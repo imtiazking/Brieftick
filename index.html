@@ -583,9 +583,20 @@ main{padding-top:90px;position:relative;z-index:3}
 /* Contagion network */
 .contagion-wrap{padding:24px;border-radius:14px;background:var(--panel);backdrop-filter:blur(16px);border:1px solid var(--border-strong)}
 .contagion-svg{width:100%;height:380px}
-.contagion-legend{display:flex;gap:16px;justify-content:center;margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em}
+.contagion-legend{display:flex;gap:16px;justify-content:center;margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;flex-wrap:wrap}
 .contagion-legend span{display:flex;align-items:center;gap:6px}
 .contagion-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.contagion-hint{color:var(--ink-faint);font-style:italic;letter-spacing:0.05em;margin-left:auto;padding-left:16px;border-left:1px solid var(--border)}
+.contagion-trail{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;min-height:22px}
+.contagion-trail-label{color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.14em}
+.contagion-trail-item{padding:4px 10px;border-radius:4px;background:rgba(212,168,90,0.08);border:1px solid rgba(212,168,90,0.2);color:var(--gold);cursor:pointer;transition:all 0.18s ease;font-weight:500}
+.contagion-trail-item:hover{background:rgba(212,168,90,0.15);border-color:rgba(212,168,90,0.4)}
+.contagion-trail-item.current{background:rgba(212,168,90,0.18);border-color:var(--gold);color:var(--gold-bright);cursor:default}
+.contagion-trail-item.current:hover{background:rgba(212,168,90,0.18);border-color:var(--gold)}
+.contagion-trail-sep{color:var(--ink-faint);font-size:9px}
+.contagion-svg .peer-node{cursor:pointer;transition:transform 0.18s ease}
+.contagion-svg .peer-node:hover{transform:translateZ(0) scale(1.08)}
+.contagion-svg .peer-node:hover circle{filter:brightness(1.3)}
 
 /* History pattern */
 .history-wrap{padding:24px;border-radius:14px;background:var(--panel);backdrop-filter:blur(16px);border:1px solid var(--border-strong)}
@@ -1485,11 +1496,13 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
       <div class="contagion">
         <h3>Sector Contagion Map</h3>
         <div class="contagion-wrap">
+          <div class="contagion-trail" id="contagionTrail"></div>
           <svg class="contagion-svg" viewBox="0 0 480 380" id="contagionSvg"></svg>
           <div class="contagion-legend">
             <span><i style="background:var(--red)"></i> Negative impact</span>
             <span><i style="background:var(--amber)"></i> Mixed</span>
             <span><i style="background:var(--green)"></i> Positive impact</span>
+            <span class="contagion-hint">Click any peer to re-center</span>
           </div>
         </div>
       </div>
@@ -4501,57 +4514,302 @@ function drawHistory(sym){
   }).join('');
 }
 
-/* Contagion network - center node + radial peers */
-function drawContagion(sym, centerColor){
-  // Each ticker's natural peer cluster - the names that actually trade in
-  // sympathy with the source ticker. Curated, not auto-generated.
-  const peersBySymbol={
-    'NVDA':['AMD','AVGO','MU','MSFT','META','QQQ','SOXX'],
-    'TSLA':['F','GM','LCID','RIVN','NIO','QQQ','XLY'],
-    'AAPL':['MSFT','QQQ','QCOM','AVGO','SPY','HPQ'],
-    'META':['GOOGL','SNAP','PINS','NFLX','QQQ','NVDA'],
-    'GOOGL':['META','MSFT','AMZN','SNAP','QQQ','NVDA'],
-    'AMD':['NVDA','AVGO','MU','INTC','SOXX','TSM','QQQ'],
-    'MSFT':['GOOGL','AAPL','AMZN','META','QQQ','NVDA'],
-    'AMZN':['MSFT','GOOGL','META','NFLX','WMT','QQQ'],
-    'NFLX':['DIS','CMCSA','META','GOOGL','SPOT','QQQ'],
-    'SNDK':['MU','WDC','STX','AMD','NVDA','QQQ'],
-    'SPY':['QQQ','DIA','IWM','XLE','XLK','XLF','VIX'],
-  };
-  const peers=peersBySymbol[sym]||peersBySymbol['NVDA'];
-  const svg=document.getElementById('contagionSvg');
-  if(!svg) return;
-  const cx=240, cy=190, R=130;
-  const colors={neg:'#ff5b6e', pos:'#3ddc97', neu:'#ffb547'};
+/* Contagion network - center node + radial peers
+ * Interactive: clicking any peer re-centers the map on that ticker with
+ * smooth position interpolation. A breadcrumb trail above the SVG lets the
+ * user navigate back through the exploration path. Pure SVG + requestAnimationFrame,
+ * no animation library required.
+ */
+let _contagionTrail = [];        // ['NVDA','AVGO',...] navigation history
+let _contagionCurrent = null;    // current source symbol
+let _contagionAnimating = false; // re-entrancy guard during transitions
 
-  // Try to pull cached live moves for the peer set - non-blocking, falls back to
-  // a light deterministic mock if no cache hit. (We avoid making a live API call
-  // here to respect Twelve Data's rate limit; the dashboard refresh already
-  // populated the cache for the most common peers.)
-  function getPeerMove(pSym){
-    const cached = (BriefTickAPI._cache && BriefTickAPI._cache.get('q:'+pSym));
-    if(cached && cached.v && !isNaN(cached.v.pctChange)) return cached.v.pctChange;
-    // Deterministic pseudo-random fallback so the visual is consistent across renders
-    const h = pSym.split('').reduce((a,c)=>((a<<5)-a+c.charCodeAt(0))|0, sym.charCodeAt(0));
-    return ((h % 700) / 100) - 3.5; // range ~-3.5% to +3.5%
+const _contagionPeers = {
+  'NVDA':['AMD','AVGO','MU','MSFT','META','QQQ','SOXX'],
+  'TSLA':['F','GM','LCID','RIVN','NIO','QQQ','XLY'],
+  'AAPL':['MSFT','QQQ','QCOM','AVGO','SPY','HPQ'],
+  'META':['GOOGL','SNAP','PINS','NFLX','QQQ','NVDA'],
+  'GOOGL':['META','MSFT','AMZN','SNAP','QQQ','NVDA'],
+  'AMD':['NVDA','AVGO','MU','INTC','SOXX','TSM','QQQ'],
+  'MSFT':['GOOGL','AAPL','AMZN','META','QQQ','NVDA'],
+  'AMZN':['MSFT','GOOGL','META','NFLX','WMT','QQQ'],
+  'NFLX':['DIS','CMCSA','META','GOOGL','SPOT','QQQ'],
+  'SNDK':['MU','WDC','STX','AMD','NVDA','QQQ'],
+  'SPY':['QQQ','DIA','IWM','XLE','XLK','XLF','VIX'],
+  // Added so peers in the curated lists above can themselves be re-centered.
+  // When a node has no curated peer list, we infer one heuristically below.
+  'AVGO':['NVDA','AMD','MU','QCOM','TSM','SOXX','QQQ'],
+  'MU':['NVDA','AMD','AVGO','WDC','STX','SOXX','QQQ'],
+  'QQQ':['SPY','NVDA','MSFT','AAPL','META','GOOGL','AMZN'],
+  'SOXX':['NVDA','AMD','AVGO','MU','TSM','INTC','QCOM'],
+  'F':['GM','TSLA','STLA','TM','HMC','XLY'],
+  'GM':['F','TSLA','STLA','TM','HMC','XLY'],
+  'INTC':['AMD','NVDA','AVGO','MU','TSM','SOXX'],
+  'TSM':['NVDA','AMD','AVGO','INTC','SOXX','QCOM'],
+  'QCOM':['AVGO','AMD','TSM','INTC','SOXX','AAPL'],
+  'DIS':['NFLX','CMCSA','PARA','WBD','SPOT','META'],
+  'SNAP':['META','PINS','GOOGL','NFLX','SPOT','QQQ'],
+  'XLE':['CVX','XOM','COP','SLB','EOG','SPY'],
+  'XLK':['NVDA','MSFT','AAPL','AVGO','META','SPY'],
+};
+
+function _getContagionPeers(sym){
+  if(_contagionPeers[sym]) return _contagionPeers[sym];
+  // Fallback for unknown tickers: borrow QQQ's peer set with the unknown
+  // ticker filtered out, so clicking exotic names still produces a map.
+  return _contagionPeers['QQQ'].filter(p => p !== sym).slice(0, 7);
+}
+
+function _getPeerMove(pSym, seedSym){
+  const cached = (BriefTickAPI._cache && BriefTickAPI._cache.get('q:'+pSym));
+  if(cached && cached.v && !isNaN(cached.v.pctChange)) return cached.v.pctChange;
+  // Deterministic pseudo-random fallback so the visual is consistent across renders
+  const h = pSym.split('').reduce((a,c)=>((a<<5)-a+c.charCodeAt(0))|0, seedSym.charCodeAt(0));
+  return ((h % 700) / 100) - 3.5; // range ~-3.5% to +3.5%
+}
+
+function _renderContagionTrail(){
+  const trailEl = document.getElementById('contagionTrail');
+  if(!trailEl) return;
+  if(_contagionTrail.length <= 1){
+    trailEl.innerHTML = '';
+    return;
+  }
+  const parts = [`<span class="contagion-trail-label">Trail</span>`];
+  _contagionTrail.forEach((s, i) => {
+    const isCurrent = (i === _contagionTrail.length - 1);
+    const cls = isCurrent ? 'contagion-trail-item current' : 'contagion-trail-item';
+    const onclick = isCurrent ? '' : `onclick="_navigateContagion(${i})"`;
+    parts.push(`<span class="${cls}" ${onclick}>${s}</span>`);
+    if(!isCurrent) parts.push(`<span class="contagion-trail-sep">→</span>`);
+  });
+  trailEl.innerHTML = parts.join('');
+}
+
+function _navigateContagion(trailIndex){
+  // Jump back to an earlier symbol in the trail. Truncate trail at that index.
+  if(_contagionAnimating) return;
+  const targetSym = _contagionTrail[trailIndex];
+  if(!targetSym) return;
+  _contagionTrail = _contagionTrail.slice(0, trailIndex + 1);
+  _contagionCurrent = targetSym;
+  // Determine color from the cached quote or fall back to neutral
+  const cached = BriefTickAPI._cache && BriefTickAPI._cache.get('q:'+targetSym);
+  const move = cached && cached.v ? cached.v.pctChange : -1;
+  const color = move >= 0.4 ? '#3ddc97' : (move <= -0.4 ? '#ff5b6e' : '#ffb547');
+  _animateContagionTo(targetSym, color, false);
+}
+
+function _peerClicked(pSym, moveStr){
+  if(_contagionAnimating) return;
+  const move = parseFloat(moveStr);
+  const color = move >= 0.4 ? '#3ddc97' : (move <= -0.4 ? '#ff5b6e' : '#ffb547');
+  _contagionTrail.push(pSym);
+  _contagionCurrent = pSym;
+  _animateContagionTo(pSym, color, true);
+}
+
+function _layoutPeers(peers, cx, cy, R){
+  // Compute target (x,y) for each peer name on the radial layout.
+  const out = {};
+  peers.forEach((pSym, i) => {
+    const ang = (-Math.PI/2) + (i/peers.length)*Math.PI*2;
+    out[pSym] = { x: cx + Math.cos(ang)*R, y: cy + Math.sin(ang)*R };
+  });
+  return out;
+}
+
+function _animateContagionTo(newSym, newCenterColor, isForward){
+  // Smooth interpolation from current layout to the new one. Peer nodes that
+  // exist in both layouts (the new center used to be a peer; old peers may
+  // reappear in the new ring) animate between positions; nodes appearing or
+  // disappearing fade.
+  const svg = document.getElementById('contagionSvg');
+  if(!svg){ drawContagion(newSym, newCenterColor); return; }
+  _contagionAnimating = true;
+
+  const cx = 240, cy = 190, R = 130;
+  const colors = { neg:'#ff5b6e', pos:'#3ddc97', neu:'#ffb547' };
+  const oldSym = _contagionTrail.length >= 2 && isForward
+    ? _contagionTrail[_contagionTrail.length - 2]
+    : (svg.getAttribute('data-source') || newSym);
+  const oldPeers = _getContagionPeers(oldSym);
+  const newPeers = _getContagionPeers(newSym);
+  const oldLayout = _layoutPeers(oldPeers, cx, cy, R);
+  const newLayout = _layoutPeers(newPeers, cx, cy, R);
+  // The clicked peer was on the old ring; it animates from its old position
+  // to the center. The old center moves outward to wherever the new layout
+  // would place it (if it appears there) or fades.
+  const oldCenterTarget = newLayout[oldSym] || { x: cx, y: cy - R - 60 };
+  const newCenterStart = oldLayout[newSym] || { x: cx, y: cy };
+
+  // Snapshot starting positions for everyone we'll be tracking.
+  const starts = {};
+  const ends = {};
+  const allKeys = new Set();
+  oldPeers.forEach(p => allKeys.add('peer:'+p));
+  newPeers.forEach(p => allKeys.add('peer:'+p));
+  allKeys.add('center:'+oldSym);
+  allKeys.add('center:'+newSym);
+
+  // Starts come from old layout (or current center for the old center)
+  allKeys.forEach(k => {
+    const [kind, name] = k.split(':');
+    if(kind === 'center' && name === oldSym){
+      starts[k] = { x: cx, y: cy, opacity: 1, scale: 1 };
+    } else if(kind === 'center' && name === newSym){
+      starts[k] = { x: newCenterStart.x, y: newCenterStart.y, opacity: oldPeers.includes(newSym) ? 1 : 0, scale: oldPeers.includes(newSym) ? 1 : 0.6 };
+    } else if(kind === 'peer'){
+      if(oldLayout[name]){
+        starts[k] = { x: oldLayout[name].x, y: oldLayout[name].y, opacity: 1, scale: 1 };
+      } else {
+        // Brand new peer (wasn't on screen before) — fade in from new position
+        starts[k] = { x: newLayout[name] ? newLayout[name].x : cx, y: newLayout[name] ? newLayout[name].y : cy, opacity: 0, scale: 0.6 };
+      }
+    }
+  });
+
+  // Ends come from new layout
+  allKeys.forEach(k => {
+    const [kind, name] = k.split(':');
+    if(kind === 'center' && name === oldSym){
+      // Old center transitions out: either becomes a peer in new layout, or fades
+      if(newPeers.includes(oldSym)){
+        ends[k] = { x: oldCenterTarget.x, y: oldCenterTarget.y, opacity: 1, scale: 1, asPeer: true };
+      } else {
+        ends[k] = { x: oldCenterTarget.x, y: oldCenterTarget.y, opacity: 0, scale: 0.6, asPeer: true };
+      }
+    } else if(kind === 'center' && name === newSym){
+      ends[k] = { x: cx, y: cy, opacity: 1, scale: 1 };
+    } else if(kind === 'peer'){
+      if(newLayout[name] && name !== newSym && name !== oldSym){
+        ends[k] = { x: newLayout[name].x, y: newLayout[name].y, opacity: 1, scale: 1 };
+      } else {
+        // Peer is leaving (not in new layout) — fade out where it was, or stays as old-center stand-in
+        if(name === newSym){
+          // Promoted to center — handled by center:newSym entry, hide this peer instance
+          ends[k] = { x: starts[k].x, y: starts[k].y, opacity: 0, scale: 0.6 };
+        } else {
+          ends[k] = { x: starts[k].x, y: starts[k].y, opacity: 0, scale: 0.6 };
+        }
+      }
+    }
+  });
+
+  // Build the moving nodes as <g> elements with unique IDs so we can mutate
+  // their transform attribute each frame.
+  const frag = [];
+  // Background gradient + edges (drawn fresh at end of animation; during the
+  // animation we keep them simple - just the radial halo around new center
+  // pulses in)
+  frag.push(`<defs>
+    <radialGradient id="centerG"><stop offset="0%" stop-color="${newCenterColor}" stop-opacity="0.4"/><stop offset="100%" stop-color="${newCenterColor}" stop-opacity="0"/></radialGradient>
+  </defs>`);
+  frag.push(`<circle id="cgHalo" cx="${cx}" cy="${cy}" r="60" fill="url(#centerG)" opacity="0"/>`);
+
+  // Render every tracked node. Centers are bigger; peers are standard size.
+  allKeys.forEach(k => {
+    const [kind, name] = k.split(':');
+    const s = starts[k];
+    if(kind === 'center'){
+      const isNewCtr = (name === newSym);
+      const stroke = isNewCtr ? newCenterColor : '#999';
+      frag.push(`<g id="cgnode-${k.replace(':','-')}" transform="translate(${s.x},${s.y}) scale(${s.scale})" opacity="${s.opacity}">
+        <circle r="34" fill="rgba(10,13,20,0.95)" stroke="${stroke}" stroke-width="2"/>
+        <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="Fraunces" font-size="14" font-weight="500">${name}</text>
+        <text x="0" y="13" text-anchor="middle" fill="${stroke}" font-family="JetBrains Mono" font-size="9">${isNewCtr ? 'SOURCE' : ''}</text>
+      </g>`);
+    } else {
+      // Compute color from move
+      const move = _getPeerMove(name, newSym);
+      const tone = move >= 0.4 ? 'pos' : (move <= -0.4 ? 'neg' : 'neu');
+      const c = colors[tone];
+      const movePct = move.toFixed(2);
+      frag.push(`<g id="cgnode-${k.replace(':','-')}" class="peer-node" transform="translate(${s.x},${s.y}) scale(${s.scale})" opacity="${s.opacity}" onclick="_peerClicked('${name}', '${movePct}')">
+        <circle r="22" fill="rgba(10,13,20,0.95)" stroke="${c}" stroke-width="1.5"/>
+        <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="10" font-weight="500" style="pointer-events:none">${name}</text>
+        <text x="0" y="10" text-anchor="middle" fill="${c}" font-family="JetBrains Mono" font-size="9" style="pointer-events:none">${move>=0?'+':''}${movePct}%</text>
+      </g>`);
+    }
+  });
+
+  svg.innerHTML = frag.join('');
+  svg.setAttribute('data-source', newSym);
+  _renderContagionTrail();
+
+  // Animate ~500ms ease-out
+  const DUR = 500;
+  const t0 = performance.now();
+  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+  function frame(now){
+    const t = Math.min((now - t0) / DUR, 1);
+    const e = easeOut(t);
+    allKeys.forEach(k => {
+      const s = starts[k], n = ends[k];
+      const x = s.x + (n.x - s.x) * e;
+      const y = s.y + (n.y - s.y) * e;
+      const op = s.opacity + (n.opacity - s.opacity) * e;
+      const sc = s.scale + (n.scale - s.scale) * e;
+      const el = document.getElementById('cgnode-' + k.replace(':','-'));
+      if(el){
+        el.setAttribute('transform', `translate(${x},${y}) scale(${sc})`);
+        el.setAttribute('opacity', op);
+      }
+    });
+    // Halo fades in
+    const halo = document.getElementById('cgHalo');
+    if(halo) halo.setAttribute('opacity', e);
+
+    if(t < 1){
+      requestAnimationFrame(frame);
+    } else {
+      // Final render: redraw cleanly so edges/pulse animations are correct
+      _contagionAnimating = false;
+      drawContagion(newSym, newCenterColor);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function drawContagion(sym, centerColor){
+  // Public entrypoint. Called by loadWim() when a ticker is loaded and by
+  // _animateContagionTo() to settle the final state after a transition.
+  const peers = _getContagionPeers(sym);
+  const svg = document.getElementById('contagionSvg');
+  if(!svg) return;
+  // Initialize trail on first render or when loadWim switches tickers from outside
+  if(!_contagionCurrent || (_contagionTrail.length && _contagionTrail[_contagionTrail.length - 1] !== sym && !_contagionAnimating)){
+    // Only reset trail if the symbol change came from outside (e.g. user typed a new ticker)
+    // We detect this by checking if the new sym is not the current trail tip.
+    if(_contagionCurrent !== sym){
+      _contagionTrail = [sym];
+      _contagionCurrent = sym;
+    }
+  }
+  if(_contagionTrail.length === 0){
+    _contagionTrail = [sym];
+    _contagionCurrent = sym;
   }
 
-  let edges='', nodes='';
-  peers.forEach((pSym,i)=>{
-    const ang=(-Math.PI/2)+(i/peers.length)*Math.PI*2;
-    const x=cx+Math.cos(ang)*R, y=cy+Math.sin(ang)*R;
-    const move = getPeerMove(pSym);
+  const cx = 240, cy = 190, R = 130;
+  const colors = { neg:'#ff5b6e', pos:'#3ddc97', neu:'#ffb547' };
+
+  let edges = '', nodes = '';
+  peers.forEach((pSym, i) => {
+    const ang = (-Math.PI/2) + (i/peers.length)*Math.PI*2;
+    const x = cx + Math.cos(ang)*R, y = cy + Math.sin(ang)*R;
+    const move = _getPeerMove(pSym, sym);
     const tone = move >= 0.4 ? 'pos' : (move <= -0.4 ? 'neg' : 'neu');
     const c = colors[tone];
     const movePct = move.toFixed(2);
-    edges+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${c}" stroke-opacity="0.35" stroke-width="${1+Math.min(Math.abs(move)/3,2)}" stroke-dasharray="3 3"/>`;
-    nodes+=`<g transform="translate(${x},${y})">
+    edges += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${c}" stroke-opacity="0.35" stroke-width="${1+Math.min(Math.abs(move)/3,2)}" stroke-dasharray="3 3"/>`;
+    nodes += `<g class="peer-node" transform="translate(${x},${y})" onclick="_peerClicked('${pSym}', '${movePct}')">
       <circle r="22" fill="rgba(10,13,20,0.95)" stroke="${c}" stroke-width="1.5"/>
-      <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="10" font-weight="500">${pSym}</text>
-      <text x="0" y="10" text-anchor="middle" fill="${c}" font-family="JetBrains Mono" font-size="9">${move>=0?'+':''}${movePct}%</text>
+      <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="10" font-weight="500" style="pointer-events:none">${pSym}</text>
+      <text x="0" y="10" text-anchor="middle" fill="${c}" font-family="JetBrains Mono" font-size="9" style="pointer-events:none">${move>=0?'+':''}${movePct}%</text>
     </g>`;
   });
-  svg.innerHTML=`
+  svg.innerHTML = `
     <defs>
       <radialGradient id="centerG"><stop offset="0%" stop-color="${centerColor}" stop-opacity="0.4"/><stop offset="100%" stop-color="${centerColor}" stop-opacity="0"/></radialGradient>
     </defs>
@@ -4567,6 +4825,8 @@ function drawContagion(sym, centerColor){
       <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="Fraunces" font-size="14" font-weight="500">${sym}</text>
       <text x="0" y="13" text-anchor="middle" fill="${centerColor}" font-family="JetBrains Mono" font-size="9">SOURCE</text>
     </g>`;
+  svg.setAttribute('data-source', sym);
+  _renderContagionTrail();
 }
 
 document.getElementById('wimInput').addEventListener('keydown',e=>{
