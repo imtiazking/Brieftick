@@ -3286,7 +3286,7 @@ const BriefTickAPI={
     const ck = 'q:'+symbol;
     const cached = this._cacheGet(ck, 60_000); // 60s cache
     if(cached) return cached;
-    const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(symbol)}&apikey=${this.keys.twelvedata}`;
+    const url = `/api/proxy?provider=twelvedata&endpoint=quote&symbol=${encodeURIComponent(symbol)}`;
     const d = await this._fetch(url);
     if(!d || d.status==='error' || d.code) return null;
     const result = {
@@ -3342,7 +3342,7 @@ const BriefTickAPI={
     for(let i = 0; i < missing.length; i += CHUNK){
       const chunk = missing.slice(i, i+CHUNK);
       const list = chunk.join(',');
-      const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(list)}&apikey=${this.keys.twelvedata}`;
+      const url = `/api/proxy?provider=twelvedata&endpoint=quote&symbol=${encodeURIComponent(list)}`;
       const d = await this._fetch(url);
       if(!d) continue;
       // Top-level error detection
@@ -3400,7 +3400,7 @@ const BriefTickAPI={
     const ck = `ts:${symbol}:${interval}:${outputsize}`;
     const cached = this._cacheGet(ck, 5*60_000); // 5min cache
     if(cached) return cached;
-    const url = `https://api.twelvedata.com/time_series?symbol=${symbol}&interval=${interval}&outputsize=${outputsize}&apikey=${this.keys.twelvedata}`;
+    const url = `/api/proxy?provider=twelvedata&endpoint=time_series&symbol=${symbol}&interval=${interval}&outputsize=${outputsize}`;
     const d = await this._fetch(url);
     if(!d || !d.values) return null;
     const series = d.values.map(v => parseFloat(v.close)).reverse();
@@ -3416,7 +3416,7 @@ const BriefTickAPI={
     const to = new Date();
     const from = new Date(Date.now() - daysBack*24*60*60*1000);
     const fmt = d => d.toISOString().slice(0,10);
-    const url = `https://finnhub.io/api/v1/company-news?symbol=${symbol}&from=${fmt(from)}&to=${fmt(to)}&token=${this.keys.finnhub}`;
+    const url = `/api/proxy?provider=finnhub&endpoint=company-news&symbol=${symbol}&from=${fmt(from)}&to=${fmt(to)}`;
     const d = await this._fetch(url);
     if(!Array.isArray(d)) return [];
     const result = d.slice(0,10).map(n=>({
@@ -3435,7 +3435,7 @@ const BriefTickAPI={
     const ck = 'mnews:'+category;
     const cached = this._cacheGet(ck, 5*60_000);
     if(cached) return cached;
-    const url = `https://finnhub.io/api/v1/news?category=${category}&token=${this.keys.finnhub}`;
+    const url = `/api/proxy?provider=finnhub&endpoint=news&category=${category}`;
     const d = await this._fetch(url);
     if(!Array.isArray(d)) return [];
     const result = d.slice(0,10).map(n=>({
@@ -3457,7 +3457,7 @@ const BriefTickAPI={
     const ck = `ec:${fromStr}:${toStr}`;
     const cached = this._cacheGet(ck, 30*60_000); // 30min
     if(cached) return cached;
-    const url = `https://finnhub.io/api/v1/calendar/earnings?from=${fromStr}&to=${toStr}&token=${this.keys.finnhub}`;
+    const url = `/api/proxy?provider=finnhub&endpoint=calendar/earnings&from=${fromStr}&to=${toStr}`;
     const d = await this._fetch(url);
     if(!d || !d.earningsCalendar) return [];
     this._cacheSet(ck, d.earningsCalendar);
@@ -3471,7 +3471,7 @@ const BriefTickAPI={
     const ck = 'av_sent:'+list;
     const cached = this._cacheGet(ck, 60*60_000); // 1 hour
     if(cached) return cached;
-    const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${encodeURIComponent(list)}&limit=10&apikey=${this.keys.alphavantage}`;
+    const url = `/api/proxy?provider=alphavantage&function=NEWS_SENTIMENT&tickers=${encodeURIComponent(list)}&limit=10`;
     const d = await this._fetch(url);
     if(!d || !d.feed) return [];
     const result = d.feed.slice(0,10).map(item=>({
@@ -3499,7 +3499,7 @@ const BriefTickAPI={
     const ck = `av_ti:${symbol}:${indicator}:${interval}:${timePeriod}`;
     const cached = this._cacheGet(ck, 60*60_000);
     if(cached) return cached;
-    const url = `https://www.alphavantage.co/query?function=${indicator}&symbol=${symbol}&interval=${interval}&time_period=${timePeriod}&series_type=close&apikey=${this.keys.alphavantage}`;
+    const url = `/api/proxy?provider=alphavantage&function=${indicator}&symbol=${symbol}&interval=${interval}&time_period=${timePeriod}&series_type=close`;
     const d = await this._fetch(url);
     if(!d) return null;
     // The technical indicator response has a nested structure varying by indicator
@@ -3521,7 +3521,7 @@ const BriefTickAPI={
     const ck = 'av_sector';
     const cached = this._cacheGet(ck, 24*60*60_000);
     if(cached) return cached;
-    const url = `https://www.alphavantage.co/query?function=SECTOR&apikey=${this.keys.alphavantage}`;
+    const url = `/api/proxy?provider=alphavantage&function=SECTOR`;
     const d = await this._fetch(url);
     if(!d) return null;
     // Response has Rank A-G keys for different time horizons
@@ -3547,13 +3547,10 @@ const BriefTickAPI={
       return null;
     }
     try {
-      const r = await fetch('https://api.anthropic.com/v1/messages', {
+      const r = await fetch('/api/proxy?provider=anthropic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': this.keys.anthropic,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true',
         },
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
@@ -3723,6 +3720,14 @@ function loadKeysFromStorage(){
 loadKeysFromStorage();
 // Make sure anthropic key field exists in keys object even if not saved
 if(!('anthropic' in BriefTickAPI.keys)) BriefTickAPI.keys.anthropic = null;
+// SERVER PROXY MODE: keys live in Vercel environment variables now,
+// not in the browser. Set dummy placeholder values so client-side feature
+// gates ("if(!this.keys.x) return;") don't block requests. The proxy
+// at /api/proxy will use the real keys from server env vars.
+BriefTickAPI.keys.twelvedata   = BriefTickAPI.keys.twelvedata   || '_server_';
+BriefTickAPI.keys.finnhub      = BriefTickAPI.keys.finnhub      || '_server_';
+BriefTickAPI.keys.alphavantage = BriefTickAPI.keys.alphavantage || '_server_';
+BriefTickAPI.keys.anthropic    = BriefTickAPI.keys.anthropic    || '_server_';
 // Hydrate cache from localStorage so users see last-known prices instantly on reload
 BriefTickAPI._loadPersistedCache();
 

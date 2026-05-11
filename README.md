@@ -1,27 +1,56 @@
 # BriefTick
 
-Markets dashboard — live quotes, news, earnings, and AI summaries. Single-file HTML app.
+Markets dashboard with server-side API key management and request caching.
 
-## Setup
+## Architecture
 
-Open the site, click the gear icon in the top right, and paste your API keys for:
+- **Frontend:** Single-file HTML/JS app (`index.html`)
+- **Backend:** Vercel serverless proxy (`api/proxy.js`) — caches API responses, hides keys
+- **Providers:** Twelve Data (quotes), Finnhub (news/earnings), Alpha Vantage (sectors/technicals), Anthropic (AI summaries)
 
-- **Anthropic** — https://console.anthropic.com (powers AI features)
-- **Twelve Data** — https://twelvedata.com (live quotes)
-- **Finnhub** — https://finnhub.io (news, earnings calendar)
-- **Alpha Vantage** — https://www.alphavantage.co (sector data, technicals)
+## How API keys work
 
-All providers have free tiers. Keys are stored only in your browser's localStorage — they never leave your machine.
+Keys live as **environment variables on Vercel**, not in the browser. The proxy at `/api/proxy?provider=...` attaches the right key server-side before forwarding requests upstream.
 
-## Deploy
+This means:
+- Visitors don't need their own keys
+- Keys never appear in client code or browser storage
+- One API call serves many visitors (response cached for 30s-30min depending on endpoint)
+- Free-tier rate limits stretch much further
 
-This is a single static HTML file. Drop it on any static host:
+## Setup (Vercel deployment)
 
-- **Vercel** — import the GitHub repo, no build config needed
-- **Netlify** — same
-- **GitHub Pages** — enable in repo settings
+1. Push this repo to GitHub
+2. Import in Vercel
+3. Go to Project Settings → Environment Variables and add:
 
-## Notes
+   | Name | Value |
+   |---|---|
+   | `TWELVE_DATA_KEY` | your Twelve Data key |
+   | `FINNHUB_KEY` | your Finnhub key |
+   | `ALPHA_VANTAGE_KEY` | your Alpha Vantage key |
+   | `ANTHROPIC_KEY` | your Anthropic key |
 
-- Free tiers have rate limits (e.g. Twelve Data is 8 calls/min, Alpha Vantage is 25/day). Upgrade if you hit them.
-- The Anthropic browser-direct call uses the `anthropic-dangerous-direct-browser-access` header. For production use, consider proxying through a serverless function.
+4. Redeploy (Vercel → Deployments → ⋯ → Redeploy on the latest)
+
+## Cache TTLs
+
+| Endpoint | TTL |
+|---|---|
+| Twelve Data quotes / time series | 30s |
+| Finnhub quote | 30s |
+| Finnhub news | 60s |
+| Finnhub company news | 5min |
+| Finnhub earnings calendar | 30min |
+| Alpha Vantage (all) | 5min |
+| Anthropic | not cached |
+
+Edit `api/proxy.js` to tune these.
+
+## Local development
+
+```
+npx vercel dev
+```
+
+This boots the proxy locally. Add the same env vars to a `.env.local` file (gitignored) for local testing.
