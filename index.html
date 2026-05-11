@@ -594,8 +594,7 @@ main{padding-top:90px;position:relative;z-index:3}
 .contagion-trail-item.current{background:rgba(212,168,90,0.18);border-color:var(--gold);color:var(--gold-bright);cursor:default}
 .contagion-trail-item.current:hover{background:rgba(212,168,90,0.18);border-color:var(--gold)}
 .contagion-trail-sep{color:var(--ink-faint);font-size:9px}
-.contagion-svg .peer-node{cursor:pointer;transition:transform 0.18s ease}
-.contagion-svg .peer-node:hover{transform:translateZ(0) scale(1.08)}
+.contagion-svg .peer-node{cursor:pointer}
 .contagion-svg .peer-node:hover circle{filter:brightness(1.3)}
 
 /* History pattern */
@@ -1502,7 +1501,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
             <span><i style="background:var(--red)"></i> Negative impact</span>
             <span><i style="background:var(--amber)"></i> Mixed</span>
             <span><i style="background:var(--green)"></i> Positive impact</span>
-            <span class="contagion-hint">Click any peer to re-center</span>
+            <span class="contagion-hint">Hover to disturb · click to re-center</span>
           </div>
         </div>
       </div>
@@ -4774,6 +4773,8 @@ function _animateContagionTo(newSym, newCenterColor, isForward){
 function drawContagion(sym, centerColor){
   // Public entrypoint. Called by loadWim() when a ticker is loaded and by
   // _animateContagionTo() to settle the final state after a transition.
+  // Also installs cursor-reactive physics on the rendered nodes (see
+  // _installContagionCursorPhysics below).
   const peers = _getContagionPeers(sym);
   const svg = document.getElementById('contagionSvg');
   if(!svg) return;
@@ -4794,6 +4795,9 @@ function drawContagion(sym, centerColor){
   const cx = 240, cy = 190, R = 130;
   const colors = { neg:'#ff5b6e', pos:'#3ddc97', neu:'#ffb547' };
 
+  // Build edge + node markup. Each gets a unique id and data-base-x/y so the
+  // physics loop can find them, know their resting position, and update them
+  // each frame.
   let edges = '', nodes = '';
   peers.forEach((pSym, i) => {
     const ang = (-Math.PI/2) + (i/peers.length)*Math.PI*2;
@@ -4802,8 +4806,8 @@ function drawContagion(sym, centerColor){
     const tone = move >= 0.4 ? 'pos' : (move <= -0.4 ? 'neg' : 'neu');
     const c = colors[tone];
     const movePct = move.toFixed(2);
-    edges += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${c}" stroke-opacity="0.35" stroke-width="${1+Math.min(Math.abs(move)/3,2)}" stroke-dasharray="3 3"/>`;
-    nodes += `<g class="peer-node" transform="translate(${x},${y})" onclick="_peerClicked('${pSym}', '${movePct}')">
+    edges += `<line id="cgedge-${i}" data-i="${i}" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${c}" stroke-opacity="0.35" stroke-width="${1+Math.min(Math.abs(move)/3,2)}" stroke-dasharray="3 3"/>`;
+    nodes += `<g id="cgpeer-${i}" data-i="${i}" data-base-x="${x}" data-base-y="${y}" class="peer-node" transform="translate(${x},${y})" onclick="_peerClicked('${pSym}', '${movePct}')">
       <circle r="22" fill="rgba(10,13,20,0.95)" stroke="${c}" stroke-width="1.5"/>
       <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="10" font-weight="500" style="pointer-events:none">${pSym}</text>
       <text x="0" y="10" text-anchor="middle" fill="${c}" font-family="JetBrains Mono" font-size="9" style="pointer-events:none">${move>=0?'+':''}${movePct}%</text>
@@ -4827,6 +4831,112 @@ function drawContagion(sym, centerColor){
     </g>`;
   svg.setAttribute('data-source', sym);
   _renderContagionTrail();
+  _installContagionCursorPhysics(peers.length, cx, cy);
+}
+
+/* Cursor-reactive physics for the contagion map.
+ * Each node has a resting position (base x/y) on the radial layout. When the
+ * cursor enters the SVG, nodes within REPEL_RADIUS receive a repulsion vector
+ * scaled by inverse distance, capped at MAX_DISPLACEMENT. A simple spring (lerp
+ * with damping factor SPRING) advances each node toward its target position
+ * every frame. When the cursor leaves, targets reset to base and nodes ease
+ * back to their resting positions. Edges follow node movement so the network
+ * appears interconnected and elastic.
+ *
+ * Runs at requestAnimationFrame rate. The loop self-cancels when the SVG is
+ * removed or replaced (next drawContagion call cancels the previous loop).
+ */
+let _cgPhysicsRAF = null;
+let _cgPhysicsState = null;
+
+function _installContagionCursorPhysics(peerCount, cx, cy){
+  // Cancel any prior loop from a previous render
+  if(_cgPhysicsRAF){ cancelAnimationFrame(_cgPhysicsRAF); _cgPhysicsRAF = null; }
+  const svg = document.getElementById('contagionSvg');
+  if(!svg) return;
+
+  // Tuning - "medium" preset
+  const REPEL_RADIUS = 90;       // SVG units; cursor only affects nodes within this distance
+  const MAX_DISPLACEMENT = 32;   // SVG units; cap on how far a node can be pushed
+  const SPRING = 0.14;           // 0..1, higher = snappier follow
+  const EDGE_FOLLOW = true;      // edges stretch to follow displaced nodes
+
+  // Gather refs
+  const peerEls = [];
+  const edgeEls = [];
+  for(let i = 0; i < peerCount; i++){
+    const pe = document.getElementById('cgpeer-' + i);
+    const ee = document.getElementById('cgedge-' + i);
+    if(!pe || !ee) return; // bail if SVG was swapped mid-call
+    const bx = parseFloat(pe.getAttribute('data-base-x'));
+    const by = parseFloat(pe.getAttribute('data-base-y'));
+    peerEls.push({ el: pe, bx, by, x: bx, y: by });
+    edgeEls.push(ee);
+  }
+
+  // Cursor state in SVG coordinates. -1,-1 means cursor is outside the SVG.
+  const state = { cursorX: -9999, cursorY: -9999, active: false };
+  _cgPhysicsState = state;
+
+  // Convert client coords to SVG viewBox coords (handles responsive sizing).
+  function clientToSvg(clientX, clientY){
+    const pt = svg.createSVGPoint();
+    pt.x = clientX; pt.y = clientY;
+    const ctm = svg.getScreenCTM();
+    if(!ctm) return { x: -9999, y: -9999 };
+    const svgPt = pt.matrixTransform(ctm.inverse());
+    return { x: svgPt.x, y: svgPt.y };
+  }
+
+  function onMove(e){
+    const p = clientToSvg(e.clientX, e.clientY);
+    state.cursorX = p.x; state.cursorY = p.y; state.active = true;
+  }
+  function onLeave(){
+    state.active = false;
+  }
+
+  svg.addEventListener('mousemove', onMove);
+  svg.addEventListener('mouseleave', onLeave);
+  // Touch support: treat the touch point as the cursor.
+  svg.addEventListener('touchmove', e => {
+    if(e.touches && e.touches[0]){
+      const t = e.touches[0];
+      const p = clientToSvg(t.clientX, t.clientY);
+      state.cursorX = p.x; state.cursorY = p.y; state.active = true;
+    }
+  }, { passive: true });
+  svg.addEventListener('touchend', onLeave);
+
+  function frame(){
+    // For each peer, compute target = base + repulsion (if cursor near)
+    for(let i = 0; i < peerEls.length; i++){
+      const p = peerEls[i];
+      let tx = p.bx, ty = p.by;
+      if(state.active){
+        const dx = p.bx - state.cursorX;
+        const dy = p.by - state.cursorY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < REPEL_RADIUS && dist > 0.001){
+          // Repulsion strength falls off linearly toward 0 at REPEL_RADIUS
+          const strength = (1 - dist / REPEL_RADIUS) * MAX_DISPLACEMENT;
+          const nx = dx / dist, ny = dy / dist;
+          tx += nx * strength;
+          ty += ny * strength;
+        }
+      }
+      // Spring toward target
+      p.x += (tx - p.x) * SPRING;
+      p.y += (ty - p.y) * SPRING;
+      p.el.setAttribute('transform', `translate(${p.x.toFixed(2)},${p.y.toFixed(2)})`);
+      if(EDGE_FOLLOW){
+        edgeEls[i].setAttribute('x2', p.x.toFixed(2));
+        edgeEls[i].setAttribute('y2', p.y.toFixed(2));
+      }
+    }
+    _cgPhysicsRAF = requestAnimationFrame(frame);
+  }
+  _cgPhysicsRAF = requestAnimationFrame(frame);
 }
 
 document.getElementById('wimInput').addEventListener('keydown',e=>{
