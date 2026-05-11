@@ -3211,16 +3211,64 @@ const BriefTickAPI={
     finnhub:      null,  // user-provided via settings panel
     alphavantage: null,  // user-provided via settings panel
   },
-  // Simple in-memory cache to avoid burning rate limits
+  // Two-tier cache: in-memory (fast) + localStorage (persists across reloads)
   _cache: new Map(),
+  _CACHE_STORAGE_KEY: 'brieftick_cache_v1',
+  _STALE_MAX_MS: 24*60*60_000, // 24h - max age for stale fallback
+  _persistTimer: null,
+  _loadPersistedCache(){
+    try{
+      const raw = localStorage.getItem(this._CACHE_STORAGE_KEY);
+      if(!raw) return;
+      const obj = JSON.parse(raw);
+      const now = Date.now();
+      for(const [k, e] of Object.entries(obj)){
+        // Drop entries older than 24h to prevent unbounded growth
+        if(e && e.t && (now - e.t) < this._STALE_MAX_MS){
+          this._cache.set(k, e);
+        }
+      }
+      console.log(`[cache] loaded ${this._cache.size} entries from localStorage`);
+    }catch(e){
+      console.warn('[cache] failed to load persisted cache:', e.message);
+    }
+  },
+  _schedulePersist(){
+    // Debounce writes - persist at most once per 2s
+    if(this._persistTimer) return;
+    this._persistTimer = setTimeout(()=>{
+      this._persistTimer = null;
+      try{
+        const obj = {};
+        for(const [k, v] of this._cache.entries()) obj[k] = v;
+        localStorage.setItem(this._CACHE_STORAGE_KEY, JSON.stringify(obj));
+      }catch(e){
+        // Likely localStorage quota exceeded - silently drop oldest half
+        if(e.name === 'QuotaExceededError'){
+          const entries = [...this._cache.entries()].sort((a,b)=>a[1].t-b[1].t);
+          const keep = entries.slice(Math.floor(entries.length/2));
+          this._cache = new Map(keep);
+          try{ localStorage.setItem(this._CACHE_STORAGE_KEY, JSON.stringify(Object.fromEntries(keep))); }catch(_){}
+        }
+      }
+    }, 2000);
+  },
   _cacheGet(key, ttlMs){
     const e = this._cache.get(key);
     if(!e) return null;
     if(Date.now() - e.t > ttlMs) return null;
     return e.v;
   },
+  // Returns stale cache even past TTL, up to _STALE_MAX_MS. Used as fallback when API fails.
+  _cacheGetStale(key){
+    const e = this._cache.get(key);
+    if(!e) return null;
+    if(Date.now() - e.t > this._STALE_MAX_MS) return null;
+    return e.v;
+  },
   _cacheSet(key, value){
     this._cache.set(key, {t:Date.now(), v:value});
+    this._schedulePersist();
   },
   async _fetch(url){
     try{
@@ -3280,8 +3328,12 @@ const BriefTickAPI={
     }
     if(missing.length === 0) return out;
 
-    // 2. If we're cooling down from a 429, return what we have
+    // 2. If we're cooling down from a 429, fall back to stale cache for missing symbols
     if(Date.now() < this._quotesCooldownUntil){
+      for(const sym of missing){
+        const stale = this._cacheGetStale('q:'+sym);
+        if(stale){ out[sym] = {...stale, _stale: true}; }
+      }
       return out;
     }
 
@@ -3295,9 +3347,16 @@ const BriefTickAPI={
       if(!d) continue;
       // Top-level error detection
       if(d.code === 429){
-        console.warn('[getQuotes] Twelve Data rate limit hit. Cooling down for 60s.');
+        console.warn('[getQuotes] Twelve Data rate limit hit. Cooling down for 60s. Serving stale cache for missing symbols.');
         this._quotesCooldownUntil = Date.now() + 60_000;
-        return out; // Return what we have so far
+        // Fall back to stale cache for any symbols still missing
+        for(const sym of missing){
+          if(!out[sym]){
+            const stale = this._cacheGetStale('q:'+sym);
+            if(stale){ out[sym] = {...stale, _stale: true}; }
+          }
+        }
+        return out;
       }
       if(d.code === 401){
         console.warn('[getQuotes] Twelve Data key invalid.');
@@ -3664,6 +3723,8 @@ function loadKeysFromStorage(){
 loadKeysFromStorage();
 // Make sure anthropic key field exists in keys object even if not saved
 if(!('anthropic' in BriefTickAPI.keys)) BriefTickAPI.keys.anthropic = null;
+// Hydrate cache from localStorage so users see last-known prices instantly on reload
+BriefTickAPI._loadPersistedCache();
 
 function openSettings(){
   const overlay = document.getElementById('settingsOverlay');
