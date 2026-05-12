@@ -4827,7 +4827,7 @@ function _reactionNodeAttrs(source, target, move){
   const safeSource = String(source).replace(/[^A-Z0-9.\-]/g,'');
   const safeTarget = String(target).replace(/[^A-Z0-9.\-]/g,'');
   const movePct = Number(move).toFixed(2);
-  return `tabindex="0" role="button" aria-label="Inspect ${safeSource} to ${safeTarget} reaction" onmouseenter="_showReactionDetail('${safeSource}','${safeTarget}','${movePct}')" onfocus="_showReactionDetail('${safeSource}','${safeTarget}','${movePct}')" onmouseleave="_showReactionSource('${safeSource}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();_peerClicked('${safeTarget}','${movePct}')}"`;
+  return `tabindex="0" role="button" aria-label="Inspect ${safeSource} to ${safeTarget} reaction" onmouseenter="_lockReactionInspecting(true);_showReactionDetail('${safeSource}','${safeTarget}','${movePct}')" onfocus="_lockReactionInspecting(true);_showReactionDetail('${safeSource}','${safeTarget}','${movePct}')" onmouseleave="_lockReactionInspecting(false)" onblur="_lockReactionInspecting(false)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();_peerClicked('${safeTarget}','${movePct}')}"`;
 }
 
 function _showReactionDetail(source, target, moveStr, mode='hover'){
@@ -4837,6 +4837,12 @@ function _showReactionDetail(source, target, moveStr, mode='hover'){
 
 function _showReactionSource(source){
   _renderReactionDetail({source: source || _contagionCurrent || 'NVDA'}, 'source');
+}
+
+let _reactionInspecting = false;
+function _lockReactionInspecting(locked){
+  _reactionInspecting = !!locked;
+  if(_cgPhysicsState && _reactionInspecting) _cgPhysicsState.active = false;
 }
 
 function _renderContagionTrail(){
@@ -5132,10 +5138,10 @@ function _installContagionCursorPhysics(peerCount, cx, cy){
   const svg = document.getElementById('contagionSvg');
   if(!svg) return;
 
-  // Tuning - "medium" preset
-  const REPEL_RADIUS = 90;       // SVG units; cursor only affects nodes within this distance
-  const MAX_DISPLACEMENT = 32;   // SVG units; cap on how far a node can be pushed
-  const SPRING = 0.14;           // 0..1, higher = snappier follow
+  // Tuning - calm preset. Keep motion subtle so hover/focus details remain readable.
+  const REPEL_RADIUS = 58;       // SVG units; cursor only affects nearby nodes
+  const MAX_DISPLACEMENT = 12;   // SVG units; cap on how far a node can be pushed
+  const SPRING = 0.07;           // 0..1, higher = snappier follow
   const EDGE_FOLLOW = true;      // edges stretch to follow displaced nodes
 
   // Gather refs
@@ -5167,6 +5173,10 @@ function _installContagionCursorPhysics(peerCount, cx, cy){
 
   function onMove(e){
     const p = clientToSvg(e.clientX, e.clientY);
+    if(_reactionInspecting){
+      state.active = false;
+      return;
+    }
     state.cursorX = p.x; state.cursorY = p.y; state.active = true;
   }
   function onLeave(){
@@ -5190,7 +5200,7 @@ function _installContagionCursorPhysics(peerCount, cx, cy){
     for(let i = 0; i < peerEls.length; i++){
       const p = peerEls[i];
       let tx = p.bx, ty = p.by;
-      if(state.active){
+      if(state.active && !_reactionInspecting){
         const dx = p.bx - state.cursorX;
         const dy = p.by - state.cursorY;
         const dist = Math.sqrt(dx*dx + dy*dy);
