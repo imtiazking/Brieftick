@@ -11,6 +11,7 @@
  *   - Earnings calendar (Finnhub) .................. 30min
  *   - Sector performance, news sentiment (AV) ...... 5min
  *   - Technical indicators (AV) .................... 5min
+ *   - Public FRED series (VIXCLS) .................. 15min
  *   - Anthropic messages ........................... NOT cached (always fresh)
  */
 
@@ -159,6 +160,36 @@ async function proxyAnthropic(req, res) {
   }
 }
 
+async function proxyFred(req, res) {
+  const series = req.query.series || 'VIXCLS';
+  if (series !== 'VIXCLS') return res.status(400).json({ error: 'unsupported FRED series' });
+  const cacheKey = `fred:${series}`;
+
+  const cached = cacheGet(cacheKey, 15 * 60_000);
+  if (cached) {
+    res.setHeader('x-brieftick-cache', 'HIT');
+    return res.status(200).json(cached);
+  }
+
+  try {
+    const r = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${encodeURIComponent(series)}`);
+    const text = await r.text();
+    const lines = text.trim().split('\n');
+    for (let i = lines.length - 1; i > 0; i--) {
+      const [date, val] = lines[i].split(',');
+      if (val && val !== '.' && !Number.isNaN(parseFloat(val))) {
+        const data = { series, date, value: parseFloat(val) };
+        cacheSet(cacheKey, data);
+        res.setHeader('x-brieftick-cache', 'MISS');
+        return res.status(200).json(data);
+      }
+    }
+    return res.status(502).json({ error: 'FRED series returned no usable value' });
+  } catch (e) {
+    return res.status(502).json({ error: 'upstream fetch failed', detail: e.message });
+  }
+}
+
 export default async function handler(req, res) {
   setCors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
@@ -169,7 +200,8 @@ export default async function handler(req, res) {
     if (provider === 'finnhub')      return await proxyFinnhub(req, res);
     if (provider === 'alphavantage') return await proxyAlphaVantage(req, res);
     if (provider === 'anthropic')    return await proxyAnthropic(req, res);
-    return res.status(400).json({ error: 'unknown provider. use twelvedata, finnhub, alphavantage, or anthropic' });
+    if (provider === 'fred')         return await proxyFred(req, res);
+    return res.status(400).json({ error: 'unknown provider. use twelvedata, finnhub, alphavantage, anthropic, or fred' });
   } catch (e) {
     return res.status(500).json({ error: 'proxy crashed', detail: e.message });
   }

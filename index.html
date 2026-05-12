@@ -2450,6 +2450,9 @@ function route(name){
   document.querySelectorAll('.nav-link').forEach(l=>{
     l.classList.toggle('active', l.dataset.route===name);
   });
+  if(name === 'portfolio' && typeof refreshPortfolioAnalysis === 'function'){
+    setTimeout(()=>refreshPortfolioAnalysis(null, false), 0);
+  }
   window.scrollTo({top:0,behavior:'instant'});
 }
 document.querySelectorAll('.nav-link').forEach(l=>{
@@ -2598,9 +2601,9 @@ document.getElementById('moversList').innerHTML=movers.map(([s,n,p,c,d,seed])=>{
 
 /* Sector heatmap */
 const sectors=[
-  ['Tech','-',0,'XLK'],['Energy','-',0,'XLE'],['Financials','-',0,'XLF'],['Healthcare','-',0,'XLV'],
-  ['Consumer Discr.','-',0,'XLY'],['Industrials','-',0,'XLI'],['Utilities','-',0,'XLU'],['Materials','-',0,'XLB'],
-  ['Comm Services','-',0,'XLC'],['Real Estate','-',0,'XLRE'],['Staples','-',0,'XLP'],['Semis','-',0,'SOXX']
+  ['Tech','+0.42%',0.42,'XLK'],['Energy','+1.18%',1.18,'XLE'],['Financials','+0.36%',0.36,'XLF'],['Healthcare','-0.18%',-0.18,'XLV'],
+  ['Consumer Discr.','-0.44%',-0.44,'XLY'],['Industrials','+0.21%',0.21,'XLI'],['Utilities','+0.63%',0.63,'XLU'],['Materials','-0.12%',-0.12,'XLB'],
+  ['Comm Services','-0.28%',-0.28,'XLC'],['Real Estate','+0.08%',0.08,'XLRE'],['Staples','+0.31%',0.31,'XLP'],['Semis','-1.36%',-1.36,'SOXX']
 ];
 function heatColor(v){
   const a=Math.min(Math.abs(v)/3,1);
@@ -2617,9 +2620,12 @@ function renderSectorHeatmap(){
 }
 renderSectorHeatmap();
 
-// Pull live sector ETF moves and update the heatmap
+// Pulling every sector ETF on page load can exhaust Twelve Data's free 8-credit
+// minute limit. Keep an immediate factor-map fallback visible, then only try a
+// live sector refresh after the priority dashboard quote batch has had time to cool down.
 async function liveRefreshSectors(){
   if(!BriefTickAPI.keys.twelvedata) return;
+  if(Date.now() < (BriefTickAPI._quotesCooldownUntil || 0)) return;
   const tickers = sectors.map(s => s[3]);
   const quotes = await BriefTickAPI.getQuotes(tickers);
   let updated = 0;
@@ -2673,20 +2679,13 @@ async function liveRefreshVix(){
   let realVix = null;
   let asOfDate = null;
   try {
-    const fredUrl = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS';
+    const fredUrl = '/api/proxy?provider=fred&series=VIXCLS';
     const resp = await fetch(fredUrl);
     if(resp.ok){
-      const text = await resp.text();
-      // CSV format: first line "observation_date,VIXCLS", then YYYY-MM-DD,VALUE per row.
-      // Walk from the bottom up to find the most recent non-empty value (FRED uses "." for missing).
-      const lines = text.trim().split('\n');
-      for(let i = lines.length - 1; i > 0; i--){
-        const [date, val] = lines[i].split(',');
-        if(val && val !== '.' && !isNaN(parseFloat(val))){
-          realVix = parseFloat(val);
-          asOfDate = date;
-          break;
-        }
+      const data = await resp.json();
+      if(data && data.value != null && !isNaN(parseFloat(data.value))){
+        realVix = parseFloat(data.value);
+        asOfDate = data.date;
       }
     }
   } catch(e){ console.warn('[vix] FRED fetch failed:', e); }
@@ -2702,7 +2701,14 @@ async function liveRefreshVix(){
     } catch(e) {}
   }
 
-  if(realVix == null && proxyChange == null) return;
+  if(realVix == null && proxyChange == null) {
+    const changeEl = document.getElementById('vixChange');
+    if(changeEl){
+      changeEl.textContent = 'fallback';
+      changeEl.style.color = 'var(--ink-faint)';
+    }
+    return;
+  }
 
   // If we have FRED data, use the real number
   if(realVix != null){
@@ -4553,26 +4559,20 @@ document.addEventListener('keydown', e=>{
    Falls back gracefully to existing mock if API fails.
 ============================================================ */
 async function liveRefreshDashboard(){
-  // 16 symbols cover hero + ticker tape + watchlist + movers across landing/dashboard/WIM.
-  // Chunks into 2 calls of 8 (Twelve Data free tier limit), runs sequentially
-  // so we don't burn the 8/min rate limit. ~2sec end-to-end on cold cache.
-  const baseSymbols = [
-    'NVDA','TSLA','AAPL','META','MSFT','SPY','QQQ','GOOGL',
-    'AMD','AMZN','XOM','CVX','JPM','DIA','IWM','AVGO'
-  ];
-  const equitySymbols = [...new Set([...baseSymbols, ...getWatchlistSymbols()])].slice(0, 32);
+  // Twelve Data free tier is 8 credits/minute and each symbol costs a credit.
+  // Keep startup to one priority batch so sector/VIX widgets don't get starved.
+  const equitySymbols = ['NVDA','TSLA','AAPL','META','MSFT','SPY','QQQ','AMD'];
   let quotes = {};
   try {
     quotes = await BriefTickAPI.getQuotes(equitySymbols);
   } catch(e){
     console.warn('[dashboard] getQuotes failed:', e);
-    return;
   }
   if(Object.keys(quotes).length === 0) {
     console.warn('[dashboard] No live quotes returned. Check Twelve Data key.');
-    return;
+  } else {
+    console.log('[dashboard] live quotes received for', Object.keys(quotes).length, 'symbols');
   }
-  console.log('[dashboard] live quotes received for', Object.keys(quotes).length, 'symbols');
 
   // Update saved watchlist rows from the same quote batch.
   renderWatchlist(quotes);
@@ -4629,10 +4629,11 @@ async function liveRefreshDashboard(){
     }
   });
 
-  // Pull live sector ETF moves via Twelve Data - replaces deprecated Alpha Vantage SECTOR endpoint
-  try {
-    await liveRefreshSectors();
-  } catch(e) { console.warn('[Sector data]', e.message); }
+  // Sector map has an immediate fallback. Try live ETF refresh later so it
+  // doesn't compete with the priority quote batch for Twelve Data credits.
+  setTimeout(()=>{
+    liveRefreshSectors().catch(e => console.warn('[Sector data]', e.message));
+  }, 70_000);
 
   // Pull live VIX
   try {
@@ -6115,9 +6116,10 @@ async function refreshPortfolioAnalysis(text, persist=true){
     return;
   }
   renderPortfolio(holdings, null);
-  if(window.BriefTickAPI && BriefTickAPI.keys && BriefTickAPI.keys.twelvedata){
+  const portfolioVisible = document.getElementById('page-portfolio')?.classList.contains('active');
+  if(portfolioVisible && window.BriefTickAPI && BriefTickAPI.keys && BriefTickAPI.keys.twelvedata){
     try{
-      const quotes = await BriefTickAPI.getQuotes(holdings.map(h=>h.symbol));
+      const quotes = await BriefTickAPI.getQuotes(holdings.map(h=>h.symbol).slice(0, 8));
       renderPortfolio(holdings, quotes);
     }catch(e){
       console.warn('[portfolio] live quote refresh failed:', e.message);
