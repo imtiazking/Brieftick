@@ -777,6 +777,43 @@ main{padding-top:90px;position:relative;z-index:3}
 .risk-level.med{color:var(--amber);background:rgba(255,181,71,0.08);border:1px solid rgba(255,181,71,0.2)}
 .risk-level.low{color:var(--green);background:rgba(61,220,151,0.08);border:1px solid rgba(61,220,151,0.2)}
 
+.portfolio-builder{
+  margin-bottom:14px;padding:22px;border-radius:14px;background:linear-gradient(135deg,rgba(212,168,90,0.06),rgba(78,168,255,0.025));
+  border:1px solid rgba(212,168,90,0.22);display:grid;grid-template-columns:1fr 1.4fr;gap:18px;align-items:stretch;
+}
+.portfolio-builder h3{font-family:var(--display);font-size:22px;font-weight:500;letter-spacing:-0.015em;margin-bottom:8px}
+.portfolio-builder p{font-size:13px;color:var(--ink-dim);line-height:1.55;margin-bottom:14px}
+.portfolio-input{
+  width:100%;min-height:138px;resize:vertical;padding:14px;border-radius:10px;background:rgba(10,13,20,0.72);
+  border:1px solid var(--border-strong);color:var(--ink);font-family:var(--mono);font-size:12px;line-height:1.55;outline:none;
+}
+.portfolio-input:focus{border-color:rgba(212,168,90,0.45);box-shadow:0 0 0 3px rgba(212,168,90,0.08)}
+.portfolio-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.portfolio-btn{
+  padding:9px 12px;border-radius:7px;border:1px solid var(--border-strong);background:rgba(255,255,255,0.04);
+  color:var(--ink);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.18s;
+}
+.portfolio-btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:#0a0d14;border:none;font-weight:700}
+.portfolio-btn:hover{transform:translateY(-1px);border-color:rgba(212,168,90,0.35)}
+.portfolio-help{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.6;margin-top:12px}
+.portfolio-status{font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;text-transform:uppercase;margin-top:8px}
+.portfolio-status.live{color:var(--green)}
+.portfolio-status.warn{color:var(--amber)}
+.holdings-table{display:flex;flex-direction:column;gap:8px}
+.holding-row{
+  display:grid;grid-template-columns:72px 1fr 72px 76px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);
+  font-family:var(--mono);font-size:11px;
+}
+.holding-row:last-child{border-bottom:none}
+.holding-row .sym{font-weight:700;color:var(--ink);letter-spacing:0.06em}
+.holding-row .sector{color:var(--ink-dim);font-family:var(--body);font-size:12px;line-height:1.35}
+.holding-row .weight{text-align:right;color:var(--ink)}
+.holding-row .move{text-align:right;border-radius:4px;padding:4px 6px}
+.holding-row .move.up{color:var(--green);background:rgba(61,220,151,0.08)}
+.holding-row .move.dn{color:var(--red);background:rgba(255,91,110,0.08)}
+.holding-row .move.flat{color:var(--ink-faint);background:rgba(255,255,255,0.03)}
+.portfolio-empty{padding:18px;border-radius:10px;background:rgba(255,255,255,0.025);border:1px dashed var(--border-strong);color:var(--ink-dim);font-size:13px;line-height:1.5}
+
 /* ---------- EARNINGS INTELLIGENCE ---------- */
 .earn{padding:36px;max-width:1480px;margin:0 auto}
 .earn-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;padding:6px;background:var(--panel);border:1px solid var(--border);border-radius:10px;backdrop-filter:blur(12px)}
@@ -1017,6 +1054,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
   .col-5,.col-6,.col-7,.col-8,.col-9{grid-column:span 6}
   .col-12{grid-column:span 6}
   .wim-grid,.wim-hero,.port-grid{grid-template-columns:1fr}
+  .portfolio-builder{grid-template-columns:1fr}
   .footer-inner{grid-template-columns:1fr 1fr}
 }
 @media (max-width:680px){
@@ -1029,6 +1067,8 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
   .footer-inner{grid-template-columns:1fr}
   .dash{padding:14px}
   .wim,.brief,.impact,.port{padding:20px 14px}
+  .holding-row{grid-template-columns:58px 1fr 56px;gap:8px}
+  .holding-row .move{grid-column:2 / 4;text-align:left}
 }
 
 /* Scrollbar */
@@ -1953,10 +1993,32 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
     <div class="dash-header" style="margin-bottom:20px">
       <div class="dash-title">
         <h2>Portfolio Intelligence</h2>
-        <div class="meta">DEMO PORTFOLIO · 14 POSITIONS · ANALYSIS ONLY · NOT ADVICE</div>
+        <div class="meta">LOCAL PORTFOLIO ANALYZER · RISK EXPOSURE · ANALYSIS ONLY · NOT ADVICE</div>
       </div>
       <div class="dash-controls">
-        <div class="regime-badge">Diversification: Concentrated</div>
+        <div class="regime-badge" id="portfolioRegimeBadge">Diversification: Analysing</div>
+      </div>
+    </div>
+
+    <div class="portfolio-builder">
+      <div>
+        <h3>Build your portfolio pulse</h3>
+        <p>Paste tickers with weights and BriefTick will map concentration, sector exposure, macro sensitivity and correlated risk. Data stays in this browser.</p>
+        <div class="portfolio-help">
+          Format examples:<br>
+          NVDA 12.4<br>
+          AAPL, 9.6<br>
+          MSFT 8.4%
+        </div>
+        <div class="portfolio-status" id="portfolioStatus">Using sample portfolio until you save your own.</div>
+      </div>
+      <div>
+        <textarea class="portfolio-input" id="portfolioInput" spellcheck="false" placeholder="NVDA 12.4&#10;AAPL 9.6&#10;MSFT 8.4"></textarea>
+        <div class="portfolio-actions">
+          <button class="portfolio-btn primary" onclick="analyzePortfolioInput()">Analyze portfolio</button>
+          <button class="portfolio-btn" onclick="loadSamplePortfolio()">Load sample</button>
+          <button class="portfolio-btn" onclick="clearPortfolioInput()">Clear</button>
+        </div>
       </div>
     </div>
 
@@ -1965,87 +2027,62 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:18px">
           <div>
             <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase">Portfolio Pulse</div>
-            <div style="font-family:var(--display);font-size:42px;font-weight:500;letter-spacing:-0.025em;margin-top:6px">$184,260.42</div>
-            <div style="font-family:var(--mono);font-size:13px;color:var(--red);margin-top:4px">−$2,108.74 (−1.13%) today</div>
+            <div style="font-family:var(--display);font-size:42px;font-weight:500;letter-spacing:-0.025em;margin-top:6px" id="portfolioValue">$184,260.42</div>
+            <div style="font-family:var(--mono);font-size:13px;color:var(--ink-dim);margin-top:4px" id="portfolioDayChange">Calculating today...</div>
           </div>
           <div style="text-align:right">
             <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase">Concentration Score</div>
-            <div style="font-family:var(--display);font-size:42px;font-weight:500;letter-spacing:-0.025em;color:var(--amber);margin-top:6px">7.2 / 10</div>
-            <div style="font-family:var(--mono);font-size:11px;color:var(--amber);margin-top:4px">Elevated</div>
+            <div style="font-family:var(--display);font-size:42px;font-weight:500;letter-spacing:-0.025em;color:var(--amber);margin-top:6px" id="concentrationScore">- / 10</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--amber);margin-top:4px" id="concentrationLabel">Analysing</div>
           </div>
         </div>
 
         <div class="port-stats">
-          <div class="port-stat"><div class="lbl">Beta (1Y)</div><div class="val">1.34</div><div class="delta" style="color:var(--amber)">+12% vs SPY</div></div>
-          <div class="port-stat"><div class="lbl">90D Vol</div><div class="val">28.4%</div><div class="delta" style="color:var(--red)">Elevated</div></div>
-          <div class="port-stat"><div class="lbl">Sharpe</div><div class="val">1.18</div><div class="delta" style="color:var(--ink-dim)">Trailing 1Y</div></div>
-          <div class="port-stat"><div class="lbl">Max DD</div><div class="val">−14.6%</div><div class="delta" style="color:var(--ink-dim)">Trailing 1Y</div></div>
+          <div class="port-stat"><div class="lbl">Beta proxy</div><div class="val" id="portStatBeta">-</div><div class="delta" id="portStatBetaDelta" style="color:var(--ink-dim)">Weighted by sector</div></div>
+          <div class="port-stat"><div class="lbl">Vol proxy</div><div class="val" id="portStatVol">-</div><div class="delta" id="portStatVolDelta" style="color:var(--ink-dim)">Historical estimate</div></div>
+          <div class="port-stat"><div class="lbl">Top 3 weight</div><div class="val" id="portStatTop3">-</div><div class="delta" id="portStatTop3Delta" style="color:var(--ink-dim)">Position concentration</div></div>
+          <div class="port-stat"><div class="lbl">Positions</div><div class="val" id="portStatPositions">-</div><div class="delta" id="portStatPositionsDelta" style="color:var(--ink-dim)">Normalised to 100%</div></div>
         </div>
 
         <div style="margin-top:24px">
           <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px">Sector Exposure</div>
-          <div class="exp-bars">
-            <div class="exp-bar"><div class="row"><span class="lbl">Information Technology</span><span class="val">42.4%</span></div><div class="exp-track"><div class="exp-fill" style="width:42.4%;background:linear-gradient(90deg,var(--gold),var(--gold-bright))"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">Communication Services</span><span class="val">18.6%</span></div><div class="exp-track"><div class="exp-fill" style="width:18.6%;background:linear-gradient(90deg,var(--blue),var(--blue-bright))"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">Consumer Discretionary</span><span class="val">14.2%</span></div><div class="exp-track"><div class="exp-fill" style="width:14.2%;background:linear-gradient(90deg,var(--blue),var(--blue-bright))"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">Financials</span><span class="val">9.8%</span></div><div class="exp-track"><div class="exp-fill" style="width:9.8%;background:linear-gradient(90deg,var(--blue),var(--blue-bright))"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">Healthcare</span><span class="val">7.1%</span></div><div class="exp-track"><div class="exp-fill" style="width:7.1%;background:linear-gradient(90deg,var(--blue),var(--blue-bright))"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">Other</span><span class="val">7.9%</span></div><div class="exp-track"><div class="exp-fill" style="width:7.9%;background:rgba(255,255,255,0.15)"></div></div></div>
-          </div>
+          <div class="exp-bars" id="sectorExposureBars"></div>
         </div>
       </div>
 
       <div class="risk-card">
         <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Detected Risk Factors</div>
-
-        <div class="risk-row">
-          <div class="risk-name">AI infrastructure concentration<div class="det">NVDA + AMD + AVGO = 31.2% of portfolio. Historically correlated.</div></div>
-          <div class="risk-level high">High</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-name">Rates sensitivity<div class="det">Long-duration growth tilt. Effective duration ≈ 7.4y equiv.</div></div>
-          <div class="risk-level high">High</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-name">Single-name concentration<div class="det">Top 3 positions = 38% of NAV.</div></div>
-          <div class="risk-level med">Medium</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-name">USD strength sensitivity<div class="det">~22% revenue exposure to international. DXY rising.</div></div>
-          <div class="risk-level med">Medium</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-name">Liquidity profile<div class="det">All positions trade above 1M ADV. Healthy liquidity.</div></div>
-          <div class="risk-level low">Low</div>
-        </div>
+        <div id="portfolioRiskList"></div>
 
         <div style="margin-top:18px;padding:14px;border-radius:8px;background:rgba(212,168,90,0.05);border:1px solid rgba(212,168,90,0.2);font-size:12px;line-height:1.55;color:var(--ink-dim)">
-          <b style="color:var(--gold)">Pattern detected:</b> sector concentration in <b style="color:var(--ink)">AI infrastructure</b> increases your portfolio's correlation to a single macro driver - long-duration rates. This is a contextual observation, not a recommendation.
+          <b style="color:var(--gold)">Pattern detected:</b> <span id="portfolioInsight">Add holdings to generate a plain-English risk summary.</span>
         </div>
       </div>
     </div>
 
     <div class="port-grid" style="grid-template-columns:1fr 1fr">
       <div class="risk-card">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Macro Sensitivity Map</div>
-        <div class="exp-bars">
-          <div class="exp-bar"><div class="row"><span class="lbl">10Y Yield (+25bp scenario)</span><span class="val">−4.2%</span></div><div class="exp-track"><div class="exp-fill red" style="width:78%"></div></div></div>
-          <div class="exp-bar"><div class="row"><span class="lbl">DXY (+2% scenario)</span><span class="val">−1.8%</span></div><div class="exp-track"><div class="exp-fill red" style="width:48%"></div></div></div>
-          <div class="exp-bar"><div class="row"><span class="lbl">Crude (+10% scenario)</span><span class="val">−0.6%</span></div><div class="exp-track"><div class="exp-fill" style="width:18%;background:rgba(255,181,71,0.6)"></div></div></div>
-          <div class="exp-bar"><div class="row"><span class="lbl">VIX (+5pt spike)</span><span class="val">−5.1%</span></div><div class="exp-track"><div class="exp-fill red" style="width:88%"></div></div></div>
-          <div class="exp-bar"><div class="row"><span class="lbl">Fed cut surprise</span><span class="val">+3.8%</span></div><div class="exp-track"><div class="exp-fill" style="width:62%;background:linear-gradient(90deg,var(--green),#6ee7a8)"></div></div></div>
-        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Holdings Watchlist</div>
+        <div class="holdings-table" id="holdingsTable"></div>
         <div style="margin-top:14px;font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.6">
-          Scenarios are historical regressions, not forecasts. Past relationships do not guarantee future behaviour.
+          Day moves use live Twelve Data quotes when available; otherwise BriefTick uses local demo moves.
         </div>
       </div>
 
       <div class="risk-card">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Correlation Cluster</div>
-        <svg viewBox="0 0 360 240" style="width:100%;height:auto" id="portCluster"></svg>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Macro Sensitivity Map</div>
+        <div class="exp-bars" id="macroSensitivityBars"></div>
         <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em;line-height:1.6">
-          Cluster size reflects 90D rolling correlation density. Tight clustering signals reduced effective diversification - even when sector labels appear distinct.
+          Scenarios are historical factor proxies, not forecasts. Past relationships do not guarantee future behaviour.
         </div>
+      </div>
+    </div>
+
+    <div class="risk-card">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Correlation Cluster</div>
+      <svg viewBox="0 0 520 260" style="width:100%;height:auto" id="portCluster"></svg>
+      <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em;line-height:1.6" id="portClusterDesc">
+        Cluster size reflects portfolio weight; proximity groups holdings by sector and factor exposure.
       </div>
     </div>
 
@@ -5062,32 +5099,366 @@ async function liveRefreshImpactFeed(){
 window.liveRefreshImpactFeed = liveRefreshImpactFeed;
 
 /* ============================================================
-   PORTFOLIO CLUSTER
+   INTERACTIVE PORTFOLIO INTELLIGENCE
 ============================================================ */
-(function(){
-  const svg=document.getElementById('portCluster');
+const PORTFOLIO_STORAGE_KEY = 'brieftick_portfolio_v1';
+const PORTFOLIO_NAV = 184260.42;
+const samplePortfolioText = `NVDA 12.4
+AMD 7.6
+AVGO 6.8
+MSFT 8.4
+META 9.1
+GOOGL 9.5
+AAPL 9.6
+AMZN 7.2
+TSLA 2.8
+JPM 4.2
+BAC 3.1
+XOM 4.5
+XLV 7.1
+SPY 7.7`;
+
+const portfolioMeta = {
+  NVDA:{name:'NVIDIA', sector:'Information Technology', theme:'AI infrastructure', beta:1.85, vol:44, rates:-0.75, usd:-0.25, crude:-0.05, vix:-0.95, fed:0.7, demoMove:-2.1},
+  AMD:{name:'AMD', sector:'Information Technology', theme:'AI infrastructure', beta:1.95, vol:48, rates:-0.8, usd:-0.2, crude:-0.05, vix:-1.05, fed:0.72, demoMove:-1.6},
+  AVGO:{name:'Broadcom', sector:'Information Technology', theme:'AI infrastructure', beta:1.55, vol:36, rates:-0.65, usd:-0.22, crude:-0.04, vix:-0.82, fed:0.55, demoMove:-1.2},
+  MSFT:{name:'Microsoft', sector:'Information Technology', theme:'Mega-cap software', beta:1.2, vol:24, rates:-0.48, usd:-0.28, crude:-0.04, vix:-0.55, fed:0.42, demoMove:-0.5},
+  AAPL:{name:'Apple', sector:'Information Technology', theme:'Mega-cap hardware', beta:1.18, vol:25, rates:-0.42, usd:-0.32, crude:-0.03, vix:-0.52, fed:0.35, demoMove:-0.7},
+  META:{name:'Meta Platforms', sector:'Communication Services', theme:'Digital ads / AI', beta:1.35, vol:31, rates:-0.52, usd:-0.18, crude:-0.03, vix:-0.68, fed:0.48, demoMove:0.4},
+  GOOGL:{name:'Alphabet', sector:'Communication Services', theme:'Digital ads / AI', beta:1.24, vol:28, rates:-0.46, usd:-0.2, crude:-0.03, vix:-0.6, fed:0.42, demoMove:-0.2},
+  AMZN:{name:'Amazon', sector:'Consumer Discretionary', theme:'Cloud / consumer', beta:1.35, vol:32, rates:-0.55, usd:-0.18, crude:-0.1, vix:-0.72, fed:0.5, demoMove:-0.8},
+  TSLA:{name:'Tesla', sector:'Consumer Discretionary', theme:'EV / high beta', beta:2.05, vol:58, rates:-0.9, usd:-0.08, crude:-0.12, vix:-1.18, fed:0.78, demoMove:-1.4},
+  JPM:{name:'JPMorgan', sector:'Financials', theme:'Banks / rates', beta:1.1, vol:27, rates:0.28, usd:0.04, crude:-0.03, vix:-0.38, fed:-0.15, demoMove:0.6},
+  BAC:{name:'Bank of America', sector:'Financials', theme:'Banks / rates', beta:1.22, vol:31, rates:0.34, usd:0.04, crude:-0.03, vix:-0.44, fed:-0.18, demoMove:0.3},
+  XOM:{name:'Exxon Mobil', sector:'Energy', theme:'Oil major', beta:0.9, vol:24, rates:-0.1, usd:-0.12, crude:0.75, vix:-0.28, fed:0.05, demoMove:1.2},
+  CVX:{name:'Chevron', sector:'Energy', theme:'Oil major', beta:0.88, vol:23, rates:-0.1, usd:-0.12, crude:0.72, vix:-0.27, fed:0.05, demoMove:1.0},
+  XLV:{name:'Health Care ETF', sector:'Healthcare', theme:'Defensive healthcare', beta:0.72, vol:18, rates:-0.12, usd:-0.05, crude:-0.02, vix:-0.2, fed:0.08, demoMove:0.2},
+  SPY:{name:'S&P 500 ETF', sector:'Broad Market', theme:'Index beta', beta:1, vol:20, rates:-0.32, usd:-0.12, crude:-0.03, vix:-0.5, fed:0.32, demoMove:-0.4},
+  QQQ:{name:'Nasdaq 100 ETF', sector:'Broad Market', theme:'Growth index', beta:1.25, vol:27, rates:-0.55, usd:-0.16, crude:-0.03, vix:-0.68, fed:0.48, demoMove:-0.9},
+  IWM:{name:'Russell 2000 ETF', sector:'Broad Market', theme:'Small caps', beta:1.35, vol:30, rates:-0.38, usd:0.02, crude:-0.05, vix:-0.7, fed:0.42, demoMove:-0.6}
+};
+
+const sectorColors = {
+  'Information Technology':'linear-gradient(90deg,var(--gold),var(--gold-bright))',
+  'Communication Services':'linear-gradient(90deg,var(--blue),var(--blue-bright))',
+  'Consumer Discretionary':'linear-gradient(90deg,#7cc4ff,#4ea8ff)',
+  'Financials':'linear-gradient(90deg,var(--green),#6ee7a8)',
+  'Energy':'linear-gradient(90deg,var(--amber),#ffce7a)',
+  'Healthcare':'linear-gradient(90deg,#b9fbc0,var(--green))',
+  'Broad Market':'linear-gradient(90deg,#9aa6bd,#e8ecf5)',
+  'Other':'rgba(255,255,255,0.18)'
+};
+
+function getPortfolioMeta(symbol){
+  return portfolioMeta[symbol] || {
+    name:symbol,
+    sector:'Other',
+    theme:'Unmapped holding',
+    beta:1.1,
+    vol:30,
+    rates:-0.3,
+    usd:-0.1,
+    crude:-0.03,
+    vix:-0.55,
+    fed:0.3,
+    demoMove:0
+  };
+}
+
+function parsePortfolioInput(text){
+  const rows = String(text||'').split(/\n|;/).map(line=>line.trim()).filter(Boolean);
+  const holdings = [];
+  rows.forEach(line=>{
+    const cleaned = line.replace(/[%$]/g,'').replace(/,/g,' ');
+    const parts = cleaned.split(/\s+/).filter(Boolean);
+    if(!parts.length) return;
+    const symbol = parts[0].toUpperCase().replace(/[^A-Z0-9.\-]/g,'');
+    const rawWeight = parts.map(p=>parseFloat(p)).find(v=>!isNaN(v) && isFinite(v));
+    if(!symbol) return;
+    holdings.push({symbol, weight: rawWeight || 0});
+  });
+  if(!holdings.length) return [];
+  const providedWeight = holdings.reduce((sum,h)=>sum+h.weight,0);
+  if(providedWeight <= 0){
+    const equal = 100 / holdings.length;
+    return holdings.map(h=>({...h, weight: equal}));
+  }
+  return holdings.map(h=>({...h, weight:(h.weight/providedWeight)*100}));
+}
+
+function loadPortfolioText(){
+  try { return localStorage.getItem(PORTFOLIO_STORAGE_KEY) || samplePortfolioText; }
+  catch(e){ return samplePortfolioText; }
+}
+
+function savePortfolioText(text){
+  try { localStorage.setItem(PORTFOLIO_STORAGE_KEY, text); } catch(e){}
+}
+
+function formatPct(v, signed=false){
+  const sign = signed && v > 0 ? '+' : '';
+  return `${sign}${v.toFixed(1)}%`;
+}
+
+function groupBySector(holdings){
+  const sectors = {};
+  holdings.forEach(h=>{
+    const meta = getPortfolioMeta(h.symbol);
+    sectors[meta.sector] = (sectors[meta.sector] || 0) + h.weight;
+  });
+  return Object.entries(sectors).sort((a,b)=>b[1]-a[1]);
+}
+
+function weightedMetric(holdings, key){
+  return holdings.reduce((sum,h)=>sum+(getPortfolioMeta(h.symbol)[key] || 0) * h.weight / 100, 0);
+}
+
+function buildRiskRows(holdings, sectors, top3, concentrationScore){
+  const rows = [];
+  const largestSector = sectors[0] || ['Other', 0];
+  const aiWeight = holdings.filter(h=>/AI infrastructure|Digital ads \/ AI/.test(getPortfolioMeta(h.symbol).theme)).reduce((sum,h)=>sum+h.weight,0);
+  const longDuration = holdings.reduce((sum,h)=>sum+Math.abs(Math.min(getPortfolioMeta(h.symbol).rates,0))*h.weight,0);
+  const unknowns = holdings.filter(h=>getPortfolioMeta(h.symbol).sector === 'Other').map(h=>h.symbol);
+
+  rows.push({
+    title:`${largestSector[0]} concentration`,
+    detail:`${largestSector[0]} is ${formatPct(largestSector[1])} of portfolio weight.`,
+    level: largestSector[1] >= 40 ? 'high' : largestSector[1] >= 25 ? 'med' : 'low'
+  });
+  rows.push({
+    title:'Top-three position weight',
+    detail:`Top three holdings add up to ${formatPct(top3)} of portfolio weight.`,
+    level: top3 >= 40 ? 'high' : top3 >= 28 ? 'med' : 'low'
+  });
+  rows.push({
+    title:'AI and long-duration factor',
+    detail:`AI-linked exposure is ${formatPct(aiWeight)}; rates sensitivity proxy is ${longDuration.toFixed(1)}.`,
+    level: aiWeight >= 28 || longDuration >= 50 ? 'high' : aiWeight >= 16 || longDuration >= 32 ? 'med' : 'low'
+  });
+  rows.push({
+    title:'Single-name diversification',
+    detail:`${holdings.length} holdings detected; fewer holdings increases idiosyncratic move risk.`,
+    level: holdings.length < 6 ? 'high' : holdings.length < 10 ? 'med' : 'low'
+  });
+  rows.push({
+    title:'Mapping coverage',
+    detail: unknowns.length ? `Unmapped holdings use conservative defaults: ${unknowns.slice(0,5).join(', ')}${unknowns.length>5?'...':''}.` : 'All holdings mapped to BriefTick sector/factor metadata.',
+    level: unknowns.length >= 4 ? 'med' : 'low'
+  });
+  if(concentrationScore >= 8){
+    rows.unshift({
+      title:'Portfolio concentration regime',
+      detail:'Multiple concentration signals are elevated at the same time.',
+      level:'high'
+    });
+  }
+  return rows.slice(0,6);
+}
+
+function renderExposureBars(targetId, entries, maxAbs){
+  const el = document.getElementById(targetId);
+  if(!el) return;
+  if(!entries.length){
+    el.innerHTML = '<div class="portfolio-empty">No exposure data yet.</div>';
+    return;
+  }
+  el.innerHTML = entries.map(([label,value,color])=>{
+    const width = Math.min(Math.abs(value) / (maxAbs || 100) * 100, 100);
+    const bar = color || (value < 0 ? 'linear-gradient(90deg,var(--red),#ff8a98)' : 'linear-gradient(90deg,var(--green),#6ee7a8)');
+    return `<div class="exp-bar">
+      <div class="row"><span class="lbl">${escapeHtml(label)}</span><span class="val">${value >= 0 && targetId === 'macroSensitivityBars' ? '+' : ''}${value.toFixed(1)}${targetId === 'macroSensitivityBars' ? '%' : '%'}</span></div>
+      <div class="exp-track"><div class="exp-fill" style="width:${width.toFixed(1)}%;background:${bar}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderHoldingsTable(holdings, quotes){
+  const el = document.getElementById('holdingsTable');
+  if(!el) return;
+  if(!holdings.length){
+    el.innerHTML = '<div class="portfolio-empty">Paste holdings above to build a watchlist.</div>';
+    return;
+  }
+  el.innerHTML = holdings
+    .slice()
+    .sort((a,b)=>b.weight-a.weight)
+    .map(h=>{
+      const meta = getPortfolioMeta(h.symbol);
+      const q = quotes && quotes[h.symbol];
+      const move = q && !isNaN(q.pctChange) ? q.pctChange : meta.demoMove;
+      const cls = move > 0.05 ? 'up' : move < -0.05 ? 'dn' : 'flat';
+      const liveMark = q ? 'live' : 'demo';
+      return `<div class="holding-row">
+        <div class="sym">${escapeHtml(h.symbol)}</div>
+        <div class="sector">${escapeHtml(meta.sector)} · ${escapeHtml(meta.theme)}</div>
+        <div class="weight">${formatPct(h.weight)}</div>
+        <div class="move ${cls}">${formatPct(move,true)} ${liveMark}</div>
+      </div>`;
+    }).join('');
+}
+
+function renderPortfolioCluster(holdings){
+  const svg = document.getElementById('portCluster');
   if(!svg) return;
-  const positions=[
-    ['NVDA',180,80,28,'#d4a85a',1],['AMD',230,120,18,'#d4a85a',1],['AVGO',150,140,16,'#d4a85a',1],['MSFT',200,170,20,'#d4a85a',1],
-    ['META',105,95,15,'#4ea8ff',2],['GOOGL',75,140,14,'#4ea8ff',2],
-    ['JPM',290,180,12,'#3ddc97',3],['BAC',310,150,10,'#3ddc97',3],
-    ['XOM',60,200,11,'#ffb547',4],
-    ['AAPL',310,80,18,'#ff5b6e',5],['HD',270,40,9,'#ff5b6e',5]
-  ];
-  // edges - cluster1 to cluster1
-  let edges='';
-  for(let i=0;i<positions.length;i++){
-    for(let j=i+1;j<positions.length;j++){
-      if(positions[i][5]===positions[j][5]){
-        edges+=`<line x1="${positions[i][1]}" y1="${positions[i][2]}" x2="${positions[j][1]}" y2="${positions[j][2]}" stroke="${positions[i][4]}" stroke-opacity="0.18" stroke-width="1"/>`;
+  if(!holdings.length){
+    svg.innerHTML = '<text x="260" y="130" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="12">Add holdings to generate cluster map</text>';
+    return;
+  }
+  const centers = {
+    'Information Technology':[215,88,'#d4a85a'],
+    'Communication Services':[120,118,'#4ea8ff'],
+    'Consumer Discretionary':[332,95,'#7cc4ff'],
+    'Financials':[385,178,'#3ddc97'],
+    'Energy':[145,195,'#ffb547'],
+    'Healthcare':[280,205,'#6ee7a8'],
+    'Broad Market':[260,138,'#9aa6bd'],
+    'Other':[455,120,'#8b94a8']
+  };
+  const sorted = holdings.slice().sort((a,b)=>b.weight-a.weight).slice(0,18);
+  const placed = sorted.map((h,i)=>{
+    const meta = getPortfolioMeta(h.symbol);
+    const c = centers[meta.sector] || centers.Other;
+    const angle = (i * 137.5) * Math.PI / 180;
+    const spread = 10 + (i % 4) * 9;
+    return {
+      h, meta, color:c[2],
+      x:c[0] + Math.cos(angle) * spread,
+      y:c[1] + Math.sin(angle) * spread,
+      r:Math.max(10, Math.min(32, 8 + h.weight * 1.15))
+    };
+  });
+  let edges = '';
+  for(let i=0;i<placed.length;i++){
+    for(let j=i+1;j<placed.length;j++){
+      if(placed[i].meta.sector === placed[j].meta.sector){
+        edges += `<line x1="${placed[i].x}" y1="${placed[i].y}" x2="${placed[j].x}" y2="${placed[j].y}" stroke="${placed[i].color}" stroke-opacity="0.16" stroke-width="1"/>`;
       }
     }
   }
-  const nodes=positions.map(([s,x,y,r,c])=>
-    `<g><circle cx="${x}" cy="${y}" r="${r}" fill="${c}" fill-opacity="0.18" stroke="${c}" stroke-width="1.2"/>
-     <text x="${x}" y="${y+3}" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="9">${s}</text></g>`).join('');
-  svg.innerHTML=edges+nodes;
-})();
+  const halos = Object.entries(centers).map(([name,[x,y,c]])=>
+    `<circle cx="${x}" cy="${y}" r="54" fill="${c}" fill-opacity="0.035" stroke="${c}" stroke-opacity="0.08" stroke-width="1"/>
+     <text x="${x}" y="${y+58}" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="8" letter-spacing="1">${escapeHtml(name.toUpperCase().slice(0,18))}</text>`
+  ).join('');
+  const nodes = placed.map(p=>
+    `<g>
+      <circle cx="${p.x}" cy="${p.y}" r="${p.r}" fill="${p.color}" fill-opacity="0.18" stroke="${p.color}" stroke-width="1.3"/>
+      <text x="${p.x}" y="${p.y+3}" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="9" font-weight="700">${escapeHtml(p.h.symbol)}</text>
+    </g>`
+  ).join('');
+  svg.innerHTML = halos + edges + nodes;
+}
+
+function renderPortfolio(holdings, quotes){
+  const sectors = groupBySector(holdings);
+  const sortedWeights = holdings.map(h=>h.weight).sort((a,b)=>b-a);
+  const top3 = sortedWeights.slice(0,3).reduce((a,b)=>a+b,0);
+  const hhi = holdings.reduce((sum,h)=>sum+h.weight*h.weight,0);
+  const largest = sortedWeights[0] || 0;
+  const concentrationScore = Math.min(10, Math.max(1, (top3/8) + (largest/7) + (hhi/260)));
+  const beta = weightedMetric(holdings,'beta');
+  const vol = weightedMetric(holdings,'vol');
+  const dayMove = holdings.reduce((sum,h)=>{
+    const q = quotes && quotes[h.symbol];
+    const move = q && !isNaN(q.pctChange) ? q.pctChange : getPortfolioMeta(h.symbol).demoMove;
+    return sum + move * h.weight / 100;
+  },0);
+  const dayDollar = PORTFOLIO_NAV * dayMove / 100;
+  const scoreLabel = concentrationScore >= 7.5 ? 'Elevated' : concentrationScore >= 5 ? 'Moderate' : 'Diversified';
+  const scoreColor = concentrationScore >= 7.5 ? 'var(--red)' : concentrationScore >= 5 ? 'var(--amber)' : 'var(--green)';
+  const liveCount = quotes ? holdings.filter(h=>quotes[h.symbol]).length : 0;
+
+  const setText = (id, value) => { const el=document.getElementById(id); if(el) el.textContent=value; };
+  setText('portfolioValue', '$' + PORTFOLIO_NAV.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}));
+  const dayEl = document.getElementById('portfolioDayChange');
+  if(dayEl){
+    dayEl.textContent = `${dayDollar >= 0 ? '+' : '-'}$${Math.abs(dayDollar).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} (${formatPct(dayMove,true)}) today`;
+    dayEl.style.color = dayMove >= 0 ? 'var(--green)' : 'var(--red)';
+  }
+  setText('concentrationScore', concentrationScore.toFixed(1) + ' / 10');
+  setText('concentrationLabel', scoreLabel);
+  const scoreEl = document.getElementById('concentrationScore');
+  const labelEl = document.getElementById('concentrationLabel');
+  if(scoreEl) scoreEl.style.color = scoreColor;
+  if(labelEl) labelEl.style.color = scoreColor;
+  setText('portStatBeta', beta.toFixed(2));
+  setText('portStatVol', vol.toFixed(1) + '%');
+  setText('portStatTop3', formatPct(top3));
+  setText('portStatPositions', String(holdings.length));
+  setText('portStatBetaDelta', beta > 1.25 ? 'High beta tilt' : beta < 0.9 ? 'Defensive tilt' : 'Near market beta');
+  setText('portStatVolDelta', vol > 32 ? 'Elevated' : vol > 23 ? 'Moderate' : 'Lower volatility');
+  setText('portStatTop3Delta', top3 > 40 ? 'Concentrated' : top3 > 28 ? 'Watchlist item' : 'Balanced');
+  setText('portStatPositionsDelta', holdings.length < 8 ? 'Few positions' : 'Normalised to 100%');
+  setText('portfolioRegimeBadge', 'Diversification: ' + scoreLabel);
+  const status = document.getElementById('portfolioStatus');
+  if(status){
+    status.textContent = liveCount ? `Live quotes loaded for ${liveCount} of ${holdings.length} holdings.` : 'Using local factor map and demo moves. Connect Twelve Data for live day changes.';
+    status.className = 'portfolio-status ' + (liveCount ? 'live' : 'warn');
+  }
+
+  renderExposureBars('sectorExposureBars', sectors.map(([s,v])=>[s,v,sectorColors[s] || sectorColors.Other]), 100);
+
+  const macroEntries = [
+    ['10Y yield +25bp', weightedMetric(holdings,'rates') * 4],
+    ['DXY +2%', weightedMetric(holdings,'usd') * 5],
+    ['Crude +10%', weightedMetric(holdings,'crude') * 5],
+    ['VIX +5pt', weightedMetric(holdings,'vix') * 3.5],
+    ['Fed cut surprise', weightedMetric(holdings,'fed') * 4]
+  ];
+  const macroMax = Math.max(3, ...macroEntries.map(e=>Math.abs(e[1])));
+  renderExposureBars('macroSensitivityBars', macroEntries, macroMax);
+
+  const riskRows = buildRiskRows(holdings, sectors, top3, concentrationScore);
+  const riskList = document.getElementById('portfolioRiskList');
+  if(riskList){
+    riskList.innerHTML = riskRows.map(r=>`<div class="risk-row">
+      <div class="risk-name">${escapeHtml(r.title)}<div class="det">${escapeHtml(r.detail)}</div></div>
+      <div class="risk-level ${r.level}">${r.level === 'med' ? 'Medium' : r.level}</div>
+    </div>`).join('');
+  }
+  const largestSector = sectors[0] || ['Other',0];
+  setText('portfolioInsight', `${largestSector[0]} is the dominant exposure at ${formatPct(largestSector[1])}. The portfolio's top-three weight is ${formatPct(top3)}, with a beta proxy of ${beta.toFixed(2)} and estimated day move of ${formatPct(dayMove,true)}. This describes risk shape only; it is not a recommendation.`);
+  renderHoldingsTable(holdings, quotes);
+  renderPortfolioCluster(holdings);
+}
+
+async function refreshPortfolioAnalysis(text, persist=true){
+  const input = document.getElementById('portfolioInput');
+  const raw = text != null ? text : (input ? input.value : samplePortfolioText);
+  if(input && input.value !== raw) input.value = raw;
+  if(persist) savePortfolioText(raw);
+  const holdings = parsePortfolioInput(raw);
+  if(!holdings.length){
+    renderPortfolio([], {});
+    return;
+  }
+  renderPortfolio(holdings, null);
+  if(window.BriefTickAPI && BriefTickAPI.keys && BriefTickAPI.keys.twelvedata){
+    try{
+      const quotes = await BriefTickAPI.getQuotes(holdings.map(h=>h.symbol));
+      renderPortfolio(holdings, quotes);
+    }catch(e){
+      console.warn('[portfolio] live quote refresh failed:', e.message);
+    }
+  }
+}
+
+function analyzePortfolioInput(){ refreshPortfolioAnalysis(null, true); }
+function loadSamplePortfolio(){ refreshPortfolioAnalysis(samplePortfolioText, true); }
+function clearPortfolioInput(){
+  const input = document.getElementById('portfolioInput');
+  if(input) input.value = '';
+  try { localStorage.removeItem(PORTFOLIO_STORAGE_KEY); } catch(e){}
+  refreshPortfolioAnalysis('', false);
+}
+window.analyzePortfolioInput = analyzePortfolioInput;
+window.loadSamplePortfolio = loadSamplePortfolio;
+window.clearPortfolioInput = clearPortfolioInput;
+
+window.addEventListener('load', ()=>{
+  const input = document.getElementById('portfolioInput');
+  if(input) input.value = loadPortfolioText();
+  refreshPortfolioAnalysis(input ? input.value : samplePortfolioText, false);
+});
 
 /* ============================================================
    LIVE MICROANIMATIONS - fake price flicker
