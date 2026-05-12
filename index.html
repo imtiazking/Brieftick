@@ -945,6 +945,12 @@ main{padding-top:90px;position:relative;z-index:3}
 /* Calendar */
 .cal-controls{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
 .cal-filters{display:flex;gap:6px;flex-wrap:wrap}
+.earn-search{
+  min-width:220px;padding:8px 11px;border-radius:7px;background:rgba(10,13,20,0.72);
+  border:1px solid var(--border);color:var(--ink);font-family:var(--mono);font-size:11px;outline:none;
+}
+.earn-search:focus{border-color:rgba(212,168,90,0.45)}
+.earn-workbench{display:grid;grid-template-columns:minmax(0,1.45fr) 360px;gap:14px;align-items:start}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:18px}
 .cal-day{background:var(--bg-1);min-height:140px;padding:10px;display:flex;flex-direction:column;gap:6px;position:relative}
 .cal-day-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px;padding-bottom:6px;border-bottom:1px solid var(--border)}
@@ -958,11 +964,32 @@ main{padding-top:90px;position:relative;z-index:3}
   transition:transform 0.15s, background 0.15s;
 }
 .cal-tile:hover{transform:translateX(2px)}
+.cal-tile.active{outline:1px solid var(--gold);background:rgba(212,168,90,0.14)}
 .cal-tile.bmo{background:rgba(78,168,255,0.08);border:1px solid rgba(78,168,255,0.2)}
 .cal-tile.amc{background:rgba(212,168,90,0.08);border:1px solid rgba(212,168,90,0.2)}
 .cal-tile .sym{font-weight:600;color:var(--ink);letter-spacing:0.04em}
 .cal-tile .session{font-size:8px;color:var(--ink-dim);letter-spacing:0.08em;text-transform:uppercase}
+.cal-tile .score{font-size:8px;color:var(--gold);letter-spacing:0.08em;grid-column:1 / -1}
 .cal-tile.high::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red);grid-column:2;align-self:start}
+.earn-detail-card{
+  position:sticky;top:118px;padding:20px;border-radius:14px;background:linear-gradient(135deg,rgba(212,168,90,0.055),rgba(78,168,255,0.035));
+  border:1px solid rgba(212,168,90,0.22);backdrop-filter:blur(16px);
+}
+.earn-detail-kicker{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:8px}
+.earn-detail-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:14px}
+.earn-detail-sym{font-family:var(--display);font-size:34px;letter-spacing:-0.025em;line-height:1}
+.earn-detail-name{font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:0.04em;margin-top:4px}
+.earn-score{font-family:var(--mono);font-size:11px;color:var(--gold);padding:5px 9px;border-radius:5px;background:rgba(212,168,90,0.08);border:1px solid rgba(212,168,90,0.24);white-space:nowrap}
+.earn-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.earn-detail-metric{padding:9px;border-radius:8px;background:rgba(10,13,20,0.55);border:1px solid var(--border)}
+.earn-detail-metric .lbl{font-family:var(--mono);font-size:8px;color:var(--ink-faint);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px}
+.earn-detail-metric .val{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.earn-watch-list{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.earn-watch-item{padding:10px;border-radius:8px;background:rgba(255,255,255,0.025);border:1px solid var(--border);font-size:12px;line-height:1.45;color:var(--ink-dim)}
+.earn-watch-item b{color:var(--ink);font-weight:600}
+.earn-related{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.earn-related span{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.08em;padding:4px 7px;border-radius:4px;background:rgba(212,168,90,0.07);border:1px solid rgba(212,168,90,0.2)}
+.earn-detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 
 /* Big earnings cards (most important) */
 .imp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
@@ -1170,6 +1197,8 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
   .col-12{grid-column:span 6}
   .wim-grid,.wim-hero,.port-grid{grid-template-columns:1fr}
   .reaction-map-body{grid-template-columns:1fr}
+  .earn-workbench{grid-template-columns:1fr}
+  .earn-detail-card{position:static}
   .portfolio-builder{grid-template-columns:1fr}
   .hero-proof{grid-template-columns:repeat(2,auto)}
   .hv-body.terminal-grid{grid-template-columns:1fr}
@@ -1190,6 +1219,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
   .section{padding:60px 16px}
   .feature-grid,.testimonial-grid{grid-template-columns:1fr}
   .heatmap{grid-template-columns:repeat(2,1fr)}
+  .cal-grid{grid-template-columns:1fr}
   .footer-inner{grid-template-columns:1fr}
   .dash{padding:14px}
   .wim,.brief,.impact,.port{padding:20px 14px}
@@ -1899,13 +1929,14 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
           <div id="impSectionSubtitle" style="font-size:13px;color:var(--ink-dim)">Ranked by expected market impact, implied volatility, and index weight.</div>
         </div>
         <div class="cal-filters">
-          <button class="chip active">All sectors</button>
-          <button class="chip">Tech</button>
-          <button class="chip">Financials</button>
-          <button class="chip">Energy</button>
-          <button class="chip">Healthcare</button>
-          <button class="chip">Mega cap</button>
-          <button class="chip">High IV</button>
+          <input class="earn-search" id="earnSearch" placeholder="Search ticker or company" autocomplete="off" spellcheck="false">
+          <button class="chip active" data-earn-filter="all">All sectors</button>
+          <button class="chip" data-earn-filter="Tech">Tech</button>
+          <button class="chip" data-earn-filter="Financials">Financials</button>
+          <button class="chip" data-earn-filter="Energy">Energy</button>
+          <button class="chip" data-earn-filter="Healthcare">Healthcare</button>
+          <button class="chip" data-earn-filter="mega">Mega cap</button>
+          <button class="chip" data-earn-filter="highiv">High IV</button>
         </div>
       </div>
 
@@ -1914,7 +1945,21 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
       <div class="imp-grid" id="impGrid"></div>
 
       <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.14em;text-transform:uppercase;margin:24px 0 12px">Calendar · week view</div>
-      <div class="cal-grid" id="calGrid"></div>
+      <div class="earn-workbench">
+        <div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+        <div class="earn-detail-card" id="earnDetail">
+          <div class="earn-detail-kicker">Earnings intelligence</div>
+          <div class="earn-detail-head">
+            <div>
+              <div class="earn-detail-sym">Select an event</div>
+              <div class="earn-detail-name">Click any calendar tile or top earnings card</div>
+            </div>
+          </div>
+          <div class="earn-watch-item">Select an earnings report to see expectations, impact score, related tickers, and what the market is watching.</div>
+        </div>
+      </div>
 
       <div style="display:flex;gap:18px;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;margin-top:14px">
         <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:rgba(78,168,255,0.25);border:1px solid rgba(78,168,255,0.4)"></i> BMO · Before market open</span>
@@ -2855,6 +2900,49 @@ document.querySelectorAll('.earn-tab').forEach(tab=>{
 });
 
 /* ---------- Most Important Earnings (calendar tab top) ---------- */
+const EARN_IMPACT_RANK = {
+  'NVDA':100,'MSFT':98,'AAPL':97,'GOOGL':95,'AMZN':94,'META':93,'TSLA':92,
+  'AVGO':88,'AMD':87,'NFLX':82,'JPM':80,'BAC':75,'XOM':74,'WMT':72,
+  'V':70,'MA':70,'UNH':68,'JNJ':66,'PG':62,'KO':58,'PEP':56,'COIN':55,
+  'GS':70,'C':68,'WFC':65,'CVX':70,'ABBV':62,'MRK':60,'PFE':54,
+  'INTC':58,'IBM':52,'CSCO':62,'ORCL':62,'CRM':60,'ADBE':62,'NOW':62,
+  'PYPL':52,'SQ':50,'BLK':62,'AXP':58,'COST':62,'NKE':56,'MCD':58,
+  'DIS':56,'CMCSA':52,'T':50,'VZ':50,'BKNG':58,'UBER':54,'ABNB':52,
+  'SBUX':50,'CAT':56,'BA':58,'GE':52,'F':46,'GM':46,'HD':56,'LOW':52,
+  'PLTR':54,'SNOW':54,'DDOG':50,'CRWD':52,'NET':48,'ZS':46,'OKTA':44,
+  'SNDK':40,'WDC':40,'MU':62,'ASML':62,'TSM':70,
+};
+function getImpact(sym){
+  return EARN_IMPACT_RANK[sym] ?? 30;
+}
+window.EARN_IMPACT_RANK = EARN_IMPACT_RANK;
+window.getImpact = getImpact;
+
+const EARN_META = {
+  NVDA:{name:'NVIDIA CORP', sector:'Tech', cap:'$3.18T', related:['AMD','AVGO','MU','SOXX'], watch:['Datacenter revenue growth and gross margin durability','Forward guidance for hyperscaler AI infrastructure demand','Management commentary on supply constraints and China exposure']},
+  MSFT:{name:'MICROSOFT', sector:'Tech', cap:'$3.42T', related:['GOOGL','AMZN','NVDA','QQQ'], watch:['Azure growth rate and AI workload contribution','Copilot monetisation vs infrastructure cost','Capital expenditure commentary']},
+  AAPL:{name:'APPLE INC', sector:'Tech', cap:'$3.32T', related:['QCOM','AVGO','SPY','QQQ'], watch:['iPhone demand and China revenue trend','Services margin resilience','Buyback and capital return update']},
+  GOOGL:{name:'ALPHABET INC', sector:'Tech', cap:'$2.15T', related:['META','MSFT','AMZN','QQQ'], watch:['Cloud growth and AI search monetisation','Ad pricing resilience','AI capex and margin trade-off']},
+  AMZN:{name:'AMAZON.COM', sector:'Tech', cap:'$2.05T', related:['MSFT','GOOGL','WMT','QQQ'], watch:['AWS growth re-acceleration','Retail margin and logistics cost trend','AI infrastructure capex guidance']},
+  META:{name:'META PLATFORMS', sector:'Tech', cap:'$1.46T', related:['GOOGL','SNAP','PINS','QQQ'], watch:['Ad revenue growth and Reels monetisation','AI capex trajectory','Reality Labs spending discipline']},
+  TSLA:{name:'TESLA', sector:'Consumer', cap:'$780B', related:['F','GM','RIVN','XLY'], watch:['Auto gross margin and price-cut commentary','Delivery outlook and demand elasticity','FSD/robotaxi timeline credibility']},
+  JPM:{name:'JPMORGAN', sector:'Financials', cap:'$590B', related:['BAC','C','XLF','GS'], watch:['Net interest income guidance','Credit quality and reserve build','Investment banking recovery']},
+  BAC:{name:'BANK OF AMERICA', sector:'Financials', cap:'$310B', related:['JPM','C','WFC','XLF'], watch:['Deposit costs and NII sensitivity','Consumer credit trend','Expense control']},
+  XOM:{name:'EXXON MOBIL', sector:'Energy', cap:'$480B', related:['CVX','XLE','USO','COP'], watch:['Upstream production and realised prices','Refining margin trend','Capital discipline and buyback cadence']},
+  CVX:{name:'CHEVRON', sector:'Energy', cap:'$300B', related:['XOM','XLE','USO','COP'], watch:['Permian output and project execution','Refining margins','Free cash flow sensitivity to crude']},
+  ABBV:{name:'ABBVIE', sector:'Healthcare', cap:'$300B', related:['PFE','MRK','XLV','JNJ'], watch:['Humira erosion pace','Immunology replacement product growth','Pipeline and acquisition integration']},
+  UNH:{name:'UNITEDHEALTH', sector:'Healthcare', cap:'$520B', related:['HUM','CI','XLV'], watch:['Medical cost ratio','Medicare Advantage commentary','Optum growth']},
+  SBUX:{name:'STARBUCKS', sector:'Consumer', cap:'$90B', related:['MCD','NKE','XLY'], watch:['US same-store sales trend','China recovery pace','Traffic vs pricing mix']},
+  UBER:{name:'UBER', sector:'Consumer', cap:'$160B', related:['ABNB','DASH','XLY'], watch:['Bookings growth and take rate','Mobility demand vs delivery margin','Free cash flow guidance']},
+  BKNG:{name:'BOOKING HOLDINGS', sector:'Consumer', cap:'$160B', related:['ABNB','EXPE','UBER'], watch:['Travel demand durability','Room-night growth','Europe and FX commentary']},
+  IBM:{name:'IBM', sector:'Tech', cap:'$170B', related:['ORCL','MSFT','QQQ'], watch:['Software growth and Red Hat trend','Consulting demand','AI bookings commentary']},
+  INTC:{name:'INTEL', sector:'Tech', cap:'$140B', related:['AMD','NVDA','SOXX'], watch:['Foundry losses and roadmap execution','PC/server demand','Gross margin recovery path']},
+  V:{name:'VISA', sector:'Financials', cap:'$560B', related:['MA','AXP','XLF'], watch:['Cross-border volume growth','Consumer spending resilience','Take-rate and margin trend']},
+  C:{name:'CITIGROUP', sector:'Financials', cap:'$120B', related:['JPM','BAC','XLF'], watch:['Restructuring progress','Credit costs','Capital return']},
+};
+
+const earnState = {filter:'all', search:'', events:[], selectedId:null, source:'demo'};
+
 const importantEarnings=[
   {sym:'NVDA', name:'NVIDIA CORP', session:'amc', day:'Today', hours:6, mins:18,
    epsExp:'$4.87', revExp:'$31.1B', iv:'42.6%', cap:'$3.18T', sector:'Tech', impact:'high'},
@@ -2865,9 +2953,63 @@ const importantEarnings=[
   {sym:'AAPL', name:'APPLE INC', session:'amc', day:'Thu', hours:74, mins:12,
    epsExp:'$1.62', revExp:'$94.2B', iv:'24.8%', cap:'$3.32T', sector:'Tech', impact:'high'},
 ];
+function earnMeta(sym){
+  const base = EARN_META[sym] || {};
+  return {
+    name: base.name || sym,
+    sector: base.sector || (getImpact(sym) >= 70 ? 'Mega cap' : 'Other'),
+    cap: base.cap || '-',
+    related: base.related || ['SPY','QQQ'],
+    watch: base.watch || ['Revenue and margin guidance versus expectations','Management commentary on demand and macro sensitivity','Initial price reaction relative to implied move'],
+  };
+}
+function earnExpectedMove(event){
+  const raw = parseFloat(String(event.iv || '').replace('%',''));
+  if(!isNaN(raw)) return (raw * 0.18).toFixed(1) + '%';
+  const impact = event.impact || getImpact(event.sym);
+  return (Math.max(2.2, Math.min(8.8, impact / 13))).toFixed(1) + '%';
+}
+function earnEventId(event){ return `${event.sym}:${event.dateKey || event.day || ''}:${event.session || ''}`; }
+function makeEarnEvent({sym, name, session='amc', day='This week', dayIndex=null, dateKey='', epsExp='-', revExp='-', iv=null, cap=null, sector=null, source='demo', quarter='Q1', year='2026'}){
+  const meta = earnMeta(sym);
+  const impact = getImpact(sym);
+  return {sym, name:name || meta.name, session, day, dayIndex, dateKey, epsExp, revExp, iv:iv || `${Math.max(18, Math.min(48, impact * 0.45)).toFixed(1)}%`, cap:cap || meta.cap, sector:sector || meta.sector, impact, source, quarter, year, related:meta.related, watch:meta.watch};
+}
+function hydrateDemoEarnings(){
+  const importantBySym = Object.fromEntries(importantEarnings.map(e=>[e.sym,e]));
+  const events = [];
+  weekDays.forEach((label, dayIndex)=>{
+    (weekEarnings[dayIndex] || []).forEach(([sym, session])=>{
+      const imp = importantBySym[sym] || {};
+      events.push(makeEarnEvent({
+        sym, name: imp.name, session, day: `${label} ${weekDates[dayIndex]}`, dayIndex,
+        epsExp: imp.epsExp || '-', revExp: imp.revExp || '-', iv: imp.iv, cap: imp.cap, sector: imp.sector,
+      }));
+    });
+  });
+  earnState.events = events;
+  earnState.selectedId = events.find(e=>e.sym==='NVDA') ? earnEventId(events.find(e=>e.sym==='NVDA')) : earnEventId(events[0] || {});
+  earnState.source = 'demo';
+}
+function visibleEarnEvents(){
+  const q = earnState.search.trim().toUpperCase();
+  return earnState.events.filter(e=>{
+    if(q && !(e.sym.includes(q) || e.name.toUpperCase().includes(q))) return false;
+    const f = earnState.filter;
+    if(f === 'all') return true;
+    if(f === 'mega') return e.impact >= 70;
+    if(f === 'highiv') return parseFloat(e.iv) >= 34 || e.impact >= 80;
+    if(f === 'Tech') return e.sector === 'Tech';
+    if(f === 'Financials') return e.sector === 'Financials';
+    if(f === 'Energy') return e.sector === 'Energy';
+    if(f === 'Healthcare') return e.sector === 'Healthcare';
+    return true;
+  });
+}
 function renderImportant(){
-  document.getElementById('impGrid').innerHTML=importantEarnings.map(e=>`
-    <div class="imp-card">
+  const events = visibleEarnEvents().slice().sort((a,b)=>b.impact-a.impact).slice(0,4);
+  document.getElementById('impGrid').innerHTML=events.map(e=>`
+    <div class="imp-card" onclick="selectEarning('${e.sym}','${e.dateKey || e.day}','${e.session}')" style="cursor:pointer">
       <div class="imp-head">
         <div>
           <div class="imp-sym">${e.sym}</div>
@@ -2876,8 +3018,8 @@ function renderImportant(){
         <div class="imp-session ${e.session}">${e.session==='bmo'?'Pre-market':'After-hours'}</div>
       </div>
       <div class="imp-countdown">
-        <div class="lbl">Reports in · ${e.day}</div>
-        ${String(e.hours).padStart(2,'0')}h : ${String(e.mins).padStart(2,'0')}m
+        <div class="lbl">Reports · ${e.day}</div>
+        Impact ${e.impact}/100
       </div>
       <div class="imp-stats">
         <div class="stat"><div class="lbl">EPS exp</div><div class="val">${e.epsExp}</div></div>
@@ -2885,14 +3027,13 @@ function renderImportant(){
         <div class="stat"><div class="lbl">IV</div><div class="val">${e.iv}</div></div>
         <div class="stat"><div class="lbl">Cap</div><div class="val">${e.cap}</div></div>
       </div>
-      <div class="imp-iv"><span>Expected move</span><b>±${(parseFloat(e.iv)*0.18).toFixed(1)}%</b></div>
+      <div class="imp-iv"><span>Expected move</span><b>±${earnExpectedMove(e)}</b></div>
       <div class="imp-actions">
-        <button class="imp-action">+ Watchlist</button>
-        <button class="imp-action">+ Alert</button>
+        <button class="imp-action" onclick="event.stopPropagation();addEarningToWatchlist('${e.sym}')">+ Watchlist</button>
+        <button class="imp-action" onclick="event.stopPropagation();openEarningWhy('${e.sym}')">Why?</button>
       </div>
     </div>`).join('');
 }
-renderImportant();
 
 /* ---------- Calendar grid (5-day work week + sat/sun) ---------- */
 const weekDays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -2907,25 +3048,120 @@ const weekEarnings={
   6:[]
 };
 function renderCalendar(){
-  const today=3; // Thursday-ish for the demo
-  const html=weekDays.map((d,i)=>{
-    const earns=weekEarnings[i]||[];
-    const isToday=i===today;
+  const events = visibleEarnEvents();
+  let days;
+  if(earnState.source === 'live'){
+    const today = new Date(); today.setHours(0,0,0,0);
+    const localISO = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    days = Array.from({length:7},(_,i)=>{
+      const date = new Date(today.getTime()+i*86400000);
+      return {label:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][date.getDay()], date:date.getDate(), key:localISO(date), today:i===0};
+    });
+  } else {
+    days = weekDays.map((label,i)=>({label, date:weekDates[i], key:String(i), today:i===3}));
+  }
+  const html=days.map((d,i)=>{
+    const earns=earnState.source === 'live'
+      ? events.filter(e=>e.dateKey === d.key)
+      : events.filter(e=>e.dayIndex === i);
+    const isToday=d.today;
     return `<div class="cal-day ${isToday?'today':''}">
       <div class="cal-day-head">
-        <span>${d} ${weekDates[i]}</span>
+        <span>${d.label} ${d.date}</span>
         ${earns.length>0?`<span class="cal-day-count">${earns.length} REPORT${earns.length>1?'S':''}</span>`:''}
       </div>
-      ${earns.map(([sym,session,high])=>`
-        <div class="cal-tile ${session} ${high?'high':''}">
-          <span class="sym">${sym}</span>
-          <span class="session">${session.toUpperCase()}</span>
+      ${earns.map(e=>`
+        <div class="cal-tile ${e.session} ${e.impact>=70?'high':''} ${earnState.selectedId===earnEventId(e)?'active':''}" onclick="selectEarning('${e.sym}','${e.dateKey || e.day}','${e.session}')">
+          <span class="sym">${e.sym}</span>
+          <span class="session">${e.session.toUpperCase()}</span>
+          <span class="score">Impact ${e.impact}</span>
         </div>`).join('')}
     </div>`;
   }).join('');
   document.getElementById('calGrid').innerHTML=html;
 }
-renderCalendar();
+function renderEarningsDetail(){
+  const el = document.getElementById('earnDetail');
+  if(!el) return;
+  const visible = visibleEarnEvents();
+  if(!visible.length){
+    el.innerHTML = '<div class="earn-detail-kicker">Earnings intelligence</div><div class="earn-watch-item">No earnings events match the current filter or search.</div>';
+    return;
+  }
+  const selected = visible.find(e=>earnEventId(e)===earnState.selectedId) || visible[0];
+  if(!selected){
+    el.innerHTML = '<div class="earn-detail-kicker">Earnings intelligence</div><div class="earn-watch-item">No earnings events match the current filter.</div>';
+    return;
+  }
+  earnState.selectedId = earnEventId(selected);
+  const sessionLabel = selected.session === 'bmo' ? 'Before market open' : 'After market close';
+  el.innerHTML = `
+    <div class="earn-detail-kicker">${selected.source === 'live' ? 'Live Finnhub calendar' : 'Demo earnings intelligence'}</div>
+    <div class="earn-detail-head">
+      <div>
+        <div class="earn-detail-sym">${selected.sym}</div>
+        <div class="earn-detail-name">${selected.name} · ${selected.sector}</div>
+      </div>
+      <div class="earn-score">Impact ${selected.impact}/100</div>
+    </div>
+    <div class="earn-detail-grid">
+      <div class="earn-detail-metric"><div class="lbl">Reports</div><div class="val">${selected.day}</div></div>
+      <div class="earn-detail-metric"><div class="lbl">Session</div><div class="val">${sessionLabel}</div></div>
+      <div class="earn-detail-metric"><div class="lbl">EPS exp</div><div class="val">${selected.epsExp}</div></div>
+      <div class="earn-detail-metric"><div class="lbl">Rev exp</div><div class="val">${selected.revExp}</div></div>
+      <div class="earn-detail-metric"><div class="lbl">Implied move</div><div class="val">±${earnExpectedMove(selected)}</div></div>
+      <div class="earn-detail-metric"><div class="lbl">Market cap</div><div class="val">${selected.cap}</div></div>
+    </div>
+    <div class="earn-detail-kicker">What the market is watching</div>
+    <div class="earn-watch-list">${selected.watch.map(w=>`<div class="earn-watch-item"><b>Watch:</b> ${escapeHtml(w)}</div>`).join('')}</div>
+    <div class="earn-detail-kicker">Related tickers</div>
+    <div class="earn-related">${selected.related.map(s=>`<span>${escapeHtml(s)}</span>`).join('')}</div>
+    <div class="earn-watch-item"><b>Risk lens:</b> ${selected.impact >= 80 ? 'High-impact report likely to move related baskets and options positioning.' : selected.impact >= 55 ? 'Moderate market impact; watch guidance and post-report sympathy names.' : 'Lower index impact, but still relevant for single-name holders.'}</div>
+    <div class="earn-detail-actions">
+      <button class="imp-action" onclick="addEarningToWatchlist('${selected.sym}')">+ Add to Watchlist</button>
+      <button class="imp-action" onclick="openEarningWhy('${selected.sym}')">Open Why Is It Moving</button>
+    </div>`;
+}
+function renderEarningsUI(){
+  const visible = visibleEarnEvents();
+  if(visible.length && !visible.some(e=>earnEventId(e)===earnState.selectedId)) earnState.selectedId = earnEventId(visible[0]);
+  renderImportant();
+  renderCalendar();
+  renderEarningsDetail();
+}
+function selectEarning(sym, dateKey, session){
+  const event = earnState.events.find(e=>e.sym===sym && String(e.dateKey || e.day)===String(dateKey) && e.session===session) || earnState.events.find(e=>e.sym===sym);
+  if(event) earnState.selectedId = earnEventId(event);
+  renderEarningsUI();
+}
+function addEarningToWatchlist(sym){
+  if(typeof addWatchlistSymbol === 'function') addWatchlistSymbol(sym);
+}
+function openEarningWhy(sym){
+  if(typeof openWhyFromWatchlist === 'function') openWhyFromWatchlist(sym);
+  else { route('why'); requestAnimationFrame(()=>loadWim(sym)); }
+}
+function setEarningsFilter(filter){
+  earnState.filter = filter || 'all';
+  document.querySelectorAll('[data-earn-filter]').forEach(btn=>btn.classList.toggle('active', btn.dataset.earnFilter === earnState.filter));
+  renderEarningsUI();
+}
+const earnSearchEl = document.getElementById('earnSearch');
+if(earnSearchEl){
+  earnSearchEl.addEventListener('input', e=>{
+    earnState.search = e.target.value || '';
+    renderEarningsUI();
+  });
+}
+document.querySelectorAll('[data-earn-filter]').forEach(btn=>{
+  btn.addEventListener('click', ()=>setEarningsFilter(btn.dataset.earnFilter));
+});
+window.selectEarning = selectEarning;
+window.addEarningToWatchlist = addEarningToWatchlist;
+window.openEarningWhy = openEarningWhy;
+window.setEarningsFilter = setEarningsFilter;
+hydrateDemoEarnings();
+renderEarningsUI();
 
 /* ---------- Live result card (NVDA beat) ---------- */
 function renderLiveResult(){
@@ -3251,27 +3487,6 @@ function updateEarnApiBanner(){
   });
 }
 
-// Finnhub returns reports across 7 days; rank by index weight + IV proxy.
-// Tier 1 (mega-caps, highest impact) - used to rank "most important" cards.
-const EARN_IMPACT_RANK = {
-  'NVDA':100,'MSFT':98,'AAPL':97,'GOOGL':95,'AMZN':94,'META':93,'TSLA':92,
-  'AVGO':88,'AMD':87,'NFLX':82,'JPM':80,'BAC':75,'XOM':74,'WMT':72,
-  'V':70,'MA':70,'UNH':68,'JNJ':66,'PG':62,'KO':58,'PEP':56,'COIN':55,
-  'GS':70,'C':68,'WFC':65,'CVX':70,'ABBV':62,'MRK':60,'PFE':54,
-  'INTC':58,'IBM':52,'CSCO':62,'ORCL':62,'CRM':60,'ADBE':62,'NOW':62,
-  'PYPL':52,'SQ':50,'BLK':62,'AXP':58,'COST':62,'NKE':56,'MCD':58,
-  'DIS':56,'CMCSA':52,'T':50,'VZ':50,'BKNG':58,'UBER':54,'ABNB':52,
-  'SBUX':50,'CAT':56,'BA':58,'GE':52,'F':46,'GM':46,'HD':56,'LOW':52,
-  'PLTR':54,'SNOW':54,'DDOG':50,'CRWD':52,'NET':48,'ZS':46,'OKTA':44,
-  'SNDK':40,'WDC':40,'MU':62,'ASML':62,'TSM':70,
-};
-
-function getImpact(sym){
-  return EARN_IMPACT_RANK[sym] ?? 30;
-}
-window.EARN_IMPACT_RANK = EARN_IMPACT_RANK;
-window.getImpact = getImpact;
-
 // Format a Finnhub date (YYYY-MM-DD) to a friendly day label
 function formatEarnDay(dateStr){
   // Parse YYYY-MM-DD as a local-midnight date so day-of-week math matches
@@ -3491,6 +3706,40 @@ function renderCalendarLive(rawCal){
   return true;
 }
 
+function normalizeLiveEarning(e){
+  const sym = e.symbol;
+  const meta = earnMeta(sym);
+  const session = (e.hour === 'bmo') ? 'bmo' : 'amc';
+  const day = formatEarnDay(e.date);
+  return makeEarnEvent({
+    sym,
+    name: e.name || meta.name,
+    session,
+    day,
+    dateKey: e.date,
+    epsExp: e.epsEstimate != null ? '$'+Number(e.epsEstimate).toFixed(2) : '-',
+    revExp: fmtRevenue(e.revenueEstimate),
+    iv: null,
+    cap: meta.cap,
+    sector: meta.sector,
+    source: 'live',
+    quarter: e.quarter ? 'Q'+e.quarter : 'Q?',
+    year: e.year || '',
+  });
+}
+function setLiveEarningsCalendar(rawCal){
+  const events = (rawCal || [])
+    .filter(e=>e && e.symbol && e.date)
+    .map(normalizeLiveEarning)
+    .sort((a,b)=>b.impact-a.impact);
+  if(!events.length) return false;
+  earnState.events = events;
+  earnState.source = 'live';
+  earnState.selectedId = earnEventId(events[0]);
+  renderEarningsUI();
+  return true;
+}
+
 async function liveRefreshEarnings(){
   updateEarnApiBanner();
   if(!BriefTickAPI.keys.finnhub){
@@ -3503,9 +3752,8 @@ async function liveRefreshEarnings(){
       console.warn('[earnings] Finnhub returned empty calendar');
       return;
     }
-    const importantOk = await renderImportantLive(cal);
-    const calendarOk = renderCalendarLive(cal);
-    if(importantOk || calendarOk){
+    const calendarOk = setLiveEarningsCalendar(cal);
+    if(calendarOk){
       // Show a small confirmation that live data loaded
       const banner = document.getElementById('earnApiBanner');
       if(banner){
