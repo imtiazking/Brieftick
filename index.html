@@ -2803,7 +2803,10 @@ function calculateRiskRegime(quotes={}){
   const breadthInputs = [spy,qqq,iwm,nvda,xlk,xlu,xle].filter(v=>!isNaN(v));
   const losers = breadthInputs.filter(v=>v<0).length;
   const breadthScore = clamp((losers / Math.max(1,breadthInputs.length))*100, 10, 90);
-  const newsScore = clamp((typeof impactData !== 'undefined' ? impactData.filter(i=>i[2]==='high').length * 16 + impactData.filter(i=>i[2]==='med').length * 7 : 34), 20, 82);
+  // `impactData` is declared later in the file, so use a window-backed mirror
+  // to avoid a temporal-dead-zone runtime error during initial dashboard setup.
+  const impactItems = Array.isArray(window._briefTickImpactData) ? window._briefTickImpactData : [];
+  const newsScore = clamp((impactItems.length ? impactItems.filter(i=>i[2]==='high').length * 16 + impactItems.filter(i=>i[2]==='med').length * 7 : 34), 20, 82);
 
   const components = [
     riskComponent('Volatility', volatilityScore, `VIX ${isNaN(vixValue)?'-':vixValue.toFixed(1)}`),
@@ -5838,7 +5841,9 @@ const impactData=[
   ['08:15','7h ago','low','2.8','SEV','UK Q1 GDP revised marginally higher','Office for National Statistics revises Q1 GDP +0.1pp; modest positive read-through to FTSE constituents and GBP.',
    [['EWU','up'],['BP','up'],['HSBC','up']]],
 ];
+window._briefTickImpactData = impactData;
 function renderImpactFeed(items){
+  window._briefTickImpactData = items;
   document.getElementById('impactList').innerHTML=items.map(([t,ago,sev,score,_,title,body,affects,url])=>{
     const clickable = url ? ` data-url="${url}" style="cursor:pointer"` : '';
     return `<div class="impact-card"${clickable}>
