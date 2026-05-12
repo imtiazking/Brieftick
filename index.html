@@ -600,9 +600,25 @@ main{padding-top:90px;position:relative;z-index:3}
 .reason-weight{font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:0.06em}
 .reason-weight b{color:var(--gold-bright);font-size:14px;font-weight:500}
 
-/* Contagion network */
+/* Market Reaction Map */
 .contagion-wrap{padding:24px;border-radius:14px;background:var(--panel);backdrop-filter:blur(16px);border:1px solid var(--border-strong)}
 .contagion-svg{width:100%;height:380px}
+.reaction-map-body{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:14px;align-items:stretch}
+.reaction-detail{
+  padding:14px;border-radius:10px;background:rgba(10,13,20,0.62);border:1px solid var(--border);
+  display:flex;flex-direction:column;gap:10px;min-height:240px;
+}
+.reaction-detail-kicker{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase}
+.reaction-detail-title{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-0.02em;line-height:1.05}
+.reaction-detail-copy{font-size:12px;color:var(--ink-dim);line-height:1.5}
+.reaction-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+.reaction-metric{padding:8px;border-radius:7px;background:rgba(255,255,255,0.025);border:1px solid var(--border)}
+.reaction-metric .lbl{font-family:var(--mono);font-size:8px;color:var(--ink-faint);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px}
+.reaction-metric .val{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.reaction-chip{display:inline-flex;width:fit-content;padding:4px 8px;border-radius:999px;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase}
+.reaction-chip.neg{color:var(--red);background:rgba(255,91,110,0.08);border:1px solid rgba(255,91,110,0.22)}
+.reaction-chip.pos{color:var(--green);background:rgba(61,220,151,0.08);border:1px solid rgba(61,220,151,0.22)}
+.reaction-chip.neu{color:var(--amber);background:rgba(255,181,71,0.08);border:1px solid rgba(255,181,71,0.22)}
 .contagion-legend{display:flex;gap:16px;justify-content:center;margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;flex-wrap:wrap}
 .contagion-legend span{display:flex;align-items:center;gap:6px}
 .contagion-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
@@ -616,6 +632,8 @@ main{padding-top:90px;position:relative;z-index:3}
 .contagion-trail-sep{color:var(--ink-faint);font-size:9px}
 .contagion-svg .peer-node{cursor:pointer}
 .contagion-svg .peer-node:hover circle{filter:brightness(1.3)}
+.contagion-svg .peer-node:focus{outline:none}
+.contagion-svg .peer-node:focus circle{filter:brightness(1.35);stroke-width:2.5}
 
 /* History pattern */
 .history-wrap{padding:24px;border-radius:14px;background:var(--panel);backdrop-filter:blur(16px);border:1px solid var(--border-strong)}
@@ -1074,6 +1092,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
   .col-5,.col-6,.col-7,.col-8,.col-9{grid-column:span 6}
   .col-12{grid-column:span 6}
   .wim-grid,.wim-hero,.port-grid{grid-template-columns:1fr}
+  .reaction-map-body{grid-template-columns:1fr}
   .portfolio-builder{grid-template-columns:1fr}
   .footer-inner{grid-template-columns:1fr 1fr}
 }
@@ -1301,7 +1320,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
             BriefTick AI · Live Analysis
           </div>
           <div class="hv-ai-text">
-            NVDA pulled lower into the close after <b>Hyperscaler capex chatter</b> reignited demand-tail concerns. Weakness is spreading across <b>AMD, AVGO, MU</b> with an estimated <b>72% sector contagion probability</b>. Macro tone neutral - no Fed catalyst.
+            NVDA pulled lower into the close after <b>Hyperscaler capex chatter</b> reignited demand-tail concerns. Weakness is spreading across <b>AMD, AVGO, MU</b> with an estimated <b>72% reaction-chain probability</b>. Macro tone neutral - no Fed catalyst.
           </div>
         </div>
       </div>
@@ -1334,7 +1353,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
       </div>
       <div class="testimonial-grid">
         <div class="testimonial">
-          <div class="testimonial-quote">"It's the first product that explains <em>why</em> something is happening, not just <em>what</em>. The contagion graph alone changed how I read sector weakness."</div>
+          <div class="testimonial-quote">"It's the first product that explains <em>why</em> something is happening, not just <em>what</em>. The reaction map alone changed how I read sector weakness."</div>
           <div class="testimonial-author"><div class="avatar">M</div><div><div class="author-name">Mara Voss</div><div class="author-role">Portfolio Manager · Solo RIA</div></div></div>
         </div>
         <div class="testimonial">
@@ -1452,7 +1471,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
         <div class="panel-head"><span class="ttl"><b>08</b> BriefTick AI · Session Summary</span><span class="meta">Generated 90s ago</span></div>
         <div class="panel-body" style="padding:20px 18px">
           <div style="font-size:14px;line-height:1.6;color:var(--ink)">
-            US equities are drifting <b style="color:var(--red)">lower into the close</b> as <b style="color:var(--gold-bright)">10-year yields</b> push back above 4.42%, pressuring growth and AI-infrastructure exposure. <b style="color:var(--gold-bright)">NVDA</b> leads weakness (−2.96%) with contagion spreading to <b style="color:var(--gold-bright)">AMD, AVGO and MU</b>. Defensive rotation visible in Utilities and Healthcare. <b style="color:var(--gold-bright)">Energy</b> bid on a softer USD and OPEC supply chatter. Overall regime is best characterised as <b style="color:var(--gold-bright)">cautious risk-off</b> - not a panic, but positioning is quietly de-grossing into Friday.
+            US equities are drifting <b style="color:var(--red)">lower into the close</b> as <b style="color:var(--gold-bright)">10-year yields</b> push back above 4.42%, pressuring growth and AI-infrastructure exposure. <b style="color:var(--gold-bright)">NVDA</b> leads weakness with reaction-chain pressure spreading to <b style="color:var(--gold-bright)">AMD, AVGO and MU</b>. Defensive rotation visible in Utilities and Healthcare. <b style="color:var(--gold-bright)">Energy</b> bid on a softer USD and OPEC supply chatter. Overall regime is best characterised as <b style="color:var(--gold-bright)">cautious risk-off</b> - not a panic, but positioning is quietly de-grossing into Friday.
           </div>
           <div style="margin-top:18px;display:flex;gap:6px;flex-wrap:wrap">
             <span class="tag macro">Yields ↑</span>
@@ -1548,7 +1567,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
           </div>
         </div>
         <div class="wim-ai-text" id="wimSummary">
-          NVDA is selling off today primarily on <b>renewed concern around AI capex sustainability</b>. A <b>major hyperscaler signalled a pause</b> in next-quarter datacentre orders, which the market read as a leading indicator for the broader AI-infrastructure complex. Compounding this, <b>10Y yields ticked back above 4.42%</b>, increasing duration pressure on long-duration growth names. Sector-wide weakness is showing classic 2024-style contagion patterns. Historically, similar setups have led to <b>−4 to −7% drawdowns over 5 sessions</b> before stabilising - though outcomes vary materially with macro tone.
+          NVDA is selling off today primarily on <b>renewed concern around AI capex sustainability</b>. A <b>major hyperscaler signalled a pause</b> in next-quarter datacentre orders, which the market read as a leading indicator for the broader AI-infrastructure complex. Compounding this, <b>10Y yields ticked back above 4.42%</b>, increasing duration pressure on long-duration growth names. Sector-wide weakness is showing classic reaction-chain patterns. Historically, similar setups have led to <b>−4 to −7% drawdowns over 5 sessions</b> before stabilising - though outcomes vary materially with macro tone.
         </div>
       </div>
     </div>
@@ -1560,15 +1579,27 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
       </div>
 
       <div class="contagion">
-        <h3>Sector Contagion Map</h3>
+        <h3>Market Reaction Map</h3>
         <div class="contagion-wrap">
           <div class="contagion-trail" id="contagionTrail"></div>
-          <svg class="contagion-svg" viewBox="0 0 480 380" id="contagionSvg"></svg>
+          <div class="reaction-map-body">
+            <svg class="contagion-svg" viewBox="0 0 480 380" id="contagionSvg" role="img" aria-label="Market Reaction Map"></svg>
+            <div class="reaction-detail" id="reactionDetail">
+              <div class="reaction-detail-kicker">Reaction intelligence</div>
+              <div class="reaction-detail-title">Hover a node</div>
+              <div class="reaction-detail-copy">Move across a ticker to see why it may react to the source. Click a node to re-center the map and follow the market ripple.</div>
+              <span class="reaction-chip neu">Exploratory</span>
+              <div class="reaction-detail-grid">
+                <div class="reaction-metric"><div class="lbl">Impact</div><div class="val">-</div></div>
+                <div class="reaction-metric"><div class="lbl">Confidence</div><div class="val">-</div></div>
+              </div>
+            </div>
+          </div>
           <div class="contagion-legend">
             <span><i style="background:var(--red)"></i> Negative impact</span>
             <span><i style="background:var(--amber)"></i> Mixed</span>
             <span><i style="background:var(--green)"></i> Positive impact</span>
-            <span class="contagion-hint">Hover to disturb · click to re-center</span>
+            <span class="contagion-hint">Hover for context · click to re-center</span>
           </div>
         </div>
       </div>
@@ -4486,11 +4517,11 @@ function inferNewsTags(text){
 ============================================================ */
 const wimDB={
   'NVDA':{name:'NVIDIA CORP · NASDAQ', price:'487.32', chg:'−14.86  (−2.96%)', chgColor:'#ff5b6e',
-    summary:`NVDA is selling off today primarily on <b>renewed concern around AI capex sustainability</b>. A <b>major hyperscaler signalled a pause</b> in next-quarter datacentre orders, which the market read as a leading indicator for the broader AI-infrastructure complex. Compounding this, <b>10Y yields ticked back above 4.42%</b>, increasing duration pressure on long-duration growth names. Sector-wide weakness is showing classic 2024-style contagion patterns. Historically, similar setups have led to <b>−4 to −7% drawdowns over 5 sessions</b> before stabilising - though outcomes vary materially with macro tone.`,
+    summary:`NVDA is selling off today primarily on <b>renewed concern around AI capex sustainability</b>. A <b>major hyperscaler signalled a pause</b> in next-quarter datacentre orders, which the market read as a leading indicator for the broader AI-infrastructure complex. Compounding this, <b>10Y yields ticked back above 4.42%</b>, increasing duration pressure on long-duration growth names. Sector-wide weakness is showing classic reaction-chain patterns. Historically, similar setups have led to <b>−4 to −7% drawdowns over 5 sessions</b> before stabilising - though outcomes vary materially with macro tone.`,
     reasons:[
       ['AI capex sustainability concerns','A top-3 hyperscaler signalled a Q3 datacentre order pause; market read this as a leading indicator for the broader AI infrastructure complex.','42%'],
       ['Rates tailwind reverses','10Y yields back above 4.42% increases duration pressure on long-duration growth names. Mechanical, not narrative.','24%'],
-      ['Sector contagion','AMD, AVGO, MU all weak in sympathy. Once correlated names break key levels, baskets follow.','18%'],
+      ['Reaction-chain pressure','AMD, AVGO, MU all weak in sympathy. Once correlated names break key levels, baskets follow.','18%'],
       ['Risk-off positioning into Friday','Quiet de-grossing visible in equity/bond and growth/value rotation signatures.','11%'],
       ['Technical level breach','Stock broke its 50-day moving average on above-average volume - algos respond.','5%'],
     ],
@@ -4660,7 +4691,7 @@ function drawHistory(sym){
   }).join('');
 }
 
-/* Contagion network - center node + radial peers
+/* Market Reaction Map - center node + radial peers
  * Interactive: clicking any peer re-centers the map on that ticker with
  * smooth position interpolation. A breadcrumb trail above the SVG lets the
  * user navigate back through the exploration path. Pure SVG + requestAnimationFrame,
@@ -4714,6 +4745,100 @@ function _getPeerMove(pSym, seedSym){
   return ((h % 700) / 100) - 3.5; // range ~-3.5% to +3.5%
 }
 
+const _reactionGroups = {
+  semis:['NVDA','AMD','AVGO','MU','SOXX','TSM','INTC','QCOM','SNDK','WDC','STX'],
+  megacap:['AAPL','MSFT','META','GOOGL','AMZN','QQQ','SPY'],
+  autos:['TSLA','F','GM','LCID','RIVN','NIO','STLA','TM','HMC','XLY'],
+  media:['NFLX','DIS','CMCSA','PARA','WBD','SPOT','SNAP','PINS'],
+  energy:['XLE','XOM','CVX','COP','SLB','EOG','USO'],
+  financials:['JPM','BAC','XLF']
+};
+
+function _reactionGroupFor(sym){
+  for(const [group, symbols] of Object.entries(_reactionGroups)){
+    if(symbols.includes(sym)) return group;
+  }
+  return 'market';
+}
+
+function _reactionTone(move){
+  return move >= 0.4 ? 'pos' : (move <= -0.4 ? 'neg' : 'neu');
+}
+
+function _reactionDetail(source, target, move){
+  const sourceGroup = _reactionGroupFor(source);
+  const targetGroup = _reactionGroupFor(target);
+  const sameGroup = sourceGroup === targetGroup && sourceGroup !== 'market';
+  const absMove = Math.abs(move);
+  const strength = Math.min(98, Math.round(42 + absMove * 10 + (sameGroup ? 18 : 6)));
+  const confidence = Math.min(96, Math.round(strength - 4 + (sameGroup ? 6 : 0)));
+  const tone = _reactionTone(move);
+  const labels = {
+    semis:'AI infrastructure / semiconductors',
+    megacap:'mega-cap growth basket',
+    autos:'EV and auto demand chain',
+    media:'digital media / streaming complex',
+    energy:'energy and crude-linked equities',
+    financials:'banks and rate-sensitive financials',
+    market:'broad market beta'
+  };
+  const label = sameGroup ? labels[sourceGroup] : `${labels[sourceGroup] || 'source'} to ${labels[targetGroup] || 'market'}`;
+  let relation = sameGroup ? 'Direct sympathy move' : 'Cross-asset read-through';
+  if(target === 'QQQ' || target === 'SPY' || target === 'SOXX' || target === 'XLE' || target === 'XLY') relation = 'ETF basket transmission';
+  if(source === 'SPY' || source === 'QQQ') relation = 'Index-level pressure';
+  const direction = tone === 'pos' ? 'positive' : tone === 'neg' ? 'negative' : 'mixed';
+  const copy = sameGroup
+    ? `${target} sits in the same ${label} cluster as ${source}. A move in ${source} can force basket, ETF and factor traders to reprice nearby names, so the expected reaction is ${direction}.`
+    : `${target} is linked to ${source} through ${label}. This is a second-order reaction: useful for context, but weaker than a direct single-stock catalyst.`;
+  return {source, target, move, tone, relation, label, strength, confidence, copy};
+}
+
+function _renderReactionDetail(detail, mode='hover'){
+  const el = document.getElementById('reactionDetail');
+  if(!el || !detail) return;
+  const modeLabel = mode === 'selected' ? 'Selected link' : mode === 'source' ? 'Current source' : 'Hover insight';
+  if(mode === 'source'){
+    const peers = _getContagionPeers(detail.source || _contagionCurrent || 'NVDA');
+    el.innerHTML = `
+      <div class="reaction-detail-kicker">Current source</div>
+      <div class="reaction-detail-title">${escapeHtml(detail.source)} reaction chain</div>
+      <div class="reaction-detail-copy">${escapeHtml(detail.source)} is the center of this map. Nearby nodes show likely sympathy, ETF and factor read-throughs. Click any node to follow the next ripple.</div>
+      <span class="reaction-chip neu">${peers.length} linked nodes</span>
+      <div class="reaction-detail-grid">
+        <div class="reaction-metric"><div class="lbl">Mode</div><div class="val">Exploring</div></div>
+        <div class="reaction-metric"><div class="lbl">Source</div><div class="val">${escapeHtml(detail.source)}</div></div>
+      </div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="reaction-detail-kicker">${modeLabel}</div>
+    <div class="reaction-detail-title">${escapeHtml(detail.source)} → ${escapeHtml(detail.target)}</div>
+    <div class="reaction-detail-copy">${escapeHtml(detail.copy)}</div>
+    <span class="reaction-chip ${detail.tone}">${escapeHtml(detail.relation)}</span>
+    <div class="reaction-detail-grid">
+      <div class="reaction-metric"><div class="lbl">Impact</div><div class="val">${detail.move>=0?'+':''}${detail.move.toFixed(2)}%</div></div>
+      <div class="reaction-metric"><div class="lbl">Confidence</div><div class="val">${detail.confidence}%</div></div>
+      <div class="reaction-metric"><div class="lbl">Strength</div><div class="val">${detail.strength}/100</div></div>
+      <div class="reaction-metric"><div class="lbl">Cluster</div><div class="val">${escapeHtml(detail.label.split(' / ')[0].slice(0,18))}</div></div>
+    </div>`;
+}
+
+function _reactionNodeAttrs(source, target, move){
+  const safeSource = String(source).replace(/[^A-Z0-9.\-]/g,'');
+  const safeTarget = String(target).replace(/[^A-Z0-9.\-]/g,'');
+  const movePct = Number(move).toFixed(2);
+  return `tabindex="0" role="button" aria-label="Inspect ${safeSource} to ${safeTarget} reaction" onmouseenter="_showReactionDetail('${safeSource}','${safeTarget}','${movePct}')" onfocus="_showReactionDetail('${safeSource}','${safeTarget}','${movePct}')" onmouseleave="_showReactionSource('${safeSource}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();_peerClicked('${safeTarget}','${movePct}')}"`;
+}
+
+function _showReactionDetail(source, target, moveStr, mode='hover'){
+  const move = parseFloat(moveStr);
+  _renderReactionDetail(_reactionDetail(source, target, isNaN(move) ? 0 : move), mode);
+}
+
+function _showReactionSource(source){
+  _renderReactionDetail({source: source || _contagionCurrent || 'NVDA'}, 'source');
+}
+
 function _renderContagionTrail(){
   const trailEl = document.getElementById('contagionTrail');
   if(!trailEl) return;
@@ -4743,6 +4868,7 @@ function _navigateContagion(trailIndex){
   const cached = BriefTickAPI._cache && BriefTickAPI._cache.get('q:'+targetSym);
   const move = cached && cached.v ? cached.v.pctChange : -1;
   const color = move >= 0.4 ? '#3ddc97' : (move <= -0.4 ? '#ff5b6e' : '#ffb547');
+  _showReactionSource(targetSym);
   _animateContagionTo(targetSym, color, false);
 }
 
@@ -4750,6 +4876,8 @@ function _peerClicked(pSym, moveStr){
   if(_contagionAnimating) return;
   const move = parseFloat(moveStr);
   const color = move >= 0.4 ? '#3ddc97' : (move <= -0.4 ? '#ff5b6e' : '#ffb547');
+  const source = _contagionCurrent || (document.getElementById('contagionSvg')?.getAttribute('data-source')) || 'NVDA';
+  _showReactionDetail(source, pSym, moveStr, 'selected');
   _contagionTrail.push(pSym);
   _contagionCurrent = pSym;
   _animateContagionTo(pSym, color, true);
@@ -4871,7 +4999,7 @@ function _animateContagionTo(newSym, newCenterColor, isForward){
       const tone = move >= 0.4 ? 'pos' : (move <= -0.4 ? 'neg' : 'neu');
       const c = colors[tone];
       const movePct = move.toFixed(2);
-      frag.push(`<g id="cgnode-${k.replace(':','-')}" class="peer-node" transform="translate(${s.x},${s.y}) scale(${s.scale})" opacity="${s.opacity}" onclick="_peerClicked('${name}', '${movePct}')">
+      frag.push(`<g id="cgnode-${k.replace(':','-')}" class="peer-node" transform="translate(${s.x},${s.y}) scale(${s.scale})" opacity="${s.opacity}" ${_reactionNodeAttrs(newSym, name, move)} onclick="_peerClicked('${name}', '${movePct}')">
         <circle r="22" fill="rgba(10,13,20,0.95)" stroke="${c}" stroke-width="1.5"/>
         <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="10" font-weight="500" style="pointer-events:none">${name}</text>
         <text x="0" y="10" text-anchor="middle" fill="${c}" font-family="JetBrains Mono" font-size="9" style="pointer-events:none">${move>=0?'+':''}${movePct}%</text>
@@ -4953,8 +5081,9 @@ function drawContagion(sym, centerColor){
     const tone = move >= 0.4 ? 'pos' : (move <= -0.4 ? 'neg' : 'neu');
     const c = colors[tone];
     const movePct = move.toFixed(2);
-    edges += `<line id="cgedge-${i}" data-i="${i}" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${c}" stroke-opacity="0.35" stroke-width="${1+Math.min(Math.abs(move)/3,2)}" stroke-dasharray="3 3"/>`;
-    nodes += `<g id="cgpeer-${i}" data-i="${i}" data-base-x="${x}" data-base-y="${y}" class="peer-node" transform="translate(${x},${y})" onclick="_peerClicked('${pSym}', '${movePct}')">
+    const width = 1 + Math.min(Math.abs(move)/3,2);
+    edges += `<line id="cgedge-${i}" data-i="${i}" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${c}" stroke-opacity="0.35" stroke-width="${width}" stroke-dasharray="${tone === 'neu' ? '3 3' : '5 2'}"/>`;
+    nodes += `<g id="cgpeer-${i}" data-i="${i}" data-base-x="${x}" data-base-y="${y}" class="peer-node" transform="translate(${x},${y})" ${_reactionNodeAttrs(sym, pSym, move)} onclick="_peerClicked('${pSym}', '${movePct}')">
       <circle r="22" fill="rgba(10,13,20,0.95)" stroke="${c}" stroke-width="1.5"/>
       <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="10" font-weight="500" style="pointer-events:none">${pSym}</text>
       <text x="0" y="10" text-anchor="middle" fill="${c}" font-family="JetBrains Mono" font-size="9" style="pointer-events:none">${move>=0?'+':''}${movePct}%</text>
@@ -4978,6 +5107,7 @@ function drawContagion(sym, centerColor){
     </g>`;
   svg.setAttribute('data-source', sym);
   _renderContagionTrail();
+  _showReactionSource(sym);
   _installContagionCursorPhysics(peers.length, cx, cy);
 }
 
