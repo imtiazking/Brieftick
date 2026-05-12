@@ -713,6 +713,8 @@ main{padding-top:90px;position:relative;z-index:3}
 .contagion-svg .peer-node:hover circle{filter:brightness(1.35)}
 .contagion-svg .peer-node:focus{outline:none}
 .contagion-svg .peer-node:focus circle{filter:brightness(1.35);stroke-width:2.5}
+.contagion-svg .peer-pulse{pointer-events:none}
+.contagion-svg .peer-node[data-emphasized="true"] .peer-pulse{filter:drop-shadow(0 0 8px currentColor)}
 
 /* History pattern */
 .history-wrap{padding:24px;border-radius:14px;background:var(--panel);backdrop-filter:blur(16px);border:1px solid var(--border-strong)}
@@ -5215,6 +5217,17 @@ function _showReactionSource(source){
   _renderReactionDetail({source: source || _contagionCurrent || 'NVDA'}, 'source');
 }
 
+function _reactionPulseMarkup(color, move){
+  const impact = Math.min(Math.abs(Number(move) || 0) / 3.5, 1);
+  const maxR = (26 + impact * 7).toFixed(1);
+  const startOpacity = (0.12 + impact * 0.18).toFixed(2);
+  const dur = (3.2 - impact * 1.1).toFixed(2);
+  return `<circle class="peer-pulse" r="23" fill="none" stroke="${color}" stroke-width="1" stroke-opacity="${startOpacity}">
+    <animate attributeName="r" values="23;${maxR};23" dur="${dur}s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-opacity" values="${startOpacity};0;${startOpacity}" dur="${dur}s" repeatCount="indefinite"/>
+  </circle>`;
+}
+
 let _reactionInspecting = false;
 function _lockReactionInspecting(locked){
   _reactionInspecting = !!locked;
@@ -5415,6 +5428,7 @@ function _animateContagionTo(newSym, newCenterColor, isForward){
       const c = colors[tone];
       const movePct = move.toFixed(2);
       frag.push(`<g id="cgnode-${k.replace(':','-')}" class="peer-node" data-symbol="${name}" data-current-x="${s.x}" data-current-y="${s.y}" transform="translate(${s.x},${s.y}) scale(${s.scale})" opacity="${s.opacity}" ${_reactionNodeAttrs(newSym, name, move)} onclick="_peerClicked('${name}', '${movePct}')">
+        ${_reactionPulseMarkup(c, move)}
         <circle r="22" fill="rgba(10,13,20,0.95)" stroke="${c}" stroke-width="1.5"/>
         <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="10" font-weight="500" style="pointer-events:none">${name}</text>
         <text x="0" y="10" text-anchor="middle" fill="${c}" font-family="JetBrains Mono" font-size="9" style="pointer-events:none">${move>=0?'+':''}${movePct}%</text>
@@ -5501,6 +5515,7 @@ function drawContagion(sym, centerColor){
     const width = 1 + Math.min(Math.abs(move)/3,2);
     edges += `<line id="cgedge-${i}" data-i="${i}" data-symbol="${pSym}" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${c}" stroke-opacity="0.35" stroke-width="${width}" stroke-dasharray="${tone === 'neu' ? '3 3' : '5 2'}"/>`;
     nodes += `<g id="cgpeer-${i}" data-i="${i}" data-symbol="${pSym}" data-base-x="${x}" data-base-y="${y}" data-current-x="${x}" data-current-y="${y}" class="peer-node" transform="translate(${x},${y})" ${_reactionNodeAttrs(sym, pSym, move)} onclick="_peerClicked('${pSym}', '${movePct}')">
+      ${_reactionPulseMarkup(c, move)}
       <circle r="22" fill="rgba(10,13,20,0.95)" stroke="${c}" stroke-width="1.5"/>
       <text x="0" y="-2" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="10" font-weight="500" style="pointer-events:none">${pSym}</text>
       <text x="0" y="10" text-anchor="middle" fill="${c}" font-family="JetBrains Mono" font-size="9" style="pointer-events:none">${move>=0?'+':''}${movePct}%</text>
