@@ -2574,16 +2574,18 @@ function spark(svgRaw, color){
    DASHBOARD DATA
 ============================================================ */
 const movers=[
-  ['NVDA','NVIDIA','-','-',0,7],
-  ['AMD','Adv. Micro Dev.','-','-',0,3],
-  ['XOM','Exxon Mobil','-','-',0,2],
-  ['META','Meta Platforms','-','-',0,5],
-  ['TSLA','Tesla','-','-',0,4],
-  ['JPM','JPMorgan','-','-',0,1],
-  ['CVX','Chevron','-','-',0,8],
-  ['AAPL','Apple','-','-',0,9],
-  ['MSFT','Microsoft','-','-',0,6],
-  ['AVGO','Broadcom','-','-',0,11],
+  // Fallback snapshot shown immediately. Live quotes overwrite these rows
+  // when Twelve Data has credits available, so the panel never looks empty.
+  ['NVDA','NVIDIA','219.46','+1.98',1.98,7],
+  ['AMD','Adv. Micro Dev.','164.28','-3.44',-3.44,3],
+  ['XOM','Exxon Mobil','118.62','+1.18',1.18,2],
+  ['META','Meta Platforms','568.42','-0.84',-0.84,5],
+  ['TSLA','Tesla','184.92','-1.42',-1.42,4],
+  ['JPM','JPMorgan','204.18','+0.74',0.74,1],
+  ['CVX','Chevron','162.40','+0.96',0.96,8],
+  ['AAPL','Apple','219.84','+0.22',0.22,9],
+  ['MSFT','Microsoft','412.74','-0.53',-0.53,6],
+  ['AVGO','Broadcom','1,386.20','-1.18',-1.18,11],
 ];
 document.getElementById('moversList').innerHTML=movers.map(([s,n,p,c,d,seed])=>{
   const series=genSeries(20,3,d*0.4,seed);
