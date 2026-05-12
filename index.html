@@ -549,6 +549,14 @@ main{padding-top:90px;position:relative;z-index:3}
 .risk-state.on{color:var(--green)}
 .risk-state.off{color:var(--red)}
 .risk-state.neutral{color:var(--amber)}
+.risk-score-row{display:flex;justify-content:center;gap:10px;align-items:baseline;margin-top:6px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;text-transform:uppercase}
+.risk-components{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.risk-component{display:grid;grid-template-columns:78px 1fr 42px;gap:8px;align-items:center;font-family:var(--mono);font-size:9px;color:var(--ink-dim);letter-spacing:0.08em;text-transform:uppercase}
+.risk-component-track{height:4px;border-radius:2px;background:rgba(255,255,255,0.06);overflow:hidden}
+.risk-component-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--green),var(--amber),var(--red))}
+.risk-explain{margin-top:14px;padding:11px;border-radius:8px;background:rgba(255,255,255,0.025);border:1px solid var(--border);font-size:12px;line-height:1.5;color:var(--ink-dim)}
+.risk-explain b{color:var(--gold);font-weight:600}
+.risk-ai-btn{margin-top:10px;width:100%;justify-content:center}
 
 /* AI feed */
 .feed-item{
@@ -1583,12 +1591,15 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
 
       <!-- Risk-On / Risk-Off -->
       <div class="panel col-4">
-        <div class="panel-head"><span class="ttl"><b>04</b> Risk Regime</span><span class="meta">Composite</span></div>
+        <div class="panel-head"><span class="ttl"><b>04</b> Risk Regime</span><span class="meta" id="riskConfidence">Heuristic · loading</span></div>
         <div class="panel-body">
           <div class="risk-bar"><div class="risk-needle" id="riskNeedle" style="left:62%"></div></div>
           <div class="risk-labels"><span>Risk-On</span><span>Neutral</span><span>Risk-Off</span></div>
-          <div class="risk-state off">RISK-OFF TILT</div>
-          <div style="font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;text-align:center;margin-top:8px">EQUITY/BOND RATIO ↓ · GOLD ↑ · DXY ↑</div>
+          <div class="risk-state neutral" id="riskRegimeLabel">CALCULATING</div>
+          <div class="risk-score-row"><span id="riskScore">-- / 100</span><span id="riskAgreement">0 of 5 signals</span></div>
+          <div class="risk-components" id="riskComponents"></div>
+          <div class="risk-explain" id="riskExplanation"><b>BriefTick read:</b> Calculating volatility, equity momentum, sector rotation and news stress.</div>
+          <button class="ai-gen-btn risk-ai-btn" onclick="generateRiskAIExplanation()" id="riskAiBtn">Generate AI explanation</button>
         </div>
       </div>
 
@@ -2642,6 +2653,7 @@ async function liveRefreshSectors(){
   });
   if(updated > 0){
     renderSectorHeatmap();
+    updateRiskRegime();
     console.log('[sectors] live data for', updated, 'of', sectors.length, 'sectors');
   }
 }
@@ -2724,6 +2736,7 @@ async function liveRefreshVix(){
       const regime = realVix < 15 ? 'CALM' : realVix < 20 ? 'NORMAL' : realVix < 25 ? 'ELEVATED' : realVix < 35 ? 'STRESSED' : 'PANIC';
       regimeEl.textContent = regime;
     }
+    updateRiskRegime();
     // Show the data freshness instead of a fake intraday %
     if(changeEl){
       // Format the date as e.g. "May 9 close" if recent
@@ -2754,8 +2767,119 @@ async function liveRefreshVix(){
       changeEl.style.color = 'var(--ink-faint)';
     }
     console.log('[vix] FRED unreachable, showing VIXY proxy:', proxyChange);
+    updateRiskRegime();
   }
 }
+
+/* Risk Regime Engine - rule-based baseline + optional AI explanation */
+const riskState = {
+  score: 52,
+  label: 'Neutral / mixed',
+  components: [],
+  explanation: '',
+  quotes: {},
+};
+
+function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+function riskComponent(name, value, detail){
+  return {name, value: clamp(value, 0, 100), detail};
+}
+function calculateRiskRegime(quotes={}){
+  const spy = quotes.SPY?.pctChange;
+  const qqq = quotes.QQQ?.pctChange;
+  const iwm = quotes.IWM?.pctChange;
+  const nvda = quotes.NVDA?.pctChange;
+  const xlk = sectors.find(s=>s[3]==='XLK')?.[2] ?? 0;
+  const xlu = sectors.find(s=>s[3]==='XLU')?.[2] ?? 0;
+  const xle = sectors.find(s=>s[3]==='XLE')?.[2] ?? 0;
+  const equityValues = [spy, qqq, iwm].filter(v=>!isNaN(v));
+  const equityAvg = equityValues.reduce((a,b)=>a+b,0) / Math.max(1,equityValues.length);
+  const volatilityScore = clamp((vixValue - 12) * 4.2, 8, 95);
+  const equityScore = clamp(50 - equityAvg * 14, 8, 92);
+  const growthInputs = [qqq, nvda, xlk].filter(v=>!isNaN(v));
+  const growthStress = growthInputs.reduce((a,b)=>a+b,0) / Math.max(1,growthInputs.length);
+  const defensiveSpread = xlu - xlk;
+  const sectorScore = clamp(48 - growthStress * 10 + defensiveSpread * 9, 8, 92);
+  const breadthInputs = [spy,qqq,iwm,nvda,xlk,xlu,xle].filter(v=>!isNaN(v));
+  const losers = breadthInputs.filter(v=>v<0).length;
+  const breadthScore = clamp((losers / Math.max(1,breadthInputs.length))*100, 10, 90);
+  const newsScore = clamp((typeof impactData !== 'undefined' ? impactData.filter(i=>i[2]==='high').length * 16 + impactData.filter(i=>i[2]==='med').length * 7 : 34), 20, 82);
+
+  const components = [
+    riskComponent('Volatility', volatilityScore, `VIX ${isNaN(vixValue)?'-':vixValue.toFixed(1)}`),
+    riskComponent('Equities', equityScore, `SPY/QQQ/IWM avg ${isNaN(equityAvg)?'n/a':(equityAvg>=0?'+':'')+equityAvg.toFixed(2)+'%'}`),
+    riskComponent('Rotation', sectorScore, `Defensives vs growth ${defensiveSpread>=0?'+':''}${defensiveSpread.toFixed(2)}%`),
+    riskComponent('Breadth', breadthScore, `${losers}/${breadthInputs.length} tracked risk assets red`),
+    riskComponent('News', newsScore, 'Impact feed severity'),
+  ];
+  const score = Math.round(components.reduce((sum,c)=>sum+c.value,0) / components.length);
+  const label = score >= 66 ? 'Risk-Off Tilt' : score <= 36 ? 'Risk-On Tilt' : 'Neutral / Mixed';
+  const signalAgreement = components.filter(c=>score >= 50 ? c.value >= 55 : c.value <= 45).length;
+  const confidence = signalAgreement >= 4 ? 'High' : signalAgreement >= 3 ? 'Medium' : 'Low';
+  const strongest = components.slice().sort((a,b)=>b.value-a.value)[0];
+  const calmest = components.slice().sort((a,b)=>a.value-b.value)[0];
+  const explanation = `<b>BriefTick read:</b> ${label}. ${strongest.name} is the strongest caution signal (${Math.round(strongest.value)}/100: ${strongest.detail}), while ${calmest.name} is the least stressed (${Math.round(calmest.value)}/100). This is a live context score, not a forecast or trading signal.`;
+  return {score, label, components, confidence, signalAgreement, explanation};
+}
+function renderRiskRegime(result){
+  const needle = document.getElementById('riskNeedle');
+  const label = document.getElementById('riskRegimeLabel');
+  const score = document.getElementById('riskScore');
+  const agreement = document.getElementById('riskAgreement');
+  const confidence = document.getElementById('riskConfidence');
+  const components = document.getElementById('riskComponents');
+  const explanation = document.getElementById('riskExplanation');
+  if(needle) needle.style.left = result.score + '%';
+  if(label){
+    label.textContent = result.label.toUpperCase();
+    label.className = 'risk-state ' + (result.score >= 66 ? 'off' : result.score <= 36 ? 'on' : 'neutral');
+  }
+  if(score) score.textContent = `${result.score} / 100`;
+  if(agreement) agreement.textContent = `${result.signalAgreement} of ${result.components.length} signals`;
+  if(confidence) confidence.textContent = `${result.confidence} confidence`;
+  if(components){
+    components.innerHTML = result.components.map(c=>`
+      <div class="risk-component" title="${escapeHtml(c.detail)}">
+        <span>${escapeHtml(c.name)}</span>
+        <div class="risk-component-track"><div class="risk-component-fill" style="width:${c.value}%"></div></div>
+        <b>${Math.round(c.value)}</b>
+      </div>`).join('');
+  }
+  if(explanation) explanation.innerHTML = result.explanation;
+}
+function updateRiskRegime(quotes={}){
+  riskState.quotes = {...riskState.quotes, ...quotes};
+  const result = calculateRiskRegime(riskState.quotes);
+  Object.assign(riskState, result);
+  renderRiskRegime(result);
+}
+async function generateRiskAIExplanation(){
+  const btn = document.getElementById('riskAiBtn');
+  const out = document.getElementById('riskExplanation');
+  if(!BriefTickAPI.keys.anthropic){
+    if(out) out.innerHTML = '<b>BriefTick AI:</b> Anthropic is not connected. Showing rules-based regime explanation.';
+    return;
+  }
+  if(btn){
+    btn.disabled = true;
+    btn.textContent = 'Generating...';
+  }
+  try{
+    const componentLines = riskState.components.map(c=>`${c.name}: ${Math.round(c.value)}/100 (${c.detail})`).join('\n');
+    const prompt = `Explain this market risk regime in plain English for investors. Educational only, no recommendations.\n\nRegime: ${riskState.label}\nScore: ${riskState.score}/100\nComponents:\n${componentLines}\n\nWrite 2 concise paragraphs: why the regime is classified this way, and what to monitor next.`;
+    const text = await BriefTickAPI._claudeCall(prompt, 420);
+    if(out && text) out.innerHTML = renderAIMarkdown(text, {accent:'var(--gold)'});
+  }catch(e){
+    if(out) out.innerHTML += '<div style="color:var(--red);margin-top:8px">AI explanation failed. Rules-based explanation remains valid.</div>';
+  }finally{
+    if(btn){
+      btn.disabled = false;
+      btn.textContent = 'Regenerate AI explanation';
+    }
+  }
+}
+window.generateRiskAIExplanation = generateRiskAIExplanation;
+updateRiskRegime();
 
 /* Watchlist */
 const WATCHLIST_STORAGE_KEY = 'brieftick_watchlist_v1';
@@ -4574,6 +4698,7 @@ async function liveRefreshDashboard(){
     console.warn('[dashboard] No live quotes returned. Check Twelve Data key.');
   } else {
     console.log('[dashboard] live quotes received for', Object.keys(quotes).length, 'symbols');
+    updateRiskRegime(quotes);
   }
 
   // Update saved watchlist rows from the same quote batch.
