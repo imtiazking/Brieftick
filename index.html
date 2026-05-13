@@ -1591,14 +1591,21 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
 
       <!-- Volatility -->
       <div class="panel col-4">
-        <div class="panel-head"><span class="ttl"><b>03</b> Volatility Monitor</span><span class="meta">VIX · <span id="vixChange">-</span></span></div>
+        <div class="panel-head">
+          <span class="ttl"><b>03</b> Volatility Monitor</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="meta" id="vixChange">-</span>
+            <button onclick="refreshVixFull()" title="Refresh VIX data" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;color:var(--ink-dim);cursor:pointer;font-family:var(--mono);font-size:9px;padding:2px 6px;letter-spacing:0.06em" id="vixRefreshBtn">↻</button>
+          </div>
+        </div>
         <div class="panel-body">
           <div class="gauge-wrap">
             <div class="gauge"><svg viewBox="0 0 200 110" id="gaugeSvg"></svg></div>
             <div class="gauge-value" id="vixValue">22.4</div>
             <div class="gauge-state" id="vixRegime">ELEVATED</div>
           </div>
-          <div id="vixExplanation" style="margin-top:14px;padding:12px 14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:12px;line-height:1.55;color:var(--ink-dim)">
+          <div id="vixIntradayStrip" style="display:none;margin-top:10px;padding:8px 10px;border-radius:6px;background:rgba(78,168,255,0.05);border:1px solid rgba(78,168,255,0.2);font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em"></div>
+          <div id="vixExplanation" style="margin-top:10px;padding:12px 14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:12px;line-height:1.55;color:var(--ink-dim)">
             <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px" id="vixExplanationLabel">BriefTick read</div>
             <div id="vixExplanationText">Loading volatility context…</div>
           </div>
@@ -2684,94 +2691,129 @@ renderVolatilityGauge();
   if(el) el.innerHTML = buildVixHeuristicExplanation(vixValue, []);
 })();
 
+// Detect whether US equity markets are currently open (ET timezone).
+// Returns true Mon–Fri between 09:30 and 16:00 ET excluding obvious edge cases.
+function isUSMarketOpen(){
+  const now = new Date();
+  // Convert to ET (UTC-4 summer / UTC-5 winter — use UTC-4 as approximate)
+  const etOffset = -4 * 60;
+  const utcMin = now.getUTCHours()*60 + now.getUTCMinutes();
+  const etMin = ((utcMin + etOffset) % 1440 + 1440) % 1440;
+  const etDay = new Date(now.getTime() + etOffset*60000).getUTCDay(); // 0=Sun,6=Sat
+  if(etDay === 0 || etDay === 6) return false; // weekend
+  return etMin >= 570 && etMin < 960; // 09:30–16:00 ET
+}
+
+let _vixIntradayInterval = null;
+let _vixFredValue = null;
+let _vixFredDate = null;
+
 // Pull live VIX and update gauge + nearby labels
 async function liveRefreshVix(){
-  // Real CBOE VIX from FRED (St. Louis Fed) - prior trading day close.
-  // CSV endpoint is public, no API key, CORS-enabled. Lagged ~1 trading day
-  // but it's the genuine CBOE VIX number, not a futures-tracking proxy.
-  let realVix = null;
-  let asOfDate = null;
+  const changeEl = document.getElementById('vixChange');
+  const btn = document.getElementById('vixRefreshBtn');
+  if(btn) btn.textContent = '…';
+
+  // Step 1: FRED official VIX (prior close)
   try {
     const fredUrl = '/api/proxy?provider=fred&series=VIXCLS';
     const resp = await fetch(fredUrl);
     if(resp.ok){
       const data = await resp.json();
       if(data && data.value != null && !isNaN(parseFloat(data.value))){
-        realVix = parseFloat(data.value);
-        asOfDate = data.date;
+        _vixFredValue = parseFloat(data.value);
+        _vixFredDate = data.date;
       }
     }
   } catch(e){ console.warn('[vix] FRED fetch failed:', e); }
 
-  // Fallback: if FRED is unreachable, use VIXY/VXX as a directional proxy
-  // (numbers won't match true VIX but the gauge will move correctly).
-  let proxyChange = null;
-  if(!realVix && BriefTickAPI.keys.twelvedata){
-    try {
-      const q = await BriefTickAPI.getQuotes(['VIXY']);
-      const v = q['VIXY'];
-      if(v && !isNaN(v.pctChange)) proxyChange = v.pctChange;
-    } catch(e) {}
-  }
-
-  if(realVix == null && proxyChange == null) {
-    const changeEl = document.getElementById('vixChange');
-    if(changeEl){
-      changeEl.textContent = 'fallback';
-      changeEl.style.color = 'var(--ink-faint)';
-    }
-    return;
-  }
-
-  // If we have FRED data, use the real number
-  if(realVix != null){
-    vixValue = realVix;
+  if(_vixFredValue != null){
+    vixValue = _vixFredValue;
     renderVolatilityGauge();
     const valueEl = document.getElementById('vixValue');
     const regimeEl = document.getElementById('vixRegime');
-    const changeEl = document.getElementById('vixChange');
-    if(valueEl) valueEl.textContent = realVix.toFixed(2);
+    if(valueEl) valueEl.textContent = _vixFredValue.toFixed(2);
     if(regimeEl){
-      const regime = realVix < 15 ? 'CALM' : realVix < 20 ? 'NORMAL' : realVix < 25 ? 'ELEVATED' : realVix < 35 ? 'STRESSED' : 'PANIC';
+      const regime = _vixFredValue < 15 ? 'CALM' : _vixFredValue < 20 ? 'NORMAL' : _vixFredValue < 25 ? 'ELEVATED' : _vixFredValue < 35 ? 'STRESSED' : 'PANIC';
       regimeEl.textContent = regime;
     }
-    updateRiskRegime();
-    // Show the data freshness instead of a fake intraday %
     if(changeEl){
-      // Format the date as e.g. "May 9 close" if recent
       try {
-        const d = new Date(asOfDate);
+        const d = new Date(_vixFredDate);
         const today = new Date(); today.setHours(0,0,0,0);
         const diffDays = Math.round((today - d) / 86400000);
-        let label;
-        if(diffDays === 0) label = "today's close";
-        else if(diffDays === 1) label = "prior close";
-        else label = d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' close';
-        changeEl.textContent = label;
+        const freshness = diffDays === 0 ? "today's close" : diffDays === 1 ? 'prior close' : d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' close';
+        changeEl.textContent = `CBOE · ${freshness}`;
         changeEl.style.color = 'var(--ink-faint)';
-      } catch(e){
-        changeEl.textContent = 'CBOE · prior close';
-        changeEl.style.color = 'var(--ink-faint)';
-      }
+      } catch(e){ changeEl.textContent = 'CBOE · prior close'; }
     }
-    console.log('[vix] real CBOE VIX from FRED:', realVix, 'as of', asOfDate);
-    // Refresh explanation now that we have a real VIX number
-    refreshVixExplanation().catch(e => console.warn('[vix explanation]', e.message));
-  } else {
-    // No FRED - show the proxy directional signal
-    const valueEl = document.getElementById('vixValue');
-    const changeEl = document.getElementById('vixChange');
-    if(valueEl) valueEl.textContent = '-';
-    if(changeEl){
-      const sign = proxyChange >= 0 ? '+' : '';
-      changeEl.textContent = `VIXY ${sign}${proxyChange.toFixed(2)}% (proxy)`;
-      changeEl.style.color = 'var(--ink-faint)';
-    }
-    console.log('[vix] FRED unreachable, showing VIXY proxy:', proxyChange);
     updateRiskRegime();
-    refreshVixExplanation().catch(e => console.warn('[vix explanation]', e.message));
+    console.log('[vix] FRED VIX:', _vixFredValue, 'as of', _vixFredDate);
+  }
+
+  // Step 2: if market is open, also fetch VIXY as intraday proxy
+  await _refreshVixIntraday();
+
+  // Step 3: refresh AI explanation
+  refreshVixExplanation().catch(e => console.warn('[vix explanation]', e.message));
+
+  if(btn) btn.textContent = '↻';
+
+  // Step 4: start auto-refresh of intraday proxy every 5 min during market hours
+  _scheduleVixIntradayAutoRefresh();
+}
+
+async function _refreshVixIntraday(){
+  const strip = document.getElementById('vixIntradayStrip');
+  if(!strip || !BriefTickAPI.keys.twelvedata) return;
+
+  if(!isUSMarketOpen()){
+    strip.style.display = 'none';
+    return;
+  }
+
+  try {
+    const q = await BriefTickAPI.getQuotes(['VIXY']);
+    const v = q['VIXY'];
+    if(!v || isNaN(v.pctChange)){ strip.style.display = 'none'; return; }
+
+    const sign = v.pctChange >= 0 ? '+' : '';
+    const dir = v.pctChange >= 1 ? '↑ Rising' : v.pctChange <= -1 ? '↓ Falling' : '→ Flat';
+    const color = v.pctChange >= 1 ? 'var(--red)' : v.pctChange <= -1 ? 'var(--green)' : 'var(--ink-dim)';
+
+    strip.style.display = 'block';
+    strip.innerHTML = `<span style="color:var(--blue)">VIXY proxy (intraday):</span>
+      <b style="color:${color};margin-left:6px">${dir} · ${sign}${v.pctChange.toFixed(2)}%</b>
+      <span style="color:var(--ink-faint);margin-left:6px">— directional indicator only, not true VIX</span>
+      <span style="float:right;color:var(--ink-faint)">${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span>`;
+
+    // If FRED value is stale (>1 day) use VIXY to update gauge direction
+    if(_vixFredValue && Math.abs(v.pctChange) > 0.5){
+      vixValue = _vixFredValue * (1 + v.pctChange / 100);
+      renderVolatilityGauge();
+    }
+    console.log('[vix] VIXY intraday proxy:', sign+v.pctChange.toFixed(2)+'%');
+  } catch(e){
+    console.warn('[vix] VIXY intraday fetch failed:', e.message);
+    strip.style.display = 'none';
   }
 }
+
+function _scheduleVixIntradayAutoRefresh(){
+  if(_vixIntradayInterval) clearInterval(_vixIntradayInterval);
+  _vixIntradayInterval = setInterval(async()=>{
+    if(!isUSMarketOpen()){ clearInterval(_vixIntradayInterval); return; }
+    await _refreshVixIntraday();
+  }, 5 * 60_000); // every 5 minutes during market hours
+}
+
+async function refreshVixFull(){
+  const btn = document.getElementById('vixRefreshBtn');
+  if(btn){ btn.disabled = true; btn.textContent = '…'; }
+  await liveRefreshVix();
+  if(btn){ btn.disabled = false; btn.textContent = '↻'; }
+}
+window.refreshVixFull = refreshVixFull;
 
 /* ============================================================
    VOLATILITY MONITOR EXPLANATION
