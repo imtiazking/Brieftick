@@ -1630,7 +1630,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
 
       <!-- AI Sentiment Feed -->
       <div class="panel col-4">
-        <div class="panel-head"><span class="ttl"><b>06</b> AI Sentiment Feed</span><span class="meta">↻ Live</span></div>
+        <div class="panel-head"><span class="ttl"><b>06</b> AI Sentiment Feed</span><span class="meta" id="sentimentMeta">Loading…</span></div>
         <div class="panel-body" id="sentimentFeed"></div>
       </div>
 
@@ -3044,22 +3044,112 @@ window.removeWatchlistSymbol = removeWatchlistSymbol;
 window.resetWatchlist = resetWatchlist;
 window.openWhyFromWatchlist = openWhyFromWatchlist;
 
-/* AI Sentiment Feed */
-const sentiment=[
-  ['NOW','<b>AI infrastructure sentiment</b> rolling over after hyperscaler capex chatter. Confidence 87%.',['tech','bearish']],
-  ['12m','<b>Energy</b> sentiment turning constructive on softer USD impulse and OPEC supply chatter.',['energy','bullish']],
-  ['38m','<b>Banks</b> mildly bid as 10Y yields climb back above 4.42%; NIM narrative resurfaces.',['macro','bullish']],
-  ['1h','<b>Consumer discretionary</b> drift lower on European EV registrations data - early read.',['tech','bearish']],
-  ['2h','Cross-asset <b>equity-bond correlation</b> turning positive again. Diversification weakening.',['macro','neutral']],
-];
-document.getElementById('sentimentFeed').innerHTML=sentiment.map(([t,txt,tags])=>
-  `<div class="feed-item">
-    <div class="feed-time">${t}</div>
-    <div class="feed-content">
-      <div class="lead">${txt}</div>
-      <div class="tags">${tags.map(tag=>`<span class="tag ${tag}">${tag}</span>`).join('')}</div>
-    </div>
-  </div>`).join('');
+/* ============================================================
+   AI SENTIMENT FEED
+   Live engine: pulls Finnhub market news, scores each item with
+   heuristic tags instantly, then enriches up to 4 items with
+   AI (Claude) interpretation if the Anthropic key is available.
+   Refreshes every 5 minutes. Falls back gracefully.
+============================================================ */
+let _sentimentLastFetch = 0;
+const SENTIMENT_REFRESH_MS = 5 * 60_000; // 5 minutes
+
+function renderSentimentFeed(items){
+  const el = document.getElementById('sentimentFeed');
+  if(!el) return;
+  if(!items || !items.length){
+    el.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Waiting for live headlines…</div>';
+    return;
+  }
+  el.innerHTML = items.map(({ago, text, tags, sentiment, summary, tickers, isAI})=>{
+    const sentTag = sentiment === 'bullish' ? 'bullish' : sentiment === 'bearish' ? 'bearish' : 'neutral';
+    const allTags = [...new Set([...tags, sentTag])].slice(0,3);
+    const aiLabel = isAI
+      ? `<span style="font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(212,168,90,0.3);padding:1px 5px;border-radius:3px;margin-left:6px">AI</span>`
+      : '';
+    const tickerBadges = tickers && tickers.length
+      ? `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">${tickers.slice(0,4).map(t=>`<span style="font-family:var(--mono);font-size:9px;color:var(--blue);background:rgba(78,168,255,0.06);border:1px solid rgba(78,168,255,0.2);padding:1px 5px;border-radius:3px">${escapeHtml(t)}</span>`).join('')}</div>`
+      : '';
+    const body = summary ? escapeHtml(summary) : escapeHtml(text);
+    return `<div class="feed-item">
+      <div class="feed-time">${ago}</div>
+      <div class="feed-content">
+        <div class="lead">${body}${aiLabel}</div>
+        ${tickerBadges}
+        <div class="tags">${allTags.map(tag=>`<span class="tag ${tag}">${tag}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Paint a skeleton while we wait for live data
+(function initSentimentFeed(){
+  const el = document.getElementById('sentimentFeed');
+  if(el) el.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Loading live sentiment…</div>';
+})();
+
+async function liveRefreshSentimentFeed(force=false){
+  const now = Date.now();
+  if(!force && now - _sentimentLastFetch < SENTIMENT_REFRESH_MS) return;
+  _sentimentLastFetch = now;
+
+  if(!BriefTickAPI.keys.finnhub) return;
+
+  let headlines;
+  try {
+    headlines = await BriefTickAPI.getMarketNews('general');
+    if(!headlines || headlines.length === 0) return;
+  } catch(e){
+    console.warn('[sentiment] Finnhub fetch failed:', e.message);
+    return;
+  }
+
+  // Step 1: heuristic-score every headline instantly so the panel fills
+  const scored = headlines.slice(0, 8).map(n => {
+    const ago = formatNewsAgo(n.datetime);
+    const tags = inferNewsTags((n.headline||'') + ' ' + (n.summary||''));
+    const sentTag = tags.includes('bullish') ? 'bullish' : tags.includes('bearish') ? 'bearish' : 'neutral';
+    return {
+      ago, text: n.headline||'', tags,
+      sentiment: sentTag, summary: null, tickers: [], isAI: false,
+      headline: n.headline||'', headlineSummary: n.summary||''
+    };
+  });
+  renderSentimentFeed(scored);
+
+  // Step 2: if Anthropic is available, enrich the top 4 with AI
+  if(!BriefTickAPI.keys.anthropic) return;
+  const toEnrich = scored.slice(0, 4);
+  let enriched = false;
+  for(let i = 0; i < toEnrich.length; i++){
+    const item = toEnrich[i];
+    try {
+      const ai = await BriefTickAPI.aiNewsInterpret(item.headline, item.headlineSummary);
+      if(ai){
+        const sentTag = ai.sentiment === 'bullish' ? 'bullish' : ai.sentiment === 'bearish' ? 'bearish' : 'neutral';
+        const sector = (ai.sectors||[]).slice(0,1).map(s=>s.toLowerCase().replace(/\s+/g,'-'));
+        scored[i] = {
+          ...item,
+          sentiment: sentTag,
+          summary: ai.summary || null,
+          tickers: ai.tickers || [],
+          tags: [...new Set([...sector, sentTag])].slice(0,3),
+          isAI: true
+        };
+        enriched = true;
+      }
+    } catch(e){ /* silent – keep heuristic for this item */ }
+  }
+  if(enriched) renderSentimentFeed(scored);
+
+  // Update panel header meta text to reflect real data
+  const panelMeta = document.getElementById('sentimentMeta');
+  if(panelMeta) panelMeta.textContent = '↻ ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+  console.log('[sentiment] live feed refreshed:', scored.length, 'items,', toEnrich.filter((_,i)=>scored[i].isAI).length, 'AI-enriched');
+}
+
+window.liveRefreshSentimentFeed = liveRefreshSentimentFeed;
 
 /* ============================================================
    EARNINGS INTELLIGENCE
@@ -4829,6 +4919,9 @@ async function liveRefreshDashboard(){
     await liveRefreshNews();
   } catch(e) { console.warn('[News data]', e.message); }
 
+  // Live AI Sentiment Feed (Finnhub + optional Anthropic enrichment)
+  liveRefreshSentimentFeed(true).catch(e => console.warn('[Sentiment]', e.message));
+
   // Add a small "LIVE DATA" indicator
   const indicator = document.createElement('div');
   indicator.style.cssText = 'position:fixed;bottom:14px;right:14px;z-index:200;padding:8px 14px;background:rgba(61,220,151,0.1);border:1px solid rgba(61,220,151,0.3);border-radius:8px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.12em;text-transform:uppercase;backdrop-filter:blur(12px);display:flex;align-items:center;gap:8px';
@@ -4839,6 +4932,9 @@ async function liveRefreshDashboard(){
 
 /* Run as soon as DOM is ready, no delay. Mock values are placeholders only. */
 window.addEventListener('load', liveRefreshDashboard);
+
+// Refresh AI sentiment feed every 5 minutes
+setInterval(()=>liveRefreshSentimentFeed(false), SENTIMENT_REFRESH_MS);
 
 /* Social Signals - politically neutral, market-impact only.
    Sample posts illustrate the categories of accounts the engine monitors
