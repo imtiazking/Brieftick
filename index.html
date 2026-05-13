@@ -1634,11 +1634,11 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
         <div class="panel-body" id="sentimentFeed"></div>
       </div>
 
-      <!-- Social Signals -->
+      <!-- High-Signal Alerts -->
       <div class="panel col-12">
         <div class="panel-head">
-          <span class="ttl"><b>S1</b> Market Signal Feed · Statements &amp; News</span>
-          <span class="meta" id="socialSignalsMeta">Loading live signals…</span>
+          <span class="ttl"><b>S1</b> High-Signal Alerts · Central Bank · Macro · Regulatory</span>
+          <span class="meta" id="socialSignalsMeta">Loading…</span>
         </div>
         <div class="panel-body" id="socialSignals"></div>
       </div>
@@ -2194,36 +2194,20 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
     <div class="dash-header" style="margin-bottom:20px">
       <div class="dash-title">
         <h2>Market Impact Feed</h2>
-        <div class="meta">EVENT INGESTION · CHAIN-REACTION MAPPING · 642 EVENTS TODAY</div>
+        <div class="meta" id="impactMeta">EVENT INGESTION · SEVERITY SCORING · CHAIN-REACTION MAPPING</div>
       </div>
       <div class="dash-controls">
-        <div class="live-badge">Live · Streaming</div>
+        <div class="live-badge" id="impactLiveBadge">Live · Finnhub</div>
       </div>
     </div>
 
     <div class="impact-filters">
-      <button class="chip active">All events</button>
-      <button class="chip">Federal Reserve</button>
-      <button class="chip">Macro data</button>
-      <button class="chip">Geopolitical</button>
-      <button class="chip">Earnings</button>
-      <button class="chip">Energy / OPEC</button>
-      <button class="chip">Regulatory</button>
-      <button class="chip">Sentiment shifts</button>
-      <button class="chip">Social signals</button>
-    </div>
-
-    <div class="social-section">
-      <div class="social-section-head">
-        <div>
-          <h3>Market Signal Feed</h3>
-          <div class="social-section-desc" style="margin-top:8px">Live market-moving statements, central bank communications, regulatory news and high-impact headlines — sourced from Finnhub and enriched with AI. Analysed only for measurable market effect. <b style="color:var(--gold)">No editorial stance.</b></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-          <div class="live-badge" id="socialFeaturedBadge">Loading…</div>
-        </div>
-      </div>
-      <div id="socialSignalsFeatured"></div>
+      <button class="chip active" data-impact-filter="all">All events</button>
+      <button class="chip" data-impact-filter="centralbank">Central Bank</button>
+      <button class="chip" data-impact-filter="macro">Macro data</button>
+      <button class="chip" data-impact-filter="geopolitical">Geopolitical</button>
+      <button class="chip" data-impact-filter="earnings">Earnings</button>
+      <button class="chip" data-impact-filter="regulatory">Regulatory</button>
     </div>
 
     <div class="impact-list" id="impactList"></div>
@@ -5007,22 +4991,25 @@ function _renderSignalItem(s, compact=false){
   </div>`;
 }
 
-// Current live signal list (shared between dashboard + impact page)
-let _liveSignals = [];
+// Current live signal lists
+let _liveSignals = [];       // all classified signals — used for full Intelligence page
+let _liveHighSignals = [];   // high-priority only (CB/macro/regulatory/geo) — used for dashboard
 
 function renderSocialSignals(targetId, limit){
   const el = document.getElementById(targetId);
   if(!el) return;
-  const items = _liveSignals.slice(0, limit);
+  // Dashboard compact panel uses high-signal subset; featured full page uses all
+  const source = targetId === 'socialSignals' ? _liveHighSignals : _liveSignals;
+  const items = source.slice(0, limit);
   if(!items.length){
-    el.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Loading live market signals…</div>';
+    el.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Loading live signals…</div>';
     return;
   }
   el.innerHTML = items.map(s=>_renderSignalItem(s, targetId==='socialSignals')).join('');
 }
 
 function renderSocialFeatured(){
-  renderSocialSignals('socialSignalsFeatured', _liveSignals.length || 6);
+  renderSocialSignals('socialSignalsFeatured', Math.max(_liveSignals.length, 6));
 }
 
 // Heuristic market-read based on classification + sentiment
@@ -5060,32 +5047,28 @@ async function liveRefreshSignalFeed(force=false){
       .filter(n => n && n.headline)
       .sort((a,b) => (b.datetime||0)-(a.datetime||0));
 
-    // Classify each headline; keep ones that are signal-worthy
-    const candidates = allNews
-      .map(n => {
-        const fullText = (n.headline||'') + ' ' + (n.summary||'');
-        const classification = _classifySignal(fullText);
-        return { n, classification, fullText };
-      })
-      .filter(({classification}) => classification.type !== 'market')  // filter generic market noise
-      .slice(0, 10);
+    // Classify each headline.
+    // Dashboard only shows the highest-signal categories (central bank, macro, regulatory, geopolitical).
+    // Intelligence page full feed shows all classified + general items.
+    const HIGH_SIGNAL_TYPES = new Set(['centralbank','macro','regulatory','geopolitical']);
+    const allClassified = allNews.map(n => {
+      const fullText = (n.headline||'') + ' ' + (n.summary||'');
+      const classification = _classifySignal(fullText);
+      return { n, classification, fullText };
+    });
 
-    // Add top generic items if we don't have enough signal items
-    if(candidates.length < 4){
-      allNews.slice(0,12).forEach(n=>{
-        if(candidates.length >= 6) return;
-        const fullText = (n.headline||'') + ' ' + (n.summary||'');
-        const classification = _classifySignal(fullText);
-        if(!candidates.find(c=>c.n.headline===n.headline)){
-          candidates.push({n, classification, fullText});
-        }
-      });
-    }
+    // Dashboard: strictly high-signal only
+    const highSignalItems = allClassified.filter(({classification}) => HIGH_SIGNAL_TYPES.has(classification.type)).slice(0, 6);
+    // Full feed (Intelligence page): all classified signals + top general news to fill gaps
+    const allSignalItems = allClassified.filter(({classification}) => classification.type !== 'market').slice(0, 10);
+    const candidates = allSignalItems.length >= 4 ? allSignalItems : allClassified.slice(0, 8);
+    const dashboardCandidates = highSignalItems.length >= 2 ? highSignalItems : candidates;
 
     if(!candidates.length){ if(meta) meta.textContent = 'No signals'; return; }
 
     // Step 1: heuristic-score everything immediately
-    const heuristicSignals = candidates.slice(0,6).map(({n, classification, fullText})=>{
+    // Dashboard uses dashboardCandidates (high-signal only), full feed uses all candidates
+    const heuristicSignals = candidates.slice(0,8).map(({n, classification, fullText})=>{
       const tags = inferNewsTags(fullText);
       const sentiment = tags.includes('bullish')?'bullish':tags.includes('bearish')?'bearish':'neutral';
       const tickers = [];
@@ -5106,6 +5089,8 @@ async function liveRefreshSignalFeed(force=false){
     });
 
     _liveSignals = heuristicSignals;
+    // Dashboard shows only high-signal items (centralbank/macro/regulatory/geopolitical)
+    _liveHighSignals = heuristicSignals.filter(s => HIGH_SIGNAL_TYPES.has(s.source.type));
     renderSocialSignals('socialSignals', 3);
     renderSocialFeatured();
     if(meta) meta.textContent = 'Live · Finnhub · loading AI…';
@@ -5133,6 +5118,7 @@ async function liveRefreshSignalFeed(force=false){
         } catch(e){ /* keep heuristic */ }
       }
       if(enriched){
+        _liveHighSignals = _liveSignals.filter(s => HIGH_SIGNAL_TYPES.has(s.source.type));
         renderSocialSignals('socialSignals', 3);
         renderSocialFeatured();
         if(meta) meta.textContent = `Live · AI · ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
@@ -6447,14 +6433,20 @@ const impactData=[
 window._briefTickImpactData = impactData;
 function renderImpactFeed(items){
   window._briefTickImpactData = items;
-  document.getElementById('impactList').innerHTML=items.map(([t,ago,sev,score,_,title,body,affects,url])=>{
+  const el = document.getElementById('impactList');
+  if(!el) return;
+  if(!items || !items.length){
+    el.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:16px 0">No events match the current filter.</div>';
+    return;
+  }
+  el.innerHTML=items.map(([t,ago,sev,score,_,title,body,affects,url])=>{
     const clickable = url ? ` data-url="${url}" style="cursor:pointer"` : '';
     return `<div class="impact-card"${clickable}>
       <div class="impact-time">${t}<span class="ago">${ago}</span></div>
       <div class="impact-content">
         <div class="head"><h3>${title}</h3></div>
         <div class="body-text">${body}</div>
-        <div class="impact-affects">${affects.map(([s,d])=>`<span class="affect ${d}">${s}${d==='up'?' ↑':d==='dn'?' ↓':' ⏤'}</span>`).join('')}</div>
+        <div class="impact-affects">${(affects||[]).map(([s,d])=>`<span class="affect ${d}">${s}${d==='up'?' ↑':d==='dn'?' ↓':' ⏤'}</span>`).join('')}</div>
       </div>
       <div class="impact-severity ${sev}">${score}<div class="sev">SEV</div>
       </div>
@@ -6489,12 +6481,38 @@ function inferImpactSeverity(headline, summary){
   return [sev, score.toFixed(1)];
 }
 
+// Store current impact items for client-side filtering
+let _impactItems = [];
+let _impactFilter = 'all';
+
+function _applyImpactFilter(){
+  const badge = document.getElementById('impactLiveBadge');
+  const filtered = _impactFilter === 'all'
+    ? _impactItems
+    : _impactItems.filter(item => item[9] === _impactFilter); // item[9] = signalType
+  renderImpactFeed(filtered);
+  if(badge) badge.textContent = _impactFilter === 'all'
+    ? `Live · ${_impactItems.length} events`
+    : `${_impactFilter} · ${filtered.length} of ${_impactItems.length}`;
+}
+
+// Wire filter chips
+document.querySelectorAll('[data-impact-filter]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-impact-filter]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    _impactFilter = btn.dataset.impactFilter;
+    _applyImpactFilter();
+  });
+});
+
 async function liveRefreshImpactFeed(){
   if(!BriefTickAPI.keys.finnhub) return;
   try {
     const headlines = await BriefTickAPI.getMarketNews('general');
     if(!headlines || headlines.length === 0) return;
-    const items = headlines.slice(0, 7).map(n => {
+
+    const items = headlines.slice(0, 12).map(n => {
       const time = (() => {
         if(!n.datetime) return '-';
         try { return new Date(n.datetime*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
@@ -6504,13 +6522,27 @@ async function liveRefreshImpactFeed(){
       const [sev, score] = inferImpactSeverity(n.headline||'', n.summary||'');
       const title = (n.source ? n.source+' · ' : '') + (n.headline||'');
       const body = n.summary || 'Click to read full article from ' + (n.source || 'source') + '.';
-      // Without AI we don't know affected tickers - leave empty.
-      // The "✦ Interpret with AI" button (next step) will populate these.
-      const affects = [];
-      return [time, ago, sev, score, 'SEV', escapeHtml(title), escapeHtml(body), affects, n.url];
+      const fullText = (n.headline||'') + ' ' + (n.summary||'');
+      const signalClass = _classifySignal(fullText);
+      const signalType = signalClass.type; // used for filter
+
+      // Tag chips on each card
+      const tagChip = signalType !== 'market'
+        ? `<span style="font-family:var(--mono);font-size:8px;color:${signalClass.color};border:1px solid ${signalClass.color}33;padding:1px 5px;border-radius:3px;margin-left:6px">${signalClass.label}</span>`
+        : '';
+
+      return [time, ago, sev, score, 'SEV',
+        escapeHtml(title) + tagChip,
+        escapeHtml(body), [], n.url, signalType];
     });
-    renderImpactFeed(items);
-    console.log('[impact] live headlines from Finnhub:', items.length);
+
+    _impactItems = items;
+    _applyImpactFilter();
+
+    const meta = document.getElementById('impactMeta');
+    if(meta) meta.textContent = `EVENT INGESTION · SEVERITY SCORING · ${items.length} EVENTS · LIVE FINNHUB`;
+
+    console.log('[impact] live feed updated:', items.length, 'events');
   } catch(e){
     console.warn('[impact] live refresh failed:', e);
   }
