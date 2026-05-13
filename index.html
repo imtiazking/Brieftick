@@ -1645,30 +1645,24 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
 
       <!-- Macro Events -->
       <div class="panel col-6">
-        <div class="panel-head"><span class="ttl"><b>07</b> Macro Event Tracker · Next 7 days</span><span class="meta">UTC</span></div>
+        <div class="panel-head"><span class="ttl"><b>07</b> Macro Event Tracker · Next 7 days</span><span class="meta" id="macroEventsMeta">UTC</span></div>
         <div class="panel-body" id="macroEvents"></div>
       </div>
 
       <!-- AI summary -->
       <div class="panel col-6">
-        <div class="panel-head"><span class="ttl"><b>08</b> BriefTick AI · Session Summary</span><span class="meta">Generated 90s ago</span></div>
-        <div class="panel-body" style="padding:20px 18px">
-          <div style="font-size:14px;line-height:1.6;color:var(--ink)">
-            US equities are drifting <b style="color:var(--red)">lower into the close</b> as <b style="color:var(--gold-bright)">10-year yields</b> push back above 4.42%, pressuring growth and AI-infrastructure exposure. <b style="color:var(--gold-bright)">NVDA</b> leads weakness with reaction-chain pressure spreading to <b style="color:var(--gold-bright)">AMD, AVGO and MU</b>. Defensive rotation visible in Utilities and Healthcare. <b style="color:var(--gold-bright)">Energy</b> bid on a softer USD and OPEC supply chatter. Overall regime is best characterised as <b style="color:var(--gold-bright)">cautious risk-off</b> - not a panic, but positioning is quietly de-grossing into Friday.
-          </div>
-          <div style="margin-top:18px;display:flex;gap:6px;flex-wrap:wrap">
-            <span class="tag macro">Yields ↑</span>
-            <span class="tag tech">AI infra weakness</span>
-            <span class="tag energy">Crude bid</span>
-            <span class="tag bearish">Risk-off</span>
-            <span class="tag neutral">Low volume</span>
-          </div>
+        <div class="panel-head">
+          <span class="ttl"><b>08</b> BriefTick AI · Session Summary</span>
+          <span class="meta" id="sessionSummaryMeta">Loading…</span>
+        </div>
+        <div class="panel-body" style="padding:20px 18px" id="sessionSummaryBody">
+          <div style="font-size:12px;color:var(--ink-faint)">Generating live market summary…</div>
         </div>
       </div>
 
       <!-- Correlation matrix -->
       <div class="panel col-6">
-        <div class="panel-head"><span class="ttl"><b>09</b> Correlation Engine · 30D</span><span class="meta">Pearson ρ</span></div>
+        <div class="panel-head"><span class="ttl"><b>09</b> Correlation Engine · 30D</span><span class="meta" id="corrMeta">Calculating…</span></div>
         <div class="panel-body" id="corrMatrix"></div>
       </div>
 
@@ -4922,6 +4916,13 @@ async function liveRefreshDashboard(){
   // Live AI Sentiment Feed (Finnhub + optional Anthropic enrichment)
   liveRefreshSentimentFeed(true).catch(e => console.warn('[Sentiment]', e.message));
 
+  // Live Correlation Engine (Twelve Data 30D closes → Pearson r)
+  // Delayed so it doesn't compete for the first Twelve Data rate-limit window
+  setTimeout(()=>liveRefreshCorrelation().catch(e=>console.warn('[Corr]',e.message)), 90_000);
+
+  // Session Summary — AI-generated from live quotes + news (Anthropic)
+  liveRefreshSessionSummary().catch(e=>console.warn('[Session summary]',e.message));
+
   // Add a small "LIVE DATA" indicator
   const indicator = document.createElement('div');
   indicator.style.cssText = 'position:fixed;bottom:14px;right:14px;z-index:200;padding:8px 14px;background:rgba(61,220,151,0.1);border:1px solid rgba(61,220,151,0.3);border-radius:8px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.12em;text-transform:uppercase;backdrop-filter:blur(12px);display:flex;align-items:center;gap:8px';
@@ -5053,27 +5054,107 @@ function renderSocialFeatured(){
 renderSocialFeatured();
 
 /* Macro events */
-const macroEvts=[
-  ['MON 14:00','high','OPEC+ Ministerial Meeting','Statement on supply quotas; energy and inflation read-across'],
-  ['TUE 13:30','high','US CPI · April','Headline + core; dominant single risk this week'],
-  ['WED 19:00','med','FOMC Minutes','March meeting minutes; tone on cuts'],
-  ['THU 13:30','high','Retail Sales · April','Consumer health pulse; discretionary read-across'],
-  ['THU 22:00','med','WMT Earnings','Consumer health proxy; staples + discretionary'],
-  ['FRI 15:00','low','UoM Consumer Sentiment','Inflation expectations subset closely watched'],
-];
-document.getElementById('macroEvents').innerHTML=macroEvts.map(([w,imp,ev,det])=>
-  `<div class="macro-event">
-    <div class="macro-when">${w}</div>
-    <div class="macro-content">
-      <div class="ev">${ev}</div>
-      <div class="det">${det}</div>
-    </div>
-    <div class="macro-impact ${imp}">${imp} impact</div>
-  </div>`).join('');
+/* ============================================================
+   MACRO EVENT TRACKER
+   Live: Finnhub economic calendar for the next 7 days.
+   Falls back to a date-aware heuristic calendar built from
+   recurring monthly/weekly US economic releases.
+============================================================ */
+function _macroFallbackEvents(){
+  // Build a date-aware list of recurring events for the next 7 days.
+  // Scheduled release days are heuristic (first/second/third week patterns).
+  const now = new Date();
+  const dow = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const items = [];
+  for(let i = 0; i < 7; i++){
+    const d = new Date(now);
+    d.setDate(d.getDate() + i);
+    const day = dow[d.getDay()];
+    const label = i===0 ? 'Today' : i===1 ? 'Tomorrow' : `${day} ${d.getDate()} ${mon[d.getMonth()]}`;
+    // Emit recurring events on their standard weekday
+    if(d.getDay() === 2){ // Tuesday
+      items.push({when:label+' 13:30', imp:'high', ev:'Retail Sales / CPI data window', det:'Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.'});
+    }
+    if(d.getDay() === 3){ // Wednesday
+      items.push({when:label+' 19:00', imp:'med', ev:'Fed communications window', det:'FOMC minutes, Fed speaker appearances, or policy signals often fall mid-week.'});
+    }
+    if(d.getDay() === 4){ // Thursday
+      items.push({when:label+' 13:30', imp:'med', ev:'Jobless Claims · Weekly', det:'Initial + continuing claims; read-through to labor market health.'});
+    }
+    if(d.getDay() === 5){ // Friday
+      items.push({when:label+' 13:30', imp:'high', ev:'NFP / Employment window', det:'Nonfarm payrolls on first Friday of month; strong market-moving potential.'});
+    }
+  }
+  if(items.length === 0){
+    items.push({when:'This week', imp:'low', ev:'Quiet macro calendar', det:'No major scheduled releases in the next 7 days. Earnings season may dominate.'});
+  }
+  return items;
+}
 
-/* Correlation matrix */
-const corrSyms=['NVDA','AMD','AVGO','MSFT','META','SPY'];
-const corrM=[
+function renderMacroEvents(items){
+  const el = document.getElementById('macroEvents');
+  if(!el) return;
+  el.innerHTML = items.map(({when,imp,ev,det})=>
+    `<div class="macro-event">
+      <div class="macro-when">${escapeHtml(when)}</div>
+      <div class="macro-content">
+        <div class="ev">${escapeHtml(ev)}</div>
+        <div class="det">${escapeHtml(det)}</div>
+      </div>
+      <div class="macro-impact ${imp}">${imp} impact</div>
+    </div>`).join('');
+}
+
+async function liveRefreshMacroEvents(){
+  // Show heuristic fallback immediately
+  renderMacroEvents(_macroFallbackEvents());
+  const meta = document.getElementById('macroEventsMeta');
+  if(meta) meta.textContent = 'Heuristic · loading';
+
+  if(!BriefTickAPI.keys.finnhub) return;
+
+  try {
+    const today = new Date();
+    const end = new Date(today.getTime() + 7*86400000);
+    const fmt = d => d.toISOString().slice(0,10);
+    const url = `/api/proxy?provider=finnhub&endpoint=calendar/economic&from=${fmt(today)}&to=${fmt(end)}`;
+    const r = await fetch(url);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data = await r.json();
+    const events = (data.economicCalendar || data.events || []);
+    if(!events.length){ if(meta) meta.textContent = 'Heuristic'; return; }
+
+    const impMap = {1:'low',2:'med',3:'high'};
+    const items = events.slice(0,8).map(e=>{
+      const d = new Date(e.time || e.date);
+      const day = isNaN(d) ? (e.date||'') : d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+      const time = isNaN(d) ? '' : ' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      const imp = impMap[e.impact] || 'low';
+      return {when: day+time, imp, ev: e.event||e.name||'Economic release', det: e.unit||e.country||''};
+    });
+
+    renderMacroEvents(items);
+    if(meta) meta.textContent = 'Live · Finnhub';
+  } catch(e){
+    console.warn('[macro] Finnhub economic calendar failed:', e.message);
+    if(meta) meta.textContent = 'Heuristic';
+  }
+}
+
+window.liveRefreshMacroEvents = liveRefreshMacroEvents;
+liveRefreshMacroEvents();
+
+/* ============================================================
+   CORRELATION ENGINE · 30D
+   Live: fetches 30 days of daily closes for each symbol via
+   Twelve Data getTimeSeries, then computes Pearson r between
+   every pair. Falls back to a static snapshot if API fails.
+============================================================ */
+const CORR_SYMS = ['NVDA','AMD','AVGO','MSFT','META','SPY'];
+
+// Static fallback snapshot (used until live data arrives)
+const CORR_FALLBACK = [
   [1.00,0.86,0.78,0.62,0.58,0.71],
   [0.86,1.00,0.74,0.54,0.51,0.66],
   [0.78,0.74,1.00,0.51,0.49,0.61],
@@ -5081,6 +5162,19 @@ const corrM=[
   [0.58,0.51,0.49,0.68,1.00,0.74],
   [0.71,0.66,0.61,0.78,0.74,1.00],
 ];
+
+function pearsonR(a, b){
+  const n = Math.min(a.length, b.length);
+  if(n < 2) return 0;
+  let sumA=0,sumB=0,sumA2=0,sumB2=0,sumAB=0;
+  for(let i=0;i<n;i++){
+    sumA+=a[i]; sumB+=b[i]; sumA2+=a[i]*a[i]; sumB2+=b[i]*b[i]; sumAB+=a[i]*b[i];
+  }
+  const num = n*sumAB - sumA*sumB;
+  const den = Math.sqrt((n*sumA2-sumA*sumA)*(n*sumB2-sumB*sumB));
+  return den===0 ? 0 : Math.max(-1, Math.min(1, num/den));
+}
+
 function corrColor(v){
   if(v>=0.8) return 'rgba(255,91,110,0.55)';
   if(v>=0.65) return 'rgba(255,91,110,0.32)';
@@ -5088,17 +5182,73 @@ function corrColor(v){
   if(v>=0.3) return 'rgba(78,168,255,0.25)';
   return 'rgba(78,168,255,0.12)';
 }
-let corrHTML='<div class="corr-grid">';
-corrHTML+='<div class="corr-cell label"></div>'+corrSyms.map(s=>`<div class="corr-cell label">${s}</div>`).join('');
-corrM.forEach((row,i)=>{
-  corrHTML+=`<div class="corr-cell label">${corrSyms[i]}</div>`;
-  row.forEach(v=>{
-    corrHTML+=`<div class="corr-cell" style="background:${corrColor(v)}">${v.toFixed(2)}</div>`;
+
+function renderCorrMatrix(matrix, syms, note){
+  let html='<div class="corr-grid">';
+  html+='<div class="corr-cell label"></div>'+syms.map(s=>`<div class="corr-cell label">${s}</div>`).join('');
+  matrix.forEach((row,i)=>{
+    html+=`<div class="corr-cell label">${syms[i]}</div>`;
+    row.forEach(v=>{
+      html+=`<div class="corr-cell" style="background:${corrColor(v)}">${v.toFixed(2)}</div>`;
+    });
   });
-});
-corrHTML+='</div>';
-corrHTML+='<div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;margin-top:14px;line-height:1.6">Pearson 30-day rolling. Correlation among AI infra names <b style="color:var(--red)">elevated</b> - suggesting reduced effective diversification.</div>';
-document.getElementById('corrMatrix').innerHTML=corrHTML;
+  html+='</div>';
+  html+=`<div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;margin-top:14px;line-height:1.6">${note}</div>`;
+  const el = document.getElementById('corrMatrix');
+  if(el) el.innerHTML = html;
+}
+
+// Paint static fallback instantly
+renderCorrMatrix(CORR_FALLBACK, CORR_SYMS, 'Pearson 30-day rolling (static snapshot). Live calculation loading…');
+
+async function liveRefreshCorrelation(){
+  const meta = document.getElementById('corrMeta');
+  if(!BriefTickAPI.keys.twelvedata){ if(meta) meta.textContent = 'Static snapshot'; return; }
+  try {
+    if(meta) meta.textContent = 'Fetching…';
+    // Fetch 30d daily closes for all symbols sequentially to avoid rate limits
+    const series = {};
+    for(const sym of CORR_SYMS){
+      try {
+        const s = await BriefTickAPI.getTimeSeries(sym, '1day', 30);
+        if(s && s.length >= 10) series[sym] = s;
+      } catch(e){ /* keep existing */ }
+    }
+    const available = CORR_SYMS.filter(s => series[s]);
+    if(available.length < 2){ if(meta) meta.textContent = 'Insufficient data'; return; }
+
+    // Compute returns (daily % changes) for Pearson
+    const returns = {};
+    for(const sym of available){
+      const prices = series[sym];
+      returns[sym] = prices.slice(1).map((p,i) => prices[i] > 0 ? (p - prices[i]) / prices[i] : 0);
+    }
+
+    // Build matrix (for symbols with data; fill static fallback for missing)
+    const matrix = CORR_SYMS.map((a,i) =>
+      CORR_SYMS.map((b,j) => {
+        if(i===j) return 1.00;
+        if(returns[a] && returns[b]) return parseFloat(pearsonR(returns[a], returns[b]).toFixed(2));
+        return CORR_FALLBACK[i][j]; // fallback for any missing symbol
+      })
+    );
+
+    // Describe the highest correlation pair
+    let maxPair='', maxV=0;
+    for(let i=0;i<CORR_SYMS.length;i++) for(let j=i+1;j<CORR_SYMS.length;j++){
+      if(matrix[i][j]>maxV){ maxV=matrix[i][j]; maxPair=`${CORR_SYMS[i]}/${CORR_SYMS[j]}`; }
+    }
+    const regime = maxV>0.85 ? `<b style="color:var(--red)">very elevated</b>` : maxV>0.7 ? `<b style="color:var(--amber)">elevated</b>` : `<b style="color:var(--green)">moderate</b>`;
+    const note = `Pearson 30D · live closes · ${available.length}/${CORR_SYMS.length} symbols. Highest pair: ${maxPair} at ${maxV.toFixed(2)} — ${regime} co-movement.`;
+    renderCorrMatrix(matrix, CORR_SYMS, note);
+    if(meta) meta.textContent = `Live · ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
+    console.log('[corr] live correlation matrix computed for', available.length, 'symbols');
+  } catch(e){
+    console.warn('[corr] live refresh failed:', e.message);
+    if(meta) meta.textContent = 'Static snapshot';
+  }
+}
+window.liveRefreshCorrelation = liveRefreshCorrelation;
 
 /* News intelligence */
 /* News feed - initial mock paint, then live Finnhub data overrides */
@@ -5141,6 +5291,80 @@ async function liveRefreshNews(){
   }
 }
 window.liveRefreshNews = liveRefreshNews;
+
+/* ============================================================
+   SESSION SUMMARY
+   AI-generated digest using live quotes + news.
+   Uses existing aiMorningBrief() which already pulls SPY/QQQ/
+   NVDA/TSLA/AAPL/MSFT/META/XOM quotes + top Finnhub headlines.
+   Falls back to a heuristic summary if AI is unavailable.
+============================================================ */
+async function liveRefreshSessionSummary(){
+  const body = document.getElementById('sessionSummaryBody');
+  const meta = document.getElementById('sessionSummaryMeta');
+  if(!body) return;
+
+  // Show loading state
+  body.innerHTML = '<div style="font-size:12px;color:var(--ink-faint)">Generating live session summary…</div>';
+
+  // Heuristic fallback uses live quotes + risk regime state already available
+  function buildHeuristicSummary(quotes){
+    const spyQ = quotes['SPY'], qqqQ = quotes['QQQ'];
+    const nvdaQ = quotes['NVDA'], xomQ = quotes['XOM'];
+    const spyDir = spyQ?.pctChange >= 0 ? 'higher' : 'lower';
+    const spyPct = spyQ ? Math.abs(spyQ.pctChange).toFixed(2)+'%' : '—';
+    const regime = (typeof _riskScore !== 'undefined') ? (_riskScore>=66?'risk-off':'risk-on') : 'mixed';
+    const nvdaStr = nvdaQ ? `NVDA ${nvdaQ.pctChange>=0?'+':''}${nvdaQ.pctChange?.toFixed(2)}%` : '';
+    const xomStr  = xomQ  ? `XOM ${xomQ.pctChange>=0?'+':''}${xomQ.pctChange?.toFixed(2)}%`   : '';
+    const movers = [nvdaStr, xomStr].filter(Boolean).join(', ');
+    return `<div style="font-size:14px;line-height:1.6;color:var(--ink)">
+      Markets are trading <b style="color:${spyQ?.pctChange>=0?'var(--green)':'var(--red)'}">${spyDir}</b> on the session
+      ${spyQ ? `with SPY ${spyQ.pctChange>=0?'+':''}${spyPct}` : ''}.
+      The current risk regime reads as <b style="color:var(--gold-bright)">${regime}</b>.
+      ${movers ? `Notable movers: ${movers}.` : ''}
+      Connect your Anthropic API key for a full AI-generated market briefing.
+    </div>
+    <div style="margin-top:14px;padding:10px 14px;border-radius:6px;background:rgba(212,168,90,0.05);border:1px solid rgba(212,168,90,0.15);font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.1em">
+      Heuristic summary · Connect Anthropic for AI analysis
+    </div>`;
+  }
+
+  // Try live quotes for heuristic fallback first
+  const latestQ = (typeof latestWatchlistQuotes !== 'undefined') ? latestWatchlistQuotes : {};
+  if(Object.keys(latestQ).length >= 2){
+    body.innerHTML = buildHeuristicSummary(latestQ);
+    if(meta) meta.textContent = 'Heuristic · loading';
+  }
+
+  // Now try full AI generation
+  if(!BriefTickAPI.keys.anthropic){
+    const q = Object.keys(latestQ).length >= 2 ? latestQ : {};
+    body.innerHTML = buildHeuristicSummary(q);
+    if(meta) meta.textContent = 'Heuristic';
+    return;
+  }
+
+  try {
+    if(meta) meta.textContent = 'AI generating…';
+    const result = await BriefTickAPI.aiMorningBrief();
+    if(result){
+      const formatted = renderAIMarkdown(result, {accent:'var(--gold)'});
+      body.innerHTML = formatted +
+        `<div style="margin-top:14px;padding:10px 14px;border-radius:6px;background:rgba(61,220,151,0.05);border:1px solid rgba(61,220,151,0.15);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.1em">
+          ✓ AI · Generated ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})} from live data
+        </div>`;
+      if(meta) meta.textContent = 'AI · '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    } else {
+      body.innerHTML = buildHeuristicSummary(latestQ);
+      if(meta) meta.textContent = 'Heuristic';
+    }
+  } catch(e){
+    console.warn('[session summary] AI failed:', e.message);
+    body.innerHTML = buildHeuristicSummary(latestQ);
+    if(meta) meta.textContent = 'Heuristic';
+  }
+}
+window.liveRefreshSessionSummary = liveRefreshSessionSummary;
 
 // Convert Finnhub unix timestamp (seconds) to "18m ago" / "2h ago" style
 function formatNewsAgo(unixSec){
