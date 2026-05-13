@@ -1598,6 +1598,10 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
             <div class="gauge-value" id="vixValue">22.4</div>
             <div class="gauge-state" id="vixRegime">ELEVATED</div>
           </div>
+          <div id="vixExplanation" style="margin-top:14px;padding:12px 14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:12px;line-height:1.55;color:var(--ink-dim)">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px" id="vixExplanationLabel">BriefTick read</div>
+            <div id="vixExplanationText">Loading volatility context…</div>
+          </div>
         </div>
       </div>
 
@@ -2674,6 +2678,12 @@ function renderVolatilityGauge(){
 }
 renderVolatilityGauge();
 
+// Paint heuristic explanation with fallback VIX immediately
+(function(){
+  const el = document.getElementById('vixExplanationText');
+  if(el) el.innerHTML = buildVixHeuristicExplanation(vixValue, []);
+})();
+
 // Pull live VIX and update gauge + nearby labels
 async function liveRefreshVix(){
   // Real CBOE VIX from FRED (St. Louis Fed) - prior trading day close.
@@ -2745,6 +2755,8 @@ async function liveRefreshVix(){
       }
     }
     console.log('[vix] real CBOE VIX from FRED:', realVix, 'as of', asOfDate);
+    // Refresh explanation now that we have a real VIX number
+    refreshVixExplanation().catch(e => console.warn('[vix explanation]', e.message));
   } else {
     // No FRED - show the proxy directional signal
     const valueEl = document.getElementById('vixValue');
@@ -2757,8 +2769,92 @@ async function liveRefreshVix(){
     }
     console.log('[vix] FRED unreachable, showing VIXY proxy:', proxyChange);
     updateRiskRegime();
+    refreshVixExplanation().catch(e => console.warn('[vix explanation]', e.message));
   }
 }
+
+/* ============================================================
+   VOLATILITY MONITOR EXPLANATION
+   Heuristic read generated from VIX level + risk regime +
+   recent news. Optionally enriched with Claude AI.
+============================================================ */
+function buildVixHeuristicExplanation(vix, newsHeadlines){
+  const regime = vix < 15 ? 'calm' : vix < 20 ? 'normal' : vix < 25 ? 'elevated' : vix < 35 ? 'stressed' : 'extreme';
+  const regimeDesc = {
+    calm:     'Markets are unusually calm. Implied volatility is low, suggesting investors expect small near-term price swings. This can indicate complacency or a lack of perceived risk.',
+    normal:   'Volatility is within its historical average range. Options markets are pricing in modest uncertainty — a typical backdrop for orderly trading.',
+    elevated: 'Volatility is above average, signalling that options markets are pricing in meaningful uncertainty. Wider intraday ranges and sharper reactions to news are common at this level.',
+    stressed: 'Volatility is significantly elevated. Institutions are actively hedging. Intraday swings are wide and sentiment can shift quickly. This regime historically amplifies both gains and losses.',
+    extreme:  'Volatility is in panic territory. Markets are pricing in tail risk. Liquidity can thin, bid-ask spreads widen, and forced selling can create dislocations disconnected from fundamentals.',
+  }[regime];
+
+  // Build drivers from recent news keywords
+  const drivers = [];
+  if(newsHeadlines){
+    const text = newsHeadlines.join(' ').toLowerCase();
+    if(/(fed\b|powell|fomc|rate|interest rate)/i.test(text)) drivers.push('Fed policy uncertainty');
+    if(/(cpi|inflation|pce|jobs|payrolls|gdp)/i.test(text)) drivers.push('macro data risk');
+    if(/(earnings|guidance|beat|miss)/i.test(text)) drivers.push('earnings season pressure');
+    if(/(tariff|trade|geopolitical|war|sanctions)/i.test(text)) drivers.push('geopolitical tensions');
+    if(/(bank|credit|default|debt|yield)/i.test(text)) drivers.push('rates and credit concerns');
+  }
+
+  const driverStr = drivers.length
+    ? `<b style="color:var(--ink)">Likely contributors:</b> ${drivers.slice(0,3).join(', ')}.`
+    : '';
+
+  return `${regimeDesc} ${driverStr}`;
+}
+
+async function refreshVixExplanation(){
+  const textEl = document.getElementById('vixExplanationText');
+  const labelEl = document.getElementById('vixExplanationLabel');
+  if(!textEl) return;
+
+  // Get recent headlines for heuristic driver detection
+  let headlines = [];
+  try {
+    const news = await BriefTickAPI.getMarketNews('general');
+    headlines = (news||[]).slice(0,8).map(n=>n.headline||'');
+  } catch(e){}
+
+  // Heuristic explanation immediately
+  const heuristic = buildVixHeuristicExplanation(vixValue, headlines);
+  textEl.innerHTML = heuristic;
+  if(labelEl) labelEl.textContent = 'BriefTick read';
+
+  // AI enrichment if Anthropic available
+  if(!BriefTickAPI.keys.anthropic) return;
+
+  try {
+    if(labelEl) labelEl.textContent = 'BriefTick AI · generating…';
+    const regime = vixValue < 15 ? 'CALM' : vixValue < 20 ? 'NORMAL' : vixValue < 25 ? 'ELEVATED' : vixValue < 35 ? 'STRESSED' : 'PANIC';
+    const newsCtx = headlines.slice(0,5).map(h=>`- ${h}`).join('\n');
+    const prompt = `You are a market intelligence analyst. The CBOE VIX is currently ${vixValue.toFixed(1)} (regime: ${regime}).
+
+Recent market headlines:
+${newsCtx || '(no recent headlines available)'}
+
+Write 2 SHORT sentences (max 60 words total) explaining:
+1. What this VIX level means for markets right now
+2. What is most likely driving current volatility based on the headlines above
+
+Be specific, factual, plain English. No jargon. No investment advice. Educational only.`;
+
+    const result = await BriefTickAPI._claudeCall(prompt, 120);
+    if(result && result.trim()){
+      textEl.innerHTML = result.trim();
+      if(labelEl){
+        labelEl.textContent = 'BriefTick AI';
+        labelEl.style.color = 'var(--gold)';
+      }
+    }
+  } catch(e){
+    console.warn('[vix explanation] AI failed:', e.message);
+    // Keep heuristic
+  }
+}
+window.refreshVixExplanation = refreshVixExplanation;
 
 /* Risk Regime Engine - rule-based baseline + optional AI explanation */
 const riskState = {
