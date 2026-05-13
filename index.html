@@ -4919,8 +4919,8 @@ async function liveRefreshDashboard(){
   liveRefreshSignalFeed(true).catch(e => console.warn('[Signals]', e.message));
 
   // Live Correlation Engine (Twelve Data 30D closes → Pearson r)
-  // Delayed so it doesn't compete for the first Twelve Data rate-limit window
-  setTimeout(()=>liveRefreshCorrelation().catch(e=>console.warn('[Corr]',e.message)), 90_000);
+  // Short delay so the initial quote batch completes first, then correlation fetches
+  setTimeout(()=>liveRefreshCorrelation().catch(e=>console.warn('[Corr]',e.message)), 12_000);
 
   // Session Summary — AI-generated from live quotes + news (Anthropic)
   liveRefreshSessionSummary().catch(e=>console.warn('[Session summary]',e.message));
@@ -4937,9 +4937,9 @@ async function liveRefreshDashboard(){
 window.addEventListener('load', liveRefreshDashboard);
 
 // Refresh AI sentiment feed every 5 minutes
-setInterval(()=>liveRefreshSentimentFeed(false), SENTIMENT_REFRESH_MS);
+setInterval(()=>liveRefreshSentimentFeed(false), 5 * 60_000);
 // Refresh Market Signal Feed every 5 minutes
-setInterval(()=>liveRefreshSignalFeed(false), SIGNAL_REFRESH_MS);
+setInterval(()=>liveRefreshSignalFeed(false), 5 * 60_000);
 
 /* Social Signals - politically neutral, market-impact only.
    Sample posts illustrate the categories of accounts the engine monitors
