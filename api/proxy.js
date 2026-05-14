@@ -11,6 +11,7 @@
  *   - Earnings calendar (Finnhub) .................. 30min
  *   - Sector performance, news sentiment (AV) ...... 5min
  *   - Technical indicators (AV) .................... 5min
+ *   - Public FRED series (VIXCLS) .................. 15min
  *   - Anthropic messages ........................... NOT cached (always fresh)
  */
 
@@ -159,6 +160,70 @@ async function proxyAnthropic(req, res) {
   }
 }
 
+async function proxyFred(req, res) {
+  const series = req.query.series || 'VIXCLS';
+  if (series !== 'VIXCLS') return res.status(400).json({ error: 'unsupported FRED series' });
+  const cacheKey = `fred:${series}`;
+
+  const cached = cacheGet(cacheKey, 15 * 60_000);
+  if (cached) {
+    res.setHeader('x-brieftick-cache', 'HIT');
+    return res.status(200).json(cached);
+  }
+
+  try {
+    const r = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${encodeURIComponent(series)}`);
+    const text = await r.text();
+    const lines = text.trim().split('\n');
+    for (let i = lines.length - 1; i > 0; i--) {
+      const [date, val] = lines[i].split(',');
+      if (val && val !== '.' && !Number.isNaN(parseFloat(val))) {
+        const data = { series, date, value: parseFloat(val) };
+        cacheSet(cacheKey, data);
+        res.setHeader('x-brieftick-cache', 'MISS');
+        return res.status(200).json(data);
+      }
+    }
+    return res.status(502).json({ error: 'FRED series returned no usable value' });
+  } catch (e) {
+    return res.status(502).json({ error: 'upstream fetch failed', detail: e.message });
+  }
+}
+
+async function proxySEC(req, res) {
+  const { endpoint, ...params } = req.query;
+  if (!endpoint) return res.status(400).json({ error: 'endpoint param required' });
+  const cacheKey = `sec:${endpoint}:${new URLSearchParams(params).toString()}`;
+  const ttl = 30 * 60_000; // 30 min
+  const cached = cacheGet(cacheKey, ttl);
+  if (cached) { res.setHeader('x-brieftick-cache', 'HIT'); return res.status(200).json(cached); }
+  try {
+    let url;
+    const today = new Date().toISOString().slice(0, 10);
+    const from = new Date(Date.now() - 21 * 86400000).toISOString().slice(0, 10);
+    if (endpoint === 'form4') {
+      url = `https://efts.sec.gov/LATEST/search-index?forms=4&dateRange=custom&fromDate=${params.from || from}&toDate=${params.to || today}`;
+    } else if (endpoint === 'search') {
+      url = `https://efts.sec.gov/LATEST/search-index?q=${encodeURIComponent(params.q || '')}&forms=${params.forms || '4'}&dateRange=custom&fromDate=${params.from || from}&toDate=${params.to || today}`;
+    } else if (endpoint === 'submissions') {
+      const cik = String(params.cik || '').replace(/\D/g, '').padStart(10, '0');
+      url = `https://data.sec.gov/submissions/CIK${cik}.json`;
+    } else {
+      return res.status(400).json({ error: 'unknown SEC endpoint' });
+    }
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'BriefTick/1.0 market-intelligence-app', 'Accept': 'application/json' }
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    cacheSet(cacheKey, data);
+    res.setHeader('x-brieftick-cache', 'MISS');
+    return res.status(200).json(data);
+  } catch (e) {
+    return res.status(502).json({ error: 'SEC fetch failed', detail: e.message });
+  }
+}
+
 export default async function handler(req, res) {
   setCors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
@@ -169,7 +234,9 @@ export default async function handler(req, res) {
     if (provider === 'finnhub')      return await proxyFinnhub(req, res);
     if (provider === 'alphavantage') return await proxyAlphaVantage(req, res);
     if (provider === 'anthropic')    return await proxyAnthropic(req, res);
-    return res.status(400).json({ error: 'unknown provider. use twelvedata, finnhub, alphavantage, or anthropic' });
+    if (provider === 'fred')         return await proxyFred(req, res);
+    if (provider === 'sec')          return await proxySEC(req, res);
+    return res.status(400).json({ error: 'unknown provider' });
   } catch (e) {
     return res.status(500).json({ error: 'proxy crashed', detail: e.message });
   }
