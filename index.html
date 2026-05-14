@@ -2497,7 +2497,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start">
-        <svg viewBox="0 0 480 300" style="width:100%;height:auto;cursor:grab;user-select:none;-webkit-user-select:none" id="portCluster"></svg>
+        <canvas id="portCluster" style="width:100%;height:300px;cursor:grab;user-select:none;-webkit-user-select:none;border-radius:8px;display:block"></canvas>
           <div id="portClusterDetail" style="width:180px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--ink-dim);min-height:120px">
           <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px">Pair insight</div>
           <div id="portClusterDetailText" style="color:var(--ink-faint)">Drag to rotate · hover a node for pair correlations.</div>
@@ -7239,54 +7239,96 @@ const _pc3dSectorColor = {
   'Energy':'#ffb547','Healthcare':'#6ee7a8','Broad Market':'#9aa6bd','Other':'#8b94a8',
 };
 
-function _pc3dDraw(svg, hoveredIdx){
-  const W=480, H=300, CX=240, CY=150, R=108, FOV=340;
+/* ── Canvas cinematic helpers ───────────────────────────────────── */
+// Parse a CSS hex/rgb color to [r,g,b] 0-255
+function _hexToRgb(hex){
+  const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return r?[parseInt(r[1],16),parseInt(r[2],16),parseInt(r[3],16)]:[139,148,168];
+}
+function _rgba(hex,a){ const [r,g,b]=_hexToRgb(hex); return `rgba(${r},${g},${b},${a})`; }
 
-  // Project + sort by depth (painter: back → front)
-  const projected = _pc3d.nodes.map((node,i)=>{
-    const rot = _pc3dRotate(node.pos, _pc3d.rotX, _pc3d.rotY);
-    const {sx,sy,depth,sc} = _pc3dProject(rot, CX, CY, R, FOV);
+// Particle system: dots flowing along correlation edges
+let _pc3dParticles=[];
+function _pc3dSpawnParticles(projected){
+  if(_pc3d.edges.length===0) return;
+  // Spawn ~2 particles per frame on high-r edges
+  for(let s=0;s<2;s++){
+    const e=_pc3d.edges[Math.floor(Math.random()*_pc3d.edges.length)];
+    if(!e||Math.abs(e.r)<0.35) continue;
+    const pa=projected[e.i], pb=projected[e.j];
+    if(!pa||!pb) continue;
+    _pc3dParticles.push({
+      xi:pa.sx,yi:pa.sy, xj:pb.sx,yj:pb.sy,
+      t:Math.random(), speed:(0.003+Math.random()*0.006)*(Math.random()<0.5?1:-1),
+      r:Math.abs(e.r), color:_corrEdgeColor(e.r)[0],
+      alpha:0.5+Math.abs(e.r)*0.4,
+    });
+  }
+  // Cap and age
+  _pc3dParticles=_pc3dParticles.filter(p=>{
+    p.t+=p.speed;
+    return p.t>=0&&p.t<=1;
+  }).slice(-120);
+}
+
+function _pc3dDraw(canvas, hoveredIdx){
+  if(!canvas||!canvas.getContext) return;
+  const ctx=canvas.getContext('2d');
+
+  // ── Canvas size / DPR setup (only resize when needed) ────────────
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const cssW=canvas.clientWidth||480;
+  const cssH=canvas.clientHeight||300;
+  if(canvas.width!==Math.round(cssW*dpr)||canvas.height!==Math.round(cssH*dpr)){
+    canvas.width=Math.round(cssW*dpr);
+    canvas.height=Math.round(cssH*dpr);
+  }
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  const W=cssW, H=cssH, CX=W/2, CY=H/2, R=Math.min(W,H)*0.36, FOV=340;
+
+  // ── Project + sort ─────────────────────────────────────────────
+  const projected=_pc3d.nodes.map((node,i)=>{
+    const rot=_pc3dRotate(node.pos,_pc3d.rotX,_pc3d.rotY);
+    const {sx,sy,depth,sc}=_pc3dProject(rot,CX,CY,R,FOV);
     const df=(depth+1)/2;
     const baseR=Math.max(10,Math.min(26,7+node.weight*0.98));
-    return {i, sx, sy, r:baseR*Math.max(0.52,sc), depth, df, opacity:0.28+df*0.72, node, baseR};
+    return {i,sx,sy,r:baseR*Math.max(0.52,sc),depth,df,opacity:0.28+df*0.72,node};
   });
-  _pc3d.projected = projected;
-  const sortedByDepth = [...projected].sort((a,b)=>a.depth-b.depth);
+  _pc3d.projected=projected;
+  const sorted=[...projected].sort((a,b)=>a.depth-b.depth);
 
-  // ── Build <defs> for per-node radial gradients ──────────────────
-  // Each node gets a gradient with a top-left light source so it looks
-  // like a lit 3-D sphere. A second small gradient simulates a specular
-  // (mirror) highlight dot near the top.
-  let defs = '<defs>';
-  for(const p of projected){
-    const c = _pc3dSectorColor[p.node.meta.sector]||'#8b94a8';
-    const isA = hoveredIdx===p.i;
-    // Main sphere gradient: light from top-left
-    defs += `<radialGradient id="pcg${p.i}" cx="36%" cy="30%" r="68%">
-      <stop offset="0%"   stop-color="#ffffff"   stop-opacity="${isA?0.28:0.18}"/>
-      <stop offset="35%"  stop-color="${c}"       stop-opacity="${isA?0.92:0.72}"/>
-      <stop offset="80%"  stop-color="${c}"       stop-opacity="${isA?0.45:0.28}"/>
-      <stop offset="100%" stop-color="#050810"    stop-opacity="${isA?0.7:0.85}"/>
-    </radialGradient>`;
-    // Rim / glow gradient for outer halo
-    defs += `<radialGradient id="pcglow${p.i}" cx="50%" cy="50%" r="50%">
-      <stop offset="50%"  stop-color="${c}" stop-opacity="0"/>
-      <stop offset="100%" stop-color="${c}" stop-opacity="${isA?0.55:0.18*p.df}"/>
-    </radialGradient>`;
+  // ── Background: deep space gradient ────────────────────────────
+  const bg=ctx.createRadialGradient(CX*0.7,CY*0.6,0,CX,CY,W*0.7);
+  bg.addColorStop(0,'#0e1422');
+  bg.addColorStop(1,'#050810');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Subtle star field
+  ctx.globalAlpha=1;
+  if(!_pc3dDraw._stars){
+    _pc3dDraw._stars=Array.from({length:55},()=>({x:Math.random(),y:Math.random(),r:Math.random()*0.9+0.2,a:Math.random()*0.35+0.05}));
   }
-  defs += '</defs>';
+  for(const s of _pc3dDraw._stars){
+    ctx.beginPath(); ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(200,210,255,${s.a})`; ctx.fill();
+  }
 
-  // ── Sphere frame ────────────────────────────────────────────────
-  // Ambient glow behind the whole sphere
-  let out = defs;
-  out += `<radialGradient id="sphereGlow" cx="50%" cy="50%" r="50%"><stop offset="60%" stop-color="rgba(78,168,255,0)" /><stop offset="100%" stop-color="rgba(78,168,255,0.06)"/></radialGradient>`;
-  out += `<circle cx="${CX}" cy="${CY}" r="${R+18}" fill="url(#sphereGlow)"/>`;
-  // Grid lines for depth context
-  out += `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="rgba(180,200,255,0.07)" stroke-width="0.8"/>`;
-  out += `<ellipse cx="${CX}" cy="${CY}" rx="${R}" ry="${Math.round(R*0.13)}" fill="none" stroke="rgba(180,200,255,0.05)" stroke-width="0.7"/>`;
-  out += `<ellipse cx="${CX}" cy="${CY}" rx="${Math.round(R*0.13)}" ry="${R}" fill="none" stroke="rgba(180,200,255,0.05)" stroke-width="0.7"/>`;
-  // Second diagonal grid ring
-  out += `<ellipse cx="${CX}" cy="${CY}" rx="${R}" ry="${Math.round(R*0.45)}" fill="none" stroke="rgba(180,200,255,0.03)" stroke-width="0.6" transform="rotate(-35 ${CX} ${CY})"/>`;
+  // Sphere ambient glow behind whole globe
+  const sphereGlow=ctx.createRadialGradient(CX,CY,R*0.3,CX,CY,R*1.6);
+  sphereGlow.addColorStop(0,'rgba(60,100,255,0.07)');
+  sphereGlow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=sphereGlow;
+  ctx.beginPath(); ctx.arc(CX,CY,R*1.6,0,Math.PI*2); ctx.fill();
+
+  // Sphere wireframe rings (equator + meridians)
+  ctx.globalAlpha=0.07;
+  ctx.strokeStyle='rgba(120,160,255,1)'; ctx.lineWidth=0.8;
+  ctx.beginPath(); ctx.arc(CX,CY,R,0,Math.PI*2); ctx.stroke();
+  ctx.save(); ctx.translate(CX,CY); ctx.scale(1,0.14);
+  ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.restore(); ctx.stroke();
+  ctx.save(); ctx.translate(CX,CY); ctx.scale(0.14,1);
+  ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.restore(); ctx.stroke();
+  ctx.globalAlpha=1;
 
   // ── Edges ───────────────────────────────────────────────────────
   for(const e of _pc3d.edges){
@@ -7295,60 +7337,130 @@ function _pc3dDraw(svg, hoveredIdx){
     const df=((pa.depth+pb.depth)/2+1)/2;
     const [color,baseOp]=_corrEdgeColor(e.r);
     const isH=hoveredIdx!=null&&(e.i===hoveredIdx||e.j===hoveredIdx);
-    const op = hoveredIdx==null ? baseOp*(0.3+df*0.7) : (isH?Math.min(baseOp*3,0.95):0.02);
-    const w  = isH ? 2.5 : (Math.abs(e.r)>=0.7?1.6:0.8);
-    // Dash pattern: solid for high-r, dashed for lower
-    const dash = !isH && Math.abs(e.r)<0.5 ? ' stroke-dasharray="3 3"' : '';
-    const mx=(pa.sx+pb.sx)/2, my=(pa.sy+pb.sy)/2;
-    const lbl = isH
-      ? `<rect x="${mx-20}" y="${my-18}" width="40" height="13" rx="3" fill="rgba(10,13,20,0.85)" stroke="${color}" stroke-opacity="0.4" stroke-width="0.8"/>
-         <text x="${mx}" y="${my-8}" text-anchor="middle" fill="${color}" font-family="JetBrains Mono" font-size="8" opacity="${op}">r=${e.r.toFixed(2)}</text>`
-      : '';
-    out += `<line x1="${pa.sx}" y1="${pa.sy}" x2="${pb.sx}" y2="${pb.sy}" stroke="${color}" stroke-opacity="${op}" stroke-width="${w}"${dash}/>${lbl}`;
+    const coreOp=hoveredIdx==null?baseOp*(0.22+df*0.55):(isH?Math.min(baseOp*3,0.9):0.02);
+
+    // Outer bloom glow pass
+    if(isH||Math.abs(e.r)>=0.5){
+      ctx.globalAlpha=isH?0.35:0.06*df;
+      ctx.strokeStyle=color; ctx.lineWidth=isH?8:4;
+      ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy); ctx.stroke();
+    }
+    // Core line
+    ctx.globalAlpha=coreOp;
+    ctx.strokeStyle=color; ctx.lineWidth=isH?1.8:(Math.abs(e.r)>=0.7?1.2:0.6);
+    if(!isH&&Math.abs(e.r)<0.5){ ctx.setLineDash([3,4]); } else { ctx.setLineDash([]); }
+    ctx.beginPath(); ctx.moveTo(pa.sx,pa.sy); ctx.lineTo(pb.sx,pb.sy); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // r label on hovered edges
+    if(isH){
+      const mx=(pa.sx+pb.sx)/2, my=(pa.sy+pb.sy)/2;
+      ctx.globalAlpha=0.9;
+      ctx.fillStyle='rgba(8,12,22,0.88)';
+      ctx.beginPath(); ctx.roundRect(mx-22,my-14,44,14,3); ctx.fill();
+      ctx.strokeStyle=color; ctx.lineWidth=0.6; ctx.stroke();
+      ctx.fillStyle=color;
+      ctx.font='bold 8px "JetBrains Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('r = '+e.r.toFixed(2), mx, my-7);
+    }
   }
+
+  // ── Edge particles ──────────────────────────────────────────────
+  _pc3dSpawnParticles(projected);
+  for(const p of _pc3dParticles){
+    const px=p.xi+(p.xj-p.xi)*p.t, py=p.yi+(p.yj-p.yi)*p.t;
+    ctx.globalAlpha=p.alpha*(1-Math.abs(p.t*2-1)); // fade at ends
+    const g=ctx.createRadialGradient(px,py,0,px,py,3.5);
+    g.addColorStop(0,_rgba(p.color,0.9)); g.addColorStop(1,_rgba(p.color,0));
+    ctx.fillStyle=g;
+    ctx.beginPath(); ctx.arc(px,py,3.5,0,Math.PI*2); ctx.fill();
+  }
+  ctx.globalAlpha=1;
 
   // ── Nodes back-to-front ─────────────────────────────────────────
-  for(const p of sortedByDepth){
-    const c = _pc3dSectorColor[p.node.meta.sector]||'#8b94a8';
-    const isA = hoveredIdx===p.i;
-    const r = p.r;
+  for(const p of sorted){
+    const c=_pc3dSectorColor[p.node.meta.sector]||'#8b94a8';
+    const [cr,cg,cb]=_hexToRgb(c);
+    const isA=hoveredIdx===p.i;
+    const r=p.r;
 
-    // 1. Outer glow halo (larger, diffuse)
-    const glowR = r * (isA ? 2.2 : 1.7);
-    out += `<circle cx="${p.sx}" cy="${p.sy}" r="${glowR}" fill="url(#pcglow${p.i})"/>`;
+    // Outer bloom halo (2 passes: wide soft + medium)
+    const bloomR=r*(isA?3.2:2.2);
+    const bloom=ctx.createRadialGradient(p.sx,p.sy,r*0.3,p.sx,p.sy,bloomR);
+    bloom.addColorStop(0,`rgba(${cr},${cg},${cb},${isA?0.32:0.1*p.df})`);
+    bloom.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=bloom;
+    ctx.beginPath(); ctx.arc(p.sx,p.sy,bloomR,0,Math.PI*2); ctx.fill();
 
-    // 2. Active pulse ring
     if(isA){
-      out += `<circle cx="${p.sx}" cy="${p.sy}" r="${r+10}" fill="none" stroke="${c}" stroke-opacity="${p.df*0.35}" stroke-width="1.2"/>`;
-      out += `<circle cx="${p.sx}" cy="${p.sy}" r="${r+5}"  fill="none" stroke="${c}" stroke-opacity="${p.df*0.55}" stroke-width="0.8"/>`;
+      // Second tighter glow ring for hover
+      const bloom2=ctx.createRadialGradient(p.sx,p.sy,r*0.6,p.sx,p.sy,r*1.8);
+      bloom2.addColorStop(0,`rgba(${cr},${cg},${cb},0.45)`);
+      bloom2.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=bloom2;
+      ctx.beginPath(); ctx.arc(p.sx,p.sy,r*1.8,0,Math.PI*2); ctx.fill();
     }
 
-    // 3. Dark shadow beneath (simulates ambient occlusion)
-    out += `<ellipse cx="${p.sx+r*0.12}" cy="${p.sy+r*0.14}" rx="${r*0.9}" ry="${r*0.85}" fill="rgba(0,0,0,0.25)" filter=""/>`;
+    // Depth shadow beneath node
+    ctx.globalAlpha=0.22*p.df;
+    ctx.fillStyle='rgba(0,0,0,1)';
+    ctx.save();
+    ctx.translate(p.sx+r*0.1, p.sy+r*0.15);
+    ctx.scale(0.95,0.88);
+    ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    ctx.globalAlpha=1;
 
-    // 4. Main sphere body — radial gradient gives 3-D lit look
-    const rimOp = p.opacity * (isA ? 1.0 : 0.85);
-    const rimW  = isA ? 2.2 : 1.2;
-    out += `<circle cx="${p.sx}" cy="${p.sy}" r="${r}" fill="url(#pcg${p.i})" stroke="${c}" stroke-width="${rimW}" stroke-opacity="${rimOp}"/>`;
+    // Main sphere body: radial gradient with top-left light source
+    const sx0=p.sx-r*0.32, sy0=p.sy-r*0.32;
+    const sphere=ctx.createRadialGradient(sx0,sy0,0,p.sx,p.sy,r);
+    sphere.addColorStop(0,`rgba(255,255,255,${isA?0.32:0.22})`);
+    sphere.addColorStop(0.3,`rgba(${cr},${cg},${cb},${isA?0.95:0.78})`);
+    sphere.addColorStop(0.8,`rgba(${Math.max(0,cr-40)},${Math.max(0,cg-40)},${Math.max(0,cb-40)},${isA?0.6:0.45})`);
+    sphere.addColorStop(1,`rgba(4,6,14,${isA?0.75:0.88})`);
+    ctx.fillStyle=sphere;
+    ctx.beginPath(); ctx.arc(p.sx,p.sy,r,0,Math.PI*2); ctx.fill();
 
-    // 5. Specular highlight — small bright ellipse upper-left
-    const hx = p.sx - r*0.28, hy = p.sy - r*0.28;
-    const hr = r * 0.25, hry = r * 0.15;
-    const specOp = isA ? 0.7 : (0.35 + p.df * 0.25);
-    out += `<ellipse cx="${hx}" cy="${hy}" rx="${hr}" ry="${hry}" fill="white" fill-opacity="${specOp}" transform="rotate(-25 ${hx} ${hy})"/>`;
+    // Rim light (inner stroke with color glow)
+    ctx.strokeStyle=`rgba(${cr},${cg},${cb},${isA?1.0:0.65*p.df})`;
+    ctx.lineWidth=isA?2:1;
+    ctx.globalCompositeOperation='screen';
+    ctx.beginPath(); ctx.arc(p.sx,p.sy,r,0,Math.PI*2); ctx.stroke();
+    ctx.globalCompositeOperation='source-over';
 
-    // 6. Ticker label
-    const fs = Math.round(Math.max(6.5, Math.min(10.5, r*0.80)));
-    const textOp = 0.6 + p.df * 0.4;
-    out += `<text x="${p.sx}" y="${p.sy+3}" text-anchor="middle" fill="rgba(232,236,245,${textOp})" font-family="JetBrains Mono" font-size="${fs}" font-weight="700" style="pointer-events:none">${escapeHtml(p.node.sym)}</text>`;
+    // Specular highlight: small bright ellipse top-left
+    const hx=p.sx-r*0.3, hy=p.sy-r*0.32;
+    const spec=ctx.createRadialGradient(hx,hy,0,hx,hy,r*0.45);
+    spec.addColorStop(0,`rgba(255,255,255,${isA?0.75:0.42+p.df*0.2})`);
+    spec.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=spec;
+    ctx.save(); ctx.translate(hx,hy); ctx.rotate(-0.44); ctx.scale(1,0.6);
+    ctx.beginPath(); ctx.arc(0,0,r*0.42,0,Math.PI*2); ctx.fill();
+    ctx.restore();
 
-    // 7. Weight badge — only front-facing nodes
-    if(p.depth > -0.15){
-      const badgeY = p.sy + r + 12;
-      out += `<text x="${p.sx}" y="${badgeY}" text-anchor="middle" fill="rgba(139,148,168,${p.opacity*0.75})" font-family="JetBrains Mono" font-size="6.5" style="pointer-events:none">${p.node.weight.toFixed(1)}%</text>`;
+    // Ticker label with depth-based opacity
+    const textOp=Math.max(0.45, 0.55+p.df*0.45);
+    ctx.globalAlpha=textOp;
+    const fs=Math.round(Math.max(7,Math.min(11,r*0.79)));
+    ctx.fillStyle='#e8ecf5';
+    ctx.font=`700 ${fs}px "JetBrains Mono",monospace`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    // Subtle text shadow for legibility
+    ctx.shadowColor=`rgba(0,0,0,0.8)`; ctx.shadowBlur=3;
+    ctx.fillText(p.node.sym, p.sx, p.sy+0.5);
+    ctx.shadowBlur=0;
+
+    // Weight badge (front nodes only)
+    if(p.depth>-0.12){
+      ctx.globalAlpha=0.55*p.df;
+      ctx.font=`400 7px "JetBrains Mono",monospace`;
+      ctx.fillStyle=`rgba(${cr},${cg},${cb},1)`;
+      ctx.fillText(p.node.weight.toFixed(1)+'%', p.sx, p.sy+r+12);
     }
+    ctx.globalAlpha=1;
   }
-  svg.innerHTML = out;
 }
 
 function _pc3dUpdateDetail(idx){
@@ -7366,11 +7478,11 @@ function _pc3dUpdateDetail(idx){
 }
 
 function _pc3dWireInteraction(svg){
-  // Hit-test using stored projected positions
+  // Hit-test using stored projected positions (canvas CSS coordinates)
   function nodeAt(e){
     const rect=svg.getBoundingClientRect();
-    const sx=(e.clientX-rect.left)*480/rect.width;
-    const sy=(e.clientY-rect.top)*300/rect.height;
+    const sx=e.clientX-rect.left;
+    const sy=e.clientY-rect.top;
     let best=null,bestD=9999;
     for(const p of _pc3d.projected){
       const d=Math.sqrt((sx-p.sx)**2+(sy-p.sy)**2);
@@ -7438,16 +7550,30 @@ function _corrRead(symA, symB, r){
 }
 
 function renderPortfolioCluster(holdings, matrix){
-  const svg = document.getElementById('portCluster');
-  if(!svg) return;
+  const canvas = document.getElementById('portCluster');
+  if(!canvas) return;
+  const svg = canvas; // alias so rest of function works unchanged
 
   // Clean up any previous animation + interaction
   _pc3dStop();
-  if(svg._pc3dCleanup){ svg._pc3dCleanup(); svg._pc3dCleanup=null; }
+  if(canvas._pc3dCleanup){ canvas._pc3dCleanup(); canvas._pc3dCleanup=null; }
+  _pc3dParticles=[];
   _pc3d.hoveredIdx = null;
 
   if(!holdings||!holdings.length){
-    svg.innerHTML='<text x="240" y="150" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="12">Add holdings above to generate cluster map</text>';
+    // Draw "empty" state on canvas
+    const ctx=canvas.getContext('2d');
+    if(ctx){
+      const dpr=Math.min(window.devicePixelRatio||1,2);
+      canvas.width=Math.round((canvas.clientWidth||480)*dpr);
+      canvas.height=Math.round((canvas.clientHeight||300)*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.fillStyle='#050810'; ctx.fillRect(0,0,canvas.clientWidth||480,canvas.clientHeight||300);
+      ctx.fillStyle='rgba(139,148,168,0.6)';
+      ctx.font='12px "JetBrains Mono",monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('Add holdings above to generate cluster map', (canvas.clientWidth||480)/2, (canvas.clientHeight||300)/2);
+    }
     const desc=document.getElementById('portClusterDesc');
     if(desc) desc.innerHTML='Enter holdings above. <a onclick="loadSamplePortfolio()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Load sample (14 holdings)</a> to see a full 3D cluster.';
     return;
