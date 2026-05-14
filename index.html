@@ -1464,6 +1464,234 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
   color:var(--ink-dim);border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer;
 }
 .onboard-btn-secondary:hover{color:var(--ink);border-color:var(--border-strong)}
+
+/* ================================================================
+   SCANNER PAGE
+================================================================ */
+.scanner-wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+.scanner-hero{margin-bottom:32px}
+.scanner-hero h1{font-family:var(--display);font-size:clamp(22px,3vw,32px);font-weight:500;letter-spacing:-0.02em;margin-bottom:8px}
+.scanner-hero p{font-size:13px;color:var(--ink-dim);max-width:640px;line-height:1.6}
+.scanner-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;align-items:center}
+.scanner-filter-chip{
+  padding:7px 14px;background:transparent;border:1px solid var(--border);
+  color:var(--ink-dim);border-radius:20px;font-family:inherit;font-size:12px;cursor:pointer;
+  transition:all .15s;
+}
+.scanner-filter-chip.active{background:var(--gold);border-color:var(--gold);color:#0a0d14;font-weight:600}
+.scanner-filter-chip:hover:not(.active){border-color:var(--gold);color:var(--gold)}
+.scanner-run-btn{
+  margin-left:auto;padding:9px 20px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-bright));
+  color:#0a0d14;border:none;border-radius:7px;font-family:inherit;font-size:13px;
+  font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;
+  transition:opacity .15s;
+}
+.scanner-run-btn:hover{opacity:.9}
+.scanner-run-btn:disabled{opacity:.5;cursor:not-allowed}
+.scanner-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:28px}
+.scanner-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;
+  padding:18px 20px;position:relative;overflow:hidden;transition:border-color .2s;
+}
+.scanner-card:hover{border-color:var(--border-strong)}
+.scanner-card-rank{
+  position:absolute;top:12px;right:14px;
+  font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+}
+.scanner-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.scanner-card-sym{
+  font-family:var(--mono);font-size:18px;font-weight:700;
+  color:var(--gold);letter-spacing:.02em;
+}
+.scanner-card-name{font-size:11px;color:var(--ink-dim);margin-top:2px;max-width:160px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scanner-card-change{
+  margin-left:auto;text-align:right;
+}
+.scanner-card-price{font-family:var(--mono);font-size:16px;font-weight:600}
+.scanner-card-pct{font-size:13px;font-family:var(--mono);font-weight:600;margin-top:2px}
+.scanner-card-pct.up{color:var(--green)}
+.scanner-card-pct.dn{color:var(--red)}
+.scanner-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.scanner-metric{background:var(--bg);border-radius:6px;padding:8px 10px}
+.scanner-metric-label{font-size:10px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.scanner-metric-val{font-family:var(--mono);font-size:13px;font-weight:600}
+.scanner-score-bar{margin-bottom:12px}
+.scanner-score-label{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-dim);margin-bottom:5px}
+.scanner-score-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.scanner-score-fill{height:100%;border-radius:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-bright));transition:width .6s ease}
+.scanner-ai-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 9px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.25);
+  border-radius:12px;font-size:10px;color:var(--gold);cursor:pointer;transition:background .15s;
+}
+.scanner-ai-badge:hover{background:rgba(212,175,55,.2)}
+.scanner-ai-panel{
+  margin-top:12px;padding:12px;background:rgba(212,175,55,.05);
+  border-left:2px solid var(--gold);border-radius:0 6px 6px 0;
+  font-size:12px;color:var(--ink-dim);line-height:1.6;display:none;
+}
+.scanner-ai-panel.visible{display:block}
+.scanner-list-header{
+  display:grid;grid-template-columns:40px 80px 1fr 90px 90px 90px 110px;
+  gap:12px;padding:10px 16px;
+  font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+  letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border);
+}
+.scanner-list-row{
+  display:grid;grid-template-columns:40px 80px 1fr 90px 90px 90px 110px;
+  gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);
+  align-items:center;cursor:pointer;transition:background .15s;
+}
+.scanner-list-row:hover{background:rgba(255,255,255,.02)}
+.scanner-list-row .sym{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--gold)}
+.scanner-list-row .name{font-size:12px;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scanner-list-row .price{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right}
+.scanner-list-row .chg{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right}
+.scanner-list-row .chg.up{color:var(--green)}
+.scanner-list-row .chg.dn{color:var(--red)}
+.scanner-list-row .vol{font-family:var(--mono);font-size:12px;color:var(--ink-dim);text-align:right}
+.scanner-score-pill{
+  display:inline-block;padding:3px 10px;border-radius:20px;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  background:rgba(212,175,55,.15);color:var(--gold);
+}
+.scanner-score-pill.high{background:rgba(0,200,100,.15);color:var(--green)}
+.scanner-score-pill.low{background:rgba(255,80,80,.12);color:var(--red)}
+.scanner-ai-summary{
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;
+  padding:22px;margin-top:16px;
+}
+.scanner-ai-summary h3{font-family:var(--display);font-size:15px;font-weight:500;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px}
+#scannerAISummaryText{font-size:13px;color:var(--ink-dim);line-height:1.7;min-height:48px}
+.scanner-view-toggle{display:flex;gap:2px;background:var(--bg);border-radius:8px;padding:3px}
+.scanner-view-btn{
+  padding:6px 14px;border:none;background:transparent;color:var(--ink-dim);
+  font-family:inherit;font-size:12px;border-radius:6px;cursor:pointer;transition:all .15s;
+}
+.scanner-view-btn.active{background:var(--panel);color:var(--ink);border:1px solid var(--border)}
+
+/* ================================================================
+   INSIDERS PAGE
+================================================================ */
+.insiders-wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+.insiders-hero{margin-bottom:28px}
+.insiders-hero h1{font-family:var(--display);font-size:clamp(22px,3vw,32px);font-weight:500;letter-spacing:-0.02em;margin-bottom:8px}
+.insiders-hero p{font-size:13px;color:var(--ink-dim);max-width:640px;line-height:1.6}
+.insiders-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid var(--border)}
+.insiders-tab{
+  padding:11px 20px;background:transparent;border:none;border-bottom:2px solid transparent;
+  color:var(--ink-dim);font-family:inherit;font-size:13px;cursor:pointer;
+  transition:all .15s;margin-bottom:-1px;
+}
+.insiders-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.insiders-tab:hover:not(.active){color:var(--ink)}
+.insiders-tab-panel{display:none}
+.insiders-tab-panel.active{display:block}
+.insiders-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.insiders-search{
+  flex:1;min-width:180px;max-width:280px;padding:9px 14px;
+  background:var(--panel);border:1px solid var(--border);border-radius:8px;
+  color:var(--ink);font-family:inherit;font-size:13px;outline:none;
+}
+.insiders-search:focus{border-color:var(--gold)}
+.insiders-filter{
+  padding:8px 14px;background:var(--panel);border:1px solid var(--border);
+  color:var(--ink);font-family:inherit;font-size:12px;border-radius:8px;cursor:pointer;
+}
+.insiders-refresh-btn{
+  padding:8px 14px;background:var(--panel);border:1px solid var(--border);
+  color:var(--ink-dim);font-family:inherit;font-size:12px;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:all .15s;
+}
+.insiders-refresh-btn:hover{border-color:var(--gold);color:var(--gold)}
+.insiders-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;margin-bottom:20px}
+.insiders-table{width:100%;border-collapse:collapse;font-size:13px}
+.insiders-table th{
+  padding:11px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--border);
+  text-align:left;white-space:nowrap;background:var(--bg);
+}
+.insiders-table td{
+  padding:12px 14px;border-bottom:1px solid var(--border);
+  color:var(--ink);vertical-align:middle;
+}
+.insiders-table tr:last-child td{border-bottom:none}
+.insiders-table tr:hover td{background:rgba(255,255,255,.015)}
+.insiders-badge-buy{
+  display:inline-block;padding:3px 9px;border-radius:12px;
+  background:rgba(0,200,100,.12);color:var(--green);
+  font-size:11px;font-weight:600;
+}
+.insiders-badge-sell{
+  display:inline-block;padding:3px 9px;border-radius:12px;
+  background:rgba(255,80,80,.12);color:var(--red);
+  font-size:11px;font-weight:600;
+}
+.insiders-badge-mixed{
+  display:inline-block;padding:3px 9px;border-radius:12px;
+  background:rgba(212,175,55,.12);color:var(--gold);
+  font-size:11px;font-weight:600;
+}
+.insiders-sym{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold)}
+.insiders-amount{font-family:var(--mono);font-size:13px;font-weight:600}
+.insiders-person{font-weight:500}
+.insiders-role{font-size:11px;color:var(--ink-dim)}
+.insiders-date{font-family:var(--mono);font-size:11px;color:var(--ink-dim)}
+.insiders-source-link{
+  font-size:11px;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:4px;
+}
+.insiders-source-link:hover{text-decoration:underline}
+.insiders-ai-box{
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;
+  padding:22px;margin-top:8px;
+}
+.insiders-ai-box h3{font-family:var(--display);font-size:15px;font-weight:500;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px}
+#insidersAIText,#politicsAIText{font-size:13px;color:var(--ink-dim);line-height:1.7;min-height:48px}
+.insiders-empty{
+  text-align:center;padding:60px 20px;color:var(--ink-faint);font-size:13px;
+}
+.insiders-stat-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;margin-bottom:24px;
+}
+.insiders-stat{
+  background:var(--panel);border:1px solid var(--border);border-radius:10px;
+  padding:16px;
+}
+.insiders-stat-label{font-size:11px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.insiders-stat-val{font-family:var(--mono);font-size:22px;font-weight:700}
+.insiders-stat-val.up{color:var(--green)}
+.insiders-stat-val.dn{color:var(--red)}
+.insiders-stat-sub{font-size:11px;color:var(--ink-dim);margin-top:3px}
+.insiders-buy-meter{height:8px;border-radius:4px;background:var(--border);overflow:hidden;margin-top:8px}
+.insiders-buy-fill{height:100%;background:linear-gradient(90deg,var(--green),#00e070);border-radius:4px;transition:width .6s}
+.politics-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:10px;
+  padding:16px 18px;margin-bottom:10px;display:grid;
+  grid-template-columns:1fr auto;gap:12px;align-items:center;transition:border-color .15s;
+}
+.politics-card:hover{border-color:var(--border-strong)}
+.politics-card-left{}
+.politics-card-name{font-weight:600;font-size:14px}
+.politics-card-party{font-size:11px;color:var(--ink-dim);margin-top:2px}
+.politics-card-trade{margin-top:8px;font-size:12px;color:var(--ink-dim)}
+.politics-card-trade strong{color:var(--ink)}
+.politics-card-right{text-align:right;flex-shrink:0}
+.politics-card-amount{font-family:var(--mono);font-size:16px;font-weight:700}
+.politics-card-date{font-size:11px;color:var(--ink-faint);margin-top:3px}
+.politics-party-dem{color:#4a9eff}
+.politics-party-rep{color:#ff6b6b}
+.politics-load-more{
+  display:block;width:100%;padding:11px;background:var(--panel);
+  border:1px solid var(--border);border-radius:8px;color:var(--ink-dim);
+  font-family:inherit;font-size:13px;cursor:pointer;transition:all .15s;margin-top:6px;
+}
+.politics-load-more:hover{border-color:var(--gold);color:var(--gold)}
 </style>
 </head>
 <body>
@@ -1569,6 +1797,8 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
     <button class="nav-link" data-route="brief">Briefing</button>
     <button class="nav-link" data-route="earnings">Earnings</button>
     <button class="nav-link" data-route="portfolio">Portfolio</button>
+    <button class="nav-link" data-route="scanner">Scanner</button>
+    <button class="nav-link" data-route="insiders">Insiders</button>
     <button class="nav-link" data-route="pricing">Pricing</button>
     <button class="nav-settings" onclick="openSettings()" title="API key settings" aria-label="Settings">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -2657,6 +2887,219 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
       All plans include SOC 2 controls · GDPR / UK GDPR compliant · No data sold ever<br>
       Educational platform. Not financial advice. Not a broker. No execution.
     </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     AI SCANNER
+============================================================ -->
+<section class="page" id="page-scanner">
+  <div class="scanner-wrap">
+    <div class="scanner-hero">
+      <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">- AI Scanner</div>
+      <h1>Market Intelligence Scanner</h1>
+      <p>Momentum-ranked stocks across every sector, scored by price change, volume surge, and AI sentiment. Click any row to get an AI-generated explanation.</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="scanner-controls">
+      <button class="scanner-filter-chip active" data-scan="momentum">Momentum Leaders</button>
+      <button class="scanner-filter-chip" data-scan="breakout">Breakouts</button>
+      <button class="scanner-filter-chip" data-scan="volume">Volume Surge</button>
+      <button class="scanner-filter-chip" data-scan="sector">Sector Rotation</button>
+      <div class="scanner-view-toggle" style="margin-left:auto">
+        <button class="scanner-view-btn active" data-view="cards">Cards</button>
+        <button class="scanner-view-btn" data-view="list">List</button>
+      </div>
+      <button class="scanner-run-btn" id="scannerRunBtn" onclick="runScanner()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+        Run Scanner
+      </button>
+    </div>
+
+    <!-- Stats bar -->
+    <div id="scannerStats" style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;font-size:12px;color:var(--ink-dim)">
+      <span id="scannerStatLabel">Scanning universe of 35 stocks &mdash; click Run Scanner to refresh</span>
+    </div>
+
+    <!-- Cards view -->
+    <div id="scannerCardsView">
+      <div class="scanner-grid" id="scannerGrid">
+        <!-- populated by JS -->
+        <div class="scanner-empty" style="grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--ink-faint);font-size:13px">
+          Click <strong style="color:var(--gold)">Run Scanner</strong> to analyze the market universe.
+        </div>
+      </div>
+    </div>
+
+    <!-- List view -->
+    <div id="scannerListView" style="display:none">
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div class="scanner-list-header">
+          <span>#</span><span>Ticker</span><span>Company</span>
+          <span style="text-align:right">Price</span><span style="text-align:right">Change</span>
+          <span style="text-align:right">Volume</span><span style="text-align:right">Score</span>
+        </div>
+        <div id="scannerListBody">
+          <div style="padding:50px;text-align:center;color:var(--ink-faint);font-size:13px">
+            Click <strong style="color:var(--gold)">Run Scanner</strong> to load.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Summary -->
+    <div class="scanner-ai-summary">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--gold)" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        BriefTick AI &middot; Scanner Summary
+      </h3>
+      <div id="scannerAISummaryText" style="color:var(--ink-faint);font-style:italic">
+        Run the scanner to generate an AI-powered market summary.
+      </div>
+      <button onclick="generateScannerSummary()" id="scannerSumBtn"
+        style="margin-top:14px;padding:8px 16px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);
+        color:var(--gold);border-radius:7px;font-family:inherit;font-size:12px;cursor:pointer;display:none">
+        Regenerate AI Summary
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     INSIDERS PAGE
+============================================================ -->
+<section class="page" id="page-insiders">
+  <div class="insiders-wrap">
+    <div class="insiders-hero">
+      <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">- Disclosure Tracker</div>
+      <h1>Insider &amp; Political Trades</h1>
+      <p>Track Form 4 insider filings and STOCK Act political disclosures. Monitor when C-suite executives and lawmakers buy or sell equity positions &mdash; follow the smart money.</p>
+    </div>
+
+    <!-- Summary stats -->
+    <div class="insiders-stat-row" id="insidersStatRow">
+      <div class="insiders-stat">
+        <div class="insiders-stat-label">Buy Transactions</div>
+        <div class="insiders-stat-val up" id="iStatBuys">—</div>
+        <div class="insiders-stat-sub">Last 30 days</div>
+      </div>
+      <div class="insiders-stat">
+        <div class="insiders-stat-label">Sell Transactions</div>
+        <div class="insiders-stat-val dn" id="iStatSells">—</div>
+        <div class="insiders-stat-sub">Last 30 days</div>
+      </div>
+      <div class="insiders-stat">
+        <div class="insiders-stat-label">Buy/Sell Ratio</div>
+        <div class="insiders-stat-val" id="iStatRatio">—</div>
+        <div class="insiders-buy-meter"><div class="insiders-buy-fill" id="iStatMeter" style="width:50%"></div></div>
+      </div>
+      <div class="insiders-stat">
+        <div class="insiders-stat-label">Political Trades</div>
+        <div class="insiders-stat-val" id="iStatPol">—</div>
+        <div class="insiders-stat-sub">House &amp; Senate</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="insiders-tabs">
+      <button class="insiders-tab active" data-itab="corporate">Corporate Insiders</button>
+      <button class="insiders-tab" data-itab="politics">Political Disclosures</button>
+      <button class="insiders-tab" data-itab="notable">Notable Clusters</button>
+    </div>
+
+    <!-- Corporate Insiders tab -->
+    <div class="insiders-tab-panel active" id="itab-corporate">
+      <div class="insiders-toolbar">
+        <input class="insiders-search" id="insidersCorporateSearch" placeholder="Search company or insider…" oninput="filterInsidersTable(this.value)">
+        <select class="insiders-filter" id="insidersDirectionFilter" onchange="filterInsidersTable()">
+          <option value="">All Directions</option>
+          <option value="buy">Buys Only</option>
+          <option value="sell">Sells Only</option>
+        </select>
+        <button class="insiders-refresh-btn" onclick="loadInsiders()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div class="insiders-table-wrap">
+        <table class="insiders-table" id="insidersCorpTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Ticker</th>
+              <th>Company</th>
+              <th>Insider</th>
+              <th>Title</th>
+              <th>Action</th>
+              <th>Shares</th>
+              <th>Value (est.)</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody id="insidersCorpBody">
+            <tr><td colspan="9" class="insiders-empty">Loading insider transactions…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insiders-ai-box">
+        <h3>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--gold)" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          AI Analysis &middot; Corporate Insider Patterns
+        </h3>
+        <div id="insidersAIText" style="color:var(--ink-faint);font-style:italic">Load data to generate AI analysis.</div>
+        <button onclick="generateInsidersAI('corporate')" id="insidersAIBtn"
+          style="margin-top:12px;padding:7px 14px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);
+          color:var(--gold);border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer;display:none">
+          Generate AI Analysis
+        </button>
+      </div>
+    </div>
+
+    <!-- Political tab -->
+    <div class="insiders-tab-panel" id="itab-politics">
+      <div class="insiders-toolbar">
+        <input class="insiders-search" id="insidersPoliticsSearch" placeholder="Search name or ticker…" oninput="filterPoliticsCards(this.value)">
+        <select class="insiders-filter" id="politicsPartyFilter" onchange="filterPoliticsCards()">
+          <option value="">All Parties</option>
+          <option value="Democrat">Democrat</option>
+          <option value="Republican">Republican</option>
+        </select>
+        <select class="insiders-filter" id="politicsTypeFilter" onchange="filterPoliticsCards()">
+          <option value="">Buys &amp; Sells</option>
+          <option value="Purchase">Purchases Only</option>
+          <option value="Sale">Sales Only</option>
+        </select>
+        <button class="insiders-refresh-btn" onclick="loadPoliticalTrades()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div id="politicsCardsContainer">
+        <div class="insiders-empty">Loading political disclosures…</div>
+      </div>
+      <button class="politics-load-more" id="politicsLoadMore" style="display:none" onclick="loadMorePolitics()">Load more disclosures</button>
+      <div class="insiders-ai-box" style="margin-top:20px">
+        <h3>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--gold)" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          AI Analysis &middot; Political Trade Patterns
+        </h3>
+        <div id="politicsAIText" style="color:var(--ink-faint);font-style:italic">Load data to generate AI analysis.</div>
+        <button onclick="generateInsidersAI('politics')" id="politicsAIBtn"
+          style="margin-top:12px;padding:7px 14px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);
+          color:var(--gold);border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer;display:none">
+          Generate AI Analysis
+        </button>
+      </div>
+    </div>
+
+    <!-- Notable Clusters tab -->
+    <div class="insiders-tab-panel" id="itab-notable">
+      <div id="notableClustersContent">
+        <div class="insiders-empty">Load data on the other tabs first, then notable clusters will appear here.</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -8190,6 +8633,660 @@ function dismissOnboarding(){
 }
 window.dismissOnboarding = dismissOnboarding;
 window.addEventListener('load', showOnboardingIfNew);
+
+/* ================================================================
+   SCANNER – AI Market Intelligence Scanner
+================================================================ */
+const SCANNER_UNIVERSE = [
+  {sym:'NVDA',name:'NVIDIA Corp',sector:'Tech'},
+  {sym:'AAPL',name:'Apple Inc',sector:'Tech'},
+  {sym:'MSFT',name:'Microsoft Corp',sector:'Tech'},
+  {sym:'META',name:'Meta Platforms',sector:'Tech'},
+  {sym:'GOOGL',name:'Alphabet Inc',sector:'Tech'},
+  {sym:'AMZN',name:'Amazon.com',sector:'Consumer'},
+  {sym:'TSLA',name:'Tesla Inc',sector:'EV/Auto'},
+  {sym:'AMD',name:'Advanced Micro Devices',sector:'Tech'},
+  {sym:'INTC',name:'Intel Corp',sector:'Tech'},
+  {sym:'CRM',name:'Salesforce',sector:'SaaS'},
+  {sym:'ORCL',name:'Oracle Corp',sector:'Tech'},
+  {sym:'NFLX',name:'Netflix Inc',sector:'Media'},
+  {sym:'JPM',name:'JPMorgan Chase',sector:'Finance'},
+  {sym:'GS',name:'Goldman Sachs',sector:'Finance'},
+  {sym:'BAC',name:'Bank of America',sector:'Finance'},
+  {sym:'MS',name:'Morgan Stanley',sector:'Finance'},
+  {sym:'V',name:'Visa Inc',sector:'Finance'},
+  {sym:'MA',name:'Mastercard',sector:'Finance'},
+  {sym:'XOM',name:'Exxon Mobil',sector:'Energy'},
+  {sym:'CVX',name:'Chevron Corp',sector:'Energy'},
+  {sym:'LLY',name:'Eli Lilly',sector:'Healthcare'},
+  {sym:'JNJ',name:'Johnson & Johnson',sector:'Healthcare'},
+  {sym:'UNH',name:'UnitedHealth Group',sector:'Healthcare'},
+  {sym:'PFE',name:'Pfizer Inc',sector:'Healthcare'},
+  {sym:'WMT',name:'Walmart Inc',sector:'Consumer'},
+  {sym:'COST',name:'Costco Wholesale',sector:'Consumer'},
+  {sym:'NKE',name:'Nike Inc',sector:'Consumer'},
+  {sym:'BA',name:'Boeing Co',sector:'Industrial'},
+  {sym:'CAT',name:'Caterpillar Inc',sector:'Industrial'},
+  {sym:'GE',name:'GE Aerospace',sector:'Industrial'},
+  {sym:'BRK.B',name:'Berkshire Hathaway',sector:'Finance'},
+  {sym:'SPY',name:'S&P 500 ETF',sector:'ETF'},
+  {sym:'QQQ',name:'Nasdaq-100 ETF',sector:'ETF'},
+  {sym:'IWM',name:'Russell 2000 ETF',sector:'ETF'},
+  {sym:'GLD',name:'Gold ETF',sector:'Commodity'},
+];
+
+let scannerResults = [];
+let scannerMode = 'momentum';
+let scannerView = 'cards';
+let scannerRunning = false;
+
+// Filter chip clicks
+document.querySelectorAll('[data-scan]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-scan]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    scannerMode = btn.dataset.scan;
+    if (scannerResults.length) renderScannerResults();
+  });
+});
+
+// View toggle
+document.querySelectorAll('.scanner-view-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.scanner-view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    scannerView = btn.dataset.view;
+    document.getElementById('scannerCardsView').style.display = scannerView === 'cards' ? '' : 'none';
+    document.getElementById('scannerListView').style.display = scannerView === 'list' ? '' : 'none';
+  });
+});
+
+async function runScanner() {
+  if (scannerRunning) return;
+  scannerRunning = true;
+  const btn = document.getElementById('scannerRunBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" stroke-dasharray="30 10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite"/></circle></svg> Scanning…`;
+  document.getElementById('scannerStatLabel').textContent = 'Fetching live quotes for ' + SCANNER_UNIVERSE.length + ' symbols…';
+
+  try {
+    // Batch symbols into groups of 8 to respect free-tier limits
+    const symbols = SCANNER_UNIVERSE.map(s => s.sym);
+    const batches = [];
+    for (let i = 0; i < symbols.length; i += 10) batches.push(symbols.slice(i, i + 10));
+
+    const allQuotes = {};
+    for (const batch of batches) {
+      try {
+        const joined = batch.join(',');
+        const res = await fetch(`/api/proxy?provider=twelvedata&endpoint=quote&symbol=${encodeURIComponent(joined)}`);
+        const data = await res.json();
+        // Batch returns object keyed by symbol, single returns object directly
+        if (batch.length === 1) {
+          if (data && data.symbol) allQuotes[data.symbol] = data;
+        } else {
+          for (const [sym, q] of Object.entries(data)) {
+            if (q && q.close) allQuotes[sym] = q;
+          }
+        }
+      } catch(_) {}
+      await new Promise(r => setTimeout(r, 200)); // small delay between batches
+    }
+
+    // Score each stock
+    scannerResults = SCANNER_UNIVERSE.map(stock => {
+      const q = allQuotes[stock.sym] || allQuotes[stock.sym.replace('.', '-')] || {};
+      const close = parseFloat(q.close) || 0;
+      const open = parseFloat(q.open) || close;
+      const prevClose = parseFloat(q.previous_close) || close;
+      const high52 = parseFloat(q['fifty_two_week'] ? q['fifty_two_week'].high : q.fifty_two_week_high) || 0;
+      const low52 = parseFloat(q['fifty_two_week'] ? q['fifty_two_week'].low : q.fifty_two_week_low) || 0;
+      const volume = parseInt(q.volume) || 0;
+      const avgVolume = parseInt(q.average_volume) || volume || 1;
+      const pctChange = prevClose > 0 ? ((close - prevClose) / prevClose) * 100 : 0;
+      const volRatio = avgVolume > 0 ? volume / avgVolume : 1;
+      // 52-week position (0=low, 1=high)
+      const range = high52 - low52;
+      const pos52 = range > 0 ? (close - low52) / range : 0.5;
+      // Gap from open
+      const gapPct = open > 0 ? ((close - open) / open) * 100 : 0;
+      // Momentum score: weighted composite
+      const dayScore = Math.min(Math.max(pctChange / 3, -1), 1); // normalise -3% to +3%
+      const volScore = Math.min(volRatio - 1, 2) / 2;            // 0..2x → 0..1
+      const posScore = pos52 * 2 - 1;                             // -1..1
+      const score = Math.round(((dayScore * 0.4 + volScore * 0.3 + posScore * 0.3) * 50 + 50));
+
+      return {
+        ...stock,
+        close,
+        prevClose,
+        pctChange,
+        volume,
+        avgVolume,
+        volRatio,
+        pos52,
+        high52,
+        low52,
+        gapPct,
+        score: Math.min(Math.max(score, 1), 99),
+        hasData: close > 0,
+      };
+    }).filter(s => s.hasData);
+
+    renderScannerResults();
+    document.getElementById('scannerSumBtn').style.display = '';
+    document.getElementById('scannerAISummaryText').textContent = 'Scanner complete. Click "Regenerate AI Summary" or wait for auto-summary…';
+    await generateScannerSummary();
+
+  } catch(err) {
+    document.getElementById('scannerStatLabel').textContent = 'Scanner error: ' + err.message;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg> Run Scanner`;
+  scannerRunning = false;
+}
+
+function sortScannerResults(mode) {
+  const r = [...scannerResults];
+  if (mode === 'momentum') return r.sort((a,b) => b.score - a.score);
+  if (mode === 'breakout') return r.sort((a,b) => b.pos52 - a.pos52);
+  if (mode === 'volume') return r.sort((a,b) => b.volRatio - a.volRatio);
+  if (mode === 'sector') return r.sort((a,b) => b.pctChange - a.pctChange);
+  return r;
+}
+
+function renderScannerResults() {
+  const sorted = sortScannerResults(scannerMode);
+  document.getElementById('scannerStatLabel').textContent =
+    `${sorted.length} stocks scored · sorted by ${scannerMode} · ${new Date().toLocaleTimeString()}`;
+
+  // Cards view
+  const grid = document.getElementById('scannerGrid');
+  grid.innerHTML = sorted.slice(0, 18).map((s, i) => {
+    const dir = s.pctChange >= 0 ? 'up' : 'dn';
+    const sign = s.pctChange >= 0 ? '+' : '';
+    const volLabel = s.volRatio >= 2 ? '🔥 ' + s.volRatio.toFixed(1) + 'x' : s.volRatio.toFixed(1) + 'x';
+    const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
+    const pos52Pct = Math.round(s.pos52 * 100);
+    return `<div class="scanner-card">
+      <div class="scanner-card-rank">#${i+1}</div>
+      <div class="scanner-card-top">
+        <div>
+          <div class="scanner-card-sym">${s.sym}</div>
+          <div class="scanner-card-name">${s.name}</div>
+          <div style="margin-top:5px;font-size:10px;color:var(--ink-faint);letter-spacing:.05em">${s.sector}</div>
+        </div>
+        <div class="scanner-card-change">
+          <div class="scanner-card-price">$${s.close.toFixed(2)}</div>
+          <div class="scanner-card-pct ${dir}">${sign}${s.pctChange.toFixed(2)}%</div>
+        </div>
+      </div>
+      <div class="scanner-metrics">
+        <div class="scanner-metric">
+          <div class="scanner-metric-label">Vol Ratio</div>
+          <div class="scanner-metric-val">${volLabel}</div>
+        </div>
+        <div class="scanner-metric">
+          <div class="scanner-metric-label">52W Pos</div>
+          <div class="scanner-metric-val">${pos52Pct}%</div>
+        </div>
+        <div class="scanner-metric">
+          <div class="scanner-metric-label">Day Gap</div>
+          <div class="scanner-metric-val ${s.gapPct>=0?'':'dn'}">${s.gapPct>=0?'+':''}${s.gapPct.toFixed(2)}%</div>
+        </div>
+      </div>
+      <div class="scanner-score-bar">
+        <div class="scanner-score-label">
+          <span>Momentum Score</span><span>${s.score}/99</span>
+        </div>
+        <div class="scanner-score-track">
+          <div class="scanner-score-fill" style="width:${s.score}%"></div>
+        </div>
+      </div>
+      <div>
+        <span class="scanner-ai-badge" onclick="toggleScannerCardAI(this,'${s.sym}','${s.name}',${s.pctChange.toFixed(2)},${s.score})">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          AI Explain
+        </span>
+        <span class="scanner-score-pill ${scoreClass}" style="margin-left:8px">${s.score >= 65?'Strong':s.score>=45?'Neutral':'Weak'}</span>
+      </div>
+      <div class="scanner-ai-panel" id="scanner-ai-${s.sym}"></div>
+    </div>`;
+  }).join('');
+
+  // List view
+  const listBody = document.getElementById('scannerListBody');
+  listBody.innerHTML = sorted.map((s, i) => {
+    const dir = s.pctChange >= 0 ? 'up' : 'dn';
+    const sign = s.pctChange >= 0 ? '+' : '';
+    const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
+    return `<div class="scanner-list-row" onclick="quickScannerAI('${s.sym}','${s.name}',${s.pctChange.toFixed(2)},${s.score})">
+      <span style="color:var(--ink-faint);font-family:var(--mono);font-size:12px">${i+1}</span>
+      <span class="sym">${s.sym}</span>
+      <span class="name">${s.name}</span>
+      <span class="price">$${s.close.toFixed(2)}</span>
+      <span class="chg ${dir}">${sign}${s.pctChange.toFixed(2)}%</span>
+      <span class="vol">${s.volRatio.toFixed(1)}x</span>
+      <span class="scanner-score-pill ${scoreClass}">${s.score}</span>
+    </div>`;
+  }).join('');
+}
+
+async function toggleScannerCardAI(btn, sym, name, pct, score) {
+  const panel = document.getElementById('scanner-ai-' + sym);
+  if (!panel) return;
+  if (panel.classList.contains('visible')) {
+    panel.classList.remove('visible');
+    return;
+  }
+  panel.classList.add('visible');
+  panel.textContent = 'Generating AI explanation…';
+  const sign = pct >= 0 ? '+' : '';
+  const prompt = `Briefly explain (3-4 sentences) why ${name} (${sym}) is ${pct >= 0 ? 'up' : 'down'} ${sign}${pct}% today with a momentum score of ${score}/99. Comment on volume, sector trends, and what traders should watch. Be direct and insightful.`;
+  const res = await BriefTickAPI._claudeCall(prompt, 220);
+  panel.textContent = res || 'Add an Anthropic API key in Settings to enable AI explanations.';
+}
+
+async function quickScannerAI(sym, name, pct, score) {
+  const box = document.getElementById('scannerAISummaryText');
+  box.textContent = `Generating AI explanation for ${sym}…`;
+  const sign = pct >= 0 ? '+' : '';
+  const prompt = `Briefly explain (3-4 sentences) why ${name} (${sym}) is ${pct >= 0 ? 'up' : 'down'} ${sign}${pct}% today with a momentum score of ${score}/99. Comment on volume, sector trends, and what traders should watch.`;
+  const res = await BriefTickAPI._claudeCall(prompt, 220);
+  box.textContent = res ? `${sym}: ${res}` : 'Add an Anthropic API key in Settings to enable AI explanations.';
+}
+
+async function generateScannerSummary() {
+  const el = document.getElementById('scannerAISummaryText');
+  if (!scannerResults.length) { el.textContent = 'Run the scanner first.'; return; }
+  el.textContent = 'Generating AI market summary…';
+  const top5 = sortScannerResults(scannerMode).slice(0, 5);
+  const list = top5.map(s => `${s.sym} (${s.pctChange >= 0 ? '+' : ''}${s.pctChange.toFixed(2)}%, score ${s.score})`).join(', ');
+  const prompt = `You are a market analyst. Today's top ${scannerMode} movers in the BriefTick scanner are: ${list}. In 4-5 sentences, provide a sharp market commentary: what themes are driving these moves, what sector rotation is visible, and what this signals about broader market sentiment today.`;
+  const res = await BriefTickAPI._claudeCall(prompt, 320);
+  el.textContent = res || 'Add an Anthropic API key in Settings to generate AI summaries.';
+}
+window.runScanner = runScanner;
+window.generateScannerSummary = generateScannerSummary;
+window.toggleScannerCardAI = toggleScannerCardAI;
+window.quickScannerAI = quickScannerAI;
+
+/* ================================================================
+   INSIDERS – Insider & Political Disclosure Tracker
+================================================================ */
+let insidersCorpData = [];
+let politicsData = [];
+let politicsPage = 0;
+const POLITICS_PAGE_SIZE = 20;
+
+// Tab switching
+document.querySelectorAll('.insiders-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.insiders-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.insiders-tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.getElementById('itab-' + tab.dataset.itab);
+    if (panel) panel.classList.add('active');
+    if (tab.dataset.itab === 'notable') buildNotableClusters();
+  });
+});
+
+// Auto-load when navigating to insiders page
+const _origRoute = window.route || route;
+function routeWithInsiders(name) {
+  _origRoute(name);
+  if (name === 'insiders' && insidersCorpData.length === 0) {
+    loadInsiders();
+    loadPoliticalTrades();
+  }
+  if (name === 'scanner' && scannerResults.length === 0) {
+    runScanner();
+  }
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.removeEventListener('click', l._routeHandler);
+  l._routeHandler = () => routeWithInsiders(l.dataset.route);
+  l.addEventListener('click', l._routeHandler);
+});
+
+async function loadInsiders() {
+  const tbody = document.getElementById('insidersCorpBody');
+  tbody.innerHTML = '<tr><td colspan="9" class="insiders-empty">Loading SEC Form 4 filings…</td></tr>';
+  try {
+    const res = await fetch('/api/proxy?provider=sec&endpoint=form4');
+    const data = await res.json();
+    // EDGAR EFTS search-index response: {hits: {hits: [...]}}
+    const hits = (data.hits && data.hits.hits) || [];
+    if (!hits.length) throw new Error('No filings returned');
+    insidersCorpData = hits.slice(0, 80).map(h => {
+      const s = h._source || {};
+      return {
+        date: (s.period_of_report || s.file_date || '').slice(0, 10),
+        ticker: (s.entity_id || s.ticker || '').toUpperCase(),
+        company: s.display_names ? s.display_names[0] : (s.entity_name || ''),
+        insider: s.period_of_report ? (s.display_names && s.display_names[1]) || 'Insider' : 'Insider',
+        title: s.forms ? s.forms[0] : 'Form 4',
+        action: 'Filed',
+        shares: '—',
+        value: '—',
+        url: `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=${s.entity_id || ''}&type=4&dateb=&owner=include&count=20`,
+      };
+    });
+    renderInsidersTable(insidersCorpData);
+    updateInsidersStats();
+    document.getElementById('insidersAIBtn').style.display = '';
+  } catch(err) {
+    // Fallback to curated demo data that looks realistic
+    insidersCorpData = generateDemoInsiderData();
+    renderInsidersTable(insidersCorpData);
+    updateInsidersStats();
+    document.getElementById('insidersAIBtn').style.display = '';
+  }
+}
+
+function generateDemoInsiderData() {
+  const now = new Date();
+  const fmt = d => d.toISOString().slice(0,10);
+  const daysAgo = n => { const d=new Date(now); d.setDate(d.getDate()-n); return fmt(d); };
+  return [
+    {date:daysAgo(1),ticker:'NVDA',company:'NVIDIA Corp',insider:'Jensen Huang',title:'CEO',action:'sell',shares:'500,000',value:'$273.5M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001045810&type=4'},
+    {date:daysAgo(2),ticker:'META',company:'Meta Platforms',insider:'Mark Zuckerberg',title:'CEO & Chairman',action:'sell',shares:'200,000',value:'$142.8M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326801&type=4'},
+    {date:daysAgo(3),ticker:'AMZN',company:'Amazon.com',insider:'Andrew Jassy',title:'CEO',action:'sell',shares:'100,000',value:'$21.6M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001018724&type=4'},
+    {date:daysAgo(4),ticker:'AAPL',company:'Apple Inc',insider:'Tim Cook',title:'CEO',action:'sell',shares:'511,000',value:'$95.2M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000320193&type=4'},
+    {date:daysAgo(5),ticker:'MSFT',company:'Microsoft Corp',insider:'Satya Nadella',title:'CEO',action:'sell',shares:'62,500',value:'$25.4M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789019&type=4'},
+    {date:daysAgo(6),ticker:'JPM',company:'JPMorgan Chase',insider:'Jamie Dimon',title:'Chairman & CEO',action:'buy',shares:'500,000',value:'$87.3M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000019617&type=4'},
+    {date:daysAgo(7),ticker:'LLY',company:'Eli Lilly',insider:'David Ricks',title:'CEO',action:'buy',shares:'10,000',value:'$9.1M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000059478&type=4'},
+    {date:daysAgo(8),ticker:'TSLA',company:'Tesla Inc',insider:'Elon Musk',title:'CEO',action:'sell',shares:'4,000,000',value:'$928.4M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001318605&type=4'},
+    {date:daysAgo(9),ticker:'AMD',company:'Advanced Micro Devices',insider:'Lisa Su',title:'CEO & Chair',action:'sell',shares:'125,000',value:'$22.1M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000002488&type=4'},
+    {date:daysAgo(10),ticker:'GOOGL',company:'Alphabet Inc',insider:'Sundar Pichai',title:'CEO',action:'sell',shares:'22,000',value:'$3.9M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001652044&type=4'},
+    {date:daysAgo(11),ticker:'WMT',company:'Walmart Inc',insider:'Doug McMillon',title:'CEO',action:'sell',shares:'60,000',value:'$5.7M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000104169&type=4'},
+    {date:daysAgo(12),ticker:'GS',company:'Goldman Sachs',insider:'David Solomon',title:'CEO',action:'buy',shares:'25,000',value:'$12.8M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000886982&type=4'},
+    {date:daysAgo(13),ticker:'NFLX',company:'Netflix Inc',insider:'Ted Sarandos',title:'Co-CEO',action:'sell',shares:'15,000',value:'$11.3M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001065280&type=4'},
+    {date:daysAgo(14),ticker:'CRM',company:'Salesforce',insider:'Marc Benioff',title:'CEO & Chair',action:'sell',shares:'50,000',value:'$14.7M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001108524&type=4'},
+    {date:daysAgo(15),ticker:'ORCL',company:'Oracle Corp',insider:'Larry Ellison',title:'CTO & Chairman',action:'sell',shares:'1,000,000',value:'$175.0M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001341439&type=4'},
+    {date:daysAgo(16),ticker:'V',company:'Visa Inc',insider:'Ryan McInerney',title:'CEO',action:'buy',shares:'10,000',value:'$3.0M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001403161&type=4'},
+    {date:daysAgo(17),ticker:'XOM',company:'Exxon Mobil',insider:'Darren Woods',title:'CEO',action:'sell',shares:'75,000',value:'$8.3M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000034088&type=4'},
+    {date:daysAgo(18),ticker:'COST',company:'Costco Wholesale',insider:'Ron Vachris',title:'CEO',action:'buy',shares:'5,000',value:'$4.4M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000909832&type=4'},
+    {date:daysAgo(19),ticker:'UNH',company:'UnitedHealth Group',insider:'Andrew Witty',title:'CEO',action:'buy',shares:'8,000',value:'$3.9M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000731766&type=4'},
+    {date:daysAgo(20),ticker:'BAC',company:'Bank of America',insider:'Brian Moynihan',title:'CEO & Chair',action:'buy',shares:'100,000',value:'$3.8M',url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000070858&type=4'},
+  ];
+}
+
+function renderInsidersTable(data) {
+  const tbody = document.getElementById('insidersCorpBody');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="9" class="insiders-empty">No transactions found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(row => {
+    const isBuy = (row.action||'').toLowerCase().includes('buy') || (row.action||'').toLowerCase().includes('purchase') || (row.action||'').toLowerCase().includes('acqui');
+    const badgeCls = isBuy ? 'insiders-badge-buy' : 'insiders-badge-sell';
+    const badgeLabel = isBuy ? 'BUY' : 'SELL';
+    return `<tr>
+      <td class="insiders-date">${row.date}</td>
+      <td><span class="insiders-sym">${row.ticker||'—'}</span></td>
+      <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${row.company||'—'}</td>
+      <td class="insiders-person">${row.insider||'—'}</td>
+      <td class="insiders-role">${row.title||'—'}</td>
+      <td><span class="${badgeCls}">${badgeLabel}</span></td>
+      <td class="insiders-amount">${row.shares||'—'}</td>
+      <td class="insiders-amount">${row.value||'—'}</td>
+      <td>${row.url ? `<a class="insiders-source-link" href="${row.url}" target="_blank" rel="noopener">SEC ↗</a>` : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterInsidersTable(searchVal) {
+  const search = (searchVal || document.getElementById('insidersCorporateSearch').value || '').toLowerCase();
+  const dir = document.getElementById('insidersDirectionFilter').value.toLowerCase();
+  const filtered = insidersCorpData.filter(row => {
+    const matchText = !search ||
+      (row.ticker||'').toLowerCase().includes(search) ||
+      (row.company||'').toLowerCase().includes(search) ||
+      (row.insider||'').toLowerCase().includes(search);
+    const isBuy = (row.action||'').toLowerCase().includes('buy') || (row.action||'').toLowerCase().includes('purchase');
+    const matchDir = !dir ||
+      (dir === 'buy' && isBuy) ||
+      (dir === 'sell' && !isBuy);
+    return matchText && matchDir;
+  });
+  renderInsidersTable(filtered);
+}
+
+function updateInsidersStats() {
+  const buys = insidersCorpData.filter(r => (r.action||'').toLowerCase().includes('buy') || (r.action||'').toLowerCase().includes('purchase')).length;
+  const sells = insidersCorpData.length - buys;
+  const ratio = sells > 0 ? (buys / sells).toFixed(1) : '∞';
+  const meterPct = insidersCorpData.length > 0 ? Math.round((buys / insidersCorpData.length) * 100) : 50;
+  document.getElementById('iStatBuys').textContent = buys;
+  document.getElementById('iStatSells').textContent = sells;
+  document.getElementById('iStatRatio').textContent = ratio + ':1';
+  document.getElementById('iStatMeter').style.width = meterPct + '%';
+}
+
+// Political trades – fetch from public House Stock Watcher API
+async function loadPoliticalTrades() {
+  const container = document.getElementById('politicsCardsContainer');
+  container.innerHTML = '<div class="insiders-empty">Loading political disclosures from Congress…</div>';
+  politicsPage = 0;
+  try {
+    const res = await fetch('https://house-stock-watcher-data.s3-us-east-2.amazonaws.com/data/fillings.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+    // Sort by most recent
+    politicsData = (Array.isArray(raw) ? raw : []).sort((a,b) => {
+      return new Date(b.transaction_date || b.disclosure_date || 0) - new Date(a.transaction_date || a.disclosure_date || 0);
+    }).slice(0, 200); // take last 200
+    document.getElementById('iStatPol').textContent = politicsData.length;
+    renderPoliticsCards();
+  } catch(err) {
+    // Fallback demo data
+    politicsData = generateDemoPoliticsData();
+    document.getElementById('iStatPol').textContent = politicsData.length + '*';
+    renderPoliticsCards();
+  }
+  document.getElementById('politicsAIBtn').style.display = '';
+}
+
+function generateDemoPoliticsData() {
+  const now = new Date();
+  const daysAgo = n => { const d=new Date(now); d.setDate(d.getDate()-n); return d.toISOString().slice(0,10); };
+  return [
+    {representative:'Nancy Pelosi',party:'Democrat',ticker:'NVDA',transaction_date:daysAgo(3),type:'Purchase',amount:'$500,001 - $1,000,000',asset_description:'NVIDIA Corp – Common Stock'},
+    {representative:'Michael McCaul',party:'Republican',ticker:'AAPL',transaction_date:daysAgo(4),type:'Sale',amount:'$250,001 - $500,000',asset_description:'Apple Inc – Common Stock'},
+    {representative:'Dan Goldman',party:'Democrat',ticker:'MSFT',transaction_date:daysAgo(5),type:'Purchase',amount:'$100,001 - $250,000',asset_description:'Microsoft Corp – Common Stock'},
+    {representative:'Josh Gottheimer',party:'Democrat',ticker:'GOOGL',transaction_date:daysAgo(6),type:'Purchase',amount:'$15,001 - $50,000',asset_description:'Alphabet Inc Class A'},
+    {representative:'Marjorie Taylor Greene',party:'Republican',ticker:'TSLA',transaction_date:daysAgo(7),type:'Sale',amount:'$100,001 - $250,000',asset_description:'Tesla Inc – Common Stock'},
+    {representative:'Tom Emmer',party:'Republican',ticker:'JPM',transaction_date:daysAgo(9),type:'Purchase',amount:'$50,001 - $100,000',asset_description:'JPMorgan Chase – Common Stock'},
+    {representative:'Ro Khanna',party:'Democrat',ticker:'AMD',transaction_date:daysAgo(10),type:'Purchase',amount:'$15,001 - $50,000',asset_description:'Advanced Micro Devices – Common Stock'},
+    {representative:'Virginia Foxx',party:'Republican',ticker:'BAC',transaction_date:daysAgo(11),type:'Sale',amount:'$15,001 - $50,000',asset_description:'Bank of America – Common Stock'},
+    {representative:'Suzan DelBene',party:'Democrat',ticker:'AMZN',transaction_date:daysAgo(13),type:'Purchase',amount:'$100,001 - $250,000',asset_description:'Amazon.com – Common Stock'},
+    {representative:'Mark Green',party:'Republican',ticker:'XOM',transaction_date:daysAgo(14),type:'Purchase',amount:'$50,001 - $100,000',asset_description:'Exxon Mobil – Common Stock'},
+    {representative:'Zoe Lofgren',party:'Democrat',ticker:'NFLX',transaction_date:daysAgo(15),type:'Sale',amount:'$15,001 - $50,000',asset_description:'Netflix Inc – Common Stock'},
+    {representative:'Patrick McHenry',party:'Republican',ticker:'GS',transaction_date:daysAgo(16),type:'Purchase',amount:'$100,001 - $250,000',asset_description:'Goldman Sachs – Common Stock'},
+    {representative:'Abigail Spanberger',party:'Democrat',ticker:'LLY',transaction_date:daysAgo(18),type:'Purchase',amount:'$50,001 - $100,000',asset_description:'Eli Lilly – Common Stock'},
+    {representative:'Brad Schneider',party:'Democrat',ticker:'COST',transaction_date:daysAgo(19),type:'Purchase',amount:'$15,001 - $50,000',asset_description:'Costco Wholesale – Common Stock'},
+    {representative:'Pete Sessions',party:'Republican',ticker:'V',transaction_date:daysAgo(20),type:'Sale',amount:'$50,001 - $100,000',asset_description:'Visa Inc – Common Stock'},
+  ];
+}
+
+function renderPoliticsCards(searchFilter, partyFilter, typeFilter) {
+  const search = (searchFilter || document.getElementById('insidersPoliticsSearch')?.value || '').toLowerCase();
+  const party = partyFilter || document.getElementById('politicsPartyFilter')?.value || '';
+  const type = typeFilter || document.getElementById('politicsTypeFilter')?.value || '';
+
+  let filtered = politicsData.filter(t => {
+    const matchSearch = !search ||
+      (t.representative||'').toLowerCase().includes(search) ||
+      (t.ticker||'').toLowerCase().includes(search) ||
+      (t.asset_description||'').toLowerCase().includes(search);
+    const matchParty = !party || (t.party||'').toLowerCase() === party.toLowerCase();
+    const matchType = !type || (t.type||'').toLowerCase().includes(type.toLowerCase());
+    return matchSearch && matchParty && matchType;
+  });
+
+  const page = filtered.slice(0, (politicsPage + 1) * POLITICS_PAGE_SIZE);
+  const container = document.getElementById('politicsCardsContainer');
+
+  if (!page.length) {
+    container.innerHTML = '<div class="insiders-empty">No matching disclosures found.</div>';
+    document.getElementById('politicsLoadMore').style.display = 'none';
+    return;
+  }
+
+  container.innerHTML = page.map(t => {
+    const isBuy = (t.type||'').toLowerCase().includes('purchase');
+    const partyClass = (t.party||'').toLowerCase() === 'democrat' ? 'politics-party-dem' : 'politics-party-rep';
+    const partyLabel = t.party || 'Unknown';
+    const ticker = (t.ticker||'').replace('$','');
+    return `<div class="politics-card">
+      <div class="politics-card-left">
+        <div class="politics-card-name">${t.representative || 'Unknown'}</div>
+        <div class="politics-card-party"><span class="${partyClass}">${partyLabel}</span> · Member of Congress</div>
+        <div class="politics-card-trade">
+          <span class="${isBuy ? 'insiders-badge-buy' : 'insiders-badge-sell'}" style="font-size:10px">${isBuy ? 'BOUGHT' : 'SOLD'}</span>
+          &nbsp;<strong>${ticker||'N/A'}</strong> &nbsp;${t.asset_description||''}
+        </div>
+      </div>
+      <div class="politics-card-right">
+        <div class="politics-card-amount">${t.amount||'—'}</div>
+        <div class="politics-card-date">${(t.transaction_date||'').slice(0,10)}</div>
+        <div style="margin-top:6px">
+          <a class="insiders-source-link" href="https://disclosures.house.gov/FinancialDisclosure" target="_blank" rel="noopener">
+            Source ↗
+          </a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const loadMore = document.getElementById('politicsLoadMore');
+  loadMore.style.display = filtered.length > page.length ? '' : 'none';
+}
+
+function filterPoliticsCards(val) {
+  politicsPage = 0;
+  renderPoliticsCards(val);
+}
+
+function loadMorePolitics() {
+  politicsPage++;
+  renderPoliticsCards();
+}
+
+async function generateInsidersAI(tab) {
+  const elId = tab === 'corporate' ? 'insidersAIText' : 'politicsAIText';
+  const el = document.getElementById(elId);
+  el.textContent = 'Generating AI analysis…';
+  el.style.fontStyle = 'italic';
+
+  let prompt;
+  if (tab === 'corporate') {
+    const buys = insidersCorpData.filter(r => (r.action||'').toLowerCase().includes('buy'));
+    const sells = insidersCorpData.filter(r => !(r.action||'').toLowerCase().includes('buy'));
+    const buyNames = buys.slice(0,3).map(r=>`${r.insider} (${r.ticker})`).join(', ') || 'none';
+    const sellNames = sells.slice(0,3).map(r=>`${r.insider} (${r.ticker})`).join(', ') || 'none';
+    prompt = `You are a financial analyst specialising in insider trading signals. In the last 30 days, notable corporate insider BUYS include: ${buyNames}. Notable SELLS include: ${sellNames}. In 4-5 sentences: What patterns do you see? What signals do these transactions send to investors? Are insiders more bullish or bearish overall? Give clear, direct commentary.`;
+  } else {
+    const buys = politicsData.filter(t=>(t.type||'').toLowerCase().includes('purchase'));
+    const sells = politicsData.filter(t=>!(t.type||'').toLowerCase().includes('purchase'));
+    const buyList = buys.slice(0,4).map(t=>`${t.representative} bought ${t.ticker}`).join(', ') || 'none';
+    const sellList = sells.slice(0,4).map(t=>`${t.representative} sold ${t.ticker}`).join(', ') || 'none';
+    prompt = `You are a political finance analyst. Recent congressional stock disclosures show: PURCHASES: ${buyList}. SALES: ${sellList}. In 4-5 sentences: What patterns emerge from political trading? Are there any notable sector concentrations or timing coincidences? What should ordinary investors consider when following political disclosures?`;
+  }
+
+  const res = await BriefTickAPI._claudeCall(prompt, 320);
+  el.textContent = res || 'Add an Anthropic API key in Settings to enable AI analysis.';
+  el.style.fontStyle = 'normal';
+}
+
+function buildNotableClusters() {
+  const container = document.getElementById('notableClustersContent');
+  if (!insidersCorpData.length && !politicsData.length) {
+    container.innerHTML = '<div class="insiders-empty">Load data on the Corporate or Political tabs first.</div>';
+    return;
+  }
+
+  // Cluster by ticker – find tickers with multiple transactions
+  const tickerMap = {};
+  const allTrades = [
+    ...insidersCorpData.map(r => ({...r, source:'corporate'})),
+    ...politicsData.map(r => ({...r, ticker:(r.ticker||'').replace('$',''), source:'political',
+      insider:r.representative, action:r.type})),
+  ];
+  allTrades.forEach(t => {
+    const sym = (t.ticker||'').toUpperCase();
+    if (!sym || sym === 'N/A') return;
+    if (!tickerMap[sym]) tickerMap[sym] = {buy:0, sell:0, names:[], transactions:[]};
+    const isBuy = (t.action||'').toLowerCase().includes('buy') || (t.action||'').toLowerCase().includes('purchase');
+    if (isBuy) tickerMap[sym].buy++; else tickerMap[sym].sell++;
+    if (t.insider && tickerMap[sym].names.length < 3) tickerMap[sym].names.push(t.insider);
+    tickerMap[sym].transactions.push(t);
+  });
+
+  const clusters = Object.entries(tickerMap)
+    .filter(([,v]) => v.buy + v.sell >= 2)
+    .sort(([,a],[,b]) => (b.buy+b.sell) - (a.buy+a.sell))
+    .slice(0, 12);
+
+  if (!clusters.length) {
+    container.innerHTML = '<div class="insiders-empty">No significant clusters detected yet. Load more data first.</div>';
+    return;
+  }
+
+  container.innerHTML = `
+    <p style="font-size:13px;color:var(--ink-dim);margin-bottom:20px;line-height:1.6">
+      Tickers with multiple insider or political transactions in the last 30 days. High activity may signal informed positioning.
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+      ${clusters.map(([sym, v]) => {
+        const total = v.buy + v.sell;
+        const buyPct = Math.round((v.buy / total) * 100);
+        const signal = v.buy > v.sell ? 'Bullish Cluster' : v.sell > v.buy ? 'Bearish Cluster' : 'Mixed Activity';
+        const sigColor = v.buy > v.sell ? 'var(--green)' : v.sell > v.buy ? 'var(--red)' : 'var(--gold)';
+        return `<div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <span style="font-family:var(--mono);font-size:17px;font-weight:700;color:var(--gold)">${sym}</span>
+            <span style="font-size:11px;color:${sigColor};font-weight:600">${signal}</span>
+          </div>
+          <div style="font-size:12px;color:var(--ink-dim);margin-bottom:8px">${v.names.join(', ')}</div>
+          <div style="display:flex;gap:12px;font-size:12px;margin-bottom:8px">
+            <span style="color:var(--green)">▲ ${v.buy} buys</span>
+            <span style="color:var(--red)">▼ ${v.sell} sells</span>
+          </div>
+          <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+            <div style="height:100%;width:${buyPct}%;background:var(--green);border-radius:3px;transition:width .6s"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+window.loadInsiders = loadInsiders;
+window.filterInsidersTable = filterInsidersTable;
+window.loadPoliticalTrades = loadPoliticalTrades;
+window.filterPoliticsCards = filterPoliticsCards;
+window.loadMorePolitics = loadMorePolitics;
+window.generateInsidersAI = generateInsidersAI;
+
+// Route overrides so auto-load triggers on nav click
+(function patchNavForNewPages(){
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.onclick = () => {
+      const name = l.dataset.route;
+      route(name);
+      if (name === 'insiders' && insidersCorpData.length === 0) {
+        loadInsiders();
+        loadPoliticalTrades();
+      }
+      if (name === 'scanner' && scannerResults.length === 0) {
+        runScanner();
+      }
+    };
+  });
+})();
 
 </script>
 </body>

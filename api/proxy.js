@@ -190,6 +190,40 @@ async function proxyFred(req, res) {
   }
 }
 
+async function proxySEC(req, res) {
+  const { endpoint, ...params } = req.query;
+  if (!endpoint) return res.status(400).json({ error: 'endpoint param required' });
+  const cacheKey = `sec:${endpoint}:${new URLSearchParams(params).toString()}`;
+  const ttl = 30 * 60_000; // 30 min
+  const cached = cacheGet(cacheKey, ttl);
+  if (cached) { res.setHeader('x-brieftick-cache', 'HIT'); return res.status(200).json(cached); }
+  try {
+    let url;
+    const today = new Date().toISOString().slice(0, 10);
+    const from = new Date(Date.now() - 21 * 86400000).toISOString().slice(0, 10);
+    if (endpoint === 'form4') {
+      url = `https://efts.sec.gov/LATEST/search-index?forms=4&dateRange=custom&fromDate=${params.from || from}&toDate=${params.to || today}`;
+    } else if (endpoint === 'search') {
+      url = `https://efts.sec.gov/LATEST/search-index?q=${encodeURIComponent(params.q || '')}&forms=${params.forms || '4'}&dateRange=custom&fromDate=${params.from || from}&toDate=${params.to || today}`;
+    } else if (endpoint === 'submissions') {
+      const cik = String(params.cik || '').replace(/\D/g, '').padStart(10, '0');
+      url = `https://data.sec.gov/submissions/CIK${cik}.json`;
+    } else {
+      return res.status(400).json({ error: 'unknown SEC endpoint' });
+    }
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'BriefTick/1.0 market-intelligence-app', 'Accept': 'application/json' }
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    cacheSet(cacheKey, data);
+    res.setHeader('x-brieftick-cache', 'MISS');
+    return res.status(200).json(data);
+  } catch (e) {
+    return res.status(502).json({ error: 'SEC fetch failed', detail: e.message });
+  }
+}
+
 export default async function handler(req, res) {
   setCors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
@@ -201,7 +235,8 @@ export default async function handler(req, res) {
     if (provider === 'alphavantage') return await proxyAlphaVantage(req, res);
     if (provider === 'anthropic')    return await proxyAnthropic(req, res);
     if (provider === 'fred')         return await proxyFred(req, res);
-    return res.status(400).json({ error: 'unknown provider. use twelvedata, finnhub, alphavantage, anthropic, or fred' });
+    if (provider === 'sec')          return await proxySEC(req, res);
+    return res.status(400).json({ error: 'unknown provider' });
   } catch (e) {
     return res.status(500).json({ error: 'proxy crashed', detail: e.message });
   }
