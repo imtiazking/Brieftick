@@ -2057,75 +2057,27 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
   <div class="brief">
     <div class="brief-cover">
       <div class="brief-cover-inner">
-        <div class="brief-eyebrow"><span class="pulse"></span> Morning Briefing · Saturday 09 May 2026</div>
-        <h1>Yields run, AI capex <em>wobbles</em>, and the dollar quietly reasserts itself.</h1>
+        <div class="brief-eyebrow"><span class="pulse"></span> <span id="briefEyebrow">Daily Brief · Loading…</span></div>
+        <h1 id="briefHeadline">Market <em>intelligence</em>, loading today's data…</h1>
         <div class="brief-meta">
-          <span><b>Read time</b> · 4 min</span>
-          <span><b>Tickers covered</b> · 23</span>
-          <span><b>Macro events</b> · 6</span>
+          <span><b>Date</b> · <span id="briefDate">–</span></span>
           <span><b>Author</b> · BriefTick AI</span>
+          <span><b>Source</b> · <span id="briefSource" style="color:var(--ink-faint)">Finnhub · Twelve Data</span></span>
         </div>
         <div style="margin-top:24px">
           <button class="ai-gen-btn ai-gen-btn-large" onclick="generateLiveBriefing()" id="briefGenBtn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:6px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg>
             Generate fresh briefing from live data
           </button>
-          <div id="liveBriefingOutput" style="display:none;margin-top:24px;padding:20px;background:rgba(212,168,90,0.04);border:1px solid rgba(212,168,90,0.2);border-radius:8px;font-size:14px;line-height:1.7"></div>
         </div>
       </div>
     </div>
 
-    <div class="brief-section">
-      <h2><span class="num">01</span> The session in one paragraph</h2>
-      <div class="brief-text">
-        <p>US equities closed lower in a quiet, low-volume session that nonetheless told a clear story: <b>the rates trade is back</b>. The 10Y pushed above 4.42% intraday, dragging down long-duration growth - particularly <b>AI-infrastructure semis</b> - while the dollar firmed and gold caught a defensive bid. Energy outperformed on a softer USD-crude impulse and OPEC supply chatter. There was no single catalyst; this was rotation, not panic.</p>
-        <p>Beneath the index level, <b>cross-asset correlation has been quietly rebuilding</b>. Equity-bond correlation flipped positive again this week - historically a regime where diversification breaks down and macro overrides single-stock fundamentals.</p>
-      </div>
-      <div class="brief-takeaway"><b>Takeaway:</b> the market isn't worried - it's distracted. Watch yields and the dollar before reading too much into single-name moves.</div>
-    </div>
-
-    <div class="brief-section">
-      <h2><span class="num">02</span> Biggest movers</h2>
-      <div class="brief-text"><p>Standout names from the session, with the model's plain-English explanation of <i>why</i>.</p></div>
-      <div class="brief-movers-grid">
-        <div class="brief-mover">
-          <div class="top"><div class="sym">NVDA</div><div class="chg dn">−2.96%</div></div>
-          <div class="why">Hyperscaler capex pause chatter; broader AI-infra de-rate; yields up.</div>
-        </div>
-        <div class="brief-mover">
-          <div class="top"><div class="sym">XOM</div><div class="chg up">+1.84%</div></div>
-          <div class="why">Crude bid on softer USD and OPEC supply commentary; sector rotation.</div>
-        </div>
-        <div class="brief-mover">
-          <div class="top"><div class="sym">TSLA</div><div class="chg dn">−1.42%</div></div>
-          <div class="why">EV demand softness reposted from European registrations data.</div>
-        </div>
-        <div class="brief-mover">
-          <div class="top"><div class="sym">JPM</div><div class="chg up">+0.74%</div></div>
-          <div class="why">Higher yields supportive of NIM expectations; defensive bank bid.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="brief-section">
-      <h2><span class="num">03</span> Sectors under pressure</h2>
-      <div class="brief-text">
-        <p><b>Semiconductors</b> bore the brunt of today's risk-off rotation, with the SOX index closing at session lows. The weakness is mechanical: rising yields compress the present value of long-dated AI revenue assumptions, and once <b>NVDA breaks key technical levels</b>, correlated names follow.</p>
-        <p><b>Consumer discretionary</b> also lagged - a quieter signal but historically a leading indicator for shifting recessionary positioning.</p>
-      </div>
-    </div>
-
-    <div class="brief-section">
-      <h2><span class="num">04</span> What we'll watch into next week</h2>
-      <div class="brief-text">
-        <p>Two macro prints anchor the calendar: <b>CPI on Tuesday</b> and <b>retail sales on Thursday</b>. Both have historically high market-moving potential - particularly with the Fed's quiet period beginning Wednesday. Earnings continue with <b>Walmart</b> the highlight; commentary on consumer health will be pored over.</p>
-        <p>Geopolitically, watch for <b>OPEC+ meeting headlines</b> and any incremental tariff colour from Washington. Both are categorically the kind of event our impact engine is designed for.</p>
-      </div>
-      <div class="brief-takeaway"><b>What it means:</b> a CPI surprise either way is the dominant single risk. The setup favours macro-aware positioning over single-name conviction this week.</div>
-    </div>
+    <!-- Live briefing output fills the full page below the cover -->
+    <div id="liveBriefingOutput" style="margin-top:0"></div>
 
     <div style="margin-top:20px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
-      <b style="color:var(--gold)">EDUCATIONAL ONLY.</b> The morning briefing is auto-generated by BriefTick AI from public market data, news flow and sentiment indicators. It is not investment advice and contains no recommendations. Always do your own research.
+      <b style="color:var(--gold)">EDUCATIONAL ONLY.</b> The daily briefing is auto-generated by BriefTick AI from live market data, news flow and sentiment indicators. It is not investment advice and contains no recommendations. Always do your own research.
     </div>
   </div>
 </section>
@@ -4042,6 +3994,7 @@ document.getElementById('guidList').innerHTML=guidanceData.map(([s,head,det,from
 /* ---------- Initialise on first visit ---------- */
 let earnInit=false;
 let impactInit=false;
+let briefInit=false;
 document.querySelectorAll('.nav-link').forEach(l=>{
   l.addEventListener('click',()=>{
     if(l.dataset.route==='earnings' && !earnInit){
@@ -4055,8 +4008,19 @@ document.querySelectorAll('.nav-link').forEach(l=>{
         if(typeof liveRefreshImpactFeed === 'function') liveRefreshImpactFeed();
       }, 400);
     }
+    if(l.dataset.route==='brief'){
+      // Always update the date; auto-generate only on first open
+      _briefSetCoverDate();
+      if(!briefInit){
+        briefInit=true;
+        setTimeout(()=>generateLiveBriefing(), 300);
+      }
+    }
   });
 });
+
+// Also set the date immediately so it is correct even before user visits the page
+window.addEventListener('load', ()=>{ _briefSetCoverDate(); });
 
 /* ============================================================
    LIVE EARNINGS RENDERING
@@ -5086,35 +5050,118 @@ async function generateLiveAISummary(){
   }
 }
 
+// ── Briefing page helpers ──────────────────────────────────────
+function _briefTodayLabel(){
+  const d = new Date();
+  return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+
+function _briefSetCoverDate(){
+  const dateEl   = document.getElementById('briefDate');
+  const eyebrow  = document.getElementById('briefEyebrow');
+  const today    = _briefTodayLabel();
+  if(dateEl)  dateEl.textContent  = today;
+  if(eyebrow) eyebrow.textContent = `Daily Brief · ${today}`;
+}
+
+function _briefSetLoading(){
+  const out = document.getElementById('liveBriefingOutput');
+  const btn = document.getElementById('briefGenBtn');
+  if(out) out.innerHTML = `
+    <div style="padding:28px 0;font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:0.1em;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-block;width:12px;height:12px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite"></span>
+        Pulling live quotes, news, and macro data…
+      </div>
+      <div style="color:var(--ink-faint);padding-left:22px">This usually takes 5–10 seconds.</div>
+    </div>`;
+  if(btn){ btn.disabled=true; btn.innerHTML='<span style="display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:-2px;margin-right:8px"></span>Generating…'; }
+}
+
+function _briefSetResult(text){
+  const out = document.getElementById('liveBriefingOutput');
+  const btn = document.getElementById('briefGenBtn');
+  const headlineEl = document.getElementById('briefHeadline');
+  const srcEl = document.getElementById('briefSource');
+  const now = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+  if(out){
+    const formatted = renderAIMarkdown(text, {accent:'var(--gold)'});
+    out.innerHTML = `
+      <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.14em;margin:0 0 20px;display:flex;align-items:center;gap:8px">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></span>
+        LIVE BRIEF · GENERATED ${now} FROM REAL MARKET DATA
+      </div>
+      ${formatted}`;
+  }
+
+  // Extract a 5–8 word headline from the first sentence of the AI text
+  if(headlineEl){
+    const firstLine = text.split('\n').find(l=>l.trim().length > 20) || '';
+    // Strip markdown symbols and truncate to make a punchy headline
+    const cleaned = firstLine.replace(/^#+\s*/,'').replace(/\*\*/g,'').trim();
+    if(cleaned.length > 20 && cleaned.length < 180){
+      // Split at first period/semicolon and italicise the last meaningful word
+      const words = cleaned.split(/\s+/).slice(0,9);
+      const last = words.pop();
+      headlineEl.innerHTML = words.join(' ') + (words.length ? ' <em>' + last + '</em>' : last);
+    } else {
+      headlineEl.innerHTML = 'Today\'s <em>market</em> intelligence.';
+    }
+  }
+
+  if(srcEl) srcEl.textContent = `AI · Finnhub · Twelve Data · ${now}`;
+
+  if(btn){
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:6px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg>Regenerate from latest data';
+  }
+}
+
+function _briefSetNoKey(){
+  const out = document.getElementById('liveBriefingOutput');
+  const headlineEl = document.getElementById('briefHeadline');
+  const btn = document.getElementById('briefGenBtn');
+  if(headlineEl) headlineEl.innerHTML = 'Connect <em>Anthropic</em> to generate today\'s brief.';
+  if(out) out.innerHTML = `
+    <div class="brief-section" style="margin-top:0">
+      <h2><span class="num">→</span> Get your daily brief</h2>
+      <div class="brief-text">
+        <p>BriefTick generates a full daily market brief from live quotes, today's headlines, and macro context — written in plain English, in the style of a hedge fund morning memo.</p>
+        <p>To activate it, <b>connect your Anthropic API key</b> using the settings panel. The free Claude tier handles hundreds of briefings per month.</p>
+      </div>
+      <button class="btn-primary" onclick="openSettings()" style="margin-top:8px">Connect Anthropic →</button>
+    </div>`;
+  if(btn){
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:6px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg>Generate fresh briefing from live data';
+  }
+}
+
 // Briefing - generate fresh from live data
 async function generateLiveBriefing(){
+  _briefSetCoverDate();
   if(!BriefTickAPI.keys.anthropic){
-    alert('Please add your Anthropic API key in Settings (gear icon) first.');
-    openSettings();
+    _briefSetNoKey();
     return;
   }
-  const btn = document.getElementById('briefGenBtn');
-  const out = document.getElementById('liveBriefingOutput');
-  if(!btn || !out) return;
-  btn.disabled = true;
-  btn.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:-2px;margin-right:8px"></span>Generating live briefing...';
-  out.style.display = 'block';
-  out.innerHTML = '<div style="font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:0.1em">Pulling live quotes, news, and macro data... synthesising briefing...</div>';
+  _briefSetLoading();
   try {
     const result = await BriefTickAPI.aiMorningBrief();
     if(result){
-      // Format with shared markdown-lite renderer
-      const formatted = renderAIMarkdown(result, {accent:'var(--gold)'});
-      out.innerHTML = '<div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.14em;margin-bottom:12px">- LIVE BRIEFING · GENERATED FROM REAL MARKET DATA</div>' + formatted;
+      _briefSetResult(result);
     } else {
-      out.innerHTML = '<div style="color:var(--red)">AI generation failed. Check console for details.</div>';
+      const out = document.getElementById('liveBriefingOutput');
+      const btn = document.getElementById('briefGenBtn');
+      if(out) out.innerHTML = '<div style="color:var(--red);padding:12px 0">Generation failed — check the console for details. Your Anthropic key may be invalid or out of credits.</div>';
+      if(btn){ btn.disabled=false; btn.innerHTML='↻ Try again'; }
     }
   } catch(e){
-    console.error(e);
-    out.innerHTML = '<div style="color:var(--red)">Error: '+e.message+'</div>';
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:6px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg>Regenerate from latest data';
+    console.error('[brief]', e);
+    const out = document.getElementById('liveBriefingOutput');
+    if(out) out.innerHTML = `<div style="color:var(--red);padding:12px 0">Error: ${escapeHtml(e.message)}</div>`;
+    const btn = document.getElementById('briefGenBtn');
+    if(btn){ btn.disabled=false; btn.innerHTML='↻ Try again'; }
   }
 }
 
