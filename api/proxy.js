@@ -224,18 +224,42 @@ async function proxySEC(req, res) {
   }
 }
 
+async function proxyPoliticalTrades(req, res) {
+  const cacheKey = 'pol:house';
+  const cached = cacheGet(cacheKey, 60 * 60_000); // 1 hour
+  if (cached) { res.setHeader('x-brieftick-cache', 'HIT'); return res.status(200).json(cached); }
+  try {
+    const r = await fetch(
+      'https://house-stock-watcher-data.s3-us-east-2.amazonaws.com/data/fillings.json',
+      { headers: { 'User-Agent': 'BriefTick/1.0 market-intelligence-app' } }
+    );
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    // Return only the most recent 300 to keep response small
+    const slice = Array.isArray(data)
+      ? data.sort((a,b) => new Date(b.transaction_date||0) - new Date(a.transaction_date||0)).slice(0,300)
+      : data;
+    cacheSet(cacheKey, slice);
+    res.setHeader('x-brieftick-cache', 'MISS');
+    return res.status(200).json(slice);
+  } catch (e) {
+    return res.status(502).json({ error: 'political trades fetch failed', detail: e.message });
+  }
+}
+
 export default async function handler(req, res) {
   setCors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
 
   const provider = req.query.provider;
   try {
-    if (provider === 'twelvedata')   return await proxyTwelveData(req, res);
-    if (provider === 'finnhub')      return await proxyFinnhub(req, res);
-    if (provider === 'alphavantage') return await proxyAlphaVantage(req, res);
-    if (provider === 'anthropic')    return await proxyAnthropic(req, res);
-    if (provider === 'fred')         return await proxyFred(req, res);
-    if (provider === 'sec')          return await proxySEC(req, res);
+    if (provider === 'twelvedata')      return await proxyTwelveData(req, res);
+    if (provider === 'finnhub')         return await proxyFinnhub(req, res);
+    if (provider === 'alphavantage')    return await proxyAlphaVantage(req, res);
+    if (provider === 'anthropic')       return await proxyAnthropic(req, res);
+    if (provider === 'fred')            return await proxyFred(req, res);
+    if (provider === 'sec')             return await proxySEC(req, res);
+    if (provider === 'politicaltrades') return await proxyPoliticalTrades(req, res);
     return res.status(400).json({ error: 'unknown provider' });
   } catch (e) {
     return res.status(500).json({ error: 'proxy crashed', detail: e.message });
