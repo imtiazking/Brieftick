@@ -6943,9 +6943,25 @@ function _corrRead(symA, symB, r){
 }
 
 function _layoutCluster(nodes){
-  // Approximate force-directed layout: start from sector-based positions,
-  // then nudge pairs closer if highly correlated.
   const W = 480, H = 300, CX = 240, CY = 150;
+
+  // Special compact layouts for very small portfolios
+  if(nodes.length === 1){
+    nodes[0].x = CX; nodes[0].y = CY; return;
+  }
+  if(nodes.length === 2){
+    nodes[0].x = 155; nodes[0].y = CY;
+    nodes[1].x = 325; nodes[1].y = CY;
+    return;
+  }
+  if(nodes.length === 3){
+    nodes[0].x = CX;    nodes[0].y = 90;
+    nodes[1].x = 145;   nodes[1].y = 210;
+    nodes[2].x = 335;   nodes[2].y = 210;
+    return;
+  }
+
+  // For larger portfolios: sector-based radial layout
   const sectorAngles = {
     'Information Technology': -0.8,
     'Communication Services': -0.2,
@@ -6958,12 +6974,11 @@ function _layoutCluster(nodes){
   };
   nodes.forEach((n, i) => {
     const baseAngle = (sectorAngles[n.meta.sector] || (i * 0.9)) + (i * 0.3);
-    const radius = 80 + (i % 3) * 28;
+    const radius = 78 + (i % 4) * 24;
     n.x = Math.round(CX + Math.cos(baseAngle) * radius);
-    n.y = Math.round(CY + Math.sin(baseAngle) * radius * 0.7);
-    // Clamp to viewbox
-    n.x = Math.max(n.r + 4, Math.min(W - n.r - 4, n.x));
-    n.y = Math.max(n.r + 4, Math.min(H - n.r - 4, n.y));
+    n.y = Math.round(CY + Math.sin(baseAngle) * radius * 0.72);
+    n.x = Math.max(n.r + 6, Math.min(W - n.r - 6, n.x));
+    n.y = Math.max(n.r + 6, Math.min(H - n.r - 6, n.y));
   });
 }
 
@@ -6971,8 +6986,15 @@ function renderPortfolioCluster(holdings, matrix){
   const svg = document.getElementById('portCluster');
   if(!svg) return;
   if(!holdings || !holdings.length){
-    svg.innerHTML = '<text x="240" y="150" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="12">Add holdings to generate cluster map</text>';
+    svg.innerHTML = '<text x="240" y="150" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="12">Add holdings above to generate cluster map</text>';
+    const desc = document.getElementById('portClusterDesc');
+    if(desc) desc.innerHTML = 'Enter holdings in the input above. <a onclick="loadSamplePortfolio()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Load sample portfolio</a> to see a full example.';
     return;
+  }
+  // With very few holdings, show a hint
+  const desc2 = document.getElementById('portClusterDesc');
+  if(holdings.length < 4 && desc2){
+    desc2.innerHTML = `Only ${holdings.length} holding${holdings.length>1?'s':''} — add more for a meaningful cluster. <a onclick="loadSamplePortfolio()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Load sample (14 holdings)</a>`;
   }
   if(matrix) _portClusterMatrix = matrix;
   _portClusterHoldings = holdings;
@@ -6986,6 +7008,8 @@ function renderPortfolioCluster(holdings, matrix){
   _layoutCluster(nodes);
 
   // Build edges between all pairs
+  // Lower the threshold for small portfolios so something always shows
+  const edgeThreshold = nodes.length <= 4 ? 0.0 : 0.25;
   const edges = [];
   for(let i=0;i<nodes.length;i++){
     for(let j=i+1;j<nodes.length;j++){
@@ -6993,7 +7017,7 @@ function renderPortfolioCluster(holdings, matrix){
       const r = _portClusterMatrix ? (_portClusterMatrix[symA]?.[symB] ?? _portClusterMatrix[symB]?.[symA] ?? null) : null;
       // Fall back to sector-based estimate if no live data
       const rFinal = r != null ? r : (nodes[i].meta.sector === nodes[j].meta.sector ? 0.72 : 0.28);
-      if(Math.abs(rFinal) >= 0.25) edges.push({i, j, r: rFinal, symA, symB});
+      if(Math.abs(rFinal) >= edgeThreshold) edges.push({i, j, r: rFinal, symA, symB});
     }
   }
 
@@ -7004,12 +7028,20 @@ function renderPortfolioCluster(holdings, matrix){
   };
 
   function buildSVG(hoveredIdx){
+    const fewNodes = nodes.length <= 4;
     const edgeSVG = edges.map(e => {
       const [color, opacity] = _corrEdgeColor(e.r);
+      const baseOpacity = fewNodes ? Math.min(opacity * 2.5, 0.85) : opacity;
       const isHovered = hoveredIdx != null && (e.i === hoveredIdx || e.j === hoveredIdx);
-      const finalOpacity = hoveredIdx == null ? opacity : (isHovered ? Math.min(opacity * 2.2, 0.9) : 0.04);
-      const width = hoveredIdx == null ? (Math.abs(e.r) >= 0.7 ? 1.5 : 1) : (isHovered ? 2.5 : 0.8);
-      return `<line x1="${nodes[e.i].x}" y1="${nodes[e.i].y}" x2="${nodes[e.j].x}" y2="${nodes[e.j].y}" stroke="${color}" stroke-opacity="${finalOpacity}" stroke-width="${width}"/>`;
+      const finalOpacity = hoveredIdx == null ? baseOpacity : (isHovered ? Math.min(baseOpacity * 2.2, 0.95) : 0.04);
+      const baseWidth = fewNodes ? (Math.abs(e.r) >= 0.7 ? 3 : 2) : (Math.abs(e.r) >= 0.7 ? 1.5 : 1);
+      const width = hoveredIdx == null ? baseWidth : (isHovered ? baseWidth * 1.8 : 0.5);
+      // For small portfolios or hovered: show r label on edge midpoint
+      const showLabel = fewNodes || isHovered;
+      const mx = (nodes[e.i].x + nodes[e.j].x) / 2;
+      const my = (nodes[e.i].y + nodes[e.j].y) / 2;
+      const label = showLabel ? `<text x="${mx}" y="${my - 6}" text-anchor="middle" fill="${color}" font-family="JetBrains Mono" font-size="9" opacity="${finalOpacity * 1.2}">r = ${e.r.toFixed(2)}</text>` : '';
+      return `<line x1="${nodes[e.i].x}" y1="${nodes[e.i].y}" x2="${nodes[e.j].x}" y2="${nodes[e.j].y}" stroke="${color}" stroke-opacity="${finalOpacity}" stroke-width="${width}"/>${label}`;
     }).join('');
 
     const nodeSVG = nodes.map((n, idx) => {
