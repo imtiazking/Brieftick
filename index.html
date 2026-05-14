@@ -8675,10 +8675,18 @@ const SCANNER_UNIVERSE = [
   {sym:'GLD',name:'Gold ETF',sector:'Commodity'},
 ];
 
-let scannerResults = [];
 let scannerMode = 'momentum';
 let scannerView = 'cards';
 let scannerRunning = false;
+// Pre-seed with demo data so the page is never blank; overwritten by live scan
+let scannerResults = [];
+window.addEventListener('load', () => {
+  scannerResults = generateDemoScannerResults();
+  renderScannerResults();
+  document.getElementById('scannerStatLabel').textContent =
+    'Showing estimated data — click Run Scanner to fetch live prices';
+  document.getElementById('scannerSumBtn').style.display = '';
+});
 
 // Filter chip clicks
 document.querySelectorAll('[data-scan]').forEach(btn => {
@@ -8846,18 +8854,19 @@ function sortScannerResults(mode) {
 
 function renderScannerResults() {
   const sorted = sortScannerResults(scannerMode);
+  const grid = document.getElementById('scannerGrid');
+  const listBody = document.getElementById('scannerListBody');
+  const statLabel = document.getElementById('scannerStatLabel');
+  if (!grid) return; // DOM not ready yet
   if (!sorted.length) {
-    document.getElementById('scannerGrid').innerHTML =
-      '<div style="grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--ink-faint);font-size:13px">No results — check your Twelve Data API key in Settings and try again.</div>';
-    document.getElementById('scannerListBody').innerHTML =
-      '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px">No results available.</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--ink-faint);font-size:13px">No results — check your Twelve Data API key in Settings and try again.</div>';
+    if (listBody) listBody.innerHTML = '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px">No results available.</div>';
     return;
   }
-  document.getElementById('scannerStatLabel').textContent =
+  if (statLabel) statLabel.textContent =
     `${sorted.length} stocks scored · sorted by ${scannerMode} · ${new Date().toLocaleTimeString()}`;
 
   // Cards view
-  const grid = document.getElementById('scannerGrid');
   grid.innerHTML = sorted.slice(0, 18).map((s, i) => {
     const dir = s.pctChange >= 0 ? 'up' : 'dn';
     const sign = s.pctChange >= 0 ? '+' : '';
@@ -8911,8 +8920,7 @@ function renderScannerResults() {
   }).join('');
 
   // List view
-  const listBody = document.getElementById('scannerListBody');
-  listBody.innerHTML = sorted.map((s, i) => {
+  if (listBody) listBody.innerHTML = sorted.map((s, i) => {
     const dir = s.pctChange >= 0 ? 'up' : 'dn';
     const sign = s.pctChange >= 0 ? '+' : '';
     const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
@@ -8927,6 +8935,7 @@ function renderScannerResults() {
     </div>`;
   }).join('');
 }
+
 
 async function toggleScannerCardAI(btn, sym, name, pct, score) {
   const panel = document.getElementById('scanner-ai-' + sym);
@@ -8994,9 +9003,6 @@ function routeWithInsiders(name) {
   if (name === 'insiders' && insidersCorpData.length === 0) {
     loadInsiders();
     loadPoliticalTrades();
-  }
-  if (name === 'scanner' && scannerResults.length === 0) {
-    runScanner();
   }
 }
 document.querySelectorAll('.nav-link').forEach(l => {
@@ -9356,9 +9362,6 @@ window.generateInsidersAI = generateInsidersAI;
       if (name === 'insiders' && insidersCorpData.length === 0) {
         loadInsiders();
         loadPoliticalTrades();
-      }
-      if (name === 'scanner' && scannerResults.length === 0) {
-        runScanner();
       }
     };
   });
