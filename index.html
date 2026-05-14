@@ -6986,47 +6986,105 @@ function _pc3dDraw(svg, hoveredIdx){
     const rot = _pc3dRotate(node.pos, _pc3d.rotX, _pc3d.rotY);
     const {sx,sy,depth,sc} = _pc3dProject(rot, CX, CY, R, FOV);
     const df=(depth+1)/2;
-    const baseR=Math.max(9,Math.min(24,6+node.weight*0.95));
-    return {i, sx, sy, r:baseR*Math.max(0.52,sc), depth, df, opacity:0.3+df*0.7, node, baseR};
+    const baseR=Math.max(10,Math.min(26,7+node.weight*0.98));
+    return {i, sx, sy, r:baseR*Math.max(0.52,sc), depth, df, opacity:0.28+df*0.72, node, baseR};
   });
   _pc3d.projected = projected;
   const sortedByDepth = [...projected].sort((a,b)=>a.depth-b.depth);
 
-  // Sphere outline (depth cue)
-  let out = `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="rgba(180,200,255,0.06)" stroke-width="1"/>`;
-  // Equator and meridian lines for grid feel
-  out += `<ellipse cx="${CX}" cy="${CY}" rx="${R}" ry="${R*0.12}" fill="none" stroke="rgba(180,200,255,0.04)" stroke-width="0.8"/>`;
-  out += `<ellipse cx="${CX}" cy="${CY}" rx="${R*0.12}" ry="${R}" fill="none" stroke="rgba(180,200,255,0.04)" stroke-width="0.8"/>`;
+  // ── Build <defs> for per-node radial gradients ──────────────────
+  // Each node gets a gradient with a top-left light source so it looks
+  // like a lit 3-D sphere. A second small gradient simulates a specular
+  // (mirror) highlight dot near the top.
+  let defs = '<defs>';
+  for(const p of projected){
+    const c = _pc3dSectorColor[p.node.meta.sector]||'#8b94a8';
+    const isA = hoveredIdx===p.i;
+    // Main sphere gradient: light from top-left
+    defs += `<radialGradient id="pcg${p.i}" cx="36%" cy="30%" r="68%">
+      <stop offset="0%"   stop-color="#ffffff"   stop-opacity="${isA?0.28:0.18}"/>
+      <stop offset="35%"  stop-color="${c}"       stop-opacity="${isA?0.92:0.72}"/>
+      <stop offset="80%"  stop-color="${c}"       stop-opacity="${isA?0.45:0.28}"/>
+      <stop offset="100%" stop-color="#050810"    stop-opacity="${isA?0.7:0.85}"/>
+    </radialGradient>`;
+    // Rim / glow gradient for outer halo
+    defs += `<radialGradient id="pcglow${p.i}" cx="50%" cy="50%" r="50%">
+      <stop offset="50%"  stop-color="${c}" stop-opacity="0"/>
+      <stop offset="100%" stop-color="${c}" stop-opacity="${isA?0.55:0.18*p.df}"/>
+    </radialGradient>`;
+  }
+  defs += '</defs>';
 
-  // Draw edges
+  // ── Sphere frame ────────────────────────────────────────────────
+  // Ambient glow behind the whole sphere
+  let out = defs;
+  out += `<radialGradient id="sphereGlow" cx="50%" cy="50%" r="50%"><stop offset="60%" stop-color="rgba(78,168,255,0)" /><stop offset="100%" stop-color="rgba(78,168,255,0.06)"/></radialGradient>`;
+  out += `<circle cx="${CX}" cy="${CY}" r="${R+18}" fill="url(#sphereGlow)"/>`;
+  // Grid lines for depth context
+  out += `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="rgba(180,200,255,0.07)" stroke-width="0.8"/>`;
+  out += `<ellipse cx="${CX}" cy="${CY}" rx="${R}" ry="${Math.round(R*0.13)}" fill="none" stroke="rgba(180,200,255,0.05)" stroke-width="0.7"/>`;
+  out += `<ellipse cx="${CX}" cy="${CY}" rx="${Math.round(R*0.13)}" ry="${R}" fill="none" stroke="rgba(180,200,255,0.05)" stroke-width="0.7"/>`;
+  // Second diagonal grid ring
+  out += `<ellipse cx="${CX}" cy="${CY}" rx="${R}" ry="${Math.round(R*0.45)}" fill="none" stroke="rgba(180,200,255,0.03)" stroke-width="0.6" transform="rotate(-35 ${CX} ${CY})"/>`;
+
+  // ── Edges ───────────────────────────────────────────────────────
   for(const e of _pc3d.edges){
     const pa=projected[e.i], pb=projected[e.j];
     if(!pa||!pb) continue;
-    const avgDepth=(pa.depth+pb.depth)/2;
-    const df=(avgDepth+1)/2;
+    const df=((pa.depth+pb.depth)/2+1)/2;
     const [color,baseOp]=_corrEdgeColor(e.r);
     const isH=hoveredIdx!=null&&(e.i===hoveredIdx||e.j===hoveredIdx);
-    const op = hoveredIdx==null ? baseOp*(0.35+df*0.65) : (isH?Math.min(baseOp*2.8,0.95):0.03);
-    const w  = isH ? 2.8 : (Math.abs(e.r)>=0.7?1.4:0.75);
+    const op = hoveredIdx==null ? baseOp*(0.3+df*0.7) : (isH?Math.min(baseOp*3,0.95):0.02);
+    const w  = isH ? 2.5 : (Math.abs(e.r)>=0.7?1.6:0.8);
+    // Dash pattern: solid for high-r, dashed for lower
+    const dash = !isH && Math.abs(e.r)<0.5 ? ' stroke-dasharray="3 3"' : '';
     const mx=(pa.sx+pb.sx)/2, my=(pa.sy+pb.sy)/2;
-    const lbl = isH ? `<text x="${mx}" y="${my-7}" text-anchor="middle" fill="${color}" font-family="JetBrains Mono" font-size="8.5" opacity="${op}">${e.r.toFixed(2)}</text>` : '';
-    out += `<line x1="${pa.sx}" y1="${pa.sy}" x2="${pb.sx}" y2="${pb.sy}" stroke="${color}" stroke-opacity="${op}" stroke-width="${w}"/>${lbl}`;
+    const lbl = isH
+      ? `<rect x="${mx-20}" y="${my-18}" width="40" height="13" rx="3" fill="rgba(10,13,20,0.85)" stroke="${color}" stroke-opacity="0.4" stroke-width="0.8"/>
+         <text x="${mx}" y="${my-8}" text-anchor="middle" fill="${color}" font-family="JetBrains Mono" font-size="8" opacity="${op}">r=${e.r.toFixed(2)}</text>`
+      : '';
+    out += `<line x1="${pa.sx}" y1="${pa.sy}" x2="${pb.sx}" y2="${pb.sy}" stroke="${color}" stroke-opacity="${op}" stroke-width="${w}"${dash}/>${lbl}`;
   }
 
-  // Draw nodes back-to-front
+  // ── Nodes back-to-front ─────────────────────────────────────────
   for(const p of sortedByDepth){
     const c = _pc3dSectorColor[p.node.meta.sector]||'#8b94a8';
     const isA = hoveredIdx===p.i;
-    const fillOp = p.opacity*(isA?0.5:0.2);
-    const strOp  = p.opacity*(isA?1.0:0.75);
-    const strW   = isA?2.8:1.4;
-    const pulse  = isA?`<circle cx="${p.sx}" cy="${p.sy}" r="${p.r+8}" fill="none" stroke="${c}" stroke-opacity="${p.opacity*0.25}" stroke-width="1.5"/>`:'' ;
-    const fs = Math.round(Math.max(6,Math.min(10,p.r*0.82)));
-    out += `${pulse}<circle cx="${p.sx}" cy="${p.sy}" r="${p.r}" fill="${c}" fill-opacity="${fillOp}" stroke="${c}" stroke-width="${strW}" stroke-opacity="${strOp}"/>`;
-    out += `<text x="${p.sx}" y="${p.sy+3}" text-anchor="middle" fill="rgba(232,236,245,${p.opacity})" font-family="JetBrains Mono" font-size="${fs}" font-weight="700" style="pointer-events:none">${escapeHtml(p.node.sym)}</text>`;
-    // Weight label only on front-facing nodes (depth > -0.2)
-    if(p.depth > -0.2){
-      out += `<text x="${p.sx}" y="${p.sy+p.r+11}" text-anchor="middle" fill="rgba(139,148,168,${p.opacity*0.8})" font-family="JetBrains Mono" font-size="7" style="pointer-events:none">${p.node.weight.toFixed(1)}%</text>`;
+    const r = p.r;
+
+    // 1. Outer glow halo (larger, diffuse)
+    const glowR = r * (isA ? 2.2 : 1.7);
+    out += `<circle cx="${p.sx}" cy="${p.sy}" r="${glowR}" fill="url(#pcglow${p.i})"/>`;
+
+    // 2. Active pulse ring
+    if(isA){
+      out += `<circle cx="${p.sx}" cy="${p.sy}" r="${r+10}" fill="none" stroke="${c}" stroke-opacity="${p.df*0.35}" stroke-width="1.2"/>`;
+      out += `<circle cx="${p.sx}" cy="${p.sy}" r="${r+5}"  fill="none" stroke="${c}" stroke-opacity="${p.df*0.55}" stroke-width="0.8"/>`;
+    }
+
+    // 3. Dark shadow beneath (simulates ambient occlusion)
+    out += `<ellipse cx="${p.sx+r*0.12}" cy="${p.sy+r*0.14}" rx="${r*0.9}" ry="${r*0.85}" fill="rgba(0,0,0,0.25)" filter=""/>`;
+
+    // 4. Main sphere body — radial gradient gives 3-D lit look
+    const rimOp = p.opacity * (isA ? 1.0 : 0.85);
+    const rimW  = isA ? 2.2 : 1.2;
+    out += `<circle cx="${p.sx}" cy="${p.sy}" r="${r}" fill="url(#pcg${p.i})" stroke="${c}" stroke-width="${rimW}" stroke-opacity="${rimOp}"/>`;
+
+    // 5. Specular highlight — small bright ellipse upper-left
+    const hx = p.sx - r*0.28, hy = p.sy - r*0.28;
+    const hr = r * 0.25, hry = r * 0.15;
+    const specOp = isA ? 0.7 : (0.35 + p.df * 0.25);
+    out += `<ellipse cx="${hx}" cy="${hy}" rx="${hr}" ry="${hry}" fill="white" fill-opacity="${specOp}" transform="rotate(-25 ${hx} ${hy})"/>`;
+
+    // 6. Ticker label
+    const fs = Math.round(Math.max(6.5, Math.min(10.5, r*0.80)));
+    const textOp = 0.6 + p.df * 0.4;
+    out += `<text x="${p.sx}" y="${p.sy+3}" text-anchor="middle" fill="rgba(232,236,245,${textOp})" font-family="JetBrains Mono" font-size="${fs}" font-weight="700" style="pointer-events:none">${escapeHtml(p.node.sym)}</text>`;
+
+    // 7. Weight badge — only front-facing nodes
+    if(p.depth > -0.15){
+      const badgeY = p.sy + r + 12;
+      out += `<text x="${p.sx}" y="${badgeY}" text-anchor="middle" fill="rgba(139,148,168,${p.opacity*0.75})" font-family="JetBrains Mono" font-size="6.5" style="pointer-events:none">${p.node.weight.toFixed(1)}%</text>`;
     }
   }
   svg.innerHTML = out;
