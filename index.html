@@ -1259,11 +1259,225 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
 
 /* Selection */
 ::selection{background:rgba(212,168,90,0.3);color:#fff}
+
+/* ── Request Access Modal ─────────────────────────────────── */
+.ra-overlay{
+  display:none;position:fixed;inset:0;z-index:1100;
+  background:rgba(5,6,10,0.82);backdrop-filter:blur(10px);
+  align-items:center;justify-content:center;padding:24px;overflow-y:auto;
+}
+.ra-overlay.open{display:flex}
+.ra-modal{
+  width:100%;max-width:520px;
+  background:linear-gradient(160deg,rgba(22,27,42,0.98),rgba(12,15,24,0.98));
+  border:1px solid rgba(212,168,90,0.28);border-radius:16px;
+  box-shadow:0 48px 120px rgba(0,0,0,0.7),0 0 80px rgba(212,168,90,0.08);
+  padding:40px;position:relative;overflow:hidden;
+  animation:modalIn 0.3s cubic-bezier(.2,.7,.2,1);
+}
+.ra-modal::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.ra-eyebrow{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ra-eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:pulse 2s infinite}
+.ra-title{font-family:var(--display);font-size:32px;font-weight:400;letter-spacing:-0.025em;line-height:1.1;margin-bottom:8px}
+.ra-title em{color:var(--gold);font-style:italic;font-weight:300}
+.ra-sub{font-size:14px;color:var(--ink-dim);line-height:1.55;margin-bottom:28px}
+.ra-close{
+  position:absolute;top:18px;right:18px;width:32px;height:32px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  color:var(--ink-dim);border-radius:6px;cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s;
+}
+.ra-close:hover{color:var(--ink);background:rgba(255,255,255,0.08)}
+.ra-field{margin-bottom:14px}
+.ra-label{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;display:block}
+.ra-input{
+  width:100%;padding:12px 14px;background:rgba(0,0,0,0.35);
+  border:1px solid var(--border-strong);border-radius:8px;
+  color:var(--ink);font-family:inherit;font-size:14px;
+  outline:none;transition:border-color 0.15s;box-sizing:border-box;
+}
+.ra-input:focus{border-color:rgba(212,168,90,0.5);background:rgba(0,0,0,0.5)}
+.ra-input::placeholder{color:var(--ink-faint)}
+.ra-select{
+  width:100%;padding:12px 14px;background:rgba(0,0,0,0.35);
+  border:1px solid var(--border-strong);border-radius:8px;
+  color:var(--ink);font-family:inherit;font-size:14px;
+  outline:none;transition:border-color 0.15s;box-sizing:border-box;
+  appearance:none;cursor:pointer;
+}
+.ra-select:focus{border-color:rgba(212,168,90,0.5)}
+.ra-submit{
+  width:100%;padding:15px;margin-top:8px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-bright));
+  color:#0a0d14;border:none;border-radius:8px;
+  font-family:inherit;font-size:14px;font-weight:700;
+  letter-spacing:0.04em;cursor:pointer;transition:all 0.2s;
+}
+.ra-submit:hover{transform:translateY(-1px);box-shadow:0 16px 40px rgba(212,168,90,0.35)}
+.ra-submit:disabled{opacity:0.55;cursor:not-allowed;transform:none}
+.ra-success{
+  text-align:center;padding:24px 0;
+}
+.ra-success-icon{font-size:48px;margin-bottom:16px}
+.ra-success h3{font-family:var(--display);font-size:24px;font-weight:400;letter-spacing:-0.02em;margin-bottom:8px}
+.ra-success p{font-size:14px;color:var(--ink-dim);line-height:1.55}
+.ra-error{font-family:var(--mono);font-size:11px;color:var(--red);margin-top:8px;padding:8px 12px;background:rgba(255,91,110,0.07);border:1px solid rgba(255,91,110,0.2);border-radius:6px}
+.ra-privacy{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.05em;text-align:center;margin-top:16px;line-height:1.5}
+
+/* ── Command Palette (Cmd+K) ──────────────────────────────── */
+.cmd-overlay{
+  display:none;position:fixed;inset:0;z-index:1200;
+  background:rgba(5,6,10,0.75);backdrop-filter:blur(8px);
+  align-items:flex-start;justify-content:center;padding-top:14vh;
+}
+.cmd-overlay.open{display:flex}
+.cmd-palette{
+  width:100%;max-width:580px;
+  background:rgba(14,18,28,0.98);
+  border:1px solid var(--border-strong);border-radius:12px;
+  box-shadow:0 40px 100px rgba(0,0,0,0.6),0 0 60px rgba(78,168,255,0.06);
+  overflow:hidden;animation:modalIn 0.22s cubic-bezier(.2,.7,.2,1);
+}
+.cmd-input-wrap{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border)}
+.cmd-icon{color:var(--ink-faint);flex-shrink:0}
+.cmd-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--ink);font-family:var(--mono);font-size:15px;letter-spacing:0.02em;
+}
+.cmd-input::placeholder{color:var(--ink-faint)}
+.cmd-shortcut{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.08em;padding:2px 6px;border:1px solid var(--border);border-radius:4px;flex-shrink:0}
+.cmd-results{max-height:360px;overflow-y:auto}
+.cmd-section{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase;padding:10px 18px 4px}
+.cmd-item{
+  display:flex;align-items:center;gap:12px;padding:11px 18px;
+  cursor:pointer;transition:background 0.1s;
+}
+.cmd-item:hover,.cmd-item.active{background:rgba(78,168,255,0.06)}
+.cmd-item.active{border-left:2px solid var(--blue)}
+.cmd-item-icon{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--ink-dim);flex-shrink:0}
+.cmd-item-sym{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink);width:60px;flex-shrink:0}
+.cmd-item-name{font-size:12px;color:var(--ink-dim);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cmd-item-action{font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0}
+.cmd-empty{padding:24px 18px;font-size:13px;color:var(--ink-faint);text-align:center}
+.cmd-footer{padding:10px 18px;border-top:1px solid var(--border);display:flex;gap:16px;font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.08em}
+.cmd-footer span{display:flex;align-items:center;gap:4px}
+.cmd-footer kbd{padding:1px 5px;border:1px solid var(--border);border-radius:3px;font-family:var(--mono);font-size:9px}
+
+/* ── Onboarding banner ────────────────────────────────────── */
+.onboard-banner{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:300;
+  width:calc(100% - 48px);max-width:640px;
+  background:linear-gradient(135deg,rgba(22,27,42,0.97),rgba(14,18,28,0.97));
+  border:1px solid rgba(212,168,90,0.28);border-radius:12px;
+  padding:20px 24px;display:flex;align-items:center;gap:18px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.55);
+  animation:slideUp 0.5s cubic-bezier(.2,.7,.2,1);
+}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.onboard-banner.hidden{display:none}
+.onboard-icon{font-size:28px;flex-shrink:0}
+.onboard-body{flex:1}
+.onboard-title{font-family:var(--display);font-size:16px;font-weight:500;letter-spacing:-0.01em;margin-bottom:4px}
+.onboard-sub{font-size:12px;color:var(--ink-dim);line-height:1.5}
+.onboard-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.onboard-btn-primary{
+  padding:9px 16px;background:linear-gradient(135deg,var(--gold),var(--gold-bright));
+  color:#0a0d14;border:none;border-radius:6px;font-family:inherit;
+  font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;
+}
+.onboard-btn-secondary{
+  padding:9px 14px;background:transparent;border:1px solid var(--border-strong);
+  color:var(--ink-dim);border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer;
+}
+.onboard-btn-secondary:hover{color:var(--ink);border-color:var(--border-strong)}
 </style>
 </head>
 <body>
 
 <!-- ===== GLOBAL TICKER ===== -->
+<!-- ============================================================
+     REQUEST ACCESS MODAL
+============================================================ -->
+<div class="ra-overlay" id="raOverlay" onclick="if(event.target===this)closeRequestAccess()">
+  <div class="ra-modal" id="raModal">
+    <button class="ra-close" onclick="closeRequestAccess()" aria-label="Close">×</button>
+    <div id="raForm">
+      <div class="ra-eyebrow">Beta Access · Cohort II</div>
+      <h2 class="ra-title">Get <em>early access</em> to BriefTick.</h2>
+      <p class="ra-sub">Join analysts, traders, and portfolio managers using BriefTick to understand what's moving markets — before the noise gets them.</p>
+      <div class="ra-field">
+        <label class="ra-label" for="raName">Your name</label>
+        <input class="ra-input" id="raName" type="text" placeholder="First name" autocomplete="name"/>
+      </div>
+      <div class="ra-field">
+        <label class="ra-label" for="raEmail">Email address <span style="color:var(--red)">*</span></label>
+        <input class="ra-input" id="raEmail" type="email" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+      <div class="ra-field">
+        <label class="ra-label" for="raRole">I am a</label>
+        <select class="ra-select" id="raRole">
+          <option value="">Select your role</option>
+          <option value="investor">Long-term investor</option>
+          <option value="trader">Active trader</option>
+          <option value="analyst">Analyst / researcher</option>
+          <option value="portfolio-manager">Portfolio manager</option>
+          <option value="beginner">New to markets</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="ra-field">
+        <label class="ra-label" for="raMsg">What would make BriefTick essential for you? <span style="color:var(--ink-faint)">(optional)</span></label>
+        <textarea class="ra-input" id="raMsg" rows="2" placeholder="e.g. I want to understand macro events faster…" style="resize:vertical;min-height:60px"></textarea>
+      </div>
+      <div id="raErrorMsg" style="display:none" class="ra-error"></div>
+      <button class="ra-submit" id="raSubmitBtn" onclick="submitRequestAccess()">Request Access →</button>
+      <p class="ra-privacy">No spam. No credit card. We'll email you when your cohort opens.<br>You can also <a onclick="route('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the live demo</a> right now.</p>
+    </div>
+    <div id="raSuccess" class="ra-success" style="display:none">
+      <div class="ra-success-icon">✓</div>
+      <h3>You're on the list.</h3>
+      <p>Thanks for your interest in BriefTick. We'll be in touch when your cohort opens.<br><br>In the meantime, <a onclick="route('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the live demo →</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     COMMAND PALETTE (Cmd+K / Ctrl+K)
+============================================================ -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCommandPalette()">
+  <div class="cmd-palette">
+    <div class="cmd-input-wrap">
+      <svg class="cmd-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input class="cmd-input" id="cmdInput" placeholder="Search ticker or company…" autocomplete="off" spellcheck="false"/>
+      <span class="cmd-shortcut">Esc</span>
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ONBOARDING BANNER (first visit only)
+============================================================ -->
+<div class="onboard-banner hidden" id="onboardBanner">
+  <div class="onboard-icon">⚡</div>
+  <div class="onboard-body">
+    <div class="onboard-title">Welcome to BriefTick</div>
+    <div class="onboard-sub">AI-powered market intelligence. Start with the <b>Live Dashboard</b>, search any ticker in <b>Why Is It Moving</b>, or type <b>Cmd+K</b> to search anywhere.</div>
+  </div>
+  <div class="onboard-actions">
+    <button class="onboard-btn-primary" onclick="route('dashboard');dismissOnboarding()">Explore Dashboard</button>
+    <button class="onboard-btn-secondary" onclick="dismissOnboarding()">Got it</button>
+  </div>
+</div>
+
 <div class="global-ticker">
   <div class="ticker-track" id="ticker"></div>
 </div>
@@ -1291,7 +1505,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
         <path d="M19.622 10.395L18.244 9.04C18.135 7.83 17.671 6.694 16.937 5.768L17.453 3.949L15.728 2.949L14.224 4.226C13.094 3.755 11.852 3.591 10.629 3.755L9.32 2.379L7.595 3.379L8.111 5.198C7.377 6.124 6.913 7.26 6.804 8.47L5.426 9.825L5.426 11.825L6.804 13.18C6.913 14.39 7.377 15.526 8.111 16.452L7.595 18.271L9.32 19.271L10.824 17.994C11.954 18.465 13.196 18.629 14.419 18.465L15.728 19.841L17.453 18.841L16.937 17.022C17.671 16.096 18.135 14.96 18.244 13.75L19.622 12.395L19.622 10.395Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/>
       </svg>
     </button>
-    <button class="nav-cta" onclick="route('pricing')">Request Access</button>
+    <button class="nav-cta" onclick="openRequestAccess()">Request Access</button>
   </div>
 </nav>
 
@@ -1415,7 +1629,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
         <h1>Understand<br>what moves<br><span class="gold">markets.</span></h1>
         <p class="hero-sub">Real-time AI intelligence across earnings, macro events, sentiment, and market-moving news - built to explain the why behind every move.</p>
         <div class="hero-cta">
-          <button class="btn-primary" onclick="route('pricing')">Request Access →</button>
+          <button class="btn-primary" onclick="openRequestAccess()">Request Access →</button>
           <button class="btn-secondary" onclick="route('dashboard')">View Live Demo <span class="external">↗</span></button>
         </div>
         <div class="hero-proof">
@@ -1553,7 +1767,7 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
     <div class="section-narrow" style="text-align:center">
       <div class="section-eyebrow" style="display:inline-block">- The market deserves better narration</div>
       <h2 class="section-title" style="margin:0 auto 28px">Stop reading the tape.<br><em>Start understanding it.</em></h2>
-      <button class="btn-primary" onclick="route('pricing')" style="margin:12px 6px">Join the Beta</button>
+      <button class="btn-primary" onclick="openRequestAccess()" style="margin:12px 6px">Join the Beta</button>
       <button class="btn-secondary" onclick="route('dashboard')" style="margin:12px 6px">Explore the Dashboard</button>
     </div>
   </section>
@@ -7434,6 +7648,240 @@ function jitter(){
   });
 }
 setInterval(jitter, 1800);
+
+/* ============================================================
+   REQUEST ACCESS MODAL
+============================================================ */
+function openRequestAccess(){
+  const overlay = document.getElementById('raOverlay');
+  if(!overlay) return;
+  document.getElementById('raForm').style.display = 'block';
+  document.getElementById('raSuccess').style.display = 'none';
+  const errEl = document.getElementById('raErrorMsg');
+  if(errEl) errEl.style.display = 'none';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(()=>{ const el=document.getElementById('raEmail'); if(el) el.focus(); }, 120);
+}
+function closeRequestAccess(){
+  const overlay = document.getElementById('raOverlay');
+  if(overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+async function submitRequestAccess(){
+  const btn = document.getElementById('raSubmitBtn');
+  const errEl = document.getElementById('raErrorMsg');
+  const email = (document.getElementById('raEmail')?.value || '').trim();
+  const name  = (document.getElementById('raName')?.value  || '').trim();
+  const role  = (document.getElementById('raRole')?.value  || '').trim();
+  const msg   = (document.getElementById('raMsg')?.value   || '').trim();
+
+  if(errEl) errEl.style.display = 'none';
+  if(!email || !email.includes('@')){
+    if(errEl){ errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; }
+    document.getElementById('raEmail')?.focus();
+    return;
+  }
+  if(btn){ btn.disabled = true; btn.textContent = 'Sending…'; }
+  try {
+    const r = await fetch('/api/signup', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({name, email, role, message: msg}),
+    });
+    const data = await r.json();
+    if(r.ok && data.success){
+      document.getElementById('raForm').style.display = 'none';
+      document.getElementById('raSuccess').style.display = 'block';
+    } else {
+      throw new Error(data.error || 'Something went wrong. Please try again.');
+    }
+  } catch(e){
+    if(errEl){ errEl.textContent = e.message; errEl.style.display = 'block'; }
+  } finally {
+    if(btn){ btn.disabled = false; btn.textContent = 'Request Access →'; }
+  }
+}
+window.openRequestAccess = openRequestAccess;
+window.closeRequestAccess = closeRequestAccess;
+window.submitRequestAccess = submitRequestAccess;
+
+// Close on Escape
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){
+    const ra = document.getElementById('raOverlay');
+    if(ra && ra.classList.contains('open')) closeRequestAccess();
+    const cmd = document.getElementById('cmdOverlay');
+    if(cmd && cmd.classList.contains('open')) closeCommandPalette();
+  }
+  // Cmd+K / Ctrl+K → open command palette
+  if((e.metaKey || e.ctrlKey) && e.key === 'k'){
+    e.preventDefault();
+    toggleCommandPalette();
+  }
+});
+
+/* ============================================================
+   COMMAND PALETTE  (Cmd+K / Ctrl+K)
+============================================================ */
+// Expanded ticker directory for command palette resolution
+const CMD_TICKERS = [
+  ['NVDA','NVIDIA Corporation','Tech'],['AAPL','Apple Inc','Tech'],['MSFT','Microsoft Corporation','Tech'],
+  ['GOOGL','Alphabet Inc','Tech'],['META','Meta Platforms','Tech'],['AMZN','Amazon.com Inc','Tech'],
+  ['TSLA','Tesla Inc','Consumer'],['AMD','Advanced Micro Devices','Tech'],['AVGO','Broadcom Inc','Tech'],
+  ['NFLX','Netflix Inc','Tech'],['JPM','JPMorgan Chase','Financials'],['BAC','Bank of America','Financials'],
+  ['GS','Goldman Sachs','Financials'],['XOM','Exxon Mobil','Energy'],['CVX','Chevron Corp','Energy'],
+  ['JNJ','Johnson & Johnson','Healthcare'],['UNH','UnitedHealth Group','Healthcare'],
+  ['WMT','Walmart Inc','Consumer'],['PG','Procter & Gamble','Consumer'],
+  ['SPY','S&P 500 ETF','ETF'],['QQQ','Nasdaq 100 ETF','ETF'],['DIA','Dow Jones ETF','ETF'],
+  ['IWM','Russell 2000 ETF','ETF'],['GLD','Gold ETF','ETF'],['USO','US Oil Fund','ETF'],
+  ['INTC','Intel Corporation','Tech'],['QCOM','Qualcomm Inc','Tech'],['TSM','Taiwan Semiconductor','Tech'],
+  ['SOXX','Semiconductor ETF','ETF'],['XLK','Technology Sector ETF','ETF'],['XLE','Energy Sector ETF','ETF'],
+  ['XLF','Financials Sector ETF','ETF'],['XLV','Healthcare Sector ETF','ETF'],
+  ['MU','Micron Technology','Tech'],['SNDK','SanDisk Corp','Tech'],
+  ['CRM','Salesforce Inc','Tech'],['ORCL','Oracle Corp','Tech'],['IBM','IBM Corp','Tech'],
+  ['V','Visa Inc','Financials'],['MA','Mastercard Inc','Financials'],
+  ['COIN','Coinbase Global','Financials'],['HOOD','Robinhood Markets','Financials'],
+];
+
+let _cmdActiveIdx = -1;
+
+function openCommandPalette(){
+  const overlay = document.getElementById('cmdOverlay');
+  if(!overlay) return;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  const input = document.getElementById('cmdInput');
+  if(input){ input.value = ''; input.focus(); }
+  _cmdActiveIdx = -1;
+  renderCmdResults('');
+}
+function closeCommandPalette(){
+  const overlay = document.getElementById('cmdOverlay');
+  if(overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function toggleCommandPalette(){
+  const overlay = document.getElementById('cmdOverlay');
+  if(!overlay) return;
+  if(overlay.classList.contains('open')) closeCommandPalette();
+  else openCommandPalette();
+}
+window.openCommandPalette = openCommandPalette;
+window.closeCommandPalette = closeCommandPalette;
+window.toggleCommandPalette = toggleCommandPalette;
+
+function renderCmdResults(query){
+  const el = document.getElementById('cmdResults');
+  if(!el) return;
+  const q = query.trim().toUpperCase();
+  let items;
+  if(!q){
+    // Default: show watchlist tickers + quick nav actions
+    const wl = (typeof watchlistSymbols !== 'undefined' ? watchlistSymbols : []).slice(0,8);
+    items = wl.map(sym=>{
+      const found = CMD_TICKERS.find(t=>t[0]===sym);
+      return {sym, name: found ? found[1] : 'Live ticker', type: found ? found[2] : ''};
+    });
+    if(!items.length) items = CMD_TICKERS.slice(0,8).map(([sym,name,type])=>({sym,name,type}));
+  } else {
+    // Search: match ticker or company name
+    const matches = CMD_TICKERS.filter(([sym,name])=>
+      sym.startsWith(q) || name.toUpperCase().includes(q)
+    ).slice(0,10);
+    // Also allow any raw ticker typed
+    if(!matches.find(m=>m[0]===q) && /^[A-Z]{1,6}$/.test(q)){
+      matches.push([q, q + ' · search', '']);
+    }
+    items = matches.map(([sym,name,type])=>({sym,name,type}));
+  }
+
+  if(!items.length){
+    el.innerHTML = '<div class="cmd-empty">No results · press Enter to search anyway</div>';
+    return;
+  }
+
+  const section = q ? 'Results' : 'Watchlist & Quick access';
+  el.innerHTML = `<div class="cmd-section">${section}</div>` +
+    items.map((item,i)=>`
+      <div class="cmd-item${i===_cmdActiveIdx?' active':''}" data-sym="${escapeHtml(item.sym)}" onclick="cmdSelectItem('${escapeHtml(item.sym)}')">
+        <div class="cmd-item-icon">${escapeHtml(item.sym.slice(0,3))}</div>
+        <div class="cmd-item-sym">${escapeHtml(item.sym)}</div>
+        <div class="cmd-item-name">${escapeHtml(item.name)}</div>
+        <div class="cmd-item-action">Why moving →</div>
+      </div>`).join('');
+}
+
+function cmdSelectItem(sym){
+  closeCommandPalette();
+  const s = String(sym).toUpperCase().trim();
+  route('why');
+  requestAnimationFrame(()=>{
+    if(typeof loadWim === 'function'){
+      if(typeof wimDB !== 'undefined' && wimDB[s]) loadWim(s);
+      else {
+        loadWim('NVDA');
+        const wimSym = document.getElementById('wimSym');
+        const wimName = document.getElementById('wimName');
+        const wimInput = document.getElementById('wimInput');
+        if(wimSym) wimSym.textContent = s;
+        if(wimName) wimName.textContent = s + ' · click Generate for live AI analysis';
+        if(wimInput) wimInput.value = s;
+        document.querySelectorAll('.wim-quick .chip').forEach(c=>c.classList.remove('active'));
+        const out = document.getElementById('wimSummary');
+        if(out) out.innerHTML = `<p style="color:var(--gold);font-size:13px">Ticker set to <b>${escapeHtml(s)}</b>. Click <b>Generate live AI</b> above to pull live market data and AI context.</p>`;
+      }
+    }
+  });
+}
+window.cmdSelectItem = cmdSelectItem;
+
+// Wire the input
+(function(){
+  const input = document.getElementById('cmdInput');
+  if(!input) return;
+  input.addEventListener('input', ()=>{ _cmdActiveIdx=-1; renderCmdResults(input.value); });
+  input.addEventListener('keydown', e=>{
+    const items = document.querySelectorAll('#cmdResults .cmd-item');
+    if(e.key==='ArrowDown'){
+      e.preventDefault();
+      _cmdActiveIdx = Math.min(_cmdActiveIdx+1, items.length-1);
+      renderCmdResults(input.value);
+    } else if(e.key==='ArrowUp'){
+      e.preventDefault();
+      _cmdActiveIdx = Math.max(_cmdActiveIdx-1, -1);
+      renderCmdResults(input.value);
+    } else if(e.key==='Enter'){
+      if(_cmdActiveIdx>=0 && items[_cmdActiveIdx]){
+        cmdSelectItem(items[_cmdActiveIdx].dataset.sym);
+      } else {
+        const sym = resolveTickerInput(input.value) || input.value.toUpperCase().trim().replace(/[^A-Z0-9.\-]/g,'');
+        if(sym) cmdSelectItem(sym);
+      }
+    }
+  });
+})();
+
+/* ============================================================
+   ONBOARDING BANNER
+============================================================ */
+const ONBOARD_KEY = 'brieftick_onboarded_v1';
+function showOnboardingIfNew(){
+  try {
+    if(localStorage.getItem(ONBOARD_KEY)) return;
+    const banner = document.getElementById('onboardBanner');
+    if(banner){
+      setTimeout(()=>banner.classList.remove('hidden'), 1200);
+    }
+  } catch(e){}
+}
+function dismissOnboarding(){
+  try { localStorage.setItem(ONBOARD_KEY, '1'); } catch(e){}
+  const banner = document.getElementById('onboardBanner');
+  if(banner) banner.classList.add('hidden');
+}
+window.dismissOnboarding = dismissOnboarding;
+window.addEventListener('load', showOnboardingIfNew);
 
 </script>
 </body>
