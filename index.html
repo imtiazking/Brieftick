@@ -2331,10 +2331,10 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start">
-        <svg viewBox="0 0 480 300" style="width:100%;height:auto;cursor:crosshair" id="portCluster"></svg>
-        <div id="portClusterDetail" style="width:180px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--ink-dim);min-height:120px">
+        <svg viewBox="0 0 480 300" style="width:100%;height:auto;cursor:grab;user-select:none;-webkit-user-select:none" id="portCluster"></svg>
+          <div id="portClusterDetail" style="width:180px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--ink-dim);min-height:120px">
           <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px">Pair insight</div>
-          <div id="portClusterDetailText" style="color:var(--ink-faint)">Hover a node to see correlation with other holdings.</div>
+          <div id="portClusterDetailText" style="color:var(--ink-faint)">Drag to rotate · hover a node for pair correlations.</div>
         </div>
       </div>
       <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
@@ -6902,18 +6902,194 @@ function renderHoldingsTable(holdings, quotes){
 }
 
 /* ============================================================
-   PORTFOLIO CORRELATION CLUSTER — Live 30D Pearson engine
-   Fetches 30D daily closes for each holding via Twelve Data,
-   computes pairwise Pearson r, lays out nodes using a
-   force-directed-style approximation (highly correlated pairs
-   sit closer together), and renders an interactive SVG where:
-   • Hover a node: highlights all its edges coloured by r strength
-   • Shows pair detail panel with r value + plain-English read
-   • Edges coloured by correlation strength (red/amber/blue)
-   • Refresh button recalculates from live prices
+   PORTFOLIO CORRELATION CLUSTER — 3D Interactive Globe
+   • Nodes distributed on a sphere via Fibonacci spiral
+   • Highly correlated pairs attracted together (spring physics)
+   • Perspective projection: depth drives size + opacity
+   • Mouse / touch drag rotates the globe
+   • Auto-rotates slowly; pauses on drag / hover
+   • Hover a node → edge highlight + pair detail panel
+   • Refresh button recalculates live 30D Pearson r
 ============================================================ */
 let _portClusterHoldings = [];
-let _portClusterMatrix = null; // symbol → symbol → r value
+let _portClusterMatrix = null;
+
+// ─── persistent 3-D state ────────────────────────────────────
+const _pc3d = {
+  nodes: [], edges: [],
+  rotX: 0.35, rotY: 0,          // initial tilt so sphere looks 3D
+  autoRotSpeed: 0.0025,
+  dragging: false, lastMouse: null,
+  raf: null, hoveredIdx: null,
+  projected: [],                 // cache for hit-testing
+};
+
+function _pc3dStop(){ if(_pc3d.raf){ cancelAnimationFrame(_pc3d.raf); _pc3d.raf = null; } }
+
+function _pc3dRotate(p, rx, ry){
+  let {x,y,z} = p;
+  let ny = y*Math.cos(rx) - z*Math.sin(rx);
+  let nz = y*Math.sin(rx) + z*Math.cos(rx);
+  y=ny; z=nz;
+  let nx = x*Math.cos(ry) + z*Math.sin(ry);
+  nz = -x*Math.sin(ry) + z*Math.cos(ry);
+  return {x:nx,y,z:nz};
+}
+
+function _pc3dProject(p, cx, cy, R, FOV){
+  const z = p.z*R + FOV;
+  const sc = FOV/Math.max(z,1);
+  return {sx:cx+p.x*R*sc, sy:cy+p.y*R*sc, depth:p.z, sc};
+}
+
+// Evenly-spaced points on unit sphere (Fibonacci spiral)
+function _pc3dFibSphere(n){
+  const pts=[], phi=Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<n;i++){
+    const y=1-(i/Math.max(n-1,1))*2, r=Math.sqrt(Math.max(0,1-y*y)), t=phi*i;
+    pts.push({x:Math.cos(t)*r,y,z:Math.sin(t)*r});
+  }
+  return pts;
+}
+
+// Spring relaxation: pull correlated pairs together on the sphere surface
+function _pc3dRelax(pts, edges, steps=90){
+  for(let s=0;s<steps;s++){
+    const F=pts.map(()=>({x:0,y:0,z:0}));
+    for(const e of edges){
+      const str=Math.max(0,(Math.abs(e.r)-0.25))*0.055;
+      if(str<=0) continue;
+      const a=pts[e.i],b=pts[e.j];
+      const dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z;
+      F[e.i].x+=dx*str; F[e.i].y+=dy*str; F[e.i].z+=dz*str;
+      F[e.j].x-=dx*str; F[e.j].y-=dy*str; F[e.j].z-=dz*str;
+    }
+    for(let i=0;i<pts.length;i++){
+      pts[i].x+=F[i].x; pts[i].y+=F[i].y; pts[i].z+=F[i].z;
+      const l=Math.sqrt(pts[i].x**2+pts[i].y**2+pts[i].z**2)||1;
+      pts[i].x/=l; pts[i].y/=l; pts[i].z/=l;
+    }
+  }
+}
+
+const _pc3dSectorColor = {
+  'Information Technology':'#d4a85a','Communication Services':'#4ea8ff',
+  'Consumer Discretionary':'#7cc4ff','Financials':'#3ddc97',
+  'Energy':'#ffb547','Healthcare':'#6ee7a8','Broad Market':'#9aa6bd','Other':'#8b94a8',
+};
+
+function _pc3dDraw(svg, hoveredIdx){
+  const W=480, H=300, CX=240, CY=150, R=108, FOV=340;
+
+  // Project + sort by depth (painter: back → front)
+  const projected = _pc3d.nodes.map((node,i)=>{
+    const rot = _pc3dRotate(node.pos, _pc3d.rotX, _pc3d.rotY);
+    const {sx,sy,depth,sc} = _pc3dProject(rot, CX, CY, R, FOV);
+    const df=(depth+1)/2;
+    const baseR=Math.max(9,Math.min(24,6+node.weight*0.95));
+    return {i, sx, sy, r:baseR*Math.max(0.52,sc), depth, df, opacity:0.3+df*0.7, node, baseR};
+  });
+  _pc3d.projected = projected;
+  const sortedByDepth = [...projected].sort((a,b)=>a.depth-b.depth);
+
+  // Sphere outline (depth cue)
+  let out = `<circle cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="rgba(180,200,255,0.06)" stroke-width="1"/>`;
+  // Equator and meridian lines for grid feel
+  out += `<ellipse cx="${CX}" cy="${CY}" rx="${R}" ry="${R*0.12}" fill="none" stroke="rgba(180,200,255,0.04)" stroke-width="0.8"/>`;
+  out += `<ellipse cx="${CX}" cy="${CY}" rx="${R*0.12}" ry="${R}" fill="none" stroke="rgba(180,200,255,0.04)" stroke-width="0.8"/>`;
+
+  // Draw edges
+  for(const e of _pc3d.edges){
+    const pa=projected[e.i], pb=projected[e.j];
+    if(!pa||!pb) continue;
+    const avgDepth=(pa.depth+pb.depth)/2;
+    const df=(avgDepth+1)/2;
+    const [color,baseOp]=_corrEdgeColor(e.r);
+    const isH=hoveredIdx!=null&&(e.i===hoveredIdx||e.j===hoveredIdx);
+    const op = hoveredIdx==null ? baseOp*(0.35+df*0.65) : (isH?Math.min(baseOp*2.8,0.95):0.03);
+    const w  = isH ? 2.8 : (Math.abs(e.r)>=0.7?1.4:0.75);
+    const mx=(pa.sx+pb.sx)/2, my=(pa.sy+pb.sy)/2;
+    const lbl = isH ? `<text x="${mx}" y="${my-7}" text-anchor="middle" fill="${color}" font-family="JetBrains Mono" font-size="8.5" opacity="${op}">${e.r.toFixed(2)}</text>` : '';
+    out += `<line x1="${pa.sx}" y1="${pa.sy}" x2="${pb.sx}" y2="${pb.sy}" stroke="${color}" stroke-opacity="${op}" stroke-width="${w}"/>${lbl}`;
+  }
+
+  // Draw nodes back-to-front
+  for(const p of sortedByDepth){
+    const c = _pc3dSectorColor[p.node.meta.sector]||'#8b94a8';
+    const isA = hoveredIdx===p.i;
+    const fillOp = p.opacity*(isA?0.5:0.2);
+    const strOp  = p.opacity*(isA?1.0:0.75);
+    const strW   = isA?2.8:1.4;
+    const pulse  = isA?`<circle cx="${p.sx}" cy="${p.sy}" r="${p.r+8}" fill="none" stroke="${c}" stroke-opacity="${p.opacity*0.25}" stroke-width="1.5"/>`:'' ;
+    const fs = Math.round(Math.max(6,Math.min(10,p.r*0.82)));
+    out += `${pulse}<circle cx="${p.sx}" cy="${p.sy}" r="${p.r}" fill="${c}" fill-opacity="${fillOp}" stroke="${c}" stroke-width="${strW}" stroke-opacity="${strOp}"/>`;
+    out += `<text x="${p.sx}" y="${p.sy+3}" text-anchor="middle" fill="rgba(232,236,245,${p.opacity})" font-family="JetBrains Mono" font-size="${fs}" font-weight="700" style="pointer-events:none">${escapeHtml(p.node.sym)}</text>`;
+    // Weight label only on front-facing nodes (depth > -0.2)
+    if(p.depth > -0.2){
+      out += `<text x="${p.sx}" y="${p.sy+p.r+11}" text-anchor="middle" fill="rgba(139,148,168,${p.opacity*0.8})" font-family="JetBrains Mono" font-size="7" style="pointer-events:none">${p.node.weight.toFixed(1)}%</text>`;
+    }
+  }
+  svg.innerHTML = out;
+}
+
+function _pc3dUpdateDetail(idx){
+  const el = document.getElementById('portClusterDetailText');
+  if(!el) return;
+  if(idx==null){ el.innerHTML='<span style="color:var(--ink-faint)">Drag to rotate · hover a node for correlations.</span>'; return; }
+  const sym = _pc3d.nodes[idx]?.sym;
+  if(!sym){ el.innerHTML=''; return; }
+  const pairs = _pc3d.edges
+    .filter(e=>e.i===idx||e.j===idx)
+    .map(e=>({sym:e.i===idx?e.symB:e.symA, r:e.r}))
+    .sort((a,b)=>Math.abs(b.r)-Math.abs(a.r)).slice(0,3);
+  if(!pairs.length){ el.innerHTML=`<b style="color:var(--ink)">${sym}</b><br><span style="color:var(--ink-faint)">No significant correlations.</span>`; return; }
+  el.innerHTML = pairs.map(p=>_corrRead(sym,p.sym,p.r)).join('<hr style="border:none;border-top:1px solid var(--border);margin:8px 0">');
+}
+
+function _pc3dWireInteraction(svg){
+  // Hit-test using stored projected positions
+  function nodeAt(e){
+    const rect=svg.getBoundingClientRect();
+    const sx=(e.clientX-rect.left)*480/rect.width;
+    const sy=(e.clientY-rect.top)*300/rect.height;
+    let best=null,bestD=9999;
+    for(const p of _pc3d.projected){
+      const d=Math.sqrt((sx-p.sx)**2+(sy-p.sy)**2);
+      if(d<p.r+8&&d<bestD){bestD=d;best=p.i;}
+    }
+    return best;
+  }
+  svg.onmousemove = e=>{
+    if(_pc3d.dragging) return;
+    const idx=nodeAt(e);
+    if(idx!==_pc3d.hoveredIdx){ _pc3d.hoveredIdx=idx; _pc3dUpdateDetail(idx); }
+  };
+  svg.onmouseleave = ()=>{ _pc3d.hoveredIdx=null; _pc3dUpdateDetail(null); };
+
+  // Drag to rotate
+  svg.onmousedown = e=>{
+    _pc3d.dragging=true;
+    _pc3d.lastMouse={x:e.clientX,y:e.clientY};
+    svg.style.cursor='grabbing';
+  };
+  const onMove = e=>{
+    if(!_pc3d.dragging) return;
+    const dx=e.clientX-_pc3d.lastMouse.x, dy=e.clientY-_pc3d.lastMouse.y;
+    _pc3d.rotY+=dx*0.007; _pc3d.rotX+=dy*0.007;
+    _pc3d.lastMouse={x:e.clientX,y:e.clientY};
+  };
+  const onUp = ()=>{ _pc3d.dragging=false; if(svg) svg.style.cursor='grab'; };
+  window.addEventListener('mousemove',onMove,{passive:true});
+  window.addEventListener('mouseup',onUp);
+
+  // Touch
+  svg.ontouchstart = e=>{ if(e.touches[0]){_pc3d.dragging=true;_pc3d.lastMouse={x:e.touches[0].clientX,y:e.touches[0].clientY};e.preventDefault();} },{passive:false};
+  svg.ontouchmove = e=>{ if(!_pc3d.dragging||!e.touches[0]) return; const t=e.touches[0]; const dx=t.clientX-_pc3d.lastMouse.x,dy=t.clientY-_pc3d.lastMouse.y; _pc3d.rotY+=dx*0.007; _pc3d.rotX+=dy*0.007; _pc3d.lastMouse={x:t.clientX,y:t.clientY}; e.preventDefault(); },{passive:false};
+  svg.ontouchend = ()=>{ _pc3d.dragging=false; };
+
+  // Store cleanup refs so we don't leak on rebuild
+  svg._pc3dCleanup = ()=>{ window.removeEventListener('mousemove',onMove); window.removeEventListener('mouseup',onUp); };
+}
 
 function _corrEdgeColor(r){
   const a = Math.abs(r);
@@ -6942,180 +7118,68 @@ function _corrRead(symA, symB, r){
   return `<b style="color:var(--ink)">${symA} / ${symB}</b><br>r = ${r.toFixed(2)} · ${lbl}<br><span style="color:var(--ink-dim);font-size:10px">${implication}</span>`;
 }
 
-function _layoutCluster(nodes){
-  const W = 480, H = 300, CX = 240, CY = 150;
-
-  // Special compact layouts for very small portfolios
-  if(nodes.length === 1){
-    nodes[0].x = CX; nodes[0].y = CY; return;
-  }
-  if(nodes.length === 2){
-    nodes[0].x = 155; nodes[0].y = CY;
-    nodes[1].x = 325; nodes[1].y = CY;
-    return;
-  }
-  if(nodes.length === 3){
-    nodes[0].x = CX;    nodes[0].y = 90;
-    nodes[1].x = 145;   nodes[1].y = 210;
-    nodes[2].x = 335;   nodes[2].y = 210;
-    return;
-  }
-
-  // For larger portfolios: sector-based radial layout
-  const sectorAngles = {
-    'Information Technology': -0.8,
-    'Communication Services': -0.2,
-    'Consumer Discretionary':  0.4,
-    'Financials':              2.2,
-    'Energy':                  2.8,
-    'Healthcare':              1.7,
-    'Broad Market':            1.1,
-    'Other':                   -1.5,
-  };
-  nodes.forEach((n, i) => {
-    const baseAngle = (sectorAngles[n.meta.sector] || (i * 0.9)) + (i * 0.3);
-    const radius = 78 + (i % 4) * 24;
-    n.x = Math.round(CX + Math.cos(baseAngle) * radius);
-    n.y = Math.round(CY + Math.sin(baseAngle) * radius * 0.72);
-    n.x = Math.max(n.r + 6, Math.min(W - n.r - 6, n.x));
-    n.y = Math.max(n.r + 6, Math.min(H - n.r - 6, n.y));
-  });
-}
-
 function renderPortfolioCluster(holdings, matrix){
   const svg = document.getElementById('portCluster');
   if(!svg) return;
-  if(!holdings || !holdings.length){
-    svg.innerHTML = '<text x="240" y="150" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="12">Add holdings above to generate cluster map</text>';
-    const desc = document.getElementById('portClusterDesc');
-    if(desc) desc.innerHTML = 'Enter holdings in the input above. <a onclick="loadSamplePortfolio()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Load sample portfolio</a> to see a full example.';
+
+  // Clean up any previous animation + interaction
+  _pc3dStop();
+  if(svg._pc3dCleanup){ svg._pc3dCleanup(); svg._pc3dCleanup=null; }
+  _pc3d.hoveredIdx = null;
+
+  if(!holdings||!holdings.length){
+    svg.innerHTML='<text x="240" y="150" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="12">Add holdings above to generate cluster map</text>';
+    const desc=document.getElementById('portClusterDesc');
+    if(desc) desc.innerHTML='Enter holdings above. <a onclick="loadSamplePortfolio()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Load sample (14 holdings)</a> to see a full 3D cluster.';
     return;
   }
-  // With very few holdings, show a hint
-  const desc2 = document.getElementById('portClusterDesc');
-  if(holdings.length < 4 && desc2){
-    desc2.innerHTML = `Only ${holdings.length} holding${holdings.length>1?'s':''} — add more for a meaningful cluster. <a onclick="loadSamplePortfolio()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Load sample (14 holdings)</a>`;
-  }
+
   if(matrix) _portClusterMatrix = matrix;
   _portClusterHoldings = holdings;
 
-  const nodes = holdings.slice().sort((a,b)=>b.weight-a.weight).slice(0,16).map(h => ({
-    h, meta: getPortfolioMeta(h.symbol),
-    r: Math.max(10, Math.min(28, 8 + h.weight * 1.1)),
-    x: 0, y: 0,
-    highlighted: false
+  const sorted = holdings.slice().sort((a,b)=>b.weight-a.weight).slice(0,16);
+
+  // Build 3D node list
+  const fibPts = _pc3dFibSphere(sorted.length);
+  _pc3d.nodes = sorted.map((h,i)=>({
+    sym: h.symbol, weight: h.weight,
+    meta: getPortfolioMeta(h.symbol),
+    pos: {...fibPts[i]},
   }));
-  _layoutCluster(nodes);
 
-  // Build edges between all pairs
-  // Lower the threshold for small portfolios so something always shows
-  const edgeThreshold = nodes.length <= 4 ? 0.0 : 0.25;
-  const edges = [];
-  for(let i=0;i<nodes.length;i++){
-    for(let j=i+1;j<nodes.length;j++){
-      const symA = nodes[i].h.symbol, symB = nodes[j].h.symbol;
-      const r = _portClusterMatrix ? (_portClusterMatrix[symA]?.[symB] ?? _portClusterMatrix[symB]?.[symA] ?? null) : null;
-      // Fall back to sector-based estimate if no live data
-      const rFinal = r != null ? r : (nodes[i].meta.sector === nodes[j].meta.sector ? 0.72 : 0.28);
-      if(Math.abs(rFinal) >= edgeThreshold) edges.push({i, j, r: rFinal, symA, symB});
+  // Build edge list
+  const mat = matrix || _portClusterMatrix;
+  _pc3d.edges = [];
+  for(let i=0;i<_pc3d.nodes.length;i++){
+    for(let j=i+1;j<_pc3d.nodes.length;j++){
+      const sA=_pc3d.nodes[i].sym, sB=_pc3d.nodes[j].sym;
+      const r=mat?(mat[sA]?.[sB]??mat[sB]?.[sA]??null):null;
+      const rF=r!=null?r:(_pc3d.nodes[i].meta.sector===_pc3d.nodes[j].meta.sector?0.68:0.22);
+      if(Math.abs(rF)>=0.15) _pc3d.edges.push({i,j,r:rF,symA:sA,symB:sB});
     }
   }
 
-  const sectorColors2 = {
-    'Information Technology':'#d4a85a','Communication Services':'#4ea8ff',
-    'Consumer Discretionary':'#7cc4ff','Financials':'#3ddc97',
-    'Energy':'#ffb547','Healthcare':'#6ee7a8','Broad Market':'#9aa6bd','Other':'#8b94a8'
-  };
+  // Spring relaxation so correlated nodes cluster together
+  _pc3dRelax(_pc3d.nodes.map(n=>n.pos), _pc3d.edges, 100);
 
-  function buildSVG(hoveredIdx){
-    const fewNodes = nodes.length <= 4;
-    const edgeSVG = edges.map(e => {
-      const [color, opacity] = _corrEdgeColor(e.r);
-      const baseOpacity = fewNodes ? Math.min(opacity * 2.5, 0.85) : opacity;
-      const isHovered = hoveredIdx != null && (e.i === hoveredIdx || e.j === hoveredIdx);
-      const finalOpacity = hoveredIdx == null ? baseOpacity : (isHovered ? Math.min(baseOpacity * 2.2, 0.95) : 0.04);
-      const baseWidth = fewNodes ? (Math.abs(e.r) >= 0.7 ? 3 : 2) : (Math.abs(e.r) >= 0.7 ? 1.5 : 1);
-      const width = hoveredIdx == null ? baseWidth : (isHovered ? baseWidth * 1.8 : 0.5);
-      // For small portfolios or hovered: show r label on edge midpoint
-      const showLabel = fewNodes || isHovered;
-      const mx = (nodes[e.i].x + nodes[e.j].x) / 2;
-      const my = (nodes[e.i].y + nodes[e.j].y) / 2;
-      const label = showLabel ? `<text x="${mx}" y="${my - 6}" text-anchor="middle" fill="${color}" font-family="JetBrains Mono" font-size="9" opacity="${finalOpacity * 1.2}">r = ${e.r.toFixed(2)}</text>` : '';
-      return `<line x1="${nodes[e.i].x}" y1="${nodes[e.i].y}" x2="${nodes[e.j].x}" y2="${nodes[e.j].y}" stroke="${color}" stroke-opacity="${finalOpacity}" stroke-width="${width}"/>${label}`;
-    }).join('');
-
-    const nodeSVG = nodes.map((n, idx) => {
-      const c = sectorColors2[n.meta.sector] || '#8b94a8';
-      const isActive = hoveredIdx === idx;
-      const strokeW = isActive ? 2.5 : 1.3;
-      const fillOp = hoveredIdx == null ? 0.18 : (isActive ? 0.32 : 0.1);
-      const pulse = isActive
-        ? `<circle cx="${n.x}" cy="${n.y}" r="${n.r + 6}" fill="none" stroke="${c}" stroke-opacity="0.25" stroke-width="1.5"/>`
-        : '';
-      return `${pulse}<g class="pcnode" data-idx="${idx}" style="cursor:pointer">
-        <circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${c}" fill-opacity="${fillOp}" stroke="${c}" stroke-width="${strokeW}"/>
-        <text x="${n.x}" y="${n.y+3}" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="${n.r > 16 ? 9 : 7}" font-weight="700" style="pointer-events:none">${escapeHtml(n.h.symbol)}</text>
-        <text x="${n.x}" y="${n.y + n.r + 11}" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="7" style="pointer-events:none">${n.h.weight.toFixed(1)}%</text>
-      </g>`;
-    }).join('');
-
-    return edgeSVG + nodeSVG;
+  // Show small-portfolio hint
+  const desc2=document.getElementById('portClusterDesc');
+  if(sorted.length < 4 && desc2){
+    desc2.innerHTML=`Only ${sorted.length} holding${sorted.length>1?'s':''} — <a onclick="loadSamplePortfolio()" style="color:var(--gold);cursor:pointer;text-decoration:underline">load sample (14)</a> for a full cluster.`;
+  } else if(desc2){
+    desc2.textContent='Drag to rotate · hover a node for correlation detail.';
   }
 
-  svg.innerHTML = buildSVG(null);
+  // Wire interaction (drag + hover hit-test)
+  _pc3dWireInteraction(svg);
 
-  // Wire hover/click interactions
-  function updateDetail(idx){
-    const detailEl = document.getElementById('portClusterDetailText');
-    if(!detailEl) return;
-    if(idx == null){
-      detailEl.innerHTML = '<span style="color:var(--ink-faint)">Hover a node to see pair correlations.</span>';
-      return;
-    }
-    const hoveredSym = nodes[idx].h.symbol;
-    // Find 2 strongest correlations with this node
-    const pairs = edges
-      .filter(e => e.i === idx || e.j === idx)
-      .map(e => ({sym: e.i === idx ? e.symB : e.symA, r: e.r}))
-      .sort((a,b) => Math.abs(b.r) - Math.abs(a.r))
-      .slice(0, 3);
-    if(!pairs.length){
-      detailEl.innerHTML = `<b style="color:var(--ink)">${hoveredSym}</b><br><span style="color:var(--ink-faint)">No significant correlations detected.</span>`;
-      return;
-    }
-    detailEl.innerHTML = pairs.map(p => _corrRead(hoveredSym, p.sym, p.r)).join('<hr style="border:none;border-top:1px solid var(--border);margin:8px 0">');
+  // Render loop: auto-rotate when not dragging
+  function frame(){
+    if(!_pc3d.dragging && _pc3d.hoveredIdx==null) _pc3d.rotY += _pc3d.autoRotSpeed;
+    _pc3dDraw(svg, _pc3d.hoveredIdx);
+    _pc3d.raf = requestAnimationFrame(frame);
   }
-
-  svg.querySelectorAll('.pcnode').forEach(el => {
-    const idx = parseInt(el.dataset.idx);
-    el.addEventListener('mouseenter', () => {
-      svg.innerHTML = buildSVG(idx);
-      // re-wire after re-render
-      setTimeout(() => wirePCNodes(), 0);
-      updateDetail(idx);
-    });
-    el.addEventListener('mouseleave', () => {
-      svg.innerHTML = buildSVG(null);
-      setTimeout(() => wirePCNodes(), 0);
-      updateDetail(null);
-    });
-  });
-
-  function wirePCNodes(){
-    svg.querySelectorAll('.pcnode').forEach(el => {
-      const idx2 = parseInt(el.dataset.idx);
-      el.addEventListener('mouseenter', () => {
-        svg.innerHTML = buildSVG(idx2);
-        setTimeout(() => wirePCNodes(), 0);
-        updateDetail(idx2);
-      });
-      el.addEventListener('mouseleave', () => {
-        svg.innerHTML = buildSVG(null);
-        setTimeout(() => wirePCNodes(), 0);
-        updateDetail(null);
-      });
-    });
-  }
+  _pc3d.raf = requestAnimationFrame(frame);
 }
 
 async function liveRefreshPortfolioCluster(){
