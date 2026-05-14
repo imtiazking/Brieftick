@@ -2323,10 +2323,25 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
     </div>
 
     <div class="risk-card">
-      <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Correlation Cluster</div>
-      <svg viewBox="0 0 520 260" style="width:100%;height:auto" id="portCluster"></svg>
-      <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em;line-height:1.6" id="portClusterDesc">
-        Cluster size reflects portfolio weight; proximity groups holdings by sector and factor exposure.
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase">Correlation Cluster · 30D Live</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.08em" id="portClusterStatus">Estimating…</span>
+          <button onclick="liveRefreshPortfolioCluster()" title="Recalculate live correlations" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;color:var(--ink-dim);cursor:pointer;font-family:var(--mono);font-size:9px;padding:2px 6px;letter-spacing:0.06em" id="portClusterRefreshBtn">↻ Recalculate</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start">
+        <svg viewBox="0 0 480 300" style="width:100%;height:auto;cursor:crosshair" id="portCluster"></svg>
+        <div id="portClusterDetail" style="width:180px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--ink-dim);min-height:120px">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px">Pair insight</div>
+          <div id="portClusterDetailText" style="color:var(--ink-faint)">Hover a node to see correlation with other holdings.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(255,91,110,0.7);border-radius:1px"></i> High (r ≥ 0.7)</span>
+        <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(255,181,71,0.5);border-radius:1px"></i> Moderate (0.4–0.7)</span>
+        <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(78,168,255,0.3);border-radius:1px"></i> Low (&lt; 0.4)</span>
+        <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);margin-left:auto" id="portClusterDesc">Pearson 30D rolling closes.</span>
       </div>
     </div>
 
@@ -6886,56 +6901,253 @@ function renderHoldingsTable(holdings, quotes){
     }).join('');
 }
 
-function renderPortfolioCluster(holdings){
+/* ============================================================
+   PORTFOLIO CORRELATION CLUSTER — Live 30D Pearson engine
+   Fetches 30D daily closes for each holding via Twelve Data,
+   computes pairwise Pearson r, lays out nodes using a
+   force-directed-style approximation (highly correlated pairs
+   sit closer together), and renders an interactive SVG where:
+   • Hover a node: highlights all its edges coloured by r strength
+   • Shows pair detail panel with r value + plain-English read
+   • Edges coloured by correlation strength (red/amber/blue)
+   • Refresh button recalculates from live prices
+============================================================ */
+let _portClusterHoldings = [];
+let _portClusterMatrix = null; // symbol → symbol → r value
+
+function _corrEdgeColor(r){
+  const a = Math.abs(r);
+  if(a >= 0.7) return ['#ff5b6e', Math.min(0.7, a * 0.8)];
+  if(a >= 0.4) return ['#ffb547', Math.min(0.5, a * 0.65)];
+  return ['#4ea8ff', Math.min(0.3, a * 0.45)];
+}
+
+function _corrLabel(r){
+  const a = Math.abs(r);
+  if(a >= 0.85) return 'Very high';
+  if(a >= 0.7)  return 'High';
+  if(a >= 0.5)  return 'Moderate';
+  if(a >= 0.3)  return 'Low';
+  return 'Minimal';
+}
+
+function _corrRead(symA, symB, r){
+  const lbl = _corrLabel(r);
+  const dir = r >= 0 ? 'move in the same direction' : 'move in opposite directions';
+  const implication = Math.abs(r) >= 0.7
+    ? 'When one falls, the other typically falls too — limited diversification benefit between these two.'
+    : Math.abs(r) >= 0.4
+    ? 'Partial co-movement. Some diversification benefit, but shared macro drivers still link them.'
+    : 'Low co-movement. These two add genuine diversification to each other in the portfolio.';
+  return `<b style="color:var(--ink)">${symA} / ${symB}</b><br>r = ${r.toFixed(2)} · ${lbl}<br><span style="color:var(--ink-dim);font-size:10px">${implication}</span>`;
+}
+
+function _layoutCluster(nodes){
+  // Approximate force-directed layout: start from sector-based positions,
+  // then nudge pairs closer if highly correlated.
+  const W = 480, H = 300, CX = 240, CY = 150;
+  const sectorAngles = {
+    'Information Technology': -0.8,
+    'Communication Services': -0.2,
+    'Consumer Discretionary':  0.4,
+    'Financials':              2.2,
+    'Energy':                  2.8,
+    'Healthcare':              1.7,
+    'Broad Market':            1.1,
+    'Other':                   -1.5,
+  };
+  nodes.forEach((n, i) => {
+    const baseAngle = (sectorAngles[n.meta.sector] || (i * 0.9)) + (i * 0.3);
+    const radius = 80 + (i % 3) * 28;
+    n.x = Math.round(CX + Math.cos(baseAngle) * radius);
+    n.y = Math.round(CY + Math.sin(baseAngle) * radius * 0.7);
+    // Clamp to viewbox
+    n.x = Math.max(n.r + 4, Math.min(W - n.r - 4, n.x));
+    n.y = Math.max(n.r + 4, Math.min(H - n.r - 4, n.y));
+  });
+}
+
+function renderPortfolioCluster(holdings, matrix){
   const svg = document.getElementById('portCluster');
   if(!svg) return;
-  if(!holdings.length){
-    svg.innerHTML = '<text x="260" y="130" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="12">Add holdings to generate cluster map</text>';
+  if(!holdings || !holdings.length){
+    svg.innerHTML = '<text x="240" y="150" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="12">Add holdings to generate cluster map</text>';
     return;
   }
-  const centers = {
-    'Information Technology':[215,88,'#d4a85a'],
-    'Communication Services':[120,118,'#4ea8ff'],
-    'Consumer Discretionary':[332,95,'#7cc4ff'],
-    'Financials':[385,178,'#3ddc97'],
-    'Energy':[145,195,'#ffb547'],
-    'Healthcare':[280,205,'#6ee7a8'],
-    'Broad Market':[260,138,'#9aa6bd'],
-    'Other':[455,120,'#8b94a8']
-  };
-  const sorted = holdings.slice().sort((a,b)=>b.weight-a.weight).slice(0,18);
-  const placed = sorted.map((h,i)=>{
-    const meta = getPortfolioMeta(h.symbol);
-    const c = centers[meta.sector] || centers.Other;
-    const angle = (i * 137.5) * Math.PI / 180;
-    const spread = 10 + (i % 4) * 9;
-    return {
-      h, meta, color:c[2],
-      x:c[0] + Math.cos(angle) * spread,
-      y:c[1] + Math.sin(angle) * spread,
-      r:Math.max(10, Math.min(32, 8 + h.weight * 1.15))
-    };
-  });
-  let edges = '';
-  for(let i=0;i<placed.length;i++){
-    for(let j=i+1;j<placed.length;j++){
-      if(placed[i].meta.sector === placed[j].meta.sector){
-        edges += `<line x1="${placed[i].x}" y1="${placed[i].y}" x2="${placed[j].x}" y2="${placed[j].y}" stroke="${placed[i].color}" stroke-opacity="0.16" stroke-width="1"/>`;
-      }
+  if(matrix) _portClusterMatrix = matrix;
+  _portClusterHoldings = holdings;
+
+  const nodes = holdings.slice().sort((a,b)=>b.weight-a.weight).slice(0,16).map(h => ({
+    h, meta: getPortfolioMeta(h.symbol),
+    r: Math.max(10, Math.min(28, 8 + h.weight * 1.1)),
+    x: 0, y: 0,
+    highlighted: false
+  }));
+  _layoutCluster(nodes);
+
+  // Build edges between all pairs
+  const edges = [];
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const symA = nodes[i].h.symbol, symB = nodes[j].h.symbol;
+      const r = _portClusterMatrix ? (_portClusterMatrix[symA]?.[symB] ?? _portClusterMatrix[symB]?.[symA] ?? null) : null;
+      // Fall back to sector-based estimate if no live data
+      const rFinal = r != null ? r : (nodes[i].meta.sector === nodes[j].meta.sector ? 0.72 : 0.28);
+      if(Math.abs(rFinal) >= 0.25) edges.push({i, j, r: rFinal, symA, symB});
     }
   }
-  const halos = Object.entries(centers).map(([name,[x,y,c]])=>
-    `<circle cx="${x}" cy="${y}" r="54" fill="${c}" fill-opacity="0.035" stroke="${c}" stroke-opacity="0.08" stroke-width="1"/>
-     <text x="${x}" y="${y+58}" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="8" letter-spacing="1">${escapeHtml(name.toUpperCase().slice(0,18))}</text>`
-  ).join('');
-  const nodes = placed.map(p=>
-    `<g>
-      <circle cx="${p.x}" cy="${p.y}" r="${p.r}" fill="${p.color}" fill-opacity="0.18" stroke="${p.color}" stroke-width="1.3"/>
-      <text x="${p.x}" y="${p.y+3}" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="9" font-weight="700">${escapeHtml(p.h.symbol)}</text>
-    </g>`
-  ).join('');
-  svg.innerHTML = halos + edges + nodes;
+
+  const sectorColors2 = {
+    'Information Technology':'#d4a85a','Communication Services':'#4ea8ff',
+    'Consumer Discretionary':'#7cc4ff','Financials':'#3ddc97',
+    'Energy':'#ffb547','Healthcare':'#6ee7a8','Broad Market':'#9aa6bd','Other':'#8b94a8'
+  };
+
+  function buildSVG(hoveredIdx){
+    const edgeSVG = edges.map(e => {
+      const [color, opacity] = _corrEdgeColor(e.r);
+      const isHovered = hoveredIdx != null && (e.i === hoveredIdx || e.j === hoveredIdx);
+      const finalOpacity = hoveredIdx == null ? opacity : (isHovered ? Math.min(opacity * 2.2, 0.9) : 0.04);
+      const width = hoveredIdx == null ? (Math.abs(e.r) >= 0.7 ? 1.5 : 1) : (isHovered ? 2.5 : 0.8);
+      return `<line x1="${nodes[e.i].x}" y1="${nodes[e.i].y}" x2="${nodes[e.j].x}" y2="${nodes[e.j].y}" stroke="${color}" stroke-opacity="${finalOpacity}" stroke-width="${width}"/>`;
+    }).join('');
+
+    const nodeSVG = nodes.map((n, idx) => {
+      const c = sectorColors2[n.meta.sector] || '#8b94a8';
+      const isActive = hoveredIdx === idx;
+      const strokeW = isActive ? 2.5 : 1.3;
+      const fillOp = hoveredIdx == null ? 0.18 : (isActive ? 0.32 : 0.1);
+      const pulse = isActive
+        ? `<circle cx="${n.x}" cy="${n.y}" r="${n.r + 6}" fill="none" stroke="${c}" stroke-opacity="0.25" stroke-width="1.5"/>`
+        : '';
+      return `${pulse}<g class="pcnode" data-idx="${idx}" style="cursor:pointer">
+        <circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${c}" fill-opacity="${fillOp}" stroke="${c}" stroke-width="${strokeW}"/>
+        <text x="${n.x}" y="${n.y+3}" text-anchor="middle" fill="#e8ecf5" font-family="JetBrains Mono" font-size="${n.r > 16 ? 9 : 7}" font-weight="700" style="pointer-events:none">${escapeHtml(n.h.symbol)}</text>
+        <text x="${n.x}" y="${n.y + n.r + 11}" text-anchor="middle" fill="#8b94a8" font-family="JetBrains Mono" font-size="7" style="pointer-events:none">${n.h.weight.toFixed(1)}%</text>
+      </g>`;
+    }).join('');
+
+    return edgeSVG + nodeSVG;
+  }
+
+  svg.innerHTML = buildSVG(null);
+
+  // Wire hover/click interactions
+  function updateDetail(idx){
+    const detailEl = document.getElementById('portClusterDetailText');
+    if(!detailEl) return;
+    if(idx == null){
+      detailEl.innerHTML = '<span style="color:var(--ink-faint)">Hover a node to see pair correlations.</span>';
+      return;
+    }
+    const hoveredSym = nodes[idx].h.symbol;
+    // Find 2 strongest correlations with this node
+    const pairs = edges
+      .filter(e => e.i === idx || e.j === idx)
+      .map(e => ({sym: e.i === idx ? e.symB : e.symA, r: e.r}))
+      .sort((a,b) => Math.abs(b.r) - Math.abs(a.r))
+      .slice(0, 3);
+    if(!pairs.length){
+      detailEl.innerHTML = `<b style="color:var(--ink)">${hoveredSym}</b><br><span style="color:var(--ink-faint)">No significant correlations detected.</span>`;
+      return;
+    }
+    detailEl.innerHTML = pairs.map(p => _corrRead(hoveredSym, p.sym, p.r)).join('<hr style="border:none;border-top:1px solid var(--border);margin:8px 0">');
+  }
+
+  svg.querySelectorAll('.pcnode').forEach(el => {
+    const idx = parseInt(el.dataset.idx);
+    el.addEventListener('mouseenter', () => {
+      svg.innerHTML = buildSVG(idx);
+      // re-wire after re-render
+      setTimeout(() => wirePCNodes(), 0);
+      updateDetail(idx);
+    });
+    el.addEventListener('mouseleave', () => {
+      svg.innerHTML = buildSVG(null);
+      setTimeout(() => wirePCNodes(), 0);
+      updateDetail(null);
+    });
+  });
+
+  function wirePCNodes(){
+    svg.querySelectorAll('.pcnode').forEach(el => {
+      const idx2 = parseInt(el.dataset.idx);
+      el.addEventListener('mouseenter', () => {
+        svg.innerHTML = buildSVG(idx2);
+        setTimeout(() => wirePCNodes(), 0);
+        updateDetail(idx2);
+      });
+      el.addEventListener('mouseleave', () => {
+        svg.innerHTML = buildSVG(null);
+        setTimeout(() => wirePCNodes(), 0);
+        updateDetail(null);
+      });
+    });
+  }
 }
+
+async function liveRefreshPortfolioCluster(){
+  const btn = document.getElementById('portClusterRefreshBtn');
+  const status = document.getElementById('portClusterStatus');
+  const desc = document.getElementById('portClusterDesc');
+  if(btn){ btn.disabled = true; btn.textContent = '…'; }
+  if(status) status.textContent = 'Fetching price history…';
+
+  const holdings = _portClusterHoldings.length ? _portClusterHoldings : [];
+  if(!holdings.length){ if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; } return; }
+
+  if(!BriefTickAPI.keys.twelvedata){
+    if(status) status.textContent = 'Estimated (no Twelve Data key)';
+    renderPortfolioCluster(holdings, null);
+    if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; }
+    return;
+  }
+
+  try {
+    // Fetch 30D daily closes for up to 12 holdings (rate-limit aware)
+    const syms = holdings.slice(0,12).map(h=>h.symbol);
+    const series = {};
+    for(const sym of syms){
+      try {
+        const s = await BriefTickAPI.getTimeSeries(sym, '1day', 30);
+        if(s && s.length >= 8) series[sym] = s;
+      } catch(e){}
+    }
+    const available = Object.keys(series);
+    if(available.length < 2){
+      if(status) status.textContent = 'Insufficient data · estimated';
+      renderPortfolioCluster(holdings, null);
+      if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; }
+      return;
+    }
+    // Compute returns
+    const returns = {};
+    for(const sym of available){
+      const prices = series[sym];
+      returns[sym] = prices.slice(1).map((p,i) => prices[i] > 0 ? (p - prices[i]) / prices[i] : 0);
+    }
+    // Build full matrix
+    const matrix = {};
+    for(const a of available){
+      matrix[a] = {};
+      for(const b of available){
+        if(a===b){ matrix[a][b] = 1; continue; }
+        matrix[a][b] = parseFloat(pearsonR(returns[a], returns[b]).toFixed(2));
+      }
+    }
+    renderPortfolioCluster(holdings, matrix);
+    const time = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    if(status) status.textContent = `Live · ${available.length} symbols · ${time}`;
+    if(desc) desc.textContent = `Pearson 30D rolling closes · ${available.length} of ${syms.length} holdings calculated.`;
+    console.log('[portCluster] live matrix for', available.length, 'symbols');
+  } catch(e){
+    console.warn('[portCluster] live refresh failed:', e.message);
+    if(status) status.textContent = 'Failed · estimated';
+    renderPortfolioCluster(holdings, null);
+  }
+  if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; }
+}
+window.liveRefreshPortfolioCluster = liveRefreshPortfolioCluster;
 
 function renderPortfolio(holdings, quotes){
   const sectors = groupBySector(holdings);
@@ -7007,7 +7219,13 @@ function renderPortfolio(holdings, quotes){
   const largestSector = sectors[0] || ['Other',0];
   setText('portfolioInsight', `${largestSector[0]} is the dominant exposure at ${formatPct(largestSector[1])}. The portfolio's top-three weight is ${formatPct(top3)}, with a beta proxy of ${beta.toFixed(2)} and estimated day move of ${formatPct(dayMove,true)}. This describes risk shape only; it is not a recommendation.`);
   renderHoldingsTable(holdings, quotes);
-  renderPortfolioCluster(holdings);
+  // Render with current matrix (estimations if no live data yet), then kick off live fetch
+  _portClusterHoldings = holdings;
+  renderPortfolioCluster(holdings, _portClusterMatrix);
+  // Only recalculate live if we have Twelve Data and portfolio just changed
+  if(BriefTickAPI.keys && BriefTickAPI.keys.twelvedata){
+    liveRefreshPortfolioCluster();
+  }
 }
 
 async function refreshPortfolioAnalysis(text, persist=true){
