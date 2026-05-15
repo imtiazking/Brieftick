@@ -225,8 +225,9 @@ async function proxySEC(req, res) {
 }
 
 async function proxyPolygon(req, res) {
-  const key = process.env.POLYGON_KEY;
-  if (!key) return res.status(500).json({ error: 'POLYGON_KEY not set on server' });
+  // Accept key from server env var (preferred) or from client header (browser settings)
+  const key = process.env.POLYGON_KEY || req.headers['x-polygon-key'];
+  if (!key) return res.status(500).json({ error: 'POLYGON_KEY not configured. Add it to Vercel environment variables or via the Settings panel.' });
   const { endpoint, ...params } = req.query;
   if (!endpoint) return res.status(400).json({ error: 'endpoint param required' });
   const cacheKey = `poly:${endpoint}:${new URLSearchParams(params).toString()}`;

@@ -9108,23 +9108,29 @@ async function loadOptionsData() {
   buildDefaultChain();
   document.getElementById('optAIBtn').style.display = '';
 
-  // Try live Polygon.io data if key is available
-  if (BriefTickAPI.keys.polygon && BriefTickAPI.keys.polygon !== '_server_') {
+  // Try live Polygon.io data if key is available (browser settings or server env)
+  const polyKey = BriefTickAPI.keys.polygon;
+  if (polyKey) {
     try {
       await fetchLiveOptionsData();
     } catch(e) {
-      console.warn('[Options] Live data failed, using demo:', e.message);
+      console.warn('[Options] Live Polygon data failed, using demo:', e.message);
     }
   }
 }
 
 async function fetchLiveOptionsData() {
   // Fetch unusual options activity from Polygon snapshots for top symbols
+  const polygonKey = BriefTickAPI.keys.polygon;
+  const polygonHeaders = polygonKey && polygonKey !== '_server_'
+    ? { 'x-polygon-key': polygonKey } : {};
+
   const symbols = ['NVDA','TSLA','SPY','META','AAPL','AMD','QQQ','MSFT'];
   const liveUnusual = [];
   for (const sym of symbols.slice(0,4)) { // limit to 4 to respect rate limits
     try {
-      const res = await fetch(`/api/proxy?provider=polygon&endpoint=v3/snapshot/options/${sym}&limit=20&sort=volume&order=desc`);
+      const res = await fetch(`/api/proxy?provider=polygon&endpoint=v3/snapshot/options/${sym}&limit=20&sort=volume&order=desc`,
+        { headers: polygonHeaders });
       const data = await res.json();
       const results = data.results || [];
       results.slice(0,4).forEach(r => {
