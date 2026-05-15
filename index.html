@@ -5367,7 +5367,8 @@ Be specific, factual, and analytical. NO buy/sell recommendations. NO investment
 
     const newsLines = marketNews.slice(0,5).map(n=>`- ${n.headline}`).join('\n');
 
-    const prompt = `You are a market intelligence analyst writing the morning briefing for institutional investors.
+    const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    const prompt = `You are a market intelligence analyst writing the daily brief for institutional investors. Today is ${today}.
 
 LIVE QUOTES:
 ${quoteLines}
@@ -5375,14 +5376,20 @@ ${quoteLines}
 TOP HEADLINES:
 ${newsLines}
 
-Write a 4-paragraph morning briefing in the style of a hedge fund daily memo:
+Write a 4-section brief in the style of a hedge fund morning memo. Begin immediately with a short punchy headline (8-12 words, no markdown symbols, no "MORNING BRIEFING", no date) that captures the single most important market theme right now. Then on the next line, a blank line, then the four sections:
 
-1. **MARKET SNAPSHOT** - what's happening across indices and key names (2-3 sentences)
-2. **DRIVERS** - the most important catalysts, news, or macro themes today (3-4 sentences)
-3. **CROSS-ASSET** - where capital is rotating, what sectors are leading/lagging (2-3 sentences)
-4. **WATCH LIST** - three specific things to monitor today (bullet points)
+**MARKET SNAPSHOT** — what is happening across indices and key names (2-3 sentences)
 
-Style: institutional, analytical, factual. NO buy/sell recommendations. Educational only. Total under 280 words.`;
+**DRIVERS** — the most important catalysts, news, or macro themes today (3-4 sentences)
+
+**CROSS-ASSET** — where capital is rotating, what sectors are leading or lagging (2-3 sentences)
+
+**WATCH LIST**
+- Item one
+- Item two
+- Item three
+
+Rules: Do NOT include a date, "MORNING BRIEFING", or any title line at the start — the first line must be the punchy headline only. Institutional tone. No buy/sell recommendations. Educational only. Total under 300 words.`;
 
     const result = await this._claudeCall(prompt, 900);
     if(result) this._cacheSet(ck, result);
@@ -5664,7 +5671,19 @@ function _briefSetResult(text){
   const now = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 
   if(out){
-    const formatted = renderAIMarkdown(text, {accent:'var(--gold)'});
+    // Strip the first line if it's the headline (already shown in the cover h1)
+    // or a leftover "MORNING BRIEFING | ..." style header
+    const lines = text.split('\n');
+    let bodyStart = 0;
+    if(lines.length > 0){
+      const first = lines[0].replace(/^#+\s*/,'').replace(/\*\*/g,'').trim();
+      if(first.length < 200 && !/MARKET SNAPSHOT|DRIVERS|CROSS.ASSET|WATCH LIST/i.test(first)){
+        bodyStart = 1; // skip the headline line — it's already on the cover
+        if(lines[bodyStart] === '') bodyStart = 2; // skip blank line after headline
+      }
+    }
+    const bodyText = lines.slice(bodyStart).join('\n');
+    const formatted = renderAIMarkdown(bodyText, {accent:'var(--gold)'});
     out.innerHTML = `
       <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.14em;margin:0 0 20px;display:flex;align-items:center;gap:8px">
         <span style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></span>
@@ -5673,14 +5692,20 @@ function _briefSetResult(text){
       ${formatted}`;
   }
 
-  // Extract a 5–8 word headline from the first sentence of the AI text
+  // Extract headline: first non-empty line that isn't a section header or date
   if(headlineEl){
-    const firstLine = text.split('\n').find(l=>l.trim().length > 20) || '';
-    // Strip markdown symbols and truncate to make a punchy headline
-    const cleaned = firstLine.replace(/^#+\s*/,'').replace(/\*\*/g,'').trim();
-    if(cleaned.length > 20 && cleaned.length < 180){
-      // Split at first period/semicolon and italicise the last meaningful word
-      const words = cleaned.split(/\s+/).slice(0,9);
+    const lines = text.split('\n');
+    const headlineLine = lines.find(l => {
+      const t = l.replace(/^#+\s*/,'').replace(/\*\*/g,'').trim();
+      if(t.length < 15) return false;
+      // Skip lines that look like section headers or contain [DATE]
+      if(/^\[|MORNING BRIEF|MARKET SNAPSHOT|DRIVERS|CROSS.ASSET|WATCH LIST/i.test(t)) return false;
+      if(/^\d{1,2}\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.test(t)) return false;
+      return true;
+    }) || '';
+    const cleaned = headlineLine.replace(/^#+\s*/,'').replace(/\*\*/g,'').trim();
+    if(cleaned.length > 15 && cleaned.length < 200){
+      const words = cleaned.replace(/[.!?].*$/,'').trim().split(/\s+/).slice(0,10);
       const last = words.pop();
       headlineEl.innerHTML = words.join(' ') + (words.length ? ' <em>' + last + '</em>' : last);
     } else {
