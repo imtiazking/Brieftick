@@ -5801,8 +5801,7 @@ document.addEventListener('keydown', e=>{
    Falls back gracefully to existing mock if API fails.
 ============================================================ */
 async function liveRefreshDashboard(){
-  // Twelve Data free tier is 8 credits/minute and each symbol costs a credit.
-  // Keep startup to one priority batch so sector/VIX widgets don't get starved.
+  // Priority batch: symbols used by watchlist, movers, hero quote
   const equitySymbols = ['NVDA','TSLA','AAPL','META','MSFT','SPY','QQQ','AMD'];
   let quotes = {};
   try {
@@ -5911,6 +5910,44 @@ async function liveRefreshDashboard(){
 
 /* Run as soon as DOM is ready, no delay. Mock values are placeholders only. */
 window.addEventListener('load', liveRefreshDashboard);
+
+/* ----------------------------------------------------------------
+   TICKER STRIP – full refresh
+   Priority quote batch (8 symbols) runs immediately above.
+   Remaining strip symbols are fetched 8 s later once the first
+   batch has cleared Twelve Data's per-minute credit window.
+---------------------------------------------------------------- */
+async function liveRefreshTickerStrip(){
+  if(!BriefTickAPI.keys.twelvedata) return;
+  // All equity symbols shown in the ticker strip
+  const stripSymbols = [
+    'DIA','IWM','GOOGL','AMZN','BRK.B','JPM','XOM','CVX',
+    'GS','MS','V','MA','INTC','CRM','NFLX','COST','NKE',
+    'WMT','LLY','JNJ','BAC','GE','CAT','BA'
+  ];
+  try {
+    const q = await BriefTickAPI.getQuotes(stripSymbols);
+    document.querySelectorAll('#ticker .ticker-item').forEach(item => {
+      const symEl = item.querySelector('.sym');
+      if (!symEl) return;
+      const sym = symEl.textContent.trim();
+      const data = q[sym];
+      if (!data || isNaN(data.price)) return;
+      const spans = item.querySelectorAll('span');
+      if (spans[1]) spans[1].textContent = data.price.toFixed(2);
+      if (spans[2]) {
+        const sign = data.pctChange >= 0 ? '+' : '';
+        spans[2].textContent = `${sign}${data.pctChange.toFixed(2)}%`;
+        spans[2].classList.toggle('up', data.pctChange >= 0);
+        spans[2].classList.toggle('dn', data.pctChange < 0);
+        spans[2].classList.toggle('flat', false);
+      }
+    });
+  } catch(e) {
+    console.warn('[ticker strip]', e.message);
+  }
+}
+window.addEventListener('load', () => setTimeout(liveRefreshTickerStrip, 8_000));
 
 // Refresh AI sentiment feed every 5 minutes
 setInterval(()=>liveRefreshSentimentFeed(false), 5 * 60_000);
