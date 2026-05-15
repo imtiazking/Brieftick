@@ -5349,7 +5349,7 @@ Be specific, factual, and analytical. NO buy/sell recommendations. NO investment
 
   /* AI: Generate a morning briefing from live market data */
   async aiMorningBrief(){
-    const ck = 'ai_brief';
+    const ck = 'ai_brief_v3';
     const cached = this._cacheGet(ck, 30*60_000); // 30 min cache
     if(cached) return cached;
 
@@ -5664,6 +5664,12 @@ function _briefSetLoading(){
 }
 
 function _briefSetResult(text){
+  // Scrub any Claude-generated "MORNING BRIEFING | [DATE]" style headers from the raw text
+  text = text
+    .replace(/^#*\s*(MORNING BRIEFING|DAILY BRIEF|MARKET BRIEF)[^\n]*/im, '')
+    .replace(/\[DATE\]/g, new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}))
+    .replace(/^\s*\n/, ''); // trim leading blank line left after removal
+
   const out = document.getElementById('liveBriefingOutput');
   const btn = document.getElementById('briefGenBtn');
   const headlineEl = document.getElementById('briefHeadline');
