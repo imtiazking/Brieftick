@@ -224,6 +224,30 @@ async function proxySEC(req, res) {
   }
 }
 
+async function proxyPolygon(req, res) {
+  const key = process.env.POLYGON_KEY;
+  if (!key) return res.status(500).json({ error: 'POLYGON_KEY not set on server' });
+  const { endpoint, ...params } = req.query;
+  if (!endpoint) return res.status(400).json({ error: 'endpoint param required' });
+  const cacheKey = `poly:${endpoint}:${new URLSearchParams(params).toString()}`;
+  // Options snapshots: 1 min cache; reference data: 1 hour
+  const ttl = endpoint.includes('snapshot') ? 60_000 : 60 * 60_000;
+  const cached = cacheGet(cacheKey, ttl);
+  if (cached) { res.setHeader('x-brieftick-cache', 'HIT'); return res.status(200).json(cached); }
+  try {
+    const qs = new URLSearchParams({ ...params, apiKey: key }).toString();
+    const url = `https://api.polygon.io/${endpoint}?${qs}`;
+    const r = await fetch(url, { headers: { 'User-Agent': 'BriefTick/1.0' } });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    if (data.status !== 'ERROR') cacheSet(cacheKey, data);
+    res.setHeader('x-brieftick-cache', 'MISS');
+    return res.status(200).json(data);
+  } catch (e) {
+    return res.status(502).json({ error: 'Polygon fetch failed', detail: e.message });
+  }
+}
+
 async function proxyPoliticalTrades(req, res) {
   const cacheKey = 'pol:house';
   const cached = cacheGet(cacheKey, 60 * 60_000); // 1 hour
@@ -259,6 +283,7 @@ export default async function handler(req, res) {
     if (provider === 'anthropic')       return await proxyAnthropic(req, res);
     if (provider === 'fred')            return await proxyFred(req, res);
     if (provider === 'sec')             return await proxySEC(req, res);
+    if (provider === 'polygon')          return await proxyPolygon(req, res);
     if (provider === 'politicaltrades') return await proxyPoliticalTrades(req, res);
     return res.status(400).json({ error: 'unknown provider' });
   } catch (e) {
