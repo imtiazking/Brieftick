@@ -1904,7 +1904,7 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
     <button class="nav-link" data-route="insiders">Insiders</button>
     <button class="nav-link" data-route="options">Options</button>
     <button class="nav-link" data-route="pricing">Pricing</button>
-    <button class="nav-settings" onclick="openSettings()" title="API key settings" aria-label="Settings">
+    <button class="nav-settings" id="navSettingsBtn" onclick="openSettings()" title="API key settings" aria-label="Settings" style="display:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <path d="M12 15.5C13.933 15.5 15.5 13.933 15.5 12C15.5 10.067 13.933 8.5 12 8.5C10.067 8.5 8.5 10.067 8.5 12C8.5 13.933 10.067 15.5 12 15.5Z" stroke="currentColor" stroke-width="1.5"/>
         <path d="M19.622 10.395L18.244 9.04C18.135 7.83 17.671 6.694 16.937 5.768L17.453 3.949L15.728 2.949L14.224 4.226C13.094 3.755 11.852 3.591 10.629 3.755L9.32 2.379L7.595 3.379L8.111 5.198C7.377 6.124 6.913 7.26 6.804 8.47L5.426 9.825L5.426 11.825L6.804 13.18C6.913 14.39 7.377 15.526 8.111 16.452L7.595 18.271L9.32 19.271L10.824 17.994C11.954 18.465 13.196 18.629 14.419 18.465L15.728 19.841L17.453 18.841L16.937 17.022C17.671 16.096 18.135 14.96 18.244 13.75L19.622 12.395L19.622 10.395Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/>
@@ -6130,7 +6130,26 @@ document.addEventListener('keydown', e=>{
     const overlay = document.getElementById('settingsOverlay');
     if(overlay && overlay.classList.contains('open')) closeSettings();
   }
+  // Secret admin shortcut: Ctrl+Shift+, (or Cmd+Shift+, on Mac)
+  // Opens Settings directly without showing the gear to regular visitors
+  if((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === ','){
+    e.preventDefault();
+    try { localStorage.setItem('brieftick_admin','1'); } catch(_){}
+    const btn = document.getElementById('navSettingsBtn');
+    if(btn) btn.style.display = '';
+    openSettings();
+  }
 });
+
+// Restore gear icon if this browser has used admin mode before
+(function(){
+  try {
+    if(localStorage.getItem('brieftick_admin')){
+      const btn = document.getElementById('navSettingsBtn');
+      if(btn) btn.style.display = '';
+    }
+  } catch(_){}
+})();
 
 /* ============================================================
    LIVE UI WIRING
