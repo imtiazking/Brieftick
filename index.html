@@ -5324,23 +5324,31 @@ const BriefTickAPI={
     const ck = 'q:'+symbol;
     const cached = this._cacheGet(ck, 60_000); // 60s cache
     if(cached) return cached;
+    // Use Finnhub as primary (real-time, no daily limit)
+    try {
+      const fh = await this._fetch(`/api/proxy?provider=finnhub&endpoint=quote&symbol=${encodeURIComponent(symbol)}`);
+      if(fh && fh.c && fh.c > 0){
+        const result = {
+          symbol, name: symbol,
+          price: fh.c, change: fh.d || 0, pctChange: fh.dp || 0,
+          open: fh.o, high: fh.h, low: fh.l, previousClose: fh.pc,
+          volume: 0, currency: 'USD', isMarketOpen: fh.t > 0,
+        };
+        this._cacheSet(ck, result);
+        return result;
+      }
+    } catch(_) {}
+    // Fallback to Twelve Data
     const url = `/api/proxy?provider=twelvedata&endpoint=quote&symbol=${encodeURIComponent(symbol)}`;
     const d = await this._fetch(url);
     if(!d || d.status==='error' || d.code) return null;
     const result = {
-      symbol: d.symbol,
-      name: d.name,
-      price: parseFloat(d.close),
-      change: parseFloat(d.change),
-      pctChange: parseFloat(d.percent_change),
-      open: parseFloat(d.open),
-      high: parseFloat(d.high),
-      low: parseFloat(d.low),
-      previousClose: parseFloat(d.previous_close),
-      volume: parseInt(d.volume),
-      currency: d.currency,
-      exchange: d.exchange,
-      isMarketOpen: d.is_market_open,
+      symbol: d.symbol, name: d.name,
+      price: parseFloat(d.close), change: parseFloat(d.change),
+      pctChange: parseFloat(d.percent_change), open: parseFloat(d.open),
+      high: parseFloat(d.high), low: parseFloat(d.low),
+      previousClose: parseFloat(d.previous_close), volume: parseInt(d.volume),
+      currency: d.currency, exchange: d.exchange, isMarketOpen: d.is_market_open,
     };
     this._cacheSet(ck, result);
     return result;
@@ -5490,8 +5498,8 @@ const BriefTickAPI={
   /* FINNHUB - earnings calendar */
   async getEarningsCalendar(from, to){
     const fmt = d => d.toISOString().slice(0,10);
-    const fromStr = from || fmt(new Date());
-    const toStr = to || fmt(new Date(Date.now() + 7*24*60*60*1000));
+    const fromStr = from || fmt(new Date(Date.now() - 2*24*60*60*1000)); // 2 days back
+    const toStr = to || fmt(new Date(Date.now() + 14*24*60*60*1000));    // 14 days forward
     const ck = `ec:${fromStr}:${toStr}`;
     const cached = this._cacheGet(ck, 30*60_000); // 30min
     if(cached) return cached;
@@ -5660,17 +5668,21 @@ Be specific, factual, and analytical. NO buy/sell recommendations. NO investment
     if(cached) return cached;
 
     const symbols = ['SPY','QQQ','NVDA','TSLA','AAPL','MSFT','META','XOM'];
-    const [quotes, marketNews] = await Promise.all([
-      this.getQuotes(symbols),
-      this.getMarketNews('general'),
-    ]);
-
+    // Use Finnhub for real-time quotes
+    let quotesRaw = {};
+    try {
+      quotesRaw = await getFinnhubQuotes(symbols);
+    } catch(_) {
+      try { quotesRaw = await this.getQuotes(symbols); } catch(__) {}
+    }
     const quoteLines = symbols.map(s=>{
-      const q = quotes[s];
-      if(!q) return null;
-      return `${s}: $${q.price?.toFixed(2)} (${q.pctChange>=0?'+':''}${q.pctChange?.toFixed(2)}%)`;
+      const q = quotesRaw[s];
+      if(!q || !q.price) return null;
+      const pct = typeof q.pctChange !== 'undefined' ? q.pctChange : (q.dp || 0);
+      return `${s}: $${Number(q.price).toFixed(2)} (${pct>=0?'+':''}${Number(pct).toFixed(2)}%)`;
     }).filter(Boolean).join('\n');
 
+    const [marketNews] = await Promise.all([this.getMarketNews('general')]);
     const newsLines = marketNews.slice(0,5).map(n=>`- ${n.headline}`).join('\n');
 
     const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
@@ -7104,13 +7116,13 @@ function loadWim(sym){
   // contagion
   drawContagion(sym, d.chgColor);
 
-  // Fetch live quote in background - overwrite seed price + change when it arrives.
-  // Falls back silently to the seed value if Twelve Data is rate-limited or down.
+  // Fetch live quote in background using Finnhub (real-time, no daily limit)
+  // Falls back silently to seed value if Finnhub is unavailable.
   (async () => {
     try {
-      const q = (await BriefTickAPI.getQuotes([sym]))[sym];
-      if(!q || isNaN(q.price)) return;
-      // Make sure user hasn't switched ticker before our async call returned
+      const quotes = await getFinnhubQuotes([sym]);
+      const q = quotes[sym];
+      if(!q || isNaN(q.price) || !q.price) return;
       if(document.getElementById('wimSym').textContent !== sym) return;
       const isUp = q.pctChange >= 0;
       const sign = isUp ? '+' : '';
