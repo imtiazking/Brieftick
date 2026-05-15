@@ -6134,19 +6134,58 @@ document.addEventListener('keydown', e=>{
    Refresh dashboard panels with real data on page load.
    Falls back gracefully to existing mock if API fails.
 ============================================================ */
+/* ----------------------------------------------------------------
+   Polygon.io quote helper — uses snapshot endpoint for real-time
+   prices. Falls back to Twelve Data when Polygon key not available.
+   Returns same shape as BriefTickAPI.getQuotes: {SYM: {price, pctChange, change}}
+---------------------------------------------------------------- */
+async function getPolygonQuotes(symbols) {
+  const key = BriefTickAPI.keys.polygon;
+  const headers = key && key !== '_server_' ? { 'x-polygon-key': key } : {};
+  // Polygon batch snapshot: up to 100 tickers per call
+  const joined = symbols.join(',');
+  const url = `/api/proxy?provider=polygon&endpoint=v2/snapshot/locale/us/markets/stocks/tickers&tickers=${encodeURIComponent(joined)}`;
+  const res = await fetch(url, { headers });
+  if (!res.ok) throw new Error('Polygon snapshot HTTP ' + res.status);
+  const data = await res.json();
+  if (data.status === 'ERROR' || data.error) throw new Error(data.error || data.message || 'Polygon error');
+  const out = {};
+  (data.tickers || []).forEach(t => {
+    const day = t.day || {};
+    const prevDay = t.prevDay || {};
+    const price = day.c || t.lastTrade?.p || 0;
+    const prevClose = prevDay.c || 0;
+    const pctChange = prevClose > 0 ? ((price - prevClose) / prevClose) * 100 : (t.todaysChangePerc || 0);
+    out[t.ticker] = {
+      price,
+      pctChange,
+      change: price - prevClose,
+      name: t.ticker,
+    };
+  });
+  return out;
+}
+
 async function liveRefreshDashboard(){
-  // Priority batch: symbols used by watchlist, movers, hero quote
-  const equitySymbols = ['NVDA','TSLA','AAPL','META','MSFT','SPY','QQQ','AMD'];
+  // Try Polygon first (no daily credit limit), fall back to Twelve Data
+  const equitySymbols = ['NVDA','TSLA','AAPL','META','MSFT','SPY','QQQ','AMD',
+    'DIA','IWM','GOOGL','AMZN','BRK.B','JPM','XOM','CVX','GS','V','AMD','NFLX',
+    'COST','WMT','LLY','BAC','MS','MA','INTC'];
   let quotes = {};
   try {
-    quotes = await BriefTickAPI.getQuotes(equitySymbols);
-  } catch(e){
-    console.warn('[dashboard] getQuotes failed:', e);
+    quotes = await getPolygonQuotes(equitySymbols);
+    console.log('[dashboard] Polygon quotes for', Object.keys(quotes).length, 'symbols');
+  } catch(e) {
+    console.warn('[dashboard] Polygon failed, trying Twelve Data:', e.message);
+    try {
+      quotes = await BriefTickAPI.getQuotes(equitySymbols.slice(0,8));
+    } catch(e2) {
+      console.warn('[dashboard] getQuotes also failed:', e2.message);
+    }
   }
   if(Object.keys(quotes).length === 0) {
-    console.warn('[dashboard] No live quotes returned. Check Twelve Data key.');
+    console.warn('[dashboard] No live quotes returned. Twelve Data may be rate-limited.');
   } else {
-    console.log('[dashboard] live quotes received for', Object.keys(quotes).length, 'symbols');
     updateRiskRegime(quotes);
   }
 
@@ -6252,34 +6291,37 @@ window.addEventListener('load', liveRefreshDashboard);
    batch has cleared Twelve Data's per-minute credit window.
 ---------------------------------------------------------------- */
 async function liveRefreshTickerStrip(){
-  if(!BriefTickAPI.keys.twelvedata) return;
   // All equity symbols shown in the ticker strip
   const stripSymbols = [
-    'DIA','IWM','GOOGL','AMZN','BRK.B','JPM','XOM','CVX',
-    'GS','MS','V','MA','INTC','CRM','NFLX','COST','NKE',
-    'WMT','LLY','JNJ','BAC','GE','CAT','BA'
+    'SPY','QQQ','DIA','IWM','NVDA','TSLA','AAPL','AMD','META','MSFT',
+    'GOOGL','AMZN','BRK.B','JPM','XOM','CVX','GS','MS','V','MA',
+    'INTC','CRM','NFLX','COST','NKE','WMT','LLY','JNJ','BAC','GE','CAT','BA'
   ];
+  let q = {};
   try {
-    const q = await BriefTickAPI.getQuotes(stripSymbols);
-    document.querySelectorAll('#ticker .ticker-item').forEach(item => {
-      const symEl = item.querySelector('.sym');
-      if (!symEl) return;
-      const sym = symEl.textContent.trim();
-      const data = q[sym];
-      if (!data || isNaN(data.price)) return;
-      const spans = item.querySelectorAll('span');
-      if (spans[1]) spans[1].textContent = data.price.toFixed(2);
-      if (spans[2]) {
-        const sign = data.pctChange >= 0 ? '+' : '';
-        spans[2].textContent = `${sign}${data.pctChange.toFixed(2)}%`;
-        spans[2].classList.toggle('up', data.pctChange >= 0);
-        spans[2].classList.toggle('dn', data.pctChange < 0);
-        spans[2].classList.toggle('flat', false);
-      }
-    });
+    // Polygon can fetch all symbols in one call — no daily credit limit
+    q = await getPolygonQuotes(stripSymbols);
   } catch(e) {
-    console.warn('[ticker strip]', e.message);
+    console.warn('[ticker strip] Polygon failed, trying Twelve Data:', e.message);
+    try { q = await BriefTickAPI.getQuotes(stripSymbols.slice(0,16)); } catch(_) {}
   }
+  if (!Object.keys(q).length) return;
+  document.querySelectorAll('#ticker .ticker-item').forEach(item => {
+    const symEl = item.querySelector('.sym');
+    if (!symEl) return;
+    const sym = symEl.textContent.trim();
+    const data = q[sym];
+    if (!data || isNaN(data.price) || !data.price) return;
+    const spans = item.querySelectorAll('span');
+    if (spans[1]) spans[1].textContent = data.price.toFixed(2);
+    if (spans[2]) {
+      const sign = data.pctChange >= 0 ? '+' : '';
+      spans[2].textContent = `${sign}${data.pctChange.toFixed(2)}%`;
+      spans[2].classList.toggle('up', data.pctChange >= 0);
+      spans[2].classList.toggle('dn', data.pctChange < 0);
+      spans[2].classList.toggle('flat', false);
+    }
+  });
 }
 window.addEventListener('load', () => setTimeout(liveRefreshTickerStrip, 8_000));
 
