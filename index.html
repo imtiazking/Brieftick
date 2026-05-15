@@ -6135,6 +6135,39 @@ document.addEventListener('keydown', e=>{
    Falls back gracefully to existing mock if API fails.
 ============================================================ */
 /* ----------------------------------------------------------------
+   Finnhub multi-symbol quotes — real-time prices, no daily limit.
+   Fetches in parallel batches respecting 60 calls/min free limit.
+   Returns {SYM: {price, pctChange, change, high, low, open, prevClose}}
+---------------------------------------------------------------- */
+async function getFinnhubQuotes(symbols) {
+  const key = BriefTickAPI.keys.finnhub;
+  const BATCH = 10; // fetch up to 10 in parallel at a time
+  const out = {};
+  for (let i = 0; i < symbols.length; i += BATCH) {
+    const batch = symbols.slice(i, i + BATCH);
+    await Promise.all(batch.map(async sym => {
+      try {
+        const res = await fetch(`/api/proxy?provider=finnhub&endpoint=quote&symbol=${encodeURIComponent(sym)}`);
+        const d = await res.json();
+        if (d && d.c && d.c > 0) {
+          out[sym] = {
+            price: d.c,
+            pctChange: d.dp || 0,
+            change: d.d || 0,
+            high: d.h,
+            low: d.l,
+            open: d.o,
+            prevClose: d.pc,
+          };
+        }
+      } catch(_) {}
+    }));
+    if (i + BATCH < symbols.length) await new Promise(r => setTimeout(r, 200));
+  }
+  return out;
+}
+
+/* ----------------------------------------------------------------
    Polygon.io quote helper — uses snapshot endpoint for real-time
    prices. Falls back to Twelve Data when Polygon key not available.
    Returns same shape as BriefTickAPI.getQuotes: {SYM: {price, pctChange, change}}
@@ -6156,31 +6189,28 @@ async function getPolygonQuotes(symbols) {
     const price = day.c || t.lastTrade?.p || 0;
     const prevClose = prevDay.c || 0;
     const pctChange = prevClose > 0 ? ((price - prevClose) / prevClose) * 100 : (t.todaysChangePerc || 0);
-    out[t.ticker] = {
-      price,
-      pctChange,
-      change: price - prevClose,
-      name: t.ticker,
-    };
+    out[t.ticker] = { price, pctChange, change: price - prevClose, name: t.ticker };
   });
   return out;
 }
 
 async function liveRefreshDashboard(){
-  // Try Polygon first (no daily credit limit), fall back to Twelve Data
+  // Finnhub has real-time quotes with no daily limit — use as primary
+  // Polygon snapshot requires paid plan; Twelve Data has 800/day free limit
   const equitySymbols = ['NVDA','TSLA','AAPL','META','MSFT','SPY','QQQ','AMD',
-    'DIA','IWM','GOOGL','AMZN','BRK.B','JPM','XOM','CVX','GS','V','AMD','NFLX',
-    'COST','WMT','LLY','BAC','MS','MA','INTC'];
+    'DIA','IWM','GOOGL','AMZN','BRK.B','JPM','XOM','CVX','GS','V',
+    'NFLX','COST','WMT','LLY','BAC','MS','MA','INTC'];
   let quotes = {};
   try {
-    quotes = await getPolygonQuotes(equitySymbols);
-    console.log('[dashboard] Polygon quotes for', Object.keys(quotes).length, 'symbols');
+    quotes = await getFinnhubQuotes(equitySymbols);
+    console.log('[dashboard] Finnhub quotes for', Object.keys(quotes).length, 'symbols');
   } catch(e) {
-    console.warn('[dashboard] Polygon failed, trying Twelve Data:', e.message);
+    console.warn('[dashboard] Finnhub failed, trying Polygon:', e.message);
     try {
-      quotes = await BriefTickAPI.getQuotes(equitySymbols.slice(0,8));
+      quotes = await getPolygonQuotes(equitySymbols);
     } catch(e2) {
-      console.warn('[dashboard] getQuotes also failed:', e2.message);
+      console.warn('[dashboard] Polygon also failed, trying Twelve Data:', e2.message);
+      try { quotes = await BriefTickAPI.getQuotes(equitySymbols.slice(0,8)); } catch(_) {}
     }
   }
   if(Object.keys(quotes).length === 0) {
@@ -6285,13 +6315,9 @@ async function liveRefreshDashboard(){
 window.addEventListener('load', liveRefreshDashboard);
 
 /* ----------------------------------------------------------------
-   TICKER STRIP – full refresh
-   Priority quote batch (8 symbols) runs immediately above.
-   Remaining strip symbols are fetched 8 s later once the first
-   batch has cleared Twelve Data's per-minute credit window.
+   TICKER STRIP – full refresh using Finnhub real-time quotes
 ---------------------------------------------------------------- */
 async function liveRefreshTickerStrip(){
-  // All equity symbols shown in the ticker strip
   const stripSymbols = [
     'SPY','QQQ','DIA','IWM','NVDA','TSLA','AAPL','AMD','META','MSFT',
     'GOOGL','AMZN','BRK.B','JPM','XOM','CVX','GS','MS','V','MA',
@@ -6299,11 +6325,12 @@ async function liveRefreshTickerStrip(){
   ];
   let q = {};
   try {
-    // Polygon can fetch all symbols in one call — no daily credit limit
-    q = await getPolygonQuotes(stripSymbols);
+    q = await getFinnhubQuotes(stripSymbols);
   } catch(e) {
-    console.warn('[ticker strip] Polygon failed, trying Twelve Data:', e.message);
-    try { q = await BriefTickAPI.getQuotes(stripSymbols.slice(0,16)); } catch(_) {}
+    console.warn('[ticker strip] Finnhub failed, trying Polygon:', e.message);
+    try { q = await getPolygonQuotes(stripSymbols); } catch(_) {
+      try { q = await BriefTickAPI.getQuotes(stripSymbols.slice(0,8)); } catch(__) {}
+    }
   }
   if (!Object.keys(q).length) return;
   document.querySelectorAll('#ticker .ticker-item').forEach(item => {
