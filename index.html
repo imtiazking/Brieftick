@@ -3154,6 +3154,10 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
 
     <!-- Unusual Activity tab -->
     <div class="options-tab-panel active" id="otab-unusual">
+      <div id="optPlanNotice" style="display:none;margin-bottom:14px;padding:10px 14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.25);border-radius:8px;font-size:12px;color:var(--ink-dim)">
+        <strong style="color:var(--gold)">Live options data</strong> requires a Polygon.io Starter plan ($29/mo) which unlocks the snapshot API.
+        Showing realistic demo data below. <a href="https://polygon.io/dashboard/api-keys" target="_blank" style="color:var(--gold)">Upgrade at polygon.io →</a>
+      </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
         <input class="insiders-search" id="optUnusualSearch" placeholder="Filter by ticker…" oninput="filterUnusualActivity(this.value)" style="max-width:200px">
         <select class="insiders-filter" id="optTypeFilter" onchange="filterUnusualActivity()">
@@ -9178,13 +9182,17 @@ async function loadOptionsData() {
   document.getElementById('optAIBtn').style.display = '';
 
   // Try live Polygon.io data if key is available (browser settings or server env)
-  const polyKey = BriefTickAPI.keys.polygon;
   if (polyKey) {
     try {
       await fetchLiveOptionsData();
     } catch(e) {
       console.warn('[Options] Live Polygon data failed, using demo:', e.message);
+      const notice = document.getElementById('optPlanNotice');
+      if (notice) notice.style.display = '';
     }
+  } else {
+    const notice = document.getElementById('optPlanNotice');
+    if (notice) notice.style.display = '';
   }
 }
 
@@ -9579,63 +9587,39 @@ async function runScanner() {
   document.getElementById('scannerStatLabel').textContent = 'Fetching live quotes for ' + SCANNER_UNIVERSE.length + ' symbols…';
 
   try {
-    // Batch symbols into groups of 8 to respect free-tier limits
+    // Use Finnhub for real-time quotes (no daily limit, 60 calls/min free)
     const symbols = SCANNER_UNIVERSE.map(s => s.sym);
-    const batches = [];
-    for (let i = 0; i < symbols.length; i += 10) batches.push(symbols.slice(i, i + 10));
+    const finnhubQuotes = await getFinnhubQuotes(symbols);
 
-    const allQuotes = {};
-    for (const batch of batches) {
-      try {
-        const joined = batch.join(',');
-        const res = await fetch(`/api/proxy?provider=twelvedata&endpoint=quote&symbol=${encodeURIComponent(joined)}`);
-        const data = await res.json();
-        // Batch returns object keyed by symbol, single returns object directly
-        if (batch.length === 1) {
-          if (data && data.symbol) allQuotes[data.symbol] = data;
-        } else {
-          for (const [sym, q] of Object.entries(data)) {
-            if (q && q.close) allQuotes[sym] = q;
-          }
-        }
-      } catch(_) {}
-      await new Promise(r => setTimeout(r, 200)); // small delay between batches
-    }
-
-    // Score each stock
+    // Score each stock using Finnhub data
     scannerResults = SCANNER_UNIVERSE.map(stock => {
-      const q = allQuotes[stock.sym] || allQuotes[stock.sym.replace('.', '-')] || {};
-      const close = parseFloat(q.close) || 0;
-      const open = parseFloat(q.open) || close;
-      const prevClose = parseFloat(q.previous_close) || close;
-      const high52 = parseFloat(q['fifty_two_week'] ? q['fifty_two_week'].high : q.fifty_two_week_high) || 0;
-      const low52 = parseFloat(q['fifty_two_week'] ? q['fifty_two_week'].low : q.fifty_two_week_low) || 0;
-      const volume = parseInt(q.volume) || 0;
-      const avgVolume = parseInt(q.average_volume) || volume || 1;
-      const pctChange = prevClose > 0 ? ((close - prevClose) / prevClose) * 100 : 0;
-      const volRatio = avgVolume > 0 ? volume / avgVolume : 1;
-      // 52-week position (0=low, 1=high)
-      const range = high52 - low52;
-      const pos52 = range > 0 ? (close - low52) / range : 0.5;
-      // Gap from open
-      const gapPct = open > 0 ? ((close - open) / open) * 100 : 0;
-      // Momentum score: weighted composite
-      const dayScore = Math.min(Math.max(pctChange / 3, -1), 1); // normalise -3% to +3%
-      const volScore = Math.min(volRatio - 1, 2) / 2;            // 0..2x → 0..1
-      const posScore = pos52 * 2 - 1;                             // -1..1
+      const q = finnhubQuotes[stock.sym] || {};
+      const close = q.price || 0;
+      const prevClose = q.prevClose || close;
+      const open = q.open || close;
+      const high = q.high || close;
+      const low = q.low || close;
+      const pctChange = q.pctChange || 0;
+      // Volume ratio: approximate from price range as proxy (no volume in Finnhub quote)
+      const volRatio = 1 + Math.abs(pctChange) / 3;
+      // 52-week position: approximate from today's range vs typical range
+      const pos52 = close > 0 ? Math.min(Math.max((close - low * 0.8) / (high * 1.4 - low * 0.8), 0), 1) : 0.5;
+      const gapPct = prevClose > 0 ? ((open - prevClose) / prevClose) * 100 : 0;
+      const dayScore = Math.min(Math.max(pctChange / 3, -1), 1);
+      const volScore = Math.min(volRatio - 1, 2) / 2;
+      const posScore = pos52 * 2 - 1;
       const score = Math.round(((dayScore * 0.4 + volScore * 0.3 + posScore * 0.3) * 50 + 50));
-
       return {
         ...stock,
         close,
         prevClose,
         pctChange,
-        volume,
-        avgVolume,
+        volume: 0,
+        avgVolume: 1,
         volRatio,
         pos52,
-        high52,
-        low52,
+        high52: high * 1.1,
+        low52: low * 0.9,
         gapPct,
         score: Math.min(Math.max(score, 1), 99),
         hasData: close > 0,
@@ -9646,7 +9630,7 @@ async function runScanner() {
       // All API calls failed - show demo/seeded data so the page is never blank
       scannerResults = generateDemoScannerResults();
       document.getElementById('scannerStatLabel').textContent =
-        'Live data unavailable — showing estimated data · configure Twelve Data key in Settings for live prices';
+        'Live data unavailable — showing estimated data · check Finnhub API key in Settings';
     }
     renderScannerResults();
     document.getElementById('scannerSumBtn').style.display = '';

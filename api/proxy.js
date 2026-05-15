@@ -253,23 +253,30 @@ async function proxyPoliticalTrades(req, res) {
   const cacheKey = 'pol:house';
   const cached = cacheGet(cacheKey, 60 * 60_000); // 1 hour
   if (cached) { res.setHeader('x-brieftick-cache', 'HIT'); return res.status(200).json(cached); }
-  try {
-    const r = await fetch(
-      'https://house-stock-watcher-data.s3-us-east-2.amazonaws.com/data/fillings.json',
-      { headers: { 'User-Agent': 'BriefTick/1.0 market-intelligence-app' } }
-    );
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const data = await r.json();
-    // Return only the most recent 300 to keep response small
-    const slice = Array.isArray(data)
-      ? data.sort((a,b) => new Date(b.transaction_date||0) - new Date(a.transaction_date||0)).slice(0,300)
-      : data;
-    cacheSet(cacheKey, slice);
-    res.setHeader('x-brieftick-cache', 'MISS');
-    return res.status(200).json(slice);
-  } catch (e) {
-    return res.status(502).json({ error: 'political trades fetch failed', detail: e.message });
+  // Try multiple public sources for congressional stock disclosures
+  const sources = [
+    'https://house-stock-watcher-data.s3-us-east-2.amazonaws.com/data/all_transactions.json',
+    'https://house-stock-watcher-data.s3.amazonaws.com/data/all_transactions.json',
+  ];
+  for (const url of sources) {
+    try {
+      const r = await fetch(url, {
+        headers: { 'User-Agent': 'BriefTick/1.0 market-intelligence-app' },
+        redirect: 'follow',
+      });
+      if (!r.ok) continue;
+      const data = await r.json();
+      if (!Array.isArray(data) || !data.length) continue;
+      const slice = data
+        .sort((a,b) => new Date(b.transaction_date||0) - new Date(a.transaction_date||0))
+        .slice(0, 300);
+      cacheSet(cacheKey, slice);
+      res.setHeader('x-brieftick-cache', 'MISS');
+      return res.status(200).json(slice);
+    } catch(_) {}
   }
+  // All sources failed — return empty so client falls back to demo data gracefully
+  return res.status(200).json([]);
 }
 
 export default async function handler(req, res) {
