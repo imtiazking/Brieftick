@@ -1183,6 +1183,7 @@ main{padding-top:90px;position:relative;z-index:3}
 .tier-features li::before{content:"";width:14px;height:14px;border-radius:50%;background:rgba(212,168,90,0.15);border:1px solid rgba(212,168,90,0.3);flex-shrink:0;margin-top:2px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M2.5 6.2 L5 8.5 L9.5 4' stroke='%23d4a85a' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-position:center;background-repeat:no-repeat}
 .tier-features li.dim{color:var(--ink-faint)}
 .tier-features li.dim::before{background-image:none;background:transparent;border-color:var(--border)}
+.tier-note{color:var(--ink-faint);font-size:11px}
 .tier-cta{
   padding:14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;
   letter-spacing:0.04em;cursor:pointer;text-align:center;transition:all 0.2s;
@@ -2947,67 +2948,86 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
     <div class="pricing-head">
       <div class="section-eyebrow" style="display:inline-block;margin-bottom:18px">- Plans</div>
       <h1>Built for the way you <em>read</em> the market.</h1>
-      <p>Beta pricing. Cancel anytime. All tiers include the same compliance posture, the same data feeds and the same BriefTick engine - they differ in how deep you go.</p>
+      <p>Beta pricing. Cancel anytime. All tiers include the same BriefTick engine — they differ in how deep you go.</p>
     </div>
 
     <div class="tier-grid">
+
+      <!-- FREE -->
       <div class="tier">
         <div class="tier-name">Free</div>
         <div class="tier-desc">A taste of the engine. Perfect for getting fluent in the language of the platform.</div>
         <div class="tier-price"><span class="num">£0</span><span class="per">/forever</span></div>
         <ul class="tier-features">
-          <li>Basic watchlist · up to 10 tickers</li>
-          <li>End-of-day market data</li>
-          <li>Daily AI recap (delivered 17:30 ET)</li>
-          <li>3 AI summaries per day</li>
-          <li>Public sector heatmap</li>
-          <li class="dim">No "Why Is It Moving"</li>
-          <li class="dim">No smart alerts</li>
-          <li class="dim">No portfolio intelligence</li>
+          <li>Market Radar <span class="tier-note">(lite)</span></li>
+          <li>AI Briefings <span class="tier-note">(1 daily)</span></li>
+          <li>Market Impact Feed <span class="tier-note">(15-min delayed)</span></li>
+          <li>Sector Rotation <span class="tier-note">(basic)</span></li>
+          <li>Macro Intelligence <span class="tier-note">(calendar only)</span></li>
+          <li>AI Market Scanner <span class="tier-note">(top 10 movers)</span></li>
+          <li>Basic earnings calendar</li>
+          <li class="dim">Smart Alerts</li>
+          <li class="dim">"Why Is It Moving" <span class="tier-note">(full)</span></li>
+          <li class="dim">Portfolio Intelligence</li>
+          <li class="dim">Correlation Engine</li>
+          <li class="dim">Insider &amp; Options Flow</li>
         </ul>
-        <button class="tier-cta">Start Free</button>
+        <button class="tier-cta" onclick="openRequestAccess()">Start Free</button>
       </div>
 
+      <!-- INTELLIGENCE -->
       <div class="tier featured">
         <div class="tier-badge">Most Popular</div>
-        <div class="tier-name">Pro</div>
-        <div class="tier-desc">For investors who want context, not signals - and want it before everyone else.</div>
+        <div class="tier-name">Intelligence</div>
+        <div class="tier-desc">For active investors and traders who want to understand what moves markets.</div>
         <div class="tier-price"><span class="num">£<em>29</em></span><span class="per">/month</span></div>
         <ul class="tier-features">
-          <li>Everything in Free</li>
-          <li>Real-time market data (15-min for Free)</li>
-          <li>Full <b>"Why Is It Moving"</b> engine</li>
-          <li>Smart alerts · unusual vol, sentiment, correlation breaks</li>
-          <li>Morning + close AI briefings</li>
-          <li>Live market radar &amp; sentiment feed</li>
-          <li>Macro event tracker · 30 days forward</li>
-          <li>Watchlist · up to 100 tickers</li>
+          <li>Market Radar</li>
+          <li>AI Briefings</li>
+          <li>Why Is It Moving</li>
+          <li>Portfolio Intelligence</li>
+          <li>Macro Intelligence</li>
+          <li>Market Impact Feed</li>
+          <li>Correlation Engine</li>
+          <li>Smart Alerts</li>
+          <li>Sector Rotation</li>
+          <li>AI Market Scanner</li>
+          <li>Earnings Intelligence</li>
         </ul>
-        <button class="tier-cta">Join Pro Beta</button>
+        <button class="tier-cta" onclick="openRequestAccess()">Join Intelligence</button>
       </div>
 
+      <!-- TERMINAL -->
       <div class="tier">
-        <div class="tier-name">Elite</div>
-        <div class="tier-desc">Institutional-grade tooling for active investors and small RIAs.</div>
+        <div class="tier-name">Terminal</div>
+        <div class="tier-desc">Institutional-grade intelligence for power users, serious traders and professional investors.</div>
         <div class="tier-price"><span class="num">£99</span><span class="per">/month</span></div>
         <ul class="tier-features">
-          <li>Everything in Pro</li>
-          <li>Full <b>portfolio intelligence</b> module</li>
-          <li>Scenario engine · custom shocks</li>
-          <li>Deep sentiment + flow analytics</li>
-          <li>Advanced telemetry &amp; heatmap layers</li>
-          <li>Custom alert builder · multi-condition</li>
-          <li>API access · 50K calls / month</li>
-          <li>Priority support &amp; analyst Q&amp;A</li>
+          <li>Everything in Intelligence</li>
+          <li>Insider &amp; Political Trades</li>
+          <li>Options Flow</li>
+          <li>Advanced Telemetry Layers</li>
+          <li>Institutional Sentiment</li>
+          <li>Cross-Asset Correlation Matrix</li>
+          <li>AI Scenario Engine</li>
+          <li>Portfolio Stress Testing</li>
+          <li>Multi-Condition Alerts</li>
+          <li>API Access</li>
+          <li>Priority Support &amp; Analyst Q&amp;A</li>
         </ul>
-        <button class="tier-cta">Apply for Elite</button>
+        <button class="tier-cta" onclick="openRequestAccess()">Apply for Terminal</button>
       </div>
+
     </div>
 
-    <div style="text-align:center;margin-top:60px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;line-height:1.7">
-      All plans include SOC 2 controls · GDPR / UK GDPR compliant · No data sold ever<br>
-      Educational platform. Not financial advice. Not a broker. No execution.
+    <div style="text-align:center;margin-top:48px;font-size:13px;color:var(--ink-dim)">
+      All plans can be cancelled at any time.
     </div>
+    <div style="text-align:center;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7;max-width:600px;margin-left:auto;margin-right:auto">
+      BriefTick is an AI-powered market intelligence platform. We provide analysis, context and market interpretation — not financial advice or buy/sell recommendations.
+    </div>
+  </div>
+</section>
   </div>
 </section>
 
