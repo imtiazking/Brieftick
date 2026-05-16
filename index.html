@@ -1799,6 +1799,36 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
 /* AI box */
 .options-ai-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;margin-top:8px}
 .options-ai-box h3{font-family:var(--display);font-size:15px;font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+
+/* ================================================================
+   ABOUT PAGE
+================================================================ */
+.about-wrap{max-width:860px;margin:0 auto;padding:60px 24px 100px}
+.about-hero{margin-bottom:72px;border-bottom:1px solid var(--border);padding-bottom:64px}
+.about-hero h1{font-family:var(--display);font-size:clamp(32px,4vw,58px);font-weight:700;
+  letter-spacing:-0.02em;line-height:1.08;margin-bottom:24px}
+.about-hero h1 em{font-style:italic;color:var(--gold)}
+.about-hero p{font-size:17px;color:var(--ink-dim);line-height:1.7;max-width:680px}
+.about-section{margin-bottom:60px}
+.about-section-label{font-family:var(--mono);font-size:10px;color:var(--gold);
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
+.about-section h2{font-family:var(--display);font-size:clamp(20px,2.4vw,28px);font-weight:600;
+  letter-spacing:-0.01em;margin-bottom:16px}
+.about-section p{font-size:15px;color:var(--ink-dim);line-height:1.75;margin-bottom:14px;max-width:720px}
+.about-principles{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:8px}
+.about-principle{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px}
+.about-principle-num{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.1em;margin-bottom:10px}
+.about-principle h3{font-family:var(--display);font-size:16px;font-weight:600;margin-bottom:8px}
+.about-principle p{font-size:13px;color:var(--ink-dim);line-height:1.6;margin:0}
+.about-stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:28px 0}
+.about-stat{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px}
+.about-stat-val{font-family:var(--display);font-size:32px;font-weight:700;color:var(--gold);line-height:1}
+.about-stat-label{font-size:12px;color:var(--ink-dim);margin-top:6px;line-height:1.4}
+.about-cta-box{background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(212,175,55,.03));
+  border:1px solid rgba(212,175,55,.25);border-radius:16px;padding:40px;text-align:center;margin-top:48px}
+.about-cta-box h2{font-family:var(--display);font-size:clamp(20px,2.5vw,30px);font-weight:600;
+  margin-bottom:12px;letter-spacing:-0.01em}
+.about-cta-box p{font-size:14px;color:var(--ink-dim);margin-bottom:24px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -1905,6 +1935,7 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
     <button class="nav-link" data-route="insiders">Insiders</button>
     <button class="nav-link" data-route="options">Options</button>
     <button class="nav-link" data-route="pricing">Pricing</button>
+    <button class="nav-link" data-route="about">About</button>
     <button class="nav-settings" id="navSettingsBtn" onclick="openSettings()" title="API key settings" aria-label="Settings" style="display:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <path d="M12 15.5C13.933 15.5 15.5 13.933 15.5 12C15.5 10.067 13.933 8.5 12 8.5C10.067 8.5 8.5 10.067 8.5 12C8.5 13.933 10.067 15.5 12 15.5Z" stroke="currentColor" stroke-width="1.5"/>
@@ -3424,6 +3455,104 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
       <div id="notableClustersContent">
         <div class="insiders-empty">Load data on the other tabs first, then notable clusters will appear here.</div>
       </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     ABOUT PAGE
+============================================================ -->
+<section class="page" id="page-about">
+  <div class="about-wrap">
+
+    <!-- Hero -->
+    <div class="about-hero">
+      <div class="section-eyebrow" style="display:inline-block;margin-bottom:20px">- About BriefTick</div>
+      <h1>Markets move fast.<br>Understanding them<br>shouldn't require a <em>Bloomberg terminal.</em></h1>
+      <p>BriefTick was built for a simple reason: institutional-grade market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that — using AI to translate complex market signals into clear, actionable context for everyone from seasoned traders to first-time investors.</p>
+    </div>
+
+    <!-- Mission -->
+    <div class="about-section">
+      <div class="about-section-label">— Mission</div>
+      <h2>Democratise market intelligence.</h2>
+      <p>The same tools that help hedge funds understand why markets are moving have historically been inaccessible to individual investors. BriefTick closes that gap — not by simplifying the data, but by making it legible.</p>
+      <p>We pull from live earnings feeds, macro event trackers, options flow, insider disclosures, sentiment models, and AI briefings — and surface what matters, when it matters, in plain English.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="about-stat-row">
+      <div class="about-stat">
+        <div class="about-stat-val">12</div>
+        <div class="about-stat-label">Intelligence modules across every major market dimension</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-val">35+</div>
+        <div class="about-stat-label">Live data sources including Finnhub, Polygon, SEC EDGAR</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-val">Real‑time</div>
+        <div class="about-stat-label">Market data with no daily credit limits on core feeds</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-val">AI‑first</div>
+        <div class="about-stat-label">Claude-powered explanations on every major data signal</div>
+      </div>
+    </div>
+
+    <!-- Principles -->
+    <div class="about-section">
+      <div class="about-section-label">— How we think</div>
+      <h2>Principles we build by.</h2>
+      <div class="about-principles">
+        <div class="about-principle">
+          <div class="about-principle-num">01 — CONTEXT OVER SIGNALS</div>
+          <h3>Explain the why, not just the what</h3>
+          <p>A price move without context is noise. BriefTick always answers the follow-up question — why is this happening and what's driving it.</p>
+        </div>
+        <div class="about-principle">
+          <div class="about-principle-num">02 — NEUTRAL INTELLIGENCE</div>
+          <h3>No recommendations. Ever.</h3>
+          <p>We are an educational intelligence layer. We surface information, patterns, and analysis — we do not tell you what to buy or sell.</p>
+        </div>
+        <div class="about-principle">
+          <div class="about-principle-num">03 — TRANSPARENCY</div>
+          <h3>You know where the data comes from</h3>
+          <p>Every feed, every score, every AI summary is traceable. We label data sources, flag estimated figures, and never invent information.</p>
+        </div>
+        <div class="about-principle">
+          <div class="about-principle-num">04 — PRIVACY FIRST</div>
+          <h3>Your portfolio stays in your browser</h3>
+          <p>Portfolio data is stored locally in your browser only. We never see your holdings, trades, or positions. No data is sold. Ever.</p>
+        </div>
+        <div class="about-principle">
+          <div class="about-principle-num">05 — ALWAYS IMPROVING</div>
+          <h3>Built with users, not for them</h3>
+          <p>BriefTick is in active beta. Every feature has been shaped by feedback from traders, investors and analysts using it in real markets.</p>
+        </div>
+        <div class="about-principle">
+          <div class="about-principle-num">06 — ACCESSIBLE</div>
+          <h3>Institutional depth, human language</h3>
+          <p>Whether you're managing a portfolio or learning how markets work, BriefTick meets you where you are — no jargon required.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- What we cover -->
+    <div class="about-section">
+      <div class="about-section-label">— Coverage</div>
+      <h2>What BriefTick covers.</h2>
+      <p>Live market intelligence across equities, ETFs, macro events, earnings, options flow, insider transactions, congressional disclosures, sector rotation, volatility, sentiment, and AI-generated briefings. Updated in real time during market hours, with full historical pattern matching and correlation analysis.</p>
+      <p>Built on data from Finnhub, Polygon.io, SEC EDGAR, Alpha Vantage, Anthropic Claude, and FRED — all routed through a secure proxy so your API keys stay private.</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="about-cta-box">
+      <div class="section-eyebrow" style="display:inline-block;margin-bottom:16px">- Join the beta</div>
+      <h2>Ready to understand the market?</h2>
+      <p>BriefTick is in private beta. Request access and we'll be in touch within 48 hours.</p>
+      <button class="btn-primary" onclick="openRequestAccess()">Request Access →</button>
     </div>
 
   </div>
