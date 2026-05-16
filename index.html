@@ -3025,7 +3025,7 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
           <li>AI Market Scanner</li>
           <li>Earnings Intelligence</li>
         </ul>
-        <button class="tier-cta" onclick="openRequestAccess()">Join Intelligence</button>
+        <button class="tier-cta" onclick="startCheckout('intelligence', this)">Join Intelligence</button>
       </div>
 
       <!-- TERMINAL -->
@@ -3046,7 +3046,7 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
           <li>API Access</li>
           <li>Priority Support &amp; Analyst Q&amp;A</li>
         </ul>
-        <button class="tier-cta" onclick="openRequestAccess()">Apply for Terminal</button>
+        <button class="tier-cta" onclick="startCheckout('terminal', this)">Apply for Terminal</button>
       </div>
 
     </div>
@@ -6534,6 +6534,12 @@ async function liveRefreshDashboard(){
 /* Run as soon as DOM is ready, no delay. Mock values are placeholders only. */
 window.addEventListener('load', liveRefreshDashboard);
 
+// Handle ?tab= param so cancel redirect from Stripe lands on the right page
+(function(){
+  const tab = new URLSearchParams(window.location.search).get('tab');
+  if (tab) route(tab);
+})();
+
 /* ----------------------------------------------------------------
    TICKER STRIP – full refresh using Finnhub real-time quotes
 ---------------------------------------------------------------- */
@@ -9293,6 +9299,33 @@ function dismissOnboarding(){
 }
 window.dismissOnboarding = dismissOnboarding;
 window.addEventListener('load', showOnboardingIfNew);
+
+/* ================================================================
+   STRIPE CHECKOUT
+================================================================ */
+async function startCheckout(plan, btn) {
+  const originalText = btn ? btn.textContent : '';
+  try {
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Redirecting to checkout…';
+    }
+    const res = await fetch(`/api/checkout?plan=${plan}`, { method: 'POST' });
+    const data = await res.json();
+    if (!res.ok || !data.url) {
+      throw new Error(data.error || 'Could not create checkout session.');
+    }
+    window.location.href = data.url;
+  } catch (err) {
+    console.error('[checkout]', err.message);
+    alert('Checkout unavailable: ' + err.message);
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  }
+}
+window.startCheckout = startCheckout;
 
 /* ================================================================
    OPTIONS FLOW PAGE
