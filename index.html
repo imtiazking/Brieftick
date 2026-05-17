@@ -10807,15 +10807,10 @@ window.generateInsidersAI = generateInsidersAI;
 })();
 
 /* ================================================================
-   DASHBOARD TELEMETRY — Ambient Market Intelligence Layer
-   Single canvas behind dashboard panels. Draws:
-     · fine market grid
-     · named market-center nodes (NYSE, LSE, Tokyo …)
-     · soft connection lines + breathing
-     · signal particles travelling along paths
-     · expanding pulse waves
-     · faint horizontal data-stream sweeps
-   All at ≤0.07 opacity — texture only, never distracting.
+   DASHBOARD TELEMETRY — Globe-Based Market Intelligence Layer
+   Orthographic globe projection + financial centre nodes +
+   animated great-circle capital flow arcs + signal particles.
+   All at low opacity — shows through semi-transparent panels.
 ================================================================ */
 function initDashTelemetry() {
   const canvas = document.getElementById('dashTelemetry');
@@ -10824,192 +10819,322 @@ function initDashTelemetry() {
 
   const ctx = canvas.getContext('2d');
   let W = 0, H = 0, animId = null, active = false;
+  let rotation = 0; // degrees, slow auto-rotation
 
-  const MARKET_NODES = [
-    { label:'NYSE',      qx:0.12, qy:0.28, primary:true  },
-    { label:'NASDAQ',    qx:0.20, qy:0.18, primary:true  },
-    { label:'LSE',       qx:0.42, qy:0.14, primary:true  },
-    { label:'FRANKFURT', qx:0.55, qy:0.20, primary:false },
-    { label:'DUBAI',     qx:0.65, qy:0.35, primary:false },
-    { label:'TOKYO',     qx:0.80, qy:0.18, primary:true  },
-    { label:'HK',        qx:0.88, qy:0.30, primary:true  },
-    { label:'CHICAGO',   qx:0.22, qy:0.62, primary:false },
-    { label:'SGX',       qx:0.76, qy:0.55, primary:false },
-    { label:'CBOE',      qx:0.30, qy:0.72, primary:false },
-    { label:'CME',       qx:0.48, qy:0.68, primary:false },
-    { label:'TSX',       qx:0.10, qy:0.50, primary:false },
+  // ── Financial centres (lat, lng, name, isPrimary) ────────────
+  const CENTRES = [
+    { lat:40.71, lng:-74.01, name:'NYSE',      primary:true  },
+    { lat:40.71, lng:-73.99, name:'NASDAQ',    primary:true  },
+    { lat:51.51, lng:-0.09,  name:'LSE',       primary:true  },
+    { lat:50.11, lng:8.68,   name:'FRANKFURT', primary:false },
+    { lat:25.20, lng:55.27,  name:'DUBAI',     primary:false },
+    { lat:35.68, lng:139.69, name:'TOKYO',     primary:true  },
+    { lat:22.33, lng:114.16, name:'HK',        primary:true  },
+    { lat:1.28,  lng:103.85, name:'SINGAPORE', primary:false },
+    { lat:41.88, lng:-87.63, name:'CHICAGO',   primary:false },
+    { lat:-23.55,lng:-46.63, name:'SAO PAULO', primary:false },
   ];
 
-  let nodes = [], connections = [], particles = [], pulses = [], streams = [];
+  // ── Capital flow corridors ────────────────────────────────────
+  const CORRIDORS = [
+    [0, 2],  // NYSE ↔ LSE
+    [0, 5],  // NYSE ↔ TOKYO
+    [2, 3],  // LSE ↔ FRANKFURT
+    [2, 6],  // LSE ↔ HK
+    [5, 6],  // TOKYO ↔ HK
+    [4, 2],  // DUBAI ↔ LSE
+    [7, 6],  // SINGAPORE ↔ HK
+    [8, 0],  // CHICAGO ↔ NYSE
+  ];
 
+  let projCentres = [];
+  let arcParticles = [];
+  let pulses = [];
+  let lastPulse = 0;
+  const R_FRAC = 0.30; // globe as fraction of min(W,H)
+
+  // ── Orthographic projection ───────────────────────────────────
+  function toRad(d) { return d * Math.PI / 180; }
+
+  function project(lat, lng) {
+    const R   = Math.min(W, H) * R_FRAC;
+    const cx  = W * 0.50;
+    const cy  = H * 0.50;
+    const phi = toRad(lat);
+    const lam = toRad(lng + rotation); // apply rotation
+    const x   = cx + R * Math.cos(phi) * Math.sin(lam);
+    const y   = cy - R * Math.sin(phi);
+    // Visibility: point is on near side if cos(phi)*cos(lam) > 0
+    const vis = Math.cos(phi) * Math.cos(lam) > -0.12;
+    const depth = Math.cos(phi) * Math.cos(lam); // -1..1
+    return { x, y, vis, depth };
+  }
+
+  // Spherical lerp between two lat/lng points (great circle)
+  function slerp(lat1, lng1, lat2, lng2, t) {
+    const p1 = [toRad(lat1), toRad(lng1)];
+    const p2 = [toRad(lat2), toRad(lng2)];
+    // Convert to 3D unit vectors
+    function toXYZ(phi, lam) {
+      return [Math.cos(phi)*Math.cos(lam), Math.cos(phi)*Math.sin(lam), Math.sin(phi)];
+    }
+    const a = toXYZ(p1[0], p1[1]);
+    const b = toXYZ(p2[0], p2[1]);
+    const dot = Math.min(1, Math.max(-1, a[0]*b[0]+a[1]*b[1]+a[2]*b[2]));
+    const omega = Math.acos(dot);
+    if (omega < 0.001) return { lat: lat1, lng: lng1 };
+    const sinO = Math.sin(omega);
+    const s0 = Math.sin((1-t)*omega) / sinO;
+    const s1 = Math.sin(t*omega)     / sinO;
+    const x = s0*a[0] + s1*b[0];
+    const y = s0*a[1] + s1*b[1];
+    const z = s0*a[2] + s1*b[2];
+    const lat = Math.asin(z) * 180 / Math.PI;
+    const lng = Math.atan2(y, x) * 180 / Math.PI;
+    return { lat, lng };
+  }
+
+  // ── Build arc particles ───────────────────────────────────────
+  function buildParticles() {
+    arcParticles = [];
+    CORRIDORS.forEach(([ai, bi]) => {
+      // 1–2 particles per corridor
+      const count = Math.random() < 0.7 ? 2 : 1;
+      for (let i = 0; i < count; i++) {
+        arcParticles.push({
+          ai, bi,
+          t:     Math.random(),
+          spd:   0.0008 + Math.random() * 0.0007,
+          dir:   Math.random() < 0.5 ? 1 : -1,
+          alpha: 0.5  + Math.random() * 0.4,
+          size:  1.8  + Math.random() * 1.4,
+        });
+      }
+    });
+  }
+
+  // ── Resize ───────────────────────────────────────────────────
   function resize() {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
-    buildScene();
+    buildParticles();
   }
 
-  function buildScene() {
-    nodes = MARKET_NODES.map((n, i) => ({
-      ...n,
-      x: n.qx * W, y: n.qy * H,
-      ox: n.qx * W, oy: n.qy * H,
-      phase: (i / MARKET_NODES.length) * Math.PI * 2,
-      r: n.primary ? 3.2 : 2.0,
-    }));
-
-    connections = [];
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].ox - nodes[j].ox;
-        const dy = nodes[i].oy - nodes[j].oy;
-        if (Math.sqrt(dx*dx + dy*dy) < W * 0.42) {
-          connections.push({ a:i, b:j, phase: Math.random() * Math.PI * 2 });
-        }
+  // ── Draw graticule ───────────────────────────────────────────
+  function drawGraticule() {
+    ctx.lineWidth = 0.5;
+    // Longitude lines
+    for (let lng = -180; lng < 180; lng += 20) {
+      ctx.beginPath();
+      let first = true;
+      for (let lat = -88; lat <= 88; lat += 3) {
+        const p = project(lat, lng);
+        if (!p.vis) { first = true; continue; }
+        const alpha = 0.016 + 0.008 * p.depth;
+        ctx.strokeStyle = `rgba(78,168,255,${alpha})`;
+        if (first) { ctx.moveTo(p.x, p.y); first = false; }
+        else ctx.lineTo(p.x, p.y);
       }
+      ctx.stroke();
     }
-
-    particles = connections.flatMap(c =>
-      Math.random() < 0.5 ? [{
-        c, t: Math.random(),
-        spd: 0.0007 + Math.random() * 0.0009,
-        dir: Math.random() < 0.5 ? 1 : -1,
-        alpha: 0.28 + Math.random() * 0.28,
-        size: 1.1 + Math.random() * 0.9,
-      }] : []
-    );
-
-    streams = Array.from({ length: 4 }, (_, i) => ({
-      y:     H * (0.18 + i * 0.22),
-      x:     -W * 0.05,
-      spd:   0.22 + Math.random() * 0.22,
-      alpha: 0.016 + Math.random() * 0.010,
-      len:   W * (0.10 + Math.random() * 0.14),
-    }));
-  }
-
-  function drawGrid() {
-    ctx.strokeStyle = 'rgba(78,168,255,0.018)';
-    ctx.lineWidth = 0.7;
-    const cols = 24;
-    const rws  = Math.round(H / (W / cols));
-    const cw = W / cols, rh = H / rws;
-    for (let c = 0; c <= cols; c++) {
-      ctx.beginPath(); ctx.moveTo(c*cw, 0); ctx.lineTo(c*cw, H); ctx.stroke();
-    }
-    for (let r = 0; r <= rws; r++) {
-      ctx.beginPath(); ctx.moveTo(0, r*rh); ctx.lineTo(W, r*rh); ctx.stroke();
+    // Latitude lines
+    for (let lat = -80; lat <= 80; lat += 20) {
+      ctx.beginPath();
+      let first = true;
+      for (let lng = -180; lng <= 180; lng += 3) {
+        const p = project(lat, lng);
+        if (!p.vis) { first = true; continue; }
+        const alpha = 0.014 + 0.007 * p.depth;
+        ctx.strokeStyle = `rgba(78,168,255,${alpha})`;
+        if (first) { ctx.moveTo(p.x, p.y); first = false; }
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
     }
   }
 
-  function drawConnections(t) {
-    connections.forEach(c => {
-      const a = nodes[c.a], b = nodes[c.b];
-      const alpha = 0.030 + 0.020 * Math.sin(t * 0.0006 + c.phase);
-      ctx.strokeStyle = `rgba(78,168,255,${alpha})`;
-      ctx.lineWidth = 0.55;
-      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+  // ── Draw globe face + atmosphere ────────────────────────────
+  function drawGlobe() {
+    const R  = Math.min(W, H) * R_FRAC;
+    const cx = W * 0.5, cy = H * 0.5;
+
+    // Atmosphere outer glow
+    const atm = ctx.createRadialGradient(cx, cy, R * 0.85, cx, cy, R * 1.28);
+    atm.addColorStop(0, 'rgba(78,168,255,0.07)');
+    atm.addColorStop(1, 'rgba(78,168,255,0)');
+    ctx.fillStyle = atm;
+    ctx.beginPath(); ctx.arc(cx, cy, R * 1.28, 0, Math.PI * 2); ctx.fill();
+
+    // Dark fill (ocean base)
+    const fill = ctx.createRadialGradient(cx - R*0.2, cy - R*0.2, R*0.05, cx, cy, R);
+    fill.addColorStop(0, 'rgba(12,18,32,0.55)');
+    fill.addColorStop(1, 'rgba(5,6,10,0.72)');
+    ctx.fillStyle = fill;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+
+    // Rim highlight
+    ctx.strokeStyle = 'rgba(78,168,255,0.18)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+
+    // Inner subtle glow
+    ctx.strokeStyle = 'rgba(78,168,255,0.06)';
+    ctx.lineWidth = 8;
+    ctx.beginPath(); ctx.arc(cx, cy, R - 4, 0, Math.PI * 2); ctx.stroke();
+  }
+
+  // ── Draw capital flow arcs ───────────────────────────────────
+  function drawArcs(ts) {
+    CORRIDORS.forEach(([ai, bi], ci) => {
+      const cA = CENTRES[ai], cB = CENTRES[bi];
+      const STEPS = 48;
+      // Check if at least partial arc is visible
+      let anyVis = false;
+      for (let s = 0; s <= STEPS; s += 8) {
+        const mid = slerp(cA.lat, cA.lng, cB.lat, cB.lng, s / STEPS);
+        if (project(mid.lat, mid.lng).vis) { anyVis = true; break; }
+      }
+      if (!anyVis) return;
+
+      const breathe = 0.028 + 0.016 * Math.sin(ts * 0.0005 + ci * 0.9);
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      let first = true;
+      for (let s = 0; s <= STEPS; s++) {
+        const mid = slerp(cA.lat, cA.lng, cB.lat, cB.lng, s / STEPS);
+        const p   = project(mid.lat, mid.lng);
+        if (!p.vis) { first = true; continue; }
+        ctx.strokeStyle = `rgba(212,168,90,${breathe * (0.5 + 0.5 * p.depth)})`;
+        if (first) { ctx.moveTo(p.x, p.y); first = false; }
+        else { ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+      }
     });
   }
 
-  function drawNodes(t) {
-    nodes.forEach(n => {
-      n.x = n.ox + Math.sin(t * 0.00035 + n.phase) * W * 0.008;
-      n.y = n.oy + Math.cos(t * 0.00028 + n.phase) * H * 0.006;
-      const breathe = 0.32 + 0.14 * Math.sin(t * 0.0008 + n.phase);
-      // Glow halo
-      const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 8);
-      grd.addColorStop(0, n.primary ? `rgba(212,168,90,${breathe*0.16})` : `rgba(78,168,255,${breathe*0.10})`);
-      grd.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(n.x, n.y, n.r*8, 0, Math.PI*2); ctx.fill();
-      // Core
-      ctx.fillStyle = n.primary ? `rgba(212,168,90,${breathe})` : `rgba(78,168,255,${breathe*0.75})`;
-      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2); ctx.fill();
-      // Label
-      if (n.primary) {
-        ctx.fillStyle = `rgba(212,168,90,${breathe * 0.48})`;
-        ctx.font = '600 7.5px "JetBrains Mono", monospace';
-        ctx.fillText(n.label, n.x + n.r + 5, n.y + 3);
-      }
-    });
-  }
-
-  function drawParticles() {
-    particles.forEach(p => {
+  // ── Draw signal particles along arcs ────────────────────────
+  function drawParticlesFn() {
+    arcParticles.forEach(p => {
       p.t += p.spd * p.dir;
       if (p.t > 1) p.t = 0;
       if (p.t < 0) p.t = 1;
-      const a = nodes[p.c.a], b = nodes[p.c.b];
-      const px = a.x + (b.x - a.x) * p.t;
-      const py = a.y + (b.y - a.y) * p.t;
-      ctx.fillStyle = `rgba(212,168,90,${p.alpha})`;
-      ctx.beginPath(); ctx.arc(px, py, p.size, 0, Math.PI*2); ctx.fill();
+      const cA = CENTRES[p.ai], cB = CENTRES[p.bi];
+      const mid  = slerp(cA.lat, cA.lng, cB.lat, cB.lng, p.t);
+      const proj = project(mid.lat, mid.lng);
+      if (!proj.vis) return;
+      const a = p.alpha * (0.4 + 0.6 * proj.depth);
+      ctx.fillStyle = `rgba(212,168,90,${a})`;
+      ctx.beginPath(); ctx.arc(proj.x, proj.y, p.size, 0, Math.PI * 2); ctx.fill();
     });
   }
 
+  // ── Draw financial centre nodes ──────────────────────────────
+  function drawCentres(ts) {
+    projCentres = CENTRES.map(c => {
+      const p = project(c.lat, c.lng);
+      return { ...c, ...p };
+    });
+
+    projCentres.forEach((c, i) => {
+      if (!c.vis || c.depth < -0.05) return;
+      const phase   = (i / CENTRES.length) * Math.PI * 2;
+      const breathe = 0.45 + 0.25 * Math.sin(ts * 0.0009 + phase);
+      const r       = c.primary ? 3.8 : 2.4;
+      const alpha   = breathe * (0.5 + 0.5 * c.depth);
+
+      // Glow halo
+      const grd = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r * 9);
+      grd.addColorStop(0, c.primary
+        ? `rgba(212,168,90,${alpha * 0.22})`
+        : `rgba(78,168,255,${alpha * 0.14})`);
+      grd.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(c.x, c.y, r * 9, 0, Math.PI * 2); ctx.fill();
+
+      // Core dot
+      ctx.fillStyle = c.primary
+        ? `rgba(212,168,90,${alpha})`
+        : `rgba(78,168,255,${alpha * 0.8})`;
+      ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2); ctx.fill();
+
+      // Label (primary only, fade with depth)
+      if (c.primary && c.depth > 0.1) {
+        ctx.fillStyle = `rgba(212,168,90,${alpha * 0.6})`;
+        ctx.font = '600 8px "JetBrains Mono", monospace';
+        ctx.fillText(c.name, c.x + r + 5, c.y + 3);
+      }
+    });
+  }
+
+  // ── Draw pulse waves ─────────────────────────────────────────
   function drawPulses() {
     pulses = pulses.filter(p => p.alpha > 0.003);
     pulses.forEach(p => {
-      p.r += 0.85; p.alpha *= 0.974;
+      p.r    += 0.9;
+      p.alpha *= 0.972;
       ctx.strokeStyle = `rgba(61,220,151,${p.alpha})`;
-      ctx.lineWidth = 0.8;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.stroke();
+      ctx.lineWidth   = 0.9;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.stroke();
     });
   }
 
-  function drawStreams() {
-    streams.forEach(s => {
-      s.x += s.spd;
-      if (s.x > W * 1.1) s.x = -s.len;
-      const g = ctx.createLinearGradient(s.x, s.y, s.x + s.len, s.y);
-      g.addColorStop(0,   'rgba(78,168,255,0)');
-      g.addColorStop(0.4, `rgba(78,168,255,${s.alpha})`);
-      g.addColorStop(1,   'rgba(78,168,255,0)');
-      ctx.strokeStyle = g;
-      ctx.lineWidth = 0.8;
-      ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(s.x + s.len, s.y); ctx.stroke();
-    });
-  }
-
-  let lastPulse = 0;
-  function maybePulse(t) {
-    if (t - lastPulse > 2900 && nodes.length) {
-      lastPulse = t;
-      const n = nodes[Math.floor(Math.random() * nodes.length)];
-      pulses.push({ x:n.x, y:n.y, r:n.r, alpha:0.05 });
+  function maybePulse(ts) {
+    if (ts - lastPulse > 2400) {
+      lastPulse = ts;
+      const vis = projCentres.filter(c => c.vis && c.depth > 0.1);
+      if (!vis.length) return;
+      const c = vis[Math.floor(Math.random() * vis.length)];
+      pulses.push({ x: c.x, y: c.y, r: c.primary ? 4 : 2.5, alpha: 0.07 });
     }
   }
 
-  function draw(t) {
+  // ── Fine background telemetry grid ───────────────────────────
+  function drawBgGrid() {
+    ctx.strokeStyle = 'rgba(78,168,255,0.012)';
+    ctx.lineWidth = 0.6;
+    const step = Math.max(32, Math.floor(W / 28));
+    for (let x = 0; x < W; x += step) {
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+    }
+    for (let y = 0; y < H; y += step) {
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+    }
+  }
+
+  // ── Main draw loop ───────────────────────────────────────────
+  function draw(ts) {
     if (!active) { animId = null; return; }
     animId = requestAnimationFrame(draw);
+    rotation += 0.006; // ~0.006°/frame ≈ full rotation in ~16 min
+
     ctx.clearRect(0, 0, W, H);
-    drawGrid();
-    drawStreams();
-    drawConnections(t);
-    drawNodes(t);
-    drawParticles();
+    drawBgGrid();
+    drawGlobe();
+    drawGraticule();
+    drawArcs(ts);
+    drawCentres(ts);
+    drawParticlesFn();
     drawPulses();
-    maybePulse(t);
+    maybePulse(ts);
   }
 
   function start() {
     if (!animId) {
-      resize(); // re-measure every time dashboard becomes active
+      resize();
       active = true;
       requestAnimationFrame(draw);
     }
   }
-  function stop()  { active = false; if (animId) { cancelAnimationFrame(animId); animId = null; } }
+  function stop() {
+    active = false;
+    if (animId) { cancelAnimationFrame(animId); animId = null; }
+  }
 
-  resize();
-
-  // Start/stop with dashboard tab
+  // ── Lifecycle ────────────────────────────────────────────────
   const dashEl = document.getElementById('page-dashboard');
   if (dashEl) {
     new MutationObserver(() => {
       dashEl.classList.contains('active') ? start() : stop();
-    }).observe(dashEl, { attributes:true, attributeFilter:['class'] });
+    }).observe(dashEl, { attributes: true, attributeFilter: ['class'] });
     if (dashEl.classList.contains('active')) start();
   }
 
@@ -11021,7 +11146,7 @@ function initDashTelemetry() {
   let rsT;
   window.addEventListener('resize', () => {
     clearTimeout(rsT);
-    rsT = setTimeout(() => { resize(); }, 220);
+    rsT = setTimeout(resize, 220);
   });
 }
 
