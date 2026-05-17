@@ -10992,8 +10992,7 @@ window.generateInsidersAI = generateInsidersAI;
 })();
 
 /* ================================================================
-   DASHBOARD TELEMETRY — Premium Globe Market Intelligence Widget
-   v3: real continent outlines, richer motion, live regional data
+   DASHBOARD TELEMETRY — Premium Globe Intelligence Widget v5
 ================================================================ */
 function initDashTelemetry() {
   const canvas = document.getElementById('dashTelemetryCanvas');
@@ -11001,493 +11000,537 @@ function initDashTelemetry() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const ctx = canvas.getContext('2d');
-  let W=0, H=0, CX=0, CY=0, R=0, animId=null, active=false;
-  let rotation = 0, scanAngle = 0;
+  let W=0,H=0,CX=0,CY=0,R=0,animId=null,active=false;
+  let rotation=0, scanAngle=0;
 
-  // ── Simplified continent polygon data (lat, lng pairs) ──────
+  // ── Flow types ───────────────────────────────────────────────
+  const FLOW = {
+    capital:  { rgb:'212,168,90',  glow:'rgba(212,168,90,',  label:'Capital Flow'    },
+    ai:       { rgb:'0,210,255',   glow:'rgba(0,210,255,',   label:'AI Signal'       },
+    vol:      { rgb:'255,80,100',  glow:'rgba(255,80,100,',  label:'Vol Stress'      },
+    rotation: { rgb:'61,220,151',  glow:'rgba(61,220,151,',  label:'Risk Rotation'   },
+  };
+
+  // ── More detailed continent polygons ─────────────────────────
   const CONTINENTS = [
     { name:'NA', pts:[
-      [72,-60],[66,-83],[60,-64],[50,-55],[44,-66],[41,-70],[41,-74],[35,-76],
-      [30,-81],[25,-80],[24,-90],[20,-88],[20,-105],[22,-106],[29,-110],[32,-117],
-      [37,-122],[48,-125],[54,-132],[58,-136],[60,-140],[64,-141],[68,-141],
-      [71,-132],[72,-120],[72,-100],[71,-84],[72,-60]
+      [72,-60],[68,-80],[60,-64],[50,-55],[44,-66],[41,-70],[40,-74],[35,-76],[30,-81],
+      [25,-80],[24,-82],[24,-90],[20,-88],[20,-98],[20,-105],[22,-106],[26,-110],
+      [29,-110],[32,-117],[34,-120],[37,-122],[41,-124],[46,-124],[48,-124],[49,-124],
+      [52,-128],[56,-132],[58,-136],[60,-140],[64,-141],[68,-141],[70,-135],[72,-120],
+      [72,-100],[71,-84],[72,-60]
     ]},
     { name:'SA', pts:[
-      [12,-72],[10,-62],[8,-60],[2,-52],[0,-50],[-5,-35],[-10,-37],
-      [-15,-39],[-23,-43],[-30,-50],[-38,-58],[-52,-65],[-55,-68],
-      [-45,-75],[-35,-71],[-20,-70],[-5,-80],[0,-78],[5,-77],[12,-72]
+      [12,-72],[11,-63],[10,-62],[8,-60],[5,-52],[2,-50],[0,-50],[-2,-44],[-5,-35],
+      [-8,-35],[-12,-37],[-15,-39],[-20,-41],[-23,-43],[-28,-49],[-30,-50],
+      [-32,-52],[-38,-58],[-50,-65],[-54,-66],[-55,-68],[-52,-70],[-48,-73],
+      [-45,-75],[-38,-72],[-30,-70],[-20,-70],[-10,-76],[-5,-80],[0,-78],
+      [5,-77],[8,-77],[12,-72]
     ]},
     { name:'EU', pts:[
-      [71,28],[70,22],[65,14],[58,8],[54,10],[51,4],[48,2],[44,8],
-      [43,4],[38,-9],[36,-6],[36,5],[35,12],[37,24],[40,28],
-      [42,35],[43,44],[55,38],[68,30],[71,28]
+      [71,28],[70,25],[68,20],[64,14],[60,18],[58,8],[56,10],[55,14],[54,10],
+      [53,8],[51,4],[50,2],[48,2],[46,-2],[44,4],[43,4],[40,-8],[38,-9],
+      [36,-8],[36,-6],[36,0],[36,5],[37,8],[35,12],[36,18],[37,24],
+      [40,28],[41,34],[42,35],[43,44],[47,40],[50,36],[55,38],[60,30],
+      [65,26],[68,30],[71,28]
     ]},
     { name:'AF', pts:[
-      [37,10],[34,37],[12,44],[12,43],[8,40],[0,42],[-11,37],
-      [-20,35],[-26,33],[-35,27],[-35,18],[-23,14],[-5,8],[0,9],
-      [5,-3],[10,-17],[15,-17],[25,-15],[37,10]
+      [37,10],[35,11],[34,37],[22,38],[15,42],[12,44],[12,43],[8,40],
+      [5,38],[0,42],[-5,40],[-10,37],[-15,35],[-20,35],[-26,33],
+      [-30,28],[-35,27],[-34,18],[-30,16],[-25,14],[-20,12],[-15,12],
+      [-10,12],[-5,10],[0,8],[5,2],[5,-3],[8,-5],[10,-16],[15,-17],
+      [18,-16],[22,-15],[26,-14],[30,-10],[37,10]
     ]},
     { name:'AS', pts:[
-      [70,32],[70,60],[70,100],[72,120],[68,138],[60,142],
-      [52,140],[45,138],[40,130],[35,120],[30,120],[22,120],
-      [20,110],[5,103],[5,80],[12,75],[22,68],[25,57],[22,60],
-      [30,50],[38,44],[42,44],[42,50],[55,60],[68,60],[70,32]
+      [70,32],[70,50],[70,70],[70,100],[72,120],[68,138],[60,142],
+      [55,138],[52,140],[48,140],[44,136],[40,130],[36,120],[32,120],
+      [28,120],[22,120],[20,110],[12,105],[5,103],[2,105],[1,104],
+      [5,100],[8,98],[10,92],[12,78],[8,77],[12,75],[18,73],[22,68],
+      [24,62],[25,57],[24,56],[22,60],[26,56],[30,48],[36,44],
+      [38,44],[42,44],[42,50],[50,56],[55,60],[62,62],[68,60],[70,32]
     ]},
     { name:'AU', pts:[
-      [-10,130],[-12,132],[-12,137],[-11,142],[-16,146],
-      [-28,154],[-38,146],[-38,140],[-35,118],[-22,114],
-      [-16,123],[-12,130],[-10,130]
+      [-10,130],[-12,132],[-12,136],[-11,142],[-14,146],[-16,146],
+      [-20,148],[-28,154],[-34,151],[-38,148],[-38,144],[-38,140],
+      [-36,136],[-34,122],[-34,118],[-30,115],[-22,114],[-18,122],
+      [-16,124],[-14,128],[-12,130],[-10,130]
     ]},
     { name:'GL', pts:[
-      [76,-66],[82,-40],[83,-20],[80,-18],[76,-20],[72,-24],
-      [70,-36],[68,-50],[68,-58],[72,-60],[76,-66]
+      [76,-66],[80,-50],[83,-32],[82,-18],[80,-18],[76,-22],
+      [72,-24],[70,-36],[68,-50],[68,-58],[72,-62],[76,-66]
+    ]},
+    { name:'JP', pts:[
+      [31,130],[33,130],[34,132],[35,134],[36,136],[38,140],
+      [40,140],[41,141],[42,142],[43,141],[43,142],[42,143],
+      [40,141],[38,141],[36,136],[34,135],[32,131],[31,130]
     ]},
   ];
 
   // ── Financial centres ────────────────────────────────────────
   const CENTRES = [
-    { lat:40.71, lng:-74.01, name:'NYSE',     primary:true,  region:'NA' },
-    { lat:51.51, lng:-0.09,  name:'LSE',      primary:true,  region:'EU' },
-    { lat:50.11, lng:8.68,   name:'FRANKFURT',primary:false, region:'EU' },
-    { lat:35.68, lng:139.69, name:'TOKYO',    primary:true,  region:'APAC'},
-    { lat:22.33, lng:114.16, name:'HK',       primary:true,  region:'APAC'},
-    { lat:1.28,  lng:103.85, name:'SGX',      primary:false, region:'APAC'},
-    { lat:25.20, lng:55.27,  name:'DUBAI',    primary:false, region:'ME' },
-    { lat:41.88, lng:-87.63, name:'CHICAGO',  primary:false, region:'NA' },
-    { lat:-23.55,lng:-46.63, name:'SAO PAULO',primary:false, region:'SA' },
-    { lat:40.42, lng:-3.70,  name:'MADRID',   primary:false, region:'EU' },
+    { lat:40.71, lng:-74.01, name:'NEW YORK',    primary:true,  region:'NA',   flowType:'capital' },
+    { lat:51.51, lng:-0.09,  name:'LONDON',      primary:true,  region:'EU',   flowType:'capital' },
+    { lat:50.11, lng:8.68,   name:'FRANKFURT',   primary:false, region:'EU',   flowType:'rotation'},
+    { lat:35.68, lng:139.69, name:'TOKYO',        primary:true,  region:'APAC', flowType:'rotation'},
+    { lat:22.33, lng:114.16, name:'HONG KONG',   primary:true,  region:'APAC', flowType:'capital' },
+    { lat:1.28,  lng:103.85, name:'SINGAPORE',   primary:false, region:'APAC', flowType:'ai'      },
+    { lat:25.20, lng:55.27,  name:'DUBAI',        primary:false, region:'ME',   flowType:'vol'     },
+    { lat:41.88, lng:-87.63, name:'CHICAGO',     primary:false, region:'NA',   flowType:'ai'      },
+    { lat:-23.55,lng:-46.63, name:'SAO PAULO',   primary:false, region:'SA',   flowType:'capital' },
+    { lat:48.85, lng:2.35,   name:'PARIS',        primary:false, region:'EU',   flowType:'rotation'},
   ];
 
-  // ── Capital flow corridors ───────────────────────────────────
+  // ── Corridors with flow types ────────────────────────────────
   const CORRIDORS = [
-    [0, 1,'gold',2], // NYSE ↔ LSE  (2 particles)
-    [0, 3,'gold',2], // NYSE ↔ TOKYO
-    [1, 4,'blue',1], // LSE ↔ HK
-    [3, 4,'blue',2], // TOKYO ↔ HK
-    [4, 5,'blue',1], // HK ↔ SGX
-    [1, 2,'blue',1], // LSE ↔ FRANKFURT
-    [6, 1,'gold',1], // DUBAI ↔ LSE
-    [7, 0,'blue',1], // CHICAGO ↔ NYSE
-    [8, 0,'gold',1], // SAO PAULO ↔ NYSE
-    [2, 6,'blue',1], // FRANKFURT ↔ DUBAI
+    [0, 1,'capital',2],   // NY ↔ London — primary transatlantic
+    [0, 3,'capital',2],   // NY ↔ Tokyo  — transpacific
+    [1, 4,'ai',     2],   // London ↔ HK — AI signal
+    [3, 4,'rotation',2],  // Tokyo ↔ HK  — Asian rotation
+    [4, 5,'ai',     1],   // HK ↔ SGX
+    [1, 2,'rotation',1],  // London ↔ Frankfurt
+    [6, 1,'vol',    1],   // Dubai ↔ London — vol stress
+    [7, 0,'ai',     1],   // Chicago ↔ NY
+    [8, 0,'capital',1],   // São Paulo ↔ NY
+    [2, 6,'vol',    1],   // Frankfurt ↔ Dubai
+    [0, 4,'capital',1],   // NY ↔ HK
+    [1, 3,'ai',     1],   // London ↔ Tokyo
   ];
 
-  // ── Data streams outside globe ───────────────────────────────
-  let streams = [], signalTrails = [], arcParticles = [];
-  let pulses = [], lastPulse = 0;
-  let projCentres = [];
+  // ── Ambient telemetry streams ────────────────────────────────
+  const STREAM_ROWS = 14;
+  let streams=[], arcParticles=[], pulses=[], projCentres=[];
+  let lastPulse=0;
 
   // ── Maths ────────────────────────────────────────────────────
-  const rad = d => d * Math.PI / 180;
-
-  function project(lat, lng) {
-    const phi = rad(lat);
-    const lam = rad(lng + rotation);
-    const x   = CX + R * Math.cos(phi) * Math.sin(lam);
-    const y   = CY - R * Math.sin(phi);
-    const depth = Math.cos(phi) * Math.cos(lam);
-    const vis = depth > -0.08;
-    return { x, y, vis, depth: (depth + 1) / 2 };
+  const rad=d=>d*Math.PI/180;
+  function project(lat,lng){
+    const phi=rad(lat), lam=rad(lng+rotation);
+    const x=CX+R*Math.cos(phi)*Math.sin(lam);
+    const y=CY-R*Math.sin(phi);
+    const depth=Math.cos(phi)*Math.cos(lam);
+    return{x,y,vis:depth>-0.05,depth:(depth+1)/2};
   }
-
-  function slerp(lat1,lng1,lat2,lng2,t){
-    const toV = (ph,la) => [Math.cos(ph)*Math.cos(la),Math.cos(ph)*Math.sin(la),Math.sin(ph)];
-    const a = toV(rad(lat1),rad(lng1)), b = toV(rad(lat2),rad(lng2));
-    const dt = Math.min(1,Math.max(-1, a[0]*b[0]+a[1]*b[1]+a[2]*b[2]));
-    const om = Math.acos(dt);
-    if(om<0.001) return {lat:lat1,lng:lng1};
-    const sin = Math.sin(om);
-    const s0 = Math.sin((1-t)*om)/sin, s1 = Math.sin(t*om)/sin;
-    const v = [s0*a[0]+s1*b[0], s0*a[1]+s1*b[1], s0*a[2]+s1*b[2]];
-    return { lat:Math.asin(v[2])*180/Math.PI, lng:Math.atan2(v[1],v[0])*180/Math.PI };
+  function slerp(la1,ln1,la2,ln2,t){
+    const toV=(ph,la)=>[Math.cos(ph)*Math.cos(la),Math.cos(ph)*Math.sin(la),Math.sin(ph)];
+    const a=toV(rad(la1),rad(ln1)),b=toV(rad(la2),rad(ln2));
+    const dt=Math.min(1,Math.max(-1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2]));
+    const om=Math.acos(dt);
+    if(om<0.001)return{lat:la1,lng:ln1};
+    const si=Math.sin(om);
+    const s0=Math.sin((1-t)*om)/si, s1=Math.sin(t*om)/si;
+    const v=[s0*a[0]+s1*b[0],s0*a[1]+s1*b[1],s0*a[2]+s1*b[2]];
+    return{lat:Math.asin(v[2])*180/Math.PI,lng:Math.atan2(v[1],v[0])*180/Math.PI};
   }
 
   // ── Build scene ──────────────────────────────────────────────
-  function buildStreams() {
-    streams = Array.from({length:6},(_,i)=>({
-      y: H * (0.12 + i * 0.16),
-      x: -W * 0.1,
-      spd: 0.3 + Math.random() * 0.3,
-      len: W * (0.08 + Math.random() * 0.10),
-      alpha: 0.014 + Math.random() * 0.009,
+  function buildStreams(){
+    streams=Array.from({length:STREAM_ROWS},(_,i)=>({
+      y: H*(0.06+i*(0.88/STREAM_ROWS)),
+      x: Math.random()*-W,
+      spd: 0.18+Math.random()*0.28,
+      len: W*(0.06+Math.random()*0.10),
+      alpha: 0.008+Math.random()*0.010,
+      type: Math.random()<0.15?'bright':'faint',
     }));
   }
-
-  function buildParticles() {
-    arcParticles = [];
-    CORRIDORS.forEach(([ai,bi,col,cnt])=>{
+  function buildParticles(){
+    arcParticles=[];
+    CORRIDORS.forEach(([ai,bi,ft,cnt])=>{
       for(let i=0;i<cnt;i++){
         arcParticles.push({
-          ai,bi,col,
-          t:   Math.random(),
-          spd: 0.0006+Math.random()*0.0009,
-          dir: Math.random()<0.5?1:-1,
-          alpha: 0.55+Math.random()*0.35,
-          size: 1.8+Math.random()*1.4,
+          ai,bi,ft,
+          t:Math.random(),
+          spd:0.0006+Math.random()*0.0010,
+          dir:Math.random()<0.5?1:-1,
+          alpha:0.60+Math.random()*0.35,
+          size:1.8+Math.random()*1.4,
         });
       }
     });
   }
 
   // ── Resize ───────────────────────────────────────────────────
-  function resize() {
-    const body = canvas.parentElement;
-    if(!body) return;
-    W  = canvas.width  = body.offsetWidth;
-    H  = canvas.height = body.offsetHeight;
-    CX = W * 0.50;
-    CY = H * 0.46;
-    R  = Math.min(W * 0.20, H * 0.44);
-    buildStreams();
-    buildParticles();
+  function resize(){
+    const body=canvas.parentElement; if(!body)return;
+    W=canvas.width=body.offsetWidth;
+    H=canvas.height=body.offsetHeight;
+    CX=W*0.50; CY=H*0.46;
+    R=Math.min(W*0.20,H*0.44);
+    buildStreams(); buildParticles();
   }
 
-  // ── Draw: background grid ─────────────────────────────────────
-  function drawBgGrid() {
-    ctx.strokeStyle='rgba(78,168,255,0.009)';
-    ctx.lineWidth=0.6;
+  // ── Draw helpers ─────────────────────────────────────────────
+
+  // Fine grid
+  function drawBgGrid(){
+    ctx.strokeStyle='rgba(78,168,255,0.008)'; ctx.lineWidth=0.5;
     const step=Math.max(28,Math.floor(W/30));
     for(let x=0;x<W;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H-38);ctx.stroke();}
     for(let y=0;y<H-38;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
   }
 
-  // ── Draw: horizontal data streams ────────────────────────────
-  function drawDataStreams() {
-    streams.forEach(s=>{
-      s.x += s.spd;
-      if(s.x > W*1.1) s.x = -s.len;
-      // Skip lines that cross the globe center area
-      const distFromGlobe = Math.abs(s.y - CY);
-      if(distFromGlobe < R * 0.8) return; // skip if too close to globe
+  // Rich ambient telemetry streams across whole widget
+  function drawAmbientTelemetry(ts){
+    streams.forEach((s,si)=>{
+      s.x+=s.spd;
+      if(s.x>W*1.05) s.x=-s.len;
+      const bright=s.type==='bright';
       const g=ctx.createLinearGradient(s.x,s.y,s.x+s.len,s.y);
+      const col=si%3===0?'78,168,255': si%3===1?'212,168,90':'61,220,151';
+      g.addColorStop(0,`rgba(${col},0)`);
+      g.addColorStop(0.35,`rgba(${col},${s.alpha*(bright?3.5:1)})`);
+      g.addColorStop(0.65,`rgba(${col},${s.alpha*(bright?2.5:0.8)})`);
+      g.addColorStop(1,`rgba(${col},0)`);
+      ctx.strokeStyle=g; ctx.lineWidth=bright?1.2:0.7;
+      ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(s.x+s.len,s.y); ctx.stroke();
+      // Small data "tick" on some lines
+      if(bright){
+        const tx=s.x+s.len*0.6;
+        ctx.fillStyle=`rgba(${col},${s.alpha*4})`;
+        ctx.fillRect(tx,s.y-1.5,2,3);
+      }
+    });
+    // Vertical faint scan lines (very slow drift)
+    const vPhase=(ts*0.00008)%(1);
+    for(let vi=0;vi<3;vi++){
+      const vx=((vPhase+vi/3)%1)*W;
+      const g=ctx.createLinearGradient(vx,0,vx,H-38);
       g.addColorStop(0,'rgba(78,168,255,0)');
-      g.addColorStop(0.4,`rgba(78,168,255,${s.alpha})`);
+      g.addColorStop(0.3,'rgba(78,168,255,0.012)');
+      g.addColorStop(0.7,'rgba(78,168,255,0.012)');
       g.addColorStop(1,'rgba(78,168,255,0)');
-      ctx.strokeStyle=g;ctx.lineWidth=0.9;
-      ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x+s.len,s.y);ctx.stroke();
+      ctx.strokeStyle=g; ctx.lineWidth=0.8;
+      ctx.beginPath(); ctx.moveTo(vx,0); ctx.lineTo(vx,H-38); ctx.stroke();
+    }
+    // Corner data-feed indicators (stacked tiny lines)
+    [[12,12],[W-60,12],[12,H-50],[W-60,H-50]].forEach(([cx2,cy2])=>{
+      for(let li=0;li<4;li++){
+        const lineLen=20+Math.sin(ts*0.001+li)*8;
+        const a=0.08+0.04*Math.sin(ts*0.0015+li*0.8);
+        ctx.strokeStyle=`rgba(78,168,255,${a})`;
+        ctx.lineWidth=0.7;
+        ctx.beginPath();ctx.moveTo(cx2,cy2+li*4);ctx.lineTo(cx2+lineLen,cy2+li*4);ctx.stroke();
+      }
     });
   }
 
-  // ── Draw: atmosphere ─────────────────────────────────────────
-  function drawAtmosphere() {
-    const g=ctx.createRadialGradient(CX,CY,R*0.9,CX,CY,R*1.4);
-    g.addColorStop(0,'rgba(60,140,255,0.10)');
-    g.addColorStop(0.4,'rgba(50,120,220,0.04)');
+  // Atmosphere glow
+  function drawAtmosphere(){
+    const g=ctx.createRadialGradient(CX,CY,R*0.85,CX,CY,R*1.45);
+    g.addColorStop(0,'rgba(55,130,255,0.12)');
+    g.addColorStop(0.5,'rgba(40,100,220,0.04)');
     g.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=g;
-    ctx.beginPath();ctx.arc(CX,CY,R*1.4,0,Math.PI*2);ctx.fill();
-    // Second gold atmosphere ring
-    const g2=ctx.createRadialGradient(CX,CY,R*1.0,CX,CY,R*1.12);
-    g2.addColorStop(0,'rgba(212,168,90,0.06)');
-    g2.addColorStop(1,'rgba(212,168,90,0)');
-    ctx.fillStyle=g2;
-    ctx.beginPath();ctx.arc(CX,CY,R*1.12,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(CX,CY,R*1.45,0,Math.PI*2);ctx.fill();
+    const g2=ctx.createRadialGradient(CX,CY,R*0.98,CX,CY,R*1.15);
+    g2.addColorStop(0,'rgba(212,168,90,0.07)');
+    g2.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g2;ctx.beginPath();ctx.arc(CX,CY,R*1.15,0,Math.PI*2);ctx.fill();
   }
 
-  // ── Draw: globe fill (clipped) ───────────────────────────────
-  function drawGlobeFill() {
-    const g=ctx.createRadialGradient(CX-R*0.18,CY-R*0.2,R*0.08,CX,CY,R);
-    g.addColorStop(0,'rgba(14,22,44,0.97)');
-    g.addColorStop(0.5,'rgba(8,13,26,0.98)');
-    g.addColorStop(1,'rgba(4,6,14,0.99)');
-    ctx.fillStyle=g;
-    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.fill();
+  // Globe ocean fill
+  function drawGlobeFill(){
+    const g=ctx.createRadialGradient(CX-R*0.18,CY-R*0.20,R*0.06,CX,CY,R);
+    g.addColorStop(0,'rgba(12,20,42,0.97)');
+    g.addColorStop(0.5,'rgba(7,12,25,0.98)');
+    g.addColorStop(1,'rgba(3,5,12,0.99)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.fill();
+    // Specular highlight
+    const s=ctx.createRadialGradient(CX-R*0.3,CY-R*0.32,0,CX-R*0.1,CY-R*0.12,R*0.6);
+    s.addColorStop(0,'rgba(78,168,255,0.07)');
+    s.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=s;ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.fill();
   }
 
-  // ── Draw: continent fills (subtle land color) ─────────────────
-  function drawContinentFills() {
+  // Continent fills
+  function drawContinentFills(){
     CONTINENTS.forEach(cont=>{
-      ctx.beginPath();
-      let started=false;
-      cont.pts.forEach(([lat,lng],i)=>{
+      ctx.beginPath();let started=false;
+      cont.pts.forEach(([lat,lng])=>{
         const p=project(lat,lng);
         if(!p.vis){started=false;return;}
-        if(!started){ctx.moveTo(p.x,p.y);started=true;}
-        else ctx.lineTo(p.x,p.y);
+        if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
       });
       ctx.closePath();
-      // Distinct land colour vs deep ocean — clearly visible
-      const landFill=ctx.createLinearGradient(CX-R,CY-R,CX+R,CY+R);
-      landFill.addColorStop(0,'rgba(28,52,108,0.88)');
-      landFill.addColorStop(1,'rgba(20,38,82,0.82)');
-      ctx.fillStyle=landFill;
-      ctx.fill();
+      const lf=ctx.createLinearGradient(CX-R,CY-R,CX+R,CY+R);
+      lf.addColorStop(0,'rgba(25,48,105,0.90)');
+      lf.addColorStop(1,'rgba(18,35,78,0.85)');
+      ctx.fillStyle=lf; ctx.fill();
     });
   }
 
-  // ── Draw: graticule ──────────────────────────────────────────
-  function drawGraticule() {
+  // Graticule
+  function drawGraticule(){
     ctx.lineWidth=0.45;
     for(let lng=-180;lng<180;lng+=20){
-      ctx.beginPath();let first=true;
-      for(let lat=-88;lat<=88;lat+=4){
+      ctx.beginPath();let f=true;
+      for(let lat=-88;lat<=88;lat+=3){
         const p=project(lat,lng);
-        if(!p.vis){first=true;continue;}
-        const a=0.04*p.depth+0.010;
-        ctx.strokeStyle=`rgba(78,168,255,${a})`;
-        if(first){ctx.moveTo(p.x,p.y);first=false;}else ctx.lineTo(p.x,p.y);
+        if(!p.vis){f=true;continue;}
+        ctx.strokeStyle=`rgba(78,168,255,${0.045*p.depth+0.010})`;
+        if(f){ctx.moveTo(p.x,p.y);f=false;}else ctx.lineTo(p.x,p.y);
       }ctx.stroke();
     }
     for(let lat=-80;lat<=80;lat+=20){
-      ctx.beginPath();let first=true;
-      for(let lng=-180;lng<=180;lng+=4){
+      ctx.beginPath();let f=true;
+      for(let lng=-180;lng<=180;lng+=3){
         const p=project(lat,lng);
-        if(!p.vis){first=true;continue;}
-        const a=0.035*p.depth+0.008;
-        ctx.strokeStyle=`rgba(78,168,255,${a})`;
-        if(first){ctx.moveTo(p.x,p.y);first=false;}else ctx.lineTo(p.x,p.y);
+        if(!p.vis){f=true;continue;}
+        ctx.strokeStyle=`rgba(78,168,255,${0.038*p.depth+0.008})`;
+        if(f){ctx.moveTo(p.x,p.y);f=false;}else ctx.lineTo(p.x,p.y);
       }ctx.stroke();
     }
   }
 
-  // ── Draw: continent OUTLINES — two-pass glow + bright core ────
-  function drawContinentOutlines() {
-    // Collect segments per continent first
+  // Continent outlines — two-pass glow + core
+  function drawContinentOutlines(){
     CONTINENTS.forEach(cont=>{
-      const segs=[];
-      let cur=[];
+      const segs=[]; let cur=[];
       cont.pts.forEach(([lat,lng])=>{
         const p=project(lat,lng);
-        if(!p.vis){ if(cur.length>1) segs.push(cur); cur=[]; return; }
+        if(!p.vis){if(cur.length>1)segs.push(cur);cur=[];return;}
         cur.push(p);
       });
-      if(cur.length>1) segs.push(cur);
-      if(!segs.length) return;
-
-      // Pass 1 — wide glow halo
-      ctx.lineWidth=5;
-      ctx.lineCap='round';
+      if(cur.length>1)segs.push(cur);
+      if(!segs.length)return;
+      // Glow pass
+      ctx.lineWidth=5;ctx.lineCap='round';
       segs.forEach(seg=>{
-        ctx.beginPath();
-        seg.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-        const avgDepth=seg.reduce((s,p)=>s+p.depth,0)/seg.length;
-        ctx.strokeStyle=`rgba(70,130,255,${0.12*avgDepth+0.04})`;
-        ctx.stroke();
+        const ad=seg.reduce((s,p)=>s+p.depth,0)/seg.length;
+        ctx.strokeStyle=`rgba(60,120,255,${0.14*ad+0.05})`;
+        ctx.beginPath();seg.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();
       });
-
-      // Pass 2 — medium glow
-      ctx.lineWidth=2;
+      // Mid pass
+      ctx.lineWidth=1.8;
       segs.forEach(seg=>{
-        ctx.beginPath();
-        seg.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-        const avgDepth=seg.reduce((s,p)=>s+p.depth,0)/seg.length;
-        ctx.strokeStyle=`rgba(100,170,255,${0.30*avgDepth+0.12})`;
-        ctx.stroke();
+        const ad=seg.reduce((s,p)=>s+p.depth,0)/seg.length;
+        ctx.strokeStyle=`rgba(100,165,255,${0.32*ad+0.14})`;
+        ctx.beginPath();seg.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();
       });
-
-      // Pass 3 — bright core line
-      ctx.lineWidth=1.0;
+      // Core
+      ctx.lineWidth=0.9;
       segs.forEach(seg=>{
-        ctx.beginPath();
         seg.forEach((p,i)=>{
-          if(i===0){ ctx.moveTo(p.x,p.y); return; }
-          ctx.strokeStyle=`rgba(150,210,255,${0.62*p.depth+0.22})`;
-          ctx.lineTo(p.x,p.y);
+          if(!i){ctx.beginPath();ctx.moveTo(p.x,p.y);return;}
+          ctx.strokeStyle=`rgba(160,215,255,${0.65*p.depth+0.24})`;
+          ctx.lineTo(p.x,p.y);ctx.stroke();ctx.beginPath();ctx.moveTo(p.x,p.y);
         });
-        ctx.stroke();
       });
     });
   }
 
-  // ── Draw: AI scan beam ────────────────────────────────────────
-  function drawScanBeam(ts) {
-    scanAngle += 0.003;
-    const beamLen = R * 0.95;
-    const x2 = CX + beamLen * Math.cos(scanAngle);
-    const y2 = CY + beamLen * Math.sin(scanAngle);
-    // Narrow sweep gradient
-    const g = ctx.createLinearGradient(CX, CY, x2, y2);
-    g.addColorStop(0, 'rgba(61,220,151,0.0)');
-    g.addColorStop(0.6,'rgba(61,220,151,0.03)');
-    g.addColorStop(1, 'rgba(61,220,151,0.0)');
-    ctx.strokeStyle = g;
-    ctx.lineWidth = 18;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.moveTo(CX, CY);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-    ctx.lineCap = 'butt';
+  // AI scan beam on globe
+  function drawScanBeam(){
+    scanAngle+=0.004;
+    const bLen=R*0.94;
+    const x2=CX+bLen*Math.cos(scanAngle), y2=CY+bLen*Math.sin(scanAngle);
+    const g=ctx.createLinearGradient(CX,CY,x2,y2);
+    g.addColorStop(0,'rgba(61,220,151,0.0)');
+    g.addColorStop(0.5,'rgba(61,220,151,0.04)');
+    g.addColorStop(1,'rgba(61,220,151,0.0)');
+    ctx.strokeStyle=g;ctx.lineWidth=20;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(CX,CY);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.lineCap='butt';
   }
 
-  // ── Draw: capital-flow beams (3-layer: glow / mid / bright core)
-  function drawArcs(ts) {
-    CORRIDORS.forEach(([ai,bi,col,cnt],ci)=>{
-      const cA=CENTRES[ai], cB=CENTRES[bi];
-      const STEPS=52;
-      const breathe=0.6+0.3*Math.sin(ts*0.0004+ci*1.1);
-      const isGold=col==='gold';
-      const goldA  = [212,168,90];
-      const blueA  = [80,160,255];
-      const rgb    = isGold ? goldA : blueA;
+  // Globe rim
+  function drawGlobeRim(){
+    ctx.strokeStyle='rgba(80,150,255,0.28)';ctx.lineWidth=1.1;
+    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.stroke();
+    ctx.strokeStyle='rgba(80,150,255,0.08)';ctx.lineWidth=8;
+    ctx.beginPath();ctx.arc(CX,CY,R-4,0,Math.PI*2);ctx.stroke();
+  }
 
-      // Pre-collect visible segments
+  // Capital-flow beams (3-layer) on globe surface
+  function drawArcs(ts){
+    CORRIDORS.forEach(([ai,bi,ft,cnt],ci)=>{
+      const cA=CENTRES[ai],cB=CENTRES[bi];
+      const STEPS=52;
+      const breathe=0.65+0.28*Math.sin(ts*0.0004+ci*1.1);
+      const f=FLOW[ft];
       const pts=[];
       for(let s=0;s<=STEPS;s++){
         const m=slerp(cA.lat,cA.lng,cB.lat,cB.lng,s/STEPS);
-        const p=project(m.lat,m.lng);
-        pts.push(p);
+        pts.push(project(m.lat,m.lng));
       }
-
-      // Layer 1: wide soft glow
+      // Layer 1 glow
       ctx.lineWidth=7;ctx.lineCap='round';
       for(let s=0;s<STEPS;s++){
         const p1=pts[s],p2=pts[s+1];
-        if(!p1.vis||!p2.vis) continue;
-        const a=breathe*0.055*(0.5+0.5*p1.depth);
-        ctx.strokeStyle=`rgba(${rgb},${a})`;
+        if(!p1.vis||!p2.vis)continue;
+        ctx.strokeStyle=`${f.glow}${breathe*0.07*(0.5+0.5*p1.depth)})`;
         ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
       }
-      // Layer 2: medium glow
-      ctx.lineWidth=2.5;
+      // Layer 2
+      ctx.lineWidth=2.2;
       for(let s=0;s<STEPS;s++){
         const p1=pts[s],p2=pts[s+1];
-        if(!p1.vis||!p2.vis) continue;
-        const a=breathe*0.18*(0.5+0.5*p1.depth);
-        ctx.strokeStyle=`rgba(${rgb},${a})`;
+        if(!p1.vis||!p2.vis)continue;
+        ctx.strokeStyle=`${f.glow}${breathe*0.22*(0.5+0.5*p1.depth)})`;
         ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
       }
-      // Layer 3: bright core
+      // Layer 3 core
       ctx.lineWidth=0.9;
       for(let s=0;s<STEPS;s++){
         const p1=pts[s],p2=pts[s+1];
-        if(!p1.vis||!p2.vis) continue;
-        const a=breathe*0.55*(0.4+0.6*p1.depth);
-        ctx.strokeStyle=`rgba(${rgb},${a})`;
+        if(!p1.vis||!p2.vis)continue;
+        ctx.strokeStyle=`${f.glow}${breathe*0.60*(0.4+0.6*p1.depth)})`;
         ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
       }
     });
   }
 
-  // ── Draw: financial centre nodes ─────────────────────────────
-  function drawCentreNodes(ts) {
-    projCentres = CENTRES.map((c,i)=>{
+  // Extended beams beyond globe into widget space
+  function drawExtendedBeams(ts){
+    projCentres.forEach((c,i)=>{
+      if(!c.vis||c.depth<0.12) return;
+      const f=FLOW[c.flowType];
+      const breathe=0.5+0.3*Math.sin(ts*0.0006+i*0.8);
+      // Direction vector from globe centre to node
+      const dx=c.x-CX, dy=c.y-CY;
+      const len=Math.sqrt(dx*dx+dy*dy)||1;
+      const nx=dx/len, ny=dy/len;
+      // Beam extends from node outward
+      const startX=c.x+nx*c.r*2;
+      const startY=c.y+ny*c.r*2;
+      const extFrac=c.primary?0.28:0.16;
+      const endX=CX+nx*(R+Math.min(W,H)*extFrac*c.depth);
+      const endY=CY+ny*(R+Math.min(W,H)*extFrac*c.depth);
+      // Draw fading extended beam
+      const g=ctx.createLinearGradient(startX,startY,endX,endY);
+      const a=breathe*c.depth;
+      g.addColorStop(0,`${f.glow}${a*0.50})`);
+      g.addColorStop(0.4,`${f.glow}${a*0.20})`);
+      g.addColorStop(1,`${f.glow}0.00)`);
+      // Glow pass
+      ctx.lineWidth=c.primary?6:3;ctx.lineCap='round';
+      ctx.strokeStyle=g;
+      ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(endX,endY);ctx.stroke();
+      // Core
+      ctx.lineWidth=c.primary?1.2:0.7;
+      ctx.strokeStyle=g;
+      ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(endX,endY);ctx.stroke();
+    });
+  }
+
+  // Glow nodes — big premium city hubs
+  function drawCentreNodes(ts){
+    projCentres=CENTRES.map((c,i)=>{
       const p=project(c.lat,c.lng);
-      return {...c,...p,phase:(i/CENTRES.length)*Math.PI*2};
+      return{...c,...p,phase:(i/CENTRES.length)*Math.PI*2};
     });
     projCentres.forEach(c=>{
-      if(!c.vis||c.depth<0.05) return;
-      const br=0.50+0.28*Math.sin(ts*0.0009+c.phase);
+      if(!c.vis||c.depth<0.04)return;
+      const f=FLOW[c.flowType];
+      const br=0.55+0.30*Math.sin(ts*0.0009+c.phase);
       const a=br*c.depth;
-      const r=c.primary?4.2:2.6;
-      // Halo
-      const g=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,r*10);
-      g.addColorStop(0,c.primary?`rgba(212,168,90,${a*0.32})`:`rgba(78,168,255,${a*0.22})`);
-      g.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=g;
-      ctx.beginPath();ctx.arc(c.x,c.y,r*10,0,Math.PI*2);ctx.fill();
-      // Core
-      ctx.fillStyle=c.primary?`rgba(212,168,90,${Math.min(a*1.2,0.95)})`:`rgba(110,190,255,${Math.min(a,0.85)})`;
-      ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.fill();
-      // Bright ring around primary
+      const r=c.primary?4.8:2.8;
+      // Large atmospheric halo
+      const g1=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,r*14);
+      g1.addColorStop(0,`${f.glow}${a*0.30})`);
+      g1.addColorStop(0.5,`${f.glow}${a*0.08})`);
+      g1.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=g1;ctx.beginPath();ctx.arc(c.x,c.y,r*14,0,Math.PI*2);ctx.fill();
+      // Medium halo
+      const g2=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,r*6);
+      g2.addColorStop(0,`${f.glow}${a*0.55})`);
+      g2.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=g2;ctx.beginPath();ctx.arc(c.x,c.y,r*6,0,Math.PI*2);ctx.fill();
+      // Concentric rings (primary nodes)
       if(c.primary){
-        ctx.strokeStyle=`rgba(212,168,90,${a*0.4})`;
-        ctx.lineWidth=0.8;
-        ctx.beginPath();ctx.arc(c.x,c.y,r+3.5,0,Math.PI*2);ctx.stroke();
+        [r*3.5,r*5.5].forEach((ring,ri)=>{
+          ctx.strokeStyle=`${f.glow}${a*(0.22-ri*0.08)})`;
+          ctx.lineWidth=0.8;
+          ctx.beginPath();ctx.arc(c.x,c.y,ring,0,Math.PI*2);ctx.stroke();
+        });
       }
+      // Core dot
+      ctx.fillStyle=`${f.glow}${Math.min(a*1.3,0.95)})`;
+      ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.fill();
+      // Bright centre
+      ctx.fillStyle=`rgba(255,255,255,${a*0.6})`;
+      ctx.beginPath();ctx.arc(c.x,c.y,r*0.45,0,Math.PI*2);ctx.fill();
       // Label
-      if(c.primary&&c.depth>0.18){
-        ctx.fillStyle=`rgba(212,168,90,${a*0.7})`;
-        ctx.font='600 8px "JetBrains Mono",monospace';
+      if((c.primary||c.depth>0.5)&&c.depth>0.15){
+        ctx.fillStyle=`${f.glow}${a*0.75})`;
+        ctx.font=`600 ${c.primary?8.5:7}px "JetBrains Mono",monospace`;
         ctx.fillText(c.name,c.x+r+6,c.y+3);
       }
     });
   }
 
-  // ── Draw: arc particles — comet tail effect ─────────────────
-  function drawArcParticles() {
+  // Comet-tail particles
+  function drawArcParticles(){
     arcParticles.forEach(p=>{
       p.t+=p.spd*p.dir;
-      if(p.t>1)p.t=0; if(p.t<0)p.t=1;
+      if(p.t>1)p.t=0;if(p.t<0)p.t=1;
       const cA=CENTRES[p.ai],cB=CENTRES[p.bi];
-      const isGold=p.col==='gold';
-      const rgb=isGold?'212,168,90':'110,190,255';
-
-      // Draw 6-step comet tail
-      const TAIL=6;
-      for(let ti=0;ti<TAIL;ti++){
-        const tailT=p.t - p.dir*(ti*0.010);
-        const tt=((tailT%1)+1)%1;
+      const f=FLOW[p.ft];
+      // Tail
+      for(let ti=0;ti<7;ti++){
+        const tt=((p.t-p.dir*(ti*0.009))+1)%1;
         const mid=slerp(cA.lat,cA.lng,cB.lat,cB.lng,tt);
-        const proj=project(mid.lat,mid.lng);
-        if(!proj.vis) continue;
-        const fade=1-(ti/TAIL);
-        const a=p.alpha*fade*(0.5+0.5*proj.depth);
-        const r=p.size*(ti===0?1.4:1.0)*fade;
-        ctx.fillStyle=`rgba(${rgb},${a})`;
-        ctx.beginPath();ctx.arc(proj.x,proj.y,r,0,Math.PI*2);ctx.fill();
+        const pr=project(mid.lat,mid.lng);
+        if(!pr.vis)continue;
+        const fade=1-ti/7;
+        ctx.fillStyle=`${f.glow}${p.alpha*fade*(0.4+0.6*pr.depth)})`;
+        ctx.beginPath();ctx.arc(pr.x,pr.y,p.size*fade*(ti===0?1.5:1),0,Math.PI*2);ctx.fill();
       }
-      // Bright head
+      // Head glow
       const mid=slerp(cA.lat,cA.lng,cB.lat,cB.lng,p.t);
-      const proj=project(mid.lat,mid.lng);
-      if(!proj.vis) return;
-      const a=p.alpha*(0.7+0.3*proj.depth);
-      // Glow halo on head
-      const g=ctx.createRadialGradient(proj.x,proj.y,0,proj.x,proj.y,p.size*4);
-      g.addColorStop(0,`rgba(${rgb},${a*0.4})`);
+      const pr=project(mid.lat,mid.lng);
+      if(!pr.vis)return;
+      const a=p.alpha*(0.7+0.3*pr.depth);
+      const g=ctx.createRadialGradient(pr.x,pr.y,0,pr.x,pr.y,p.size*5);
+      g.addColorStop(0,`${f.glow}${a*0.5})`);
       g.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=g;
-      ctx.beginPath();ctx.arc(proj.x,proj.y,p.size*4,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle=`rgba(${rgb},${Math.min(a*1.3,1)})`;
-      ctx.beginPath();ctx.arc(proj.x,proj.y,p.size*1.5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(pr.x,pr.y,p.size*5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=`${f.glow}${Math.min(a*1.4,1)})`;
+      ctx.beginPath();ctx.arc(pr.x,pr.y,p.size*1.6,0,Math.PI*2);ctx.fill();
     });
   }
 
-  // ── Draw: globe rim ───────────────────────────────────────────
-  function drawGlobeRim() {
-    ctx.strokeStyle='rgba(80,150,255,0.25)';
-    ctx.lineWidth=1.1;
-    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.stroke();
-    ctx.strokeStyle='rgba(80,150,255,0.07)';
-    ctx.lineWidth=7;
-    ctx.beginPath();ctx.arc(CX,CY,R-3.5,0,Math.PI*2);ctx.stroke();
-  }
-
-  // ── Draw: pulse waves ─────────────────────────────────────────
-  function drawPulses() {
+  // Pulse waves
+  function drawPulses(){
     pulses=pulses.filter(p=>p.alpha>0.003);
     pulses.forEach(p=>{
-      p.r+=0.9; p.alpha*=0.971;
-      ctx.strokeStyle=p.gold?`rgba(212,168,90,${p.alpha})`:`rgba(61,220,151,${p.alpha})`;
+      p.r+=0.95;p.alpha*=0.971;
+      const f=FLOW[p.ft||'capital'];
+      ctx.strokeStyle=`${f.glow}${p.alpha})`;
       ctx.lineWidth=1;
       ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.stroke();
     });
   }
-
-  function maybePulse(ts) {
-    if(ts-lastPulse>2100){
+  function maybePulse(ts){
+    if(ts-lastPulse>1900){
       lastPulse=ts;
       const vis=projCentres.filter(c=>c.vis&&c.depth>0.15);
-      if(!vis.length) return;
+      if(!vis.length)return;
       const c=vis[Math.floor(Math.random()*vis.length)];
-      pulses.push({x:c.x,y:c.y,r:c.primary?4:2.5,alpha:0.09,gold:c.primary});
-      // Second delayed pulse
-      setTimeout(()=>{
-        if(c.vis) pulses.push({x:c.x,y:c.y,r:c.primary?4:2.5,alpha:0.05,gold:false});
-      },600);
+      pulses.push({x:c.x,y:c.y,r:c.primary?5:3,alpha:0.10,ft:c.flowType});
+      setTimeout(()=>{ if(c.depth>0.1)pulses.push({x:c.x,y:c.y,r:c.primary?5:3,alpha:0.05,ft:'ai'}); },700);
     }
   }
 
-  // ── Main draw loop ────────────────────────────────────────────
-  function draw(ts) {
+  // ── Main loop ────────────────────────────────────────────────
+  function draw(ts){
     if(!active){animId=null;return;}
     animId=requestAnimationFrame(draw);
     rotation+=0.012;
     ctx.clearRect(0,0,W,H);
     drawBgGrid();
-    drawDataStreams();
+    drawAmbientTelemetry(ts);
     drawAtmosphere();
-    // All globe content clipped to circle
     ctx.save();
     ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.clip();
     drawGlobeFill();
     drawContinentFills();
     drawGraticule();
     drawContinentOutlines();
-    drawScanBeam(ts);
+    drawScanBeam();
     ctx.restore();
     drawGlobeRim();
     drawArcs(ts);
+    drawExtendedBeams(ts);
     drawCentreNodes(ts);
     drawArcParticles();
     drawPulses();
@@ -11497,73 +11540,54 @@ function initDashTelemetry() {
   function start(){if(!animId){resize();active=true;requestAnimationFrame(draw);}}
   function stop(){active=false;if(animId){cancelAnimationFrame(animId);animId=null;}}
 
-  // ── Live regional overlay data ────────────────────────────────
-  const REGION_CONFIG = [
-    { id:'NA',   label:'US Equities',  etf:'SPY',  subDefault:'NYSE · NASDAQ',
-      states:[
-        {val:'+0.84%',cls:'up',state:'Momentum Building',note:'Breadth expanding'},
-        {val:'-1.12%',cls:'dn',state:'Momentum Weakening',note:'Risk Elevated'},
-        {val:'+0.12%',cls:'up',state:'Consolidating',note:'Range-bound'},
-      ]},
-    { id:'EU',   label:'Europe',       etf:'EZU',  subDefault:'LSE · Frankfurt',
-      states:[
-        {val:'+0.21%',cls:'up',state:'Defensive Rotation',note:'Yield Pressure'},
-        {val:'-0.68%',cls:'dn',state:'Volatility Rising',note:'ECB Watch'},
-        {val:'+0.44%',cls:'up',state:'Recovery Signal',note:'Bond spread stable'},
-      ]},
-    { id:'COM',  label:'Commodities',  etf:'DJP',  subDefault:'Energy · Metals',
-      states:[
-        {val:'+1.43%',cls:'up',state:'Energy Bid Strong',note:'Supply tightening'},
-        {val:'-0.55%',cls:'dn',state:'Demand Softening',note:'Crude weakness'},
-        {val:'+0.31%',cls:'up',state:'Metals Leading',note:'Gold bid active'},
-      ]},
-    { id:'APAC', label:'Asia Pacific',  etf:'EWJ', subDefault:'Tokyo · HK · SGX',
-      states:[
-        {val:'+0.76%',cls:'up',state:'Risk-On Flows',note:'JPY stabilising'},
-        {val:'-0.92%',cls:'dn',state:'Pressure Elevated',note:'PBOC watch'},
-        {val:'+0.18%',cls:'up',state:'FX Stabilising',note:'USD · JPY range'},
-      ]},
+  // ── Regional overlays ────────────────────────────────────────
+  const REGION_CONFIG=[
+    {id:'NA',etf:'SPY',states:[
+      {val:'+0.84%',cls:'up',state:'Momentum Building',note:'Breadth expanding'},
+      {val:'-1.12%',cls:'dn',state:'Momentum Weakening',note:'Risk Elevated'},
+      {val:'+0.12%',cls:'up',state:'Consolidating',note:'Range-bound'},
+    ]},
+    {id:'EU',etf:'EZU',states:[
+      {val:'+0.21%',cls:'up',state:'Defensive Rotation',note:'Yield pressure'},
+      {val:'-0.68%',cls:'dn',state:'Volatility Rising',note:'ECB watch'},
+      {val:'+0.44%',cls:'up',state:'Recovery Signal',note:'Spread stable'},
+    ]},
+    {id:'COM',etf:'DJP',states:[
+      {val:'+1.43%',cls:'up',state:'Energy Bid Strong',note:'Supply tightening'},
+      {val:'-0.55%',cls:'dn',state:'Demand Softening',note:'Crude weakness'},
+      {val:'+0.31%',cls:'up',state:'Metals Leading',note:'Gold bid active'},
+    ]},
+    {id:'APAC',etf:'EWJ',states:[
+      {val:'+0.76%',cls:'up',state:'Risk-On Flows',note:'JPY stabilising'},
+      {val:'-0.92%',cls:'dn',state:'Pressure Elevated',note:'PBOC watch'},
+      {val:'+0.18%',cls:'up',state:'FX Stabilising',note:'USD·JPY range'},
+    ]},
   ];
-
-  function populateRegionOverlays() {
+  function populateRegionOverlays(){
     REGION_CONFIG.forEach(reg=>{
-      // Pick state based on quote data if available, else random
-      let state;
-      try {
-        const q = BriefTickAPI._cacheGetStale && BriefTickAPI._cacheGetStale('q:'+reg.etf);
-        if(q && q.pctChange !== undefined){
-          const pct = q.pctChange;
-          const sign = pct>=0?'+':'';
-          const cls  = pct>=0?'up':'dn';
-          const stateText = pct > 0.5 ? reg.states[0].state
-            : pct < -0.3 ? reg.states[1].state
-            : reg.states[2].state;
-          const noteText = pct > 0.5 ? reg.states[0].note
-            : pct < -0.3 ? reg.states[1].note
-            : reg.states[2].note;
-          state = { val:`${sign}${pct.toFixed(2)}%`, cls, state:stateText, note:noteText };
+      let st;
+      try{
+        const q=BriefTickAPI._cacheGetStale&&BriefTickAPI._cacheGetStale('q:'+reg.etf);
+        if(q&&q.pctChange!==undefined){
+          const pct=q.pctChange,sign=pct>=0?'+':'',cls=pct>=0?'up':'dn';
+          const stateText=pct>0.5?reg.states[0].state:pct<-0.3?reg.states[1].state:reg.states[2].state;
+          const noteText=pct>0.5?reg.states[0].note:pct<-0.3?reg.states[1].note:reg.states[2].note;
+          st={val:`${sign}${pct.toFixed(2)}%`,cls,state:stateText,note:noteText};
         }
-      } catch(_){}
-      if(!state) state = reg.states[Math.floor(Math.random()*reg.states.length)];
-
-      const valEl  = document.getElementById('tVal'+reg.id);
-      const subEl  = document.getElementById('tSub'+reg.id);
-      const stEl   = document.getElementById('tState'+reg.id);
-      if(valEl){ valEl.textContent=state.val; valEl.className=`t-region-value ${state.cls}`; }
-      if(subEl){ subEl.textContent=state.state; }
-      if(stEl){  stEl.textContent=state.note; }
+      }catch(_){}
+      if(!st)st=reg.states[Math.floor(Math.random()*reg.states.length)];
+      const vEl=document.getElementById('tVal'+reg.id);
+      const sEl=document.getElementById('tSub'+reg.id);
+      const nEl=document.getElementById('tState'+reg.id);
+      if(vEl){vEl.textContent=st.val;vEl.className=`t-region-value ${st.cls}`;}
+      if(sEl) sEl.textContent=st.state;
+      if(nEl) nEl.textContent=st.note;
     });
-    // Animate AI signals counter
     const sigEl=document.getElementById('tSigCount');
-    if(sigEl){
-      const base=1842;
-      setInterval(()=>{
-        sigEl.textContent=(base+Math.floor(Math.random()*20-5)).toLocaleString();
-      },3200);
-    }
+    if(sigEl){setInterval(()=>{sigEl.textContent=(1842+Math.floor(Math.random()*25-8)).toLocaleString();},2800);}
   }
 
-  // ── Lifecycle ─────────────────────────────────────────────────
+  // ── Lifecycle ────────────────────────────────────────────────
   const dashEl=document.getElementById('page-dashboard');
   if(dashEl){
     new MutationObserver(()=>{
@@ -11576,8 +11600,7 @@ function initDashTelemetry() {
     if(document.hidden)stop();
     else if(dashEl&&dashEl.classList.contains('active'))start();
   });
-  let rsT;
-  window.addEventListener('resize',()=>{clearTimeout(rsT);rsT=setTimeout(resize,200);});
+  let rsT;window.addEventListener('resize',()=>{clearTimeout(rsT);rsT=setTimeout(resize,200);});
 }
 
 // ── GSAP Dashboard Panel Entrance ────────────────────────────────
