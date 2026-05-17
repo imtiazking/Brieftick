@@ -11068,16 +11068,16 @@ function initDashTelemetry() {
 
   // ── Financial centres ────────────────────────────────────────
   const CENTRES = [
-    { lat:40.71, lng:-74.01, name:'NEW YORK',    primary:true,  region:'NA',   flowType:'capital' },
-    { lat:51.51, lng:-0.09,  name:'LONDON',      primary:true,  region:'EU',   flowType:'capital' },
-    { lat:50.11, lng:8.68,   name:'FRANKFURT',   primary:false, region:'EU',   flowType:'rotation'},
-    { lat:35.68, lng:139.69, name:'TOKYO',        primary:true,  region:'APAC', flowType:'rotation'},
-    { lat:22.33, lng:114.16, name:'HONG KONG',   primary:true,  region:'APAC', flowType:'capital' },
-    { lat:1.28,  lng:103.85, name:'SINGAPORE',   primary:false, region:'APAC', flowType:'ai'      },
-    { lat:25.20, lng:55.27,  name:'DUBAI',        primary:false, region:'ME',   flowType:'vol'     },
-    { lat:41.88, lng:-87.63, name:'CHICAGO',     primary:false, region:'NA',   flowType:'ai'      },
-    { lat:-23.55,lng:-46.63, name:'SAO PAULO',   primary:false, region:'SA',   flowType:'capital' },
-    { lat:48.85, lng:2.35,   name:'PARIS',        primary:false, region:'EU',   flowType:'rotation'},
+    { lat:40.71, lng:-74.01, name:'New York',    primary:true,  region:'NA',   flowType:'capital' },
+    { lat:51.51, lng:-0.09,  name:'London',      primary:true,  region:'EU',   flowType:'capital' },
+    { lat:50.11, lng:8.68,   name:'Frankfurt',   primary:false, region:'EU',   flowType:'rotation'},
+    { lat:35.68, lng:139.69, name:'Tokyo',        primary:true,  region:'APAC', flowType:'rotation'},
+    { lat:22.33, lng:114.16, name:'Hong Kong',   primary:true,  region:'APAC', flowType:'capital' },
+    { lat:1.28,  lng:103.85, name:'Singapore',   primary:false, region:'APAC', flowType:'ai'      },
+    { lat:25.20, lng:55.27,  name:'Dubai',        primary:false, region:'ME',   flowType:'vol'     },
+    { lat:41.88, lng:-87.63, name:'Chicago',     primary:false, region:'NA',   flowType:'ai'      },
+    { lat:-23.55,lng:-46.63, name:'São Paulo',   primary:false, region:'SA',   flowType:'capital' },
+    { lat:48.85, lng:2.35,   name:'Paris',        primary:false, region:'EU',   flowType:'rotation'},
   ];
 
   // ── Corridors with flow types ────────────────────────────────
@@ -11449,11 +11449,28 @@ function initDashTelemetry() {
       // Bright centre
       ctx.fillStyle=`rgba(255,255,255,${a*0.6})`;
       ctx.beginPath();ctx.arc(c.x,c.y,r*0.45,0,Math.PI*2);ctx.fill();
-      // Label
-      if((c.primary||c.depth>0.5)&&c.depth>0.15){
-        ctx.fillStyle=`${f.glow}${a*0.75})`;
-        ctx.font=`600 ${c.primary?8.5:7}px "JetBrains Mono",monospace`;
-        ctx.fillText(c.name,c.x+r+6,c.y+3);
+      // City label — always shown when on visible side
+      if(c.depth>0.08){
+        const labelAlpha=Math.min((c.depth-0.08)/0.25,1); // fade in near limb
+        const fontSize=c.primary?9:7.5;
+        // Background pill for readability
+        const label=c.name;
+        ctx.font=`600 ${fontSize}px "JetBrains Mono",monospace`;
+        const tw=ctx.measureText(label).width;
+        const px=c.x+r+7, py=c.y+3;
+        // Subtle dark backing
+        ctx.fillStyle=`rgba(4,6,14,${labelAlpha*0.65})`;
+        ctx.fillRect(px-2,py-fontSize,tw+4,fontSize+3);
+        // Text glow (wide, faint)
+        ctx.shadowColor=`${f.glow}${labelAlpha*0.6})`;
+        ctx.shadowBlur=6;
+        ctx.fillStyle=`${f.glow}${labelAlpha*(c.primary?0.92:0.70)})`;
+        ctx.fillText(label,px,py);
+        ctx.shadowBlur=0;
+        // Dot connector line from node to label
+        ctx.strokeStyle=`${f.glow}${labelAlpha*0.25})`;
+        ctx.lineWidth=0.5;
+        ctx.beginPath();ctx.moveTo(c.x+r*0.9,c.y);ctx.lineTo(px-2,py-fontSize*0.4);ctx.stroke();
       }
     });
   }
