@@ -1924,8 +1924,8 @@ h1,h2,h3{
   opacity:1;
 }
 
-/* ── GSAP initial hidden state ───────────────────────────────── */
-.gsap-hero-el{opacity:0}
+/* ── GSAP initial hidden state — set via JS only, not CSS ──── */
+/* Elements stay visible if GSAP fails to load */
 
 /* ── Reduced motion override ─────────────────────────────────── */
 @media(prefers-reduced-motion:reduce){
@@ -9537,7 +9537,11 @@ function initHeroAmbient() {
    CINEMATIC UPGRADE — GSAP Motion System
 ================================================================ */
 function initGSAP() {
-  if (typeof gsap === 'undefined') return;
+  if (typeof gsap === 'undefined') {
+    // GSAP failed to load — make sure all elements are visible
+    document.querySelectorAll('.gsap-hero-el').forEach(el => { el.style.opacity = '1'; });
+    return;
+  }
   gsap.registerPlugin(ScrollTrigger);
 
   // Nav entrance
@@ -9546,12 +9550,13 @@ function initGSAP() {
     clearProps: 'all',
   });
 
-  // Hero stagger entrance
+  // Hero stagger entrance — set initial state first, then animate
   const heroEls = document.querySelectorAll('.gsap-hero-el');
-  gsap.fromTo(heroEls,
-    { opacity: 0, y: 22 },
-    { opacity: 1, y: 0, duration: 0.85, stagger: 0.13, ease: 'power3.out', delay: 0.45, clearProps: 'all' }
-  );
+  gsap.set(heroEls, { opacity: 0, y: 22 });
+  gsap.to(heroEls, {
+    opacity: 1, y: 0, duration: 0.85, stagger: 0.13,
+    ease: 'power3.out', delay: 0.45, clearProps: 'all',
+  });
 
   // Hero visual entrance
   gsap.from('.hero-visual', {
