@@ -1801,6 +1801,120 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
 .options-ai-box h3{font-family:var(--display);font-size:15px;font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 
 /* ================================================================
+   DASHBOARD TELEMETRY — Globe-Based Market Intelligence Widget
+================================================================ */
+
+/* Remove old fixed canvas approach */
+#dashTelemetry{display:none!important}
+
+/* Widget panel */
+.dash-telemetry-widget{
+  grid-column:span 12;
+  position:relative;
+  overflow:hidden;
+  min-height:320px;
+}
+
+/* Canvas fills the widget body */
+.telemetry-body{
+  position:relative;
+  width:100%;
+  height:320px;
+  overflow:hidden;
+}
+
+#dashTelemetryCanvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Regional overlay cards */
+.t-region{
+  position:absolute;
+  z-index:2;
+  padding:10px 13px;
+  background:rgba(10,13,20,0.72);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(180,200,255,0.1);
+  border-radius:8px;
+  min-width:110px;
+  transition:border-color .3s;
+}
+.t-region:hover{border-color:rgba(212,168,90,0.3)}
+.t-region-tl{top:14px;left:14px}
+.t-region-tr{top:14px;right:14px}
+.t-region-ml{top:50%;transform:translateY(-50%);left:14px}
+.t-region-mr{top:50%;transform:translateY(-50%);right:14px}
+.t-region-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px;
+}
+.t-region-value{
+  font-family:var(--mono);font-size:18px;font-weight:700;line-height:1;
+}
+.t-region-value.up{color:var(--green)}
+.t-region-value.dn{color:var(--red)}
+.t-region-sub{
+  font-size:10px;color:var(--ink-faint);margin-top:3px;line-height:1.3;
+}
+
+/* Status strip */
+.t-status-strip{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  z-index:3;
+  display:flex;
+  align-items:center;
+  gap:0;
+  padding:0 16px;
+  height:38px;
+  background:rgba(5,6,10,0.82);
+  backdrop-filter:blur(16px);
+  border-top:1px solid rgba(180,200,255,0.08);
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.1em;
+}
+.t-status-item{
+  display:flex;align-items:center;gap:8px;
+  padding:0 20px;
+  border-right:1px solid rgba(180,200,255,0.07);
+}
+.t-status-item:first-child{padding-left:0}
+.t-status-item:last-child{border-right:none}
+.t-status-label{color:var(--ink-faint);text-transform:uppercase}
+.t-status-val{color:var(--ink);font-weight:600}
+.t-status-val.t-live{color:var(--green)}
+.t-status-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse 1.6s infinite;
+  flex-shrink:0;
+}
+
+/* AI signals ticker at bottom of strip */
+.t-sources{
+  margin-left:auto;
+  color:var(--ink-faint);
+  font-size:9px;
+  letter-spacing:.1em;
+  display:flex;align-items:center;gap:6px;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.t-sources span{color:var(--gold);opacity:.6}
+
+@media(max-width:680px){
+  .telemetry-body{height:240px}
+  .t-region{display:none}
+}
+
+/* ================================================================
    CINEMATIC UPGRADE — Dashboard Telemetry Canvas
 ================================================================ */
 
@@ -2483,6 +2597,69 @@ h1,h2,h3{
         <div class="panel-head"><span class="ttl"><b>06</b> AI Sentiment Feed</span><span class="meta" id="sentimentMeta">Loading…</span></div>
         <div class="panel-body" id="sentimentFeed"></div>
       </div>
+
+      <!-- ═══ GLOBAL MARKET INTELLIGENCE TELEMETRY WIDGET ═══ -->
+      <div class="panel dash-telemetry-widget" id="dashTelemetryWidget">
+        <div class="panel-head" style="position:relative;z-index:4">
+          <span class="ttl"><b>07</b> Global Market Intelligence</span>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em">AI SIGNAL PROCESSING · LIVE</span>
+            <div class="live-badge" style="font-size:9px;padding:4px 10px">Live · AI</div>
+          </div>
+        </div>
+
+        <div class="telemetry-body">
+          <!-- Globe canvas -->
+          <canvas id="dashTelemetryCanvas" aria-hidden="true"></canvas>
+
+          <!-- Regional overlays -->
+          <div class="t-region t-region-tl" id="tRegionNA">
+            <div class="t-region-label">US Equities</div>
+            <div class="t-region-value dn" id="tValNA">—</div>
+            <div class="t-region-sub" id="tSubNA">NYSE · NASDAQ</div>
+          </div>
+          <div class="t-region t-region-tr" id="tRegionEU">
+            <div class="t-region-label">Europe</div>
+            <div class="t-region-value" id="tValEU">—</div>
+            <div class="t-region-sub" id="tSubEU">LSE · Frankfurt</div>
+          </div>
+          <div class="t-region t-region-ml" id="tRegionCOM">
+            <div class="t-region-label">Commodities</div>
+            <div class="t-region-value" id="tValCOM">—</div>
+            <div class="t-region-sub" id="tSubCOM">Energy · Metals</div>
+          </div>
+          <div class="t-region t-region-mr" id="tRegionAPAC">
+            <div class="t-region-label">Asia Pacific</div>
+            <div class="t-region-value" id="tValAPAC">—</div>
+            <div class="t-region-sub" id="tSubAPAC">Tokyo · HK · SGX</div>
+          </div>
+
+          <!-- Status strip -->
+          <div class="t-status-strip">
+            <div class="t-status-item">
+              <span class="t-status-dot"></span>
+              <span class="t-status-label">System Status</span>
+              <span class="t-status-val t-live">LIVE</span>
+            </div>
+            <div class="t-status-item">
+              <span class="t-status-label">Data Streams</span>
+              <span class="t-status-val">12</span>
+            </div>
+            <div class="t-status-item">
+              <span class="t-status-label">AI Signals</span>
+              <span class="t-status-val" id="tSigCount">1,842</span>
+            </div>
+            <div class="t-status-item">
+              <span class="t-status-label">Latency</span>
+              <span class="t-status-val">18ms</span>
+            </div>
+            <div class="t-sources">
+              <span>●</span> LIVE · TWELVEDATA · FINNHUB · POLYGON · SEC FILINGS · REAL-TIME
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ═══ END TELEMETRY WIDGET ═══ -->
 
       <!-- High-Signal Alerts -->
       <div class="panel col-12">
@@ -10807,107 +10984,123 @@ window.generateInsidersAI = generateInsidersAI;
 })();
 
 /* ================================================================
-   DASHBOARD TELEMETRY — Globe-Based Market Intelligence Layer
-   Orthographic globe projection + financial centre nodes +
-   animated great-circle capital flow arcs + signal particles.
-   All at low opacity — shows through semi-transparent panels.
+   DASHBOARD TELEMETRY — Premium Globe Market Intelligence Widget
 ================================================================ */
 function initDashTelemetry() {
-  const canvas = document.getElementById('dashTelemetry');
+  const canvas = document.getElementById('dashTelemetryCanvas');
   if (!canvas) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const ctx = canvas.getContext('2d');
-  let W = 0, H = 0, animId = null, active = false;
-  let rotation = 0; // degrees, slow auto-rotation
+  let W = 0, H = 0, CX = 0, CY = 0, R = 0;
+  let animId = null, active = false;
+  let rotation = 0;
 
-  // ── Financial centres (lat, lng, name, isPrimary) ────────────
+  // ── Geographic data ──────────────────────────────────────────
   const CENTRES = [
-    { lat:40.71, lng:-74.01, name:'NYSE',      primary:true  },
-    { lat:40.71, lng:-73.99, name:'NASDAQ',    primary:true  },
-    { lat:51.51, lng:-0.09,  name:'LSE',       primary:true  },
-    { lat:50.11, lng:8.68,   name:'FRANKFURT', primary:false },
-    { lat:25.20, lng:55.27,  name:'DUBAI',     primary:false },
-    { lat:35.68, lng:139.69, name:'TOKYO',     primary:true  },
-    { lat:22.33, lng:114.16, name:'HK',        primary:true  },
-    { lat:1.28,  lng:103.85, name:'SINGAPORE', primary:false },
-    { lat:41.88, lng:-87.63, name:'CHICAGO',   primary:false },
-    { lat:-23.55,lng:-46.63, name:'SAO PAULO', primary:false },
+    { lat:40.71,  lng:-74.01, name:'NYSE',      primary:true,  region:'NA'   },
+    { lat:51.51,  lng:-0.09,  name:'LSE',       primary:true,  region:'EU'   },
+    { lat:50.11,  lng:8.68,   name:'FRANKFURT', primary:false, region:'EU'   },
+    { lat:35.68,  lng:139.69, name:'TOKYO',     primary:true,  region:'APAC' },
+    { lat:22.33,  lng:114.16, name:'HK',        primary:true,  region:'APAC' },
+    { lat:1.28,   lng:103.85, name:'SGX',       primary:false, region:'APAC' },
+    { lat:25.20,  lng:55.27,  name:'DUBAI',     primary:false, region:'ME'   },
+    { lat:41.88,  lng:-87.63, name:'CHICAGO',   primary:false, region:'NA'   },
+    { lat:-23.55, lng:-46.63, name:'SAO PAULO', primary:false, region:'SA'   },
+    { lat:40.42,  lng:-3.70,  name:'MADRID',    primary:false, region:'EU'   },
   ];
 
-  // ── Capital flow corridors ────────────────────────────────────
   const CORRIDORS = [
-    [0, 2],  // NYSE ↔ LSE
-    [0, 5],  // NYSE ↔ TOKYO
-    [2, 3],  // LSE ↔ FRANKFURT
-    [2, 6],  // LSE ↔ HK
-    [5, 6],  // TOKYO ↔ HK
-    [4, 2],  // DUBAI ↔ LSE
-    [7, 6],  // SINGAPORE ↔ HK
-    [8, 0],  // CHICAGO ↔ NYSE
+    [0, 1, 'gold'],  // NYSE ↔ LSE
+    [0, 3, 'gold'],  // NYSE ↔ TOKYO
+    [1, 2, 'blue'],  // LSE ↔ FRANKFURT
+    [1, 4, 'gold'],  // LSE ↔ HK
+    [3, 4, 'blue'],  // TOKYO ↔ HK
+    [4, 5, 'blue'],  // HK ↔ SGX
+    [6, 1, 'gold'],  // DUBAI ↔ LSE
+    [7, 0, 'blue'],  // CHICAGO ↔ NYSE
   ];
 
+  // Approximate continent land dots (lat/lng boxes + random sampling)
+  const LAND_BOXES = [
+    // North America
+    { latMin:25,  latMax:70,  lngMin:-140, lngMax:-55,  density:300 },
+    // South America
+    { latMin:-55, latMax:12,  lngMin:-80,  lngMax:-35,  density:200 },
+    // Europe
+    { latMin:35,  latMax:72,  lngMin:-10,  lngMax:40,   density:220 },
+    // Africa
+    { latMin:-35, latMax:37,  lngMin:-18,  lngMax:52,   density:250 },
+    // Middle East / West Asia
+    { latMin:15,  latMax:45,  lngMin:35,   lngMax:75,   density:120 },
+    // Asia
+    { latMin:5,   latMax:70,  lngMin:65,   lngMax:145,  density:380 },
+    // Southeast Asia
+    { latMin:-10, latMax:20,  lngMin:95,   lngMax:145,  density:150 },
+    // Australia
+    { latMin:-40, latMax:-10, lngMin:113,  lngMax:154,  density:140 },
+  ];
+
+  let landDots = [];
   let projCentres = [];
   let arcParticles = [];
   let pulses = [];
   let lastPulse = 0;
-  const R_FRAC = 0.30; // globe as fraction of min(W,H)
 
-  // ── Orthographic projection ───────────────────────────────────
-  function toRad(d) { return d * Math.PI / 180; }
+  // ── Maths ────────────────────────────────────────────────────
+  const rad = d => d * Math.PI / 180;
 
   function project(lat, lng) {
-    const R   = Math.min(W, H) * R_FRAC;
-    const cx  = W * 0.50;
-    const cy  = H * 0.50;
-    const phi = toRad(lat);
-    const lam = toRad(lng + rotation); // apply rotation
-    const x   = cx + R * Math.cos(phi) * Math.sin(lam);
-    const y   = cy - R * Math.sin(phi);
-    // Visibility: point is on near side if cos(phi)*cos(lam) > 0
-    const vis = Math.cos(phi) * Math.cos(lam) > -0.12;
-    const depth = Math.cos(phi) * Math.cos(lam); // -1..1
+    const phi = rad(lat);
+    const lam = rad(lng + rotation);
+    const x   = CX + R * Math.cos(phi) * Math.sin(lam);
+    const y   = CY - R * Math.sin(phi);
+    const vis = Math.cos(phi) * Math.cos(lam) > -0.08;
+    const depth = (Math.cos(phi) * Math.cos(lam) + 1) / 2; // 0..1
     return { x, y, vis, depth };
   }
 
-  // Spherical lerp between two lat/lng points (great circle)
   function slerp(lat1, lng1, lat2, lng2, t) {
-    const p1 = [toRad(lat1), toRad(lng1)];
-    const p2 = [toRad(lat2), toRad(lng2)];
-    // Convert to 3D unit vectors
-    function toXYZ(phi, lam) {
-      return [Math.cos(phi)*Math.cos(lam), Math.cos(phi)*Math.sin(lam), Math.sin(phi)];
+    function toV(ph, la) {
+      return [Math.cos(ph)*Math.cos(la), Math.cos(ph)*Math.sin(la), Math.sin(ph)];
     }
-    const a = toXYZ(p1[0], p1[1]);
-    const b = toXYZ(p2[0], p2[1]);
-    const dot = Math.min(1, Math.max(-1, a[0]*b[0]+a[1]*b[1]+a[2]*b[2]));
-    const omega = Math.acos(dot);
-    if (omega < 0.001) return { lat: lat1, lng: lng1 };
-    const sinO = Math.sin(omega);
-    const s0 = Math.sin((1-t)*omega) / sinO;
-    const s1 = Math.sin(t*omega)     / sinO;
-    const x = s0*a[0] + s1*b[0];
-    const y = s0*a[1] + s1*b[1];
-    const z = s0*a[2] + s1*b[2];
-    const lat = Math.asin(z) * 180 / Math.PI;
-    const lng = Math.atan2(y, x) * 180 / Math.PI;
-    return { lat, lng };
+    const a = toV(rad(lat1), rad(lng1));
+    const b = toV(rad(lat2), rad(lng2));
+    const dt = Math.min(1, Math.max(-1, a[0]*b[0]+a[1]*b[1]+a[2]*b[2]));
+    const om = Math.acos(dt);
+    if (om < 0.001) return { lat: lat1, lng: lng1 };
+    const s0 = Math.sin((1-t)*om)/Math.sin(om);
+    const s1 = Math.sin(t*om)/Math.sin(om);
+    const v = [s0*a[0]+s1*b[0], s0*a[1]+s1*b[1], s0*a[2]+s1*b[2]];
+    return { lat: Math.asin(v[2])*180/Math.PI, lng: Math.atan2(v[1],v[0])*180/Math.PI };
   }
 
-  // ── Build arc particles ───────────────────────────────────────
+  // ── Build scene ──────────────────────────────────────────────
+  function buildLandDots() {
+    landDots = [];
+    const rng = (a, b) => a + Math.random() * (b - a);
+    LAND_BOXES.forEach(box => {
+      for (let i = 0; i < box.density; i++) {
+        landDots.push({
+          lat: rng(box.latMin, box.latMax),
+          lng: rng(box.lngMin, box.lngMax),
+        });
+      }
+    });
+  }
+
   function buildParticles() {
     arcParticles = [];
-    CORRIDORS.forEach(([ai, bi]) => {
-      // 1–2 particles per corridor
-      const count = Math.random() < 0.7 ? 2 : 1;
-      for (let i = 0; i < count; i++) {
+    CORRIDORS.forEach(([ai, bi, col]) => {
+      const cnt = Math.random() < 0.6 ? 2 : 1;
+      for (let i = 0; i < cnt; i++) {
         arcParticles.push({
-          ai, bi,
+          ai, bi, col,
           t:     Math.random(),
-          spd:   0.0008 + Math.random() * 0.0007,
+          spd:   0.0007 + Math.random() * 0.0008,
           dir:   Math.random() < 0.5 ? 1 : -1,
-          alpha: 0.5  + Math.random() * 0.4,
-          size:  1.8  + Math.random() * 1.4,
+          alpha: 0.55 + Math.random() * 0.35,
+          size:  1.6  + Math.random() * 1.2,
         });
       }
     });
@@ -10915,37 +11108,67 @@ function initDashTelemetry() {
 
   // ── Resize ───────────────────────────────────────────────────
   function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    const body = canvas.parentElement;
+    if (!body) return;
+    W  = canvas.width  = body.offsetWidth;
+    H  = canvas.height = body.offsetHeight;
+    CX = W * 0.50;
+    CY = H * 0.46;
+    R  = Math.min(W * 0.22, H * 0.46);
+    buildLandDots();
     buildParticles();
   }
 
-  // ── Draw graticule ───────────────────────────────────────────
+  // ── Draw layers ──────────────────────────────────────────────
+
+  function drawAtmosphere() {
+    // Outer atmospheric haze
+    const g = ctx.createRadialGradient(CX, CY, R * 0.88, CX, CY, R * 1.32);
+    g.addColorStop(0, 'rgba(78,168,255,0.09)');
+    g.addColorStop(0.5,'rgba(78,168,255,0.03)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(CX, CY, R * 1.32, 0, Math.PI*2); ctx.fill();
+  }
+
+  function drawGlobeFill() {
+    // Deep space fill inside globe
+    const g = ctx.createRadialGradient(CX - R*0.18, CY - R*0.18, R*0.08, CX, CY, R);
+    g.addColorStop(0, 'rgba(14,20,38,0.92)');
+    g.addColorStop(0.6,'rgba(8,11,20,0.95)');
+    g.addColorStop(1, 'rgba(4,5,10,0.98)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI*2); ctx.fill();
+
+    // Subtle top specular
+    const s = ctx.createRadialGradient(CX - R*0.25, CY - R*0.3, 0, CX - R*0.1, CY - R*0.15, R*0.55);
+    s.addColorStop(0, 'rgba(78,168,255,0.06)');
+    s.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = s;
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI*2); ctx.fill();
+  }
+
   function drawGraticule() {
     ctx.lineWidth = 0.5;
-    // Longitude lines
     for (let lng = -180; lng < 180; lng += 20) {
       ctx.beginPath();
       let first = true;
-      for (let lat = -88; lat <= 88; lat += 3) {
+      for (let lat = -88; lat <= 88; lat += 4) {
         const p = project(lat, lng);
         if (!p.vis) { first = true; continue; }
-        const alpha = 0.016 + 0.008 * p.depth;
-        ctx.strokeStyle = `rgba(78,168,255,${alpha})`;
+        ctx.strokeStyle = `rgba(78,168,255,${0.04 * p.depth + 0.01})`;
         if (first) { ctx.moveTo(p.x, p.y); first = false; }
         else ctx.lineTo(p.x, p.y);
       }
       ctx.stroke();
     }
-    // Latitude lines
     for (let lat = -80; lat <= 80; lat += 20) {
       ctx.beginPath();
       let first = true;
-      for (let lng = -180; lng <= 180; lng += 3) {
+      for (let lng = -180; lng <= 180; lng += 4) {
         const p = project(lat, lng);
         if (!p.vis) { first = true; continue; }
-        const alpha = 0.014 + 0.007 * p.depth;
-        ctx.strokeStyle = `rgba(78,168,255,${alpha})`;
+        ctx.strokeStyle = `rgba(78,168,255,${0.035 * p.depth + 0.008})`;
         if (first) { ctx.moveTo(p.x, p.y); first = false; }
         else ctx.lineTo(p.x, p.y);
       }
@@ -10953,66 +11176,51 @@ function initDashTelemetry() {
     }
   }
 
-  // ── Draw globe face + atmosphere ────────────────────────────
-  function drawGlobe() {
-    const R  = Math.min(W, H) * R_FRAC;
-    const cx = W * 0.5, cy = H * 0.5;
-
-    // Atmosphere outer glow
-    const atm = ctx.createRadialGradient(cx, cy, R * 0.85, cx, cy, R * 1.28);
-    atm.addColorStop(0, 'rgba(78,168,255,0.07)');
-    atm.addColorStop(1, 'rgba(78,168,255,0)');
-    ctx.fillStyle = atm;
-    ctx.beginPath(); ctx.arc(cx, cy, R * 1.28, 0, Math.PI * 2); ctx.fill();
-
-    // Dark fill (ocean base)
-    const fill = ctx.createRadialGradient(cx - R*0.2, cy - R*0.2, R*0.05, cx, cy, R);
-    fill.addColorStop(0, 'rgba(12,18,32,0.55)');
-    fill.addColorStop(1, 'rgba(5,6,10,0.72)');
-    ctx.fillStyle = fill;
-    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
-
-    // Rim highlight
-    ctx.strokeStyle = 'rgba(78,168,255,0.18)';
-    ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
-
-    // Inner subtle glow
-    ctx.strokeStyle = 'rgba(78,168,255,0.06)';
-    ctx.lineWidth = 8;
-    ctx.beginPath(); ctx.arc(cx, cy, R - 4, 0, Math.PI * 2); ctx.stroke();
+  function drawLandDots() {
+    landDots.forEach(d => {
+      const p = project(d.lat, d.lng);
+      if (!p.vis) return;
+      const a = 0.18 * p.depth + 0.04;
+      ctx.fillStyle = `rgba(100,140,200,${a})`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 0.7, 0, Math.PI*2); ctx.fill();
+    });
   }
 
-  // ── Draw capital flow arcs ───────────────────────────────────
-  function drawArcs(ts) {
-    CORRIDORS.forEach(([ai, bi], ci) => {
-      const cA = CENTRES[ai], cB = CENTRES[bi];
-      const STEPS = 48;
-      // Check if at least partial arc is visible
-      let anyVis = false;
-      for (let s = 0; s <= STEPS; s += 8) {
-        const mid = slerp(cA.lat, cA.lng, cB.lat, cB.lng, s / STEPS);
-        if (project(mid.lat, mid.lng).vis) { anyVis = true; break; }
-      }
-      if (!anyVis) return;
+  function drawGlobeRim() {
+    // Main rim
+    ctx.strokeStyle = 'rgba(78,168,255,0.22)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI*2); ctx.stroke();
+    // Inner rim glow
+    ctx.strokeStyle = 'rgba(78,168,255,0.08)';
+    ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.arc(CX, CY, R - 3, 0, Math.PI*2); ctx.stroke();
+  }
 
-      const breathe = 0.028 + 0.016 * Math.sin(ts * 0.0005 + ci * 0.9);
-      ctx.lineWidth = 0.7;
-      ctx.beginPath();
-      let first = true;
-      for (let s = 0; s <= STEPS; s++) {
-        const mid = slerp(cA.lat, cA.lng, cB.lat, cB.lng, s / STEPS);
-        const p   = project(mid.lat, mid.lng);
-        if (!p.vis) { first = true; continue; }
-        ctx.strokeStyle = `rgba(212,168,90,${breathe * (0.5 + 0.5 * p.depth)})`;
-        if (first) { ctx.moveTo(p.x, p.y); first = false; }
-        else { ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+  function drawArcs(ts) {
+    CORRIDORS.forEach(([ai, bi, col], ci) => {
+      const cA = CENTRES[ai], cB = CENTRES[bi];
+      const STEPS = 52;
+      const breathe = 0.035 + 0.018 * Math.sin(ts * 0.0004 + ci * 1.1);
+      const isGold  = col === 'gold';
+
+      ctx.lineWidth = 0.8;
+      for (let s = 0; s < STEPS; s++) {
+        const m1 = slerp(cA.lat, cA.lng, cB.lat, cB.lng, s / STEPS);
+        const m2 = slerp(cA.lat, cA.lng, cB.lat, cB.lng, (s+1) / STEPS);
+        const p1 = project(m1.lat, m1.lng);
+        const p2 = project(m2.lat, m2.lng);
+        if (!p1.vis || !p2.vis) continue;
+        const alpha = breathe * (0.4 + 0.6 * p1.depth);
+        ctx.strokeStyle = isGold
+          ? `rgba(212,168,90,${alpha})`
+          : `rgba(78,168,255,${alpha * 0.9})`;
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
       }
     });
   }
 
-  // ── Draw signal particles along arcs ────────────────────────
-  function drawParticlesFn() {
+  function drawArcParticles() {
     arcParticles.forEach(p => {
       p.t += p.spd * p.dir;
       if (p.t > 1) p.t = 0;
@@ -11021,98 +11229,99 @@ function initDashTelemetry() {
       const mid  = slerp(cA.lat, cA.lng, cB.lat, cB.lng, p.t);
       const proj = project(mid.lat, mid.lng);
       if (!proj.vis) return;
-      const a = p.alpha * (0.4 + 0.6 * proj.depth);
-      ctx.fillStyle = `rgba(212,168,90,${a})`;
-      ctx.beginPath(); ctx.arc(proj.x, proj.y, p.size, 0, Math.PI * 2); ctx.fill();
+      const a = p.alpha * (0.5 + 0.5 * proj.depth);
+      const isGold = p.col === 'gold';
+      ctx.fillStyle = isGold
+        ? `rgba(212,168,90,${a})`
+        : `rgba(120,190,255,${a})`;
+      ctx.beginPath(); ctx.arc(proj.x, proj.y, p.size, 0, Math.PI*2); ctx.fill();
     });
   }
 
-  // ── Draw financial centre nodes ──────────────────────────────
-  function drawCentres(ts) {
-    projCentres = CENTRES.map(c => {
+  function drawCentreNodes(ts) {
+    projCentres = CENTRES.map((c, i) => {
       const p = project(c.lat, c.lng);
-      return { ...c, ...p };
+      return { ...c, ...p, phase: (i / CENTRES.length) * Math.PI * 2 };
     });
 
-    projCentres.forEach((c, i) => {
-      if (!c.vis || c.depth < -0.05) return;
-      const phase   = (i / CENTRES.length) * Math.PI * 2;
-      const breathe = 0.45 + 0.25 * Math.sin(ts * 0.0009 + phase);
-      const r       = c.primary ? 3.8 : 2.4;
-      const alpha   = breathe * (0.5 + 0.5 * c.depth);
+    projCentres.forEach(c => {
+      if (!c.vis || c.depth < 0.02) return;
+      const br = 0.45 + 0.25 * Math.sin(ts * 0.0009 + c.phase);
+      const a  = br * c.depth;
+      const r  = c.primary ? 3.8 : 2.2;
 
       // Glow halo
-      const grd = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r * 9);
-      grd.addColorStop(0, c.primary
-        ? `rgba(212,168,90,${alpha * 0.22})`
-        : `rgba(78,168,255,${alpha * 0.14})`);
-      grd.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(c.x, c.y, r * 9, 0, Math.PI * 2); ctx.fill();
+      const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r * 10);
+      g.addColorStop(0, c.primary ? `rgba(212,168,90,${a*0.28})` : `rgba(78,168,255,${a*0.18})`);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(c.x, c.y, r*10, 0, Math.PI*2); ctx.fill();
 
       // Core dot
       ctx.fillStyle = c.primary
-        ? `rgba(212,168,90,${alpha})`
-        : `rgba(78,168,255,${alpha * 0.8})`;
-      ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2); ctx.fill();
+        ? `rgba(212,168,90,${Math.min(a*1.1, 0.9)})`
+        : `rgba(100,180,255,${Math.min(a*0.9, 0.7)})`;
+      ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI*2); ctx.fill();
 
-      // Label (primary only, fade with depth)
-      if (c.primary && c.depth > 0.1) {
-        ctx.fillStyle = `rgba(212,168,90,${alpha * 0.6})`;
-        ctx.font = '600 8px "JetBrains Mono", monospace';
+      // Label
+      if (c.primary && c.depth > 0.2) {
+        ctx.fillStyle = `rgba(212,168,90,${a * 0.65})`;
+        ctx.font = '600 8px "JetBrains Mono",monospace';
         ctx.fillText(c.name, c.x + r + 5, c.y + 3);
       }
     });
   }
 
-  // ── Draw pulse waves ─────────────────────────────────────────
   function drawPulses() {
     pulses = pulses.filter(p => p.alpha > 0.003);
     pulses.forEach(p => {
-      p.r    += 0.9;
-      p.alpha *= 0.972;
-      ctx.strokeStyle = `rgba(61,220,151,${p.alpha})`;
-      ctx.lineWidth   = 0.9;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.stroke();
+      p.r    += 0.95;
+      p.alpha *= 0.971;
+      const col = p.gold ? `rgba(212,168,90,${p.alpha})` : `rgba(61,220,151,${p.alpha})`;
+      ctx.strokeStyle = col;
+      ctx.lineWidth   = 1;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.stroke();
     });
   }
 
   function maybePulse(ts) {
-    if (ts - lastPulse > 2400) {
+    if (ts - lastPulse > 2200) {
       lastPulse = ts;
-      const vis = projCentres.filter(c => c.vis && c.depth > 0.1);
+      const vis = projCentres.filter(c => c.vis && c.depth > 0.15);
       if (!vis.length) return;
       const c = vis[Math.floor(Math.random() * vis.length)];
-      pulses.push({ x: c.x, y: c.y, r: c.primary ? 4 : 2.5, alpha: 0.07 });
+      pulses.push({ x:c.x, y:c.y, r:c.primary?4:2.5, alpha:0.08, gold:c.primary });
     }
   }
 
-  // ── Fine background telemetry grid ───────────────────────────
+  // Faint background grid for the whole widget
   function drawBgGrid() {
-    ctx.strokeStyle = 'rgba(78,168,255,0.012)';
+    ctx.strokeStyle = 'rgba(78,168,255,0.010)';
     ctx.lineWidth = 0.6;
-    const step = Math.max(32, Math.floor(W / 28));
+    const step = Math.max(28, Math.floor(W / 30));
     for (let x = 0; x < W; x += step) {
-      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H-38); ctx.stroke();
     }
-    for (let y = 0; y < H; y += step) {
+    for (let y = 0; y < H-38; y += step) {
       ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
     }
   }
 
-  // ── Main draw loop ───────────────────────────────────────────
+  // ── Main loop ────────────────────────────────────────────────
   function draw(ts) {
     if (!active) { animId = null; return; }
     animId = requestAnimationFrame(draw);
-    rotation += 0.006; // ~0.006°/frame ≈ full rotation in ~16 min
-
+    rotation += 0.005;
     ctx.clearRect(0, 0, W, H);
     drawBgGrid();
-    drawGlobe();
+    drawAtmosphere();
+    drawGlobeFill();
     drawGraticule();
+    drawLandDots();
     drawArcs(ts);
-    drawCentres(ts);
-    drawParticlesFn();
+    drawCentreNodes(ts);
+    drawArcParticles();
+    drawGlobeRim();
     drawPulses();
     maybePulse(ts);
   }
@@ -11129,13 +11338,42 @@ function initDashTelemetry() {
     if (animId) { cancelAnimationFrame(animId); animId = null; }
   }
 
+  // ── Populate region overlays from live data ──────────────────
+  function populateRegionOverlays() {
+    // Pull from existing dashboard data (sector heatmap etc.)
+    const regions = [
+      { id:'NA',   val:null, sub:'NYSE · NASDAQ' },
+      { id:'EU',   val:null, sub:'LSE · Frankfurt' },
+      { id:'COM',  val:null, sub:'Energy · Metals' },
+      { id:'APAC', val:null, sub:'Tokyo · HK · SGX' },
+    ];
+    // Try to read SPY/XOM/etc from existing quote cache
+    try {
+      const spyQ = BriefTickAPI._cacheGetStale && BriefTickAPI._cacheGetStale('q:SPY');
+      const spyPct = spyQ ? spyQ.pctChange : null;
+      if (spyPct !== null) {
+        const el = document.getElementById('tValNA');
+        if (el) {
+          const sign = spyPct >= 0 ? '+' : '';
+          el.textContent = `${sign}${spyPct.toFixed(2)}%`;
+          el.className = `t-region-value ${spyPct >= 0 ? 'up' : 'dn'}`;
+        }
+      }
+    } catch(_) {}
+  }
+
   // ── Lifecycle ────────────────────────────────────────────────
   const dashEl = document.getElementById('page-dashboard');
   if (dashEl) {
     new MutationObserver(() => {
-      dashEl.classList.contains('active') ? start() : stop();
-    }).observe(dashEl, { attributes: true, attributeFilter: ['class'] });
-    if (dashEl.classList.contains('active')) start();
+      if (dashEl.classList.contains('active')) {
+        start();
+        setTimeout(populateRegionOverlays, 1500);
+      } else {
+        stop();
+      }
+    }).observe(dashEl, { attributes:true, attributeFilter:['class'] });
+    if (dashEl.classList.contains('active')) { start(); setTimeout(populateRegionOverlays, 1500); }
   }
 
   document.addEventListener('visibilitychange', () => {
@@ -11146,7 +11384,7 @@ function initDashTelemetry() {
   let rsT;
   window.addEventListener('resize', () => {
     clearTimeout(rsT);
-    rsT = setTimeout(resize, 220);
+    rsT = setTimeout(resize, 200);
   });
 }
 
