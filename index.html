@@ -1801,6 +1801,142 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
 .options-ai-box h3{font-family:var(--display);font-size:15px;font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 
 /* ================================================================
+   CINEMATIC UPGRADE — Premium atmosphere & motion layer
+================================================================ */
+
+/* ── Typography enhancements ─────────────────────────────────── */
+h1,h2,h3{
+  font-feature-settings:'kern','liga','calt';
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+}
+.hero h1{
+  line-height:1.04;
+}
+
+/* ── Panel depth & glass ─────────────────────────────────────── */
+.panel{
+  box-shadow:0 4px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.panel-head{
+  border-bottom:1px solid var(--border);
+}
+.tier{
+  box-shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+.tier.featured{
+  box-shadow:0 0 0 1px rgba(212,168,90,0.28), 0 8px 48px rgba(212,168,90,0.09), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* ── Nav deepened glass ──────────────────────────────────────── */
+.nav{
+  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 1px 0 rgba(0,0,0,0.4);
+}
+.nav-link.active{
+  box-shadow:inset 0 -1px 0 var(--gold);
+}
+
+/* ── Hero ambient canvas ─────────────────────────────────────── */
+.hero{position:relative;overflow:hidden}
+#heroAmbient{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+}
+.hero-grid{position:relative;z-index:1}
+
+/* ── Gold glow on accents ────────────────────────────────────── */
+.gold,.hero h1 .gold,h1 em{
+  text-shadow:0 0 48px rgba(212,168,90,0.25);
+}
+
+/* ── Button shimmer on hover ─────────────────────────────────── */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{
+  content:'';position:absolute;top:0;left:-110%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent);
+  transform:skewX(-20deg);transition:left 0.55s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+.btn-primary:hover::after{left:160%}
+.btn-primary:hover{
+  box-shadow:0 16px 48px rgba(212,168,90,0.38);
+  transform:translateY(-2px);
+}
+.btn-secondary:hover{
+  background:rgba(255,255,255,0.07);
+  border-color:rgba(180,200,255,0.22);
+  transform:translateY(-1px);
+}
+
+/* ── Premium feature card hover ──────────────────────────────── */
+.feature{
+  transition:transform 0.3s cubic-bezier(.4,0,.2,1),
+             box-shadow 0.3s cubic-bezier(.4,0,.2,1),
+             border-color 0.3s;
+  will-change:transform;
+}
+.feature:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  border-color:rgba(212,168,90,0.2);
+}
+
+/* ── Live badge ring animation ───────────────────────────────── */
+@keyframes liveRing{
+  0%{box-shadow:0 0 0 0 rgba(61,220,151,0.5)}
+  70%{box-shadow:0 0 0 7px rgba(61,220,151,0)}
+  100%{box-shadow:0 0 0 0 rgba(61,220,151,0)}
+}
+.live-badge{animation:liveRing 2.4s ease-out infinite}
+
+/* ── Dashboard panel hover lift ─────────────────────────────── */
+.panel{transition:border-color 0.3s, box-shadow 0.3s, transform 0.25s cubic-bezier(.4,0,.2,1)}
+.panel:hover{
+  border-color:rgba(180,200,255,0.14);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* ── Pricing card hover ──────────────────────────────────────── */
+.tier{
+  transition:transform 0.3s cubic-bezier(.4,0,.2,1),
+             box-shadow 0.3s,border-color 0.3s;
+}
+.tier:not(.featured):hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.5);
+}
+
+/* ── Ambient section glow on about/pricing ───────────────────── */
+#page-pricing,#page-about{
+  background:radial-gradient(ellipse 80% 40% at 50% -10%, rgba(212,168,90,0.04) 0%, transparent 70%);
+}
+
+/* ── Smooth page fade ────────────────────────────────────────── */
+.page{
+  transition:opacity 0.25s ease;
+}
+.page:not(.active){
+  opacity:0;pointer-events:none;
+}
+.page.active{
+  opacity:1;
+}
+
+/* ── GSAP initial hidden state ───────────────────────────────── */
+.gsap-hero-el{opacity:0}
+
+/* ── Reduced motion override ─────────────────────────────────── */
+@media(prefers-reduced-motion:reduce){
+  .feature,.panel,.tier,.btn-primary,.btn-secondary{transition:none!important;transform:none!important}
+  .live-badge{animation:none}
+  .btn-primary::after{display:none}
+  #heroAmbient{display:none}
+  .gsap-hero-el{opacity:1!important}
+}
+
+/* ================================================================
    ABOUT PAGE
 ================================================================ */
 .about-wrap{max-width:860px;margin:0 auto;padding:60px 24px 100px}
@@ -1830,6 +1966,9 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
   margin-bottom:12px;letter-spacing:-0.01em}
 .about-cta-box p{font-size:14px;color:var(--ink-dim);margin-bottom:24px;line-height:1.6}
 </style>
+  <!-- GSAP 3 + ScrollTrigger via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 </head>
 <body>
 
@@ -2077,12 +2216,13 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
 ============================================================ -->
 <section class="page active" id="page-landing">
   <div class="hero">
+    <canvas id="heroAmbient" aria-hidden="true"></canvas>
     <div class="hero-grid">
       <div class="hero-copy">
-        <div class="hero-eyebrow"><span class="pulse"></span> Live Beta · Cohort II Open</div>
-        <h1>Understand<br>what moves<br><span class="gold">markets.</span></h1>
-        <p class="hero-sub">Real-time AI intelligence across earnings, macro events, sentiment, and market-moving news - built to explain the why behind every move.</p>
-        <div class="hero-cta">
+        <div class="hero-eyebrow gsap-hero-el"><span class="pulse"></span> Live Beta · Cohort II Open</div>
+        <h1 class="gsap-hero-el">Understand<br>what moves<br><span class="gold">markets.</span></h1>
+        <p class="hero-sub gsap-hero-el">Real-time AI intelligence across earnings, macro events, sentiment, and market-moving news - built to explain the why behind every move.</p>
+        <div class="hero-cta gsap-hero-el">
           <button class="btn-primary" onclick="openRequestAccess()">Request Access →</button>
           <button class="btn-secondary" onclick="route('dashboard')">View Live Demo <span class="external">↗</span></button>
         </div>
@@ -9299,6 +9439,210 @@ function dismissOnboarding(){
 }
 window.dismissOnboarding = dismissOnboarding;
 window.addEventListener('load', showOnboardingIfNew);
+
+/* ================================================================
+   CINEMATIC UPGRADE — Ambient Hero Canvas
+================================================================ */
+function initHeroAmbient() {
+  const canvas = document.getElementById('heroAmbient');
+  if (!canvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const ctx = canvas.getContext('2d');
+  let W, H, particles, animId;
+
+  function resize() {
+    const p = canvas.parentElement;
+    if (!p) return;
+    W = canvas.width = p.offsetWidth;
+    H = canvas.height = p.offsetHeight;
+  }
+
+  function mkParticles() {
+    particles = Array.from({ length: 55 }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.16,
+      vy: (Math.random() - 0.5) * 0.16,
+      r: Math.random() * 1.4 + 0.3,
+      alpha: Math.random() * 0.35 + 0.08,
+      pulse: Math.random() * Math.PI * 2,
+    }));
+  }
+
+  function drawGrid() {
+    ctx.strokeStyle = 'rgba(78,168,255,0.022)';
+    ctx.lineWidth = 0.8;
+    const step = Math.max(28, Math.floor(W / 26));
+    for (let x = 0; x <= W; x += step) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (let y = 0; y <= H; y += step) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+  }
+
+  function draw() {
+    animId = requestAnimationFrame(draw);
+    ctx.clearRect(0, 0, W, H);
+    drawGrid();
+
+    // Connection lines
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 145) {
+          ctx.strokeStyle = `rgba(212,168,90,${(1 - d / 145) * 0.07})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Particles
+    for (const p of particles) {
+      p.pulse += 0.016;
+      const a = p.alpha * (0.65 + 0.35 * Math.sin(p.pulse));
+      ctx.fillStyle = `rgba(212,168,90,${a})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -2) p.x = W + 2;
+      if (p.x > W + 2) p.x = -2;
+      if (p.y < -2) p.y = H + 2;
+      if (p.y > H + 2) p.y = -2;
+    }
+  }
+
+  resize(); mkParticles(); draw();
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { resize(); mkParticles(); }, 200);
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(animId);
+    else draw();
+  });
+}
+
+/* ================================================================
+   CINEMATIC UPGRADE — GSAP Motion System
+================================================================ */
+function initGSAP() {
+  if (typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Nav entrance
+  gsap.from('.nav', {
+    duration: 1.1, opacity: 0, y: -14, ease: 'power3.out', delay: 0.1,
+    clearProps: 'all',
+  });
+
+  // Hero stagger entrance
+  const heroEls = document.querySelectorAll('.gsap-hero-el');
+  gsap.fromTo(heroEls,
+    { opacity: 0, y: 22 },
+    { opacity: 1, y: 0, duration: 0.85, stagger: 0.13, ease: 'power3.out', delay: 0.45, clearProps: 'all' }
+  );
+
+  // Hero visual entrance
+  gsap.from('.hero-visual', {
+    duration: 1.1, opacity: 0, x: 28, ease: 'power3.out', delay: 0.55, clearProps: 'all',
+  });
+
+  // Feature cards scroll reveal
+  gsap.from('.feature', {
+    scrollTrigger: {
+      trigger: '#featureGrid',
+      start: 'top 82%',
+      toggleActions: 'play none none none',
+    },
+    duration: 0.65, opacity: 0, y: 28, stagger: 0.065, ease: 'power2.out',
+    clearProps: 'all',
+  });
+
+  // About page principle cards scroll reveal
+  gsap.from('.about-principle', {
+    scrollTrigger: {
+      trigger: '.about-principles',
+      start: 'top 82%',
+      toggleActions: 'play none none none',
+    },
+    duration: 0.6, opacity: 0, y: 20, stagger: 0.07, ease: 'power2.out',
+    clearProps: 'all',
+  });
+
+  // Pricing tier cards scroll reveal
+  gsap.from('.tier', {
+    scrollTrigger: {
+      trigger: '.tier-grid',
+      start: 'top 82%',
+      toggleActions: 'play none none none',
+    },
+    duration: 0.6, opacity: 0, y: 24, stagger: 0.1, ease: 'power2.out',
+    clearProps: 'all',
+  });
+
+  // Panel hover micro-lift
+  document.querySelectorAll('.panel').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      gsap.to(el, { duration: 0.28, y: -2, ease: 'power2.out' });
+    });
+    el.addEventListener('mouseleave', () => {
+      gsap.to(el, { duration: 0.28, y: 0, ease: 'power2.inOut' });
+    });
+  });
+
+  // Smooth route transitions — wrap existing route()
+  const _gsapRoute = window.route;
+  window.route = function(name) {
+    const current = document.querySelector('.page.active');
+    if (current) {
+      gsap.to(current, {
+        duration: 0.18, opacity: 0, ease: 'power2.in',
+        onComplete() {
+          _gsapRoute(name);
+          const next = document.getElementById('page-' + name);
+          if (next) gsap.fromTo(next,
+            { opacity: 0, y: 7 },
+            { opacity: 1, y: 0, duration: 0.32, ease: 'power2.out', clearProps: 'all' }
+          );
+        }
+      });
+    } else {
+      _gsapRoute(name);
+    }
+  };
+
+  // Re-bind nav links to new route()
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.onclick = () => {
+      const name = l.dataset.route;
+      window.route(name);
+      if (name === 'insiders' && typeof loadInsiders === 'function' && !window._insidersLoaded) {
+        window._insidersLoaded = true;
+        loadInsiders(); loadPoliticalTrades();
+      }
+      if (name === 'options' && typeof loadOptionsData === 'function' && !window._optionsLoaded) {
+        window._optionsLoaded = true;
+        loadOptionsData();
+      }
+    };
+  });
+}
+
+window.addEventListener('load', () => {
+  initHeroAmbient();
+  initGSAP();
+});
 
 /* ================================================================
    STRIPE CHECKOUT
