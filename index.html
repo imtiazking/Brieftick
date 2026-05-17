@@ -11392,7 +11392,7 @@ function initDashTelemetry() {
   function draw(ts) {
     if(!active){animId=null;return;}
     animId=requestAnimationFrame(draw);
-    rotation+=0.005;
+    rotation+=0.012;
     ctx.clearRect(0,0,W,H);
     drawBgGrid();
     drawDataStreams();
