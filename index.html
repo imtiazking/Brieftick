@@ -2387,24 +2387,24 @@ h1,h2,h3{
         <div class="hv-header">
           <div class="left">
             <span class="live">LIVE</span>
-            <span>NVDA · NASDAQ</span>
-            <span>15:42:08 EDT</span>
+            <span id="hvHeaderSym">NVDA · NASDAQ</span>
+            <span id="hvHeaderTime">15:42:08 EDT</span>
           </div>
-          <div class="engine">BriefTick Engine v3.4</div>
+          <div class="engine">Brieftick Engine v3.4</div>
         </div>
-        <div class="hv-body terminal-grid">
+        <div class="hv-body terminal-grid" id="hvBody" style="transition:opacity 0.35s ease">
           <div class="hv-main">
             <div class="hv-quote">
               <div>
-                <div class="sym">NVDA</div>
-                <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;margin-top:4px">NVIDIA CORP</div>
+                <div class="sym" id="hvSym">NVDA</div>
+                <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;margin-top:4px" id="hvName">NVIDIA CORP</div>
               </div>
               <div style="text-align:right">
-                <div class="price">-</div>
-                <div class="chg" style="color:var(--ink-faint)">Loading live data…</div>
+                <div class="price hv-quote-price">-</div>
+                <div class="chg hv-quote-chg" style="color:var(--ink-faint)">Loading live data…</div>
               </div>
             </div>
-            <div class="hv-tags">
+            <div class="hv-tags" id="hvTags">
               <span class="hv-tag gold">AI Infrastructure</span>
               <span class="hv-tag">Semiconductors</span>
               <span class="hv-tag blue">Market Cap $2.58T</span>
@@ -2413,9 +2413,9 @@ h1,h2,h3{
             <div class="hv-ai">
               <div class="hv-ai-head">
                 <span style="width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)"></span>
-                BriefTick AI · Live Analysis
+                Brieftick AI · Live Analysis
               </div>
-              <div class="hv-ai-text">
+              <div class="hv-ai-text" id="hvAiText">
                 NVDA pulled lower into the close after <b>hyperscaler capex chatter</b> reignited demand-tail concerns. Weakness is spreading across <b>AMD, AVGO, MU</b> with an estimated <b>72% reaction-chain probability</b>. Macro tone neutral - no Fed catalyst.
               </div>
             </div>
@@ -2424,16 +2424,16 @@ h1,h2,h3{
             <div class="hv-card">
               <div class="hv-card-title">AI Sentiment</div>
               <div class="hv-meter"></div>
-              <div class="hv-card-big" style="color:var(--green)">Bullish <small>72/100</small></div>
+              <div class="hv-card-big" id="hvSentiment" style="color:var(--green)">Bullish <small>72/100</small></div>
             </div>
             <div class="hv-card">
               <div class="hv-card-title">AI Confidence</div>
-              <div class="hv-card-big">78<small>%</small></div>
-              <div class="hv-mini-bars"><div class="up">High conviction · rising</div></div>
+              <div class="hv-card-big" id="hvConfidence">78<small>%</small></div>
+              <div class="hv-mini-bars"><div class="up" id="hvConviction">High conviction · rising</div></div>
             </div>
             <div class="hv-card">
               <div class="hv-card-title">Sector Impact</div>
-              <div class="hv-mini-bars">
+              <div class="hv-mini-bars" id="hvSectorImpact">
                 <div class="hv-mini-bar"><span>AI Infra</span><b class="dn">-2.34%</b></div>
                 <div class="hv-mini-bar"><span>Semis</span><b class="dn">-1.87%</b></div>
                 <div class="hv-mini-bar"><span>Cloud</span><b class="dn">-1.12%</b></div>
@@ -3825,13 +3825,13 @@ h1,h2,h3{
     <!-- Hero -->
     <div class="about-hero">
       <h1>Markets move fast.<br>Understanding them<br>shouldn't require a <em>Bloomberg terminal.</em></h1>
-      <p>BriefTick was built for a simple reason: institutional-grade market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by using AI to translate complex market signals into clear, actionable context for everyone from seasoned traders to first-time investors.</p>
+      <p>Brieftick was built for a simple reason: institutional-grade market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by using AI to translate complex market signals into clear, actionable context for everyone from seasoned traders to first-time investors.</p>
     </div>
 
     <!-- Mission -->
     <div class="about-section">
       <h2>Democratise market intelligence.</h2>
-      <p>The same tools that help hedge funds understand why markets are moving have historically been inaccessible to individual investors. BriefTick closes that gap. Not by simplifying the data, but by making it legible.</p>
+      <p>The same tools that help hedge funds understand why markets are moving have historically been inaccessible to individual investors. Brieftick closes that gap. Not by simplifying the data, but by making it legible.</p>
       <p>We pull from live earnings feeds, macro event trackers, options flow, insider disclosures, sentiment models, and AI briefings. We surface what matters, when it matters, in plain English.</p>
     </div>
 
@@ -3862,7 +3862,7 @@ h1,h2,h3{
         <div class="about-principle">
           <div class="about-principle-num">01</div>
           <h3>Explain the why, not just the what</h3>
-          <p>A price move without context is noise. BriefTick always answers the follow-up question: why is this happening and what's driving it.</p>
+          <p>A price move without context is noise. Brieftick always answers the follow-up question: why is this happening and what's driving it.</p>
         </div>
         <div class="about-principle">
           <div class="about-principle-num">02</div>
@@ -3882,19 +3882,19 @@ h1,h2,h3{
         <div class="about-principle">
           <div class="about-principle-num">05</div>
           <h3>Built with users, not for them</h3>
-          <p>BriefTick is in active beta. Every feature has been shaped by feedback from traders, investors and analysts using it in real markets.</p>
+          <p>Brieftick is in active beta. Every feature has been shaped by feedback from traders, investors and analysts using it in real markets.</p>
         </div>
         <div class="about-principle">
           <div class="about-principle-num">06</div>
           <h3>Institutional depth, human language</h3>
-          <p>Whether you're managing a portfolio or learning how markets work, BriefTick meets you where you are — no jargon required.</p>
+          <p>Whether you're managing a portfolio or learning how markets work, Brieftick meets you where you are — no jargon required.</p>
         </div>
       </div>
     </div>
 
     <!-- What we cover -->
     <div class="about-section">
-      <h2>What BriefTick covers.</h2>
+      <h2>What Brieftick covers.</h2>
       <p>Live market intelligence across equities, ETFs, macro events, earnings, options flow, insider transactions, congressional disclosures, sector rotation, volatility, sentiment, and AI-generated briefings. Updated in real time during market hours, with full historical pattern matching and correlation analysis.</p>
       <p>Built on data from Finnhub, Polygon.io, SEC EDGAR, Alpha Vantage, Anthropic Claude, and FRED. All routed through a secure proxy so your API keys stay private.</p>
     </div>
@@ -3902,7 +3902,7 @@ h1,h2,h3{
     <!-- CTA -->
     <div class="about-cta-box">
       <h2>Ready to understand the market?</h2>
-      <p>BriefTick is in private beta. Request access and we'll be in touch within 48 hours.</p>
+      <p>Brieftick is in private beta. Request access and we'll be in touch within 48 hours.</p>
       <button class="btn-primary" onclick="openRequestAccess()">Request Access →</button>
     </div>
 
@@ -9650,6 +9650,352 @@ function dismissOnboarding(){
 }
 window.dismissOnboarding = dismissOnboarding;
 window.addEventListener('load', showOnboardingIfNew);
+
+/* ================================================================
+   HERO STOCK CARD ROTATION
+================================================================ */
+const HERO_STOCKS = [
+  {
+    sym:'NVDA', name:'NVIDIA CORP', exchange:'NASDAQ',
+    tags:['<span class="hv-tag gold">AI Infrastructure</span>','<span class="hv-tag">Semiconductors</span>','<span class="hv-tag blue">Market Cap $2.58T</span>'],
+    sentiment:'Bullish <small>72/100</small>', sentColor:'var(--green)',
+    confidence:'78', conviction:'High conviction · rising', convCls:'up',
+    sectors:[['AI Infra','dn','-2.34%'],['Semis','dn','-1.87%'],['Cloud','dn','-1.12%']],
+    ai:'NVDA is consolidating after <b>hyperscaler capex commentary</b> softened demand expectations. Weakness is transmitting across <b>AMD, AVGO, MU</b>. Macro backdrop neutral — no Fed catalyst.',
+  },
+  {
+    sym:'AAPL', name:'APPLE INC', exchange:'NASDAQ',
+    tags:['<span class="hv-tag gold">Consumer Tech</span>','<span class="hv-tag">Services</span>','<span class="hv-tag blue">Market Cap $3.32T</span>'],
+    sentiment:'Neutral <small>54/100</small>', sentColor:'var(--gold)',
+    confidence:'63', conviction:'Mixed signals · watchful', convCls:'up',
+    sectors:[['Consumer Tech','up','+0.44%'],['Services','up','+0.62%'],['Hardware','dn','-0.28%']],
+    ai:'AAPL holding a key technical level as <b>iPhone demand data</b> out of China came in mixed. Services margin expansion continues to drive the bull case. Watch the <b>$185 support zone</b>.',
+  },
+  {
+    sym:'TSLA', name:'TESLA INC', exchange:'NASDAQ',
+    tags:['<span class="hv-tag gold">EV / Auto</span>','<span class="hv-tag">Energy Storage</span>','<span class="hv-tag blue">Market Cap $780B</span>'],
+    sentiment:'Bearish <small>38/100</small>', sentColor:'var(--red)',
+    confidence:'55', conviction:'Low conviction · volatile', convCls:'dn',
+    sectors:[['EV Sector','dn','-1.42%'],['Auto OEMs','dn','-0.84%'],['Energy','up','+0.31%']],
+    ai:'TSLA under pressure as <b>Q1 delivery miss</b> weighs on near-term guidance. Analyst cuts are widening. <b>Robotaxi timeline credibility</b> is the key swing factor for a recovery thesis.',
+  },
+  {
+    sym:'MSFT', name:'MICROSOFT CORP', exchange:'NASDAQ',
+    tags:['<span class="hv-tag gold">Cloud / AI</span>','<span class="hv-tag">Enterprise SaaS</span>','<span class="hv-tag blue">Market Cap $3.42T</span>'],
+    sentiment:'Bullish <small>68/100</small>', sentColor:'var(--green)',
+    confidence:'74', conviction:'Moderate conviction · stable', convCls:'up',
+    sectors:[['Cloud','up','+0.88%'],['Enterprise AI','up','+1.24%'],['Productivity','up','+0.44%']],
+    ai:'MSFT steady as <b>Azure growth re-accelerated</b> last quarter, driven by AI workload demand. Copilot monetisation is early but showing positive unit economics. Market pricing this conservatively.',
+  },
+  {
+    sym:'AMZN', name:'AMAZON.COM INC', exchange:'NASDAQ',
+    tags:['<span class="hv-tag gold">Cloud / AWS</span>','<span class="hv-tag">E-Commerce</span>','<span class="hv-tag blue">Market Cap $2.05T</span>'],
+    sentiment:'Bullish <small>66/100</small>', sentColor:'var(--green)',
+    confidence:'71', conviction:'High conviction · building', convCls:'up',
+    sectors:[['AWS','up','+1.14%'],['Retail','up','+0.52%'],['Logistics','dn','-0.18%']],
+    ai:'AMZN benefiting from <b>AWS re-acceleration narrative</b> and improving retail margins. Ad revenue growth is an underappreciated driver. Infrastructure capex ramp is the main near-term overhang.',
+  },
+  {
+    sym:'META', name:'META PLATFORMS', exchange:'NASDAQ',
+    tags:['<span class="hv-tag gold">Social / AI</span>','<span class="hv-tag">Digital Ads</span>','<span class="hv-tag blue">Market Cap $1.46T</span>'],
+    sentiment:'Bullish <small>74/100</small>', sentColor:'var(--green)',
+    confidence:'82', conviction:'High conviction · rising', convCls:'up',
+    sectors:[['Social Media','up','+1.32%'],['Digital Ads','up','+0.88%'],['AI Compute','dn','-0.44%']],
+    ai:'META executing well on <b>Reels monetisation and AI ad targeting</b>. Capex discipline narrative is improving. Reality Labs losses remain the main bear case but market is increasingly discounting them.',
+  },
+  {
+    sym:'PLTR', name:'PALANTIR TECH', exchange:'NYSE',
+    tags:['<span class="hv-tag gold">AI / Defence</span>','<span class="hv-tag">Data Analytics</span>','<span class="hv-tag blue">Market Cap $180B</span>'],
+    sentiment:'Bullish <small>78/100</small>', sentColor:'var(--green)',
+    confidence:'69', conviction:'Moderate conviction · momentum', convCls:'up',
+    sectors:[['Defence Tech','up','+2.14%'],['AI Platforms','up','+1.66%'],['Gov Contracts','up','+0.92%']],
+    ai:'PLTR rallying on <b>expanded US Government contract wins</b> and strong AIP commercial adoption. High valuation premium is justified by the institutional intelligence moat. Momentum is strong.',
+  },
+];
+
+let heroStockIdx = 0;
+let heroRotateTimer = null;
+
+async function rotateHeroStock(idx) {
+  const stock = HERO_STOCKS[idx];
+  const body = document.getElementById('hvBody');
+  if (!body) return;
+
+  // Fade out
+  body.style.opacity = '0';
+  await new Promise(r => setTimeout(r, 350));
+
+  // Update content
+  const setText = (id, val) => { const el=document.getElementById(id); if(el) el.innerHTML=val; };
+  setText('hvSym',    stock.sym);
+  setText('hvName',   stock.name);
+  setText('hvTags',   stock.tags.join(''));
+  setText('hvAiText', stock.ai);
+  setText('hvSentiment', stock.sentiment);
+  setText('hvConfidence', stock.confidence + '<small>%</small>');
+  setText('hvConviction', stock.conviction);
+  setText('hvSectorImpact', stock.sectors.map(([n,c,v])=>`<div class="hv-mini-bar"><span>${n}</span><b class="${c}">${v}</b></div>`).join(''));
+
+  const sentEl = document.getElementById('hvSentiment');
+  if (sentEl) sentEl.style.color = stock.sentColor;
+  const convEl = document.getElementById('hvConviction');
+  if (convEl) convEl.className = stock.convCls;
+
+  const headerSym = document.getElementById('hvHeaderSym');
+  if (headerSym) headerSym.textContent = `${stock.sym} · ${stock.exchange}`;
+
+  // Update time
+  const timeEl = document.getElementById('hvHeaderTime');
+  if (timeEl) {
+    const now = new Date();
+    timeEl.textContent = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}) + ' EDT';
+  }
+
+  // Fetch live price
+  try {
+    const quotes = await getFinnhubQuotes([stock.sym]);
+    const q = quotes[stock.sym];
+    if (q && q.price) {
+      const priceEl = body.querySelector('.hv-quote-price');
+      const chgEl   = body.querySelector('.hv-quote-chg');
+      if (priceEl) priceEl.textContent = q.price.toFixed(2);
+      if (chgEl) {
+        const sign = q.pctChange >= 0 ? '+' : '';
+        chgEl.textContent = `${sign}${q.change.toFixed(2)}  (${sign}${q.pctChange.toFixed(2)}%)`;
+        chgEl.style.color = q.pctChange >= 0 ? 'var(--green)' : 'var(--red)';
+      }
+    }
+  } catch(_) {}
+
+  // Redraw sparkline chart
+  try {
+    const series = genSeries(80, 5, (Math.random()-0.5)*0.6, idx*7+3);
+    const chartEl = document.getElementById('heroChart');
+    if (chartEl) drawChart(chartEl, series, {color:'#ff5b6e', fillColor:'rgba(255,91,110,0.12)', id:'hero'});
+  } catch(_) {}
+
+  // Fade in
+  body.style.opacity = '1';
+}
+
+function startHeroRotation() {
+  heroRotateTimer = setInterval(() => {
+    heroStockIdx = (heroStockIdx + 1) % HERO_STOCKS.length;
+    rotateHeroStock(heroStockIdx);
+  }, 8000);
+}
+
+window.addEventListener('load', () => {
+  rotateHeroStock(0);    // apply IDs/data for the first stock immediately
+  setTimeout(startHeroRotation, 8000); // start cycling after 8s
+});
+
+/* ================================================================
+   SECTOR HEATMAP — CLICK EXPLANATIONS
+================================================================ */
+const SECTOR_EXPLANATIONS = {
+  'Tech':          { headline:'Technology is leading today on AI infrastructure spend', macro:'Rate expectations stable; growth premiums holding. AI capex cycle intact.',  sentiment:'Bullish — institutional flows rotating into mega-cap tech.', earnings:'Strong guidance from cloud names. Semis showing volume recovery.', risk:'Risk-on. Low VIX supports growth multiple expansion.' },
+  'Energy':        { headline:'Energy outperforming on supply constraint signals',       macro:'Crude above $80 amid OPEC+ discipline. Geopolitical risk premium elevated.', sentiment:'Moderately bullish — commodities in demand rotation.', earnings:'Upstream E&P beating on realised prices. Refining margins compressed.', risk:'Mild risk-off hedge. Energy performing defensive function.' },
+  'Financials':    { headline:'Financials mixed as yield curve flattens',                macro:'10Y yield flat. NII pressured at regional banks. Investment banking recovering.', sentiment:'Neutral — cautious positioning ahead of Fed commentary.', earnings:'JPM and GS beat on trading revenue. Regional banks lagging.', risk:'Rate sensitive. Underperforms in rate-cut environments.' },
+  'Healthcare':    { headline:'Healthcare underperforming on policy overhang',           macro:'Drug pricing legislation risk dampening sector enthusiasm.', sentiment:'Bearish short-term — defensive rotation into utilities instead.', earnings:'Pharma mixed. MedTech solid. Managed care facing cost ratio pressure.', risk:'Defensive sector — benefits in genuine risk-off but lagging today.' },
+  'Consumer Discr.':{ headline:'Consumer Discretionary under pressure on spending data', macro:'Retail sales softer than expected. Consumer confidence dipping.', sentiment:'Bearish — credit card spend data showing deceleration.', earnings:'Mixed results. Auto weakening. Luxury holding. Fast casual resilient.', risk:'High beta to consumer cycle. Underperforms in slowdown scenarios.' },
+  'Industrials':   { headline:'Industrials slightly positive on manufacturing data',     macro:'ISM Manufacturing ticked above 50. Capex intentions stable.', sentiment:'Mildly bullish — infrastructure spend supporting order books.', earnings:'Aerospace and defence strong. Rail volumes soft.', risk:'Cyclical. Sensitive to PMI data and credit conditions.' },
+  'Utilities':     { headline:'Utilities outperforming as a defensive safe haven',       macro:'Rising rate uncertainty driving capital to predictable yield assets.', sentiment:'Cautiously bullish — pension rebalancing into regulated utilities.', earnings:'In-line results. Rate base growth steady. Renewable capex on track.', risk:'Classic risk-off trade. Rallies when equities show stress signals.' },
+  'Materials':     { headline:'Materials slightly negative on demand outlook',           macro:'China stimulus expectations fading. Steel and copper prices softening.', sentiment:'Mildly bearish — cyclical sector with limited near-term catalysts.', earnings:'Mining companies guiding cautiously on realised prices.', risk:'High China exposure. Risk-off positioning weighs on the sector.' },
+  'Comm Services': { headline:'Communication Services down on ad revenue concerns',      macro:'Digital ad market showing mixed growth signals. Streaming competition intense.', sentiment:'Bearish short-term — multiple compression risk on high-valuation names.', earnings:'Advertising soft at smaller platforms. Mega-cap social resilient.', risk:'Rate sensitive due to long-duration growth profile.' },
+  'Real Estate':   { headline:'Real Estate flat as rate sensitivity keeps buyers cautious', macro:'10Y yield elevated. Office vacancy rates persisting. Residential tight.', sentiment:'Neutral — positioning balanced between yield seekers and rate fears.', earnings:'REIT earnings mixed. Industrial and data centre REITs outperforming.', risk:'Highly rate sensitive. Benefits materially from rate cuts.' },
+  'Staples':       { headline:'Consumer Staples modestly positive as defensive bid builds', macro:'Earnings growth slow but predictable. Pricing power fading as input costs ease.', sentiment:'Mildly bullish — institutional hedging demand.', earnings:'Margin recovery ongoing. Volume growth remains sluggish.', risk:'Classic defensive. Outperforms in recessions and market corrections.' },
+  'Semis':         { headline:'Semiconductors under pressure on inventory cycle concerns', macro:'PC and smartphone end-demand soft. AI chip demand diverging from consumer chips.', sentiment:'Bearish near-term — inventory overhang concerns.', earnings:'NVDA and AVGO strong. Memory players guiding cautiously on DRAM.', risk:'High beta growth sector. Amplifies both upside and downside moves.' },
+};
+
+function renderSectorHeatmap(){
+  const container = document.getElementById('heatmap');
+  if (!container) return;
+  container.innerHTML = sectors.map(([n,p,v]) =>
+    `<div class="heat-cell" style="background:${heatColor(v)};cursor:pointer" onclick="showSectorExplain('${n}','${p}',${v})">
+      <div class="sec">${n}</div>
+      <div class="pct">${p}</div>
+    </div>`).join('');
+}
+
+function showSectorExplain(name, pct, val) {
+  const ex = SECTOR_EXPLANATIONS[name];
+  const dir = val >= 0 ? 'up' : 'dn';
+  const sign = val >= 0 ? '+' : '';
+  const existingPanel = document.getElementById('sectorExplainPanel');
+  if (existingPanel) existingPanel.remove();
+
+  const panel = document.createElement('div');
+  panel.id = 'sectorExplainPanel';
+  panel.style.cssText = `
+    margin-top:12px;padding:16px 18px;
+    background:var(--panel);border:1px solid var(--border-strong);
+    border-radius:10px;font-size:13px;line-height:1.65;
+    animation:pageIn 0.3s ease;
+  `;
+  panel.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+      <div>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase">${name}</span>
+        <span style="font-family:var(--mono);font-size:14px;font-weight:700;margin-left:10px;color:${val>=0?'var(--green)':'var(--red)'}">${sign}${pct}</span>
+      </div>
+      <button onclick="document.getElementById('sectorExplainPanel').remove()"
+        style="background:none;border:none;color:var(--ink-faint);font-size:18px;cursor:pointer;line-height:1;padding:0">×</button>
+    </div>
+    <p style="color:var(--ink);font-weight:500;margin-bottom:10px">${ex ? ex.headline : name + ' moving on broad market conditions.'}</p>
+    ${ex ? `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:var(--bg);border-radius:7px;padding:10px">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Macro Context</div>
+        <div style="color:var(--ink-dim);font-size:12px">${ex.macro}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:7px;padding:10px">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Sentiment</div>
+        <div style="color:var(--ink-dim);font-size:12px">${ex.sentiment}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:7px;padding:10px">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Earnings / News</div>
+        <div style="color:var(--ink-dim);font-size:12px">${ex.earnings}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:7px;padding:10px">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Risk Context</div>
+        <div style="color:var(--ink-dim);font-size:12px">${ex.risk}</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--ink-faint);font-family:var(--mono)">Educational context only. Not financial advice.</div>
+    ` : ''}
+  `;
+
+  const heatmapEl = document.getElementById('heatmap');
+  if (heatmapEl) heatmapEl.parentElement.appendChild(panel);
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+window.showSectorExplain = showSectorExplain;
+
+/* ================================================================
+   TOP MOVERS — LOCATION SELECTOR
+================================================================ */
+const MOVERS_MARKETS = {
+  us: {
+    label: 'S&P 500',
+    stocks: [
+      ['NVDA','NVIDIA Corp','219.46','+1.98',1.98,7],
+      ['AMD','Adv. Micro Dev.','164.28','-3.44',-3.44,3],
+      ['XOM','Exxon Mobil','118.62','+1.18',1.18,2],
+      ['META','Meta Platforms','568.42','-0.84',-0.84,5],
+      ['TSLA','Tesla','184.92','-1.42',-1.42,4],
+      ['JPM','JPMorgan','204.18','+0.74',0.74,1],
+      ['CVX','Chevron','162.40','+0.96',0.96,8],
+      ['AAPL','Apple','189.84','+0.22',0.22,9],
+      ['MSFT','Microsoft','415.32','-0.53',-0.53,6],
+      ['AVGO','Broadcom','1386.20','-1.18',-1.18,11],
+    ],
+  },
+  lse: {
+    label: 'FTSE 100',
+    stocks: [
+      ['SHEL','Shell plc','28.42','+1.44',1.44,12],
+      ['HSBA','HSBC Holdings','7.18','+0.56',0.56,13],
+      ['AZN','AstraZeneca','124.60','+2.12',2.12,14],
+      ['ULVR','Unilever','44.28','-0.38',-0.38,15],
+      ['BP','BP plc','4.86','+1.02',1.02,16],
+      ['RIO','Rio Tinto','54.82','-0.62',-0.62,17],
+      ['GSK','GSK plc','17.36','+0.84',0.84,18],
+      ['VOD','Vodafone','0.74','-1.24',-1.24,19],
+      ['LSEG','LSEG','102.40','+0.48',0.48,20],
+      ['BAB','BAE Systems','13.62','+1.88',1.88,21],
+    ],
+  },
+  sgx: {
+    label: 'SGX / STI',
+    stocks: [
+      ['D05','DBS Group','38.42','+0.78',0.78,22],
+      ['O39','OCBC Bank','14.62','+0.42',0.42,23],
+      ['U11','UOB','31.84','+0.62',0.62,24],
+      ['Z74','SingTel','2.88','-0.34',-0.34,25],
+      ['C6L','Singapore Airlines','7.14','+1.12',1.12,26],
+      ['F34','Wilmar Intl','3.22','-0.62',-0.62,27],
+      ['C09','City Developments','6.18','+0.32',0.32,28],
+      ['BS6','Yangzijiang Ship.','2.44','+2.18',2.18,29],
+      ['S68','SGX Ltd','11.22','+0.44',0.44,30],
+      ['V03','Venture Corp','14.82','-0.28',-0.28,31],
+    ],
+  },
+};
+
+let moversMarket = 'us';
+
+function renderMovers(market) {
+  moversMarket = market;
+  const data = MOVERS_MARKETS[market];
+  const list = document.getElementById('moversList');
+  const head = document.querySelector('#moversList')?.closest('.panel')?.querySelector('.ttl');
+  if (!list) return;
+
+  // Update header
+  if (head) head.innerHTML = `<b>01</b> Top Movers · ${data.label}`;
+
+  // Fade out
+  list.style.transition = 'opacity 0.25s';
+  list.style.opacity = '0';
+  setTimeout(() => {
+    list.innerHTML = data.stocks.map(([s,n,p,c,d,seed]) => {
+      const series = genSeries(20, 3, d*0.4, seed);
+      const cls    = d > 0 ? 'up' : (d < 0 ? 'dn' : 'flat');
+      const color  = d > 0 ? '#3ddc97' : (d < 0 ? '#ff5b6e' : '#5a6577');
+      return `<div class="mover">
+        <div class="sym">${s}</div>
+        <div class="name">${n}</div>
+        <div>${spark(series,color)}</div>
+        <div class="price">${p}</div>
+        <div class="chg ${cls}">${c}%</div>
+      </div>`;
+    }).join('');
+    list.style.opacity = '1';
+  }, 260);
+
+  // Update tab active states
+  document.querySelectorAll('.movers-market-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.market === market);
+  });
+}
+window.renderMovers = renderMovers;
+
+// Inject market selector tabs into movers panel header
+(function injectMoversSelector() {
+  const panel = document.getElementById('moversList')?.closest('.panel');
+  if (!panel) return;
+  const head = panel.querySelector('.panel-head');
+  if (!head) return;
+
+  const tabs = document.createElement('div');
+  tabs.style.cssText = 'display:flex;gap:4px;align-items:center';
+  tabs.innerHTML = ['us','lse','sgx'].map(m =>
+    `<button class="movers-market-tab${m==='us'?' active':''}" data-market="${m}"
+      style="padding:3px 9px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;
+             text-transform:uppercase;border-radius:4px;cursor:pointer;transition:all .15s;
+             background:${m==='us'?'rgba(212,168,90,0.15)':'transparent'};
+             color:${m==='us'?'var(--gold)':'var(--ink-faint)'};
+             border:1px solid ${m==='us'?'rgba(212,168,90,0.3)':'var(--border)'}"
+      onclick="renderMovers('${m}')">${m==='us'?'US':m==='lse'?'LSE':'SGX'}</button>`
+  ).join('');
+
+  // Style active tabs on click
+  tabs.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.querySelectorAll('button').forEach(b => {
+        b.style.background = 'transparent';
+        b.style.color = 'var(--ink-faint)';
+        b.style.borderColor = 'var(--border)';
+      });
+      btn.style.background = 'rgba(212,168,90,0.15)';
+      btn.style.color = 'var(--gold)';
+      btn.style.borderColor = 'rgba(212,168,90,0.3)';
+    });
+  });
+
+  head.appendChild(tabs);
+})();
 
 /* ================================================================
    CINEMATIC UPGRADE — Ambient Hero Canvas
