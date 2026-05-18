@@ -1919,6 +1919,73 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
 }
 
 /* ================================================================
+   AI FLOW ENGINE WIDGET
+================================================================ */
+.flow-engine-widget{grid-column:span 12;overflow:hidden}
+.flow-stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);border-bottom:1px solid var(--border);
+}
+.flow-stat{
+  padding:14px 18px;background:var(--panel);
+}
+.flow-stat-label{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.flow-stat-val{font-family:var(--display);font-size:22px;font-weight:700;line-height:1}
+.flow-stat-val.up{color:var(--green)}
+.flow-stat-val.dn{color:var(--red)}
+.flow-stat-val.gold{color:var(--gold)}
+.flow-stat-sub{font-size:11px;color:var(--ink-dim);margin-top:4px}
+.flow-canvas-wrap{
+  position:relative;height:240px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(5,6,10,0.6) 0%,rgba(10,14,24,0.4) 100%);
+}
+#flowEngineCanvas{position:absolute;inset:0;width:100%;height:100%}
+.flow-node-labels{position:absolute;inset:0;pointer-events:none}
+.flow-src-labels{position:absolute;left:16px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-around;padding:16px 0}
+.flow-dst-labels{position:absolute;right:16px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-around;padding:16px 0}
+.flow-node-label{
+  background:rgba(10,14,28,0.82);border:1px solid rgba(180,200,255,0.1);
+  border-radius:6px;padding:6px 10px;min-width:110px;
+  backdrop-filter:blur(8px);
+}
+.flow-node-label.dst{text-align:right}
+.flow-node-name{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase}
+.flow-node-val{font-family:var(--mono);font-size:13px;font-weight:700;margin-top:2px}
+.flow-node-val.up{color:var(--green)}.flow-node-val.dn{color:var(--red)}
+.flow-center-label{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;pointer-events:none;
+}
+.flow-center-name{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:.16em;text-transform:uppercase;margin-top:6px}
+.flow-narrative-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--border);
+}
+.flow-narrative-card{
+  padding:14px 16px;border-right:1px solid var(--border);
+  transition:background .15s;cursor:default;
+}
+.flow-narrative-card:last-child{border-right:none}
+.flow-narrative-card:hover{background:rgba(255,255,255,0.02)}
+.flow-narr-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;margin-bottom:8px;
+}
+.flow-narr-tag.up{background:rgba(61,220,151,.12);color:var(--green)}
+.flow-narr-tag.dn{background:rgba(255,91,110,.12);color:var(--red)}
+.flow-narr-tag.neutral{background:rgba(212,168,90,.12);color:var(--gold)}
+.flow-narr-title{font-family:var(--display);font-size:13px;font-weight:600;margin-bottom:6px;line-height:1.2}
+.flow-narr-body{font-size:11px;color:var(--ink-dim);line-height:1.55;margin-bottom:8px}
+.flow-narr-conf{font-family:var(--mono);font-size:9px;color:var(--ink-faint)}
+.flow-narr-conf span{color:var(--gold)}
+@media(max-width:900px){
+  .flow-stats-row{grid-template-columns:repeat(2,1fr)}
+  .flow-narrative-grid{grid-template-columns:repeat(2,1fr)}
+  .flow-canvas-wrap{height:180px}
+}
+
+/* ================================================================
    CINEMATIC UPGRADE — Dashboard Telemetry Canvas
 ================================================================ */
 
@@ -2601,6 +2668,126 @@ h1,h2,h3{
         <div class="panel-head"><span class="ttl"><b>06</b> AI Sentiment Feed</span><span class="meta" id="sentimentMeta">Loading…</span></div>
         <div class="panel-body" id="sentimentFeed"></div>
       </div>
+
+      <!-- ═══ AI FLOW ENGINE ═══ -->
+      <div class="panel flow-engine-widget" id="flowEngineWidget">
+        <div class="panel-head" style="position:relative;z-index:2">
+          <div>
+            <span class="ttl"><b>07</b> AI Market Intelligence Engine</span>
+            <span class="meta" style="margin-left:8px;color:var(--ink-faint)">Live Capital Flow &amp; Market Regime Visualisation</span>
+          </div>
+          <div class="live-badge" style="font-size:9px;padding:4px 10px">Live · AI</div>
+        </div>
+
+        <!-- Stats row -->
+        <div class="flow-stats-row">
+          <div class="flow-stat">
+            <div class="flow-stat-label">Capital Flow</div>
+            <div class="flow-stat-val up" id="feCapFlow">+$12.4B</div>
+            <div class="flow-stat-sub">Today · Net inflow</div>
+          </div>
+          <div class="flow-stat">
+            <div class="flow-stat-label">Risk Appetite</div>
+            <div class="flow-stat-val gold" id="feRiskScore">62 / 100</div>
+            <div class="flow-stat-sub" id="feRiskLabel">Moderate Risk-On</div>
+          </div>
+          <div class="flow-stat">
+            <div class="flow-stat-label">Market Regime</div>
+            <div class="flow-stat-val gold" id="feRegime">EXPANSION</div>
+            <div class="flow-stat-sub" id="feRegimeSub">Early Cycle</div>
+          </div>
+          <div class="flow-stat">
+            <div class="flow-stat-label">Volatility</div>
+            <div class="flow-stat-val" id="feVol">—</div>
+            <div class="flow-stat-sub" id="feVolLabel">Loading…</div>
+          </div>
+        </div>
+
+        <!-- Flow canvas + labels -->
+        <div class="flow-canvas-wrap">
+          <canvas id="flowEngineCanvas" aria-hidden="true"></canvas>
+
+          <!-- Source labels (left) -->
+          <div class="flow-node-labels">
+            <div class="flow-src-labels">
+              <div class="flow-node-label">
+                <div class="flow-node-name">Institutions</div>
+                <div class="flow-node-val up">+$4.8B</div>
+              </div>
+              <div class="flow-node-label">
+                <div class="flow-node-name">Retail</div>
+                <div class="flow-node-val up">+$2.1B</div>
+              </div>
+              <div class="flow-node-label">
+                <div class="flow-node-name">Hedge Funds</div>
+                <div class="flow-node-val up">+$3.2B</div>
+              </div>
+              <div class="flow-node-label">
+                <div class="flow-node-name">ETF Flows</div>
+                <div class="flow-node-val up">+$3.3B</div>
+              </div>
+            </div>
+
+            <!-- Center label -->
+            <div class="flow-center-label">
+              <div class="flow-center-name">AI Flow Engine</div>
+            </div>
+
+            <!-- Destination labels (right) -->
+            <div class="flow-dst-labels">
+              <div class="flow-node-label dst">
+                <div class="flow-node-name">Technology</div>
+                <div class="flow-node-val up">+$5.6B</div>
+              </div>
+              <div class="flow-node-label dst">
+                <div class="flow-node-name">Energy</div>
+                <div class="flow-node-val up">+$3.2B</div>
+              </div>
+              <div class="flow-node-label dst">
+                <div class="flow-node-name">Financials</div>
+                <div class="flow-node-val up">+$1.8B</div>
+              </div>
+              <div class="flow-node-label dst">
+                <div class="flow-node-name">Consumer Def.</div>
+                <div class="flow-node-val dn">-$1.8B</div>
+              </div>
+              <div class="flow-node-label dst">
+                <div class="flow-node-name">Real Estate</div>
+                <div class="flow-node-val dn">-$6.0B</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Narrative cards -->
+        <div class="flow-narrative-grid" id="feNarrativeGrid">
+          <div class="flow-narrative-card">
+            <div class="flow-narr-tag up">↑ Risk-On Rotation</div>
+            <div class="flow-narr-title">Risk-On Rotation</div>
+            <div class="flow-narr-body">Capital is rotating into growth sectors with strong earnings momentum and improving breadth.</div>
+            <div class="flow-narr-conf">Confidence <span>72%</span></div>
+          </div>
+          <div class="flow-narrative-card">
+            <div class="flow-narr-tag neutral">~ Yield Pressure</div>
+            <div class="flow-narr-title">Yield Pressure</div>
+            <div class="flow-narr-body">Rising Treasury yields are creating valuation pressure on long-duration assets and rate-sensitive sectors.</div>
+            <div class="flow-narr-conf">Confidence <span>68%</span></div>
+          </div>
+          <div class="flow-narrative-card">
+            <div class="flow-narr-tag up">↑ Sector Strength</div>
+            <div class="flow-narr-title">Energy Strength</div>
+            <div class="flow-narr-body">Energy sector benefiting from geopolitical premium and supply-side constraints driving capital inflows.</div>
+            <div class="flow-narr-conf">Confidence <span>74%</span></div>
+          </div>
+          <div class="flow-narrative-card">
+            <div class="flow-narr-tag dn">↓ Defensive Outflows</div>
+            <div class="flow-narr-title">Defensive Outflows</div>
+            <div class="flow-narr-body">Defensive sectors seeing outflows as investors increase risk appetite and rotate toward cyclicals.</div>
+            <div class="flow-narr-conf">Confidence <span>65%</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- ═══ END AI FLOW ENGINE ═══ -->
 
       <!-- ═══ GLOBAL MARKET INTELLIGENCE TELEMETRY WIDGET ═══ -->
       <div class="panel dash-telemetry-widget" id="dashTelemetryWidget">
@@ -9650,6 +9837,269 @@ function dismissOnboarding(){
 }
 window.dismissOnboarding = dismissOnboarding;
 window.addEventListener('load', showOnboardingIfNew);
+
+/* ================================================================
+   AI FLOW ENGINE — Animated Capital Flow Visualisation
+================================================================ */
+function initFlowEngine() {
+  const canvas = document.getElementById('flowEngineCanvas');
+  if (!canvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0, CX = 0, CY = 0, animId = null, active = false;
+  let pulseR = 0, pulseAlpha = 0.08;
+
+  // Sources (left side) and destinations (right side) — fractional Y positions
+  const SOURCES = [
+    { name:'Institutions', val:'+$4.8B', yFrac:0.18, color:'61,220,151', flow: 4.8 },
+    { name:'Retail',       val:'+$2.1B', yFrac:0.38, color:'61,220,151', flow: 2.1 },
+    { name:'Hedge Funds',  val:'+$3.2B', yFrac:0.58, color:'61,220,151', flow: 3.2 },
+    { name:'ETF Flows',    val:'+$3.3B', yFrac:0.78, color:'61,220,151', flow: 3.3 },
+  ];
+  const DESTS = [
+    { name:'Technology',   val:'+$5.6B', yFrac:0.14, color:'61,220,151',  flow:  5.6 },
+    { name:'Energy',       val:'+$3.2B', yFrac:0.30, color:'61,220,151',  flow:  3.2 },
+    { name:'Financials',   val:'+$1.8B', yFrac:0.50, color:'61,220,151',  flow:  1.8 },
+    { name:'Consumer Def.',val:'-$1.8B', yFrac:0.70, color:'255,91,110',  flow: -1.8 },
+    { name:'Real Estate',  val:'-$6.0B', yFrac:0.86, color:'255,91,110',  flow: -6.0 },
+  ];
+
+  // Particle paths
+  let particles = [];
+  const LEFT_X_FRAC  = 0.22;
+  const RIGHT_X_FRAC = 0.78;
+
+  function resize() {
+    const body = canvas.parentElement;
+    if (!body) return;
+    W = canvas.width  = body.offsetWidth;
+    H = canvas.height = body.offsetHeight;
+    CX = W * 0.50;
+    CY = H * 0.50;
+    buildParticles();
+  }
+
+  // Bezier path helper: point at t along cubic bezier
+  function bezierPt(x0,y0, x1,y1, x2,y2, x3,y3, t) {
+    const mt = 1 - t;
+    return {
+      x: mt*mt*mt*x0 + 3*mt*mt*t*x1 + 3*mt*t*t*x2 + t*t*t*x3,
+      y: mt*mt*mt*y0 + 3*mt*mt*t*y1 + 3*mt*t*t*y2 + t*t*t*y3,
+    };
+  }
+
+  function buildParticles() {
+    particles = [];
+    const srcX = W * LEFT_X_FRAC + 115;
+    const dstX = W * RIGHT_X_FRAC - 115;
+
+    // Source → centre particles
+    SOURCES.forEach((src, si) => {
+      const srcY = H * src.yFrac;
+      const cnt = Math.round(src.flow * 0.6 + 1);
+      for (let i = 0; i < cnt; i++) {
+        particles.push({
+          phase: 'in',
+          t: Math.random(),
+          spd: 0.003 + Math.random() * 0.003,
+          color: src.color,
+          x0: srcX, y0: srcY,
+          x1: CX * 0.6, y1: srcY,
+          x2: CX * 0.85, y2: CY,
+          x3: CX, y3: CY,
+          size: 1.6 + Math.random() * 1.2,
+          alpha: 0.55 + Math.random() * 0.35,
+        });
+      }
+    });
+
+    // Centre → destination particles
+    DESTS.forEach((dst, di) => {
+      const dstY = H * dst.yFrac;
+      const cnt = Math.max(1, Math.round(Math.abs(dst.flow) * 0.5));
+      for (let i = 0; i < cnt; i++) {
+        particles.push({
+          phase: 'out',
+          t: Math.random(),
+          spd: 0.003 + Math.random() * 0.003,
+          color: dst.color,
+          x0: CX, y0: CY,
+          x1: CX + (dstX - CX) * 0.15, y1: CY,
+          x2: CX + (dstX - CX) * 0.4,  y2: dstY,
+          x3: dstX, y3: dstY,
+          size: 1.6 + Math.random() * 1.2,
+          alpha: 0.55 + Math.random() * 0.35,
+        });
+      }
+    });
+  }
+
+  function drawFlowLines() {
+    const srcX = W * LEFT_X_FRAC + 115;
+    const dstX = W * RIGHT_X_FRAC - 115;
+
+    // Source → centre lines
+    SOURCES.forEach(src => {
+      const srcY = H * src.yFrac;
+      [
+        { lw: 6,   alpha: 0.04 },
+        { lw: 2,   alpha: 0.10 },
+        { lw: 0.8, alpha: 0.22 },
+      ].forEach(({ lw, alpha }) => {
+        ctx.lineWidth = lw;
+        ctx.strokeStyle = `rgba(${src.color},${alpha})`;
+        ctx.beginPath();
+        ctx.moveTo(srcX, srcY);
+        ctx.bezierCurveTo(CX * 0.6, srcY, CX * 0.85, CY, CX, CY);
+        ctx.stroke();
+      });
+    });
+
+    // Centre → destination lines
+    DESTS.forEach(dst => {
+      const dstY = H * dst.yFrac;
+      [
+        { lw: 6,   alpha: 0.04 },
+        { lw: 2,   alpha: 0.10 },
+        { lw: 0.8, alpha: 0.22 },
+      ].forEach(({ lw, alpha }) => {
+        ctx.lineWidth = lw;
+        ctx.strokeStyle = `rgba(${dst.color},${alpha})`;
+        ctx.beginPath();
+        ctx.moveTo(CX, CY);
+        ctx.bezierCurveTo(
+          CX + (dstX - CX) * 0.15, CY,
+          CX + (dstX - CX) * 0.4,  dstY,
+          dstX, dstY
+        );
+        ctx.stroke();
+      });
+    });
+  }
+
+  function drawParticles() {
+    particles.forEach(p => {
+      p.t += p.spd;
+      if (p.t > 1) p.t = 0;
+      // Draw 5-step comet tail
+      for (let ti = 4; ti >= 0; ti--) {
+        const tt = Math.max(0, p.t - ti * 0.018);
+        const pt = bezierPt(p.x0,p.y0, p.x1,p.y1, p.x2,p.y2, p.x3,p.y3, tt);
+        const fade = (1 - ti/5) * p.alpha;
+        const r = p.size * (1 - ti/6);
+        ctx.fillStyle = `rgba(${p.color},${fade})`;
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, r, 0, Math.PI*2); ctx.fill();
+      }
+      // Glowing head
+      const head = bezierPt(p.x0,p.y0, p.x1,p.y1, p.x2,p.y2, p.x3,p.y3, p.t);
+      const g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, p.size*4);
+      g.addColorStop(0, `rgba(${p.color},${p.alpha*0.5})`);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(head.x, head.y, p.size*4, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = `rgba(${p.color},${Math.min(p.alpha*1.3,1)})`;
+      ctx.beginPath(); ctx.arc(head.x, head.y, p.size*1.4, 0, Math.PI*2); ctx.fill();
+    });
+  }
+
+  function drawCentreNode(ts) {
+    const breathe = 0.5 + 0.3 * Math.sin(ts * 0.001);
+    // Outer atmosphere
+    const g1 = ctx.createRadialGradient(CX,CY,0,CX,CY,55);
+    g1.addColorStop(0, `rgba(212,168,90,${breathe*0.18})`);
+    g1.addColorStop(0.5,`rgba(0,210,255,${breathe*0.08})`);
+    g1.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g1; ctx.beginPath(); ctx.arc(CX,CY,55,0,Math.PI*2); ctx.fill();
+
+    // Pulsing rings
+    pulseR += 0.6; pulseAlpha *= 0.971;
+    if (pulseR > 50) { pulseR = 12; pulseAlpha = 0.10; }
+    ctx.strokeStyle = `rgba(0,210,255,${pulseAlpha})`; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.arc(CX,CY,pulseR,0,Math.PI*2); ctx.stroke();
+
+    // Second slower ring
+    ctx.strokeStyle = `rgba(212,168,90,${breathe*0.35})`; ctx.lineWidth=0.8;
+    ctx.beginPath(); ctx.arc(CX,CY,28,0,Math.PI*2); ctx.stroke();
+    ctx.strokeStyle = `rgba(212,168,90,${breathe*0.18})`; ctx.lineWidth=0.6;
+    ctx.beginPath(); ctx.arc(CX,CY,38,0,Math.PI*2); ctx.stroke();
+
+    // Rotating dashed ring
+    ctx.save();
+    ctx.translate(CX,CY); ctx.rotate(ts*0.0008);
+    ctx.strokeStyle = `rgba(0,210,255,${breathe*0.25})`; ctx.lineWidth=1;
+    ctx.setLineDash([4,8]);
+    ctx.beginPath(); ctx.arc(0,0,22,0,Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // Core fill
+    const g2 = ctx.createRadialGradient(CX-4,CY-4,0,CX,CY,16);
+    g2.addColorStop(0,'rgba(0,210,255,0.85)');
+    g2.addColorStop(0.5,'rgba(212,168,90,0.60)');
+    g2.addColorStop(1,'rgba(10,14,28,0.90)');
+    ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(CX,CY,16,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.7)';
+    ctx.beginPath(); ctx.arc(CX,CY,4,0,Math.PI*2); ctx.fill();
+  }
+
+  function draw(ts) {
+    if (!active) { animId=null; return; }
+    animId = requestAnimationFrame(draw);
+    ctx.clearRect(0, 0, W, H);
+    drawFlowLines();
+    drawParticles();
+    drawCentreNode(ts);
+  }
+
+  function start() { if (!animId) { resize(); active=true; requestAnimationFrame(draw); } }
+  function stop()  { active=false; if(animId){cancelAnimationFrame(animId);animId=null;} }
+
+  // Sync with dashboard visibility
+  const dashEl = document.getElementById('page-dashboard');
+  if (dashEl) {
+    new MutationObserver(() => {
+      dashEl.classList.contains('active') ? start() : stop();
+    }).observe(dashEl, { attributes:true, attributeFilter:['class'] });
+    if (dashEl.classList.contains('active')) start();
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+    else if (dashEl && dashEl.classList.contains('active')) start();
+  });
+  let rsT; window.addEventListener('resize', () => { clearTimeout(rsT); rsT=setTimeout(resize,200); });
+
+  // Wire up live stats from existing data
+  function updateFlowStats() {
+    // Volatility from VIX
+    const volEl = document.getElementById('feVol');
+    const volLbl = document.getElementById('feVolLabel');
+    if (volEl && typeof vixValue !== 'undefined') {
+      volEl.textContent = vixValue.toFixed(1);
+      volEl.className = `flow-stat-val ${vixValue > 25 ? 'dn' : vixValue < 18 ? 'up' : 'gold'}`;
+      if (volLbl) volLbl.textContent = vixValue > 30 ? 'Elevated stress' : vixValue > 22 ? 'Moderate' : 'Normal';
+    }
+    // Risk regime from existing riskScore
+    try {
+      const scoreEl = document.getElementById('riskScore');
+      if (scoreEl) {
+        const score = parseInt(scoreEl.textContent) || 62;
+        document.getElementById('feRiskScore').textContent = score + ' / 100';
+        const regimeEl = document.getElementById('feRegime');
+        if (regimeEl) {
+          if (score >= 70) { regimeEl.textContent='EXPANSION'; document.getElementById('feRegimeSub').textContent='Full cycle'; }
+          else if (score >= 50) { regimeEl.textContent='EXPANSION'; document.getElementById('feRegimeSub').textContent='Early cycle'; }
+          else if (score >= 35) { regimeEl.textContent='SLOWDOWN';  document.getElementById('feRegimeSub').textContent='Late cycle'; }
+          else { regimeEl.textContent='CONTRACTION'; document.getElementById('feRegimeSub').textContent='Recession risk'; }
+        }
+      }
+    } catch(_) {}
+  }
+  setTimeout(updateFlowStats, 2000);
+  setInterval(updateFlowStats, 30000);
+}
+
+window.addEventListener('load', initFlowEngine);
 
 /* ================================================================
    HERO STOCK CARD ROTATION
