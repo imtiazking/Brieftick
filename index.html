@@ -1184,6 +1184,76 @@ main{padding-top:90px;position:relative;z-index:3}
 .tier-features li.dim{color:var(--ink-faint)}
 .tier-features li.dim::before{background-image:none;background:transparent;border-color:var(--border)}
 .tier-note{color:var(--ink-faint);font-size:11px}
+
+/* ================================================================
+   PRICING v2 — 2-tier + comparison table + how it works
+================================================================ */
+.tier-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:860px;margin:0 auto 60px}
+@media(max-width:680px){.tier-grid-2{grid-template-columns:1fr}}
+.tier2{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:32px 28px;position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.tier2:hover{border-color:var(--border-strong);box-shadow:0 8px 40px rgba(0,0,0,.4)}
+.tier2.featured{border-color:rgba(212,168,90,.35);box-shadow:0 0 0 1px rgba(212,168,90,.2),0 12px 60px rgba(212,168,90,.08)}
+.tier2.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-bright))}
+.t2-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:4px;margin-bottom:16px;background:rgba(212,168,90,.12);color:var(--gold);border:1px solid rgba(212,168,90,.3)}
+.t2-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);flex-shrink:0}
+.t2-name{font-family:var(--display);font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px}
+.t2-sub{font-size:14px;color:var(--ink-dim);margin-bottom:24px;line-height:1.5}
+.t2-price{display:flex;align-items:baseline;gap:4px;margin-bottom:24px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+.t2-price .num{font-family:var(--display);font-size:52px;font-weight:700;letter-spacing:-0.03em;line-height:1}
+.t2-price .num em{font-style:italic;color:var(--gold)}
+.t2-price .per{font-family:var(--mono);font-size:12px;color:var(--ink-dim);letter-spacing:.06em}
+.t2-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.t2-features li{font-size:13px;color:var(--ink-dim);display:flex;align-items:flex-start;gap:9px;line-height:1.4}
+.t2-features li::before{content:'';width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(61,220,151,.12) url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l2 2 4-4' stroke='%233ddc97' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;border:1px solid rgba(61,220,151,.35)}
+.t2-cta{width:100%;padding:14px;border-radius:9px;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.02em;cursor:pointer;text-align:center;transition:all .2s;border:none}
+.t2-cta.secondary{background:rgba(255,255,255,.05);color:var(--ink);border:1px solid var(--border-strong)}
+.t2-cta.secondary:hover{background:rgba(255,255,255,.09)}
+.t2-cta.primary{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:#0a0d14;position:relative;overflow:hidden}
+.t2-cta.primary::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);transform:skewX(-20deg);transition:left .55s;pointer-events:none}
+.t2-cta.primary:hover::after{left:160%}
+.t2-cta.primary:hover{transform:translateY(-1px);box-shadow:0 10px 32px rgba(212,168,90,.35)}
+
+/* Comparison table */
+.pricing-compare{max-width:860px;margin:0 auto 70px}
+.pricing-compare h2{font-family:var(--display);font-size:clamp(22px,2.8vw,32px);font-weight:600;text-align:center;margin-bottom:32px;letter-spacing:-0.02em}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th{padding:12px 16px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--border);text-align:left}
+.compare-table th:not(:first-child){text-align:center}
+.compare-table td{padding:13px 16px;border-bottom:1px solid var(--border);color:var(--ink-dim)}
+.compare-table td:not(:first-child){text-align:center;font-family:var(--mono);font-size:11px}
+.compare-table tr:hover td{background:rgba(255,255,255,.015)}
+.compare-table tr:last-child td{border-bottom:none}
+.ct-feature{font-weight:500;color:var(--ink)}
+.ct-terminal{color:var(--green);font-weight:600}
+.ct-header-terminal{color:var(--gold)!important}
+
+/* How it works */
+.pricing-how{max-width:920px;margin:0 auto 70px}
+.pricing-how h2{font-family:var(--display);font-size:clamp(22px,2.8vw,32px);font-weight:600;text-align:center;margin-bottom:40px;letter-spacing:-0.02em}
+.how-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+.how-steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--border-strong),var(--gold),var(--border-strong),transparent);opacity:.5}
+.how-step{text-align:center;padding:0 10px;position:relative}
+.how-num{width:56px;height:56px;border-radius:50%;background:var(--panel);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--gold);position:relative;z-index:1;transition:all .25s}
+.how-step:last-child .how-num{background:rgba(212,168,90,.12);border-color:rgba(212,168,90,.4);box-shadow:0 0 24px rgba(212,168,90,.18)}
+.how-title{font-family:var(--display);font-size:14px;font-weight:600;margin-bottom:6px}
+.how-body{font-size:12px;color:var(--ink-dim);line-height:1.5}
+@media(max-width:780px){.how-steps{grid-template-columns:1fr 1fr;gap:24px}.how-steps::before{display:none}}
+
+/* ================================================================
+   SOFT PAYWALL / UPGRADE OVERLAY SYSTEM
+================================================================ */
+.upgrade-overlay{position:absolute;inset:0;z-index:10;background:rgba(5,6,10,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;cursor:pointer;transition:background .2s}
+.upgrade-overlay:hover{background:rgba(5,6,10,.82)}
+.upgrade-overlay .uo-icon{width:44px;height:44px;border-radius:50%;background:rgba(212,168,90,.12);border:1px solid rgba(212,168,90,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(212,168,90,.15)}
+.upgrade-overlay .uo-title{font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.upgrade-overlay .uo-sub{font-size:12px;color:var(--ink-dim);max-width:240px;line-height:1.5}
+.upgrade-overlay .uo-btn{padding:9px 20px;background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:#0a0d14;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.02em;margin-top:4px;transition:opacity .15s,transform .15s}
+.upgrade-overlay .uo-btn:hover{opacity:.9;transform:translateY(-1px)}
+.teaser-strip{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(212,168,90,.06);border-top:1px solid rgba(212,168,90,.15);font-size:12px;color:var(--ink-dim);cursor:pointer;transition:background .15s}
+.teaser-strip:hover{background:rgba(212,168,90,.10)}
+.teaser-strip .ts-cta{margin-left:auto;color:var(--gold);font-weight:600;font-size:11px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.nav-lock{display:inline-flex;align-items:center;opacity:.5;margin-left:2px;vertical-align:middle}
+.pricing-note{text-align:center;font-size:13px;color:var(--ink-dim);margin-bottom:16px}
 .tier-cta{
   padding:14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;
   letter-spacing:0.04em;cursor:pointer;text-align:center;transition:all 0.2s;
@@ -2285,9 +2355,9 @@ h1,h2,h3{
     <button class="nav-link" data-route="brief">Briefing</button>
     <button class="nav-link" data-route="earnings">Earnings</button>
     <button class="nav-link" data-route="portfolio">Portfolio</button>
-    <button class="nav-link" data-route="scanner">Scanner</button>
-    <button class="nav-link" data-route="insiders">Insiders</button>
-    <button class="nav-link" data-route="options">Options</button>
+    <button class="nav-link" data-route="scanner">Scanner <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="nav-link" data-route="insiders">Insiders <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="nav-link" data-route="options">Options <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <button class="nav-link" data-route="pricing">Pricing</button>
     <button class="nav-settings" id="navSettingsBtn" onclick="openSettings()" title="API key settings" aria-label="Settings" style="display:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -3519,86 +3589,131 @@ h1,h2,h3{
 <section class="page" id="page-pricing">
   <div class="pricing">
     <div class="pricing-head">
-      <div class="section-eyebrow" style="display:inline-block;margin-bottom:18px">Plans</div>
-      <h1>Built for the way you <em>read</em> the market.</h1>
-      <p>Beta pricing. Cancel anytime. All tiers include the same BriefTick engine They differ in how deep you go.</p>
+      <h1>Two plans. <em>One goal.</em></h1>
+      <p>Explore the full platform for free. Unlock the full depth of market intelligence with Terminal.</p>
     </div>
 
-    <div class="tier-grid">
+    <!-- 2-tier grid -->
+    <div class="tier-grid-2">
 
       <!-- FREE -->
-      <div class="tier">
-        <div class="tier-name">Free</div>
-        <div class="tier-desc">A taste of the engine. Perfect for getting fluent in the language of the platform.</div>
-        <div class="tier-price"><span class="num">£0</span><span class="per">/forever</span></div>
-        <ul class="tier-features">
-          <li>Market Radar <span class="tier-note">(lite)</span></li>
-          <li>Market Briefings <span class="tier-note">(1 daily)</span></li>
-          <li>Market Impact Feed <span class="tier-note">(15-min delayed)</span></li>
-          <li>Sector Rotation <span class="tier-note">(basic)</span></li>
-          <li>Macro Intelligence <span class="tier-note">(calendar only)</span></li>
-          <li>Market Scanner <span class="tier-note">(top 10 movers)</span></li>
-          <li>Basic earnings calendar</li>
-          <li class="dim">Smart Alerts</li>
-          <li class="dim">"Why Is It Moving" <span class="tier-note">(full)</span></li>
-          <li class="dim">Portfolio Intelligence</li>
-          <li class="dim">Correlation Engine</li>
-          <li class="dim">Insider &amp; Options Flow</li>
+      <div class="tier2">
+        <div class="t2-name">Free</div>
+        <div class="t2-sub">Learn what moves markets.</div>
+        <div class="t2-price"><span class="num">£0</span><span class="per">&nbsp;/ forever</span></div>
+        <ul class="t2-features">
+          <li>Full Dashboard access</li>
+          <li>Top Movers &amp; Sector Heatmap</li>
+          <li>Earnings calendar</li>
+          <li>10-stock watchlist</li>
+          <li>Why Is It Moving (3–5 per day)</li>
+          <li>Market Scanner lite mode</li>
+          <li>Market Briefings (1 daily, delayed)</li>
+          <li>Basic macro signals</li>
         </ul>
-        <button class="tier-cta" onclick="openRequestAccess()">Start Free</button>
-      </div>
-
-      <!-- INTELLIGENCE -->
-      <div class="tier featured">
-        <div class="tier-badge">Most Popular</div>
-        <div class="tier-name">Intelligence</div>
-        <div class="tier-desc">For active investors and traders who want to understand what moves markets.</div>
-        <div class="tier-price"><span class="num">£<em>29</em></span><span class="per">/month</span></div>
-        <ul class="tier-features">
-          <li>Market Radar</li>
-          <li>Market Briefings</li>
-          <li>Why Is It Moving</li>
-          <li>Portfolio Intelligence</li>
-          <li>Macro Intelligence</li>
-          <li>Market Impact Feed</li>
-          <li>Correlation Engine</li>
-          <li>Smart Alerts</li>
-          <li>Sector Rotation</li>
-          <li>Market Scanner</li>
-          <li>Earnings Intelligence</li>
-        </ul>
-        <button class="tier-cta" onclick="startCheckout('intelligence', this)">Join Intelligence</button>
+        <button class="t2-cta secondary" onclick="openRequestAccess()">Start Free</button>
       </div>
 
       <!-- TERMINAL -->
-      <div class="tier">
-        <div class="tier-name">Terminal</div>
-        <div class="tier-desc">Institutional-grade intelligence for power users, serious traders and professional investors.</div>
-        <div class="tier-price"><span class="num">£99</span><span class="per">/month</span></div>
-        <ul class="tier-features">
-          <li>Everything in Intelligence</li>
-          <li>Insider &amp; Political Trades</li>
+      <div class="tier2 featured">
+        <div class="t2-badge">Best Value</div>
+        <div class="t2-name">Terminal</div>
+        <div class="t2-sub">Institutional-grade market intelligence.</div>
+        <div class="t2-price"><span class="num">£<em>29</em></span><span class="per">&nbsp;/ month</span></div>
+        <ul class="t2-features">
+          <li>Everything in Free</li>
+          <li>Unlimited Why Is It Moving</li>
+          <li>Real-time market intelligence</li>
+          <li>Advanced Market Scanner</li>
+          <li>Live Market Flows</li>
+          <li>Market Relationships &amp; Correlation Cluster</li>
+          <li>Sector Rotation Engine</li>
+          <li>Global Macro Signals</li>
+          <li>Earnings Impact Analysis</li>
+          <li>Insider &amp; Political Trade Tracker</li>
           <li>Options Flow</li>
-          <li>Advanced Telemetry Layers</li>
-          <li>Institutional Sentiment</li>
-          <li>Cross-Asset Correlation Matrix</li>
-          <li>Scenario Engine</li>
-          <li>Portfolio Stress Testing</li>
-          <li>Multi-Condition Alerts</li>
-          <li>API Access</li>
-          <li>Priority Support &amp; Analyst Q&amp;A</li>
+          <li>Full Telemetry System</li>
+          <li>Risk-On / Risk-Off Signals</li>
+          <li>Advanced Alerts</li>
+          <li>Unlimited watchlist</li>
         </ul>
-        <button class="tier-cta" onclick="startCheckout('terminal', this)">Apply for Terminal</button>
+        <button class="t2-cta primary" onclick="startCheckout('intelligence', this)">Unlock Terminal</button>
       </div>
 
     </div>
 
-    <div style="text-align:center;margin-top:48px;font-size:13px;color:var(--ink-dim)">
-      All plans can be cancelled at any time.
+    <!-- Comparison table -->
+    <div class="pricing-compare">
+      <h2>What you get on each plan</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free</th>
+            <th class="ct-header-terminal" style="color:var(--gold)">Terminal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="ct-feature">Dashboard</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Full access</td></tr>
+          <tr><td class="ct-feature">Top Movers</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Full access</td></tr>
+          <tr><td class="ct-feature">Sector Heatmap</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Full access + overlays</td></tr>
+          <tr><td class="ct-feature">Earnings Calendar</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Full access + impact analysis</td></tr>
+          <tr><td class="ct-feature">Why Is It Moving</td><td>3–5 per day</td><td class="ct-terminal">Unlimited</td></tr>
+          <tr><td class="ct-feature">Market Briefings</td><td>1 daily · delayed</td><td class="ct-terminal">Real-time · unlimited</td></tr>
+          <tr><td class="ct-feature">Signal Intelligence Feed</td><td>Limited · delayed</td><td class="ct-terminal">Live · unlimited</td></tr>
+          <tr><td class="ct-feature">Market Scanner</td><td>Lite mode</td><td class="ct-terminal">Advanced · all sectors</td></tr>
+          <tr><td class="ct-feature">Market Relationships</td><td>Preview only</td><td class="ct-terminal">Full correlation cluster</td></tr>
+          <tr><td class="ct-feature">Live Flows</td><td>Preview only</td><td class="ct-terminal">Real-time capital flows</td></tr>
+          <tr><td class="ct-feature">Macro Signals</td><td>Limited</td><td class="ct-terminal">Full global coverage</td></tr>
+          <tr><td class="ct-feature">Insider &amp; Political Trades</td><td>—</td><td class="ct-terminal">Full access</td></tr>
+          <tr><td class="ct-feature">Options Flow</td><td>—</td><td class="ct-terminal">Full access</td></tr>
+          <tr><td class="ct-feature">Watchlist</td><td>Up to 10 stocks</td><td class="ct-terminal">Unlimited</td></tr>
+          <tr><td class="ct-feature">Alerts</td><td>Limited</td><td class="ct-terminal">Advanced multi-condition</td></tr>
+          <tr><td class="ct-feature">Telemetry System</td><td>Preview overlay</td><td class="ct-terminal">Full telemetry</td></tr>
+          <tr><td class="ct-feature">Risk Signals</td><td>Basic</td><td class="ct-terminal">Risk-On / Risk-Off engine</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div style="text-align:center;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7;max-width:600px;margin-left:auto;margin-right:auto">
-      Brieftick is a live market intelligence platform. We provide analysis, context and market interpretation. Not financial advice or buy/sell recommendations.
+
+    <!-- How it works -->
+    <div class="pricing-how">
+      <h2>How it works</h2>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-num">01</div>
+          <div class="how-title">Track the market</div>
+          <div class="how-body">Live dashboard, heatmaps and movers give you the full market picture at a glance.</div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">02</div>
+          <div class="how-title">Understand why stocks move</div>
+          <div class="how-body">Search any ticker. Brieftick breaks down exactly what is driving the price move.</div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">03</div>
+          <div class="how-title">Explore intelligence</div>
+          <div class="how-body">Dive into earnings, macro signals, sector rotation, and cross-market relationships.</div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">04</div>
+          <div class="how-title">Build your watchlist</div>
+          <div class="how-body">Track your portfolio and get contextual intelligence for every holding.</div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">05</div>
+          <div class="how-title">Unlock Terminal</div>
+          <div class="how-body">Go deeper with real-time flows, insider trades, options flow and full market intelligence.</div>
+        </div>
+      </div>
     </div>
+
+    <div class="pricing-note">
+      Cancel anytime. <strong>No hidden fees.</strong> Educational platform only. Not financial advice.
+    </div>
+    <div style="text-align:center;margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.06em">
+      Brieftick is a live market intelligence platform. Not a broker. Not a registered adviser.
+    </div>
+
   </div>
 </section>
   </div>
@@ -3609,6 +3724,12 @@ h1,h2,h3{
 ============================================================ -->
 <section class="page" id="page-scanner">
   <div class="scanner-wrap">
+    <!-- Terminal teaser strip -->
+    <div class="teaser-strip" onclick="route('pricing')">
+      <svg class="ts-lock" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Free plan: lite mode only. Showing top 10 results, estimated data.</span>
+      <span class="ts-cta">Unlock Terminal →</span>
+    </div>
     <div class="scanner-hero">
       <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Market Scanner</div>
       <h1>Market Intelligence Scanner</h1>
@@ -3685,6 +3806,12 @@ h1,h2,h3{
 ============================================================ -->
 <section class="page" id="page-options">
   <div class="options-wrap">
+    <!-- Terminal teaser strip -->
+    <div class="teaser-strip" onclick="route('pricing')">
+      <svg class="ts-lock" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Options Flow is a Terminal feature. Live options data, dark pool prints and unusual activity.</span>
+      <span class="ts-cta">Unlock Terminal →</span>
+    </div>
     <div class="options-hero">
       <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Options Flow</div>
       <h1>Options Flow &amp; Unusual Activity</h1>
@@ -3870,6 +3997,12 @@ h1,h2,h3{
 ============================================================ -->
 <section class="page" id="page-insiders">
   <div class="insiders-wrap">
+    <!-- Terminal teaser strip -->
+    <div class="teaser-strip" onclick="route('pricing')">
+      <svg class="ts-lock" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Insider &amp; Political Trades is a Terminal feature. Full SEC Form 4 and STOCK Act disclosures.</span>
+      <span class="ts-cta">Unlock Terminal →</span>
+    </div>
     <div class="insiders-hero">
       <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Disclosure Tracker</div>
       <h1>Insider &amp; Political Trades</h1>
@@ -9837,6 +9970,48 @@ function dismissOnboarding(){
 }
 window.dismissOnboarding = dismissOnboarding;
 window.addEventListener('load', showOnboardingIfNew);
+
+/* ================================================================
+   UPGRADE OVERLAY SYSTEM
+================================================================ */
+function showUpgradePrompt(feature, targetEl) {
+  // Navigate to pricing page with a smooth highlight
+  route('pricing');
+  setTimeout(() => {
+    const el = document.getElementById('page-pricing');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+window.showUpgradePrompt = showUpgradePrompt;
+
+// Add upgrade overlays to premium panels on dashboard load
+(function addDashboardOverlays() {
+  const LOCK_SVG = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+
+  function makeOverlay(title, sub) {
+    const d = document.createElement('div');
+    d.className = 'upgrade-overlay';
+    d.onclick = () => showUpgradePrompt(title);
+    d.innerHTML = `
+      <div class="uo-icon">${LOCK_SVG}</div>
+      <div class="uo-title">${title}</div>
+      <div class="uo-sub">${sub}</div>
+      <button class="uo-btn">Unlock Terminal</button>`;
+    return d;
+  }
+
+  // Apply overlay to Correlation Cluster panel
+  window.addEventListener('load', () => {
+    const clusterPanel = document.getElementById('portCluster')?.closest('.panel');
+    if (clusterPanel) {
+      clusterPanel.style.position = 'relative';
+      clusterPanel.appendChild(makeOverlay(
+        'Correlation Cluster',
+        'Full 3D correlation mapping is a Terminal feature. See how your holdings move together.'
+      ));
+    }
+  });
+})();
 
 /* ================================================================
    AI FLOW ENGINE — Animated Capital Flow Visualisation
