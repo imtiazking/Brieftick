@@ -2260,7 +2260,7 @@ h1,h2,h3{
   <div class="onboard-icon"><img src="/logo-symbol-transparent.png" alt="BriefTick" style="width:56px;height:56px;object-fit:contain"></div>
   <div class="onboard-body">
     <div class="onboard-title">Welcome to BriefTick</div>
-    <div class="onboard-sub">AI-powered market intelligence. Start with the <b>Live Dashboard</b>, search any ticker in <b>Why Is It Moving</b>, or type <b>Cmd+K</b> to search anywhere.</div>
+    <div class="onboard-sub">Live market intelligence. Start with the <b>Live Dashboard</b>, search any ticker in <b>Why Is It Moving</b>, or type <b>Cmd+K</b> to search anywhere.</div>
   </div>
   <div class="onboard-actions">
     <button class="onboard-btn-primary" onclick="route('dashboard');dismissOnboarding()">Explore Dashboard</button>
@@ -2328,8 +2328,8 @@ h1,h2,h3{
       <div class="settings-row">
         <div class="settings-row-head">
           <div>
-            <div class="settings-row-name">Anthropic <span class="settings-badge gold">AI Layer</span></div>
-            <div class="settings-row-desc">Powers AI summaries, briefings, and "Why Is It Moving" interpretations. Without this, AI text remains static mock content.</div>
+            <div class="settings-row-name">Anthropic <span class="settings-badge gold">Intelligence Layer</span></div>
+            <div class="settings-row-desc">Powers intelligent summaries, briefings, and "Why Is It Moving" interpretations. Without this, analysis remains static mock content.</div>
           </div>
           <div class="settings-status" id="status-anthropic">Not set</div>
         </div>
@@ -2436,7 +2436,7 @@ h1,h2,h3{
       <div class="hero-copy">
         <div class="hero-eyebrow gsap-hero-el"><span class="pulse"></span> Live Beta · Cohort II Open</div>
         <h1 class="gsap-hero-el">Understand<br>what moves<br><span class="gold">markets.</span></h1>
-        <p class="hero-sub gsap-hero-el">Real-time AI intelligence across earnings, macro events, sentiment, and market-moving news - built to explain the why behind every move.</p>
+        <p class="hero-sub gsap-hero-el">Real-time market intelligence across earnings, macro events, sentiment, and market-moving news — built to explain the why behind every move.</p>
         <div class="hero-cta gsap-hero-el">
           <button class="btn-primary" onclick="openRequestAccess()">Request Access →</button>
           <button class="btn-secondary" onclick="route('dashboard')">View Live Demo <span class="external">↗</span></button>
@@ -2445,7 +2445,7 @@ h1,h2,h3{
           <div class="hero-proof-item"><div class="hero-proof-icon">⌁</div><div><b>Live market data</b><span>Streaming context</span></div></div>
           <div class="hero-proof-item"><div class="hero-proof-icon">◫</div><div><b>12,000+ equities</b><span>Global coverage</span></div></div>
           <div class="hero-proof-item"><div class="hero-proof-icon">◴</div><div><b>Earnings monitoring</b><span>Real-time updates</span></div></div>
-          <div class="hero-proof-item"><div class="hero-proof-icon">◇</div><div><b>AI intelligence</b><span>Built for investors</span></div></div>
+          <div class="hero-proof-item"><div class="hero-proof-icon">◇</div><div><b>Market intelligence</b><span>Built for investors</span></div></div>
         </div>
       </div>
 
@@ -2480,7 +2480,7 @@ h1,h2,h3{
             <div class="hv-ai">
               <div class="hv-ai-head">
                 <span style="width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)"></span>
-                Brieftick AI · Live Analysis
+                Brieftick · Live Analysis
               </div>
               <div class="hv-ai-text" id="hvAiText">
                 NVDA pulled lower into the close after <b>hyperscaler capex chatter</b> reignited demand-tail concerns. Weakness is spreading across <b>AMD, AVGO, MU</b> with an estimated <b>72% reaction-chain probability</b>. Macro tone neutral - no Fed catalyst.
@@ -2489,12 +2489,12 @@ h1,h2,h3{
           </div>
           <div class="hv-side">
             <div class="hv-card">
-              <div class="hv-card-title">AI Sentiment</div>
+              <div class="hv-card-title">Signal Sentiment</div>
               <div class="hv-meter"></div>
               <div class="hv-card-big" id="hvSentiment" style="color:var(--green)">Bullish <small>72/100</small></div>
             </div>
             <div class="hv-card">
-              <div class="hv-card-title">AI Confidence</div>
+              <div class="hv-card-title">Signal Confidence</div>
               <div class="hv-card-big" id="hvConfidence">78<small>%</small></div>
               <div class="hv-mini-bars"><div class="up" id="hvConviction">High conviction · rising</div></div>
             </div>
@@ -2646,7 +2646,7 @@ h1,h2,h3{
           <div class="risk-score-row"><span id="riskScore">-- / 100</span><span id="riskAgreement">0 of 5 signals</span></div>
           <div class="risk-components" id="riskComponents"></div>
           <div class="risk-explain" id="riskExplanation"><b>BriefTick read:</b> Calculating volatility, equity momentum, sector rotation and news stress.</div>
-          <button class="ai-gen-btn risk-ai-btn" onclick="generateRiskAIExplanation()" id="riskAiBtn">Generate AI explanation</button>
+          <button class="ai-gen-btn risk-ai-btn" onclick="generateRiskAIExplanation()" id="riskAiBtn">Generate explanation</button>
         </div>
       </div>
 
@@ -2663,9 +2663,9 @@ h1,h2,h3{
         </div>
       </div>
 
-      <!-- AI Sentiment Feed -->
+      <!-- Signal Intelligence Feed -->
       <div class="panel col-4">
-        <div class="panel-head"><span class="ttl"><b>06</b> AI Sentiment Feed</span><span class="meta" id="sentimentMeta">Loading…</span></div>
+        <div class="panel-head"><span class="ttl"><b>06</b> Signal Intelligence Feed</span><span class="meta" id="sentimentMeta">Loading…</span></div>
         <div class="panel-body" id="sentimentFeed"></div>
       </div>
 
@@ -2673,10 +2673,10 @@ h1,h2,h3{
       <div class="panel flow-engine-widget" id="flowEngineWidget">
         <div class="panel-head" style="position:relative;z-index:2">
           <div>
-            <span class="ttl"><b>07</b> AI Market Intelligence Engine</span>
+            <span class="ttl"><b>07</b> Market Intelligence Engine</span>
             <span class="meta" style="margin-left:8px;color:var(--ink-faint)">Live Capital Flow &amp; Market Regime Visualisation</span>
           </div>
-          <div class="live-badge" style="font-size:9px;padding:4px 10px">Live · AI</div>
+          <div class="live-badge" style="font-size:9px;padding:4px 10px">Live</div>
         </div>
 
         <!-- Stats row -->
@@ -2730,7 +2730,7 @@ h1,h2,h3{
 
             <!-- Center label -->
             <div class="flow-center-label">
-              <div class="flow-center-name">AI Flow Engine</div>
+              <div class="flow-center-name">Flow Engine</div>
             </div>
 
             <!-- Destination labels (right) -->
@@ -2794,8 +2794,8 @@ h1,h2,h3{
         <div class="panel-head" style="position:relative;z-index:4">
           <span class="ttl"><b>07</b> Global Market Intelligence</span>
           <div style="display:flex;align-items:center;gap:10px">
-            <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em">AI SIGNAL PROCESSING · LIVE</span>
-            <div class="live-badge" style="font-size:9px;padding:4px 10px">Live · AI</div>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em">SIGNAL PROCESSING · LIVE</span>
+            <div class="live-badge" style="font-size:9px;padding:4px 10px">Live</div>
           </div>
         </div>
 
@@ -2841,7 +2841,7 @@ h1,h2,h3{
               <span class="t-status-val">12</span>
             </div>
             <div class="t-status-item">
-              <span class="t-status-label">AI Signals</span>
+              <span class="t-status-label">Market Signals</span>
               <span class="t-status-val" id="tSigCount">1,842</span>
             </div>
             <div class="t-status-item">
@@ -2874,7 +2874,7 @@ h1,h2,h3{
       <!-- AI summary -->
       <div class="panel col-6">
         <div class="panel-head">
-          <span class="ttl"><b>08</b> BriefTick AI · Session Summary</span>
+          <span class="ttl"><b>08</b> Brieftick · Session Summary</span>
           <span class="meta" id="sessionSummaryMeta">Loading…</span>
         </div>
         <div class="panel-body" style="padding:20px 18px" id="sessionSummaryBody">
@@ -2956,11 +2956,11 @@ h1,h2,h3{
 
       <div class="wim-ai-card">
         <div class="wim-ai-head">
-          <div class="lbl">BriefTick AI · Plain-English Summary</div>
+          <div class="lbl">Brieftick · Plain-English Summary</div>
           <div style="display:flex;gap:8px;align-items:center">
             <button class="ai-gen-btn" onclick="generateLiveAISummary()" id="aiGenBtn">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="vertical-align:-1px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg>
-              Generate live AI
+              Generate live
             </button>
             <div class="wim-conf">CONFIDENCE <b>87%</b></div>
           </div>
@@ -3058,7 +3058,7 @@ h1,h2,h3{
         <h1 id="briefHeadline">Market <em>intelligence</em>, loading today's data…</h1>
         <div class="brief-meta">
           <span><b>Date</b> · <span id="briefDate">–</span></span>
-          <span><b>Author</b> · BriefTick AI</span>
+          <span><b>Author</b> · Brieftick</span>
           <span><b>Source</b> · <span id="briefSource" style="color:var(--ink-faint)">Finnhub · Twelve Data</span></span>
         </div>
         <div style="margin-top:24px">
@@ -3074,7 +3074,7 @@ h1,h2,h3{
     <div id="liveBriefingOutput" style="margin-top:0"></div>
 
     <div style="margin-top:20px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
-      <b style="color:var(--gold)">EDUCATIONAL ONLY.</b> The daily briefing is auto-generated by BriefTick AI from live market data, news flow and sentiment indicators. It is not investment advice and contains no recommendations. Always do your own research.
+      <b style="color:var(--gold)">EDUCATIONAL ONLY.</b> The daily briefing is auto-generated by Brieftick from live market data, news flow and sentiment indicators. It is not investment advice and contains no recommendations. Always do your own research.
     </div>
   </div>
 </section>
@@ -3087,7 +3087,7 @@ h1,h2,h3{
     <div class="dash-header" style="margin-bottom:18px">
       <div class="dash-title">
         <h2>Earnings <span style="color:var(--gold);font-style:italic">Intelligence</span></h2>
-        <div class="meta">Live earnings calendar · AI interpretation · impact mapping</div>
+        <div class="meta">Live earnings calendar · market interpretation · impact mapping</div>
       </div>
       <div class="dash-controls">
         <div class="live-badge">Live · ↻ 4s</div>
@@ -3110,7 +3110,7 @@ h1,h2,h3{
     <div class="earn-tabs">
       <button class="earn-tab active" data-earn-tab="cal">Calendar</button>
       <button class="earn-tab" data-earn-tab="live">Live Feed</button>
-      <button class="earn-tab" data-earn-tab="ai">AI Analysis</button>
+      <button class="earn-tab" data-earn-tab="ai">Analysis</button>
       <button class="earn-tab" data-earn-tab="impact">Related Impact</button>
       <button class="earn-tab" data-earn-tab="guidance">Guidance</button>
       <button class="earn-tab" data-earn-tab="risk">Portfolio Risk</button>
@@ -3212,7 +3212,7 @@ h1,h2,h3{
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
         <div class="lr-ai" style="margin-bottom:0">
           <div class="lr-ai-head">
-            <div class="lr-ai-lbl">BriefTick AI · NVDA Beat Analysis</div>
+            <div class="lr-ai-lbl">Brieftick · NVDA Beat Analysis</div>
             <div class="lr-ai-conf">CONFIDENCE <b>91%</b></div>
           </div>
           <div class="lr-ai-text">
@@ -3222,7 +3222,7 @@ h1,h2,h3{
 
         <div class="lr-ai" style="margin-bottom:0;background:linear-gradient(135deg,rgba(255,91,110,0.05),rgba(78,168,255,0.03));border-color:rgba(255,91,110,0.25)">
           <div class="lr-ai-head">
-            <div class="lr-ai-lbl" style="color:var(--red)"><span style="background:var(--red);box-shadow:0 0 10px var(--red);width:6px;height:6px;border-radius:50%;display:inline-block"></span>BriefTick AI · TSLA Miss Analysis</div>
+            <div class="lr-ai-lbl" style="color:var(--red)"><span style="background:var(--red);box-shadow:0 0 10px var(--red);width:6px;height:6px;border-radius:50%;display:inline-block"></span>Brieftick · TSLA Miss Analysis</div>
             <div class="lr-ai-conf">CONFIDENCE <b style="color:var(--green)">84%</b></div>
           </div>
           <div class="lr-ai-text">
@@ -3347,7 +3347,7 @@ h1,h2,h3{
       </div>
 
       <div style="margin-top:14px;padding:18px;border-radius:14px;background:rgba(212,168,90,0.04);border:1px solid rgba(212,168,90,0.2)">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:10px">BriefTick AI · earnings-week briefing</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:10px">Brieftick · Earnings Briefing</div>
         <div style="font-size:14px;line-height:1.65;color:var(--ink)">
           Your portfolio enters this earnings week with <b style="color:var(--gold-bright)">elevated event risk</b>: three of your top five positions report inside seven days, all clustered in long-duration growth. The macro setup - 10Y at 4.42%, VIX above 22 - means <b style="color:var(--gold-bright)">misses will be amplified and beats may be muted</b>. Historically, this combination of sector concentration and macro tone leads to wider intraday ranges and higher single-day NAV swings. Consider this a description of the path, not a prescription. <b style="color:var(--gold-bright)">Educational only - not advice.</b>
         </div>
@@ -3355,7 +3355,7 @@ h1,h2,h3{
     </div>
 
     <div style="margin-top:24px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
-      <b style="color:var(--gold)">EDUCATIONAL CONTEXT ONLY.</b> Earnings Intelligence interprets historical and current market data. Beat/miss outcomes, sympathy moves, and pattern matches are descriptions of statistical relationships - not forecasts. AI confidence scores reflect model agreement, not predictive accuracy. Nothing in this section constitutes investment advice or a recommendation to buy, sell or hold any security. When connected to live data feeds (Polygon, Finnhub, FMP, Alpha Vantage, Twelve Data), data freshness depends on the API tier provisioned.
+      <b style="color:var(--gold)">EDUCATIONAL CONTEXT ONLY.</b> Earnings Intelligence interprets historical and current market data. Beat/miss outcomes, sympathy moves, and pattern matches are descriptions of statistical relationships - not forecasts. Signal confidence scores reflect model agreement, not predictive accuracy. Nothing in this section constitutes investment advice or a recommendation to buy, sell or hold any security. When connected to live data feeds (Polygon, Finnhub, FMP, Alpha Vantage, Twelve Data), data freshness depends on the API tier provisioned.
     </div>
   </div>
 </section>
@@ -3534,11 +3534,11 @@ h1,h2,h3{
         <div class="tier-price"><span class="num">£0</span><span class="per">/forever</span></div>
         <ul class="tier-features">
           <li>Market Radar <span class="tier-note">(lite)</span></li>
-          <li>AI Briefings <span class="tier-note">(1 daily)</span></li>
+          <li>Market Briefings <span class="tier-note">(1 daily)</span></li>
           <li>Market Impact Feed <span class="tier-note">(15-min delayed)</span></li>
           <li>Sector Rotation <span class="tier-note">(basic)</span></li>
           <li>Macro Intelligence <span class="tier-note">(calendar only)</span></li>
-          <li>AI Market Scanner <span class="tier-note">(top 10 movers)</span></li>
+          <li>Market Scanner <span class="tier-note">(top 10 movers)</span></li>
           <li>Basic earnings calendar</li>
           <li class="dim">Smart Alerts</li>
           <li class="dim">"Why Is It Moving" <span class="tier-note">(full)</span></li>
@@ -3557,7 +3557,7 @@ h1,h2,h3{
         <div class="tier-price"><span class="num">£<em>29</em></span><span class="per">/month</span></div>
         <ul class="tier-features">
           <li>Market Radar</li>
-          <li>AI Briefings</li>
+          <li>Market Briefings</li>
           <li>Why Is It Moving</li>
           <li>Portfolio Intelligence</li>
           <li>Macro Intelligence</li>
@@ -3565,7 +3565,7 @@ h1,h2,h3{
           <li>Correlation Engine</li>
           <li>Smart Alerts</li>
           <li>Sector Rotation</li>
-          <li>AI Market Scanner</li>
+          <li>Market Scanner</li>
           <li>Earnings Intelligence</li>
         </ul>
         <button class="tier-cta" onclick="startCheckout('intelligence', this)">Join Intelligence</button>
@@ -3583,7 +3583,7 @@ h1,h2,h3{
           <li>Advanced Telemetry Layers</li>
           <li>Institutional Sentiment</li>
           <li>Cross-Asset Correlation Matrix</li>
-          <li>AI Scenario Engine</li>
+          <li>Scenario Engine</li>
           <li>Portfolio Stress Testing</li>
           <li>Multi-Condition Alerts</li>
           <li>API Access</li>
@@ -3598,7 +3598,7 @@ h1,h2,h3{
       All plans can be cancelled at any time.
     </div>
     <div style="text-align:center;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7;max-width:600px;margin-left:auto;margin-right:auto">
-      BriefTick is an AI-powered market intelligence platform. We provide analysis, context and market interpretation — not financial advice or buy/sell recommendations.
+      Brieftick is a live market intelligence platform. We provide analysis, context and market interpretation — not financial advice or buy/sell recommendations.
     </div>
   </div>
 </section>
@@ -3611,9 +3611,9 @@ h1,h2,h3{
 <section class="page" id="page-scanner">
   <div class="scanner-wrap">
     <div class="scanner-hero">
-      <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">AI Scanner</div>
+      <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Market Scanner</div>
       <h1>Market Intelligence Scanner</h1>
-      <p>Momentum-ranked stocks across every sector, scored by price change, volume surge, and AI sentiment. Click any row to get an AI-generated explanation.</p>
+      <p>Momentum-ranked stocks across every sector, scored by price change, volume surge, and market sentiment. Click any row to get an intelligent explanation.</p>
     </div>
 
     <!-- Controls -->
@@ -3667,15 +3667,15 @@ h1,h2,h3{
     <div class="scanner-ai-summary">
       <h3>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--gold)" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
-        BriefTick AI &middot; Scanner Summary
+        Brieftick &middot; Scanner Summary
       </h3>
       <div id="scannerAISummaryText" style="color:var(--ink-faint);font-style:italic">
-        Run the scanner to generate an AI-powered market summary.
+        Run the scanner to generate a market summary.
       </div>
       <button onclick="generateScannerSummary()" id="scannerSumBtn"
         style="margin-top:14px;padding:8px 16px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);
         color:var(--gold);border-radius:7px;font-family:inherit;font-size:12px;cursor:pointer;display:none">
-        Regenerate AI Summary
+        Regenerate Summary
       </button>
     </div>
   </div>
@@ -3855,7 +3855,7 @@ h1,h2,h3{
     <div class="options-ai-box">
       <h3>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--gold)" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
-        BriefTick AI · Options Flow Analysis
+        Brieftick · Options Flow Analysis
       </h3>
       <div id="optAIText" style="font-size:13px;color:var(--ink-faint);font-style:italic;line-height:1.7">Load data to generate AI analysis of today's options flow.</div>
       <button onclick="generateOptionsAI()" id="optAIBtn" style="margin-top:12px;padding:8px 16px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:var(--gold);border-radius:7px;font-family:inherit;font-size:12px;cursor:pointer;display:none">
@@ -4155,7 +4155,7 @@ h1,h2,h3{
   <div class="footer-inner">
     <div class="footer-brand">
       <img src="/logo-transparent.png" alt="BriefTick" style="height:52px;width:auto;display:block;object-fit:contain;margin-bottom:12px">
-      <p class="tagline">AI-powered market intelligence. Understand <em>why</em> markets move — before the noise gets you. Educational context only, not financial advice.</p>
+      <p class="tagline">intelligent market intelligence. Understand <em>why</em> markets move — before the noise gets you. Educational context only, not financial advice.</p>
       <div class="footer-social">
         <a href="https://x.com" target="_blank" rel="noopener" title="X / Twitter">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -4637,7 +4637,7 @@ async function refreshVixExplanation(){
   if(!BriefTickAPI.keys.anthropic) return;
 
   try {
-    if(labelEl) labelEl.textContent = 'BriefTick AI · generating…';
+    if(labelEl) labelEl.textContent = 'Brieftick · generating…';
     const regime = vixValue < 15 ? 'CALM' : vixValue < 20 ? 'NORMAL' : vixValue < 25 ? 'ELEVATED' : vixValue < 35 ? 'STRESSED' : 'PANIC';
     const newsCtx = headlines.slice(0,5).map(h=>`- ${h}`).join('\n');
     const prompt = `You are a market intelligence analyst. The CBOE VIX is currently ${vixValue.toFixed(1)} (regime: ${regime}).
@@ -4655,7 +4655,7 @@ Be specific, factual, plain English. No jargon. No investment advice. Educationa
     if(result && result.trim()){
       textEl.innerHTML = result.trim();
       if(labelEl){
-        labelEl.textContent = 'BriefTick AI';
+        labelEl.textContent = 'Brieftick';
         labelEl.style.color = 'var(--gold)';
       }
     }
@@ -4755,7 +4755,7 @@ async function generateRiskAIExplanation(){
   const btn = document.getElementById('riskAiBtn');
   const out = document.getElementById('riskExplanation');
   if(!BriefTickAPI.keys.anthropic){
-    if(out) out.innerHTML = '<b>BriefTick AI:</b> Anthropic is not connected. Showing rules-based regime explanation.';
+    if(out) out.innerHTML = '<b>Brieftick:</b> Anthropic is not connected. Showing rules-based regime explanation.';
     return;
   }
   if(btn){
@@ -4911,7 +4911,7 @@ function openWhyFromWatchlist(symbol){
       document.getElementById('wimInput').value = sym;
       document.querySelectorAll('.wim-quick .chip').forEach(c=>c.classList.remove('active'));
       const out = document.getElementById('wimSummary');
-      if(out) out.innerHTML = '<p style="color:var(--gold);font-size:13px">Ticker set to <b>'+escapeHtml(sym)+'</b>. Click <b>Generate live AI</b> to pull market data, headlines and AI context.</p>';
+      if(out) out.innerHTML = '<p style="color:var(--gold);font-size:13px">Ticker set to <b>'+escapeHtml(sym)+'</b>. Click <b>Generate live</b> to pull market data, headlines and AI context.</p>';
     }
   });
 }
@@ -5353,7 +5353,7 @@ function renderLiveResult(){
 
     <div class="lr-ai">
       <div class="lr-ai-head">
-        <div class="lr-ai-lbl">BriefTick AI · Beat Interpretation</div>
+        <div class="lr-ai-lbl">Brieftick · Beat Interpretation</div>
         <div class="lr-ai-conf">CONFIDENCE <b>91%</b></div>
       </div>
       <div class="lr-ai-text">
@@ -7048,7 +7048,7 @@ async function liveRefreshDashboard(){
     await liveRefreshNews();
   } catch(e) { console.warn('[News data]', e.message); }
 
-  // Live AI Sentiment Feed (Finnhub + optional Anthropic enrichment)
+  // Live Signal Intelligence Feed (Finnhub + optional Anthropic enrichment)
   liveRefreshSentimentFeed(true).catch(e => console.warn('[Sentiment]', e.message));
 
   // Live Market Signal Feed (replaces static Social Signal Engine)
@@ -9784,7 +9784,7 @@ function cmdSelectItem(sym){
         if(wimInput) wimInput.value = s;
         document.querySelectorAll('.wim-quick .chip').forEach(c=>c.classList.remove('active'));
         const out = document.getElementById('wimSummary');
-        if(out) out.innerHTML = `<p style="color:var(--gold);font-size:13px">Ticker set to <b>${escapeHtml(s)}</b>. Click <b>Generate live AI</b> above to pull live market data and AI context.</p>`;
+        if(out) out.innerHTML = `<p style="color:var(--gold);font-size:13px">Ticker set to <b>${escapeHtml(s)}</b>. Click <b>Generate live</b> above to pull live market data and AI context.</p>`;
       }
     }
   });
@@ -11241,7 +11241,7 @@ async function runScanner() {
     renderScannerResults();
     document.getElementById('scannerSumBtn').style.display = '';
     if (scannerResults.length) {
-      document.getElementById('scannerAISummaryText').textContent = 'Scanner complete. Click "Regenerate AI Summary" or wait for auto-summary…';
+      document.getElementById('scannerAISummaryText').textContent = 'Scanner complete. Click "Regenerate Summary" or wait for auto-summary…';
       await generateScannerSummary();
     }
 
