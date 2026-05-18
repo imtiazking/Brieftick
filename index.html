@@ -2289,7 +2289,6 @@ h1,h2,h3{
     <button class="nav-link" data-route="insiders">Insiders</button>
     <button class="nav-link" data-route="options">Options</button>
     <button class="nav-link" data-route="pricing">Pricing</button>
-    <button class="nav-link" data-route="about">About</button>
     <button class="nav-settings" id="navSettingsBtn" onclick="openSettings()" title="API key settings" aria-label="Settings" style="display:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <path d="M12 15.5C13.933 15.5 15.5 13.933 15.5 12C15.5 10.067 13.933 8.5 12 8.5C10.067 8.5 8.5 10.067 8.5 12C8.5 13.933 10.067 15.5 12 15.5Z" stroke="currentColor" stroke-width="1.5"/>
@@ -4183,6 +4182,7 @@ h1,h2,h3{
     <div class="footer-col">
       <h5>Contact &amp; Legal</h5>
       <ul>
+        <li onclick="route('about')">About Brieftick</li>
         <li onclick="openRequestAccess()">Contact us</li>
         <li onclick="openLegal('terms')">Terms of Use</li>
         <li onclick="openLegal('privacy')">Privacy Policy</li>
@@ -4247,7 +4247,7 @@ tickerEl.innerHTML=ticks;
 const featureData=[
   ['Market Radar','Live regime detection across volatility, breadth, correlation and sentiment. Tells you what kind of market you\'re in - not just where it\'s going.','module 01',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><line x1="12" y1="3" x2="12" y2="12" stroke="currentColor" stroke-width="1.5"/></svg>'],
-  ['AI Briefings','Morning, midday and close briefings written by our analysis engine. Hedge-fund prep work, simplified.','module 02',
+  ['Market Briefings','Morning, midday and close briefings written by our analysis engine. Hedge-fund prep work, simplified.','module 02',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="17" x2="13" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>'],
   ['Why Is It Moving','The flagship feature. Decompose any move into causes - macro, sector, sentiment and historical pattern matches.','module 03',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18 L9 12 L13 16 L20 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="6" r="2" fill="currentColor"/></svg>'],
@@ -4271,7 +4271,7 @@ const featureData=[
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 17 L8 12 L12 15 L16 9 L21 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21" cy="11" r="2" fill="currentColor"/><path d="M3 21 L21 21" stroke="currentColor" stroke-width="1" opacity="0.3"/></svg>'],
 ];
 const featureRoutes = {
-  'Market Radar':'dashboard','AI Briefings':'brief','Why Is It Moving':'why',
+  'Market Radar':'dashboard','Market Briefings':'brief','Why Is It Moving':'why',
   'Portfolio Intelligence':'portfolio','Macro Intelligence':'impact',
   'Market Impact Feed':'impact','Correlation Engine':'portfolio',
   'Smart Alerts':'dashboard','Sector Rotation':'dashboard',
