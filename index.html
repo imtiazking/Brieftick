@@ -11084,17 +11084,53 @@ window.addEventListener('load', () => {
 ================================================================ */
 async function startCheckout(plan, btn) {
   const originalText = btn ? btn.textContent : '';
+
+  // ── Sign-in gate: require Clerk account before checkout ──────
+  if (window.Clerk && !window.Clerk.user) {
+    // Save intent and open sign-in; after auth _onAuthChange will
+    // not auto-start checkout (user has to click again — intentional)
+    if (btn) {
+      btn.textContent = 'Sign in to continue…';
+      setTimeout(() => { if (btn) btn.textContent = originalText; }, 2000);
+    }
+    window.Clerk.openSignIn({
+      afterSignInUrl: window.location.href,
+      afterSignUpUrl: window.location.href,
+    });
+    return;
+  }
+
   try {
     if (btn) {
       btn.disabled = true;
       btn.textContent = 'Redirecting to checkout…';
     }
-    const res = await fetch(`/api/checkout?plan=${plan}`, { method: 'POST' });
-    const data = await res.json();
-    if (!res.ok || !data.url) {
-      throw new Error(data.error || 'Could not create checkout session.');
+
+    let res;
+    try {
+      res = await fetch(`/api/checkout?plan=${plan}`, { method: 'POST' });
+    } catch (networkErr) {
+      // "Failed to fetch" = server not responding
+      // This usually means vercel dev is not running or Stripe keys are missing
+      throw new Error(
+        'Could not reach the server. If testing locally, run "vercel dev" and add ' +
+        'STRIPE_SECRET_KEY and STRIPE_INTELLIGENCE_PRICE_ID to your .env.local file.'
+      );
     }
+
+    let data;
+    try {
+      data = await res.json();
+    } catch (_) {
+      throw new Error(`Server returned an unexpected response (HTTP ${res.status}). Check the server logs.`);
+    }
+
+    if (!res.ok || !data.url) {
+      throw new Error(data.error || data.hint || 'Could not create checkout session.');
+    }
+
     window.location.href = data.url;
+
   } catch (err) {
     console.error('[checkout]', err.message);
     alert('Checkout unavailable: ' + err.message);
