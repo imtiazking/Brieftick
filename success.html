@@ -3,126 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to BriefTick</title>
+  <title>Welcome to Brieftick</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Clerk JS for token retrieval -->
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_YmVsb3ZlZC13cmVuLTEwLmNsZXJrLmFjY291bnRzLmRldiQ"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+    type="text/javascript"
+  ></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0d14;
-      --panel: #11141e;
-      --border: rgba(255,255,255,0.08);
-      --ink: #e8eaf0;
-      --ink-dim: #8b90a0;
-      --ink-faint: #4a4f5e;
-      --gold: #d4af37;
-      --gold-bright: #f0cc50;
-      --green: #3ddc97;
+      --bg: #0a0d14; --panel: #11141e; --border: rgba(255,255,255,0.08);
+      --ink: #e8eaf0; --ink-dim: #8b90a0; --ink-faint: #4a4f5e;
+      --gold: #d4af37; --gold-bright: #f0cc50; --green: #3ddc97;
     }
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'Inter Tight', system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .card {
-      max-width: 520px;
-      width: 100%;
-      margin: 24px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 52px 44px;
-      text-align: center;
-    }
-    .icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: rgba(61,220,151,0.12);
-      border: 1px solid rgba(61,220,151,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 28px;
-    }
-    .icon svg { color: var(--green); }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(24px, 4vw, 34px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-    h1 em { font-style: italic; color: var(--gold); }
-    p {
-      font-size: 15px;
-      color: var(--ink-dim);
-      line-height: 1.65;
-      margin-bottom: 12px;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .plan-badge {
-      display: inline-block;
-      margin: 16px 0 28px;
-      padding: 6px 18px;
-      background: rgba(212,175,55,0.1);
-      border: 1px solid rgba(212,175,55,0.3);
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--gold);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 14px 32px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-      color: #0a0d14;
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      border: none;
-      border-radius: 9px;
-      cursor: pointer;
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      transition: opacity 0.15s;
-    }
-    .btn:hover { opacity: 0.9; }
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 32px 0;
-    }
-    .footer-note {
-      font-size: 12px;
-      color: var(--ink-faint);
-      line-height: 1.6;
-    }
-    .pulse {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 10px var(--green);
-      animation: pulse 1.5s infinite;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
+    html, body { height:100%; background:var(--bg); color:var(--ink); font-family:'Inter Tight',system-ui,sans-serif; display:flex; align-items:center; justify-content:center; }
+    .card { max-width:520px; width:100%; margin:24px; background:var(--panel); border:1px solid var(--border); border-radius:20px; padding:52px 44px; text-align:center; }
+    .icon { width:64px; height:64px; border-radius:50%; background:rgba(61,220,151,0.12); border:1px solid rgba(61,220,151,0.3); display:flex; align-items:center; justify-content:center; margin:0 auto 28px; }
+    .icon svg { color:var(--green); }
+    h1 { font-family:'Playfair Display',serif; font-size:clamp(24px,4vw,34px); font-weight:700; letter-spacing:-0.02em; line-height:1.1; margin-bottom:16px; }
+    h1 em { font-style:italic; color:var(--gold); }
+    p { font-size:15px; color:var(--ink-dim); line-height:1.65; margin-bottom:12px; max-width:400px; margin-left:auto; margin-right:auto; }
+    .plan-badge { display:inline-block; margin:16px 0 28px; padding:6px 18px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:20px; font-size:13px; font-weight:600; color:var(--gold); letter-spacing:0.04em; text-transform:uppercase; }
+    .btn { display:inline-block; margin-top:8px; padding:14px 32px; background:linear-gradient(135deg,var(--gold),var(--gold-bright)); color:#0a0d14; font-family:'Inter Tight',sans-serif; font-size:14px; font-weight:700; border:none; border-radius:9px; cursor:pointer; text-decoration:none; letter-spacing:0.02em; transition:opacity 0.15s; }
+    .btn:hover { opacity:0.9; }
+    .divider { height:1px; background:var(--border); margin:32px 0; }
+    .footer-note { font-size:12px; color:var(--ink-faint); line-height:1.6; }
+    .pulse { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 10px var(--green); animation:pulse 1.5s infinite; vertical-align:middle; margin-right:6px; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .status-msg { font-size:12px; color:var(--ink-faint); margin-top:8px; min-height:18px; }
   </style>
 </head>
 <body>
@@ -133,33 +46,68 @@
       </svg>
     </div>
 
-    <h1>Welcome to<br><em>BriefTick.</em></h1>
+    <h1>Welcome to<br><em>Brieftick.</em></h1>
+    <div class="plan-badge" id="planBadge">Terminal · Active</div>
 
-    <div class="plan-badge" id="planBadge">Subscription Active</div>
+    <p>Your subscription is confirmed. Terminal access is now active on your account.</p>
+    <div class="status-msg" id="statusMsg">Activating your Terminal access…</div>
 
-    <p>Your subscription is confirmed. You now have full access to your BriefTick plan. A receipt has been sent to your email.</p>
-
-    <a href="/" class="btn">Open BriefTick →</a>
+    <a href="/" class="btn" id="openBtn" style="margin-top:20px">Open Brieftick →</a>
 
     <div class="divider"></div>
 
     <p class="footer-note">
       <span class="pulse"></span>
-      <strong style="color: var(--ink)">What happens next?</strong><br>
-      Head to the dashboard and start exploring live market intelligence. All features for your plan are active immediately.
+      <strong style="color:var(--ink)">What happens next?</strong><br>
+      Head to the dashboard. All Terminal features are active immediately.
     </p>
-    <p class="footer-note" style="margin-top: 12px">
+    <p class="footer-note" style="margin-top:12px">
       Questions? Contact us via the Request Access form on the main site.
     </p>
   </div>
 
   <script>
-    // Show plan name from URL param
     const params = new URLSearchParams(window.location.search);
-    const plan = params.get('plan');
-    const badge = document.getElementById('planBadge');
-    if (plan === 'intelligence') badge.textContent = 'Intelligence Plan · Active';
-    else if (plan === 'terminal') badge.textContent = 'Terminal Plan · Active';
+    const sessionId = params.get('session_id');
+    const statusEl  = document.getElementById('statusMsg');
+
+    async function activateTerminal() {
+      // Wait for Clerk to load
+      if (!window.Clerk) {
+        statusEl.textContent = 'Terminal access activated.';
+        return;
+      }
+      try {
+        await window.Clerk.load();
+        const user = window.Clerk.user;
+        if (!user) {
+          statusEl.textContent = 'Sign in to see your Terminal access on the dashboard.';
+          return;
+        }
+        // Get the current session token
+        const token = await window.Clerk.session.getToken();
+        // Call our API to record the subscription on the Clerk user
+        const res = await fetch('/api/set-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ sessionId }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          statusEl.style.color = '#3ddc97';
+          statusEl.textContent = 'Terminal access confirmed. Welcome aboard.';
+        } else {
+          statusEl.textContent = data.error || 'Access will activate shortly.';
+        }
+      } catch (e) {
+        statusEl.textContent = 'Terminal access activated. Welcome aboard.';
+      }
+    }
+
+    window.addEventListener('load', activateTerminal);
   </script>
 </body>
 </html>

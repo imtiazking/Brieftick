@@ -1254,6 +1254,18 @@ main{padding-top:90px;position:relative;z-index:3}
 .teaser-strip .ts-cta{margin-left:auto;color:var(--gold);font-weight:600;font-size:11px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
 .nav-lock{display:inline-flex;align-items:center;opacity:.5;margin-left:2px;vertical-align:middle}
 .pricing-note{text-align:center;font-size:13px;color:var(--ink-dim);margin-bottom:16px}
+
+/* ── Auth nav elements ─────────────────────────────────────── */
+.auth-area{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.auth-signin-btn{padding:8px 14px;background:transparent;border:1px solid var(--border-strong);color:var(--ink-dim);border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer;transition:all .15s}
+.auth-signin-btn:hover{color:var(--ink);border-color:rgba(180,200,255,.28)}
+.auth-signup-btn{padding:8px 16px;background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:#0a0d14;border:none;border-radius:6px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.auth-signup-btn:hover{opacity:.9;transform:translateY(-1px)}
+.auth-plan-badge{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:3px;font-weight:700}
+.auth-plan-badge.free{background:rgba(180,200,255,.08);color:var(--ink-faint);border:1px solid var(--border)}
+.auth-plan-badge.terminal{background:rgba(212,168,90,.12);color:var(--gold);border:1px solid rgba(212,168,90,.3)}
+.cl-userButtonAvatarBox{width:30px!important;height:30px!important}
+
 .tier-cta{
   padding:14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;
   letter-spacing:0.04em;cursor:pointer;text-align:center;transition:all 0.2s;
@@ -2254,6 +2266,14 @@ h1,h2,h3{
   <!-- GSAP 3 + ScrollTrigger via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <!-- Clerk JS SDK -->
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_YmVsb3ZlZC13cmVuLTEwLmNsZXJrLmFjY291bnRzLmRldiQ"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+    type="text/javascript"
+  ></script>
 </head>
 <body>
 
@@ -2365,7 +2385,20 @@ h1,h2,h3{
         <path d="M19.622 10.395L18.244 9.04C18.135 7.83 17.671 6.694 16.937 5.768L17.453 3.949L15.728 2.949L14.224 4.226C13.094 3.755 11.852 3.591 10.629 3.755L9.32 2.379L7.595 3.379L8.111 5.198C7.377 6.124 6.913 7.26 6.804 8.47L5.426 9.825L5.426 11.825L6.804 13.18C6.913 14.39 7.377 15.526 8.111 16.452L7.595 18.271L9.32 19.271L10.824 17.994C11.954 18.465 13.196 18.629 14.419 18.465L15.728 19.841L17.453 18.841L16.937 17.022C17.671 16.096 18.135 14.96 18.244 13.75L19.622 12.395L19.622 10.395Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/>
       </svg>
     </button>
-    <button class="nav-cta" onclick="openRequestAccess()">Request Access</button>
+
+    <!-- Auth area — populated by Clerk JS -->
+    <div class="auth-area" id="authArea">
+      <!-- Signed-out state (default) -->
+      <div id="authSignedOut" style="display:flex;gap:8px;align-items:center">
+        <button class="auth-signin-btn" id="authSignInBtn">Sign In</button>
+        <button class="auth-signup-btn" id="authSignUpBtn">Start Free</button>
+      </div>
+      <!-- Signed-in state -->
+      <div id="authSignedIn" style="display:none;align-items:center;gap:10px">
+        <span class="auth-plan-badge free" id="authPlanBadge">Free</span>
+        <div id="clerkUserButton"></div>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -9970,6 +10003,141 @@ function dismissOnboarding(){
 }
 window.dismissOnboarding = dismissOnboarding;
 window.addEventListener('load', showOnboardingIfNew);
+
+/* ================================================================
+   CLERK AUTHENTICATION
+================================================================ */
+let _clerkUser = null;         // null = visitor, object = signed in user
+let _isTerminal = false;       // true when user has Terminal subscription
+
+async function initClerk() {
+  if (!window.Clerk) return;
+  try {
+    await window.Clerk.load({
+      appearance: {
+        variables: {
+          colorPrimary:      '#d4a85a',
+          colorBackground:   '#0a0d14',
+          colorInputBackground: '#11141e',
+          colorText:         '#e8ecf5',
+          colorTextSecondary:'#8b94a8',
+          borderRadius:      '8px',
+        },
+        elements: {
+          card:            'background:#11141e;border:1px solid rgba(180,200,255,0.08)',
+          formButtonPrimary: 'background:linear-gradient(135deg,#d4a85a,#e8c178);color:#0a0d14',
+          footerActionLink:  'color:#d4a85a',
+        },
+      },
+    });
+
+    // Mount UserButton inside the nav div
+    const ubEl = document.getElementById('clerkUserButton');
+    if (ubEl && window.Clerk.user) {
+      window.Clerk.mountUserButton(ubEl);
+    }
+
+    // Wire sign in / sign up buttons
+    const signInBtn  = document.getElementById('authSignInBtn');
+    const signUpBtn  = document.getElementById('authSignUpBtn');
+    if (signInBtn)  signInBtn.addEventListener('click',  () => window.Clerk.openSignIn());
+    if (signUpBtn)  signUpBtn.addEventListener('click',  () => window.Clerk.openSignUp());
+
+    // Update UI for current auth state immediately
+    await _onAuthChange(window.Clerk.user);
+
+    // Listen for future sign-in / sign-out events
+    window.Clerk.addListener(({ user }) => _onAuthChange(user));
+
+  } catch (e) {
+    console.warn('[Clerk] init failed:', e.message);
+  }
+}
+
+async function _onAuthChange(user) {
+  _clerkUser = user || null;
+  const signedOut = document.getElementById('authSignedOut');
+  const signedIn  = document.getElementById('authSignedIn');
+  const badge     = document.getElementById('authPlanBadge');
+  const ubEl      = document.getElementById('clerkUserButton');
+
+  if (!user) {
+    // Visitor — show Sign In + Start Free
+    _isTerminal = false;
+    if (signedOut) signedOut.style.display = 'flex';
+    if (signedIn)  signedIn.style.display  = 'none';
+    _applyAccessLevel('visitor');
+    return;
+  }
+
+  // Signed in — hide sign-in buttons, show user button
+  if (signedOut) signedOut.style.display = 'none';
+  if (signedIn)  { signedIn.style.display = 'flex'; }
+
+  // Mount UserButton if not already mounted
+  if (ubEl && !ubEl.querySelector('.cl-userButton')) {
+    window.Clerk.mountUserButton(ubEl);
+  }
+
+  // Check subscription from public metadata (fast, no API call)
+  const sub = user.publicMetadata?.subscription;
+  if (sub === 'terminal') {
+    _isTerminal = true;
+    if (badge) { badge.textContent = 'Terminal'; badge.className = 'auth-plan-badge terminal'; }
+    _applyAccessLevel('terminal');
+  } else {
+    // Also verify server-side in case metadata is stale
+    _isTerminal = false;
+    if (badge) { badge.textContent = 'Free'; badge.className = 'auth-plan-badge free'; }
+    _applyAccessLevel('free');
+    // Background check
+    _verifySubscriptionFromServer();
+  }
+}
+
+async function _verifySubscriptionFromServer() {
+  if (!window.Clerk?.session) return;
+  try {
+    const token = await window.Clerk.session.getToken();
+    const res   = await fetch('/api/user', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.subscription === 'terminal' && !_isTerminal) {
+      _isTerminal = true;
+      const badge = document.getElementById('authPlanBadge');
+      if (badge) { badge.textContent = 'Terminal'; badge.className = 'auth-plan-badge terminal'; }
+      _applyAccessLevel('terminal');
+    }
+  } catch (_) {}
+}
+
+function _applyAccessLevel(level) {
+  // Remove existing teaser strips and overlays if Terminal
+  if (level === 'terminal') {
+    document.querySelectorAll('.teaser-strip').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.upgrade-overlay').forEach(el => el.remove());
+    // Remove nav lock icons text — keep icons subtle but remove visual prominence
+    document.querySelectorAll('.nav-lock').forEach(el => el.style.opacity = '0.2');
+  } else {
+    // Free / visitor — restore teaser strips
+    document.querySelectorAll('.teaser-strip').forEach(el => el.style.display = '');
+    document.querySelectorAll('.nav-lock').forEach(el => el.style.opacity = '0.5');
+  }
+}
+
+// Expose for global use
+window.clerkSignIn  = () => window.Clerk?.openSignIn();
+window.clerkSignUp  = () => window.Clerk?.openSignUp();
+window.isTerminal   = () => _isTerminal;
+
+// Init after Clerk script loads
+if (document.readyState === 'complete') {
+  initClerk();
+} else {
+  window.addEventListener('load', initClerk);
+}
 
 /* ================================================================
    UPGRADE OVERLAY SYSTEM
