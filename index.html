@@ -1266,6 +1266,72 @@ main{padding-top:90px;position:relative;z-index:3}
 .auth-plan-badge.terminal{background:rgba(212,168,90,.12);color:var(--gold);border:1px solid rgba(212,168,90,.3)}
 .cl-userButtonAvatarBox{width:30px!important;height:30px!important}
 
+/* ── Clerk modal: force visible text in all inputs ─────────── */
+/* These rules override Clerk's injected styles regardless of specificity */
+.cl-formFieldInput,
+.cl-formFieldInput[type="password"],
+.cl-formFieldInput[type="email"],
+.cl-formFieldInput[type="text"] {
+  color: #e8ecf5 !important;
+  background-color: #11141e !important;
+  caret-color: #e8ecf5 !important;
+  border-color: rgba(180,200,255,0.15) !important;
+  -webkit-text-fill-color: #e8ecf5 !important;
+}
+/* Placeholder text */
+.cl-formFieldInput::placeholder {
+  color: #566175 !important;
+  -webkit-text-fill-color: #566175 !important;
+}
+/* Password revealed (type switches to text) */
+.cl-formFieldInput[type="text"] {
+  color: #e8ecf5 !important;
+  -webkit-text-fill-color: #e8ecf5 !important;
+}
+/* Fix browser autofill dark overlay */
+.cl-formFieldInput:-webkit-autofill,
+.cl-formFieldInput:-webkit-autofill:hover,
+.cl-formFieldInput:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #11141e inset !important;
+  -webkit-text-fill-color: #e8ecf5 !important;
+  caret-color: #e8ecf5 !important;
+}
+/* Inner wrapper Clerk sometimes uses */
+.cl-formFieldInputGroup,
+.cl-formFieldInputShowPasswordButton {
+  background-color: #11141e !important;
+  color: #e8ecf5 !important;
+}
+.cl-formFieldInputShowPasswordIcon {
+  color: #8b94a8 !important;
+}
+.cl-card {
+  background: #11141e !important;
+  color: #e8ecf5 !important;
+}
+.cl-modalContent {
+  background: rgba(5,6,10,0.9) !important;
+}
+.cl-headerTitle,
+.cl-headerSubtitle {
+  color: #e8ecf5 !important;
+}
+.cl-formFieldLabel {
+  color: #8b94a8 !important;
+}
+.cl-formButtonPrimary {
+  background: linear-gradient(135deg,#d4a85a,#e8c178) !important;
+  color: #0a0d14 !important;
+}
+.cl-footerActionLink {
+  color: #d4a85a !important;
+}
+.cl-identityPreviewText,
+.cl-userPreviewTextContainer {
+  color: #e8ecf5 !important;
+}
+
+
 .tier-cta{
   padding:14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;
   letter-spacing:0.04em;cursor:pointer;text-align:center;transition:all 0.2s;
@@ -10016,17 +10082,30 @@ async function initClerk() {
     await window.Clerk.load({
       appearance: {
         variables: {
-          colorPrimary:      '#d4a85a',
-          colorBackground:   '#0a0d14',
+          colorPrimary:         '#d4a85a',
+          colorBackground:      '#0a0d14',
           colorInputBackground: '#11141e',
-          colorText:         '#e8ecf5',
-          colorTextSecondary:'#8b94a8',
-          borderRadius:      '8px',
+          colorInputText:       '#e8ecf5',
+          colorText:            '#e8ecf5',
+          colorTextSecondary:   '#8b94a8',
+          colorTextOnPrimaryBackground: '#0a0d14',
+          colorNeutral:         '#e8ecf5',
+          borderRadius:         '8px',
         },
         elements: {
-          card:            'background:#11141e;border:1px solid rgba(180,200,255,0.08)',
-          formButtonPrimary: 'background:linear-gradient(135deg,#d4a85a,#e8c178);color:#0a0d14',
-          footerActionLink:  'color:#d4a85a',
+          card:               'background:#11141e;border:1px solid rgba(180,200,255,0.08);box-shadow:0 8px 40px rgba(0,0,0,0.6)',
+          formButtonPrimary:  'background:linear-gradient(135deg,#d4a85a,#e8c178);color:#0a0d14;font-weight:700',
+          footerActionLink:   'color:#d4a85a',
+          formFieldInput:     'background:#11141e;color:#e8ecf5;border-color:rgba(180,200,255,0.15);caret-color:#e8ecf5',
+          formFieldLabel:     'color:#8b94a8',
+          identityPreviewText:'color:#e8ecf5',
+          headerTitle:        'color:#e8ecf5',
+          headerSubtitle:     'color:#8b94a8',
+          dividerLine:        'background:rgba(180,200,255,0.08)',
+          dividerText:        'color:#566175',
+          socialButtonsBlockButton: 'background:#11141e;border-color:rgba(180,200,255,0.12);color:#e8ecf5',
+          socialButtonsBlockButtonText: 'color:#e8ecf5',
+          alternativeMethodsBlockButton: 'background:#11141e;border-color:rgba(180,200,255,0.12);color:#e8ecf5',
         },
       },
     });
