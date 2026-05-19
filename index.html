@@ -1253,6 +1253,12 @@ main{padding-top:90px;position:relative;z-index:3}
 .teaser-strip:hover{background:rgba(212,168,90,.10)}
 .teaser-strip .ts-cta{margin-left:auto;color:var(--gold);font-weight:600;font-size:11px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
 .nav-lock{display:inline-flex;align-items:center;opacity:.5;margin-left:2px;vertical-align:middle}
+
+/* ── Public nav: hide app tabs until signed in ─────────────── */
+/* Default: app tabs hidden (public mode) */
+.app-tab{display:none!important}
+/* nav--authed: show all tabs */
+.nav--authed .app-tab{display:inline-flex!important}
 .pricing-note{text-align:center;font-size:13px;color:var(--ink-dim);margin-bottom:16px}
 
 /* ── Auth nav elements ─────────────────────────────────────── */
@@ -2433,18 +2439,19 @@ h1,h2,h3{
   <div class="brand" onclick="route('landing')" id="navBrand">
     <img src="/logo-transparent.png" alt="BriefTick" style="height:78px;width:auto;display:block;object-fit:contain">
   </div>
-  <div class="nav-links">
-    <button class="nav-link" data-route="landing">Overview</button>
-    <button class="nav-link" data-route="dashboard">Dashboard</button>
-    <button class="nav-link" data-route="why">Movers</button>
-    <button class="nav-link" data-route="impact">Intelligence</button>
-    <button class="nav-link" data-route="brief">Briefing</button>
-    <button class="nav-link" data-route="earnings">Earnings</button>
-    <button class="nav-link" data-route="portfolio">Portfolio</button>
-    <button class="nav-link" data-route="scanner">Scanner <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    <button class="nav-link" data-route="insiders">Insiders <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    <button class="nav-link" data-route="options">Options <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-link" data-route="landing">Home</button>
+    <button class="nav-link app-tab" data-route="dashboard">Dashboard</button>
+    <button class="nav-link app-tab" data-route="why">Movers</button>
+    <button class="nav-link app-tab" data-route="impact">Intelligence</button>
+    <button class="nav-link app-tab" data-route="brief">Briefing</button>
+    <button class="nav-link app-tab" data-route="earnings">Earnings</button>
+    <button class="nav-link app-tab" data-route="portfolio">Portfolio</button>
+    <button class="nav-link app-tab" data-route="scanner">Scanner <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="nav-link app-tab" data-route="insiders">Insiders <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button class="nav-link app-tab" data-route="options">Options <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <button class="nav-link" data-route="pricing">Pricing</button>
+    <button class="nav-link" data-route="about">About</button>
     <button class="nav-settings" id="navSettingsBtn" onclick="openSettings()" title="API key settings" aria-label="Settings" style="display:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <path d="M12 15.5C13.933 15.5 15.5 13.933 15.5 12C15.5 10.067 13.933 8.5 12 8.5C10.067 8.5 8.5 10.067 8.5 12C8.5 13.933 10.067 15.5 12 15.5Z" stroke="currentColor" stroke-width="1.5"/>
@@ -10139,16 +10146,20 @@ async function _onAuthChange(user) {
   const signedIn  = document.getElementById('authSignedIn');
   const badge     = document.getElementById('authPlanBadge');
   const ubEl      = document.getElementById('clerkUserButton');
+  const navEl     = document.getElementById('navLinks');
 
   if (!user) {
     _isTerminal = false;
     if (signedOut) signedOut.style.display = 'flex';
     if (signedIn)  signedIn.style.display  = 'none';
+    // Hide app tabs for public users
+    if (navEl) navEl.classList.remove('nav--authed');
     _applyAccessLevel('visitor');
     return;
   }
 
-  // Signed in — update nav UI
+  // Signed in — show app tabs
+  if (navEl) navEl.classList.add('nav--authed');
   if (signedOut) signedOut.style.display = 'none';
   if (signedIn)  signedIn.style.display  = 'flex';
 
