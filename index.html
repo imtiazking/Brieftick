@@ -2380,7 +2380,7 @@ h1,h2,h3{
       </div>
       <div id="raErrorMsg" style="display:none" class="ra-error"></div>
       <button class="ra-submit" id="raSubmitBtn" onclick="submitRequestAccess()">Request Access →</button>
-      <p class="ra-privacy">No spam. No credit card. We'll email you when your cohort opens.<br>You can also <a onclick="route('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the live demo</a> right now.</p>
+      <p class="ra-privacy">No spam. No credit card. We'll email you when your cohort opens.<br>You can also <a onclick="routeWithAuth('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the live demo</a> right now.</p>
     </div>
     <div id="raSuccess" class="ra-success" style="display:none">
       <div class="ra-success-icon">✓</div>
@@ -2419,7 +2419,7 @@ h1,h2,h3{
     <div class="onboard-sub">Live market intelligence. Start with the <b>Live Dashboard</b>, search any ticker in <b>Why Is It Moving</b>, or type <b>Cmd+K</b> to search anywhere.</div>
   </div>
   <div class="onboard-actions">
-    <button class="onboard-btn-primary" onclick="route('dashboard');dismissOnboarding()">Explore Dashboard</button>
+    <button class="onboard-btn-primary" onclick="routeWithAuth('dashboard');dismissOnboarding()">Explore Dashboard</button>
     <button class="onboard-btn-secondary" onclick="dismissOnboarding()">Got it</button>
   </div>
 </div>
@@ -2606,8 +2606,8 @@ h1,h2,h3{
         <h1 class="gsap-hero-el">Understand<br>what moves<br><span class="gold">markets.</span></h1>
         <p class="hero-sub gsap-hero-el">Real-time market intelligence across earnings, macro events, sentiment, and market-moving news. Built to explain the why behind every move.</p>
         <div class="hero-cta gsap-hero-el">
-          <button class="btn-primary" onclick="openRequestAccess()">Request Access →</button>
-          <button class="btn-secondary" onclick="route('dashboard')">View Live Demo <span class="external">↗</span></button>
+          <button class="btn-primary" onclick="clerkSignUp()">Start Free →</button>
+          <button class="btn-secondary" onclick="routeWithAuth('dashboard')">View Live Demo <span class="external">↗</span></button>
         </div>
         <div class="hero-proof">
           <div class="hero-proof-item"><div class="hero-proof-icon">⌁</div><div><b>Live market data</b><span>Streaming context</span></div></div>
@@ -2744,8 +2744,8 @@ h1,h2,h3{
     <div class="section-narrow" style="text-align:center">
       <div class="section-eyebrow" style="display:inline-block">The market deserves better narration</div>
       <h2 class="section-title" style="margin:0 auto 28px">Stop reading the tape.<br><em>Start understanding it.</em></h2>
-      <button class="btn-primary" onclick="openRequestAccess()" style="margin:12px 6px">Join the Beta</button>
-      <button class="btn-secondary" onclick="route('dashboard')" style="margin:12px 6px">Explore the Dashboard</button>
+      <button class="btn-primary" onclick="clerkSignUp()" style="margin:12px 6px">Start Free →</button>
+      <button class="btn-secondary" onclick="routeWithAuth('dashboard')" style="margin:12px 6px">Explore the Dashboard</button>
     </div>
   </section>
 </section>
@@ -3710,7 +3710,7 @@ h1,h2,h3{
           <li>Market Briefings (1 daily, delayed)</li>
           <li>Basic macro signals</li>
         </ul>
-        <button class="t2-cta secondary" onclick="openRequestAccess()">Start Free</button>
+        <button class="t2-cta secondary" onclick="clerkSignUp()">Start Free</button>
       </div>
 
       <!-- TERMINAL -->
@@ -4451,7 +4451,7 @@ function route(name){
   window.scrollTo({top:0,behavior:'instant'});
 }
 document.querySelectorAll('.nav-link').forEach(l=>{
-  l.addEventListener('click',()=>route(l.dataset.route));
+  l.addEventListener('click',()=>routeWithAuth(l.dataset.route));
 });
 
 /* ============================================================
@@ -4512,7 +4512,7 @@ const featureRoutes = {
 };
 document.getElementById('featureGrid').innerHTML=featureData.map(([t,d,tag,icon])=>{
   const dest = featureRoutes[t] || 'dashboard';
-  return `<div class="feature" style="cursor:pointer" onclick="route('${dest}')" title="Open ${t}">
+  return `<div class="feature" style="cursor:pointer" onclick="routeWithAuth('${dest}')" title="Open ${t}">
     <div class="feature-icon">${icon}</div>
     <h3>${t}</h3>
     <p>${d}</p>
@@ -7307,7 +7307,7 @@ window.addEventListener('load', liveRefreshDashboard);
 // Handle ?tab= param so cancel redirect from Stripe lands on the right page
 (function(){
   const tab = new URLSearchParams(window.location.search).get('tab');
-  if (tab) route(tab);
+  if (tab) routeWithAuth(tab);
 })();
 
 /* ----------------------------------------------------------------
@@ -10180,8 +10180,14 @@ async function _onAuthChange(user) {
     const intent = sessionStorage.getItem('bt_checkout_intent');
     if (intent) {
       sessionStorage.removeItem('bt_checkout_intent');
-      // Small delay so the nav finishes updating visually first
       setTimeout(() => startCheckout(intent, null), 400);
+    } else {
+      // Resume nav intent (tab they tried to visit while signed out)
+      const navIntent = sessionStorage.getItem('bt_nav_intent');
+      if (navIntent && !_PUBLIC_TABS.has(navIntent)) {
+        sessionStorage.removeItem('bt_nav_intent');
+        setTimeout(() => window.route(navIntent), 450);
+      }
     }
   } catch(_) {}
 }
@@ -10503,6 +10509,41 @@ window.addEventListener('load', () => {
 // Global auth helpers (also used before Clerk loads)
 window.clerkSignIn  = () => window.Clerk?.openSignIn();
 window.clerkSignUp  = () => window.Clerk?.openSignUp();
+
+/* ================================================================
+   ROUTE WITH AUTH — public route gate
+   Public tabs: landing, pricing, about (no sign-in needed)
+   Protected tabs: everything else — require Clerk account
+================================================================ */
+const _PUBLIC_TABS = new Set(['landing', 'pricing', 'about']);
+
+function routeWithAuth(name) {
+  // Public tabs always accessible
+  if (_PUBLIC_TABS.has(name)) { window.route(name); return; }
+
+  // Protected tab — require sign-in
+  if (!_clerkUser) {
+    try { sessionStorage.setItem('bt_nav_intent', name); } catch(_) {}
+    window.Clerk?.openSignUp();
+    return;
+  }
+
+  // Signed in — navigate normally
+  window.route(name);
+}
+window.routeWithAuth = routeWithAuth;
+
+// On page load: if public user somehow lands on a protected tab, redirect to landing
+window.addEventListener('load', () => {
+  const active = document.querySelector('.page.active');
+  const activeId = active?.id?.replace('page-', '');
+  if (activeId && !_PUBLIC_TABS.has(activeId) && !_clerkUser) {
+    // Give Clerk a moment to load and set user; if still public → back to landing
+    setTimeout(() => {
+      if (!_clerkUser) window.route('landing');
+    }, 1200);
+  }
+});
 
 
 // Init after Clerk script loads
@@ -11350,16 +11391,16 @@ function initGSAP() {
     }
   };
 
-  // Re-bind nav links to new route()
+  // Re-bind nav links to use routeWithAuth (public gate)
   document.querySelectorAll('.nav-link').forEach(l => {
     l.onclick = () => {
       const name = l.dataset.route;
-      window.route(name);
-      if (name === 'insiders' && typeof loadInsiders === 'function' && !window._insidersLoaded) {
+      routeWithAuth(name);
+      if (name === 'insiders' && typeof loadInsiders === 'function' && !window._insidersLoaded && _clerkUser) {
         window._insidersLoaded = true;
         loadInsiders(); loadPoliticalTrades();
       }
-      if (name === 'options' && typeof loadOptionsData === 'function' && !window._optionsLoaded) {
+      if (name === 'options' && typeof loadOptionsData === 'function' && !window._optionsLoaded && _clerkUser) {
         window._optionsLoaded = true;
         loadOptionsData();
       }
@@ -12530,8 +12571,8 @@ window.generateInsidersAI = generateInsidersAI;
   document.querySelectorAll('.nav-link').forEach(l => {
     l.onclick = () => {
       const name = l.dataset.route;
-      route(name);
-      if (name === 'insiders' && insidersCorpData.length === 0) {
+      routeWithAuth(name);
+      if (name === 'insiders' && insidersCorpData.length === 0 && _clerkUser) {
         loadInsiders();
         loadPoliticalTrades();
       }
