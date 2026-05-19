@@ -3087,17 +3087,17 @@ h1,h2,h3{
         <input id="wimInput" type="text" placeholder="Search ticker, company or theme…" value="NVDA">
       </div>
       <div class="wim-quick">
-        <button class="chip active" onclick="loadWim('NVDA')">NVDA</button>
-        <button class="chip" onclick="loadWim('TSLA')">TSLA</button>
-        <button class="chip" onclick="loadWim('AAPL')">AAPL</button>
-        <button class="chip" onclick="loadWim('META')">META</button>
-        <button class="chip" onclick="loadWim('GOOGL')">GOOGL</button>
-        <button class="chip" onclick="loadWim('AMD')">AMD</button>
-        <button class="chip" onclick="loadWim('MSFT')">MSFT</button>
-        <button class="chip" onclick="loadWim('AMZN')">AMZN</button>
-        <button class="chip" onclick="loadWim('NFLX')">NFLX</button>
-        <button class="chip" onclick="loadWim('SNDK')">SNDK</button>
-        <button class="chip" onclick="loadWim('SPY')">SPY</button>
+        <button class="chip active" onclick="loadWimWithLimit('NVDA')">NVDA</button>
+        <button class="chip" onclick="loadWimWithLimit('TSLA')">TSLA</button>
+        <button class="chip" onclick="loadWimWithLimit('AAPL')">AAPL</button>
+        <button class="chip" onclick="loadWimWithLimit('META')">META</button>
+        <button class="chip" onclick="loadWimWithLimit('GOOGL')">GOOGL</button>
+        <button class="chip" onclick="loadWimWithLimit('AMD')">AMD</button>
+        <button class="chip" onclick="loadWimWithLimit('MSFT')">MSFT</button>
+        <button class="chip" onclick="loadWimWithLimit('AMZN')">AMZN</button>
+        <button class="chip" onclick="loadWimWithLimit('NFLX')">NFLX</button>
+        <button class="chip" onclick="loadWimWithLimit('SNDK')">SNDK</button>
+        <button class="chip" onclick="loadWimWithLimit('SPY')">SPY</button>
       </div>
     </div>
 
@@ -10207,23 +10207,303 @@ async function _verifySubscriptionFromServer() {
 }
 
 function _applyAccessLevel(level) {
-  // Remove existing teaser strips and overlays if Terminal
-  if (level === 'terminal') {
-    document.querySelectorAll('.teaser-strip').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.upgrade-overlay').forEach(el => el.remove());
-    // Remove nav lock icons text — keep icons subtle but remove visual prominence
-    document.querySelectorAll('.nav-lock').forEach(el => el.style.opacity = '0.2');
+  const isPremium = (level === 'terminal' || level === 'admin');
+
+  // ── Nav lock icons ─────────────────────────────────────────────
+  document.querySelectorAll('.nav-lock').forEach(el => {
+    el.style.opacity = isPremium ? '0.15' : '0.5';
+  });
+
+  // ── Teaser strips on Scanner / Options / Insiders ─────────────
+  document.querySelectorAll('.teaser-strip').forEach(el => {
+    el.style.display = isPremium ? 'none' : '';
+  });
+
+  if (isPremium) {
+    // Remove all free restrictions
+    document.querySelectorAll('.bt-free-overlay').forEach(el => el.remove());
+    document.querySelectorAll('.bt-free-blur').forEach(el => {
+      el.classList.remove('bt-free-blur');
+    });
+    document.querySelectorAll('.bt-free-hidden').forEach(el => {
+      el.style.display = '';
+    });
+    document.querySelectorAll('.bt-wim-limit-banner').forEach(el => el.remove());
   } else {
-    // Free / visitor — restore teaser strips
-    document.querySelectorAll('.teaser-strip').forEach(el => el.style.display = '');
-    document.querySelectorAll('.nav-lock').forEach(el => el.style.opacity = '0.5');
+    // Apply free restrictions after a small delay (let DOM settle)
+    setTimeout(_addFreeRestrictions, 600);
   }
 }
 
-// Expose for global use
+/* ── CSS for free restrictions (injected once) ─────────────────── */
+(function injectFreeCSS() {
+  if (document.getElementById('bt-free-css')) return;
+  const style = document.createElement('style');
+  style.id = 'bt-free-css';
+  style.textContent = `
+    .bt-free-blur { filter: blur(5px); pointer-events: none; user-select: none; }
+    .bt-free-overlay-wrap { position: relative; overflow: hidden; }
+    .bt-free-overlay {
+      position: absolute; inset: 0; z-index: 20;
+      background: rgba(5,6,10,0.78);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; padding: 28px; text-align: center;
+      border-radius: inherit;
+    }
+    .bt-free-overlay .bfo-icon {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(212,168,90,.12); border: 1px solid rgba(212,168,90,.3);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 20px rgba(212,168,90,.15);
+    }
+    .bt-free-overlay .bfo-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px; font-weight: 600; color: #e8ecf5;
+      letter-spacing: -0.01em;
+    }
+    .bt-free-overlay .bfo-sub {
+      font-size: 12px; color: #8b94a8;
+      max-width: 260px; line-height: 1.55;
+    }
+    .bt-free-overlay .bfo-btn {
+      padding: 9px 22px;
+      background: linear-gradient(135deg, #d4a85a, #e8c178);
+      color: #0a0d14; border: none; border-radius: 7px;
+      font-family: inherit; font-size: 12px; font-weight: 700;
+      cursor: pointer; letter-spacing: .03em; margin-top: 4px;
+      transition: opacity .15s, transform .15s;
+    }
+    .bt-free-overlay .bfo-btn:hover { opacity: .9; transform: translateY(-1px); }
+    .bt-wim-limit-banner {
+      background: rgba(212,168,90,.07);
+      border: 1px solid rgba(212,168,90,.2);
+      border-radius: 8px; padding: 12px 16px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; color: #8b94a8; margin: 12px 0;
+    }
+    .bt-wim-limit-banner .bwl-cta {
+      margin-left: auto; color: #d4a85a; font-weight: 600;
+      font-size: 11px; font-family: 'JetBrains Mono', monospace;
+      letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+      white-space: nowrap;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+const LOCK_SVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+
+function _makeOverlay(title, sub) {
+  const div = document.createElement('div');
+  div.className = 'bt-free-overlay';
+  div.innerHTML = `
+    <div class="bfo-icon">${LOCK_SVG}</div>
+    <div class="bfo-title">${title}</div>
+    <div class="bfo-sub">${sub}</div>
+    <button class="bfo-btn" onclick="route('pricing')">Unlock Terminal</button>`;
+  return div;
+}
+
+function _wrapAndOverlay(el, title, sub) {
+  if (!el) return;
+  if (el.querySelector('.bt-free-overlay')) return; // already applied
+  if (!el.classList.contains('bt-free-overlay-wrap')) {
+    const orig = el.style.position;
+    if (!orig || orig === 'static') el.style.position = 'relative';
+    el.classList.add('bt-free-overlay-wrap');
+  }
+  el.appendChild(_makeOverlay(title, sub));
+}
+
+function _addFreeRestrictions() {
+  // 1. OPTIONS tab — overlay over the full content wrap
+  const optWrap = document.querySelector('#page-options .options-wrap');
+  if (optWrap) {
+    optWrap.style.position = 'relative';
+    if (!optWrap.querySelector('.bt-free-overlay')) {
+      const ov = _makeOverlay(
+        'Options Flow',
+        'Real-time options chains, unusual activity, put/call ratios and dark pool prints are Terminal features.'
+      );
+      ov.style.top = '48px'; // below teaser strip
+      optWrap.appendChild(ov);
+    }
+  }
+
+  // 2. INSIDERS tab — overlay over table + stats (below teaser strip)
+  const insWrap = document.querySelector('#page-insiders .insiders-wrap');
+  if (insWrap) {
+    insWrap.style.position = 'relative';
+    if (!insWrap.querySelector('.bt-free-overlay')) {
+      const ov = _makeOverlay(
+        'Insider & Political Trades',
+        'Full SEC Form 4 filings and congressional STOCK Act disclosures are Terminal features.'
+      );
+      ov.style.top = '48px';
+      insWrap.appendChild(ov);
+    }
+  }
+
+  // 3. SCANNER — blur cards after the first 4, add upgrade strip
+  const scanGrid = document.getElementById('scannerGrid');
+  if (scanGrid) {
+    const cards = scanGrid.querySelectorAll('.scanner-card');
+    cards.forEach((card, i) => {
+      if (i >= 4 && !card.classList.contains('bt-free-blur')) {
+        card.classList.add('bt-free-blur');
+      }
+    });
+    const listBody = document.getElementById('scannerListBody');
+    if (listBody) {
+      const rows = listBody.querySelectorAll('.scanner-list-row');
+      rows.forEach((row, i) => {
+        if (i >= 5) row.classList.add('bt-free-blur');
+      });
+    }
+    // Add upgrade banner below grid if not present
+    const wrap = document.querySelector('.scanner-wrap');
+    if (wrap && !wrap.querySelector('.bt-free-overlay')) {
+      const ov = _makeOverlay(
+        'Advanced Scanner',
+        'Full 35-stock universe with momentum scoring across all sectors requires Terminal access. Showing 4 of 18 results.'
+      );
+      ov.style.cssText = 'position:relative;inset:unset;border-radius:10px;margin-top:12px;background:rgba(5,6,10,.82);backdrop-filter:blur(6px);border:1px solid rgba(212,168,90,.2);padding:28px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;';
+      wrap.appendChild(ov);
+    }
+  }
+
+  // 4. FLOW ENGINE widget canvas — blur canvas + overlay
+  const flowWidget = document.getElementById('flowEngineWidget');
+  if (flowWidget) {
+    const canvasWrap = flowWidget.querySelector('.flow-canvas-wrap');
+    if (canvasWrap && !canvasWrap.querySelector('.bt-free-overlay')) {
+      canvasWrap.style.position = 'relative';
+      const ov = _makeOverlay(
+        'Live Capital Flows',
+        'Real-time cross-market capital flow visualisation is a Terminal feature.'
+      );
+      canvasWrap.appendChild(ov);
+    }
+    // Also blur the narrative cards
+    const narr = flowWidget.querySelector('.flow-narrative-grid');
+    if (narr && !narr.classList.contains('bt-free-blur')) narr.classList.add('bt-free-blur');
+  }
+
+  // 5. CORRELATION CLUSTER — already has overlay from addDashboardOverlays()
+  //    Re-add if it was removed
+  const clusterPanel = document.getElementById('portCluster')?.closest('.panel');
+  if (clusterPanel && !clusterPanel.querySelector('.bt-free-overlay,.upgrade-overlay')) {
+    clusterPanel.style.position = 'relative';
+    clusterPanel.appendChild(_makeOverlay(
+      'Correlation Cluster',
+      'Full 3D correlation mapping across your portfolio is a Terminal feature.'
+    ));
+  }
+
+  // 6. SIGNAL INTELLIGENCE FEED — blur after first 3 items
+  const sentFeed = document.getElementById('sentimentFeed');
+  if (sentFeed && !sentFeed.querySelector('.bt-free-overlay')) {
+    const items = sentFeed.querySelectorAll('.signal-item,.feed-item,[class*="signal"],[class*="feed-card"]');
+    items.forEach((item, i) => { if (i >= 3) item.classList.add('bt-free-blur'); });
+    // Add a soft overlay at the bottom of the panel
+    const panel = sentFeed.closest('.panel');
+    if (panel) {
+      const footer = document.createElement('div');
+      footer.className = 'bt-wim-limit-banner bt-free-overlay';
+      footer.style.cssText = 'position:absolute;bottom:0;left:0;right:0;border-radius:0 0 12px 12px;background:linear-gradient(0deg,rgba(5,6,10,.95) 60%,rgba(5,6,10,.3));backdrop-filter:none;justify-content:flex-end;flex-direction:row;padding:14px 16px;gap:10px;';
+      footer.innerHTML = `
+        <span style="font-size:12px;color:#8b94a8">Showing limited intelligence feed</span>
+        <button class="bfo-btn" style="margin-top:0;padding:7px 14px;font-size:11px" onclick="route('pricing')">Unlock Terminal</button>`;
+      panel.style.position = 'relative';
+      panel.appendChild(footer);
+    }
+  }
+
+  // 7. WHY IS IT MOVING — usage limit (5/day for free)
+  _enforceWimLimit();
+}
+
+/* ── WIM daily usage limit for free users ─────────────────────── */
+const WIM_FREE_LIMIT = 5;
+const WIM_STORAGE_KEY = 'bt_wim_usage';
+
+function _getWimUsage() {
+  try {
+    const raw = localStorage.getItem(WIM_STORAGE_KEY);
+    if (!raw) return { count: 0, date: '' };
+    return JSON.parse(raw);
+  } catch(_) { return { count: 0, date: '' }; }
+}
+
+function _incrementWimUsage() {
+  if (_isTerminal) return; // no limit for premium
+  const today = new Date().toISOString().slice(0, 10);
+  const usage = _getWimUsage();
+  const count = usage.date === today ? usage.count + 1 : 1;
+  try { localStorage.setItem(WIM_STORAGE_KEY, JSON.stringify({ count, date: today })); } catch(_) {}
+  return count;
+}
+
+function _enforceWimLimit() {
+  // Show usage counter on WIM page header
+  const wimMeta = document.querySelector('#page-why .meta');
+  if (!wimMeta) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const usage  = _getWimUsage();
+  const used   = usage.date === today ? usage.count : 0;
+  const left   = Math.max(0, WIM_FREE_LIMIT - used);
+  // Remove any old banner
+  document.querySelectorAll('.bt-wim-limit-banner').forEach(e => e.remove());
+  if (left <= 0) {
+    // Block the WIM input area with a banner
+    const wimSearch = document.querySelector('#page-why .wim-search');
+    if (wimSearch && !wimSearch.querySelector('.bt-wim-limit-banner')) {
+      const banner = document.createElement('div');
+      banner.className = 'bt-wim-limit-banner';
+      banner.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="#d4a85a" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#d4a85a" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>You've used all ${WIM_FREE_LIMIT} free daily lookups. Resets tomorrow.</span>
+        <span class="bwl-cta" onclick="route('pricing')">Unlock Unlimited →</span>`;
+      wimSearch.insertAdjacentElement('afterend', banner);
+    }
+  } else {
+    // Show subtle counter
+    wimMeta.innerHTML = wimMeta.innerHTML.replace(/\s*·\s*\d+ free today/g, '');
+    wimMeta.innerHTML += ` · <span style="color:var(--gold);font-family:var(--mono)">${left}/${WIM_FREE_LIMIT} free today</span>`;
+  }
+}
+
+// Hook into loadWim to enforce free limit
+const _origLoadWim = typeof loadWim === 'function' ? loadWim : null;
+function loadWimWithLimit(sym) {
+  if (!_isTerminal) {
+    const today = new Date().toISOString().slice(0, 10);
+    const usage  = _getWimUsage();
+    const used   = usage.date === today ? usage.count : 0;
+    if (used >= WIM_FREE_LIMIT) {
+      _enforceWimLimit();
+      return; // block the lookup
+    }
+    _incrementWimUsage();
+    _enforceWimLimit();
+  }
+  if (typeof loadWim === 'function') loadWim(sym);
+}
+
+// Override the global loadWim binding AFTER the page loads
+window.addEventListener('load', () => {
+  // Re-export helpers so templates can call them
+  window.isAdmin    = () => window.Clerk?.user?.publicMetadata?.role === 'admin';
+  window.isTerminal = () => _isTerminal;
+  window.isFree     = () => !_isTerminal;
+});
+
+// Global auth helpers (also used before Clerk loads)
 window.clerkSignIn  = () => window.Clerk?.openSignIn();
 window.clerkSignUp  = () => window.Clerk?.openSignUp();
-window.isTerminal   = () => _isTerminal;
+
 
 // Init after Clerk script loads
 if (document.readyState === 'complete') {
