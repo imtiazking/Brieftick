@@ -10141,7 +10141,6 @@ async function _onAuthChange(user) {
   const ubEl      = document.getElementById('clerkUserButton');
 
   if (!user) {
-    // Visitor — show Sign In + Start Free
     _isTerminal = false;
     if (signedOut) signedOut.style.display = 'flex';
     if (signedIn)  signedIn.style.display  = 'none';
@@ -10149,29 +10148,36 @@ async function _onAuthChange(user) {
     return;
   }
 
-  // Signed in — hide sign-in buttons, show user button
+  // Signed in — update nav UI
   if (signedOut) signedOut.style.display = 'none';
-  if (signedIn)  { signedIn.style.display = 'flex'; }
+  if (signedIn)  signedIn.style.display  = 'flex';
 
-  // Mount UserButton if not already mounted
   if (ubEl && !ubEl.querySelector('.cl-userButton')) {
     window.Clerk.mountUserButton(ubEl);
   }
 
-  // Check subscription from public metadata (fast, no API call)
+  // Set plan badge and access level
   const sub = user.publicMetadata?.subscription;
   if (sub === 'terminal') {
     _isTerminal = true;
     if (badge) { badge.textContent = 'Terminal'; badge.className = 'auth-plan-badge terminal'; }
     _applyAccessLevel('terminal');
   } else {
-    // Also verify server-side in case metadata is stale
     _isTerminal = false;
     if (badge) { badge.textContent = 'Free'; badge.className = 'auth-plan-badge free'; }
     _applyAccessLevel('free');
-    // Background check
     _verifySubscriptionFromServer();
   }
+
+  // ── Resume checkout intent if user just signed in ─────────────
+  try {
+    const intent = sessionStorage.getItem('bt_checkout_intent');
+    if (intent) {
+      sessionStorage.removeItem('bt_checkout_intent');
+      // Small delay so the nav finishes updating visually first
+      setTimeout(() => startCheckout(intent, null), 400);
+    }
+  } catch(_) {}
 }
 
 async function _verifySubscriptionFromServer() {
@@ -11087,16 +11093,14 @@ async function startCheckout(plan, btn) {
 
   // ── Sign-in gate: require Clerk account before checkout ──────
   if (window.Clerk && !window.Clerk.user) {
-    // Save intent and open sign-in; after auth _onAuthChange will
-    // not auto-start checkout (user has to click again — intentional)
+    // Store the checkout intent so _onAuthChange can resume it automatically
+    try { sessionStorage.setItem('bt_checkout_intent', plan); } catch(_) {}
+
     if (btn) {
       btn.textContent = 'Sign in to continue…';
-      setTimeout(() => { if (btn) btn.textContent = originalText; }, 2000);
+      setTimeout(() => { if (btn) btn.textContent = originalText; }, 2500);
     }
-    window.Clerk.openSignIn({
-      afterSignInUrl: window.location.href,
-      afterSignUpUrl: window.location.href,
-    });
+    window.Clerk.openSignIn();
     return;
   }
 
