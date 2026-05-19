@@ -10156,9 +10156,15 @@ async function _onAuthChange(user) {
     window.Clerk.mountUserButton(ubEl);
   }
 
-  // Set plan badge and access level
-  const sub = user.publicMetadata?.subscription;
-  if (sub === 'terminal') {
+  // Set plan badge and access level — priority: admin > terminal > free
+  const role = user.publicMetadata?.role;
+  const sub  = user.publicMetadata?.subscription;
+
+  if (role === 'admin') {
+    _isTerminal = true;
+    if (badge) { badge.textContent = 'Admin'; badge.className = 'auth-plan-badge terminal'; }
+    _applyAccessLevel('terminal');
+  } else if (sub === 'terminal') {
     _isTerminal = true;
     if (badge) { badge.textContent = 'Terminal'; badge.className = 'auth-plan-badge terminal'; }
     _applyAccessLevel('terminal');
@@ -10189,10 +10195,12 @@ async function _verifySubscriptionFromServer() {
     });
     if (!res.ok) return;
     const data = await res.json();
-    if (data.subscription === 'terminal' && !_isTerminal) {
+    // Admin role or terminal subscription both unlock full access
+    if ((data.role === 'admin' || data.subscription === 'terminal') && !_isTerminal) {
       _isTerminal = true;
       const badge = document.getElementById('authPlanBadge');
-      if (badge) { badge.textContent = 'Terminal'; badge.className = 'auth-plan-badge terminal'; }
+      const label = data.role === 'admin' ? 'Admin' : 'Terminal';
+      if (badge) { badge.textContent = label; badge.className = 'auth-plan-badge terminal'; }
       _applyAccessLevel('terminal');
     }
   } catch (_) {}
@@ -11101,6 +11109,13 @@ async function startCheckout(plan, btn) {
       setTimeout(() => { if (btn) btn.textContent = originalText; }, 2500);
     }
     window.Clerk.openSignIn();
+    return;
+  }
+
+  // ── Admin bypass — already has full access ────────────────────
+  if (window.Clerk?.user?.publicMetadata?.role === 'admin') {
+    if (btn) { btn.disabled = false; btn.textContent = originalText; }
+    alert('You already have Admin access — all Terminal features are unlocked.');
     return;
   }
 

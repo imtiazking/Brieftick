@@ -34,6 +34,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       userId: user.id,
+      role:         user.publicMetadata?.role || null,
       subscription: user.publicMetadata?.subscription || 'free',
       firstName: user.firstName || null,
       email: user.emailAddresses?.[0]?.emailAddress || null,
