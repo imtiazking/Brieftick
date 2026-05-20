@@ -2391,7 +2391,7 @@ h1,h2,h3{
     <div id="raSuccess" class="ra-success" style="display:none">
       <div class="ra-success-icon">✓</div>
       <h3>You're on the list.</h3>
-      <p>Thanks for your interest in BriefTick. We'll be in touch when your cohort opens.<br><br>In the meantime, <a onclick="route('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the live demo →</a></p>
+      <p>Thanks for your interest in BriefTick. We'll be in touch when your cohort opens.<br><br>In the meantime, <a onclick="routeWithAuth('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the live demo →</a></p>
     </div>
   </div>
 </div>
@@ -4409,19 +4409,19 @@ h1,h2,h3{
     <div class="footer-col">
       <h5>Product</h5>
       <ul>
-        <li class="live-item" onclick="route('dashboard')">Live Dashboard</li>
-        <li onclick="route('why')">Why Is It Moving</li>
-        <li onclick="route('brief')">Daily Brief</li>
-        <li onclick="route('earnings')">Earnings Intelligence</li>
-        <li onclick="route('impact')">Market Impact Feed</li>
-        <li onclick="route('portfolio')">Portfolio Intelligence</li>
-        <li onclick="route('pricing')">Pricing</li>
+        <li class="live-item" onclick="routeWithAuth('dashboard')">Live Dashboard</li>
+        <li onclick="routeWithAuth('why')">Why Is It Moving</li>
+        <li onclick="routeWithAuth('brief')">Daily Brief</li>
+        <li onclick="routeWithAuth('earnings')">Earnings Intelligence</li>
+        <li onclick="routeWithAuth('impact')">Market Impact Feed</li>
+        <li onclick="routeWithAuth('portfolio')">Portfolio Intelligence</li>
+        <li onclick="routeWithAuth('pricing')">Pricing</li>
       </ul>
     </div>
     <div class="footer-col">
       <h5>Contact &amp; Legal</h5>
       <ul>
-        <li onclick="route('about')">About Brieftick</li>
+        <li onclick="routeWithAuth('about')">About Brieftick</li>
         <li onclick="openRequestAccess()">Contact us</li>
         <li onclick="openLegal('terms')">Terms of Use</li>
         <li onclick="openLegal('privacy')">Privacy Policy</li>
