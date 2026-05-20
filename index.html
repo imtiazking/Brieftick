@@ -12138,24 +12138,49 @@ function sortScannerResults(mode) {
 }
 
 function renderScannerResults() {
-  const sorted = sortScannerResults(scannerMode);
-  const grid = document.getElementById('scannerGrid');
-  const listBody = document.getElementById('scannerListBody');
+  /* Plan gate: Free users see first 3 real cards only.
+     Locked placeholders have NO real data. Terminal sees all. */
+  const FREE_LIMIT = 3;
+  const isGated    = !_isTerminal;
+
+  const sorted     = sortScannerResults(scannerMode);
+  const visible    = isGated ? sorted.slice(0, FREE_LIMIT) : sorted.slice(0, 18);
+  const lockedCount = isGated ? Math.max(0, Math.min(sorted.length, 18) - FREE_LIMIT) : 0;
+
+  const grid      = document.getElementById('scannerGrid');
+  const listBody  = document.getElementById('scannerListBody');
   const statLabel = document.getElementById('scannerStatLabel');
-  if (!grid) return; // DOM not ready yet
-  if (!sorted.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--ink-faint);font-size:13px">No results. Check your Twelve Data API key in Settings and try again.</div>';
-    if (listBody) listBody.innerHTML = '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px">No results available.</div>';
+  if (!grid) return;
+  if (!visible.length && !lockedCount) {
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--ink-faint);font-size:13px">No results. Check your API key in Settings and try again.</div>';
+    if (listBody) listBody.innerHTML = '';
     return;
   }
-  if (statLabel) statLabel.textContent =
-    `${sorted.length} stocks scored · sorted by ${scannerMode} · ${new Date().toLocaleTimeString()}`;
+  if (statLabel) {
+    statLabel.textContent = isGated
+      ? `Showing 3 of ${sorted.length} stocks \u00b7 Terminal unlocks full results`
+      : `${sorted.length} stocks scored \u00b7 sorted by ${scannerMode} \u00b7 ${new Date().toLocaleTimeString()}`;
+  }
 
-  // Cards view
-  grid.innerHTML = sorted.slice(0, 18).map((s, i) => {
+  function lockedCard(rank) {
+    return `<div class="scanner-card" style="position:relative;overflow:hidden;min-height:160px">
+      <div class="scanner-card-rank" style="filter:blur(3px);opacity:.35">#${rank}</div>
+      <div class="scanner-card-top" style="filter:blur(5px);opacity:.2;pointer-events:none;user-select:none">
+        <div><div class="scanner-card-sym">\u2014</div><div class="scanner-card-name">Locked</div></div>
+        <div class="scanner-card-change"><div class="scanner-card-price">$\u2014</div><div class="scanner-card-pct">\u2014%</div></div>
+      </div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(5,6,10,.78);backdrop-filter:blur(6px);z-index:3">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(212,175,55,.7)" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase">Terminal required</div>
+        <button onclick="route('pricing')" style="padding:5px 14px;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);border-radius:6px;color:var(--gold);font-size:11px;cursor:pointer">Unlock Terminal \u2192</button>
+      </div>
+    </div>`;
+  }
+
+  const realCards = visible.map((s, i) => {
     const dir = s.pctChange >= 0 ? 'up' : 'dn';
     const sign = s.pctChange >= 0 ? '+' : '';
-    const volLabel = s.volRatio >= 2 ? '🔥 ' + s.volRatio.toFixed(1) + 'x' : s.volRatio.toFixed(1) + 'x';
+    const volLabel = s.volRatio >= 2 ? '\ud83d\udd25 ' + s.volRatio.toFixed(1) + 'x' : s.volRatio.toFixed(1) + 'x';
     const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
     const pos52Pct = Math.round(s.pos52 * 100);
     return `<div class="scanner-card">
@@ -12172,53 +12197,52 @@ function renderScannerResults() {
         </div>
       </div>
       <div class="scanner-metrics">
-        <div class="scanner-metric">
-          <div class="scanner-metric-label">Vol Ratio</div>
-          <div class="scanner-metric-val">${volLabel}</div>
-        </div>
-        <div class="scanner-metric">
-          <div class="scanner-metric-label">52W Pos</div>
-          <div class="scanner-metric-val">${pos52Pct}%</div>
-        </div>
-        <div class="scanner-metric">
-          <div class="scanner-metric-label">Day Gap</div>
-          <div class="scanner-metric-val ${s.gapPct>=0?'':'dn'}">${s.gapPct>=0?'+':''}${s.gapPct.toFixed(2)}%</div>
-        </div>
+        <div class="scanner-metric"><div class="scanner-metric-label">Vol Ratio</div><div class="scanner-metric-val">${volLabel}</div></div>
+        <div class="scanner-metric"><div class="scanner-metric-label">52W Pos</div><div class="scanner-metric-val">${pos52Pct}%</div></div>
+        <div class="scanner-metric"><div class="scanner-metric-label">Gap</div><div class="scanner-metric-val">${s.gapPct >= 0 ? '+' : ''}${s.gapPct.toFixed(1)}%</div></div>
       </div>
       <div class="scanner-score-bar">
-        <div class="scanner-score-label">
-          <span>Momentum Score</span><span>${s.score}/99</span>
-        </div>
-        <div class="scanner-score-track">
-          <div class="scanner-score-fill" style="width:${s.score}%"></div>
-        </div>
+        <div class="scanner-score-label"><span>Momentum Score</span><span>${s.score}/99</span></div>
+        <div class="scanner-score-track"><div class="scanner-score-fill" style="width:${s.score}%"></div></div>
       </div>
       <div>
         <span class="scanner-ai-badge" onclick="toggleScannerCardAI(this,'${s.sym}','${s.name}',${s.pctChange.toFixed(2)},${s.score})">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          AI Explain
+          Explain
         </span>
         <span class="scanner-score-pill ${scoreClass}" style="margin-left:8px">${s.score >= 65?'Strong':s.score>=45?'Neutral':'Weak'}</span>
       </div>
       <div class="scanner-ai-panel" id="scanner-ai-${s.sym}"></div>
     </div>`;
-  }).join('');
+  });
 
-  // List view
-  if (listBody) listBody.innerHTML = sorted.map((s, i) => {
-    const dir = s.pctChange >= 0 ? 'up' : 'dn';
-    const sign = s.pctChange >= 0 ? '+' : '';
-    const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
-    return `<div class="scanner-list-row" onclick="quickScannerAI('${s.sym}','${s.name}',${s.pctChange.toFixed(2)},${s.score})">
-      <span style="color:var(--ink-faint);font-family:var(--mono);font-size:12px">${i+1}</span>
-      <span class="sym">${s.sym}</span>
-      <span class="name">${s.name}</span>
-      <span class="price">$${s.close.toFixed(2)}</span>
-      <span class="chg ${dir}">${sign}${s.pctChange.toFixed(2)}%</span>
-      <span class="vol">${s.volRatio.toFixed(1)}x</span>
-      <span class="scanner-score-pill ${scoreClass}">${s.score}</span>
-    </div>`;
-  }).join('');
+  const lockedCards = Array.from({length: lockedCount}, (_, i) => lockedCard(FREE_LIMIT + i + 1));
+  grid.innerHTML = [...realCards, ...lockedCards].join('');
+
+  if (listBody) {
+    const realRows = visible.map((s, i) => {
+      const dir = s.pctChange >= 0 ? 'up' : 'dn';
+      const sign = s.pctChange >= 0 ? '+' : '';
+      const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
+      return `<div class="scanner-list-row" onclick="quickScannerAI('${s.sym}','${s.name}',${s.pctChange.toFixed(2)},${s.score})">
+        <span style="color:var(--ink-faint);font-family:var(--mono);font-size:12px">${i+1}</span>
+        <span class="sym">${s.sym}</span><span class="name">${s.name}</span>
+        <span class="price">$${s.close.toFixed(2)}</span>
+        <span class="chg ${dir}">${sign}${s.pctChange.toFixed(2)}%</span>
+        <span class="vol">${s.volRatio.toFixed(1)}x</span>
+        <span class="scanner-score-pill ${scoreClass}">${s.score}</span>
+      </div>`;
+    });
+    const lockedRows = Array.from({length: lockedCount}, (_, i) =>
+      `<div class="scanner-list-row" style="filter:blur(4px);opacity:.25;pointer-events:none;user-select:none">
+        <span style="color:var(--ink-faint);font-family:var(--mono);font-size:12px">${FREE_LIMIT+i+1}</span>
+        <span class="sym">\u2014</span><span class="name">Locked</span>
+        <span class="price">$\u2014</span><span class="chg">\u2014%</span>
+        <span class="vol">\u2014x</span><span class="scanner-score-pill">\u2014</span>
+      </div>`
+    );
+    listBody.innerHTML = [...realRows, ...lockedRows].join('');
+  }
 }
 
 
