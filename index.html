@@ -355,10 +355,20 @@ main{padding-top:90px;position:relative;z-index:3}
 .hero-proof-item b{display:block;color:var(--ink);font-weight:600;margin-bottom:1px}
 .hero-proof-item span{display:block;white-space:nowrap}
 
-/* ── Intelligence rail — active state ────────────────────────── */
-/* FM controls opacity/transform; CSS handles will-change hints  */
-.hero-proof-item{will-change:opacity,transform;transition:none}
-.hero-proof-icon {will-change:transform,filter;transition:none}
+/* ── Intelligence rail — per-symbol CSS loops (reliable, no CDN dependency) */
+@keyframes railPulse  {0%,100%{opacity:.6;transform:scale(1)}   50%{opacity:1;transform:scale(1.12)}}
+@keyframes railBreath {0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.14) rotate(6deg)}}
+@keyframes railSweep  {from{transform:rotate(0deg)}             to{transform:rotate(360deg)}}
+@keyframes railBeat   {0%,100%{transform:scale(1)}25%{transform:scale(1.18)}55%{transform:scale(1.10)}}
+
+#hpIcon0{animation:railPulse  1.9s ease-in-out infinite}
+#hpIcon1{animation:railBreath 3.4s ease-in-out infinite}
+#hpIcon2{animation:railSweep  7s   linear       infinite}
+#hpIcon3{animation:railBeat   2.6s ease-in-out  infinite}
+
+@media(prefers-reduced-motion:reduce){
+  #hpIcon0,#hpIcon1,#hpIcon2,#hpIcon3{animation:none}
+}
 .hero-visual{
   box-shadow:0 30px 90px rgba(0,0,0,0.35),0 0 80px rgba(78,168,255,0.06);
   background:linear-gradient(180deg,rgba(12,17,27,0.88),rgba(5,8,14,0.92));
@@ -13500,68 +13510,46 @@ window.addEventListener('load', () => {
 </script>
 
 <!-- ================================================================
-     INTELLIGENCE SIGNAL RAIL — Framer Motion
-     Per-symbol loops · active cycling · sub-text motion · hover lift
+     INTELLIGENCE SIGNAL RAIL — Framer Motion cycling + hover
+     Symbol loops handled by CSS @keyframes above (no CDN dependency).
 ================================================================ -->
 <script type="module">
-import { animate } from 'https://esm.sh/framer-motion@12/dom';
+(async () => {
+  /* Wait for DOM + assets */
+  await new Promise(r => window.addEventListener('load', r, { once: true }));
 
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const EASE = [0.16, 1, 0.3, 1];
+  /* Safely import FM - if CDN fails, CSS loops still work */
+  let animate;
+  try {
+    ({ animate } = await import('https://esm.sh/framer-motion@12/dom'));
+  } catch (e) {
+    console.warn('[rail] FM CDN unavailable; CSS loops active');
+    return;
+  }
 
-  /* Collect the four rail items */
   const ITEMS = [0,1,2,3].map(i => ({
     item : document.getElementById('hpi'    + i),
     icon : document.getElementById('hpIcon' + i),
     sub  : document.getElementById('hpSub'  + i),
   })).filter(d => d.item && d.icon && d.sub);
 
-  if (!ITEMS.length) throw new Error('[rail] hero-proof items not found');
+  if (!ITEMS.length) {
+    console.warn('[rail] hero-proof items not found');
+    return;
+  }
 
-  /* ── Shadow constants ──────────────────────────────────────── */
-  const GOLD_SHADOW = '0 0 14px rgba(212,175,55,0.65)';
-  const BLUE_SHADOW = '0 0 10px rgba(78,168,255,0.35)';
+  const EASE        = [0.16, 1, 0.3, 1];
+  const GOLD_SHADOW = '0 0 16px rgba(212,175,55,0.8)';
+  const BLUE_SHADOW = '0 0 12px rgba(78,168,255,0.5)';
   const NO_SHADOW   = '0 0 0px rgba(0,0,0,0)';
 
-  /* ═══════════════════════════════════════════════════════════════
-     1. PER-SYMBOL LOOPING ANIMATIONS
-     Each icon has a distinct personality matching its meaning.
-  ═══════════════════════════════════════════════════════════════ */
+  /* All items start dimmed */
+  ITEMS.forEach(d => animate(d.item, { opacity: 0.35 }, { duration: 0 }));
 
-  /* ⌁  signal pulse — opacity wave, simulates a live data tick */
-  animate(ITEMS[0].icon,
-    { opacity: [0.65, 1, 0.65], scale: [1, 1.08, 1] },
-    { duration: 1.9, repeat: Infinity, ease: 'easeInOut' }
-  );
-
-  /* ◫  slow geometric breathe — subtle scale + micro-rotate */
-  animate(ITEMS[1].icon,
-    { scale: [1, 1.12, 1], rotate: [0, 6, 0] },
-    { duration: 3.4, repeat: Infinity, ease: 'easeInOut' }
-  );
-
-  /* ◴  radar sweep — continuous clockwise rotation */
-  animate(ITEMS[2].icon,
-    { rotate: [0, 360] },
-    { duration: 7, repeat: Infinity, ease: 'linear' }
-  );
-
-  /* ◇  diamond heartbeat — double-pulse scale */
-  animate(ITEMS[3].icon,
-    { scale: [1, 1.18, 1, 1.10, 1] },
-    { duration: 2.6, repeat: Infinity, ease: 'easeInOut' }
-  );
-
-  /* ═══════════════════════════════════════════════════════════════
-     2. ACTIVE SIGNAL CYCLING
-     One item brightens and its sub-text floats up every 2.8 s.
-  ═══════════════════════════════════════════════════════════════ */
-  let activeIdx = -1;
+  let activeIdx  = -1;
   let hoveredIdx = -1;
-
-  /* Start all items at resting opacity */
-  ITEMS.forEach(d => animate(d.item, { opacity: 0.52 }, { duration: 0 }));
 
   function activateItem(idx) {
     activeIdx = idx;
@@ -13570,37 +13558,43 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const isHov    = (i === hoveredIdx);
 
       if (isActive) {
-        animate(d.item, { opacity: 1,    y: -3 }, { duration: 0.45, ease: EASE });
-        animate(d.icon, { textShadow: GOLD_SHADOW, filter: 'brightness(1.5)' }, { duration: 0.4 });
-        /* Sub-text: slight fade + 7 px upward float */
-        animate(d.sub,  { opacity: [0.45, 1], y: [7, 0] }, { duration: 0.5, ease: EASE });
+        animate(d.item, { opacity: 1, y: -4 }, { duration: 0.45, ease: EASE });
+        animate(d.icon, {
+          textShadow: GOLD_SHADOW,
+          filter: 'brightness(1.8) drop-shadow(0 0 6px rgba(212,175,55,0.6))',
+          color: 'rgba(212,175,55,1)',
+        }, { duration: 0.4 });
+        /* Sub-text: fade + 8px upward float */
+        animate(d.sub, { opacity: [0.3, 1], y: [8, 0] }, { duration: 0.55, ease: EASE });
       } else if (!isHov) {
-        animate(d.item, { opacity: 0.52, y: 0  }, { duration: 0.4, ease: EASE });
-        animate(d.icon, { textShadow: NO_SHADOW,   filter: 'brightness(1)'   }, { duration: 0.35 });
+        animate(d.item, { opacity: 0.35, y: 0 }, { duration: 0.4, ease: EASE });
+        animate(d.icon, {
+          textShadow: NO_SHADOW,
+          filter:     'brightness(1) drop-shadow(0 0 0px transparent)',
+          color:      'rgba(169,215,255,1)',
+        }, { duration: 0.35 });
       }
     });
   }
 
+  /* Start immediately + cycle every 2.8 s */
   activateItem(0);
   setInterval(() => {
     if (!document.hidden) activateItem((activeIdx + 1) % ITEMS.length);
   }, 2800);
 
-  /* ═══════════════════════════════════════════════════════════════
-     3. HOVER INTERACTIONS
-     Icon scales + glows blue; item lifts slightly.
-     Cycling continues in background.
-  ═══════════════════════════════════════════════════════════════ */
+  /* ── Hover: icon scales blue, item lifts fully ─────────────── */
   ITEMS.forEach((d, i) => {
     d.item.style.cursor = 'default';
 
     d.item.addEventListener('mouseenter', () => {
       hoveredIdx = i;
-      animate(d.item, { opacity: 1,    y: -4 }, { duration: 0.2 });
+      animate(d.item, { opacity: 1, y: -5 }, { duration: 0.2 });
       animate(d.icon, {
-        scale: 1.22,
+        scale: 1.3,
         textShadow: BLUE_SHADOW,
-        filter: 'brightness(1.6)',
+        filter: 'brightness(1.8)',
+        color: 'rgba(169,215,255,1)',
       }, { duration: 0.2 });
     });
 
@@ -13608,18 +13602,18 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       hoveredIdx = -1;
       const isActive = (i === activeIdx);
       animate(d.item, {
-        opacity: isActive ? 1    : 0.52,
-        y:       isActive ? -3   : 0,
+        opacity: isActive ? 1    : 0.35,
+        y:       isActive ? -4   : 0,
       }, { duration: 0.25 });
       animate(d.icon, {
         scale: 1,
         textShadow: isActive ? GOLD_SHADOW : NO_SHADOW,
-        filter:     isActive ? 'brightness(1.5)' : 'brightness(1)',
+        filter:     isActive ? 'brightness(1.8)' : 'brightness(1)',
+        color:      isActive ? 'rgba(212,175,55,1)' : 'rgba(169,215,255,1)',
       }, { duration: 0.25 });
     });
   });
-
-} /* end reduced-motion guard */
+})();
 </script>
 </body>
 </html>
