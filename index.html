@@ -355,6 +355,142 @@ main{padding-top:90px;position:relative;z-index:3}
 .hero-proof-item b{display:block;color:var(--ink);font-weight:600;margin-bottom:1px}
 .hero-proof-item span{display:block;white-space:nowrap}
 
+/* ════════════════════════════════════════════════════════════════
+   HERO WIRE / GRID INTELLIGENCE BACKGROUND
+   Full-width SVG flowing signal lines — Bloomberg × Linear tone
+════════════════════════════════════════════════════════════════ */
+.hero-wire-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.hero-wire-svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* Structural grid lines */
+.hw-grid line{stroke:rgba(78,168,255,0.04);stroke-width:.5}
+
+/* Flowing signal paths — base style */
+.hw-flow{fill:none;stroke-width:1;stroke-linecap:round}
+.hw-gold  {stroke:rgba(212,175,55,0.22)}
+.hw-blue  {stroke:rgba(78,168,255,0.18)}
+.hw-purple{stroke:rgba(130,100,220,0.14)}
+.hw-diagonal{stroke-width:.6;opacity:.6}
+
+/* Flowing comet animations via stroke-dashoffset */
+@keyframes flowRight{from{stroke-dashoffset:2000}to{stroke-dashoffset:0}}
+@keyframes flowLeft {from{stroke-dashoffset:0}to{stroke-dashoffset:2000}}
+@keyframes flowDiag {from{stroke-dashoffset:2400}to{stroke-dashoffset:0}}
+
+.hw-s1{stroke-dasharray:260 1740;animation:flowRight 14s linear infinite}
+.hw-s2{stroke-dasharray:180 1820;animation:flowRight 18s linear infinite 4s}
+.hw-s3{stroke-dasharray:300 1700;animation:flowRight 11s linear infinite 2s}
+.hw-s4{stroke-dasharray:140 1860;animation:flowRight 22s linear infinite 7s}
+.hw-s5{stroke-dasharray:220 1780;animation:flowRight 16s linear infinite 1s}
+.hw-s6{stroke-dasharray:300 2100;animation:flowDiag  20s linear infinite 3s}
+.hw-s7{stroke-dasharray:200 2200;animation:flowDiag  25s linear infinite 9s}
+
+/* Glow node pulses */
+@keyframes hwNodePulse{0%,100%{opacity:.2;r:2}50%{opacity:.7;r:3.5}}
+.hw-node{fill:rgba(212,175,55,.5)}
+.hw-pulse-a{animation:hwNodePulse 3.2s ease-in-out infinite}
+.hw-pulse-b{animation:hwNodePulse 4.5s ease-in-out infinite 1.5s}
+
+@media(prefers-reduced-motion:reduce){
+  .hw-flow,.hw-node{animation:none;opacity:.04}
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CINEMATIC HERO PANEL — right-side intelligence surface
+════════════════════════════════════════════════════════════════ */
+.hvc-panel{
+  position:relative;height:560px;border-radius:18px;z-index:1;
+  background:rgba(8,11,18,0.42);
+  border:1px solid rgba(255,255,255,0.07);
+  backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(212,175,55,0.04) inset,
+             0 32px 80px rgba(0,0,0,0.38),
+             0 0 60px rgba(78,168,255,0.04);
+}
+/* Ambient radial layers */
+.hvc-ambient{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(600px 360px at 70% 20%, rgba(212,175,55,0.06), transparent 65%),
+    radial-gradient(400px 280px at 20% 75%, rgba(78,168,255,0.05), transparent 60%),
+    radial-gradient(300px 200px at 90% 90%, rgba(130,100,220,0.04), transparent 55%);
+}
+/* Header */
+.hvc-header{
+  position:relative;display:flex;justify-content:space-between;align-items:center;
+  padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.05);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+}
+.hvc-header-left{display:flex;align-items:center;gap:10px;color:var(--ink-dim)}
+.hvc-live-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);animation:pulse 1.5s ease-in-out infinite;flex-shrink:0;
+}
+.hvc-live-label{color:var(--green);letter-spacing:.14em}
+.hvc-ticker-label{color:var(--ink);font-weight:600}
+.hvc-header-right{display:flex;align-items:center;gap:14px;color:var(--ink-faint)}
+.hvc-time{font-variant-numeric:tabular-nums}
+.hvc-engine{color:rgba(212,175,55,.4);letter-spacing:.12em}
+
+/* Body grid: main | metrics */
+.hvc-body{
+  position:relative;padding:16px 18px;height:calc(100% - 37px);
+  display:grid;
+  grid-template-columns:1fr 130px;
+  grid-template-rows:auto 1fr auto auto;
+  gap:12px 14px;
+}
+/* Quote row */
+.hvc-main{min-width:0;display:flex;flex-direction:column;gap:10px;grid-row:1/-1}
+.hvc-quote-row{display:flex;justify-content:space-between;align-items:flex-end}
+.hvc-sym{font-family:var(--display);font-size:34px;letter-spacing:-.02em;font-weight:500;color:var(--ink);line-height:1}
+.hvc-name{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.08em;margin-top:4px}
+.hvc-price-block{text-align:right}
+.hvc-price-block .price{font-family:var(--mono);font-size:28px;color:var(--ink)}
+.hvc-price-block .chg{font-family:var(--mono);font-size:13px;margin-top:4px}
+
+/* Intelligence feed */
+.hvc-insights{
+  padding:12px 14px;border-radius:10px;
+  background:rgba(10,13,20,0.55);border:1px solid rgba(255,255,255,0.06);
+  backdrop-filter:blur(8px);flex-shrink:0;
+}
+.hvc-insights-label{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:9px;color:var(--gold);
+  letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;
+}
+.hvc-dot-gold{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);flex-shrink:0}
+.hvc-insights-body{font-size:12px;line-height:1.55;color:var(--ink)}
+.hvc-insights-body b{color:var(--gold-bright);font-weight:500}
+
+/* Right metrics column */
+.hvc-metrics{
+  grid-column:2;grid-row:1/-1;
+  display:flex;flex-direction:column;gap:8px;
+}
+.hvc-metric-card{
+  padding:10px 12px;border-radius:9px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);
+  flex-shrink:0;
+}
+.hvc-metric-label{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.hvc-metric-value{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--ink);line-height:1}
+.hvc-metric-value small{font-size:10px;color:var(--ink-dim);font-weight:400}
+.hvc-metric-sub{font-family:var(--mono);font-size:9px;margin-top:4px;letter-spacing:.06em}
+.hvc-metric-sub.up{color:var(--green)}.hvc-metric-sub.dn{color:var(--red)}
+.hvc-sentiment-bar{height:3px;border-radius:2px;background:rgba(255,255,255,0.08);margin-bottom:6px;overflow:hidden}
+.hvc-sentiment-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,rgba(61,220,151,.5),var(--green));transition:width .6s ease}
+
+/* Market strip */
+.hvc-strip{
+  grid-column:1/-1;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  border:1px solid rgba(255,255,255,0.05);border-radius:8px;
+  overflow:hidden;background:rgba(0,0,0,0.15);
+}
+
 /* ── Intelligence rail — per-symbol CSS loops (reliable, no CDN dependency) */
 @keyframes railPulse  {0%,100%{opacity:.6;transform:scale(1)}   50%{opacity:1;transform:scale(1.12)}}
 @keyframes railBreath {0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.14) rotate(6deg)}}
@@ -2653,6 +2789,46 @@ h1,h2,h3{
 ============================================================ -->
 <section class="page active" id="page-landing">
   <div class="hero">
+    <!-- Wire/grid intelligence background — full hero width -->
+    <div class="hero-wire-bg" aria-hidden="true">
+      <svg class="hero-wire-svg" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice"
+           xmlns="http://www.w3.org/2000/svg">
+        <!-- structural grid -->
+        <g class="hw-grid">
+          <line x1="0"    y1="140" x2="1440" y2="140"/>
+          <line x1="0"    y1="280" x2="1440" y2="280"/>
+          <line x1="0"    y1="420" x2="1440" y2="420"/>
+          <line x1="0"    y1="560" x2="1440" y2="560"/>
+          <line x1="288"  y1="0"   x2="288"  y2="700"/>
+          <line x1="576"  y1="0"   x2="576"  y2="700"/>
+          <line x1="864"  y1="0"   x2="864"  y2="700"/>
+          <line x1="1152" y1="0"   x2="1152" y2="700"/>
+        </g>
+        <!-- flowing signal paths: gold -->
+        <path class="hw-flow hw-gold hw-s1"
+              d="M-100 210 C200 190 500 230 800 200 S1200 170 1540 205"/>
+        <path class="hw-flow hw-gold hw-s2"
+              d="M-100 490 C300 460 600 520 900 490 S1300 460 1540 495"/>
+        <!-- flowing signal paths: blue -->
+        <path class="hw-flow hw-blue hw-s3"
+              d="M-100 320 C250 300 550 340 850 315 S1250 290 1540 325"/>
+        <path class="hw-flow hw-blue hw-s4"
+              d="M-100 600 C200 575 500 620 800 595 S1200 570 1540 600"/>
+        <!-- flowing signal paths: purple/accent -->
+        <path class="hw-flow hw-purple hw-s5"
+              d="M-100 90  C350  70 700 110 1050  85 S1350  60 1540  92"/>
+        <!-- diagonal cross signals -->
+        <line class="hw-flow hw-gold hw-s6 hw-diagonal"
+              x1="-50" y1="0" x2="800" y2="700"/>
+        <line class="hw-flow hw-blue hw-s7 hw-diagonal"
+              x1="640" y1="0" x2="1490" y2="700"/>
+        <!-- glow nodes at intersections -->
+        <circle class="hw-node hw-pulse-a" cx="576" cy="280" r="2"/>
+        <circle class="hw-node hw-pulse-b" cx="864" cy="420" r="2"/>
+        <circle class="hw-node hw-pulse-a" cx="288" cy="140" r="1.5"/>
+        <circle class="hw-node hw-pulse-b" cx="1152" cy="560" r="1.5"/>
+      </svg>
+    </div>
     <canvas id="heroAmbient" aria-hidden="true"></canvas>
     <div class="hero-grid">
       <div class="hero-copy">
@@ -2671,72 +2847,100 @@ h1,h2,h3{
         </div>
       </div>
 
-      <div class="hero-visual terminal">
+      <div class="hero-visual hvc-panel">
+        <!-- ambient glow layer -->
+        <div class="hvc-ambient"></div>
+        <!-- scan-line shimmer -->
         <div class="scan-line"></div>
-        <div class="hv-header">
-          <div class="left">
-            <span class="live">LIVE</span>
-            <span id="hvHeaderSym">NVDA · NASDAQ</span>
-            <span id="hvHeaderTime">15:42:08 EDT</span>
+
+        <!-- HEADER -->
+        <div class="hvc-header">
+          <div class="hvc-header-left">
+            <span class="hvc-live-dot"></span>
+            <span class="hvc-live-label">LIVE</span>
+            <span id="hvHeaderSym" class="hvc-ticker-label">NVDA · NASDAQ</span>
           </div>
-          <div class="engine">Brieftick Engine v3.4</div>
+          <div class="hvc-header-right">
+            <span id="hvHeaderTime" class="hvc-time">15:42:08 EDT</span>
+            <span class="hvc-engine">Brieftick</span>
+          </div>
         </div>
-        <div class="hv-body terminal-grid" id="hvBody" style="transition:opacity 0.35s ease">
-          <div class="hv-main">
-            <div class="hv-quote">
+
+        <!-- BODY: quote + chart + insights (left), metrics (right) -->
+        <div class="hvc-body terminal-grid" id="hvBody" style="transition:opacity 0.35s ease">
+
+          <!-- LEFT MAIN COLUMN -->
+          <div class="hvc-main">
+            <!-- Quote row -->
+            <div class="hvc-quote-row">
               <div>
-                <div class="sym" id="hvSym">NVDA</div>
-                <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;margin-top:4px" id="hvName">NVIDIA CORP</div>
+                <div class="hvc-sym" id="hvSym">NVDA</div>
+                <div class="hvc-name" id="hvName">NVIDIA CORP</div>
               </div>
-              <div style="text-align:right">
-                <div class="price hv-quote-price">-</div>
-                <div class="chg hv-quote-chg" style="color:var(--ink-faint)">Loading live data…</div>
+              <div class="hvc-price-block">
+                <div class="price hv-quote-price">—</div>
+                <div class="chg hv-quote-chg" style="color:var(--ink-faint)">Loading…</div>
               </div>
             </div>
+
+            <!-- Tags -->
             <div class="hv-tags" id="hvTags">
               <span class="hv-tag gold">AI Infrastructure</span>
               <span class="hv-tag">Semiconductors</span>
-              <span class="hv-tag blue">Market Cap $2.58T</span>
+              <span class="hv-tag blue">$2.58T Cap</span>
             </div>
+
+            <!-- Chart — keeps existing ID for drawChart() -->
             <div class="hv-chart" id="heroChart"></div>
-            <div class="hv-ai">
-              <div class="hv-ai-head">
-                <span style="width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)"></span>
-                Brieftick · Live Analysis
+
+            <!-- Intelligence feed -->
+            <div class="hvc-insights">
+              <div class="hvc-insights-label">
+                <span class="hvc-dot-gold"></span>
+                Market Signals
               </div>
-              <div class="hv-ai-text" id="hvAiText">
-                NVDA pulled lower into the close after <b>hyperscaler capex chatter</b> reignited demand-tail concerns. Weakness is spreading across <b>AMD, AVGO, MU</b> with an estimated <b>72% reaction-chain probability</b>. Macro tone neutral - no Fed catalyst.
+              <div class="hvc-insights-body hv-ai-text" id="hvAiText">
+                NVDA pulled lower after hyperscaler capex chatter reignited demand-tail concerns.
+                Weakness spreading across <b>AMD, AVGO, MU</b> — 72% reaction-chain probability.
+                Macro tone neutral. No Fed catalyst.
               </div>
             </div>
           </div>
-          <div class="hv-side">
-            <div class="hv-card">
-              <div class="hv-card-title">Signal Sentiment</div>
-              <div class="hv-meter"></div>
-              <div class="hv-card-big" id="hvSentiment" style="color:var(--green)">Bullish <small>72/100</small></div>
+
+          <!-- RIGHT METRICS COLUMN -->
+          <div class="hvc-metrics">
+            <div class="hvc-metric-card">
+              <div class="hvc-metric-label">Sentiment</div>
+              <div class="hvc-sentiment-bar">
+                <div class="hvc-sentiment-fill" id="hvSentimentFill" style="width:72%"></div>
+              </div>
+              <div class="hvc-metric-value" id="hvSentiment" style="color:var(--green)">Bullish <small>72/100</small></div>
             </div>
-            <div class="hv-card">
-              <div class="hv-card-title">Signal Confidence</div>
-              <div class="hv-card-big" id="hvConfidence">78<small>%</small></div>
-              <div class="hv-mini-bars"><div class="up" id="hvConviction">High conviction · rising</div></div>
+            <div class="hvc-metric-card">
+              <div class="hvc-metric-label">Conviction</div>
+              <div class="hvc-metric-value" id="hvConfidence">78<small>%</small></div>
+              <div class="hvc-metric-sub up" id="hvConviction">High · rising</div>
             </div>
-            <div class="hv-card">
-              <div class="hv-card-title">Sector Impact</div>
-              <div class="hv-mini-bars" id="hvSectorImpact">
+            <div class="hvc-metric-card">
+              <div class="hvc-metric-label">Sector Impact</div>
+              <div id="hvSectorImpact">
                 <div class="hv-mini-bar"><span>AI Infra</span><b class="dn">-2.34%</b></div>
                 <div class="hv-mini-bar"><span>Semis</span><b class="dn">-1.87%</b></div>
                 <div class="hv-mini-bar"><span>Cloud</span><b class="dn">-1.12%</b></div>
               </div>
             </div>
           </div>
-          <div class="hv-market-strip">
+
+          <!-- BOTTOM MARKET STRIP -->
+          <div class="hvc-strip hv-market-strip">
             <div class="hv-market"><div class="sym">SPY</div><div class="val">528.64</div><div class="move up">+0.56%</div></div>
             <div class="hv-market"><div class="sym">QQQ</div><div class="val">452.11</div><div class="move up">+0.48%</div></div>
             <div class="hv-market"><div class="sym">DIA</div><div class="val">395.42</div><div class="move up">+0.41%</div></div>
             <div class="hv-market"><div class="sym">VIX</div><div class="val">17.38</div><div class="move dn">-3.22%</div></div>
-            <div class="hv-market"><div class="sym">10Y Yield</div><div class="val">4.28%</div><div class="move dn">-0.03</div></div>
+            <div class="hv-market"><div class="sym">10Y</div><div class="val">4.28%</div><div class="move dn">-0.03</div></div>
           </div>
-        </div>
+
+        </div><!-- /hvc-body -->
       </div>
     </div>
   </div>
