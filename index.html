@@ -2773,7 +2773,7 @@ h1,h2,h3{
       <div class="section-head">
         <div>
           <div class="section-eyebrow">Early access voices</div>
-          <h2 class="section-title">Built with the people who <em>read</em> markets for a living.</h2>
+          <h2 class="section-title">Built with the people who <em id="h2Flip1">read</em> markets for a living.</h2>
         </div>
       </div>
       <div class="testimonial-grid">
@@ -2797,7 +2797,7 @@ h1,h2,h3{
   <section class="section" style="padding-bottom:140px">
     <div class="section-narrow" style="text-align:center">
       <div class="section-eyebrow" style="display:inline-block">The market deserves better narration</div>
-      <h2 class="section-title" style="margin:0 auto 28px">Stop reading the tape.<br><em>Start understanding it.</em></h2>
+      <h2 class="section-title" style="margin:0 auto 28px"><span id="h2Flip2">Stop reading the tape.</span><br><em>Start understanding it.</em></h2>
       <button class="btn-primary" onclick="clerkSignUp()" style="margin:12px 6px">Start Free →</button>
       <button class="btn-secondary" onclick="routeWithAuth('dashboard')" style="margin:12px 6px">Explore the Dashboard</button>
     </div>
@@ -13425,9 +13425,39 @@ window.addEventListener('load', () => {
       });
   }, 2800);
 
+  /* ── "read" in "Built with the people who read markets…" ──────── */
+  const h2Flip1El = document.getElementById('h2Flip1');
+  const H2_CYCLE1 = ['read', 'analyse', 'track', 'decode'];
+  let   h2i1      = 0;
 
-  /* ══════════════════════════════════════════════════════════════
-     4. AUDIENCE FLIP CARDS
+  setInterval(() => {
+    if (!h2Flip1El || document.hidden) return;
+    h2i1 = (h2i1 + 1) % H2_CYCLE1.length;
+    animate(h2Flip1El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
+      .then(() => {
+        h2Flip1El.textContent = H2_CYCLE1[h2i1];
+        h2Flip1El.style.color = 'var(--gold)';
+        setTimeout(() => { h2Flip1El.style.color = ''; }, 600);
+        animate(h2Flip1El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
+      });
+  }, 2800);
+
+  /* ── "Stop reading the tape." first-line cycles ────────────────── */
+  const h2Flip2El = document.getElementById('h2Flip2');
+  const H2_CYCLE2 = ['Stop reading the tape.', 'Stop chasing the noise.', 'Stop missing the context.', 'Stop guessing the move.'];
+  let   h2i2      = 0;
+
+  setInterval(() => {
+    if (!h2Flip2El || document.hidden) return;
+    h2i2 = (h2i2 + 1) % H2_CYCLE2.length;
+    animate(h2Flip2El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
+      .then(() => {
+        h2Flip2El.textContent = H2_CYCLE2[h2i2];
+        h2Flip2El.style.color = 'var(--gold)';
+        setTimeout(() => { h2Flip2El.style.color = ''; }, 600);
+        animate(h2Flip2El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
+      });
+  }, 2800);
      On mouseenter: rotate inner to 180°, revealing back face.
      On mouseleave: rotate back to 0°.
   ══════════════════════════════════════════════════════════════ */
