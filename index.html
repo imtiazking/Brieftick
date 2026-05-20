@@ -7301,7 +7301,7 @@ async function liveRefreshDashboard(){
   // Add a small "LIVE DATA" indicator
   const indicator = document.createElement('div');
   indicator.style.cssText = 'position:fixed;bottom:14px;right:14px;z-index:200;padding:8px 14px;background:rgba(61,220,151,0.1);border:1px solid rgba(61,220,151,0.3);border-radius:8px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.12em;text-transform:uppercase;backdrop-filter:blur(12px);display:flex;align-items:center;gap:8px';
-  indicator.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.5s infinite"></span>Live · TwelveData + Finnhub + Alpha Vantage';
+  indicator.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.5s infinite"></span>LIVE MARKET INTELLIGENCE';
   document.body.appendChild(indicator);
   setTimeout(()=>{indicator.style.transition='opacity 1s'; indicator.style.opacity='0.5';}, 5000);
 }
