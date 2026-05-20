@@ -4408,13 +4408,11 @@ h1,h2,h3{
     </div>
     <div class="footer-col">
       <h5>Product</h5>
-      <ul>
-        <li class="live-item" onclick="routeWithAuth('dashboard')">Live Dashboard</li>
-        <li onclick="routeWithAuth('why')">Why Is It Moving</li>
-        <li onclick="routeWithAuth('brief')">Daily Brief</li>
-        <li onclick="routeWithAuth('earnings')">Earnings Intelligence</li>
-        <li onclick="routeWithAuth('impact')">Market Impact Feed</li>
-        <li onclick="routeWithAuth('portfolio')">Portfolio Intelligence</li>
+      <ul id="footerProductLinks">
+        <!-- Protected app links are injected here by JS only when signed in.
+             Public/logged-out users see no app links — not rendered, not hidden. -->
+      </ul>
+      <ul style="margin-top:0">
         <li onclick="routeWithAuth('pricing')">Pricing</li>
       </ul>
     </div>
@@ -10154,12 +10152,29 @@ async function _onAuthChange(user) {
     if (signedIn)  signedIn.style.display  = 'none';
     // Hide app tabs for public users
     if (navEl) navEl.classList.remove('nav--authed');
+    // Remove protected footer product links — not rendered for logged-out users
+    const fpl = document.getElementById('footerProductLinks');
+    if (fpl) fpl.innerHTML = '';
     _applyAccessLevel('visitor');
     return;
   }
 
   // Signed in — show app tabs
   if (navEl) navEl.classList.add('nav--authed');
+  // Render protected footer product links for signed-in users
+  (function() {
+    const fpl = document.getElementById('footerProductLinks');
+    if (fpl && !fpl.querySelector('li')) {
+      fpl.innerHTML = `
+        <li class="live-item" onclick="routeWithAuth('dashboard')">Live Dashboard</li>
+        <li onclick="routeWithAuth('why')">Why Is It Moving</li>
+        <li onclick="routeWithAuth('brief')">Daily Brief</li>
+        <li onclick="routeWithAuth('earnings')">Earnings Intelligence</li>
+        <li onclick="routeWithAuth('impact')">Market Impact Feed</li>
+        <li onclick="routeWithAuth('portfolio')">Portfolio Intelligence</li>
+      `;
+    }
+  })();
   if (signedOut) signedOut.style.display = 'none';
   if (signedIn)  signedIn.style.display  = 'flex';
 
