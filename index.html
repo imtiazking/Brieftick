@@ -411,6 +411,38 @@ main{padding-top:90px;position:relative;z-index:3}
 }
 .trust-pill b{display:block;color:var(--ink);font-family:var(--body);font-size:13px;letter-spacing:0;text-transform:none;margin-bottom:3px}
 
+/* ── Framer Motion flip cards (audience grid) ─────────────── */
+.fm-flip-card{
+  perspective:700px;cursor:pointer;
+  /* match existing trust-pill sizing */
+  min-height:72px;
+}
+.fm-flip-inner{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.fm-flip-front,.fm-flip-back{
+  position:absolute;inset:0;
+  padding:12px 14px;border-radius:10px;
+  background:rgba(255,255,255,0.025);border:1px solid var(--border);
+  text-align:center;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;text-transform:uppercase;
+}
+.fm-flip-front b{display:block;color:var(--ink);font-family:var(--body);font-size:13px;letter-spacing:0;text-transform:none;margin-bottom:3px}
+.fm-flip-front span{display:block;font-size:10px;color:var(--ink-dim);letter-spacing:0.06em}
+.fm-flip-back{
+  transform:rotateY(180deg);
+  background:rgba(212,175,55,0.05);border-color:rgba(212,175,55,0.18);
+  font-size:10px;letter-spacing:0.02em;text-transform:none;color:var(--ink-dim);line-height:1.55;
+}
+.fm-flip-card:hover .fm-flip-front,
+.fm-flip-card:focus .fm-flip-front{border-color:rgba(212,175,55,0.3)}
+/* word-reveal spans in h1 */
+.fm-word{display:inline}
+
 /* ---------- SECTION HEADER ---------- */
 .section{padding:100px 36px;position:relative}
 .section-narrow{max-width:1280px;margin:0 auto}
@@ -2610,7 +2642,7 @@ h1,h2,h3{
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="hero-eyebrow gsap-hero-el"><span class="pulse"></span> Live Beta · Cohort II Open</div>
-        <h1 class="gsap-hero-el">Understand<br>what moves<br><span class="gold">markets.</span></h1>
+        <h1 class="gsap-hero-el" id="heroHeadline"><span class="fm-word" id="fmW1">Understand</span><br><span class="fm-word" id="fmW2">what moves</span><br><span class="fm-word" id="fmW3"><span class="gold">markets.</span></span></h1>
         <p class="hero-sub gsap-hero-el">Real-time market intelligence across earnings, macro events, sentiment, and market-moving news. Built to explain the why behind every move.</p>
         <div class="hero-cta gsap-hero-el">
           <button class="btn-primary" onclick="clerkSignUp()">Start Free →</button>
@@ -2696,12 +2728,12 @@ h1,h2,h3{
 
   <div class="landing-trust">
     <div class="trust-label">Built for market participants</div>
-    <div class="trust-grid">
-      <div class="trust-pill"><b>Investors</b>Portfolio context</div>
-      <div class="trust-pill"><b>Traders</b>Volatility drivers</div>
-      <div class="trust-pill"><b>Analysts</b>News impact</div>
-      <div class="trust-pill"><b>Beginners</b>Plain English</div>
-      <div class="trust-pill"><b>Market teams</b>Shared intelligence</div>
+    <div class="trust-grid" id="trustGrid">
+      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Investors</b><span>Portfolio context</span></div><div class="fm-flip-back"><span>Understand what drives your holdings — macro, sector rotation, and earnings impact explained.</span></div></div></div>
+      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Traders</b><span>Volatility drivers</span></div><div class="fm-flip-back"><span>See real-time volatility signals, options flow, and sector momentum before the move.</span></div></div></div>
+      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Analysts</b><span>News impact</span></div><div class="fm-flip-back"><span>Map breaking news to affected stocks, sectors, and macro indicators instantly.</span></div></div></div>
+      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Beginners</b><span>Plain English</span></div><div class="fm-flip-back"><span>Every signal translated into clear context — no jargon, no noise, just understanding.</span></div></div></div>
+      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Market teams</b><span>Shared intelligence</span></div><div class="fm-flip-back"><span>One intelligence layer for your entire team. Same data, same context, aligned decisions.</span></div></div></div>
     </div>
   </div>
 
@@ -13254,6 +13286,212 @@ function initDashTelemetry() {
   if (dashEl.classList.contains('active')) enter();
 })();
 
+</script>
+
+<!-- ================================================================
+     FRAMER MOTION PREVIEW — Premium landing page motion
+     animate · inView · stagger  (framer-motion/dom, no React)
+================================================================ -->
+<script type="module">
+import { animate, inView, stagger }
+  from 'https://esm.sh/framer-motion@12/dom';
+
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EASE    = [0.16, 1, 0.3, 1];   // premium deceleration
+
+/* ── helpers ──────────────────────────────────────────────────── */
+function show(el) { el.style.opacity = '1'; el.style.transform = 'none'; }
+function hide(el, y = 28) {
+  el.style.opacity = '0';
+  el.style.transform = `translateY(${y}px)`;
+  el.style.willChange = 'opacity, transform';
+}
+
+window.addEventListener('load', () => {
+
+  if (REDUCED) {
+    // Instantly reveal everything and bail
+    document.querySelectorAll('.gsap-hero-el,.fm-word,.fm-flip-card')
+      .forEach(show);
+    return;
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     1. NAV STAGGER ENTRANCE
+     logo → links → auth buttons, 80 ms apart
+  ══════════════════════════════════════════════════════════════ */
+  const navBrand = document.getElementById('navBrand');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const authArea = document.getElementById('authArea');
+
+  [navBrand, ...navLinks, authArea].filter(Boolean).forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-10px)';
+    el.style.willChange = 'opacity, transform';
+  });
+
+  const navTargets = [navBrand, ...Array.from(navLinks), authArea].filter(Boolean);
+  // Safety fallback
+  const navFallback = setTimeout(() => navTargets.forEach(show), 1800);
+  animate(navTargets,
+    { opacity: [0, 1], y: [-10, 0] },
+    { duration: 0.55, delay: stagger(0.06, { startDelay: 0.1 }), ease: EASE }
+  ).then(() => { clearTimeout(navFallback); navTargets.forEach(el => el.style.willChange = 'auto'); });
+
+
+  /* ══════════════════════════════════════════════════════════════
+     2. HERO HEADLINE WORD-BY-WORD REVEAL
+     "Understand"  →  "what moves"  →  "markets."
+     Each line fades up in sequence, 160 ms stagger
+  ══════════════════════════════════════════════════════════════ */
+  const words = [
+    document.getElementById('fmW1'),
+    document.getElementById('fmW2'),
+    document.getElementById('fmW3'),
+  ].filter(Boolean);
+
+  words.forEach(w => hide(w, 32));
+  const heroFallback = setTimeout(() => words.forEach(show), 2200);
+
+  animate(words,
+    { opacity: [0, 1], y: [32, 0] },
+    { duration: 0.9, delay: stagger(0.16, { startDelay: 0.45 }), ease: EASE }
+  ).then(() => { clearTimeout(heroFallback); words.forEach(el => el.style.willChange = 'auto'); });
+
+  // Also reveal other hero elements (eyebrow, sub, cta, proof)
+  const heroRest = Array.from(document.querySelectorAll('.gsap-hero-el'))
+    .filter(el => el.id !== 'heroHeadline');   // h1 handled above via words
+  heroRest.forEach(el => hide(el, 20));
+  animate(heroRest,
+    { opacity: [0, 1], y: [20, 0] },
+    { duration: 0.75, delay: stagger(0.12, { startDelay: 0.6 }), ease: EASE }
+  );
+
+
+  /* ══════════════════════════════════════════════════════════════
+     3. WORD FLIP — "Understand" cycles through synonyms
+     Slow 2.8 s interval.  Current word fades up-and-out,
+     next word fades up-and-in, gold on change.
+  ══════════════════════════════════════════════════════════════ */
+  const flipEl = document.getElementById('fmW1');
+  const CYCLE  = ['Understand', 'Explain', 'Track', 'Anticipate'];
+  let   ci     = 0;
+
+  setInterval(() => {
+    if (!flipEl || document.hidden) return;
+    ci = (ci + 1) % CYCLE.length;
+    // Fade out upward
+    animate(flipEl, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
+      .then(() => {
+        flipEl.textContent = CYCLE[ci];
+        // Gold flash on change, then back to white
+        flipEl.style.color = 'var(--gold)';
+        setTimeout(() => { flipEl.style.color = ''; }, 600);
+        // Fade in from below
+        animate(flipEl, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
+      });
+  }, 2800);
+
+
+  /* ══════════════════════════════════════════════════════════════
+     4. AUDIENCE FLIP CARDS
+     On mouseenter: rotate inner to 180°, revealing back face.
+     On mouseleave: rotate back to 0°.
+  ══════════════════════════════════════════════════════════════ */
+  document.querySelectorAll('.fm-flip-card').forEach((card, i) => {
+    const inner = card.querySelector('.fm-flip-inner');
+    if (!inner) return;
+
+    // Staggered reveal as section enters view
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(18px)';
+
+    let flipped = false;
+
+    card.addEventListener('mouseenter', () => {
+      if (flipped) return;
+      flipped = true;
+      animate(inner, { rotateY: 180 }, { duration: 0.52, ease: EASE });
+      animate(card, { borderColor: 'rgba(212,175,55,0.3)' }, { duration: 0.25 });
+    });
+    card.addEventListener('mouseleave', () => {
+      if (!flipped) return;
+      flipped = false;
+      animate(inner, { rotateY: 0 }, { duration: 0.45, ease: EASE });
+    });
+
+    // Keyboard / touch support
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        flipped = !flipped;
+        animate(inner, { rotateY: flipped ? 180 : 0 }, { duration: 0.52, ease: EASE });
+      }
+    });
+  });
+
+  // Staggered scroll-reveal for the flip cards
+  inView('#trustGrid', ({ target }) => {
+    const cards = Array.from(target.querySelectorAll('.fm-flip-card'));
+    animate(cards,
+      { opacity: [0, 1], y: [18, 0] },
+      { duration: 0.6, delay: stagger(0.08, { startDelay: 0.1 }), ease: EASE }
+    );
+    return () => {};
+  }, { margin: '-5% 0px -5% 0px' });
+
+
+  /* ══════════════════════════════════════════════════════════════
+     5. HERO VISUAL — float animation
+     Card gently bobs up/down after entrance slide-in
+  ══════════════════════════════════════════════════════════════ */
+  const heroCard = document.querySelector('.hero-visual');
+  if (heroCard) {
+    heroCard.style.opacity = '0';
+    heroCard.style.transform = 'translateX(28px)';
+    heroCard.style.willChange = 'opacity, transform';
+    animate(heroCard,
+      { opacity: [0, 1], x: [28, 0] },
+      { duration: 1.05, delay: 0.5, ease: EASE }
+    ).then(() => {
+      heroCard.style.willChange = 'transform';
+      animate(heroCard, { y: [0, -9, 0] }, { duration: 5, repeat: Infinity, ease: 'easeInOut' });
+    });
+  }
+
+
+  /* ══════════════════════════════════════════════════════════════
+     6. SECTION SCROLL REVEALS
+     feature cards · pricing tiers · about principles
+  ══════════════════════════════════════════════════════════════ */
+  inView('.feature', ({ target }) => {
+    animate(target, { opacity: [0, 1], y: [24, 0] }, { duration: 0.6, ease: EASE });
+    return () => {};
+  }, { margin: '-8% 0px -8% 0px' });
+
+  inView('.tier-grid', ({ target }) => {
+    const tiers = Array.from(target.querySelectorAll('.tier'));
+    tiers.forEach(t => { t.style.opacity = '0'; t.style.transform = 'translateY(22px)'; });
+    animate(tiers, { opacity: [0, 1], y: [22, 0] },
+      { duration: 0.65, delay: stagger(0.1), ease: EASE });
+    return () => {};
+  });
+
+  inView('.about-principles', ({ target }) => {
+    const items = Array.from(target.querySelectorAll('.about-principle'));
+    items.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(16px)'; });
+    animate(items, { opacity: [0, 1], y: [16, 0] },
+      { duration: 0.55, delay: stagger(0.07), ease: EASE });
+    return () => {};
+  });
+
+  inView('.section-head', ({ target }) => {
+    animate(target, { opacity: [0, 1], y: [14, 0] }, { duration: 0.55, ease: EASE });
+    return () => {};
+  }, { margin: '-5% 0px -5% 0px' });
+
+}); /* end load */
 </script>
 </body>
 </html>
