@@ -3281,7 +3281,6 @@ h1,h2,h3{
         <div class="brief-meta">
           <span><b>Date</b> · <span id="briefDate">–</span></span>
           <span><b>Author</b> · Brieftick</span>
-          <span><b>Source</b> · <span id="briefSource" style="color:var(--ink-faint)">Finnhub · Twelve Data</span></span>
         </div>
         <div style="margin-top:24px">
           <button class="ai-gen-btn ai-gen-btn-large" onclick="generateLiveBriefing()" id="briefGenBtn">
@@ -6208,7 +6207,7 @@ async function liveRefreshEarnings(){
         const meta = document.querySelector('#page-earnings .meta');
         if(meta){
           const count = cal.length;
-          meta.innerHTML = `CALENDAR · LIVE RESULTS · AI INTERPRETATION · IMPACT MAPPING · <b style="color:var(--green)">${count} REPORTS THIS WEEK · LIVE</b>`;
+          meta.innerHTML = `CALENDAR · LIVE RESULTS · IMPACT MAPPING · <b style="color:var(--green)">${count} REPORTS THIS WEEK · LIVE</b>`;
         }
       }
     }
