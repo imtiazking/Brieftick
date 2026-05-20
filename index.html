@@ -355,6 +355,223 @@ main{padding-top:90px;position:relative;z-index:3}
 .hero-proof-item b{display:block;color:var(--ink);font-weight:600;margin-bottom:1px}
 .hero-proof-item span{display:block;white-space:nowrap}
 
+/* ════════════════════════════════════════════════════════════════
+   HERO WIRE / GRID INTELLIGENCE BACKGROUND
+   Full-width SVG flowing signal lines — Bloomberg × Linear tone
+════════════════════════════════════════════════════════════════ */
+.hero-wire-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.hero-wire-svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* Structural grid lines */
+.hw-grid line{stroke:rgba(78,168,255,0.04);stroke-width:.5}
+
+/* Flowing signal paths — base style */
+.hw-flow{fill:none;stroke-width:1;stroke-linecap:round}
+.hw-gold  {stroke:rgba(212,175,55,0.22)}
+.hw-blue  {stroke:rgba(78,168,255,0.18)}
+.hw-purple{stroke:rgba(130,100,220,0.14)}
+.hw-diagonal{stroke-width:.6;opacity:.6}
+
+/* Flowing comet animations via stroke-dashoffset */
+@keyframes flowRight{from{stroke-dashoffset:2000}to{stroke-dashoffset:0}}
+@keyframes flowLeft {from{stroke-dashoffset:0}to{stroke-dashoffset:2000}}
+@keyframes flowDiag {from{stroke-dashoffset:2400}to{stroke-dashoffset:0}}
+
+.hw-s1{stroke-dasharray:260 1740;animation:flowRight 14s linear infinite}
+.hw-s2{stroke-dasharray:180 1820;animation:flowRight 18s linear infinite 4s}
+.hw-s3{stroke-dasharray:300 1700;animation:flowRight 11s linear infinite 2s}
+.hw-s4{stroke-dasharray:140 1860;animation:flowRight 22s linear infinite 7s}
+.hw-s5{stroke-dasharray:220 1780;animation:flowRight 16s linear infinite 1s}
+.hw-s6{stroke-dasharray:300 2100;animation:flowDiag  20s linear infinite 3s}
+.hw-s7{stroke-dasharray:200 2200;animation:flowDiag  25s linear infinite 9s}
+
+/* Glow node pulses */
+@keyframes hwNodePulse{0%,100%{opacity:.2;r:2}50%{opacity:.7;r:3.5}}
+.hw-node{fill:rgba(212,175,55,.5)}
+.hw-pulse-a{animation:hwNodePulse 3.2s ease-in-out infinite}
+.hw-pulse-b{animation:hwNodePulse 4.5s ease-in-out infinite 1.5s}
+
+@media(prefers-reduced-motion:reduce){
+  .hw-flow,.hw-node{animation:none;opacity:.04}
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CINEMATIC HERO PANEL — right-side intelligence surface
+════════════════════════════════════════════════════════════════ */
+.hvc-panel{
+  position:relative;height:560px;border-radius:18px;z-index:1;
+  background:rgba(8,11,18,0.42);
+  border:1px solid rgba(255,255,255,0.07);
+  backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(212,175,55,0.04) inset,
+             0 32px 80px rgba(0,0,0,0.38),
+             0 0 60px rgba(78,168,255,0.04);
+}
+/* Ambient radial layers */
+.hvc-ambient{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(600px 360px at 70% 20%, rgba(212,175,55,0.06), transparent 65%),
+    radial-gradient(400px 280px at 20% 75%, rgba(78,168,255,0.05), transparent 60%),
+    radial-gradient(300px 200px at 90% 90%, rgba(130,100,220,0.04), transparent 55%);
+}
+/* Header */
+.hvc-header{
+  position:relative;display:flex;justify-content:space-between;align-items:center;
+  padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.05);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+}
+.hvc-header-left{display:flex;align-items:center;gap:10px;color:var(--ink-dim)}
+.hvc-live-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);animation:pulse 1.5s ease-in-out infinite;flex-shrink:0;
+}
+.hvc-live-label{color:var(--green);letter-spacing:.14em}
+.hvc-ticker-label{color:var(--ink);font-weight:600}
+.hvc-header-right{display:flex;align-items:center;gap:14px;color:var(--ink-faint)}
+.hvc-time{font-variant-numeric:tabular-nums}
+.hvc-engine{color:rgba(212,175,55,.4);letter-spacing:.12em}
+
+/* Body grid: main | metrics */
+.hvc-body{
+  position:relative;padding:16px 18px;height:calc(100% - 37px);
+  display:grid;
+  grid-template-columns:1fr 130px;
+  grid-template-rows:auto 1fr auto auto;
+  gap:12px 14px;
+}
+/* Quote row */
+.hvc-main{min-width:0;display:flex;flex-direction:column;gap:10px;grid-row:1/-1}
+.hvc-quote-row{display:flex;justify-content:space-between;align-items:flex-end}
+.hvc-sym{font-family:var(--display);font-size:34px;letter-spacing:-.02em;font-weight:500;color:var(--ink);line-height:1}
+.hvc-name{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.08em;margin-top:4px}
+.hvc-price-block{text-align:right}
+.hvc-price-block .price{font-family:var(--mono);font-size:28px;color:var(--ink)}
+.hvc-price-block .chg{font-family:var(--mono);font-size:13px;margin-top:4px}
+
+/* Intelligence feed */
+.hvc-insights{
+  padding:12px 14px;border-radius:10px;
+  background:rgba(10,13,20,0.55);border:1px solid rgba(255,255,255,0.06);
+  backdrop-filter:blur(8px);flex-shrink:0;
+}
+.hvc-insights-label{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:9px;color:var(--gold);
+  letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;
+}
+.hvc-dot-gold{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);flex-shrink:0}
+.hvc-insights-body{font-size:12px;line-height:1.55;color:var(--ink)}
+.hvc-insights-body b{color:var(--gold-bright);font-weight:500}
+
+/* Right metrics column */
+.hvc-metrics{
+  grid-column:2;grid-row:1/-1;
+  display:flex;flex-direction:column;gap:8px;
+}
+.hvc-metric-card{
+  padding:10px 12px;border-radius:9px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);
+  flex-shrink:0;
+}
+.hvc-metric-label{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.hvc-metric-value{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--ink);line-height:1}
+.hvc-metric-value small{font-size:10px;color:var(--ink-dim);font-weight:400}
+.hvc-metric-sub{font-family:var(--mono);font-size:9px;margin-top:4px;letter-spacing:.06em}
+.hvc-metric-sub.up{color:var(--green)}.hvc-metric-sub.dn{color:var(--red)}
+.hvc-sentiment-bar{height:3px;border-radius:2px;background:rgba(255,255,255,0.08);margin-bottom:6px;overflow:hidden}
+.hvc-sentiment-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,rgba(61,220,151,.5),var(--green));transition:width .6s ease}
+
+/* Market strip */
+.hvc-strip{
+  grid-column:1/-1;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  border:1px solid rgba(255,255,255,0.05);border-radius:8px;
+  overflow:hidden;background:rgba(0,0,0,0.15);
+}
+
+/* ────────────────────────────────────────────────────────────────
+   PAGE-WIDE WIRE — landing page below hero, fades with scroll
+──────────────────────────────────────────────────────────────── */
+.page-wire-bg{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  pointer-events:none;z-index:0;overflow:hidden;
+  /* gentle fade only at the very bottom — stays strong throughout */
+  -webkit-mask-image:linear-gradient(to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 70%,
+    rgba(0,0,0,.4) 90%,
+    transparent 100%);
+  mask-image:linear-gradient(to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 70%,
+    rgba(0,0,0,.4) 90%,
+    transparent 100%);
+}
+.page-wire-svg{position:absolute;top:0;left:0;width:100%;height:100%}
+/* Structural grid — matches hero density */
+.pw-grid line{stroke:rgba(78,168,255,0.05);stroke-width:.5}
+/* Signal paths — match hero opacity */
+.pw-flow{fill:none;stroke-width:1;stroke-linecap:round}
+.pw-gold  {stroke:rgba(212,175,55,0.22)}
+.pw-blue  {stroke:rgba(78,168,255,0.18)}
+.pw-purple{stroke:rgba(130,100,220,0.14)}
+.pw-diag  {stroke-width:.7;opacity:.7}
+/* Animations — longer than hero but still visible */
+@keyframes pwFlowR{from{stroke-dashoffset:2200}to{stroke-dashoffset:0}}
+@keyframes pwFlowD{from{stroke-dashoffset:3200}to{stroke-dashoffset:0}}
+.pw-a{stroke-dasharray:260 1940;animation:pwFlowR 20s linear infinite}
+.pw-b{stroke-dasharray:200 2000;animation:pwFlowR 24s linear infinite 5s}
+.pw-c{stroke-dasharray:220 1980;animation:pwFlowR 22s linear infinite 10s}
+.pw-d{stroke-dasharray:180 2020;animation:pwFlowR 28s linear infinite 3s}
+.pw-e{stroke-dasharray:320 2880;animation:pwFlowD 36s linear infinite 2s}
+.pw-f{stroke-dasharray:240 2960;animation:pwFlowD 42s linear infinite 14s}
+/* Nodes */
+.pw-node{fill:rgba(212,175,55,.5)}
+@keyframes pwPulse{0%,100%{opacity:.25;r:2}50%{opacity:.75;r:3.5}}
+.pw-np-a{animation:pwPulse 3.5s ease-in-out infinite}
+.pw-np-b{animation:pwPulse 5s ease-in-out infinite 1.8s}
+
+/* ────────────────────────────────────────────────────────────────
+   ABOUT PAGE WIRE — same strength as landing, subtle fade at bottom
+──────────────────────────────────────────────────────────────── */
+#page-about{position:relative;overflow:hidden}
+.about-wire-bg{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 65%,
+    rgba(0,0,0,.3) 88%,
+    transparent 100%);
+  mask-image:linear-gradient(to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 65%,
+    rgba(0,0,0,.3) 88%,
+    transparent 100%);
+}
+.about-wire-svg{position:absolute;top:0;left:0;width:100%;height:100%}
+.aw-grid line{stroke:rgba(78,168,255,0.045);stroke-width:.5}
+.aw-flow{fill:none;stroke-width:1;stroke-linecap:round}
+.aw-gold  {stroke:rgba(212,175,55,0.20)}
+.aw-blue  {stroke:rgba(78,168,255,0.16)}
+.aw-purple{stroke:rgba(130,100,220,0.12)}
+@keyframes awFlowR{from{stroke-dashoffset:2000}to{stroke-dashoffset:0}}
+.aw-a{stroke-dasharray:200 1800;animation:awFlowR 22s linear infinite}
+.aw-b{stroke-dasharray:160 1840;animation:awFlowR 28s linear infinite 8s}
+.aw-c{stroke-dasharray:140 1860;animation:awFlowR 32s linear infinite 4s}
+.aw-node{fill:rgba(212,175,55,.45)}
+@keyframes awPulse{0%,100%{opacity:.2;r:1.5}50%{opacity:.65;r:3}}
+.aw-np-a{animation:awPulse 4s ease-in-out infinite}
+.aw-np-b{animation:awPulse 6s ease-in-out infinite 2s}
+
+/* ensure landing page is relative so absolute child positions correctly */
+#page-landing{position:relative}
+
+@media(prefers-reduced-motion:reduce){
+  .pw-flow,.pw-node,.aw-flow,.aw-node{animation:none;opacity:.02}
+}
 /* ── Intelligence rail — per-symbol CSS loops (reliable, no CDN dependency) */
 @keyframes railPulse  {0%,100%{opacity:.6;transform:scale(1)}   50%{opacity:1;transform:scale(1.12)}}
 @keyframes railBreath {0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.14) rotate(6deg)}}
@@ -2652,7 +2869,74 @@ h1,h2,h3{
      LANDING PAGE
 ============================================================ -->
 <section class="page active" id="page-landing">
+  <!-- Page-wide wire — fades as user scrolls, below hero strength -->
+  <div class="page-wire-bg" aria-hidden="true">
+    <svg class="page-wire-svg" viewBox="0 0 1440 3200" preserveAspectRatio="xMidYTop slice"
+         xmlns="http://www.w3.org/2000/svg">
+      <!-- sparse structural grid -->
+      <g class="pw-grid">
+        <line x1="0" y1="900"  x2="1440" y2="900"/><line x1="0" y1="1300" x2="1440" y2="1300"/>
+        <line x1="0" y1="1700" x2="1440" y2="1700"/><line x1="0" y1="2100" x2="1440" y2="2100"/>
+        <line x1="0" y1="2500" x2="1440" y2="2500"/><line x1="0" y1="2900" x2="1440" y2="2900"/>
+        <line x1="480"  y1="700" x2="480"  y2="3200"/>
+        <line x1="960"  y1="700" x2="960"  y2="3200"/>
+      </g>
+      <!-- flowing signal paths — sparser, slower, lower opacity than hero -->
+      <path class="pw-flow pw-gold  pw-a" d="M-100 1050 C400 1020 800 1080 1200 1050 S1600 1020 1900 1055"/>
+      <path class="pw-flow pw-blue  pw-b" d="M-100 1600 C350 1570 750 1630 1150 1600 S1550 1570 1900 1605"/>
+      <path class="pw-flow pw-gold  pw-c" d="M-100 2150 C450 2120 850 2180 1250 2150 S1650 2120 1900 2155"/>
+      <path class="pw-flow pw-purple pw-d" d="M-100 2700 C400 2670 800 2730 1200 2700 S1600 2670 1900 2705"/>
+      <!-- gentle diagonal traces -->
+      <line class="pw-flow pw-blue pw-e pw-diag" x1="0" y1="800"  x2="1440" y2="2600"/>
+      <line class="pw-flow pw-gold pw-f pw-diag" x1="300" y1="700" x2="1440" y2="3000"/>
+      <!-- occasional pulse nodes -->
+      <circle class="pw-node pw-np-a" cx="480"  cy="1300" r="1.5"/>
+      <circle class="pw-node pw-np-b" cx="960"  cy="1700" r="1.5"/>
+      <circle class="pw-node pw-np-a" cx="480"  cy="2500" r="1"/>
+      <circle class="pw-node pw-np-b" cx="960"  cy="2900" r="1"/>
+    </svg>
+  </div>
   <div class="hero">
+    <!-- Wire/grid intelligence background — full hero width -->
+    <div class="hero-wire-bg" aria-hidden="true">
+      <svg class="hero-wire-svg" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice"
+           xmlns="http://www.w3.org/2000/svg">
+        <!-- structural grid -->
+        <g class="hw-grid">
+          <line x1="0"    y1="140" x2="1440" y2="140"/>
+          <line x1="0"    y1="280" x2="1440" y2="280"/>
+          <line x1="0"    y1="420" x2="1440" y2="420"/>
+          <line x1="0"    y1="560" x2="1440" y2="560"/>
+          <line x1="288"  y1="0"   x2="288"  y2="700"/>
+          <line x1="576"  y1="0"   x2="576"  y2="700"/>
+          <line x1="864"  y1="0"   x2="864"  y2="700"/>
+          <line x1="1152" y1="0"   x2="1152" y2="700"/>
+        </g>
+        <!-- flowing signal paths: gold -->
+        <path class="hw-flow hw-gold hw-s1"
+              d="M-100 210 C200 190 500 230 800 200 S1200 170 1540 205"/>
+        <path class="hw-flow hw-gold hw-s2"
+              d="M-100 490 C300 460 600 520 900 490 S1300 460 1540 495"/>
+        <!-- flowing signal paths: blue -->
+        <path class="hw-flow hw-blue hw-s3"
+              d="M-100 320 C250 300 550 340 850 315 S1250 290 1540 325"/>
+        <path class="hw-flow hw-blue hw-s4"
+              d="M-100 600 C200 575 500 620 800 595 S1200 570 1540 600"/>
+        <!-- flowing signal paths: purple/accent -->
+        <path class="hw-flow hw-purple hw-s5"
+              d="M-100 90  C350  70 700 110 1050  85 S1350  60 1540  92"/>
+        <!-- diagonal cross signals -->
+        <line class="hw-flow hw-gold hw-s6 hw-diagonal"
+              x1="-50" y1="0" x2="800" y2="700"/>
+        <line class="hw-flow hw-blue hw-s7 hw-diagonal"
+              x1="640" y1="0" x2="1490" y2="700"/>
+        <!-- glow nodes at intersections -->
+        <circle class="hw-node hw-pulse-a" cx="576" cy="280" r="2"/>
+        <circle class="hw-node hw-pulse-b" cx="864" cy="420" r="2"/>
+        <circle class="hw-node hw-pulse-a" cx="288" cy="140" r="1.5"/>
+        <circle class="hw-node hw-pulse-b" cx="1152" cy="560" r="1.5"/>
+      </svg>
+    </div>
     <canvas id="heroAmbient" aria-hidden="true"></canvas>
     <div class="hero-grid">
       <div class="hero-copy">
@@ -2671,72 +2955,100 @@ h1,h2,h3{
         </div>
       </div>
 
-      <div class="hero-visual terminal">
+      <div class="hero-visual hvc-panel">
+        <!-- ambient glow layer -->
+        <div class="hvc-ambient"></div>
+        <!-- scan-line shimmer -->
         <div class="scan-line"></div>
-        <div class="hv-header">
-          <div class="left">
-            <span class="live">LIVE</span>
-            <span id="hvHeaderSym">NVDA · NASDAQ</span>
-            <span id="hvHeaderTime">15:42:08 EDT</span>
+
+        <!-- HEADER -->
+        <div class="hvc-header">
+          <div class="hvc-header-left">
+            <span class="hvc-live-dot"></span>
+            <span class="hvc-live-label">LIVE</span>
+            <span id="hvHeaderSym" class="hvc-ticker-label">NVDA · NASDAQ</span>
           </div>
-          <div class="engine">Brieftick Engine v3.4</div>
+          <div class="hvc-header-right">
+            <span id="hvHeaderTime" class="hvc-time">15:42:08 EDT</span>
+            <span class="hvc-engine">Brieftick</span>
+          </div>
         </div>
-        <div class="hv-body terminal-grid" id="hvBody" style="transition:opacity 0.35s ease">
-          <div class="hv-main">
-            <div class="hv-quote">
+
+        <!-- BODY: quote + chart + insights (left), metrics (right) -->
+        <div class="hvc-body terminal-grid" id="hvBody" style="transition:opacity 0.35s ease">
+
+          <!-- LEFT MAIN COLUMN -->
+          <div class="hvc-main">
+            <!-- Quote row -->
+            <div class="hvc-quote-row">
               <div>
-                <div class="sym" id="hvSym">NVDA</div>
-                <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;margin-top:4px" id="hvName">NVIDIA CORP</div>
+                <div class="hvc-sym" id="hvSym">NVDA</div>
+                <div class="hvc-name" id="hvName">NVIDIA CORP</div>
               </div>
-              <div style="text-align:right">
-                <div class="price hv-quote-price">-</div>
-                <div class="chg hv-quote-chg" style="color:var(--ink-faint)">Loading live data…</div>
+              <div class="hvc-price-block">
+                <div class="price hv-quote-price">—</div>
+                <div class="chg hv-quote-chg" style="color:var(--ink-faint)">Loading…</div>
               </div>
             </div>
+
+            <!-- Tags -->
             <div class="hv-tags" id="hvTags">
               <span class="hv-tag gold">AI Infrastructure</span>
               <span class="hv-tag">Semiconductors</span>
-              <span class="hv-tag blue">Market Cap $2.58T</span>
+              <span class="hv-tag blue">$2.58T Cap</span>
             </div>
+
+            <!-- Chart — keeps existing ID for drawChart() -->
             <div class="hv-chart" id="heroChart"></div>
-            <div class="hv-ai">
-              <div class="hv-ai-head">
-                <span style="width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)"></span>
-                Brieftick · Live Analysis
+
+            <!-- Intelligence feed -->
+            <div class="hvc-insights">
+              <div class="hvc-insights-label">
+                <span class="hvc-dot-gold"></span>
+                Market Signals
               </div>
-              <div class="hv-ai-text" id="hvAiText">
-                NVDA pulled lower into the close after <b>hyperscaler capex chatter</b> reignited demand-tail concerns. Weakness is spreading across <b>AMD, AVGO, MU</b> with an estimated <b>72% reaction-chain probability</b>. Macro tone neutral - no Fed catalyst.
+              <div class="hvc-insights-body hv-ai-text" id="hvAiText">
+                NVDA pulled lower after hyperscaler capex chatter reignited demand-tail concerns.
+                Weakness spreading across <b>AMD, AVGO, MU</b> — 72% reaction-chain probability.
+                Macro tone neutral. No Fed catalyst.
               </div>
             </div>
           </div>
-          <div class="hv-side">
-            <div class="hv-card">
-              <div class="hv-card-title">Signal Sentiment</div>
-              <div class="hv-meter"></div>
-              <div class="hv-card-big" id="hvSentiment" style="color:var(--green)">Bullish <small>72/100</small></div>
+
+          <!-- RIGHT METRICS COLUMN -->
+          <div class="hvc-metrics">
+            <div class="hvc-metric-card">
+              <div class="hvc-metric-label">Sentiment</div>
+              <div class="hvc-sentiment-bar">
+                <div class="hvc-sentiment-fill" id="hvSentimentFill" style="width:72%"></div>
+              </div>
+              <div class="hvc-metric-value" id="hvSentiment" style="color:var(--green)">Bullish <small>72/100</small></div>
             </div>
-            <div class="hv-card">
-              <div class="hv-card-title">Signal Confidence</div>
-              <div class="hv-card-big" id="hvConfidence">78<small>%</small></div>
-              <div class="hv-mini-bars"><div class="up" id="hvConviction">High conviction · rising</div></div>
+            <div class="hvc-metric-card">
+              <div class="hvc-metric-label">Conviction</div>
+              <div class="hvc-metric-value" id="hvConfidence">78<small>%</small></div>
+              <div class="hvc-metric-sub up" id="hvConviction">High · rising</div>
             </div>
-            <div class="hv-card">
-              <div class="hv-card-title">Sector Impact</div>
-              <div class="hv-mini-bars" id="hvSectorImpact">
+            <div class="hvc-metric-card">
+              <div class="hvc-metric-label">Sector Impact</div>
+              <div id="hvSectorImpact">
                 <div class="hv-mini-bar"><span>AI Infra</span><b class="dn">-2.34%</b></div>
                 <div class="hv-mini-bar"><span>Semis</span><b class="dn">-1.87%</b></div>
                 <div class="hv-mini-bar"><span>Cloud</span><b class="dn">-1.12%</b></div>
               </div>
             </div>
           </div>
-          <div class="hv-market-strip">
+
+          <!-- BOTTOM MARKET STRIP -->
+          <div class="hvc-strip hv-market-strip">
             <div class="hv-market"><div class="sym">SPY</div><div class="val">528.64</div><div class="move up">+0.56%</div></div>
             <div class="hv-market"><div class="sym">QQQ</div><div class="val">452.11</div><div class="move up">+0.48%</div></div>
             <div class="hv-market"><div class="sym">DIA</div><div class="val">395.42</div><div class="move up">+0.41%</div></div>
             <div class="hv-market"><div class="sym">VIX</div><div class="val">17.38</div><div class="move dn">-3.22%</div></div>
-            <div class="hv-market"><div class="sym">10Y Yield</div><div class="val">4.28%</div><div class="move dn">-0.03</div></div>
+            <div class="hv-market"><div class="sym">10Y</div><div class="val">4.28%</div><div class="move dn">-0.03</div></div>
           </div>
-        </div>
+
+        </div><!-- /hvc-body -->
       </div>
     </div>
   </div>
@@ -4291,11 +4603,30 @@ h1,h2,h3{
      ABOUT PAGE
 ============================================================ -->
 <section class="page" id="page-about">
+  <!-- Ambient intelligence grid — lighter than landing, purely atmospheric -->
+  <div class="about-wire-bg" aria-hidden="true">
+    <svg class="about-wire-svg" viewBox="0 0 1440 2400" preserveAspectRatio="xMidYTop slice"
+         xmlns="http://www.w3.org/2000/svg">
+      <g class="aw-grid">
+        <line x1="0" y1="400"  x2="1440" y2="400"/>
+        <line x1="0" y1="900"  x2="1440" y2="900"/>
+        <line x1="0" y1="1400" x2="1440" y2="1400"/>
+        <line x1="0" y1="1900" x2="1440" y2="1900"/>
+        <line x1="360"  y1="0" x2="360"  y2="2400"/>
+        <line x1="1080" y1="0" x2="1080" y2="2400"/>
+      </g>
+      <path class="aw-flow aw-gold  aw-a" d="M-100 500  C400 475 800 525 1200 500  S1600 475 1900 505"/>
+      <path class="aw-flow aw-blue  aw-b" d="M-100 1100 C350 1075 750 1125 1150 1100 S1550 1075 1900 1105"/>
+      <path class="aw-flow aw-purple aw-c" d="M-100 1700 C450 1675 850 1725 1250 1700 S1650 1675 1900 1705"/>
+      <circle class="aw-node aw-np-a" cx="360"  cy="900"  r="1.5"/>
+      <circle class="aw-node aw-np-b" cx="1080" cy="1400" r="1.5"/>
+    </svg>
+  </div>
   <div class="about-wrap">
 
     <!-- Hero -->
     <div class="about-hero">
-      <h1>Markets move fast.<br>Understanding them<br>shouldn't require a <em>Bloomberg terminal.</em></h1>
+      <h1>Markets move fast.<br><span id="aboutFlip1">Understanding them</span><br>shouldn't require a <em><span id="aboutFlip2">Bloomberg terminal.</span></em></h1>
       <p>Brieftick was built for a simple reason: institutional-grade market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by using AI to translate complex market signals into clear, actionable context for everyone from seasoned traders to first-time investors.</p>
     </div>
 
@@ -13428,7 +13759,7 @@ window.addEventListener('load', () => {
         // Fade in from below
         animate(flipEl, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ── Section heading word flip — "Nine modules" cycles ─────────
      Same timing/easing as the hero flip above.
@@ -13447,7 +13778,7 @@ window.addEventListener('load', () => {
         setTimeout(() => { sectionFlipEl.style.color = ''; }, 600);
         animate(sectionFlipEl, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ── "read" in "Built with the people who read markets…" ──────── */
   const h2Flip1El = document.getElementById('h2Flip1');
@@ -13464,7 +13795,7 @@ window.addEventListener('load', () => {
         setTimeout(() => { h2Flip1El.style.color = ''; }, 600);
         animate(h2Flip1El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ── "Stop reading the tape." first-line cycles ────────────────── */
   const h2Flip2El = document.getElementById('h2Flip2');
@@ -13481,7 +13812,45 @@ window.addEventListener('load', () => {
         setTimeout(() => { h2Flip2El.style.color = ''; }, 600);
         animate(h2Flip2El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
+
+  /* ── About page: "Understanding them" cycles ────────────────────
+     Same timing/easing as all other word flips above.
+  ════════════════════════════════════════════════════════════════ */
+  const aboutFlip1El = document.getElementById('aboutFlip1');
+  const ABOUT_CYCLE1 = ['Understanding them', 'Decoding them', 'Reading them', 'Tracking them'];
+  let   abi1         = 0;
+
+  setInterval(() => {
+    if (!aboutFlip1El || document.hidden) return;
+    abi1 = (abi1 + 1) % ABOUT_CYCLE1.length;
+    animate(aboutFlip1El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
+      .then(() => {
+        aboutFlip1El.textContent = ABOUT_CYCLE1[abi1];
+        aboutFlip1El.style.color = 'var(--gold)';
+        setTimeout(() => { aboutFlip1El.style.color = ''; }, 600);
+        animate(aboutFlip1El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
+      });
+  }, 5000);
+
+  /* ── About page: "Bloomberg terminal." cycles ───────────────────
+     Cycles through alternative descriptions of expensive platforms.
+  ════════════════════════════════════════════════════════════════ */
+  const aboutFlip2El = document.getElementById('aboutFlip2');
+  const ABOUT_CYCLE2 = ['Bloomberg terminal.', 'institutional tools.', 'Wall Street access.', 'proprietary software.'];
+  let   abi2         = 0;
+
+  setInterval(() => {
+    if (!aboutFlip2El || document.hidden) return;
+    abi2 = (abi2 + 1) % ABOUT_CYCLE2.length;
+    animate(aboutFlip2El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
+      .then(() => {
+        aboutFlip2El.textContent = ABOUT_CYCLE2[abi2];
+        aboutFlip2El.style.color = 'var(--gold)';
+        setTimeout(() => { aboutFlip2El.style.color = ''; }, 600);
+        animate(aboutFlip2El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
+      });
+  }, 5000);
 
   /* ══════════════════════════════════════════════════════════════
      4. AUDIENCE FLIP CARDS
@@ -13656,7 +14025,7 @@ window.addEventListener('load', () => {
   activateItem(0);
   setInterval(() => {
     if (!document.hidden) activateItem((activeIdx + 1) % ITEMS.length);
-  }, 2800);
+  }, 5000);
 
   /* ── Hover: icon scales blue, item lifts fully ─────────────── */
   ITEMS.forEach((d, i) => {
