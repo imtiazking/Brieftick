@@ -497,78 +497,74 @@ main{padding-top:90px;position:relative;z-index:3}
 .page-wire-bg{
   position:absolute;top:0;left:0;right:0;bottom:0;
   pointer-events:none;z-index:0;overflow:hidden;
-  /* gradient mask: strong near top, near-invisible by bottom */
+  /* gentle fade only at the very bottom — stays strong throughout */
   -webkit-mask-image:linear-gradient(to bottom,
-    transparent 0%,
-    rgba(0,0,0,.6) 8%,
-    rgba(0,0,0,.4) 30%,
-    rgba(0,0,0,.15) 60%,
-    rgba(0,0,0,.04) 85%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 70%,
+    rgba(0,0,0,.4) 90%,
     transparent 100%);
   mask-image:linear-gradient(to bottom,
-    transparent 0%,
-    rgba(0,0,0,.6) 8%,
-    rgba(0,0,0,.4) 30%,
-    rgba(0,0,0,.15) 60%,
-    rgba(0,0,0,.04) 85%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 70%,
+    rgba(0,0,0,.4) 90%,
     transparent 100%);
 }
 .page-wire-svg{position:absolute;top:0;left:0;width:100%;height:100%}
-/* Structural grid — sparser than hero */
-.pw-grid line{stroke:rgba(78,168,255,0.025);stroke-width:.4}
-/* Signal paths */
-.pw-flow{fill:none;stroke-width:.8;stroke-linecap:round}
-.pw-gold  {stroke:rgba(212,175,55,0.10)}
-.pw-blue  {stroke:rgba(78,168,255,0.08)}
-.pw-purple{stroke:rgba(130,100,220,0.07)}
-.pw-diag  {stroke-width:.5;opacity:.5}
-/* Animations — longer, slower than hero */
+/* Structural grid — matches hero density */
+.pw-grid line{stroke:rgba(78,168,255,0.05);stroke-width:.5}
+/* Signal paths — match hero opacity */
+.pw-flow{fill:none;stroke-width:1;stroke-linecap:round}
+.pw-gold  {stroke:rgba(212,175,55,0.22)}
+.pw-blue  {stroke:rgba(78,168,255,0.18)}
+.pw-purple{stroke:rgba(130,100,220,0.14)}
+.pw-diag  {stroke-width:.7;opacity:.7}
+/* Animations — longer than hero but still visible */
 @keyframes pwFlowR{from{stroke-dashoffset:2200}to{stroke-dashoffset:0}}
 @keyframes pwFlowD{from{stroke-dashoffset:3200}to{stroke-dashoffset:0}}
-.pw-a{stroke-dasharray:220 1980;animation:pwFlowR 28s linear infinite}
-.pw-b{stroke-dasharray:160 2040;animation:pwFlowR 35s linear infinite 8s}
-.pw-c{stroke-dasharray:180 2020;animation:pwFlowR 32s linear infinite 14s}
-.pw-d{stroke-dasharray:140 2060;animation:pwFlowR 40s linear infinite 5s}
-.pw-e{stroke-dasharray:280 2920;animation:pwFlowD 50s linear infinite 3s}
-.pw-f{stroke-dasharray:200 3000;animation:pwFlowD 60s linear infinite 18s}
+.pw-a{stroke-dasharray:260 1940;animation:pwFlowR 20s linear infinite}
+.pw-b{stroke-dasharray:200 2000;animation:pwFlowR 24s linear infinite 5s}
+.pw-c{stroke-dasharray:220 1980;animation:pwFlowR 22s linear infinite 10s}
+.pw-d{stroke-dasharray:180 2020;animation:pwFlowR 28s linear infinite 3s}
+.pw-e{stroke-dasharray:320 2880;animation:pwFlowD 36s linear infinite 2s}
+.pw-f{stroke-dasharray:240 2960;animation:pwFlowD 42s linear infinite 14s}
 /* Nodes */
-.pw-node{fill:rgba(212,175,55,.35)}
-@keyframes pwPulse{0%,100%{opacity:.15;r:1.5}50%{opacity:.55;r:2.8}}
-.pw-np-a{animation:pwPulse 5s ease-in-out infinite}
-.pw-np-b{animation:pwPulse 7s ease-in-out infinite 2.5s}
+.pw-node{fill:rgba(212,175,55,.5)}
+@keyframes pwPulse{0%,100%{opacity:.25;r:2}50%{opacity:.75;r:3.5}}
+.pw-np-a{animation:pwPulse 3.5s ease-in-out infinite}
+.pw-np-b{animation:pwPulse 5s ease-in-out infinite 1.8s}
 
 /* ────────────────────────────────────────────────────────────────
-   ABOUT PAGE WIRE — lightest layer, purely atmospheric
+   ABOUT PAGE WIRE — same strength as landing, subtle fade at bottom
 ──────────────────────────────────────────────────────────────── */
 #page-about{position:relative;overflow:hidden}
 .about-wire-bg{
   position:absolute;inset:0;
   pointer-events:none;z-index:0;overflow:hidden;
   -webkit-mask-image:linear-gradient(to bottom,
-    rgba(0,0,0,.35) 0%,
-    rgba(0,0,0,.18) 40%,
-    rgba(0,0,0,.06) 75%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 65%,
+    rgba(0,0,0,.3) 88%,
     transparent 100%);
   mask-image:linear-gradient(to bottom,
-    rgba(0,0,0,.35) 0%,
-    rgba(0,0,0,.18) 40%,
-    rgba(0,0,0,.06) 75%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 65%,
+    rgba(0,0,0,.3) 88%,
     transparent 100%);
 }
 .about-wire-svg{position:absolute;top:0;left:0;width:100%;height:100%}
-.aw-grid line{stroke:rgba(78,168,255,0.018);stroke-width:.4}
-.aw-flow{fill:none;stroke-width:.7;stroke-linecap:round}
-.aw-gold  {stroke:rgba(212,175,55,0.07)}
-.aw-blue  {stroke:rgba(78,168,255,0.06)}
-.aw-purple{stroke:rgba(130,100,220,0.05)}
+.aw-grid line{stroke:rgba(78,168,255,0.045);stroke-width:.5}
+.aw-flow{fill:none;stroke-width:1;stroke-linecap:round}
+.aw-gold  {stroke:rgba(212,175,55,0.20)}
+.aw-blue  {stroke:rgba(78,168,255,0.16)}
+.aw-purple{stroke:rgba(130,100,220,0.12)}
 @keyframes awFlowR{from{stroke-dashoffset:2000}to{stroke-dashoffset:0}}
-.aw-a{stroke-dasharray:160 1840;animation:awFlowR 38s linear infinite}
-.aw-b{stroke-dasharray:120 1880;animation:awFlowR 48s linear infinite 12s}
-.aw-c{stroke-dasharray:100 1900;animation:awFlowR 55s linear infinite 6s}
-.aw-node{fill:rgba(212,175,55,.28)}
-@keyframes awPulse{0%,100%{opacity:.12;r:1.5}50%{opacity:.45;r:2.5}}
-.aw-np-a{animation:awPulse 6s ease-in-out infinite}
-.aw-np-b{animation:awPulse 8s ease-in-out infinite 3s}
+.aw-a{stroke-dasharray:200 1800;animation:awFlowR 22s linear infinite}
+.aw-b{stroke-dasharray:160 1840;animation:awFlowR 28s linear infinite 8s}
+.aw-c{stroke-dasharray:140 1860;animation:awFlowR 32s linear infinite 4s}
+.aw-node{fill:rgba(212,175,55,.45)}
+@keyframes awPulse{0%,100%{opacity:.2;r:1.5}50%{opacity:.65;r:3}}
+.aw-np-a{animation:awPulse 4s ease-in-out infinite}
+.aw-np-b{animation:awPulse 6s ease-in-out infinite 2s}
 
 /* ensure landing page is relative so absolute child positions correctly */
 #page-landing{position:relative}
