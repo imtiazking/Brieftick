@@ -13759,7 +13759,7 @@ window.addEventListener('load', () => {
         // Fade in from below
         animate(flipEl, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ── Section heading word flip — "Nine modules" cycles ─────────
      Same timing/easing as the hero flip above.
@@ -13778,7 +13778,7 @@ window.addEventListener('load', () => {
         setTimeout(() => { sectionFlipEl.style.color = ''; }, 600);
         animate(sectionFlipEl, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ── "read" in "Built with the people who read markets…" ──────── */
   const h2Flip1El = document.getElementById('h2Flip1');
@@ -13795,7 +13795,7 @@ window.addEventListener('load', () => {
         setTimeout(() => { h2Flip1El.style.color = ''; }, 600);
         animate(h2Flip1El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ── "Stop reading the tape." first-line cycles ────────────────── */
   const h2Flip2El = document.getElementById('h2Flip2');
@@ -13812,7 +13812,7 @@ window.addEventListener('load', () => {
         setTimeout(() => { h2Flip2El.style.color = ''; }, 600);
         animate(h2Flip2El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ── About page: "Understanding them" cycles ────────────────────
      Same timing/easing as all other word flips above.
@@ -13831,7 +13831,7 @@ window.addEventListener('load', () => {
         setTimeout(() => { aboutFlip1El.style.color = ''; }, 600);
         animate(aboutFlip1El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ── About page: "Bloomberg terminal." cycles ───────────────────
      Cycles through alternative descriptions of expensive platforms.
@@ -13850,7 +13850,7 @@ window.addEventListener('load', () => {
         setTimeout(() => { aboutFlip2El.style.color = ''; }, 600);
         animate(aboutFlip2El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
-  }, 2800);
+  }, 5000);
 
   /* ══════════════════════════════════════════════════════════════
      4. AUDIENCE FLIP CARDS
@@ -14025,7 +14025,7 @@ window.addEventListener('load', () => {
   activateItem(0);
   setInterval(() => {
     if (!document.hidden) activateItem((activeIdx + 1) % ITEMS.length);
-  }, 2800);
+  }, 5000);
 
   /* ── Hover: icon scales blue, item lifts fully ─────────────── */
   ITEMS.forEach((d, i) => {
