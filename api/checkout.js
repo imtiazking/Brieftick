@@ -62,8 +62,8 @@ export default async function handler(req, res) {
     mode:                            'subscription',
     'line_items[0][price]':          priceId,
     'line_items[0][quantity]':       '1',
-    success_url:                     `${baseUrl}/success?plan=terminal&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url:                      `${baseUrl}/?tab=pricing`,
+    success_url:                     `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url:                      `${baseUrl}/pricing`,
     'subscription_data[metadata][plan]': 'terminal',
     allow_promotion_codes:           'true',
   });
