@@ -491,6 +491,91 @@ main{padding-top:90px;position:relative;z-index:3}
   overflow:hidden;background:rgba(0,0,0,0.15);
 }
 
+/* ────────────────────────────────────────────────────────────────
+   PAGE-WIDE WIRE — landing page below hero, fades with scroll
+──────────────────────────────────────────────────────────────── */
+.page-wire-bg{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  pointer-events:none;z-index:0;overflow:hidden;
+  /* gradient mask: strong near top, near-invisible by bottom */
+  -webkit-mask-image:linear-gradient(to bottom,
+    transparent 0%,
+    rgba(0,0,0,.6) 8%,
+    rgba(0,0,0,.4) 30%,
+    rgba(0,0,0,.15) 60%,
+    rgba(0,0,0,.04) 85%,
+    transparent 100%);
+  mask-image:linear-gradient(to bottom,
+    transparent 0%,
+    rgba(0,0,0,.6) 8%,
+    rgba(0,0,0,.4) 30%,
+    rgba(0,0,0,.15) 60%,
+    rgba(0,0,0,.04) 85%,
+    transparent 100%);
+}
+.page-wire-svg{position:absolute;top:0;left:0;width:100%;height:100%}
+/* Structural grid — sparser than hero */
+.pw-grid line{stroke:rgba(78,168,255,0.025);stroke-width:.4}
+/* Signal paths */
+.pw-flow{fill:none;stroke-width:.8;stroke-linecap:round}
+.pw-gold  {stroke:rgba(212,175,55,0.10)}
+.pw-blue  {stroke:rgba(78,168,255,0.08)}
+.pw-purple{stroke:rgba(130,100,220,0.07)}
+.pw-diag  {stroke-width:.5;opacity:.5}
+/* Animations — longer, slower than hero */
+@keyframes pwFlowR{from{stroke-dashoffset:2200}to{stroke-dashoffset:0}}
+@keyframes pwFlowD{from{stroke-dashoffset:3200}to{stroke-dashoffset:0}}
+.pw-a{stroke-dasharray:220 1980;animation:pwFlowR 28s linear infinite}
+.pw-b{stroke-dasharray:160 2040;animation:pwFlowR 35s linear infinite 8s}
+.pw-c{stroke-dasharray:180 2020;animation:pwFlowR 32s linear infinite 14s}
+.pw-d{stroke-dasharray:140 2060;animation:pwFlowR 40s linear infinite 5s}
+.pw-e{stroke-dasharray:280 2920;animation:pwFlowD 50s linear infinite 3s}
+.pw-f{stroke-dasharray:200 3000;animation:pwFlowD 60s linear infinite 18s}
+/* Nodes */
+.pw-node{fill:rgba(212,175,55,.35)}
+@keyframes pwPulse{0%,100%{opacity:.15;r:1.5}50%{opacity:.55;r:2.8}}
+.pw-np-a{animation:pwPulse 5s ease-in-out infinite}
+.pw-np-b{animation:pwPulse 7s ease-in-out infinite 2.5s}
+
+/* ────────────────────────────────────────────────────────────────
+   ABOUT PAGE WIRE — lightest layer, purely atmospheric
+──────────────────────────────────────────────────────────────── */
+#page-about{position:relative;overflow:hidden}
+.about-wire-bg{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,
+    rgba(0,0,0,.35) 0%,
+    rgba(0,0,0,.18) 40%,
+    rgba(0,0,0,.06) 75%,
+    transparent 100%);
+  mask-image:linear-gradient(to bottom,
+    rgba(0,0,0,.35) 0%,
+    rgba(0,0,0,.18) 40%,
+    rgba(0,0,0,.06) 75%,
+    transparent 100%);
+}
+.about-wire-svg{position:absolute;top:0;left:0;width:100%;height:100%}
+.aw-grid line{stroke:rgba(78,168,255,0.018);stroke-width:.4}
+.aw-flow{fill:none;stroke-width:.7;stroke-linecap:round}
+.aw-gold  {stroke:rgba(212,175,55,0.07)}
+.aw-blue  {stroke:rgba(78,168,255,0.06)}
+.aw-purple{stroke:rgba(130,100,220,0.05)}
+@keyframes awFlowR{from{stroke-dashoffset:2000}to{stroke-dashoffset:0}}
+.aw-a{stroke-dasharray:160 1840;animation:awFlowR 38s linear infinite}
+.aw-b{stroke-dasharray:120 1880;animation:awFlowR 48s linear infinite 12s}
+.aw-c{stroke-dasharray:100 1900;animation:awFlowR 55s linear infinite 6s}
+.aw-node{fill:rgba(212,175,55,.28)}
+@keyframes awPulse{0%,100%{opacity:.12;r:1.5}50%{opacity:.45;r:2.5}}
+.aw-np-a{animation:awPulse 6s ease-in-out infinite}
+.aw-np-b{animation:awPulse 8s ease-in-out infinite 3s}
+
+/* ensure landing page is relative so absolute child positions correctly */
+#page-landing{position:relative}
+
+@media(prefers-reduced-motion:reduce){
+  .pw-flow,.pw-node,.aw-flow,.aw-node{animation:none;opacity:.02}
+}
 /* ── Intelligence rail — per-symbol CSS loops (reliable, no CDN dependency) */
 @keyframes railPulse  {0%,100%{opacity:.6;transform:scale(1)}   50%{opacity:1;transform:scale(1.12)}}
 @keyframes railBreath {0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.14) rotate(6deg)}}
@@ -2788,6 +2873,33 @@ h1,h2,h3{
      LANDING PAGE
 ============================================================ -->
 <section class="page active" id="page-landing">
+  <!-- Page-wide wire — fades as user scrolls, below hero strength -->
+  <div class="page-wire-bg" aria-hidden="true">
+    <svg class="page-wire-svg" viewBox="0 0 1440 3200" preserveAspectRatio="xMidYTop slice"
+         xmlns="http://www.w3.org/2000/svg">
+      <!-- sparse structural grid -->
+      <g class="pw-grid">
+        <line x1="0" y1="900"  x2="1440" y2="900"/><line x1="0" y1="1300" x2="1440" y2="1300"/>
+        <line x1="0" y1="1700" x2="1440" y2="1700"/><line x1="0" y1="2100" x2="1440" y2="2100"/>
+        <line x1="0" y1="2500" x2="1440" y2="2500"/><line x1="0" y1="2900" x2="1440" y2="2900"/>
+        <line x1="480"  y1="700" x2="480"  y2="3200"/>
+        <line x1="960"  y1="700" x2="960"  y2="3200"/>
+      </g>
+      <!-- flowing signal paths — sparser, slower, lower opacity than hero -->
+      <path class="pw-flow pw-gold  pw-a" d="M-100 1050 C400 1020 800 1080 1200 1050 S1600 1020 1900 1055"/>
+      <path class="pw-flow pw-blue  pw-b" d="M-100 1600 C350 1570 750 1630 1150 1600 S1550 1570 1900 1605"/>
+      <path class="pw-flow pw-gold  pw-c" d="M-100 2150 C450 2120 850 2180 1250 2150 S1650 2120 1900 2155"/>
+      <path class="pw-flow pw-purple pw-d" d="M-100 2700 C400 2670 800 2730 1200 2700 S1600 2670 1900 2705"/>
+      <!-- gentle diagonal traces -->
+      <line class="pw-flow pw-blue pw-e pw-diag" x1="0" y1="800"  x2="1440" y2="2600"/>
+      <line class="pw-flow pw-gold pw-f pw-diag" x1="300" y1="700" x2="1440" y2="3000"/>
+      <!-- occasional pulse nodes -->
+      <circle class="pw-node pw-np-a" cx="480"  cy="1300" r="1.5"/>
+      <circle class="pw-node pw-np-b" cx="960"  cy="1700" r="1.5"/>
+      <circle class="pw-node pw-np-a" cx="480"  cy="2500" r="1"/>
+      <circle class="pw-node pw-np-b" cx="960"  cy="2900" r="1"/>
+    </svg>
+  </div>
   <div class="hero">
     <!-- Wire/grid intelligence background — full hero width -->
     <div class="hero-wire-bg" aria-hidden="true">
@@ -4495,6 +4607,25 @@ h1,h2,h3{
      ABOUT PAGE
 ============================================================ -->
 <section class="page" id="page-about">
+  <!-- Ambient intelligence grid — lighter than landing, purely atmospheric -->
+  <div class="about-wire-bg" aria-hidden="true">
+    <svg class="about-wire-svg" viewBox="0 0 1440 2400" preserveAspectRatio="xMidYTop slice"
+         xmlns="http://www.w3.org/2000/svg">
+      <g class="aw-grid">
+        <line x1="0" y1="400"  x2="1440" y2="400"/>
+        <line x1="0" y1="900"  x2="1440" y2="900"/>
+        <line x1="0" y1="1400" x2="1440" y2="1400"/>
+        <line x1="0" y1="1900" x2="1440" y2="1900"/>
+        <line x1="360"  y1="0" x2="360"  y2="2400"/>
+        <line x1="1080" y1="0" x2="1080" y2="2400"/>
+      </g>
+      <path class="aw-flow aw-gold  aw-a" d="M-100 500  C400 475 800 525 1200 500  S1600 475 1900 505"/>
+      <path class="aw-flow aw-blue  aw-b" d="M-100 1100 C350 1075 750 1125 1150 1100 S1550 1075 1900 1105"/>
+      <path class="aw-flow aw-purple aw-c" d="M-100 1700 C450 1675 850 1725 1250 1700 S1650 1675 1900 1705"/>
+      <circle class="aw-node aw-np-a" cx="360"  cy="900"  r="1.5"/>
+      <circle class="aw-node aw-np-b" cx="1080" cy="1400" r="1.5"/>
+    </svg>
+  </div>
   <div class="about-wrap">
 
     <!-- Hero -->
