@@ -2758,7 +2758,7 @@ h1,h2,h3{
       <div class="section-head">
         <div>
           <div class="section-eyebrow">What it does</div>
-          <h2 class="section-title">Nine modules. <em>One</em> intelligence layer.</h2>
+          <h2 class="section-title"><span id="sectionFlipWord">Nine modules</span>. <em>One</em> intelligence layer.</h2>
         </div>
         <p class="section-desc">Every feature shares a single market graph - so a tariff headline, a watchlist alert and a sector heatmap all speak the same language.</p>
       </div>
@@ -13403,6 +13403,25 @@ window.addEventListener('load', () => {
         setTimeout(() => { flipEl.style.color = ''; }, 600);
         // Fade in from below
         animate(flipEl, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
+      });
+  }, 2800);
+
+  /* ── Section heading word flip — "Nine modules" cycles ─────────
+     Same timing/easing as the hero flip above.
+  ════════════════════════════════════════════════════════════════ */
+  const sectionFlipEl = document.getElementById('sectionFlipWord');
+  const SECTION_CYCLE = ['Nine modules', 'Live signals', 'Real-time data', 'Deep analysis'];
+  let   si            = 0;
+
+  setInterval(() => {
+    if (!sectionFlipEl || document.hidden) return;
+    si = (si + 1) % SECTION_CYCLE.length;
+    animate(sectionFlipEl, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
+      .then(() => {
+        sectionFlipEl.textContent = SECTION_CYCLE[si];
+        sectionFlipEl.style.color = 'var(--gold)';
+        setTimeout(() => { sectionFlipEl.style.color = ''; }, 600);
+        animate(sectionFlipEl, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
   }, 2800);
 
