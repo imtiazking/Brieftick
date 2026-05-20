@@ -354,6 +354,11 @@ main{padding-top:90px;position:relative;z-index:3}
 }
 .hero-proof-item b{display:block;color:var(--ink);font-weight:600;margin-bottom:1px}
 .hero-proof-item span{display:block;white-space:nowrap}
+
+/* ── Intelligence rail — active state ────────────────────────── */
+/* FM controls opacity/transform; CSS handles will-change hints  */
+.hero-proof-item{will-change:opacity,transform;transition:none}
+.hero-proof-icon {will-change:transform,filter;transition:none}
 .hero-visual{
   box-shadow:0 30px 90px rgba(0,0,0,0.35),0 0 80px rgba(78,168,255,0.06);
   background:linear-gradient(180deg,rgba(12,17,27,0.88),rgba(5,8,14,0.92));
@@ -2648,11 +2653,11 @@ h1,h2,h3{
           <button class="btn-primary" onclick="clerkSignUp()">Start Free →</button>
           <button class="btn-secondary" onclick="routeWithAuth('dashboard')">View Live Demo <span class="external">↗</span></button>
         </div>
-        <div class="hero-proof">
-          <div class="hero-proof-item"><div class="hero-proof-icon">⌁</div><div><b>Live market data</b><span>Streaming context</span></div></div>
-          <div class="hero-proof-item"><div class="hero-proof-icon">◫</div><div><b>12,000+ equities</b><span>Global coverage</span></div></div>
-          <div class="hero-proof-item"><div class="hero-proof-icon">◴</div><div><b>Earnings monitoring</b><span>Real-time updates</span></div></div>
-          <div class="hero-proof-item"><div class="hero-proof-icon">◇</div><div><b>Market intelligence</b><span>Built for investors</span></div></div>
+        <div class="hero-proof" id="heroProof">
+          <div class="hero-proof-item" id="hpi0"><div class="hero-proof-icon" id="hpIcon0">⌁</div><div><b>Live market data</b><span id="hpSub0">Streaming context</span></div></div>
+          <div class="hero-proof-item" id="hpi1"><div class="hero-proof-icon" id="hpIcon1">◫</div><div><b>12,000+ equities</b><span id="hpSub1">Global coverage</span></div></div>
+          <div class="hero-proof-item" id="hpi2"><div class="hero-proof-icon" id="hpIcon2">◴</div><div><b>Earnings monitoring</b><span id="hpSub2">Real-time updates</span></div></div>
+          <div class="hero-proof-item" id="hpi3"><div class="hero-proof-icon" id="hpIcon3">◇</div><div><b>Market intelligence</b><span id="hpSub3">Built for investors</span></div></div>
         </div>
       </div>
 
@@ -13492,6 +13497,129 @@ window.addEventListener('load', () => {
   }, { margin: '-5% 0px -5% 0px' });
 
 }); /* end load */
+</script>
+
+<!-- ================================================================
+     INTELLIGENCE SIGNAL RAIL — Framer Motion
+     Per-symbol loops · active cycling · sub-text motion · hover lift
+================================================================ -->
+<script type="module">
+import { animate } from 'https://esm.sh/framer-motion@12/dom';
+
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+
+  const EASE = [0.16, 1, 0.3, 1];
+
+  /* Collect the four rail items */
+  const ITEMS = [0,1,2,3].map(i => ({
+    item : document.getElementById('hpi'    + i),
+    icon : document.getElementById('hpIcon' + i),
+    sub  : document.getElementById('hpSub'  + i),
+  })).filter(d => d.item && d.icon && d.sub);
+
+  if (!ITEMS.length) throw new Error('[rail] hero-proof items not found');
+
+  /* ── Shadow constants ──────────────────────────────────────── */
+  const GOLD_SHADOW = '0 0 14px rgba(212,175,55,0.65)';
+  const BLUE_SHADOW = '0 0 10px rgba(78,168,255,0.35)';
+  const NO_SHADOW   = '0 0 0px rgba(0,0,0,0)';
+
+  /* ═══════════════════════════════════════════════════════════════
+     1. PER-SYMBOL LOOPING ANIMATIONS
+     Each icon has a distinct personality matching its meaning.
+  ═══════════════════════════════════════════════════════════════ */
+
+  /* ⌁  signal pulse — opacity wave, simulates a live data tick */
+  animate(ITEMS[0].icon,
+    { opacity: [0.65, 1, 0.65], scale: [1, 1.08, 1] },
+    { duration: 1.9, repeat: Infinity, ease: 'easeInOut' }
+  );
+
+  /* ◫  slow geometric breathe — subtle scale + micro-rotate */
+  animate(ITEMS[1].icon,
+    { scale: [1, 1.12, 1], rotate: [0, 6, 0] },
+    { duration: 3.4, repeat: Infinity, ease: 'easeInOut' }
+  );
+
+  /* ◴  radar sweep — continuous clockwise rotation */
+  animate(ITEMS[2].icon,
+    { rotate: [0, 360] },
+    { duration: 7, repeat: Infinity, ease: 'linear' }
+  );
+
+  /* ◇  diamond heartbeat — double-pulse scale */
+  animate(ITEMS[3].icon,
+    { scale: [1, 1.18, 1, 1.10, 1] },
+    { duration: 2.6, repeat: Infinity, ease: 'easeInOut' }
+  );
+
+  /* ═══════════════════════════════════════════════════════════════
+     2. ACTIVE SIGNAL CYCLING
+     One item brightens and its sub-text floats up every 2.8 s.
+  ═══════════════════════════════════════════════════════════════ */
+  let activeIdx = -1;
+  let hoveredIdx = -1;
+
+  /* Start all items at resting opacity */
+  ITEMS.forEach(d => animate(d.item, { opacity: 0.52 }, { duration: 0 }));
+
+  function activateItem(idx) {
+    activeIdx = idx;
+    ITEMS.forEach((d, i) => {
+      const isActive = (i === idx);
+      const isHov    = (i === hoveredIdx);
+
+      if (isActive) {
+        animate(d.item, { opacity: 1,    y: -3 }, { duration: 0.45, ease: EASE });
+        animate(d.icon, { textShadow: GOLD_SHADOW, filter: 'brightness(1.5)' }, { duration: 0.4 });
+        /* Sub-text: slight fade + 7 px upward float */
+        animate(d.sub,  { opacity: [0.45, 1], y: [7, 0] }, { duration: 0.5, ease: EASE });
+      } else if (!isHov) {
+        animate(d.item, { opacity: 0.52, y: 0  }, { duration: 0.4, ease: EASE });
+        animate(d.icon, { textShadow: NO_SHADOW,   filter: 'brightness(1)'   }, { duration: 0.35 });
+      }
+    });
+  }
+
+  activateItem(0);
+  setInterval(() => {
+    if (!document.hidden) activateItem((activeIdx + 1) % ITEMS.length);
+  }, 2800);
+
+  /* ═══════════════════════════════════════════════════════════════
+     3. HOVER INTERACTIONS
+     Icon scales + glows blue; item lifts slightly.
+     Cycling continues in background.
+  ═══════════════════════════════════════════════════════════════ */
+  ITEMS.forEach((d, i) => {
+    d.item.style.cursor = 'default';
+
+    d.item.addEventListener('mouseenter', () => {
+      hoveredIdx = i;
+      animate(d.item, { opacity: 1,    y: -4 }, { duration: 0.2 });
+      animate(d.icon, {
+        scale: 1.22,
+        textShadow: BLUE_SHADOW,
+        filter: 'brightness(1.6)',
+      }, { duration: 0.2 });
+    });
+
+    d.item.addEventListener('mouseleave', () => {
+      hoveredIdx = -1;
+      const isActive = (i === activeIdx);
+      animate(d.item, {
+        opacity: isActive ? 1    : 0.52,
+        y:       isActive ? -3   : 0,
+      }, { duration: 0.25 });
+      animate(d.icon, {
+        scale: 1,
+        textShadow: isActive ? GOLD_SHADOW : NO_SHADOW,
+        filter:     isActive ? 'brightness(1.5)' : 'brightness(1)',
+      }, { duration: 0.25 });
+    });
+  });
+
+} /* end reduced-motion guard */
 </script>
 </body>
 </html>
