@@ -2293,8 +2293,10 @@ h1,h2,h3{
   opacity:1;
 }
 
-/* ── GSAP initial hidden state — set via JS only, not CSS ──── */
-/* Elements stay visible if GSAP fails to load */
+/* ── Framer Motion: pre-hide animated elements (FM sets them visible) ── */
+/* Falls back to visible immediately if FM fails to load */
+.fm-hidden{opacity:0;transform:translateY(24px)}
+.feature.fm-hidden,.tier.fm-hidden,.about-principle.fm-hidden{opacity:0;transform:translateY(20px)}
 
 /* ── Reduced motion override ─────────────────────────────────── */
 @media(prefers-reduced-motion:reduce){
@@ -2302,7 +2304,7 @@ h1,h2,h3{
   .live-badge{animation:none}
   .btn-primary::after{display:none}
   #heroAmbient{display:none}
-  .gsap-hero-el{opacity:1!important}
+  .gsap-hero-el,.fm-hidden{opacity:1!important;transform:none!important}
 }
 
 /* ================================================================
@@ -11324,7 +11326,8 @@ function initHeroAmbient() {
 }
 
 /* ================================================================
-   CINEMATIC UPGRADE — GSAP Motion System
+   GSAP Motion System — nav entrance · panel hover · route transitions
+   (Hero, scroll reveals and floating card handled by Framer Motion)
 ================================================================ */
 function initGSAP() {
   if (typeof gsap === 'undefined') {
@@ -11337,52 +11340,6 @@ function initGSAP() {
   // Nav entrance
   gsap.from('.nav', {
     duration: 1.1, opacity: 0, y: -14, ease: 'power3.out', delay: 0.1,
-    clearProps: 'all',
-  });
-
-  // Hero stagger entrance — set initial state first, then animate
-  const heroEls = document.querySelectorAll('.gsap-hero-el');
-  gsap.set(heroEls, { opacity: 0, y: 22 });
-  gsap.to(heroEls, {
-    opacity: 1, y: 0, duration: 0.85, stagger: 0.13,
-    ease: 'power3.out', delay: 0.45, clearProps: 'all',
-  });
-
-  // Hero visual entrance
-  gsap.from('.hero-visual', {
-    duration: 1.1, opacity: 0, x: 28, ease: 'power3.out', delay: 0.55, clearProps: 'all',
-  });
-
-  // Feature cards scroll reveal
-  gsap.from('.feature', {
-    scrollTrigger: {
-      trigger: '#featureGrid',
-      start: 'top 82%',
-      toggleActions: 'play none none none',
-    },
-    duration: 0.65, opacity: 0, y: 28, stagger: 0.065, ease: 'power2.out',
-    clearProps: 'all',
-  });
-
-  // About page principle cards scroll reveal
-  gsap.from('.about-principle', {
-    scrollTrigger: {
-      trigger: '.about-principles',
-      start: 'top 82%',
-      toggleActions: 'play none none none',
-    },
-    duration: 0.6, opacity: 0, y: 20, stagger: 0.07, ease: 'power2.out',
-    clearProps: 'all',
-  });
-
-  // Pricing tier cards scroll reveal
-  gsap.from('.tier', {
-    scrollTrigger: {
-      trigger: '.tier-grid',
-      start: 'top 82%',
-      toggleActions: 'play none none none',
-    },
-    duration: 0.6, opacity: 0, y: 24, stagger: 0.1, ease: 'power2.out',
     clearProps: 'all',
   });
 
@@ -13254,6 +13211,137 @@ function initDashTelemetry() {
   if (dashEl.classList.contains('active')) enter();
 })();
 
+</script>
+
+<!-- ================================================================
+     FRAMER MOTION — Landing Page Premium Motion
+     animate · inView · stagger from framer-motion/dom (no React needed)
+================================================================ -->
+<script type="module">
+import { animate, inView, stagger }
+  from 'https://esm.sh/framer-motion@12/dom';
+
+/* Abort entirely if user prefers reduced motion */
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.gsap-hero-el, .feature, .tier, .about-principle')
+    .forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+} else {
+
+  /* ── Cubic ease used throughout — premium deceleration ─────── */
+  const EASE = [0.16, 1, 0.3, 1];
+
+  /* ── 1. HERO STAGGER FADE-IN ──────────────────────────────────
+     eyebrow → h1 → sub → CTA → proof items, each 130ms apart     */
+  const heroEls = Array.from(document.querySelectorAll('.gsap-hero-el'));
+  heroEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.willChange = 'opacity, transform';
+  });
+  /* Safety net: force-visible after 2 s if module fails mid-load */
+  const heroFallback = setTimeout(() => {
+    heroEls.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+  }, 2000);
+  animate(
+    heroEls,
+    { opacity: [0, 1], y: [24, 0] },
+    { duration: 0.85, delay: stagger(0.13, { startDelay: 0.4 }), ease: EASE }
+  ).then(() => {
+    clearTimeout(heroFallback);
+    heroEls.forEach(el => el.style.willChange = 'auto');
+  });
+
+  /* ── 2. HERO VISUAL — slide in then float forever ─────────────
+     Card enters from the right, then gently bobs up/down          */
+  const heroCard = document.querySelector('.hero-visual');
+  if (heroCard) {
+    heroCard.style.opacity = '0';
+    heroCard.style.transform = 'translateX(30px)';
+    heroCard.style.willChange = 'opacity, transform';
+    animate(
+      heroCard,
+      { opacity: [0, 1], x: [30, 0] },
+      { duration: 1.1, delay: 0.5, ease: EASE }
+    ).then(() => {
+      heroCard.style.willChange = 'transform';
+      /* Continuous float loop */
+      animate(
+        heroCard,
+        { y: [0, -10, 0] },
+        { duration: 5, repeat: Infinity, ease: 'easeInOut' }
+      );
+    });
+  }
+
+  /* ── 3. LIVE PULSE INDICATOR — glow ring ─────────────────────
+     Extra radial glow pulsing on the .pulse dot in the eyebrow    */
+  const pulseDot = document.querySelector('.hero-eyebrow .pulse');
+  if (pulseDot) {
+    animate(
+      pulseDot,
+      { boxShadow: ['0 0 0 0 rgba(212,175,55,0.6)', '0 0 0 8px rgba(212,175,55,0)'] },
+      { duration: 1.6, repeat: Infinity, ease: 'easeOut' }
+    );
+  }
+
+  /* ── 4. BUTTON HOVER GLOW ─────────────────────────────────────
+     Gold glow blooms on mouseenter, fades on mouseleave           */
+  function addButtonGlow(selector, color) {
+    document.querySelectorAll(selector).forEach(btn => {
+      btn.addEventListener('mouseenter', () =>
+        animate(btn, { boxShadow: `0 0 28px ${color}, 0 4px 16px ${color}` }, { duration: 0.22 })
+      );
+      btn.addEventListener('mouseleave', () =>
+        animate(btn, { boxShadow: '0 0 0px rgba(0,0,0,0)' }, { duration: 0.35 })
+      );
+    });
+  }
+  addButtonGlow('.btn-primary',   'rgba(212,175,55,0.45)');
+  addButtonGlow('.btn-secondary', 'rgba(212,175,55,0.18)');
+
+  /* ── 5. SECTION REVEAL ON SCROLL — feature cards ─────────────
+     Each .feature fades up individually as it enters view         */
+  document.querySelectorAll('.feature').forEach(el => el.classList.add('fm-hidden'));
+  inView('.feature', ({ target }) => {
+    animate(target, { opacity: [0, 1], y: [28, 0] }, { duration: 0.65, ease: EASE });
+    target.classList.remove('fm-hidden');
+    return () => {}; /* no reverse on scroll-out */
+  }, { margin: '-8% 0px -8% 0px' });
+
+  /* ── 6. PRICING TIER CARDS ───────────────────────────────────
+     Both cards reveal together with a short stagger               */
+  inView('.tier-grid', ({ target }) => {
+    const tiers = Array.from(target.querySelectorAll('.tier'));
+    tiers.forEach(t => { t.style.opacity = '0'; t.style.transform = 'translateY(24px)'; });
+    animate(
+      tiers,
+      { opacity: [0, 1], y: [24, 0] },
+      { duration: 0.65, delay: stagger(0.1), ease: EASE }
+    );
+    return () => {};
+  });
+
+  /* ── 7. ABOUT PRINCIPLES ─────────────────────────────────────
+     Staggered reveal for numbered principle rows                  */
+  inView('.about-principles', ({ target }) => {
+    const items = Array.from(target.querySelectorAll('.about-principle'));
+    items.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(18px)'; });
+    animate(
+      items,
+      { opacity: [0, 1], y: [18, 0] },
+      { duration: 0.6, delay: stagger(0.07), ease: EASE }
+    );
+    return () => {};
+  });
+
+  /* ── 8. SECTION HEADINGS ─────────────────────────────────────
+     Landing-page section headers fade up on scroll               */
+  inView('.section-head', ({ target }) => {
+    animate(target, { opacity: [0, 1], y: [14, 0] }, { duration: 0.6, ease: EASE });
+    return () => {};
+  }, { margin: '-5% 0px -5% 0px' });
+
+} /* end reduced-motion guard */
 </script>
 </body>
 </html>
