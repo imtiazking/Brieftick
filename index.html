@@ -4626,7 +4626,7 @@ h1,h2,h3{
 
     <!-- Hero -->
     <div class="about-hero">
-      <h1>Markets move fast.<br>Understanding them<br>shouldn't require a <em>Bloomberg terminal.</em></h1>
+      <h1>Markets move fast.<br><span id="aboutFlip1">Understanding them</span><br>shouldn't require a <em><span id="aboutFlip2">Bloomberg terminal.</span></em></h1>
       <p>Brieftick was built for a simple reason: institutional-grade market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by using AI to translate complex market signals into clear, actionable context for everyone from seasoned traders to first-time investors.</p>
     </div>
 
@@ -13811,6 +13811,44 @@ window.addEventListener('load', () => {
         h2Flip2El.style.color = 'var(--gold)';
         setTimeout(() => { h2Flip2El.style.color = ''; }, 600);
         animate(h2Flip2El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
+      });
+  }, 2800);
+
+  /* ── About page: "Understanding them" cycles ────────────────────
+     Same timing/easing as all other word flips above.
+  ════════════════════════════════════════════════════════════════ */
+  const aboutFlip1El = document.getElementById('aboutFlip1');
+  const ABOUT_CYCLE1 = ['Understanding them', 'Decoding them', 'Reading them', 'Tracking them'];
+  let   abi1         = 0;
+
+  setInterval(() => {
+    if (!aboutFlip1El || document.hidden) return;
+    abi1 = (abi1 + 1) % ABOUT_CYCLE1.length;
+    animate(aboutFlip1El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
+      .then(() => {
+        aboutFlip1El.textContent = ABOUT_CYCLE1[abi1];
+        aboutFlip1El.style.color = 'var(--gold)';
+        setTimeout(() => { aboutFlip1El.style.color = ''; }, 600);
+        animate(aboutFlip1El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
+      });
+  }, 2800);
+
+  /* ── About page: "Bloomberg terminal." cycles ───────────────────
+     Cycles through alternative descriptions of expensive platforms.
+  ════════════════════════════════════════════════════════════════ */
+  const aboutFlip2El = document.getElementById('aboutFlip2');
+  const ABOUT_CYCLE2 = ['Bloomberg terminal.', 'institutional tools.', 'Wall Street access.', 'proprietary software.'];
+  let   abi2         = 0;
+
+  setInterval(() => {
+    if (!aboutFlip2El || document.hidden) return;
+    abi2 = (abi2 + 1) % ABOUT_CYCLE2.length;
+    animate(aboutFlip2El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
+      .then(() => {
+        aboutFlip2El.textContent = ABOUT_CYCLE2[abi2];
+        aboutFlip2El.style.color = 'var(--gold)';
+        setTimeout(() => { aboutFlip2El.style.color = ''; }, 600);
+        animate(aboutFlip2El, { opacity: [0, 1], y: [14, 0] }, { duration: 0.42, ease: EASE });
       });
   }, 2800);
 
