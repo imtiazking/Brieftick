@@ -399,27 +399,28 @@ main{padding-top:90px;position:relative;z-index:3}
    CINEMATIC HERO PANEL — right-side intelligence surface
 ════════════════════════════════════════════════════════════════ */
 .hvc-panel{
-  position:relative;height:560px;border-radius:18px;z-index:1;
-  background:rgba(8,11,18,0.14);
-  border:1px solid rgba(255,255,255,0.04);
-  backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+  position:relative;height:560px;border-radius:20px;z-index:1;
+  background:rgba(8,11,18,0.12);
+  border:1px solid rgba(255,255,255,0.035);
+  backdrop-filter:blur(52px);-webkit-backdrop-filter:blur(52px);
   overflow:hidden;
-  box-shadow:0 0 0 1px rgba(212,175,55,0.06) inset,
-             0 32px 80px rgba(0,0,0,0.22),
-             0 0 60px rgba(78,168,255,0.06);
+  box-shadow:0 0 0 1px rgba(212,175,55,0.045) inset,
+             0 24px 64px rgba(0,0,0,0.18),
+             0 0 80px rgba(78,168,255,0.05),
+             0 0 120px rgba(212,175,55,0.03);
 }
-/* Ambient radial layers */
+/* Ambient radial layers — breathe more naturally */
 .hvc-ambient{
   position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(600px 360px at 70% 20%, rgba(212,175,55,0.06), transparent 65%),
-    radial-gradient(400px 280px at 20% 75%, rgba(78,168,255,0.05), transparent 60%),
-    radial-gradient(300px 200px at 90% 90%, rgba(130,100,220,0.04), transparent 55%);
+    radial-gradient(680px 400px at 68% 18%, rgba(212,175,55,0.08), transparent 62%),
+    radial-gradient(440px 300px at 18% 78%, rgba(78,168,255,0.07), transparent 58%),
+    radial-gradient(320px 220px at 92% 88%, rgba(130,100,220,0.05), transparent 52%);
 }
 /* Header */
 .hvc-header{
   position:relative;display:flex;justify-content:space-between;align-items:center;
-  padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.05);
+  padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.04);
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
 }
 .hvc-header-left{display:flex;align-items:center;gap:10px;color:var(--ink-dim)}
