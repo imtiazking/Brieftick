@@ -520,10 +520,12 @@ main{padding-top:90px;position:relative;z-index:3}
   position:absolute;inset:0;z-index:0;overflow:hidden;
   pointer-events:none;
 }
-/* Crop top black strip: scale up more + shift down */
+/* Crop top black strip: anchor to top, scale up to push black border off screen */
 .about-video-bg .hero-video{
-  transform:translate(-50%, -40%) scale(1.18);
-  object-position:center 15%;
+  top:0;
+  left:50%;
+  transform:translateX(-50%) scale(1.18);
+  object-position:center top;
 }
 #page-about{position:relative;overflow:hidden}
 .about-wrap{position:relative;z-index:2}
