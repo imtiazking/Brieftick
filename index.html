@@ -357,62 +357,55 @@ main{padding-top:90px;position:relative;z-index:3}
 
 
 /* ════════════════════════════════════════════════════════════════
-   BACKGROUND BEAMS — diagonal animated beam system
-   Original implementation — no library source used
+   CURVED BLUE BACKGROUND BEAMS
+   Diagonal curved paths from top-centre with travelling pulse glow
 ════════════════════════════════════════════════════════════════ */
+.bt-beams{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bt-beams-svg{position:absolute;inset:0;width:100%;height:100%}
 
-/* Beam containers */
-.bt-beams{
-  position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;
-}
-.bt-beams-svg{
-  position:absolute;inset:0;width:100%;height:100%;
-}
+/* Landing: spans full section */
+.bt-beams-landing{position:absolute;top:0;left:0;right:0;bottom:0}
 
-/* Landing page beams span full section height */
-.bt-beams-landing{
-  position:absolute;top:0;left:0;right:0;bottom:0;
-}
-/* About page beams */
+/* About: fade at bottom */
 #page-about{position:relative;overflow:hidden}
 .bt-beams-about{
   position:absolute;inset:0;
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.4) 80%, transparent 100%);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.4) 80%, transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.6) 60%, transparent 100%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.6) 60%, transparent 100%);
 }
 #page-landing{position:relative}
 
-/* Static rail lines — very faint structural base */
-.btb-rails line{
-  stroke:rgba(255,255,255,0.03);
+/* Rail lines — barely visible structural base */
+.btb-rails path{
+  fill:none;
+  stroke:rgba(59,130,246,0.06);
   stroke-width:1;
 }
 
-/* Animated beam travelers */
-.btb-beam{
+/* Travelling pulse glows */
+.btb-pulse{
   fill:none;
-  stroke-linecap:round;
+  stroke:rgba(99,165,255,0.75);
   stroke-width:1.5;
+  stroke-linecap:round;
 }
-.btb-gold  {stroke:url(#bg1)}
-.btb-blue  {stroke:url(#bb1)}
-.btb-purple{stroke:url(#bp1)}
 
-/* Beam travel animations — stroke-dashoffset drives the glow along each line */
-@keyframes beamTravel{ from{stroke-dashoffset:1200} to{stroke-dashoffset:-200} }
+/* Each pulse gets its own dasharray length + animation delay */
+@keyframes btPulse{from{stroke-dashoffset:1100}to{stroke-dashoffset:-100}}
 
-.btb-s1{stroke-dasharray:120 1080;animation:beamTravel 6s  linear infinite}
-.btb-s2{stroke-dasharray:90  1110;animation:beamTravel 9s  linear infinite 1.5s}
-.btb-s3{stroke-dasharray:110 1090;animation:beamTravel 7s  linear infinite 3s}
-.btb-s4{stroke-dasharray:80  1120;animation:beamTravel 11s linear infinite 0.8s}
-.btb-s5{stroke-dasharray:100 1100;animation:beamTravel 8s  linear infinite 2s}
-.btb-s6{stroke-dasharray:130 1070;animation:beamTravel 10s linear infinite 4s}
-.btb-s7{stroke-dasharray:75  1125;animation:beamTravel 12s linear infinite 5s}
-.btb-s8{stroke-dasharray:95  1105;animation:beamTravel 9s  linear infinite 1s}
+.btb-d1{stroke-dasharray:100 1000;animation:btPulse 7s  linear infinite 0s}
+.btb-d2{stroke-dasharray:80  1020;animation:btPulse 9s  linear infinite 1.2s}
+.btb-d3{stroke-dasharray:110 990; animation:btPulse 8s  linear infinite 2.4s}
+.btb-d4{stroke-dasharray:70  1030;animation:btPulse 11s linear infinite 0.6s}
+.btb-d5{stroke-dasharray:90  1010;animation:btPulse 10s linear infinite 3.5s}
+.btb-d6{stroke-dasharray:85  1015;animation:btPulse 9s  linear infinite 1.8s}
+.btb-d7{stroke-dasharray:100 1000;animation:btPulse 7s  linear infinite 4.2s}
+.btb-d8{stroke-dasharray:75  1025;animation:btPulse 12s linear infinite 2s}
+.btb-d9{stroke-dasharray:95  1005;animation:btPulse 8s  linear infinite 0.4s}
 
 @media(prefers-reduced-motion:reduce){
-  .btb-beam{animation:none;opacity:0}
-  .btb-rails line{stroke:rgba(255,255,255,0.02)}
+  .btb-pulse{animation:none;opacity:0}
+  .btb-rails path{stroke:rgba(59,130,246,0.03)}
 }
 
 /* ── Intelligence rail — per-symbol CSS loops (reliable, no CDN dependency) */
@@ -2712,55 +2705,46 @@ h1,h2,h3{
      LANDING PAGE
 ============================================================ -->
 <section class="page active" id="page-landing">
-  <!-- Background Beams — landing page + hero -->
+  <!-- Curved blue background beams — landing page -->
   <div class="bt-beams bt-beams-landing" aria-hidden="true">
     <svg class="bt-beams-svg" xmlns="http://www.w3.org/2000/svg"
          viewBox="0 0 1440 900" preserveAspectRatio="xMidYTop slice">
       <defs>
-        <!-- Beam: short bright head traveling along a long dim trail -->
-        <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="rgba(212,175,55,0)"  />
-          <stop offset="50%"  stop-color="rgba(212,175,55,0.9)"/>
-          <stop offset="100%" stop-color="rgba(212,175,55,0)"  />
-        </linearGradient>
-        <linearGradient id="bb1" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="rgba(78,168,255,0)"  />
-          <stop offset="50%"  stop-color="rgba(78,168,255,0.9)"/>
-          <stop offset="100%" stop-color="rgba(78,168,255,0)"  />
-        </linearGradient>
-        <linearGradient id="bp1" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="rgba(130,100,220,0)"  />
-          <stop offset="50%"  stop-color="rgba(130,100,220,0.8)"/>
-          <stop offset="100%" stop-color="rgba(130,100,220,0)"  />
-        </linearGradient>
+        <filter id="btGlow">
+          <feGaussianBlur stdDeviation="3.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
       </defs>
-
-      <!-- ── Static base beams (very low opacity rail lines) ── -->
       <g class="btb-rails">
-        <line x1="720" y1="0" x2="-200" y2="900"/>
-        <line x1="720" y1="0" x2="50"   y2="900"/>
-        <line x1="720" y1="0" x2="320"  y2="900"/>
-        <line x1="720" y1="0" x2="590"  y2="900"/>
-        <line x1="720" y1="0" x2="850"  y2="900"/>
-        <line x1="720" y1="0" x2="1110" y2="900"/>
-        <line x1="720" y1="0" x2="1380" y2="900"/>
-        <line x1="720" y1="0" x2="1640" y2="900"/>
+      <!-- Curved beam paths from top-centre ─────────────────────── -->
+      <!-- Each path: M 720 0 C [cp1x cy1] [cp2x cy2] [end] -->
+      <!-- Leftmost sweep -->
+      <path d="M 720 0 C 680 200 200 400 -150 900"/>
+      <path d="M 720 0 C 690 200 350 450  80 900"/>
+      <path d="M 720 0 C 700 250 480 500 300 900"/>
+      <path d="M 720 0 C 710 250 580 520 520 900"/>
+      <!-- Centre -->
+      <path d="M 720 0 C 720 300 720 600 720 900"/>
+      <!-- Rightmost sweep -->
+      <path d="M 720 0 C 730 250 860 520 920 900"/>
+      <path d="M 720 0 C 740 250 940 500 1140 900"/>
+      <path d="M 720 0 C 750 200 1090 450 1360 900"/>
+      <path d="M 720 0 C 760 200 1240 400 1590 900"/>
       </g>
-
-      <!-- ── Animated glow travelers ── -->
-      <!-- Gold beams -->
-      <line class="btb-beam btb-gold btb-s1" x1="720" y1="0" x2="-200" y2="900"/>
-      <line class="btb-beam btb-gold btb-s2" x1="720" y1="0" x2="320"  y2="900"/>
-      <line class="btb-beam btb-gold btb-s3" x1="720" y1="0" x2="1110" y2="900"/>
-      <line class="btb-beam btb-gold btb-s4" x1="720" y1="0" x2="1640" y2="900"/>
-      <!-- Blue beams -->
-      <line class="btb-beam btb-blue btb-s5" x1="720" y1="0" x2="50"   y2="900"/>
-      <line class="btb-beam btb-blue btb-s6" x1="720" y1="0" x2="850"  y2="900"/>
-      <line class="btb-beam btb-blue btb-s7" x1="720" y1="0" x2="1380" y2="900"/>
-      <!-- Purple accent -->
-      <line class="btb-beam btb-purple btb-s8" x1="720" y1="0" x2="590" y2="900"/>
+      <g class="btb-pulses" filter="url(#btGlow)">
+      <path class="btb-pulse btb-d1" d="M 720 0 C 680 200 200 400 -150 900"/>
+      <path class="btb-pulse btb-d2" d="M 720 0 C 690 200 350 450  80 900"/>
+      <path class="btb-pulse btb-d3" d="M 720 0 C 700 250 480 500 300 900"/>
+      <path class="btb-pulse btb-d4" d="M 720 0 C 710 250 580 520 520 900"/>
+      <path class="btb-pulse btb-d5" d="M 720 0 C 720 300 720 600 720 900"/>
+      <path class="btb-pulse btb-d6" d="M 720 0 C 730 250 860 520 920 900"/>
+      <path class="btb-pulse btb-d7" d="M 720 0 C 740 250 940 500 1140 900"/>
+      <path class="btb-pulse btb-d8" d="M 720 0 C 750 200 1090 450 1360 900"/>
+      <path class="btb-pulse btb-d9" d="M 720 0 C 760 200 1240 400 1590 900"/>
+      </g>
     </svg>
   </div>
+
 
   <div class="hero">
 
@@ -4430,24 +4414,33 @@ h1,h2,h3{
      ABOUT PAGE
 ============================================================ -->
 <section class="page" id="page-about">
-  <!-- Background Beams — About page -->
+  <!-- Curved blue background beams — About page -->
   <div class="bt-beams bt-beams-about" aria-hidden="true">
     <svg class="bt-beams-svg" xmlns="http://www.w3.org/2000/svg"
          viewBox="0 0 1440 900" preserveAspectRatio="xMidYTop slice">
+      <defs>
+        <filter id="btGlowA">
+          <feGaussianBlur stdDeviation="3.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
       <g class="btb-rails">
-        <line x1="720" y1="0" x2="-200" y2="900"/>
-        <line x1="720" y1="0" x2="320"  y2="900"/>
-        <line x1="720" y1="0" x2="720"  y2="900"/>
-        <line x1="720" y1="0" x2="1120" y2="900"/>
-        <line x1="720" y1="0" x2="1640" y2="900"/>
+      <path d="M 720 0 C 680 200 200 400 -150 900"/>
+      <path d="M 720 0 C 700 250 480 500 300 900"/>
+      <path d="M 720 0 C 720 300 720 600 720 900"/>
+      <path d="M 720 0 C 740 250 940 500 1140 900"/>
+      <path d="M 720 0 C 760 200 1240 400 1590 900"/>
       </g>
-      <line class="btb-beam btb-gold   btb-s1" x1="720" y1="0" x2="-200" y2="900"/>
-      <line class="btb-beam btb-gold   btb-s3" x1="720" y1="0" x2="1120" y2="900"/>
-      <line class="btb-beam btb-blue   btb-s5" x1="720" y1="0" x2="320"  y2="900"/>
-      <line class="btb-beam btb-blue   btb-s7" x1="720" y1="0" x2="1640" y2="900"/>
-      <line class="btb-beam btb-purple btb-s8" x1="720" y1="0" x2="720"  y2="900"/>
+      <g class="btb-pulses" filter="url(#btGlowA)">
+      <path class="btb-pulse btb-d1" d="M 720 0 C 680 200 200 400 -150 900"/>
+      <path class="btb-pulse btb-d3" d="M 720 0 C 700 250 480 500 300 900"/>
+      <path class="btb-pulse btb-d5" d="M 720 0 C 720 300 720 600 720 900"/>
+      <path class="btb-pulse btb-d7" d="M 720 0 C 740 250 940 500 1140 900"/>
+      <path class="btb-pulse btb-d9" d="M 720 0 C 760 200 1240 400 1590 900"/>
+      </g>
     </svg>
   </div>
+
   <!-- Ambient intelligence grid — lighter than landing, purely atmospheric -->
 
   <div class="about-wrap">
