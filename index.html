@@ -334,6 +334,165 @@ main{padding-top:90px;position:relative;z-index:3}
 .hv-ai-text{font-size:13px;line-height:1.5;color:var(--ink)}
 .hv-ai-text b{color:var(--gold-bright);font-weight:500}
 
+
+/* ================================================================
+   CINEMATIC HERO PANEL — glass intelligence surface
+================================================================ */
+.hvc-panel{
+  position:relative;height:600px;border-radius:20px;z-index:1;
+  background:rgba(8,11,18,0.12);
+  border:1px solid rgba(255,255,255,0.05);
+  backdrop-filter:blur(52px);-webkit-backdrop-filter:blur(52px);
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(212,175,55,0.045) inset,
+             0 24px 64px rgba(0,0,0,0.18),
+             0 0 80px rgba(78,168,255,0.05),
+             0 0 120px rgba(212,175,55,0.03);
+}
+.hvc-ambient{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(680px 400px at 68% 18%, rgba(212,175,55,0.08), transparent 62%),
+    radial-gradient(440px 300px at 18% 78%, rgba(78,168,255,0.07), transparent 58%),
+    radial-gradient(320px 220px at 92% 88%, rgba(130,100,220,0.05), transparent 52%);
+}
+/* Header */
+.hvc-header{
+  position:relative;display:flex;justify-content:space-between;align-items:center;
+  padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  flex-shrink:0;
+}
+.hvc-header-left{display:flex;align-items:center;gap:10px;color:var(--ink-dim)}
+.hvc-live-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);animation:pulse 1.5s ease-in-out infinite;flex-shrink:0;
+}
+.hvc-live-label{color:var(--green);letter-spacing:.14em;font-weight:600}
+.hvc-ticker-label{color:var(--ink);font-weight:600;letter-spacing:.08em}
+.hvc-header-right{display:flex;align-items:center;gap:14px;color:var(--ink-faint)}
+.hvc-time{font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.hvc-engine{color:rgba(212,175,55,.45);letter-spacing:.12em}
+
+/* Body: 2-column grid + bottom strip */
+.hvc-body{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 136px;
+  grid-template-rows:1fr auto;
+  gap:0;
+  height:calc(100% - 41px);
+  overflow:hidden;
+}
+
+/* Left main column */
+.hvc-main{
+  grid-column:1;grid-row:1;
+  display:flex;flex-direction:column;gap:10px;
+  padding:14px 16px 14px 18px;
+  overflow:hidden;min-width:0;
+}
+
+/* Quote row */
+.hvc-quote-row{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  flex-shrink:0;
+}
+.hvc-sym{
+  font-family:var(--display);font-size:32px;letter-spacing:-.025em;
+  font-weight:500;color:var(--ink);line-height:1;
+}
+.hvc-name{
+  font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+  letter-spacing:.08em;text-transform:uppercase;margin-top:4px;
+}
+.hvc-price-block{text-align:right;flex-shrink:0}
+.hvc-price-block .price{
+  font-family:var(--mono);font-size:26px;font-weight:600;
+  color:var(--ink);line-height:1;
+}
+.hvc-price-block .chg{
+  font-family:var(--mono);font-size:12px;margin-top:5px;
+}
+
+/* Chart — fixed height so it doesn't squash other content */
+.hvc-main .hv-chart{
+  flex:0 0 130px;height:130px;min-height:130px;max-height:130px;
+}
+
+/* Intelligence feed */
+.hvc-insights{
+  flex:1 1 0;min-height:0;overflow:hidden;
+  padding:10px 12px;border-radius:10px;
+  background:rgba(10,13,20,0.18);border:1px solid rgba(255,255,255,0.04);
+}
+.hvc-insights-label{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:9px;color:var(--gold);
+  letter-spacing:.16em;text-transform:uppercase;margin-bottom:7px;
+  flex-shrink:0;
+}
+.hvc-dot-gold{
+  width:5px;height:5px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 6px var(--gold);flex-shrink:0;
+}
+.hvc-insights-body{font-size:11.5px;line-height:1.55;color:var(--ink);overflow:hidden}
+.hvc-insights-body b{color:var(--gold-bright);font-weight:500}
+
+/* Right metrics column */
+.hvc-metrics{
+  grid-column:2;grid-row:1;
+  display:flex;flex-direction:column;gap:6px;
+  padding:14px 14px 10px 10px;
+  border-left:1px solid rgba(255,255,255,0.04);
+  overflow:hidden;
+}
+.hvc-metric-card{
+  padding:9px 10px;border-radius:8px;
+  background:rgba(255,255,255,0.01);
+  border:1px solid rgba(255,255,255,0.03);
+  flex-shrink:0;
+}
+.hvc-metric-label{
+  font-family:var(--mono);font-size:8px;color:var(--ink-faint);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;
+}
+.hvc-metric-value{
+  font-family:var(--mono);font-size:16px;font-weight:600;
+  color:var(--ink);line-height:1;
+}
+.hvc-metric-value small{font-size:9px;color:var(--ink-dim);font-weight:400}
+.hvc-metric-sub{font-family:var(--mono);font-size:9px;margin-top:3px;letter-spacing:.04em}
+.hvc-metric-sub.up{color:var(--green)}.hvc-metric-sub.dn{color:var(--red)}
+.hvc-sentiment-bar{
+  height:3px;border-radius:2px;background:rgba(255,255,255,0.08);
+  margin-bottom:5px;overflow:hidden;
+}
+.hvc-sentiment-fill{
+  height:100%;border-radius:2px;
+  background:linear-gradient(90deg,rgba(61,220,151,.5),var(--green));
+  transition:width .6s ease;
+}
+/* Sector mini bars in metrics column */
+.hvc-metrics .hv-mini-bar{
+  display:grid;grid-template-columns:1fr auto;gap:4px;
+  font-family:var(--mono);font-size:9px;color:var(--ink-dim);
+  margin-bottom:4px;
+}
+.hvc-metrics .hv-mini-bar b.up{color:var(--green)}
+.hvc-metrics .hv-mini-bar b.dn{color:var(--red)}
+
+/* Bottom market strip — spans full width */
+.hvc-strip{
+  grid-column:1 / -1;grid-row:2;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  border-top:1px solid rgba(255,255,255,0.04);
+  border-radius:0 0 18px 18px;overflow:hidden;
+  background:rgba(0,0,0,0.12);flex-shrink:0;
+}
+.hvc-strip .hv-market{padding:8px 10px;font-size:9px}
+.hvc-strip .hv-market:last-child{border-right:none}
+
 /* Premium landing refresh */
 .hero::after{
   content:"";position:absolute;inset:auto 0 0;height:220px;
