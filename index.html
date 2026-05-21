@@ -515,6 +515,14 @@ main{padding-top:90px;position:relative;z-index:3}
 .hero-proof-item span{display:block;white-space:nowrap}
 
 
+/* ── About page video background ────────────────────────────── */
+.about-video-bg{
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+  pointer-events:none;
+}
+#page-about{position:relative;overflow:hidden}
+.about-wrap{position:relative;z-index:2}
+
 /* ── Intelligence rail — per-symbol CSS loops (reliable, no CDN dependency) */
 @keyframes railPulse  {0%,100%{opacity:.6;transform:scale(1)}   50%{opacity:1;transform:scale(1.12)}}
 @keyframes railBreath {0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.14) rotate(6deg)}}
@@ -4521,6 +4529,19 @@ h1,h2,h3{
 ============================================================ -->
 <section class="page" id="page-about">
 
+  <!-- Video background — same as hero -->
+  <div class="about-video-bg" aria-hidden="true">
+    <video
+      class="hero-video"
+      src="/hero-bg.mp4.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+    ></video>
+    <div class="hero-video-overlay"></div>
+  </div>
 
   <!-- Ambient intelligence grid — lighter than landing, purely atmospheric -->
 
