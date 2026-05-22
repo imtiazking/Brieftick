@@ -7252,23 +7252,19 @@ window.clearAllKeys = clearAllKeys;
 ============================================================ */
 
 // Why Is It Moving - generate live AI summary
-async function generateLiveAISummary(){
-  if(!BriefTickAPI.keys.anthropic){
-    alert('Please add your Anthropic API key in Settings (gear icon) first.');
-    openSettings();
-    return;
-  }
-  const btn = document.getElementById('aiGenBtn');
-  const out = document.getElementById('wimSummary');
-  if(!btn || !out) return;
-  btn.disabled = true;
-  btn.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:-1px;margin-right:6px"></span>Analysing...';
-  // Pull current symbol from the page - #wimSym is updated by loadWim()
-  // Fallback chain: visible ticker label → active chip → search input → NVDA
-  const wimSymEl = document.getElementById('wimSym');
+async function generateLiveAISummary(opts){
+  opts = opts || {};
+  const isFree   = !window._isTerminal;
+  const today    = new Date().toISOString().slice(0,10);
+  const btn      = document.getElementById('aiGenBtn');
+  const out      = document.getElementById('wimSummary');
+  if(!out) return;
+
+  // Resolve current symbol
+  const wimSymEl  = document.getElementById('wimSym');
   const activeChip = document.querySelector('.wim-quick .chip.active');
-  const wimInput = document.getElementById('wimInput');
-  const typedSymbol = wimInput?.value?.trim();
+  const wimInput  = document.getElementById('wimInput');
+  const typedSymbol  = wimInput?.value?.trim();
   const visibleSymbol = wimSymEl?.textContent?.trim();
   const rawSymbol = (typedSymbol && resolveTickerInput(typedSymbol) !== resolveTickerInput(visibleSymbol))
                   ? typedSymbol
@@ -7280,34 +7276,93 @@ async function generateLiveAISummary(){
     const nameEl = document.getElementById('wimName');
     if(nameEl) nameEl.textContent = (watchlistNames[symbol] || symbol) + ' · live data';
   }
+
+  const cacheKey = 'bt_wim_v1_' + today + '_' + symbol;
+
+  // Free users: serve from 24h cache if available
+  if(isFree) {
+    const cached = (() => { try { return localStorage.getItem(cacheKey); } catch(_){ return null; } })();
+    if(cached) {
+      out.innerHTML = (typeof renderAIMarkdown === 'function' ? renderAIMarkdown(cached, {accent:'var(--gold)'}) : cached)
+        + `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase">Today\'s analysis · ${symbol}</div>`;
+      return;
+    }
+  }
+
+  if(!BriefTickAPI.keys.anthropic){
+    if(!isFree) { alert('Please add your Anthropic API key in Settings first.'); openSettings(); }
+    return;
+  }
+
+  // Show loading state
+  out.innerHTML = '<div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.08em">Analysing ' + escapeHtml(symbol) + '…</div>';
+  if(btn){ btn.disabled = true; btn.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:-1px;margin-right:6px"></span>Analysing...'; }
+
   try {
     const result = await BriefTickAPI.aiWhyMoving(symbol);
     if(result){
-      const html = renderAIMarkdown(result, {accent:'var(--gold)'});
-      out.innerHTML = html + `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.12em;text-transform:uppercase">✓ Live AI · Generated just now from real ${symbol} data</div>`;
+      const html = typeof renderAIMarkdown === 'function' ? renderAIMarkdown(result, {accent:'var(--gold)'}) : result;
+      const footer = isFree
+        ? `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase">Today\'s analysis · ${symbol}</div>`
+        : `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase">✓ Live AI · Generated just now from real ${symbol} data</div>`;
+      out.innerHTML = html + footer;
+      // Cache for Free users (valid for calendar day, per ticker)
+      if(isFree) {
+        try { localStorage.setItem(cacheKey, result); } catch(_){}
+      }
     } else {
-      out.innerHTML += `<div style="margin-top:14px;color:var(--ink-dim);font-size:13px">No AI response returned for <b>${escapeHtml(symbol)}</b>.</div>`;
+      out.innerHTML = '<div style="color:var(--ink-dim);font-size:13px">Today\'s ticker commentary unavailable.</div>';
     }
   } catch(e){
     console.error('[WIM]', e);
-    const msg = e.message || 'Unknown error';
-        const isModelErr   = msg.includes('not_found') || msg.includes('model');
-        const isAuthErr    = msg.includes('authentication') || msg.includes('invalid_api_key');
-        const isBillingErr = msg.includes('credit') || msg.includes('billing') || msg.includes('balance');
-        let hint = '';
-        if(isModelErr)    hint = 'Model not found on this API key. Set ANTHROPIC_MODEL=claude-3-5-sonnet-20241022 in Vercel environment variables and redeploy.';
-        else if(isAuthErr)   hint = 'Authentication failed. Verify your Anthropic API key in Vercel env vars (ANTHROPIC_KEY).';
-        else if(isBillingErr) hint = 'Account credits exhausted. Top up at console.anthropic.com → Plans & Billing.';
-        else hint = 'Check Vercel function logs for details.';
-    out.innerHTML = `<div style="margin-top:8px;padding:12px 14px;border-radius:8px;background:rgba(255,80,80,0.06);border:1px solid rgba(255,80,80,0.2);font-size:12px;line-height:1.6">
-      <b style="color:var(--red)">AI Error: ${escapeHtml(msg)}</b><br>
-      <span style="color:var(--ink-dim)">${hint}</span>
-    </div>`;
+    const msg = e.message || '';
+    const isModelErr   = msg.includes('not_found') || msg.includes('model');
+    const isAuthErr    = msg.includes('authentication') || msg.includes('invalid_api_key');
+    const isBillingErr = msg.includes('credit') || msg.includes('billing') || msg.includes('balance');
+    let hint = '';
+    if(isModelErr)    hint = 'Model not found. Set ANTHROPIC_MODEL in Vercel and redeploy.';
+    else if(isAuthErr)   hint = 'Auth failed. Verify ANTHROPIC_KEY in Vercel env vars.';
+    else if(isBillingErr) hint = 'Credits exhausted. Top up at console.anthropic.com.';
+    if(isFree) {
+      out.innerHTML = '<div style="color:var(--ink-dim);font-size:13px">Today\'s ticker commentary unavailable.</div>';
+    } else {
+      out.innerHTML = `<div style="padding:12px 14px;border-radius:8px;background:rgba(255,80,80,0.06);border:1px solid rgba(255,80,80,0.2);font-size:12px;line-height:1.6"><b style="color:var(--red)">AI Error: ${escapeHtml(msg)}</b><br><span style="color:var(--ink-dim)">${hint}</span></div>`;
+    }
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="vertical-align:-1px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg> Regenerate';
+    if(btn){
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="vertical-align:-1px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg> Regenerate';
+    }
   }
 }
+
+// Auto-generate WIM for Free users once per day per ticker
+function _maybeAutoWIM(sym) {
+  if(window._isTerminal) return; // Terminal: button-driven
+  if(!sym) return;
+  const today    = new Date().toISOString().slice(0,10);
+  const cacheKey = 'bt_wim_v1_' + today + '_' + sym;
+  const cached   = (() => { try { return localStorage.getItem(cacheKey); } catch(_){ return null; } })();
+  if(cached) {
+    const out = document.getElementById('wimSummary');
+    if(out) {
+      out.innerHTML = (typeof renderAIMarkdown === 'function' ? renderAIMarkdown(cached, {accent:'var(--gold)'}) : cached)
+        + `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase">Today\'s analysis · ${sym}</div>`;
+    }
+    return;
+  }
+  // Not cached — generate
+  generateLiveAISummary({ auto: true, sym: sym });
+}
+
+// Hide/show WIM generate button based on plan
+function _updateWIMButtonVisibility() {
+  const btn = document.getElementById('aiGenBtn');
+  if(!btn) return;
+  btn.style.display = window._isTerminal ? '' : 'none';
+}
+window._updateWIMButtonVisibility = _updateWIMButtonVisibility;
+document.addEventListener('bt_plan_changed', _updateWIMButtonVisibility);
 
 // ── Briefing page helpers ──────────────────────────────────────
 function _briefTodayLabel(){
@@ -8558,7 +8613,8 @@ function loadWim(sym){
   // contagion
   drawContagion(sym, d.chgColor);
 
-  // Show loading state for price — do NOT show stale seed prices
+  // Flag that WIM has loaded for this symbol — auto-gen fires once Clerk confirms Free plan
+  window._wimLastSym = sym;
   document.getElementById('wimPrice').textContent = '—';
   document.getElementById('wimChg').textContent = 'Loading live price…';
   document.getElementById('wimChg').style.color = 'var(--ink-faint)';
@@ -10820,11 +10876,17 @@ function _applyAccessLevel(level) {
     if(typeof _updateRiskRegimeButtonVisibility === 'function') _updateRiskRegimeButtonVisibility();
   } else {
     setTimeout(_addFreeRestrictions, 600);
-    // Free plan confirmed — hide button and auto-generate regime explanation
+    // Free plan confirmed — hide Risk Regime button and auto-generate
     const riskBtn = document.getElementById('riskAiBtn');
     if(riskBtn) riskBtn.style.display = 'none';
     if(window._riskRegimeRendered) {
       setTimeout(_maybeAutoRiskExplain, 500);
+    }
+    // Free plan confirmed — hide WIM generate button and auto-generate for current ticker
+    const wimBtn = document.getElementById('aiGenBtn');
+    if(wimBtn) wimBtn.style.display = 'none';
+    if(window._wimLastSym) {
+      setTimeout(function(){ _maybeAutoWIM(window._wimLastSym); }, 700);
     }
   }
 }
