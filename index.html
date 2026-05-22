@@ -7237,14 +7237,14 @@ async function generateLiveAISummary(){
   } catch(e){
     console.error('[WIM]', e);
     const msg = e.message || 'Unknown error';
-    const isModelErr   = msg.includes('not_found');
-    const isAuthErr    = msg.includes('authentication') || msg.includes('invalid_api_key');
-    const isBillingErr = msg.includes('credit') || msg.includes('billing') || msg.includes('balance');
-    let hint = '';
-    if(isModelErr)   hint = 'The AI model is not available on this API key. Check your Anthropic workspace at console.anthropic.com.';
-    else if(isAuthErr)  hint = 'Authentication failed. Verify your Anthropic API key in Vercel environment variables (ANTHROPIC_KEY).';
-    else if(isBillingErr) hint = 'Account credits are exhausted. Top up at console.anthropic.com → Plans & Billing.';
-    else hint = 'Check Vercel function logs for details.';
+        const isModelErr   = msg.includes('not_found') || msg.includes('model');
+        const isAuthErr    = msg.includes('authentication') || msg.includes('invalid_api_key');
+        const isBillingErr = msg.includes('credit') || msg.includes('billing') || msg.includes('balance');
+        let hint = '';
+        if(isModelErr)    hint = 'Model not found on this API key. Set ANTHROPIC_MODEL=claude-3-5-sonnet-20241022 in Vercel environment variables and redeploy.';
+        else if(isAuthErr)   hint = 'Authentication failed. Verify your Anthropic API key in Vercel env vars (ANTHROPIC_KEY).';
+        else if(isBillingErr) hint = 'Account credits exhausted. Top up at console.anthropic.com → Plans & Billing.';
+        else hint = 'Check Vercel function logs for details.';
     out.innerHTML = `<div style="margin-top:8px;padding:12px 14px;border-radius:8px;background:rgba(255,80,80,0.06);border:1px solid rgba(255,80,80,0.2);font-size:12px;line-height:1.6">
       <b style="color:var(--red)">AI Error: ${escapeHtml(msg)}</b><br>
       <span style="color:var(--ink-dim)">${hint}</span>

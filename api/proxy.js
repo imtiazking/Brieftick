@@ -146,6 +146,10 @@ async function proxyAnthropic(req, res) {
     error: 'Anthropic API key not set on server. Add ANTHROPIC_KEY or ANTHROPIC_API_KEY to Vercel environment variables and redeploy.'
   });
 
+  // Model is controlled server-side — client suggestion overridden by env var
+  const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
+  const body  = { ...req.body, model };
+
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -154,12 +158,12 @@ async function proxyAnthropic(req, res) {
         'x-api-key': key,
         'anthropic-version': '2023-06-01',
       },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify(body),
     });
     const data = await r.json();
     // Log errors server-side for easier debugging
     if (data.type === 'error') {
-      console.error('[proxy/anthropic] API error:', data.error?.type, data.error?.message, '| model:', req.body?.model);
+      console.error('[proxy/anthropic] API error:', data.error?.type, data.error?.message, '| model:', model);
     }
     return res.status(r.status).json(data);
   } catch (e) {
