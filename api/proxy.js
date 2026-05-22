@@ -140,8 +140,11 @@ async function proxyAnthropic(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'method not allowed; POST required' });
   }
-  const key = process.env.ANTHROPIC_KEY;
-  if (!key) return res.status(500).json({ error: 'ANTHROPIC_KEY not set on server' });
+  // Accept both common env var names
+  const key = process.env.ANTHROPIC_KEY || process.env.ANTHROPIC_API_KEY;
+  if (!key) return res.status(500).json({
+    error: 'Anthropic API key not set on server. Add ANTHROPIC_KEY or ANTHROPIC_API_KEY to Vercel environment variables and redeploy.'
+  });
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -154,8 +157,13 @@ async function proxyAnthropic(req, res) {
       body: JSON.stringify(req.body),
     });
     const data = await r.json();
+    // Log errors server-side for easier debugging
+    if (data.type === 'error') {
+      console.error('[proxy/anthropic] API error:', data.error?.type, data.error?.message, '| model:', req.body?.model);
+    }
     return res.status(r.status).json(data);
   } catch (e) {
+    console.error('[proxy/anthropic] fetch failed:', e.message);
     return res.status(502).json({ error: 'upstream fetch failed', detail: e.message });
   }
 }
