@@ -146,8 +146,8 @@ async function proxyAnthropic(req, res) {
     error: 'Anthropic API key not set on server. Add ANTHROPIC_KEY or ANTHROPIC_API_KEY to Vercel environment variables and redeploy.'
   });
 
-  // Model is controlled server-side — client suggestion overridden by env var
-  const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
+  // Model: use env var if set, otherwise keep client's requested model
+  const model = process.env.ANTHROPIC_MODEL || req.body?.model || 'claude-3-haiku-20240307';
   const body  = { ...req.body, model };
 
   try {
