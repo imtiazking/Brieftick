@@ -2586,6 +2586,9 @@ h1,h2,h3{
   <!-- GSAP 3 + ScrollTrigger via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <!-- Three.js for 3D globe -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <!-- Clerk JS SDK -->
   <script
     async
@@ -3270,6 +3273,7 @@ h1,h2,h3{
         <div class="telemetry-body">
           <!-- Globe canvas -->
           <canvas id="dashTelemetryCanvas" aria-hidden="true"></canvas>
+          <div id="globeContainer" style="position:absolute;inset:0;z-index:0;"></div>
 
           <!-- Regional overlays -->
           <div class="t-region t-region-tl" id="tRegionNA">
@@ -12940,629 +12944,261 @@ window.generateInsidersAI = generateInsidersAI;
    DASHBOARD TELEMETRY — Premium Globe Intelligence Widget v5
 ================================================================ */
 function initDashTelemetry() {
-  const canvas = document.getElementById('dashTelemetryCanvas');
-  if (!canvas) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const ctx = canvas.getContext('2d');
-  let W=0,H=0,CX=0,CY=0,R=0,animId=null,active=false;
-  let rotation=0, scanAngle=0;
-
-  // ── Flow types ───────────────────────────────────────────────
-  const FLOW = {
-    capital:  { rgb:'212,168,90',  glow:'rgba(212,168,90,',  label:'Capital Flow'    },
-    ai:       { rgb:'0,210,255',   glow:'rgba(0,210,255,',   label:'AI Signal'       },
-    vol:      { rgb:'255,80,100',  glow:'rgba(255,80,100,',  label:'Vol Stress'      },
-    rotation: { rgb:'61,220,151',  glow:'rgba(61,220,151,',  label:'Risk Rotation'   },
-  };
-
-  // ── More detailed continent polygons ─────────────────────────
-  const CONTINENTS = [
-    { name:'NA', pts:[
-      [72,-60],[68,-80],[60,-64],[50,-55],[44,-66],[41,-70],[40,-74],[35,-76],[30,-81],
-      [25,-80],[24,-82],[24,-90],[20,-88],[20,-98],[20,-105],[22,-106],[26,-110],
-      [29,-110],[32,-117],[34,-120],[37,-122],[41,-124],[46,-124],[48,-124],[49,-124],
-      [52,-128],[56,-132],[58,-136],[60,-140],[64,-141],[68,-141],[70,-135],[72,-120],
-      [72,-100],[71,-84],[72,-60]
-    ]},
-    { name:'SA', pts:[
-      [12,-72],[11,-63],[10,-62],[8,-60],[5,-52],[2,-50],[0,-50],[-2,-44],[-5,-35],
-      [-8,-35],[-12,-37],[-15,-39],[-20,-41],[-23,-43],[-28,-49],[-30,-50],
-      [-32,-52],[-38,-58],[-50,-65],[-54,-66],[-55,-68],[-52,-70],[-48,-73],
-      [-45,-75],[-38,-72],[-30,-70],[-20,-70],[-10,-76],[-5,-80],[0,-78],
-      [5,-77],[8,-77],[12,-72]
-    ]},
-    { name:'EU', pts:[
-      [71,28],[70,25],[68,20],[64,14],[60,18],[58,8],[56,10],[55,14],[54,10],
-      [53,8],[51,4],[50,2],[48,2],[46,-2],[44,4],[43,4],[40,-8],[38,-9],
-      [36,-8],[36,-6],[36,0],[36,5],[37,8],[35,12],[36,18],[37,24],
-      [40,28],[41,34],[42,35],[43,44],[47,40],[50,36],[55,38],[60,30],
-      [65,26],[68,30],[71,28]
-    ]},
-    { name:'AF', pts:[
-      [37,10],[35,11],[34,37],[22,38],[15,42],[12,44],[12,43],[8,40],
-      [5,38],[0,42],[-5,40],[-10,37],[-15,35],[-20,35],[-26,33],
-      [-30,28],[-35,27],[-34,18],[-30,16],[-25,14],[-20,12],[-15,12],
-      [-10,12],[-5,10],[0,8],[5,2],[5,-3],[8,-5],[10,-16],[15,-17],
-      [18,-16],[22,-15],[26,-14],[30,-10],[37,10]
-    ]},
-    { name:'AS', pts:[
-      [70,32],[70,50],[70,70],[70,100],[72,120],[68,138],[60,142],
-      [55,138],[52,140],[48,140],[44,136],[40,130],[36,120],[32,120],
-      [28,120],[22,120],[20,110],[12,105],[5,103],[2,105],[1,104],
-      [5,100],[8,98],[10,92],[12,78],[8,77],[12,75],[18,73],[22,68],
-      [24,62],[25,57],[24,56],[22,60],[26,56],[30,48],[36,44],
-      [38,44],[42,44],[42,50],[50,56],[55,60],[62,62],[68,60],[70,32]
-    ]},
-    { name:'AU', pts:[
-      [-10,130],[-12,132],[-12,136],[-11,142],[-14,146],[-16,146],
-      [-20,148],[-28,154],[-34,151],[-38,148],[-38,144],[-38,140],
-      [-36,136],[-34,122],[-34,118],[-30,115],[-22,114],[-18,122],
-      [-16,124],[-14,128],[-12,130],[-10,130]
-    ]},
-    { name:'GL', pts:[
-      [76,-66],[80,-50],[83,-32],[82,-18],[80,-18],[76,-22],
-      [72,-24],[70,-36],[68,-50],[68,-58],[72,-62],[76,-66]
-    ]},
-    { name:'JP', pts:[
-      [31,130],[33,130],[34,132],[35,134],[36,136],[38,140],
-      [40,140],[41,141],[42,142],[43,141],[43,142],[42,143],
-      [40,141],[38,141],[36,136],[34,135],[32,131],[31,130]
-    ]},
-  ];
-
-  // ── Financial centres ────────────────────────────────────────
-  const CENTRES = [
-    { lat:40.71, lng:-74.01, name:'New York',    primary:true,  region:'NA',   flowType:'capital' },
-    { lat:51.51, lng:-0.09,  name:'London',      primary:true,  region:'EU',   flowType:'capital' },
-    { lat:50.11, lng:8.68,   name:'Frankfurt',   primary:false, region:'EU',   flowType:'rotation'},
-    { lat:35.68, lng:139.69, name:'Tokyo',        primary:true,  region:'APAC', flowType:'rotation'},
-    { lat:22.33, lng:114.16, name:'Hong Kong',   primary:true,  region:'APAC', flowType:'capital' },
-    { lat:1.28,  lng:103.85, name:'Singapore',   primary:false, region:'APAC', flowType:'ai'      },
-    { lat:25.20, lng:55.27,  name:'Dubai',        primary:false, region:'ME',   flowType:'vol'     },
-    { lat:41.88, lng:-87.63, name:'Chicago',     primary:false, region:'NA',   flowType:'ai'      },
-    { lat:-23.55,lng:-46.63, name:'São Paulo',   primary:false, region:'SA',   flowType:'capital' },
-    { lat:48.85, lng:2.35,   name:'Paris',        primary:false, region:'EU',   flowType:'rotation'},
-  ];
-
-  // ── Corridors with flow types ────────────────────────────────
-  const CORRIDORS = [
-    [0, 1,'capital',2],   // NY ↔ London — primary transatlantic
-    [0, 3,'capital',2],   // NY ↔ Tokyo  — transpacific
-    [1, 4,'ai',     2],   // London ↔ HK — AI signal
-    [3, 4,'rotation',2],  // Tokyo ↔ HK  — Asian rotation
-    [4, 5,'ai',     1],   // HK ↔ SGX
-    [1, 2,'rotation',1],  // London ↔ Frankfurt
-    [6, 1,'vol',    1],   // Dubai ↔ London — vol stress
-    [7, 0,'ai',     1],   // Chicago ↔ NY
-    [8, 0,'capital',1],   // São Paulo ↔ NY
-    [2, 6,'vol',    1],   // Frankfurt ↔ Dubai
-    [0, 4,'capital',1],   // NY ↔ HK
-    [1, 3,'ai',     1],   // London ↔ Tokyo
-  ];
-
-  // ── Ambient telemetry streams ────────────────────────────────
-  const STREAM_ROWS = 14;
-  let streams=[], arcParticles=[], pulses=[], projCentres=[];
-  let lastPulse=0;
-
-  // ── Maths ────────────────────────────────────────────────────
-  const rad=d=>d*Math.PI/180;
-  function project(lat,lng){
-    const phi=rad(lat), lam=rad(lng+rotation);
-    const x=CX+R*Math.cos(phi)*Math.sin(lam);
-    const y=CY-R*Math.sin(phi);
-    const depth=Math.cos(phi)*Math.cos(lam);
-    return{x,y,vis:depth>-0.05,depth:(depth+1)/2};
-  }
-  function slerp(la1,ln1,la2,ln2,t){
-    const toV=(ph,la)=>[Math.cos(ph)*Math.cos(la),Math.cos(ph)*Math.sin(la),Math.sin(ph)];
-    const a=toV(rad(la1),rad(ln1)),b=toV(rad(la2),rad(ln2));
-    const dt=Math.min(1,Math.max(-1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2]));
-    const om=Math.acos(dt);
-    if(om<0.001)return{lat:la1,lng:ln1};
-    const si=Math.sin(om);
-    const s0=Math.sin((1-t)*om)/si, s1=Math.sin(t*om)/si;
-    const v=[s0*a[0]+s1*b[0],s0*a[1]+s1*b[1],s0*a[2]+s1*b[2]];
-    return{lat:Math.asin(v[2])*180/Math.PI,lng:Math.atan2(v[1],v[0])*180/Math.PI};
+  if (typeof THREE === 'undefined') {
+    console.warn('[Globe] Three.js not loaded');
+    return;
   }
 
-  // ── Build scene ──────────────────────────────────────────────
-  function buildStreams(){
-    streams=Array.from({length:STREAM_ROWS},(_,i)=>({
-      y: H*(0.06+i*(0.88/STREAM_ROWS)),
-      x: Math.random()*-W,
-      spd: 0.18+Math.random()*0.28,
-      len: W*(0.06+Math.random()*0.10),
-      alpha: 0.008+Math.random()*0.010,
-      type: Math.random()<0.15?'bright':'faint',
-    }));
-  }
-  function buildParticles(){
-    arcParticles=[];
-    CORRIDORS.forEach(([ai,bi,ft,cnt])=>{
-      for(let i=0;i<cnt;i++){
-        arcParticles.push({
-          ai,bi,ft,
-          t:Math.random(),
-          spd:0.0006+Math.random()*0.0010,
-          dir:Math.random()<0.5?1:-1,
-          alpha:0.60+Math.random()*0.35,
-          size:1.8+Math.random()*1.4,
-        });
-      }
-    });
-  }
+  const container = document.getElementById('globeContainer');
+  if (!container) return;
 
-  // ── Resize ───────────────────────────────────────────────────
-  function resize(){
-    const body=canvas.parentElement; if(!body)return;
-    W=canvas.width=body.offsetWidth;
-    H=canvas.height=body.offsetHeight;
-    CX=W*0.50; CY=H*0.46;
-    R=Math.min(W*0.20,H*0.44);
-    buildStreams(); buildParticles();
-  }
+  /* ── Canvas sizing ─────────────────────────────────────── */
+  const W = container.offsetWidth  || 700;
+  const H = container.offsetHeight || 320;
 
-  // ── Draw helpers ─────────────────────────────────────────────
-
-  // Fine grid
-  function drawBgGrid(){
-    ctx.strokeStyle='rgba(78,168,255,0.008)'; ctx.lineWidth=0.5;
-    const step=Math.max(28,Math.floor(W/30));
-    for(let x=0;x<W;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H-38);ctx.stroke();}
-    for(let y=0;y<H-38;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  }
-
-  // Rich ambient telemetry streams across whole widget
-  function drawAmbientTelemetry(ts){
-    streams.forEach((s,si)=>{
-      s.x+=s.spd;
-      if(s.x>W*1.05) s.x=-s.len;
-      const bright=s.type==='bright';
-      const g=ctx.createLinearGradient(s.x,s.y,s.x+s.len,s.y);
-      const col=si%3===0?'78,168,255': si%3===1?'212,168,90':'61,220,151';
-      g.addColorStop(0,`rgba(${col},0)`);
-      g.addColorStop(0.35,`rgba(${col},${s.alpha*(bright?3.5:1)})`);
-      g.addColorStop(0.65,`rgba(${col},${s.alpha*(bright?2.5:0.8)})`);
-      g.addColorStop(1,`rgba(${col},0)`);
-      ctx.strokeStyle=g; ctx.lineWidth=bright?1.2:0.7;
-      ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(s.x+s.len,s.y); ctx.stroke();
-      // Small data "tick" on some lines
-      if(bright){
-        const tx=s.x+s.len*0.6;
-        ctx.fillStyle=`rgba(${col},${s.alpha*4})`;
-        ctx.fillRect(tx,s.y-1.5,2,3);
-      }
-    });
-    // Vertical faint scan lines (very slow drift)
-    const vPhase=(ts*0.00008)%(1);
-    for(let vi=0;vi<3;vi++){
-      const vx=((vPhase+vi/3)%1)*W;
-      const g=ctx.createLinearGradient(vx,0,vx,H-38);
-      g.addColorStop(0,'rgba(78,168,255,0)');
-      g.addColorStop(0.3,'rgba(78,168,255,0.012)');
-      g.addColorStop(0.7,'rgba(78,168,255,0.012)');
-      g.addColorStop(1,'rgba(78,168,255,0)');
-      ctx.strokeStyle=g; ctx.lineWidth=0.8;
-      ctx.beginPath(); ctx.moveTo(vx,0); ctx.lineTo(vx,H-38); ctx.stroke();
-    }
-    // Corner data-feed indicators (stacked tiny lines)
-    [[12,12],[W-60,12],[12,H-50],[W-60,H-50]].forEach(([cx2,cy2])=>{
-      for(let li=0;li<4;li++){
-        const lineLen=20+Math.sin(ts*0.001+li)*8;
-        const a=0.08+0.04*Math.sin(ts*0.0015+li*0.8);
-        ctx.strokeStyle=`rgba(78,168,255,${a})`;
-        ctx.lineWidth=0.7;
-        ctx.beginPath();ctx.moveTo(cx2,cy2+li*4);ctx.lineTo(cx2+lineLen,cy2+li*4);ctx.stroke();
-      }
-    });
-  }
-
-  // Atmosphere glow
-  function drawAtmosphere(){
-    const g=ctx.createRadialGradient(CX,CY,R*0.85,CX,CY,R*1.45);
-    g.addColorStop(0,'rgba(55,130,255,0.12)');
-    g.addColorStop(0.5,'rgba(40,100,220,0.04)');
-    g.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=g;ctx.beginPath();ctx.arc(CX,CY,R*1.45,0,Math.PI*2);ctx.fill();
-    const g2=ctx.createRadialGradient(CX,CY,R*0.98,CX,CY,R*1.15);
-    g2.addColorStop(0,'rgba(212,168,90,0.07)');
-    g2.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=g2;ctx.beginPath();ctx.arc(CX,CY,R*1.15,0,Math.PI*2);ctx.fill();
-  }
-
-  // Globe ocean fill
-  function drawGlobeFill(){
-    const g=ctx.createRadialGradient(CX-R*0.18,CY-R*0.20,R*0.06,CX,CY,R);
-    g.addColorStop(0,'rgba(12,20,42,0.97)');
-    g.addColorStop(0.5,'rgba(7,12,25,0.98)');
-    g.addColorStop(1,'rgba(3,5,12,0.99)');
-    ctx.fillStyle=g;ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.fill();
-    // Specular highlight
-    const s=ctx.createRadialGradient(CX-R*0.3,CY-R*0.32,0,CX-R*0.1,CY-R*0.12,R*0.6);
-    s.addColorStop(0,'rgba(78,168,255,0.07)');
-    s.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=s;ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.fill();
-  }
-
-  // Continent fills
-  function drawContinentFills(){
-    CONTINENTS.forEach(cont=>{
-      ctx.beginPath();let started=false;
-      cont.pts.forEach(([lat,lng])=>{
-        const p=project(lat,lng);
-        if(!p.vis){started=false;return;}
-        if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);
-      });
-      ctx.closePath();
-      const lf=ctx.createLinearGradient(CX-R,CY-R,CX+R,CY+R);
-      lf.addColorStop(0,'rgba(25,48,105,0.90)');
-      lf.addColorStop(1,'rgba(18,35,78,0.85)');
-      ctx.fillStyle=lf; ctx.fill();
-    });
-  }
-
-  // Graticule
-  function drawGraticule(){
-    ctx.lineWidth=0.45;
-    for(let lng=-180;lng<180;lng+=20){
-      ctx.beginPath();let f=true;
-      for(let lat=-88;lat<=88;lat+=3){
-        const p=project(lat,lng);
-        if(!p.vis){f=true;continue;}
-        ctx.strokeStyle=`rgba(78,168,255,${0.045*p.depth+0.010})`;
-        if(f){ctx.moveTo(p.x,p.y);f=false;}else ctx.lineTo(p.x,p.y);
-      }ctx.stroke();
-    }
-    for(let lat=-80;lat<=80;lat+=20){
-      ctx.beginPath();let f=true;
-      for(let lng=-180;lng<=180;lng+=3){
-        const p=project(lat,lng);
-        if(!p.vis){f=true;continue;}
-        ctx.strokeStyle=`rgba(78,168,255,${0.038*p.depth+0.008})`;
-        if(f){ctx.moveTo(p.x,p.y);f=false;}else ctx.lineTo(p.x,p.y);
-      }ctx.stroke();
-    }
-  }
-
-  // Continent outlines — two-pass glow + core
-  function drawContinentOutlines(){
-    CONTINENTS.forEach(cont=>{
-      const segs=[]; let cur=[];
-      cont.pts.forEach(([lat,lng])=>{
-        const p=project(lat,lng);
-        if(!p.vis){if(cur.length>1)segs.push(cur);cur=[];return;}
-        cur.push(p);
-      });
-      if(cur.length>1)segs.push(cur);
-      if(!segs.length)return;
-      // Glow pass
-      ctx.lineWidth=5;ctx.lineCap='round';
-      segs.forEach(seg=>{
-        const ad=seg.reduce((s,p)=>s+p.depth,0)/seg.length;
-        ctx.strokeStyle=`rgba(60,120,255,${0.14*ad+0.05})`;
-        ctx.beginPath();seg.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();
-      });
-      // Mid pass
-      ctx.lineWidth=1.8;
-      segs.forEach(seg=>{
-        const ad=seg.reduce((s,p)=>s+p.depth,0)/seg.length;
-        ctx.strokeStyle=`rgba(100,165,255,${0.32*ad+0.14})`;
-        ctx.beginPath();seg.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();
-      });
-      // Core
-      ctx.lineWidth=0.9;
-      segs.forEach(seg=>{
-        seg.forEach((p,i)=>{
-          if(!i){ctx.beginPath();ctx.moveTo(p.x,p.y);return;}
-          ctx.strokeStyle=`rgba(160,215,255,${0.65*p.depth+0.24})`;
-          ctx.lineTo(p.x,p.y);ctx.stroke();ctx.beginPath();ctx.moveTo(p.x,p.y);
-        });
-      });
-    });
-  }
-
-  // AI scan beam on globe
-  function drawScanBeam(){
-    scanAngle+=0.004;
-    const bLen=R*0.94;
-    const x2=CX+bLen*Math.cos(scanAngle), y2=CY+bLen*Math.sin(scanAngle);
-    const g=ctx.createLinearGradient(CX,CY,x2,y2);
-    g.addColorStop(0,'rgba(61,220,151,0.0)');
-    g.addColorStop(0.5,'rgba(61,220,151,0.04)');
-    g.addColorStop(1,'rgba(61,220,151,0.0)');
-    ctx.strokeStyle=g;ctx.lineWidth=20;ctx.lineCap='round';
-    ctx.beginPath();ctx.moveTo(CX,CY);ctx.lineTo(x2,y2);ctx.stroke();
-    ctx.lineCap='butt';
-  }
-
-  // Globe rim
-  function drawGlobeRim(){
-    ctx.strokeStyle='rgba(80,150,255,0.28)';ctx.lineWidth=1.1;
-    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.stroke();
-    ctx.strokeStyle='rgba(80,150,255,0.08)';ctx.lineWidth=8;
-    ctx.beginPath();ctx.arc(CX,CY,R-4,0,Math.PI*2);ctx.stroke();
-  }
-
-  // Capital-flow beams (3-layer) on globe surface
-  function drawArcs(ts){
-    CORRIDORS.forEach(([ai,bi,ft,cnt],ci)=>{
-      const cA=CENTRES[ai],cB=CENTRES[bi];
-      const STEPS=52;
-      const breathe=0.65+0.28*Math.sin(ts*0.0004+ci*1.1);
-      const f=FLOW[ft];
-      const pts=[];
-      for(let s=0;s<=STEPS;s++){
-        const m=slerp(cA.lat,cA.lng,cB.lat,cB.lng,s/STEPS);
-        pts.push(project(m.lat,m.lng));
-      }
-      // Layer 1 glow
-      ctx.lineWidth=7;ctx.lineCap='round';
-      for(let s=0;s<STEPS;s++){
-        const p1=pts[s],p2=pts[s+1];
-        if(!p1.vis||!p2.vis)continue;
-        ctx.strokeStyle=`${f.glow}${breathe*0.07*(0.5+0.5*p1.depth)})`;
-        ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
-      }
-      // Layer 2
-      ctx.lineWidth=2.2;
-      for(let s=0;s<STEPS;s++){
-        const p1=pts[s],p2=pts[s+1];
-        if(!p1.vis||!p2.vis)continue;
-        ctx.strokeStyle=`${f.glow}${breathe*0.22*(0.5+0.5*p1.depth)})`;
-        ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
-      }
-      // Layer 3 core
-      ctx.lineWidth=0.9;
-      for(let s=0;s<STEPS;s++){
-        const p1=pts[s],p2=pts[s+1];
-        if(!p1.vis||!p2.vis)continue;
-        ctx.strokeStyle=`${f.glow}${breathe*0.60*(0.4+0.6*p1.depth)})`;
-        ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
-      }
-    });
-  }
-
-  // Extended beams beyond globe into widget space
-  function drawExtendedBeams(ts){
-    projCentres.forEach((c,i)=>{
-      if(!c.vis||c.depth<0.12) return;
-      const f=FLOW[c.flowType];
-      const breathe=0.5+0.3*Math.sin(ts*0.0006+i*0.8);
-      // Direction vector from globe centre to node
-      const dx=c.x-CX, dy=c.y-CY;
-      const len=Math.sqrt(dx*dx+dy*dy)||1;
-      const nx=dx/len, ny=dy/len;
-      // Beam extends from node outward
-      const startX=c.x+nx*c.r*2;
-      const startY=c.y+ny*c.r*2;
-      const extFrac=c.primary?0.28:0.16;
-      const endX=CX+nx*(R+Math.min(W,H)*extFrac*c.depth);
-      const endY=CY+ny*(R+Math.min(W,H)*extFrac*c.depth);
-      // Draw fading extended beam
-      const g=ctx.createLinearGradient(startX,startY,endX,endY);
-      const a=breathe*c.depth;
-      g.addColorStop(0,`${f.glow}${a*0.50})`);
-      g.addColorStop(0.4,`${f.glow}${a*0.20})`);
-      g.addColorStop(1,`${f.glow}0.00)`);
-      // Glow pass
-      ctx.lineWidth=c.primary?6:3;ctx.lineCap='round';
-      ctx.strokeStyle=g;
-      ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(endX,endY);ctx.stroke();
-      // Core
-      ctx.lineWidth=c.primary?1.2:0.7;
-      ctx.strokeStyle=g;
-      ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(endX,endY);ctx.stroke();
-    });
-  }
-
-  // Glow nodes — big premium city hubs
-  function drawCentreNodes(ts){
-    projCentres=CENTRES.map((c,i)=>{
-      const p=project(c.lat,c.lng);
-      return{...c,...p,phase:(i/CENTRES.length)*Math.PI*2};
-    });
-    projCentres.forEach(c=>{
-      if(!c.vis||c.depth<0.04)return;
-      const f=FLOW[c.flowType];
-      const br=0.55+0.30*Math.sin(ts*0.0009+c.phase);
-      const a=br*c.depth;
-      const r=c.primary?4.8:2.8;
-      // Large atmospheric halo
-      const g1=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,r*14);
-      g1.addColorStop(0,`${f.glow}${a*0.30})`);
-      g1.addColorStop(0.5,`${f.glow}${a*0.08})`);
-      g1.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=g1;ctx.beginPath();ctx.arc(c.x,c.y,r*14,0,Math.PI*2);ctx.fill();
-      // Medium halo
-      const g2=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,r*6);
-      g2.addColorStop(0,`${f.glow}${a*0.55})`);
-      g2.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=g2;ctx.beginPath();ctx.arc(c.x,c.y,r*6,0,Math.PI*2);ctx.fill();
-      // Concentric rings (primary nodes)
-      if(c.primary){
-        [r*3.5,r*5.5].forEach((ring,ri)=>{
-          ctx.strokeStyle=`${f.glow}${a*(0.22-ri*0.08)})`;
-          ctx.lineWidth=0.8;
-          ctx.beginPath();ctx.arc(c.x,c.y,ring,0,Math.PI*2);ctx.stroke();
-        });
-      }
-      // Core dot
-      ctx.fillStyle=`${f.glow}${Math.min(a*1.3,0.95)})`;
-      ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.fill();
-      // Bright centre
-      ctx.fillStyle=`rgba(255,255,255,${a*0.6})`;
-      ctx.beginPath();ctx.arc(c.x,c.y,r*0.45,0,Math.PI*2);ctx.fill();
-      // City label — always shown when on visible side
-      if(c.depth>0.08){
-        const labelAlpha=Math.min((c.depth-0.08)/0.25,1); // fade in near limb
-        const fontSize=c.primary?9:7.5;
-        // Background pill for readability
-        const label=c.name;
-        ctx.font=`600 ${fontSize}px "JetBrains Mono",monospace`;
-        const tw=ctx.measureText(label).width;
-        const px=c.x+r+7, py=c.y+3;
-        // Subtle dark backing
-        ctx.fillStyle=`rgba(4,6,14,${labelAlpha*0.65})`;
-        ctx.fillRect(px-2,py-fontSize,tw+4,fontSize+3);
-        // Text glow (wide, faint)
-        ctx.shadowColor=`${f.glow}${labelAlpha*0.6})`;
-        ctx.shadowBlur=6;
-        ctx.fillStyle=`${f.glow}${labelAlpha*(c.primary?0.92:0.70)})`;
-        ctx.fillText(label,px,py);
-        ctx.shadowBlur=0;
-        // Dot connector line from node to label
-        ctx.strokeStyle=`${f.glow}${labelAlpha*0.25})`;
-        ctx.lineWidth=0.5;
-        ctx.beginPath();ctx.moveTo(c.x+r*0.9,c.y);ctx.lineTo(px-2,py-fontSize*0.4);ctx.stroke();
-      }
-    });
-  }
-
-  // Comet-tail particles
-  function drawArcParticles(){
-    arcParticles.forEach(p=>{
-      p.t+=p.spd*p.dir;
-      if(p.t>1)p.t=0;if(p.t<0)p.t=1;
-      const cA=CENTRES[p.ai],cB=CENTRES[p.bi];
-      const f=FLOW[p.ft];
-      // Tail
-      for(let ti=0;ti<7;ti++){
-        const tt=((p.t-p.dir*(ti*0.009))+1)%1;
-        const mid=slerp(cA.lat,cA.lng,cB.lat,cB.lng,tt);
-        const pr=project(mid.lat,mid.lng);
-        if(!pr.vis)continue;
-        const fade=1-ti/7;
-        ctx.fillStyle=`${f.glow}${p.alpha*fade*(0.4+0.6*pr.depth)})`;
-        ctx.beginPath();ctx.arc(pr.x,pr.y,p.size*fade*(ti===0?1.5:1),0,Math.PI*2);ctx.fill();
-      }
-      // Head glow
-      const mid=slerp(cA.lat,cA.lng,cB.lat,cB.lng,p.t);
-      const pr=project(mid.lat,mid.lng);
-      if(!pr.vis)return;
-      const a=p.alpha*(0.7+0.3*pr.depth);
-      const g=ctx.createRadialGradient(pr.x,pr.y,0,pr.x,pr.y,p.size*5);
-      g.addColorStop(0,`${f.glow}${a*0.5})`);
-      g.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=g;ctx.beginPath();ctx.arc(pr.x,pr.y,p.size*5,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle=`${f.glow}${Math.min(a*1.4,1)})`;
-      ctx.beginPath();ctx.arc(pr.x,pr.y,p.size*1.6,0,Math.PI*2);ctx.fill();
-    });
-  }
-
-  // Pulse waves
-  function drawPulses(){
-    pulses=pulses.filter(p=>p.alpha>0.003);
-    pulses.forEach(p=>{
-      p.r+=0.95;p.alpha*=0.971;
-      const f=FLOW[p.ft||'capital'];
-      ctx.strokeStyle=`${f.glow}${p.alpha})`;
-      ctx.lineWidth=1;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.stroke();
-    });
-  }
-  function maybePulse(ts){
-    if(ts-lastPulse>1900){
-      lastPulse=ts;
-      const vis=projCentres.filter(c=>c.vis&&c.depth>0.15);
-      if(!vis.length)return;
-      const c=vis[Math.floor(Math.random()*vis.length)];
-      pulses.push({x:c.x,y:c.y,r:c.primary?5:3,alpha:0.10,ft:c.flowType});
-      setTimeout(()=>{ if(c.depth>0.1)pulses.push({x:c.x,y:c.y,r:c.primary?5:3,alpha:0.05,ft:'ai'}); },700);
-    }
-  }
-
-  // ── Main loop ────────────────────────────────────────────────
-  function draw(ts){
-    if(!active){animId=null;return;}
-    animId=requestAnimationFrame(draw);
-    rotation+=0.012;
-    ctx.clearRect(0,0,W,H);
-    drawBgGrid();
-    drawAmbientTelemetry(ts);
-    drawAtmosphere();
-    ctx.save();
-    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.clip();
-    drawGlobeFill();
-    drawContinentFills();
-    drawGraticule();
-    drawContinentOutlines();
-    drawScanBeam();
-    ctx.restore();
-    drawGlobeRim();
-    drawArcs(ts);
-    drawExtendedBeams(ts);
-    drawCentreNodes(ts);
-    drawArcParticles();
-    drawPulses();
-    maybePulse(ts);
-  }
-
-  function start(){if(!animId){resize();active=true;requestAnimationFrame(draw);}}
-  function stop(){active=false;if(animId){cancelAnimationFrame(animId);animId=null;}}
-
-  // ── Regional overlays ────────────────────────────────────────
-  const REGION_CONFIG=[
-    {id:'NA',etf:'SPY',states:[
-      {val:'+0.84%',cls:'up',state:'Momentum Building',note:'Breadth expanding'},
-      {val:'-1.12%',cls:'dn',state:'Momentum Weakening',note:'Risk Elevated'},
-      {val:'+0.12%',cls:'up',state:'Consolidating',note:'Range-bound'},
-    ]},
-    {id:'EU',etf:'EZU',states:[
-      {val:'+0.21%',cls:'up',state:'Defensive Rotation',note:'Yield pressure'},
-      {val:'-0.68%',cls:'dn',state:'Volatility Rising',note:'ECB watch'},
-      {val:'+0.44%',cls:'up',state:'Recovery Signal',note:'Spread stable'},
-    ]},
-    {id:'COM',etf:'DJP',states:[
-      {val:'+1.43%',cls:'up',state:'Energy Bid Strong',note:'Supply tightening'},
-      {val:'-0.55%',cls:'dn',state:'Demand Softening',note:'Crude weakness'},
-      {val:'+0.31%',cls:'up',state:'Metals Leading',note:'Gold bid active'},
-    ]},
-    {id:'APAC',etf:'EWJ',states:[
-      {val:'+0.76%',cls:'up',state:'Risk-On Flows',note:'JPY stabilising'},
-      {val:'-0.92%',cls:'dn',state:'Pressure Elevated',note:'PBOC watch'},
-      {val:'+0.18%',cls:'up',state:'FX Stabilising',note:'USD·JPY range'},
-    ]},
-  ];
-  function populateRegionOverlays(){
-    REGION_CONFIG.forEach(reg=>{
-      let st;
-      try{
-        const q=BriefTickAPI._cacheGetStale&&BriefTickAPI._cacheGetStale('q:'+reg.etf);
-        if(q&&q.pctChange!==undefined){
-          const pct=q.pctChange,sign=pct>=0?'+':'',cls=pct>=0?'up':'dn';
-          const stateText=pct>0.5?reg.states[0].state:pct<-0.3?reg.states[1].state:reg.states[2].state;
-          const noteText=pct>0.5?reg.states[0].note:pct<-0.3?reg.states[1].note:reg.states[2].note;
-          st={val:`${sign}${pct.toFixed(2)}%`,cls,state:stateText,note:noteText};
-        }
-      }catch(_){}
-      if(!st)st=reg.states[Math.floor(Math.random()*reg.states.length)];
-      const vEl=document.getElementById('tVal'+reg.id);
-      const sEl=document.getElementById('tSub'+reg.id);
-      const nEl=document.getElementById('tState'+reg.id);
-      if(vEl){vEl.textContent=st.val;vEl.className=`t-region-value ${st.cls}`;}
-      if(sEl) sEl.textContent=st.state;
-      if(nEl) nEl.textContent=st.note;
-    });
-    const sigEl=document.getElementById('tSigCount');
-    if(sigEl){setInterval(()=>{sigEl.textContent=(1842+Math.floor(Math.random()*25-8)).toLocaleString();},2800);}
-  }
-
-  // ── Lifecycle ────────────────────────────────────────────────
-  const dashEl=document.getElementById('page-dashboard');
-  if(dashEl){
-    new MutationObserver(()=>{
-      if(dashEl.classList.contains('active')){start();setTimeout(populateRegionOverlays,1200);}
-      else stop();
-    }).observe(dashEl,{attributes:true,attributeFilter:['class']});
-    if(dashEl.classList.contains('active')){start();setTimeout(populateRegionOverlays,1200);}
-  }
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden)stop();
-    else if(dashEl&&dashEl.classList.contains('active'))start();
+  /* ── Renderer ──────────────────────────────────────────── */
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W, H);
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+  Object.assign(renderer.domElement.style, {
+    position: 'absolute', inset: '0', width: '100%', height: '100%',
   });
-  let rsT;window.addEventListener('resize',()=>{clearTimeout(rsT);rsT=setTimeout(resize,200);});
+
+  /* ── Scene & Camera ───────────────────────────────────── */
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 1000);
+  camera.position.set(0, 0, 2.6);
+
+  /* ── Lighting ─────────────────────────────────────────── */
+  const ambientLight = new THREE.AmbientLight(0x1a2040, 1.8);
+  scene.add(ambientLight);
+  const sunLight = new THREE.DirectionalLight(0xffffff, 2.2);
+  sunLight.position.set(3, 2, 4);
+  scene.add(sunLight);
+  const rimLight = new THREE.DirectionalLight(0x4ea8ff, 0.6);
+  rimLight.position.set(-4, -1, -2);
+  scene.add(rimLight);
+
+  /* ── Texture loader ───────────────────────────────────── */
+  const loader = new THREE.TextureLoader();
+  const EARTH_TEX  = 'https://unpkg.com/three-globe@2.30.0/example/img/earth-blue-marble.jpg';
+  const NIGHT_TEX  = 'https://unpkg.com/three-globe@2.30.0/example/img/earth-night.jpg';
+  const BUMP_TEX   = 'https://unpkg.com/three-globe@2.30.0/example/img/earth-topology.png';
+  const SPEC_TEX   = 'https://unpkg.com/three-globe@2.30.0/example/img/earth-water.png';
+  const CLOUDS_TEX = 'https://unpkg.com/three-globe@2.30.0/example/img/earth-clouds.png';
+
+  /* ── Earth sphere ─────────────────────────────────────── */
+  const earthGeo = new THREE.SphereGeometry(1, 80, 80);
+  const earthMat = new THREE.MeshPhongMaterial({
+    shininess: 20,
+    specular:  new THREE.Color(0x224466),
+  });
+  loader.load(EARTH_TEX,  t => { earthMat.map      = t; earthMat.needsUpdate = true; });
+  loader.load(BUMP_TEX,   t => { earthMat.bumpMap   = t; earthMat.bumpScale  = 0.012; earthMat.needsUpdate = true; });
+  loader.load(SPEC_TEX,   t => { earthMat.specularMap = t; earthMat.needsUpdate = true; });
+  const earth = new THREE.Mesh(earthGeo, earthMat);
+  scene.add(earth);
+
+  /* ── Cloud layer ──────────────────────────────────────── */
+  const cloudGeo = new THREE.SphereGeometry(1.008, 64, 64);
+  const cloudMat = new THREE.MeshPhongMaterial({
+    transparent: true, opacity: 0.28, depthWrite: false,
+  });
+  loader.load(CLOUDS_TEX, t => { cloudMat.alphaMap = t; cloudMat.needsUpdate = true; });
+  const clouds = new THREE.Mesh(cloudGeo, cloudMat);
+  scene.add(clouds);
+
+  /* ── Outer atmosphere glow ────────────────────────────── */
+  const atmGeo  = new THREE.SphereGeometry(1.06, 64, 64);
+  const atmMat  = new THREE.MeshPhongMaterial({
+    color: 0x4488cc, transparent: true, opacity: 0.07,
+    side: THREE.FrontSide, depthWrite: false,
+  });
+  scene.add(new THREE.Mesh(atmGeo, atmMat));
+  const atmInner = new THREE.SphereGeometry(1.025, 64, 64);
+  const atmInnerMat = new THREE.MeshPhongMaterial({
+    color: 0x88bbff, transparent: true, opacity: 0.04,
+    side: THREE.BackSide, depthWrite: false,
+  });
+  scene.add(new THREE.Mesh(atmInner, atmInnerMat));
+
+  /* ── Helper: lat/lon → 3D point ───────────────────────── */
+  function latLonToVec3(lat, lon, r) {
+    const phi   = (90 - lat)  * Math.PI / 180;
+    const theta = (lon + 180) * Math.PI / 180;
+    return new THREE.Vector3(
+      -r * Math.sin(phi) * Math.cos(theta),
+       r * Math.cos(phi),
+       r * Math.sin(phi) * Math.sin(theta)
+    );
+  }
+
+  /* ── City nodes ───────────────────────────────────────── */
+  const CITIES = [
+    { name: 'New York',    lat:  40.71, lon:  -74.01, col: 0xd4af37 },
+    { name: 'London',      lat:  51.51, lon:   -0.12, col: 0x4ea8ff },
+    { name: 'Tokyo',       lat:  35.68, lon:  139.69, col: 0x4ea8ff },
+    { name: 'Frankfurt',   lat:  50.11, lon:    8.68, col: 0x4ea8ff },
+    { name: 'Singapore',   lat:   1.35, lon:  103.82, col: 0xd4af37 },
+    { name: 'Dubai',       lat:  25.20, lon:   55.27, col: 0xd4af37 },
+    { name: 'Hong Kong',   lat:  22.32, lon:  114.17, col: 0x4ea8ff },
+    { name: 'São Paulo',   lat: -23.55, lon:  -46.63, col: 0xd4af37 },
+    { name: 'Sydney',      lat: -33.87, lon:  151.21, col: 0x4ea8ff },
+    { name: 'Chicago',     lat:  41.88, lon:  -87.63, col: 0xd4af37 },
+  ];
+
+  const nodeGroup = new THREE.Group();
+  scene.add(nodeGroup);
+
+  CITIES.forEach(city => {
+    const pos  = latLonToVec3(city.lat, city.lon, 1.015);
+    // Outer glow ring
+    const ringGeo  = new THREE.SphereGeometry(0.014, 12, 12);
+    const ringMat  = new THREE.MeshBasicMaterial({ color: city.col, transparent: true, opacity: 0.35 });
+    const ring     = new THREE.Mesh(ringGeo, ringMat);
+    ring.position.copy(pos);
+    // Inner bright dot
+    const dotGeo   = new THREE.SphereGeometry(0.007, 10, 10);
+    const dotMat   = new THREE.MeshBasicMaterial({ color: city.col });
+    const dot      = new THREE.Mesh(dotGeo, dotMat);
+    dot.position.copy(pos);
+    // Animate via userData
+    ring.userData = { phase: Math.random() * Math.PI * 2, baseOpacity: 0.35 };
+    nodeGroup.add(ring, dot);
+    city._ring = ring;
+  });
+
+  /* ── Arc helper: great-circle arc as tube ─────────────── */
+  function buildArc(latA, lonA, latB, lonB, color, arcHeight = 0.35) {
+    const start = latLonToVec3(latA, lonA, 1.015);
+    const end   = latLonToVec3(latB, lonB, 1.015);
+    const mid   = start.clone().add(end).multiplyScalar(0.5);
+    const midLen = mid.length();
+    mid.multiplyScalar((1 + arcHeight) / midLen);
+
+    const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+    const points = curve.getPoints(80);
+    const geo    = new THREE.BufferGeometry().setFromPoints(points);
+    const mat    = new THREE.LineBasicMaterial({
+      color, transparent: true, opacity: 0.55, linewidth: 1,
+    });
+    const line = new THREE.Line(geo, mat);
+    line.userData = {
+      points, phase: Math.random() * Math.PI * 2,
+      speed: 0.4 + Math.random() * 0.4,
+    };
+    return line;
+  }
+
+  /* Arcs between major financial centres */
+  const arcGroup = new THREE.Group();
+  scene.add(arcGroup);
+
+  const ARCS = [
+    [40.71,-74.01, 51.51,-0.12,  0x4ea8ff],   // NY → London
+    [51.51,-0.12,  50.11, 8.68,  0x4ea8ff],   // London → Frankfurt
+    [51.51,-0.12,  35.68,139.69, 0xd4af37],   // London → Tokyo
+    [40.71,-74.01, 1.35, 103.82, 0xd4af37],   // NY → Singapore
+    [35.68,139.69, 1.35, 103.82, 0x4ea8ff],   // Tokyo → Singapore
+    [25.20, 55.27, 1.35, 103.82, 0xd4af37],   // Dubai → Singapore
+    [22.32,114.17, 35.68,139.69, 0x4ea8ff],   // HK → Tokyo
+    [40.71,-74.01, 41.88,-87.63, 0xd4af37],   // NY → Chicago
+    [-33.87,151.21, 1.35,103.82, 0x4ea8ff],   // Sydney → Singapore
+    [51.51,-0.12, 25.20, 55.27,  0xd4af37],   // London → Dubai
+  ];
+  ARCS.forEach(([la,lo,lb,lo2,col]) => {
+    arcGroup.add(buildArc(la, lo, lb, lo2, col));
+  });
+
+  /* ── Star field ──────────────────────────────────────── */
+  const starGeo = new THREE.BufferGeometry();
+  const starVerts = new Float32Array(3000);
+  for (let i = 0; i < 3000; i += 3) {
+    starVerts[i]   = (Math.random() - 0.5) * 400;
+    starVerts[i+1] = (Math.random() - 0.5) * 400;
+    starVerts[i+2] = (Math.random() - 0.5) * 400;
+  }
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starVerts, 3));
+  const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.25, sizeAttenuation: true, transparent: true, opacity: 0.45 });
+  scene.add(new THREE.Points(starGeo, starMat));
+
+  /* ── Resize handler ──────────────────────────────────── */
+  function onResize() {
+    const w = container.offsetWidth  || 700;
+    const h = container.offsetHeight || 320;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+  window.addEventListener('resize', onResize);
+
+  /* ── Animation loop ──────────────────────────────────── */
+  let frameId;
+  let t = 0;
+
+  function animate() {
+    frameId = requestAnimationFrame(animate);
+    t += 0.004;
+
+    // Rotate globe and clouds
+    earth.rotation.y  += 0.0012;
+    clouds.rotation.y += 0.0014;
+    nodeGroup.rotation.y = earth.rotation.y;
+    arcGroup.rotation.y  = earth.rotation.y;
+
+    // Pulse city rings
+    nodeGroup.children.forEach(child => {
+      if (child.userData.phase !== undefined) {
+        child.material.opacity =
+          child.userData.baseOpacity *
+          (0.65 + 0.35 * Math.sin(t * 2.5 + child.userData.phase));
+      }
+    });
+
+    // Animate arc dash offset (traveling glow)
+    arcGroup.children.forEach(arc => {
+      if (!arc.userData.points) return;
+      const progress = ((t * arc.userData.speed + arc.userData.phase) % (Math.PI * 2)) / (Math.PI * 2);
+      const total = arc.userData.points.length;
+      const seg   = Math.floor(progress * total);
+      const visible = 18; // number of visible points in traveling head
+      const pts = [];
+      for (let k = 0; k < visible; k++) {
+        const idx = (seg + k) % total;
+        pts.push(arc.userData.points[idx]);
+      }
+      if (pts.length > 1) {
+        arc.geometry.setFromPoints(pts);
+        arc.material.opacity = 0.55 + 0.3 * Math.sin(t * 3 + arc.userData.phase);
+      }
+    });
+
+    renderer.render(scene, camera);
+  }
+
+  /* Start when dashboard panel is visible */
+  const dashEl = document.getElementById('page-dashboard');
+  if (!dashEl) { animate(); return; }
+
+  function tryStart() {
+    if (dashEl.classList.contains('active')) {
+      onResize();
+      animate();
+    }
+  }
+  tryStart();
+
+  new MutationObserver(() => {
+    if (dashEl.classList.contains('active') && !frameId) {
+      onResize();
+      animate();
+    } else if (!dashEl.classList.contains('active') && frameId) {
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    }
+  }).observe(dashEl, { attributes: true, attributeFilter: ['class'] });
 }
 
 // ── GSAP Dashboard Panel Entrance ────────────────────────────────
