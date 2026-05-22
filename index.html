@@ -2757,13 +2757,13 @@ h1,h2,h3{
             <div class="settings-row-name">Anthropic <span class="settings-badge gold">Intelligence Layer</span></div>
             <div class="settings-row-desc">Powers intelligent summaries, briefings, and "Why Is It Moving" interpretations. Without this, analysis remains static mock content.</div>
           </div>
-          <div class="settings-status" id="status-anthropic">Not set</div>
+          <div class="settings-status" id="status-anthropic">Checking…</div>
         </div>
         <div class="settings-input-group">
-          <input type="password" id="key-anthropic" placeholder="sk-ant-api03-..." autocomplete="off" spellcheck="false"/>
+          <input type="password" id="key-anthropic" placeholder="sk-ant-api03-… (optional if set in Vercel)" autocomplete="off" spellcheck="false"/>
           <button class="settings-btn-show" onclick="toggleKeyVisible('key-anthropic')" type="button">Show</button>
         </div>
-        <div class="settings-help">
+        <div class="settings-help" id="anthropic-server-status" style="margin-top:6px;font-size:11px">
           <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> · Set a <b>$20 monthly spend limit</b> in Billing before testing
         </div>
       </div>
@@ -7103,6 +7103,7 @@ function updateStatusIndicators(){
     const el = document.getElementById(id);
     if(!el) return;
     const has = !!(BriefTickAPI.keys[name] && BriefTickAPI.keys[name].length > 10);
+    if(name === 'anthropic') return; // handled separately below
     if(has){
       el.textContent = 'Connected';
       el.classList.add('connected');
@@ -7111,6 +7112,40 @@ function updateStatusIndicators(){
       el.classList.remove('connected');
     }
   });
+
+  // Anthropic: check both browser key AND server key, show each separately
+  const anthrEl = document.getElementById('status-anthropic');
+  const anthrInfo = document.getElementById('anthropic-server-status');
+  const browserKey = BriefTickAPI.keys.anthropic && BriefTickAPI.keys.anthropic !== '_server_' && BriefTickAPI.keys.anthropic.length > 10;
+
+  if(anthrEl) {
+    anthrEl.textContent = browserKey ? 'Browser: SET' : 'Browser: NOT SET';
+    anthrEl.classList.toggle('connected', !!browserKey);
+  }
+
+  // Fetch server-side status (no key value exposed)
+  fetch('/api/proxy?provider=status')
+    .then(r => r.json())
+    .then(status => {
+      const serverSet = !!status.anthropic;
+      if(anthrEl) {
+        const bLabel = browserKey ? '✓ Browser key set' : '✗ Browser key not set';
+        const sLabel = serverSet  ? '✓ Server key set (Vercel)' : '✗ Server key not set in Vercel';
+        anthrEl.innerHTML = serverSet || browserKey
+          ? (serverSet ? '<span style="color:var(--green)">'+sLabel+'</span>' : '<span style="color:var(--red)">'+sLabel+'</span>')
+          : 'Not configured';
+        anthrEl.classList.toggle('connected', serverSet || browserKey);
+        if(anthrInfo) {
+          anthrInfo.innerHTML = `<span style="opacity:.7">${bLabel}</span> &nbsp;·&nbsp; <span style="opacity:.7">${sLabel}</span><br><a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> · Set a <b>$20 monthly spend limit</b> in Billing before testing`;
+        }
+      }
+    })
+    .catch(() => {
+      if(anthrEl && !browserKey) {
+        anthrEl.textContent = 'Browser: NOT SET';
+        anthrEl.classList.remove('connected');
+      }
+    });
 }
 
 function saveSettings(){

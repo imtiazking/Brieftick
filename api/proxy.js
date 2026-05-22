@@ -257,6 +257,17 @@ async function proxyPolygon(req, res) {
   }
 }
 
+async function proxyStatus(req, res) {
+  // Returns which server-side keys are configured — values never exposed
+  return res.status(200).json({
+    anthropic:    !!(process.env.ANTHROPIC_KEY || process.env.ANTHROPIC_API_KEY),
+    twelvedata:   !!process.env.TWELVE_DATA_KEY,
+    finnhub:      !!process.env.FINNHUB_KEY,
+    alphavantage: !!process.env.ALPHA_VANTAGE_KEY,
+    polygon:      !!process.env.POLYGON_KEY,
+  });
+}
+
 async function proxyPoliticalTrades(req, res) {
   const cacheKey = 'pol:house';
   const cached = cacheGet(cacheKey, 60 * 60_000); // 1 hour
@@ -301,6 +312,7 @@ export default async function handler(req, res) {
     if (provider === 'sec')             return await proxySEC(req, res);
     if (provider === 'polygon')          return await proxyPolygon(req, res);
     if (provider === 'politicaltrades') return await proxyPoliticalTrades(req, res);
+    if (provider === 'status')          return await proxyStatus(req, res);
     return res.status(400).json({ error: 'unknown provider' });
   } catch (e) {
     return res.status(500).json({ error: 'proxy crashed', detail: e.message });
