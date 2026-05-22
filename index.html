@@ -7364,6 +7364,19 @@ function _updateWIMButtonVisibility() {
 window._updateWIMButtonVisibility = _updateWIMButtonVisibility;
 document.addEventListener('bt_plan_changed', _updateWIMButtonVisibility);
 
+// Watch Movers page: when it becomes active AND plan is confirmed Free, auto-generate
+(function() {
+  var whyPage = document.getElementById('page-why');
+  if (!whyPage) return;
+  new MutationObserver(function() {
+    if (!whyPage.classList.contains('active')) return;
+    if (window._isTerminal === true) return; // Terminal: button-driven only
+    if (window._isTerminal === undefined) return; // Clerk not yet confirmed — wait
+    var sym = window._wimLastSym || (document.getElementById('wimSym') && document.getElementById('wimSym').textContent) || 'NVDA';
+    setTimeout(function() { _maybeAutoWIM(sym); }, 400);
+  }).observe(whyPage, { attributes: true, attributeFilter: ['class'] });
+})();
+
 // ── Briefing page helpers ──────────────────────────────────────
 function _briefTodayLabel(){
   const d = new Date();
