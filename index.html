@@ -13134,6 +13134,53 @@ function initDashTelemetry() {
   }
   window.addEventListener('resize', onResize);
 
+  /* ── Interaction state ───────────────────────────────── */
+  let isDragging   = false;
+  let prevX        = 0;
+  let prevY        = 0;
+  let velX         = 0;       // drag velocity (horizontal)
+  let velY         = 0;       // drag velocity (vertical)
+  let rotY         = 0;       // accumulated horizontal rotation (radians)
+  let tiltX        = 0;       // accumulated vertical tilt (radians)
+  const TILT_MAX   = 0.55;    // ~31° max tilt — prevents upside-down
+  const DAMPING    = 0.88;    // inertia decay per frame
+  const AUTO_ROT   = 0.0012;  // cinematic auto-rotation speed
+  const DRAG_SENS  = 0.007;   // drag sensitivity multiplier
+  let autoRotPause = 0;       // frames remaining to suppress auto-rotation
+
+  /* Grab cursor */
+  renderer.domElement.style.cursor = 'grab';
+
+  function onPointerDown(e) {
+    isDragging = true;
+    prevX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    prevY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+    velX = 0; velY = 0;
+    renderer.domElement.style.cursor = 'grabbing';
+  }
+  function onPointerMove(e) {
+    if (!isDragging) return;
+    const cx = e.clientX ?? e.touches?.[0]?.clientX ?? prevX;
+    const cy = e.clientY ?? e.touches?.[0]?.clientY ?? prevY;
+    const dx = cx - prevX;
+    const dy = cy - prevY;
+    velX = dx * DRAG_SENS;
+    velY = dy * DRAG_SENS;
+    prevX = cx; prevY = cy;
+    autoRotPause = 120; // pause auto-rotation for 2 seconds after any drag
+  }
+  function onPointerUp() {
+    isDragging = false;
+    renderer.domElement.style.cursor = 'grab';
+  }
+
+  renderer.domElement.addEventListener('mousedown',  onPointerDown);
+  renderer.domElement.addEventListener('touchstart', onPointerDown, { passive: true });
+  window.addEventListener('mousemove',  onPointerMove);
+  window.addEventListener('touchmove',  onPointerMove, { passive: true });
+  window.addEventListener('mouseup',    onPointerUp);
+  window.addEventListener('touchend',   onPointerUp);
+
   /* ── Animation loop ──────────────────────────────────── */
   let frameId;
   let t = 0;
@@ -13142,13 +13189,38 @@ function initDashTelemetry() {
     frameId = requestAnimationFrame(animate);
     t += 0.004;
 
-    // Rotate globe and clouds
-    earth.rotation.y  += 0.0012;
-    clouds.rotation.y += 0.0014;
-    nodeGroup.rotation.y = earth.rotation.y;
-    arcGroup.rotation.y  = earth.rotation.y;
+    /* Apply drag velocity → rotation */
+    if (isDragging) {
+      rotY  += velX;
+      tiltX += velY;
+    } else {
+      /* Inertia: decay velocity and keep applying */
+      velX  *= DAMPING;
+      velY  *= DAMPING;
+      rotY  += velX;
+      tiltX += velY;
+      /* Auto-rotation resumes smoothly after pause */
+      if (autoRotPause > 0) {
+        autoRotPause--;
+      } else {
+        rotY += AUTO_ROT;
+      }
+    }
 
-    // Pulse city rings
+    /* Clamp vertical tilt to prevent upside-down */
+    tiltX = Math.max(-TILT_MAX, Math.min(TILT_MAX, tiltX));
+
+    /* Apply rotations to globe group */
+    earth.rotation.y     = rotY;
+    earth.rotation.x     = tiltX;
+    clouds.rotation.y    = rotY + t * 0.0002; // clouds drift slightly
+    clouds.rotation.x    = tiltX;
+    nodeGroup.rotation.y = rotY;
+    nodeGroup.rotation.x = tiltX;
+    arcGroup.rotation.y  = rotY;
+    arcGroup.rotation.x  = tiltX;
+
+    /* Pulse city rings */
     nodeGroup.children.forEach(child => {
       if (child.userData.phase !== undefined) {
         child.material.opacity =
@@ -13157,18 +13229,15 @@ function initDashTelemetry() {
       }
     });
 
-    // Animate arc dash offset (traveling glow)
+    /* Animate arc traveling heads */
     arcGroup.children.forEach(arc => {
       if (!arc.userData.points) return;
       const progress = ((t * arc.userData.speed + arc.userData.phase) % (Math.PI * 2)) / (Math.PI * 2);
       const total = arc.userData.points.length;
       const seg   = Math.floor(progress * total);
-      const visible = 18; // number of visible points in traveling head
+      const visible = 18;
       const pts = [];
-      for (let k = 0; k < visible; k++) {
-        const idx = (seg + k) % total;
-        pts.push(arc.userData.points[idx]);
-      }
+      for (let k = 0; k < visible; k++) pts.push(arc.userData.points[(seg + k) % total]);
       if (pts.length > 1) {
         arc.geometry.setFromPoints(pts);
         arc.material.opacity = 0.55 + 0.3 * Math.sin(t * 3 + arc.userData.phase);
