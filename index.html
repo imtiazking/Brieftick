@@ -3419,6 +3419,7 @@ h1,h2,h3{
           <div class="right">
             <div class="price" id="wimPrice">-</div>
             <div class="chg" id="wimChg" style="color:var(--ink-faint)">Loading…</div>
+            <div id="wimPriceSource" style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.08em;margin-top:4px"></div>
           </div>
         </div>
         <div class="hv-chart" id="wimChart" style="height:140px;margin-bottom:16px"></div>
@@ -8504,21 +8505,80 @@ function loadWim(sym){
   // contagion
   drawContagion(sym, d.chgColor);
 
-  // Fetch live quote in background using Finnhub (real-time, no daily limit)
-  // Falls back silently to seed value if Finnhub is unavailable.
+  // Show loading state for price — do NOT show stale seed prices
+  document.getElementById('wimPrice').textContent = '—';
+  document.getElementById('wimChg').textContent = 'Loading live price…';
+  document.getElementById('wimChg').style.color = 'var(--ink-faint)';
+  const srcEl = document.getElementById('wimPriceSource');
+  if(srcEl) srcEl.textContent = '';
+
+  // Fetch live quote — Finnhub first, then Twelve Data fallback
+  // UK tickers (.L suffix) are passed as-is; Finnhub supports LSE format
   (async () => {
+    const priceEl = document.getElementById('wimPrice');
+    const chgEl   = document.getElementById('wimChg');
+    const srcEl   = document.getElementById('wimPriceSource');
+    // Guard: abort if symbol changed while we were fetching
+    const guard = () => document.getElementById('wimSym').textContent !== sym;
+
+    let q = null;
+    let provider = null;
+
+    // 1. Try Finnhub (real-time, no daily limit)
     try {
       const quotes = await getFinnhubQuotes([sym]);
-      const q = quotes[sym];
-      if(!q || isNaN(q.price) || !q.price) return;
-      if(document.getElementById('wimSym').textContent !== sym) return;
-      const isUp = q.pctChange >= 0;
-      const sign = isUp ? '+' : '';
+      if(quotes[sym] && quotes[sym].price > 0) {
+        q = quotes[sym];
+        provider = 'Finnhub';
+        console.log(`[WIM price] Finnhub OK for ${sym}:`, q.price);
+      } else {
+        console.warn(`[WIM price] Finnhub returned no price for ${sym}:`, quotes[sym]);
+      }
+    } catch(e) {
+      console.warn(`[WIM price] Finnhub error for ${sym}:`, e.message);
+    }
+
+    // 2. Fallback: Twelve Data
+    if(!q) {
+      try {
+        const res = await BriefTickAPI.getQuote(sym);
+        if(res && res.price > 0) {
+          q = res;
+          provider = 'Twelve Data';
+          console.log(`[WIM price] Twelve Data OK for ${sym}:`, q.price);
+        } else {
+          console.warn(`[WIM price] Twelve Data returned no price for ${sym}:`, res);
+        }
+      } catch(e) {
+        console.warn(`[WIM price] Twelve Data error for ${sym}:`, e.message);
+      }
+    }
+
+    if(guard()) return; // symbol changed — discard
+
+    if(q && q.price > 0) {
+      const isUp  = q.pctChange >= 0;
+      const sign  = isUp ? '+' : '';
       const color = isUp ? '#3ddc97' : '#ff5b6e';
-      document.getElementById('wimPrice').textContent = q.price.toFixed(2);
-      document.getElementById('wimChg').textContent = `${sign}${q.change.toFixed(2)}  (${sign}${q.pctChange.toFixed(2)}%)`;
-      document.getElementById('wimChg').style.color = color;
-    } catch(e){ /* silent - keep seed values */ }
+      if(priceEl) priceEl.textContent = q.price.toFixed(2);
+      if(chgEl) {
+        chgEl.textContent = `${sign}${(q.change||0).toFixed(2)}  (${sign}${(q.pctChange||0).toFixed(2)}%)`;
+        chgEl.style.color = color;
+      }
+      if(srcEl) {
+        const ts = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+        srcEl.textContent = `Price source: ${provider}  ·  Resolved: ${sym}  ·  Updated: ${ts}`;
+      }
+    } else {
+      // All providers failed — be explicit, do NOT show seed/stale data
+      if(priceEl) priceEl.textContent = '—';
+      if(chgEl) {
+        chgEl.textContent = 'Live price unavailable';
+        chgEl.style.color = 'var(--ink-faint)';
+      }
+      if(srcEl) srcEl.textContent = `No live data for ${sym} — check API keys in Settings or try another ticker`;
+      console.warn(`[WIM price] All providers failed for ${sym}`);
+    }
   })();
 }
 const historicalPatternLibrary = [
