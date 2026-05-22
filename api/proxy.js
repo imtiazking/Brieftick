@@ -147,7 +147,7 @@ async function proxyAnthropic(req, res) {
   });
 
   // Model: use env var if set, otherwise keep client's requested model
-  const model = process.env.ANTHROPIC_MODEL || req.body?.model || 'claude-3-haiku-20240307';
+  const model = process.env.ANTHROPIC_MODEL || req.body?.model || 'claude-haiku-4-5-20251001';
   const body  = { ...req.body, model };
 
   try {
