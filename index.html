@@ -5296,8 +5296,8 @@ function renderRiskRegime(result){
       </div>`).join('');
   }
   if(explanation) explanation.innerHTML = result.explanation;
-  // Auto-generate explanation for Free users once per day
-  setTimeout(_maybeAutoRiskExplain, 800);
+  // Flag that regime has rendered — auto-generation fires once Clerk confirms Free plan
+  window._riskRegimeRendered = true;
 }
 function updateRiskRegime(quotes={}){
   riskState.quotes = {...riskState.quotes, ...quotes};
@@ -10820,6 +10820,12 @@ function _applyAccessLevel(level) {
     if(typeof _updateRiskRegimeButtonVisibility === 'function') _updateRiskRegimeButtonVisibility();
   } else {
     setTimeout(_addFreeRestrictions, 600);
+    // Free plan confirmed — hide button and auto-generate regime explanation
+    const riskBtn = document.getElementById('riskAiBtn');
+    if(riskBtn) riskBtn.style.display = 'none';
+    if(window._riskRegimeRendered) {
+      setTimeout(_maybeAutoRiskExplain, 500);
+    }
   }
 }
 
