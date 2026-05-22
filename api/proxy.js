@@ -146,6 +146,10 @@ async function proxyAnthropic(req, res) {
     error: 'Anthropic API key not set on server. Add ANTHROPIC_KEY or ANTHROPIC_API_KEY to Vercel environment variables and redeploy.'
   });
 
+  // Model is controlled server-side — client suggestion overridden by env var
+  const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
+  const body  = { ...req.body, model };
+
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -154,12 +158,12 @@ async function proxyAnthropic(req, res) {
         'x-api-key': key,
         'anthropic-version': '2023-06-01',
       },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify(body),
     });
     const data = await r.json();
     // Log errors server-side for easier debugging
     if (data.type === 'error') {
-      console.error('[proxy/anthropic] API error:', data.error?.type, data.error?.message, '| model:', req.body?.model);
+      console.error('[proxy/anthropic] API error:', data.error?.type, data.error?.message, '| model:', model);
     }
     return res.status(r.status).json(data);
   } catch (e) {
@@ -257,6 +261,17 @@ async function proxyPolygon(req, res) {
   }
 }
 
+async function proxyStatus(req, res) {
+  // Returns which server-side keys are configured — values never exposed
+  return res.status(200).json({
+    anthropic:    !!(process.env.ANTHROPIC_KEY || process.env.ANTHROPIC_API_KEY),
+    twelvedata:   !!process.env.TWELVE_DATA_KEY,
+    finnhub:      !!process.env.FINNHUB_KEY,
+    alphavantage: !!process.env.ALPHA_VANTAGE_KEY,
+    polygon:      !!process.env.POLYGON_KEY,
+  });
+}
+
 async function proxyPoliticalTrades(req, res) {
   const cacheKey = 'pol:house';
   const cached = cacheGet(cacheKey, 60 * 60_000); // 1 hour
@@ -301,6 +316,7 @@ export default async function handler(req, res) {
     if (provider === 'sec')             return await proxySEC(req, res);
     if (provider === 'polygon')          return await proxyPolygon(req, res);
     if (provider === 'politicaltrades') return await proxyPoliticalTrades(req, res);
+    if (provider === 'status')          return await proxyStatus(req, res);
     return res.status(400).json({ error: 'unknown provider' });
   } catch (e) {
     return res.status(500).json({ error: 'proxy crashed', detail: e.message });

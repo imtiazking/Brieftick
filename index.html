@@ -2757,13 +2757,13 @@ h1,h2,h3{
             <div class="settings-row-name">Anthropic <span class="settings-badge gold">Intelligence Layer</span></div>
             <div class="settings-row-desc">Powers intelligent summaries, briefings, and "Why Is It Moving" interpretations. Without this, analysis remains static mock content.</div>
           </div>
-          <div class="settings-status" id="status-anthropic">Not set</div>
+          <div class="settings-status" id="status-anthropic">Checking…</div>
         </div>
         <div class="settings-input-group">
-          <input type="password" id="key-anthropic" placeholder="sk-ant-api03-..." autocomplete="off" spellcheck="false"/>
+          <input type="password" id="key-anthropic" placeholder="sk-ant-api03-… (optional if set in Vercel)" autocomplete="off" spellcheck="false"/>
           <button class="settings-btn-show" onclick="toggleKeyVisible('key-anthropic')" type="button">Show</button>
         </div>
-        <div class="settings-help">
+        <div class="settings-help" id="anthropic-server-status" style="margin-top:6px;font-size:11px">
           <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> · Set a <b>$20 monthly spend limit</b> in Billing before testing
         </div>
       </div>
@@ -6849,25 +6849,26 @@ const BriefTickAPI={
     try {
       const r = await fetch('/api/proxy?provider=anthropic', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-3-5-haiku-20241022',
           max_tokens: maxTokens,
           messages: [{role:'user', content: prompt}],
         }),
       });
-      if(!r.ok){
-        const err = await r.text();
-        console.warn('[BriefTickAPI] Claude error', r.status, err);
-        return null;
-      }
       const d = await r.json();
+      // Surface real Anthropic errors so they appear in the UI
+      if(d.type === 'error' || !r.ok){
+        const errType = d?.error?.type || 'unknown';
+        const errMsg  = d?.error?.message || `HTTP ${r.status}`;
+        console.warn('[BriefTickAPI] Anthropic error:', errType, errMsg);
+        // Throw so the calling function can show the real error
+        throw new Error(`Anthropic: ${errMsg}`);
+      }
       return d.content?.[0]?.text || null;
     } catch(e){
       console.warn('[BriefTickAPI] Claude call failed:', e.message);
-      return null;
+      throw e; // re-throw so callers can show the real reason
     }
   },
 
@@ -7102,6 +7103,7 @@ function updateStatusIndicators(){
     const el = document.getElementById(id);
     if(!el) return;
     const has = !!(BriefTickAPI.keys[name] && BriefTickAPI.keys[name].length > 10);
+    if(name === 'anthropic') return; // handled separately below
     if(has){
       el.textContent = 'Connected';
       el.classList.add('connected');
@@ -7110,6 +7112,40 @@ function updateStatusIndicators(){
       el.classList.remove('connected');
     }
   });
+
+  // Anthropic: check both browser key AND server key, show each separately
+  const anthrEl = document.getElementById('status-anthropic');
+  const anthrInfo = document.getElementById('anthropic-server-status');
+  const browserKey = BriefTickAPI.keys.anthropic && BriefTickAPI.keys.anthropic !== '_server_' && BriefTickAPI.keys.anthropic.length > 10;
+
+  if(anthrEl) {
+    anthrEl.textContent = browserKey ? 'Browser: SET' : 'Browser: NOT SET';
+    anthrEl.classList.toggle('connected', !!browserKey);
+  }
+
+  // Fetch server-side status (no key value exposed)
+  fetch('/api/proxy?provider=status')
+    .then(r => r.json())
+    .then(status => {
+      const serverSet = !!status.anthropic;
+      if(anthrEl) {
+        const bLabel = browserKey ? '✓ Browser key set' : '✗ Browser key not set';
+        const sLabel = serverSet  ? '✓ Server key set (Vercel)' : '✗ Server key not set in Vercel';
+        anthrEl.innerHTML = serverSet || browserKey
+          ? (serverSet ? '<span style="color:var(--green)">'+sLabel+'</span>' : '<span style="color:var(--red)">'+sLabel+'</span>')
+          : 'Not configured';
+        anthrEl.classList.toggle('connected', serverSet || browserKey);
+        if(anthrInfo) {
+          anthrInfo.innerHTML = `<span style="opacity:.7">${bLabel}</span> &nbsp;·&nbsp; <span style="opacity:.7">${sLabel}</span><br><a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> · Set a <b>$20 monthly spend limit</b> in Billing before testing`;
+        }
+      }
+    })
+    .catch(() => {
+      if(anthrEl && !browserKey) {
+        anthrEl.textContent = 'Browser: NOT SET';
+        anthrEl.classList.remove('connected');
+      }
+    });
 }
 
 function saveSettings(){
@@ -7193,15 +7229,26 @@ async function generateLiveAISummary(){
   try {
     const result = await BriefTickAPI.aiWhyMoving(symbol);
     if(result){
-      // Render with markdown-lite (handles **bold**, # headers, - bullets)
       const html = renderAIMarkdown(result, {accent:'var(--gold)'});
       out.innerHTML = html + `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.12em;text-transform:uppercase">✓ Live AI · Generated just now from real ${symbol} data</div>`;
     } else {
-      out.innerHTML += `<div style="margin-top:14px;color:var(--red);font-size:13px">⚠ AI generation failed for <b>${escapeHtml(symbol)}</b>. If you typed a company name, try the ticker symbol directly. This can also happen when the quote/news provider is temporarily rate-limited.</div>`;
+      out.innerHTML += `<div style="margin-top:14px;color:var(--ink-dim);font-size:13px">No AI response returned for <b>${escapeHtml(symbol)}</b>.</div>`;
     }
   } catch(e){
-    console.error(e);
-    out.innerHTML += '<div style="margin-top:14px;color:var(--red);font-size:13px">⚠ Error: '+e.message+'</div>';
+    console.error('[WIM]', e);
+    const msg = e.message || 'Unknown error';
+        const isModelErr   = msg.includes('not_found') || msg.includes('model');
+        const isAuthErr    = msg.includes('authentication') || msg.includes('invalid_api_key');
+        const isBillingErr = msg.includes('credit') || msg.includes('billing') || msg.includes('balance');
+        let hint = '';
+        if(isModelErr)    hint = 'Model not found on this API key. Set ANTHROPIC_MODEL=claude-3-5-sonnet-20241022 in Vercel environment variables and redeploy.';
+        else if(isAuthErr)   hint = 'Authentication failed. Verify your Anthropic API key in Vercel env vars (ANTHROPIC_KEY).';
+        else if(isBillingErr) hint = 'Account credits exhausted. Top up at console.anthropic.com → Plans & Billing.';
+        else hint = 'Check Vercel function logs for details.';
+    out.innerHTML = `<div style="margin-top:8px;padding:12px 14px;border-radius:8px;background:rgba(255,80,80,0.06);border:1px solid rgba(255,80,80,0.2);font-size:12px;line-height:1.6">
+      <b style="color:var(--red)">AI Error: ${escapeHtml(msg)}</b><br>
+      <span style="color:var(--ink-dim)">${hint}</span>
+    </div>`;
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="vertical-align:-1px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg> Regenerate';
