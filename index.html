@@ -7492,29 +7492,57 @@ function _briefSetNoKey(){
 // Briefing - generate fresh from live data
 async function generateLiveBriefing(){
   _briefSetCoverDate();
-  if(!BriefTickAPI.keys.anthropic){
-    _briefSetNoKey();
-    return;
+  const isFree   = !window._isTerminal;
+  const today    = new Date().toISOString().slice(0,10);
+  const cacheKey = 'bt_brief_v1_' + today;
+  const out      = document.getElementById('liveBriefingOutput');
+  const btn      = document.getElementById('briefGenBtn');
+
+  // Free users: serve 24h cache if available
+  if(isFree) {
+    const cached = (function(){ try{ return localStorage.getItem(cacheKey); }catch(_){ return null; } })();
+    if(cached) {
+      _briefSetResult(cached);
+      return;
+    }
   }
+
+  if(!BriefTickAPI.keys.anthropic){ _briefSetNoKey(); return; }
   _briefSetLoading();
+
   try {
     const result = await BriefTickAPI.aiMorningBrief();
     if(result){
       _briefSetResult(result);
+      // Cache for Free users (valid for calendar day)
+      if(isFree) {
+        try{ localStorage.setItem(cacheKey, result); }catch(_){}
+      }
     } else {
-      const out = document.getElementById('liveBriefingOutput');
-      const btn = document.getElementById('briefGenBtn');
-      if(out) out.innerHTML = '<div style="color:var(--red);padding:12px 0">Generation failed. Check the console for details. Your Anthropic key may be invalid or out of credits.</div>';
+      if(out) out.innerHTML = '<div style="color:var(--ink-dim);padding:12px 0">Today\'s Daily Brief unavailable.</div>';
       if(btn){ btn.disabled=false; btn.innerHTML='↻ Try again'; }
     }
   } catch(e){
     console.error('[brief]', e);
-    const out = document.getElementById('liveBriefingOutput');
-    if(out) out.innerHTML = `<div style="color:var(--red);padding:12px 0">Error: ${escapeHtml(e.message)}</div>`;
-    const btn = document.getElementById('briefGenBtn');
+    if(out) out.innerHTML = '<div style="color:var(--ink-dim);padding:12px 0">Today\'s Daily Brief unavailable.</div>';
     if(btn){ btn.disabled=false; btn.innerHTML='↻ Try again'; }
   }
 }
+
+// Watch Briefing page: auto-generate for Free users when tab opens
+(function(){
+  var briefPage = document.getElementById('page-brief');
+  if(!briefPage) return;
+  new MutationObserver(function(){
+    if(!briefPage.classList.contains('active')) return;
+    if(window._isTerminal === true) return;   // Terminal: button-driven
+    if(window._isTerminal === undefined) return; // Clerk not yet confirmed
+    // Auto-generate only if output is empty/default
+    var out = document.getElementById('liveBriefingOutput');
+    var isEmpty = !out || !out.textContent.trim() || out.textContent.indexOf('Click') >= 0 || out.textContent.indexOf('Generate') >= 0;
+    if(isEmpty) setTimeout(generateLiveBriefing, 400);
+  }).observe(briefPage, { attributes:true, attributeFilter:['class'] });
+})();
 
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -10901,6 +10929,9 @@ function _applyAccessLevel(level) {
     if(window._wimLastSym) {
       setTimeout(function(){ _maybeAutoWIM(window._wimLastSym); }, 700);
     }
+    // Free plan confirmed — hide Daily Brief regenerate button
+    const briefBtn = document.getElementById('briefGenBtn');
+    if(briefBtn) briefBtn.style.display = 'none';
   }
 }
 
