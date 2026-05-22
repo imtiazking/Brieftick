@@ -5296,6 +5296,8 @@ function renderRiskRegime(result){
       </div>`).join('');
   }
   if(explanation) explanation.innerHTML = result.explanation;
+  // Flag that regime has rendered — auto-generation fires once Clerk confirms Free plan
+  window._riskRegimeRendered = true;
 }
 function updateRiskRegime(quotes={}){
   riskState.quotes = {...riskState.quotes, ...quotes};
@@ -5303,24 +5305,48 @@ function updateRiskRegime(quotes={}){
   Object.assign(riskState, result);
   renderRiskRegime(result);
 }
-async function generateRiskAIExplanation(){
+async function generateRiskAIExplanation(opts){
+  opts = opts || {};
   const btn = document.getElementById('riskAiBtn');
   const out = document.getElementById('riskExplanation');
+  const isFree = !window._isTerminal;
+  const today  = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+  const cacheKey = 'bt_risk_explain_v1_' + today;
+
+  // Free users: check 24h cache first — skip generation if already done today
+  if(isFree) {
+    const cached = (() => { try { return localStorage.getItem(cacheKey); } catch(_){ return null; } })();
+    if(cached) {
+      if(out) out.innerHTML = renderAIMarkdown ? renderAIMarkdown(cached, {accent:'var(--gold)'}) : cached;
+      return;
+    }
+  }
+
   if(!BriefTickAPI.keys.anthropic){
     if(out) out.innerHTML = '<b>Brieftick:</b> Anthropic is not connected. Showing rules-based regime explanation.';
     return;
   }
-  if(btn){
-    btn.disabled = true;
-    btn.textContent = 'Generating...';
-  }
+
+  // Show loading shimmer
+  if(out) out.innerHTML = '<div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.08em">Generating regime commentary…</div>';
+  if(btn){ btn.disabled = true; btn.textContent = 'Generating...'; }
+
   try{
     const componentLines = riskState.components.map(c=>`${c.name}: ${Math.round(c.value)}/100 (${c.detail})`).join('\n');
     const prompt = `Explain this market risk regime in plain English for investors. Educational only, no recommendations.\n\nRegime: ${riskState.label}\nScore: ${riskState.score}/100\nComponents:\n${componentLines}\n\nWrite 2 concise paragraphs: why the regime is classified this way, and what to monitor next.`;
-    const text = await BriefTickAPI._claudeCall(prompt, 420);
-    if(out && text) out.innerHTML = renderAIMarkdown(text, {accent:'var(--gold)'});
+    const maxTok = isFree ? 180 : 420;
+    const text = await BriefTickAPI._claudeCall(prompt, maxTok);
+    if(out && text) {
+      out.innerHTML = renderAIMarkdown ? renderAIMarkdown(text, {accent:'var(--gold)'}) : text;
+      // Cache for Free users (valid for calendar day)
+      if(isFree) {
+        try { localStorage.setItem(cacheKey, text); } catch(_){}
+      }
+    } else if(out) {
+      out.innerHTML = '<span style="color:var(--ink-dim)">Today\'s regime commentary unavailable.</span>';
+    }
   }catch(e){
-    if(out) out.innerHTML += '<div style="color:var(--red);margin-top:8px">AI explanation failed. Rules-based explanation remains valid.</div>';
+    if(out) out.innerHTML = '<span style="color:var(--ink-dim)">Today\'s regime commentary unavailable.</span>';
   }finally{
     if(btn){
       btn.disabled = false;
@@ -5329,6 +5355,33 @@ async function generateRiskAIExplanation(){
   }
 }
 window.generateRiskAIExplanation = generateRiskAIExplanation;
+
+// Auto-run explanation once regime renders — Free: once per day from cache/API; Terminal: on demand only
+function _maybeAutoRiskExplain() {
+  const isFree = !window._isTerminal;
+  if(!isFree) return; // Terminal users use the button
+  const today = new Date().toISOString().slice(0,10);
+  const cacheKey = 'bt_risk_explain_v1_' + today;
+  // If already cached today, render immediately without an API call
+  const cached = (() => { try { return localStorage.getItem(cacheKey); } catch(_){ return null; } })();
+  if(cached) {
+    const out = document.getElementById('riskExplanation');
+    if(out) out.innerHTML = renderAIMarkdown ? renderAIMarkdown(cached, {accent:'var(--gold)'}) : cached;
+    return;
+  }
+  // Not cached — generate once for the day
+  generateRiskAIExplanation({ auto: true });
+}
+
+// Hide/show button based on plan
+function _updateRiskRegimeButtonVisibility() {
+  const btn = document.getElementById('riskAiBtn');
+  if(!btn) return;
+  btn.style.display = window._isTerminal ? '' : 'none';
+}
+window._updateRiskRegimeButtonVisibility = _updateRiskRegimeButtonVisibility;
+// Run on plan change
+document.addEventListener('bt_plan_changed', _updateRiskRegimeButtonVisibility);
 updateRiskRegime();
 
 /* Watchlist */
@@ -10763,9 +10816,16 @@ function _applyAccessLevel(level) {
       el.style.display = '';
     });
     document.querySelectorAll('.bt-wim-limit-banner').forEach(el => el.remove());
+    // Terminal: show regenerate button
+    if(typeof _updateRiskRegimeButtonVisibility === 'function') _updateRiskRegimeButtonVisibility();
   } else {
-    // Apply free restrictions after a small delay (let DOM settle)
     setTimeout(_addFreeRestrictions, 600);
+    // Free plan confirmed — hide button and auto-generate regime explanation
+    const riskBtn = document.getElementById('riskAiBtn');
+    if(riskBtn) riskBtn.style.display = 'none';
+    if(window._riskRegimeRendered) {
+      setTimeout(_maybeAutoRiskExplain, 500);
+    }
   }
 }
 
