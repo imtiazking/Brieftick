@@ -532,6 +532,36 @@ main{padding-top:90px;position:relative;z-index:3}
 #page-about{position:relative;overflow:hidden}
 .about-wrap{position:relative;z-index:2}
 
+
+/* ── Auto-Intelligence shimmer loading state ─────────────────── */
+@keyframes btShimmer {
+  0%   { background-position: -400px 0 }
+  100% { background-position:  400px 0 }
+}
+.bt-shimmer {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.03) 25%,
+    rgba(255,255,255,0.07) 50%,
+    rgba(255,255,255,0.03) 75%);
+  background-size: 800px 100%;
+  animation: btShimmer 1.4s linear infinite;
+  border-radius: 6px;
+  color: transparent !important;
+  user-select: none;
+  pointer-events: none;
+}
+.bt-shimmer * { visibility: hidden !important; }
+.bt-ai-streaming {
+  border-left: 2px solid rgba(212,175,55,0.4);
+  padding-left: 10px;
+  animation: none;
+}
+.bt-ai-streaming::after {
+  content: '▋';
+  color: var(--gold);
+  animation: btCursor 0.7s step-end infinite;
+}
+@keyframes btCursor { 0%,100%{opacity:1} 50%{opacity:0} }
 /* ── Intelligence rail — per-symbol CSS loops (reliable, no CDN dependency) */
 @keyframes railPulse  {0%,100%{opacity:.6;transform:scale(1)}   50%{opacity:1;transform:scale(1.12)}}
 @keyframes railBreath {0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.14) rotate(6deg)}}
@@ -13778,5 +13808,275 @@ window.addEventListener('load', () => {
   });
 })();
 </script>
+
+<script>
+/* AUTO-INTELLIGENCE ORCHESTRATOR
+   Turns Brieftick from button-driven into always-alive AI platform.
+   Original implementation.
+*/
+(function() {
+  'use strict';
+
+  /* Helpers */
+  var $ = function(id) { return document.getElementById(id); };
+
+  function skeletonHTML(lines) {
+    lines = lines || 3;
+    var out = '';
+    for (var i = 0; i < lines; i++) {
+      out += '<div class="bt-shimmer" style="height:13px;margin-bottom:6px;width:' + (75 - i*12) + '%;border-radius:4px">&nbsp;</div>';
+    }
+    return out;
+  }
+
+  function tokenBudget(section) {
+    var isT = window._isTerminal;
+    var map = { wim:isT?650:130, risk:isT?500:100, vix:isT?400:90, brief:isT?900:150, session:isT?450:100 };
+    return map[section] || 200;
+  }
+
+  function teaserSuffix() {
+    return window._isTerminal ? '' : '\n\n[Upgrade to Terminal for full institutional analysis]';
+  }
+
+  var _aiCache = {};
+  function aiCacheGet(key, ttl) {
+    var e = _aiCache[key];
+    if (!e || Date.now() - e.t > ttl) return null;
+    return e.v;
+  }
+  function aiCacheSet(key, val) { _aiCache[key] = {t: Date.now(), v: val}; }
+
+  async function autoGenerate(prompt, section, cacheKey, ttlMs) {
+    ttlMs = ttlMs || 600000;
+    var cached = aiCacheGet(cacheKey, ttlMs);
+    if (cached) return cached;
+    if (!window.BriefTickAPI) return null;
+    var budget = tokenBudget(section);
+    var fullPrompt = prompt + teaserSuffix();
+    var result = await window.BriefTickAPI._claudeCall(fullPrompt, budget);
+    if (result) aiCacheSet(cacheKey, result);
+    return result;
+  }
+
+  /* 1. AUTO-WIM ON TICKER CLICK */
+  function setupTickerClickAutoWIM() {
+    document.addEventListener('click', function(e) {
+      var el = e.target.closest('[data-sym],[data-ticker],.ticker-item,.wl-sym,.wl-row,.scanner-card-sym');
+      if (!el) return;
+      var raw = el.dataset.sym || el.dataset.ticker || el.textContent || '';
+      raw = raw.trim();
+      if (!raw || raw.length > 6) return;
+      var sym = raw.replace(/[^A-Z0-9.]/gi,'').toUpperCase();
+      if (!sym || sym.length < 1 || sym.length > 6) return;
+      if (typeof window.routeWithAuth === 'function') {
+        window.routeWithAuth('why');
+        setTimeout(function() {
+          var input = document.getElementById('wimInput');
+          if (input) input.value = sym;
+          autoTriggerWIM(sym);
+        }, 150);
+      }
+    });
+  }
+
+  async function autoTriggerWIM(sym) {
+    var out = $('wimSummary');
+    if (!out) return;
+    out.innerHTML = skeletonHTML(4);
+    out.classList.add('bt-shimmer');
+    var symEl = $('wimSym');
+    var nameEl = $('wimName');
+    if (symEl) symEl.textContent = sym;
+    if (nameEl) nameEl.textContent = sym + ' · loading...';
+    try {
+      var quote = null, news = [];
+      try {
+        var results = await Promise.all([
+          window.BriefTickAPI.getQuote(sym),
+          window.BriefTickAPI.getCompanyNews(sym, 3)
+        ]);
+        quote = results[0]; news = results[1] || [];
+      } catch(e) {}
+      if (!Array.isArray(news)) news = [];
+      var newsCtx = news.slice(0,3).map(function(n){ return '- ' + n.headline + ' (' + n.source + ')'; }).join('\n') || '(no major news)';
+      var qCtx = quote
+        ? 'Current: $' + (quote.price||0).toFixed(2) + ' | Change: ' + (quote.pctChange||0).toFixed(2) + '% | Range: $' + (quote.low||0).toFixed(2) + '-$' + (quote.high||0).toFixed(2)
+        : 'Live quote unavailable.';
+      var isT = window._isTerminal;
+      var prompt = isT
+        ? 'You are a senior market analyst. Explain why ' + sym + ' is moving today. DATA: ' + qCtx + '. NEWS: ' + newsCtx + '. Write: (1) primary driver, (2) technical/sector context, (3) macro overlay, (4) what to watch. Under 180 words. No investment advice.'
+        : 'Briefly explain why ' + sym + ' is moving today in 2-3 sentences. DATA: ' + qCtx + '. NEWS: ' + newsCtx + '. Educational context only.';
+      var cacheKey = 'auto_wim:' + sym + ':' + (isT ? 't' : 'f');
+      var result = await autoGenerate(prompt, 'wim', cacheKey, 600000);
+      out.classList.remove('bt-shimmer');
+      if (result) {
+        var rendered = typeof window.renderAIMarkdown === 'function'
+          ? window.renderAIMarkdown(result, {accent:'var(--gold)'})
+          : result;
+        out.innerHTML = rendered + '<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:.12em">AUTO-GENERATED &middot; ' + sym + ' &middot; ' + new Date().toLocaleTimeString() + '</div>';
+        if (nameEl && quote && quote.name) nameEl.textContent = quote.name;
+      } else {
+        out.innerHTML = '<div style="color:var(--ink-dim);font-size:13px">Analysis unavailable - check Anthropic API key in Settings.</div>';
+      }
+    } catch(err) {
+      out.classList.remove('bt-shimmer');
+      out.innerHTML = '<div style="color:var(--red);font-size:12px">Error: ' + err.message + '</div>';
+    }
+  }
+
+  /* 2. AUTO-RISK REGIME EXPLANATION */
+  var _riskFired = false;
+  function setupAutoRiskExplain() {
+    var el = $('riskRegimeLabel');
+    if (!el) return;
+    var obs = new MutationObserver(function() {
+      var state = (el.textContent || '').trim();
+      if (!state || state === 'CALCULATING' || _riskFired) return;
+      _riskFired = true;
+      setTimeout(function() { autoRiskExplain(state); }, 800);
+    });
+    obs.observe(el, { childList: true, characterData: true, subtree: true });
+    var cur = (el.textContent || '').trim();
+    if (cur && cur !== 'CALCULATING') setTimeout(function() { autoRiskExplain(cur); }, 1000);
+  }
+
+  async function autoRiskExplain(regime) {
+    var el = $('riskExplanation');
+    var btn = $('riskAiBtn');
+    if (!el) return;
+    var score = ($('riskScore') && $('riskScore').textContent) || '';
+    el.innerHTML = skeletonHTML(3);
+    el.classList.add('bt-shimmer');
+    if (btn) btn.style.display = 'none';
+    var isT = window._isTerminal;
+    var prompt = isT
+      ? 'Current risk regime: ' + regime + ' (score: ' + score + '). Explain risk-on/risk-off dynamics, bond/equity relationships, DXY and gold movement context, and sector positioning implications. 3 short paragraphs. Educational only.'
+      : 'Current risk regime: ' + regime + '. Briefly explain what this means for markets in 2 sentences. Educational only.';
+    var result = await autoGenerate(prompt, 'risk', 'auto_risk:' + regime + ':' + (isT?'t':'f'), 900000);
+    el.classList.remove('bt-shimmer');
+    el.innerHTML = result
+      ? '<b>BriefTick read:</b> ' + result
+      : '<b>BriefTick read:</b> Risk regime assessment complete. Check signals above.';
+  }
+
+  /* 3. AUTO-VOLATILITY COMMENTARY */
+  var _vixFired = false;
+  function setupAutoVixCommentary() {
+    var label = $('vixRegime');
+    if (!label) return;
+    var obs = new MutationObserver(function() {
+      var state = (label.textContent || '').trim();
+      if (!state || _vixFired) return;
+      _vixFired = true;
+      setTimeout(function() { autoVixCommentary(state); }, 1200);
+    });
+    obs.observe(label, { childList: true, characterData: true, subtree: true });
+  }
+
+  async function autoVixCommentary(vixState) {
+    var el = $('vixExplanationText');
+    if (!el) return;
+    el.innerHTML = skeletonHTML(2);
+    el.classList.add('bt-shimmer');
+    var vixVal = '';
+    var gaugeEl = document.querySelector('.gauge-value');
+    if (gaugeEl) vixVal = gaugeEl.textContent || '';
+    var isT = window._isTerminal;
+    var prompt = isT
+      ? 'VIX is currently ' + vixState + ' (' + vixVal + '). Explain: (1) what this volatility level means, (2) historical context for this range, (3) options pricing and hedging implications. 3 sentences. No investment advice.'
+      : 'VIX is ' + vixState + ' (' + vixVal + '). Briefly explain what this means for market volatility in 1-2 sentences.';
+    var result = await autoGenerate(prompt, 'vix', 'auto_vix:' + vixState + ':' + (isT?'t':'f'), 1200000);
+    el.classList.remove('bt-shimmer');
+    el.textContent = result || 'Volatility context loading...';
+  }
+
+  /* 4. AUTO-BRIEFING ON TAB OPEN */
+  function setupAutoBriefingOnTabOpen() {
+    var briefPage = document.getElementById('page-brief');
+    if (!briefPage) return;
+    var obs = new MutationObserver(function() {
+      if (!briefPage.classList.contains('active')) return;
+      var out = document.getElementById('liveBriefingOutput');
+      if (out && (!out.textContent.trim() || out.textContent.indexOf('Click') >= 0 || out.textContent.indexOf('Generate') >= 0)) {
+        if (typeof window.generateLiveBriefing === 'function') {
+          setTimeout(window.generateLiveBriefing, 400);
+        }
+      }
+    });
+    obs.observe(briefPage, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  /* 5. AUTO-SESSION SUMMARY */
+  var _sessionFired = false;
+  async function autoSessionSummary() {
+    if (_sessionFired) return;
+    var body = $('sessionSummaryBody');
+    if (!body) return;
+    _sessionFired = true;
+    await new Promise(function(r) { setTimeout(r, 3000); });
+    var isT = window._isTerminal;
+    var symbols = ['SPY','QQQ','NVDA','TSLA','AAPL'];
+    var quoteLine = '';
+    try {
+      var qs = await window.getFinnhubQuotes(symbols);
+      quoteLine = symbols.map(function(s) {
+        var q = qs[s]; if (!q) return null;
+        return s + ': ' + (q.pctChange >= 0 ? '+' : '') + (q.pctChange||0).toFixed(2) + '%';
+      }).filter(Boolean).join(', ');
+    } catch(e) {}
+    var prevText = body.innerHTML || '';
+    if (prevText && prevText.indexOf('Loading') < 0 && prevText.indexOf('start the session') < 0) return;
+    body.innerHTML = skeletonHTML(4);
+    body.classList.add('bt-shimmer');
+    var prompt = isT
+      ? 'Market snapshot: ' + (quoteLine || 'data loading') + '. Write a concise session intelligence summary (4-5 sentences): market tone, notable sector movements, risk regime context, and one key watchpoint for traders. No investment advice.'
+      : 'Market snapshot: ' + (quoteLine || 'data loading') + '. Give a 1-2 sentence market summary. Educational only.';
+    var result = await autoGenerate(prompt, 'session', 'auto_session:' + (isT?'t':'f') + ':' + new Date().toDateString(), 1800000);
+    body.classList.remove('bt-shimmer');
+    if (result) {
+      body.innerHTML = '<div style="font-size:13px;line-height:1.6;color:var(--ink)">' + result + '</div><div style="margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.1em">' + new Date().toLocaleTimeString() + ' AUTO-GENERATED</div>';
+      var meta = $('sessionSummaryMeta');
+      if (meta) meta.textContent = 'Intelligence feed updated';
+    }
+  }
+
+  /* INIT */
+  function init() {
+    setupTickerClickAutoWIM();
+    setupAutoRiskExplain();
+    setupAutoVixCommentary();
+    setupAutoBriefingOnTabOpen();
+    var dashPage = document.getElementById('page-dashboard');
+    if (dashPage) {
+      new MutationObserver(function() {
+        if (dashPage.classList.contains('active') && !_sessionFired) autoSessionSummary();
+      }).observe(dashPage, { attributes: true, attributeFilter: ['class'] });
+      if (dashPage.classList.contains('active')) autoSessionSummary();
+    }
+    var whyPage = document.getElementById('page-why');
+    if (whyPage) {
+      new MutationObserver(function() {
+        if (!whyPage.classList.contains('active')) return;
+        var out = $('wimSummary');
+        var sym = ($('wimSym') && $('wimSym').textContent) || 'NVDA';
+        sym = sym.trim();
+        if (out && (!out.textContent.trim() || out.textContent.indexOf('quick chip') >= 0)) {
+          setTimeout(function() { autoTriggerWIM(sym); }, 300);
+        }
+      }).observe(whyPage, { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    setTimeout(init, 500);
+  }
+
+  window._autoIntel = { triggerWIM: autoTriggerWIM, riskExplain: autoRiskExplain, vixCommentary: autoVixCommentary };
+})();
+</script>
+
 </body>
 </html>
