@@ -56,17 +56,25 @@ export default async function handler(req, res) {
   const formspreeId = process.env.FORMSPREE_ID;
   if (formspreeId) {
     try {
+      // Include Origin header so Formspree validates the domain correctly.
+      // _replyto tells Formspree which address to set as reply-to on the notification.
+      const fsPayload = { ...payload, _replyto: payload.email };
       const r = await fetch(`https://formspree.io/f/${formspreeId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Origin': 'https://www.brieftick.com',
+          'Referer': 'https://www.brieftick.com/',
+        },
+        body: JSON.stringify(fsPayload),
       });
       const body = await r.text();
       if (!r.ok) {
         errors.push(`formspree HTTP ${r.status}: ${body}`);
         console.error('[signup] Formspree error:', r.status, body);
       } else {
-        console.log('[signup] Formspree delivery OK:', r.status);
+        console.log('[signup] Formspree delivery OK:', r.status, body.slice(0, 120));
       }
     } catch (e) {
       errors.push(`formspree: ${e.message}`);
