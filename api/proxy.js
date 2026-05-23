@@ -269,6 +269,8 @@ async function proxyStatus(req, res) {
     finnhub:      !!process.env.FINNHUB_KEY,
     alphavantage: !!process.env.ALPHA_VANTAGE_KEY,
     polygon:      !!process.env.POLYGON_KEY,
+    formspree:    !!process.env.FORMSPREE_ID,
+    signup_webhook: !!process.env.SIGNUP_WEBHOOK_URL,
   });
 }
 

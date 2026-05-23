@@ -61,10 +61,19 @@ export default async function handler(req, res) {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!r.ok) errors.push(`formspree HTTP ${r.status}`);
+      const body = await r.text();
+      if (!r.ok) {
+        errors.push(`formspree HTTP ${r.status}: ${body}`);
+        console.error('[signup] Formspree error:', r.status, body);
+      } else {
+        console.log('[signup] Formspree delivery OK:', r.status);
+      }
     } catch (e) {
       errors.push(`formspree: ${e.message}`);
+      console.error('[signup] Formspree fetch failed:', e.message);
     }
+  } else {
+    console.warn('[signup] FORMSPREE_ID not set — skipping Formspree delivery');
   }
 
   // Always log so Vercel function logs capture it even without integrations
