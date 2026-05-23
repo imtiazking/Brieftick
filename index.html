@@ -2608,9 +2608,12 @@ h1,h2,h3{
   <div class="ra-modal" id="raModal">
     <button class="ra-close" onclick="closeRequestAccess()" aria-label="Close">×</button>
     <div id="raForm">
-      <div class="ra-eyebrow">Beta Access · Cohort II</div>
-      <h2 class="ra-title">Get <em>early access</em> to BriefTick.</h2>
-      <p class="ra-sub">Join analysts, traders, and portfolio managers using BriefTick to understand what's moving markets, before the noise gets them.</p>
+      <!-- Logo -->
+      <div style="margin-bottom:18px">
+        <img src="/logo-transparent.png" alt="Brieftick" style="height:38px;width:auto;display:block;object-fit:contain">
+      </div>
+      <h2 class="ra-title">Understand <em>what moves</em> markets.</h2>
+      <p class="ra-sub">Contact the Brieftick team for partnerships, institutional access, product feedback, or platform enquiries.</p>
       <div class="ra-field">
         <label class="ra-label" for="raName">Your name</label>
         <input class="ra-input" id="raName" type="text" placeholder="First name" autocomplete="name"/>
@@ -2632,17 +2635,17 @@ h1,h2,h3{
         </select>
       </div>
       <div class="ra-field">
-        <label class="ra-label" for="raMsg">What would make BriefTick essential for you? <span style="color:var(--ink-faint)">(optional)</span></label>
-        <textarea class="ra-input" id="raMsg" rows="2" placeholder="e.g. I want to understand macro events faster…" style="resize:vertical;min-height:60px"></textarea>
+        <label class="ra-label" for="raMsg">Message <span style="color:var(--ink-faint)">(optional)</span></label>
+        <textarea class="ra-input" id="raMsg" rows="2" placeholder="How can we help you?" style="resize:vertical;min-height:60px"></textarea>
       </div>
       <div id="raErrorMsg" style="display:none" class="ra-error"></div>
-      <button class="ra-submit" id="raSubmitBtn" onclick="submitRequestAccess()">Request Access →</button>
-      <p class="ra-privacy">No spam. No credit card. We'll email you when your cohort opens.<br>You can also <a onclick="routeWithAuth('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the live demo</a> right now.</p>
+      <button class="ra-submit" id="raSubmitBtn" onclick="submitRequestAccess()">Contact Brieftick →</button>
+      <p class="ra-privacy">We typically reply within 1–2 business days.<br>You can also <a onclick="routeWithAuth('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the platform</a>.</p>
     </div>
     <div id="raSuccess" class="ra-success" style="display:none">
       <div class="ra-success-icon">✓</div>
-      <h3>You're on the list.</h3>
-      <p>Thanks for your interest in BriefTick. We'll be in touch when your cohort opens.<br><br>In the meantime, <a onclick="routeWithAuth('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the live demo →</a></p>
+      <h3>Message received.</h3>
+      <p>Thanks for reaching out. We'll be in touch within 1–2 business days.<br><br><a onclick="routeWithAuth('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">Explore the platform →</a></p>
     </div>
   </div>
 </div>
