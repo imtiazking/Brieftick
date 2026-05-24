@@ -88,20 +88,29 @@ body::after{
 .brand{display:flex;align-items:center;gap:12px;cursor:pointer}
 .brand-mark{
   display:flex;align-items:center;
-}
-.brand-mark img{width:42px;height:auto;display:block}
-  width:42px;height:36px;position:relative;
-  background:transparent;border:none;border-radius:0;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:none;
+  flex-shrink:0;
 }
 .brand-mark img{width:42px;height:auto;display:block}
 .brand-name{
   font-family:'Inter Tight', system-ui, sans-serif;
   font-size:19px;font-weight:800;letter-spacing:0.05em;color:var(--ink);
-  text-transform:uppercase;
+  text-transform:lowercase;
+  line-height:1;
+  white-space:nowrap;
 }
 .brand-name .ai{color:var(--gold);font-style:italic}
+/* Dia Text Reveal preview — nav wordmark only */
+.preview-dia-text-reveal .brand{align-items:center;gap:10px}
+.preview-dia-text-reveal .brand > img{display:none!important}
+.preview-dia-text-reveal .brand-mark img{width:42px;height:auto}
+.preview-dia-text-reveal .dia-brand-text{
+  display:inline-block;
+  transform:translateY(-1px);
+  font-family:'Inter Tight',system-ui,sans-serif;
+  font-size:19px;font-weight:800;
+  letter-spacing:0.05em;
+  text-transform:lowercase;
+}
 .nav-links{display:flex;gap:6px;align-items:center}
 .nav-link{
   padding:8px 14px;font-size:12px;color:var(--ink-dim);cursor:pointer;
@@ -14210,5 +14219,6 @@ window.addEventListener('load', () => {
 })();
 </script>
 <script src="/preview/social-intelligence-tweet-cards.js"></script>
+<script src="/preview/dia-text-reveal-brand.js"></script>
 </body>
 </html>
