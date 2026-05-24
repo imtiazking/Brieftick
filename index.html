@@ -2753,6 +2753,13 @@ h1,h2,h3{
   ></script>
 </head>
 <body>
+<script>
+(function(){
+  if(new URLSearchParams(location.search).get('preview')==='dia-text-reveal'){
+    document.documentElement.classList.add('preview-dia-text-reveal');
+  }
+})();
+</script>
 
 <!-- ===== GLOBAL TICKER ===== -->
 <!-- ============================================================
@@ -13851,14 +13858,24 @@ window.addEventListener('load', () => {
   const navBrand = document.getElementById('navBrand');
   const navLinks = document.querySelectorAll('.nav-link');
   const authArea = document.getElementById('authArea');
+  const isDiaPreview = new URLSearchParams(location.search).get('preview') === 'dia-text-reveal';
 
-  [navBrand, ...navLinks, authArea].filter(Boolean).forEach(el => {
+  const navAnimEls = isDiaPreview
+    ? [...navLinks, authArea].filter(Boolean)
+    : [navBrand, ...navLinks, authArea].filter(Boolean);
+
+  navAnimEls.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(-10px)';
     el.style.willChange = 'opacity, transform';
   });
 
-  const navTargets = [navBrand, ...Array.from(navLinks), authArea].filter(Boolean);
+  if (isDiaPreview && navBrand) {
+    navBrand.style.opacity = '1';
+    navBrand.style.transform = 'none';
+  }
+
+  const navTargets = navAnimEls;
   // Safety fallback
   const navFallback = setTimeout(() => navTargets.forEach(show), 1800);
   animate(navTargets,
@@ -14219,6 +14236,40 @@ window.addEventListener('load', () => {
 })();
 </script>
 <script src="/preview/social-intelligence-tweet-cards.js"></script>
-<script src="/preview/dia-text-reveal-brand.js"></script>
+<script>
+/* Dia Text Reveal preview — inlined so ?preview=dia-text-reveal works on production deploy */
+(function(){
+  if(new URLSearchParams(location.search).get('preview')!=='dia-text-reveal')return;
+  document.documentElement.classList.add('preview-dia-text-reveal');
+  var C=["#4ea8ff","#6b7dff","#8b5cf6","#a855f7","#6366f1"],TC="#e8ecf5",BH=17,SS=-BH,SE=100+BH;
+  var ease=function(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+  function grad(pos){
+    var bs=pos-BH,be=pos+BH,p=[];
+    if(bs>=100)return'linear-gradient(90deg,'+TC+','+TC+')';
+    if(bs>0)p.push(TC+' 0%',TC+' '+bs.toFixed(2)+'%');
+    C.forEach(function(c,i){var pct=C.length===1?pos:bs+(i/(C.length-1))*BH*2;p.push(c+' '+pct.toFixed(2)+'%');});
+    if(be<100)p.push('transparent '+be.toFixed(2)+'%','transparent 100%');
+    return'linear-gradient(90deg,'+p.join(', ')+')';
+  }
+  function apply(el,pos){
+    el.style.color='transparent';el.style.backgroundClip='text';el.style.webkitBackgroundClip='text';
+    el.style.backgroundSize='100% 100%';el.style.backgroundImage=grad(pos);
+  }
+  async function play(el){
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.style.color=TC;el.style.backgroundImage='none';return;}
+    var animate;try{({animate}=await import('https://esm.sh/framer-motion@12/dom'));}catch(e){el.style.color=TC;return;}
+    var s={pos:SS};apply(el,s.pos);
+    animate(s,{pos:SE},{duration:1.5,delay:0.15,ease:ease,onUpdate:function(){apply(el,s.pos);},onComplete:function(){apply(el,SE);}});
+  }
+  function mount(){
+    var b=document.getElementById('navBrand');if(!b)return;
+    b.innerHTML='<span class="brand-mark"><img src="/logo-symbol-transparent.png" alt="Brieftick" style="width:42px;height:auto;display:block;object-fit:contain"/></span><span class="brand-name dia-brand-text" id="diaBrandText">brieftick</span>';
+    b.style.opacity='1';b.style.transform='none';
+    var t=document.getElementById('diaBrandText');if(t)play(t);
+  }
+  function init(){mount();addEventListener('load',function(){setTimeout(mount,650);});}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 </body>
 </html>

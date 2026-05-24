@@ -1,7 +1,6 @@
 /**
  * Dia Text Reveal — nav brand preview (static icon + animated wordmark).
  * Activate with: ?preview=dia-text-reveal
- * Mirrors components/dia-text-reveal.tsx via framer-motion/dom (no React).
  */
 (function () {
   const PREVIEW_KEY = "dia-text-reveal";
@@ -49,7 +48,6 @@
 
   async function playDiaReveal(el) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      applyDiaStyles(el, SWEEP_END);
       el.style.color = TEXT_COLOR;
       el.style.backgroundImage = "none";
       return;
@@ -66,7 +64,7 @@
     applyDiaStyles(el, state.pos);
     animate(state, { pos: SWEEP_END }, {
       duration: 1.5,
-      delay: 0.25,
+      delay: 0.15,
       ease: sweepEase,
       onUpdate: () => applyDiaStyles(el, state.pos),
       onComplete: () => applyDiaStyles(el, SWEEP_END),
@@ -75,24 +73,30 @@
 
   function mountBrandPreview() {
     const brand = document.getElementById("navBrand");
-    if (!brand || brand.dataset.diaPreviewMounted === "1") return;
-    brand.dataset.diaPreviewMounted = "1";
+    if (!brand) return;
 
     brand.innerHTML = `
-      <span class="brand-mark" aria-hidden="false">
-        <img src="/logo-symbol-transparent.png" alt="" width="42" height="42" style="width:42px;height:auto;display:block;object-fit:contain" />
+      <span class="brand-mark">
+        <img src="/logo-symbol-transparent.png" alt="Brieftick" width="42" height="42" style="width:42px;height:auto;display:block;object-fit:contain" />
       </span>
       <span class="brand-name dia-brand-text" id="diaBrandText">brieftick</span>
     `;
+
+    brand.style.opacity = "1";
+    brand.style.transform = "none";
 
     const textEl = document.getElementById("diaBrandText");
     if (textEl) playDiaReveal(textEl);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", mountBrandPreview);
-  } else {
+  function init() {
     mountBrandPreview();
+    window.addEventListener("load", () => setTimeout(mountBrandPreview, 650));
   }
-  window.addEventListener("load", () => setTimeout(mountBrandPreview, 100));
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
