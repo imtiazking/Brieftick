@@ -809,21 +809,29 @@ main{padding-top:90px;position:relative;z-index:3}
 /* ---------- SOCIAL INTELLIGENCE PREVIEW (Magic UI Tweet Card style) ---------- */
 .si-feed-preview{
   display:flex;flex-direction:column;gap:10px;
-  max-height:520px;overflow-y:auto;overflow-x:hidden;
-  scroll-behavior:smooth;padding-right:2px;
+  max-height:none;overflow:visible;
+  scroll-behavior:smooth;
 }
-.si-feed-preview::-webkit-scrollbar{width:4px}
-.si-feed-preview::-webkit-scrollbar-thumb{background:rgba(78,168,255,0.25);border-radius:4px}
+.si-feed-preview.si-feed-scroll{
+  max-height:640px;overflow-y:auto;overflow-x:hidden;padding-right:4px;
+}
+.si-feed-preview.si-feed-scroll::-webkit-scrollbar{width:4px}
+.si-feed-preview.si-feed-scroll::-webkit-scrollbar-thumb{background:rgba(78,168,255,0.25);border-radius:4px}
+.si-feed-note{
+  font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.06em;line-height:1.5;
+  padding:8px 10px;border-radius:6px;margin-bottom:4px;
+  background:rgba(78,168,255,0.04);border:1px solid rgba(78,168,255,0.12);
+}
 .si-feed-preview .si-tweet-card{
   position:relative;display:flex;flex-direction:column;
   grid-template-columns:unset;border-bottom:none;
-  padding:14px 14px 12px;border-radius:10px;
+  padding:12px 12px 10px;border-radius:10px;
   background:linear-gradient(145deg,rgba(12,14,22,0.88),rgba(8,10,16,0.72));
   border:1px solid rgba(255,255,255,0.06);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   box-shadow:0 8px 32px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.04);
   transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
-  overflow:hidden;gap:10px;
+  overflow:visible;gap:8px;min-width:0;
 }
 .si-tweet-card--enter{opacity:0;transform:translateY(8px)}
 .si-tweet-card--visible{opacity:1;transform:translateY(0);transition:opacity .45s ease,transform .45s ease;transition-delay:var(--si-delay,0ms)}
@@ -847,21 +855,25 @@ main{padding-top:90px;position:relative;z-index:3}
   background:radial-gradient(ellipse,rgba(78,168,255,0.06) 0%,transparent 70%);
   pointer-events:none;
 }
-.si-tweet-head{display:flex;align-items:flex-start;gap:10px;position:relative;z-index:1}
-.si-tweet-avatar{
-  width:34px;height:34px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.04em;
-  color:var(--blue);background:rgba(78,168,255,0.08);
-  border:1px solid rgba(78,168,255,0.22);
-  box-shadow:0 0 12px rgba(78,168,255,0.08);
+.si-tweet-head{
+  display:grid;grid-template-columns:34px minmax(0,1fr);grid-template-rows:auto auto;
+  column-gap:10px;row-gap:4px;position:relative;z-index:1;align-items:start;
 }
-.si-tweet-identity{flex:1;min-width:0}
+.si-tweet-avatar{grid-row:1 / span 2}
+.si-tweet-identity{grid-column:2;min-width:0}
+.si-tweet-meta-right{
+  grid-column:2;display:flex;align-items:center;gap:6px;flex-shrink:0;
+  justify-self:start;
+}
 .si-tweet-author{
-  font-size:13px;font-weight:500;color:var(--ink);
+  font-size:12px;font-weight:500;color:var(--ink);line-height:1.35;
   display:flex;align-items:center;gap:5px;flex-wrap:wrap;
+  word-break:break-word;
 }
-.si-tweet-handle{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.08em;margin-top:2px}
+.si-tweet-handle{
+  font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.06em;margin-top:1px;
+  line-height:1.4;word-break:break-word;
+}
 .si-verified{
   width:14px;height:14px;border-radius:50%;flex-shrink:0;
   background:rgba(78,168,255,0.15);border:1px solid rgba(78,168,255,0.35);
@@ -872,7 +884,14 @@ main{padding-top:90px;position:relative;z-index:3}
   font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:.1em;
   border:1px solid rgba(212,168,90,0.3);padding:1px 5px;border-radius:3px;
 }
-.si-tweet-meta-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.si-tweet-avatar{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.04em;
+  color:var(--blue);background:rgba(78,168,255,0.08);
+  border:1px solid rgba(78,168,255,0.22);
+  box-shadow:0 0 12px rgba(78,168,255,0.08);
+}
 .si-live-pulse{
   width:6px;height:6px;border-radius:50%;background:var(--green);
   box-shadow:0 0 8px var(--green);animation:siLivePulse 2s ease-in-out infinite;
@@ -883,10 +902,11 @@ main{padding-top:90px;position:relative;z-index:3}
 }
 .si-tweet-time{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.06em}
 .si-tweet-body{
-  font-size:13px;line-height:1.55;color:var(--ink);margin:0;
+  font-size:12px;line-height:1.5;color:var(--ink);margin:0;
   position:relative;z-index:1;
+  word-break:break-word;overflow-wrap:anywhere;
 }
-.si-tweet-signals{display:flex;align-items:center;gap:6px;flex-wrap:wrap;position:relative;z-index:1}
+.si-tweet-signals{display:flex;align-items:center;gap:5px;flex-wrap:wrap;position:relative;z-index:1}
 .si-signal-type{
   font-family:var(--mono);font-size:9px;color:var(--ink-dim);letter-spacing:.1em;text-transform:uppercase;
   padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);
@@ -905,13 +925,16 @@ main{padding-top:90px;position:relative;z-index:3}
 .si-tag--bearish{color:var(--red);background:rgba(255,91,110,0.06);border:1px solid rgba(255,91,110,0.15)}
 .si-tag--neutral{color:var(--ink-dim);background:rgba(255,255,255,0.04);border:1px solid var(--border)}
 .si-tweet-impact{
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  display:flex;flex-direction:column;align-items:flex-start;gap:4px;
   padding:7px 9px;border-radius:6px;
   background:rgba(78,168,255,0.04);border:1px solid rgba(78,168,255,0.12);
   position:relative;z-index:1;
 }
 .si-impact-label{font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase}
-.si-impact-val{font-family:var(--mono);font-size:10px;color:var(--ink-dim)}
+.si-impact-val{
+  font-family:var(--mono);font-size:10px;color:var(--ink-dim);line-height:1.45;
+  word-break:break-word;overflow-wrap:anywhere;
+}
 .si-ticker-row{display:flex;gap:4px;flex-wrap:wrap;position:relative;z-index:1}
 .si-ticker{
   font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;letter-spacing:.04em;
