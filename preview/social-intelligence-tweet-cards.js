@@ -1,26 +1,16 @@
 /**
- * Social Intelligence Feed — Magic UI Tweet Card preview with live Finnhub data.
- * Activate with: ?preview=social-intelligence
- * No Twitter/X API calls.
+ * Social Intelligence Feed — live Finnhub headlines in institutional tweet cards.
  */
 (function () {
-  const PREVIEW_KEY = "social-intelligence";
   const REFRESH_MS = 5 * 60_000;
-  const params = new URLSearchParams(window.location.search);
-  const isPreview = window.__SOCIAL_INTEL_PREVIEW || params.get("preview") === PREVIEW_KEY;
-
-  if (!isPreview) return;
-
-  window.__SOCIAL_INTEL_PREVIEW = true;
-
   let _lastFetch = 0;
-  let _refreshTimer = null;
+  let _initialized = false;
 
   const FALLBACK_SIGNALS = [
     {
       id: "fallback-01",
       author: "Market Intelligence",
-      handle: "Finnhub unavailable · demo card",
+      handle: "Finnhub unavailable",
       verified: false,
       ago: "—",
       signalType: "Market News",
@@ -168,10 +158,9 @@
     const el = document.getElementById("sentimentFeed");
     if (!el) return;
     el.classList.add("si-feed-preview", "si-feed-scroll");
-    el.innerHTML = `
-      <div class="si-feed-note">${escapeHtml(note)}</div>
-      ${items.map(renderCard).join("")}
-    `;
+    el.innerHTML = note
+      ? `<div class="si-feed-note">${escapeHtml(note)}</div>${items.map(renderCard).join("")}`
+      : items.map(renderCard).join("");
     requestAnimationFrame(() => {
       el.querySelectorAll(".si-tweet-card--enter").forEach((card) => {
         card.classList.add("si-tweet-card--visible");
@@ -183,21 +172,8 @@
     const meta = document.getElementById("sentimentMeta");
     if (meta) {
       meta.innerHTML = live
-        ? `<span class="si-preview-badge">Live</span> ${escapeHtml(status)}`
-        : `<span class="si-preview-badge">Demo</span> ${escapeHtml(status)}`;
-    }
-    const panel = document.getElementById("sentimentFeed")?.closest(".panel");
-    if (panel) {
-      panel.style.position = "relative";
-      let ribbon = panel.querySelector(".si-preview-ribbon");
-      if (!ribbon) {
-        ribbon = document.createElement("div");
-        ribbon.className = "si-preview-ribbon";
-        panel.appendChild(ribbon);
-      }
-      ribbon.textContent = live
-        ? "Social Intelligence · Live feed"
-        : "Social Intelligence · Preview";
+        ? `<span class="si-live-badge">Live</span> ${escapeHtml(status)}`
+        : escapeHtml(status);
     }
   }
 
@@ -206,37 +182,35 @@
     if (!el) return;
     el.classList.add("si-feed-preview");
     el.innerHTML =
-      '<div class="si-feed-note">Loading live market headlines from Finnhub…</div><div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Pulling Signal Intelligence Feed…</div>';
-    updateMeta("Loading live data…", true);
+      '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Loading live headlines…</div>';
+    updateMeta("Loading…", true);
   }
 
   async function waitForFinnhub(maxMs) {
     const start = Date.now();
     while (Date.now() - start < maxMs) {
       if (window.BriefTickAPI?.keys?.finnhub) return true;
-      if (window.BriefTickAPI && window.BriefTickAPI.keys && !window.BriefTickAPI.keys.finnhub) {
-        return false;
-      }
+      if (window.BriefTickAPI?.keys && !window.BriefTickAPI.keys.finnhub) return false;
       await new Promise((r) => setTimeout(r, 250));
     }
     return !!window.BriefTickAPI?.keys?.finnhub;
   }
 
-  async function liveRefreshSocialIntelligencePreview(force) {
+  async function liveRefreshSocialIntelligenceFeed(force) {
     const now = Date.now();
     if (!force && now - _lastFetch < REFRESH_MS) return;
     _lastFetch = now;
 
-    if (typeof window.route === "function") window.route("dashboard");
-    showLoading();
+    if (!_initialized) showLoading();
 
-    const hasFinnhub = await waitForFinnhub(10000);
+    const hasFinnhub = await waitForFinnhub(force ? 10000 : 2000);
     if (!hasFinnhub || !window.BriefTickAPI?.getMarketNews) {
       renderFeed(
         FALLBACK_SIGNALS,
-        "Finnhub not connected · showing demo card. Add your Finnhub key in Settings for live headlines."
+        "Finnhub not connected · add your key in Settings for live headlines."
       );
       updateMeta("Finnhub unavailable", false);
+      _initialized = true;
       return;
     }
 
@@ -244,26 +218,22 @@
     try {
       headlines = await window.BriefTickAPI.getMarketNews("general");
     } catch (e) {
-      console.warn("[social-intelligence preview] Finnhub fetch failed:", e.message);
-      renderFeed(
-        FALLBACK_SIGNALS,
-        "Live fetch failed · showing demo card. Check Finnhub key and retry."
-      );
+      console.warn("[social-intelligence] Finnhub fetch failed:", e.message);
+      renderFeed(FALLBACK_SIGNALS, "Live fetch failed · check Finnhub key and retry.");
       updateMeta("Fetch failed", false);
+      _initialized = true;
       return;
     }
 
     if (!headlines || !headlines.length) {
-      renderFeed(FALLBACK_SIGNALS, "No live headlines returned · showing demo card.");
+      renderFeed(FALLBACK_SIGNALS, "No live headlines returned.");
       updateMeta("No headlines", false);
+      _initialized = true;
       return;
     }
 
     const items = headlines.slice(0, 6).map(mapLiveHeadline);
-    renderFeed(
-      items,
-      "Live Signal Feed · Finnhub market headlines · refreshes every 5 minutes"
-    );
+    renderFeed(items, "");
     updateMeta(
       "Finnhub · " +
         new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
@@ -308,10 +278,7 @@
         }
       }
       if (enriched) {
-        renderFeed(
-          items,
-          "Live Signal Feed · Finnhub + AI enrichment · refreshes every 5 minutes"
-        );
+        renderFeed(items, "");
         updateMeta(
           "AI · " +
             new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
@@ -319,23 +286,11 @@
         );
       }
     }
+
+    _initialized = true;
+    console.log("[social-intelligence] refreshed:", items.length, "cards");
   }
 
-  function initSocialIntelligencePreview() {
-    if (_refreshTimer) return;
-    liveRefreshSocialIntelligencePreview(true);
-    _refreshTimer = setInterval(
-      () => liveRefreshSocialIntelligencePreview(false),
-      REFRESH_MS
-    );
-  }
-
-  window.liveRefreshSocialIntelligencePreview = liveRefreshSocialIntelligencePreview;
-  window.renderSocialIntelligencePreview = () =>
-    liveRefreshSocialIntelligencePreview(true);
-  window.initSocialIntelligencePreview = initSocialIntelligencePreview;
-
-  window.addEventListener("load", () => {
-    setTimeout(initSocialIntelligencePreview, 800);
-  });
+  window.liveRefreshSocialIntelligenceFeed = liveRefreshSocialIntelligenceFeed;
+  window.liveRefreshSocialIntelligencePreview = liveRefreshSocialIntelligenceFeed;
 })();

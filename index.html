@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BriefTick - Markets, briefly.</title>
-<script>
-  window.__SOCIAL_INTEL_PREVIEW = new URLSearchParams(location.search).get('preview') === 'social-intelligence';
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -795,7 +792,7 @@ main{padding-top:90px;position:relative;z-index:3}
 }
 .feed-item:last-child{border-bottom:none}
 .feed-time{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;padding-top:2px;width:48px}
-.feed-content .lead{font-size:13px;line-height:1.5;color:var(--ink)}
+.feed-content .lead{font-size:13px;line-height:1.5;color:var(--ink);word-break:break-word;overflow-wrap:anywhere}
 .feed-content .lead b{color:var(--gold-bright);font-weight:500}
 .feed-content .tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
 .tag{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;letter-spacing:0.08em;text-transform:uppercase}
@@ -946,12 +943,9 @@ main{padding-top:90px;position:relative;z-index:3}
   font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;
   border:1px solid rgba(212,168,90,0.35);padding:1px 5px;border-radius:3px;margin-right:6px;
 }
-.si-preview-ribbon{
-  position:absolute;top:10px;right:12px;z-index:3;pointer-events:none;
-  font-family:var(--mono);font-size:8px;color:rgba(78,168,255,0.85);letter-spacing:.12em;text-transform:uppercase;
-  padding:3px 8px;border-radius:4px;
-  background:rgba(78,168,255,0.06);border:1px solid rgba(78,168,255,0.18);
-  backdrop-filter:blur(8px);
+.si-live-badge{
+  font-family:var(--mono);font-size:8px;color:var(--green);letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid rgba(61,220,151,0.35);padding:1px 5px;border-radius:3px;margin-right:6px;
 }
 
 /* Watchlist */
@@ -5700,7 +5694,7 @@ let _sentimentLastFetch = 0;
 const SENTIMENT_REFRESH_MS = 5 * 60_000; // 5 minutes
 
 function renderSentimentFeed(items){
-  if(window.__SOCIAL_INTEL_PREVIEW) return;
+  if(typeof window.liveRefreshSocialIntelligenceFeed === 'function') return;
   const el = document.getElementById('sentimentFeed');
   if(!el) return;
   if(!items || !items.length){
@@ -5730,13 +5724,14 @@ function renderSentimentFeed(items){
 
 // Paint a skeleton while we wait for live data
 (function initSentimentFeed(){
-  if(new URLSearchParams(location.search).get('preview') === 'social-intelligence') return;
   const el = document.getElementById('sentimentFeed');
-  if(el) el.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Loading live sentiment…</div>';
+  if(el) el.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Loading live headlines…</div>';
 })();
 
 async function liveRefreshSentimentFeed(force=false){
-  if(window.__SOCIAL_INTEL_PREVIEW) return;
+  if(typeof window.liveRefreshSocialIntelligenceFeed === 'function'){
+    return window.liveRefreshSocialIntelligenceFeed(force);
+  }
   const now = Date.now();
   if(!force && now - _sentimentLastFetch < SENTIMENT_REFRESH_MS) return;
   _sentimentLastFetch = now;
@@ -7957,9 +7952,7 @@ async function liveRefreshDashboard(){
   } catch(e) { console.warn('[News data]', e.message); }
 
   // Live Signal Intelligence Feed (Finnhub + optional Anthropic enrichment)
-  if(!window.__SOCIAL_INTEL_PREVIEW){
-    liveRefreshSentimentFeed(true).catch(e => console.warn('[Sentiment]', e.message));
-  }
+  liveRefreshSentimentFeed(true).catch(e => console.warn('[Sentiment]', e.message));
 
   // Live Market Signal Feed (replaces static Social Signal Engine)
   liveRefreshSignalFeed(true).catch(e => console.warn('[Signals]', e.message));
@@ -8066,11 +8059,7 @@ window.addEventListener('load', () => {
 // Handle ?tab= param so cancel redirect from Stripe lands on the right page
 (function(){
   const tab = new URLSearchParams(window.location.search).get('tab');
-  const previewTab = window.__SOCIAL_INTEL_PREVIEW ? 'dashboard' : tab;
-  if (previewTab) {
-    if (window.__SOCIAL_INTEL_PREVIEW) window.route(previewTab);
-    else routeWithAuth(previewTab);
-  }
+  if (tab) routeWithAuth(tab);
 })();
 
 /* ----------------------------------------------------------------
@@ -8112,9 +8101,7 @@ async function liveRefreshTickerStrip(){
 window.addEventListener('load', () => setTimeout(liveRefreshTickerStrip, 8_000));
 
 // Refresh AI sentiment feed every 5 minutes
-if(!new URLSearchParams(location.search).get('preview')){
-  setInterval(()=>liveRefreshSentimentFeed(false), 5 * 60_000);
-}
+setInterval(()=>liveRefreshSentimentFeed(false), 5 * 60_000);
 // Refresh Market Signal Feed every 5 minutes
 setInterval(()=>liveRefreshSignalFeed(false), 5 * 60_000);
 
@@ -11084,7 +11071,7 @@ function _applyAccessLevel(level) {
     // Terminal: show regenerate button
     if(typeof _updateRiskRegimeButtonVisibility === 'function') _updateRiskRegimeButtonVisibility();
   } else {
-    if (!window.__SOCIAL_INTEL_PREVIEW) setTimeout(_addFreeRestrictions, 600);
+    setTimeout(_addFreeRestrictions, 600);
     // Free plan confirmed — hide Risk Regime button and auto-generate
     const riskBtn = document.getElementById('riskAiBtn');
     if(riskBtn) riskBtn.style.display = 'none';
@@ -11271,7 +11258,6 @@ function _addFreeRestrictions() {
   }
 
   // 6. SIGNAL INTELLIGENCE FEED — blur after first 3 items
-  if (!window.__SOCIAL_INTEL_PREVIEW) {
   const sentFeed = document.getElementById('sentimentFeed');
   if (sentFeed && !sentFeed.querySelector('.bt-free-overlay')) {
     const items = sentFeed.querySelectorAll('.signal-item,.feed-item,[class*="signal"],[class*="feed-card"]');
@@ -11288,7 +11274,6 @@ function _addFreeRestrictions() {
       panel.style.position = 'relative';
       panel.appendChild(footer);
     }
-  }
   }
 
   // 7. WHY IS IT MOVING — usage limit (5/day for free)
@@ -11382,8 +11367,8 @@ window.clerkSignUp  = () => window.Clerk?.openSignUp();
 const _PUBLIC_TABS = new Set(['landing', 'pricing', 'about']);
 
 function routeWithAuth(name) {
-  // Public tabs always accessible; preview mode allows dashboard demo without sign-in
-  if (_PUBLIC_TABS.has(name) || (window.__SOCIAL_INTEL_PREVIEW && name === 'dashboard')) {
+  // Public tabs always accessible
+  if (_PUBLIC_TABS.has(name)) {
     window.route(name);
     return;
   }
@@ -11402,7 +11387,6 @@ window.routeWithAuth = routeWithAuth;
 
 // On page load: if public user somehow lands on a protected tab, redirect to landing
 window.addEventListener('load', () => {
-  if (window.__SOCIAL_INTEL_PREVIEW) return;
   const active = document.querySelector('.page.active');
   const activeId = active?.id?.replace('page-', '');
   if (activeId && !_PUBLIC_TABS.has(activeId) && !_clerkUser) {
