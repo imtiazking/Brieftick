@@ -803,6 +803,131 @@ main{padding-top:90px;position:relative;z-index:3}
 .tag.bearish{color:var(--red);background:rgba(255,91,110,0.08)}
 .tag.neutral{color:var(--ink-dim);background:rgba(255,255,255,0.04)}
 
+/* ---------- SOCIAL INTELLIGENCE PREVIEW (Magic UI Tweet Card style) ---------- */
+.si-feed-preview{
+  display:flex;flex-direction:column;gap:10px;
+  max-height:520px;overflow-y:auto;overflow-x:hidden;
+  scroll-behavior:smooth;padding-right:2px;
+}
+.si-feed-preview::-webkit-scrollbar{width:4px}
+.si-feed-preview::-webkit-scrollbar-thumb{background:rgba(78,168,255,0.25);border-radius:4px}
+.si-feed-preview .si-tweet-card{
+  position:relative;display:flex;flex-direction:column;
+  grid-template-columns:unset;border-bottom:none;
+  padding:14px 14px 12px;border-radius:10px;
+  background:linear-gradient(145deg,rgba(12,14,22,0.88),rgba(8,10,16,0.72));
+  border:1px solid rgba(255,255,255,0.06);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.04);
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease;
+  overflow:hidden;gap:10px;
+}
+.si-tweet-card--enter{opacity:0;transform:translateY(8px)}
+.si-tweet-card--visible{opacity:1;transform:translateY(0);transition:opacity .45s ease,transform .45s ease;transition-delay:var(--si-delay,0ms)}
+.si-tweet-card:hover{
+  border-color:rgba(78,168,255,0.28);
+  box-shadow:0 12px 40px rgba(0,0,0,0.45),0 0 24px rgba(78,168,255,0.08),inset 0 1px 0 rgba(255,255,255,0.06);
+  transform:translateY(-1px);
+}
+.si-tweet-card--pulse{animation:siCardPulse 1.2s ease}
+@keyframes siCardPulse{
+  0%,100%{box-shadow:0 8px 32px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.04)}
+  50%{box-shadow:0 8px 32px rgba(0,0,0,0.35),0 0 20px rgba(78,168,255,0.14),inset 0 1px 0 rgba(255,255,255,0.06)}
+}
+.si-tweet-beam{
+  position:absolute;top:0;left:12%;right:12%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(78,168,255,0.65) 50%,transparent);
+  opacity:.55;pointer-events:none;
+}
+.si-tweet-glow{
+  position:absolute;top:-40%;left:-20%;width:60%;height:80%;
+  background:radial-gradient(ellipse,rgba(78,168,255,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.si-tweet-head{display:flex;align-items:flex-start;gap:10px;position:relative;z-index:1}
+.si-tweet-avatar{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.04em;
+  color:var(--blue);background:rgba(78,168,255,0.08);
+  border:1px solid rgba(78,168,255,0.22);
+  box-shadow:0 0 12px rgba(78,168,255,0.08);
+}
+.si-tweet-identity{flex:1;min-width:0}
+.si-tweet-author{
+  font-size:13px;font-weight:500;color:var(--ink);
+  display:flex;align-items:center;gap:5px;flex-wrap:wrap;
+}
+.si-tweet-handle{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.08em;margin-top:2px}
+.si-verified{
+  width:14px;height:14px;border-radius:50%;flex-shrink:0;
+  background:rgba(78,168,255,0.15);border:1px solid rgba(78,168,255,0.35);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M3 6 L5 8 L9 4' stroke='%234ea8ff' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size:8px;background-position:center;background-repeat:no-repeat;
+}
+.si-ai-badge{
+  font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:.1em;
+  border:1px solid rgba(212,168,90,0.3);padding:1px 5px;border-radius:3px;
+}
+.si-tweet-meta-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.si-live-pulse{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);animation:siLivePulse 2s ease-in-out infinite;
+}
+@keyframes siLivePulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.45;transform:scale(.85)}
+}
+.si-tweet-time{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.06em}
+.si-tweet-body{
+  font-size:13px;line-height:1.55;color:var(--ink);margin:0;
+  position:relative;z-index:1;
+}
+.si-tweet-signals{display:flex;align-items:center;gap:6px;flex-wrap:wrap;position:relative;z-index:1}
+.si-signal-type{
+  font-family:var(--mono);font-size:9px;color:var(--ink-dim);letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+}
+.si-sentiment{
+  font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 6px;border-radius:3px;
+}
+.si-sentiment--bullish{color:var(--green);background:rgba(61,220,151,0.06);border:1px solid rgba(61,220,151,0.2)}
+.si-sentiment--bearish{color:var(--red);background:rgba(255,91,110,0.06);border:1px solid rgba(255,91,110,0.2)}
+.si-sentiment--neutral{color:var(--amber);background:rgba(255,181,71,0.06);border:1px solid rgba(255,181,71,0.2)}
+.si-tag{font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:2px 5px;border-radius:3px}
+.si-tag--macro{color:var(--gold);background:rgba(212,168,90,0.08);border:1px solid rgba(212,168,90,0.18)}
+.si-tag--tech{color:var(--blue);background:rgba(78,168,255,0.08);border:1px solid rgba(78,168,255,0.18)}
+.si-tag--bullish{color:var(--green);background:rgba(61,220,151,0.06);border:1px solid rgba(61,220,151,0.15)}
+.si-tag--bearish{color:var(--red);background:rgba(255,91,110,0.06);border:1px solid rgba(255,91,110,0.15)}
+.si-tag--neutral{color:var(--ink-dim);background:rgba(255,255,255,0.04);border:1px solid var(--border)}
+.si-tweet-impact{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:7px 9px;border-radius:6px;
+  background:rgba(78,168,255,0.04);border:1px solid rgba(78,168,255,0.12);
+  position:relative;z-index:1;
+}
+.si-impact-label{font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase}
+.si-impact-val{font-family:var(--mono);font-size:10px;color:var(--ink-dim)}
+.si-ticker-row{display:flex;gap:4px;flex-wrap:wrap;position:relative;z-index:1}
+.si-ticker{
+  font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;letter-spacing:.04em;
+}
+.si-ticker--bullish{color:var(--green);background:rgba(61,220,151,0.06);border:1px solid rgba(61,220,151,0.18)}
+.si-ticker--bearish{color:var(--red);background:rgba(255,91,110,0.06);border:1px solid rgba(255,91,110,0.18)}
+.si-ticker--neutral{color:var(--blue);background:rgba(78,168,255,0.06);border:1px solid rgba(78,168,255,0.18)}
+.si-preview-badge{
+  font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid rgba(212,168,90,0.35);padding:1px 5px;border-radius:3px;margin-right:6px;
+}
+.si-preview-ribbon{
+  position:absolute;top:10px;right:12px;z-index:3;pointer-events:none;
+  font-family:var(--mono);font-size:8px;color:rgba(78,168,255,0.85);letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 8px;border-radius:4px;
+  background:rgba(78,168,255,0.06);border:1px solid rgba(78,168,255,0.18);
+  backdrop-filter:blur(8px);
+}
+
 /* Watchlist */
 .watchlist-tools{display:flex;gap:6px;margin-bottom:10px}
 .watchlist-input{
@@ -5549,6 +5674,7 @@ let _sentimentLastFetch = 0;
 const SENTIMENT_REFRESH_MS = 5 * 60_000; // 5 minutes
 
 function renderSentimentFeed(items){
+  if(window.__SOCIAL_INTEL_PREVIEW) return;
   const el = document.getElementById('sentimentFeed');
   if(!el) return;
   if(!items || !items.length){
@@ -5578,11 +5704,13 @@ function renderSentimentFeed(items){
 
 // Paint a skeleton while we wait for live data
 (function initSentimentFeed(){
+  if(new URLSearchParams(location.search).get('preview') === 'social-intelligence') return;
   const el = document.getElementById('sentimentFeed');
   if(el) el.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Loading live sentiment…</div>';
 })();
 
 async function liveRefreshSentimentFeed(force=false){
+  if(window.__SOCIAL_INTEL_PREVIEW) return;
   const now = Date.now();
   if(!force && now - _sentimentLastFetch < SENTIMENT_REFRESH_MS) return;
   _sentimentLastFetch = now;
@@ -7803,7 +7931,9 @@ async function liveRefreshDashboard(){
   } catch(e) { console.warn('[News data]', e.message); }
 
   // Live Signal Intelligence Feed (Finnhub + optional Anthropic enrichment)
-  liveRefreshSentimentFeed(true).catch(e => console.warn('[Sentiment]', e.message));
+  if(!window.__SOCIAL_INTEL_PREVIEW){
+    liveRefreshSentimentFeed(true).catch(e => console.warn('[Sentiment]', e.message));
+  }
 
   // Live Market Signal Feed (replaces static Social Signal Engine)
   liveRefreshSignalFeed(true).catch(e => console.warn('[Signals]', e.message));
@@ -7952,7 +8082,9 @@ async function liveRefreshTickerStrip(){
 window.addEventListener('load', () => setTimeout(liveRefreshTickerStrip, 8_000));
 
 // Refresh AI sentiment feed every 5 minutes
-setInterval(()=>liveRefreshSentimentFeed(false), 5 * 60_000);
+if(!new URLSearchParams(location.search).get('preview')){
+  setInterval(()=>liveRefreshSentimentFeed(false), 5 * 60_000);
+}
 // Refresh Market Signal Feed every 5 minutes
 setInterval(()=>liveRefreshSignalFeed(false), 5 * 60_000);
 
@@ -14057,5 +14189,6 @@ window.addEventListener('load', () => {
   });
 })();
 </script>
+<script src="/preview/social-intelligence-tweet-cards.js"></script>
 </body>
 </html>
