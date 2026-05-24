@@ -1,10 +1,11 @@
 /**
- * Social Intelligence Feed — Magic UI Tweet Card preview (static sample data only).
+ * Social Intelligence Feed — Magic UI Tweet Card preview with live Finnhub data.
  * Activate with: ?preview=social-intelligence
- * No Twitter/X API calls. Production feed logic is untouched when preview is off.
+ * No Twitter/X API calls.
  */
 (function () {
   const PREVIEW_KEY = "social-intelligence";
+  const REFRESH_MS = 5 * 60_000;
   const params = new URLSearchParams(window.location.search);
   const isPreview = window.__SOCIAL_INTEL_PREVIEW || params.get("preview") === PREVIEW_KEY;
 
@@ -12,63 +13,23 @@
 
   window.__SOCIAL_INTEL_PREVIEW = true;
 
-  const SAMPLE_SIGNALS = [
+  let _lastFetch = 0;
+  let _refreshTimer = null;
+
+  const FALLBACK_SIGNALS = [
     {
-      id: "sig-01",
-      author: "Global Macro Desk",
-      handle: "Macro Commentary",
-      verified: true,
-      ago: "1m",
-      signalType: "Central Bank",
-      sentiment: "bearish",
-      sentimentLabel: "Risk-Off",
-      body: "Fed funds futures price 68bps of cuts by year-end. Front-end yields are repricing faster than equities.",
-      marketRead: "SPY, TLT · duration bid",
-      tickers: ["SPY", "TLT"],
-      tags: ["macro"],
-    },
-    {
-      id: "sig-02",
-      author: "Earnings Intelligence",
-      handle: "Earnings Reaction",
-      verified: true,
-      ago: "4m",
-      signalType: "Beat / Guidance",
-      sentiment: "bullish",
-      sentimentLabel: "Risk-On",
-      body: "NVDA guidance points to data-centre growth re-accelerating in Q3. Call skew turned heavy within 15 minutes of the print.",
-      marketRead: "NVDA, SMCI · sympathy cluster",
-      tickers: ["NVDA", "SMCI"],
-      tags: ["tech"],
-    },
-    {
-      id: "sig-03",
-      author: "Volatility Monitor",
-      handle: "Volatility Alert",
+      id: "fallback-01",
+      author: "Market Intelligence",
+      handle: "Finnhub unavailable · demo card",
       verified: false,
-      ago: "7m",
-      signalType: "VIX Spike",
-      sentiment: "bearish",
-      sentimentLabel: "Elevated",
-      body: "VIX term structure inverted for a third session. Dealer gamma turns negative below SPX 5,180.",
-      marketRead: "VIX, SPX · gamma flip zone",
-      tickers: ["VIX", "SPX"],
-      tags: ["macro"],
-    },
-    {
-      id: "sig-04",
-      author: "Brieftick Session AI",
-      handle: "Market Summary",
-      verified: true,
-      ago: "11m",
-      signalType: "Session Brief",
+      ago: "—",
+      signalType: "Market News",
       sentiment: "neutral",
-      sentimentLabel: "Mixed",
-      body: "Equities flat, credit spreads wider, dollar firm. Defensives outperform cyclicals for a third day.",
-      marketRead: "Multi-asset · defensive rotation",
-      tickers: ["XLK", "XLP"],
+      sentimentLabel: "Neutral",
+      body: "Connect Finnhub in Settings to load live headlines. This card appears when the live feed cannot be reached.",
+      marketRead: "Awaiting live data",
+      tickers: [],
       tags: ["neutral"],
-      isAI: true,
     },
   ];
 
@@ -89,6 +50,76 @@
       .toUpperCase();
   }
 
+  function classifyHeadline(text) {
+    const t = (text || "").toLowerCase();
+    if (/(fed\b|fomc|powell|ecb|central bank|rate cut|rate hike|basis point)/i.test(t)) {
+      return { signalType: "Central Bank", author: "Macro Desk", handle: "Central Bank Signal" };
+    }
+    if (/(earnings|eps|guidance|beat|miss|quarterly results)/i.test(t)) {
+      return { signalType: "Earnings", author: "Earnings Intelligence", handle: "Earnings Reaction" };
+    }
+    if (/(vix|volatility|vol spike|implied vol)/i.test(t)) {
+      return { signalType: "Volatility", author: "Volatility Monitor", handle: "Vol Alert" };
+    }
+    if (/(cpi|gdp|jobs|payroll|pce|retail sales|pmi|ism|macro)/i.test(t)) {
+      return { signalType: "Macro Data", author: "Macro Desk", handle: "Macro Commentary" };
+    }
+    if (/(sec\b|regulation|antitrust|sanctions|tariff)/i.test(t)) {
+      return { signalType: "Regulatory", author: "Policy Desk", handle: "Regulatory Signal" };
+    }
+    return { signalType: "Market News", author: "Market Intelligence", handle: "Live Headline" };
+  }
+
+  function sentimentLabel(sentiment) {
+    if (sentiment === "bullish") return "Risk-On";
+    if (sentiment === "bearish") return "Risk-Off";
+    return "Neutral";
+  }
+
+  function truncateText(str, max) {
+    const s = String(str || "").trim();
+    if (s.length <= max) return s;
+    return s.slice(0, max - 3) + "...";
+  }
+
+  function mapLiveHeadline(n, index) {
+    const fullText = (n.headline || "") + " " + (n.summary || "");
+    const tags =
+      typeof window.inferNewsTags === "function"
+        ? window.inferNewsTags(fullText)
+        : ["neutral"];
+    const sentiment = tags.includes("bullish")
+      ? "bullish"
+      : tags.includes("bearish")
+        ? "bearish"
+        : "neutral";
+    const cls = classifyHeadline(fullText);
+    const ago =
+      typeof window.formatNewsAgo === "function"
+        ? window.formatNewsAgo(n.datetime)
+        : "now";
+
+    return {
+      id: "live-" + (n.id || index),
+      author: cls.author,
+      handle: (n.source || "Finnhub") + " · " + cls.handle,
+      verified: true,
+      ago,
+      signalType: cls.signalType,
+      sentiment,
+      sentimentLabel: sentimentLabel(sentiment),
+      body: truncateText(n.summary || n.headline || "", 180),
+      marketRead:
+        tags.slice(0, 2).join(", ") +
+        (sentiment === "bullish" ? " · constructive read" : sentiment === "bearish" ? " · cautious read" : " · mixed read"),
+      tickers: [],
+      tags: tags.slice(0, 2),
+      isAI: false,
+      headline: n.headline || "",
+      headlineSummary: n.summary || "",
+    };
+  }
+
   function renderCard(item, index) {
     const aiBadge = item.isAI ? '<span class="si-ai-badge">AI</span>' : "";
     const verified = item.verified
@@ -102,11 +133,11 @@
       )
       .join("");
     const tags = (item.tags || [])
-      .slice(0, 1)
+      .slice(0, 2)
       .map((tag) => `<span class="si-tag si-tag--${tag}">${escapeHtml(tag)}</span>`)
       .join("");
 
-    return `<article class="feed-item si-tweet-card si-tweet-card--enter" style="--si-delay:${index * 80}ms" data-si-id="${escapeHtml(item.id)}">
+    return `<article class="feed-item si-tweet-card si-tweet-card--enter" style="--si-delay:${index * 70}ms" data-si-id="${escapeHtml(item.id)}">
       <div class="si-tweet-beam" aria-hidden="true"></div>
       <header class="si-tweet-head">
         <div class="si-tweet-avatar" aria-hidden="true">${escapeHtml(initials(item.author))}</div>
@@ -133,13 +164,13 @@
     </article>`;
   }
 
-  function renderPreviewFeed() {
+  function renderFeed(items, note) {
     const el = document.getElementById("sentimentFeed");
     if (!el) return;
     el.classList.add("si-feed-preview", "si-feed-scroll");
     el.innerHTML = `
-      <div class="si-feed-note">Preview mode · static demo cards only. Production feed pulls live Finnhub headlines every 5 minutes.</div>
-      ${SAMPLE_SIGNALS.map(renderCard).join("")}
+      <div class="si-feed-note">${escapeHtml(note)}</div>
+      ${items.map(renderCard).join("")}
     `;
     requestAnimationFrame(() => {
       el.querySelectorAll(".si-tweet-card--enter").forEach((card) => {
@@ -148,60 +179,163 @@
     });
   }
 
-  function updatePreviewMeta() {
+  function updateMeta(status, live) {
     const meta = document.getElementById("sentimentMeta");
     if (meta) {
-      meta.innerHTML =
-        '<span class="si-preview-badge">Demo</span> Not live · sample data';
+      meta.innerHTML = live
+        ? `<span class="si-preview-badge">Live</span> ${escapeHtml(status)}`
+        : `<span class="si-preview-badge">Demo</span> ${escapeHtml(status)}`;
     }
     const panel = document.getElementById("sentimentFeed")?.closest(".panel");
     if (panel) {
       panel.style.position = "relative";
-      if (!panel.querySelector(".si-preview-ribbon")) {
-        const ribbon = document.createElement("div");
+      let ribbon = panel.querySelector(".si-preview-ribbon");
+      if (!ribbon) {
+        ribbon = document.createElement("div");
         ribbon.className = "si-preview-ribbon";
-        ribbon.textContent = "Preview · Static demo";
         panel.appendChild(ribbon);
+      }
+      ribbon.textContent = live
+        ? "Social Intelligence · Live feed"
+        : "Social Intelligence · Preview";
+    }
+  }
+
+  function showLoading() {
+    const el = document.getElementById("sentimentFeed");
+    if (!el) return;
+    el.classList.add("si-feed-preview");
+    el.innerHTML =
+      '<div class="si-feed-note">Loading live market headlines from Finnhub…</div><div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Pulling Signal Intelligence Feed…</div>';
+    updateMeta("Loading live data…", true);
+  }
+
+  async function waitForFinnhub(maxMs) {
+    const start = Date.now();
+    while (Date.now() - start < maxMs) {
+      if (window.BriefTickAPI?.keys?.finnhub) return true;
+      if (window.BriefTickAPI && window.BriefTickAPI.keys && !window.BriefTickAPI.keys.finnhub) {
+        return false;
+      }
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    return !!window.BriefTickAPI?.keys?.finnhub;
+  }
+
+  async function liveRefreshSocialIntelligencePreview(force) {
+    const now = Date.now();
+    if (!force && now - _lastFetch < REFRESH_MS) return;
+    _lastFetch = now;
+
+    if (typeof window.route === "function") window.route("dashboard");
+    showLoading();
+
+    const hasFinnhub = await waitForFinnhub(10000);
+    if (!hasFinnhub || !window.BriefTickAPI?.getMarketNews) {
+      renderFeed(
+        FALLBACK_SIGNALS,
+        "Finnhub not connected · showing demo card. Add your Finnhub key in Settings for live headlines."
+      );
+      updateMeta("Finnhub unavailable", false);
+      return;
+    }
+
+    let headlines;
+    try {
+      headlines = await window.BriefTickAPI.getMarketNews("general");
+    } catch (e) {
+      console.warn("[social-intelligence preview] Finnhub fetch failed:", e.message);
+      renderFeed(
+        FALLBACK_SIGNALS,
+        "Live fetch failed · showing demo card. Check Finnhub key and retry."
+      );
+      updateMeta("Fetch failed", false);
+      return;
+    }
+
+    if (!headlines || !headlines.length) {
+      renderFeed(FALLBACK_SIGNALS, "No live headlines returned · showing demo card.");
+      updateMeta("No headlines", false);
+      return;
+    }
+
+    const items = headlines.slice(0, 6).map(mapLiveHeadline);
+    renderFeed(
+      items,
+      "Live Signal Feed · Finnhub market headlines · refreshes every 5 minutes"
+    );
+    updateMeta(
+      "Finnhub · " +
+        new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+      true
+    );
+
+    if (window.BriefTickAPI.keys.anthropic) {
+      const toEnrich = items.slice(0, 3);
+      let enriched = false;
+      for (let i = 0; i < toEnrich.length; i++) {
+        const item = toEnrich[i];
+        try {
+          const ai = await window.BriefTickAPI.aiNewsInterpret(
+            item.headline,
+            item.headlineSummary
+          );
+          if (ai) {
+            const sent =
+              ai.sentiment === "bullish"
+                ? "bullish"
+                : ai.sentiment === "bearish"
+                  ? "bearish"
+                  : "neutral";
+            items[i] = {
+              ...item,
+              sentiment: sent,
+              sentimentLabel: sentimentLabel(sent),
+              body: truncateText(ai.summary || item.body, 180),
+              tickers: (ai.tickers || []).slice(0, 3),
+              marketRead:
+                (ai.tickers || []).slice(0, 3).join(", ") ||
+                item.marketRead.replace("mixed read", "AI read"),
+              tags: [...new Set([(ai.sectors || [])[0]?.toLowerCase?.(), sent])]
+                .filter(Boolean)
+                .slice(0, 2),
+              isAI: true,
+            };
+            enriched = true;
+          }
+        } catch (_) {
+          /* keep heuristic card */
+        }
+      }
+      if (enriched) {
+        renderFeed(
+          items,
+          "Live Signal Feed · Finnhub + AI enrichment · refreshes every 5 minutes"
+        );
+        updateMeta(
+          "AI · " +
+            new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+          true
+        );
       }
     }
   }
 
-  function simulateLiveUpdates() {
-    const el = document.getElementById("sentimentFeed");
-    if (!el) return;
-    setInterval(() => {
-      const cards = el.querySelectorAll(".si-tweet-card");
-      if (!cards.length) return;
-      const card = cards[Math.floor(Math.random() * cards.length)];
-      card.classList.remove("si-tweet-card--pulse");
-      void card.offsetWidth;
-      card.classList.add("si-tweet-card--pulse");
-    }, 12000);
-  }
-
   function initSocialIntelligencePreview() {
-    if (typeof window.route === "function") window.route("dashboard");
-    updatePreviewMeta();
-    renderPreviewFeed();
-    simulateLiveUpdates();
-    setTimeout(() => {
-      document.getElementById("sentimentFeed")?.closest(".panel")?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }, 500);
+    if (_refreshTimer) return;
+    liveRefreshSocialIntelligencePreview(true);
+    _refreshTimer = setInterval(
+      () => liveRefreshSocialIntelligencePreview(false),
+      REFRESH_MS
+    );
   }
 
-  window.renderSocialIntelligencePreview = renderPreviewFeed;
+  window.liveRefreshSocialIntelligencePreview = liveRefreshSocialIntelligencePreview;
+  window.renderSocialIntelligencePreview = () =>
+    liveRefreshSocialIntelligencePreview(true);
   window.initSocialIntelligencePreview = initSocialIntelligencePreview;
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initSocialIntelligencePreview);
-  } else {
-    initSocialIntelligencePreview();
-  }
-
   window.addEventListener("load", () => {
-    setTimeout(initSocialIntelligencePreview, 300);
+    setTimeout(initSocialIntelligencePreview, 800);
   });
 })();
