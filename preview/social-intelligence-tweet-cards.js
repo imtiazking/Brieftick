@@ -6,7 +6,7 @@
 (function () {
   const PREVIEW_KEY = "social-intelligence";
   const params = new URLSearchParams(window.location.search);
-  const isPreview = params.get("preview") === PREVIEW_KEY;
+  const isPreview = window.__SOCIAL_INTEL_PREVIEW || params.get("preview") === PREVIEW_KEY;
 
   if (!isPreview) return;
 
@@ -217,9 +217,17 @@
   }
 
   function initSocialIntelligencePreview() {
+    if (typeof window.route === "function") window.route("dashboard");
     updatePreviewMeta();
     renderPreviewFeed();
     simulateLiveUpdates();
+    setTimeout(() => {
+      const panel = document.getElementById("sentimentFeed")?.closest(".panel");
+      if (panel) {
+        panel.style.position = "relative";
+        panel.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 500);
   }
 
   window.renderSocialIntelligencePreview = renderPreviewFeed;
@@ -230,4 +238,8 @@
   } else {
     initSocialIntelligencePreview();
   }
+
+  window.addEventListener("load", () => {
+    setTimeout(initSocialIntelligencePreview, 300);
+  });
 })();
