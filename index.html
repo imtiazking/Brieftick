@@ -14,15 +14,10 @@
   function logicFormSubmit(e) {
     var form = e.target;
     if (!form || !form.id) return;
-    if (form.id !== "logicHeroForm" && form.id !== "logicCommandForm" && form.id !== "logicSearchForm") return;
+    if (form.id !== "logicHeroForm" && form.id !== "logicSearchForm") return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    var inputId =
-      form.id === "logicHeroForm"
-        ? "logicHeroInput"
-        : form.id === "logicSearchForm"
-          ? "logicSearchInput"
-          : "logicCommandInput";
+    var inputId = form.id === "logicHeroForm" ? "logicHeroInput" : "logicSearchInput";
     var el = document.getElementById(inputId);
     var v = (el && el.value ? el.value : "").trim();
     if (!v) return false;
@@ -30,7 +25,7 @@
     if (typeof window.submitLogicQuery === "function") {
       window.submitLogicQuery(v);
       if (el) el.value = "";
-      ["logicHeroInput", "logicCommandInput", "logicSearchInput"].forEach(function (id) {
+      ["logicHeroInput", "logicSearchInput"].forEach(function (id) {
         var x = document.getElementById(id);
         if (x && x !== el) x.value = "";
       });
@@ -2758,7 +2753,7 @@ h1,h2,h3{
    BRIEFTICK LOGIC (PREVIEW — scoped to #page-logic only)
 ================================================================ */
 #page-logic{background:var(--bg-0);min-height:calc(100vh - 120px)}
-.logic-wrap{max-width:1440px;margin:0 auto;padding:20px 24px 100px;display:flex;flex-direction:column;gap:16px;min-height:calc(100vh - 140px)}
+.logic-wrap{max-width:1440px;margin:0 auto;padding:20px 24px 32px;display:flex;flex-direction:column;gap:16px;min-height:calc(100vh - 140px)}
 .logic-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .logic-preview-badge{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,168,90,.35);padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px}
 .logic-usage-banner{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--text-2);display:block;width:100%;margin-bottom:6px}
@@ -2819,7 +2814,6 @@ h1,h2,h3{
 .logic-msg-foot{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:9px;color:var(--ink-faint);margin-bottom:6px}
 .logic-disclaimer{font-family:var(--mono);font-size:9px;color:var(--ink-faint);margin:0;letter-spacing:.04em}
 .logic-loading-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:pulse 1.2s infinite;margin-right:6px;vertical-align:middle}
-.logic-command-bar{position:sticky;bottom:12px;z-index:5;padding:0}
 .logic-command-form{
   display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;
   border:1px solid var(--border-strong);background:rgba(10,13,20,.92);
@@ -5137,14 +5131,6 @@ h1,h2,h3{
         </div>
       </aside>
     </div>
-
-    <footer class="logic-command-bar" id="logicCommandBar">
-      <form id="logicCommandForm" class="logic-command-form" autocomplete="off" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
-        <input type="text" id="logicCommandInput" class="logic-command-input" placeholder="Ask Brieftick Logic anything…" spellcheck="false" />
-        <button type="submit" class="logic-command-submit">Run Logic</button>
-        <span class="logic-command-hint"><kbd>⌘</kbd><kbd>K</kbd></span>
-      </form>
-    </footer>
   </div>
 
   <div class="logic-search-overlay" id="logicSearchOverlay" aria-hidden="true">

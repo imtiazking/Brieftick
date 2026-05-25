@@ -436,7 +436,7 @@ function bindPromptButtons() {
     btn.addEventListener("click", () => {
       const p = btn.dataset.prompt || "";
       submitLogicQuery(p);
-      ["logicHeroInput", "logicCommandInput", "logicSearchInput"].forEach((id) => {
+      ["logicHeroInput", "logicSearchInput"].forEach((id) => {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
@@ -571,17 +571,6 @@ function bindForms() {
     )
   );
 
-  document.getElementById("logicCommandForm")?.addEventListener("submit", (e) =>
-    onSubmit(
-      e,
-      () => document.getElementById("logicCommandInput")?.value,
-      () => {
-        const el = document.getElementById("logicCommandInput");
-        if (el) el.value = "";
-      }
-    )
-  );
-
   document.getElementById("logicSearchForm")?.addEventListener("submit", (e) =>
     onSubmit(
       e,
@@ -590,7 +579,7 @@ function bindForms() {
         document.getElementById("logicHeroInput")?.value ||
         "",
       () => {
-        ["logicSearchInput", "logicHeroInput", "logicCommandInput"].forEach((id) => {
+        ["logicSearchInput", "logicHeroInput"].forEach((id) => {
           const el = document.getElementById(id);
           if (el) el.value = "";
         });
@@ -653,9 +642,7 @@ function bindLogicUI() {
         };
         const p = prompts[activeMode] || "";
         const hero = document.getElementById("logicHeroInput");
-        const bottom = document.getElementById("logicCommandInput");
         if (hero) hero.value = p;
-        if (bottom) bottom.value = p;
       });
     });
   }
