@@ -2,11 +2,57 @@
 <html lang="en">
 <script>
 (function () {
-  const p = new URLSearchParams(location.search).get("preview");
+  const params = new URLSearchParams(location.search);
+  const p = params.get("preview");
   if (p === "logic" || p === "agent") {
     document.documentElement.classList.add("preview-logic");
     window.__LOGIC_PREVIEW = true;
     window.__AGENT_PREVIEW = true;
+  }
+
+  /* Prevent Logic form GET submit from wiping ?preview=logic&tab=logic (causes landing redirect) */
+  function logicFormSubmit(e) {
+    var form = e.target;
+    if (!form || !form.id) return;
+    if (form.id !== "logicHeroForm" && form.id !== "logicCommandForm" && form.id !== "logicSearchForm") return;
+    e.preventDefault();
+    e.stopPropagation();
+    var inputId =
+      form.id === "logicHeroForm"
+        ? "logicHeroInput"
+        : form.id === "logicSearchForm"
+          ? "logicSearchInput"
+          : "logicCommandInput";
+    var el = document.getElementById(inputId);
+    var v = (el && el.value ? el.value : "").trim();
+    if (!v) return false;
+    if (typeof window.logicHandleSubmit === "function") {
+      window.logicHandleSubmit(v);
+      if (el) el.value = "";
+      ["logicHeroInput", "logicCommandInput", "logicSearchInput"].forEach(function (id) {
+        var x = document.getElementById(id);
+        if (x && x !== el) x.value = "";
+      });
+    } else {
+      window.__logicPendingPrompt = v;
+    }
+    return false;
+  }
+  document.addEventListener("submit", logicFormSubmit, true);
+  window.__logicFormGuard = logicFormSubmit;
+
+  function routeLogicWhenReady() {
+    if (p !== "logic" && p !== "agent") return;
+    if (typeof window.route !== "function") {
+      setTimeout(routeLogicWhenReady, 40);
+      return;
+    }
+    window.route("logic");
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", routeLogicWhenReady);
+  } else {
+    routeLogicWhenReady();
   }
 })();
 </script>
@@ -2731,7 +2777,7 @@ h1,h2,h3{
   background:var(--panel);backdrop-filter:blur(12px);
   display:flex;flex-direction:column;min-height:420px;overflow:hidden;
 }
-.logic-chat-messages{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;max-height:min(62vh,640px)}
+.logic-chat-messages{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;min-height:120px;max-height:min(42vh,420px)}
 .logic-widgets{display:flex;flex-direction:column;gap:10px}
 .logic-widget-card{padding:14px;border-radius:10px;border:1px solid var(--border);background:rgba(10,13,20,.55)}
 .logic-widget-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
@@ -4957,7 +5003,7 @@ h1,h2,h3{
     </header>
 
     <section class="logic-hero-command" aria-label="Ask Brieftick Logic">
-      <form id="logicHeroForm" class="logic-hero-form" autocomplete="off">
+      <form id="logicHeroForm" class="logic-hero-form" autocomplete="off" action="#" method="post" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
         <input type="text" id="logicHeroInput" class="logic-hero-input" placeholder="Ask Brieftick Logic anything…" spellcheck="false" aria-label="Ask Brieftick Logic" />
         <button type="submit" class="logic-hero-submit">Run Logic</button>
       </form>
@@ -5033,7 +5079,7 @@ h1,h2,h3{
     </div>
 
     <footer class="logic-command-bar" id="logicCommandBar">
-      <form id="logicCommandForm" class="logic-command-form" autocomplete="off">
+      <form id="logicCommandForm" class="logic-command-form" autocomplete="off" action="#" method="post" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
         <input type="text" id="logicCommandInput" class="logic-command-input" placeholder="Ask Brieftick Logic anything…" spellcheck="false" />
         <button type="submit" class="logic-command-submit">Run Logic</button>
         <span class="logic-command-hint"><kbd>⌘</kbd><kbd>K</kbd></span>
@@ -5045,7 +5091,7 @@ h1,h2,h3{
     <div class="logic-search-panel" role="dialog" aria-label="Logic search">
       <button type="button" class="logic-search-close" id="logicSearchClose" aria-label="Close">×</button>
       <h4>Brieftick Logic · Command centre</h4>
-      <form id="logicSearchForm" class="logic-command-form" autocomplete="off" style="box-shadow:none;border:none;background:transparent;padding:0">
+      <form id="logicSearchForm" class="logic-command-form" autocomplete="off" action="#" method="post" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false" style="box-shadow:none;border:none;background:transparent;padding:0">
         <input type="text" id="logicSearchInput" class="logic-command-input" placeholder="Ask Brieftick Logic…" spellcheck="false" />
         <button type="submit" class="logic-command-submit">Run</button>
       </form>

@@ -541,6 +541,7 @@ export function initLogicPreview() {
 
   window.__LOGIC_PREVIEW = true;
   window.__AGENT_PREVIEW = true;
+  window.logicHandleSubmit = handleSubmit;
   document.documentElement.classList.add("preview-logic");
 
   const tab = document.getElementById("navLogicTab");
@@ -549,6 +550,12 @@ export function initLogicPreview() {
   bindLogicUI();
   showInitialChatHint();
   hydrateIntelligenceHub();
+
+  if (window.__logicPendingPrompt) {
+    const pending = window.__logicPendingPrompt;
+    delete window.__logicPendingPrompt;
+    handleSubmit(pending);
+  }
 
   setTimeout(() => document.getElementById("logicHeroInput")?.focus(), 400);
 
@@ -567,4 +574,5 @@ if (isLogicPreview()) {
   window.addEventListener("load", () => setTimeout(initLogicPreview, 200));
 }
 
+window.logicHandleSubmit = handleSubmit;
 export { handleSubmit as logicHandleSubmit };
