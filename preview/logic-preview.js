@@ -1,29 +1,34 @@
 /**
  * Brieftick Logic — preview UI (Logic Terminal).
  * Activate: ?preview=logic  or  ?tab=logic&preview=logic
- * Legacy: ?preview=agent redirects to Logic preview.
  */
 import { LOGIC_MODES } from "../logic/types.js";
 import { detectLogicMode, routeLogicPrompt } from "../logic/logicRouter.js";
 import { resolvePrimaryEntity } from "../logic/entityResolver.js";
 import { runMarketPulseLogic } from "../logic/marketPulseLogic.js";
 import { runRiskRegimeLogic } from "../logic/riskRegimeLogic.js";
-import { logicDebug } from "../logic/shared.js";
+import {
+  getHeadlines,
+  getWatchlist,
+  logicDebug,
+} from "../logic/shared.js";
 import { LIMITED_DATA_MSG } from "../logic/types.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 
-function getPreviewParam() {
-  return new URLSearchParams(location.search).get("preview");
-}
+const HERO_PROMPTS = [
+  { label: "Why is Nvidia moving?", prompt: "Why is Nvidia moving?" },
+  { label: "Analyze my portfolio", prompt: "Analyze my portfolio" },
+  { label: "Show risk regime", prompt: "Show risk regime" },
+  { label: "Explain today's market", prompt: "Explain today's market" },
+  { label: "AI sector rotation", prompt: "Show me AI sector rotation" },
+];
 
-export function isLogicPreview() {
-  return PREVIEW_KEYS.has(getPreviewParam());
-}
+const DEFAULT_WATCH = ["NVDA", "TSLA", "AAPL", "MSFT", "AMD", "META"];
 
-/** @type {import('../logic/types.js').LogicMode} */
 let activeMode = "market-pulse";
 let isProcessing = false;
+let hasConversation = false;
 
 function escapeHtml(s) {
   return String(s || "")
@@ -41,6 +46,37 @@ const CARD_SECTIONS = [
   ["volatility", "Volatility"],
   ["aiSummary", "Summary"],
 ];
+
+function widgetSkeleton() {
+  return `<div class="logic-skeleton-block">
+    <div class="logic-skeleton logic-skel-val"></div>
+    <div class="logic-skeleton logic-skel-line logic-skel-line--med"></div>
+    <div class="logic-skeleton logic-skel-line logic-skel-line--short"></div>
+  </div>`;
+}
+
+function hubBlockSkeleton(lines = 3) {
+  let html = "";
+  for (let i = 0; i < lines; i++) {
+    html += `<div class="logic-skeleton logic-skel-line${i === 0 ? " logic-skel-line--med" : " logic-skel-line--short"}"></div>`;
+  }
+  return html;
+}
+
+function renderLoadingState() {
+  return `<div class="logic-msg logic-msg--loading" id="logicLoading">
+    <div class="logic-processing">
+      <span class="logic-processing-glow"></span>
+      <span>Processing intelligence…</span>
+    </div>
+    <div class="logic-loading-skeleton">
+      <div class="logic-skeleton"></div>
+      <div class="logic-skeleton"></div>
+      <div class="logic-skeleton"></div>
+      <div class="logic-skeleton"></div>
+    </div>
+  </div>`;
+}
 
 function renderIntelligenceCard(res, role = "logic") {
   const cards = res.cards || {};
@@ -72,7 +108,7 @@ function renderIntelligenceCard(res, role = "logic") {
       ? `<p class="logic-limited-banner">${escapeHtml(LIMITED_DATA_MSG)}</p>`
       : "";
 
-  return `<div class="logic-msg logic-msg--${role}">
+  return `<div class="logic-msg logic-msg--logic">
     <div class="logic-msg-head">
       <span class="logic-msg-role">${role === "user" ? "You" : "Brieftick Logic"}</span>
       ${res.mode ? `<span class="logic-msg-mode">${escapeHtml(res.modeLabel || res.mode)}</span>` : ""}
@@ -111,6 +147,12 @@ function enrichResponseMeta(res, prompt) {
   };
 }
 
+function activateConversationMode() {
+  if (hasConversation) return;
+  hasConversation = true;
+  document.getElementById("logicMain")?.classList.add("logic-main--active");
+}
+
 async function handleSubmit(promptText) {
   const prompt = (promptText || "").trim();
   if (!prompt || isProcessing) return;
@@ -118,12 +160,10 @@ async function handleSubmit(promptText) {
   const chat = document.getElementById("logicChatMessages");
   if (!chat) return;
 
+  activateConversationMode();
   isProcessing = true;
   chat.insertAdjacentHTML("beforeend", renderUserBubble(prompt));
-  chat.insertAdjacentHTML(
-    "beforeend",
-    `<div class="logic-msg logic-msg--loading" id="logicLoading"><span class="logic-loading-dot"></span> Processing intelligence…</div>`
-  );
+  chat.insertAdjacentHTML("beforeend", renderLoadingState());
   scrollChatToBottom();
 
   const primary = resolvePrimaryEntity(prompt);
@@ -138,6 +178,7 @@ async function handleSubmit(promptText) {
     document.getElementById("logicLoading")?.remove();
     chat.insertAdjacentHTML("beforeend", renderIntelligenceCard(response));
     updateInsightWidgets(response);
+    updateHubFromResponse(response);
   } catch (e) {
     logicDebug("handler_error", { message: e.message });
     document.getElementById("logicLoading")?.remove();
@@ -175,47 +216,211 @@ async function handleSubmit(promptText) {
   scrollChatToBottom();
 }
 
-function updateInsightWidgets(lastResponse) {
-  const pulseEl = document.getElementById("logicWidgetPulse");
-  const riskEl = document.getElementById("logicWidgetRisk");
-  if (pulseEl && lastResponse?.mode === "market-pulse") {
-    pulseEl.innerHTML = `<div class="logic-widget-val">${escapeHtml(lastResponse.signals?.[0] || "Mixed")}</div>
-      <p class="logic-widget-copy">${escapeHtml((lastResponse.cards?.snapshot || lastResponse.summary).slice(0, 140))}…</p>`;
+function updateHubFromResponse(res) {
+  if (res.mode === "market-pulse") {
+    const el = document.getElementById("logicHubPulse");
+    if (el)
+      el.innerHTML = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(res.signals?.[0] || "Mixed")}</div>
+        <p class="logic-widget-copy">${escapeHtml((res.cards?.snapshot || "").slice(0, 120))}</p>`;
   }
-  if (riskEl && lastResponse?.mode === "risk-regime") {
-    riskEl.innerHTML = `<div class="logic-widget-val">${escapeHtml(lastResponse.signals?.[0] || "Mixed")}</div>
-      <p class="logic-widget-copy">${escapeHtml((lastResponse.cards?.snapshot || lastResponse.summary).slice(0, 140))}…</p>`;
+  if (res.mode === "risk-regime") {
+    const el = document.getElementById("logicHubRisk");
+    if (el) {
+      el.innerHTML = (res.signals || [])
+        .map(
+          (s) =>
+            `<span class="logic-risk-pill logic-widget-body--loaded"><span class="logic-risk-dot"></span>${escapeHtml(s)}</span>`
+        )
+        .join("");
+    }
   }
 }
 
-async function refreshWidgets() {
+function updateInsightWidgets(lastResponse) {
+  const pulseEl = document.getElementById("logicWidgetPulse");
+  const riskEl = document.getElementById("logicWidgetRisk");
+  const pulseHtml = (res) =>
+    `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(res.signals?.[0] || "Mixed")}</div>
+      <p class="logic-widget-copy">${escapeHtml((res.cards?.snapshot || res.summary).slice(0, 140))}…</p>`;
+  if (pulseEl && lastResponse?.mode === "market-pulse") pulseEl.innerHTML = pulseHtml(lastResponse);
+  if (riskEl && lastResponse?.mode === "risk-regime") riskEl.innerHTML = pulseHtml(lastResponse);
+}
+
+function setWidgetSkeletons() {
+  const sk = widgetSkeleton();
+  document.getElementById("logicWidgetPulse")?.insertAdjacentHTML("afterbegin", sk);
+  document.getElementById("logicWidgetRisk")?.insertAdjacentHTML("afterbegin", sk);
+  document.getElementById("logicHubPulse")?.innerHTML = hubBlockSkeleton(2);
+  document.getElementById("logicHubVol")?.innerHTML = hubBlockSkeleton(2);
+  document.getElementById("logicHubMacro")?.innerHTML = hubBlockSkeleton(3);
+  document.getElementById("logicHubRisk")?.innerHTML = hubBlockSkeleton(1);
+  document.getElementById("logicStreamInner")?.innerHTML = hubBlockSkeleton(4);
+}
+
+function renderHeroChips() {
+  const wrap = document.getElementById("logicHeroChips");
+  const grid = document.getElementById("logicSuggestGrid");
+  const chipHtml = HERO_PROMPTS.map(
+    (p) =>
+      `<button type="button" class="logic-hero-chip" data-prompt="${escapeHtml(p.prompt)}">${escapeHtml(p.label)}</button>`
+  ).join("");
+  if (wrap) wrap.innerHTML = chipHtml;
+  if (grid) {
+    grid.innerHTML = HERO_PROMPTS.map(
+      (p) =>
+        `<button type="button" class="logic-suggest-card" data-prompt="${escapeHtml(p.prompt)}">
+          <strong>${escapeHtml(p.label)}</strong>
+          <span>Run ${escapeHtml(p.label.toLowerCase())} through Brieftick Logic</span>
+        </button>`
+    ).join("");
+  }
+  bindPromptButtons();
+}
+
+function bindPromptButtons() {
+  document.querySelectorAll("[data-prompt]").forEach((btn) => {
+    if (btn.dataset.logicBound) return;
+    btn.dataset.logicBound = "1";
+    btn.addEventListener("click", () => {
+      const p = btn.dataset.prompt || "";
+      const hero = document.getElementById("logicHeroInput");
+      const bottom = document.getElementById("logicCommandInput");
+      if (hero) hero.value = p;
+      if (bottom) bottom.value = p;
+      handleSubmit(p);
+      if (hero) hero.value = "";
+      if (bottom) bottom.value = "";
+      closeLogicSearch();
+    });
+  });
+}
+
+function renderNarrativeFeed(headlines, live) {
+  const inner = document.getElementById("logicStreamInner");
+  const status = document.getElementById("logicStreamStatus");
+  if (!inner) return;
+
+  const items =
+    headlines.length > 0
+      ? headlines
+      : [
+          { headline: "Mega-cap tech anchors index tone as breadth stays selective", source: "Desk" },
+          { headline: "Rate expectations remain the primary cross-asset driver", source: "Macro" },
+          { headline: "Energy complex firm on supply narrative", source: "Commodities" },
+          { headline: "Volatility monitored into macro data prints", source: "Risk" },
+        ];
+
+  const doubled = [...items, ...items];
+  inner.innerHTML = doubled
+    .map(
+      (n, i) =>
+        `<div class="logic-stream-item logic-widget-body--loaded" style="animation-delay:${(i % 4) * 0.08}s">
+          <time>${escapeHtml(n.source || "Narrative")}</time>
+          ${escapeHtml((n.headline || "").slice(0, 140))}
+        </div>`
+    )
+    .join("");
+
+  if (status) status.textContent = live ? "Live feed" : "Contextual feed";
+}
+
+function renderWatchlistHub() {
+  const el = document.getElementById("logicHubWatchlist");
+  if (!el) return;
+  const list = getWatchlist();
+  const symbols = list.length ? list.slice(0, 8) : DEFAULT_WATCH;
+  el.innerHTML = symbols
+    .map(
+      (s) =>
+        `<button type="button" class="logic-watch-pill" data-prompt="Why is ${escapeHtml(s)} moving?">${escapeHtml(s)}</button>`
+    )
+    .join("");
+  bindPromptButtons();
+}
+
+function renderMacroHub(headlines) {
+  const el = document.getElementById("logicHubMacro");
+  if (!el) return;
+  const lines =
+    headlines.length > 0
+      ? headlines.slice(0, 4)
+      : [
+          { headline: "Fed speakers lean cautious on near-term cuts" },
+          { headline: "Inflation path still anchors rate expectations" },
+          { headline: "Dollar tone influences risk appetite" },
+        ];
+  el.innerHTML = lines
+    .map(
+      (n) =>
+        `<div class="logic-macro-line logic-widget-body--loaded">${escapeHtml((n.headline || "").slice(0, 100))}</div>`
+    )
+    .join("");
+}
+
+async function hydrateIntelligenceHub() {
+  setWidgetSkeletons();
+  renderHeroChips();
+  renderWatchlistHub();
+
+  const newsPack = await getHeadlines(8);
+  renderNarrativeFeed(newsPack.headlines, newsPack.live);
+  renderMacroHub(newsPack.headlines);
+
   try {
     const [pulse, risk] = await Promise.all([
       runMarketPulseLogic({ prompt: "market pulse" }),
       runRiskRegimeLogic({ prompt: "risk regime" }),
     ]);
+
     const pulseEl = document.getElementById("logicWidgetPulse");
     const riskEl = document.getElementById("logicWidgetRisk");
-    if (pulseEl) {
-      pulseEl.innerHTML = `<div class="logic-widget-val">${escapeHtml(pulse.signals?.[0] || "Mixed")}</div>
-        <p class="logic-widget-copy">${escapeHtml((pulse.cards?.snapshot || pulse.summary).slice(0, 150))}…</p>`;
-    }
-    if (riskEl) {
-      riskEl.innerHTML = `<div class="logic-widget-val">${escapeHtml(risk.signals?.[0] || "Mixed")}</div>
-        <p class="logic-widget-copy">${escapeHtml((risk.cards?.snapshot || risk.summary).slice(0, 150))}…</p>`;
-    }
-  } catch (_) {}
+    const hubPulse = document.getElementById("logicHubPulse");
+    const hubVol = document.getElementById("logicHubVol");
+    const hubRisk = document.getElementById("logicHubRisk");
+
+    const pulseBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(pulse.signals?.[0] || "Mixed")}</div>
+      <p class="logic-widget-copy">${escapeHtml((pulse.cards?.snapshot || pulse.summary).slice(0, 130))}</p>`;
+    const volBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(pulse.signals?.[1] || "Monitored")}</div>
+      <p class="logic-widget-copy">${escapeHtml((pulse.cards?.volatility || "Volatility channel active").slice(0, 100))}</p>`;
+    const riskBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(risk.signals?.[0] || "Mixed")}</div>
+      <p class="logic-widget-copy">${escapeHtml((risk.cards?.snapshot || risk.summary).slice(0, 130))}</p>`;
+    const riskPills = (risk.signals || ["Mixed", "Macro monitored"])
+      .map(
+        (s) =>
+          `<span class="logic-risk-pill logic-widget-body--loaded"><span class="logic-risk-dot"></span>${escapeHtml(s)}</span>`
+      )
+      .join("");
+
+    if (pulseEl) pulseEl.innerHTML = pulseBody;
+    if (riskEl) riskEl.innerHTML = riskBody;
+    if (hubPulse) hubPulse.innerHTML = pulseBody;
+    if (hubVol) hubVol.innerHTML = volBody;
+    if (hubRisk) hubRisk.innerHTML = riskPills;
+  } catch (_) {
+    logicDebug("hub_hydrate_partial", {});
+  }
+}
+
+function showInitialChatHint() {
+  const chat = document.getElementById("logicChatMessages");
+  if (!chat || chat.dataset.hint) return;
+  chat.dataset.hint = "1";
+  chat.innerHTML = `<div class="logic-welcome logic-widget-body--loaded">
+    <p class="logic-widget-copy" style="margin:0;font-size:12px;color:var(--ink-faint)">
+      Intelligence responses appear here. Select a prompt above or type in the command bar.
+    </p>
+  </div>`;
 }
 
 function openLogicSearch() {
   const overlay = document.getElementById("logicSearchOverlay");
-  const input = document.getElementById("logicCommandInput");
   if (overlay) {
     overlay.classList.add("open");
     overlay.setAttribute("aria-hidden", "false");
   }
   const searchInput = document.getElementById("logicSearchInput");
-  (searchInput || input)?.focus();
+  const hero = document.getElementById("logicHeroInput");
+  (searchInput || hero)?.focus();
 }
 
 function closeLogicSearch() {
@@ -224,6 +429,69 @@ function closeLogicSearch() {
     overlay.classList.remove("open");
     overlay.setAttribute("aria-hidden", "true");
   }
+}
+
+function bindForms() {
+  const submitHandler = (getValue, clear) => (e) => {
+    e.preventDefault();
+    handleSubmit(getValue());
+    clear();
+    closeLogicSearch();
+  };
+
+  document
+    .getElementById("logicHeroForm")
+    ?.addEventListener(
+      "submit",
+      submitHandler(
+        () => document.getElementById("logicHeroInput")?.value,
+        () => {
+          const el = document.getElementById("logicHeroInput");
+          if (el) el.value = "";
+        }
+      )
+    );
+
+  document
+    .getElementById("logicCommandForm")
+    ?.addEventListener(
+      "submit",
+      submitHandler(
+        () => document.getElementById("logicCommandInput")?.value,
+        () => {
+          const el = document.getElementById("logicCommandInput");
+          if (el) el.value = "";
+        }
+      )
+    );
+
+  document.getElementById("logicSearchForm")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v =
+      document.getElementById("logicSearchInput")?.value ||
+      document.getElementById("logicHeroInput")?.value ||
+      "";
+    handleSubmit(v);
+    ["logicSearchInput", "logicHeroInput", "logicCommandInput"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    closeLogicSearch();
+  });
+
+  document.getElementById("logicSearchClose")?.addEventListener("click", closeLogicSearch);
+  document.getElementById("logicSearchOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "logicSearchOverlay") closeLogicSearch();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (!document.getElementById("page-logic")?.classList.contains("active")) return;
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      openLogicSearch();
+    }
+    if (e.key === "Escape") closeLogicSearch();
+  });
 }
 
 function bindLogicUI() {
@@ -245,78 +513,27 @@ function bindLogicUI() {
           .querySelectorAll(".logic-mode-btn")
           .forEach((b) => b.classList.toggle("active", b === btn));
         const prompts = {
-          "market-pulse": "Explain today's overall market direction",
-          ticker: "What is the latest news on Nvidia?",
-          portfolio: "Analyze my portfolio exposure",
+          "market-pulse": "Explain today's market",
+          ticker: "Why is Nvidia moving?",
+          portfolio: "Analyze my portfolio",
           "sector-rotation": "Show me AI sector rotation",
-          "risk-regime": "What is today's market risk?",
+          "risk-regime": "Show risk regime",
           "daily-brief": "Give me today's market brief",
           scenario: "What happens if rates rise?",
         };
-        const input = document.getElementById("logicCommandInput");
-        if (input) input.value = prompts[activeMode] || "";
+        const p = prompts[activeMode] || "";
+        const hero = document.getElementById("logicHeroInput");
+        const bottom = document.getElementById("logicCommandInput");
+        if (hero) hero.value = p;
+        if (bottom) bottom.value = p;
       });
     });
   }
-
-  const form = document.getElementById("logicCommandForm");
-  const input = document.getElementById("logicCommandInput");
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    handleSubmit(input?.value);
-    if (input) input.value = "";
-    closeLogicSearch();
-  });
-
-  const searchForm = document.getElementById("logicSearchForm");
-  const searchInput = document.getElementById("logicSearchInput");
-  searchForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    handleSubmit(searchInput?.value || input?.value);
-    if (searchInput) searchInput.value = "";
-    if (input) input.value = "";
-    closeLogicSearch();
-  });
-
-  document.querySelectorAll(".logic-quick-prompt").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const p = btn.dataset.prompt || "";
-      handleSubmit(p);
-      if (input) input.value = "";
-      closeLogicSearch();
-    });
-  });
-
-  document.getElementById("logicSearchClose")?.addEventListener("click", closeLogicSearch);
-  document.getElementById("logicSearchOverlay")?.addEventListener("click", (e) => {
-    if (e.target.id === "logicSearchOverlay") closeLogicSearch();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    const onLogicPage = document.getElementById("page-logic")?.classList.contains("active");
-    if (!onLogicPage) return;
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-      e.preventDefault();
-      openLogicSearch();
-    }
-    if (e.key === "Escape") closeLogicSearch();
-  });
+  bindForms();
 }
 
-function showWelcome() {
-  const chat = document.getElementById("logicChatMessages");
-  if (!chat || chat.dataset.welcome) return;
-  chat.dataset.welcome = "1";
-  chat.innerHTML = `<div class="logic-welcome">
-    <h3>Understand what moves markets.</h3>
-    <p>Brieftick Logic interprets macro tone, tickers, sectors, risk, and portfolio exposure in plain English — not trade ideas.</p>
-    <div class="logic-quick-prompts">
-      <button type="button" class="logic-quick-prompt" data-prompt="What is the latest news on Nvidia?">Latest news on Nvidia</button>
-      <button type="button" class="logic-quick-prompt" data-prompt="Why is Tesla moving?">Why is Tesla moving?</button>
-      <button type="button" class="logic-quick-prompt" data-prompt="Analyze my portfolio">Analyze my portfolio</button>
-      <button type="button" class="logic-quick-prompt" data-prompt="What is today's market risk?">Today's market risk</button>
-    </div>
-  </div>`;
+export function isLogicPreview() {
+  return PREVIEW_KEYS.has(new URLSearchParams(location.search).get("preview"));
 }
 
 export function initLogicPreview() {
@@ -330,8 +547,10 @@ export function initLogicPreview() {
   if (tab) tab.style.display = "";
 
   bindLogicUI();
-  showWelcome();
-  refreshWidgets();
+  showInitialChatHint();
+  hydrateIntelligenceHub();
+
+  setTimeout(() => document.getElementById("logicHeroInput")?.focus(), 400);
 
   const params = new URLSearchParams(location.search);
   if (params.get("tab") === "logic" || params.get("tab") === "agent" || isLogicPreview()) {
@@ -348,4 +567,4 @@ if (isLogicPreview()) {
   window.addEventListener("load", () => setTimeout(initLogicPreview, 200));
 }
 
-export { handleSubmit as logicHandleSubmit, isLogicPreview };
+export { handleSubmit as logicHandleSubmit };
