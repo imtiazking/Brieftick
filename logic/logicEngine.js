@@ -1,15 +1,21 @@
 /**
- * Logic intelligence engine — orchestrates entity, sources, fusion, confidence, memory.
+ * Brieftick Logic — structured intelligence pipeline orchestrator.
+ *
+ * Prompt → entityResolver → intent + modeDetect → sourceRouter
+ *       → multiSourceFetch → dataFusion → Logic module → fallbackIntelligence
+ *       → watchlist + portfolioMemory → confidenceEngine → Intelligence Cards UI
+ *
  * @module logic/logicEngine
  */
 
 import { resolveEntities, resolvePrimaryEntity } from "./entityResolver.js";
-import { detectLogicMode } from "./modeDetect.js";
+import { detectIntent } from "./intentDetect.js";
 import { routeSources } from "./sourceRouter.js";
-import { fetchFusedData } from "./dataFusion.js";
-import { applyConfidenceToResponse } from "./confidence.js";
+import { fetchAndFuse } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { applyMemoryToResponse, buildMemoryContext, recordLogicInteraction } from "./watchlistMemory.js";
+import { applyPortfolioMemoryToResponse, buildPortfolioMemory } from "./portfolioMemory.js";
+import { applyConfidenceEngine } from "./confidenceEngine.js";
 import { logicDebug } from "./shared.js";
 import { LIMITED_DATA_MSG } from "./types.js";
 
@@ -22,37 +28,34 @@ import { runDailyBriefLogic } from "./dailyBriefLogic.js";
 import { runScenarioAnalysisLogic } from "./scenarioAnalysisLogic.js";
 
 /**
+ * Post-module pipeline: fallback guard → memory → confidence.
  * @param {import('./types.js').LogicResponse} res
  * @param {object} ctx
  */
 export function finalizeLogicResponse(res, ctx) {
   let out = { ...res };
 
-  if (/unable to provide|cannot provide analysis/i.test(out.summary || "")) {
-    out.summary = `${LIMITED_DATA_MSG} ${buildFallbackResponse(ctx).summary}`;
-    out.dataLimited = true;
+  if (/unable to provide|cannot provide analysis|unable to analyze/i.test(out.summary || "")) {
+    logicDebug("fallback triggered", "blocked empty copy");
+    out = buildFallbackResponse(ctx);
   }
 
-  const memory = ctx.memory || buildMemoryContext(ctx.primaryEntity, ctx.mode);
-  out = applyMemoryToResponse(out, memory);
+  if (!out?.cards?.snapshot?.trim()) {
+    logicDebug("fallback triggered", "missing snapshot card");
+    out = buildFallbackResponse(ctx);
+  }
 
-  out = applyConfidenceToResponse(out, {
-    entityConfidence: ctx.primaryEntity?.confidence,
-    sourceAgreement: ctx.fusion?.sourceAgreement,
-    liveSourceCount: ctx.fusion?.liveSourceCount,
-    hasQuote: ctx.fusion?.hasQuote,
-    hasNews: ctx.fusion?.hasNews,
-  });
+  const watchlistMemory = ctx.memory || buildMemoryContext(ctx.primaryEntity, ctx.mode);
+  out = applyMemoryToResponse(out, watchlistMemory);
+
+  const portfolioMemory = ctx.portfolioMemory || buildPortfolioMemory();
+  out = applyPortfolioMemoryToResponse(out, portfolioMemory, ctx.mode);
+
+  out = applyConfidenceEngine(out, ctx.fusion, ctx.primaryEntity);
 
   if (!out.sources?.length) {
     out.sources = ["Brieftick Logic"];
   }
-
-  logicDebug("confidence level", {
-    label: out.confidenceLabel,
-    score: out.confidence,
-    level: out.confidenceLevel,
-  });
 
   return out;
 }
@@ -64,15 +67,21 @@ export function finalizeLogicResponse(res, ctx) {
 export async function executeLogicPipeline(prompt, modeOverride) {
   logicDebug("prompt received", prompt.slice(0, 160));
 
+  // 1. entityResolver
   const entities = resolveEntities(prompt);
   const primaryEntity = resolvePrimaryEntity(prompt);
-  const mode = modeOverride || detectLogicMode(prompt, primaryEntity);
+  logicDebug("entity resolved", { primary: primaryEntity, entities });
 
-  logicDebug("entity resolved", { primary: primaryEntity, count: entities.length });
-  logicDebug("Logic module selected", mode);
+  // 2. intent + modeDetect
+  const intentResult = detectIntent(prompt, primaryEntity);
+  const mode = modeOverride || intentResult.mode;
+  logicDebug("Logic module selected", { mode, intent: intentResult.intent });
 
+  // 3. sourceRouter
   const sourceRoute = routeSources({ prompt, mode, primaryEntity });
-  const fusion = await fetchFusedData(sourceRoute, {
+
+  // 4. multiSourceFetch → 5. dataFusion
+  const fusion = await fetchAndFuse(sourceRoute, {
     prompt,
     mode,
     primaryEntity,
@@ -80,13 +89,26 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   });
 
   const memory = buildMemoryContext(primaryEntity, mode);
-  const ctx = { prompt, primaryEntity, entities, mode, sourceRoute, fusion, memory };
+  const portfolioMemory = buildPortfolioMemory();
+  const ctx = {
+    prompt,
+    primaryEntity,
+    entities,
+    mode,
+    intent: intentResult.intent,
+    intentLabel: intentResult.label,
+    sourceRoute,
+    fusion,
+    memory,
+    portfolioMemory,
+  };
 
+  // 6. Logic module
   let response;
   try {
     response = await runLogicModule(ctx);
-    if (!response?.title || !response?.cards?.snapshot) {
-      logicDebug("fallback triggered", "empty module response");
+    if (!response?.title) {
+      logicDebug("fallback triggered", "no title");
       response = buildFallbackResponse(ctx);
     }
   } catch (e) {
@@ -94,15 +116,16 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     response = buildFallbackResponse(ctx);
   }
 
+  // 7–9. fallback guard + watchlist/portfolio memory + confidenceEngine
   response = finalizeLogicResponse(
-    { ...response, mode: response.mode || mode },
+    { ...response, mode: response.mode || mode, intent: intentResult.intent },
     ctx
   );
 
   recordLogicInteraction(prompt, mode, primaryEntity);
   logicDebug("render completed", {
     mode,
-    title: response.title,
+    intent: intentResult.intent,
     confidence: response.confidenceLabel,
   });
 

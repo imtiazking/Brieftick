@@ -74,7 +74,7 @@ export async function runTickerIntelligenceLogic(ctx) {
           keyDrivers: ["News catalyst", "Sector sympathy", "Macro rates backdrop"],
           signals: ["Headline-driven", fq?.agreement ? "Sources aligned" : "Volatility active"],
           confidence: fq?.agreement ? 76 : 72,
-          sources: fusionAttributionSources(fusion || { providers: ["finnhub"], failedSources }, "ticker"),
+          sources: fusionAttributionSources(fusion || { providers: ["finnhub"], failedSources }),
           mode: "ticker",
           usedAI: true,
         });
@@ -96,7 +96,7 @@ export async function runTickerIntelligenceLogic(ctx) {
       mode: "ticker",
       mockData: !fusion?.live,
       sources: fusion
-        ? fusionAttributionSources(fusion, "ticker")
+        ? fusionAttributionSources(fusion)
         : ai.sources,
     };
   }
@@ -150,7 +150,7 @@ export async function runTickerIntelligenceLogic(ctx) {
       ],
       confidence: quote && fusion?.live ? 74 : 52,
       sources: fusion
-        ? fusionAttributionSources(fusion, "ticker")
+        ? fusionAttributionSources(fusion)
         : ["Brieftick Logic · contextual"],
       mode: "ticker",
       mockData: !quote || !fusion?.live,

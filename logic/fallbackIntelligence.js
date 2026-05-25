@@ -93,7 +93,7 @@ export function buildFallbackResponse(ctx) {
     ],
     confidence: fusion?.live ? 48 : 38,
     sources: fusion
-      ? fusionAttributionSources(fusion, mode)
+      ? fusionAttributionSources(fusion)
       : ["Brieftick Logic", "Macro Feed"],
     disclaimer: LOGIC_DISCLAIMER,
     mode,

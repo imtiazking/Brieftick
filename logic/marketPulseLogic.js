@@ -46,7 +46,7 @@ ${buildFusionPromptExtras(ctx, "SPY")}`;
       ...ai,
       mode: "market-pulse",
       mockData: !fusion?.live,
-      sources: fusion ? fusionAttributionSources(fusion, "market-pulse") : ai.sources,
+      sources: fusion ? fusionAttributionSources(fusion) : ai.sources,
     };
   }
 
@@ -83,7 +83,7 @@ ${buildFusionPromptExtras(ctx, "SPY")}`;
       signals: [tone, spyPct != null && spyPct >= 0 ? "Equities firm" : "Equities soft", "Macro in focus"],
       confidence: fusion?.live && spyPct != null ? 72 : 52,
       sources: fusion
-        ? fusionAttributionSources(fusion, "market-pulse")
+        ? fusionAttributionSources(fusion)
         : ["Brieftick Logic"],
       mode: "market-pulse",
       mockData: !fusion?.live,

@@ -2,7 +2,7 @@
  * Brieftick Logic — preview UI (Logic Terminal).
  */
 import { LOGIC_MODES, buildLogicResponse, LOGIC_DISCLAIMER, LIMITED_DATA_MSG } from "../logic/types.js";
-import { detectLogicMode, routeLogicPrompt } from "../logic/logicRouter.js";
+import { detectLogicMode, detectIntent, routeLogicPrompt } from "../logic/logicRouter.js";
 import { resolvePrimaryEntity } from "../logic/entityResolver.js";
 import { runMarketPulseLogic } from "../logic/marketPulseLogic.js";
 import { runRiskRegimeLogic } from "../logic/riskRegimeLogic.js";
@@ -296,8 +296,11 @@ export async function submitLogicQuery(promptText) {
   setRunButtonsDisabled(true);
 
   const primary = resolvePrimaryEntity(prompt);
-  const mode = detectLogicMode(prompt, primary);
+  const intent = detectIntent(prompt, primary);
+  const mode = intent.mode;
   activeMode = mode;
+  logicLog("entity resolved", primary);
+  logicLog("intent detected", intent.intent);
   logicLog("selected Logic module", mode);
 
   document

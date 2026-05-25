@@ -38,7 +38,7 @@ export async function runRiskRegimeLogic(ctx) {
     return {
       ...ai,
       mode: "risk-regime",
-      sources: ctx.fusion ? fusionAttributionSources(ctx.fusion, "risk-regime") : ai.sources,
+      sources: ctx.fusion ? fusionAttributionSources(ctx.fusion) : ai.sources,
       optionalCards: { riskSignal: `${signal} · ${vixLabel}` },
     };
   }
@@ -59,7 +59,7 @@ export async function runRiskRegimeLogic(ctx) {
       signals: [signal, `Volatility: ${vixLabel}`, "Monitor macro"],
       confidence: ctx.fusion?.live ? 72 : 58,
       sources: ctx.fusion
-        ? fusionAttributionSources(ctx.fusion, "risk-regime")
+        ? fusionAttributionSources(ctx.fusion)
         : ["Macro Feed", "Brieftick Logic"],
       mode: "risk-regime",
       mockData: !ctx.fusion?.live,

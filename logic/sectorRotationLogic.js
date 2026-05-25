@@ -4,7 +4,9 @@ import {
   getHeadlines,
   withDataLimited,
   MOCK_HEADLINES,
+  buildFusionPromptExtras,
 } from "./shared.js";
+import { fusionAttributionSources } from "./dataFusion.js";
 
 const SECTOR_ETFS = [
   ["XLK", "Technology"],
@@ -33,7 +35,7 @@ export async function runSectorRotationLogic(ctx) {
     } catch (e) {
       failedSources.push(`sector_etf:${sym}`);
     }
-    rows.push({ sym, label, pct: pct ?? (Math.random() * 2 - 1) });
+    rows.push({ sym, label, pct: pct ?? null });
   }
 
   rows.sort((a, b) => (b.pct ?? 0) - (a.pct ?? 0));

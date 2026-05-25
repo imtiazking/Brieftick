@@ -52,7 +52,7 @@ export async function runPortfolioLogic(ctx) {
       ...ai,
       mode: "portfolio",
       mockData: !holdings.length,
-      sources: ctx.fusion ? fusionAttributionSources(ctx.fusion, "portfolio") : ai.sources,
+      sources: ctx.fusion ? fusionAttributionSources(ctx.fusion) : ai.sources,
       optionalCards: {
         portfolioImpact: `Concentration in ${top3.map((h) => h.symbol).join(", ")} (~${top3Weight.toFixed(0)}% top-3) · macro and vol transmission elevated`,
         riskSignal: top3Weight > 35 ? "Correlation risk elevated" : "Moderate book diversification",
@@ -85,7 +85,7 @@ export async function runPortfolioLogic(ctx) {
       ],
       confidence: holdings.length ? 68 : 54,
       sources: ctx.fusion
-        ? fusionAttributionSources(ctx.fusion, "portfolio")
+        ? fusionAttributionSources(ctx.fusion)
         : holdings.length
           ? ["Portfolio Context", "Finnhub", "Brieftick Logic"]
           : ["Sample book · Brieftick Logic"],

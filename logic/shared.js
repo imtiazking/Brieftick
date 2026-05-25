@@ -35,7 +35,18 @@ export function buildFusionPromptExtras(ctx, symbol) {
   const quoteLine = q
     ? `Quote (${q.providers.join("+")}): ${q.pctChange >= 0 ? "+" : ""}${q.pctChange?.toFixed(2)}% agreement=${q.agreement}`
     : "Quote: unavailable";
-  return `${quoteLine}\nHeadlines: ${news || "contextual"}\nMemory: ${ctx.memory?.hint || "none"}`;
+  const sentiment = fusion.sentiment?.label || "";
+  const vol = fusion.volatility
+    ? `VIX/regime: ${fusion.volatility.vixLabel} · ${fusion.volatility.regime}`
+    : "";
+  const sector =
+    fusion.sectorMoves?.length > 0
+      ? `Sectors: ${fusion.sectorMoves
+          .slice(0, 3)
+          .map((s) => `${s.label} ${s.pct != null ? (s.pct >= 0 ? "+" : "") + s.pct.toFixed(2) + "%" : "—"}`)
+          .join(", ")}`
+      : "";
+  return `${quoteLine}\nHeadlines: ${news || "contextual"}\n${sentiment}\n${vol}\n${sector}\nWatchlist: ${ctx.memory?.hint || "none"}\nPortfolio: ${ctx.portfolioMemory?.hint || "none"}`;
 }
 
 /**

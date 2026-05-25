@@ -1,51 +1,66 @@
-# Brieftick Logic — Intelligence Engine (Preview)
+# Brieftick Logic — Structured Intelligence Pipeline (Preview)
 
-Structured market intelligence pipeline. **Preview branch only** until approved for `main`.
+**Preview branch only.** Do not merge to `main` / production without explicit approval.
 
-## Pipeline
+## Target architecture
 
 ```
-User prompt
-  → entityResolver (normalize companies, tickers, ETFs, sectors, indices, macro)
-  → modeDetect (route to 7 Logic modules)
-  → sourceRouter (Finnhub, Twelve Data, Polygon, macro, portfolio context)
-  → dataFusion (multi-source quotes + news, cross-check, relevance filter)
-  → Logic module (Market Pulse, Ticker, Portfolio, …)
-  → fallbackIntelligence (if empty / API fail — never “unable to analyze”)
-  → watchlistMemory (personalized hints)
-  → confidence (High / Moderate / Limited live / Partial data)
-  → UI cards in #logicResultSurface
+Prompt
+  ↓
+entityResolver
+  ↓
+intent + modeDetect
+  ↓
+sourceRouter
+  ↓
+multiSourceFetch
+  ↓
+dataFusion
+  ↓
+Logic module
+  ↓
+fallbackIntelligence
+  ↓
+watchlist + portfolioMemory
+  ↓
+confidenceEngine
+  ↓
+Intelligence Cards UI (#logicResultSurface)
 ```
 
-## Files
+## Stage reference
 
-| File | Role |
-|------|------|
-| `entityResolver.js` | Aliases, stopwords, no first-word ticker false positives |
-| `modeDetect.js` | Module selection from prompt + entity |
-| `sourceRouter.js` | Provider routing by intent |
-| `dataFusion.js` | Multi-source fetch + agreement scoring |
-| `confidence.js` | Structured confidence labels |
-| `watchlistMemory.js` | Watchlist, themes, interaction memory |
-| `fallbackIntelligence.js` | Always-on contextual cards |
-| `logicEngine.js` | Orchestrator (`executeLogicPipeline`) |
-| `logicRouter.js` | Public API: `routeLogicPrompt`, `detectLogicMode` |
-| `shared.js` | LLM, headlines, quotes, debug logging |
-| `*Logic.js` | Seven module handlers |
-| `freeAccess.js` | Free tier limits (preview + signed-in Free) |
-| `preview/logic-preview.js` | UI submit + card render |
+| Stage | Module | Responsibility |
+|-------|--------|----------------|
+| 1 | `entityResolver.js` | Companies, tickers, ETFs, sectors, indices, macro; aliases (Nvidia→NVDA, AI stocks→XLK); no first-word ticker false positives |
+| 2 | `intentDetect.js` + `modeDetect.js` | User intent label + Logic module (ticker, market pulse, risk, portfolio, sector, brief, scenario) |
+| 3 | `sourceRouter.js` | Route quote / news / macro / earnings / sentiment / volatility to Finnhub, Polygon, Twelve Data, macro feed, portfolio context |
+| 4 | `multiSourceFetch.js` | Parallel fetch all routed sources |
+| 5 | `dataFusion.js` | Merge price, news, sentiment, vol, sector moves, portfolio into `FusionBundle` |
+| 6 | `*Logic.js` | Module-specific narrative + structured cards |
+| 7 | `fallbackIntelligence.js` | Never blank; never “Unable to analyze”; historical + macro + sector context |
+| 8 | `watchlistMemory.js` + `portfolioMemory.js` | Watchlist, themes, interactions, concentration, exposure |
+| 9 | `confidenceEngine.js` | High / Moderate / Limited live confirmation / Partial market data |
+| 10 | `preview/logic-preview.js` | Render Snapshot, Catalyst, Macro, Sector, Volatility, Summary (+ optional cards) |
 
-## Mock vs live data
+Orchestrator: `logicEngine.js` (`executeLogicPipeline`).
 
-- **Live:** Finnhub news/quotes when API keys are set in Settings; Twelve Data used as secondary quote check when configured.
-- **Partial:** `Live market confirmation currently limited.` banner + **Limited live confirmation** confidence.
-- **Contextual:** Historical/sector/macro narrative via `fallbackIntelligence.js` — not an error state.
+Public API: `logicRouter.js` → `routeLogicPrompt`, `detectLogicMode`, `detectIntent`.
+
+## Mock vs live
+
+| State | Behavior |
+|-------|----------|
+| **Live** | Finnhub (+ Twelve Data / Polygon when keys set in Settings) |
+| **Limited** | Banner: “Live market confirmation currently limited.” |
+| **Contextual** | `fallbackIntelligence.js` — partial intelligence, not an error |
 
 ## Safety
 
-Every response includes: **Market intelligence, not financial advice.**  
+Every response: **Market intelligence, not financial advice.**  
 No buy/sell/hold or trade execution.
 
-## Preview URL
+## Preview
 
-`?preview=logic&tab=logic` on the Vercel PR deployment, or **Logic** tab when signed in.
+`?preview=logic&tab=logic` on the PR Vercel deployment, or **Logic** tab when signed in.  
+Add `&logic_debug=1` for `[Brieftick Logic]` console logs.
