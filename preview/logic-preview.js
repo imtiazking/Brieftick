@@ -1,20 +1,15 @@
 /**
  * Brieftick Logic — preview UI (Logic Terminal).
- * Activate: ?preview=logic  or  ?tab=logic&preview=logic
  */
-import { LOGIC_MODES } from "../logic/types.js";
+import { LOGIC_MODES, buildLogicResponse, LOGIC_DISCLAIMER, LIMITED_DATA_MSG } from "../logic/types.js";
 import { detectLogicMode, routeLogicPrompt } from "../logic/logicRouter.js";
 import { resolvePrimaryEntity } from "../logic/entityResolver.js";
 import { runMarketPulseLogic } from "../logic/marketPulseLogic.js";
 import { runRiskRegimeLogic } from "../logic/riskRegimeLogic.js";
-import {
-  getHeadlines,
-  getWatchlist,
-  logicDebug,
-} from "../logic/shared.js";
-import { LIMITED_DATA_MSG } from "../logic/types.js";
+import { getHeadlines, getWatchlist } from "../logic/shared.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
+const LOGIC_API_TIMEOUT_MS = 14000;
 
 const HERO_PROMPTS = [
   { label: "Why is Nvidia moving?", prompt: "Why is Nvidia moving?" },
@@ -28,7 +23,11 @@ const DEFAULT_WATCH = ["NVDA", "TSLA", "AAPL", "MSFT", "AMD", "META"];
 
 let activeMode = "market-pulse";
 let isProcessing = false;
-let hasConversation = false;
+
+function logicLog(event, data) {
+  const payload = data !== undefined ? data : "";
+  console.log(`[Brieftick Logic] ${event}`, payload);
+}
 
 function escapeHtml(s) {
   return String(s || "")
@@ -47,27 +46,30 @@ const CARD_SECTIONS = [
   ["aiSummary", "Summary"],
 ];
 
-function widgetSkeleton() {
-  return `<div class="logic-skeleton-block">
-    <div class="logic-skeleton logic-skel-val"></div>
-    <div class="logic-skeleton logic-skel-line logic-skel-line--med"></div>
-    <div class="logic-skeleton logic-skel-line logic-skel-line--short"></div>
-  </div>`;
-}
-
-function hubBlockSkeleton(lines = 3) {
-  let html = "";
-  for (let i = 0; i < lines; i++) {
-    html += `<div class="logic-skeleton logic-skel-line${i === 0 ? " logic-skel-line--med" : " logic-skel-line--short"}"></div>`;
-  }
-  return html;
+function ensureFullCards(res) {
+  const cards = { ...(res.cards || {}) };
+  const summary = res.summary || "Market intelligence context is available.";
+  const drivers = res.keyDrivers || [];
+  const signals = res.signals || [];
+  return {
+    ...res,
+    cards: {
+      snapshot: cards.snapshot || summary.slice(0, 220),
+      catalyst: cards.catalyst || drivers[0] || "Headline and catalyst channel in focus",
+      macroContext: cards.macroContext || drivers[1] || "Rates, policy, and inflation path anchor the tape",
+      sectorImpact: cards.sectorImpact || drivers[2] || "Sector beta and peer sympathy shape relative moves",
+      volatility: cards.volatility || signals.find((s) => /vol|risk/i.test(s)) || signals[0] || "Volatility monitored",
+      aiSummary: cards.aiSummary || summary,
+    },
+    disclaimer: res.disclaimer || LOGIC_DISCLAIMER,
+  };
 }
 
 function renderLoadingState() {
   return `<div class="logic-msg logic-msg--loading" id="logicLoading">
     <div class="logic-processing">
       <span class="logic-processing-glow"></span>
-      <span>Processing intelligence…</span>
+      <span>Analyzing…</span>
     </div>
     <div class="logic-loading-skeleton">
       <div class="logic-skeleton"></div>
@@ -79,49 +81,49 @@ function renderLoadingState() {
 }
 
 function renderIntelligenceCard(res, role = "logic") {
-  const cards = res.cards || {};
+  const full = ensureFullCards(res);
+  const cards = full.cards;
   const sections = CARD_SECTIONS.map(([key, label]) => {
     const text = cards[key];
-    if (!text) return "";
-    const full = key === "aiSummary" ? " logic-intel-section--full" : "";
-    return `<div class="logic-intel-section${full}">
+    const fullRow = key === "aiSummary" ? " logic-intel-section--full" : "";
+    return `<div class="logic-intel-section${fullRow}">
       <div class="logic-intel-label">${escapeHtml(label)}</div>
       <p class="logic-intel-text">${escapeHtml(text)}</p>
     </div>`;
   }).join("");
 
-  const signals = (res.signals || [])
+  const signals = (full.signals || [])
     .map((s) => `<span class="logic-signal-chip">${escapeHtml(s)}</span>`)
     .join("");
 
   const meta = [
-    res.usedAI ? "Logic enriched" : null,
-    res.dataLimited || res.mockData ? "Partial / delayed data" : null,
-    `Confidence ${res.confidence}%`,
-    res.primarySymbol ? res.primarySymbol : null,
+    full.usedAI ? "Logic enriched" : null,
+    full.dataLimited || full.mockData ? "Partial / delayed data" : null,
+    `Confidence ${full.confidence}%`,
+    full.primarySymbol ? full.primarySymbol : null,
   ]
     .filter(Boolean)
     .join(" · ");
 
   const limitedBanner =
-    res.dataLimited || res.mockData
+    full.dataLimited || full.mockData
       ? `<p class="logic-limited-banner">${escapeHtml(LIMITED_DATA_MSG)}</p>`
       : "";
 
   return `<div class="logic-msg logic-msg--logic">
     <div class="logic-msg-head">
       <span class="logic-msg-role">${role === "user" ? "You" : "Brieftick Logic"}</span>
-      ${res.mode ? `<span class="logic-msg-mode">${escapeHtml(res.modeLabel || res.mode)}</span>` : ""}
+      ${full.mode ? `<span class="logic-msg-mode">${escapeHtml(full.modeLabel || full.mode)}</span>` : ""}
     </div>
-    <h3 class="logic-msg-title">${escapeHtml(res.title)}</h3>
+    <h3 class="logic-msg-title">${escapeHtml(full.title)}</h3>
     ${limitedBanner}
     <div class="logic-intel-card">${sections}</div>
     ${signals ? `<div class="logic-signal-row">${signals}</div>` : ""}
     <div class="logic-msg-foot">
       <span>${escapeHtml(meta)}</span>
-      <span class="logic-msg-sources">${escapeHtml((res.sources || []).join(" · "))}</span>
+      <span class="logic-msg-sources">${escapeHtml((full.sources || []).join(" · "))}</span>
     </div>
-    <p class="logic-disclaimer">${escapeHtml(res.disclaimer)}</p>
+    <p class="logic-disclaimer">${escapeHtml(full.disclaimer)}</p>
   </div>`;
 }
 
@@ -132,89 +134,186 @@ function renderUserBubble(text) {
   </div>`;
 }
 
-function scrollChatToBottom() {
-  const el = document.getElementById("logicChatMessages");
-  if (el) el.scrollTop = el.scrollHeight;
+function setRunButtonsDisabled(disabled) {
+  document.querySelectorAll(".logic-hero-submit, .logic-command-submit").forEach((btn) => {
+    btn.disabled = disabled;
+  });
+}
+
+function showResultPanelLoading() {
+  const surface = document.getElementById("logicResultSurface");
+  const idle = document.getElementById("logicResultIdle");
+  const content = document.getElementById("logicResultContent");
+  if (surface) {
+    surface.classList.add("is-processing");
+    surface.classList.remove("is-ready");
+  }
+  if (idle) idle.hidden = true;
+  if (content) {
+    content.hidden = false;
+    content.innerHTML = renderLoadingState();
+  }
+  logicLog("render state updated", "loading");
+}
+
+function renderToPanels(userHtml, responseHtml) {
+  const content = document.getElementById("logicResultContent");
+  const chat = document.getElementById("logicChatMessages");
+  const surface = document.getElementById("logicResultSurface");
+  const idle = document.getElementById("logicResultIdle");
+
+  if (content) {
+    content.hidden = false;
+    content.innerHTML = (userHtml || "") + (responseHtml || "");
+  }
+  if (idle) idle.hidden = true;
+  if (surface) {
+    surface.classList.remove("is-processing");
+    surface.classList.add("is-ready");
+  }
+  if (chat) {
+    if (userHtml) chat.insertAdjacentHTML("beforeend", userHtml);
+    if (responseHtml) chat.insertAdjacentHTML("beforeend", responseHtml);
+    chat.scrollTop = chat.scrollHeight;
+  }
+  logicLog("render state updated", "response visible");
+}
+
+function scrollResultPanel() {
+  const content = document.getElementById("logicResultContent");
+  if (content) content.scrollTop = content.scrollHeight;
 }
 
 function enrichResponseMeta(res, prompt) {
   const primary = resolvePrimaryEntity(prompt);
   const modeMeta = LOGIC_MODES.find((m) => m.id === res.mode);
-  return {
+  return ensureFullCards({
     ...res,
     primarySymbol: primary.symbol || undefined,
     modeLabel: modeMeta?.label || res.mode,
-  };
+  });
 }
 
-function activateConversationMode() {
-  if (hasConversation) return;
-  hasConversation = true;
-  document.getElementById("logicMain")?.classList.add("logic-main--active");
+function buildMockResponse(prompt, mode) {
+  const primary = resolvePrimaryEntity(prompt);
+  const sym = primary.symbol || "NVDA";
+  const name = primary.companyName || sym;
+  return buildLogicResponse({
+    title: `${name} (${sym}) · Logic preview`,
+    summary: `${name} is in focus on today's tape. Headline sensitivity and sector beta remain the primary channels, with macro rates framing the move. This is a contextual read while live feeds connect.`,
+    cards: {
+      snapshot: `${sym} — session attention elevated; narrative-driven`,
+      catalyst: "Earnings expectations, AI demand commentary, and supply headlines",
+      macroContext: "Rate path and risk appetite set the backdrop for mega-cap tech",
+      sectorImpact: "Semiconductor and AI peer group sympathy likely amplifies moves",
+      volatility: "Single-name volatility active; monitor headline gaps",
+      aiSummary: `${name} moves are being read through headlines, sector tone, and macro risk channels rather than an isolated technical print.`,
+    },
+    keyDrivers: ["Headline flow", "Sector sympathy", "Macro rates"],
+    signals: ["Headline-sensitive", "Volatility active"],
+    confidence: 58,
+    sources: ["Brieftick Logic · preview mock"],
+    disclaimer: LOGIC_DISCLAIMER,
+    mode: mode || "ticker",
+    mockData: true,
+    dataLimited: true,
+  });
 }
 
-async function handleSubmit(promptText) {
+function runLogicWithTimeout(prompt, mode) {
+  logicLog("API request started", { prompt: prompt.slice(0, 80), mode });
+  return Promise.race([
+    routeLogicPrompt(prompt, mode),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Logic request timed out")), LOGIC_API_TIMEOUT_MS)
+    ),
+  ]);
+}
+
+/**
+ * Single submit entry — hero Run Logic, bottom bar, Enter, chips, Cmd+K.
+ */
+export async function submitLogicQuery(promptText) {
   const prompt = (promptText || "").trim();
-  if (!prompt || isProcessing) return;
+  if (!prompt) {
+    logicLog("error", "empty prompt");
+    return;
+  }
+  if (isProcessing) {
+    logicLog("error", "already processing");
+    return;
+  }
 
-  const chat = document.getElementById("logicChatMessages");
-  if (!chat) return;
-
-  activateConversationMode();
+  logicLog("submitted prompt", prompt);
   isProcessing = true;
-  chat.insertAdjacentHTML("beforeend", renderUserBubble(prompt));
-  chat.insertAdjacentHTML("beforeend", renderLoadingState());
-  scrollChatToBottom();
+  setRunButtonsDisabled(true);
 
   const primary = resolvePrimaryEntity(prompt);
   const mode = detectLogicMode(prompt, primary);
   activeMode = mode;
+  logicLog("selected Logic module", mode);
+
   document
     .querySelectorAll(".logic-mode-btn")
     .forEach((b) => b.classList.toggle("active", b.dataset.mode === mode));
 
-  try {
-    const response = enrichResponseMeta(await routeLogicPrompt(prompt, mode), prompt);
-    document.getElementById("logicLoading")?.remove();
-    chat.insertAdjacentHTML("beforeend", renderIntelligenceCard(response));
-    updateInsightWidgets(response);
-    updateHubFromResponse(response);
-  } catch (e) {
-    logicDebug("handler_error", { message: e.message });
-    document.getElementById("logicLoading")?.remove();
-    chat.insertAdjacentHTML(
-      "beforeend",
-      renderIntelligenceCard(
-        enrichResponseMeta(
-          {
-            title: "Logic · Contextual read",
-            summary: LIMITED_DATA_MSG,
-            cards: {
-              snapshot: LIMITED_DATA_MSG,
-              catalyst: "Headline channel may be delayed",
-              macroContext: "Macro backdrop still applies from prior session tone",
-              sectorImpact: "Sector narrative inferred from theme mapping",
-              volatility: "Volatility regime unchanged pending live confirm",
-              aiSummary:
-                "Historical context and sector narrative remain available while live feeds catch up.",
-            },
-            keyDrivers: ["Delayed live feed", "Contextual inference"],
-            signals: ["Data limited"],
-            confidence: 45,
-            sources: ["Brieftick Logic"],
-            disclaimer: "Market intelligence, not financial advice.",
-            dataLimited: true,
-            mockData: true,
-          },
-          prompt
-        )
-      )
-    );
+  const userHtml = renderUserBubble(prompt);
+  showResultPanelLoading();
+
+  const chat = document.getElementById("logicChatMessages");
+  if (chat) {
+    const hint = chat.querySelector(".logic-welcome");
+    if (hint) hint.remove();
+    chat.insertAdjacentHTML("beforeend", userHtml);
   }
 
+  let response;
+  try {
+    response = enrichResponseMeta(await runLogicWithTimeout(prompt, mode), prompt);
+    logicLog("API response received", {
+      title: response.title,
+      mode: response.mode,
+      confidence: response.confidence,
+    });
+  } catch (e) {
+    logicLog("error", e.message || e);
+    response = enrichResponseMeta(
+      {
+        ...buildMockResponse(prompt, mode),
+        title: "Logic · Fallback intelligence",
+        dataLimited: true,
+      },
+      prompt
+    );
+    logicLog("API response received", "fallback mock");
+  }
+
+  document.getElementById("logicLoading")?.remove();
+  const cardHtml = renderIntelligenceCard(response);
+  const content = document.getElementById("logicResultContent");
+  if (content) {
+    content.innerHTML = userHtml + cardHtml;
+    const surface = document.getElementById("logicResultSurface");
+    if (surface) {
+      surface.classList.remove("is-processing");
+      surface.classList.add("is-ready");
+    }
+    document.getElementById("logicResultIdle")?.setAttribute("hidden", "");
+  }
+  if (chat) chat.insertAdjacentHTML("beforeend", cardHtml);
+
+  updateInsightWidgets(response);
+  updateHubFromResponse(response);
+  scrollResultPanel();
+  if (chat) chat.scrollTop = chat.scrollHeight;
+
   isProcessing = false;
-  scrollChatToBottom();
+  setRunButtonsDisabled(false);
+  logicLog("render state updated", "complete");
 }
+
+/** @deprecated alias */
+export const handleSubmit = submitLogicQuery;
 
 function updateHubFromResponse(res) {
   if (res.mode === "market-pulse") {
@@ -246,15 +345,38 @@ function updateInsightWidgets(lastResponse) {
   if (riskEl && lastResponse?.mode === "risk-regime") riskEl.innerHTML = pulseHtml(lastResponse);
 }
 
+function widgetSkeleton() {
+  return `<div class="logic-skeleton-block">
+    <div class="logic-skeleton logic-skel-val"></div>
+    <div class="logic-skeleton logic-skel-line logic-skel-line--med"></div>
+    <div class="logic-skeleton logic-skel-line logic-skel-line--short"></div>
+  </div>`;
+}
+
+function hubBlockSkeleton(lines = 3) {
+  let html = "";
+  for (let i = 0; i < lines; i++) {
+    html += `<div class="logic-skeleton logic-skel-line${i === 0 ? " logic-skel-line--med" : " logic-skel-line--short"}"></div>`;
+  }
+  return html;
+}
+
 function setWidgetSkeletons() {
   const sk = widgetSkeleton();
-  document.getElementById("logicWidgetPulse")?.insertAdjacentHTML("afterbegin", sk);
-  document.getElementById("logicWidgetRisk")?.insertAdjacentHTML("afterbegin", sk);
-  document.getElementById("logicHubPulse")?.innerHTML = hubBlockSkeleton(2);
-  document.getElementById("logicHubVol")?.innerHTML = hubBlockSkeleton(2);
-  document.getElementById("logicHubMacro")?.innerHTML = hubBlockSkeleton(3);
-  document.getElementById("logicHubRisk")?.innerHTML = hubBlockSkeleton(1);
-  document.getElementById("logicStreamInner")?.innerHTML = hubBlockSkeleton(4);
+  const pulse = document.getElementById("logicWidgetPulse");
+  const risk = document.getElementById("logicWidgetRisk");
+  if (pulse) pulse.innerHTML = sk;
+  if (risk) risk.innerHTML = sk;
+  const hubPulse = document.getElementById("logicHubPulse");
+  if (hubPulse) hubPulse.innerHTML = hubBlockSkeleton(2);
+  const hubVol = document.getElementById("logicHubVol");
+  if (hubVol) hubVol.innerHTML = hubBlockSkeleton(2);
+  const hubMacro = document.getElementById("logicHubMacro");
+  if (hubMacro) hubMacro.innerHTML = hubBlockSkeleton(3);
+  const hubRisk = document.getElementById("logicHubRisk");
+  if (hubRisk) hubRisk.innerHTML = hubBlockSkeleton(1);
+  const stream = document.getElementById("logicStreamInner");
+  if (stream) stream.innerHTML = hubBlockSkeleton(4);
 }
 
 function renderHeroChips() {
@@ -283,13 +405,11 @@ function bindPromptButtons() {
     btn.dataset.logicBound = "1";
     btn.addEventListener("click", () => {
       const p = btn.dataset.prompt || "";
-      const hero = document.getElementById("logicHeroInput");
-      const bottom = document.getElementById("logicCommandInput");
-      if (hero) hero.value = p;
-      if (bottom) bottom.value = p;
-      handleSubmit(p);
-      if (hero) hero.value = "";
-      if (bottom) bottom.value = "";
+      submitLogicQuery(p);
+      ["logicHeroInput", "logicCommandInput", "logicSearchInput"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
       closeLogicSearch();
     });
   });
@@ -372,12 +492,6 @@ async function hydrateIntelligenceHub() {
       runRiskRegimeLogic({ prompt: "risk regime" }),
     ]);
 
-    const pulseEl = document.getElementById("logicWidgetPulse");
-    const riskEl = document.getElementById("logicWidgetRisk");
-    const hubPulse = document.getElementById("logicHubPulse");
-    const hubVol = document.getElementById("logicHubVol");
-    const hubRisk = document.getElementById("logicHubRisk");
-
     const pulseBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(pulse.signals?.[0] || "Mixed")}</div>
       <p class="logic-widget-copy">${escapeHtml((pulse.cards?.snapshot || pulse.summary).slice(0, 130))}</p>`;
     const volBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(pulse.signals?.[1] || "Monitored")}</div>
@@ -391,93 +505,68 @@ async function hydrateIntelligenceHub() {
       )
       .join("");
 
+    const pulseEl = document.getElementById("logicWidgetPulse");
+    const riskEl = document.getElementById("logicWidgetRisk");
     if (pulseEl) pulseEl.innerHTML = pulseBody;
     if (riskEl) riskEl.innerHTML = riskBody;
+    const hubPulse = document.getElementById("logicHubPulse");
     if (hubPulse) hubPulse.innerHTML = pulseBody;
+    const hubVol = document.getElementById("logicHubVol");
     if (hubVol) hubVol.innerHTML = volBody;
+    const hubRisk = document.getElementById("logicHubRisk");
     if (hubRisk) hubRisk.innerHTML = riskPills;
-  } catch (_) {
-    logicDebug("hub_hydrate_partial", {});
-  }
-}
-
-function showInitialChatHint() {
-  const chat = document.getElementById("logicChatMessages");
-  if (!chat || chat.dataset.hint) return;
-  chat.dataset.hint = "1";
-  chat.innerHTML = `<div class="logic-welcome logic-widget-body--loaded">
-    <p class="logic-widget-copy" style="margin:0;font-size:12px;color:var(--ink-faint)">
-      Intelligence responses appear here. Select a prompt above or type in the command bar.
-    </p>
-  </div>`;
-}
-
-function openLogicSearch() {
-  const overlay = document.getElementById("logicSearchOverlay");
-  if (overlay) {
-    overlay.classList.add("open");
-    overlay.setAttribute("aria-hidden", "false");
-  }
-  const searchInput = document.getElementById("logicSearchInput");
-  const hero = document.getElementById("logicHeroInput");
-  (searchInput || hero)?.focus();
-}
-
-function closeLogicSearch() {
-  const overlay = document.getElementById("logicSearchOverlay");
-  if (overlay) {
-    overlay.classList.remove("open");
-    overlay.setAttribute("aria-hidden", "true");
+  } catch (e) {
+    logicLog("error", { hub: e.message });
   }
 }
 
 function bindForms() {
-  const submitHandler = (getValue, clear) => (e) => {
+  const onSubmit = (e, getValue, clearInputs) => {
     e.preventDefault();
-    handleSubmit(getValue());
-    clear();
+    e.stopPropagation();
+    submitLogicQuery(getValue());
+    clearInputs();
     closeLogicSearch();
+    return false;
   };
 
-  document
-    .getElementById("logicHeroForm")
-    ?.addEventListener(
-      "submit",
-      submitHandler(
-        () => document.getElementById("logicHeroInput")?.value,
-        () => {
-          const el = document.getElementById("logicHeroInput");
-          if (el) el.value = "";
-        }
-      )
-    );
+  document.getElementById("logicHeroForm")?.addEventListener("submit", (e) =>
+    onSubmit(
+      e,
+      () => document.getElementById("logicHeroInput")?.value,
+      () => {
+        const el = document.getElementById("logicHeroInput");
+        if (el) el.value = "";
+      }
+    )
+  );
 
-  document
-    .getElementById("logicCommandForm")
-    ?.addEventListener(
-      "submit",
-      submitHandler(
-        () => document.getElementById("logicCommandInput")?.value,
-        () => {
-          const el = document.getElementById("logicCommandInput");
-          if (el) el.value = "";
-        }
-      )
-    );
+  document.getElementById("logicCommandForm")?.addEventListener("submit", (e) =>
+    onSubmit(
+      e,
+      () => document.getElementById("logicCommandInput")?.value,
+      () => {
+        const el = document.getElementById("logicCommandInput");
+        if (el) el.value = "";
+      }
+    )
+  );
 
-  document.getElementById("logicSearchForm")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const v =
-      document.getElementById("logicSearchInput")?.value ||
-      document.getElementById("logicHeroInput")?.value ||
-      "";
-    handleSubmit(v);
-    ["logicSearchInput", "logicHeroInput", "logicCommandInput"].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = "";
-    });
-    closeLogicSearch();
-  });
+  document.getElementById("logicSearchForm")?.addEventListener("submit", (e) =>
+    onSubmit(
+      e,
+      () =>
+        document.getElementById("logicSearchInput")?.value ||
+        document.getElementById("logicHeroInput")?.value ||
+        "",
+      () => {
+        ["logicSearchInput", "logicHeroInput", "logicCommandInput"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+      }
+    )
+  );
 
   document.getElementById("logicSearchClose")?.addEventListener("click", closeLogicSearch);
   document.getElementById("logicSearchOverlay")?.addEventListener("click", (e) => {
@@ -532,6 +621,25 @@ function bindLogicUI() {
   bindForms();
 }
 
+function openLogicSearch() {
+  const overlay = document.getElementById("logicSearchOverlay");
+  if (overlay) {
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+  }
+  const searchInput = document.getElementById("logicSearchInput");
+  const hero = document.getElementById("logicHeroInput");
+  (searchInput || hero)?.focus();
+}
+
+function closeLogicSearch() {
+  const overlay = document.getElementById("logicSearchOverlay");
+  if (overlay) {
+    overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden", "true");
+  }
+}
+
 export function isLogicPreview() {
   return PREVIEW_KEYS.has(new URLSearchParams(location.search).get("preview"));
 }
@@ -541,20 +649,22 @@ export function initLogicPreview() {
 
   window.__LOGIC_PREVIEW = true;
   window.__AGENT_PREVIEW = true;
-  window.logicHandleSubmit = handleSubmit;
+  window.submitLogicQuery = submitLogicQuery;
+  window.logicHandleSubmit = submitLogicQuery;
   document.documentElement.classList.add("preview-logic");
+
+  logicLog("init", "Logic preview ready");
 
   const tab = document.getElementById("navLogicTab");
   if (tab) tab.style.display = "";
 
   bindLogicUI();
-  showInitialChatHint();
   hydrateIntelligenceHub();
 
   if (window.__logicPendingPrompt) {
     const pending = window.__logicPendingPrompt;
     delete window.__logicPendingPrompt;
-    handleSubmit(pending);
+    submitLogicQuery(pending);
   }
 
   setTimeout(() => document.getElementById("logicHeroInput")?.focus(), 400);
@@ -574,5 +684,5 @@ if (isLogicPreview()) {
   window.addEventListener("load", () => setTimeout(initLogicPreview, 200));
 }
 
-window.logicHandleSubmit = handleSubmit;
-export { handleSubmit as logicHandleSubmit };
+window.submitLogicQuery = submitLogicQuery;
+window.logicHandleSubmit = submitLogicQuery;

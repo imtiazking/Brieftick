@@ -16,7 +16,7 @@
     if (!form || !form.id) return;
     if (form.id !== "logicHeroForm" && form.id !== "logicCommandForm" && form.id !== "logicSearchForm") return;
     e.preventDefault();
-    e.stopPropagation();
+    e.stopImmediatePropagation();
     var inputId =
       form.id === "logicHeroForm"
         ? "logicHeroInput"
@@ -26,15 +26,20 @@
     var el = document.getElementById(inputId);
     var v = (el && el.value ? el.value : "").trim();
     if (!v) return false;
-    if (typeof window.logicHandleSubmit === "function") {
-      window.logicHandleSubmit(v);
+    console.log("[Brieftick Logic] submitted prompt (early guard):", v);
+    if (typeof window.submitLogicQuery === "function") {
+      window.submitLogicQuery(v);
       if (el) el.value = "";
       ["logicHeroInput", "logicCommandInput", "logicSearchInput"].forEach(function (id) {
         var x = document.getElementById(id);
         if (x && x !== el) x.value = "";
       });
+    } else if (typeof window.logicHandleSubmit === "function") {
+      window.logicHandleSubmit(v);
+      if (el) el.value = "";
     } else {
       window.__logicPendingPrompt = v;
+      console.warn("[Brieftick Logic] module not ready — queued prompt");
     }
     return false;
   }
@@ -2888,12 +2893,29 @@ h1,h2,h3{
 .logic-hero-chip:hover{border-color:rgba(78,168,255,.3);color:var(--ink);background:rgba(78,168,255,.08);transform:translateY(-1px)}
 .logic-main{display:flex;flex-direction:column;gap:12px;min-height:0;flex:1}
 .logic-hub{display:flex;flex-direction:column;gap:12px;animation:logicFadeIn .5s .15s ease both}
-.logic-main--active .logic-hub{
-  max-height:0;opacity:0;overflow:hidden;margin:0;padding:0;
-  pointer-events:none;transition:max-height .45s ease,opacity .35s ease,margin .35s ease;
+.logic-result-surface{
+  border-radius:12px;border:1px solid var(--border-strong);
+  background:var(--panel);backdrop-filter:blur(12px);
+  min-height:min(42vh,420px);padding:18px;display:flex;flex-direction:column;
+  transition:box-shadow .3s ease,border-color .3s ease;
 }
-.logic-main--active .logic-chat-panel{min-height:min(50vh,480px)}
-.logic-chat-panel.logic-chat-panel--grow{min-height:280px}
+.logic-result-surface.is-processing{
+  border-color:rgba(78,168,255,.25);
+  box-shadow:0 0 32px rgba(78,168,255,.08);
+}
+.logic-result-surface.is-ready{
+  border-color:rgba(212,168,90,.2);
+  box-shadow:0 0 28px rgba(212,168,90,.06);
+}
+.logic-result-idle{
+  flex:1;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:24px;color:var(--ink-faint);font-size:13px;line-height:1.55;
+}
+.logic-result-content{flex:1;display:flex;flex-direction:column;gap:12px;min-height:200px}
+.logic-chat-panel.logic-chat-panel--grow{min-height:120px}
+.logic-hero-submit:disabled,.logic-command-submit:disabled{
+  opacity:.55;cursor:not-allowed;pointer-events:none;
+}
 .logic-hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .logic-hub-section{
   padding:12px 14px;border-radius:10px;border:1px solid var(--border);
@@ -5003,7 +5025,7 @@ h1,h2,h3{
     </header>
 
     <section class="logic-hero-command" aria-label="Ask Brieftick Logic">
-      <form id="logicHeroForm" class="logic-hero-form" autocomplete="off" action="#" method="post" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
+      <form id="logicHeroForm" class="logic-hero-form" autocomplete="off" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
         <input type="text" id="logicHeroInput" class="logic-hero-input" placeholder="Ask Brieftick Logic anything…" spellcheck="false" aria-label="Ask Brieftick Logic" />
         <button type="submit" class="logic-hero-submit">Run Logic</button>
       </form>
@@ -5015,6 +5037,13 @@ h1,h2,h3{
       <aside class="logic-sidebar" id="logicModeSidebar" aria-label="Logic modes"></aside>
 
       <div class="logic-main" id="logicMain">
+        <section class="logic-result-surface" id="logicResultSurface" aria-live="polite">
+          <div class="logic-result-idle" id="logicResultIdle">
+            Intelligence cards appear here — Snapshot, Catalyst, Macro Context, Sector Impact, Volatility, and Summary.
+          </div>
+          <div class="logic-result-content" id="logicResultContent" hidden></div>
+        </section>
+
         <div class="logic-hub" id="logicIntelligenceHub">
           <div class="logic-hub-section logic-hub-section--wide">
             <div class="logic-hub-head">
@@ -5079,7 +5108,7 @@ h1,h2,h3{
     </div>
 
     <footer class="logic-command-bar" id="logicCommandBar">
-      <form id="logicCommandForm" class="logic-command-form" autocomplete="off" action="#" method="post" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
+      <form id="logicCommandForm" class="logic-command-form" autocomplete="off" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
         <input type="text" id="logicCommandInput" class="logic-command-input" placeholder="Ask Brieftick Logic anything…" spellcheck="false" />
         <button type="submit" class="logic-command-submit">Run Logic</button>
         <span class="logic-command-hint"><kbd>⌘</kbd><kbd>K</kbd></span>
@@ -5091,7 +5120,7 @@ h1,h2,h3{
     <div class="logic-search-panel" role="dialog" aria-label="Logic search">
       <button type="button" class="logic-search-close" id="logicSearchClose" aria-label="Close">×</button>
       <h4>Brieftick Logic · Command centre</h4>
-      <form id="logicSearchForm" class="logic-command-form" autocomplete="off" action="#" method="post" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false" style="box-shadow:none;border:none;background:transparent;padding:0">
+      <form id="logicSearchForm" class="logic-command-form" autocomplete="off" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false" style="box-shadow:none;border:none;background:transparent;padding:0">
         <input type="text" id="logicSearchInput" class="logic-command-input" placeholder="Ask Brieftick Logic…" spellcheck="false" />
         <button type="submit" class="logic-command-submit">Run</button>
       </form>
@@ -14648,5 +14677,31 @@ window.addEventListener('load', () => {
 </script>
 <script src="/preview/social-intelligence-tweet-cards.js"></script>
 <script type="module" src="/preview/logic-preview.js"></script>
+<script>
+(function () {
+  var s = document.querySelector('script[type="module"][src*="logic-preview"]');
+  if (!s) return;
+  s.addEventListener("error", function () {
+    console.error("[Brieftick Logic] module failed to load — using inline fallback");
+    if (typeof window.submitLogicQuery === "function") return;
+    window.submitLogicQuery = function (prompt) {
+      var el = document.getElementById("logicResultContent");
+      var idle = document.getElementById("logicResultIdle");
+      if (idle) idle.hidden = true;
+      if (el) {
+        el.hidden = false;
+        el.innerHTML =
+          '<div class="logic-msg logic-msg--logic"><h3 class="logic-msg-title">Logic · Preview fallback</h3>' +
+          '<div class="logic-intel-card">' +
+          '<div class="logic-intel-section"><div class="logic-intel-label">Snapshot</div><p class="logic-intel-text">Module load failed. Redeploy preview branch.</p></div>' +
+          '<div class="logic-intel-section"><div class="logic-intel-label">Summary</div><p class="logic-intel-text">' +
+          (prompt || "") + "</p></div></div></div>";
+      }
+    };
+    window.logicHandleSubmit = window.submitLogicQuery;
+    if (window.__logicPendingPrompt) window.submitLogicQuery(window.__logicPendingPrompt);
+  });
+})();
+</script>
 </body>
 </html>
