@@ -16,13 +16,18 @@ const SECTOR_ETFS = [
   ["XLP", "Consumer Staples"],
 ];
 
-/** @param {{ prompt: string, primaryEntity: import('./entityResolver.js').ResolvedEntity }} ctx */
+/** @param {{ prompt: string, primaryEntity: import('./entityResolver.js').ResolvedEntity, fusion?: import('./dataFusion.js').FusionBundle }} ctx */
 export async function runSectorRotationLogic(ctx) {
   const prompt = ctx.prompt || "Explain sector rotation";
-  const failedSources = [];
+  const failedSources = [...(ctx.fusion?.failedSources || [])];
   const rows = [];
 
+  if (ctx.fusion?.sectorMoves?.length) {
+    ctx.fusion.sectorMoves.forEach((r) => rows.push({ sym: r.sym, label: r.label, pct: r.pct }));
+  }
+
   for (const [sym, label] of SECTOR_ETFS) {
+    if (rows.some((r) => r.sym === sym)) continue;
     let pct = null;
     try {
       if (typeof getFinnhubQuotes === "function") {
@@ -51,11 +56,18 @@ export async function runSectorRotationLogic(ctx) {
 
   const ai = await callLogicLLM(
     "Brieftick Sector Rotation Logic — leadership and laggards. No trade advice.",
-    `${prompt}\n${sectorCtx}\nNews: ${items[0]?.headline}`,
+    `${prompt}\n${sectorCtx}\nNews: ${items[0]?.headline}\n${buildFusionPromptExtras(ctx, "XLK")}`,
     650
   );
 
-  if (ai) return { ...ai, mode: "sector-rotation", mockData: !newsPack.live };
+  if (ai) {
+    return {
+      ...ai,
+      mode: "sector-rotation",
+      mockData: !ctx.fusion?.live,
+      sources: ctx.fusion ? fusionAttributionSources(ctx.fusion) : ai.sources,
+    };
+  }
 
   return withDataLimited(
     {
@@ -76,7 +88,11 @@ export async function runSectorRotationLogic(ctx) {
       ],
       signals: ["Rotation active", "Breadth uneven"],
       confidence: newsPack.live ? 68 : 55,
-      sources: newsPack.live ? ["Finnhub sector ETFs", "Brieftick Logic"] : ["Logic Preview"],
+      sources: ctx.fusion
+        ? fusionAttributionSources(ctx.fusion)
+        : newsPack.live
+          ? ["Finnhub", "Brieftick Logic"]
+          : ["Brieftick Logic"],
       mode: "sector-rotation",
       mockData: !newsPack.live,
     },
