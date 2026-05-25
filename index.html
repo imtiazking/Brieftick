@@ -327,7 +327,18 @@ main{padding-top:90px;position:relative;z-index:3}
   content:"";position:absolute;left:-2%;right:-2%;top:55%;height:2px;
   background:linear-gradient(90deg, transparent, var(--blue), transparent);
 }
-.hero-sub{font-size:18px;color:var(--ink-dim);max-width:540px;line-height:1.55;margin-bottom:36px}
+.hero-sub{font-size:18px;color:var(--ink-dim);max-width:540px;line-height:1.55;margin-bottom:22px}
+.hero-logic-layer{
+  max-width:540px;margin:0 0 26px;padding-top:14px;
+  border-top:1px solid rgba(212,168,90,.14);
+}
+.hero-logic-kicker{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(212,175,55,.72);margin:0 0 6px;font-weight:500;
+}
+.hero-logic-desc{
+  font-size:13px;line-height:1.5;color:var(--ink-faint);margin:0;max-width:520px;
+}
 .hero-cta{display:flex;gap:12px;margin-bottom:48px;flex-wrap:wrap}
 .btn-primary{
   padding:14px 28px;background:linear-gradient(135deg, var(--gold), var(--gold-bright));
@@ -3367,6 +3378,10 @@ h1,h2,h3{
         <div class="hero-eyebrow gsap-hero-el"><span class="pulse"></span> Live Beta · Cohort II Open</div>
         <h1 class="gsap-hero-el" id="heroHeadline"><span class="fm-word" id="fmW1">Understand</span><br><span class="fm-word" id="fmW2">what moves</span><br><span class="fm-word" id="fmW3"><span class="gold">markets.</span></span></h1>
         <p class="hero-sub gsap-hero-el">Real-time market intelligence across earnings, macro events, sentiment, and market-moving news. Built to explain the why behind every move.</p>
+        <div class="hero-logic-layer gsap-hero-el" aria-label="Brieftick Logic">
+          <p class="hero-logic-kicker">Powered by Brieftick Logic</p>
+          <p class="hero-logic-desc">An intelligent reasoning engine connecting the dots across markets, sectors and macro events.</p>
+        </div>
         <div class="hero-cta gsap-hero-el">
           <button class="btn-primary" onclick="clerkSignUp()">Start Free →</button>
           <button class="btn-secondary" onclick="routeWithAuth('dashboard')">View Live Demo <span class="external">↗</span></button>
