@@ -140,43 +140,26 @@ function setRunButtonsDisabled(disabled) {
   });
 }
 
-function showResultPanelLoading() {
+/** Render active Logic output only inside #logicResultSurface / #logicResultContent */
+function renderResultSurface(html, state = "ready") {
   const surface = document.getElementById("logicResultSurface");
   const idle = document.getElementById("logicResultIdle");
   const content = document.getElementById("logicResultContent");
-  if (surface) {
-    surface.classList.add("is-processing");
-    surface.classList.remove("is-ready");
-  }
+  if (!content) return;
+
   if (idle) idle.hidden = true;
-  if (content) {
-    content.hidden = false;
-    content.innerHTML = renderLoadingState();
+  content.hidden = false;
+  content.innerHTML = html || "";
+
+  if (surface) {
+    surface.classList.toggle("is-processing", state === "loading");
+    surface.classList.toggle("is-ready", state === "ready");
   }
-  logicLog("render state updated", "loading");
+  logicLog("render state updated", state);
 }
 
-function renderToPanels(userHtml, responseHtml) {
-  const content = document.getElementById("logicResultContent");
-  const chat = document.getElementById("logicChatMessages");
-  const surface = document.getElementById("logicResultSurface");
-  const idle = document.getElementById("logicResultIdle");
-
-  if (content) {
-    content.hidden = false;
-    content.innerHTML = (userHtml || "") + (responseHtml || "");
-  }
-  if (idle) idle.hidden = true;
-  if (surface) {
-    surface.classList.remove("is-processing");
-    surface.classList.add("is-ready");
-  }
-  if (chat) {
-    if (userHtml) chat.insertAdjacentHTML("beforeend", userHtml);
-    if (responseHtml) chat.insertAdjacentHTML("beforeend", responseHtml);
-    chat.scrollTop = chat.scrollHeight;
-  }
-  logicLog("render state updated", "response visible");
+function showResultPanelLoading() {
+  renderResultSurface(renderLoadingState(), "loading");
 }
 
 function scrollResultPanel() {
@@ -260,13 +243,6 @@ export async function submitLogicQuery(promptText) {
   const userHtml = renderUserBubble(prompt);
   showResultPanelLoading();
 
-  const chat = document.getElementById("logicChatMessages");
-  if (chat) {
-    const hint = chat.querySelector(".logic-welcome");
-    if (hint) hint.remove();
-    chat.insertAdjacentHTML("beforeend", userHtml);
-  }
-
   let response;
   try {
     response = enrichResponseMeta(await runLogicWithTimeout(prompt, mode), prompt);
@@ -290,22 +266,11 @@ export async function submitLogicQuery(promptText) {
 
   document.getElementById("logicLoading")?.remove();
   const cardHtml = renderIntelligenceCard(response);
-  const content = document.getElementById("logicResultContent");
-  if (content) {
-    content.innerHTML = userHtml + cardHtml;
-    const surface = document.getElementById("logicResultSurface");
-    if (surface) {
-      surface.classList.remove("is-processing");
-      surface.classList.add("is-ready");
-    }
-    document.getElementById("logicResultIdle")?.setAttribute("hidden", "");
-  }
-  if (chat) chat.insertAdjacentHTML("beforeend", cardHtml);
+  renderResultSurface(userHtml + cardHtml, "ready");
 
   updateInsightWidgets(response);
   updateHubFromResponse(response);
   scrollResultPanel();
-  if (chat) chat.scrollTop = chat.scrollHeight;
 
   isProcessing = false;
   setRunButtonsDisabled(false);

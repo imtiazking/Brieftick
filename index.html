@@ -2891,12 +2891,16 @@ h1,h2,h3{
   font-family:inherit;transition:border-color .2s,background .2s,color .2s,transform .15s;
 }
 .logic-hero-chip:hover{border-color:rgba(78,168,255,.3);color:var(--ink);background:rgba(78,168,255,.08);transform:translateY(-1px)}
-.logic-main{display:flex;flex-direction:column;gap:12px;min-height:0;flex:1}
-.logic-hub{display:flex;flex-direction:column;gap:12px;animation:logicFadeIn .5s .15s ease both}
+.logic-main{display:flex;flex-direction:column;gap:14px;flex:1;min-height:min(56vh,560px)}
+.logic-hub{
+  display:flex;flex-direction:column;gap:12px;flex:0 0 auto;order:2;
+  animation:logicFadeIn .5s .15s ease both;
+}
 .logic-result-surface{
+  flex:1 1 auto;order:1;
   border-radius:12px;border:1px solid var(--border-strong);
   background:var(--panel);backdrop-filter:blur(12px);
-  min-height:min(42vh,420px);padding:18px;display:flex;flex-direction:column;
+  min-height:min(44vh,440px);padding:18px;display:flex;flex-direction:column;
   transition:box-shadow .3s ease,border-color .3s ease;
 }
 .logic-result-surface.is-processing{
@@ -2911,8 +2915,16 @@ h1,h2,h3{
   flex:1;display:flex;align-items:center;justify-content:center;text-align:center;
   padding:24px;color:var(--ink-faint);font-size:13px;line-height:1.55;
 }
-.logic-result-content{flex:1;display:flex;flex-direction:column;gap:12px;min-height:200px}
-.logic-chat-panel.logic-chat-panel--grow{min-height:120px}
+.logic-result-content{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:12px;
+  min-height:200px;width:100%;overflow-y:auto;
+}
+#logicResultContent .logic-msg--user,
+#logicResultContent .logic-msg--logic{
+  width:100%;max-width:880px;margin:0 auto;
+}
+#logicResultContent .logic-intel-card{width:100%;max-width:880px}
+#page-logic .logic-chat-panel{display:none}
 .logic-hero-submit:disabled,.logic-command-submit:disabled{
   opacity:.55;cursor:not-allowed;pointer-events:none;
 }
@@ -14687,7 +14699,9 @@ window.addEventListener('load', () => {
     window.submitLogicQuery = function (prompt) {
       var el = document.getElementById("logicResultContent");
       var idle = document.getElementById("logicResultIdle");
+      var surface = document.getElementById("logicResultSurface");
       if (idle) idle.hidden = true;
+      if (surface) surface.classList.add("is-ready");
       if (el) {
         el.hidden = false;
         el.innerHTML =
