@@ -327,7 +327,18 @@ main{padding-top:90px;position:relative;z-index:3}
   content:"";position:absolute;left:-2%;right:-2%;top:55%;height:2px;
   background:linear-gradient(90deg, transparent, var(--blue), transparent);
 }
-.hero-sub{font-size:18px;color:var(--ink-dim);max-width:540px;line-height:1.55;margin-bottom:36px}
+.hero-sub{font-size:18px;color:var(--ink-dim);max-width:540px;line-height:1.55;margin-bottom:22px}
+.hero-logic-layer{
+  max-width:540px;margin:0 0 26px;padding-top:14px;
+  border-top:1px solid rgba(212,168,90,.14);
+}
+.hero-logic-kicker{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(212,175,55,.72);margin:0 0 6px;font-weight:500;
+}
+.hero-logic-desc{
+  font-size:13px;line-height:1.5;color:var(--ink-faint);margin:0;max-width:520px;
+}
 .hero-cta{display:flex;gap:12px;margin-bottom:48px;flex-wrap:wrap}
 .btn-primary{
   padding:14px 28px;background:linear-gradient(135deg, var(--gold), var(--gold-bright));
@@ -3367,6 +3378,10 @@ h1,h2,h3{
         <div class="hero-eyebrow gsap-hero-el"><span class="pulse"></span> Live Beta · Cohort II Open</div>
         <h1 class="gsap-hero-el" id="heroHeadline"><span class="fm-word" id="fmW1">Understand</span><br><span class="fm-word" id="fmW2">what moves</span><br><span class="fm-word" id="fmW3"><span class="gold">markets.</span></span></h1>
         <p class="hero-sub gsap-hero-el">Real-time market intelligence across earnings, macro events, sentiment, and market-moving news. Built to explain the why behind every move.</p>
+        <div class="hero-logic-layer gsap-hero-el" aria-label="Brieftick Logic">
+          <p class="hero-logic-kicker">Powered by Brieftick Logic</p>
+          <p class="hero-logic-desc">An intelligent reasoning engine connecting the dots across markets, sectors and macro events.</p>
+        </div>
         <div class="hero-cta gsap-hero-el">
           <button class="btn-primary" onclick="clerkSignUp()">Start Free →</button>
           <button class="btn-secondary" onclick="routeWithAuth('dashboard')">View Live Demo <span class="external">↗</span></button>
@@ -4500,7 +4515,7 @@ h1,h2,h3{
           <li>Top Movers &amp; Sector Heatmap</li>
           <li>Earnings Calendar</li>
           <li>Watchlist limited to 3 stocks</li>
-          <li>Why Is It Moving (limited daily explanations)</li>
+          <li>Logic Preview (5 daily queries) — intelligent market reasoning across macro, sectors and volatility.</li>
           <li>Market Scanner lite mode</li>
           <li>Daily Brief (1 daily, delayed)</li>
           <li>Basic macro signals</li>
@@ -4514,10 +4529,13 @@ h1,h2,h3{
         <div class="t2-name">Terminal</div>
         <div class="t2-sub">Institutional-grade market intelligence.</div>
         <div class="t2-price"><span class="num">£<em>29</em></span><span class="per">&nbsp;/ month</span></div>
+        <p class="t2-sub">Powered by full Brieftick Logic — intelligent market reasoning across portfolios, macro, sectors, volatility and real-time intelligence flows.</p>
         <ul class="t2-features">
           <li>Everything in Free</li>
-          <li>Unlimited Why Is It Moving</li>
+          <li>Unlimited Logic — intelligent market reasoning across portfolios, macro, sectors, volatility and real-time intelligence flows.</li>
           <li>Real-time market intelligence</li>
+          <li>Portfolio Logic</li>
+          <li>Scenario Analysis</li>
           <li>Advanced Market Scanner</li>
           <li>Live Market Flows</li>
           <li>Market Relationships &amp; Correlation Cluster</li>
@@ -4530,6 +4548,7 @@ h1,h2,h3{
           <li>Risk-On / Risk-Off Signals</li>
           <li>Advanced Alerts</li>
           <li>Unlimited watchlist</li>
+          <li>Personalized intelligence briefings</li>
         </ul>
         <button class="t2-cta primary" onclick="startCheckout('intelligence', this)">Unlock Terminal</button>
       </div>
