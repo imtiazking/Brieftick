@@ -55,6 +55,12 @@ const CARD_SECTIONS = [
   ["aiSummary", "Summary"],
 ];
 
+const OPTIONAL_SECTIONS = [
+  ["riskSignal", "Risk Signal"],
+  ["relatedMovers", "Related Movers"],
+  ["portfolioImpact", "Portfolio Impact"],
+];
+
 function ensureFullCards(res) {
   const cards = { ...(res.cards || {}) };
   const summary = res.summary || "Market intelligence context is available.";
@@ -101,6 +107,17 @@ function renderIntelligenceCard(res, role = "logic") {
     </div>`;
   }).join("");
 
+  const optional = full.optionalCards || {};
+  const optionalHtml = OPTIONAL_SECTIONS.filter(([key]) => optional[key])
+    .map(
+      ([key, label]) =>
+        `<div class="logic-intel-section logic-intel-section--optional">
+      <div class="logic-intel-label">${escapeHtml(label)}</div>
+      <p class="logic-intel-text">${escapeHtml(optional[key])}</p>
+    </div>`
+    )
+    .join("");
+
   const signals = (full.signals || [])
     .map((s) => `<span class="logic-signal-chip">${escapeHtml(s)}</span>`)
     .join("");
@@ -108,7 +125,7 @@ function renderIntelligenceCard(res, role = "logic") {
   const meta = [
     full.usedAI ? "Logic enriched" : null,
     full.dataLimited || full.mockData ? "Partial / delayed data" : null,
-    `Confidence ${full.confidence}%`,
+    full.confidenceLabel || `Confidence ${full.confidence}%`,
     full.primarySymbol ? full.primarySymbol : null,
   ]
     .filter(Boolean)
@@ -126,7 +143,7 @@ function renderIntelligenceCard(res, role = "logic") {
     </div>
     <h3 class="logic-msg-title">${escapeHtml(full.title)}</h3>
     ${limitedBanner}
-    <div class="logic-intel-card">${sections}</div>
+    <div class="logic-intel-card">${sections}${optionalHtml}</div>
     ${signals ? `<div class="logic-signal-row">${signals}</div>` : ""}
     <div class="logic-msg-foot">
       <span>${escapeHtml(meta)}</span>
@@ -312,8 +329,9 @@ export async function submitLogicQuery(promptText) {
     logicLog("API response received", {
       title: response.title,
       mode: response.mode,
-      confidence: response.confidence,
+      confidence: response.confidenceLabel || response.confidence,
     });
+    logicLog("confidence level", response.confidenceLabel || response.confidence);
   } catch (e) {
     logicLog("error", e.message || e);
     response = enrichResponseMeta(
@@ -324,6 +342,7 @@ export async function submitLogicQuery(promptText) {
       },
       prompt
     );
+    logicLog("fallback triggered", e.message || e);
     logicLog("API response received", "fallback mock");
   }
 

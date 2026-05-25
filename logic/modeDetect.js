@@ -1,0 +1,77 @@
+/**
+ * Logic module detection from prompt + entity.
+ * @module logic/modeDetect
+ */
+
+import { resolvePrimaryEntity } from "./entityResolver.js";
+
+/**
+ * @param {string} prompt
+ * @param {import('./entityResolver.js').ResolvedEntity} [primaryEntity]
+ * @returns {import('./types.js').LogicMode}
+ */
+export function detectLogicMode(prompt, primaryEntity) {
+  const t = (prompt || "").toLowerCase().trim();
+  const entity = primaryEntity || resolvePrimaryEntity(prompt);
+
+  if (!t) return "market-pulse";
+
+  if (
+    /portfolio|holdings|concentration|diversif|exposure|my book|analyze my portfolio/.test(
+      t
+    ) &&
+    !/news on|latest news/.test(t)
+  )
+    return "portfolio";
+
+  if (
+    /risk regime|market risk|today.?s market risk|current market risk|risk-on|risk-off|risk on|risk off|volatility regime|show risk/.test(
+      t
+    )
+  )
+    return "risk-regime";
+
+  if (
+    /daily brief|morning brief|give me.*brief|today.?s (market )?brief|session brief|market recap/.test(
+      t
+    )
+  )
+    return "daily-brief";
+
+  if (
+    /what happens if|scenario|if rates|if oil|if tech|hypothetical|what if/.test(t)
+  )
+    return "scenario";
+
+  if (
+    /sector rotation|leading sector|lagging sector|rotation|ai sector|semiconductor/.test(
+      t
+    ) ||
+    entity.entityType === "sector_theme"
+  )
+    return "sector-rotation";
+
+  if (
+    /market pulse|overall market|market direction|today.?s tape|explain today|market tone|explain today.?s market/.test(
+      t
+    ) &&
+    !entity.symbol
+  )
+    return "market-pulse";
+
+  if (
+    /latest news|news on|headline|why is|why are|what changed|moving today|move today|what is .* doing|explain/.test(
+      t
+    ) ||
+    entity.entityType === "company" ||
+    entity.entityType === "ticker" ||
+    entity.entityType === "etf" ||
+    entity.entityType === "index" ||
+    (entity.symbol && !/portfolio|sector rotation|risk regime|daily brief/.test(t))
+  )
+    return "ticker";
+
+  if (entity.entityType === "macro") return "market-pulse";
+
+  return "market-pulse";
+}

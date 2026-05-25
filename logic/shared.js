@@ -7,12 +7,35 @@ import { buildLogicResponse, LIMITED_DATA_MSG, LOGIC_DISCLAIMER } from "./types.
 import { resolvePrimaryEntity } from "./entityResolver.js";
 
 export function logicDebug(event, data) {
+  const payload = data !== undefined ? data : "";
   const on =
     window.__LOGIC_DEBUG === true ||
+    window.__LOGIC_PREVIEW === true ||
     new URLSearchParams(location.search).get("logic_debug") === "1" ||
     new URLSearchParams(location.search).get("preview") === "logic" ||
     new URLSearchParams(location.search).get("preview") === "agent";
-  if (on) console.info("[Brieftick Logic]", event, data);
+  if (on) console.log(`[Brieftick Logic] ${event}`, payload);
+}
+
+/**
+ * @param {object} ctx
+ * @param {string} symbol
+ */
+export function buildFusionPromptExtras(ctx, symbol) {
+  const fusion = ctx.fusion;
+  if (!fusion) return "";
+  const q = fusion.quotes?.[symbol];
+  const news = (fusion.relatedHeadlines?.length
+    ? fusion.relatedHeadlines
+    : fusion.news?.headlines || []
+  )
+    .slice(0, 4)
+    .map((n) => n.headline)
+    .join("; ");
+  const quoteLine = q
+    ? `Quote (${q.providers.join("+")}): ${q.pctChange >= 0 ? "+" : ""}${q.pctChange?.toFixed(2)}% agreement=${q.agreement}`
+    : "Quote: unavailable";
+  return `${quoteLine}\nHeadlines: ${news || "contextual"}\nMemory: ${ctx.memory?.hint || "none"}`;
 }
 
 /**

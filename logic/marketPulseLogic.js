@@ -2,27 +2,38 @@ import { buildLogicResponse } from "./types.js";
 import {
   callLogicLLM,
   getHeadlines,
-  getQuote,
   withDataLimited,
   MOCK_HEADLINES,
+  buildFusionPromptExtras,
 } from "./shared.js";
+import { getFusedQuote, fusionAttributionSources } from "./dataFusion.js";
+import { buildFallbackResponse } from "./fallbackIntelligence.js";
 
-/** @param {{ prompt: string }} ctx */
+/** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runMarketPulseLogic(ctx) {
   const prompt = ctx.prompt || "Explain today's market pulse";
-  const failedSources = [];
-  const newsPack = await getHeadlines(8);
-  failedSources.push(...(newsPack.failedSources || []));
-  const items = newsPack.headlines.length ? newsPack.headlines : MOCK_HEADLINES;
+  const fusion = ctx.fusion;
+  const failedSources = [...(fusion?.failedSources || [])];
 
-  const [spyR, qqqR] = await Promise.all([getQuote("SPY"), getQuote("QQQ")]);
-  failedSources.push(...spyR.failedSources, ...qqqR.failedSources);
-  const spy = spyR.quote;
-  const qqq = qqqR.quote;
+  const items =
+    fusion?.news?.headlines?.length
+      ? fusion.news.headlines
+      : (await getHeadlines(8)).headlines;
+  if (!fusion?.news?.headlines?.length) {
+    const pack = await getHeadlines(8);
+    failedSources.push(...(pack.failedSources || []));
+  }
+  const headlines = items.length ? items : MOCK_HEADLINES;
 
-  const marketCtx = `HEADLINES:\n${items.map((n) => `- ${n.headline}`).join("\n")}
-QUOTES:\nSPY: ${spy ? `${spy.pctChange >= 0 ? "+" : ""}${spy.pctChange?.toFixed(2)}%` : "unavailable"}
-QQQ: ${qqq ? `${qqq.pctChange >= 0 ? "+" : ""}${qqq.pctChange?.toFixed(2)}%` : "unavailable"}`;
+  const spy = fusion ? getFusedQuote(fusion, "SPY") : null;
+  const qqq = fusion ? getFusedQuote(fusion, "QQQ") : null;
+  const spyPct = spy?.pctChange;
+  const qqqPct = qqq?.pctChange;
+
+  const marketCtx = `HEADLINES:\n${headlines.map((n) => `- ${n.headline}`).join("\n")}
+QUOTES:\nSPY: ${spyPct != null ? `${spyPct >= 0 ? "+" : ""}${spyPct.toFixed(2)}%` : "unavailable"}
+QQQ: ${qqqPct != null ? `${qqqPct >= 0 ? "+" : ""}${qqqPct.toFixed(2)}%` : "unavailable"}
+${buildFusionPromptExtras(ctx, "SPY")}`;
 
   const ai = await callLogicLLM(
     "You are Brieftick Logic — calm institutional market pulse. No trade advice.",
@@ -30,13 +41,24 @@ QQQ: ${qqq ? `${qqq.pctChange >= 0 ? "+" : ""}${qqq.pctChange?.toFixed(2)}%` : "
     650
   );
 
-  if (ai) return { ...ai, mode: "market-pulse", mockData: !newsPack.live };
+  if (ai) {
+    return {
+      ...ai,
+      mode: "market-pulse",
+      mockData: !fusion?.live,
+      sources: fusion ? fusionAttributionSources(fusion, "market-pulse") : ai.sources,
+    };
+  }
+
+  if (spyPct == null && qqqPct == null && !headlines.length) {
+    return buildFallbackResponse(ctx);
+  }
 
   const tone =
-    spy && qqq
-      ? (spy.pctChange + qqq.pctChange) / 2 > 0.3
+    spyPct != null && qqqPct != null
+      ? (spyPct + qqqPct) / 2 > 0.3
         ? "Risk-on tilt"
-        : (spy.pctChange + qqq.pctChange) / 2 < -0.3
+        : (spyPct + qqqPct) / 2 < -0.3
           ? "Risk-off tilt"
           : "Mixed session"
       : "Mixed session";
@@ -46,23 +68,25 @@ QQQ: ${qqq ? `${qqq.pctChange >= 0 ? "+" : ""}${qqq.pctChange?.toFixed(2)}%` : "
       title: "Market Pulse",
       summary: `Session tone reads ${tone.toLowerCase()}. Index leadership remains selective while macro headlines anchor rate expectations and volatility.`,
       cards: {
-        snapshot: `${tone} — indices ${spy ? "tracked live" : "contextual"}`,
-        catalyst: items[0]?.headline || "Macro headline flow",
+        snapshot: `${tone} — indices ${spyPct != null ? "tracked" : "contextual"}`,
+        catalyst: headlines[0]?.headline || "Macro headline flow",
         macroContext: "Policy and inflation path dominate cross-asset pricing",
         sectorImpact: "Mega-cap tech vs cyclicals defines breadth",
         volatility: tone.includes("Risk-off") ? "Defensive bid in vol" : "Volatility monitored",
         aiSummary: `Tape tone is ${tone.toLowerCase()} with investors balancing growth exposure against duration risk.`,
       },
       keyDrivers: [
-        items[0]?.headline || "Macro headline flow",
-        spy ? `SPY ${spy.pctChange >= 0 ? "+" : ""}${spy.pctChange.toFixed(2)}%` : "Index data limited",
+        headlines[0]?.headline || "Macro headline flow",
+        spyPct != null ? `SPY ${spyPct >= 0 ? "+" : ""}${spyPct.toFixed(2)}%` : "Index data limited",
         "Breadth vs mega-cap leadership",
       ],
-      signals: [tone, spy?.pctChange >= 0 ? "Equities firm" : "Equities soft", "Macro in focus"],
-      confidence: newsPack.live && spy ? 70 : 52,
-      sources: newsPack.live ? ["Finnhub", "Brieftick Logic"] : ["Brieftick Logic"],
+      signals: [tone, spyPct != null && spyPct >= 0 ? "Equities firm" : "Equities soft", "Macro in focus"],
+      confidence: fusion?.live && spyPct != null ? 72 : 52,
+      sources: fusion
+        ? fusionAttributionSources(fusion, "market-pulse")
+        : ["Brieftick Logic"],
       mode: "market-pulse",
-      mockData: !newsPack.live,
+      mockData: !fusion?.live,
     },
     failedSources
   );

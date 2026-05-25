@@ -7,22 +7,54 @@ import {
   resolveSymbolForPrompt,
   withDataLimited,
   MOCK_HEADLINES,
+  buildFusionPromptExtras,
 } from "./shared.js";
+import { getFusedQuote, fusionAttributionSources } from "./dataFusion.js";
+import { buildFallbackResponse } from "./fallbackIntelligence.js";
 
 /**
- * @param {{ prompt: string, primaryEntity: import('./entityResolver.js').ResolvedEntity }} ctx
+ * @param {{ prompt: string, primaryEntity: import('./entityResolver.js').ResolvedEntity, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx
  */
 export async function runTickerIntelligenceLogic(ctx) {
-  const { prompt, primaryEntity } = ctx;
+  const { prompt, primaryEntity, fusion } = ctx;
   const symbol = resolveSymbolForPrompt(prompt, primaryEntity);
   const displayName = primaryEntity.companyName || symbol;
-  const failedSources = [];
+  const failedSources = [...(fusion?.failedSources || [])];
   const api = window.BriefTickAPI;
   const isNewsQuery = /news|headline|latest|update/i.test(prompt);
 
   logicDebug("ticker_symbol", { symbol, displayName, isNewsQuery });
 
-  if (api?.aiWhyMoving && !isNewsQuery) {
+  const fq = fusion ? getFusedQuote(fusion, symbol) : null;
+  let quote = fq
+    ? { price: fq.price, pctChange: fq.pctChange }
+    : null;
+
+  if (!quote) {
+    const { quote: q, failedSources: qf } = await getQuote(symbol);
+    quote = q;
+    failedSources.push(...qf);
+  }
+
+  const headlines =
+    fusion?.relatedHeadlines?.length
+      ? fusion.relatedHeadlines
+      : fusion?.news?.headlines?.length
+        ? fusion.news.headlines
+        : (await getHeadlines(8)).headlines;
+
+  if (!fusion?.news?.headlines?.length) {
+    const pack = await getHeadlines(8);
+    failedSources.push(...(pack.failedSources || []));
+  }
+
+  const items = headlines.length ? headlines : MOCK_HEADLINES;
+  const newsCtx = items
+    .slice(0, 4)
+    .map((n) => n.headline)
+    .join("; ");
+
+  if (api?.aiWhyMoving && !isNewsQuery && quote) {
     try {
       const text = await api.aiWhyMoving(symbol);
       if (text) {
@@ -31,16 +63,18 @@ export async function runTickerIntelligenceLogic(ctx) {
           summary: text.slice(0, 480),
           cards: {
             snapshot: text.slice(0, 200),
-            catalyst: "Live narrative from price and headline channel",
+            catalyst: items[0]?.headline || "Headline and flow channel",
             macroContext: "Rates and risk appetite frame the move",
             sectorImpact: "Sector beta and peer sympathy in play",
-            volatility: "Session volatility reflects headline sensitivity",
+            volatility: fq?.agreement
+              ? "Cross-source quote agreement · vol active"
+              : "Session volatility reflects headline sensitivity",
             aiSummary: text.slice(0, 520),
           },
           keyDrivers: ["News catalyst", "Sector sympathy", "Macro rates backdrop"],
-          signals: ["Headline-driven", "Volatility active"],
-          confidence: 74,
-          sources: ["Finnhub", "Brieftick Logic"],
+          signals: ["Headline-driven", fq?.agreement ? "Sources aligned" : "Volatility active"],
+          confidence: fq?.agreement ? 76 : 72,
+          sources: fusionAttributionSources(fusion || { providers: ["finnhub"], failedSources }, "ticker"),
           mode: "ticker",
           usedAI: true,
         });
@@ -50,32 +84,25 @@ export async function runTickerIntelligenceLogic(ctx) {
     }
   }
 
-  const [{ quote, failedSources: quoteFail }, newsPack] = await Promise.all([
-    getQuote(symbol),
-    getHeadlines(8),
-  ]);
-  failedSources.push(...quoteFail, ...(newsPack.failedSources || []));
-
-  const headlines = newsPack.headlines.length ? newsPack.headlines : MOCK_HEADLINES;
-  const symUpper = symbol.toUpperCase();
-  const nameLower = (displayName || "").toLowerCase();
-  const relatedNews = headlines.filter((n) => {
-    const h = `${n.headline || ""} ${n.summary || ""}`.toUpperCase();
-    return h.includes(symUpper) || (nameLower && h.includes(nameLower.toUpperCase()));
-  });
-  const newsCtx = (relatedNews.length ? relatedNews : headlines)
-    .slice(0, 4)
-    .map((n) => n.headline)
-    .join("; ");
-
   const ai = await callLogicLLM(
     "You are Brieftick Logic — institutional ticker intelligence. Explain news and price context. No recommendations.",
-    `Symbol: ${symbol} (${displayName})\nQuery type: ${isNewsQuery ? "news focus" : "price context"}\nPrompt: ${prompt}\nQuote: ${quote ? JSON.stringify({ price: quote.price, pct: quote.pctChange }) : "unavailable"}\nHeadlines: ${newsCtx}`,
+    `Symbol: ${symbol} (${displayName})\nQuery type: ${isNewsQuery ? "news focus" : "price context"}\nPrompt: ${prompt}\n${buildFusionPromptExtras(ctx, symbol)}`,
     750
   );
 
   if (ai) {
-    return { ...ai, mode: "ticker", mockData: !newsPack.live };
+    return {
+      ...ai,
+      mode: "ticker",
+      mockData: !fusion?.live,
+      sources: fusion
+        ? fusionAttributionSources(fusion, "ticker")
+        : ai.sources,
+    };
+  }
+
+  if (!quote && !items.length) {
+    return buildFallbackResponse(ctx);
   }
 
   const pctStr = quote
@@ -85,12 +112,9 @@ export async function runTickerIntelligenceLogic(ctx) {
   let summaryText = `${displayName} is in focus`;
   if (quote) {
     const dir = quote.pctChange >= 0 ? "firmer" : "softer";
-    const channel = isNewsQuery
-      ? "Headline flow is the primary narrative channel."
-      : "Moves reflect catalyst sensitivity plus sector beta.";
-    summaryText = `${displayName} is ${dir} on the session (${pctStr}). ${channel} Historical patterns suggest similar setups often cluster around earnings, guidance, or macro repricing.`;
+    summaryText = `${displayName} is ${dir} on the session (${pctStr}). Moves reflect catalyst sensitivity plus sector beta and macro risk channels.`;
   } else {
-    summaryText = `${displayName} is seeing attention; live quote delayed. Context uses headline tone and sector patterns.`;
+    summaryText = `${displayName} is seeing attention; live quote delayed. Context uses headline tone, sector patterns, and historical catalyst behavior.`;
   }
 
   return withDataLimited(
@@ -101,35 +125,40 @@ export async function runTickerIntelligenceLogic(ctx) {
       summary: summaryText,
       cards: {
         snapshot: quote
-          ? `${symbol} ${pctStr} — ${isNewsQuery ? "news-led attention" : "active two-way trade"}`
+          ? `${symbol} ${pctStr} — ${isNewsQuery ? "news-led" : "active session"}`
           : `${displayName} in focus; live quote delayed`,
-        catalyst: relatedNews[0]?.headline || newsCtx.split(";")[0] || "Sector and headline narrative",
-        macroContext: "Rates, dollar, and risk appetite set the backdrop for mega-cap tech beta",
-        sectorImpact: "Semiconductor and AI peer group sympathy likely amplifies single-name moves",
+        catalyst: items[0]?.headline || newsCtx.split(";")[0] || "Sector and headline narrative",
+        macroContext: "Rates, dollar, and risk appetite set the backdrop for mega-cap beta",
+        sectorImpact: "Peer sympathy in the same sector theme likely amplifies moves",
         volatility: quote
           ? Math.abs(quote.pctChange) > 2
             ? "Elevated single-name volatility"
             : "Moderate session volatility"
-          : "Volatility context inferred from sector",
+          : "Volatility inferred from sector regime",
         aiSummary: isNewsQuery
-          ? `Latest narrative on ${displayName} ties to headline flow: ${newsCtx.slice(0, 280)}`
-          : `${displayName} price action is being read through headlines and sector tone rather than isolated technicals.`,
+          ? `Narrative on ${displayName}: ${newsCtx.slice(0, 280)}`
+          : `${displayName} is read through headlines and sector tone rather than price alone.`,
       },
       keyDrivers: [
-        relatedNews[0]?.headline || "Headline / sector narrative",
-        quote ? `Session change ${pctStr}` : "Quote feed delayed",
-        "Macro rates and risk channel",
+        items[0]?.headline || "Headline / sector narrative",
+        quote ? `Session ${pctStr}` : "Quote delayed",
+        "Macro rates channel",
       ],
       signals: [
         quote?.pctChange >= 0 ? "Positive momentum" : "Negative momentum",
-        isNewsQuery ? "News-sensitive" : "Flow-driven",
+        fq?.agreement ? "Multi-source aligned" : isNewsQuery ? "News-sensitive" : "Flow-driven",
       ],
-      confidence: quote && newsPack.live ? 72 : 52,
-      sources: newsPack.live
-        ? ["Finnhub", "Brieftick Logic"]
+      confidence: quote && fusion?.live ? 74 : 52,
+      sources: fusion
+        ? fusionAttributionSources(fusion, "ticker")
         : ["Brieftick Logic · contextual"],
       mode: "ticker",
-      mockData: !quote || !newsPack.live,
+      mockData: !quote || !fusion?.live,
+      optionalCards: {
+        relatedMovers: ctx.memory?.watchlist?.length
+          ? `Watchlist context: ${ctx.memory.watchlist.slice(0, 5).join(", ")}`
+          : undefined,
+      },
     },
     failedSources
   );

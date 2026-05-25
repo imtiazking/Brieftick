@@ -56,6 +56,16 @@ const COMPANY_ALIASES = [
   ["chevron", "CVX", "Chevron"],
   ["costco", "COST", "Costco"],
   ["eli lilly", "LLY", "Eli Lilly"],
+  ["palantir", "PLTR", "Palantir"],
+  ["pltr", "PLTR", "Palantir"],
+  ["coinbase", "COIN", "Coinbase"],
+  ["uber", "UBER", "Uber"],
+  ["disney", "DIS", "Disney"],
+  ["salesforce", "CRM", "Salesforce"],
+  ["oracle", "ORCL", "Oracle"],
+  ["micron", "MU", "Micron"],
+  ["super micro", "SMCI", "Super Micro"],
+  ["smci", "SMCI", "Super Micro"],
 ];
 
 const TICKER_SYMBOLS = new Set([
@@ -192,16 +202,23 @@ export function resolveEntities(prompt) {
     }
   }
 
+  const trimmed = (prompt || "").trim();
+  const firstToken = trimmed.split(/\s+/)[0]?.replace(/[^A-Za-z0-9.]/g, "").toUpperCase() || "";
+  const isBareTickerPrompt =
+    trimmed.split(/\s+/).length === 1 && TICKER_SYMBOLS.has(firstToken);
+
   const upper = prompt.toUpperCase();
   const tickerMatches = upper.match(/\$?([A-Z]{1,5})\b/g) || [];
   for (const raw of tickerMatches) {
     const sym = raw.replace("$", "");
     if (!TICKER_SYMBOLS.has(sym) || STOPWORDS.has(sym)) continue;
+    const hasDollar = raw.includes("$");
+    if (sym === firstToken && !hasDollar && !isBareTickerPrompt) continue;
     tryAdd({
-      entityType: sym.length <= 3 ? "ticker" : "ticker",
+      entityType: "ticker",
       symbol: sym,
       companyName: sym,
-      confidence: 80,
+      confidence: hasDollar ? 88 : 80,
     });
   }
 
@@ -218,6 +235,12 @@ export function resolveEntities(prompt) {
  */
 export function resolvePrimaryEntity(prompt) {
   const entities = resolveEntities(prompt);
-  const company = entities.find((e) => e.entityType === "company" || e.symbol);
-  return company || entities[0];
+  const priority = ["company", "etf", "index", "ticker", "sector_theme", "macro", "market"];
+  for (const type of priority) {
+    const hit = entities.find((e) => e.entityType === type && e.symbol);
+    if (hit) return hit;
+  }
+  const company = entities.find((e) => e.entityType === "company");
+  if (company) return company;
+  return entities[0] || { entityType: "market", symbol: null, companyName: null, confidence: 35 };
 }

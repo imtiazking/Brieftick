@@ -29,6 +29,10 @@ export const LIMITED_DATA_MSG =
  * @property {string[]} keyDrivers
  * @property {string[]} signals
  * @property {number} confidence
+ * @property {'high'|'moderate'|'limited'|'partial'} [confidenceLevel]
+ * @property {string} [confidenceLabel]
+ * @property {{ riskSignal?: string, relatedMovers?: string, portfolioImpact?: string }} [optionalCards]
+ * @property {string} [memoryHint]
  * @property {string[]} sources
  * @property {string} disclaimer
  * @property {LogicMode} [mode]
@@ -100,6 +104,10 @@ export function buildLogicResponse(partial) {
     keyDrivers: drivers,
     signals,
     confidence: typeof partial.confidence === "number" ? partial.confidence : 62,
+    confidenceLevel: partial.confidenceLevel,
+    confidenceLabel: partial.confidenceLabel,
+    optionalCards: partial.optionalCards || {},
+    memoryHint: partial.memoryHint,
     sources: partial.sources || ["Brieftick Logic"],
     disclaimer: partial.disclaimer || LOGIC_DISCLAIMER,
     mode: partial.mode,

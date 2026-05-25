@@ -1,10 +1,18 @@
 import { buildLogicResponse } from "./types.js";
-import { callLogicLLM, getPortfolioHoldings, getQuote, withDataLimited } from "./shared.js";
+import {
+  callLogicLLM,
+  getPortfolioHoldings,
+  getQuote,
+  withDataLimited,
+  buildFusionPromptExtras,
+} from "./shared.js";
+import { fusionAttributionSources } from "./dataFusion.js";
+import { buildFallbackResponse } from "./fallbackIntelligence.js";
 
-/** @param {{ prompt: string }} ctx */
+/** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runPortfolioLogic(ctx) {
   const prompt = ctx.prompt || "Analyze my portfolio";
-  const failedSources = [];
+  const failedSources = [...(ctx.fusion?.failedSources || [])];
   const holdings = getPortfolioHoldings();
   const lines =
     holdings.length > 0
@@ -34,12 +42,25 @@ export async function runPortfolioLogic(ctx) {
     .join("\n");
 
   const ai = await callLogicLLM(
-    "Brieftick Portfolio Logic — composition and exposure only. Never recommend trades.",
-    `${prompt}\nHoldings:\n${bookCtx}\nTop3 weight: ${top3Weight}%`,
+    "Brieftick Portfolio Logic — composition, concentration, vol exposure, macro sensitivity. Never recommend trades.",
+    `${prompt}\nHoldings:\n${bookCtx}\nTop3 weight: ${top3Weight}%\n${buildFusionPromptExtras(ctx, top3[0]?.symbol || "SPY")}`,
     700
   );
 
-  if (ai) return { ...ai, mode: "portfolio", mockData: !holdings.length };
+  if (ai) {
+    return {
+      ...ai,
+      mode: "portfolio",
+      mockData: !holdings.length,
+      sources: ctx.fusion ? fusionAttributionSources(ctx.fusion, "portfolio") : ai.sources,
+      optionalCards: {
+        portfolioImpact: `Concentration in ${top3.map((h) => h.symbol).join(", ")} (~${top3Weight.toFixed(0)}% top-3) · macro and vol transmission elevated`,
+        riskSignal: top3Weight > 35 ? "Correlation risk elevated" : "Moderate book diversification",
+      },
+    };
+  }
+
+  if (!holdings.length && failedSources.length > 4) return buildFallbackResponse(ctx);
 
   return withDataLimited(
     {
@@ -63,11 +84,16 @@ export async function runPortfolioLogic(ctx) {
         "Monitor vol sensitivity",
       ],
       confidence: holdings.length ? 68 : 54,
-      sources: holdings.length
-        ? ["Local portfolio · Finnhub", "Brieftick Logic"]
-        : ["Sample book · Logic Preview"],
+      sources: ctx.fusion
+        ? fusionAttributionSources(ctx.fusion, "portfolio")
+        : holdings.length
+          ? ["Portfolio Context", "Finnhub", "Brieftick Logic"]
+          : ["Sample book · Brieftick Logic"],
       mode: "portfolio",
       mockData: !holdings.length,
+      optionalCards: {
+        portfolioImpact: `Largest weights ${top3.map((h) => `${h.symbol} ${h.weight}%`).join(", ")} — sector balance and macro beta drive book volatility.`,
+      },
     },
     failedSources
   );
