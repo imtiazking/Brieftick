@@ -147,9 +147,14 @@ function renderResultSurface(html, state = "ready") {
   const content = document.getElementById("logicResultContent");
   if (!content) return;
 
-  if (idle) idle.hidden = true;
+  if (idle) {
+    idle.hidden = true;
+    idle.style.display = "none";
+  }
   content.hidden = false;
+  content.style.display = "flex";
   content.innerHTML = html || "";
+  content.scrollTop = 0;
 
   if (surface) {
     surface.classList.toggle("is-processing", state === "loading");
@@ -164,7 +169,7 @@ function showResultPanelLoading() {
 
 function scrollResultPanel() {
   const content = document.getElementById("logicResultContent");
-  if (content) content.scrollTop = content.scrollHeight;
+  if (content) content.scrollTop = 0;
 }
 
 function enrichResponseMeta(res, prompt) {
