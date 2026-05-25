@@ -7,6 +7,14 @@ import { resolvePrimaryEntity } from "../logic/entityResolver.js";
 import { runMarketPulseLogic } from "../logic/marketPulseLogic.js";
 import { runRiskRegimeLogic } from "../logic/riskRegimeLogic.js";
 import { getHeadlines, getWatchlist } from "../logic/shared.js";
+import {
+  checkLogicAccess,
+  getUsageBannerText,
+  isLogicTerminalUser,
+  LOGIC_UPGRADE_MSG,
+  PREMIUM_LOGIC_MODES,
+  recordLogicUsage,
+} from "../logic/freeAccess.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 const LOGIC_API_TIMEOUT_MS = 14000;
@@ -23,6 +31,7 @@ const DEFAULT_WATCH = ["NVDA", "TSLA", "AAPL", "MSFT", "AMD", "META"];
 
 let activeMode = "market-pulse";
 let isProcessing = false;
+let logicPageInitialized = false;
 
 function logicLog(event, data) {
   const payload = data !== undefined ? data : "";
@@ -172,6 +181,39 @@ function scrollResultPanel() {
   if (content) content.scrollTop = 0;
 }
 
+function updateUsageBanner() {
+  const el = document.getElementById("logicUsageBanner");
+  if (!el) return;
+  el.textContent = getUsageBannerText();
+  el.hidden = false;
+}
+
+function renderAccessBlockedResponse(prompt, reason) {
+  const isLimit = reason === "daily_limit";
+  const summary = isLimit
+    ? `You have used all 5 Free Logic prompts for today. ${LOGIC_UPGRADE_MSG}`
+    : LOGIC_UPGRADE_MSG;
+  return buildLogicResponse({
+    title: isLimit ? "Free Logic limit reached" : "Terminal feature",
+    summary,
+    cards: {
+      snapshot: isLimit ? "Daily Free Logic quota exhausted" : "Portfolio, scenario, and sector Logic require Terminal",
+      catalyst: "Upgrade for portfolio intelligence and scenario analysis",
+      macroContext: "Terminal unlocks full source depth and live premium data",
+      sectorImpact: "Free users can still use Market Pulse, Ticker, Risk Regime, and Daily Brief",
+      volatility: "Limits reset at midnight UTC",
+      aiSummary: summary,
+    },
+    keyDrivers: ["Free tier limit", "Terminal unlocks full Logic"],
+    signals: [isLimit ? "5/5 used" : "Upgrade required"],
+    confidence: 100,
+    sources: ["Brieftick Logic · access"],
+    disclaimer: LOGIC_DISCLAIMER,
+    mode: activeMode,
+    mockData: true,
+  });
+}
+
 function enrichResponseMeta(res, prompt) {
   const primary = resolvePrimaryEntity(prompt);
   const modeMeta = LOGIC_MODES.find((m) => m.id === res.mode);
@@ -248,6 +290,22 @@ export async function submitLogicQuery(promptText) {
   const userHtml = renderUserBubble(prompt);
   showResultPanelLoading();
 
+  const access = checkLogicAccess(mode);
+  if (!access.ok) {
+    logicLog("error", { access: access.reason });
+    document.getElementById("logicLoading")?.remove();
+    const blocked = enrichResponseMeta(
+      renderAccessBlockedResponse(prompt, access.reason),
+      prompt
+    );
+    renderResultSurface(userHtml + renderIntelligenceCard(blocked), "ready");
+    isProcessing = false;
+    setRunButtonsDisabled(false);
+    updateUsageBanner();
+    logicLog("render state updated", "access blocked");
+    return;
+  }
+
   let response;
   try {
     response = enrichResponseMeta(await runLogicWithTimeout(prompt, mode), prompt);
@@ -273,6 +331,8 @@ export async function submitLogicQuery(promptText) {
   const cardHtml = renderIntelligenceCard(response);
   renderResultSurface(userHtml + cardHtml, "ready");
 
+  if (!isLogicTerminalUser()) recordLogicUsage();
+  updateUsageBanner();
   updateInsightWidgets(response);
   updateHubFromResponse(response);
   scrollResultPanel();
@@ -555,18 +615,29 @@ function bindForms() {
 
 function bindLogicUI() {
   const sidebar = document.getElementById("logicModeSidebar");
+  const terminal = isLogicTerminalUser();
   if (sidebar) {
-    sidebar.innerHTML = LOGIC_MODES.map(
-      (m) =>
-        `<button type="button" class="logic-mode-btn${m.id === activeMode ? " active" : ""}" data-mode="${m.id}">
+    sidebar.innerHTML = LOGIC_MODES.map((m) => {
+      const locked = !terminal && PREMIUM_LOGIC_MODES.has(m.id);
+      return `<button type="button" class="logic-mode-btn${m.id === activeMode ? " active" : ""}${locked ? " logic-mode-btn--locked" : ""}" data-mode="${m.id}" data-locked="${locked ? "1" : "0"}">
           <span class="logic-mode-icon">${m.icon}</span>
-          <span class="logic-mode-label">${escapeHtml(m.label)}</span>
+          <span class="logic-mode-label">${escapeHtml(m.label)}${locked ? " · Terminal" : ""}</span>
           <span class="logic-mode-desc">${escapeHtml(m.desc)}</span>
-        </button>`
-    ).join("");
+        </button>`;
+    }).join("");
 
     sidebar.querySelectorAll(".logic-mode-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
+        if (btn.dataset.locked === "1") {
+          submitLogicQuery(
+            btn.dataset.mode === "portfolio"
+              ? "Analyze my portfolio"
+              : btn.dataset.mode === "scenario"
+                ? "What happens if rates rise?"
+                : "Show me AI sector rotation"
+          );
+          return;
+        }
         activeMode = btn.dataset.mode;
         sidebar
           .querySelectorAll(".logic-mode-btn")
@@ -614,22 +685,62 @@ export function isLogicPreview() {
   return PREVIEW_KEYS.has(new URLSearchParams(location.search).get("preview"));
 }
 
-export function initLogicPreview() {
-  if (!isLogicPreview()) return;
+function canInitLogic() {
+  return isLogicPreview() || !!window._clerkUser;
+}
+
+function showLogicNav() {
+  const tab = document.getElementById("navLogicTab");
+  const pill = document.getElementById("logicPreviewPill");
+  if (!tab) return;
+  const visible = isLogicPreview() || !!window._clerkUser;
+  if (visible) tab.style.display = "inline-flex";
+  if (isLogicPreview()) {
+    document.documentElement.classList.add("preview-logic");
+    if (pill) pill.style.display = "";
+  } else if (pill) {
+    pill.style.display = "none";
+  }
+}
+
+function refreshLogicPageChrome() {
+  const previewBadge = document.querySelector(".logic-preview-badge");
+  const headerSub = document.querySelector(".logic-header-sub");
+  if (previewBadge) previewBadge.style.display = isLogicPreview() ? "" : "none";
+  if (headerSub) {
+    headerSub.textContent = isLogicTerminalUser()
+      ? "Logic Terminal · Institutional intelligence · Not financial advice"
+      : "Free Logic · Limited daily prompts · Not financial advice";
+  }
+  updateUsageBanner();
+}
+
+function hookLogicRoute() {
+  if (window.__logicRouteHooked || typeof window.route !== "function") return;
+  const orig = window.route;
+  window.__logicRouteHooked = true;
+  window.route = function (name) {
+    orig(name);
+    if (name === "logic") setTimeout(tryInitLogicPage, 0);
+  };
+}
+
+export function initLogicPage() {
+  if (logicPageInitialized) return;
+  if (!canInitLogic()) return;
+  logicPageInitialized = true;
 
   window.__LOGIC_PREVIEW = true;
-  window.__AGENT_PREVIEW = true;
   window.submitLogicQuery = submitLogicQuery;
   window.logicHandleSubmit = submitLogicQuery;
-  document.documentElement.classList.add("preview-logic");
 
-  logicLog("init", "Logic preview ready");
+  logicLog("init", isLogicTerminalUser() ? "Logic Terminal ready" : "Logic Free ready");
 
-  const tab = document.getElementById("navLogicTab");
-  if (tab) tab.style.display = "";
-
+  showLogicNav();
+  refreshLogicPageChrome();
   bindLogicUI();
   hydrateIntelligenceHub();
+  updateUsageBanner();
 
   if (window.__logicPendingPrompt) {
     const pending = window.__logicPendingPrompt;
@@ -638,21 +749,55 @@ export function initLogicPreview() {
   }
 
   setTimeout(() => document.getElementById("logicHeroInput")?.focus(), 400);
+}
+
+function tryInitLogicPage() {
+  if (!document.getElementById("page-logic")) return;
+  if (!canInitLogic()) return;
+  initLogicPage();
+}
+
+function bootstrapLogicModule() {
+  window.submitLogicQuery = submitLogicQuery;
+  window.logicHandleSubmit = submitLogicQuery;
+  window.btInitLogicForUser = () => {
+    showLogicNav();
+    refreshLogicPageChrome();
+    tryInitLogicPage();
+    if (logicPageInitialized) bindLogicUI();
+  };
+
+  hookLogicRoute();
+  if (typeof window.route !== "function") {
+    setTimeout(hookLogicRoute, 50);
+  }
 
   const params = new URLSearchParams(location.search);
-  if (params.get("tab") === "logic" || params.get("tab") === "agent" || isLogicPreview()) {
-    setTimeout(() => window.route?.("logic"), 50);
+  const tab = params.get("tab");
+  if (isLogicPreview() || tab === "logic" || tab === "agent") {
+    if (typeof window.route === "function") window.route("logic");
   }
-}
 
-if (isLogicPreview()) {
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initLogicPreview);
+    document.addEventListener("DOMContentLoaded", tryInitLogicPage);
   } else {
-    initLogicPreview();
+    tryInitLogicPage();
   }
-  window.addEventListener("load", () => setTimeout(initLogicPreview, 200));
+  window.addEventListener("load", tryInitLogicPage);
+
+  const clerkPoll = setInterval(() => {
+    if (window._clerkUser) {
+      showLogicNav();
+      if (document.getElementById("page-logic")?.classList.contains("active")) {
+        tryInitLogicPage();
+      }
+      clearInterval(clerkPoll);
+    }
+  }, 250);
+  setTimeout(() => clearInterval(clerkPoll), 10000);
 }
 
-window.submitLogicQuery = submitLogicQuery;
-window.logicHandleSubmit = submitLogicQuery;
+/** @deprecated */
+export const initLogicPreview = initLogicPage;
+
+bootstrapLogicModule();

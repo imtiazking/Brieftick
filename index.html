@@ -2761,6 +2761,9 @@ h1,h2,h3{
 .logic-wrap{max-width:1440px;margin:0 auto;padding:20px 24px 100px;display:flex;flex-direction:column;gap:16px;min-height:calc(100vh - 140px)}
 .logic-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .logic-preview-badge{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,168,90,.35);padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.logic-usage-banner{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--text-2);display:block;width:100%;margin-bottom:6px}
+.logic-mode-btn--locked{opacity:.78;border-style:dashed}
+.logic-mode-btn--locked .logic-mode-label{color:var(--text-3)}
 .logic-header h2{font-family:var(--display);font-size:clamp(22px,3vw,32px);font-weight:600;letter-spacing:-.02em;margin:0}
 .logic-header-sub{font-size:13px;color:var(--ink-dim);margin:6px 0 0;max-width:520px;line-height:1.5}
 .logic-header-meta{display:flex;gap:8px;flex-wrap:wrap}
@@ -2927,7 +2930,8 @@ h1,h2,h3{
 }
 .logic-result-surface.is-ready .logic-result-content,
 .logic-result-surface.is-processing .logic-result-content{
-  flex:1 1 auto;align-content:flex-start;
+  flex:1 1 auto;justify-content:flex-start;align-content:flex-start;
+  align-items:center;
 }
 #logicResultContent .logic-msg--user,
 #logicResultContent .logic-msg--logic{
@@ -3189,7 +3193,7 @@ h1,h2,h3{
     <button class="nav-link app-tab" data-route="insiders">Insiders <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <button class="nav-link app-tab" data-route="options">Options <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <button class="nav-link" data-route="pricing">Pricing</button>
-    <button class="nav-link app-tab logic-preview-tab" data-route="logic" id="navLogicTab" style="display:none">Logic <span class="nav-preview-pill">Preview</span></button>
+    <button class="nav-link app-tab logic-preview-tab" data-route="logic" id="navLogicTab" style="display:none">Logic <span class="nav-preview-pill" id="logicPreviewPill">Preview</span></button>
     <button class="nav-link" data-route="about">About</button>
     <button class="nav-settings" id="navSettingsBtn" onclick="openSettings()" title="API key settings" aria-label="Settings" style="display:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -5045,6 +5049,7 @@ h1,h2,h3{
         <p class="logic-header-sub">Logic Terminal · Institutional intelligence · Not financial advice</p>
       </div>
       <div class="logic-header-meta">
+        <span class="logic-usage-banner" id="logicUsageBanner" hidden>Free Logic: 0/5 used today</span>
         <span class="logic-meta-chip">7 Logic modules</span>
         <span class="logic-meta-chip">Cmd+K · Command centre</span>
       </div>
@@ -11417,6 +11422,7 @@ async function initClerk() {
 
 async function _onAuthChange(user) {
   _clerkUser = user || null;
+  window._clerkUser = _clerkUser;
   const signedOut = document.getElementById('authSignedOut');
   const signedIn  = document.getElementById('authSignedIn');
   const badge     = document.getElementById('authPlanBadge');
@@ -11425,10 +11431,14 @@ async function _onAuthChange(user) {
 
   if (!user) {
     _isTerminal = false;
+    window._isTerminal = false;
+    window._clerkUser = null;
     if (signedOut) signedOut.style.display = 'flex';
     if (signedIn)  signedIn.style.display  = 'none';
     // Hide app tabs for public users
     if (navEl) navEl.classList.remove('nav--authed');
+    const logicTab = document.getElementById('navLogicTab');
+    if (logicTab && !isLogicPreviewActive()) logicTab.style.display = 'none';
     // Remove protected footer product links — not rendered for logged-out users
     const fpl = document.getElementById('footerProductLinks');
     if (fpl) fpl.innerHTML = '';
@@ -11465,17 +11475,24 @@ async function _onAuthChange(user) {
 
   if (role === 'admin') {
     _isTerminal = true;
+    window._isTerminal = true;
     if (badge) { badge.textContent = 'Admin'; badge.className = 'auth-plan-badge terminal'; }
     _applyAccessLevel('terminal');
   } else if (sub === 'terminal') {
     _isTerminal = true;
+    window._isTerminal = true;
     if (badge) { badge.textContent = 'Terminal'; badge.className = 'auth-plan-badge terminal'; }
     _applyAccessLevel('terminal');
   } else {
     _isTerminal = false;
+    window._isTerminal = false;
     if (badge) { badge.textContent = 'Free'; badge.className = 'auth-plan-badge free'; }
     _applyAccessLevel('free');
     _verifySubscriptionFromServer();
+  }
+
+  if (typeof window.btInitLogicForUser === 'function') {
+    window.btInitLogicForUser();
   }
 
   // ── Resume checkout intent if user just signed in ─────────────
@@ -11507,10 +11524,12 @@ async function _verifySubscriptionFromServer() {
     // Admin role or terminal subscription both unlock full access
     if ((data.role === 'admin' || data.subscription === 'terminal') && !_isTerminal) {
       _isTerminal = true;
+      window._isTerminal = true;
       const badge = document.getElementById('authPlanBadge');
       const label = data.role === 'admin' ? 'Admin' : 'Terminal';
       if (badge) { badge.textContent = label; badge.className = 'auth-plan-badge terminal'; }
       _applyAccessLevel('terminal');
+      if (typeof window.btInitLogicForUser === 'function') window.btInitLogicForUser();
     }
   } catch (_) {}
 }
@@ -11853,8 +11872,8 @@ function routeWithAuth(name) {
     return;
   }
 
-  // Logic preview — no sign-in required while ?preview=logic (legacy: agent)
-  if (name === 'logic' && isLogicPreviewActive()) {
+  // Logic — preview without sign-in, or signed-in Free / Terminal
+  if (name === 'logic' && (isLogicPreviewActive() || _clerkUser)) {
     window.route(name);
     return;
   }
@@ -11883,8 +11902,9 @@ window.addEventListener('load', () => {
     if (activeId === 'logic' && isLogicPreviewActive()) return;
     // Give Clerk a moment to load and set user; if still public → back to landing
     setTimeout(() => {
-      if (!_clerkUser && !(activeId === 'logic' && isLogicPreviewActive()))
-        window.route('landing');
+      if (_clerkUser) return;
+      if (activeId === 'logic' && isLogicPreviewActive()) return;
+      window.route('landing');
     }, 1200);
   }
 });
