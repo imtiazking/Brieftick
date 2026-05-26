@@ -4,7 +4,6 @@
  */
 
 import { logicDebug } from "../shared.js";
-import { publishIntelligenceFeedHooks } from "./intelligenceFeedEngine.js";
 
 /** @type {import('./intelligenceStream.js').StreamSignal[]} */
 let pendingSignals = [];
@@ -18,6 +17,19 @@ let pendingSignals = [];
  */
 
 const listeners = new Set();
+
+/**
+ * @param {{ id: string, message: string, severity?: string }[]} notes
+ */
+export function publishIntelligenceFeedHooks(notes) {
+  for (const note of notes || []) {
+    emitIntelligenceSignal({
+      id: `feed_${note.id}`,
+      message: note.message,
+      severity: note.severity === "shift" ? "shift" : "info",
+    });
+  }
+}
 
 /**
  * @param {Omit<StreamSignal, 'at'> & { at?: number }} signal
@@ -46,8 +58,24 @@ export function hookIntelligenceStream(ctx, res) {
   const regime = ctx.regime?.primary;
   const narrative = ctx.narrative?.dominantLabel;
 
+  if (ctx.intelligenceStream?.feed?.length) {
+    publishIntelligenceFeedHooks(
+      ctx.intelligenceStream.feed.map((n) => ({
+        id: n.id,
+        message: n.message,
+        severity: n.category === "narrative" || n.category === "divergence" ? "shift" : "info",
+      }))
+    );
+    return;
+  }
   if (ctx.marketIntelligence?.feedNotes?.length) {
-    publishIntelligenceFeedHooks(ctx.marketIntelligence.feedNotes);
+    publishIntelligenceFeedHooks(
+      ctx.marketIntelligence.feedNotes.map((n) => ({
+        id: n.id,
+        message: n.message,
+        severity: "info",
+      }))
+    );
   }
 
   if (regime === "geopolitical_stress") {

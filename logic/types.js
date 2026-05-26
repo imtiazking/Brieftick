@@ -33,7 +33,9 @@ export const LIMITED_DATA_MSG =
  * @property {number} confidence
  * @property {'high'|'moderate'|'limited'|'partial'} [confidenceLevel]
  * @property {string} [confidenceLabel]
- * @property {{ riskSignal?: string, relatedMovers?: string, portfolioImpact?: string, narrativeLink?: string, marketStructure?: string, crossAssetSignal?: string, marketDivergence?: string, stressSignal?: string }} [optionalCards]
+ * @property {{ riskSignal?: string, relatedMovers?: string, portfolioImpact?: string, narrativeLink?: string, marketStructure?: string, crossAssetSignal?: string, marketDivergence?: string, stressSignal?: string, prioritySignal?: string }} [optionalCards]
+ * @property {object[]} [intelligenceFeed]
+ * @property {object} [liveIntelligence]
  * @property {string} [memoryHint]
  * @property {string[]} sources
  * @property {string} disclaimer

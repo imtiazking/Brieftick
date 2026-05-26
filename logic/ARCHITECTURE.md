@@ -1,51 +1,57 @@
-# Brieftick Logic — Interconnected Intelligence (Preview)
+# Brieftick Logic — AI-Native Market Intelligence (Preview)
 
 **Preview only.** No production merge without approval.
+
+## Evolution
+
+Logic moves from reactive Q&A toward **continuous market interpretation**:
+
+- **Intelligence feed** — institutional notes from structure, regime, divergence, narrative
+- **Live narrative engine** — acceleration, fatigue, sensitivity shifts
+- **Market priority** — what dominates pricing now
+- **Portfolio intelligence** — hooks + simulated book reasoning
+- **Stream orchestrator** — coordinates engines; proactive session without a prompt
 
 ## Pipeline
 
 ```
-Prompt
-  → entityResolver
-  → questionIntent + modeDetect
-  → sourceRouter → multiSourceFetch → dataFusion
-  → intelligenceContext (regime, marketGraph, narrative memory)
-  → marketIntelligenceStack (structure, cross-asset, positioning, narrative shifts, divergence, stress, feed hooks)
-  → Logic module (ticker | briefing | causal | scenario | macro-interpretation | …)
-  → intelligenceLayer (graph, market intelligence apply, memory, quality, synthesis, polish)
-  → watchlist/portfolio memory
-  → confidenceEngine (with reasons)
-  → responseComposer
-  → Intelligence Cards UI (dynamic schema, optional structure sections)
+Prompt (optional)
+  → entityResolver → questionIntent
+  → sourceRouter → dataFusion
+  → intelligenceContext
+       regime · marketGraph · narrative memory
+       marketIntelligenceStack (structure, cross-asset, positioning, divergence, stress)
+       intelligenceStreamOrchestrator (feed, live narrative, priority, portfolio)
+  → Logic module
+  → intelligenceLayer (apply stream + polish)
+  → confidenceEngine → responseComposer
 ```
+
+**Proactive session:** `executeLiveIntelligenceSession()` — powers Logic hub stream on page load.
 
 ## Engines
 
 | Module | Role |
 |--------|------|
-| `engines/marketGraph.js` | Cross-asset transmission chains |
-| `engines/regimeEngine.js` | risk-on/off, inflation, geopolitical stress, AI momentum, … |
-| `engines/marketStructureEngine.js` | Breadth, concentration, AI leadership, fragile rallies |
-| `engines/crossAssetEngine.js` | Dominant factor sensitivities (rates, oil, vol, liquidity, AI) |
-| `engines/marketDivergenceEngine.js` | Conflicting equity/bond/vol/geopolitical signals |
-| `engines/marketStressEngine.js` | Complacency, concentration, liquidity fragility |
-| `engines/positioningEngine.js` | Crowding, de-grossing, rotation pressure |
-| `engines/narrativeEngine.js` | Focus shifts, inflation→growth, AI→breadth fatigue |
-| `engines/intelligenceFeedEngine.js` | Institutional notes + stream hooks (no live UI yet) |
-| `engines/marketIntelligenceOrchestrator.js` | Runs stack; applies insights when query is complex |
-| `engines/macroInterpretationEngine.js` | Conceptual macro Q&A |
-| `engines/causalReasoningEngine.js` | Mechanism-first sector Q&A |
-| `engines/intelligenceStream.js` | Hooks for future live feed |
+| `intelligenceFeedEngine.js` | Continuous strategist notes |
+| `liveNarrativeEngine.js` | Real-time narrative shifts |
+| `marketPriorityEngine.js` | Dominant market sensitivity |
+| `portfolioIntelligenceEngine.js` | Portfolio hooks + simulated exposure |
+| `intelligenceStreamOrchestrator.js` | Coordinates feed + applies to responses |
+| `marketStructureEngine.js` | Breadth, concentration, fragile rallies |
+| `crossAssetEngine.js` | Factor sensitivities |
+| `marketDivergenceEngine.js` | Conflicting signals |
+| `marketStressEngine.js` | Complacency, fragility |
+| `intelligenceStream.js` | Hooks for future push / live UI |
 
 ## Preview
 
-`?preview=logic&tab=logic`
+`?preview=logic&tab=logic` — hub stream uses Logic intelligence notes (not headline ticker).
 
 ## Test prompts
 
-- What macro conditions would break the current AI-led market structure?
-- Why can lower inflation become bearish for growth stocks?
-- Why can falling yields signal recession risk instead of optimism?
-- What relationships across oil, yields, volatility and AI matter most right now?
-- Why have equities remained strong while bond markets price slower growth?
+- What matters most to markets right now?
 - What hidden fragilities are markets currently underpricing?
+- Why have equities remained strong while bond markets price slower growth?
+- What macro conditions would break the current AI-led market structure?
+- What relationships across oil, yields, volatility and AI matter most right now?

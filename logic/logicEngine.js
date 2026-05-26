@@ -153,6 +153,54 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   return response;
 }
 
+/**
+ * Proactive live intelligence session — no user prompt required.
+ * Powers Logic hub stream and future push alerts.
+ * @param {{ prompt?: string }} [options]
+ */
+export async function executeLiveIntelligenceSession(options = {}) {
+  const prompt = options.prompt || "";
+  const primaryEntity = resolvePrimaryEntity(prompt || "market pulse");
+  const classified = classifyQuestion(prompt || "what matters most to markets right now", primaryEntity);
+  const sourceRoute = routeSources({
+    prompt: prompt || "market pulse",
+    mode: "market-pulse",
+    primaryEntity,
+  });
+  const fusion = await fetchAndFuse(sourceRoute, {
+    prompt,
+    mode: "market-pulse",
+    primaryEntity,
+    entities: resolveEntities(prompt),
+  });
+
+  const ctx = buildIntelligenceContext({
+    prompt,
+    mode: "market-pulse",
+    questionKind: classified.kind,
+    primaryEntity,
+    fusion,
+    memory: buildMemoryContext(primaryEntity, "market-pulse"),
+    portfolioMemory: buildPortfolioMemory(),
+  });
+
+  logicDebug("liveIntelligenceSession", {
+    feed: ctx.intelligenceStream?.feed?.length,
+    lead: ctx.intelligenceStream?.leadNote?.slice(0, 80),
+  });
+
+  return {
+    feed: ctx.intelligenceStream?.feed || [],
+    chips: ctx.intelligenceStream?.chips || [],
+    leadNote: ctx.intelligenceStream?.leadNote || "",
+    priority: ctx.marketPriority,
+    liveNarrative: ctx.liveNarrative,
+    portfolio: ctx.portfolioIntelligence,
+    regime: ctx.regime,
+    disclaimer: "Market intelligence, not financial advice.",
+  };
+}
+
 /** @param {object} ctx */
 async function runLogicModule(ctx) {
   switch (ctx.mode) {

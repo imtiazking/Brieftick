@@ -197,6 +197,22 @@ const INTERPRETATION_LIBRARY = [
     keyDrivers: ["Concentration", "Vol compression", "Divergence"],
   },
   {
+    id: "what_matters_most",
+    patterns: /what matters most|care about most right now|markets care about most/i,
+    label: "What matters most to markets",
+    directAnswer:
+      "Markets rank sensitivities by what is repricing fastest — typically rates and liquidity first, then earnings breadth and AI capex, with oil and geopolitics as gap-risk overlays. The dominant channel can change within a week as data shifts narrative focus.",
+    expectations:
+      "Investors watch which asset moves first after macro prints — that reveals the active sensitivity.",
+    growthEarnings:
+      "Earnings revisions tell you whether macro is hitting demand or only multiples.",
+    ratesLiquidity:
+      "Real yields and financial conditions remain the master variable for risk assets.",
+    positioningNarrative:
+      "Crowded trades can make one factor feel dominant even when fundamentals are mixed.",
+    keyDrivers: ["Rates", "Liquidity", "Earnings breadth", "Positioning"],
+  },
+  {
     id: "cross_asset_relationships",
     patterns:
       /relationships across|matter most right now|oil.*yields.*volatility|cross.?asset/i,
@@ -262,7 +278,9 @@ export function isMacroInterpretationQuery(prompt) {
     /^why\s+(can|would|does|do|is|are|have)\b/.test(t) && macroTopic;
 
   const analyticalWhat =
-    /^what\s+(macro|relationships|hidden|conditions|fragil)/i.test(t) && macroTopic;
+    (/^what\s+(macro|relationships|hidden|conditions|fragil|matters)/i.test(t) &&
+      macroTopic) ||
+    /what matters most|care about most right now/i.test(t);
 
   return (conceptual && macroTopic) || abstractWhy || analyticalWhat;
 }

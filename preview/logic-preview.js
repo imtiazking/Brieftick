@@ -2,7 +2,12 @@
  * Brieftick Logic — preview UI (Logic Terminal).
  */
 import { LOGIC_MODES, buildLogicResponse, LOGIC_DISCLAIMER, LIMITED_DATA_MSG } from "../logic/types.js";
-import { detectLogicMode, detectIntent, routeLogicPrompt } from "../logic/logicRouter.js";
+import {
+  detectLogicMode,
+  detectIntent,
+  routeLogicPrompt,
+  executeLiveIntelligenceSession,
+} from "../logic/logicRouter.js";
 import { resolvePrimaryEntity } from "../logic/entityResolver.js";
 import { runMarketPulseLogic } from "../logic/marketPulseLogic.js";
 import { runRiskRegimeLogic } from "../logic/riskRegimeLogic.js";
@@ -135,6 +140,7 @@ function renderIntelligenceCard(res, role = "logic") {
   const optionalOrder = [
     ["sectorRisks", "Sector Losers"],
     ["portfolioImpact", "Supply Chain"],
+    ["prioritySignal", "Market Priority"],
     ["marketStructure", "Market Structure"],
     ["crossAssetSignal", "Cross-Asset Signal"],
     ["riskSignal", "Positioning"],
@@ -409,6 +415,9 @@ export async function submitLogicQuery(promptText) {
   updateUsageBanner();
   updateInsightWidgets(response);
   updateHubFromResponse(response);
+  if (response.intelligenceFeed?.length) {
+    renderNarrativeFeed([], false, response.intelligenceFeed);
+  }
   scrollResultPanel();
 
   isProcessing = false;
@@ -519,33 +528,51 @@ function bindPromptButtons() {
   });
 }
 
-function renderNarrativeFeed(headlines, live) {
+function renderNarrativeFeed(headlines, live, intelligenceNotes = []) {
   const inner = document.getElementById("logicStreamInner");
   const status = document.getElementById("logicStreamStatus");
   if (!inner) return;
 
+  const intelItems =
+    intelligenceNotes.length > 0
+      ? intelligenceNotes.map((n) => ({
+          headline: n.message,
+          source: (n.category || "Logic").replace(/_/g, " "),
+        }))
+      : [];
+
   const items =
-    headlines.length > 0
-      ? headlines
-      : [
-          { headline: "Mega-cap tech anchors index tone as breadth stays selective", source: "Desk" },
-          { headline: "Rate expectations remain the primary cross-asset driver", source: "Macro" },
-          { headline: "Energy complex firm on supply narrative", source: "Commodities" },
-          { headline: "Volatility monitored into macro data prints", source: "Risk" },
-        ];
+    intelItems.length > 0
+      ? intelItems
+      : headlines.length > 0
+        ? headlines.map((n) => ({
+            headline: n.headline,
+            source: n.source || "Headline",
+          }))
+        : [
+            { headline: "Logic interpreting cross-asset sensitivities…", source: "Logic" },
+            { headline: "Monitoring breadth, positioning and narrative shifts", source: "Structure" },
+            { headline: "Rates and liquidity remain primary transmission channels", source: "Macro" },
+          ];
 
   const doubled = [...items, ...items];
   inner.innerHTML = doubled
     .map(
       (n, i) =>
         `<div class="logic-stream-item logic-widget-body--loaded" style="animation-delay:${(i % 4) * 0.08}s">
-          <time>${escapeHtml(n.source || "Narrative")}</time>
+          <time>${escapeHtml(n.source || "Logic")}</time>
           ${escapeHtml((n.headline || "").slice(0, 140))}
         </div>`
     )
     .join("");
 
-  if (status) status.textContent = live ? "Live feed" : "Contextual feed";
+  if (status) {
+    status.textContent = intelItems.length
+      ? "Logic intelligence"
+      : live
+        ? "Live feed"
+        : "Contextual feed";
+  }
 }
 
 function renderWatchlistHub() {
@@ -587,8 +614,21 @@ async function hydrateIntelligenceHub() {
   renderWatchlistHub();
 
   const newsPack = await getHeadlines(8);
-  renderNarrativeFeed(newsPack.headlines, newsPack.live);
-  renderMacroHub(newsPack.headlines);
+  let liveFeed = [];
+  try {
+    const session = await executeLiveIntelligenceSession();
+    liveFeed = session.feed || [];
+    const hubMacro = document.getElementById("logicHubMacro");
+    if (hubMacro && session.leadNote) {
+      hubMacro.innerHTML = `<div class="logic-macro-line logic-widget-body--loaded">${escapeHtml(session.leadNote)}</div>`;
+    }
+    logicLog("live intelligence session", { notes: liveFeed.length });
+  } catch (e) {
+    logicLog("live intelligence fallback", e.message || e);
+  }
+
+  renderNarrativeFeed(newsPack.headlines, newsPack.live, liveFeed);
+  if (!liveFeed.length) renderMacroHub(newsPack.headlines);
 
   try {
     const [pulse, risk] = await Promise.all([

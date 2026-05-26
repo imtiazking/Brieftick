@@ -1,13 +1,11 @@
 /**
- * Intelligence layer — interconnects graph, regime, narrative, positioning,
- * market structure, cross-asset, divergence, stress, memory, quality.
+ * Intelligence layer — graph, regime, market structure, live stream, memory, quality.
  * @module logic/intelligenceLayer
  */
 
 import { resolveMarketGraph, applyGraphToResponse } from "./engines/marketGraph.js";
 import { detectMarketRegime } from "./engines/regimeEngine.js";
-import { updateNarrativeState, applyNarrativeToResponse } from "./engines/narrativeEngine.js";
-import { applyPositioningToResponse } from "./engines/positioningEngine.js";
+import { updateNarrativeState } from "./engines/narrativeEngine.js";
 import {
   applyRelationshipMemoryToResponse,
   recordRelationshipMemory,
@@ -18,15 +16,15 @@ import { logicFinalPolish } from "./engines/logicFinalPolish.js";
 import { hookIntelligenceStream } from "./engines/intelligenceStream.js";
 import { runCausalReasoningEngine } from "./engines/causalReasoningEngine.js";
 import { runMacroInterpretationEngine } from "./engines/macroInterpretationEngine.js";
+import { runMarketIntelligenceStack, applyMarketIntelligenceToResponse } from "./engines/marketIntelligenceOrchestrator.js";
 import {
-  runMarketIntelligenceStack,
-  applyMarketIntelligenceToResponse,
-} from "./engines/marketIntelligenceOrchestrator.js";
+  runIntelligenceStreamOrchestrator,
+  applyIntelligenceStreamToResponse,
+} from "./engines/intelligenceStreamOrchestrator.js";
 import { logicDebug } from "./shared.js";
 
 /**
  * Build shared intelligence context after data fusion.
- * Runs market structure stack after regime + marketGraph; narrative state updated first.
  * @param {object} ctx
  */
 export function buildIntelligenceContext(ctx) {
@@ -36,16 +34,24 @@ export function buildIntelligenceContext(ctx) {
 
   const enriched = { ...ctx, regime, graph };
   const marketIntelligence = runMarketIntelligenceStack(enriched);
+  const intelligenceStream = runIntelligenceStreamOrchestrator(
+    { ...enriched, marketIntelligence },
+    { proactive: true, publishHooks: false }
+  );
 
   return {
     ...enriched,
     narrative: marketIntelligence.narrative,
     positioning: marketIntelligence.positioning,
     marketIntelligence,
+    intelligenceStream,
     marketStructure: marketIntelligence.structure,
     crossAsset: marketIntelligence.crossAsset,
     marketDivergence: marketIntelligence.divergence,
     marketStress: marketIntelligence.stress,
+    marketPriority: intelligenceStream.priority,
+    liveNarrative: intelligenceStream.liveNarrative,
+    portfolioIntelligence: intelligenceStream.portfolio,
   };
 }
 
@@ -61,11 +67,7 @@ export function enrichIntelligenceLayer(res, ctx) {
   }
 
   out = applyMarketIntelligenceToResponse(out, ctx);
-
-  if (!ctx.marketIntelligence) {
-    out = applyNarrativeToResponse(out, ctx.narrative);
-    out = applyPositioningToResponse(out, ctx.positioning);
-  }
+  out = applyIntelligenceStreamToResponse(out, ctx);
 
   out = applyRelationshipMemoryToResponse(out, ctx.prompt);
 
@@ -84,7 +86,7 @@ export function enrichIntelligenceLayer(res, ctx) {
   logicDebug("intelligenceLayer enriched", {
     graph: !!ctx.graph?.chain,
     regime: ctx.regime?.primary,
-    marketIntel: !!ctx.marketIntelligence,
+    feed: ctx.intelligenceStream?.feed?.length,
   });
 
   return out;
