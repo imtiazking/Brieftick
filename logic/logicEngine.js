@@ -25,6 +25,8 @@ import {
 import { logicDebug } from "./shared.js";
 import { classifyQuestion } from "./questionIntent.js";
 import { inferWatchlistExposure } from "./watchlistStore.js";
+import { buildResponsePlan, entityForPlan } from "./engines/responsePlan.js";
+import { applyResponseContract } from "./engines/applyResponseContract.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -50,9 +52,23 @@ export function finalizeLogicResponse(res, ctx) {
     out = buildFallbackResponse(ctx);
   }
 
+  const plan = ctx.responsePlan;
+  const hasAnswer =
+    (out.directAnswer && out.directAnswer.length > 48) ||
+    (out.summary && out.summary.length > 48);
+
   if (!out?.cards?.snapshot?.trim()) {
-    logicDebug("fallback triggered", "missing snapshot card");
-    out = buildFallbackResponse(ctx);
+    if (plan?.skipFallbackOnAnswer && hasAnswer) {
+      out.cards = { ...(out.cards || {}), snapshot: out.directAnswer || out.summary };
+    } else if (!plan?.conceptualOk) {
+      logicDebug("fallback triggered", "missing snapshot card");
+      out = buildFallbackResponse(ctx);
+    } else if (hasAnswer) {
+      out.cards = { ...(out.cards || {}), snapshot: out.directAnswer || out.summary };
+    } else {
+      logicDebug("fallback triggered", "missing snapshot card");
+      out = buildFallbackResponse(ctx);
+    }
   }
 
   const watchlistMemory = ctx.memory || buildMemoryContext(ctx.primaryEntity, ctx.mode);
@@ -68,6 +84,10 @@ export function finalizeLogicResponse(res, ctx) {
   }
 
   out = composeLogicResponse(out, ctx);
+
+  if (plan) {
+    out = applyResponseContract(out, plan);
+  }
 
   return out;
 }
@@ -85,23 +105,24 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   logicDebug("entity resolved", { primary: primaryEntity, entities });
 
   // 2. intent + modeDetect
-  const intentResult = detectIntent(prompt, primaryEntity);
   const classified = classifyQuestion(prompt, primaryEntity);
-  const mode = modeOverride || intentResult.mode;
+  const responsePlan = buildResponsePlan(prompt, classified, primaryEntity);
+  const routedEntity = entityForPlan(primaryEntity, responsePlan);
+  const mode = modeOverride || responsePlan.mode || classified.mode;
+  const intentResult = detectIntent(prompt, routedEntity);
   logicDebug("Logic module selected", {
     mode,
     intent: intentResult.intent,
     questionKind: classified.kind,
+    responseIntent: responsePlan.intentId,
   });
 
-  const memory = buildMemoryContext(primaryEntity, mode);
-
   // 3. sourceRouter → 4–5. fetch + fusion (context for modules and scenario impact)
-  const sourceRoute = routeSources({ prompt, mode, primaryEntity });
+  const sourceRoute = routeSources({ prompt, mode, primaryEntity: routedEntity });
   const fusion = await fetchAndFuse(sourceRoute, {
     prompt,
     mode,
-    primaryEntity,
+    primaryEntity: routedEntity,
     entities,
   });
 
@@ -109,15 +130,17 @@ export async function executeLogicPipeline(prompt, modeOverride) {
 
   let ctx = {
     prompt,
-    primaryEntity,
+    primaryEntity: routedEntity,
     entities,
     mode,
     intent: intentResult.intent,
-    intentLabel: intentResult.label,
+    intentLabel: responsePlan.label || intentResult.label,
     questionKind: classified.kind,
+    responsePlan,
+    skipTape: responsePlan.abstractEntity,
     sourceRoute,
     fusion,
-    memory,
+    memory: buildMemoryContext(routedEntity, mode),
     portfolioMemory,
     portfolioProfile: portfolioMemory.profile,
     watchlistExposure: inferWatchlistExposure(),

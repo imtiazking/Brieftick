@@ -7,6 +7,7 @@
 
 import { logicDebug } from "../shared.js";
 import { concise } from "./topicContext.js";
+import { isStrategistInterpretationQuery } from "./strategistQueryGate.js";
 
 /**
  * @typedef {Object} MacroInterpretation
@@ -146,6 +147,23 @@ const INTERPRETATION_LIBRARY = [
     keyDrivers: ["Fed balance sheet", "Funding stress", "Financial conditions"],
   },
   {
+    id: "fragility_breaks_first",
+    patterns:
+      /what breaks first|breaks first|first to break|what would break first|break first if/i,
+    label: "What breaks first",
+    directAnswer:
+      "If AI leadership weakens, the first break is usually in crowded growth positioning — semis and mega-cap beta de-gross before the index fully reflects it. Volatility can reset from compression, real yields can reprice duration, and breadth deterioration matters more than headline index levels.",
+    expectations:
+      "Earnings revisions and capex guidance are the catalyst; liquidity determines the speed of the move.",
+    growthEarnings:
+      "Narrow leadership means the index can lag the factor unwind — watch semis, networking and hyperscaler estimates first.",
+    ratesLiquidity:
+      "Higher real yields or tighter financial conditions compress multiples on the same leadership that carried the rally.",
+    positioningNarrative:
+      "Crowded AI books break faster than fundamentals shift when liquidity impulse turns.",
+    keyDrivers: ["Positioning unwind", "Vol reset", "Real yields", "Breadth"],
+  },
+  {
     id: "ai_structure_break",
     patterns:
       /break.*(ai|market structure)|macro conditions.*break|ai.?led market|fragil.*ai|underpric.*ai/i,
@@ -180,9 +198,43 @@ const INTERPRETATION_LIBRARY = [
     keyDrivers: ["Growth scare", "Earnings breadth", "Fed reaction"],
   },
   {
+    id: "consensus_overcrowded",
+    patterns:
+      /consensus trade|consensus.*overcrowd|overcrowded trade|what trade looks overcrowd|crowded trade|one-sided trade|factor crowding/i,
+    label: "Crowded consensus trade",
+    directAnswer:
+      "The consensus trade that often looks most overcrowded is crowded growth / AI leadership — investors are positioned for liquidity, duration and mega-cap earnings resilience together. When everyone is in the same trade, de-grossing hits semis and high-beta growth first, often before the index fully reflects the unwind.",
+    expectations:
+      "Crowding shows up in correlated factor returns and compressed volatility beneath narrow leadership.",
+    growthEarnings:
+      "Earnings revisions on AI and capex names are the catalyst if the consensus breaks.",
+    ratesLiquidity:
+      "Liquidity withdrawal or higher real yields can force simultaneous multiple compression.",
+    positioningNarrative:
+      "Consensus positioning raises gap risk — the unwind is positioning-driven as much as fundamental.",
+    keyDrivers: ["Crowding", "AI beta", "Liquidity", "Vol compression"],
+  },
+  {
+    id: "markets_ignoring",
+    patterns:
+      /markets? ignoring|market ignoring|risks? (are )?markets ignoring|overlooked by markets|not pricing|what.*markets.*missing/i,
+    label: "Risks markets may be ignoring",
+    directAnswer:
+      "Markets often underweight concentration, volatility compression and bond-equity growth divergence while indices look calm — investors focus on mega-cap earnings resilience and miss breadth fatigue, liquidity dependence and gap risk in crowded factors.",
+    expectations:
+      "Ignored risks surface when a single catalyst forces repositioning faster than headlines shift.",
+    growthEarnings:
+      "Breadth and cyclical confirmation matter more than index levels when leadership is narrow.",
+    ratesLiquidity:
+      "Real yields and financial conditions can reprice duration before equities catch down.",
+    positioningNarrative:
+      "Low vol can mask positioning imbalance until vol resets or liquidity tightens.",
+    keyDrivers: ["Concentration", "Vol compression", "Divergence", "Liquidity"],
+  },
+  {
     id: "hidden_fragilities",
     patterns:
-      /hidden fragil|underpric|complacent|what.*markets.*missing|fragility/i,
+      /hidden fragil|underpric|complacent|fragility/i,
     label: "Hidden market fragilities",
     directAnswer:
       "Markets often underprice concentration, volatility compression and cross-asset divergence — calm indices can hide narrow AI leadership, complacency toward geopolitical or energy risk, and bonds pricing slower growth ahead of equities.",
@@ -253,6 +305,8 @@ const INTERPRETATION_LIBRARY = [
  * @returns {boolean}
  */
 export function isMacroInterpretationQuery(prompt) {
+  if (isStrategistInterpretationQuery(prompt)) return true;
+
   const t = (prompt || "").toLowerCase().trim();
   if (!t || t.length < 15) return false;
 
@@ -270,7 +324,7 @@ export function isMacroInterpretationQuery(prompt) {
     );
 
   const macroTopic =
-    /inflation|disinflation|cpi|pce|rates?|yield|fed|fomc|growth stock|recession|soft landing|hard landing|liquidity|qe|qt|ai capex|hyperscaler|earnings growth|rate cut|easing|tightening|macro|equities rally|bond|market structure|ai.?led|fragilit|underpric|cross.?asset|breadth|concentration|positioning|diverg/i.test(
+    /inflation|disinflation|cpi|pce|rates?|yield|fed|fomc|growth stock|recession|soft landing|hard landing|liquidity|qe|qt|ai capex|hyperscaler|earnings growth|rate cut|easing|tightening|macro|equities rally|bond|market structure|ai.?led|fragilit|underpric|cross.?asset|breadth|concentration|positioning|diverg|consensus|overcrowd|crowded|ignoring/i.test(
       t
     );
 

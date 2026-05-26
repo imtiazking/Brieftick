@@ -90,7 +90,10 @@ export function buildConfidenceReasons(res, fusion, ctx) {
   if (ctx?.qualityIssues?.length) {
     reasons.push(`Quality check: ${ctx.qualityIssues[0]}`);
   }
-  if (ctx?.regime?.primary === "mixed") reasons.push("Mixed regime — no single macro driver dominates");
+  const conceptual = ctx?.responsePlan?.conceptualOk;
+  if (ctx?.regime?.primary === "mixed" && !conceptual) {
+    reasons.push("Mixed regime — no single macro driver dominates");
+  }
   if (res.usedAI && reasons.length < 2) reasons.push("Logic-enriched synthesis applied");
 
   if (!reasons.length) reasons.push("Contextual reasoning with available market data");

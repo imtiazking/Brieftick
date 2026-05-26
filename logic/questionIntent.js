@@ -7,6 +7,7 @@ import { resolvePrimaryEntity } from "./entityResolver.js";
 import { logicDebug } from "./shared.js";
 import { isCausalReasoningQuery } from "./engines/causalReasoningEngine.js";
 import { isMacroInterpretationQuery } from "./engines/macroInterpretationEngine.js";
+import { isStrategistInterpretationQuery } from "./engines/strategistQueryGate.js";
 
 /** @typedef {'news'|'geopolitical'|'macro'|'rates'|'sector'|'supply_chain'|'commodities'|'portfolio'|'scenario'|'ticker'|'risk'|'market_pulse'|'daily_brief'|'causal'|'macro_interpretation'} QuestionKind */
 
@@ -49,8 +50,27 @@ export function classifyQuestion(prompt, entity) {
     wantsBriefing: false,
   };
 
-  if (
-    /portfolio|holdings|concentration|diversif|exposure|my book|analyze my portfolio|what risks matter|how exposed.*(portfolio|rates|ai)|what would hurt|vulnerable.*(portfolio|recession)|concentrated.*ai|risks for my/i.test(
+  if (isStrategistInterpretationQuery(prompt)) {
+    result = {
+      kind: "macro_interpretation",
+      mode: "macro-interpretation",
+      label: "Macro Strategist Interpretation",
+      wantsBriefing: false,
+    };
+  } else if (
+    /what breaks first|breaks first|first to break|hidden fragil|underpric|what.*markets.*missing/i.test(
+      t
+    ) &&
+    !newsStyle
+  ) {
+    result = {
+      kind: "macro_interpretation",
+      mode: "macro-interpretation",
+      label: "Macro Interpretation Logic",
+      wantsBriefing: false,
+    };
+  } else if (
+    /portfolio|holdings|concentration|diversif|exposure|my book|analyze my portfolio|what risks matter|what risks dominate|how exposed.*(portfolio|rates|ai)|what would hurt|vulnerable.*(portfolio|recession)|concentrated.*ai|risks for my|regime benefit|what regime.*portfolio/i.test(
       t
     ) &&
     !/news on|latest on/.test(t)
@@ -193,12 +213,12 @@ export function classifyQuestion(prompt, entity) {
       label: "Macro Briefing",
       wantsBriefing: true,
     };
-  } else if (t.length > 8) {
+  } else if (t.length > 8 && !isStrategistInterpretationQuery(prompt)) {
     result = {
-      kind: "news",
-      mode: "briefing",
-      label: "Market Briefing",
-      wantsBriefing: true,
+      kind: "macro_interpretation",
+      mode: "macro-interpretation",
+      label: "Macro Interpretation",
+      wantsBriefing: false,
     };
   }
 
