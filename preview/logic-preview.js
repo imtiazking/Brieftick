@@ -135,9 +135,13 @@ function renderIntelligenceCard(res, role = "logic") {
   const optionalOrder = [
     ["sectorRisks", "Sector Losers"],
     ["portfolioImpact", "Supply Chain"],
+    ["marketStructure", "Market Structure"],
+    ["crossAssetSignal", "Cross-Asset Signal"],
     ["riskSignal", "Positioning"],
+    ["marketDivergence", "Divergence"],
+    ["stressSignal", "Stress Signal"],
     ["relatedMovers", "Headline Context"],
-    ["narrativeLink", "Narrative Link"],
+    ["narrativeLink", "Narrative Shift"],
   ];
   const optionalHtml = optionalOrder
     .filter(([key]) => optional[key] && !schemaKeys.has(key))

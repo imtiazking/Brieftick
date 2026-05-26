@@ -12,10 +12,23 @@ import { concise } from "./topicContext.js";
 export function synthesizeIntelligence(res, ctx) {
   const regime = ctx.regime;
   const graph = ctx.graph;
+  const mi = ctx.marketIntelligence;
   let direct = res.directAnswer || res.summary || "";
 
-  if (regime?.adaptationNote && direct.length < 280) {
+  const complex = mi?.isComplexQuery;
+  const structureLine = mi?.structure?.headline;
+  const crossLine = mi?.crossAsset?.headline;
+
+  if (complex && structureLine && direct.length < 300 && !direct.includes(structureLine.slice(0, 40))) {
+    direct = concise(`${direct} ${structureLine}`, 380);
+  } else if (regime?.adaptationNote && direct.length < 280 && !complex) {
     direct = concise(`${direct} Regime: ${regime.label} — ${regime.adaptationNote}`, 360);
+  }
+
+  if (complex && crossLine && /relationship|across|matter most|structure|fragil|diverg/i.test(ctx.prompt || "")) {
+    if (!direct.includes(crossLine.slice(0, 35))) {
+      direct = concise(`${direct} ${crossLine}`, 400);
+    }
   }
 
   if (graph?.narrative && ctx.mode === "causal" && !direct.includes("→")) {

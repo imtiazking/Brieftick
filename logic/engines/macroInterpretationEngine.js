@@ -146,6 +146,74 @@ const INTERPRETATION_LIBRARY = [
     keyDrivers: ["Fed balance sheet", "Funding stress", "Financial conditions"],
   },
   {
+    id: "ai_structure_break",
+    patterns:
+      /break.*(ai|market structure)|macro conditions.*break|ai.?led market|fragil.*ai|underpric.*ai/i,
+    label: "Breaking AI-led market structure",
+    directAnswer:
+      "The AI-led structure breaks if earnings revisions, capex intensity or liquidity no longer support mega-cap concentration. Breadth deterioration, higher real yields or a volatility reset can force de-grossing even if the index level looks stable.",
+    expectations:
+      "Markets reassess whether AI revenues justify prior investment and index weights.",
+    growthEarnings:
+      "Semis, networking and hyperscaler estimates are the first pressure point; cyclicals matter for breadth confirmation.",
+    ratesLiquidity:
+      "Tighter financial conditions or sticky real yields compress duration-sensitive leaders faster than the index suggests.",
+    positioningNarrative:
+      "Crowded AI positioning amplifies downside when the narrative shifts from leadership to concentration risk.",
+    keyDrivers: ["Earnings breadth", "Capex cycle", "Liquidity impulse"],
+  },
+  {
+    id: "equity_bond_divergence",
+    patterns:
+      /equities.*(strong|firm|up).*(bond|yields)|bond.*(slower growth|recession).*(equities|stocks)/i,
+    label: "Equity–bond growth divergence",
+    directAnswer:
+      "Equities can stay firm while bonds price slower growth when investors split between earnings resilience in mega-caps and recession hedging in duration. The divergence often resolves through earnings downgrades, a volatility spike, or a catch-up rally in cyclicals.",
+    expectations:
+      "Bonds lead growth scares; equities lag until earnings confirm or the Fed eases decisively.",
+    growthEarnings:
+      "If cyclicals and small caps keep lagging, equities may be masking narrow strength.",
+    ratesLiquidity:
+      "Falling yields help multiples only if recession risk stays contained.",
+    positioningNarrative:
+      "Duration and equity beta can move opposite ways when positioning is split between hedges and crowded growth.",
+    keyDrivers: ["Growth scare", "Earnings breadth", "Fed reaction"],
+  },
+  {
+    id: "hidden_fragilities",
+    patterns:
+      /hidden fragil|underpric|complacent|what.*markets.*missing|fragility/i,
+    label: "Hidden market fragilities",
+    directAnswer:
+      "Markets often underprice concentration, volatility compression and cross-asset divergence — calm indices can hide narrow AI leadership, complacency toward geopolitical or energy risk, and bonds pricing slower growth ahead of equities.",
+    expectations:
+      "Fragilities surface when a single catalyst hits crowded positioning or thin liquidity.",
+    growthEarnings:
+      "Breadth fatigue matters more than index levels when mega-caps dominate.",
+    ratesLiquidity:
+      "Liquidity and vol regimes can flip faster than macro headlines.",
+    positioningNarrative:
+      "Crowded trades and low vol raise gap risk when narratives shift.",
+    keyDrivers: ["Concentration", "Vol compression", "Divergence"],
+  },
+  {
+    id: "cross_asset_relationships",
+    patterns:
+      /relationships across|matter most right now|oil.*yields.*volatility|cross.?asset/i,
+    label: "Dominant cross-asset relationships",
+    directAnswer:
+      "The dominant relationships shift with regime: rates and liquidity usually lead growth multiples; oil feeds inflation and geopolitical risk premia; volatility sets gap risk; AI concentration links semis, mega-cap beta and capex narratives. Right now the market’s sensitivity ranking depends on which of these factors is moving fastest.",
+    expectations:
+      "Investors rank factors by speed of repricing, not static correlation tables.",
+    growthEarnings:
+      "Earnings breadth tells you whether macro shocks are passing through demand or only multiples.",
+    ratesLiquidity:
+      "Real yields and financial conditions are the bridge between macro and equity beta.",
+    positioningNarrative:
+      "Crowded factor exposure can make one channel dominate for days even if fundamentals are mixed.",
+    keyDrivers: ["Rates", "Oil", "Volatility", "AI beta"],
+  },
+  {
     id: "inflation_not_bullish",
     patterns:
       /inflation.*(not|isn't|is not).*bullish|why.*inflation.*fall|lower inflation|disinflation/i,
@@ -186,14 +254,17 @@ export function isMacroInterpretationQuery(prompt) {
     );
 
   const macroTopic =
-    /inflation|disinflation|cpi|pce|rates?|yield|fed|fomc|growth stock|recession|soft landing|hard landing|liquidity|qe|qt|ai capex|hyperscaler|earnings growth|rate cut|easing|tightening|macro|equities rally|bond/i.test(
+    /inflation|disinflation|cpi|pce|rates?|yield|fed|fomc|growth stock|recession|soft landing|hard landing|liquidity|qe|qt|ai capex|hyperscaler|earnings growth|rate cut|easing|tightening|macro|equities rally|bond|market structure|ai.?led|fragilit|underpric|cross.?asset|breadth|concentration|positioning|diverg/i.test(
       t
     );
 
   const abstractWhy =
-    /^why\s+(can|would|does|do|is|are)\b/.test(t) && macroTopic;
+    /^why\s+(can|would|does|do|is|are|have)\b/.test(t) && macroTopic;
 
-  return (conceptual && macroTopic) || abstractWhy;
+  const analyticalWhat =
+    /^what\s+(macro|relationships|hidden|conditions|fragil)/i.test(t) && macroTopic;
+
+  return (conceptual && macroTopic) || abstractWhy || analyticalWhat;
 }
 
 /**

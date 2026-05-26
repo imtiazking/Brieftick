@@ -1,12 +1,13 @@
 /**
- * Intelligence layer — interconnects graph, regime, narrative, positioning, memory, quality.
+ * Intelligence layer — interconnects graph, regime, narrative, positioning,
+ * market structure, cross-asset, divergence, stress, memory, quality.
  * @module logic/intelligenceLayer
  */
 
 import { resolveMarketGraph, applyGraphToResponse } from "./engines/marketGraph.js";
 import { detectMarketRegime } from "./engines/regimeEngine.js";
 import { updateNarrativeState, applyNarrativeToResponse } from "./engines/narrativeEngine.js";
-import { analyzePositioning, applyPositioningToResponse } from "./engines/positioningEngine.js";
+import { applyPositioningToResponse } from "./engines/positioningEngine.js";
 import {
   applyRelationshipMemoryToResponse,
   recordRelationshipMemory,
@@ -17,24 +18,34 @@ import { logicFinalPolish } from "./engines/logicFinalPolish.js";
 import { hookIntelligenceStream } from "./engines/intelligenceStream.js";
 import { runCausalReasoningEngine } from "./engines/causalReasoningEngine.js";
 import { runMacroInterpretationEngine } from "./engines/macroInterpretationEngine.js";
+import {
+  runMarketIntelligenceStack,
+  applyMarketIntelligenceToResponse,
+} from "./engines/marketIntelligenceOrchestrator.js";
 import { logicDebug } from "./shared.js";
 
 /**
  * Build shared intelligence context after data fusion.
+ * Runs market structure stack after regime + marketGraph; narrative state updated first.
  * @param {object} ctx
  */
 export function buildIntelligenceContext(ctx) {
   const regime = detectMarketRegime(ctx);
   const graph = resolveMarketGraph(ctx.prompt, ctx.questionKind);
-  const narrative = updateNarrativeState(ctx.prompt, ctx.questionKind);
-  const positioning = analyzePositioning(ctx.prompt, regime);
+  updateNarrativeState(ctx.prompt, ctx.questionKind);
+
+  const enriched = { ...ctx, regime, graph };
+  const marketIntelligence = runMarketIntelligenceStack(enriched);
 
   return {
-    ...ctx,
-    regime,
-    graph,
-    narrative,
-    positioning,
+    ...enriched,
+    narrative: marketIntelligence.narrative,
+    positioning: marketIntelligence.positioning,
+    marketIntelligence,
+    marketStructure: marketIntelligence.structure,
+    crossAsset: marketIntelligence.crossAsset,
+    marketDivergence: marketIntelligence.divergence,
+    marketStress: marketIntelligence.stress,
   };
 }
 
@@ -48,9 +59,16 @@ export function enrichIntelligenceLayer(res, ctx) {
   if (ctx.mode !== "macro-interpretation") {
     out = applyGraphToResponse(out, ctx.graph);
   }
-  out = applyNarrativeToResponse(out, ctx.narrative);
-  out = applyPositioningToResponse(out, ctx.positioning);
+
+  out = applyMarketIntelligenceToResponse(out, ctx);
+
+  if (!ctx.marketIntelligence) {
+    out = applyNarrativeToResponse(out, ctx.narrative);
+    out = applyPositioningToResponse(out, ctx.positioning);
+  }
+
   out = applyRelationshipMemoryToResponse(out, ctx.prompt);
+
   if (ctx.mode === "causal" && !ctx.causalModel) {
     ctx.causalModel = runCausalReasoningEngine(ctx.prompt);
   }
@@ -66,6 +84,7 @@ export function enrichIntelligenceLayer(res, ctx) {
   logicDebug("intelligenceLayer enriched", {
     graph: !!ctx.graph?.chain,
     regime: ctx.regime?.primary,
+    marketIntel: !!ctx.marketIntelligence,
   });
 
   return out;

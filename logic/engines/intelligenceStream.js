@@ -4,6 +4,7 @@
  */
 
 import { logicDebug } from "../shared.js";
+import { publishIntelligenceFeedHooks } from "./intelligenceFeedEngine.js";
 
 /** @type {import('./intelligenceStream.js').StreamSignal[]} */
 let pendingSignals = [];
@@ -45,6 +46,10 @@ export function hookIntelligenceStream(ctx, res) {
   const regime = ctx.regime?.primary;
   const narrative = ctx.narrative?.dominantLabel;
 
+  if (ctx.marketIntelligence?.feedNotes?.length) {
+    publishIntelligenceFeedHooks(ctx.marketIntelligence.feedNotes);
+  }
+
   if (regime === "geopolitical_stress") {
     emitIntelligenceSignal({
       id: "geo_stress",
@@ -70,6 +75,13 @@ export function hookIntelligenceStream(ctx, res) {
     emitIntelligenceSignal({
       id: "narrative_shift",
       message: ctx.narrative.shiftNote.slice(0, 120),
+      severity: "shift",
+    });
+  }
+  if (ctx.marketDivergence?.headline) {
+    emitIntelligenceSignal({
+      id: "divergence",
+      message: ctx.marketDivergence.headline.slice(0, 120),
       severity: "shift",
     });
   }
