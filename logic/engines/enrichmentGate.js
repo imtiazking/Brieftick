@@ -118,6 +118,7 @@ export function shouldBuildFullMarketStack(ctx) {
     plan.enrichment.streamApply ||
     plan.intentId === "portfolio" ||
     plan.intentId === "portfolio_risk" ||
-    plan.intentId === "regime_fit"
+    plan.intentId === "regime_fit" ||
+    plan.intentId === "portfolio_stress"
   );
 }

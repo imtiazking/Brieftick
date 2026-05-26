@@ -9,6 +9,7 @@ import {
 import { fusionAttributionSources } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { analyzePortfolioIntelligence } from "./engines/portfolioIntelligenceEngine.js";
+import { shapePortfolioAnswer } from "./engines/portfolioAnswerShaper.js";
 
 /** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runPortfolioLogic(ctx) {
@@ -34,6 +35,38 @@ export async function runPortfolioLogic(ctx) {
   const top3 = [...lines].sort((a, b) => (b.weight || 0) - (a.weight || 0)).slice(0, 3);
   const top3Weight = top3.reduce((s, h) => s + (h.weight || 0), 0);
 
+  const pint = analyzePortfolioIntelligence(ctx, ctx.marketIntelligence);
+  const profile = pint.profile || ctx.portfolioMemory?.profile;
+  const shaped = shapePortfolioAnswer(ctx, profile, pint, top3, top3Weight);
+
+  if (shaped.useShapedAnswer) {
+    return withDataLimited(
+      {
+        title: shaped.title,
+        directAnswer: shaped.directAnswer,
+        summary: shaped.summary,
+        cards: shaped.cards,
+        keyDrivers: shaped.keyDrivers,
+        signals: shaped.signals,
+        confidence: holdings.length ? 72 : 58,
+        sources: ctx.fusion
+          ? fusionAttributionSources(ctx.fusion)
+          : holdings.length
+            ? ["Portfolio Context", "Brieftick Logic"]
+            : ["Sample book · Brieftick Logic"],
+        mode: "portfolio",
+        modeLabel: ctx.responsePlan?.label || shaped.title,
+        mockData: !holdings.length,
+        portfolioAnswerShape: shaped.shape,
+        optionalCards: {
+          portfolioImpact: shaped.cards.sectorImpact || shaped.summary,
+          riskSignal: shaped.signals[0] || "",
+        },
+      },
+      failedSources
+    );
+  }
+
   const bookCtx = lines
     .map((h) => {
       const q = quotes[h.symbol];
@@ -42,59 +75,37 @@ export async function runPortfolioLogic(ctx) {
     })
     .join("\n");
 
+  const focus = shaped.llmFocus || prompt;
   const ai = await callLogicLLM(
-    "Brieftick Portfolio Logic — composition, concentration, vol exposure, macro sensitivity. Never recommend trades.",
+    `Brieftick Portfolio Logic. Answer ONLY this question: "${focus}". Do not open with a generic AI concentration summary unless that is what was asked. Never recommend trades.`,
     `${prompt}\nHoldings:\n${bookCtx}\nTop3 weight: ${top3Weight}%\n${buildFusionPromptExtras(ctx, top3[0]?.symbol || "SPY")}`,
     700
   );
 
-  if (ai) {
+  if (ai?.directAnswer) {
     return {
       ...ai,
       mode: "portfolio",
+      modeLabel: ctx.responsePlan?.label,
       mockData: !holdings.length,
       sources: ctx.fusion ? fusionAttributionSources(ctx.fusion) : ai.sources,
       optionalCards: {
-        portfolioImpact: `Concentration in ${top3.map((h) => h.symbol).join(", ")} (~${top3Weight.toFixed(0)}% top-3) · macro and vol transmission elevated`,
-        riskSignal: top3Weight > 35 ? "Correlation risk elevated" : "Moderate book diversification",
+        portfolioImpact: shaped.cards.sectorImpact || ai.optionalCards?.portfolioImpact,
+        riskSignal: shaped.signals[0] || ai.optionalCards?.riskSignal,
       },
     };
   }
 
   if (!holdings.length && failedSources.length > 4) return buildFallbackResponse(ctx);
 
-  const pint = analyzePortfolioIntelligence(ctx, ctx.marketIntelligence);
-  const profile = pint.profile || ctx.portfolioMemory?.profile;
-  const expNotes = pint.exposures.map((e) => e.note).slice(0, 2).join(" ");
-
   return withDataLimited(
     {
-      title: "Portfolio Logic",
-      directAnswer: pint.headline,
-      summary: pint.headline,
-      cards: {
-        snapshot: pint.headline,
-        catalyst: pint.exposures[0]?.note || "Macro and headline channels drive book variance",
-        macroContext:
-          pint.exposures.find((e) => /rates/i.test(e.theme))?.note ||
-          `Rates sensitivity: ${profile?.sensitivity?.rates || "moderate"}`,
-        sectorImpact:
-          pint.exposures.find((e) => /AI/i.test(e.theme))?.note ||
-          `AI-weighted exposure ~${profile?.aiWeight || "—"}%`,
-        volatility:
-          pint.exposures.find((e) => /vol/i.test(e.theme))?.note ||
-          (top3Weight > 35 ? "Concentration elevates vol sensitivity" : "Moderate vol channel"),
-        aiSummary: expNotes || pint.headline,
-      },
-      keyDrivers: [
-        `Top weights: ${top3.map((h) => `${h.symbol} ${h.weight}%`).join(", ")}`,
-        profile?.growthDefensiveTilt || "Growth tilt",
-        `AI ~${profile?.aiWeight || "—"}%`,
-      ],
-      signals: [
-        ...(pint.warnings || []).slice(0, 2),
-        ...(pint.personalizedNotes || []).slice(0, 1),
-      ],
+      title: shaped.title,
+      directAnswer: shaped.directAnswer,
+      summary: shaped.summary,
+      cards: shaped.cards,
+      keyDrivers: shaped.keyDrivers,
+      signals: shaped.signals,
       confidence: holdings.length ? 68 : 54,
       sources: ctx.fusion
         ? fusionAttributionSources(ctx.fusion)
@@ -104,7 +115,7 @@ export async function runPortfolioLogic(ctx) {
       mode: "portfolio",
       mockData: !holdings.length,
       optionalCards: {
-        portfolioImpact: `Largest weights ${top3.map((h) => `${h.symbol} ${h.weight}%`).join(", ")} — sector balance and macro beta drive book volatility.`,
+        portfolioImpact: `Largest weights ${top3.map((h) => `${h.symbol} ${h.weight}%`).join(", ")} — macro beta drives book volatility.`,
       },
     },
     failedSources

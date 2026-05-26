@@ -9,7 +9,7 @@ import { isMacroInterpretationQuery } from "./macroInterpretationEngine.js";
 import { isCausalReasoningQuery } from "./causalReasoningEngine.js";
 
 /**
- * @typedef {'fragility'|'portfolio_risk'|'regime_fit'|'macro_interpretation'|'causal'|'scenario'|'portfolio'|'risk_regime'|'market_pulse'|'ticker'|'briefing'|'sector'|'daily_brief'} ResponseIntentId
+ * @typedef {'fragility'|'portfolio_risk'|'regime_fit'|'portfolio_stress'|'macro_interpretation'|'causal'|'scenario'|'portfolio'|'risk_regime'|'market_pulse'|'ticker'|'briefing'|'sector'|'daily_brief'} ResponseIntentId
  */
 
 /**
@@ -94,10 +94,38 @@ export function buildResponsePlan(prompt, classified, entity) {
   };
 
   if (
-    /what risks dominate|risks dominate.*portfolio|dominant risk.*portfolio|what would hurt my portfolio/i.test(
+    (/what happens if|what if\b|if .+ tighten|liquidity tighten|financial conditions tighten|qt\b|tightening liquidity/i.test(
       t
     ) &&
-    /portfolio|holdings|book/i.test(t)
+      (/portfolio|holdings|my book|this book/i.test(t) || classified.mode === "portfolio")) ||
+    (/liquidity tighten|what happens if liquidity/i.test(t) && classified.mode === "portfolio")
+  ) {
+    plan = {
+      ...plan,
+      intentId: "portfolio_stress",
+      mode: "portfolio",
+      label: "Portfolio Stress Path",
+      primaryQuestion: "What happens to this portfolio if conditions tighten?",
+      abstractEntity: true,
+      conceptualOk: true,
+      skipFallbackOnAnswer: true,
+      allowedCards: ["snapshot", "catalyst", "macroContext", "sectorImpact", "volatility", "aiSummary"],
+      allowedOptional: ["portfolioImpact", "riskSignal"],
+      enrichment: {
+        graph: false,
+        marketIntelApply: true,
+        streamApply: false,
+        relationshipMemory: false,
+        synthesis: false,
+        feedHook: false,
+        marketIntelKeys: ["stress", "positioning"],
+      },
+    };
+  } else if (
+    /what risks dominate|risks dominate|dominant risk|what would hurt my portfolio|what risks matter most/i.test(
+      t
+    ) &&
+    !newsStyle
   ) {
     plan = {
       ...plan,
@@ -121,8 +149,10 @@ export function buildResponsePlan(prompt, classified, entity) {
       },
     };
   } else if (
-    /regime benefit|benefit.*portfolio|what regime|which regime.*portfolio|portfolio.*regime/i.test(t) &&
-    /portfolio|holdings|book/i.test(t)
+    /regime benefit|benefit.*portfolio|what regime benefits|which regime benefits|what regime fits|portfolio.*regime/i.test(
+      t
+    ) &&
+    !newsStyle
   ) {
     plan = {
       ...plan,
