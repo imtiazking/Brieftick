@@ -25,6 +25,7 @@ const HERO_PROMPTS = [
   { label: "Show risk regime", prompt: "Show risk regime" },
   { label: "Explain today's market", prompt: "Explain today's market" },
   { label: "AI sector rotation", prompt: "Show me AI sector rotation" },
+  { label: "What if oil spikes?", prompt: "What happens if oil prices spike?" },
 ];
 
 const DEFAULT_WATCH = ["NVDA", "TSLA", "AAPL", "MSFT", "AMD", "META"];
@@ -55,10 +56,19 @@ const CARD_SECTIONS = [
   ["aiSummary", "Summary"],
 ];
 
+const SCENARIO_CARD_SECTIONS = [
+  ["snapshot", "Scenario Snapshot"],
+  ["catalyst", "Market Impact"],
+  ["sectorImpact", "Sector Winners"],
+  ["volatility", "Volatility Outlook"],
+  ["aiSummary", "Logic Summary"],
+];
+
 const OPTIONAL_SECTIONS = [
   ["riskSignal", "Risk Signal"],
   ["relatedMovers", "Related Movers"],
   ["portfolioImpact", "Portfolio Impact"],
+  ["sectorRisks", "Sector Risks"],
 ];
 
 function ensureFullCards(res) {
@@ -98,17 +108,44 @@ function renderLoadingState() {
 function renderIntelligenceCard(res, role = "logic") {
   const full = ensureFullCards(res);
   const cards = full.cards;
-  const sections = CARD_SECTIONS.map(([key, label]) => {
-    const text = cards[key];
-    const fullRow = key === "aiSummary" ? " logic-intel-section--full" : "";
-    return `<div class="logic-intel-section${fullRow}">
+  const optional = full.optionalCards || {};
+  const renderSection = (key, label, extraClass = "") => {
+    const text = cards[key] || optional[key];
+    if (!text) return "";
+    const fullRow =
+      key === "aiSummary" ? " logic-intel-section--full" : "";
+    return `<div class="logic-intel-section${fullRow}${extraClass}">
       <div class="logic-intel-label">${escapeHtml(label)}</div>
       <p class="logic-intel-text">${escapeHtml(text)}</p>
     </div>`;
-  }).join("");
+  };
 
-  const optional = full.optionalCards || {};
-  const optionalHtml = OPTIONAL_SECTIONS.filter(([key]) => optional[key])
+  let sections;
+  if (full.mode === "scenario") {
+    sections = [
+      renderSection("snapshot", "Scenario Snapshot"),
+      renderSection("catalyst", "Market Impact"),
+      renderSection("sectorImpact", "Sector Winners"),
+      renderSection("sectorRisks", "Sector Risks", " logic-intel-section--optional"),
+      renderSection("volatility", "Volatility Outlook"),
+      renderSection("aiSummary", "Logic Summary"),
+    ]
+      .filter(Boolean)
+      .join("");
+  } else {
+    sections = CARD_SECTIONS.map(([key, label]) => renderSection(key, label)).join("");
+  }
+
+  const optionalOrder =
+    full.mode === "scenario"
+      ? [
+          ["portfolioImpact", "Portfolio Impact"],
+          ["riskSignal", "Risk Signal"],
+          ["relatedMovers", "Related Movers"],
+        ]
+      : OPTIONAL_SECTIONS.filter(([key]) => key !== "sectorRisks");
+  const optionalHtml = optionalOrder
+    .filter(([key]) => optional[key])
     .map(
       ([key, label]) =>
         `<div class="logic-intel-section logic-intel-section--optional">

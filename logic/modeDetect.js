@@ -39,7 +39,9 @@ export function detectLogicMode(prompt, primaryEntity) {
     return "daily-brief";
 
   if (
-    /what happens if|scenario|if rates|if oil|if tech|hypothetical|what if/.test(t)
+    /what happens if|scenario|hypothetical|what if|peace deal|ceasefire|oil spike|crude surge|fed cut|rate cut|inflation cool|disinflation|recession|growth scare|ai spending|hyperscaler capex|geopolitical|energy shock|if rates|if oil|if tech/i.test(
+      t
+    )
   )
     return "scenario";
 

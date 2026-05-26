@@ -36,6 +36,8 @@ export const LIMITED_DATA_MSG =
  * @property {string[]} sources
  * @property {string} disclaimer
  * @property {LogicMode} [mode]
+ * @property {string} [modeLabel]
+ * @property {string} [scenarioId]
  * @property {boolean} [usedAI]
  * @property {boolean} [mockData]
  * @property {boolean} [dataLimited]

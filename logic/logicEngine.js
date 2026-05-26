@@ -1,8 +1,8 @@
 /**
  * Brieftick Logic — structured intelligence pipeline orchestrator.
  *
- * Prompt → entityResolver → intent + modeDetect → sourceRouter
- *       → multiSourceFetch → dataFusion → Logic module → fallbackIntelligence
+ * Prompt → entityResolver → intent + modeDetect → [scenario: scenarioEngine → impactAnalysis]
+ *       → sourceRouter → multiSourceFetch → dataFusion → Logic module → fallbackIntelligence
  *       → watchlist + portfolioMemory → confidenceEngine → Intelligence Cards UI
  *
  * @module logic/logicEngine
@@ -77,10 +77,11 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   const mode = modeOverride || intentResult.mode;
   logicDebug("Logic module selected", { mode, intent: intentResult.intent });
 
-  // 3. sourceRouter
-  const sourceRoute = routeSources({ prompt, mode, primaryEntity });
+  const memory = buildMemoryContext(primaryEntity, mode);
+  const portfolioMemory = buildPortfolioMemory();
 
-  // 4. multiSourceFetch → 5. dataFusion
+  // 3. sourceRouter → 4–5. fetch + fusion (context for modules and scenario impact)
+  const sourceRoute = routeSources({ prompt, mode, primaryEntity });
   const fusion = await fetchAndFuse(sourceRoute, {
     prompt,
     mode,
@@ -88,8 +89,6 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     entities,
   });
 
-  const memory = buildMemoryContext(primaryEntity, mode);
-  const portfolioMemory = buildPortfolioMemory();
   const ctx = {
     prompt,
     primaryEntity,
@@ -103,7 +102,7 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     portfolioMemory,
   };
 
-  // 6. Logic module
+  // 6. Logic module (scenario uses scenarioEngine → impactAnalysis before finalize)
   let response;
   try {
     response = await runLogicModule(ctx);
