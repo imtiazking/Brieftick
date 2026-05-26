@@ -9,7 +9,10 @@ import { logicDebug } from "../shared.js";
 const HEADLINE_LEAD = /^(Reuters|Bloomberg|AP |Three months in)/i;
 const FILLER = [
   /indices tracked/i,
+  /indices contextual/i,
+  /contextual snapshot/i,
   /volatility monitored/i,
+  /stress signals are balanced/i,
   /policy and inflation path dominate/i,
   /mega-cap tech vs cyclicals/i,
   /Tape:\s*SPY/i,

@@ -146,6 +146,23 @@ const INTERPRETATION_LIBRARY = [
     keyDrivers: ["Fed balance sheet", "Funding stress", "Financial conditions"],
   },
   {
+    id: "fragility_breaks_first",
+    patterns:
+      /what breaks first|breaks first|first to break|what would break first|break first if/i,
+    label: "What breaks first",
+    directAnswer:
+      "If AI leadership weakens, the first break is usually in crowded growth positioning — semis and mega-cap beta de-gross before the index fully reflects it. Volatility can reset from compression, real yields can reprice duration, and breadth deterioration matters more than headline index levels.",
+    expectations:
+      "Earnings revisions and capex guidance are the catalyst; liquidity determines the speed of the move.",
+    growthEarnings:
+      "Narrow leadership means the index can lag the factor unwind — watch semis, networking and hyperscaler estimates first.",
+    ratesLiquidity:
+      "Higher real yields or tighter financial conditions compress multiples on the same leadership that carried the rally.",
+    positioningNarrative:
+      "Crowded AI books break faster than fundamentals shift when liquidity impulse turns.",
+    keyDrivers: ["Positioning unwind", "Vol reset", "Real yields", "Breadth"],
+  },
+  {
     id: "ai_structure_break",
     patterns:
       /break.*(ai|market structure)|macro conditions.*break|ai.?led market|fragil.*ai|underpric.*ai/i,

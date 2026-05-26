@@ -54,7 +54,9 @@ export function composeLogicResponse(res, ctx) {
     out.summary ||
     "";
 
-  if (isCausal || isMacroInterp || ctx?.skipTape) direct = stripTapeAndHeadlineLead(direct);
+  if (isCausal || isMacroInterp || ctx?.skipTape || ctx?.responsePlan?.abstractEntity) {
+    direct = stripTapeAndHeadlineLead(direct);
+  }
   direct = direct.replace(/markets may read this through[^.]*\./gi, "").trim();
   direct = concise(direct, isCausal || isMacroInterp ? 360 : 320);
   if (!direct && out.cards.catalyst) {
@@ -72,7 +74,9 @@ export function composeLogicResponse(res, ctx) {
       else if (key === "aiSummary") val = direct;
       else val = "";
     }
-    if (isCausal || isMacroInterp || ctx?.skipTape) val = stripTapeAndHeadlineLead(val);
+    if (isCausal || isMacroInterp || ctx?.skipTape || ctx?.responsePlan?.abstractEntity) {
+      val = stripTapeAndHeadlineLead(val);
+    }
     if (isMacroInterp) {
       val = val.replace(/markets may read this through[^.]*\./gi, "").trim();
     }
