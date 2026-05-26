@@ -17,8 +17,12 @@ import { applyMemoryToResponse, buildMemoryContext, recordLogicInteraction } fro
 import { applyPortfolioMemoryToResponse, buildPortfolioMemory } from "./portfolioMemory.js";
 import { applyConfidenceEngine } from "./confidenceEngine.js";
 import { composeLogicResponse } from "./engines/responseComposer.js";
+import {
+  buildIntelligenceContext,
+  enrichIntelligenceLayer,
+  recordRelationshipMemory,
+} from "./intelligenceLayer.js";
 import { logicDebug } from "./shared.js";
-import { LIMITED_DATA_MSG } from "./types.js";
 import { classifyQuestion } from "./questionIntent.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
@@ -55,7 +59,7 @@ export function finalizeLogicResponse(res, ctx) {
   const portfolioMemory = ctx.portfolioMemory || buildPortfolioMemory();
   out = applyPortfolioMemoryToResponse(out, portfolioMemory, ctx.mode);
 
-  out = applyConfidenceEngine(out, ctx.fusion, ctx.primaryEntity);
+  out = applyConfidenceEngine(out, ctx.fusion, ctx.primaryEntity, ctx);
 
   if (!out.sources?.length) {
     out.sources = ["Brieftick Logic"];
@@ -100,7 +104,7 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     entities,
   });
 
-  const ctx = {
+  let ctx = {
     prompt,
     primaryEntity,
     entities,
@@ -113,6 +117,8 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     memory,
     portfolioMemory,
   };
+
+  ctx = buildIntelligenceContext(ctx);
 
   // 6. Logic module (scenario uses scenarioEngine → impactAnalysis before finalize)
   let response;
@@ -127,13 +133,16 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     response = buildFallbackResponse(ctx);
   }
 
-  // 7–9. fallback guard + watchlist/portfolio memory + confidenceEngine
-  response = finalizeLogicResponse(
+  response = enrichIntelligenceLayer(
     { ...response, mode: response.mode || mode, intent: intentResult.intent },
     ctx
   );
 
+  // 7–9. fallback guard + watchlist/portfolio memory + confidenceEngine
+  response = finalizeLogicResponse(response, ctx);
+
   recordLogicInteraction(prompt, mode, primaryEntity);
+  recordRelationshipMemory(prompt, classified.kind);
   logicDebug("render completed", {
     mode,
     intent: intentResult.intent,

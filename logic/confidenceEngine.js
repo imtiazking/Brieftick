@@ -67,7 +67,38 @@ export function scoreConfidence(input) {
  * @param {import('./dataFusion.js').FusionBundle} [fusion]
  * @param {import('./entityResolver.js').ResolvedEntity} [entity]
  */
-export function applyConfidenceEngine(res, fusion, entity) {
+/**
+ * @param {import('./types.js').LogicResponse} res
+ * @param {import('./dataFusion.js').FusionBundle} [fusion]
+ * @param {object} [ctx]
+ */
+export function buildConfidenceReasons(res, fusion, ctx) {
+  /** @type {string[]} */
+  const reasons = [];
+  const failed = (res.failedSources || fusion?.failedSources || []).length;
+  const agreement = fusion?.sourceAgreement ?? 0;
+
+  if (failed > 2) reasons.push("Several data sources unavailable or stale");
+  else if (failed > 0) reasons.push("Partial live confirmation — some feeds limited");
+  if (agreement >= 0.65) reasons.push("Strong cross-asset quote agreement");
+  else if (agreement > 0 && agreement < 0.4) reasons.push("Conflicting cross-asset signals");
+  if (res.dataLimited) reasons.push("Live market confirmation currently limited");
+  if (fusion?.hasStaleQuote) reasons.push("Some quote data may be stale");
+  if (!fusion?.hasNews && /latest|news|headline/i.test(ctx?.prompt || "")) {
+    reasons.push("Limited headline confirmation for news-style query");
+  }
+  if (ctx?.qualityIssues?.length) {
+    reasons.push(`Quality check: ${ctx.qualityIssues[0]}`);
+  }
+  if (ctx?.regime?.primary === "mixed") reasons.push("Mixed regime — no single macro driver dominates");
+  if (res.usedAI && reasons.length < 2) reasons.push("Logic-enriched synthesis applied");
+
+  if (!reasons.length) reasons.push("Contextual reasoning with available market data");
+
+  return reasons.slice(0, 4);
+}
+
+export function applyConfidenceEngine(res, fusion, entity, ctx) {
   const api = typeof window !== "undefined" ? window.BriefTickAPI : null;
   const apiAvailable = !!(api?.keys?.finnhub || api?.keys?.twelvedata || api?.keys?.polygon);
 
@@ -84,12 +115,16 @@ export function applyConfidenceEngine(res, fusion, entity) {
     apiAvailable,
   });
 
-  logicDebug("confidenceEngine", conf);
+  const confidenceReasons = buildConfidenceReasons(res, fusion, ctx);
+  const label = `${conf.label} — ${confidenceReasons[0]}`;
+
+  logicDebug("confidenceEngine", { ...conf, confidenceReasons });
 
   return {
     ...res,
     confidence: conf.score,
     confidenceLevel: conf.level,
-    confidenceLabel: conf.label,
+    confidenceLabel: label,
+    confidenceReasons,
   };
 }

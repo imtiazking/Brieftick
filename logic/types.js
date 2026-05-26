@@ -44,6 +44,13 @@ export const LIMITED_DATA_MSG =
  * @property {boolean} [mockData]
  * @property {boolean} [dataLimited]
  * @property {string[]} [failedSources]
+ * @property {string} [graphChain]
+ * @property {string} [regimeLabel]
+ * @property {string} [narrativeNote]
+ * @property {string[]} [confidenceReasons]
+ * @property {string[]} [relatedThemes]
+ * @property {string[]} [qualityIssues]
+ * @property {string} [cardSchemaId]
  */
 
 export const LOGIC_MODES = [

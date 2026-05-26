@@ -15,6 +15,7 @@ import {
   PREMIUM_LOGIC_MODES,
   recordLogicUsage,
 } from "../logic/freeAccess.js";
+import { resolveCardSchema } from "../logic/cardSchemas.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 const LOGIC_API_TIMEOUT_MS = 14000;
@@ -120,58 +121,23 @@ function renderIntelligenceCard(res, role = "logic") {
     </div>`;
   };
 
-  const isBriefing = full.mode === "briefing" || full.modeLabel?.includes("Briefing");
-  const isCausal = full.mode === "causal" || full.modeLabel?.includes("Causal");
-  const isGeoBriefing =
-    isBriefing && (full.questionKind === "geopolitical" || /geopolitical/i.test(full.title || ""));
-  let sections;
-  if (isCausal) {
-    sections = [
-      renderSection("catalyst", "Cause → Effect"),
-      renderSection("macroContext", "Macro Transmission"),
-      renderSection("sectorImpact", "Sector Winners"),
-      renderSection("sectorRisks", "Sector Losers", " logic-intel-section--optional"),
-      renderSection("volatility", "Volatility"),
-    ]
-      .filter(Boolean)
-      .join("");
-  } else if (full.mode === "scenario" && !isBriefing) {
-    sections = [
-      renderSection("snapshot", isGeoBriefing ? "Briefing Snapshot" : "Scenario Snapshot"),
-      renderSection("catalyst", isGeoBriefing ? "Key Headline" : "Market Impact"),
-      isGeoBriefing ? renderSection("macroContext", "Macro & Oil") : "",
-      renderSection("sectorImpact", isGeoBriefing ? "Market Impact (Sectors)" : "Sector Winners"),
-      renderSection("sectorRisks", isGeoBriefing ? "Sector Risks" : "Sector Risks", " logic-intel-section--optional"),
-      renderSection("volatility", "Volatility Outlook"),
-      renderSection("aiSummary", "Logic Summary"),
-    ]
-      .filter(Boolean)
-      .join("");
-  } else if (isBriefing) {
-    sections = [
-      renderSection("catalyst", "Key Headline"),
-      renderSection("macroContext", "Macro"),
-      renderSection("sectorImpact", "Sectors"),
-      renderSection("volatility", "Volatility"),
-    ]
-      .filter(Boolean)
-      .join("");
-  } else {
-    sections = CARD_SECTIONS.map(([key, label]) => renderSection(key, label)).join("");
-  }
+  const schema = resolveCardSchema(full);
+  const sections = schema
+    .map(({ key, label, optional, fullWidth }) => {
+      let extraClass = optional ? " logic-intel-section--optional" : "";
+      if (fullWidth) extraClass += " logic-intel-section--full";
+      return renderSection(key, label, extraClass);
+    })
+    .filter(Boolean)
+    .join("");
 
-  const optionalOrder = isCausal
-    ? [
-        ["portfolioImpact", "Supply Chain"],
-        ["relatedMovers", "Headline Context"],
-      ]
-    : full.mode === "scenario"
-      ? [
-          ["portfolioImpact", "Portfolio Impact"],
-          ["riskSignal", "Risk Signal"],
-          ["relatedMovers", "Related Movers"],
-        ]
-      : OPTIONAL_SECTIONS.filter(([key]) => key !== "sectorRisks");
+  const optionalOrder = [
+    ["sectorRisks", "Sector Losers"],
+    ["portfolioImpact", "Supply Chain"],
+    ["riskSignal", "Positioning"],
+    ["relatedMovers", "Headline Context"],
+    ["narrativeLink", "Narrative Link"],
+  ];
   const optionalHtml = optionalOrder
     .filter(([key]) => optional[key])
     .map(
@@ -189,12 +155,18 @@ function renderIntelligenceCard(res, role = "logic") {
 
   const meta = [
     full.usedAI ? "Logic enriched" : null,
+    full.regimeLabel ? `Regime: ${full.regimeLabel}` : null,
     full.dataLimited || full.mockData ? "Partial / delayed data" : null,
     full.confidenceLabel || `Confidence ${full.confidence}%`,
     full.primarySymbol ? full.primarySymbol : null,
   ]
     .filter(Boolean)
     .join(" · ");
+
+  const confidenceDetail =
+    full.confidenceReasons?.length
+      ? `<p class="logic-confidence-reasons">${escapeHtml(full.confidenceReasons.join(" · "))}</p>`
+      : "";
 
   const limitedBanner =
     full.dataLimited || full.mockData
@@ -221,6 +193,7 @@ function renderIntelligenceCard(res, role = "logic") {
     ${signals ? `<div class="logic-signal-row">${signals}</div>` : ""}
     <div class="logic-msg-foot">
       <span>${escapeHtml(meta)}</span>
+      ${confidenceDetail}
       <span class="logic-msg-sources">${escapeHtml((full.sources || []).join(" · "))}</span>
     </div>
     <p class="logic-disclaimer">${escapeHtml(full.disclaimer)}</p>
