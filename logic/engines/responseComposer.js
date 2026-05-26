@@ -13,6 +13,8 @@ const FILLER_PATTERNS = [
   /session tone reads/i,
   /tape tone is/i,
   /index leadership remains selective/i,
+  /^Tape:\s*SPY/i,
+  /\bTape:\s*SPY/i,
 ];
 
 /**
@@ -27,9 +29,22 @@ function isFiller(text) {
  * @param {object} [ctx]
  * @returns {import('../types.js').LogicResponse}
  */
+/**
+ * @param {string} text
+ */
+function stripTapeAndHeadlineLead(text) {
+  return String(text || "")
+    .replace(/\bTape:\s*SPY[^.]*\.?/gi, "")
+    .replace(/\bSPY\s*[+-]?\d+\.?\d*%/gi, "")
+    .replace(/^[-•]\s*[^.]{10,120}(Reuters|Bloomberg)\s*[-–]/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function composeLogicResponse(res, ctx) {
   const out = { ...res, cards: { ...(res.cards || {}) } };
   const prompt = ctx?.prompt || "";
+  const isCausal = ctx?.mode === "causal" || out.mode === "causal";
 
   let direct =
     out.directAnswer ||
@@ -37,7 +52,8 @@ export function composeLogicResponse(res, ctx) {
     out.summary ||
     "";
 
-  direct = concise(direct, 320);
+  if (isCausal || ctx?.skipTape) direct = stripTapeAndHeadlineLead(direct);
+  direct = concise(direct, isCausal ? 360 : 320);
   if (!direct && out.cards.catalyst) {
     direct = concise(
       `${out.cards.catalyst} ${out.cards.sectorImpact || ""}`.trim(),
@@ -52,6 +68,10 @@ export function composeLogicResponse(res, ctx) {
       if (key === "snapshot") val = direct;
       else if (key === "aiSummary") val = direct;
       else val = "";
+    }
+    if (isCausal || ctx?.skipTape) val = stripTapeAndHeadlineLead(val);
+    if (isCausal && key === "catalyst" && isFiller(val)) {
+      val = out.cards.macroContext || "";
     }
     out.cards[key] = concise(val, key === "aiSummary" ? 260 : 200);
   }

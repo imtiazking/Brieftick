@@ -8,7 +8,7 @@ import { detectLogicMode } from "./modeDetect.js";
 import { classifyQuestion } from "./questionIntent.js";
 import { logicDebug } from "./shared.js";
 
-/** @typedef {'ticker_intelligence'|'market_pulse'|'risk_regime'|'portfolio_logic'|'sector_rotation'|'daily_brief'|'scenario_analysis'|'market_briefing'} LogicIntent */
+/** @typedef {'ticker_intelligence'|'market_pulse'|'risk_regime'|'portfolio_logic'|'sector_rotation'|'daily_brief'|'scenario_analysis'|'market_briefing'|'causal_reasoning'} LogicIntent */
 
 /** @type {Record<import('./types.js').LogicMode, LogicIntent>} */
 const MODE_TO_INTENT = {
@@ -20,6 +20,7 @@ const MODE_TO_INTENT = {
   "daily-brief": "daily_brief",
   scenario: "scenario_analysis",
   briefing: "market_briefing",
+  causal: "causal_reasoning",
 };
 
 /** @type {Record<LogicIntent, string>} */
@@ -32,6 +33,7 @@ export const INTENT_LABELS = {
   daily_brief: "Daily Brief",
   scenario_analysis: "Scenario Analysis",
   market_briefing: "Market Briefing",
+  causal_reasoning: "Causal Market Logic",
 };
 
 /**

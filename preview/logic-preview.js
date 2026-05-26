@@ -121,10 +121,21 @@ function renderIntelligenceCard(res, role = "logic") {
   };
 
   const isBriefing = full.mode === "briefing" || full.modeLabel?.includes("Briefing");
+  const isCausal = full.mode === "causal" || full.modeLabel?.includes("Causal");
   const isGeoBriefing =
     isBriefing && (full.questionKind === "geopolitical" || /geopolitical/i.test(full.title || ""));
   let sections;
-  if (full.mode === "scenario" && !isBriefing) {
+  if (isCausal) {
+    sections = [
+      renderSection("catalyst", "Cause → Effect"),
+      renderSection("macroContext", "Macro Transmission"),
+      renderSection("sectorImpact", "Sector Winners"),
+      renderSection("sectorRisks", "Sector Losers", " logic-intel-section--optional"),
+      renderSection("volatility", "Volatility"),
+    ]
+      .filter(Boolean)
+      .join("");
+  } else if (full.mode === "scenario" && !isBriefing) {
     sections = [
       renderSection("snapshot", isGeoBriefing ? "Briefing Snapshot" : "Scenario Snapshot"),
       renderSection("catalyst", isGeoBriefing ? "Key Headline" : "Market Impact"),
@@ -149,8 +160,12 @@ function renderIntelligenceCard(res, role = "logic") {
     sections = CARD_SECTIONS.map(([key, label]) => renderSection(key, label)).join("");
   }
 
-  const optionalOrder =
-    full.mode === "scenario"
+  const optionalOrder = isCausal
+    ? [
+        ["portfolioImpact", "Supply Chain"],
+        ["relatedMovers", "Headline Context"],
+      ]
+    : full.mode === "scenario"
       ? [
           ["portfolioImpact", "Portfolio Impact"],
           ["riskSignal", "Risk Signal"],

@@ -5,8 +5,9 @@
 
 import { resolvePrimaryEntity } from "./entityResolver.js";
 import { logicDebug } from "./shared.js";
+import { isCausalReasoningQuery } from "./engines/causalReasoningEngine.js";
 
-/** @typedef {'news'|'geopolitical'|'macro'|'rates'|'sector'|'supply_chain'|'commodities'|'portfolio'|'scenario'|'ticker'|'risk'|'market_pulse'|'daily_brief'} QuestionKind */
+/** @typedef {'news'|'geopolitical'|'macro'|'rates'|'sector'|'supply_chain'|'commodities'|'portfolio'|'scenario'|'ticker'|'risk'|'market_pulse'|'daily_brief'|'causal'} QuestionKind */
 
 /**
  * @typedef {Object} QuestionClassification
@@ -63,9 +64,17 @@ export function classifyQuestion(prompt, entity) {
     !/iran|war|oil|fed/i.test(t)
   ) {
     result = { kind: "daily_brief", mode: "daily-brief", label: "Daily Brief", wantsBriefing: false };
+  } else if (isCausalReasoningQuery(prompt)) {
+    result = {
+      kind: "causal",
+      mode: "causal",
+      label: "Causal Market Logic",
+      wantsBriefing: false,
+    };
   } else if (
     /what happens if|what if|scenario|hypothetical|if .+ (rises|falls|spikes|cuts|slows)/i.test(t) &&
-    !newsStyle
+    !newsStyle &&
+    !isCausalReasoningQuery(prompt)
   ) {
     result = { kind: "scenario", mode: "scenario", label: "Scenario Analysis", wantsBriefing: false };
   } else if (
@@ -80,7 +89,8 @@ export function classifyQuestion(prompt, entity) {
       wantsBriefing: true,
     };
   } else if (
-    /supply chain|shipping|freight|logistics|port congestion|red sea shipping|container|shortage/i.test(t)
+    /supply chain|shipping|freight|logistics|port congestion|red sea shipping|container|shortage/i.test(t) &&
+    !isCausalReasoningQuery(prompt)
   ) {
     result = {
       kind: "supply_chain",

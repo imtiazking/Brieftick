@@ -29,6 +29,7 @@ import { runRiskRegimeLogic } from "./riskRegimeLogic.js";
 import { runDailyBriefLogic } from "./dailyBriefLogic.js";
 import { runScenarioAnalysisLogic } from "./scenarioAnalysisLogic.js";
 import { runBriefingLogic } from "./briefingLogic.js";
+import { runCausalLogic } from "./causalLogic.js";
 
 /**
  * Post-module pipeline: fallback guard → memory → confidence.
@@ -159,6 +160,8 @@ async function runLogicModule(ctx) {
       return runScenarioAnalysisLogic(ctx);
     case "briefing":
       return runBriefingLogic(ctx);
+    case "causal":
+      return runCausalLogic(ctx);
     case "market-pulse":
     default:
       return runMarketPulseLogic(ctx);
