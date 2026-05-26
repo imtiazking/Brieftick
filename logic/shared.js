@@ -148,6 +148,7 @@ export async function callLogicLLM(systemPrompt, userPrompt, maxTokens = 700) {
 Return ONLY valid JSON (no markdown fences) matching:
 {
   "title": string,
+  "directAnswer": string,
   "summary": string,
   "keyDrivers": string[],
   "signals": string[],
@@ -186,6 +187,7 @@ export function parseLogicJson(raw) {
     const obj = JSON.parse(stripped.slice(start, end + 1));
     return buildLogicResponse({
       title: obj.title || "Market intelligence",
+      directAnswer: obj.directAnswer || obj.direct_answer,
       summary: obj.summary || stripped.slice(0, 400),
       keyDrivers: obj.keyDrivers || obj.key_drivers || [],
       signals: obj.signals || [],

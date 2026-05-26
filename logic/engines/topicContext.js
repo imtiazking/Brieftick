@@ -34,6 +34,9 @@ const TOPIC_KEYWORDS = {
   oil: ["oil", "crude", "opec", "energy price", "brent", "wti"],
   sanctions: ["sanctions", "embargo"],
   geopolitics: ["geopolit", "geopolitical", "diplomatic", "tension"],
+  fed: ["fed", "fomc", "powell", "rate cut", "rate hike"],
+  inflation: ["inflation", "cpi", "pce", "prices"],
+  supply: ["supply chain", "shipping", "freight", "logistics", "port"],
 };
 
 /**
@@ -145,7 +148,6 @@ export function isGeopoliticalBriefingQuery(prompt) {
  * @returns {ScenarioQueryKind}
  */
 export function detectScenarioQueryKind(prompt) {
-  if (isGeopoliticalBriefingQuery(prompt)) return "briefing";
   if (/what happens if|what if|scenario|hypothetical/i.test(prompt || "")) return "hypothetical";
   return "hypothetical";
 }

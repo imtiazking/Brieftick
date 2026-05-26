@@ -63,6 +63,14 @@ export function routeSources({ prompt, mode, primaryEntity }) {
       intents.add("news");
       intents.add("volatility");
       break;
+    case "briefing":
+      intents.add("news");
+      intents.add("macro");
+      intents.add("quote");
+      intents.add("volatility");
+      intents.add("sentiment");
+      intents.add("sector");
+      break;
     case "daily-brief":
       intents.add("news");
       intents.add("macro");

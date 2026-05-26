@@ -5,9 +5,10 @@
 
 import { resolvePrimaryEntity } from "./entityResolver.js";
 import { detectLogicMode } from "./modeDetect.js";
+import { classifyQuestion } from "./questionIntent.js";
 import { logicDebug } from "./shared.js";
 
-/** @typedef {'ticker_intelligence'|'market_pulse'|'risk_regime'|'portfolio_logic'|'sector_rotation'|'daily_brief'|'scenario_analysis'} LogicIntent */
+/** @typedef {'ticker_intelligence'|'market_pulse'|'risk_regime'|'portfolio_logic'|'sector_rotation'|'daily_brief'|'scenario_analysis'|'market_briefing'} LogicIntent */
 
 /** @type {Record<import('./types.js').LogicMode, LogicIntent>} */
 const MODE_TO_INTENT = {
@@ -18,6 +19,7 @@ const MODE_TO_INTENT = {
   "sector-rotation": "sector_rotation",
   "daily-brief": "daily_brief",
   scenario: "scenario_analysis",
+  briefing: "market_briefing",
 };
 
 /** @type {Record<LogicIntent, string>} */
@@ -29,6 +31,7 @@ export const INTENT_LABELS = {
   sector_rotation: "Sector Rotation",
   daily_brief: "Daily Brief",
   scenario_analysis: "Scenario Analysis",
+  market_briefing: "Market Briefing",
 };
 
 /**
@@ -36,6 +39,7 @@ export const INTENT_LABELS = {
  * @property {LogicIntent} intent
  * @property {import('./types.js').LogicMode} mode
  * @property {string} label
+ * @property {import('./questionIntent.js').QuestionKind} [questionKind]
  */
 
 /**
@@ -45,12 +49,14 @@ export const INTENT_LABELS = {
  */
 export function detectIntent(prompt, primaryEntity) {
   const entity = primaryEntity || resolvePrimaryEntity(prompt);
+  const classified = classifyQuestion(prompt, entity);
   const mode = detectLogicMode(prompt, entity);
   const intent = MODE_TO_INTENT[mode] || "market_pulse";
   const result = {
     intent,
     mode,
-    label: INTENT_LABELS[intent],
+    label: classified.label || INTENT_LABELS[intent],
+    questionKind: classified.kind,
   };
   logicDebug("intent detected", result);
   return result;

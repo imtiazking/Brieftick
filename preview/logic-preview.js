@@ -120,11 +120,11 @@ function renderIntelligenceCard(res, role = "logic") {
     </div>`;
   };
 
+  const isBriefing = full.mode === "briefing" || full.modeLabel?.includes("Briefing");
   const isGeoBriefing =
-    full.mode === "scenario" &&
-    (full.modeLabel === "Geopolitical Briefing" || /geopolitical briefing/i.test(full.title || ""));
+    isBriefing && (full.questionKind === "geopolitical" || /geopolitical/i.test(full.title || ""));
   let sections;
-  if (full.mode === "scenario") {
+  if (full.mode === "scenario" && !isBriefing) {
     sections = [
       renderSection("snapshot", isGeoBriefing ? "Briefing Snapshot" : "Scenario Snapshot"),
       renderSection("catalyst", isGeoBriefing ? "Key Headline" : "Market Impact"),
@@ -133,6 +133,15 @@ function renderIntelligenceCard(res, role = "logic") {
       renderSection("sectorRisks", isGeoBriefing ? "Sector Risks" : "Sector Risks", " logic-intel-section--optional"),
       renderSection("volatility", "Volatility Outlook"),
       renderSection("aiSummary", "Logic Summary"),
+    ]
+      .filter(Boolean)
+      .join("");
+  } else if (isBriefing) {
+    sections = [
+      renderSection("catalyst", "Key Headline"),
+      renderSection("macroContext", "Macro"),
+      renderSection("sectorImpact", "Sectors"),
+      renderSection("volatility", "Volatility"),
     ]
       .filter(Boolean)
       .join("");
@@ -177,6 +186,14 @@ function renderIntelligenceCard(res, role = "logic") {
       ? `<p class="logic-limited-banner">${escapeHtml(LIMITED_DATA_MSG)}</p>`
       : "";
 
+  const directAnswer = full.directAnswer || (full.mode === "briefing" ? full.cards?.snapshot : "");
+  const answerBlock = directAnswer
+    ? `<div class="logic-direct-answer">
+      <div class="logic-intel-label">Answer</div>
+      <p class="logic-intel-text logic-direct-answer-text">${escapeHtml(directAnswer)}</p>
+    </div>`
+    : "";
+
   return `<div class="logic-msg logic-msg--logic">
     <div class="logic-msg-head">
       <span class="logic-msg-role">${role === "user" ? "You" : "Brieftick Logic"}</span>
@@ -184,6 +201,7 @@ function renderIntelligenceCard(res, role = "logic") {
     </div>
     <h3 class="logic-msg-title">${escapeHtml(full.title)}</h3>
     ${limitedBanner}
+    ${answerBlock}
     <div class="logic-intel-card">${sections}${optionalHtml}</div>
     ${signals ? `<div class="logic-signal-row">${signals}</div>` : ""}
     <div class="logic-msg-foot">

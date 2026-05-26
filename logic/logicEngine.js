@@ -16,8 +16,10 @@ import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { applyMemoryToResponse, buildMemoryContext, recordLogicInteraction } from "./watchlistMemory.js";
 import { applyPortfolioMemoryToResponse, buildPortfolioMemory } from "./portfolioMemory.js";
 import { applyConfidenceEngine } from "./confidenceEngine.js";
+import { composeLogicResponse } from "./engines/responseComposer.js";
 import { logicDebug } from "./shared.js";
 import { LIMITED_DATA_MSG } from "./types.js";
+import { classifyQuestion } from "./questionIntent.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -26,6 +28,7 @@ import { runSectorRotationLogic } from "./sectorRotationLogic.js";
 import { runRiskRegimeLogic } from "./riskRegimeLogic.js";
 import { runDailyBriefLogic } from "./dailyBriefLogic.js";
 import { runScenarioAnalysisLogic } from "./scenarioAnalysisLogic.js";
+import { runBriefingLogic } from "./briefingLogic.js";
 
 /**
  * Post-module pipeline: fallback guard → memory → confidence.
@@ -57,6 +60,8 @@ export function finalizeLogicResponse(res, ctx) {
     out.sources = ["Brieftick Logic"];
   }
 
+  out = composeLogicResponse(out, ctx);
+
   return out;
 }
 
@@ -74,8 +79,13 @@ export async function executeLogicPipeline(prompt, modeOverride) {
 
   // 2. intent + modeDetect
   const intentResult = detectIntent(prompt, primaryEntity);
+  const classified = classifyQuestion(prompt, primaryEntity);
   const mode = modeOverride || intentResult.mode;
-  logicDebug("Logic module selected", { mode, intent: intentResult.intent });
+  logicDebug("Logic module selected", {
+    mode,
+    intent: intentResult.intent,
+    questionKind: classified.kind,
+  });
 
   const memory = buildMemoryContext(primaryEntity, mode);
   const portfolioMemory = buildPortfolioMemory();
@@ -96,6 +106,7 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     mode,
     intent: intentResult.intent,
     intentLabel: intentResult.label,
+    questionKind: classified.kind,
     sourceRoute,
     fusion,
     memory,
@@ -146,6 +157,8 @@ async function runLogicModule(ctx) {
       return runDailyBriefLogic(ctx);
     case "scenario":
       return runScenarioAnalysisLogic(ctx);
+    case "briefing":
+      return runBriefingLogic(ctx);
     case "market-pulse":
     default:
       return runMarketPulseLogic(ctx);

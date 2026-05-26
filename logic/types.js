@@ -9,7 +9,7 @@ export const LOGIC_DISCLAIMER =
 export const LIMITED_DATA_MSG =
   "Live market confirmation currently limited.";
 
-/** @typedef {'market-pulse'|'ticker'|'portfolio'|'sector-rotation'|'risk-regime'|'daily-brief'|'scenario'} LogicMode */
+/** @typedef {'market-pulse'|'ticker'|'portfolio'|'sector-rotation'|'risk-regime'|'daily-brief'|'scenario'|'briefing'} LogicMode */
 
 /**
  * @typedef {Object} IntelligenceCards
@@ -24,6 +24,8 @@ export const LIMITED_DATA_MSG =
 /**
  * @typedef {Object} LogicResponse
  * @property {string} title
+ * @property {string} [directAnswer]
+ * @property {string} [questionKind]
  * @property {string} summary
  * @property {IntelligenceCards} cards
  * @property {string[]} keyDrivers
@@ -87,6 +89,12 @@ export const LOGIC_MODES = [
     desc: "Hypothetical macro scenarios",
     icon: "SC",
   },
+  {
+    id: "briefing",
+    label: "Market Briefing Logic",
+    desc: "Concise answers for news and macro topics",
+    icon: "BR",
+  },
 ];
 
 /**
@@ -101,6 +109,8 @@ export function buildLogicResponse(partial) {
 
   return {
     title: partial.title,
+    directAnswer: partial.directAnswer,
+    questionKind: partial.questionKind,
     summary,
     cards,
     keyDrivers: drivers,
@@ -113,6 +123,7 @@ export function buildLogicResponse(partial) {
     sources: partial.sources || ["Brieftick Logic"],
     disclaimer: partial.disclaimer || LOGIC_DISCLAIMER,
     mode: partial.mode,
+    modeLabel: partial.modeLabel,
     usedAI: !!partial.usedAI,
     mockData: !!partial.mockData,
     dataLimited: !!partial.dataLimited,

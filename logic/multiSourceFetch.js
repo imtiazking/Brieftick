@@ -221,7 +221,10 @@ export async function multiSourceFetch(sourceRoute, ctx) {
     return h.includes(symUpper) || (nameLower && h.includes(nameLower.toUpperCase()));
   });
 
-  if (ctx.prompt && isGeopoliticalBriefingQuery(ctx.prompt)) {
+  if (
+    ctx.prompt &&
+    (ctx.mode === "briefing" || isGeopoliticalBriefingQuery(ctx.prompt))
+  ) {
     const topicFiltered = filterHeadlinesForPrompt(newsPack.headlines || [], ctx.prompt);
     if (topicFiltered.length) relatedHeadlines = topicFiltered;
   }

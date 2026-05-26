@@ -8,13 +8,14 @@ export const FREE_LOGIC_DAILY_LIMIT = 5;
 export const LOGIC_UPGRADE_MSG =
   "Upgrade to unlock full Logic: portfolio intelligence, scenario analysis, watchlist memory and advanced market signals.";
 
-/** @typedef {'market-pulse'|'ticker'|'portfolio'|'sector-rotation'|'risk-regime'|'daily-brief'|'scenario'} LogicMode */
+/** @typedef {'market-pulse'|'ticker'|'portfolio'|'sector-rotation'|'risk-regime'|'daily-brief'|'scenario'|'briefing'} LogicMode */
 
 export const FREE_LOGIC_MODES = new Set([
   "market-pulse",
   "ticker",
   "risk-regime",
   "daily-brief",
+  "briefing",
 ]);
 
 export const PREMIUM_LOGIC_MODES = new Set([
