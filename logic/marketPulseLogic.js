@@ -10,6 +10,8 @@ import { getFusedQuote, fusionAttributionSources } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { isNewsStyleQuery } from "./questionIntent.js";
 import { runBriefingLogic } from "./briefingLogic.js";
+import { isStrategistInterpretationQuery } from "./engines/strategistQueryGate.js";
+import { runMacroInterpretationLogic } from "./macroInterpretationLogic.js";
 
 /** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runMarketPulseLogic(ctx) {

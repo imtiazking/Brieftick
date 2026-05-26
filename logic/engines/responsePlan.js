@@ -7,9 +7,13 @@ import { logicDebug } from "../shared.js";
 import { isNewsStyleQuery } from "../questionIntent.js";
 import { isMacroInterpretationQuery } from "./macroInterpretationEngine.js";
 import { isCausalReasoningQuery } from "./causalReasoningEngine.js";
+import {
+  isStrategistInterpretationQuery,
+  isExplicitNewsQuery,
+} from "./strategistQueryGate.js";
 
 /**
- * @typedef {'fragility'|'portfolio_risk'|'regime_fit'|'portfolio_stress'|'macro_interpretation'|'causal'|'scenario'|'portfolio'|'risk_regime'|'market_pulse'|'ticker'|'briefing'|'sector'|'daily_brief'} ResponseIntentId
+ * @typedef {'fragility'|'strategist_interpretation'|'positioning_crowding'|'portfolio_risk'|'regime_fit'|'portfolio_stress'|'macro_interpretation'|'causal'|'scenario'|'portfolio'|'risk_regime'|'market_pulse'|'ticker'|'briefing'|'sector'|'daily_brief'} ResponseIntentId
  */
 
 /**
@@ -48,15 +52,12 @@ const SUPPRESS_DEFAULT = [
  * @param {string} prompt
  */
 export function isAbstractStrategistQuery(prompt) {
-  const t = (prompt || "").toLowerCase();
-  if (isNewsStyleQuery(prompt)) return false;
+  if (isExplicitNewsQuery(prompt)) return false;
   return (
-    /what breaks first|breaks first|hidden fragil|underpric|what matters most|what risks dominate|regime benefit|benefit.*portfolio|what regime|fragilit|complacent|cross.?asset diverg|breadth deterior|volatility compression|concentration risk|what would hurt|why can equities|why have equities/i.test(
-      t
-    ) ||
+    isStrategistInterpretationQuery(prompt) ||
     isMacroInterpretationQuery(prompt) ||
-    (/portfolio|holdings|my book/i.test(t) &&
-      /risk|regime|exposed|concentrat|dominate/i.test(t))
+    (/portfolio|holdings|my book/i.test((prompt || "").toLowerCase()) &&
+      /risk|regime|exposed|concentrat|dominate/i.test((prompt || "").toLowerCase()))
   );
 }
 
@@ -93,12 +94,34 @@ export function buildResponsePlan(prompt, classified, entity) {
     suppressPatterns: [...SUPPRESS_DEFAULT],
   };
 
-  if (
-    (/what happens if|what if\b|if .+ tighten|liquidity tighten|financial conditions tighten|qt\b|tightening liquidity/i.test(
+  if (isStrategistInterpretationQuery(prompt) && !isExplicitNewsQuery(prompt)) {
+    const crowding = /consensus|overcrowd|crowded trade/i.test(t);
+    plan = {
+      ...plan,
+      intentId: crowding ? "positioning_crowding" : "strategist_interpretation",
+      mode: "macro-interpretation",
+      label: crowding ? "Positioning & crowding" : "Macro Strategist Interpretation",
+      primaryQuestion: prompt,
+      abstractEntity: true,
+      conceptualOk: true,
+      skipFallbackOnAnswer: true,
+      allowedCards: ["snapshot", "catalyst", "macroContext", "sectorImpact", "volatility", "aiSummary"],
+      allowedOptional: [],
+      enrichment: {
+        graph: false,
+        marketIntelApply: false,
+        streamApply: false,
+        relationshipMemory: false,
+        synthesis: false,
+        feedHook: false,
+      },
+    };
+  } else if (
+    /what happens if|what if\b|if .+ tighten|liquidity tighten|financial conditions tighten|tightening liquidity|what happens if liquidity/i.test(
       t
     ) &&
-      (/portfolio|holdings|my book|this book/i.test(t) || classified.mode === "portfolio")) ||
-    (/liquidity tighten|what happens if liquidity/i.test(t) && classified.mode === "portfolio")
+    !newsStyle &&
+    !/iran|ukraine|war in|shipping route|freight cost/i.test(t)
   ) {
     plan = {
       ...plan,
@@ -285,7 +308,7 @@ export function buildResponsePlan(prompt, classified, entity) {
         feedHook: false,
       },
     };
-  } else if (classified.wantsBriefing || newsStyle) {
+  } else if ((classified.wantsBriefing || newsStyle) && !isStrategistInterpretationQuery(prompt)) {
     plan = {
       ...plan,
       intentId: "briefing",

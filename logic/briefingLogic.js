@@ -14,6 +14,8 @@ import { getFusedQuote, fusionAttributionSources } from "./dataFusion.js";
 import { filterHeadlinesForPrompt, concise } from "./engines/topicContext.js";
 import { formatHeadlineSupport } from "./engines/headlineContext.js";
 import { composeLogicResponse } from "./engines/responseComposer.js";
+import { isStrategistInterpretationQuery } from "./engines/strategistQueryGate.js";
+import { runMacroInterpretationLogic } from "./macroInterpretationLogic.js";
 
 const KIND_FRAMING = {
   geopolitical: {
@@ -65,6 +67,9 @@ const KIND_FRAMING = {
  */
 export async function runBriefingLogic(ctx) {
   const prompt = ctx.prompt || "";
+  if (isStrategistInterpretationQuery(prompt)) {
+    return runMacroInterpretationLogic({ ...ctx, mode: "macro-interpretation" });
+  }
   const kind = ctx.questionKind || "news";
   const fusion = ctx.fusion;
   const failedSources = [...(fusion?.failedSources || [])];
