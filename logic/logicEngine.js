@@ -95,7 +95,6 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   });
 
   const memory = buildMemoryContext(primaryEntity, mode);
-  const portfolioMemory = buildPortfolioMemory();
 
   // 3. sourceRouter → 4–5. fetch + fusion (context for modules and scenario impact)
   const sourceRoute = routeSources({ prompt, mode, primaryEntity });
