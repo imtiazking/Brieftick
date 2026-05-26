@@ -12,6 +12,7 @@ import {
 } from "./shared.js";
 import { getFusedQuote, fusionAttributionSources } from "./dataFusion.js";
 import { filterHeadlinesForPrompt, concise } from "./engines/topicContext.js";
+import { formatHeadlineSupport } from "./engines/headlineContext.js";
 import { composeLogicResponse } from "./engines/responseComposer.js";
 
 const KIND_FRAMING = {
@@ -81,6 +82,7 @@ export async function runBriefingLogic(ctx) {
   const relevant = filterHeadlinesForPrompt(headlines, prompt);
   const top = (relevant.length ? relevant : headlines).slice(0, 5);
   const lead = top[0]?.headline;
+  const headlineSupport = formatHeadlineSupport(top.length ? top : headlines, prompt);
 
   const spy = fusion ? getFusedQuote(fusion, "SPY") : null;
   const xle = fusion ? getFusedQuote(fusion, "XLE") : null;
@@ -98,10 +100,11 @@ export async function runBriefingLogic(ctx) {
   const briefingCtx = `USER QUESTION (answer this first): ${prompt}
 BRIEFING TYPE: ${kind}
 LENS: ${frame.lens}
-HEADLINES (use these; do not invent stories):
+HEADLINES (support only — do not lead answer with these):
 ${headlineBlock}
-TAPE: ${tape || "limited"}
-${buildFusionPromptExtras(ctx, "SPY")}`;
+${headlineSupport ? `SUPPORTING: ${headlineSupport}` : ""}
+${ctx.mode === "causal" ? "" : `TAPE: ${tape || "limited"}`}
+${ctx.mode === "causal" ? "" : buildFusionPromptExtras(ctx, "SPY")}`;
 
   const ai = await callLogicLLM(
     `You are Brieftick Logic. Answer the user's market question in plain English.
@@ -131,13 +134,10 @@ Return JSON with: title, directAnswer, summary, keyDrivers, signals, confidence,
 
   const direct = lead
     ? concise(
-        `${lead} Markets may read this through ${frame.lens}.${tape ? ` Tape: ${tape}.` : ""}`,
+        `Markets may read this through ${frame.lens}. ${headlineSupport || lead.slice(0, 100)}`,
         300
       )
-    : concise(
-        `Limited headline match for your question; framing through ${frame.lens}.${tape ? ` Tape: ${tape}.` : ""}`,
-        300
-      );
+    : concise(`Framing through ${frame.lens}. Mechanism-first read.`, 280);
 
   const partial = buildLogicResponse({
     title: frame.title,

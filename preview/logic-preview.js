@@ -122,6 +122,7 @@ function renderIntelligenceCard(res, role = "logic") {
   };
 
   const schema = resolveCardSchema(full);
+  const schemaKeys = new Set(schema.map((s) => s.key));
   const sections = schema
     .map(({ key, label, optional, fullWidth }) => {
       let extraClass = optional ? " logic-intel-section--optional" : "";
@@ -139,7 +140,7 @@ function renderIntelligenceCard(res, role = "logic") {
     ["narrativeLink", "Narrative Link"],
   ];
   const optionalHtml = optionalOrder
-    .filter(([key]) => optional[key])
+    .filter(([key]) => optional[key] && !schemaKeys.has(key))
     .map(
       ([key, label]) =>
         `<div class="logic-intel-section logic-intel-section--optional">

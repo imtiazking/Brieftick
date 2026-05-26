@@ -13,7 +13,9 @@ import {
 } from "./relationshipMemory.js";
 import { logicQualityValidator } from "./engines/logicQualityValidator.js";
 import { synthesizeIntelligence } from "./engines/intelligenceSynthesis.js";
+import { logicFinalPolish } from "./engines/logicFinalPolish.js";
 import { hookIntelligenceStream } from "./engines/intelligenceStream.js";
+import { runCausalReasoningEngine } from "./engines/causalReasoningEngine.js";
 import { logicDebug } from "./shared.js";
 
 /**
@@ -46,8 +48,13 @@ export function enrichIntelligenceLayer(res, ctx) {
   out = applyNarrativeToResponse(out, ctx.narrative);
   out = applyPositioningToResponse(out, ctx.positioning);
   out = applyRelationshipMemoryToResponse(out, ctx.prompt);
+  if (ctx.mode === "causal" && !ctx.causalModel) {
+    ctx.causalModel = runCausalReasoningEngine(ctx.prompt);
+  }
+
   out = logicQualityValidator(ctx.prompt, out, ctx);
   out = synthesizeIntelligence(out, ctx);
+  out = logicFinalPolish(out, ctx);
   hookIntelligenceStream(ctx, out);
 
   logicDebug("intelligenceLayer enriched", {

@@ -5,7 +5,7 @@
 
 import { buildLogicResponse } from "./types.js";
 import { callLogicLLM, getHeadlines, withDataLimited } from "./shared.js";
-import { filterHeadlinesForPrompt } from "./engines/topicContext.js";
+import { formatHeadlineSupport } from "./engines/headlineContext.js";
 import {
   runCausalReasoningEngine,
   buildCausalCards,
@@ -24,12 +24,10 @@ export async function runCausalLogic(ctx) {
   let headlineSupport = "";
   const headlines = fusion?.news?.headlines || [];
   if (headlines.length) {
-    const top = filterHeadlinesForPrompt(headlines, prompt).slice(0, 2);
-    if (top.length) headlineSupport = top.map((n) => n.headline).join(" · ");
+    headlineSupport = formatHeadlineSupport(headlines, prompt);
   } else {
-    const pack = await getHeadlines(6);
-    const top = filterHeadlinesForPrompt(pack.headlines, prompt).slice(0, 1);
-    if (top[0]) headlineSupport = top[0].headline;
+    const pack = await getHeadlines(8);
+    headlineSupport = formatHeadlineSupport(pack.headlines, prompt);
     failedSources.push(...(pack.failedSources || []));
   }
 

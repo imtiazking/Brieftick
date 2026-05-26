@@ -295,18 +295,16 @@ export function buildCausalCards(model, prompt, headlineSupport) {
 
   const macroContext = concise(model.macroTransmission, 200);
   const sectorImpact = concise(`Winners: ${winners}`, 200);
-  const volOutlook = concise(
-    "Vol may rise if the shift surprises positioning; otherwise dispersion widens more than index vol.",
-    180
-  );
+  const inflationLine =
+    model.secondOrderEffects.find((s) => /inflation|goods|cpi|pass-through/i.test(s)) ||
+    model.macroTransmission;
+  const volOutlook = concise(inflationLine, 180);
   const summary = concise(
     `${model.cause}. ${model.pricingPowerShift} ${model.secondOrderEffects[0] || ""}`,
     280
   );
 
-  const headlineNote = headlineSupport
-    ? concise(`Context (headlines): ${headlineSupport}`, 160)
-    : "";
+  const headlineNote = headlineSupport || "";
 
   return {
     title: `Causal Logic · ${model.label}`,
