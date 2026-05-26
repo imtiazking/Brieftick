@@ -181,7 +181,7 @@ export function isMacroInterpretationQuery(prompt) {
   }
 
   const conceptual =
-    /why can|why would|why does|why is it that|how can|how would|how does|explain why|what does it mean|why .* bearish|why .* bullish|why .* bad|why .* good|why .* hurt|why .* help/i.test(
+    /why can|why would|why does|why is it that|how can|how would|how does|explain why|what does it mean|what happens if|what happens when|what if .+ (mean|imply|signal)|why .* bearish|why .* bullish|why .* bad|why .* good|why .* hurt|why .* help/i.test(
       t
     );
 
