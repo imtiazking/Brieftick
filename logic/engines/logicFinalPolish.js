@@ -40,6 +40,10 @@ const SHARPEN_PHRASES = [
     "Markets price in",
   ],
   [
+    /markets may read this through/gi,
+    "",
+  ],
+  [
     /with elevated likelihood of/gi,
     "with risk of",
   ],
@@ -97,11 +101,20 @@ export function logicFinalPolish(res, ctx) {
   const schema = resolveCardSchema(res);
   let out = { ...res };
 
+  if (ctx.mode === "macro-interpretation") {
+    const opt = { ...(out.optionalCards || {}) };
+    delete opt.relatedMovers;
+    out.optionalCards = opt;
+  }
+
   const headlines =
     ctx.fusion?.relatedHeadlines?.length
       ? ctx.fusion.relatedHeadlines
       : ctx.fusion?.news?.headlines || [];
-  const support = formatHeadlineSupport(headlines, ctx.prompt || "");
+  const support =
+    ctx.mode === "macro-interpretation"
+      ? ""
+      : formatHeadlineSupport(headlines, ctx.prompt || "");
   if (support) {
     const noisy = out.optionalCards?.relatedMovers;
     if (!noisy || /reuters|three months|trump losing/i.test(noisy)) {

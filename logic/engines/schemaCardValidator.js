@@ -60,6 +60,18 @@ const LABEL_RULES = {
   Risk: {
     must: /risk|vol|beta|drawdown|sensitiv/i,
   },
+  Expectations: {
+    must: /expect|rate|fed|cut|hike|pricing|narrative|inflation|disinflat/i,
+  },
+  "Growth & Earnings": {
+    must: /growth|earnings|multiple|margin|capex|demand|gdp|recession/i,
+  },
+  "Positioning & Narrative": {
+    must: /position|crowd|narrative|unwind|rotation|investor/i,
+  },
+  "Rates & Liquidity": {
+    must: /rate|yield|liquidity|fed|financial condition|real yield|bond/i,
+  },
 };
 
 /**
@@ -104,6 +116,14 @@ function fallbackForLabel(label, ctx, res) {
       return model?.sectorWinners?.slice(0, 2).join("; ") || res.cards?.sectorImpact;
     case "Sector Losers":
       return model?.sectorLosers?.slice(0, 2).join("; ") || res.optionalCards?.sectorRisks;
+    case "Expectations":
+      return ctx.macroInterpretationModel?.expectations;
+    case "Growth & Earnings":
+      return ctx.macroInterpretationModel?.growthEarnings;
+    case "Positioning & Narrative":
+      return ctx.macroInterpretationModel?.positioningNarrative;
+    case "Rates & Liquidity":
+      return ctx.macroInterpretationModel?.ratesLiquidity;
     default:
       return "";
   }

@@ -57,7 +57,10 @@ export function validateLogicQuality(prompt, res, ctx) {
 
   const isCausal =
     ctx?.mode === "causal" ||
-    /→|because|may lead|transmission|pricing power/i.test(direct);
+    ctx?.mode === "macro-interpretation" ||
+    /→|because|may lead|transmission|pricing power|interpret|disinflation|recession|earnings/i.test(
+      direct
+    );
 
   if (/which sector|pricing power|benefit first/i.test(promptLower) && !isCausal) {
     issues.push("Expected causal reasoning");

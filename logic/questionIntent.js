@@ -6,8 +6,9 @@
 import { resolvePrimaryEntity } from "./entityResolver.js";
 import { logicDebug } from "./shared.js";
 import { isCausalReasoningQuery } from "./engines/causalReasoningEngine.js";
+import { isMacroInterpretationQuery } from "./engines/macroInterpretationEngine.js";
 
-/** @typedef {'news'|'geopolitical'|'macro'|'rates'|'sector'|'supply_chain'|'commodities'|'portfolio'|'scenario'|'ticker'|'risk'|'market_pulse'|'daily_brief'|'causal'} QuestionKind */
+/** @typedef {'news'|'geopolitical'|'macro'|'rates'|'sector'|'supply_chain'|'commodities'|'portfolio'|'scenario'|'ticker'|'risk'|'market_pulse'|'daily_brief'|'causal'|'macro_interpretation'} QuestionKind */
 
 /**
  * @typedef {Object} QuestionClassification
@@ -64,6 +65,13 @@ export function classifyQuestion(prompt, entity) {
     !/iran|war|oil|fed/i.test(t)
   ) {
     result = { kind: "daily_brief", mode: "daily-brief", label: "Daily Brief", wantsBriefing: false };
+  } else if (isMacroInterpretationQuery(prompt)) {
+    result = {
+      kind: "macro_interpretation",
+      mode: "macro-interpretation",
+      label: "Macro Interpretation Logic",
+      wantsBriefing: false,
+    };
   } else if (isCausalReasoningQuery(prompt)) {
     result = {
       kind: "causal",
@@ -106,7 +114,8 @@ export function classifyQuestion(prompt, entity) {
       wantsBriefing: true,
     };
   } else if (
-    /fed |fomc|interest rate|yields?|treasury|inflation|cpi|pce|real rates|rate cut|rate hike|powell/i.test(t)
+    /fed |fomc|interest rate|yields?|treasury|inflation|cpi|pce|real rates|rate cut|rate hike|powell/i.test(t) &&
+    !isMacroInterpretationQuery(prompt)
   ) {
     result = {
       kind: "rates",
@@ -115,7 +124,10 @@ export function classifyQuestion(prompt, entity) {
       wantsBriefing: true,
     };
   } else if (
-    /recession|gdp|payrolls|jobs report|macro outlook|economic growth|soft landing|hard landing/i.test(t)
+    /recession|gdp|payrolls|jobs report|macro outlook|economic growth|soft landing|hard landing/i.test(
+      t
+    ) &&
+    !isMacroInterpretationQuery(prompt)
   ) {
     result = {
       kind: "macro",

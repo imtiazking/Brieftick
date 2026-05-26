@@ -76,6 +76,10 @@ export function routeSources({ prompt, mode, primaryEntity }) {
       intents.add("sector");
       intents.add("macro");
       break;
+    case "macro-interpretation":
+      intents.add("macro");
+      intents.add("risk");
+      break;
     case "daily-brief":
       intents.add("news");
       intents.add("macro");

@@ -45,6 +45,8 @@ export function composeLogicResponse(res, ctx) {
   const out = { ...res, cards: { ...(res.cards || {}) } };
   const prompt = ctx?.prompt || "";
   const isCausal = ctx?.mode === "causal" || out.mode === "causal";
+  const isMacroInterp =
+    ctx?.mode === "macro-interpretation" || out.mode === "macro-interpretation";
 
   let direct =
     out.directAnswer ||
@@ -52,8 +54,9 @@ export function composeLogicResponse(res, ctx) {
     out.summary ||
     "";
 
-  if (isCausal || ctx?.skipTape) direct = stripTapeAndHeadlineLead(direct);
-  direct = concise(direct, isCausal ? 360 : 320);
+  if (isCausal || isMacroInterp || ctx?.skipTape) direct = stripTapeAndHeadlineLead(direct);
+  direct = direct.replace(/markets may read this through[^.]*\./gi, "").trim();
+  direct = concise(direct, isCausal || isMacroInterp ? 360 : 320);
   if (!direct && out.cards.catalyst) {
     direct = concise(
       `${out.cards.catalyst} ${out.cards.sectorImpact || ""}`.trim(),
@@ -69,7 +72,10 @@ export function composeLogicResponse(res, ctx) {
       else if (key === "aiSummary") val = direct;
       else val = "";
     }
-    if (isCausal || ctx?.skipTape) val = stripTapeAndHeadlineLead(val);
+    if (isCausal || isMacroInterp || ctx?.skipTape) val = stripTapeAndHeadlineLead(val);
+    if (isMacroInterp) {
+      val = val.replace(/markets may read this through[^.]*\./gi, "").trim();
+    }
     if (isCausal && key === "catalyst" && isFiller(val)) {
       val = out.cards.macroContext || "";
     }

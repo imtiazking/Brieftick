@@ -68,6 +68,13 @@ export const CARD_SCHEMAS = {
     { key: "volatility", label: "Volatility" },
     { key: "aiSummary", label: "Logic Summary", fullWidth: true },
   ],
+  macro_interpretation: [
+    { key: "catalyst", label: "Expectations" },
+    { key: "macroContext", label: "Growth & Earnings" },
+    { key: "sectorImpact", label: "Positioning & Narrative" },
+    { key: "volatility", label: "Rates & Liquidity" },
+    { key: "aiSummary", label: "Logic Summary", fullWidth: true },
+  ],
   default: [
     { key: "snapshot", label: "Snapshot" },
     { key: "catalyst", label: "Catalyst" },
@@ -89,6 +96,8 @@ export function resolveCardSchema(res) {
   if (kind === "geopolitical") return CARD_SCHEMAS.geopolitical;
   if (mode === "ticker" || kind === "ticker") return CARD_SCHEMAS.ticker;
   if (mode === "causal") return CARD_SCHEMAS.causal;
+  if (mode === "macro-interpretation" || kind === "macro_interpretation")
+    return CARD_SCHEMAS.macro_interpretation;
   if (kind === "supply_chain") return CARD_SCHEMAS.supply_chain;
   if (mode === "scenario") return CARD_SCHEMAS.scenario;
   if (mode === "briefing") return CARD_SCHEMAS.briefing;

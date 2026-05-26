@@ -9,7 +9,7 @@ export const LOGIC_DISCLAIMER =
 export const LIMITED_DATA_MSG =
   "Live market confirmation currently limited.";
 
-/** @typedef {'market-pulse'|'ticker'|'portfolio'|'sector-rotation'|'risk-regime'|'daily-brief'|'scenario'|'briefing'|'causal'} LogicMode */
+/** @typedef {'market-pulse'|'ticker'|'portfolio'|'sector-rotation'|'risk-regime'|'daily-brief'|'scenario'|'briefing'|'causal'|'macro-interpretation'} LogicMode */
 
 /**
  * @typedef {Object} IntelligenceCards
@@ -107,6 +107,12 @@ export const LOGIC_MODES = [
     label: "Causal Market Logic",
     desc: "Mechanism-first sector and pricing power reasoning",
     icon: "CR",
+  },
+  {
+    id: "macro-interpretation",
+    label: "Macro Interpretation Logic",
+    desc: "Conceptual macro nuance and paradox reasoning",
+    icon: "MI",
   },
 ];
 

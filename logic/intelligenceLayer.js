@@ -16,6 +16,7 @@ import { synthesizeIntelligence } from "./engines/intelligenceSynthesis.js";
 import { logicFinalPolish } from "./engines/logicFinalPolish.js";
 import { hookIntelligenceStream } from "./engines/intelligenceStream.js";
 import { runCausalReasoningEngine } from "./engines/causalReasoningEngine.js";
+import { runMacroInterpretationEngine } from "./engines/macroInterpretationEngine.js";
 import { logicDebug } from "./shared.js";
 
 /**
@@ -44,12 +45,17 @@ export function buildIntelligenceContext(ctx) {
 export function enrichIntelligenceLayer(res, ctx) {
   let out = { ...res, questionKind: ctx.questionKind, regimeLabel: ctx.regime?.label };
 
-  out = applyGraphToResponse(out, ctx.graph);
+  if (ctx.mode !== "macro-interpretation") {
+    out = applyGraphToResponse(out, ctx.graph);
+  }
   out = applyNarrativeToResponse(out, ctx.narrative);
   out = applyPositioningToResponse(out, ctx.positioning);
   out = applyRelationshipMemoryToResponse(out, ctx.prompt);
   if (ctx.mode === "causal" && !ctx.causalModel) {
     ctx.causalModel = runCausalReasoningEngine(ctx.prompt);
+  }
+  if (ctx.mode === "macro-interpretation" && !ctx.macroInterpretationModel) {
+    ctx.macroInterpretationModel = runMacroInterpretationEngine(ctx.prompt);
   }
 
   out = logicQualityValidator(ctx.prompt, out, ctx);

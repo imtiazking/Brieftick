@@ -21,6 +21,7 @@ const MODE_TO_INTENT = {
   scenario: "scenario_analysis",
   briefing: "market_briefing",
   causal: "causal_reasoning",
+  "macro-interpretation": "macro_interpretation",
 };
 
 /** @type {Record<LogicIntent, string>} */
@@ -34,6 +35,7 @@ export const INTENT_LABELS = {
   scenario_analysis: "Scenario Analysis",
   market_briefing: "Market Briefing",
   causal_reasoning: "Causal Market Logic",
+  macro_interpretation: "Macro Interpretation",
 };
 
 /**
