@@ -10,6 +10,10 @@ import {
   getPortfolioHoldings,
   logicDebug,
 } from "./shared.js";
+import {
+  filterHeadlinesForPrompt,
+  isGeopoliticalBriefingQuery,
+} from "./engines/topicContext.js";
 
 const SECTOR_ETFS = [
   ["XLK", "Technology"],
@@ -211,11 +215,16 @@ export async function multiSourceFetch(sourceRoute, ctx) {
 
   const symUpper = (sym || "").toUpperCase();
   const nameLower = (ctx.primaryEntity?.companyName || "").toLowerCase();
-  const relatedHeadlines = (newsPack.headlines || []).filter((n) => {
+  let relatedHeadlines = (newsPack.headlines || []).filter((n) => {
     const h = `${n.headline || ""} ${n.summary || ""}`.toUpperCase();
     if (!symUpper && !nameLower) return true;
     return h.includes(symUpper) || (nameLower && h.includes(nameLower.toUpperCase()));
   });
+
+  if (ctx.prompt && isGeopoliticalBriefingQuery(ctx.prompt)) {
+    const topicFiltered = filterHeadlinesForPrompt(newsPack.headlines || [], ctx.prompt);
+    if (topicFiltered.length) relatedHeadlines = topicFiltered;
+  }
 
   const holdings = getPortfolioHoldings();
   const topWeight = holdings.reduce((max, h) => Math.max(max, h.weight || 0), 0);

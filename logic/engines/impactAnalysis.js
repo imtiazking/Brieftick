@@ -14,6 +14,11 @@ import {
 } from "../shared.js";
 import { getFusedQuote } from "../dataFusion.js";
 import { logicDebug } from "../shared.js";
+import {
+  concise,
+  filterHeadlinesForPrompt,
+} from "./topicContext.js";
+import { getHeadlines } from "../shared.js";
 
 /**
  * @param {import('./scenarioEngine.js').ScenarioEngineResult} scenarioResult
@@ -21,6 +26,10 @@ import { logicDebug } from "../shared.js";
  * @returns {import('../types.js').LogicResponse}
  */
 export async function runImpactAnalysis(scenarioResult, ctx) {
+  if (scenarioResult.queryKind === "briefing") {
+    return runGeopoliticalBriefing(scenarioResult, ctx);
+  }
+
   const frame = scenarioResult.primary;
   const prompt = ctx.prompt || "";
   const fusion = ctx.fusion;
@@ -180,4 +189,205 @@ function buildTemplateImpact(scenarioResult, ctx, failedSources, portSymbols, sp
   });
 
   return withDataLimited({ ...partial, scenarioId: frame.id }, failedSources);
+}
+
+/**
+ * Current-events briefing — concise, topic-filtered (e.g. Iran conflict).
+ * @param {import('./scenarioEngine.js').ScenarioEngineResult} scenarioResult
+ * @param {object} ctx
+ */
+async function runGeopoliticalBriefing(scenarioResult, ctx) {
+  const frame = scenarioResult.primary;
+  const prompt = ctx.prompt || "";
+  const fusion = ctx.fusion;
+  const failedSources = [...(fusion?.failedSources || [])];
+
+  let headlines =
+    fusion?.relatedHeadlines?.length
+      ? fusion.relatedHeadlines
+      : fusion?.news?.headlines || [];
+  if (!headlines.length) {
+    const pack = await getHeadlines(12);
+    headlines = pack.headlines;
+    failedSources.push(...(pack.failedSources || []));
+  }
+  const relevant = filterHeadlinesForPrompt(headlines, prompt);
+  const top = (relevant.length ? relevant : headlines).slice(0, 4);
+  const topicLabel =
+    scenarioResult.topics?.includes("iran")
+      ? "Iran / Middle East conflict"
+      : scenarioResult.topics?.[0]?.replace("_", " ") || "Geopolitical conflict";
+
+  const spy = fusion ? getFusedQuote(fusion, "SPY") : null;
+  const oil = fusion ? getFusedQuote(fusion, "XLE") : null;
+  const tape =
+    spy?.pctChange != null
+      ? `SPY ${spy.pctChange >= 0 ? "+" : ""}${spy.pctChange.toFixed(2)}%`
+      : null;
+  const energy =
+    oil?.pctChange != null
+      ? `Energy (XLE) ${oil.pctChange >= 0 ? "+" : ""}${oil.pctChange.toFixed(2)}%`
+      : null;
+
+  const headlineBullets = top
+    .map((n) => `- ${n.headline}${n.source ? ` (${n.source})` : ""}`)
+    .join("\n");
+
+  const briefingCtx = `USER QUESTION: ${prompt}
+TOPIC: ${topicLabel}
+RELEVANT HEADLINES (use these — do not invent):
+${headlineBullets || "- No topic-filtered headlines; use general conflict framing only"}
+TAPE: ${[tape, energy].filter(Boolean).join(" · ") || "limited"}
+FRAMING: ${frame.pricingInterpretation}`;
+
+  const ai = await callLogicLLM(
+    `You are Brieftick Logic — geopolitical market briefing. Answer the user's question directly in the first card.
+Rules:
+- MAX 2 short sentences per card field. No filler like "indices tracked" or "volatility monitored".
+- Lead with what the conflict headline means for markets NOW.
+- Use only provided headlines; cite the story theme, not generic market pulse boilerplate.
+- No buy/sell/hold. No exact probabilities.
+- Use: markets appear to be pricing in, investors may interpret, elevated likelihood.
+JSON cards: snapshot (direct answer), catalyst (key headline driver), macroContext (rates/oil/dollar), sectorImpact (winners), volatility (vol outlook), aiSummary (2 sentences max).`,
+    briefingCtx,
+    720
+  );
+
+  if (ai) {
+    const tightened = tightenBriefingResponse(ai, top, topicLabel, tape);
+    return {
+      ...tightened,
+      mode: "scenario",
+      modeLabel: "Geopolitical Briefing",
+      scenarioId: frame.id,
+      usedAI: true,
+      mockData: !fusion?.live,
+      sources: ai.sources?.length ? ai.sources : ["Brieftick Logic · Geopolitical Briefing"],
+    };
+  }
+
+  return buildBriefingTemplate(scenarioResult, ctx, top, failedSources, tape, energy);
+}
+
+/**
+ * @param {import('../types.js').LogicResponse} ai
+ * @param {object[]} topHeadlines
+ * @param {string} topicLabel
+ * @param {string|null} tape
+ */
+function tightenBriefingResponse(ai, topHeadlines, topicLabel, tape) {
+  const lead = topHeadlines[0]?.headline;
+  const cards = { ...(ai.cards || {}) };
+  const snapshot =
+    cards.snapshot ||
+    (lead
+      ? concise(
+          `On ${topicLabel}: ${lead} Investors may interpret this through oil, defense, and risk-premium channels.`,
+          220
+        )
+      : concise(ai.summary, 220));
+
+  return {
+    ...ai,
+    title: ai.title?.includes("Iran") ? ai.title : `Geopolitical Briefing · ${topicLabel}`,
+    summary: concise(ai.summary, 280),
+    cards: {
+      snapshot: concise(snapshot, 220),
+      catalyst: concise(cards.catalyst || lead || "Headline-driven geopolitical risk", 200),
+      macroContext: concise(
+        cards.macroContext || "Oil, rates, and the dollar may co-move with escalation or de-escalation headlines.",
+        200
+      ),
+      sectorImpact: concise(
+        cards.sectorImpact || "Energy and defense may outperform on escalation; airlines and EM may lag.",
+        200
+      ),
+      volatility: concise(
+        cards.volatility ||
+          (tape
+            ? `Volatility may stay bid around headlines; tape: ${tape}.`
+            : "Volatility may rise on surprise geopolitical headlines."),
+        200
+      ),
+      aiSummary: concise(cards.aiSummary || ai.summary, 240),
+    },
+    optionalCards: {
+      ...(ai.optionalCards || {}),
+      sectorRisks: concise(
+        ai.optionalCards?.sectorRisks ||
+          "Travel, regional banks with EM exposure, and rate-sensitive growth may face headline risk.",
+        200
+      ),
+    },
+  };
+}
+
+/**
+ * @param {import('./scenarioEngine.js').ScenarioEngineResult} scenarioResult
+ * @param {object} ctx
+ * @param {object[]} topHeadlines
+ * @param {string[]} failedSources
+ * @param {string|null} tape
+ * @param {string|null} energy
+ */
+function buildBriefingTemplate(
+  scenarioResult,
+  ctx,
+  topHeadlines,
+  failedSources,
+  tape,
+  energy
+) {
+  const frame = scenarioResult.primary;
+  const lead = topHeadlines[0]?.headline || "Geopolitical headlines are driving cross-asset moves";
+  const second = topHeadlines[1]?.headline;
+
+  const snapshot = concise(
+    `${lead} Markets appear to be pricing in headline risk rather than a single clear outcome.${tape ? ` Tape: ${tape}.` : ""}`,
+    240
+  );
+
+  return withDataLimited(
+    {
+      title: "Geopolitical Briefing · Iran / Middle East",
+      summary: concise(
+        `${lead} Investors may interpret escalation through oil, defense, and volatility channels — not a uniform equity move.`,
+        280
+      ),
+      cards: {
+        snapshot,
+        catalyst: concise(lead, 200),
+        macroContext: concise(
+          `Oil and rates may react first; ${energy || "energy complex in focus"}. Dollar may firm on risk-off moves.`,
+          200
+        ),
+        sectorImpact: concise(
+          "Energy and defense may lead on escalation headlines; megacap tech may still anchor indices.",
+          200
+        ),
+        volatility: concise(
+          `Elevated likelihood of headline-driven vol spikes; ${tape || "monitor index and oil vol"}.`,
+          200
+        ),
+        aiSummary: concise(
+          second
+            ? `Also in focus: ${second} Overall, a conflict briefing — not generic market pulse.`
+            : frame.pricingInterpretation,
+          240
+        ),
+      },
+      optionalCards: {
+        sectorRisks: concise(frame.bearishOutcomes.slice(0, 2).join(" "), 200),
+      },
+      keyDrivers: topHeadlines.slice(0, 3).map((n) => n.headline),
+      signals: ["Headline-driven", "Oil / defense channel", tape || "Tape mixed"],
+      confidence: topHeadlines.length >= 2 ? 64 : 52,
+      sources: ["Brieftick Logic · Geopolitical Briefing"],
+      mode: "scenario",
+      modeLabel: "Geopolitical Briefing",
+      scenarioId: frame.id,
+      mockData: true,
+    },
+    failedSources
+  );
 }

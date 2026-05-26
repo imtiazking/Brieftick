@@ -8,10 +8,15 @@ import {
 } from "./shared.js";
 import { getFusedQuote, fusionAttributionSources } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
+import { isGeopoliticalBriefingQuery } from "./engines/topicContext.js";
+import { runScenarioAnalysisLogic } from "./scenarioAnalysisLogic.js";
 
 /** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runMarketPulseLogic(ctx) {
   const prompt = ctx.prompt || "Explain today's market pulse";
+  if (isGeopoliticalBriefingQuery(prompt)) {
+    return runScenarioAnalysisLogic(ctx);
+  }
   const fusion = ctx.fusion;
   const failedSources = [...(fusion?.failedSources || [])];
 

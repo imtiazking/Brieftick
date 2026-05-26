@@ -4,6 +4,7 @@
  */
 
 import { resolvePrimaryEntity } from "./entityResolver.js";
+import { isGeopoliticalBriefingQuery } from "./engines/topicContext.js";
 
 /**
  * @param {string} prompt
@@ -38,6 +39,8 @@ export function detectLogicMode(prompt, primaryEntity) {
   )
     return "daily-brief";
 
+  if (isGeopoliticalBriefingQuery(prompt)) return "scenario";
+
   if (
     /what happens if|scenario|hypothetical|what if|peace deal|ceasefire|oil spike|crude surge|fed cut|rate cut|inflation cool|disinflation|recession|growth scare|ai spending|hyperscaler capex|geopolitical|energy shock|if rates|if oil|if tech/i.test(
       t
@@ -57,7 +60,8 @@ export function detectLogicMode(prompt, primaryEntity) {
     /market pulse|overall market|market direction|today.?s tape|explain today|market tone|explain today.?s market/.test(
       t
     ) &&
-    !entity.symbol
+    !entity.symbol &&
+    !isGeopoliticalBriefingQuery(prompt)
   )
     return "market-pulse";
 

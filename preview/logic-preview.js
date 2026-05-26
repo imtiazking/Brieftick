@@ -120,13 +120,17 @@ function renderIntelligenceCard(res, role = "logic") {
     </div>`;
   };
 
+  const isGeoBriefing =
+    full.mode === "scenario" &&
+    (full.modeLabel === "Geopolitical Briefing" || /geopolitical briefing/i.test(full.title || ""));
   let sections;
   if (full.mode === "scenario") {
     sections = [
-      renderSection("snapshot", "Scenario Snapshot"),
-      renderSection("catalyst", "Market Impact"),
-      renderSection("sectorImpact", "Sector Winners"),
-      renderSection("sectorRisks", "Sector Risks", " logic-intel-section--optional"),
+      renderSection("snapshot", isGeoBriefing ? "Briefing Snapshot" : "Scenario Snapshot"),
+      renderSection("catalyst", isGeoBriefing ? "Key Headline" : "Market Impact"),
+      isGeoBriefing ? renderSection("macroContext", "Macro & Oil") : "",
+      renderSection("sectorImpact", isGeoBriefing ? "Market Impact (Sectors)" : "Sector Winners"),
+      renderSection("sectorRisks", isGeoBriefing ? "Sector Risks" : "Sector Risks", " logic-intel-section--optional"),
       renderSection("volatility", "Volatility Outlook"),
       renderSection("aiSummary", "Logic Summary"),
     ]

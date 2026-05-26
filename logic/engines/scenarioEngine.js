@@ -6,6 +6,11 @@
  */
 
 import { logicDebug } from "../shared.js";
+import {
+  detectScenarioQueryKind,
+  extractPromptTopics,
+  isGeopoliticalBriefingQuery,
+} from "./topicContext.js";
 
 /** @typedef {'geopolitical'|'macro'|'market_event'|'policy'|'commodity'|'growth'} ScenarioCategory */
 
@@ -30,6 +35,8 @@ import { logicDebug } from "../shared.js";
  * @property {ScenarioFrame[]} alternatives
  * @property {string[]} themes
  * @property {boolean} isScenarioPrompt
+ * @property {'briefing'|'hypothetical'} queryKind
+ * @property {string[]} topics
  */
 
 const LIKELIHOOD = {
@@ -39,6 +46,32 @@ const LIKELIHOOD = {
 };
 
 const SCENARIO_LIBRARY = [
+  {
+    id: "active_geopolitical_conflict",
+    label: "Active geopolitical conflict (current events)",
+    category: "geopolitical",
+    patterns:
+      /iran|ukraine|gaza|israel|hamas|hezbollah|middle east|war in|war\?|conflict in|military strike|hormuz|strait|sanctions|latest on.*war|latest.*iran|update on.*iran|geopolit/i,
+    headline: "An active geopolitical conflict with cross-asset spillovers",
+    likelihood: "elevated",
+    bullish: [
+      "Defense and energy names may hold bid while uncertainty persists",
+      "Safe-haven flows may support gold and quality duration if risk appetite fades",
+    ],
+    bearish: [
+      "Global equities may trade with elevated gap risk around headlines",
+      "Oil and shipping routes may see risk premia if supply disruption is discussed",
+      "Airlines, travel, and EM risk assets may lag on escalation headlines",
+    ],
+    secondOrder: [
+      "Inflation expectations may react to energy moves before growth expectations adjust",
+      "Dollar and rates may co-move with risk appetite rather than isolated fundamentals",
+      "Breadth may narrow as investors hide in mega-cap liquidity",
+    ],
+    pricing:
+      "Markets appear to be pricing in headline-driven volatility; investors may interpret each development through energy, defense, and risk-premium channels rather than a single equity narrative.",
+    assets: ["equities", "sectors", "volatility", "commodities", "rates", "macro", "portfolios"],
+  },
   {
     id: "peace_deal",
     label: "Geopolitical de-escalation / peace deal",
@@ -306,6 +339,7 @@ function matchScenarioDefinition(prompt) {
 export function isScenarioStylePrompt(prompt) {
   const t = (prompt || "").toLowerCase();
   if (!t) return false;
+  if (isGeopoliticalBriefingQuery(prompt)) return true;
   return (
     /what happens if|what if|scenario|hypothetical|if .+ (rises|falls|spikes|cuts|deal)|peace deal|oil spike|recession|inflation cool|rate cut|ai spending/i.test(
       t
@@ -319,7 +353,12 @@ export function isScenarioStylePrompt(prompt) {
  * @returns {ScenarioEngineResult}
  */
 export function runScenarioEngine(prompt, primaryEntity) {
-  const matched = matchScenarioDefinition(prompt);
+  const queryKind = detectScenarioQueryKind(prompt);
+  let matched = matchScenarioDefinition(prompt);
+  if (queryKind === "briefing" && !matched) {
+    matched =
+      SCENARIO_LIBRARY.find((d) => d.id === "active_geopolitical_conflict") || null;
+  }
   const fallback = SCENARIO_LIBRARY.find((d) => d.id === "macro_shock");
   const primaryDef = matched || fallback;
   const primary = toFrame(primaryDef);
@@ -338,7 +377,8 @@ export function runScenarioEngine(prompt, primaryEntity) {
     alternatives.push(...related.map(toFrame));
   }
 
-  const themes = [];
+  const topics = extractPromptTopics(prompt);
+  const themes = [...topics];
   if (primaryEntity?.label) themes.push(primaryEntity.label);
   if (primaryEntity?.symbol) themes.push(primaryEntity.symbol);
   if (primary.category) themes.push(primary.category.replace("_", " "));
@@ -348,11 +388,15 @@ export function runScenarioEngine(prompt, primaryEntity) {
     primary,
     alternatives,
     themes,
+    topics,
+    queryKind,
     isScenarioPrompt: isScenarioStylePrompt(prompt) || !!matched,
   };
 
   logicDebug("scenarioEngine", {
     primary: primary.id,
+    queryKind,
+    topics,
     alternatives: alternatives.map((a) => a.id),
   });
 
