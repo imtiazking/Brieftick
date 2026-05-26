@@ -50,7 +50,9 @@ export function classifyQuestion(prompt, entity) {
   };
 
   if (
-    /portfolio|holdings|concentration|diversif|exposure|my book|analyze my portfolio/.test(t) &&
+    /portfolio|holdings|concentration|diversif|exposure|my book|analyze my portfolio|what risks matter|how exposed.*(portfolio|rates|ai)|what would hurt|vulnerable.*(portfolio|recession)|concentrated.*ai|risks for my/i.test(
+      t
+    ) &&
     !/news on|latest on/.test(t)
   ) {
     result = { kind: "portfolio", mode: "portfolio", label: "Portfolio Logic", wantsBriefing: false };

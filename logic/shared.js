@@ -114,6 +114,7 @@ export function getPortfolioHoldings() {
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed)) return parsed;
     if (parsed?.holdings) return parsed.holdings;
+    if (parsed?.profile?.holdings) return parsed.profile.holdings;
   } catch (_) {}
   const ta = document.getElementById("portfolioInput");
   if (!ta?.value?.trim()) return [];

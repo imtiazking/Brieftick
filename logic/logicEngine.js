@@ -24,6 +24,7 @@ import {
 } from "./intelligenceLayer.js";
 import { logicDebug } from "./shared.js";
 import { classifyQuestion } from "./questionIntent.js";
+import { inferWatchlistExposure } from "./watchlistStore.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -105,6 +106,8 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     entities,
   });
 
+  const portfolioMemory = buildPortfolioMemory();
+
   let ctx = {
     prompt,
     primaryEntity,
@@ -117,6 +120,8 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     fusion,
     memory,
     portfolioMemory,
+    portfolioProfile: portfolioMemory.profile,
+    watchlistExposure: inferWatchlistExposure(),
   };
 
   ctx = buildIntelligenceContext(ctx);
@@ -174,6 +179,7 @@ export async function executeLiveIntelligenceSession(options = {}) {
     entities: resolveEntities(prompt),
   });
 
+  const portfolioMemory = buildPortfolioMemory();
   const ctx = buildIntelligenceContext({
     prompt,
     mode: "market-pulse",
@@ -181,7 +187,9 @@ export async function executeLiveIntelligenceSession(options = {}) {
     primaryEntity,
     fusion,
     memory: buildMemoryContext(primaryEntity, "market-pulse"),
-    portfolioMemory: buildPortfolioMemory(),
+    portfolioMemory,
+    portfolioProfile: portfolioMemory.profile,
+    watchlistExposure: inferWatchlistExposure(),
   });
 
   logicDebug("liveIntelligenceSession", {
@@ -196,6 +204,8 @@ export async function executeLiveIntelligenceSession(options = {}) {
     priority: ctx.marketPriority,
     liveNarrative: ctx.liveNarrative,
     portfolio: ctx.portfolioIntelligence,
+    watchlist: ctx.watchlistExposure,
+    portfolioProfile: portfolioMemory.profile,
     regime: ctx.regime,
     disclaimer: "Market intelligence, not financial advice.",
   };

@@ -1,10 +1,13 @@
 /**
- * Portfolio intelligence engine — hooks for holdings-aware reasoning (simulated when empty).
+ * Portfolio intelligence engine — personalized concentration, macro sensitivity, risks.
  * @module logic/engines/portfolioIntelligenceEngine
  */
 
 import { logicDebug } from "../shared.js";
 import { concise } from "./topicContext.js";
+import { buildPortfolioProfile } from "../portfolioProfile.js";
+import { loadSavedPortfolio } from "../portfolioParser.js";
+import { inferWatchlistExposure } from "../watchlistStore.js";
 
 /**
  * @typedef {Object} PortfolioExposure
@@ -18,13 +21,11 @@ import { concise } from "./topicContext.js";
  * @property {string} headline
  * @property {PortfolioExposure[]} exposures
  * @property {string[]} warnings
+ * @property {string[]} personalizedNotes
+ * @property {import('../portfolioProfile.js').PortfolioProfile} [profile]
  * @property {boolean} simulated
  * @property {number} relevance
  */
-
-const AI_SYMBOLS = /^(NVDA|AMD|MSFT|GOOGL|GOOG|META|AVGO|SMCI|ARM|TSM)/i;
-const RATE_SENSITIVE = /^(XLF|JPM|BAC|HD|LOW|DHI|LEN|IWM|QQQ)/i;
-const DEFENSIVE = /^(KO|PG|JNJ|WMT|COST|XLP|XLU)/i;
 
 /**
  * @param {object} ctx
@@ -33,136 +34,168 @@ const DEFENSIVE = /^(KO|PG|JNJ|WMT|COST|XLP|XLU)/i;
  */
 export function analyzePortfolioIntelligence(ctx, marketIntelligence) {
   const prompt = (ctx.prompt || "").toLowerCase();
-  const portfolio = ctx.portfolioMemory || {
-    holdings: [
-      { symbol: "NVDA", weight: 18 },
-      { symbol: "AAPL", weight: 12 },
-      { symbol: "MSFT", weight: 10 },
-    ],
-    concentrationLabel: "High concentration",
-    hint: "Sample growth-tilted book for contextual exposure read.",
-    positionCount: 3,
-    topThreeWeight: 40,
-    topSymbols: ["NVDA", "AAPL", "MSFT"],
-  };
-  const holdings = portfolio.holdings || [];
-  const simulated = !ctx.portfolioMemory?.holdings?.length || portfolio.hint?.includes("sample");
+  const saved = loadSavedPortfolio();
+  const memoryHoldings = ctx.portfolioMemory?.holdings;
+  const holdings =
+    memoryHoldings?.length ? memoryHoldings : saved?.holdings?.length ? saved.holdings : [];
+
+  const profile =
+    ctx.portfolioProfile ||
+    saved?.profile ||
+    buildPortfolioProfile(
+      holdings.length
+        ? holdings
+        : [
+            { symbol: "NVDA", weight: 18 },
+            { symbol: "AAPL", weight: 12 },
+            { symbol: "MSFT", weight: 10 },
+          ]
+    );
+
+  const simulated = !saved?.holdings?.length && !memoryHoldings?.length;
   const mi = marketIntelligence || ctx.marketIntelligence;
+  const watchlist = ctx.watchlistExposure || inferWatchlistExposure();
 
   /** @type {PortfolioExposure[]} */
   const exposures = [];
   /** @type {string[]} */
   const warnings = [];
+  /** @type {string[]} */
+  const personalizedNotes = [];
 
-  let aiWeight = 0;
-  let rateWeight = 0;
-  let defensiveWeight = 0;
-
-  for (const h of holdings) {
-    const sym = String(h.symbol || "").toUpperCase();
-    const w = h.weight || 0;
-    if (AI_SYMBOLS.test(sym)) aiWeight += w;
-    if (RATE_SENSITIVE.test(sym)) rateWeight += w;
-    if (DEFENSIVE.test(sym)) defensiveWeight += w;
-  }
-
-  if (simulated) {
-    aiWeight = 38;
-    rateWeight = 22;
-  }
-
-  if (aiWeight >= 25 || /\bai\b|portfolio|holdings|concentration/i.test(prompt)) {
+  if (profile.aiWeight >= 25) {
     exposures.push({
       theme: "AI concentration",
-      level: aiWeight >= 35 ? "elevated" : "moderate",
-      note: "Your portfolio appears increasingly dependent on AI capex resilience.",
+      level: profile.sensitivity.earnings,
+      note:
+        profile.aiWeight >= 35
+          ? "Portfolio remains highly concentrated in AI infrastructure."
+          : "AI-linked exposure is a meaningful share of portfolio beta.",
     });
   }
 
-  if (rateWeight >= 20 || /rates|yields|duration/i.test(prompt)) {
+  if (profile.sensitivity.rates !== "low") {
     exposures.push({
-      theme: "Rate sensitivity",
-      level: rateWeight >= 30 ? "elevated" : "moderate",
-      note: "Duration and financial conditions remain a primary beta channel for the book.",
+      theme: "Rates sensitivity",
+      level: profile.sensitivity.rates,
+      note: "Current holdings are increasingly sensitive to real yields and financial conditions.",
     });
   }
 
-  if (ctx.regime?.primary === "geopolitical_stress" || /iran|war|oil/i.test(prompt)) {
+  if (profile.topThreeWeight >= 40) {
+    warnings.push("Mega-cap concentration risk remains elevated.");
+    personalizedNotes.push(
+      `Top-three weights (${profile.topSymbols.join(", ")}) near ${profile.topThreeWeight.toFixed(0)}%.`
+    );
+  }
+
+  if (profile.sensitivity.volatility !== "low") {
     exposures.push({
-      theme: "Geopolitical exposure",
+      theme: "Volatility sensitivity",
+      level: profile.sensitivity.volatility,
+      note: "High-beta sleeves may gap on vol resets despite calm indices.",
+    });
+  }
+
+  if (profile.sensitivity.liquidity === "low beta" || profile.cashWeight >= 15) {
+    exposures.push({
+      theme: "Liquidity buffer",
       level: "moderate",
-      note: "Energy and defense channels may matter more than index calm suggests.",
+      note: "Liquidity conditions remain critical for your current exposure profile.",
     });
-  }
-
-  if (mi?.stress?.primary === "liquidity_fragility" || /liquidity/i.test(prompt)) {
+  } else {
     exposures.push({
       theme: "Liquidity sensitivity",
-      level: "elevated",
-      note: "Liquidity regime shifts could hit high-beta sleeves before macro headlines catch up.",
+      level: profile.sensitivity.liquidity,
+      note: "Liquidity regime shifts could hit growth-heavy books before headlines catch up.",
     });
   }
 
-  if (mi?.stress?.primary === "vol_compression_risk" || mi?.divergence?.divergences?.length) {
+  if (profile.sensitivity.geopolitical !== "low") {
     exposures.push({
-      theme: "Volatility vulnerability",
-      level: "moderate",
-      note: "Compressed vol beneath macro uncertainty raises gap-risk for concentrated books.",
+      theme: "Geopolitical exposure",
+      level: profile.sensitivity.geopolitical,
+      note: "Energy and defense channels may matter more than index calm suggests.",
     });
   }
 
   exposures.push({
     theme: "Earnings dependence",
-    level: aiWeight >= 30 ? "elevated" : "moderate",
-    note: "Mega-cap earnings revisions remain the marginal driver for growth-tilted portfolios.",
+    level: profile.sensitivity.earnings,
+    note: `${profile.growthDefensiveTilt} — earnings revisions remain the marginal risk for this book.`,
   });
 
-  if (portfolio.concentrationLabel?.includes("High")) {
-    warnings.push("Portfolio concentration risk remains elevated.");
-  }
-  if (mi?.positioning?.themes?.includes("crowded AI / mega-cap growth")) {
-    warnings.push("Current positioning may be vulnerable to growth-scare rotations.");
+  if (mi?.positioning?.themes?.some((t) => /AI|mega-cap/i.test(t))) {
+    warnings.push("Portfolio may be vulnerable to growth-scare rotations.");
   }
 
-  let relevance = 0.35;
-  if (/portfolio|holdings|my book|exposure|concentration/i.test(prompt)) relevance = 0.85;
-  if (ctx.mode === "portfolio") relevance = 0.9;
+  if (/recession|hard landing|slowdown/i.test(prompt)) {
+    warnings.push("Recession-risk pricing would stress cyclical and high-beta weights first.");
+  }
+
+  if (/what would hurt|hurt.*most|biggest risk/i.test(prompt)) {
+    personalizedNotes.push(
+      profile.aiWeight >= 30
+        ? "Fastest pain path: AI capex disappointment + higher real yields."
+        : "Fastest pain path: rates shock + vol expansion on concentrated weights."
+    );
+  }
+
+  if (/how exposed.*rates|rates exposure/i.test(prompt)) {
+    personalizedNotes.push(`Rates sensitivity: ${profile.sensitivity.rates} (${profile.growthDefensiveTilt}).`);
+  }
+
+  if (/ai concentration|concentrated.*ai/i.test(prompt)) {
+    personalizedNotes.push(`AI-weighted exposure ~${profile.aiWeight}% of equity sleeve.`);
+  }
+
+  if (watchlist.symbols?.length && !simulated) {
+    personalizedNotes.push(watchlist.summary);
+  }
+
+  let relevance = 0.4;
+  if (/portfolio|holdings|my book|exposure|concentration|rates|ai |vulnerable|risk/i.test(prompt)) {
+    relevance = 0.9;
+  }
+  if (ctx.mode === "portfolio") relevance = 0.95;
 
   const headline = concise(
     warnings[0] ||
+      personalizedNotes[0] ||
       exposures[0]?.note ||
       "Portfolio macro channels align with index leadership — monitor breadth and rates.",
-    220
+    240
   );
 
   logicDebug("portfolioIntelligenceEngine", {
     simulated,
-    exposures: exposures.length,
+    aiWeight: profile.aiWeight,
     relevance,
   });
 
   return {
     headline,
-    exposures: exposures.slice(0, 5),
+    exposures: exposures.slice(0, 6),
     warnings,
+    personalizedNotes,
+    profile,
     simulated,
     relevance: Math.min(1, relevance),
   };
 }
 
-/**
- * Hooks for future brokerage / saved watchlist integrations.
- * @param {object} _holdingsPayload
- */
-export function ingestPortfolioHoldings(_holdingsPayload) {
-  logicDebug("portfolioIntelligenceEngine.ingest", "hook only — not wired to brokerage");
-  return { ok: false, reason: "preview_architecture_only" };
+/** @param {import('../portfolioParser.js').ParsedHolding[]} holdings */
+export function ingestPortfolioHoldings(holdings) {
+  logicDebug("portfolioIntelligenceEngine.ingest", holdings?.length || 0);
+  return {
+    ok: true,
+    profile: buildPortfolioProfile(holdings || []),
+  };
 }
 
 /**
  * @param {string[]} symbols
  */
 export function ingestWatchlistThemes(symbols) {
-  logicDebug("portfolioIntelligenceEngine.watchlist", symbols?.length || 0);
-  return { symbols: symbols || [], themes: ["watchlist_hook"] };
+  return inferWatchlistExposure(symbols);
 }

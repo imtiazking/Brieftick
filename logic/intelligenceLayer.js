@@ -21,6 +21,7 @@ import {
   runIntelligenceStreamOrchestrator,
   applyIntelligenceStreamToResponse,
 } from "./engines/intelligenceStreamOrchestrator.js";
+import { inferWatchlistExposure } from "./watchlistStore.js";
 import { logicDebug } from "./shared.js";
 
 /**
@@ -32,7 +33,8 @@ export function buildIntelligenceContext(ctx) {
   const graph = resolveMarketGraph(ctx.prompt, ctx.questionKind);
   updateNarrativeState(ctx.prompt, ctx.questionKind);
 
-  const enriched = { ...ctx, regime, graph };
+  const watchlistExposure = inferWatchlistExposure();
+  const enriched = { ...ctx, regime, graph, watchlistExposure };
   const marketIntelligence = runMarketIntelligenceStack(enriched);
   const intelligenceStream = runIntelligenceStreamOrchestrator(
     { ...enriched, marketIntelligence },

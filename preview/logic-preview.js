@@ -21,6 +21,7 @@ import {
   recordLogicUsage,
 } from "../logic/freeAccess.js";
 import { resolveCardSchema } from "../logic/cardSchemas.js";
+import { mountLogicPortfolioPanel } from "./logic-portfolio-panel.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 const LOGIC_API_TIMEOUT_MS = 14000;
@@ -840,6 +841,7 @@ export function initLogicPage() {
   showLogicNav();
   refreshLogicPageChrome();
   bindLogicUI();
+  mountLogicPortfolioPanel();
   hydrateIntelligenceHub();
   updateUsageBanner();
 

@@ -121,9 +121,13 @@ export function applyIntelligenceStreamToResponse(res, ctx) {
     out.optionalCards.prioritySignal = stream.priority.headline;
   }
 
-  if (wantsPortfolio && stream.portfolio?.headline) {
+  if ((wantsPortfolio || stream.portfolio?.relevance >= 0.85) && stream.portfolio?.headline) {
+    out.directAnswer = out.directAnswer || stream.portfolio.headline;
     out.optionalCards.portfolioImpact =
       out.optionalCards.portfolioImpact || stream.portfolio.headline;
+    for (const note of stream.portfolio.personalizedNotes || []) {
+      addChip(note);
+    }
   }
 
   if (stream.liveNarrative?.headline && !out.narrativeNote) {

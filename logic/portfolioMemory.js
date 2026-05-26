@@ -1,14 +1,17 @@
 /**
- * Portfolio-aware Logic memory — exposure, concentration, sector balance.
+ * Portfolio-aware Logic memory — exposure, concentration, macro sensitivity.
  * @module logic/portfolioMemory
  */
 
+import { loadSavedPortfolio } from "./portfolioParser.js";
+import { buildPortfolioProfile } from "./portfolioProfile.js";
 import { getPortfolioHoldings } from "./shared.js";
 import { logicDebug } from "./shared.js";
 
 /**
  * @typedef {Object} PortfolioMemory
  * @property {{ symbol: string, weight: number }[]} holdings
+ * @property {import('./portfolioProfile.js').PortfolioProfile} profile
  * @property {number} positionCount
  * @property {number} topThreeWeight
  * @property {string[]} topSymbols
@@ -20,7 +23,11 @@ import { logicDebug } from "./shared.js";
  * @returns {PortfolioMemory}
  */
 export function buildPortfolioMemory() {
-  const holdings = getPortfolioHoldings();
+  const saved = loadSavedPortfolio();
+  const fromDom = getPortfolioHoldings();
+  const holdings =
+    fromDom.length > 0 ? fromDom : saved?.holdings?.length ? saved.holdings : [];
+
   const lines =
     holdings.length > 0
       ? holdings
@@ -30,40 +37,38 @@ export function buildPortfolioMemory() {
           { symbol: "MSFT", weight: 10 },
         ];
 
-  const sorted = [...lines].sort((a, b) => (b.weight || 0) - (a.weight || 0));
-  const top3 = sorted.slice(0, 3);
-  const topThreeWeight = top3.reduce((s, h) => s + (h.weight || 0), 0);
-  const concentrationLabel =
-    topThreeWeight > 40
-      ? "High concentration"
-      : topThreeWeight > 25
-        ? "Moderate concentration"
-        : "Balanced book";
+  const profile = buildPortfolioProfile(lines);
+  const top3 = profile.topSymbols;
+  const topThreeWeight = profile.topThreeWeight;
+  const concentrationLabel = profile.concentrationLabel;
 
   const hintParts = [];
-  if (holdings.length) {
+  if (holdings.length && saved?.holdings?.length) {
     hintParts.push(
-      `Portfolio: ${holdings.length} positions; top weights ${top3.map((h) => h.symbol).join(", ")} (${topThreeWeight.toFixed(0)}% in top 3).`
+      `Portfolio: ${profile.positionCount} positions; top ${top3.join(", ")} (${topThreeWeight.toFixed(0)}% top-3).`
     );
-    hintParts.push(`${concentrationLabel} — macro and vol transmission matter for book risk.`);
+    hintParts.push(
+      `AI ~${profile.aiWeight}% · rates ${profile.sensitivity.rates} · ${profile.growthDefensiveTilt}.`
+    );
   } else {
     hintParts.push(
-      "No saved portfolio — using sample growth-tilted weights for contextual exposure read."
+      "No saved portfolio — paste holdings in Logic or Portfolio tab for personalized reads."
     );
   }
 
   const memory = {
     holdings: lines,
-    positionCount: holdings.length || lines.length,
+    profile,
+    positionCount: profile.positionCount,
     topThreeWeight,
-    topSymbols: top3.map((h) => h.symbol),
+    topSymbols: top3,
     concentrationLabel,
     hint: hintParts.join(" "),
   };
 
   logicDebug("portfolioMemory", {
     positions: memory.positionCount,
-    topThreeWeight,
+    aiWeight: profile.aiWeight,
   });
 
   return memory;
@@ -77,15 +82,24 @@ export function buildPortfolioMemory() {
 export function applyPortfolioMemoryToResponse(res, portfolio, mode) {
   if (!portfolio?.hint) return res;
   const optional = { ...(res.optionalCards || {}) };
+  const profile = portfolio.profile;
 
-  if (mode === "portfolio" || mode === "ticker") {
-    optional.portfolioImpact = portfolio.hint.slice(0, 240);
+  if (mode === "portfolio" || mode === "ticker" || /portfolio/i.test(res.mode || "")) {
+    optional.portfolioImpact = (portfolio.hint || "").slice(0, 240);
   }
-  if (portfolio.concentrationLabel.includes("High")) {
+  if (profile?.aiWeight >= 30) {
     optional.riskSignal =
       optional.riskSignal ||
-      `${portfolio.concentrationLabel} · correlation risk elevated`;
+      `AI concentration ~${profile.aiWeight}% · ${portfolio.concentrationLabel}`;
+  } else if (portfolio.concentrationLabel.includes("High")) {
+    optional.riskSignal =
+      optional.riskSignal || `${portfolio.concentrationLabel} · correlation risk elevated`;
   }
 
-  return { ...res, optionalCards: optional, portfolioHint: portfolio.hint };
+  return {
+    ...res,
+    optionalCards: optional,
+    portfolioHint: portfolio.hint,
+    portfolioProfile: profile,
+  };
 }

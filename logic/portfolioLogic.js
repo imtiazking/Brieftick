@@ -8,6 +8,7 @@ import {
 } from "./shared.js";
 import { fusionAttributionSources } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
+import { analyzePortfolioIntelligence } from "./engines/portfolioIntelligenceEngine.js";
 
 /** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runPortfolioLogic(ctx) {
@@ -62,26 +63,37 @@ export async function runPortfolioLogic(ctx) {
 
   if (!holdings.length && failedSources.length > 4) return buildFallbackResponse(ctx);
 
+  const pint = analyzePortfolioIntelligence(ctx, ctx.marketIntelligence);
+  const profile = pint.profile || ctx.portfolioMemory?.profile;
+  const expNotes = pint.exposures.map((e) => e.note).slice(0, 2).join(" ");
+
   return withDataLimited(
     {
-      title: "Portfolio Logic snapshot",
-      summary: `Book shows ${lines.length} positions with largest weights in ${top3.map((h) => h.symbol).join(", ")}. Top-three concentration near ${top3Weight.toFixed(0)}% raises sensitivity to sector shocks and headline risk.`,
+      title: "Portfolio Logic",
+      directAnswer: pint.headline,
+      summary: pint.headline,
       cards: {
-        snapshot: `Top weights: ${top3.map((h) => h.symbol).join(", ")}`,
-        catalyst: "Single-name and sector headlines drive day-over-day variance",
-        macroContext: "Rates and volatility channel affect growth-heavy books",
-        sectorImpact: "Technology / growth exposure likely elevated",
-        volatility: top3Weight > 35 ? "Concentration elevates vol sensitivity" : "Moderate diversification",
-        aiSummary: `Exposure is concentrated in ${top3.map((h) => h.symbol).join(", ")} with macro and vol as the main risk transmitters.`,
+        snapshot: pint.headline,
+        catalyst: pint.exposures[0]?.note || "Macro and headline channels drive book variance",
+        macroContext:
+          pint.exposures.find((e) => /rates/i.test(e.theme))?.note ||
+          `Rates sensitivity: ${profile?.sensitivity?.rates || "moderate"}`,
+        sectorImpact:
+          pint.exposures.find((e) => /AI/i.test(e.theme))?.note ||
+          `AI-weighted exposure ~${profile?.aiWeight || "—"}%`,
+        volatility:
+          pint.exposures.find((e) => /vol/i.test(e.theme))?.note ||
+          (top3Weight > 35 ? "Concentration elevates vol sensitivity" : "Moderate vol channel"),
+        aiSummary: expNotes || pint.headline,
       },
       keyDrivers: [
         `Top weights: ${top3.map((h) => `${h.symbol} ${h.weight}%`).join(", ")}`,
-        "Growth / technology factor tilt",
-        "Macro rate channel",
+        profile?.growthDefensiveTilt || "Growth tilt",
+        `AI ~${profile?.aiWeight || "—"}%`,
       ],
       signals: [
-        top3Weight > 35 ? "Concentration elevated" : "Diversification moderate",
-        "Monitor vol sensitivity",
+        ...(pint.warnings || []).slice(0, 2),
+        ...(pint.personalizedNotes || []).slice(0, 1),
       ],
       confidence: holdings.length ? 68 : 54,
       sources: ctx.fusion

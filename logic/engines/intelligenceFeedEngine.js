@@ -18,6 +18,40 @@ import { readFusionMarketState } from "./fusionSignals.js";
  * @property {number} [at]
  */
 
+const FEED_HISTORY_KEY = "brieftick_logic_feed_history_v1";
+const MAX_HISTORY = 40;
+
+function loadFeedHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(FEED_HISTORY_KEY) || "[]");
+  } catch (_) {
+    return [];
+  }
+}
+
+function saveFeedHistory(messages) {
+  try {
+    const merged = [...messages, ...loadFeedHistory()].slice(0, MAX_HISTORY);
+    localStorage.setItem(FEED_HISTORY_KEY, JSON.stringify(merged));
+  } catch (_) {}
+}
+
+/**
+ * Reduce repetitive feed lines across sessions.
+ * @param {IntelligenceNote[]} notes
+ */
+export function dedupeFeedAgainstHistory(notes) {
+  const hist = loadFeedHistory().map((m) => String(m).slice(0, 55).toLowerCase());
+  const out = [];
+  for (const n of notes) {
+    const key = n.message.slice(0, 55).toLowerCase();
+    if (hist.some((h) => h && (key.includes(h) || h.includes(key)))) continue;
+    out.push(n);
+  }
+  if (out.length) saveFeedHistory(out.map((n) => n.message));
+  return out.length ? out : notes.slice(0, 5);
+}
+
 const FEED_LIBRARY = [
   {
     id: "ai_breadth_weak",
@@ -165,6 +199,12 @@ export function generateIntelligenceFeed(input) {
   if (portfolio?.headline && portfolio.relevance >= 0.45) {
     push("portfolio", portfolio.headline, "portfolio", portfolio.relevance);
   }
+  for (const note of portfolio?.personalizedNotes || []) {
+    push(`pf_${note.slice(0, 10)}`, note, "portfolio", 0.7);
+  }
+  for (const w of portfolio?.warnings || []) {
+    push(`warn_${w.slice(0, 10)}`, w, "portfolio", 0.75);
+  }
   if (ctx?.regime?.label) {
     push(
       "regime",
@@ -175,7 +215,7 @@ export function generateIntelligenceFeed(input) {
   }
 
   notes.sort((a, b) => b.priority - a.priority);
-  const out = notes.slice(0, 8);
+  const out = dedupeFeedAgainstHistory(notes.slice(0, 8));
   logicDebug("intelligenceFeedEngine", { count: out.length });
   return out;
 }
