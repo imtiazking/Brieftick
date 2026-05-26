@@ -16,6 +16,9 @@ import { runMacroInterpretationLogic } from "./macroInterpretationLogic.js";
 /** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runMarketPulseLogic(ctx) {
   const prompt = ctx.prompt || "Explain today's market pulse";
+  if (isStrategistInterpretationQuery(prompt)) {
+    return runMacroInterpretationLogic({ ...ctx, mode: "macro-interpretation" });
+  }
   if (isNewsStyleQuery(prompt)) {
     return runBriefingLogic(ctx);
   }
