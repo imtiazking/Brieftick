@@ -11,7 +11,7 @@
 import { resolveEntities, resolvePrimaryEntity } from "./entityResolver.js";
 import { detectIntent } from "./intentDetect.js";
 import { routeSources } from "./sourceRouter.js";
-import { fetchAndFuse } from "./dataFusion.js";
+import { fetchAndFuse, getFusedQuote } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { applyMemoryToResponse, buildMemoryContext, recordLogicInteraction } from "./watchlistMemory.js";
 import { applyPortfolioMemoryToResponse, buildPortfolioMemory } from "./portfolioMemory.js";
@@ -33,6 +33,7 @@ import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
 import { buildConversationalPresentation } from "./engines/conversationalPresentation.js";
 import { humanizeLogicResponse } from "./engines/conversationalVoice.js";
+import { applyTickerVoiceToResponse } from "./engines/tickerVoiceVariation.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -96,6 +97,13 @@ export function finalizeLogicResponse(res, ctx) {
     out = applyResponseContract(out, plan);
   }
 
+  if (out.mode === "ticker") {
+    out = applyTickerVoiceToResponse(out, {
+      headline: out.cards?.catalyst,
+      quote: ctx.fusion ? getQuoteFromFusion(ctx, out.primarySymbol) : null,
+    });
+  }
+
   if (typeof window !== "undefined" && isConversationalLogicPreview()) {
     out = humanizeLogicResponse(out, { prompt: ctx.prompt });
     out.conversational = buildConversationalPresentation(out, ctx);
@@ -103,6 +111,16 @@ export function finalizeLogicResponse(res, ctx) {
   }
 
   return out;
+}
+
+/**
+ * @param {object} ctx
+ * @param {string} [symbol]
+ */
+function getQuoteFromFusion(ctx, symbol) {
+  if (!symbol || !ctx.fusion) return null;
+  const fq = getFusedQuote(ctx.fusion, symbol);
+  return fq?.pctChange != null ? { pctChange: fq.pctChange } : null;
 }
 
 /**

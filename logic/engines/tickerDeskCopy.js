@@ -5,6 +5,10 @@
 
 import { buildLogicResponse, LOGIC_DISCLAIMER } from "../types.js";
 import { getTickerDisplayName } from "./tickerCatalog.js";
+import {
+  applyTickerVoiceVariation,
+  applyTickerVoiceToResponse,
+} from "./tickerVoiceVariation.js";
 
 /** Phrases to strip or reject in ticker answers. */
 export const GENERIC_TICKER_PHRASE_RE =
@@ -127,54 +131,15 @@ function shortenHeadline(headline) {
 export function buildTickerDeskAnswer(input) {
   const symbol = String(input.symbol || "").toUpperCase();
   const name = input.displayName || getTickerDisplayName(symbol) || symbol;
-  const profile = getTickerDeskProfile(symbol);
   const headline = input.headline?.trim() || "";
-  const quote = input.quote;
-  const hasSpecific = isSymbolSpecificHeadline(headline, symbol, name);
 
-  let moveBit = "";
-  if (quote && typeof quote.pctChange === "number") {
-    const pct = quote.pctChange;
-    const sign = pct >= 0 ? "+" : "";
-    const dir = pct >= 0 ? "firmer" : "softer";
-    if (Math.abs(pct) >= 0.15) {
-      moveBit = ` is ${dir} on the session (${sign}${pct.toFixed(2)}%)`;
-    }
-  }
-
-  if (hasSpecific) {
-    const hook = shortenHeadline(headline);
-    return `${name}${moveBit || " is moving"} following ${hook}. Broader ${profile.sector.replace(/^broader\s+/i, "")} may still be in the mix.`
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  if (symbol === "TSLA") {
-    return `Tesla is moving with broader high-beta growth sentiment today, with no clear company-specific catalyst dominating the session.`;
-  }
-  if (symbol === "NVDA") {
-    return `Nvidia is trading with broader AI and semiconductor sentiment today, with no single company-specific headline clearly driving the move.`;
-  }
-  if (symbol === "AAPL") {
-    return `Apple appears to be moving with mega-cap technology sentiment, rather than a stock-specific catalyst.`;
-  }
-
-  const weakTail =
-    profile.weak ||
-    "with no clear company-specific catalyst dominating the move";
-
-  if (profile.style === "appears") {
-    return `${name} appears to be moving with ${profile.sector}, ${weakTail}.`;
-  }
-
-  if (quote && typeof quote.pctChange === "number" && Math.abs(quote.pctChange) >= 0.15) {
-    const pct = quote.pctChange;
-    const sign = pct >= 0 ? "+" : "";
-    const dir = pct >= 0 ? "firmer" : "softer";
-    return `${name} is ${dir} (${sign}${pct.toFixed(2)}%) on ${profile.sector}, ${weakTail}.`;
-  }
-
-  return `${name} is moving with ${profile.sector} today, ${weakTail}.`;
+  return applyTickerVoiceVariation({
+    symbol,
+    displayName: name,
+    quote: input.quote ?? null,
+    headline: headline ? shortenHeadline(headline) : "",
+    text: input.text ?? null,
+  });
 }
 
 /**
@@ -205,7 +170,7 @@ export function buildTickerDeskLogicResponse(ctx, symbol, displayName, quote, he
   const sectorLine = getTickerDeskProfile(symbol).sector;
   const catalystLine = isSymbolSpecificHeadline(headline, symbol, displayName)
     ? shortenHeadline(headline)
-    : "No clear company-specific catalyst is dominating the move.";
+    : "Macro and sector tone — not a dominant name-specific headline.";
 
   return buildLogicResponse({
     title: displayName,
