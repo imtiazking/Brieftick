@@ -356,11 +356,10 @@ export async function submitLogicQuery(promptText) {
 
   const primary = resolvePrimaryEntity(prompt);
   const intent = detectIntent(prompt, primary);
-  const mode = intent.mode;
-  activeMode = mode;
+  activeMode = intent.mode;
   logicLog("entity resolved", primary);
   logicLog("intent detected", intent.intent);
-  logicLog("selected Logic module", mode);
+  logicLog("selected Logic module (pipeline decides mode)", intent.mode);
 
   document
     .querySelectorAll(".logic-mode-btn")
@@ -387,7 +386,7 @@ export async function submitLogicQuery(promptText) {
 
   let response;
   try {
-    response = enrichResponseMeta(await runLogicWithTimeout(prompt, mode), prompt);
+    response = enrichResponseMeta(await runLogicWithTimeout(prompt), prompt);
     logicLog("API response received", {
       title: response.title,
       mode: response.mode,
@@ -398,7 +397,7 @@ export async function submitLogicQuery(promptText) {
     logicLog("error", e.message || e);
     response = enrichResponseMeta(
       {
-        ...buildMockResponse(prompt, mode),
+        ...buildMockResponse(prompt, intent.mode),
         title: "Logic · Fallback intelligence",
         dataLimited: true,
       },

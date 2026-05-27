@@ -113,6 +113,7 @@ export function applyGatedEnrichment(res, ctx) {
 export function shouldBuildFullMarketStack(ctx) {
   const plan = ctx.responsePlan;
   if (!plan) return true;
+  if (ctx.mode === "watchlist" || plan.intentId === "watchlist_performance") return false;
   return (
     plan.enrichment.marketIntelApply ||
     plan.enrichment.streamApply ||

@@ -56,7 +56,7 @@ export function classifyQuestion(prompt, entity, options = {}) {
     wantsBriefing: false,
   };
 
-  if (isWatchlistPerformanceQuery(prompt) && (userContext?.hasWatchlist ?? true)) {
+  if (isWatchlistPerformanceQuery(prompt)) {
     result = {
       kind: "watchlist",
       mode: "watchlist",
@@ -100,7 +100,8 @@ export function classifyQuestion(prompt, entity, options = {}) {
     /portfolio|holdings|concentration|diversif|exposure|my book|analyze my portfolio|what risks matter|what risks dominate|how exposed.*(portfolio|rates|ai)|what would hurt|vulnerable.*(portfolio|recession)|concentrated.*ai|risks for my|regime benefit|what regime.*portfolio/i.test(
       t
     ) &&
-    !/news on|latest on/.test(t)
+    !/news on|latest on/.test(t) &&
+    !isWatchlistPerformanceQuery(prompt)
   ) {
     result = { kind: "portfolio", mode: "portfolio", label: "Portfolio Logic", wantsBriefing: false };
   } else if (
@@ -251,7 +252,11 @@ export function classifyQuestion(prompt, entity, options = {}) {
       label: "Macro Interpretation",
       wantsBriefing: false,
     };
-  } else if (t.length > 8 && (userContext?.hasBook || userContext?.hasWatchlist)) {
+  } else if (
+    t.length > 8 &&
+    (userContext?.hasBook || userContext?.hasWatchlist) &&
+    !isWatchlistPerformanceQuery(prompt)
+  ) {
     result = {
       kind: userContext?.hasBook ? "portfolio" : "market_pulse",
       mode: userContext?.hasBook ? "portfolio" : "market-pulse",

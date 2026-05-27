@@ -45,7 +45,7 @@ export function planLogicRoute(prompt, userContext, classified) {
     suppressMacroFallback: userContext.hasBook || userContext.hasWatchlist,
   };
 
-  if (isWatchlistPerformanceQuery(prompt) && userContext.hasWatchlist) {
+  if (isWatchlistPerformanceQuery(prompt)) {
     route = {
       mode: "watchlist",
       label: "Watchlist Performance",
@@ -55,7 +55,11 @@ export function planLogicRoute(prompt, userContext, classified) {
       suppressStrategist: true,
       suppressMacroFallback: true,
     };
-  } else if (isPortfolioScopedQuery(prompt, userContext) || mentionsPersonalBook(prompt)) {
+  } else if (
+    (isPortfolioScopedQuery(prompt, userContext) || mentionsPersonalBook(prompt)) &&
+    !isWatchlistPerformanceQuery(prompt) &&
+    !mentionsPersonalWatchlist(prompt)
+  ) {
     const riskDominate = /risks?\s+dominate|dominant risk/i.test(t);
     route = {
       mode: "portfolio",
@@ -70,7 +74,9 @@ export function planLogicRoute(prompt, userContext, classified) {
     userContext.hasBook &&
     /portfolio|holdings|my book/i.test(t) &&
     !newsStyle &&
-    !isExplicitNewsQuery(prompt)
+    !isExplicitNewsQuery(prompt) &&
+    !isWatchlistPerformanceQuery(prompt) &&
+    !mentionsPersonalWatchlist(prompt)
   ) {
     route = {
       mode: "portfolio",

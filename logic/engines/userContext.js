@@ -50,7 +50,7 @@ export function isWatchlistPerformanceQuery(prompt) {
   if (!t) return false;
 
   const perfSignal =
-    /best\s+perform|worst\s+perform|top\s+perform|outperform|underperform|biggest\s+(gainer|loser)|best\s+stock|worst\s+stock|which\s+stock.*best|best\s+.*\s+stock|rank.*watchlist|performing\s+(best|worst)|top\s+gainer|top\s+loser/i;
+    /best\s+perform|worst\s+perform|best\s+performing|worst\s+performing|performing\s+best|performing\s+worst|top\s+perform|outperform|underperform|biggest\s+(gainer|loser)|best\s+stock|worst\s+stock|which\s+stock.*best|which\s+.*\s+best|best\s+.*\s+stock|rank.*watchlist|performing\s+(best|worst)|top\s+gainer|top\s+loser|weakest|strongest|leading|lagging|trend/i;
 
   const watchlistSignal =
     /\bwatchlist\b|\bmy\s+list\b|\bsymbols\s+i('m| am)\s+watching\b|\btickers\s+i('m| am)\s+watching\b/i;
@@ -59,9 +59,10 @@ export function isWatchlistPerformanceQuery(prompt) {
   if (/out of my watchlist|on my watchlist|from my watchlist/i.test(t) && perfSignal.test(t)) {
     return true;
   }
-  if (/\bwatchlist\b/i.test(t) && /(best|worst|top|rank|gainer|loser|perform)/i.test(t)) {
+  if (/\bwatchlist\b/i.test(t) && /(best|worst|top|rank|gainer|loser|perform|weakest|strongest|trend)/i.test(t)) {
     return true;
   }
+  if (/which\s+(stock|name|ticker).*\bwatchlist\b/i.test(t)) return true;
 
   return false;
 }

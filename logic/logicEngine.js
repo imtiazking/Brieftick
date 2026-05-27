@@ -27,7 +27,7 @@ import { classifyQuestion } from "./questionIntent.js";
 import { inferWatchlistExposure } from "./watchlistStore.js";
 import { buildResponsePlan, entityForPlan } from "./engines/responsePlan.js";
 import { applyResponseContract } from "./engines/applyResponseContract.js";
-import { resolveUserContext } from "./engines/userContext.js";
+import { isWatchlistPerformanceQuery, resolveUserContext } from "./engines/userContext.js";
 import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
 
@@ -118,7 +118,24 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     logicRoute,
   });
   const routedEntity = entityForPlan(primaryEntity, responsePlan);
-  const mode = modeOverride || responsePlan.mode || routedClassification.mode;
+  let mode = modeOverride || responsePlan.mode || routedClassification.mode;
+  if (isWatchlistPerformanceQuery(prompt)) {
+    mode = "watchlist";
+    routedClassification.mode = "watchlist";
+    routedClassification.kind = "watchlist";
+    routedClassification.label = "Watchlist Performance";
+    responsePlan.mode = "watchlist";
+    responsePlan.intentId = "watchlist_performance";
+    responsePlan.label = "Watchlist Performance";
+    responsePlan.enrichment = {
+      graph: false,
+      marketIntelApply: false,
+      streamApply: false,
+      relationshipMemory: false,
+      synthesis: false,
+      feedHook: false,
+    };
+  }
   const intentResult = detectIntent(prompt, routedEntity);
   logicDebug("Logic module selected", {
     mode,

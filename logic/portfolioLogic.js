@@ -10,9 +10,16 @@ import { fusionAttributionSources } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { analyzePortfolioIntelligence } from "./engines/portfolioIntelligenceEngine.js";
 import { shapePortfolioAnswer } from "./engines/portfolioAnswerShaper.js";
+import { isValidWatchlistTicker } from "./engines/watchlistSymbols.js";
+import { isWatchlistPerformanceQuery } from "./engines/userContext.js";
 
 /** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runPortfolioLogic(ctx) {
+  if (isWatchlistPerformanceQuery(ctx.prompt || "")) {
+    const { runWatchlistPerformanceLogic } = await import("./watchlistPerformanceLogic.js");
+    return runWatchlistPerformanceLogic(ctx);
+  }
+
   const prompt = ctx.prompt || "Analyze my portfolio";
   const failedSources = [...(ctx.fusion?.failedSources || [])];
   const ctxHoldings = ctx.portfolioContext?.holdings || ctx.portfolioMemory?.holdings;
@@ -20,7 +27,7 @@ export async function runPortfolioLogic(ctx) {
   const holdings = domHoldings.length ? domHoldings : ctxHoldings?.length ? ctxHoldings : [];
   const lines =
     holdings.length > 0
-      ? holdings
+      ? holdings.filter((h) => isValidWatchlistTicker(h.symbol))
       : [
           { symbol: "NVDA", weight: 18 },
           { symbol: "AAPL", weight: 12 },
