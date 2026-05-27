@@ -34,7 +34,7 @@ import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
 import { buildConversationalPresentation } from "./engines/conversationalPresentation.js";
 import { humanizeLogicResponse } from "./engines/conversationalVoice.js";
 import { applyTickerVoiceToResponse } from "./engines/tickerVoiceVariation.js";
-import { buildTickerUnresolvedResponse } from "./engines/tickerResolver.js";
+import { buildTickerUnresolvedResponse, extractTickerCandidate } from "./engines/tickerResolver.js";
 import { enforceTickerAnswerIdentity } from "./engines/tickerAnswerIdentity.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
@@ -147,6 +147,11 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   if (primaryEntity.unresolved) {
     logicDebug("tickerResolver.blocked", {
       rawInput: prompt,
+      extractedCandidate: extractTickerCandidate(prompt),
+      moversResolvedSymbol: null,
+      moversResolvedName: null,
+      confidence: 0,
+      finalAnswerSymbol: null,
       suggestions: primaryEntity.suggestions,
     });
     const blocked = buildTickerUnresolvedResponse({
