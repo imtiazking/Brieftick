@@ -8,38 +8,36 @@ import {
   GENERIC_TICKER_PHRASE_RE,
   stripGenericTickerPhrases,
 } from "./tickerDeskCopy.js";
+import {
+  classifyResponseDepthIntent,
+  depthProfileToLegacy,
+} from "./responseDepthIntent.js";
 
 /**
  * @param {string} prompt
- * @param {string} intentId
+ * @param {string} [intentId]
+ * @param {import('./responseDepthIntent.js').ResponseDepthProfile} [depthProfile]
  * @returns {'brief'|'standard'|'deep'}
  */
-export function resolveAnswerDepth(prompt, intentId) {
-  const t = (prompt || "").toLowerCase();
-  const deepIntent = new Set([
-    "portfolio_risk",
-    "portfolio_stress",
-    "regime_fit",
-    "fragility",
-    "positioning_crowding",
-    "strategist_interpretation",
-  ]);
-  if (
-    deepIntent.has(intentId) ||
-    /fragil|hidden risk|what breaks|dominate.*risk|stress test|liquidity tighten|concentrat|regime fit|what would hurt|underpric|crowded trade/i.test(
-      t
-    )
-  ) {
-    return "deep";
+export function resolveAnswerDepth(prompt, intentId, depthProfile) {
+  if (depthProfile) return depthProfileToLegacy(depthProfile);
+
+  const profile = classifyResponseDepthIntent(prompt, {});
+  return depthProfileToLegacy(profile);
+}
+
+/**
+ * @param {'brief'|'standard'|'deep'|'contextual'} depth
+ * @param {import('./responseDepthIntent.js').ResponseDepthProfile} [profile]
+ */
+export function limitsForDepth(depth, profile) {
+  if (profile) {
+    return { maxSentences: profile.maxSentences, maxChars: profile.maxChars };
   }
-  if (
-    (/^(why is|why are|what happened to|why did)\b/i.test(t) && /mov|moving|down|up|today/i.test(t)) ||
-    (/why\b.*\bmov/i.test(t) && !/portfolio|watchlist|fragil|stress|regime/i.test(t)) ||
-    (/what'?s driving|why are semis|why is .+ (weak|down|up)/i.test(t) && !/portfolio|fragil/i.test(t))
-  ) {
-    return "brief";
-  }
-  return "standard";
+  if (depth === "brief") return { maxSentences: 2, maxChars: 280 };
+  if (depth === "deep") return { maxSentences: 6, maxChars: 640 };
+  if (depth === "contextual") return { maxSentences: 4, maxChars: 520 };
+  return { maxSentences: 4, maxChars: 400 };
 }
 
 const REPORT_LABEL_NAMES =
@@ -146,12 +144,21 @@ export function softenRoboticPhrasing(text) {
 
 /**
  * @param {string} text
- * @param {{ depth?: 'brief'|'standard'|'deep', maxChars?: number }} [options]
+ * @param {{ depth?: 'brief'|'standard'|'deep'|'contextual', maxChars?: number, maxSentences?: number, depthProfile?: import('./responseDepthIntent.js').ResponseDepthProfile }} [options]
  */
 export function humanizeLogicAnswer(text, options = {}) {
-  const depth = options.depth || "standard";
-  const maxSentences = depth === "brief" ? 3 : depth === "deep" ? 6 : 4;
-  const maxChars = options.maxChars ?? (depth === "brief" ? 280 : depth === "deep" ? 560 : 400);
+  const depth = options.depthProfile
+    ? options.depthProfile.depth === "brief"
+      ? "brief"
+      : options.depthProfile.depth === "deep"
+        ? "deep"
+        : "contextual"
+    : options.depth || "standard";
+  const limits = options.depthProfile
+    ? { maxSentences: options.depthProfile.maxSentences, maxChars: options.depthProfile.maxChars }
+    : limitsForDepth(depth, null);
+  const maxSentences = options.maxSentences ?? limits.maxSentences;
+  const maxChars = options.maxChars ?? limits.maxChars;
 
   let s = stripReportLabels(text);
   s = softenRoboticPhrasing(s);
@@ -161,14 +168,24 @@ export function humanizeLogicAnswer(text, options = {}) {
 
 /**
  * @param {import('../types.js').LogicResponse} res
- * @param {{ prompt?: string, depth?: 'brief'|'standard'|'deep' }} [options]
+ * @param {{ prompt?: string, depth?: 'brief'|'standard'|'deep', depthProfile?: import('./responseDepthIntent.js').ResponseDepthProfile }} [options]
  */
 export function humanizeLogicResponse(res, options = {}) {
   const prompt = options.prompt || "";
-  const depth = options.depth || resolveAnswerDepth(prompt, res.responseIntent || res.mode || "");
+  const depthProfile =
+    options.depthProfile ||
+    classifyResponseDepthIntent(prompt, { mode: res.mode });
+  const depth =
+    options.depth || resolveAnswerDepth(prompt, res.responseIntent || res.mode || "", depthProfile);
+  const primaryLimits = limitsForDepth(depth, depthProfile);
 
-  const cleanField = (t, charMax) =>
-    humanizeLogicAnswer(t, { depth, maxChars: charMax });
+  const cleanField = (t, charMax, sentenceCap) =>
+    humanizeLogicAnswer(t, {
+      depth,
+      depthProfile,
+      maxChars: charMax,
+      maxSentences: sentenceCap,
+    });
 
   const out = {
     ...res,
@@ -180,8 +197,15 @@ export function humanizeLogicResponse(res, options = {}) {
     out.title = stripReportLabels(out.title).replace(/\s*·\s*intelligence\s*$/i, "").trim();
   }
 
-  out.directAnswer = cleanField(out.directAnswer, depth === "brief" ? 300 : 420);
-  out.summary = cleanField(out.summary, 380) || out.directAnswer;
+  out.directAnswer = cleanField(
+    out.directAnswer,
+    primaryLimits.maxChars,
+    primaryLimits.maxSentences
+  );
+  out.summary =
+    cleanField(out.summary, primaryLimits.maxChars + 40, primaryLimits.maxSentences) ||
+    out.directAnswer;
+  out.responseDepthIntent = depthProfile.intent;
 
   for (const key of Object.keys(out.cards)) {
     out.cards[key] = cleanField(out.cards[key], 220);
@@ -197,7 +221,11 @@ export function humanizeLogicResponse(res, options = {}) {
     .slice(0, 5);
 
   if (!out.directAnswer && out.cards.snapshot) {
-    out.directAnswer = cleanField(out.cards.snapshot, 420);
+    out.directAnswer = cleanField(
+      out.cards.snapshot,
+      primaryLimits.maxChars,
+      primaryLimits.maxSentences
+    );
   }
   if (out.directAnswer) {
     out.cards.snapshot = out.directAnswer;

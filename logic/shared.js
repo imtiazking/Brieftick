@@ -7,6 +7,7 @@ import { buildLogicResponse, LIMITED_DATA_MSG, LOGIC_DISCLAIMER } from "./types.
 import { resolvePrimaryEntity, resolveTickerTargets } from "./entityResolver.js";
 import { getTickerDisplayName, resolveQuoteSymbol } from "./engines/tickerCatalog.js";
 import { isConversationalLogicPreview } from "./previewFlags.js";
+import { getLogicVoiceRulesForDepth } from "./engines/responseDepthIntent.js";
 
 export { logicDebug } from "./logicDebug.js";
 
@@ -160,15 +161,24 @@ export function getWatchlist() {
   }
 }
 
-export async function callLogicLLM(systemPrompt, userPrompt, maxTokens = 700) {
+/**
+ * @param {string} systemPrompt
+ * @param {string} userPrompt
+ * @param {number} [maxTokens]
+ * @param {{ depthProfile?: import('./engines/responseDepthIntent.js').ResponseDepthProfile }} [options]
+ */
+export async function callLogicLLM(systemPrompt, userPrompt, maxTokens = 700, options = {}) {
   const api = window.BriefTickAPI;
   if (!api?.keys?.anthropic) {
     logicDebug("api_failed", { source: "anthropic", error: "missing_key" });
     return null;
   }
+  const depthProfile = options.depthProfile;
   const voiceRules =
     typeof window !== "undefined" && isConversationalLogicPreview()
-      ? `
+      ? depthProfile
+        ? getLogicVoiceRulesForDepth(depthProfile)
+        : `
 VOICE (required): Plain conversational prose only. No markdown (#, **), no section headers, no labels like "Headline Reason", "Primary Driver", or "Logic Summary". directAnswer must be 1-3 calm institutional sentences that answer the question directly — like a desk strategist speaking, not a report template. For ticker questions: be symbol-specific; never use generic filler such as "in focus on today's tape", "headline sensitivity", "sector beta remain the primary channels", or "live feeds connect". If no company catalyst, say so plainly and frame the sector or factor move.`
       : "";
 

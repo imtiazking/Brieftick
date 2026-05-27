@@ -89,7 +89,8 @@ export async function runPortfolioLogic(ctx) {
   const ai = await callLogicLLM(
     `Brieftick Portfolio Logic. Answer ONLY this question: "${focus}". Do not open with a generic AI concentration summary unless that is what was asked. Never recommend trades.`,
     `${prompt}\nHoldings:\n${bookCtx}\nTop3 weight: ${top3Weight}%\n${buildFusionPromptExtras(ctx, top3[0]?.symbol || "SPY")}`,
-    700
+    700,
+    { depthProfile: ctx.depthProfile }
   );
 
   if (ai?.directAnswer) {

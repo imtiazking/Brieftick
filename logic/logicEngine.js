@@ -33,6 +33,7 @@ import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
 import { buildConversationalPresentation } from "./engines/conversationalPresentation.js";
 import { humanizeLogicResponse } from "./engines/conversationalVoice.js";
+import { classifyResponseDepthIntent } from "./engines/responseDepthIntent.js";
 import { applyTickerVoiceToResponse } from "./engines/tickerVoiceVariation.js";
 import { buildTickerUnresolvedResponse, extractTickerCandidate } from "./engines/tickerResolver.js";
 import { enforceTickerAnswerIdentity } from "./engines/tickerAnswerIdentity.js";
@@ -104,6 +105,7 @@ export function finalizeLogicResponse(res, ctx) {
     out = applyTickerVoiceToResponse(out, {
       headline: out.cards?.catalyst,
       quote: ctx.fusion ? getQuoteFromFusion(ctx, out.primarySymbol) : null,
+      maxSentences: ctx.depthProfile?.maxSentences ?? 2,
     });
     out = enforceTickerAnswerIdentity(out, ctx.primaryEntity, ctx);
     logicDebug("tickerAnswerIdentity.finalSymbol", {
@@ -113,9 +115,13 @@ export function finalizeLogicResponse(res, ctx) {
   }
 
   if (typeof window !== "undefined" && isConversationalLogicPreview()) {
-    out = humanizeLogicResponse(out, { prompt: ctx.prompt });
+    out = humanizeLogicResponse(out, {
+      prompt: ctx.prompt,
+      depthProfile: ctx.depthProfile,
+    });
     out.conversational = buildConversationalPresentation(out, ctx);
     out.responseIntent = plan?.intentId;
+    out.responseDepthIntent = ctx.depthProfile?.intent;
   }
 
   return out;
@@ -183,6 +189,12 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     userContext,
     logicRoute,
   });
+  const depthProfile = classifyResponseDepthIntent(prompt, {
+    classified: routedClassification,
+    primaryEntity,
+    mode: responsePlan.mode,
+  });
+  responsePlan.depthProfile = depthProfile;
   const routedEntity = entityForPlan(primaryEntity, responsePlan);
   let mode = modeOverride || responsePlan.mode || routedClassification.mode;
   if (isWatchlistPerformanceQuery(prompt)) {
@@ -233,6 +245,8 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     intentLabel: responsePlan.label || intentResult.label,
     questionKind: routedClassification.kind,
     responsePlan,
+    depthProfile,
+    classified: routedClassification,
     userContext,
     logicRoute,
     skipTape: responsePlan.abstractEntity,

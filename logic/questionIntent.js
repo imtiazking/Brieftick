@@ -32,7 +32,7 @@ import {
 export function isNewsStyleQuery(prompt) {
   const t = (prompt || "").toLowerCase();
   return (
-    /latest\s+(on|about|regarding)|what.?'?s the latest|update on|news on|headline|situation in|status of|what.?'?s happening|happening in|current news|any news|tell me about|what happened|breaking/i.test(
+    /latest\s+(?:on|about|regarding|in|for|with)|what.?'?s the latest|update on|news on|headline|situation in|status of|what.?'?s happening|what is happening|happening with|happening in|current news|any news|tell me about|what happened|what'?s the story|story with|breaking/i.test(
       t
     ) || (/latest|update|news|today/i.test(t) && t.length < 120)
   );

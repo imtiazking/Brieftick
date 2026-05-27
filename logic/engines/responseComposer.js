@@ -62,8 +62,9 @@ export function composeLogicResponse(res, ctx) {
   direct = direct.replace(/markets may read this through[^.]*\./gi, "").trim();
   if (typeof window !== "undefined" && isConversationalLogicPreview()) {
     direct = humanizeLogicAnswer(direct, {
-      depth: /why.*mov|what.*driving/i.test(prompt) ? "brief" : "standard",
-      maxChars: isCausal || isMacroInterp ? 400 : 320,
+      depthProfile: ctx?.depthProfile,
+      depth: ctx?.depthProfile?.depth === "brief" ? "brief" : "contextual",
+      maxChars: ctx?.depthProfile?.maxChars || (isCausal || isMacroInterp ? 400 : 320),
     });
   } else {
     direct = concise(direct, isCausal || isMacroInterp ? 360 : 320);

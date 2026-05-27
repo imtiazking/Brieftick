@@ -193,7 +193,10 @@ export async function runTickerIntelligenceLogic(ctx) {
     try {
       const text = await api.aiWhyMoving(symbol);
       if (text) {
-        const voice = humanizeLogicAnswer(text, { depth: "brief", maxChars: 320 });
+        const voice = humanizeLogicAnswer(text, {
+          depthProfile: ctx.depthProfile,
+          depth: ctx.depthProfile?.depth === "brief" ? "brief" : "contextual",
+        });
         return buildLogicResponse({
           title: displayName,
           directAnswer: voice,
@@ -229,7 +232,8 @@ export async function runTickerIntelligenceLogic(ctx) {
   const ai = await callLogicLLM(
     "You are Brieftick Logic — institutional ticker intelligence. Plain prose only; answer ONLY for the symbol named. Do not discuss SPY unless the symbol is SPY. No recommendations.",
     `Symbol: ${symbol} (${displayName}) — answer for this symbol only.\nQuery type: ${isNewsQuery ? "news focus" : "price context"}\nPrompt: ${prompt}\n${buildFusionPromptExtras(ctx, symbol)}`,
-    750
+    750,
+    { depthProfile: ctx.depthProfile }
   );
 
   if (ai) {
