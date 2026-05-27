@@ -4,7 +4,7 @@
  */
 
 import {
-  resolveSymbolForPrompt,
+  resolveSymbolsForPrompt,
   getHeadlines,
   getQuote,
   getPortfolioHoldings,
@@ -99,9 +99,12 @@ export async function multiSourceFetch(sourceRoute, ctx) {
   const providers = new Set(sourceRoute.providers || []);
   const quotes = /** @type {RawSourceBundle["quotes"]} */ ({});
 
-  const sym = resolveSymbolForPrompt(ctx.prompt, ctx.primaryEntity);
-  const symbols = new Set();
-  if (sym) symbols.add(sym);
+  const opts = ctx.entityOpts || { watchlistSymbols: ctx.userContext?.watchlistSymbols };
+  const resolved = resolveSymbolsForPrompt(ctx.prompt, ctx.primaryEntity, opts);
+  const symbols = new Set(resolved);
+  if (ctx.tickerTargets?.length) {
+    ctx.tickerTargets.forEach((s) => symbols.add(s));
+  }
   if (ctx.mode === "market-pulse" || ctx.mode === "daily-brief") {
     symbols.add("SPY");
     symbols.add("QQQ");

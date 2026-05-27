@@ -2,16 +2,8 @@
  * Brieftick Logic — preview UI (Logic Terminal).
  */
 import { LOGIC_MODES, buildLogicResponse, LOGIC_DISCLAIMER, LIMITED_DATA_MSG } from "../logic/types.js";
-import {
-  detectLogicMode,
-  detectIntent,
-  routeLogicPrompt,
-  executeLiveIntelligenceSession,
-} from "../logic/logicRouter.js";
+import { detectIntent, routeLogicPrompt } from "../logic/logicRouter.js";
 import { resolvePrimaryEntity } from "../logic/entityResolver.js";
-import { runMarketPulseLogic } from "../logic/marketPulseLogic.js";
-import { runRiskRegimeLogic } from "../logic/riskRegimeLogic.js";
-import { getHeadlines, getWatchlist } from "../logic/shared.js";
 import {
   checkLogicAccess,
   getUsageBannerText,
@@ -22,8 +14,23 @@ import {
 } from "../logic/freeAccess.js";
 import { resolveCardSchema } from "../logic/cardSchemas.js";
 import { mountLogicPortfolioPanel } from "./logic-portfolio-panel.js";
+import {
+  mountLogicContextSidebar,
+  refreshLogicContextSidebar,
+  hydrateLogicMarketState,
+} from "./logic-context-sidebar.js";
+import {
+  renderConversationalLogic,
+  bindConversationalChips,
+} from "./logic-conversational.js";
+import { buildConversationalPresentation } from "../logic/engines/conversationalPresentation.js";
+import {
+  isConversationalLogicPreview,
+  syncLogicPreviewFlags,
+} from "../logic/previewFlags.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
+const LOGIC_PREVIEW_BUILD = "conv-v2";
 const LOGIC_API_TIMEOUT_MS = 14000;
 
 const HERO_PROMPTS = [
@@ -34,8 +41,6 @@ const HERO_PROMPTS = [
   { label: "AI sector rotation", prompt: "Show me AI sector rotation" },
   { label: "What if oil spikes?", prompt: "What happens if oil prices spike?" },
 ];
-
-const DEFAULT_WATCH = ["NVDA", "TSLA", "AAPL", "MSFT", "AMD", "META"];
 
 let activeMode = "market-pulse";
 let isProcessing = false;
@@ -103,13 +108,38 @@ function renderLoadingState() {
       <span class="logic-processing-glow"></span>
       <span>Analyzing…</span>
     </div>
-    <div class="logic-loading-skeleton">
-      <div class="logic-skeleton"></div>
-      <div class="logic-skeleton"></div>
-      <div class="logic-skeleton"></div>
+    <div class="logic-loading-skeleton logic-loading-skeleton--conv">
       <div class="logic-skeleton"></div>
     </div>
   </div>`;
+}
+
+/** Preview: conversational answer + on-demand chips (no report grid). */
+function useConversationalPreview() {
+  return isConversationalLogicPreview();
+}
+
+/**
+ * @param {import('../logic/types.js').LogicResponse} res
+ * @param {string} [role]
+ * @param {string} [prompt]
+ */
+function renderLogicResponse(res, role = "logic", prompt = "") {
+  if (!useConversationalPreview()) {
+    return renderIntelligenceCard(res, role);
+  }
+  const payload = {
+    ...res,
+    _logicPrompt: prompt,
+    conversational:
+      res.conversational ||
+      buildConversationalPresentation(res, {
+        prompt,
+        responsePlan: { intentId: res.responseIntent },
+        primaryEntity: res.primarySymbol ? { symbol: res.primarySymbol } : undefined,
+      }),
+  };
+  return renderConversationalLogic(payload, role);
 }
 
 function renderIntelligenceCard(res, role = "logic") {
@@ -240,6 +270,9 @@ function renderResultSurface(html, state = "ready") {
   content.style.display = "flex";
   content.innerHTML = html || "";
   content.scrollTop = 0;
+  if (useConversationalPreview()) {
+    bindConversationalChips(content);
+  }
 
   if (surface) {
     surface.classList.toggle("is-processing", state === "loading");
@@ -293,11 +326,14 @@ function renderAccessBlockedResponse(prompt, reason) {
 function enrichResponseMeta(res, prompt) {
   const primary = resolvePrimaryEntity(prompt);
   const modeMeta = LOGIC_MODES.find((m) => m.id === res.mode);
-  return ensureFullCards({
+  const meta = {
     ...res,
     primarySymbol: primary.symbol || undefined,
     modeLabel: modeMeta?.label || res.mode,
-  });
+    _logicPrompt: prompt,
+  };
+  if (useConversationalPreview()) return meta;
+  return ensureFullCards(meta);
 }
 
 function buildMockResponse(prompt, mode) {
@@ -326,10 +362,10 @@ function buildMockResponse(prompt, mode) {
   });
 }
 
-function runLogicWithTimeout(prompt, mode) {
-  logicLog("API request started", { prompt: prompt.slice(0, 80), mode });
+function runLogicWithTimeout(prompt, modeHint) {
+  logicLog("API request started", { prompt: prompt.slice(0, 80), modeHint });
   return Promise.race([
-    routeLogicPrompt(prompt, mode),
+    routeLogicPrompt(prompt, modeHint),
     new Promise((_, reject) =>
       setTimeout(() => reject(new Error("Logic request timed out")), LOGIC_API_TIMEOUT_MS)
     ),
@@ -356,7 +392,7 @@ export async function submitLogicQuery(promptText) {
 
   const primary = resolvePrimaryEntity(prompt);
   const intent = detectIntent(prompt, primary);
-  const mode = intent.mode;
+  const mode = intent.mode || "market-pulse";
   activeMode = mode;
   logicLog("entity resolved", primary);
   logicLog("intent detected", intent.intent);
@@ -377,7 +413,7 @@ export async function submitLogicQuery(promptText) {
       renderAccessBlockedResponse(prompt, access.reason),
       prompt
     );
-    renderResultSurface(userHtml + renderIntelligenceCard(blocked), "ready");
+    renderResultSurface(userHtml + renderLogicResponse(blocked, "logic", prompt), "ready");
     isProcessing = false;
     setRunButtonsDisabled(false);
     updateUsageBanner();
@@ -398,7 +434,7 @@ export async function submitLogicQuery(promptText) {
     logicLog("error", e.message || e);
     response = enrichResponseMeta(
       {
-        ...buildMockResponse(prompt, mode),
+        ...buildMockResponse(prompt, intent.mode),
         title: "Logic · Fallback intelligence",
         dataLimited: true,
       },
@@ -409,16 +445,12 @@ export async function submitLogicQuery(promptText) {
   }
 
   document.getElementById("logicLoading")?.remove();
-  const cardHtml = renderIntelligenceCard(response);
+  const cardHtml = renderLogicResponse(response, "logic", prompt);
   renderResultSurface(userHtml + cardHtml, "ready");
 
   if (!isLogicTerminalUser()) recordLogicUsage();
   updateUsageBanner();
-  updateInsightWidgets(response);
-  updateHubFromResponse(response);
-  if (response.intelligenceFeed?.length) {
-    renderNarrativeFeed([], false, response.intelligenceFeed);
-  }
+  updateHubFromResponse();
   scrollResultPanel();
 
   isProcessing = false;
@@ -429,87 +461,17 @@ export async function submitLogicQuery(promptText) {
 /** @deprecated alias */
 export const handleSubmit = submitLogicQuery;
 
-function updateHubFromResponse(res) {
-  if (res.mode === "market-pulse") {
-    const el = document.getElementById("logicHubPulse");
-    if (el)
-      el.innerHTML = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(res.signals?.[0] || "Mixed")}</div>
-        <p class="logic-widget-copy">${escapeHtml((res.cards?.snapshot || "").slice(0, 120))}</p>`;
-  }
-  if (res.mode === "risk-regime") {
-    const el = document.getElementById("logicHubRisk");
-    if (el) {
-      el.innerHTML = (res.signals || [])
-        .map(
-          (s) =>
-            `<span class="logic-risk-pill logic-widget-body--loaded"><span class="logic-risk-dot"></span>${escapeHtml(s)}</span>`
-        )
-        .join("");
-    }
-  }
-}
-
-function updateInsightWidgets(lastResponse) {
-  const pulseEl = document.getElementById("logicWidgetPulse");
-  const riskEl = document.getElementById("logicWidgetRisk");
-  const pulseHtml = (res) =>
-    `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(res.signals?.[0] || "Mixed")}</div>
-      <p class="logic-widget-copy">${escapeHtml((res.cards?.snapshot || res.summary).slice(0, 140))}…</p>`;
-  if (pulseEl && lastResponse?.mode === "market-pulse") pulseEl.innerHTML = pulseHtml(lastResponse);
-  if (riskEl && lastResponse?.mode === "risk-regime") riskEl.innerHTML = pulseHtml(lastResponse);
-}
-
-function widgetSkeleton() {
-  return `<div class="logic-skeleton-block">
-    <div class="logic-skeleton logic-skel-val"></div>
-    <div class="logic-skeleton logic-skel-line logic-skel-line--med"></div>
-    <div class="logic-skeleton logic-skel-line logic-skel-line--short"></div>
-  </div>`;
-}
-
-function hubBlockSkeleton(lines = 3) {
-  let html = "";
-  for (let i = 0; i < lines; i++) {
-    html += `<div class="logic-skeleton logic-skel-line${i === 0 ? " logic-skel-line--med" : " logic-skel-line--short"}"></div>`;
-  }
-  return html;
-}
-
-function setWidgetSkeletons() {
-  const sk = widgetSkeleton();
-  const pulse = document.getElementById("logicWidgetPulse");
-  const risk = document.getElementById("logicWidgetRisk");
-  if (pulse) pulse.innerHTML = sk;
-  if (risk) risk.innerHTML = sk;
-  const hubPulse = document.getElementById("logicHubPulse");
-  if (hubPulse) hubPulse.innerHTML = hubBlockSkeleton(2);
-  const hubVol = document.getElementById("logicHubVol");
-  if (hubVol) hubVol.innerHTML = hubBlockSkeleton(2);
-  const hubMacro = document.getElementById("logicHubMacro");
-  if (hubMacro) hubMacro.innerHTML = hubBlockSkeleton(3);
-  const hubRisk = document.getElementById("logicHubRisk");
-  if (hubRisk) hubRisk.innerHTML = hubBlockSkeleton(1);
-  const stream = document.getElementById("logicStreamInner");
-  if (stream) stream.innerHTML = hubBlockSkeleton(4);
+function updateHubFromResponse() {
+  refreshLogicContextSidebar(submitLogicQuery);
 }
 
 function renderHeroChips() {
   const wrap = document.getElementById("logicHeroChips");
-  const grid = document.getElementById("logicSuggestGrid");
   const chipHtml = HERO_PROMPTS.map(
     (p) =>
       `<button type="button" class="logic-hero-chip" data-prompt="${escapeHtml(p.prompt)}">${escapeHtml(p.label)}</button>`
   ).join("");
   if (wrap) wrap.innerHTML = chipHtml;
-  if (grid) {
-    grid.innerHTML = HERO_PROMPTS.map(
-      (p) =>
-        `<button type="button" class="logic-suggest-card" data-prompt="${escapeHtml(p.prompt)}">
-          <strong>${escapeHtml(p.label)}</strong>
-          <span>Run ${escapeHtml(p.label.toLowerCase())} through Brieftick Logic</span>
-        </button>`
-    ).join("");
-  }
   bindPromptButtons();
 }
 
@@ -529,140 +491,12 @@ function bindPromptButtons() {
   });
 }
 
-function renderNarrativeFeed(headlines, live, intelligenceNotes = []) {
-  const inner = document.getElementById("logicStreamInner");
-  const status = document.getElementById("logicStreamStatus");
-  if (!inner) return;
-
-  const intelItems =
-    intelligenceNotes.length > 0
-      ? intelligenceNotes.map((n) => ({
-          headline: n.message,
-          source: (n.category || "Logic").replace(/_/g, " "),
-        }))
-      : [];
-
-  const items =
-    intelItems.length > 0
-      ? intelItems
-      : headlines.length > 0
-        ? headlines.map((n) => ({
-            headline: n.headline,
-            source: n.source || "Headline",
-          }))
-        : [
-            { headline: "Logic interpreting cross-asset sensitivities…", source: "Logic" },
-            { headline: "Monitoring breadth, positioning and narrative shifts", source: "Structure" },
-            { headline: "Rates and liquidity remain primary transmission channels", source: "Macro" },
-          ];
-
-  const doubled = [...items, ...items];
-  inner.innerHTML = doubled
-    .map(
-      (n, i) =>
-        `<div class="logic-stream-item logic-widget-body--loaded" style="animation-delay:${(i % 4) * 0.08}s">
-          <time>${escapeHtml(n.source || "Logic")}</time>
-          ${escapeHtml((n.headline || "").slice(0, 140))}
-        </div>`
-    )
-    .join("");
-
-  if (status) {
-    status.textContent = intelItems.length
-      ? "Logic intelligence"
-      : live
-        ? "Live feed"
-        : "Contextual feed";
-  }
-}
-
-function renderWatchlistHub() {
-  const el = document.getElementById("logicHubWatchlist");
-  if (!el) return;
-  const list = getWatchlist();
-  const symbols = list.length ? list.slice(0, 8) : DEFAULT_WATCH;
-  el.innerHTML = symbols
-    .map(
-      (s) =>
-        `<button type="button" class="logic-watch-pill" data-prompt="Why is ${escapeHtml(s)} moving?">${escapeHtml(s)}</button>`
-    )
-    .join("");
-  bindPromptButtons();
-}
-
-function renderMacroHub(headlines) {
-  const el = document.getElementById("logicHubMacro");
-  if (!el) return;
-  const lines =
-    headlines.length > 0
-      ? headlines.slice(0, 4)
-      : [
-          { headline: "Fed speakers lean cautious on near-term cuts" },
-          { headline: "Inflation path still anchors rate expectations" },
-          { headline: "Dollar tone influences risk appetite" },
-        ];
-  el.innerHTML = lines
-    .map(
-      (n) =>
-        `<div class="logic-macro-line logic-widget-body--loaded">${escapeHtml((n.headline || "").slice(0, 100))}</div>`
-    )
-    .join("");
-}
-
-async function hydrateIntelligenceHub() {
-  setWidgetSkeletons();
+async function hydrateLogicChrome() {
   renderHeroChips();
-  renderWatchlistHub();
-
-  const newsPack = await getHeadlines(8);
-  let liveFeed = [];
-  try {
-    const session = await executeLiveIntelligenceSession();
-    liveFeed = session.feed || [];
-    const hubMacro = document.getElementById("logicHubMacro");
-    if (hubMacro && session.leadNote) {
-      hubMacro.innerHTML = `<div class="logic-macro-line logic-widget-body--loaded">${escapeHtml(session.leadNote)}</div>`;
-    }
-    logicLog("live intelligence session", { notes: liveFeed.length });
-  } catch (e) {
-    logicLog("live intelligence fallback", e.message || e);
-  }
-
-  renderNarrativeFeed(newsPack.headlines, newsPack.live, liveFeed);
-  if (!liveFeed.length) renderMacroHub(newsPack.headlines);
-
-  try {
-    const [pulse, risk] = await Promise.all([
-      runMarketPulseLogic({ prompt: "market pulse" }),
-      runRiskRegimeLogic({ prompt: "risk regime" }),
-    ]);
-
-    const pulseBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(pulse.signals?.[0] || "Mixed")}</div>
-      <p class="logic-widget-copy">${escapeHtml((pulse.cards?.snapshot || pulse.summary).slice(0, 130))}</p>`;
-    const volBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(pulse.signals?.[1] || "Monitored")}</div>
-      <p class="logic-widget-copy">${escapeHtml((pulse.cards?.volatility || "Volatility channel active").slice(0, 100))}</p>`;
-    const riskBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(risk.signals?.[0] || "Mixed")}</div>
-      <p class="logic-widget-copy">${escapeHtml((risk.cards?.snapshot || risk.summary).slice(0, 130))}</p>`;
-    const riskPills = (risk.signals || ["Mixed", "Macro monitored"])
-      .map(
-        (s) =>
-          `<span class="logic-risk-pill logic-widget-body--loaded"><span class="logic-risk-dot"></span>${escapeHtml(s)}</span>`
-      )
-      .join("");
-
-    const pulseEl = document.getElementById("logicWidgetPulse");
-    const riskEl = document.getElementById("logicWidgetRisk");
-    if (pulseEl) pulseEl.innerHTML = pulseBody;
-    if (riskEl) riskEl.innerHTML = riskBody;
-    const hubPulse = document.getElementById("logicHubPulse");
-    if (hubPulse) hubPulse.innerHTML = pulseBody;
-    const hubVol = document.getElementById("logicHubVol");
-    if (hubVol) hubVol.innerHTML = volBody;
-    const hubRisk = document.getElementById("logicHubRisk");
-    if (hubRisk) hubRisk.innerHTML = riskPills;
-  } catch (e) {
-    logicLog("error", { hub: e.message });
-  }
+  mountLogicContextSidebar(submitLogicQuery);
+  window.refreshLogicContextSidebar = () => refreshLogicContextSidebar(submitLogicQuery);
+  await hydrateLogicMarketState();
+  refreshLogicContextSidebar(submitLogicQuery);
 }
 
 function bindForms() {
@@ -784,7 +618,7 @@ function closeLogicSearch() {
 }
 
 export function isLogicPreview() {
-  return PREVIEW_KEYS.has(new URLSearchParams(location.search).get("preview"));
+  return isConversationalLogicPreview();
 }
 
 function canInitLogic() {
@@ -808,7 +642,13 @@ function showLogicNav() {
 function refreshLogicPageChrome() {
   const previewBadge = document.querySelector(".logic-preview-badge");
   const headerSub = document.querySelector(".logic-header-sub");
-  if (previewBadge) previewBadge.style.display = isLogicPreview() ? "" : "none";
+  if (previewBadge) {
+    previewBadge.style.display = isLogicPreview() ? "" : "none";
+    if (isLogicPreview()) {
+      previewBadge.textContent = `Conversational preview · ${LOGIC_PREVIEW_BUILD}`;
+      previewBadge.title = "Answer-first Logic UI — use ?preview=logic&tab=logic";
+    }
+  }
   if (headerSub) {
     headerSub.textContent = isLogicTerminalUser()
       ? "Logic Terminal · Institutional intelligence · Not financial advice"
@@ -832,7 +672,7 @@ export function initLogicPage() {
   if (!canInitLogic()) return;
   logicPageInitialized = true;
 
-  window.__LOGIC_PREVIEW = true;
+  syncLogicPreviewFlags();
   window.submitLogicQuery = submitLogicQuery;
   window.logicHandleSubmit = submitLogicQuery;
 
@@ -842,7 +682,7 @@ export function initLogicPage() {
   refreshLogicPageChrome();
   bindLogicUI();
   mountLogicPortfolioPanel();
-  hydrateIntelligenceHub();
+  hydrateLogicChrome();
   updateUsageBanner();
 
   if (window.__logicPendingPrompt) {
@@ -861,6 +701,7 @@ function tryInitLogicPage() {
 }
 
 function bootstrapLogicModule() {
+  syncLogicPreviewFlags();
   window.submitLogicQuery = submitLogicQuery;
   window.logicHandleSubmit = submitLogicQuery;
   window.btInitLogicForUser = () => {

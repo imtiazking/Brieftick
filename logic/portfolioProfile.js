@@ -32,6 +32,13 @@ export const SYMBOL_PROFILE = {
   IWM: { sector: "Small Cap", themes: ["Cyclicals", "Rates sensitive"] },
   QQQ: { sector: "Technology", themes: ["Mega-cap growth", "Rates sensitive"] },
   SPY: { sector: "Broad Market", themes: ["Beta"] },
+  GLD: { sector: "Commodities", themes: ["Gold", "Rates sensitive", "Geopolitical"] },
+  SLV: { sector: "Commodities", themes: ["Gold", "Rates sensitive"] },
+  GDX: { sector: "Materials", themes: ["Gold", "Geopolitical"] },
+  USO: { sector: "Energy", themes: ["Oil sensitivity", "Geopolitical"] },
+  UUP: { sector: "FX", themes: ["Rates sensitive", "Dollar"] },
+  USD: { sector: "FX", themes: ["Rates sensitive", "Dollar"] },
+  TLT: { sector: "Fixed Income", themes: ["Rates sensitive"] },
   CASH: { sector: "Cash", themes: ["Liquidity"] },
 };
 

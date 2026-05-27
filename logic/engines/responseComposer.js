@@ -4,6 +4,8 @@
  */
 
 import { concise } from "./topicContext.js";
+import { humanizeLogicAnswer } from "./conversationalVoice.js";
+import { isConversationalLogicPreview } from "../previewFlags.js";
 
 const FILLER_PATTERNS = [
   /indices tracked/i,
@@ -58,7 +60,14 @@ export function composeLogicResponse(res, ctx) {
     direct = stripTapeAndHeadlineLead(direct);
   }
   direct = direct.replace(/markets may read this through[^.]*\./gi, "").trim();
-  direct = concise(direct, isCausal || isMacroInterp ? 360 : 320);
+  if (typeof window !== "undefined" && isConversationalLogicPreview()) {
+    direct = humanizeLogicAnswer(direct, {
+      depth: /why.*mov|what.*driving/i.test(prompt) ? "brief" : "standard",
+      maxChars: isCausal || isMacroInterp ? 400 : 320,
+    });
+  } else {
+    direct = concise(direct, isCausal || isMacroInterp ? 360 : 320);
+  }
   if (!direct && out.cards.catalyst) {
     direct = concise(
       `${out.cards.catalyst} ${out.cards.sectorImpact || ""}`.trim(),

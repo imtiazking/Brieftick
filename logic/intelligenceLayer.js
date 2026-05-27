@@ -87,6 +87,12 @@ export function enrichIntelligenceLayer(res, ctx) {
     mode: res.mode || ctx.mode,
   };
 
+  if (ctx.mode === "watchlist" || plan?.intentId === "watchlist_performance") {
+    out.mode = "watchlist";
+    out.modeLabel = plan?.label || "Watchlist Performance";
+    return applyResponseContract(out, plan);
+  }
+
   if (plan?.enrichment?.graph !== false && ctx.mode !== "macro-interpretation") {
     out = applyGraphToResponse(out, ctx.graph);
   }

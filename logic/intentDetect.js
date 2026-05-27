@@ -6,9 +6,10 @@
 import { resolvePrimaryEntity } from "./entityResolver.js";
 import { detectLogicMode } from "./modeDetect.js";
 import { classifyQuestion } from "./questionIntent.js";
+import { resolveUserContext } from "./engines/userContext.js";
 import { logicDebug } from "./shared.js";
 
-/** @typedef {'ticker_intelligence'|'market_pulse'|'risk_regime'|'portfolio_logic'|'sector_rotation'|'daily_brief'|'scenario_analysis'|'market_briefing'|'causal_reasoning'} LogicIntent */
+/** @typedef {'ticker_intelligence'|'market_pulse'|'risk_regime'|'portfolio_logic'|'sector_rotation'|'daily_brief'|'scenario_analysis'|'market_briefing'|'causal_reasoning'|'watchlist_performance'} LogicIntent */
 
 /** @type {Record<import('./types.js').LogicMode, LogicIntent>} */
 const MODE_TO_INTENT = {
@@ -22,6 +23,7 @@ const MODE_TO_INTENT = {
   briefing: "market_briefing",
   causal: "causal_reasoning",
   "macro-interpretation": "macro_interpretation",
+  watchlist: "watchlist_performance",
 };
 
 /** @type {Record<LogicIntent, string>} */
@@ -36,6 +38,7 @@ export const INTENT_LABELS = {
   market_briefing: "Market Briefing",
   causal_reasoning: "Causal Market Logic",
   macro_interpretation: "Macro Interpretation",
+  watchlist_performance: "Watchlist Performance",
 };
 
 /**
@@ -53,7 +56,8 @@ export const INTENT_LABELS = {
  */
 export function detectIntent(prompt, primaryEntity) {
   const entity = primaryEntity || resolvePrimaryEntity(prompt);
-  const classified = classifyQuestion(prompt, entity);
+  const userContext = resolveUserContext(prompt);
+  const classified = classifyQuestion(prompt, entity, { userContext });
   const mode = detectLogicMode(prompt, entity);
   const intent = MODE_TO_INTENT[mode] || "market_pulse";
   const result = {

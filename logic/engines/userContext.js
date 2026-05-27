@@ -3,7 +3,7 @@
  * @module logic/engines/userContext
  */
 
-import { getLogicWatchlist } from "../watchlistStore.js";
+import { getLogicWatchlist, resolveWatchlistForQuery } from "../watchlistStore.js";
 import { hasExplicitPortfolio, resolvePortfolioContext } from "./inferredPortfolioContext.js";
 import { logicDebug } from "../shared.js";
 
@@ -16,6 +16,7 @@ import { logicDebug } from "../shared.js";
  * @property {boolean} hasBook
  * @property {boolean} hasWatchlist
  * @property {boolean} personalScope
+ * @property {'saved'|'dashboard'|'prompt'|'empty'} [watchlistSource]
  */
 
 const PERSONAL_BOOK =
@@ -50,7 +51,7 @@ export function isWatchlistPerformanceQuery(prompt) {
   if (!t) return false;
 
   const perfSignal =
-    /best\s+perform|worst\s+perform|top\s+perform|outperform|underperform|biggest\s+(gainer|loser)|best\s+stock|worst\s+stock|which\s+stock.*best|best\s+.*\s+stock|rank.*watchlist|performing\s+(best|worst)|top\s+gainer|top\s+loser/i;
+    /best\s+perform|worst\s+perform|best\s+performing|worst\s+performing|performing\s+best|performing\s+worst|top\s+perform|outperform|underperform|biggest\s+(gainer|loser)|best\s+stock|worst\s+stock|which\s+stock.*best|which\s+.*\s+best|best\s+.*\s+stock|rank.*watchlist|performing\s+(best|worst)|top\s+gainer|top\s+loser|weakest|strongest|leading|lagging|trend/i;
 
   const watchlistSignal =
     /\bwatchlist\b|\bmy\s+list\b|\bsymbols\s+i('m| am)\s+watching\b|\btickers\s+i('m| am)\s+watching\b/i;
@@ -59,9 +60,10 @@ export function isWatchlistPerformanceQuery(prompt) {
   if (/out of my watchlist|on my watchlist|from my watchlist/i.test(t) && perfSignal.test(t)) {
     return true;
   }
-  if (/\bwatchlist\b/i.test(t) && /(best|worst|top|rank|gainer|loser|perform)/i.test(t)) {
+  if (/\bwatchlist\b/i.test(t) && /(best|worst|top|rank|gainer|loser|perform|weakest|strongest|trend)/i.test(t)) {
     return true;
   }
+  if (/which\s+(stock|name|ticker).*\bwatchlist\b/i.test(t)) return true;
 
   return false;
 }
@@ -95,11 +97,17 @@ export function isPortfolioScopedQuery(prompt, ctx) {
 /**
  * @returns {UserContext}
  */
-export function resolveUserContext() {
+/**
+ * @param {string} [prompt]
+ */
+export function resolveUserContext(prompt) {
   const portfolioContext = resolvePortfolioContext();
-  const watchlistSymbols = getLogicWatchlist();
+  const stored = getLogicWatchlist();
+  const watchlistResolved = resolveWatchlistForQuery(prompt, stored);
+  const watchlistSymbols = watchlistResolved.symbols;
   const hasExplicitBook = portfolioContext.source === "explicit";
-  const hasInferredBook = portfolioContext.source === "inferred_watchlist";
+  const hasInferredBook =
+    portfolioContext.source === "inferred_watchlist" && watchlistSymbols.length > 0;
   const hasBook = hasExplicitBook || hasInferredBook;
   const hasWatchlist = watchlistSymbols.length > 0;
   const personalScope = hasBook || hasWatchlist;
@@ -107,6 +115,7 @@ export function resolveUserContext() {
   const ctx = {
     portfolioContext,
     watchlistSymbols,
+    watchlistSource: watchlistResolved.source,
     hasExplicitBook,
     hasInferredBook,
     hasBook,
@@ -117,6 +126,8 @@ export function resolveUserContext() {
   logicDebug("userContext", {
     source: portfolioContext.source,
     watchlistN: watchlistSymbols.length,
+    watchlistSource: watchlistResolved.source,
+    resolvedWatchlistSymbols: watchlistSymbols,
     hasBook,
   });
 

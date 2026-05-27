@@ -4,6 +4,7 @@
  */
 
 import { resolvePrimaryEntity } from "./entityResolver.js";
+import { extractSymbolsFromPrompt } from "./engines/tickerCatalog.js";
 import { logicDebug } from "./shared.js";
 import { isCausalReasoningQuery } from "./engines/causalReasoningEngine.js";
 import { isMacroInterpretationQuery } from "./engines/macroInterpretationEngine.js";
@@ -44,7 +45,9 @@ export function isNewsStyleQuery(prompt) {
  */
 export function classifyQuestion(prompt, entity, options = {}) {
   const t = (prompt || "").toLowerCase().trim();
-  const primary = entity || resolvePrimaryEntity(prompt);
+  const wl = options.userContext?.watchlistSymbols || [];
+  const primary = entity || resolvePrimaryEntity(prompt, { watchlistSymbols: wl });
+  const promptTickers = extractSymbolsFromPrompt(prompt, wl);
   const newsStyle = isNewsStyleQuery(prompt);
   const userContext = options.userContext;
 
@@ -56,7 +59,20 @@ export function classifyQuestion(prompt, entity, options = {}) {
     wantsBriefing: false,
   };
 
-  if (isWatchlistPerformanceQuery(prompt) && (userContext?.hasWatchlist ?? true)) {
+  if (
+    promptTickers.length &&
+    /why is|why are|what.*driving|moving today|move today|what changed|compare|versus|vs\b|between/i.test(
+      t
+    ) &&
+    !isWatchlistPerformanceQuery(prompt)
+  ) {
+    result = {
+      kind: "ticker",
+      mode: "ticker",
+      label: "Ticker Intelligence",
+      wantsBriefing: false,
+    };
+  } else if (isWatchlistPerformanceQuery(prompt)) {
     result = {
       kind: "watchlist",
       mode: "watchlist",
@@ -100,7 +116,8 @@ export function classifyQuestion(prompt, entity, options = {}) {
     /portfolio|holdings|concentration|diversif|exposure|my book|analyze my portfolio|what risks matter|what risks dominate|how exposed.*(portfolio|rates|ai)|what would hurt|vulnerable.*(portfolio|recession)|concentrated.*ai|risks for my|regime benefit|what regime.*portfolio/i.test(
       t
     ) &&
-    !/news on|latest on/.test(t)
+    !/news on|latest on/.test(t) &&
+    !isWatchlistPerformanceQuery(prompt)
   ) {
     result = { kind: "portfolio", mode: "portfolio", label: "Portfolio Logic", wantsBriefing: false };
   } else if (
@@ -155,7 +172,10 @@ export function classifyQuestion(prompt, entity, options = {}) {
       label: "Supply Chain Briefing",
       wantsBriefing: true,
     };
-  } else if (/oil|crude|opec|brent|wti|gold price|copper|commodit|natural gas|lng/i.test(t)) {
+  } else if (
+    /oil|crude|opec|brent|wti|gold price|copper|commodit|natural gas|lng/i.test(t) &&
+    !promptTickers.length
+  ) {
     result = {
       kind: "commodities",
       mode: "briefing",
@@ -251,7 +271,11 @@ export function classifyQuestion(prompt, entity, options = {}) {
       label: "Macro Interpretation",
       wantsBriefing: false,
     };
-  } else if (t.length > 8 && (userContext?.hasBook || userContext?.hasWatchlist)) {
+  } else if (
+    t.length > 8 &&
+    (userContext?.hasBook || userContext?.hasWatchlist) &&
+    !isWatchlistPerformanceQuery(prompt)
+  ) {
     result = {
       kind: userContext?.hasBook ? "portfolio" : "market_pulse",
       mode: userContext?.hasBook ? "portfolio" : "market-pulse",

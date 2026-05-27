@@ -6,7 +6,7 @@
 import { loadSavedPortfolio } from "../portfolioParser.js";
 import { buildPortfolioProfile } from "../portfolioProfile.js";
 import { getPortfolioHoldings } from "../shared.js";
-import { getLogicWatchlist } from "../watchlistStore.js";
+import { getLogicWatchlist, resolveWatchlistSymbols } from "../watchlistStore.js";
 import { logicDebug } from "../shared.js";
 
 /** @typedef {'explicit'|'inferred_watchlist'|'sample'} PortfolioContextSource */
@@ -163,7 +163,7 @@ export function resolvePortfolioContext() {
     return ctx;
   }
 
-  const symbols = getLogicWatchlist();
+  const symbols = resolveWatchlistSymbols(getLogicWatchlist());
   if (symbols.length) {
     let holdings = buildEqualWeightHoldings(symbols);
     holdings = applySoftConcentrationInference(holdings);
