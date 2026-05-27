@@ -4,6 +4,7 @@
  */
 
 import { getWatchlist, getPortfolioHoldings } from "./shared.js";
+import { resolvePortfolioContext } from "./engines/inferredPortfolioContext.js";
 
 const MEMORY_KEY = "brieftick_logic_memory_v1";
 const MAX_INTERACTIONS = 24;
@@ -116,8 +117,13 @@ export function buildMemoryContext(entity, mode) {
     lines.push(`Recent Logic on this name: "${recent.prompt.slice(0, 80)}…"`);
   }
 
-  if (mode === "portfolio" && holdings.length) {
-    lines.push(`Portfolio context: ${holdings.length} saved positions.`);
+  if (mode === "portfolio") {
+    const book = resolvePortfolioContext();
+    if (book.source === "explicit") {
+      lines.push(`Portfolio context: ${book.holdings.length} saved positions with weights.`);
+    } else if (book.source === "inferred_watchlist") {
+      lines.push("Watchlist-derived portfolio interpretation active.");
+    }
   }
 
   return {

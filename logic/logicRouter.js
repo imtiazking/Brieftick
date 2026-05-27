@@ -21,3 +21,7 @@ export {
   removeWatchlistSymbol,
   inferWatchlistExposure,
 } from "./watchlistStore.js";
+export {
+  resolvePortfolioContext,
+  hasExplicitPortfolio,
+} from "./engines/inferredPortfolioContext.js";

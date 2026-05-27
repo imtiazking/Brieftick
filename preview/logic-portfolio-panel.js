@@ -18,6 +18,7 @@ import {
   removeWatchlistSymbol,
   inferWatchlistExposure,
 } from "../logic/watchlistStore.js";
+import { resolvePortfolioContext } from "../logic/engines/inferredPortfolioContext.js";
 
 function escapeHtml(s) {
   return String(s || "")
@@ -154,12 +155,15 @@ function renderWatchlistManage(symbols) {
 function updateExposureLine() {
   const el = document.getElementById("logicWatchlistExposure");
   if (!el) return;
-  const exp = inferWatchlistExposure();
-  const saved = loadSavedPortfolio();
-  const pf = saved?.profile;
-  const parts = [exp.summary];
-  if (pf?.aiWeight) parts.push(`Book: AI ~${pf.aiWeight}% · ${pf.concentrationLabel}.`);
-  el.textContent = parts.join(" ");
+  const resolved = resolvePortfolioContext();
+  if (resolved.source === "explicit") {
+    el.textContent = `${resolved.contextLabel} · AI ~${resolved.profile.aiWeight}% · ${resolved.profile.concentrationLabel}.`;
+  } else if (resolved.source === "inferred_watchlist") {
+    el.textContent = `Watchlist-derived portfolio interpretation active · ${resolved.profile.positionCount} names · AI ~${resolved.profile.aiWeight}% · ${resolved.profile.growthDefensiveTilt}.`;
+  } else {
+    const exp = inferWatchlistExposure();
+    el.textContent = exp.summary;
+  }
 }
 
 function refreshHubWatchlist() {

@@ -25,6 +25,7 @@ import {
 import { logicDebug } from "./shared.js";
 import { classifyQuestion } from "./questionIntent.js";
 import { inferWatchlistExposure } from "./watchlistStore.js";
+import { resolvePortfolioContext } from "./engines/inferredPortfolioContext.js";
 import { buildResponsePlan, entityForPlan } from "./engines/responsePlan.js";
 import { applyResponseContract } from "./engines/applyResponseContract.js";
 
@@ -126,6 +127,7 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     entities,
   });
 
+  const portfolioContext = resolvePortfolioContext();
   const portfolioMemory = buildPortfolioMemory();
 
   let ctx = {
@@ -141,6 +143,7 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     sourceRoute,
     fusion,
     memory: buildMemoryContext(routedEntity, mode),
+    portfolioContext,
     portfolioMemory,
     portfolioProfile: portfolioMemory.profile,
     watchlistExposure: inferWatchlistExposure(),
