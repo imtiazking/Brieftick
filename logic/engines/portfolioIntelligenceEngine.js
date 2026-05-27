@@ -6,7 +6,7 @@
 import { logicDebug } from "../shared.js";
 import { concise } from "./topicContext.js";
 import { buildPortfolioProfile } from "../portfolioProfile.js";
-import { loadSavedPortfolio } from "../portfolioParser.js";
+import { resolvePortfolioContext } from "./inferredPortfolioContext.js";
 import { inferWatchlistExposure } from "../watchlistStore.js";
 
 /**
@@ -34,25 +34,12 @@ import { inferWatchlistExposure } from "../watchlistStore.js";
  */
 export function analyzePortfolioIntelligence(ctx, marketIntelligence) {
   const prompt = (ctx.prompt || "").toLowerCase();
-  const saved = loadSavedPortfolio();
-  const memoryHoldings = ctx.portfolioMemory?.holdings;
-  const holdings =
-    memoryHoldings?.length ? memoryHoldings : saved?.holdings?.length ? saved.holdings : [];
+  const resolved = ctx.portfolioContext || resolvePortfolioContext();
+  const holdings = resolved.holdings || ctx.portfolioMemory?.holdings || [];
+  const profile = ctx.portfolioProfile || resolved.profile || buildPortfolioProfile(holdings);
 
-  const profile =
-    ctx.portfolioProfile ||
-    saved?.profile ||
-    buildPortfolioProfile(
-      holdings.length
-        ? holdings
-        : [
-            { symbol: "NVDA", weight: 18 },
-            { symbol: "AAPL", weight: 12 },
-            { symbol: "MSFT", weight: 10 },
-          ]
-    );
-
-  const simulated = !saved?.holdings?.length && !memoryHoldings?.length;
+  const simulated = resolved.source === "sample";
+  const isInferred = resolved.source === "inferred_watchlist";
   const mi = marketIntelligence || ctx.marketIntelligence;
   const watchlist = ctx.watchlistExposure || inferWatchlistExposure();
 
@@ -149,7 +136,12 @@ export function analyzePortfolioIntelligence(ctx, marketIntelligence) {
     personalizedNotes.push(`AI-weighted exposure ~${profile.aiWeight}% of equity sleeve.`);
   }
 
-  if (watchlist.symbols?.length && !simulated) {
+  if (isInferred) {
+    personalizedNotes.push(resolved.hint || "Watchlist-derived portfolio interpretation active.");
+    for (const note of resolved.inferenceNotes || []) {
+      personalizedNotes.push(note);
+    }
+  } else if (watchlist.symbols?.length && !simulated) {
     personalizedNotes.push(watchlist.summary);
   }
 
@@ -160,15 +152,18 @@ export function analyzePortfolioIntelligence(ctx, marketIntelligence) {
   if (ctx.mode === "portfolio") relevance = 0.95;
 
   const headline = concise(
-    warnings[0] ||
-      personalizedNotes[0] ||
-      exposures[0]?.note ||
-      "Portfolio macro channels align with index leadership — monitor breadth and rates.",
+    isInferred && resolved.inferenceNotes?.[0]
+      ? `${resolved.contextLabel}: ${resolved.inferenceNotes[0]}`
+      : warnings[0] ||
+          personalizedNotes[0] ||
+          exposures[0]?.note ||
+          "Portfolio macro channels align with index leadership — monitor breadth and rates.",
     240
   );
 
   logicDebug("portfolioIntelligenceEngine", {
     simulated,
+    source: resolved.source,
     aiWeight: profile.aiWeight,
     relevance,
   });
@@ -180,6 +175,8 @@ export function analyzePortfolioIntelligence(ctx, marketIntelligence) {
     personalizedNotes,
     profile,
     simulated,
+    isInferred,
+    portfolioContextLabel: resolved.contextLabel,
     relevance: Math.min(1, relevance),
   };
 }

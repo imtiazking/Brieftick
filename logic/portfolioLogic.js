@@ -10,20 +10,20 @@ import { fusionAttributionSources } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { analyzePortfolioIntelligence } from "./engines/portfolioIntelligenceEngine.js";
 import { shapePortfolioAnswer } from "./engines/portfolioAnswerShaper.js";
+import { resolvePortfolioContext } from "./engines/inferredPortfolioContext.js";
 
 /** @param {{ prompt: string, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx */
 export async function runPortfolioLogic(ctx) {
   const prompt = ctx.prompt || "Analyze my portfolio";
   const failedSources = [...(ctx.fusion?.failedSources || [])];
-  const holdings = getPortfolioHoldings();
-  const lines =
-    holdings.length > 0
-      ? holdings
-      : [
-          { symbol: "NVDA", weight: 18 },
-          { symbol: "AAPL", weight: 12 },
-          { symbol: "MSFT", weight: 10 },
-        ];
+  const portfolioCtx = ctx.portfolioContext || resolvePortfolioContext();
+  const lines = portfolioCtx.holdings?.length
+    ? portfolioCtx.holdings
+    : ctx.portfolioMemory?.holdings?.length
+      ? ctx.portfolioMemory.holdings
+      : getPortfolioHoldings();
+  const hasRealBook =
+    portfolioCtx.source === "explicit" || portfolioCtx.source === "inferred_watchlist";
 
   const quotes = {};
   for (const h of lines.slice(0, 8)) {
@@ -48,19 +48,30 @@ export async function runPortfolioLogic(ctx) {
         cards: shaped.cards,
         keyDrivers: shaped.keyDrivers,
         signals: shaped.signals,
-        confidence: holdings.length ? 72 : 58,
+        confidence: hasRealBook ? (portfolioCtx.isInferred ? 64 : 72) : 58,
         sources: ctx.fusion
           ? fusionAttributionSources(ctx.fusion)
-          : holdings.length
-            ? ["Portfolio Context", "Brieftick Logic"]
+          : hasRealBook
+            ? portfolioCtx.isInferred
+              ? ["Watchlist-derived portfolio", "Brieftick Logic"]
+              : ["Portfolio Context", "Brieftick Logic"]
             : ["Sample book · Brieftick Logic"],
         mode: "portfolio",
-        modeLabel: ctx.responsePlan?.label || shaped.title,
-        mockData: !holdings.length,
+        modeLabel: portfolioCtx.isInferred
+          ? `Portfolio Logic · ${portfolioCtx.contextLabel}`
+          : ctx.responsePlan?.label || shaped.title,
+        mockData: !hasRealBook,
         portfolioAnswerShape: shaped.shape,
+        portfolioContextSource: portfolioCtx.source,
+        portfolioContextLabel: portfolioCtx.contextLabel,
+        isInferredPortfolio: portfolioCtx.isInferred,
         optionalCards: {
           portfolioImpact: shaped.cards.sectorImpact || shaped.summary,
           riskSignal: shaped.signals[0] || "",
+          portfolioContextLabel: portfolioCtx.contextLabel,
+          inferredPortfolioProfile: portfolioCtx.isInferred
+            ? `Inferred portfolio profile · ${portfolioCtx.contextLabel}`
+            : undefined,
         },
       },
       failedSources
@@ -87,7 +98,9 @@ export async function runPortfolioLogic(ctx) {
       ...ai,
       mode: "portfolio",
       modeLabel: ctx.responsePlan?.label,
-      mockData: !holdings.length,
+      mockData: !hasRealBook,
+      portfolioContextSource: portfolioCtx.source,
+      isInferredPortfolio: portfolioCtx.isInferred,
       sources: ctx.fusion ? fusionAttributionSources(ctx.fusion) : ai.sources,
       optionalCards: {
         portfolioImpact: shaped.cards.sectorImpact || ai.optionalCards?.portfolioImpact,
@@ -96,7 +109,7 @@ export async function runPortfolioLogic(ctx) {
     };
   }
 
-  if (!holdings.length && failedSources.length > 4) return buildFallbackResponse(ctx);
+  if (!hasRealBook && failedSources.length > 4) return buildFallbackResponse(ctx);
 
   return withDataLimited(
     {
@@ -106,14 +119,21 @@ export async function runPortfolioLogic(ctx) {
       cards: shaped.cards,
       keyDrivers: shaped.keyDrivers,
       signals: shaped.signals,
-      confidence: holdings.length ? 68 : 54,
+      confidence: hasRealBook ? (portfolioCtx.isInferred ? 64 : 68) : 54,
       sources: ctx.fusion
         ? fusionAttributionSources(ctx.fusion)
-        : holdings.length
-          ? ["Portfolio Context", "Finnhub", "Brieftick Logic"]
+        : hasRealBook
+          ? portfolioCtx.isInferred
+            ? ["Watchlist-derived portfolio", "Brieftick Logic"]
+            : ["Portfolio Context", "Finnhub", "Brieftick Logic"]
           : ["Sample book · Brieftick Logic"],
       mode: "portfolio",
-      mockData: !holdings.length,
+      modeLabel: portfolioCtx.isInferred
+        ? `Portfolio Logic · ${portfolioCtx.contextLabel}`
+        : ctx.responsePlan?.label,
+      mockData: !hasRealBook,
+      portfolioContextSource: portfolioCtx.source,
+      isInferredPortfolio: portfolioCtx.isInferred,
       optionalCards: {
         portfolioImpact: `Largest weights ${top3.map((h) => `${h.symbol} ${h.weight}%`).join(", ")} — macro beta drives book volatility.`,
       },

@@ -170,7 +170,16 @@ export function shapePortfolioAnswer(ctx, profile, pint, top3, top3Weight) {
   const prompt = ctx.prompt || "";
   const shape = resolvePortfolioAnswerShape(plan, prompt);
 
-  let title = plan?.label || "Portfolio Logic";
+  const inferred = ctx.isInferredPortfolio || ctx.portfolioContext?.isInferred;
+  const contextLabel =
+    ctx.portfolioContextLabel ||
+    ctx.portfolioContext?.contextLabel ||
+    (inferred ? "Watchlist-derived exposure" : "");
+
+  let title =
+    inferred && contextLabel
+      ? `Portfolio Logic · ${contextLabel}`
+      : plan?.label || "Portfolio Logic";
   let directAnswer = "";
   let summary = "";
   /** @type {Record<string, string>} */
@@ -181,7 +190,7 @@ export function shapePortfolioAnswer(ctx, profile, pint, top3, top3Weight) {
   const keyDrivers = [];
 
   if (shape === "ranked_risks") {
-    title = "Portfolio Risk";
+    title = inferred ? `Portfolio Risk · ${contextLabel || "Inferred profile"}` : "Portfolio Risk";
     const ranked = buildRankedRisks(profile);
     directAnswer = ranked.direct;
     summary = concise(
