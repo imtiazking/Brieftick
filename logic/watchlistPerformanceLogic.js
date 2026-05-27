@@ -6,21 +6,33 @@
 import { buildLogicResponse } from "./types.js";
 import { getQuote, withDataLimited, logicDebug } from "./shared.js";
 import { fusionAttributionSources } from "./dataFusion.js";
-import { getLogicWatchlist } from "./watchlistStore.js";
-import { isValidWatchlistTicker, resolveWatchlistSymbols } from "./engines/watchlistSymbols.js";
+import {
+  isValidWatchlistTicker,
+  resolveWatchlistForQuery,
+} from "./engines/watchlistSymbols.js";
+import { saveLogicWatchlist } from "./watchlistStore.js";
 import { concise } from "./engines/topicContext.js";
 
 /**
  * @param {object} ctx
  */
 export async function runWatchlistPerformanceLogic(ctx) {
-  const raw =
-    ctx.userContext?.watchlistSymbols?.length > 0
-      ? ctx.userContext.watchlistSymbols
-      : getLogicWatchlist();
-  const symbols = resolveWatchlistSymbols(raw);
+  const prompt = ctx.prompt || "";
+  const { symbols, source } = resolveWatchlistForQuery(
+    prompt,
+    ctx.userContext?.watchlistSymbols
+  );
 
-  logicDebug("watchlistPerformance.resolved", symbols);
+  if (source === "prompt" && symbols.length && typeof window !== "undefined") {
+    window.watchlistSymbols = symbols;
+    if (symbols.length >= 2) {
+      try {
+        saveLogicWatchlist(symbols);
+      } catch (_) {}
+    }
+  }
+
+  logicDebug("watchlistPerformance.resolved", { symbols, source });
 
   const failedSources = [...(ctx.fusion?.failedSources || [])];
   const wantWorst = /worst|loser|underperform|bottom/i.test((ctx.prompt || "").toLowerCase());
@@ -30,20 +42,23 @@ export async function runWatchlistPerformanceLogic(ctx) {
     return buildLogicResponse({
       title: "Watchlist Performance",
       directAnswer:
-        "Add tickers to your Logic watchlist first — then ask which name is leading or lagging the group.",
-      summary: "No valid watchlist symbols saved yet.",
+        "Save tickers in Portfolio & watchlist (click Add), or name them in your question — e.g. “NVDA and MSFT — which is leading today?”",
+      summary: "No symbols to rank yet.",
       mode: "watchlist",
       modeLabel: ctx.responsePlan?.label || "Watchlist Performance",
       confidence: 48,
       cards: {
-        snapshot: "Save symbols in the watchlist panel to enable relative performance ranking.",
-        catalyst: "—",
+        snapshot:
+          "Use Portfolio & watchlist on the right, or include tickers in your question.",
+        catalyst: "Save symbols before asking — placeholder chips are not your list.",
         macroContext: "—",
         sectorImpact: "—",
         volatility: "—",
-        aiSummary: "Personal watchlist required for this question type.",
+        aiSummary: "Personal watchlist required — save tickers or name them in the prompt.",
       },
-      keyDrivers: ["Empty watchlist"],
+        keyDrivers: [
+          "No watchlist symbols found — save tickers in Portfolio & watchlist, or name them in your question (e.g. NVDA, MSFT).",
+        ],
       signals: ["Add symbols to personalize"],
       sources: ["Brieftick Logic"],
     });

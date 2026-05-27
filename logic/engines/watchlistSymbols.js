@@ -166,3 +166,76 @@ export function resolveWatchlistSymbols(input, options = {}) {
   logicDebug("watchlistSymbols.resolved", resolved);
   return resolved;
 }
+
+/**
+ * Pull known tickers mentioned in the question (when nothing saved yet).
+ * @param {string} prompt
+ */
+export function extractTickersFromPrompt(prompt) {
+  const text = String(prompt || "").toUpperCase();
+  if (!text || text.length < 4) return [];
+
+  /** @type {string[]} */
+  const found = [];
+  const catalog = [...KNOWN_WATCHLIST_TICKERS].sort((a, b) => b.length - a.length);
+
+  for (const ticker of catalog) {
+    const escaped = ticker.replace(/\./g, "\\.");
+    const re = new RegExp(`(?:\\$|\\b)${escaped}(?:\\b|$)`, "g");
+    if (re.test(text)) found.push(ticker);
+  }
+
+  const fromRegex = text.match(/\$?([A-Z]{1,5})\b/g) || [];
+  for (const raw of fromRegex) {
+    const sym = raw.replace("$", "");
+    if (isValidWatchlistTicker(sym)) found.push(sym);
+  }
+
+  return resolveWatchlistSymbols(found);
+}
+
+/**
+ * @typedef {'saved'|'dashboard'|'prompt'|'empty'} WatchlistSource
+ */
+
+/**
+ * @typedef {Object} ResolvedWatchlist
+ * @property {string[]} symbols
+ * @property {WatchlistSource} source
+ */
+
+/**
+ * Saved watchlist → dashboard memory → tickers named in the prompt.
+ * @param {string} [prompt]
+ * @param {string[]} [storedSymbols]
+ * @returns {ResolvedWatchlist}
+ */
+export function resolveWatchlistForQuery(prompt, storedSymbols) {
+  let symbols = resolveWatchlistSymbols(storedSymbols || []);
+  if (symbols.length) {
+    logicDebug("watchlistForQuery", { source: "saved", symbols });
+    return { symbols, source: "saved" };
+  }
+
+  if (typeof window !== "undefined" && Array.isArray(window.watchlistSymbols) && window.watchlistSymbols.length) {
+    symbols = resolveWatchlistSymbols(window.watchlistSymbols);
+    if (symbols.length) {
+      logicDebug("watchlistForQuery", { source: "dashboard", symbols });
+      return { symbols, source: "dashboard" };
+    }
+  }
+
+  if (prompt) {
+    symbols = extractTickersFromPrompt(prompt);
+    const perfContext =
+      /\bwatchlist\b/i.test(prompt) ||
+      /perform|gainer|loser|leading|lagging|weakest|strongest|outperform|underperform/i.test(prompt);
+    if (symbols.length && (perfContext || symbols.length >= 2)) {
+      logicDebug("watchlistForQuery", { source: "prompt", symbols });
+      return { symbols, source: "prompt" };
+    }
+  }
+
+  logicDebug("watchlistForQuery", { source: "empty", symbols: [] });
+  return { symbols: [], source: "empty" };
+}

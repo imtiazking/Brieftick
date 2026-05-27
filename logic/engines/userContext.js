@@ -3,7 +3,7 @@
  * @module logic/engines/userContext
  */
 
-import { getLogicWatchlist, resolveWatchlistSymbols } from "../watchlistStore.js";
+import { getLogicWatchlist, resolveWatchlistForQuery } from "../watchlistStore.js";
 import { hasExplicitPortfolio, resolvePortfolioContext } from "./inferredPortfolioContext.js";
 import { logicDebug } from "../shared.js";
 
@@ -16,6 +16,7 @@ import { logicDebug } from "../shared.js";
  * @property {boolean} hasBook
  * @property {boolean} hasWatchlist
  * @property {boolean} personalScope
+ * @property {'saved'|'dashboard'|'prompt'|'empty'} [watchlistSource]
  */
 
 const PERSONAL_BOOK =
@@ -96,11 +97,17 @@ export function isPortfolioScopedQuery(prompt, ctx) {
 /**
  * @returns {UserContext}
  */
-export function resolveUserContext() {
+/**
+ * @param {string} [prompt]
+ */
+export function resolveUserContext(prompt) {
   const portfolioContext = resolvePortfolioContext();
-  const watchlistSymbols = resolveWatchlistSymbols(getLogicWatchlist());
+  const stored = getLogicWatchlist();
+  const watchlistResolved = resolveWatchlistForQuery(prompt, stored);
+  const watchlistSymbols = watchlistResolved.symbols;
   const hasExplicitBook = portfolioContext.source === "explicit";
-  const hasInferredBook = portfolioContext.source === "inferred_watchlist";
+  const hasInferredBook =
+    portfolioContext.source === "inferred_watchlist" && watchlistSymbols.length > 0;
   const hasBook = hasExplicitBook || hasInferredBook;
   const hasWatchlist = watchlistSymbols.length > 0;
   const personalScope = hasBook || hasWatchlist;
@@ -108,6 +115,7 @@ export function resolveUserContext() {
   const ctx = {
     portfolioContext,
     watchlistSymbols,
+    watchlistSource: watchlistResolved.source,
     hasExplicitBook,
     hasInferredBook,
     hasBook,
@@ -118,6 +126,7 @@ export function resolveUserContext() {
   logicDebug("userContext", {
     source: portfolioContext.source,
     watchlistN: watchlistSymbols.length,
+    watchlistSource: watchlistResolved.source,
     resolvedWatchlistSymbols: watchlistSymbols,
     hasBook,
   });

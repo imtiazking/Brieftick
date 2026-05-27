@@ -48,7 +48,8 @@ localStorage.setItem(
   JSON.stringify(["NVDA", "MSFT", "AAPL", "META", "AMD", "AVGO"])
 );
 
-const uc = resolveUserContext();
+const uc = resolveUserContext(WATCHLIST_PROMPT);
+assert(uc.hasWatchlist && uc.watchlistSymbols.includes("NVDA"), "saved watchlist in userContext");
 
 for (const prompt of [CHIP_PROMPT, WATCHLIST_PROMPT, SCENARIO_PROMPT]) {
   const entity = resolvePrimaryEntity(prompt);

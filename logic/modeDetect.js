@@ -16,7 +16,7 @@ import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 export function detectLogicMode(prompt, primaryEntity) {
   const entity = primaryEntity || resolvePrimaryEntity(prompt);
   if (!(prompt || "").trim()) return "market-pulse";
-  const userContext = resolveUserContext();
+  const userContext = resolveUserContext(prompt);
   const classified = classifyQuestion(prompt, entity, { userContext });
   const route = planLogicRoute(prompt, userContext, classified);
   return applyLogicRoute(classified, route).mode;

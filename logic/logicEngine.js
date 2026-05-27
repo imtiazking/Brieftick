@@ -109,7 +109,7 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   logicDebug("entity resolved", { primary: primaryEntity, entities });
 
   // 2. user context → context-first route → intent + response plan
-  const userContext = resolveUserContext();
+  const userContext = resolveUserContext(prompt);
   const classified = classifyQuestion(prompt, primaryEntity, { userContext });
   const logicRoute = planLogicRoute(prompt, userContext, classified);
   const routedClassification = applyLogicRoute(classified, logicRoute);

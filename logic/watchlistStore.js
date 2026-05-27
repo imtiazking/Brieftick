@@ -7,6 +7,8 @@ import { SYMBOL_PROFILE } from "./portfolioProfile.js";
 import { logicDebug } from "./shared.js";
 import { resolveWatchlistSymbols } from "./engines/watchlistSymbols.js";
 
+export { resolveWatchlistForQuery, extractTickersFromPrompt } from "./engines/watchlistSymbols.js";
+
 const WATCHLIST_KEY = "brieftick_watchlist_v1";
 const LOGIC_WATCHLIST_META_KEY = "brieftick_logic_watchlist_meta_v1";
 
@@ -45,10 +47,27 @@ export function getLogicWatchlist() {
         logicDebug("watchlistStore.healed", resolved);
       } catch (_) {}
     }
-    return resolved;
-  } catch (_) {
-    return [];
+    if (resolved.length) return resolved;
+  } catch (_) {}
+
+  if (typeof window !== "undefined") {
+    if (Array.isArray(window.watchlistSymbols) && window.watchlistSymbols.length) {
+      const fromDash = resolveWatchlistSymbols(window.watchlistSymbols);
+      if (fromDash.length) {
+        logicDebug("watchlistStore.fromDashboardMemory", fromDash);
+        return fromDash;
+      }
+    }
+    if (typeof window.getWatchlistSymbols === "function") {
+      const fromDashFn = resolveWatchlistSymbols(window.getWatchlistSymbols());
+      if (fromDashFn.length) {
+        logicDebug("watchlistStore.fromDashboardFn", fromDashFn);
+        return fromDashFn;
+      }
+    }
   }
+
+  return [];
 }
 
 /**

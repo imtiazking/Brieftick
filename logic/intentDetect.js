@@ -56,7 +56,7 @@ export const INTENT_LABELS = {
  */
 export function detectIntent(prompt, primaryEntity) {
   const entity = primaryEntity || resolvePrimaryEntity(prompt);
-  const userContext = resolveUserContext();
+  const userContext = resolveUserContext(prompt);
   const classified = classifyQuestion(prompt, entity, { userContext });
   const mode = detectLogicMode(prompt, entity);
   const intent = MODE_TO_INTENT[mode] || "market_pulse";
