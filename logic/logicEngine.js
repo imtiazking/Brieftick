@@ -31,6 +31,7 @@ import { isWatchlistPerformanceQuery, resolveUserContext } from "./engines/userC
 import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
 import { buildConversationalPresentation } from "./engines/conversationalPresentation.js";
+import { humanizeLogicResponse } from "./engines/conversationalVoice.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -95,6 +96,7 @@ export function finalizeLogicResponse(res, ctx) {
   }
 
   if (typeof window !== "undefined" && window.__LOGIC_PREVIEW === true) {
+    out = humanizeLogicResponse(out, { prompt: ctx.prompt });
     out.conversational = buildConversationalPresentation(out, ctx);
     out.responseIntent = plan?.intentId;
   }

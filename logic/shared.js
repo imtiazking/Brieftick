@@ -144,11 +144,17 @@ export async function callLogicLLM(systemPrompt, userPrompt, maxTokens = 700) {
     logicDebug("api_failed", { source: "anthropic", error: "missing_key" });
     return null;
   }
-  const prompt = `${systemPrompt}
+  const voiceRules =
+    typeof window !== "undefined" && window.__LOGIC_PREVIEW === true
+      ? `
+VOICE (required): Plain conversational prose only. No markdown (#, **), no section headers, no labels like "Headline Reason", "Primary Driver", or "Logic Summary". directAnswer must be 1-3 calm institutional sentences that answer the question directly — like a desk strategist speaking, not a report template.`
+      : "";
+
+  const prompt = `${systemPrompt}${voiceRules}
 
 Return ONLY valid JSON (no markdown fences) matching:
 {
-  "title": string,
+  "title": string (short plain title, no # markdown),
   "directAnswer": string,
   "summary": string,
   "keyDrivers": string[],

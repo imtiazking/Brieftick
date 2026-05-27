@@ -4,6 +4,7 @@
  */
 
 import { buildConversationalPresentation } from "../logic/engines/conversationalPresentation.js";
+import { humanizeLogicAnswer } from "../logic/engines/conversationalVoice.js";
 import { LOGIC_DISCLAIMER, LIMITED_DATA_MSG } from "../logic/types.js";
 
 /**
@@ -30,7 +31,11 @@ export function renderConversationalLogic(res, role = "logic") {
       primaryEntity: res.primarySymbol ? { symbol: res.primarySymbol } : undefined,
     });
 
-  const primary = conv.primaryAnswer || res.directAnswer || res.summary || "";
+  const depth = conv.depth || "standard";
+  const primary = humanizeLogicAnswer(
+    conv.primaryAnswer || res.directAnswer || res.summary || "",
+    { depth, maxChars: depth === "brief" ? 300 : 420 }
+  );
   const chips = (conv.followUpChips || []).slice(0, 8);
 
   const limitedBanner =
@@ -56,7 +61,7 @@ export function renderConversationalLogic(res, role = "logic") {
             (c) =>
               `<div class="logic-conv-panel" data-logic-chip-panel="${escapeHtml(c.id)}" hidden>
             <div class="logic-conv-panel-label">${escapeHtml(c.label)}</div>
-            <p class="logic-conv-panel-text">${escapeHtml(c.text)}</p>
+            <p class="logic-conv-panel-text">${escapeHtml(humanizeLogicAnswer(c.text, { depth: "standard", maxChars: 480 }))}</p>
           </div>`
           )
           .join("")}
@@ -74,7 +79,6 @@ export function renderConversationalLogic(res, role = "logic") {
   return `<div class="logic-msg logic-msg--logic logic-msg--conversational">
     <div class="logic-msg-head">
       <span class="logic-msg-role">${role === "user" ? "You" : "Brieftick Logic"}</span>
-      ${res.mode ? `<span class="logic-msg-mode">${escapeHtml(res.modeLabel || res.mode)}</span>` : ""}
     </div>
     ${limitedBanner}
     <div class="logic-conv-primary">

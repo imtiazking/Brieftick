@@ -11,6 +11,7 @@ import {
 } from "./shared.js";
 import { getFusedQuote, fusionAttributionSources } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
+import { humanizeLogicAnswer } from "./engines/conversationalVoice.js";
 
 /**
  * @param {{ prompt: string, primaryEntity: import('./entityResolver.js').ResolvedEntity, fusion?: import('./dataFusion.js').FusionBundle, memory?: object }} ctx
@@ -58,11 +59,13 @@ export async function runTickerIntelligenceLogic(ctx) {
     try {
       const text = await api.aiWhyMoving(symbol);
       if (text) {
+        const voice = humanizeLogicAnswer(text, { depth: "brief", maxChars: 320 });
         return buildLogicResponse({
-          title: `${displayName} (${symbol}) · Intelligence`,
-          summary: text.slice(0, 480),
+          title: displayName,
+          directAnswer: voice,
+          summary: voice,
           cards: {
-            snapshot: text.slice(0, 200),
+            snapshot: voice,
             catalyst: items[0]?.headline || "Headline and flow channel",
             macroContext: "Rates and risk appetite frame the move",
             sectorImpact: "Sector beta and peer sympathy in play",
