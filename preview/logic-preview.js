@@ -472,17 +472,6 @@ function updateHubFromResponse(res) {
       el.innerHTML = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(res.signals?.[0] || "Mixed")}</div>
         <p class="logic-widget-copy">${escapeHtml((res.cards?.snapshot || "").slice(0, 120))}</p>`;
   }
-  if (res.mode === "risk-regime") {
-    const el = document.getElementById("logicHubRisk");
-    if (el) {
-      el.innerHTML = (res.signals || [])
-        .map(
-          (s) =>
-            `<span class="logic-risk-pill logic-widget-body--loaded"><span class="logic-risk-dot"></span>${escapeHtml(s)}</span>`
-        )
-        .join("");
-    }
-  }
 }
 
 function updateInsightWidgets(lastResponse) {
@@ -521,10 +510,6 @@ function setWidgetSkeletons() {
   if (hubPulse) hubPulse.innerHTML = hubBlockSkeleton(2);
   const hubVol = document.getElementById("logicHubVol");
   if (hubVol) hubVol.innerHTML = hubBlockSkeleton(2);
-  const hubMacro = document.getElementById("logicHubMacro");
-  if (hubMacro) hubMacro.innerHTML = hubBlockSkeleton(3);
-  const hubRisk = document.getElementById("logicHubRisk");
-  if (hubRisk) hubRisk.innerHTML = hubBlockSkeleton(1);
   const stream = document.getElementById("logicStreamInner");
   if (stream) stream.innerHTML = hubBlockSkeleton(4);
 }
@@ -626,25 +611,6 @@ function renderWatchlistHub() {
   bindPromptButtons();
 }
 
-function renderMacroHub(headlines) {
-  const el = document.getElementById("logicHubMacro");
-  if (!el) return;
-  const lines =
-    headlines.length > 0
-      ? headlines.slice(0, 4)
-      : [
-          { headline: "Fed speakers lean cautious on near-term cuts" },
-          { headline: "Inflation path still anchors rate expectations" },
-          { headline: "Dollar tone influences risk appetite" },
-        ];
-  el.innerHTML = lines
-    .map(
-      (n) =>
-        `<div class="logic-macro-line logic-widget-body--loaded">${escapeHtml((n.headline || "").slice(0, 100))}</div>`
-    )
-    .join("");
-}
-
 async function hydrateIntelligenceHub() {
   setWidgetSkeletons();
   renderHeroChips();
@@ -655,17 +621,12 @@ async function hydrateIntelligenceHub() {
   try {
     const session = await executeLiveIntelligenceSession();
     liveFeed = session.feed || [];
-    const hubMacro = document.getElementById("logicHubMacro");
-    if (hubMacro && session.leadNote) {
-      hubMacro.innerHTML = `<div class="logic-macro-line logic-widget-body--loaded">${escapeHtml(session.leadNote)}</div>`;
-    }
     logicLog("live intelligence session", { notes: liveFeed.length });
   } catch (e) {
     logicLog("live intelligence fallback", e.message || e);
   }
 
   renderNarrativeFeed(newsPack.headlines, newsPack.live, liveFeed);
-  if (!liveFeed.length) renderMacroHub(newsPack.headlines);
 
   try {
     const [pulse, risk] = await Promise.all([
@@ -679,13 +640,6 @@ async function hydrateIntelligenceHub() {
       <p class="logic-widget-copy">${escapeHtml((pulse.cards?.volatility || "Volatility channel active").slice(0, 100))}</p>`;
     const riskBody = `<div class="logic-widget-val logic-widget-body--loaded">${escapeHtml(risk.signals?.[0] || "Mixed")}</div>
       <p class="logic-widget-copy">${escapeHtml((risk.cards?.snapshot || risk.summary).slice(0, 130))}</p>`;
-    const riskPills = (risk.signals || ["Mixed", "Macro monitored"])
-      .map(
-        (s) =>
-          `<span class="logic-risk-pill logic-widget-body--loaded"><span class="logic-risk-dot"></span>${escapeHtml(s)}</span>`
-      )
-      .join("");
-
     const pulseEl = document.getElementById("logicWidgetPulse");
     const riskEl = document.getElementById("logicWidgetRisk");
     if (pulseEl) pulseEl.innerHTML = pulseBody;
@@ -694,8 +648,6 @@ async function hydrateIntelligenceHub() {
     if (hubPulse) hubPulse.innerHTML = pulseBody;
     const hubVol = document.getElementById("logicHubVol");
     if (hubVol) hubVol.innerHTML = volBody;
-    const hubRisk = document.getElementById("logicHubRisk");
-    if (hubRisk) hubRisk.innerHTML = riskPills;
   } catch (e) {
     logicLog("error", { hub: e.message });
   }
