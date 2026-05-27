@@ -8,16 +8,7 @@ import { resolvePrimaryEntity, resolveTickerTargets } from "./entityResolver.js"
 import { getTickerDisplayName, resolveQuoteSymbol } from "./engines/tickerCatalog.js";
 import { isConversationalLogicPreview } from "./previewFlags.js";
 
-export function logicDebug(event, data) {
-  const payload = data !== undefined ? data : "";
-  const on =
-    window.__LOGIC_DEBUG === true ||
-    window.__LOGIC_PREVIEW === true ||
-    new URLSearchParams(location.search).get("logic_debug") === "1" ||
-    new URLSearchParams(location.search).get("preview") === "logic" ||
-    new URLSearchParams(location.search).get("preview") === "agent";
-  if (on) console.log(`[Brieftick Logic] ${event}`, payload);
-}
+export { logicDebug } from "./logicDebug.js";
 
 /**
  * @param {object} ctx

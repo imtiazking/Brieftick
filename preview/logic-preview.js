@@ -29,6 +29,7 @@ import {
   syncLogicPreviewFlags,
 } from "../logic/previewFlags.js";
 import { buildTickerDeskAnswer } from "../logic/engines/tickerDeskCopy.js";
+import { buildTickerUnresolvedResponse } from "../logic/engines/tickerResolver.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 const LOGIC_PREVIEW_BUILD = "conv-v2";
@@ -395,6 +396,19 @@ export async function submitLogicQuery(promptText) {
   setRunButtonsDisabled(true);
 
   const primary = resolvePrimaryEntity(prompt);
+  if (primary.unresolved) {
+    const userHtml = renderUserBubble(prompt);
+    showResultPanelLoading();
+    document.getElementById("logicLoading")?.remove();
+    const blocked = enrichResponseMeta(
+      buildTickerUnresolvedResponse({ suggestions: primary.suggestions }),
+      prompt
+    );
+    renderResultSurface(userHtml + renderLogicResponse(blocked, "logic", prompt), "ready");
+    isProcessing = false;
+    setRunButtonsDisabled(false);
+    return;
+  }
   const intent = detectIntent(prompt, primary);
   const mode = intent.mode || "market-pulse";
   activeMode = mode;

@@ -9,8 +9,12 @@ import {
   extractSymbolsFromPrompt,
   getTickerDisplayName,
   isKnownLogicTicker,
-  LOGIC_TICKER_CATALOG,
 } from "./engines/tickerCatalog.js";
+import {
+  isTickerLikeQuery,
+  resolveTickerFromPrompt,
+} from "./engines/tickerResolver.js";
+import { resetTickerQueryContext, rememberResolvedTicker } from "./engines/tickerQueryContext.js";
 
 /** @typedef {'company'|'ticker'|'sector'|'sector_theme'|'macro'|'etf'|'index'|'market'} EntityType */
 
@@ -30,53 +34,6 @@ const STOPWORDS = new Set([
   "CURRENT", "MARKET", "STOCK", "STOCKS", "SHARE", "PRICE", "MOVING", "MOVE",
   "HAPPENING", "HAPPENED", "UPDATE", "UPDATES", "READ", "BRIEF", "REGIME", "RISK",
 ]);
-
-/** [alias, symbol, displayName] — longest aliases matched first */
-const COMPANY_ALIASES = [
-  ["nvidia corporation", "NVDA", "Nvidia"],
-  ["nvidia", "NVDA", "Nvidia"],
-  ["nvda", "NVDA", "Nvidia"],
-  ["apple inc", "AAPL", "Apple"],
-  ["apple", "AAPL", "Apple"],
-  ["aapl", "AAPL", "Apple"],
-  ["microsoft corporation", "MSFT", "Microsoft"],
-  ["microsoft", "MSFT", "Microsoft"],
-  ["msft", "MSFT", "Microsoft"],
-  ["alphabet", "GOOGL", "Alphabet"],
-  ["google", "GOOGL", "Alphabet"],
-  ["googl", "GOOGL", "Alphabet"],
-  ["amazon", "AMZN", "Amazon"],
-  ["amzn", "AMZN", "Amazon"],
-  ["meta platforms", "META", "Meta"],
-  ["facebook", "META", "Meta"],
-  ["meta", "META", "Meta"],
-  ["tesla", "TSLA", "Tesla"],
-  ["tsla", "TSLA", "Tesla"],
-  ["amd", "AMD", "AMD"],
-  ["advanced micro", "AMD", "AMD"],
-  ["intel", "INTC", "Intel"],
-  ["intc", "INTC", "Intel"],
-  ["broadcom", "AVGO", "Broadcom"],
-  ["netflix", "NFLX", "Netflix"],
-  ["jpmorgan", "JPM", "JPMorgan"],
-  ["berkshire", "BRK.B", "Berkshire Hathaway"],
-  ["exxon", "XOM", "Exxon Mobil"],
-  ["chevron", "CVX", "Chevron"],
-  ["costco", "COST", "Costco"],
-  ["eli lilly", "LLY", "Eli Lilly"],
-  ["palantir", "PLTR", "Palantir"],
-  ["pltr", "PLTR", "Palantir"],
-  ["coinbase", "COIN", "Coinbase"],
-  ["uber", "UBER", "Uber"],
-  ["disney", "DIS", "Disney"],
-  ["salesforce", "CRM", "Salesforce"],
-  ["oracle", "ORCL", "Oracle"],
-  ["micron", "MU", "Micron"],
-  ["super micro", "SMCI", "Super Micro"],
-  ["smci", "SMCI", "Super Micro"],
-];
-
-const TICKER_SYMBOLS = LOGIC_TICKER_CATALOG;
 
 const INDEX_ALIASES = [
   ["s&p 500", "SPY", "S&P 500", "index"],
@@ -147,18 +104,14 @@ export function resolveEntities(prompt) {
     found.push(entity);
   };
 
-  for (const [alias, symbol, name] of [...COMPANY_ALIASES].sort(
-    (a, b) => b[0].length - a[0].length
-  )) {
-    const idx = normalized.indexOf(alias);
-    if (idx === -1) continue;
+  const tickerHit = resolveTickerFromPrompt(prompt);
+  if (tickerHit.ok && tickerHit.symbol) {
     tryAdd({
-      entityType: "company",
-      symbol,
-      companyName: name,
-      confidence: alias.length >= 6 ? 92 : 85,
+      entityType: tickerHit.assetType === "etf" ? "etf" : "company",
+      symbol: tickerHit.symbol,
+      companyName: tickerHit.name,
+      confidence: tickerHit.confidence,
     });
-    usedSpans.push([idx, idx + alias.length]);
   }
 
   for (const [alias, symbol, name, type] of INDEX_ALIASES) {
@@ -208,10 +161,12 @@ export function resolveEntities(prompt) {
   const trimmed = (prompt || "").trim();
   const firstToken = trimmed.split(/\s+/)[0]?.replace(/[^A-Za-z0-9.]/g, "").toUpperCase() || "";
   const isBareTickerPrompt =
-    trimmed.split(/\s+/).length === 1 && TICKER_SYMBOLS.has(firstToken);
+    trimmed.split(/\s+/).length === 1 && isKnownLogicTicker(firstToken);
+
+  const allowWatchlist = !isTickerLikeQuery(prompt);
 
   if (!isWatchlistPerformanceQuery(prompt)) {
-    for (const sym of extractSymbolsFromPrompt(prompt)) {
+    for (const sym of extractSymbolsFromPrompt(prompt, [], { allowWatchlist })) {
       if (STOPWORDS.has(sym)) continue;
       const hasDollar = (prompt || "").toUpperCase().includes(`$${sym}`);
       if (sym === firstToken && !hasDollar && !isBareTickerPrompt) continue;
@@ -240,15 +195,50 @@ export function resolveEntities(prompt) {
  * @param {{ watchlistSymbols?: string[] }} [options]
  */
 export function resolvePrimaryEntity(prompt, options = {}) {
-  const fromPrompt = extractSymbolsFromPrompt(prompt, options.watchlistSymbols || []);
+  resetTickerQueryContext();
+
+  const resolution = resolveTickerFromPrompt(prompt, options);
+  if (resolution.ok && resolution.symbol) {
+    const entity = {
+      entityType: resolution.assetType === "etf" ? "etf" : "ticker",
+      symbol: resolution.symbol,
+      companyName: resolution.name || getTickerDisplayName(resolution.symbol),
+      confidence: resolution.confidence,
+    };
+    rememberResolvedTicker({
+      symbol: entity.symbol,
+      name: entity.companyName,
+    });
+    return entity;
+  }
+
+  if (isTickerLikeQuery(prompt)) {
+    return {
+      entityType: "unresolved",
+      symbol: null,
+      companyName: null,
+      confidence: 0,
+      unresolved: true,
+      suggestions: resolution.suggestions || [],
+    };
+  }
+
+  const allowWatchlist = true;
+  const fromPrompt = extractSymbolsFromPrompt(
+    prompt,
+    allowWatchlist ? options.watchlistSymbols || [] : [],
+    { allowWatchlist }
+  );
   if (fromPrompt.length) {
     const sym = fromPrompt[0];
-    return {
+    const entity = {
       entityType: isKnownLogicTicker(sym) ? "ticker" : "etf",
       symbol: sym,
       companyName: getTickerDisplayName(sym),
       confidence: 90,
     };
+    rememberResolvedTicker({ symbol: entity.symbol, name: entity.companyName });
+    return entity;
   }
 
   const entities = resolveEntities(prompt);
@@ -268,7 +258,15 @@ export function resolvePrimaryEntity(prompt, options = {}) {
  * @param {{ watchlistSymbols?: string[] }} [options]
  */
 export function resolveTickerTargets(prompt, options = {}) {
-  const fromPrompt = extractSymbolsFromPrompt(prompt, options.watchlistSymbols || []);
+  const resolution = resolveTickerFromPrompt(prompt, options);
+  if (resolution.ok && resolution.symbol) return [resolution.symbol];
+
+  const allowWatchlist = !isTickerLikeQuery(prompt);
+  const fromPrompt = extractSymbolsFromPrompt(
+    prompt,
+    allowWatchlist ? options.watchlistSymbols || [] : [],
+    { allowWatchlist }
+  );
   if (fromPrompt.length) return fromPrompt;
   const primary = resolvePrimaryEntity(prompt, options);
   return primary.symbol ? [primary.symbol] : [];

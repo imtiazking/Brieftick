@@ -17,11 +17,13 @@ function limitSentences(text, max) {
   return parts.slice(0, max).join(" ").trim();
 }
 
-/** @typedef {'mega_cap_tech'|'semi_ai'|'ev_high_beta'|'bank_financial'|'gold_hedge'|'energy'|'defensive_staples'|'index_etf'|'general'} TickerVoiceType */
+/** @typedef {'mega_cap_tech'|'semi_ai'|'memory_semis'|'legacy_semi'|'cloud_software'|'telecom'|'ev_high_beta'|'bank_financial'|'gold_hedge'|'energy'|'defensive_staples'|'index_etf'|'general'} TickerVoiceType */
 
-const SEMIS = new Set([
-  "NVDA", "AMD", "INTC", "AVGO", "MU", "ASML", "TSM", "ARM", "SMCI", "SOX", "SMH",
-]);
+const SEMIS_AI = new Set(["NVDA", "AMD", "AVGO", "ASML", "TSM", "ARM", "SMCI", "SOX", "SMH"]);
+const MEMORY_SEMIS = new Set(["MU"]);
+const LEGACY_SEMIS = new Set(["INTC"]);
+const CLOUD_SOFTWARE = new Set(["SNOW", "CRM", "ORCL"]);
+const TELECOM = new Set(["NOK", "VZ", "T"]);
 const MEGA_TECH = new Set([
   "AAPL", "MSFT", "GOOGL", "GOOG", "AMZN", "META", "NFLX", "ORCL", "CRM", "COST",
 ]);
@@ -87,7 +89,11 @@ export function tickerAnswerStructureKey(text, symbol, name) {
 export function classifyTickerVoiceType(symbol) {
   const s = String(symbol || "").toUpperCase();
   if (EV_HIGH_BETA.has(s)) return "ev_high_beta";
-  if (SEMIS.has(s)) return "semi_ai";
+  if (CLOUD_SOFTWARE.has(s)) return "cloud_software";
+  if (TELECOM.has(s)) return "telecom";
+  if (MEMORY_SEMIS.has(s)) return "memory_semis";
+  if (LEGACY_SEMIS.has(s)) return "legacy_semi";
+  if (SEMIS_AI.has(s)) return "semi_ai";
   if (MEGA_TECH.has(s)) return "mega_cap_tech";
   if (BANKS.has(s)) return "bank_financial";
   if (PRECIOUS.has(s)) return "gold_hedge";
@@ -136,6 +142,38 @@ function variantsForType(type, symbol, ctx) {
       () =>
         `For ${name}, the tape reads macro-led: EV and growth beta are moving together without a dedicated catalyst.`,
     ],
+    cloud_software: [
+      () =>
+        `${name} is trading with cloud and data-infrastructure software tone — the group matters more than a lone headline.`,
+      () =>
+        `For ${name}, enterprise software sentiment is in charge; nothing name-specific is dominating the session.`,
+      () =>
+        `${name} looks more like a cloud-software batch move than a Snowflake-specific catalyst.`,
+    ],
+    telecom: [
+      () =>
+        `${name} is moving with telecom and network-equipment tone rather than a dedicated company headline.`,
+      () =>
+        `For ${name}, the read is sector-linked — carriers and network names are moving together.`,
+      () =>
+        `${name} fits the telecom infrastructure bucket today; no standalone catalyst is obvious.`,
+    ],
+    memory_semis: [
+      () =>
+        `${name} is tracking memory-chip sentiment — DRAM/NAND tone is louder than a one-off headline.`,
+      () =>
+        `Memory semis are setting the pace for ${name}; the group move is the cleaner story.`,
+      () =>
+        `${name} is ${easing} with memory peers; company-specific news is not leading.`,
+    ],
+    legacy_semi: [
+      () =>
+        `${name} is moving with legacy semiconductor and CPU tone — foundry and PC demand matter more than a single headline.`,
+      () =>
+        `For ${name}, the old-line semi complex is in focus; idiosyncratic news is not dominating.`,
+      () =>
+        `${name} is tracking Intel/CPU peer tone rather than a standalone catalyst.`,
+    ],
     semi_ai: [
       () =>
         `Nvidia is easing alongside semiconductors and AI-linked names after recent strength, with no major standalone headline driving the move.`,
@@ -147,8 +185,6 @@ function variantsForType(type, symbol, ctx) {
         `${name} is tracking peer semiconductors more than its own story — typical when the sector batch moves together.`,
     ],
     mega_cap_tech: [
-      () =>
-        `Apple's move appears more connected to broader mega-cap positioning and market tone than company-specific news.`,
       () =>
         `${name}'s move appears more connected to broader mega-cap positioning and market tone than company-specific news.`,
       () =>
@@ -217,7 +253,22 @@ function variantsForType(type, symbol, ctx) {
 
   if (sym === "TSLA" && type === "ev_high_beta") return [pool[0], pool[1], pool[2], pool[3]];
   if (sym === "NVDA" && type === "semi_ai") return [pool[0], pool[1], pool[2], pool[3]];
-  if (sym === "AAPL" && type === "mega_cap_tech") return [pool[0], pool[1], pool[2], pool[3]];
+  if (sym === "AAPL" && type === "mega_cap_tech") {
+    return [
+      () =>
+        `Apple's move appears more connected to broader mega-cap positioning and market tone than company-specific news.`,
+      ...pool,
+    ];
+  }
+  if (sym === "GOOGL" && type === "mega_cap_tech") {
+    return [
+      () =>
+        `Alphabet is trading with search, ads, and cloud tone today — the mega-cap complex is doing more work than a single headline.`,
+      () =>
+        `${name} is moving with search and cloud sentiment; company-specific news is not leading the print.`,
+      ...pool,
+    ];
+  }
   if (sym === "JPM" && type === "bank_financial") return [pool[0], pool[1], pool[2], pool[3]];
   if ((sym === "GLD" || sym === "SLV") && type === "gold_hedge") return [pool[0], pool[1], pool[2], pool[3]];
 
@@ -243,6 +294,10 @@ function headlineVariants(hook, ctx) {
 function sectorWord(type) {
   const map = {
     semi_ai: "semiconductor",
+    memory_semis: "memory semiconductor",
+    legacy_semi: "semiconductor",
+    cloud_software: "cloud software",
+    telecom: "telecom",
     ev_high_beta: "growth",
     mega_cap_tech: "mega-cap tech",
     bank_financial: "financial",
@@ -285,6 +340,11 @@ export function applyTickerVoiceVariation(input) {
   const symbol = String(input.symbol || "").toUpperCase();
   const name = input.displayName || getTickerDisplayName(symbol) || symbol;
   const type = classifyTickerVoiceType(symbol);
+
+  if (input.resetSession) {
+    const list = getSessionPatterns();
+    list.length = 0;
+  }
   const headline = String(input.headline || "").trim();
   const hook =
     headline.length > 110 ? `${headline.slice(0, 107).trim()}…` : headline;

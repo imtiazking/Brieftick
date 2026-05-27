@@ -34,6 +34,8 @@ import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
 import { buildConversationalPresentation } from "./engines/conversationalPresentation.js";
 import { humanizeLogicResponse } from "./engines/conversationalVoice.js";
 import { applyTickerVoiceToResponse } from "./engines/tickerVoiceVariation.js";
+import { buildTickerUnresolvedResponse } from "./engines/tickerResolver.js";
+import { enforceTickerAnswerIdentity } from "./engines/tickerAnswerIdentity.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -97,10 +99,16 @@ export function finalizeLogicResponse(res, ctx) {
     out = applyResponseContract(out, plan);
   }
 
-  if (out.mode === "ticker") {
+  if (out.mode === "ticker" && ctx.primaryEntity?.symbol) {
+    out = enforceTickerAnswerIdentity(out, ctx.primaryEntity, ctx);
     out = applyTickerVoiceToResponse(out, {
       headline: out.cards?.catalyst,
       quote: ctx.fusion ? getQuoteFromFusion(ctx, out.primarySymbol) : null,
+    });
+    out = enforceTickerAnswerIdentity(out, ctx.primaryEntity, ctx);
+    logicDebug("tickerAnswerIdentity.finalSymbol", {
+      resolved: ctx.primaryEntity.symbol,
+      primarySymbol: out.primarySymbol,
     });
   }
 
@@ -135,6 +143,24 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   const entityOpts = { watchlistSymbols: userContextEarly.watchlistSymbols };
   const entities = resolveEntities(prompt);
   const primaryEntity = resolvePrimaryEntity(prompt, entityOpts);
+
+  if (primaryEntity.unresolved) {
+    logicDebug("tickerResolver.blocked", {
+      rawInput: prompt,
+      suggestions: primaryEntity.suggestions,
+    });
+    const blocked = buildTickerUnresolvedResponse({
+      suggestions: primaryEntity.suggestions,
+    });
+    return finalizeLogicResponse(blocked, {
+      prompt,
+      mode: "ticker",
+      primaryEntity,
+      fusion: null,
+      responsePlan: { intentId: "ticker", mode: "ticker" },
+    });
+  }
+
   const tickerTargets = primaryEntity.symbol
     ? [
         primaryEntity.symbol,
