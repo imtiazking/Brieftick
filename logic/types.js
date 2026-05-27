@@ -53,6 +53,7 @@ export const LIMITED_DATA_MSG =
  * @property {string[]} [relatedThemes]
  * @property {string[]} [qualityIssues]
  * @property {string} [cardSchemaId]
+ * @property {{ primaryAnswer: string, supportingInsights: { id: string, label: string, text: string }[], exploreNext: string[] }} [conversational]
  */
 
 export const LOGIC_MODES = [

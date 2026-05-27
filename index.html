@@ -2820,6 +2820,46 @@ h1,h2,h3{
   border:1px solid rgba(212,168,90,.28);background:rgba(212,168,90,.06);
 }
 .logic-direct-answer-text{font-size:13px;line-height:1.5;color:var(--ink)!important}
+.logic-msg--conversational{border-color:rgba(212,168,90,.12);background:rgba(8,10,16,.65)}
+.logic-conv-primary{
+  margin:4px 0 16px;padding:16px 18px;border-radius:10px;
+  border:1px solid rgba(212,168,90,.22);
+  background:linear-gradient(145deg,rgba(212,168,90,.07),rgba(78,168,255,.04));
+}
+.logic-conv-answer{
+  margin:0;font-family:var(--display);font-size:clamp(16px,2.1vw,19px);
+  line-height:1.55;color:var(--ink);letter-spacing:-.015em;font-weight:450;
+}
+.logic-conv-insights{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:10px;margin:0 0 16px;
+}
+.logic-conv-insight{
+  padding:12px 14px;border-radius:8px;border:1px solid var(--border);
+  background:rgba(0,0,0,.28);
+}
+.logic-conv-insight-label{
+  font-family:var(--mono);font-size:8px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:8px;
+}
+.logic-conv-insight-text{font-size:12px;line-height:1.5;color:var(--ink-dim);margin:0}
+.logic-conv-explore{margin:0 0 12px}
+.logic-conv-explore-title{
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px;
+}
+.logic-conv-followups{display:flex;flex-direction:column;gap:8px}
+.logic-conv-followup{
+  text-align:left;padding:10px 12px;border-radius:8px;cursor:pointer;
+  border:1px solid rgba(78,168,255,.18);background:rgba(78,168,255,.05);
+  color:var(--ink);font-size:12px;line-height:1.45;font-family:inherit;
+  transition:border-color .15s,background .15s;
+}
+.logic-conv-followup:hover{
+  border-color:rgba(78,168,255,.35);background:rgba(78,168,255,.1);color:var(--ink);
+}
+.logic-conv-limited{font-family:var(--mono);font-size:10px;color:var(--gold);margin:0 0 10px}
+.logic-conv-foot{margin-top:4px}
 .logic-confidence-reasons{font-family:var(--mono);font-size:9px;color:var(--ink-faint);margin:4px 0 0;width:100%;line-height:1.4}
 .logic-intel-card{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .logic-intel-section{padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(0,0,0,.2)}
