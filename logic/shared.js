@@ -4,7 +4,8 @@
  */
 
 import { buildLogicResponse, LIMITED_DATA_MSG, LOGIC_DISCLAIMER } from "./types.js";
-import { resolvePrimaryEntity } from "./entityResolver.js";
+import { resolvePrimaryEntity, resolveTickerTargets } from "./entityResolver.js";
+import { getTickerDisplayName, resolveQuoteSymbol } from "./engines/tickerCatalog.js";
 
 export function logicDebug(event, data) {
   const payload = data !== undefined ? data : "";
@@ -53,10 +54,32 @@ export function buildFusionPromptExtras(ctx, symbol) {
  * @param {string} prompt
  * @param {import('./entityResolver.js').ResolvedEntity} [entity]
  */
-export function resolveSymbolForPrompt(prompt, entity) {
-  const primary = entity || resolvePrimaryEntity(prompt);
+/**
+ * @param {string} prompt
+ * @param {import('./entityResolver.js').ResolvedEntity} [entity]
+ * @param {{ watchlistSymbols?: string[] }} [options]
+ */
+export function resolveSymbolForPrompt(prompt, entity, options = {}) {
+  const targets = resolveTickerTargets(prompt, options);
+  if (targets.length) return targets[0];
+  const primary = entity || resolvePrimaryEntity(prompt, options);
   if (primary?.symbol) return primary.symbol;
+  if (/ticker|why is|why are|moving|what.*driving/i.test(prompt || "")) {
+    return null;
+  }
   return "SPY";
+}
+
+/**
+ * @param {string} prompt
+ * @param {import('./entityResolver.js').ResolvedEntity} [entity]
+ * @param {{ watchlistSymbols?: string[] }} [options]
+ */
+export function resolveSymbolsForPrompt(prompt, entity, options = {}) {
+  const targets = resolveTickerTargets(prompt, options);
+  if (targets.length) return targets;
+  const sym = resolveSymbolForPrompt(prompt, entity, options);
+  return sym ? [sym] : [];
 }
 
 export async function getHeadlines(limit = 6) {
@@ -84,18 +107,25 @@ export async function getHeadlines(limit = 6) {
 export async function getQuote(symbol) {
   const api = window.BriefTickAPI;
   const failedSources = [];
+  const requested = String(symbol || "").toUpperCase();
+  const quoteSym = resolveQuoteSymbol(requested);
   if (!api) {
     failedSources.push("quote:no_api");
     return { quote: null, failedSources };
   }
   try {
     if (typeof getFinnhubQuotes === "function") {
-      const q = await getFinnhubQuotes([symbol]);
-      if (q?.[symbol]?.price != null) return { quote: q[symbol], failedSources };
+      const q = await getFinnhubQuotes([quoteSym]);
+      if (q?.[quoteSym]?.price != null) {
+        const row = { ...q[quoteSym], symbol: requested };
+        return { quote: row, failedSources };
+      }
     }
-    const quote = await api.getQuote(symbol);
-    if (quote) return { quote, failedSources };
-    failedSources.push(`quote:empty_${symbol}`);
+    const quote = await api.getQuote(quoteSym);
+    if (quote) {
+      return { quote: { ...quote, symbol: requested }, failedSources };
+    }
+    failedSources.push(`quote:empty_${quoteSym}`);
   } catch (e) {
     if (/rate|429|limit/i.test(e.message || "")) {
       failedSources.push(`quote:rate_limit_${symbol}`);

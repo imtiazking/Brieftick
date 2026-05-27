@@ -7,17 +7,10 @@ import { logicDebug } from "../shared.js";
 
 /** @typedef {'empty'|'too_long'|'invalid_format'|'resolver_stopword'|'repaired_concat'} RejectReason */
 
-/**
- * Known liquid symbols — used to repair concatenated blobs (NVDA+MSFT+…).
- * Keep in sync with entityResolver TICKER_SYMBOLS for Logic paths.
- */
-export const KNOWN_WATCHLIST_TICKERS = new Set([
-  "NVDA", "TSLA", "AAPL", "MSFT", "GOOGL", "GOOG", "AMZN", "META", "AMD", "INTC",
-  "AVGO", "SMCI", "SPY", "QQQ", "DIA", "IWM", "XOM", "CVX", "JPM", "GS", "NFLX",
-  "CRM", "COST", "LLY", "JNJ", "BAC", "CAT", "BA", "RIVN", "SOX", "XLK", "XLF",
-  "XLE", "XLV", "XLP", "SPX", "NDX", "MU", "ARM", "ASML", "TSM", "PLTR", "COIN",
-  "UBER", "DIS", "ORCL", "BRK.B",
-]);
+import { LOGIC_TICKER_CATALOG } from "./tickerCatalog.js";
+
+/** Known liquid symbols — used to repair concatenated blobs (NVDA+MSFT+…). */
+export const KNOWN_WATCHLIST_TICKERS = LOGIC_TICKER_CATALOG;
 
 /** False positives from entityResolver-style prompt scanning — never watchlist names. */
 const RESOLVER_STOPWORDS = new Set([

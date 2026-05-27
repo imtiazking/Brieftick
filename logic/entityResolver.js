@@ -5,6 +5,12 @@
  */
 
 import { isWatchlistPerformanceQuery } from "./engines/userContext.js";
+import {
+  extractSymbolsFromPrompt,
+  getTickerDisplayName,
+  isKnownLogicTicker,
+  LOGIC_TICKER_CATALOG,
+} from "./engines/tickerCatalog.js";
 
 /** @typedef {'company'|'ticker'|'sector'|'sector_theme'|'macro'|'etf'|'index'|'market'} EntityType */
 
@@ -70,12 +76,7 @@ const COMPANY_ALIASES = [
   ["smci", "SMCI", "Super Micro"],
 ];
 
-const TICKER_SYMBOLS = new Set([
-  "NVDA", "TSLA", "AAPL", "MSFT", "GOOGL", "GOOG", "AMZN", "META", "AMD", "INTC",
-  "AVGO", "SMCI", "SPY", "QQQ", "DIA", "IWM", "XOM", "CVX", "JPM", "GS", "NFLX",
-  "CRM", "COST", "LLY", "JNJ", "BAC", "CAT", "BA", "RIVN", "SOX", "XLK", "XLF",
-  "XLE", "XLV", "XLP", "SPX", "NDX",
-]);
+const TICKER_SYMBOLS = LOGIC_TICKER_CATALOG;
 
 const INDEX_ALIASES = [
   ["s&p 500", "SPY", "S&P 500", "index"],
@@ -210,20 +211,17 @@ export function resolveEntities(prompt) {
     trimmed.split(/\s+/).length === 1 && TICKER_SYMBOLS.has(firstToken);
 
   if (!isWatchlistPerformanceQuery(prompt)) {
-  const upper = prompt.toUpperCase();
-  const tickerMatches = upper.match(/\$?([A-Z]{1,5})\b/g) || [];
-  for (const raw of tickerMatches) {
-    const sym = raw.replace("$", "");
-    if (!TICKER_SYMBOLS.has(sym) || STOPWORDS.has(sym)) continue;
-    const hasDollar = raw.includes("$");
-    if (sym === firstToken && !hasDollar && !isBareTickerPrompt) continue;
-    tryAdd({
-      entityType: "ticker",
-      symbol: sym,
-      companyName: sym,
-      confidence: hasDollar ? 88 : 80,
-    });
-  }
+    for (const sym of extractSymbolsFromPrompt(prompt)) {
+      if (STOPWORDS.has(sym)) continue;
+      const hasDollar = (prompt || "").toUpperCase().includes(`$${sym}`);
+      if (sym === firstToken && !hasDollar && !isBareTickerPrompt) continue;
+      tryAdd({
+        entityType: "ticker",
+        symbol: sym,
+        companyName: getTickerDisplayName(sym),
+        confidence: hasDollar ? 92 : 86,
+      });
+    }
   }
 
   found.sort((a, b) => b.confidence - a.confidence);
@@ -237,7 +235,22 @@ export function resolveEntities(prompt) {
  * @param {string} prompt
  * @returns {ResolvedEntity}
  */
-export function resolvePrimaryEntity(prompt) {
+/**
+ * @param {string} prompt
+ * @param {{ watchlistSymbols?: string[] }} [options]
+ */
+export function resolvePrimaryEntity(prompt, options = {}) {
+  const fromPrompt = extractSymbolsFromPrompt(prompt, options.watchlistSymbols || []);
+  if (fromPrompt.length) {
+    const sym = fromPrompt[0];
+    return {
+      entityType: isKnownLogicTicker(sym) ? "ticker" : "etf",
+      symbol: sym,
+      companyName: getTickerDisplayName(sym),
+      confidence: 90,
+    };
+  }
+
   const entities = resolveEntities(prompt);
   const priority = ["company", "etf", "index", "ticker", "sector_theme", "macro", "market"];
   for (const type of priority) {
@@ -247,4 +260,16 @@ export function resolvePrimaryEntity(prompt) {
   const company = entities.find((e) => e.entityType === "company");
   if (company) return company;
   return entities[0] || { entityType: "market", symbol: null, companyName: null, confidence: 35 };
+}
+
+/**
+ * All ticker targets for a prompt (compare / multi-name questions).
+ * @param {string} prompt
+ * @param {{ watchlistSymbols?: string[] }} [options]
+ */
+export function resolveTickerTargets(prompt, options = {}) {
+  const fromPrompt = extractSymbolsFromPrompt(prompt, options.watchlistSymbols || []);
+  if (fromPrompt.length) return fromPrompt;
+  const primary = resolvePrimaryEntity(prompt, options);
+  return primary.symbol ? [primary.symbol] : [];
 }

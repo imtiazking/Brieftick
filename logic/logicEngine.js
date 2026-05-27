@@ -112,12 +112,20 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   logicDebug("prompt received", prompt.slice(0, 160));
 
   // 1. entityResolver
+  const userContextEarly = resolveUserContext(prompt);
+  const entityOpts = { watchlistSymbols: userContextEarly.watchlistSymbols };
   const entities = resolveEntities(prompt);
-  const primaryEntity = resolvePrimaryEntity(prompt);
-  logicDebug("entity resolved", { primary: primaryEntity, entities });
+  const primaryEntity = resolvePrimaryEntity(prompt, entityOpts);
+  const tickerTargets = primaryEntity.symbol
+    ? [
+        primaryEntity.symbol,
+        ...entities.map((e) => e.symbol).filter((s) => s && s !== primaryEntity.symbol),
+      ].filter((s, i, arr) => s && arr.indexOf(s) === i)
+    : [];
+  logicDebug("entity resolved", { primary: primaryEntity, entities, tickerTargets });
 
   // 2. user context → context-first route → intent + response plan
-  const userContext = resolveUserContext(prompt);
+  const userContext = userContextEarly;
   const classified = classifyQuestion(prompt, primaryEntity, { userContext });
   const logicRoute = planLogicRoute(prompt, userContext, classified);
   const routedClassification = applyLogicRoute(classified, logicRoute);
@@ -159,6 +167,9 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     mode,
     primaryEntity: routedEntity,
     entities,
+    userContext,
+    entityOpts,
+    tickerTargets,
   });
 
   const portfolioMemory = buildPortfolioMemoryFromContext(userContext.portfolioContext);
@@ -182,6 +193,8 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     portfolioProfile: portfolioMemory.profile,
     portfolioContext: userContext.portfolioContext,
     watchlistExposure: inferWatchlistExposure(),
+    tickerTargets,
+    entityOpts,
   };
 
   ctx = buildIntelligenceContext(ctx);

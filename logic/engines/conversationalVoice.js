@@ -110,8 +110,15 @@ export function limitSentences(text, max) {
  * Light touch-ups for stiff template phrasing.
  * @param {string} text
  */
+/**
+ * @param {string} text
+ */
+export function dedupeSymbolLead(text) {
+  return String(text || "").replace(/\b([A-Z]{2,5})\s+\1\b/g, "$1");
+}
+
 export function softenRoboticPhrasing(text) {
-  let s = String(text || "");
+  let s = dedupeSymbolLead(String(text || ""));
   s = s.replace(
     /(\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+is\s+down\s+([\d.]+)%\s+with\s+no\s+major\s+company-specific\s+news\s+driving\s+the\s+(decline|drop|move|weakness)\.?/gi,
     "$1 is slightly lower today (−$2%) with no major company-specific catalyst — broader sector tone may be doing more of the work."
