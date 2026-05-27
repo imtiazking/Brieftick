@@ -3,7 +3,7 @@
  * @module logic/engines/userContext
  */
 
-import { getLogicWatchlist } from "../watchlistStore.js";
+import { getLogicWatchlist, resolveWatchlistSymbols } from "../watchlistStore.js";
 import { hasExplicitPortfolio, resolvePortfolioContext } from "./inferredPortfolioContext.js";
 import { logicDebug } from "../shared.js";
 
@@ -97,7 +97,7 @@ export function isPortfolioScopedQuery(prompt, ctx) {
  */
 export function resolveUserContext() {
   const portfolioContext = resolvePortfolioContext();
-  const watchlistSymbols = getLogicWatchlist();
+  const watchlistSymbols = resolveWatchlistSymbols(getLogicWatchlist());
   const hasExplicitBook = portfolioContext.source === "explicit";
   const hasInferredBook = portfolioContext.source === "inferred_watchlist";
   const hasBook = hasExplicitBook || hasInferredBook;
@@ -117,6 +117,7 @@ export function resolveUserContext() {
   logicDebug("userContext", {
     source: portfolioContext.source,
     watchlistN: watchlistSymbols.length,
+    resolvedWatchlistSymbols: watchlistSymbols,
     hasBook,
   });
 

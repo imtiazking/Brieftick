@@ -5,6 +5,7 @@
 
 import { SYMBOL_PROFILE } from "./portfolioProfile.js";
 import { logicDebug } from "./shared.js";
+import { resolveWatchlistSymbols } from "./engines/watchlistSymbols.js";
 
 const WATCHLIST_KEY = "brieftick_watchlist_v1";
 const LOGIC_WATCHLIST_META_KEY = "brieftick_logic_watchlist_meta_v1";
@@ -36,20 +37,25 @@ export function getLogicWatchlist() {
   try {
     const raw = localStorage.getItem(WATCHLIST_KEY);
     const arr = JSON.parse(raw || "[]");
-    return Array.isArray(arr) ? arr.map((s) => String(s).toUpperCase()).slice(0, 24) : [];
+    if (!Array.isArray(arr)) return [];
+    const resolved = resolveWatchlistSymbols(arr);
+    if (resolved.length && JSON.stringify(resolved) !== JSON.stringify(arr)) {
+      try {
+        localStorage.setItem(WATCHLIST_KEY, JSON.stringify(resolved));
+        logicDebug("watchlistStore.healed", resolved);
+      } catch (_) {}
+    }
+    return resolved;
   } catch (_) {
     return [];
   }
 }
 
 /**
- * @param {string[]} symbols
+ * @param {string[]|string} symbols
  */
 export function saveLogicWatchlist(symbols) {
-  const list = [...new Set(symbols.map((s) => String(s).toUpperCase()).filter(Boolean))].slice(
-    0,
-    24
-  );
+  const list = resolveWatchlistSymbols(symbols);
   try {
     localStorage.setItem(WATCHLIST_KEY, JSON.stringify(list));
   } catch (_) {}
@@ -64,30 +70,46 @@ export function saveLogicWatchlist(symbols) {
 }
 
 /**
+ * Add one or more tickers (space/comma-separated paste safe).
  * @param {string} symbol
  */
 export function addWatchlistSymbol(symbol) {
-  const sym = String(symbol || "").toUpperCase().replace(/[^A-Z]/g, "");
-  if (!sym || sym.length > 5) return getLogicWatchlist();
+  const incoming = resolveWatchlistSymbols(symbol);
+  if (!incoming.length) return getLogicWatchlist();
   const list = getLogicWatchlist();
-  if (!list.includes(sym)) list.unshift(sym);
-  return saveLogicWatchlist(list);
+  for (const sym of incoming) {
+    if (!list.includes(sym)) list.unshift(sym);
+  }
+  return saveLogicWatchlist(list.slice(0, 24));
 }
 
 /**
  * @param {string} symbol
  */
 export function removeWatchlistSymbol(symbol) {
-  const sym = String(symbol || "").toUpperCase();
-  return saveLogicWatchlist(getLogicWatchlist().filter((s) => s !== sym));
+  const targets = new Set(resolveWatchlistSymbols(symbol));
+  if (!targets.size) {
+    const sym = normalizeTickerTokenLegacy(symbol);
+    if (sym) targets.add(sym);
+  }
+  return saveLogicWatchlist(getLogicWatchlist().filter((s) => !targets.has(s)));
+}
+
+/** @param {string} raw */
+function normalizeTickerTokenLegacy(raw) {
+  const t = String(raw || "")
+    .toUpperCase()
+    .trim()
+    .replace(/[^A-Z0-9.]/g, "");
+  return t.length <= 6 ? t : "";
 }
 
 /**
- * @param {string[]} [symbols]
+ * @param {string[]|string} [symbols]
  * @returns {WatchlistExposure}
  */
 export function inferWatchlistExposure(symbols) {
-  const list = symbols?.length ? symbols : getLogicWatchlist();
+  const list = symbols?.length ? resolveWatchlistSymbols(symbols) : getLogicWatchlist();
   /** @type {Record<string, number>} */
   const sectorCounts = {};
   /** @type {Record<string, number>} */
@@ -143,9 +165,11 @@ export function inferWatchlistExposure(symbols) {
 
 /**
  * Hooks for future account sync.
- * @param {string[]} symbols
+ * @param {string[]|string} symbols
  */
 export function syncWatchlistFromAccount(symbols) {
   logicDebug("watchlistStore.syncAccount", "hook");
   return saveLogicWatchlist(symbols || []);
 }
+
+export { resolveWatchlistSymbols } from "./engines/watchlistSymbols.js";

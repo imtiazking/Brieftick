@@ -4,6 +4,8 @@
  * @module logic/entityResolver
  */
 
+import { isWatchlistPerformanceQuery } from "./engines/userContext.js";
+
 /** @typedef {'company'|'ticker'|'sector'|'sector_theme'|'macro'|'etf'|'index'|'market'} EntityType */
 
 /**
@@ -207,6 +209,7 @@ export function resolveEntities(prompt) {
   const isBareTickerPrompt =
     trimmed.split(/\s+/).length === 1 && TICKER_SYMBOLS.has(firstToken);
 
+  if (!isWatchlistPerformanceQuery(prompt)) {
   const upper = prompt.toUpperCase();
   const tickerMatches = upper.match(/\$?([A-Z]{1,5})\b/g) || [];
   for (const raw of tickerMatches) {
@@ -220,6 +223,7 @@ export function resolveEntities(prompt) {
       companyName: sym,
       confidence: hasDollar ? 88 : 80,
     });
+  }
   }
 
   found.sort((a, b) => b.confidence - a.confidence);

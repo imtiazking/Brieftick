@@ -20,4 +20,5 @@ export {
   addWatchlistSymbol,
   removeWatchlistSymbol,
   inferWatchlistExposure,
+  resolveWatchlistSymbols,
 } from "./watchlistStore.js";
