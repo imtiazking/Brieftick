@@ -53,6 +53,10 @@ export const LIMITED_DATA_MSG =
  * @property {string[]} [relatedThemes]
  * @property {string[]} [qualityIssues]
  * @property {string} [cardSchemaId]
+ * @property {import('./engines/conversationalPresentation.js').ConversationalPresentation} [conversational]
+ * @property {string} [responseIntent]
+ * @property {string} [primarySymbol]
+ * @property {string} [_logicPrompt]
  */
 
 export const LOGIC_MODES = [

@@ -30,6 +30,7 @@ import { applyResponseContract } from "./engines/applyResponseContract.js";
 import { isWatchlistPerformanceQuery, resolveUserContext } from "./engines/userContext.js";
 import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
+import { buildConversationalPresentation } from "./engines/conversationalPresentation.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -91,6 +92,11 @@ export function finalizeLogicResponse(res, ctx) {
 
   if (plan) {
     out = applyResponseContract(out, plan);
+  }
+
+  if (typeof window !== "undefined" && window.__LOGIC_PREVIEW === true) {
+    out.conversational = buildConversationalPresentation(out, ctx);
+    out.responseIntent = plan?.intentId;
   }
 
   return out;

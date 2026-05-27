@@ -22,6 +22,11 @@ import {
 } from "../logic/freeAccess.js";
 import { resolveCardSchema } from "../logic/cardSchemas.js";
 import { mountLogicPortfolioPanel } from "./logic-portfolio-panel.js";
+import {
+  renderConversationalLogic,
+  bindConversationalChips,
+} from "./logic-conversational.js";
+import { buildConversationalPresentation } from "../logic/engines/conversationalPresentation.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 const LOGIC_API_TIMEOUT_MS = 14000;
@@ -103,13 +108,38 @@ function renderLoadingState() {
       <span class="logic-processing-glow"></span>
       <span>Analyzing…</span>
     </div>
-    <div class="logic-loading-skeleton">
-      <div class="logic-skeleton"></div>
-      <div class="logic-skeleton"></div>
-      <div class="logic-skeleton"></div>
+    <div class="logic-loading-skeleton logic-loading-skeleton--conv">
       <div class="logic-skeleton"></div>
     </div>
   </div>`;
+}
+
+/** Preview: conversational answer + on-demand chips (no report grid). */
+function useConversationalPreview() {
+  return window.__LOGIC_PREVIEW === true;
+}
+
+/**
+ * @param {import('../logic/types.js').LogicResponse} res
+ * @param {string} [role]
+ * @param {string} [prompt]
+ */
+function renderLogicResponse(res, role = "logic", prompt = "") {
+  if (!useConversationalPreview()) {
+    return renderIntelligenceCard(res, role);
+  }
+  const payload = {
+    ...res,
+    _logicPrompt: prompt,
+    conversational:
+      res.conversational ||
+      buildConversationalPresentation(res, {
+        prompt,
+        responsePlan: { intentId: res.responseIntent },
+        primaryEntity: res.primarySymbol ? { symbol: res.primarySymbol } : undefined,
+      }),
+  };
+  return renderConversationalLogic(payload, role);
 }
 
 function renderIntelligenceCard(res, role = "logic") {
@@ -240,6 +270,9 @@ function renderResultSurface(html, state = "ready") {
   content.style.display = "flex";
   content.innerHTML = html || "";
   content.scrollTop = 0;
+  if (useConversationalPreview()) {
+    bindConversationalChips(content);
+  }
 
   if (surface) {
     surface.classList.toggle("is-processing", state === "loading");
@@ -293,11 +326,14 @@ function renderAccessBlockedResponse(prompt, reason) {
 function enrichResponseMeta(res, prompt) {
   const primary = resolvePrimaryEntity(prompt);
   const modeMeta = LOGIC_MODES.find((m) => m.id === res.mode);
-  return ensureFullCards({
+  const meta = {
     ...res,
     primarySymbol: primary.symbol || undefined,
     modeLabel: modeMeta?.label || res.mode,
-  });
+    _logicPrompt: prompt,
+  };
+  if (useConversationalPreview()) return meta;
+  return ensureFullCards(meta);
 }
 
 function buildMockResponse(prompt, mode) {
@@ -377,7 +413,7 @@ export async function submitLogicQuery(promptText) {
       renderAccessBlockedResponse(prompt, access.reason),
       prompt
     );
-    renderResultSurface(userHtml + renderIntelligenceCard(blocked), "ready");
+    renderResultSurface(userHtml + renderLogicResponse(blocked, "logic", prompt), "ready");
     isProcessing = false;
     setRunButtonsDisabled(false);
     updateUsageBanner();
@@ -409,7 +445,7 @@ export async function submitLogicQuery(promptText) {
   }
 
   document.getElementById("logicLoading")?.remove();
-  const cardHtml = renderIntelligenceCard(response);
+  const cardHtml = renderLogicResponse(response, "logic", prompt);
   renderResultSurface(userHtml + cardHtml, "ready");
 
   if (!isLogicTerminalUser()) recordLogicUsage();
