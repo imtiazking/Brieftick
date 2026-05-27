@@ -6,6 +6,7 @@
 import { buildLogicResponse, LIMITED_DATA_MSG, LOGIC_DISCLAIMER } from "./types.js";
 import { resolvePrimaryEntity, resolveTickerTargets } from "./entityResolver.js";
 import { getTickerDisplayName, resolveQuoteSymbol } from "./engines/tickerCatalog.js";
+import { isConversationalLogicPreview } from "./previewFlags.js";
 
 export function logicDebug(event, data) {
   const payload = data !== undefined ? data : "";
@@ -175,7 +176,7 @@ export async function callLogicLLM(systemPrompt, userPrompt, maxTokens = 700) {
     return null;
   }
   const voiceRules =
-    typeof window !== "undefined" && window.__LOGIC_PREVIEW === true
+    typeof window !== "undefined" && isConversationalLogicPreview()
       ? `
 VOICE (required): Plain conversational prose only. No markdown (#, **), no section headers, no labels like "Headline Reason", "Primary Driver", or "Logic Summary". directAnswer must be 1-3 calm institutional sentences that answer the question directly — like a desk strategist speaking, not a report template.`
       : "";

@@ -2776,6 +2776,9 @@ h1,h2,h3{
 .logic-meta-chip{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ink-faint);padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:rgba(255,255,255,.03)}
 .logic-layout{display:grid;grid-template-columns:220px minmax(0,1fr) 260px;gap:14px;flex:1;min-height:0}
 .logic-layout--conversation{grid-template-columns:minmax(0,200px) minmax(0,1fr) minmax(260px,300px)}
+.preview-logic .logic-layout--conversation{grid-template-columns:minmax(0,1fr) minmax(260px,300px)}
+.preview-logic #logicModeSidebar{display:none!important}
+.preview-logic .logic-header-meta .logic-meta-chip:first-of-type{display:none}
 .logic-main--conversation{gap:0}
 .logic-result-surface--primary{min-height:min(58vh,520px);flex:1}
 .logic-hub-legacy{display:none!important}
@@ -14775,7 +14778,7 @@ window.addEventListener('load', () => {
   var s = document.querySelector('script[type="module"][src*="logic-preview"]');
   if (!s) return;
   s.addEventListener("error", function () {
-    console.error("[Brieftick Logic] module failed to load — using inline fallback");
+    console.error("[Brieftick Logic] module failed to load — using conversational inline fallback");
     if (typeof window.submitLogicQuery === "function") return;
     window.submitLogicQuery = function (prompt) {
       var el = document.getElementById("logicResultContent");
@@ -14786,11 +14789,12 @@ window.addEventListener('load', () => {
       if (el) {
         el.hidden = false;
         el.innerHTML =
-          '<div class="logic-msg logic-msg--logic"><h3 class="logic-msg-title">Logic · Preview fallback</h3>' +
-          '<div class="logic-intel-card">' +
-          '<div class="logic-intel-section"><div class="logic-intel-label">Snapshot</div><p class="logic-intel-text">Module load failed. Redeploy preview branch.</p></div>' +
-          '<div class="logic-intel-section"><div class="logic-intel-label">Summary</div><p class="logic-intel-text">' +
-          (prompt || "") + "</p></div></div></div>";
+          '<div class="logic-msg logic-msg--logic logic-msg--conversational">' +
+          '<div class="logic-msg-head"><span class="logic-msg-role">Brieftick Logic</span></div>' +
+          '<p class="logic-conv-limited">Preview bundle did not load. Hard-refresh with <code>?preview=logic&amp;tab=logic</code> on the preview branch deploy.</p>' +
+          '<div class="logic-conv-primary"><p class="logic-conv-answer">' +
+          (prompt ? "Your question was received, but the Logic module failed to load: " + prompt : "Logic module failed to load.") +
+          "</p></div></div>";
       }
     };
     window.logicHandleSubmit = window.submitLogicQuery;

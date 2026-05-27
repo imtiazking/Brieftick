@@ -23,6 +23,7 @@ import {
   recordRelationshipMemory,
 } from "./intelligenceLayer.js";
 import { logicDebug } from "./shared.js";
+import { isConversationalLogicPreview } from "./previewFlags.js";
 import { classifyQuestion } from "./questionIntent.js";
 import { inferWatchlistExposure } from "./watchlistStore.js";
 import { buildResponsePlan, entityForPlan } from "./engines/responsePlan.js";
@@ -95,7 +96,7 @@ export function finalizeLogicResponse(res, ctx) {
     out = applyResponseContract(out, plan);
   }
 
-  if (typeof window !== "undefined" && window.__LOGIC_PREVIEW === true) {
+  if (typeof window !== "undefined" && isConversationalLogicPreview()) {
     out = humanizeLogicResponse(out, { prompt: ctx.prompt });
     out.conversational = buildConversationalPresentation(out, ctx);
     out.responseIntent = plan?.intentId;

@@ -24,8 +24,13 @@ import {
   bindConversationalChips,
 } from "./logic-conversational.js";
 import { buildConversationalPresentation } from "../logic/engines/conversationalPresentation.js";
+import {
+  isConversationalLogicPreview,
+  syncLogicPreviewFlags,
+} from "../logic/previewFlags.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
+const LOGIC_PREVIEW_BUILD = "conv-v2";
 const LOGIC_API_TIMEOUT_MS = 14000;
 
 const HERO_PROMPTS = [
@@ -111,7 +116,7 @@ function renderLoadingState() {
 
 /** Preview: conversational answer + on-demand chips (no report grid). */
 function useConversationalPreview() {
-  return window.__LOGIC_PREVIEW === true;
+  return isConversationalLogicPreview();
 }
 
 /**
@@ -613,7 +618,7 @@ function closeLogicSearch() {
 }
 
 export function isLogicPreview() {
-  return PREVIEW_KEYS.has(new URLSearchParams(location.search).get("preview"));
+  return isConversationalLogicPreview();
 }
 
 function canInitLogic() {
@@ -637,7 +642,13 @@ function showLogicNav() {
 function refreshLogicPageChrome() {
   const previewBadge = document.querySelector(".logic-preview-badge");
   const headerSub = document.querySelector(".logic-header-sub");
-  if (previewBadge) previewBadge.style.display = isLogicPreview() ? "" : "none";
+  if (previewBadge) {
+    previewBadge.style.display = isLogicPreview() ? "" : "none";
+    if (isLogicPreview()) {
+      previewBadge.textContent = `Conversational preview · ${LOGIC_PREVIEW_BUILD}`;
+      previewBadge.title = "Answer-first Logic UI — use ?preview=logic&tab=logic";
+    }
+  }
   if (headerSub) {
     headerSub.textContent = isLogicTerminalUser()
       ? "Logic Terminal · Institutional intelligence · Not financial advice"
@@ -661,7 +672,7 @@ export function initLogicPage() {
   if (!canInitLogic()) return;
   logicPageInitialized = true;
 
-  window.__LOGIC_PREVIEW = true;
+  syncLogicPreviewFlags();
   window.submitLogicQuery = submitLogicQuery;
   window.logicHandleSubmit = submitLogicQuery;
 
@@ -690,6 +701,7 @@ function tryInitLogicPage() {
 }
 
 function bootstrapLogicModule() {
+  syncLogicPreviewFlags();
   window.submitLogicQuery = submitLogicQuery;
   window.logicHandleSubmit = submitLogicQuery;
   window.btInitLogicForUser = () => {

@@ -5,6 +5,7 @@
 
 import { concise } from "./topicContext.js";
 import { humanizeLogicAnswer } from "./conversationalVoice.js";
+import { isConversationalLogicPreview } from "../previewFlags.js";
 
 const FILLER_PATTERNS = [
   /indices tracked/i,
@@ -59,7 +60,7 @@ export function composeLogicResponse(res, ctx) {
     direct = stripTapeAndHeadlineLead(direct);
   }
   direct = direct.replace(/markets may read this through[^.]*\./gi, "").trim();
-  if (typeof window !== "undefined" && window.__LOGIC_PREVIEW === true) {
+  if (typeof window !== "undefined" && isConversationalLogicPreview()) {
     direct = humanizeLogicAnswer(direct, {
       depth: /why.*mov|what.*driving/i.test(prompt) ? "brief" : "standard",
       maxChars: isCausal || isMacroInterp ? 400 : 320,
