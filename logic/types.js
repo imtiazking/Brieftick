@@ -9,7 +9,7 @@ export const LOGIC_DISCLAIMER =
 export const LIMITED_DATA_MSG =
   "Live market confirmation currently limited.";
 
-/** @typedef {'market-pulse'|'ticker'|'portfolio'|'sector-rotation'|'risk-regime'|'daily-brief'|'scenario'|'briefing'|'causal'|'macro-interpretation'} LogicMode */
+/** @typedef {'market-pulse'|'ticker'|'portfolio'|'sector-rotation'|'risk-regime'|'daily-brief'|'scenario'|'briefing'|'causal'|'macro-interpretation'|'watchlist'} LogicMode */
 
 /**
  * @typedef {Object} IntelligenceCards
@@ -73,6 +73,12 @@ export const LOGIC_MODES = [
     label: "Portfolio Logic",
     desc: "Exposure and concentration context",
     icon: "PF",
+  },
+  {
+    id: "watchlist",
+    label: "Watchlist Performance",
+    desc: "Rank symbols on your saved watchlist",
+    icon: "WL",
   },
   {
     id: "sector-rotation",

@@ -10,7 +10,10 @@ const STRATEGIST_SIGNAL =
   /consensus trade|consensus.*(overcrowd|crowded|one-sided)|overcrowd|crowded trade|crowded positioning|one-sided trade|de-?gross|unwind risk|markets? ignoring|market ignoring|risks? (are )?markets ignoring|underpric|underpriced|underpricing|overlooked by markets|not pricing|hidden fragil|fragilit|complacent|asymmetric|what breaks first|breaks first|what matters most|care about most|cross.?asset diverg|breadth deterior|volatility compression|concentration risk|positioning imbalance|factor crowding|what trade looks|which trade looks|macro structure|market structure|liquidity tighten|financial conditions tighten/i;
 
 const ANALYTICAL_WHAT =
-  /^what\s+(consensus|trade|positioning|fragil|risk|regime|happens|would|breaks|matters|hidden|conditions)/i;
+  /^what\s+(consensus|trade|positioning|fragil|regime|happens|would|breaks|matters|hidden|conditions)/i;
+
+const PERSONAL_SCOPE =
+  /\b(my|this)\s+(portfolio|book|holdings|watchlist)\b|\bportfolio\b.*\b(my|this)\b|\bout of my watchlist\b|\bon my watchlist\b|\bfrom my watchlist\b/i;
 
 /**
  * True only when user clearly wants headlines / updates.
@@ -29,7 +32,14 @@ export function isStrategistInterpretationQuery(prompt) {
   const t = (prompt || "").toLowerCase().trim();
   if (!t || t.length < 12) return false;
   if (isExplicitNewsQuery(prompt)) return false;
+  if (PERSONAL_SCOPE.test(t)) return false;
   if (/^why\s+(is|are)\s+(spy|qqq|the market|stocks)\s+moving/i.test(t)) return false;
+  if (
+    /^what\s+.+\s+risk/i.test(t) &&
+    /portfolio|holdings|my book|this book|watchlist/i.test(t)
+  ) {
+    return false;
+  }
 
   if (STRATEGIST_SIGNAL.test(t)) return true;
   if (ANALYTICAL_WHAT.test(t) && !/latest|headline|news on|update on/i.test(t)) return true;

@@ -1,7 +1,7 @@
 /**
  * Brieftick Logic — structured intelligence pipeline orchestrator.
  *
- * Prompt → entityResolver → intent + modeDetect → [scenario: scenarioEngine → impactAnalysis]
+ * Prompt → entityResolver → userContext → route → intent + mode → fetch → Logic module
  *       → sourceRouter → multiSourceFetch → dataFusion → Logic module → fallbackIntelligence
  *       → watchlist + portfolioMemory → confidenceEngine → Intelligence Cards UI
  *
@@ -27,6 +27,9 @@ import { classifyQuestion } from "./questionIntent.js";
 import { inferWatchlistExposure } from "./watchlistStore.js";
 import { buildResponsePlan, entityForPlan } from "./engines/responsePlan.js";
 import { applyResponseContract } from "./engines/applyResponseContract.js";
+import { resolveUserContext } from "./engines/userContext.js";
+import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
+import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -38,6 +41,7 @@ import { runScenarioAnalysisLogic } from "./scenarioAnalysisLogic.js";
 import { runBriefingLogic } from "./briefingLogic.js";
 import { runCausalLogic } from "./causalLogic.js";
 import { runMacroInterpretationLogic } from "./macroInterpretationLogic.js";
+import { runWatchlistPerformanceLogic } from "./watchlistPerformanceLogic.js";
 
 /**
  * Post-module pipeline: fallback guard → memory → confidence.
@@ -104,11 +108,17 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   const primaryEntity = resolvePrimaryEntity(prompt);
   logicDebug("entity resolved", { primary: primaryEntity, entities });
 
-  // 2. intent + modeDetect
-  const classified = classifyQuestion(prompt, primaryEntity);
-  const responsePlan = buildResponsePlan(prompt, classified, primaryEntity);
+  // 2. user context → context-first route → intent + response plan
+  const userContext = resolveUserContext();
+  const classified = classifyQuestion(prompt, primaryEntity, { userContext });
+  const logicRoute = planLogicRoute(prompt, userContext, classified);
+  const routedClassification = applyLogicRoute(classified, logicRoute);
+  const responsePlan = buildResponsePlan(prompt, routedClassification, primaryEntity, {
+    userContext,
+    logicRoute,
+  });
   const routedEntity = entityForPlan(primaryEntity, responsePlan);
-  const mode = modeOverride || responsePlan.mode || classified.mode;
+  const mode = modeOverride || responsePlan.mode || routedClassification.mode;
   const intentResult = detectIntent(prompt, routedEntity);
   logicDebug("Logic module selected", {
     mode,
@@ -126,7 +136,7 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     entities,
   });
 
-  const portfolioMemory = buildPortfolioMemory();
+  const portfolioMemory = buildPortfolioMemoryFromContext(userContext.portfolioContext);
 
   let ctx = {
     prompt,
@@ -135,14 +145,17 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     mode,
     intent: intentResult.intent,
     intentLabel: responsePlan.label || intentResult.label,
-    questionKind: classified.kind,
+    questionKind: routedClassification.kind,
     responsePlan,
+    userContext,
+    logicRoute,
     skipTape: responsePlan.abstractEntity,
     sourceRoute,
     fusion,
     memory: buildMemoryContext(routedEntity, mode),
     portfolioMemory,
     portfolioProfile: portfolioMemory.profile,
+    portfolioContext: userContext.portfolioContext,
     watchlistExposure: inferWatchlistExposure(),
   };
 
@@ -170,7 +183,7 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   response = finalizeLogicResponse(response, ctx);
 
   recordLogicInteraction(prompt, mode, primaryEntity);
-  recordRelationshipMemory(prompt, classified.kind);
+  recordRelationshipMemory(prompt, routedClassification.kind);
   logicDebug("render completed", {
     mode,
     intent: intentResult.intent,
@@ -254,6 +267,8 @@ async function runLogicModule(ctx) {
       return runCausalLogic(ctx);
     case "macro-interpretation":
       return runMacroInterpretationLogic(ctx);
+    case "watchlist":
+      return runWatchlistPerformanceLogic(ctx);
     case "market-pulse":
     default:
       return runMarketPulseLogic(ctx);

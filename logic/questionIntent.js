@@ -8,8 +8,13 @@ import { logicDebug } from "./shared.js";
 import { isCausalReasoningQuery } from "./engines/causalReasoningEngine.js";
 import { isMacroInterpretationQuery } from "./engines/macroInterpretationEngine.js";
 import { isStrategistInterpretationQuery } from "./engines/strategistQueryGate.js";
+import {
+  isPortfolioScopedQuery,
+  isWatchlistPerformanceQuery,
+  mentionsPersonalBook,
+} from "./engines/userContext.js";
 
-/** @typedef {'news'|'geopolitical'|'macro'|'rates'|'sector'|'supply_chain'|'commodities'|'portfolio'|'scenario'|'ticker'|'risk'|'market_pulse'|'daily_brief'|'causal'|'macro_interpretation'} QuestionKind */
+/** @typedef {'news'|'geopolitical'|'macro'|'rates'|'sector'|'supply_chain'|'commodities'|'portfolio'|'scenario'|'ticker'|'risk'|'market_pulse'|'daily_brief'|'causal'|'macro_interpretation'|'watchlist'} QuestionKind */
 
 /**
  * @typedef {Object} QuestionClassification
@@ -37,10 +42,11 @@ export function isNewsStyleQuery(prompt) {
  * @param {import('./entityResolver.js').ResolvedEntity} [entity]
  * @returns {QuestionClassification}
  */
-export function classifyQuestion(prompt, entity) {
+export function classifyQuestion(prompt, entity, options = {}) {
   const t = (prompt || "").toLowerCase().trim();
   const primary = entity || resolvePrimaryEntity(prompt);
   const newsStyle = isNewsStyleQuery(prompt);
+  const userContext = options.userContext;
 
   /** @type {QuestionClassification} */
   let result = {
@@ -50,7 +56,28 @@ export function classifyQuestion(prompt, entity) {
     wantsBriefing: false,
   };
 
-  if (isStrategistInterpretationQuery(prompt)) {
+  if (isWatchlistPerformanceQuery(prompt) && (userContext?.hasWatchlist ?? true)) {
+    result = {
+      kind: "watchlist",
+      mode: "watchlist",
+      label: "Watchlist Performance",
+      wantsBriefing: false,
+    };
+  } else if (isPortfolioScopedQuery(prompt, userContext) || (userContext?.hasBook && mentionsPersonalBook(prompt))) {
+    const riskDominate = /risks?\s+dominate|dominant risk/i.test(t);
+    result = {
+      kind: "portfolio",
+      mode: "portfolio",
+      label: riskDominate ? "Portfolio Risk" : "Portfolio Logic",
+      wantsBriefing: false,
+    };
+  } else if (
+    userContext?.hasBook &&
+    /portfolio|holdings|my book/i.test(t) &&
+    !newsStyle
+  ) {
+    result = { kind: "portfolio", mode: "portfolio", label: "Portfolio Logic", wantsBriefing: false };
+  } else if (isStrategistInterpretationQuery(prompt)) {
     result = {
       kind: "macro_interpretation",
       mode: "macro-interpretation",
@@ -213,11 +240,22 @@ export function classifyQuestion(prompt, entity) {
       label: "Macro Briefing",
       wantsBriefing: true,
     };
-  } else if (t.length > 8 && !isStrategistInterpretationQuery(prompt)) {
+  } else if (
+    t.length > 8 &&
+    !isStrategistInterpretationQuery(prompt) &&
+    !(userContext?.hasBook || userContext?.hasWatchlist)
+  ) {
     result = {
       kind: "macro_interpretation",
       mode: "macro-interpretation",
       label: "Macro Interpretation",
+      wantsBriefing: false,
+    };
+  } else if (t.length > 8 && (userContext?.hasBook || userContext?.hasWatchlist)) {
+    result = {
+      kind: userContext?.hasBook ? "portfolio" : "market_pulse",
+      mode: userContext?.hasBook ? "portfolio" : "market-pulse",
+      label: userContext?.hasBook ? "Portfolio Logic" : "Market Pulse",
       wantsBriefing: false,
     };
   }

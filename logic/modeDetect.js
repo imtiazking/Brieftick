@@ -5,6 +5,8 @@
 
 import { resolvePrimaryEntity } from "./entityResolver.js";
 import { classifyQuestion } from "./questionIntent.js";
+import { resolveUserContext } from "./engines/userContext.js";
+import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 
 /**
  * @param {string} prompt
@@ -14,5 +16,8 @@ import { classifyQuestion } from "./questionIntent.js";
 export function detectLogicMode(prompt, primaryEntity) {
   const entity = primaryEntity || resolvePrimaryEntity(prompt);
   if (!(prompt || "").trim()) return "market-pulse";
-  return classifyQuestion(prompt, entity).mode;
+  const userContext = resolveUserContext();
+  const classified = classifyQuestion(prompt, entity, { userContext });
+  const route = planLogicRoute(prompt, userContext, classified);
+  return applyLogicRoute(classified, route).mode;
 }

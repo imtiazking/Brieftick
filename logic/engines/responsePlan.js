@@ -13,7 +13,7 @@ import {
 } from "./strategistQueryGate.js";
 
 /**
- * @typedef {'fragility'|'strategist_interpretation'|'positioning_crowding'|'portfolio_risk'|'regime_fit'|'portfolio_stress'|'macro_interpretation'|'causal'|'scenario'|'portfolio'|'risk_regime'|'market_pulse'|'ticker'|'briefing'|'sector'|'daily_brief'} ResponseIntentId
+ * @typedef {'fragility'|'strategist_interpretation'|'positioning_crowding'|'portfolio_risk'|'regime_fit'|'portfolio_stress'|'macro_interpretation'|'causal'|'scenario'|'portfolio'|'risk_regime'|'market_pulse'|'ticker'|'briefing'|'sector'|'daily_brief'|'watchlist_performance'} ResponseIntentId
  */
 
 /**
@@ -51,14 +51,13 @@ const SUPPRESS_DEFAULT = [
 /**
  * @param {string} prompt
  */
-export function isAbstractStrategistQuery(prompt) {
+export function isAbstractStrategistQuery(prompt, userContext) {
   if (isExplicitNewsQuery(prompt)) return false;
-  return (
-    isStrategistInterpretationQuery(prompt) ||
-    isMacroInterpretationQuery(prompt) ||
-    (/portfolio|holdings|my book/i.test((prompt || "").toLowerCase()) &&
-      /risk|regime|exposed|concentrat|dominate/i.test((prompt || "").toLowerCase()))
-  );
+  if (userContext?.hasBook || userContext?.personalScope) {
+    const t = (prompt || "").toLowerCase();
+    if (/portfolio|holdings|my book|this portfolio|watchlist/i.test(t)) return false;
+  }
+  return isStrategistInterpretationQuery(prompt) || isMacroInterpretationQuery(prompt);
 }
 
 /**
@@ -67,16 +66,19 @@ export function isAbstractStrategistQuery(prompt) {
  * @param {import('../entityResolver.js').ResolvedEntity} [entity]
  * @returns {ResponsePlan}
  */
-export function buildResponsePlan(prompt, classified, entity) {
+export function buildResponsePlan(prompt, classified, entity, options = {}) {
+  const userContext = options.userContext;
+  const logicRoute = options.logicRoute;
   const t = (prompt || "").toLowerCase().trim();
   const newsStyle = isNewsStyleQuery(prompt);
-  const abstract = isAbstractStrategistQuery(prompt);
+  const abstract = isAbstractStrategistQuery(prompt, userContext);
+  const suppressStrategist = logicRoute?.suppressStrategist;
 
   /** @type {ResponsePlan} */
   let plan = {
     intentId: "market_pulse",
-    mode: classified.mode,
-    label: classified.label,
+    mode: logicRoute?.mode || classified.mode,
+    label: logicRoute?.label || classified.label,
     primaryQuestion: prompt,
     abstractEntity: abstract,
     conceptualOk: false,
@@ -94,7 +96,30 @@ export function buildResponsePlan(prompt, classified, entity) {
     suppressPatterns: [...SUPPRESS_DEFAULT],
   };
 
-  if (isStrategistInterpretationQuery(prompt) && !isExplicitNewsQuery(prompt)) {
+  if (
+    logicRoute?.mode === "watchlist" ||
+    (logicRoute?.routeReason === "watchlist_performance" && classified.kind === "watchlist")
+  ) {
+    plan = {
+      ...plan,
+      intentId: "watchlist_performance",
+      mode: "watchlist",
+      label: "Watchlist Performance",
+      abstractEntity: false,
+      conceptualOk: true,
+      skipFallbackOnAnswer: true,
+      allowedCards: ["snapshot", "sectorImpact", "volatility", "aiSummary"],
+      allowedOptional: ["relatedMovers"],
+      enrichment: {
+        graph: false,
+        marketIntelApply: false,
+        streamApply: false,
+        relationshipMemory: false,
+        synthesis: false,
+        feedHook: false,
+      },
+    };
+  } else if (isStrategistInterpretationQuery(prompt) && !isExplicitNewsQuery(prompt) && !suppressStrategist) {
     const crowding = /consensus|overcrowd|crowded trade/i.test(t);
     plan = {
       ...plan,

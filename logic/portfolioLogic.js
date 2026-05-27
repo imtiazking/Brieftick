@@ -15,7 +15,9 @@ import { shapePortfolioAnswer } from "./engines/portfolioAnswerShaper.js";
 export async function runPortfolioLogic(ctx) {
   const prompt = ctx.prompt || "Analyze my portfolio";
   const failedSources = [...(ctx.fusion?.failedSources || [])];
-  const holdings = getPortfolioHoldings();
+  const ctxHoldings = ctx.portfolioContext?.holdings || ctx.portfolioMemory?.holdings;
+  const domHoldings = getPortfolioHoldings();
+  const holdings = domHoldings.length ? domHoldings : ctxHoldings?.length ? ctxHoldings : [];
   const lines =
     holdings.length > 0
       ? holdings
@@ -24,6 +26,7 @@ export async function runPortfolioLogic(ctx) {
           { symbol: "AAPL", weight: 12 },
           { symbol: "MSFT", weight: 10 },
         ];
+  const usingSample = !holdings.length;
 
   const quotes = {};
   for (const h of lines.slice(0, 8)) {
@@ -48,15 +51,15 @@ export async function runPortfolioLogic(ctx) {
         cards: shaped.cards,
         keyDrivers: shaped.keyDrivers,
         signals: shaped.signals,
-        confidence: holdings.length ? 72 : 58,
+        confidence: usingSample ? 58 : 72,
         sources: ctx.fusion
           ? fusionAttributionSources(ctx.fusion)
-          : holdings.length
-            ? ["Portfolio Context", "Brieftick Logic"]
-            : ["Sample book · Brieftick Logic"],
+          : usingSample
+            ? ["Sample book · Brieftick Logic"]
+            : ["Portfolio Context", "Brieftick Logic"],
         mode: "portfolio",
         modeLabel: ctx.responsePlan?.label || shaped.title,
-        mockData: !holdings.length,
+        mockData: usingSample,
         portfolioAnswerShape: shaped.shape,
         optionalCards: {
           portfolioImpact: shaped.cards.sectorImpact || shaped.summary,

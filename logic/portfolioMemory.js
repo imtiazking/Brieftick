@@ -7,6 +7,7 @@ import { loadSavedPortfolio } from "./portfolioParser.js";
 import { buildPortfolioProfile } from "./portfolioProfile.js";
 import { getPortfolioHoldings } from "./shared.js";
 import { logicDebug } from "./shared.js";
+import { resolvePortfolioContext } from "./engines/inferredPortfolioContext.js";
 
 /**
  * @typedef {Object} PortfolioMemory
@@ -20,41 +21,15 @@ import { logicDebug } from "./shared.js";
  */
 
 /**
+ * @param {import('./engines/inferredPortfolioContext.js').ResolvedPortfolioContext} [portfolioContext]
  * @returns {PortfolioMemory}
  */
-export function buildPortfolioMemory() {
-  const saved = loadSavedPortfolio();
-  const fromDom = getPortfolioHoldings();
-  const holdings =
-    fromDom.length > 0 ? fromDom : saved?.holdings?.length ? saved.holdings : [];
-
-  const lines =
-    holdings.length > 0
-      ? holdings
-      : [
-          { symbol: "NVDA", weight: 18 },
-          { symbol: "AAPL", weight: 12 },
-          { symbol: "MSFT", weight: 10 },
-        ];
-
-  const profile = buildPortfolioProfile(lines);
+export function buildPortfolioMemoryFromContext(portfolioContext) {
+  const resolved = portfolioContext || resolvePortfolioContext();
+  const lines = resolved.holdings;
+  const profile = resolved.profile;
   const top3 = profile.topSymbols;
   const topThreeWeight = profile.topThreeWeight;
-  const concentrationLabel = profile.concentrationLabel;
-
-  const hintParts = [];
-  if (holdings.length && saved?.holdings?.length) {
-    hintParts.push(
-      `Portfolio: ${profile.positionCount} positions; top ${top3.join(", ")} (${topThreeWeight.toFixed(0)}% top-3).`
-    );
-    hintParts.push(
-      `AI ~${profile.aiWeight}% · rates ${profile.sensitivity.rates} · ${profile.growthDefensiveTilt}.`
-    );
-  } else {
-    hintParts.push(
-      "No saved portfolio — paste holdings in Logic or Portfolio tab for personalized reads."
-    );
-  }
 
   const memory = {
     holdings: lines,
@@ -62,16 +37,27 @@ export function buildPortfolioMemory() {
     positionCount: profile.positionCount,
     topThreeWeight,
     topSymbols: top3,
-    concentrationLabel,
-    hint: hintParts.join(" "),
+    concentrationLabel: profile.concentrationLabel,
+    hint: resolved.hint || "",
+    portfolioSource: resolved.source,
+    isInferred: resolved.isInferred,
+    contextLabel: resolved.contextLabel,
   };
 
   logicDebug("portfolioMemory", {
+    source: resolved.source,
     positions: memory.positionCount,
     aiWeight: profile.aiWeight,
   });
 
   return memory;
+}
+
+/**
+ * @returns {PortfolioMemory}
+ */
+export function buildPortfolioMemory() {
+  return buildPortfolioMemoryFromContext(resolvePortfolioContext());
 }
 
 /**

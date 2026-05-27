@@ -80,6 +80,10 @@ export function routeSources({ prompt, mode, primaryEntity }) {
       intents.add("macro");
       intents.add("risk");
       break;
+    case "watchlist":
+      intents.add("quote");
+      intents.add("sentiment");
+      break;
     case "daily-brief":
       intents.add("news");
       intents.add("macro");
