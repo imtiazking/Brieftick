@@ -10,6 +10,7 @@ export const LOGIC_TICKER_CATALOG = new Set([
   "CRM", "COST", "LLY", "JNJ", "BAC", "CAT", "BA", "RIVN", "SOX", "XLK", "XLF",
   "XLE", "XLV", "XLP", "XLU", "SPX", "NDX", "MU", "ARM", "ASML", "TSM", "PLTR",
   "COIN", "UBER", "DIS", "ORCL", "BRK.B", "GLD", "SLV", "GDX", "USO", "UNG",
+  "SNOW", "NOK",
   "UUP", "USD", "TLT", "HYG", "LQD", "VNQ", "ARKK", "SMH", "IBIT",
 ]);
 
@@ -37,6 +38,13 @@ export const TICKER_DISPLAY_NAMES = {
   TSLA: "Tesla",
   META: "Meta",
   AMD: "AMD",
+  SNOW: "Snowflake",
+  MU: "Micron",
+  INTC: "Intel",
+  NOK: "Nokia",
+  GOOGL: "Alphabet",
+  AMZN: "Amazon",
+  JPM: "JPMorgan",
 };
 
 /**
@@ -69,7 +77,7 @@ export function getTickerDisplayName(sym) {
  * @param {string[]} [extraSymbols]
  * @returns {string[]}
  */
-export function extractSymbolsFromPrompt(prompt, extraSymbols = []) {
+export function extractSymbolsFromPrompt(prompt, extraSymbols = [], opts = {}) {
   const text = String(prompt || "").toUpperCase();
   if (!text || text.length < 2) return [];
 
@@ -77,7 +85,10 @@ export function extractSymbolsFromPrompt(prompt, extraSymbols = []) {
   const found = [];
   const seen = new Set();
 
-  const catalog = [...LOGIC_TICKER_CATALOG, ...extraSymbols.map((s) => String(s).toUpperCase())]
+  const extras =
+    opts.allowWatchlist === false ? [] : extraSymbols.map((s) => String(s).toUpperCase());
+
+  const catalog = [...LOGIC_TICKER_CATALOG, ...extras]
     .filter(Boolean)
     .sort((a, b) => b.length - a.length);
 

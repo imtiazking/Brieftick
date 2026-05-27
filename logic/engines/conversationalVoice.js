@@ -4,6 +4,10 @@
  */
 
 import { concise } from "./topicContext.js";
+import {
+  GENERIC_TICKER_PHRASE_RE,
+  stripGenericTickerPhrases,
+} from "./tickerDeskCopy.js";
 
 /**
  * @param {string} prompt
@@ -118,7 +122,10 @@ export function dedupeSymbolLead(text) {
 }
 
 export function softenRoboticPhrasing(text) {
-  let s = dedupeSymbolLead(String(text || ""));
+  let s = stripGenericTickerPhrases(dedupeSymbolLead(String(text || "")));
+  if (GENERIC_TICKER_PHRASE_RE.test(s)) {
+    s = stripGenericTickerPhrases(s);
+  }
   s = s.replace(
     /(\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+is\s+down\s+([\d.]+)%\s+with\s+no\s+major\s+company-specific\s+news\s+driving\s+the\s+(decline|drop|move|weakness)\.?/gi,
     "$1 is slightly lower today (−$2%) with no major company-specific catalyst — broader sector tone may be doing more of the work."

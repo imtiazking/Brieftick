@@ -28,6 +28,8 @@ import {
   isConversationalLogicPreview,
   syncLogicPreviewFlags,
 } from "../logic/previewFlags.js";
+import { buildTickerDeskAnswer } from "../logic/engines/tickerDeskCopy.js";
+import { buildTickerUnresolvedResponse } from "../logic/engines/tickerResolver.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 const LOGIC_PREVIEW_BUILD = "conv-v2";
@@ -340,25 +342,28 @@ function buildMockResponse(prompt, mode) {
   const primary = resolvePrimaryEntity(prompt);
   const sym = primary.symbol || "NVDA";
   const name = primary.companyName || sym;
+  const direct = buildTickerDeskAnswer({ symbol: sym, displayName: name });
   return buildLogicResponse({
-    title: `${name} (${sym}) · Logic preview`,
-    summary: `${name} is in focus on today's tape. Headline sensitivity and sector beta remain the primary channels, with macro rates framing the move. This is a contextual read while live feeds connect.`,
+    title: name,
+    directAnswer: direct,
+    summary: direct,
     cards: {
-      snapshot: `${sym} — session attention elevated; narrative-driven`,
-      catalyst: "Earnings expectations, AI demand commentary, and supply headlines",
-      macroContext: "Rate path and risk appetite set the backdrop for mega-cap tech",
-      sectorImpact: "Semiconductor and AI peer group sympathy likely amplifies moves",
-      volatility: "Single-name volatility active; monitor headline gaps",
-      aiSummary: `${name} moves are being read through headlines, sector tone, and macro risk channels rather than an isolated technical print.`,
+      snapshot: direct,
+      catalyst: "No clear company-specific catalyst is dominating the move.",
+      macroContext: "Rates and risk appetite remain part of the backdrop.",
+      sectorImpact: "Sector and factor sentiment",
+      volatility: "Typical session volatility",
+      aiSummary: direct,
     },
-    keyDrivers: ["Headline flow", "Sector sympathy", "Macro rates"],
-    signals: ["Headline-sensitive", "Volatility active"],
+    keyDrivers: ["Sector sentiment", "Macro backdrop"],
+    signals: [`${sym} · preview`],
     confidence: 58,
     sources: ["Brieftick Logic · preview mock"],
     disclaimer: LOGIC_DISCLAIMER,
     mode: mode || "ticker",
     mockData: true,
     dataLimited: true,
+    primarySymbol: sym,
   });
 }
 
@@ -391,6 +396,19 @@ export async function submitLogicQuery(promptText) {
   setRunButtonsDisabled(true);
 
   const primary = resolvePrimaryEntity(prompt);
+  if (primary.unresolved) {
+    const userHtml = renderUserBubble(prompt);
+    showResultPanelLoading();
+    document.getElementById("logicLoading")?.remove();
+    const blocked = enrichResponseMeta(
+      buildTickerUnresolvedResponse({ suggestions: primary.suggestions }),
+      prompt
+    );
+    renderResultSurface(userHtml + renderLogicResponse(blocked, "logic", prompt), "ready");
+    isProcessing = false;
+    setRunButtonsDisabled(false);
+    return;
+  }
   const intent = detectIntent(prompt, primary);
   const mode = intent.mode || "market-pulse";
   activeMode = mode;

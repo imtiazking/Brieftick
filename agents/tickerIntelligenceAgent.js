@@ -5,6 +5,7 @@ import {
   getHeadlines,
   getQuote,
 } from "./shared.js";
+import { buildTickerDeskAnswer } from "../logic/engines/tickerDeskCopy.js";
 
 export async function runTickerIntelligenceAgent(prompt) {
   const symbol = extractPrimaryTicker(prompt);
@@ -47,11 +48,16 @@ export async function runTickerIntelligenceAgent(prompt) {
 
   if (ai) return { ...ai, mode: "ticker" };
 
+  const desk = buildTickerDeskAnswer({
+    symbol,
+    displayName: symbol,
+    quote: quote || null,
+    headline: newsCtx.split(";")[0] || "",
+  });
+
   return buildAgentResponse({
     title: `Why is ${symbol} moving?`,
-    summary: quote
-      ? `${symbol} is ${quote.pctChange >= 0 ? "trading higher" : "trading lower"} (${quote.pctChange >= 0 ? "+" : ""}${quote.pctChange.toFixed(2)}%) with attention on headline flow and sector beta. Moves appear driven by a mix of catalyst sensitivity and broader risk appetite rather than a single isolated datapoint.`
-      : `${symbol} is seeing attention in today's tape, but live quote data is temporarily unavailable. Context is being inferred from headline tone and sector patterns only.`,
+    summary: desk,
     keyDrivers: [
       newsCtx || "Sector and macro narrative",
       quote ? `Day change ${quote.pctChange.toFixed(2)}%` : "Quote feed limited",

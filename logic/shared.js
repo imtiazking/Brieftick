@@ -8,16 +8,7 @@ import { resolvePrimaryEntity, resolveTickerTargets } from "./entityResolver.js"
 import { getTickerDisplayName, resolveQuoteSymbol } from "./engines/tickerCatalog.js";
 import { isConversationalLogicPreview } from "./previewFlags.js";
 
-export function logicDebug(event, data) {
-  const payload = data !== undefined ? data : "";
-  const on =
-    window.__LOGIC_DEBUG === true ||
-    window.__LOGIC_PREVIEW === true ||
-    new URLSearchParams(location.search).get("logic_debug") === "1" ||
-    new URLSearchParams(location.search).get("preview") === "logic" ||
-    new URLSearchParams(location.search).get("preview") === "agent";
-  if (on) console.log(`[Brieftick Logic] ${event}`, payload);
-}
+export { logicDebug } from "./logicDebug.js";
 
 /**
  * @param {object} ctx
@@ -178,7 +169,7 @@ export async function callLogicLLM(systemPrompt, userPrompt, maxTokens = 700) {
   const voiceRules =
     typeof window !== "undefined" && isConversationalLogicPreview()
       ? `
-VOICE (required): Plain conversational prose only. No markdown (#, **), no section headers, no labels like "Headline Reason", "Primary Driver", or "Logic Summary". directAnswer must be 1-3 calm institutional sentences that answer the question directly — like a desk strategist speaking, not a report template.`
+VOICE (required): Plain conversational prose only. No markdown (#, **), no section headers, no labels like "Headline Reason", "Primary Driver", or "Logic Summary". directAnswer must be 1-3 calm institutional sentences that answer the question directly — like a desk strategist speaking, not a report template. For ticker questions: be symbol-specific; never use generic filler such as "in focus on today's tape", "headline sensitivity", "sector beta remain the primary channels", or "live feeds connect". If no company catalyst, say so plainly and frame the sector or factor move.`
       : "";
 
   const prompt = `${systemPrompt}${voiceRules}

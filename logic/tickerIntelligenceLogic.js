@@ -14,6 +14,12 @@ import { getFusedQuote, fusionAttributionSources } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { humanizeLogicAnswer } from "./engines/conversationalVoice.js";
 import { getTickerDisplayName } from "./engines/tickerCatalog.js";
+import {
+  buildTickerDeskAnswer,
+  buildTickerDeskLogicResponse,
+  getTickerDeskProfile,
+  isSymbolSpecificHeadline,
+} from "./engines/tickerDeskCopy.js";
 
 const SYMBOL_HEADLINE_HINTS = {
   GLD: /gold|bullion|precious|safe.?haven/i,
@@ -139,7 +145,7 @@ export async function runTickerIntelligenceLogic(ctx) {
   }
 
   if (!symbols.length) {
-    return buildFallbackResponse(ctx);
+    return buildFallbackResponse({ ...ctx, mode: "ticker" });
   }
 
   if (symbols.length > 1) {
@@ -194,12 +200,17 @@ export async function runTickerIntelligenceLogic(ctx) {
           summary: voice,
           cards: {
             snapshot: voice,
-            catalyst: items[0]?.headline || "Headline and flow channel",
-            macroContext: "Rates and risk appetite frame the move",
-            sectorImpact: "Sector beta and peer sympathy in play",
+            catalyst: items[0]?.headline || "No clear company-specific catalyst is dominating the move.",
+            macroContext: getTickerDeskProfile(symbol).sector,
+            sectorImpact: buildTickerDeskAnswer({
+              symbol,
+              displayName,
+              quote,
+              headline: items[0]?.headline,
+            }).slice(0, 120),
             volatility: fq?.agreement
-              ? "Cross-source quote agreement · vol active"
-              : "Session volatility reflects headline sensitivity",
+              ? "Cross-source quotes aligned"
+              : "Typical session volatility",
             aiSummary: text.slice(0, 520),
           },
           keyDrivers: ["News catalyst", "Sector sympathy", "Macro rates backdrop"],
@@ -232,75 +243,30 @@ export async function runTickerIntelligenceLogic(ctx) {
     };
   }
 
-  if (!quote && !items.length) {
-    return buildFallbackResponse(ctx);
-  }
-
-  const pctStr = quote
-    ? `${quote.pctChange >= 0 ? "+" : ""}${quote.pctChange.toFixed(2)}%`
-    : null;
-
-  let summaryText = `${displayName} is in focus`;
-  if (quote) {
-    const dir = quote.pctChange >= 0 ? "firmer" : "softer";
-    summaryText = `${displayName} is ${dir} on the session (${pctStr}). Moves reflect catalyst sensitivity plus sector beta and macro risk channels.`;
-  } else {
-    summaryText = `${displayName} is seeing attention; live quote delayed. Context uses headline tone, sector patterns, and historical catalyst behavior.`;
-  }
-
-  return withDataLimited(
-    {
-      title: isNewsQuery
-        ? `${displayName} · Latest news context`
-        : `${displayName} (${symbol}) · Tape read`,
-      summary: summaryText,
-      cards: {
-        snapshot: quote
-          ? `${symbol} ${pctStr} — ${isNewsQuery ? "news-led" : "active session"}`
-          : `${displayName} in focus; live quote delayed`,
-        catalyst: items[0]?.headline || newsCtx.split(";")[0] || "Sector and headline narrative",
-        macroContext:
-          symbol === "GLD" || symbol === "SLV"
-            ? "Real yields and geopolitical risk premia anchor gold"
-            : symbol === "USO" || symbol === "UNG"
-              ? "Crude supply and geopolitical risk drive the energy complex"
-              : symbol === "USD" || symbol === "UUP"
-                ? "Rate differentials and risk appetite drive the dollar"
-                : "Macro cross-currents frame the move",
-        sectorImpact:
-          symbol === "GLD" || symbol === "SLV"
-            ? "Precious metals and miners set the peer context"
-            : "Related ETF and futures sympathy",
-        volatility: quote
-          ? Math.abs(quote.pctChange) > 2
-            ? "Elevated single-name volatility"
-            : "Moderate session volatility"
-          : "Volatility inferred from sector regime",
-        aiSummary: isNewsQuery
-          ? `Narrative on ${displayName}: ${newsCtx.slice(0, 280)}`
-          : `${displayName} is read through headlines and sector tone rather than price alone.`,
-      },
-      keyDrivers: [
-        items[0]?.headline || "Headline / sector narrative",
-        quote ? `Session ${pctStr}` : "Quote delayed",
-        "Macro rates channel",
-      ],
-      signals: [
-        quote?.pctChange >= 0 ? "Positive momentum" : "Negative momentum",
-        fq?.agreement ? "Multi-source aligned" : isNewsQuery ? "News-sensitive" : "Flow-driven",
-      ],
-      confidence: quote && fusion?.live ? 74 : 52,
-      sources: fusion
-        ? fusionAttributionSources(fusion)
-        : ["Brieftick Logic · contextual"],
-      mode: "ticker",
-      mockData: !quote || !fusion?.live,
-      optionalCards: {
-        relatedMovers: ctx.memory?.watchlist?.length
-          ? `Watchlist context: ${ctx.memory.watchlist.slice(0, 5).join(", ")}`
-          : undefined,
-      },
-    },
-    failedSources
+  const topHeadline = items[0]?.headline || newsCtx.split(";")[0] || "";
+  const desk = buildTickerDeskLogicResponse(
+    ctx,
+    symbol,
+    displayName,
+    quote,
+    topHeadline
   );
+
+  if (isNewsQuery && isSymbolSpecificHeadline(topHeadline, symbol, displayName)) {
+    desk.title = `${displayName} · News context`;
+    desk.cards.catalyst = topHeadline.slice(0, 200);
+  }
+
+  desk.confidence = quote && fusion?.live ? 68 : 52;
+  desk.sources = fusion
+    ? fusionAttributionSources(fusion)
+    : ["Brieftick Logic"];
+  desk.mockData = !quote || !fusion?.live;
+  if (ctx.memory?.watchlist?.length) {
+    desk.optionalCards = {
+      relatedMovers: `Watchlist: ${ctx.memory.watchlist.slice(0, 5).join(", ")}`,
+    };
+  }
+
+  return withDataLimited(desk, failedSources);
 }

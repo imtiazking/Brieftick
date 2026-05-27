@@ -7,6 +7,7 @@ import { buildLogicResponse, LIMITED_DATA_MSG, LOGIC_DISCLAIMER } from "./types.
 import { resolveSymbolForPrompt, MOCK_HEADLINES } from "./shared.js";
 import { fusionAttributionSources, getFusedQuote } from "./dataFusion.js";
 import { buildMemoryContext } from "./watchlistMemory.js";
+import { buildTickerDeskLogicResponse } from "./engines/tickerDeskCopy.js";
 
 const SECTOR_NARRATIVES = {
   NVDA: "AI infrastructure and semiconductor supply chain",
@@ -23,6 +24,21 @@ export function buildFallbackResponse(ctx) {
   const { prompt, mode, primaryEntity, fusion } = ctx;
   const symbol = resolveSymbolForPrompt(prompt, primaryEntity);
   const name = primaryEntity?.companyName || symbol;
+
+  if (mode === "ticker" && symbol) {
+    const fq = fusion ? getFusedQuote(fusion, symbol) : null;
+    const headline =
+      fusion?.relatedHeadlines?.[0]?.headline ||
+      fusion?.news?.headlines?.[0]?.headline ||
+      MOCK_HEADLINES[0]?.headline;
+    return buildTickerDeskLogicResponse(
+      ctx,
+      symbol,
+      name,
+      fq?.pctChange != null ? { pctChange: fq.pctChange } : null,
+      headline
+    );
+  }
   const memory = buildMemoryContext(primaryEntity, mode);
   const headlines =
     fusion?.relatedHeadlines?.length

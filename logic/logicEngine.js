@@ -11,7 +11,7 @@
 import { resolveEntities, resolvePrimaryEntity } from "./entityResolver.js";
 import { detectIntent } from "./intentDetect.js";
 import { routeSources } from "./sourceRouter.js";
-import { fetchAndFuse } from "./dataFusion.js";
+import { fetchAndFuse, getFusedQuote } from "./dataFusion.js";
 import { buildFallbackResponse } from "./fallbackIntelligence.js";
 import { applyMemoryToResponse, buildMemoryContext, recordLogicInteraction } from "./watchlistMemory.js";
 import { applyPortfolioMemoryToResponse, buildPortfolioMemory } from "./portfolioMemory.js";
@@ -33,6 +33,9 @@ import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
 import { buildConversationalPresentation } from "./engines/conversationalPresentation.js";
 import { humanizeLogicResponse } from "./engines/conversationalVoice.js";
+import { applyTickerVoiceToResponse } from "./engines/tickerVoiceVariation.js";
+import { buildTickerUnresolvedResponse } from "./engines/tickerResolver.js";
+import { enforceTickerAnswerIdentity } from "./engines/tickerAnswerIdentity.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -96,6 +99,19 @@ export function finalizeLogicResponse(res, ctx) {
     out = applyResponseContract(out, plan);
   }
 
+  if (out.mode === "ticker" && ctx.primaryEntity?.symbol) {
+    out = enforceTickerAnswerIdentity(out, ctx.primaryEntity, ctx);
+    out = applyTickerVoiceToResponse(out, {
+      headline: out.cards?.catalyst,
+      quote: ctx.fusion ? getQuoteFromFusion(ctx, out.primarySymbol) : null,
+    });
+    out = enforceTickerAnswerIdentity(out, ctx.primaryEntity, ctx);
+    logicDebug("tickerAnswerIdentity.finalSymbol", {
+      resolved: ctx.primaryEntity.symbol,
+      primarySymbol: out.primarySymbol,
+    });
+  }
+
   if (typeof window !== "undefined" && isConversationalLogicPreview()) {
     out = humanizeLogicResponse(out, { prompt: ctx.prompt });
     out.conversational = buildConversationalPresentation(out, ctx);
@@ -103,6 +119,16 @@ export function finalizeLogicResponse(res, ctx) {
   }
 
   return out;
+}
+
+/**
+ * @param {object} ctx
+ * @param {string} [symbol]
+ */
+function getQuoteFromFusion(ctx, symbol) {
+  if (!symbol || !ctx.fusion) return null;
+  const fq = getFusedQuote(ctx.fusion, symbol);
+  return fq?.pctChange != null ? { pctChange: fq.pctChange } : null;
 }
 
 /**
@@ -117,6 +143,24 @@ export async function executeLogicPipeline(prompt, modeOverride) {
   const entityOpts = { watchlistSymbols: userContextEarly.watchlistSymbols };
   const entities = resolveEntities(prompt);
   const primaryEntity = resolvePrimaryEntity(prompt, entityOpts);
+
+  if (primaryEntity.unresolved) {
+    logicDebug("tickerResolver.blocked", {
+      rawInput: prompt,
+      suggestions: primaryEntity.suggestions,
+    });
+    const blocked = buildTickerUnresolvedResponse({
+      suggestions: primaryEntity.suggestions,
+    });
+    return finalizeLogicResponse(blocked, {
+      prompt,
+      mode: "ticker",
+      primaryEntity,
+      fusion: null,
+      responsePlan: { intentId: "ticker", mode: "ticker" },
+    });
+  }
+
   const tickerTargets = primaryEntity.symbol
     ? [
         primaryEntity.symbol,
