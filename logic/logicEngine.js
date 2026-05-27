@@ -148,6 +148,10 @@ export async function executeLogicPipeline(prompt, modeOverride) {
     logicDebug("tickerResolver.blocked", {
       rawInput: prompt,
       extractedCandidate: extractTickerCandidate(prompt),
+      moversResolvedSymbol: null,
+      moversResolvedName: null,
+      confidence: 0,
+      finalAnswerSymbol: null,
       suggestions: primaryEntity.suggestions,
     });
     const blocked = buildTickerUnresolvedResponse({

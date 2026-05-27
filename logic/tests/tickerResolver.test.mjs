@@ -13,6 +13,10 @@ import { buildTickerDeskAnswer } from "../engines/tickerDeskCopy.js";
 import { applyTickerVoiceVariation } from "../engines/tickerVoiceVariation.js";
 
 const CASES = [
+  ["sandisk why is it moving?", "SNDK", "SanDisk"],
+  ["Why is sandisk moving?", "SNDK", "SanDisk"],
+  ["microship technology why is it moving?", "MCHP", "Microchip"],
+  ["microchip technology why is it moving?", "MCHP", "Microchip"],
   ["Why is LRCX moving?", "LRCX", "Lam Research"],
   ["Why is IREN moving?", "IREN", "Iris Energy"],
   ["Why is nvdia moving?", "NVDA", "Nvidia"],

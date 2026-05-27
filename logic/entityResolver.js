@@ -136,14 +136,16 @@ export function resolveEntities(prompt) {
     }
   }
 
-  for (const [re, symbol, name, type, conf] of SECTOR_THEMES) {
-    if (re.test(normalized)) {
-      tryAdd({
-        entityType: type,
-        symbol,
-        companyName: name,
-        confidence: conf,
-      });
+  if (!isTickerLikeQuery(prompt)) {
+    for (const [re, symbol, name, type, conf] of SECTOR_THEMES) {
+      if (re.test(normalized)) {
+        tryAdd({
+          entityType: type,
+          symbol,
+          companyName: name,
+          confidence: conf,
+        });
+      }
     }
   }
 

@@ -61,8 +61,10 @@ export function isTickerLikeQuery(prompt) {
  * @returns {TickerResolveResult}
  */
 function fromMoversLookup(movers) {
+  const hasEntity =
+    Boolean(movers.symbol) && Boolean(movers.name) && (movers.confidence || 0) >= MIN_CONFIDENCE;
   return {
-    ok: movers.ok && (movers.confidence || 0) >= MIN_CONFIDENCE,
+    ok: movers.ok && hasEntity,
     symbol: movers.symbol,
     name: movers.name,
     assetType: movers.assetType || "equity",
@@ -113,18 +115,22 @@ export function resolveTickerFromPrompt(prompt, options = {}) {
     logResolution(result);
     logicDebug("tickerResolver.resolved", {
       rawInput,
-      candidate: result.candidate,
-      lookupSource: result.source,
-      symbol: result.symbol,
-      name: result.name,
+      extractedCandidate: result.candidate,
+      moversResolvedSymbol: result.symbol,
+      moversResolvedName: result.name,
       confidence: result.confidence,
+      finalAnswerSymbol: result.symbol,
     });
     return result;
   }
 
   logicDebug("tickerResolver.unresolved", {
     rawInput,
-    candidate,
+    extractedCandidate: candidate,
+    moversResolvedSymbol: movers.symbol || null,
+    moversResolvedName: movers.name || null,
+    confidence: movers.confidence || 0,
+    finalAnswerSymbol: null,
     lookupSource: movers.source,
     suggestions: movers.suggestions,
   });
@@ -144,11 +150,11 @@ export function resolveTickerFromPrompt(prompt, options = {}) {
  */
 export function buildTickerUnresolvedResponse(resolution) {
   const suggestions = resolution.suggestions || [];
-  const hint =
+  const hint = suggestions.map((s) => `${s.name} (${s.symbol})`).join(", ");
+  const direct =
     suggestions.length > 0
-      ? suggestions.map((s) => `${s.name} (${s.symbol})`).join(", ")
-      : "Nvidia (NVDA), Nokia (NOK), Snowflake (SNOW)";
-  const direct = `I couldn't confidently identify that ticker. Did you mean ${hint}?`;
+      ? `I couldn't confidently identify that company or ticker. Did you mean ${hint}?`
+      : "I couldn't confidently identify that company or ticker.";
 
   return buildLogicResponse({
     title: "Ticker not identified",
