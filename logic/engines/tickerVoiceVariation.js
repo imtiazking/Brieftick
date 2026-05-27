@@ -19,7 +19,8 @@ function limitSentences(text, max) {
 
 /** @typedef {'mega_cap_tech'|'semi_ai'|'memory_semis'|'legacy_semi'|'cloud_software'|'telecom'|'ev_high_beta'|'bank_financial'|'gold_hedge'|'energy'|'defensive_staples'|'index_etf'|'general'} TickerVoiceType */
 
-const SEMIS_AI = new Set(["NVDA", "AMD", "AVGO", "ASML", "TSM", "ARM", "SMCI", "SOX", "SMH"]);
+const SEMIS_AI = new Set(["NVDA", "AMD", "AVGO", "ASML", "TSM", "ARM", "SMCI", "SOX", "SMH", "LRCX"]);
+const SEMI_EQUIPMENT = new Set(["LRCX"]);
 const MEMORY_SEMIS = new Set(["MU"]);
 const LEGACY_SEMIS = new Set(["INTC"]);
 const CLOUD_SOFTWARE = new Set(["SNOW", "CRM", "ORCL"]);
@@ -93,6 +94,7 @@ export function classifyTickerVoiceType(symbol) {
   if (TELECOM.has(s)) return "telecom";
   if (MEMORY_SEMIS.has(s)) return "memory_semis";
   if (LEGACY_SEMIS.has(s)) return "legacy_semi";
+  if (SEMI_EQUIPMENT.has(s)) return "semi_ai";
   if (SEMIS_AI.has(s)) return "semi_ai";
   if (MEGA_TECH.has(s)) return "mega_cap_tech";
   if (BANKS.has(s)) return "bank_financial";

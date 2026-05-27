@@ -3193,6 +3193,7 @@ h1,h2,h3{
     src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
     type="text/javascript"
   ></script>
+<script type="module" src="/lib/moversSymbolLookup.bridge.js"></script>
 </head>
 <body>
 
@@ -6069,32 +6070,14 @@ let latestWatchlistQuotes = {};
 function cleanTickerSymbol(value){
   return String(value || '').toUpperCase().trim().replace(/[^A-Z0-9.\-]/g,'').slice(0,12);
 }
-const tickerAliases = {
-  'intel':'INTC','intel stock':'INTC','intel corporation':'INTC','intel corp':'INTC','intc':'INTC',
-  'nvidia':'NVDA','nvidia stock':'NVDA','nvda':'NVDA',
-  'tesla':'TSLA','tesla stock':'TSLA','tsla':'TSLA',
-  'apple':'AAPL','apple stock':'AAPL','aapl':'AAPL',
-  'microsoft':'MSFT','microsoft stock':'MSFT','msft':'MSFT',
-  'amazon':'AMZN','amazon stock':'AMZN','amzn':'AMZN',
-  'alphabet':'GOOGL','google':'GOOGL','google stock':'GOOGL','googl':'GOOGL','goog':'GOOGL',
-  'meta':'META','facebook':'META','meta stock':'META',
-  'amd':'AMD','advanced micro devices':'AMD','advanced micro devices stock':'AMD',
-  'broadcom':'AVGO','broadcom stock':'AVGO','avgo':'AVGO',
-  'netflix':'NFLX','netflix stock':'NFLX','nflx':'NFLX',
-  'jpmorgan':'JPM','jp morgan':'JPM','jpmorgan chase':'JPM','jpm':'JPM',
-  'bank of america':'BAC','bac':'BAC',
-  'exxon':'XOM','exxon mobil':'XOM','xom':'XOM',
-  'chevron':'CVX','cvx':'CVX',
-  's&p 500':'SPY','sp500':'SPY','spy':'SPY','nasdaq':'QQQ','nasdaq 100':'QQQ','qqq':'QQQ',
-};
+/* resolveTickerInput → lib/moversSymbolLookup.bridge.js (shared with Logic) */
 function resolveTickerInput(value){
+  if(window.BrieftickMoversLookup?.resolveMoversSymbolInput){
+    return window.BrieftickMoversLookup.resolveMoversSymbolInput(value);
+  }
   const raw = String(value || '').trim();
   if(!raw) return '';
-  const lowered = raw.toLowerCase().replace(/\b(stock|shares|ticker|company|corp|corporation|inc|plc)\b/g,'').replace(/\s+/g,' ').trim();
-  if(tickerAliases[raw.toLowerCase().trim()]) return tickerAliases[raw.toLowerCase().trim()];
-  if(tickerAliases[lowered]) return tickerAliases[lowered];
   const firstToken = raw.toUpperCase().replace(/[^A-Z0-9.\-\s]/g,'').trim().split(/\s+/)[0];
-  if(tickerAliases[firstToken?.toLowerCase()]) return tickerAliases[firstToken.toLowerCase()];
   return cleanTickerSymbol(firstToken || raw);
 }
 function loadWatchlistSymbols(){
@@ -7943,7 +7926,11 @@ async function generateLiveAISummary(opts){
   const rawSymbol = (typedSymbol && resolveTickerInput(typedSymbol) !== resolveTickerInput(visibleSymbol))
                   ? typedSymbol
                   : (visibleSymbol || activeChip?.textContent?.trim() || typedSymbol || 'NVDA');
-  const symbol = resolveTickerInput(rawSymbol) || 'NVDA';
+  const symbol = resolveTickerInput(rawSymbol) || '';
+  if(!symbol){
+    if(out) out.innerHTML = '<p style="color:var(--gold);font-size:13px">Enter a valid ticker or company name, then click <b>Generate live</b>.</p>';
+    return;
+  }
   if(wimInput && wimInput.value !== symbol) wimInput.value = symbol;
   if(wimSymEl && wimSymEl.textContent !== symbol){
     wimSymEl.textContent = symbol;

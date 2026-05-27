@@ -1,7 +1,13 @@
 /**
- * Logic ticker catalog — symbols, display names, quote aliases (single source of truth).
+ * Logic ticker catalog — display names & quote aliases; resolution uses Movers lookup.
  * @module logic/engines/tickerCatalog
  */
+
+import {
+  getMoversSymbolRow,
+  isMoversSearchableSymbol,
+  MOVERS_SYMBOL_DIRECTORY,
+} from "../../lib/moversSymbolLookup.js";
 
 /** @type {Set<string>} */
 export const LOGIC_TICKER_CATALOG = new Set([
@@ -52,7 +58,14 @@ export const TICKER_DISPLAY_NAMES = {
  */
 export function isKnownLogicTicker(sym) {
   const s = String(sym || "").toUpperCase().trim();
-  return LOGIC_TICKER_CATALOG.has(s);
+  return LOGIC_TICKER_CATALOG.has(s) || !!getMoversSymbolRow(s) || isMoversSearchableSymbol(s);
+}
+
+for (const [symbol, name] of MOVERS_SYMBOL_DIRECTORY) {
+  if (!TICKER_DISPLAY_NAMES[symbol]) {
+    TICKER_DISPLAY_NAMES[symbol] = name.split(" · ")[0];
+  }
+  LOGIC_TICKER_CATALOG.add(symbol);
 }
 
 /**
@@ -68,7 +81,7 @@ export function resolveQuoteSymbol(sym) {
  */
 export function getTickerDisplayName(sym) {
   const s = String(sym || "").toUpperCase().trim();
-  return TICKER_DISPLAY_NAMES[s] || s;
+  return TICKER_DISPLAY_NAMES[s] || getMoversSymbolRow(s)?.name || s;
 }
 
 /**
