@@ -326,10 +326,10 @@ function buildMockResponse(prompt, mode) {
   });
 }
 
-function runLogicWithTimeout(prompt, mode) {
-  logicLog("API request started", { prompt: prompt.slice(0, 80), mode });
+function runLogicWithTimeout(prompt, modeHint) {
+  logicLog("API request started", { prompt: prompt.slice(0, 80), modeHint });
   return Promise.race([
-    routeLogicPrompt(prompt, mode),
+    routeLogicPrompt(prompt, modeHint),
     new Promise((_, reject) =>
       setTimeout(() => reject(new Error("Logic request timed out")), LOGIC_API_TIMEOUT_MS)
     ),
@@ -356,10 +356,11 @@ export async function submitLogicQuery(promptText) {
 
   const primary = resolvePrimaryEntity(prompt);
   const intent = detectIntent(prompt, primary);
-  activeMode = intent.mode;
+  const mode = intent.mode || "market-pulse";
+  activeMode = mode;
   logicLog("entity resolved", primary);
   logicLog("intent detected", intent.intent);
-  logicLog("selected Logic module (pipeline decides mode)", intent.mode);
+  logicLog("selected Logic module", mode);
 
   document
     .querySelectorAll(".logic-mode-btn")
@@ -386,7 +387,7 @@ export async function submitLogicQuery(promptText) {
 
   let response;
   try {
-    response = enrichResponseMeta(await runLogicWithTimeout(prompt), prompt);
+    response = enrichResponseMeta(await runLogicWithTimeout(prompt, mode), prompt);
     logicLog("API response received", {
       title: response.title,
       mode: response.mode,
