@@ -107,7 +107,7 @@ function buildFollowUpChips(res, intentId, ctx) {
     );
     pushChip(chips, "risk", "Risk", cards.volatility || opt.riskSignal || drivers[1]);
     pushChip(chips, "positioning", "Positioning", opt.riskSignal || opt.marketStructure);
-    pushChip(chips, "sector", "Sector Sympathy", cards.sectorImpact || opt.relatedMovers);
+    pushChip(chips, "sector", "Sector", cards.sectorImpact || opt.relatedMovers);
     pushChip(chips, "crossAsset", "Cross-Asset", opt.crossAssetSignal || cards.macroContext);
     pushChip(chips, "supplyChain", "Supply Chain", opt.portfolioImpact || opt.narrativeLink);
     pushChip(chips, "stress", "Stress Signal", opt.stressSignal);

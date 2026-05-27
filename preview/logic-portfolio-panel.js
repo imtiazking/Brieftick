@@ -45,7 +45,9 @@ function escapeHtml(s) {
  * Inject compact portfolio + watchlist controls into Logic hub.
  */
 export function mountLogicPortfolioPanel() {
-  const hub = document.getElementById("logicIntelligenceHub");
+  const hub =
+    document.getElementById("logicPortfolioMount") ||
+    document.getElementById("logicIntelligenceHub");
   if (!hub || document.getElementById("logicPortfolioPanel")) return;
 
   syncLogicWatchlistFromDashboard();
@@ -54,13 +56,13 @@ export function mountLogicPortfolioPanel() {
 
   const section = document.createElement("div");
   section.id = "logicPortfolioPanel";
-  section.className = "logic-hub-section logic-hub-section--wide";
+  section.className = "logic-hub-section logic-hub-section--wide logic-portfolio-panel--compact";
   section.innerHTML = `
     <div class="logic-hub-head">
-      <span class="logic-hub-title">Portfolio & watchlist</span>
+      <span class="logic-hub-title">Book & watchlist</span>
       <span class="logic-hub-live" id="logicPortfolioStatus">${saved?.holdings?.length ? `${saved.holdings.length} saved` : "Paste or import"}</span>
     </div>
-    <p class="logic-intel-text" style="margin:0 0 8px;font-size:11px">Personalize Logic — paste weights, drop CSV/XLSX/PDF/screenshot, manage watchlist. Data stays in this browser.</p>
+    <p class="logic-intel-text" style="margin:0 0 8px;font-size:10px;opacity:.85">Paste weights or add tickers — stored locally in this browser.</p>
     <textarea id="logicPortfolioPaste" class="logic-hero-input" style="width:100%;min-height:72px;font-size:12px;margin-bottom:8px" spellcheck="false" placeholder="NVDA 30%&#10;MSFT 20%&#10;META 15%&#10;Cash 15%"></textarea>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
       <button type="button" class="logic-hero-chip" id="logicPortfolioSave">Save holdings</button>
@@ -174,11 +176,14 @@ function renderWatchlistManage(symbols) {
   el.querySelectorAll("[data-remove-watch]").forEach((btn) => {
     btn.addEventListener("click", () => {
       removeWatchlistSymbol(btn.dataset.removeWatch);
-      renderWatchlistManage(getLogicWatchlist());
-      updateExposureLine();
-      refreshHubWatchlist();
-    });
+    renderWatchlistManage(getLogicWatchlist());
+    updateExposureLine();
+    refreshHubWatchlist();
+    if (typeof window.refreshLogicContextSidebar === "function") {
+      window.refreshLogicContextSidebar();
+    }
   });
+});
 }
 
 function updateExposureLine() {
@@ -193,6 +198,9 @@ function updateExposureLine() {
 }
 
 function refreshHubWatchlist() {
+  if (typeof window.refreshLogicContextSidebar === "function") {
+    window.refreshLogicContextSidebar();
+  }
   const hub = document.getElementById("logicHubWatchlist");
   if (!hub) return;
   const symbols = getLogicWatchlist();
