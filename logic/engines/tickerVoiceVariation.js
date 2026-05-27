@@ -369,12 +369,13 @@ export function applyTickerVoiceVariation(input) {
     );
   }
 
-  return limitSentences(answer.replace(/\s+/g, " ").trim(), 2);
+  const maxSentences = input.maxSentences ?? 2;
+  return limitSentences(answer.replace(/\s+/g, " ").trim(), maxSentences);
 }
 
 /**
  * @param {import('../types.js').LogicResponse} res
- * @param {{ headline?: string, quote?: { pctChange?: number }|null }} [opts]
+ * @param {{ headline?: string, quote?: { pctChange?: number }|null, maxSentences?: number }} [opts]
  */
 export function applyTickerVoiceToResponse(res, opts = {}) {
   if (res.mode !== "ticker") return res;
@@ -392,6 +393,7 @@ export function applyTickerVoiceToResponse(res, opts = {}) {
     quote: opts.quote ?? null,
     headline: opts.headline ?? res.cards?.catalyst ?? "",
     text: res.directAnswer || res.summary || res.cards?.snapshot || "",
+    maxSentences: opts.maxSentences ?? 2,
   });
 
   const out = {

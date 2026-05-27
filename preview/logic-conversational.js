@@ -32,11 +32,15 @@ export function renderConversationalLogic(res, role = "logic") {
     });
 
   const depth = conv.depth || "standard";
+  const depthIntent = conv.depthIntent || res.responseDepthIntent;
+  const maxChars =
+    depth === "brief" ? 280 : depth === "deep" ? 640 : depthIntent === "latest_context" ? 520 : 420;
+  const maxSentences = depth === "brief" ? 2 : depth === "deep" ? 6 : 4;
   const primary = humanizeLogicAnswer(
     conv.primaryAnswer || res.directAnswer || res.summary || "",
-    { depth, maxChars: depth === "brief" ? 300 : 420 }
+    { depth, maxChars, maxSentences }
   );
-  const chips = (conv.followUpChips || []).slice(0, 8);
+  const chips = (conv.followUpChips || []).slice(0, 6);
 
   const limitedBanner =
     res.dataLimited || res.mockData

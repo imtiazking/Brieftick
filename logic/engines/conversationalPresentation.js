@@ -5,7 +5,8 @@
  */
 
 import { concise } from "./topicContext.js";
-import { humanizeLogicAnswer, resolveAnswerDepth } from "./conversationalVoice.js";
+import { humanizeLogicAnswer, resolveAnswerDepth, limitsForDepth } from "./conversationalVoice.js";
+import { classifyResponseDepthIntent } from "./responseDepthIntent.js";
 
 export { resolveAnswerDepth };
 
@@ -57,6 +58,16 @@ function pushChip(chips, id, label, text, deepPrompt, depth = "standard") {
  * @param {object} ctx
  * @returns {FollowUpChip[]}
  */
+/** Standard exploration chips — dormant until tap; no report grid. */
+const TICKER_EXPLORATION_CHIPS = [
+  ["catalyst", "Catalyst", "catalyst"],
+  ["earnings", "Earnings", "earnings"],
+  ["risk", "Risk", "volatility"],
+  ["sector", "Sector", "sectorImpact"],
+  ["guidance", "Guidance", "guidance"],
+  ["positioning", "Positioning", "positioning"],
+];
+
 function buildFollowUpChips(res, intentId, ctx, depth = "standard") {
   const cards = res.cards || {};
   const opt = res.optionalCards || {};
@@ -70,21 +81,30 @@ function buildFollowUpChips(res, intentId, ctx, depth = "standard") {
   const add = (id, label, text, deepPrompt) =>
     pushChip(chips, id, label, text, deepPrompt, chipDepth);
 
-  if (res.mode === "ticker" || intentId === "ticker") {
-    add("catalyst", "Catalyst", cards.catalyst || drivers[0]);
-    add(
-      "earnings",
-      "Earnings",
-      drivers.find((d) => /earn|guidance|revenue/i.test(d)) ||
-        signals.find((s) => /earn|guidance/i.test(s)) ||
-        cards.catalyst
-    );
-    add("risk", "Risk", cards.volatility || opt.riskSignal || drivers[1]);
-    add("positioning", "Positioning", opt.riskSignal || opt.marketStructure);
-    add("sector", "Sector", cards.sectorImpact || opt.relatedMovers);
-    add("crossAsset", "Cross-Asset", opt.crossAssetSignal || cards.macroContext);
-    add("supplyChain", "Supply Chain", opt.portfolioImpact || opt.narrativeLink);
-    add("stress", "Stress Signal", opt.stressSignal);
+  const pickGuidance = () =>
+    drivers.find((d) => /guidance|outlook|revenue|earn/i.test(d)) ||
+    signals.find((s) => /guidance|earn/i.test(s)) ||
+    cards.catalyst;
+
+  if (res.mode === "ticker" || intentId === "ticker" || res.responseDepthIntent === "quick_move" || res.responseDepthIntent === "latest_context") {
+    for (const [id, label, key] of TICKER_EXPLORATION_CHIPS) {
+      let text = cards[key];
+      if (key === "earnings") {
+        text =
+          drivers.find((d) => /earn|guidance|revenue/i.test(d)) ||
+          signals.find((s) => /earn|guidance/i.test(s)) ||
+          cards.catalyst;
+      } else if (key === "volatility") {
+        text = cards.volatility || opt.riskSignal || drivers[1];
+      } else if (key === "sectorImpact") {
+        text = cards.sectorImpact || opt.relatedMovers;
+      } else if (key === "guidance") {
+        text = pickGuidance();
+      } else if (key === "positioning") {
+        text = opt.riskSignal || opt.marketStructure;
+      }
+      add(id, label, text);
+    }
   } else if (res.mode === "portfolio" || /^portfolio/.test(intentId)) {
     add("breaksFirst", "What breaks first?", cards.catalyst || drivers[0]);
     add("liquidity", "Liquidity sensitivity", cards.volatility || cards.macroContext);
@@ -139,7 +159,7 @@ function buildFollowUpChips(res, intentId, ctx, depth = "standard") {
     }
   }
 
-  return chips.slice(0, 8);
+  return chips.slice(0, 6);
 }
 
 /**
@@ -151,20 +171,27 @@ export function buildConversationalPresentation(res, ctx = {}) {
   const plan = ctx.responsePlan;
   const intentId = plan?.intentId || res.responseIntent || res.mode || "default";
   const prompt = ctx.prompt || "";
-  const depth = resolveAnswerDepth(prompt, intentId);
-
-  const maxByDepth = depth === "brief" ? 280 : depth === "deep" ? 560 : 400;
+  const depthProfile =
+    ctx.depthProfile ||
+    plan?.depthProfile ||
+    classifyResponseDepthIntent(prompt, {
+      classified: ctx.classified,
+      primaryEntity: ctx.primaryEntity,
+      mode: res.mode,
+    });
+  const depth = resolveAnswerDepth(prompt, intentId, depthProfile);
+  const limits = limitsForDepth(depth, depthProfile);
 
   let primary =
     res.directAnswer ||
     res.summary ||
-    pickText(res.cards?.snapshot, maxByDepth, depth) ||
+    pickText(res.cards?.snapshot, limits.maxChars, depth) ||
     "";
 
-  primary = pickText(primary, maxByDepth, depth);
+  primary = humanizeLogicAnswer(primary, { depthProfile, depth });
 
   if (!primary && res.cards?.aiSummary) {
-    primary = pickText(res.cards.aiSummary, maxByDepth, depth);
+    primary = humanizeLogicAnswer(res.cards.aiSummary, { depthProfile, depth });
   }
 
   const followUpChips = buildFollowUpChips(res, intentId, ctx, depth);
@@ -173,5 +200,6 @@ export function buildConversationalPresentation(res, ctx = {}) {
     primaryAnswer: primary,
     followUpChips,
     depth,
+    depthIntent: depthProfile.intent,
   };
 }

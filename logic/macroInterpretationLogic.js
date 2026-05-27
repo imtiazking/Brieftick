@@ -33,13 +33,14 @@ Drivers: ${model.keyDrivers.join(" | ")}`;
   const ai = await callLogicLLM(
     `You are Brieftick Logic macro interpretation. Explain nuanced macro concepts for investors.
 Rules:
-- Answer the question directly in directAnswer (2-3 sentences). No Reuters. No SPY tape.
+- Answer the question directly in directAnswer. No Reuters. No SPY tape.
 - Never start with "Markets may read this through..."
 - Explain WHY the paradox or nuance exists (e.g. lower inflation can hurt growth if demand-driven).
 - Cards: catalyst=expectations, macroContext=growth/earnings, sectorImpact=positioning, volatility=rates/liquidity.
 - Dense institutional tone. No buy/sell/hold.`,
     `USER QUESTION: ${prompt}\n\n${frame}`,
-    720
+    720,
+    { depthProfile: ctx.depthProfile }
   );
 
   if (ai && !BANNED_PHRASES.test(ai.directAnswer || ai.summary || "")) {
