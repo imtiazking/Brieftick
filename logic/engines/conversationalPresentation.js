@@ -25,7 +25,7 @@ export { resolveAnswerDepth };
  */
 
 const GENERIC_FILLER =
-  /indices tracked|volatility monitored|policy and inflation path|sector beta and peer|headline and catalyst channel|rates, policy, and inflation|anchor the tape|shape relative moves/i;
+  /indices tracked|volatility monitored|policy and inflation path|sector beta and peer|headline and catalyst channel|rates, policy, and inflation|anchor the tape|shape relative moves|in focus on today'?s tape|headline sensitivity|sector beta remain|macro rates framing|live feeds connect|contextual read while|catalyst sensitivity plus sector beta/i;
 
 /**
  * @param {string} text
