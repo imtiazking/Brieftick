@@ -22,6 +22,10 @@ import {
 } from "../logic/freeAccess.js";
 import { resolveCardSchema } from "../logic/cardSchemas.js";
 import { mountLogicPortfolioPanel } from "./logic-portfolio-panel.js";
+import {
+  bindConversationalFollowUps,
+  renderConversationalLogic,
+} from "./logic-conversational.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 const LOGIC_API_TIMEOUT_MS = 14000;
@@ -110,6 +114,14 @@ function renderLoadingState() {
       <div class="logic-skeleton"></div>
     </div>
   </div>`;
+}
+
+/** Preview: conversational strategist note. Production: full card grid until approved. */
+function renderLogicResponse(res, role = "logic") {
+  if (isLogicPreview()) {
+    return renderConversationalLogic(res, role);
+  }
+  return renderIntelligenceCard(res, role);
 }
 
 function renderIntelligenceCard(res, role = "logic") {
@@ -377,7 +389,7 @@ export async function submitLogicQuery(promptText) {
       renderAccessBlockedResponse(prompt, access.reason),
       prompt
     );
-    renderResultSurface(userHtml + renderIntelligenceCard(blocked), "ready");
+    renderResultSurface(userHtml + renderLogicResponse(blocked), "ready");
     isProcessing = false;
     setRunButtonsDisabled(false);
     updateUsageBanner();
@@ -409,7 +421,7 @@ export async function submitLogicQuery(promptText) {
   }
 
   document.getElementById("logicLoading")?.remove();
-  const cardHtml = renderIntelligenceCard(response);
+  const cardHtml = renderLogicResponse(response);
   renderResultSurface(userHtml + cardHtml, "ready");
 
   if (!isLogicTerminalUser()) recordLogicUsage();
@@ -841,6 +853,10 @@ export function initLogicPage() {
   showLogicNav();
   refreshLogicPageChrome();
   bindLogicUI();
+  const resultContent = document.getElementById("logicResultContent");
+  if (resultContent) {
+    bindConversationalFollowUps(resultContent, (q) => submitLogicQuery(q));
+  }
   mountLogicPortfolioPanel();
   hydrateIntelligenceHub();
   updateUsageBanner();

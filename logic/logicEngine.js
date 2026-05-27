@@ -27,6 +27,7 @@ import { classifyQuestion } from "./questionIntent.js";
 import { inferWatchlistExposure } from "./watchlistStore.js";
 import { buildResponsePlan, entityForPlan } from "./engines/responsePlan.js";
 import { applyResponseContract } from "./engines/applyResponseContract.js";
+import { buildConversationalPresentation } from "./engines/conversationalPresentation.js";
 import { resolveUserContext } from "./engines/userContext.js";
 import { applyLogicRoute, planLogicRoute } from "./engines/planLogicRoute.js";
 import { buildPortfolioMemoryFromContext } from "./portfolioMemory.js";
@@ -92,6 +93,8 @@ export function finalizeLogicResponse(res, ctx) {
   if (plan) {
     out = applyResponseContract(out, plan);
   }
+
+  out.conversational = buildConversationalPresentation(out, ctx);
 
   return out;
 }
