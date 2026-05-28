@@ -1,5 +1,5 @@
 /**
- * Conversational Logic render — answer first; chips reveal dormant intelligence on tap.
+ * Conversational Logic render — one primary answer; chips reveal depth on tap only.
  * @module preview/logic-conversational
  */
 
@@ -34,9 +34,9 @@ export function renderConversationalLogic(res, role = "logic") {
   const depth = conv.depth || "standard";
   const primary = humanizeLogicAnswer(
     conv.primaryAnswer || res.directAnswer || res.summary || "",
-    { depth, maxChars: depth === "brief" ? 300 : 420 }
+    { depth, maxChars: depth === "brief" ? 320 : 480 }
   );
-  const chips = (conv.followUpChips || []).slice(0, 8);
+  const chips = (conv.followUpChips || []).slice(0, 6);
 
   const limitedBanner =
     res.dataLimited || res.mockData
@@ -60,42 +60,32 @@ export function renderConversationalLogic(res, role = "logic") {
           .map(
             (c) =>
               `<div class="logic-conv-panel" data-logic-chip-panel="${escapeHtml(c.id)}" hidden>
-            <div class="logic-conv-panel-label">${escapeHtml(c.label)}</div>
-            <p class="logic-conv-panel-text">${escapeHtml(humanizeLogicAnswer(c.text, { depth: "standard", maxChars: 480 }))}</p>
+            <p class="logic-conv-panel-text">${escapeHtml(humanizeLogicAnswer(c.text, { depth: "standard", maxChars: 420 }))}</p>
           </div>`
           )
           .join("")}
       </div>`
     : "";
 
-  const meta = [
-    res.confidenceLabel || (res.confidence ? `Confidence ${res.confidence}%` : null),
-    res.regimeLabel ? `Regime: ${res.regimeLabel}` : null,
-    res.dataLimited || res.mockData ? "Partial data" : null,
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  if (role === "user") {
+    return `<div class="logic-msg logic-msg--user">
+      <p class="logic-msg-summary">${escapeHtml(primary)}</p>
+    </div>`;
+  }
 
   return `<div class="logic-msg logic-msg--logic logic-msg--conversational">
-    <div class="logic-msg-head">
-      <span class="logic-msg-role">${role === "user" ? "You" : "Brieftick Logic"}</span>
-    </div>
     ${limitedBanner}
     <div class="logic-conv-primary">
       <p class="logic-conv-answer">${escapeHtml(primary)}</p>
     </div>
     ${chipRow}
     ${panels}
-    <div class="logic-msg-foot logic-conv-foot">
-      <span>${escapeHtml(meta)}</span>
-      <span class="logic-msg-sources">${escapeHtml((res.sources || []).slice(0, 4).join(" · "))}</span>
-    </div>
-    <p class="logic-disclaimer">${escapeHtml(res.disclaimer || LOGIC_DISCLAIMER)}</p>
+    <p class="logic-disclaimer logic-conv-disclaimer">${escapeHtml(res.disclaimer || LOGIC_DISCLAIMER)}</p>
   </div>`;
 }
 
 /**
- * Chip expand/collapse — dormant layers only; no auto report grid.
+ * Chip expand/collapse — one panel open at a time; smooth inline reveal.
  * @param {HTMLElement} root
  */
 export function bindConversationalChips(root) {
@@ -112,6 +102,7 @@ export function bindConversationalChips(root) {
     const willShow = panel.hidden;
     root.querySelectorAll("[data-logic-chip-panel]").forEach((p) => {
       p.hidden = true;
+      p.classList.remove("is-open");
     });
     root.querySelectorAll(".logic-conv-chip").forEach((b) => {
       b.classList.remove("is-active");
@@ -120,6 +111,7 @@ export function bindConversationalChips(root) {
 
     if (willShow) {
       panel.hidden = false;
+      requestAnimationFrame(() => panel.classList.add("is-open"));
       chip.classList.add("is-active");
       chip.setAttribute("aria-expanded", "true");
       panel.scrollIntoView({ block: "nearest", behavior: "smooth" });

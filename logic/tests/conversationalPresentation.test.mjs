@@ -56,6 +56,8 @@ assert(conv.primaryAnswer.includes("2.29%"), "primary uses direct answer");
 assert(conv.primaryAnswer.length < 280, "brief depth caps primary length");
 assert(!conv.followUpChips.some((c) => c.label === "Summary"), "no summary chip");
 assert(conv.followUpChips.some((c) => c.id === "catalyst"), "catalyst chip available");
+assert(conv.followUpChips.some((c) => c.label === "Price Action"), "price action chip available");
+assert(conv.followUpChips.length <= 5, "ticker mode caps at five chips");
 assert(conv.followUpChips.every((c) => c.text && c.text.length > 8), "chips carry dormant text");
 
 console.log(`\n${passed} passed, ${failed} failed`);

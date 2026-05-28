@@ -32,7 +32,7 @@ import { buildTickerDeskAnswer } from "../logic/engines/tickerDeskCopy.js";
 import { buildTickerUnresolvedResponse } from "../logic/engines/tickerResolver.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
-const LOGIC_PREVIEW_BUILD = "conv-v2";
+const LOGIC_PREVIEW_BUILD = "conv-v3";
 const LOGIC_API_TIMEOUT_MS = 14000;
 
 const HERO_PROMPTS = [
@@ -116,7 +116,12 @@ function renderLoadingState() {
   </div>`;
 }
 
-/** Preview: conversational answer + on-demand chips (no report grid). */
+/** Conversational answer + dormant chips — default Logic UX (no auto report grid). */
+function useConversationalLayout() {
+  return true;
+}
+
+/** Preview chrome: hide mode sidebar, show badge (URL ?preview=logic). */
 function useConversationalPreview() {
   return isConversationalLogicPreview();
 }
@@ -127,7 +132,7 @@ function useConversationalPreview() {
  * @param {string} [prompt]
  */
 function renderLogicResponse(res, role = "logic", prompt = "") {
-  if (!useConversationalPreview()) {
+  if (!useConversationalLayout()) {
     return renderIntelligenceCard(res, role);
   }
   const payload = {
@@ -272,7 +277,7 @@ function renderResultSurface(html, state = "ready") {
   content.style.display = "flex";
   content.innerHTML = html || "";
   content.scrollTop = 0;
-  if (useConversationalPreview()) {
+  if (useConversationalLayout()) {
     bindConversationalChips(content);
   }
 
@@ -334,7 +339,7 @@ function enrichResponseMeta(res, prompt) {
     modeLabel: modeMeta?.label || res.mode,
     _logicPrompt: prompt,
   };
-  if (useConversationalPreview()) return meta;
+  if (useConversationalLayout()) return meta;
   return ensureFullCards(meta);
 }
 

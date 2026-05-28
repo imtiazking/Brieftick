@@ -71,20 +71,17 @@ function buildFollowUpChips(res, intentId, ctx, depth = "standard") {
     pushChip(chips, id, label, text, deepPrompt, chipDepth);
 
   if (res.mode === "ticker" || intentId === "ticker") {
+    add("priceAction", "Price Action", cards.snapshot || res.summary);
     add("catalyst", "Catalyst", cards.catalyst || drivers[0]);
     add(
       "earnings",
       "Earnings",
-      drivers.find((d) => /earn|guidance|revenue/i.test(d)) ||
-        signals.find((s) => /earn|guidance/i.test(s)) ||
-        cards.catalyst
+      cards.macroContext ||
+        drivers.find((d) => /earn|guidance|revenue/i.test(d)) ||
+        signals.find((s) => /earn|guidance/i.test(s))
     );
-    add("risk", "Risk", cards.volatility || opt.riskSignal || drivers[1]);
-    add("positioning", "Positioning", opt.riskSignal || opt.marketStructure);
-    add("sector", "Sector", cards.sectorImpact || opt.relatedMovers);
-    add("crossAsset", "Cross-Asset", opt.crossAssetSignal || cards.macroContext);
-    add("supplyChain", "Supply Chain", opt.portfolioImpact || opt.narrativeLink);
-    add("stress", "Stress Signal", opt.stressSignal);
+    add("positioning", "Positioning", opt.riskSignal || opt.marketStructure || cards.sectorImpact);
+    add("risk", "Risk", cards.volatility || opt.stressSignal || drivers[1]);
   } else if (res.mode === "portfolio" || /^portfolio/.test(intentId)) {
     add("breaksFirst", "What breaks first?", cards.catalyst || drivers[0]);
     add("liquidity", "Liquidity sensitivity", cards.volatility || cards.macroContext);
@@ -139,7 +136,8 @@ function buildFollowUpChips(res, intentId, ctx, depth = "standard") {
     }
   }
 
-  return chips.slice(0, 8);
+  const maxChips = res.mode === "ticker" || intentId === "ticker" ? 5 : 6;
+  return chips.slice(0, maxChips);
 }
 
 /**
