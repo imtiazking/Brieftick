@@ -3194,6 +3194,7 @@ h1,h2,h3{
     type="text/javascript"
   ></script>
 <script type="module" src="/lib/moversSymbolLookup.bridge.js"></script>
+<script type="module" src="/lib/landingTickerQuotes.bridge.js"></script>
 </head>
 <body>
 
@@ -3582,12 +3583,12 @@ h1,h2,h3{
           </div>
 
           <!-- BOTTOM MARKET STRIP -->
-          <div class="hvc-strip hv-market-strip">
-            <div class="hv-market"><div class="sym">SPY</div><div class="val">528.64</div><div class="move up">+0.56%</div></div>
-            <div class="hv-market"><div class="sym">QQQ</div><div class="val">452.11</div><div class="move up">+0.48%</div></div>
-            <div class="hv-market"><div class="sym">DIA</div><div class="val">395.42</div><div class="move up">+0.41%</div></div>
-            <div class="hv-market"><div class="sym">VIX</div><div class="val">17.38</div><div class="move dn">-3.22%</div></div>
-            <div class="hv-market"><div class="sym">10Y</div><div class="val">4.28%</div><div class="move dn">-0.03</div></div>
+          <div class="hvc-strip hv-market-strip" id="hvMarketStrip">
+            <div class="hv-market" data-sym="SPY"><div class="sym">SPY</div><div class="val">…</div><div class="move flat">…</div></div>
+            <div class="hv-market" data-sym="QQQ"><div class="sym">QQQ</div><div class="val">…</div><div class="move flat">…</div></div>
+            <div class="hv-market" data-sym="DIA"><div class="sym">DIA</div><div class="val">…</div><div class="move flat">…</div></div>
+            <div class="hv-market" data-sym="VIX"><div class="sym">VIX</div><div class="val">…</div><div class="move flat">…</div></div>
+            <div class="hv-market" data-sym="10Y"><div class="sym">10Y</div><div class="val">…</div><div class="move flat">…</div></div>
           </div>
 
         </div><!-- /hvc-body -->
@@ -5449,14 +5450,14 @@ document.querySelectorAll('.nav-link').forEach(l=>{
    GLOBAL TICKER
 ============================================================ */
 const tickerData=[
-  ['SPY','-','-','flat'],['QQQ','-','-','flat'],['DIA','-','-','flat'],
-  ['IWM','-','-','flat'],['VIX','22.4','+8.2%','up'],['NVDA','-','-','flat'],
-  ['TSLA','-','-','flat'],['AAPL','-','-','flat'],['AMD','-','-','flat'],
-  ['META','-','-','flat'],['MSFT','-','-','flat'],['GOOGL','-','-','flat'],
-  ['AMZN','-','-','flat'],['BRK.B','-','-','flat'],['JPM','-','-','flat'],
-  ['XOM','-','-','flat'],['CVX','-','-','flat'],['BTC','68,420','-1.18%','dn'],
-  ['ETH','3,624','-1.84%','dn'],['GOLD','2,418','+0.84%','up'],['CRUDE','78.42','+1.62%','up'],
-  ['DXY','105.84','+0.32%','up'],['10Y','4.42','+4bp','up'],['EUR/USD','1.0742','-0.18%','dn']
+  ['SPY','…','…','flat'],['QQQ','…','…','flat'],['DIA','…','…','flat'],
+  ['IWM','…','…','flat'],['VIX','…','…','flat'],['NVDA','…','…','flat'],
+  ['TSLA','…','…','flat'],['AAPL','…','…','flat'],['AMD','…','…','flat'],
+  ['META','…','…','flat'],['MSFT','…','…','flat'],['GOOGL','…','…','flat'],
+  ['AMZN','…','…','flat'],['BRK.B','…','…','flat'],['JPM','…','…','flat'],
+  ['XOM','…','…','flat'],['CVX','…','…','flat'],['BTC','…','…','flat'],
+  ['ETH','…','…','flat'],['GOLD','…','…','flat'],['CRUDE','…','…','flat'],
+  ['DXY','…','…','flat'],['10Y','…','…','flat'],['EUR/USD','…','…','flat']
 ];
 const tickerEl=document.getElementById('ticker');
 const ticks=[...tickerData,...tickerData].map(([s,p,c,d])=>
@@ -8306,21 +8307,26 @@ function _unlockAdmin(){
    Fetches in parallel batches respecting 60 calls/min free limit.
    Returns {SYM: {price, pctChange, change, high, low, open, prevClose}}
 ---------------------------------------------------------------- */
+function _mapFinnhubSymbol(sym) {
+  return window.BrieftickLandingTicker?.mapSymbolForProvider(sym, 'finnhub') || sym;
+}
+
 async function getFinnhubQuotes(symbols) {
-  const key = BriefTickAPI.keys.finnhub;
-  const BATCH = 10; // fetch up to 10 in parallel at a time
+  const BATCH = 10;
   const out = {};
-  for (let i = 0; i < symbols.length; i += BATCH) {
-    const batch = symbols.slice(i, i + BATCH);
+  const unique = [...new Set(symbols.map(s => String(s || '').trim()).filter(Boolean))];
+  for (let i = 0; i < unique.length; i += BATCH) {
+    const batch = unique.slice(i, i + BATCH);
     await Promise.all(batch.map(async sym => {
+      const fhSym = _mapFinnhubSymbol(sym);
       try {
-        const res = await fetch(`/api/proxy?provider=finnhub&endpoint=quote&symbol=${encodeURIComponent(sym)}`);
+        const res = await fetch(`/api/proxy?provider=finnhub&endpoint=quote&symbol=${encodeURIComponent(fhSym)}`);
         const d = await res.json();
-        if (d && d.c && d.c > 0) {
+        if (d && typeof d.c === 'number' && d.c > 0) {
           out[sym] = {
             price: d.c,
-            pctChange: d.dp || 0,
-            change: d.d || 0,
+            pctChange: typeof d.dp === 'number' ? d.dp : 0,
+            change: typeof d.d === 'number' ? d.d : 0,
             high: d.h,
             low: d.l,
             open: d.o,
@@ -8329,9 +8335,152 @@ async function getFinnhubQuotes(symbols) {
         }
       } catch(_) {}
     }));
-    if (i + BATCH < symbols.length) await new Promise(r => setTimeout(r, 200));
+    if (i + BATCH < unique.length) await new Promise(r => setTimeout(r, 180));
   }
   return out;
+}
+
+/** Finnhub → Polygon snapshot → Twelve Data (same priority as Movers). */
+async function fetchLiveQuotes(symbols) {
+  const list = [...new Set(symbols.map(s => String(s || '').trim()).filter(Boolean))];
+  if (!list.length) return {};
+  let quotes = {};
+  try {
+    quotes = await getFinnhubQuotes(list);
+  } catch(e) {
+    console.warn('[quotes] Finnhub batch failed:', e.message);
+  }
+  const missing = list.filter(s => !quotes[s] || isNaN(quotes[s].price));
+  if (missing.length) {
+    try {
+      const poly = await getPolygonQuotes(missing);
+      missing.forEach(s => {
+        const p = poly[s] || poly[_mapFinnhubSymbol(s)];
+        if (p && !isNaN(p.price)) quotes[s] = p;
+      });
+    } catch(e) {
+      console.warn('[quotes] Polygon fallback:', e.message);
+    }
+  }
+  const stillMissing = list.filter(s => !quotes[s] || isNaN(quotes[s].price));
+  if (stillMissing.length && BriefTickAPI.keys.twelvedata && Date.now() >= (BriefTickAPI._quotesCooldownUntil || 0)) {
+    try {
+      const td = await BriefTickAPI.getQuotes(stillMissing.slice(0, 12));
+      stillMissing.forEach(s => { if (td[s] && !isNaN(td[s].price)) quotes[s] = td[s]; });
+    } catch(e) {
+      console.warn('[quotes] Twelve Data fallback:', e.message);
+    }
+  }
+  return quotes;
+}
+
+async function _fetchLandingMacroQuotes() {
+  const LT = window.BrieftickLandingTicker;
+  if (!LT || !BriefTickAPI.keys.twelvedata) return {};
+  const out = {};
+  const macroSyms = [...LT.LANDING_MACRO_SYMBOLS].filter(s => s !== 'VIX' && s !== '10Y');
+  for (const displaySym of macroSyms) {
+    const fetchSym = LT.LANDING_MACRO_FETCH_MAP[displaySym];
+    if (!fetchSym) continue;
+    try {
+      let q = await BriefTickAPI.getQuote(fetchSym);
+      if ((!q || isNaN(q.price)) && LT.LANDING_MACRO_ETF_PROXY[displaySym]) {
+        q = await BriefTickAPI.getQuote(LT.LANDING_MACRO_ETF_PROXY[displaySym]);
+      }
+      if (q && !isNaN(q.price)) out[displaySym] = q;
+    } catch(_) {}
+  }
+  return out;
+}
+
+function _applyQuotesToGlobalTicker(quotes) {
+  const patch = window.BrieftickLandingTicker?.patchGlobalTickerItem;
+  document.querySelectorAll('#ticker .ticker-item').forEach(item => {
+    const sym = item.querySelector('.sym')?.textContent?.trim();
+    if (!sym || !quotes[sym]) return;
+    if (patch) patch(item, sym, quotes[sym]);
+    else {
+      const q = quotes[sym];
+      const spans = item.querySelectorAll('span');
+      if (spans[1]) spans[1].textContent = q.price.toFixed(2);
+      if (spans[2]) {
+        const sign = q.pctChange >= 0 ? '+' : '';
+        spans[2].textContent = `${sign}${q.pctChange.toFixed(2)}%`;
+        spans[2].classList.toggle('up', q.pctChange >= 0);
+        spans[2].classList.toggle('dn', q.pctChange < 0);
+      }
+      item.dataset.live = 'live';
+    }
+  });
+}
+
+function _applyQuotesToHeroStrip(quotes) {
+  const patch = window.BrieftickLandingTicker?.patchHeroStripMarket;
+  const strip = document.getElementById('hvMarketStrip');
+  if (!strip) return;
+  strip.querySelectorAll('.hv-market').forEach(el => {
+    const sym = el.dataset.sym || el.querySelector('.sym')?.textContent?.trim();
+    if (!sym) return;
+    if (sym === 'VIX' && typeof _vixFredValue === 'number' && !isNaN(_vixFredValue)) {
+      const vixQ = quotes.VIX || { price: _vixFredValue, pctChange: 0, change: 0 };
+      if (patch) patch(el, 'VIX', vixQ);
+      else {
+        const valEl = el.querySelector('.val');
+        if (valEl) valEl.textContent = _vixFredValue.toFixed(2);
+      }
+      return;
+    }
+    if (sym === '10Y') return;
+    const q = quotes[sym];
+    if (!q) return;
+    if (patch) patch(el, sym, q);
+  });
+}
+
+function _patchHeroQuoteFromBatch(quotes) {
+  const sym = document.getElementById('hvSym')?.textContent?.trim();
+  if (!sym || !quotes[sym]) return;
+  const q = quotes[sym];
+  const priceEl = document.querySelector('.hv-quote-price');
+  const chgEl = document.querySelector('.hv-quote-chg');
+  if (priceEl) priceEl.textContent = q.price.toFixed(2);
+  if (chgEl && typeof q.pctChange === 'number') {
+    const sign = q.pctChange >= 0 ? '+' : '';
+    chgEl.textContent = `${sign}${(q.change ?? 0).toFixed(2)}  (${sign}${q.pctChange.toFixed(2)}%)`;
+    chgEl.style.color = q.pctChange >= 0 ? 'var(--green)' : 'var(--red)';
+  }
+}
+
+let _landingTickerRefreshInFlight = false;
+async function refreshLandingTickerQuotes() {
+  if (_landingTickerRefreshInFlight) return;
+  _landingTickerRefreshInFlight = true;
+  try {
+    const LT = window.BrieftickLandingTicker;
+    const equities = LT
+      ? LT.landingEquitySymbolsFromTickerData(tickerData)
+      : tickerData.map(r => r[0]).filter(s => !['VIX','BTC','ETH','GOLD','CRUDE','DXY','10Y','EUR/USD'].includes(s));
+    const heroStrip = LT ? LT.HERO_STRIP_SYMBOLS.filter(s => s !== 'VIX' && s !== '10Y') : ['SPY','QQQ','DIA'];
+    const heroSym = document.getElementById('hvSym')?.textContent?.trim();
+    const fetchList = [...new Set([...equities, ...heroStrip, heroSym].filter(Boolean))];
+
+    const quotes = await fetchLiveQuotes(fetchList);
+    const macro = await _fetchLandingMacroQuotes();
+    if (typeof _vixFredValue === 'number' && !isNaN(_vixFredValue)) {
+      macro.VIX = { price: _vixFredValue, pctChange: 0, change: 0 };
+    }
+    const merged = { ...quotes, ...macro };
+
+    _applyQuotesToGlobalTicker(merged);
+    _applyQuotesToHeroStrip(merged);
+    _patchHeroQuoteFromBatch(merged);
+
+    if (LT) LT.markStaleTickerPlaceholders('#ticker', equities);
+  } catch(e) {
+    console.warn('[landing ticker]', e.message);
+  } finally {
+    _landingTickerRefreshInFlight = false;
+  }
 }
 
 /* ----------------------------------------------------------------
@@ -8362,95 +8511,54 @@ async function getPolygonQuotes(symbols) {
 }
 
 async function liveRefreshDashboard(){
-  // Finnhub has real-time quotes with no daily limit — use as primary
-  // Polygon snapshot requires paid plan; Twelve Data has 800/day free limit
-  const equitySymbols = ['NVDA','TSLA','AAPL','META','MSFT','SPY','QQQ','AMD',
-    'DIA','IWM','GOOGL','AMZN','BRK.B','JPM','XOM','CVX','GS','V',
-    'NFLX','COST','WMT','LLY','BAC','MS','MA','INTC'];
-  let quotes = {};
   try {
-    quotes = await getFinnhubQuotes(equitySymbols);
-    console.log('[dashboard] Finnhub quotes for', Object.keys(quotes).length, 'symbols');
-  } catch(e) {
-    console.warn('[dashboard] Finnhub failed, trying Polygon:', e.message);
-    try {
-      quotes = await getPolygonQuotes(equitySymbols);
-    } catch(e2) {
-      console.warn('[dashboard] Polygon also failed, trying Twelve Data:', e2.message);
-      try { quotes = await BriefTickAPI.getQuotes(equitySymbols.slice(0,8)); } catch(_) {}
-    }
-  }
-  if(Object.keys(quotes).length === 0) {
-    console.warn('[dashboard] No live quotes returned. Twelve Data may be rate-limited.');
-  } else {
-    updateRiskRegime(quotes);
-  }
+    await liveRefreshVix();
+  } catch(e) { console.warn('[VIX data]', e.message); }
 
-  // Update saved watchlist rows from the same quote batch.
-  renderWatchlist(quotes);
+  await refreshLandingTickerQuotes();
 
-  // Update top movers panel
-  document.querySelectorAll('#moversList .mover').forEach(row=>{
-    const symEl = row.querySelector('.sym');
-    if(!symEl) return;
-    const sym = symEl.textContent.trim();
-    const q = quotes[sym];
-    if(!q || isNaN(q.price)) return;
-    const priceEl = row.querySelector('.price');
-    const chgEl = row.querySelector('.chg');
-    if(priceEl) priceEl.textContent = q.price.toFixed(2);
-    if(chgEl) {
-      const sign = q.pctChange >= 0 ? '+' : '';
-      chgEl.textContent = `${sign}${q.pctChange.toFixed(2)}%`;
-      chgEl.classList.toggle('up', q.pctChange >= 0);
-      chgEl.classList.toggle('dn', q.pctChange < 0);
-    }
+  const moversSymbols = [];
+  document.querySelectorAll('#moversList .mover .sym').forEach(el => {
+    const s = el.textContent.trim();
+    if (s) moversSymbols.push(s);
   });
-
-  // Update top of page hero NVDA price
-  const nvda = quotes['NVDA'];
-  if(nvda && !isNaN(nvda.price)){
-    const heroPrice = document.querySelector('.hv-quote .price');
-    const heroChg = document.querySelector('.hv-quote .chg');
-    if(heroPrice) heroPrice.textContent = nvda.price.toFixed(2);
-    if(heroChg) {
-      const sign = nvda.change >= 0 ? '+' : '';
-      heroChg.textContent = `${sign}${nvda.change.toFixed(2)} (${sign}${nvda.pctChange.toFixed(2)}%)`;
-      heroChg.style.color = nvda.pctChange >= 0 ? 'var(--green)' : 'var(--red)';
-    }
-  } else {
-    console.warn('[dashboard] NVDA quote missing from live data');
+  const LT = window.BrieftickLandingTicker;
+  const stripEquities = LT
+    ? LT.landingEquitySymbolsFromTickerData(tickerData)
+    : tickerData.map(r => r[0]);
+  const extra = moversSymbols.filter(s => !stripEquities.includes(s));
+  let quotes = {};
+  if (extra.length) {
+    quotes = await fetchLiveQuotes(extra);
+    document.querySelectorAll('#moversList .mover').forEach(row => {
+      const sym = row.querySelector('.sym')?.textContent?.trim();
+      const q = sym && quotes[sym];
+      if (!q || isNaN(q.price)) return;
+      const priceEl = row.querySelector('.price');
+      const chgEl = row.querySelector('.chg');
+      if (priceEl) priceEl.textContent = q.price.toFixed(2);
+      if (chgEl) {
+        const sign = q.pctChange >= 0 ? '+' : '';
+        chgEl.textContent = `${sign}${q.pctChange.toFixed(2)}%`;
+        chgEl.classList.toggle('up', q.pctChange >= 0);
+        chgEl.classList.toggle('dn', q.pctChange < 0);
+      }
+    });
   }
 
-  // Update the top ticker tape (running across the top of every page)
-  // Each ticker-item has 3 spans: .sym, plain price, .up/.dn change
-  document.querySelectorAll('#ticker .ticker-item').forEach(item=>{
-    const symEl = item.querySelector('.sym');
-    if(!symEl) return;
-    const sym = symEl.textContent.trim();
-    const q = quotes[sym];
-    if(!q || isNaN(q.price)) return; // leave non-equity items (BTC, GOLD, 10Y, etc) alone
-    const spans = item.querySelectorAll('span');
-    // Layout: [0]=.sym  [1]=price  [2]=.up/.dn change
-    if(spans[1]) spans[1].textContent = q.price.toFixed(2);
-    if(spans[2]) {
-      const sign = q.pctChange >= 0 ? '+' : '';
-      spans[2].textContent = `${sign}${q.pctChange.toFixed(2)}%`;
-      spans[2].classList.toggle('up', q.pctChange >= 0);
-      spans[2].classList.toggle('dn', q.pctChange < 0);
-    }
-  });
+  const allForRisk = await fetchLiveQuotes(stripEquities.slice(0, 24));
+  if (Object.keys(allForRisk).length) {
+    updateRiskRegime(allForRisk);
+    renderWatchlist(allForRisk);
+  } else {
+    console.warn('[dashboard] No live quotes returned. Check FINNHUB_KEY / proxy.');
+  }
 
   // Sector map has an immediate fallback. Try live ETF refresh later so it
   // doesn't compete with the priority quote batch for Twelve Data credits.
   setTimeout(()=>{
     liveRefreshSectors().catch(e => console.warn('[Sector data]', e.message));
   }, 70_000);
-
-  // Pull live VIX
-  try {
-    await liveRefreshVix();
-  } catch(e) { console.warn('[VIX data]', e.message); }
 
   // Pull live market news headlines (Finnhub)
   try {
@@ -8478,8 +8586,11 @@ async function liveRefreshDashboard(){
   setTimeout(()=>{indicator.style.transition='opacity 1s'; indicator.style.opacity='0.5';}, 5000);
 }
 
-/* Run as soon as DOM is ready, no delay. Mock values are placeholders only. */
+/* Run as soon as DOM is ready. Ticker strip shows … until first live batch lands. */
 window.addEventListener('load', liveRefreshDashboard);
+window.addEventListener('load', () => {
+  setInterval(() => refreshLandingTickerQuotes().catch(() => {}), 30_000);
+});
 
 /* ================================================================
    TELEMETRY OVERLAY — live ETF data for regional cards
@@ -8573,44 +8684,6 @@ window.addEventListener('load', () => {
   }
   routeWithAuth(tab);
 })();
-
-/* ----------------------------------------------------------------
-   TICKER STRIP – full refresh using Finnhub real-time quotes
----------------------------------------------------------------- */
-async function liveRefreshTickerStrip(){
-  const stripSymbols = [
-    'SPY','QQQ','DIA','IWM','NVDA','TSLA','AAPL','AMD','META','MSFT',
-    'GOOGL','AMZN','BRK.B','JPM','XOM','CVX','GS','MS','V','MA',
-    'INTC','CRM','NFLX','COST','NKE','WMT','LLY','JNJ','BAC','GE','CAT','BA'
-  ];
-  let q = {};
-  try {
-    q = await getFinnhubQuotes(stripSymbols);
-  } catch(e) {
-    console.warn('[ticker strip] Finnhub failed, trying Polygon:', e.message);
-    try { q = await getPolygonQuotes(stripSymbols); } catch(_) {
-      try { q = await BriefTickAPI.getQuotes(stripSymbols.slice(0,8)); } catch(__) {}
-    }
-  }
-  if (!Object.keys(q).length) return;
-  document.querySelectorAll('#ticker .ticker-item').forEach(item => {
-    const symEl = item.querySelector('.sym');
-    if (!symEl) return;
-    const sym = symEl.textContent.trim();
-    const data = q[sym];
-    if (!data || isNaN(data.price) || !data.price) return;
-    const spans = item.querySelectorAll('span');
-    if (spans[1]) spans[1].textContent = data.price.toFixed(2);
-    if (spans[2]) {
-      const sign = data.pctChange >= 0 ? '+' : '';
-      spans[2].textContent = `${sign}${data.pctChange.toFixed(2)}%`;
-      spans[2].classList.toggle('up', data.pctChange >= 0);
-      spans[2].classList.toggle('dn', data.pctChange < 0);
-      spans[2].classList.toggle('flat', false);
-    }
-  });
-}
-window.addEventListener('load', () => setTimeout(liveRefreshTickerStrip, 8_000));
 
 // Refresh AI sentiment feed every 5 minutes
 setInterval(()=>liveRefreshSentimentFeed(false), 5 * 60_000);
@@ -12323,20 +12396,29 @@ const HERO_STOCKS = [
 
 let heroStockIdx = 0;
 let heroRotateTimer = null;
+let _heroFetchGen = 0;
+
+function _heroDisplayName(sym, fallback) {
+  const lookup = window.BrieftickMoversLookup?.lookupMoversSymbol?.(sym);
+  if (lookup?.ok && lookup.name) return lookup.name.toUpperCase();
+  return fallback || sym;
+}
 
 async function rotateHeroStock(idx) {
   const stock = HERO_STOCKS[idx];
   const body = document.getElementById('hvBody');
   if (!body) return;
+  const fetchGen = ++_heroFetchGen;
 
   // Fade out
   body.style.opacity = '0';
   await new Promise(r => setTimeout(r, 350));
+  if (fetchGen !== _heroFetchGen) return;
 
   // Update content
   const setText = (id, val) => { const el=document.getElementById(id); if(el) el.innerHTML=val; };
   setText('hvSym',    stock.sym);
-  setText('hvName',   stock.name);
+  setText('hvName',   _heroDisplayName(stock.sym, stock.name));
   setText('hvTags',   stock.tags.join(''));
   setText('hvAiText', stock.ai);
   setText('hvSentiment', stock.sentiment);
@@ -12359,21 +12441,32 @@ async function rotateHeroStock(idx) {
     timeEl.textContent = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}) + ' EDT';
   }
 
-  // Fetch live price
+  const priceEl = body.querySelector('.hv-quote-price');
+  const chgEl   = body.querySelector('.hv-quote-chg');
+  if (priceEl) priceEl.textContent = '…';
+  if (chgEl) { chgEl.textContent = 'Loading…'; chgEl.style.color = 'var(--ink-faint)'; }
+
   try {
-    const quotes = await getFinnhubQuotes([stock.sym]);
+    const quotes = await fetchLiveQuotes([stock.sym]);
+    if (fetchGen !== _heroFetchGen) return;
     const q = quotes[stock.sym];
     if (q && q.price) {
-      const priceEl = body.querySelector('.hv-quote-price');
-      const chgEl   = body.querySelector('.hv-quote-chg');
       if (priceEl) priceEl.textContent = q.price.toFixed(2);
       if (chgEl) {
         const sign = q.pctChange >= 0 ? '+' : '';
-        chgEl.textContent = `${sign}${q.change.toFixed(2)}  (${sign}${q.pctChange.toFixed(2)}%)`;
+        chgEl.textContent = `${sign}${(q.change ?? 0).toFixed(2)}  (${sign}${q.pctChange.toFixed(2)}%)`;
         chgEl.style.color = q.pctChange >= 0 ? 'var(--green)' : 'var(--red)';
       }
+    } else if (chgEl) {
+      chgEl.textContent = 'Live price unavailable';
+      chgEl.style.color = 'var(--ink-faint)';
     }
-  } catch(_) {}
+  } catch(_) {
+    if (fetchGen === _heroFetchGen && chgEl) {
+      chgEl.textContent = 'Live price unavailable';
+      chgEl.style.color = 'var(--ink-faint)';
+    }
+  }
 
   // Redraw sparkline chart
   try {
