@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="en" data-concept="04">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Design Lab · Brieftick</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4a85a; --gold-soft: rgba(212,168,90,.45);
+      --violet: #9b7ed9; --violet-glow: rgba(155,126,217,.35);
+      --ether: #c4b5e8; --void: #020204;
+      --display: "Playfair Display", serif; --body: "Inter Tight", sans-serif; --mono: "JetBrains Mono", monospace;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1); --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--body); background: var(--void); color: #e8ecf5; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    .dl-top { position: sticky; top: 0; z-index: 400; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      padding: 10px 18px; border-bottom: 1px solid rgba(255,255,255,.05); background: rgba(2,2,4,.92); backdrop-filter: blur(20px); }
+    html[data-concept="10"] { --split-mark-top: 88px; }
+    html[data-concept="12"] { --ether-mark-top: 88px; }
+    .dl-brand strong { font-family: var(--mono); font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+    .dl-brand span { font-size: 10px; color: #5a6070; display: block; margin-top: 2px; }
+    .dl-nav { flex: 1; overflow-x: auto; scrollbar-width: none; }
+    .dl-nav::-webkit-scrollbar { display: none; }
+    .dl-nav-inner { display: flex; gap: 4px; min-width: max-content; }
+    .dl-btn { padding: 5px 10px; border: 1px solid rgba(255,255,255,.08); border-radius: 5px; background: transparent;
+      color: #6b7280; font-family: var(--mono); font-size: 7px; letter-spacing: .1em; text-transform: uppercase;
+      cursor: pointer; white-space: nowrap; transition: all .25s var(--ease); }
+    .dl-btn:hover { color: #e8ecf5; border-color: rgba(255,255,255,.18); }
+    .dl-btn.is-active { background: var(--gold); color: #0a0a0c; border-color: var(--gold); }
+    .dl-btn--sig { border-color: rgba(212,168,90,.4); }
+    .dl-btn--evo { border-style: dashed; border-color: rgba(155,126,217,.35); }
+    .dl-btn--land { border-color: rgba(100,160,220,.35); }
+    .dl-btn--land2 { border-color: rgba(212,168,90,.45); background: rgba(212,168,90,.06); }
+    .dl-btn--neo { border-color: rgba(140,200,180,.35); border-style: dotted; }
+    .dl-mode { display: flex; gap: 4px; padding: 2px; background: rgba(255,255,255,.04); border-radius: 6px; }
+    .dl-mode button { padding: 5px 12px; border: none; border-radius: 4px; background: transparent; color: #6b7280;
+      font-family: var(--mono); font-size: 7px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: all .25s; }
+    .dl-mode button.is-active { background: rgba(212,168,90,.2); color: var(--gold); }
+    .dl-nav-landing { display: none; }
+    body[data-lab="landing"] .dl-nav-identity { display: none; }
+    body[data-lab="landing"] .dl-nav-landing { display: block; }
+    .dl-back { font-family: var(--mono); font-size: 8px; color: #5a6070; text-decoration: none; letter-spacing: .1em; text-transform: uppercase; }
+    .dl-back:hover { color: var(--gold); }
+    .dl-top-links { display: flex; gap: 12px; align-items: center; margin-left: auto; }
+    .dl-canvas--landing { min-height: 100vh; max-height: none; overflow: visible; border-radius: 0; margin: 0 -18px; width: calc(100% + 36px); }
+    .dl-panel[data-lab-group="landing"] .dl-meta { display: none; }
+
+    .dl-stage { max-width: 1680px; margin: 0 auto; padding: 24px 18px 64px; }
+    .dl-panel { display: none; animation: rise .6s var(--ease-slow); }
+    .dl-panel.is-active { display: block; }
+    .dl-panel:not(.is-active) { display: none !important; }
+    .dl-panel:not(.is-active) { content-visibility: hidden; contain: strict; pointer-events: none; }
+    .dl-panel:not(.is-active) * { animation-play-state: paused !important; }
+    .dl-fallback { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 48px 32px; text-align: center; background: radial-gradient(ellipse at 50% 40%, rgba(212,168,90,.08), var(--void));
+      border: 1px solid rgba(212,168,90,.2); border-radius: 12px; }
+    .dl-fallback h2 { font-family: var(--display); font-size: 24px; margin-bottom: 12px; color: #e8ecf5; }
+    .dl-fallback p { font-size: 13px; color: #7a8498; max-width: 40ch; line-height: 1.55; }
+    .dl-canvas-loading { min-height: 50vh; display: grid; place-items: center; font-family: var(--mono);
+      font-size: 9px; letter-spacing: .2em; color: rgba(212,168,90,.5); text-transform: uppercase; }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    .dl-meta { margin-bottom: 18px; }
+    .dl-meta-tag { font-family: var(--mono); font-size: 7px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; display: block; }
+    .dl-meta h1 { font-family: var(--display); font-size: clamp(20px, 2.8vw, 28px); font-weight: 500; letter-spacing: -.02em; margin-bottom: 6px; }
+    .dl-meta p { font-size: 12px; line-height: 1.55; color: #7a8498; max-width: 52ch; }
+    .dl-traits { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .dl-traits span { font-family: var(--mono); font-size: 7px; padding: 3px 8px; border: 1px solid rgba(255,255,255,.06); border-radius: 3px; color: #5a6070; }
+    .dl-canvas { min-height: min(84vh, 800px); position: relative; border-radius: 2px; overflow: hidden; }
+    .dl-foot { text-align: center; margin-top: 32px; font-family: var(--mono); font-size: 8px; color: #3d4454; letter-spacing: .1em; }
+
+    @keyframes phFade { 0%,100% { opacity: .25; } 50% { opacity: .85; } }
+    @keyframes phSlow { 0%,100% { opacity: .15; transform: scale(1); } 50% { opacity: .5; transform: scale(1.05); } }
+    @keyframes drift { 0%,100% { transform: translate(0,0); } 50% { transform: translate(16px,-24px); } }
+    @keyframes orbit { to { transform: translate(-50%,-50%) rotate(360deg); } }
+    @keyframes orbitRev { to { transform: translate(-50%,-50%) rotate(-360deg); } }
+    @keyframes ringBreath { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: .35; } 50% { transform: translate(-50%,-50%) scale(1.04); opacity: .7; } }
+    @keyframes ringExpand { 0% { transform: translate(-50%,-50%) scale(.6); opacity: .8; } 100% { transform: translate(-50%,-50%) scale(1.4); opacity: 0; } }
+    @keyframes river { to { transform: translateX(-50%); } }
+    @keyframes horizonGlow { 0%,100% { opacity: .4; } 50% { opacity: .9; } }
+    @keyframes particle { 0% { transform: translateY(0) scale(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: .6; } 100% { transform: translateY(-120vh) scale(1); opacity: 0; } }
+    @keyframes pulseRing { 0% { transform: translate(-50%,-50%) scale(.5); opacity: .6; } 100% { transform: translate(-50%,-50%) scale(2.2); opacity: 0; } }
+    @keyframes hxSpin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+    @keyframes hxSpinRev { to { transform: translate(-50%,-50%) rotate(-360deg); } }
+    @keyframes hxFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes hxPulseCore { 0%,100% { box-shadow: 0 0 60px rgba(212,168,90,.12); } 50% { box-shadow: 0 0 100px rgba(212,168,90,.28); } }
+    @keyframes flow { to { stroke-dashoffset: -48; } }
+    @keyframes camPan { 0%,100% { transform: scale(1.06) translate(0,0); } 50% { transform: scale(1.14) translate(-1.5%,-1%); } }
+    @keyframes fluidMorph { 0%,100% { border-radius: 58% 42% 62% 38%; transform: translate(0,0) rotate(0deg); } 50% { border-radius: 42% 58% 38% 62%; transform: translate(4%,-5%) rotate(12deg); } }
+    @keyframes scanDown { 0% { top: -20%; opacity: 0; } 8% { opacity: .6; } 92% { opacity: .6; } 100% { top: 120%; opacity: 0; } }
+    @keyframes waveRoll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes tunnelPulse { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: .35; } 50% { transform: translate(-50%,-50%) scale(1.08); opacity: .65; } }
+    @keyframes chorusReveal { from { opacity: 0; transform: translateY(20px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+    @keyframes prismPlane { 0%,100% { transform: rotateY(0deg) rotateX(12deg); } 50% { transform: rotateY(180deg) rotateX(-8deg); } }
+    @keyframes stormFlash { 0%,86%,100% { opacity: 0; } 88%,92% { opacity: .55; } 94% { opacity: .15; } }
+    @keyframes gridDepth { 0% { background-position: 0 0; } 100% { background-position: 0 80px; } }
+    @keyframes reactorSync { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: .4; } 50% { transform: translate(-50%,-50%) scale(1.2); opacity: .9; } }
+    @keyframes oceanRise { 0% { transform: translateY(0) scale(.5); opacity: 0; } 15% { opacity: .7; } 100% { transform: translateY(-120vh) scale(1); opacity: 0; } }
+    @keyframes orbCam { 0%,100% { transform: scale(1.08) translate(0,0); } 50% { transform: scale(1.14) translate(-2%,-1.5%); } }
+
+    .dl-canvas--world { min-height: min(96vh, 920px); max-height: none; overflow: hidden; border-radius: 0; }
+    .dl-panel[data-panel^="3"] .dl-meta { margin-bottom: 12px; }
+    .world { position: relative; width: 100%; height: min(96vh, 920px); min-height: 88vh; overflow: hidden; background: var(--void); }
+    .world-stage { position: absolute; inset: -5%; animation: orbCam 36s ease-in-out infinite; transform-origin: center center; z-index: 1; }
+    .world-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(0,0,0,.55)); pointer-events: none; z-index: 40; }
+    .world-ghost { position: absolute; left: 50%; top: 14%; transform: translateX(-50%); z-index: 50; font-family: var(--display);
+      font-size: clamp(48px, 12vw, 140px); font-weight: 400; letter-spacing: -.04em; line-height: .9;
+      color: rgba(255,255,255,.03); white-space: nowrap; pointer-events: none; user-select: none; animation: phSlow 10s ease-in-out infinite; }
+    .world-answer { position: absolute; left: 50%; top: 20%; transform: translateX(-50%); z-index: 55; max-width: 34ch;
+      font-family: var(--display); font-size: clamp(13px, 1.8vw, 17px); line-height: 1.6; font-style: italic; text-align: center;
+      color: rgba(232,236,245,.35); transition: color 1.2s var(--ease-slow); pointer-events: none; }
+    .world:has(.bt-wrap.is-focused) .world-answer, .world:has(.bt-wrap.has-value) .world-answer { color: rgba(232,236,245,.65); }
+    .world-cmd { position: absolute; left: 50%; bottom: 7%; transform: translateX(-50%); z-index: 100; width: min(420px, 88%);
+      padding: 16px 22px; background: rgba(4,6,10,.75); backdrop-filter: blur(16px); border: 1px solid rgba(212,168,90,.2);
+      border-radius: 20px; opacity: .92; transition: opacity .5s var(--ease), transform .5s var(--ease), box-shadow .5s; pointer-events: auto; }
+    .world:hover .world-cmd, .world .world-cmd.bt-wrap.is-focused { opacity: 1; transform: translateX(-50%) translateY(-6px);
+      box-shadow: 0 24px 80px rgba(0,0,0,.5); border-color: rgba(212,168,90,.25); }
+    .world-cmd .bt-tag { font-size: 7px; color: rgba(212,168,90,.55); display: block; margin-bottom: 10px; text-align: center; letter-spacing: .24em; }
+    .world-cmd input { width: 100%; border: none; background: transparent; outline: none; text-align: center;
+      font-family: var(--display); font-size: clamp(18px, 2.4vw, 24px); color: #f5f0e8; }
+    .world-river { position: absolute; left: 0; right: 0; z-index: 70; font-family: var(--mono); font-size: 8px; letter-spacing: .12em;
+      color: rgba(212,168,90,.28); padding: 6px 0; overflow: hidden; pointer-events: none; }
+    .world-river span { display: flex; gap: 48px; white-space: nowrap; animation: river 32s linear infinite; }
+    .world-river--t { top: 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .world-river--b { bottom: 0; border-top: 1px solid rgba(255,255,255,.04); }
+    .world-river--b span { animation-direction: reverse; animation-duration: 38s; }
+
+    .bt-drop { position: absolute; left: 0; right: 0; top: calc(100% + 10px); z-index: 90;
+      background: rgba(4,4,8,.98); border: 1px solid rgba(255,255,255,.08); border-radius: 12px;
+      padding: 6px 0; max-height: 220px; overflow-y: auto; opacity: 0; visibility: hidden;
+      transform: translateY(-6px); transition: all .35s var(--ease); box-shadow: 0 40px 100px rgba(0,0,0,.8); }
+    .bt-wrap.is-focused .bt-drop { opacity: 1; visibility: visible; transform: none; }
+    .bt-sug { display: flex; gap: 10px; padding: 9px 14px; cursor: pointer; font-size: 11px; transition: background .15s; }
+    .bt-sug:hover { background: rgba(255,255,255,.04); }
+    .bt-sug .sym { font-family: var(--mono); color: var(--gold); min-width: 48px; font-size: 10px; }
+    .bt-sug .sub { color: #7a8498; font-size: 10px; }
+    .bt-tag { font-family: var(--mono); font-size: 8px; letter-spacing: .24em; text-transform: uppercase; }
+
+    /* ── 04 Cinematic ── */
+    .c04 { position: relative; min-height: 84vh;
+      background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(212,168,90,.12), transparent 50%), var(--void); }
+    .c04-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,.7)); pointer-events: none; }
+    .c04-cmd { position: absolute; left: 50%; top: 12%; transform: translateX(-50%); width: min(560px, 92%); z-index: 30;
+      padding: 22px 30px; background: rgba(6,8,12,.45); backdrop-filter: blur(40px);
+      border: 1px solid rgba(212,168,90,.25); border-radius: 20px;
+      box-shadow: 0 0 100px rgba(212,168,90,.1); transition: top .5s var(--ease-slow), box-shadow .5s; }
+    .bt-wrap.is-focused.c04-cmd { top: 8%; box-shadow: 0 0 140px rgba(212,168,90,.2); }
+    .c04-cmd .bt-tag { color: var(--gold); text-align: center; display: block; margin-bottom: 16px; }
+    .c04-cmd input { width: 100%; border: none; background: transparent; text-align: center; font-family: var(--display);
+      font-size: clamp(20px, 2.6vw, 26px); color: #f0f2f8; outline: none; letter-spacing: -.02em; }
+    .c04-answer { position: absolute; left: 50%; top: 52%; transform: translate(-50%,-50%); width: min(500px, 88%); padding: 32px 36px; z-index: 10;
+      background: rgba(4,6,10,.55); backdrop-filter: blur(32px); border: 1px solid rgba(212,168,90,.12); border-radius: 18px; }
+    .c04-answer p { font-family: var(--display); font-size: 17px; line-height: 1.62; color: rgba(240,242,248,.9); }
+    .c04-whisper { position: absolute; font-family: var(--mono); font-size: 9px; letter-spacing: .12em; color: rgba(212,168,90,.35);
+      animation: drift 12s ease-in-out infinite; }
+    .c04-w1 { left: 8%; top: 32%; } .c04-w2 { right: 10%; top: 24%; animation-delay: -4s; }
+    .c04-w3 { left: 12%; bottom: 28%; animation-delay: -8s; }
+    .c04-atmo { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .c04-atmo::before, .c04-atmo::after { content: ""; position: absolute; border-radius: 50%; filter: blur(90px); animation: drift 22s ease-in-out infinite; }
+    .c04-atmo::before { width: 45%; height: 38%; left: -5%; top: 8%; background: rgba(212,168,90,.14); }
+    .c04-atmo::after { width: 38%; height: 32%; right: -8%; bottom: 18%; background: rgba(100,140,200,.1); animation-delay: -10s; }
+    .c04-river { position: absolute; left: 0; right: 0; z-index: 8; overflow: hidden; font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+      color: rgba(212,168,90,.35); padding: 10px 0; border-color: rgba(255,255,255,.04); pointer-events: none; }
+    .c04-river span { display: flex; gap: 48px; white-space: nowrap; animation: river 36s linear infinite; }
+    .c04-river--t { top: 0; border-bottom: 1px solid; } .c04-river--b { bottom: 0; border-top: 1px solid; }
+    .c04-river--b span { animation-direction: reverse; animation-duration: 42s; }
+    .c04-intel { position: absolute; z-index: 6; padding: 10px 14px; font-family: var(--mono); font-size: 8px; letter-spacing: .1em;
+      color: rgba(232,236,245,.4); background: rgba(4,6,10,.45); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,.06); border-radius: 10px; animation: drift 16s ease-in-out infinite; pointer-events: none; }
+    .c04-i1 { left: 6%; top: 18%; } .c04-i2 { right: 7%; top: 52%; animation-delay: -5s; }
+    .c04-i3 { left: 10%; bottom: 22%; animation-delay: -11s; }
+    .c04-regime { position: absolute; right: 24px; bottom: 72px; z-index: 6; font-family: var(--mono); font-size: 7px;
+      letter-spacing: .18em; color: rgba(212,168,90,.35); text-transform: uppercase; }
+    .c04-regime strong { display: block; font-size: 11px; color: rgba(212,168,90,.7); margin-top: 4px; letter-spacing: .08em; }
+
+    /* ── 27 Helix · Orbital Market OS ── */
+    .c27 { position: relative; min-height: 92vh;
+      background: radial-gradient(ellipse at 50% 48%, #100c18 0%, var(--void) 72%); overflow: hidden; }
+    .c27-haze { position: absolute; left: 50%; top: 50%; width: min(90vmin, 820px); height: min(90vmin, 820px);
+      transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(212,168,90,.07) 0%, transparent 58%);
+      filter: blur(40px); animation: phSlow 12s ease-in-out infinite; pointer-events: none; z-index: 2; }
+    .c27-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, transparent 18%, rgba(0,0,0,.75) 100%);
+      pointer-events: none; z-index: 15; }
+    .c27-particles { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .c27-particles i { position: absolute; width: 1px; height: 1px; background: rgba(212,168,90,.25); border-radius: 50%;
+      animation: particle 22s linear infinite; }
+    .c27-gravity { position: absolute; left: 50%; top: 50%; width: min(70vmin, 640px); height: min(70vmin, 640px);
+      transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(212,168,90,.05) 0%, transparent 62%);
+      animation: phSlow 14s ease-in-out infinite; pointer-events: none; }
+    .c27-stage { position: absolute; inset: 0; z-index: 5; }
+    .c27-track { position: absolute; left: 50%; top: 50%; border-radius: 50%; border: 1px solid rgba(212,168,90,.06);
+      transform: translate(-50%,-50%); pointer-events: none; transition: opacity .8s var(--ease-slow), border-color .8s; }
+    .c27.has-focus .c27-track { opacity: .2; }
+    .c27.has-focus .c27-track.is-near { opacity: .55; border-color: rgba(212,168,90,.14); }
+    .c27-orbit { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: translate(-50%,-50%);
+      animation: hxSpin var(--dur, 180s) linear infinite; }
+    .c27-orbit--rev { animation-name: hxSpinRev; }
+    .c27.has-focus .c27-orbit { animation-duration: calc(var(--dur, 180s) * 2.2); }
+    .c27-slot { position: absolute; left: 0; top: 0; transform: rotate(var(--angle)) translateY(calc(-1 * var(--radius))); transform-origin: 0 0; }
+    .c27-tick {
+      display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 14px; margin-left: -50%;
+      background: rgba(6,5,10,.4); backdrop-filter: blur(14px); border: 1px solid rgba(212,168,90,.1);
+      border-radius: 10px; cursor: pointer; font-family: var(--mono);
+      transition: transform .5s var(--ease-slow), border-color .5s, box-shadow .5s, background .5s, opacity .6s;
+      transform: rotate(calc(-1 * var(--angle))); animation: hxFloat 6s ease-in-out infinite; animation-delay: var(--delay, 0s);
+    }
+    .c27-tick:hover { border-color: rgba(212,168,90,.3); box-shadow: 0 0 32px rgba(212,168,90,.12);
+      transform: rotate(calc(-1 * var(--angle))) scale(1.05); z-index: 20; opacity: 1 !important; }
+    .c27-tick.is-active {
+      border-color: rgba(212,168,90,.55); background: rgba(212,168,90,.1);
+      box-shadow: 0 0 48px rgba(212,168,90,.25); transform: rotate(calc(-1 * var(--angle))) scale(1.18);
+      opacity: 1 !important; z-index: 30; animation: none;
+    }
+    .c27-tick.is-dim { opacity: .12; filter: blur(0.3px); }
+    .c27.has-focus .c27-tick.is-spotlight { opacity: .55; }
+    .c27-tick .sym { font-size: 10px; font-weight: 500; letter-spacing: .12em; color: rgba(240,236,228,.85); }
+    .c27-tick.is-active .sym { font-size: 11px; color: #f5f0e8; }
+    .c27-tick .chg { font-size: 8px; letter-spacing: .08em; opacity: .85; }
+    .c27-tick .chg.up { color: #6ec9a0; } .c27-tick .chg.dn { color: #c97a86; }
+    .c27-pulse-ring { position: absolute; left: 50%; top: 50%; width: min(55vmin, 480px); height: min(55vmin, 480px);
+      border: 1px solid rgba(212,168,90,.08); border-radius: 50%; transform: translate(-50%,-50%);
+      animation: ringExpand 7s ease-out infinite; pointer-events: none; opacity: .6; }
+    .c27-core { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 30; width: min(400px, 92%); pointer-events: none; }
+    .c27-core > * { pointer-events: auto; }
+    .c27-nucleus {
+      padding: 0; border-radius: 24px; overflow: hidden;
+      background: rgba(4,3,8,.82); backdrop-filter: blur(36px);
+      border: 1px solid rgba(212,168,90,.28);
+      box-shadow: 0 0 80px rgba(212,168,90,.12), inset 0 0 60px rgba(212,168,90,.03);
+      animation: hxPulseCore 5s ease-in-out infinite;
+      transition: transform .6s var(--ease-slow), box-shadow .5s;
+    }
+    .c27.has-focus .c27-nucleus { transform: scale(1.015); box-shadow: 0 0 140px rgba(212,168,90,.18); }
+    .c27-focus { padding: 24px 28px 18px; text-align: center; border-bottom: 1px solid rgba(212,168,90,.08);
+      min-height: 150px; transition: opacity .5s; }
+    .c27-focus-symbol { font-family: var(--display); font-size: clamp(32px, 4.5vw, 42px); font-weight: 500; letter-spacing: -.03em;
+      color: #f5f0e8; margin-bottom: 6px; transition: transform .5s var(--ease-slow); }
+    .c27.has-focus .c27-focus-symbol { transform: scale(1.02); }
+    .c27-focus-chg { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; margin-bottom: 12px; }
+    .c27-focus-chg.up { color: #6ec9a0; } .c27-focus-chg.dn { color: #c97a86; }
+    .c27-focus-summary { font-family: var(--display); font-size: 13px; line-height: 1.55; color: rgba(232,228,220,.75);
+      font-style: italic; max-width: 28em; margin: 0 auto 12px; }
+    .c27-meta { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-family: var(--mono); font-size: 7px;
+      letter-spacing: .14em; color: rgba(212,168,90,.45); text-transform: uppercase; }
+    .c27-meta span strong { color: rgba(212,168,90,.75); font-weight: 500; }
+    .c27-pulse-bar { height: 2px; margin: 12px 24px 0; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
+    .c27-pulse-fill { height: 100%; width: 68%; background: linear-gradient(90deg, transparent, rgba(212,168,90,.6), transparent);
+      animation: phFade 2s ease-in-out infinite; transition: width .6s var(--ease); }
+    .c27-cmd-zone { padding: 16px 22px 22px; }
+    .c27-cmd .bt-tag { color: rgba(212,168,90,.55); margin-bottom: 10px; display: block; font-size: 7px; text-align: center; }
+    .c27-cmd input { width: 100%; border: none; background: transparent; text-align: center; font-family: var(--display);
+      font-size: clamp(16px, 2.2vw, 20px); color: #f0ece4; outline: none; }
+    .c27-context { margin-top: 14px; font-family: var(--mono); font-size: 7px; letter-spacing: .16em;
+      color: rgba(212,168,90,.35); text-transform: uppercase; max-height: 0; overflow: hidden; opacity: 0; transition: all .5s var(--ease); }
+    .c27.has-focus .c27-context { max-height: 24px; opacity: 1; }
+    .c27-telemetry { position: absolute; font-family: var(--mono); font-size: 7px; letter-spacing: .16em; color: rgba(212,168,90,.22); z-index: 12; }
+    .c27-tl { left: 20px; top: 20px; } .c27-tr { right: 20px; top: 20px; }
+    .dl-panel[data-panel="27"] .dl-canvas { min-height: min(92vh, 860px); }
+
+    /* ── 28 Ether (evolved) ── */
+    .c28 { position: relative; min-height: 84vh; overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 35%, #1a1230, #0a0614 45%, var(--void)); }
+    .c28-depth { position: absolute; inset: 0; }
+    .c28-fog { position: absolute; border-radius: 50%; filter: blur(90px); animation: drift 20s ease-in-out infinite; pointer-events: none; }
+    .c28-fog:nth-child(1) { width: 50%; height: 40%; left: 5%; top: 15%; background: rgba(140,100,220,.2); }
+    .c28-fog:nth-child(2) { width: 45%; height: 35%; right: 0; top: 35%; background: rgba(100,140,200,.15); animation-delay: -7s; }
+    .c28-fog:nth-child(3) { width: 40%; height: 30%; left: 30%; bottom: 10%; background: rgba(212,168,90,.08); animation-delay: -14s; }
+    .c28-particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .c28-dot { position: absolute; width: 2px; height: 2px; background: rgba(220,210,255,.6); border-radius: 50%;
+      animation: particle 14s linear infinite; box-shadow: 0 0 6px rgba(200,180,255,.8); }
+    .c28-orb { position: absolute; padding: 14px 18px; font-size: 11px; font-weight: 300; color: rgba(232,228,248,.45);
+      background: rgba(255,255,255,.03); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.06);
+      border-radius: 14px; animation: drift 14s ease-in-out infinite; }
+    .c28-orb--1 { left: 10%; top: 22%; } .c28-orb--2 { right: 12%; top: 30%; animation-delay: -5s; }
+    .c28-orb--3 { left: 18%; bottom: 26%; animation-delay: -10s; }
+    .c28:has(.bt-wrap.is-focused) .c28-orb { color: rgba(232,228,248,.75); border-color: rgba(255,255,255,.12); }
+    .c28-cmd { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 30; width: min(500px, 90%); }
+    .c28-portal { padding: 36px 40px; text-align: center; position: relative;
+      background: rgba(255,255,255,.03); backdrop-filter: blur(48px); border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.08); box-shadow: 0 0 100px var(--violet-glow);
+      transition: box-shadow .6s var(--ease-slow), transform .6s var(--ease-slow); }
+    .bt-wrap.is-focused .c28-portal { box-shadow: 0 0 160px rgba(155,126,217,.5); transform: scale(1.02); }
+    .c28-portal::before { content: ""; position: absolute; inset: -30px; border-radius: 40px;
+      background: radial-gradient(circle, rgba(180,150,255,.25), transparent 70%); opacity: 0; transition: opacity .5s; z-index: -1; }
+    .bt-wrap.is-focused .c28-portal::before { opacity: 1; animation: phFade 4s ease-in-out infinite; }
+    .c28-cmd .bt-tag { color: rgba(200,190,240,.75); margin-bottom: 18px; display: block; }
+    .c28-cmd input { width: 100%; border: none; background: transparent; text-align: center; font-family: var(--display);
+      font-size: clamp(22px, 3vw, 28px); font-weight: 400; color: #f8f4ff; outline: none; letter-spacing: -.01em; }
+    .c28-answer { margin-top: 28px; font-family: var(--display); font-size: 14px; line-height: 1.62; font-style: italic;
+      color: rgba(232,228,248,.45); max-height: 0; overflow: hidden; opacity: 0; transition: all .7s var(--ease-slow); }
+    .bt-wrap.is-focused .c28-answer, .bt-wrap.has-value .c28-answer { max-height: 120px; opacity: 1; color: rgba(232,228,248,.75); }
+    .c28-river { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; overflow: hidden; font-family: var(--mono);
+      font-size: 8px; color: rgba(200,180,255,.3); padding: 8px 0; border-top: 1px solid rgba(255,255,255,.04); pointer-events: none; }
+    .c28-river span { display: flex; gap: 40px; white-space: nowrap; animation: river 32s linear infinite; }
+
+    /* ── 29 Ether Black ── */
+    .c29 { position: relative; min-height: 84vh; background: #000; overflow: hidden; }
+    .c29-void { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(212,168,90,.03), transparent 50%); }
+    .c29-mist { position: absolute; border-radius: 50%; filter: blur(100px); opacity: .4; animation: phSlow 16s ease-in-out infinite; }
+    .c29-mist:nth-child(1) { width: 400px; height: 300px; left: 20%; top: 30%; background: rgba(80,60,40,.15); }
+    .c29-mist:nth-child(2) { width: 300px; height: 250px; right: 15%; bottom: 25%; background: rgba(40,50,80,.12); animation-delay: -8s; }
+    .c29-float { position: absolute; font-family: var(--mono); font-size: 9px; letter-spacing: .16em; color: rgba(255,255,255,.12);
+      padding: 10px 14px; border: 1px solid rgba(255,255,255,.04); border-radius: 8px;
+      background: rgba(255,255,255,.01); animation: drift 18s ease-in-out infinite; }
+    .c29-f1 { left: 15%; top: 30%; } .c29-f2 { right: 18%; top: 45%; animation-delay: -6s; }
+    .c29:has(.bt-wrap.is-focused) .c29-float { color: rgba(212,168,90,.4); border-color: rgba(212,168,90,.15); }
+    .c29-cmd { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 20; width: min(480px, 88%); text-align: center; }
+    .c29-cmd .bt-tag { color: rgba(212,168,90,.35); margin-bottom: 28px; display: block; font-size: 7px; }
+    .c29-cmd input { width: 100%; border: none; background: transparent; text-align: center; font-family: var(--display);
+      font-size: clamp(24px, 3.2vw, 32px); font-weight: 400; color: rgba(255,255,255,.92); outline: none;
+      text-shadow: 0 0 60px rgba(212,168,90,.3); transition: text-shadow .5s; }
+    .bt-wrap.is-focused .c29-cmd input { text-shadow: 0 0 80px rgba(212,168,90,.5); }
+    .c29-line { height: 1px; margin-top: 20px; background: linear-gradient(90deg, transparent, rgba(212,168,90,.4), transparent);
+      opacity: 0; transition: opacity .5s; }
+    .bt-wrap.is-focused .c29-line { opacity: 1; animation: phFade 3s ease-in-out infinite; }
+    .c29-dust { position: absolute; inset: 0; pointer-events: none; }
+    .c29-dust i { position: absolute; width: 1px; height: 1px; background: rgba(255,255,255,.3); border-radius: 50%;
+      animation: particle 18s linear infinite; }
+
+    /* ── 30 Ether Horizon ── */
+    .c30 { position: relative; min-height: 84vh; overflow: hidden;
+      background: linear-gradient(180deg, #040810 0%, #0c1830 25%, #1a3058 45%, #243d68 55%, #081018 75%, #000 100%); }
+    .c30-atmo { position: absolute; inset: 0 0 35%; }
+    .c30-band { position: absolute; left: -10%; right: -10%; height: 12%; filter: blur(50px); opacity: .35; animation: horizonGlow 12s ease-in-out infinite; }
+    .c30-band:nth-child(1) { top: 18%; background: rgba(61,180,140,.3); }
+    .c30-band:nth-child(2) { top: 32%; background: rgba(200,120,80,.25); animation-delay: -4s; }
+    .c30-band:nth-child(3) { top: 46%; background: rgba(100,140,200,.2); animation-delay: -8s; }
+    .c30-macro { position: absolute; left: 5%; top: 8%; font-family: var(--display); font-size: clamp(56px, 10vw, 120px);
+      font-weight: 500; line-height: .88; letter-spacing: -.04em; color: rgba(255,255,255,.06); pointer-events: none; }
+    .c30-layer { position: absolute; font-family: var(--mono); font-size: 8px; letter-spacing: .14em; color: rgba(232,236,245,.35);
+      padding: 8px 12px; border: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.25);
+      animation: drift 10s ease-in-out infinite; }
+    .c30-l1 { right: 10%; top: 20%; } .c30-l2 { left: 12%; top: 38%; animation-delay: -3s; }
+    .c30-deck { position: absolute; bottom: 0; left: 0; right: 0; height: 42%;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,.9)); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 56px; }
+    .c30-cmd { width: min(600px, 92%); z-index: 20; text-align: center; }
+    .c30-cmd .bt-tag { color: rgba(200,210,230,.5); margin-bottom: 18px; display: block; }
+    .c30-cmd input { width: 100%; border: none; background: transparent; text-align: center; font-family: var(--display);
+      font-size: clamp(22px, 3vw, 30px); color: #f0f4fc; outline: none; border-bottom: 1px solid rgba(255,255,255,.1); padding-bottom: 16px; }
+    .bt-wrap.is-focused .c30-cmd input { border-bottom-color: rgba(200,180,255,.5); }
+    .c30-echo { margin-top: 24px; font-size: 14px; line-height: 1.6; color: rgba(232,236,245,.5); font-weight: 300;
+      max-height: 0; overflow: hidden; opacity: 0; transition: all .6s var(--ease-slow); }
+    .bt-wrap.is-focused .c30-echo { max-height: 100px; opacity: 1; }
+
+    /* ── 31 Helix Core ── */
+    .c31 { position: relative; min-height: 84vh; background: #030306; overflow: hidden; }
+    .c31-grid { position: absolute; inset: 0; opacity: .04;
+      background-image: radial-gradient(circle at 50% 50%, rgba(212,168,90,.8) 1px, transparent 1px);
+      background-size: 48px 48px; }
+    .c31-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .c31-svg circle { fill: none; stroke: rgba(212,168,90,.12); stroke-width: 1; transform-origin: 400px 300px; }
+    .c31-svg .spin { animation: orbit 80s linear infinite; transform-box: fill-box; transform-origin: center; }
+    .c31-svg .spin-rev { animation: orbitRev 55s linear infinite; transform-box: fill-box; transform-origin: center; }
+    .c31-telemetry { position: absolute; font-family: var(--mono); font-size: 8px; letter-spacing: .12em; color: rgba(212,168,90,.4); }
+    .c31-t1 { left: 24px; top: 24px; } .c31-t2 { right: 24px; top: 24px; } .c31-t3 { left: 24px; bottom: 24px; }
+    .c31-core { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 25; width: min(420px, 90%); }
+    .c31-engine { padding: 30px; text-align: center; border: 1px solid rgba(212,168,90,.25);
+      background: rgba(4,4,8,.8); backdrop-filter: blur(24px); position: relative; }
+    .c31-engine::before { content: ""; position: absolute; inset: -1px; background: linear-gradient(135deg, rgba(212,168,90,.2), transparent, rgba(212,168,90,.1));
+      z-index: -1; opacity: 0; transition: opacity .4s; }
+    .bt-wrap.is-focused .c31-engine::before { opacity: 1; }
+    .c31-cmd .bt-tag { color: var(--gold); margin-bottom: 12px; display: block; font-size: 7px; }
+    .c31-cmd input { width: 100%; border: none; background: transparent; text-align: center; font-family: var(--display);
+      font-size: 20px; color: #f5f0e8; outline: none; }
+    .c31-status { margin-top: 16px; font-family: var(--mono); font-size: 9px; color: rgba(212,168,90,.35); letter-spacing: .1em; }
+    .bt-wrap.is-focused .c31-status { color: rgba(212,168,90,.6); }
+
+    /* ── 32 Ether Pulse ── */
+    .c32 { position: relative; min-height: 84vh; background: radial-gradient(ellipse at 50% 50%, #120a1c, var(--void)); overflow: hidden; }
+    .c32-pulses { position: absolute; left: 50%; top: 50%; pointer-events: none; }
+    .c32-pulse { position: absolute; width: 40vmin; height: 40vmin; border: 1px solid rgba(180,140,255,.2); border-radius: 50%;
+      animation: pulseRing 3.5s ease-out infinite; }
+    .c32-pulse:nth-child(2) { animation-delay: 1.2s; } .c32-pulse:nth-child(3) { animation-delay: 2.4s; }
+    .c32-river { position: absolute; left: 0; right: 0; height: 40px; display: flex; align-items: center; overflow: hidden;
+      font-family: var(--mono); font-size: 10px; color: rgba(180,160,220,.4); opacity: .6; }
+    .c32-river--t { top: 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .c32-river--b { bottom: 0; border-top: 1px solid rgba(255,255,255,.04); }
+    .c32-river span { display: flex; gap: 40px; white-space: nowrap; animation: river 28s linear infinite; }
+    .c32-glow { position: absolute; left: 50%; top: 50%; width: 50vmin; height: 50vmin; transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(155,126,217,.15), transparent 70%); animation: ringBreath 4s ease-in-out infinite; }
+    .c32-cmd { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 20; width: min(480px, 88%); text-align: center; }
+    .c32-cmd .bt-tag { color: rgba(200,180,240,.6); margin-bottom: 16px; display: block; }
+    .c32-cmd input { width: 100%; border: none; background: rgba(255,255,255,.02); padding: 20px 24px; text-align: center;
+      font-family: var(--display); font-size: clamp(20px, 2.6vw, 26px); color: #f4f0ff; outline: none;
+      border-radius: 16px; border: 1px solid rgba(255,255,255,.06); transition: box-shadow .4s, border-color .4s; }
+    .bt-wrap.is-focused .c32-cmd input { border-color: rgba(180,150,255,.35); box-shadow: 0 0 60px rgba(155,126,217,.25); }
+
+    /* ── 33 Helix Observatory ── */
+    .c33 { position: relative; min-height: 84vh; overflow: hidden; perspective: 900px;
+      background: radial-gradient(ellipse 100% 80% at 50% 100%, #0a1428, var(--void)); }
+    .c33-dome { position: absolute; inset: -5% -15% 25%; border-radius: 50% 50% 0 0 / 25% 25% 0 0;
+      background: linear-gradient(180deg, rgba(20,40,80,.4), transparent);
+      border: 1px solid rgba(78,140,200,.15); transform: rotateX(12deg); transform-origin: bottom center; }
+    .c33-world { position: absolute; left: 50%; top: 55%; width: min(55vmin, 420px); height: min(55vmin, 420px);
+      transform: translate(-50%,-50%); border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1a4060, #0a1830 60%, #050a14);
+      box-shadow: 0 0 80px rgba(78,140,200,.2), inset 0 0 60px rgba(0,0,0,.5);
+      animation: ringBreath 6s ease-in-out infinite; }
+    .c33-world::after { content: ""; position: absolute; inset: -8%; border: 1px solid rgba(212,168,90,.2); border-radius: 50%;
+      animation: orbit 90s linear infinite; }
+    .c33-orbit-ring { position: absolute; left: 50%; top: 55%; border: 1px dashed rgba(212,168,90,.15); border-radius: 50%;
+      transform: translate(-50%,-50%); animation: orbit 70s linear infinite; pointer-events: none; }
+    .c33-or1 { width: min(75vmin, 560px); height: min(75vmin, 560px); }
+    .c33-or2 { width: min(95vmin, 700px); height: min(95vmin, 700px); animation-duration: 100s; animation-direction: reverse; }
+    .c33-geo { position: absolute; font-family: var(--mono); font-size: 8px; letter-spacing: .12em; color: rgba(180,200,230,.45);
+      animation: clusterFloat 8s ease-in-out infinite; }
+    @keyframes clusterFloat { 50% { transform: translateY(-6px); } }
+    .c33-g1 { left: 10%; top: 28%; } .c33-g2 { right: 12%; top: 32%; animation-delay: -3s; }
+    .c33-cmd { position: absolute; left: 50%; top: 28%; transform: translateX(-50%); z-index: 30; width: min(500px, 90%); text-align: center; }
+    .c33-chamber { padding: 26px 32px; background: rgba(6,12,24,.7); backdrop-filter: blur(32px);
+      border: 1px solid rgba(78,140,200,.3); border-radius: 16px 16px 40px 40px / 12px 12px 30px 30px;
+      box-shadow: 0 0 80px rgba(78,140,200,.15); transition: box-shadow .5s; }
+    .bt-wrap.is-focused .c33-chamber { box-shadow: 0 0 120px rgba(78,140,200,.3); }
+    .c33-cmd .bt-tag { color: rgba(140,180,230,.8); margin-bottom: 14px; display: block; }
+    .c33-cmd input { width: 100%; border: none; background: transparent; text-align: center; font-family: var(--display);
+      font-size: clamp(20px, 2.6vw, 24px); color: #e8f4ff; outline: none; }
+
+    /* ── 34 Ether Infinite ── */
+    .c34 { position: relative; min-height: 84vh; background: var(--void); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .c34-infinite { position: absolute; font-family: var(--display); font-size: clamp(80px, 18vw, 200px); font-weight: 400;
+      letter-spacing: -.06em; color: rgba(255,255,255,.02); pointer-events: none; user-select: none; white-space: nowrap; }
+    .c34-vanish { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, transparent 20%, var(--void) 75%); pointer-events: none; }
+    .c34-mote { position: absolute; width: 1px; height: 1px; background: rgba(255,255,255,.15); border-radius: 50%;
+      animation: drift 25s ease-in-out infinite; }
+    .c34-cmd { position: relative; z-index: 20; width: min(440px, 88%); text-align: center; }
+    .c34-cmd .bt-tag { color: rgba(255,255,255,.2); margin-bottom: 32px; display: block; font-size: 7px; letter-spacing: .3em; }
+    .c34-cmd input { width: 100%; border: none; background: transparent; text-align: center; font-family: var(--display);
+      font-size: clamp(26px, 4vw, 40px); font-weight: 400; color: rgba(255,255,255,.9); outline: none; letter-spacing: -.02em; }
+    .c34-cmd input::placeholder { color: rgba(255,255,255,.15); }
+    .c34-response { margin-top: 48px; font-family: var(--display); font-size: clamp(16px, 2vw, 20px); font-style: italic;
+      line-height: 1.65; color: rgba(232,228,240,.4); font-weight: 300; max-width: 28em; margin-left: auto; margin-right: auto;
+      opacity: 0; transform: translateY(12px); transition: all .8s var(--ease-slow); }
+    .bt-wrap.is-focused .c34-response, .bt-wrap.has-value .c34-response { opacity: 1; transform: none; color: rgba(232,228,240,.7); }
+
+
+    /* ── 35–42 · Immersive market worlds ── */
+    .w35 { background: linear-gradient(180deg, #0a1420 0%, #030508 45%, #020204 100%); }
+    .w35-sky { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 80% at 50% 20%, rgba(80,120,180,.25), transparent 55%); animation: phSlow 14s ease-in-out infinite; }
+    .w35-cloud { position: absolute; border-radius: 50%; filter: blur(60px); animation: drift 22s ease-in-out infinite; pointer-events: none; }
+    .w35-c1 { width: 55%; height: 35%; left: -10%; top: 15%; background: rgba(100,140,200,.2); }
+    .w35-c2 { width: 45%; height: 30%; right: -5%; top: 35%; background: rgba(212,168,90,.12); animation-delay: -8s; animation-duration: 28s; }
+    .w35-c3 { width: 50%; height: 28%; left: 20%; bottom: 10%; background: rgba(140,100,180,.15); animation-delay: -14s; }
+    .w35-storm { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, rgba(200,180,255,.15), transparent 45%);
+      animation: stormFlash 9s ease-in-out infinite; pointer-events: none; }
+    .w35-fog i { position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,.35); border-radius: 50%; animation: particle 20s linear infinite; }
+    .w35-pulse { position: absolute; left: 50%; top: 50%; width: min(70vmin, 600px); height: min(70vmin, 600px);
+      transform: translate(-50%,-50%); border-radius: 50%; border: 1px solid rgba(212,168,90,.08);
+      animation: ringExpand 6s ease-out infinite; pointer-events: none; }
+    .w35-macro { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-family: var(--mono);
+      font-size: 9px; letter-spacing: .3em; color: rgba(212,168,90,.2); animation: phFade 4s infinite; }
+
+    .w36 { background: radial-gradient(ellipse at 50% 50%, #0c0818, #020204); }
+    .w36-stars i { position: absolute; width: 1px; height: 1px; background: rgba(255,255,255,.5); border-radius: 50%; animation: phFade 3s ease-in-out infinite; }
+    .w36-galaxy { position: absolute; left: 50%; top: 48%; width: min(95vmin, 820px); height: min(95vmin, 820px); transform: translate(-50%,-50%); }
+    .w36-ring { position: absolute; left: 50%; top: 50%; border: 1px solid rgba(212,168,90,.1); border-radius: 50%;
+      transform: translate(-50%,-50%); animation: hxSpin var(--d, 100s) linear infinite; }
+    .w36-ring--rev { animation-direction: reverse; }
+    .w36-body { position: absolute; left: 0; top: 0; font-family: var(--mono); font-size: 8px; letter-spacing: .1em;
+      color: rgba(240,236,228,.7); padding: 5px 10px; background: rgba(0,0,0,.35); border-radius: 6px;
+      transform: rotate(var(--a)) translateY(calc(-1 * var(--r))) rotate(calc(-1 * var(--a))); white-space: nowrap; }
+    .w36-core { position: absolute; left: 50%; top: 48%; width: 24px; height: 24px; transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(255,240,220,.9), rgba(212,168,90,.3)); border-radius: 50%;
+      box-shadow: 0 0 80px rgba(212,168,90,.4); animation: hxPulseCore 4s infinite; z-index: 10; }
+
+    .w37 { background: linear-gradient(180deg, #020810 0%, #041828 40%, #062840 70%, #020408 100%); }
+    .w37-caustic { position: absolute; inset: 0; opacity: .15; background: radial-gradient(ellipse at 30% 80%, rgba(100,200,255,.4), transparent 50%),
+      radial-gradient(ellipse at 70% 60%, rgba(212,168,90,.2), transparent 40%); animation: phSlow 8s infinite; }
+    .w37-wave { position: absolute; left: -10%; width: 120%; height: 100px; opacity: .4;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 80'%3E%3Cpath fill='rgba(212,168,90,0.12)' d='M0,40 Q200,0 400,40 T800,40 T1200,40 L1200,80 L0,80 Z'/%3E%3C/svg%3E") repeat-x;
+      background-size: 50% 100%; animation: waveRoll 14s linear infinite; }
+    .w37-w1 { bottom: 18%; } .w37-w2 { bottom: 10%; opacity: .25; animation-duration: 20s; animation-direction: reverse; }
+    .w37-w3 { bottom: 2%; opacity: .15; animation-duration: 26s; }
+    .w37-bubble { position: absolute; width: 4px; height: 4px; border-radius: 50%; border: 1px solid rgba(212,168,90,.3);
+      animation: oceanRise 14s linear infinite; }
+
+    .w38 { background: #030306; }
+    .w38-floor { position: absolute; left: -50%; right: -50%; bottom: -20%; height: 60%;
+      background: linear-gradient(180deg, transparent, rgba(212,168,90,.06)); transform: perspective(400px) rotateX(72deg);
+      background-image: repeating-linear-gradient(90deg, rgba(212,168,90,.08) 0, rgba(212,168,90,.08) 1px, transparent 1px, transparent 48px),
+        repeating-linear-gradient(0deg, rgba(212,168,90,.06) 0, rgba(212,168,90,.06) 1px, transparent 1px, transparent 48px);
+      animation: gridDepth 3s linear infinite; opacity: .5; }
+    .w38-pillar { position: absolute; bottom: 0; width: 2px; height: 55%; background: linear-gradient(180deg, rgba(212,168,90,.5), transparent);
+      animation: phFade 2.5s ease-in-out infinite; filter: blur(1px); }
+    .w38-p1 { left: 20%; animation-delay: 0s; } .w38-p2 { left: 45%; height: 65%; animation-delay: .4s; }
+    .w38-p3 { left: 70%; animation-delay: .8s; } .w38-p4 { left: 88%; height: 48%; animation-delay: 1.2s; }
+    .w38-core { position: absolute; left: 50%; top: 42%; width: min(30vmin, 220px); height: min(30vmin, 220px);
+      transform: translate(-50%,-50%); border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,90,.25), transparent 65%); animation: reactorSync 3s ease-in-out infinite; }
+    .w38-reflect { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(155,126,217,.12), transparent 55%);
+      animation: phSlow 12s infinite; }
+
+    .w39 { background: #020204; perspective: 600px; }
+    .w39-terrain { position: absolute; left: -50%; right: -50%; bottom: -30%; height: 80%;
+      transform: rotateX(72deg); transform-origin: center top;
+      background-image: linear-gradient(rgba(212,168,90,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(212,168,90,.12) 1px, transparent 1px);
+      background-size: 56px 56px; animation: gridDepth 2.5s linear infinite; opacity: .45; }
+    .w39-horizon { position: absolute; left: 0; right: 0; top: 38%; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(212,168,90,.5), transparent); box-shadow: 0 0 40px rgba(212,168,90,.3); }
+    .w39-float { position: absolute; font-family: var(--mono); font-size: 9px; letter-spacing: .12em; color: rgba(212,168,90,.35);
+      padding: 8px 12px; border: 1px solid rgba(212,168,90,.15); animation: drift 16s ease-in-out infinite; }
+    .w39-macro { position: absolute; left: 50%; top: 28%; transform: translateX(-50%); font-family: var(--display);
+      font-size: clamp(32px, 6vw, 72px); color: rgba(255,255,255,.04); letter-spacing: -.03em; white-space: nowrap; }
+
+    .w40 { background: radial-gradient(ellipse at 50% 50%, #120a18, #020204); }
+    .w40-reactor { position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%); }
+    .w40-ring { position: absolute; left: 50%; top: 50%; border: 1px solid rgba(212,168,90,.15); border-radius: 50%;
+      transform: translate(-50%,-50%); animation: reactorSync 2.5s ease-in-out infinite; animation-delay: var(--d, 0s); }
+    .w40-core { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; transform: translate(-50%,-50%);
+      background: radial-gradient(circle, #fff8e8, rgba(212,168,90,.6)); border-radius: 50%;
+      box-shadow: 0 0 100px rgba(212,168,90,.5); animation: hxPulseCore 1.8s ease-in-out infinite; }
+    .w40-beam { position: absolute; left: 50%; top: 50%; width: 1px; height: 45vmin; transform-origin: center top;
+      background: linear-gradient(180deg, rgba(212,168,90,.4), transparent); animation: hxSpin 20s linear infinite; }
+    .w40-telemetry { position: absolute; inset: 0; font-family: var(--mono); font-size: 8px; color: rgba(212,168,90,.2);
+      overflow: hidden; pointer-events: none; }
+    .w40-telemetry span { position: absolute; white-space: nowrap; animation: river 20s linear infinite; top: var(--y, 50%); }
+
+    .w41 { background: #000; }
+    .w41-layer { position: absolute; border-radius: 50%; filter: blur(80px); animation: drift 24s ease-in-out infinite; pointer-events: none; }
+    .w41-l1 { width: 60%; height: 45%; left: -10%; top: 20%; background: rgba(140,100,220,.18); }
+    .w41-l2 { width: 50%; height: 40%; right: -15%; top: 40%; background: rgba(212,168,90,.1); animation-delay: -10s; }
+    .w41-l3 { width: 45%; height: 35%; left: 25%; bottom: 5%; background: rgba(100,140,200,.12); animation-delay: -18s; }
+    .w41-orb { position: absolute; padding: 16px 20px; font-size: 11px; color: rgba(232,228,248,.35);
+      background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06); border-radius: 50%;
+      backdrop-filter: blur(20px); animation: drift 18s ease-in-out infinite; }
+    .w41-o1 { left: 12%; top: 25%; } .w41-o2 { right: 15%; top: 35%; animation-delay: -6s; }
+    .w41-o3 { left: 22%; bottom: 30%; animation-delay: -12s; }
+    .w41-mote i { position: absolute; width: 1px; height: 1px; background: rgba(220,210,255,.5); border-radius: 50%; animation: particle 18s linear infinite; }
+
+    .w42 { background: radial-gradient(ellipse at 50% 48%, #100c18, var(--void)); }
+    .w42-gravity { position: absolute; left: 50%; top: 46%; width: min(100vmin, 900px); height: min(100vmin, 900px);
+      transform: translate(-50%,-50%); pointer-events: none; }
+    .w42-orbit { position: absolute; left: 50%; top: 50%; border: 1px solid rgba(212,168,90,.08); border-radius: 50%;
+      transform: translate(-50%,-50%); animation: hxSpin var(--dur, 120s) linear infinite; }
+    .w42-orbit--rev { animation-direction: reverse; }
+    .w42-orbit .w42-slot { position: absolute; left: 50%; top: 0; width: 0; height: 0; margin-left: 0; }
+    .w42-well { position: absolute; left: 50%; top: 50%; width: min(22vmin, 160px); height: min(22vmin, 160px);
+      transform: translate(-50%,-50%); border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,240,220,.15), rgba(212,168,90,.08) 40%, transparent 70%);
+      box-shadow: 0 0 120px rgba(212,168,90,.2), inset 0 0 80px rgba(212,168,90,.08); animation: hxPulseCore 5s infinite; z-index: 8; }
+    .w42-slot { position: absolute; left: 0; top: 0; width: 0; height: 0; animation: hxFloat 6s ease-in-out infinite; animation-delay: var(--d, 0s); }
+    .w42-tick { font-family: var(--mono); font-size: 9px; letter-spacing: .1em; padding: 6px 12px;
+      background: rgba(4,3,8,.5); border: 1px solid rgba(212,168,90,.2); border-radius: 8px; color: rgba(240,236,228,.75);
+      transform: translate(-50%, calc(-1 * var(--r))); white-space: nowrap; cursor: pointer; transition: all .4s var(--ease); }
+    .w42-tick:hover { border-color: rgba(212,168,90,.5); box-shadow: 0 0 24px rgba(212,168,90,.2); }
+
+        /* Landing content tokens */
+
+    /* ── Cinematic landing worlds (09–16) ── */
+    @keyframes cwCam { 0%,100% { transform: scale(1.06) translate(0,0); } 50% { transform: scale(1.14) translate(-2%,-1.2%); } }
+    @keyframes cwFog { 0%,100% { opacity: .45; transform: translate(0,0) scale(1); } 50% { opacity: .75; transform: translate(3%,-4%) scale(1.08); } }
+    @keyframes cwPulseEnv { 0%,100% { opacity: .35; transform: scale(1); } 50% { opacity: .85; transform: scale(1.15); } }
+    @keyframes cwTypeRise { from { opacity: 0; transform: translateY(12vh) scale(.94); filter: blur(12px); } to { opacity: 1; transform: none; filter: none; } }
+    @keyframes cwTypeDrift { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes cwVertFlow { to { transform: translateY(-50%); } }
+    @keyframes cwHorizFlow { to { transform: translateX(-50%); } }
+    @keyframes cwOrbitEnv { to { transform: translate(-50%,-50%) rotate(360deg); } }
+    @keyframes cwSceneGlow { 0%,100% { opacity: .2; } 50% { opacity: .55; } }
+    @keyframes cwScan { 0% { top: -30%; } 100% { top: 130%; } }
+
+    .cw { --mx: 0; --my: 0; --scroll: 0; position: relative; color: #e8ecf5; font-family: var(--body);
+      --glow-x: calc(50% + var(--mx) * 28%); --glow-y: calc(45% + var(--my) * 22%); }
+    .cw--snap { height: min(96vh, 900px); overflow-y: auto; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+    .cw-env { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: #020204; }
+    .cw-cam { position: absolute; inset: -12%; transition: transform .1s linear; animation: cwCam 52s ease-in-out infinite; }
+    .cw-fog { position: absolute; inset: -25%; opacity: calc(.4 + var(--scroll) * .35);
+      background: radial-gradient(ellipse 70% 55% at var(--glow-x) var(--glow-y), rgba(212,168,90,.22), transparent 55%),
+        radial-gradient(ellipse 50% 45% at calc(100% - var(--glow-x)) calc(100% - var(--glow-y)), rgba(78,120,200,.18), transparent 50%);
+      animation: cwFog 22s ease-in-out infinite; filter: blur(40px); }
+    .cw-particles { position: absolute; inset: 0; }
+    .cw-particles i { position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,.35); border-radius: 50%;
+      animation: particle 16s linear infinite; bottom: -5%; }
+    .cw-grid { position: absolute; inset: 0; opacity: .12; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 48px 48px;
+      animation: gridDepth 12s linear infinite; mask-image: radial-gradient(ellipse at 50% 50%, black, transparent 75%); }
+    .cw-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, transparent 25%, rgba(0,0,0,.75)); }
+    .cw-react-glow { position: absolute; left: var(--glow-x); top: var(--glow-y); width: min(50vw, 420px); height: min(50vw, 420px);
+      transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(212,168,90,.35), transparent 65%);
+      filter: blur(50px); opacity: calc(.25 + var(--scroll) * .3); transition: opacity .6s, transform .6s; animation: cwPulseEnv 4s ease-in-out infinite; }
+    .cw--focus .cw-react-glow { opacity: .9; animation-duration: 2s; }
+    .cw--focus .cw-cam { animation-duration: 80s; }
+    .cw-scan { position: absolute; left: 0; right: 0; height: 20%; background: linear-gradient(180deg, transparent, rgba(212,168,90,.06), transparent);
+      animation: cwScan 8s linear infinite; opacity: .5; }
+    .cw-river { position: fixed; left: 0; right: 0; z-index: 60; overflow: hidden; font-family: var(--mono); font-size: 8px;
+      letter-spacing: .14em; color: rgba(212,168,90,.45); padding: 8px 0; pointer-events: none; }
+    .cw-river--t { top: 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .cw-river--b { bottom: 0; border-top: 1px solid rgba(255,255,255,.05); }
+    .cw-river span { display: flex; gap: 56px; white-space: nowrap; animation: river 38s linear infinite; }
+    .cw-river--b span { animation-direction: reverse; animation-duration: 44s; }
+    .cw-hud { position: fixed; top: 14px; right: 18px; z-index: 70; font-family: var(--mono); font-size: 8px; letter-spacing: .16em;
+      color: rgba(212,168,90,.5); text-transform: uppercase; pointer-events: none; }
+    .cw-progress { position: fixed; left: 14px; top: 50%; transform: translateY(-50%); z-index: 70; display: flex; flex-direction: column; gap: 8px; }
+    .cw-progress i { width: 5px; height: 5px; border-radius: 50%; border: 1px solid rgba(212,168,90,.35); background: transparent; transition: all .4s; }
+    .cw-progress i.is-on { background: var(--gold); box-shadow: 0 0 14px var(--gold); transform: scale(1.4); }
+    .cw-scenes { position: relative; z-index: 10; }
+    .cw-scene { min-height: 100vh; scroll-snap-align: start; display: flex; align-items: center; justify-content: center;
+      padding: 80px 32px; position: relative; }
+    .cw-scene-inner { width: min(100%, 960px); position: relative; z-index: 2; }
+    .cw-scene.is-active .cw-type-line { animation: cwTypeRise 1.2s var(--ease-slow) forwards, cwTypeDrift 9s ease-in-out infinite; animation-delay: calc(var(--i) * .18s + .1s), calc(var(--i) * .18s + 1.4s); }
+    .cw-eyebrow { font-family: var(--mono); font-size: 8px; letter-spacing: .24em; text-transform: uppercase; color: rgba(212,168,90,.65); margin-bottom: 20px; }
+    .cw-eyebrow .pulse { display: inline-block; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin-right: 8px; animation: phFade 2s infinite; vertical-align: middle; }
+    .cw-type-line { display: block; font-family: var(--display); font-size: clamp(52px, 11vw, 128px); line-height: .9; letter-spacing: -.04em;
+      font-weight: 500; opacity: 0; transform: translateY(10vh); }
+    .cw-type-line em, .cw-type-line .gold { font-style: italic; color: var(--gold); }
+    .cw-float { position: absolute; font-family: var(--mono); font-size: 9px; letter-spacing: .12em; color: rgba(212,168,90,.28);
+      padding: 8px 12px; border: 1px solid rgba(255,255,255,.06); background: rgba(0,0,0,.25); animation: drift 14s ease-in-out infinite; pointer-events: none; }
+    .cw-sub { font-size: clamp(15px, 2vw, 18px); line-height: 1.65; color: rgba(232,236,245,.6); max-width: 42ch; margin-top: 28px; }
+    .cw-whisper { font-family: var(--display); font-size: clamp(18px, 2.4vw, 26px); line-height: 1.55; font-style: italic;
+      color: rgba(232,236,245,.55); margin-top: 32px; padding-left: 20px; border-left: 2px solid rgba(212,168,90,.35);
+      opacity: 0; transform: translateY(24px); transition: all 1s var(--ease-slow); }
+    .cw-scene.is-active .cw-whisper { opacity: 1; transform: none; }
+    .cw-cmd { position: relative; z-index: 20; padding: 22px 28px; background: rgba(4,6,12,.55); backdrop-filter: blur(32px);
+      border: 1px solid rgba(212,168,90,.3); border-radius: 20px; box-shadow: 0 0 calc(60px + var(--scroll) * 80px) rgba(212,168,90,.15);
+      transition: box-shadow .5s, border-color .5s, transform .5s; }
+    .cw--focus .cw-cmd { border-color: rgba(212,168,90,.6); box-shadow: 0 0 120px rgba(212,168,90,.25); transform: scale(1.02); }
+    .cw-cmd .bt-tag { display: block; text-align: center; color: var(--gold); margin-bottom: 12px; }
+    .cw-cmd input { width: 100%; text-align: center; font-family: var(--display); font-size: clamp(20px, 3vw, 28px); color: #f5f0e8;
+      border: none; background: transparent; outline: none; }
+    .cw-cmd--dock { position: fixed; left: 50%; bottom: 6%; transform: translateX(-50%); width: min(540px, 92%); z-index: 80; }
+    .cw-logic-bloom { font-family: var(--display); font-size: clamp(20px, 2.8vw, 30px); line-height: 1.55; font-style: italic;
+      color: rgba(240,242,248,.8); text-align: center; max-width: 28ch; margin: 0 auto; text-shadow: 0 0 60px rgba(212,168,90,.2); }
+    .cw-macro { position: absolute; font-family: var(--mono); font-size: clamp(10px, 1.2vw, 12px); letter-spacing: .2em;
+      color: rgba(212,168,90,.35); text-transform: uppercase; animation: cwSceneGlow 5s ease-in-out infinite; }
+    .cw-vert-stream { height: min(55vh, 480px); overflow: hidden; mask-image: linear-gradient(180deg, transparent, black 15%, black 85%, transparent); }
+    .cw-vert-stream-inner { animation: cwVertFlow 50s linear infinite; }
+    .cw-vert-item { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .cw-vert-item strong { display: block; font-family: var(--display); font-size: clamp(22px, 3vw, 32px); margin-bottom: 6px; }
+    .cw-vert-item span { font-family: var(--mono); font-size: 8px; letter-spacing: .14em; color: rgba(212,168,90,.45); }
+    .cw-vert-item p { font-size: 13px; color: rgba(232,236,245,.45); line-height: 1.5; margin-top: 8px; max-width: 48ch; }
+    .cw-voice { font-family: var(--display); font-size: clamp(22px, 3.5vw, 36px); line-height: 1.45; font-style: italic; max-width: 22ch; }
+    .cw-voice em { font-style: normal; color: var(--gold); }
+    .cw-voice-meta { margin-top: 20px; font-size: 11px; opacity: .45; }
+    .cw-monoliths { display: flex; gap: clamp(24px, 6vw, 80px); justify-content: center; flex-wrap: wrap; align-items: flex-end; margin-top: 40px; }
+    .cw-monolith { padding: 32px 28px; min-width: min(100%, 280px); border: 1px solid rgba(255,255,255,.1); background: rgba(0,0,0,.35);
+      backdrop-filter: blur(16px); transition: transform .5s, box-shadow .5s; }
+    .cw-monolith:hover { transform: translateY(-8px); box-shadow: 0 0 80px rgba(212,168,90,.12); }
+    .cw-monolith--feat { border-color: rgba(212,168,90,.45); box-shadow: 0 0 100px rgba(212,168,90,.15); }
+    .cw-monolith h3 { font-family: var(--display); font-size: 32px; margin-bottom: 8px; }
+    .cw-monolith .price { font-family: var(--display); font-size: 48px; color: var(--gold); margin: 16px 0; }
+    .cw-monolith ul { list-style: none; font-size: 11px; line-height: 1.6; opacity: .65; }
+    .cw-cta { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
+    .cw-cta button { padding: 14px 26px; border-radius: 999px; font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+      text-transform: uppercase; cursor: pointer; border: 1px solid transparent; transition: all .35s; }
+    .cw-cta-pri { background: linear-gradient(135deg, var(--gold), #e8c178); color: #0a0c10; }
+    .cw-cta-sec { background: transparent; border-color: rgba(255,255,255,.2); color: #e8ecf5; }
+    .cw-ticker-orbit { position: absolute; left: 50%; top: 50%; width: min(90vmin, 800px); height: min(90vmin, 800px); transform: translate(-50%,-50%); }
+    .cw-ticker-orbit .ring { position: absolute; left: 50%; top: 50%; border: 1px solid rgba(212,168,90,.1); border-radius: 50%;
+      transform: translate(-50%,-50%); animation: cwOrbitEnv var(--dur, 100s) linear infinite; }
+    .cw-ticker-orbit .ring--rev { animation-direction: reverse; }
+    .cw-ticker-orbit .tick { position: absolute; left: 50%; top: 0; font-family: var(--mono); font-size: 9px; padding: 5px 10px;
+      background: rgba(4,3,8,.7); border: 1px solid rgba(212,168,90,.25); border-radius: 6px; transform-origin: center 0; white-space: nowrap; cursor: pointer;
+      transition: border-color .3s, box-shadow .3s; }
+    .cw-ticker-orbit .tick:hover, .cw-ticker-orbit .tick.is-hot { border-color: rgba(212,168,90,.7); box-shadow: 0 0 24px rgba(212,168,90,.3); }
+    .cw--focus .cw-ticker-orbit .ring { animation-duration: calc(var(--dur, 100s) * 0.4); }
+    .cw-dual { position: absolute; inset: 0; }
+    .cw-dual span { position: absolute; width: 55%; height: 70%; filter: blur(70px); animation: cwFog 18s ease-in-out infinite; }
+    .cw-dual span:nth-child(1) { left: -10%; top: 10%; background: rgba(78,120,200,.2); }
+    .cw-dual span:nth-child(2) { right: -10%; bottom: 5%; background: rgba(212,168,90,.15); animation-delay: -9s; }
+    .cw-ether-layer { position: absolute; inset: 10% 5%; border-radius: 32px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+      backdrop-filter: blur(24px); animation: l12Layer 12s ease-in-out infinite; }
+    .cw-ether-layer:nth-child(2) { inset: 18% 12%; animation-delay: -4s; transform: rotate(2deg); }
+    .cw-ether-layer:nth-child(3) { inset: 26% 8%; animation-delay: -8s; transform: rotate(-1deg); }
+    .cw-type-tunnel { overflow: hidden; white-space: nowrap; mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent); }
+    .cw-type-tunnel-inner { display: inline-flex; gap: 80px; animation: cwHorizFlow 60s linear infinite; font-family: var(--display);
+      font-size: clamp(64px, 14vw, 160px); letter-spacing: -.04em; opacity: .15; }
+    .cw-type-tunnel-inner b { color: var(--gold); font-weight: 500; opacity: 1; }
+    .cw-core { position: absolute; left: 50%; top: 50%; width: min(70vmin, 500px); height: min(70vmin, 500px); transform: translate(-50%,-50%); }
+    .cw-core .ring { position: absolute; left: 50%; top: 50%; border: 1px solid rgba(212,168,90,.15); border-radius: 50%;
+      transform: translate(-50%,-50%); animation: reactorSync 3s ease-in-out infinite; animation-delay: var(--d, 0s); }
+    /* Concept 14 (Terminal): rings only — no centre orb or centre box-shadow blob */
+    .cw-globe { position: absolute; left: 50%; top: 45%; width: min(75vmin, 560px); height: min(75vmin, 560px); transform: translate(-50%,-50%);
+      border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(78,168,255,.35), rgba(20,40,80,.4) 45%, rgba(2,4,8,.9) 70%);
+      box-shadow: inset -40px -20px 80px rgba(0,0,0,.6), 0 0 120px rgba(78,140,200,.2); animation: cwPulseEnv 6s ease-in-out infinite; }
+    .cw-globe::after { content: ""; position: absolute; inset: -8%; border-radius: 50%; border: 1px solid rgba(78,168,255,.2);
+      animation: ringExpand 4s ease-out infinite; }
+    .cw-hot { position: absolute; font-family: var(--mono); font-size: 9px; padding: 6px 10px; background: rgba(4,8,16,.8);
+      border: 1px solid rgba(78,168,255,.4); border-radius: 4px; animation: phFade 3s ease-in-out infinite; cursor: pointer; z-index: 5; }
+    .cw-hot:hover { border-color: rgba(120,200,255,.8); box-shadow: 0 0 20px rgba(78,168,255,.4); }
+    .cw-scene--center { text-align: center; }
+    .cw-scene--center .cw-sub { margin-left: auto; margin-right: auto; }
+    .cw--void .cw-env, .cw--story .cw-env { background: #020204; }
+    .cw--story .cw-cmd, .cw--story .bt-wrap { display: none !important; }
+    .cw--dual .cw-fog { opacity: .25; }
+    .cw--dual .cw-dual span { filter: blur(48px); will-change: transform, opacity; }
+    .cw--dual .cw-cmd { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .cw--dual .cw-cmd,
+    .cw--dual .cw-cmd--dock,
+    .cw--dual .bt-wrap { display: none !important; }
+    @keyframes splitMarkReveal {
+      0% { opacity: 0; transform: translate3d(0, 16px, 0); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    /* Concept 10 Split — wordmark top-left, no glass panel */
+    .cw-split-mark {
+      position: fixed;
+      left: clamp(18px, 2.5vw, 32px);
+      top: var(--split-mark-top, 88px);
+      z-index: 399;
+      pointer-events: none;
+      text-align: left;
+      transform: translate3d(calc(var(--mx, 0) * 6px), calc(var(--my, 0) * 4px), 0);
+    }
+    .cw-split-mark-lockup {
+      display: inline-flex; flex-direction: column; align-items: flex-start; gap: 8px;
+    }
+    .cw-split-mark-img {
+      display: block; width: auto;
+      height: clamp(38px, 5.8vw, 54px); object-fit: contain;
+      opacity: 0;
+      animation: splitMarkReveal 1.35s var(--ease-slow) .1s forwards;
+      filter: drop-shadow(0 2px 14px rgba(78,120,200,.22)) drop-shadow(0 2px 12px rgba(212,168,90,.12));
+    }
+    .cw-split-mark-tag {
+      font-family: var(--mono); font-size: 7px; letter-spacing: .22em;
+      text-transform: uppercase; color: rgba(232,236,245,.48); padding-left: 2px;
+      opacity: 0; animation: splitMarkReveal 1.25s var(--ease-slow) .28s forwards;
+    }
+    .cw--orbit .cw-fog { background: radial-gradient(ellipse at 50% 50%, rgba(212,168,90,.1), transparent 60%); }
+    .cw--ether { background: #05030a; }
+    .cw--ether .cw-fog { background: radial-gradient(ellipse at 62% 28%, rgba(140,100,220,.18), transparent 52%),
+      radial-gradient(ellipse at 40% 78%, rgba(212,168,90,.08), transparent 48%); }
+    .cw--ether .cw-react-glow { opacity: .18; }
+    .cw--ether.cw--focus .cw-react-glow { opacity: .32; }
+    @keyframes etherMarkReveal {
+      0% { opacity: 0; transform: translate3d(0, 14px, 0); }
+      100% { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+  /* Concept 12: wordmark on Ether — no card/border, top-left under nav */
+    .cw-ether-mark {
+      position: fixed;
+      left: clamp(18px, 2.5vw, 32px);
+      top: var(--ether-mark-top, 88px);
+      z-index: 399;
+      pointer-events: none;
+      text-align: left;
+      isolation: isolate;
+      transform: translate3d(calc(var(--mx, 0) * 8px), calc(var(--my, 0) * 6px), 0);
+      transition: transform .14s linear;
+    }
+    .cw-ether-mark-lockup {
+      position: relative; display: inline-flex; flex-direction: column; align-items: flex-start; gap: 10px;
+    }
+    .cw-ether-mark-img {
+      position: relative; z-index: 1; display: block; width: auto;
+      height: clamp(38px, 5.8vw, 54px); object-fit: contain;
+      opacity: 0; filter: none; box-shadow: none;
+      animation: etherMarkReveal 1.45s var(--ease-slow) .12s forwards, etherMarkFloat 18s ease-in-out 1.6s infinite;
+    }
+    .cw-ether-mark-tag {
+      position: relative; z-index: 1; font-family: var(--mono); font-size: 7px; letter-spacing: .22em;
+      text-transform: uppercase; color: rgba(232,236,245,.5); padding-left: 2px;
+      opacity: 0; animation: etherMarkReveal 1.35s var(--ease-slow) .35s forwards;
+    }
+    .cw--ether.cw--deep .cw-ether-mark { opacity: calc(1 - var(--scroll, 0) * .15); }
+    /* Concept 12 Ether — GPU-friendly motion (visual parity, less repaint) */
+    .cw--ether { contain: layout style; }
+    .cw--ether .cw-env { contain: strict; }
+    .cw--ether .cw-cam {
+      transition: none;
+      animation: cwCamEther 64s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes cwCamEther {
+      0%,100% { transform: translate3d(0, 0, 0) scale(1.04); }
+      50% { transform: translate3d(-1.2%, -0.8%, 0) scale(1.06); }
+    }
+    .cw--ether .cw-fog {
+      filter: blur(26px);
+      will-change: transform, opacity;
+      animation: cwFogEther 26s ease-in-out infinite;
+    }
+    @keyframes cwFogEther {
+      0%,100% { opacity: .42; transform: translate3d(0, 0, 0) scale(1); }
+      50% { opacity: .68; transform: translate3d(2%, -3%, 0) scale(1.05); }
+    }
+    .cw--ether .cw-react-glow {
+      filter: blur(32px);
+      will-change: transform, opacity;
+      transition: opacity .5s ease;
+      animation: cwPulseEnvEther 5s ease-in-out infinite;
+    }
+    @keyframes cwPulseEnvEther {
+      0%,100% { opacity: .28; transform: translate3d(-50%, -50%, 0) scale(1); }
+      50% { opacity: .42; transform: translate3d(-50%, -50%, 0) scale(1.08); }
+    }
+    .cw--ether .cw-scan { display: none; }
+    .cw--ether .cw-grid { opacity: .08; animation-duration: 18s; }
+    .cw--ether .cw-particles i { animation-duration: 18s; }
+    .cw--ether .cw-ether-layer {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      animation: etherLayerDrift 16s ease-in-out infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes etherLayerDrift {
+      0%,100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: .88; }
+      50% { transform: translate3d(0, -10px, 0) rotate(1deg); opacity: 1; }
+    }
+    .cw--ether .cw-ether-layer:nth-child(2) { animation-delay: -5s; }
+    .cw--ether .cw-ether-layer:nth-child(3) { animation-delay: -10s; }
+    .cw--ether .cw-river { contain: layout style paint; }
+    .cw--ether .cw-river span,
+    .cw--ether .cw-river .cw-river-track {
+      display: inline-flex;
+      gap: 56px;
+      white-space: nowrap;
+      will-change: transform;
+      backface-visibility: hidden;
+      transform: translate3d(0, 0, 0);
+      animation: etherRiver 52s linear infinite;
+    }
+    .cw--ether .cw-river--b span,
+    .cw--ether .cw-river--b .cw-river-track { animation-duration: 58s; animation-direction: reverse; }
+    @keyframes etherRiver { to { transform: translate3d(-50%, 0, 0); } }
+    .cw--ether .cw-scene.is-active .cw-type-line {
+      animation: etherTypeRise 1.15s var(--ease-slow) forwards, cwTypeDrift 9s ease-in-out infinite;
+      animation-delay: calc(var(--i) * .18s + .1s), calc(var(--i) * .18s + 1.35s);
+      will-change: transform, opacity;
+    }
+    @keyframes etherTypeRise {
+      from { opacity: 0; transform: translate3d(0, 10vh, 0) scale(.96); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    .cw--ether .cw-cmd {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: border-color .4s var(--ease), transform .4s var(--ease), opacity .4s var(--ease);
+      will-change: transform;
+    }
+    .cw--ether.cw--focus .cw-cmd {
+      transform: translate3d(0, 0, 0) scale(1.02);
+      box-shadow: 0 0 72px rgba(212,168,90,.18);
+    }
+    .cw--ether .cw-ether-mark {
+      transition: none;
+      will-change: transform;
+    }
+    .cw--ether .cw-ether-mark-img {
+      will-change: transform, opacity;
+      animation: etherMarkReveal 1.45s var(--ease-slow) .12s forwards, etherMarkFloat 18s ease-in-out 1.6s infinite;
+    }
+    @keyframes etherMarkFloat {
+      0%,100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -3px, 0); }
+    }
+    .cw--ether .cw-float { will-change: transform; }
+    .cw--ether .cw-vert-stream-inner { will-change: transform; }
+    .cw--tunnel .cw-type-tunnel { position: fixed; inset: 0; z-index: 1; display: flex; align-items: center; opacity: .35; pointer-events: none; }
+    .cw--pulse .cw-react-glow {
+      background: radial-gradient(circle, rgba(212,168,90,.5), rgba(155,126,217,.2), transparent 70%);
+      animation: cwPulseEnv 4s ease-in-out infinite, hxPulseCore 2s infinite;
+    }
+    .cw--globe .cw-fog { opacity: .2; }
+    .cw-phrases { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 40px; max-width: 720px; margin-left: auto; margin-right: auto; }
+    .cw-phrase { font-family: var(--mono); font-size: 9px; letter-spacing: .1em; padding: 10px 14px; border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px; color: rgba(232,236,245,.4); animation: cwTypeDrift 8s ease-in-out infinite; animation-delay: var(--d, 0s); }
+
+    html.bt-paused .cw-cam,
+    html.bt-paused .cw-particles i,
+    html.bt-paused .cw-river span,
+    html.bt-paused .cw-vert-stream-inner,
+    html.bt-paused .cw-split-mark-img,
+    html.bt-paused .cw-split-mark-tag,
+    html.bt-paused .cw-ether-mark-img,
+    html.bt-paused .cw-ether-mark-tag,
+    html.bt-paused .cw--ether .cw-fog,
+    html.bt-paused .cw--ether .cw-cam,
+    html.bt-paused .cw--ether .cw-react-glow,
+    html.bt-paused .cw--ether .cw-ether-layer,
+    html.bt-paused .cw--ether .cw-river span,
+    html.bt-paused .cw--ether .cw-river .cw-river-track,
+    html.bt-paused .world-stage { animation-play-state: paused !important; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      .world-stage { animation: none !important; transform: none !important; }
+    }
+
+    @media (max-width: 900px) {
+      .lp-intel-grid, .lp-proof, .lp-feat-grid, .lp-test-grid, .lp-tier-grid { grid-template-columns: 1fr; }
+      .l10-shell { grid-template-columns: 1fr; }
+      .l10-panel { position: relative; height: auto; min-height: 50vh; }
+      .l11-orbit-feats, .l15-briefings, .l16-feat-strip, .l16-compact { grid-template-columns: 1fr; }
+      .l13-lede, .l13-spread { grid-template-columns: 1fr; }
+      .l09-pricing-row { grid-template-columns: 1fr; }
+      .c30-macro { font-size: 48px; }
+      .c34-infinite { font-size: 60px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="dl-top">
+    <div class="dl-brand">
+      <strong>Brieftick · Design Lab</strong>
+      <span id="dl-brand-sub">Landing · cinematic pages · same IA</span>
+    </div>
+    <div class="dl-mode" role="tablist">
+      <button type="button" data-lab="identity">Identity</button>
+      <button type="button" class="is-active" data-lab="landing">Landing</button>
+    </div>
+    <nav class="dl-nav dl-nav-identity" aria-label="Identity concepts">
+      <div class="dl-nav-inner">
+        <button type="button" class="dl-btn dl-btn--sig" data-id="04">04 Cinematic</button>
+        <button type="button" class="dl-btn dl-btn--sig" data-id="27">27 Helix</button>
+        <button type="button" class="dl-btn dl-btn--sig" data-id="28">28 Ether</button>
+        <button type="button" class="dl-btn dl-btn--evo" data-id="29">29 Black</button>
+        <button type="button" class="dl-btn dl-btn--evo" data-id="30">30 Horizon</button>
+        <button type="button" class="dl-btn dl-btn--evo" data-id="31">31 Core</button>
+        <button type="button" class="dl-btn dl-btn--evo" data-id="32">32 Pulse</button>
+        <button type="button" class="dl-btn dl-btn--evo" data-id="33">33 Obs</button>
+        <button type="button" class="dl-btn dl-btn--evo" data-id="34">34 Infinite</button>
+        <button type="button" class="dl-btn dl-btn--neo" data-id="35">35 Atmos</button>
+        <button type="button" class="dl-btn dl-btn--neo" data-id="36">36 Orbit</button>
+        <button type="button" class="dl-btn dl-btn--neo" data-id="37">37 Ocean</button>
+        <button type="button" class="dl-btn dl-btn--neo" data-id="38">38 Quantum</button>
+        <button type="button" class="dl-btn dl-btn--neo" data-id="39">39 Grid</button>
+        <button type="button" class="dl-btn dl-btn--neo" data-id="40">40 Reactor</button>
+        <button type="button" class="dl-btn dl-btn--neo" data-id="41">41 Drift</button>
+        <button type="button" class="dl-btn dl-btn--neo" data-id="42">42 Nexus</button>
+      </div>
+    </nav>
+    <nav class="dl-nav dl-nav-landing" aria-label="Landing concepts">
+      <div class="dl-nav-inner">
+        <button type="button" class="dl-btn dl-btn--land is-active" data-id="09">09 Cinema</button>
+        <button type="button" class="dl-btn dl-btn--land" data-id="10">10 Split</button>
+        <button type="button" class="dl-btn dl-btn--land" data-id="11">11 Helix</button>
+        <button type="button" class="dl-btn dl-btn--land" data-id="12">12 Ether</button>
+        <button type="button" class="dl-btn dl-btn--land2" data-id="13">13 Editorial</button>
+        <button type="button" class="dl-btn dl-btn--land2" data-id="14">14 Terminal</button>
+        <button type="button" class="dl-btn dl-btn--land2" data-id="15">15 Map</button>
+        <button type="button" class="dl-btn dl-btn--land2" data-id="16">16 Story</button>
+      </div>
+    </nav>
+    <div class="dl-top-links">
+      <a class="dl-back" href="/nav-design-lab.html">Nav lab →</a>
+      <a class="dl-back" href="/">← Product</a>
+    </div>
+  </header>
+
+  <main class="dl-stage" id="stage"></main>
+  <p class="dl-foot" id="dl-foot">Design exploration · mock intelligence · not production</p>
+
+  <script>
+    const CMD = {
+      tagline: "Ask the market anything.",
+      placeholders: [
+        "Why is TSLA moving?",
+        "What's happening with Nvidia?",
+        "Speak to the global macro regime…",
+        "Read the market's pulse right now…",
+        "What is the world pricing in?",
+      ],
+      suggestions: [
+        { sym: "NVDA", sub: "NVIDIA · live intelligence", kbd: "↵" },
+        { sym: "TSLA", sub: "Tesla · session thesis", kbd: "↵" },
+        { sym: "/regime", sub: "Global risk regime", kbd: "⌘" },
+        { sym: "/flows", sub: "Capital route map", kbd: "⌘" },
+        { sym: "/weather", sub: "Market atmosphere", kbd: "⌘" },
+      ],
+    };
+
+    const M = {
+      answer: "Tesla looks more tied to broader growth sentiment today than any specific company catalyst, with high-beta tech still sensitive to rates and risk appetite.",
+      tickers: [["SPY","528","+0.48%"],["NVDA","892","-1.24%"],["TSLA","248","-2.18%"],["VIX","17.4","-3.1%"]],
+      regime: { l: "Risk-on selective", v: "68" },
+    };
+
+    const META = {
+      "04": { title: "Cinematic AI Command Center", desc: "Foundational identity anchor. Glass command, gold atmosphere, whisper intelligence — cinematic restraint with the market as dialogue partner.", traits: ["Signature anchor", "Gold glass", "Market dialogue", "Cinematic restraint"] },
+      "27": { title: "Helix · Orbital Market OS", desc: "Elegant orbital intelligence. Curated ticker rings, calm rotation, volumetric depth — select a symbol and the market becomes the hero at the nucleus.", traits: ["Curated orbits", "Hero focus", "Calm motion", "Spatial luxury"] },
+      "28": { title: "Ether", desc: "Evolved atmospheric intelligence. Volumetric depth, particle field, floating orbs — intelligence suspended in cinematic space.", traits: ["Volumetric depth", "Particle field", "Portal command", "Spatial immersion"] },
+      "29": { title: "Ether Black", desc: "Ultra-premium black void. Intelligence as whisper in darkness — gold thread command, near-invisible chrome, deepest emotional immersion.", traits: ["Luxury void", "Gold thread", "Invisible chrome", "Emotional depth"] },
+      "30": { title: "Ether Horizon", desc: "Panoramic orbit view. Horizon-scale gradients, atmospheric bands, deck command — watching the global economy unfold.", traits: ["Orbit scale", "Atmospheric bands", "Macro horizon", "Deck command"] },
+      "31": { title: "Helix Core", desc: "Refined orbital OS. SVG intelligence rings, institutional telemetry, engine command — the iconic interaction system.", traits: ["Orbital OS", "Engine core", "Institutional", "Iconic interaction"] },
+      "32": { title: "Ether Pulse", desc: "Market breathing. Radial pulse waves, ambient rivers, reactive glow — movement transformed into emotional atmosphere.", traits: ["Pulse waves", "Ambient rivers", "Reactive glow", "Market breath"] },
+      "33": { title: "Helix Observatory", desc: "Orbital macro chamber. Curved dome architecture, world system, geo overlays — global intelligence at cinematic scale.", traits: ["Dome chamber", "World system", "Orbital rings", "Macro scale"] },
+      "34": { title: "Ether Infinite", desc: "Infinite intelligence space. Near-empty composition, giant typographic void, whisper response — maximum luxury restraint.", traits: ["Infinite void", "Giant restraint", "Whisper response", "Ultimate elegance"] },
+      "35": { title: "Market Atmosphere", desc: "Living macro climate. Flowing weather, volatility storms, intelligence fog, economic pulse — inside a breathing global economy.", traits: ["Macro weather", "Volatility storms", "Living fog", "Climate system"] },
+      "36": { title: "Orbital Intelligence", desc: "Cinematic orbital universe. Rotating market galaxies, ticker constellations, camera drift — a space observatory for capital.", traits: ["Orbital galaxies", "Ticker stars", "Camera drift", "Spatial depth"] },
+      "37": { title: "Intelligence Ocean", desc: "Fluid market ecosystem. Liquid currents, underwater depth, reactive tides — floating through living AI ocean.", traits: ["Liquid motion", "Ticker currents", "Pulse waves", "Ocean depth"] },
+      "38": { title: "Quantum Chamber", desc: "Institutional AI vault. Reactive architecture, moving light pillars, energy core — futuristic intelligence chamber.", traits: ["Light pillars", "Energy core", "Vault depth", "Reactive walls"] },
+      "39": { title: "Infinite Grid", desc: "Endless intelligence field. Horizon terrain, floating tickers, macro overlays — the market stretching into infinity.", traits: ["Infinite terrain", "Horizon scale", "Moving grid", "Macro field"] },
+      "40": { title: "Pulse Reactor", desc: "Market energy core. Synchronized pulses, telemetry flow, volatility heartbeat — standing inside the reactor.", traits: ["Pulse sync", "Energy beams", "Telemetry flow", "Market heart"] },
+      "41": { title: "Ether Drift", desc: "Dreamlike Ether evolution. Slow atmospheric drift, translucent layers, reactive fog — premium AI atmosphere.", traits: ["Ether evolution", "Slow drift", "Layered fog", "Dream atmosphere"] },
+      "42": { title: "Helix Nexus", desc: "Living orbital engine. Giant rings, ticker ecosystems, gravity well — immersive Helix evolution at scale.", traits: ["Helix evolution", "Orbital rings", "Gravity well", "Ticker ecosystem"] },
+      "09": { title: "Void Breath", desc: "Film intro. Giant type emerges from fog; camera drifts; command dock pulses; module river scrolls through darkness.", traits: ["Living fog", "Giant type", "Mouse reactive", "Scene snap"] },
+      "10": { title: "Dual Mist", desc: "Two atmospheric planes breathe in opposition. Logic blooms first; intelligence fields shift with scroll depth.", traits: ["Dual atmosphere", "Scroll depth", "Logic bloom", "Continuous motion"] },
+      "11": { title: "Orbital Cinema", desc: "Ticker rings orbit the nucleus. Hover tickers heat the world; command focus accelerates rotation.", traits: ["Orbital tickers", "Reactive rings", "Nucleus cmd", "Spatial depth"] },
+      "12": { title: "Ether Drift", desc: "Layered volumetric fog. Sticky ether sheets; command scene suspended in violet atmosphere.", traits: ["Ether layers", "Volumetric", "Parallax fog", "Suspended cmd"] },
+      "13": { title: "Type Tunnel", desc: "Kinetic typography tunnel behind the narrative. Massive drifting module names; cinematic text velocity.", traits: ["Type tunnel", "Kinetic copy", "Depth motion", "Atmospheric"] },
+      "14": { title: "Pulse Reactor", desc: "Market-energy core pulses through every scene. Focus on command intensifies the reactor heartbeat.", traits: ["Pulse core", "Energy rings", "Focus reactive", "Cinematic beat"] },
+      "15": { title: "Macro Globe", desc: "Living macro sphere with regional hotspots. Map-search command; globe glow reacts to pointer.", traits: ["Globe world", "Hotspots", "Geo glow", "Immersive"] },
+      "16": { title: "Chapter Film", desc: "Snap-scroll cinematic chapters. No command chrome — story, motion, and Logic bloom only. Enter via CTA when ready.", traits: ["Chapter snap", "No search UI", "Story-first", "Logic bloom"] },
+    };
+
+    const LANDING = {
+      eyebrow: "Live Beta · Cohort II Open",
+      headline: ["Understand", "what moves", "<em class=\"gold\">markets.</em>"],
+      sub: "Real-time market intelligence across earnings, macro events, sentiment, and market-moving news. Built to explain the why behind every move.",
+      logicKicker: "Powered by Brieftick Logic",
+      logicDesc: "An intelligent reasoning engine connecting the dots across markets, sectors and macro events.",
+      proof: [
+        ["Live market data", "Streaming context"],
+        ["12,000+ equities", "Global coverage"],
+        ["Earnings monitoring", "Real-time updates"],
+        ["Market intelligence", "Built for investors"],
+      ],
+      features: {
+        eyebrow: "What it does",
+        title: "Nine modules. <em>One</em> intelligence layer.",
+        desc: "Every feature shares a single market graph — so a tariff headline, a watchlist alert and a sector heatmap all speak the same language.",
+        items: [
+          ["Market Radar", "Live movers, sector heatmaps and regime context in one institutional view.", "module 01"],
+          ["Market Briefings", "Morning, midday and close briefings written by our analysis engine.", "module 02"],
+          ["Why Is It Moving", "Decompose any move into causes — macro, sector, sentiment and historical pattern matches.", "module 03"],
+          ["Portfolio Intelligence", "Concentration, correlation, macro sensitivity and volatility exposure — explained, not advised.", "module 04"],
+          ["Macro Intelligence", "Inflation, rates, currencies and policy events — translated into measurable market effect.", "module 05"],
+          ["Market Impact Feed", "A neutral, real-time feed of market-moving events with chain-reaction mapping.", "module 06"],
+          ["Correlation Engine", "Track when relationships between stocks, sectors and assets break down.", "module 07"],
+          ["Smart Alerts", "Multi-condition alerts in plain English: vol spikes, sentiment turns, correlation breaks.", "module 08"],
+          ["Sector Rotation", "Where money is flowing — and leaving. Visualised, ranked and explained.", "module 09"],
+          ["AI Market Scanner", "Momentum-ranked universe scored live across price, volume and 52-week position.", "module 10"],
+          ["Insider & Political Trades", "SEC Form 4 and congressional STOCK Act disclosures — follow smart money.", "module 11"],
+          ["Options Flow", "Unusual options activity, put/call ratios, dark pool prints and full options chains.", "module 12"],
+        ],
+      },
+      testimonials: {
+        eyebrow: "Early access voices",
+        title: "Built with the people who <em>read</em> markets for a living.",
+        items: [
+          ["It's the first product that explains <em>why</em> something is happening, not just <em>what</em>. The reaction map alone changed how I read sector weakness.", "Mara Voss", "Portfolio Manager · Solo RIA"],
+          ["I used to keep eight tabs open just to make sense of a Fed day. Brieftick replaced six of them and made the other two faster.", "Jonas Reiter", "Macro Analyst · London"],
+          ["The morning briefing is genuinely the first thing I read. It feels written by a senior analyst who already pre-read the tape.", "Aisha Khoury", "Active Trader · 12 yrs"],
+        ],
+      },
+      pricing: {
+        title: "Two plans. <em>One goal.</em>",
+        sub: "Explore the full platform for free. Unlock the full depth of market intelligence with Terminal.",
+        tiers: [
+          { name: "Free", sub: "Learn what moves markets.", price: "£0", per: "/ forever", featured: false, features: [
+            "Full Dashboard access", "Top Movers & Sector Heatmap", "Earnings Calendar", "Watchlist limited to 3 stocks",
+            "Logic Preview (5 daily queries)", "Market Scanner lite mode", "Daily Brief (1 daily, delayed)", "Basic macro signals",
+          ]},
+          { name: "Terminal", sub: "Institutional-grade market intelligence.", price: "£29", per: "/ month", featured: true, badge: "Best Value", features: [
+            "Everything in Free", "Unlimited Logic", "Real-time market intelligence", "Portfolio Logic", "Scenario Analysis",
+            "Advanced Market Scanner", "Live Market Flows", "Market Relationships & Correlation Cluster", "Sector Rotation Engine",
+            "Global Macro Signals", "Earnings Impact Analysis", "Insider & Political Trade Tracker", "Options Flow",
+            "Full Telemetry System", "Risk-On / Risk-Off Signals", "Advanced Alerts", "Unlimited watchlist", "Personalized intelligence briefings",
+          ]},
+        ],
+        how: [
+          ["01", "Track the market", "Live dashboard, heatmaps and movers give you the full market picture at a glance."],
+          ["02", "Understand why stocks move", "Search any ticker. Brieftick breaks down exactly what is driving the price move."],
+          ["03", "Explore intelligence", "Dive into earnings, macro signals, sector rotation, and cross-market relationships."],
+          ["04", "Build your watchlist", "Track your portfolio and get contextual intelligence for every holding."],
+        ],
+      },
+      closing: {
+        eyebrow: "The market deserves better narration",
+        title: "Stop reading the tape.<br><em>Start understanding it.</em>",
+      },
+    };
+
+    function lpRiver() {
+      const tick = "SPY +0.48% · NVDA −1.24% · TSLA −2.18% · VIX −3.1% · QQQ −0.32% · AAPL +0.82% · ";
+      return `<div class="lp-river lp-river--t"><span>${tick.repeat(4)}</span></div>`;
+    }
+
+    function lpRiverBottom() {
+      const tick = M.tickers.map(([s, , c]) => `${s} ${c}`).join(" · ") + " · BRIEFTICK LOGIC · ";
+      return `<div class="lp-river lp-river--b"><span>${tick.repeat(6)}</span></div>`;
+    }
+
+    function lpHeroExtras() {
+      const proof = LANDING.proof.map(([b, s]) => `<div class="lp-proof-item"><b>${b}</b><span>${s}</span></div>`).join("");
+      return `<div class="lp-logic"><strong>${LANDING.logicKicker}</strong><p>${LANDING.logicDesc}</p></div>
+        <div class="lp-cta"><button type="button" class="lp-btn lp-btn--pri">Start Free →</button><button type="button" class="lp-btn lp-btn--sec">Explore the Dashboard</button></div>
+        <div class="lp-proof">${proof}</div>`;
+    }
+
+    function lpHeadline() {
+      return LANDING.headline.map((line) => `<span style="display:block">${line}</span>`).join("");
+    }
+
+    
+    const CW_PHRASES = [
+      "Risk-on selective", "Macro regime live", "Intelligence narrated",
+      "Twelve modules · one graph", "Institutional calm", "The market, explained",
+    ];
+
+    function cwParticles(n) {
+      return Array.from({ length: n }, (_, i) =>
+        `<i style="left:${(i * 17 + 5) % 100}%;animation-delay:${(i * 0.7) % 12}s;animation-duration:${14 + (i % 8)}s"></i>`
+      ).join("");
+    }
+
+    function cwTickerText() {
+      const t = M.tickers.map(([s, , c]) => `${s} ${c}`).join(" · ") + ` · REGIME ${M.regime.l} · BRIEFTICK LOGIC · `;
+      return t.repeat(10);
+    }
+
+    function cwRivers() {
+      const tick = cwTickerText();
+      return `<div class="cw-river cw-river--t"><span>${tick}</span></div>
+        <div class="cw-river cw-river--b"><span>${tick}</span></div>`;
+    }
+
+    function cwRiversEther() {
+      const tick = cwTickerText();
+      const track = `${tick}${tick}`;
+      return `<div class="cw-river cw-river--t"><span class="cw-river-track">${track}</span></div>
+        <div class="cw-river cw-river--b"><span class="cw-river-track">${track}</span></div>`;
+    }
+
+    function cwHud() {
+      return `<div class="cw-hud">LIVE · ${M.regime.l}</div>`;
+    }
+
+    function cwEnvBase(extra, envOpts) {
+      const particleN = envOpts?.particles ?? 28;
+      const scan = envOpts?.scan === false ? "" : `<div class="cw-scan"></div>`;
+      return `<div class="cw-env"><div class="cw-cam">
+        <div class="cw-fog"></div><div class="cw-particles">${cwParticles(particleN)}</div>
+        <div class="cw-grid"></div>${scan}<div class="cw-vignette"></div>
+        <div class="cw-react-glow"></div>${extra || ""}
+      </div></div>`;
+    }
+
+    function cwEtherMark() {
+      return `<div class="cw-ether-mark" aria-label="Brieftick">
+        <div class="cw-ether-mark-lockup">
+          <img class="cw-ether-mark-img" src="/logo-transparent.png" alt="Brieftick" width="200" height="52" />
+          <span class="cw-ether-mark-tag">${LANDING.eyebrow}</span>
+        </div>
+      </div>`;
+    }
+
+    function cwSplitMark() {
+      return `<div class="cw-split-mark" aria-label="Brieftick">
+        <div class="cw-split-mark-lockup">
+          <img class="cw-split-mark-img" src="/logo-transparent.png" alt="Brieftick" width="200" height="52" />
+          <span class="cw-split-mark-tag">${LANDING.eyebrow}</span>
+        </div>
+      </div>`;
+    }
+
+    function cwOrbitEnv() {
+      const rings = [
+        ["min(48vmin,440px)", "140s", false, [["SPY","+0.48%"],["QQQ","-0.32%"],["VIX","-3.1%"]]],
+        ["min(36vmin,320px)", "100s", true, [["NVDA","-1.24%"],["AMD","-0.92%"]]],
+        ["min(26vmin,240px)", "80s", false, [["TSLA","-2.18%"],["AAPL","+0.82%"]]],
+      ];
+      const html = rings.map(([r, d, rev, ticks]) => {
+        const cls = rev ? "ring ring--rev" : "ring";
+        const labels = ticks.map(([sym, chg], i) => {
+          const a = (i / ticks.length) * 360;
+          return `<span class="tick" data-ticker="${sym}" style="transform:rotate(${a}deg) translateY(calc(-1 * ${r} / 2)) rotate(-${a}deg)">${sym} ${chg}</span>`;
+        }).join("");
+        return `<div class="${cls}" style="width:${r};height:${r};--dur:${d}">${labels}</div>`;
+      }).join("");
+      return `<div class="cw-ticker-orbit">${html}</div>`;
+    }
+
+    function cwTitleLines() {
+      return LANDING.headline.map((line, i) =>
+        `<span class="cw-type-line" style="--i:${i}">${line}</span>`
+      ).join("");
+    }
+
+    function cwPhrases() {
+      return CW_PHRASES.map((p, i) =>
+        `<span class="cw-phrase" style="--d:${i * 0.6}s">${p}</span>`
+      ).join("");
+    }
+
+    function cwCmd(mod) {
+      return `<div class="cw-cmd bt-wrap ${mod || ""}"><span class="bt-tag">${CMD.tagline}</span>
+        <input type="text" aria-label="Command" />${dropHtml()}</div>`;
+    }
+
+    function cwCta() {
+      return `<div class="cw-cta"><button type="button" class="cw-cta-pri">Start Free →</button>
+        <button type="button" class="cw-cta-sec">Explore the Dashboard</button></div>`;
+    }
+
+    function cwSceneTitle(extras) {
+      return `<section class="cw-scene cw-scene--center">
+        <span class="cw-float" style="left:8%;top:20%">NYSE OPEN</span>
+        <span class="cw-float" style="right:10%;top:30%;animation-delay:-5s">LOGIC ACTIVE</span>
+        <div class="cw-scene-inner">
+          <div class="cw-eyebrow"><span class="pulse"></span>${LANDING.eyebrow}</div>
+          ${cwTitleLines()}
+          <p class="cw-sub">${LANDING.sub}</p>
+          ${extras || ""}
+          <div class="cw-phrases">${cwPhrases()}</div>
+        </div>
+      </section>`;
+    }
+
+    function cwSceneAsk(dock) {
+      return `<section class="cw-scene cw-scene--center">
+        <div class="cw-scene-inner">
+          <p class="cw-macro" style="position:relative;margin-bottom:32px">Ask the market anything</p>
+          ${dock ? cwCmd("cw-cmd--dock") : cwCmd()}
+          <p class="cw-whisper">${LANDING.logicKicker} — ${LANDING.logicDesc}</p>
+        </div>
+      </section>`;
+    }
+
+    function cwSceneLogic() {
+      return `<section class="cw-scene cw-scene--center">
+        <span class="cw-macro" style="left:12%;top:18%">MACRO OVERLAY</span>
+        <span class="cw-macro" style="right:14%;bottom:22%;animation-delay:-2s">REGIME · ${M.regime.l.toUpperCase()}</span>
+        <div class="cw-scene-inner">
+          <div class="cw-eyebrow">Intelligence showcase</div>
+          <blockquote class="cw-logic-bloom">${M.answer}</blockquote>
+          <p class="cw-sub" style="margin-top:32px;text-align:center;margin-left:auto;margin-right:auto">
+            The market, <em style="color:var(--gold);font-style:italic">explained</em> — not just displayed.</p>
+        </div>
+      </section>`;
+    }
+
+    function cwSceneStream() {
+      const items = LANDING.features.items.map(([t, d, tag]) =>
+        `<div class="cw-vert-item"><span>${tag}</span><strong>${t}</strong><p>${d}</p></div>`
+      ).join("");
+      return `<section class="cw-scene">
+        <div class="cw-scene-inner">
+          <div class="cw-eyebrow">${LANDING.features.eyebrow}</div>
+          <h2 style="font-family:var(--display);font-size:clamp(28px,4vw,48px);margin-bottom:24px;letter-spacing:-.02em">${LANDING.features.title}</h2>
+          <div class="cw-vert-stream"><div class="cw-vert-stream-inner">${items}${items}</div></div>
+        </div>
+      </section>`;
+    }
+
+    function cwSceneVoices() {
+      const voices = LANDING.testimonials.items.map(([q, n, r], i) =>
+        `<div class="cw-voice" style="margin-bottom:48px;opacity:${0.85 - i * 0.1}">${q}
+          <div class="cw-voice-meta"><strong>${n}</strong> · ${r}</div></div>`
+      ).join("");
+      return `<section class="cw-scene cw-scene--center">
+        <div class="cw-scene-inner">
+          <div class="cw-eyebrow">${LANDING.testimonials.eyebrow}</div>
+          ${voices}
+        </div>
+      </section>`;
+    }
+
+    function cwScenePlans() {
+      const tiers = LANDING.pricing.tiers.map((t) => `
+        <div class="cw-monolith${t.featured ? " cw-monolith--feat" : ""}">
+          ${t.badge ? `<div class="cw-eyebrow">${t.badge}</div>` : ""}
+          <h3>${t.name}</h3><p style="opacity:.5;font-size:12px">${t.sub}</p>
+          <div class="price">${t.price}</div>
+          <ul>${t.features.slice(0, 5).map((f) => `<li>${f}</li>`).join("")}</ul>
+        </div>`).join("");
+      return `<section class="cw-scene cw-scene--center">
+        <div class="cw-scene-inner">
+          <div class="cw-eyebrow" style="text-align:center">${LANDING.pricing.title}</div>
+          <p class="cw-sub" style="text-align:center;margin:0 auto 8px">${LANDING.pricing.sub}</p>
+          <div class="cw-monoliths">${tiers}</div>
+        </div>
+      </section>`;
+    }
+
+    function cwSceneFinale() {
+      return `<section class="cw-scene cw-scene--center">
+        <div class="cw-scene-inner">
+          <div class="cw-eyebrow">${LANDING.closing.eyebrow}</div>
+          <h2 class="cw-type-line" style="--i:0;opacity:1;transform:none;animation:cwTypeDrift 10s ease-in-out infinite">${LANDING.closing.title}</h2>
+          ${cwCta()}
+        </div>
+      </section>`;
+    }
+
+    function cwProgress(n) {
+      return `<nav class="cw-progress" aria-hidden="true">${Array.from({ length: n }, (_, i) =>
+        `<i${i === 0 ? ' class="is-on"' : ""}></i>`
+      ).join("")}</nav>`;
+    }
+
+    function cwWorld(variant, envExtra, scenes, opts) {
+      const snap = opts?.snap !== false ? " cw--snap" : "";
+      const mark = opts?.mark || "";
+      const rivers = variant === "ether" ? cwRiversEther() : cwRivers();
+      const env = cwEnvBase(envExtra, opts?.env);
+      return `<div class="cw cw--${variant}${snap}" data-cw-variant="${variant}">
+        ${mark}${env}${rivers}${cwHud()}${cwProgress(scenes.match(/cw-scene/g).length)}
+        <div class="cw-scenes">${scenes}</div>
+      </div>`;
+    }
+
+    function syncBrandMarkTop(cssVar) {
+      const nav = document.querySelector(".dl-top");
+      if (!nav) return;
+      document.documentElement.style.setProperty(cssVar, `${nav.getBoundingClientRect().height + 14}px`);
+    }
+    function syncEtherMarkTop() { syncBrandMarkTop("--ether-mark-top"); }
+    function syncSplitMarkTop() { syncBrandMarkTop("--split-mark-top"); }
+
+    let activeCinematicTeardown = null;
+
+    function initCinematicWorld(root, opts) {
+      const world = root.querySelector(".cw");
+      if (!world || world.dataset.cwInit === "1") return null;
+      world.dataset.cwInit = "1";
+
+      const isEther = opts?.ether || world.classList.contains("cw--ether");
+      const cam = world.querySelector(".cw-cam");
+      const scroller = world.classList.contains("cw--snap") ? world : null;
+      const scenes = world.querySelectorAll(".cw-scene");
+      const dots = world.querySelectorAll(".cw-progress i");
+      let mx = 0, my = 0, raf = 0;
+      let alive = true;
+      let moveRect = null;
+      let lastPointerAt = 0;
+
+      const applyPointer = () => {
+        if (!alive || document.hidden) return;
+        if (!isEther && cam) cam.style.transform = `translate3d(${mx * 32}px, ${my * 22}px, 0) scale(1.06)`;
+        world.style.setProperty("--mx", String(mx));
+        world.style.setProperty("--my", String(my));
+      };
+
+      const onMove = (e) => {
+        if (!alive || document.hidden) return;
+        const now = performance.now();
+        if (isEther && now - lastPointerAt < 32) return;
+        lastPointerAt = now;
+        if (!moveRect) moveRect = world.getBoundingClientRect();
+        mx = (e.clientX - moveRect.left) / moveRect.width - 0.5;
+        my = (e.clientY - moveRect.top) / moveRect.height - 0.5;
+        if (!raf) raf = requestAnimationFrame(() => { applyPointer(); raf = 0; });
+      };
+
+      const onScroll = () => {
+        if (!alive || document.hidden) return;
+        const st = scroller ? scroller.scrollTop : window.scrollY;
+        const h = (scroller ? scroller.scrollHeight - scroller.clientHeight : 1) || 1;
+        const p = Math.min(1, Math.max(0, st / h));
+        world.style.setProperty("--scroll", String(p));
+        world.classList.toggle("cw--deep", p > 0.25);
+      };
+
+      const onResize = () => { moveRect = null; };
+      world.addEventListener("mousemove", onMove, { passive: true });
+      (scroller || window).addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onResize, { passive: true });
+      onScroll();
+
+      const cmd = world.querySelector(".bt-wrap");
+      const onFocusIn = () => world.classList.add("cw--focus");
+      const onFocusOut = (e) => {
+        if (!cmd.contains(e.relatedTarget)) world.classList.remove("cw--focus");
+      };
+      if (cmd) {
+        cmd.addEventListener("focusin", onFocusIn);
+        cmd.addEventListener("focusout", onFocusOut);
+      }
+
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("is-active");
+          const i = [...scenes].indexOf(e.target);
+          dots.forEach((d, j) => d.classList.toggle("is-on", j === i));
+        });
+      }, { root: scroller, threshold: 0.45 });
+      scenes.forEach((s) => obs.observe(s));
+
+      const tickHandlers = [];
+      world.querySelectorAll("[data-ticker]").forEach((tick) => {
+        const onEnter = () => {
+          world.querySelectorAll(".tick").forEach((t) => t.classList.remove("is-hot"));
+          tick.classList.add("is-hot");
+        };
+        const onLeave = () => tick.classList.remove("is-hot");
+        tick.addEventListener("mouseenter", onEnter);
+        tick.addEventListener("mouseleave", onLeave);
+        tickHandlers.push({ tick, onEnter, onLeave });
+      });
+
+      const onVis = () => {
+        document.documentElement.classList.toggle("bt-paused", document.hidden);
+      };
+      document.addEventListener("visibilitychange", onVis);
+
+      return () => {
+        alive = false;
+        if (raf) cancelAnimationFrame(raf);
+        world.removeEventListener("mousemove", onMove);
+        window.removeEventListener("resize", onResize);
+        (scroller || window).removeEventListener("scroll", onScroll);
+        document.removeEventListener("visibilitychange", onVis);
+        if (cmd) {
+          cmd.removeEventListener("focusin", onFocusIn);
+          cmd.removeEventListener("focusout", onFocusOut);
+        }
+        obs.disconnect();
+        tickHandlers.forEach(({ tick, onEnter, onLeave }) => {
+          tick.removeEventListener("mouseenter", onEnter);
+          tick.removeEventListener("mouseleave", onLeave);
+        });
+        world.dataset.cwInit = "";
+        world.classList.remove("cw--focus");
+      };
+    }
+
+    function finishCinematic(el, after, opts) {
+      const hasCmd = !!el.querySelector(".bt-wrap");
+      if (hasCmd) bindCmd(el);
+      else syncCmdPlaceholderTimer();
+      const world = el.querySelector(".cw");
+      const initOpts = opts || (world?.classList.contains("cw--ether") ? { ether: true } : null);
+      const teardown = initCinematicWorld(el, initOpts);
+      if (teardown) el._cinematicTeardown = teardown;
+      if (after) after(el);
+    }
+
+    function build09(el) {
+      const scenes = cwSceneTitle() + cwSceneAsk(true) + cwSceneLogic() + cwSceneStream() + cwSceneVoices() + cwScenePlans() + cwSceneFinale();
+      el.innerHTML = cwWorld("void", "", scenes);
+      finishCinematic(el);
+    }
+
+    function build10(el) {
+      const scenes = cwSceneTitle() +
+        cwSceneStream() + cwSceneVoices() + cwScenePlans() + cwSceneFinale();
+      el.innerHTML = cwWorld("dual", `<div class="cw-dual"><span></span><span></span></div>`, scenes, { mark: cwSplitMark() });
+      finishCinematic(el, null, { noCmd: true });
+      syncSplitMarkTop();
+      if (!window._brandMarkTopBound) {
+        window._brandMarkTopBound = true;
+        window.addEventListener("resize", () => {
+          syncSplitMarkTop();
+          syncEtherMarkTop();
+        });
+      }
+    }
+
+    function build11(el) {
+      const scenes = `<section class="cw-scene cw-scene--center" style="min-height:100vh">
+        <div class="cw-scene-inner" style="text-align:center">
+          <div class="cw-eyebrow">${LANDING.eyebrow}</div>
+          ${cwTitleLines()}
+        </div></section>
+        <section class="cw-scene cw-scene--center" style="min-height:100vh">
+          ${cwOrbitEnv()}
+          <div style="position:relative;z-index:20;margin-top:min(45vh,380px)">${cwCmd()}
+          <p class="cw-sub" style="text-align:center;margin:24px auto 0">${LANDING.sub}</p></div>
+        </section>` + cwSceneLogic() + cwSceneStream() + cwSceneVoices() + cwScenePlans() + cwSceneFinale();
+      el.innerHTML = cwWorld("orbit", "", scenes);
+      finishCinematic(el);
+    }
+
+    function build12(el) {
+      const layers = `<div class="cw-ether-layer"></div><div class="cw-ether-layer"></div><div class="cw-ether-layer"></div>`;
+      const scenes = cwSceneTitle() +
+        `<section class="cw-scene cw-scene--center"><div class="cw-scene-inner">${cwCmd()}<p class="cw-whisper">${LANDING.sub}</p></div></section>` +
+        cwSceneLogic() + cwSceneStream() + cwSceneVoices() + cwScenePlans() + cwSceneFinale();
+      el.innerHTML = cwWorld("ether", layers, scenes, {
+        mark: cwEtherMark(),
+        env: { particles: 14, scan: false },
+      });
+      finishCinematic(el, null, { ether: true });
+      syncEtherMarkTop();
+      if (!window._brandMarkTopBound) {
+        window._brandMarkTopBound = true;
+        window.addEventListener("resize", () => {
+          syncSplitMarkTop();
+          syncEtherMarkTop();
+        });
+      }
+    }
+
+    function build13(el) {
+      const tunnel = `<div class="cw-type-tunnel"><div class="cw-type-tunnel-inner">
+        ${LANDING.features.items.map(([t]) => `<span>${t} · </span>`).join("")}
+        <b>${LANDING.headline.map((l) => l.replace(/<[^>]+>/g, "")).join(" ")}</b>
+      </div></div>`;
+      const scenes = cwSceneTitle() + cwSceneAsk(false) + cwSceneLogic() + cwSceneStream() + cwSceneVoices() + cwScenePlans() + cwSceneFinale();
+      el.innerHTML = cwWorld("tunnel", tunnel, scenes);
+      finishCinematic(el);
+    }
+
+    function build14(el) {
+      const core = `<div class="cw-core">${[120, 200, 280, 360].map((s, i) =>
+        `<div class="ring" style="width:${s}px;height:${s}px;--d:${i * 0.35}s"></div>`
+      ).join("")}</div>`;
+      const scenes = cwSceneTitle() + cwSceneAsk(false) + cwSceneLogic() + cwSceneStream() + cwSceneVoices() + cwScenePlans() + cwSceneFinale();
+      el.innerHTML = cwWorld("pulse", core, scenes);
+      finishCinematic(el);
+    }
+
+    function build15(el) {
+      const globe = `<div class="cw-globe"></div>
+        <span class="cw-hot" style="left:22%;top:40%" data-ticker="SPY">AMERICAS · ${M.tickers[0][2]}</span>
+        <span class="cw-hot" style="left:48%;top:28%" data-ticker="EUR">EUROPE · RATES</span>
+        <span class="cw-hot" style="left:68%;top:45%" data-ticker="NVDA">APAC · ${M.tickers[1][2]}</span>
+        <span class="cw-hot" style="left:52%;top:58%" data-ticker="EM">EM · ${M.regime.l}</span>`;
+      const scenes = `<section class="cw-scene cw-scene--center" style="min-height:100vh">
+        ${globe}<div class="cw-scene-inner" style="margin-top:min(52vh,420px);text-align:center">
+          ${cwTitleLines()}<p class="cw-sub" style="margin:20px auto">${LANDING.sub}</p>${cwCmd()}
+        </div></section>` + cwSceneLogic() + cwSceneStream() + cwSceneVoices() + cwScenePlans() + cwSceneFinale();
+      el.innerHTML = cwWorld("globe", globe, scenes);
+      finishCinematic(el);
+    }
+
+    function build16(el) {
+      const scenes = cwSceneTitle() + cwSceneLogic() + cwSceneStream() + cwSceneVoices() + cwScenePlans() + cwSceneFinale();
+      el.innerHTML = cwWorld("story", "", scenes);
+      finishCinematic(el);
+    }
+
+    function dropHtml() {
+      const sug = CMD.suggestions.map((s) =>
+        `<div class="bt-sug" data-fill="${s.sub.includes("·") ? "Why is " + s.sym + " moving?" : s.sym}"><span class="sym">${s.sym}</span><span class="sub">${s.sub}</span></div>`
+      ).join("");
+      return `<div class="bt-drop">${sug}</div>`;
+    }
+
+    let cmdPhIndex = 0;
+    let cmdPhTimer = null;
+
+    function tickCmdPlaceholders() {
+      if (document.documentElement.dataset.concept === "16") return;
+      const input = document.querySelector(".dl-panel.is-active .bt-wrap input");
+      if (input && document.activeElement !== input && !input.value)
+        input.placeholder = CMD.placeholders[cmdPhIndex++ % CMD.placeholders.length];
+    }
+
+    function syncCmdPlaceholderTimer() {
+      const input = document.querySelector(".dl-panel.is-active .bt-wrap input");
+      if (!input || document.documentElement.dataset.concept === "16") {
+        if (cmdPhTimer) { clearInterval(cmdPhTimer); cmdPhTimer = null; }
+        return;
+      }
+      if (!cmdPhTimer) cmdPhTimer = setInterval(() => {
+        if (document.hidden) return;
+        tickCmdPlaceholders();
+      }, 4000);
+    }
+
+    function bindCmd(root) {
+      const wrap = root.querySelector(".bt-wrap");
+      if (!wrap || wrap.dataset.bound === "1") return;
+      wrap.dataset.bound = "1";
+      const input = wrap.querySelector("input");
+      if (!input) return;
+      if (!input.placeholder) input.placeholder = CMD.placeholders[0];
+      syncCmdPlaceholderTimer();
+      wrap.addEventListener("focusin", () => wrap.classList.add("is-focused"));
+      wrap.addEventListener("focusout", (e) => {
+        if (!wrap.contains(e.relatedTarget)) wrap.classList.remove("is-focused");
+      });
+      input.addEventListener("input", () => wrap.classList.toggle("has-value", !!input.value.trim()));
+      root.querySelectorAll(".bt-sug").forEach((el) => {
+        el.addEventListener("mousedown", (e) => {
+          e.preventDefault();
+          input.value = el.dataset.fill;
+          wrap.classList.add("has-value");
+          input.focus();
+        });
+      });
+    }
+
+    const HELIX_RINGS = [
+      { id: "macro", radius: "min(50vmin, 460px)", dur: 280, rev: true,
+        tickers: [["SPY","+0.48%"],["QQQ","-0.32%"],["VIX","-3.10%"]] },
+      { id: "megacap", radius: "min(38vmin, 350px)", dur: 240, rev: false,
+        tickers: [["AAPL","+0.82%"],["MSFT","+0.54%"],["AMZN","+1.12%"]] },
+      { id: "ai", radius: "min(28vmin, 260px)", dur: 200, rev: true,
+        tickers: [["NVDA","-1.24%"],["AMD","-0.92%"],["SMH","-1.08%"]] },
+      { id: "movers", radius: "min(20vmin, 190px)", dur: 160, rev: false,
+        tickers: [["TSLA","-2.18%"],["PLTR","+3.24%"]] },
+    ];
+
+    const HELIX_INTEL = {
+      NVDA: { summary: "Semiconductor leadership under pressure as rates-sensitive growth trades reprice; AI capex narrative remains intact but near-term beta elevated.", catalyst: "Sector rotation · AI demand", sector: "Semiconductors", pulse: 82, related: ["AMD", "SMH", "AVGO", "TSM"] },
+      TSLA: { summary: "High-beta growth sensitivity dominates; move reflects macro risk appetite more than company-specific catalyst on today's tape.", catalyst: "Macro beta · rates", sector: "Consumer Discretionary", pulse: 74, related: ["QQQ", "XLK", "RIVN"] },
+      SPY: { summary: "Broad market holding selective risk-on tone; breadth mixed with megacap carrying index while cyclicals lag.", catalyst: "Macro regime", sector: "US Equities", pulse: 68, related: ["QQQ", "IWM", "VIX", "TLT"] },
+      AAPL: { summary: "Defensive megacap bid intact; modest outperformance vs semis reflects quality rotation within tech.", catalyst: "Quality rotation", sector: "Technology", pulse: 52, related: ["MSFT", "QQQ", "XLK"] },
+      VIX: { summary: "Volatility compressing into macro event window; implied vol decline signals calmer near-term risk pricing.", catalyst: "Vol crush", sector: "Volatility", pulse: 88, related: ["SPY", "TLT", "QQQ"] },
+      BTC: { summary: "Digital macro proxy tracking risk appetite; correlates with growth beta in current regime.", catalyst: "Risk appetite proxy", sector: "Digital Macro", pulse: 71, related: ["COIN", "QQQ", "GLD"] },
+      DEFAULT: { summary: M.answer, catalyst: "Session dynamics", sector: "Cross-asset", pulse: 68, related: ["SPY", "NVDA", "VIX"] },
+    };
+
+    function tickerRiver(repeat) {
+      const tick = M.tickers.map(([s, , c]) => `${s} ${c}`).join(" · ") + " · ";
+      return tick.repeat(repeat);
+    }
+
+    function build04(el) {
+      el.innerHTML = `<div class="c04">
+        <div class="c04-atmo"></div>
+        <div class="c04-vignette"></div>
+        <div class="c04-river c04-river--t"><span>${tickerRiver(8)}</span></div>
+        <div class="c04-river c04-river--b"><span>${tickerRiver(8)}</span></div>
+        <div class="c04-intel c04-i1">MACRO · ${M.regime.l.toUpperCase()}</div>
+        <div class="c04-intel c04-i2">${M.tickers[1][0]} ${M.tickers[1][1]} · LIVE</div>
+        <div class="c04-intel c04-i3">LOGIC · SESSION ACTIVE</div>
+        <div class="c04-regime">REGIME PULSE<span>${M.regime.v}%</span></div>
+        <span class="c04-whisper c04-w1">${M.regime.l}</span>
+        <span class="c04-whisper c04-w2">${M.tickers[0][0]} ${M.tickers[0][2]}</span>
+        <span class="c04-whisper c04-w3">VOL · ACTIVE</span>
+        <div class="c04-cmd bt-wrap"><span class="bt-tag">${CMD.tagline}</span><input type="text" aria-label="Command" />${dropHtml()}</div>
+        <div class="c04-answer"><p>${M.answer}</p></div></div>`;
+      bindCmd(el);
+    }
+
+    function build27(el) {
+      const particles = Array.from({ length: 8 }, (_, i) =>
+        `<i style="left:${10 + Math.random() * 80}%;animation-delay:${Math.random() * 20}s;animation-duration:${18 + Math.random() * 8}s"></i>`
+      ).join("");
+
+      const tracks = HELIX_RINGS.map((ring) =>
+        `<div class="c27-track" data-ring="${ring.id}" style="width:${ring.radius};height:${ring.radius}"></div>`
+      ).join("");
+
+      const orbits = HELIX_RINGS.map((ring) => {
+        const n = ring.tickers.length;
+        const slots = ring.tickers.map(([sym, chg], i) => {
+          const angle = (i / n) * 360 + (n === 2 ? 90 : 0);
+          const up = chg.startsWith("+");
+          return `<div class="c27-slot" style="--angle:${angle}deg;--radius:${ring.radius};--delay:${i * 0.8}s">
+            <button type="button" class="c27-tick" data-sym="${sym}" data-chg="${chg}" data-ring="${ring.id}" aria-label="${sym} ${chg}">
+              <span class="sym">${sym}</span><span class="chg ${up ? "up" : "dn"}">${chg}</span>
+            </button></div>`;
+        }).join("");
+        const rev = ring.rev ? " c27-orbit--rev" : "";
+        return `<div class="c27-orbit${rev}" data-ring="${ring.id}" style="--dur:${ring.dur}s">${slots}</div>`;
+      }).join("");
+
+      el.innerHTML = `<div class="c27" id="helix-root">
+        <div class="c27-particles">${particles}</div>
+        <div class="c27-haze"></div>
+        <div class="c27-gravity"></div>
+        <div class="c27-stage">${tracks}<div class="c27-pulse-ring"></div>${orbits}</div>
+        <span class="c27-telemetry c27-tl">HELIX</span>
+        <span class="c27-telemetry c27-tr">${M.regime.l}</span>
+        <div class="c27-vignette"></div>
+        <div class="c27-core">
+          <div class="c27-nucleus">
+            <div class="c27-focus" id="helix-focus">
+              <div class="c27-focus-symbol" id="hx-sym">—</div>
+              <div class="c27-focus-chg" id="hx-chg">—</div>
+              <p class="c27-focus-summary" id="hx-summary">Select an orbiting symbol to bring it into focus.</p>
+              <div class="c27-meta" id="hx-meta">
+                <span>CATALYST <strong id="hx-cat">—</strong></span>
+                <span>SECTOR <strong id="hx-sec">—</strong></span>
+                <span>PULSE <strong id="hx-pulse">—</strong></span>
+              </div>
+              <div class="c27-pulse-bar"><div class="c27-pulse-fill" id="hx-pulse-bar" style="width:40%"></div></div>
+            </div>
+            <div class="c27-cmd-zone c27-cmd bt-wrap">
+              <span class="bt-tag">${CMD.tagline}</span>
+              <input type="text" id="helix-input" aria-label="Helix command" />
+              ${dropHtml()}
+              <p class="c27-context" id="hx-context"></p>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+      bindCmd(el);
+      initHelix(el);
+    }
+
+    function initHelix(root) {
+      const container = root.querySelector("#helix-root");
+      const ticks = root.querySelectorAll(".c27-tick");
+      let activeSym = null;
+
+      function intel(sym) {
+        return HELIX_INTEL[sym] || { ...HELIX_INTEL.DEFAULT, related: HELIX_INTEL.DEFAULT.related.filter((s) => s !== sym).slice(0, 3) };
+      }
+
+      function selectTicker(btn) {
+        const sym = btn.dataset.sym;
+        const chg = btn.dataset.chg;
+        const ringId = btn.dataset.ring;
+        activeSym = sym;
+        const data = intel(sym);
+        const up = chg.startsWith("+");
+
+        container.classList.add("has-focus");
+        ticks.forEach((t) => {
+          t.classList.remove("is-active", "is-dim", "is-spotlight");
+          if (t === btn) t.classList.add("is-active");
+          else t.classList.add("is-dim");
+        });
+        data.related.forEach((r) => {
+          const rel = root.querySelector(`.c27-tick[data-sym="${r}"]`);
+          if (rel && rel !== btn) { rel.classList.remove("is-dim"); rel.classList.add("is-spotlight"); }
+        });
+
+        root.querySelectorAll(".c27-track, .c27-orbit").forEach((el) => {
+          el.classList.toggle("is-near", el.dataset.ring === ringId);
+        });
+
+        root.querySelector("#hx-sym").textContent = sym;
+        const chgEl = root.querySelector("#hx-chg");
+        chgEl.textContent = chg;
+        chgEl.className = "c27-focus-chg " + (up ? "up" : "dn");
+        root.querySelector("#hx-summary").textContent = data.summary;
+        root.querySelector("#hx-cat").textContent = data.catalyst;
+        root.querySelector("#hx-sec").textContent = data.sector;
+        root.querySelector("#hx-pulse").textContent = data.pulse + "%";
+        root.querySelector("#hx-pulse-bar").style.width = data.pulse + "%";
+        root.querySelector("#hx-context").textContent =
+          data.related.length ? `Also in orbit · ${data.related.join(" · ")}` : "";
+
+        const input = root.querySelector("#helix-input");
+        if (input) input.placeholder = `Why is ${sym} moving?`;
+      }
+
+      ticks.forEach((btn) => {
+        btn.addEventListener("click", (e) => { e.stopPropagation(); selectTicker(btn); });
+      });
+
+      const input = root.querySelector("#helix-input");
+      input?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && input.value.trim()) {
+          const q = input.value.trim().toUpperCase();
+          const match = root.querySelector(`.c27-tick[data-sym="${q}"]`) ||
+            [...ticks].find((t) => t.dataset.sym.includes(q));
+          if (match) selectTicker(match);
+        }
+      });
+
+      selectTicker(root.querySelector('.c27-tick[data-sym="NVDA"]') || ticks[0]);
+    }
+
+    function build28(el) {
+      const dots = Array.from({ length: 24 }, (_, i) =>
+        `<i class="c28-dot" style="left:${Math.random()*100}%;animation-delay:${Math.random()*14}s;animation-duration:${12+Math.random()*8}s"></i>`
+      ).join("");
+      el.innerHTML = `<div class="c28"><div class="c28-depth"><div class="c28-fog"></div><div class="c28-fog"></div><div class="c28-fog"></div></div>
+        <div class="c28-particles">${dots}</div>
+        <div class="c28-orb c28-orb--1">${M.regime.l}</div><div class="c28-orb c28-orb--2">${M.tickers[1][0]} ${M.tickers[1][2]}</div><div class="c28-orb c28-orb--3">LIVE ATMOSPHERE</div>
+        <div class="c28-cmd bt-wrap"><div class="c28-portal"><span class="bt-tag">${CMD.tagline}</span>
+          <input type="text" aria-label="Ether" />${dropHtml()}
+          <p class="c28-answer">${M.answer}</p></div></div>
+        <div class="c28-river"><span>${tickerRiver(10)}</span></div></div>`;
+      bindCmd(el);
+    }
+
+    function build29(el) {
+      const dust = Array.from({ length: 20 }, (_, i) =>
+        `<i style="left:${Math.random()*100}%;animation-delay:${Math.random()*18}s"></i>`
+      ).join("");
+      el.innerHTML = `<div class="c29"><div class="c29-void"></div><div class="c29-mist"></div><div class="c29-mist"></div>
+        <div class="c29-dust">${dust}</div>
+        <span class="c29-float c29-f1">${M.regime.l}</span><span class="c29-float c29-f2">${M.tickers[2][0]} ${M.tickers[2][2]}</span>
+        <div class="c29-cmd bt-wrap"><span class="bt-tag">${CMD.tagline}</span><input type="text" aria-label="Ether Black" />${dropHtml()}
+          <div class="c29-line"></div></div></div>`;
+      bindCmd(el);
+    }
+
+    function build30(el) {
+      el.innerHTML = `<div class="c30"><div class="c30-atmo"><div class="c30-band"></div><div class="c30-band"></div><div class="c30-band"></div></div>
+        <div class="c30-macro">ORBIT<br>VIEW</div>
+        <span class="c30-layer c30-l1">MACRO WEATHER · MIXED</span><span class="c30-layer c30-l2">RATES · ELEVATED</span>
+        <div class="c30-deck"><div class="c30-cmd bt-wrap"><span class="bt-tag">${CMD.tagline}</span><input type="text" aria-label="Ether Horizon" />${dropHtml()}
+          <p class="c30-echo">${M.answer}</p></div></div></div>`;
+      bindCmd(el);
+    }
+
+    function build31(el) {
+      const svg = `<svg class="c31-svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+        <g transform="translate(400,300)"><circle class="spin" r="220"/><circle class="spin-rev" r="160"/><circle class="spin" r="100" style="animation-duration:40s"/>
+        <circle r="4" fill="rgba(212,168,90,.6)"/></g></svg>`;
+      el.innerHTML = `<div class="c31"><div class="c31-grid"></div>${svg}
+        <span class="c31-telemetry c31-t1">HELIX CORE · LIVE</span><span class="c31-telemetry c31-t2">${M.regime.v}% REGIME</span>
+        <span class="c31-telemetry c31-t3">${M.tickers.map(([s]) => s).join(" · ")}</span>
+        <div class="c31-core"><div class="c31-engine c31-cmd bt-wrap"><span class="bt-tag">${CMD.tagline}</span>
+          <input type="text" aria-label="Helix Core" />${dropHtml()}<p class="c31-status">ENGINE READY · AWAITING QUERY</p></div></div></div>`;
+      bindCmd(el);
+      const status = el.querySelector(".c31-status");
+      el.querySelector(".bt-wrap input")?.addEventListener("focus", () => { status.textContent = "PROCESSING INTELLIGENCE…"; });
+      el.querySelector(".bt-wrap input")?.addEventListener("blur", () => { status.textContent = "ENGINE READY · AWAITING QUERY"; });
+    }
+
+    function build32(el) {
+      const tick = [...M.tickers, ...M.tickers, ...M.tickers].map(([s,,c]) => `${s} ${c}`).join("   ");
+      const river = `<span style="display:flex;gap:40px;animation:river 28s linear infinite">${tick}   ${tick}</span>`;
+      el.innerHTML = `<div class="c32">
+        <div class="c32-river c32-river--t">${river}</div>
+        <div class="c32-pulses"><div class="c32-pulse"></div><div class="c32-pulse"></div><div class="c32-pulse"></div></div>
+        <div class="c32-glow"></div>
+        <div class="c32-cmd bt-wrap"><span class="bt-tag">${CMD.tagline}</span><input type="text" aria-label="Ether Pulse" />${dropHtml()}</div>
+        <div class="c32-river c32-river--b"><span style="display:flex;gap:40px;animation:river 24s linear infinite reverse">${M.regime.l} · BREATHING · ${M.regime.v}% · ${M.regime.l} · BREATHING</span></div></div>`;
+      bindCmd(el);
+    }
+
+    function build33(el) {
+      el.innerHTML = `<div class="c33"><div class="c33-dome"></div>
+        <div class="c33-orbit-ring c33-or1"></div><div class="c33-orbit-ring c33-or2"></div>
+        <div class="c33-world"></div>
+        <span class="c33-geo c33-g1">EU · POLICY WATCH</span><span class="c33-geo c33-g2">APAC · FLOWS +</span>
+        <div class="c33-cmd bt-wrap"><div class="c33-chamber"><span class="bt-tag">${CMD.tagline}</span>
+          <input type="text" aria-label="Helix Observatory" />${dropHtml()}</div></div></div>`;
+      bindCmd(el);
+    }
+
+    function build34(el) {
+      const motes = Array.from({ length: 8 }, (_, i) =>
+        `<i class="c34-mote" style="left:${10+i*10}%;top:${20+Math.random()*60}%;animation-delay:${i*2}s"></i>`
+      ).join("");
+      el.innerHTML = `<div class="c34"><div class="c34-infinite">∞</div><div class="c34-vanish"></div>${motes}
+        <div class="c34-cmd bt-wrap"><span class="bt-tag">${CMD.tagline}</span><input type="text" aria-label="Ether Infinite" />${dropHtml()}
+          <p class="c34-response">${M.answer}</p></div></div>`;
+      bindCmd(el);
+    }
+
+    function spawnParticles(count, cls, root) {
+      return Array.from({ length: count }, (_, i) =>
+        `<i class="${cls}" style="left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${Math.random() * 14}s;animation-duration:${14 + Math.random() * 10}s"></i>`
+      ).join("");
+    }
+
+    function worldParticles(n, cls) {
+      const cap = Math.min(n, 16);
+      return Array.from({ length: cap }, () =>
+        `<i class="${cls}" style="left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${Math.random() * 18}s;animation-duration:${14 + Math.random() * 12}s"></i>`
+      ).join("");
+    }
+
+    function worldRivers() {
+      const tick = M.tickers.map(([s, , c]) => `${s} ${c}`).join(" · ") + " · ";
+      const row = tick.repeat(10);
+      return `<div class="world-river world-river--t"><span>${row}</span></div>
+        <div class="world-river world-river--b"><span>${row}</span></div>`;
+    }
+
+    function worldAmbient() {
+      return `<p class="world-ghost">${M.regime.l}</p><p class="world-answer">${M.answer}</p>`;
+    }
+
+    function worldCmd(cls) {
+      return `<div class="world-cmd ${cls} bt-wrap"><span class="bt-tag">${CMD.tagline}</span>
+        <input type="text" aria-label="Command" />${dropHtml()}</div>`;
+    }
+
+    function initWorldDrift(el, sel) {
+      if (reduceMotion()) return;
+      const stage = el.querySelector(sel);
+      if (!stage || el.dataset.driftBound === "1") return;
+      el.dataset.driftBound = "1";
+      let raf = 0;
+      const onMove = (e) => {
+        if (document.hidden || !el.closest(".dl-panel.is-active")) return;
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          const r = el.getBoundingClientRect();
+          if (!r.width) return;
+          const x = (e.clientX - r.left) / r.width - 0.5;
+          const y = (e.clientY - r.top) / r.height - 0.5;
+          stage.style.transform = `scale(1.04) translate(${x * -18}px, ${y * -12}px)`;
+        });
+      };
+      el.addEventListener("mousemove", onMove, { passive: true });
+      el._driftTeardown = () => {
+        if (raf) cancelAnimationFrame(raf);
+        el.removeEventListener("mousemove", onMove);
+        el.dataset.driftBound = "";
+        el._driftTeardown = null;
+      };
+    }
+
+    function finishWorld(el) {
+      bindCmd(el);
+    }
+
+    function reduceMotion() {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    function build35(el) {
+      el.innerHTML = `<div class="world w35">
+        ${worldRivers()}
+        <div class="world-stage w35-stage">
+          <div class="w35-sky"></div>
+          <div class="w35-cloud w35-c1"></div><div class="w35-cloud w35-c2"></div><div class="w35-cloud w35-c3"></div>
+          <div class="w35-storm"></div>
+          <div class="w35-fog">${worldParticles(12, "w35-fog")}</div>
+          <div class="w35-pulse"></div><div class="w35-pulse" style="animation-delay:2s"></div>
+          <span class="w35-macro">${M.regime.l.toUpperCase()} · ${M.regime.v}% PULSE</span>
+        </div>
+        <div class="world-vignette"></div>${worldAmbient()}${worldCmd("w35-cmd")}
+      </div>`;
+      finishWorld(el);
+      initWorldDrift(el, ".w35-stage");
+    }
+
+    function build36(el) {
+      const rings = [
+        ["min(42vmin,380px)", "90s", false],
+        ["min(58vmin,520px)", "140s", true],
+        ["min(74vmin,660px)", "200s", false],
+        ["min(90vmin,800px)", "280s", true],
+      ];
+      const ringHtml = rings.map(([r, d, rev]) =>
+        `<div class="w36-ring${rev ? " w36-ring--rev" : ""}" style="width:${r};height:${r};--d:${d}"></div>`
+      ).join("");
+      const bodies = M.tickers.map(([sym, , chg], i) => {
+        const a = i * (360 / M.tickers.length);
+        return `<span class="w36-body" style="--a:${a}deg;--r:min(38vmin,300px)">${sym} ${chg}</span>`;
+      }).join("");
+      const stars = worldParticles(20, "w36-stars");
+      el.innerHTML = `<div class="world w36">
+        ${worldRivers()}
+        <div class="world-stage w36-stage">
+          <div class="w36-stars">${stars}</div>
+          <div class="w36-galaxy">${ringHtml}<div style="position:absolute;left:50%;top:50%;width:0;height:0">${bodies}</div><div class="w36-core"></div></div>
+        </div>
+        <div class="world-vignette"></div>${worldAmbient()}${worldCmd("w36-cmd")}
+      </div>`;
+      finishWorld(el);
+      initWorldDrift(el, ".w36-stage");
+    }
+
+    function build37(el) {
+      const bubbles = Array.from({ length: 10 }, (_, i) =>
+        `<i class="w37-bubble" style="left:${Math.random() * 100}%;bottom:-5%;animation-delay:${i * 0.7}s;animation-duration:${12 + Math.random() * 8}s"></i>`
+      ).join("");
+      el.innerHTML = `<div class="world w37">
+        ${worldRivers()}
+        <div class="world-stage w37-stage">
+          <div class="w37-caustic"></div>
+          <div class="w37-wave w37-w1"></div><div class="w37-wave w37-w2"></div><div class="w37-wave w37-w3"></div>
+          ${bubbles}
+        </div>
+        <div class="world-vignette"></div>${worldAmbient()}${worldCmd("w37-cmd")}
+      </div>`;
+      finishWorld(el);
+      initWorldDrift(el, ".w37-stage");
+    }
+
+    function build38(el) {
+      el.innerHTML = `<div class="world w38">
+        ${worldRivers()}
+        <div class="world-stage w38-stage">
+          <div class="w38-reflect"></div>
+          <div class="w38-floor"></div>
+          <div class="w38-pillar w38-p1"></div><div class="w38-pillar w38-p2"></div>
+          <div class="w38-pillar w38-p3"></div><div class="w38-pillar w38-p4"></div>
+          <div class="w38-core"></div>
+        </div>
+        <div class="world-vignette"></div>${worldAmbient()}${worldCmd("w38-cmd")}
+      </div>`;
+      finishWorld(el);
+      initWorldDrift(el, ".w38-stage");
+    }
+
+    function build39(el) {
+      const floats = M.tickers.map(([sym, , chg], i) =>
+        `<span class="w39-float" style="left:${10 + i * 20}%;top:${25 + (i % 2) * 35}%;animation-delay:${i * 1.2}s">${sym} ${chg}</span>`
+      ).join("");
+      el.innerHTML = `<div class="world w39">
+        ${worldRivers()}
+        <div class="world-stage w39-stage">
+          <div class="w39-terrain"></div>
+          <div class="w39-horizon"></div>
+          <div class="w39-macro">INFINITE FIELD</div>
+          ${floats}
+        </div>
+        <div class="world-vignette"></div>${worldAmbient()}${worldCmd("w39-cmd")}
+      </div>`;
+      finishWorld(el);
+      initWorldDrift(el, ".w39-stage");
+    }
+
+    function build40(el) {
+      const rings = [80, 140, 220, 320, 420].map((s, i) =>
+        `<div class="w40-ring" style="width:${s}px;height:${s}px;--d:${i * 0.35}s"></div>`
+      ).join("");
+      const beams = [0, 45, 90, 135].map((deg) =>
+        `<div class="w40-beam" style="transform:rotate(${deg}deg)"></div>`
+      ).join("");
+      const telem = Array.from({ length: 8 }, (_, i) =>
+        `<span style="--y:${12 + i * 10}%">${M.tickers[i % 4][0]} ${M.tickers[i % 4][2]} · ${M.regime.l} · </span>`
+      ).join("");
+      el.innerHTML = `<div class="world w40">
+        ${worldRivers()}
+        <div class="world-stage w40-stage">
+          <div class="w40-reactor">${rings}${beams}<div class="w40-core"></div></div>
+          <div class="w40-telemetry">${telem}</div>
+        </div>
+        <div class="world-vignette"></div>${worldAmbient()}${worldCmd("w40-cmd")}
+      </div>`;
+      finishWorld(el);
+      initWorldDrift(el, ".w40-stage");
+    }
+
+    function build41(el) {
+      el.innerHTML = `<div class="world w41">
+        ${worldRivers()}
+        <div class="world-stage w41-stage">
+          <div class="w41-layer w41-l1"></div><div class="w41-layer w41-l2"></div><div class="w41-layer w41-l3"></div>
+          <div class="w41-mote">${worldParticles(14, "w41-mote")}</div>
+          <div class="w41-orb w41-o1">${M.regime.l}</div>
+          <div class="w41-orb w41-o2">${M.tickers[1][0]} ${M.tickers[1][2]}</div>
+          <div class="w41-orb w41-o3">ETHER · LIVE</div>
+        </div>
+        <div class="world-vignette"></div>${worldAmbient()}${worldCmd("w41-cmd")}
+      </div>`;
+      finishWorld(el);
+      initWorldDrift(el, ".w41-stage");
+    }
+
+    function build42(el) {
+      const rings = HELIX_RINGS.map((ring) => {
+        const rev = ring.rev ? " w42-orbit--rev" : "";
+        const slots = ring.tickers.map(([sym, chg], i) => {
+          const a = (i / ring.tickers.length) * 360;
+          return `<div class="w42-slot" style="--d:${i * 0.5}s;transform:rotate(${a}deg)">
+            <span class="w42-tick" data-sym="${sym}" style="--r:${ring.radius}">${sym} ${chg}</span></div>`;
+        }).join("");
+        return `<div class="w42-orbit${rev}" style="width:${ring.radius};height:${ring.radius};--dur:${ring.dur}s">${slots}</div>`;
+      }).join("");
+      el.innerHTML = `<div class="world w42">
+        ${worldRivers()}
+        <div class="world-stage w42-stage">
+          <div class="w42-gravity"><div class="w42-well"></div>${rings}</div>
+        </div>
+        <div class="world-vignette"></div>${worldAmbient()}${worldCmd("w42-cmd")}
+      </div>`;
+      finishWorld(el);
+      initWorldDrift(el, ".w42-stage");
+      el.querySelectorAll(".w42-tick").forEach((t) => {
+        t.addEventListener("mouseenter", () => {
+          el.querySelectorAll(".w42-tick").forEach((x) => x.style.opacity = "0.25");
+          t.style.opacity = "1";
+        });
+        t.addEventListener("mouseleave", () => el.querySelectorAll(".w42-tick").forEach((x) => x.style.opacity = ""));
+      });
+    }
+
+    const BUILD_IDENTITY = {
+      "04": build04, "27": build27, "28": build28, "29": build29, "30": build30, "31": build31, "32": build32, "33": build33, "34": build34,
+      "35": build35, "36": build36, "37": build37, "38": build38, "39": build39, "40": build40, "41": build41, "42": build42,
+    };
+    const BUILD_LANDING = {
+      "09": build09, "10": build10, "11": build11, "12": build12,
+      "13": build13, "14": build14, "15": build15, "16": build16,
+    };
+    const WORLD_IDS = ["35", "36", "37", "38", "39", "40", "41", "42"];
+    const IDENTITY_IDS = Object.keys(BUILD_IDENTITY);
+    const LANDING_IDS = Object.keys(BUILD_LANDING);
+
+    let labMode = "landing";
+    let activePanelId = "09";
+    const builtPanels = new Set();
+
+    function canvasFallback(id, err) {
+      const m = META[id];
+      const msg = err ? String(err.message || err) : "";
+      return `<div class="dl-fallback">
+        <h2>Concept ${id} · ${m ? m.title : "Environment"}</h2>
+        <p>${m ? m.desc : "Preview unavailable."}${msg ? ` (${msg})` : ""}</p>
+        <p style="margin-top:16px;font-family:var(--mono);font-size:9px;color:rgba(212,168,90,.5)">Ask the market anything — command layer active when environment loads.</p>
+      </div>`;
+    }
+
+    function ensurePanelBuilt(id) {
+      if (builtPanels.has(id)) return;
+      const canvas = document.getElementById(`canvas-${id}`);
+      if (!canvas) return;
+      const build = LANDING_IDS.includes(id) ? BUILD_LANDING[id] : BUILD_IDENTITY[id];
+      if (!build) {
+        canvas.innerHTML = canvasFallback(id);
+        builtPanels.add(id);
+        return;
+      }
+      const isLanding = LANDING_IDS.includes(id);
+      canvas.innerHTML = `<div class="dl-canvas-loading">${isLanding ? "Loading landing…" : "Loading environment…"}</div>`;
+      requestAnimationFrame(() => {
+        try {
+          build(canvas);
+          if (!isLanding) bindCmd(canvas);
+        } catch (err) {
+          console.error("[design-lab] build failed:", id, err);
+          canvas.innerHTML = canvasFallback(id, err);
+        }
+        builtPanels.add(id);
+      });
+    }
+
+    function setActivePanel(id) {
+      if (activeCinematicTeardown) {
+        activeCinematicTeardown();
+        activeCinematicTeardown = null;
+      }
+      activePanelId = id;
+      document.documentElement.dataset.concept = id;
+      const group = LANDING_IDS.includes(id) ? "landing" : "identity";
+      document.querySelectorAll(".dl-panel").forEach((p) => {
+        const inGroup = p.dataset.labGroup === group;
+        const active = inGroup && p.dataset.panel === id;
+        p.classList.toggle("is-active", active);
+        p.style.display = !inGroup ? "none" : active ? "block" : "none";
+      });
+      document.querySelectorAll(`.dl-nav-${group} .dl-btn`).forEach((b) =>
+        b.classList.toggle("is-active", b.dataset.id === id)
+      );
+      ensurePanelBuilt(id);
+      if (id === "10") syncSplitMarkTop();
+      if (id === "12") syncEtherMarkTop();
+      const canvas = document.getElementById(`canvas-${id}`);
+      if (canvas && canvas._cinematicTeardown) activeCinematicTeardown = canvas._cinematicTeardown;
+      syncCmdPlaceholderTimer();
+    }
+
+    function renderPanels(ids, isLanding, append) {
+      const stage = document.getElementById("stage");
+      const html = ids.map((id) => {
+        const m = META[id];
+        const isWorld = WORLD_IDS.includes(id);
+        const canvasClass = isLanding ? "dl-canvas dl-canvas--landing" : isWorld ? "dl-canvas dl-canvas--world" : "dl-canvas";
+        return `<section class="dl-panel" data-panel="${id}" data-lab-group="${isLanding ? "landing" : "identity"}">
+          <div class="dl-meta"><span class="dl-meta-tag">Concept ${id}</span><h1>${m.title}</h1><p>${m.desc}</p>
+          <div class="dl-traits">${m.traits.map((t) => `<span>${t}</span>`).join("")}</div></div>
+          <div class="${canvasClass}" id="canvas-${id}"></div></section>`;
+      }).join("");
+      if (append) stage.insertAdjacentHTML("beforeend", html);
+      else stage.innerHTML = html;
+    }
+
+    function renderAll() {
+      builtPanels.clear();
+      renderPanels(IDENTITY_IDS, false, false);
+      renderPanels(LANDING_IDS, true, true);
+      applyLabMode(labMode);
+    }
+
+    function applyLabMode(mode) {
+      labMode = mode;
+      document.body.dataset.lab = mode;
+      const defaultId = mode === "landing" ? "10" : "04";
+      document.querySelectorAll(".dl-mode button").forEach((b) => b.classList.toggle("is-active", b.dataset.lab === mode));
+      document.getElementById("dl-brand-sub").textContent = mode === "landing"
+        ? "Landing · 10 Split · chosen direction · 09–16 explore"
+        : "Identity · 04, 27–42 · environments only";
+      document.getElementById("dl-foot").textContent = mode === "landing"
+        ? "Landing exploration · production site unchanged · not live"
+        : "World exploration · motion-first · not production";
+      setActivePanel(defaultId);
+    }
+
+    renderAll();
+
+    document.querySelectorAll(".dl-mode button").forEach((btn) => {
+      btn.addEventListener("click", () => applyLabMode(btn.dataset.lab));
+    });
+
+    document.querySelectorAll(".dl-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        const group = LANDING_IDS.includes(id) ? "landing" : "identity";
+        if (group !== labMode) applyLabMode(group);
+        else setActivePanel(id);
+      });
+    });
+  </script>
+</body>
+</html>

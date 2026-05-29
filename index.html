@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="split">
 <script>
 (function () {
   const params = new URLSearchParams(location.search);
   const p = params.get("preview");
   if (p === "logic" || p === "agent") {
     document.documentElement.classList.add("preview-logic");
+    document.documentElement.setAttribute("data-theme", "logic");
     window.__LOGIC_PREVIEW = true;
     window.__AGENT_PREVIEW = true;
   }
@@ -118,15 +119,13 @@ body::after{
   opacity:0.04;mix-blend-mode:overlay;
 }
 
-/* ---------- TICKER / GLOBAL ---------- */
+/* ---------- TICKER (hidden data source for cinematic river) ---------- */
 .global-ticker{
-  position:fixed;top:0;left:0;right:0;height:30px;z-index:100;
-  background:linear-gradient(180deg, rgba(5,6,10,0.98), rgba(5,6,10,0.85));
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;overflow:hidden;font-family:var(--mono);font-size:11px;
-  backdrop-filter:blur(20px);
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  pointer-events:none;visibility:hidden;
 }
-.ticker-track{display:flex;gap:48px;padding-left:100%;animation:ticker 90s linear infinite;white-space:nowrap}
+.ticker-track{display:flex;gap:48px;white-space:nowrap}
 .ticker-item{display:flex;gap:8px;align-items:center;color:var(--ink-dim)}
 .ticker-item .sym{color:var(--ink);letter-spacing:0.06em}
 .ticker-item .up{color:var(--green)}
@@ -135,11 +134,13 @@ body::after{
 
 /* ---------- NAV ---------- */
 .nav{
-  position:fixed;top:30px;left:0;right:0;z-index:99;
-  background:rgba(5,6,10,0.7);backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--border);
+  position:fixed;top:0;left:0;right:0;z-index:99;
   padding:14px 36px;
   display:flex;align-items:center;justify-content:space-between;
+}
+.nav:not(.nav-a){
+  background:rgba(5,6,10,0.7);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
 }
 .brand{display:flex;align-items:center;gap:12px;cursor:pointer}
 .brand-mark{
@@ -316,6 +317,7 @@ main{padding-top:90px;position:relative;z-index:3}
 }
 .hero-eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+html.bt-paused *, html.bt-paused *::before, html.bt-paused *::after { animation-play-state: paused !important; }
 .hero h1{
   font-family:var(--display);font-weight:700;
   font-size:clamp(40px, 5.4vw, 76px);line-height:1.0;letter-spacing:-0.02em;
@@ -1430,7 +1432,7 @@ main{padding-top:90px;position:relative;z-index:3}
 .cal-tile .score{font-size:8px;color:var(--gold);letter-spacing:0.08em;grid-column:1 / -1}
 .cal-tile.high::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red);grid-column:2;align-self:start}
 .earn-detail-card{
-  position:sticky;top:118px;padding:20px;border-radius:14px;background:linear-gradient(135deg,rgba(212,168,90,0.055),rgba(78,168,255,0.035));
+  position:sticky;top:var(--split-chrome-h,88px);padding:20px;border-radius:14px;background:linear-gradient(135deg,rgba(212,168,90,0.055),rgba(78,168,255,0.035));
   border:1px solid rgba(212,168,90,0.22);backdrop-filter:blur(16px);
 }
 .earn-detail-kicker{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:8px}
@@ -1820,8 +1822,8 @@ footer{padding:60px 36px 40px;border-top:1px solid var(--border);margin-top:80px
   .footer-inner{grid-template-columns:1fr 1fr;gap:32px}
 }
 @media (max-width:680px){
-  .nav{padding:12px 16px}
-  .nav-links{display:none}
+  .nav:not(.nav-a){padding:12px 16px}
+  .nav:not(.nav-a) .nav-links{display:none}
   .hero{padding:40px 16px 60px}
   .hero-proof{grid-template-columns:1fr}
   .hero-visual.terminal{height:auto;min-height:680px}
@@ -2628,15 +2630,7 @@ h1,h2,h3{
   box-shadow:0 0 0 1px rgba(212,168,90,0.28), 0 8px 48px rgba(212,168,90,0.09), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
-/* ── Nav deepened glass ──────────────────────────────────────── */
-.nav{
-  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-  border-bottom:1px solid rgba(255,255,255,0.06);
-  box-shadow:0 1px 0 rgba(0,0,0,0.4);
-}
-.nav-link.active{
-  box-shadow:inset 0 -1px 0 var(--gold);
-}
+/* Legacy nav glass — superseded by Concept A (split-nav-a.css) */
 
 /* ── Hero video background ───────────────────────────────────── */
 .hero-video-bg{
@@ -3207,6 +3201,14 @@ h1,h2,h3{
   ></script>
 <script type="module" src="/lib/moversSymbolLookup.bridge.js"></script>
 <script type="module" src="/lib/landingTickerQuotes.bridge.js"></script>
+<link rel="stylesheet" href="/styles/split-theme.css">
+<link rel="stylesheet" href="/styles/split-cinematic.css">
+<link rel="stylesheet" href="/styles/split-nav-a.css">
+<link rel="stylesheet" href="/styles/split-app-cards.css">
+<link rel="stylesheet" href="/styles/logic-cinematic.css">
+<script type="module" src="/lib/split-theme.bridge.js"></script>
+<script type="module" src="/lib/split-landing.bridge.js"></script>
+<script type="module" src="/lib/logic-cinematic.bridge.js"></script>
 </head>
 <body>
 
@@ -3294,44 +3296,44 @@ h1,h2,h3{
   </div>
 </div>
 
-<div class="global-ticker">
+<div class="global-ticker" aria-hidden="true">
   <div class="ticker-track" id="ticker"></div>
 </div>
 
-<!-- ===== NAV ===== -->
-<nav class="nav">
-  <div class="brand" onclick="route('landing')" id="navBrand">
-    <img src="/logo-transparent.png" alt="BriefTick" style="height:78px;width:auto;display:block;object-fit:contain">
+<!-- ===== NAV — Concept A: Floating Minimal ===== -->
+<nav class="nav nav-a" id="siteNav" aria-label="Site navigation">
+  <div class="nav-a__start">
+    <div class="brand split-brand" onclick="route('landing')" id="navBrand">
+      <img src="/logo-transparent.png" alt="Brieftick" class="split-brand-img" width="160" height="52">
+    </div>
+    <div class="nav-links nav-a__links" id="navLinks">
+      <button type="button" class="nav-link" data-route="landing">Home</button>
+      <button type="button" class="nav-link app-tab" data-route="dashboard">Dashboard</button>
+      <button type="button" class="nav-link app-tab" data-route="why">Movers</button>
+      <button type="button" class="nav-link app-tab" data-route="impact">Intelligence</button>
+      <button type="button" class="nav-link app-tab" data-route="brief">Briefing</button>
+      <button type="button" class="nav-link app-tab" data-route="earnings">Earnings</button>
+      <button type="button" class="nav-link app-tab" data-route="portfolio">Portfolio</button>
+      <button type="button" class="nav-link app-tab" data-route="scanner">Scanner <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button type="button" class="nav-link app-tab" data-route="insiders">Insider <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button type="button" class="nav-link app-tab" data-route="options">Options <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button type="button" class="nav-link" data-route="pricing">Pricing</button>
+      <button type="button" class="nav-link nav-link--logic app-tab logic-preview-tab" data-route="logic" id="navLogicTab" style="display:none">Logic <span class="nav-preview-pill" id="logicPreviewPill">Preview</span></button>
+      <button type="button" class="nav-link" data-route="about">About</button>
+    </div>
   </div>
-  <div class="nav-links" id="navLinks">
-    <button class="nav-link" data-route="landing">Home</button>
-    <button class="nav-link app-tab" data-route="dashboard">Dashboard</button>
-    <button class="nav-link app-tab" data-route="why">Movers</button>
-    <button class="nav-link app-tab" data-route="impact">Intelligence</button>
-    <button class="nav-link app-tab" data-route="brief">Briefing</button>
-    <button class="nav-link app-tab" data-route="earnings">Earnings</button>
-    <button class="nav-link app-tab" data-route="portfolio">Portfolio</button>
-    <button class="nav-link app-tab" data-route="scanner">Scanner <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    <button class="nav-link app-tab" data-route="insiders">Insiders <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    <button class="nav-link app-tab" data-route="options">Options <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    <button class="nav-link" data-route="pricing">Pricing</button>
-    <button class="nav-link app-tab logic-preview-tab" data-route="logic" id="navLogicTab" style="display:none">Logic <span class="nav-preview-pill" id="logicPreviewPill">Preview</span></button>
-    <button class="nav-link" data-route="about">About</button>
-    <button class="nav-settings" id="navSettingsBtn" onclick="openSettings()" title="API key settings" aria-label="Settings" style="display:none">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+  <div class="nav-a__end">
+    <button type="button" class="nav-settings" id="navSettingsBtn" onclick="openSettings()" title="API key settings" aria-label="Settings" style="display:none">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M12 15.5C13.933 15.5 15.5 13.933 15.5 12C15.5 10.067 13.933 8.5 12 8.5C10.067 8.5 8.5 10.067 8.5 12C8.5 13.933 10.067 15.5 12 15.5Z" stroke="currentColor" stroke-width="1.5"/>
         <path d="M19.622 10.395L18.244 9.04C18.135 7.83 17.671 6.694 16.937 5.768L17.453 3.949L15.728 2.949L14.224 4.226C13.094 3.755 11.852 3.591 10.629 3.755L9.32 2.379L7.595 3.379L8.111 5.198C7.377 6.124 6.913 7.26 6.804 8.47L5.426 9.825L5.426 11.825L6.804 13.18C6.913 14.39 7.377 15.526 8.111 16.452L7.595 18.271L9.32 19.271L10.824 17.994C11.954 18.465 13.196 18.629 14.419 18.465L15.728 19.841L17.453 18.841L16.937 17.022C17.671 16.096 18.135 14.96 18.244 13.75L19.622 12.395L19.622 10.395Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/>
       </svg>
     </button>
-
-    <!-- Auth area — populated by Clerk JS -->
     <div class="auth-area" id="authArea">
-      <!-- Signed-out state (default) -->
       <div id="authSignedOut" style="display:flex;gap:8px;align-items:center">
-        <button class="auth-signin-btn" id="authSignInBtn">Sign In</button>
-        <button class="auth-signup-btn" id="authSignUpBtn">Start Free</button>
+        <button type="button" class="auth-signin-btn" id="authSignInBtn">Sign In</button>
+        <button type="button" class="auth-signup-btn" id="authSignUpBtn">Start Free</button>
       </div>
-      <!-- Signed-in state -->
       <div id="authSignedIn" style="display:none;align-items:center;gap:10px">
         <span class="auth-plan-badge free" id="authPlanBadge">Free</span>
         <div id="clerkUserButton"></div>
@@ -3470,205 +3472,7 @@ h1,h2,h3{
      LANDING PAGE
 ============================================================ -->
 <section class="page active" id="page-landing">
-
-
-
-  <div class="hero">
-
-    <!-- Video hero background -->
-    <div class="hero-video-bg" aria-hidden="true">
-      <video
-        class="hero-video"
-        src="/hero-bg.mp4.mp4"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-      ></video>
-      <div class="hero-video-overlay"></div>
-    </div>
-    <canvas id="heroAmbient" aria-hidden="true"></canvas>
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <div class="hero-eyebrow gsap-hero-el"><span class="pulse"></span> Live Beta · Cohort II Open</div>
-        <h1 class="gsap-hero-el" id="heroHeadline"><span class="fm-word" id="fmW1">Understand</span><br><span class="fm-word" id="fmW2">what moves</span><br><span class="fm-word" id="fmW3"><span class="gold">markets.</span></span></h1>
-        <p class="hero-sub gsap-hero-el">Real-time market intelligence across earnings, macro events, sentiment, and market-moving news. Built to explain the why behind every move.</p>
-        <div class="hero-logic-layer gsap-hero-el" aria-label="Brieftick Logic">
-          <p class="hero-logic-kicker">Powered by Brieftick Logic</p>
-          <p class="hero-logic-desc">An intelligent reasoning engine connecting the dots across markets, sectors and macro events.</p>
-        </div>
-        <div class="hero-cta gsap-hero-el">
-          <button class="btn-primary" onclick="clerkSignUp()">Start Free →</button>
-          <button class="btn-secondary" onclick="routeWithAuth('dashboard')">View Live Demo <span class="external">↗</span></button>
-        </div>
-        <div class="hero-proof" id="heroProof">
-          <div class="hero-proof-item" id="hpi0"><div class="hero-proof-icon" id="hpIcon0">⌁</div><div><b>Live market data</b><span id="hpSub0">Streaming context</span></div></div>
-          <div class="hero-proof-item" id="hpi1"><div class="hero-proof-icon" id="hpIcon1">◫</div><div><b>12,000+ equities</b><span id="hpSub1">Global coverage</span></div></div>
-          <div class="hero-proof-item" id="hpi2"><div class="hero-proof-icon" id="hpIcon2">◴</div><div><b>Earnings monitoring</b><span id="hpSub2">Real-time updates</span></div></div>
-          <div class="hero-proof-item" id="hpi3"><div class="hero-proof-icon" id="hpIcon3">◇</div><div><b>Market intelligence</b><span id="hpSub3">Built for investors</span></div></div>
-        </div>
-      </div>
-
-      <div class="hero-visual hvc-panel">
-        <!-- ambient glow layer -->
-        <div class="hvc-ambient"></div>
-        <!-- scan-line shimmer -->
-        <div class="scan-line"></div>
-
-        <!-- HEADER -->
-        <div class="hvc-header">
-          <div class="hvc-header-left">
-            <span class="hvc-live-dot"></span>
-            <span class="hvc-live-label">LIVE</span>
-            <span id="hvHeaderSym" class="hvc-ticker-label">NVDA · NASDAQ</span>
-          </div>
-          <div class="hvc-header-right">
-            <span id="hvHeaderTime" class="hvc-time">15:42:08 EDT</span>
-            <span class="hvc-engine">Brieftick</span>
-          </div>
-        </div>
-
-        <!-- BODY: quote + chart + insights (left), metrics (right) -->
-        <div class="hvc-body terminal-grid" id="hvBody" style="transition:opacity 0.35s ease">
-
-          <!-- LEFT MAIN COLUMN -->
-          <div class="hvc-main">
-            <!-- Quote row -->
-            <div class="hvc-quote-row">
-              <div>
-                <div class="hvc-sym" id="hvSym">NVDA</div>
-                <div class="hvc-name" id="hvName">NVIDIA CORP</div>
-              </div>
-              <div class="hvc-price-block">
-                <div class="price hv-quote-price">—</div>
-                <div class="chg hv-quote-chg" style="color:var(--ink-faint)">Loading…</div>
-              </div>
-            </div>
-
-            <!-- Tags -->
-            <div class="hv-tags" id="hvTags">
-              <span class="hv-tag gold">AI Infrastructure</span>
-              <span class="hv-tag">Semiconductors</span>
-              <span class="hv-tag blue">$2.58T Cap</span>
-            </div>
-
-            <!-- Chart — keeps existing ID for drawChart() -->
-            <div class="hv-chart" id="heroChart"></div>
-
-            <!-- Intelligence feed -->
-            <div class="hvc-insights">
-              <div class="hvc-insights-label">
-                <span class="hvc-dot-gold"></span>
-                Market Signals
-              </div>
-              <div class="hvc-insights-body hv-ai-text" id="hvAiText">
-                NVDA pulled lower after hyperscaler capex chatter reignited demand-tail concerns.
-                Weakness spreading across <b>AMD, AVGO, MU</b> — 72% reaction-chain probability.
-                Macro tone neutral. No Fed catalyst.
-              </div>
-            </div>
-          </div>
-
-          <!-- RIGHT METRICS COLUMN -->
-          <div class="hvc-metrics">
-            <div class="hvc-metric-card">
-              <div class="hvc-metric-label">Sentiment</div>
-              <div class="hvc-sentiment-bar">
-                <div class="hvc-sentiment-fill" id="hvSentimentFill" style="width:72%"></div>
-              </div>
-              <div class="hvc-metric-value" id="hvSentiment" style="color:var(--green)">Bullish <small>72/100</small></div>
-            </div>
-            <div class="hvc-metric-card">
-              <div class="hvc-metric-label">Conviction</div>
-              <div class="hvc-metric-value" id="hvConfidence">78<small>%</small></div>
-              <div class="hvc-metric-sub up" id="hvConviction">High · rising</div>
-            </div>
-            <div class="hvc-metric-card">
-              <div class="hvc-metric-label">Sector Impact</div>
-              <div id="hvSectorImpact">
-                <div class="hv-mini-bar"><span>AI Infra</span><b class="dn">-2.34%</b></div>
-                <div class="hv-mini-bar"><span>Semis</span><b class="dn">-1.87%</b></div>
-                <div class="hv-mini-bar"><span>Cloud</span><b class="dn">-1.12%</b></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- BOTTOM MARKET STRIP -->
-          <div class="hvc-strip hv-market-strip" id="hvMarketStrip">
-            <div class="hv-market" data-sym="SPY"><div class="sym">SPY</div><div class="val">…</div><div class="move flat">…</div></div>
-            <div class="hv-market" data-sym="QQQ"><div class="sym">QQQ</div><div class="val">…</div><div class="move flat">…</div></div>
-            <div class="hv-market" data-sym="DIA"><div class="sym">DIA</div><div class="val">…</div><div class="move flat">…</div></div>
-            <div class="hv-market" data-sym="VIX"><div class="sym">VIX</div><div class="val">…</div><div class="move flat">…</div></div>
-            <div class="hv-market" data-sym="10Y"><div class="sym">10Y</div><div class="val">…</div><div class="move flat">…</div></div>
-          </div>
-
-        </div><!-- /hvc-body -->
-      </div>
-    </div>
-  </div>
-
-  <div class="landing-trust">
-    <div class="trust-label">Built for market participants</div>
-    <div class="trust-grid" id="trustGrid">
-      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Investors</b><span>Portfolio context</span></div><div class="fm-flip-back"><span>Understand what drives your holdings — macro, sector rotation, and earnings impact explained.</span></div></div></div>
-      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Traders</b><span>Volatility drivers</span></div><div class="fm-flip-back"><span>See real-time volatility signals, options flow, and sector momentum before the move.</span></div></div></div>
-      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Analysts</b><span>News impact</span></div><div class="fm-flip-back"><span>Map breaking news to affected stocks, sectors, and macro indicators instantly.</span></div></div></div>
-      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Beginners</b><span>Plain English</span></div><div class="fm-flip-back"><span>Every signal translated into clear context — no jargon, no noise, just understanding.</span></div></div></div>
-      <div class="fm-flip-card"><div class="fm-flip-inner"><div class="fm-flip-front"><b>Market teams</b><span>Shared intelligence</span></div><div class="fm-flip-back"><span>One intelligence layer for your entire team. Same data, same context, aligned decisions.</span></div></div></div>
-    </div>
-  </div>
-
-  <!-- features -->
-  <section class="section">
-    <div class="section-narrow">
-      <div class="section-head">
-        <div>
-          <div class="section-eyebrow">What it does</div>
-          <h2 class="section-title"><span id="sectionFlipWord">Nine modules</span>. <em>One</em> intelligence layer.</h2>
-        </div>
-        <p class="section-desc">Every feature shares a single market graph - so a tariff headline, a watchlist alert and a sector heatmap all speak the same language.</p>
-      </div>
-
-      <div class="feature-grid" id="featureGrid"></div>
-    </div>
-  </section>
-
-  <!-- testimonials -->
-  <section class="section">
-    <div class="section-narrow">
-      <div class="section-head">
-        <div>
-          <div class="section-eyebrow">Early access voices</div>
-          <h2 class="section-title">Built with the people who <em id="h2Flip1">read</em> markets for a living.</h2>
-        </div>
-      </div>
-      <div class="testimonial-grid">
-        <div class="testimonial">
-          <div class="testimonial-quote">"It's the first product that explains <em>why</em> something is happening, not just <em>what</em>. The reaction map alone changed how I read sector weakness."</div>
-          <div class="testimonial-author"><div class="avatar">M</div><div><div class="author-name">Mara Voss</div><div class="author-role">Portfolio Manager · Solo RIA</div></div></div>
-        </div>
-        <div class="testimonial">
-          <div class="testimonial-quote">"I used to keep eight tabs open just to make sense of a Fed day. BriefTick replaced six of them and made the other two faster."</div>
-          <div class="testimonial-author"><div class="avatar">J</div><div><div class="author-name">Jonas Reiter</div><div class="author-role">Macro Analyst · London</div></div></div>
-        </div>
-        <div class="testimonial">
-          <div class="testimonial-quote">"The morning briefing is genuinely the first thing I read. It feels written by a senior analyst who already pre-read the tape."</div>
-          <div class="testimonial-author"><div class="avatar">A</div><div><div class="author-name">Aisha Khoury</div><div class="author-role">Active Trader · 12 yrs</div></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- closing -->
-  <section class="section" style="padding-bottom:140px">
-    <div class="section-narrow" style="text-align:center">
-      <div class="section-eyebrow" style="display:inline-block">The market deserves better narration</div>
-      <h2 class="section-title" style="margin:0 auto 28px"><span id="h2Flip2">Stop reading the tape.</span><br><em>Start understanding it.</em></h2>
-      <button class="btn-primary" onclick="clerkSignUp()" style="margin:12px 6px">Start Free →</button>
-      <button class="btn-secondary" onclick="routeWithAuth('dashboard')" style="margin:12px 6px">Explore the Dashboard</button>
-    </div>
-  </section>
+  <div id="splitLandingMount" class="split-landing-mount" aria-label="Brieftick landing"></div>
 </section>
 
 <!-- ============================================================
@@ -4612,6 +4416,7 @@ h1,h2,h3{
      PRICING
 ============================================================ -->
 <section class="page" id="page-pricing">
+  <div id="splitPricingMount" class="split-immersive-mount" aria-hidden="true"></div>
   <div class="pricing">
     <div class="pricing-head">
       <h1>Two plans. <em>One goal.</em></h1>
@@ -5168,46 +4973,59 @@ h1,h2,h3{
      BRIEFTICK LOGIC (PREVIEW)
 ============================================================ -->
 <section class="page" id="page-logic">
-  <div class="logic-wrap">
-    <header class="logic-header">
-      <div class="logic-header-left">
-        <span class="logic-preview-badge">Logic Preview</span>
-        <div class="logic-title-row">
-          <h2>Logic</h2>
-        </div>
-        <p class="logic-tagline">Understand what moves markets.</p>
-        <p class="logic-header-sub">Logic Terminal · Institutional intelligence · Not financial advice</p>
-      </div>
-      <div class="logic-header-meta">
-        <span class="logic-usage-banner" id="logicUsageBanner" hidden>Free Logic: 0/5 used today</span>
-        <span class="logic-meta-chip">7 Logic modules</span>
-        <span class="logic-meta-chip">Cmd+K · Command centre</span>
-      </div>
+  <div class="logic-env" aria-hidden="true">
+    <div class="logic-env__atmo"></div>
+    <div class="logic-env__haze"></div>
+    <div class="logic-env__gravity"></div>
+    <div class="logic-env__helix" id="logicHelix" aria-hidden="true"></div>
+    <div class="logic-env__vignette"></div>
+    <div class="logic-env__whisper logic-env__whisper--1">MACRO · LIVE</div>
+    <div class="logic-env__whisper logic-env__whisper--2">LOGIC · SESSION</div>
+    <div class="logic-env__whisper logic-env__whisper--3">VOL · ACTIVE</div>
+    <div class="logic-env__regime">REGIME PULSE<span>INTELLIGENCE CORE</span></div>
+    <div class="logic-env__river"><span id="logicEnvRiver"></span></div>
+  </div>
+  <div class="logic-wrap logic-wrap--helix">
+    <header class="logic-header logic-header--telemetry">
+      <span class="logic-telemetry logic-telemetry--tl">HELIX · LOGIC</span>
+      <span class="logic-telemetry logic-telemetry--tr" id="logicTelemetryRegime">INTELLIGENCE CORE</span>
+      <span class="logic-usage-banner logic-usage-banner--corner" id="logicUsageBanner" hidden>Free Logic: 0/5 used today</span>
     </header>
 
-    <section class="logic-hero-command" aria-label="Ask Brieftick Logic">
-      <form id="logicHeroForm" class="logic-hero-form" autocomplete="off" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
-        <input type="text" id="logicHeroInput" class="logic-hero-input" placeholder="Ask Brieftick Logic anything…" spellcheck="false" aria-label="Ask Brieftick Logic" />
-        <button type="submit" class="logic-hero-submit">Run Logic</button>
-      </form>
-      <p class="logic-hero-hint"><span>Press <kbd style="font-family:var(--mono);font-size:9px;padding:2px 5px;border:1px solid var(--border);border-radius:3px">⌘</kbd><kbd style="font-family:var(--mono);font-size:9px;padding:2px 5px;border:1px solid var(--border);border-radius:3px">K</kbd> for command centre</span><span>·</span><span>Select a prompt or type your question</span></p>
-      <div class="logic-hero-chips" id="logicHeroChips"></div>
-    </section>
-
-    <div class="logic-layout logic-layout--conversation">
-      <aside class="logic-sidebar logic-sidebar--modes" id="logicModeSidebar" aria-label="Logic modes"></aside>
-
-      <div class="logic-main logic-main--conversation" id="logicMain">
-        <section class="logic-result-surface logic-result-surface--primary" id="logicResultSurface" aria-live="polite">
-          <div class="logic-result-idle" id="logicResultIdle">
-            Ask one question — Logic answers here. Tap follow-up chips to go deeper.
-          </div>
-          <div class="logic-result-content" id="logicResultContent" hidden></div>
-        </section>
-        <div id="logicIntelligenceHub" class="logic-hub-legacy" hidden aria-hidden="true"></div>
+    <div class="logic-helix-scene">
+      <div class="logic-nucleus" id="logicNucleus">
+        <div class="logic-nucleus__intel" id="logicMain">
+          <section class="logic-result-surface logic-result-surface--primary" id="logicResultSurface" aria-live="polite">
+            <div class="logic-nucleus__focus" id="logicNucleusFocus">
+              <div class="logic-nucleus__symbol" id="logicNucleusSymbol">LOGIC</div>
+              <div class="logic-nucleus__chg" id="logicNucleusChg" aria-hidden="true"></div>
+              <p class="logic-result-idle" id="logicResultIdle">
+                Select an orbiting symbol or ask Logic — institutional intelligence surfaces at the nucleus.
+              </p>
+            </div>
+            <div class="logic-result-content" id="logicResultContent" hidden></div>
+          </section>
+          <div id="logicIntelligenceHub" class="logic-hub-legacy" hidden aria-hidden="true"></div>
+        </div>
+        <div class="logic-nucleus__pulse-bar" aria-hidden="true"><div class="logic-nucleus__pulse-fill" id="logicPulseFill"></div></div>
+        <div class="logic-nucleus__cmd-zone">
+          <section class="logic-hero-command" aria-label="Ask Brieftick Logic">
+            <form id="logicHeroForm" class="logic-hero-form" autocomplete="off" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
+              <span class="logic-hero-tag">Ask the market anything.</span>
+              <input type="text" id="logicHeroInput" class="logic-hero-input" placeholder="Speak to the global macro regime…" spellcheck="false" aria-label="Ask Brieftick Logic" />
+              <button type="submit" class="logic-hero-submit">Run Logic</button>
+            </form>
+            <p class="logic-hero-hint"><span>⌘K command centre</span><span>·</span><span>Enter to run</span></p>
+            <div class="logic-hero-chips" id="logicHeroChips"></div>
+          </section>
+          <p class="logic-nucleus__orbit-ctx" id="logicOrbitCtx">ALSO IN ORBIT · VIX · SPY · QQQ · NVDA · TSLA · AAPL</p>
+        </div>
       </div>
 
-      <aside class="logic-context-sidebar" id="logicContextSidebar" aria-label="Market context"></aside>
+      <div class="logic-flanks">
+        <aside class="logic-sidebar logic-sidebar--modes" id="logicModeSidebar" aria-label="Logic modes"></aside>
+        <aside class="logic-context-sidebar" id="logicContextSidebar" aria-label="Market context"></aside>
+      </div>
     </div>
   </div>
 
@@ -5227,23 +5045,7 @@ h1,h2,h3{
      ABOUT PAGE
 ============================================================ -->
 <section class="page" id="page-about">
-
-  <!-- Video background — same as hero -->
-  <div class="about-video-bg" aria-hidden="true">
-    <video
-      class="hero-video"
-      src="/hero-bg.mp4.mp4"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-    ></video>
-    <div class="hero-video-overlay"></div>
-  </div>
-
-  <!-- Ambient intelligence grid — lighter than landing, purely atmospheric -->
-
+  <div id="splitAboutMount" class="split-immersive-mount" aria-hidden="true"></div>
   <div class="about-wrap">
 
     <!-- Hero -->
@@ -5439,13 +5241,45 @@ h1,h2,h3{
 </footer>
 
 <script>
+/* Visibility-aware timers — skip work when tab is hidden (reduces CPU + API calls). */
+const BTRuntime = (() => {
+  const _timers = new Set();
+  function isActive() {
+    return document.visibilityState === "visible" && !document.hidden;
+  }
+  function setInterval(fn, ms) {
+    const id = window.setInterval(() => { if (isActive()) fn(); }, ms);
+    _timers.add(id);
+    return id;
+  }
+  function clearInterval(id) {
+    window.clearInterval(id);
+    _timers.delete(id);
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (!isActive()) document.documentElement.classList.add("bt-paused");
+    else document.documentElement.classList.remove("bt-paused");
+  });
+  function activePage() {
+    const p = document.querySelector(".page.active");
+    return p ? p.id.replace(/^page-/, "") : "landing";
+  }
+  function isPage(...names) {
+    return names.includes(activePage());
+  }
+  return { isActive, setInterval, clearInterval, activePage, isPage };
+})();
+
 /* ============================================================
    ROUTING
 ============================================================ */
 function route(name){
+  window._activeRoute = name;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const target=document.getElementById('page-'+name);
   if(target) target.classList.add('active');
+  if (_cgPhysicsRAF) { cancelAnimationFrame(_cgPhysicsRAF); _cgPhysicsRAF = null; }
+  if (_pc3d && _pc3d.raf) { cancelAnimationFrame(_pc3d.raf); _pc3d.raf = null; }
   document.querySelectorAll('.nav-link').forEach(l=>{
     l.classList.toggle('active', l.dataset.route===name);
   });
@@ -5453,6 +5287,7 @@ function route(name){
     setTimeout(()=>refreshPortfolioAnalysis(null, false), 0);
   }
   window.scrollTo({top:0,behavior:'instant'});
+  if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
 }
 document.querySelectorAll('.nav-link').forEach(l=>{
   l.addEventListener('click',()=>routeWithAuth(l.dataset.route));
@@ -5506,6 +5341,7 @@ const featureData=[
   ['Options Flow','Unusual options activity, put/call ratios, dark pool prints and full options chains. When options diverge from price, smart money is positioning early.','module 12',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 17 L8 12 L12 15 L16 9 L21 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21" cy="11" r="2" fill="currentColor"/><path d="M3 21 L21 21" stroke="currentColor" stroke-width="1" opacity="0.3"/></svg>'],
 ];
+window.BT_FEATURE_DATA = featureData;
 const featureRoutes = {
   'Market Radar':'dashboard','Market Briefings':'brief','Why Is It Moving':'why',
   'Portfolio Intelligence':'portfolio','Macro Intelligence':'impact',
@@ -5514,7 +5350,9 @@ const featureRoutes = {
   'AI Market Scanner':'scanner','Insider &amp; Political Trades':'insiders',
   'Options Flow':'options',
 };
-document.getElementById('featureGrid').innerHTML=featureData.map(([t,d,tag,icon])=>{
+window.BT_FEATURE_DATA = featureData;
+const _featureGridEl = document.getElementById('featureGrid');
+if (_featureGridEl) _featureGridEl.innerHTML=featureData.map(([t,d,tag,icon])=>{
   const dest = featureRoutes[t] || 'dashboard';
   return `<div class="feature" style="cursor:pointer" onclick="routeWithAuth('${dest}')" title="Open ${t}">
     <div class="feature-icon">${icon}</div>
@@ -5804,9 +5642,10 @@ async function _refreshVixIntraday(){
 }
 
 function _scheduleVixIntradayAutoRefresh(){
-  if(_vixIntradayInterval) clearInterval(_vixIntradayInterval);
-  _vixIntradayInterval = setInterval(async()=>{
-    if(!isUSMarketOpen()){ clearInterval(_vixIntradayInterval); return; }
+  if(_vixIntradayInterval) BTRuntime.clearInterval(_vixIntradayInterval);
+  _vixIntradayInterval = BTRuntime.setInterval(async()=>{
+    if(!BTRuntime.isPage('landing','dashboard')) return;
+    if(!isUSMarketOpen()){ BTRuntime.clearInterval(_vixIntradayInterval); _vixIntradayInterval = null; return; }
     await _refreshVixIntraday();
   }, 5 * 60_000); // every 5 minutes during market hours
 }
@@ -6244,6 +6083,8 @@ function renderSentimentFeed(items){
 })();
 
 async function liveRefreshSentimentFeed(force=false){
+  if(!force && !BTRuntime.isActive()) return;
+  if(!force && !BTRuntime.isPage('dashboard')) return;
   if(typeof window.liveRefreshSocialIntelligenceFeed === 'function'){
     return window.liveRefreshSocialIntelligenceFeed(force);
   }
@@ -8465,6 +8306,7 @@ function _patchHeroQuoteFromBatch(quotes) {
 
 let _landingTickerRefreshInFlight = false;
 async function refreshLandingTickerQuotes() {
+  if (!BTRuntime.isActive()) return;
   if (_landingTickerRefreshInFlight) return;
   _landingTickerRefreshInFlight = true;
   try {
@@ -8523,11 +8365,15 @@ async function getPolygonQuotes(symbols) {
 }
 
 async function liveRefreshDashboard(){
+  if(!BTRuntime.isActive()) return;
+  if(!BTRuntime.isPage('landing','dashboard')) return;
   try {
     await liveRefreshVix();
   } catch(e) { console.warn('[VIX data]', e.message); }
 
   await refreshLandingTickerQuotes();
+
+  if(!BTRuntime.isPage('dashboard')) return;
 
   const moversSymbols = [];
   document.querySelectorAll('#moversList .mover .sym').forEach(el => {
@@ -8599,15 +8445,19 @@ async function liveRefreshDashboard(){
 }
 
 /* Run as soon as DOM is ready. Ticker strip shows … until first live batch lands. */
-window.addEventListener('load', liveRefreshDashboard);
 window.addEventListener('load', () => {
-  setInterval(() => refreshLandingTickerQuotes().catch(() => {}), 30_000);
+  if (BTRuntime.isActive() && BTRuntime.isPage('landing', 'dashboard')) liveRefreshDashboard();
 });
+BTRuntime.setInterval(() => {
+  if (BTRuntime.isPage('landing', 'dashboard')) refreshLandingTickerQuotes().catch(() => {});
+}, 30_000);
 
 /* ================================================================
    TELEMETRY OVERLAY — live ETF data for regional cards
 ================================================================ */
 async function liveRefreshTelemetryOverlay() {
+  if(!BTRuntime.isActive()) return;
+  if(!BTRuntime.isPage('dashboard')) return;
   /* ETF proxies: SPY=US, EZU=Europe, DJP=Commodities, EWJ=Asia */
   const REGIONS = [
     { sym:'SPY',  valId:'tValNA',   subId:'tSubNA',   noteId:'tStateNA',
@@ -8679,11 +8529,11 @@ async function liveRefreshTelemetryOverlay() {
   }
 }
 
-/* Run once on load + every 60 s */
+/* Run once on load + every 60 s (visible tab only) */
 window.addEventListener('load', () => {
-  setTimeout(liveRefreshTelemetryOverlay, 1500);
-  setInterval(liveRefreshTelemetryOverlay, 60000);
+  setTimeout(() => { if (BTRuntime.isActive()) liveRefreshTelemetryOverlay(); }, 1500);
 });
+BTRuntime.setInterval(() => liveRefreshTelemetryOverlay(), 60000);
 
 // Handle ?tab= param so cancel redirect from Stripe lands on the right page
 (function(){
@@ -8697,10 +8547,10 @@ window.addEventListener('load', () => {
   routeWithAuth(tab);
 })();
 
-// Refresh AI sentiment feed every 5 minutes
-setInterval(()=>liveRefreshSentimentFeed(false), 5 * 60_000);
-// Refresh Market Signal Feed every 5 minutes
-setInterval(()=>liveRefreshSignalFeed(false), 5 * 60_000);
+// Refresh AI sentiment feed every 5 minutes (visible tab only)
+BTRuntime.setInterval(() => liveRefreshSentimentFeed(false), 5 * 60_000);
+// Refresh Market Signal Feed every 5 minutes (visible tab only)
+BTRuntime.setInterval(() => liveRefreshSignalFeed(false), 5 * 60_000);
 
 /* Social Signals - politically neutral, market-impact only.
    Sample posts illustrate the categories of accounts the engine monitors
@@ -8800,6 +8650,8 @@ let _signalLastFetch = 0;
 const SIGNAL_REFRESH_MS = 5 * 60_000;
 
 async function liveRefreshSignalFeed(force=false){
+  if(!force && !BTRuntime.isActive()) return;
+  if(!force && !BTRuntime.isPage('dashboard')) return;
   const now = Date.now();
   if(!force && now - _signalLastFetch < SIGNAL_REFRESH_MS) return;
   _signalLastFetch = now;
@@ -10179,6 +10031,10 @@ function _installContagionCursorPhysics(peerCount, cx, cy){
   svg.addEventListener('touchend', onLeave);
 
   function frame(){
+    if(document.hidden || !document.getElementById('page-why')?.classList.contains('active')){
+      _cgPhysicsRAF = null;
+      return;
+    }
     // For each peer, compute target = base + repulsion (if cursor near)
     for(let i = 0; i < peerEls.length; i++){
       const p = peerEls[i];
@@ -11043,6 +10899,10 @@ function renderPortfolioCluster(holdings, matrix){
 
   // Render loop: auto-rotate when not dragging
   function frame(){
+    if(!document.getElementById('page-portfolio')?.classList.contains('active')) {
+      _pc3d.raf = null;
+      return;
+    }
     if(!_pc3d.dragging && _pc3d.hoveredIdx==null) _pc3d.rotY += _pc3d.autoRotSpeed;
     _pc3dDraw(svg, _pc3d.hoveredIdx);
     _pc3d.raf = requestAnimationFrame(frame);
@@ -11236,6 +11096,8 @@ window.addEventListener('load', ()=>{
    LIVE MICROANIMATIONS - fake price flicker
 ============================================================ */
 function jitter(){
+  if(!BTRuntime.isActive()) return;
+  if(!BTRuntime.isPage('dashboard')) return;
   document.querySelectorAll('.wl-row .price, .mover .price').forEach(el=>{
     if(Math.random()<0.18){
       el.style.color='#7cc4ff';
@@ -11243,7 +11105,7 @@ function jitter(){
     }
   });
 }
-setInterval(jitter, 1800);
+BTRuntime.setInterval(jitter, 1800);
 
 /* ============================================================
    REQUEST ACCESS MODAL
@@ -12314,6 +12176,7 @@ function initFlowEngine() {
 
   // Wire up live stats from existing data
   function updateFlowStats() {
+    if (!BTRuntime.isPage('dashboard')) return;
     // Volatility from VIX
     const volEl = document.getElementById('feVol');
     const volLbl = document.getElementById('feVolLabel');
@@ -12338,8 +12201,8 @@ function initFlowEngine() {
       }
     } catch(_) {}
   }
-  setTimeout(updateFlowStats, 2000);
-  setInterval(updateFlowStats, 30000);
+  setTimeout(() => { if (BTRuntime.isActive()) updateFlowStats(); }, 2000);
+  BTRuntime.setInterval(updateFlowStats, 30000);
 }
 
 window.addEventListener('load', initFlowEngine);
@@ -12492,15 +12355,17 @@ async function rotateHeroStock(idx) {
 }
 
 function startHeroRotation() {
-  heroRotateTimer = setInterval(() => {
+  if (heroRotateTimer) clearInterval(heroRotateTimer);
+  heroRotateTimer = BTRuntime.setInterval(() => {
     heroStockIdx = (heroStockIdx + 1) % HERO_STOCKS.length;
     rotateHeroStock(heroStockIdx);
   }, 8000);
 }
 
 window.addEventListener('load', () => {
+  if (!document.getElementById('heroChart') || !BTRuntime.isPage('landing')) return;
   rotateHeroStock(0);    // apply IDs/data for the first stock immediately
-  setTimeout(startHeroRotation, 8000); // start cycling after 8s
+  setTimeout(() => { if (BTRuntime.isPage('landing')) startHeroRotation(); }, 8000);
 });
 
 /* ================================================================
@@ -12820,29 +12685,31 @@ function initGSAP() {
     clearProps: 'all',
   });
 
-  // Hero stagger entrance — set initial state first, then animate
+  // Landing uses Concept 10 Split cinematic mount — skip legacy hero/feature GSAP
   const heroEls = document.querySelectorAll('.gsap-hero-el');
-  gsap.set(heroEls, { opacity: 0, y: 22 });
-  gsap.to(heroEls, {
-    opacity: 1, y: 0, duration: 0.85, stagger: 0.13,
-    ease: 'power3.out', delay: 0.45, clearProps: 'all',
-  });
-
-  // Hero visual entrance
-  gsap.from('.hero-visual', {
-    duration: 1.1, opacity: 0, x: 28, ease: 'power3.out', delay: 0.55, clearProps: 'all',
-  });
-
-  // Feature cards scroll reveal
-  gsap.from('.feature', {
-    scrollTrigger: {
-      trigger: '#featureGrid',
-      start: 'top 82%',
-      toggleActions: 'play none none none',
-    },
-    duration: 0.65, opacity: 0, y: 28, stagger: 0.065, ease: 'power2.out',
-    clearProps: 'all',
-  });
+  if (heroEls.length) {
+    gsap.set(heroEls, { opacity: 0, y: 22 });
+    gsap.to(heroEls, {
+      opacity: 1, y: 0, duration: 0.85, stagger: 0.13,
+      ease: 'power3.out', delay: 0.45, clearProps: 'all',
+    });
+  }
+  if (document.querySelector('.hero-visual')) {
+    gsap.from('.hero-visual', {
+      duration: 1.1, opacity: 0, x: 28, ease: 'power3.out', delay: 0.55, clearProps: 'all',
+    });
+  }
+  if (document.querySelector('#featureGrid .feature')) {
+    gsap.from('.feature', {
+      scrollTrigger: {
+        trigger: '#featureGrid',
+        start: 'top 82%',
+        toggleActions: 'play none none none',
+      },
+      duration: 0.65, opacity: 0, y: 28, stagger: 0.065, ease: 'power2.out',
+      clearProps: 'all',
+    });
+  }
 
   // About page principle cards scroll reveal
   gsap.from('.about-principle', {
@@ -14550,7 +14417,7 @@ window.addEventListener('load', () => {
   const CYCLE  = ['Understand', 'Explain', 'Track', 'Anticipate'];
   let   ci     = 0;
 
-  setInterval(() => {
+  BTRuntime.setInterval(() => {
     if (!flipEl || document.hidden) return;
     ci = (ci + 1) % CYCLE.length;
     // Fade out upward
@@ -14572,7 +14439,7 @@ window.addEventListener('load', () => {
   const SECTION_CYCLE = ['Nine modules', 'Live signals', 'Real-time data', 'Deep analysis'];
   let   si            = 0;
 
-  setInterval(() => {
+  BTRuntime.setInterval(() => {
     if (!sectionFlipEl || document.hidden) return;
     si = (si + 1) % SECTION_CYCLE.length;
     animate(sectionFlipEl, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
@@ -14589,7 +14456,7 @@ window.addEventListener('load', () => {
   const H2_CYCLE1 = ['read', 'analyse', 'track', 'decode'];
   let   h2i1      = 0;
 
-  setInterval(() => {
+  BTRuntime.setInterval(() => {
     if (!h2Flip1El || document.hidden) return;
     h2i1 = (h2i1 + 1) % H2_CYCLE1.length;
     animate(h2Flip1El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
@@ -14606,7 +14473,7 @@ window.addEventListener('load', () => {
   const H2_CYCLE2 = ['Stop reading the tape.', 'Stop chasing the noise.', 'Stop missing the context.', 'Stop guessing the move.'];
   let   h2i2      = 0;
 
-  setInterval(() => {
+  BTRuntime.setInterval(() => {
     if (!h2Flip2El || document.hidden) return;
     h2i2 = (h2i2 + 1) % H2_CYCLE2.length;
     animate(h2Flip2El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
@@ -14625,7 +14492,7 @@ window.addEventListener('load', () => {
   const ABOUT_CYCLE1 = ['Understanding them', 'Decoding them', 'Reading them', 'Tracking them'];
   let   abi1         = 0;
 
-  setInterval(() => {
+  BTRuntime.setInterval(() => {
     if (!aboutFlip1El || document.hidden) return;
     abi1 = (abi1 + 1) % ABOUT_CYCLE1.length;
     animate(aboutFlip1El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
@@ -14644,7 +14511,7 @@ window.addEventListener('load', () => {
   const ABOUT_CYCLE2 = ['Bloomberg terminal.', 'institutional tools.', 'Wall Street access.', 'proprietary software.'];
   let   abi2         = 0;
 
-  setInterval(() => {
+  BTRuntime.setInterval(() => {
     if (!aboutFlip2El || document.hidden) return;
     abi2 = (abi2 + 1) % ABOUT_CYCLE2.length;
     animate(aboutFlip2El, { opacity: [1, 0], y: [0, -14] }, { duration: 0.32, ease: 'easeIn' })
@@ -14827,8 +14694,8 @@ window.addEventListener('load', () => {
 
   /* Start immediately + cycle every 2.8 s */
   activateItem(0);
-  setInterval(() => {
-    if (!document.hidden) activateItem((activeIdx + 1) % ITEMS.length);
+  BTRuntime.setInterval(() => {
+    if (!document.hidden && BTRuntime.isPage('landing')) activateItem((activeIdx + 1) % ITEMS.length);
   }, 5000);
 
   /* ── Hover: icon scales blue, item lifts fully ─────────────── */

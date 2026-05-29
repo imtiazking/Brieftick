@@ -1,0 +1,652 @@
+/**
+ * Concept 10 Split — embedded app surfaces (not dashboard widgets).
+ * Product pages only. Environment dominates; cards are layered into it.
+ */
+
+html[data-theme="split"] {
+  --split-surface: rgba(2, 4, 8, 0.2);
+  --split-surface-raised: rgba(2, 4, 8, 0.32);
+  --split-surface-hero: rgba(2, 4, 8, 0.26);
+  --split-edge-blue: rgba(78, 120, 200, 0.14);
+  --split-edge-orange: rgba(212, 168, 90, 0.11);
+  --split-seam: rgba(255, 255, 255, 0.045);
+  --split-inset-depth:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  --split-edge-depth:
+    inset 5px 0 28px -22px rgba(78, 120, 200, 0.12),
+    inset -5px 0 28px -22px rgba(212, 168, 90, 0.09);
+}
+
+/* ── App page shells: environment visible ──────────────────── */
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) {
+  position: relative;
+  z-index: 2;
+}
+
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) :is(.dash, .wim, .brief, .impact, .port, .earn, .scanner-wrap, .options-wrap, .insiders-wrap) {
+  background: transparent;
+}
+
+/* ── Embedded surface (all app cards) ─────────────────────────── */
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) :is(
+  .panel,
+  .wim-quote-panel,
+  .wim-ai-card,
+  .pos-card,
+  .brief-cover,
+  .brief-section,
+  .impact-card,
+  .social-section,
+  .port-overview,
+  .portfolio-builder,
+  .risk-card,
+  .earn-tabs,
+  .earn-detail-card,
+  .scanner-card,
+  .scanner-ai-panel,
+  .options-stat,
+  .pc-gauge-wrap,
+  .options-table-wrap,
+  .options-ai-box,
+  .flow-cell,
+  .insiders-stat,
+  .insiders-table-wrap,
+  .insiders-ai-box,
+  .politics-card,
+  .chain-grid,
+  .cal-grid
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--split-surface) !important;
+  border: none !important;
+  border-radius: 16px !important;
+  box-shadow: var(--split-inset-depth), var(--split-edge-depth) !important;
+  backdrop-filter: blur(5px) saturate(1.05);
+  -webkit-backdrop-filter: blur(5px) saturate(1.05);
+  transition:
+    background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Kill legacy dashboard panel chrome */
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) .panel::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Hairline seam instead of widget border */
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) :is(.panel, .impact-card, .scanner-card, .port-overview, .risk-card, .brief-section)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px var(--split-seam);
+}
+
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) :is(.panel, .impact-card, .scanner-card):hover {
+  background: var(--split-surface-raised) !important;
+  border: none !important;
+  box-shadow:
+    var(--split-inset-depth),
+    inset 6px 0 32px -24px rgba(78, 120, 200, 0.14),
+    inset -6px 0 32px -24px rgba(212, 168, 90, 0.1) !important;
+}
+
+/* ── Editorial panel heads (not widget headers) ───────────────── */
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) .panel-head {
+  background: transparent !important;
+  border-bottom: 1px solid var(--split-seam) !important;
+  padding: 18px 22px 16px;
+}
+
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) .panel-head .ttl {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.42);
+  font-weight: 500;
+}
+
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) .panel-head .ttl b {
+  color: rgba(212, 168, 90, 0.75);
+  font-weight: 500;
+}
+
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) .panel-head .meta {
+  color: rgba(232, 236, 245, 0.28);
+  letter-spacing: 0.12em;
+}
+
+html[data-theme="split"] :is(
+  #page-dashboard,
+  #page-why,
+  #page-impact,
+  #page-brief,
+  #page-earnings,
+  #page-portfolio,
+  #page-scanner,
+  #page-insiders,
+  #page-options
+) .panel-body {
+  padding: 18px 22px 22px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DASHBOARD — Split hero + embedded grid
+══════════════════════════════════════════════════════════════ */
+
+/* Hero: Live Market Intelligence — editorial, not a box */
+html[data-theme="split"] #page-dashboard .dash-header {
+  margin-bottom: 28px;
+  padding: 8px 4px 28px;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  position: relative;
+}
+
+html[data-theme="split"] #page-dashboard .dash-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(78, 120, 200, 0.2) 0%,
+    rgba(255, 255, 255, 0.06) 35%,
+    rgba(255, 255, 255, 0.06) 65%,
+    rgba(212, 168, 90, 0.16) 100%
+  );
+}
+
+html[data-theme="split"] #page-dashboard .dash-title h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #e8ecf5;
+  text-shadow: none;
+}
+
+html[data-theme="split"] #page-dashboard .dash-title .meta {
+  margin-top: 10px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(232, 236, 245, 0.35);
+}
+
+html[data-theme="split"] #page-dashboard .live-badge,
+html[data-theme="split"] #page-dashboard .regime-badge {
+  background: rgba(2, 4, 8, 0.35);
+  border: 1px solid var(--split-seam);
+  box-shadow: none;
+  backdrop-filter: blur(4px);
+}
+
+html[data-theme="split"] #page-dashboard .live-badge::before {
+  box-shadow: none;
+}
+
+/* Hero panel: telemetry / globe */
+html[data-theme="split"] #page-dashboard .dash-telemetry-widget {
+  background: var(--split-surface-hero) !important;
+  border-radius: 18px !important;
+  min-height: 340px;
+  box-shadow:
+    var(--split-inset-depth),
+    inset 8px 0 40px -28px rgba(78, 120, 200, 0.14),
+    inset -8px 0 40px -28px rgba(212, 168, 90, 0.1),
+    0 24px 64px -48px rgba(0, 0, 0, 0.7) !important;
+}
+
+html[data-theme="split"] #page-dashboard .dash-telemetry-widget .panel-head {
+  border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+  padding: 20px 24px 14px;
+}
+
+html[data-theme="split"] #page-dashboard .dash-telemetry-widget .panel-head .ttl {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(16px, 2vw, 22px);
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: rgba(232, 236, 245, 0.88);
+}
+
+html[data-theme="split"] #page-dashboard .dash-telemetry-widget .panel-head .ttl b {
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+  color: rgba(212, 168, 90, 0.5);
+  margin-right: 0.35em;
+}
+
+html[data-theme="split"] #page-dashboard .dash-telemetry-widget .panel-head .meta {
+  display: block;
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+
+html[data-theme="split"] #page-dashboard .telemetry-body {
+  height: 340px;
+}
+
+html[data-theme="split"] #page-dashboard .t-region {
+  background: rgba(2, 4, 8, 0.45) !important;
+  border: 1px solid var(--split-seam) !important;
+  border-radius: 10px;
+  box-shadow: var(--split-inset-depth);
+  backdrop-filter: blur(4px);
+}
+
+html[data-theme="split"] #page-dashboard .t-status-strip {
+  background: rgba(2, 4, 8, 0.55) !important;
+  border-top: 1px solid var(--split-seam) !important;
+  backdrop-filter: blur(6px);
+}
+
+/* Primary tier: flow engine */
+html[data-theme="split"] #page-dashboard .flow-engine-widget {
+  background: var(--split-surface-hero) !important;
+  border-radius: 18px !important;
+  box-shadow:
+    var(--split-inset-depth),
+    inset 6px 0 36px -26px rgba(78, 120, 200, 0.12),
+    inset -6px 0 36px -26px rgba(212, 168, 90, 0.09) !important;
+}
+
+html[data-theme="split"] #page-dashboard .flow-stats-row {
+  background: transparent !important;
+  border-bottom: 1px solid var(--split-seam) !important;
+  gap: 0;
+}
+
+html[data-theme="split"] #page-dashboard .flow-stat {
+  background: rgba(0, 0, 0, 0.12) !important;
+  border-right: 1px solid var(--split-seam);
+  padding: 16px 20px;
+}
+
+html[data-theme="split"] #page-dashboard .flow-stat:last-child {
+  border-right: none;
+}
+
+/* Standard grid panels — lighter, more embedded */
+html[data-theme="split"] #page-dashboard .dash-grid .panel:not(.dash-telemetry-widget):not(.flow-engine-widget) {
+  background: rgba(2, 4, 8, 0.16) !important;
+  border-radius: 14px !important;
+  box-shadow:
+    var(--split-inset-depth),
+    inset 4px 0 22px -18px rgba(78, 120, 200, 0.1),
+    inset -4px 0 22px -18px rgba(212, 168, 90, 0.08) !important;
+}
+
+html[data-theme="split"] #page-dashboard .dash-grid {
+  gap: 16px;
+}
+
+/* Inner dashboard micro-surfaces */
+html[data-theme="split"] #page-dashboard .mover {
+  border-bottom-color: var(--split-seam);
+}
+
+html[data-theme="split"] #page-dashboard .heatmap .cell {
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOVERS
+══════════════════════════════════════════════════════════════ */
+html[data-theme="split"] #page-why .wim-quote-panel,
+html[data-theme="split"] #page-why .wim-ai-card {
+  background: var(--split-surface) !important;
+  box-shadow: var(--split-inset-depth), var(--split-edge-depth) !important;
+}
+
+html[data-theme="split"] #page-why .wim-sym-row .left .sym {
+  font-family: "Playfair Display", Georgia, serif;
+  letter-spacing: -0.03em;
+}
+
+html[data-theme="split"] #page-why .wim-stats {
+  border-top: 1px solid var(--split-seam);
+}
+
+html[data-theme="split"] #page-why .wim-search input {
+  background: rgba(2, 4, 8, 0.35) !important;
+  border: 1px solid var(--split-seam) !important;
+  box-shadow: var(--split-inset-depth);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BRIEFING — editorial document surfaces
+══════════════════════════════════════════════════════════════ */
+html[data-theme="split"] #page-brief .brief-cover {
+  background: var(--split-surface-hero) !important;
+  border: none !important;
+  box-shadow: var(--split-inset-depth), var(--split-edge-depth) !important;
+  border-radius: 18px !important;
+}
+
+html[data-theme="split"] #page-brief .brief-cover-inner::before {
+  display: none;
+}
+
+html[data-theme="split"] #page-brief .brief-cover h1 {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+html[data-theme="split"] #page-brief .brief-section {
+  background: rgba(2, 4, 8, 0.16) !important;
+  border: none !important;
+  box-shadow: var(--split-inset-depth), var(--split-edge-depth) !important;
+}
+
+html[data-theme="split"] #page-brief .brief-section h2 {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+html[data-theme="split"] #page-brief .brief-mover {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--split-seam);
+}
+
+html[data-theme="split"] #page-brief .brief-takeaway {
+  background: rgba(0, 0, 0, 0.12);
+  border-left: 2px solid rgba(212, 168, 90, 0.35);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   INTELLIGENCE
+══════════════════════════════════════════════════════════════ */
+html[data-theme="split"] #page-impact .impact-card {
+  background: rgba(2, 4, 8, 0.16) !important;
+  padding: 22px 24px;
+  gap: 22px;
+}
+
+html[data-theme="split"] #page-impact .impact-card:hover {
+  background: rgba(2, 4, 8, 0.24) !important;
+}
+
+html[data-theme="split"] #page-impact .impact-content h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+html[data-theme="split"] #page-impact .social-section {
+  background: rgba(2, 4, 8, 0.2) !important;
+  border: none !important;
+  box-shadow: var(--split-inset-depth), var(--split-edge-depth) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EARNINGS
+══════════════════════════════════════════════════════════════ */
+html[data-theme="split"] #page-earnings .earn-tabs {
+  background: rgba(2, 4, 8, 0.2) !important;
+  border: none !important;
+  box-shadow: var(--split-inset-depth) !important;
+  padding: 6px;
+}
+
+html[data-theme="split"] #page-earnings .earn-detail-card {
+  background: var(--split-surface-raised) !important;
+  border: none !important;
+  box-shadow: var(--split-inset-depth), var(--split-edge-depth) !important;
+}
+
+html[data-theme="split"] #page-earnings .earn-detail-metric {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--split-seam);
+  border-radius: 8px;
+}
+
+html[data-theme="split"] #page-earnings .panel {
+  background: rgba(2, 4, 8, 0.16) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PORTFOLIO
+══════════════════════════════════════════════════════════════ */
+html[data-theme="split"] #page-portfolio .port-overview,
+html[data-theme="split"] #page-portfolio .risk-card {
+  background: var(--split-surface) !important;
+  padding: 26px 28px;
+}
+
+html[data-theme="split"] #page-portfolio .portfolio-builder {
+  background: rgba(2, 4, 8, 0.22) !important;
+  border: none !important;
+  box-shadow: var(--split-inset-depth), var(--split-edge-depth) !important;
+}
+
+html[data-theme="split"] #page-portfolio .port-stats {
+  border-top: 1px solid var(--split-seam);
+}
+
+html[data-theme="split"] #page-portfolio .port-stat .val {
+  font-family: "Playfair Display", Georgia, serif;
+  text-shadow: none;
+}
+
+html[data-theme="split"] #page-portfolio .portfolio-input {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--split-seam);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCANNER · OPTIONS · INSIDER — page heroes + cards
+══════════════════════════════════════════════════════════════ */
+html[data-theme="split"] :is(#page-scanner, #page-options, #page-insiders) :is(.scanner-hero, .options-hero, .insiders-hero) {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid transparent;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 100%
+  );
+  position: relative;
+}
+
+html[data-theme="split"] :is(#page-scanner, #page-options, #page-insiders) :is(.scanner-hero, .options-hero, .insiders-hero)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(78, 120, 200, 0.18) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(212, 168, 90, 0.14) 100%
+  );
+}
+
+html[data-theme="split"] :is(#page-scanner, #page-options, #page-insiders) :is(.scanner-hero h1, .options-hero h1, .insiders-hero h1) {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(26px, 3.5vw, 36px);
+  letter-spacing: -0.03em;
+  text-shadow: none;
+}
+
+html[data-theme="split"] #page-scanner .scanner-card,
+html[data-theme="split"] #page-options .options-stat,
+html[data-theme="split"] #page-options .flow-cell,
+html[data-theme="split"] #page-insiders .insiders-stat,
+html[data-theme="split"] #page-insiders .politics-card {
+  background: rgba(2, 4, 8, 0.16) !important;
+}
+
+html[data-theme="split"] #page-scanner .scanner-metric {
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--split-seam);
+}
+
+html[data-theme="split"] #page-options .options-table-wrap,
+html[data-theme="split"] #page-options .chain-grid,
+html[data-theme="split"] #page-options .pc-gauge-wrap,
+html[data-theme="split"] #page-options .options-ai-box {
+  background: rgba(2, 4, 8, 0.18) !important;
+  border: none !important;
+  box-shadow: var(--split-inset-depth), var(--split-edge-depth) !important;
+}
+
+html[data-theme="split"] #page-options .options-table th {
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid var(--split-seam);
+}
+
+html[data-theme="split"] #page-insiders .insiders-table-wrap {
+  background: rgba(2, 4, 8, 0.18) !important;
+}
+
+html[data-theme="split"] #page-insiders .insiders-table th {
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid var(--split-seam);
+}
+
+/* Stat top accents — keep semantic, soften */
+html[data-theme="split"] #page-options .options-stat::before {
+  opacity: 0.5;
+  height: 1px;
+}
+
+@media (max-width: 768px) {
+  html[data-theme="split"] #page-dashboard .dash-title h2 {
+    font-size: 26px;
+  }
+
+  html[data-theme="split"] #page-dashboard .telemetry-body {
+    height: 260px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="split"] :is(
+    #page-dashboard,
+    #page-why,
+    #page-impact,
+    #page-brief,
+    #page-earnings,
+    #page-portfolio,
+    #page-scanner,
+    #page-insiders,
+    #page-options
+  ) :is(.panel, .impact-card, .scanner-card) {
+    transition: none !important;
+  }
+}

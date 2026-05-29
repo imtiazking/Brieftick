@@ -1,0 +1,309 @@
+/**
+ * Brieftick Concept 10 Split — site-wide visual layer (excludes Logic).
+ * Lightweight dual atmosphere: blue/orange, fog, cinematic dark, no heavy glass stacks.
+ */
+
+@keyframes splitFog {
+  0%, 100% { opacity: 0.45; transform: translate3d(0, 0, 0) scale(1); }
+  50% { opacity: 0.72; transform: translate3d(3%, -4%, 0) scale(1.06); }
+}
+@keyframes splitRiver {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes splitMarkReveal {
+  0% { opacity: 0; transform: translate3d(0, 12px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes splitFadeUp {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* ── Tokens (Split only) ─────────────────────────────────────── */
+html[data-theme="split"] {
+  --bg-0: #020204;
+  --bg-1: #06080e;
+  --bg-2: #0a0e16;
+  --void: #020204;
+  --split-blue: rgba(78, 120, 200, 0.22);
+  --split-orange: rgba(212, 168, 90, 0.18);
+  --split-border: rgba(78, 120, 200, 0.14);
+  --split-border-warm: rgba(212, 168, 90, 0.2);
+  --panel-split: rgba(6, 8, 14, 0.78);
+  --ease-split: cubic-bezier(0.16, 1, 0.3, 1);
+  --split-chrome-h: 88px;
+}
+
+html[data-theme="split"],
+html[data-theme="split"] body {
+  background: var(--void);
+  color: #e8ecf5;
+}
+
+/* ── Atmosphere (fixed, behind chrome) ───────────────────────── */
+.split-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #020204;
+  transition: opacity 0.45s var(--ease-split);
+}
+.split-atmosphere.is-off {
+  opacity: 0;
+  visibility: hidden;
+}
+.split-atmosphere__dual span {
+  position: absolute;
+  width: 58%;
+  height: 72%;
+  filter: blur(52px);
+  will-change: transform, opacity;
+  animation: splitFog 20s ease-in-out infinite;
+}
+.split-atmosphere__dual span:nth-child(1) {
+  left: -12%;
+  top: 8%;
+  background: var(--split-blue);
+}
+.split-atmosphere__dual span:nth-child(2) {
+  right: -12%;
+  bottom: 4%;
+  background: var(--split-orange);
+  animation-delay: -10s;
+}
+.split-atmosphere__fog {
+  position: absolute;
+  inset: -20%;
+  opacity: 0.28;
+  background:
+    radial-gradient(ellipse 70% 55% at 28% 38%, rgba(78, 120, 200, 0.2), transparent 55%),
+    radial-gradient(ellipse 55% 48% at 78% 62%, rgba(212, 168, 90, 0.16), transparent 52%);
+  animation: splitFog 24s ease-in-out infinite;
+}
+.split-atmosphere__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 22%, rgba(0, 0, 0, 0.78) 100%);
+}
+
+/* Cinematic market ribbon — bottom only */
+.split-river--top {
+  display: none !important;
+}
+.split-river {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  overflow: hidden;
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 7px;
+  letter-spacing: 0.16em;
+  color: rgba(212, 168, 90, 0.28);
+  opacity: 0.62;
+  padding: 5px 0 7px;
+  pointer-events: none;
+}
+.split-river--bottom {
+  bottom: 0;
+  border: none;
+}
+.split-river-track,
+.split-river--bottom > span {
+  display: flex;
+  gap: 64px;
+  white-space: nowrap;
+  width: max-content;
+  will-change: transform;
+  animation: splitRiver 62s linear infinite;
+}
+.split-river--bottom .ticker-item,
+.split-river--bottom .ticker-item .sym,
+.split-river--bottom .ticker-item .up,
+.split-river--bottom .ticker-item .dn {
+  color: inherit !important;
+}
+html[data-theme="logic"] .split-river,
+html[data-theme="logic"] .split-atmosphere {
+  display: none !important;
+}
+
+/* ── Shell: nav, main, pages ─────────────────────────────────── */
+/* Nav bar chrome: Concept A in split-nav-a.css (transparent on split) */
+html[data-theme="split"] main {
+  position: relative;
+  z-index: 3;
+  padding-top: var(--split-chrome-h, 88px);
+}
+html[data-theme="split"] .page {
+  position: relative;
+  z-index: 1;
+}
+
+/* Logo — clear in nav, no glass card, load reveal */
+html[data-theme="split"] .brand.split-brand {
+  align-items: center;
+  flex-shrink: 0;
+}
+html[data-theme="split"] .split-brand-img {
+  display: block;
+  width: auto;
+  height: clamp(36px, 5vw, 52px) !important;
+  object-fit: contain;
+  opacity: 0;
+  animation: splitMarkReveal 1.2s var(--ease-split, cubic-bezier(0.16, 1, 0.3, 1)) 0.08s forwards;
+  filter: drop-shadow(0 2px 12px rgba(78, 120, 200, 0.2)) drop-shadow(0 2px 10px rgba(212, 168, 90, 0.12));
+}
+
+/* Nav link active: Concept A gold text in split-nav-a.css */
+/* App cards: split-app-cards.css (product pages only) */
+
+/* ── Landing ─────────────────────────────────────────────────── */
+html[data-theme="split"] #page-landing .hero-video-bg,
+html[data-theme="split"] #page-landing #heroAmbient,
+html[data-theme="split"] #page-landing .hero-logic-layer {
+  display: none !important;
+}
+html[data-theme="split"] #page-landing .hero {
+  background: transparent;
+}
+html[data-theme="split"] #page-landing .hero h1 .gold,
+html[data-theme="split"] #page-landing .hero h1 em {
+  text-shadow: 0 0 40px rgba(212, 168, 90, 0.22);
+}
+html[data-theme="split"] #page-landing .hero-visual.hvc-panel {
+  border-color: rgba(78, 120, 200, 0.18);
+  box-shadow:
+    0 0 48px rgba(78, 120, 200, 0.08),
+    0 0 32px rgba(212, 168, 90, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+html[data-theme="split"] #page-landing .hero-eyebrow {
+  border-color: rgba(78, 120, 200, 0.22);
+  background: rgba(78, 120, 200, 0.06);
+}
+html[data-theme="split"] #page-landing .gsap-hero-el {
+  animation: splitFadeUp 0.9s var(--ease-split) backwards;
+}
+html[data-theme="split"] #page-landing .landing-trust {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── About & Pricing ─────────────────────────────────────────── */
+html[data-theme="split"] #page-about .about-video-bg {
+  display: none !important;
+}
+html[data-theme="split"] #page-about,
+html[data-theme="split"] #page-pricing {
+  background: transparent;
+}
+html[data-theme="split"] #page-about .about-wrap,
+html[data-theme="split"] #page-pricing .pricing {
+  position: relative;
+  z-index: 2;
+}
+html[data-theme="split"] #page-pricing .pricing-head h1 em {
+  color: var(--gold);
+  text-shadow: 0 0 32px rgba(212, 168, 90, 0.2);
+}
+
+/* ── Dashboard shell ─────────────────────────────────────────── */
+html[data-theme="split"] #page-dashboard {
+  background: transparent;
+}
+html[data-theme="split"] #page-dashboard.active #dashTelemetry {
+  opacity: 0.22;
+  mix-blend-mode: screen;
+}
+
+/* ── Market modules (Movers, Intelligence, Brief, Earnings, etc.) ─ */
+html[data-theme="split"] #page-why .wim-search input,
+html[data-theme="split"] #page-brief .meta,
+html[data-theme="split"] #page-impact .section,
+html[data-theme="split"] #page-earnings .earnings-wrap,
+html[data-theme="split"] #page-portfolio .port-wrap,
+html[data-theme="split"] #page-scanner .scanner-wrap,
+html[data-theme="split"] #page-options .options-wrap,
+html[data-theme="split"] #page-insiders .insiders-wrap {
+  position: relative;
+  z-index: 2;
+}
+html[data-theme="split"] .wim-search input {
+  background: rgba(4, 6, 12, 0.65);
+  border-color: var(--split-border);
+}
+html[data-theme="split"] .wim-search input:focus {
+  border-color: rgba(78, 120, 200, 0.35);
+  box-shadow: 0 0 16px rgba(78, 120, 200, 0.1);
+}
+html[data-theme="split"] .scanner-hero h1,
+html[data-theme="split"] .options-hero h1,
+html[data-theme="split"] .insiders-hero h1 {
+  text-shadow: 0 0 24px rgba(78, 120, 200, 0.1);
+}
+
+/* ── Sections & typography accents ───────────────────────────── */
+html[data-theme="split"] .section-eyebrow,
+html[data-theme="split"] .section-title em {
+  color: var(--gold);
+}
+html[data-theme="split"] .btn-primary {
+  box-shadow: 0 8px 28px rgba(212, 168, 90, 0.28);
+}
+html[data-theme="split"] .btn-secondary:hover {
+  border-color: rgba(78, 120, 200, 0.28);
+  background: rgba(78, 120, 200, 0.06);
+}
+
+/* ── Logic isolation — own environment ─────────────────────── */
+html[data-theme="logic"] #splitAtmosphere,
+html[data-theme="logic"] .split-river {
+  display: none !important;
+}
+html[data-theme="logic"] .nav {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+html[data-theme="logic"] #page-logic {
+  position: relative;
+  z-index: 4;
+  min-height: calc(100vh - 120px);
+}
+
+/* No command/search overlay outside Logic */
+html[data-theme="split"] .bt-wrap,
+html[data-theme="split"] .cw-cmd {
+  display: none !important;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  html[data-theme="split"] .split-brand-img {
+    height: clamp(32px, 8vw, 44px) !important;
+  }
+  html[data-theme="split"] .split-river {
+    font-size: 7px;
+    padding: 5px 0;
+  }
+  html[data-theme="split"] .nav.nav-a {
+    padding: 10px 14px;
+  }
+  html[data-theme="split"] .hero-grid {
+    gap: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split-atmosphere__dual span,
+  .split-atmosphere__fog,
+  .split-river span,
+  html[data-theme="split"] .split-brand-img {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

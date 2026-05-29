@@ -1,0 +1,825 @@
+/**
+ * Brieftick Logic — Concept 27 Helix (screenshot target)
+ * Visual only. Scoped to html[data-theme="logic"] #page-logic.
+ */
+
+@keyframes logicDrift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(14px, -20px); }
+}
+@keyframes logicRiver {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes logicFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes logicHelixSpin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes logicHelixSpinRev {
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+@keyframes logicHelixFloat {
+  0%, 100% { transform: rotate(calc(-1 * var(--slot-angle, 0deg))) translateY(0); }
+  50% { transform: rotate(calc(-1 * var(--slot-angle, 0deg))) translateY(-4px); }
+}
+@keyframes logicHazePulse {
+  0%, 100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
+}
+@keyframes logicNucleusPulse {
+  0%, 100% {
+    box-shadow: 0 0 80px rgba(212, 168, 90, 0.12), inset 0 0 60px rgba(212, 168, 90, 0.03);
+  }
+  50% {
+    box-shadow: 0 0 120px rgba(212, 168, 90, 0.22), inset 0 0 80px rgba(212, 168, 90, 0.05);
+  }
+}
+@keyframes logicRingExpand {
+  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.08); opacity: 0; }
+}
+@keyframes logicPulseFill {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+html[data-theme="logic"] {
+  --logic-gold: #d4a85a;
+  --logic-void: #020204;
+  --logic-helix-bg: #100c18;
+  --logic-display: "Playfair Display", Georgia, serif;
+  --logic-mono: "JetBrains Mono", ui-monospace, monospace;
+  --logic-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --logic-seam: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Page shell ──────────────────────────────────────────────── */
+html[data-theme="logic"] #page-logic {
+  position: relative;
+  z-index: 4;
+  min-height: calc(100vh - var(--split-chrome-h, 88px));
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 48%, var(--logic-helix-bg) 0%, var(--logic-void) 72%);
+}
+
+html[data-theme="logic"] #page-logic.active {
+  display: block;
+}
+
+/* ── Environment ───────────────────────────────────────────────── */
+html[data-theme="logic"] .logic-env {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+html[data-theme="logic"] .logic-env__atmo::before,
+html[data-theme="logic"] .logic-env__atmo::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  animation: logicDrift 22s ease-in-out infinite;
+}
+
+html[data-theme="logic"] .logic-env__atmo::before {
+  width: 45%;
+  height: 38%;
+  left: -5%;
+  top: 8%;
+  background: rgba(212, 168, 90, 0.14);
+}
+
+html[data-theme="logic"] .logic-env__atmo::after {
+  width: 38%;
+  height: 32%;
+  right: -8%;
+  bottom: 18%;
+  background: rgba(100, 140, 200, 0.1);
+  animation-delay: -10s;
+}
+
+html[data-theme="logic"] .logic-env__haze {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(90vmin, 820px);
+  height: min(90vmin, 820px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(212, 168, 90, 0.07) 0%, transparent 58%);
+  filter: blur(40px);
+  animation: logicHazePulse 12s ease-in-out infinite;
+  z-index: 2;
+}
+
+html[data-theme="logic"] .logic-env__gravity {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(70vmin, 640px);
+  height: min(70vmin, 640px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(212, 168, 90, 0.05) 0%, transparent 62%);
+  animation: logicHazePulse 14s ease-in-out infinite reverse;
+  z-index: 1;
+}
+
+html[data-theme="logic"] .logic-env__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  background: radial-gradient(ellipse at 50% 50%, transparent 18%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+html[data-theme="logic"] .logic-env__river {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 12;
+  overflow: hidden;
+  font-family: var(--logic-mono);
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  color: rgba(212, 168, 90, 0.2);
+  opacity: 0.45;
+  padding: 6px 0 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="logic"] .logic-env__river span {
+  display: flex;
+  gap: 48px;
+  white-space: nowrap;
+  width: max-content;
+  animation: logicRiver 58s linear infinite;
+}
+
+html[data-theme="logic"] .logic-env__whisper,
+html[data-theme="logic"] .logic-env__regime {
+  display: none;
+}
+
+/* ── Helix orbital stage (full viewport) ─────────────────────── */
+html[data-theme="logic"] .logic-env__helix {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+html[data-theme="logic"] .logic-helix__stage {
+  position: absolute;
+  inset: 0;
+}
+
+html[data-theme="logic"] .logic-helix__anchor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+
+html[data-theme="logic"] .logic-helix__track {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 168, 90, 0.06);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.8s var(--logic-ease), border-color 0.8s;
+}
+
+html[data-theme="logic"] .logic-env--focus .logic-helix__track {
+  opacity: 0.2;
+}
+
+html[data-theme="logic"] .logic-env--focus .logic-helix__track.is-near {
+  opacity: 0.55;
+  border-color: rgba(212, 168, 90, 0.14);
+}
+
+html[data-theme="logic"] .logic-helix__pulse-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(55vmin, 480px);
+  height: min(55vmin, 480px);
+  border: 1px solid rgba(212, 168, 90, 0.08);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: logicRingExpand 7s ease-out infinite;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+html[data-theme="logic"] .logic-helix__orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  animation: logicHelixSpin var(--orbit-dur, 280s) linear infinite;
+}
+
+html[data-theme="logic"] .logic-helix__orbit--rev {
+  animation-name: logicHelixSpinRev;
+}
+
+html[data-theme="logic"] .logic-env--focus .logic-helix__orbit {
+  animation-duration: calc(var(--orbit-dur, 280s) * 2.2);
+}
+
+html[data-theme="logic"] .logic-helix__slot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: rotate(var(--slot-angle)) translateY(calc(-1 * var(--orbit-radius)));
+  transform-origin: 0 0;
+}
+
+html[data-theme="logic"] .logic-helix__entity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-left: -50%;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(212, 168, 90, 0.1);
+  background: rgba(6, 5, 10, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-family: var(--logic-mono);
+  opacity: var(--entity-opacity, 0.32);
+  filter: blur(var(--entity-blur, 0px));
+  transform: rotate(calc(-1 * var(--slot-angle)));
+  animation: logicHelixFloat 6s ease-in-out infinite;
+  animation-delay: var(--entity-delay, 0s);
+  transition: opacity 0.6s var(--logic-ease), border-color 0.5s, box-shadow 0.5s, filter 0.6s;
+  pointer-events: none;
+}
+
+html[data-theme="logic"] .logic-helix__entity--far {
+  --entity-opacity: 0.22;
+  --entity-blur: 0.25px;
+}
+
+html[data-theme="logic"] .logic-helix__entity--mid {
+  --entity-opacity: 0.3;
+}
+
+html[data-theme="logic"] .logic-helix__entity--near {
+  --entity-opacity: 0.38;
+}
+
+html[data-theme="logic"] .logic-env--focus .logic-helix__entity.is-dim {
+  opacity: 0.12;
+  filter: blur(0.35px);
+}
+
+html[data-theme="logic"] .logic-env--focus .logic-helix__entity.is-spotlight {
+  opacity: 0.55;
+  border-color: rgba(212, 168, 90, 0.3);
+  box-shadow: 0 0 32px rgba(212, 168, 90, 0.12);
+  filter: blur(0);
+  animation: none;
+}
+
+html[data-theme="logic"] .logic-helix__sym {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: rgba(240, 236, 228, 0.85);
+}
+
+html[data-theme="logic"] .logic-helix__entity.is-spotlight .logic-helix__sym {
+  font-size: 11px;
+  color: #f5f0e8;
+}
+
+html[data-theme="logic"] .logic-helix__chg {
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+html[data-theme="logic"] .logic-helix__chg.up {
+  color: #6ec9a0;
+}
+
+html[data-theme="logic"] .logic-helix__chg.dn {
+  color: #c97a86;
+}
+
+html[data-theme="logic"] .logic-helix__chg.flat {
+  color: rgba(212, 168, 90, 0.45);
+}
+
+/* ── Helix scene + central nucleus ─────────────────────────────── */
+html[data-theme="logic"] .logic-wrap--helix {
+  position: relative;
+  z-index: 20;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  min-height: calc(100vh - var(--split-chrome-h, 88px));
+  display: flex;
+  flex-direction: column;
+}
+
+html[data-theme="logic"] .logic-header--telemetry {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 40;
+  padding: 0;
+  border: none;
+  background: transparent;
+  pointer-events: none;
+  min-height: 0;
+}
+
+html[data-theme="logic"] .logic-telemetry {
+  position: absolute;
+  top: 16px;
+  font-family: var(--logic-mono);
+  font-size: 7px;
+  letter-spacing: 0.16em;
+  color: rgba(212, 168, 90, 0.22);
+  text-transform: uppercase;
+}
+
+html[data-theme="logic"] .logic-telemetry--tl {
+  left: 20px;
+}
+
+html[data-theme="logic"] .logic-telemetry--tr {
+  right: 20px;
+}
+
+html[data-theme="logic"] .logic-usage-banner--corner {
+  position: absolute;
+  top: 32px;
+  right: 20px;
+  font-family: var(--logic-mono);
+  font-size: 9px;
+  color: rgba(212, 168, 90, 0.45);
+  pointer-events: auto;
+}
+
+html[data-theme="logic"] .logic-helix-scene {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--split-chrome-h, 88px));
+  padding: 48px 20px 56px;
+}
+
+html[data-theme="logic"] .logic-nucleus {
+  position: relative;
+  z-index: 30;
+  width: min(420px, 92vw);
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(4, 3, 8, 0.82);
+  backdrop-filter: blur(36px);
+  -webkit-backdrop-filter: blur(36px);
+  border: 1px solid rgba(212, 168, 90, 0.28);
+  animation: logicNucleusPulse 5s ease-in-out infinite;
+  transition: transform 0.6s var(--logic-ease), box-shadow 0.5s;
+  pointer-events: auto;
+}
+
+html[data-theme="logic"] .logic-nucleus.has-answer,
+html[data-theme="logic"] .logic-nucleus.has-spotlight {
+  transform: scale(1.015);
+}
+
+html[data-theme="logic"] .logic-nucleus__intel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+html[data-theme="logic"] .logic-result-surface {
+  flex: 1 1 auto;
+  order: unset;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+html[data-theme="logic"] .logic-nucleus__focus {
+  padding: 24px 28px 12px;
+  text-align: center;
+  border-bottom: 1px solid rgba(212, 168, 90, 0.08);
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-theme="logic"] .logic-nucleus__symbol {
+  font-family: var(--logic-display);
+  font-size: clamp(32px, 4.5vw, 42px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: #f5f0e8;
+  margin-bottom: 6px;
+  transition: transform 0.5s var(--logic-ease);
+}
+
+html[data-theme="logic"] .logic-nucleus.has-spotlight .logic-nucleus__symbol {
+  transform: scale(1.02);
+}
+
+html[data-theme="logic"] .logic-nucleus__chg {
+  font-family: var(--logic-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  margin-bottom: 10px;
+}
+
+html[data-theme="logic"] .logic-nucleus__chg:empty {
+  display: none;
+}
+
+html[data-theme="logic"] .logic-nucleus__chg.up {
+  color: #6ec9a0;
+}
+
+html[data-theme="logic"] .logic-nucleus__chg.dn {
+  color: #c97a86;
+}
+
+html[data-theme="logic"] .logic-result-idle {
+  flex: unset;
+  display: block;
+  padding: 0;
+  margin: 0;
+  max-width: 28em;
+  font-family: var(--logic-display);
+  font-size: 13px;
+  line-height: 1.55;
+  font-style: italic;
+  color: rgba(232, 228, 220, 0.75);
+  text-align: center;
+}
+
+html[data-theme="logic"] .logic-result-surface.is-ready .logic-nucleus__symbol,
+html[data-theme="logic"] .logic-result-surface.is-ready .logic-nucleus__chg,
+html[data-theme="logic"] .logic-result-surface.is-processing .logic-nucleus__symbol,
+html[data-theme="logic"] .logic-result-surface.is-processing .logic-nucleus__chg {
+  display: none;
+}
+
+html[data-theme="logic"] .logic-result-surface.is-ready .logic-result-idle,
+html[data-theme="logic"] .logic-result-surface.is-processing .logic-result-idle {
+  display: none !important;
+}
+
+html[data-theme="logic"] .logic-result-surface.is-ready .logic-nucleus__focus,
+html[data-theme="logic"] .logic-result-surface.is-processing .logic-nucleus__focus {
+  border-bottom: none;
+  min-height: 0;
+  padding-bottom: 8px;
+}
+
+html[data-theme="logic"] .logic-result-content {
+  padding: 8px 24px 16px;
+  max-height: min(38vh, 320px);
+  overflow-y: auto;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+html[data-theme="logic"] .logic-nucleus__pulse-bar {
+  height: 2px;
+  margin: 0 24px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+html[data-theme="logic"] .logic-nucleus__pulse-fill {
+  height: 100%;
+  width: 68%;
+  background: linear-gradient(90deg, transparent, rgba(212, 168, 90, 0.6), transparent);
+  animation: logicPulseFill 2s ease-in-out infinite;
+  transition: width 0.6s var(--logic-ease);
+}
+
+html[data-theme="logic"] .logic-nucleus__cmd-zone {
+  padding: 0;
+}
+
+html[data-theme="logic"] .logic-hero-command {
+  padding: 16px 22px 10px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+html[data-theme="logic"] .logic-hero-command::before {
+  display: none;
+}
+
+html[data-theme="logic"] .logic-hero-command:focus-within {
+  box-shadow: none;
+}
+
+html[data-theme="logic"] .logic-hero-tag {
+  display: block;
+  font-family: var(--logic-mono);
+  font-size: 7px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(212, 168, 90, 0.55);
+  margin-bottom: 10px;
+}
+
+html[data-theme="logic"] .logic-hero-form {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+html[data-theme="logic"] .logic-hero-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: var(--logic-display);
+  font-size: clamp(16px, 2.2vw, 20px);
+  color: #f0ece4;
+  letter-spacing: -0.01em;
+  padding: 4px 8px;
+  outline: none;
+}
+
+html[data-theme="logic"] .logic-hero-input::placeholder {
+  color: rgba(232, 228, 220, 0.28);
+  font-style: italic;
+}
+
+html[data-theme="logic"] .logic-hero-submit {
+  align-self: center;
+  margin-top: 12px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+html[data-theme="logic"] .logic-hero-hint {
+  justify-content: center;
+  margin-top: 8px;
+  font-size: 7px;
+  color: rgba(212, 168, 90, 0.35);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html[data-theme="logic"] .logic-hero-chips {
+  justify-content: center;
+  margin-top: 10px;
+  gap: 6px;
+}
+
+html[data-theme="logic"] .logic-hero-chip {
+  padding: 5px 10px;
+  font-size: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 168, 90, 0.12);
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(232, 228, 220, 0.45);
+}
+
+html[data-theme="logic"] .logic-nucleus__orbit-ctx {
+  margin: 0;
+  padding: 10px 22px 18px;
+  font-family: var(--logic-mono);
+  font-size: 7px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(212, 168, 90, 0.35);
+}
+
+/* ── Flanking panels (modes + context) ─────────────────────────── */
+html[data-theme="logic"] .logic-flanks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 28;
+}
+
+html[data-theme="logic"] .logic-flanks > aside {
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.42;
+  transition: opacity 0.35s var(--logic-ease);
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+}
+
+html[data-theme="logic"] .logic-flanks > aside:hover {
+  opacity: 1;
+}
+
+html[data-theme="logic"] #logicModeSidebar {
+  left: max(12px, 2vw);
+  width: min(200px, 18vw);
+}
+
+html[data-theme="logic"] #logicContextSidebar {
+  right: max(12px, 2vw);
+  width: min(240px, 22vw);
+  max-width: 280px;
+}
+
+html[data-theme="logic"] .logic-sidebar {
+  gap: 6px;
+}
+
+html[data-theme="logic"] .logic-mode-btn {
+  border: 1px solid rgba(212, 168, 90, 0.08);
+  background: rgba(4, 3, 8, 0.55);
+  backdrop-filter: blur(12px);
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: none;
+}
+
+html[data-theme="logic"] .logic-mode-btn:hover,
+html[data-theme="logic"] .logic-mode-btn.active {
+  border-color: rgba(212, 168, 90, 0.22);
+  background: rgba(212, 168, 90, 0.08);
+  box-shadow: 0 0 24px rgba(212, 168, 90, 0.06);
+}
+
+html[data-theme="logic"] .logic-context-sidebar {
+  border: none;
+  background: transparent;
+  padding: 0;
+  gap: 8px;
+}
+
+html[data-theme="logic"] .logic-ctx-block {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(212, 168, 90, 0.08);
+  background: rgba(4, 3, 8, 0.55);
+  backdrop-filter: blur(12px);
+  box-shadow: none;
+}
+
+html[data-theme="logic"] .logic-ctx-label {
+  color: rgba(212, 168, 90, 0.45);
+  letter-spacing: 0.14em;
+}
+
+/* ── Answer / conversational output ────────────────────────────── */
+html[data-theme="logic"] .logic-conv-answer {
+  font-family: var(--logic-display);
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.62;
+  color: rgba(240, 242, 248, 0.92);
+  text-align: center;
+}
+
+html[data-theme="logic"] .logic-msg--logic {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+html[data-theme="logic"] .logic-msg-title {
+  font-family: var(--logic-display);
+  font-size: clamp(17px, 2.2vw, 20px);
+  text-align: center;
+}
+
+html[data-theme="logic"] .logic-direct-answer {
+  border: 1px solid rgba(212, 168, 90, 0.12);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+html[data-theme="logic"] #logicResultContent .logic-msg--user,
+html[data-theme="logic"] #logicResultContent .logic-msg--logic,
+html[data-theme="logic"] #logicResultContent .logic-intel-card {
+  max-width: 100%;
+}
+
+/* ── Cmd+K overlay ───────────────────────────────────────────────── */
+html[data-theme="logic"] .logic-search-overlay {
+  background: rgba(2, 4, 4, 0.82);
+  backdrop-filter: blur(14px);
+  z-index: 200;
+}
+
+html[data-theme="logic"] .logic-search-panel {
+  border-radius: 24px;
+  border: 1px solid rgba(212, 168, 90, 0.28);
+  background: rgba(4, 3, 8, 0.9);
+  box-shadow: 0 0 120px rgba(212, 168, 90, 0.14);
+  animation: logicNucleusPulse 5s ease-in-out infinite;
+}
+
+html[data-theme="logic"] .logic-search-panel h4 {
+  font-family: var(--logic-mono);
+  font-size: 7px;
+  letter-spacing: 0.2em;
+  color: rgba(212, 168, 90, 0.55);
+}
+
+html[data-theme="logic"] .logic-command-input {
+  text-align: center;
+  font-family: var(--logic-display);
+  font-size: clamp(18px, 2.4vw, 22px);
+}
+
+html[data-theme="logic"] .logic-conv-chip {
+  border-color: rgba(212, 168, 90, 0.1);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+html[data-theme="logic"] .logic-conv-chip.is-active {
+  border-color: rgba(212, 168, 90, 0.35);
+  background: rgba(212, 168, 90, 0.08);
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  html[data-theme="logic"] .logic-flanks > aside {
+    opacity: 0.28;
+  }
+
+  html[data-theme="logic"] #logicModeSidebar,
+  html[data-theme="logic"] #logicContextSidebar {
+    width: 160px;
+  }
+}
+
+@media (max-width: 900px) {
+  html[data-theme="logic"] .logic-helix-scene {
+    padding: 40px 12px 48px;
+  }
+
+  html[data-theme="logic"] .logic-flanks {
+    display: none;
+  }
+
+  html[data-theme="logic"] .logic-nucleus {
+    width: min(400px, 96vw);
+  }
+
+  html[data-theme="logic"] .logic-helix__entity {
+    padding: 6px 10px;
+    opacity: 0.2 !important;
+  }
+
+  html[data-theme="logic"] .logic-env--focus .logic-helix__entity.is-spotlight {
+    opacity: 0.35 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="logic"] .logic-env__atmo::before,
+  html[data-theme="logic"] .logic-env__atmo::after,
+  html[data-theme="logic"] .logic-env__haze,
+  html[data-theme="logic"] .logic-env__gravity,
+  html[data-theme="logic"] .logic-env__river span,
+  html[data-theme="logic"] .logic-helix__orbit,
+  html[data-theme="logic"] .logic-helix__entity,
+  html[data-theme="logic"] .logic-helix__pulse-ring,
+  html[data-theme="logic"] .logic-nucleus,
+  html[data-theme="logic"] .logic-nucleus__pulse-fill {
+    animation: none !important;
+  }
+}

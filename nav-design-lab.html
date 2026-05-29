@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en" data-nav-concept="A">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Navigation Design Lab · Brieftick Split</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/split-cinematic.css">
+  <style>
+    :root {
+      --gold: #d4a85a;
+      --void: #020204;
+      --display: "Playfair Display", Georgia, serif;
+      --body: "Inter Tight", system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
+      --ndl-chrome-h: 52px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--body);
+      background: var(--void);
+      color: #e8ecf5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Lab chrome (not production nav) */
+    .ndl-top {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 10px 18px;
+      background: rgba(2, 2, 4, 0.94);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+    }
+    .ndl-brand strong {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .ndl-brand span { font-size: 10px; color: #5a6070; display: block; margin-top: 2px; }
+    .ndl-concepts { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
+    .ndl-btn {
+      padding: 6px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      background: transparent;
+      color: #6b7280;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s var(--ease);
+    }
+    .ndl-btn:hover { color: #e8ecf5; border-color: rgba(255, 255, 255, 0.18); }
+    .ndl-btn.is-active {
+      background: rgba(212, 168, 90, 0.15);
+      border-color: rgba(212, 168, 90, 0.45);
+      color: var(--gold);
+    }
+    .ndl-viewport {
+      display: flex;
+      gap: 4px;
+      padding: 2px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 6px;
+    }
+    .ndl-viewport button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      background: transparent;
+      color: #6b7280;
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .ndl-viewport button.is-active { background: rgba(78, 120, 200, 0.2); color: #9ec4ff; }
+    .ndl-back {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: #5a6070;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .ndl-back:hover { color: var(--gold); }
+
+    .ndl-meta {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 20px 18px 8px;
+    }
+    .ndl-meta h1 {
+      font-family: var(--display);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .ndl-meta p { font-size: 13px; color: #7a8498; line-height: 1.55; max-width: 56ch; }
+
+    .ndl-panel { display: none; }
+    .ndl-panel.is-active { display: block; }
+    .ndl-panel:not(.is-active) { content-visibility: hidden; contain: strict; }
+
+    .ndl-previews {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 0 18px 48px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1fr;
+    }
+    body[data-ndl-view="both"] .ndl-previews {
+      grid-template-columns: 1fr 380px;
+    }
+    body[data-ndl-view="mobile"] .ndl-previews { grid-template-columns: 380px; justify-content: center; }
+    body[data-ndl-view="desktop"] .ndl-frame--mobile { display: none; }
+    body[data-ndl-view="mobile"] .ndl-frame--desktop { display: none; }
+
+    .ndl-frame-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(212, 168, 90, 0.55);
+      margin-bottom: 8px;
+    }
+
+    .ndl-stage {
+      position: relative;
+      height: min(88vh, 820px);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: #020204;
+    }
+    .ndl-stage .ndl-world {
+      position: absolute;
+      inset: 0;
+      --mx: 0;
+      --my: 0;
+      --scroll: 0;
+    }
+    .ndl-stage .cw-env { position: absolute; inset: 0; }
+    .ndl-stage .cw-river--t { top: 0; position: absolute; }
+    .ndl-stage .cw-river--b { bottom: 0; position: absolute; }
+
+    .ndl-content {
+      position: relative;
+      z-index: 20;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+    }
+    .ndl-content > * { pointer-events: auto; }
+
+    .ndl-mock-hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 32px 48px;
+      text-align: center;
+    }
+    .ndl-mock-hero h2 {
+      font-family: var(--display);
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-weight: 500;
+    }
+    .ndl-mock-hero h2 em { font-style: italic; color: var(--gold); }
+    .ndl-mock-hero p {
+      margin-top: 20px;
+      font-size: 15px;
+      color: rgba(232, 236, 245, 0.5);
+      max-width: 36ch;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* Shared nav tokens */
+    .ndl-logo img {
+      height: clamp(34px, 5vw, 48px);
+      width: auto;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 12px rgba(78, 120, 200, 0.2)) drop-shadow(0 2px 10px rgba(212, 168, 90, 0.12));
+    }
+    .ndl-link {
+      font-family: var(--body);
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(232, 236, 245, 0.55);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 0;
+      transition: color 0.25s var(--ease), text-shadow 0.25s;
+      letter-spacing: 0.02em;
+    }
+    .ndl-link:hover {
+      color: #e8ecf5;
+      text-shadow: 0 0 20px rgba(78, 120, 200, 0.35);
+    }
+    .ndl-link.is-active { color: var(--gold); }
+    .ndl-link--logic {
+      color: rgba(212, 168, 90, 0.75);
+    }
+    .ndl-link--logic:hover {
+      color: var(--gold);
+      text-shadow: 0 0 24px rgba(212, 168, 90, 0.4);
+    }
+    .ndl-lock {
+      opacity: 0.45;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+    .ndl-auth {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .ndl-auth-btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: transparent;
+      color: rgba(232, 236, 245, 0.7);
+      transition: all 0.25s var(--ease);
+    }
+    .ndl-auth-btn:hover { border-color: rgba(78, 120, 200, 0.35); color: #e8ecf5; }
+    .ndl-auth-btn--pri {
+      background: linear-gradient(135deg, var(--gold), #e8c178);
+      color: #0a0c10;
+      border: none;
+    }
+    .ndl-auth-btn--pri:hover { box-shadow: 0 8px 24px rgba(212, 168, 90, 0.3); }
+    .ndl-plan {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 168, 90, 0.35);
+      color: var(--gold);
+    }
+
+    /* A — Floating Minimal */
+    .nav-a {
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      padding: 22px 28px 0;
+      flex-wrap: wrap;
+    }
+    .nav-a .ndl-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      align-items: center;
+      padding-top: 14px;
+    }
+
+    /* B — Glass Pill */
+    .nav-b {
+      padding: 20px 24px 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .nav-b-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(6, 8, 14, 0.55);
+      border: 1px solid rgba(78, 120, 200, 0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+    .nav-b-pill .ndl-link { padding: 6px 12px; font-size: 11px; }
+
+    /* C — Left Rail */
+    .nav-c-rail {
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      bottom: 18px;
+      width: 168px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 16px 14px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 30;
+    }
+    .nav-c-rail .ndl-logo { margin-bottom: 12px; }
+    .nav-c-rail .ndl-link {
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 11px;
+    }
+    .nav-c-rail .ndl-link:hover {
+      background: rgba(78, 120, 200, 0.08);
+    }
+    .nav-c-rail .ndl-link.is-active {
+      background: rgba(212, 168, 90, 0.1);
+    }
+    .nav-c .ndl-mock-hero { padding-left: 200px; }
+
+    /* D — Split distributed */
+    .nav-d-chrome { position: absolute; inset: 0; pointer-events: none; z-index: 25; }
+    .nav-d-chrome .ndl-logo {
+      position: absolute;
+      left: 24px;
+      top: 22px;
+      pointer-events: auto;
+    }
+    .nav-d-node {
+      position: absolute;
+      pointer-events: auto;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(212, 168, 90, 0.4);
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      animation: ndlDrift 12s ease-in-out infinite;
+    }
+    .nav-d-node:hover {
+      color: rgba(232, 236, 245, 0.85);
+      border-color: rgba(78, 120, 200, 0.3);
+      box-shadow: 0 0 20px rgba(78, 120, 200, 0.15);
+    }
+    .nav-d-node--logic {
+      color: rgba(212, 168, 90, 0.65);
+      border-color: rgba(212, 168, 90, 0.25);
+    }
+    @keyframes ndlDrift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(6px, -8px); }
+    }
+
+    /* E — Command Center */
+    .nav-e {
+      padding: 16px 24px 0;
+    }
+    .nav-e-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 8px;
+      border-bottom: 1px solid rgba(78, 120, 200, 0.15);
+      background: linear-gradient(180deg, rgba(6, 8, 14, 0.5), transparent);
+    }
+    .nav-e-group {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 12px 14px;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .nav-e-group:last-of-type { border-right: none; }
+    .nav-e-label {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(232, 236, 245, 0.28);
+      margin-right: 10px;
+      padding-right: 10px;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .nav-e .ndl-link { font-size: 11px; padding: 8px 10px; }
+    .nav-e-logic {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border-left: 1px solid rgba(212, 168, 90, 0.2);
+      background: rgba(212, 168, 90, 0.04);
+    }
+    .nav-e-logic .ndl-link--logic {
+      font-family: var(--display);
+      font-size: 14px;
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+    .nav-e-logic-tag {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.14em;
+      color: rgba(212, 168, 90, 0.5);
+      text-transform: uppercase;
+    }
+
+    /* F — Adaptive */
+    .nav-f-toggle {
+      display: flex;
+      gap: 6px;
+      padding: 18px 24px 0;
+    }
+    .nav-f-toggle button {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: transparent;
+      color: #6b7280;
+      transition: all 0.25s;
+    }
+    .nav-f-toggle button.is-active {
+      border-color: rgba(212, 168, 90, 0.4);
+      color: var(--gold);
+      background: rgba(212, 168, 90, 0.08);
+    }
+    .nav-f-variant { display: none; }
+    .nav-f-variant.is-on { display: block; }
+    .nav-f-public {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 8px 28px 0;
+      flex-wrap: wrap;
+    }
+    .nav-f-public .ndl-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .nav-f-signed {
+      padding: 8px 20px 0;
+    }
+    .nav-f-signed .nav-b-pill { max-width: 100%; }
+
+    /* Mobile frames */
+    .ndl-stage--mobile {
+      height: 640px;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+    .nav-m-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 0;
+    }
+    .nav-m-header .ndl-logo img { height: 32px; }
+    .nav-m-menu {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.3);
+      color: #e8ecf5;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-m-drawer {
+      margin: 12px 12px 0;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(78, 120, 200, 0.12);
+      backdrop-filter: blur(10px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+    .nav-m-drawer .ndl-link {
+      font-size: 11px;
+      padding: 10px 8px;
+      text-align: left;
+    }
+    .nav-m-drawer .ndl-link--logic {
+      grid-column: 1 / -1;
+      text-align: center;
+      border: 1px solid rgba(212, 168, 90, 0.25);
+      border-radius: 8px;
+      margin-top: 4px;
+    }
+
+    .ndl-foot {
+      text-align: center;
+      padding: 24px;
+      font-family: var(--mono);
+      font-size: 8px;
+      color: #3d4454;
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 900px) {
+      body[data-ndl-view="both"] .ndl-previews { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-ndl-view="both">
+
+  <header class="ndl-top">
+    <div class="ndl-brand">
+      <strong>Navigation Design Lab</strong>
+      <span>Concept 10 Split · production nav unchanged</span>
+    </div>
+    <nav class="ndl-concepts" aria-label="Navigation concepts">
+      <button type="button" class="ndl-btn is-active" data-concept="A">A · Minimal</button>
+      <button type="button" class="ndl-btn" data-concept="B">B · Glass Pill</button>
+      <button type="button" class="ndl-btn" data-concept="C">C · Left Rail</button>
+      <button type="button" class="ndl-btn" data-concept="D">D · Split</button>
+      <button type="button" class="ndl-btn" data-concept="E">E · Command</button>
+      <button type="button" class="ndl-btn" data-concept="F">F · Adaptive</button>
+    </nav>
+    <div class="ndl-viewport" aria-label="Viewport">
+      <button type="button" class="is-active" data-view="both">Both</button>
+      <button type="button" data-view="desktop">Desktop</button>
+      <button type="button" data-view="mobile">Mobile</button>
+    </div>
+    <a class="ndl-back" href="/design-lab.html">← Landing lab</a>
+    <a class="ndl-back" href="/">Production</a>
+  </header>
+
+  <div class="global-ticker" style="position:fixed;top:var(--ndl-chrome-h);left:0;right:0;height:28px;z-index:499;display:flex;align-items:center;overflow:hidden;font-family:var(--mono);font-size:10px;background:rgba(2,2,4,.95);border-bottom:1px solid rgba(255,255,255,.05)">
+    <div class="ticker-track" id="ticker" style="display:flex;gap:48px;padding-left:100%;animation:river 90s linear infinite;white-space:nowrap"></div>
+  </div>
+  <style>@keyframes river{to{transform:translateX(-50%)}}</style>
+
+  <div class="ndl-meta" id="ndlMeta">
+    <h1>Concept A — Floating Minimal</h1>
+    <p>Logo top-left, bare text links, no bar — navigation floats in the Split atmosphere.</p>
+  </div>
+
+  <div id="ndlPanels"></div>
+
+  <p class="ndl-foot">Navigation experiments only · not connected to production routing</p>
+
+  <script type="module">
+    import {
+      buildSplitShellHtml,
+      initSplitCinematic,
+      refreshSplitRivers,
+      riverText,
+    } from "/lib/split-atmosphere.js";
+
+    const META = {
+      A: { title: "Concept A — Floating Minimal", desc: "Logo top-left, bare text links, no bar — navigation floats in the Split atmosphere." },
+      B: { title: "Concept B — Floating Glass Pill", desc: "Logo plus links inside a floating pill — premium SaaS chrome without a full-width bar." },
+      C: { title: "Concept C — Left Rail", desc: "Vertical rail navigation — cinematic OS-style shell along the left edge." },
+      D: { title: "Concept D — Split Navigation", desc: "Links distributed across the environment as ambient nodes — minimal chrome." },
+      E: { title: "Concept E — Command Center", desc: "Institutional grouped navigation with Logic highlighted as the intelligence core." },
+      F: { title: "Concept F — Adaptive", desc: "Compare public (marketing) vs signed-in (full platform) navigation states." },
+    };
+
+    const LOCK_SVG = '<svg class="ndl-lock" width="9" height="9" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2"/></svg>';
+
+    const NAV = [
+      { label: "Home", id: "landing" },
+      { label: "Dashboard", id: "dashboard" },
+      { label: "Movers", id: "movers" },
+      { label: "Intelligence", id: "intelligence" },
+      { label: "Briefing", id: "briefing" },
+      { label: "Earnings", id: "earnings" },
+      { label: "Portfolio", id: "portfolio" },
+      { label: "Scanner", id: "scanner", lock: true },
+      { label: "Insider", id: "insiders", lock: true },
+      { label: "Options", id: "options", lock: true },
+      { label: "Pricing", id: "pricing" },
+      { label: "Logic", id: "logic", logic: true },
+      { label: "About", id: "about" },
+    ];
+
+    const PUBLIC_NAV = ["Home", "Pricing", "Logic", "About"];
+    const APP_NAV = NAV.filter((n) => !["Home", "Pricing", "About"].includes(n.label));
+
+    function logoHtml() {
+      return `<a class="ndl-logo" href="#" onclick="return false"><img src="/logo-transparent.png" alt="Brieftick" width="160" height="48"></a>`;
+    }
+
+    function linkHtml(item, active) {
+      const cls = [
+        "ndl-link",
+        item.logic ? "ndl-link--logic" : "",
+        active ? "is-active" : "",
+      ].filter(Boolean).join(" ");
+      const lock = item.lock ? LOCK_SVG : "";
+      return `<button type="button" class="${cls}" data-nav-id="${item.id}">${item.label}${lock}</button>`;
+    }
+
+    function linksRow(items, activeId = "landing") {
+      return items.map((item) => linkHtml(item, item.id === activeId)).join("");
+    }
+
+    function buildNavA(activeId) {
+      return `<nav class="nav-a" aria-label="Site navigation">
+        ${logoHtml()}
+        <div class="ndl-links">${linksRow(NAV, activeId)}</div>
+        <div class="ndl-auth">
+          <button type="button" class="ndl-auth-btn">Sign In</button>
+          <button type="button" class="ndl-auth-btn ndl-auth-btn--pri">Start Free</button>
+        </div>
+      </nav>`;
+    }
+
+    function buildNavB(activeId) {
+      return `<nav class="nav-b" aria-label="Site navigation">
+        ${logoHtml()}
+        <div class="nav-b-pill">${linksRow(NAV, activeId)}</div>
+        <div class="ndl-auth">
+          <button type="button" class="ndl-auth-btn">Sign In</button>
+          <button type="button" class="ndl-auth-btn ndl-auth-btn--pri">Start Free</button>
+        </div>
+      </nav>`;
+    }
+
+    function buildNavC(activeId) {
+      return `<nav class="nav-c-rail" aria-label="Site navigation">
+        ${logoHtml()}
+        ${NAV.map((item) => linkHtml(item, item.id === activeId)).join("")}
+      </nav>`;
+    }
+
+    function buildNavD() {
+      const positions = [
+        ["Dashboard", "18%", "22%", "0s"],
+        ["Movers", "72%", "18%", "-2s"],
+        ["Intelligence", "68%", "38%", "-4s"],
+        ["Briefing", "22%", "48%", "-1s"],
+        ["Earnings", "55%", "55%", "-3s"],
+        ["Portfolio", "12%", "62%", "-5s"],
+        ["Scanner", "78%", "58%", "-6s"],
+        ["Pricing", "42%", "72%", "-2.5s"],
+        ["Logic", "58%", "28%", "0s", true],
+        ["About", "32%", "78%", "-4.5s"],
+      ];
+      const nodes = positions.map(([label, l, t, delay, logic]) => {
+        const item = NAV.find((n) => n.label === label) || { label, logic };
+        return `<button type="button" class="nav-d-node${logic ? " nav-d-node--logic" : ""}" style="left:${l};top:${t};animation-delay:${delay}">${label}</button>`;
+      }).join("");
+      return `<div class="nav-d-chrome" aria-label="Distributed navigation">${logoHtml()}${nodes}</div>`;
+    }
+
+    function buildNavE(activeId) {
+      const market = NAV.filter((n) => ["Dashboard", "Movers", "Intelligence", "Briefing", "Earnings", "Portfolio"].includes(n.label));
+      const tools = NAV.filter((n) => ["Scanner", "Insider", "Options"].includes(n.label));
+      const meta = NAV.filter((n) => ["Home", "Pricing", "About"].includes(n.label));
+      const logic = NAV.find((n) => n.logic);
+      return `<nav class="nav-e" aria-label="Command center navigation">
+        <div class="nav-e-bar">
+          ${logoHtml()}
+          <div class="nav-e-group"><span class="nav-e-label">Markets</span>${linksRow(market, activeId)}</div>
+          <div class="nav-e-group"><span class="nav-e-label">Terminal</span>${linksRow(tools, activeId)}</div>
+          <div class="nav-e-group"><span class="nav-e-label">Platform</span>${linksRow(meta, activeId)}</div>
+          <div class="nav-e-logic">
+            <span class="nav-e-logic-tag">Intelligence core</span>
+            ${linkHtml(logic, activeId === "logic")}
+          </div>
+        </div>
+      </nav>`;
+    }
+
+    function buildNavF(mode) {
+      const publicItems = NAV.filter((n) => PUBLIC_NAV.includes(n.label));
+      return `<div class="nav-f">
+        <div class="nav-f-toggle">
+          <button type="button" class="nav-f-tgl${mode === "public" ? " is-active" : ""}" data-f-mode="public">Public view</button>
+          <button type="button" class="nav-f-tgl${mode === "signed" ? " is-active" : ""}" data-f-mode="signed">Signed in</button>
+        </div>
+        <div class="nav-f-variant nav-f-public${mode === "public" ? " is-on" : ""}">
+          ${logoHtml()}
+          <div class="ndl-links">${linksRow(publicItems, "landing")}</div>
+          <div class="ndl-auth">
+            <button type="button" class="ndl-auth-btn">Sign In</button>
+            <button type="button" class="ndl-auth-btn ndl-auth-btn--pri">Start Free</button>
+          </div>
+        </div>
+        <div class="nav-f-variant nav-f-signed${mode === "signed" ? " is-on" : ""}">
+          <div style="display:flex;align-items:center;gap:12px;padding:0 20px 8px;flex-wrap:wrap">
+            ${logoHtml()}
+            <span class="ndl-plan">Terminal</span>
+            <div class="ndl-auth"><span style="width:32px;height:32px;border-radius:50%;background:rgba(212,168,90,.2);border:1px solid rgba(212,168,90,.35)"></span></div>
+          </div>
+          <div class="nav-b-pill" style="margin:0 20px">${linksRow(NAV, "dashboard")}</div>
+        </div>
+      </div>`;
+    }
+
+    function buildMobileNav(concept) {
+      const drawer = NAV.map((item) => linkHtml(item, item.id === "dashboard")).join("");
+      return `<nav class="nav-m-header" aria-label="Mobile navigation">
+        ${logoHtml()}
+        <button type="button" class="nav-m-menu" aria-label="Menu">≡</button>
+      </nav>
+      <div class="nav-m-drawer">${drawer}</div>`;
+    }
+
+    const BUILDERS = {
+      A: () => buildNavA("landing"),
+      B: () => buildNavB("landing"),
+      C: () => buildNavC("landing"),
+      D: () => buildNavD(),
+      E: () => buildNavE("dashboard"),
+      F: () => buildNavF("public"),
+    };
+
+    function mockHero() {
+      return `<div class="ndl-mock-hero">
+        <div>
+          <div class="cw-eyebrow" style="justify-content:center;margin-bottom:16px"><span class="pulse"></span> Live Beta</div>
+          <h2>Understand<br>what moves<br><em>markets.</em></h2>
+          <p>Navigation preview over Concept 10 Split atmosphere — production site unchanged.</p>
+        </div>
+      </div>`;
+    }
+
+    function stageHtml(concept, mobile) {
+      const shell = buildSplitShellHtml({
+        particles: mobile ? 12 : 18,
+        rivers: true,
+        hud: `NAV ${concept}${mobile ? " · MOBILE" : ""}`,
+        extraClass: "cw--immersive",
+      });
+      const nav = mobile ? buildMobileNav(concept) : BUILDERS[concept]();
+      const cls = mobile ? "ndl-stage ndl-stage--mobile" : "ndl-stage";
+      const extraClass = !mobile && concept === "C" ? " nav-c" : "";
+      return `<div class="${cls}" data-ndl-stage="${concept}${mobile ? "-m" : "-d"}">
+        <div class="ndl-world cw cw--dual">${shell}</div>
+        <div class="ndl-content${extraClass}">
+          ${nav}
+          ${mockHero()}
+        </div>
+      </div>`;
+    }
+
+    function renderPanels() {
+      const root = document.getElementById("ndlPanels");
+      root.innerHTML = Object.keys(META).map((id) => `
+        <section class="ndl-panel${id === "A" ? " is-active" : ""}" data-panel="${id}">
+          <div class="ndl-previews">
+            <div class="ndl-frame--desktop">
+              <p class="ndl-frame-label">Desktop</p>
+              ${stageHtml(id, false)}
+            </div>
+            <div class="ndl-frame--mobile">
+              <p class="ndl-frame-label">Mobile</p>
+              ${stageHtml(id, true)}
+            </div>
+          </div>
+        </section>
+      `).join("");
+
+      initAllStages();
+      wirePanelF();
+      wireLinkHovers();
+    }
+
+    const teardowns = new Map();
+
+    function initAllStages() {
+      teardowns.forEach((fn) => fn());
+      teardowns.clear();
+      document.querySelectorAll(".ndl-stage").forEach((stage) => {
+        const world = stage.querySelector(".ndl-world");
+        if (!world) return;
+        world.dataset.cwInit = "";
+        const td = initSplitCinematic(stage, { pointerTarget: stage });
+        if (td) teardowns.set(stage, td);
+        refreshSplitRivers(stage);
+      });
+    }
+
+    function wirePanelF() {
+      document.querySelectorAll('.ndl-panel[data-panel="F"] .nav-f-tgl').forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const mode = btn.dataset.fMode;
+          const panel = btn.closest('.ndl-panel[data-panel="F"]');
+          panel.querySelectorAll(".nav-f-tgl").forEach((b) => b.classList.toggle("is-active", b === btn));
+          panel.querySelectorAll(".nav-f-variant").forEach((v) => {
+            v.classList.toggle("is-on", v.classList.contains(`nav-f-${mode}`));
+          });
+        });
+      });
+    }
+
+    function wireLinkHovers() {
+      document.querySelectorAll(".ndl-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          const nav = link.closest("nav, .nav-c-rail, .nav-m-drawer, .nav-b-pill, .nav-f-public, .nav-e-bar");
+          if (!nav) return;
+          nav.querySelectorAll(".ndl-link").forEach((l) => l.classList.remove("is-active"));
+          link.classList.add("is-active");
+        });
+      });
+    }
+
+    function seedTicker() {
+      const tick = "SPY +0.48% · QQQ −0.32% · NVDA −1.24% · TSLA −2.18% · VIX −3.1% · AAPL +0.82% · ".repeat(8);
+      const el = document.getElementById("ticker");
+      if (!el) return;
+      const chunk = `<div class="ticker-item"><span class="sym">SPY</span><span>+0.48%</span><span class="up">+0.48%</span></div>`.repeat(12);
+      el.innerHTML = chunk + chunk;
+    }
+
+    function setConcept(id) {
+      document.documentElement.dataset.navConcept = id;
+      document.querySelectorAll(".ndl-btn").forEach((b) => b.classList.toggle("is-active", b.dataset.concept === id));
+      document.querySelectorAll(".ndl-panel").forEach((p) => p.classList.toggle("is-active", p.dataset.panel === id));
+      const m = META[id];
+      document.getElementById("ndlMeta").innerHTML = `<h1>${m.title}</h1><p>${m.desc}</p>`;
+      initAllStages();
+    }
+
+    document.querySelectorAll(".ndl-btn[data-concept]").forEach((btn) => {
+      btn.addEventListener("click", () => setConcept(btn.dataset.concept));
+    });
+
+    document.querySelectorAll(".ndl-viewport button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.body.dataset.ndlView = btn.dataset.view;
+        document.querySelectorAll(".ndl-viewport button").forEach((b) => b.classList.toggle("is-active", b === btn));
+      });
+    });
+
+    seedTicker();
+    renderPanels();
+    setTimeout(() => {
+      document.querySelectorAll(".ndl-stage").forEach((s) => refreshSplitRivers(s));
+    }, 400);
+
+    document.addEventListener("visibilitychange", () => {
+      document.documentElement.classList.toggle("bt-paused", document.hidden);
+    });
+  </script>
+</body>
+</html>
