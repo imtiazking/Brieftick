@@ -143,6 +143,16 @@ html[data-theme="split"] body.dash-lab-body {
   display: block;
 }
 
+#panelWheel.is-active .intel-wheel-scene {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+}
+
+#panelWheel.is-active .dash-lab-env {
+  z-index: 0;
+}
+
 .dash-lab-env {
   position: absolute;
   inset: 0;
@@ -816,6 +826,89 @@ body[data-dash-lab-concept="rail"] .dash-lab-concept-toggle button[data-concept=
   max-width: 1040px;
   margin: 0 auto;
   padding: 28px 12px 100px;
+}
+
+#panelWheel.is-active .intel-wheel-scene {
+  padding-top: 8px;
+}
+
+/* Compact Market Pulse — context strip above wheel */
+.wheel-pulse-strip {
+  position: relative;
+  z-index: 3;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  max-width: 920px;
+  margin: 0 auto 20px;
+  padding: 0 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(212, 168, 90, 0.14);
+  background: linear-gradient(180deg, rgba(212, 168, 90, 0.07), transparent 80%);
+}
+
+.wheel-pulse-strip__tag {
+  display: block;
+  font-family: var(--dash-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 90, 0.72);
+  margin-bottom: 10px;
+}
+
+.wheel-pulse-strip__line {
+  font-family: var(--dash-display);
+  font-size: clamp(14px, 1.85vw, 17px);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: rgba(232, 236, 245, 0.72);
+  margin: 0;
+}
+
+.wheel-pulse-strip__regime {
+  color: rgba(110, 201, 160, 0.95);
+  font-weight: 500;
+}
+
+.wheel-pulse-strip__conf {
+  font-family: var(--dash-mono);
+  font-size: 0.82em;
+  letter-spacing: 0.06em;
+  color: rgba(232, 236, 245, 0.58);
+}
+
+.wheel-pulse-strip__sep {
+  margin: 0 0.35em;
+  color: rgba(212, 168, 90, 0.28);
+  font-weight: 300;
+}
+
+.wheel-pulse-strip__narr {
+  color: rgba(240, 236, 228, 0.82);
+}
+
+.wheel-pulse-strip__driver {
+  color: rgba(232, 236, 245, 0.55);
+  font-size: 0.94em;
+}
+
+.wheel-pulse-strip__risk {
+  color: rgba(255, 181, 71, 0.75);
+  font-size: 0.94em;
+}
+
+@media (max-width: 720px) {
+  .wheel-pulse-strip__line {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .wheel-pulse-strip__sep {
+    display: inline;
+  }
 }
 
 .intel-wheel__hint {

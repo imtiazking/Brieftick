@@ -8,6 +8,7 @@ import {
   WHEEL_SECTIONS,
   renderRailModule,
   renderRailPulseHero,
+  renderWheelPulseStrip,
 } from "./dashboard-rail-mocks.js";
 import { createIntelligenceWheel } from "./dashboard-design-wheel.js";
 
@@ -223,6 +224,11 @@ function selectDeckCard(index) {
   });
 }
 
+function populateWheelPulseStrip() {
+  const strip = document.getElementById("wheelPulseStrip");
+  if (strip) strip.innerHTML = renderWheelPulseStrip();
+}
+
 function setConcept(concept, options = {}) {
   activeConcept = concept;
   document.querySelectorAll("[data-concept]").forEach((btn) => {
@@ -306,6 +312,8 @@ function selectWheelModule(id) {
 }
 
 function initWheel() {
+  populateWheelPulseStrip();
+
   const viewport = document.getElementById("wheelViewport");
   if (!viewport || viewport.dataset.built) return;
   viewport.dataset.built = "1";

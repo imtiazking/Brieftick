@@ -5,11 +5,14 @@
 
 export const RAIL_PULSE = {
   regime: "Risk-On · Narrow Leadership",
-  confidence: "72%",
+  regimeShort: "Risk-On",
+  confidence: "78%",
   narrative:
     "Megacap tech is carrying index returns while breadth only partially confirms. Rates are stable and the dollar is steady — leadership is concentrated, not broad. Institutional flow favours growth ETFs; defensives see tactical outflows.",
+  narrativeShort:
+    "AI leadership dominant while breadth only partly confirms — index strength remains narrow, not broad.",
   keyDriver: "AI capex narrative + mega-cap earnings resilience",
-  keyRisk: "Breadth divergence · CPI event risk · narrow index concentration",
+  keyRisk: "Treasury yields · CPI event risk · narrow concentration",
   session:
     "NYSE session: indices green on tech leadership; energy firm on supply narrative; financials lag on curve flattening. Watch CPI tomorrow and Powell commentary Wednesday.",
 };
@@ -371,4 +374,23 @@ export function renderRailPulseHero() {
       <span class="rail-pulse__session-label">Session Summary</span>
       <p>${esc(p.session)}</p>
     </footer>`;
+}
+
+export function renderWheelPulseStrip() {
+  const p = RAIL_PULSE;
+  const regime = p.regimeShort || p.regime;
+  const narrative = p.narrativeShort || p.narrative;
+  return `
+    <span class="wheel-pulse-strip__tag">Market Pulse</span>
+    <p class="wheel-pulse-strip__line">
+      <span class="wheel-pulse-strip__regime">${esc(regime)}</span>
+      <span class="wheel-pulse-strip__sep" aria-hidden="true">·</span>
+      <span class="wheel-pulse-strip__conf">Confidence ${esc(p.confidence)}</span>
+      <span class="wheel-pulse-strip__sep" aria-hidden="true">·</span>
+      <span class="wheel-pulse-strip__narr">${esc(narrative)}</span>
+      <span class="wheel-pulse-strip__sep" aria-hidden="true">·</span>
+      <span class="wheel-pulse-strip__driver">Key driver: ${esc(p.keyDriver)}</span>
+      <span class="wheel-pulse-strip__sep" aria-hidden="true">·</span>
+      <span class="wheel-pulse-strip__risk">Key risk: ${esc(p.keyRisk)}</span>
+    </p>`;
 }
