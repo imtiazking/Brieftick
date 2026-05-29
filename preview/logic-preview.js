@@ -574,18 +574,46 @@ function bindForms() {
   });
 }
 
+const LOGIC_PRIMARY_MODES = new Set(["market-pulse", "ticker", "risk-regime"]);
+
+const LOGIC_MODE_SHORT = {
+  "market-pulse": "Pulse",
+  ticker: "Ticker",
+  portfolio: "Portfolio",
+  watchlist: "Watchlist",
+  "sector-rotation": "Sectors",
+  "risk-regime": "Risk",
+  "daily-brief": "Brief",
+  scenario: "Scenario",
+  briefing: "Briefing",
+  causal: "Causal",
+  "macro-interpretation": "Macro",
+};
+
+function renderLogicModeBtn(m, terminal) {
+  const locked = !terminal && PREMIUM_LOGIC_MODES.has(m.id);
+  const short = LOGIC_MODE_SHORT[m.id] || m.icon;
+  return `<button type="button" class="logic-mode-btn${m.id === activeMode ? " active" : ""}${locked ? " logic-mode-btn--locked" : ""}" data-mode="${m.id}" data-locked="${locked ? "1" : "0"}">
+      <span class="logic-mode-icon">${m.icon}</span>
+      <span class="logic-mode-label">${escapeHtml(short)}${locked ? " ·" : ""}</span>
+      <span class="logic-mode-desc">${escapeHtml(m.desc)}</span>
+    </button>`;
+}
+
 function bindLogicUI() {
   const sidebar = document.getElementById("logicModeSidebar");
   const terminal = isLogicTerminalUser();
   if (sidebar) {
-    sidebar.innerHTML = LOGIC_MODES.map((m) => {
-      const locked = !terminal && PREMIUM_LOGIC_MODES.has(m.id);
-      return `<button type="button" class="logic-mode-btn${m.id === activeMode ? " active" : ""}${locked ? " logic-mode-btn--locked" : ""}" data-mode="${m.id}" data-locked="${locked ? "1" : "0"}">
-          <span class="logic-mode-icon">${m.icon}</span>
-          <span class="logic-mode-label">${escapeHtml(m.label)}${locked ? " · Terminal" : ""}</span>
-          <span class="logic-mode-desc">${escapeHtml(m.desc)}</span>
-        </button>`;
-    }).join("");
+    const primary = LOGIC_MODES.filter((m) => LOGIC_PRIMARY_MODES.has(m.id));
+    const more = LOGIC_MODES.filter((m) => !LOGIC_PRIMARY_MODES.has(m.id));
+    sidebar.classList.add("logic-modes-rail");
+    sidebar.innerHTML = `
+      <div class="logic-modes-rail__label">Logic Modes</div>
+      <div class="logic-modes-rail__primary">${primary.map((m) => renderLogicModeBtn(m, terminal)).join("")}</div>
+      <details class="logic-modes-rail__more">
+        <summary class="logic-modes-rail__more-sum">More</summary>
+        <div class="logic-modes-rail__more-list">${more.map((m) => renderLogicModeBtn(m, terminal)).join("")}</div>
+      </details>`;
 
     sidebar.querySelectorAll(".logic-mode-btn").forEach((btn) => {
       btn.addEventListener("click", () => {

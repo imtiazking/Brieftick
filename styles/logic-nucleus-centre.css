@@ -1,0 +1,289 @@
+/**
+ * Approved Logic nucleus centre — source of truth: /logic-design-lab
+ * Helix atmosphere + nucleus card + glow: logic-cinematic.css
+ * This file locks centre parity on the real Logic page (overrides index inline preview block).
+ */
+
+/* ── Page shell (approved lab) ───────────────────────────────── */
+html[data-theme="logic"] #page-logic {
+  background: radial-gradient(ellipse at 50% 48%, var(--logic-helix-bg) 0%, var(--logic-void) 72%) !important;
+  min-height: calc(100vh - var(--split-chrome-h, 88px)) !important;
+  max-height: calc(100vh - var(--split-chrome-h, 88px)) !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix {
+  position: relative !important;
+  z-index: 20 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: calc(100vh - var(--split-chrome-h, 88px)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-header {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+}
+
+/* ── Nucleus result surface (inside card, not legacy panel) ─── */
+html[data-theme="logic"] .logic-wrap--helix .logic-result-surface,
+html[data-theme="logic"] .logic-wrap--helix .logic-result-surface--primary {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  order: unset !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-result-surface.is-processing,
+html[data-theme="logic"] .logic-wrap--helix .logic-result-surface.is-ready {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-result-idle {
+  flex: unset !important;
+  display: block !important;
+  align-items: unset !important;
+  justify-content: unset !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 28em !important;
+  font-family: var(--logic-display) !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  font-style: italic !important;
+  color: rgba(232, 228, 220, 0.75) !important;
+  text-align: center !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-result-content {
+  flex: 0 0 auto !important;
+  align-self: stretch !important;
+  padding: 8px 24px 16px !important;
+  max-height: min(38vh, 320px) !important;
+  overflow-y: auto !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-result-surface.is-ready .logic-result-content,
+html[data-theme="logic"] .logic-wrap--helix .logic-result-surface.is-processing .logic-result-content {
+  flex: 1 1 auto !important;
+}
+
+/* ── Hero command (approved nucleus typography) ─────────────── */
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-command {
+  position: relative !important;
+  padding: 16px 22px 10px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-command::before {
+  display: none !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-command:focus-within {
+  box-shadow: none !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-form {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-input {
+  flex: unset !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  text-align: center !important;
+  font-family: var(--logic-display) !important;
+  font-size: clamp(16px, 2.2vw, 20px) !important;
+  color: #f0ece4 !important;
+  letter-spacing: -0.01em !important;
+  padding: 4px 8px !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-input:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-input::placeholder {
+  color: rgba(232, 228, 220, 0.28) !important;
+  font-style: italic !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-submit {
+  align-self: center !important;
+  flex-shrink: 0 !important;
+  width: auto !important;
+  margin-top: 12px !important;
+  padding: 8px 18px !important;
+  border-radius: 999px !important;
+  font-size: 10px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  opacity: 0.85 !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-hint {
+  justify-content: center !important;
+  margin-top: 8px !important;
+  font-family: var(--logic-mono) !important;
+  font-size: 7px !important;
+  color: rgba(212, 168, 90, 0.35) !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-chips {
+  justify-content: center !important;
+  margin-top: 10px !important;
+  gap: 6px !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-chip {
+  padding: 5px 10px !important;
+  font-size: 10px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(212, 168, 90, 0.12) !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  color: rgba(232, 228, 220, 0.45) !important;
+  transform: none !important;
+  font-family: inherit !important;
+}
+
+html[data-theme="logic"] .logic-wrap--helix .logic-hero-chip:hover {
+  border-color: rgba(212, 168, 90, 0.28) !important;
+  color: var(--ink-dim) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* ── Conversational answers inside nucleus (approved lab) ───── */
+html[data-theme="logic"] #page-logic .logic-msg--conversational {
+  border: none !important;
+  background: transparent !important;
+  padding: 8px 4px 12px !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-msg--conversational .logic-msg-head,
+html[data-theme="logic"] #page-logic .logic-msg--conversational .logic-msg-title,
+html[data-theme="logic"] #page-logic .logic-msg--conversational .logic-intel-card,
+html[data-theme="logic"] #page-logic .logic-msg--conversational .logic-direct-answer,
+html[data-theme="logic"] #page-logic .logic-msg--conversational .logic-signal-row,
+html[data-theme="logic"] #page-logic .logic-msg--conversational .logic-msg-foot {
+  display: none !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-conv-primary {
+  margin: 0 0 20px !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-conv-answer {
+  margin: 0 !important;
+  font-family: var(--logic-display) !important;
+  font-size: clamp(17px, 2.35vw, 21px) !important;
+  line-height: 1.58 !important;
+  color: var(--ink) !important;
+  letter-spacing: -0.02em !important;
+  font-weight: 430 !important;
+  max-width: 42em !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-conv-limited {
+  font-family: var(--logic-mono) !important;
+  font-size: 10px !important;
+  color: var(--gold) !important;
+  margin: 0 0 12px !important;
+  opacity: 0.85 !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-conv-chips {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  margin: 0 0 4px !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-conv-chip {
+  padding: 5px 11px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: transparent !important;
+  color: var(--ink-faint) !important;
+  font-size: 10px !important;
+  font-family: var(--logic-mono) !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-conv-chip:hover,
+html[data-theme="logic"] #page-logic .logic-conv-chip.is-active {
+  border-color: rgba(212, 168, 90, 0.4) !important;
+  color: var(--gold) !important;
+  background: rgba(212, 168, 90, 0.08) !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-conv-panel-text {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: var(--ink-dim) !important;
+  padding-left: 12px !important;
+  border-left: 1px solid rgba(212, 168, 90, 0.25) !important;
+}
+
+html[data-theme="logic"] #page-logic .logic-conv-disclaimer {
+  margin: 18px 0 0 !important;
+  font-size: 9px !important;
+  opacity: 0.45 !important;
+  font-family: var(--logic-mono) !important;
+}
+
+html[data-theme="logic"] #page-logic #logicResultContent .logic-msg--user,
+html[data-theme="logic"] #page-logic #logicResultContent .logic-msg--logic {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+}
+
+@media (max-width: 720px) {
+  html[data-theme="logic"] .logic-wrap--helix .logic-hero-form {
+    flex-wrap: nowrap !important;
+  }
+
+  html[data-theme="logic"] .logic-wrap--helix .logic-hero-submit {
+    width: auto !important;
+  }
+}

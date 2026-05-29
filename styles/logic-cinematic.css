@@ -61,7 +61,9 @@ html[data-theme="logic"] #page-logic {
   position: relative;
   z-index: 4;
   min-height: calc(100vh - var(--split-chrome-h, 88px));
+  max-height: calc(100vh - var(--split-chrome-h, 88px));
   overflow: hidden;
+  isolation: isolate;
   background: radial-gradient(ellipse at 50% 48%, var(--logic-helix-bg) 0%, var(--logic-void) 72%);
 }
 
@@ -71,11 +73,26 @@ html[data-theme="logic"] #page-logic.active {
 
 /* ── Environment ───────────────────────────────────────────────── */
 html[data-theme="logic"] .logic-env {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  /* Fade bottom spill — haze / orbit rings must not read as a detached orb below */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 68%,
+    rgba(0, 0, 0, 0.85) 78%,
+    transparent 92%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 68%,
+    rgba(0, 0, 0, 0.85) 78%,
+    transparent 92%
+  );
 }
 
 html[data-theme="logic"] .logic-env__atmo::before,
@@ -169,6 +186,8 @@ html[data-theme="logic"] .logic-env__regime {
 html[data-theme="logic"] .logic-env__helix {
   position: absolute;
   inset: 0;
+  top: 0;
+  bottom: 12%;
   z-index: 5;
   pointer-events: none;
   overflow: hidden;

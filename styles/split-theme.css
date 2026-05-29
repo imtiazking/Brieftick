@@ -11,10 +11,6 @@
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
 }
-@keyframes splitMarkReveal {
-  0% { opacity: 0; transform: translate3d(0, 12px, 0); }
-  100% { opacity: 1; transform: translate3d(0, 0, 0); }
-}
 @keyframes splitFadeUp {
   from { opacity: 0; transform: translate3d(0, 10px, 0); }
   to { opacity: 1; transform: translate3d(0, 0, 0); }
@@ -143,20 +139,7 @@ html[data-theme="split"] .page {
   z-index: 1;
 }
 
-/* Logo — clear in nav, no glass card, load reveal */
-html[data-theme="split"] .brand.split-brand {
-  align-items: center;
-  flex-shrink: 0;
-}
-html[data-theme="split"] .split-brand-img {
-  display: block;
-  width: auto;
-  height: clamp(36px, 5vw, 52px) !important;
-  object-fit: contain;
-  opacity: 0;
-  animation: splitMarkReveal 1.2s var(--ease-split, cubic-bezier(0.16, 1, 0.3, 1)) 0.08s forwards;
-  filter: drop-shadow(0 2px 12px rgba(78, 120, 200, 0.2)) drop-shadow(0 2px 10px rgba(212, 168, 90, 0.12));
-}
+/* Nav logo: styles/split-brand.css */
 
 /* Nav link active: Concept A gold text in split-nav-a.css */
 /* App cards: split-app-cards.css (product pages only) */
@@ -282,9 +265,6 @@ html[data-theme="split"] .cw-cmd {
 
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  html[data-theme="split"] .split-brand-img {
-    height: clamp(32px, 8vw, 44px) !important;
-  }
   html[data-theme="split"] .split-river {
     font-size: 7px;
     padding: 5px 0;
@@ -301,9 +281,4 @@ html[data-theme="split"] .cw-cmd {
   .split-atmosphere__dual span,
   .split-atmosphere__fog,
   .split-river span,
-  html[data-theme="split"] .split-brand-img {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
 }

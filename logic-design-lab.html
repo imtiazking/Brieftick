@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="logic">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Brieftick · Logic Design Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/split-brand.css">
+  <link rel="stylesheet" href="/styles/logic-cinematic.css">
+  <link rel="stylesheet" href="/styles/logic-nucleus-centre.css">
+  <link rel="stylesheet" href="/styles/logic-design-lab.css">
+  <script>
+    /* Block accidental network from design QA */
+    window.__LOGIC_DESIGN_LAB = true;
+    window.Clerk = undefined;
+    window._clerkUser = null;
+    const _fetch = window.fetch;
+    window.fetch = function designLabFetch() {
+      return Promise.reject(new Error("fetch disabled on Logic Design Lab"));
+    };
+  </script>
+  <script type="module" src="/lib/logic-cinematic.bridge.js"></script>
+  <script type="module" src="/preview/logic-design-lab.js"></script>
+</head>
+<body>
+  <header class="logic-lab-nav" aria-label="Design lab">
+    <div class="brand split-brand">
+      <img src="/logo-transparent.png" alt="Brieftick" class="split-brand-img" width="160" height="52">
+    </div>
+    <span class="logic-lab-badge" id="logicLabBuild">Design lab</span>
+    <span class="logic-lab-note">Public visual test — no auth, no API</span>
+  </header>
+
+  <section class="page active" id="page-logic">
+    <div class="logic-env" aria-hidden="true">
+      <div class="logic-env__atmo"></div>
+      <div class="logic-env__haze"></div>
+      <div class="logic-env__gravity"></div>
+      <div class="logic-env__helix" id="logicHelix" aria-hidden="true"></div>
+      <div class="logic-env__vignette"></div>
+      <div class="logic-env__whisper logic-env__whisper--1">MACRO · MOCK</div>
+      <div class="logic-env__whisper logic-env__whisper--2">LOGIC · LAB</div>
+      <div class="logic-env__whisper logic-env__whisper--3">VOL · STATIC</div>
+      <div class="logic-env__regime">REGIME PULSE<span>DESIGN LAB</span></div>
+      <div class="logic-env__river"><span id="logicEnvRiver"></span></div>
+    </div>
+
+    <div class="logic-wrap logic-wrap--helix">
+      <header class="logic-header logic-header--telemetry">
+        <span class="logic-telemetry logic-telemetry--tl">HELIX · LOGIC</span>
+        <span class="logic-telemetry logic-telemetry--tr" id="logicTelemetryRegime">DESIGN LAB · MOCK</span>
+      </header>
+
+      <div class="logic-helix-scene">
+        <div class="logic-nucleus" id="logicNucleus">
+          <div class="logic-nucleus__intel" id="logicMain">
+            <section class="logic-result-surface logic-result-surface--primary" id="logicResultSurface" aria-live="polite">
+              <div class="logic-nucleus__focus" id="logicNucleusFocus">
+                <div class="logic-nucleus__symbol" id="logicNucleusSymbol">LOGIC</div>
+                <div class="logic-nucleus__chg" id="logicNucleusChg" aria-hidden="true"></div>
+                <p class="logic-result-idle" id="logicResultIdle">
+                  Select an orbiting symbol or ask Logic — static mock answers only on this page.
+                </p>
+              </div>
+              <div class="logic-result-content" id="logicResultContent" hidden></div>
+            </section>
+          </div>
+          <div class="logic-nucleus__pulse-bar" aria-hidden="true">
+            <div class="logic-nucleus__pulse-fill" id="logicPulseFill"></div>
+          </div>
+          <div class="logic-nucleus__cmd-zone">
+            <section class="logic-hero-command" aria-label="Ask Brieftick Logic">
+              <form id="logicHeroForm" class="logic-hero-form" autocomplete="off" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
+                <span class="logic-hero-tag">Ask the market anything.</span>
+                <input type="text" id="logicHeroInput" class="logic-hero-input" placeholder="Speak to the global macro regime…" spellcheck="false" aria-label="Ask Brieftick Logic">
+                <button type="submit" class="logic-hero-submit">Run Logic</button>
+              </form>
+              <p class="logic-hero-hint"><span>⌘K command centre</span><span>·</span><span>Enter to run</span></p>
+              <div class="logic-hero-chips" id="logicHeroChips"></div>
+            </section>
+            <p class="logic-nucleus__orbit-ctx" id="logicOrbitCtx">ALSO IN ORBIT · VIX · SPY · NVDA · AAPL</p>
+          </div>
+        </div>
+
+        <div class="logic-flanks">
+          <aside class="logic-sidebar logic-sidebar--modes" id="logicModeSidebar" aria-label="Logic modes"></aside>
+          <aside class="logic-context-sidebar" id="logicContextSidebar" aria-label="Market context"></aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="logic-search-overlay" id="logicSearchOverlay" aria-hidden="true">
+      <div class="logic-search-panel" role="dialog" aria-label="Logic search">
+        <button type="button" class="logic-search-close" id="logicSearchClose" aria-label="Close">×</button>
+        <h4>Brieftick Logic · Command centre</h4>
+        <form id="logicSearchForm" class="logic-command-form" autocomplete="off" onsubmit="return window.__logicFormGuard ? window.__logicFormGuard(event) : false">
+          <input type="text" id="logicSearchInput" class="logic-command-input" placeholder="Ask Brieftick Logic…" spellcheck="false">
+          <button type="submit" class="logic-command-submit">Run</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

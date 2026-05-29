@@ -1,0 +1,114 @@
+/**
+ * Logic Design Lab — shell only (nav, page chrome).
+ * Approved centre: logic-cinematic.css + logic-nucleus-centre.css
+ */
+
+:root {
+  --bg-0: #05060a;
+  --ink: #e8ecf5;
+  --ink-faint: #566175;
+  --gold: #d4a85a;
+  --body: "Inter Tight", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--bg-0);
+  color: var(--ink);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.logic-lab-nav {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 168, 90, 0.12);
+  background: rgba(4, 6, 10, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+.logic-lab-nav .split-brand {
+  cursor: default;
+}
+
+.logic-lab-badge {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(212, 168, 90, 0.35);
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.logic-lab-note {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+  max-width: 220px;
+  line-height: 1.35;
+}
+
+#page-logic {
+  display: block !important;
+  opacity: 1 !important;
+  min-height: 100vh;
+  padding-top: 72px;
+}
+
+html[data-theme="logic"] #page-logic {
+  padding-top: 72px;
+}
+
+.logic-processing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+.logic-skeleton {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.04)
+  );
+  background-size: 200% 100%;
+  animation: logicLabShimmer 1.4s ease infinite;
+}
+
+@keyframes logicLabShimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}

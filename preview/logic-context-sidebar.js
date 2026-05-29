@@ -19,6 +19,8 @@ function escapeHtml(s) {
     .replace(/"/g, "&quot;");
 }
 
+const COMPACT_WATCH_SYMBOLS = ["NVDA", "TSLA", "AAPL"];
+
 const TICKER_ACTIONS = [
   { label: "Why moving?", suffix: "Why is {sym} moving?" },
   { label: "Earnings", suffix: "What are the earnings drivers for {sym}?" },
@@ -42,26 +44,30 @@ export function mountLogicContextSidebar(onPrompt) {
   if (!root || root.dataset.mounted) return;
   root.dataset.mounted = "1";
 
+  root.classList.add("logic-ctx-rail");
   root.innerHTML = `
-    <section class="logic-ctx-block" aria-label="Watchlist">
+    <section class="logic-ctx-block logic-ctx-block--watch" aria-label="Watchlist">
       <div class="logic-ctx-label">Watchlist</div>
-      <div class="logic-ctx-watch" id="logicCtxWatchlist"></div>
+      <div class="logic-ctx-watch logic-ctx-watch--compact" id="logicCtxWatchlist"></div>
     </section>
-    <section class="logic-ctx-block" aria-label="Market state">
-      <div class="logic-ctx-label">Market state</div>
-      <p class="logic-ctx-line" id="logicCtxMarket">Loading tape…</p>
-    </section>
-    <section class="logic-ctx-block logic-ctx-block--optional" id="logicCtxExposureBlock" hidden>
-      <div class="logic-ctx-label">Portfolio exposure</div>
-      <p class="logic-ctx-line" id="logicCtxExposure"></p>
-    </section>
-    <section class="logic-ctx-block" aria-label="Alerts">
-      <div class="logic-ctx-label">Alerts</div>
-      <ul class="logic-ctx-alerts" id="logicCtxAlerts"></ul>
-    </section>
-    <details class="logic-ctx-manage" id="logicCtxManage">
-      <summary class="logic-ctx-manage-sum">Manage book & watchlist</summary>
-      <div id="logicPortfolioMount" class="logic-ctx-manage-body"></div>
+    <details class="logic-ctx-rail__more">
+      <summary class="logic-ctx-rail__more-sum">Context</summary>
+      <section class="logic-ctx-block logic-ctx-block--ambient" aria-label="Market state">
+        <div class="logic-ctx-label">Market state</div>
+        <p class="logic-ctx-line" id="logicCtxMarket">Loading tape…</p>
+      </section>
+      <section class="logic-ctx-block logic-ctx-block--optional logic-ctx-block--ambient" id="logicCtxExposureBlock" hidden>
+        <div class="logic-ctx-label">Exposure</div>
+        <p class="logic-ctx-line" id="logicCtxExposure"></p>
+      </section>
+      <section class="logic-ctx-block logic-ctx-block--ambient" aria-label="Alerts">
+        <div class="logic-ctx-label">Alerts</div>
+        <ul class="logic-ctx-alerts" id="logicCtxAlerts"></ul>
+      </section>
+      <details class="logic-ctx-manage" id="logicCtxManage">
+        <summary class="logic-ctx-manage-sum">Manage book</summary>
+        <div id="logicPortfolioMount" class="logic-ctx-manage-body"></div>
+      </details>
     </details>
   `;
 
@@ -73,31 +79,35 @@ export function mountLogicContextSidebar(onPrompt) {
 /**
  * @param {(prompt: string) => void} onPrompt
  */
-function renderWatchlistSection(onPrompt) {
-  const el = document.getElementById("logicCtxWatchlist");
-  if (!el) return;
-  const symbols = getLogicWatchlist();
-  if (!symbols.length) {
-    el.innerHTML =
-      '<p class="logic-ctx-empty">No tickers saved — open Manage below.</p>';
-    return;
-  }
-
-  el.innerHTML = symbols
-    .slice(0, 12)
-    .map(
-      (sym) => `
-    <div class="logic-ctx-ticker" data-ticker="${escapeHtml(sym)}">
+function watchlistTickerRow(sym) {
+  return `<div class="logic-ctx-ticker" data-ticker="${escapeHtml(sym)}">
       <button type="button" class="logic-ctx-ticker-btn" data-ticker-toggle="${escapeHtml(sym)}">${escapeHtml(sym)}</button>
-      <div class="logic-ctx-ticker-menu" hidden>
+      <div class="logic-ctx-ticker-menu">
         ${TICKER_ACTIONS.map(
           (a) =>
             `<button type="button" class="logic-ctx-action" data-prompt="${escapeHtml(a.suffix.replace("{sym}", sym))}">${escapeHtml(a.label)}</button>`
         ).join("")}
       </div>
-    </div>`
-    )
-    .join("");
+    </div>`;
+}
+
+function renderWatchlistSection(onPrompt) {
+  const el = document.getElementById("logicCtxWatchlist");
+  if (!el) return;
+  const saved = getLogicWatchlist();
+  const compact = COMPACT_WATCH_SYMBOLS;
+  const extra = saved.filter((s) => !compact.includes(s));
+
+  let html = compact.map((sym) => watchlistTickerRow(sym)).join("");
+  if (extra.length) {
+    html += `<details class="logic-ctx-watch-more">
+      <summary class="logic-ctx-watch-more-sum">+${extra.length} saved</summary>
+      <div class="logic-ctx-watch-more-list">${extra.map((sym) => watchlistTickerRow(sym)).join("")}</div>
+    </details>`;
+  } else if (!saved.length) {
+    html += '<p class="logic-ctx-empty">Hover a symbol for actions</p>';
+  }
+  el.innerHTML = html;
 }
 
 /**
@@ -106,14 +116,16 @@ function renderWatchlistSection(onPrompt) {
 function renderAlertsSection(onPrompt) {
   const el = document.getElementById("logicCtxAlerts");
   if (!el) return;
-  el.innerHTML = PREVIEW_ALERTS.map(
-    (a) => `<li class="logic-ctx-alert">
+  el.innerHTML = PREVIEW_ALERTS.slice(0, 2)
+    .map(
+      (a) => `<li class="logic-ctx-alert">
       <button type="button" class="logic-ctx-alert-btn" data-prompt="${escapeHtml(a.prompt)}">
         <span class="logic-ctx-alert-name">${escapeHtml(a.label)}</span>
         <span class="logic-ctx-alert-when">${escapeHtml(a.when)}</span>
       </button>
     </li>`
-  ).join("");
+    )
+    .join("");
 }
 
 /**
