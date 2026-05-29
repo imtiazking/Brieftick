@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="split">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Brieftick · Dashboard Intelligence Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/split-brand.css">
+  <link rel="stylesheet" href="/styles/split-theme.css">
+  <link rel="stylesheet" href="/styles/split-nav-a.css">
+  <link rel="stylesheet" href="/styles/dashboard-design-lab.css">
+  <link rel="stylesheet" href="/styles/dashboard-rail-modules.css">
+  <script>
+    window.__DASHBOARD_DESIGN_LAB = true;
+    window.Clerk = undefined;
+    window._clerkUser = null;
+    window.fetch = function dashboardLabFetch() {
+      return Promise.reject(new Error("fetch disabled on Dashboard Intelligence Lab"));
+    };
+  </script>
+  <script type="module" src="/preview/dashboard-design-lab.js"></script>
+</head>
+<body class="dash-lab-body">
+  <div class="split-atmosphere" aria-hidden="true">
+    <div class="split-atmosphere__dual"><span></span><span></span></div>
+    <div class="split-atmosphere__fog"></div>
+    <div class="split-atmosphere__vignette"></div>
+  </div>
+
+  <header class="dash-lab-chrome" aria-label="Dashboard Intelligence Lab">
+    <div class="dash-lab-chrome__brand">
+      <div class="brand split-brand">
+        <img src="/logo-transparent.png" alt="Brieftick" class="split-brand-img" width="140" height="46">
+      </div>
+      <span class="dash-lab-chrome__meta">Dashboard Intelligence Lab</span>
+    </div>
+    <div class="dash-lab-concept-toggle" role="group" aria-label="Concept">
+      <button type="button" data-concept="orbit" class="is-active" aria-pressed="true">Orbit</button>
+      <button type="button" data-concept="deck" aria-pressed="false">Deck</button>
+      <button type="button" data-concept="rail" aria-pressed="false">Rail</button>
+      <button type="button" data-concept="wheel" aria-pressed="false">Wheel</button>
+    </div>
+    <p class="dash-lab-note">Static mocks · no auth · no API</p>
+  </header>
+
+  <div class="dash-lab-nav">
+    <nav class="nav nav-a" aria-label="Site navigation">
+      <div class="nav-a__start">
+        <div class="brand split-brand">
+          <img src="/logo-transparent.png" alt="Brieftick" class="split-brand-img" width="120" height="40">
+        </div>
+        <div class="nav-links nav-a__links">
+          <a class="nav-link" href="/">Home</a>
+          <span class="nav-link active" data-lab-only>Dashboard Lab</span>
+          <a class="nav-link" href="/logic-design-lab">Logic Lab</a>
+          <a class="nav-link" href="/pricing">Pricing</a>
+          <a class="nav-link" href="/about">About</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <main class="dash-lab-main">
+    <!-- CONCEPT A — Intelligence Orbit -->
+    <section id="panelOrbit" class="dash-lab-panel is-active" aria-label="Intelligence Orbit">
+      <div class="dash-lab-env" aria-hidden="true">
+        <div class="dash-lab-env__haze"></div>
+        <div class="dash-lab-env__vignette"></div>
+      </div>
+      <div class="intel-orbit-scene" id="orbitScene">
+        <div class="intel-orbit-stage" id="orbitStage" aria-hidden="true"></div>
+        <article class="intel-nucleus" aria-live="polite">
+          <header class="intel-nucleus__header">
+            <span class="intel-nucleus__tag">Market Pulse</span>
+            <h1 class="intel-nucleus__title">Intelligence Orbit</h1>
+            <p class="intel-nucleus__regime" id="orbitRegime">Risk-on · narrow leadership</p>
+          </header>
+          <div class="intel-surface is-visible" id="orbitSurface"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONCEPT B — Intelligence Deck -->
+    <section id="panelDeck" class="dash-lab-panel" aria-label="Intelligence Deck" hidden>
+      <div class="dash-lab-env" aria-hidden="true">
+        <div class="dash-lab-env__haze"></div>
+        <div class="dash-lab-env__vignette"></div>
+      </div>
+      <div class="intel-deck-scene">
+        <header class="deck-hero" id="deckHero">
+          <span class="deck-hero__tag">Market Pulse</span>
+          <h2 class="deck-hero__title">Loading…</h2>
+          <p class="deck-hero__body"></p>
+        </header>
+        <div class="deck-controls">
+          <button type="button" id="deckPrev" aria-label="Previous card">‹</button>
+          <div class="deck-rail" id="deckRail" role="tablist" aria-label="Intelligence deck"></div>
+          <button type="button" id="deckNext" aria-label="Next card">›</button>
+        </div>
+        <div class="deck-viewport" id="deckViewport">
+          <div class="deck-stage" id="deckStage" role="tabpanel"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONCEPT C — Intelligence Rail -->
+    <section id="panelRail" class="dash-lab-panel" aria-label="Intelligence Rail" hidden>
+      <div class="dash-lab-env" aria-hidden="true">
+        <div class="dash-lab-env__haze"></div>
+        <div class="dash-lab-env__vignette"></div>
+      </div>
+      <div class="intel-rail-scene">
+        <header class="rail-pulse-hero" id="railPulseHero" aria-label="Market Pulse"></header>
+        <nav class="intel-rail" id="intelRail" role="tablist" aria-label="Intelligence rail"></nav>
+        <div class="rail-module-viewport" id="railViewport">
+          <div class="rail-module-stage" id="railModuleStage" role="tabpanel" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONCEPT D — Intelligence Wheel -->
+    <section id="panelWheel" class="dash-lab-panel" aria-label="Intelligence Wheel" hidden>
+      <div class="dash-lab-env" aria-hidden="true">
+        <div class="dash-lab-env__haze"></div>
+        <div class="dash-lab-env__vignette"></div>
+      </div>
+      <div class="intel-wheel-scene">
+        <p class="intel-wheel__hint">Drag or click any channel · arrow keys</p>
+        <div class="intel-wheel__viewport" id="wheelViewport" tabindex="0" aria-label="Intelligence wheel"></div>
+        <div class="wheel-module-viewport">
+          <div class="rail-module-stage" id="wheelModuleStage" role="region" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="dash-lab-river" aria-hidden="true">
+    <span id="dashLabRiver"></span>
+  </div>
+</body>
+</html>
