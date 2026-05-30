@@ -11,6 +11,8 @@ export const RAIL_PULSE = {
     "Megacap tech is carrying index returns while breadth only partially confirms. Rates are stable and the dollar is steady — leadership is concentrated, not broad. Institutional flow favours growth ETFs; defensives see tactical outflows.",
   narrativeShort:
     "AI leadership dominant while breadth only partly confirms — index strength remains narrow, not broad.",
+  /** Wheel strip — single editorial line (max 2 lines total) */
+  editorialLine: "AI Leadership Dominant",
   keyDriver: "AI capex narrative + mega-cap earnings resilience",
   keyRisk: "Treasury yields · CPI event risk · narrow concentration",
   session:
@@ -30,8 +32,25 @@ export const RAIL_SECTIONS = [
   { id: "session", label: "SESSION", code: "08", title: "Brieftick · Session Summary", meta: "AI · mock" },
 ];
 
-/** Wheel + rail navigation order */
-export const WHEEL_SECTIONS = RAIL_SECTIONS;
+/** Plain-English wheel navigation labels (wheel only; module ids/engines unchanged) */
+const WHEEL_LABELS = {
+  movers: "Movers",
+  heatmap: "Sectors",
+  volatility: "Market Risk",
+  flows: "Money Flow",
+  signals: "Opportunities",
+  news: "News",
+  correlation: "Relationships",
+  alerts: "What Matters",
+  watchlist: "Watchlist",
+  session: "Summary",
+};
+
+/** Wheel channel order — same ids as RAIL_SECTIONS, investor-friendly labels */
+export const WHEEL_SECTIONS = RAIL_SECTIONS.map((s) => ({
+  ...s,
+  label: WHEEL_LABELS[s.id] ?? s.label,
+}));
 
 const MOVERS = [
   ["NVDA", "NVIDIA", "219.46", "+1.98", 1.98],
@@ -378,19 +397,9 @@ export function renderRailPulseHero() {
 
 export function renderWheelPulseStrip() {
   const p = RAIL_PULSE;
-  const regime = p.regimeShort || p.regime;
-  const narrative = p.narrativeShort || p.narrative;
+  const line =
+    p.editorialLine || p.regimeShort || p.regime.split("·")[0].trim();
   return `
     <span class="wheel-pulse-strip__tag">Market Pulse</span>
-    <p class="wheel-pulse-strip__line">
-      <span class="wheel-pulse-strip__regime">${esc(regime)}</span>
-      <span class="wheel-pulse-strip__sep" aria-hidden="true">·</span>
-      <span class="wheel-pulse-strip__conf">Confidence ${esc(p.confidence)}</span>
-      <span class="wheel-pulse-strip__sep" aria-hidden="true">·</span>
-      <span class="wheel-pulse-strip__narr">${esc(narrative)}</span>
-      <span class="wheel-pulse-strip__sep" aria-hidden="true">·</span>
-      <span class="wheel-pulse-strip__driver">Key driver: ${esc(p.keyDriver)}</span>
-      <span class="wheel-pulse-strip__sep" aria-hidden="true">·</span>
-      <span class="wheel-pulse-strip__risk">Key risk: ${esc(p.keyRisk)}</span>
-    </p>`;
+    <p class="wheel-pulse-strip__headline">${esc(line)}</p>`;
 }

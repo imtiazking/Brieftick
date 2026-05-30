@@ -832,19 +832,15 @@ body[data-dash-lab-concept="rail"] .dash-lab-concept-toggle button[data-concept=
   padding-top: 8px;
 }
 
-/* Compact Market Pulse — context strip above wheel */
+/* Market Pulse — minimal editorial strip above wheel */
 .wheel-pulse-strip {
   position: relative;
   z-index: 3;
   display: block;
-  visibility: visible;
-  opacity: 1;
-  max-width: 920px;
-  margin: 0 auto 20px;
-  padding: 0 12px 16px;
+  max-width: 640px;
+  margin: 0 auto 18px;
+  padding: 0 12px 14px;
   text-align: center;
-  border-bottom: 1px solid rgba(212, 168, 90, 0.14);
-  background: linear-gradient(180deg, rgba(212, 168, 90, 0.07), transparent 80%);
 }
 
 .wheel-pulse-strip__tag {
@@ -852,63 +848,21 @@ body[data-dash-lab-concept="rail"] .dash-lab-concept-toggle button[data-concept=
   font-family: var(--dash-mono);
   font-size: 8px;
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(212, 168, 90, 0.72);
-  margin-bottom: 10px;
+  color: rgba(212, 168, 90, 0.55);
+  margin-bottom: 8px;
 }
 
-.wheel-pulse-strip__line {
+.wheel-pulse-strip__headline {
   font-family: var(--dash-display);
-  font-size: clamp(14px, 1.85vw, 17px);
+  font-size: clamp(20px, 2.6vw, 26px);
   font-weight: 400;
-  line-height: 1.55;
-  letter-spacing: -0.01em;
-  color: rgba(232, 236, 245, 0.72);
+  font-style: italic;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: rgba(245, 240, 232, 0.88);
   margin: 0;
-}
-
-.wheel-pulse-strip__regime {
-  color: rgba(110, 201, 160, 0.95);
-  font-weight: 500;
-}
-
-.wheel-pulse-strip__conf {
-  font-family: var(--dash-mono);
-  font-size: 0.82em;
-  letter-spacing: 0.06em;
-  color: rgba(232, 236, 245, 0.58);
-}
-
-.wheel-pulse-strip__sep {
-  margin: 0 0.35em;
-  color: rgba(212, 168, 90, 0.28);
-  font-weight: 300;
-}
-
-.wheel-pulse-strip__narr {
-  color: rgba(240, 236, 228, 0.82);
-}
-
-.wheel-pulse-strip__driver {
-  color: rgba(232, 236, 245, 0.55);
-  font-size: 0.94em;
-}
-
-.wheel-pulse-strip__risk {
-  color: rgba(255, 181, 71, 0.75);
-  font-size: 0.94em;
-}
-
-@media (max-width: 720px) {
-  .wheel-pulse-strip__line {
-    font-size: 14px;
-    line-height: 1.65;
-  }
-
-  .wheel-pulse-strip__sep {
-    display: inline;
-  }
 }
 
 .intel-wheel__hint {
