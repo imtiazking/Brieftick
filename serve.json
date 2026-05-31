@@ -1,6 +1,4 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
     { "source": "/dashboard-preview", "destination": "/dashboard-preview.html" },
     { "source": "/dashboard-design-lab", "destination": "/dashboard-design-lab.html" }

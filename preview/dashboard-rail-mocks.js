@@ -1,7 +1,14 @@
 /**
- * Intelligence Rail — static module mocks (production dashboard parity).
+ * Intelligence Rail — static module mocks (design lab).
+ *
+ * Design rule: visual first · one takeaway · one optional explanation.
+ * Hero chart/map on screen; text supports the visual — never a text-only surface.
  * @module preview/dashboard-rail-mocks
  */
+
+import { renderMovesNetworkHero } from "./dashboard-moves-network.js";
+import { bindMoversIntel } from "./dashboard-movers-intel.js";
+import { renderNewsHero, bindNewsNarrative } from "./dashboard-news-narrative.js";
 
 export const RAIL_PULSE = {
   regime: "Risk-On · Narrow Leadership",
@@ -26,10 +33,10 @@ export const RAIL_SECTIONS = [
   { id: "flows", label: "FLOWS", code: "07", title: "Market Intelligence Engine", meta: "Live capital flow" },
   { id: "signals", label: "SIGNALS", code: "06", title: "Signal Intelligence Feed", meta: "8 headlines · mock" },
   { id: "news", label: "NEWS", code: "10", title: "News Intelligence", meta: "Filtered ↻ 12s" },
-  { id: "correlation", label: "CORRELATION", code: "09", title: "Correlation Engine · 30D", meta: "Pearson · static" },
+  { id: "correlation", label: "MOVES TOGETHER", code: "09", title: "Moves Together", meta: "Who rises & falls together" },
   { id: "alerts", label: "ALERTS", code: "S1", title: "High-Signal Alerts", meta: "CB · Macro · Regulatory" },
   { id: "watchlist", label: "WATCHLIST", code: "05", title: "Watchlist", meta: "Design lab book" },
-  { id: "session", label: "SESSION", code: "08", title: "Brieftick · Session Summary", meta: "AI · mock" },
+  { id: "session", label: "SESSION", code: "08", title: "Today's Briefing", meta: "Live · preview" },
 ];
 
 /** Plain-English wheel navigation labels (wheel only; module ids/engines unchanged) */
@@ -40,7 +47,7 @@ const WHEEL_LABELS = {
   flows: "Money Flow",
   signals: "Opportunities",
   news: "News",
-  correlation: "Relationships",
+  correlation: "Moves Together",
   alerts: "What Matters",
   watchlist: "Watchlist",
   session: "Summary",
@@ -65,29 +72,88 @@ const MOVERS = [
   ["AVGO", "Broadcom", "1386.20", "−1.18", -1.18],
 ];
 
-const SECTORS = [
-  ["Tech", "+0.42%", 0.42],
-  ["Energy", "+1.18%", 1.18],
-  ["Financials", "+0.36%", 0.36],
-  ["Healthcare", "−0.18%", -0.18],
-  ["Consumer Discr.", "−0.44%", -0.44],
-  ["Industrials", "+0.21%", 0.21],
-  ["Utilities", "+0.63%", 0.63],
-  ["Materials", "−0.12%", -0.12],
-  ["Comm Services", "−0.28%", -0.28],
-  ["Real Estate", "+0.08%", 0.08],
-  ["Staples", "+0.31%", 0.31],
-  ["Semis", "−1.36%", -1.36],
-];
-
-const CORR_SYMS = ["NVDA", "AMD", "AVGO", "MSFT", "META", "SPY"];
-const CORR_MATRIX = [
-  [1.0, 0.86, 0.78, 0.62, 0.58, 0.71],
-  [0.86, 1.0, 0.74, 0.54, 0.51, 0.66],
-  [0.78, 0.74, 1.0, 0.51, 0.49, 0.61],
-  [0.62, 0.54, 0.51, 1.0, 0.68, 0.78],
-  [0.58, 0.51, 0.49, 0.68, 1.0, 0.74],
-  [0.71, 0.66, 0.61, 0.78, 0.74, 1.0],
+/** Interactive sector guides — beginner-friendly copy (design lab) */
+const SECTOR_GUIDES = [
+  {
+    id: "technology",
+    name: "Technology",
+    pct: 0.42,
+    means:
+      "Technology companies are leading the market today. This group includes software, chips, and online platforms that investors often look to for growth.",
+    why:
+      "Strong interest in artificial intelligence and solid earnings from big tech names are pulling money into this area. Investors see these companies as leaders in the next wave of growth.",
+    examples: ["NVDA", "MSFT", "AAPL", "GOOGL"],
+  },
+  {
+    id: "energy",
+    name: "Energy",
+    pct: 1.18,
+    means:
+      "Energy companies are doing well today. This sector covers oil, gas, and companies that produce and sell fuel.",
+    why:
+      "Oil prices are firm and supply concerns are keeping investors interested. When energy prices rise, these companies often benefit.",
+    examples: ["XOM", "CVX", "COP", "SLB"],
+  },
+  {
+    id: "financials",
+    name: "Financials",
+    pct: 0.36,
+    means:
+      "Banks and financial companies are slightly higher. This sector includes banks, insurers, and payment companies.",
+    why:
+      "A steady economy and stable interest rates are helping bank stocks. Investors feel these companies can still earn solid profits in the current environment.",
+    examples: ["JPM", "BAC", "GS", "V"],
+  },
+  {
+    id: "healthcare",
+    name: "Healthcare",
+    pct: -0.18,
+    means:
+      "Healthcare is slightly lower today. This sector includes drug makers, hospitals, and health insurance companies.",
+    why:
+      "Some investors are moving money into faster-growing areas like tech. Healthcare is often seen as steadier, but it is not the main focus right now.",
+    examples: ["JNJ", "UNH", "LLY", "PFE"],
+  },
+  {
+    id: "consumer",
+    name: "Consumer",
+    pct: -0.44,
+    means:
+      "Consumer companies are a bit weaker today. This includes retailers, restaurants, and brands people buy from every day.",
+    why:
+      "Shoppers are being careful with spending, and some big retail names are under pressure. Investors worry that slower spending could hurt profits.",
+    examples: ["AMZN", "WMT", "TGT", "NKE"],
+  },
+  {
+    id: "industrials",
+    name: "Industrials",
+    pct: 0.21,
+    means:
+      "Industrial companies are modestly higher. This sector makes and moves physical goods — planes, trucks, factories, and equipment.",
+    why:
+      "A stable economy supports demand for goods and transport. Investors see these companies as tied to how busy the broader economy is.",
+    examples: ["CAT", "GE", "UPS", "BA"],
+  },
+  {
+    id: "utilities",
+    name: "Utilities",
+    pct: 0.63,
+    means:
+      "Utilities are doing better today. These companies provide electricity and gas to homes and businesses.",
+    why:
+      "When investors want steadier, defensive places for money, utilities often attract attention. They are seen as reliable, even when the market is uncertain.",
+    examples: ["NEE", "DUK", "SO", "AEP"],
+  },
+  {
+    id: "materials",
+    name: "Materials",
+    pct: -0.12,
+    means:
+      "Materials are slightly down. This sector includes metals, chemicals, and companies that supply raw inputs to other industries.",
+    why:
+      "Slower demand from factories and construction has weighed on these stocks. Investors are waiting for clearer signs that the economy will pick up speed.",
+    examples: ["LIN", "FCX", "NEM", "DOW"],
+  },
 ];
 
 const WATCHLIST = [
@@ -97,24 +163,6 @@ const WATCHLIST = [
   ["AAPL", "Apple", "219.84", "+0.22"],
   ["TSLA", "Tesla", "184.92", "−1.42"],
   ["META", "Meta", "568.42", "−0.84"],
-];
-
-const SIGNALS = [
-  { ago: "12m", text: "<b>Fed speakers</b> lean slightly hawkish; front-end yields tick higher.", tags: ["macro", "bearish"] },
-  { ago: "28m", text: "Unusual <b>call activity</b> in NVDA ahead of earnings — vol above 30d mean.", tags: ["tech", "bullish"] },
-  { ago: "41m", text: "Small-cap breadth diverges: <b>IWM</b> lags SPY despite risk-on index tone.", tags: ["neutral"] },
-  { ago: "1h", text: "<b>OPEC</b> commentary supports crude; energy complex bid.", tags: ["energy", "bullish"] },
-  { ago: "1h", text: "Dollar–gold <b>correlation breakdown</b> intraday — macro desks flag.", tags: ["macro"] },
-  { ago: "2h", text: "<b>NVDA</b> dark-pool prints show buyers defending on dips.", tags: ["tech", "bullish"] },
-];
-
-const NEWS = [
-  ["14m", "<b>CPI preview:</b> economists expect core stickiness; markets price 2–3bp front-end move.", ["macro"]],
-  ["32m", "<b>NVDA</b> supplier commentary supports AI capex narrative into earnings.", ["tech", "bullish"]],
-  ["48m", "European PMIs soften; <b>DAX</b> lags US futures.", ["macro", "bearish"]],
-  ["1h", "<b>JPM</b> notes buyback support in mega-cap financials.", ["bullish"]],
-  ["1h", "Geopolitical headlines <b>muted</b>; oil steady near range highs.", ["energy", "neutral"]],
-  ["2h", "<b>Fed</b> balance-sheet debate resurfaces in op-ed cycle.", ["macro"]],
 ];
 
 const ALERTS = [
@@ -139,12 +187,9 @@ function heatColor(v) {
   return "rgba(255,255,255,0.04)";
 }
 
-function corrColor(v) {
-  if (v >= 0.8) return "rgba(255,91,110,0.55)";
-  if (v >= 0.65) return "rgba(255,91,110,0.32)";
-  if (v >= 0.5) return "rgba(255,181,71,0.32)";
-  if (v >= 0.3) return "rgba(78,168,255,0.25)";
-  return "rgba(78,168,255,0.12)";
+function formatSectorPct(v) {
+  const sign = v >= 0 ? "+" : "−";
+  return `${sign}${Math.abs(v).toFixed(1)}%`;
 }
 
 function sparkPath(seed) {
@@ -163,150 +208,541 @@ function sparkPath(seed) {
     .join(" ");
 }
 
-function moduleHead(section) {
+export function moduleHead(section, options = {}) {
+  const showCode = options.showCode !== false && section.code;
+  const titleInner = showCode
+    ? `<b>${esc(section.code)}</b> ${esc(section.title)}`
+    : esc(section.title);
   return `<header class="rail-module__head">
-    <span class="rail-module__title"><b>${esc(section.code)}</b> ${esc(section.title)}</span>
+    <span class="rail-module__title">${titleInner}</span>
     <span class="rail-module__meta">${esc(section.meta)}</span>
   </header>`;
 }
 
-function renderMovers(section) {
-  const rows = MOVERS.map(([s, n, p, c, d]) => {
-    const cls = d > 0 ? "up" : d < 0 ? "dn" : "flat";
-    const color = d > 0 ? "#3ddc97" : d < 0 ? "#ff5b6e" : "#5a6577";
-    return `<div class="mover">
-      <div class="sym">${esc(s)}</div>
-      <div class="name">${esc(n)}</div>
-      <svg class="spark" viewBox="0 0 56 22" preserveAspectRatio="none"><polyline points="${sparkPath(d * 3 + s.length)}" fill="none" stroke="${color}" stroke-width="1.4"/></svg>
-      <div class="price">${esc(p)}</div>
-      <div class="chg ${cls}">${esc(c)}%</div>
+function focusDetailBlocks({ what, why, matters }) {
+  return `<div class="focus-detail__block">
+      <span class="focus-detail__q">What is happening?</span>
+      <p>${esc(what)}</p>
+    </div>
+    <div class="focus-detail__block">
+      <span class="focus-detail__q">Why is it happening?</span>
+      <p>${esc(why)}</p>
+    </div>
+    <div class="focus-detail__block">
+      <span class="focus-detail__q">Why does it matter?</span>
+      <p>${esc(matters)}</p>
     </div>`;
-  }).join("");
-  return `<div class="rail-module">${moduleHead(section)}${rows}</div>`;
 }
 
-function renderHeatmap(section) {
-  const cells = SECTORS.map(
-    ([n, p, v]) =>
-      `<div class="heat-cell" style="background:${heatColor(v)}">
-        <div class="sec">${esc(n)}</div>
-        <div class="pct">${esc(p)}</div>
-      </div>`
-  ).join("");
-  return `<div class="rail-module">${moduleHead(section)}<div class="heatmap">${cells}</div></div>`;
+/** Visual-first surface: hero → takeaway → optional explanation toggle. */
+function renderIntelSurface(heroHtml, takeaway, explain) {
+  return `<div class="rail-module rail-module--intel">
+    <div class="intel-hero">${heroHtml}</div>
+    <p class="intel-takeaway">${esc(takeaway)}</p>
+    <button type="button" class="intel-explain-toggle" aria-expanded="false">Understand this</button>
+    <article class="intel-explain" hidden>${focusDetailBlocks(explain)}</article>
+  </div>`;
 }
 
-function renderVolatility(section) {
+export function bindIntelExplain(root) {
+  const scope = root || document;
+  const btn = scope.querySelector(".intel-explain-toggle");
+  const panel = scope.querySelector(".intel-explain");
+  if (!btn || !panel) return;
+
+  btn.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", open ? "false" : "true");
+    panel.hidden = open;
+    btn.textContent = open ? "Understand this" : "Hide explanation";
+  });
+}
+
+function heroVolatilityGauge() {
   const vix = 14.2;
-  const gauge = `<svg class="gauge" viewBox="0 0 200 110" aria-hidden="true">
-    <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/>
-    <line x1="100" y1="100" x2="118" y2="42" stroke="#e8c178" stroke-width="2.5" stroke-linecap="round"/>
-    <circle cx="100" cy="100" r="5" fill="#0a0d14" stroke="#d4a85a" stroke-width="2"/>
-  </svg>`;
-  return `<div class="rail-module">${moduleHead(section)}
-    <div class="gauge-wrap">${gauge}
-      <div class="gauge-value">${vix.toFixed(1)}</div>
-      <div class="gauge-state">NORMAL</div>
+  return `<div class="live-chart live-gauge" data-vix="${vix}">
+    <svg class="live-gauge__svg" viewBox="0 0 200 120" aria-label="Interactive volatility gauge">
+      <path class="live-gauge__track" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" stroke-linecap="round"/>
+      <path class="live-gauge__fill" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="calc(100 - var(--gauge-fill, 35))"/>
+      <defs>
+        <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#3ddc97"/>
+          <stop offset="55%" stop-color="#e8c178"/>
+          <stop offset="100%" stop-color="#ff5b6e"/>
+        </linearGradient>
+      </defs>
+      <circle class="live-gauge__hit" cx="100" cy="100" r="76" fill="transparent"/>
+      <g class="live-gauge__needle" transform="rotate(-35 100 100)">
+        <line x1="100" y1="100" x2="100" y2="38" stroke="#e8c178" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="6" fill="#0a0d14" stroke="#d4a85a" stroke-width="2"/>
+      </g>
+      <g class="live-gauge__zones" aria-hidden="true">
+        <path data-zone="11" class="live-gauge__zone" d="M 24 100 A 76 76 0 0 1 70 48" fill="none" stroke="transparent" stroke-width="24"/>
+        <path data-zone="14.2" class="live-gauge__zone" d="M 70 48 A 76 76 0 0 1 130 48" fill="none" stroke="transparent" stroke-width="24"/>
+        <path data-zone="22" class="live-gauge__zone" d="M 130 48 A 76 76 0 0 1 176 100" fill="none" stroke="transparent" stroke-width="24"/>
+      </g>
+    </svg>
+    <div class="live-gauge__readout">
+      <span class="live-gauge__value gauge-value">${vix.toFixed(1)}</span>
+      <span class="live-gauge__state gauge-state">Normal · Constructive</span>
     </div>
-    <div class="vix-explain">
-      <div class="vix-explain__label">BriefTick read</div>
-      Volatility sits in a constructive band for equities. Event risk is priced into the front week (CPI, Fed speakers) but spot VIX does not signal panic. Skew is modestly elevated — dealers hedging earnings cluster.
+    <p class="live-chart__hint">Drag the dial or tap a zone</p>
+    <p class="live-chart__probe" aria-live="polite"></p>
+  </div>`;
+}
+
+/**
+ * Packed-orbit layout (% within centered cluster box).
+ *        Industrials
+ *  Technology    Defensives
+ *    Financials  Energy
+ */
+const CAPITAL_FLOW_BUBBLES = [
+  { id: "technology", label: "Technology", pct: 38, x: 50, y: 52, delay: 0 },
+  { id: "industrials", label: "Industrials", pct: 11, x: 50, y: 6, delay: 3 },
+  { id: "defensives", label: "Defensives", pct: 8, x: 84, y: 36, delay: 4, outflow: true },
+  { id: "financials", label: "Financials", pct: 14, x: 16, y: 86, delay: 2 },
+  { id: "energy", label: "Energy", pct: 22, x: 80, y: 84, delay: 1 },
+];
+
+const FLOW_CLUSTER_CENTER = { x: 50, y: 52 };
+
+const FLOW_BUBBLE_SIZE = { min: 56, max: 176 };
+
+const FLOW_STORY_DEFAULT = {
+  primary: "Technology attracts the largest share of capital today.",
+  secondary: "Energy and Financials continue to participate while Defensives lag.",
+};
+
+function flowBubbleDiameter(pct) {
+  const maxPct = Math.max(...CAPITAL_FLOW_BUBBLES.map((b) => b.pct));
+  const t = pct / maxPct;
+  return Math.round(FLOW_BUBBLE_SIZE.min + t * (FLOW_BUBBLE_SIZE.max - FLOW_BUBBLE_SIZE.min));
+}
+
+function flowBubbleTier(id) {
+  const sorted = [...CAPITAL_FLOW_BUBBLES].sort((a, b) => b.pct - a.pct);
+  return sorted.findIndex((b) => b.id === id) + 1;
+}
+
+function heroFlowMap() {
+  const bubbles = CAPITAL_FLOW_BUBBLES.map((b) => {
+    const size = flowBubbleDiameter(b.pct);
+    const tier = flowBubbleTier(b.id);
+    const leaderCls = tier === 1 ? " is-leader" : "";
+    const outCls = b.outflow ? " is-outflow" : "";
+    return `<button
+      type="button"
+      class="flow-bubble flow-bubble--tier-${tier}${leaderCls}${outCls}"
+      data-flow-id="${esc(b.id)}"
+      data-anchor-x="${b.x}"
+      data-anchor-y="${b.y}"
+      style="--size:${size}px;--x:${b.x}%;--y:${b.y}%;--delay:${b.delay};--pct:${b.pct};--tier:${tier}"
+      aria-label="${esc(b.label)}, ${b.pct} percent of capital flow"
+    >
+      <span class="flow-bubble__halo" aria-hidden="true"></span>
+      <span class="flow-bubble__drift" aria-hidden="true">
+        <span class="flow-bubble__sphere">
+          <span class="flow-bubble__pct">${b.pct}%</span>
+          <span class="flow-bubble__label">${esc(b.label)}</span>
+        </span>
+      </span>
+    </button>`;
+  }).join("");
+
+  return `<div class="live-chart flow-bubbles-hero" aria-label="Money flow — capital concentration">
+    <div class="flow-bubbles-hero__env" aria-hidden="true">
+      <span class="flow-bubbles-hero__mist"></span>
+      <span class="flow-bubbles-hero__floor"></span>
+    </div>
+    <div class="flow-bubbles-hero__canvas" role="img" aria-label="Capital flowing toward Technology, Energy, Financials, Industrials, and Defensives">
+      <button type="button" class="flow-bubbles-hero__stage-hit" aria-label="View capital flow composition"></button>
+      <div class="flow-bubbles-hero__cluster">${bubbles}</div>
+    </div>
+    <div class="flow-bubbles-hero__story" aria-live="polite">
+      <p class="flow-bubbles-hero__story-primary">${FLOW_STORY_DEFAULT.primary}</p>
+      <p class="flow-bubbles-hero__story-secondary">${FLOW_STORY_DEFAULT.secondary}</p>
     </div>
   </div>`;
 }
 
-function renderFlows(section) {
-  return `<div class="rail-module">${moduleHead(section)}
-    <div class="flow-stats-row">
-      <div class="flow-stat"><div class="flow-stat-label">Capital Flow</div><div class="flow-stat-val up">+$12.4B</div><div class="flow-stat-sub">Today · Net inflow</div></div>
-      <div class="flow-stat"><div class="flow-stat-label">Risk Appetite</div><div class="flow-stat-val gold">62 / 100</div><div class="flow-stat-sub">Moderate Risk-On</div></div>
-      <div class="flow-stat"><div class="flow-stat-label">Market Regime</div><div class="flow-stat-val gold">EXPANSION</div><div class="flow-stat-sub">Early Cycle</div></div>
-      <div class="flow-stat"><div class="flow-stat-label">Volatility</div><div class="flow-stat-val">14.2</div><div class="flow-stat-sub">VIX · Normal</div></div>
+function heroSignalPulse() {
+  const bars = [
+    { key: "interest-rates", label: "Interest Rates", h: 72, delay: 0 },
+    { key: "technology", label: "Technology", h: 88, delay: 1 },
+    { key: "market-strength", label: "Market Strength", h: 38, delay: 2 },
+    { key: "energy", label: "Energy", h: 64, delay: 3 },
+  ];
+  const maxH = Math.max(...bars.map((b) => b.h));
+  const leader = bars.find((b) => b.h === maxH) || bars[0];
+
+  const cols = bars
+    .map((b) => {
+      const isLeader = b.h === maxH;
+      return `<button type="button" class="signal-bar${isLeader ? " is-leader" : ""}" data-signal="${esc(b.key)}" style="--h:${b.h}%;--delay:${b.delay}" aria-label="${esc(b.label)} — ${b.h} opportunity strength">
+        <span class="signal-bar__value">${b.h}</span>
+        <span class="signal-bar__track">
+          <span class="signal-bar__fill"></span>
+          <span class="signal-bar__sheen" aria-hidden="true"></span>
+          <span class="signal-bar__glow" aria-hidden="true"></span>
+        </span>
+        <span class="signal-bar__ripple" aria-hidden="true"></span>
+        <span class="signal-bar__label">${esc(b.label)}</span>
+      </button>`;
+    })
+    .join("");
+
+  return `<div class="live-chart signal-pulse-hero" aria-label="Opportunities — what is driving the tape today">
+    <p class="signal-pulse-hero__kicker">Driving opportunities today</p>
+    <div class="signal-pulse-hero__chart">${cols}</div>
+    <p class="signal-pulse-hero__lead"><span class="signal-pulse-hero__lead-name">${esc(leader.label)}</span> is leading the tape</p>
+    <p class="live-chart__hint">Tap a bar to explore</p>
+    <p class="live-chart__probe" aria-live="polite"></p>
+  </div>`;
+}
+
+function heroNewsTimeline() {
+  const nodes = [
+    ["CPI", "cpi"],
+    ["AI supply", "ai supply"],
+    ["Europe", "europe"],
+    ["Oil", "oil"],
+  ];
+  const dots = nodes
+    .map(
+      ([label, key], i) =>
+        `<button type="button" class="news-timeline__node${i === 0 ? " is-active" : ""}" data-news="${esc(key)}">${esc(label)}</button>`
+    )
+    .join("");
+  return `<div class="live-chart news-timeline-hero" aria-label="News timeline — tap to scrub">
+    <div class="news-timeline__track"><span class="news-timeline__pulse"></span></div>
+    <div class="news-timeline__nodes">${dots}</div>
+    <p class="live-chart__hint">Scrub the headline cycle</p>
+    <p class="live-chart__probe" aria-live="polite"></p>
+  </div>`;
+}
+
+function heroConnectedMarkets() {
+  const edges = MOVES_EDGES.map((edge, i) => {
+    return `<g
+      class="moves-edge moves-edge--${edge.strength}${i === 0 ? " is-active" : ""}"
+      data-moves-edge="${esc(edge.id)}"
+      data-from="${esc(edge.from)}"
+      data-to="${esc(edge.to)}"
+      data-headline="${esc(edge.headline)}"
+      data-why="${esc(edge.why)}"
+      data-badge="${esc(edge.badge)}"
+      data-strength="${esc(edge.strength)}"
+      role="button"
+      tabindex="0"
+      aria-label="${esc(edge.headline)}"
+    >
+      <path class="moves-edge__glow" d="${edge.d}" pathLength="100"/>
+      <path class="moves-edge__line" d="${edge.d}" pathLength="100"/>
+    </g>`;
+  }).join("");
+
+  const nodes = MOVES_NODES.map((node, i) => {
+    const active = i === 0 || i === 1 ? " is-active" : "";
+    return `<button
+      type="button"
+      class="moves-node${active}"
+      data-moves-node="${esc(node.id)}"
+      style="left:${node.left};top:${node.top}"
+      aria-label="${esc(node.sym)} — ${esc(node.name)}"
+    >
+      <span class="moves-node__sym">${esc(node.sym)}</span>
+      <span class="moves-node__name">${esc(node.name)}</span>
+    </button>`;
+  }).join("");
+
+  const first = MOVES_EDGES[0];
+
+  return `<div class="live-chart moves-together-hero" aria-label="Moves Together — market connections">
+    <div class="moves-together__canvas">
+      <svg class="moves-together__svg" viewBox="0 0 400 220" aria-hidden="true">${edges}</svg>
+      <div class="moves-together__nodes">${nodes}</div>
     </div>
-    <div class="flow-grid">
-      <div class="flow-col">
-        <div class="flow-node"><span>Institutions</span><span class="up">+$4.8B</span></div>
-        <div class="flow-node"><span>Retail</span><span class="up">+$2.1B</span></div>
-        <div class="flow-node"><span>Hedge Funds</span><span class="up">+$3.2B</span></div>
-        <div class="flow-node"><span>ETF Flows</span><span class="up">+$3.3B</span></div>
+    <article class="moves-together__detail">
+      <h3 class="moves-together__headline">${esc(first.headline)}</h3>
+      <p class="moves-together__why">${esc(first.why)}</p>
+      <span class="moves-together__badge moves-together__badge--${first.strength === "strong" ? "strong" : "moderate"}">${esc(first.badge)}</span>
+    </article>
+    <p class="live-chart__hint">Tap a glowing line or company — strongest links pulse brightest</p>
+    <p class="live-chart__probe" aria-live="polite"></p>
+  </div>`;
+}
+
+function heroAlertsStack() {
+  return ALERTS.slice(0, 3)
+    .map(
+      (a, i) =>
+        `<button type="button" class="alert-visual${i === 0 ? " alert-visual--primary is-active" : ""}">
+          <span class="alert-visual__type">${esc(a.type)}</span>
+          <span class="alert-visual__head">${esc(a.headline)}</span>
+        </button>`
+    )
+    .join("");
+}
+
+function heroSessionChart() {
+  const w = 320;
+  const h = 72;
+  const path = sparkPath(42)
+    .split(" ")
+    .map((p, i) => {
+      const [x, y] = p.split(",").map(Number);
+      const nx = (x / 56) * w;
+      const ny = (y / 22) * h;
+      return `${i === 0 ? "M" : "L"}${nx.toFixed(1)},${ny.toFixed(1)}`;
+    })
+    .join(" ");
+  return `<div class="session-chart-hero">
+    <div class="session-chart-hero__regime"><span class="session-chart-hero__pill">Risk-On</span><span class="session-chart-hero__breadth">Narrow breadth</span></div>
+    <svg class="session-chart-hero__svg" viewBox="0 0 ${w} ${h}" aria-hidden="true">
+      <defs><linearGradient id="sessionFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(61,220,151,0.35)"/><stop offset="100%" stop-color="rgba(61,220,151,0)"/></linearGradient></defs>
+      <path d="${path} L${w},${h} L0,${h} Z" fill="url(#sessionFill)"/>
+      <path d="${path}" fill="none" stroke="#3ddc97" stroke-width="2"/>
+    </svg>
+  </div>`;
+}
+
+function moverSparkMarkup(sym, dir, seed) {
+  const color = dir === "up" ? "#3ddc97" : dir === "dn" ? "#ff5b6e" : "#5a6577";
+  const points = sparkPath(seed);
+  return `<svg class="mover-row__spark" viewBox="0 0 56 22" preserveAspectRatio="none" aria-hidden="true"><polyline class="mover-row__spark-line" points="${points}" pathLength="100" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function renderMovers(section) {
+  const rows = MOVERS.map(([s, n, p, c, d], i) => {
+    const dir = d > 0 ? "up" : d < 0 ? "dn" : "flat";
+    const spark = moverSparkMarkup(s, dir, d * 3 + s.length);
+    const active = i === 0 ? " is-active" : "";
+    return `<button
+      type="button"
+      class="mover-row mover-row--${dir}${active}"
+      data-mover-sym="${esc(s)}"
+      data-mover-dir="${dir}"
+      data-mover-chg="${esc(c)}%"
+      aria-selected="${i === 0 ? "true" : "false"}"
+      style="--row-i:${i}"
+    >
+      <span class="mover-row__glow" aria-hidden="true"></span>
+      <span class="mover-row__sym">${esc(s)}</span>
+      <span class="mover-row__name">${esc(n)}</span>
+      ${spark}
+      <span class="mover-row__price">${esc(p)}</span>
+      <span class="mover-row__chg mover-row__chg--${dir}">${esc(c)}%</span>
+    </button>`;
+  }).join("");
+
+  const first = MOVERS[0];
+  const firstDir = first[4] > 0 ? "up" : first[4] < 0 ? "dn" : "flat";
+  const firstSpark = moverSparkMarkup(first[0], firstDir, first[4] * 3 + first[0].length);
+
+  return `<div class="rail-module rail-module--movers">
+    ${moduleHead(section)}
+    <div class="movers-intel" data-active-sym="${esc(first[0])}">
+      <div class="movers-intel__ambience" aria-hidden="true">
+        <span class="movers-intel__sweep"></span>
+        <span class="movers-intel__bloom"></span>
+        <span class="movers-intel__depth"></span>
       </div>
-      <div class="flow-center">Flow Engine</div>
-      <div class="flow-col">
-        <div class="flow-node"><span>Technology</span><span class="up">+$5.6B</span></div>
-        <div class="flow-node"><span>Energy</span><span class="up">+$3.2B</span></div>
-        <div class="flow-node"><span>Financials</span><span class="up">+$1.8B</span></div>
-        <div class="flow-node"><span>Consumer Def.</span><span class="dn">−$1.8B</span></div>
+      <div class="movers-intel__layout">
+        <div class="movers-intel__list" role="list">${rows}</div>
+        <aside class="movers-intel__story is-visible" aria-live="polite">
+          <div class="movers-intel__story-inner">
+            <div class="movers-intel__hero">
+              <span class="movers-intel__hero-bloom" aria-hidden="true"></span>
+              <div class="movers-intel__hero-spark">${firstSpark}</div>
+              <div class="movers-intel__hero-meta">
+                <span class="movers-intel__hero-sym">${esc(first[0])}</span>
+                <span class="movers-intel__hero-chg movers-intel__hero-chg--${firstDir}">${esc(first[3])}%</span>
+              </div>
+            </div>
+            <p class="movers-intel__lead">AI infrastructure demand continues to support semiconductor leadership.</p>
+            <p class="movers-intel__why"><span class="movers-intel__why-label">Why it matters:</span> <span class="movers-intel__why-text">NVDA remains the strongest signal in the AI trade.</span></p>
+          </div>
+        </aside>
       </div>
-    </div>
-    <p class="rail-module__meta" style="margin-bottom:12px">Global Market Intelligence · regional snapshot</p>
-    <div class="global-grid">
-      <div class="global-region"><div class="global-region__label">US Equities</div><div class="global-region__val dn">−0.12%</div><div class="global-region__sub">Momentum mixed</div></div>
-      <div class="global-region"><div class="global-region__label">Europe</div><div class="global-region__val">+0.08%</div><div class="global-region__sub">Defensive rotation</div></div>
-      <div class="global-region"><div class="global-region__label">Commodities</div><div class="global-region__val up">+0.64%</div><div class="global-region__sub">Energy bid</div></div>
-      <div class="global-region"><div class="global-region__label">Asia Pacific</div><div class="global-region__val up">+0.22%</div><div class="global-region__sub">FX stabilising</div></div>
-    </div>
-    <div class="flow-narr-grid">
-      <div class="flow-narr"><div class="flow-narr-tag" style="color:#3ddc97">↑ Risk-On Rotation</div><div class="flow-narr-title">Growth leadership</div><div class="flow-narr-body">Capital rotating into tech and semis with earnings momentum.</div></div>
-      <div class="flow-narr"><div class="flow-narr-tag" style="color:#ffb547">~ Yield Pressure</div><div class="flow-narr-title">Curve dynamics</div><div class="flow-narr-body">Rising front-end yields press long-duration assets selectively.</div></div>
     </div>
   </div>`;
 }
 
-function renderSignals(section) {
-  const items = SIGNALS.map(
-    ({ ago, text, tags }) =>
-      `<div class="feed-item">
-        <div class="feed-time">${esc(ago)}</div>
-        <div class="feed-content">
-          <div class="lead">${text}</div>
-          <div class="tags">${tags.map((t) => `<span class="tag ${esc(t)}">${esc(t)}</span>`).join("")}</div>
-        </div>
-      </div>`
-  ).join("");
-  return `<div class="rail-module">${moduleHead(section)}${items}</div>`;
+function renderSectorCard(sector) {
+  const v = sector.pct;
+  const dir = v > 0.05 ? "up" : v < -0.05 ? "dn" : "flat";
+  const bg = heatColor(v);
+  const chips = sector.examples.map((t) => `<span class="sector-card__ticker">${esc(t)}</span>`).join("");
+  const head = `<span class="sector-card__head">
+      <span class="sector-card__name">${esc(sector.name)}</span>
+      <span class="sector-card__pct">${formatSectorPct(v)}</span>
+    </span>`;
+  const detailInner = `${focusDetailBlocks({
+    what: sector.means,
+    why: sector.why,
+    matters: `Examples you may hear today: ${sector.examples.join(", ")}.`,
+  })}<div class="sector-card__tickers">${chips}</div>`;
+
+  return `<button type="button" class="sector-card sector-card--${dir}" data-sector-id="${esc(sector.id)}" aria-expanded="false">
+    <span class="sector-card__flip">
+      <span class="sector-card__face sector-card__face--front" style="background:${bg}">
+        ${head}
+        <div class="sector-card__detail">${detailInner}</div>
+      </span>
+      <span class="sector-card__face sector-card__face--back" style="background:${bg}">
+        ${head}
+        <div class="sector-card__detail sector-card__detail--focused">${detailInner}</div>
+      </span>
+    </span>
+  </button>`;
 }
 
-function renderNews(section) {
-  const items = NEWS.map(
-    ([t, txt, tags]) =>
-      `<div class="feed-item">
-        <div class="feed-time">${esc(t)}</div>
-        <div class="feed-content">
-          <div class="lead">${txt}</div>
-          <div class="tags">${tags.map((tag) => `<span class="tag ${esc(tag)}">${esc(tag)}</span>`).join("")}</div>
-        </div>
-      </div>`
-  ).join("");
-  return `<div class="rail-module">${moduleHead(section)}${items}</div>`;
+function renderHeatmap() {
+  const cards = SECTOR_GUIDES.map(renderSectorCard).join("");
+  return `<div class="rail-module rail-module--intel rail-module--sectors">
+    <div class="intel-hero intel-hero--flush">
+      <div class="sector-grid" role="group" aria-label="Sector heatmap">${cards}</div>
+    </div>
+    <p class="intel-takeaway">Technology and energy lead the tape; most other sectors are only moving slightly.</p>
+    <p class="intel-hint">Tap a tile — heat responds · one story opens at a time</p>
+    <p class="live-chart__probe sector-probe" aria-live="polite">Explore sector leadership on the heatmap.</p>
+  </div>`;
 }
 
-function renderCorrelation(section) {
-  let grid = '<div class="corr-grid"><div class="corr-cell label"></div>';
-  grid += CORR_SYMS.map((s) => `<div class="corr-cell label">${esc(s)}</div>`).join("");
-  CORR_MATRIX.forEach((row, i) => {
-    grid += `<div class="corr-cell label">${esc(CORR_SYMS[i])}</div>`;
-    row.forEach((v) => {
-      grid += `<div class="corr-cell" style="background:${corrColor(v)}">${v.toFixed(2)}</div>`;
+/** Wire flip + click-to-expand on sector cards (call after heatmap HTML is injected). */
+export function bindSectorHeatmap(root) {
+  const grid = (root || document).querySelector(".sector-grid");
+  if (!grid) return;
+
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+  grid.querySelectorAll(".sector-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const wasOpen = card.classList.contains("is-expanded");
+
+      if (!finePointer.matches && !wasOpen) {
+        const wasFlipped = card.classList.contains("is-flipped");
+        if (!wasFlipped) {
+          grid.querySelectorAll(".sector-card").forEach((c) => c.classList.remove("is-flipped"));
+          card.classList.add("is-flipped");
+          return;
+        }
+        card.classList.remove("is-flipped");
+      }
+
+      const opening = !wasOpen;
+      grid.querySelectorAll(".sector-card").forEach((c) => {
+        c.classList.remove("is-expanded", "is-flipped");
+        c.setAttribute("aria-expanded", "false");
+      });
+      grid.classList.remove("has-focus");
+      if (opening) {
+        card.classList.add("is-expanded");
+        card.setAttribute("aria-expanded", "true");
+        grid.classList.add("has-focus");
+        const probe = (root || document).querySelector(".sector-probe");
+        const name = card.querySelector(".sector-card__name");
+        if (probe && name) probe.textContent = `${name.textContent} — open for the full story.`;
+      } else {
+        const probe = (root || document).querySelector(".sector-probe");
+        if (probe) probe.textContent = "Explore sector leadership on the heatmap.";
+      }
     });
   });
-  grid += "</div>";
-  const note =
-    "Pearson 30D · mock snapshot. Highest pair: NVDA/AMD at 0.86, <b style='color:#ffb547'>elevated</b> co-movement. Tech complex remains highly correlated — diversification benefit limited within semis.";
-  return `<div class="rail-module">${moduleHead(section)}${grid}<div class="corr-note">${note}</div></div>`;
 }
 
-function renderAlerts(section) {
-  const items = ALERTS.map(
-    (a) =>
-      `<div class="alert-item">
-        <div class="alert-type">${esc(a.type)}</div>
-        <div class="alert-headline">${esc(a.headline)}</div>
-        <div class="alert-read">${esc(a.read)}</div>
-      </div>`
-  ).join("");
-  return `<div class="rail-module">${moduleHead(section)}${items}
-    <p class="rail-module__meta" style="margin-top:16px">Risk Regime · <b style="color:#d4a85a">04</b> surfaced in Market Pulse hero</p>
-  </div>`;
+const VOLATILITY_EXPLAIN = {
+  what: "Volatility sits in a normal, constructive band — the market is not pricing panic.",
+  why: "Strong mega-cap earnings and stable rates keep investors willing to hold risk; event risk is in the calendar, not spot vol.",
+  matters: "You can read leadership and catalysts without assuming a volatility shock — until data surprises.",
+};
+
+const FLOWS_EXPLAIN = {
+  what: "Technology attracts the largest share of capital today.",
+  why: "Energy and Financials continue to participate while Defensives lag — bubble size shows the order of attraction.",
+  matters: "One glance at the map tells you where money is going without reading flow tables.",
+};
+
+const SIGNALS_EXPLAIN = {
+  what: "Technology is dominating today's opportunity set — rates, energy, and weak breadth follow.",
+  why: "Mega-cap earnings and AI positioning concentrate upside; the average stock still lags.",
+  matters: "The bars show where desks are leaning — size conviction to what is actually driving the tape.",
+};
+
+const NEWS_EXPLAIN = {
+  what: "Plain English explains what is moving markets, why it matters, which areas are affected, and what to watch next.",
+  why: "You should not need investing experience to understand the biggest story in under five seconds.",
+  matters: "Brieftick interprets the market for you — it does not dump headlines or jargon.",
+};
+
+const MOVES_TOGETHER_EXPLAIN = {
+  what: "One name is leading the session — the ring shows who is moving with it.",
+  why: "When a market leader runs, related chips, ETFs, and peers often react in the same direction.",
+  matters: "You see influence before you read a number — leadership and reaction are visible at a glance.",
+};
+
+const ALERTS_EXPLAIN = {
+  what: "Fed speakers, CPI, and energy supply commentary are the week's high-signal threads.",
+  why: "Each can move front-end yields or crude — both feed back into the leadership trade.",
+  matters: "Size positions into events consciously; the visual stack shows priority, not every headline.",
+};
+
+const SESSION_EXPLAIN = {
+  what: "US indices hold a risk-on tone with narrow tech and energy leadership.",
+  why: "Earnings resilience outweighs soft patches elsewhere; breadth only partly confirms the move.",
+  matters: "Strength is real but concentrated — CPI and mega-cap earnings are the next tests.",
+};
+
+function renderVolatility() {
+  return renderIntelSurface(
+    heroVolatilityGauge(),
+    "Volatility is calm — investors are comfortable holding risk into this week's data.",
+    VOLATILITY_EXPLAIN
+  );
+}
+
+function renderFlows() {
+  return renderIntelSurface(
+    heroFlowMap(),
+    "Technology attracts the largest share of capital today. Energy and Financials participate; Defensives lag.",
+    FLOWS_EXPLAIN
+  );
+}
+
+function renderSignals() {
+  return renderIntelSurface(
+    heroSignalPulse(),
+    "Technology is driving today's opportunities — interest rates and energy follow; market strength lags.",
+    SIGNALS_EXPLAIN
+  );
+}
+
+function renderNews() {
+  return renderIntelSurface(
+    renderNewsHero(),
+    "Inflation is today's biggest story — higher prices are pushing interest rates and weighing on technology stocks.",
+    NEWS_EXPLAIN
+  );
+}
+
+function renderCorrelation() {
+  return renderIntelSurface(
+    renderMovesNetworkHero(),
+    "Tap any name on the ring to see who it influences — the centre becomes your leader.",
+    MOVES_TOGETHER_EXPLAIN
+  );
+}
+
+function renderAlerts() {
+  return renderIntelSurface(
+    `<div class="live-chart alerts-stack-hero">${heroAlertsStack()}
+      <p class="live-chart__hint">Tap the stack — one priority at a time</p>
+      <p class="live-chart__probe" aria-live="polite"></p>
+    </div>`,
+    "Three macro threads — central bank, inflation data, and energy — deserve attention this week.",
+    ALERTS_EXPLAIN
+  );
 }
 
 function renderWatchlist(section) {
@@ -320,7 +756,7 @@ function renderWatchlist(section) {
     </div>`;
   }).join("");
   return `<div class="rail-module">${moduleHead(section)}${rows}
-    <p class="intel-surface__note" style="margin-top:14px">Session Summary · <b style="color:#d4a85a">08</b> in Market Pulse footer</p>
+    <p class="intel-surface__note" style="margin-top:14px">Open the <b style="color:#d4a85a">Summary</b> channel on the Intelligence Wheel for today's briefing.</p>
   </div>`;
 }
 
@@ -339,14 +775,26 @@ function renderRisk(section) {
   </div>`;
 }
 
-function renderSession(section) {
-  return `<div class="rail-module">${moduleHead({ ...section, code: "08", title: "Brieftick · Session Summary", meta: "AI · mock" })}
-    <div class="session-body">
-      <p>${esc(RAIL_PULSE.session)}</p>
-      <p>Cross-asset: dollar steady, gold firm, crude supported. Rates market prices two cuts by year-end with CPI as the next catalyst.</p>
-      <p>Desk positioning: long gamma in mega-cap tech, underweight defensives tactically. Watch NVDA earnings and Powell Wednesday.</p>
-    </div>
-  </div>`;
+function renderSession() {
+  return renderIntelSurface(heroSessionChart(), RAIL_PULSE.narrativeShort, SESSION_EXPLAIN);
+}
+
+/** Wire progressive disclosure after a visual intelligence module is injected. */
+export function bindIntelligenceModule(root, id) {
+  if (id === "heatmap") {
+    bindSectorHeatmap(root);
+    return;
+  }
+  if (id === "movers") {
+    bindMoversIntel(root);
+    return;
+  }
+  if (id === "news") {
+    bindNewsNarrative(root);
+    bindIntelExplain(root);
+    return;
+  }
+  bindIntelExplain(root);
 }
 
 const RENDERERS = {

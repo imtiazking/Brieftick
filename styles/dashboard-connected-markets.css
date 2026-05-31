@@ -1,0 +1,768 @@
+/**
+ * Moves Together — interactive influence ring (premium bloom, no beams).
+ */
+
+@keyframes mrDialSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mrFlowRing {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes mrSegmentPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    filter: brightness(0.92);
+  }
+  50% {
+    opacity: 0.82;
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes mrSegmentGlow {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.35;
+  }
+  55% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes mrCorePulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes mrRingPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.94);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.18);
+    opacity: 0;
+  }
+}
+
+@keyframes mrBloom {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes mrFadeRing {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes mrModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes mrModalBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.moves-ring-hero {
+  position: relative;
+  min-height: min(460px, 52vh);
+  padding: 8px 0 4px;
+  overflow: hidden;
+  border-radius: 16px;
+  isolation: isolate;
+  background: #000;
+}
+
+.moves-ring-hero.is-reconfiguring .moves-ring__spin {
+  animation: mrFadeRing 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.wheel-module-viewport .rail-module--intel .intel-hero:has(.moves-ring-hero) {
+  padding: 0;
+  background: #000;
+}
+
+.wheel-module-viewport .rail-module--intel:has(.moves-ring-hero) {
+  background: rgba(0, 0, 0, 0.65);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.moves-ring-hero .live-chart__hint {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  padding: 8px 0 12px;
+  text-align: center;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.35;
+}
+
+.moves-ring-hero .live-chart__probe {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* ── Add Stock control ──────────────────────────────────────── */
+.moves-ring__add-stock {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 12;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255, 255, 255, 0.72);
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.moves-ring__add-stock:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(140, 165, 230, 0.15);
+}
+
+.moves-ring__add-stock-icon {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+/* ── Add Stock modal (glass) ────────────────────────────────── */
+.moves-stock-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 72px 16px 24px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.moves-stock-modal.is-open {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.moves-stock-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.moves-stock-modal.is-open .moves-stock-modal__backdrop {
+  opacity: 1;
+  animation: mrModalBackdrop 0.28s ease forwards;
+}
+
+.moves-stock-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 360px);
+  padding: 18px 18px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: linear-gradient(
+    145deg,
+    rgba(28, 32, 48, 0.92) 0%,
+    rgba(12, 14, 22, 0.88) 100%
+  );
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+  transition:
+    opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moves-stock-modal.is-open .moves-stock-modal__panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: mrModalIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.moves-stock-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.moves-stock-modal__title {
+  margin: 0;
+  font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.02em;
+}
+
+.moves-stock-modal__close {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.moves-stock-modal__close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.moves-stock-modal__search-wrap {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.moves-stock-modal__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.moves-stock-modal__input::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.moves-stock-modal__input:focus {
+  border-color: rgba(140, 165, 230, 0.45);
+  box-shadow: 0 0 0 3px rgba(140, 165, 230, 0.12);
+}
+
+.moves-stock-modal__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+.moves-stock-modal__list:empty {
+  display: none;
+}
+
+.moves-stock-modal__option {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.moves-stock-modal__option:hover,
+.moves-stock-modal__option.is-active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.moves-stock-modal__option-sym {
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.moves-stock-modal__option-name {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.moves-stock-modal__empty {
+  padding: 12px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  text-align: center;
+}
+
+.moves-stock-modal__examples-label {
+  margin: 14px 0 8px;
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.moves-stock-modal__examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.moves-stock-modal__chip {
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.moves-stock-modal__chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.moves-stock-modal .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Atmosphere ─────────────────────────────────────────────── */
+.moves-ring__env {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.moves-ring__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 65% at 50% 48%, transparent 12%, rgba(0, 0, 0, 0.88) 100%);
+}
+
+.moves-ring__bloom {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(55vmin, 380px);
+  height: min(55vmin, 380px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(140, 165, 230, 0.1) 0%,
+    rgba(212, 168, 90, 0.04) 38%,
+    transparent 68%
+  );
+  filter: blur(48px);
+  animation: mrBloom 7s ease-in-out infinite;
+}
+
+/* ── Stage ──────────────────────────────────────────────────── */
+.moves-ring__stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+
+.moves-ring__spin {
+  position: absolute;
+  inset: 0;
+  animation: mrDialSpin 180s linear infinite;
+}
+
+.moves-ring__dial-mount,
+.moves-ring__nodes-mount {
+  position: absolute;
+  inset: 0;
+}
+
+.moves-ring__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.moves-ring__dial {
+  transform-origin: center;
+}
+
+.moves-ring__perimeter {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+  stroke-dasharray: 2 10;
+}
+
+/* Flowing light around ring — soft, not laser */
+.moves-ring__flow-track {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 18;
+  animation: mrFlowRing 14s linear infinite;
+}
+
+.moves-ring__flow-glow {
+  stroke: rgba(180, 195, 245, 0.12);
+  stroke-width: 8;
+  stroke-dasharray: 2 22;
+  filter: blur(3px);
+  animation: mrFlowRing 14s linear infinite;
+  animation-delay: -4s;
+  opacity: 0.6;
+}
+
+/* Segment illumination + pulse propagation */
+.moves-ring__segment-glow {
+  fill: rgba(200, 215, 255, 0.35);
+  filter: url(#movesSoftGlow);
+  opacity: 0;
+  pointer-events: none;
+  animation: mrSegmentGlow 4.2s ease-in-out infinite;
+  animation-delay: calc(var(--seg-i) * 0.45s);
+}
+
+.moves-ring__segment {
+  filter: url(#movesRingBloom);
+  opacity: 0.62;
+  cursor: pointer;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+  animation: mrSegmentPulse 4.2s ease-in-out infinite;
+  animation-delay: calc(var(--seg-i) * 0.45s);
+}
+
+.moves-ring__segment.is-active,
+.moves-ring__segment-glow.is-active {
+  opacity: 1;
+  animation: none;
+}
+
+.moves-ring__segment.is-active {
+  filter: url(#movesRingBloom) brightness(1.12);
+}
+
+.moves-ring__segment-glow.is-active {
+  opacity: 0.55;
+  animation: mrSegmentGlow 2.5s ease-in-out infinite;
+}
+
+.moves-ring__segment.is-dim,
+.moves-ring__segment-glow.is-dim {
+  opacity: 0.15;
+  animation: none;
+}
+
+.moves-ring__core-halo {
+  animation: mrCorePulse 4.5s ease-in-out infinite;
+}
+
+.moves-ring__core-pulse {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 1;
+}
+
+/* ── Central leader (dynamic) ───────────────────────────────── */
+.moves-ring__core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moves-ring__core::before,
+.moves-ring__core::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.moves-ring__core::before {
+  width: 108px;
+  height: 108px;
+  animation: mrRingPulse 3.5s ease-out infinite;
+}
+
+.moves-ring__core::after {
+  width: 108px;
+  height: 108px;
+  animation: mrRingPulse 3.5s ease-out infinite 1.75s;
+}
+
+.moves-ring__core:hover {
+  transform: translate(-50%, -50%) scale(1.03);
+}
+
+.moves-ring__core-kicker {
+  position: relative;
+  z-index: 1;
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 7px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.moves-ring__core-sym {
+  position: relative;
+  z-index: 1;
+  font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #fff;
+  text-shadow:
+    0 0 48px rgba(180, 195, 245, 0.35),
+    0 0 72px rgba(212, 168, 90, 0.12);
+  transition: opacity 0.35s ease;
+}
+
+.moves-ring-hero.is-reconfiguring .moves-ring__core-sym {
+  opacity: 0.4;
+}
+
+/* ── Ring nodes ─────────────────────────────────────────────── */
+.moves-ring__nodes-mount {
+  z-index: 5;
+  pointer-events: none;
+}
+
+.moves-ring__node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moves-ring__node-halo {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(180, 195, 245, 0.2), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.moves-ring__node-sym {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.25);
+  animation: mrDialSpin 180s linear infinite reverse;
+}
+
+.moves-ring__node:hover,
+.moves-ring__node.is-active {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.moves-ring__node.is-active .moves-ring__node-halo {
+  opacity: 1;
+}
+
+.moves-ring__node.is-active .moves-ring__node-sym {
+  color: #fff;
+}
+
+.moves-ring__node.is-dim {
+  opacity: 0.25;
+}
+
+/* ── Narrative ──────────────────────────────────────────────── */
+.moves-ring__insight {
+  position: relative;
+  z-index: 3;
+  margin: 12px 0 0;
+  padding: 0 24px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.moves-ring__insight-lead {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+  font-size: 1.05rem;
+}
+
+.moves-ring__insight-sub {
+  font-size: 12px;
+}
+
+.wheel-module-viewport .rail-module--intel:has(.moves-ring-hero) .intel-takeaway {
+  padding: 0 20px 12px;
+  text-align: center;
+  font-size: 11px;
+  opacity: 0.4;
+}
+
+.wheel-module-viewport .rail-module--intel:has(.moves-ring-hero) .intel-explain-toggle {
+  margin: 0 auto 12px;
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .moves-ring__stage {
+    max-width: min(92vw, 340px);
+  }
+
+  .moves-ring__node {
+    width: 38px;
+    height: 38px;
+  }
+
+  .moves-ring__node-sym {
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moves-ring__spin,
+  .moves-ring__node-sym,
+  .moves-ring__flow-track,
+  .moves-ring__flow-glow,
+  .moves-ring__segment,
+  .moves-ring__segment-glow,
+  .moves-ring__core-halo,
+  .moves-ring__bloom,
+  .moves-ring__core::before,
+  .moves-ring__core::after,
+  .moves-stock-modal__panel,
+  .moves-stock-modal__backdrop {
+    animation: none !important;
+  }
+
+  .moves-stock-modal,
+  .moves-stock-modal__panel {
+    transition: none !important;
+  }
+}

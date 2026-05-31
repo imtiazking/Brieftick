@@ -5,12 +5,12 @@
 
 import {
   RAIL_SECTIONS,
-  WHEEL_SECTIONS,
   renderRailModule,
   renderRailPulseHero,
-  renderWheelPulseStrip,
+  bindIntelligenceModule,
 } from "./dashboard-rail-mocks.js";
-import { createIntelligenceWheel } from "./dashboard-design-wheel.js";
+import { bindInteractiveCharts } from "./dashboard-intel-charts.js";
+import { initIntelligenceWheel } from "./dashboard-wheel-core.js";
 
 const ORBIT_NODES = [
   { id: "flows", label: "Flows", icon: "FL" },
@@ -18,7 +18,7 @@ const ORBIT_NODES = [
   { id: "risk", label: "Risk", icon: "RK" },
   { id: "signals", label: "Signals", icon: "SG" },
   { id: "news", label: "News", icon: "NW" },
-  { id: "correlation", label: "Correlation", icon: "CR" },
+  { id: "correlation", label: "Moves Together", icon: "MT" },
   { id: "watchlist", label: "Watchlist", icon: "WL" },
   { id: "events", label: "Events", icon: "EV" },
 ];
@@ -30,7 +30,7 @@ const DECK_CARDS = [
   { id: "sectors", title: "Sector Rotation", kicker: "Leadership" },
   { id: "signals", title: "Signal Feed", kicker: "Anomalies" },
   { id: "news", title: "News Intelligence", kicker: "Headlines" },
-  { id: "correlation", title: "Correlation Engine", kicker: "Cross-asset" },
+  { id: "correlation", title: "Moves Together", kicker: "Connected markets" },
   { id: "watchlist", title: "Watchlist", kicker: "Your book" },
   { id: "events", title: "What To Watch", kicker: "Calendar" },
 ];
@@ -42,9 +42,9 @@ const MOCK = {
     metrics: ["S&P +0.4%", "VIX 14.2", "Breadth mixed", "Dollar flat"],
   },
   flows: {
-    headline: "Institutional flow tilts growth",
-    body: "ETF creations favour QQQ and SMH; financials see modest outflows. Dark-pool prints show buyers defending semis on dips.",
-    metrics: ["QQQ inflow", "XLF outflow", "Semis bid", "Energy neutral"],
+    headline: "Where money is going",
+    body: "Technology attracts the largest share of capital today. Energy and Financials continue to participate while Defensives lag.",
+    metrics: ["Technology · 38%", "Energy · 22%", "Financials · 14%", "Defensives · 8%"],
   },
   sectors: {
     headline: "AI complex leads, defensives lag",
@@ -57,19 +57,19 @@ const MOCK = {
     metrics: ["VIX firm", "HY tight", "2Y range-bound", "Skew elevated"],
   },
   signals: {
-    headline: "Three live anomalies",
-    body: "Unusual call activity in NVDA; breadth divergence in small caps; dollar–gold correlation breakdown intraday.",
-    metrics: ["NVDA vol spike", "IWM lag", "DXY/Gold decouple", "Gamma pin SPY"],
+    headline: "What is driving opportunities",
+    body: "Technology leads the tape; interest rates and energy follow. Market strength remains subdued beneath index gains.",
+    metrics: ["Technology · 88", "Interest Rates · 72", "Energy · 64", "Market Strength · 38"],
   },
   news: {
-    headline: "Macro headlines dominate",
-    body: "Fed speakers and CPI preview anchor sentiment. Earnings focus shifts to mega-cap tech; geopolitical headlines muted.",
-    metrics: ["Fed week", "CPI tomorrow", "NVDA earnings", "Oil steady"],
+    headline: "Inflation is driving markets",
+    body: "Plain-English interpreter: what happened, why it matters, market impact, and what to watch next. No jargon, no topic menus.",
+    metrics: ["Technology", "Banks", "Energy", "Fed commentary"],
   },
   correlation: {
-    headline: "Tech–rates decouple",
-    body: "Nasdaq beta to 10Y moves has softened. Gold and real yields re-couple; oil tracks dollar less than seasonal norm.",
-    metrics: ["NDX/10Y low", "Gold/REAL+", "Oil/DXY −", "BTC/NDX +"],
+    headline: "Who moves with the leader",
+    body: "Tap any name on the ring to make it the leader — the centre, peers, and narrative reconfigure around your pick.",
+    metrics: ["Explore · AAPL", "Explore · MSFT", "Explore · SPY", "Reset · session leader"],
   },
   watchlist: {
     headline: "Book bias: AI tilt",
@@ -92,8 +92,6 @@ let activeConcept = "orbit";
 let activeOrbitId = "flows";
 let activeDeckIndex = 0;
 let activeRailId = "movers";
-let activeWheelId = "movers";
-let wheelController = null;
 
 function escapeHtml(s) {
   return String(s || "")
@@ -224,11 +222,6 @@ function selectDeckCard(index) {
   });
 }
 
-function populateWheelPulseStrip() {
-  const strip = document.getElementById("wheelPulseStrip");
-  if (strip) strip.innerHTML = renderWheelPulseStrip();
-}
-
 function setConcept(concept, options = {}) {
   activeConcept = concept;
   document.querySelectorAll("[data-concept]").forEach((btn) => {
@@ -290,6 +283,8 @@ function selectRailSection(id) {
   requestAnimationFrame(() => {
     stage.innerHTML = renderRailModule(id);
     stage.classList.add("is-visible");
+    bindIntelligenceModule(stage, id);
+    bindInteractiveCharts(stage, id);
   });
 }
 
@@ -298,31 +293,6 @@ function initRail() {
   if (hero) hero.innerHTML = renderRailPulseHero();
   buildIntelRail();
   selectRailSection(activeRailId);
-}
-
-function selectWheelModule(id) {
-  activeWheelId = id;
-  const stage = document.getElementById("wheelModuleStage");
-  if (!stage) return;
-  stage.classList.remove("is-visible");
-  requestAnimationFrame(() => {
-    stage.innerHTML = renderRailModule(id);
-    stage.classList.add("is-visible");
-  });
-}
-
-function initWheel() {
-  populateWheelPulseStrip();
-
-  const viewport = document.getElementById("wheelViewport");
-  if (!viewport || viewport.dataset.built) return;
-  viewport.dataset.built = "1";
-
-  wheelController = createIntelligenceWheel(viewport, WHEEL_SECTIONS, {
-    initialId: activeWheelId,
-    onActiveChange: (id) => selectWheelModule(id),
-  });
-  selectWheelModule(activeWheelId);
 }
 
 function getConceptFromUrl() {
@@ -355,7 +325,7 @@ function init() {
   renderDeckTabs();
   selectDeckCard(0);
   initRail();
-  initWheel();
+  initIntelligenceWheel();
   fillRiver();
 
   const urlConcept = getConceptFromUrl();

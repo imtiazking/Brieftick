@@ -1,0 +1,982 @@
+/**
+ * Live chart motion + touch exploration (Dashboard Intelligence Lab).
+ */
+
+.live-chart__hint {
+  font-family: var(--dash-mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.28);
+  text-align: center;
+  margin: 10px 0 4px;
+}
+
+.live-chart__probe {
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(212, 168, 90, 0.88);
+  text-align: center;
+  min-height: 1.4em;
+  margin: 0 auto;
+  max-width: 28em;
+  transition: color 0.25s ease;
+}
+
+/* Volatility gauge */
+.live-gauge {
+  --gauge-fill: 35;
+  text-align: center;
+  touch-action: none;
+}
+
+.live-gauge__svg {
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto;
+  display: block;
+  cursor: grab;
+}
+
+.live-gauge.is-active .live-gauge__svg {
+  cursor: grabbing;
+}
+
+.live-gauge__hit {
+  cursor: grab;
+}
+
+.live-gauge__zone {
+  cursor: pointer;
+  pointer-events: stroke;
+}
+
+.live-gauge__needle {
+  transition: transform 0.12s ease-out;
+  transform-origin: 100px 100px;
+}
+
+.live-gauge.is-pulse .live-gauge__needle {
+  animation: gaugeKick 0.4s ease;
+}
+
+@keyframes gaugeKick {
+  50% {
+    filter: drop-shadow(0 0 8px rgba(232, 193, 120, 0.6));
+  }
+}
+
+.live-gauge__readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Money Flow — capital concentration bubbles */
+.flow-bubbles-hero {
+  position: relative;
+  min-height: min(360px, 46vh);
+  padding: 8px 12px 4px;
+  isolation: isolate;
+}
+
+.rail-module--intel:has(.flow-bubbles-hero) .intel-hero {
+  padding: 10px 12px 6px;
+  background: #000;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.flow-bubbles-hero__story {
+  position: relative;
+  z-index: 2;
+  max-width: 26em;
+  margin: 14px auto 0;
+  padding: 0 16px 4px;
+  text-align: center;
+}
+
+.flow-bubbles-hero__story-primary {
+  margin: 0 0 8px;
+  font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+  font-size: 15px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.flow-bubbles-hero__story-secondary {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.flow-bubbles-hero__env {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.flow-bubbles-hero__mist {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 55% 50% at 50% 46%, rgba(100, 75, 160, 0.1) 0%, transparent 68%);
+}
+
+.flow-bubbles-hero__floor {
+  position: absolute;
+  left: 50%;
+  bottom: 22%;
+  width: min(72%, 360px);
+  height: 38%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 100% 55% at 50% 100%, rgba(120, 95, 180, 0.14), transparent 72%);
+  filter: blur(22px);
+}
+
+.flow-bubbles-hero__canvas {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: min(300px, 38vh);
+  min-height: 260px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+
+.flow-bubbles-hero__stage-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+.flow-bubbles-hero__cluster {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 440px);
+  height: min(100%, 280px);
+  max-height: 280px;
+  margin: 0 auto;
+}
+
+.flow-bubbles-hero__cluster::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 48%;
+  height: 48%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(140, 110, 210, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.flow-bubble {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transform: translate(calc(-50% + var(--ox, 0px)), calc(-50% + var(--oy, 0px))) scale(var(--scale, 1));
+  transition:
+    transform 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.55s ease,
+    filter 0.55s ease,
+    z-index 0s;
+  z-index: calc(6 - var(--tier, 3));
+}
+
+.flow-bubbles-hero.is-spreading .flow-bubble {
+  transition-duration: 0.82s, 0.55s, 0.55s, 0s;
+}
+
+.flow-bubble--tier-1 {
+  z-index: 6;
+}
+
+.flow-bubble--tier-2 {
+  z-index: 4;
+  filter: brightness(0.96);
+}
+
+.flow-bubble--tier-3 {
+  z-index: 3;
+  filter: brightness(0.9);
+}
+
+.flow-bubble--tier-4,
+.flow-bubble--tier-5 {
+  z-index: 2;
+  filter: brightness(0.84);
+}
+
+.flow-bubble__drift {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: flowBubbleOrbit 9s ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0) * 0.85s);
+}
+
+.flow-bubble--tier-1 .flow-bubble__drift {
+  animation-duration: 10s;
+}
+
+.flow-bubble--tier-4 .flow-bubble__drift,
+.flow-bubble--tier-5 .flow-bubble__drift {
+  animation-duration: 8s;
+}
+
+.flow-bubbles-hero__cluster.has-focus .flow-bubble:not(.is-focused) {
+  opacity: 0.42;
+  filter: brightness(0.82) saturate(0.88);
+}
+
+.flow-bubble.is-focused {
+  z-index: 8;
+  opacity: 1;
+  filter: brightness(1.06) saturate(1.04);
+}
+
+.flow-bubble.is-focused .flow-bubble__drift,
+.flow-bubbles-hero.is-spreading .flow-bubble__drift {
+  animation-play-state: paused;
+}
+
+.flow-bubble__halo {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(140, 110, 210, 0.35) 0%,
+    rgba(90, 65, 150, 0.12) 45%,
+    transparent 72%
+  );
+  filter: blur(14px);
+  opacity: 0.55;
+  animation: flowBubbleHalo 4.5s ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0) * 0.5s);
+}
+
+.flow-bubble__sphere {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 32%,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(225, 215, 245, 0.88) 14%,
+    rgba(165, 140, 220, 0.78) 38%,
+    rgba(95, 70, 155, 0.55) 62%,
+    rgba(45, 32, 85, 0.35) 82%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  box-shadow:
+    inset 0 2px 12px rgba(255, 255, 255, 0.2),
+    inset 0 -12px 28px rgba(0, 0, 0, 0.25),
+    0 0 40px rgba(110, 85, 180, 0.22);
+  animation: flowBubbleBreathe 4.2s ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0) * 0.6s);
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.5s ease;
+}
+
+.flow-bubble__pct {
+  font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+  font-size: clamp(1.1rem, calc(var(--size) * 0.14), 2rem);
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+}
+
+.flow-bubble__label {
+  font-family: var(--dash-mono);
+  font-size: clamp(7px, calc(var(--size) * 0.065), 10px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.35;
+  max-width: 88%;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.flow-bubble.is-leader .flow-bubble__sphere {
+  background: radial-gradient(
+    circle at 38% 32%,
+    rgba(255, 252, 245, 0.98) 0%,
+    rgba(235, 220, 200, 0.9) 12%,
+    rgba(200, 170, 230, 0.82) 32%,
+    rgba(120, 90, 175, 0.62) 58%,
+    rgba(50, 38, 90, 0.4) 82%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  box-shadow:
+    inset 0 2px 14px rgba(255, 255, 255, 0.28),
+    inset 0 -14px 32px rgba(0, 0, 0, 0.28),
+    0 0 56px rgba(212, 168, 90, 0.18),
+    0 0 48px rgba(120, 95, 190, 0.28);
+  animation: flowBubbleBreathe 3.6s ease-in-out infinite;
+}
+
+.flow-bubble.is-leader .flow-bubble__halo {
+  opacity: 0.85;
+  animation: flowBubbleHalo 3.8s ease-in-out infinite;
+  background: radial-gradient(
+    circle,
+    rgba(212, 168, 90, 0.2) 0%,
+    rgba(140, 110, 210, 0.28) 40%,
+    transparent 72%
+  );
+}
+
+.flow-bubble.is-outflow .flow-bubble__sphere {
+  background: radial-gradient(
+    circle at 38% 32%,
+    rgba(220, 218, 225, 0.75) 0%,
+    rgba(150, 145, 165, 0.55) 40%,
+    rgba(70, 65, 90, 0.4) 70%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  box-shadow:
+    inset 0 1px 8px rgba(255, 255, 255, 0.12),
+    0 0 24px rgba(90, 85, 110, 0.15);
+}
+
+.flow-bubble.is-outflow .flow-bubble__halo {
+  opacity: 0.35;
+  background: radial-gradient(circle, rgba(100, 95, 120, 0.2), transparent 70%);
+}
+
+.flow-bubble.is-focused .flow-bubble__sphere {
+  filter: brightness(1.1);
+  box-shadow:
+    inset 0 2px 16px rgba(255, 255, 255, 0.3),
+    inset 0 -16px 36px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(130, 105, 200, 0.4);
+}
+
+.flow-bubble.is-focused .flow-bubble__halo {
+  opacity: 1;
+}
+
+.flow-bubble__sphere {
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s ease,
+    filter 0.5s ease;
+}
+
+.flow-bubble__halo {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+@keyframes flowBubbleOrbit {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2px, -4px);
+  }
+  50% {
+    transform: translate(-2px, -5px);
+  }
+  75% {
+    transform: translate(-3px, -2px);
+  }
+}
+
+@keyframes flowBubbleBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes flowBubbleHalo {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.04);
+  }
+}
+
+/* Opportunities — telemetry bars (hero) */
+.signal-pulse-hero__chart {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(12px, 2.8vw, 22px);
+  width: min(68%, 440px);
+  height: min(260px, 38vh);
+  min-height: 220px;
+  margin: 4px auto 0;
+  padding: 0 4px 2px;
+}
+
+.signal-pulse-hero__chart::before {
+  content: "";
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  bottom: 32px;
+  height: 45%;
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 100%,
+    rgba(78, 168, 255, 0.14) 0%,
+    rgba(212, 168, 90, 0.06) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+  filter: blur(8px);
+}
+
+.signal-pulse-hero__chart::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 28px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12) 20%,
+    rgba(255, 255, 255, 0.12) 80%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.signal-pulse-hero .signal-bar {
+  flex: 1;
+  max-width: 80px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.signal-bar__value {
+  font-family: var(--dash-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.35);
+  transition: color 0.35s ease, text-shadow 0.35s ease;
+}
+
+.signal-bar__track {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 12px 12px 5px 5px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.25) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -8px 24px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.signal-bar__fill {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: var(--h);
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(210, 225, 255, 0.95) 0%,
+    rgba(100, 155, 245, 0.82) 28%,
+    rgba(50, 95, 190, 0.55) 100%
+  );
+  box-shadow:
+    0 0 28px rgba(78, 168, 255, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  animation: signalBarGrow 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--delay, 0) * 0.1s);
+  transition:
+    filter 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.signal-bar__sheen {
+  position: absolute;
+  z-index: 3;
+  left: 12%;
+  right: 12%;
+  bottom: 0;
+  height: var(--h);
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 42%,
+    transparent 58%
+  );
+  pointer-events: none;
+  opacity: 0.7;
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  animation: signalBarGrow 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--delay, 0) * 0.1s + 0.05s);
+}
+
+.signal-bar__glow {
+  position: absolute;
+  z-index: 1;
+  left: -20%;
+  right: -20%;
+  bottom: -6px;
+  height: calc(var(--h) + 12%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse 70% 40% at 50% 100%, rgba(78, 168, 255, 0.45), transparent 70%);
+  opacity: 0.5;
+  pointer-events: none;
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  animation: signalBarGrow 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--delay, 0) * 0.1s);
+}
+
+.signal-bar__label {
+  font-family: var(--dash-mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.35;
+  max-width: 5.5em;
+  color: rgba(232, 236, 245, 0.42);
+  transition: color 0.35s ease;
+}
+
+.signal-bar__ripple {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  border-radius: 50%;
+  border: 1px solid rgba(140, 180, 255, 0.35);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Leader — Technology dominates */
+.signal-bar.is-leader {
+  flex: 1.18;
+  max-width: 92px;
+}
+
+.signal-bar.is-leader .signal-bar__value {
+  color: rgba(212, 168, 90, 0.95);
+  text-shadow: 0 0 16px rgba(212, 168, 90, 0.45);
+  font-size: 11px;
+}
+
+.signal-bar.is-leader .signal-bar__fill {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 248, 235, 0.98) 0%,
+    rgba(212, 168, 90, 0.88) 22%,
+    rgba(120, 165, 245, 0.78) 55%,
+    rgba(45, 90, 185, 0.6) 100%
+  );
+  box-shadow:
+    0 0 48px rgba(212, 168, 90, 0.35),
+    0 0 32px rgba(78, 168, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  animation:
+    signalBarGrow 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    signalLeaderPulse 2.8s ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0) * 0.1s), 1.2s;
+}
+
+.signal-bar.is-leader .signal-bar__glow {
+  background: radial-gradient(
+    ellipse 80% 45% at 50% 100%,
+    rgba(212, 168, 90, 0.4),
+    rgba(78, 168, 255, 0.25) 50%,
+    transparent 72%
+  );
+  opacity: 0.85;
+  animation:
+    signalBarGrow 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    signalLeaderGlow 2.8s ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0) * 0.1s), 1.2s;
+}
+
+.signal-bar.is-leader .signal-bar__label {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.signal-bar.is-leader .signal-bar__ripple {
+  border-color: rgba(212, 168, 90, 0.45);
+  animation: signalRipple 2s ease-out infinite;
+}
+
+/* Weak breadth — subdued */
+.signal-bar[data-signal="market-strength"] .signal-bar__fill {
+  background: linear-gradient(
+    180deg,
+    rgba(180, 190, 210, 0.55) 0%,
+    rgba(90, 105, 140, 0.35) 100%
+  );
+  box-shadow: 0 0 12px rgba(100, 120, 160, 0.2);
+}
+
+.signal-bar.is-active .signal-bar__fill,
+.signal-bar:hover .signal-bar__fill {
+  filter: brightness(1.14);
+  box-shadow:
+    0 0 36px rgba(78, 168, 255, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.signal-bar.is-active .signal-bar__value,
+.signal-bar:hover .signal-bar__value {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.signal-bar.is-active .signal-bar__label,
+.signal-bar:hover .signal-bar__label {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.signal-bar.is-active .signal-bar__ripple,
+.signal-bar:hover .signal-bar__ripple {
+  animation: signalRipple 1.4s ease-out infinite;
+}
+
+@keyframes signalBarGrow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes signalLeaderPulse {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.12);
+  }
+}
+
+@keyframes signalLeaderGlow {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes signalRipple {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+/* News timeline */
+.news-timeline-hero .news-timeline__node {
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.news-timeline-hero .news-timeline__node:hover {
+  transform: translateY(-2px);
+}
+
+.news-timeline__pulse {
+  transition: left 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.news-timeline-hero:has(.news-timeline__node.is-active) .news-timeline__pulse {
+  animation: newsGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes newsGlow {
+  50% {
+    box-shadow: 0 0 16px rgba(212, 168, 90, 0.7);
+  }
+}
+
+/* Correlation */
+.corr-grid--live .corr-cell[data-corr] {
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font: inherit;
+  transition:
+    transform 0.2s ease,
+    opacity 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.corr-grid--live .corr-cell[data-corr]:hover {
+  transform: scale(1.08);
+  z-index: 1;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.corr-grid--live .corr-cell.is-highlight {
+  box-shadow: 0 0 0 2px rgba(212, 168, 90, 0.65);
+  transform: scale(1.1);
+}
+
+.corr-grid--live .corr-cell.is-dim {
+  opacity: 0.25;
+}
+
+/* Alerts */
+.alerts-stack-hero .alert-visual {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.3s ease;
+}
+
+.alerts-stack-hero .alert-visual:hover {
+  transform: translateX(4px);
+}
+
+.alerts-stack-hero:has(.alert-visual.is-active) .alert-visual:not(.is-active) {
+  opacity: 0.4;
+}
+
+.alerts-stack-hero .alert-visual.is-active {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+/* Session chart */
+.session-chart-hero__scrub {
+  width: 100%;
+  max-width: 320px;
+  margin: 10px auto 0;
+  display: block;
+  accent-color: #3ddc97;
+  cursor: grab;
+}
+
+.session-chart-hero__line {
+  cursor: crosshair;
+}
+
+.session-chart-hero__dot {
+  transition:
+    cx 0.08s linear,
+    cy 0.08s linear;
+  filter: drop-shadow(0 0 6px rgba(61, 220, 151, 0.6));
+}
+
+.session-chart-hero.is-scrubbing .session-chart-hero__dot {
+  r: 7;
+}
+
+.session-chart-hero:not(.is-scrubbing) .session-chart-hero__line {
+  stroke-dasharray: 400;
+  animation: sessionDraw 4s ease-in-out infinite alternate;
+}
+
+@keyframes sessionDraw {
+  from {
+    stroke-dashoffset: 80;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Sector heatmap */
+.sector-grid--live .sector-card__face {
+  animation: sectorBreathe 4s ease-in-out infinite;
+  animation-delay: calc(var(--sector-i, 0) * 0.15s);
+}
+
+.sector-grid--live .sector-card:nth-child(1) {
+  --sector-i: 0;
+}
+.sector-grid--live .sector-card:nth-child(2) {
+  --sector-i: 1;
+}
+.sector-grid--live .sector-card:nth-child(3) {
+  --sector-i: 2;
+}
+.sector-grid--live .sector-card:nth-child(4) {
+  --sector-i: 3;
+}
+.sector-grid--live .sector-card:nth-child(5) {
+  --sector-i: 4;
+}
+.sector-grid--live .sector-card:nth-child(6) {
+  --sector-i: 5;
+}
+.sector-grid--live .sector-card:nth-child(7) {
+  --sector-i: 6;
+}
+.sector-grid--live .sector-card:nth-child(8) {
+  --sector-i: 7;
+}
+
+@keyframes sectorBreathe {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.08);
+  }
+}
+
+.sector-grid--live .sector-card:hover {
+  transform: scale(1.03);
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-bubble__drift,
+  .flow-bubble__sphere,
+  .flow-bubble__halo {
+    animation: none !important;
+  }
+
+  .flow-bubbles-hero__canvas:has(.flow-bubble:hover) .flow-bubble:not(:hover) {
+    opacity: 1;
+    filter: none;
+  }
+
+  .flow-stream.is-flowing,
+  .signal-bar__fill,
+  .signal-bar__sheen,
+  .signal-bar__glow,
+  .signal-bar.is-leader .signal-bar__fill,
+  .signal-bar.is-leader .signal-bar__glow,
+  .signal-bar.is-active .signal-bar__ripple,
+  .signal-bar.is-leader .signal-bar__ripple,
+  .news-timeline-hero:has(.news-timeline__node.is-active) .news-timeline__pulse,
+  .session-chart-hero:not(.is-scrubbing) .session-chart-hero__line,
+  .sector-grid--live .sector-card__face {
+    animation: none;
+  }
+
+  .rail-module .sector-card__flip {
+    transition: none;
+    transform: none !important;
+  }
+
+  .rail-module .sector-card__face {
+    transition: opacity 0.28s ease, border-color 0.28s ease;
+  }
+
+  .rail-module .sector-card__face--back {
+    opacity: 0;
+    pointer-events: none;
+    transform: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .rail-module .sector-card:hover:not(.is-expanded) .sector-card__face--front,
+    .rail-module .sector-card.is-flipped:not(.is-expanded) .sector-card__face--front {
+      opacity: 0;
+    }
+
+    .rail-module .sector-card:hover:not(.is-expanded) .sector-card__face--back,
+    .rail-module .sector-card.is-flipped:not(.is-expanded) .sector-card__face--back {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  @media (hover: none) {
+    .rail-module .sector-card.is-flipped:not(.is-expanded) .sector-card__face--front {
+      opacity: 0;
+    }
+
+    .rail-module .sector-card.is-flipped:not(.is-expanded) .sector-card__face--back {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .signal-bar__fill,
+  .signal-bar__sheen,
+  .signal-bar__glow {
+    transform: scaleY(1);
+  }
+
+  .live-gauge__needle {
+    transition: none;
+  }
+}

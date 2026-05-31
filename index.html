@@ -4,6 +4,11 @@
 (function () {
   const params = new URLSearchParams(location.search);
   const p = params.get("preview");
+  if (p === "dashboard") {
+    location.replace("/dashboard-preview");
+    return;
+  }
+
   if (p === "logic" || p === "agent") {
     document.documentElement.classList.add("preview-logic");
     document.documentElement.setAttribute("data-theme", "logic");
@@ -1013,17 +1018,44 @@ html.bt-paused *, html.bt-paused *::before, html.bt-paused *::after { animation-
 }
 
 /* Watchlist */
-.watchlist-tools{display:flex;gap:6px;margin-bottom:10px}
+.watchlist-add{
+  margin-bottom:12px;padding:10px 12px;border-radius:8px;
+  border:1px solid rgba(212,168,90,0.28);
+  background:linear-gradient(135deg,rgba(212,168,90,0.07),rgba(10,13,20,0.5));
+  box-shadow:0 0 24px rgba(212,168,90,0.06);
+}
+.watchlist-add__head{
+  display:flex;align-items:center;gap:8px;margin-bottom:8px;
+}
+.watchlist-add__icon{
+  width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:14px;font-weight:500;color:var(--gold);
+  background:rgba(212,168,90,0.12);border:1px solid rgba(212,168,90,0.3);
+}
+.watchlist-add__label{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);
+}
+.watchlist-add__row{display:flex;gap:6px}
 .watchlist-input{
   flex:1;min-width:0;padding:8px 10px;border-radius:6px;background:rgba(10,13,20,0.7);
   border:1px solid var(--border);color:var(--ink);font-family:var(--mono);font-size:11px;outline:none;
 }
 .watchlist-input:focus{border-color:rgba(212,168,90,0.45)}
 .watchlist-btn{
-  padding:8px 10px;border-radius:6px;background:rgba(212,168,90,0.08);border:1px solid rgba(212,168,90,0.24);
+  padding:8px 12px;border-radius:6px;background:rgba(212,168,90,0.08);border:1px solid rgba(212,168,90,0.24);
   color:var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;
+  white-space:nowrap;
+}
+.watchlist-btn--primary{
+  background:rgba(212,168,90,0.16);border-color:rgba(212,168,90,0.45);font-weight:500;
 }
 .watchlist-btn:hover{background:rgba(212,168,90,0.13)}
+.watchlist-btn--ghost{
+  margin-top:8px;padding:0;border:none;background:transparent;color:var(--ink-faint);
+  font-size:9px;letter-spacing:0.08em;
+}
+.watchlist-btn--ghost:hover{color:var(--gold);background:transparent}
 .wl-row{
   display:grid;grid-template-columns:auto 1fr auto auto auto auto;gap:10px;align-items:center;
   padding:8px 4px;border-radius:6px;cursor:pointer;transition:background 0.15s;
@@ -1042,6 +1074,170 @@ html.bt-paused *, html.bt-paused *::before, html.bt-paused *::after { animation-
 }
 .wl-row .remove:hover{color:var(--red)}
 .watchlist-empty{padding:12px;border-radius:8px;border:1px dashed var(--border-strong);color:var(--ink-dim);font-size:12px;line-height:1.5}
+.watchlist-msg{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;min-height:1.2em;
+}
+.watchlist-msg:empty{display:none}
+#watchlist{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto}
+.wl-card{
+  padding:10px 12px;border-radius:8px;border:1px solid var(--border);
+  background:rgba(10,13,20,0.45);cursor:pointer;transition:border-color 0.2s,background 0.2s,transform 0.15s;
+}
+.wl-card:hover{border-color:rgba(212,168,90,0.28);background:rgba(255,255,255,0.03);transform:translateY(-1px)}
+.wl-card__top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.wl-card__sym{font-family:var(--mono);font-size:13px;font-weight:500;flex:1}
+.wl-status{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;
+  padding:3px 7px;border-radius:999px;border:1px solid transparent;
+}
+.wl-status--rising{color:var(--green);background:rgba(61,220,151,0.08);border-color:rgba(61,220,151,0.22)}
+.wl-status--falling{color:var(--red);background:rgba(255,91,110,0.08);border-color:rgba(255,91,110,0.22)}
+.wl-status--volatile{color:var(--amber);background:rgba(255,181,71,0.08);border-color:rgba(255,181,71,0.22)}
+.wl-status--watching{color:var(--blue);background:rgba(78,168,255,0.08);border-color:rgba(78,168,255,0.22)}
+.wl-card__remove{
+  font-family:var(--mono);font-size:14px;line-height:1;color:var(--ink-faint);
+  background:transparent;border:none;cursor:pointer;padding:2px 4px;
+}
+.wl-card__remove:hover{color:var(--red)}
+.wl-card__name{font-size:11px;color:var(--ink-dim);margin-bottom:6px}
+.wl-card__quote{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.wl-card__price{font-family:var(--mono);font-size:13px}
+.wl-card__chg{font-family:var(--mono);font-size:11px;font-weight:500}
+.wl-card__chg.up{color:var(--green)}
+.wl-card__chg.dn{color:var(--red)}
+.wl-card__chg.flat{color:var(--ink-faint)}
+.wl-card__insight{font-size:11px;line-height:1.45;color:var(--ink-dim);margin:0 0 8px}
+.wl-card__why{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--gold);padding:5px 8px;border-radius:4px;border:1px solid rgba(212,168,90,0.22);
+  background:rgba(212,168,90,0.06);cursor:pointer;width:100%;
+}
+.wl-card__why:hover{background:rgba(212,168,90,0.1)}
+
+/* Session intelligence briefing */
+.session-briefing{
+  position:relative;padding:14px 14px 4px;border-radius:10px;
+  border:1px solid rgba(212,168,90,0.12);
+  background:linear-gradient(180deg,rgba(212,168,90,0.04),rgba(0,0,0,0.15));
+  box-shadow:0 0 40px rgba(61,220,151,0.04);
+}
+.session-briefing__signal{
+  display:flex;align-items:center;gap:10px;margin-bottom:10px;
+}
+.session-briefing__signal-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;
+  box-shadow:0 0 10px rgba(61,220,151,0.7);
+  animation:briefingDot 1.6s ease-in-out infinite;
+}
+@keyframes briefingDot{
+  0%,100%{opacity:0.5;transform:scale(0.9)}
+  50%{opacity:1;transform:scale(1.1)}
+}
+.session-briefing__signal-track{
+  flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.06);position:relative;overflow:hidden;
+}
+.session-briefing__signal-track::after{
+  content:'';position:absolute;left:-30%;top:0;width:30%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(61,220,151,0.55),transparent);
+  animation:briefingScan 2.4s ease-in-out infinite;
+}
+@keyframes briefingScan{
+  0%{left:-30%}
+  100%{left:100%}
+}
+.session-briefing__live-tag{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(61,220,151,0.9);
+}
+.session-briefing__pulse{
+  position:absolute;top:0;left:0;right:0;height:2px;border-radius:10px 10px 0 0;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0.5;animation:briefingPulse 2.8s ease-in-out infinite;
+}
+@keyframes briefingPulse{
+  0%,100%{opacity:0.25;transform:scaleX(0.6)}
+  50%{opacity:0.85;transform:scaleX(1)}
+}
+.session-briefing__badges{
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;
+}
+.session-briefing__badge{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:5px 11px;border-radius:999px;border:1px solid transparent;
+}
+.session-briefing__badge--regime{
+  color:var(--green);border-color:rgba(61,220,151,0.35);
+  background:rgba(61,220,151,0.08);box-shadow:0 0 16px rgba(61,220,151,0.12);
+}
+.session-briefing__badge--regime.off{
+  color:var(--red);border-color:rgba(255,91,110,0.35);background:rgba(255,91,110,0.08);
+  box-shadow:0 0 16px rgba(255,91,110,0.1);
+}
+.session-briefing__badge--breadth{
+  color:var(--amber);border-color:rgba(255,181,71,0.32);
+  background:rgba(255,181,71,0.07);box-shadow:0 0 14px rgba(255,181,71,0.08);
+}
+.session-briefing__confidence-row{
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;
+}
+.session-briefing__confidence-label{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink-faint);width:72px;flex-shrink:0;
+}
+.session-briefing__meter{
+  flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,0.06);overflow:hidden;
+}
+.session-briefing__meter-fill{
+  height:100%;border-radius:3px;
+  background:linear-gradient(90deg,rgba(61,220,151,0.5),rgba(212,168,90,0.85));
+  box-shadow:0 0 10px rgba(212,168,90,0.35);
+  transition:width 0.6s ease;
+}
+.session-briefing__confidence-val{
+  font-family:var(--mono);font-size:9px;color:var(--gold);width:52px;text-align:right;flex-shrink:0;
+}
+.session-briefing__lede{
+  font-size:14px;line-height:1.55;color:var(--ink);margin:0 0 14px;
+  padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.session-briefing__headline{
+  font-family:var(--display);font-size:16px;font-weight:500;line-height:1.35;
+  color:var(--ink-dim);margin:0 0 12px;letter-spacing:-0.01em;
+}
+.session-briefing__sections{display:flex;flex-direction:column;gap:12px}
+.session-briefing__block{
+  padding:12px 14px;border-radius:8px;border:1px solid var(--border);
+  background:rgba(255,255,255,0.02);
+  animation:briefingFadeIn 0.5s ease backwards;
+}
+.session-briefing__block:nth-child(1){animation-delay:0.05s}
+.session-briefing__block:nth-child(2){animation-delay:0.12s}
+.session-briefing__block:nth-child(3){animation-delay:0.19s}
+@keyframes briefingFadeIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.session-briefing__label{
+  display:block;font-family:var(--mono);font-size:8px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:6px;
+}
+.session-briefing__block p,.session-briefing__block ul{
+  font-size:13px;line-height:1.55;color:var(--ink-dim);margin:0;
+}
+.session-briefing__block ul{padding-left:1.1em}
+.session-briefing__block li{margin-bottom:4px}
+.session-briefing__block li:last-child{margin-bottom:0}
+.session-briefing__foot{
+  margin-top:14px;padding:10px 14px;border-radius:6px;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.1em;
+}
+.session-briefing__foot--ai{color:var(--green);background:rgba(61,220,151,0.05);border:1px solid rgba(61,220,151,0.15)}
+.session-briefing__foot--heuristic{color:var(--gold);background:rgba(212,168,90,0.05);border:1px solid rgba(212,168,90,0.15)}
+@media (prefers-reduced-motion:reduce){
+  .session-briefing__pulse,.session-briefing__block,.session-briefing__signal-dot,
+  .session-briefing__signal-track::after{animation:none}
+}
 
 /* Macro events */
 .macro-event{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
@@ -3549,12 +3745,19 @@ h1,h2,h3{
       <div class="panel col-4 row-2">
         <div class="panel-head"><span class="ttl"><b>05</b> Watchlist</span><span class="meta" id="watchlistMeta">Saved locally</span></div>
         <div class="panel-body">
-          <div class="watchlist-tools">
-            <input class="watchlist-input" id="watchlistInput" placeholder="Add ticker e.g. NVDA" autocomplete="off" spellcheck="false">
-            <button class="watchlist-btn" onclick="addWatchlistSymbol()">Add</button>
-            <button class="watchlist-btn" onclick="resetWatchlist()">Reset</button>
+          <div class="watchlist-add" role="group" aria-label="Add ticker to watchlist">
+            <div class="watchlist-add__head">
+              <span class="watchlist-add__icon" aria-hidden="true">+</span>
+              <span class="watchlist-add__label">Add ticker to watchlist</span>
+            </div>
+            <div class="watchlist-add__row">
+              <input class="watchlist-input" id="watchlistInput" placeholder="Add ticker" autocomplete="off" spellcheck="false" maxlength="12" aria-label="Ticker symbol">
+              <button class="watchlist-btn watchlist-btn--primary" type="button" onclick="addWatchlistSymbol()">Add</button>
+            </div>
           </div>
+          <div class="watchlist-msg" id="watchlistMsg" aria-live="polite"></div>
           <div id="watchlist"></div>
+          <button class="watchlist-btn watchlist-btn--ghost" type="button" onclick="resetWatchlist()">Reset default list</button>
         </div>
       </div>
 
@@ -5947,32 +6150,65 @@ function saveWatchlistSymbols(){
 function getWatchlistSymbols(){
   return watchlistSymbols.slice();
 }
+function setWatchlistMsg(text){
+  const el = document.getElementById('watchlistMsg');
+  if(!el) return;
+  el.textContent = text || '';
+  if(text){
+    clearTimeout(setWatchlistMsg._t);
+    setWatchlistMsg._t = setTimeout(()=>{ el.textContent = ''; }, 3200);
+  }
+}
+function watchlistStatus(pct){
+  if(pct == null || isNaN(pct)) return { label:'Watching', cls:'watching' };
+  if(Math.abs(pct) >= 2.5) return { label:'Volatile', cls:'volatile' };
+  if(pct > 0.15) return { label:'Rising', cls:'rising' };
+  if(pct < -0.15) return { label:'Falling', cls:'falling' };
+  return { label:'Watching', cls:'watching' };
+}
+function watchlistInsight(sym, q){
+  const name = q?.name || watchlistNames[sym] || sym;
+  const pct = q && !isNaN(q.pctChange) ? q.pctChange : null;
+  if(pct == null) return `Tracking ${name} — prices update when market data is connected.`;
+  if(pct >= 2.5) return `${name} is leading today’s move — momentum is clearly positive.`;
+  if(pct <= -2.5) return `${name} is under pressure — watch headlines for a catalyst.`;
+  if(pct > 0) return `${name} is ticking higher on a constructive session.`;
+  if(pct < 0) return `${name} is slightly softer — the tape is not broadening yet.`;
+  return `${name} is steady — no major intraday move so far.`;
+}
 function renderWatchlist(quotes){
   const el = document.getElementById('watchlist');
   const meta = document.getElementById('watchlistMeta');
   if(!el) return;
   if(quotes) latestWatchlistQuotes = {...latestWatchlistQuotes, ...quotes};
-  if(meta) meta.textContent = `${watchlistSymbols.length} tickers · saved`;
+  if(meta) meta.textContent = `${watchlistSymbols.length} ticker${watchlistSymbols.length===1?'':'s'} · saved locally`;
   if(!watchlistSymbols.length){
-    el.innerHTML = '<div class="watchlist-empty">Add tickers above to build a live watchlist. Each row can jump into Why Is It Moving.</div>';
+    el.innerHTML = '<div class="watchlist-empty">Add a ticker above — try AAPL, TSLA, NVDA, MSFT, AMZN, META, or GOOGL. Tap a card for Why Is It Moving.</div>';
     return;
   }
   el.innerHTML = watchlistSymbols.map(sym=>{
     const q = latestWatchlistQuotes[sym];
-    const name = q?.name || watchlistNames[sym] || 'Live ticker';
-    const price = q && !isNaN(q.price) ? q.price.toFixed(2) : '-';
+    const name = q?.name || watchlistNames[sym] || sym;
+    const price = q && !isNaN(q.price) ? '$'+q.price.toFixed(2) : '—';
     const pct = q && !isNaN(q.pctChange) ? q.pctChange : null;
-    const cls = pct == null ? 'flat' : (pct >= 0 ? 'up' : 'dn');
-    const color = cls === 'up' ? 'var(--green)' : (cls === 'dn' ? 'var(--red)' : 'var(--ink-faint)');
-    const chg = pct == null ? '-' : `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`;
-    return `<div class="wl-row" data-symbol="${escapeHtml(sym)}" onclick="openWhyFromWatchlist('${escapeHtml(sym)}')">
-      <div class="sym">${escapeHtml(sym)}</div>
-      <div class="name">${escapeHtml(name)}</div>
-      <div class="price">${price}</div>
-      <div class="chg ${cls}" style="color:${color}">${chg}</div>
-      <button class="why" type="button" onclick="event.stopPropagation();openWhyFromWatchlist('${escapeHtml(sym)}')">Why?</button>
-      <button class="remove" type="button" aria-label="Remove ${escapeHtml(sym)}" onclick="event.stopPropagation();removeWatchlistSymbol('${escapeHtml(sym)}')">×</button>
-    </div>`;
+    const chgCls = pct == null ? 'flat' : (pct >= 0 ? 'up' : 'dn');
+    const chg = pct == null ? '—' : `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`;
+    const status = watchlistStatus(pct);
+    const insight = watchlistInsight(sym, q);
+    return `<article class="wl-card" data-symbol="${escapeHtml(sym)}">
+      <div class="wl-card__top" onclick="openWhyFromWatchlist('${escapeHtml(sym)}')">
+        <span class="wl-card__sym">${escapeHtml(sym)}</span>
+        <span class="wl-status wl-status--${status.cls}">${escapeHtml(status.label)}</span>
+        <button class="wl-card__remove" type="button" aria-label="Remove ${escapeHtml(sym)}" onclick="event.stopPropagation();removeWatchlistSymbol('${escapeHtml(sym)}')">×</button>
+      </div>
+      <div class="wl-card__name" onclick="openWhyFromWatchlist('${escapeHtml(sym)}')">${escapeHtml(name)}</div>
+      <div class="wl-card__quote" onclick="openWhyFromWatchlist('${escapeHtml(sym)}')">
+        <span class="wl-card__price">${price}</span>
+        <span class="wl-card__chg ${chgCls}">${chg}</span>
+      </div>
+      <p class="wl-card__insight">${escapeHtml(insight)}</p>
+      <button class="wl-card__why" type="button" onclick="event.stopPropagation();openWhyFromWatchlist('${escapeHtml(sym)}')">Why is it moving?</button>
+    </article>`;
   }).join('');
 }
 async function refreshWatchlistQuotes(){
@@ -5986,12 +6222,24 @@ async function refreshWatchlistQuotes(){
 }
 function addWatchlistSymbol(symbol){
   const input = document.getElementById('watchlistInput');
-  const sym = cleanTickerSymbol(symbol || input?.value);
-  if(!sym) return;
-  if(!watchlistSymbols.includes(sym)) watchlistSymbols.unshift(sym);
-  watchlistSymbols = watchlistSymbols.slice(0,24);
+  const sym = resolveTickerInput(symbol || input?.value) || cleanTickerSymbol(symbol || input?.value);
+  if(!sym){
+    setWatchlistMsg('Enter a valid ticker symbol');
+    return;
+  }
+  if(watchlistSymbols.includes(sym)){
+    setWatchlistMsg(sym + ' is already on your watchlist');
+    if(input) input.value = '';
+    return;
+  }
+  if(watchlistSymbols.length >= 24){
+    setWatchlistMsg('Watchlist full (24 max) — remove one to add another');
+    return;
+  }
+  watchlistSymbols.unshift(sym);
   saveWatchlistSymbols();
   if(input) input.value = '';
+  setWatchlistMsg(sym + ' added');
   renderWatchlist();
   refreshWatchlistQuotes();
 }
@@ -6038,6 +6286,7 @@ window.addWatchlistSymbol = addWatchlistSymbol;
 window.removeWatchlistSymbol = removeWatchlistSymbol;
 window.resetWatchlist = resetWatchlist;
 window.openWhyFromWatchlist = openWhyFromWatchlist;
+window.getWatchlistSymbols = getWatchlistSymbols;
 
 /* ============================================================
    AI SENTIMENT FEED
@@ -7516,20 +7765,18 @@ ${quoteLines}
 TOP HEADLINES:
 ${newsLines}
 
-Write a 4-section brief in the style of a hedge fund morning memo. Begin immediately with a short punchy headline (8-12 words, no markdown symbols, no "MORNING BRIEFING", no date) that captures the single most important market theme right now. Then on the next line, a blank line, then the four sections:
+Write a live intelligence briefing for investors. Begin with one punchy headline line (8-12 words, plain text, no markdown on that line). Then blank line, then exactly these sections (beginner-friendly, premium tone, short sentences — no walls of text):
 
-**MARKET SNAPSHOT**: what is happening across indices and key names (2-3 sentences)
+**WHAT CHANGED**: what is happening across indices and key names (2-3 short sentences)
 
-**DRIVERS**: the most important catalysts, news, or macro themes today (3-4 sentences)
+**WHY IT MATTERS**: the most important catalysts and macro context (2-3 short sentences)
 
-**CROSS-ASSET**: where capital is rotating, what sectors are leading or lagging (2-3 sentences)
+**WHAT TO WATCH NEXT**
+- bullet one
+- bullet two
+- bullet three
 
-**WATCH LIST**
-- Item one
-- Item two
-- Item three
-
-Rules: Do NOT include a date, "MORNING BRIEFING", or any title line at the start. The first line must be the punchy headline only. Institutional tone. No buy/sell recommendations. Educational only. Total under 300 words.`;
+Rules: No date line, no "MORNING BRIEFING" title. No buy/sell advice. Educational only. Under 220 words total.`;
 
     const result = await this._claudeCall(prompt, 900);
     if(result) this._cacheSet(ck, result);
@@ -9019,68 +9266,221 @@ window.liveRefreshNews = liveRefreshNews;
    NVDA/TSLA/AAPL/MSFT/META/XOM quotes + top Finnhub headlines.
    Falls back to a heuristic summary if AI is unavailable.
 ============================================================ */
+function getBriefingContext(){
+  const rs = (typeof riskState !== 'undefined' && riskState.score != null) ? riskState : null;
+  return {
+    confidence: rs?.confidence || 'Medium',
+    regime: rs?.label || 'Neutral / Mixed',
+    score: rs?.score != null ? rs.score : null,
+  };
+}
+function getBriefingBadges(quotes){
+  const q = quotes || (typeof latestWatchlistQuotes !== 'undefined' ? latestWatchlistQuotes : {});
+  const rs = (typeof riskState !== 'undefined' && riskState.score != null) ? riskState : {};
+  let regimeShort = 'Mixed';
+  if(rs.score != null){
+    if(rs.score <= 36) regimeShort = 'Risk-On';
+    else if(rs.score >= 66) regimeShort = 'Risk-Off';
+    else regimeShort = 'Mixed';
+  } else if(/risk-on/i.test(String(rs.label||''))) regimeShort = 'Risk-On';
+  else if(/risk-off/i.test(String(rs.label||''))) regimeShort = 'Risk-Off';
+
+  const spy = q.SPY, iwm = q.IWM;
+  let breadth = 'Narrow breadth';
+  if(spy && iwm && !isNaN(spy.pctChange) && !isNaN(iwm.pctChange)){
+    const spread = spy.pctChange - iwm.pctChange;
+    if(spread > 0.2) breadth = 'Narrow breadth';
+    else if(spread <= 0.05) breadth = 'Broadening breadth';
+    else breadth = 'Mixed breadth';
+  }
+
+  const confidenceLabel = rs.confidence || 'Medium';
+  const confidencePct = confidenceLabel === 'High' ? 84 : confidenceLabel === 'Low' ? 36 : 62;
+  return { regimeShort, breadth, confidencePct, confidenceLabel };
+}
+function buildBriefingLede(badges){
+  if(badges.regimeShort === 'Risk-On' && /narrow/i.test(badges.breadth)){
+    return 'Markets are leaning risk-on, but participation is thin. A small group of leaders is carrying the move, so the rally looks strong on the surface but fragile underneath.';
+  }
+  if(badges.regimeShort === 'Risk-Off'){
+    return 'Investors are playing defence today. Caution is showing up in breadth and positioning — the tape can reverse quickly if macro data surprises.';
+  }
+  if(badges.regimeShort === 'Risk-On'){
+    return 'Risk appetite is holding up today. Leadership is visible, but watch whether the rest of the market catches up or fades.';
+  }
+  return 'The session is sending mixed signals — indices and breadth are not fully aligned, so read the move carefully.';
+}
+function escapeBriefHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function parseBriefingFromAI(text){
+  const raw = String(text||'').trim();
+  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  let headline = lines[0] || '';
+  if(headline.startsWith('**')) headline = headline.replace(/^\*\*|\*\*$/g,'').trim();
+  const sections = { changed:'', matters:'', watch:'' };
+  const map = [
+    [/what changed|market snapshot/i, 'changed'],
+    [/why it matters|drivers|cross-asset/i, 'matters'],
+    [/what to watch|watch list|watchlist/i, 'watch'],
+  ];
+  let current = null;
+  lines.slice(1).forEach(line=>{
+    const header = line.match(/^\*\*(.+?)\*\*:?\s*(.*)$/);
+    if(header){
+      const title = header[1].trim();
+      const rest = header[2].trim();
+      for(const [re,key] of map){
+        if(re.test(title)){ current = key; if(rest) sections[key] = rest; return; }
+      }
+      current = null;
+      return;
+    }
+    if(/^[-•*]\s+/.test(line) && current === 'watch'){
+      sections.watch += (sections.watch ? '\n' : '') + line.replace(/^[-•*]\s+/,'');
+      return;
+    }
+    if(current && line) sections[current] += (sections[current] ? ' ' : '') + line;
+  });
+  if(!sections.changed && !sections.matters){
+    const chunks = raw.split(/\n\n+/).filter(Boolean);
+    if(chunks.length >= 2){
+      sections.changed = chunks[1]?.replace(/\*\*[^*]+\*\*:?/g,'').trim() || '';
+      sections.matters = chunks[2]?.replace(/\*\*[^*]+\*\*:?/g,'').trim() || '';
+      sections.watch = chunks.slice(3).join('\n').replace(/\*\*[^*]+\*\*:?/g,'').trim();
+    }
+  }
+  return { headline, ...sections };
+}
+function renderSessionBriefing({ headline, lede, changed, matters, watch, foot, footClass, quotes }){
+  const badges = getBriefingBadges(quotes);
+  const ledeText = lede || buildBriefingLede(badges);
+  const regimeCls = badges.regimeShort === 'Risk-Off' ? ' off' : '';
+  const watchHtml = watch
+    ? (watch.includes('\n')
+      ? '<ul>'+watch.split('\n').filter(Boolean).map(i=>'<li>'+escapeBriefHtml(i)+'</li>').join('')+'</ul>'
+      : '<p>'+escapeBriefHtml(watch)+'</p>')
+    : '<p>Macro calendar and mega-cap earnings.</p>';
+  return `<div class="session-briefing session-briefing--live">
+    <div class="session-briefing__pulse" aria-hidden="true"></div>
+    <div class="session-briefing__signal" aria-hidden="true">
+      <span class="session-briefing__signal-dot"></span>
+      <span class="session-briefing__signal-track"></span>
+      <span class="session-briefing__live-tag">Live briefing</span>
+    </div>
+    <div class="session-briefing__badges">
+      <span class="session-briefing__badge session-briefing__badge--regime${regimeCls}">${escapeBriefHtml(badges.regimeShort)}</span>
+      <span class="session-briefing__badge session-briefing__badge--breadth">${escapeBriefHtml(badges.breadth)}</span>
+    </div>
+    <div class="session-briefing__confidence-row">
+      <span class="session-briefing__confidence-label">Confidence</span>
+      <div class="session-briefing__meter" role="meter" aria-valuenow="${badges.confidencePct}" aria-valuemin="0" aria-valuemax="100" aria-label="Briefing confidence">
+        <div class="session-briefing__meter-fill" style="width:${badges.confidencePct}%"></div>
+      </div>
+      <span class="session-briefing__confidence-val">${escapeBriefHtml(badges.confidenceLabel)}</span>
+    </div>
+    <p class="session-briefing__lede">${escapeBriefHtml(ledeText)}</p>
+    ${headline ? `<h3 class="session-briefing__headline">${escapeBriefHtml(headline)}</h3>` : ''}
+    <div class="session-briefing__sections">
+      <section class="session-briefing__block">
+        <span class="session-briefing__label">What changed</span>
+        <p>${escapeBriefHtml(changed) || 'Markets are updating — refresh for the latest tape.'}</p>
+      </section>
+      <section class="session-briefing__block">
+        <span class="session-briefing__label">Why it matters</span>
+        <p>${escapeBriefHtml(matters) || 'Leadership and macro data are shaping how investors price risk today.'}</p>
+      </section>
+      <section class="session-briefing__block">
+        <span class="session-briefing__label">What to watch next</span>
+        ${watchHtml}
+      </section>
+    </div>
+    ${foot ? `<div class="session-briefing__foot session-briefing__foot--${footClass||'heuristic'}">${escapeBriefHtml(foot)}</div>` : ''}
+  </div>`;
+}
+function buildHeuristicBriefing(quotes){
+  const spyQ = quotes['SPY'], qqqQ = quotes['QQQ'];
+  const nvdaQ = quotes['NVDA'], xomQ = quotes['XOM'];
+  const spyPct = spyQ && !isNaN(spyQ.pctChange) ? (spyQ.pctChange>=0?'+':'')+spyQ.pctChange.toFixed(2)+'%' : null;
+  const qqqPct = qqqQ && !isNaN(qqqQ.pctChange) ? (qqqQ.pctChange>=0?'+':'')+qqqQ.pctChange.toFixed(2)+'%' : null;
+  const badges = getBriefingBadges(quotes);
+  const headline = spyQ
+    ? (spyQ.pctChange >= 0 ? 'Leaders are carrying the index' : 'Defensive tone on the tape')
+    : 'Live intelligence briefing';
+  const changedParts = [
+    spyPct ? `SPY is ${spyPct} today` : null,
+    qqqPct ? `growth-heavy QQQ is ${qqqPct}` : null,
+    nvdaQ ? `mega-cap tech (NVDA ${nvdaQ.pctChange>=0?'+':''}${nvdaQ.pctChange?.toFixed(2)}%) leads` : null,
+  ].filter(Boolean);
+  const changed = changedParts.length
+    ? changedParts.join(', ') + '.'
+    : 'Indices are updating — connect live data for exact moves.';
+  const matters = badges.breadth === 'Narrow breadth'
+    ? 'When only a few names lift the index, the move can reverse fast if those leaders stumble — even when the headline number looks healthy.'
+    : 'Breadth and leadership are telling a more balanced story, but macro headlines can still shift sentiment quickly.';
+  const watch = ['CPI, jobs, and Fed speakers on the calendar','Whether tech earnings confirm the AI trade','If small caps start catching up to mega-cap leaders'];
+  return renderSessionBriefing({
+    headline,
+    lede: buildBriefingLede(badges),
+    changed,
+    matters,
+    watch: watch.join('\n'),
+    quotes,
+    foot: 'Live heuristic · Connect Anthropic for AI briefing',
+    footClass: 'heuristic',
+  });
+}
 async function liveRefreshSessionSummary(){
   const body = document.getElementById('sessionSummaryBody');
   const meta = document.getElementById('sessionSummaryMeta');
   if(!body) return;
 
-  // Show loading state
-  body.innerHTML = '<div style="font-size:12px;color:var(--ink-faint)">Generating live session summary…</div>';
+  body.innerHTML = renderSessionBriefing({
+    headline: 'Briefing in progress',
+    changed: 'Pulling live quotes and headlines…',
+    matters: 'Context updates as data arrives.',
+    watch: 'Session catalysts\nRisk regime shift',
+    foot: 'Updating',
+    footClass: 'heuristic',
+  });
+  if(meta) meta.textContent = 'Live · updating';
 
-  // Heuristic fallback uses live quotes + risk regime state already available
-  function buildHeuristicSummary(quotes){
-    const spyQ = quotes['SPY'], qqqQ = quotes['QQQ'];
-    const nvdaQ = quotes['NVDA'], xomQ = quotes['XOM'];
-    const spyDir = spyQ?.pctChange >= 0 ? 'higher' : 'lower';
-    const spyPct = spyQ ? Math.abs(spyQ.pctChange).toFixed(2)+'%' : '—';
-    const regime = (typeof _riskScore !== 'undefined') ? (_riskScore>=66?'risk-off':'risk-on') : 'mixed';
-    const nvdaStr = nvdaQ ? `NVDA ${nvdaQ.pctChange>=0?'+':''}${nvdaQ.pctChange?.toFixed(2)}%` : '';
-    const xomStr  = xomQ  ? `XOM ${xomQ.pctChange>=0?'+':''}${xomQ.pctChange?.toFixed(2)}%`   : '';
-    const movers = [nvdaStr, xomStr].filter(Boolean).join(', ');
-    return `<div style="font-size:14px;line-height:1.6;color:var(--ink)">
-      Markets are trading <b style="color:${spyQ?.pctChange>=0?'var(--green)':'var(--red)'}">${spyDir}</b> on the session
-      ${spyQ ? `with SPY ${spyQ.pctChange>=0?'+':''}${spyPct}` : ''}.
-      The current risk regime reads as <b style="color:var(--gold-bright)">${regime}</b>.
-      ${movers ? `Notable movers: ${movers}.` : ''}
-      Connect your Anthropic API key for a full AI-generated market briefing.
-    </div>
-    <div style="margin-top:14px;padding:10px 14px;border-radius:6px;background:rgba(212,168,90,0.05);border:1px solid rgba(212,168,90,0.15);font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.1em">
-      Heuristic summary · Connect Anthropic for AI analysis
-    </div>`;
-  }
-
-  // Try live quotes for heuristic fallback first
   const latestQ = (typeof latestWatchlistQuotes !== 'undefined') ? latestWatchlistQuotes : {};
   if(Object.keys(latestQ).length >= 2){
-    body.innerHTML = buildHeuristicSummary(latestQ);
-    if(meta) meta.textContent = 'Heuristic · loading';
+    body.innerHTML = buildHeuristicBriefing(latestQ);
+    if(meta) meta.textContent = 'Live · heuristic';
   }
 
-  // Now try full AI generation
   if(!BriefTickAPI.keys.anthropic){
-    const q = Object.keys(latestQ).length >= 2 ? latestQ : {};
-    body.innerHTML = buildHeuristicSummary(q);
+    body.innerHTML = buildHeuristicBriefing(Object.keys(latestQ).length >= 2 ? latestQ : {});
     if(meta) meta.textContent = 'Heuristic';
     return;
   }
 
   try {
-    if(meta) meta.textContent = 'AI generating…';
+    if(meta) meta.textContent = 'AI · generating';
     const result = await BriefTickAPI.aiMorningBrief();
     if(result){
-      const formatted = renderAIMarkdown(result, {accent:'var(--gold)'});
-      body.innerHTML = formatted +
-        `<div style="margin-top:14px;padding:10px 14px;border-radius:6px;background:rgba(61,220,151,0.05);border:1px solid rgba(61,220,151,0.15);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.1em">
-          ✓ AI · Generated ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})} from live data
-        </div>`;
-      if(meta) meta.textContent = 'AI · '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      const parsed = parseBriefingFromAI(result);
+      const time = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      body.innerHTML = renderSessionBriefing({
+        headline: parsed.headline || 'Market intelligence briefing',
+        lede: parsed.matters ? buildBriefingLede(getBriefingBadges(latestQ)) : undefined,
+        changed: parsed.changed || result.slice(0, 280),
+        matters: parsed.matters || 'Leadership and macro data still drive how investors price risk.',
+        watch: parsed.watch || 'Fed speakers\nSector leadership\nVolatility regime',
+        quotes: latestQ,
+        foot: '✓ AI briefing · '+time+' from live data',
+        footClass: 'ai',
+      });
+      if(meta) meta.textContent = 'AI · '+time;
     } else {
-      body.innerHTML = buildHeuristicSummary(latestQ);
+      body.innerHTML = buildHeuristicBriefing(latestQ);
       if(meta) meta.textContent = 'Heuristic';
     }
   } catch(e){
     console.warn('[session summary] AI failed:', e.message);
-    body.innerHTML = buildHeuristicSummary(latestQ);
+    body.innerHTML = buildHeuristicBriefing(latestQ);
     if(meta) meta.textContent = 'Heuristic';
   }
 }
@@ -11851,6 +12251,15 @@ function isLogicPreviewActive() {
   );
 }
 
+function isDashboardPreviewActive() {
+  const p = new URLSearchParams(location.search).get('preview');
+  return (
+    window.__DASHBOARD_PREVIEW === true ||
+    p === 'dashboard' ||
+    /(?:^|\/)dashboard-preview(?:\.html)?\/?$/i.test(location.pathname)
+  );
+}
+
 function routeWithAuth(name) {
   // Public tabs always accessible
   if (_PUBLIC_TABS.has(name)) {
@@ -11865,6 +12274,12 @@ function routeWithAuth(name) {
   }
   if (name === 'agent' && isLogicPreviewActive()) {
     window.route('logic');
+    return;
+  }
+
+  // Dashboard — local preview route only (no sign-in)
+  if (name === 'dashboard' && (isDashboardPreviewActive() || _clerkUser)) {
+    window.route(name);
     return;
   }
 
@@ -11886,10 +12301,12 @@ window.addEventListener('load', () => {
   const activeId = active?.id?.replace('page-', '');
   if (activeId && !_PUBLIC_TABS.has(activeId) && !_clerkUser) {
     if (activeId === 'logic' && isLogicPreviewActive()) return;
+    if (activeId === 'dashboard' && isDashboardPreviewActive()) return;
     // Give Clerk a moment to load and set user; if still public → back to landing
     setTimeout(() => {
       if (_clerkUser) return;
       if (activeId === 'logic' && isLogicPreviewActive()) return;
+      if (activeId === 'dashboard' && isDashboardPreviewActive()) return;
       window.route('landing');
     }, 1200);
   }

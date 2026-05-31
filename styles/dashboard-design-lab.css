@@ -23,11 +23,16 @@
 
 html[data-theme="split"] body.dash-lab-body {
   min-height: 100vh;
-  background: var(--dash-void);
+  background-color: var(--dash-void);
   color: #e8ecf5;
   font-family: var(--dash-body);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* Wheel uses full-page gradient from dashboard-preview.css; keep main transparent */
+body.dash-lab-body[data-dash-lab-concept="wheel"] .dash-lab-main {
+  background: transparent;
 }
 
 /* ── Lab chrome ─────────────────────────────────────────────── */
@@ -146,11 +151,10 @@ html[data-theme="split"] body.dash-lab-body {
 #panelWheel.is-active .intel-wheel-scene {
   position: relative;
   z-index: 2;
-  isolation: isolate;
 }
 
-#panelWheel.is-active .dash-lab-env {
-  z-index: 0;
+body[data-dash-lab-concept="wheel"] #panelWheel.is-active .intel-wheel-scene {
+  isolation: auto;
 }
 
 .dash-lab-env {
@@ -826,10 +830,15 @@ body[data-dash-lab-concept="rail"] .dash-lab-concept-toggle button[data-concept=
   max-width: 1040px;
   margin: 0 auto;
   padding: 28px 12px 100px;
+  background: transparent;
 }
 
 #panelWheel.is-active .intel-wheel-scene {
   padding-top: 8px;
+}
+
+body[data-dash-lab-concept="wheel"] #panelWheel.is-active .intel-wheel-scene {
+  padding-bottom: 48px;
 }
 
 /* Market Pulse — minimal editorial strip above wheel */
@@ -982,6 +991,7 @@ body[data-dash-lab-concept="rail"] .dash-lab-concept-toggle button[data-concept=
 .wheel-module-viewport {
   position: relative;
   min-height: 360px;
+  background: transparent;
 }
 
 .wheel-module-viewport .rail-module-stage {
