@@ -240,7 +240,7 @@ function renderIntelligenceCard(res, role = "logic") {
 
   return `<div class="logic-msg logic-msg--logic">
     <div class="logic-msg-head">
-      <span class="logic-msg-role">${role === "user" ? "You" : "Brieftick Logic"}</span>
+      <span class="logic-msg-role">${role === "user" ? "You" : "Ask Logic"}</span>
       ${full.mode ? `<span class="logic-msg-mode">${escapeHtml(full.modeLabel || full.mode)}</span>` : ""}
     </div>
     <h3 class="logic-msg-title">${escapeHtml(full.title)}</h3>
@@ -316,20 +316,20 @@ function updateUsageBanner() {
 function renderAccessBlockedResponse(prompt, reason) {
   const isLimit = reason === "daily_limit";
   const summary = isLimit
-    ? `You have used all 5 Free Logic prompts for today. ${LOGIC_UPGRADE_MSG}`
+    ? `You have used all 5 free Ask Logic questions for today. ${LOGIC_UPGRADE_MSG}`
     : LOGIC_UPGRADE_MSG;
   return buildLogicResponse({
-    title: isLimit ? "Free Logic limit reached" : "Terminal feature",
+    title: isLimit ? "Ask Logic limit reached" : "Terminal feature",
     summary,
     cards: {
-      snapshot: isLimit ? "Daily Free Logic quota exhausted" : "Portfolio, scenario, and sector Logic require Terminal",
+      snapshot: isLimit ? "Daily free Ask Logic quota exhausted" : "My Portfolio, scenario, and sector questions require Terminal",
       catalyst: "Upgrade for portfolio intelligence and scenario analysis",
       macroContext: "Terminal unlocks full source depth and live premium data",
       sectorImpact: "Free users can still use Market Pulse, Ticker, Risk Regime, and Daily Brief",
       volatility: "Limits reset at midnight UTC",
       aiSummary: summary,
     },
-    keyDrivers: ["Free tier limit", "Terminal unlocks full Logic"],
+    keyDrivers: ["Free tier limit", "Terminal unlocks full Ask Logic"],
     signals: [isLimit ? "5/5 used" : "Upgrade required"],
     confidence: 100,
     sources: ["Brieftick Logic · access"],
@@ -613,7 +613,7 @@ const LOGIC_MODE_SHORT = {
   "risk-regime": "Risk",
   "daily-brief": "Brief",
   scenario: "Scenario",
-  briefing: "Briefing",
+  briefing: "Daily Brief",
   causal: "Causal",
   "macro-interpretation": "Macro",
 };
@@ -730,8 +730,8 @@ function refreshLogicPageChrome() {
   }
   if (headerSub) {
     headerSub.textContent = isLogicTerminalUser()
-      ? "Logic Terminal · Institutional intelligence · Not financial advice"
-      : "Free Logic · Limited daily prompts · Not financial advice";
+      ? "Ask Logic · Terminal · Not financial advice"
+      : "Ask Logic · Free tier · Limited daily questions · Not financial advice";
   }
   updateUsageBanner();
 }

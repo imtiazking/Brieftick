@@ -319,7 +319,7 @@ function renderActiveTab() {
       if (openSource === "scanner") {
         const note = document.createElement("p");
         note.className = "tdd-context-footnote";
-        note.textContent = "Scanner view does not use your portfolio — positioning bars are market-wide.";
+        note.textContent = "Discover Stocks view does not use your portfolio — positioning bars are market-wide.";
         host.appendChild(note);
       }
       renderedTabs.add("positioning");

@@ -91,5 +91,5 @@ export function checkLogicAccess(mode) {
 export function getUsageBannerText() {
   if (isLogicTerminalUser()) return "Terminal Logic · unlimited";
   const { count, limit } = getLogicUsageToday();
-  return `Free Logic: ${count}/${limit} used today`;
+  return `Ask Logic free tier: ${count}/${limit} used today`;
 }

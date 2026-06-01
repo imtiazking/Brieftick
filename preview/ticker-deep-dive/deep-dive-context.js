@@ -17,10 +17,10 @@
  */
 
 const SOURCE_KICKER = {
-  movers: "From Dashboard · Movers",
-  scanner: "From Scanner",
-  portfolio: "From Portfolio",
-  logic: "From Logic",
+  movers: "From What's Moving",
+  scanner: "From Discover Stocks",
+  portfolio: "From My Portfolio",
+  logic: "From Ask Logic",
   watchlist: "From Watchlist",
   url: "Deep Dive",
   unknown: "Deep Dive",
@@ -171,7 +171,7 @@ export function buildScannerContext(stock, meta = {}) {
     <p class="tdd-context-block__muted">${esc(stripHtml(buildScannerWhyLineHtml(stock, mode, rank)))}</p>`;
 
   const overviewBody = `
-    <p class="tdd-context-block__line">Scanner snapshot · ${esc(modeLabel)} · #${esc(rank)} · ${esc(pct)} · ${esc(Number(stock.volRatio).toFixed(1))}× volume</p>`;
+    <p class="tdd-context-block__line">Discover Stocks snapshot · ${esc(modeLabel)} · #${esc(rank)} · ${esc(pct)} · ${esc(Number(stock.volRatio).toFixed(1))}× volume</p>`;
 
   return {
     source: "scanner",
