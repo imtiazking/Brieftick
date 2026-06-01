@@ -2322,6 +2322,18 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
   font-size:12px;color:var(--ink-dim);line-height:1.6;display:none;
 }
 .scanner-ai-panel.visible{display:block}
+.scanner-why-here{
+  font-size:12px;line-height:1.55;color:var(--ink-dim);margin-bottom:12px;
+  padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.025);border:1px solid var(--border);
+}
+.scanner-why-here b{color:var(--gold);font-weight:500}
+.scanner-explain-metrics{
+  font-size:11px;color:var(--ink-dim);line-height:1.55;margin-bottom:10px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.scanner-explain-metrics div{margin-bottom:4px}
+.scanner-explain-metrics .lbl{color:var(--ink-faint);font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.scanner-explain-ai{font-size:12px;color:var(--ink-dim);line-height:1.6}
 .scanner-list-header{
   display:grid;grid-template-columns:40px 80px 1fr 90px 90px 90px 110px;
   gap:12px;padding:10px 16px;
@@ -4847,10 +4859,10 @@ h1,h2,h3{
 
     <!-- Controls -->
     <div class="scanner-controls">
-      <button class="scanner-filter-chip active" data-scan="momentum">Momentum Leaders</button>
-      <button class="scanner-filter-chip" data-scan="breakout">Breakouts</button>
-      <button class="scanner-filter-chip" data-scan="volume">Volume Surge</button>
-      <button class="scanner-filter-chip" data-scan="sector">Sector Rotation</button>
+      <button class="scanner-filter-chip active" data-scan="momentum" title="Strongest combined move, activity, and range position">Big Movers</button>
+      <button class="scanner-filter-chip" data-scan="breakout" title="Prices closest to their 52-week high">Near 52-Week Highs</button>
+      <button class="scanner-filter-chip" data-scan="volume" title="Highest volume compared with typical">Unusual Volume</button>
+      <button class="scanner-filter-chip" data-scan="sector" title="Largest gainers in the scan today">Today's Leaders</button>
       <div class="scanner-view-toggle" style="margin-left:auto">
         <button class="scanner-view-btn active" data-view="cards">Cards</button>
         <button class="scanner-view-btn" data-view="list">List</button>
@@ -4882,7 +4894,7 @@ h1,h2,h3{
         <div class="scanner-list-header">
           <span>#</span><span>Ticker</span><span>Company</span>
           <span style="text-align:right">Price</span><span style="text-align:right">Change</span>
-          <span style="text-align:right">Volume</span><span style="text-align:right">Score</span>
+          <span style="text-align:right">Activity</span><span style="text-align:right">Strength</span>
         </div>
         <div id="scannerListBody">
           <div style="padding:50px;text-align:center;color:var(--ink-faint);font-size:13px">
@@ -13935,6 +13947,57 @@ async function runScanner() {
   scannerRunning = false;
 }
 
+const SCANNER_MODE_LABELS = {
+  momentum: 'Big Movers',
+  breakout: 'Near 52-Week Highs',
+  volume: 'Unusual Volume',
+  sector: "Today's Leaders",
+};
+
+const SCANNER_SCORE_LABELS = {
+  momentum: 'Strength score',
+  breakout: 'Breakout score',
+  volume: 'Volume score',
+  sector: 'Leadership score',
+};
+
+function scannerScorePillLabel(score) {
+  if (score >= 65) return 'Strong';
+  if (score >= 45) return 'Neutral';
+  return 'Weak';
+}
+
+function buildScannerWhyLine(s, mode, rank) {
+  const sign = s.pctChange >= 0 ? '+' : '';
+  const pct = `${sign}${s.pctChange.toFixed(2)}%`;
+  const volPhrase =
+    s.volRatio >= 2 ? 'higher than usual trading activity' : s.volRatio >= 1.2 ? 'above-average trading activity' : 'typical trading activity';
+  const posPct = Math.round(s.pos52 * 100);
+  const rankPhrase = rank <= 5 ? `Ranked <b>#${rank}</b> on this list` : 'Ranked in the top half of this scan';
+
+  if (mode === 'breakout') {
+    return `<b>Why it's here:</b> ${rankPhrase} — <b>near its 52-week high</b> (about ${posPct}% of the yearly range), ${pct} today.`;
+  }
+  if (mode === 'volume') {
+    return `<b>Why it's here:</b> ${rankPhrase} for <b>unusual volume</b> (${s.volRatio.toFixed(1)}× typical), ${pct} today.`;
+  }
+  if (mode === 'sector') {
+    return `<b>Why it's here:</b> ${rankPhrase} — <b>one of today's top gainers</b> (${pct}) in ${s.sector}.`;
+  }
+  return `<b>Why it's here:</b> ${rankPhrase} among big movers — ${pct} today, ${volPhrase}, price <b>${posPct >= 70 ? 'high' : posPct <= 35 ? 'low' : 'mid-range'}</b> in its yearly range (${s.sector}).`;
+}
+
+function buildScannerExplainMetricsHtml(s) {
+  const volDisplay = s.volRatio >= 2 ? '🔥 ' + s.volRatio.toFixed(1) + '×' : s.volRatio.toFixed(1) + '×';
+  const posPct = Math.round(s.pos52 * 100);
+  const gapSign = s.gapPct >= 0 ? '+' : '';
+  return `<div class="scanner-explain-metrics">
+    <div><span class="lbl">Trading activity</span> · ${volDisplay} vs usual volume</div>
+    <div><span class="lbl">Year range position</span> · ${posPct}% (0% = yearly low, 100% = yearly high)</div>
+    <div><span class="lbl">Opening move</span> · ${gapSign}${s.gapPct.toFixed(1)}% vs prior close</div>
+  </div>`;
+}
+
 function sortScannerResults(mode) {
   const r = [...scannerResults];
   if (mode === 'momentum') return r.sort((a,b) => b.score - a.score);
@@ -13963,10 +14026,11 @@ function renderScannerResults() {
     if (listBody) listBody.innerHTML = '';
     return;
   }
+  const modeLabel = SCANNER_MODE_LABELS[scannerMode] || scannerMode;
   if (statLabel) {
     statLabel.textContent = isGated
       ? `Showing 3 of ${sorted.length} stocks \u00b7 Terminal unlocks full results`
-      : `${sorted.length} stocks scored \u00b7 sorted by ${scannerMode} \u00b7 ${new Date().toLocaleTimeString()}`;
+      : `${sorted.length} stocks \u00b7 Sorted by ${modeLabel} \u00b7 ${new Date().toLocaleTimeString()}`;
   }
 
   function lockedCard(rank) {
@@ -13984,40 +14048,37 @@ function renderScannerResults() {
     </div>`;
   }
 
+  const scoreLabel = SCANNER_SCORE_LABELS[scannerMode] || 'Strength score';
   const realCards = visible.map((s, i) => {
     const dir = s.pctChange >= 0 ? 'up' : 'dn';
     const sign = s.pctChange >= 0 ? '+' : '';
-    const volLabel = s.volRatio >= 2 ? '\ud83d\udd25 ' + s.volRatio.toFixed(1) + 'x' : s.volRatio.toFixed(1) + 'x';
     const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
-    const pos52Pct = Math.round(s.pos52 * 100);
+    const whyLine = buildScannerWhyLine(s, scannerMode, i + 1);
+    const safeName = String(s.name).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     return `<div class="scanner-card">
       <div class="scanner-card-rank">#${i+1}</div>
       <div class="scanner-card-top">
         <div>
           <div class="scanner-card-sym">${s.sym}</div>
-          <div class="scanner-card-name">${s.name}</div>
-          <div style="margin-top:5px;font-size:10px;color:var(--ink-faint);letter-spacing:.05em">${s.sector}</div>
+          <div class="scanner-card-name">${escapeHtml(s.name)}</div>
+          <div style="margin-top:5px;font-size:10px;color:var(--ink-faint);letter-spacing:.05em">${escapeHtml(s.sector)}</div>
         </div>
         <div class="scanner-card-change">
           <div class="scanner-card-price">$${s.close.toFixed(2)}</div>
           <div class="scanner-card-pct ${dir}">${sign}${s.pctChange.toFixed(2)}%</div>
         </div>
       </div>
-      <div class="scanner-metrics">
-        <div class="scanner-metric"><div class="scanner-metric-label">Vol Ratio</div><div class="scanner-metric-val">${volLabel}</div></div>
-        <div class="scanner-metric"><div class="scanner-metric-label">52W Pos</div><div class="scanner-metric-val">${pos52Pct}%</div></div>
-        <div class="scanner-metric"><div class="scanner-metric-label">Gap</div><div class="scanner-metric-val">${s.gapPct >= 0 ? '+' : ''}${s.gapPct.toFixed(1)}%</div></div>
-      </div>
+      <div class="scanner-why-here">${whyLine}</div>
       <div class="scanner-score-bar">
-        <div class="scanner-score-label"><span>Momentum Score</span><span>${s.score}/99</span></div>
+        <div class="scanner-score-label"><span>${scoreLabel}</span><span>${s.score}/99</span></div>
         <div class="scanner-score-track"><div class="scanner-score-fill" style="width:${s.score}%"></div></div>
       </div>
       <div>
-        <span class="scanner-ai-badge" onclick="toggleScannerCardAI(this,'${s.sym}','${s.name}',${s.pctChange.toFixed(2)},${s.score})">
+        <span class="scanner-ai-badge" onclick="toggleScannerCardAI(this,'${s.sym}','${safeName}',${s.pctChange.toFixed(2)},${s.score},${s.volRatio.toFixed(2)},${s.pos52.toFixed(4)},${s.gapPct.toFixed(2)})">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           Explain
         </span>
-        <span class="scanner-score-pill ${scoreClass}" style="margin-left:8px">${s.score >= 65?'Strong':s.score>=45?'Neutral':'Weak'}</span>
+        <span class="scanner-score-pill ${scoreClass}" style="margin-left:8px">${scannerScorePillLabel(s.score)}</span>
       </div>
       <div class="scanner-ai-panel" id="scanner-ai-${s.sym}"></div>
     </div>`;
@@ -14053,7 +14114,7 @@ function renderScannerResults() {
 }
 
 
-async function toggleScannerCardAI(btn, sym, name, pct, score) {
+async function toggleScannerCardAI(btn, sym, name, pct, score, volRatio, pos52, gapPct) {
   const panel = document.getElementById('scanner-ai-' + sym);
   if (!panel) return;
   if (panel.classList.contains('visible')) {
@@ -14061,18 +14122,28 @@ async function toggleScannerCardAI(btn, sym, name, pct, score) {
     return;
   }
   panel.classList.add('visible');
-  panel.textContent = 'Generating AI explanation…';
+  const metricsHtml = buildScannerExplainMetricsHtml({
+    volRatio: Number(volRatio),
+    pos52: Number(pos52),
+    gapPct: Number(gapPct),
+  });
+  panel.innerHTML = metricsHtml + '<div class="scanner-explain-ai">Generating AI explanation…</div>';
+  const aiEl = panel.querySelector('.scanner-explain-ai');
   const sign = pct >= 0 ? '+' : '';
-  const prompt = `Briefly explain (3-4 sentences) why ${name} (${sym}) is ${pct >= 0 ? 'up' : 'down'} ${sign}${pct}% today with a momentum score of ${score}/99. Comment on volume, sector trends, and what traders should watch. Be direct and insightful.`;
+  const scoreName = SCANNER_SCORE_LABELS[scannerMode] || 'strength score';
+  const prompt = `Briefly explain (3-4 sentences) why ${name} (${sym}) is ${pct >= 0 ? 'up' : 'down'} ${sign}${pct}% today with a ${scoreName.toLowerCase()} of ${score}/99. Comment on volume, sector trends, and what traders should watch. Be direct and insightful.`;
   const res = await BriefTickAPI._claudeCall(prompt, 220);
-  panel.textContent = res || 'Add an Anthropic API key in Settings to enable AI explanations.';
+  if (aiEl) {
+    aiEl.textContent = res || 'Add an Anthropic API key in Settings to enable AI explanations.';
+  }
 }
 
 async function quickScannerAI(sym, name, pct, score) {
   const box = document.getElementById('scannerAISummaryText');
   box.textContent = `Generating AI explanation for ${sym}…`;
   const sign = pct >= 0 ? '+' : '';
-  const prompt = `Briefly explain (3-4 sentences) why ${name} (${sym}) is ${pct >= 0 ? 'up' : 'down'} ${sign}${pct}% today with a momentum score of ${score}/99. Comment on volume, sector trends, and what traders should watch.`;
+  const scoreName = SCANNER_SCORE_LABELS[scannerMode] || 'strength score';
+  const prompt = `Briefly explain (3-4 sentences) why ${name} (${sym}) is ${pct >= 0 ? 'up' : 'down'} ${sign}${pct}% today with a ${scoreName.toLowerCase()} of ${score}/99. Comment on volume, sector trends, and what traders should watch.`;
   const res = await BriefTickAPI._claudeCall(prompt, 220);
   box.textContent = res ? `${sym}: ${res}` : 'Add an Anthropic API key in Settings to enable AI explanations.';
 }
