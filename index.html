@@ -2316,6 +2316,20 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
   border-radius:12px;font-size:10px;color:var(--gold);cursor:pointer;transition:background .15s;
 }
 .scanner-ai-badge:hover{background:rgba(212,175,55,.2)}
+.scanner-card-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.scanner-deep-dive-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 9px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:12px;font-size:10px;color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s;
+  font-family:inherit;
+}
+.scanner-deep-dive-badge:hover{background:rgba(255,255,255,.08);border-color:var(--border-strong);color:var(--gold)}
+.scanner-list-deep-dive{
+  justify-self:end;padding:4px 8px;font-size:10px;border-radius:8px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--ink);
+  cursor:pointer;font-family:inherit;white-space:nowrap;
+}
+.scanner-list-deep-dive:hover{border-color:var(--border-strong);color:var(--gold)}
 .scanner-ai-panel{
   margin-top:12px;padding:12px;background:rgba(212,175,55,.05);
   border-left:2px solid var(--gold);border-radius:0 6px 6px 0;
@@ -2335,13 +2349,13 @@ footer{padding:56px 36px 0;border-top:1px solid var(--border);margin-top:80px}
 .scanner-explain-metrics .lbl{color:var(--ink-faint);font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase}
 .scanner-explain-ai{font-size:12px;color:var(--ink-dim);line-height:1.6}
 .scanner-list-header{
-  display:grid;grid-template-columns:40px 80px 1fr 90px 90px 90px 110px;
+  display:grid;grid-template-columns:40px 80px 1fr 90px 90px 90px 88px 72px;
   gap:12px;padding:10px 16px;
   font-family:var(--mono);font-size:10px;color:var(--ink-faint);
   letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border);
 }
 .scanner-list-row{
-  display:grid;grid-template-columns:40px 80px 1fr 90px 90px 90px 110px;
+  display:grid;grid-template-columns:40px 80px 1fr 90px 90px 90px 88px 72px;
   gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);
   align-items:center;cursor:pointer;transition:background .15s;
 }
@@ -3423,6 +3437,7 @@ h1,h2,h3{
 <script type="module" src="/lib/split-landing.bridge.js"></script>
 <script type="module" src="/lib/logic-cinematic.bridge.js"></script>
 <script type="module" src="/lib/portfolio-deep-dive.js"></script>
+<script type="module" src="/lib/scanner-deep-dive.js"></script>
 <script type="module" src="/lib/portfolio-layout.js"></script>
 </head>
 <body>
@@ -4895,6 +4910,7 @@ h1,h2,h3{
           <span>#</span><span>Ticker</span><span>Company</span>
           <span style="text-align:right">Price</span><span style="text-align:right">Change</span>
           <span style="text-align:right">Activity</span><span style="text-align:right">Strength</span>
+          <span style="text-align:right">Deep Dive</span>
         </div>
         <div id="scannerListBody">
           <div style="padding:50px;text-align:center;color:var(--ink-faint);font-size:13px">
@@ -14073,12 +14089,13 @@ function renderScannerResults() {
         <div class="scanner-score-label"><span>${scoreLabel}</span><span>${s.score}/99</span></div>
         <div class="scanner-score-track"><div class="scanner-score-fill" style="width:${s.score}%"></div></div>
       </div>
-      <div>
+      <div class="scanner-card-actions">
         <span class="scanner-ai-badge" onclick="toggleScannerCardAI(this,'${s.sym}','${safeName}',${s.pctChange.toFixed(2)},${s.score},${s.volRatio.toFixed(2)},${s.pos52.toFixed(4)},${s.gapPct.toFixed(2)})">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           Explain
         </span>
-        <span class="scanner-score-pill ${scoreClass}" style="margin-left:8px">${scannerScorePillLabel(s.score)}</span>
+        <button type="button" class="scanner-deep-dive-badge" onclick="event.stopPropagation();openScannerDeepDive('${s.sym}')">Deep Dive</button>
+        <span class="scanner-score-pill ${scoreClass}" style="margin-left:auto">${scannerScorePillLabel(s.score)}</span>
       </div>
       <div class="scanner-ai-panel" id="scanner-ai-${s.sym}"></div>
     </div>`;
@@ -14092,13 +14109,15 @@ function renderScannerResults() {
       const dir = s.pctChange >= 0 ? 'up' : 'dn';
       const sign = s.pctChange >= 0 ? '+' : '';
       const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
-      return `<div class="scanner-list-row" onclick="quickScannerAI('${s.sym}','${s.name}',${s.pctChange.toFixed(2)},${s.score})">
+      const safeListName = String(s.name).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      return `<div class="scanner-list-row" onclick="quickScannerAI('${s.sym}','${safeListName}',${s.pctChange.toFixed(2)},${s.score})">
         <span style="color:var(--ink-faint);font-family:var(--mono);font-size:12px">${i+1}</span>
-        <span class="sym">${s.sym}</span><span class="name">${s.name}</span>
+        <span class="sym">${s.sym}</span><span class="name">${escapeHtml(s.name)}</span>
         <span class="price">$${s.close.toFixed(2)}</span>
         <span class="chg ${dir}">${sign}${s.pctChange.toFixed(2)}%</span>
         <span class="vol">${s.volRatio.toFixed(1)}x</span>
         <span class="scanner-score-pill ${scoreClass}">${s.score}</span>
+        <button type="button" class="scanner-list-deep-dive" onclick="event.stopPropagation();openScannerDeepDive('${s.sym}')">Deep Dive</button>
       </div>`;
     });
     const lockedRows = Array.from({length: lockedCount}, (_, i) =>
@@ -14107,9 +14126,14 @@ function renderScannerResults() {
         <span class="sym">\u2014</span><span class="name">Locked</span>
         <span class="price">$\u2014</span><span class="chg">\u2014%</span>
         <span class="vol">\u2014x</span><span class="scanner-score-pill">\u2014</span>
+        <span></span>
       </div>`
     );
     listBody.innerHTML = [...realRows, ...lockedRows].join('');
+  }
+
+  if (typeof window.__scannerDeepDiveSync === 'function') {
+    window.__scannerDeepDiveSync(scannerResults);
   }
 }
 
