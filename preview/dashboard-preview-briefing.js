@@ -11,6 +11,19 @@ const PREVIEW_QUOTES = {
   XOM: { pctChange: 1.18, price: 118.62 },
 };
 
+/** Static intro — what the Market Summary section measures. */
+export const MARKET_SUMMARY_INTRO =
+  "This is a simple overview of today's market conditions.";
+
+/** Signals combined into today's overview. */
+export const MARKET_SUMMARY_FACTORS = [
+  "Market direction",
+  "Investor sentiment",
+  "Sector leadership",
+  "Market breadth",
+  "Money flow",
+];
+
 export function initPreviewRiskState() {
   window.riskState = {
     score: 38,
@@ -59,31 +72,56 @@ export function getIntelContext(quotes) {
   return { q, regimeShort, regimeCls, breadthNarrow };
 }
 
-function getHeadline(ctx) {
-  if (ctx.regimeShort === "Risk-On" && ctx.breadthNarrow) return "AI Leadership Dominates";
-  if (ctx.regimeShort === "Risk-On") return "Growth Holds the Tape";
-  if (ctx.regimeShort === "Risk-Off") return "Defensive Posture Returns";
-  return "A Divided Session";
-}
-
-function getNarrative(ctx) {
+/**
+ * @param {ReturnType<typeof getIntelContext>} ctx
+ * @returns {{ headline: string, paragraphs: string[] }}
+ */
+function getTodayStory(ctx) {
   if (ctx.regimeShort === "Risk-On" && ctx.breadthNarrow) {
-    return "Megacap tech is carrying the index while the broader market only partly follows. The move looks strong on the surface — participation remains thin.";
+    return {
+      headline: "A Divided Session",
+      paragraphs: [
+        "Large technology companies are pushing markets higher, but many smaller stocks are not participating.",
+        "This means the market appears strong on the surface, but strength is concentrated in a smaller group of companies.",
+      ],
+    };
   }
   if (ctx.regimeShort === "Risk-On") {
-    return "Investors are leaning into growth and AI-linked leadership. Breadth is holding enough to support the rally — for now.";
+    return {
+      headline: "Growth Holds the Tape",
+      paragraphs: [
+        "Investors are leaning into growth and AI-linked leadership. Major indices are moving higher with broader participation than a narrow rally.",
+        "The move still depends on a few strong sectors — watch whether smaller companies keep pace.",
+      ],
+    };
   }
   if (ctx.regimeShort === "Risk-Off") {
-    return "Caution is showing up beneath the headline numbers. Defensive rotation and softer breadth suggest the tape can turn quickly on macro surprises.";
+    return {
+      headline: "Defensive Posture Returns",
+      paragraphs: [
+        "Caution is showing up beneath the headline numbers. Safer areas are attracting more attention while riskier stocks lag.",
+        "Sudden headlines can move prices quickly when investors are already on edge.",
+      ],
+    };
   }
-  return "Indices and internals are not telling the same story. Read leadership and breadth together before sizing risk.";
+  return {
+    headline: "A Divided Session",
+    paragraphs: [
+      "Indices and individual stocks are not all moving the same way. Leadership in one area can hide weakness elsewhere.",
+      "Read market direction, sentiment, and breadth together before assuming the whole market is strong or weak.",
+    ],
+  };
 }
 
 function getWatchNext(ctx) {
   if (ctx.breadthNarrow) {
-    return "Whether small caps start catching up — narrow leadership can reverse fast if mega-caps lose momentum.";
+    return "Whether smaller companies start catching up — narrow leadership can reverse fast if mega-caps lose momentum.";
   }
   return "CPI and mega-cap earnings are the next tests for whether this move broadens or fades.";
+}
+
+function marketSummaryFactorsHtml() {
+  return MARKET_SUMMARY_FACTORS.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
 /** Single immersive visual — animated market pulse wave. */
@@ -112,7 +150,11 @@ function renderPulseVisual(uid) {
 
 export function buildStoryBriefing(quotes) {
   const ctx = getIntelContext(quotes);
+  const story = getTodayStory(ctx);
   const uid = Math.random().toString(36).slice(2, 8);
+  const storyParagraphs = story.paragraphs
+    .map((p) => `<p class="market-summary-story__text">${escapeHtml(p)}</p>`)
+    .join("");
 
   return `<article class="briefing-story briefing-story--${ctx.regimeCls}" aria-live="polite">
     <div class="briefing-story__atmosphere" aria-hidden="true"></div>
@@ -123,11 +165,22 @@ export function buildStoryBriefing(quotes) {
       <span class="briefing-story__regime briefing-story__regime--${ctx.regimeCls}">${escapeHtml(ctx.regimeShort)}</span>
     </header>
 
-    <h2 class="briefing-story__headline">${escapeHtml(getHeadline(ctx))}</h2>
-
-    <p class="briefing-story__narrative">${escapeHtml(getNarrative(ctx))}</p>
+    <section class="market-summary-brief" aria-labelledby="market-summary-title">
+      <h2 class="market-summary-brief__kicker" id="market-summary-title">Market Summary</h2>
+      <h3 class="focus-detail__q">What am I looking at?</h3>
+      <p class="market-summary-brief__intro">${escapeHtml(MARKET_SUMMARY_INTRO)}</p>
+      <p class="market-summary-brief__combines">It combines:</p>
+      <ul class="market-summary-brief__factors">${marketSummaryFactorsHtml()}</ul>
+      <p class="market-summary-brief__closes">to explain what is driving stocks right now.</p>
+    </section>
 
     ${renderPulseVisual(uid)}
+
+    <section class="market-summary-story" aria-labelledby="market-story-title">
+      <h2 class="market-summary-brief__kicker" id="market-story-title">Today's Market Story</h2>
+      <h3 class="market-summary-story__headline">${escapeHtml(story.headline)}</h3>
+      ${storyParagraphs}
+    </section>
 
     <footer class="briefing-story__watch">
       <span class="briefing-story__watch-label">What to watch next</span>

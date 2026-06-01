@@ -767,6 +767,127 @@
   color: var(--rail-ink);
 }
 
+.rail-module--market-risk .intel-hero {
+  outline: none;
+}
+
+.rail-module--market-risk .intel-hero:focus,
+.rail-module--market-risk .intel-hero:focus-within {
+  outline: none;
+}
+
+.rail-module--market-risk .live-gauge__headline-mood {
+  color: var(--rail-ink);
+}
+
+.rail-module--market-risk[data-mood="optimistic"] .live-gauge__headline-mood,
+.rail-module--market-risk .live-gauge[data-mood="optimistic"] .live-gauge__headline-mood {
+  color: #9ae8c4;
+}
+
+.rail-module--market-risk[data-mood="comfortable"] .live-gauge__headline-mood,
+.rail-module--market-risk .live-gauge[data-mood="comfortable"] .live-gauge__headline-mood {
+  color: #7ddeb0;
+}
+
+.rail-module--market-risk[data-mood="neutral"] .live-gauge__headline-mood,
+.rail-module--market-risk .live-gauge[data-mood="neutral"] .live-gauge__headline-mood {
+  color: #e8c178;
+}
+
+.rail-module--market-risk[data-mood="cautious"] .live-gauge__headline-mood,
+.rail-module--market-risk .live-gauge[data-mood="cautious"] .live-gauge__headline-mood {
+  color: #e8c178;
+}
+
+.rail-module--market-risk[data-mood="fear"] .live-gauge__headline-mood,
+.rail-module--market-risk .live-gauge[data-mood="defensive"] .live-gauge__headline-mood,
+.rail-module--market-risk .live-gauge[data-mood="fear"] .live-gauge__headline-mood {
+  color: #ff9aa8;
+}
+
+.rail-module--market-risk .market-risk-summary,
+.rail-module--market-risk .market-mood-plain,
+.rail-module--market-risk .market-mood-investors {
+  max-width: 34em;
+  margin: 12px auto 0;
+  text-align: left;
+}
+
+.rail-module--market-risk .market-risk-summary {
+  margin-top: 4px;
+}
+
+.rail-module--market-risk .market-risk-summary__about {
+  margin: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(232, 236, 245, 0.72);
+}
+
+.rail-module--market-risk .market-risk-summary__current-title {
+  margin-bottom: 6px;
+}
+
+.rail-module--market-risk .market-risk-summary__current {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(212, 168, 90, 0.9);
+  text-align: left;
+  max-width: none;
+}
+
+.rail-module--market-risk .market-mood-plain__text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(232, 236, 245, 0.82);
+}
+
+.rail-module--market-risk .market-mood-disclaimer {
+  margin: 0 0 8px;
+  font-family: var(--dash-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.36);
+}
+
+.rail-module--market-risk .market-mood-list,
+.rail-module--market-risk .market-risk-means .market-mood-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rail-module--market-risk .market-mood-list li,
+.rail-module--market-risk .market-risk-means .market-mood-list li {
+  position: relative;
+  padding-left: 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(232, 236, 245, 0.76);
+}
+
+.rail-module--market-risk .market-mood-list li::before,
+.rail-module--market-risk .market-risk-means .market-mood-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(212, 168, 90, 0.55);
+}
+
+.rail-module--market-risk .market-mood-list li:last-child,
+.rail-module--market-risk .market-risk-means .market-mood-list li:last-child {
+  margin-bottom: 0;
+}
+
 .rail-module--market-risk .gauge-blurb {
   font-size: 13px;
   line-height: 1.45;
@@ -796,15 +917,8 @@
   text-align: left;
 }
 
-.rail-module--market-risk .market-risk-means p {
-  font-size: 13px;
-  line-height: 1.55;
-  color: rgba(232, 236, 245, 0.78);
-  margin: 0 0 8px;
-}
-
-.rail-module--market-risk .market-risk-means p:last-child {
-  margin-bottom: 0;
+.rail-module--market-risk .market-risk-means {
+  margin-top: 14px;
 }
 
 .rail-module--market-risk .market-mood-why,

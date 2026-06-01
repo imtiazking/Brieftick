@@ -4,7 +4,16 @@
  */
 
 import { bindMovesNetwork } from "./dashboard-moves-network.js";
-import { marketMoodFromScore } from "./market-mood.js";
+import {
+  gaugeArcGeometry,
+  GAUGE_VIX_MAX,
+  GAUGE_VIX_MIN,
+  moodZoneById,
+  moodZoneFromVix,
+  vixFromArcAngleRad,
+  vixToRiskScorePercent,
+} from "./market-mood.js";
+import { getFlowIndustryDetail, renderFlowDetailContent } from "./flow-bubble-detail.js";
 
 const PROBES = {
   volatility: {
@@ -62,7 +71,9 @@ const PROBES = {
 };
 
 function setProbe(hero, text) {
-  const el = hero.querySelector(".live-chart__probe");
+  const scope = hero.closest(".rail-module--market-risk") || hero;
+  const el =
+    scope.querySelector("[data-mood-summary]") || hero.querySelector(".live-chart__probe");
   if (el && text) el.textContent = text;
 }
 
@@ -70,45 +81,62 @@ function bindLiveGauge(hero) {
   const wrap = hero.querySelector(".live-gauge");
   if (!wrap) return;
 
-  const needle = wrap.querySelector(".live-gauge__needle");
+  const needleLine = wrap.querySelector(".live-gauge__needle-line");
+  const marker = wrap.querySelector(".live-gauge__marker");
   const valueEl = wrap.querySelector(".live-gauge__value");
-  const stateEl = wrap.querySelector(".live-gauge__state");
-  const faceEl = wrap.querySelector(".gauge-mood__face");
-  const blurbEl = wrap.querySelector(".gauge-blurb");
+  const moodLabelEl = wrap.querySelector("[data-mood-label]");
+  const moodZoneEl = wrap.querySelector("[data-mood-zone]");
+  const zoneLegend = wrap.querySelector("[data-zone-legend]");
+  const confidenceEl = wrap.querySelector("[data-mood-confidence]");
+  const zoneTipEl = wrap.querySelector("[data-zone-tip]");
   const hit = wrap.querySelector(".live-gauge__hit");
-  if (!needle || !hit) return;
+  if (!needleLine || !hit) return;
 
   const module = hero.closest(".rail-module--market-risk");
-  const meansSection = module?.querySelector(".market-risk-means");
+  const plainEl = module?.querySelector("[data-mood-plain]");
+  const usuallyWrap = module?.querySelector("[data-mood-usually]");
+  const investorsWrap = module?.querySelector("[data-mood-investors]");
   const whyList = module?.querySelector(".market-mood-why");
 
-  const baseVix = Number(wrap.dataset.vix) || 14.2;
+  const baseVix = Number(wrap.dataset.vix) || 12.2;
   let vix = baseVix;
+  let previewZoneId = null;
 
-  const vixToAngle = (v) => {
-    const t = Math.max(10, Math.min(32, v));
-    return -72 + ((t - 10) / 22) * 144;
-  };
-
-  const angleToVix = (deg) => {
-    const t = (deg + 72) / 144;
-    return 10 + t * 22;
+  const setListContent = (wrapEl, items) => {
+    if (!wrapEl) return;
+    const ul = wrapEl.querySelector("ul");
+    if (!ul) return;
+    ul.innerHTML = "";
+    for (const line of items) {
+      const li = document.createElement("li");
+      li.textContent = line;
+      ul.appendChild(li);
+    }
   };
 
   const render = () => {
-    const deg = vixToAngle(vix);
-    needle.setAttribute("transform", `rotate(${deg} 100 100)`);
-    const m = marketMoodFromScore(vix);
-    if (valueEl) valueEl.textContent = vix.toFixed(1);
-    if (stateEl) stateEl.textContent = m.label;
-    if (faceEl) faceEl.textContent = m.face;
-    if (blurbEl) blurbEl.textContent = m.blurb;
-    if (meansSection) {
-      const paras = meansSection.querySelectorAll("p");
-      paras.forEach((p, i) => {
-        if (m.means[i]) p.textContent = m.means[i];
+    const geom = gaugeArcGeometry(vix);
+    const m = moodZoneFromVix(vix);
+    const riskPct = vixToRiskScorePercent(vix);
+    needleLine.setAttribute("x2", String(geom.needleX2));
+    needleLine.setAttribute("y2", String(geom.needleY2));
+    if (marker) {
+      marker.setAttribute("cx", String(geom.markerX));
+      marker.setAttribute("cy", String(geom.markerY));
+      marker.setAttribute("fill", m.color);
+    }
+    if (valueEl) valueEl.textContent = riskPct.toFixed(1);
+    if (confidenceEl) confidenceEl.textContent = m.confidence;
+    if (moodLabelEl) moodLabelEl.textContent = m.label;
+    if (moodZoneEl) moodZoneEl.textContent = `Current Zone: ${m.label}`;
+    if (zoneLegend) {
+      zoneLegend.querySelectorAll(".live-gauge__zone-key").forEach((key) => {
+        key.classList.toggle("is-active", key.dataset.zoneId === m.id);
       });
     }
+    if (plainEl) plainEl.textContent = m.plainEnglish;
+    setListContent(usuallyWrap, m.usuallyMeans);
+    setListContent(investorsWrap, m.investorsDo);
     if (whyList) {
       whyList.innerHTML = "";
       for (const line of m.why) {
@@ -117,23 +145,60 @@ function bindLiveGauge(hero) {
         whyList.appendChild(li);
       }
     }
+    if (!previewZoneId) {
+      setProbe(hero, m.summary || m.probe || PROBES.volatility.default);
+      if (zoneTipEl) zoneTipEl.hidden = true;
+    }
+    wrap.style.setProperty(
+      "--gauge-fill",
+      `${((vix - GAUGE_VIX_MIN) / (GAUGE_VIX_MAX - GAUGE_VIX_MIN)) * 100}%`
+    );
     wrap.dataset.mood = m.id;
-    setProbe(hero, m.probe || PROBES.volatility.default);
-    wrap.style.setProperty("--gauge-fill", `${((vix - 10) / 22) * 100}%`);
+    if (module) module.dataset.mood = m.id;
+    wrap.setAttribute("aria-valuenow", String(Math.round(riskPct)));
+  };
+
+  const showZonePreview = (zoneId) => {
+    const z = moodZoneById(zoneId);
+    if (!z) return;
+    previewZoneId = zoneId;
+    wrap.classList.add("is-zone-active");
+    if (zoneLegend) {
+      zoneLegend.querySelectorAll(".live-gauge__zone-key").forEach((key) => {
+        key.classList.toggle("is-active", key.dataset.zoneId === zoneId);
+        key.classList.toggle("is-preview", key.dataset.zoneId === zoneId);
+      });
+    }
+    if (zoneTipEl) {
+      zoneTipEl.textContent = `${z.label} — ${z.zoneTip}`;
+      zoneTipEl.hidden = false;
+    }
+  };
+
+  const clearZonePreview = () => {
+    previewZoneId = null;
+    wrap.classList.remove("is-zone-active");
+    if (zoneLegend) {
+      zoneLegend.querySelectorAll(".live-gauge__zone-key").forEach((key) => {
+        key.classList.remove("is-preview");
+      });
+    }
+    if (zoneTipEl) zoneTipEl.hidden = true;
+    render();
   };
 
   const pointerToVix = (clientX, clientY) => {
     const rect = hit.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
-    const cy = rect.bottom - 4;
-    const ang = (Math.atan2(clientY - cy, clientX - cx) * 180) / Math.PI;
-    const clamped = Math.max(-72, Math.min(72, ang));
-    vix = angleToVix(clamped);
+    const cy = rect.top + rect.height / 2;
+    const ang = Math.atan2(clientY - cy, clientX - cx);
+    vix = vixFromArcAngleRad(ang);
     render();
   };
 
   let dragging = false;
   const onDown = (e) => {
+    e.preventDefault();
     dragging = true;
     wrap.classList.add("is-active");
     pointerToVix(e.clientX, e.clientY);
@@ -145,30 +210,64 @@ function bindLiveGauge(hero) {
   const onUp = () => {
     dragging = false;
     wrap.classList.remove("is-active");
+    if (document.activeElement === wrap) wrap.blur();
   };
 
   hit.addEventListener("pointerdown", onDown);
   window.addEventListener("pointermove", onMove);
   window.addEventListener("pointerup", onUp);
 
-  wrap.querySelectorAll("[data-zone]").forEach((zone) => {
-    zone.addEventListener("click", () => {
-      vix = Number(zone.dataset.zone);
+  const bindZoneTarget = (el) => {
+    const zoneId = el.dataset.zoneId;
+    if (!zoneId) return;
+    const isLegendKey = el.classList.contains("live-gauge__zone-key");
+
+    el.addEventListener("pointerenter", () => showZonePreview(zoneId));
+    el.addEventListener("pointerleave", (e) => {
+      if (e.relatedTarget?.closest?.(".live-gauge__zone, .live-gauge__zone-key")) return;
+      clearZonePreview();
+    });
+    if (isLegendKey) {
+      el.addEventListener("focus", () => showZonePreview(zoneId));
+      el.addEventListener("blur", () => clearZonePreview());
+    }
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      previewZoneId = null;
+      vix = Number(el.dataset.zoneVix) || moodZoneById(zoneId).vixAnchor;
+      wrap.classList.add("is-zone-active");
       render();
       wrap.classList.add("is-pulse");
       setTimeout(() => wrap.classList.remove("is-pulse"), 400);
     });
+  };
+
+  wrap.querySelectorAll("[data-zone-id]").forEach(bindZoneTarget);
+
+  wrap.addEventListener("keydown", (e) => {
+    const step = (GAUGE_VIX_MAX - GAUGE_VIX_MIN) / 40;
+    if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      e.preventDefault();
+      vix = Math.max(GAUGE_VIX_MIN, vix - step);
+      render();
+    } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      e.preventDefault();
+      vix = Math.min(GAUGE_VIX_MAX, vix + step);
+      render();
+    }
+  });
+
+  wrap.addEventListener("pointerenter", () => wrap.classList.add("is-zone-active"));
+  wrap.addEventListener("pointerleave", (e) => {
+    if (e.relatedTarget?.closest?.(".live-gauge")) return;
+    wrap.classList.remove("is-zone-active");
+    if (!dragging) clearZonePreview();
   });
 
   render();
 }
 
-const FLOW_CLUSTER_CENTER = { x: 50, y: 52 };
-/** Subtle focus lift — stays inside stage (no crowding). */
-const FLOW_FOCUS_SCALE = 1.02;
-const FLOW_PEER_SCALE = 0.97;
-/** % from cluster edge — nudge focused bubble inward when anchor is near border. */
-const FLOW_EDGE_ANCHOR = 22;
+const FLOW_CLUSTER_CENTER = { x: 50, y: 50 };
 
 function setFlowStory(map, key) {
   const story = PROBES.flows[key] || PROBES.flows.default;
@@ -213,48 +312,51 @@ function bindFlowMap(hero) {
     height: cluster.clientHeight,
   });
 
-  /** @param {{ x: number, y: number }} anchor @param {{ width: number, height: number }} box */
-  const edgeNudgeForAnchor = (anchor, box) => {
-    const span = Math.min(box.width, box.height);
-    const strength = span * 0.08;
-    let ox = 0;
-    let oy = 0;
-    if (anchor.x < FLOW_EDGE_ANCHOR) {
-      ox += ((FLOW_EDGE_ANCHOR - anchor.x) / FLOW_EDGE_ANCHOR) * strength;
-    }
-    if (anchor.x > 100 - FLOW_EDGE_ANCHOR) {
-      ox -= ((anchor.x - (100 - FLOW_EDGE_ANCHOR)) / FLOW_EDGE_ANCHOR) * strength;
-    }
-    if (anchor.y < FLOW_EDGE_ANCHOR) {
-      oy += ((FLOW_EDGE_ANCHOR - anchor.y) / FLOW_EDGE_ANCHOR) * strength;
-    }
-    if (anchor.y > 100 - FLOW_EDGE_ANCHOR) {
-      oy -= ((anchor.y - (100 - FLOW_EDGE_ANCHOR)) / FLOW_EDGE_ANCHOR) * strength;
-    }
-    return { ox, oy };
-  };
-
-  /** Keep bubble centres (incl. halo bleed) inside the cluster safe area. */
+  /** Keep bubble centres (incl. halo bleed + drift) inside the cluster safe area. */
   const clampStatesToCluster = (states) => {
-    const rect = clusterRect();
-    const pad = Math.max(12, Math.min(rect.width, rect.height) * 0.08);
-    const haloFactor = 1.1;
+    const box = clusterBox();
+    const pad = Math.max(14, Math.min(box.width, box.height) * 0.11);
+    const haloFactor = 1.06;
+    const driftPad = 6;
 
     return states.map((state, i) => {
       const anchor = anchors[i];
       let { ox, oy, scale } = state;
-      const halfW = (anchor.el.offsetWidth * scale * haloFactor) / 2;
-      const halfH = (anchor.el.offsetHeight * scale * haloFactor) / 2;
-      let cx = (anchor.x / 100) * rect.width + ox;
-      let cy = (anchor.y / 100) * rect.height + oy;
+      const halfW = (anchor.el.offsetWidth * scale * haloFactor) / 2 + driftPad;
+      const halfH = (anchor.el.offsetHeight * scale * haloFactor) / 2 + driftPad;
+      let cx = (anchor.x / 100) * box.width + ox;
+      let cy = (anchor.y / 100) * box.height + oy;
 
       if (cx - halfW < pad) ox += pad - (cx - halfW);
-      if (cx + halfW > rect.width - pad) ox -= cx + halfW - (rect.width - pad);
+      if (cx + halfW > box.width - pad) ox -= cx + halfW - (box.width - pad);
       if (cy - halfH < pad) oy += pad - (cy - halfH);
-      if (cy + halfH > rect.height - pad) oy -= cy + halfH - (rect.height - pad);
+      if (cy + halfH > box.height - pad) oy -= cy + halfH - (box.height - pad);
 
       return { ox, oy, scale };
     });
+  };
+
+  const detailPanel = map.querySelector("[data-flow-detail]");
+  const detailBody = map.querySelector("[data-flow-detail-body]");
+  const detailClose = map.querySelector("[data-flow-detail-close]");
+  const coarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  let detailPinned = false;
+
+  const showDetail = (id) => {
+    const detail = getFlowIndustryDetail(id);
+    if (!detailPanel || !detailBody || !detail) return;
+    detailBody.innerHTML = renderFlowDetailContent(detail);
+    detailPanel.hidden = false;
+    detailPanel.removeAttribute("aria-hidden");
+    map.classList.add("has-flow-detail");
+  };
+
+  const hideDetail = () => {
+    if (!detailPanel) return;
+    detailPanel.hidden = true;
+    detailPanel.setAttribute("aria-hidden", "true");
+    map.classList.remove("has-flow-detail", "is-detail-pinned");
+    detailPinned = false;
   };
 
   const restState = () => anchors.map(() => ({ ox: 0, oy: 0, scale: 1 }));
@@ -275,33 +377,14 @@ function bindFlowMap(hero) {
     return clampStatesToCluster(states);
   };
 
-  const focusState = (focusId) => {
-    const focus = anchors.find((a) => a.id === focusId);
-    if (!focus || reducedMotion) return clampStatesToCluster(restState());
-    const box = clusterBox();
-    const fr = focus.el.getBoundingClientRect();
-    const fcx = fr.left + fr.width / 2;
-    const fcy = fr.top + fr.height / 2;
-    const inward = edgeNudgeForAnchor(focus, box);
-    const states = anchors.map((a) => {
-      if (a.id === focusId) {
-        return { ox: inward.ox, oy: inward.oy, scale: FLOW_FOCUS_SCALE };
-      }
-      const r = a.el.getBoundingClientRect();
-      const dx = r.left + r.width / 2 - fcx;
-      const dy = r.top + r.height / 2 - fcy;
-      const dist = Math.hypot(dx, dy) || 1;
-      const push = Math.min(10, 4 + 72 / dist);
-      return { ox: (dx / dist) * push, oy: (dy / dist) * push, scale: FLOW_PEER_SCALE };
-    });
-    return clampStatesToCluster(states);
-  };
-
   const setFocus = (id) => {
     focusedId = id;
     cluster.classList.add("has-focus");
     bubbleEls.forEach((b) => b.classList.toggle("is-focused", b.dataset.flowId === id));
-    applyMotion(focusState(id));
+    showDetail(id);
+    if (!map.classList.contains("is-spreading")) {
+      applyMotion(restState());
+    }
     setFlowStory(map, id);
   };
 
@@ -309,7 +392,10 @@ function bindFlowMap(hero) {
     focusedId = null;
     cluster.classList.remove("has-focus");
     bubbleEls.forEach((b) => b.classList.remove("is-focused"));
-    applyMotion(clampStatesToCluster(restState()));
+    hideDetail();
+    if (!map.classList.contains("is-spreading")) {
+      applyMotion(restState());
+    }
     setFlowStory(map, "default");
   };
 
@@ -325,7 +411,7 @@ function bindFlowMap(hero) {
 
     spreadTimer = setTimeout(() => {
       map.classList.remove("is-spreading");
-      applyMotion(focusedId ? focusState(focusedId) : restState());
+      applyMotion(restState());
     }, 720);
 
     settleTimer = setTimeout(() => {
@@ -333,28 +419,67 @@ function bindFlowMap(hero) {
     }, 1650);
   };
 
-  const onStageActivate = () => triggerSpread();
+  const onStageActivate = (e) => {
+    if (e.target.closest(".flow-bubble") || e.target.closest("[data-flow-detail]")) return;
+    triggerSpread();
+  };
 
   stageHit?.addEventListener("click", onStageActivate);
   cluster.addEventListener("click", onStageActivate);
 
   bubbleEls.forEach((bubble) => {
+    const id = bubble.dataset.flowId;
+    if (!id) return;
+
     bubble.addEventListener("click", (e) => {
       e.stopPropagation();
-      setFocus(bubble.dataset.flowId);
+      if (coarsePointer) {
+        if (focusedId === id && detailPinned) {
+          clearFocus();
+          map.classList.remove("is-spreading");
+          return;
+        }
+        detailPinned = true;
+        map.classList.add("is-detail-pinned");
+      }
+      setFocus(id);
       triggerSpread();
     });
-    bubble.addEventListener("pointerenter", () => {
-      if (!map.classList.contains("is-spreading")) setFocus(bubble.dataset.flowId);
-    });
-    bubble.addEventListener("focus", () => setFocus(bubble.dataset.flowId));
+
+    if (!coarsePointer) {
+      bubble.addEventListener("pointerenter", () => {
+        if (!map.classList.contains("is-spreading")) setFocus(id);
+      });
+    }
+
+    bubble.addEventListener("focus", () => setFocus(id));
   });
 
-  map.addEventListener("pointerleave", () => {
+  detailClose?.addEventListener("click", (e) => {
+    e.stopPropagation();
     clearFocus();
     map.classList.remove("is-spreading");
   });
 
+  detailPanel?.addEventListener("click", (e) => e.stopPropagation());
+
+  map.addEventListener("pointerleave", (e) => {
+    if (coarsePointer || detailPinned) return;
+    if (e.relatedTarget && map.contains(e.relatedTarget)) return;
+    clearFocus();
+    map.classList.remove("is-spreading");
+  });
+
+  const onResize = () => {
+    applyMotion(
+      map.classList.contains("is-spreading")
+        ? clampStatesToCluster(spreadState())
+        : restState()
+    );
+  };
+  window.addEventListener("resize", onResize);
+
+  if (detailPanel) detailPanel.setAttribute("aria-hidden", "true");
   applyMotion(restState());
   setFlowStory(map, "default");
 

@@ -10,10 +10,15 @@ import { renderMovesNetworkHero } from "./dashboard-moves-network.js";
 import { bindMoversIntel } from "./dashboard-movers-intel.js";
 import { renderNewsHero, bindNewsNarrative } from "./dashboard-news-narrative.js";
 import {
+  gaugeArcGeometry,
   marketMoodFromScore,
-  MOOD_COMFORTABLE,
+  MARKET_RISK_ABOUT,
   MOOD_STATE_GUIDE,
+  MOOD_ZONES,
+  moodZoneFromVix,
+  vixToRiskScorePercent,
 } from "./market-mood.js";
+import { renderFlowDetailPanelShell } from "./flow-bubble-detail.js";
 
 export const RAIL_PULSE = {
   regime: "Risk-On · Narrow Leadership",
@@ -326,27 +331,66 @@ function renderIntelSurface(heroHtml, takeaway, explain) {
 
 export function bindIntelExplain(root) {
   const scope = root || document;
-  const btn = scope.querySelector(".intel-explain-toggle");
-  const panel = scope.querySelector(".intel-explain");
-  if (!btn || !panel) return;
+  const modules = scope.querySelectorAll(".rail-module--intel");
 
-  const isMarketRisk = scope.classList.contains("rail-module--market-risk");
-  const openLabel = isMarketRisk ? "Why?" : "Understand this";
-  const closeLabel = isMarketRisk ? "Hide" : "Hide explanation";
-  btn.textContent = openLabel;
+  const wire = (module) => {
+    const btn = module.querySelector(".intel-explain-toggle");
+    const panel = module.querySelector(".intel-explain");
+    if (!btn || !panel || btn.dataset.explainBound === "1") return;
 
-  btn.addEventListener("click", () => {
-    const open = btn.getAttribute("aria-expanded") === "true";
-    btn.setAttribute("aria-expanded", open ? "false" : "true");
-    panel.hidden = open;
-    btn.textContent = open ? openLabel : closeLabel;
-  });
+    const isMarketRisk = module.classList.contains("rail-module--market-risk");
+    const openLabel = isMarketRisk ? "Why?" : "Understand this";
+    const closeLabel = isMarketRisk ? "Hide" : "Hide explanation";
+    btn.textContent = openLabel;
+    btn.dataset.explainBound = "1";
+
+    btn.addEventListener("click", () => {
+      const open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", open ? "false" : "true");
+      panel.hidden = open;
+      btn.textContent = open ? openLabel : closeLabel;
+    });
+  };
+
+  if (modules.length) {
+    modules.forEach(wire);
+    return;
+  }
+
+  if (scope.classList?.contains("rail-module--intel")) wire(scope);
+}
+
+function gaugeZonePathsHtml() {
+  const arcs = [
+    "M 24 100 A 76 76 0 0 1 56 56",
+    "M 56 56 A 76 76 0 0 1 84 47",
+    "M 84 47 A 76 76 0 0 1 116 47",
+    "M 116 47 A 76 76 0 0 1 144 56",
+    "M 144 56 A 76 76 0 0 1 176 100",
+  ];
+  return MOOD_ZONES.map(
+    (z, i) =>
+      `<path data-zone-id="${z.id}" data-zone-vix="${z.vixAnchor}" class="live-gauge__zone" d="${arcs[i]}" fill="none" stroke="transparent" stroke-width="26" aria-label="${esc(z.label)}"/>`
+  ).join("");
+}
+
+function gaugeZoneLegendHtml() {
+  return MOOD_ZONES.map(
+    (z) =>
+      `<button type="button" class="live-gauge__zone-key" data-zone-id="${z.id}" data-zone-vix="${z.vixAnchor}" aria-label="${esc(z.label)}">${esc(z.label)}</button>`
+  ).join("");
+}
+
+function moodListHtml(items) {
+  return `<ul class="market-mood-list">${items.map((line) => `<li>${esc(line)}</li>`).join("")}</ul>`;
 }
 
 function heroVolatilityGauge() {
-  const score = 14.2;
-  const mood = marketMoodFromScore(score);
-  return `<div class="live-chart live-gauge" data-vix="${score}" data-mood="${mood.id}">
+  const score = 12.2;
+  const mood = moodZoneFromVix(score);
+  const riskPct = vixToRiskScorePercent(score);
+  const geom = gaugeArcGeometry(score);
+  return `<div class="live-chart live-gauge" data-vix="${score}" data-mood="${mood.id}" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${riskPct.toFixed(0)}" aria-label="Market mood gauge">
     <svg class="live-gauge__svg" viewBox="0 0 200 120" aria-label="Interactive market mood gauge">
       <path class="live-gauge__track" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" stroke-linecap="round"/>
       <path class="live-gauge__fill" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="calc(100 - var(--gauge-fill, 35))"/>
@@ -356,29 +400,42 @@ function heroVolatilityGauge() {
           <stop offset="55%" stop-color="#e8c178"/>
           <stop offset="100%" stop-color="#ff5b6e"/>
         </linearGradient>
+        <filter id="gaugeMarkerGlow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
       </defs>
       <circle class="live-gauge__hit" cx="100" cy="100" r="76" fill="transparent"/>
-      <g class="live-gauge__needle" transform="rotate(-35 100 100)">
-        <line x1="100" y1="100" x2="100" y2="38" stroke="#e8c178" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="100" cy="100" r="6" fill="#0a0d14" stroke="#d4a85a" stroke-width="2"/>
+      <g class="live-gauge__needle">
+        <line class="live-gauge__needle-line" x1="${geom.needleX1}" y1="${geom.needleY1}" x2="${geom.needleX2.toFixed(2)}" y2="${geom.needleY2.toFixed(2)}" stroke="#f0d9a8" stroke-width="3.5" stroke-linecap="round"/>
+        <circle class="live-gauge__needle-hub" cx="100" cy="100" r="7" fill="#0a0d14" stroke="#d4a85a" stroke-width="2.5"/>
       </g>
-      <g class="live-gauge__zones" aria-hidden="true">
-        <path data-zone="11" class="live-gauge__zone" d="M 24 100 A 76 76 0 0 1 70 48" fill="none" stroke="transparent" stroke-width="24"/>
-        <path data-zone="14.2" class="live-gauge__zone" d="M 70 48 A 76 76 0 0 1 130 48" fill="none" stroke="transparent" stroke-width="24"/>
-        <path data-zone="22" class="live-gauge__zone" d="M 130 48 A 76 76 0 0 1 176 100" fill="none" stroke="transparent" stroke-width="24"/>
-      </g>
+      <circle class="live-gauge__marker" cx="${geom.markerX.toFixed(2)}" cy="${geom.markerY.toFixed(2)}" r="6" fill="${mood.color}" stroke="#fff" stroke-width="2" filter="url(#gaugeMarkerGlow)"/>
+      <g class="live-gauge__zones">${gaugeZonePathsHtml()}</g>
     </svg>
-    <div class="live-gauge__readout">
-      <span class="live-gauge__kicker gauge-kicker">Market Mood</span>
-      <span class="live-gauge__mood gauge-mood">
-        <span class="gauge-mood__face" aria-hidden="true">${mood.face}</span>
-        <span class="live-gauge__state gauge-state">${esc(mood.label)}</span>
-      </span>
-      <p class="live-gauge__blurb gauge-blurb">${esc(mood.blurb)}</p>
-      <span class="live-gauge__score gauge-score">Risk score <span class="live-gauge__value gauge-value">${score.toFixed(1)}</span></span>
+    <div class="live-gauge__headline" aria-live="polite">
+      <span class="live-gauge__headline-kicker">Market Mood</span>
+      <strong class="live-gauge__headline-mood" data-mood-label>${esc(mood.label)}</strong>
+      <span class="live-gauge__headline-zone" data-mood-zone>Current Zone: ${esc(mood.label)}</span>
     </div>
-    <p class="live-chart__hint">Drag the dial or tap a zone</p>
-    <p class="live-chart__probe" aria-live="polite"></p>
+    <div class="live-gauge__zone-legend" data-zone-legend role="group" aria-label="Mood zones">
+      ${gaugeZoneLegendHtml()}
+    </div>
+    <p class="live-gauge__zone-tip" data-zone-tip hidden></p>
+    <div class="live-gauge__rating" aria-live="polite">
+      <p class="live-gauge__rating-row live-gauge__rating-row--score">
+        <span class="live-gauge__rating-label">Risk Score:</span>
+        <strong class="live-gauge__rating-score"><span class="live-gauge__value gauge-value">${riskPct.toFixed(1)}</span> / 100</strong>
+      </p>
+      <p class="live-gauge__rating-row">
+        <span class="live-gauge__rating-label">Confidence Level:</span>
+        <strong class="live-gauge__confidence" data-mood-confidence>${esc(mood.confidence)}</strong>
+      </p>
+    </div>
+    <p class="live-chart__hint">Drag the dial or hover the gauge for mood zones</p>
   </div>`;
 }
 
@@ -448,8 +505,13 @@ function heroFlowMap() {
       <span class="flow-bubbles-hero__floor"></span>
     </div>
     <div class="flow-bubbles-hero__canvas" role="img" aria-label="Capital flowing toward Technology, Energy, Financials, Industrials, and Defensives">
-      <button type="button" class="flow-bubbles-hero__stage-hit" aria-label="View capital flow composition"></button>
-      <div class="flow-bubbles-hero__cluster">${bubbles}</div>
+      <div class="flow-bubbles-hero__split">
+        <div class="flow-bubbles-hero__stage">
+          <button type="button" class="flow-bubbles-hero__stage-hit" aria-label="View capital flow composition"></button>
+          <div class="flow-bubbles-hero__cluster">${bubbles}</div>
+        </div>
+        ${renderFlowDetailPanelShell()}
+      </div>
     </div>
     <div class="flow-bubbles-hero__story" aria-live="polite">
       <p class="flow-bubbles-hero__story-primary">${FLOW_STORY_DEFAULT.primary}</p>
@@ -737,7 +799,7 @@ export function bindSectorHeatmap(root) {
 }
 
 function marketRiskMeansHtml(means) {
-  return means.map((line) => `<p>${esc(line)}</p>`).join("");
+  return moodListHtml(means);
 }
 
 function marketRiskWhyHtml(why) {
@@ -751,13 +813,28 @@ function marketRiskStatesHtml() {
   ).join("")}</ul>`;
 }
 
-/** Visual-first Market Risk surface — mood gauge, plain-English “What This Means”, optional Why. */
+/** Visual-first Market Risk surface — mood gauge, plain-English education, optional Why. */
 function renderMarketRiskSurface(heroHtml, mood) {
-  return `<div class="rail-module rail-module--intel rail-module--market-risk">
+  return `<div class="rail-module rail-module--intel rail-module--market-risk" data-mood="${mood.id}">
     <div class="intel-hero">${heroHtml}</div>
+    <section class="market-risk-summary" aria-labelledby="market-risk-about-title">
+      <h3 class="focus-detail__q" id="market-risk-about-title">About Market Risk</h3>
+      <p class="market-risk-summary__about">${esc(MARKET_RISK_ABOUT)}</p>
+      <h3 class="focus-detail__q market-risk-summary__current-title">Current Summary</h3>
+      <p class="market-risk-summary__current live-chart__probe" data-mood-summary aria-live="polite">${esc(mood.summary || mood.probe)}</p>
+    </section>
+    <section class="market-mood-plain" aria-labelledby="market-mood-plain-title">
+      <h3 class="focus-detail__q" id="market-mood-plain-title">In plain English</h3>
+      <p class="market-mood-plain__text" data-mood-plain>${esc(mood.plainEnglish)}</p>
+    </section>
     <section class="market-risk-means" aria-labelledby="market-risk-means-title">
-      <h3 class="focus-detail__q" id="market-risk-means-title">What This Means</h3>
-      ${marketRiskMeansHtml(mood.means)}
+      <h3 class="focus-detail__q" id="market-risk-means-title">What This Usually Means</h3>
+      <div data-mood-usually>${marketRiskMeansHtml(mood.usuallyMeans)}</div>
+    </section>
+    <section class="market-mood-investors" aria-labelledby="market-mood-investors-title">
+      <h3 class="focus-detail__q" id="market-mood-investors-title">What Investors Typically Do</h3>
+      <p class="market-mood-disclaimer">Examples only — not financial advice.</p>
+      <div data-mood-investors>${moodListHtml(mood.investorsDo)}</div>
     </section>
     <button type="button" class="intel-explain-toggle" aria-expanded="false">Why?</button>
     <article class="intel-explain" hidden>
@@ -766,7 +843,7 @@ function renderMarketRiskSurface(heroHtml, mood) {
         ${marketRiskWhyHtml(mood.why)}
       </div>
       <div class="focus-detail__block">
-        <span class="focus-detail__q">The three moods</span>
+        <span class="focus-detail__q">The five mood zones</span>
         ${marketRiskStatesHtml()}
       </div>
     </article>
@@ -810,7 +887,7 @@ const SESSION_EXPLAIN = {
 };
 
 function renderVolatility() {
-  const mood = MOOD_COMFORTABLE;
+  const mood = moodZoneFromVix(12.2);
   return renderMarketRiskSurface(heroVolatilityGauge(), mood);
 }
 
