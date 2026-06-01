@@ -1,6 +1,6 @@
 /**
  * Ticker Deep Dive — slide-over (desktop) / full-screen (mobile).
- * Phase 1: Movers + Watchlist entry; WIM tabs reused from legacy page.
+ * Phase 2.3: context personalization by entry source (WIM_DB unchanged).
  * @module preview/ticker-deep-dive/ticker-deep-dive
  */
 
@@ -10,6 +10,15 @@ import { renderPatternsPanel } from "./wim-patterns.js";
 import { renderPositioningPanel } from "./wim-positioning.js";
 import { createContagionMap } from "./wim-contagion.js";
 import { fetchLiveQuote } from "./wim-quotes.js";
+import {
+  buildDeepDiveContext,
+  getDefaultTabForSource,
+  getDriversSectionTitle,
+  getPositioningSectionTitle,
+  getPanelLeadHtml,
+  getSourceKicker,
+  renderContextStrip,
+} from "./deep-dive-context.js";
 
 const TABS = [
   { id: "overview", label: "Overview" },
@@ -24,6 +33,8 @@ let panel = null;
 let backdrop = null;
 let openSym = null;
 let openSource = null;
+/** @type {import('./deep-dive-context.js').DeepDiveContext|null} */
+let openContext = null;
 let activeTab = "overview";
 let quoteRequest = 0;
 let contagion = null;
@@ -54,6 +65,7 @@ function ensureShell() {
         </div>
         <button type="button" class="ticker-deep-dive__close" data-tdd-close aria-label="Close Deep Dive">×</button>
       </header>
+      <div class="ticker-deep-dive__context-slot" id="tddContextSlot"></div>
       <nav class="ticker-deep-dive__tabs" id="tddTabs" aria-label="Deep Dive sections"></nav>
       <div class="ticker-deep-dive__body" id="tddBody"></div>
       <footer class="ticker-deep-dive__foot">
@@ -92,12 +104,23 @@ function setTab(id) {
   renderActiveTab();
 }
 
-function tabPanelHtml(sym) {
+/**
+ * @param {string} sym
+ * @param {string} source
+ */
+function tabPanelHtml(sym, source) {
   const d = getWimEntry(sym);
+  const driversTitle = getDriversSectionTitle(source);
+  const posTitle = getPositioningSectionTitle(source);
+  const reactionHint = openContext?.reactionHint
+    ? `<p class="tdd-reaction-hint">${esc(openContext.reactionHint)}</p>`
+    : "";
+
   return `
     <div class="ticker-deep-dive__panels">
       <section class="tdd-panel" data-tdd-panel="overview">
         <div class="tdd-overview">
+          <div id="tddLead-overview" class="tdd-context-lead-slot"></div>
           <div class="tdd-quote">
             <div class="tdd-quote__sym">${esc(sym)}</div>
             <div class="tdd-quote__name" id="tddName">${esc(d.name)}</div>
@@ -116,11 +139,13 @@ function tabPanelHtml(sym) {
         </div>
       </section>
       <section class="tdd-panel" data-tdd-panel="drivers" hidden>
-        <h3 class="tdd-section-title">Movement decomposition</h3>
+        <h3 class="tdd-section-title">${esc(driversTitle)}</h3>
+        <div id="tddLead-drivers" class="tdd-context-lead-slot"></div>
         <div class="tdd-drivers" id="tddDrivers"></div>
       </section>
       <section class="tdd-panel" data-tdd-panel="reaction" hidden>
         <h3 class="tdd-section-title">Market Reaction Map</h3>
+        ${reactionHint}
         <div class="tdd-contagion contagion-wrap">
           <div class="tdd-contagion__trail contagion-trail"></div>
           <div class="reaction-map-body">
@@ -139,10 +164,25 @@ function tabPanelHtml(sym) {
         <div id="tddPatterns"></div>
       </section>
       <section class="tdd-panel" data-tdd-panel="positioning" hidden>
-        <h3 class="tdd-section-title">Market Positioning</h3>
+        <h3 class="tdd-section-title">${esc(posTitle)}</h3>
+        <div id="tddLead-positioning" class="tdd-context-lead-slot"></div>
         <div id="tddPositioning"></div>
       </section>
     </div>`;
+}
+
+function mountPanelLeads() {
+  const slots = {
+    overview: root?.querySelector("#tddLead-overview"),
+    drivers: root?.querySelector("#tddLead-drivers"),
+    positioning: root?.querySelector("#tddLead-positioning"),
+  };
+  for (const [panel, el] of Object.entries(slots)) {
+    if (!el) continue;
+    const html = getPanelLeadHtml(openContext, panel);
+    el.innerHTML = html || "";
+    el.hidden = !html;
+  }
 }
 
 function renderDrivers(sym) {
@@ -188,9 +228,7 @@ function renderActiveTab() {
     const wrap = root.querySelector(".tdd-contagion");
     if (wrap) {
       contagion = createContagionMap(wrap, {
-        onSymbolChange: (s) => {
-          /* stay on reaction tab while exploring peers */
-        },
+        onSymbolChange: () => {},
       });
       contagion.mount(openSym);
       renderedTabs.add("reaction");
@@ -209,6 +247,12 @@ function renderActiveTab() {
     const host = root.querySelector("#tddPositioning");
     if (host) {
       renderPositioningPanel(host, openSym);
+      if (openSource === "scanner") {
+        const note = document.createElement("p");
+        note.className = "tdd-context-footnote";
+        note.textContent = "Scanner view does not use your portfolio — positioning bars are market-wide.";
+        host.appendChild(note);
+      }
       renderedTabs.add("positioning");
     }
   }
@@ -251,31 +295,52 @@ async function refreshLivePrice(sym) {
 }
 
 /**
- * @param {{ symbol: string, source?: string, tab?: string, quote?: { price: number, pctChange: number, change?: number, provider?: string }, weightPct?: number }} opts
+ * @param {{
+ *   symbol: string,
+ *   source?: string,
+ *   tab?: string,
+ *   quote?: { price: number, pctChange: number, change?: number, provider?: string },
+ *   weightPct?: number,
+ *   context?: import('./deep-dive-context.js').DeepDiveContext,
+ *   contextPayload?: object,
+ * }} opts
  */
 export function openTickerDeepDive(opts) {
   const sym = String(opts?.symbol || "NVDA").toUpperCase();
   const source = opts?.source || "unknown";
-  const tab = opts?.tab && TABS.some((t) => t.id === opts.tab) ? opts.tab : "overview";
+  const tab =
+    opts?.tab && TABS.some((t) => t.id === opts.tab)
+      ? opts.tab
+      : getDefaultTabForSource(source);
 
   ensureShell();
   openSym = sym;
   openSource = source;
+  openContext =
+    opts?.context ||
+    buildDeepDiveContext(source, { ...opts?.contextPayload, symbol: sym }) ||
+    null;
   renderedTabs = new Set();
   contagion = null;
   quoteRequest++;
 
   const d = getWimEntry(sym);
   root.querySelector("#tddTitle").textContent = sym;
-  root.querySelector("#tddKicker").textContent = `Ticker Deep Dive · ${source.replace(/-/g, " ")}`;
+  root.querySelector("#tddKicker").textContent = getSourceKicker(source);
   const weightNote =
     opts.weightPct != null && !Number.isNaN(Number(opts.weightPct))
       ? ` · ${Number(opts.weightPct).toFixed(1)}% of book`
-      : "";
+      : openContext?.source === "portfolio" && opts.contextPayload?.weightPct != null
+        ? ` · ${Number(opts.contextPayload.weightPct).toFixed(1)}% of book`
+        : "";
   root.querySelector("#tddMeta").textContent = d.name + weightNote;
 
+  const slot = root.querySelector("#tddContextSlot");
+  if (slot) slot.innerHTML = openContext ? renderContextStrip(openContext) : "";
+
   const body = root.querySelector("#tddBody");
-  if (body) body.innerHTML = tabPanelHtml(sym);
+  if (body) body.innerHTML = tabPanelHtml(sym, source);
+  mountPanelLeads();
 
   root.hidden = false;
   root.setAttribute("aria-hidden", "false");
@@ -299,6 +364,7 @@ export function closeTickerDeepDive() {
   root.setAttribute("aria-hidden", "true");
   document.body.classList.remove("ticker-deep-dive-open");
   openSym = null;
+  openContext = null;
   contagion = null;
 }
 

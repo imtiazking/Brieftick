@@ -4,6 +4,7 @@
  */
 
 import { openTickerDeepDive } from "./ticker-deep-dive/ticker-deep-dive.js";
+import { buildMoversContext } from "./ticker-deep-dive/deep-dive-context.js";
 
 /** @type {Record<string, { lead: string, why: string }>} */
 const MOVER_STORIES = {
@@ -52,6 +53,13 @@ const MOVER_STORIES = {
 const DEFAULT_STORY = MOVER_STORIES.NVDA;
 
 /**
+ * @param {string} sym
+ */
+export function getMoverStoryForSymbol(sym) {
+  return MOVER_STORIES[String(sym || "").toUpperCase()] || DEFAULT_STORY;
+}
+
+/**
  * @param {HTMLElement} root
  */
 export function bindMoversIntel(root) {
@@ -70,7 +78,7 @@ export function bindMoversIntel(root) {
 
   const setActive = (row) => {
     const sym = row.dataset.moverSym || "";
-    const narrative = MOVER_STORIES[sym] || DEFAULT_STORY;
+    const narrative = getMoverStoryForSymbol(sym);
 
     rows.forEach((r) => {
       const on = r === row;
@@ -129,7 +137,18 @@ export function bindMoversIntel(root) {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
       const sym = wrap.dataset.activeSym || rows[0]?.dataset.moverSym || "NVDA";
-      openTickerDeepDive({ symbol: sym, source: "movers" });
+      const row = rows.find((r) => r.dataset.moverSym === sym) || rows[0];
+      const story = getMoverStoryForSymbol(sym);
+      openTickerDeepDive({
+        symbol: sym,
+        source: "movers",
+        context: buildMoversContext({
+          symbol: sym,
+          lead: story.lead,
+          why: story.why,
+          chg: row?.dataset.moverChg || "",
+        }),
+      });
     });
     storyInner.appendChild(btn);
   }
@@ -138,7 +157,19 @@ export function bindMoversIntel(root) {
     row.addEventListener("dblclick", (e) => {
       e.preventDefault();
       const sym = row.dataset.moverSym;
-      if (sym) openTickerDeepDive({ symbol: sym, source: "movers" });
+      if (sym) {
+        const story = getMoverStoryForSymbol(sym);
+        openTickerDeepDive({
+          symbol: sym,
+          source: "movers",
+          context: buildMoversContext({
+            symbol: sym,
+            lead: story.lead,
+            why: story.why,
+            chg: row.dataset.moverChg || "",
+          }),
+        });
+      }
     });
   });
 

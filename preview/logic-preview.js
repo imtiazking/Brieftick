@@ -358,10 +358,14 @@ function enrichResponseMeta(res, prompt) {
 
 function syncLogicDeepDiveFromResponse(res) {
   if (!res?.deepDiveOpen?.symbol) return;
+  const conv = res.conversational;
   syncLogicDeepDiveData({
     symbol: res.deepDiveOpen.symbol,
     quote: res.logicDeepDiveQuote,
     name: res.deepDiveOpen.name,
+    prompt: res._logicPrompt || "",
+    answer: conv?.primaryAnswer || res.directAnswer || res.summary || "",
+    confidenceLabel: res.confidenceLabel || "",
   });
 }
 

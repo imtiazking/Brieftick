@@ -80,6 +80,108 @@
   letter-spacing: 0.04em;
 }
 
+.ticker-deep-dive__context-slot {
+  padding: 0 18px 10px;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.ticker-deep-dive__context-strip {
+  margin: 0;
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--gold, #d4a85a);
+}
+
+.tdd-context-lead-slot:not(:empty) {
+  margin-bottom: 14px;
+}
+
+.tdd-context-block {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(212, 168, 90, 0.22);
+  background: rgba(212, 168, 90, 0.06);
+}
+
+.tdd-context-block--scanner {
+  border-color: rgba(100, 180, 255, 0.25);
+  background: rgba(100, 180, 255, 0.05);
+}
+
+.tdd-context-block--portfolio {
+  border-color: rgba(212, 168, 90, 0.35);
+  background: rgba(212, 168, 90, 0.08);
+}
+
+.tdd-context-block--logic {
+  border-color: rgba(180, 140, 255, 0.28);
+  background: rgba(140, 100, 220, 0.06);
+}
+
+.tdd-context-block--movers {
+  border-color: rgba(212, 168, 90, 0.28);
+}
+
+.tdd-context-block--watchlist {
+  border-color: rgba(120, 200, 160, 0.25);
+  background: rgba(80, 160, 120, 0.05);
+}
+
+.tdd-context-block__title {
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold, #d4a85a);
+  margin-bottom: 8px;
+}
+
+.tdd-context-block__body {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink-dim, rgba(232, 236, 245, 0.75));
+}
+
+.tdd-context-block__line {
+  margin: 0 0 6px;
+}
+
+.tdd-context-block__line:last-child {
+  margin-bottom: 0;
+}
+
+.tdd-context-block__muted {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--ink-faint, rgba(232, 236, 245, 0.5));
+}
+
+.tdd-context-k {
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint, rgba(232, 236, 245, 0.45));
+  margin-right: 4px;
+}
+
+.tdd-reaction-hint {
+  margin: 0 0 10px;
+  font-size: 11px;
+  color: var(--ink-faint, rgba(232, 236, 245, 0.55));
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  letter-spacing: 0.03em;
+}
+
+.tdd-context-footnote {
+  margin-top: 12px;
+  font-size: 10px;
+  color: var(--ink-faint, rgba(232, 236, 245, 0.45));
+  font-family: var(--mono, "JetBrains Mono", monospace);
+}
+
 .ticker-deep-dive__close {
   flex-shrink: 0;
   width: 36px;

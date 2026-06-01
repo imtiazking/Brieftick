@@ -14151,7 +14151,7 @@ function renderScannerResults() {
   }
 
   if (typeof window.__scannerDeepDiveSync === 'function') {
-    window.__scannerDeepDiveSync(scannerResults);
+    window.__scannerDeepDiveSync(scannerResults, scannerMode);
   }
 }
 

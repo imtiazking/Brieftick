@@ -4,6 +4,7 @@
  */
 
 import { openTickerDeepDive } from "./ticker-deep-dive/ticker-deep-dive.js";
+import { buildWatchlistContext } from "./ticker-deep-dive/deep-dive-context.js";
 
 const WL_DEBUG = true;
 
@@ -490,8 +491,34 @@ function ensureWatchlistDelegates() {
       return;
     }
     if (action === "deep-dive") {
-      const sym = e.target.closest(".intel-wl-card--ticker")?.dataset.symbol;
-      if (sym) openTickerDeepDive({ symbol: sym, source: "watchlist" });
+      const card = e.target.closest(".intel-wl-card--ticker");
+      const sym = card?.dataset.symbol;
+      if (!sym) return;
+      const insight = card.querySelector(".intel-wl-card__insight")?.textContent?.trim() || "";
+      const statusLabel = card.querySelector(".intel-wl-card__status")?.textContent?.trim() || "Watching";
+      const moveText = card.querySelector(".intel-wl-card__move")?.textContent?.trim() || "";
+      const pctMatch = moveText.match(/([+-]?\d+\.?\d*)/);
+      const pctChange = pctMatch ? parseFloat(pctMatch[1]) : undefined;
+      const q = latestWatchlistQuotes[sym];
+      openTickerDeepDive({
+        symbol: sym,
+        source: "watchlist",
+        context: buildWatchlistContext({
+          symbol: sym,
+          insight,
+          statusLabel,
+          pctChange: q?.pctChange ?? pctChange,
+        }),
+        quote:
+          q?.price > 0
+            ? {
+                price: q.price,
+                pctChange: q.pctChange,
+                change: q.change,
+                provider: "Watchlist",
+              }
+            : undefined,
+      });
     }
   });
 
