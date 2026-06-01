@@ -502,6 +502,37 @@ body.ticker-deep-dive-open {
   align-self: flex-start;
 }
 
+/* Portfolio holdings → Deep Dive (Phase 2.0) */
+#page-portfolio .holdings-table .holding-row[data-symbol] {
+  grid-template-columns: 72px 1fr 72px 76px auto;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+#page-portfolio .holdings-table .holding-row[data-symbol]:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+#page-portfolio .holding-row__deep-dive {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(212, 168, 90, 0.35);
+  background: rgba(212, 168, 90, 0.08);
+  color: var(--gold, #d4a85a);
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#page-portfolio .holding-row__deep-dive:hover {
+  background: rgba(212, 168, 90, 0.14);
+  border-color: var(--gold, #d4a85a);
+}
+
 @media (min-width: 640px) {
   .ticker-deep-dive .reaction-map-body {
     grid-template-columns: minmax(0, 1fr) 160px;
@@ -513,6 +544,16 @@ body.ticker-deep-dive-open {
 }
 
 @media (max-width: 767px) {
+  #page-portfolio .holdings-table .holding-row[data-symbol] {
+    grid-template-columns: 58px 1fr 56px;
+  }
+
+  #page-portfolio .holding-row__deep-dive {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 4px;
+  }
+
   .ticker-deep-dive__panel {
     left: 0;
     width: 100%;

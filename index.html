@@ -3405,9 +3405,13 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/split-app-cards.css">
 <link rel="stylesheet" href="/styles/logic-cinematic.css">
 <link rel="stylesheet" href="/styles/logic-nucleus-centre.css">
+<link rel="stylesheet" href="/styles/ticker-deep-dive.css">
+<link rel="stylesheet" href="/styles/portfolio-simplified.css">
 <script type="module" src="/lib/split-theme.bridge.js"></script>
 <script type="module" src="/lib/split-landing.bridge.js"></script>
 <script type="module" src="/lib/logic-cinematic.bridge.js"></script>
+<script type="module" src="/lib/portfolio-deep-dive.js"></script>
+<script type="module" src="/lib/portfolio-layout.js"></script>
 </head>
 <body>
 
@@ -4500,117 +4504,182 @@ h1,h2,h3{
      PORTFOLIO INTELLIGENCE
 ============================================================ -->
 <section class="page" id="page-portfolio">
-  <div class="port">
-    <div class="dash-header" style="margin-bottom:20px">
+  <div class="port port--simplified">
+    <header class="dash-header port-header" style="margin-bottom:20px">
       <div class="dash-title">
-        <h2>Portfolio Intelligence</h2>
-        <div class="meta">LOCAL PORTFOLIO ANALYZER · RISK EXPOSURE · ANALYSIS ONLY · NOT ADVICE</div>
+        <h2>Your portfolio</h2>
+        <div class="meta">Local analysis · educational only · not advice</div>
       </div>
       <div class="dash-controls">
-        <div class="regime-badge" id="portfolioRegimeBadge">Diversification: Analysing</div>
+        <div class="regime-badge port-sr-only" id="portfolioRegimeBadge" aria-hidden="true">Diversification: Analysing</div>
       </div>
-    </div>
+    </header>
 
-    <div class="portfolio-builder">
-      <div>
-        <h3>Build your portfolio pulse</h3>
-        <p>Paste tickers with weights and BriefTick will map concentration, sector exposure, macro sensitivity and correlated risk. Data stays in this browser.</p>
-        <div class="portfolio-help">
-          Format examples:<br>
-          NVDA 12.4<br>
-          AAPL, 9.6<br>
-          MSFT 8.4%
-        </div>
-        <div class="portfolio-status" id="portfolioStatus">Using sample portfolio until you save your own.</div>
-      </div>
-      <div>
-        <textarea class="portfolio-input" id="portfolioInput" spellcheck="false" placeholder="NVDA 12.4&#10;AAPL 9.6&#10;MSFT 8.4"></textarea>
-        <div class="portfolio-actions">
-          <button class="portfolio-btn primary" onclick="analyzePortfolioInput()">Analyze portfolio</button>
-          <button class="portfolio-btn" onclick="loadSamplePortfolio()">Load sample</button>
-          <button class="portfolio-btn" onclick="clearPortfolioInput()">Clear</button>
-        </div>
-      </div>
-    </div>
+    <span id="portfolioStatus" class="port-sr-only" aria-hidden="true">Using sample portfolio until you save your own.</span>
+    <span id="portfolioInsight" class="port-sr-only" aria-hidden="true">Add holdings to generate a plain-English risk summary.</span>
+    <span id="concentrationScore" class="port-sr-only" aria-hidden="true">- / 10</span>
+    <span id="concentrationLabel" class="port-sr-only" aria-hidden="true">Analysing</span>
+    <span id="portfolioDayChange" class="port-sr-only" aria-hidden="true">Calculating today...</span>
 
-    <div class="port-grid">
-      <div class="port-overview">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:18px">
-          <div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase">Portfolio Pulse</div>
-            <div style="font-family:var(--display);font-size:42px;font-weight:500;letter-spacing:-0.025em;margin-top:6px" id="portfolioValue">$184,260.42</div>
-            <div style="font-family:var(--mono);font-size:13px;color:var(--ink-dim);margin-top:4px" id="portfolioDayChange">Calculating today...</div>
+    <!-- 1. Portfolio Health -->
+    <section class="port-section port-section--health" aria-labelledby="portHealthHeading">
+      <h3 class="port-section__title" id="portHealthHeading">Portfolio Health</h3>
+      <div class="port-health-grid">
+        <div class="port-health__main">
+          <div class="port-health__label">Diversification</div>
+          <div class="port-health__score" id="portHealthDiversification">—</div>
+          <div class="port-health__sublabel" id="portHealthDiversificationLabel">—</div>
+        </div>
+        <div class="port-health__today">
+          <div class="port-health__label">Today</div>
+          <div class="port-health__today-val" id="portHealthToday">—</div>
+        </div>
+      </div>
+      <div class="port-health-meta">
+        <div class="port-health-chip">
+          <span class="lbl">Risk level</span>
+          <span class="val" id="portHealthRiskLevel">—</span>
+        </div>
+        <div class="port-health-chip">
+          <span class="lbl">Largest exposure</span>
+          <span class="val" id="portHealthLargestExposure">—</span>
+        </div>
+        <div class="port-health-chip">
+          <span class="lbl">Top holding</span>
+          <span class="val" id="portHealthTopHolding">—</span>
+        </div>
+      </div>
+      <p class="port-health-verdict" id="portHealthVerdict">Add holdings to see your portfolio health summary.</p>
+    </section>
+
+    <!-- 2. Top Things To Know Today -->
+    <section class="port-section port-section--today" aria-labelledby="portTodayHeading">
+      <h3 class="port-section__title" id="portTodayHeading">Top Things To Know Today</h3>
+      <div class="port-today-insight" id="portTodayInsight">
+        <b>What we're seeing:</b> Add holdings to generate a plain-English summary.
+      </div>
+      <ul class="port-today-list" id="portTodayRisks" aria-label="Top risk highlights"></ul>
+      <ul class="port-today-list" id="portTodayMovers" aria-label="Biggest movers today"></ul>
+      <p class="port-today-status" id="portTodayQuoteStatus">Analyze your portfolio to load quote status.</p>
+    </section>
+
+    <!-- 3. Holdings -->
+    <section class="port-section port-section--holdings" aria-labelledby="portHoldingsHeading">
+      <div class="port-holdings-head">
+        <h3 class="port-section__title" id="portHoldingsHeading">Your holdings</h3>
+        <button type="button" class="portfolio-btn" id="portEditHoldingsBtn">Edit holdings</button>
+      </div>
+
+      <div class="portfolio-builder portfolio-builder--collapsible" id="portfolioBuilder">
+        <div class="portfolio-builder__collapsed-bar">
+          <span style="font-size:13px;color:var(--ink-dim)">Holdings saved in this browser</span>
+          <button type="button" class="portfolio-btn" id="portEditHoldingsBtnInline">Edit</button>
+        </div>
+        <div class="portfolio-builder__intro">
+          <h3>Build your portfolio</h3>
+          <p>Paste tickers with weights. BriefTick maps concentration, sectors, macro sensitivity, and correlations. Data stays in this browser.</p>
+          <div class="portfolio-help">
+            Format examples:<br>
+            NVDA 12.4<br>
+            AAPL, 9.6<br>
+            MSFT 8.4%
           </div>
-          <div style="text-align:right">
-            <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase">Concentration Score</div>
-            <div style="font-family:var(--display);font-size:42px;font-weight:500;letter-spacing:-0.025em;color:var(--amber);margin-top:6px" id="concentrationScore">- / 10</div>
-            <div style="font-family:var(--mono);font-size:11px;color:var(--amber);margin-top:4px" id="concentrationLabel">Analysing</div>
+        </div>
+        <div class="portfolio-builder__editor">
+          <textarea class="portfolio-input" id="portfolioInput" spellcheck="false" placeholder="NVDA 12.4&#10;AAPL 9.6&#10;MSFT 8.4"></textarea>
+          <div class="portfolio-actions">
+            <button type="button" class="portfolio-btn primary" onclick="analyzePortfolioInput()">Analyze portfolio</button>
+            <button type="button" class="portfolio-btn" onclick="loadSamplePortfolio()">Load sample</button>
+            <button type="button" class="portfolio-btn" onclick="clearPortfolioInput()">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="port-holdings-card">
+        <div class="holdings-table" id="holdingsTable"></div>
+        <p class="holdings-footnote">Day moves use live Twelve Data quotes when available; otherwise BriefTick uses local demo moves. Click a row or Deep Dive for ticker intelligence.</p>
+      </div>
+    </section>
+
+    <!-- 4. Advanced Analysis -->
+    <section class="port-section port-section--advanced" aria-labelledby="portAdvancedHeading">
+      <h3 class="port-sr-only" id="portAdvancedHeading">Advanced Analysis</h3>
+      <button type="button" class="port-advanced-toggle" id="portAdvancedToggle" aria-expanded="false" aria-controls="portAdvancedPanel">
+        <span>
+          <span class="port-advanced-toggle__title">Advanced Analysis</span>
+          <span class="port-advanced-toggle__hint">Sector exposure, factor metrics, macro scenarios, and 30-day correlation map</span>
+        </span>
+        <span class="port-advanced-toggle__chevron" aria-hidden="true">▼</span>
+      </button>
+      <div class="port-advanced-panel" id="portAdvancedPanel" hidden>
+
+        <div class="port-overview port-overview--advanced">
+          <p class="port-advanced-subtitle">Portfolio pulse · illustrative NAV</p>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:18px">
+            <div>
+              <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase">Modeled value</div>
+              <div style="font-family:var(--display);font-size:36px;font-weight:500;letter-spacing:-0.025em;margin-top:6px" id="portfolioValue">$184,260.42</div>
+              <div style="font-family:var(--mono);font-size:12px;color:var(--ink-dim);margin-top:4px" id="portfolioDayChangeVisible">Calculating today...</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase">Concentration score</div>
+              <div style="font-family:var(--display);font-size:36px;font-weight:500;letter-spacing:-0.025em;color:var(--amber);margin-top:6px" id="concentrationScoreVisible">- / 10</div>
+              <div style="font-family:var(--mono);font-size:11px;color:var(--amber);margin-top:4px" id="concentrationLabelVisible">Analysing</div>
+            </div>
+          </div>
+          <div class="port-stats">
+            <div class="port-stat"><div class="lbl">Beta proxy</div><div class="val" id="portStatBeta">-</div><div class="delta" id="portStatBetaDelta" style="color:var(--ink-dim)">Weighted by sector</div></div>
+            <div class="port-stat"><div class="lbl">Vol proxy</div><div class="val" id="portStatVol">-</div><div class="delta" id="portStatVolDelta" style="color:var(--ink-dim)">Historical estimate</div></div>
+            <div class="port-stat"><div class="lbl">Top 3 weight</div><div class="val" id="portStatTop3">-</div><div class="delta" id="portStatTop3Delta" style="color:var(--ink-dim)">Position concentration</div></div>
+            <div class="port-stat"><div class="lbl">Positions</div><div class="val" id="portStatPositions">-</div><div class="delta" id="portStatPositionsDelta" style="color:var(--ink-dim)">Normalised to 100%</div></div>
           </div>
         </div>
 
-        <div class="port-stats">
-          <div class="port-stat"><div class="lbl">Beta proxy</div><div class="val" id="portStatBeta">-</div><div class="delta" id="portStatBetaDelta" style="color:var(--ink-dim)">Weighted by sector</div></div>
-          <div class="port-stat"><div class="lbl">Vol proxy</div><div class="val" id="portStatVol">-</div><div class="delta" id="portStatVolDelta" style="color:var(--ink-dim)">Historical estimate</div></div>
-          <div class="port-stat"><div class="lbl">Top 3 weight</div><div class="val" id="portStatTop3">-</div><div class="delta" id="portStatTop3Delta" style="color:var(--ink-dim)">Position concentration</div></div>
-          <div class="port-stat"><div class="lbl">Positions</div><div class="val" id="portStatPositions">-</div><div class="delta" id="portStatPositionsDelta" style="color:var(--ink-dim)">Normalised to 100%</div></div>
-        </div>
-
-        <div style="margin-top:24px">
-          <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:14px">Sector Exposure</div>
+        <div class="risk-card">
+          <p class="port-advanced-subtitle">Sector exposure</p>
           <div class="exp-bars" id="sectorExposureBars"></div>
         </div>
-      </div>
 
-      <div class="risk-card">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Detected Risk Factors</div>
-        <div id="portfolioRiskList"></div>
+        <div class="risk-card">
+          <p class="port-advanced-subtitle">All risk factors</p>
+          <div id="portfolioRiskList"></div>
+          <div style="margin-top:18px;padding:14px;border-radius:8px;background:rgba(212,168,90,0.05);border:1px solid rgba(212,168,90,0.2);font-size:12px;line-height:1.55;color:var(--ink-dim)">
+            <b style="color:var(--gold)">Full pattern summary:</b> <span id="portfolioInsightVisible">Add holdings to generate a plain-English risk summary.</span>
+          </div>
+        </div>
 
-        <div style="margin-top:18px;padding:14px;border-radius:8px;background:rgba(212,168,90,0.05);border:1px solid rgba(212,168,90,0.2);font-size:12px;line-height:1.55;color:var(--ink-dim)">
-          <b style="color:var(--gold)">Pattern detected:</b> <span id="portfolioInsight">Add holdings to generate a plain-English risk summary.</span>
+        <div class="risk-card">
+          <p class="port-advanced-subtitle">Macro sensitivity map</p>
+          <div class="exp-bars" id="macroSensitivityBars"></div>
+          <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em;line-height:1.6">
+            Scenarios are historical factor proxies, not forecasts. Past relationships do not guarantee future behaviour.
+          </div>
+        </div>
+
+        <div class="risk-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+            <p class="port-advanced-subtitle" style="margin:0">Correlation cluster · 30D live</p>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.08em" id="portClusterStatus">Estimating…</span>
+              <button type="button" onclick="liveRefreshPortfolioCluster()" title="Recalculate live correlations" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;color:var(--ink-dim);cursor:pointer;font-family:var(--mono);font-size:9px;padding:2px 6px;letter-spacing:0.06em" id="portClusterRefreshBtn">↻ Recalculate</button>
+            </div>
+          </div>
+          <div class="port-cluster-layout" style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start">
+            <canvas id="portCluster" style="width:100%;height:300px;cursor:grab;user-select:none;-webkit-user-select:none;border-radius:8px;display:block"></canvas>
+            <div id="portClusterDetail" style="width:180px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--ink-dim);min-height:120px">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px">Pair insight</div>
+              <div id="portClusterDetailText" style="color:var(--ink-faint)">Drag to rotate · hover a node for pair correlations.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(255,91,110,0.7);border-radius:1px"></i> High (r ≥ 0.7)</span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(255,181,71,0.5);border-radius:1px"></i> Moderate (0.4–0.7)</span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(78,168,255,0.3);border-radius:1px"></i> Low (&lt; 0.4)</span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);margin-left:auto" id="portClusterDesc">Pearson 30D rolling closes.</span>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="port-grid" style="grid-template-columns:1fr 1fr">
-      <div class="risk-card">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Holdings Watchlist</div>
-        <div class="holdings-table" id="holdingsTable"></div>
-        <div style="margin-top:14px;font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.6">
-          Day moves use live Twelve Data quotes when available; otherwise BriefTick uses local demo moves.
-        </div>
-      </div>
-
-      <div class="risk-card">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px">Macro Sensitivity Map</div>
-        <div class="exp-bars" id="macroSensitivityBars"></div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em;line-height:1.6">
-          Scenarios are historical factor proxies, not forecasts. Past relationships do not guarantee future behaviour.
-        </div>
-      </div>
-    </div>
-
-    <div class="risk-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase">Correlation Cluster · 30D Live</div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.08em" id="portClusterStatus">Estimating…</span>
-          <button onclick="liveRefreshPortfolioCluster()" title="Recalculate live correlations" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;color:var(--ink-dim);cursor:pointer;font-family:var(--mono);font-size:9px;padding:2px 6px;letter-spacing:0.06em" id="portClusterRefreshBtn">↻ Recalculate</button>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start">
-        <canvas id="portCluster" style="width:100%;height:300px;cursor:grab;user-select:none;-webkit-user-select:none;border-radius:8px;display:block"></canvas>
-          <div id="portClusterDetail" style="width:180px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:11px;line-height:1.5;color:var(--ink-dim);min-height:120px">
-          <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px">Pair insight</div>
-          <div id="portClusterDetailText" style="color:var(--ink-faint)">Drag to rotate · hover a node for pair correlations.</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
-        <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(255,91,110,0.7);border-radius:1px"></i> High (r ≥ 0.7)</span>
-        <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(255,181,71,0.5);border-radius:1px"></i> Moderate (0.4–0.7)</span>
-        <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);display:flex;align-items:center;gap:4px"><i style="display:inline-block;width:20px;height:3px;background:rgba(78,168,255,0.3);border-radius:1px"></i> Low (&lt; 0.4)</span>
-        <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);margin-left:auto" id="portClusterDesc">Pearson 30D rolling closes.</span>
-      </div>
-    </div>
+    </section>
 
     <div style="margin-top:20px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
       <b style="color:var(--gold)">PORTFOLIO INTELLIGENCE - NOT ADVICE.</b> All metrics are descriptive. BriefTick does not provide investment recommendations and does not know your goals, time horizon, tax situation or risk tolerance. Discuss any portfolio decisions with a qualified, licensed advisor.
@@ -10835,11 +10904,12 @@ function renderHoldingsTable(holdings, quotes){
       const move = q && !isNaN(q.pctChange) ? q.pctChange : meta.demoMove;
       const cls = move > 0.05 ? 'up' : move < -0.05 ? 'dn' : 'flat';
       const liveMark = q ? 'live' : 'demo';
-      return `<div class="holding-row">
+      return `<div class="holding-row" data-symbol="${escapeHtml(h.symbol)}" tabindex="0" role="button" aria-label="Open ${escapeHtml(h.symbol)} deep dive">
         <div class="sym">${escapeHtml(h.symbol)}</div>
         <div class="sector">${escapeHtml(meta.sector)} · ${escapeHtml(meta.theme)}</div>
         <div class="weight">${formatPct(h.weight)}</div>
         <div class="move ${cls}">${formatPct(move,true)} ${liveMark}</div>
+        <button type="button" class="holding-row__deep-dive" data-action="portfolio-deep-dive">Deep Dive</button>
       </div>`;
     }).join('');
 }
@@ -11446,8 +11516,14 @@ function renderPortfolio(holdings, quotes){
   const largestSector = sectors[0] || ['Other',0];
   setText('portfolioInsight', `${largestSector[0]} is the dominant exposure at ${formatPct(largestSector[1])}. The portfolio's top-three weight is ${formatPct(top3)}, with a beta proxy of ${beta.toFixed(2)} and estimated day move of ${formatPct(dayMove,true)}. This describes risk shape only; it is not a recommendation.`);
   renderHoldingsTable(holdings, quotes);
+  if (typeof window.__portfolioDeepDiveSync === "function") {
+    window.__portfolioDeepDiveSync(holdings, quotes || {});
+  } else if (typeof window.__portfolioLayoutSync === "function") {
+    window.__portfolioLayoutSync(holdings, quotes || {});
+  }
   // Render with current matrix (estimations if no live data yet), then kick off live fetch
   _portClusterHoldings = holdings;
+  window._portClusterHoldings = holdings;
   renderPortfolioCluster(holdings, _portClusterMatrix);
   // Only recalculate live if we have Twelve Data and portfolio just changed
   if(BriefTickAPI.keys && BriefTickAPI.keys.twelvedata){

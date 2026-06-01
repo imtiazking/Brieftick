@@ -214,40 +214,44 @@ function renderActiveTab() {
   }
 }
 
-async function refreshLivePrice(sym) {
-  const req = ++quoteRequest;
+function applyLiveQuote(sym, q, providerLabel) {
   const priceEl = root?.querySelector("#tddPrice");
   const chgEl = root?.querySelector("#tddChg");
   const srcEl = root?.querySelector("#tddPriceSrc");
-  const q = await fetchLiveQuote(sym);
-  if (req !== quoteRequest || !root) return;
-  if (q && q.price > 0) {
-    const isUp = q.pctChange >= 0;
-    const sign = isUp ? "+" : "";
-    const color = isUp ? "#3ddc97" : "#ff5b6e";
-    if (priceEl) priceEl.textContent = q.price.toFixed(2);
-    if (chgEl) {
-      chgEl.textContent = `${sign}${(q.change || 0).toFixed(2)}  (${sign}${(q.pctChange || 0).toFixed(2)}%)`;
-      chgEl.style.color = color;
-    }
-    if (srcEl) {
-      const ts = new Date().toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      });
-      srcEl.textContent = `Price source: ${q.provider || "API"}  ·  ${sym}  ·  Updated: ${ts}`;
-    }
-    if (contagion) {
-      contagion.setQuoteCache({ [sym]: q });
-    }
-  } else if (srcEl) {
-    srcEl.textContent = `Live price unavailable for ${sym} — showing narrative data`;
+  if (!q || !(q.price > 0)) {
+    if (srcEl) srcEl.textContent = `Live price unavailable for ${sym} — showing narrative data`;
+    return;
+  }
+  const isUp = q.pctChange >= 0;
+  const sign = isUp ? "+" : "";
+  const color = isUp ? "#3ddc97" : "#ff5b6e";
+  if (priceEl) priceEl.textContent = q.price.toFixed(2);
+  if (chgEl) {
+    chgEl.textContent = `${sign}${(q.change || 0).toFixed(2)}  (${sign}${(q.pctChange || 0).toFixed(2)}%)`;
+    chgEl.style.color = color;
+  }
+  if (srcEl) {
+    const ts = new Date().toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    srcEl.textContent = `Price source: ${providerLabel || q.provider || "API"}  ·  ${sym}  ·  Updated: ${ts}`;
+  }
+  if (contagion) {
+    contagion.setQuoteCache({ [sym]: q });
   }
 }
 
+async function refreshLivePrice(sym) {
+  const req = ++quoteRequest;
+  const q = await fetchLiveQuote(sym);
+  if (req !== quoteRequest || !root) return;
+  applyLiveQuote(sym, q);
+}
+
 /**
- * @param {{ symbol: string, source?: string, tab?: string }} opts
+ * @param {{ symbol: string, source?: string, tab?: string, quote?: { price: number, pctChange: number, change?: number, provider?: string }, weightPct?: number }} opts
  */
 export function openTickerDeepDive(opts) {
   const sym = String(opts?.symbol || "NVDA").toUpperCase();
@@ -264,7 +268,11 @@ export function openTickerDeepDive(opts) {
   const d = getWimEntry(sym);
   root.querySelector("#tddTitle").textContent = sym;
   root.querySelector("#tddKicker").textContent = `Ticker Deep Dive · ${source.replace(/-/g, " ")}`;
-  root.querySelector("#tddMeta").textContent = d.name;
+  const weightNote =
+    opts.weightPct != null && !Number.isNaN(Number(opts.weightPct))
+      ? ` · ${Number(opts.weightPct).toFixed(1)}% of book`
+      : "";
+  root.querySelector("#tddMeta").textContent = d.name + weightNote;
 
   const body = root.querySelector("#tddBody");
   if (body) body.innerHTML = tabPanelHtml(sym);
@@ -275,7 +283,11 @@ export function openTickerDeepDive(opts) {
   document.body.classList.add("ticker-deep-dive-open");
 
   setTab(tab);
-  refreshLivePrice(sym);
+  if (opts.quote?.price > 0) {
+    applyLiveQuote(sym, opts.quote, opts.quote.provider || "Portfolio");
+  } else {
+    refreshLivePrice(sym);
+  }
 
   requestAnimationFrame(() => panel?.focus?.());
 }
