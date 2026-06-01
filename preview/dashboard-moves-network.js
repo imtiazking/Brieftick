@@ -196,6 +196,8 @@ const INFLUENCE_MAP = {
 const DEFAULT_RING_POOL = ["qqq", "spy", "msft", "aapl", "nvda", "meta", "amzn", "amd"];
 
 const SESSION_DEFAULT_LEADER = "nvda";
+const SESSION_LEADER_KEY = "brieftick.movesTogether.leader";
+const SESSION_WATCH_KEY = "brieftick.movesTogether.watch";
 
 function escapeHtml(s) {
   return String(s || "")
@@ -365,9 +367,11 @@ function renderAddStockModal() {
           class="moves-stock-modal__input"
           autocomplete="off"
           spellcheck="false"
-          placeholder="Search ticker or company name..."
+          placeholder="e.g. AAPL, TSLA, NVDA"
         />
       </label>
+      <p class="moves-stock-modal__error" role="alert" hidden></p>
+      <button type="button" class="moves-stock-modal__submit">Add to Moves Together</button>
       <ul class="moves-stock-modal__list" role="listbox" aria-label="Search results"></ul>
       <p class="moves-stock-modal__examples-label">Examples</p>
       <div class="moves-stock-modal__examples">${renderExampleChips()}</div>
@@ -403,6 +407,11 @@ export function renderMovesNetworkHero() {
       <span class="moves-ring__insight-lead"></span>
       <span class="moves-ring__insight-sub"></span>
     </p>
+
+    <div class="moves-ring__watch" data-moves-watch hidden aria-label="Your Moves Together watch group">
+      <span class="moves-ring__watch-label">Your group</span>
+      <div class="moves-ring__watch-chips" data-moves-watch-chips></div>
+    </div>
 
     <p class="live-chart__hint">Tap a name on the ring to explore who it influences</p>
     <p class="live-chart__probe" aria-live="polite"></p>
@@ -445,11 +454,102 @@ function setChartModel(chart, model) {
   chart.__movesModel = model;
 }
 
+function loadWatchSession() {
+  try {
+    const raw = sessionStorage.getItem(SESSION_WATCH_KEY);
+    const ids = raw ? JSON.parse(raw) : [];
+    return Array.isArray(ids) ? ids.filter((id) => TICKERS[id]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveWatchSession(ids) {
+  try {
+    sessionStorage.setItem(SESSION_WATCH_KEY, JSON.stringify([...new Set(ids)]));
+  } catch {
+    /* preview-only */
+  }
+}
+
+function loadSessionLeader() {
+  try {
+    const saved = sessionStorage.getItem(SESSION_LEADER_KEY);
+    return saved && TICKERS[saved] ? saved : null;
+  } catch {
+    return null;
+  }
+}
+
+function persistSessionLeader(leaderId) {
+  if (!TICKERS[leaderId]) return;
+  try {
+    sessionStorage.setItem(SESSION_LEADER_KEY, leaderId);
+  } catch {
+    /* preview-only */
+  }
+}
+
+function addToWatchSession(leaderId) {
+  if (!TICKERS[leaderId]) return;
+  const next = loadWatchSession();
+  if (!next.includes(leaderId)) next.push(leaderId);
+  saveWatchSession(next);
+}
+
+/** @param {HTMLElement} chart */
+function renderWatchGroup(chart) {
+  const wrap = chart.querySelector("[data-moves-watch]");
+  const chips = chart.querySelector("[data-moves-watch-chips]");
+  if (!wrap || !chips) return;
+
+  const ids = loadWatchSession();
+  if (!ids.length) {
+    wrap.hidden = true;
+    chips.innerHTML = "";
+    return;
+  }
+
+  wrap.hidden = false;
+  chips.innerHTML = ids
+    .map((id) => {
+      const t = TICKERS[id];
+      const active = chart.dataset.leader === id ? " is-active" : "";
+      return `<button type="button" class="moves-ring__watch-chip${active}" data-watch-id="${id}">${escapeHtml(t.sym)}</button>`;
+    })
+    .join("");
+}
+
+function resolveTickerId(raw) {
+  const q = String(raw || "")
+    .trim()
+    .toLowerCase();
+  if (!q) return null;
+  if (TICKERS[q]) return q;
+  const match = Object.entries(TICKERS).find(([, t]) => t.sym.toLowerCase() === q);
+  return match ? match[0] : null;
+}
+
+/** @param {HTMLElement} chart */
+function portalMovesModal(chart) {
+  const modal = chart.querySelector(".moves-stock-modal");
+  if (!modal) return null;
+  chart.__movesModalEl = modal;
+  if (modal.parentElement !== document.body) {
+    document.body.appendChild(modal);
+  }
+  return modal;
+}
+
 function applyLeader(chart, leaderId, hooks, focusId) {
+  if (!TICKERS[leaderId]) return;
   const model = buildRingModel(leaderId);
   const focus = focusId || model.peers[0]?.id;
 
   chart.dataset.leader = leaderId;
+  persistSessionLeader(leaderId);
+  addToWatchSession(leaderId);
+  renderWatchGroup(chart);
   chart.classList.add("is-reconfiguring");
   setChartModel(chart, model);
 
@@ -492,10 +592,18 @@ function renderSearchResults(listEl, results, activeIndex) {
 }
 
 function openAddStockModal(chart) {
-  const modal = chart.querySelector(".moves-stock-modal");
-  const input = chart.querySelector(".moves-stock-modal__input");
-  const list = chart.querySelector(".moves-stock-modal__list");
-  if (!modal || !input || !list) return;
+  const modal = portalMovesModal(chart) || chart.__movesModalEl;
+  if (!modal) return;
+
+  const input = modal.querySelector(".moves-stock-modal__input");
+  const list = modal.querySelector(".moves-stock-modal__list");
+  const error = modal.querySelector(".moves-stock-modal__error");
+  if (!input || !list) return;
+
+  if (error) {
+    error.textContent = "";
+    error.hidden = true;
+  }
 
   modal.hidden = false;
   modal.setAttribute("aria-hidden", "false");
@@ -508,7 +616,7 @@ function openAddStockModal(chart) {
 }
 
 function closeAddStockModal(chart) {
-  const modal = chart.querySelector(".moves-stock-modal");
+  const modal = chart.__movesModalEl;
   if (!modal) return;
   modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden", "true");
@@ -524,32 +632,75 @@ function closeAddStockModal(chart) {
 
 function bindAddStockModal(chart, hooks) {
   if (chart.dataset.movesAddBound === "1") return;
-  chart.dataset.movesAddBound = "1";
 
-  const modal = chart.querySelector(".moves-stock-modal");
-  const input = chart.querySelector(".moves-stock-modal__input");
-  const list = chart.querySelector(".moves-stock-modal__list");
+  const modal = portalMovesModal(chart);
+  const input = modal?.querySelector(".moves-stock-modal__input");
+  const list = modal?.querySelector(".moves-stock-modal__list");
+  const error = modal?.querySelector(".moves-stock-modal__error");
+  const submit = modal?.querySelector(".moves-stock-modal__submit");
   if (!modal || !input || !list) return;
 
+  chart.dataset.movesAddBound = "1";
+
   let debounce = 0;
+
+  const showError = (message) => {
+    if (!error) return;
+    if (message) {
+      error.textContent = message;
+      error.hidden = false;
+    } else {
+      error.textContent = "";
+      error.hidden = true;
+    }
+  };
 
   const refreshList = () => {
     const results = searchStocks(input.value);
     chart.__movesSearchResults = results;
     chart.__movesSearchActive = Math.min(chart.__movesSearchActive ?? 0, Math.max(0, results.length - 1));
     renderSearchResults(list, results, chart.__movesSearchActive);
+    if (input.value.trim()) showError("");
   };
 
   const pick = (id) => {
     if (!id || !TICKERS[id]) return;
+    showError("");
     closeAddStockModal(chart);
     selectStockFromSearch(chart, id, hooks);
   };
 
-  chart.querySelector("[data-action=open-add-stock]")?.addEventListener("click", () => openAddStockModal(chart));
+  const submitFromInput = () => {
+    const raw = input.value.trim();
+    if (!raw) {
+      showError("Enter a ticker symbol to add a stock.");
+      return;
+    }
+    const id = resolveTickerId(raw);
+    if (!id) {
+      showError(`"${raw.toUpperCase()}" isn't in our preview list — try AAPL, TSLA, or NVDA.`);
+      return;
+    }
+    pick(id);
+  };
 
-  chart.querySelectorAll("[data-action=close-add-stock]").forEach((el) => {
-    el.addEventListener("click", () => closeAddStockModal(chart));
+  const openBtn = chart.querySelector("[data-action=open-add-stock]");
+  openBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openAddStockModal(chart);
+  });
+
+  modal.querySelectorAll("[data-action=close-add-stock]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeAddStockModal(chart);
+    });
+  });
+
+  submit?.addEventListener("click", (e) => {
+    e.preventDefault();
+    submitFromInput();
   });
 
   input.addEventListener("input", () => {
@@ -582,7 +733,12 @@ function bindAddStockModal(chart, hooks) {
     if (e.key === "Enter") {
       e.preventDefault();
       const row = results[chart.__movesSearchActive ?? 0];
-      if (row) pick(row.id);
+      const typed = resolveTickerId(input.value);
+      if (row && (!typed || row.id === typed || row.sym.toLowerCase() === input.value.trim().toLowerCase())) {
+        pick(row.id);
+      } else {
+        submitFromInput();
+      }
     }
   });
 
@@ -591,15 +747,16 @@ function bindAddStockModal(chart, hooks) {
     if (btn?.dataset.pick) pick(btn.dataset.pick);
   });
 
-  chart.querySelector(".moves-stock-modal__examples")?.addEventListener("click", (e) => {
+  modal.querySelector(".moves-stock-modal__examples")?.addEventListener("click", (e) => {
     const chip = e.target.closest("[data-pick]");
     if (chip?.dataset.pick) pick(chip.dataset.pick);
   });
 
-  document.addEventListener("keydown", (e) => {
+  chart.__movesEscapeHandler = (e) => {
     if (e.key !== "Escape" || !modal.classList.contains("is-open")) return;
     closeAddStockModal(chart);
-  });
+  };
+  document.addEventListener("keydown", chart.__movesEscapeHandler);
 }
 
 function ensureRingDelegates(chart, hooks) {
@@ -607,6 +764,12 @@ function ensureRingDelegates(chart, hooks) {
   chart.dataset.movesBound = "1";
 
   chart.addEventListener("click", (e) => {
+    if (e.target.closest("[data-action=open-add-stock]")) return;
+    const watch = e.target.closest("[data-watch-id]");
+    if (watch?.dataset.watchId) {
+      applyLeader(chart, watch.dataset.watchId, hooks);
+      return;
+    }
     const node = e.target.closest(".moves-ring__node");
     if (node?.dataset.node) {
       applyLeader(chart, node.dataset.node, hooks);
@@ -626,30 +789,52 @@ function ensureRingDelegates(chart, hooks) {
     const subEl = chart.querySelector(".moves-ring__insight-sub");
     if (subEl && peer) subEl.textContent = ` ${peer.note}`;
   });
+
+}
+
+/** @param {HTMLElement} [hero] */
+export function destroyMovesNetwork(hero) {
+  const chart = hero?.querySelector?.(".moves-ring-hero");
+  if (!chart) return;
+
+  if (chart.__movesEscapeHandler) {
+    document.removeEventListener("keydown", chart.__movesEscapeHandler);
+    delete chart.__movesEscapeHandler;
+  }
+
+  const modal = chart.__movesModalEl;
+  if (modal) {
+    modal.classList.remove("is-open");
+    modal.hidden = true;
+    modal.remove();
+    delete chart.__movesModalEl;
+  }
+
+  delete chart.dataset.movesAddBound;
+  delete chart.dataset.movesBound;
 }
 
 /**
  * @param {HTMLElement} hero
  * @param {{ setProbe: (root: HTMLElement, text: string) => void, probes: { correlation: { default: string, edge: (h: string) => string } } }} hooks
+ * @returns {() => void}
  */
 export function bindMovesNetwork(hero, hooks) {
   const chart = hero.querySelector(".moves-ring-hero");
-  if (!chart) return;
+  if (!chart) return () => {};
 
-  const leaderId = chart.dataset.leader || SESSION_DEFAULT_LEADER;
-  const model = buildRingModel(leaderId);
-
-  setChartModel(chart, model);
+  buildSearchIndex();
   ensureRingDelegates(chart, hooks);
   bindAddStockModal(chart, hooks);
-  buildSearchIndex();
-
-  paintNarrative(chart, model, model.peers[0]?.id);
-  highlightPeer(chart, model.peers[0]?.id);
 
   chart.querySelector("[data-action=reset-leader]")?.addEventListener("click", () => {
     applyLeader(chart, SESSION_DEFAULT_LEADER, hooks);
   });
 
+  const leaderId = loadSessionLeader() || chart.dataset.leader || SESSION_DEFAULT_LEADER;
+  applyLeader(chart, leaderId, hooks);
+
   hooks.setProbe(hero, hooks.probes.correlation.default);
+
+  return () => destroyMovesNetwork(hero);
 }

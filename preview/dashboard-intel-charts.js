@@ -4,13 +4,11 @@
  */
 
 import { bindMovesNetwork } from "./dashboard-moves-network.js";
+import { marketMoodFromScore } from "./market-mood.js";
 
 const PROBES = {
   volatility: {
-    default: "Volatility is calm — constructive for equities.",
-    low: "Low vol · investors are comfortable holding risk.",
-    mid: "Normal range · event risk priced, not panic.",
-    high: "Elevated · hedging demand is picking up.",
+    default: "Markets feel calm — investors are willing to hold stocks.",
   },
   flows: {
     default: {
@@ -50,7 +48,7 @@ const PROBES = {
     edge: (headline) => headline,
   },
   alerts: {
-    default: "Tap the priority stack — one story at a time.",
+    default: "Tap a card to see what could move markets this week.",
   },
   session: {
     default: "Drag along the session — explore the tape.",
@@ -75,8 +73,14 @@ function bindLiveGauge(hero) {
   const needle = wrap.querySelector(".live-gauge__needle");
   const valueEl = wrap.querySelector(".live-gauge__value");
   const stateEl = wrap.querySelector(".live-gauge__state");
+  const faceEl = wrap.querySelector(".gauge-mood__face");
+  const blurbEl = wrap.querySelector(".gauge-blurb");
   const hit = wrap.querySelector(".live-gauge__hit");
   if (!needle || !hit) return;
+
+  const module = hero.closest(".rail-module--market-risk");
+  const meansSection = module?.querySelector(".market-risk-means");
+  const whyList = module?.querySelector(".market-mood-why");
 
   const baseVix = Number(wrap.dataset.vix) || 14.2;
   let vix = baseVix;
@@ -91,19 +95,30 @@ function bindLiveGauge(hero) {
     return 10 + t * 22;
   };
 
-  const mood = (v) => {
-    if (v < 13) return { state: "Low · Complacent", probe: PROBES.volatility.low };
-    if (v < 18) return { state: "Normal · Constructive", probe: PROBES.volatility.mid };
-    return { state: "Elevated · Cautious", probe: PROBES.volatility.high };
-  };
-
   const render = () => {
     const deg = vixToAngle(vix);
     needle.setAttribute("transform", `rotate(${deg} 100 100)`);
+    const m = marketMoodFromScore(vix);
     if (valueEl) valueEl.textContent = vix.toFixed(1);
-    const m = mood(vix);
-    if (stateEl) stateEl.textContent = m.state;
-    setProbe(hero, m.probe);
+    if (stateEl) stateEl.textContent = m.label;
+    if (faceEl) faceEl.textContent = m.face;
+    if (blurbEl) blurbEl.textContent = m.blurb;
+    if (meansSection) {
+      const paras = meansSection.querySelectorAll("p");
+      paras.forEach((p, i) => {
+        if (m.means[i]) p.textContent = m.means[i];
+      });
+    }
+    if (whyList) {
+      whyList.innerHTML = "";
+      for (const line of m.why) {
+        const li = document.createElement("li");
+        li.textContent = line;
+        whyList.appendChild(li);
+      }
+    }
+    wrap.dataset.mood = m.id;
+    setProbe(hero, m.probe || PROBES.volatility.default);
     wrap.style.setProperty("--gauge-fill", `${((vix - 10) / 22) * 100}%`);
   };
 
@@ -149,6 +164,11 @@ function bindLiveGauge(hero) {
 }
 
 const FLOW_CLUSTER_CENTER = { x: 50, y: 52 };
+/** Subtle focus lift — stays inside stage (no crowding). */
+const FLOW_FOCUS_SCALE = 1.02;
+const FLOW_PEER_SCALE = 0.97;
+/** % from cluster edge — nudge focused bubble inward when anchor is near border. */
+const FLOW_EDGE_ANCHOR = 22;
 
 function setFlowStory(map, key) {
   const story = PROBES.flows[key] || PROBES.flows.default;
@@ -188,38 +208,93 @@ function bindFlowMap(hero) {
     });
   };
 
+  const clusterBox = () => ({
+    width: cluster.clientWidth,
+    height: cluster.clientHeight,
+  });
+
+  /** @param {{ x: number, y: number }} anchor @param {{ width: number, height: number }} box */
+  const edgeNudgeForAnchor = (anchor, box) => {
+    const span = Math.min(box.width, box.height);
+    const strength = span * 0.08;
+    let ox = 0;
+    let oy = 0;
+    if (anchor.x < FLOW_EDGE_ANCHOR) {
+      ox += ((FLOW_EDGE_ANCHOR - anchor.x) / FLOW_EDGE_ANCHOR) * strength;
+    }
+    if (anchor.x > 100 - FLOW_EDGE_ANCHOR) {
+      ox -= ((anchor.x - (100 - FLOW_EDGE_ANCHOR)) / FLOW_EDGE_ANCHOR) * strength;
+    }
+    if (anchor.y < FLOW_EDGE_ANCHOR) {
+      oy += ((FLOW_EDGE_ANCHOR - anchor.y) / FLOW_EDGE_ANCHOR) * strength;
+    }
+    if (anchor.y > 100 - FLOW_EDGE_ANCHOR) {
+      oy -= ((anchor.y - (100 - FLOW_EDGE_ANCHOR)) / FLOW_EDGE_ANCHOR) * strength;
+    }
+    return { ox, oy };
+  };
+
+  /** Keep bubble centres (incl. halo bleed) inside the cluster safe area. */
+  const clampStatesToCluster = (states) => {
+    const rect = clusterRect();
+    const pad = Math.max(12, Math.min(rect.width, rect.height) * 0.08);
+    const haloFactor = 1.1;
+
+    return states.map((state, i) => {
+      const anchor = anchors[i];
+      let { ox, oy, scale } = state;
+      const halfW = (anchor.el.offsetWidth * scale * haloFactor) / 2;
+      const halfH = (anchor.el.offsetHeight * scale * haloFactor) / 2;
+      let cx = (anchor.x / 100) * rect.width + ox;
+      let cy = (anchor.y / 100) * rect.height + oy;
+
+      if (cx - halfW < pad) ox += pad - (cx - halfW);
+      if (cx + halfW > rect.width - pad) ox -= cx + halfW - (rect.width - pad);
+      if (cy - halfH < pad) oy += pad - (cy - halfH);
+      if (cy + halfH > rect.height - pad) oy -= cy + halfH - (rect.height - pad);
+
+      return { ox, oy, scale };
+    });
+  };
+
   const restState = () => anchors.map(() => ({ ox: 0, oy: 0, scale: 1 }));
 
   const spreadState = () => {
-    const rect = cluster.getBoundingClientRect();
-    const amount = reducedMotion ? 0 : 13;
-    return anchors.map((a) => {
+    const box = clusterBox();
+    const amount = reducedMotion ? 0 : 7;
+    const states = anchors.map((a) => {
       const dx = a.x - FLOW_CLUSTER_CENTER.x;
       const dy = a.y - FLOW_CLUSTER_CENTER.y;
       const dist = Math.hypot(dx, dy) || 1;
       return {
-        ox: ((dx / dist) * amount * rect.width) / 100,
-        oy: ((dy / dist) * amount * rect.height) / 100,
+        ox: ((dx / dist) * amount * box.width) / 100,
+        oy: ((dy / dist) * amount * box.height) / 100,
         scale: 1,
       };
     });
+    return clampStatesToCluster(states);
   };
 
   const focusState = (focusId) => {
     const focus = anchors.find((a) => a.id === focusId);
-    if (!focus || reducedMotion) return restState();
+    if (!focus || reducedMotion) return clampStatesToCluster(restState());
+    const box = clusterBox();
     const fr = focus.el.getBoundingClientRect();
     const fcx = fr.left + fr.width / 2;
     const fcy = fr.top + fr.height / 2;
-    return anchors.map((a) => {
-      if (a.id === focusId) return { ox: 0, oy: 0, scale: 1.08 };
+    const inward = edgeNudgeForAnchor(focus, box);
+    const states = anchors.map((a) => {
+      if (a.id === focusId) {
+        return { ox: inward.ox, oy: inward.oy, scale: FLOW_FOCUS_SCALE };
+      }
       const r = a.el.getBoundingClientRect();
       const dx = r.left + r.width / 2 - fcx;
       const dy = r.top + r.height / 2 - fcy;
       const dist = Math.hypot(dx, dy) || 1;
-      const push = Math.min(18, 6 + 110 / dist);
-      return { ox: (dx / dist) * push, oy: (dy / dist) * push, scale: 0.94 };
+      const push = Math.min(10, 4 + 72 / dist);
+      return { ox: (dx / dist) * push, oy: (dy / dist) * push, scale: FLOW_PEER_SCALE };
     });
+    return clampStatesToCluster(states);
   };
 
   const setFocus = (id) => {
@@ -234,7 +309,7 @@ function bindFlowMap(hero) {
     focusedId = null;
     cluster.classList.remove("has-focus");
     bubbleEls.forEach((b) => b.classList.remove("is-focused"));
-    applyMotion(restState());
+    applyMotion(clampStatesToCluster(restState()));
     setFlowStory(map, "default");
   };
 
@@ -286,6 +361,7 @@ function bindFlowMap(hero) {
   return () => {
     clearTimeout(spreadTimer);
     clearTimeout(settleTimer);
+    window.removeEventListener("resize", onResize);
   };
 }
 
@@ -320,7 +396,7 @@ function bindSignalPulse(hero) {
 }
 
 function bindMovesTogether(hero) {
-  bindMovesNetwork(hero, {
+  return bindMovesNetwork(hero, {
     setProbe,
     probes: PROBES,
   });
@@ -331,13 +407,60 @@ function bindAlertsStack(hero) {
   if (!stack) return;
 
   const items = stack.querySelectorAll(".alert-visual");
-  const activate = (item) => {
-    items.forEach((a) => a.classList.toggle("is-active", a === item));
-    const head = item.querySelector(".alert-visual__head");
-    setProbe(hero, head ? head.textContent : PROBES.alerts.default);
+
+  const collapseExpand = (card) => {
+    const toggle = card.querySelector(".alert-visual__toggle");
+    const panel = card.querySelector(".alert-visual__expand");
+    if (!toggle || !panel) return;
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.textContent = "Learn more";
+    panel.hidden = true;
   };
 
-  items.forEach((item) => item.addEventListener("click", () => activate(item)));
+  const activate = (item) => {
+    items.forEach((a) => {
+      const on = a === item;
+      a.classList.toggle("is-active", on);
+      if (!on) collapseExpand(a);
+    });
+    const head = item.querySelector(".alert-visual__head");
+    const why = item.querySelector(".alert-visual__why");
+    if (head && why) {
+      const whyText = why.textContent.replace(/^\s*Why it matters:\s*/i, "").trim();
+      setProbe(hero, `${head.textContent} — ${whyText}`);
+    } else {
+      setProbe(hero, PROBES.alerts.default);
+    }
+  };
+
+  items.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      if (e.target.closest(".alert-visual__toggle")) return;
+      activate(item);
+    });
+    item.addEventListener("keydown", (e) => {
+      if (e.target.closest(".alert-visual__toggle")) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        activate(item);
+      }
+    });
+  });
+
+  stack.querySelectorAll(".alert-visual__toggle").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const card = btn.closest(".alert-visual");
+      const panel = card?.querySelector(".alert-visual__expand");
+      if (!card || !panel) return;
+      const open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", open ? "false" : "true");
+      panel.hidden = open;
+      btn.textContent = open ? "Learn more" : "Hide";
+      if (!open) activate(card);
+    });
+  });
+
   if (items[0]) activate(items[0]);
   else setProbe(hero, PROBES.alerts.default);
 }
@@ -419,9 +542,11 @@ export function bindInteractiveCharts(root, moduleId) {
     case "signals":
       bindSignalPulse(hero);
       break;
-    case "correlation":
-      bindMovesTogether(hero);
+    case "correlation": {
+      const stopMoves = bindMovesTogether(hero);
+      scope._chartTeardown = () => stopMoves?.();
       break;
+    }
     case "alerts":
       bindAlertsStack(hero);
       break;

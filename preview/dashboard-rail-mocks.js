@@ -9,6 +9,11 @@
 import { renderMovesNetworkHero } from "./dashboard-moves-network.js";
 import { bindMoversIntel } from "./dashboard-movers-intel.js";
 import { renderNewsHero, bindNewsNarrative } from "./dashboard-news-narrative.js";
+import {
+  marketMoodFromScore,
+  MOOD_COMFORTABLE,
+  MOOD_STATE_GUIDE,
+} from "./market-mood.js";
 
 export const RAIL_PULSE = {
   regime: "Risk-On · Narrow Leadership",
@@ -29,12 +34,12 @@ export const RAIL_PULSE = {
 export const RAIL_SECTIONS = [
   { id: "movers", label: "MOVERS", code: "01", title: "Top Movers · S&P 500", meta: "↻ 4s · mock" },
   { id: "heatmap", label: "HEATMAP", code: "02", title: "Sector Heatmap", meta: "1D %" },
-  { id: "volatility", label: "VOLATILITY", code: "03", title: "Volatility Monitor", meta: "CBOE · prior close" },
+  { id: "volatility", label: "MARKET RISK", code: "03", title: "Market Mood", meta: "Plain-English read · mock" },
   { id: "flows", label: "FLOWS", code: "07", title: "Market Intelligence Engine", meta: "Live capital flow" },
   { id: "signals", label: "SIGNALS", code: "06", title: "Signal Intelligence Feed", meta: "8 headlines · mock" },
   { id: "news", label: "NEWS", code: "10", title: "News Intelligence", meta: "Filtered ↻ 12s" },
   { id: "correlation", label: "MOVES TOGETHER", code: "09", title: "Moves Together", meta: "Who rises & falls together" },
-  { id: "alerts", label: "ALERTS", code: "S1", title: "High-Signal Alerts", meta: "CB · Macro · Regulatory" },
+  { id: "alerts", label: "WHAT MATTERS", code: "S1", title: "What to Watch", meta: "This week · plain English" },
   { id: "watchlist", label: "WATCHLIST", code: "05", title: "Watchlist", meta: "Design lab book" },
   { id: "session", label: "SESSION", code: "08", title: "Today's Briefing", meta: "Live · preview" },
 ];
@@ -165,12 +170,87 @@ const WATCHLIST = [
   ["META", "Meta", "568.42", "−0.84"],
 ];
 
+/** @typedef {'high' | 'medium' | 'low'} AlertImportance */
+
+/**
+ * What Matters — plain-English calendar items (preview mock).
+ * @type {Array<{ id: string, type: string, title: string, why: string, impact: string[], importance: AlertImportance, explain: string }>}
+ */
 const ALERTS = [
-  { type: "Central Bank", headline: "Fed speaker stack this week — front-end sensitive", read: "Multiple governors on circuit; markets anchor on inflation progress narrative." },
-  { type: "Macro", headline: "CPI tomorrow · consensus core 0.2% m/m", read: "Event risk elevated; vol markets price modest upside surprise risk." },
-  { type: "Regulatory", headline: "SEC comment period on market structure reform", read: "Desk focus low near-term; watch for exchange fee narrative." },
-  { type: "Geopolitical", headline: "Energy supply commentary from OPEC+", read: "Supports crude bid; inflation pass-through risk for goods." },
+  {
+    id: "fed-speakers",
+    type: "Central Bank",
+    title: "Fed Officials Speaking This Week",
+    why: "When central bankers talk, investors listen for clues about interest rates and the economy.",
+    impact: ["Interest Rates", "Banks", "Stock Market"],
+    importance: "high",
+    explain:
+      "Several Federal Reserve officials are speaking this week. If they sound worried about inflation, investors may expect rates to stay higher for longer — which can pressure technology and other growth stocks. If they sound more relaxed, stocks may get a short-term boost.",
+  },
+  {
+    id: "cpi",
+    type: "Inflation",
+    title: "Inflation Report Tomorrow",
+    why: "Higher inflation could keep interest rates higher, which often weighs on stock prices.",
+    impact: ["Technology", "Bonds", "US Dollar"],
+    importance: "high",
+    explain:
+      "The Consumer Price Index (CPI) shows how fast everyday prices are rising. A higher-than-expected number can make investors nervous that the Fed will keep rates high. That tends to hurt rate-sensitive areas like technology first, while bonds and the dollar often react quickly too.",
+  },
+  {
+    id: "sec-reform",
+    type: "Rules",
+    title: "Stock Market Rule Changes Under Review",
+    why: "New trading rules can change costs and behaviour for brokers and exchanges over time.",
+    impact: ["Financials", "Brokers"],
+    importance: "low",
+    explain:
+      "Regulators are gathering public comments on how US stock markets operate. This rarely moves the whole market overnight, but it matters for brokers, exchanges, and how trading fees work in the long run.",
+  },
+  {
+    id: "opec",
+    type: "Energy",
+    title: "Oil Producers Meeting on Supply",
+    why: "Oil prices affect energy stocks, transport costs, and how investors think about inflation.",
+    impact: ["Energy", "Transportation", "Inflation"],
+    importance: "medium",
+    explain:
+      "OPEC+ sets guidance on oil production. If producers signal tighter supply, oil prices can rise — helping energy companies but raising costs for airlines, shipping, and consumers. That can feed back into inflation expectations.",
+  },
 ];
+
+/** @param {AlertImportance} level */
+function alertImportanceLabel(level) {
+  if (level === "high") return "High";
+  if (level === "medium") return "Medium";
+  return "Low";
+}
+
+/** @param {typeof ALERTS[0]} alert @param {number} index */
+function renderAlertCard(alert, index) {
+  const imp = alert.importance;
+  const impactTags = alert.impact
+    .map((tag) => `<span class="alert-impact-tag">${esc(tag)}</span>`)
+    .join("");
+  const tier = index === 0 ? " alert-visual--primary is-active" : "";
+  return `<div class="alert-visual${tier}" role="button" tabindex="0" data-alert-id="${esc(alert.id)}">
+    <span class="alert-visual__type">${esc(alert.type)}</span>
+    <div class="alert-visual__body">
+      <span class="alert-visual__head">${esc(alert.title)}</span>
+      <p class="alert-visual__why"><span class="alert-visual__label">Why it matters:</span> ${esc(alert.why)}</p>
+      <div class="alert-visual__impacts">
+        <span class="alert-visual__label">Potential impact:</span>
+        ${impactTags}
+      </div>
+      <p class="alert-visual__importance-row">
+        <span class="alert-visual__label">Importance:</span>
+        <span class="alert-visual__importance alert-visual__importance--${imp}">${esc(alertImportanceLabel(imp))}</span>
+      </p>
+      <button type="button" class="alert-visual__toggle" aria-expanded="false">Learn more</button>
+      <div class="alert-visual__expand" hidden><p>${esc(alert.explain)}</p></div>
+    </div>
+  </div>`;
+}
 
 function esc(s) {
   return String(s || "")
@@ -250,18 +330,24 @@ export function bindIntelExplain(root) {
   const panel = scope.querySelector(".intel-explain");
   if (!btn || !panel) return;
 
+  const isMarketRisk = scope.classList.contains("rail-module--market-risk");
+  const openLabel = isMarketRisk ? "Why?" : "Understand this";
+  const closeLabel = isMarketRisk ? "Hide" : "Hide explanation";
+  btn.textContent = openLabel;
+
   btn.addEventListener("click", () => {
     const open = btn.getAttribute("aria-expanded") === "true";
     btn.setAttribute("aria-expanded", open ? "false" : "true");
     panel.hidden = open;
-    btn.textContent = open ? "Understand this" : "Hide explanation";
+    btn.textContent = open ? openLabel : closeLabel;
   });
 }
 
 function heroVolatilityGauge() {
-  const vix = 14.2;
-  return `<div class="live-chart live-gauge" data-vix="${vix}">
-    <svg class="live-gauge__svg" viewBox="0 0 200 120" aria-label="Interactive volatility gauge">
+  const score = 14.2;
+  const mood = marketMoodFromScore(score);
+  return `<div class="live-chart live-gauge" data-vix="${score}" data-mood="${mood.id}">
+    <svg class="live-gauge__svg" viewBox="0 0 200 120" aria-label="Interactive market mood gauge">
       <path class="live-gauge__track" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" stroke-linecap="round"/>
       <path class="live-gauge__fill" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="calc(100 - var(--gauge-fill, 35))"/>
       <defs>
@@ -283,8 +369,13 @@ function heroVolatilityGauge() {
       </g>
     </svg>
     <div class="live-gauge__readout">
-      <span class="live-gauge__value gauge-value">${vix.toFixed(1)}</span>
-      <span class="live-gauge__state gauge-state">Normal · Constructive</span>
+      <span class="live-gauge__kicker gauge-kicker">Market Mood</span>
+      <span class="live-gauge__mood gauge-mood">
+        <span class="gauge-mood__face" aria-hidden="true">${mood.face}</span>
+        <span class="live-gauge__state gauge-state">${esc(mood.label)}</span>
+      </span>
+      <p class="live-gauge__blurb gauge-blurb">${esc(mood.blurb)}</p>
+      <span class="live-gauge__score gauge-score">Risk score <span class="live-gauge__value gauge-value">${score.toFixed(1)}</span></span>
     </div>
     <p class="live-chart__hint">Drag the dial or tap a zone</p>
     <p class="live-chart__probe" aria-live="polite"></p>
@@ -292,22 +383,23 @@ function heroVolatilityGauge() {
 }
 
 /**
- * Packed-orbit layout (% within centered cluster box).
+ * Packed-orbit layout (% within centered cluster box) — inset from edges for safe stage padding.
  *        Industrials
  *  Technology    Defensives
  *    Financials  Energy
  */
 const CAPITAL_FLOW_BUBBLES = [
-  { id: "technology", label: "Technology", pct: 38, x: 50, y: 52, delay: 0 },
-  { id: "industrials", label: "Industrials", pct: 11, x: 50, y: 6, delay: 3 },
-  { id: "defensives", label: "Defensives", pct: 8, x: 84, y: 36, delay: 4, outflow: true },
-  { id: "financials", label: "Financials", pct: 14, x: 16, y: 86, delay: 2 },
-  { id: "energy", label: "Energy", pct: 22, x: 80, y: 84, delay: 1 },
+  { id: "technology", label: "Technology", pct: 38, x: 50, y: 50, delay: 0 },
+  { id: "industrials", label: "Industrials", pct: 11, x: 50, y: 16, delay: 3 },
+  { id: "defensives", label: "Defensives", pct: 8, x: 74, y: 38, delay: 4, outflow: true },
+  { id: "financials", label: "Financials", pct: 14, x: 26, y: 74, delay: 2 },
+  { id: "energy", label: "Energy", pct: 22, x: 72, y: 72, delay: 1 },
 ];
 
-const FLOW_CLUSTER_CENTER = { x: 50, y: 52 };
+const FLOW_CLUSTER_CENTER = { x: 50, y: 50 };
 
-const FLOW_BUBBLE_SIZE = { min: 56, max: 176 };
+/** ~17% smaller than prior min/max for a more spacious stage. */
+const FLOW_BUBBLE_SIZE = { min: 46, max: 146 };
 
 const FLOW_STORY_DEFAULT = {
   primary: "Technology attracts the largest share of capital today.",
@@ -474,15 +566,7 @@ function heroConnectedMarkets() {
 }
 
 function heroAlertsStack() {
-  return ALERTS.slice(0, 3)
-    .map(
-      (a, i) =>
-        `<button type="button" class="alert-visual${i === 0 ? " alert-visual--primary is-active" : ""}">
-          <span class="alert-visual__type">${esc(a.type)}</span>
-          <span class="alert-visual__head">${esc(a.headline)}</span>
-        </button>`
-    )
-    .join("");
+  return ALERTS.slice(0, 3).map((a, i) => renderAlertCard(a, i)).join("");
 }
 
 function heroSessionChart() {
@@ -652,11 +736,42 @@ export function bindSectorHeatmap(root) {
   });
 }
 
-const VOLATILITY_EXPLAIN = {
-  what: "Volatility sits in a normal, constructive band — the market is not pricing panic.",
-  why: "Strong mega-cap earnings and stable rates keep investors willing to hold risk; event risk is in the calendar, not spot vol.",
-  matters: "You can read leadership and catalysts without assuming a volatility shock — until data surprises.",
-};
+function marketRiskMeansHtml(means) {
+  return means.map((line) => `<p>${esc(line)}</p>`).join("");
+}
+
+function marketRiskWhyHtml(why) {
+  return `<ul class="market-mood-why">${why.map((line) => `<li>${esc(line)}</li>`).join("")}</ul>`;
+}
+
+function marketRiskStatesHtml() {
+  return `<ul class="market-mood-states">${MOOD_STATE_GUIDE.map(
+    (s) =>
+      `<li><span class="market-mood-states__badge" aria-hidden="true">${s.emoji}</span> <b>${esc(s.label)}</b> — ${esc(s.text)}</li>`
+  ).join("")}</ul>`;
+}
+
+/** Visual-first Market Risk surface — mood gauge, plain-English “What This Means”, optional Why. */
+function renderMarketRiskSurface(heroHtml, mood) {
+  return `<div class="rail-module rail-module--intel rail-module--market-risk">
+    <div class="intel-hero">${heroHtml}</div>
+    <section class="market-risk-means" aria-labelledby="market-risk-means-title">
+      <h3 class="focus-detail__q" id="market-risk-means-title">What This Means</h3>
+      ${marketRiskMeansHtml(mood.means)}
+    </section>
+    <button type="button" class="intel-explain-toggle" aria-expanded="false">Why?</button>
+    <article class="intel-explain" hidden>
+      <div class="focus-detail__block">
+        <span class="focus-detail__q">Why?</span>
+        ${marketRiskWhyHtml(mood.why)}
+      </div>
+      <div class="focus-detail__block">
+        <span class="focus-detail__q">The three moods</span>
+        ${marketRiskStatesHtml()}
+      </div>
+    </article>
+  </div>`;
+}
 
 const FLOWS_EXPLAIN = {
   what: "Technology attracts the largest share of capital today.",
@@ -683,9 +798,9 @@ const MOVES_TOGETHER_EXPLAIN = {
 };
 
 const ALERTS_EXPLAIN = {
-  what: "Fed speakers, CPI, and energy supply commentary are the week's high-signal threads.",
-  why: "Each can move front-end yields or crude — both feed back into the leadership trade.",
-  matters: "Size positions into events consciously; the visual stack shows priority, not every headline.",
+  what: "These are the main events and stories that could move markets this week — explained in plain English.",
+  why: "Knowing what is coming helps you understand sudden price moves instead of being surprised by them.",
+  matters: "Tap a card to focus on it, then use Learn more for a fuller explanation without jargon.",
 };
 
 const SESSION_EXPLAIN = {
@@ -695,11 +810,8 @@ const SESSION_EXPLAIN = {
 };
 
 function renderVolatility() {
-  return renderIntelSurface(
-    heroVolatilityGauge(),
-    "Volatility is calm — investors are comfortable holding risk into this week's data.",
-    VOLATILITY_EXPLAIN
-  );
+  const mood = MOOD_COMFORTABLE;
+  return renderMarketRiskSurface(heroVolatilityGauge(), mood);
 }
 
 function renderFlows() {
@@ -737,10 +849,10 @@ function renderCorrelation() {
 function renderAlerts() {
   return renderIntelSurface(
     `<div class="live-chart alerts-stack-hero">${heroAlertsStack()}
-      <p class="live-chart__hint">Tap the stack — one priority at a time</p>
+      <p class="live-chart__hint">Tap a card to focus · Learn more for the full story</p>
       <p class="live-chart__probe" aria-live="polite"></p>
     </div>`,
-    "Three macro threads — central bank, inflation data, and energy — deserve attention this week.",
+    "Inflation data and Fed comments are the biggest things to watch this week — they can move rates and stocks quickly.",
     ALERTS_EXPLAIN
   );
 }

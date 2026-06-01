@@ -175,15 +175,16 @@ export function bindNewsNarrative(root) {
     return 6 + (index / (count - 1)) * 88;
   };
 
-  const setActive = (node) => {
+  const applyStory = (node, intent) => {
     const id = node.dataset.storyId || "";
     const story = byId[id];
     if (!story) return;
 
     const i = nodes.indexOf(node);
+    const isSelect = intent === "select";
 
     nodes.forEach((n) => {
-      const on = n === node;
+      const on = isSelect && n === node;
       n.classList.toggle("is-active", on);
       n.setAttribute("aria-selected", on ? "true" : "false");
     });
@@ -197,7 +198,26 @@ export function bindNewsNarrative(root) {
 
     if (visual) {
       visual.dataset.visual = id;
-      visual._globeCanvas?.setStory(id);
+      const globeIntent = isSelect ? "select" : "preview";
+      if (typeof visual._globeSetStory === "function") {
+        visual._globeSetStory(id, { intent: globeIntent });
+      } else {
+        visual._globeCanvas?.setStory?.(id, { intent: globeIntent });
+      }
+      if (
+        typeof globalThis !== "undefined" &&
+        (globalThis.__NEWS_GLOBE_DEBUG__ === true ||
+          (typeof location !== "undefined" &&
+            new URLSearchParams(location.search).has("globe-debug")))
+      ) {
+        console.info(`[news-globe] ${isSelect ? "select" : "hover"}`, {
+          storyId: id,
+          shortTitle: story.shortTitle,
+          intent: globeIntent,
+          globeBound: visual.dataset.globeBound === "true",
+          hasGlobeApi: Boolean(visual._globeCanvas?.setStory),
+        });
+      }
       visual.classList.remove("is-updating");
       void visual.offsetWidth;
       visual.classList.add("is-updating");
@@ -208,15 +228,15 @@ export function bindNewsNarrative(root) {
   };
 
   nodes.forEach((node) => {
-    node.addEventListener("pointerenter", () => setActive(node));
-    node.addEventListener("focus", () => setActive(node));
-    node.addEventListener("click", () => setActive(node));
+    node.addEventListener("pointerenter", () => applyStory(node, "preview"));
+    node.addEventListener("focus", () => applyStory(node, "preview"));
+    node.addEventListener("click", () => applyStory(node, "select"));
   });
 
   wrap.addEventListener("pointerleave", () => wrap.classList.remove("has-focus"));
 
   if (pulse) pulse.style.left = `${pulseLeft(0, nodes.length)}%`;
-  setActive(nodes[0]);
+  applyStory(nodes[0], "select");
 
   if (visual) {
     if (visual._globeTeardown) visual._globeTeardown();

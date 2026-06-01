@@ -195,6 +195,8 @@
 
 .rail-module--intel:has(.flow-bubbles-hero) .intel-hero {
   margin-bottom: 12px;
+  overflow: visible;
+  padding: 14px 10px 16px;
 }
 
 /* Opportunities hero — bars own the panel */
@@ -320,13 +322,107 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--rail-gold);
-  grid-row: span 2;
+  grid-row: 1 / -1;
+  align-self: start;
+}
+
+.rail-module--intel .alert-visual__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
 }
 
 .rail-module--intel .alert-visual__head {
   font-size: 13px;
   line-height: 1.45;
   color: var(--rail-ink);
+  font-weight: 500;
+}
+
+.rail-module--intel .alert-visual__label {
+  font-family: var(--dash-mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 90, 0.65);
+  margin-right: 4px;
+}
+
+.rail-module--intel .alert-visual__why,
+.rail-module--intel .alert-visual__importance-row {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(232, 236, 245, 0.72);
+}
+
+.rail-module--intel .alert-visual__impacts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.rail-module--intel .alert-impact-tag {
+  font-family: var(--dash-mono);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(232, 236, 245, 0.75);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.rail-module--intel .alert-visual__importance {
+  font-family: var(--dash-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.rail-module--intel .alert-visual__importance--high {
+  color: #ff8a9a;
+}
+
+.rail-module--intel .alert-visual__importance--medium {
+  color: var(--rail-amber);
+}
+
+.rail-module--intel .alert-visual__importance--low {
+  color: rgba(232, 236, 245, 0.45);
+}
+
+.rail-module--intel .alert-visual__toggle {
+  align-self: flex-start;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 168, 90, 0.35);
+  background: transparent;
+  color: rgba(212, 168, 90, 0.9);
+  font-family: var(--dash-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rail-module--intel .alert-visual__toggle:hover {
+  background: rgba(212, 168, 90, 0.08);
+}
+
+.rail-module--intel .alert-visual__expand {
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rail-module--intel .alert-visual__expand p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(232, 236, 245, 0.68);
 }
 
 .rail-module--intel .session-chart-hero {
@@ -642,6 +738,101 @@
   font-size: 11px;
   color: var(--rail-amber);
   letter-spacing: 0.12em;
+}
+
+/* Market Risk — mood-first gauge readout (score secondary) */
+.rail-module--market-risk .gauge-kicker {
+  font-family: var(--dash-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.45);
+}
+
+.rail-module--market-risk .gauge-mood {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rail-module--market-risk .gauge-mood__face {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.rail-module--market-risk .gauge-mood .gauge-state {
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--rail-ink);
+}
+
+.rail-module--market-risk .gauge-blurb {
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(232, 236, 245, 0.78);
+  max-width: 22em;
+  margin: 0;
+}
+
+.rail-module--market-risk .gauge-score {
+  font-family: var(--dash-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.38);
+}
+
+.rail-module--market-risk .gauge-score .gauge-value {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(232, 236, 245, 0.5);
+}
+
+.rail-module--market-risk .market-risk-means {
+  max-width: 34em;
+  margin: 14px auto 10px;
+  text-align: left;
+}
+
+.rail-module--market-risk .market-risk-means p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(232, 236, 245, 0.78);
+  margin: 0 0 8px;
+}
+
+.rail-module--market-risk .market-risk-means p:last-child {
+  margin-bottom: 0;
+}
+
+.rail-module--market-risk .market-mood-why,
+.rail-module--market-risk .market-mood-states {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rail-module--market-risk .market-mood-why li,
+.rail-module--market-risk .market-mood-states li {
+  position: relative;
+  padding-left: 1.1em;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(232, 236, 245, 0.78);
+}
+
+.rail-module--market-risk .market-mood-why li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: rgba(61, 220, 151, 0.85);
+}
+
+.rail-module--market-risk .market-mood-states__badge {
+  margin-right: 4px;
 }
 
 .rail-module .vix-explain {

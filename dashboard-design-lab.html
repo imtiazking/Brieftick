@@ -24,9 +24,26 @@
     window.__DASHBOARD_DESIGN_LAB = true;
     window.Clerk = undefined;
     window._clerkUser = null;
-    window.fetch = function dashboardLabFetch() {
+    const __dashLabNativeFetch = window.fetch.bind(window);
+    window.fetch = function dashboardLabFetch(input, init) {
+      const url = typeof input === "string" ? input : input?.url || "";
+      if (
+        /natural-earth-geojson|three-globe.*countries|ne_110m_admin_0_countries/i.test(url) ||
+        /esm\.sh\/(three|three-conic|three-geojson)/i.test(url)
+      ) {
+        return __dashLabNativeFetch(input, init);
+      }
       return Promise.reject(new Error("fetch disabled on Dashboard Intelligence Lab"));
     };
+  </script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.160.0",
+      "three-conic-polygon-geometry": "https://esm.sh/three-conic-polygon-geometry@2.1.1?external=three",
+      "three-geojson-geometry": "https://esm.sh/three-geojson-geometry@2.1.1?external=three"
+    }
+  }
   </script>
   <script type="module" src="/preview/dashboard-design-lab.js"></script>
 </head>

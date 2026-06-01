@@ -124,25 +124,24 @@
   pointer-events: auto;
   border-radius: 50%;
   background: radial-gradient(
-    circle at 50% 42%,
-    rgba(28, 58, 105, 0.65) 0%,
-    rgba(8, 14, 28, 0.35) 48%,
-    rgba(4, 8, 16, 0.05) 72%,
-    transparent 100%
+    circle at 48% 42%,
+    rgba(6, 22, 42, 0.45) 0%,
+    rgba(2, 8, 18, 0.22) 52%,
+    transparent 78%
   );
-  box-shadow:
-    inset 0 0 60px rgba(40, 100, 180, 0.12),
-    0 0 48px rgba(30, 80, 150, 0.15);
+  box-shadow: none;
 }
 
 .news-globe-canvas {
   position: absolute;
   inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
   display: block;
   pointer-events: none;
   border-radius: 50%;
+  filter: none;
 }
 
 .news-globe-hit {
