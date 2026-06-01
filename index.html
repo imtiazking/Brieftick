@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="split">
+<script src="/lib/dashboard-preview-route.js"></script>
 <script>
 (function () {
   const params = new URLSearchParams(location.search);
@@ -11892,7 +11893,12 @@ async function _onAuthChange(user) {
       const navIntent = sessionStorage.getItem('bt_nav_intent');
       if (navIntent && !_PUBLIC_TABS.has(navIntent)) {
         sessionStorage.removeItem('bt_nav_intent');
-        setTimeout(() => window.route(navIntent), 450);
+        setTimeout(() => {
+          if (navIntent === 'dashboard' && typeof window.btRedirectToWheelDashboard === 'function' && window.btRedirectToWheelDashboard()) {
+            return;
+          }
+          window.route(navIntent);
+        }, 450);
       }
     }
   } catch(_) {}
@@ -12277,10 +12283,15 @@ function routeWithAuth(name) {
     return;
   }
 
-  // Dashboard — local preview route only (no sign-in)
-  if (name === 'dashboard' && (isDashboardPreviewActive() || _clerkUser)) {
-    window.route(name);
-    return;
+  // Dashboard — Vercel preview / ?preview=dashboard → intelligence wheel bundle
+  if (name === 'dashboard') {
+    if (typeof window.btRedirectToWheelDashboard === 'function' && window.btRedirectToWheelDashboard()) {
+      return;
+    }
+    if (isDashboardPreviewActive() || _clerkUser) {
+      window.route(name);
+      return;
+    }
   }
 
   // Protected tab — require sign-in

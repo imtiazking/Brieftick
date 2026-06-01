@@ -4,5 +4,19 @@
   "rewrites": [
     { "source": "/dashboard-preview", "destination": "/dashboard-preview.html" },
     { "source": "/dashboard-design-lab", "destination": "/dashboard-design-lab.html" }
+  ],
+  "headers": [
+    {
+      "source": "/preview/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/styles/dashboard-(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/dashboard-preview",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    }
   ]
 }
