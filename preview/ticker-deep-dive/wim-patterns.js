@@ -5,6 +5,7 @@
 
 import { genSeries, spark } from "./wim-charts.js";
 import { getWimEntry, getContagionPeers } from "./wim-data.js";
+import { inferSectorTemplate } from "./ticker-meta.js";
 
 const historicalPatternLibrary = [
   {
@@ -134,9 +135,32 @@ function esc(s) {
     .replace(/"/g, "&quot;");
 }
 
+function metaPatternTags(sym) {
+  const template = inferSectorTemplate(sym);
+  const tags = new Set([sym]);
+  if (template === "financials") {
+    tags.add("banks");
+    tags.add("financials");
+    tags.add("rates");
+    tags.add("rotation");
+  } else if (template === "energy") {
+    tags.add("energy");
+    tags.add("oil");
+    tags.add("inflation");
+  } else if (template === "semis") {
+    tags.add("ai-capex");
+    tags.add("semis");
+  } else if (template === "ev") {
+    tags.add("ev-demand");
+    tags.add("autos");
+  }
+  return [...tags];
+}
+
 function currentPatternTags(sym) {
   const d = getWimEntry(sym);
   const text = [sym, d.name, d.summary, ...(d.reasons || []).flat()].join(" ").toLowerCase();
+  if (!d.summary?.trim()) return metaPatternTags(sym);
   const tags = new Set();
   if (/ai|capex|datacenter|hyperscaler|infrastructure|semiconductor|semi|nvda|amd|avgo|soxx/.test(text)) {
     tags.add("ai-capex");

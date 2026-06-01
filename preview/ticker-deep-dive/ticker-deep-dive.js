@@ -1,6 +1,6 @@
 /**
  * Ticker Deep Dive — slide-over (desktop) / full-screen (mobile).
- * Phase 2.3: context personalization by entry source (WIM_DB unchanged).
+ * Phase A: API-powered overview + drivers; Phase 2.3 context personalization.
  * @module preview/ticker-deep-dive/ticker-deep-dive
  */
 
@@ -10,6 +10,9 @@ import { renderPatternsPanel } from "./wim-patterns.js";
 import { renderPositioningPanel } from "./wim-positioning.js";
 import { createContagionMap } from "./wim-contagion.js";
 import { fetchLiveQuote } from "./wim-quotes.js";
+import { fetchDeepDiveBundle } from "./deep-dive-bundle.js";
+import { composeDeepDiveIntel, provenanceBadgeHtml } from "./deep-dive-compose.js";
+import { getTickerMeta } from "./ticker-meta.js";
 import {
   buildDeepDiveContext,
   getDefaultTabForSource,
@@ -39,6 +42,9 @@ let activeTab = "overview";
 let quoteRequest = 0;
 let contagion = null;
 let renderedTabs = new Set();
+/** @type {import('./deep-dive-compose.js').ComposedDeepDiveIntel|null} */
+let openIntel = null;
+let intelRequest = 0;
 
 function esc(s) {
   return String(s)
@@ -109,7 +115,7 @@ function setTab(id) {
  * @param {string} source
  */
 function tabPanelHtml(sym, source) {
-  const d = getWimEntry(sym);
+  const meta = getTickerMeta(sym);
   const driversTitle = getDriversSectionTitle(source);
   const posTitle = getPositioningSectionTitle(source);
   const reactionHint = openContext?.reactionHint
@@ -123,10 +129,10 @@ function tabPanelHtml(sym, source) {
           <div id="tddLead-overview" class="tdd-context-lead-slot"></div>
           <div class="tdd-quote">
             <div class="tdd-quote__sym">${esc(sym)}</div>
-            <div class="tdd-quote__name" id="tddName">${esc(d.name)}</div>
+            <div class="tdd-quote__name" id="tddName">${esc(meta.displayName)} · ${esc(meta.sectorLabel)}</div>
             <div class="tdd-quote__row">
-              <span class="tdd-quote__price" id="tddPrice">${esc(d.price)}</span>
-              <span class="tdd-quote__chg" id="tddChg" style="color:${d.chgColor}">${esc(d.chg)}</span>
+              <span class="tdd-quote__price" id="tddPrice">—</span>
+              <span class="tdd-quote__chg" id="tddChg" style="color:#ffb547">—</span>
             </div>
             <p class="tdd-quote__src" id="tddPriceSrc">Loading live price…</p>
           </div>
@@ -134,7 +140,8 @@ function tabPanelHtml(sym, source) {
             <div class="tdd-chart" id="tddChart" aria-label="Price chart"></div>
           </div>
           <div class="tdd-summary intel-takeaway">
-            <p class="tdd-summary__text" id="tddSummary">${d.summary}</p>
+            <div class="tdd-summary__head" id="tddProvenance"></div>
+            <p class="tdd-summary__text" id="tddSummary">Loading intelligence…</p>
           </div>
         </div>
       </section>
@@ -185,11 +192,13 @@ function mountPanelLeads() {
   }
 }
 
-function renderDrivers(sym) {
-  const d = getWimEntry(sym);
+function renderDriversFromIntel() {
   const host = root.querySelector("#tddDrivers");
-  if (!host) return;
-  host.innerHTML = d.reasons
+  if (!host || !openIntel?.reasons?.length) {
+    if (host) host.innerHTML = `<p class="tdd-context-footnote">Loading drivers…</p>`;
+    return;
+  }
+  host.innerHTML = openIntel.reasons
     .map(
       ([title, desc, weight], i) => `
     <article class="reason">
@@ -204,6 +213,73 @@ function renderDrivers(sym) {
     .join("");
 }
 
+function applyIntelToOverview() {
+  if (!openIntel || !root) return;
+  const summaryEl = root.querySelector("#tddSummary");
+  const provEl = root.querySelector("#tddProvenance");
+  const nameEl = root.querySelector("#tddName");
+  if (summaryEl) summaryEl.innerHTML = openIntel.summaryHtml;
+  if (provEl) provEl.innerHTML = provenanceBadgeHtml(openIntel.provenance);
+  if (nameEl) nameEl.textContent = openIntel.name;
+  renderedTabs.delete("overview-chart");
+  if (activeTab === "overview") paintOverviewChart();
+}
+
+function paintOverviewChart() {
+  if (!root || !openSym) return;
+  const chart = root.querySelector("#tddChart");
+  if (!chart) return;
+  const trend = openIntel?.trend ?? getWimEntry(openSym).trend;
+  const color = openIntel?.chgColor || "#ff5b6e";
+  const series = genSeries(80, 8, trend, openSym.charCodeAt(0));
+  requestAnimationFrame(() => drawChart(chart, series, { color, id: `tdd_${openSym}` }));
+  renderedTabs.add("overview-chart");
+}
+
+async function refreshDeepDiveIntel(sym, opts = {}) {
+  const req = ++intelRequest;
+  try {
+    const bundle = await fetchDeepDiveBundle(sym, {
+      quote: opts.quote,
+      fusion: opts.fusion,
+    });
+    if (req !== intelRequest || !root) return;
+    openIntel = composeDeepDiveIntel(bundle);
+    applyIntelToOverview();
+    if (bundle.quote?.price > 0) {
+      applyLiveQuote(sym, bundle.quote, bundle.quote.provider || "API");
+    }
+    if (activeTab === "drivers") renderDriversFromIntel();
+  } catch {
+    if (req !== intelRequest || !root) return;
+    const meta = getTickerMeta(sym);
+    openIntel = {
+      name: `${meta.displayName} · ${meta.sectorLabel}`,
+      summaryHtml: `<b>${esc(sym)}</b> intelligence is temporarily unavailable. Sector context: ${esc(meta.sectorLabel)}.`,
+      reasons: composeDeepDiveIntel({
+        sym,
+        meta,
+        quote: null,
+        companyNews: [],
+        earnings: null,
+        sectorMoves: [],
+        primarySector: null,
+        macro: {},
+        provenance: "Sector Model",
+        failedSources: ["compose:error"],
+        fetchedAt: Date.now(),
+      }).reasons,
+      chgColor: "#ffb547",
+      price: "—",
+      chg: "—",
+      trend: 0,
+      provenance: "Sector Model",
+    };
+    applyIntelToOverview();
+    if (activeTab === "drivers") renderDriversFromIntel();
+  }
+}
+
 function renderActiveTab() {
   if (!root || !openSym) return;
   root.querySelectorAll("[data-tdd-panel]").forEach((p) => {
@@ -212,17 +288,10 @@ function renderActiveTab() {
   });
 
   if (activeTab === "overview" && !renderedTabs.has("overview-chart")) {
-    const d = getWimEntry(openSym);
-    const chart = root.querySelector("#tddChart");
-    if (chart) {
-      const series = genSeries(80, 8, d.trend, openSym.charCodeAt(0));
-      const color = d.chgColor || "#ff5b6e";
-      requestAnimationFrame(() => drawChart(chart, series, { color, id: `tdd_${openSym}` }));
-      renderedTabs.add("overview-chart");
-    }
+    paintOverviewChart();
   }
 
-  if (activeTab === "drivers") renderDrivers(openSym);
+  if (activeTab === "drivers") renderDriversFromIntel();
 
   if (activeTab === "reaction" && !renderedTabs.has("reaction")) {
     const wrap = root.querySelector(".tdd-contagion");
@@ -280,7 +349,22 @@ function applyLiveQuote(sym, q, providerLabel) {
       minute: "2-digit",
       second: "2-digit",
     });
-    srcEl.textContent = `Price source: ${providerLabel || q.provider || "API"}  ·  ${sym}  ·  Updated: ${ts}`;
+    const prov = openIntel?.provenance ? ` · ${openIntel.provenance}` : "";
+    srcEl.textContent = `Price source: ${providerLabel || q.provider || "API"}  ·  ${sym}  ·  Updated: ${ts}${prov}`;
+  }
+  if (openIntel && q.price > 0) {
+    openIntel.price = q.price.toFixed(2);
+    const isUp = q.pctChange >= 0;
+    openIntel.chg = `${isUp ? "+" : ""}${(q.change || 0).toFixed(2)}  (${isUp ? "+" : ""}${(q.pctChange || 0).toFixed(2)}%)`;
+    openIntel.chgColor = isUp ? "#3ddc97" : "#ff5b6e";
+    openIntel.trend = q.pctChange >= 0 ? 0.08 : -0.25;
+    const priceEl = root?.querySelector("#tddPrice");
+    const chgEl = root?.querySelector("#tddChg");
+    if (priceEl) priceEl.textContent = openIntel.price;
+    if (chgEl) {
+      chgEl.textContent = openIntel.chg;
+      chgEl.style.color = openIntel.chgColor;
+    }
   }
   if (contagion) {
     contagion.setQuoteCache({ [sym]: q });
@@ -303,6 +387,7 @@ async function refreshLivePrice(sym) {
  *   weightPct?: number,
  *   context?: import('./deep-dive-context.js').DeepDiveContext,
  *   contextPayload?: object,
+ *   fusion?: import('../../logic/dataFusion.js').FusionBundle,
  * }} opts
  */
 export function openTickerDeepDive(opts) {
@@ -323,8 +408,10 @@ export function openTickerDeepDive(opts) {
   renderedTabs = new Set();
   contagion = null;
   quoteRequest++;
+  intelRequest++;
+  openIntel = null;
 
-  const d = getWimEntry(sym);
+  const meta = getTickerMeta(sym);
   root.querySelector("#tddTitle").textContent = sym;
   root.querySelector("#tddKicker").textContent = getSourceKicker(source);
   const weightNote =
@@ -333,7 +420,8 @@ export function openTickerDeepDive(opts) {
       : openContext?.source === "portfolio" && opts.contextPayload?.weightPct != null
         ? ` · ${Number(opts.contextPayload.weightPct).toFixed(1)}% of book`
         : "";
-  root.querySelector("#tddMeta").textContent = d.name + weightNote;
+  root.querySelector("#tddMeta").textContent =
+    `${meta.displayName} · ${meta.sectorLabel}` + weightNote;
 
   const slot = root.querySelector("#tddContextSlot");
   if (slot) slot.innerHTML = openContext ? renderContextStrip(openContext) : "";
@@ -348,6 +436,7 @@ export function openTickerDeepDive(opts) {
   document.body.classList.add("ticker-deep-dive-open");
 
   setTab(tab);
+  refreshDeepDiveIntel(sym, { quote: opts.quote, fusion: opts.fusion });
   if (opts.quote?.price > 0) {
     applyLiveQuote(sym, opts.quote, opts.quote.provider || "Portfolio");
   } else {
@@ -365,6 +454,7 @@ export function closeTickerDeepDive() {
   document.body.classList.remove("ticker-deep-dive-open");
   openSym = null;
   openContext = null;
+  openIntel = null;
   contagion = null;
 }
 

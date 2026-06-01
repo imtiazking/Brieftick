@@ -133,6 +133,7 @@ export function attachLogicDeepDiveToResponse(res, ctx = {}) {
     ...res,
     deepDiveOpen: open,
     logicDeepDiveQuote: quote,
+    logicDeepDiveFusion: ctx.fusion || res?.logicDeepDiveFusion || null,
   };
 }
 

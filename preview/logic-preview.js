@@ -350,6 +350,7 @@ function enrichResponseMeta(res, prompt) {
   };
   meta = attachLogicDeepDiveToResponse(meta, {
     primaryEntity: resolveDeepDiveEntity(primary, meta),
+    fusion: meta.logicDeepDiveFusion || null,
   });
   syncLogicDeepDiveFromResponse(meta);
   if (useConversationalLayout()) return meta;
@@ -362,6 +363,7 @@ function syncLogicDeepDiveFromResponse(res) {
   syncLogicDeepDiveData({
     symbol: res.deepDiveOpen.symbol,
     quote: res.logicDeepDiveQuote,
+    fusion: res.logicDeepDiveFusion || null,
     name: res.deepDiveOpen.name,
     prompt: res._logicPrompt || "",
     answer: conv?.primaryAnswer || res.directAnswer || res.summary || "",

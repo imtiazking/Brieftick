@@ -212,9 +212,31 @@ export const CONTAGION_PEERS = {
   XLK: ["NVDA", "MSFT", "AAPL", "AVGO", "META", "SPY"],
 };
 
+/**
+ * Minimal entry for panels that still read WIM shape (patterns chart) — not NVDA clone.
+ * @param {string} key
+ * @returns {WimEntry}
+ */
+function buildSectorStubEntry(key) {
+  return {
+    name: `${key} · EQUITY`,
+    price: "—",
+    chg: "—",
+    chgColor: "#ffb547",
+    summary: "",
+    reasons: [],
+    sym: key,
+    trend: 0,
+  };
+}
+
+/**
+ * Authored WIM rows remain for legacy pattern tag mining; overview/drivers use API intel.
+ * @param {string} sym
+ */
 export function getWimEntry(sym) {
   const key = String(sym || "NVDA").toUpperCase();
-  return WIM_DB[key] || { ...WIM_DB.NVDA, sym: key };
+  return WIM_DB[key] || buildSectorStubEntry(key);
 }
 
 export function getContagionPeers(sym) {
