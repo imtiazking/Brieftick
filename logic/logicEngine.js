@@ -36,6 +36,10 @@ import { humanizeLogicResponse } from "./engines/conversationalVoice.js";
 import { applyTickerVoiceToResponse } from "./engines/tickerVoiceVariation.js";
 import { buildTickerUnresolvedResponse, extractTickerCandidate } from "./engines/tickerResolver.js";
 import { enforceTickerAnswerIdentity } from "./engines/tickerAnswerIdentity.js";
+import {
+  attachLogicDeepDiveToResponse,
+  resolveDeepDiveEntity,
+} from "./engines/deepDiveActions.js";
 
 import { runMarketPulseLogic } from "./marketPulseLogic.js";
 import { runTickerIntelligenceLogic } from "./tickerIntelligenceLogic.js";
@@ -117,6 +121,11 @@ export function finalizeLogicResponse(res, ctx) {
     out.conversational = buildConversationalPresentation(out, ctx);
     out.responseIntent = plan?.intentId;
   }
+
+  out = attachLogicDeepDiveToResponse(out, {
+    ...ctx,
+    primaryEntity: resolveDeepDiveEntity(ctx.primaryEntity, out),
+  });
 
   return out;
 }

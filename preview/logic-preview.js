@@ -30,6 +30,14 @@ import {
 } from "../logic/previewFlags.js";
 import { buildTickerDeskAnswer } from "../logic/engines/tickerDeskCopy.js";
 import { buildTickerUnresolvedResponse } from "../logic/engines/tickerResolver.js";
+import {
+  attachLogicDeepDiveToResponse,
+  resolveDeepDiveEntity,
+} from "../logic/engines/deepDiveActions.js";
+import {
+  bindLogicDeepDiveActions,
+  syncLogicDeepDiveData,
+} from "../lib/logic-deep-dive.js";
 
 const PREVIEW_KEYS = new Set(["logic", "agent"]);
 const LOGIC_PREVIEW_BUILD = "conv-v3";
@@ -279,6 +287,7 @@ function renderResultSurface(html, state = "ready") {
   content.scrollTop = 0;
   if (useConversationalLayout()) {
     bindConversationalChips(content);
+    bindLogicDeepDiveActions(content);
   }
 
   if (surface) {
@@ -333,14 +342,27 @@ function renderAccessBlockedResponse(prompt, reason) {
 function enrichResponseMeta(res, prompt) {
   const primary = resolvePrimaryEntity(prompt);
   const modeMeta = LOGIC_MODES.find((m) => m.id === res.mode);
-  const meta = {
+  let meta = {
     ...res,
-    primarySymbol: primary.symbol || undefined,
+    primarySymbol: primary.symbol || res.primarySymbol || undefined,
     modeLabel: modeMeta?.label || res.mode,
     _logicPrompt: prompt,
   };
+  meta = attachLogicDeepDiveToResponse(meta, {
+    primaryEntity: resolveDeepDiveEntity(primary, meta),
+  });
+  syncLogicDeepDiveFromResponse(meta);
   if (useConversationalLayout()) return meta;
   return ensureFullCards(meta);
+}
+
+function syncLogicDeepDiveFromResponse(res) {
+  if (!res?.deepDiveOpen?.symbol) return;
+  syncLogicDeepDiveData({
+    symbol: res.deepDiveOpen.symbol,
+    quote: res.logicDeepDiveQuote,
+    name: res.deepDiveOpen.name,
+  });
 }
 
 function buildMockResponse(prompt, mode) {

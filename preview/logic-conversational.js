@@ -67,6 +67,13 @@ export function renderConversationalLogic(res, role = "logic") {
       </div>`
     : "";
 
+  const deepDiveRail =
+    role !== "user" && res.deepDiveOpen?.symbol
+      ? `<div class="logic-conv-actions" role="group" aria-label="Ticker Deep Dive">
+          <button type="button" class="logic-deep-dive-btn" data-logic-deep-dive="${escapeHtml(res.deepDiveOpen.symbol)}">Open Deep Dive</button>
+        </div>`
+      : "";
+
   if (role === "user") {
     return `<div class="logic-msg logic-msg--user">
       <p class="logic-msg-summary">${escapeHtml(primary)}</p>
@@ -78,6 +85,7 @@ export function renderConversationalLogic(res, role = "logic") {
     <div class="logic-conv-primary">
       <p class="logic-conv-answer">${escapeHtml(primary)}</p>
     </div>
+    ${deepDiveRail}
     ${chipRow}
     ${panels}
     <p class="logic-disclaimer logic-conv-disclaimer">${escapeHtml(res.disclaimer || LOGIC_DISCLAIMER)}</p>

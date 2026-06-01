@@ -56,6 +56,8 @@ export const LIMITED_DATA_MSG =
  * @property {import('./engines/conversationalPresentation.js').ConversationalPresentation} [conversational]
  * @property {string} [responseIntent]
  * @property {string} [primarySymbol]
+ * @property {{ symbol: string, name?: string }} [deepDiveOpen]
+ * @property {{ price: number, pctChange: number, change?: number, provider?: string }} [logicDeepDiveQuote]
  * @property {string} [_logicPrompt]
  */
 

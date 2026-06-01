@@ -3102,7 +3102,8 @@ h1,h2,h3{
 .logic-msg--conversational .logic-direct-answer,
 .logic-msg--conversational .logic-signal-row,
 .logic-msg--conversational .logic-msg-foot{display:none!important}
-.logic-conv-primary{margin:0 0 20px;padding:0;border:none;background:transparent}
+.logic-conv-primary{margin:0 0 14px;padding:0;border:none;background:transparent}
+.logic-msg--conversational:has(.logic-conv-actions) .logic-conv-primary{margin-bottom:10px}
 .logic-conv-answer{
   margin:0;font-family:var(--display);font-size:clamp(17px,2.35vw,21px);
   line-height:1.58;color:var(--ink);letter-spacing:-.02em;font-weight:430;
@@ -3111,6 +3112,7 @@ h1,h2,h3{
 .logic-conv-chips{
   display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px;
 }
+.logic-msg--conversational:has(.logic-conv-actions) .logic-conv-chips{margin-top:2px}
 .logic-conv-chip{
   padding:5px 11px;border-radius:999px;cursor:pointer;
   border:1px solid rgba(255,255,255,.08);background:transparent;
@@ -3136,6 +3138,21 @@ h1,h2,h3{
 .logic-conv-panel-text{
   font-size:13px;line-height:1.55;color:var(--ink-dim);margin:0;
   padding-left:12px;border-left:1px solid rgba(212,168,90,.25);
+}
+.logic-conv-actions{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  margin:0 0 12px;max-width:42em;
+}
+.logic-deep-dive-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:7px 14px;border-radius:10px;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid rgba(212,168,90,.45);background:rgba(212,168,90,.1);color:var(--gold);
+  box-shadow:0 0 0 1px rgba(212,168,90,.06);
+  transition:background .15s,border-color .15s,box-shadow .15s;
+}
+.logic-deep-dive-btn:hover{
+  background:rgba(212,168,90,.14);border-color:var(--gold);
 }
 .logic-conv-limited{font-family:var(--mono);font-size:10px;color:var(--gold);margin:0 0 12px;opacity:.85}
 .logic-conv-disclaimer{
@@ -3438,6 +3455,7 @@ h1,h2,h3{
 <script type="module" src="/lib/logic-cinematic.bridge.js"></script>
 <script type="module" src="/lib/portfolio-deep-dive.js"></script>
 <script type="module" src="/lib/scanner-deep-dive.js"></script>
+<script type="module" src="/lib/logic-deep-dive.js"></script>
 <script type="module" src="/lib/portfolio-layout.js"></script>
 </head>
 <body>
