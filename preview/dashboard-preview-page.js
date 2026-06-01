@@ -4,6 +4,7 @@
  */
 
 import { initIntelligenceWheel } from "./dashboard-wheel-core.js";
+import { initTickerDeepDive } from "./ticker-deep-dive/ticker-deep-dive.js";
 
 function init() {
   window.__DASHBOARD_PREVIEW = true;
@@ -12,6 +13,7 @@ function init() {
   document.body.dataset.dashLabConcept = "wheel";
   document.getElementById("panelWheel")?.classList.add("is-active");
   initIntelligenceWheel();
+  initTickerDeepDive();
 }
 
 if (document.readyState === "loading") {

@@ -3,6 +3,8 @@
  * @module preview/dashboard-preview-watchlist
  */
 
+import { openTickerDeepDive } from "./ticker-deep-dive/ticker-deep-dive.js";
+
 const WL_DEBUG = true;
 
 function wlLog(...args) {
@@ -236,6 +238,7 @@ function renderTickerCard(sym) {
       <div class="intel-wl-card__expand" aria-hidden="true">
         ${chg ? `<span class="intel-wl-card__move intel-wl-card__move--${chgCls}">${chg}</span>` : ""}
       </div>
+      <button type="button" class="intel-wl-card__deep-dive" data-action="deep-dive" draggable="false">Deep Dive</button>
       <div class="intel-wl-card__actions">
         <button type="button" class="intel-wl-card__pin" data-action="pin" draggable="false" aria-pressed="${isPinned ? "true" : "false"}" aria-label="${isPinned ? "Unpin" : "Pin"} ${escapeHtml(sym)}">
           <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M6 1 7.5 4.5 11 5.5 8.5 8 9 11.5 6 9.5 3 11.5 3.5 8 1 5.5 4.5 4.5z"/></svg>
@@ -484,6 +487,11 @@ function ensureWatchlistDelegates() {
     if (action === "pin") {
       const sym = e.target.closest(".intel-wl-card--ticker")?.dataset.symbol;
       if (sym) togglePin(sym);
+      return;
+    }
+    if (action === "deep-dive") {
+      const sym = e.target.closest(".intel-wl-card--ticker")?.dataset.symbol;
+      if (sym) openTickerDeepDive({ symbol: sym, source: "watchlist" });
     }
   });
 

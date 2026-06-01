@@ -3,6 +3,8 @@
  * @module preview/dashboard-movers-intel
  */
 
+import { openTickerDeepDive } from "./ticker-deep-dive/ticker-deep-dive.js";
+
 /** @type {Record<string, { lead: string, why: string }>} */
 const MOVER_STORIES = {
   NVDA: {
@@ -116,6 +118,28 @@ export function bindMoversIntel(root) {
 
   wrap.addEventListener("pointerleave", () => {
     wrap.classList.remove("has-focus");
+  });
+
+  const storyInner = wrap.querySelector(".movers-intel__story-inner");
+  if (storyInner && !storyInner.querySelector(".movers-intel__deep-dive")) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "movers-intel__deep-dive";
+    btn.textContent = "Ticker Deep Dive";
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const sym = wrap.dataset.activeSym || rows[0]?.dataset.moverSym || "NVDA";
+      openTickerDeepDive({ symbol: sym, source: "movers" });
+    });
+    storyInner.appendChild(btn);
+  }
+
+  rows.forEach((row) => {
+    row.addEventListener("dblclick", (e) => {
+      e.preventDefault();
+      const sym = row.dataset.moverSym;
+      if (sym) openTickerDeepDive({ symbol: sym, source: "movers" });
+    });
   });
 
   setActive(rows[0]);
