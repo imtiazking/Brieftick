@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Theater · Experience Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/experience-lab/_exp-base.css">
+  <style>
+    .th { min-height: 100vh; background: #000; padding-top: 52px; position: relative; overflow: hidden; }
+    .th-spot {
+      position: absolute; left: 50%; top: 45%; width: 40vmin; height: 40vmin;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+      transition: width 0.8s var(--ease), height 0.8s var(--ease), opacity 0.6s;
+    }
+    .th-stage { position: relative; z-index: 2; text-align: center; padding: 20vh 24px 120px; }
+    .th-act { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 16px; }
+    .th-title { font-family: var(--display); font-size: clamp(26px, 5vw, 40px); font-style: italic; margin-bottom: 12px; }
+    .th-sub { font-size: 16px; color: rgba(232,236,245,0.65); max-width: 32ch; margin: 0 auto; }
+    .th-curtain {
+      position: fixed; left: 0; right: 0; height: 2px; background: var(--gold);
+      opacity: 0; transform: scaleX(0); transition: opacity 0.4s, transform 0.6s var(--ease);
+      z-index: 5;
+    }
+    .th-curtain.is-on { opacity: 0.5; transform: scaleX(1); }
+    .th-program {
+      position: fixed; bottom: 0; left: 0; right: 0; padding: 16px 24px 28px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.95));
+      transform: translateY(100%); transition: transform 0.5s var(--ease);
+      z-index: 10;
+    }
+    .th-program.is-visible { transform: none; }
+    .th-program label { font-family: var(--mono); font-size: 8px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+    .th-cast { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+    .th-cast button {
+      padding: 10px 16px; border: 1px solid rgba(255,255,255,0.15); background: transparent;
+      color: var(--text); font-size: 14px; border-radius: 6px; cursor: pointer;
+    }
+    .th-nav { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 8px; }
+    .th-nav button {
+      padding: 10px 20px; border: 1px solid var(--line); background: rgba(0,0,0,0.6);
+      color: var(--text); font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer; border-radius: 99px;
+    }
+  </style>
+</head>
+<body class="th">
+  <header class="exp-chrome"><strong>02 · Market Theater</strong><a href="/design-lab/experience-lab">Experience Lab</a></header>
+  <div class="th-spot" id="spot"></div>
+  <div class="th-curtain" id="curtain"></div>
+  <div class="th-stage">
+    <p class="th-act" id="act">Act I</p>
+    <h1 class="th-title" id="title">The session opens upbeat</h1>
+    <p class="th-sub" id="sub">Tech takes the lead.</p>
+  </div>
+  <div class="th-nav">
+    <button type="button" id="prev">Previous act</button>
+    <button type="button" id="next">Next act</button>
+  </div>
+  <div class="th-program" id="program">
+    <label>Cast · this act</label>
+    <div class="th-cast" id="cast"></div>
+  </div>
+  <script type="module">
+    import { BEATS, mountDive, openDive } from "/design-lab/experience-lab/_exp-mock.js";
+    mountDive();
+    const acts = [
+      { act: "Act I", title: "The session opens upbeat", sub: "Tech takes the lead.", cast: [] },
+      { act: "Act II", title: "Conflict: rotation", sub: "Banks vs tech — rate-cut hopes pressure financials.", cast: [{ sym: "JPM", name: "JPMorgan" }] },
+      { act: "Act III", title: "Resolution", sub: "Tech and energy carry the tape.", cast: [{ sym: "NVDA", name: "NVIDIA" }, { sym: "XOM", name: "Exxon" }] },
+      { act: "Encore", title: "Watch next", sub: "NVDA commentary · Fed speakers · Crude close", cast: [] },
+    ];
+    let i = 0;
+    const spot = document.getElementById("spot");
+    const program = document.getElementById("program");
+    function show() {
+      const a = acts[i];
+      document.getElementById("act").textContent = a.act;
+      document.getElementById("title").textContent = a.title;
+      document.getElementById("sub").textContent = a.sub;
+      spot.style.width = (50 + i * 15) + "vmin";
+      spot.style.height = spot.style.width;
+      document.getElementById("curtain").classList.add("is-on");
+      setTimeout(() => document.getElementById("curtain").classList.remove("is-on"), 700);
+      const cast = document.getElementById("cast");
+      cast.innerHTML = a.cast.map(c =>
+        `<button type="button" data-sym="${c.sym}">${c.sym}</button>`).join("") || "<span style='color:var(--muted);font-size:13px'>No cast on stage</span>";
+      program.classList.toggle("is-visible", a.cast.length > 0);
+      cast.querySelectorAll("button").forEach(b => {
+        b.addEventListener("click", () => openDive(b.dataset.sym, b.dataset.sym, `Backstage · ${a.act}`));
+      });
+    }
+    document.getElementById("next").addEventListener("click", () => { i = Math.min(acts.length - 1, i + 1); show(); });
+    document.getElementById("prev").addEventListener("click", () => { i = Math.max(0, i - 1); show(); });
+    show();
+  </script>
+</body>
+</html>

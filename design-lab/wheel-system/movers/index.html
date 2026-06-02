@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="split">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/split-brand.css">
+  <link rel="stylesheet" href="/styles/split-theme.css">
+  <link rel="stylesheet" href="/styles/dashboard-design-lab.css">
+  <link rel="stylesheet" href="/styles/dashboard-preview.css">
+  <link rel="stylesheet" href="/design-lab/wheel-system/_wheel-lab.css">
+</head>
+<body class="dash-preview-body dash-lab-body wheel-system-lab" data-dash-lab-concept="wheel">
+  <div class="split-atmosphere" aria-hidden="true">
+    <div class="split-atmosphere__dual"><span></span><span></span></div>
+    <div class="split-atmosphere__fog"></div>
+    <div class="split-atmosphere__vignette"></div>
+  </div>
+  <header class="wheel-lab-chrome">
+    <strong id="wheelLabTitle">Wheel System</strong>
+    <a href="/design-lab/wheel-system">← Wheel System Lab</a>
+  </header>
+  <main class="wheel-lab-main dash-preview-main">
+    <div class="dash-preview-wheel-wrap wheel-lab-scene">
+      <section id="panelWheel" class="dash-lab-panel is-active" aria-label="Wheel intelligence engine">
+        <div class="dash-lab-env" aria-hidden="true">
+          <div class="dash-lab-env__haze"></div>
+          <div class="dash-lab-env__vignette"></div>
+        </div>
+        <div class="intel-wheel-scene">
+          <header class="wheel-pulse-strip" id="wheelPulseStrip"></header>
+          <p class="intel-wheel__hint" id="wheelLabSubtitle">—</p>
+          <div class="wheel-stage" id="wheelStage">
+            <div class="wheel-stage__wheel" aria-label="Intelligence wheel">
+              <div class="intel-wheel__viewport" id="wheelViewport" tabindex="0"></div>
+            </div>
+            <div class="wheel-stage__panel" id="wheelEngine"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="/design-lab/wheel-system/movers/boot.js"></script>
+</body>
+</html>

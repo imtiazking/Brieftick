@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="split">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Brieftick Briefing · Design Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/split-theme.css">
+  <style>
+    body { margin: 0; min-height: 100vh; background: #020204; color: #e8ecf5; font-family: "Inter Tight", sans-serif; }
+    .hub { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+    .hub h1 { font-family: "Playfair Display", serif; font-size: 34px; margin: 0 0 8px; }
+    .hub .lead { color: #8a94a8; line-height: 1.6; margin-bottom: 32px; font-size: 16px; }
+    .hub-flagship {
+      display: block; padding: 24px 26px; margin-bottom: 32px; border-radius: 14px;
+      border: 1px solid rgba(212, 168, 90, 0.35);
+      background: linear-gradient(145deg, rgba(212, 168, 90, 0.08), rgba(10, 12, 20, 0.9));
+      text-decoration: none; color: inherit;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .hub-flagship:hover { border-color: rgba(212, 168, 90, 0.55); transform: translateY(-2px); }
+    .hub-flagship em {
+      font-family: "JetBrains Mono", monospace; font-size: 9px; color: #d4a85a;
+      font-style: normal; letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 8px;
+    }
+    .hub-flagship strong { font-size: 22px; display: block; margin-bottom: 8px; }
+    .hub-flagship span { font-size: 14px; color: #b0b8c8; line-height: 1.5; }
+    .hub-archive h2 {
+      font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #5a6070; margin: 0 0 12px;
+    }
+    .hub-archive a {
+      display: block; padding: 14px 16px; margin-bottom: 8px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06); background: rgba(10,12,20,0.5);
+      text-decoration: none; color: #8a94a8; font-size: 14px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .hub-archive a:hover { border-color: rgba(255,255,255,0.12); color: #e8ecf5; }
+    .hub-note { margin-top: 28px; font-family: "JetBrains Mono", monospace; font-size: 9px; color: #5a6070; letter-spacing: 0.06em; }
+  </style>
+</head>
+<body>
+  <div class="hub">
+    <h1>Brieftick Briefing</h1>
+    <p class="lead">Selected flagship direction for Brieftick. Vertical briefing wheel controls today's market read. Mock data only — not in production.</p>
+    <a class="hub-flagship" href="/design-lab/wheel-system/briefing">
+      <em>Flagship · Design lab final</em>
+      <strong>Open Brieftick Briefing</strong>
+      <span>Today · Why · Winners · Losers · Next — with market snapshot and full briefing panel.</span>
+    </a>
+    <div class="hub-archive">
+      <h2>Archive prototypes (lab only)</h2>
+      <a href="/design-lab/wheel-system/dashboard">Dashboard Wheel — Mood · Macro · Themes · Regions · Risks · Outlook</a>
+      <a href="/design-lab/wheel-system/movers">Movers Wheel — Why · Drivers · Reaction · Patterns · Sentiment</a>
+      <a href="/design-lab/wheel-system/intelligence">Intelligence Wheel — Macro · Sectors · Stocks · Risks · Opportunities</a>
+    </div>
+    <p class="hub-note">Design lab · No production deploy · Review before shipping</p>
+  </div>
+</body>
+</html>

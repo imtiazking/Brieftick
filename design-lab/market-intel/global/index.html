@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>04 · Global Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/market-intel/_intel-base.css">
+  <style>
+    .globe-wrap { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
+    @media (max-width: 800px) { .globe-wrap { grid-template-columns: 1fr; } }
+    .globe-map {
+      position: relative; aspect-ratio: 2/1; border-radius: 14px;
+      border: 1px solid var(--line); background: #060810; overflow: hidden;
+    }
+    .globe-map svg { width: 100%; height: 100%; }
+    .region { fill: rgba(255,255,255,0.04); stroke: rgba(255,255,255,0.1); stroke-width: 0.5; cursor: pointer; transition: fill 0.4s; }
+    .region.is-hot { fill: rgba(62, 207, 142, 0.25); stroke: rgba(62, 207, 142, 0.5); }
+    .region.is-warm { fill: rgba(212, 168, 90, 0.2); stroke: rgba(212, 168, 90, 0.4); }
+    .region.is-cool { fill: rgba(240, 113, 120, 0.12); stroke: rgba(240, 113, 120, 0.3); }
+    .globe-panel {
+      padding: 18px; border-radius: 12px; border: 1px solid var(--line);
+      background: var(--glass); min-height: 200px;
+    }
+    .globe-panel h3 { font-size: 16px; margin-bottom: 10px; }
+    .globe-panel p { font-size: 14px; line-height: 1.55; color: #a8b0c0; }
+    .globe-panel .impact { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--up); }
+  </style>
+</head>
+<body>
+  <header class="intel-lab"><strong>04 · Global Intelligence</strong><a href="/design-lab/market-intel">All concepts</a></header>
+  <section class="intel-hero" id="hero"></section>
+  <main class="intel-main">
+    <div class="globe-wrap">
+      <div class="globe-map">
+        <svg viewBox="0 0 800 400" id="map"></svg>
+      </div>
+      <div class="globe-panel" id="panel">
+        <h3>US · Leading session</h3>
+        <p>AI and energy drive US equities higher. Tap a region to see local impact on sectors and names.</p>
+        <p class="impact">Sectors: Technology, Energy</p>
+      </div>
+    </div>
+  </main>
+  <p class="intel-note">Region heat = session leadership · Not decorative geography</p>
+  <script type="module">
+    import { SESSION, mountHero } from "/design-lab/market-intel/_intel-mock.js";
+    mountHero("hero", "Global Intelligence");
+    const regions = [
+      { id: "us", d: "M120,80 L280,60 L320,140 L300,220 L140,240 L100,160Z", heat: "hot", title: "US · Leading", text: "AI capex lifts tech. Energy firms with oil. Banks lag on rates.", impact: "NVDA · XOM · JPM" },
+      { id: "eu", d: "M380,70 L520,90 L500,180 L400,200 L360,120Z", heat: "warm", title: "Europe · Mixed", text: "Autos quiet. Luxury soft. Rates story shared with US.", impact: "Watch ECB rhetoric" },
+      { id: "asia", d: "M540,100 L720,120 L700,220 L560,240 L520,160Z", heat: "warm", title: "Asia · Tech supply", text: "Chip supply chain echoes US AI trade.", impact: "TSM · Samsung supply chain" },
+    ];
+    const map = document.getElementById("map");
+    const panel = document.getElementById("panel");
+    regions.forEach(r => {
+      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", r.d);
+      p.classList.add("region", "is-" + r.heat);
+      p.addEventListener("click", () => {
+        document.querySelectorAll(".region").forEach(x => x.style.opacity = "0.5");
+        p.style.opacity = "1";
+        panel.innerHTML = `<h3>${r.title}</h3><p>${r.text}</p><p class="impact">${r.impact}</p>`;
+      });
+      map.appendChild(p);
+    });
+  </script>
+</body>
+</html>

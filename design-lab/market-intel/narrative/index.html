@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>07 · Market Narrative</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/market-intel/_intel-base.css">
+  <style>
+    .nar-scrub {
+      width: 100%; margin: 20px 0; accent-color: var(--gold);
+    }
+    .nar-track {
+      display: flex; gap: 0; position: relative; padding: 24px 0 40px;
+      border-bottom: 2px solid var(--line);
+    }
+    .nar-beat {
+      flex: 1; text-align: center; position: relative; cursor: pointer;
+      opacity: 0.4; transition: opacity 0.4s, transform 0.4s var(--ease);
+    }
+    .nar-beat.is-now { opacity: 1; transform: scale(1.05); }
+    .nar-beat::before {
+      content: ""; width: 12px; height: 12px; border-radius: 50%;
+      background: var(--line); display: block; margin: 0 auto 12px;
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    .nar-beat.is-now::before {
+      background: var(--gold); box-shadow: 0 0 16px var(--gold);
+    }
+    .nar-beat time { font-family: var(--mono); font-size: 9px; color: var(--muted); display: block; margin-bottom: 6px; }
+    .nar-beat strong { font-size: 13px; display: block; line-height: 1.3; }
+    .nar-stage {
+      padding: 28px 24px; border-radius: 14px; border: 1px solid var(--line);
+      background: var(--glass); min-height: 160px;
+      transition: opacity 0.35s;
+    }
+    .nar-stage h2 { font-family: var(--display); font-size: 22px; margin-bottom: 12px; }
+    .nar-stage p { font-size: 15px; line-height: 1.55; color: #b0b8c8; max-width: 52ch; }
+    .nar-tags { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+    .nar-tags span { padding: 6px 12px; border-radius: 6px; font-size: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+  </style>
+</head>
+<body>
+  <header class="intel-lab"><strong>07 · Market Narrative</strong><a href="/design-lab/market-intel">All concepts</a></header>
+  <section class="intel-hero" id="hero"></section>
+  <main class="intel-main">
+    <div class="nar-track" id="track"></div>
+    <input type="range" class="nar-scrub" id="scrub" min="0" max="3" value="3" aria-label="Story progress">
+    <div class="nar-stage" id="stage"></div>
+  </main>
+  <p class="intel-note">Scrub the story — motion follows the narrative beat</p>
+  <script type="module">
+    import { SESSION, mountHero } from "/design-lab/market-intel/_intel-mock.js";
+    mountHero("hero", "Market Narrative");
+    const beats = [
+      { time: "Open", title: "Mixed open", body: "Futures pointed to a cautious start. No single theme dominated yet.", tags: ["S&P flat"] },
+      { time: "Morning", title: "AI bid emerges", body: "Chip names gained as hyperscaler spend stayed in focus.", tags: ["NVDA", "Semis"] },
+      { time: "Midday", title: "Energy joins", body: "Oil held steady; producers moved with the broad market.", tags: ["XOM", "Energy"] },
+      { time: "Now", title: "Tech leads, banks lag", body: SESSION.summary, tags: ["Watch Fed", "JPM soft"] },
+    ];
+    const track = document.getElementById("track");
+    const scrub = document.getElementById("scrub");
+    const stage = document.getElementById("stage");
+    track.innerHTML = beats.map((b, i) => `
+      <div class="nar-beat" data-i="${i}"><time>${b.time}</time><strong>${b.title}</strong></div>`).join("");
+    function go(i) {
+      i = +i;
+      scrub.value = i;
+      track.querySelectorAll(".nar-beat").forEach((el, j) => el.classList.toggle("is-now", j === i));
+      const b = beats[i];
+      stage.style.opacity = "0";
+      setTimeout(() => {
+        stage.innerHTML = `<h2>${b.title}</h2><p>${b.body}</p><div class="nar-tags">${b.tags.map(t=>`<span>${t}</span>`).join("")}</div>`;
+        stage.style.opacity = "1";
+      }, 120);
+    }
+    scrub.addEventListener("input", () => go(scrub.value));
+    track.querySelectorAll(".nar-beat").forEach(el => el.addEventListener("click", () => go(el.dataset.i)));
+    go(3);
+  </script>
+</body>
+</html>

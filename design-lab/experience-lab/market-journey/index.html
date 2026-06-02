@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Journey · Experience Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/experience-lab/_exp-base.css">
+  <style>
+    .jny { padding: 56px 0 100px; min-height: 100vh; }
+    .jny-header { padding: 0 24px 32px; max-width: 560px; }
+    .jny-header h2 { font-size: 14px; color: var(--gold); font-family: var(--mono); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .jny-header p { font-size: 18px; line-height: 1.45; }
+    .jny-route {
+      position: relative; margin: 0 24px; padding: 40px 0;
+      min-height: 120vh;
+    }
+    .jny-line {
+      position: absolute; left: 24px; top: 0; bottom: 0; width: 3px;
+      background: rgba(255,255,255,0.08); border-radius: 2px;
+    }
+    .jny-line-fill {
+      position: absolute; left: 0; top: 0; width: 100%; height: 0%;
+      background: linear-gradient(180deg, var(--gold), var(--up));
+      border-radius: 2px; transition: height 0.2s;
+    }
+    .jny-stop {
+      position: relative; margin-left: 56px; margin-bottom: 48px;
+      padding: 16px 20px; border-radius: 12px; border: 1px solid var(--line);
+      background: var(--glass); max-width: 400px;
+      transform: scale(0.92); opacity: 0.5;
+      transition: transform 0.45s var(--ease), opacity 0.45s, border-color 0.3s;
+    }
+    .jny-stop.is-here { transform: scale(1); opacity: 1; border-color: var(--gold-dim); }
+    .jny-stop.is-past { opacity: 0.75; transform: scale(0.96); }
+    .jny-stop::before {
+      content: ""; position: absolute; left: -44px; top: 20px;
+      width: 14px; height: 14px; border-radius: 50%; background: var(--line);
+      border: 2px solid var(--void); transition: background 0.3s, box-shadow 0.3s;
+    }
+    .jny-stop.is-here::before { background: var(--gold); box-shadow: 0 0 12px var(--gold); }
+    .jny-stop kbd { font-family: var(--mono); font-size: 9px; color: var(--muted); }
+    .jny-stop strong { display: block; font-size: 16px; margin: 6px 0; }
+    .jny-stop span { font-size: 13px; color: var(--muted); }
+    .jny-you {
+      position: fixed; top: 56px; right: 20px; padding: 12px 16px;
+      border-radius: 10px; border: 1px solid var(--gold-dim); background: var(--glass);
+      font-family: var(--mono); font-size: 10px; z-index: 30;
+    }
+  </style>
+</head>
+<body>
+  <header class="exp-chrome"><strong>05 · Market Journey</strong><a href="/design-lab/experience-lab">Experience Lab</a></header>
+  <div class="jny-you" id="you">You are here · Mid-session</div>
+  <main class="jny">
+    <div class="jny-header">
+      <h2>Next stop</h2>
+      <p id="next">Tech leadership ahead — banks lagging, rotation risk.</p>
+    </div>
+    <div class="jny-route" id="route">
+      <div class="jny-line"><div class="jny-line-fill" id="fill"></div></div>
+    </div>
+  </main>
+  <script type="module">
+    import { BEATS, SESSION, mountDive, openDive } from "/design-lab/experience-lab/_exp-mock.js";
+    mountDive();
+    const stops = [
+      { kbd: "Open", title: "Mixed open", sub: "No dominant theme yet" },
+      { kbd: "Morning", title: "AI bid emerges", sub: BEATS[0].why, stocks: BEATS[0].stocks },
+      { kbd: "Midday", title: "Energy joins", sub: BEATS[1].why, stocks: BEATS[1].stocks },
+      { kbd: "Now", title: "Tech leads, banks lag", sub: SESSION.subline, stocks: BEATS[2].stocks },
+      { kbd: "Ahead", title: "Watch", sub: SESSION.watch.join(" · ") },
+    ];
+    const route = document.getElementById("route");
+    stops.forEach((s, i) => {
+      const el = document.createElement("div");
+      el.className = "jny-stop" + (i === 3 ? " is-here" : i < 3 ? " is-past" : "");
+      el.innerHTML = `<kbd>${s.kbd}</kbd><strong>${s.title}</strong><span>${s.sub}</span>`;
+      if (s.stocks) {
+        s.stocks.forEach(st => {
+          const b = document.createElement("button");
+          b.textContent = st.sym;
+          b.style.cssText = "margin-top:10px;margin-right:6px;padding:6px 10px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer";
+          b.addEventListener("click", () => openDive(st.sym, st.sym, `Journey · ${s.title}`));
+          el.appendChild(b);
+        });
+      }
+      route.appendChild(el);
+    });
+    const fill = document.getElementById("fill");
+    const stopEls = route.querySelectorAll(".jny-stop");
+    const obs = new IntersectionObserver(() => {
+      let active = 0;
+      stopEls.forEach((el, i) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.5) active = i;
+      });
+      stopEls.forEach((el, i) => {
+        el.classList.toggle("is-here", i === active);
+        el.classList.toggle("is-past", i < active);
+      });
+      fill.style.height = ((active + 1) / stops.length * 100) + "%";
+      document.getElementById("you").textContent = `You are here · ${stops[active].kbd}`;
+      if (stops[active + 1]) document.getElementById("next").textContent = stops[active + 1].title;
+    }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
+    stopEls.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

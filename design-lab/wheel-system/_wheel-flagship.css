@@ -1,0 +1,269 @@
+/* Brieftick Briefing — flagship design-lab final */
+
+.wheel-flagship-lab .briefing-scene--flagship {
+  max-width: 1320px;
+  padding-bottom: 24px;
+}
+
+.wheel-flagship-lab .briefing-scene--flagship .wheel-pulse-strip {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+}
+
+.wheel-flagship-lab .briefing-stage {
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.wheel-flagship-lab .briefing-rail {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wheel-flagship-lab .briefing-rail__wheel {
+  flex: 0 0 auto;
+  padding: 14px 8px 16px;
+}
+
+.wheel-flagship-lab .briefing-snapshot {
+  flex: 0 0 auto;
+}
+
+.wheel-flagship-lab .briefing-main {
+  min-height: 0;
+}
+
+/* Main briefing panel */
+.briefing-panel {
+  padding: 28px 32px 32px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(165deg, rgba(14, 16, 24, 0.95), rgba(6, 8, 14, 0.92));
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.32);
+  min-height: 100%;
+}
+
+.briefing-panel__hero {
+  margin-bottom: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.briefing-panel__segment {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid rgba(212, 168, 90, 0.4);
+  background: rgba(212, 168, 90, 0.1);
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dash-gold, #d4a85a);
+}
+
+.briefing-panel__headline {
+  font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: #f5f0e8;
+  margin: 0;
+}
+
+.briefing-panel__section {
+  margin-bottom: 22px;
+}
+
+.briefing-panel__label {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 90, 0.7);
+  margin: 0 0 10px;
+}
+
+.briefing-panel__body {
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(200, 208, 220, 0.94);
+  margin: 0;
+}
+
+.briefing-panel__cards {
+  margin-bottom: 8px;
+}
+
+.briefing-data-card__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.briefing-data-card {
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.briefing-data-card--wide {
+  padding: 16px 18px;
+}
+
+.briefing-data-card__kicker {
+  display: block;
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(138, 148, 168, 0.85);
+  margin-bottom: 6px;
+}
+
+.briefing-data-card__title {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: #e8ecf5;
+  margin-bottom: 6px;
+}
+
+.briefing-data-card__move {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.briefing-data-card__move.is-up { color: #3ecf8e; }
+.briefing-data-card__move.is-dn { color: #f07178; }
+
+.briefing-data-card__copy {
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(200, 208, 220, 0.92);
+  margin: 0;
+}
+
+.briefing-panel__stocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.briefing-stock {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  gap: 2px 8px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font-family: inherit;
+  transition: border-color 0.2s, transform 0.2s ease;
+}
+
+.briefing-stock:hover {
+  border-color: rgba(212, 168, 90, 0.45);
+  transform: translateY(-1px);
+}
+
+.briefing-stock__sym {
+  grid-column: 1;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.briefing-stock__pct {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 13px;
+}
+
+.briefing-stock__pct.is-up { color: #3ecf8e; }
+.briefing-stock__pct.is-dn { color: #f07178; }
+
+.briefing-stock__name {
+  grid-column: 1;
+  font-size: 12px;
+  color: rgba(138, 148, 168, 0.95);
+}
+
+.briefing-stock__role {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: rgba(212, 168, 90, 0.55);
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+}
+
+.briefing-panel__watch {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.briefing-panel__watch li {
+  position: relative;
+  padding: 10px 0 10px 18px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(200, 208, 220, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.briefing-panel__watch li:last-child {
+  border-bottom: none;
+}
+
+.briefing-panel__watch li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dash-gold, #d4a85a);
+  opacity: 0.75;
+}
+
+.briefing-main.is-swapping .briefing-panel__headline,
+.briefing-main.is-swapping .briefing-panel__body {
+  opacity: 0.45;
+  transition: opacity 0.28s ease;
+}
+
+.flagship-lab-note {
+  position: fixed;
+  bottom: 10px;
+  right: 16px;
+  z-index: 100;
+  margin: 0;
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(138, 148, 168, 0.55);
+  pointer-events: none;
+}
+
+@media (max-width: 960px) {
+  .wheel-flagship-lab .briefing-stage {
+    grid-template-columns: 1fr;
+  }
+}

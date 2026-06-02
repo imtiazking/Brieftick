@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>01 · Intelligence Canvas</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/market-intel/_intel-base.css">
+  <style>
+    .canvas-stage { position: relative; height: min(62vh, 520px); border-radius: 14px; border: 1px solid var(--line); background: rgba(0,0,0,0.35); overflow: hidden; }
+  .canvas-stage svg { width: 100%; height: 100%; }
+  .canvas-node { cursor: pointer; transition: opacity 0.35s var(--ease); }
+  .canvas-node text { font-family: var(--body); font-size: 11px; fill: #e8ecf5; pointer-events: none; }
+  .canvas-node .ring { fill: none; stroke-width: 1.5; transition: stroke 0.3s, stroke-width 0.3s; }
+  .canvas-link { stroke: rgba(212,168,90,0.2); stroke-width: 1; fill: none; transition: stroke 0.4s, stroke-width 0.4s; }
+  .canvas-stage[data-focus] .canvas-node { opacity: 0.35; }
+  .canvas-stage[data-focus] .canvas-node.is-on { opacity: 1; }
+  .canvas-stage[data-focus] .canvas-link { opacity: 0.15; }
+  .canvas-stage[data-focus] .canvas-link.is-on { opacity: 1; stroke: var(--gold); stroke-width: 2; }
+  .canvas-detail { margin-top: 16px; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--glass); font-size: 14px; line-height: 1.55; color: #b0b8c8; min-height: 72px; }
+  .canvas-detail strong { color: var(--gold); font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 8px; }
+  .canvas-legend { display: flex; gap: 16px; margin-bottom: 12px; font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .canvas-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <header class="intel-lab"><strong>01 · Intelligence Canvas</strong><a href="/design-lab/market-intel">All concepts</a></header>
+  <section class="intel-hero" id="hero"></section>
+  <main class="intel-main">
+    <div class="canvas-legend">
+      <span><i style="background:var(--gold)"></i> Driver</span>
+      <span><i style="background:#9b7ed9"></i> Sector</span>
+      <span><i style="background:var(--up)"></i> Stock</span>
+    </div>
+    <div class="canvas-stage" id="stage"><svg id="svg" viewBox="0 0 800 400"></svg></div>
+    <div class="canvas-detail" id="detail"><strong>Tap any node</strong> Lines show how a driver reaches sectors and stocks. Motion highlights the path.</div>
+  </main>
+  <p class="intel-note">Design lab · Mock data · Motion explains connections</p>
+  <script type="module">
+    import { SESSION, DRIVERS, mountHero } from "/design-lab/market-intel/_intel-mock.js";
+    mountHero("hero", "Intelligence Canvas");
+    const nodes = [
+      { id: "ai", type: "driver", x: 120, y: 120, label: "AI capex" },
+      { id: "oil", type: "driver", x: 120, y: 280, label: "Oil steady" },
+      { id: "rates", type: "driver", x: 120, y: 200, label: "Rate cuts" },
+      { id: "tech", type: "sector", x: 360, y: 100, label: "Technology" },
+      { id: "energy", type: "sector", x: 360, y: 280, label: "Energy" },
+      { id: "fin", type: "sector", x: 360, y: 190, label: "Financials" },
+      { id: "nvda", type: "stock", x: 620, y: 80, label: "NVDA +1.98%" },
+      { id: "xom", type: "stock", x: 620, y: 260, label: "XOM +1.18%" },
+      { id: "jpm", type: "stock", x: 620, y: 170, label: "JPM −0.41%" },
+    ];
+    const links = [
+      ["ai","tech"],["tech","nvda"],["oil","energy"],["energy","xom"],["rates","fin"],["fin","jpm"],
+    ];
+    const colors = { driver: "#d4a85a", sector: "#9b7ed9", stock: "#3ecf8e" };
+    const svg = document.getElementById("svg");
+    const stage = document.getElementById("stage");
+    const detail = document.getElementById("detail");
+    const linkEls = links.map(([a,b]) => {
+      const na = nodes.find(n => n.id === a), nb = nodes.find(n => n.id === b);
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", na.x); line.setAttribute("y1", na.y);
+      line.setAttribute("x2", nb.x); line.setAttribute("y2", nb.y);
+      line.classList.add("canvas-link");
+      line.dataset.a = a; line.dataset.b = b;
+      svg.appendChild(line);
+      return line;
+    });
+    nodes.forEach(n => {
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.classList.add("canvas-node"); g.dataset.id = n.id;
+      const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      c.setAttribute("cx", n.x); c.setAttribute("cy", n.y); c.setAttribute("r", n.type === "driver" ? 28 : n.type === "sector" ? 24 : 20);
+      c.classList.add("ring"); c.style.stroke = colors[n.type];
+      const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      t.setAttribute("x", n.x); t.setAttribute("y", n.y + (n.type === "stock" ? 38 : 44));
+      t.setAttribute("text-anchor", "middle"); t.textContent = n.label;
+      g.appendChild(c); g.appendChild(t); svg.appendChild(g);
+      g.addEventListener("click", () => focus(n.id));
+    });
+    function focus(id) {
+      const related = new Set([id]);
+      links.forEach(([a,b]) => { if (a===id||b===id) { related.add(a); related.add(b); } });
+      links.forEach(([a,b]) => { if (related.has(a)&&related.has(b)) { related.add(a); related.add(b); } });
+      let changed = true;
+      while (changed) {
+        changed = false;
+        links.forEach(([a,b]) => {
+          if (related.has(a) && !related.has(b)) { related.add(b); changed = true; }
+          if (related.has(b) && !related.has(a)) { related.add(a); changed = true; }
+        });
+      }
+      stage.dataset.focus = "1";
+      document.querySelectorAll(".canvas-node").forEach(g => g.classList.toggle("is-on", related.has(g.dataset.id)));
+      linkEls.forEach((line, i) => {
+        const [a,b] = links[i];
+        line.classList.toggle("is-on", related.has(a) && related.has(b));
+      });
+      const n = nodes.find(x => x.id === id);
+      const d = DRIVERS.find(x => x.id === id) || DRIVERS[0];
+      detail.innerHTML = `<strong>${n.label}</strong>${SESSION.summary} Path lighting shows cause → sector → stock.`;
+    }
+  </script>
+</body>
+</html>

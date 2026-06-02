@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligence Room · Experience Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/experience-lab/_exp-base.css">
+  <style>
+    .room { min-height: 100vh; padding: 56px 0 80px; perspective: 800px; overflow-x: hidden; }
+    .room-scene {
+      max-width: 900px; margin: 0 auto; padding: 0 20px;
+      transform: translateZ(0); transition: transform 0.6s var(--ease);
+    }
+    .room-table {
+      text-align: center; padding: 40px 24px; margin-bottom: 48px;
+      border-radius: 20px; border: 1px solid var(--gold-dim);
+      background: radial-gradient(ellipse at center, rgba(212,168,90,0.1), transparent 70%);
+      animation: tableBreath 6s ease-in-out infinite;
+    }
+    @keyframes tableBreath {
+      0%,100% { box-shadow: 0 0 40px rgba(212,168,90,0.08); }
+      50% { box-shadow: 0 0 80px rgba(212,168,90,0.18); }
+    }
+    .room-table p { font-family: var(--display); font-size: clamp(20px, 4vw, 26px); line-height: 1.4; }
+    .room-walls { display: flex; flex-direction: column; gap: 16px; }
+    .room-wall {
+      padding: 24px; border-radius: 14px; border: 1px solid var(--line);
+      background: rgba(0,0,0,0.4); opacity: 0.35;
+      transition: opacity 0.6s var(--ease), border-color 0.5s, transform 0.6s var(--ease);
+      transform: translateZ(-20px);
+    }
+    .room-wall.is-lit {
+      opacity: 1; border-color: var(--gold-dim);
+      transform: translateZ(0);
+      background: rgba(212,168,90,0.04);
+    }
+    .room-wall label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+    .room-wall h3 { font-size: 18px; margin: 10px 0; }
+    .room-wall .items { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .room-wall button {
+      margin-top: 12px; margin-right: 8px; padding: 8px 14px; border-radius: 8px;
+      border: 1px solid var(--line); background: transparent; color: var(--text); cursor: pointer;
+    }
+    .room-progress {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <header class="exp-chrome"><strong>04 · Intelligence Room</strong><a href="/design-lab/experience-lab">Experience Lab</a></header>
+  <main class="room">
+    <div class="room-scene" id="scene">
+      <div class="room-table">
+        <p>Tech and energy carry the session.</p>
+      </div>
+      <div class="room-walls">
+        <section class="room-wall" data-step="0">
+          <label>Wall 1 · Drivers</label>
+          <h3>What’s driving today</h3>
+          <div class="items">AI spend · Oil steady · Rate-cut bets</div>
+        </section>
+        <section class="room-wall" data-step="1">
+          <label>Wall 2 · Sectors</label>
+          <h3>Who leads</h3>
+          <div class="items">Technology — bright · Energy — firm · Financials — dim</div>
+        </section>
+        <section class="room-wall" data-step="2">
+          <label>Wall 3 · Names</label>
+          <h3>Stocks on the lit sector</h3>
+          <div class="items" id="names"></div>
+        </section>
+      </div>
+    </div>
+    <p class="room-progress" id="progress">Scroll to approach each wall</p>
+  </main>
+  <script type="module">
+    import { BEATS, mountDive, openDive } from "/design-lab/experience-lab/_exp-mock.js";
+    mountDive();
+    const walls = document.querySelectorAll(".room-wall");
+    const names = document.getElementById("names");
+    names.innerHTML = BEATS.flatMap(b => b.stocks.map(s =>
+      `<button type="button" data-sym="${s.sym}">${s.sym} ${s.pct>0?"+":""}${s.pct}%</button>`)).join("");
+    names.querySelectorAll("button").forEach(b => {
+      b.addEventListener("click", () => openDive(b.dataset.sym, b.dataset.sym, "Intelligence Room · Names wall"));
+    });
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add("is-lit");
+          document.getElementById("progress").textContent =
+            `Wall ${+e.target.dataset.step + 1} illuminated`;
+        }
+      });
+    }, { threshold: 0.5 });
+    walls.forEach(w => obs.observe(w));
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      document.getElementById("scene").style.transform =
+        `translateZ(${Math.min(y * 0.05, 40)}px)`;
+    });
+  </script>
+</body>
+</html>

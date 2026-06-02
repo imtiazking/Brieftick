@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligence Stream · Experience Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/experience-lab/_exp-base.css">
+  <style>
+    .str { min-height: 100vh; padding-top: 48px; display: flex; flex-direction: column; }
+    .str-live {
+      display: flex; align-items: center; gap: 8px; padding: 8px 20px;
+      background: rgba(240,113,120,0.15); font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .str-live i {
+      width: 8px; height: 8px; border-radius: 50%; background: #f07178;
+      animation: live 1.2s ease-in-out infinite;
+    }
+    @keyframes live { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .str-main { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px 24px; }
+    .str-anchor { font-family: var(--display); font-size: clamp(22px, 4vw, 32px); line-height: 1.35; max-width: 20ch; margin-bottom: 16px; }
+    .str-lower {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.9); border-top: 1px solid var(--line);
+      padding: 12px 0; overflow: hidden;
+    }
+    .str-crawl {
+      display: flex; white-space: nowrap;
+      animation: crawl 28s linear infinite;
+      font-size: 15px; color: #c5ccd8;
+    }
+    @keyframes crawl {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .str-crawl span { padding-right: 80px; }
+    .str-pip {
+      position: fixed; right: 20px; bottom: 72px; width: 140px; padding: 12px;
+      border-radius: 10px; border: 1px solid var(--gold-dim); background: var(--glass);
+      transform: scale(0.85); opacity: 0.7;
+      transition: transform 0.5s var(--ease), opacity 0.5s, width 0.5s, height 0.5s;
+      cursor: pointer; z-index: 20;
+    }
+    .str-pip.is-segment { width: min(320px, 90vw); right: 50%; transform: translateX(50%) scale(1); opacity: 1; bottom: 100px; }
+    .str-pip kbd { font-family: var(--mono); font-size: 8px; color: var(--gold); }
+    .str-pip p { font-size: 13px; margin-top: 8px; line-height: 1.4; }
+    .str-segments { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+    .str-segments button {
+      padding: 10px 16px; border: 1px solid var(--line); background: transparent;
+      color: var(--text); font-size: 12px; border-radius: 8px; cursor: pointer;
+    }
+  </style>
+</head>
+<body class="str">
+  <header class="exp-chrome"><strong>07 · Intelligence Stream</strong><a href="/design-lab/experience-lab">Experience Lab</a></header>
+  <div class="str-live"><i></i> Session live · Positive</div>
+  <main class="str-main">
+    <p class="str-anchor" id="anchor">Markets higher — AI and energy lead, banks soft.</p>
+    <div class="str-segments" id="segments"></div>
+  </main>
+  <div class="str-pip" id="pip">
+    <kbd>Segment</kbd>
+    <p id="pipText">Tap a segment below</p>
+  </div>
+  <div class="str-lower">
+    <div class="str-crawl" id="crawl"></div>
+  </div>
+  <script type="module">
+    import { SESSION, BEATS, mountDive, openDive } from "/design-lab/experience-lab/_exp-mock.js";
+    mountDive();
+    document.getElementById("anchor").textContent = SESSION.subline.replace("Investors are ", "Markets higher — ").replace("while rate-cut hopes pressure banks.", "banks soft.");
+    const insights = [
+      "Tech leadership driven by AI capex · ",
+      "Energy firms with steady oil · ",
+      "Banks lag on rate-cut expectations · ",
+      "Watch NVDA commentary and Fed speakers · ",
+    ];
+    const text = insights.join("");
+    document.getElementById("crawl").innerHTML =
+      `<span>${text}</span><span>${text}</span>`;
+    const segs = [
+      { name: "Tech", body: BEATS[0].why, sym: "NVDA" },
+      { name: "Energy", body: BEATS[1].why, sym: "XOM" },
+      { name: "Banks", body: BEATS[2].why, sym: "JPM" },
+    ];
+    const pip = document.getElementById("pip");
+    document.getElementById("segments").innerHTML = segs.map((s,i) =>
+      `<button type="button" data-i="${i}">${s.name} segment</button>`).join("");
+    document.getElementById("segments").querySelectorAll("button").forEach(b => {
+      b.addEventListener("click", () => {
+        const s = segs[+b.dataset.i];
+        pip.classList.add("is-segment");
+        document.getElementById("pipText").textContent = s.body;
+        pip.onclick = () => openDive(s.sym, s.sym, `Stream · ${s.name} segment`);
+      });
+    });
+  </script>
+</body>
+</html>

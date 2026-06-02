@@ -1,0 +1,56 @@
+:root {
+  --gold: #d4a85a;
+  --gold-dim: rgba(212, 168, 90, 0.28);
+  --up: #3ecf8e;
+  --dn: #f07178;
+  --mixed: #e8b86a;
+  --void: #020204;
+  --glass: rgba(10, 12, 20, 0.78);
+  --line: rgba(255, 255, 255, 0.08);
+  --text: #e8ecf5;
+  --muted: #8a94a8;
+  --display: "Playfair Display", serif;
+  --body: "Inter Tight", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--body);
+  background: var(--void);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.intel-lab {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  padding: 10px 18px; border-bottom: 1px solid var(--line);
+  background: rgba(2, 2, 4, 0.92); backdrop-filter: blur(14px);
+}
+.intel-lab strong { font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.intel-lab a { font-family: var(--mono); font-size: 8px; color: var(--muted); text-decoration: none; letter-spacing: 0.06em; }
+.intel-lab a:hover { color: var(--gold); }
+.intel-hero {
+  padding: 20px 24px; border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(212, 168, 90, 0.06), transparent);
+}
+.intel-hero h1 { font-family: var(--display); font-size: clamp(20px, 3vw, 26px); font-weight: 500; margin-bottom: 8px; }
+.intel-hero .summary { font-size: 15px; line-height: 1.5; color: #c5ccd8; max-width: 56ch; }
+.intel-hero .meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; align-items: center; }
+.intel-mood {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 99px; border: 1px solid;
+}
+.intel-mood--up { color: var(--up); border-color: rgba(62,207,142,0.4); background: rgba(62,207,142,0.1); }
+.intel-mood--mix { color: var(--mixed); border-color: rgba(232,184,106,0.4); background: rgba(232,184,106,0.08); }
+.intel-watch { font-size: 12px; color: var(--muted); }
+.intel-watch b { color: var(--gold); font-weight: 500; }
+.intel-main { padding: 20px 24px 40px; min-height: 60vh; }
+.intel-note {
+  font-family: var(--mono); font-size: 9px; color: #4a5568; text-align: center; padding: 16px;
+  letter-spacing: 0.06em;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

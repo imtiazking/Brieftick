@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>02 · Market Flow</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/market-intel/_intel-base.css">
+  <style>
+    .flow-pipeline { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding-bottom: 8px; }
+    .flow-step { flex: 1; min-width: 140px; position: relative; padding: 16px 12px; text-align: center; }
+    .flow-step::after {
+      content: ""; position: absolute; right: -1px; top: 50%; width: 24px; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent); transform: translateY(-50%);
+      opacity: 0.4;
+    }
+    .flow-step:last-child::after { display: none; }
+    .flow-step label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 8px; }
+    .flow-step .val { font-size: 14px; font-weight: 500; line-height: 1.35; }
+    .flow-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+    .flow-bar i { display: block; height: 100%; background: var(--gold); width: 0; transition: width 0.8s var(--ease); }
+    .flow-row { margin-bottom: 20px; padding: 18px; border-radius: 14px; border: 1px solid var(--line); background: var(--glass); cursor: pointer; transition: border-color 0.3s; }
+    .flow-row.is-active { border-color: var(--gold-dim); }
+    .flow-row h3 { font-size: 16px; margin-bottom: 12px; }
+    .flow-row.is-active .flow-bar i { width: 100%; }
+  </style>
+</head>
+<body>
+  <header class="intel-lab"><strong>02 · Market Flow</strong><a href="/design-lab/market-intel">All concepts</a></header>
+  <section class="intel-hero" id="hero"></section>
+  <main class="intel-main" id="main"></main>
+  <p class="intel-note">Active row animates the pipeline — cause → sector → stock → reaction</p>
+  <script type="module">
+    import { SESSION, DRIVERS, mountHero } from "/design-lab/market-intel/_intel-mock.js";
+    mountHero("hero", "Market Flow");
+    const main = document.getElementById("main");
+    main.innerHTML = DRIVERS.map((d, i) => `
+      <article class="flow-row${i===0?" is-active":""}" data-i="${i}">
+        <h3>${d.title}</h3>
+        <div class="flow-pipeline">
+          <div class="flow-step"><label>Cause</label><div class="val">${d.cause}</div><div class="flow-bar"><i></i></div></div>
+          <div class="flow-step"><label>Sector</label><div class="val">${d.sector}</div><div class="flow-bar"><i style="transition-delay:.15s"></i></div></div>
+          <div class="flow-step"><label>Stock</label><div class="val">${d.stocks.map(s=>s.sym+" "+(s.pct>0?"+":"")+s.pct+"%").join(", ")}</div><div class="flow-bar"><i style="transition-delay:.3s"></i></div></div>
+          <div class="flow-step"><label>Reaction</label><div class="val">${d.reaction}</div><div class="flow-bar"><i style="transition-delay:.45s"></i></div></div>
+        </div>
+      </article>`).join("");
+    main.querySelectorAll(".flow-row").forEach(row => {
+      row.addEventListener("click", () => {
+        main.querySelectorAll(".flow-row").forEach(r => r.classList.remove("is-active"));
+        row.classList.add("is-active");
+      });
+    });
+  </script>
+</body>
+</html>

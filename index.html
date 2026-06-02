@@ -3470,6 +3470,12 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/dashboard-watchlist-intel.css">
 <link rel="stylesheet" href="/styles/dashboard-connected-markets.css">
 <link rel="stylesheet" href="/styles/dashboard-in-app-wheel.css">
+<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-lab.css">
+<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-briefing.css">
+<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">
+<link rel="stylesheet" href="/styles/whats-moving-briefing.css">
+<script type="module" src="/lib/ticker-deep-dive.bridge.js"></script>
+<script type="module" src="/lib/briefing-wheel.boot.js"></script>
 <script type="module" src="/lib/split-theme.bridge.js"></script>
 <script type="module" src="/lib/split-landing.bridge.js"></script>
 <script type="module" src="/lib/logic-cinematic.bridge.js"></script>
@@ -3579,15 +3585,13 @@ h1,h2,h3{
       <button type="button" class="nav-link" data-route="landing">Home</button>
       <button type="button" class="nav-link app-tab" data-route="dashboard">Dashboard</button>
       <button type="button" class="nav-link app-tab" data-route="why">What's Moving</button>
-      <button type="button" class="nav-link app-tab" data-route="impact">Why Markets Move</button>
-      <button type="button" class="nav-link app-tab" data-route="brief">Daily Brief</button>
       <button type="button" class="nav-link app-tab" data-route="earnings">Earnings</button>
-      <button type="button" class="nav-link app-tab" data-route="portfolio">My Portfolio</button>
+      <button type="button" class="nav-link app-tab" data-route="portfolio">Portfolio</button>
       <button type="button" class="nav-link app-tab" data-route="scanner">Discover Stocks <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <button type="button" class="nav-link app-tab" data-route="insiders">Insider <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <button type="button" class="nav-link app-tab" data-route="options">Options <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button type="button" class="nav-link nav-link--logic app-tab logic-preview-tab" data-route="logic" id="navLogicTab" style="display:none">Logic</button>
       <button type="button" class="nav-link" data-route="pricing">Pricing</button>
-      <button type="button" class="nav-link nav-link--logic app-tab logic-preview-tab" data-route="logic" id="navLogicTab" style="display:none">Ask Logic <span class="nav-preview-pill" id="logicPreviewPill">Preview</span></button>
       <button type="button" class="nav-link" data-route="about">About</button>
     </div>
   </div>
@@ -4094,185 +4098,68 @@ h1,h2,h3{
 </section>
 
 <!-- ============================================================
-     WHY IS IT MOVING
+     WHAT'S MOVING — Briefing Wheel (route: why)
 ============================================================ -->
 <section class="page" id="page-why">
-  <div class="wim">
-    <div class="dash-header" style="margin-bottom:20px">
+  <div class="whats-moving-briefing wheel-briefing-lab wheel-flagship-lab">
+    <header class="wm-briefing-header">
       <div class="dash-title">
-        <h2>Why Is It Moving<span style="color:var(--gold)">?</span></h2>
-        <div class="meta">Search any ticker to see what's driving today's move — chart, drivers, reactions and patterns.</div>
+        <h2>What's Moving</h2>
+        <p class="meta" id="wheelLabSubtitle">Today's market briefing · drag the wheel or use arrow keys</p>
       </div>
-      <div class="dash-controls">
-        <div class="regime-badge">Confidence Engine v3.4</div>
-      </div>
-    </div>
-
-    <div class="wim-search">
-      <div style="display:flex;align-items:center;gap:10px;flex:1;padding:0 4px">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#8b94a8" stroke-width="1.5"/><path d="M11 11 L14 14" stroke="#8b94a8" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <input id="wimInput" type="text" placeholder="Search ticker, company or theme…" value="NVDA">
-      </div>
-      <div class="wim-quick">
-        <button class="chip active" onclick="loadWimWithLimit('NVDA')">NVDA</button>
-        <button class="chip" onclick="loadWimWithLimit('TSLA')">TSLA</button>
-        <button class="chip" onclick="loadWimWithLimit('AAPL')">AAPL</button>
-        <button class="chip" onclick="loadWimWithLimit('META')">META</button>
-        <button class="chip" onclick="loadWimWithLimit('GOOGL')">GOOGL</button>
-        <button class="chip" onclick="loadWimWithLimit('AMD')">AMD</button>
-        <button class="chip" onclick="loadWimWithLimit('MSFT')">MSFT</button>
-        <button class="chip" onclick="loadWimWithLimit('AMZN')">AMZN</button>
-        <button class="chip" onclick="loadWimWithLimit('NFLX')">NFLX</button>
-        <button class="chip" onclick="loadWimWithLimit('SNDK')">SNDK</button>
-        <button class="chip" onclick="loadWimWithLimit('SPY')">SPY</button>
-      </div>
-    </div>
-
-    <div class="wim-hero">
-      <div class="wim-quote-panel">
-        <div class="wim-sym-row">
-          <div class="left">
-            <div class="sym" id="wimSym">NVDA</div>
-            <div class="name" id="wimName">NVIDIA CORP · NASDAQ</div>
+    </header>
+    <div class="briefing-scene briefing-scene--flagship">
+      <header class="wheel-pulse-strip" id="wheelPulseStrip"></header>
+      <div class="briefing-stage" id="briefingStage">
+        <aside class="briefing-rail" aria-label="Briefing intelligence rail">
+          <p class="briefing-rail__title">Briefing wheel</p>
+          <div class="briefing-rail__wheel">
+            <div class="intel-wheel__viewport intel-wheel__viewport--vertical" id="whmWheelViewport" tabindex="0" aria-label="Briefing wheel"></div>
           </div>
-          <div class="right">
-            <div class="price" id="wimPrice">-</div>
-            <div class="chg" id="wimChg" style="color:var(--ink-faint)">Loading…</div>
-            <div id="wimPriceSource" style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.08em;margin-top:4px"></div>
+          <div class="briefing-snapshot" aria-label="Market snapshot">
+            <h2 class="briefing-snapshot__title">Market Snapshot</h2>
+            <ul class="briefing-snapshot__grid">
+              <li class="briefing-snapshot__row">
+                <span class="briefing-snapshot__name">S&amp;P 500</span>
+                <span class="briefing-snapshot__level">5,842.18</span>
+                <span class="briefing-snapshot__chg is-up">+0.62%</span>
+              </li>
+              <li class="briefing-snapshot__row">
+                <span class="briefing-snapshot__name">Nasdaq</span>
+                <span class="briefing-snapshot__level">18,412.44</span>
+                <span class="briefing-snapshot__chg is-up">+0.89%</span>
+              </li>
+              <li class="briefing-snapshot__row">
+                <span class="briefing-snapshot__name">Dow</span>
+                <span class="briefing-snapshot__level">42,156.70</span>
+                <span class="briefing-snapshot__chg is-up">+0.41%</span>
+              </li>
+              <li class="briefing-snapshot__row">
+                <span class="briefing-snapshot__name">VIX</span>
+                <span class="briefing-snapshot__level">14.82</span>
+                <span class="briefing-snapshot__chg is-dn">−3.2%</span>
+              </li>
+              <li class="briefing-snapshot__row">
+                <span class="briefing-snapshot__name">Oil (WTI)</span>
+                <span class="briefing-snapshot__level">$78.40</span>
+                <span class="briefing-snapshot__chg is-up">+0.8%</span>
+              </li>
+              <li class="briefing-snapshot__row">
+                <span class="briefing-snapshot__name">10Y Yield</span>
+                <span class="briefing-snapshot__level">4.28%</span>
+                <span class="briefing-snapshot__chg is-up">+2 bp</span>
+              </li>
+            </ul>
           </div>
-        </div>
-        <div class="hv-chart" id="wimChart" style="height:140px;margin-bottom:16px"></div>
-        <div class="wim-stats">
-          <div class="wim-stat"><div class="lbl">Volume</div><div class="val">62.4M</div></div>
-          <div class="wim-stat"><div class="lbl">RVol</div><div class="val">1.84×</div></div>
-          <div class="wim-stat"><div class="lbl">IV</div><div class="val">42.6%</div></div>
-          <div class="wim-stat"><div class="lbl">RSI(14)</div><div class="val">38.2</div></div>
-        </div>
-      </div>
-
-      <div class="wim-ai-card">
-        <div class="wim-ai-head">
-          <div class="lbl">Brieftick · Plain-English Summary</div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="ai-gen-btn" onclick="generateLiveAISummary()" id="aiGenBtn">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="vertical-align:-1px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg>
-              Generate live
-            </button>
-            <div class="wim-conf">CONFIDENCE <b>87%</b></div>
-          </div>
-        </div>
-        <div class="wim-ai-text" id="wimSummary">
-          NVDA is selling off today primarily on <b>renewed concern around AI capex sustainability</b>. A <b>major hyperscaler signalled a pause</b> in next-quarter datacentre orders, which the market read as a leading indicator for the broader AI-infrastructure complex. Compounding this, <b>10Y yields ticked back above 4.42%</b>, increasing duration pressure on long-duration growth names. Sector-wide weakness is showing classic reaction-chain patterns. Historically, similar setups have led to <b>−4 to −7% drawdowns over 5 sessions</b> before stabilising - though outcomes vary materially with macro tone.
-        </div>
+        </aside>
+        <div class="briefing-main" id="whmWheelEngine" aria-live="polite"></div>
       </div>
     </div>
-
-    <div class="wim-grid">
-      <div class="reasons">
-        <h3>Movement Decomposition</h3>
-        <div id="wimReasons"></div>
-      </div>
-
-      <div class="contagion">
-        <h3>Market Reaction Map</h3>
-        <div class="contagion-wrap">
-          <div class="contagion-trail" id="contagionTrail"></div>
-          <div class="reaction-map-body">
-            <svg class="contagion-svg" viewBox="0 0 480 380" id="contagionSvg" role="img" aria-label="Market Reaction Map"></svg>
-            <div class="reaction-detail" id="reactionDetail">
-              <div class="reaction-detail-kicker">Reaction intelligence</div>
-              <div class="reaction-detail-title">Hover a node</div>
-              <div class="reaction-detail-copy">Move across a ticker to see why it may react to the source. Click a node to re-center the map and follow the market ripple.</div>
-              <span class="reaction-chip neu">Exploratory</span>
-              <div class="reaction-detail-grid">
-                <div class="reaction-metric"><div class="lbl">Impact</div><div class="val">-</div></div>
-                <div class="reaction-metric"><div class="lbl">Confidence</div><div class="val">-</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="contagion-legend">
-            <span><i style="background:var(--red)"></i> Negative impact</span>
-            <span><i style="background:var(--amber)"></i> Mixed</span>
-            <span><i style="background:var(--green)"></i> Positive impact</span>
-            <span class="contagion-hint">Hover for context · click to re-center</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="wim-grid">
-      <div class="history">
-        <h3>Historical Pattern Comparisons</h3>
-        <div class="history-wrap" id="wimHistory"></div>
-      </div>
-
-      <div class="pos">
-        <h3>Market Positioning</h3>
-        <div class="pos-card">
-          <div class="pos-bar">
-            <div class="top"><span>Institutional positioning</span><b>72nd percentile</b></div>
-            <div class="pos-track"><div class="pos-fill" style="width:72%"></div></div>
-          </div>
-          <div class="pos-bar">
-            <div class="top"><span>Retail sentiment</span><b>Bullish · cooling</b></div>
-            <div class="pos-track"><div class="pos-fill blue" style="width:58%"></div></div>
-          </div>
-          <div class="pos-bar">
-            <div class="top"><span>Short interest</span><b>1.8% · low</b></div>
-            <div class="pos-track"><div class="pos-fill" style="width:18%"></div></div>
-          </div>
-          <div class="pos-bar">
-            <div class="top"><span>Implied volatility (rank)</span><b>76th pct · elevated</b></div>
-            <div class="pos-track"><div class="pos-fill red" style="width:76%"></div></div>
-          </div>
-          <div class="pos-bar">
-            <div class="top"><span>Options skew</span><b>Put-skewed</b></div>
-            <div class="pos-track"><div class="pos-fill red" style="width:64%"></div></div>
-          </div>
-
-          <div style="margin-top:18px;padding:14px;border-radius:8px;background:rgba(255,91,110,0.05);border:1px solid rgba(255,91,110,0.2);font-size:12px;line-height:1.55;color:var(--ink-dim)">
-            <b style="color:var(--red)">Volatility implication:</b> realised vol is rising faster than implied - historically a precursor to wider intraday ranges over the next 3–5 sessions.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:20px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
-      <b style="color:var(--gold)">EDUCATIONAL CONTEXT ONLY.</b> BriefTick provides analytical decomposition of historical and current market data. Nothing on this page constitutes investment advice or a recommendation to buy, sell or hold any security. Confidence scores reflect model agreement, not predictive accuracy.
-    </div>
+    <p class="wm-briefing-foot"><b style="color:var(--gold)">EDUCATIONAL ONLY.</b> Mock briefing data until live feed is wired. Tap a stock for Ticker Deep Dive. Not investment advice.</p>
   </div>
 </section>
 
-<!-- ============================================================
-     AI BRIEFING
-============================================================ -->
-<section class="page" id="page-brief">
-  <div class="brief">
-    <div class="brief-cover">
-      <div class="brief-cover-inner">
-        <div class="brief-eyebrow"><span class="pulse"></span> <span id="briefEyebrow">Daily Brief · Loading…</span></div>
-        <h1 id="briefHeadline">Daily <em>Brief</em>, loading today's data…</h1>
-        <div class="brief-meta">
-          <span><b>Date</b> · <span id="briefDate">–</span></span>
-          <span><b>Author</b> · Brieftick</span>
-        </div>
-        <div style="margin-top:24px">
-          <button class="ai-gen-btn ai-gen-btn-large" onclick="generateLiveBriefing()" id="briefGenBtn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:6px"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/></svg>
-            Generate fresh briefing from live data
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Live briefing output fills the full page below the cover -->
-    <div id="liveBriefingOutput" style="margin-top:0"></div>
-
-    <div style="margin-top:20px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
-      <b style="color:var(--gold)">EDUCATIONAL ONLY.</b> The daily briefing is auto-generated by Brieftick from live market data, news flow and sentiment indicators. It is not investment advice and contains no recommendations. Always do your own research.
-    </div>
-  </div>
-</section>
+<!-- Daily Brief (brief) and Why Markets Move (impact) retired — route() redirects both to What's Moving (why). -->
 
 <!-- ============================================================
      EARNINGS INTELLIGENCE
@@ -4555,37 +4442,7 @@ h1,h2,h3{
   </div>
 </section>
 
-<!-- ============================================================
-     IMPACT FEED
-============================================================ -->
-<section class="page" id="page-impact">
-  <div class="impact">
-    <div class="dash-header" style="margin-bottom:20px">
-      <div class="dash-title">
-        <h2>Why Markets Move</h2>
-        <div class="meta" id="impactMeta">News, Fed, inflation, oil, AI, geopolitics — and how they move markets</div>
-      </div>
-      <div class="dash-controls">
-        <div class="live-badge" id="impactLiveBadge">Live · Finnhub</div>
-      </div>
-    </div>
-
-    <div class="impact-filters">
-      <button class="chip active" data-impact-filter="all">All events</button>
-      <button class="chip" data-impact-filter="centralbank">Central Bank</button>
-      <button class="chip" data-impact-filter="macro">Macro data</button>
-      <button class="chip" data-impact-filter="geopolitical">Geopolitical</button>
-      <button class="chip" data-impact-filter="earnings">Earnings</button>
-      <button class="chip" data-impact-filter="regulatory">Regulatory</button>
-    </div>
-
-    <div class="impact-list" id="impactList"></div>
-
-    <div style="margin-top:24px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
-      <b style="color:var(--gold)">NEUTRALITY NOTE.</b> BriefTick analyses market impact only. Political figures, government officials, CEOs and central bankers are monitored exclusively because their public statements have historically demonstrated measurable, reproducible effects on asset prices, sector rotations and cross-asset correlations. Posts are characterised by their statistical effect on markets - never by political stance, party affiliation, or policy preference. We monitor commentary across the political spectrum and across jurisdictions with the same neutral analytical framework.
-    </div>
-  </div>
-</section>
+<!-- Why Markets Move (impact) tab retired — route('impact') redirects to What's Moving (why); feed helpers kept for dashboard risk regime. -->
 
 <!-- ============================================================
      PORTFOLIO INTELLIGENCE
@@ -4855,8 +4712,8 @@ h1,h2,h3{
           <tr><td class="ct-feature">Earnings Calendar</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Earnings impact intelligence</td></tr>
           <tr><td class="ct-feature">Ask Logic</td><td>Ask Logic preview (5 daily questions)</td><td class="ct-terminal">Unlimited Ask Logic</td></tr>
           <tr><td class="ct-feature">Why Is It Moving?</td><td>Daily limited explanations</td><td class="ct-terminal">Unlimited deep analysis</td></tr>
-          <tr><td class="ct-feature">Daily Brief</td><td>Daily standard brief</td><td class="ct-terminal">Real-time brief stream</td></tr>
-          <tr><td class="ct-feature">Why Markets Move</td><td>Delayed event feed</td><td class="ct-terminal">Live event feed</td></tr>
+          <tr><td class="ct-feature">What's Moving briefing</td><td>Daily briefing wheel</td><td class="ct-terminal">Full briefing · all segments</td></tr>
+          <tr><td class="ct-feature">Market event context</td><td colspan="2">Included in What's Moving · Dashboard news panels</td></tr>
           <tr><td class="ct-feature">Discover Stocks</td><td>Lite discovery</td><td class="ct-terminal">Advanced multi-sector discovery</td></tr>
           <tr><td class="ct-feature">My Portfolio</td><td>Basic portfolio view</td><td class="ct-terminal">Full portfolio insights</td></tr>
           <tr><td class="ct-feature">Market Relationships</td><td>Preview access</td><td class="ct-terminal">Full correlation cluster</td></tr>
@@ -5638,6 +5495,7 @@ const BTRuntime = (() => {
    ROUTING
 ============================================================ */
 function route(name){
+  if (name === 'impact' || name === 'brief') name = 'why';
   window._activeRoute = name;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const target=document.getElementById('page-'+name);
@@ -5650,9 +5508,66 @@ function route(name){
   if(name === 'portfolio' && typeof refreshPortfolioAnalysis === 'function'){
     setTimeout(()=>refreshPortfolioAnalysis(null, false), 0);
   }
+  if(name === 'why' && typeof window.mountWhatsMovingBriefing === 'function'){
+    requestAnimationFrame(()=>window.mountWhatsMovingBriefing());
+  }
   window.scrollTo({top:0,behavior:'instant'});
   if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
 }
+
+/* Route with auth — must be defined before nav listeners attach */
+const _PUBLIC_TABS = new Set(['landing', 'pricing', 'about']);
+
+function isLogicPreviewActive() {
+  const p = new URLSearchParams(location.search).get('preview');
+  return (
+    window.__LOGIC_PREVIEW === true ||
+    window.__AGENT_PREVIEW === true ||
+    p === 'logic' ||
+    p === 'agent'
+  );
+}
+
+function isDashboardPreviewActive() {
+  const p = new URLSearchParams(location.search).get('preview');
+  return (
+    window.__DASHBOARD_PREVIEW === true ||
+    p === 'dashboard' ||
+    /(?:^|\/)dashboard-preview(?:\.html)?\/?$/i.test(location.pathname)
+  );
+}
+
+function routeWithAuth(name) {
+  if (_PUBLIC_TABS.has(name)) {
+    window.route(name);
+    return;
+  }
+  if (name === 'logic' && (isLogicPreviewActive() || typeof _clerkUser !== 'undefined' && _clerkUser)) {
+    window.route(name);
+    return;
+  }
+  if (name === 'agent' && isLogicPreviewActive()) {
+    window.route('logic');
+    return;
+  }
+  if (name === 'dashboard') {
+    if (typeof window.btRedirectToWheelDashboard === 'function' && window.btRedirectToWheelDashboard()) {
+      return;
+    }
+    if (isDashboardPreviewActive() || (typeof _clerkUser !== 'undefined' && _clerkUser)) {
+      window.route(name);
+      return;
+    }
+  }
+  if (typeof _clerkUser === 'undefined' || !_clerkUser) {
+    try { sessionStorage.setItem('bt_nav_intent', name); } catch (_) {}
+    window.Clerk?.openSignUp();
+    return;
+  }
+  window.route(name);
+}
+window.routeWithAuth = routeWithAuth;
+
 document.querySelectorAll('.nav-link').forEach(l=>{
   l.addEventListener('click',()=>routeWithAuth(l.dataset.route));
 });
@@ -5707,9 +5622,9 @@ const featureData=[
 ];
 window.BT_FEATURE_DATA = featureData;
 const featureRoutes = {
-  'Market Radar':'dashboard','Daily Brief':'brief','Why Is It Moving?':'why',
-  'My Portfolio':'portfolio','Why Markets Move':'impact',
-  'Live market events':'impact','Correlation Engine':'portfolio',
+  'Market Radar':'dashboard','Daily Brief':'why','Why Is It Moving?':'why',
+  'My Portfolio':'portfolio','Why Markets Move':'why',
+  'Live market events':'why','Correlation Engine':'portfolio',
   'Smart Alerts':'dashboard','Sector Rotation':'dashboard',
   'Discover Stocks':'scanner','Insider &amp; Political Trades':'insiders',
   'Options Flow':'options',
@@ -6419,20 +6334,7 @@ function resetWatchlist(){
 function openWhyFromWatchlist(symbol){
   const sym = cleanTickerSymbol(symbol);
   if(!sym) return;
-  route('why');
-  requestAnimationFrame(()=>{
-    if(wimDB[sym]) {
-      loadWim(sym);
-    } else {
-      loadWim('NVDA');
-      document.getElementById('wimSym').textContent = sym;
-      document.getElementById('wimName').textContent = (watchlistNames[sym] || sym) + ' · live data on generate';
-      document.getElementById('wimInput').value = sym;
-      document.querySelectorAll('.wim-quick .chip').forEach(c=>c.classList.remove('active'));
-      const out = document.getElementById('wimSummary');
-      if(out) out.innerHTML = '<p style="color:var(--gold);font-size:13px">Ticker set to <b>'+escapeHtml(sym)+'</b>. Click <b>Generate live</b> to pull market data, headlines and AI context.</p>';
-    }
-  });
+  loadWim(sym);
 }
 renderWatchlist();
 const watchlistInputEl = document.getElementById('watchlistInput');
@@ -7106,28 +7008,12 @@ document.getElementById('guidList').innerHTML=guidanceData.map(([s,head,det,from
 
 /* ---------- Initialise on first visit ---------- */
 let earnInit=false;
-let impactInit=false;
-let briefInit=false;
 document.querySelectorAll('.nav-link').forEach(l=>{
   l.addEventListener('click',()=>{
     if(l.dataset.route==='earnings' && !earnInit){
       earnInit=true;
       // Defer to let the page render first, then attempt live data
       setTimeout(()=>{ liveRefreshEarnings(); }, 400);
-    }
-    if(l.dataset.route==='impact' && !impactInit){
-      impactInit=true;
-      setTimeout(()=>{
-        if(typeof liveRefreshImpactFeed === 'function') liveRefreshImpactFeed();
-      }, 400);
-    }
-    if(l.dataset.route==='brief'){
-      // Always update the date; auto-generate only on first open
-      _briefSetCoverDate();
-      if(!briefInit){
-        briefInit=true;
-        setTimeout(()=>generateLiveBriefing(), 300);
-      }
     }
   });
 });
@@ -9793,6 +9679,13 @@ const wimDB={
 
 const wimReasonsEl=document.getElementById('wimReasons');
 function loadWim(sym){
+  const s = String(sym || 'NVDA').toUpperCase().trim();
+  route('why');
+  if (typeof window.mountWhatsMovingBriefing === 'function') window.mountWhatsMovingBriefing();
+  if (typeof window.openTickerDeepDive === 'function') {
+    window.openTickerDeepDive({ symbol: s, source: 'movers', tab: 'overview' });
+    return;
+  }
   document.querySelectorAll('.wim-quick .chip').forEach(c=>c.classList.toggle('active',c.textContent===sym));
   document.getElementById('wimInput').value=sym;
   const d=wimDB[sym]||wimDB['NVDA'];
@@ -10633,41 +10526,35 @@ function _installContagionCursorPhysics(peerCount, cx, cy){
   _cgPhysicsRAF = requestAnimationFrame(frame);
 }
 
-document.getElementById('wimInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    const v=resolveTickerInput(e.target.value);
-    if(!v) return;
-    if(wimDB[v]) {
-      loadWim(v);
-    } else {
-      // Unknown ticker - load NVDA template but update the visible symbol
-      // so AI generation picks it up. Real data fetched on Generate click.
-      loadWim('NVDA');
-      document.getElementById('wimSym').textContent = v;
-      document.getElementById('wimName').textContent = v + ' · live data on generate';
-      document.getElementById('wimInput').value = v;
-      document.querySelectorAll('.wim-quick .chip').forEach(c=>c.classList.remove('active'));
-      // Hint user to click Generate
-      const out = document.getElementById('wimSummary');
-      if(out) out.innerHTML = '<p style="color:var(--gold);font-size:13px">Ticker set to <b>'+v+'</b>. Click <b>Regenerate</b> below to pull live data and run AI analysis.</p>';
-    }
-  }
-});
+(function bindLegacyWimInput() {
+  const wimInputEl = document.getElementById('wimInput');
+  if (!wimInputEl) return;
+  wimInputEl.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const v = resolveTickerInput(e.target.value);
+    if (!v) return;
+    loadWim(v);
+  });
+})();
 
 /* Initialise WIM when page first opened */
-let wimInit=false;
+let whyBriefingInit=false;
 document.querySelectorAll('.nav-link').forEach(l=>{
   l.addEventListener('click',()=>{
-    if(l.dataset.route==='why' && !wimInit){
-      requestAnimationFrame(()=>{ loadWim('NVDA'); wimInit=true; });
+    if(l.dataset.route==='why' && !whyBriefingInit){
+      whyBriefingInit=true;
+      requestAnimationFrame(()=>{
+        if(typeof window.mountWhatsMovingBriefing==='function') window.mountWhatsMovingBriefing();
+      });
     }
   });
 });
 
 /* ============================================================
-   IMPACT FEED
+   IMPACT FEED (retired tab — helpers kept for dashboard risk regime)
+   route('impact') → What's Moving (why). No #page-impact / #impactList UI.
 ============================================================ */
-/* Impact Feed - initial mock paint, then live Finnhub overrides on page open */
+/* Impact Feed - initial mock severity seed for risk regime; live Finnhub via liveRefreshImpactFeed */
 const impactData=[
   ['15:42','3m ago','high','9.2','SEV','Hyperscaler signals AI capex pause for Q3','Major cloud provider commentary suggests reduced datacentre order velocity into next quarter. Read-across to broader AI infrastructure complex; affects semiconductor demand assumptions and long-duration growth multiples.',
    [['NVDA','dn'],['AMD','dn'],['AVGO','dn'],['MU','dn'],['SOXX','dn'],['QQQ','dn']]],
@@ -10710,7 +10597,6 @@ function renderImpactFeed(items){
     el.addEventListener('click', ()=>window.open(el.dataset.url,'_blank','noopener'));
   });
 }
-renderImpactFeed(impactData);
 
 /* Heuristic severity score: high-impact keywords get bumped up.
    Returns [sev_class, score_string]. Honest signal: real news, heuristic ranking. */
@@ -12007,9 +11893,7 @@ async function _onAuthChange(user) {
       fpl.innerHTML = `
         <li class="live-item" onclick="routeWithAuth('dashboard')">Dashboard</li>
         <li onclick="routeWithAuth('why')">What's Moving</li>
-        <li onclick="routeWithAuth('brief')">Daily Brief</li>
         <li onclick="routeWithAuth('earnings')">Earnings</li>
-        <li onclick="routeWithAuth('impact')">Why Markets Move</li>
         <li onclick="routeWithAuth('portfolio')">My Portfolio</li>
         <li onclick="routeWithAuth('scanner')">Discover Stocks</li>
       `;
@@ -12405,72 +12289,6 @@ window.addEventListener('load', () => {
 // Global auth helpers (also used before Clerk loads)
 window.clerkSignIn  = () => window.Clerk?.openSignIn();
 window.clerkSignUp  = () => window.Clerk?.openSignUp();
-
-/* ================================================================
-   ROUTE WITH AUTH — public route gate
-   Public tabs: landing, pricing, about (no sign-in needed)
-   Protected tabs: everything else — require Clerk account
-================================================================ */
-const _PUBLIC_TABS = new Set(['landing', 'pricing', 'about']);
-
-function isLogicPreviewActive() {
-  const p = new URLSearchParams(location.search).get('preview');
-  return (
-    window.__LOGIC_PREVIEW === true ||
-    window.__AGENT_PREVIEW === true ||
-    p === 'logic' ||
-    p === 'agent'
-  );
-}
-
-function isDashboardPreviewActive() {
-  const p = new URLSearchParams(location.search).get('preview');
-  return (
-    window.__DASHBOARD_PREVIEW === true ||
-    p === 'dashboard' ||
-    /(?:^|\/)dashboard-preview(?:\.html)?\/?$/i.test(location.pathname)
-  );
-}
-
-function routeWithAuth(name) {
-  // Public tabs always accessible
-  if (_PUBLIC_TABS.has(name)) {
-    window.route(name);
-    return;
-  }
-
-  // Logic — preview without sign-in, or signed-in Free / Terminal
-  if (name === 'logic' && (isLogicPreviewActive() || _clerkUser)) {
-    window.route(name);
-    return;
-  }
-  if (name === 'agent' && isLogicPreviewActive()) {
-    window.route('logic');
-    return;
-  }
-
-  // Dashboard — ?preview=dashboard only → optional standalone wheel at /dashboard-preview
-  if (name === 'dashboard') {
-    if (typeof window.btRedirectToWheelDashboard === 'function' && window.btRedirectToWheelDashboard()) {
-      return;
-    }
-    if (isDashboardPreviewActive() || _clerkUser) {
-      window.route(name);
-      return;
-    }
-  }
-
-  // Protected tab — require sign-in
-  if (!_clerkUser) {
-    try { sessionStorage.setItem('bt_nav_intent', name); } catch(_) {}
-    window.Clerk?.openSignUp();
-    return;
-  }
-
-  // Signed in — navigate normally
-  window.route(name);
-}
-window.routeWithAuth = routeWithAuth;
 
 // On page load: if public user somehow lands on a protected tab, redirect to landing
 window.addEventListener('load', () => {

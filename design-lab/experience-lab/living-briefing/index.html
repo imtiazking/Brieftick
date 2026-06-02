@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Living Briefing · Experience Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/experience-lab/_exp-base.css">
+  <style>
+    .lb { padding: 72px 24px 48px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    .lb h1 { font-family: var(--display); font-size: clamp(28px, 6vw, 44px); text-align: center; max-width: 14ch; line-height: 1.2; margin-bottom: 20px; }
+    .lb .type { font-size: clamp(16px, 3vw, 20px); color: #b0b8c8; text-align: center; max-width: 36ch; line-height: 1.5; min-height: 3em; }
+    .lb .type::after { content: "|"; animation: blink 1s step-end infinite; color: var(--gold); }
+  .lb .type.done::after { display: none; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .mood-track { width: min(320px, 90vw); height: 6px; background: rgba(255,255,255,0.08); border-radius: 99px; margin: 32px 0; position: relative; }
+    .mood-thumb {
+      position: absolute; top: 50%; width: 14px; height: 14px; border-radius: 50%;
+      background: var(--up); box-shadow: 0 0 12px var(--up);
+      transform: translate(-50%, -50%); left: 72%;
+      transition: left 1.2s var(--ease);
+    }
+    .mood-labels { display: flex; justify-content: space-between; width: min(320px, 90vw); font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .lb-beats { width: min(480px, 100%); margin-top: 40px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+    .lb-beats.is-visible { opacity: 1; transform: none; }
+    .lb-continue {
+      margin-top: 28px; padding: 14px 28px; border-radius: 99px; border: 1px solid var(--gold-dim);
+      background: transparent; color: var(--gold); font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+    }
+    .lb-beat {
+      padding: 20px 0; border-bottom: 1px solid var(--line);
+      cursor: pointer; transition: padding-left 0.35s var(--ease);
+    }
+    .lb-beat:hover { padding-left: 8px; }
+    .lb-beat strong { display: block; font-size: 18px; margin-bottom: 6px; }
+    .lb-beat span { font-size: 14px; color: var(--muted); }
+    .lb-stocks { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; max-height: 0; overflow: hidden; transition: max-height 0.45s var(--ease); }
+    .lb-beat.is-open .lb-stocks { max-height: 80px; }
+    .lb-stocks button {
+      padding: 8px 14px; border-radius: 99px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04); color: var(--text); font-size: 13px; cursor: pointer;
+    }
+    .lb-sweep {
+      position: fixed; inset: 0; pointer-events: none;
+      background: linear-gradient(105deg, transparent 40%, rgba(212,168,90,0.06) 50%, transparent 60%);
+      transform: translateX(-100%); animation: sweep 8s ease-in-out infinite;
+    }
+    @keyframes sweep { 0%,100% { transform: translateX(-100%); } 50% { transform: translateX(100%); } }
+  </style>
+</head>
+<body>
+  <div class="lb-sweep" aria-hidden="true"></div>
+  <header class="exp-chrome"><strong>01 · Living Briefing</strong><a href="/design-lab/experience-lab">Experience Lab</a></header>
+  <main class="lb">
+    <h1 id="headline"></h1>
+    <p class="type" id="type"></p>
+    <div class="mood-track"><div class="mood-thumb" id="thumb"></div></div>
+    <div class="mood-labels"><span>Negative</span><span>Mixed</span><span>Positive</span></div>
+    <button type="button" class="lb-continue" id="continue">Continue briefing</button>
+    <div class="lb-beats" id="beats"></div>
+  </main>
+  <script type="module">
+    import { SESSION, BEATS, mountDive, openDive } from "/design-lab/experience-lab/_exp-mock.js";
+    mountDive();
+    document.getElementById("headline").textContent = SESSION.headline;
+    const typeEl = document.getElementById("type");
+    const text = SESSION.subline;
+    let i = 0;
+    const typeTimer = setInterval(() => {
+      typeEl.textContent = text.slice(0, ++i);
+      if (i >= text.length) { clearInterval(typeTimer); typeEl.classList.add("done"); }
+    }, 28);
+    document.getElementById("continue").addEventListener("click", () => {
+      const beats = document.getElementById("beats");
+      beats.classList.add("is-visible");
+      beats.innerHTML = BEATS.map(b => `
+        <div class="lb-beat" data-id="${b.id}">
+          <strong>${b.verb}</strong><span>${b.why}</span>
+          <div class="lb-stocks">${b.stocks.map(s =>
+            `<button type="button" data-sym="${s.sym}" data-name="${s.sym}">${s.sym} · ${s.role}</button>`).join("")}</div>
+        </div>`).join("");
+      beats.querySelectorAll(".lb-beat").forEach(row => {
+        row.addEventListener("click", (e) => {
+          if (e.target.closest("button")) return;
+          row.classList.toggle("is-open");
+        });
+      });
+      beats.querySelectorAll(".lb-stocks button").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openDive(btn.dataset.sym, btn.dataset.sym, `From briefing beat: ${rowText(btn)}`);
+        });
+      });
+      document.getElementById("continue").style.display = "none";
+    });
+    function rowText(btn) {
+      return btn.closest(".lb-beat").querySelector("strong").textContent;
+    }
+  </script>
+</body>
+</html>

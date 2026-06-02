@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>08 · Intelligence Layers</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/market-intel/_intel-base.css">
+  <style>
+    .lay-stack { display: flex; flex-direction: column; gap: 10px; }
+    .lay-band {
+      padding: 18px 20px; border-radius: 12px; border: 1px solid var(--line);
+      background: var(--glass); cursor: pointer;
+      transition: transform 0.5s var(--ease), opacity 0.45s, border-color 0.3s, padding 0.5s var(--ease);
+    }
+    .lay-band label {
+      font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 8px;
+    }
+    .lay-band h3 { font-size: 17px; margin-bottom: 6px; }
+    .lay-band p { font-size: 14px; color: var(--muted); line-height: 1.45; }
+    .lay-band .items { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .lay-band .items span { font-size: 13px; padding: 6px 12px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+    .lay-stack[data-focus="macro"] .lay-band[data-layer="sector"],
+    .lay-stack[data-focus="macro"] .lay-band[data-layer="stock"] { opacity: 0.45; transform: scale(0.98); }
+    .lay-stack[data-focus="sector"] .lay-band[data-layer="macro"],
+    .lay-stack[data-focus="sector"] .lay-band[data-layer="stock"] { opacity: 0.45; transform: scale(0.98); }
+    .lay-stack[data-focus="stock"] .lay-band[data-layer="macro"],
+    .lay-stack[data-focus="stock"] .lay-band[data-layer="sector"] { opacity: 0.45; transform: scale(0.98); }
+    .lay-band.is-focused {
+      border-color: var(--gold-dim);
+      transform: scale(1.02);
+      opacity: 1 !important;
+      padding: 24px 22px;
+    }
+    .lay-zoom-hint { font-family: var(--mono); font-size: 9px; color: #5a6070; margin-bottom: 12px; letter-spacing: 0.08em; }
+  </style>
+</head>
+<body>
+  <header class="intel-lab"><strong>08 · Intelligence Layers</strong><a href="/design-lab/market-intel">All concepts</a></header>
+  <section class="intel-hero" id="hero"></section>
+  <main class="intel-main">
+    <p class="lay-zoom-hint">All layers visible · Tap to zoom focus without leaving the screen</p>
+    <div class="lay-stack" id="stack" data-focus="">
+      <div class="lay-band is-focused" data-layer="macro">
+        <label>Layer 1 · Macro</label>
+        <h3>AI spend + steady oil vs rate-cut bets</h3>
+        <p>Two tailwinds (tech, energy) and one headwind (banks) define the session.</p>
+        <div class="items"><span>Positive mood</span><span>Rates in focus</span></div>
+      </div>
+      <div class="lay-band" data-layer="sector">
+        <label>Layer 2 · Sectors</label>
+        <h3>Technology & Energy lead · Financials lag</h3>
+        <p>Sector rotation is visible without opening another page.</p>
+        <div class="items"><span>Technology</span><span>Energy</span><span>Financials</span></div>
+      </div>
+      <div class="lay-band" data-layer="stock">
+        <label>Layer 3 · Stocks</label>
+        <h3>Names carrying the story</h3>
+        <p>Tap a layer to emphasize — zoom is motion, not navigation.</p>
+        <div class="items"><span>NVDA +1.98%</span><span>XOM +1.18%</span><span>JPM −0.41%</span></div>
+      </div>
+    </div>
+  </main>
+  <p class="intel-note">F1 telemetry stack — macro → sector → stock on one view</p>
+  <script type="module">
+    import { mountHero } from "/design-lab/market-intel/_intel-mock.js";
+    mountHero("hero", "Intelligence Layers");
+    const stack = document.getElementById("stack");
+    stack.querySelectorAll(".lay-band").forEach(band => {
+      band.addEventListener("click", () => {
+        const layer = band.dataset.layer;
+        const focused = band.classList.contains("is-focused");
+        stack.dataset.focus = focused ? "" : layer;
+        stack.querySelectorAll(".lay-band").forEach(b => b.classList.remove("is-focused"));
+        if (!focused) band.classList.add("is-focused");
+        else stack.querySelector('[data-layer="macro"]').classList.add("is-focused");
+      });
+    });
+  </script>
+</body>
+</html>

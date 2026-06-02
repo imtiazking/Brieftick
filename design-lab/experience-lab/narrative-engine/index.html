@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Narrative Engine · Experience Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/experience-lab/_exp-base.css">
+  <style>
+    .eng { min-height: 100vh; padding: 56px 24px 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .eng-card {
+      width: min(480px, 100%); text-align: center;
+      padding: 48px 32px; border-radius: 16px;
+      border: 1px solid var(--line); background: var(--glass);
+    }
+    .eng-card.is-playing { border-color: var(--gold-dim); }
+    .eng-ep { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; color: var(--gold); margin-bottom: 16px; }
+    .eng-title { font-family: var(--display); font-size: clamp(28px, 5vw, 36px); margin-bottom: 12px; }
+    .eng-log { font-size: 15px; color: var(--muted); line-height: 1.5; margin-bottom: 28px; }
+    .eng-progress { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
+    .eng-progress i { display: block; height: 100%; background: var(--gold); width: 0%; transition: width 0.3s linear; }
+    .eng-time { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 24px; }
+    .eng-play {
+      width: 64px; height: 64px; border-radius: 50%; border: none;
+      background: var(--gold); color: #0a0a0c; font-size: 22px; cursor: pointer;
+      margin-bottom: 24px; transition: transform 0.2s;
+    }
+    .eng-play:hover { transform: scale(1.05); }
+    .eng-beat {
+      min-height: 80px; font-size: 16px; line-height: 1.55; color: #b8c0d0;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    }
+    .eng-beat.is-on { opacity: 1; transform: none; }
+    .eng-scrub { width: 100%; margin-top: 20px; accent-color: var(--gold); }
+    .eng-stocks { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+    .eng-stocks button {
+      padding: 8px 14px; border-radius: 99px; border: 1px solid var(--line);
+      background: transparent; color: var(--text); cursor: pointer; font-size: 13px;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .eng-stocks.has-stocks button { opacity: 1; }
+    .eng-badge {
+      display: inline-block; margin-top: 12px; padding: 6px 12px; border-radius: 99px;
+      background: rgba(212,168,90,0.15); font-family: var(--mono); font-size: 9px; color: var(--gold);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .eng-badge.is-on { opacity: 1; animation: badgePop 0.5s var(--ease); }
+    @keyframes badgePop { 0% { transform: scale(0.9); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+  </style>
+</head>
+<body>
+  <header class="exp-chrome"><strong>08 · Market Narrative Engine</strong><a href="/design-lab/experience-lab">Experience Lab</a></header>
+  <main class="eng">
+    <div class="eng-card" id="card">
+      <p class="eng-ep">Today's episode</p>
+      <h1 class="eng-title" id="epTitle">Rotation Day</h1>
+      <p class="eng-log" id="logline">Tech wins, banks lose, energy joins late.</p>
+      <div class="eng-progress"><i id="prog"></i></div>
+      <p class="eng-time" id="time">0:00 / 1:30</p>
+      <button type="button" class="eng-play" id="play" aria-label="Play">▶</button>
+      <p class="eng-beat" id="beat"></p>
+      <span class="eng-badge" id="badge">New beat</span>
+      <div class="eng-stocks" id="stocks"></div>
+      <input type="range" class="eng-scrub" id="scrub" min="0" max="4" value="0" step="1" aria-label="Scrub episode">
+    </div>
+  </main>
+  <script type="module">
+    import { SESSION, BEATS, mountDive, openDive } from "/design-lab/experience-lab/_exp-mock.js";
+    mountDive();
+    const beats = [
+      { t: "Cold open", body: "Session mood: positive. Stakes: rotation between tech and banks.", stocks: [] },
+      { t: "Rising action", body: BEATS[0].why, stocks: BEATS[0].stocks },
+      { t: "Midpoint", body: BEATS[1].why, stocks: BEATS[1].stocks },
+      { t: "Tension", body: BEATS[2].why, stocks: BEATS[2].stocks },
+      { t: "Close", body: "Watch next: " + SESSION.watch.join(", "), stocks: [] },
+    ];
+    let playing = false;
+    let idx = 0;
+    let timer;
+    const play = document.getElementById("play");
+    const beat = document.getElementById("beat");
+    const scrub = document.getElementById("scrub");
+    const prog = document.getElementById("prog");
+    const stocks = document.getElementById("stocks");
+    const badge = document.getElementById("badge");
+    function showBeat(i) {
+      idx = i;
+      scrub.value = i;
+      const b = beats[i];
+      beat.classList.remove("is-on");
+      void beat.offsetWidth;
+      beat.textContent = b.t + " — " + b.body;
+      beat.classList.add("is-on");
+      prog.style.width = ((i + 1) / beats.length * 100) + "%";
+      document.getElementById("time").textContent =
+        `0:${String(Math.min(90, i * 22)).padStart(2,"0")} / 1:30`;
+      stocks.classList.toggle("has-stocks", b.stocks.length > 0);
+      stocks.innerHTML = b.stocks.map(s =>
+        `<button type="button" data-sym="${s.sym}">${s.sym}</button>`).join("");
+      stocks.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => openDive(btn.dataset.sym, btn.dataset.sym, `Episode · ${b.t}`));
+      });
+      badge.classList.add("is-on");
+      setTimeout(() => badge.classList.remove("is-on"), 800);
+    }
+    function tick() {
+      if (idx < beats.length - 1) showBeat(idx + 1);
+      else { playing = false; play.textContent = "▶"; clearInterval(timer); }
+    }
+    play.addEventListener("click", () => {
+      playing = !playing;
+      document.getElementById("card").classList.toggle("is-playing", playing);
+      play.textContent = playing ? "❚❚" : "▶";
+      if (playing) {
+        if (idx === 0 && !beat.classList.contains("is-on")) showBeat(0);
+        timer = setInterval(tick, 4000);
+      } else clearInterval(timer);
+    });
+    scrub.addEventListener("input", () => { clearInterval(timer); playing = false; play.textContent = "▶"; showBeat(+scrub.value); });
+    showBeat(0);
+    beat.classList.add("is-on");
+  </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+/* Briefing Wheel — left intelligence rail + main briefing panel */
+
+.wheel-briefing-lab .briefing-scene {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 8px 20px 40px;
+}
+
+.wheel-briefing-lab .briefing-scene .wheel-pulse-strip {
+  max-width: none;
+  text-align: left;
+  margin-bottom: 20px;
+  padding: 0 4px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.wheel-briefing-lab .briefing-scene .wheel-pulse-strip__headline {
+  font-size: clamp(22px, 2.8vw, 30px);
+  text-align: left;
+}
+
+.wheel-briefing-lab .intel-wheel__hint {
+  display: none;
+}
+
+/* Stage: fixed rail | main briefing */
+.briefing-stage {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: clamp(20px, 2.5vw, 32px);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .briefing-stage {
+    grid-template-columns: 1fr;
+  }
+  .briefing-rail {
+    position: relative !important;
+    top: auto !important;
+    width: 100% !important;
+  }
+}
+
+/* Left rail */
+.briefing-rail {
+  position: sticky;
+  top: 52px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.briefing-rail__title {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dash-gold, #d4a85a);
+  margin: 0 4px;
+}
+
+.briefing-rail__wheel {
+  padding: 18px 10px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 8, 14, 0.72);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Vertical picker in briefing rail — 5 segments visible */
+.wheel-briefing-lab .briefing-rail .intel-wheel__viewport--vertical {
+  height: 260px;
+  min-height: 260px;
+  max-height: 280px;
+}
+
+.wheel-briefing-lab .briefing-rail .intel-wheel__viewport--vertical .intel-wheel__chip {
+  flex: 0 0 50px;
+  height: 50px;
+  min-height: 50px;
+}
+
+.wheel-briefing-lab .briefing-rail .intel-wheel__focus--vertical {
+  height: 50px;
+}
+
+.wheel-briefing-lab .briefing-rail .intel-wheel__viewport--vertical .intel-wheel__chip.is-centered .intel-wheel__chip-label {
+  font-size: 15px;
+}
+
+/* Market snapshot */
+.briefing-snapshot {
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(4, 6, 12, 0.85);
+}
+
+.briefing-snapshot__title {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 90, 0.7);
+  margin: 0 0 12px;
+}
+
+.briefing-snapshot__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.briefing-snapshot__row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px 12px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 13px;
+}
+
+.briefing-snapshot__row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.briefing-snapshot__name {
+  color: rgba(176, 184, 200, 0.95);
+  font-weight: 500;
+}
+
+.briefing-snapshot__level {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 12px;
+  color: rgba(232, 236, 245, 0.75);
+  text-align: right;
+}
+
+.briefing-snapshot__chg {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 52px;
+  text-align: right;
+}
+
+.briefing-snapshot__chg.is-up { color: #3ecf8e; }
+.briefing-snapshot__chg.is-dn { color: #f07178; }
+.briefing-snapshot__chg.is-flat { color: rgba(176, 184, 200, 0.7); }
+
+/* Main briefing panel */
+.briefing-main {
+  min-width: 0;
+}
+
+.briefing-main.is-swapping {
+  opacity: 0.45;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.briefing-main:not(.is-swapping) {
+  opacity: 1 !important;
+}
+
+.intel-panel--briefing {
+  padding: 28px 32px 36px;
+}
+
+.intel-panel--briefing .intel-panel__section-kicker {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 90, 0.65);
+  margin: 0 0 8px;
+}
+
+.intel-panel--briefing .intel-panel__head {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.intel-panel--briefing .intel-panel__badge {
+  margin-bottom: 16px;
+}
+
+.intel-panel--briefing .intel-panel__headline {
+  margin-bottom: 12px;
+}
+
+.intel-panel--briefing .intel-panel__explanation {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.intel-panel--briefing .intel-panel__blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}

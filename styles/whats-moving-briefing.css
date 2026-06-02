@@ -1,0 +1,156 @@
+/* What's Moving — production Briefing Wheel (route: why) */
+
+#page-why.active {
+  display: block;
+}
+
+.whats-moving-briefing {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+.wm-briefing-header {
+  margin-bottom: 16px;
+}
+
+.wm-briefing-header .dash-title h2 {
+  font-family: var(--display, "Playfair Display", serif);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.wm-briefing-header .meta {
+  font-size: 13px;
+  color: var(--ink-dim, #8a94a8);
+  line-height: 1.5;
+  max-width: 62ch;
+}
+
+.whats-moving-briefing .briefing-scene {
+  padding: 0;
+}
+
+.whats-moving-briefing .intel-wheel__hint {
+  display: none;
+}
+
+/* Vertical wheel — production (lab styles are scoped to body.wheel-system-lab) */
+.whats-moving-briefing .intel-wheel__viewport {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+}
+
+.whats-moving-briefing .intel-wheel__viewport--vertical {
+  height: 260px;
+  min-height: 260px;
+  max-height: 280px;
+  margin-bottom: 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 14%,
+    #000 86%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
+
+.whats-moving-briefing .intel-wheel__viewport--vertical.is-dragging {
+  cursor: grabbing;
+}
+
+.whats-moving-briefing .intel-wheel__track--vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  height: auto;
+  will-change: transform;
+}
+
+.whats-moving-briefing .intel-wheel__viewport--vertical .intel-wheel__chip {
+  flex: 0 0 50px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 50px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.whats-moving-briefing .intel-wheel__viewport--vertical .intel-wheel__chip-label {
+  width: 100%;
+  text-align: center;
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.65);
+  transform-origin: center center;
+  will-change: transform, opacity;
+  white-space: nowrap;
+}
+
+.whats-moving-briefing .intel-wheel__viewport--vertical .intel-wheel__chip.is-centered .intel-wheel__chip-label {
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--dash-gold, #d4a85a);
+  text-shadow: 0 0 22px rgba(212, 168, 90, 0.45);
+}
+
+.whats-moving-briefing .intel-wheel__focus--vertical {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 50%;
+  width: auto;
+  height: 50px;
+  transform: translateY(-50%);
+  border-radius: 10px;
+  border: 1px solid rgba(212, 168, 90, 0.14);
+  background: radial-gradient(ellipse at 50% 50%, rgba(212, 168, 90, 0.1), transparent 72%);
+  box-shadow: 0 0 32px rgba(212, 168, 90, 0.1);
+  pointer-events: none;
+}
+
+.whats-moving-briefing .intel-wheel__focus--vertical::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(212, 168, 90, 0.55), transparent);
+}
+
+.wm-briefing-foot {
+  margin-top: 20px;
+  font-family: var(--mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint, #5a6070);
+  line-height: 1.6;
+}
+
+html[data-theme="split"] #page-why .whats-moving-briefing {
+  padding: 28px clamp(16px, 3vw, 32px) 56px;
+}
+
+@media (max-width: 720px) {
+  .whats-moving-briefing {
+    padding: 16px 14px 40px;
+  }
+}

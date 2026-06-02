@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligence Lens · Experience Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/experience-lab/_exp-base.css">
+  <style>
+    .lens { position: fixed; inset: 0; padding-top: 48px; overflow: hidden; }
+    .lens-vf {
+      position: absolute; inset: 48px 0 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='40' cy='40' r='1' fill='%23fff' opacity='0.03'/%3E%3C/svg%3E");
+      filter: blur(12px); transition: filter 0.7s var(--ease);
+    }
+    .lens-vf.is-sharp { filter: blur(0); }
+    .lens-hud {
+      position: absolute; inset: 48px 16px 100px 16px;
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 4px;
+      pointer-events: none;
+    }
+    .lens-hud::before, .lens-hud::after {
+      content: ""; position: absolute; width: 24px; height: 24px;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+    .lens-hud::before { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+    .lens-hud::after { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+    .lens-corner {
+      position: absolute; font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.08em; text-transform: uppercase; z-index: 10;
+    }
+    .lens-corner--tl { top: 64px; left: 24px; color: var(--up); }
+    .lens-corner--tr { top: 64px; right: 24px; color: var(--text); }
+    .lens-corner--bl { bottom: 120px; left: 24px; color: var(--muted); max-width: 200px; line-height: 1.4; }
+    .lens-center {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 80px; height: 80px; border: 1px solid rgba(212,168,90,0.5); border-radius: 4px;
+      z-index: 5;
+    }
+    .lens-center::before, .lens-center::after {
+      content: ""; position: absolute; background: rgba(212,168,90,0.6);
+    }
+    .lens-center::before { left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%); }
+    .lens-center::after { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-50%); }
+    .lens-hud-panel {
+      position: absolute; left: 24px; right: 24px; bottom: 108px;
+      padding: 16px; border-radius: 10px; background: rgba(0,0,0,0.75);
+      border: 1px solid var(--line);
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+      z-index: 15;
+    }
+    .lens-hud-panel.is-on { opacity: 1; transform: none; }
+    .lens-hud-panel h3 { font-size: 16px; margin-bottom: 8px; }
+    .lens-hud-panel p { font-size: 13px; color: var(--muted); }
+    .lens-dock {
+      position: fixed; bottom: 0; left: 0; right: 0; padding: 16px 20px 24px;
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      background: linear-gradient(transparent, rgba(0,0,0,0.95)); z-index: 20;
+    }
+    .lens-dock button {
+      padding: 12px 18px; border-radius: 99px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05); color: var(--text); font-size: 13px; cursor: pointer;
+    }
+    .lens-dock button.is-on { border-color: var(--gold); color: var(--gold); }
+    .lens-prompt {
+      position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%);
+      font-size: 14px; color: rgba(255,255,255,0.5); z-index: 8; text-align: center;
+      transition: opacity 0.4s;
+    }
+    .lens-prompt.is-hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <header class="exp-chrome"><strong>06 · Intelligence Lens</strong><a href="/design-lab/experience-lab">Experience Lab</a></header>
+  <div class="lens">
+    <div class="lens-vf" id="vf"></div>
+    <div class="lens-hud"></div>
+    <div class="lens-center"></div>
+    <span class="lens-corner lens-corner--tl" id="mood">Positive</span>
+    <span class="lens-corner lens-corner--tr" id="lead">Tech leading</span>
+    <span class="lens-corner lens-corner--bl" id="watch">Watch: NVDA · Fed · Crude</span>
+    <p class="lens-prompt" id="prompt">Tap a driver to focus</p>
+    <div class="lens-hud-panel" id="panel">
+      <h3 id="panelH">—</h3>
+      <p id="panelP">—</p>
+      <div id="panelStocks" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"></div>
+    </div>
+    <nav class="lens-dock" id="dock"></nav>
+  </div>
+  <script type="module">
+    import { DRIVERS, BEATS, SESSION, mountDive, openDive } from "/design-lab/experience-lab/_exp-mock.js";
+    mountDive();
+    const drivers = [
+      { ...DRIVERS[0], body: BEATS[0].why, stocks: BEATS[0].stocks },
+      { ...DRIVERS[1], body: BEATS[1].why, stocks: BEATS[1].stocks },
+      { ...DRIVERS[2], body: BEATS[2].why, stocks: BEATS[2].stocks },
+    ];
+    const dock = document.getElementById("dock");
+    dock.innerHTML = drivers.map((d,i) =>
+      `<button type="button" data-i="${i}">${d.label}</button>`).join("");
+    function focus(i) {
+      const d = drivers[i];
+      document.getElementById("vf").classList.add("is-sharp");
+      document.getElementById("prompt").classList.add("is-hidden");
+      document.getElementById("panel").classList.add("is-on");
+      document.getElementById("panelH").textContent = d.title;
+      document.getElementById("panelP").textContent = d.body;
+      document.getElementById("lead").textContent = d.sector;
+      const stocks = document.getElementById("panelStocks");
+      stocks.innerHTML = d.stocks.map(s =>
+        `<button type="button" data-sym="${s.sym}" style="padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer">${s.sym}</button>`).join("");
+      dock.querySelectorAll("button").forEach((b,j) => b.classList.toggle("is-on", j===i));
+      stocks.querySelectorAll("button").forEach(b => {
+        b.addEventListener("click", () => openDive(b.dataset.sym, b.dataset.sym, `Lens · ${d.label}`));
+      });
+    }
+    dock.querySelectorAll("button").forEach(b => b.addEventListener("click", () => focus(+b.dataset.i)));
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market OS · Experience Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/experience-lab/_exp-base.css">
+  <style>
+    .os { min-height: 100vh; padding-top: 36px; }
+    .os-menubar {
+      position: fixed; top: 36px; left: 0; right: 0; height: 32px;
+      display: flex; align-items: center; gap: 20px; padding: 0 16px;
+      background: rgba(20,22,30,0.95); border-bottom: 1px solid var(--line);
+      font-family: var(--mono); font-size: 11px; z-index: 50;
+    }
+    .os-menubar .brand { color: var(--gold); }
+    .os-menubar .phase { margin-left: auto; color: var(--muted); }
+    .os-desktop {
+      padding: 80px 24px 40px; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .os-dock {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; padding: 10px 14px; border-radius: 16px;
+      background: rgba(10,12,20,0.9); border: 1px solid var(--line);
+      backdrop-filter: blur(20px); z-index: 40;
+    }
+    .os-dock button {
+      width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04); color: var(--text); font-size: 10px;
+      font-family: var(--mono); cursor: pointer; transition: transform 0.3s var(--ease);
+    }
+    .os-dock button.is-active { border-color: var(--gold); transform: scale(1.1); }
+    .os-window {
+      width: min(520px, 92vw); padding: 0; border-radius: 12px;
+      border: 1px solid var(--line); background: var(--glass);
+      backdrop-filter: blur(24px); box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+      transform: scale(1); transition: transform 0.55s var(--ease), opacity 0.45s;
+      overflow: hidden;
+    }
+    .os-window.is-zoom { transform: scale(1.04); }
+    .os-win-bar {
+      padding: 10px 14px; background: rgba(0,0,0,0.3); display: flex; gap: 6px; align-items: center;
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+    }
+    .os-win-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+    .os-win-body { padding: 24px; }
+    .os-win-body h2 { font-size: 20px; margin-bottom: 10px; }
+    .os-win-body p { font-size: 15px; line-height: 1.5; color: var(--muted); }
+    .os-stocks { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .os-stocks button {
+      padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03); color: var(--text); cursor: pointer; font-size: 13px;
+    }
+    .os-bg-windows { position: absolute; inset: 0; pointer-events: none; }
+    .os-bg-windows .ghost {
+      position: absolute; padding: 12px; border-radius: 8px; border: 1px solid var(--line);
+      opacity: 0.2; font-size: 12px; filter: blur(1px);
+      transition: opacity 0.5s, transform 0.5s var(--ease);
+    }
+  </style>
+</head>
+<body class="os">
+  <header class="exp-chrome"><strong>03 · Market OS</strong><a href="/design-lab/experience-lab">Experience Lab</a></header>
+  <div class="os-menubar">
+    <span class="brand">What's Moving</span>
+    <span>Today</span>
+    <span class="phase" id="phase">Mid-session</span>
+  </div>
+  <div class="os-desktop">
+    <div class="os-bg-windows" id="ghosts"></div>
+    <div class="os-window is-zoom" id="win">
+      <div class="os-win-bar"><i></i><i></i><i></i><span id="winTitle">Today's priority</span></div>
+      <div class="os-win-body">
+        <h2 id="winH">AI spend → Tech</h2>
+        <p id="winP">Hyperscaler capex keeps chip names in focus. Session mood: positive.</p>
+        <div class="os-stocks" id="stocks"></div>
+      </div>
+    </div>
+  </div>
+  <nav class="os-dock" id="dock"></nav>
+  <script type="module">
+    import { DRIVERS, SESSION, mountDive, openDive } from "/design-lab/experience-lab/_exp-mock.js";
+    mountDive();
+    const apps = [
+      { id: "ai", icon: "AI", ...DRIVERS[0], stocks: ["NVDA", "AMD"], body: "Hyperscaler capex keeps chip names in focus." },
+      { id: "oil", icon: "EN", ...DRIVERS[1], stocks: ["XOM", "CVX"], body: "Crude holds range; producers firm." },
+      { id: "rates", icon: "BN", ...DRIVERS[2], stocks: ["JPM"], body: "Rate-cut bets pressure bank margins." },
+    ];
+    const dock = document.getElementById("dock");
+    dock.innerHTML = apps.map((a,i) =>
+      `<button type="button" data-i="${i}" class="${i===0?"is-active":""}">${a.icon}</button>`).join("");
+    document.getElementById("ghosts").innerHTML = apps.map((a,i) =>
+      `<div class="ghost" style="left:${15+i*28}%;top:${20+i*8}%">${a.label}</div>`).join("");
+    function focus(i) {
+      const a = apps[i];
+      document.getElementById("winH").textContent = a.title;
+      document.getElementById("winP").textContent = a.body;
+      document.getElementById("winTitle").textContent = a.label;
+      document.getElementById("stocks").innerHTML = a.stocks.map(s =>
+        `<button type="button" data-sym="${s}">${s}</button>`).join("");
+      dock.querySelectorAll("button").forEach((b,j) => b.classList.toggle("is-active", j===i));
+      document.querySelectorAll(".ghost").forEach((g,j) => {
+        g.style.opacity = j === i ? "0" : "0.15";
+        g.style.transform = j === i ? "scale(0.9)" : "none";
+      });
+      const win = document.getElementById("win");
+      win.classList.remove("is-zoom");
+      void win.offsetWidth;
+      win.classList.add("is-zoom");
+      document.getElementById("stocks").querySelectorAll("button").forEach(b => {
+        b.addEventListener("click", () => openDive(b.dataset.sym, b.dataset.sym, `Market OS · ${a.title}`));
+      });
+    }
+    dock.querySelectorAll("button").forEach(b => b.addEventListener("click", () => focus(+b.dataset.i)));
+    focus(0);
+    const phases = ["Open", "Mid-session", "Late"];
+    let p = 1;
+    setInterval(() => {
+      document.getElementById("phase").textContent = phases[p % 3];
+      p++;
+    }, 5000);
+  </script>
+</body>
+</html>

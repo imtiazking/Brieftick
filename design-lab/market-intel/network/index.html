@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>05 · Intelligence Network</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/market-intel/_intel-base.css">
+  <style>
+    .net-wrap { display: grid; grid-template-columns: 200px 1fr; gap: 16px; min-height: 420px; }
+    @media (max-width: 700px) { .net-wrap { grid-template-columns: 1fr; } }
+    .net-themes { display: flex; flex-direction: column; gap: 8px; }
+    .net-theme {
+      padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--glass); cursor: pointer; text-align: left; color: inherit; font: inherit;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .net-theme.is-active { border-color: var(--gold); background: rgba(212,168,90,0.08); }
+    .net-theme strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .net-theme span { font-size: 12px; color: var(--muted); }
+    .net-graph {
+      position: relative; border-radius: 14px; border: 1px solid var(--line);
+      background: rgba(0,0,0,0.3); padding: 24px;
+    }
+    .net-col { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+    .net-col label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .net-node {
+      padding: 10px 14px; border-radius: 8px; border: 1px solid var(--line);
+      font-size: 13px; opacity: 0.35; transform: translateX(0);
+      transition: opacity 0.4s, transform 0.4s var(--ease), border-color 0.3s;
+    }
+    .net-graph.is-live .net-node { opacity: 1; }
+    .net-node.is-lit { border-color: var(--gold-dim); transform: translateX(4px); }
+    .net-arrows { display: flex; align-items: center; justify-content: center; padding: 0 8px; color: var(--gold); font-size: 20px; opacity: 0; transition: opacity 0.4s; }
+    .net-graph.is-live .net-arrows { opacity: 0.6; }
+    .net-layout { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; height: 100%; min-height: 320px; }
+  </style>
+</head>
+<body>
+  <header class="intel-lab"><strong>05 · Intelligence Network</strong><a href="/design-lab/market-intel">All concepts</a></header>
+  <section class="intel-hero" id="hero"></section>
+  <main class="intel-main">
+    <div class="net-wrap">
+      <div class="net-themes" id="themes"></div>
+      <div class="net-graph" id="graph">
+        <div class="net-layout">
+          <div class="net-col"><label>Theme</label><div class="net-node" id="n-theme"></div></div>
+          <div class="net-arrows">→</div>
+          <div class="net-col"><label>Sector</label><div class="net-node" id="n-sector"></div></div>
+          <div class="net-arrows">→</div>
+          <div class="net-col"><label>Companies</label><div id="n-stocks"></div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <p class="intel-note">Structured graph — relationships, not decoration</p>
+  <script type="module">
+    import { DRIVERS, mountHero } from "/design-lab/market-intel/_intel-mock.js";
+    mountHero("hero", "Intelligence Network");
+    const themes = document.getElementById("themes");
+    const graph = document.getElementById("graph");
+    themes.innerHTML = DRIVERS.map((d, i) => `
+      <button type="button" class="net-theme${i===0?" is-active":""}" data-id="${d.id}">
+        <strong>${d.title}</strong><span>${d.cause}</span>
+      </button>`).join("");
+    function show(id) {
+      const d = DRIVERS.find(x => x.id === id);
+      document.getElementById("n-theme").textContent = d.label;
+      document.getElementById("n-sector").textContent = d.sector;
+      document.getElementById("n-stocks").innerHTML = d.stocks.map(s =>
+        `<div class="net-node is-lit">${s.sym} ${s.pct>0?"+":""}${s.pct}%</div>`).join("");
+      graph.classList.add("is-live");
+      themes.querySelectorAll(".net-theme").forEach(b => b.classList.toggle("is-active", b.dataset.id === id));
+    }
+    themes.querySelectorAll(".net-theme").forEach(b => b.addEventListener("click", () => show(b.dataset.id)));
+    show(DRIVERS[0].id);
+  </script>
+</body>
+</html>

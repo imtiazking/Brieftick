@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>06 · Capital Movement</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/market-intel/_intel-base.css">
+  <style>
+    .cap-flows { display: flex; flex-direction: column; gap: 20px; }
+    .cap-row { display: grid; grid-template-columns: 140px 1fr 100px; gap: 16px; align-items: center; }
+    @media (max-width: 600px) { .cap-row { grid-template-columns: 1fr; } }
+    .cap-label { font-size: 14px; font-weight: 500; }
+    .cap-bar-wrap { height: 36px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden; position: relative; }
+    .cap-bar {
+      height: 100%; border-radius: 8px;
+      background: linear-gradient(90deg, rgba(212,168,90,0.3), rgba(62,207,142,0.5));
+      width: var(--w, 50%);
+      transition: width 1s var(--ease);
+      position: relative;
+    }
+    .cap-bar::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      animation: capShine 2.5s ease-in-out infinite;
+    }
+    @keyframes capShine { 0%,100% { transform: translateX(-100%); } 50% { transform: translateX(100%); } }
+    .cap-out { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .cap-from { font-family: var(--mono); font-size: 9px; color: var(--dn); margin-top: 8px; }
+    .cap-detail { margin-top: 20px; padding: 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--glass); font-size: 14px; color: #b0b8c8; }
+  </style>
+</head>
+<body>
+  <header class="intel-lab"><strong>06 · Capital Movement</strong><a href="/design-lab/market-intel">All concepts</a></header>
+  <section class="intel-hero" id="hero"></section>
+  <main class="intel-main">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Bar width = relative flow today · Motion shows money moving into sectors</p>
+    <div class="cap-flows" id="flows"></div>
+    <div class="cap-detail" id="detail">Rotation: capital leaving Financials toward Technology and Energy.</div>
+  </main>
+  <p class="intel-note">Sankey-style readability without chart junk</p>
+  <script type="module">
+    import { mountHero } from "/design-lab/market-intel/_intel-mock.js";
+    mountHero("hero", "Capital Movement");
+    const flows = [
+      { label: "Technology", w: 88, from: "Financials, Cash", stocks: "NVDA, AMD, META" },
+      { label: "Energy", w: 62, from: "Industrials", stocks: "XOM, CVX" },
+      { label: "Financials", w: 28, from: "Outflows", stocks: "JPM lagging" },
+      { label: "Healthcare", w: 35, from: "Neutral", stocks: "Flat defensives" },
+    ];
+    document.getElementById("flows").innerHTML = flows.map(f => `
+      <div class="cap-row">
+        <span class="cap-label">${f.label}</span>
+        <div class="cap-bar-wrap"><div class="cap-bar" style="--w:${f.w}%"></div></div>
+        <span class="cap-out">${f.stocks}</span>
+      </div>
+      <div class="cap-from">From: ${f.from}</div>`).join("");
+  </script>
+</body>
+</html>

@@ -1,6 +1,33 @@
 {
   "rewrites": [
     { "source": "/dashboard-preview", "destination": "/dashboard-preview.html" },
-    { "source": "/dashboard-design-lab", "destination": "/dashboard-design-lab.html" }
+    { "source": "/dashboard-design-lab", "destination": "/dashboard-design-lab.html" },
+    { "source": "/design-lab/whats-moving-v2/:concept", "destination": "/design-lab/whats-moving-v2/index.html" },
+    { "source": "/design-lab/whats-moving-def/:concept", "destination": "/design-lab/whats-moving-def/index.html" },
+    { "source": "/design-lab/whats-moving-pulse", "destination": "/design-lab/whats-moving-pulse/index.html" },
+    { "source": "/design-lab/market-intel", "destination": "/design-lab/market-intel/index.html" },
+    { "source": "/design-lab/market-intel/canvas", "destination": "/design-lab/market-intel/canvas/index.html" },
+    { "source": "/design-lab/market-intel/flow", "destination": "/design-lab/market-intel/flow/index.html" },
+    { "source": "/design-lab/market-intel/command", "destination": "/design-lab/market-intel/command/index.html" },
+    { "source": "/design-lab/market-intel/global", "destination": "/design-lab/market-intel/global/index.html" },
+    { "source": "/design-lab/market-intel/network", "destination": "/design-lab/market-intel/network/index.html" },
+    { "source": "/design-lab/market-intel/capital", "destination": "/design-lab/market-intel/capital/index.html" },
+    { "source": "/design-lab/market-intel/narrative", "destination": "/design-lab/market-intel/narrative/index.html" },
+    { "source": "/design-lab/market-intel/layers", "destination": "/design-lab/market-intel/layers/index.html" },
+    { "source": "/design-lab/experience-lab", "destination": "/design-lab/experience-lab/index.html" },
+    { "source": "/design-lab/experience-lab/living-briefing", "destination": "/design-lab/experience-lab/living-briefing/index.html" },
+    { "source": "/design-lab/experience-lab/market-theater", "destination": "/design-lab/experience-lab/market-theater/index.html" },
+    { "source": "/design-lab/experience-lab/market-os", "destination": "/design-lab/experience-lab/market-os/index.html" },
+    { "source": "/design-lab/experience-lab/intelligence-room", "destination": "/design-lab/experience-lab/intelligence-room/index.html" },
+    { "source": "/design-lab/experience-lab/market-journey", "destination": "/design-lab/experience-lab/market-journey/index.html" },
+    { "source": "/design-lab/experience-lab/intelligence-lens", "destination": "/design-lab/experience-lab/intelligence-lens/index.html" },
+    { "source": "/design-lab/experience-lab/intelligence-stream", "destination": "/design-lab/experience-lab/intelligence-stream/index.html" },
+    { "source": "/design-lab/experience-lab/narrative-engine", "destination": "/design-lab/experience-lab/narrative-engine/index.html" },
+    { "source": "/design-lab/briefing", "destination": "/design-lab/wheel-system/briefing/index.html" },
+    { "source": "/design-lab/wheel-system", "destination": "/design-lab/wheel-system/index.html" },
+    { "source": "/design-lab/wheel-system/dashboard", "destination": "/design-lab/wheel-system/dashboard/index.html" },
+    { "source": "/design-lab/wheel-system/movers", "destination": "/design-lab/wheel-system/movers/index.html" },
+    { "source": "/design-lab/wheel-system/intelligence", "destination": "/design-lab/wheel-system/intelligence/index.html" },
+    { "source": "/design-lab/wheel-system/briefing", "destination": "/design-lab/wheel-system/briefing/index.html" }
   ]
 }
