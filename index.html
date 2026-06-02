@@ -3429,8 +3429,18 @@ h1,h2,h3{
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
-  <!-- Three.js for 3D globe -->
+  <!-- Three.js for 3D globe (legacy dashboard telemetry) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <!-- ES module map for Intelligence Wheel News globe (matches dashboard-preview.html) -->
+  <script type="importmap" data-bt-wheel-importmap>
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.160.0",
+      "three-conic-polygon-geometry": "https://esm.sh/three-conic-polygon-geometry@2.1.1?external=three",
+      "three-geojson-geometry": "https://esm.sh/three-geojson-geometry@2.1.1?external=three"
+    }
+  }
+  </script>
   <!-- Clerk JS SDK -->
   <script
     async
@@ -3450,6 +3460,16 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/logic-nucleus-centre.css">
 <link rel="stylesheet" href="/styles/ticker-deep-dive.css">
 <link rel="stylesheet" href="/styles/portfolio-simplified.css">
+<link rel="stylesheet" href="/styles/dashboard-design-lab.css">
+<link rel="stylesheet" href="/styles/dashboard-rail-modules.css">
+<link rel="stylesheet" href="/styles/dashboard-movers-intel.css">
+<link rel="stylesheet" href="/styles/dashboard-news-narrative.css">
+<link rel="stylesheet" href="/styles/dashboard-intel-charts.css">
+<link rel="stylesheet" href="/styles/dashboard-preview.css">
+<link rel="stylesheet" href="/styles/dashboard-briefing-story.css">
+<link rel="stylesheet" href="/styles/dashboard-watchlist-intel.css">
+<link rel="stylesheet" href="/styles/dashboard-connected-markets.css">
+<link rel="stylesheet" href="/styles/dashboard-in-app-wheel.css">
 <script type="module" src="/lib/split-theme.bridge.js"></script>
 <script type="module" src="/lib/split-landing.bridge.js"></script>
 <script type="module" src="/lib/logic-cinematic.bridge.js"></script>
@@ -3457,6 +3477,7 @@ h1,h2,h3{
 <script type="module" src="/lib/scanner-deep-dive.js"></script>
 <script type="module" src="/lib/logic-deep-dive.js"></script>
 <script type="module" src="/lib/portfolio-layout.js"></script>
+<script type="module" src="/lib/dashboard-wheel.bridge.js"></script>
 </head>
 <body>
 
@@ -3726,7 +3747,27 @@ h1,h2,h3{
 <!-- ============================================================
      LIVE DASHBOARD
 ============================================================ -->
-<section class="page" id="page-dashboard">
+<section class="page" id="page-dashboard" data-dash-view="wheel">
+  <div class="dash-wheel-experience" id="dashWheelExperience" aria-label="Intelligence Wheel dashboard">
+    <div class="dash-preview-wheel-wrap">
+      <section id="panelWheel" class="dash-lab-panel is-active" aria-label="Intelligence Wheel">
+        <div class="dash-lab-env" aria-hidden="true">
+          <div class="dash-lab-env__haze"></div>
+          <div class="dash-lab-env__vignette"></div>
+        </div>
+        <div class="intel-wheel-scene">
+          <header class="wheel-pulse-strip" id="wheelPulseStrip" aria-label="Market Pulse"></header>
+          <p class="intel-wheel__hint">Drag or click any channel · arrow keys</p>
+          <div class="intel-wheel__viewport" id="wheelViewport" tabindex="0" aria-label="Intelligence wheel"></div>
+          <div class="wheel-module-viewport">
+            <div class="rail-module-stage" id="wheelModuleStage" role="region" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="dash-legacy-fallback" id="dashLegacyFallback" hidden aria-hidden="true">
   <canvas id="dashTelemetry" aria-hidden="true"></canvas>
   <div class="dash">
     <div class="dash-header">
@@ -4048,6 +4089,7 @@ h1,h2,h3{
       </div>
 
     </div>
+  </div>
   </div>
 </section>
 
@@ -12407,7 +12449,7 @@ function routeWithAuth(name) {
     return;
   }
 
-  // Dashboard — Vercel preview / ?preview=dashboard → intelligence wheel bundle
+  // Dashboard — ?preview=dashboard only → optional standalone wheel at /dashboard-preview
   if (name === 'dashboard') {
     if (typeof window.btRedirectToWheelDashboard === 'function' && window.btRedirectToWheelDashboard()) {
       return;
