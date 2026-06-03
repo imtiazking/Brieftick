@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Portfolio · Relationship Story (preview)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/portfolio-relationship-story/preview-vars.css">
+  <link rel="stylesheet" href="/styles/portfolio-simplified.css">
+  <link rel="stylesheet" href="/design-lab/portfolio-relationship-story/preview-shell.css">
+  <link rel="stylesheet" href="/design-lab/move-together/story/story-embed.css">
+</head>
+<body>
+  <header class="pr-preview-chrome">
+    <strong>Design lab · portfolio preview</strong>
+    <nav>
+      <a href="/design-lab/move-together">← Move Together hub</a>
+      <a href="/design-lab/move-together/story">Standalone story</a>
+    </nav>
+  </header>
+  <p class="pr-preview-banner" role="status">
+    Preview only · illustrative relationship data · not linked from production navigation
+  </p>
+
+  <section class="page active" id="page-portfolio">
+    <div class="port port--simplified pr-portfolio">
+      <header class="dash-header port-header">
+        <div class="dash-title">
+          <h2>My Portfolio</h2>
+          <div class="meta">How your stocks are doing · local analysis · educational only · not advice</div>
+        </div>
+      </header>
+
+      <section class="port-section port-section--summary" aria-labelledby="portSummaryHeading">
+        <h3 class="port-sr-only" id="portSummaryHeading">Portfolio summary</h3>
+        <div class="port-summary">
+          <div class="port-summary__main">
+            <div class="port-summary__label">Portfolio value</div>
+            <div class="port-summary__value" id="portSummaryValue">$184,260</div>
+            <div class="port-summary__today" id="portSummaryToday" style="color:var(--green)">+$1,842 today (+1.0%)</div>
+          </div>
+          <div class="port-summary-chips">
+            <div class="port-summary-chip">
+              <span class="lbl">Live quotes loaded</span>
+              <span class="val port-summary-quotes--ok" id="portSummaryQuotes">14 of 14</span>
+            </div>
+            <div class="port-summary-chip">
+              <span class="lbl">Biggest holding</span>
+              <span class="val" id="portSummaryTopHolding">NVDA · 12.4%</span>
+            </div>
+            <div class="port-summary-chip">
+              <span class="lbl">Biggest sector</span>
+              <span class="val" id="portSummaryTopSector">Technology · 38%</span>
+            </div>
+            <div class="port-summary-chip">
+              <span class="lbl">Risk level</span>
+              <span class="val port-summary-risk" id="portSummaryRisk" style="color:var(--amber)">Moderate</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="port-section port-section--story" aria-label="Portfolio story">
+        <article class="port-card port-card--story">
+          <h3 class="port-card__title">Portfolio Story</h3>
+          <p class="port-card__body">
+            Your portfolio leans on AI infrastructure and large-cap tech. NVIDIA is your largest position; when AI spending narratives move, several holdings often move in the same direction.
+          </p>
+        </article>
+      </section>
+
+      <section class="port-section port-section--cards" aria-label="Portfolio insights">
+        <div class="port-cards port-cards--four">
+          <article class="port-card">
+            <h3 class="port-card__title">What You Own Most</h3>
+            <p class="port-card__body">NVIDIA (12.4%), Microsoft (9.6%), and Apple (8.8%) are your top three — about 31% of the portfolio.</p>
+          </article>
+          <article class="port-card">
+            <h3 class="port-card__title">What Moved Today</h3>
+            <p class="port-card__body">Semiconductor and cloud names led the day. NVDA and AVGO helped most; defensive healthcare names were slightly soft.</p>
+          </article>
+          <article class="port-card">
+            <h3 class="port-card__title">Where Your Risk Is</h3>
+            <p class="port-card__body">Technology makes up the largest share of your portfolio. Your top holding, NVIDIA, adds extra concentration risk.</p>
+          </article>
+          <article class="port-card">
+            <h3 class="port-card__title">What To Watch</h3>
+            <p class="port-card__body">AI spending headlines, rate expectations, and big-tech earnings can move several of your holdings at once.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="port-section port-section--relationship pr-relationship-section" aria-labelledby="portRelationshipHeading">
+        <div class="pr-relationship-head">
+          <div>
+            <h3 class="port-section__title" id="portRelationshipHeading">Why Your Stocks Move Together</h3>
+            <p class="pr-relationship-lead">Understand the common themes connecting your holdings.</p>
+          </div>
+          <span class="pr-relationship-badge" id="prRelationshipBadge">Preview only · illustrative relationship data</span>
+        </div>
+        <div class="pr-story-controls">
+          <div class="pr-ticker-bar">
+            <label class="pr-ticker-bar__label" for="tickerInput">Build a custom group</label>
+            <input
+              type="text"
+              id="tickerInput"
+              class="pr-ticker-input"
+              placeholder="Tesla, Nvidia, Apple — or NVDA, AMD, MSFT"
+              spellcheck="false"
+              autocomplete="off"
+              aria-describedby="tickerInputMessage resolverPicker"
+            />
+            <button type="button" class="pr-ticker-analyze" id="tickerAnalyzeBtn">Add / Analyze</button>
+          </div>
+          <p class="pr-ticker-msg" id="tickerInputMessage" role="status" aria-live="polite"></p>
+          <div class="pr-resolver-picker" id="resolverPicker" hidden>
+            <p class="pr-resolver-picker__title">Choose a match</p>
+            <p class="pr-resolver-picker__hint">Company names are resolved via search · cached for this session</p>
+            <div id="resolverPickerBody"></div>
+            <div class="pr-resolver-picker__actions">
+              <button type="button" class="pr-resolver-cancel" id="resolverPickerCancel">Cancel</button>
+              <button type="button" class="pr-resolver-confirm" id="resolverPickerConfirm">Continue</button>
+            </div>
+          </div>
+        </div>
+        <div id="relationshipStoryMount" class="pr-relationship-mount" aria-label="Relationship story visualization"></div>
+      </section>
+
+      <section class="port-section port-section--holdings" aria-labelledby="portHoldingsHeading">
+        <div class="port-holdings-head">
+          <h3 class="port-section__title" id="portHoldingsHeading">Your holdings</h3>
+        </div>
+        <div class="port-holdings-card pr-holdings-mini">
+          <table>
+            <thead>
+              <tr><th>Symbol</th><th>Weight</th><th>Day</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>NVDA</td><td>12.4%</td><td style="color:var(--green)">+2.1%</td></tr>
+              <tr><td>MSFT</td><td>9.6%</td><td style="color:var(--green)">+0.8%</td></tr>
+              <tr><td>AAPL</td><td>8.8%</td><td style="color:var(--green)">+0.4%</td></tr>
+              <tr><td>AVGO</td><td>7.2%</td><td style="color:var(--green)">+1.6%</td></tr>
+              <tr><td>AMD</td><td>5.1%</td><td style="color:var(--green)">+1.9%</td></tr>
+            </tbody>
+          </table>
+          <p class="pr-advanced-note">Mock holdings for layout only · full table omitted in preview</p>
+        </div>
+      </section>
+
+      <section class="port-section port-section--advanced" aria-labelledby="portAdvancedHeading">
+        <h3 class="port-sr-only" id="portAdvancedHeading">Advanced Analysis</h3>
+        <button type="button" class="port-advanced-toggle" id="portAdvancedToggle" aria-expanded="false" aria-controls="portAdvancedPanel">
+          <span>
+            <span class="port-advanced-toggle__title">Advanced Analysis</span>
+            <span class="port-advanced-toggle__hint">Market sensitivity, volatility, sector exposure, risk factors, macro scenarios, and correlation data</span>
+          </span>
+          <span class="port-advanced-toggle__chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="port-advanced-panel" id="portAdvancedPanel" hidden>
+
+          <div class="risk-card">
+            <p class="port-advanced-subtitle">Market metrics</p>
+            <div class="port-stats port-stats--pair">
+              <div class="port-stat"><div class="lbl">Market sensitivity</div><div class="val">1.12</div><div class="delta" style="color:var(--ink-dim)">Weighted beta vs S&amp;P 500</div></div>
+              <div class="port-stat"><div class="lbl">Typical swing size</div><div class="val">18.4%</div><div class="delta" style="color:var(--ink-dim)">Historical volatility estimate</div></div>
+            </div>
+          </div>
+
+          <div class="risk-card">
+            <p class="port-advanced-subtitle">Sector exposure</p>
+            <div class="exp-bars">
+              <div class="exp-bar"><span class="exp-bar__lbl">Technology</span><div class="exp-bar__track"><div class="exp-bar__fill" style="width:38%"></div></div><span class="exp-bar__pct">38%</span></div>
+              <div class="exp-bar"><span class="exp-bar__lbl">Financials</span><div class="exp-bar__track"><div class="exp-bar__fill" style="width:14%"></div></div><span class="exp-bar__pct">14%</span></div>
+              <div class="exp-bar"><span class="exp-bar__lbl">Healthcare</span><div class="exp-bar__track"><div class="exp-bar__fill" style="width:12%"></div></div><span class="exp-bar__pct">12%</span></div>
+              <div class="exp-bar"><span class="exp-bar__lbl">Energy</span><div class="exp-bar__track"><div class="exp-bar__fill" style="width:9%"></div></div><span class="exp-bar__pct">9%</span></div>
+            </div>
+          </div>
+
+          <div class="risk-card">
+            <p class="port-advanced-subtitle">Risk factors</p>
+            <div class="risk-row">
+              <div class="risk-name">Technology concentration <span class="det">· 38% of portfolio</span></div>
+              <div class="risk-val warn">Elevated</div>
+            </div>
+            <div class="risk-row">
+              <div class="risk-name">Top holding weight <span class="det">· NVDA 12.4%</span></div>
+              <div class="risk-val warn">Watch</div>
+            </div>
+            <div class="risk-row">
+              <div class="risk-name">Market beta <span class="det">· vs S&amp;P 500</span></div>
+              <div class="risk-val">1.12</div>
+            </div>
+            <div style="margin-top:18px;padding:14px;border-radius:8px;background:rgba(212,168,90,0.05);border:1px solid rgba(212,168,90,0.2);font-size:12px;line-height:1.55;color:var(--ink-dim)">
+              <b style="color:var(--gold)">Full pattern summary:</b>
+              Your portfolio is tilted toward AI and large-cap growth. Several holdings share the same sector drivers, so they can rise or fall together when those narratives dominate.
+            </div>
+          </div>
+
+          <div class="risk-card">
+            <p class="port-advanced-subtitle">Macro scenarios</p>
+            <div class="exp-bars">
+              <div class="exp-bar"><span class="exp-bar__lbl">Rates &amp; Fed</span><div class="exp-bar__track"><div class="exp-bar__fill" style="width:62%"></div></div><span class="exp-bar__pct">High</span></div>
+              <div class="exp-bar"><span class="exp-bar__lbl">AI capex cycle</span><div class="exp-bar__track"><div class="exp-bar__fill" style="width:78%"></div></div><span class="exp-bar__pct">High</span></div>
+              <div class="exp-bar"><span class="exp-bar__lbl">Oil shock</span><div class="exp-bar__track"><div class="exp-bar__fill" style="width:28%"></div></div><span class="exp-bar__pct">Low</span></div>
+            </div>
+            <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em;line-height:1.6">
+              Scenarios are historical factor proxies, not forecasts. Past relationships do not guarantee future behaviour.
+            </div>
+          </div>
+
+          <div class="risk-card pr-correlation-card">
+            <p class="port-advanced-subtitle">Correlation data</p>
+            <p class="pr-correlation-note">30-day rolling correlation map · available in production Advanced Analysis. Relationship Story above replaces this view for everyday portfolio insight.</p>
+            <div class="pr-correlation-placeholder" aria-hidden="true">
+              <span>NVDA</span><span>AMD</span><span>MSFT</span><span>AVGO</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="margin-top:20px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
+        <b style="color:var(--gold)">PORTFOLIO INTELLIGENCE - NOT ADVICE.</b> This preview uses mock quotes and relationship episodes. Production Portfolio is unchanged at <code>/#page-portfolio</code>.
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="/design-lab/portfolio-relationship-story/preview.js"></script>
+</body>
+</html>

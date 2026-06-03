@@ -26,14 +26,26 @@
     { "source": "/design-lab/experience-lab/intelligence-lens", "destination": "/design-lab/experience-lab/intelligence-lens/index.html" },
     { "source": "/design-lab/experience-lab/intelligence-stream", "destination": "/design-lab/experience-lab/intelligence-stream/index.html" },
     { "source": "/design-lab/experience-lab/narrative-engine", "destination": "/design-lab/experience-lab/narrative-engine/index.html" },
-    { "source": "/design-lab/briefing", "destination": "/design-lab/wheel-system/briefing/index.html" },
+    { "source": "/debug/market-data", "destination": "/debug/market-data/index.html" },
+    { "source": "/debug/portfolio-data", "destination": "/debug/portfolio-data/index.html" },
+    { "source": "/earnings", "destination": "/" },
+    { "source": "/design-lab/briefing", "destination": "/design-lab/briefing" },
     { "source": "/design-lab/wheel-system", "destination": "/design-lab/wheel-system/index.html" },
     { "source": "/design-lab/wheel-system/dashboard", "destination": "/design-lab/wheel-system/dashboard/index.html" },
     { "source": "/design-lab/wheel-system/movers", "destination": "/design-lab/wheel-system/movers/index.html" },
     { "source": "/design-lab/wheel-system/intelligence", "destination": "/design-lab/wheel-system/intelligence/index.html" },
-    { "source": "/design-lab/wheel-system/briefing", "destination": "/design-lab/wheel-system/briefing/index.html" }
+    { "source": "/design-lab/wheel-system/briefing", "destination": "/design-lab/wheel-system/briefing" },
+    { "source": "/design-lab/earnings-beginner", "destination": "/design-lab/earnings-beginner/index.html" }
   ],
   "headers": [
+    {
+      "source": "/",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/index.html",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
     {
       "source": "/preview/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
@@ -56,6 +68,18 @@
     },
     {
       "source": "/lib/portfolio-layout.js",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/lib/portfolio-relationship-story.js",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/design-lab/move-together/story/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/lib/portfolio-quotes.js",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
     },
     {
@@ -154,6 +178,27 @@
     },
     {
       "source": "/design-lab/wheel-system/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/design-lab/briefing",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/design-lab/earnings-beginner",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/design-lab/earnings-beginner/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }

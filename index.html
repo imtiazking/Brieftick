@@ -66,6 +66,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="brieftick-build" content="portfolio-relationship-20260603">
 <title>BriefTick - Markets, briefly.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3460,6 +3461,7 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/logic-nucleus-centre.css">
 <link rel="stylesheet" href="/styles/ticker-deep-dive.css">
 <link rel="stylesheet" href="/styles/portfolio-simplified.css">
+<link rel="stylesheet" href="/design-lab/move-together/story/story-embed.css">
 <link rel="stylesheet" href="/styles/dashboard-design-lab.css">
 <link rel="stylesheet" href="/styles/dashboard-rail-modules.css">
 <link rel="stylesheet" href="/styles/dashboard-movers-intel.css">
@@ -3474,15 +3476,20 @@ h1,h2,h3{
 <link rel="stylesheet" href="/design-lab/wheel-system/_wheel-briefing.css">
 <link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">
 <link rel="stylesheet" href="/styles/whats-moving-briefing.css">
+<link rel="stylesheet" href="/styles/earnings-beginner.css">
 <script type="module" src="/lib/ticker-deep-dive.bridge.js"></script>
 <script type="module" src="/lib/briefing-wheel.boot.js"></script>
+<script type="module" src="/lib/earnings-beginner.js"></script>
+<script src="/lib/earnings-route.js"></script>
 <script type="module" src="/lib/split-theme.bridge.js"></script>
 <script type="module" src="/lib/split-landing.bridge.js"></script>
 <script type="module" src="/lib/logic-cinematic.bridge.js"></script>
 <script type="module" src="/lib/portfolio-deep-dive.js"></script>
 <script type="module" src="/lib/scanner-deep-dive.js"></script>
 <script type="module" src="/lib/logic-deep-dive.js"></script>
+<script type="module" src="/lib/portfolio-quotes.js"></script>
 <script type="module" src="/lib/portfolio-layout.js"></script>
+<script type="module" src="/lib/portfolio-relationship-story.js"></script>
 <script type="module" src="/lib/dashboard-wheel.bridge.js"></script>
 </head>
 <body>
@@ -4116,332 +4123,90 @@ h1,h2,h3{
           <div class="briefing-rail__wheel">
             <div class="intel-wheel__viewport intel-wheel__viewport--vertical" id="whmWheelViewport" tabindex="0" aria-label="Briefing wheel"></div>
           </div>
-          <div class="briefing-snapshot" aria-label="Market snapshot">
-            <h2 class="briefing-snapshot__title">Market Snapshot</h2>
-            <ul class="briefing-snapshot__grid">
-              <li class="briefing-snapshot__row">
-                <span class="briefing-snapshot__name">S&amp;P 500</span>
-                <span class="briefing-snapshot__level">5,842.18</span>
-                <span class="briefing-snapshot__chg is-up">+0.62%</span>
-              </li>
-              <li class="briefing-snapshot__row">
-                <span class="briefing-snapshot__name">Nasdaq</span>
-                <span class="briefing-snapshot__level">18,412.44</span>
-                <span class="briefing-snapshot__chg is-up">+0.89%</span>
-              </li>
-              <li class="briefing-snapshot__row">
-                <span class="briefing-snapshot__name">Dow</span>
-                <span class="briefing-snapshot__level">42,156.70</span>
-                <span class="briefing-snapshot__chg is-up">+0.41%</span>
-              </li>
-              <li class="briefing-snapshot__row">
-                <span class="briefing-snapshot__name">VIX</span>
-                <span class="briefing-snapshot__level">14.82</span>
-                <span class="briefing-snapshot__chg is-dn">−3.2%</span>
-              </li>
-              <li class="briefing-snapshot__row">
-                <span class="briefing-snapshot__name">Oil (WTI)</span>
-                <span class="briefing-snapshot__level">$78.40</span>
-                <span class="briefing-snapshot__chg is-up">+0.8%</span>
-              </li>
-              <li class="briefing-snapshot__row">
-                <span class="briefing-snapshot__name">10Y Yield</span>
-                <span class="briefing-snapshot__level">4.28%</span>
-                <span class="briefing-snapshot__chg is-up">+2 bp</span>
-              </li>
-            </ul>
+          <div class="briefing-snapshot" aria-label="Market snapshot" data-market-snapshot>
+            <!-- Live rows injected by lib/market-snapshot.js -->
           </div>
         </aside>
         <div class="briefing-main" id="whmWheelEngine" aria-live="polite"></div>
       </div>
     </div>
-    <p class="wm-briefing-foot"><b style="color:var(--gold)">EDUCATIONAL ONLY.</b> Mock briefing data until live feed is wired. Tap a stock for Ticker Deep Dive. Not investment advice.</p>
+    <p class="wm-briefing-foot"><b style="color:var(--gold)">EDUCATIONAL ONLY.</b> Market snapshot uses live API quotes; briefing wheel copy may still be illustrative. Tap a stock for Ticker Deep Dive. Not investment advice.</p>
   </div>
 </section>
 
 <!-- Daily Brief (brief) and Why Markets Move (impact) retired — route() redirects both to What's Moving (why). -->
 
 <!-- ============================================================
-     EARNINGS INTELLIGENCE
+     EARNINGS
 ============================================================ -->
 <section class="page" id="page-earnings">
-  <div class="earn">
-    <div class="dash-header" style="margin-bottom:18px">
-      <div class="dash-title">
-        <h2>Earnings</h2>
-        <div class="meta">Live earnings calendar · market interpretation · impact mapping</div>
+  <div class="earn-v2">
+    <header class="earn-v2-hero">
+      <div>
+        <h1>Earnings</h1>
+        <p class="earn-v2-hero-sub">See who reports this week, why it matters, and what could move—without the jargon.</p>
       </div>
-      <div class="dash-controls">
-        <div class="live-badge">Live · ↻ 4s</div>
-        <div class="regime-badge">Q1 2026 Season · Wk 4 of 6</div>
+      <div class="earn-v2-hero-meta">
+        <span class="earn-v2-data-badge" id="earnDataBadge">Illustrative</span>
+        <span class="earn-v2-report-count" id="earnReportCount">— reports this week</span>
       </div>
-    </div>
+    </header>
 
-    <!-- API status banner -->
-    <div class="api-banner" id="earnApiBanner">
-      <div class="api-status-list">
-        <span style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase">Data sources:</span>
-        <div class="api-status" data-prov="finnhub"><span class="dot"></span><span>Finnhub</span></div>
-        <div class="api-status" data-prov="twelvedata"><span class="dot"></span><span>Twelve Data</span></div>
-        <div class="api-status" data-prov="alphavantage"><span class="dot"></span><span>Alpha Vantage</span></div>
-        <div class="api-status" data-prov="anthropic"><span class="dot"></span><span>Anthropic AI</span></div>
-      </div>
-      <button class="api-banner-cta" onclick="openSettings()">+ Connect Live Data</button>
-    </div>
+    <p class="earn-v2-disclosure" id="earnDataDisclosure">Illustrative earnings data — live earnings integration pending.</p>
 
-    <div class="earn-tabs">
-      <button class="earn-tab active" data-earn-tab="cal">Calendar</button>
-      <button class="earn-tab" data-earn-tab="live">Live Feed</button>
-      <button class="earn-tab" data-earn-tab="ai">Analysis</button>
-      <button class="earn-tab" data-earn-tab="impact">Related Impact</button>
-      <button class="earn-tab" data-earn-tab="guidance">Guidance</button>
-      <button class="earn-tab" data-earn-tab="risk">Portfolio Risk</button>
-    </div>
+    <nav class="earn-v2-tabs" aria-label="Earnings views">
+      <button type="button" class="earn-v2-tab is-active" data-earn-tab="cal">Calendar</button>
+      <button type="button" class="earn-v2-tab" data-earn-tab="ai">Analysis</button>
+    </nav>
 
-    <!-- ============== CALENDAR ============== -->
-    <div class="earn-section active" data-earn="cal">
-      <div class="cal-controls">
-        <div>
-          <div id="impSectionTitle" style="font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px">Most important earnings · this week</div>
-          <div id="impSectionSubtitle" style="font-size:13px;color:var(--ink-dim)">Ranked by expected market impact, implied volatility, and index weight.</div>
-        </div>
-        <div class="cal-filters">
-          <input class="earn-search" id="earnSearch" placeholder="Search ticker or company" autocomplete="off" spellcheck="false">
-          <button class="chip active" data-earn-filter="all">All sectors</button>
-          <button class="chip" data-earn-filter="Tech">Tech</button>
-          <button class="chip" data-earn-filter="Financials">Financials</button>
-          <button class="chip" data-earn-filter="Energy">Energy</button>
-          <button class="chip" data-earn-filter="Healthcare">Healthcare</button>
-          <button class="chip" data-earn-filter="mega">Mega cap</button>
-          <button class="chip" data-earn-filter="highiv">High IV</button>
-        </div>
+    <section class="earn-v2-section is-active" data-earn="cal" id="earnCalTab">
+      <div id="earnDetailHero" class="earn-v2-detail-hero" aria-live="polite"></div>
+
+      <div class="earn-v2-section-head earn-v2-section-head--tight">
+        <h2>This week's calendar</h2>
+        <p>Ticker · why it matters (sector theme) · impact. Hover a card for timing and expected move.</p>
       </div>
 
-      <div id="impQuietBanner" style="display:none;margin:0 0 16px;padding:12px 16px;background:rgba(212,168,90,0.06);border:1px solid rgba(212,168,90,0.2);border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:0.08em"></div>
-
-      <div class="imp-grid" id="impGrid"></div>
-
-      <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.14em;text-transform:uppercase;margin:24px 0 12px">Calendar · week view</div>
-      <div class="earn-workbench">
-        <div>
-          <div class="cal-grid" id="calGrid"></div>
-        </div>
-        <div class="earn-detail-card" id="earnDetail">
-          <div class="earn-detail-kicker">Earnings intelligence</div>
-          <div class="earn-detail-head">
-            <div>
-              <div class="earn-detail-sym">Select an event</div>
-              <div class="earn-detail-name">Click any calendar tile or top earnings card</div>
-            </div>
-          </div>
-          <div class="earn-watch-item">Select an earnings report to see expectations, impact score, related tickers, and what the market is watching.</div>
-        </div>
+      <div class="earn-v2-cal-scroll" id="earnCalScroll">
+        <div class="earn-v2-cal-grid" id="calGrid"></div>
       </div>
 
-      <div style="display:flex;gap:18px;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;margin-top:14px">
-        <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:rgba(78,168,255,0.25);border:1px solid rgba(78,168,255,0.4)"></i> BMO · Before market open</span>
-        <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:3px;background:rgba(212,168,90,0.25);border:1px solid rgba(212,168,90,0.4)"></i> AMC · After market close</span>
-        <span style="display:flex;align-items:center;gap:6px"><i style="width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red)"></i> High-impact event</span>
-      </div>
-    </div>
-
-    <!-- ============== LIVE FEED ============== -->
-    <div class="earn-section" data-earn="live">
-      <div class="live-grid">
-        <div>
-          <div class="live-result-card beat" id="liveResultCard">
-            <!-- populated by JS -->
-          </div>
-        </div>
-        <div>
-          <div class="cc-card">
-            <div class="cc-head">
-              <div class="cc-title">Conference Call · Live</div>
-              <div class="cc-status">Live · 24m elapsed</div>
-            </div>
-            <div style="font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:0.06em;margin-bottom:14px">NVDA Q1 2026 · 16 analysts on the line · Q&A starting</div>
-            <div class="cc-quote">
-              We are seeing continued enterprise AI infrastructure spending strength, with hyperscaler datacenter demand exceeding our prior outlook into Q2.
-              <span class="who">- CEO · 4 minutes ago</span>
-            </div>
-            <div class="cc-quote">
-              Sequential gross margin expansion of 80 basis points reflects favorable mix and cost efficiencies in our datacenter segment.
-              <span class="who">- CFO · 11 minutes ago</span>
-            </div>
-            <div class="cc-tags">
-              <span class="tag tech">AI infra</span>
-              <span class="tag bullish">Capex beat</span>
-              <span class="tag bullish">Margin expansion</span>
-              <span class="tag macro">Forward guide</span>
-            </div>
-          </div>
-        </div>
+      <div class="earn-v2-cal-legend">
+        <span><i style="width:10px;height:10px;border-radius:3px;background:rgba(78,168,255,0.3);display:inline-block"></i> Before open</span>
+        <span><i style="width:10px;height:10px;border-radius:3px;background:rgba(212,168,90,0.3);display:inline-block"></i> After close</span>
+        <span>Hover for timing · move · why it matters</span>
       </div>
 
-      <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.14em;text-transform:uppercase;margin:8px 0 12px">Earnings heatmap · today's reports</div>
-      <div class="panel" style="padding:18px">
-        <div class="eheat" id="earnHeat"></div>
+      <div class="earn-v2-section-head earn-v2-section-head--spaced">
+        <h2>Most important earnings</h2>
+        <p>Up to five reports likely to matter most—tap any card to focus.</p>
       </div>
 
-      <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.14em;text-transform:uppercase;margin:24px 0 12px">After-hours · pre-market reports</div>
-      <div class="panel" style="padding:18px">
-        <div id="ahFeed"></div>
-      </div>
-    </div>
-
-    <!-- ============== AI ANALYSIS ============== -->
-    <div class="earn-section" data-earn="ai">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-        <div class="lr-ai" style="margin-bottom:0">
-          <div class="lr-ai-head">
-            <div class="lr-ai-lbl">Brieftick · NVDA Beat Analysis</div>
-            <div class="lr-ai-conf">CONFIDENCE <b>91%</b></div>
-          </div>
-          <div class="lr-ai-text">
-            <b>NVIDIA exceeded analyst expectations</b> on both revenue and EPS, driven by stronger-than-expected AI datacenter demand. EPS of $5.18 came in 6.4% above the $4.87 consensus, while revenue of $32.4B beat by 4.2%. Critically, <b>guidance was raised</b> for next quarter - a signal that hyperscaler capex commitments remain durable into H2 2026. Datacenter segment grew 154% YoY; gaming was a slight drag. <b>Semiconductor and cloud infrastructure stocks are reacting positively</b> as investors interpret this as continued enterprise AI spending strength.
-          </div>
-        </div>
-
-        <div class="lr-ai" style="margin-bottom:0;background:linear-gradient(135deg,rgba(255,91,110,0.05),rgba(78,168,255,0.03));border-color:rgba(255,91,110,0.25)">
-          <div class="lr-ai-head">
-            <div class="lr-ai-lbl" style="color:var(--red)"><span style="background:var(--red);box-shadow:0 0 10px var(--red);width:6px;height:6px;border-radius:50%;display:inline-block"></span>Brieftick · TSLA Miss Analysis</div>
-            <div class="lr-ai-conf">CONFIDENCE <b style="color:var(--green)">84%</b></div>
-          </div>
-          <div class="lr-ai-text">
-            <b>Tesla missed on revenue</b>, with $24.8B vs the $25.6B consensus. EPS of $0.62 also below $0.71 expectations. Gross auto margin compressed by 240bp - the weakest in 7 quarters. Management cited <b>price competition in Europe and softer EV demand</b>. Forward guidance was withdrawn, citing macro uncertainty - historically a market-negative signal. <b>EV-sector sympathy weakness</b> spreading to LCID, RIVN, NIO; battery suppliers (PANW, ENS) drifting lower; charging infrastructure (CHPT, BLNK) under modest pressure.
-          </div>
-        </div>
+      <div class="earn-v2-controls">
+        <input class="earn-v2-search" id="earnSearch" type="search" placeholder="Search company or ticker" autocomplete="off" spellcheck="false">
+        <button type="button" class="earn-v2-chip is-active" data-earn-filter="all">All</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Tech">Tech</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Financials">Banks</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Energy">Energy</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="mega">Megacap</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="bigmove">Big expected moves</button>
       </div>
 
-      <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.14em;text-transform:uppercase;margin:18px 0 12px">Why-Markets-Move · cause attribution for tonight's reports</div>
-      <div class="panel" style="padding:18px">
-        <div id="whyMoveList"></div>
+      <div class="earn-v2-imp-grid" id="impGrid"></div>
+    </section>
+
+    <section class="earn-v2-section" data-earn="ai" id="earnAnalysisTab">
+      <div class="earn-v2-section-head">
+        <h2>What to know before the report</h2>
+        <p>Plain-English context for the company you selected on Calendar.</p>
       </div>
+      <div class="panel" id="earnAnalysisPanel" aria-live="polite"></div>
+    </section>
 
-      <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.14em;text-transform:uppercase;margin:24px 0 12px">Macro &amp; sentiment · cross-cuts</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-        <div class="panel" style="padding:18px">
-          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px">Rates context</div>
-          <div style="font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-0.02em;line-height:1">10Y · 4.42%</div>
-          <div style="font-family:var(--mono);font-size:11px;color:var(--red);margin-top:4px">+4bp on session</div>
-          <div style="font-size:12px;color:var(--ink-dim);line-height:1.5;margin-top:12px">Long-duration growth names face mechanical headwind. <b style="color:var(--ink)">NVDA's beat overcame this</b> - TSLA's miss was amplified by it.</div>
-        </div>
-        <div class="panel" style="padding:18px">
-          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px">Risk regime</div>
-          <div style="font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-0.02em;line-height:1;color:var(--amber)">Cautious</div>
-          <div style="font-family:var(--mono);font-size:11px;color:var(--ink-dim);margin-top:4px">VIX 22.4 · Risk-off tilt</div>
-          <div style="font-size:12px;color:var(--ink-dim);line-height:1.5;margin-top:12px">Beats are getting <b style="color:var(--ink)">muted reactions</b>; misses are getting <b style="color:var(--ink)">amplified reactions</b>. Classic late-cycle pattern.</div>
-        </div>
-        <div class="panel" style="padding:18px">
-          <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px">Sentiment shift</div>
-          <div style="font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-0.02em;line-height:1">AI: Bullish · cooling</div>
-          <div style="font-family:var(--mono);font-size:11px;color:var(--ink-dim);margin-top:4px">Score 71 · was 78 last week</div>
-          <div style="font-size:12px;color:var(--ink-dim);line-height:1.5;margin-top:12px">NVDA's strong print may <b style="color:var(--ink)">re-anchor positive AI sentiment</b> - but the cooling trend is real.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ============== RELATED IMPACT ============== -->
-    <div class="earn-section" data-earn="impact">
-      <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
-        <button class="chip active" onclick="loadImpactEngine('NVDA')">NVDA · beat</button>
-        <button class="chip" onclick="loadImpactEngine('TSLA')">TSLA · miss</button>
-        <button class="chip" onclick="loadImpactEngine('JPM')">JPM · beat</button>
-        <button class="chip" onclick="loadImpactEngine('NFLX')">NFLX · in-line</button>
-      </div>
-
-      <div class="imp-engine">
-        <div class="imp-engine-card">
-          <div class="imp-engine-head">
-            <h3 id="impWinTitle">Likely winners · NVDA beat</h3>
-            <span style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.1em">SYMPATHY +</span>
-          </div>
-          <div id="impWinners"></div>
-        </div>
-
-        <div class="imp-engine-card">
-          <div class="imp-engine-head">
-            <h3 id="impLoseTitle">Likely losers · NVDA beat</h3>
-            <span style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:0.1em">SYMPATHY −</span>
-          </div>
-          <div id="impLosers"></div>
-        </div>
-      </div>
-
-      <div class="imp-engine-card">
-        <div class="imp-engine-head">
-          <h3>Macro &amp; cross-asset reaction</h3>
-          <span style="font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.1em">CHAIN REACTION</span>
-        </div>
-        <div id="impMacro"></div>
-      </div>
-    </div>
-
-    <!-- ============== GUIDANCE ============== -->
-    <div class="earn-section" data-earn="guidance">
-      <div style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px">Guidance changes · last 24 hours</div>
-      <div class="guid-list" id="guidList"></div>
-    </div>
-
-    <!-- ============== PORTFOLIO RISK ============== -->
-    <div class="earn-section" data-earn="risk">
-      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:14px">
-        <div class="panel" style="padding:24px">
-          <div style="font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px">Earnings exposure · your portfolio</div>
-          <div style="font-size:13px;color:var(--ink-dim);line-height:1.55;margin-bottom:18px">14 holdings · 7 with earnings reports in the next 14 days. Combined index weight of upcoming reports = <b style="color:var(--gold)">38% of portfolio NAV</b>.</div>
-
-          <div class="exp-bars">
-            <div class="exp-bar"><div class="row"><span class="lbl">NVDA · reporting tonight</span><span class="val">12.4% NAV · IV 42%</span></div><div class="exp-track"><div class="exp-fill red" style="width:84%"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">META · reporting Thu</span><span class="val">9.1% NAV · IV 36%</span></div><div class="exp-track"><div class="exp-fill red" style="width:68%"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">MSFT · reporting Tue</span><span class="val">8.4% NAV · IV 28%</span></div><div class="exp-track"><div class="exp-fill" style="width:54%;background:linear-gradient(90deg,var(--amber),#ffce7a)"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">JPM · reported · beat</span><span class="val">4.2% NAV · settled</span></div><div class="exp-track"><div class="exp-fill" style="width:22%;background:linear-gradient(90deg,var(--green),#6ee7a8)"></div></div></div>
-            <div class="exp-bar"><div class="row"><span class="lbl">TSLA · reported · miss</span><span class="val">2.8% NAV · settled</span></div><div class="exp-track"><div class="exp-fill red" style="width:36%"></div></div></div>
-          </div>
-
-          <div style="margin-top:18px;padding:14px;border-radius:10px;background:rgba(255,91,110,0.05);border:1px solid rgba(255,91,110,0.2);font-size:13px;line-height:1.55;color:var(--ink-dim)">
-            <b style="color:var(--red)">Concentrated earnings risk:</b> three of your top-five positions report within 7 days. Combined 38% NAV exposure to earnings volatility. <b style="color:var(--ink)">This is observation, not advice.</b>
-          </div>
-        </div>
-
-        <div class="panel" style="padding:24px">
-          <div style="font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px">Detected risk patterns</div>
-          <div class="risk-row">
-            <div class="risk-name">AI infra earnings cluster<div class="det">NVDA + AMD + AVGO all report this week. Historically correlated reactions.</div></div>
-            <div class="risk-level high">High</div>
-          </div>
-          <div class="risk-row">
-            <div class="risk-name">Long-duration growth tilt<div class="det">Earnings reactions amplified by 10Y above 4.4%.</div></div>
-            <div class="risk-level high">High</div>
-          </div>
-          <div class="risk-row">
-            <div class="risk-name">Sector concentration · Tech 42%<div class="det">Earnings season impact disproportionately shapes portfolio path.</div></div>
-            <div class="risk-level med">Medium</div>
-          </div>
-          <div class="risk-row">
-            <div class="risk-name">Implied vol elevated<div class="det">Average IV across reporters = 34% · 78th percentile.</div></div>
-            <div class="risk-level med">Medium</div>
-          </div>
-          <div class="risk-row">
-            <div class="risk-name">Defensive ballast<div class="det">7.1% healthcare provides modest beta dampening.</div></div>
-            <div class="risk-level low">Low</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top:14px;padding:18px;border-radius:14px;background:rgba(212,168,90,0.04);border:1px solid rgba(212,168,90,0.2)">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:10px">Brieftick · Earnings Briefing</div>
-        <div style="font-size:14px;line-height:1.65;color:var(--ink)">
-          Your portfolio enters this earnings week with <b style="color:var(--gold-bright)">elevated event risk</b>: three of your top five positions report inside seven days, all clustered in long-duration growth. The macro setup - 10Y at 4.42%, VIX above 22 - means <b style="color:var(--gold-bright)">misses will be amplified and beats may be muted</b>. Historically, this combination of sector concentration and macro tone leads to wider intraday ranges and higher single-day NAV swings. Consider this a description of the path, not a prescription. <b style="color:var(--gold-bright)">Educational only - not advice.</b>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:24px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
-      <b style="color:var(--gold)">EDUCATIONAL CONTEXT ONLY.</b> Earnings interprets historical and current market data. Beat/miss outcomes, sympathy moves, and pattern matches are descriptions of statistical relationships - not forecasts. Signal confidence scores reflect model agreement, not predictive accuracy. Nothing in this section constitutes investment advice or a recommendation to buy, sell or hold any security. When connected to live data feeds (Polygon, Finnhub, FMP, Alpha Vantage, Twelve Data), data freshness depends on the API tier provisioned.
-    </div>
+    <p class="earn-v2-foot"><b>Educational only.</b> Not investment advice. Expected moves and impact tiers are illustrative models, not forecasts.</p>
   </div>
-</section>
 
+</section>
 <!-- Why Markets Move (impact) tab retired — route('impact') redirects to What's Moving (why); feed helpers kept for dashboard risk regime. -->
 
 <!-- ============================================================
@@ -4465,46 +4230,68 @@ h1,h2,h3{
     <span id="concentrationLabel" class="port-sr-only" aria-hidden="true">Analysing</span>
     <span id="portfolioDayChange" class="port-sr-only" aria-hidden="true">Calculating today...</span>
 
-    <!-- 1. Portfolio Health -->
-    <section class="port-section port-section--health" aria-labelledby="portHealthHeading">
-      <h3 class="port-section__title" id="portHealthHeading">Portfolio Health</h3>
-      <div class="port-health-grid">
-        <div class="port-health__main">
-          <div class="port-health__label">Diversification</div>
-          <div class="port-health__score" id="portHealthDiversification">—</div>
-          <div class="port-health__sublabel" id="portHealthDiversificationLabel">—</div>
+    <!-- Summary (beginner-first) -->
+    <section class="port-section port-section--summary" aria-labelledby="portSummaryHeading">
+      <h3 class="port-sr-only" id="portSummaryHeading">Portfolio summary</h3>
+      <div class="port-summary">
+        <div class="port-summary__main">
+          <div class="port-summary__label">Portfolio value</div>
+          <div class="port-summary__value" id="portSummaryValue">—</div>
+          <div class="port-summary__today" id="portSummaryToday">—</div>
         </div>
-        <div class="port-health__today">
-          <div class="port-health__label">Today</div>
-          <div class="port-health__today-val" id="portHealthToday">—</div>
+        <div class="port-summary-chips">
+          <div class="port-summary-chip">
+            <span class="lbl">Live quotes loaded</span>
+            <span class="val" id="portSummaryQuotes">—</span>
+          </div>
+          <div class="port-summary-chip">
+            <span class="lbl">Biggest holding</span>
+            <span class="val" id="portSummaryTopHolding">—</span>
+          </div>
+          <div class="port-summary-chip">
+            <span class="lbl">Biggest sector</span>
+            <span class="val" id="portSummaryTopSector">—</span>
+          </div>
+          <div class="port-summary-chip">
+            <span class="lbl">Risk level</span>
+            <span class="val port-summary-risk" id="portSummaryRisk">—</span>
+          </div>
         </div>
       </div>
-      <div class="port-health-meta">
-        <div class="port-health-chip">
-          <span class="lbl">Risk level</span>
-          <span class="val" id="portHealthRiskLevel">—</span>
-        </div>
-        <div class="port-health-chip">
-          <span class="lbl">Largest exposure</span>
-          <span class="val" id="portHealthLargestExposure">—</span>
-        </div>
-        <div class="port-health-chip">
-          <span class="lbl">Top holding</span>
-          <span class="val" id="portHealthTopHolding">—</span>
-        </div>
-      </div>
-      <p class="port-health-verdict" id="portHealthVerdict">Add holdings to see your portfolio health summary.</p>
     </section>
 
-    <!-- 2. Top Things To Know Today -->
-    <section class="port-section port-section--today" aria-labelledby="portTodayHeading">
-      <h3 class="port-section__title" id="portTodayHeading">Top Things To Know Today</h3>
-      <div class="port-today-insight" id="portTodayInsight">
-        <b>What we're seeing:</b> Add holdings to generate a plain-English summary.
+    <!-- Portfolio narrative -->
+    <section class="port-section port-section--story" aria-label="Portfolio story">
+      <article class="port-card port-card--story">
+        <h3 class="port-card__title">Portfolio Story</h3>
+        <p class="port-card__body" id="portCardStory">Add holdings and load live quotes to see a plain-English read on your portfolio.</p>
+      </article>
+    </section>
+
+    <!-- Plain-English insight cards -->
+    <section class="port-section port-section--cards" aria-label="Portfolio insights">
+      <div class="port-cards">
+        <article class="port-card">
+          <h3 class="port-card__title">What you own most</h3>
+          <p class="port-card__body" id="portCardOwn">Add holdings to see where your money is concentrated.</p>
+        </article>
+        <article class="port-card">
+          <h3 class="port-card__title">What's helping today</h3>
+          <p class="port-card__body" id="portCardHelping">Live day moves appear when quotes load.</p>
+        </article>
+        <article class="port-card">
+          <h3 class="port-card__title">What's hurting today</h3>
+          <p class="port-card__body" id="portCardHurting">We will highlight the biggest drags once quotes load.</p>
+        </article>
+        <article class="port-card">
+          <h3 class="port-card__title">Where your risk is</h3>
+          <p class="port-card__body" id="portCardRisk">Analyze your portfolio to see risk highlights.</p>
+        </article>
+        <article class="port-card">
+          <h3 class="port-card__title">What to watch</h3>
+          <p class="port-card__body" id="portCardWatch">We will surface the main things to keep an eye on here.</p>
+        </article>
       </div>
-      <ul class="port-today-list" id="portTodayRisks" aria-label="Top risk highlights"></ul>
-      <ul class="port-today-list" id="portTodayMovers" aria-label="Biggest movers today"></ul>
-      <p class="port-today-status" id="portTodayQuoteStatus">Analyze your portfolio to load quote status.</p>
     </section>
 
     <!-- 3. Holdings -->
@@ -4521,7 +4308,7 @@ h1,h2,h3{
         </div>
         <div class="portfolio-builder__intro">
           <h3>Build your portfolio</h3>
-          <p>Paste tickers with weights. BriefTick maps concentration, sectors, macro sensitivity, and correlations. Data stays in this browser.</p>
+          <p>Paste tickers with weights (one per line). BriefTick summarizes sectors and risk in plain English. Data stays in this browser.</p>
           <div class="portfolio-help">
             Format examples:<br>
             NVDA 12.4<br>
@@ -4541,17 +4328,29 @@ h1,h2,h3{
 
       <div class="port-holdings-card">
         <div class="holdings-table" id="holdingsTable"></div>
-        <p class="holdings-footnote">Day moves use live Twelve Data quotes when available; otherwise BriefTick uses local demo moves. Click a row or Deep Dive for ticker intelligence.</p>
+        <p class="holdings-footnote" id="holdingsFootnote">Day moves appear when live quotes load.</p>
       </div>
     </section>
 
-    <!-- 4. Advanced Analysis -->
+    <!-- 4. Why Your Stocks Move Together -->
+    <section class="port-section port-section--relationship" aria-labelledby="portRelationshipHeading">
+      <div class="port-relationship-intro">
+        <h3 class="port-section__title" id="portRelationshipHeading">Why Your Stocks Move Together</h3>
+        <p class="port-relationship-lead">Understand the common themes connecting your holdings.</p>
+      </div>
+      <div id="portRelationshipUnavailable" class="port-relationship-unavailable" hidden>
+        <p>Relationship insights are temporarily unavailable.</p>
+      </div>
+      <div id="relationshipStoryMount" class="port-relationship-mount" hidden aria-label="Why your stocks move together"></div>
+    </section>
+
+    <!-- 5. Advanced Analysis -->
     <section class="port-section port-section--advanced" aria-labelledby="portAdvancedHeading">
       <h3 class="port-sr-only" id="portAdvancedHeading">Advanced Analysis</h3>
       <button type="button" class="port-advanced-toggle" id="portAdvancedToggle" aria-expanded="false" aria-controls="portAdvancedPanel">
         <span>
           <span class="port-advanced-toggle__title">Advanced Analysis</span>
-          <span class="port-advanced-toggle__hint">Sector exposure, factor metrics, macro scenarios, and 30-day correlation map</span>
+          <span class="port-advanced-toggle__hint">Market sensitivity, volatility, sector exposure, scenario analysis, correlation map, and risk factors</span>
         </span>
         <span class="port-advanced-toggle__chevron" aria-hidden="true">▼</span>
       </button>
@@ -4572,9 +4371,9 @@ h1,h2,h3{
             </div>
           </div>
           <div class="port-stats">
-            <div class="port-stat"><div class="lbl">Beta proxy</div><div class="val" id="portStatBeta">-</div><div class="delta" id="portStatBetaDelta" style="color:var(--ink-dim)">Weighted by sector</div></div>
-            <div class="port-stat"><div class="lbl">Vol proxy</div><div class="val" id="portStatVol">-</div><div class="delta" id="portStatVolDelta" style="color:var(--ink-dim)">Historical estimate</div></div>
-            <div class="port-stat"><div class="lbl">Top 3 weight</div><div class="val" id="portStatTop3">-</div><div class="delta" id="portStatTop3Delta" style="color:var(--ink-dim)">Position concentration</div></div>
+            <div class="port-stat"><div class="lbl">Market sensitivity</div><div class="val" id="portStatBeta">-</div><div class="delta" id="portStatBetaDelta" style="color:var(--ink-dim)">Weighted by sector</div></div>
+            <div class="port-stat"><div class="lbl">Typical swing size</div><div class="val" id="portStatVol">-</div><div class="delta" id="portStatVolDelta" style="color:var(--ink-dim)">Historical estimate</div></div>
+            <div class="port-stat"><div class="lbl">Top holdings concentration</div><div class="val" id="portStatTop3">-</div><div class="delta" id="portStatTop3Delta" style="color:var(--ink-dim)">Position concentration</div></div>
             <div class="port-stat"><div class="lbl">Positions</div><div class="val" id="portStatPositions">-</div><div class="delta" id="portStatPositionsDelta" style="color:var(--ink-dim)">Normalised to 100%</div></div>
           </div>
         </div>
@@ -4593,7 +4392,7 @@ h1,h2,h3{
         </div>
 
         <div class="risk-card">
-          <p class="port-advanced-subtitle">Macro sensitivity map</p>
+          <p class="port-advanced-subtitle">What could affect your portfolio</p>
           <div class="exp-bars" id="macroSensitivityBars"></div>
           <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em;line-height:1.6">
             Scenarios are historical factor proxies, not forecasts. Past relationships do not guarantee future behaviour.
@@ -4602,7 +4401,7 @@ h1,h2,h3{
 
         <div class="risk-card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-            <p class="port-advanced-subtitle" style="margin:0">Correlation cluster · 30D live</p>
+            <p class="port-advanced-subtitle" style="margin:0">Correlation data · 30D</p>
             <div style="display:flex;align-items:center;gap:8px">
               <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:0.08em" id="portClusterStatus">Estimating…</span>
               <button type="button" onclick="liveRefreshPortfolioCluster()" title="Recalculate live correlations" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;color:var(--ink-dim);cursor:pointer;font-family:var(--mono);font-size:9px;padding:2px 6px;letter-spacing:0.06em" id="portClusterRefreshBtn">↻ Recalculate</button>
@@ -5510,6 +5309,9 @@ function route(name){
   }
   if(name === 'why' && typeof window.mountWhatsMovingBriefing === 'function'){
     requestAnimationFrame(()=>window.mountWhatsMovingBriefing());
+  }
+  if(name === 'earnings' && typeof window.mountEarningsPage === 'function'){
+    requestAnimationFrame(()=>window.mountEarningsPage());
   }
   window.scrollTo({top:0,behavior:'instant'});
   if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
@@ -6461,891 +6263,6 @@ async function liveRefreshSentimentFeed(force=false){
 }
 
 window.liveRefreshSentimentFeed = liveRefreshSentimentFeed;
-
-/* ============================================================
-   EARNINGS INTELLIGENCE
-   ----------------------------------------------------------------
-   Data shapes match common API responses (Polygon, Finnhub, FMP,
-   Alpha Vantage, Twelve Data). To go live, replace each loader's
-   mock return with a real API call. Search "// LIVE:" markers.
-============================================================ */
-
-/* Tab switching */
-document.querySelectorAll('.earn-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    const target=tab.dataset.earnTab;
-    document.querySelectorAll('.earn-tab').forEach(t=>t.classList.toggle('active',t===tab));
-    document.querySelectorAll('.earn-section').forEach(s=>s.classList.toggle('active',s.dataset.earn===target));
-  });
-});
-
-/* ---------- Most Important Earnings (calendar tab top) ---------- */
-const EARN_IMPACT_RANK = {
-  'NVDA':100,'MSFT':98,'AAPL':97,'GOOGL':95,'AMZN':94,'META':93,'TSLA':92,
-  'AVGO':88,'AMD':87,'NFLX':82,'JPM':80,'BAC':75,'XOM':74,'WMT':72,
-  'V':70,'MA':70,'UNH':68,'JNJ':66,'PG':62,'KO':58,'PEP':56,'COIN':55,
-  'GS':70,'C':68,'WFC':65,'CVX':70,'ABBV':62,'MRK':60,'PFE':54,
-  'INTC':58,'IBM':52,'CSCO':62,'ORCL':62,'CRM':60,'ADBE':62,'NOW':62,
-  'PYPL':52,'SQ':50,'BLK':62,'AXP':58,'COST':62,'NKE':56,'MCD':58,
-  'DIS':56,'CMCSA':52,'T':50,'VZ':50,'BKNG':58,'UBER':54,'ABNB':52,
-  'SBUX':50,'CAT':56,'BA':58,'GE':52,'F':46,'GM':46,'HD':56,'LOW':52,
-  'PLTR':54,'SNOW':54,'DDOG':50,'CRWD':52,'NET':48,'ZS':46,'OKTA':44,
-  'SNDK':40,'WDC':40,'MU':62,'ASML':62,'TSM':70,
-};
-function getImpact(sym){
-  return EARN_IMPACT_RANK[sym] ?? 30;
-}
-window.EARN_IMPACT_RANK = EARN_IMPACT_RANK;
-window.getImpact = getImpact;
-
-const EARN_META = {
-  NVDA:{name:'NVIDIA CORP', sector:'Tech', cap:'$3.18T', related:['AMD','AVGO','MU','SOXX'], watch:['Datacenter revenue growth and gross margin durability','Forward guidance for hyperscaler AI infrastructure demand','Management commentary on supply constraints and China exposure']},
-  MSFT:{name:'MICROSOFT', sector:'Tech', cap:'$3.42T', related:['GOOGL','AMZN','NVDA','QQQ'], watch:['Azure growth rate and AI workload contribution','Copilot monetisation vs infrastructure cost','Capital expenditure commentary']},
-  AAPL:{name:'APPLE INC', sector:'Tech', cap:'$3.32T', related:['QCOM','AVGO','SPY','QQQ'], watch:['iPhone demand and China revenue trend','Services margin resilience','Buyback and capital return update']},
-  GOOGL:{name:'ALPHABET INC', sector:'Tech', cap:'$2.15T', related:['META','MSFT','AMZN','QQQ'], watch:['Cloud growth and AI search monetisation','Ad pricing resilience','AI capex and margin trade-off']},
-  AMZN:{name:'AMAZON.COM', sector:'Tech', cap:'$2.05T', related:['MSFT','GOOGL','WMT','QQQ'], watch:['AWS growth re-acceleration','Retail margin and logistics cost trend','AI infrastructure capex guidance']},
-  META:{name:'META PLATFORMS', sector:'Tech', cap:'$1.46T', related:['GOOGL','SNAP','PINS','QQQ'], watch:['Ad revenue growth and Reels monetisation','AI capex trajectory','Reality Labs spending discipline']},
-  TSLA:{name:'TESLA', sector:'Consumer', cap:'$780B', related:['F','GM','RIVN','XLY'], watch:['Auto gross margin and price-cut commentary','Delivery outlook and demand elasticity','FSD/robotaxi timeline credibility']},
-  JPM:{name:'JPMORGAN', sector:'Financials', cap:'$590B', related:['BAC','C','XLF','GS'], watch:['Net interest income guidance','Credit quality and reserve build','Investment banking recovery']},
-  BAC:{name:'BANK OF AMERICA', sector:'Financials', cap:'$310B', related:['JPM','C','WFC','XLF'], watch:['Deposit costs and NII sensitivity','Consumer credit trend','Expense control']},
-  XOM:{name:'EXXON MOBIL', sector:'Energy', cap:'$480B', related:['CVX','XLE','USO','COP'], watch:['Upstream production and realised prices','Refining margin trend','Capital discipline and buyback cadence']},
-  CVX:{name:'CHEVRON', sector:'Energy', cap:'$300B', related:['XOM','XLE','USO','COP'], watch:['Permian output and project execution','Refining margins','Free cash flow sensitivity to crude']},
-  ABBV:{name:'ABBVIE', sector:'Healthcare', cap:'$300B', related:['PFE','MRK','XLV','JNJ'], watch:['Humira erosion pace','Immunology replacement product growth','Pipeline and acquisition integration']},
-  UNH:{name:'UNITEDHEALTH', sector:'Healthcare', cap:'$520B', related:['HUM','CI','XLV'], watch:['Medical cost ratio','Medicare Advantage commentary','Optum growth']},
-  SBUX:{name:'STARBUCKS', sector:'Consumer', cap:'$90B', related:['MCD','NKE','XLY'], watch:['US same-store sales trend','China recovery pace','Traffic vs pricing mix']},
-  UBER:{name:'UBER', sector:'Consumer', cap:'$160B', related:['ABNB','DASH','XLY'], watch:['Bookings growth and take rate','Mobility demand vs delivery margin','Free cash flow guidance']},
-  BKNG:{name:'BOOKING HOLDINGS', sector:'Consumer', cap:'$160B', related:['ABNB','EXPE','UBER'], watch:['Travel demand durability','Room-night growth','Europe and FX commentary']},
-  IBM:{name:'IBM', sector:'Tech', cap:'$170B', related:['ORCL','MSFT','QQQ'], watch:['Software growth and Red Hat trend','Consulting demand','AI bookings commentary']},
-  INTC:{name:'INTEL', sector:'Tech', cap:'$140B', related:['AMD','NVDA','SOXX'], watch:['Foundry losses and roadmap execution','PC/server demand','Gross margin recovery path']},
-  V:{name:'VISA', sector:'Financials', cap:'$560B', related:['MA','AXP','XLF'], watch:['Cross-border volume growth','Consumer spending resilience','Take-rate and margin trend']},
-  C:{name:'CITIGROUP', sector:'Financials', cap:'$120B', related:['JPM','BAC','XLF'], watch:['Restructuring progress','Credit costs','Capital return']},
-};
-
-const earnState = {filter:'all', search:'', events:[], selectedId:null, source:'demo'};
-
-const importantEarnings=[
-  {sym:'NVDA', name:'NVIDIA CORP', session:'amc', day:'Today', hours:6, mins:18,
-   epsExp:'$4.87', revExp:'$31.1B', iv:'42.6%', cap:'$3.18T', sector:'Tech', impact:'high'},
-  {sym:'MSFT', name:'MICROSOFT', session:'amc', day:'Tue', hours:28, mins:42,
-   epsExp:'$3.42', revExp:'$68.4B', iv:'28.1%', cap:'$3.42T', sector:'Tech', impact:'high'},
-  {sym:'META', name:'META PLATFORMS', session:'amc', day:'Thu', hours:74, mins:12,
-   epsExp:'$5.18', revExp:'$42.6B', iv:'36.4%', cap:'$1.46T', sector:'Tech', impact:'high'},
-  {sym:'AAPL', name:'APPLE INC', session:'amc', day:'Thu', hours:74, mins:12,
-   epsExp:'$1.62', revExp:'$94.2B', iv:'24.8%', cap:'$3.32T', sector:'Tech', impact:'high'},
-];
-function earnMeta(sym){
-  const base = EARN_META[sym] || {};
-  return {
-    name: base.name || sym,
-    sector: base.sector || (getImpact(sym) >= 70 ? 'Mega cap' : 'Other'),
-    cap: base.cap || '-',
-    related: base.related || ['SPY','QQQ'],
-    watch: base.watch || ['Revenue and margin guidance versus expectations','Management commentary on demand and macro sensitivity','Initial price reaction relative to implied move'],
-  };
-}
-function earnExpectedMove(event){
-  const raw = parseFloat(String(event.iv || '').replace('%',''));
-  if(!isNaN(raw)) return (raw * 0.18).toFixed(1) + '%';
-  const impact = event.impact || getImpact(event.sym);
-  return (Math.max(2.2, Math.min(8.8, impact / 13))).toFixed(1) + '%';
-}
-function earnEventId(event){ return `${event.sym}:${event.dateKey || event.day || ''}:${event.session || ''}`; }
-function makeEarnEvent({sym, name, session='amc', day='This week', dayIndex=null, dateKey='', epsExp='-', revExp='-', iv=null, cap=null, sector=null, source='demo', quarter='Q1', year='2026'}){
-  const meta = earnMeta(sym);
-  const impact = getImpact(sym);
-  return {sym, name:name || meta.name, session, day, dayIndex, dateKey, epsExp, revExp, iv:iv || `${Math.max(18, Math.min(48, impact * 0.45)).toFixed(1)}%`, cap:cap || meta.cap, sector:sector || meta.sector, impact, source, quarter, year, related:meta.related, watch:meta.watch};
-}
-function hydrateDemoEarnings(){
-  const importantBySym = Object.fromEntries(importantEarnings.map(e=>[e.sym,e]));
-  const events = [];
-  weekDays.forEach((label, dayIndex)=>{
-    (weekEarnings[dayIndex] || []).forEach(([sym, session])=>{
-      const imp = importantBySym[sym] || {};
-      events.push(makeEarnEvent({
-        sym, name: imp.name, session, day: `${label} ${weekDates[dayIndex]}`, dayIndex,
-        epsExp: imp.epsExp || '-', revExp: imp.revExp || '-', iv: imp.iv, cap: imp.cap, sector: imp.sector,
-      }));
-    });
-  });
-  earnState.events = events;
-  earnState.selectedId = events.find(e=>e.sym==='NVDA') ? earnEventId(events.find(e=>e.sym==='NVDA')) : earnEventId(events[0] || {});
-  earnState.source = 'demo';
-}
-function visibleEarnEvents(){
-  const q = earnState.search.trim().toUpperCase();
-  return earnState.events.filter(e=>{
-    if(q && !(e.sym.includes(q) || e.name.toUpperCase().includes(q))) return false;
-    const f = earnState.filter;
-    if(f === 'all') return true;
-    if(f === 'mega') return e.impact >= 70;
-    if(f === 'highiv') return parseFloat(e.iv) >= 34 || e.impact >= 80;
-    if(f === 'Tech') return e.sector === 'Tech';
-    if(f === 'Financials') return e.sector === 'Financials';
-    if(f === 'Energy') return e.sector === 'Energy';
-    if(f === 'Healthcare') return e.sector === 'Healthcare';
-    return true;
-  });
-}
-function renderImportant(){
-  const events = visibleEarnEvents().slice().sort((a,b)=>b.impact-a.impact).slice(0,4);
-  document.getElementById('impGrid').innerHTML=events.map(e=>`
-    <div class="imp-card" onclick="selectEarning('${e.sym}','${e.dateKey || e.day}','${e.session}')" style="cursor:pointer">
-      <div class="imp-head">
-        <div>
-          <div class="imp-sym">${e.sym}</div>
-          <div class="imp-name">${e.name}</div>
-        </div>
-        <div class="imp-session ${e.session}">${e.session==='bmo'?'Pre-market':'After-hours'}</div>
-      </div>
-      <div class="imp-countdown">
-        <div class="lbl">Reports · ${e.day}</div>
-        Impact ${e.impact}/100
-      </div>
-      <div class="imp-stats">
-        <div class="stat"><div class="lbl">EPS exp</div><div class="val">${e.epsExp}</div></div>
-        <div class="stat"><div class="lbl">Rev exp</div><div class="val">${e.revExp}</div></div>
-        <div class="stat"><div class="lbl">IV</div><div class="val">${e.iv}</div></div>
-        <div class="stat"><div class="lbl">Cap</div><div class="val">${e.cap}</div></div>
-      </div>
-      <div class="imp-iv"><span>Expected move</span><b>±${earnExpectedMove(e)}</b></div>
-      <div class="imp-actions">
-        <button class="imp-action" onclick="event.stopPropagation();addEarningToWatchlist('${e.sym}')">+ Watchlist</button>
-        <button class="imp-action" onclick="event.stopPropagation();openEarningWhy('${e.sym}')">Why?</button>
-      </div>
-    </div>`).join('');
-}
-
-/* ---------- Calendar grid (5-day work week + sat/sun) ---------- */
-const weekDays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-const weekDates=[11,12,13,14,15,16,17];
-const weekEarnings={
-  0:[['JPM','bmo',true],['BAC','bmo',false],['C','bmo',false]],
-  1:[['MSFT','amc',true],['GOOGL','amc',true],['AMD','amc',false],['SBUX','amc',false],['V','amc',false]],
-  2:[['TSLA','amc',true],['UBER','amc',false],['BKNG','amc',false],['IBM','amc',false]],
-  3:[['NVDA','amc',true],['META','amc',true],['AAPL','amc',true],['AMZN','amc',true],['INTC','amc',false]],
-  4:[['XOM','bmo',false],['CVX','bmo',false],['ABBV','bmo',false]],
-  5:[],
-  6:[]
-};
-function renderCalendar(){
-  const events = visibleEarnEvents();
-  let days;
-  if(earnState.source === 'live'){
-    const today = new Date(); today.setHours(0,0,0,0);
-    const localISO = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    days = Array.from({length:7},(_,i)=>{
-      const date = new Date(today.getTime()+i*86400000);
-      return {label:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][date.getDay()], date:date.getDate(), key:localISO(date), today:i===0};
-    });
-  } else {
-    days = weekDays.map((label,i)=>({label, date:weekDates[i], key:String(i), today:i===3}));
-  }
-  const html=days.map((d,i)=>{
-    const earns=earnState.source === 'live'
-      ? events.filter(e=>e.dateKey === d.key)
-      : events.filter(e=>e.dayIndex === i);
-    const isToday=d.today;
-    return `<div class="cal-day ${isToday?'today':''}">
-      <div class="cal-day-head">
-        <span>${d.label} ${d.date}</span>
-        ${earns.length>0?`<span class="cal-day-count">${earns.length} REPORT${earns.length>1?'S':''}</span>`:''}
-      </div>
-      ${earns.map(e=>`
-        <div class="cal-tile ${e.session} ${e.impact>=70?'high':''} ${earnState.selectedId===earnEventId(e)?'active':''}" onclick="selectEarning('${e.sym}','${e.dateKey || e.day}','${e.session}')">
-          <span class="sym">${e.sym}</span>
-          <span class="session">${e.session.toUpperCase()}</span>
-          <span class="score">Impact ${e.impact}</span>
-        </div>`).join('')}
-    </div>`;
-  }).join('');
-  document.getElementById('calGrid').innerHTML=html;
-}
-function renderEarningsDetail(){
-  const el = document.getElementById('earnDetail');
-  if(!el) return;
-  const visible = visibleEarnEvents();
-  if(!visible.length){
-    el.innerHTML = '<div class="earn-detail-kicker">Earnings intelligence</div><div class="earn-watch-item">No earnings events match the current filter or search.</div>';
-    return;
-  }
-  const selected = visible.find(e=>earnEventId(e)===earnState.selectedId) || visible[0];
-  if(!selected){
-    el.innerHTML = '<div class="earn-detail-kicker">Earnings intelligence</div><div class="earn-watch-item">No earnings events match the current filter.</div>';
-    return;
-  }
-  earnState.selectedId = earnEventId(selected);
-  const sessionLabel = selected.session === 'bmo' ? 'Before market open' : 'After market close';
-  el.innerHTML = `
-    <div class="earn-detail-kicker">${selected.source === 'live' ? 'Live Finnhub calendar' : 'Demo earnings intelligence'}</div>
-    <div class="earn-detail-head">
-      <div>
-        <div class="earn-detail-sym">${selected.sym}</div>
-        <div class="earn-detail-name">${selected.name} · ${selected.sector}</div>
-      </div>
-      <div class="earn-score">Impact ${selected.impact}/100</div>
-    </div>
-    <div class="earn-detail-grid">
-      <div class="earn-detail-metric"><div class="lbl">Reports</div><div class="val">${selected.day}</div></div>
-      <div class="earn-detail-metric"><div class="lbl">Session</div><div class="val">${sessionLabel}</div></div>
-      <div class="earn-detail-metric"><div class="lbl">EPS exp</div><div class="val">${selected.epsExp}</div></div>
-      <div class="earn-detail-metric"><div class="lbl">Rev exp</div><div class="val">${selected.revExp}</div></div>
-      <div class="earn-detail-metric"><div class="lbl">Implied move</div><div class="val">±${earnExpectedMove(selected)}</div></div>
-      <div class="earn-detail-metric"><div class="lbl">Market cap</div><div class="val">${selected.cap}</div></div>
-    </div>
-    <div class="earn-detail-kicker">What the market is watching</div>
-    <div class="earn-watch-list">${selected.watch.map(w=>`<div class="earn-watch-item"><b>Watch:</b> ${escapeHtml(w)}</div>`).join('')}</div>
-    <div class="earn-detail-kicker">Related tickers</div>
-    <div class="earn-related">${selected.related.map(s=>`<span>${escapeHtml(s)}</span>`).join('')}</div>
-    <div class="earn-watch-item"><b>Risk lens:</b> ${selected.impact >= 80 ? 'High-impact report likely to move related baskets and options positioning.' : selected.impact >= 55 ? 'Moderate market impact; watch guidance and post-report sympathy names.' : 'Lower index impact, but still relevant for single-name holders.'}</div>
-    <div class="earn-detail-actions">
-      <button class="imp-action" onclick="addEarningToWatchlist('${selected.sym}')">+ Add to Watchlist</button>
-      <button class="imp-action" onclick="openEarningWhy('${selected.sym}')">Why is it moving?</button>
-    </div>`;
-}
-function renderEarningsUI(){
-  const visible = visibleEarnEvents();
-  if(visible.length && !visible.some(e=>earnEventId(e)===earnState.selectedId)) earnState.selectedId = earnEventId(visible[0]);
-  renderImportant();
-  renderCalendar();
-  renderEarningsDetail();
-}
-function selectEarning(sym, dateKey, session){
-  const event = earnState.events.find(e=>e.sym===sym && String(e.dateKey || e.day)===String(dateKey) && e.session===session) || earnState.events.find(e=>e.sym===sym);
-  if(event) earnState.selectedId = earnEventId(event);
-  renderEarningsUI();
-}
-function addEarningToWatchlist(sym){
-  if(typeof addWatchlistSymbol === 'function') addWatchlistSymbol(sym);
-}
-function openEarningWhy(sym){
-  if(typeof openWhyFromWatchlist === 'function') openWhyFromWatchlist(sym);
-  else { route('why'); requestAnimationFrame(()=>loadWim(sym)); }
-}
-function setEarningsFilter(filter){
-  earnState.filter = filter || 'all';
-  document.querySelectorAll('[data-earn-filter]').forEach(btn=>btn.classList.toggle('active', btn.dataset.earnFilter === earnState.filter));
-  renderEarningsUI();
-}
-const earnSearchEl = document.getElementById('earnSearch');
-if(earnSearchEl){
-  earnSearchEl.addEventListener('input', e=>{
-    earnState.search = e.target.value || '';
-    renderEarningsUI();
-  });
-}
-document.querySelectorAll('[data-earn-filter]').forEach(btn=>{
-  btn.addEventListener('click', ()=>setEarningsFilter(btn.dataset.earnFilter));
-});
-window.selectEarning = selectEarning;
-window.addEarningToWatchlist = addEarningToWatchlist;
-window.openEarningWhy = openEarningWhy;
-window.setEarningsFilter = setEarningsFilter;
-hydrateDemoEarnings();
-renderEarningsUI();
-
-/* ---------- Live result card (NVDA beat) ---------- */
-function renderLiveResult(){
-  document.getElementById('liveResultCard').innerHTML=`
-    <div class="lr-head">
-      <div class="lr-sym-row">
-        <div>
-          <div class="lr-sym">NVDA</div>
-          <div class="lr-name">NVIDIA CORP · Q1 2026 Results</div>
-        </div>
-      </div>
-      <div class="lr-status beat">★ Beat · After-hours</div>
-    </div>
-
-    <div class="lr-grid">
-      <div class="lr-metric">
-        <div class="lbl">EPS</div>
-        <div class="val">$5.18</div>
-        <div class="delta up">+$0.31 vs $4.87 exp</div>
-      </div>
-      <div class="lr-metric">
-        <div class="lbl">Revenue</div>
-        <div class="val">$32.4B</div>
-        <div class="delta up">+$1.3B vs $31.1B exp</div>
-      </div>
-      <div class="lr-metric">
-        <div class="lbl">DC Revenue</div>
-        <div class="val">$24.6B</div>
-        <div class="delta up">+154% YoY</div>
-      </div>
-      <div class="lr-metric">
-        <div class="lbl">Gross margin</div>
-        <div class="val">78.4%</div>
-        <div class="delta up">+80bp QoQ</div>
-      </div>
-    </div>
-
-    <div class="lr-ai">
-      <div class="lr-ai-head">
-        <div class="lr-ai-lbl">Brieftick · Beat Interpretation</div>
-        <div class="lr-ai-conf">CONFIDENCE <b>91%</b></div>
-      </div>
-      <div class="lr-ai-text">
-        NVIDIA exceeded expectations on every key line, led by <b>datacenter revenue +154% YoY</b>. Crucially, <b>guidance was raised</b> for next quarter - the strongest signal possible that hyperscaler AI capex commitments are durable. Gross margin expansion of 80bp despite cost pressures suggests pricing power intact. After-hours trade <b>+4.8% on heavy volume</b>; sympathy bid for AMD, AVGO, MU, and the broader semiconductor complex. <b>Re-anchors the AI infrastructure narrative</b> after recent capex-pause concerns.
-      </div>
-    </div>
-
-    <div class="lr-meta">
-      <span><b>Released</b> 16:18 EDT</span>
-      <span><b>AH price</b> 510.84 <span style="color:var(--green)">+4.8%</span></span>
-      <span><b>Volume</b> 84.2M (RVol 2.4×)</span>
-      <span><b>Conf call</b> 17:00 EDT</span>
-    </div>
-  `;
-}
-renderLiveResult();
-
-/* ---------- Earnings heatmap ---------- */
-const heatEarnings=[
-  ['NVDA',+4.8],['MSFT',+0.6],['GOOGL',+1.2],['META',-0.2],['AAPL',+0.4],['AMZN',+1.8],['NFLX',-0.6],['ADBE',+0.8],
-  ['CRM',+1.1],['ORCL',+0.3],['INTC',-2.4],['AMD',+3.2],['AVGO',+2.8],['QCOM',+1.4],['MU',+2.1],['TXN',-0.4],
-  ['JPM',+0.7],['BAC',+0.4],['C',-0.2],['WFC',+0.6],['GS',+0.3],['MS',+0.1],['XOM',+1.6],['CVX',+1.4]
-];
-function renderHeat(){
-  function color(v){
-    const a=Math.min(Math.abs(v)/4,1);
-    if(v>=0) return `rgba(61,220,151, ${0.18+a*0.65})`;
-    return `rgba(255,91,110, ${0.18+a*0.65})`;
-  }
-  document.getElementById('earnHeat').innerHTML=heatEarnings.map(([s,v])=>`
-    <div class="eheat-cell" style="background:${color(v)}">
-      <div class="sym">${s}</div>
-      <div>
-        <div class="pct">${v>=0?'+':''}${v.toFixed(1)}%</div>
-        <div class="surp">${v>=0?'beat':'miss'}</div>
-      </div>
-    </div>`).join('');
-}
-renderHeat();
-
-/* ---------- After-hours / pre-market feed ---------- */
-const ahFeed=[
-  ['NVDA','15m','beat','+4.8%','EPS $5.18 vs $4.87 · DC +154% YoY · raised guide','strong'],
-  ['SNAP','42m','beat','+8.2%','EPS $0.18 vs $0.12 · DAUs beat · ad pricing recovery','strong'],
-  ['TSLA','1h','miss','-3.4%','EPS $0.62 vs $0.71 · auto margin -240bp · guidance withdrawn','weak'],
-  ['IBM','2h','in-line','+0.6%','EPS $3.42 in line · cloud +6% slight miss · steady FCF','neutral'],
-  ['SBUX','2h','miss','-2.8%','Comp sales -2% vs -0.4% exp · China weakness persists','weak'],
-];
-document.getElementById('ahFeed').innerHTML=ahFeed.map(([s,t,r,c,det])=>{
-  const cls=r==='beat'?'up':r==='miss'?'dn':'';
-  const color=r==='beat'?'var(--green)':r==='miss'?'var(--red)':'var(--ink-dim)';
-  const label=r==='beat'?'★ Beat':r==='miss'?'✗ Miss':'In-line';
-  return `<div class="mover">
-    <div class="sym" style="width:60px">${s}</div>
-    <div class="name" style="font-size:12px">${det}</div>
-    <div class="chg" style="color:${color};background:${color==='var(--green)'?'rgba(61,220,151,0.08)':color==='var(--red)'?'rgba(255,91,110,0.08)':'rgba(255,255,255,0.04)'};font-size:10px;letter-spacing:0.08em;text-transform:uppercase;width:auto;padding:3px 8px">${label}</div>
-    <div class="chg ${cls}">${c}</div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);width:48px;text-align:right">${t} ago</div>
-  </div>`;
-}).join('');
-
-/* ---------- Why-Markets-Move attribution list ---------- */
-const whyMoveList=[
-  ['NVDA','+4.8%','beat','Datacenter +154% YoY · raised guide','Pure earnings catalyst - fundamentals beat amplified by raised guidance.','EARNINGS · 92%'],
-  ['SOXX','+2.1%','sympathy','NVDA spillover · re-anchored AI narrative','Sector sympathy - direct read-through from NVDA datacenter strength.','SECTOR · 78%'],
-  ['TLT','-0.4%','macro','10Y yields rose 4bp on jobs print','Macroeconomic - rates moved on data, dragging long bonds.','MACRO · 81%'],
-  ['TSLA','-3.4%','miss','Auto margin compression · withdrawn guide','Earnings catalyst - guidance withdrawal historically negative signal.','EARNINGS · 89%'],
-  ['XOM','+1.6%','sentiment','Risk-off rotation + crude bid','Mixed driver - partly earnings beat, partly defensive rotation.','MIXED · 64%'],
-];
-document.getElementById('whyMoveList').innerHTML=whyMoveList.map(([s,c,kind,headline,exp,attr])=>{
-  const cls=parseFloat(c)>=0?'up':'dn';
-  const color=parseFloat(c)>=0?'var(--green)':'var(--red)';
-  return `<div class="imp-row" style="grid-template-columns:auto 1fr auto auto;padding:12px 0">
-    <div class="sym">${s}</div>
-    <div>
-      <div style="font-size:13px;font-weight:500;margin-bottom:3px">${headline}</div>
-      <div style="font-size:11px;color:var(--ink-dim);line-height:1.4">${exp}</div>
-    </div>
-    <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.1em;text-align:right;padding:3px 8px;border-radius:4px;background:rgba(212,168,90,0.06);border:1px solid rgba(212,168,90,0.2)">${attr}</div>
-    <div class="chg ${cls}" style="color:${color};font-family:var(--mono);font-weight:500;width:60px;text-align:right">${c}</div>
-  </div>`;
-}).join('');
-
-/* ---------- Related Impact Engine ---------- */
-const impactEngineDB={
-  'NVDA':{
-    title:'NVDA beat',
-    winners:[
-      ['AMD','+3.2%','AI infrastructure sympathy bid · datacenter read-across'],
-      ['AVGO','+2.8%','Networking/silicon for AI buildout · custom chip exposure'],
-      ['MU','+2.1%','HBM memory demand correlation with AI capex'],
-      ['SOXX','+2.4%','Sector ETF reflects basket strength on NVDA narrative'],
-      ['MSFT','+0.6%','Hyperscaler buyer of NVDA chips - capex commitment validated'],
-      ['ANET','+1.8%','Networking infrastructure for AI datacenters'],
-    ],
-    losers:[
-      ['INTC','-1.4%','Competitive pressure as NVDA dominance reaffirmed'],
-      ['TLT','-0.6%','Long bonds drift on risk-on rotation in tech'],
-      ['XLP','-0.3%','Defensive sectors fade as risk-on returns'],
-      ['VIX','-4.2%','Volatility crushes as event resolves favorably'],
-    ],
-    macro:[
-      ['QQQ','+0.8%','Tech-heavy index lifted by mega-cap AI bid'],
-      ['SPY','+0.4%','Modest broad-market support from tech sentiment'],
-      ['DXY','+0.1%','Dollar marginal bid on risk-on US asset rotation'],
-      ['Gold','-0.2%','Defensive haven softens slightly'],
-      ['10Y yield','+2bp','Risk-on flow modestly supports yields higher'],
-    ]
-  },
-  'TSLA':{
-    title:'TSLA miss',
-    winners:[
-      ['XLE','+1.2%','Oil sector strengthens on EV demand questions'],
-      ['F','+0.8%','Legacy auto with hybrid mix viewed defensively'],
-      ['GM','+0.6%','Hybrid strategy validated vs pure EV play'],
-      ['XOM','+1.6%','Crude bid on softer EV transition narrative'],
-    ],
-    losers:[
-      ['LCID','-1.8%','Pure-play EV sympathy weakness'],
-      ['RIVN','-1.4%','EV demand read-across to all pure-plays'],
-      ['NIO','-2.1%','Chinese EV exposure compounds general weakness'],
-      ['CHPT','-1.2%','Charging infrastructure tied to EV adoption pace'],
-      ['BLNK','-0.9%','Charging network demand softens with EV demand'],
-      ['PANW','-0.6%','Battery supplier indirectly exposed'],
-    ],
-    macro:[
-      ['XLY','-0.4%','Discretionary sector pressured by TSLA weight'],
-      ['SPY','-0.1%','Negligible index drag - TSLA sector-isolated'],
-      ['Crude','+0.8%','Slight bid on softer EV adoption assumption'],
-      ['Copper','-0.3%','Industrial metal softens on EV demand'],
-    ]
-  },
-  'JPM':{
-    title:'JPM beat',
-    winners:[
-      ['BAC','+1.2%','Bank sympathy on JPM NIM strength'],
-      ['C','+0.8%','Money-center bank read-across'],
-      ['WFC','+1.1%','Mortgage exposure benefits from rate environment'],
-      ['XLF','+0.9%','Sector ETF reflects financials strength'],
-      ['GS','+0.6%','Trading revenue read-across to investment banks'],
-    ],
-    losers:[
-      ['TLT','-0.3%','Long bonds soft on bank-positive rate narrative'],
-      ['Regional banks','-0.2%','Mixed - large banks favored over regionals'],
-    ],
-    macro:[
-      ['10Y yield','+3bp','Rates supportive for bank NIMs continues'],
-      ['DXY','+0.2%','Dollar firm on US bank strength'],
-      ['SPY','+0.2%','Modest broad support from financial sector'],
-    ]
-  },
-  'NFLX':{
-    title:'NFLX in-line',
-    winners:[
-      ['DIS','+0.4%','Streaming sector marginal bid on stable NFLX print'],
-      ['ROKU','+0.6%','Connected TV ecosystem tied to streaming health'],
-    ],
-    losers:[
-      ['PARA','-0.3%','Slight relative weakness vs NFLX execution'],
-      ['WBD','-0.2%','Subscale streaming exposure'],
-    ],
-    macro:[
-      ['XLC','+0.1%','Communication services sector neutral reaction'],
-      ['QQQ','flat','In-line earnings rarely move index'],
-    ]
-  }
-};
-function loadImpactEngine(sym){
-  document.querySelectorAll('[data-earn="impact"] .chip').forEach(c=>c.classList.toggle('active',c.textContent.startsWith(sym)));
-  const d=impactEngineDB[sym];
-  if(!d) return;
-  document.getElementById('impWinTitle').textContent=`Likely winners · ${d.title}`;
-  document.getElementById('impLoseTitle').textContent=`Likely losers · ${d.title}`;
-  document.getElementById('impWinners').innerHTML=d.winners.map(([s,c,r])=>`
-    <div class="imp-row">
-      <div class="sym">${s}</div>
-      <div class="reason">${r}</div>
-      <div class="chg up">${c}</div>
-      <div class="imp-link-icon">→</div>
-    </div>`).join('');
-  document.getElementById('impLosers').innerHTML=d.losers.map(([s,c,r])=>`
-    <div class="imp-row">
-      <div class="sym">${s}</div>
-      <div class="reason">${r}</div>
-      <div class="chg dn">${c}</div>
-      <div class="imp-link-icon">→</div>
-    </div>`).join('');
-  document.getElementById('impMacro').innerHTML=d.macro.map(([s,c,r])=>{
-    const isFlat=c.toLowerCase().includes('flat');
-    const isUp=!isFlat && (c.startsWith('+') || c.includes('+'));
-    const cls=isFlat?'':isUp?'up':'dn';
-    return `<div class="imp-row">
-      <div class="sym">${s}</div>
-      <div class="reason">${r}</div>
-      <div class="chg ${cls}" style="${isFlat?'color:var(--ink-dim);background:rgba(255,255,255,0.04)':''}">${c}</div>
-      <div class="imp-link-icon">→</div>
-    </div>`;
-  }).join('');
-}
-loadImpactEngine('NVDA');
-
-/* ---------- Guidance changes ---------- */
-const guidanceData=[
-  ['NVDA','Raised next-quarter revenue guide','Pre-announced datacenter strength persisting into Q2','$33B','$36B','up'],
-  ['TSLA','Withdrew full-year delivery guide','Cited macro uncertainty and pricing pressure','2.0M units','- withdrawn','dn'],
-  ['MSFT','Raised cloud revenue guide','Azure AI workloads continuing to scale','+22% YoY','+26% YoY','up'],
-  ['SBUX','Lowered comp sales guide','China region weakness persisting','+2-3%','+0-1%','dn'],
-  ['AVGO','Raised AI revenue guidance','Custom silicon ramp ahead of plan','$8B FY','$10B FY','up'],
-  ['INTC','Lowered foundry margin guide','Capex front-loading offsets near-term margins','12-14%','8-10%','dn'],
-];
-document.getElementById('guidList').innerHTML=guidanceData.map(([s,head,det,from,to,dir])=>`
-  <div class="guid-item">
-    <div class="guid-sym">${s}</div>
-    <div class="guid-content">
-      <div class="head">${head}</div>
-      <div class="det">${det}</div>
-    </div>
-    <div class="guid-arrow ${dir}">
-      <span class="from">${from}</span>
-      <span style="color:var(--ink-faint)">→</span>
-      <span class="to">${to}</span>
-    </div>
-  </div>`).join('');
-
-/* ---------- Initialise on first visit ---------- */
-let earnInit=false;
-document.querySelectorAll('.nav-link').forEach(l=>{
-  l.addEventListener('click',()=>{
-    if(l.dataset.route==='earnings' && !earnInit){
-      earnInit=true;
-      // Defer to let the page render first, then attempt live data
-      setTimeout(()=>{ liveRefreshEarnings(); }, 400);
-    }
-  });
-});
-
-// Also set the date immediately so it is correct even before user visits the page
-window.addEventListener('load', ()=>{ _briefSetCoverDate(); });
-
-/* ============================================================
-   LIVE EARNINGS RENDERING
-   ----------------------------------------------------------------
-   - Updates API status banner based on which keys are saved
-   - Pulls Finnhub earnings calendar for the next 7 days
-   - Re-renders #impGrid (most important) + #calGrid (week view)
-   - Falls back silently to mock data if Finnhub key absent or call fails
-============================================================ */
-function updateEarnApiBanner(){
-  const banner = document.getElementById('earnApiBanner');
-  if(!banner) return;
-  const keyMap = {
-    finnhub: BriefTickAPI.keys.finnhub,
-    twelvedata: BriefTickAPI.keys.twelvedata,
-    alphavantage: BriefTickAPI.keys.alphavantage,
-    anthropic: BriefTickAPI.keys.anthropic,
-  };
-  const labels = {
-    finnhub: 'Finnhub',
-    twelvedata: 'Twelve Data',
-    alphavantage: 'Alpha Vantage',
-    anthropic: 'Anthropic AI',
-  };
-  banner.querySelectorAll('.api-status').forEach(el=>{
-    const prov = el.dataset.prov;
-    const live = !!keyMap[prov];
-    const dot = el.querySelector('.dot');
-    const label = el.querySelector('span:last-child');
-    if(live){
-      el.style.borderColor = 'rgba(61,220,151,0.3)';
-      if(dot){
-        dot.style.background = 'var(--green)';
-        dot.style.boxShadow = '0 0 6px var(--green)';
-      }
-      if(label) label.textContent = labels[prov] + ' · live';
-      label.style.color = 'var(--green)';
-    } else {
-      if(label) label.textContent = labels[prov] + ' · demo';
-    }
-  });
-}
-
-// Format a Finnhub date (YYYY-MM-DD) to a friendly day label
-function formatEarnDay(dateStr){
-  // Parse YYYY-MM-DD as a local-midnight date so day-of-week math matches
-  // what the user sees on their calendar.
-  const [y,m,dd] = dateStr.split('-').map(Number);
-  const d = new Date(y, m-1, dd);
-  const today = new Date(); today.setHours(0,0,0,0);
-  const diffDays = Math.round((d - today) / 86400000);
-  if(diffDays === 0) return 'Today';
-  if(diffDays === 1) return 'Tomorrow';
-  if(diffDays < 7 && diffDays > 0){
-    return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
-  }
-  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-}
-
-// Build hours/minutes countdown to a date string + session
-function countdownTo(dateStr, hour){
-  // Parse as UTC explicitly - `new Date('2026-05-13T00:00:00')` is parsed as
-  // *local* time, which shifts the day for users east of UTC.
-  const target = new Date(dateStr+'T00:00:00Z');
-  // bmo ~ 8:00 ET (~13:00 UTC), amc ~ 16:30 ET (~20:30 UTC).
-  if(hour === 'bmo') target.setUTCHours(13,0);
-  else if(hour === 'amc') target.setUTCHours(20,30);
-  else target.setUTCHours(20,30);
-  const diffMs = target - new Date();
-  if(diffMs <= 0) return {hours:0, mins:0, past:true};
-  const hours = Math.floor(diffMs/3600000);
-  const mins = Math.floor((diffMs%3600000)/60000);
-  return {hours, mins, past:false};
-}
-
-// Fmt currency for revenue (Finnhub returns dollars)
-function fmtRevenue(v){
-  if(v == null || isNaN(v)) return '-';
-  if(v >= 1e9) return '$'+(v/1e9).toFixed(1)+'B';
-  if(v >= 1e6) return '$'+(v/1e6).toFixed(0)+'M';
-  return '$'+v.toFixed(0);
-}
-
-async function renderImportantLive(rawCal){
-  // Rank ALL real reports by impact score; show top 4
-  // Quiet weeks will surface mid-cap names - that's intentional and honest.
-  const candidates = rawCal
-    .filter(e => e.symbol)
-    .sort((a,b) => {
-      const impactDiff = getImpact(b.symbol) - getImpact(a.symbol);
-      if(impactDiff !== 0) return impactDiff;
-      // Tiebreak 1: prefer entries with EPS estimate (more complete data)
-      const aHas = a.epsEstimate != null ? 1 : 0;
-      const bHas = b.epsEstimate != null ? 1 : 0;
-      if(bHas !== aHas) return bHas - aHas;
-      // Tiebreak 2: prefer entries with revenue estimate
-      const aRev = a.revenueEstimate != null ? 1 : 0;
-      const bRev = b.revenueEstimate != null ? 1 : 0;
-      return bRev - aRev;
-    });
-  const ranked = candidates.slice(0,4);
-  if(ranked.length === 0) return false; // nothing useful - keep mock
-
-  // Honest framing: count the genuinely high-impact reports (mega/large-caps)
-  const highImpactCount = ranked.filter(e => getImpact(e.symbol) >= 60).length;
-  const titleEl = document.getElementById('impSectionTitle');
-  const subEl = document.getElementById('impSectionSubtitle');
-  const banner = document.getElementById('impQuietBanner');
-
-  if(highImpactCount >= 3){
-    // Plenty of mega-caps - original framing is honest
-    if(titleEl) titleEl.textContent = 'Most important earnings · this week';
-    if(subEl) subEl.textContent = 'Ranked by expected market impact, implied volatility, and index weight.';
-    if(banner) banner.style.display = 'none';
-  } else if(highImpactCount >= 1){
-    if(titleEl) titleEl.textContent = 'Earnings reports · this week';
-    if(subEl) subEl.textContent = 'Live calendar from Finnhub. Sorted by expected market impact.';
-    if(banner) banner.style.display = 'none';
-  } else {
-    // Quiet week - be honest about it
-    if(titleEl) titleEl.textContent = 'Earnings reports · this week';
-    if(subEl) subEl.textContent = 'Live calendar from Finnhub. Sorted by expected market impact.';
-    if(banner){
-      // Look ahead 7-21 days for the next mega-cap print
-      const nextBig = await findNextHighImpact();
-      let msg = '◆  Quiet earnings week - no S&P 100 reports scheduled.';
-      if(nextBig){
-        const day = formatEarnDay(nextBig.date);
-        msg += `  Next major print: <b style="color:var(--gold)">${nextBig.symbol}</b> · ${day} (${nextBig.date})`;
-      }
-      banner.innerHTML = msg;
-      banner.style.display = 'block';
-    }
-  }
-
-  // Pull live quotes for these symbols
-  const symbols = ranked.map(e=>e.symbol);
-  const quotes = await BriefTickAPI.getQuotes(symbols);
-
-  const html = ranked.map(e => {
-    const sym = e.symbol;
-    const impact = getImpact(sym);
-    const isHighImpact = impact >= 60;
-    const q = quotes[sym];
-    const cd = countdownTo(e.date, e.hour);
-    const day = formatEarnDay(e.date);
-    const session = (e.hour === 'bmo') ? 'bmo' : 'amc';
-    const sessionLabel = (e.hour === 'bmo') ? 'Pre-market' : 'After-hours';
-    const epsExp = e.epsEstimate != null ? '$'+Number(e.epsEstimate).toFixed(2) : '-';
-    const revExp = fmtRevenue(e.revenueEstimate);
-    const price = q?.price ? '$'+q.price.toFixed(2) : '-';
-    const pct = q?.pctChange != null ? (q.pctChange>=0?'+':'')+q.pctChange.toFixed(2)+'%' : '';
-    const pctColor = q?.pctChange >= 0 ? 'var(--green)' : 'var(--red)';
-    const impactBadge = isHighImpact
-      ? `<div class="imp-session" style="background:rgba(212,168,90,0.12);border:1px solid rgba(212,168,90,0.3);color:var(--gold)">High impact</div>`
-      : `<div class="imp-session ${session}">${sessionLabel}</div>`;
-    return `
-    <div class="imp-card">
-      <div class="imp-head">
-        <div>
-          <div class="imp-sym">${sym}</div>
-          <div class="imp-name">${q?.name || sym}</div>
-        </div>
-        ${impactBadge}
-      </div>
-      <div class="imp-countdown">
-        <div class="lbl">Reports · ${day} · ${sessionLabel}</div>
-        ${cd.past ? '<span style="color:var(--gold)">Reported</span>' : String(cd.hours).padStart(2,'0')+'h : '+String(cd.mins).padStart(2,'0')+'m'}
-      </div>
-      <div class="imp-stats">
-        <div class="stat"><div class="lbl">EPS exp</div><div class="val">${epsExp}</div></div>
-        <div class="stat"><div class="lbl">Rev exp</div><div class="val">${revExp}</div></div>
-        <div class="stat"><div class="lbl">Price</div><div class="val">${price}</div></div>
-        <div class="stat"><div class="lbl">Today</div><div class="val" style="color:${pctColor}">${pct||'-'}</div></div>
-      </div>
-      <div class="imp-iv"><span>Q${e.quarter} ${e.year} report</span><b style="color:var(--gold)">Live · Finnhub</b></div>
-      <div class="imp-actions">
-        <button class="imp-action">+ Watchlist</button>
-        <button class="imp-action">+ Alert</button>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('impGrid').innerHTML = html;
-  return true;
-}
-
-// Look ahead 7-21 days for the next high-impact (>= 60) earnings report.
-// Used for the quiet-week banner. Cached for an hour by getEarningsCalendar
-// but this widens the date range so needs its own call.
-async function findNextHighImpact(){
-  try {
-    const today = new Date();
-    const start = new Date(today.getTime() + 7*86400000);
-    const end = new Date(today.getTime() + 21*86400000);
-    const fromStr = start.toISOString().slice(0,10);
-    const toStr = end.toISOString().slice(0,10);
-    const cal = await BriefTickAPI.getEarningsCalendar(fromStr, toStr);
-    if(!cal || cal.length === 0) return null;
-    const sorted = cal
-      .filter(e => e.symbol && getImpact(e.symbol) >= 60)
-      .sort((a,b) => {
-        // Earlier date first
-        const dateDiff = a.date.localeCompare(b.date);
-        if(dateDiff !== 0) return dateDiff;
-        // Then highest impact
-        return getImpact(b.symbol) - getImpact(a.symbol);
-      });
-    return sorted[0] || null;
-  } catch(e){
-    console.warn('[earnings] findNextHighImpact failed:', e);
-    return null;
-  }
-}
-
-function renderCalendarLive(rawCal){
-  if(!rawCal || rawCal.length === 0) return false;
-  // Group by date; we want today + next 6 days (a 7-day window)
-  const today = new Date(); today.setHours(0,0,0,0);
-  const days = [];
-  // Build local YYYY-MM-DD string without going through UTC
-  const localISO = (d) => d.getFullYear()+'-'+
-    String(d.getMonth()+1).padStart(2,'0')+'-'+
-    String(d.getDate()).padStart(2,'0');
-  for(let i = 0; i < 7; i++){
-    const d = new Date(today.getTime() + i*86400000);
-    const iso = localISO(d);
-    days.push({ iso, label: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()], date: d.getDate(), reports: [] });
-  }
-  rawCal.forEach(e => {
-    const day = days.find(d => d.iso === e.date);
-    if(!day || !e.symbol) return;
-    day.reports.push({
-      sym: e.symbol,
-      session: (e.hour === 'bmo') ? 'bmo' : 'amc',
-      high: getImpact(e.symbol) >= 70,
-      impact: getImpact(e.symbol),
-    });
-  });
-  // Sort each day's reports by impact, cap at 8 to avoid overflow
-  days.forEach(d => {
-    d.reports.sort((a,b) => b.impact - a.impact);
-    d.overflow = Math.max(0, d.reports.length - 8);
-    d.reports = d.reports.slice(0, 8);
-  });
-
-  const html = days.map((d,i)=> `
-    <div class="cal-day ${i===0?'today':''}">
-      <div class="cal-day-head">
-        <span>${d.label} ${d.date}</span>
-        ${d.reports.length>0?`<span class="cal-day-count">${d.reports.length+d.overflow} REPORT${(d.reports.length+d.overflow)>1?'S':''}</span>`:''}
-      </div>
-      ${d.reports.map(r=>`
-        <div class="cal-tile ${r.session} ${r.high?'high':''}">
-          <span class="sym">${r.sym}</span>
-          <span class="cal-tile-session">${r.session.toUpperCase()}</span>
-        </div>`).join('')}
-      ${d.overflow>0?`<div style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);padding:6px 4px;letter-spacing:0.08em">+${d.overflow} more</div>`:''}
-    </div>`).join('');
-  document.getElementById('calGrid').innerHTML = html;
-  return true;
-}
-
-function normalizeLiveEarning(e){
-  const sym = e.symbol;
-  const meta = earnMeta(sym);
-  const session = (e.hour === 'bmo') ? 'bmo' : 'amc';
-  const day = formatEarnDay(e.date);
-  return makeEarnEvent({
-    sym,
-    name: e.name || meta.name,
-    session,
-    day,
-    dateKey: e.date,
-    epsExp: e.epsEstimate != null ? '$'+Number(e.epsEstimate).toFixed(2) : '-',
-    revExp: fmtRevenue(e.revenueEstimate),
-    iv: null,
-    cap: meta.cap,
-    sector: meta.sector,
-    source: 'live',
-    quarter: e.quarter ? 'Q'+e.quarter : 'Q?',
-    year: e.year || '',
-  });
-}
-function setLiveEarningsCalendar(rawCal){
-  const events = (rawCal || [])
-    .filter(e=>e && e.symbol && e.date)
-    .map(normalizeLiveEarning)
-    .sort((a,b)=>b.impact-a.impact);
-  if(!events.length) return false;
-  earnState.events = events;
-  earnState.source = 'live';
-  earnState.selectedId = earnEventId(events[0]);
-  renderEarningsUI();
-  return true;
-}
-
-async function liveRefreshEarnings(){
-  updateEarnApiBanner();
-  if(!BriefTickAPI.keys.finnhub){
-    // No Finnhub key - keep the existing mock UI
-    return;
-  }
-  try {
-    const cal = await BriefTickAPI.getEarningsCalendar();
-    if(!cal || cal.length === 0){
-      console.warn('[earnings] Finnhub returned empty calendar');
-      return;
-    }
-    const calendarOk = setLiveEarningsCalendar(cal);
-    if(calendarOk){
-      // Show a small confirmation that live data loaded
-      const banner = document.getElementById('earnApiBanner');
-      if(banner){
-        const meta = document.querySelector('#page-earnings .meta');
-        if(meta){
-          const count = cal.length;
-          meta.innerHTML = `CALENDAR · LIVE RESULTS · IMPACT MAPPING · <b style="color:var(--green)">${count} REPORTS THIS WEEK · LIVE</b>`;
-        }
-      }
-    }
-  } catch(e){
-    console.warn('[earnings] live refresh failed:', e);
-  }
-}
-
-window.liveRefreshEarnings = liveRefreshEarnings;
 
 /* ============================================================
    LIVE API INTEGRATION
@@ -10804,42 +9721,70 @@ function weightedMetric(holdings, key){
   return holdings.reduce((sum,h)=>sum+(getPortfolioMeta(h.symbol)[key] || 0) * h.weight / 100, 0);
 }
 
+function describeTopHoldingsShare(top3){
+  if(top3 >= 45) return 'nearly half';
+  if(top3 >= 38) return 'nearly two-fifths';
+  if(top3 >= 28) return 'nearly one-third';
+  if(top3 >= 22) return 'about one-quarter';
+  return formatPct(top3);
+}
+
+function describeTechnologyExposure(aiWeight){
+  if(aiWeight >= 45) return 'Almost half of your portfolio is linked to AI and technology companies.';
+  if(aiWeight >= 35) return `A large share (${formatPct(aiWeight)}) of your portfolio is linked to AI and technology companies.`;
+  if(aiWeight >= 20) return `About ${formatPct(aiWeight)} of your portfolio is linked to AI and technology companies.`;
+  return `Roughly ${formatPct(aiWeight)} of your portfolio touches AI or high-growth technology themes.`;
+}
+
+function describeMarketSensitivity(beta){
+  if(beta > 1.05){
+    const pct = Math.round((beta - 1) * 100);
+    return `Your portfolio typically moves around ${pct}% more than the broader market.`;
+  }
+  if(beta < 0.95){
+    const pct = Math.round((1 - beta) * 100);
+    return `Your portfolio typically moves around ${pct}% less than the broader market.`;
+  }
+  return 'Your portfolio usually moves in line with the broader market.';
+}
+
 function buildRiskRows(holdings, sectors, top3, concentrationScore){
   const rows = [];
   const largestSector = sectors[0] || ['Other', 0];
   const aiWeight = holdings.filter(h=>/AI infrastructure|Digital ads \/ AI/.test(getPortfolioMeta(h.symbol).theme)).reduce((sum,h)=>sum+h.weight,0);
-  const longDuration = holdings.reduce((sum,h)=>sum+Math.abs(Math.min(getPortfolioMeta(h.symbol).rates,0))*h.weight,0);
   const unknowns = holdings.filter(h=>getPortfolioMeta(h.symbol).sector === 'Other').map(h=>h.symbol);
 
   rows.push({
-    title:`${largestSector[0]} concentration`,
-    detail:`${largestSector[0]} is ${formatPct(largestSector[1])} of portfolio weight.`,
+    title:'Too much in one area',
+    detail:`${largestSector[0]} is ${formatPct(largestSector[1])} of your portfolio — the largest sector slice.`,
     level: largestSector[1] >= 40 ? 'high' : largestSector[1] >= 25 ? 'med' : 'low'
   });
   rows.push({
-    title:'Top-three position weight',
-    detail:`Top three holdings add up to ${formatPct(top3)} of portfolio weight.`,
+    title:'Top holdings concentration',
+    detail:`Your three largest positions make up ${describeTopHoldingsShare(top3)} of your portfolio.`,
     level: top3 >= 40 ? 'high' : top3 >= 28 ? 'med' : 'low'
   });
   rows.push({
-    title:'AI and long-duration factor',
-    detail:`AI-linked exposure is ${formatPct(aiWeight)}; rates sensitivity proxy is ${longDuration.toFixed(1)}.`,
-    level: aiWeight >= 28 || longDuration >= 50 ? 'high' : aiWeight >= 16 || longDuration >= 32 ? 'med' : 'low'
+    title:'Technology exposure',
+    detail: describeTechnologyExposure(aiWeight),
+    level: aiWeight >= 28 ? 'high' : aiWeight >= 16 ? 'med' : 'low'
   });
   rows.push({
-    title:'Single-name diversification',
-    detail:`${holdings.length} holdings detected; fewer holdings increases idiosyncratic move risk.`,
+    title:'Number of holdings',
+    detail:`You hold ${holdings.length} names — fewer holdings can mean bigger single-stock surprises.`,
     level: holdings.length < 6 ? 'high' : holdings.length < 10 ? 'med' : 'low'
   });
-  rows.push({
-    title:'Mapping coverage',
-    detail: unknowns.length ? `Unmapped holdings use conservative defaults: ${unknowns.slice(0,5).join(', ')}${unknowns.length>5?'...':''}.` : 'All holdings mapped to BriefTick sector/factor metadata.',
-    level: unknowns.length >= 4 ? 'med' : 'low'
-  });
+  if(unknowns.length){
+    rows.push({
+      title:'Some tickers use estimates',
+      detail:`We use conservative defaults for: ${unknowns.slice(0,5).join(', ')}${unknowns.length>5?'…':''}.`,
+      level: unknowns.length >= 4 ? 'med' : 'low'
+    });
+  }
   if(concentrationScore >= 8){
     rows.unshift({
-      title:'Portfolio concentration regime',
-      detail:'Multiple concentration signals are elevated at the same time.',
+      title:'Several risk signals at once',
+      detail:'Concentration looks elevated in more than one way — worth a closer look.',
       level:'high'
     });
   }
@@ -10863,11 +9808,33 @@ function renderExposureBars(targetId, entries, maxAbs){
   }).join('');
 }
 
+function holdingMoveCell(h, quotes){
+  const q = quotes && quotes[h.symbol];
+  const hasLive = q && !Number.isNaN(q.pctChange);
+  const move = hasLive ? q.pctChange : null;
+  const cls = move == null ? 'na' : move > 0.05 ? 'up' : move < -0.05 ? 'dn' : 'flat';
+  const moveText = move == null ? 'Live quote unavailable' : formatPct(move, true);
+  return { cls, moveText };
+}
+
+function updateHoldingRowQuote(symbol, quote){
+  const sym = String(symbol || '').toUpperCase();
+  const row = document.querySelector(`#holdingsTable .holding-row[data-symbol="${sym}"]`);
+  if(!row) return;
+  const moveEl = row.querySelector('.move');
+  if(!moveEl) return;
+  const hasLive = quote && !Number.isNaN(quote.pctChange);
+  const move = hasLive ? quote.pctChange : null;
+  const cls = move == null ? 'na' : move > 0.05 ? 'up' : move < -0.05 ? 'dn' : 'flat';
+  moveEl.className = 'move ' + cls;
+  moveEl.textContent = move == null ? 'Live quote unavailable' : formatPct(move, true);
+}
+
 function renderHoldingsTable(holdings, quotes){
   const el = document.getElementById('holdingsTable');
   if(!el) return;
   if(!holdings.length){
-    el.innerHTML = '<div class="portfolio-empty">Paste holdings above to build a watchlist.</div>';
+    el.innerHTML = '<div class="portfolio-empty">Paste holdings above to build your portfolio.</div>';
     return;
   }
   el.innerHTML = holdings
@@ -10875,15 +9842,12 @@ function renderHoldingsTable(holdings, quotes){
     .sort((a,b)=>b.weight-a.weight)
     .map(h=>{
       const meta = getPortfolioMeta(h.symbol);
-      const q = quotes && quotes[h.symbol];
-      const move = q && !isNaN(q.pctChange) ? q.pctChange : meta.demoMove;
-      const cls = move > 0.05 ? 'up' : move < -0.05 ? 'dn' : 'flat';
-      const liveMark = q ? 'live' : 'demo';
+      const { cls, moveText } = holdingMoveCell(h, quotes);
       return `<div class="holding-row" data-symbol="${escapeHtml(h.symbol)}" tabindex="0" role="button" aria-label="Open ${escapeHtml(h.symbol)} deep dive">
         <div class="sym">${escapeHtml(h.symbol)}</div>
-        <div class="sector">${escapeHtml(meta.sector)} · ${escapeHtml(meta.theme)}</div>
+        <div class="sector">${escapeHtml(meta.sector)}</div>
         <div class="weight">${formatPct(h.weight)}</div>
-        <div class="move ${cls}">${formatPct(move,true)} ${liveMark}</div>
+        <div class="move ${cls}">${moveText}</div>
         <button type="button" class="holding-row__deep-dive" data-action="portfolio-deep-dive">Deep Dive</button>
       </div>`;
     }).join('');
@@ -11306,7 +10270,10 @@ function renderPortfolioCluster(holdings, matrix){
     return;
   }
 
-  if(matrix) _portClusterMatrix = matrix;
+  if(matrix){
+    _portClusterMatrix = matrix;
+    window._portClusterMatrix = matrix;
+  }
   _portClusterHoldings = holdings;
 
   const sorted = holdings.slice().sort((a,b)=>b.weight-a.weight).slice(0,16);
@@ -11358,6 +10325,13 @@ function renderPortfolioCluster(holdings, matrix){
   _pc3d.raf = requestAnimationFrame(frame);
 }
 
+function syncPortfolioRelationshipFromCluster(){
+  const holdings = _portClusterHoldings.length ? _portClusterHoldings : [];
+  if(typeof window.__portfolioRelationshipSync === 'function'){
+    window.__portfolioRelationshipSync(holdings, _portClusterMatrix || null);
+  }
+}
+
 async function liveRefreshPortfolioCluster(){
   const btn = document.getElementById('portClusterRefreshBtn');
   const status = document.getElementById('portClusterStatus');
@@ -11366,11 +10340,16 @@ async function liveRefreshPortfolioCluster(){
   if(status) status.textContent = 'Fetching price history…';
 
   const holdings = _portClusterHoldings.length ? _portClusterHoldings : [];
-  if(!holdings.length){ if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; } return; }
+  if(!holdings.length){
+    syncPortfolioRelationshipFromCluster();
+    if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; }
+    return;
+  }
 
   if(!BriefTickAPI.keys.twelvedata){
     if(status) status.textContent = 'Estimated (no Twelve Data key)';
     renderPortfolioCluster(holdings, null);
+    syncPortfolioRelationshipFromCluster();
     if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; }
     return;
   }
@@ -11389,6 +10368,7 @@ async function liveRefreshPortfolioCluster(){
     if(available.length < 2){
       if(status) status.textContent = 'Insufficient data · estimated';
       renderPortfolioCluster(holdings, null);
+      syncPortfolioRelationshipFromCluster();
       if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; }
       return;
     }
@@ -11417,6 +10397,7 @@ async function liveRefreshPortfolioCluster(){
     if(status) status.textContent = 'Failed · estimated';
     renderPortfolioCluster(holdings, null);
   }
+  syncPortfolioRelationshipFromCluster();
   if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; }
 }
 window.liveRefreshPortfolioCluster = liveRefreshPortfolioCluster;
@@ -11430,22 +10411,44 @@ function renderPortfolio(holdings, quotes){
   const concentrationScore = Math.min(10, Math.max(1, (top3/8) + (largest/7) + (hhi/260)));
   const beta = weightedMetric(holdings,'beta');
   const vol = weightedMetric(holdings,'vol');
-  const dayMove = holdings.reduce((sum,h)=>{
-    const q = quotes && quotes[h.symbol];
-    const move = q && !isNaN(q.pctChange) ? q.pctChange : getPortfolioMeta(h.symbol).demoMove;
-    return sum + move * h.weight / 100;
-  },0);
-  const dayDollar = PORTFOLIO_NAV * dayMove / 100;
+  const liveCount = quotes ? holdings.filter(h=>{
+    const q = quotes[h.symbol];
+    return q && !Number.isNaN(q.pctChange);
+  }).length : 0;
+  const allQuotesLive = holdings.length > 0 && liveCount === holdings.length;
+  const hasLiveDay = liveCount > 0;
+  const dayMove = hasLiveDay
+    ? holdings.reduce((sum,h)=>{
+        const q = quotes && quotes[h.symbol];
+        if(!q || Number.isNaN(q.pctChange)) return sum;
+        return sum + q.pctChange * h.weight / 100;
+      },0)
+    : null;
+  const dayDollar = dayMove != null ? PORTFOLIO_NAV * dayMove / 100 : null;
   const scoreLabel = concentrationScore >= 7.5 ? 'Elevated' : concentrationScore >= 5 ? 'Moderate' : 'Diversified';
   const scoreColor = concentrationScore >= 7.5 ? 'var(--red)' : concentrationScore >= 5 ? 'var(--amber)' : 'var(--green)';
-  const liveCount = quotes ? holdings.filter(h=>quotes[h.symbol]).length : 0;
-
   const setText = (id, value) => { const el=document.getElementById(id); if(el) el.textContent=value; };
-  setText('portfolioValue', '$' + PORTFOLIO_NAV.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}));
+  const navStr = '$' + PORTFOLIO_NAV.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  setText('portfolioValue', navStr);
+  setText('portSummaryValue', navStr);
   const dayEl = document.getElementById('portfolioDayChange');
+  const summaryToday = document.getElementById('portSummaryToday');
+  const todayBase = hasLiveDay && dayMove != null && dayDollar != null
+    ? `Today: ${dayDollar >= 0 ? '+' : '-'}$${Math.abs(dayDollar).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} (${formatPct(dayMove,true)})`
+    : null;
+  const todayStr = !todayBase
+    ? "Today's move unavailable until live quotes load."
+    : allQuotesLive
+      ? todayBase
+      : `${todayBase} · Estimated from ${liveCount} of ${holdings.length} live quotes`;
+  const todayColor = hasLiveDay && dayMove != null ? (dayMove >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--ink-dim)';
   if(dayEl){
-    dayEl.textContent = `${dayDollar >= 0 ? '+' : '-'}$${Math.abs(dayDollar).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} (${formatPct(dayMove,true)}) today`;
-    dayEl.style.color = dayMove >= 0 ? 'var(--green)' : 'var(--red)';
+    dayEl.textContent = todayStr;
+    dayEl.style.color = todayColor;
+  }
+  if(summaryToday){
+    summaryToday.textContent = todayStr;
+    summaryToday.style.color = todayColor;
   }
   setText('concentrationScore', concentrationScore.toFixed(1) + ' / 10');
   setText('concentrationLabel', scoreLabel);
@@ -11457,15 +10460,37 @@ function renderPortfolio(holdings, quotes){
   setText('portStatVol', vol.toFixed(1) + '%');
   setText('portStatTop3', formatPct(top3));
   setText('portStatPositions', String(holdings.length));
-  setText('portStatBetaDelta', beta > 1.25 ? 'High beta tilt' : beta < 0.9 ? 'Defensive tilt' : 'Near market beta');
+  setText('portStatBetaDelta', describeMarketSensitivity(beta));
   setText('portStatVolDelta', vol > 32 ? 'Elevated' : vol > 23 ? 'Moderate' : 'Lower volatility');
-  setText('portStatTop3Delta', top3 > 40 ? 'Concentrated' : top3 > 28 ? 'Watchlist item' : 'Balanced');
+  setText('portStatTop3Delta', `Your three largest positions make up ${describeTopHoldingsShare(top3)} of your portfolio.`);
   setText('portStatPositionsDelta', holdings.length < 8 ? 'Few positions' : 'Normalised to 100%');
   setText('portfolioRegimeBadge', 'Diversification: ' + scoreLabel);
+  const quoteStatusLine = !holdings.length
+    ? ''
+    : liveCount === 0 && _portfolioQuotesLoading
+      ? 'Loading live quotes…'
+    : liveCount === 0
+      ? 'Some prices are unavailable right now.'
+      : `Live quotes loaded for ${liveCount} of ${holdings.length} holdings`;
   const status = document.getElementById('portfolioStatus');
-  if(status){
-    status.textContent = liveCount ? `Live quotes loaded for ${liveCount} of ${holdings.length} holdings.` : 'Using local factor map and demo moves. Connect Twelve Data for live day changes.';
-    status.className = 'portfolio-status ' + (liveCount ? 'live' : 'warn');
+  if(status) status.textContent = quoteStatusLine || 'Using sample portfolio until you save your own.';
+  const summaryQuotes = document.getElementById('portSummaryQuotes');
+  if(summaryQuotes){
+    if(!holdings.length) summaryQuotes.textContent = '—';
+    else if(_portfolioQuotesLoading && liveCount === 0) summaryQuotes.textContent = 'Loading…';
+    else summaryQuotes.textContent = `${liveCount} of ${holdings.length}`;
+    summaryQuotes.classList.toggle('port-summary-quotes--ok', allQuotesLive);
+    summaryQuotes.classList.toggle('port-summary-quotes--warn', holdings.length > 0 && !allQuotesLive && !_portfolioQuotesLoading);
+  }
+  const footnote = document.getElementById('holdingsFootnote');
+  if(footnote && holdings.length){
+    if(allQuotesLive){
+      footnote.textContent = 'Day moves are based on live delayed quotes. Use Deep Dive for more on any holding.';
+    } else if(!_portfolioQuotesLoading && liveCount < holdings.length){
+      footnote.textContent = 'Some day moves are unavailable because live quotes could not load.';
+    } else if(_portfolioQuotesLoading){
+      footnote.textContent = 'Loading live quotes for day moves…';
+    }
   }
 
   renderExposureBars('sectorExposureBars', sectors.map(([s,v])=>[s,v,sectorColors[s] || sectorColors.Other]), 100);
@@ -11489,7 +10514,13 @@ function renderPortfolio(holdings, quotes){
     </div>`).join('');
   }
   const largestSector = sectors[0] || ['Other',0];
-  setText('portfolioInsight', `${largestSector[0]} is the dominant exposure at ${formatPct(largestSector[1])}. The portfolio's top-three weight is ${formatPct(top3)}, with a beta proxy of ${beta.toFixed(2)} and estimated day move of ${formatPct(dayMove,true)}. This describes risk shape only; it is not a recommendation.`);
+  const topH = holdings.length ? [...holdings].sort((a,b)=>b.weight-a.weight)[0] : null;
+  const dayPart = hasLiveDay && dayMove != null
+    ? (allQuotesLive
+      ? `Estimated portfolio move today is about ${formatPct(dayMove,true)}.`
+      : `Estimated from ${liveCount} of ${holdings.length} live quotes: about ${formatPct(dayMove,true)} today.`)
+    : 'Today’s move needs live quotes.';
+  setText('portfolioInsight', `${largestSector[0]} is your biggest sector (${formatPct(largestSector[1])}). ${topH ? topH.symbol + ' is your largest holding (' + formatPct(topH.weight) + '). ' : ''}${dayPart} Educational context only — not advice.`);
   renderHoldingsTable(holdings, quotes);
   if (typeof window.__portfolioDeepDiveSync === "function") {
     window.__portfolioDeepDiveSync(holdings, quotes || {});
@@ -11500,10 +10531,50 @@ function renderPortfolio(holdings, quotes){
   _portClusterHoldings = holdings;
   window._portClusterHoldings = holdings;
   renderPortfolioCluster(holdings, _portClusterMatrix);
-  // Only recalculate live if we have Twelve Data and portfolio just changed
-  if(BriefTickAPI.keys && BriefTickAPI.keys.twelvedata){
+  if(typeof liveRefreshPortfolioCluster === 'function'){
     liveRefreshPortfolioCluster();
+  } else if(typeof window.__portfolioRelationshipSync === 'function'){
+    window.__portfolioRelationshipSync(holdings, _portClusterMatrix || null);
   }
+}
+
+let _portfolioQuoteSession = 0;
+let _portfolioLiveQuotes = {};
+let _portfolioQuoteHoldings = [];
+let _portfolioQuotesLoading = false;
+
+function startPortfolioLiveQuotes(holdings){
+  if(!holdings?.length || !window.BriefTickPortfolioQuotes?.loadPortfolioQuotes){
+    return;
+  }
+  const session = ++_portfolioQuoteSession;
+  _portfolioLiveQuotes = {};
+  _portfolioQuoteHoldings = holdings;
+  _portfolioQuotesLoading = true;
+  const summaryQuotes = document.getElementById('portSummaryQuotes');
+  if(summaryQuotes) summaryQuotes.textContent = 'Loading…';
+  const footnote = document.getElementById('holdingsFootnote');
+  if(footnote) footnote.textContent = 'Loading live quotes for day moves…';
+
+  window.BriefTickPortfolioQuotes.loadPortfolioQuotes(
+    holdings.map(h=>h.symbol),
+    (symbol, quote)=>{
+      if(session !== _portfolioQuoteSession) return;
+      _portfolioLiveQuotes[symbol] = quote;
+      updateHoldingRowQuote(symbol, quote);
+      renderPortfolio(_portfolioQuoteHoldings, { ..._portfolioLiveQuotes });
+    },
+    { isCancelled: () => session !== _portfolioQuoteSession }
+  )
+    .catch(e=>{
+      console.warn('[portfolio] live quote load failed:', e.message);
+    })
+    .finally(()=>{
+      if(session === _portfolioQuoteSession) _portfolioQuotesLoading = false;
+      if(session === _portfolioQuoteSession && _portfolioQuoteHoldings.length){
+        renderPortfolio(_portfolioQuoteHoldings, { ..._portfolioLiveQuotes });
+      }
+    });
 }
 
 async function refreshPortfolioAnalysis(text, persist=true){
@@ -11513,19 +10584,12 @@ async function refreshPortfolioAnalysis(text, persist=true){
   if(persist) savePortfolioText(raw);
   const holdings = parsePortfolioInput(raw);
   if(!holdings.length){
+    _portfolioQuoteSession++;
     renderPortfolio([], {});
     return;
   }
   renderPortfolio(holdings, null);
-  const portfolioVisible = document.getElementById('page-portfolio')?.classList.contains('active');
-  if(portfolioVisible && window.BriefTickAPI && BriefTickAPI.keys && BriefTickAPI.keys.twelvedata){
-    try{
-      const quotes = await BriefTickAPI.getQuotes(holdings.map(h=>h.symbol).slice(0, 8));
-      renderPortfolio(holdings, quotes);
-    }catch(e){
-      console.warn('[portfolio] live quote refresh failed:', e.message);
-    }
-  }
+  startPortfolioLiveQuotes(holdings);
 }
 
 function analyzePortfolioInput(){ refreshPortfolioAnalysis(null, true); }

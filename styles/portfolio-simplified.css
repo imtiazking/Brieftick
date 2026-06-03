@@ -6,6 +6,14 @@
   text-transform: none;
 }
 
+#page-portfolio .port-summary-quotes--ok {
+  color: var(--green);
+}
+
+#page-portfolio .port-summary-quotes--warn {
+  color: var(--amber);
+}
+
 #page-portfolio .port-header .dash-controls {
   display: none;
 }
@@ -25,6 +33,129 @@
   font-weight: 500;
   letter-spacing: -0.015em;
   margin: 0 0 16px;
+}
+
+.port-summary {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.port-summary__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.port-summary__value {
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.port-summary__today {
+  font-family: var(--mono);
+  font-size: 13px;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.port-summary-chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.port-summary-chip {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border);
+}
+
+.port-summary-chip .lbl {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.port-summary-chip .val {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.port-section--story {
+  margin-bottom: 12px;
+}
+
+.port-card--story {
+  padding: 20px 22px;
+}
+
+.port-card--story .port-card__body {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.port-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.port-card {
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+}
+
+.port-card__title {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+  font-weight: 500;
+}
+
+.port-card__body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+
+.port-summary-risk--high {
+  color: var(--red);
+}
+
+.port-summary-risk--med {
+  color: var(--amber);
+}
+
+.port-summary-risk--low {
+  color: var(--green);
+}
+
+#page-portfolio .holding-row .move.na {
+  color: var(--ink-faint);
+  font-size: 11px;
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
 }
 
 .port-health-grid {
@@ -162,6 +293,59 @@
 
 .port-holdings-head .port-section__title {
   margin: 0;
+}
+
+.port-section--relationship {
+  padding-top: 4px;
+}
+
+.port-relationship-intro {
+  margin-bottom: 16px;
+}
+
+.port-relationship-intro .port-section__title {
+  margin: 0 0 8px;
+  font-size: clamp(20px, 3vw, 24px);
+}
+
+.port-relationship-lead {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  max-width: 48ch;
+}
+
+.port-relationship-unavailable {
+  padding: 20px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.port-relationship-unavailable p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-dim);
+}
+
+.port-relationship-mount {
+  --text: var(--ink);
+  --text-soft: var(--ink-dim);
+  --muted: var(--ink-faint);
+  --gold: var(--gold-bright);
+}
+
+@media (max-width: 720px) {
+  .port-relationship-mount .rs-root--embed .rs-stage {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .port-relationship-mount .rs-root--embed .rs-narrative {
+    border-top: 1px solid var(--border);
+  }
 }
 
 .port-holdings-card {
@@ -312,6 +496,18 @@
 }
 
 @media (max-width: 768px) {
+  .port-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .port-summary-chips {
+    grid-template-columns: 1fr;
+  }
+
+  .port-cards {
+    grid-template-columns: 1fr;
+  }
+
   .port-health-grid {
     grid-template-columns: 1fr;
   }
