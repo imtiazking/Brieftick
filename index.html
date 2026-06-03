@@ -66,7 +66,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="brieftick-build" content="portfolio-relationship-20260607">
+<meta name="brieftick-build" content="portfolio-relationship-20260608">
 <title>BriefTick - Markets, briefly.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -4337,6 +4337,31 @@ h1,h2,h3{
       <div class="port-relationship-intro">
         <h3 class="port-section__title" id="portRelationshipHeading">Why Your Stocks Move Together</h3>
         <p class="port-relationship-lead">Understand the common themes connecting your holdings.</p>
+      </div>
+      <div class="pr-story-controls">
+        <div class="pr-ticker-bar">
+          <label class="pr-ticker-bar__label" for="tickerInput">Build a custom group</label>
+          <input
+            type="text"
+            id="tickerInput"
+            class="pr-ticker-input"
+            placeholder="Tesla, Nvidia, Apple — or NVDA, AMD, MSFT"
+            spellcheck="false"
+            autocomplete="off"
+            aria-describedby="tickerInputMessage resolverPicker"
+          />
+          <button type="button" class="pr-ticker-analyze" id="tickerAnalyzeBtn">Add / Analyze</button>
+        </div>
+        <p class="pr-ticker-msg" id="tickerInputMessage" role="status" aria-live="polite"></p>
+        <div class="pr-resolver-picker" id="resolverPicker" hidden>
+          <p class="pr-resolver-picker__title">Choose a match</p>
+          <p class="pr-resolver-picker__hint">Company names are resolved via search · cached for this session</p>
+          <div id="resolverPickerBody"></div>
+          <div class="pr-resolver-picker__actions">
+            <button type="button" class="pr-resolver-cancel" id="resolverPickerCancel">Cancel</button>
+            <button type="button" class="pr-resolver-confirm" id="resolverPickerConfirm">Continue</button>
+          </div>
+        </div>
       </div>
       <div id="portRelationshipUnavailable" class="port-relationship-unavailable" hidden>
         <p>Relationship insights are temporarily unavailable.</p>

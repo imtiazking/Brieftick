@@ -35,7 +35,15 @@
     { "source": "/design-lab/wheel-system/movers", "destination": "/design-lab/wheel-system/movers/index.html" },
     { "source": "/design-lab/wheel-system/intelligence", "destination": "/design-lab/wheel-system/intelligence/index.html" },
     { "source": "/design-lab/wheel-system/briefing", "destination": "/design-lab/wheel-system/briefing" },
-    { "source": "/design-lab/earnings-beginner", "destination": "/design-lab/earnings-beginner/index.html" }
+    { "source": "/design-lab/earnings-beginner", "destination": "/design-lab/earnings-beginner/index.html" },
+    { "source": "/design-lab/move-together", "destination": "/design-lab/move-together/index.html" },
+    { "source": "/design-lab/move-together/story", "destination": "/design-lab/move-together/story/index.html" },
+    { "source": "/design-lab/move-together/currents", "destination": "/design-lab/move-together/currents/index.html" },
+    { "source": "/design-lab/move-together/ecosystem", "destination": "/design-lab/move-together/ecosystem/index.html" },
+    { "source": "/design-lab/move-together/dna", "destination": "/design-lab/move-together/dna/index.html" },
+    { "source": "/design-lab/move-together/chamber", "destination": "/design-lab/move-together/chamber/index.html" },
+    { "source": "/design-lab/move-together/lens", "destination": "/design-lab/move-together/lens/index.html" },
+    { "source": "/design-lab/portfolio-relationship-story", "destination": "/design-lab/portfolio-relationship-story/index.html" }
   ],
   "headers": [
     {
@@ -72,6 +80,10 @@
     },
     {
       "source": "/lib/portfolio-relationship-story.js",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/lib/portfolio-relationship-custom-group.js",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
     },
     {
