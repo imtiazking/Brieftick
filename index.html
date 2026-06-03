@@ -66,7 +66,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="brieftick-build" content="portfolio-relationship-20260604">
+<meta name="brieftick-build" content="portfolio-relationship-20260605">
 <title>BriefTick - Markets, briefly.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -4341,7 +4341,9 @@ h1,h2,h3{
       <div id="portRelationshipUnavailable" class="port-relationship-unavailable" hidden>
         <p>Relationship insights are temporarily unavailable.</p>
       </div>
-      <div id="relationshipStoryMount" class="port-relationship-mount" aria-label="Why your stocks move together"></div>
+      <div id="relationshipStoryMount" class="port-relationship-mount" aria-label="Why your stocks move together">
+        <p class="port-relationship-mount__probe" data-rs-probe>RELATIONSHIP STORY TEST</p>
+      </div>
     </section>
 
     <!-- 5. Advanced Analysis -->
@@ -9672,6 +9674,7 @@ function getPortfolioMeta(symbol){
     demoMove:0
   };
 }
+window.getPortfolioMeta = getPortfolioMeta;
 
 function parsePortfolioInput(text){
   const rows = String(text||'').split(/\n|;/).map(line=>line.trim()).filter(Boolean);

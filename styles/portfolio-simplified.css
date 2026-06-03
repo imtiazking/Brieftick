@@ -340,16 +340,59 @@
   --gold: var(--gold-bright);
 }
 
-.port-relationship-mount.is-empty {
-  display: none;
+.port-relationship-mount__probe {
+  margin: 0;
+  padding: 24px 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  border: 1px dashed rgba(212, 168, 90, 0.35);
+  border-radius: 10px;
+  background: rgba(212, 168, 90, 0.06);
+}
+
+.port-relationship-mount.is-empty:not(:has(.rs-root)) {
+  min-height: 48px;
+}
+
+.port-relationship-fallback {
+  padding: 20px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 91, 110, 0.35);
+  background: rgba(255, 91, 110, 0.06);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-dim);
+}
+
+.port-relationship-fallback__title {
+  margin: 0 0 8px;
+  font-family: var(--display);
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.port-relationship-fallback__detail,
+.port-relationship-fallback__meta,
+.port-relationship-fallback__hint {
+  margin: 0 0 8px;
+}
+
+.port-relationship-fallback__hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
 }
 
 .port-relationship-mount .rs-root--embed .rs-stage {
   min-height: min(520px, 62vh);
 }
 
-.port-relationship-section.is-unavailable .port-relationship-mount {
-  display: none;
+.port-relationship-section.is-unavailable .port-relationship-mount:not(.is-ready) {
+  display: block;
 }
 
 @media (max-width: 720px) {
