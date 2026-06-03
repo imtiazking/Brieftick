@@ -565,6 +565,64 @@
   min-height: 48px;
 }
 
+.port-relationship-mount.is-loading {
+  min-height: min(420px, 52vh);
+}
+
+.port-relationship-skeleton {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 34%);
+  gap: 20px;
+  padding: 28px 22px 32px;
+  min-height: min(400px, 50vh);
+  align-items: center;
+}
+
+.port-relationship-skeleton__hero,
+.port-relationship-skeleton__panel {
+  border-radius: 12px;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.04) 8%,
+    rgba(255, 255, 255, 0.09) 18%,
+    rgba(255, 255, 255, 0.04) 33%
+  );
+  background-size: 200% 100%;
+  animation: port-relationship-shimmer 1.4s ease-in-out infinite;
+}
+
+.port-relationship-skeleton__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.port-relationship-skeleton__hero {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+}
+
+.port-relationship-skeleton__panel {
+  min-height: 220px;
+}
+
+@keyframes port-relationship-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .port-relationship-skeleton {
+    grid-template-columns: 1fr;
+  }
+}
+
 .port-relationship-fallback {
   padding: 20px 18px;
   border-radius: 12px;

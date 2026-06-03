@@ -126,6 +126,16 @@ function labelName(sym, episode) {
   return episode?.symbolNames?.[sym] || displayName(sym);
 }
 
+/** Stable key for skip-replay updates (hero + relatives + source). */
+function episodeSignature(ep) {
+  if (!ep) return "";
+  return `${ep.source || "preset"}:${ep.hero}:${(ep.relatives || []).join(",")}`;
+}
+
+function episodesListSignature(list) {
+  return list.map(episodeSignature).join("|");
+}
+
 /**
  * @param {HTMLElement} host
  * @param {{ episodes?: typeof DEFAULT_EPISODES, layout?: 'fullscreen' | 'embed', defaultEpisode?: number, hidePicker?: boolean, onEpisodeChange?: (episode: typeof DEFAULT_EPISODES[0]) => void }} [options]
@@ -336,12 +346,31 @@ export function mountRelationshipStory(host, options = {}) {
 
   /**
    * @param {typeof DEFAULT_EPISODES} nextEpisodes
-   * @param {{ playIndex?: number }} [opts]
+   * @param {{ playIndex?: number, force?: boolean }} [opts]
    */
   function setEpisodes(nextEpisodes, opts = {}) {
+    const idx = Math.min(
+      Math.max(0, opts.playIndex ?? episodeIdx),
+      Math.max(0, nextEpisodes.length - 1)
+    );
+    const force = opts.force === true;
+    const nextActive = nextEpisodes[idx];
+    const listChanged =
+      episodesListSignature(nextEpisodes) !== episodesListSignature(episodes);
+    const sameActive =
+      !force &&
+      !listChanged &&
+      idx === episodeIdx &&
+      episodeSignature(nextActive) === episodeSignature(episodes[episodeIdx]);
+
     episodes = [...nextEpisodes];
-    const idx = opts.playIndex ?? Math.max(0, episodes.length - 1);
     defaultEpisode = idx;
+    renderPicker(idx);
+
+    if (sameActive) {
+      return episodes[episodeIdx];
+    }
+
     playEpisode(idx);
     return episodes[episodeIdx];
   }
