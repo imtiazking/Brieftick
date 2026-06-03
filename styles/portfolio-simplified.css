@@ -295,8 +295,10 @@
   margin: 0;
 }
 
-.port-section--relationship {
+.port-section--relationship,
+.port-relationship-section {
   padding-top: 4px;
+  overflow: hidden;
 }
 
 .port-relationship-intro {
@@ -331,13 +333,30 @@
 }
 
 .port-relationship-mount {
+  margin: 0 -22px -8px;
   --text: var(--ink);
   --text-soft: var(--ink-dim);
   --muted: var(--ink-faint);
   --gold: var(--gold-bright);
 }
 
+.port-relationship-mount.is-empty {
+  display: none;
+}
+
+.port-relationship-mount .rs-root--embed .rs-stage {
+  min-height: min(520px, 62vh);
+}
+
+.port-relationship-section.is-unavailable .port-relationship-mount {
+  display: none;
+}
+
 @media (max-width: 720px) {
+  .port-relationship-mount {
+    margin: 0 -16px -8px;
+  }
+
   .port-relationship-mount .rs-root--embed .rs-stage {
     grid-template-columns: 1fr;
     min-height: auto;

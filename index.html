@@ -66,7 +66,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="brieftick-build" content="portfolio-relationship-20260603">
+<meta name="brieftick-build" content="portfolio-relationship-20260604">
 <title>BriefTick - Markets, briefly.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -4333,7 +4333,7 @@ h1,h2,h3{
     </section>
 
     <!-- 4. Why Your Stocks Move Together -->
-    <section class="port-section port-section--relationship" aria-labelledby="portRelationshipHeading">
+    <section class="port-section port-section--relationship port-relationship-section" aria-labelledby="portRelationshipHeading">
       <div class="port-relationship-intro">
         <h3 class="port-section__title" id="portRelationshipHeading">Why Your Stocks Move Together</h3>
         <p class="port-relationship-lead">Understand the common themes connecting your holdings.</p>
@@ -4341,7 +4341,7 @@ h1,h2,h3{
       <div id="portRelationshipUnavailable" class="port-relationship-unavailable" hidden>
         <p>Relationship insights are temporarily unavailable.</p>
       </div>
-      <div id="relationshipStoryMount" class="port-relationship-mount" hidden aria-label="Why your stocks move together"></div>
+      <div id="relationshipStoryMount" class="port-relationship-mount" aria-label="Why your stocks move together"></div>
     </section>
 
     <!-- 5. Advanced Analysis -->
@@ -10327,9 +10327,12 @@ function renderPortfolioCluster(holdings, matrix){
 
 function syncPortfolioRelationshipFromCluster(){
   const holdings = _portClusterHoldings.length ? _portClusterHoldings : [];
+  const matrix = _portClusterMatrix || null;
   if(typeof window.__portfolioRelationshipSync === 'function'){
-    window.__portfolioRelationshipSync(holdings, _portClusterMatrix || null);
+    window.__portfolioRelationshipSync(holdings, matrix);
+    return;
   }
+  window.__portfolioRelationshipPending = { holdings, matrix };
 }
 
 async function liveRefreshPortfolioCluster(){
@@ -10531,10 +10534,9 @@ function renderPortfolio(holdings, quotes){
   _portClusterHoldings = holdings;
   window._portClusterHoldings = holdings;
   renderPortfolioCluster(holdings, _portClusterMatrix);
+  syncPortfolioRelationshipFromCluster();
   if(typeof liveRefreshPortfolioCluster === 'function'){
     liveRefreshPortfolioCluster();
-  } else if(typeof window.__portfolioRelationshipSync === 'function'){
-    window.__portfolioRelationshipSync(holdings, _portClusterMatrix || null);
   }
 }
 
