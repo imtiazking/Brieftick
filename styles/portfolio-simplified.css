@@ -391,6 +391,18 @@
   min-height: min(520px, 62vh);
 }
 
+.port-relationship-mount--three .rs-root--embed .rs-stage {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 36%);
+}
+
+.port-relationship-mount--three .rs-scene {
+  min-height: 360px;
+}
+
+.port-relationship-mount--three .rs-relatives {
+  max-width: 52%;
+}
+
 .port-relationship-section.is-unavailable .port-relationship-mount:not(.is-ready) {
   display: block;
 }

@@ -86,8 +86,8 @@ const THEME_GROUP_COPY = {
     "Hover a partner to see how each name links back to the hero.",
   ],
   "AI Infrastructure": [
-    "These names often trade on the same AI infrastructure narrative.",
-    "Hover a partner to see the clearest connection.",
+    "These names often trade on the same AI infrastructure story.",
+    "Hover a partner to see the clearest link in plain English.",
   ],
   "Mixed Exposure": [
     "This group spans more than one market theme.",

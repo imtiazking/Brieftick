@@ -188,6 +188,7 @@ export function insightForCustomPair(meta, peer) {
  * @returns {string[]}
  */
 export function insightForCustomGroup(meta) {
+  if (GROUP_INSIGHTS[meta.hero]) return clampInsight(GROUP_INSIGHTS[meta.hero]);
   return clampInsight(themeGroupSentences(meta.theme));
 }
 
