@@ -11,7 +11,8 @@
  *   - Earnings calendar (Finnhub) .................. 30min
  *   - Sector performance, news sentiment (AV) ...... 5min
  *   - Technical indicators (AV) .................... 5min
- *   - Public FRED series (VIXCLS) .................. 15min
+ *   - Public FRED series (macro) ................... 15min
+ *   - Yahoo chart (indices / ETF fallback) ......... 10min indices, 45s ETFs
  *   - Anthropic messages ........................... NOT cached (always fresh)
  */
 
@@ -65,10 +66,13 @@ async function proxyTwelveData(req, res) {
   try {
     const r = await fetch(url);
     const data = await r.json();
+    if (r.status === 429) {
+      return res.status(429).json({ status: 'error', code: 429, message: 'Rate limited', ...data });
+    }
     // Don't cache rate-limit errors
     if (!(data && data.code === 429)) cacheSet(cacheKey, data);
     res.setHeader('x-brieftick-cache', 'MISS');
-    return res.status(200).json(data);
+    return res.status(r.status >= 400 ? r.status : 200).json(data);
   } catch (e) {
     return res.status(502).json({ error: 'upstream fetch failed', detail: e.message });
   }
@@ -90,6 +94,7 @@ async function proxyFinnhub(req, res) {
   else if (endpoint.startsWith('calendar/earnings')) ttl = 30 * 60_000;
   else if (endpoint === 'news') ttl = 60_000;
   else if (endpoint === 'quote') ttl = 30_000;
+  else if (endpoint === 'search') ttl = 60 * 60_000;
 
   const cached = cacheGet(cacheKey, ttl);
   if (cached) {
@@ -100,11 +105,151 @@ async function proxyFinnhub(req, res) {
   try {
     const r = await fetch(url);
     const data = await r.json();
+    if (r.status === 429) {
+      return res.status(429).json({ error: 'Rate limited', ...data });
+    }
+    if (r.status < 400) cacheSet(cacheKey, data);
+    res.setHeader('x-brieftick-cache', 'MISS');
+    return res.status(r.status >= 400 ? r.status : 200).json(data);
+  } catch (e) {
+    return res.status(502).json({ error: 'upstream fetch failed', detail: e.message });
+  }
+}
+
+const YAHOO_INDEX_SYMBOLS = new Set(['^GSPC', '^IXIC', '^DJI', '^VIX']);
+const YAHOO_SYMBOL_RE = /^[A-Z0-9^.\-]{1,12}$/;
+
+function normalizeYahooSymbol(raw) {
+  return String(raw || '')
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9^.\-]/g, '');
+}
+
+async function proxyYahooSearch(req, res) {
+  const q = String(req.query.q || "").trim();
+  if (!q || q.length > 80) {
+    return res.status(400).json({ error: "invalid search query" });
+  }
+
+  const cacheKey = `yahoo:search:${q.toLowerCase()}`;
+  const cached = cacheGet(cacheKey, 60 * 60_000);
+  if (cached) {
+    res.setHeader("x-brieftick-cache", "HIT");
+    return res.status(200).json(cached);
+  }
+
+  const url = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}&quotesCount=10&newsCount=0&listsCount=0`;
+  try {
+    const r = await fetch(url, {
+      headers: { "User-Agent": "BriefTick/1.0 symbol-search" },
+    });
+    if (r.status === 429) {
+      return res.status(429).json({ ok: false, failureReason: "rate_limited" });
+    }
+    const raw = await r.json();
+    const quotes = raw?.quotes || [];
+    const matches = quotes
+      .filter((row) => {
+        const t = String(row.quoteType || "").toUpperCase();
+        return t === "EQUITY" || t === "ETF" || !t;
+      })
+      .map((row) => ({
+        symbol: String(row.symbol || "")
+          .toUpperCase()
+          .replace(/\.(US|NASDAQ|NYSE)$/i, ""),
+        name: row.shortname || row.longname || row.symbol,
+        exchange: row.exchange || row.exchDisp || "",
+      }))
+      .filter((row) => /^[A-Z][A-Z0-9]{0,4}(?:\.[A-Z])?$/.test(row.symbol));
+
+    const data = { ok: true, query: q, matches };
+    cacheSet(cacheKey, data);
+    res.setHeader("x-brieftick-cache", "MISS");
+    return res.status(200).json(data);
+  } catch (e) {
+    return res.status(502).json({
+      ok: false,
+      failureReason: "parse_error",
+      detail: e.message,
+    });
+  }
+}
+
+async function proxyYahoo(req, res) {
+  if (req.query.endpoint === "search") return proxyYahooSearch(req, res);
+  return proxyYahooChart(req, res);
+}
+
+async function proxyYahooChart(req, res) {
+  const symbol = normalizeYahooSymbol(req.query.symbol);
+  if (!symbol || !YAHOO_SYMBOL_RE.test(symbol)) {
+    return res.status(400).json({
+      error: 'invalid Yahoo chart symbol',
+      detail: 'Use 1–12 characters: letters, digits, ^ . -',
+    });
+  }
+
+  const cacheKey = `yahoo:chart:${symbol}`;
+  const cacheTtl = YAHOO_INDEX_SYMBOLS.has(symbol) ? 10 * 60_000 : 45_000;
+  const cached = cacheGet(cacheKey, cacheTtl);
+  if (cached) {
+    res.setHeader('x-brieftick-cache', 'HIT');
+    return res.status(200).json(cached);
+  }
+
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`;
+  try {
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'BriefTick/1.0 market-snapshot' },
+    });
+    if (r.status === 429) {
+      return res.status(429).json({ ok: false, failureReason: 'rate_limited', message: 'Rate limited' });
+    }
+    const raw = await r.json();
+    const result = raw?.chart?.result?.[0];
+    const meta = result?.meta;
+    const closes = result?.indicators?.quote?.[0]?.close?.filter((n) => Number.isFinite(n)) || [];
+    const price = meta?.regularMarketPrice;
+    if (!Number.isFinite(price) || price <= 0) {
+      return res.status(502).json({
+        ok: false,
+        failureReason: 'parse_error',
+        message: 'Parse error',
+        detail: 'missing regularMarketPrice',
+      });
+    }
+    const prev =
+      Number.isFinite(meta?.chartPreviousClose) && meta.chartPreviousClose > 0
+        ? meta.chartPreviousClose
+        : closes.length >= 2
+          ? closes[closes.length - 2]
+          : null;
+    const change = prev != null ? price - prev : null;
+    const changePercent = change != null && prev ? (change / prev) * 100 : null;
+    const data = {
+      ok: true,
+      symbol,
+      price,
+      change,
+      changePercent,
+      previousClose: prev,
+      updatedAt: meta?.regularMarketTime
+        ? new Date(meta.regularMarketTime * 1000).toISOString()
+        : new Date().toISOString(),
+      source: 'yahoo',
+      longName: meta?.longName || meta?.shortName || symbol,
+    };
     cacheSet(cacheKey, data);
     res.setHeader('x-brieftick-cache', 'MISS');
     return res.status(200).json(data);
   } catch (e) {
-    return res.status(502).json({ error: 'upstream fetch failed', detail: e.message });
+    return res.status(502).json({
+      ok: false,
+      failureReason: 'parse_error',
+      message: 'Parse error',
+      detail: e.message,
+    });
   }
 }
 
@@ -172,9 +317,59 @@ async function proxyAnthropic(req, res) {
   }
 }
 
+const FRED_ALLOWED_SERIES = new Set([
+  'VIXCLS',
+  'DGS10',
+  'DCOILWTICO',
+  'SP500',
+  'NASDAQCOM',
+  'DJIA',
+]);
+
+async function fetchFredCsv(series, attempt = 1) {
+  // Full-series CSV can exceed serverless timeouts; request a recent window only.
+  const coed = new Date().toISOString().slice(0, 10);
+  const cosd = new Date(Date.now() - 60 * 86400000).toISOString().slice(0, 10);
+  const url =
+    `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${encodeURIComponent(series)}` +
+    `&cosd=${cosd}&coed=${coed}`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 18_000);
+  try {
+    const r = await fetch(url, {
+      signal: ctrl.signal,
+      headers: {
+        'User-Agent': 'BriefTick/1.0 (market-snapshot; +https://www.brieftick.com)',
+        Accept: 'text/csv,text/plain,*/*',
+      },
+    });
+    const text = await r.text();
+    if (!r.ok || text.includes('Gateway Time-out') || text.startsWith('<!DOCTYPE')) {
+      return { ok: false, retryable: r.status >= 500 || text.includes('Time-out'), detail: `HTTP ${r.status}` };
+    }
+    const lines = text.trim().split('\n');
+    const points = [];
+    for (let i = lines.length - 1; i > 0; i--) {
+      const [date, val] = lines[i].split(',');
+      if (val && val !== '.' && !Number.isNaN(parseFloat(val))) {
+        points.push({ date, value: parseFloat(val) });
+        if (points.length >= 2) break;
+      }
+    }
+    if (!points.length) return { ok: false, retryable: attempt < 2, detail: 'no usable rows' };
+    return { ok: true, points };
+  } catch (e) {
+    return { ok: false, retryable: attempt < 2, detail: e.message };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function proxyFred(req, res) {
   const series = req.query.series || 'VIXCLS';
-  if (series !== 'VIXCLS') return res.status(400).json({ error: 'unsupported FRED series' });
+  if (!FRED_ALLOWED_SERIES.has(series)) {
+    return res.status(400).json({ error: 'unsupported FRED series', allowed: [...FRED_ALLOWED_SERIES] });
+  }
   const cacheKey = `fred:${series}`;
 
   const cached = cacheGet(cacheKey, 15 * 60_000);
@@ -184,19 +379,32 @@ async function proxyFred(req, res) {
   }
 
   try {
-    const r = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${encodeURIComponent(series)}`);
-    const text = await r.text();
-    const lines = text.trim().split('\n');
-    for (let i = lines.length - 1; i > 0; i--) {
-      const [date, val] = lines[i].split(',');
-      if (val && val !== '.' && !Number.isNaN(parseFloat(val))) {
-        const data = { series, date, value: parseFloat(val) };
-        cacheSet(cacheKey, data);
-        res.setHeader('x-brieftick-cache', 'MISS');
-        return res.status(200).json(data);
-      }
+    let fetched = await fetchFredCsv(series, 1);
+    if (!fetched.ok && fetched.retryable) {
+      await new Promise((r) => setTimeout(r, 400));
+      fetched = await fetchFredCsv(series, 2);
     }
-    return res.status(502).json({ error: 'FRED series returned no usable value' });
+    if (!fetched.ok || !fetched.points?.length) {
+      return res.status(502).json({
+        error: 'FRED series returned no usable value',
+        failureReason: 'upstream_error',
+        detail: fetched.detail,
+      });
+    }
+    const points = fetched.points;
+    const latest = points[0];
+    const previous = points[1];
+    const data = {
+      series,
+      date: latest.date,
+      value: latest.value,
+      previousDate: previous?.date ?? null,
+      previousValue: previous?.value ?? null,
+      change: previous ? latest.value - previous.value : null,
+    };
+    cacheSet(cacheKey, data);
+    res.setHeader('x-brieftick-cache', 'MISS');
+    return res.status(200).json(data);
   } catch (e) {
     return res.status(502).json({ error: 'upstream fetch failed', detail: e.message });
   }
@@ -315,6 +523,7 @@ export default async function handler(req, res) {
     if (provider === 'alphavantage')    return await proxyAlphaVantage(req, res);
     if (provider === 'anthropic')       return await proxyAnthropic(req, res);
     if (provider === 'fred')            return await proxyFred(req, res);
+    if (provider === 'yahoo')           return await proxyYahoo(req, res);
     if (provider === 'sec')             return await proxySEC(req, res);
     if (provider === 'polygon')          return await proxyPolygon(req, res);
     if (provider === 'politicaltrades') return await proxyPoliticalTrades(req, res);
