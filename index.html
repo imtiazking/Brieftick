@@ -66,7 +66,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="brieftick-build" content="portfolio-relationship-20260609">
+<meta name="brieftick-build" content="discover-market-story-20260610">
 <title>BriefTick - Markets, briefly.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3462,6 +3462,7 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/ticker-deep-dive.css">
 <link rel="stylesheet" href="/styles/portfolio-simplified.css">
 <link rel="stylesheet" href="/design-lab/move-together/story/story-embed.css">
+<link rel="stylesheet" href="/styles/scanner-market-story.css">
 <link rel="stylesheet" href="/styles/dashboard-design-lab.css">
 <link rel="stylesheet" href="/styles/dashboard-rail-modules.css">
 <link rel="stylesheet" href="/styles/dashboard-movers-intel.css">
@@ -3490,6 +3491,7 @@ h1,h2,h3{
 <script type="module" src="/lib/portfolio-quotes.js"></script>
 <script type="module" src="/lib/portfolio-layout.js"></script>
 <script type="module" src="/lib/portfolio-relationship-story.js"></script>
+<script type="module" src="/lib/discover-market-story.js"></script>
 <script type="module" src="/lib/dashboard-wheel.bridge.js"></script>
 </head>
 <body>
@@ -4609,10 +4611,31 @@ h1,h2,h3{
       <span class="ts-cta">Unlock Terminal →</span>
     </div>
     <div class="scanner-hero">
-      <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Discover Stocks</div>
       <h1>Discover Stocks</h1>
-      <p>Find stocks moving today — ranked by price change, volume surge, and sentiment. Click any row for a plain-English explanation.</p>
+      <p class="scanner-hero__lead">Find stocks moving today — ranked by price change, volume, and range position. Click a card for a plain-English explanation or Deep Dive.</p>
     </div>
+
+    <section class="dms-story is-theme-active" id="dmsStory" aria-labelledby="dmsStoryEyebrow">
+      <p class="dms-story__eyebrow" id="dmsStoryEyebrow">Today's Market Story</p>
+      <h2 class="dms-story__title" id="dmsThemeTitle">AI Infrastructure Leads Markets</h2>
+      <p class="dms-story__body" id="dmsStoryBody">
+        NVIDIA, AMD and Broadcom are among today's strongest names as investors continue to favour companies benefiting from AI infrastructure spending and data-centre demand.
+      </p>
+      <p class="dms-story__notice" id="dmsStoryNotice">
+        Market story uses illustrative theme data until live scan integration is connected.
+      </p>
+      <div class="dms-theme-chips" id="dmsThemeChips" role="tablist" aria-label="Market themes"></div>
+      <div class="dms-names" id="dmsNames" aria-label="Key names in this theme">
+        <div class="dms-key-names dms-key-names--default" id="dmsKeyNamesDefault"></div>
+        <button type="button" class="dms-names-toggle" id="dmsNamesToggle" aria-expanded="false" aria-controls="dmsNamesExpanded">
+          Show more names
+        </button>
+        <div class="dms-names-expanded" id="dmsNamesExpanded" hidden>
+          <div id="dmsNamesGroups"></div>
+        </div>
+      </div>
+      <button type="button" class="dms-explore-btn" id="dmsExploreBtn">Explore Theme →</button>
+    </section>
 
     <!-- Controls -->
     <div class="scanner-controls">
@@ -4651,7 +4674,7 @@ h1,h2,h3{
         <div class="scanner-list-header">
           <span>#</span><span>Ticker</span><span>Company</span>
           <span style="text-align:right">Price</span><span style="text-align:right">Change</span>
-          <span style="text-align:right">Activity</span><span style="text-align:right">Strength</span>
+          <span style="text-align:right">Activity</span><span style="text-align:right">Signal</span>
           <span style="text-align:right">Deep Dive</span>
         </div>
         <div id="scannerListBody">
@@ -4676,6 +4699,20 @@ h1,h2,h3{
         color:var(--gold);border-radius:7px;font-family:inherit;font-size:12px;cursor:pointer;display:none">
         Regenerate Summary
       </button>
+    </div>
+  </div>
+
+  <div class="dms-rel-panel" id="dmsRelPanel" hidden role="dialog" aria-modal="true" aria-labelledby="dmsRelTitle">
+    <div class="dms-rel-panel__backdrop" aria-hidden="true"></div>
+    <div class="dms-rel-panel__sheet">
+      <header class="dms-rel-panel__head">
+        <div>
+          <h3 id="dmsRelTitle">Why they move together</h3>
+          <p id="dmsRelThemeLabel">AI Infrastructure</p>
+        </div>
+        <button type="button" class="dms-rel-close" id="dmsRelClose" aria-label="Close panel">×</button>
+      </header>
+      <div class="dms-rel-mount" id="dmsRelMount" aria-label="Relationship story"></div>
     </div>
   </div>
 </section>
@@ -13036,14 +13073,16 @@ function renderScannerResults() {
     </div>`;
   }
 
-  const scoreLabel = SCANNER_SCORE_LABELS[scannerMode] || 'Strength score';
+  const signalLabel = typeof window.SCANNER_SIGNAL_LABEL === 'string' ? window.SCANNER_SIGNAL_LABEL : 'Signal strength';
+  const signalText = (score) => (typeof window.scannerSignalStrengthLabel === 'function' ? window.scannerSignalStrengthLabel(score) : '—');
+  const signalClass = (score) => (typeof window.scannerSignalStrengthClass === 'function' ? window.scannerSignalStrengthClass(score) : '');
   const realCards = visible.map((s, i) => {
     const dir = s.pctChange >= 0 ? 'up' : 'dn';
     const sign = s.pctChange >= 0 ? '+' : '';
     const scoreClass = s.score >= 65 ? 'high' : s.score <= 35 ? 'low' : '';
     const whyLine = buildScannerWhyLine(s, scannerMode, i + 1);
     const safeName = String(s.name).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-    return `<div class="scanner-card">
+    return `<div class="scanner-card" data-symbol="${s.sym}">
       <div class="scanner-card-rank">#${i+1}</div>
       <div class="scanner-card-top">
         <div>
@@ -13058,8 +13097,8 @@ function renderScannerResults() {
       </div>
       <div class="scanner-why-here">${whyLine}</div>
       <div class="scanner-score-bar">
-        <div class="scanner-score-label"><span>${scoreLabel}</span><span>${s.score}/99</span></div>
-        <div class="scanner-score-track"><div class="scanner-score-fill" style="width:${s.score}%"></div></div>
+        <div class="scanner-score-label"><span>${signalLabel}</span><span class="scanner-signal-val ${signalClass(s.score)}" title="Model score: ${s.score} out of 99">${signalText(s.score)}</span></div>
+        <div class="scanner-score-track" aria-hidden="true"><div class="scanner-score-fill" style="width:${s.score}%"></div></div>
       </div>
       <div class="scanner-card-actions">
         <span class="scanner-ai-badge" onclick="toggleScannerCardAI(this,'${s.sym}','${safeName}',${s.pctChange.toFixed(2)},${s.score},${s.volRatio.toFixed(2)},${s.pos52.toFixed(4)},${s.gapPct.toFixed(2)})">
@@ -13088,7 +13127,7 @@ function renderScannerResults() {
         <span class="price">$${s.close.toFixed(2)}</span>
         <span class="chg ${dir}">${sign}${s.pctChange.toFixed(2)}%</span>
         <span class="vol">${s.volRatio.toFixed(1)}x</span>
-        <span class="scanner-score-pill ${scoreClass}">${s.score}</span>
+        <span class="scanner-score-pill ${scoreClass}" title="Model score: ${s.score} out of 99">${signalText(s.score)}</span>
         <button type="button" class="scanner-list-deep-dive" onclick="event.stopPropagation();openScannerDeepDive('${s.sym}')">Deep Dive</button>
       </div>`;
     });
