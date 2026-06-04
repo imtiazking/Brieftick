@@ -38,6 +38,7 @@ function storageKey() {
 
 export function isLogicTerminalUser() {
   return (
+    (typeof window.hasTerminalAccess === "function" && window.hasTerminalAccess()) ||
     window._isTerminal === true ||
     (typeof window.isTerminal === "function" && window.isTerminal())
   );

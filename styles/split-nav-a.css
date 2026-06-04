@@ -171,6 +171,18 @@
   transform: rotate(45deg);
 }
 
+/* ── Landing: transparent nav over hero atmosphere ─────────────── */
+html[data-split-landing] .nav.nav-a,
+html[data-split-landing] .nav.nav-a::before,
+html[data-split-landing] .nav.nav-a::after {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 /* ── Logic theme: subtle chrome for readability ───────────────── */
 html[data-theme="logic"] .nav.nav-a {
   background: rgba(5, 6, 10, 0.82);

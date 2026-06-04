@@ -248,6 +248,56 @@
   transition: opacity 0.28s ease;
 }
 
+.briefing-provenance-wrap {
+  position: fixed;
+  bottom: 28px;
+  left: 16px;
+  z-index: 100;
+  margin: 0;
+  max-width: min(520px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.briefing-provenance-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(138, 148, 168, 0.35);
+  color: rgba(200, 208, 220, 0.85);
+  background: rgba(12, 16, 24, 0.72);
+}
+
+.briefing-provenance-badge.is-live {
+  border-color: rgba(72, 187, 120, 0.45);
+  color: rgba(134, 239, 172, 0.95);
+}
+
+.briefing-provenance-badge.is-mixed {
+  border-color: rgba(251, 191, 36, 0.45);
+  color: rgba(253, 224, 71, 0.95);
+}
+
+.briefing-provenance-badge.is-fallback {
+  border-color: rgba(248, 113, 113, 0.4);
+  color: rgba(252, 165, 165, 0.95);
+}
+
+.briefing-provenance-detail {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 8px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: rgba(138, 148, 168, 0.7);
+}
+
 .flagship-lab-note {
   position: fixed;
   bottom: 10px;

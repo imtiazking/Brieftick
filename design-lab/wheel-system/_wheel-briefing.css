@@ -122,12 +122,39 @@
 
 .briefing-snapshot__row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 8px 12px;
-  align-items: baseline;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 4px 12px;
+  align-items: start;
   padding: 9px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 13px;
+}
+
+.briefing-snapshot__namecol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.briefing-snapshot__status {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 8px;
+  line-height: 1.35;
+  letter-spacing: 0.03em;
+  color: rgba(138, 148, 168, 0.8);
+}
+
+.briefing-snapshot__row.is-retrying .briefing-snapshot__status {
+  color: rgba(212, 168, 90, 0.9);
+}
+
+.briefing-snapshot__row.is-unavailable .briefing-snapshot__status {
+  color: rgba(240, 113, 120, 0.85);
+}
+
+.briefing-snapshot__row.is-proxy .briefing-snapshot__name {
+  color: rgba(212, 168, 90, 0.95);
 }
 
 .briefing-snapshot__row:last-child {
@@ -151,13 +178,42 @@
   font-family: var(--dash-mono, "JetBrains Mono", monospace);
   font-size: 12px;
   font-weight: 500;
-  min-width: 52px;
+  min-width: 88px;
   text-align: right;
 }
 
 .briefing-snapshot__chg.is-up { color: #3ecf8e; }
 .briefing-snapshot__chg.is-dn { color: #f07178; }
 .briefing-snapshot__chg.is-flat { color: rgba(176, 184, 200, 0.7); }
+
+.briefing-snapshot__note {
+  margin: 0 0 10px;
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 8px;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  color: rgba(138, 148, 168, 0.85);
+}
+
+.briefing-snapshot__note.is-stale {
+  color: rgba(212, 168, 90, 0.75);
+}
+
+.briefing-snapshot__row.is-loading .briefing-snapshot__level,
+.briefing-snapshot__row.is-loading .briefing-snapshot__chg {
+  color: rgba(138, 148, 168, 0.55);
+}
+
+.briefing-snapshot__row.is-unavailable .briefing-snapshot__chg,
+.briefing-snapshot__row.is-error .briefing-snapshot__chg {
+  font-size: 10px;
+  color: rgba(240, 113, 120, 0.85);
+}
+
+.briefing-snapshot__row.is-stale .briefing-snapshot__level,
+.briefing-snapshot__row.is-stale .briefing-snapshot__name {
+  opacity: 0.88;
+}
 
 /* Main briefing panel */
 .briefing-main {

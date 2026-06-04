@@ -66,7 +66,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="brieftick-build" content="discover-market-story-20260610">
+<meta name="brieftick-build" content="premium-signals-20260605">
 <title>BriefTick - Markets, briefly.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3463,6 +3463,8 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/portfolio-simplified.css">
 <link rel="stylesheet" href="/design-lab/move-together/story/story-embed.css">
 <link rel="stylesheet" href="/styles/scanner-market-story.css">
+<link rel="stylesheet" href="/styles/insiders-smart-money.css">
+<link rel="stylesheet" href="/styles/options-story.css">
 <link rel="stylesheet" href="/styles/dashboard-design-lab.css">
 <link rel="stylesheet" href="/styles/dashboard-rail-modules.css">
 <link rel="stylesheet" href="/styles/dashboard-movers-intel.css">
@@ -3492,6 +3494,9 @@ h1,h2,h3{
 <script type="module" src="/lib/portfolio-layout.js"></script>
 <script type="module" src="/lib/portfolio-relationship-story.js"></script>
 <script type="module" src="/lib/discover-market-story.js"></script>
+<script type="module" src="/lib/insider-smart-money.js"></script>
+<script type="module" src="/lib/options-story.js"></script>
+<script type="module" src="/lib/terminal-access.bridge.js"></script>
 <script type="module" src="/lib/dashboard-wheel.bridge.js"></script>
 </head>
 <body>
@@ -4465,7 +4470,9 @@ h1,h2,h3{
   <div class="pricing">
     <div class="pricing-head">
       <h1>Two plans. <em>One goal.</em></h1>
-      <p>Explore the full platform for free. Unlock the full depth of market intelligence with Terminal.</p>
+      <p>Explore story-first market intelligence for free. Unlock connected stories and full module depth with Terminal.</p>
+      <p class="section-eyebrow">12 modules · one graph</p>
+      <p>Every Brieftick module connects through the same intelligence graph, linking portfolios, earnings, macro signals, options, insiders, market stories, and Deep Dive investigations.</p>
     </div>
 
     <!-- 2-tier grid -->
@@ -4481,10 +4488,10 @@ h1,h2,h3{
           <li>Top Movers &amp; Sector Heatmap</li>
           <li>Earnings Calendar</li>
           <li>Watchlist limited to 3 stocks</li>
-          <li>Ask Logic preview (5 daily questions) — macro, sectors and volatility in plain English.</li>
-          <li>Discover Stocks lite mode</li>
-          <li>Daily Brief (1 daily, delayed)</li>
-          <li>Basic macro signals</li>
+          <li>Ask Logic preview (5 daily questions): markets, macro, sectors, portfolios, and stocks on the same intelligence graph.</li>
+          <li>Discover Stocks: market story preview</li>
+          <li>Daily Brief: 1 briefing per day</li>
+          <li>Core macro context</li>
         </ul>
         <button class="t2-cta secondary" onclick="clerkSignUp()">Start Free</button>
       </div>
@@ -4493,27 +4500,28 @@ h1,h2,h3{
       <div class="tier2 featured">
         <div class="t2-badge">Best Value</div>
         <div class="t2-name">Terminal</div>
-        <div class="t2-sub">Institutional-grade market intelligence.</div>
+        <div class="t2-sub">Story-first intelligence with full platform depth.</div>
         <div class="t2-price"><span class="num">£<em>29</em></span><span class="per">&nbsp;/ month</span></div>
         <ul class="t2-features">
           <li>Everything in Free</li>
-          <li>Unlimited Ask Logic — portfolios, macro, sectors and volatility in plain English.</li>
-          <li>Real-time market context</li>
-          <li>My Portfolio insights</li>
+          <li>Unlimited Ask Logic: markets, macro, sectors, portfolios, and stocks on the same intelligence graph.</li>
+          <li>Connected stories across portfolios, markets, earnings, options, insiders, and macro signals</li>
+          <li>Portfolio Story</li>
+          <li>Deep Dive: full investigation from any story</li>
           <li>Scenario Analysis</li>
-          <li>Advanced Discover Stocks</li>
-          <li>Live Market Flows</li>
-          <li>Market Relationships &amp; Correlation Cluster</li>
+          <li>Full Discover Stocks: market story and scans</li>
+          <li>Live Market Flows &amp; Capital Movement</li>
+          <li>Market Relationships &amp; Correlation Intelligence</li>
           <li>Sector Rotation Engine</li>
-          <li>Global Macro Signals</li>
+          <li>Global Macro Context</li>
           <li>Earnings Impact Analysis</li>
-          <li>Insider &amp; Political Trade Tracker</li>
-          <li>Options Flow</li>
-          <li>Full Telemetry System</li>
+          <li>Smart Money Flow: insider and political activity stories</li>
+          <li>Options Story: positioning narrative and full flow data</li>
+          <li>Full Market Telemetry</li>
           <li>Risk-On / Risk-Off Signals</li>
-          <li>Advanced Alerts</li>
+          <li>Smart Alerts</li>
           <li>Unlimited watchlist</li>
-          <li>Personalized intelligence briefings</li>
+          <li>What's Moving: full briefing and segments</li>
         </ul>
         <button class="t2-cta primary" onclick="startCheckout('intelligence', this)">Unlock Terminal</button>
       </div>
@@ -4533,23 +4541,24 @@ h1,h2,h3{
         </thead>
         <tbody>
           <tr><td class="ct-feature">Dashboard</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Full access</td></tr>
-          <tr><td class="ct-feature">Top Movers</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Full access + real-time intelligence</td></tr>
+          <tr><td class="ct-feature">Top Movers</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Full access + live movers context</td></tr>
           <tr><td class="ct-feature">Sector Heatmap</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Overlays + sector flow analysis</td></tr>
           <tr><td class="ct-feature">Earnings Calendar</td><td class="ct-terminal">Full access</td><td class="ct-terminal">Earnings impact intelligence</td></tr>
-          <tr><td class="ct-feature">Ask Logic</td><td>Ask Logic preview (5 daily questions)</td><td class="ct-terminal">Unlimited Ask Logic</td></tr>
+          <tr><td class="ct-feature">Ask Logic</td><td>Preview (5 daily): markets, macro, sectors, portfolios, and stocks on the same intelligence graph</td><td class="ct-terminal">Unlimited: markets, macro, sectors, portfolios, and stocks on the same intelligence graph</td></tr>
           <tr><td class="ct-feature">Why Is It Moving?</td><td>Daily limited explanations</td><td class="ct-terminal">Unlimited deep analysis</td></tr>
           <tr><td class="ct-feature">What's Moving briefing</td><td>Daily briefing wheel</td><td class="ct-terminal">Full briefing · all segments</td></tr>
-          <tr><td class="ct-feature">Market event context</td><td colspan="2">Included in What's Moving · Dashboard news panels</td></tr>
-          <tr><td class="ct-feature">Discover Stocks</td><td>Lite discovery</td><td class="ct-terminal">Advanced multi-sector discovery</td></tr>
-          <tr><td class="ct-feature">My Portfolio</td><td>Basic portfolio view</td><td class="ct-terminal">Full portfolio insights</td></tr>
-          <tr><td class="ct-feature">Market Relationships</td><td>Preview access</td><td class="ct-terminal">Full correlation cluster</td></tr>
-          <tr><td class="ct-feature">Live Flows</td><td>Preview access</td><td class="ct-terminal">Real-time capital flow tracking</td></tr>
-          <tr><td class="ct-feature">Macro Signals</td><td>Core macro insights</td><td class="ct-terminal">Full global macro intelligence</td></tr>
-          <tr><td class="ct-feature">Insider &amp; Political Trades</td><td>—</td><td class="ct-terminal">Full access</td></tr>
-          <tr><td class="ct-feature">Options Flow</td><td>—</td><td class="ct-terminal">Full access</td></tr>
+          <tr><td class="ct-feature">Market Context</td><td>Basic context</td><td class="ct-terminal">Connected narratives and market intelligence</td></tr>
+          <tr><td class="ct-feature">Discover Stocks</td><td>Today's market story · lite scans</td><td class="ct-terminal">Full market story · themes · scans</td></tr>
+          <tr><td class="ct-feature">Portfolio Story</td><td>Basic portfolio overview</td><td class="ct-terminal">Full portfolio narrative and insights</td></tr>
+          <tr><td class="ct-feature">Deep Dive</td><td>Limited</td><td class="ct-terminal">Full investigation from any story</td></tr>
+          <tr><td class="ct-feature">Market Relationships</td><td>Preview access</td><td class="ct-terminal">Correlation intelligence</td></tr>
+          <tr><td class="ct-feature">Live Market Flows</td><td>Preview access</td><td class="ct-terminal">Real-time capital movement tracking</td></tr>
+          <tr><td class="ct-feature">Macro Context</td><td>Core macro context</td><td class="ct-terminal">Full global macro intelligence</td></tr>
+          <tr><td class="ct-feature">Smart Money Flow</td><td>—</td><td class="ct-terminal">Full insider and political flow stories</td></tr>
+          <tr><td class="ct-feature">Options Story</td><td>—</td><td class="ct-terminal">Full positioning narrative and flow data</td></tr>
           <tr><td class="ct-feature">Watchlist</td><td>Limited to 3 stocks</td><td class="ct-terminal">Unlimited + intelligence overlays</td></tr>
-          <tr><td class="ct-feature">Alerts</td><td>Basic alerts</td><td class="ct-terminal">Advanced intelligence alerts</td></tr>
-          <tr><td class="ct-feature">Telemetry System</td><td>Preview mode</td><td class="ct-terminal">Full telemetry system</td></tr>
+          <tr><td class="ct-feature">Alerts</td><td>Basic alerts</td><td class="ct-terminal">Smart Alerts</td></tr>
+          <tr><td class="ct-feature">Telemetry</td><td>Preview mode</td><td class="ct-terminal">Full market telemetry</td></tr>
           <tr><td class="ct-feature">Risk Signals</td><td>Basic risk view</td><td class="ct-terminal">Risk-On / Risk-Off engine</td></tr>
         </tbody>
       </table>
@@ -4572,7 +4581,7 @@ h1,h2,h3{
         <div class="how-step">
           <div class="how-num">03</div>
           <div class="how-title">Explore intelligence</div>
-          <div class="how-body">Dive into earnings, macro signals, sector rotation, and cross-market relationships.</div>
+          <div class="how-body">Dive into earnings, macro context, sector rotation, and market relationships on one graph.</div>
         </div>
         <div class="how-step">
           <div class="how-num">04</div>
@@ -4582,7 +4591,7 @@ h1,h2,h3{
         <div class="how-step">
           <div class="how-num">05</div>
           <div class="how-title">Unlock Terminal</div>
-          <div class="how-body">Go deeper with real-time flows, insider trades, options flow and full market intelligence.</div>
+          <div class="how-body">Go deeper with Portfolio Story, Smart Money Flow, Options Story, live market flows, and Deep Dive.</div>
         </div>
       </div>
     </div>
@@ -4731,11 +4740,13 @@ h1,h2,h3{
     <div class="options-hero">
       <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Options Flow</div>
       <h1>Options Flow &amp; Unusual Activity</h1>
-      <p>Track unusual options volume, put/call ratios, and large block trades across the market. When options flow diverges from price, it often signals what smart money is positioning for next.</p>
     </div>
 
+    <div id="optionsStoryMount"></div>
+
+    <section class="options-activity-section" id="optionsActivitySection" aria-label="Options activity data">
     <!-- Stats row -->
-    <div class="options-stats">
+    <div class="options-stats options-metrics-secondary">
       <div class="options-stat bullish">
         <div class="options-stat-label">Call Volume</div>
         <div class="options-stat-val up" id="optStatCalls">—</div>
@@ -4764,7 +4775,7 @@ h1,h2,h3{
     </div>
 
     <!-- Put/Call gauge -->
-    <div class="pc-gauge-wrap">
+    <div class="pc-gauge-wrap options-metrics-secondary">
       <div class="pc-gauge-label">
         <span>Market Sentiment · Put/Call Ratio</span>
         <span id="optPCRLabel" style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold)">Loading…</span>
@@ -4893,6 +4904,8 @@ h1,h2,h3{
       </div>
     </div>
 
+    </section>
+
     <!-- AI Analysis -->
     <div class="options-ai-box">
       <h3>
@@ -4922,33 +4935,11 @@ h1,h2,h3{
     <div class="insiders-hero">
       <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Disclosure Tracker</div>
       <h1>Insider &amp; Political Trades</h1>
-      <p>Track Form 4 insider filings and STOCK Act political disclosures. Monitor when C-suite executives and lawmakers buy or sell equity positions &mdash; follow the smart money.</p>
     </div>
 
-    <!-- Summary stats -->
-    <div class="insiders-stat-row" id="insidersStatRow">
-      <div class="insiders-stat">
-        <div class="insiders-stat-label">Buy Transactions</div>
-        <div class="insiders-stat-val up" id="iStatBuys">—</div>
-        <div class="insiders-stat-sub">Last 30 days</div>
-      </div>
-      <div class="insiders-stat">
-        <div class="insiders-stat-label">Sell Transactions</div>
-        <div class="insiders-stat-val dn" id="iStatSells">—</div>
-        <div class="insiders-stat-sub">Last 30 days</div>
-      </div>
-      <div class="insiders-stat">
-        <div class="insiders-stat-label">Buy/Sell Ratio</div>
-        <div class="insiders-stat-val" id="iStatRatio">—</div>
-        <div class="insiders-buy-meter"><div class="insiders-buy-fill" id="iStatMeter" style="width:50%"></div></div>
-      </div>
-      <div class="insiders-stat">
-        <div class="insiders-stat-label">Political Trades</div>
-        <div class="insiders-stat-val" id="iStatPol">—</div>
-        <div class="insiders-stat-sub">House &amp; Senate</div>
-      </div>
-    </div>
+    <div id="insidersSmartMoneyMount"></div>
 
+    <section class="insiders-filings-section" id="insidersFilingsSection" aria-label="Insider filings">
     <!-- Tabs -->
     <div class="insiders-tabs">
       <button class="insiders-tab active" data-itab="corporate">Corporate Insiders</button>
@@ -5048,6 +5039,7 @@ h1,h2,h3{
       </div>
     </div>
 
+    </section>
   </div>
 </section>
 
@@ -5133,13 +5125,14 @@ h1,h2,h3{
     <!-- Hero -->
     <div class="about-hero">
       <h1>Markets move fast.<br><span id="aboutFlip1">Understanding them</span><br>shouldn't require a <em><span id="aboutFlip2">Bloomberg terminal.</span></em></h1>
-      <p>Brieftick was built for a simple reason: institutional-grade market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by using AI to translate complex market signals into clear, actionable context for everyone from seasoned traders to first-time investors.</p>
+      <p>Brieftick was built for a simple reason: story-first market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by translating complex market signals into plain English, explainable context for everyone from seasoned traders to first-time investors.</p>
     </div>
 
     <!-- Mission -->
     <div class="about-section">
       <h2>Democratise market intelligence.</h2>
       <p>The same tools that help hedge funds understand why markets are moving have historically been inaccessible to individual investors. Brieftick closes that gap. Not by simplifying the data, but by making it legible.</p>
+      <p>We lead with stories: short, connected narratives. Then we show the data behind them. Portfolio, markets, insiders, options, and macro signals all connect through the same intelligence graph, so you always know what you're looking at and why it matters.</p>
       <p>We pull from live earnings feeds, macro event trackers, options flow, insider disclosures, sentiment models, and AI briefings. We surface what matters, when it matters, in plain English.</p>
     </div>
 
@@ -5147,7 +5140,7 @@ h1,h2,h3{
     <div class="about-stat-row">
       <div class="about-stat">
         <div class="about-stat-val">12</div>
-        <div class="about-stat-label">Tools across every major market dimension</div>
+        <div class="about-stat-label">modules · one intelligence graph</div>
       </div>
       <div class="about-stat">
         <div class="about-stat-val">35+</div>
@@ -5158,8 +5151,8 @@ h1,h2,h3{
         <div class="about-stat-label">Market data with no daily credit limits on core feeds</div>
       </div>
       <div class="about-stat">
-        <div class="about-stat-val">AI‑first</div>
-        <div class="about-stat-label">Claude-powered explanations on every major data signal</div>
+        <div class="about-stat-val">Story‑first</div>
+        <div class="about-stat-label">Connected narratives and plain-English context before the tables</div>
       </div>
     </div>
 
@@ -5194,8 +5187,8 @@ h1,h2,h3{
         </div>
         <div class="about-principle">
           <div class="about-principle-num">06</div>
-          <h3>Institutional depth, human language</h3>
-          <p>Whether you're managing a portfolio or learning how markets work, Brieftick meets you where you are. No jargon required.</p>
+          <h3>Deep context, human language</h3>
+          <p>Whether you're managing a portfolio or learning how markets work, Brieftick meets you where you are. Explainable investing. No jargon required.</p>
         </div>
       </div>
     </div>
@@ -5276,7 +5269,7 @@ h1,h2,h3{
   <div class="footer-inner">
     <div class="footer-brand">
       <img src="/logo-transparent.png" alt="BriefTick" style="height:52px;width:auto;display:block;object-fit:contain;margin-bottom:12px">
-      <p class="tagline">intelligent market intelligence. Understand <em>why</em> markets move, before the noise gets you. Educational context only, not financial advice.</p>
+      <p class="tagline">Story-first market intelligence. Understand <em>why</em> markets move through connected narratives, before the noise gets you. Educational context only, not financial advice.</p>
       <div class="footer-social">
         <a href="https://x.com/Brieftick" target="_blank" rel="noopener" title="X / Twitter">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -5463,35 +5456,35 @@ const featureData=[
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><line x1="12" y1="3" x2="12" y2="12" stroke="currentColor" stroke-width="1.5"/></svg>'],
   ['Daily Brief','Morning, midday and close summaries written in plain English. Five-minute market prep, simplified.','module 02',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="17" x2="13" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>'],
-  ['Why Is It Moving?','See why a single stock is up or down — macro, sector, sentiment and historical pattern matches.','module 03',
+  ['Why Is It Moving?','See why a single stock is up or down: macro, sector, sentiment and historical pattern matches.','module 03',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18 L9 12 L13 16 L20 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="6" r="2" fill="currentColor"/></svg>'],
-  ['My Portfolio','Concentration, correlation, macro sensitivity and volatility exposure - explained, not advised.','module 04',
+  ['Portfolio Story','Your holdings explained as a narrative: concentration, drivers, relationships, and what to watch before the holdings table.','module 04',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M12 4 L12 12 L18 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'],
   ['Why Markets Move','Inflation, rates, currencies and policy events - translated into how they move stocks and sectors.','module 05',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12 L7 8 L11 14 L15 6 L21 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'],
-  ['Live market events','Real-time feed of market-moving news — part of Why Markets Move. We map the chain reaction - you read it.','module 06',
+  ['Deep Dive','Every story opens into Deep Dive: one investigation view for any company, theme, or market signal.','module 06',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="14" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="20" r="1.5" fill="currentColor"/><circle cx="18" cy="20" r="1.5" fill="currentColor"/><line x1="6" y1="8" x2="11" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="18" y1="8" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="11" y1="15" x2="7" y2="19" stroke="currentColor" stroke-width="1.5"/><line x1="13" y1="15" x2="17" y2="19" stroke="currentColor" stroke-width="1.5"/></svg>'],
   ['Correlation Engine','Track when relationships between stocks, sectors and assets break down. The earliest signals usually live here.','module 07',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="6" height="6" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="4" width="6" height="6" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="14" width="6" height="6" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="6" height="6" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="7" x2="14" y2="7" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/><line x1="7" y1="10" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/></svg>'],
-  ['Smart Alerts','Multi-condition alerts written in plain English: vol spikes, sentiment turns, correlation breaks, sector rotation.','module 08',
+  ['Ask Logic','Ask questions in plain English across markets, macro, sectors, portfolios, and stocks on the same intelligence graph.','module 08',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 9 a6 6 0 0 1 12 0 v6 l1.5 2 H4.5 L6 15 z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 19 a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.5"/></svg>'],
   ['Sector Rotation','Where money is flowing - and leaving. Visualised, ranked and explained, not just charted.','module 09',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 8 a8 8 0 1 1 -3 -4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="14,3 19,4 18,9" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'],
-  ['Discover Stocks','Momentum-ranked universe of 35 stocks scored live across price change, volume surge and 52-week position. Four scan modes. Plain-English explanations on every row.','module 10',
+  ['Discover Stocks','Today\'s market story, key themes, and stocks worth investigating, before rankings and scans.','module 10',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="8" x2="11" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'],
-  ['Insider &amp; Political Trades','Track SEC Form 4 corporate insider transactions and congressional STOCK Act disclosures. Follow the smart money before it moves the market.','module 11',
+  ['Smart Money Flow','Insider and political activity organized into a clear flow story: who is buying, who is selling, and where activity is clustering.','module 11',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M17 3l1.5 1.5L22 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'],
-  ['Options Flow','Unusual options activity, put/call ratios, dark pool prints and full options chains. When options diverge from price, smart money is positioning early.','module 12',
+  ['Options Story','Today\'s options positioning explained in plain English before unusual activity, chains, and flow data.','module 12',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 17 L8 12 L12 15 L16 9 L21 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21" cy="11" r="2" fill="currentColor"/><path d="M3 21 L21 21" stroke="currentColor" stroke-width="1" opacity="0.3"/></svg>'],
 ];
 window.BT_FEATURE_DATA = featureData;
 const featureRoutes = {
   'Market Radar':'dashboard','Daily Brief':'why','Why Is It Moving?':'why',
-  'My Portfolio':'portfolio','Why Markets Move':'why',
-  'Live market events':'why','Correlation Engine':'portfolio',
-  'Smart Alerts':'dashboard','Sector Rotation':'dashboard',
-  'Discover Stocks':'scanner','Insider &amp; Political Trades':'insiders',
-  'Options Flow':'options',
+  'Portfolio Story':'portfolio','Why Markets Move':'why',
+  'Deep Dive':'why','Correlation Engine':'portfolio',
+  'Ask Logic':'logic','Sector Rotation':'dashboard',
+  'Discover Stocks':'scanner','Smart Money Flow':'insiders',
+  'Options Story':'options',
 };
 window.BT_FEATURE_DATA = featureData;
 const _featureGridEl = document.getElementById('featureGrid');
@@ -10928,7 +10921,27 @@ window.addEventListener('load', showOnboardingIfNew);
    CLERK AUTHENTICATION
 ================================================================ */
 let _clerkUser = null;         // null = visitor, object = signed in user
-let _isTerminal = false;       // true when user has Terminal subscription
+let _isTerminal = false;       // true when user has Terminal subscription or admin role
+
+function _isAdminRole(role) {
+  if (typeof window.BrieftickAccess?.isAdminRole === 'function') {
+    return window.BrieftickAccess.isAdminRole(role);
+  }
+  const r = String(role ?? '').trim().toLowerCase();
+  return r === 'admin' || r === 'administrator';
+}
+
+function _hasTerminalAccess() {
+  if (typeof window.hasTerminalAccess === 'function') return window.hasTerminalAccess();
+  return !!_isTerminal;
+}
+
+function _refreshScannerOnAccessChange() {
+  if (typeof window.logTerminalAccessState === 'function') window.logTerminalAccessState();
+  if (typeof renderScannerResults === 'function' && Array.isArray(scannerResults) && scannerResults.length) {
+    renderScannerResults();
+  }
+}
 
 async function initClerk() {
   if (!window.Clerk) return;
@@ -11010,6 +11023,8 @@ async function _onAuthChange(user) {
     const fpl = document.getElementById('footerProductLinks');
     if (fpl) fpl.innerHTML = '';
     _applyAccessLevel('visitor');
+    if (typeof window.logTerminalAccessState === 'function') window.logTerminalAccessState();
+    _refreshScannerOnAccessChange();
     return;
   }
 
@@ -11038,13 +11053,15 @@ async function _onAuthChange(user) {
   // Set plan badge and access level — priority: admin > terminal > free
   const role = user.publicMetadata?.role;
   const sub  = user.publicMetadata?.subscription;
+  const isAdmin = _isAdminRole(role);
+  const isTerminalSub = String(sub ?? '').trim().toLowerCase() === 'terminal';
 
-  if (role === 'admin') {
+  if (isAdmin) {
     _isTerminal = true;
     window._isTerminal = true;
     if (badge) { badge.textContent = 'Admin'; badge.className = 'auth-plan-badge terminal'; }
     _applyAccessLevel('terminal');
-  } else if (sub === 'terminal') {
+  } else if (isTerminalSub) {
     _isTerminal = true;
     window._isTerminal = true;
     if (badge) { badge.textContent = 'Terminal'; badge.className = 'auth-plan-badge terminal'; }
@@ -11056,6 +11073,8 @@ async function _onAuthChange(user) {
     _applyAccessLevel('free');
     _verifySubscriptionFromServer();
   }
+
+  _refreshScannerOnAccessChange();
 
   if (typeof window.btInitLogicForUser === 'function') {
     window.btInitLogicForUser();
@@ -11093,14 +11112,17 @@ async function _verifySubscriptionFromServer() {
     if (!res.ok) return;
     const data = await res.json();
     // Admin role or terminal subscription both unlock full access
-    if ((data.role === 'admin' || data.subscription === 'terminal') && !_isTerminal) {
+    const serverAdmin = _isAdminRole(data.role);
+    const serverTerminal = String(data.subscription ?? '').trim().toLowerCase() === 'terminal';
+    if ((serverAdmin || serverTerminal) && !_hasTerminalAccess()) {
       _isTerminal = true;
       window._isTerminal = true;
       const badge = document.getElementById('authPlanBadge');
-      const label = data.role === 'admin' ? 'Admin' : 'Terminal';
+      const label = serverAdmin ? 'Admin' : 'Terminal';
       if (badge) { badge.textContent = label; badge.className = 'auth-plan-badge terminal'; }
       _applyAccessLevel('terminal');
       if (typeof window.btInitLogicForUser === 'function') window.btInitLogicForUser();
+      _refreshScannerOnAccessChange();
     }
   } catch (_) {}
 }
@@ -11233,6 +11255,8 @@ function _wrapAndOverlay(el, title, sub) {
 }
 
 function _addFreeRestrictions() {
+  if (_hasTerminalAccess()) return;
+
   // 1. OPTIONS tab — overlay over the full content wrap
   const optWrap = document.querySelector('#page-options .options-wrap');
   if (optWrap) {
@@ -11353,7 +11377,7 @@ function _getWimUsage() {
 }
 
 function _incrementWimUsage() {
-  if (_isTerminal) return; // no limit for premium
+  if (_hasTerminalAccess()) return; // no limit for premium / admin
   const today = new Date().toISOString().slice(0, 10);
   const usage = _getWimUsage();
   const count = usage.date === today ? usage.count + 1 : 1;
@@ -11393,7 +11417,7 @@ function _enforceWimLimit() {
 // Hook into loadWim to enforce free limit
 const _origLoadWim = typeof loadWim === 'function' ? loadWim : null;
 function loadWimWithLimit(sym) {
-  if (!_isTerminal) {
+  if (!_hasTerminalAccess()) {
     const today = new Date().toISOString().slice(0, 10);
     const usage  = _getWimUsage();
     const used   = usage.date === today ? usage.count : 0;
@@ -11407,13 +11431,7 @@ function loadWimWithLimit(sym) {
   if (typeof loadWim === 'function') loadWim(sym);
 }
 
-// Override the global loadWim binding AFTER the page loads
-window.addEventListener('load', () => {
-  // Re-export helpers so templates can call them
-  window.isAdmin    = () => window.Clerk?.user?.publicMetadata?.role === 'admin';
-  window.isTerminal = () => _isTerminal;
-  window.isFree     = () => !_isTerminal;
-});
+// Access helpers are set by /lib/terminal-access.bridge.js (hasTerminalAccess, isAdmin, isTerminal, isFree).
 
 // Global auth helpers (also used before Clerk loads)
 window.clerkSignIn  = () => window.Clerk?.openSignIn();
@@ -12350,7 +12368,7 @@ async function startCheckout(plan, btn) {
   }
 
   // ── Admin bypass — already has full access ────────────────────
-  if (window.Clerk?.user?.publicMetadata?.role === 'admin') {
+  if (typeof window.isAdmin === 'function' ? window.isAdmin() : _isAdminRole(window.Clerk?.user?.publicMetadata?.role)) {
     if (btn) { btn.disabled = false; btn.textContent = originalText; }
     alert('You already have Admin access — all Terminal features are unlocked.');
     return;
@@ -12498,6 +12516,7 @@ async function loadOptionsData() {
   renderFlowHeatmap();
   renderDarkPool();
   updateOptionsStats();
+  if (typeof window.refreshOptionsStorySummary === 'function') window.refreshOptionsStorySummary();
   buildDefaultChain();
   document.getElementById('optAIBtn').style.display = '';
 
@@ -12557,6 +12576,7 @@ async function fetchLiveOptionsData() {
     optionsUnusualData = liveUnusual;
     renderUnusualActivity();
     updateOptionsStats();
+    if (typeof window.refreshOptionsStorySummary === 'function') window.refreshOptionsStorySummary();
   }
 }
 
@@ -12593,32 +12613,40 @@ function updateOptionsStats() {
   const pcrNum = parseFloat(pcr) || 0.85;
   const pcrLabel = pcrNum < 0.7 ? '🟢 Bullish sentiment' : pcrNum > 1.0 ? '🔴 Bearish sentiment' : '🟡 Neutral';
   document.getElementById('optPCRLabel').textContent = `PCR ${pcr} · ${pcrLabel}`;
+  if (typeof window.refreshOptionsStorySummary === 'function') window.refreshOptionsStorySummary();
 }
 
 function renderUnusualActivity(filter) {
   const search = (filter || document.getElementById('optUnusualSearch')?.value || '').toLowerCase();
   const type   = document.getElementById('optTypeFilter')?.value || '';
   const sent   = document.getElementById('optSentFilter')?.value || '';
+  const flow = typeof window.getOptionsFlowFilter === 'function' ? window.getOptionsFlowFilter() : null;
+  const highlightMode = flow && flow.otab === 'unusual';
 
-  const filtered = optionsUnusualData.filter(r => {
+  const passesToolbar = (r) => {
     const ms = !search || r.sym.toLowerCase().includes(search);
     const mt = !type || r.type === type;
     const ms2 = !sent || r.sentiment === sent;
     return ms && mt && ms2;
-  });
+  };
+
+  const filtered = optionsUnusualData.filter(passesToolbar);
 
   const tbody = document.getElementById('optUnusualBody');
   if (!filtered.length) {
     tbody.innerHTML = '<tr><td colspan="12" style="padding:30px;text-align:center;color:var(--ink-faint)">No matching activity.</td></tr>';
     return;
   }
-  const maxVol = Math.max(...filtered.map(r => r.volume), 1);
-  tbody.innerHTML = filtered.map(r => {
+  const rows = filtered;
+  const maxVol = Math.max(...rows.map(r => r.volume), 1);
+  tbody.innerHTML = rows.map(r => {
+    const matchFlow = !highlightMode || !flow || (typeof window.optionsUnusualRowMatchesFlow === 'function' && window.optionsUnusualRowMatchesFlow(r, flow, optionsUnusualData));
+    const rowCls = highlightMode ? (matchFlow ? 'options-row-highlight' : 'options-row-dimmed') : '';
     const typeClass = r.type === 'CALL' ? 'opt-call' : 'opt-put';
     const voiRatio = r.oi > 0 ? (r.volume/r.oi).toFixed(1) + 'x' : '—';
     const barW = Math.round((r.volume / maxVol) * 100);
     const itm = r.type === 'CALL' ? r.spot > r.strike : r.spot < r.strike;
-    return `<tr>
+    return `<tr class="${rowCls}">
       <td style="font-family:var(--mono);font-size:11px;color:var(--ink-dim)">${r.time}</td>
       <td><span class="opt-sym">${r.sym}</span></td>
       <td><span class="${typeClass}">${r.type}</span></td>
@@ -12777,6 +12805,7 @@ In 4-5 sentences: What themes emerge from this options flow? Are traders net bul
 
 window.loadOptionsData = loadOptionsData;
 window.filterUnusualActivity = filterUnusualActivity;
+window.getOptionsUnusualData = () => optionsUnusualData;
 window.loadChain = loadChain;
 window.loadChainForSym = loadChainForSym;
 window.selectExpiry = selectExpiry;
@@ -13036,7 +13065,7 @@ function renderScannerResults() {
   /* Plan gate: Free users see first 3 real cards only.
      Locked placeholders have NO real data. Terminal sees all. */
   const FREE_LIMIT = 3;
-  const isGated    = !_isTerminal;
+  const isGated    = !_hasTerminalAccess();
 
   const sorted     = sortScannerResults(scannerMode);
   const visible    = isGated ? sorted.slice(0, FREE_LIMIT) : sorted.slice(0, 18);
@@ -13314,11 +13343,15 @@ function renderInsidersTable(data) {
     tbody.innerHTML = '<tr><td colspan="9" class="insiders-empty">No transactions found.</td></tr>';
     return;
   }
+  const flow = typeof window.getInsiderFlowFilter === 'function' ? window.getInsiderFlowFilter() : null;
+  const highlightMode = flow && flow.itab === 'corporate';
   tbody.innerHTML = data.map(row => {
     const isBuy = (row.action||'').toLowerCase().includes('buy') || (row.action||'').toLowerCase().includes('purchase') || (row.action||'').toLowerCase().includes('acqui');
     const badgeCls = isBuy ? 'insiders-badge-buy' : 'insiders-badge-sell';
     const badgeLabel = isBuy ? 'BUY' : 'SELL';
-    return `<tr>
+    const matchFlow = !highlightMode || !flow || (typeof window.insiderCorporateRowMatchesFlow === 'function' && window.insiderCorporateRowMatchesFlow(row, flow));
+    const rowCls = highlightMode ? (matchFlow ? 'insiders-row-highlight' : 'insiders-row-dimmed') : '';
+    return `<tr class="${rowCls}">
       <td class="insiders-date">${row.date}</td>
       <td><span class="insiders-sym">${row.ticker||'—'}</span></td>
       <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${row.company||'—'}</td>
@@ -13350,14 +13383,9 @@ function filterInsidersTable(searchVal) {
 }
 
 function updateInsidersStats() {
-  const buys = insidersCorpData.filter(r => (r.action||'').toLowerCase().includes('buy') || (r.action||'').toLowerCase().includes('purchase')).length;
-  const sells = insidersCorpData.length - buys;
-  const ratio = sells > 0 ? (buys / sells).toFixed(1) : '∞';
-  const meterPct = insidersCorpData.length > 0 ? Math.round((buys / insidersCorpData.length) * 100) : 50;
-  document.getElementById('iStatBuys').textContent = buys;
-  document.getElementById('iStatSells').textContent = sells;
-  document.getElementById('iStatRatio').textContent = ratio + ':1';
-  document.getElementById('iStatMeter').style.width = meterPct + '%';
+  if (typeof window.refreshInsiderSmartMoneySummary === 'function') {
+    window.refreshInsiderSmartMoneySummary();
+  }
 }
 
 // Political trades – fetch from public House Stock Watcher API
@@ -13366,7 +13394,6 @@ async function loadPoliticalTrades() {
   // Always show demo data immediately
   if (!politicsData.length) {
     politicsData = generateDemoPoliticsData();
-    document.getElementById('iStatPol').textContent = politicsData.length + '*';
     renderPoliticsCards();
     document.getElementById('politicsAIBtn').style.display = '';
   }
@@ -13384,8 +13411,10 @@ async function loadPoliticalTrades() {
       politicsData = arr.sort((a,b) =>
         new Date(b.transaction_date || b.disclosure_date || 0) - new Date(a.transaction_date || a.disclosure_date || 0)
       ).slice(0, 300);
-      document.getElementById('iStatPol').textContent = politicsData.length;
       renderPoliticsCards();
+      if (typeof window.refreshInsiderSmartMoneySummary === 'function') {
+        window.refreshInsiderSmartMoneySummary();
+      }
     }
   } catch(_) {
     // demo data already shown, nothing more to do
@@ -13439,12 +13468,17 @@ function renderPoliticsCards(searchFilter, partyFilter, typeFilter) {
     return;
   }
 
+  const flow = typeof window.getInsiderFlowFilter === 'function' ? window.getInsiderFlowFilter() : null;
+  const highlightMode = flow && flow.itab === 'politics';
+
   container.innerHTML = page.map(t => {
     const isBuy = (t.type||'').toLowerCase().includes('purchase');
     const partyClass = (t.party||'').toLowerCase() === 'democrat' ? 'politics-party-dem' : 'politics-party-rep';
     const partyLabel = t.party || 'Unknown';
     const ticker = (t.ticker||'').replace('$','');
-    return `<div class="politics-card">
+    const matchFlow = !highlightMode || !flow || (typeof window.insiderPoliticsRowMatchesFlow === 'function' && window.insiderPoliticsRowMatchesFlow(t, flow));
+    const cardCls = highlightMode ? (matchFlow ? 'ismf-highlight' : 'ismf-dimmed') : '';
+    return `<div class="politics-card ${cardCls}" data-ticker="${ticker}">
       <div class="politics-card-left">
         <div class="politics-card-name">${t.representative || 'Unknown'}</div>
         <div class="politics-card-party"><span class="${partyClass}">${partyLabel}</span> · Member of Congress</div>
@@ -13539,6 +13573,9 @@ function buildNotableClusters() {
     return;
   }
 
+  const flow = typeof window.getInsiderFlowFilter === 'function' ? window.getInsiderFlowFilter() : null;
+  const highlightMode = flow && flow.itab === 'notable';
+
   container.innerHTML = `
     <p style="font-size:13px;color:var(--ink-dim);margin-bottom:20px;line-height:1.6">
       Tickers with multiple insider or political transactions in the last 30 days. High activity may signal informed positioning.
@@ -13549,7 +13586,9 @@ function buildNotableClusters() {
         const buyPct = Math.round((v.buy / total) * 100);
         const signal = v.buy > v.sell ? 'Bullish Cluster' : v.sell > v.buy ? 'Bearish Cluster' : 'Mixed Activity';
         const sigColor = v.buy > v.sell ? 'var(--green)' : v.sell > v.buy ? 'var(--red)' : 'var(--gold)';
-        return `<div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px">
+        const matchFlow = !highlightMode || !flow || (typeof window.insiderClusterSymMatchesFlow === 'function' && window.insiderClusterSymMatchesFlow(sym, flow));
+        const clusterCls = highlightMode ? (matchFlow ? 'ismf-cluster-highlight' : 'ismf-cluster-dimmed') : '';
+        return `<div class="${clusterCls}" style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px" data-symbol="${sym}">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
             <span style="font-family:var(--mono);font-size:17px;font-weight:700;color:var(--gold)">${sym}</span>
             <span style="font-size:11px;color:${sigColor};font-weight:600">${signal}</span>
@@ -13574,6 +13613,9 @@ window.loadPoliticalTrades = loadPoliticalTrades;
 window.filterPoliticsCards = filterPoliticsCards;
 window.loadMorePolitics = loadMorePolitics;
 window.generateInsidersAI = generateInsidersAI;
+window.buildNotableClusters = buildNotableClusters;
+window.getInsidersCorpData = () => insidersCorpData;
+window.getInsidersPoliticsData = () => politicsData;
 
 // Route overrides so auto-load triggers on nav click
 (function patchNavForNewPages(){
@@ -14044,11 +14086,11 @@ window.addEventListener('load', () => {
       });
   }, 5000);
 
-  /* ── Section heading word flip — "Nine modules" cycles ─────────
+  /* ── Section heading word flip — "Twelve modules" cycles ─────────
      Same timing/easing as the hero flip above.
   ════════════════════════════════════════════════════════════════ */
   const sectionFlipEl = document.getElementById('sectionFlipWord');
-  const SECTION_CYCLE = ['Nine modules', 'Live signals', 'Real-time data', 'Deep analysis'];
+  const SECTION_CYCLE = ['Twelve modules', 'Connected narratives', 'Story-first intelligence', 'Explainable investing'];
   let   si            = 0;
 
   BTRuntime.setInterval(() => {

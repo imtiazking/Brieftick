@@ -42,40 +42,8 @@
               <div class="briefing-rail__wheel">
                 <div class="intel-wheel__viewport" id="wheelViewport" tabindex="0" aria-label="Briefing wheel"></div>
               </div>
-              <div class="briefing-snapshot" aria-label="Market snapshot">
-                <h2 class="briefing-snapshot__title">Market Snapshot</h2>
-                <ul class="briefing-snapshot__grid">
-                  <li class="briefing-snapshot__row">
-                    <span class="briefing-snapshot__name">S&amp;P 500</span>
-                    <span class="briefing-snapshot__level">5,842.18</span>
-                    <span class="briefing-snapshot__chg is-up">+0.62%</span>
-                  </li>
-                  <li class="briefing-snapshot__row">
-                    <span class="briefing-snapshot__name">Nasdaq</span>
-                    <span class="briefing-snapshot__level">18,412.44</span>
-                    <span class="briefing-snapshot__chg is-up">+0.89%</span>
-                  </li>
-                  <li class="briefing-snapshot__row">
-                    <span class="briefing-snapshot__name">Dow</span>
-                    <span class="briefing-snapshot__level">42,156.70</span>
-                    <span class="briefing-snapshot__chg is-up">+0.41%</span>
-                  </li>
-                  <li class="briefing-snapshot__row">
-                    <span class="briefing-snapshot__name">VIX</span>
-                    <span class="briefing-snapshot__level">14.82</span>
-                    <span class="briefing-snapshot__chg is-dn">−3.2%</span>
-                  </li>
-                  <li class="briefing-snapshot__row">
-                    <span class="briefing-snapshot__name">Oil (WTI)</span>
-                    <span class="briefing-snapshot__level">$78.40</span>
-                    <span class="briefing-snapshot__chg is-up">+0.8%</span>
-                  </li>
-                  <li class="briefing-snapshot__row">
-                    <span class="briefing-snapshot__name">10Y Yield</span>
-                    <span class="briefing-snapshot__level">4.28%</span>
-                    <span class="briefing-snapshot__chg is-up">+2 bp</span>
-                  </li>
-                </ul>
+              <div class="briefing-snapshot" aria-label="Market snapshot" data-market-snapshot>
+                <!-- Rows injected by market-snapshot.js from lib/marketDataService.js -->
               </div>
             </aside>
             <div class="briefing-main" id="wheelEngine" aria-live="polite"></div>
@@ -84,7 +52,11 @@
       </section>
     </div>
   </main>
-  <p class="flagship-lab-note">Design lab · Mock data only · Not in production</p>
-  <script type="module" src="/design-lab/wheel-system/briefing/boot.js"></script>
+  <p class="briefing-provenance-wrap" aria-live="polite">
+    <span class="briefing-provenance-badge is-mixed" id="briefingProvenanceBadge">Data: …</span>
+    <span class="briefing-provenance-detail" id="briefingProvenanceDetail">Loading live quotes…</span>
+  </p>
+  <p class="flagship-lab-note">Design lab · Briefing Wheel Phase 1 preview · not production</p>
+  <script type="module" src="/design-lab/wheel-system/briefing/boot-live.js"></script>
 </body>
 </html>

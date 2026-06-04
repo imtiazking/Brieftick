@@ -44,7 +44,10 @@
     { "source": "/design-lab/move-together/chamber", "destination": "/design-lab/move-together/chamber/index.html" },
     { "source": "/design-lab/move-together/lens", "destination": "/design-lab/move-together/lens/index.html" },
     { "source": "/design-lab/portfolio-relationship-story", "destination": "/design-lab/portfolio-relationship-story/index.html" },
-    { "source": "/design-lab/discover-market-story", "destination": "/design-lab/discover-market-story/index.html" }
+    { "source": "/design-lab/discover-market-story", "destination": "/design-lab/discover-market-story/index.html" },
+    { "source": "/design-lab/insider-story", "destination": "/design-lab/insider-story/index.html" },
+    { "source": "/design-lab/options-story", "destination": "/design-lab/options-story/index.html" },
+    { "source": "/design-lab/hero-proof-concepts", "destination": "/design-lab/hero-proof-concepts/index.html" }
   ],
   "headers": [
     {

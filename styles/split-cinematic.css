@@ -80,10 +80,14 @@ html[data-split-landing] #page-landing {
   top: 0;
   bottom: 0;
   z-index: 4;
-  overflow: hidden;
+  overflow: visible;
   background: transparent;
-  padding-top: var(--split-chrome-h);
+  padding-top: 0;
   box-sizing: border-box;
+}
+/* Hero scene keeps the same top inset; atmosphere (.cw-env) can paint under the nav */
+html[data-split-landing] .cw-scene--hero {
+  padding-top: calc(64px + var(--split-chrome-h));
 }
 html[data-split-landing] footer {
   display: none;
@@ -323,10 +327,76 @@ html[data-split-landing] #page-landing .split-landing-mount {
 .cw-scene--center {
   text-align: center;
 }
-.cw-scene.is-active .cw-type-line:not(.cw-type-line--finale) {
+.cw-scene:not(.cw-scene--hero).is-active .cw-type-line:not(.cw-type-line--finale) {
   animation: cwTypeRise 1.2s var(--split-ease-slow) forwards, cwTypeDrift 9s ease-in-out infinite;
   animation-delay: calc(var(--i) * 0.18s + 0.1s), calc(var(--i) * 0.18s + 1.4s);
 }
+
+/* Hero copy — fully fixed (opacity fade on wrapper only; no translateY / drift) */
+.cw-scene--hero .cw-hero-copy--stable,
+.cw-scene--hero .cw-hero-copy--stable *,
+.cw-scene--hero .cw-type-line,
+.cw-scene--hero .cw-phrase,
+.cw-scene--hero .cw-sub,
+.cw-scene--hero .cw-proof,
+.cw-scene--hero .cw-eyebrow,
+.cw-scene--hero .cw-phrases {
+  animation-name: none !important;
+  animation: none !important;
+  transform: none !important;
+  translate: none !important;
+  filter: none !important;
+}
+.cw-scene--hero .cw-hero-copy--stable .pulse {
+  animation: phFade 2s infinite !important;
+}
+.cw-scene--hero .cw-hero-copy--stable {
+  opacity: 0;
+  transition: opacity 1.1s var(--split-ease-slow);
+}
+.cw-scene--hero.is-active .cw-hero-copy--stable {
+  opacity: 1;
+}
+.cw-scene--hero .cw-type-line {
+  opacity: 1 !important;
+}
+
+/* Hero proof pills — Premium Signals (Version G) */
+.cw-scene--hero .cw-phrases {
+  gap: 10px;
+}
+
+.cw-scene--hero .cw-phrase {
+  position: relative;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 2px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.82);
+  background: rgba(212, 168, 90, 0.035);
+  box-shadow: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.cw-scene--hero .cw-phrase::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  bottom: 1px;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    rgba(232, 201, 138, 0.95),
+    rgba(212, 168, 90, 0.55) 45%,
+    rgba(212, 168, 90, 0.25)
+  );
+  border-radius: 1px 0 0 1px;
+  box-shadow: 0 0 10px rgba(212, 168, 90, 0.2);
+}
+
 .cw-type-line--finale {
   display: block;
   font-family: var(--split-display);
@@ -415,6 +485,8 @@ html[data-split-landing] #page-landing .split-landing-mount {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   color: rgba(232, 236, 245, 0.4);
+}
+.cw-scene:not(.cw-scene--hero) .cw-phrase {
   animation: cwTypeDrift 8s ease-in-out infinite;
   animation-delay: var(--d, 0s);
 }

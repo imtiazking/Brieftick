@@ -1,0 +1,252 @@
+/* Insider & Political Trades · Smart Money Flow (production) */
+
+#page-insiders .ismf-story {
+  --ismf-glass: rgba(12, 16, 26, 0.72);
+  --ismf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  margin-bottom: 28px;
+}
+
+#page-insiders .ismf-story__title {
+  font-family: var(--display);
+  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+
+#page-insiders .ismf-overall {
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  background: rgba(212, 168, 90, 0.06);
+  border: 1px solid rgba(212, 168, 90, 0.2);
+  border-radius: 12px;
+}
+
+#page-insiders .ismf-overall__title {
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+#page-insiders .ismf-overall__body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  max-width: 68ch;
+}
+
+#page-insiders .ismf-flows-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+#page-insiders .ismf-flow-unit__card {
+  background: var(--ismf-glass);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition:
+    border-color 0.25s var(--ismf-ease),
+    box-shadow 0.25s var(--ismf-ease);
+}
+
+#page-insiders .ismf-flow-unit:hover .ismf-flow-unit__card,
+#page-insiders .ismf-flow-unit.is-selected .ismf-flow-unit__card {
+  border-color: rgba(212, 168, 90, 0.35);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+#page-insiders .ismf-flow-card {
+  display: block;
+  width: 100%;
+  min-height: 88px;
+  padding: 18px 20px 16px 26px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  position: relative;
+}
+
+#page-insiders .ismf-flow-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--ink-faint);
+}
+
+#page-insiders .ismf-flow-card[data-tone="buy"]::before {
+  background: var(--green);
+}
+
+#page-insiders .ismf-flow-card[data-tone="sell"]::before {
+  background: var(--red);
+}
+
+#page-insiders .ismf-flow-card[data-tone="mixed"]::before {
+  background: var(--gold);
+}
+
+#page-insiders .ismf-flow-card__label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+
+#page-insiders .ismf-flow-card__sector {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 400;
+}
+
+#page-insiders .ismf-flow-preview {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  border-top: 1px solid transparent;
+  transition:
+    max-height 0.35s var(--ismf-ease),
+    opacity 0.28s var(--ismf-ease),
+    padding 0.3s var(--ismf-ease);
+}
+
+#page-insiders .ismf-flow-unit:hover .ismf-flow-preview,
+#page-insiders .ismf-flow-unit.is-selected .ismf-flow-preview {
+  max-height: 240px;
+  opacity: 1;
+  padding: 4px 20px 16px;
+  border-top-color: var(--border);
+}
+
+#page-insiders .ismf-flow-preview__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 10px;
+  margin-bottom: 8px;
+}
+
+#page-insiders .ismf-flow-preview__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+
+#page-insiders .ismf-flow-preview__tickers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#page-insiders .ismf-preview__ticker {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--ink);
+}
+
+#page-insiders .ismf-flow-preview__why,
+#page-insiders .ismf-flow-preview__matters {
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+#page-insiders .ismf-flow-preview__why strong,
+#page-insiders .ismf-flow-preview__matters strong {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+}
+
+#page-insiders .ismf-view-filings {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--gold);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+#page-insiders .ismf-view-filings:hover svg {
+  transform: translateY(2px);
+}
+
+#page-insiders .ismf-view-filings svg {
+  transition: transform 0.2s var(--ismf-ease);
+}
+
+#page-insiders .insiders-filings-section {
+  scroll-margin-top: 72px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#page-insiders .insiders-filings-section .insiders-tabs {
+  margin-bottom: 20px;
+}
+
+#page-insiders .insiders-filings-section .insiders-data-header h3 {
+  font-size: 1.1rem;
+  color: var(--ink-dim);
+}
+
+#page-insiders .insiders-row-highlight td {
+  background: rgba(212, 168, 90, 0.1) !important;
+}
+
+#page-insiders .insiders-row-dimmed td {
+  opacity: 0.38;
+}
+
+#page-insiders .politics-card.ismf-highlight {
+  border-color: rgba(212, 168, 90, 0.45);
+  box-shadow: 0 0 0 1px rgba(212, 168, 90, 0.15);
+}
+
+#page-insiders .politics-card.ismf-dimmed {
+  opacity: 0.4;
+}
+
+#page-insiders .ismf-cluster-highlight {
+  border-color: rgba(212, 168, 90, 0.45) !important;
+}
+
+#page-insiders .ismf-cluster-dimmed {
+  opacity: 0.45;
+}
+
+@media (max-width: 720px) {
+  #page-insiders .ismf-flows-grid {
+    grid-template-columns: 1fr;
+  }
+}
