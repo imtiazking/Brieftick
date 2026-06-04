@@ -631,16 +631,19 @@ html[data-split-landing] #page-landing .split-landing-mount {
 }
 
 .cw-monoliths {
-  display: flex;
-  gap: clamp(24px, 6vw, 80px);
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+  align-items: end;
+  width: 100%;
+  max-width: min(100%, 860px);
+  margin: 40px auto 0;
 }
 .cw-monolith {
   padding: 32px 28px;
-  min-width: min(100%, 280px);
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.35);
   text-align: left;
@@ -905,6 +908,38 @@ html[data-split-pricing] .compare-table {
 html[data-split-pricing] .how-step {
   background: rgba(0, 0, 0, 0.28);
   border-color: rgba(78, 120, 200, 0.1);
+}
+
+/* Pricing page: Free left, Terminal right on desktop */
+.tier-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: min(100%, 860px);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 60px;
+}
+
+.tier-grid-2 > .tier2 {
+  min-width: 0;
+}
+
+html[data-split-pricing] .tier-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 680px) {
+  .tier-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .cw-monoliths {
+    grid-template-columns: 1fr;
+    max-width: min(100%, 400px);
+  }
 }
 
 @media (max-width: 900px) {
