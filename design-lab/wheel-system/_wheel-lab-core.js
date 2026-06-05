@@ -112,14 +112,15 @@ function bootWheelLab(config, meta = {}) {
     chromeLink.href = "/design-lab/wheel-system";
   }
 
-  const pulseStrip = document.getElementById("wheelPulseStrip");
+  const pulseStrip =
+    meta.pulseStripEl || document.getElementById("wheelPulseStrip");
   if (pulseStrip) {
     pulseStrip.innerHTML = `
       <span class="wheel-pulse-strip__tag">${esc(config.pulseTag)}</span>
       <p class="wheel-pulse-strip__headline">${esc(config.pulseHeadline)}</p>`;
   }
 
-  const subtitle = document.getElementById("wheelLabSubtitle");
+  const subtitle = meta.subtitleEl || document.getElementById("wheelLabSubtitle");
   if (subtitle) {
     if (isProduction) {
       subtitle.textContent = config.subtitle || "Today's market briefing";

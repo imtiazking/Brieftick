@@ -13,6 +13,7 @@ import { bindInteractiveCharts } from "./dashboard-intel-charts.js";
 import { createIntelligenceWheel } from "./dashboard-design-wheel.js";
 import { renderWatchlistModule, bindWatchlistPanel } from "./dashboard-preview-watchlist.js";
 import { renderMarketBriefingModule, bindMarketBriefing } from "./dashboard-preview-briefing.js";
+import { scheduleModuleHydrate } from "/lib/dashboard-live-bridge.js";
 
 let activeWheelId = "movers";
 let wheelBuilt = false;
@@ -48,6 +49,9 @@ export function selectWheelModule(id) {
     stage.classList.add("is-visible");
     bindIntelligenceModule(stage, id);
     bindInteractiveCharts(stage, id);
+    if (id === "movers" || id === "heatmap" || id === "volatility") {
+      scheduleModuleHydrate(id, stage);
+    }
   });
 }
 

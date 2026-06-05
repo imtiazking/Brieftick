@@ -587,4 +587,39 @@ export function bindWatchlistPanel(root) {
     wlLog("watchlist delegates error", e);
   }
   revealWatchlistPanel();
+  refreshDashboardWatchlistQuotes();
+}
+
+/** Live quotes for Intelligence Wheel watchlist (via app fetchLiveQuotes). */
+export async function refreshDashboardWatchlistQuotes() {
+  const fetchQuotes =
+    typeof window.fetchLiveQuotes === "function" ? window.fetchLiveQuotes : null;
+  if (!fetchQuotes || !watchlistSymbols.length) return;
+
+  try {
+    const quotes = await fetchQuotes(watchlistSymbols);
+    let updated = 0;
+    for (const sym of watchlistSymbols) {
+      const q = quotes[sym];
+      if (!q || q.price == null || Number.isNaN(q.price)) continue;
+      latestWatchlistQuotes[sym] = {
+        price: q.price,
+        pctChange: q.pctChange,
+        name: watchlistNames[sym] || sym,
+        _live: true,
+      };
+      updated++;
+    }
+    const meta = watchlistRoot?.querySelector("#watchlistMeta");
+    if (meta && updated > 0) {
+      meta.textContent = `Live · ${updated} symbols · ${new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`;
+    }
+    renderWatchlist();
+  } catch (e) {
+    wlLog("live quote refresh failed", e.message);
+  }
+}
+
+if (typeof window !== "undefined") {
+  window.refreshDashboardWatchlistQuotes = refreshDashboardWatchlistQuotes;
 }

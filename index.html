@@ -3468,6 +3468,8 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/options-story.css">
 <link rel="stylesheet" href="/styles/dashboard-design-lab.css">
 <link rel="stylesheet" href="/styles/dashboard-rail-modules.css">
+<link rel="stylesheet" href="/styles/live-data-badge.css">
+<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">
 <link rel="stylesheet" href="/styles/dashboard-movers-intel.css">
 <link rel="stylesheet" href="/styles/dashboard-news-narrative.css">
 <link rel="stylesheet" href="/styles/dashboard-intel-charts.css">
@@ -3482,6 +3484,7 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/whats-moving-briefing.css">
 <link rel="stylesheet" href="/styles/earnings-beginner.css">
 <script type="module" src="/lib/ticker-deep-dive.bridge.js"></script>
+<script type="module" src="/lib/live-data-badge.js"></script>
 <script type="module" src="/lib/briefing-wheel.boot.js"></script>
 <script type="module" src="/lib/earnings-beginner.js"></script>
 <script src="/lib/earnings-route.js"></script>
@@ -3776,6 +3779,7 @@ h1,h2,h3{
         </div>
         <div class="intel-wheel-scene">
           <header class="wheel-pulse-strip" id="wheelPulseStrip" aria-label="Market Pulse"></header>
+          <div class="dash-live-badge-slot"><span id="dashLiveBadge" class="bt-live-badge bt-live-badge--illustrative" title="Loading market data">Illustrative</span></div>
           <p class="intel-wheel__hint">Drag or click any channel · arrow keys</p>
           <div class="intel-wheel__viewport" id="wheelViewport" tabindex="0" aria-label="Intelligence wheel"></div>
           <div class="wheel-module-viewport">
@@ -4121,6 +4125,10 @@ h1,h2,h3{
       <div class="dash-title">
         <h2>What's Moving</h2>
         <p class="meta" id="wheelLabSubtitle">Today's market briefing · drag the wheel or use arrow keys</p>
+        <p class="briefing-provenance-wrap wm-briefing-header__badges" aria-live="polite">
+          <span id="whmBriefingBadge" class="bt-live-badge bt-live-badge--delayed">Delayed</span>
+          <span class="briefing-provenance-detail" id="whmBriefingDetail">Market snapshot live · briefing loading…</span>
+        </p>
       </div>
     </header>
     <div class="briefing-scene briefing-scene--flagship">
@@ -4741,6 +4749,7 @@ h1,h2,h3{
     <div class="options-hero">
       <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Options Flow</div>
       <h1>Options Flow &amp; Unusual Activity</h1>
+      <p class="options-hero__badges"><span id="optionsLiveBadge" class="bt-live-badge bt-live-badge--illustrative" title="Loading options data">Illustrative</span></p>
     </div>
 
     <div id="optionsStoryMount"></div>
@@ -4803,8 +4812,7 @@ h1,h2,h3{
     <!-- Unusual Activity tab -->
     <div class="options-tab-panel active" id="otab-unusual">
       <div id="optPlanNotice" style="display:none;margin-bottom:14px;padding:10px 14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.25);border-radius:8px;font-size:12px;color:var(--ink-dim)">
-        <strong style="color:var(--gold)">Live options data</strong> requires a Polygon.io Starter plan ($29/mo) which unlocks the snapshot API.
-        Showing realistic demo data below. <a href="https://polygon.io/dashboard/api-keys" target="_blank" style="color:var(--gold)">Upgrade at polygon.io →</a>
+        <strong style="color:var(--gold)">Illustrative</strong> — unusual activity below is sample data, not a live Polygon feed. Flow heatmap, dark pool, and chain remain illustrative until Polygon is configured on the server.
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
         <input class="insiders-search" id="optUnusualSearch" placeholder="Filter by ticker…" oninput="filterUnusualActivity(this.value)" style="max-width:200px">
@@ -6880,6 +6888,7 @@ BriefTickAPI.keys.twelvedata   = BriefTickAPI.keys.twelvedata   || '_server_';
 BriefTickAPI.keys.finnhub      = BriefTickAPI.keys.finnhub      || '_server_';
 BriefTickAPI.keys.alphavantage = BriefTickAPI.keys.alphavantage || '_server_';
 BriefTickAPI.keys.anthropic    = BriefTickAPI.keys.anthropic    || '_server_';
+BriefTickAPI.keys.polygon      = BriefTickAPI.keys.polygon      || '_server_';
 // Hydrate cache from localStorage so users see last-known prices instantly on reload
 BriefTickAPI._loadPersistedCache();
 
@@ -7493,6 +7502,7 @@ async function fetchLiveQuotes(symbols) {
   }
   return quotes;
 }
+window.fetchLiveQuotes = fetchLiveQuotes;
 
 async function _fetchLandingMacroQuotes() {
   const LT = window.BrieftickLandingTicker;
@@ -12512,13 +12522,73 @@ function generateDemoOptionsData() {
   return { unusual, dark, flow, expiries };
 }
 
-async function loadOptionsData() {
-  optionsLoaded = true;
-  // Seed with demo data immediately
+let optionsDataMode = 'illustrative';
+Object.defineProperty(window, 'optionsDataMode', {
+  get() { return optionsDataMode; },
+  configurable: true,
+});
+
+function hasPolygonOptionsKey() {
+  const k = BriefTickAPI?.keys?.polygon;
+  return k === '_server_' || (typeof k === 'string' && k.length > 4 && k !== 'demo');
+}
+
+function setOptionsLiveBadge() {
+  const el = document.getElementById('optionsLiveBadge');
+  if (!el || !window.BrieftickLiveBadge) return;
+  if (optionsDataMode === 'live') {
+    window.BrieftickLiveBadge.apply(el, 'live', 'Unusual activity · Polygon snapshot API');
+  } else if (optionsDataMode === 'mixed') {
+    window.BrieftickLiveBadge.apply(el, 'mixed', 'Unusual activity live · flow/dark/chain illustrative');
+  } else {
+    window.BrieftickLiveBadge.apply(el, 'illustrative', 'Sample options data — not a live market feed');
+  }
+}
+
+function paintIllustrativeOptions() {
   const demo = generateDemoOptionsData();
   optionsUnusualData = demo.unusual;
   optionsDarkData = demo.dark;
   optionsFlowData = demo.flow;
+  optionsDataMode = 'illustrative';
+  const notice = document.getElementById('optPlanNotice');
+  if (notice) notice.style.display = '';
+  setOptionsLiveBadge();
+}
+
+async function loadOptionsData() {
+  optionsLoaded = true;
+  const grid = document.getElementById('optUnusualGrid');
+  if (grid) {
+    grid.innerHTML = '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px">Loading options data…</div>';
+  }
+  if (window.BrieftickLiveBadge) {
+    const el = document.getElementById('optionsLiveBadge');
+    if (el) window.BrieftickLiveBadge.apply(el, 'delayed', 'Loading…');
+  }
+
+  let liveOk = false;
+  if (hasPolygonOptionsKey()) {
+    try {
+      liveOk = await fetchLiveOptionsData();
+    } catch (e) {
+      console.warn('[Options] Live Polygon data failed:', e.message);
+    }
+  }
+
+  if (liveOk) {
+    optionsDataMode = 'mixed';
+    const demo = generateDemoOptionsData();
+    optionsDarkData = demo.dark;
+    optionsFlowData = demo.flow;
+    const notice = document.getElementById('optPlanNotice');
+    if (notice) {
+      notice.style.display = '';
+      notice.innerHTML = '<strong style="color:var(--gold)">Mixed</strong> — unusual activity is live from Polygon. Flow heatmap, dark pool, and options chain below remain <strong>illustrative</strong> sample data.';
+    }
+  } else {
+    paintIllustrativeOptions();
+  }
 
   renderUnusualActivity();
   renderFlowHeatmap();
@@ -12527,20 +12597,7 @@ async function loadOptionsData() {
   if (typeof window.refreshOptionsStorySummary === 'function') window.refreshOptionsStorySummary();
   buildDefaultChain();
   document.getElementById('optAIBtn').style.display = '';
-
-  // Try live Polygon.io data if key is available (browser settings or server env)
-  if (polyKey) {
-    try {
-      await fetchLiveOptionsData();
-    } catch(e) {
-      console.warn('[Options] Live Polygon data failed, using demo:', e.message);
-      const notice = document.getElementById('optPlanNotice');
-      if (notice) notice.style.display = '';
-    }
-  } else {
-    const notice = document.getElementById('optPlanNotice');
-    if (notice) notice.style.display = '';
-  }
+  setOptionsLiveBadge();
 }
 
 async function fetchLiveOptionsData() {
@@ -12582,10 +12639,10 @@ async function fetchLiveOptionsData() {
   }
   if (liveUnusual.length >= 3) {
     optionsUnusualData = liveUnusual;
-    renderUnusualActivity();
-    updateOptionsStats();
-    if (typeof window.refreshOptionsStorySummary === 'function') window.refreshOptionsStorySummary();
+    optionsDataMode = 'live';
+    return true;
   }
+  return false;
 }
 
 function formatPremium(val) {
