@@ -43,7 +43,10 @@ function cacheSet(key, value) {
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-api-key, anthropic-version');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, x-api-key, anthropic-version, x-brieftick-health-key, x-brieftick-health-secret'
+  );
 }
 
 async function proxyTwelveData(req, res) {
@@ -470,16 +473,10 @@ async function proxyPolygon(req, res) {
 }
 
 async function proxyStatus(req, res) {
-  // Returns which server-side keys are configured — values never exposed
-  return res.status(200).json({
-    anthropic:    !!(process.env.ANTHROPIC_KEY || process.env.ANTHROPIC_API_KEY),
-    twelvedata:   !!process.env.TWELVE_DATA_KEY,
-    finnhub:      !!process.env.FINNHUB_KEY,
-    alphavantage: !!process.env.ALPHA_VANTAGE_KEY,
-    polygon:      !!process.env.POLYGON_KEY,
-    formspree:    !!process.env.FORMSPREE_ID,
-    signup_webhook: !!process.env.SIGNUP_WEBHOOK_URL,
-  });
+  const { buildProviderStatusResponse } = await import('./provider-health.js');
+  const { status, body } = await buildProviderStatusResponse(req);
+  res.setHeader('Cache-Control', 'no-store');
+  return res.status(status).json(body);
 }
 
 async function proxyPoliticalTrades(req, res) {
