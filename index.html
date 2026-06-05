@@ -11026,6 +11026,9 @@ async function _onAuthChange(user) {
     _applyAccessLevel('visitor');
     if (typeof window.logTerminalAccessState === 'function') window.logTerminalAccessState();
     _refreshScannerOnAccessChange();
+    if (typeof window.BrieftickSplitLanding?.syncCtas === 'function') {
+      window.BrieftickSplitLanding.syncCtas();
+    }
     return;
   }
 
@@ -11079,6 +11082,10 @@ async function _onAuthChange(user) {
 
   if (typeof window.btInitLogicForUser === 'function') {
     window.btInitLogicForUser();
+  }
+
+  if (typeof window.BrieftickSplitLanding?.syncCtas === 'function') {
+    window.BrieftickSplitLanding.syncCtas();
   }
 
   // ── Resume checkout intent if user just signed in ─────────────
