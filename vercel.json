@@ -47,7 +47,8 @@
     { "source": "/design-lab/discover-market-story", "destination": "/design-lab/discover-market-story/index.html" },
     { "source": "/design-lab/insider-story", "destination": "/design-lab/insider-story/index.html" },
     { "source": "/design-lab/options-story", "destination": "/design-lab/options-story/index.html" },
-    { "source": "/design-lab/hero-proof-concepts", "destination": "/design-lab/hero-proof-concepts/index.html" }
+    { "source": "/design-lab/hero-proof-concepts", "destination": "/design-lab/hero-proof-concepts/index.html" },
+    { "source": "/design-lab/onboarding-tour", "destination": "/design-lab/onboarding-tour/index.html" }
   ],
   "headers": [
     {
@@ -227,6 +228,20 @@
     },
     {
       "source": "/design-lab/earnings-beginner/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/design-lab/onboarding-tour",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/design-lab/onboarding-tour/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
