@@ -42,6 +42,7 @@ const CONCEPTS = {
     label: "Market Analyst",
     mode: "ambient",
     init: initAnalyst,
+    description: "Strategist session v2",
   },
 };
 

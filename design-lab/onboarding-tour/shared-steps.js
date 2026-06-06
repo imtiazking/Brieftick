@@ -163,32 +163,78 @@ export function getQuestChallenges(third = "discover") {
   ];
 }
 
-/** Analyst whispers */
-export function getAnalystNotes(third = "discover") {
+/** Strategist-guided sessions — first-person, teaching-focused */
+export function getStrategistSessions(third = "discover") {
   const s = getSteps(third);
-  return [
-    {
-      step: s[0],
-      mood: "calm",
-      whisper: "Start here — Dashboard is your pulse check. Mood, movers, summary.",
-      detail: s[0].body,
-      cta: "Got it",
+  return {
+    intro: {
+      headline: "I'll walk you through Brieftick",
+      body: "I'm Elena, senior market strategist. In about two minutes I'll show you the three places every new user should know — without overwhelming you.",
+      duration: "~2 min",
     },
-    {
-      step: s[1],
-      mood: "curious",
-      whisper: "Stuck on a headline? Logic translates market moves into plain English.",
-      detail: s[1].body,
-      cta: "Show Logic",
+    stops: [
+      {
+        step: s[0],
+        stopLabel: "Stop 1 · Orientation",
+        title: "Start on the Dashboard",
+        strategistSays:
+          "Every session begins here. I read market mood, movers, and what changed — then decide where to dig deeper.",
+        teach: [
+          "Check Market Risk for today's tone",
+          "Scan top movers for leadership",
+          "Open Summary for the plain-English brief",
+        ],
+        lookFor: "The Intelligence Wheel — your control panel for the session.",
+        ctaWalk: "Show me the Dashboard",
+        ctaNext: "I've got the Dashboard",
+      },
+      {
+        step: s[1],
+        stopLabel: "Stop 2 · Questions",
+        title: "Ask Logic in plain English",
+        strategistSays:
+          "When a headline confuses you, don't guess. Logic is how I answer 'why is this moving?' without Wall Street jargon.",
+        teach: [
+          "Ask one clear question at a time",
+          "Logic uses live market context",
+          "Great for beginners who want clarity fast",
+        ],
+        lookFor: "Try a question like: “Why are tech stocks lagging today?”",
+        ctaWalk: "Take me to Logic",
+        ctaNext: "Ready for the next stop",
+      },
+      {
+        step: s[2],
+        stopLabel: "Stop 3 · Discovery",
+        title: `Explore ${s[2].title}`,
+        strategistSays: `When you don't have a ticker in mind, ${s[2].title} is where I hunt for themes and stories worth researching.`,
+        teach: [
+          "Browse by sector or theme",
+          "Follow momentum without chasing hype",
+          "Save ideas to your watchlist later",
+        ],
+        lookFor: "Pick one theme that fits your style — that's enough for today.",
+        ctaWalk: `Open ${s[2].title}`,
+        ctaNext: "Finish session",
+      },
+    ],
+    outro: {
+      headline: "You're oriented.",
+      body: "Dashboard for the pulse. Logic for questions. Discover or Intelligence when you want the next layer. I'll stay out of your way now.",
     },
-    {
-      step: s[2],
-      mood: "focused",
-      whisper: `When you want ideas, ${s[2].title} is where themes surface.`,
-      detail: s[2].body,
-      cta: "Open next",
-    },
-  ];
+  };
+}
+
+/** @deprecated Use getStrategistSessions */
+export function getAnalystNotes(third = "discover") {
+  const sessions = getStrategistSessions(third);
+  return sessions.stops.map((stop) => ({
+    step: stop.step,
+    mood: "focused",
+    whisper: stop.strategistSays,
+    detail: stop.teach.join(" · "),
+    cta: stop.ctaNext,
+  }));
 }
 
 /** Mission path nodes */
