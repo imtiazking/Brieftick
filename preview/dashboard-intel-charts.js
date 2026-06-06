@@ -118,17 +118,26 @@ function bindLiveGauge(hero) {
     const geom = gaugeArcGeometry(vix);
     const m = moodZoneFromVix(vix);
     const riskPct = vixToRiskScorePercent(vix);
+    const rs = typeof window !== "undefined" ? window.riskState : null;
+    const liveRegime = rs?.label;
     needleLine.setAttribute("x2", String(geom.needleX2));
     needleLine.setAttribute("y2", String(geom.needleY2));
     if (marker) {
       marker.setAttribute("cx", String(geom.markerX));
       marker.setAttribute("cy", String(geom.markerY));
-      marker.setAttribute("fill", m.color);
+      marker.setAttribute("fill", rs?.mood?.color || m.color);
     }
-    if (valueEl) valueEl.textContent = riskPct.toFixed(1);
-    if (confidenceEl) confidenceEl.textContent = m.confidence;
-    if (moodLabelEl) moodLabelEl.textContent = m.label;
-    if (moodZoneEl) moodZoneEl.textContent = `Current Zone: ${m.label}`;
+    if (valueEl) {
+      valueEl.textContent =
+        rs?.vix != null && !Number.isNaN(rs.vix) ? rs.vix.toFixed(1) : riskPct.toFixed(1);
+    }
+    if (confidenceEl) confidenceEl.textContent = rs?.confidence || m.confidence;
+    if (moodLabelEl) moodLabelEl.textContent = liveRegime || m.label;
+    if (moodZoneEl) {
+      moodZoneEl.textContent = liveRegime
+        ? `VIX ${rs?.vix != null ? rs.vix.toFixed(1) : "—"} · composite gauge`
+        : `Current Zone: ${m.label}`;
+    }
     if (zoneLegend) {
       zoneLegend.querySelectorAll(".live-gauge__zone-key").forEach((key) => {
         key.classList.toggle("is-active", key.dataset.zoneId === m.id);
@@ -146,7 +155,9 @@ function bindLiveGauge(hero) {
       }
     }
     if (!previewZoneId) {
-      setProbe(hero, m.summary || m.probe || PROBES.volatility.default);
+      const probe =
+        rs?.narrative?.summary || rs?.mood?.summary || m.summary || m.probe || PROBES.volatility.default;
+      setProbe(hero, probe);
       if (zoneTipEl) zoneTipEl.hidden = true;
     }
     wrap.style.setProperty(

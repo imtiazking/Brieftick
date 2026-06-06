@@ -1,15 +1,7 @@
 /**
- * Premium live market briefing — wheel Summary channel (storytelling, not dashboard).
+ * Premium live market briefing — wheel Summary channel.
  * @module preview/dashboard-preview-briefing
  */
-
-const PREVIEW_QUOTES = {
-  SPY: { pctChange: 0.48, price: 512.2 },
-  QQQ: { pctChange: 0.62, price: 445.1 },
-  IWM: { pctChange: 0.08, price: 198.4 },
-  NVDA: { pctChange: 1.98, price: 219.46 },
-  XOM: { pctChange: 1.18, price: 118.62 },
-};
 
 /** Static intro — what the Market Summary section measures. */
 export const MARKET_SUMMARY_INTRO =
@@ -24,13 +16,25 @@ export const MARKET_SUMMARY_FACTORS = [
   "Money flow",
 ];
 
+/** Design-lab / dashboard-preview only — not used in production app shell. */
+export const PREVIEW_QUOTES = {
+  SPY: { pctChange: 0.48, price: 512.2 },
+  QQQ: { pctChange: 0.62, price: 445.1 },
+  IWM: { pctChange: 0.08, price: 198.4 },
+  NVDA: { pctChange: 1.98, price: 219.46 },
+  XOM: { pctChange: 1.18, price: 118.62 },
+};
+
+/** @deprecated Production uses live window.riskState from market-risk-runner. */
 export function initPreviewRiskState() {
-  window.riskState = {
-    score: 38,
-    label: "Risk-On Tilt",
-    confidence: "Medium",
-    quotes: { ...PREVIEW_QUOTES },
-  };
+  if (window.__DASHBOARD_PREVIEW) {
+    window.riskState = {
+      score: 38,
+      label: "Risk-On",
+      confidence: "Medium",
+      quotes: { ...PREVIEW_QUOTES },
+    };
+  }
 }
 
 function escapeHtml(s) {
@@ -40,91 +44,35 @@ function escapeHtml(s) {
     .replace(/>/g, "&gt;");
 }
 
-export function getIntelContext(quotes) {
-  const q = { ...PREVIEW_QUOTES, ...quotes };
-  const rs = window.riskState || {};
-  let regimeShort = "Mixed";
-  let regimeCls = "mixed";
-
-  if (rs.score != null) {
-    if (rs.score <= 36) {
-      regimeShort = "Risk-On";
-      regimeCls = "on";
-    } else if (rs.score >= 66) {
-      regimeShort = "Risk-Off";
-      regimeCls = "off";
-    }
-  } else if (/risk-on/i.test(String(rs.label || ""))) {
-    regimeShort = "Risk-On";
-    regimeCls = "on";
-  } else if (/risk-off/i.test(String(rs.label || ""))) {
-    regimeShort = "Risk-Off";
-    regimeCls = "off";
-  }
-
-  const spy = q.SPY;
-  const iwm = q.IWM;
-  let breadthNarrow = false;
-  if (spy && iwm && !isNaN(spy.pctChange) && !isNaN(iwm.pctChange)) {
-    breadthNarrow = spy.pctChange - iwm.pctChange > 0.2;
-  }
-
-  return { q, regimeShort, regimeCls, breadthNarrow };
-}
-
 /**
- * @param {ReturnType<typeof getIntelContext>} ctx
- * @returns {{ headline: string, paragraphs: string[] }}
+ * @param {object} [riskState]
  */
-function getTodayStory(ctx) {
-  if (ctx.regimeShort === "Risk-On" && ctx.breadthNarrow) {
-    return {
-      headline: "A Divided Session",
-      paragraphs: [
-        "Large technology companies are pushing markets higher, but many smaller stocks are not participating.",
-        "This means the market appears strong on the surface, but strength is concentrated in a smaller group of companies.",
-      ],
-    };
-  }
-  if (ctx.regimeShort === "Risk-On") {
-    return {
-      headline: "Growth Holds the Tape",
-      paragraphs: [
-        "Investors are leaning into growth and AI-linked leadership. Major indices are moving higher with broader participation than a narrow rally.",
-        "The move still depends on a few strong sectors — watch whether smaller companies keep pace.",
-      ],
-    };
-  }
-  if (ctx.regimeShort === "Risk-Off") {
-    return {
-      headline: "Defensive Posture Returns",
-      paragraphs: [
-        "Caution is showing up beneath the headline numbers. Safer areas are attracting more attention while riskier stocks lag.",
-        "Sudden headlines can move prices quickly when investors are already on edge.",
-      ],
-    };
-  }
-  return {
-    headline: "A Divided Session",
-    paragraphs: [
-      "Indices and individual stocks are not all moving the same way. Leadership in one area can hide weakness elsewhere.",
-      "Read market direction, sentiment, and breadth together before assuming the whole market is strong or weak.",
-    ],
-  };
-}
+export function getIntelContext(riskState) {
+  const rs = riskState || window.riskState || {};
+  const q = rs.quotes || {};
+  const label = rs.label || "Neutral";
+  let regimeShort = label;
+  let regimeCls = rs.regimeCls || "mixed";
 
-function getWatchNext(ctx) {
-  if (ctx.breadthNarrow) {
-    return "Whether smaller companies start catching up — narrow leadership can reverse fast if mega-caps lose momentum.";
-  }
-  return "CPI and mega-cap earnings are the next tests for whether this move broadens or fades.";
+  if (label === "Risk-On") regimeCls = "on";
+  else if (label === "Risk-Off") regimeCls = "off";
+  else if (label.includes("Cautious")) regimeCls = "mixed";
+
+  return {
+    q,
+    regimeShort,
+    regimeCls,
+    breadthNarrow: !!rs.breadthNarrow,
+    confidence: rs.confidence || "Medium",
+    confidencePct: rs.confidencePct ?? 62,
+    narrative: rs.narrative || {},
+  };
 }
 
 function marketSummaryFactorsHtml() {
   return MARKET_SUMMARY_FACTORS.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
-/** Single immersive visual — animated market pulse wave. */
 function renderPulseVisual(uid) {
   return `<div class="briefing-story__visual" aria-hidden="true">
     <div class="briefing-story__pulse-ambient"></div>
@@ -148,15 +96,28 @@ function renderPulseVisual(uid) {
   </div>`;
 }
 
-export function buildStoryBriefing(quotes) {
-  const ctx = getIntelContext(quotes);
-  const story = getTodayStory(ctx);
-  const uid = Math.random().toString(36).slice(2, 8);
-  const storyParagraphs = story.paragraphs
-    .map((p) => `<p class="market-summary-story__text">${escapeHtml(p)}</p>`)
-    .join("");
+function watchListHtml(watch) {
+  const items = Array.isArray(watch) ? watch : watch ? [watch] : [];
+  if (!items.length) return "<p>Macro calendar and market breadth.</p>";
+  return `<ul class="market-summary-watch__list">${items
+    .map((line) => `<li>${escapeHtml(line)}</li>`)
+    .join("")}</ul>`;
+}
 
-  return `<article class="briefing-story briefing-story--${ctx.regimeCls}" aria-live="polite">
+/**
+ * @param {object} [riskState]
+ */
+export function buildStoryBriefing(riskState) {
+  const ctx = getIntelContext(riskState);
+  const n = ctx.narrative;
+  const uid = Math.random().toString(36).slice(2, 8);
+  const headline = n.headline || "Today's market story";
+  const whatChanged = n.whatChanged || "Pulling live market inputs…";
+  const whyItMatters =
+    n.whyItMatters || "Context updates as live quotes and macro data arrive.";
+  const whatToWatch = n.whatToWatch || ["VIX", "Treasury yields", "Market breadth"];
+
+  return `<article class="briefing-story briefing-story--${ctx.regimeCls}" aria-live="polite" data-risk-label="${escapeHtml(ctx.regimeShort)}">
     <div class="briefing-story__atmosphere" aria-hidden="true"></div>
     <div class="briefing-story__sweep" aria-hidden="true"></div>
 
@@ -164,6 +125,14 @@ export function buildStoryBriefing(quotes) {
       <span class="briefing-story__live"><span class="briefing-story__live-dot"></span>Live briefing</span>
       <span class="briefing-story__regime briefing-story__regime--${ctx.regimeCls}">${escapeHtml(ctx.regimeShort)}</span>
     </header>
+
+    <div class="briefing-story__confidence-row" style="margin:0 0 14px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink-dim)">
+      <span>Confidence</span>
+      <div style="flex:1;max-width:120px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden">
+        <div style="width:${ctx.confidencePct}%;height:100%;background:var(--gold)"></div>
+      </div>
+      <span>${escapeHtml(ctx.confidence)}</span>
+    </div>
 
     <section class="market-summary-brief" aria-labelledby="market-summary-title">
       <h2 class="market-summary-brief__kicker" id="market-summary-title">Market Summary</h2>
@@ -178,13 +147,22 @@ export function buildStoryBriefing(quotes) {
 
     <section class="market-summary-story" aria-labelledby="market-story-title">
       <h2 class="market-summary-brief__kicker" id="market-story-title">Today's Market Story</h2>
-      <h3 class="market-summary-story__headline">${escapeHtml(story.headline)}</h3>
-      ${storyParagraphs}
+      <h3 class="market-summary-story__headline">${escapeHtml(headline)}</h3>
+    </section>
+
+    <section class="market-summary-section" style="margin-top:16px">
+      <h3 class="focus-detail__q">What changed</h3>
+      <p class="market-summary-story__text" data-risk-what-changed>${escapeHtml(whatChanged)}</p>
+    </section>
+
+    <section class="market-summary-section" style="margin-top:12px">
+      <h3 class="focus-detail__q">Why it matters</h3>
+      <p class="market-summary-story__text" data-risk-why-matters>${escapeHtml(whyItMatters)}</p>
     </section>
 
     <footer class="briefing-story__watch">
       <span class="briefing-story__watch-label">What to watch next</span>
-      <p class="briefing-story__watch-text">${escapeHtml(getWatchNext(ctx))}</p>
+      <div data-risk-what-watch>${watchListHtml(whatToWatch)}</div>
     </footer>
   </article>`;
 }
@@ -193,10 +171,55 @@ export function buildStoryBriefing(quotes) {
 export const buildRichSummary = buildStoryBriefing;
 
 export function renderMarketBriefingModule() {
-  initPreviewRiskState();
+  const rs = window.riskState;
   return `<div class="rail-module rail-module--briefing rail-module--story">
-    <div class="wheel-briefing-body">${buildStoryBriefing()}</div>
+    <div class="wheel-briefing-body">${buildStoryBriefing(rs)}</div>
   </div>`;
+}
+
+/**
+ * Patch briefing DOM in place when riskState updates.
+ * @param {HTMLElement | null} root
+ * @param {object} riskState
+ */
+export function refreshBriefingFromRiskState(root, riskState) {
+  if (!root || !riskState) return;
+  const body = root.querySelector(".wheel-briefing-body");
+  if (!body) {
+    root.innerHTML = `<div class="wheel-briefing-body">${buildStoryBriefing(riskState)}</div>`;
+    bindMarketBriefing(root);
+    return;
+  }
+
+  const ctx = getIntelContext(riskState);
+  const n = riskState.narrative || {};
+  const story = body.querySelector(".briefing-story");
+  if (!story) {
+    body.innerHTML = buildStoryBriefing(riskState);
+    bindMarketBriefing(root);
+    return;
+  }
+
+  story.className = `briefing-story briefing-story--${ctx.regimeCls} is-visible`;
+  story.dataset.riskLabel = ctx.regimeShort;
+
+  const regimeEl = story.querySelector(".briefing-story__regime");
+  if (regimeEl) {
+    regimeEl.textContent = ctx.regimeShort;
+    regimeEl.className = `briefing-story__regime briefing-story__regime--${ctx.regimeCls}`;
+  }
+
+  const headlineEl = story.querySelector(".market-summary-story__headline");
+  if (headlineEl) headlineEl.textContent = n.headline || "Today's market story";
+
+  const changedEl = story.querySelector("[data-risk-what-changed]");
+  if (changedEl) changedEl.textContent = n.whatChanged || "";
+
+  const mattersEl = story.querySelector("[data-risk-why-matters]");
+  if (mattersEl) mattersEl.textContent = n.whyItMatters || "";
+
+  const watchEl = story.querySelector("[data-risk-what-watch]");
+  if (watchEl) watchEl.innerHTML = watchListHtml(n.whatToWatch);
 }
 
 export function bindMarketBriefing(root) {
@@ -204,5 +227,3 @@ export function bindMarketBriefing(root) {
   if (!story) return;
   requestAnimationFrame(() => story.classList.add("is-visible"));
 }
-
-export { PREVIEW_QUOTES };

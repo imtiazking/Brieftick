@@ -20,20 +20,18 @@ import {
 } from "./market-mood.js";
 import { renderFlowDetailPanelShell } from "./flow-bubble-detail.js";
 
+/** Design-lab fallback when live riskState is unavailable. */
 export const RAIL_PULSE = {
-  regime: "Risk-On · Narrow Leadership",
-  regimeShort: "Risk-On",
-  confidence: "78%",
+  regime: "Neutral → Cautious",
+  regimeShort: "Neutral",
+  confidence: "Medium",
   narrative:
-    "Megacap tech is carrying index returns while breadth only partially confirms. Rates are stable and the dollar is steady — leadership is concentrated, not broad. Institutional flow favours growth ETFs; defensives see tactical outflows.",
-  narrativeShort:
-    "AI leadership dominant while breadth only partly confirms — index strength remains narrow, not broad.",
-  /** Wheel strip — single editorial line (max 2 lines total) */
-  editorialLine: "AI Leadership Dominant",
-  keyDriver: "AI capex narrative + mega-cap earnings resilience",
-  keyRisk: "Treasury yields · CPI event risk · narrow concentration",
-  session:
-    "NYSE session: indices green on tech leadership; energy firm on supply narrative; financials lag on curve flattening. Watch CPI tomorrow and Powell commentary Wednesday.",
+    "Live market risk engine unavailable in this preview — connect the production dashboard for live regime, yields, and breadth.",
+  narrativeShort: "Loading live market risk context…",
+  editorialLine: "Loading market pulse…",
+  keyDriver: "Live quotes · VIX · Treasury yields",
+  keyRisk: "Breadth · sector rotation · macro headlines",
+  session: "Summary channel uses structured live inputs in production.",
 };
 
 export const RAIL_SECTIONS = [
@@ -386,11 +384,15 @@ function moodListHtml(items) {
 }
 
 function heroVolatilityGauge() {
-  const score = 12.2;
+  const rs = typeof window !== "undefined" ? window.riskState : null;
+  const score = rs?.gaugeVix ?? 18;
+  const moodId = rs?.moodId ?? moodZoneFromVix(score).id;
   const mood = moodZoneFromVix(score);
+  const label = rs?.label || "Loading…";
   const riskPct = vixToRiskScorePercent(score);
   const geom = gaugeArcGeometry(score);
-  return `<div class="live-chart live-gauge" data-vix="${score}" data-mood="${mood.id}" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${riskPct.toFixed(0)}" aria-label="Market mood gauge">
+  const vixDisplay = rs?.vix != null ? rs.vix.toFixed(1) : "—";
+  return `<div class="live-chart live-gauge" data-vix="${score}" data-mood="${moodId}" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${riskPct.toFixed(0)}" aria-label="Market risk gauge · ${esc(label)}">
     <svg class="live-gauge__svg" viewBox="0 0 200 120" aria-label="Interactive market mood gauge">
       <path class="live-gauge__track" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" stroke-linecap="round"/>
       <path class="live-gauge__fill" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="calc(100 - var(--gauge-fill, 35))"/>
@@ -417,9 +419,9 @@ function heroVolatilityGauge() {
       <g class="live-gauge__zones">${gaugeZonePathsHtml()}</g>
     </svg>
     <div class="live-gauge__headline" aria-live="polite">
-      <span class="live-gauge__headline-kicker">Market Mood</span>
-      <strong class="live-gauge__headline-mood" data-mood-label>${esc(mood.label)}</strong>
-      <span class="live-gauge__headline-zone" data-mood-zone>Current Zone: ${esc(mood.label)}</span>
+      <span class="live-gauge__headline-kicker">Market Risk</span>
+      <strong class="live-gauge__headline-mood" data-mood-label>${esc(label)}</strong>
+      <span class="live-gauge__headline-zone" data-mood-zone>VIX ${esc(vixDisplay)} · composite gauge</span>
     </div>
     <div class="live-gauge__zone-legend" data-zone-legend role="group" aria-label="Mood zones">
       ${gaugeZoneLegendHtml()}
@@ -428,11 +430,11 @@ function heroVolatilityGauge() {
     <div class="live-gauge__rating" aria-live="polite">
       <p class="live-gauge__rating-row live-gauge__rating-row--score">
         <span class="live-gauge__rating-label">Risk Score:</span>
-        <strong class="live-gauge__rating-score"><span class="live-gauge__value gauge-value">${riskPct.toFixed(1)}</span> / 100</strong>
+        <strong class="live-gauge__rating-score"><span class="live-gauge__value gauge-value">${esc(vixDisplay)}</span> VIX</strong>
       </p>
       <p class="live-gauge__rating-row">
         <span class="live-gauge__rating-label">Confidence Level:</span>
-        <strong class="live-gauge__confidence" data-mood-confidence>${esc(mood.confidence)}</strong>
+        <strong class="live-gauge__confidence" data-mood-confidence>${esc(rs?.confidence || mood.confidence)}</strong>
       </p>
     </div>
     <p class="live-chart__hint">Drag the dial or hover the gauge for mood zones</p>
@@ -821,7 +823,7 @@ function renderMarketRiskSurface(heroHtml, mood) {
       <h3 class="focus-detail__q" id="market-risk-about-title">About Market Risk</h3>
       <p class="market-risk-summary__about">${esc(MARKET_RISK_ABOUT)}</p>
       <h3 class="focus-detail__q market-risk-summary__current-title">Current Summary</h3>
-      <p class="market-risk-summary__current live-chart__probe" data-mood-summary aria-live="polite">${esc(mood.summary || mood.probe)}</p>
+        <p class="market-risk-summary__current live-chart__probe" data-mood-summary aria-live="polite">${esc((typeof window !== "undefined" && window.riskState?.narrative?.summary) || mood.summary || mood.probe)}</p>
     </section>
     <section class="market-mood-plain" aria-labelledby="market-mood-plain-title">
       <h3 class="focus-detail__q" id="market-mood-plain-title">In plain English</h3>
@@ -1033,10 +1035,16 @@ export function renderRailPulseHero() {
 }
 
 export function renderWheelPulseStrip() {
-  const p = RAIL_PULSE;
+  const rs = typeof window !== "undefined" ? window.riskState : null;
   const line =
-    p.editorialLine || p.regimeShort || p.regime.split("·")[0].trim();
+    rs?.narrative?.pulseLine ||
+    rs?.label ||
+    RAIL_PULSE.editorialLine ||
+    "Loading market pulse…";
+  const tag = rs
+    ? `Market Pulse · ${rs.label} · ${rs.confidence || "Medium"} confidence`
+    : "Market Pulse";
   return `
-    <span class="wheel-pulse-strip__tag">Market Pulse</span>
+    <span class="wheel-pulse-strip__tag">${esc(tag)}</span>
     <p class="wheel-pulse-strip__headline">${esc(line)}</p>`;
 }

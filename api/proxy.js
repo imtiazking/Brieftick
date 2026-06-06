@@ -323,6 +323,7 @@ async function proxyAnthropic(req, res) {
 const FRED_ALLOWED_SERIES = new Set([
   'VIXCLS',
   'DGS10',
+  'DGS2',
   'DCOILWTICO',
   'SP500',
   'NASDAQCOM',
