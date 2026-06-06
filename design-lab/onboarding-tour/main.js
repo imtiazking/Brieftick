@@ -133,4 +133,10 @@ document.querySelectorAll(".mock-nav__link").forEach((link) => {
   });
 });
 
-mountConcept(readHashConcept() || "spotlight");
+const initialConcept = readHashConcept() || "spotlight";
+mountConcept(initialConcept);
+
+window.addEventListener("hashchange", () => {
+  const id = readHashConcept();
+  if (id && id !== activeConcept) mountConcept(id);
+});
