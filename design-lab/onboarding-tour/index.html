@@ -4,25 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <title>Onboarding Tour · Design Lab · Brieftick</title>
+  <title>Onboarding Tour Concepts · Design Lab · Brieftick</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/design-lab/onboarding-tour/onboarding-tour.css">
+  <link rel="stylesheet" href="/design-lab/onboarding-tour/shared.css">
+  <link rel="stylesheet" href="/design-lab/onboarding-tour/concepts.css">
 </head>
 <body>
   <header class="lab-chrome">
-    <div>
-      <div class="lab-chrome__title">Onboarding tour prototype</div>
+    <div class="lab-chrome__row">
+      <div>
+        <div class="lab-chrome__title">Onboarding tour · 5 concepts</div>
+      </div>
+      <span class="lab-chrome__pill">Design lab · not production</span>
+      <div class="lab-chrome__actions">
+        <span class="lab-chrome__pill" style="border-color:transparent;padding-left:0">Step 3:</span>
+        <button type="button" class="lab-chrome__btn is-active" id="variantDiscover">Discover</button>
+        <button type="button" class="lab-chrome__btn" id="variantIntelligence">Intelligence</button>
+        <button type="button" class="lab-chrome__btn" id="tourRestart">Restart</button>
+        <a href="/design-lab.html">← Design lab</a>
+      </div>
     </div>
-    <span class="lab-chrome__pill">Design lab · not production</span>
-    <div class="lab-chrome__actions">
-      <span class="lab-chrome__pill" style="border-color:transparent;padding-left:0">Step 3 variant:</span>
-      <button type="button" class="lab-chrome__btn is-active" id="variantDiscover">Discover</button>
-      <button type="button" class="lab-chrome__btn" id="variantIntelligence">Intelligence</button>
-      <button type="button" class="lab-chrome__btn" id="tourRestart">Restart tour</button>
-      <a href="/design-lab.html">← Design lab</a>
-    </div>
+    <nav class="concept-tabs" id="conceptTabs" aria-label="Onboarding concept switcher"></nav>
   </header>
 
   <div class="mock-app" id="mockApp">
@@ -37,7 +41,7 @@
     </nav>
 
     <main class="mock-main">
-      <section class="mock-page is-active" id="page-dashboard" aria-label="Dashboard preview">
+      <section class="mock-page is-active" id="page-dashboard">
         <header class="mock-hero">
           <h1>Dashboard</h1>
           <p>Market mood, movers, and your daily briefing — the fastest way to see what matters.</p>
@@ -47,23 +51,23 @@
         </div>
         <div class="mock-card-grid">
           <article class="mock-card"><strong>Market Risk</strong><span>Neutral → Cautious</span></article>
-          <article class="mock-card"><strong>Top Movers</strong><span>Live leaders & laggards</span></article>
+          <article class="mock-card"><strong>Top Movers</strong><span>Live leaders &amp; laggards</span></article>
           <article class="mock-card"><strong>Summary</strong><span>What changed today</span></article>
         </div>
       </section>
 
-      <section class="mock-page" id="page-logic" aria-label="Logic preview">
+      <section class="mock-page" id="page-logic">
         <header class="mock-hero">
           <h1>Logic</h1>
           <p>Ask what's moving and why — Brieftick explains it without the Wall Street jargon.</p>
         </header>
         <div class="mock-logic-box">
-          <textarea readonly placeholder="Try: Why is the market down today?">Why are tech stocks lagging while the S&amp;P holds up?</textarea>
-          <p class="mock-logic-hint">Logic reads live market context and answers in plain English. Great for beginners who want clarity, not buzzwords.</p>
+          <textarea readonly>Why are tech stocks lagging while the S&amp;P holds up?</textarea>
+          <p class="mock-logic-hint">Logic reads live market context and answers in plain English.</p>
         </div>
       </section>
 
-      <section class="mock-page" id="page-discover" aria-label="Discover preview">
+      <section class="mock-page" id="page-discover">
         <header class="mock-hero">
           <h1>Discover</h1>
           <p>Browse themes and ideas when you don't have a ticker in mind yet.</p>
@@ -72,49 +76,30 @@
           <article class="mock-card"><strong>AI &amp; Semis</strong><span>Momentum leaders</span></article>
           <article class="mock-card"><strong>Dividend growers</strong><span>Steady compounders</span></article>
           <article class="mock-card"><strong>Small-cap bounce</strong><span>Breadth watchlist</span></article>
-          <article class="mock-card"><strong>Energy rotation</strong><span>Sector shift</span></article>
         </div>
       </section>
 
-      <section class="mock-page" id="page-intelligence" aria-label="Intelligence preview">
+      <section class="mock-page" id="page-intelligence">
         <header class="mock-hero">
           <h1>Intelligence</h1>
           <p>News, flows, and narrative context woven together for deeper research.</p>
         </header>
         <div class="mock-card-grid">
-          <article class="mock-card"><strong>News stress</strong><span>Headline severity feed</span></article>
-          <article class="mock-card"><strong>Money flow</strong><span>Where capital is moving</span></article>
+          <article class="mock-card"><strong>News stress</strong><span>Headline severity</span></article>
+          <article class="mock-card"><strong>Money flow</strong><span>Capital rotation</span></article>
           <article class="mock-card"><strong>Moves together</strong><span>Correlation clusters</span></article>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- Tour overlay -->
-  <div class="tour-overlay is-open" id="tourOverlay" role="dialog" aria-modal="true" aria-labelledby="tourTitle" aria-hidden="false">
-    <div class="tour-spotlight tour-spotlight--pill" id="tourSpotlight" aria-hidden="true"></div>
-    <div class="tour-arrow" id="tourArrow" aria-hidden="true"></div>
+  <div id="tourRoot" aria-live="polite"></div>
 
-    <div class="tour-card" id="tourCard">
-      <div class="tour-card__progress">
-        <div class="tour-card__dots" id="tourDots" aria-label="Tour progress"></div>
-        <span class="tour-card__step-label" id="tourStepLabel">Step 1 of 3</span>
-      </div>
-      <h2 class="tour-card__title" id="tourTitle">Your market home base</h2>
-      <p class="tour-card__body" id="tourBody">The Dashboard gives you a quick read on market mood, top movers, and what changed today — all in plain English.</p>
-      <div class="tour-card__actions">
-        <button type="button" class="tour-btn tour-btn--skip" id="tourSkip">Skip tour</button>
-        <button type="button" class="tour-btn tour-btn--ghost" id="tourBack" hidden>Back</button>
-        <button type="button" class="tour-btn tour-btn--primary" id="tourNext">Next</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="tour-finish-banner" id="tourFinishBanner" role="status" aria-live="polite">
-    <p>You're set. Explore the Dashboard, ask Logic a question, or browse Discover when you're ready.</p>
+  <div class="tour-finish-banner" id="tourFinishBanner" role="status">
+    <p>Tour complete. Switch concepts above to compare styles, or restart to replay.</p>
     <button type="button">Dismiss</button>
   </div>
 
-  <script type="module" src="/design-lab/onboarding-tour/onboarding-tour.js"></script>
+  <script type="module" src="/design-lab/onboarding-tour/main.js"></script>
 </body>
 </html>
