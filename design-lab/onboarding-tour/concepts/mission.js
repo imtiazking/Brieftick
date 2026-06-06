@@ -1,117 +1,126 @@
 /**
- * Concept 3 — Mission Path
+ * Concept 1 — Mission Path
+ * Psychology: achievement · RPG quest map · unlock missions
  * @module design-lab/onboarding-tour/concepts/mission
  */
 
-import {
-  bindTourActions,
-  bindTourKeys,
-  highlightNav,
-  positionSpotlight,
-  setActivePage,
-} from "../tour-utils.js";
+import { getMissionNodes } from "../shared-steps.js";
+import { setActivePage } from "../tour-utils.js";
 
-const MISSION_SHORT = { dashboard: "Dashboard", logic: "Logic", discover: "Discover", intelligence: "Intelligence" };
-
-export function initMission({ steps, root }) {
-  let stepIndex = 0;
+export function initMission({ steps, root, stepThreeVariant = "discover" }) {
+  const nodes = getMissionNodes(stepThreeVariant);
+  let active = 0;
+  let completed = new Set();
   let open = true;
 
-  const pathHtml = steps
-    .map(
-      (s, i) => `
-    <li class="c-mission__node" data-mission-node="${i}">
-      <span class="c-mission__badge">${i + 1}</span>
-      <span class="c-mission__node-label">${MISSION_SHORT[s.id] || s.title}</span>
-      <span class="c-mission__node-state" data-node-state="${i}"></span>
-    </li>`
-    )
-    .join('<li class="c-mission__connector" aria-hidden="true"></li>');
-
   root.innerHTML = `
-    <div class="c-mission tour-layer is-open" data-tour-layer>
-      <div class="c-mission__veil"></div>
-      <div class="tour-spotlight tour-spotlight--pill" data-spotlight></div>
-      <div class="c-mission__card ${window.innerWidth <= 640 ? "c-mission__card--sheet" : ""}">
-        <span class="c-mission__kicker">Start your session</span>
-        <h2 class="c-mission__title">Your 3-step path</h2>
-        <ol class="c-mission__path">${pathHtml}</ol>
-        <div class="c-mission__detail">
-          <h3 class="tour-title" data-title></h3>
-          <p class="tour-body" data-body></p>
-        </div>
-        <div class="c-mission__bar" aria-hidden="true"><span data-progress-bar></span></div>
-        <div class="tour-actions">
-          <button type="button" class="tour-btn tour-btn--skip" data-tour-skip>Skip</button>
-          <button type="button" class="tour-btn tour-btn--primary" data-tour-next>Next</button>
-        </div>
+    <div class="phil mission" data-layer>
+      <div class="mission__backdrop"></div>
+      <div class="mission__frame">
+        <header class="mission__header">
+          <span class="mission__tag">Session Quest</span>
+          <h1>Start your market session</h1>
+          <p>Complete three missions to unlock the full Brieftick workflow.</p>
+          <div class="mission__xp">
+            <span data-xp-label>0 XP</span>
+            <div class="mission__xp-track"><span data-xp-bar style="width:0%"></span></div>
+          </div>
+        </header>
+        <ol class="mission__map" data-map></ol>
+        <article class="mission__active" data-active-panel hidden>
+          <span class="mission__rank" data-rank></span>
+          <h2 data-title></h2>
+          <p data-body></p>
+          <div class="mission__actions">
+            <button type="button" class="phil-btn phil-btn--ghost" data-skip>Skip quest</button>
+            <button type="button" class="phil-btn phil-btn--gold" data-complete>Complete mission</button>
+          </div>
+        </article>
+        <footer class="mission__footer" data-footer>
+          <button type="button" class="phil-btn phil-btn--ghost" data-restart>Restart</button>
+          <button type="button" class="phil-btn phil-btn--gold" data-begin>Begin Mission 1</button>
+        </footer>
       </div>
     </div>`;
 
-  const layer = root.querySelector("[data-tour-layer]");
-  const spotlight = root.querySelector("[data-spotlight]");
+  const layer = root.querySelector("[data-layer]");
+  const map = root.querySelector("[data-map]");
+  const panel = root.querySelector("[data-active-panel]");
+  const footer = root.querySelector("[data-footer]");
 
-  function updatePath(index) {
-    steps.forEach((_, i) => {
-      const node = root.querySelector(`[data-mission-node="${i}"]`);
-      const state = root.querySelector(`[data-node-state="${i}"]`);
-      node?.classList.toggle("is-active", i === index);
-      node?.classList.toggle("is-done", i < index);
-      if (state) {
-        state.textContent = i < index ? "✓" : i === index ? "Now" : "";
-      }
-    });
-    const bar = root.querySelector("[data-progress-bar]");
-    if (bar) bar.style.width = `${((index + 1) / steps.length) * 100}%`;
+  function renderMap() {
+    map.innerHTML = nodes
+      .map(
+        (n, i) => `
+      <li class="mission__node ${completed.has(i) ? "is-done" : ""} ${i === active ? "is-active" : ""}" data-node="${i}">
+        <div class="mission__node-icon">${i + 1}</div>
+        <div class="mission__node-body">
+          <strong>${n.step.title}</strong>
+          <span>${n.rank} · ${n.reward}</span>
+        </div>
+        <span class="mission__node-status">${completed.has(i) ? "✓" : i === active ? "→" : "—"}</span>
+      </li>`
+      )
+      .join("");
   }
 
-  function showStep(index) {
-    const step = steps[index];
-    if (!step) return;
-    stepIndex = index;
-    setActivePage(step.pageId, step.navId);
-    updatePath(index);
-    const target = document.getElementById(step.navId);
-    if (!target) return;
-    highlightNav(target, true);
-    target.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
-    requestAnimationFrame(() => {
-      if (spotlight) positionSpotlight(spotlight, target.getBoundingClientRect(), step.pill);
-      root.querySelector("[data-title]").textContent = step.title;
-      root.querySelector("[data-body]").textContent = step.body;
-      root.querySelector("[data-tour-next]").textContent =
-        index === steps.length - 1 ? "Finish session" : "Next step";
-    });
+  function xpTotal() {
+    return [...completed].reduce((sum, i) => sum + (i === 0 ? 25 : i === 1 ? 50 : 100), 0);
   }
 
-  function close() {
-    open = false;
-    layer?.classList.remove("is-open");
-    highlightNav(null, false);
+  function updateXp() {
+    const xp = xpTotal();
+    root.querySelector("[data-xp-label]").textContent = `${xp} XP`;
+    root.querySelector("[data-xp-bar]").style.width = `${(completed.size / nodes.length) * 100}%`;
   }
 
-  function onNext() {
-    if (stepIndex >= steps.length - 1) {
-      close();
-      document.getElementById("tourFinishBanner")?.classList.add("is-visible");
+  function showMission(i) {
+    active = i;
+    const n = nodes[i];
+    setActivePage(n.step.pageId, n.step.navId);
+    renderMap();
+    panel.hidden = false;
+    footer.hidden = true;
+    root.querySelector("[data-rank]").textContent = `${n.rank} · ${n.reward}`;
+    root.querySelector("[data-title]").textContent = n.step.title;
+    root.querySelector("[data-body]").textContent = n.objective;
+    root.querySelector("[data-complete]").textContent =
+      i === nodes.length - 1 ? "Finish quest" : `Complete · Mission ${i + 1}`;
+  }
+
+  function completeMission() {
+    completed.add(active);
+    updateXp();
+    if (active >= nodes.length - 1) {
+      close(true);
       return;
     }
-    showStep(stepIndex + 1);
+    showMission(active + 1);
   }
 
-  bindTourActions(root, { onSkip: close, onNext, onRestart: () => showStep(0) });
-  const unbindKeys = bindTourKeys((action) => {
-    if (!open) return;
-    if (action === "skip") close();
-    if (action === "next") onNext();
+  function close(finished = false) {
+    open = false;
+    layer?.classList.add("is-closed");
+    if (finished) document.getElementById("tourFinishBanner")?.classList.add("is-visible");
+  }
+
+  root.querySelector("[data-begin]")?.addEventListener("click", () => showMission(0));
+  root.querySelector("[data-complete]")?.addEventListener("click", completeMission);
+  root.querySelector("[data-skip]")?.addEventListener("click", () => close(false));
+  root.querySelector("[data-restart]")?.addEventListener("click", () => {
+    completed = new Set();
+    active = 0;
+    panel.hidden = true;
+    footer.hidden = false;
+    updateXp();
+    renderMap();
+    setActivePage(steps[0].pageId, steps[0].navId);
   });
-  const onResize = () => open && showStep(stepIndex);
-  window.addEventListener("resize", onResize);
-  showStep(0);
+
+  renderMap();
+  updateXp();
 
   return () => {
-    unbindKeys();
-    window.removeEventListener("resize", onResize);
     root.innerHTML = "";
   };
 }

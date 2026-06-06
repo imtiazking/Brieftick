@@ -1,53 +1,53 @@
 /**
- * Onboarding tour concept lab — orchestrator
+ * Onboarding philosophy lab — five distinct experiences
  * @module design-lab/onboarding-tour/main
  */
 
 import { getSteps } from "./shared-steps.js";
 import { applyStepThreeNav } from "./tour-utils.js";
-import { initSpotlight } from "./concepts/spotlight.js";
-import { initCommand } from "./concepts/command.js";
 import { initMission } from "./concepts/mission.js";
-import { initGuide } from "./concepts/guide.js";
-import { initFloating } from "./concepts/floating.js";
+import { initBriefing } from "./concepts/briefing.js";
+import { initCopilot } from "./concepts/copilot.js";
+import { initQuest } from "./concepts/quest.js";
+import { initAnalyst } from "./concepts/analyst.js";
 
-/** @type {Record<string, { id: string, label: string, copy: 'default' | 'market', init: Function }>} */
+/** @type {Record<string, { id: string, label: string, init: Function, mode: string }>} */
 const CONCEPTS = {
-  spotlight: {
-    id: "spotlight",
-    label: "Spotlight Classic",
-    copy: "default",
-    init: initSpotlight,
-  },
-  command: {
-    id: "command",
-    label: "Command Coach",
-    copy: "default",
-    init: initCommand,
-  },
   mission: {
     id: "mission",
     label: "Mission Path",
-    copy: "default",
+    mode: "immersive",
     init: initMission,
   },
-  guide: {
-    id: "guide",
-    label: "Market Guide",
-    copy: "market",
-    init: initGuide,
+  briefing: {
+    id: "briefing",
+    label: "Morning Briefing",
+    mode: "immersive",
+    init: initBriefing,
   },
-  floating: {
-    id: "floating",
-    label: "Floating Assistant",
-    copy: "default",
-    init: initFloating,
+  copilot: {
+    id: "copilot",
+    label: "AI Co-Pilot",
+    mode: "immersive",
+    init: initCopilot,
+  },
+  quest: {
+    id: "quest",
+    label: "Quest",
+    mode: "immersive",
+    init: initQuest,
+  },
+  analyst: {
+    id: "analyst",
+    label: "Market Analyst",
+    mode: "ambient",
+    init: initAnalyst,
   },
 };
 
-const CONCEPT_ORDER = ["spotlight", "command", "mission", "guide", "floating"];
+const CONCEPT_ORDER = ["mission", "briefing", "copilot", "quest", "analyst"];
 
-let activeConcept = "spotlight";
+let activeConcept = "mission";
 let stepThreeVariant = "discover";
 /** @type {(() => void) | null} */
 let destroyTour = null;
@@ -58,6 +58,7 @@ const restartBtn = document.getElementById("tourRestart");
 const variantDiscover = document.getElementById("variantDiscover");
 const variantIntel = document.getElementById("variantIntelligence");
 const finishBanner = document.getElementById("tourFinishBanner");
+const mockApp = document.getElementById("mockApp");
 
 function readHashConcept() {
   const hash = window.location.hash.replace(/^#/, "");
@@ -82,13 +83,17 @@ function mountConcept(id) {
   if (!concept || !root) return;
 
   applyStepThreeNav(stepThreeVariant);
-  const steps = getSteps(concept.copy, stepThreeVariant);
+  const steps = getSteps(stepThreeVariant);
+
+  document.body.dataset.concept = id;
+  document.body.dataset.conceptMode = concept.mode;
+  mockApp?.classList.toggle("is-ambient", concept.mode === "ambient");
 
   document.querySelectorAll("[data-concept-tab]").forEach((tab) => {
     tab.classList.toggle("is-active", tab.dataset.conceptTab === id);
   });
 
-  destroyTour = concept.init({ steps, root });
+  destroyTour = concept.init({ steps, root, stepThreeVariant });
   setHashConcept(id);
 }
 
@@ -121,7 +126,7 @@ finishBanner?.querySelector("button")?.addEventListener("click", () => {
 
 document.querySelectorAll(".mock-nav__link").forEach((link) => {
   link.addEventListener("click", () => {
-    if (destroyTour) return;
+    if (destroyTour && document.body.dataset.conceptMode !== "ambient") return;
     const pageId = link.dataset.page;
     if (!pageId) return;
     document.querySelectorAll(".mock-page").forEach((p) => {
@@ -133,7 +138,7 @@ document.querySelectorAll(".mock-nav__link").forEach((link) => {
   });
 });
 
-const initialConcept = readHashConcept() || "spotlight";
+const initialConcept = readHashConcept() || "mission";
 mountConcept(initialConcept);
 
 window.addEventListener("hashchange", () => {
