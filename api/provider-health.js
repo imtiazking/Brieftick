@@ -27,6 +27,7 @@ function safeMessage(msg) {
 function classifyProbe(httpStatus, body) {
   if (httpStatus === 429 || body?.code === 429) return 'rate_limited';
   if (httpStatus === 403 || httpStatus === 401) return 'forbidden';
+  if (body?.timedOut || body?.error === 'Probe timed out') return 'delayed';
   if (httpStatus >= 200 && httpStatus < 300) return 'ok';
   return 'error';
 }
@@ -65,8 +66,9 @@ async function fetchProbe(url, init = {}) {
     }
     return { httpStatus: r.status, body };
   } catch (e) {
-    const msg = e.name === 'AbortError' ? 'Probe timed out' : e.message;
-    return { httpStatus: 0, body: { error: safeMessage(msg) } };
+    const timedOut = e.name === 'AbortError';
+    const msg = timedOut ? 'Probe timed out' : e.message;
+    return { httpStatus: 0, body: { error: safeMessage(msg), timedOut } };
   } finally {
     clearTimeout(timer);
   }
@@ -281,10 +283,11 @@ const PROVIDERS = [
           probe: 'VIXCLS',
         };
       } catch (e) {
+        const timedOut = e.name === 'AbortError';
         return {
-          lastTestStatus: 'error',
-          httpStatus: 0,
-          message: safeMessage(e.name === 'AbortError' ? 'Probe timed out' : e.message),
+          lastTestStatus: timedOut ? 'delayed' : 'error',
+          httpStatus: timedOut ? null : 0,
+          message: timedOut ? 'Delayed / timeout' : safeMessage(e.message),
           probe: 'VIXCLS',
         };
       } finally {
@@ -407,6 +410,7 @@ export async function runProviderProbes() {
     ok: results.filter((r) => r.lastTestStatus === 'ok').length,
     rate_limited: results.filter((r) => r.lastTestStatus === 'rate_limited').length,
     forbidden: results.filter((r) => r.lastTestStatus === 'forbidden').length,
+    delayed: results.filter((r) => r.lastTestStatus === 'delayed').length,
     error: results.filter((r) => r.lastTestStatus === 'error').length,
     unknown: results.filter((r) => r.lastTestStatus === 'unknown').length,
   };

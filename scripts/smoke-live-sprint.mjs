@@ -98,21 +98,32 @@ try {
   });
   await page.waitForTimeout(2500);
 
-  const optIllustrative = await page.evaluate(() => ({
+  const optBeta = await page.evaluate(() => ({
     badge: document.getElementById("optionsLiveBadge")?.textContent?.trim(),
+    subtext: document.getElementById("optionsLiveBadgeSub")?.textContent?.trim(),
     badgeClass: document.getElementById("optionsLiveBadge")?.className || "",
     mode: window.optionsDataMode,
     noticeVisible: document.getElementById("optPlanNotice")?.offsetParent !== null,
+    noticeText: document.getElementById("optPlanNotice")?.textContent?.trim(),
   }));
-  if (optIllustrative.badge === "Illustrative" && optIllustrative.mode === "illustrative") {
-    pass("Options without POLYGON_KEY", "Illustrative badge");
+  if (
+    optBeta.badge === "Options Beta" &&
+    optBeta.subtext === "Live options flow coming soon" &&
+    optBeta.mode === "illustrative"
+  ) {
+    pass("Options without POLYGON_KEY", "Options Beta badge + subtext");
   } else {
-    fail("Options without POLYGON_KEY", JSON.stringify(optIllustrative));
+    fail("Options without POLYGON_KEY", JSON.stringify(optBeta));
   }
-  if (!optIllustrative.badgeClass.includes("bt-live-badge--live")) {
-    pass("Demo options never labelled Live (no key)");
+  if (optBeta.badgeClass.includes("bt-live-badge--options-beta")) {
+    pass("Options badge uses beta styling (no key)");
   } else {
-    fail("Demo options never labelled Live (no key)");
+    fail("Options badge uses beta styling (no key)", optBeta.badgeClass);
+  }
+  if (!optBeta.badgeClass.includes("bt-live-badge--live")) {
+    pass("Options never labelled Live (no key)");
+  } else {
+    fail("Options never labelled Live (no key)");
   }
 
   // --- Options: with server polygon placeholder ---
@@ -125,15 +136,25 @@ try {
 
   const optPolygon = await page.evaluate(() => ({
     badge: document.getElementById("optionsLiveBadge")?.textContent?.trim(),
+    subtext: document.getElementById("optionsLiveBadgeSub")?.textContent?.trim(),
     mode: window.optionsDataMode,
     rows: document.querySelectorAll("#optUnusualGrid tr, #optUnusualGrid .opt-row").length,
   }));
-  if (["Live", "Mixed"].includes(optPolygon.badge)) {
-    pass("Options with POLYGON_KEY gate", `badge=${optPolygon.badge} mode=${optPolygon.mode}`);
-  } else if (optPolygon.badge === "Illustrative") {
-    pass("Options with POLYGON_KEY gate", "Illustrative (Polygon API empty in local — OK for smoke)");
+  if (
+    optPolygon.badge === "Options Beta" &&
+    optPolygon.subtext === "Live options flow coming soon"
+  ) {
+    pass(
+      "Options with POLYGON_KEY gate",
+      `user-facing Beta copy preserved (internal mode=${optPolygon.mode})`
+    );
   } else {
     fail("Options with POLYGON_KEY gate", JSON.stringify(optPolygon));
+  }
+  if (!["Live", "Mixed", "Illustrative"].includes(optPolygon.badge)) {
+    pass("Options never exposes legacy provenance badges");
+  } else {
+    fail("Options never exposes legacy provenance badges", optPolygon.badge);
   }
 
   // --- What's Moving ---

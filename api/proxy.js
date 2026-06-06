@@ -388,9 +388,14 @@ async function proxyFred(req, res) {
       fetched = await fetchFredCsv(series, 2);
     }
     if (!fetched.ok || !fetched.points?.length) {
+      const detail = String(fetched.detail || '');
+      const timedOut =
+        detail.toLowerCase().includes('abort') ||
+        detail.toLowerCase().includes('time-out') ||
+        detail.toLowerCase().includes('timeout');
       return res.status(502).json({
         error: 'FRED series returned no usable value',
-        failureReason: 'upstream_error',
+        failureReason: timedOut ? 'delayed' : 'upstream_error',
         detail: fetched.detail,
       });
     }

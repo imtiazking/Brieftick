@@ -64,6 +64,28 @@
   background: rgba(255, 255, 255, 0.25);
 }
 
+.bt-live-badge--options-beta {
+  color: var(--gold, #d4af37);
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.35);
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-size: 11px;
+}
+
+.bt-live-badge--options-beta::before {
+  background: var(--gold, #d4af37);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.45);
+}
+
+.options-hero__badge-sub {
+  flex: 1 1 100%;
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-dim, #9aa3b2);
+}
+
 .wm-briefing-header__badges,
 .options-hero__badges,
 #dashWheelExperience .dash-live-badge-slot {

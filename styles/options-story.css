@@ -23,6 +23,13 @@
   color: var(--gold);
 }
 
+#page-options .osf-today-story__beta {
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+
 #page-options .osf-today-story__body {
   margin: 0;
   font-size: 15px;

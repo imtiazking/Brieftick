@@ -4744,13 +4744,16 @@ h1,h2,h3{
     <!-- Terminal teaser strip -->
     <div class="teaser-strip" onclick="route('pricing')">
       <svg class="ts-lock" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <span>Options Flow is a Terminal feature. Live options data, dark pool prints and unusual activity.</span>
+      <span>Options Flow is a Terminal feature. Live options flow coming soon — unusual activity, dark pool prints, and flow heatmaps.</span>
       <span class="ts-cta">Unlock Terminal →</span>
     </div>
     <div class="options-hero">
       <div class="section-eyebrow" style="display:inline-block;margin-bottom:12px">Options Flow</div>
       <h1>Options Flow &amp; Unusual Activity</h1>
-      <p class="options-hero__badges"><span id="optionsLiveBadge" class="bt-live-badge bt-live-badge--illustrative" title="Loading options data">Illustrative</span></p>
+      <p class="options-hero__badges">
+        <span id="optionsLiveBadge" class="bt-live-badge bt-live-badge--options-beta" title="Live options flow coming soon">Options Beta</span>
+        <span class="options-hero__badge-sub" id="optionsLiveBadgeSub">Live options flow coming soon</span>
+      </p>
     </div>
 
     <div id="optionsStoryMount"></div>
@@ -4812,8 +4815,8 @@ h1,h2,h3{
 
     <!-- Unusual Activity tab -->
     <div class="options-tab-panel active" id="otab-unusual">
-      <div id="optPlanNotice" style="display:none;margin-bottom:14px;padding:10px 14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.25);border-radius:8px;font-size:12px;color:var(--ink-dim)">
-        <strong style="color:var(--gold)">Illustrative</strong> — unusual activity below is sample data, not a live Polygon feed. Flow heatmap, dark pool, and chain remain illustrative until Polygon is configured on the server.
+      <div id="optPlanNotice" style="margin-bottom:14px;padding:10px 14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.25);border-radius:8px;font-size:12px;color:var(--ink-dim)">
+        <strong style="color:var(--gold)">Options Beta</strong> — Live options flow coming soon. Tables below are preview data while we connect live flow for Terminal subscribers.
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
         <input class="insiders-search" id="optUnusualSearch" placeholder="Filter by ticker…" oninput="filterUnusualActivity(this.value)" style="max-width:200px">
@@ -4851,7 +4854,7 @@ h1,h2,h3{
             </tr>
           </thead>
           <tbody id="optUnusualBody">
-            <tr><td colspan="12" style="padding:40px;text-align:center;color:var(--ink-faint)">Loading unusual options activity…</td></tr>
+            <tr><td colspan="12" style="padding:40px;text-align:center;color:var(--ink-faint)">Loading preview activity…</td></tr>
           </tbody>
         </table>
       </div>
@@ -4869,7 +4872,7 @@ h1,h2,h3{
           Load Chain
         </button>
       </div>
-      <div style="margin-bottom:10px;font-size:12px;color:var(--ink-dim)" id="chainMeta">Select a ticker and expiry to view the full options chain.</div>
+      <div style="margin-bottom:10px;font-size:12px;color:var(--ink-dim)" id="chainMeta">Options Beta — live chain flow coming soon. Select a ticker and expiry to explore the preview chain.</div>
       <!-- Chain table header -->
       <div class="chain-col-labels" id="chainColLabels" style="display:none">
         <div style="text-align:right">CALLS</div>
@@ -4883,14 +4886,14 @@ h1,h2,h3{
         <div style="padding:8px 12px;background:var(--bg);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:.06em">BID · ASK · VOL · IV</div>
         <!-- rows populated by JS -->
         <div id="chainBody" style="display:contents">
-          <div style="grid-column:1/-1;padding:50px;text-align:center;color:var(--ink-faint);font-size:13px">Click "Load Chain" to view options for a ticker.</div>
+          <div style="grid-column:1/-1;padding:50px;text-align:center;color:var(--ink-faint);font-size:13px">Click "Load Chain" to view preview options for a ticker.</div>
         </div>
       </div>
     </div>
 
     <!-- Flow Heatmap tab -->
     <div class="options-tab-panel" id="otab-heatmap">
-      <p style="font-size:13px;color:var(--ink-dim);margin-bottom:18px;line-height:1.6">Options flow intensity by ticker. Green = call-heavy flow (bullish bias). Red = put-heavy flow (bearish bias). Size reflects total premium traded.</p>
+      <p style="font-size:13px;color:var(--ink-dim);margin-bottom:18px;line-height:1.6">Live options flow coming soon. Preview heatmap below — green = call-heavy bias, red = put-heavy bias; size reflects sample premium traded.</p>
       <div class="flow-heatmap" id="optFlowHeatmap">
         <!-- populated by JS -->
       </div>
@@ -4898,7 +4901,7 @@ h1,h2,h3{
 
     <!-- Dark Pool tab -->
     <div class="options-tab-panel" id="otab-darkpool">
-      <p style="font-size:13px;color:var(--ink-dim);margin-bottom:18px;line-height:1.6">Large block trades and dark pool prints. These off-exchange transactions often precede significant price moves by 1–5 days.</p>
+      <p style="font-size:13px;color:var(--ink-dim);margin-bottom:18px;line-height:1.6">Live options flow coming soon. Preview dark pool prints below — sample block-trade layout for the planned Terminal feed.</p>
       <div class="options-table-wrap">
         <table class="options-table" id="optDarkTable">
           <thead>
@@ -4908,7 +4911,7 @@ h1,h2,h3{
             </tr>
           </thead>
           <tbody id="optDarkBody">
-            <tr><td colspan="8" style="padding:40px;text-align:center;color:var(--ink-faint)">Loading dark pool data…</td></tr>
+            <tr><td colspan="8" style="padding:40px;text-align:center;color:var(--ink-faint)">Loading preview prints…</td></tr>
           </tbody>
         </table>
       </div>
@@ -4922,7 +4925,7 @@ h1,h2,h3{
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--gold)" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
         Brieftick · Options Flow Analysis
       </h3>
-      <div id="optAIText" style="font-size:13px;color:var(--ink-faint);font-style:italic;line-height:1.7">Load data to generate AI analysis of today's options flow.</div>
+      <div id="optAIText" style="font-size:13px;color:var(--ink-faint);font-style:italic;line-height:1.7">Load preview data to generate sample AI commentary. Live options flow coming soon.</div>
       <button onclick="generateOptionsAI()" id="optAIBtn" style="margin-top:12px;padding:8px 16px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:var(--gold);border-radius:7px;font-family:inherit;font-size:12px;cursor:pointer;display:none">
         Generate AI Analysis
       </button>
@@ -5522,6 +5525,7 @@ function genSeries(n=80, vol=8, trend=-0.4, seed=1){
   return a;
 }
 function drawChart(el, series, opts={}){
+  if (!el || !series?.length) return;
   const w=el.clientWidth||640, h=el.clientHeight||220;
   const min=Math.min(...series), max=Math.max(...series);
   const pad=8, span=max-min||1;
@@ -5556,10 +5560,12 @@ function drawChart(el, series, opts={}){
     </svg>`;
 }
 window.addEventListener('load',()=>{
-  drawChart(document.getElementById('heroChart'), genSeries(90,7,-0.35,7), {id:'hero'});
+  const heroChartEl=document.getElementById('heroChart');
+  if(heroChartEl) drawChart(heroChartEl, genSeries(90,7,-0.35,7), {id:'hero'});
 });
 window.addEventListener('resize',()=>{
-  drawChart(document.getElementById('heroChart'), genSeries(90,7,-0.35,7), {id:'hero'});
+  const heroChartEl=document.getElementById('heroChart');
+  if(heroChartEl) drawChart(heroChartEl, genSeries(90,7,-0.35,7), {id:'hero'});
 });
 
 function spark(svgRaw, color){
@@ -8690,7 +8696,8 @@ function loadWim(sym){
     </div>`).join('');
   // chart
   const series=genSeries(80,5,d.trend, sym.charCodeAt(0));
-  drawChart(document.getElementById('wimChart'), series, {color:d.chgColor, fillColor:'rgba(255,91,110,0.12)', id:'wim'});
+  const wimChartEl=document.getElementById('wimChart');
+  if(wimChartEl) drawChart(wimChartEl, series, {color:d.chgColor, fillColor:'rgba(255,91,110,0.12)', id:'wim'});
   // history
   drawHistory(sym);
   // contagion
@@ -12534,16 +12541,29 @@ function hasPolygonOptionsKey() {
   return k === '_server_' || (typeof k === 'string' && k.length > 4 && k !== 'demo');
 }
 
-function setOptionsLiveBadge() {
-  const el = document.getElementById('optionsLiveBadge');
-  if (!el || !window.BrieftickLiveBadge) return;
-  if (optionsDataMode === 'live') {
-    window.BrieftickLiveBadge.apply(el, 'live', 'Unusual activity · Polygon snapshot API');
-  } else if (optionsDataMode === 'mixed') {
-    window.BrieftickLiveBadge.apply(el, 'mixed', 'Unusual activity live · flow/dark/chain illustrative');
-  } else {
-    window.BrieftickLiveBadge.apply(el, 'illustrative', 'Sample options data — not a live market feed');
+const OPTIONS_BETA_NOTICE_HTML =
+  '<strong style="color:var(--gold)">Options Beta</strong> — Live options flow coming soon. Tables below are preview data while we connect live flow for Terminal subscribers.';
+
+function applyOptionsUserFacingCopy() {
+  const badge = document.getElementById('optionsLiveBadge');
+  const sub = document.getElementById('optionsLiveBadgeSub');
+  if (window.BrieftickLiveBadge?.applyOptionsBetaBadge) {
+    window.BrieftickLiveBadge.applyOptionsBetaBadge(badge, sub);
+  } else if (badge) {
+    badge.className = 'bt-live-badge bt-live-badge--options-beta';
+    badge.textContent = 'Options Beta';
+    badge.title = 'Live options flow coming soon';
+    if (sub) sub.textContent = 'Live options flow coming soon';
   }
+  const notice = document.getElementById('optPlanNotice');
+  if (notice) {
+    notice.innerHTML = OPTIONS_BETA_NOTICE_HTML;
+    notice.style.display = '';
+  }
+}
+
+function setOptionsLiveBadge() {
+  applyOptionsUserFacingCopy();
 }
 
 function paintIllustrativeOptions() {
@@ -12561,12 +12581,9 @@ async function loadOptionsData() {
   optionsLoaded = true;
   const grid = document.getElementById('optUnusualGrid');
   if (grid) {
-    grid.innerHTML = '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px">Loading options data…</div>';
+    grid.innerHTML = '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px">Loading preview…</div>';
   }
-  if (window.BrieftickLiveBadge) {
-    const el = document.getElementById('optionsLiveBadge');
-    if (el) window.BrieftickLiveBadge.apply(el, 'delayed', 'Loading…');
-  }
+  applyOptionsUserFacingCopy();
 
   let liveOk = false;
   if (hasPolygonOptionsKey()) {
@@ -12582,14 +12599,10 @@ async function loadOptionsData() {
     const demo = generateDemoOptionsData();
     optionsDarkData = demo.dark;
     optionsFlowData = demo.flow;
-    const notice = document.getElementById('optPlanNotice');
-    if (notice) {
-      notice.style.display = '';
-      notice.innerHTML = '<strong style="color:var(--gold)">Mixed</strong> — unusual activity is live from Polygon. Flow heatmap, dark pool, and options chain below remain <strong>illustrative</strong> sample data.';
-    }
   } else {
     paintIllustrativeOptions();
   }
+  applyOptionsUserFacingCopy();
 
   renderUnusualActivity();
   renderFlowHeatmap();
@@ -12598,7 +12611,7 @@ async function loadOptionsData() {
   if (typeof window.refreshOptionsStorySummary === 'function') window.refreshOptionsStorySummary();
   buildDefaultChain();
   document.getElementById('optAIBtn').style.display = '';
-  setOptionsLiveBadge();
+  applyOptionsUserFacingCopy();
 }
 
 async function fetchLiveOptionsData() {
@@ -12614,6 +12627,7 @@ async function fetchLiveOptionsData() {
       const res = await fetch(`/api/proxy?provider=polygon&endpoint=v3/snapshot/options/${sym}&limit=20&sort=volume&order=desc`,
         { headers: polygonHeaders });
       const data = await res.json();
+      if (!res.ok || data?.error || String(data?.detail || '').includes('403')) continue;
       const results = data.results || [];
       results.slice(0,4).forEach(r => {
         const d = r.details || {};
@@ -12804,7 +12818,7 @@ function loadChain() {
   const spot = unusualItem?.spot || (flowItem ? 100 : 100);
 
   document.getElementById('chainMeta').textContent =
-    `${sym} options chain · Expiry: ${expLabel} · Spot: $${spot.toFixed(2)} · Data: estimated`;
+    `${sym} preview chain · Expiry: ${expLabel} · Spot: $${spot.toFixed(2)} · Live options flow coming soon`;
 
   // Generate realistic chain around the spot price
   const strikes = [];
@@ -12852,13 +12866,13 @@ function loadChain() {
 
 async function generateOptionsAI() {
   const el = document.getElementById('optAIText');
-  el.textContent = 'Generating AI analysis of options flow…';
+  el.textContent = 'Generating preview analysis…';
   el.style.fontStyle = 'italic';
   const topCalls = optionsUnusualData.filter(r=>r.type==='CALL').slice(0,3).map(r=>`${r.sym} ${r.strike}C ${r.expiry} (${r.premium}, IV ${r.iv}%)`).join(', ');
   const topPuts  = optionsUnusualData.filter(r=>r.type==='PUT').slice(0,3).map(r=>`${r.sym} ${r.strike}P ${r.expiry} (${r.premium}, IV ${r.iv}%)`).join(', ');
   const pcrEl = document.getElementById('optStatPCR');
   const pcr = pcrEl ? pcrEl.textContent : '0.85';
-  const prompt = `You are an options flow analyst. Today's unusual options activity shows:
+  const prompt = `You are an options flow analyst reviewing PREVIEW/SAMPLE data (not live market flow). The sample unusual activity shows:
 Largest CALL flow: ${topCalls || 'none'}.
 Largest PUT flow: ${topPuts || 'none'}.
 Market put/call ratio: ${pcr}.
