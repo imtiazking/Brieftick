@@ -10,6 +10,8 @@ const COUNTRIES_GEO_FALLBACK =
 
 const TILT = (23.4 * Math.PI) / 180;
 const DRAG_SENSITIVITY = 0.005;
+/** ~3 min per full revolution at 60fps — premium idle drift */
+const IDLE_ROTATION_RAD_PER_SEC = 0.035;
 const GLOBE_RADIUS = 1;
 const OCEAN_RADIUS = GLOBE_RADIUS * 0.998;
 const GRID_RADIUS = GLOBE_RADIUS * 1.0015;
@@ -612,6 +614,19 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     },
 
     tick(timeMs) {
+      const prevMs = layers.lastTickMs ?? timeMs;
+      const dt = Math.min(0.05, (timeMs - prevMs) / 1000);
+      layers.lastTickMs = timeMs;
+
+      if (
+        layers.idleRotationEnabled &&
+        !layers.idleRotationPaused &&
+        !layers.orientAnim &&
+        dt > 0
+      ) {
+        layers.globe.rotation.y += layers.idleRotationSpeed * dt;
+      }
+
       const t = timeMs * 0.001;
       for (const entry of layers.hotspotEntries) {
         const pulse = 0.5 + 0.5 * Math.sin(t * 1.15 + entry.phase);
@@ -979,8 +994,28 @@ export async function bindNewsGlobeThree(visual, _storyId = "inflation") {
   let startX = 0;
   let startY = 0;
 
+  const applyReducedMotion = () => {
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    ctx.layers.idleRotationEnabled = !reduced;
+    ctx.layers.idleRotationSpeed = reduced ? 0 : IDLE_ROTATION_RAD_PER_SEC;
+  };
+  applyReducedMotion();
+  const motionMq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+  const onMotionChange = () => applyReducedMotion();
+  motionMq?.addEventListener?.("change", onMotionChange);
+
+  const pauseIdleRotation = () => {
+    ctx.layers.idleRotationPaused = true;
+  };
+  const resumeIdleRotation = () => {
+    if (!dragging) ctx.layers.idleRotationPaused = false;
+  };
+
   const onDown = (e) => {
     if (e.button !== 0 && e.pointerType === "mouse") return;
+    pauseIdleRotation();
     pointerId = e.pointerId;
     lastX = e.clientX;
     startX = e.clientX;
@@ -1031,7 +1066,11 @@ export async function bindNewsGlobeThree(visual, _storyId = "inflation") {
     }
     pointerId = null;
     touchAxis = null;
+    resumeIdleRotation();
   };
+
+  visual.addEventListener("pointerenter", pauseIdleRotation);
+  visual.addEventListener("pointerleave", resumeIdleRotation);
 
   const onResize = () => ctx.resize();
   const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onResize) : null;
@@ -1058,6 +1097,9 @@ export async function bindNewsGlobeThree(visual, _storyId = "inflation") {
     target.removeEventListener("pointermove", onMove);
     target.removeEventListener("pointerup", onUp);
     target.removeEventListener("pointercancel", onUp);
+    visual.removeEventListener("pointerenter", pauseIdleRotation);
+    visual.removeEventListener("pointerleave", resumeIdleRotation);
+    motionMq?.removeEventListener?.("change", onMotionChange);
     window.removeEventListener("resize", onResize);
     ro?.disconnect();
   };
