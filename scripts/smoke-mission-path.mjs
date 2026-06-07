@@ -19,13 +19,16 @@ async function runDesktop() {
   });
   await page.waitForTimeout(1000);
 
-  const welcome = await page.textContent(".mp-welcome__meta");
+  const welcome = {
+    step: await page.textContent(".mp-welcome .mp-progress-head__step"),
+    time: await page.textContent(".mp-welcome .mp-progress-head__time"),
+  };
   await page.click("[data-mp-begin]");
   await page.waitForTimeout(800);
 
   const m1 = {
-    meta: await page.textContent(".mp-panel__meta"),
-    title: await page.textContent(".mp-panel__title"),
+    meta: await page.textContent(".mp-progress-head__step"),
+    title: await page.textContent(".mp-progress-head__title"),
   };
 
   await page.click('[data-mp-check="volatility"]');
@@ -81,7 +84,7 @@ async function runMobile() {
     return {
       bottom: st?.bottom,
       maxHeight: st?.maxHeight,
-      meta: document.querySelector(".mp-panel__meta")?.textContent,
+      meta: document.querySelector(".mp-progress-head__step")?.textContent,
     };
   });
   await page.close();
@@ -95,7 +98,8 @@ await browser.close();
 console.log(JSON.stringify({ errors, desktop, mobile }, null, 2));
 
 const ok =
-  desktop.welcome?.includes("~10 min") &&
+  desktop.welcome?.time?.includes("~10 min") &&
+  desktop.welcome?.step?.includes("Mission 1 of 6") &&
   desktop.m1.meta?.includes("Mission 1 of 6") &&
   desktop.m1.title === "Read the Market" &&
   desktop.checked &&
