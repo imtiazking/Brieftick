@@ -36,19 +36,24 @@ async function openDiscover(page) {
   const cardAudit = await page.evaluate(() => {
     const cards = [...document.querySelectorAll(".discover-story-card")];
     const required = [
-      "What is happening?",
-      "Why is it happening?",
-      "How strong is the story?",
-      "What could change the story?",
-      "Which stocks are exposed?",
+      "What's happening",
+      "Why it matters",
+      "Story strength",
+      "What could change it",
+      "Exposed names",
     ];
     return cards.map((card) => {
-      const text = card.innerText.toLowerCase();
-      const missing = required.filter((q) => !text.includes(q.toLowerCase()));
+      const labels = [...card.querySelectorAll(".discover-story-card__q")].map((el) =>
+        el.textContent.trim().toLowerCase()
+      );
+      const missing = required.filter(
+        (q) => !labels.includes(q.toLowerCase())
+      );
       const tickers = card.querySelectorAll(".discover-ticker-chip").length;
       const strength = card.querySelector(".discover-story-card__strength-fill");
       return {
         theme: card.dataset.theme,
+        labels,
         missing,
         tickers,
         hasStrength: !!strength,
@@ -56,6 +61,7 @@ async function openDiscover(page) {
     });
   });
 
+  checks.cardAudit = cardAudit;
   checks.allCardsComplete =
     cardAudit.length === 6 &&
     cardAudit.every((c) => c.missing.length === 0 && c.tickers >= 4 && c.hasStrength);
