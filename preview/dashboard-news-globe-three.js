@@ -43,17 +43,45 @@ const GLOBE_REGIONS = {
  * @typedef {'macro' | 'sector' | 'regional' | 'commodity'} StoryGlobeType
  */
 
-/** @param {number} lonDeg */
-function yawForLongitude(lonDeg) {
-  return (-lonDeg * Math.PI) / 180 + Math.PI * 0.5;
+/**
+ * Match three-geojson-geometry polar2Cartesian (lat, lng → x,y,z on +Z-front sphere).
+ * @param {number} lonDeg
+ * @param {number} [latDeg]
+ */
+function geoToUnitVector(lonDeg, latDeg = 0) {
+  const phi = ((90 - latDeg) * Math.PI) / 180;
+  const theta = ((90 - lonDeg) * Math.PI) / 180;
+  return {
+    x: Math.sin(phi) * Math.cos(theta),
+    y: Math.cos(phi),
+    z: Math.sin(phi) * Math.sin(theta),
+  };
 }
 
-/** Balanced Atlantic / macro framing — avoids locking on one country. */
-const GLOBAL_MACRO_YAW = INITIAL_YAW;
-const TRANSATLANTIC_YAW = yawForLongitude(-32);
-const PACIFIC_SUPPLY_CHAIN_YAW = yawForLongitude(-158);
-/** Gulf / OPEC corridor — Saudi, UAE, Iraq, Kuwait (~50°E) */
-const MIDDLE_EAST_YAW = yawForLongitude(50);
+/**
+ * Globe.rotation.y that brings (lon, lat) to the camera-facing meridian.
+ * Derived from three-geojson-geometry layout — do not add π/2 offsets.
+ * @param {number} lonDeg
+ * @param {number} [latDeg]
+ */
+function yawToFaceLonLat(lonDeg, latDeg = 0) {
+  const v = geoToUnitVector(lonDeg, latDeg);
+  return Math.atan2(-v.x, v.z);
+}
+
+/**
+ * Approximate lon/lat at the view centre for a given yaw (equator reference).
+ * @param {number} yawRad
+ */
+function centerGeoAtYaw(yawRad) {
+  const x = Math.sin(yawRad);
+  const z = Math.cos(yawRad);
+  const theta = Math.atan2(z, x);
+  const lon = 90 - (theta * 180) / Math.PI;
+  const sinPhi = Math.sqrt(x * x + z * z);
+  const lat = 90 - (Math.asin(Math.min(1, sinPhi)) * 180) / Math.PI;
+  return { lon, lat };
+}
 
 /** @returns {boolean} */
 function isGlobeStoryDebug() {
@@ -61,6 +89,14 @@ function isGlobeStoryDebug() {
   if (globalThis.__NEWS_GLOBE_DEBUG__ === true) return true;
   if (typeof location === "undefined") return false;
   return new URLSearchParams(location.search).has("globe-debug");
+}
+
+/** Preview-only manual calibration (?globe-calibrate or __NEWS_GLOBE_CALIBRATE__). */
+function isGlobeCalibrateMode() {
+  if (typeof globalThis === "undefined") return false;
+  if (globalThis.__NEWS_GLOBE_CALIBRATE__ === true) return true;
+  if (typeof location === "undefined") return false;
+  return new URLSearchParams(location.search).has("globe-calibrate");
 }
 
 /** @param {string} event @param {Record<string, unknown>} data */
@@ -76,10 +112,19 @@ const EUROPE_MACRO_VISIBLE = [
 /**
  * @type {Record<string, object>}
  */
+/**
+ * Story globe targets — semantic lon/lat plus calibrated yaw (rendered on this asset).
+ * Yaw values computed via yawToFaceLonLat() against three-geojson-geometry layout.
+ */
 const STORY_GLOBE_CONFIG = {
   inflation: {
     type: "macro",
-    orient: { lon: -98, lat: 39, mode: "us_macro" },
+    orient: {
+      lon: -96,
+      lat: 38,
+      yaw: 1.675516081914556,
+      mode: "us_macro",
+    },
     highlight: { primary: ["US"], secondary: EUROPE_MACRO_VISIBLE },
     hotspots: [
       { lon: -77.03, lat: 38.9 },
@@ -88,7 +133,12 @@ const STORY_GLOBE_CONFIG = {
   },
   ai: {
     type: "sector",
-    orient: { lon: -168, lat: 22, mode: "pacific_supply" },
+    orient: {
+      lon: -122,
+      lat: 37,
+      yaw: 2.129301687433082,
+      mode: "pacific_supply",
+    },
     highlight: { primary: ["US"], secondary: ["TW", "JP", "KR"], tertiary: ["CN"] },
     hotspots: [
       { lon: -122.08, lat: 37.39 },
@@ -98,7 +148,12 @@ const STORY_GLOBE_CONFIG = {
   },
   europe: {
     type: "regional",
-    orient: { lon: -32, lat: 48, mode: "transatlantic" },
+    orient: {
+      lon: -35,
+      lat: 48,
+      yaw: 0.610865238198015,
+      mode: "transatlantic",
+    },
     highlight: { primary: ["US"], region: "europe" },
     hotspots: [
       { lon: -74.01, lat: 40.71 },
@@ -107,7 +162,12 @@ const STORY_GLOBE_CONFIG = {
   },
   energy: {
     type: "commodity",
-    orient: { lon: 50, lat: 26, mode: "middle_east" },
+    orient: {
+      lon: 51,
+      lat: 26,
+      yaw: -0.8901179185171082,
+      mode: "middle_east",
+    },
     highlight: { primaryRegion: "middle_east", secondary: ["US", "NO", "RU"] },
     hotspots: [
       { lon: 50.1, lat: 26.2 },
@@ -117,10 +177,18 @@ const STORY_GLOBE_CONFIG = {
   },
   china: {
     type: "macro",
-    orient: { mode: "pacific" },
+    orient: { lon: 116, lat: 35, yaw: yawToFaceLonLat(116, 35), mode: "pacific" },
     highlight: { primary: ["CN"], secondary: ["JP", "KR", "TW"] },
     hotspots: [{ lon: 116.4, lat: 39.9 }],
   },
+};
+
+/** Expected land-centre bands for smoke tests (semantic lon/lat, not yaw). */
+const STORY_LAND_REGION = {
+  inflation: { lonMin: -125, lonMax: -70, latMin: 22, latMax: 52 },
+  ai: { lonMin: -135, lonMax: -105, latMin: 28, latMax: 48 },
+  europe: { lonMin: -80, lonMax: 15, latMin: 35, latMax: 60 },
+  energy: { lonMin: 30, lonMax: 65, latMin: 12, latMax: 38 },
 };
 
 /**
@@ -128,14 +196,16 @@ const STORY_GLOBE_CONFIG = {
  * @returns {number | null}
  */
 function resolveStoryYaw(config) {
-  if (typeof config?.orient?.lon === "number") {
-    return yawForLongitude(config.orient.lon);
+  if (typeof config?.orient?.yaw === "number") {
+    return config.orient.yaw;
   }
-  const mode = config?.orient?.mode;
-  if (mode === "global" || mode === "us_macro") return GLOBAL_MACRO_YAW;
-  if (mode === "transatlantic") return TRANSATLANTIC_YAW;
-  if (mode === "pacific" || mode === "pacific_supply") return PACIFIC_SUPPLY_CHAIN_YAW;
-  if (mode === "middle_east") return MIDDLE_EAST_YAW;
+  if (typeof config?.orient?.lon === "number") {
+    return yawToFaceLonLat(
+      config.orient.lon,
+      typeof config.orient.lat === "number" ? config.orient.lat : 0
+    );
+  }
+  if (config?.orient?.mode === "us_macro") return INITIAL_YAW;
   return null;
 }
 
@@ -502,21 +572,11 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
 
       const config = STORY_GLOBE_CONFIG[storyId];
       const orientMode = config?.orient?.mode;
-      const targetLon =
-        typeof config?.orient?.lon === "number"
-          ? config.orient.lon
-          : orientMode === "middle_east"
-            ? 50
-            : orientMode === "transatlantic"
-              ? -32
-              : orientMode === "pacific"
-                ? -158
-                : null;
-      const targetYaw = resolveStoryYaw(config);
       const orientLon =
-        typeof config?.orient?.lon === "number" ? config.orient.lon : targetLon;
+        typeof config?.orient?.lon === "number" ? config.orient.lon : null;
       const orientLat =
         typeof config?.orient?.lat === "number" ? config.orient.lat : null;
+      const targetYaw = resolveStoryYaw(config);
       const willRotate =
         targetYaw != null && (intent === "select" || !layers.manualOverride);
       logGlobeStory("setStory", {
@@ -620,6 +680,60 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
 
     getCountryMeshes(iso) {
       return layers.countryMeshesByIso.get(iso) || [];
+    },
+
+    /** Current yaw and approximate view-centre geo (preview calibration). */
+    getOrientationState() {
+      const yawRad = layers.globe.rotation.y;
+      const center = centerGeoAtYaw(yawRad);
+      return {
+        yawRad,
+        yawDeg: (yawRad * 180) / Math.PI,
+        centerLon: center.lon,
+        centerLat: center.lat,
+        manualOverride: layers.manualOverride,
+        orientAnim: layers.orientAnim,
+      };
+    },
+
+    /** Log yaw/lon after manual rotation (?globe-calibrate). */
+    logOrientation(label = "manual") {
+      const state = api.getOrientationState();
+      console.info(`[news-globe] orientation:${label}`, state);
+      return state;
+    },
+
+    /** Capture current view centre as a story target (preview calibration). */
+    captureStoryTarget(storyId) {
+      const yawRad = layers.globe.rotation.y;
+      const center = centerGeoAtYaw(yawRad);
+      const payload = {
+        storyId,
+        yawRad,
+        yawDeg: (yawRad * 180) / Math.PI,
+        centerLon: center.lon,
+        centerLat: center.lat,
+        orientSnippet: `{ lon: ${center.lon.toFixed(2)}, lat: ${center.lat.toFixed(2)}, yaw: ${yawRad} }`,
+      };
+      console.info("[news-globe] captureStoryTarget", payload);
+      if (STORY_GLOBE_CONFIG[storyId]) {
+        STORY_GLOBE_CONFIG[storyId].orient = {
+          ...STORY_GLOBE_CONFIG[storyId].orient,
+          lon: center.lon,
+          lat: center.lat,
+          yaw: yawRad,
+        };
+      }
+      return payload;
+    },
+
+    /** Semantic land-region check for the story target lon/lat. */
+    getStoryLandRegion(storyId) {
+      return STORY_LAND_REGION[storyId] ?? null;
+    },
+
+    getStoryOrient(storyId) {
+      return STORY_GLOBE_CONFIG[storyId]?.orient ?? null;
     },
 
     tick(timeMs) {
@@ -1064,6 +1178,7 @@ export async function bindNewsGlobeThree(visual, _storyId = "inflation") {
 
   const onUp = (e) => {
     if (e.pointerId !== pointerId) return;
+    const wasDragging = dragging;
     if (dragging) {
       dragging = false;
       visual.classList.remove("is-dragging");
@@ -1076,7 +1191,38 @@ export async function bindNewsGlobeThree(visual, _storyId = "inflation") {
     pointerId = null;
     touchAxis = null;
     resumeIdleRotation();
+    if (wasDragging && isGlobeCalibrateMode()) {
+      globeApi.logOrientation("drag-end");
+    }
   };
+
+  const calibrateKeys = {
+    Digit1: "inflation",
+    Digit2: "ai",
+    Digit3: "europe",
+    Digit4: "energy",
+  };
+  const onCalibrateKey = (e) => {
+    if (!isGlobeCalibrateMode()) return;
+    const storyId = calibrateKeys[e.code];
+    if (!storyId) return;
+    e.preventDefault();
+    globeApi.captureStoryTarget(storyId);
+  };
+
+  if (isGlobeCalibrateMode()) {
+    globalThis.__NEWS_GLOBE_CALIBRATE_API__ = {
+      logOrientation: (label) => globeApi.logOrientation(label),
+      captureStoryTarget: (id) => globeApi.captureStoryTarget(id),
+      getOrientationState: () => globeApi.getOrientationState(),
+      yawToFaceLonLat,
+      centerGeoAtYaw,
+    };
+    console.info(
+      "[news-globe] calibration mode — drag to frame, keys 1-4 capture inflation/ai/europe/energy"
+    );
+    window.addEventListener("keydown", onCalibrateKey);
+  }
 
   visual.addEventListener("pointerenter", pauseIdleRotation);
   visual.addEventListener("pointerleave", resumeIdleRotation);
@@ -1110,8 +1256,12 @@ export async function bindNewsGlobeThree(visual, _storyId = "inflation") {
     visual.removeEventListener("pointerleave", resumeIdleRotation);
     motionMq?.removeEventListener?.("change", onMotionChange);
     window.removeEventListener("resize", onResize);
+    window.removeEventListener("keydown", onCalibrateKey);
+    delete globalThis.__NEWS_GLOBE_CALIBRATE_API__;
     ro?.disconnect();
   };
 }
+
+export { yawToFaceLonLat, centerGeoAtYaw, STORY_GLOBE_CONFIG, STORY_LAND_REGION };
 
 export const bindNewsGlobeCanvas = bindNewsGlobeThree;

@@ -5,6 +5,41 @@ const browser = await chromium.launch({ headless: true });
 const errors = [];
 const checks = {};
 
+/**
+ * Calibrated story yaws — must match STORY_GLOBE_CONFIG.orient.yaw in
+ * preview/dashboard-news-globe-three.js.
+ *
+ * Values come from yawToFaceLonLat(lon, lat) using three-geojson-geometry's
+ * polar2Cartesian mapping (theta = 90° − lng). The old formula added a spurious
+ * π/2 that pushed targets ~90° off, centreing open ocean instead of land.
+ */
+const CALIBRATED_STORY_YAW = {
+  inflation: 1.675516081914556,
+  ai: 2.129301687433082,
+  europe: 0.610865238198015,
+  energy: -0.8901179185171082,
+};
+
+/** Semantic land-centre bands — story orient lon/lat must fall inside these. */
+const STORY_LAND_REGION = {
+  inflation: { lonMin: -125, lonMax: -70, latMin: 22, latMax: 52 },
+  ai: { lonMin: -135, lonMax: -105, latMin: 28, latMax: 48 },
+  europe: { lonMin: -80, lonMax: 15, latMin: 35, latMax: 60 },
+  energy: { lonMin: 30, lonMax: 65, latMin: 12, latMax: 38 },
+};
+
+function inLandRegion(orient, region) {
+  if (!orient || !region) return false;
+  const lon = orient.lon;
+  const lat = orient.lat ?? 0;
+  return (
+    lon >= region.lonMin &&
+    lon <= region.lonMax &&
+    lat >= region.latMin &&
+    lat <= region.latMax
+  );
+}
+
 async function openDashboardNews(page) {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(BASE + "/", { waitUntil: "domcontentloaded", timeout: 60000 });
@@ -47,6 +82,7 @@ async function openDashboardNews(page) {
         enabled: layers.idleRotationEnabled,
         paused: layers.idleRotationPaused,
         speed: layers.idleRotationSpeed,
+        orientAnim: layers.orientAnim,
       };
     });
 
@@ -61,7 +97,6 @@ async function openDashboardNews(page) {
 
   await page.mouse.move(10, 10);
   await page.waitForTimeout(200);
-  const c = await sampleRotation();
   await page.hover(".news-narrative__visual");
   await page.waitForTimeout(300);
   const hovered = await sampleRotation();
@@ -84,53 +119,85 @@ async function openDashboardNews(page) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   await openDashboardNews(page);
 
-  const yawForLongitude = (lonDeg) => (-lonDeg * Math.PI) / 180 + Math.PI * 0.5;
-
-  const readGlobeState = () =>
-    page.evaluate(() => {
+  const readGlobeState = (storyId) =>
+    page.evaluate((sid) => {
       const visual = document.querySelector('.news-narrative__visual[data-globe-bound="true"]');
-      const layers = visual?._globeCanvas?.layers;
+      const api = visual?._globeCanvas;
+      const layers = api?.layers;
       if (!layers?.globe) return null;
       return {
         yaw: layers.globe.rotation.y,
         orientAnim: layers.orientAnim,
         manualOverride: layers.manualOverride,
+        orient: api.getStoryOrient?.(sid),
       };
-    });
+    }, storyId);
 
   const clickStoryAndWait = async (storyId) => {
     await page.click(`[data-story-id="${storyId}"]`);
     await page.waitForTimeout(1300);
-    return readGlobeState();
-  };
-
-  const expectedYaw = {
-    inflation: yawForLongitude(-98),
-    ai: yawForLongitude(-168),
-    europe: yawForLongitude(-32),
-    energy: yawForLongitude(50),
+    return readGlobeState(storyId);
   };
 
   const storyYaws = {};
   for (const id of ["inflation", "ai", "europe", "energy"]) {
     const state = await clickStoryAndWait(id);
     storyYaws[id] = state?.yaw ?? null;
+    const expectedYaw = CALIBRATED_STORY_YAW[id];
+    const region = STORY_LAND_REGION[id];
+    checks[`story_${id}_yaw`] =
+      state != null &&
+      typeof state.yaw === "number" &&
+      Math.abs(state.yaw - expectedYaw) < 0.12;
+    checks[`story_${id}_land`] =
+      state?.orient != null && inLandRegion(state.orient, region);
     checks[`story_${id}_oriented`] =
       state != null &&
       state.orientAnim == null &&
       state.manualOverride === false &&
-      typeof state.yaw === "number" &&
-      Math.abs(state.yaw - expectedYaw[id]) < 0.12;
+      checks[`story_${id}_yaw`] &&
+      checks[`story_${id}_land`];
   }
 
   const yaws = Object.values(storyYaws).filter((y) => typeof y === "number");
   checks.storyYawsDistinct =
-    yaws.length === 4 &&
-    new Set(yaws.map((y) => y.toFixed(2))).size === 4;
-
+    yaws.length === 4 && new Set(yaws.map((y) => y.toFixed(2))).size === 4;
   checks.storyYawSamples = storyYaws;
 
+  await page.click('[data-story-id="energy"]');
+  await page.waitForTimeout(1300);
+  await page.evaluate(() => {
+    document
+      .querySelector(".news-narrative__visual")
+      ?.dispatchEvent(new PointerEvent("pointerleave", { bubbles: true }));
+  });
+  const yawBeforeIdle = (
+    await sampleRotationFromPage(page)
+  )?.yaw;
+  await page.waitForTimeout(1800);
+  const afterIdle = await sampleRotationFromPage(page);
+  checks.idleResumesAfterStoryOrient =
+    yawBeforeIdle != null &&
+    afterIdle?.orientAnim == null &&
+    afterIdle?.enabled === true &&
+    afterIdle?.paused === false &&
+    Math.abs(afterIdle.yaw - yawBeforeIdle) > 0.01;
+
   await page.close();
+}
+
+async function sampleRotationFromPage(page) {
+  return page.evaluate(() => {
+    const visual = document.querySelector('.news-narrative__visual[data-globe-bound="true"]');
+    const layers = visual?._globeCanvas?.layers;
+    if (!layers?.globe) return null;
+    return {
+      yaw: layers.globe.rotation.y,
+      enabled: layers.idleRotationEnabled,
+      paused: layers.idleRotationPaused,
+      orientAnim: layers.orientAnim,
+    };
+  });
 }
 
 await browser.close();
@@ -147,7 +214,8 @@ const pass =
   checks.story_ai_oriented &&
   checks.story_europe_oriented &&
   checks.story_energy_oriented &&
-  checks.storyYawsDistinct;
+  checks.storyYawsDistinct &&
+  checks.idleResumesAfterStoryOrient;
 
 console.log(JSON.stringify({ pass, errors, checks }, null, 2));
 process.exit(pass ? 0 : 1);
