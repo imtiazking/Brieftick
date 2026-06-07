@@ -3491,6 +3491,7 @@ h1,h2,h3{
 <link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">
 <link rel="stylesheet" href="/styles/whats-moving-briefing.css">
 <link rel="stylesheet" href="/styles/earnings-beginner.css">
+<link rel="stylesheet" href="/styles/mission-path.css">
 <script type="module" src="/lib/ticker-deep-dive.bridge.js"></script>
 <script type="module" src="/lib/live-data-badge.js"></script>
 <script type="module" src="/lib/provider-health.js"></script>
@@ -3512,6 +3513,7 @@ h1,h2,h3{
 <script type="module" src="/lib/terminal-access.bridge.js"></script>
 <script type="module" src="/lib/market-risk-runner.js"></script>
 <script type="module" src="/lib/dashboard-wheel.bridge.js"></script>
+<script type="module" src="/lib/mission-path/index.js"></script>
 </head>
 <body>
 
@@ -3584,20 +3586,8 @@ h1,h2,h3{
   </div>
 </div>
 
-<!-- ============================================================
-     ONBOARDING BANNER (first visit only)
-============================================================ -->
-<div class="onboard-banner hidden" id="onboardBanner">
-  <div class="onboard-icon"><img src="/logo-symbol-transparent.png" alt="BriefTick" style="width:56px;height:56px;object-fit:contain"></div>
-  <div class="onboard-body">
-    <div class="onboard-title">Welcome to BriefTick</div>
-    <div class="onboard-sub">See what's happening on the <b>Dashboard</b>, open a stock under <b>What's Moving</b>, or press <b>Cmd+K</b> to search any ticker.</div>
-  </div>
-  <div class="onboard-actions">
-    <button class="onboard-btn-primary" onclick="routeWithAuth('dashboard');dismissOnboarding()">Explore Dashboard</button>
-    <button class="onboard-btn-secondary" onclick="dismissOnboarding()">Got it</button>
-  </div>
-</div>
+<!-- Mission Path mounts here (first-login onboarding) -->
+<div id="missionPathRoot" aria-live="polite"></div>
 
 <div class="global-ticker" aria-hidden="true">
   <div class="ticker-track" id="ticker"></div>
@@ -3667,6 +3657,22 @@ h1,h2,h3{
     </div>
 
     <div class="settings-body">
+      <!-- Mission Path -->
+      <div class="settings-row" id="missionPathSettings">
+        <div class="settings-row-head">
+          <div>
+            <div class="settings-row-name">Mission Path <span class="settings-badge gold">Onboarding</span></div>
+            <div class="settings-row-desc">Guided workflow onboarding — Dashboard, Movers, Logic, Discover, Earnings, and Watchlist.</div>
+          </div>
+        </div>
+        <p class="mission-settings-status" id="missionPathStatus">Not started</p>
+        <div class="mission-settings-actions">
+          <button type="button" id="missionPathContinue">Continue Mission Path</button>
+          <button type="button" id="missionPathRestart">Restart Mission Path</button>
+          <button type="button" id="missionPathReset">Reset progress</button>
+        </div>
+      </div>
+
       <!-- Anthropic -->
       <div class="settings-row">
         <div class="settings-row-head">
@@ -6903,6 +6909,9 @@ function openSettings(){
     if(input) input.value = BriefTickAPI.keys[name] || '';
   });
   updateStatusIndicators();
+  if (typeof window.MissionPathController?.syncSettingsUI === 'function') {
+    window.MissionPathController.syncSettingsUI();
+  }
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -10900,25 +10909,8 @@ window.cmdSelectItem = cmdSelectItem;
 })();
 
 /* ============================================================
-   ONBOARDING BANNER
+   MISSION PATH — see lib/mission-path/
 ============================================================ */
-const ONBOARD_KEY = 'brieftick_onboarded_v1';
-function showOnboardingIfNew(){
-  try {
-    if(localStorage.getItem(ONBOARD_KEY)) return;
-    const banner = document.getElementById('onboardBanner');
-    if(banner){
-      setTimeout(()=>banner.classList.remove('hidden'), 1200);
-    }
-  } catch(e){}
-}
-function dismissOnboarding(){
-  try { localStorage.setItem(ONBOARD_KEY, '1'); } catch(e){}
-  const banner = document.getElementById('onboardBanner');
-  if(banner) banner.classList.add('hidden');
-}
-window.dismissOnboarding = dismissOnboarding;
-window.addEventListener('load', showOnboardingIfNew);
 
 /* ================================================================
    CLERK AUTHENTICATION
@@ -11028,6 +11020,9 @@ async function _onAuthChange(user) {
     _applyAccessLevel('visitor');
     if (typeof window.logTerminalAccessState === 'function') window.logTerminalAccessState();
     _refreshScannerOnAccessChange();
+    if (typeof window.MissionPathController?.onAuthReady === 'function') {
+      window.MissionPathController.onAuthReady(null);
+    }
     if (typeof window.BrieftickSplitLanding?.syncCtas === 'function') {
       window.BrieftickSplitLanding.syncCtas();
     }
@@ -11088,6 +11083,10 @@ async function _onAuthChange(user) {
 
   if (typeof window.BrieftickSplitLanding?.syncCtas === 'function') {
     window.BrieftickSplitLanding.syncCtas();
+  }
+
+  if (typeof window.MissionPathController?.onAuthReady === 'function') {
+    window.MissionPathController.onAuthReady(user);
   }
 
   // ── Resume checkout intent if user just signed in ─────────────
