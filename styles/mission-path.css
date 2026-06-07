@@ -283,20 +283,51 @@
   padding: 8px 14px 12px;
 }
 
+.mp-prose {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mp-text);
+  margin: 0 0 14px;
+}
+
+.mp-prose--lead {
+  color: var(--mp-text);
+}
+
+.mp-prose--when {
+  color: var(--mp-muted);
+  font-size: 13px;
+}
+
+.mp-prose--closing {
+  color: var(--mp-muted);
+  font-size: 13px;
+  margin-bottom: 0;
+}
+
+.mp-block--task {
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--mp-line);
+}
+
+.mp-block--task .mp-block__label {
+  margin-bottom: 10px;
+}
+
+.mp-task-intro {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--mp-muted);
+  margin: 0 0 10px;
+}
+
 .mp-panel__title {
   font-family: var(--display, Georgia, serif);
   font-size: 20px;
   font-weight: 500;
   margin: 0 0 12px;
   color: var(--mp-text);
-}
-
-.mp-when {
-  margin: 0;
-  padding-left: 18px;
-  font-size: 13px;
-  color: var(--mp-text);
-  line-height: 1.6;
 }
 
 .mp-task-text {
@@ -420,32 +451,6 @@
   font-size: 14px;
   color: var(--mp-muted);
   margin: 0 0 16px;
-}
-
-.mp-loop {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.mp-loop li {
-  display: grid;
-  grid-template-columns: 24px 1fr auto;
-  gap: 8px;
-  font-size: 12px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--mp-line);
-  color: var(--mp-text);
-}
-
-.mp-loop__n {
-  font-family: var(--mono, ui-monospace, monospace);
-  color: var(--mp-gold);
-}
-
-.mp-loop__d {
-  font-size: 11px;
-  color: var(--mp-muted);
 }
 
 .mp-complete__xp {
