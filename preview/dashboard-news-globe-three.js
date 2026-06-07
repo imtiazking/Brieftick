@@ -79,17 +79,17 @@ const EUROPE_MACRO_VISIBLE = [
 const STORY_GLOBE_CONFIG = {
   inflation: {
     type: "macro",
-    orient: { mode: "global" },
-    highlight: { secondary: ["US"], tertiary: EUROPE_MACRO_VISIBLE },
+    orient: { lon: -98, lat: 39, mode: "us_macro" },
+    highlight: { primary: ["US"], secondary: EUROPE_MACRO_VISIBLE },
     hotspots: [
       { lon: -77.03, lat: 38.9 },
-      { lon: 8.68, lat: 50.11 },
+      { lon: -98.5, lat: 39.8 },
     ],
   },
   ai: {
     type: "sector",
-    orient: { mode: "pacific" },
-    highlight: { primary: ["US"], secondary: ["TW"] },
+    orient: { lon: -168, lat: 22, mode: "pacific_supply" },
+    highlight: { primary: ["US"], secondary: ["TW", "JP", "KR"], tertiary: ["CN"] },
     hotspots: [
       { lon: -122.08, lat: 37.39 },
       { lon: 121.56, lat: 25.03 },
@@ -98,7 +98,7 @@ const STORY_GLOBE_CONFIG = {
   },
   europe: {
     type: "regional",
-    orient: { mode: "transatlantic" },
+    orient: { lon: -32, lat: 48, mode: "transatlantic" },
     highlight: { primary: ["US"], region: "europe" },
     hotspots: [
       { lon: -74.01, lat: 40.71 },
@@ -107,12 +107,13 @@ const STORY_GLOBE_CONFIG = {
   },
   energy: {
     type: "commodity",
-    orient: { mode: "middle_east" },
+    orient: { lon: 50, lat: 26, mode: "middle_east" },
     highlight: { primaryRegion: "middle_east", secondary: ["US", "NO", "RU"] },
     hotspots: [
       { lon: 50.1, lat: 26.2 },
       { lon: 54.37, lat: 24.45 },
     ],
+    flows: [{ from: [50.1, 26.2], to: [-95.4, 29.8] }],
   },
   china: {
     type: "macro",
@@ -127,12 +128,14 @@ const STORY_GLOBE_CONFIG = {
  * @returns {number | null}
  */
 function resolveStoryYaw(config) {
+  if (typeof config?.orient?.lon === "number") {
+    return yawForLongitude(config.orient.lon);
+  }
   const mode = config?.orient?.mode;
-  if (mode === "global") return GLOBAL_MACRO_YAW;
+  if (mode === "global" || mode === "us_macro") return GLOBAL_MACRO_YAW;
   if (mode === "transatlantic") return TRANSATLANTIC_YAW;
-  if (mode === "pacific") return PACIFIC_SUPPLY_CHAIN_YAW;
+  if (mode === "pacific" || mode === "pacific_supply") return PACIFIC_SUPPLY_CHAIN_YAW;
   if (mode === "middle_east") return MIDDLE_EAST_YAW;
-  if (typeof config?.orient?.lon === "number") return yawForLongitude(config.orient.lon);
   return null;
 }
 
@@ -510,7 +513,12 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
                 ? -158
                 : null;
       const targetYaw = resolveStoryYaw(config);
-      const willRotate = !layers.manualOverride && targetYaw != null;
+      const orientLon =
+        typeof config?.orient?.lon === "number" ? config.orient.lon : targetLon;
+      const orientLat =
+        typeof config?.orient?.lat === "number" ? config.orient.lat : null;
+      const willRotate =
+        targetYaw != null && (intent === "select" || !layers.manualOverride);
       logGlobeStory("setStory", {
         storyId,
         intent,
@@ -518,7 +526,8 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
         orientMode: orientMode ?? null,
         targetRegion:
           config?.highlight?.primaryRegion || config?.highlight?.region || null,
-        targetLonDeg: targetLon,
+        targetLonDeg: orientLon,
+        targetLatDeg: orientLat,
         hotspotCoords: config?.hotspots ?? null,
         targetYawRad: targetYaw,
         targetYawDeg: targetYaw != null ? (targetYaw * 180) / Math.PI : null,
