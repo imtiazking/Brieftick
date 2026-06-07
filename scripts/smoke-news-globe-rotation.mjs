@@ -164,6 +164,17 @@ async function openDashboardNews(page) {
     yaws.length === 4 && new Set(yaws.map((y) => y.toFixed(2))).size === 4;
   checks.storyYawSamples = storyYaws;
 
+  await page.click('[data-story-id="ai"]');
+  await page.waitForTimeout(1200);
+  const aiFx = await page.evaluate(() => {
+    const api = document.querySelector(".news-narrative__visual")?._globeCanvas;
+    return api?.getStoryEffectState?.() ?? null;
+  });
+  checks.storySelectFxActive =
+    aiFx != null &&
+    aiFx.pulseRingCount >= 2 &&
+    aiFx.flowCount >= 1;
+
   await page.click('[data-story-id="energy"]');
   await page.waitForTimeout(1300);
   await page.evaluate(() => {
@@ -215,6 +226,7 @@ const pass =
   checks.story_europe_oriented &&
   checks.story_energy_oriented &&
   checks.storyYawsDistinct &&
+  checks.storySelectFxActive &&
   checks.idleResumesAfterStoryOrient;
 
 console.log(JSON.stringify({ pass, errors, checks }, null, 2));

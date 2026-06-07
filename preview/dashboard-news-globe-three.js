@@ -28,6 +28,11 @@ const BORDER_RESOLUTION_DEG = 4;
 const LAND_DETAIL_EDGE_KEEP = 0.1;
 const HOTSPOT_RADIUS = GLOBE_RADIUS * 1.009;
 const FLOW_RADIUS = GLOBE_RADIUS * 1.01;
+const PULSE_RING_RADIUS = GLOBE_RADIUS * 1.011;
+/** One-shot region pulse after orientation settles */
+const STORY_PULSE_MS = 1400;
+const STORY_FLOW_DRAW_MS = 900;
+const STORY_HIGHLIGHT_REVEAL_MS = 900;
 /** @type {Record<string, string[]>} */
 const GLOBE_REGIONS = {
   europe: [
@@ -159,6 +164,7 @@ const STORY_GLOBE_CONFIG = {
       { lon: -74.01, lat: 40.71 },
       { lon: 8.68, lat: 50.11 },
     ],
+    flows: [{ from: [-74.01, 40.71], to: [8.68, 50.11] }],
   },
   energy: {
     type: "commodity",
@@ -173,7 +179,6 @@ const STORY_GLOBE_CONFIG = {
       { lon: 50.1, lat: 26.2 },
       { lon: 54.37, lat: 24.45 },
     ],
-    flows: [{ from: [50.1, 26.2], to: [-95.4, 29.8] }],
   },
   china: {
     type: "macro",
@@ -189,6 +194,38 @@ const STORY_LAND_REGION = {
   ai: { lonMin: -135, lonMax: -105, latMin: 28, latMax: 48 },
   europe: { lonMin: -80, lonMax: 15, latMin: 35, latMax: 60 },
   energy: { lonMin: 30, lonMax: 65, latMin: 12, latMax: 38 },
+};
+
+/**
+ * Story-select motion cues — subtle pulses and connection draws (select intent only).
+ * @type {Record<string, object>}
+ */
+const STORY_EFFECTS = {
+  inflation: {
+    pulses: [{ lon: -98, lat: 39, radiusDeg: 6, peakOpacity: 0.2, color: 0x8ab4cc }],
+    flowDrawIn: false,
+  },
+  ai: {
+    pulses: [
+      { lon: -122.08, lat: 37.39, radiusDeg: 3.8, peakOpacity: 0.17, color: 0x8ab4cc },
+      { lon: 121.56, lat: 25.03, radiusDeg: 3.8, peakOpacity: 0.17, color: 0x8ab4cc, delayMs: 220 },
+    ],
+    flowDrawIn: true,
+  },
+  europe: {
+    pulses: [
+      { lon: -74.01, lat: 40.71, radiusDeg: 3.2, peakOpacity: 0.15, color: 0x8ab4cc },
+      { lon: 8.68, lat: 50.11, radiusDeg: 3.2, peakOpacity: 0.15, color: 0x8ab4cc, delayMs: 260 },
+    ],
+    flowDrawIn: true,
+  },
+  energy: {
+    pulses: [
+      { lon: 50.1, lat: 26.2, radiusDeg: 5.2, peakOpacity: 0.18, color: 0x8aaa90 },
+      { lon: 54.37, lat: 24.45, radiusDeg: 4.2, peakOpacity: 0.13, color: 0x8aaa90, delayMs: 200 },
+    ],
+    flowDrawIn: false,
+  },
 };
 
 /**
@@ -509,6 +546,97 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     }
     layers.hotspotEntries = [];
     layers.flowEntries = [];
+    layers.pulseRingEntries = [];
+    layers.storySelectFx = null;
+    layers.highlightReveal = null;
+  };
+
+  const setHighlightOpacities = (opacities) => {
+    if (opacities.primary != null) layers.highlightCapMat.opacity = opacities.primary;
+    if (opacities.secondary != null) layers.secondaryCapMat.opacity = opacities.secondary;
+    if (opacities.tertiary != null) layers.tertiaryCapMat.opacity = opacities.tertiary;
+    if (opacities.dim != null) layers.dimCapMat.opacity = opacities.dim;
+  };
+
+  const addPulseRing = (lon, lat, options = {}) => {
+    const coords = circleCoordsAt(lon, lat, options.radiusDeg ?? 4);
+    const geo = new GeoJsonGeometry(
+      { type: "LineString", coordinates: coords },
+      PULSE_RING_RADIUS,
+      3
+    );
+    const mat = new THREE.LineBasicMaterial({
+      color: options.color ?? 0x8ab4cc,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+    });
+    const line = new THREE.Line(geo, mat);
+    layers.storyOverlay.add(line);
+    disposables.push({ geo, mat });
+    layers.pulseRingEntries.push({
+      mat,
+      startMs: options.startMs ?? 0,
+      duration: options.duration ?? STORY_PULSE_MS,
+      peakOpacity: options.peakOpacity ?? 0.18,
+    });
+  };
+
+  const beginSelectEffects = (storyId, orientDelayMs = 0) => {
+    const effect = STORY_EFFECTS[storyId];
+    if (!effect) return;
+
+    const now = performance.now();
+    const fxStartMs = now + orientDelayMs;
+    const targets = layers.highlightOpacityTargets ?? {
+      primary: 0.68,
+      secondary: 0.46,
+      tertiary: 0.4,
+      dim: 0.26,
+    };
+
+    layers.storySelectFx = {
+      storyId,
+      fxStartMs,
+      pulseEndMs: fxStartMs + STORY_PULSE_MS,
+      livePhase: false,
+    };
+
+    if (layers.reducedMotion) {
+      setHighlightOpacities(targets);
+      return;
+    }
+
+    layers.highlightReveal = {
+      startMs: now,
+      duration: Math.min(orientDelayMs || STORY_HIGHLIGHT_REVEAL_MS, STORY_HIGHLIGHT_REVEAL_MS),
+      targets,
+    };
+    setHighlightOpacities({
+      primary: 0.38,
+      secondary: 0.28,
+      tertiary: 0.24,
+      dim: 0.22,
+    });
+
+    for (const pulse of effect.pulses ?? []) {
+      addPulseRing(pulse.lon, pulse.lat, {
+        radiusDeg: pulse.radiusDeg,
+        peakOpacity: pulse.peakOpacity,
+        color: pulse.color,
+        startMs: fxStartMs + (pulse.delayMs ?? 0),
+        duration: pulse.duration ?? STORY_PULSE_MS,
+      });
+    }
+
+    if (effect.flowDrawIn) {
+      for (const entry of layers.flowEntries) {
+        entry.mat.opacity = 0;
+        entry.drawIn = true;
+        entry.targetOpacity = 0.08;
+        entry.phase = 0;
+      }
+    }
   };
 
   const startOrientation = (targetYaw, intent) => {
@@ -548,10 +676,15 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     dimNetwork();
 
     const preview = intent === "preview";
-    layers.highlightCapMat.opacity = preview ? 0.62 : 0.68;
-    layers.secondaryCapMat.opacity = preview ? 0.4 : 0.46;
-    layers.tertiaryCapMat.opacity = preview ? 0.36 : 0.4;
-    layers.dimCapMat.opacity = preview ? 0.3 : 0.26;
+    layers.highlightOpacityTargets = {
+      primary: preview ? 0.62 : 0.68,
+      secondary: preview ? 0.4 : 0.46,
+      tertiary: preview ? 0.36 : 0.4,
+      dim: preview ? 0.3 : 0.26,
+    };
+    if (intent !== "select" || layers.reducedMotion) {
+      setHighlightOpacities(layers.highlightOpacityTargets);
+    }
   };
 
   const api = {
@@ -598,6 +731,11 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
       if (willRotate) {
         startOrientation(targetYaw, intent);
       }
+
+      if (intent === "select") {
+        const orientDelay = willRotate ? ORIENT_MS_SELECT : 0;
+        beginSelectEffects(storyId, orientDelay);
+      }
     },
 
     highlightCountries(isoCodes = [], _options = {}) {
@@ -634,7 +772,12 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
 
     setCapitalFlows(flows = []) {
       if (!flows.length) return;
-      const arcs = flows.map((f) => lerpArc(f.from[0], f.from[1], f.to[0], f.to[1], 32));
+      const arcs = flows.map((f) => {
+        const span =
+          Math.abs(f.from[0] - f.to[0]) + Math.abs(f.from[1] - f.to[1]);
+        const steps = span > 80 ? 48 : 32;
+        return lerpArc(f.from[0], f.from[1], f.to[0], f.to[1], steps);
+      });
       const geo = new GeoJsonGeometry(
         { type: "MultiLineString", coordinates: arcs },
         FLOW_RADIUS,
@@ -649,7 +792,7 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
       const lines = new THREE.LineSegments(geo, mat);
       layers.storyOverlay.add(lines);
       disposables.push({ geo, mat });
-      layers.flowEntries.push({ mat, phase: 0 });
+      layers.flowEntries.push({ mat, phase: 0, targetOpacity: 0.08, drawIn: false });
     },
 
     setEconomicEvents(events = []) {
@@ -736,6 +879,15 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
       return STORY_GLOBE_CONFIG[storyId]?.orient ?? null;
     },
 
+    getStoryEffectState() {
+      return {
+        storySelectFx: layers.storySelectFx,
+        pulseRingCount: layers.pulseRingEntries?.length ?? 0,
+        flowCount: layers.flowEntries?.length ?? 0,
+        highlightReveal: Boolean(layers.highlightReveal),
+      };
+    },
+
     tick(timeMs) {
       const prevMs = layers.lastTickMs ?? timeMs;
       const dt = Math.min(0.05, (timeMs - prevMs) / 1000);
@@ -750,15 +902,78 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
         layers.globe.rotation.y += layers.idleRotationSpeed * dt;
       }
 
+      const reveal = layers.highlightReveal;
+      if (reveal) {
+        const p = Math.min(1, (timeMs - reveal.startMs) / reveal.duration);
+        const eased = easeOutCubic(p);
+        const tgt = reveal.targets;
+        setHighlightOpacities({
+          primary: lerpNum(0.38, tgt.primary, eased),
+          secondary: lerpNum(0.28, tgt.secondary, eased),
+          tertiary: lerpNum(0.24, tgt.tertiary, eased),
+          dim: lerpNum(0.22, tgt.dim, eased),
+        });
+        if (p >= 1) layers.highlightReveal = null;
+      }
+
+      const fx = layers.storySelectFx;
+      let pulseBoost = 0;
+      for (const entry of layers.pulseRingEntries) {
+        if (timeMs < entry.startMs) {
+          entry.mat.opacity = 0;
+          continue;
+        }
+        const p = (timeMs - entry.startMs) / entry.duration;
+        if (p >= 1) {
+          entry.mat.opacity = 0;
+          continue;
+        }
+        const env = pulseEnvelope(p);
+        entry.mat.opacity = env * entry.peakOpacity;
+        pulseBoost = Math.max(pulseBoost, env);
+      }
+      if (fx && !layers.reducedMotion && pulseBoost > 0 && layers.highlightOpacityTargets) {
+        const tgt = layers.highlightOpacityTargets;
+        const boost = pulseBoost * 0.05;
+        if (!reveal) {
+          setHighlightOpacities({
+            primary: tgt.primary + boost,
+            secondary: tgt.secondary + boost * 0.55,
+            tertiary: tgt.tertiary + boost * 0.35,
+            dim: tgt.dim,
+          });
+        }
+      }
+
       const t = timeMs * 0.001;
+      const livePhase =
+        fx && (fx.livePhase || timeMs >= fx.pulseEndMs);
+      if (fx && timeMs >= fx.pulseEndMs) fx.livePhase = true;
+
       for (const entry of layers.hotspotEntries) {
+        if (!livePhase && fx) {
+          entry.mat.opacity = 0.12;
+          entry.mat.size = 0.02;
+          continue;
+        }
         const pulse = 0.5 + 0.5 * Math.sin(t * 1.15 + entry.phase);
-        entry.mat.opacity = 0.2 + pulse * 0.18;
-        entry.mat.size = 0.022 + pulse * 0.014;
+        entry.mat.opacity = 0.2 + pulse * 0.14;
+        entry.mat.size = 0.022 + pulse * 0.01;
       }
       for (const entry of layers.flowEntries) {
+        if (entry.drawIn && fx && timeMs >= fx.fxStartMs) {
+          const p = Math.min(1, (timeMs - fx.fxStartMs) / STORY_FLOW_DRAW_MS);
+          entry.mat.opacity = easeOutCubic(p) * (entry.targetOpacity ?? 0.08);
+          if (p >= 1) entry.drawIn = false;
+          continue;
+        }
+        if (!livePhase && fx) {
+          entry.mat.opacity = entry.drawIn ? 0 : 0.04;
+          continue;
+        }
         const pulse = 0.5 + 0.5 * Math.sin(t * 0.85 + entry.phase);
-        entry.mat.opacity = 0.045 + pulse * 0.035;
+        const base = entry.targetOpacity ?? 0.08;
+        entry.mat.opacity = base * 0.55 + pulse * base * 0.45;
       }
 
       const anim = layers.orientAnim;
@@ -826,6 +1041,32 @@ function lerpArc(lon1, lat1, lon2, lat2, steps = 24) {
     coords.push([lon1 + (lon2 - lon1) * t, lat1 + (lat2 - lat1) * t]);
   }
   return coords;
+}
+
+/** Small geographic circle for on-globe pulse rings. */
+function circleCoordsAt(lonDeg, latDeg, radiusDeg = 4, segments = 36) {
+  const latRad = (latDeg * Math.PI) / 180;
+  const cosLat = Math.cos(latRad) || 0.15;
+  const coords = [];
+  for (let i = 0; i <= segments; i++) {
+    const a = (i / segments) * Math.PI * 2;
+    coords.push([
+      lonDeg + (Math.cos(a) * radiusDeg) / cosLat,
+      latDeg + Math.sin(a) * radiusDeg,
+    ]);
+  }
+  return coords;
+}
+
+/** @param {number} t 0..1 */
+function pulseEnvelope(t) {
+  if (t <= 0 || t >= 1) return 0;
+  return Math.sin(t * Math.PI);
+}
+
+/** @param {number} a @param {number} b @param {number} t */
+function lerpNum(a, b, t) {
+  return a + (b - a) * t;
 }
 
 function buildNetworkGeometry() {
@@ -1040,6 +1281,11 @@ async function createGlobeScene(canvas, countriesGeo) {
     storyDisposables: [],
     hotspotEntries: [],
     flowEntries: [],
+    pulseRingEntries: [],
+    storySelectFx: null,
+    highlightReveal: null,
+    highlightOpacityTargets: null,
+    reducedMotion: false,
     countryMeshesByIso,
     baseCapMat: capMat,
     highlightCapMat,
@@ -1123,6 +1369,7 @@ export async function bindNewsGlobeThree(visual, _storyId = "inflation") {
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
     ctx.layers.idleRotationEnabled = !reduced;
     ctx.layers.idleRotationSpeed = reduced ? 0 : IDLE_ROTATION_RAD_PER_SEC;
+    ctx.layers.reducedMotion = Boolean(reduced);
   };
   applyReducedMotion();
   const motionMq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
