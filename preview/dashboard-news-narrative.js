@@ -88,7 +88,10 @@ function renderLivePanel(story, isPrimaryStory) {
         </ul>
       </div>
       <div class="news-live-panel__meta">
-        <span class="news-live-panel__status" data-news-status data-status="stable">→ Stable</span>
+        <span class="news-live-status-chip" data-news-status data-status="stable">
+          <span class="news-live-status-chip__icon" data-news-status-icon aria-hidden="true">●</span>
+          <span class="news-live-status-chip__label" data-news-status-label>Stable</span>
+        </span>
         <span class="news-live-panel__updated" data-news-updated data-quality="fallback" hidden>Updating…</span>
       </div>
       <div class="news-live-panel__metrics">
@@ -116,9 +119,6 @@ function renderLivePanel(story, isPrimaryStory) {
         <p class="news-narrative__block-label">What could change it</p>
         <ul class="news-watching__list news-watching__list--templates">${watching}</ul>
       </div>
-      <p class="news-live-panel__credibility" data-news-credibility${isPrimaryStory ? "" : " hidden"}>
-        Built from live prices, sectors and macro signals.
-      </p>
     </div>
   `;
 }
@@ -129,10 +129,15 @@ function renderLivePanel(story, isPrimaryStory) {
  * @returns {string}
  */
 function renderHeroContent(story, isPrimaryStory) {
-  const kicker = isPrimaryStory ? PRIMARY_KICKER : SECONDARY_KICKER;
+  const credibility = isPrimaryStory
+    ? `<p class="news-live-panel__credibility" data-news-credibility>
+        Built from live prices, sectors and macro signals.
+      </p>`
+    : `<p class="news-live-panel__credibility" data-news-credibility hidden>
+        Built from live prices, sectors and macro signals.
+      </p>`;
 
   return `
-    <p class="news-narrative__kicker">${esc(kicker)}</p>
     <h2 class="news-narrative__headline">${esc(story.headline)}</h2>
     <p class="news-narrative__what news-narrative__what--supporting">${esc(story.what)}</p>
     ${renderLivePanel(story, isPrimaryStory)}
@@ -140,6 +145,7 @@ function renderHeroContent(story, isPrimaryStory) {
       <p class="news-narrative__block-label">Why it matters</p>
       <p class="news-narrative__block-text">${esc(story.why)}</p>
     </div>
+    ${credibility}
   `;
 }
 
@@ -194,10 +200,11 @@ export function renderNewsHero() {
           <span class="news-timeline__flow" aria-hidden="true"></span>
           <span class="news-timeline__pulse" aria-hidden="true"></span>
         </div>
+        <p class="news-narrative__section-label news-narrative__section-label--primary">${esc(PRIMARY_KICKER)}</p>
         <div class="news-narrative__focus-row">
           ${renderPrimaryFocusButton(primary)}
         </div>
-        <p class="news-narrative__secondary-label">${esc(SECONDARY_KICKER)}</p>
+        <p class="news-narrative__section-label news-narrative__section-label--secondary">${esc(SECONDARY_KICKER)}</p>
         <div class="news-timeline__nodes" role="list">${secondaryNodes}</div>
       </div>
     </div>
