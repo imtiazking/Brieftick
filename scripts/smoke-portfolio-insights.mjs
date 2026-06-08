@@ -48,19 +48,20 @@ checks.continueDisabled = await page
   .first()
   .isDisabled();
 
+checks.openBasketDisabled = await page
+  .locator("#page-portfolio-insights [data-open-basket]")
+  .first()
+  .isDisabled();
+
 await page.locator("#page-portfolio-insights .pi-chip").first().click();
 checks.continueEnabled = !(await page
   .locator("#page-portfolio-insights [data-basket-continue]")
   .first()
   .isDisabled());
-
-await page.locator("#page-portfolio-insights [data-basket-continue]").first().click();
-checks.handoffOpen = await page.evaluate(
-  () => document.getElementById("piHandoff")?.classList.contains("is-open")
-);
-
-const handoffTickers = await page.locator("#piHandoffTickers").textContent();
-checks.handoffHasSelection = (handoffTickers || "").includes("NVDA");
+checks.openBasketEnabled = !(await page
+  .locator("#page-portfolio-insights [data-open-basket]")
+  .first()
+  .isDisabled());
 
 await page.evaluate(() => {
   const basket = document.querySelector("#page-portfolio-insights .pi-basket");
@@ -73,6 +74,30 @@ checks.singleCompanyLabel = await page
   .locator("#page-portfolio-insights [data-selected-count]")
   .first()
   .textContent();
+
+await page.locator("#page-portfolio-insights [data-open-basket]").first().click();
+checks.basketReviewOpen = await page.evaluate(
+  () => document.getElementById("piBasketReview")?.classList.contains("is-open")
+);
+checks.basketReviewTitle = await page.locator("#piBasketReviewTitle").textContent();
+checks.basketReviewTickers = await page.locator("#piBasketReviewTickers").textContent();
+checks.basketReviewCount = await page.locator("#piBasketReviewCount").textContent();
+checks.basketReviewRisk = await page.locator("#piBasketReviewRisk").textContent();
+
+await page.locator("[data-basket-review-continue]").click();
+checks.handoffOpen = await page.evaluate(
+  () => document.getElementById("piHandoff")?.classList.contains("is-open")
+);
+
+const handoffTickers = await page.locator("#piHandoffTickers").textContent();
+const handoffCount = await page.locator("#piHandoffCount").textContent();
+const handoffProto = await page.locator(".pi-handoff__proto").textContent();
+const handoffMock = await page.locator(".pi-handoff__mock").textContent();
+checks.handoffHasSelection = (handoffTickers || "").trim() === "NVDA";
+checks.handoffSingleCount = handoffCount?.trim() === "1 company selected";
+checks.handoffFriendlyCopy =
+  handoffProto?.trim() === "Prototype only" &&
+  /does not place trades or hold funds/i.test(handoffMock || "");
 
 await browser.close();
 
@@ -89,9 +114,18 @@ const failed =
   checks.headline?.trim() !== "Portfolio Insights" ||
   checks.basketsRendered !== 4 ||
   !checks.continueDisabled ||
+  !checks.openBasketDisabled ||
   !checks.continueEnabled ||
+  !checks.openBasketEnabled ||
+  !checks.basketReviewOpen ||
+  checks.basketReviewTitle?.trim() !== "AI Infrastructure Basket" ||
+  checks.basketReviewTickers?.trim() !== "NVDA" ||
+  checks.basketReviewCount?.trim() !== "1 company selected" ||
+  !checks.basketReviewRisk?.includes("Risk note") ||
   !checks.handoffOpen ||
-  !checks.handoffHasSelection;
+  !checks.handoffHasSelection ||
+  !checks.handoffSingleCount ||
+  !checks.handoffFriendlyCopy;
 
 console.log(JSON.stringify({ checks, errors }, null, 2));
 process.exit(failed ? 1 : 0);

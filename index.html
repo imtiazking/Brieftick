@@ -4379,20 +4379,35 @@ h1,h2,h3{
     </footer>
   </div>
 
+  <div class="pi-basket-review" id="piBasketReview" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="piBasketReviewTitle">
+    <div class="pi-basket-review__backdrop" data-basket-review-close tabindex="-1"></div>
+    <div class="pi-basket-review__sheet">
+      <h2 id="piBasketReviewTitle">Basket</h2>
+      <p class="pi-basket-review__tickers" id="piBasketReviewTickers" aria-label="Selected companies"></p>
+      <p class="pi-basket-review__count" id="piBasketReviewCount"></p>
+      <p class="pi-basket-review__risk" id="piBasketReviewRisk"></p>
+      <div class="pi-basket-review__actions">
+        <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-basket-review-continue>Continue with Trading212</button>
+        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-basket-review-close>Close</button>
+      </div>
+    </div>
+  </div>
+
   <div class="pi-handoff" id="piHandoff" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="piHandoffTitle">
     <div class="pi-handoff__backdrop" data-handoff-close tabindex="-1"></div>
     <div class="pi-handoff__sheet">
-      <p class="pi-handoff__proto">Broker handoff</p>
+      <p class="pi-handoff__proto">Prototype only</p>
       <h2 id="piHandoffTitle">Continue with Trading212</h2>
       <p id="piHandoffBody"></p>
       <p class="pi-handoff__tickers" id="piHandoffTickers" aria-label="Selected companies"></p>
+      <p class="pi-handoff__count" id="piHandoffCount"></p>
       <p class="pi-handoff__mock">
-        MOCK · No authentication, KYC, payments, custody, or order routing.
-        Continue with your broker — Brieftick is the intelligence layer only.
+        Brieftick does not place trades or hold funds.
+        Your broker handles execution and custody.
       </p>
       <div class="pi-handoff__actions">
         <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-open-in-broker>Continue with Trading212</button>
-        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Stay in Brieftick</button>
+        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Close</button>
       </div>
     </div>
   </div>
