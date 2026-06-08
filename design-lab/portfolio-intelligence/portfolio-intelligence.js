@@ -1,5 +1,5 @@
 /**
- * Portfolio Intelligence · design-lab prototype only.
+ * Portfolio Insights · design-lab prototype only.
  * No auth, API, KYC, payments, or order routing.
  */
 
@@ -103,7 +103,7 @@ function init() {
     const basket = e.target.closest("[data-open-basket]");
 
     if (exec) {
-      openHandoff(exec.dataset.handoffLabel || "Portfolio Intelligence", exec.dataset.tickers || "NVDA,AMD,MSFT");
+      openHandoff(exec.dataset.handoffLabel || "Portfolio Insights", exec.dataset.tickers || "NVDA,AMD,MSFT");
       return;
     }
     if (basket) {
