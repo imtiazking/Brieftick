@@ -482,6 +482,30 @@
   margin: 0 0 16px;
 }
 
+.mp-complete__next {
+  margin: 0 0 4px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--mp-line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.mp-complete__next-label {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mp-gold);
+  margin: 0 0 4px;
+}
+
+.mp-complete__next-body {
+  font-size: 14px;
+  color: var(--mp-text);
+  margin: 0;
+  line-height: 1.45;
+}
+
 .mp-complete__xp {
   display: flex;
   flex-direction: column;

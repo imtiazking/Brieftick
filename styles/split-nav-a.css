@@ -77,6 +77,11 @@
   text-shadow: 0 0 18px rgba(212, 168, 90, 0.28);
 }
 
+.nav.nav-a .nav-link.app-tab[data-route="portfolio-insights"].active {
+  color: var(--gold, #d4a85a);
+  text-shadow: 0 0 18px rgba(212, 168, 90, 0.28);
+}
+
 .nav.nav-a .nav-link--logic {
   color: rgba(212, 168, 90, 0.75);
 }

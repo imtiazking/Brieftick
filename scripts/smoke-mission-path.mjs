@@ -1,5 +1,6 @@
 import { chromium } from "playwright";
 
+const BASE = process.env.SMOKE_BASE || "http://127.0.0.1:3458";
 const browser = await chromium.launch({ headless: true });
 const errors = [];
 
@@ -7,7 +8,7 @@ async function runDesktop() {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   page.on("pageerror", (e) => errors.push(e.message));
 
-  await page.goto("http://127.0.0.1:3458/", { waitUntil: "domcontentloaded", timeout: 60000 });
+  await page.goto(BASE + "/", { waitUntil: "domcontentloaded", timeout: 60000 });
   await page.waitForFunction(() => window.MissionPathController, { timeout: 30000 });
   await page.waitForTimeout(2500);
 
@@ -67,7 +68,7 @@ async function runDesktop() {
 
 async function runMobile() {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  await page.goto("http://127.0.0.1:3458/", { waitUntil: "domcontentloaded" });
+  await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => window.MissionPathController);
   await page.waitForTimeout(2500);
   await page.evaluate(() => {

@@ -71,7 +71,7 @@
 <title>BriefTick - Markets, briefly.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Instrument+Serif&family=JetBrains+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg-0:#05060a;
@@ -3492,6 +3492,7 @@ h1,h2,h3{
 <link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">
 <link rel="stylesheet" href="/styles/whats-moving-briefing.css">
 <link rel="stylesheet" href="/styles/earnings-beginner.css">
+<link rel="stylesheet" href="/styles/portfolio-insights.css">
 <link rel="stylesheet" href="/styles/mission-path.css">
 <link rel="stylesheet" href="/styles/discover-market-story.css">
 <script type="module" src="/lib/ticker-deep-dive.bridge.js"></script>
@@ -3500,6 +3501,8 @@ h1,h2,h3{
 <script type="module" src="/lib/briefing-wheel.boot.js"></script>
 <script type="module" src="/lib/earnings-beginner.js"></script>
 <script src="/lib/earnings-route.js"></script>
+<script type="module" src="/lib/portfolio-insights.js"></script>
+<script src="/lib/portfolio-insights-route.js"></script>
 <script type="module" src="/lib/split-theme.bridge.js"></script>
 <script type="module" src="/lib/split-landing.bridge.js"></script>
 <script type="module" src="/lib/logic-cinematic.bridge.js"></script>
@@ -3609,6 +3612,7 @@ h1,h2,h3{
       <button type="button" class="nav-link app-tab" data-route="earnings">Earnings</button>
       <button type="button" class="nav-link app-tab" data-route="portfolio">Portfolio</button>
       <button type="button" class="nav-link app-tab" data-route="scanner">Discover <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button type="button" class="nav-link app-tab" data-route="portfolio-insights">Portfolio Insights</button>
       <button type="button" class="nav-link app-tab" data-route="insiders">Insider <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <button type="button" class="nav-link app-tab" data-route="options">Options <span class="nav-beta-pill">Beta</span> <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <button type="button" class="nav-link nav-link--logic app-tab logic-preview-tab" data-route="logic" id="navLogicTab" style="display:none">Logic</button>
@@ -4241,6 +4245,173 @@ h1,h2,h3{
     <p class="earn-v2-foot"><b>Educational only.</b> Not investment advice. Expected moves and impact tiers are illustrative models, not forecasts.</p>
   </div>
 
+</section>
+
+<!-- ============================================================
+     PORTFOLIO INSIGHTS
+============================================================ -->
+<section class="page" id="page-portfolio-insights">
+  <div class="pi-shell">
+    <header class="pi-header">
+      <h1>Portfolio Insights</h1>
+      <p class="pi-header__sub">Understand what you own.<br>Understand what to do next.</p>
+      <p class="pi-header__tagline">Brieftick explains. Your broker executes.</p>
+    </header>
+
+    <aside class="pi-intro" id="piIntro" hidden aria-labelledby="piIntroTitle">
+      <div class="pi-intro__inner">
+        <p class="pi-intro__title" id="piIntroTitle">Portfolio Insights helps you:</p>
+        <ul class="pi-intro__list">
+          <li>Understand today's leading market story</li>
+          <li>See how it affects your portfolio</li>
+          <li>Build your own basket</li>
+          <li>Continue with your broker</li>
+        </ul>
+        <button type="button" class="pi-intro__dismiss" data-pi-intro-dismiss>Got it</button>
+      </div>
+    </aside>
+
+    <section class="pi-section" id="piStory" aria-labelledby="piStoryLabel">
+      <p class="pi-section__label" id="piStoryLabel">Today's Market Story</p>
+      <article class="pi-story">
+        <div class="pi-story__inner">
+          <p class="pi-story__live">Leading narrative</p>
+          <h2>AI Infrastructure</h2>
+          <p class="pi-story__body">
+            Data-centre build-out and GPU demand continue to favour chip designers, networking vendors, and hyperscale platforms as AI capex accelerates across the supply chain.
+          </p>
+          <dl class="pi-story__meta">
+            <div>
+              <dt>Story strength</dt>
+              <dd class="pi-story__strength">Elevated — broad participation across semis and cloud</dd>
+            </div>
+            <div>
+              <dt>What could change it</dt>
+              <dd>Rising bond yields, capex guidance cuts, or regulation on AI spending</dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+    </section>
+
+    <section class="pi-section" id="piExposure" aria-labelledby="piExposureLabel">
+      <p class="pi-section__label" id="piExposureLabel">Your Portfolio Exposure</p>
+      <div class="pi-exposure-grid">
+        <article class="pi-exposure pi-exposure--high">
+          <div>
+            <p class="pi-exposure__level">High exposure</p>
+            <h3>AI Infrastructure</h3>
+            <p class="pi-exposure__detail">NVDA, AMD, MSFT overlap with today's leading narrative</p>
+          </div>
+        </article>
+        <article class="pi-exposure pi-exposure--med">
+          <div>
+            <p class="pi-exposure__level">Medium exposure</p>
+            <h3>Inflation</h3>
+            <p class="pi-exposure__detail">Rates-sensitive holdings share a macro driver</p>
+          </div>
+        </article>
+        <article class="pi-exposure pi-exposure--low">
+          <div>
+            <p class="pi-exposure__level">Low exposure</p>
+            <h3>Energy</h3>
+            <p class="pi-exposure__detail">Limited direct theme overlap in current mock holdings</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="pi-section" id="piLogicSection" aria-labelledby="piLogicLabel">
+      <p class="pi-section__label" id="piLogicLabel">Logic</p>
+      <div class="pi-logic">
+        <div class="pi-logic__head">
+          <span class="pi-logic__icon" aria-hidden="true">◇</span>
+          <p class="pi-logic__title">Portfolio reasoning</p>
+        </div>
+        <ul>
+          <li>Three of your holdings are exposed to the same AI capex narrative.</li>
+          <li>Rising bond yields are the main risk.</li>
+          <li>You have limited defensive exposure.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="pi-section" id="piReady" aria-labelledby="piReadyLabel">
+      <p class="pi-section__label" id="piReadyLabel">Ready to act</p>
+      <article class="pi-execution">
+        <h2>Ready to act</h2>
+        <p class="pi-execution__support">
+          You stay in control.<br>
+          Brieftick provides intelligence.<br>
+          Your broker handles execution.
+        </p>
+        <button
+          type="button"
+          class="pi-btn pi-btn--gold"
+          data-continue-broker
+          data-handoff-label="AI Infrastructure"
+          data-tickers="NVDA,AMD,AVGO,MSFT,ANET"
+        >
+          Continue with Trading212
+        </button>
+      </article>
+    </section>
+
+    <section class="pi-section" id="piBasketsSection" aria-labelledby="piBasketsLabel">
+      <p class="pi-section__label" id="piBasketsLabel">Build Your Basket</p>
+      <p class="pi-section__sub" id="piBasketsSub">Select one or more companies to include.</p>
+      <div class="pi-baskets" id="piBaskets"></div>
+    </section>
+
+    <section class="pi-section" id="piBrokersSection" aria-labelledby="piBrokersLabel" data-future-placeholder="connected-brokers">
+      <p class="pi-section__label" id="piBrokersLabel">Connected Brokers</p>
+      <div class="pi-brokers">
+        <div class="pi-broker"><span class="pi-broker__name">Trading212</span><span class="pi-broker__status">Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">Interactive Brokers</span><span class="pi-broker__status">Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">eToro</span><span class="pi-broker__status">Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">IG</span><span class="pi-broker__status">Coming Soon</span></div>
+      </div>
+    </section>
+
+    <footer class="pi-disclaimer" role="note">
+      Brieftick provides market intelligence only and does not hold funds or place orders.
+      Illustrative portfolio data — connect your broker when available.
+    </footer>
+  </div>
+
+  <div class="pi-handoff" id="piHandoff" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="piHandoffTitle">
+    <div class="pi-handoff__backdrop" data-handoff-close tabindex="-1"></div>
+    <div class="pi-handoff__sheet">
+      <p class="pi-handoff__proto">Broker handoff</p>
+      <h2 id="piHandoffTitle">Continue with Trading212</h2>
+      <p id="piHandoffBody"></p>
+      <p class="pi-handoff__tickers" id="piHandoffTickers" aria-label="Selected companies"></p>
+      <p class="pi-handoff__mock">
+        MOCK · No authentication, KYC, payments, custody, or order routing.
+        Continue with your broker — Brieftick is the intelligence layer only.
+      </p>
+      <div class="pi-handoff__actions">
+        <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-open-in-broker>Continue with Trading212</button>
+        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Stay in Brieftick</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="pi-sticky" id="piSticky" aria-label="Ready to act" hidden>
+    <p class="pi-sticky__label">Ready to act</p>
+    <p class="pi-sticky__context">Your portfolio has High AI Infrastructure exposure.</p>
+    <button
+      type="button"
+      class="pi-btn pi-btn--gold pi-btn--block"
+      data-continue-broker
+      data-handoff-label="AI Infrastructure"
+      data-tickers="NVDA,AMD,AVGO,MSFT,ANET"
+    >
+      Continue with Trading212
+    </button>
+  </aside>
+
+  <p class="pi-toast" id="piToast" hidden role="status"></p>
 </section>
 <!-- Why Markets Move (impact) tab retired — route('impact') redirects to What's Moving (why); feed helpers kept for dashboard risk regime. -->
 
@@ -5402,6 +5573,9 @@ function route(name){
   }
   if(name === 'earnings' && typeof window.mountEarningsPage === 'function'){
     requestAnimationFrame(()=>window.mountEarningsPage());
+  }
+  if(name === 'portfolio-insights' && typeof window.mountPortfolioInsights === 'function'){
+    requestAnimationFrame(()=>window.mountPortfolioInsights());
   }
   window.scrollTo({top:0,behavior:'instant'});
   if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
@@ -11058,6 +11232,7 @@ async function _onAuthChange(user) {
         <li onclick="routeWithAuth('earnings')">Earnings</li>
         <li onclick="routeWithAuth('portfolio')">My Portfolio</li>
         <li onclick="routeWithAuth('scanner')">Discover Stocks</li>
+        <li onclick="routeWithAuth('portfolio-insights')">Portfolio Insights</li>
       `;
     }
   })();
