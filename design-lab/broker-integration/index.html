@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Broker Integration · Design Lab · Brieftick</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/broker-integration/vars.css">
+  <link rel="stylesheet" href="/design-lab/broker-integration/broker-integration.css">
+</head>
+<body>
+  <div class="bi-page">
+    <header class="bi-chrome">
+      <strong>Design lab · Terminal concept</strong>
+      <nav>
+        <a href="#story">Story-to-Broker</a>
+        <a href="#baskets">Baskets</a>
+        <a href="#brokers">Connections</a>
+        <a href="/">← Brieftick</a>
+      </nav>
+    </header>
+
+    <p class="bi-banner" role="status">
+      Preview only · no broker authentication · no order routing · not linked from production
+    </p>
+
+    <header class="bi-hero">
+      <p class="bi-hero__eyebrow">Future Terminal · Broker handoff</p>
+      <h1>Intelligence in Brieftick.<br>Execution with your broker.</h1>
+      <p class="bi-hero__lead">
+        Brieftick remains the intelligence layer — stories, exposed names, and themed baskets.
+        Trading212 is the execution layer when you are ready to act.
+      </p>
+      <div class="bi-hero__flow" aria-label="Core journey">
+        <span>Story</span>
+        <span class="bi-arrow" aria-hidden="true">→</span>
+        <span>Exposed names</span>
+        <span class="bi-arrow" aria-hidden="true">→</span>
+        <span>Basket</span>
+        <span class="bi-arrow" aria-hidden="true">→</span>
+        <span class="is-gold">Continue to Trading212</span>
+      </div>
+    </header>
+
+    <!-- 1. Story-to-Broker -->
+    <section class="bi-section" id="story" aria-labelledby="biStoryHead">
+      <div class="bi-section__head">
+        <div>
+          <p class="bi-section__label">Concept 01</p>
+          <h2 id="biStoryHead">Story-to-Broker</h2>
+        </div>
+        <p class="bi-section__sub">From a live market narrative to broker-ready names in one surface.</p>
+      </div>
+
+      <article class="bi-story-card">
+        <div class="bi-story-card__inner">
+          <p class="bi-story-card__tag">Today's story</p>
+          <h3>AI Infrastructure</h3>
+          <p class="bi-story-card__body">
+            Data-centre build-out and GPU demand continue to favour the supply chain — from chip designers to networking and hyperscale platforms.
+          </p>
+          <div class="bi-names">
+            <p class="bi-names__label">Exposed names</p>
+            <div class="bi-names__row" id="biStoryTickers"></div>
+          </div>
+          <div class="bi-actions">
+            <button type="button" class="bi-btn bi-btn--ghost" data-mock-watchlist>Add to Watchlist</button>
+            <button type="button" class="bi-btn bi-btn--ghost" data-mock-logic>Ask Logic</button>
+            <button
+              type="button"
+              class="bi-btn bi-btn--broker"
+              data-handoff="AI Infrastructure"
+              data-tickers="NVDA,AMD,AVGO,MSFT,ANET"
+            >
+              Trade with Trading212
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 2. Brieftick Baskets -->
+    <section class="bi-section" id="baskets" aria-labelledby="biBasketsHead">
+      <div class="bi-section__head">
+        <div>
+          <p class="bi-section__label">Concept 02</p>
+          <h2 id="biBasketsHead">Brieftick Baskets</h2>
+        </div>
+        <p class="bi-section__sub">Curated theme baskets — intelligence first, with a clear path to your broker.</p>
+      </div>
+      <div class="bi-baskets" id="biBaskets"></div>
+    </section>
+
+    <!-- 3. Broker Connections -->
+    <section class="bi-section" id="brokers" aria-labelledby="biBrokersHead">
+      <div class="bi-section__head">
+        <div>
+          <p class="bi-section__label">Concept 03</p>
+          <h2 id="biBrokersHead">Broker Connections</h2>
+        </div>
+        <p class="bi-section__sub">Connect your broker to understand how market stories affect your portfolio.</p>
+      </div>
+
+      <div class="bi-brokers">
+        <article class="bi-broker">
+          <div class="bi-broker__mark" aria-hidden="true">212</div>
+          <div class="bi-broker__info">
+            <h3>Trading212</h3>
+            <p>Connect your broker to understand how market stories affect your portfolio. View baskets and exposed names in your existing account — Brieftick does not hold funds or place orders.</p>
+          </div>
+          <span class="bi-status bi-status--soon">Coming Soon</span>
+        </article>
+      </div>
+    </section>
+
+    <aside class="bi-disclaimer" role="note">
+      <strong>Disclaimer</strong>
+      Brieftick provides market intelligence only, not brokerage services or financial advice.
+      Past themes and exposed names are illustrative. Any broker handoff is your decision —
+      we do not guarantee returns, custody assets, or route orders on your behalf.
+    </aside>
+
+    <p class="bi-footnote">
+      Route: <code>/design-lab/broker-integration</code> · Production app unchanged ·
+      Mock handoff only — no KYC, payments, or API integration.
+    </p>
+  </div>
+
+  <p id="biToast" class="bi-banner" hidden role="status" style="position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);z-index:90;max-width:min(90vw,360px);margin:0;"></p>
+
+  <!-- Mock Trading212 handoff -->
+  <div class="bi-handoff" id="biHandoff" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="biHandoffTitle">
+    <div class="bi-handoff__backdrop" data-handoff-close tabindex="-1"></div>
+    <div class="bi-handoff__sheet">
+      <p class="bi-handoff__badge">
+        <span aria-hidden="true">212</span>
+        Trading212 handoff
+      </p>
+      <h2 id="biHandoffTitle">Continue to broker</h2>
+      <p class="bi-handoff__context" id="biHandoffContext"></p>
+      <div class="bi-handoff__names" id="biHandoffNames"></div>
+      <ol class="bi-handoff__steps">
+        <li><em>1</em> Review exposed names in Brieftick</li>
+        <li><em>2</em> Open basket in Trading212 (prototype)</li>
+        <li><em>3</em> View in broker — you stay in control of any action</li>
+      </ol>
+      <p class="bi-handoff__mock">
+        MOCK · This screen simulates a deep link. No authentication, KYC, or order routing occurs.
+      </p>
+      <div class="bi-handoff__actions">
+        <button type="button" class="bi-btn bi-btn--broker bi-btn--block" data-handoff-close>
+          View in broker (prototype)
+        </button>
+        <button type="button" class="bi-btn bi-btn--ghost bi-btn--block" data-handoff-close>
+          Stay in Brieftick
+        </button>
+      </div>
+      <p class="bi-handoff__fine">
+        Brieftick is not a broker. Trading212 is a separate regulated entity.
+      </p>
+    </div>
+  </div>
+
+  <script src="/design-lab/broker-integration/broker-integration.js" defer></script>
+</body>
+</html>
