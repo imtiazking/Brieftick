@@ -29,8 +29,7 @@ const LAND_DETAIL_EDGE_KEEP = 0.1;
 const HOTSPOT_RADIUS = GLOBE_RADIUS * 1.009;
 const FLOW_RADIUS = GLOBE_RADIUS * 1.01;
 const PULSE_RING_RADIUS = GLOBE_RADIUS * 1.011;
-/** One-shot region pulse after orientation settles */
-const STORY_PULSE_MS = 1400;
+/** Initial draw-in when a story is selected */
 const STORY_FLOW_DRAW_MS = 900;
 const STORY_HIGHLIGHT_REVEAL_MS = 900;
 /** @type {Record<string, string[]>} */
@@ -197,33 +196,112 @@ const STORY_LAND_REGION = {
 };
 
 /**
- * Story-select motion cues — subtle pulses and connection draws (select intent only).
+ * Continuous story-select motion — active until another story is chosen.
  * @type {Record<string, object>}
  */
 const STORY_EFFECTS = {
   inflation: {
-    pulses: [{ lon: -98, lat: 39, radiusDeg: 6, peakOpacity: 0.2, color: 0x8ab4cc }],
+    pulses: [
+      {
+        lon: -98,
+        lat: 39,
+        radiusDeg: 7,
+        baseOpacity: 0.14,
+        peakOpacity: 0.28,
+        color: 0x8ab4cc,
+        phase: 0,
+        speed: 0.85,
+      },
+    ],
     flowDrawIn: false,
   },
   ai: {
     pulses: [
-      { lon: -122.08, lat: 37.39, radiusDeg: 3.8, peakOpacity: 0.17, color: 0x8ab4cc },
-      { lon: 121.56, lat: 25.03, radiusDeg: 3.8, peakOpacity: 0.17, color: 0x8ab4cc, delayMs: 220 },
+      {
+        lon: -122.08,
+        lat: 37.39,
+        radiusDeg: 4.2,
+        baseOpacity: 0.12,
+        peakOpacity: 0.24,
+        color: 0x8ab4cc,
+        phase: 0,
+        speed: 0.95,
+      },
+      {
+        lon: 121.56,
+        lat: 25.03,
+        radiusDeg: 4.2,
+        baseOpacity: 0.12,
+        peakOpacity: 0.24,
+        color: 0x8ab4cc,
+        phase: 1.8,
+        speed: 0.95,
+      },
     ],
     flowDrawIn: true,
+    flowGlow: true,
+    glowSpeed: 0.07,
   },
   europe: {
     pulses: [
-      { lon: -74.01, lat: 40.71, radiusDeg: 3.2, peakOpacity: 0.15, color: 0x8ab4cc },
-      { lon: 8.68, lat: 50.11, radiusDeg: 3.2, peakOpacity: 0.15, color: 0x8ab4cc, delayMs: 260 },
+      {
+        lon: -74.01,
+        lat: 40.71,
+        radiusDeg: 3.6,
+        baseOpacity: 0.11,
+        peakOpacity: 0.22,
+        color: 0x8ab4cc,
+        phase: 0,
+        speed: 0.8,
+      },
+      {
+        lon: 8.68,
+        lat: 50.11,
+        radiusDeg: 3.6,
+        baseOpacity: 0.11,
+        peakOpacity: 0.22,
+        color: 0x8ab4cc,
+        phase: 2.1,
+        speed: 0.8,
+      },
     ],
     flowDrawIn: true,
+    flowGlow: true,
+    glowSpeed: 0.09,
   },
   energy: {
     pulses: [
-      { lon: 50.1, lat: 26.2, radiusDeg: 5.2, peakOpacity: 0.18, color: 0x8aaa90 },
-      { lon: 54.37, lat: 24.45, radiusDeg: 4.2, peakOpacity: 0.13, color: 0x8aaa90, delayMs: 200 },
+      {
+        lon: 50.1,
+        lat: 26.2,
+        radiusDeg: 5.8,
+        baseOpacity: 0.13,
+        peakOpacity: 0.26,
+        color: 0x8aaa90,
+        phase: 0,
+        speed: 0.75,
+      },
+      {
+        lon: 54.37,
+        lat: 24.45,
+        radiusDeg: 4.8,
+        baseOpacity: 0.1,
+        peakOpacity: 0.2,
+        color: 0x8aaa90,
+        phase: 1.6,
+        speed: 0.75,
+      },
     ],
+    regionGlow: {
+      lon: 52,
+      lat: 26,
+      radiusDeg: 10,
+      baseOpacity: 0.08,
+      peakOpacity: 0.18,
+      color: 0x8aaa90,
+      phase: 0.5,
+      speed: 0.55,
+    },
     flowDrawIn: false,
   },
 };
@@ -546,6 +624,7 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     }
     layers.hotspotEntries = [];
     layers.flowEntries = [];
+    layers.flowGlowEntries = [];
     layers.pulseRingEntries = [];
     layers.storySelectFx = null;
     layers.highlightReveal = null;
@@ -576,9 +655,38 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     disposables.push({ geo, mat });
     layers.pulseRingEntries.push({
       mat,
-      startMs: options.startMs ?? 0,
-      duration: options.duration ?? STORY_PULSE_MS,
-      peakOpacity: options.peakOpacity ?? 0.18,
+      baseOpacity: options.baseOpacity ?? 0.1,
+      peakOpacity: options.peakOpacity ?? 0.22,
+      phase: options.phase ?? 0,
+      speed: options.speed ?? 0.85,
+    });
+  };
+
+  const addFlowGlowTraveler = (coords, options = {}) => {
+    if (!coords?.length) return;
+    const geo = new GeoJsonGeometry(
+      { type: "Point", coordinates: [[coords[0][0], coords[0][1]]] },
+      FLOW_RADIUS * 1.003,
+      3
+    );
+    const mat = new THREE.PointsMaterial({
+      color: options.color ?? 0x9ec8e0,
+      size: options.size ?? 0.042,
+      transparent: true,
+      opacity: 0,
+      sizeAttenuation: true,
+      depthWrite: false,
+    });
+    const mesh = new THREE.Points(geo, mat);
+    setMeshAtLonLat(mesh, coords[0][0], coords[0][1], FLOW_RADIUS * 1.003);
+    layers.storyOverlay.add(mesh);
+    disposables.push({ geo, mat });
+    layers.flowGlowEntries.push({
+      mesh,
+      mat,
+      coords,
+      phase: options.phase ?? 0,
+      speed: options.speed ?? 0.08,
     });
   };
 
@@ -589,17 +697,16 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     const now = performance.now();
     const fxStartMs = now + orientDelayMs;
     const targets = layers.highlightOpacityTargets ?? {
-      primary: 0.68,
-      secondary: 0.46,
-      tertiary: 0.4,
-      dim: 0.26,
+      primary: 0.88,
+      secondary: 0.62,
+      tertiary: 0.54,
+      dim: 0.18,
     };
 
     layers.storySelectFx = {
       storyId,
       fxStartMs,
-      pulseEndMs: fxStartMs + STORY_PULSE_MS,
-      livePhase: false,
+      active: true,
     };
 
     if (layers.reducedMotion) {
@@ -613,28 +720,55 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
       targets,
     };
     setHighlightOpacities({
-      primary: 0.38,
-      secondary: 0.28,
-      tertiary: 0.24,
-      dim: 0.22,
+      primary: 0.42,
+      secondary: 0.3,
+      tertiary: 0.26,
+      dim: 0.16,
     });
 
     for (const pulse of effect.pulses ?? []) {
       addPulseRing(pulse.lon, pulse.lat, {
         radiusDeg: pulse.radiusDeg,
+        baseOpacity: pulse.baseOpacity,
         peakOpacity: pulse.peakOpacity,
         color: pulse.color,
-        startMs: fxStartMs + (pulse.delayMs ?? 0),
-        duration: pulse.duration ?? STORY_PULSE_MS,
+        phase: pulse.phase ?? 0,
+        speed: pulse.speed ?? 0.85,
       });
     }
 
-    if (effect.flowDrawIn) {
-      for (const entry of layers.flowEntries) {
+    if (effect.regionGlow) {
+      const g = effect.regionGlow;
+      addPulseRing(g.lon, g.lat, {
+        radiusDeg: g.radiusDeg,
+        baseOpacity: g.baseOpacity,
+        peakOpacity: g.peakOpacity,
+        color: g.color,
+        phase: g.phase ?? 0,
+        speed: g.speed ?? 0.55,
+      });
+    }
+
+    for (const entry of layers.flowEntries) {
+      entry.targetOpacity = 0.11;
+      if (effect.flowDrawIn) {
         entry.mat.opacity = 0;
         entry.drawIn = true;
-        entry.targetOpacity = 0.08;
         entry.phase = 0;
+      } else {
+        entry.mat.opacity = entry.targetOpacity;
+        entry.drawIn = false;
+      }
+    }
+
+    if (effect.flowGlow) {
+      for (const entry of layers.flowEntries) {
+        if (entry.coords?.length) {
+          addFlowGlowTraveler(entry.coords, {
+            speed: effect.glowSpeed ?? 0.08,
+            phase: entry.phase,
+          });
+        }
       }
     }
   };
@@ -677,10 +811,10 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
 
     const preview = intent === "preview";
     layers.highlightOpacityTargets = {
-      primary: preview ? 0.62 : 0.68,
-      secondary: preview ? 0.4 : 0.46,
-      tertiary: preview ? 0.36 : 0.4,
-      dim: preview ? 0.3 : 0.26,
+      primary: preview ? 0.78 : 0.88,
+      secondary: preview ? 0.55 : 0.62,
+      tertiary: preview ? 0.48 : 0.54,
+      dim: preview ? 0.22 : 0.18,
     };
     if (intent !== "select" || layers.reducedMotion) {
       setHighlightOpacities(layers.highlightOpacityTargets);
@@ -757,9 +891,9 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
         );
         const mat = new THREE.PointsMaterial({
           color: 0x9ec8e0,
-          size: 0.028,
+          size: 0.034,
           transparent: true,
-          opacity: 0.32,
+          opacity: 0.42,
           sizeAttenuation: true,
           depthWrite: false,
         });
@@ -772,27 +906,33 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
 
     setCapitalFlows(flows = []) {
       if (!flows.length) return;
-      const arcs = flows.map((f) => {
+      for (const f of flows) {
         const span =
           Math.abs(f.from[0] - f.to[0]) + Math.abs(f.from[1] - f.to[1]);
-        const steps = span > 80 ? 48 : 32;
-        return lerpArc(f.from[0], f.from[1], f.to[0], f.to[1], steps);
-      });
-      const geo = new GeoJsonGeometry(
-        { type: "MultiLineString", coordinates: arcs },
-        FLOW_RADIUS,
-        4
-      );
-      const mat = new THREE.LineBasicMaterial({
-        color: 0x7ab0cc,
-        transparent: true,
-        opacity: 0.07,
-        depthWrite: false,
-      });
-      const lines = new THREE.LineSegments(geo, mat);
-      layers.storyOverlay.add(lines);
-      disposables.push({ geo, mat });
-      layers.flowEntries.push({ mat, phase: 0, targetOpacity: 0.08, drawIn: false });
+        const steps = span > 80 ? 56 : 36;
+        const coords = lerpArc(f.from[0], f.from[1], f.to[0], f.to[1], steps);
+        const geo = new GeoJsonGeometry(
+          { type: "LineString", coordinates: coords },
+          FLOW_RADIUS,
+          4
+        );
+        const mat = new THREE.LineBasicMaterial({
+          color: 0x7ab0cc,
+          transparent: true,
+          opacity: 0.11,
+          depthWrite: false,
+        });
+        const line = new THREE.Line(geo, mat);
+        layers.storyOverlay.add(line);
+        disposables.push({ geo, mat });
+        layers.flowEntries.push({
+          mat,
+          phase: Math.random() * Math.PI * 2,
+          targetOpacity: 0.11,
+          drawIn: false,
+          coords,
+        });
+      }
     },
 
     setEconomicEvents(events = []) {
@@ -884,7 +1024,9 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
         storySelectFx: layers.storySelectFx,
         pulseRingCount: layers.pulseRingEntries?.length ?? 0,
         flowCount: layers.flowEntries?.length ?? 0,
+        flowGlowCount: layers.flowGlowEntries?.length ?? 0,
         highlightReveal: Boolean(layers.highlightReveal),
+        effectsPaused: Boolean(layers.effectsPaused),
       };
     },
 
@@ -908,72 +1050,96 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
         const eased = easeOutCubic(p);
         const tgt = reveal.targets;
         setHighlightOpacities({
-          primary: lerpNum(0.38, tgt.primary, eased),
-          secondary: lerpNum(0.28, tgt.secondary, eased),
-          tertiary: lerpNum(0.24, tgt.tertiary, eased),
-          dim: lerpNum(0.22, tgt.dim, eased),
+          primary: lerpNum(0.42, tgt.primary, eased),
+          secondary: lerpNum(0.3, tgt.secondary, eased),
+          tertiary: lerpNum(0.26, tgt.tertiary, eased),
+          dim: lerpNum(0.16, tgt.dim, eased),
         });
         if (p >= 1) layers.highlightReveal = null;
       }
 
       const fx = layers.storySelectFx;
-      let pulseBoost = 0;
-      for (const entry of layers.pulseRingEntries) {
-        if (timeMs < entry.startMs) {
-          entry.mat.opacity = 0;
-          continue;
-        }
-        const p = (timeMs - entry.startMs) / entry.duration;
-        if (p >= 1) {
-          entry.mat.opacity = 0;
-          continue;
-        }
-        const env = pulseEnvelope(p);
-        entry.mat.opacity = env * entry.peakOpacity;
-        pulseBoost = Math.max(pulseBoost, env);
-      }
-      if (fx && !layers.reducedMotion && pulseBoost > 0 && layers.highlightOpacityTargets) {
+      const fxActive = Boolean(fx?.active && timeMs >= (fx?.fxStartMs ?? 0));
+      const motionOff = layers.reducedMotion;
+      const motionScale = motionOff ? 0 : layers.effectsPaused ? 0.4 : 1;
+      const t = timeMs * 0.001;
+
+      if (fxActive && !reveal && layers.highlightOpacityTargets) {
         const tgt = layers.highlightOpacityTargets;
-        const boost = pulseBoost * 0.05;
-        if (!reveal) {
+        if (motionOff) {
+          setHighlightOpacities(tgt);
+        } else {
+          const breathe = 0.5 + 0.5 * Math.sin(t * 0.62);
           setHighlightOpacities({
-            primary: tgt.primary + boost,
-            secondary: tgt.secondary + boost * 0.55,
-            tertiary: tgt.tertiary + boost * 0.35,
+            primary: tgt.primary + breathe * 0.05 * motionScale,
+            secondary: tgt.secondary + breathe * 0.03 * motionScale,
+            tertiary: tgt.tertiary + breathe * 0.02 * motionScale,
             dim: tgt.dim,
           });
         }
       }
 
-      const t = timeMs * 0.001;
-      const livePhase =
-        fx && (fx.livePhase || timeMs >= fx.pulseEndMs);
-      if (fx && timeMs >= fx.pulseEndMs) fx.livePhase = true;
-
-      for (const entry of layers.hotspotEntries) {
-        if (!livePhase && fx) {
-          entry.mat.opacity = 0.12;
-          entry.mat.size = 0.02;
+      for (const entry of layers.pulseRingEntries) {
+        if (!fxActive || motionOff) {
+          entry.mat.opacity = motionOff ? entry.baseOpacity * 0.85 : 0;
           continue;
         }
-        const pulse = 0.5 + 0.5 * Math.sin(t * 1.15 + entry.phase);
-        entry.mat.opacity = 0.2 + pulse * 0.14;
-        entry.mat.size = 0.022 + pulse * 0.01;
+        const wave = 0.5 + 0.5 * Math.sin(t * entry.speed + entry.phase);
+        entry.mat.opacity =
+          (entry.baseOpacity + wave * entry.peakOpacity) * motionScale;
       }
+
+      for (const entry of layers.hotspotEntries) {
+        if (!fxActive) {
+          entry.mat.opacity = 0.2;
+          entry.mat.size = 0.028;
+          continue;
+        }
+        if (motionOff) {
+          entry.mat.opacity = 0.4;
+          entry.mat.size = 0.034;
+          continue;
+        }
+        const pulse = 0.5 + 0.5 * Math.sin(t * 1.05 + entry.phase);
+        entry.mat.opacity = (0.34 + pulse * 0.2) * motionScale;
+        entry.mat.size = 0.03 + pulse * 0.014 * motionScale;
+      }
+
       for (const entry of layers.flowEntries) {
-        if (entry.drawIn && fx && timeMs >= fx.fxStartMs) {
+        const base = entry.targetOpacity ?? 0.11;
+        if (entry.drawIn && fxActive) {
           const p = Math.min(1, (timeMs - fx.fxStartMs) / STORY_FLOW_DRAW_MS);
-          entry.mat.opacity = easeOutCubic(p) * (entry.targetOpacity ?? 0.08);
+          entry.mat.opacity = easeOutCubic(p) * base * (motionOff ? 1 : motionScale);
           if (p >= 1) entry.drawIn = false;
           continue;
         }
-        if (!livePhase && fx) {
-          entry.mat.opacity = entry.drawIn ? 0 : 0.04;
+        if (!fxActive) {
+          entry.mat.opacity = 0.05;
           continue;
         }
-        const pulse = 0.5 + 0.5 * Math.sin(t * 0.85 + entry.phase);
-        const base = entry.targetOpacity ?? 0.08;
-        entry.mat.opacity = base * 0.55 + pulse * base * 0.45;
+        if (motionOff) {
+          entry.mat.opacity = base;
+          continue;
+        }
+        const pulse = 0.5 + 0.5 * Math.sin(t * 0.72 + entry.phase);
+        entry.mat.opacity = (base * 0.72 + pulse * base * 0.55) * motionScale;
+      }
+
+      for (const entry of layers.flowGlowEntries) {
+        if (!fxActive || motionOff) {
+          entry.mat.opacity = 0;
+          continue;
+        }
+        const progress = (t * entry.speed + entry.phase) % 1;
+        const idx = Math.min(
+          entry.coords.length - 1,
+          Math.floor(progress * (entry.coords.length - 1))
+        );
+        const [lon, lat] = entry.coords[idx];
+        setMeshAtLonLat(entry.mesh, lon, lat, FLOW_RADIUS * 1.003);
+        const glowWave = 0.5 + 0.5 * Math.sin(t * 2.2 + entry.phase * 2);
+        entry.mat.opacity = (0.3 + glowWave * 0.25) * motionScale;
+        entry.mat.size = 0.04 + glowWave * 0.02 * motionScale;
       }
 
       const anim = layers.orientAnim;
@@ -1058,15 +1224,15 @@ function circleCoordsAt(lonDeg, latDeg, radiusDeg = 4, segments = 36) {
   return coords;
 }
 
-/** @param {number} t 0..1 */
-function pulseEnvelope(t) {
-  if (t <= 0 || t >= 1) return 0;
-  return Math.sin(t * Math.PI);
-}
-
 /** @param {number} a @param {number} b @param {number} t */
 function lerpNum(a, b, t) {
   return a + (b - a) * t;
+}
+
+/** Place a mesh on the globe surface at lon/lat. */
+function setMeshAtLonLat(mesh, lonDeg, latDeg, radius) {
+  const v = geoToUnitVector(lonDeg, latDeg);
+  mesh.position.set(v.x * radius, v.y * radius, v.z * radius);
 }
 
 function buildNetworkGeometry() {
@@ -1281,11 +1447,13 @@ async function createGlobeScene(canvas, countriesGeo) {
     storyDisposables: [],
     hotspotEntries: [],
     flowEntries: [],
+    flowGlowEntries: [],
     pulseRingEntries: [],
     storySelectFx: null,
     highlightReveal: null,
     highlightOpacityTargets: null,
     reducedMotion: false,
+    effectsPaused: false,
     countryMeshesByIso,
     baseCapMat: capMat,
     highlightCapMat,
@@ -1378,9 +1546,13 @@ export async function bindNewsGlobeThree(visual, _storyId = "inflation") {
 
   const pauseIdleRotation = () => {
     ctx.layers.idleRotationPaused = true;
+    ctx.layers.effectsPaused = true;
   };
   const resumeIdleRotation = () => {
-    if (!dragging) ctx.layers.idleRotationPaused = false;
+    if (!dragging) {
+      ctx.layers.idleRotationPaused = false;
+      ctx.layers.effectsPaused = false;
+    }
   };
 
   const onDown = (e) => {

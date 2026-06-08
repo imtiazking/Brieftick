@@ -168,12 +168,40 @@ async function openDashboardNews(page) {
   await page.waitForTimeout(1200);
   const aiFx = await page.evaluate(() => {
     const api = document.querySelector(".news-narrative__visual")?._globeCanvas;
-    return api?.getStoryEffectState?.() ?? null;
+    const layers = api?.layers;
+    const pulseOpacity =
+      layers?.pulseRingEntries?.map((e) => e.mat?.opacity) ?? [];
+    return {
+      ...(api?.getStoryEffectState?.() ?? {}),
+      pulseOpacity,
+      fxActive: layers?.storySelectFx?.active === true,
+    };
   });
   checks.storySelectFxActive =
     aiFx != null &&
     aiFx.pulseRingCount >= 2 &&
-    aiFx.flowCount >= 1;
+    aiFx.flowCount >= 1 &&
+    aiFx.flowGlowCount >= 1 &&
+    aiFx.fxActive === true;
+
+  await page.waitForTimeout(2200);
+  const aiFxContinuous = await page.evaluate(() => {
+    const layers = document.querySelector(".news-narrative__visual")?._globeCanvas?.layers;
+    const pulseOpacity = layers?.pulseRingEntries?.map((e) => e.mat?.opacity) ?? [];
+    const flowOpacity = layers?.flowEntries?.map((e) => e.mat?.opacity) ?? [];
+    const glowOpacity = layers?.flowGlowEntries?.map((e) => e.mat?.opacity) ?? [];
+    return {
+      pulseOpacity,
+      flowOpacity,
+      glowOpacity,
+      fxActive: layers?.storySelectFx?.active === true,
+    };
+  });
+  checks.storySelectFxContinuous =
+    aiFxContinuous.fxActive === true &&
+    aiFxContinuous.pulseOpacity.some((o) => o > 0.08) &&
+    aiFxContinuous.flowOpacity.some((o) => o > 0.05) &&
+    aiFxContinuous.glowOpacity.some((o) => o > 0.1);
 
   await page.click('[data-story-id="energy"]');
   await page.waitForTimeout(1300);
@@ -227,6 +255,7 @@ const pass =
   checks.story_energy_oriented &&
   checks.storyYawsDistinct &&
   checks.storySelectFxActive &&
+  checks.storySelectFxContinuous &&
   checks.idleResumesAfterStoryOrient;
 
 console.log(JSON.stringify({ pass, errors, checks }, null, 2));
