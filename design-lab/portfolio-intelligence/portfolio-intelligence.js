@@ -34,8 +34,16 @@ const BASKETS = [
   },
 ];
 
+function stockCountLabel(n) {
+  return `${n} stock${n === 1 ? "" : "s"} selected`;
+}
+
 function getSelectedTickers(basketEl) {
   return [...basketEl.querySelectorAll(".pi-chip.is-selected")].map((c) => c.dataset.ticker);
+}
+
+function formatTickerLine(tickers) {
+  return tickers.length ? tickers.join(" • ") : "";
 }
 
 function updateBasketCard(basketEl) {
@@ -43,19 +51,24 @@ function updateBasketCard(basketEl) {
   const countEl = basketEl.querySelector("[data-selected-count]");
   const previewEl = basketEl.querySelector("[data-basket-preview]");
   const continueBtn = basketEl.querySelector("[data-basket-continue]");
+  const hintEl = basketEl.querySelector("[data-continue-hint]");
 
-  if (countEl) countEl.textContent = `${selected.length} selected`;
+  if (countEl) countEl.textContent = stockCountLabel(selected.length);
 
   if (previewEl) {
-    previewEl.innerHTML = selected.length
-      ? selected.map((t) => `<span class="pi-ticker">${t}</span>`).join("")
-      : `<span class="pi-basket__preview-empty">Select names to preview your basket</span>`;
+    previewEl.textContent = selected.length
+      ? formatTickerLine(selected)
+      : "No companies selected yet";
+    previewEl.classList.toggle("is-empty", selected.length === 0);
   }
 
+  const empty = selected.length === 0;
   if (continueBtn) {
-    const empty = selected.length === 0;
     continueBtn.disabled = empty;
     continueBtn.classList.toggle("is-disabled", empty);
+  }
+  if (hintEl) {
+    hintEl.hidden = !empty;
   }
 }
 
@@ -63,15 +76,15 @@ function renderBaskets() {
   const grid = document.getElementById("piBaskets");
   if (!grid) return;
 
-  grid.innerHTML = BASKETS.map(
-    (b) => `
+  grid.innerHTML = BASKETS.map((b) => {
+    const initialLine = formatTickerLine(b.tickers);
+    return `
     <article class="pi-basket" data-basket="${b.id}">
       <h3>${b.title}</h3>
       <p class="pi-basket__story">${b.story}</p>
-      <div class="pi-basket__picker">
-        <p class="pi-basket__field-label">Exposed names</p>
-        <p class="pi-basket__select-hint">Select the names you want to include.</p>
-        <div class="pi-chip-row" role="group" aria-label="Exposed names for ${b.title}">
+      <div class="pi-basket__build">
+        <p class="pi-basket__select-hint">Select the companies you want to follow.</p>
+        <div class="pi-chip-row" role="group" aria-label="Companies for ${b.title}">
           ${b.tickers
             .map(
               (t) =>
@@ -79,12 +92,15 @@ function renderBaskets() {
             )
             .join("")}
         </div>
-        <p class="pi-basket__count" data-selected-count>${b.tickers.length} selected</p>
-        <div class="pi-basket__preview-wrap">
-          <p class="pi-basket__preview-label">Custom Basket</p>
-          <div class="pi-basket__preview" data-basket-preview>
-            ${b.tickers.map((t) => `<span class="pi-ticker">${t}</span>`).join("")}
-          </div>
+        <div class="pi-basket__summary" aria-live="polite">
+          <p class="pi-basket__summary-label">Your Basket</p>
+          <p class="pi-basket__summary-count" data-selected-count>${stockCountLabel(b.tickers.length)}</p>
+          <p class="pi-basket__summary-tickers" data-basket-preview>${initialLine}</p>
+        </div>
+        <!-- Future: portfolio-aware slots (owned vs suggested additions) -->
+        <div class="pi-basket__evolve" hidden aria-hidden="true" data-evolve-slot>
+          <div class="pi-basket__evolve-owned" data-evolve-owned></div>
+          <div class="pi-basket__evolve-add" data-evolve-suggested></div>
         </div>
       </div>
       <p class="pi-basket__risk"><strong>Risk note.</strong> ${b.risk}</p>
@@ -95,9 +111,12 @@ function renderBaskets() {
         <button type="button" class="pi-btn pi-btn--gold" data-continue-broker data-basket-continue data-handoff-label="${b.title}">
           Continue with Trading212
         </button>
+        <p class="pi-basket__continue-hint" data-continue-hint hidden>
+          Select at least one company to continue.
+        </p>
       </div>
-    </article>`
-  ).join("");
+    </article>`;
+  }).join("");
 }
 
 function init() {
@@ -128,9 +147,8 @@ function init() {
       handoffBody.textContent = `Prototype handoff for "${label}". View in broker — Brieftick does not place orders or hold funds.`;
     }
     if (handoffTickers) {
-      handoffTickers.innerHTML = list.length
-        ? list.map((t) => `<span class="pi-ticker">${t}</span>`).join("")
-        : `<span class="pi-basket__preview-empty">No tickers selected</span>`;
+      handoffTickers.textContent = list.length ? formatTickerLine(list) : "No companies selected";
+      handoffTickers.classList.toggle("is-empty", list.length === 0);
     }
 
     handoff.classList.add("is-open");
@@ -184,8 +202,8 @@ function init() {
       const selected = getSelectedTickers(basketEl);
       showToast(
         selected.length
-          ? `Prototype — "${title}" basket: ${selected.join(", ")}`
-          : `Prototype — "${title}" basket: no names selected`
+          ? `Prototype — "${title}" · Your Basket: ${formatTickerLine(selected)}`
+          : `Prototype — "${title}" · Your Basket: no companies selected`
       );
       return;
     }
