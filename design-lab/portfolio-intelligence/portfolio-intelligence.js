@@ -34,6 +34,31 @@ const BASKETS = [
   },
 ];
 
+function getSelectedTickers(basketEl) {
+  return [...basketEl.querySelectorAll(".pi-chip.is-selected")].map((c) => c.dataset.ticker);
+}
+
+function updateBasketCard(basketEl) {
+  const selected = getSelectedTickers(basketEl);
+  const countEl = basketEl.querySelector("[data-selected-count]");
+  const previewEl = basketEl.querySelector("[data-basket-preview]");
+  const continueBtn = basketEl.querySelector("[data-basket-continue]");
+
+  if (countEl) countEl.textContent = `${selected.length} selected`;
+
+  if (previewEl) {
+    previewEl.innerHTML = selected.length
+      ? selected.map((t) => `<span class="pi-ticker">${t}</span>`).join("")
+      : `<span class="pi-basket__preview-empty">Select names to preview your basket</span>`;
+  }
+
+  if (continueBtn) {
+    const empty = selected.length === 0;
+    continueBtn.disabled = empty;
+    continueBtn.classList.toggle("is-disabled", empty);
+  }
+}
+
 function renderBaskets() {
   const grid = document.getElementById("piBaskets");
   if (!grid) return;
@@ -43,18 +68,31 @@ function renderBaskets() {
     <article class="pi-basket" data-basket="${b.id}">
       <h3>${b.title}</h3>
       <p class="pi-basket__story">${b.story}</p>
-      <div class="pi-basket__row">
-        <dl class="pi-basket__field">
-          <dt>Exposed names</dt>
-          <dd class="pi-tickers">${b.tickers.map((t) => `<span class="pi-ticker">${t}</span>`).join("")}</dd>
-        </dl>
+      <div class="pi-basket__picker">
+        <p class="pi-basket__field-label">Exposed names</p>
+        <p class="pi-basket__select-hint">Select the names you want to include.</p>
+        <div class="pi-chip-row" role="group" aria-label="Exposed names for ${b.title}">
+          ${b.tickers
+            .map(
+              (t) =>
+                `<button type="button" class="pi-chip is-selected" data-ticker="${t}" aria-pressed="true">${t}</button>`
+            )
+            .join("")}
+        </div>
+        <p class="pi-basket__count" data-selected-count>${b.tickers.length} selected</p>
+        <div class="pi-basket__preview-wrap">
+          <p class="pi-basket__preview-label">Custom Basket</p>
+          <div class="pi-basket__preview" data-basket-preview>
+            ${b.tickers.map((t) => `<span class="pi-ticker">${t}</span>`).join("")}
+          </div>
+        </div>
       </div>
       <p class="pi-basket__risk"><strong>Risk note.</strong> ${b.risk}</p>
       <div class="pi-basket__actions">
-        <button type="button" class="pi-btn pi-btn--ghost" data-open-basket="${b.title}" data-tickers="${b.tickers.join(",")}">
+        <button type="button" class="pi-btn pi-btn--ghost" data-open-basket>
           Open Basket
         </button>
-        <button type="button" class="pi-btn pi-btn--gold" data-continue-broker data-handoff-label="${b.title}" data-tickers="${b.tickers.join(",")}">
+        <button type="button" class="pi-btn pi-btn--gold" data-continue-broker data-basket-continue data-handoff-label="${b.title}">
           Continue with Trading212
         </button>
       </div>
@@ -68,6 +106,7 @@ function init() {
   const handoff = document.getElementById("piHandoff");
   const handoffTitle = document.getElementById("piHandoffTitle");
   const handoffBody = document.getElementById("piHandoffBody");
+  const handoffTickers = document.getElementById("piHandoffTickers");
   const toast = document.getElementById("piToast");
 
   function showToast(msg) {
@@ -77,15 +116,23 @@ function init() {
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => {
       toast.hidden = true;
-    }, 2400);
+    }, 2800);
   }
 
   function openHandoff(label, tickers) {
     if (!handoff) return;
+    const list = typeof tickers === "string" ? tickers.split(",").filter(Boolean) : tickers;
+
     if (handoffTitle) handoffTitle.textContent = "Continue with Trading212";
     if (handoffBody) {
-      handoffBody.textContent = `Prototype handoff for "${label}". Execute with your broker — Brieftick does not place orders or hold funds.`;
+      handoffBody.textContent = `Prototype handoff for "${label}". View in broker — Brieftick does not place orders or hold funds.`;
     }
+    if (handoffTickers) {
+      handoffTickers.innerHTML = list.length
+        ? list.map((t) => `<span class="pi-ticker">${t}</span>`).join("")
+        : `<span class="pi-basket__preview-empty">No tickers selected</span>`;
+    }
+
     handoff.classList.add("is-open");
     handoff.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -99,22 +146,55 @@ function init() {
   }
 
   document.addEventListener("click", (e) => {
-    const exec = e.target.closest("[data-continue-broker]");
-    const basket = e.target.closest("[data-open-basket]");
+    const chip = e.target.closest(".pi-chip");
+    if (chip) {
+      const basketEl = chip.closest(".pi-basket");
+      if (!basketEl) return;
+      const selected = chip.classList.toggle("is-selected");
+      chip.setAttribute("aria-pressed", selected ? "true" : "false");
+      updateBasketCard(basketEl);
+      return;
+    }
 
+    const exec = e.target.closest("[data-continue-broker]");
     if (exec) {
-      openHandoff(exec.dataset.handoffLabel || "Portfolio Insights", exec.dataset.tickers || "NVDA,AMD,MSFT");
+      if (exec.disabled || exec.classList.contains("is-disabled")) return;
+
+      const basketEl = exec.closest(".pi-basket");
+      if (basketEl) {
+        const selected = getSelectedTickers(basketEl);
+        if (!selected.length) return;
+        const label = exec.dataset.handoffLabel || basketEl.querySelector("h3")?.textContent;
+        openHandoff(label, selected);
+        return;
+      }
+
+      openHandoff(
+        exec.dataset.handoffLabel || "Portfolio Insights",
+        exec.dataset.tickers || "NVDA,AMD,MSFT"
+      );
       return;
     }
-    if (basket) {
-      showToast(`Prototype — "${basket.dataset.openBasket}" basket opened in design lab.`);
+
+    const openBtn = e.target.closest("[data-open-basket]");
+    if (openBtn) {
+      const basketEl = openBtn.closest(".pi-basket");
+      if (!basketEl) return;
+      const title = basketEl.querySelector("h3")?.textContent || "Basket";
+      const selected = getSelectedTickers(basketEl);
+      showToast(
+        selected.length
+          ? `Prototype — "${title}" basket: ${selected.join(", ")}`
+          : `Prototype — "${title}" basket: no names selected`
+      );
       return;
     }
+
     if (e.target.closest("[data-handoff-close]") || e.target.classList.contains("pi-handoff__backdrop")) {
       closeHandoff();
     }
     if (e.target.closest("[data-open-in-broker]")) {
-      showToast("Prototype — Open in Trading212 simulated. No order routing.");
+      showToast("Prototype — View in broker simulated. No order routing.");
       closeHandoff();
     }
   });

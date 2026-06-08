@@ -388,20 +388,98 @@ body::before {
   margin-bottom: 0.85rem;
 }
 
-.pi-basket__row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.25rem;
+.pi-basket__picker {
   margin-bottom: 0.85rem;
 }
 
-.pi-basket__field dt {
+.pi-basket__field-label {
   font-family: var(--mono);
   font-size: 0.55rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-faint);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.35rem;
+}
+
+.pi-basket__select-hint {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  margin-bottom: 0.65rem;
+}
+
+.pi-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+}
+
+.pi-chip {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 0.38rem 0.62rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition:
+    background 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+}
+
+.pi-chip.is-selected {
+  border-color: rgba(212, 168, 90, 0.4);
+  background: var(--gold-dim);
+  color: var(--gold-bright);
+  box-shadow: 0 0 12px rgba(212, 168, 90, 0.12);
+}
+
+.pi-chip:hover {
+  border-color: var(--border-strong);
+}
+
+.pi-chip.is-selected:hover {
+  border-color: rgba(212, 168, 90, 0.55);
+}
+
+.pi-basket__count {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  margin-bottom: 0.65rem;
+}
+
+.pi-basket__preview-wrap {
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border-soft);
+}
+
+.pi-basket__preview-label {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.4rem;
+}
+
+.pi-basket__preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  min-height: 1.5rem;
+}
+
+.pi-basket__preview-empty {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  font-style: italic;
 }
 
 .pi-tickers {
@@ -467,6 +545,13 @@ body::before {
 
 .pi-btn--gold:hover {
   background: linear-gradient(180deg, rgba(212, 168, 90, 0.38), rgba(212, 168, 90, 0.16));
+}
+
+.pi-btn--gold:disabled,
+.pi-btn--gold.is-disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .pi-btn--block {
@@ -654,6 +739,13 @@ body::before {
 .pi-handoff p {
   font-size: 0.84rem;
   color: var(--ink-dim);
+  margin-bottom: 1rem;
+}
+
+.pi-handoff__tickers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
   margin-bottom: 1rem;
 }
 
