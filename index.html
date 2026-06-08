@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="split">
 <script src="/lib/dashboard-preview-route.js"></script>
+<script src="/lib/preview-qa-session.js"></script>
 <script>
 (function () {
   const params = new URLSearchParams(location.search);
@@ -5423,13 +5424,20 @@ function isDashboardPreviewActive() {
   return (
     window.__DASHBOARD_PREVIEW === true ||
     p === 'dashboard' ||
-    /(?:^|\/)dashboard-preview(?:\.html)?\/?$/i.test(location.pathname)
+    /(?:^|\/)dashboard-preview(?:\.html)?\/?$/i.test(location.pathname) ||
+    (typeof window.isPreviewQaActive === 'function' && window.isPreviewQaActive())
   );
 }
 
 function routeWithAuth(name) {
   if (_PUBLIC_TABS.has(name)) {
     window.route(name);
+    if (typeof window.btQaSaveRoute === 'function') window.btQaSaveRoute(name);
+    return;
+  }
+  if (typeof window.isPreviewQaRoute === 'function' && window.isPreviewQaRoute(name)) {
+    window.route(name);
+    if (typeof window.btQaSaveRoute === 'function') window.btQaSaveRoute(name);
     return;
   }
   if (name === 'logic' && (isLogicPreviewActive() || typeof _clerkUser !== 'undefined' && _clerkUser)) {
@@ -11003,6 +11011,9 @@ async function initClerk() {
 async function _onAuthChange(user) {
   _clerkUser = user || null;
   window._clerkUser = _clerkUser;
+  if (user && typeof window.btQaRememberClerkUser === 'function') {
+    window.btQaRememberClerkUser(user);
+  }
   const signedOut = document.getElementById('authSignedOut');
   const signedIn  = document.getElementById('authSignedIn');
   const badge     = document.getElementById('authPlanBadge');
@@ -11458,13 +11469,26 @@ window.addEventListener('load', () => {
   if (activeId && !_PUBLIC_TABS.has(activeId) && !_clerkUser) {
     if (activeId === 'logic' && isLogicPreviewActive()) return;
     if (activeId === 'dashboard' && isDashboardPreviewActive()) return;
+    if (typeof window.isPreviewQaRoute === 'function' && window.isPreviewQaRoute(activeId)) return;
     // Give Clerk a moment to load and set user; if still public → back to landing
     setTimeout(() => {
       if (_clerkUser) return;
       if (activeId === 'logic' && isLogicPreviewActive()) return;
       if (activeId === 'dashboard' && isDashboardPreviewActive()) return;
+      if (typeof window.isPreviewQaRoute === 'function' && window.isPreviewQaRoute(activeId)) return;
       window.route('landing');
     }, 1200);
+  }
+  if (typeof window.isPreviewQaActive === 'function' && window.isPreviewQaActive()) {
+    const qaRoute = typeof window.btQaRestoreRoute === 'function' ? window.btQaRestoreRoute() : null;
+    if (qaRoute && qaRoute !== 'landing' && typeof window.route === 'function') {
+      setTimeout(() => {
+        if (_clerkUser) return;
+        if (typeof window.isPreviewQaRoute === 'function' && window.isPreviewQaRoute(qaRoute)) {
+          window.route(qaRoute);
+        }
+      }, 800);
+    }
   }
 });
 

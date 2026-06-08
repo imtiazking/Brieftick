@@ -157,6 +157,14 @@ async function openDashboardNews(page) {
       state.manualOverride === false &&
       checks[`story_${id}_yaw`] &&
       checks[`story_${id}_land`];
+    if (id === "inflation") {
+      const fx = await page.evaluate(() => {
+        const api = document.querySelector(".news-narrative__visual")?._globeCanvas;
+        return api?.getStoryEffectState?.() ?? null;
+      });
+      checks.story_inflation_breath =
+        (fx?.breathMeshCount ?? 0) > 0 && (fx?.pulseRingCount ?? 0) > 0;
+    }
   }
 
   const yaws = Object.values(storyYaws).filter((y) => typeof y === "number");
@@ -256,6 +264,7 @@ const pass =
   checks.storyYawsDistinct &&
   checks.storySelectFxActive &&
   checks.storySelectFxContinuous &&
+  checks.story_inflation_breath &&
   checks.idleResumesAfterStoryOrient;
 
 console.log(JSON.stringify({ pass, errors, checks }, null, 2));

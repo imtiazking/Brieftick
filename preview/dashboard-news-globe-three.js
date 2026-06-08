@@ -201,41 +201,52 @@ const STORY_LAND_REGION = {
  */
 const STORY_EFFECTS = {
   inflation: {
+    breath: { primary: ["US"] },
     pulses: [
       {
         lon: -98,
         lat: 39,
-        radiusDeg: 7,
-        baseOpacity: 0.14,
-        peakOpacity: 0.28,
+        radiusDeg: 16,
+        baseOpacity: 0.18,
+        peakOpacity: 0.36,
         color: 0x8ab4cc,
         phase: 0,
-        speed: 0.85,
+        speed: 0.62,
+        expand: true,
+        minScale: 0.55,
+        maxScale: 1.38,
       },
     ],
     flowDrawIn: false,
   },
   ai: {
+    breath: { primary: ["US"], secondary: ["TW", "JP", "KR"] },
     pulses: [
       {
-        lon: -122.08,
-        lat: 37.39,
-        radiusDeg: 4.2,
-        baseOpacity: 0.12,
-        peakOpacity: 0.24,
+        lon: -118,
+        lat: 38,
+        radiusDeg: 11,
+        baseOpacity: 0.16,
+        peakOpacity: 0.32,
         color: 0x8ab4cc,
         phase: 0,
-        speed: 0.95,
+        speed: 0.78,
+        expand: true,
+        minScale: 0.58,
+        maxScale: 1.28,
       },
       {
-        lon: 121.56,
-        lat: 25.03,
-        radiusDeg: 4.2,
-        baseOpacity: 0.12,
-        peakOpacity: 0.24,
+        lon: 120,
+        lat: 26,
+        radiusDeg: 10,
+        baseOpacity: 0.16,
+        peakOpacity: 0.32,
         color: 0x8ab4cc,
-        phase: 1.8,
-        speed: 0.95,
+        phase: 1.9,
+        speed: 0.78,
+        expand: true,
+        minScale: 0.58,
+        maxScale: 1.28,
       },
     ],
     flowDrawIn: true,
@@ -243,26 +254,33 @@ const STORY_EFFECTS = {
     glowSpeed: 0.07,
   },
   europe: {
+    breath: { primary: ["US"], region: "europe" },
     pulses: [
       {
         lon: -74.01,
         lat: 40.71,
-        radiusDeg: 3.6,
-        baseOpacity: 0.11,
-        peakOpacity: 0.22,
+        radiusDeg: 9,
+        baseOpacity: 0.14,
+        peakOpacity: 0.28,
         color: 0x8ab4cc,
         phase: 0,
-        speed: 0.8,
+        speed: 0.72,
+        expand: true,
+        minScale: 0.55,
+        maxScale: 1.22,
       },
       {
         lon: 8.68,
         lat: 50.11,
-        radiusDeg: 3.6,
-        baseOpacity: 0.11,
-        peakOpacity: 0.22,
+        radiusDeg: 9,
+        baseOpacity: 0.14,
+        peakOpacity: 0.28,
         color: 0x8ab4cc,
-        phase: 2.1,
-        speed: 0.8,
+        phase: 2.2,
+        speed: 0.72,
+        expand: true,
+        minScale: 0.55,
+        maxScale: 1.22,
       },
     ],
     flowDrawIn: true,
@@ -270,37 +288,47 @@ const STORY_EFFECTS = {
     glowSpeed: 0.09,
   },
   energy: {
+    breath: { primaryRegion: "middle_east" },
     pulses: [
       {
         lon: 50.1,
         lat: 26.2,
-        radiusDeg: 5.8,
-        baseOpacity: 0.13,
-        peakOpacity: 0.26,
+        radiusDeg: 8,
+        baseOpacity: 0.17,
+        peakOpacity: 0.34,
         color: 0x8aaa90,
         phase: 0,
-        speed: 0.75,
+        speed: 0.68,
+        expand: true,
+        minScale: 0.58,
+        maxScale: 1.32,
       },
       {
         lon: 54.37,
         lat: 24.45,
-        radiusDeg: 4.8,
-        baseOpacity: 0.1,
-        peakOpacity: 0.2,
+        radiusDeg: 7,
+        baseOpacity: 0.14,
+        peakOpacity: 0.28,
         color: 0x8aaa90,
-        phase: 1.6,
-        speed: 0.75,
+        phase: 1.7,
+        speed: 0.68,
+        expand: true,
+        minScale: 0.58,
+        maxScale: 1.28,
       },
     ],
     regionGlow: {
       lon: 52,
       lat: 26,
-      radiusDeg: 10,
-      baseOpacity: 0.08,
-      peakOpacity: 0.18,
+      radiusDeg: 18,
+      baseOpacity: 0.12,
+      peakOpacity: 0.28,
       color: 0x8aaa90,
       phase: 0.5,
-      speed: 0.55,
+      speed: 0.48,
+      expand: true,
+      minScale: 0.62,
+      maxScale: 1.18,
     },
     flowDrawIn: false,
   },
@@ -628,6 +656,48 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     layers.pulseRingEntries = [];
     layers.storySelectFx = null;
     layers.highlightReveal = null;
+    clearBreathMeshes();
+  };
+
+  const clearBreathMeshes = () => {
+    for (const entry of layers.breathMeshes || []) {
+      entry.mat?.dispose?.();
+    }
+    layers.breathMeshes = [];
+  };
+
+  const setupBreathMeshes = (breathConfig) => {
+    clearBreathMeshes();
+    if (!breathConfig) return;
+
+    const breathPrimary = new Set(breathConfig.primary || []);
+    const breathSecondary = new Set(breathConfig.secondary || []);
+    if (breathConfig.region && GLOBE_REGIONS[breathConfig.region]) {
+      for (const iso of GLOBE_REGIONS[breathConfig.region]) breathPrimary.add(iso);
+    }
+    if (breathConfig.primaryRegion && GLOBE_REGIONS[breathConfig.primaryRegion]) {
+      for (const iso of GLOBE_REGIONS[breathConfig.primaryRegion]) breathPrimary.add(iso);
+    }
+
+    for (const [iso, meshes] of layers.countryMeshesByIso) {
+      const tier = breathPrimary.has(iso)
+        ? "primary"
+        : breathSecondary.has(iso)
+          ? "secondary"
+          : null;
+      if (!tier) continue;
+      for (const mesh of meshes) {
+        const srcMat = mesh.material;
+        const breathMat = srcMat.clone();
+        mesh.material = breathMat;
+        layers.breathMeshes.push({
+          mat: breathMat,
+          tier,
+          baseOpacity: breathMat.opacity,
+        });
+        disposables.push({ geo: null, mat: breathMat });
+      }
+    }
   };
 
   const setHighlightOpacities = (opacities) => {
@@ -654,11 +724,15 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     layers.storyOverlay.add(line);
     disposables.push({ geo, mat });
     layers.pulseRingEntries.push({
+      line,
       mat,
       baseOpacity: options.baseOpacity ?? 0.1,
       peakOpacity: options.peakOpacity ?? 0.22,
       phase: options.phase ?? 0,
       speed: options.speed ?? 0.85,
+      expand: options.expand !== false,
+      minScale: options.minScale ?? 0.55,
+      maxScale: options.maxScale ?? 1.3,
     });
   };
 
@@ -697,10 +771,10 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     const now = performance.now();
     const fxStartMs = now + orientDelayMs;
     const targets = layers.highlightOpacityTargets ?? {
-      primary: 0.88,
-      secondary: 0.62,
-      tertiary: 0.54,
-      dim: 0.18,
+      primary: 0.94,
+      secondary: 0.72,
+      tertiary: 0.58,
+      dim: 0.14,
     };
 
     layers.storySelectFx = {
@@ -708,6 +782,8 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
       fxStartMs,
       active: true,
     };
+
+    setupBreathMeshes(effect.breath);
 
     if (layers.reducedMotion) {
       setHighlightOpacities(targets);
@@ -750,7 +826,7 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
     }
 
     for (const entry of layers.flowEntries) {
-      entry.targetOpacity = 0.11;
+      entry.targetOpacity = 0.14;
       if (effect.flowDrawIn) {
         entry.mat.opacity = 0;
         entry.drawIn = true;
@@ -811,10 +887,10 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
 
     const preview = intent === "preview";
     layers.highlightOpacityTargets = {
-      primary: preview ? 0.78 : 0.88,
-      secondary: preview ? 0.55 : 0.62,
-      tertiary: preview ? 0.48 : 0.54,
-      dim: preview ? 0.22 : 0.18,
+      primary: preview ? 0.84 : 0.94,
+      secondary: preview ? 0.62 : 0.72,
+      tertiary: preview ? 0.52 : 0.58,
+      dim: preview ? 0.18 : 0.14,
     };
     if (intent !== "select" || layers.reducedMotion) {
       setHighlightOpacities(layers.highlightOpacityTargets);
@@ -928,7 +1004,7 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
         layers.flowEntries.push({
           mat,
           phase: Math.random() * Math.PI * 2,
-          targetOpacity: 0.11,
+          targetOpacity: 0.14,
           drawIn: false,
           coords,
         });
@@ -1025,6 +1101,7 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
         pulseRingCount: layers.pulseRingEntries?.length ?? 0,
         flowCount: layers.flowEntries?.length ?? 0,
         flowGlowCount: layers.flowGlowEntries?.length ?? 0,
+        breathMeshCount: layers.breathMeshes?.length ?? 0,
         highlightReveal: Boolean(layers.highlightReveal),
         effectsPaused: Boolean(layers.effectsPaused),
       };
@@ -1064,29 +1141,46 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
       const motionScale = motionOff ? 0 : layers.effectsPaused ? 0.4 : 1;
       const t = timeMs * 0.001;
 
+      const breathWave = 0.5 + 0.5 * Math.sin(t * 0.55);
+
       if (fxActive && !reveal && layers.highlightOpacityTargets) {
         const tgt = layers.highlightOpacityTargets;
         if (motionOff) {
           setHighlightOpacities(tgt);
         } else {
-          const breathe = 0.5 + 0.5 * Math.sin(t * 0.62);
           setHighlightOpacities({
-            primary: tgt.primary + breathe * 0.05 * motionScale,
-            secondary: tgt.secondary + breathe * 0.03 * motionScale,
-            tertiary: tgt.tertiary + breathe * 0.02 * motionScale,
+            primary: tgt.primary + breathWave * 0.07 * motionScale,
+            secondary: tgt.secondary + breathWave * 0.045 * motionScale,
+            tertiary: tgt.tertiary + breathWave * 0.03 * motionScale,
             dim: tgt.dim,
           });
         }
       }
 
+      for (const entry of layers.breathMeshes || []) {
+        if (!fxActive) continue;
+        if (motionOff) {
+          entry.mat.opacity = entry.baseOpacity;
+          continue;
+        }
+        const amp = entry.tier === "primary" ? 0.16 : 0.1;
+        entry.mat.opacity = (entry.baseOpacity + breathWave * amp) * motionScale;
+      }
+
       for (const entry of layers.pulseRingEntries) {
         if (!fxActive || motionOff) {
-          entry.mat.opacity = motionOff ? entry.baseOpacity * 0.85 : 0;
+          entry.mat.opacity = motionOff ? entry.baseOpacity * 0.9 : 0;
+          if (entry.line && entry.expand) entry.line.scale.setScalar(1);
           continue;
         }
         const wave = 0.5 + 0.5 * Math.sin(t * entry.speed + entry.phase);
         entry.mat.opacity =
           (entry.baseOpacity + wave * entry.peakOpacity) * motionScale;
+        if (entry.line && entry.expand) {
+          const scale =
+            entry.minScale + wave * (entry.maxScale - entry.minScale);
+          entry.line.scale.setScalar(scale * motionScale);
+        }
       }
 
       for (const entry of layers.hotspotEntries) {
@@ -1106,7 +1200,7 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
       }
 
       for (const entry of layers.flowEntries) {
-        const base = entry.targetOpacity ?? 0.11;
+        const base = entry.targetOpacity ?? 0.14;
         if (entry.drawIn && fxActive) {
           const p = Math.min(1, (timeMs - fx.fxStartMs) / STORY_FLOW_DRAW_MS);
           entry.mat.opacity = easeOutCubic(p) * base * (motionOff ? 1 : motionScale);
@@ -1138,8 +1232,8 @@ function createGlobeHighlightApi(THREE, GeoJsonGeometry, layers) {
         const [lon, lat] = entry.coords[idx];
         setMeshAtLonLat(entry.mesh, lon, lat, FLOW_RADIUS * 1.003);
         const glowWave = 0.5 + 0.5 * Math.sin(t * 2.2 + entry.phase * 2);
-        entry.mat.opacity = (0.3 + glowWave * 0.25) * motionScale;
-        entry.mat.size = 0.04 + glowWave * 0.02 * motionScale;
+        entry.mat.opacity = (0.38 + glowWave * 0.32) * motionScale;
+        entry.mat.size = 0.048 + glowWave * 0.026 * motionScale;
       }
 
       const anim = layers.orientAnim;
@@ -1448,6 +1542,7 @@ async function createGlobeScene(canvas, countriesGeo) {
     hotspotEntries: [],
     flowEntries: [],
     flowGlowEntries: [],
+    breathMeshes: [],
     pulseRingEntries: [],
     storySelectFx: null,
     highlightReveal: null,
