@@ -49,7 +49,11 @@
     { "source": "/design-lab/options-story", "destination": "/design-lab/options-story/index.html" },
     { "source": "/design-lab/hero-proof-concepts", "destination": "/design-lab/hero-proof-concepts/index.html" },
     { "source": "/design-lab/onboarding-tour", "destination": "/design-lab/onboarding-tour/index.html" },
-    { "source": "/design-lab/broker-integration", "destination": "/design-lab/broker-integration/index.html" }
+    { "source": "/design-lab/broker-integration", "destination": "/design-lab/broker-integration/index.html" },
+    { "source": "/design-lab/broker-intelligence", "destination": "/design-lab/broker-intelligence/index.html" },
+    { "source": "/design-lab/broker-intelligence/command-center", "destination": "/design-lab/broker-intelligence/command-center.html" },
+    { "source": "/design-lab/broker-intelligence/journey", "destination": "/design-lab/broker-intelligence/journey.html" },
+    { "source": "/design-lab/broker-intelligence/portfolio", "destination": "/design-lab/broker-intelligence/portfolio.html" }
   ],
   "headers": [
     {

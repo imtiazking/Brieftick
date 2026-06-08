@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Concept B · Investment Journey · Broker Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/vars.css">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/shared.css">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/journey.css">
+</head>
+<body class="concept-b">
+  <div class="jn-page">
+    <header class="bi-lab-chrome">
+      <strong>Concept B · Journey</strong>
+      <nav>
+        <a href="/design-lab/broker-intelligence">Hub</a>
+        <a href="/design-lab/broker-intelligence/command-center">A</a>
+        <a href="/design-lab/broker-intelligence/portfolio">C</a>
+      </nav>
+    </header>
+
+    <p class="bi-lab-banner">Guided flow prototype · tap Next to advance steps</p>
+
+    <header class="jn-hero">
+      <span class="jn-hero__tag">Investment Journey</span>
+      <h1>From story to conviction.</h1>
+      <p>Understand the market, discover names, build a basket — then continue with your broker.</p>
+    </header>
+
+    <div class="jn-flow-labels" aria-hidden="true">
+      <span class="is-active">Understand</span>
+      <span>Discover</span>
+      <span>Build</span>
+      <span>Invest</span>
+    </div>
+
+    <div class="jn-path">
+      <article class="jn-step is-current" data-step="0">
+        <p class="jn-step__num">Step 1</p>
+        <h3>Read the market story</h3>
+        <p><strong>AI Infrastructure</strong> leads today's narrative — data-centre build-out and GPU demand favour the supply chain from chips to cloud.</p>
+        <div class="jn-nav">
+          <button type="button" class="bi-btn bi-btn--gold" data-jn-next>Next →</button>
+        </div>
+      </article>
+
+      <article class="jn-step" data-step="1">
+        <p class="jn-step__num">Step 2</p>
+        <h3>See exposed names</h3>
+        <p>These companies sit closest to the theme. Review before building conviction.</p>
+        <span class="bi-ticker">NVDA</span>
+        <span class="bi-ticker">AMD</span>
+        <span class="bi-ticker">AVGO</span>
+        <span class="bi-ticker">MSFT</span>
+        <span class="bi-ticker">ANET</span>
+        <div class="jn-nav">
+          <button type="button" class="bi-btn bi-btn--ghost" data-jn-prev>← Back</button>
+          <button type="button" class="bi-btn bi-btn--gold" data-jn-next>Next →</button>
+        </div>
+      </article>
+
+      <article class="jn-step" data-step="2">
+        <p class="jn-step__num">Step 3</p>
+        <h3>Build a basket</h3>
+        <p>Create an AI Infrastructure basket from exposed names. Add Cybersecurity, Energy, or Healthcare when ready.</p>
+        <div class="jn-step__actions">
+          <button type="button" class="bi-btn bi-btn--gold" data-proto-toast="basket">Create Basket</button>
+          <button type="button" class="bi-btn bi-btn--ghost" data-proto-toast="watchlist">Add to Watchlist</button>
+        </div>
+        <div class="jn-nav">
+          <button type="button" class="bi-btn bi-btn--ghost" data-jn-prev>← Back</button>
+          <button type="button" class="bi-btn bi-btn--gold" data-jn-next>Next →</button>
+        </div>
+      </article>
+
+      <article class="jn-step" data-step="3">
+        <p class="jn-step__num">Step 4</p>
+        <h3>Continue with Trading212</h3>
+        <p>Open your basket in the broker you already use. Brieftick does not hold funds or execute trades.</p>
+        <div class="jn-step__actions">
+          <button type="button" class="bi-btn bi-btn--broker" data-handoff="AI Infrastructure Basket" data-tickers="NVDA,AMD,AVGO,MSFT,ANET">Continue with Trading212</button>
+          <button type="button" class="bi-btn bi-btn--ghost" data-proto-toast="logic">Ask Logic</button>
+        </div>
+        <div class="jn-nav">
+          <button type="button" class="bi-btn bi-btn--ghost" data-jn-prev>← Back</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="jn-baskets-mini">
+      <h4>Sample baskets</h4>
+      <div class="jn-basket-pills">
+        <span class="jn-basket-pill">AI Infrastructure</span>
+        <span class="jn-basket-pill">Cybersecurity</span>
+        <span class="jn-basket-pill">Energy</span>
+        <span class="jn-basket-pill">Healthcare</span>
+      </div>
+    </div>
+
+    <p class="bi-disclaimer">Brieftick provides market intelligence only and does not hold funds or place orders.</p>
+  </div>
+
+  <div class="bi-handoff" id="biHandoff" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="bi-handoff__backdrop" data-handoff-close></div>
+    <div class="bi-handoff__sheet">
+      <p class="bi-handoff__proto">Prototype handoff</p>
+      <h2 id="biHandoffTitle">Continue with Trading212</h2>
+      <p id="biHandoffBody"></p>
+      <div class="bi-handoff__tickers" id="biHandoffTickers"></div>
+      <p class="bi-handoff__mock">MOCK · No authentication, KYC, payments, or order routing.</p>
+      <div class="bi-handoff__actions">
+        <button type="button" class="bi-btn bi-btn--broker" data-handoff-close>View in broker (prototype)</button>
+        <button type="button" class="bi-btn bi-btn--ghost" data-handoff-close>Stay in Brieftick</button>
+      </div>
+    </div>
+  </div>
+  <p class="bi-toast" id="biToast" hidden role="status"></p>
+  <script type="module" src="/design-lab/broker-intelligence/shared.js"></script>
+  <script src="/design-lab/broker-intelligence/journey.js" defer></script>
+</body>
+</html>

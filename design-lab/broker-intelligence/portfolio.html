@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Concept C · Portfolio Intelligence · Broker Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/vars.css">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/shared.css">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/portfolio.css">
+</head>
+<body class="concept-c">
+  <div class="pi-page">
+    <header class="bi-lab-chrome">
+      <strong>Concept C · Portfolio Intelligence</strong>
+      <nav>
+        <a href="/design-lab/broker-intelligence">Hub</a>
+        <a href="/design-lab/broker-intelligence/command-center">A</a>
+        <a href="/design-lab/broker-intelligence/journey">B</a>
+      </nav>
+    </header>
+
+    <p class="bi-lab-banner">Flagship concept · mock portfolio · broker connection coming soon</p>
+
+    <header class="pi-hero">
+      <h1>Connect your broker</h1>
+      <p>See how today's market stories affect the investments you already own. Brieftick is the intelligence layer — your broker handles execution.</p>
+    </header>
+
+    <div class="pi-layout">
+      <section class="pi-exposure">
+        <h2>Story exposure · mock portfolio</h2>
+        <div class="pi-exposure-grid">
+          <article class="pi-exposure-card">
+            <div>
+              <h3>AI Infrastructure</h3>
+              <p>NVDA, AMD, MSFT overlap with today's leading narrative</p>
+            </div>
+            <span class="pi-badge pi-badge--high">High exposure</span>
+          </article>
+          <article class="pi-exposure-card">
+            <div>
+              <h3>Inflation</h3>
+              <p>Rates-sensitive holdings share a macro driver</p>
+            </div>
+            <span class="pi-badge pi-badge--med">Medium exposure</span>
+          </article>
+          <article class="pi-exposure-card">
+            <div>
+              <h3>Energy</h3>
+              <p>Limited direct theme overlap in current mock holdings</p>
+            </div>
+            <span class="pi-badge pi-badge--low">Low exposure</span>
+          </article>
+        </div>
+      </section>
+
+      <aside class="pi-side">
+        <div class="pi-logic">
+          <p class="pi-logic__label">Logic</p>
+          <h3>Why is my portfolio moving today?</h3>
+          <ul>
+            <li>AI holdings weakened as yields rose.</li>
+            <li>Three positions share the same macro driver.</li>
+            <li>Energy exposure is insulated from today's headline risk.</li>
+          </ul>
+        </div>
+
+        <div class="pi-actions">
+          <button type="button" class="bi-btn bi-btn--gold" data-proto-toast="analyze">Analyze Portfolio</button>
+          <button type="button" class="bi-btn bi-btn--ghost" data-proto-toast="basket">Open Basket</button>
+          <button type="button" class="bi-btn bi-btn--broker" data-handoff="AI Infrastructure" data-tickers="NVDA,AMD,AVGO,MSFT,ANET">Continue with Trading212</button>
+        </div>
+
+        <div class="pi-broker">
+          <div class="pi-broker__row">
+            <div class="pi-broker__mark" aria-hidden="true">212</div>
+            <div>
+              <h4>Trading212</h4>
+              <span class="pi-broker__soon">Coming Soon</span>
+            </div>
+          </div>
+          <p>Brieftick does not hold funds or execute trades. Connect your broker to map stories to holdings you already own.</p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="pi-baskets">
+      <h2>Sample baskets · open in broker</h2>
+      <div class="pi-basket-grid">
+        <div class="pi-basket">
+          <strong>AI Infrastructure</strong>
+          <span class="bi-ticker">NVDA</span><span class="bi-ticker">AMD</span><span class="bi-ticker">AVGO</span><span class="bi-ticker">MSFT</span><span class="bi-ticker">ANET</span>
+        </div>
+        <div class="pi-basket">
+          <strong>Cybersecurity</strong>
+          <span class="bi-ticker">CRWD</span><span class="bi-ticker">PANW</span><span class="bi-ticker">ZS</span><span class="bi-ticker">FTNT</span>
+        </div>
+        <div class="pi-basket">
+          <strong>Energy</strong>
+          <span class="bi-ticker">XOM</span><span class="bi-ticker">CVX</span><span class="bi-ticker">COP</span><span class="bi-ticker">SLB</span>
+        </div>
+        <div class="pi-basket">
+          <strong>Healthcare</strong>
+          <span class="bi-ticker">LLY</span><span class="bi-ticker">UNH</span><span class="bi-ticker">JNJ</span><span class="bi-ticker">ABBV</span>
+        </div>
+      </div>
+    </section>
+
+    <p class="bi-disclaimer">Brieftick provides market intelligence only and does not hold funds or place orders.</p>
+  </div>
+
+  <div class="bi-handoff" id="biHandoff" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="bi-handoff__backdrop" data-handoff-close></div>
+    <div class="bi-handoff__sheet">
+      <p class="bi-handoff__proto">Prototype handoff</p>
+      <h2 id="biHandoffTitle">Continue with Trading212</h2>
+      <p id="biHandoffBody"></p>
+      <div class="bi-handoff__tickers" id="biHandoffTickers"></div>
+      <p class="bi-handoff__mock">MOCK · No authentication, KYC, payments, or order routing.</p>
+      <div class="bi-handoff__actions">
+        <button type="button" class="bi-btn bi-btn--broker" data-handoff-close>View in broker (prototype)</button>
+        <button type="button" class="bi-btn bi-btn--ghost" data-handoff-close>Stay in Brieftick</button>
+      </div>
+    </div>
+  </div>
+  <p class="bi-toast" id="biToast" hidden role="status"></p>
+  <script type="module" src="/design-lab/broker-intelligence/shared.js"></script>
+</body>
+</html>

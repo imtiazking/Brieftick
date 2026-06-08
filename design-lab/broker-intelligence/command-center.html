@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Concept A · Command Center · Broker Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/vars.css">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/shared.css">
+  <link rel="stylesheet" href="/design-lab/broker-intelligence/command-center.css">
+</head>
+<body class="concept-a">
+  <div class="cc-page">
+    <header class="bi-lab-chrome">
+      <strong>Concept A · Command Center</strong>
+      <nav>
+        <a href="/design-lab/broker-intelligence">Hub</a>
+        <a href="/design-lab/broker-intelligence/journey">B</a>
+        <a href="/design-lab/broker-intelligence/portfolio">C</a>
+      </nav>
+    </header>
+
+    <p class="bi-lab-banner">Design lab prototype · illustrative conviction score · not financial advice</p>
+
+    <header class="cc-hero">
+      <p class="cc-hero__eyebrow">Broker Intelligence</p>
+      <h1>Build conviction before you invest.</h1>
+      <p class="cc-hero__sub">Institutional-grade story intelligence — execution stays with your broker.</p>
+    </header>
+
+    <article class="cc-main">
+      <div class="cc-main__head">
+        <div>
+          <p class="cc-section__label">Featured story</p>
+          <h2>AI Infrastructure</h2>
+        </div>
+        <div class="cc-conviction">
+          <p class="cc-conviction__label">Conviction</p>
+          <p class="cc-conviction__value">92%</p>
+          <div class="cc-meter" aria-hidden="true"><span></span></div>
+        </div>
+      </div>
+
+      <div class="cc-sections">
+        <section class="cc-section">
+          <p class="cc-section__label">Story</p>
+          <p>Data-centre build-out and GPU demand continue to favour chip designers, networking, and hyperscale platforms as AI capex accelerates.</p>
+        </section>
+        <section class="cc-section">
+          <p class="cc-section__label">Exposed names</p>
+          <div class="cc-tickers">
+            <span class="bi-ticker">NVDA</span>
+            <span class="bi-ticker">AMD</span>
+            <span class="bi-ticker">AVGO</span>
+            <span class="bi-ticker">MSFT</span>
+            <span class="bi-ticker">ANET</span>
+          </div>
+        </section>
+        <section class="cc-section">
+          <p class="cc-section__label">Basket</p>
+          <p>AI Infrastructure — 5 names across compute, networking, and cloud platforms. Open basket to review in your broker.</p>
+        </section>
+        <section class="cc-section">
+          <p class="cc-section__label">Risk note</p>
+          <p class="cc-risk">Concentrated mega-cap theme exposure. Momentum can reverse on capex cuts or regulation headlines.</p>
+        </section>
+      </div>
+
+      <div class="cc-actions">
+        <button type="button" class="bi-btn bi-btn--ghost" data-proto-toast="watchlist">Add to Watchlist</button>
+        <button type="button" class="bi-btn bi-btn--ghost" data-proto-toast="logic">Ask Logic</button>
+        <button type="button" class="bi-btn bi-btn--gold" data-proto-toast="basket">Create Basket</button>
+        <button type="button" class="bi-btn bi-btn--broker" data-handoff="AI Infrastructure" data-tickers="NVDA,AMD,AVGO,MSFT,ANET">Continue with Trading212</button>
+      </div>
+    </article>
+
+    <section class="cc-baskets">
+      <h3>Sample baskets</h3>
+      <div class="cc-basket-row">
+        <div class="cc-basket-chip"><strong>AI Infrastructure</strong><span>NVDA · AMD · AVGO · MSFT · ANET</span></div>
+        <div class="cc-basket-chip"><strong>Cybersecurity</strong><span>CRWD · PANW · ZS · FTNT</span></div>
+        <div class="cc-basket-chip"><strong>Energy</strong><span>XOM · CVX · COP · SLB</span></div>
+        <div class="cc-basket-chip"><strong>Healthcare</strong><span>LLY · UNH · JNJ · ABBV</span></div>
+      </div>
+    </section>
+
+    <p class="bi-disclaimer">Brieftick provides market intelligence only and does not hold funds or place orders.</p>
+  </div>
+
+  <div class="bi-handoff" id="biHandoff" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="bi-handoff__backdrop" data-handoff-close></div>
+    <div class="bi-handoff__sheet">
+      <p class="bi-handoff__proto">Prototype handoff</p>
+      <h2 id="biHandoffTitle">Continue with Trading212</h2>
+      <p id="biHandoffBody"></p>
+      <div class="bi-handoff__tickers" id="biHandoffTickers"></div>
+      <p class="bi-handoff__mock">MOCK · No authentication, KYC, payments, or order routing. View in broker is simulated.</p>
+      <div class="bi-handoff__actions">
+        <button type="button" class="bi-btn bi-btn--broker" data-handoff-close>View in broker (prototype)</button>
+        <button type="button" class="bi-btn bi-btn--ghost" data-handoff-close>Stay in Brieftick</button>
+      </div>
+    </div>
+  </div>
+  <p class="bi-toast" id="biToast" hidden role="status"></p>
+  <script type="module" src="/design-lab/broker-intelligence/shared.js"></script>
+</body>
+</html>

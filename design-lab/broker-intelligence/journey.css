@@ -1,0 +1,202 @@
+/* Concept B — Investment Journey: Mission Path for investing */
+
+body.concept-b {
+  background: linear-gradient(180deg, #070a14 0%, #05070e 100%);
+}
+
+.jn-page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+  min-height: 100vh;
+}
+
+.jn-hero {
+  text-align: center;
+  padding: 1.5rem 0 2rem;
+}
+
+.jn-hero__tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 196, 183, 0.3);
+  background: var(--teal-dim);
+  margin-bottom: 1rem;
+}
+
+.jn-hero h1 {
+  font-family: var(--display);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.jn-hero p {
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+}
+
+.jn-flow-labels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink-faint);
+}
+
+.jn-flow-labels span.is-active {
+  color: var(--teal);
+}
+
+.jn-path {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.jn-path::before {
+  content: "";
+  position: absolute;
+  left: 0.55rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background: linear-gradient(180deg, var(--teal), rgba(94, 196, 183, 0.15));
+  border-radius: 2px;
+}
+
+.jn-step {
+  position: relative;
+  margin-bottom: 1.75rem;
+  padding: 1.1rem 1.15rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(12, 16, 28, 0.7);
+  opacity: 0.55;
+  transform: translateX(0);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.3s;
+}
+
+.jn-step.is-current {
+  opacity: 1;
+  border-color: rgba(94, 196, 183, 0.35);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.jn-step.is-done {
+  opacity: 0.85;
+}
+
+.jn-step::before {
+  content: "";
+  position: absolute;
+  left: -1.65rem;
+  top: 1.35rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  background: var(--void);
+}
+
+.jn-step.is-current::before,
+.jn-step.is-done::before {
+  border-color: var(--teal);
+  background: var(--teal);
+  box-shadow: 0 0 12px rgba(94, 196, 183, 0.5);
+}
+
+.jn-step__num {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.35rem;
+}
+
+.jn-step h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+
+.jn-step p {
+  font-size: 0.84rem;
+  color: var(--ink-dim);
+  margin-bottom: 0.65rem;
+}
+
+.jn-step .bi-ticker {
+  margin: 0.15rem 0.15rem 0 0;
+}
+
+.jn-step__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.jn-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.jn-nav .bi-btn {
+  flex: 1;
+  text-align: center;
+}
+
+.jn-baskets-mini {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px dashed var(--border);
+}
+
+.jn-baskets-mini h4 {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.65rem;
+}
+
+.jn-basket-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.jn-basket-pill {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-dim);
+}
+
+@media (max-width: 480px) {
+  .jn-flow-labels {
+    font-size: 0.5rem;
+  }
+  .jn-step__actions {
+    flex-direction: column;
+  }
+  .jn-step__actions .bi-btn {
+    width: 100%;
+  }
+}
