@@ -9,6 +9,9 @@ import {
   STORY_REGISTRY_BY_ID,
 } from "/lib/dashboard-news-story-registry.js";
 
+const PRIMARY_KICKER = "What markets are watching";
+const SECONDARY_KICKER = "Also shaping markets";
+
 /**
  * @typedef {Object} NewsStory
  * @property {string} id
@@ -32,6 +35,15 @@ export const NEWS_STORIES = STORY_REGISTRY.map((s) => ({
   watching: s.watchingTemplates,
   shortTitle: s.shortTitle,
 }));
+
+function getPrimaryStory() {
+  return STORY_REGISTRY.find((s) => s.primary) || STORY_REGISTRY[0];
+}
+
+function getSecondaryStories() {
+  const primary = getPrimaryStory();
+  return STORY_REGISTRY.filter((s) => s.id !== primary.id);
+}
 
 /**
  * @param {string} s
@@ -59,9 +71,10 @@ function renderNewsVisual(storyId) {
 
 /**
  * @param {import('/lib/dashboard-news-story-registry.js').StoryRegistryEntry} story
+ * @param {boolean} isPrimaryStory
  * @returns {string}
  */
-function renderLivePanel(story) {
+function renderLivePanel(story, isPrimaryStory) {
   const watching = story.watchingTemplates
     .map((item) => `<li>${esc(item)}</li>`)
     .join("");
@@ -76,15 +89,18 @@ function renderLivePanel(story) {
       </div>
       <div class="news-live-panel__meta">
         <span class="news-live-panel__status" data-news-status data-status="stable">→ Stable</span>
-        <span class="news-live-panel__updated" data-news-updated data-quality="fallback">Updating…</span>
+        <span class="news-live-panel__updated" data-news-updated data-quality="fallback" hidden>Updating…</span>
       </div>
       <div class="news-live-panel__metrics">
-        <div class="news-live-metric">
+        <div class="news-live-metric news-live-metric--strength">
           <span class="news-live-panel__label">Story strength</span>
+          <div class="news-live-strength__track" aria-hidden="true">
+            <div class="news-live-strength__fill" data-news-strength-bar style="width:0%"></div>
+          </div>
           <span class="news-live-metric__value" data-news-strength>— / 100</span>
         </div>
         <div class="news-live-metric">
-          <span class="news-live-panel__label">Confidence</span>
+          <span class="news-live-panel__label">Data coverage</span>
           <span class="news-live-metric__value" data-news-confidence data-confidence="low">—</span>
         </div>
       </div>
@@ -100,25 +116,26 @@ function renderLivePanel(story) {
         <p class="news-narrative__block-label">What could change it</p>
         <ul class="news-watching__list news-watching__list--templates">${watching}</ul>
       </div>
+      <p class="news-live-panel__credibility" data-news-credibility${isPrimaryStory ? "" : " hidden"}>
+        Built from live prices, sectors and macro signals.
+      </p>
     </div>
   `;
 }
 
 /**
  * @param {import('/lib/dashboard-news-story-registry.js').StoryRegistryEntry} story
- * @param {boolean} [isPrimaryStory]
+ * @param {boolean} isPrimaryStory
  * @returns {string}
  */
 function renderHeroContent(story, isPrimaryStory) {
-  const kicker = isPrimaryStory
-    ? "Today's biggest story"
-    : "Also shaping markets";
+  const kicker = isPrimaryStory ? PRIMARY_KICKER : SECONDARY_KICKER;
 
   return `
     <p class="news-narrative__kicker">${esc(kicker)}</p>
     <h2 class="news-narrative__headline">${esc(story.headline)}</h2>
     <p class="news-narrative__what news-narrative__what--supporting">${esc(story.what)}</p>
-    ${renderLivePanel(story)}
+    ${renderLivePanel(story, isPrimaryStory)}
     <div class="news-narrative__block">
       <p class="news-narrative__block-label">Why it matters</p>
       <p class="news-narrative__block-text">${esc(story.why)}</p>
@@ -126,25 +143,41 @@ function renderHeroContent(story, isPrimaryStory) {
   `;
 }
 
+/**
+ * @param {import('/lib/dashboard-news-story-registry.js').StoryRegistryEntry} primary
+ * @returns {string}
+ */
+function renderPrimaryFocusButton(primary) {
+  return `<button
+    type="button"
+    class="news-story-node is-primary-focus is-active"
+    data-story-id="${esc(primary.id)}"
+    aria-selected="true"
+  >
+    <span class="news-story-node__marker" aria-hidden="true"></span>
+    <span class="news-story-node__title">Market focus</span>
+  </button>`;
+}
+
 /** @returns {string} */
 export function renderNewsHero() {
-  const primary = STORY_REGISTRY[0];
-  const nodes = STORY_REGISTRY.map((story, i) => {
-    const tier = story.primary ? " is-primary" : " is-secondary";
-    const active = i === 0 ? " is-active" : "";
-    return `<button
+  const primary = getPrimaryStory();
+  const secondary = getSecondaryStories();
+  const secondaryNodes = secondary
+    .map(
+      (story) => `<button
       type="button"
-      class="news-story-node${tier}${active}"
+      class="news-story-node is-secondary"
       data-story-id="${esc(story.id)}"
-      aria-selected="${i === 0 ? "true" : "false"}"
-      style="--story-i:${i}"
+      aria-selected="false"
     >
       <span class="news-story-node__marker" aria-hidden="true"></span>
       <span class="news-story-node__title">${esc(story.shortTitle)}</span>
-    </button>`;
-  }).join("");
+    </button>`
+    )
+    .join("");
 
-  return `<div class="live-chart news-narrative-hero" data-active-story="${esc(primary.id)}">
+  return `<div class="live-chart news-narrative-hero" data-active-story="${esc(primary.id)}" data-primary-story="${esc(primary.id)}">
     <div class="news-narrative__ambience" aria-hidden="true">
       <span class="news-narrative__sweep"></span>
       <span class="news-narrative__bloom"></span>
@@ -161,7 +194,11 @@ export function renderNewsHero() {
           <span class="news-timeline__flow" aria-hidden="true"></span>
           <span class="news-timeline__pulse" aria-hidden="true"></span>
         </div>
-        <div class="news-timeline__nodes" role="list">${nodes}</div>
+        <div class="news-narrative__focus-row">
+          ${renderPrimaryFocusButton(primary)}
+        </div>
+        <p class="news-narrative__secondary-label">${esc(SECONDARY_KICKER)}</p>
+        <div class="news-timeline__nodes" role="list">${secondaryNodes}</div>
       </div>
     </div>
   </div>`;
@@ -178,11 +215,12 @@ export function bindNewsNarrative(root) {
   const heroContent = wrap.querySelector(".news-narrative__hero-content");
   const visual = wrap.querySelector(".news-narrative__visual");
   const pulse = wrap.querySelector(".news-timeline__pulse");
-  const nodes = [...wrap.querySelectorAll(".news-story-node[data-story-id]")];
+  const primaryId = wrap.dataset.primaryStory || getPrimaryStory().id;
+  const focusBtn = wrap.querySelector(".news-story-node.is-primary-focus");
+  const secondaryNodes = [...wrap.querySelectorAll(".news-story-node.is-secondary[data-story-id]")];
+  const allNodes = focusBtn ? [focusBtn, ...secondaryNodes] : secondaryNodes;
 
-  if (!hero || !heroContent || !nodes.length) return;
-
-  const primaryId = STORY_REGISTRY.find((s) => s.primary)?.id || STORY_REGISTRY[0].id;
+  if (!hero || !heroContent || !allNodes.length) return;
 
   const pulseLeft = (index, count) => {
     if (count <= 1) return 50;
@@ -205,20 +243,22 @@ export function bindNewsNarrative(root) {
     const story = STORY_REGISTRY_BY_ID[id];
     if (!story) return;
 
-    const i = nodes.indexOf(node);
     const isSelect = intent === "select";
     const isPrimaryStory = id === primaryId;
+    const nodeIndex = allNodes.indexOf(node);
 
-    nodes.forEach((n) => {
+    allNodes.forEach((n) => {
       const on = isSelect && n === node;
       n.classList.toggle("is-active", on);
       n.setAttribute("aria-selected", on ? "true" : "false");
     });
 
-    wrap.classList.add("has-focus");
+    wrap.classList.toggle("has-focus", !isPrimaryStory || !isSelect);
     wrap.dataset.activeStory = id;
 
-    if (pulse) pulse.style.left = `${pulseLeft(i, nodes.length)}%`;
+    if (pulse && nodeIndex >= 0) {
+      pulse.style.left = `${pulseLeft(nodeIndex, allNodes.length)}%`;
+    }
 
     heroContent.innerHTML = renderHeroContent(story, isPrimaryStory);
     applySnapshot();
@@ -231,20 +271,6 @@ export function bindNewsNarrative(root) {
       } else {
         visual._globeCanvas?.setStory?.(id, { intent: globeIntent });
       }
-      if (
-        typeof globalThis !== "undefined" &&
-        (globalThis.__NEWS_GLOBE_DEBUG__ === true ||
-          (typeof location !== "undefined" &&
-            new URLSearchParams(location.search).has("globe-debug")))
-      ) {
-        console.info(`[news-globe] ${isSelect ? "select" : "hover"}`, {
-          storyId: id,
-          shortTitle: story.shortTitle,
-          intent: globeIntent,
-          globeBound: visual.dataset.globeBound === "true",
-          hasGlobeApi: Boolean(visual._globeCanvas?.setStory),
-        });
-      }
       visual.classList.remove("is-updating");
       void visual.offsetWidth;
       visual.classList.add("is-updating");
@@ -254,16 +280,24 @@ export function bindNewsNarrative(root) {
     requestAnimationFrame(() => hero.classList.add("is-visible"));
   };
 
-  nodes.forEach((node) => {
+  if (focusBtn) {
+    focusBtn.addEventListener("click", () => applyStory(focusBtn, "select"));
+  }
+
+  secondaryNodes.forEach((node) => {
     node.addEventListener("pointerenter", () => applyStory(node, "preview"));
     node.addEventListener("focus", () => applyStory(node, "preview"));
     node.addEventListener("click", () => applyStory(node, "select"));
   });
 
-  wrap.addEventListener("pointerleave", () => wrap.classList.remove("has-focus"));
+  wrap.addEventListener("pointerleave", () => {
+    if (wrap.dataset.activeStory === primaryId) {
+      wrap.classList.remove("has-focus");
+    }
+  });
 
-  if (pulse) pulse.style.left = `${pulseLeft(0, nodes.length)}%`;
-  applyStory(nodes[0], "select");
+  if (pulse) pulse.style.left = `${pulseLeft(0, allNodes.length)}%`;
+  if (focusBtn) applyStory(focusBtn, "select");
 
   const onStoriesUpdated = (ev) => {
     if (ev.detail && typeof window.applyNewsSnapshotToDom === "function") {
