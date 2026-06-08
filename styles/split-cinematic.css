@@ -336,6 +336,7 @@ html[data-split-landing] #page-landing .split-landing-mount {
 .cw-scene--hero .cw-hero-copy--stable,
 .cw-scene--hero .cw-hero-copy--stable *,
 .cw-scene--hero .cw-type-line,
+.cw-scene--hero .cw-tagline,
 .cw-scene--hero .cw-phrase,
 .cw-scene--hero .cw-sub,
 .cw-scene--hero .cw-proof,
@@ -456,6 +457,15 @@ html[data-split-landing] #page-landing .split-landing-mount {
   animation: drift 14s ease-in-out infinite;
   pointer-events: none;
 }
+.cw-scene--hero .cw-tagline {
+  font-family: var(--split-mono);
+  font-size: clamp(11px, 1.4vw, 13px);
+  letter-spacing: 0.06em;
+  color: rgba(232, 201, 138, 0.92);
+  margin-top: 18px;
+  line-height: 1.55;
+}
+
 .cw-sub {
   font-size: clamp(15px, 2vw, 18px);
   line-height: 1.65;
