@@ -68,16 +68,15 @@ function renderLivePanel(story) {
 
   return `
     <div class="news-live-panel" data-news-live-panel aria-live="polite">
+      <div class="news-live-panel__lead">
+        <p class="news-live-panel__lead-label">What changed today</p>
+        <ul class="news-live-changed" data-news-changed-list>
+          <li>Loading live market context…</li>
+        </ul>
+      </div>
       <div class="news-live-panel__meta">
-        <div class="news-live-panel__status-row">
-          <span class="news-live-panel__label">Status</span>
-          <span class="news-live-panel__status" data-news-status data-status="stable">→ Stable</span>
-        </div>
-        <div class="news-live-panel__status-row">
-          <span class="news-live-panel__label">Updated</span>
-          <span class="news-live-panel__updated" data-news-updated>Updating…</span>
-          <span class="news-live-panel__badge" data-news-live-badge data-quality="fallback">Updating</span>
-        </div>
+        <span class="news-live-panel__status" data-news-status data-status="stable">→ Stable</span>
+        <span class="news-live-panel__updated" data-news-updated data-quality="fallback">Updating…</span>
       </div>
       <div class="news-live-panel__metrics">
         <div class="news-live-metric">
@@ -89,13 +88,7 @@ function renderLivePanel(story) {
           <span class="news-live-metric__value" data-news-confidence data-confidence="low">—</span>
         </div>
       </div>
-      <div class="news-narrative__block news-live-panel__block">
-        <p class="news-narrative__block-label">What changed today</p>
-        <ul class="news-live-changed" data-news-changed-list>
-          <li>Loading live market context…</li>
-        </ul>
-      </div>
-      <div class="news-narrative__block news-live-panel__block">
+      <div class="news-narrative__block news-live-panel__block news-live-panel__sectors">
         <p class="news-narrative__block-label">Related sectors</p>
         <ul class="news-live-sectors" data-news-sectors></ul>
       </div>
@@ -103,7 +96,7 @@ function renderLivePanel(story) {
         <p class="news-narrative__block-label">Since your last visit</p>
         <ul class="news-live-since" data-news-since-list hidden></ul>
       </div>
-      <div class="news-narrative__block">
+      <div class="news-narrative__block news-live-panel__watching">
         <p class="news-narrative__block-label">What could change it</p>
         <ul class="news-watching__list news-watching__list--templates">${watching}</ul>
       </div>
@@ -124,7 +117,7 @@ function renderHeroContent(story, isPrimaryStory) {
   return `
     <p class="news-narrative__kicker">${esc(kicker)}</p>
     <h2 class="news-narrative__headline">${esc(story.headline)}</h2>
-    <p class="news-narrative__what">${esc(story.what)}</p>
+    <p class="news-narrative__what news-narrative__what--supporting">${esc(story.what)}</p>
     ${renderLivePanel(story)}
     <div class="news-narrative__block">
       <p class="news-narrative__block-label">Why it matters</p>
