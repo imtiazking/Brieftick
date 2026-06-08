@@ -1,0 +1,30 @@
+:root {
+  --gold: #d4a85a;
+  --gold-bright: #e8c98a;
+  --gold-dim: rgba(212, 168, 90, 0.12);
+  --gold-glow: rgba(212, 168, 90, 0.22);
+  --void: #04060c;
+  --void-elevated: #080b14;
+  --glass: rgba(10, 14, 24, 0.55);
+  --glass-strong: rgba(12, 16, 28, 0.82);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-soft: rgba(255, 255, 255, 0.04);
+  --ink: #eceff6;
+  --ink-dim: #8d97ab;
+  --ink-faint: #5c667a;
+  --high: #f0a8a0;
+  --high-glow: rgba(240, 113, 120, 0.15);
+  --med: #e8c07a;
+  --med-glow: rgba(232, 192, 122, 0.12);
+  --low: #7ecba8;
+  --low-glow: rgba(126, 203, 168, 0.12);
+  --violet: #a99bff;
+  --violet-dim: rgba(169, 155, 255, 0.1);
+  --display: "Instrument Serif", Georgia, serif;
+  --sans: "Inter Tight", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --section-gap: clamp(2.5rem, 6vw, 4rem);
+  --radius: 20px;
+  --radius-sm: 12px;
+}

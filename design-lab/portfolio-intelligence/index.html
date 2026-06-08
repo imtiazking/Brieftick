@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Portfolio Intelligence · Design Lab · Brieftick</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/portfolio-intelligence/vars.css">
+  <link rel="stylesheet" href="/design-lab/portfolio-intelligence/portfolio-intelligence.css">
+</head>
+<body>
+  <div class="pi-shell">
+    <header class="pi-chrome">
+      <strong>Design lab · Flagship</strong>
+      <a href="/">← Brieftick</a>
+    </header>
+
+    <p class="pi-proto" role="status">
+      Prototype only · mock portfolio · no broker auth · no KYC · no payments · no order routing
+    </p>
+
+    <header class="pi-header">
+      <h1>Portfolio Intelligence</h1>
+      <p class="pi-header__sub">Understand what you own.<br>Understand what to do next.</p>
+      <p class="pi-header__tagline">Brieftick explains. Your broker executes.</p>
+    </header>
+
+    <!-- Section 1: Today's Market Story -->
+    <section class="pi-section" id="story" aria-labelledby="piStoryLabel">
+      <p class="pi-section__label" id="piStoryLabel">Today's Market Story</p>
+      <article class="pi-story">
+        <div class="pi-story__inner">
+          <p class="pi-story__live">Leading narrative</p>
+          <h2>AI Infrastructure</h2>
+          <p class="pi-story__body">
+            Data-centre build-out and GPU demand continue to favour chip designers, networking vendors, and hyperscale platforms as AI capex accelerates across the supply chain.
+          </p>
+          <dl class="pi-story__meta">
+            <div>
+              <dt>Story strength</dt>
+              <dd class="pi-story__strength">Elevated — broad participation across semis and cloud</dd>
+            </div>
+            <div>
+              <dt>What could change it</dt>
+              <dd>Rising bond yields, capex guidance cuts, or regulation on AI spending</dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+    </section>
+
+    <!-- Section 2: Portfolio Exposure -->
+    <section class="pi-section" id="exposure" aria-labelledby="piExposureLabel">
+      <p class="pi-section__label" id="piExposureLabel">Your Portfolio Exposure</p>
+      <div class="pi-exposure-grid">
+        <article class="pi-exposure pi-exposure--high">
+          <div>
+            <p class="pi-exposure__level">High exposure</p>
+            <h3>AI Infrastructure</h3>
+            <p class="pi-exposure__detail">NVDA, AMD, MSFT overlap with today's leading narrative</p>
+          </div>
+        </article>
+        <article class="pi-exposure pi-exposure--med">
+          <div>
+            <p class="pi-exposure__level">Medium exposure</p>
+            <h3>Inflation</h3>
+            <p class="pi-exposure__detail">Rates-sensitive holdings share a macro driver</p>
+          </div>
+        </article>
+        <article class="pi-exposure pi-exposure--low">
+          <div>
+            <p class="pi-exposure__level">Low exposure</p>
+            <h3>Energy</h3>
+            <p class="pi-exposure__detail">Limited direct theme overlap in current mock holdings</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Section 3: Logic -->
+    <section class="pi-section" id="logic" aria-labelledby="piLogicLabel">
+      <p class="pi-section__label" id="piLogicLabel">Logic</p>
+      <div class="pi-logic">
+        <div class="pi-logic__head">
+          <span class="pi-logic__icon" aria-hidden="true">◇</span>
+          <p class="pi-logic__title">Portfolio reasoning</p>
+        </div>
+        <ul>
+          <li>Three of your holdings are exposed to the same AI capex narrative.</li>
+          <li>Rising bond yields are the main risk.</li>
+          <li>You have limited defensive exposure.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 4: Suggested Baskets -->
+    <section class="pi-section" id="baskets" aria-labelledby="piBasketsLabel">
+      <p class="pi-section__label" id="piBasketsLabel">Suggested Baskets</p>
+      <div class="pi-baskets" id="piBaskets"></div>
+    </section>
+
+    <!-- Section 5: Execution -->
+    <section class="pi-section" id="execution" aria-labelledby="piExecLabel">
+      <p class="pi-section__label" id="piExecLabel">Execution</p>
+      <article class="pi-execution">
+        <h2>Continue with Trading212</h2>
+        <p>
+          Brieftick provides market intelligence and portfolio analysis.<br>
+          Your broker handles execution and custody of assets.
+        </p>
+        <button
+          type="button"
+          class="pi-btn pi-btn--gold"
+          data-continue-broker
+          data-tickers="NVDA,AMD,AVGO,MSFT,ANET"
+        >
+          Continue with Trading212
+        </button>
+      </article>
+    </section>
+
+    <!-- Future: Connected Brokers -->
+    <section class="pi-section" id="brokers" aria-labelledby="piBrokersLabel">
+      <p class="pi-section__label" id="piBrokersLabel">Connected Brokers · Future</p>
+      <div class="pi-brokers">
+        <div class="pi-broker"><span class="pi-broker__name">Trading212</span><span class="pi-broker__status">Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">Interactive Brokers</span><span class="pi-broker__status">Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">eToro</span><span class="pi-broker__status">Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">IG</span><span class="pi-broker__status">Coming Soon</span></div>
+      </div>
+    </section>
+
+    <footer class="pi-disclaimer" role="note">
+      Brieftick provides market intelligence only and does not hold funds or place orders.
+      This page is a design-lab prototype at <code>/design-lab/portfolio-intelligence</code> —
+      not linked from production Dashboard, Discover, Portfolio, Watchlist, or Logic.
+    </footer>
+  </div>
+
+  <!-- Mock broker handoff -->
+  <div class="pi-handoff" id="piHandoff" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="piHandoffTitle">
+    <div class="pi-handoff__backdrop" data-handoff-close tabindex="-1"></div>
+    <div class="pi-handoff__sheet">
+      <p class="pi-handoff__proto">Prototype handoff</p>
+      <h2 id="piHandoffTitle">Continue with Trading212</h2>
+      <p id="piHandoffBody"></p>
+      <p class="pi-handoff__mock">
+        MOCK · No authentication, KYC, payments, custody, or order routing.
+        Execute with your broker — Brieftick is the intelligence layer only.
+      </p>
+      <div class="pi-handoff__actions">
+        <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-open-in-broker>Open in Trading212 (prototype)</button>
+        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Stay in Brieftick</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="pi-toast" id="piToast" hidden role="status"></p>
+  <script src="/design-lab/portfolio-intelligence/portfolio-intelligence.js" defer></script>
+</body>
+</html>
