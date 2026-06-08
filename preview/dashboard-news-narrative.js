@@ -4,6 +4,10 @@
  */
 
 import { bindNewsGlobeInteraction } from "./dashboard-news-globe.js";
+import {
+  STORY_REGISTRY,
+  STORY_REGISTRY_BY_ID,
+} from "/lib/dashboard-news-story-registry.js";
 
 /**
  * @typedef {Object} NewsStory
@@ -17,46 +21,17 @@ import { bindNewsGlobeInteraction } from "./dashboard-news-globe.js";
  * @property {string} shortTitle
  */
 
-/** @type {NewsStory[]} */
-export const NEWS_STORIES = [
-  {
-    id: "inflation",
-    primary: true,
-    headline: "Inflation Is Driving Markets",
-    what: "Higher inflation expectations are influencing interest rates and technology stocks.",
-    why: "Higher rates can make growth stocks less attractive.",
-    impact: ["Technology", "Banks", "Energy"],
-    watching: ["Next inflation report", "Federal Reserve commentary"],
-    shortTitle: "Inflation is driving markets",
-  },
-  {
-    id: "ai",
-    headline: "AI Spending Is Lifting Tech Stocks",
-    what: "Large companies are still investing heavily in artificial intelligence, which helps chip and software stocks.",
-    why: "When technology leads, major indexes often rise even when other parts of the economy slow down.",
-    impact: ["Technology", "Semiconductors"],
-    watching: ["Big tech earnings", "New AI product launches"],
-    shortTitle: "AI spending lifts tech",
-  },
-  {
-    id: "europe",
-    headline: "US Markets Are Outpacing Europe",
-    what: "American stocks are rising while growth in Europe looks weaker.",
-    why: "Investors often move money toward stronger economies, which can lift US stocks and the dollar.",
-    impact: ["Technology", "Large US companies", "Currency markets"],
-    watching: ["European economic reports", "US sales abroad"],
-    shortTitle: "US ahead of Europe",
-  },
-  {
-    id: "energy",
-    headline: "Steady Oil Prices Are Helping Energy Stocks",
-    what: "Oil prices are holding in a stable range, giving energy companies more predictable profits.",
-    why: "When energy rises without wild price swings, it can support the broader market without adding panic.",
-    impact: ["Energy", "Transportation"],
-    watching: ["Oil supply updates", "Energy company earnings"],
-    shortTitle: "Oil steady, energy firm",
-  },
-];
+/** @type {NewsStory[]} — backward-compatible export */
+export const NEWS_STORIES = STORY_REGISTRY.map((s) => ({
+  id: s.id,
+  primary: s.primary,
+  headline: s.headline,
+  what: s.what,
+  why: s.why,
+  impact: s.impactSectors,
+  watching: s.watchingTemplates,
+  shortTitle: s.shortTitle,
+}));
 
 /**
  * @param {string} s
@@ -83,39 +58,85 @@ function renderNewsVisual(storyId) {
 }
 
 /**
- * @param {NewsStory} story
+ * @param {import('/lib/dashboard-news-story-registry.js').StoryRegistryEntry} story
  * @returns {string}
  */
-function renderHeroContent(story) {
-  const kicker = story.primary ? "Today's biggest story" : "Also shaping markets";
-  const impact = story.impact
-    .map((item) => `<li class="news-impact__tag">${esc(item)}</li>`)
+function renderLivePanel(story) {
+  const watching = story.watchingTemplates
+    .map((item) => `<li>${esc(item)}</li>`)
     .join("");
-  const watching = story.watching.map((item) => `<li>${esc(item)}</li>`).join("");
+
+  return `
+    <div class="news-live-panel" data-news-live-panel aria-live="polite">
+      <div class="news-live-panel__meta">
+        <div class="news-live-panel__status-row">
+          <span class="news-live-panel__label">Status</span>
+          <span class="news-live-panel__status" data-news-status data-status="stable">→ Stable</span>
+        </div>
+        <div class="news-live-panel__status-row">
+          <span class="news-live-panel__label">Updated</span>
+          <span class="news-live-panel__updated" data-news-updated>Updating…</span>
+          <span class="news-live-panel__badge" data-news-live-badge data-quality="fallback">Updating</span>
+        </div>
+      </div>
+      <div class="news-live-panel__metrics">
+        <div class="news-live-metric">
+          <span class="news-live-panel__label">Story strength</span>
+          <span class="news-live-metric__value" data-news-strength>— / 100</span>
+        </div>
+        <div class="news-live-metric">
+          <span class="news-live-panel__label">Confidence</span>
+          <span class="news-live-metric__value" data-news-confidence data-confidence="low">—</span>
+        </div>
+      </div>
+      <div class="news-narrative__block news-live-panel__block">
+        <p class="news-narrative__block-label">What changed today</p>
+        <ul class="news-live-changed" data-news-changed-list>
+          <li>Loading live market context…</li>
+        </ul>
+      </div>
+      <div class="news-narrative__block news-live-panel__block">
+        <p class="news-narrative__block-label">Related sectors</p>
+        <ul class="news-live-sectors" data-news-sectors></ul>
+      </div>
+      <div class="news-narrative__block news-live-panel__since" data-news-since hidden>
+        <p class="news-narrative__block-label">Since your last visit</p>
+        <ul class="news-live-since" data-news-since-list hidden></ul>
+      </div>
+      <div class="news-narrative__block">
+        <p class="news-narrative__block-label">What could change it</p>
+        <ul class="news-watching__list news-watching__list--templates">${watching}</ul>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * @param {import('/lib/dashboard-news-story-registry.js').StoryRegistryEntry} story
+ * @param {boolean} [isPrimaryStory]
+ * @returns {string}
+ */
+function renderHeroContent(story, isPrimaryStory) {
+  const kicker = isPrimaryStory
+    ? "Today's biggest story"
+    : "Also shaping markets";
 
   return `
     <p class="news-narrative__kicker">${esc(kicker)}</p>
     <h2 class="news-narrative__headline">${esc(story.headline)}</h2>
     <p class="news-narrative__what">${esc(story.what)}</p>
+    ${renderLivePanel(story)}
     <div class="news-narrative__block">
       <p class="news-narrative__block-label">Why it matters</p>
       <p class="news-narrative__block-text">${esc(story.why)}</p>
-    </div>
-    <div class="news-narrative__block">
-      <p class="news-narrative__block-label">Market impact</p>
-      <ul class="news-impact__tags" aria-label="Market impact">${impact}</ul>
-    </div>
-    <div class="news-narrative__block">
-      <p class="news-narrative__block-label">What investors are watching next</p>
-      <ul class="news-watching__list">${watching}</ul>
     </div>
   `;
 }
 
 /** @returns {string} */
 export function renderNewsHero() {
-  const primary = NEWS_STORIES[0];
-  const nodes = NEWS_STORIES.map((story, i) => {
+  const primary = STORY_REGISTRY[0];
+  const nodes = STORY_REGISTRY.map((story, i) => {
     const tier = story.primary ? " is-primary" : " is-secondary";
     const active = i === 0 ? " is-active" : "";
     return `<button
@@ -137,7 +158,7 @@ export function renderNewsHero() {
     </div>
     <article class="news-narrative__hero is-visible" aria-live="polite">
       <div class="news-narrative__hero-grid">
-        <div class="news-narrative__hero-content">${renderHeroContent(primary)}</div>
+        <div class="news-narrative__hero-content">${renderHeroContent(primary, true)}</div>
         ${renderNewsVisual(primary.id)}
       </div>
     </article>
@@ -168,20 +189,32 @@ export function bindNewsNarrative(root) {
 
   if (!hero || !heroContent || !nodes.length) return;
 
-  const byId = Object.fromEntries(NEWS_STORIES.map((s) => [s.id, s]));
+  const primaryId = STORY_REGISTRY.find((s) => s.primary)?.id || STORY_REGISTRY[0].id;
 
   const pulseLeft = (index, count) => {
     if (count <= 1) return 50;
     return 6 + (index / (count - 1)) * 88;
   };
 
+  const applySnapshot = () => {
+    const snap =
+      window.dashboardNewsSnapshot ||
+      (typeof window.getNewsStorySnapshot === "function"
+        ? window.getNewsStorySnapshot()
+        : null);
+    if (snap && typeof window.applyNewsSnapshotToDom === "function") {
+      window.applyNewsSnapshotToDom(root, snap);
+    }
+  };
+
   const applyStory = (node, intent) => {
     const id = node.dataset.storyId || "";
-    const story = byId[id];
+    const story = STORY_REGISTRY_BY_ID[id];
     if (!story) return;
 
     const i = nodes.indexOf(node);
     const isSelect = intent === "select";
+    const isPrimaryStory = id === primaryId;
 
     nodes.forEach((n) => {
       const on = isSelect && n === node;
@@ -194,7 +227,8 @@ export function bindNewsNarrative(root) {
 
     if (pulse) pulse.style.left = `${pulseLeft(i, nodes.length)}%`;
 
-    heroContent.innerHTML = renderHeroContent(story);
+    heroContent.innerHTML = renderHeroContent(story, isPrimaryStory);
+    applySnapshot();
 
     if (visual) {
       visual.dataset.visual = id;
@@ -238,6 +272,20 @@ export function bindNewsNarrative(root) {
   if (pulse) pulse.style.left = `${pulseLeft(0, nodes.length)}%`;
   applyStory(nodes[0], "select");
 
+  const onStoriesUpdated = (ev) => {
+    if (ev.detail && typeof window.applyNewsSnapshotToDom === "function") {
+      window.applyNewsSnapshotToDom(root, ev.detail);
+    }
+  };
+  document.addEventListener("bt_news_stories_updated", onStoriesUpdated);
+
+  if (typeof window.refreshNewsStoryState === "function") {
+    window
+      .refreshNewsStoryState({ refreshImpact: true, fetchOil: true })
+      .then(() => applySnapshot())
+      .catch(() => {});
+  }
+
   if (visual) {
     if (visual._globeTeardown) visual._globeTeardown();
     requestAnimationFrame(() => {
@@ -247,6 +295,7 @@ export function bindNewsNarrative(root) {
   }
 
   return () => {
+    document.removeEventListener("bt_news_stories_updated", onStoriesUpdated);
     if (visual?._globeTeardown) {
       visual._globeTeardown();
       visual._globeTeardown = null;

@@ -40,7 +40,7 @@ export const RAIL_SECTIONS = [
   { id: "volatility", label: "MARKET RISK", code: "03", title: "Market Mood", meta: "Plain-English read · mock" },
   { id: "flows", label: "FLOWS", code: "07", title: "Market Intelligence Engine", meta: "Live capital flow" },
   { id: "signals", label: "SIGNALS", code: "06", title: "Signal Intelligence Feed", meta: "8 headlines · mock" },
-  { id: "news", label: "NEWS", code: "10", title: "News Intelligence", meta: "Filtered ↻ 12s" },
+  { id: "news", label: "NEWS", code: "10", title: "News Intelligence", meta: "Live ↻ 60s" },
   { id: "correlation", label: "MOVES TOGETHER", code: "09", title: "Moves Together", meta: "Who rises & falls together" },
   { id: "alerts", label: "WHAT MATTERS", code: "S1", title: "What to Watch", meta: "This week · plain English" },
   { id: "watchlist", label: "WATCHLIST", code: "05", title: "Watchlist", meta: "Design lab book" },
