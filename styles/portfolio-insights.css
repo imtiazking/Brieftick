@@ -734,45 +734,25 @@
   transform: translateY(0);
 }
 
-#page-portfolio-insights .pi-handoff__proto {
-  font-family: var(--pi-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--pi-gold);
-  margin-bottom: 0.65rem;
-}
-
 #page-portfolio-insights .pi-handoff h2 {
   font-family: var(--pi-display);
   font-size: 1.4rem;
   margin-bottom: 0.5rem;
 }
 
-#page-portfolio-insights .pi-handoff p {
+#page-portfolio-insights .pi-handoff__label {
   font-size: 0.84rem;
   color: var(--pi-ink-dim);
-  margin-bottom: 1rem;
+  margin-bottom: 0.35rem;
 }
 
 #page-portfolio-insights .pi-handoff__tickers {
   font-family: var(--pi-mono);
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--pi-ink);
   line-height: 1.55;
-  margin-bottom: 0.35rem;
-  word-break: break-word;
-}
-
-#page-portfolio-insights .pi-handoff__count {
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--pi-gold-bright);
   margin-bottom: 1rem;
-}
-
-#page-portfolio-insights .pi-handoff__count[hidden] {
-  display: none;
+  word-break: break-word;
 }
 
 #page-portfolio-insights .pi-handoff__mock {

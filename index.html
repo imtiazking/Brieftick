@@ -4396,18 +4396,16 @@ h1,h2,h3{
   <div class="pi-handoff" id="piHandoff" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="piHandoffTitle">
     <div class="pi-handoff__backdrop" data-handoff-close tabindex="-1"></div>
     <div class="pi-handoff__sheet">
-      <p class="pi-handoff__proto">Prototype only</p>
       <h2 id="piHandoffTitle">Continue with Trading212</h2>
-      <p id="piHandoffBody"></p>
+      <p class="pi-handoff__label" id="piHandoffCompaniesLabel">Your selected companies:</p>
       <p class="pi-handoff__tickers" id="piHandoffTickers" aria-label="Selected companies"></p>
-      <p class="pi-handoff__count" id="piHandoffCount"></p>
-      <p class="pi-handoff__mock">
+      <p class="pi-handoff__mock" id="piHandoffDisclaimer">
         Brieftick does not place trades or hold funds.
-        Your broker handles execution and custody.
+        Trading212 opens in a new tab, where you stay in control.
       </p>
       <div class="pi-handoff__actions">
-        <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-open-in-broker>Continue with Trading212</button>
-        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Close</button>
+        <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-open-in-broker>Open Trading212</button>
+        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Stay in Brieftick</button>
       </div>
     </div>
   </div>

@@ -90,14 +90,32 @@ checks.handoffOpen = await page.evaluate(
 );
 
 const handoffTickers = await page.locator("#piHandoffTickers").textContent();
-const handoffCount = await page.locator("#piHandoffCount").textContent();
-const handoffProto = await page.locator(".pi-handoff__proto").textContent();
-const handoffMock = await page.locator(".pi-handoff__mock").textContent();
+const handoffLabel = await page.locator("#piHandoffCompaniesLabel").textContent();
+const handoffDisclaimer = await page.locator("#piHandoffDisclaimer").textContent();
+const handoffOpenBtn = await page.locator("[data-open-in-broker]").textContent();
+const handoffStayBtn = await page
+  .locator("#piHandoff button[data-handoff-close]")
+  .textContent();
 checks.handoffHasSelection = (handoffTickers || "").trim() === "NVDA";
-checks.handoffSingleCount = handoffCount?.trim() === "1 company selected";
-checks.handoffFriendlyCopy =
-  handoffProto?.trim() === "Prototype only" &&
-  /does not place trades or hold funds/i.test(handoffMock || "");
+checks.handoffCopy =
+  handoffLabel?.trim() === "Your selected companies:" &&
+  /does not place trades or hold funds/i.test(handoffDisclaimer || "") &&
+  /opens in a new tab/i.test(handoffDisclaimer || "") &&
+  handoffOpenBtn?.trim() === "Open Trading212" &&
+  handoffStayBtn?.trim() === "Stay in Brieftick";
+
+await page.evaluate(() => {
+  window.__piTestOpen = null;
+  window.open = (url) => {
+    window.__piTestOpen = url;
+    return null;
+  };
+});
+await page.locator("[data-open-in-broker]").click();
+checks.trading212Url = await page.evaluate(() => window.__piTestOpen);
+checks.handoffStaysOpen = await page.evaluate(
+  () => document.getElementById("piHandoff")?.classList.contains("is-open")
+);
 
 await browser.close();
 
@@ -124,8 +142,9 @@ const failed =
   !checks.basketReviewRisk?.includes("Risk note") ||
   !checks.handoffOpen ||
   !checks.handoffHasSelection ||
-  !checks.handoffSingleCount ||
-  !checks.handoffFriendlyCopy;
+  !checks.handoffCopy ||
+  checks.trading212Url !== "https://www.trading212.com/" ||
+  !checks.handoffStaysOpen;
 
 console.log(JSON.stringify({ checks, errors }, null, 2));
 process.exit(failed ? 1 : 0);
