@@ -157,14 +157,17 @@ async function openDashboardNews(page) {
       state.manualOverride === false &&
       checks[`story_${id}_yaw`] &&
       checks[`story_${id}_land`];
-    if (id === "inflation") {
-      const fx = await page.evaluate(() => {
-        const api = document.querySelector(".news-narrative__visual")?._globeCanvas;
-        return api?.getStoryEffectState?.() ?? null;
-      });
-      checks.story_inflation_breath =
-        (fx?.breathMeshCount ?? 0) > 0 && (fx?.pulseRingCount ?? 0) > 0;
-    }
+    const fx = await page.evaluate(() => {
+      const api = document.querySelector(".news-narrative__visual")?._globeCanvas;
+      const layers = api?.layers;
+      return {
+        ...(api?.getStoryEffectState?.() ?? {}),
+        pulseRingCount: layers?.pulseRingEntries?.length ?? 0,
+      };
+    });
+    checks[`story_${id}_breath`] =
+      (fx?.breathMeshCount ?? 0) > 0 && (fx?.breathBorderCount ?? 0) > 0;
+    checks[`story_${id}_no_rings`] = (fx?.pulseRingCount ?? 0) === 0;
   }
 
   const yaws = Object.values(storyYaws).filter((y) => typeof y === "number");
@@ -177,29 +180,29 @@ async function openDashboardNews(page) {
   const aiFx = await page.evaluate(() => {
     const api = document.querySelector(".news-narrative__visual")?._globeCanvas;
     const layers = api?.layers;
-    const pulseOpacity =
-      layers?.pulseRingEntries?.map((e) => e.mat?.opacity) ?? [];
     return {
       ...(api?.getStoryEffectState?.() ?? {}),
-      pulseOpacity,
+      pulseRingCount: layers?.pulseRingEntries?.length ?? 0,
       fxActive: layers?.storySelectFx?.active === true,
     };
   });
   checks.storySelectFxActive =
     aiFx != null &&
-    aiFx.pulseRingCount >= 2 &&
+    aiFx.breathMeshCount >= 1 &&
+    aiFx.breathBorderCount >= 1 &&
     aiFx.flowCount >= 1 &&
     aiFx.flowGlowCount >= 1 &&
-    aiFx.fxActive === true;
+    aiFx.fxActive === true &&
+    (aiFx.pulseRingCount ?? 0) === 0;
 
   await page.waitForTimeout(2200);
   const aiFxContinuous = await page.evaluate(() => {
     const layers = document.querySelector(".news-narrative__visual")?._globeCanvas?.layers;
-    const pulseOpacity = layers?.pulseRingEntries?.map((e) => e.mat?.opacity) ?? [];
+    const breathOpacity = layers?.breathMeshes?.map((e) => e.mat?.opacity) ?? [];
     const flowOpacity = layers?.flowEntries?.map((e) => e.mat?.opacity) ?? [];
     const glowOpacity = layers?.flowGlowEntries?.map((e) => e.mat?.opacity) ?? [];
     return {
-      pulseOpacity,
+      breathOpacity,
       flowOpacity,
       glowOpacity,
       fxActive: layers?.storySelectFx?.active === true,
@@ -207,9 +210,25 @@ async function openDashboardNews(page) {
   });
   checks.storySelectFxContinuous =
     aiFxContinuous.fxActive === true &&
-    aiFxContinuous.pulseOpacity.some((o) => o > 0.08) &&
+    aiFxContinuous.breathOpacity.some((o) => o > 0.5) &&
     aiFxContinuous.flowOpacity.some((o) => o > 0.05) &&
     aiFxContinuous.glowOpacity.some((o) => o > 0.1);
+
+  await page.click('[data-story-id="europe"]');
+  await page.waitForTimeout(1300);
+  const europeFx = await page.evaluate(() => {
+    const api = document.querySelector(".news-narrative__visual")?._globeCanvas;
+    const layers = api?.layers;
+    return {
+      flowCount: layers?.flowEntries?.length ?? 0,
+      flowGlowCount: layers?.flowGlowEntries?.length ?? 0,
+      pulseRingCount: layers?.pulseRingEntries?.length ?? 0,
+    };
+  });
+  checks.story_europe_flows =
+    europeFx.flowCount >= 1 &&
+    europeFx.flowGlowCount >= 1 &&
+    europeFx.pulseRingCount === 0;
 
   await page.click('[data-story-id="energy"]');
   await page.waitForTimeout(1300);
@@ -265,6 +284,14 @@ const pass =
   checks.storySelectFxActive &&
   checks.storySelectFxContinuous &&
   checks.story_inflation_breath &&
+  checks.story_ai_breath &&
+  checks.story_europe_breath &&
+  checks.story_energy_breath &&
+  checks.story_inflation_no_rings &&
+  checks.story_ai_no_rings &&
+  checks.story_europe_no_rings &&
+  checks.story_energy_no_rings &&
+  checks.story_europe_flows &&
   checks.idleResumesAfterStoryOrient;
 
 console.log(JSON.stringify({ pass, errors, checks }, null, 2));
