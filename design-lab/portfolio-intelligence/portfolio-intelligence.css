@@ -422,8 +422,14 @@ body::before {
 .pi-basket__risk {
   font-size: 0.78rem;
   color: var(--med);
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
   line-height: 1.45;
+}
+
+.pi-basket__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
 }
 
 .pi-btn {
@@ -468,7 +474,7 @@ body::before {
   text-align: center;
 }
 
-/* Section 5 — Execution */
+/* Section 4 — Ready to act */
 .pi-execution {
   padding: clamp(1.5rem, 4vw, 2rem);
   border-radius: var(--radius);
@@ -495,6 +501,59 @@ body::before {
 
 .pi-execution .pi-btn--gold {
   min-width: 240px;
+}
+
+/* Desktop sticky broker card */
+.pi-sticky {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .pi-sticky {
+    display: block;
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 50;
+    width: 220px;
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--glass-strong);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(212, 168, 90, 0.15);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+    pointer-events: none;
+  }
+
+  .pi-sticky.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .pi-sticky__label {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .pi-sticky__context {
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    line-height: 1.45;
+    margin-bottom: 0.75rem;
+  }
+
+  .pi-sticky .pi-btn {
+    font-size: 0.72rem;
+    padding: 0.5rem 0.75rem;
+  }
 }
 
 /* Section 6 — Brokers */
@@ -644,6 +703,15 @@ body::before {
   .pi-basket__row {
     flex-direction: column;
     gap: 0.65rem;
+  }
+
+  .pi-basket__actions {
+    flex-direction: column;
+  }
+
+  .pi-basket__actions .pi-btn {
+    width: 100%;
+    text-align: center;
   }
 
   .pi-execution .pi-btn--gold {

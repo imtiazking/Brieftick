@@ -96,17 +96,11 @@
       </div>
     </section>
 
-    <!-- Section 4: Suggested Baskets -->
-    <section class="pi-section" id="baskets" aria-labelledby="piBasketsLabel">
-      <p class="pi-section__label" id="piBasketsLabel">Suggested Baskets</p>
-      <div class="pi-baskets" id="piBaskets"></div>
-    </section>
-
-    <!-- Section 5: Execution -->
-    <section class="pi-section" id="execution" aria-labelledby="piExecLabel">
-      <p class="pi-section__label" id="piExecLabel">Execution</p>
+    <!-- Section 4: Ready to act -->
+    <section class="pi-section" id="ready" aria-labelledby="piReadyLabel">
+      <p class="pi-section__label" id="piReadyLabel">Ready to act</p>
       <article class="pi-execution">
-        <h2>Continue with Trading212</h2>
+        <h2>Ready to act</h2>
         <p>
           Brieftick provides market intelligence and portfolio analysis.<br>
           Your broker handles execution and custody of assets.
@@ -115,6 +109,7 @@
           type="button"
           class="pi-btn pi-btn--gold"
           data-continue-broker
+          data-handoff-label="AI Infrastructure"
           data-tickers="NVDA,AMD,AVGO,MSFT,ANET"
         >
           Continue with Trading212
@@ -122,14 +117,20 @@
       </article>
     </section>
 
+    <!-- Section 5: Suggested Baskets -->
+    <section class="pi-section" id="baskets" aria-labelledby="piBasketsLabel">
+      <p class="pi-section__label" id="piBasketsLabel">Suggested Baskets</p>
+      <div class="pi-baskets" id="piBaskets"></div>
+    </section>
+
     <!-- Future: Connected Brokers -->
     <section class="pi-section" id="brokers" aria-labelledby="piBrokersLabel">
       <p class="pi-section__label" id="piBrokersLabel">Connected Brokers · Future</p>
       <div class="pi-brokers">
-        <div class="pi-broker"><span class="pi-broker__name">Trading212</span><span class="pi-broker__status">Coming Soon</span></div>
-        <div class="pi-broker"><span class="pi-broker__name">Interactive Brokers</span><span class="pi-broker__status">Coming Soon</span></div>
-        <div class="pi-broker"><span class="pi-broker__name">eToro</span><span class="pi-broker__status">Coming Soon</span></div>
-        <div class="pi-broker"><span class="pi-broker__name">IG</span><span class="pi-broker__status">Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">Trading212</span><span class="pi-broker__status">— Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">Interactive Brokers</span><span class="pi-broker__status">— Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">eToro</span><span class="pi-broker__status">— Coming Soon</span></div>
+        <div class="pi-broker"><span class="pi-broker__name">IG</span><span class="pi-broker__status">— Coming Soon</span></div>
       </div>
     </section>
 
@@ -157,6 +158,21 @@
       </div>
     </div>
   </div>
+
+  <!-- Desktop sticky broker card -->
+  <aside class="pi-sticky" id="piSticky" aria-label="Ready to act" hidden>
+    <p class="pi-sticky__label">Ready to act</p>
+    <p class="pi-sticky__context">Your portfolio has High AI Infrastructure exposure.</p>
+    <button
+      type="button"
+      class="pi-btn pi-btn--gold pi-btn--block"
+      data-continue-broker
+      data-handoff-label="AI Infrastructure"
+      data-tickers="NVDA,AMD,AVGO,MSFT,ANET"
+    >
+      Continue with Trading212
+    </button>
+  </aside>
 
   <p class="pi-toast" id="piToast" hidden role="status"></p>
   <script src="/design-lab/portfolio-intelligence/portfolio-intelligence.js" defer></script>

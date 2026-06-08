@@ -50,9 +50,14 @@ function renderBaskets() {
         </dl>
       </div>
       <p class="pi-basket__risk"><strong>Risk note.</strong> ${b.risk}</p>
-      <button type="button" class="pi-btn pi-btn--ghost" data-open-basket="${b.title}" data-tickers="${b.tickers.join(",")}">
-        Open Basket
-      </button>
+      <div class="pi-basket__actions">
+        <button type="button" class="pi-btn pi-btn--ghost" data-open-basket="${b.title}" data-tickers="${b.tickers.join(",")}">
+          Open Basket
+        </button>
+        <button type="button" class="pi-btn pi-btn--gold" data-continue-broker data-handoff-label="${b.title}" data-tickers="${b.tickers.join(",")}">
+          Continue with Trading212
+        </button>
+      </div>
     </article>`
   ).join("");
 }
@@ -98,7 +103,7 @@ function init() {
     const basket = e.target.closest("[data-open-basket]");
 
     if (exec) {
-      openHandoff("Portfolio Intelligence", exec.dataset.tickers || "NVDA,AMD,MSFT");
+      openHandoff(exec.dataset.handoffLabel || "Portfolio Intelligence", exec.dataset.tickers || "NVDA,AMD,MSFT");
       return;
     }
     if (basket) {
@@ -117,6 +122,20 @@ function init() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && handoff?.classList.contains("is-open")) closeHandoff();
   });
+
+  const ready = document.getElementById("ready");
+  const sticky = document.getElementById("piSticky");
+  if (ready && sticky) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const past = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        sticky.hidden = !past;
+        sticky.classList.toggle("is-visible", past);
+      },
+      { threshold: 0, rootMargin: "0px" }
+    );
+    observer.observe(ready);
+  }
 }
 
 if (document.readyState === "loading") {
