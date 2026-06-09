@@ -334,7 +334,7 @@ html[data-split-landing] #page-landing .split-landing-mount {
 
 /* Hero copy — fully fixed (opacity fade on wrapper only; no translateY / drift) */
 .cw-scene--hero .cw-hero-copy--stable,
-.cw-scene--hero .cw-hero-copy--stable *,
+.cw-scene--hero .cw-hero-copy--stable *:not(.cw-ed-line__curtain),
 .cw-scene--hero .cw-type-line,
 .cw-scene--hero .cw-tagline,
 .cw-scene--hero .cw-phrase,
@@ -355,7 +355,8 @@ html[data-split-landing] #page-landing .split-landing-mount {
   opacity: 0;
   transition: opacity 1.1s var(--split-ease-slow);
 }
-.cw-scene--hero.is-active .cw-hero-copy--stable {
+.cw-scene--hero.is-active .cw-hero-copy--stable,
+.cw-scene--hero.has-revealed .cw-hero-copy--stable {
   opacity: 1;
 }
 .cw-scene--hero .cw-type-line {
@@ -496,11 +497,51 @@ html[data-split-landing] #page-landing .split-landing-mount {
 }
 
 .cw-scene--hero .cw-hero-editorial,
-.cw-scene--hero .cw-hero-editorial * {
+.cw-scene--hero .cw-hero-editorial *:not(.cw-ed-line__curtain) {
   animation: none !important;
   transform: none !important;
   translate: none !important;
   opacity: 1 !important;
+}
+
+/* Concept 37 K — Editorial Curtain (production, lab values unchanged) */
+@keyframes cwEdCurtainUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.cw-scene--hero .cw-ed-line {
+  overflow: hidden;
+}
+
+.cw-scene--hero .cw-ed-line__curtain {
+  display: block;
+}
+
+.cw-scene--hero .cw-ed-line__curtain--flex {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.12em;
+  flex-wrap: wrap;
+}
+
+.cw-scene--hero:not(.has-revealed) .cw-ed-line__curtain {
+  transform: translateY(100%);
+}
+
+.cw-scene--hero.is-active:not(.has-revealed) .cw-ed-line__curtain {
+  animation: cwEdCurtainUp 0.55s var(--split-ease-slow) both !important;
+}
+
+.cw-scene--hero.is-active:not(.has-revealed) .cw-ed-line[data-cw-ed-line="1"] .cw-ed-line__curtain { animation-delay: 0ms !important; }
+.cw-scene--hero.is-active:not(.has-revealed) .cw-ed-line[data-cw-ed-line="2"] .cw-ed-line__curtain { animation-delay: 120ms !important; }
+.cw-scene--hero.is-active:not(.has-revealed) .cw-ed-line[data-cw-ed-line="3"] .cw-ed-line__curtain { animation-delay: 240ms !important; }
+.cw-scene--hero.is-active:not(.has-revealed) .cw-ed-line[data-cw-ed-line="4"] .cw-ed-line__curtain { animation-delay: 360ms !important; }
+
+.cw-scene--hero.has-revealed .cw-ed-line__curtain {
+  transform: translateY(0) !important;
+  animation: none !important;
 }
 
 /* Hero proof pills — Premium Signals (Version G) */
@@ -1133,6 +1174,14 @@ html[data-split-pricing] .tier-grid-2 {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+  }
+  .cw-scene--hero .cw-ed-line__curtain {
+    animation: none !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+  .cw-scene--hero.has-revealed .cw-hero-copy--stable {
+    opacity: 1 !important;
   }
 }
 
