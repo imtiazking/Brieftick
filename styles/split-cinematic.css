@@ -362,6 +362,147 @@ html[data-split-landing] #page-landing .split-landing-mount {
   opacity: 1 !important;
 }
 
+/* Hero headline — Concept 35 Variation 6 (Minimal) typography only */
+.cw-scene--hero .cw-hero-editorial {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  font-synthesis: none;
+  font-size: clamp(2.5rem, 10vw, 7.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.cw-scene--hero .cw-ed-line {
+  display: block;
+  position: relative;
+}
+
+.cw-scene--hero .cw-ed-line--split {
+  margin-bottom: 0;
+}
+
+.cw-scene--hero .cw-ed-line--italic {
+  font-style: italic;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+.cw-scene--hero .cw-ed-line--without {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.12em;
+  flex-wrap: wrap;
+}
+
+.cw-scene--hero .cw-ed-metallic {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: inherit;
+  color: inherit;
+  filter: none;
+}
+
+.cw-scene--hero .cw-ed-metallic--inline {
+  display: inline-block;
+  position: relative;
+}
+
+.cw-scene--hero .cw-ed-metallic__base,
+.cw-scene--hero .cw-ed-metallic__shine {
+  display: block;
+}
+
+.cw-scene--hero .cw-ed-metallic__shine {
+  position: absolute;
+  inset: 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  background-size: 165% 100%;
+  background-position: 0% center;
+  background-repeat: no-repeat;
+}
+
+.cw-scene--hero .cw-ed-line:nth-child(1) .cw-ed-metallic__shine { background-position: -5% center; }
+.cw-scene--hero .cw-ed-line:nth-child(2) .cw-ed-metallic__shine { background-position: 0% center; }
+.cw-scene--hero .cw-ed-line:nth-child(3) .cw-ed-metallic__shine { background-position: 5% center; }
+.cw-scene--hero .cw-ed-line:nth-child(4) .cw-ed-metallic__shine { background-position: 10% center; }
+
+.cw-scene--hero .cw-ed-metallic--silver {
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.18)) !important;
+}
+
+.cw-scene--hero .cw-ed-metallic--silver .cw-ed-metallic__base {
+  color: #ece8e2;
+}
+
+.cw-scene--hero .cw-ed-metallic--silver .cw-ed-metallic__shine {
+  background-image: linear-gradient(
+    90deg,
+    #d0ccc6 0%,
+    #e0dcd6 10%,
+    #f0ece6 24%,
+    #ffffff 42%,
+    #faf6f0 58%,
+    #ffffff 74%,
+    #f4f0ea 88%,
+    #dcd8d2 100%
+  );
+}
+
+.cw-scene--hero .cw-ed-metallic--gold {
+  filter: drop-shadow(0 2px 10px rgba(138, 100, 35, 0.1)) !important;
+}
+
+.cw-scene--hero .cw-ed-metallic--gold .cw-ed-metallic__base {
+  color: #d8b05a;
+}
+
+.cw-scene--hero .cw-ed-metallic--gold .cw-ed-metallic__shine {
+  background-image: linear-gradient(
+    90deg,
+    #8a6423 0%,
+    #9a7430 14%,
+    #b89040 30%,
+    #d8b05a 46%,
+    #f6e2a6 56%,
+    #e8c878 68%,
+    #d8b05a 82%,
+    #8a6423 100%
+  );
+}
+
+.cw-scene--hero .cw-ed-the {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: 0.22em;
+  font-style: italic;
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-color: rgba(216, 176, 90, 0.38);
+  color: #d8b05a;
+  margin-left: 0.15em;
+  align-self: center;
+}
+
+.cw-scene--hero .cw-hero-editorial,
+.cw-scene--hero .cw-hero-editorial * {
+  animation: none !important;
+  transform: none !important;
+  translate: none !important;
+  opacity: 1 !important;
+}
+
 /* Hero proof pills — Premium Signals (Version G) */
 .cw-scene--hero .cw-phrases {
   gap: 10px;
@@ -966,6 +1107,13 @@ html[data-split-pricing] .tier-grid-2 {
   }
   .cw-scene {
     padding: 48px 20px 64px;
+  }
+  .cw-scene--hero .cw-hero-editorial {
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+  }
+  .cw-scene--hero .cw-ed-the {
+    font-size: 0.28em;
   }
 }
 
