@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Concept 28 — Editorial Intelligence · Design Lab · Brieftick</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/editorial-intelligence/editorial-intelligence.css">
+</head>
+<body>
+  <div class="ei-shell">
+    <header class="ei-chrome">
+      <div class="ei-chrome__start">
+        <strong>Design Lab · Concept 28 — Editorial Intelligence</strong>
+        <span class="ei-chrome__note">Typography exploration only</span>
+      </div>
+      <nav class="ei-versions" aria-label="Typography versions">
+        <button type="button" class="ei-versions__btn is-active" data-ei-version="a">A · Sentence case</button>
+        <button type="button" class="ei-versions__btn" data-ei-version="b">B · All caps</button>
+        <button type="button" class="ei-versions__btn" data-ei-version="c">C · Editorial hierarchy</button>
+      </nav>
+      <a class="ei-chrome__back" href="/">← Brieftick</a>
+    </header>
+
+    <main class="ei-stage">
+      <div class="ei-atmosphere" aria-hidden="true">
+        <div class="ei-atmosphere__glow"></div>
+        <div class="ei-atmosphere__grain"></div>
+      </div>
+
+      <!-- Version A — Sentence case -->
+      <article class="ei-hero is-active" data-ei-panel="a" aria-label="Version A sentence case">
+        <div class="ei-masthead ei-masthead--sentence">
+          <h1 class="ei-headline">
+            <span class="ei-line ei-line--silver">Investment intelligence.</span>
+            <span class="ei-line ei-line--gold ei-line--italic">Without the noise.</span>
+          </h1>
+        </div>
+      </article>
+
+      <!-- Version B — All caps -->
+      <article class="ei-hero" data-ei-panel="b" hidden aria-label="Version B all caps">
+        <div class="ei-masthead ei-masthead--caps">
+          <h1 class="ei-headline">
+            <span class="ei-line ei-line--silver">Investment intelligence.</span>
+            <span class="ei-line ei-line--gold ei-line--italic">Without the noise.</span>
+          </h1>
+        </div>
+      </article>
+
+      <!-- Version C — Mixed editorial hierarchy (reference-inspired) -->
+      <article class="ei-hero" data-ei-panel="c" hidden aria-label="Version C editorial hierarchy">
+        <div class="ei-masthead ei-masthead--editorial">
+          <h1 class="ei-headline">
+            <span class="ei-line ei-line--silver ei-line--split">
+              <span class="ei-word">In<span class="ei-v-accent" aria-hidden="true">V</span>estment</span>
+            </span>
+            <span class="ei-line ei-line--silver ei-line--split">
+              <span class="ei-word">Intell<span class="ei-i-accent">i</span>gence.</span>
+            </span>
+            <span class="ei-line ei-line--gold ei-line--italic ei-line--split ei-line--without">
+              <span class="ei-word">Without</span>
+              <span class="ei-the">the</span>
+            </span>
+            <span class="ei-line ei-line--gold ei-line--italic ei-line--split">
+              <span class="ei-word">N<span class="ei-o-slash">o</span>ise.</span>
+            </span>
+          </h1>
+        </div>
+      </article>
+    </main>
+
+    <footer class="ei-foot" role="note">
+      Prototype typography · not production · no rollout to landing without approval
+    </footer>
+  </div>
+
+  <script src="/design-lab/editorial-intelligence/editorial-intelligence.js" defer></script>
+</body>
+</html>

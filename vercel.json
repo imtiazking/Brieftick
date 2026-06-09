@@ -55,7 +55,8 @@
     { "source": "/design-lab/broker-intelligence/command-center", "destination": "/design-lab/broker-intelligence/command-center.html" },
     { "source": "/design-lab/broker-intelligence/journey", "destination": "/design-lab/broker-intelligence/journey.html" },
     { "source": "/design-lab/broker-intelligence/portfolio", "destination": "/design-lab/broker-intelligence/portfolio.html" },
-    { "source": "/design-lab/portfolio-intelligence", "destination": "/design-lab/portfolio-intelligence/index.html" }
+    { "source": "/design-lab/portfolio-intelligence", "destination": "/design-lab/portfolio-intelligence/index.html" },
+    { "source": "/design-lab/editorial-intelligence", "destination": "/design-lab/editorial-intelligence/index.html" }
   ],
   "headers": [
     {

@@ -1,0 +1,383 @@
+/**
+ * Concept 28 — Editorial Intelligence
+ * Premium editorial typography exploration (design-lab only)
+ */
+
+:root {
+  --ei-gold: #d4a85a;
+  --ei-gold-bright: #e8c98a;
+  --ei-gold-deep: #9a7332;
+  --ei-void: #0a0b0e;
+  --ei-void-warm: #12100c;
+  --ei-silver: #ece8e0;
+  --ei-display: "Cormorant Garamond", "Bodoni Moda", Georgia, serif;
+  --ei-display-caps: "Bodoni Moda", "Cormorant Garamond", Georgia, serif;
+  --ei-mono: "JetBrains Mono", ui-monospace, monospace;
+  --ei-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--ei-display);
+  background: var(--ei-void);
+  color: var(--ei-silver);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.ei-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chrome */
+.ei-chrome {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 0.85rem clamp(1rem, 3vw, 1.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(6, 7, 10, 0.72);
+  backdrop-filter: blur(12px);
+  font-family: var(--ei-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.ei-chrome strong {
+  color: var(--ei-gold);
+  font-weight: 500;
+}
+
+.ei-chrome__note {
+  margin-left: 0.5rem;
+  opacity: 0.7;
+}
+
+.ei-chrome__back {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ei-chrome__back:hover {
+  color: var(--ei-silver);
+}
+
+.ei-versions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.ei-versions__btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--ei-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.65rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
+}
+
+.ei-versions__btn:hover {
+  color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(212, 168, 90, 0.25);
+}
+
+.ei-versions__btn.is-active {
+  color: var(--ei-gold-bright);
+  border-color: rgba(212, 168, 90, 0.4);
+  background: rgba(212, 168, 90, 0.08);
+}
+
+/* Stage */
+.ei-stage {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 120px);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  overflow: hidden;
+}
+
+.ei-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ei-atmosphere__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 88% 42%, rgba(212, 168, 90, 0.14), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 12% 78%, rgba(120, 130, 160, 0.06), transparent 55%),
+    linear-gradient(165deg, #060608 0%, var(--ei-void) 45%, var(--ei-void-warm) 100%);
+}
+
+.ei-atmosphere__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.ei-hero {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1120px);
+  animation: ei-fade-in 1s var(--ei-ease) both;
+}
+
+.ei-hero[hidden] {
+  display: none;
+}
+
+@keyframes ei-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Masthead — shared scale */
+.ei-masthead {
+  text-align: left;
+  padding-left: clamp(0.5rem, 3vw, 2rem);
+}
+
+.ei-headline {
+  font-family: var(--ei-display);
+  font-weight: 400;
+  font-size: clamp(3.5rem, 14vw, 11.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+}
+
+.ei-line {
+  display: block;
+  position: relative;
+}
+
+/* Metallic silver */
+.ei-line--silver {
+  background: linear-gradient(
+    118deg,
+    #8a8880 0%,
+    #f4f0e8 18%,
+    #ffffff 32%,
+    #c8c4bc 48%,
+    #f0ece4 62%,
+    #a8a49c 78%,
+    #e8e4dc 92%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.45));
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Metallic gold */
+.ei-line--gold {
+  background: linear-gradient(
+    125deg,
+    #6b5220 0%,
+    #c9983a 15%,
+    #f0d898 30%,
+    #fff4d0 42%,
+    #d4a85a 58%,
+    #e8c98a 72%,
+    #9a7332 88%,
+    #e0b86a 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 6px 22px rgba(212, 168, 90, 0.22));
+}
+
+.ei-line--italic {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Version B — all caps */
+.ei-masthead--caps .ei-headline {
+  font-family: var(--ei-display-caps);
+  font-weight: 500;
+  letter-spacing: -0.028em;
+  text-transform: uppercase;
+}
+
+.ei-masthead--caps .ei-line--italic {
+  font-weight: 500;
+}
+
+/* Version C — editorial split hierarchy */
+.ei-masthead--editorial .ei-headline {
+  font-family: var(--ei-display-caps);
+  font-weight: 500;
+  font-size: clamp(3.25rem, 13.5vw, 10.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.ei-masthead--editorial .ei-line--split {
+  margin-bottom: -0.02em;
+}
+
+.ei-masthead--editorial .ei-line--without {
+  display: flex;
+  align-items: baseline;
+  gap: 0.12em;
+  flex-wrap: wrap;
+}
+
+.ei-the {
+  font-size: 0.22em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-color: rgba(212, 168, 90, 0.55);
+  background: linear-gradient(125deg, #c9983a, #f0d898, #d4a85a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-left: 0.15em;
+  align-self: center;
+}
+
+/* Gold accent on V left stroke */
+.ei-v-accent {
+  position: relative;
+  display: inline-block;
+}
+
+.ei-v-accent::before {
+  content: "";
+  position: absolute;
+  left: -0.02em;
+  top: 8%;
+  bottom: 8%;
+  width: 0.09em;
+  background: linear-gradient(180deg, #fff0c8, #d4a85a, #9a7332);
+  border-radius: 1px;
+  transform: skewX(-8deg);
+  box-shadow: 0 0 12px rgba(212, 168, 90, 0.45);
+}
+
+/* Gold sphere on i tittle */
+.ei-i-accent {
+  position: relative;
+  font-style: normal;
+}
+
+.ei-i-accent::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -0.55em;
+  width: 0.18em;
+  height: 0.18em;
+  margin-left: -0.09em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff8e0, #d4a85a 55%, #7a5c20);
+  box-shadow: 0 0 10px rgba(212, 168, 90, 0.5);
+}
+
+/* Slashed O */
+.ei-o-slash {
+  position: relative;
+  display: inline-block;
+}
+
+.ei-o-slash::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 50%;
+  height: 0.04em;
+  background: linear-gradient(90deg, transparent, #e8c98a, transparent);
+  transform: rotate(-32deg);
+  box-shadow: 0 0 6px rgba(212, 168, 90, 0.35);
+}
+
+.ei-foot {
+  position: relative;
+  z-index: 10;
+  padding: 0.85rem clamp(1rem, 3vw, 1.5rem);
+  font-family: var(--ei-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.28);
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 640px) {
+  .ei-chrome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ei-masthead {
+    padding-left: 0;
+  }
+
+  .ei-headline {
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+  }
+
+  .ei-masthead--editorial .ei-the {
+    font-size: 0.28em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ei-hero {
+    animation: none;
+  }
+}
