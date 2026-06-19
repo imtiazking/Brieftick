@@ -1,5 +1,5 @@
 /**
- * BriefTick Beta Signup API
+ * FORGENIQ Beta Signup API
  *
  * Accepts POST { name, email, role, message } and forwards to any
  * combination of:
@@ -64,8 +64,8 @@ export default async function handler(req, res) {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Origin': 'https://www.brieftick.com',
-          'Referer': 'https://www.brieftick.com/',
+          'Origin': 'https://www.forgeniq.com',
+          'Referer': 'https://www.forgeniq.com/',
         },
         body: JSON.stringify(fsPayload),
       });

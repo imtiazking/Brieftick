@@ -55,7 +55,7 @@ export async function runSectorRotationLogic(ctx) {
     .join("\n");
 
   const ai = await callLogicLLM(
-    "Brieftick Sector Rotation Logic — leadership and laggards. No trade advice.",
+    "FORGENIQ Sector Rotation Logic — leadership and laggards. No trade advice.",
     `${prompt}\n${sectorCtx}\nNews: ${items[0]?.headline}\n${buildFusionPromptExtras(ctx, "XLK")}`,
     650
   );
@@ -91,8 +91,8 @@ export async function runSectorRotationLogic(ctx) {
       sources: ctx.fusion
         ? fusionAttributionSources(ctx.fusion)
         : newsPack.live
-          ? ["Finnhub", "Brieftick Logic"]
-          : ["Brieftick Logic"],
+          ? ["Finnhub", "FORGENIQ Logic"]
+          : ["FORGENIQ Logic"],
       mode: "sector-rotation",
       mockData: !newsPack.live,
     },

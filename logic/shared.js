@@ -221,7 +221,7 @@ export function parseLogicJson(raw) {
       keyDrivers: obj.keyDrivers || obj.key_drivers || [],
       signals: obj.signals || [],
       confidence: obj.confidence ?? 65,
-      sources: obj.sources || ["Anthropic · Brieftick Logic"],
+      sources: obj.sources || ["Anthropic · FORGENIQ Logic"],
       cards: obj.cards,
       disclaimer: LOGIC_DISCLAIMER,
       usedAI: true,
@@ -233,7 +233,7 @@ export function parseLogicJson(raw) {
       keyDrivers: [],
       signals: [],
       confidence: 55,
-      sources: ["Anthropic · Brieftick Logic"],
+      sources: ["Anthropic · FORGENIQ Logic"],
       usedAI: true,
     });
   }

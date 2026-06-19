@@ -82,7 +82,7 @@ export function getWatchlist() {
 }
 
 /**
- * Ask Claude via existing BriefTick proxy; expect JSON object in response.
+ * Ask Claude via existing FORGENIQ proxy; expect JSON object in response.
  */
 export async function callAgentLLM(systemPrompt, userPrompt, maxTokens = 700) {
   const api = window.BriefTickAPI;
@@ -126,7 +126,7 @@ export function parseAgentJson(raw) {
       keyDrivers: obj.keyDrivers || obj.key_drivers || [],
       signals: obj.signals || [],
       confidence: obj.confidence ?? 65,
-      sources: obj.sources || ["Anthropic · Brieftick"],
+      sources: obj.sources || ["Anthropic · FORGENIQ"],
       disclaimer: AGENT_DISCLAIMER,
       usedAI: true,
     });
@@ -137,7 +137,7 @@ export function parseAgentJson(raw) {
       keyDrivers: [],
       signals: [],
       confidence: 55,
-      sources: ["Anthropic · Brieftick"],
+      sources: ["Anthropic · FORGENIQ"],
       usedAI: true,
     });
   }

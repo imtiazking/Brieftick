@@ -1,5 +1,5 @@
 /**
- * Brieftick Logic — shared types & intelligence card helpers.
+ * FORGENIQ Logic — shared types & intelligence card helpers.
  * @module logic/types
  */
 
@@ -153,7 +153,7 @@ export function buildLogicResponse(partial) {
     confidenceLabel: partial.confidenceLabel,
     optionalCards: partial.optionalCards || {},
     memoryHint: partial.memoryHint,
-    sources: partial.sources || ["Brieftick Logic"],
+    sources: partial.sources || ["FORGENIQ Logic"],
     disclaimer: partial.disclaimer || LOGIC_DISCLAIMER,
     mode: partial.mode,
     modeLabel: partial.modeLabel,

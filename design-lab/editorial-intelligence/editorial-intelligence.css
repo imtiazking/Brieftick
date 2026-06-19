@@ -132,6 +132,7 @@ body {
 .ei-atmosphere {
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -156,6 +157,7 @@ body {
   position: relative;
   z-index: 2;
   width: min(100%, 1120px);
+  isolation: isolate;
   animation: ei-fade-in 1s var(--ei-ease) both;
 }
 
@@ -239,11 +241,116 @@ body {
 }
 
 /* Version B — all caps */
+.ei-masthead--caps {
+  isolation: isolate;
+}
+
 .ei-masthead--caps .ei-headline {
   font-family: var(--ei-display-caps);
   font-weight: 500;
-  letter-spacing: -0.028em;
+  letter-spacing: -0.022em;
   text-transform: uppercase;
+}
+
+.ei-masthead--caps .ei-line--split {
+  margin-bottom: -0.02em;
+}
+
+/*
+ * Dual-layer metallic: solid base + high-contrast gradient shine.
+ * Base guarantees every serif stroke stays opaque; shine adds luxury depth.
+ */
+.ei-masthead--caps .ei-metallic,
+.ei-masthead--editorial .ei-metallic {
+  background: none;
+  background-image: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: inherit;
+  color: inherit;
+  filter: none;
+}
+
+.ei-metallic--inline {
+  display: inline-block;
+  position: relative;
+}
+
+.ei-metallic__base,
+.ei-metallic__shine {
+  display: block;
+}
+
+.ei-metallic__base {
+  color: #dedad2;
+  text-shadow: 0 -1px 0 #ccc8c0;
+}
+
+.ei-metallic__shine {
+  position: absolute;
+  inset: 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Polished chrome — gradient floor stays bright; no washed-out dark stops */
+.ei-metallic--silver {
+  filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.22));
+}
+
+.ei-metallic--silver .ei-metallic__base {
+  color: #ddd9d1;
+  text-shadow:
+    0 1px 0 #ece8e0,
+    0 -1px 0 #c4c0b8;
+}
+
+.ei-metallic--silver .ei-metallic__shine {
+  background-image: linear-gradient(
+    168deg,
+    #e4e0d8 0%,
+    #f8f4ec 22%,
+    #ffffff 44%,
+    #f0ece4 62%,
+    #ffffff 80%,
+    #e8e4dc 100%
+  );
+  background-size: 100% 100%;
+}
+
+/* Luxury gold — champagne highlights, amber depth, watch-brand richness */
+.ei-metallic--gold {
+  filter:
+    drop-shadow(0 2px 10px rgba(180, 130, 40, 0.45))
+    drop-shadow(0 6px 28px rgba(212, 168, 90, 0.38))
+    drop-shadow(0 0 48px rgba(232, 200, 138, 0.12));
+}
+
+.ei-metallic--gold .ei-metallic__base {
+  color: #c9983a;
+  text-shadow:
+    0 1px 0 #fff4d8,
+    0 2px 0 #f0d080,
+    0 -1px 0 #a87830,
+    0 -2px 0 #8a6428;
+}
+
+.ei-metallic--gold .ei-metallic__shine {
+  background-image: linear-gradient(
+    154deg,
+    #c09038 0%,
+    #d4a85a 14%,
+    #e8c070 30%,
+    #f5d888 44%,
+    #fff8ec 52%,
+    #fff4d8 58%,
+    #f0d080 72%,
+    #e8b850 86%,
+    #c9983a 100%
+  );
+  background-size: 100% 100%;
 }
 
 .ei-masthead--caps .ei-line--italic {
@@ -251,6 +358,10 @@ body {
 }
 
 /* Version C — editorial split hierarchy */
+.ei-masthead--editorial {
+  isolation: isolate;
+}
+
 .ei-masthead--editorial .ei-headline {
   font-family: var(--ei-display-caps);
   font-weight: 500;
@@ -271,6 +382,10 @@ body {
   flex-wrap: wrap;
 }
 
+.ei-masthead--editorial .ei-line--italic {
+  font-weight: 500;
+}
+
 .ei-the {
   font-size: 0.22em;
   font-style: italic;
@@ -280,68 +395,12 @@ body {
   text-decoration: underline;
   text-underline-offset: 0.35em;
   text-decoration-color: rgba(212, 168, 90, 0.55);
-  background: linear-gradient(125deg, #c9983a, #f0d898, #d4a85a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #e8c070;
+  text-shadow:
+    0 1px 0 #fff4d8,
+    0 -1px 0 #a87830;
   margin-left: 0.15em;
   align-self: center;
-}
-
-/* Gold accent on V left stroke */
-.ei-v-accent {
-  position: relative;
-  display: inline-block;
-}
-
-.ei-v-accent::before {
-  content: "";
-  position: absolute;
-  left: -0.02em;
-  top: 8%;
-  bottom: 8%;
-  width: 0.09em;
-  background: linear-gradient(180deg, #fff0c8, #d4a85a, #9a7332);
-  border-radius: 1px;
-  transform: skewX(-8deg);
-  box-shadow: 0 0 12px rgba(212, 168, 90, 0.45);
-}
-
-/* Gold sphere on i tittle */
-.ei-i-accent {
-  position: relative;
-  font-style: normal;
-}
-
-.ei-i-accent::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -0.55em;
-  width: 0.18em;
-  height: 0.18em;
-  margin-left: -0.09em;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #fff8e0, #d4a85a 55%, #7a5c20);
-  box-shadow: 0 0 10px rgba(212, 168, 90, 0.5);
-}
-
-/* Slashed O */
-.ei-o-slash {
-  position: relative;
-  display: inline-block;
-}
-
-.ei-o-slash::after {
-  content: "";
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  top: 50%;
-  height: 0.04em;
-  background: linear-gradient(90deg, transparent, #e8c98a, transparent);
-  transform: rotate(-32deg);
-  box-shadow: 0 0 6px rgba(212, 168, 90, 0.35);
 }
 
 .ei-foot {

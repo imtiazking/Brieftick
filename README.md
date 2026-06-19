@@ -1,4 +1,4 @@
-# BriefTick
+# FORGENIQ
 
 Markets dashboard with server-side API key management and request caching.
 
@@ -49,8 +49,17 @@ Edit `api/proxy.js` to tune these.
 
 ## Local development
 
-```
-npx vercel dev
+```bash
+npm install
+npm run dev
 ```
 
-This boots the proxy locally. Add the same env vars to a `.env.local` file (gitignored) for local testing.
+Opens **http://localhost:3000** — static app + design labs (`serve` with `serve.json` clean URLs).
+
+**Full production parity** (API routes + all `vercel.json` rewrites): run `vercel login` once, then:
+
+```bash
+npm run dev:vercel
+```
+
+Add API keys to `.env.local` (gitignored) when using `dev:vercel`.

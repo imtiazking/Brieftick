@@ -11,7 +11,7 @@ export function logicDebug(event, data) {
   if (typeof window === "undefined") {
     if (process.env.LOGIC_DEBUG === "1") {
       const payload = data !== undefined ? data : "";
-      console.log(`[Brieftick Logic] ${event}`, payload);
+      console.log(`[FORGENIQ Logic] ${event}`, payload);
     }
     return;
   }
@@ -22,5 +22,5 @@ export function logicDebug(event, data) {
     new URLSearchParams(window.location.search).get("logic_debug") === "1" ||
     new URLSearchParams(window.location.search).get("preview") === "logic" ||
     new URLSearchParams(window.location.search).get("preview") === "agent";
-  if (on) console.log(`[Brieftick Logic] ${event}`, payload);
+  if (on) console.log(`[FORGENIQ Logic] ${event}`, payload);
 }

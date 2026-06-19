@@ -867,7 +867,7 @@ const SIGNALS_EXPLAIN = {
 const NEWS_EXPLAIN = {
   what: "Plain English explains what is moving markets, why it matters, which areas are affected, and what to watch next.",
   why: "You should not need investing experience to understand the biggest story in under five seconds.",
-  matters: "Brieftick interprets the market for you — it does not dump headlines or jargon.",
+  matters: "FORGENIQ interprets the market for you — it does not dump headlines or jargon.",
 };
 
 const MOVES_TOGETHER_EXPLAIN = {
@@ -962,7 +962,7 @@ function renderRisk(section) {
       <div class="risk-component"><span>Sectors</span><div class="risk-component-track"><div class="risk-component-fill" style="width:55%"></div></div><span>55</span></div>
       <div class="risk-component"><span>News Stress</span><div class="risk-component-track"><div class="risk-component-fill" style="width:42%"></div></div><span>42</span></div>
     </div>
-    <div class="vix-explain" style="margin-top:14px"><b style="color:#d4a85a">BriefTick read:</b> Equities hold firm while vol markets price event risk. Credit spreads calm; front-end yields anchor the tape. Primary risk is breadth, not level.</div>
+    <div class="vix-explain" style="margin-top:14px"><b style="color:#d4a85a">FORGENIQ read:</b> Equities hold firm while vol markets price event risk. Credit spreads calm; front-end yields anchor the tape. Primary risk is breadth, not level.</div>
   </div>`;
 }
 

@@ -4,7 +4,7 @@ from pathlib import Path
 path = Path(__file__).resolve().parents[1] / "index.html"
 content = path.read_text(encoding="utf-8")
 replacement = """<section class="page active" id="page-landing">
-  <div id="splitLandingMount" class="split-landing-mount" aria-label="Brieftick landing"></div>
+  <div id="splitLandingMount" class="split-landing-mount" aria-label="FORGENIQ landing"></div>
 </section>
 
 """

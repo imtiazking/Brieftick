@@ -20,7 +20,7 @@ export function initMission({ steps, root, stepThreeVariant = "discover" }) {
         <header class="mission__header">
           <span class="mission__tag">Session Quest</span>
           <h1>Start your market session</h1>
-          <p>Complete three missions to unlock the full Brieftick workflow.</p>
+          <p>Complete three missions to unlock the full FORGENIQ workflow.</p>
           <div class="mission__xp">
             <span data-xp-label>0 XP</span>
             <div class="mission__xp-track"><span data-xp-bar style="width:0%"></span></div>

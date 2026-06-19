@@ -64,7 +64,7 @@ export function getBriefingSections(third = "discover") {
   return [
     {
       id: "open",
-      kicker: "BRIEFTICK TERMINAL · SESSION OPEN",
+      kicker: "FORGENIQ TERMINAL · SESSION OPEN",
       headline: "Good morning. Markets are live.",
       body: "This briefing walks you through three places every new user should know. Read at your pace — arrow or tap to advance.",
       meta: "— — —",
@@ -106,7 +106,7 @@ export function getCopilotScript(third = "discover") {
   return [
     {
       role: "bot",
-      text: "Hi — I'm your Brieftick co-pilot. I'll show you three spots that matter. Ready?",
+      text: "Hi — I'm your FORGENIQ co-pilot. I'll show you three spots that matter. Ready?",
       chips: ["Let's go", "Skip intro"],
     },
     {
@@ -168,7 +168,7 @@ export function getStrategistSessions(third = "discover") {
   const s = getSteps(third);
   return {
     intro: {
-      headline: "I'll walk you through Brieftick",
+      headline: "I'll walk you through FORGENIQ",
       body: "I'm Elena, senior market strategist. In about two minutes I'll show you the three places every new user should know — without overwhelming you.",
       duration: "~2 min",
     },

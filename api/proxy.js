@@ -1,5 +1,5 @@
 /**
- * BriefTick API Proxy
+ * FORGENIQ API Proxy
  *
  * Routes browser requests to the right provider, attaches the secret API key
  * server-side, and caches responses so visitors share API calls.
@@ -145,7 +145,7 @@ async function proxyYahooSearch(req, res) {
   const url = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}&quotesCount=10&newsCount=0&listsCount=0`;
   try {
     const r = await fetch(url, {
-      headers: { "User-Agent": "BriefTick/1.0 symbol-search" },
+      headers: { "User-Agent": "FORGENIQ/1.0 symbol-search" },
     });
     if (r.status === 429) {
       return res.status(429).json({ ok: false, failureReason: "rate_limited" });
@@ -204,7 +204,7 @@ async function proxyYahooChart(req, res) {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`;
   try {
     const r = await fetch(url, {
-      headers: { 'User-Agent': 'BriefTick/1.0 market-snapshot' },
+      headers: { 'User-Agent': 'FORGENIQ/1.0 market-snapshot' },
     });
     if (r.status === 429) {
       return res.status(429).json({ ok: false, failureReason: 'rate_limited', message: 'Rate limited' });
@@ -343,7 +343,7 @@ async function fetchFredCsv(series, attempt = 1) {
     const r = await fetch(url, {
       signal: ctrl.signal,
       headers: {
-        'User-Agent': 'BriefTick/1.0 (market-snapshot; +https://www.brieftick.com)',
+        'User-Agent': 'FORGENIQ/1.0 (market-snapshot; +https://www.forgeniq.com)',
         Accept: 'text/csv,text/plain,*/*',
       },
     });
@@ -441,7 +441,7 @@ async function proxySEC(req, res) {
       return res.status(400).json({ error: 'unknown SEC endpoint' });
     }
     const r = await fetch(url, {
-      headers: { 'User-Agent': 'BriefTick/1.0 market-intelligence-app', 'Accept': 'application/json' }
+      headers: { 'User-Agent': 'FORGENIQ/1.0 market-intelligence-app', 'Accept': 'application/json' }
     });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
@@ -467,7 +467,7 @@ async function proxyPolygon(req, res) {
   try {
     const qs = new URLSearchParams({ ...params, apiKey: key }).toString();
     const url = `https://api.polygon.io/${endpoint}?${qs}`;
-    const r = await fetch(url, { headers: { 'User-Agent': 'BriefTick/1.0' } });
+    const r = await fetch(url, { headers: { 'User-Agent': 'FORGENIQ/1.0' } });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
     if (data.status !== 'ERROR') cacheSet(cacheKey, data);
@@ -497,7 +497,7 @@ async function proxyPoliticalTrades(req, res) {
   for (const url of sources) {
     try {
       const r = await fetch(url, {
-        headers: { 'User-Agent': 'BriefTick/1.0 market-intelligence-app' },
+        headers: { 'User-Agent': 'FORGENIQ/1.0 market-intelligence-app' },
         redirect: 'follow',
       });
       if (!r.ok) continue;

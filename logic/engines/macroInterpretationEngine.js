@@ -394,7 +394,7 @@ export function buildMacroInterpretationCards(model) {
     keyDrivers: model.keyDrivers,
     signals: ["Conceptual macro", "Context-dependent", model.label],
     confidence: 68,
-    sources: ["Brieftick Logic · Macro Interpretation"],
+    sources: ["FORGENIQ Logic · Macro Interpretation"],
   };
 }
 

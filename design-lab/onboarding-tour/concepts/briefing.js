@@ -16,7 +16,7 @@ export function initBriefing({ steps, root, stepThreeVariant = "discover" }) {
     <div class="phil briefing" data-layer>
       <div class="briefing__terminal">
         <header class="briefing__bar">
-          <span>BRIEFTICK</span>
+          <span>FORGENIQ</span>
           <span class="briefing__clock" data-clock></span>
           <span class="briefing__line" data-line-counter>LN 1/${sections.length}</span>
         </header>

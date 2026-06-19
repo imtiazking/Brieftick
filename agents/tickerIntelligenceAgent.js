@@ -21,7 +21,7 @@ export async function runTickerIntelligenceAgent(prompt) {
           keyDrivers: ["News catalyst", "Sector sympathy", "Macro rates backdrop"],
           signals: ["Volatility active", "Headline-driven"],
           confidence: 74,
-          sources: ["Finnhub", "Anthropic · Brieftick"],
+          sources: ["Finnhub", "Anthropic · FORGENIQ"],
           mode: "ticker",
           usedAI: true,
         });
@@ -68,7 +68,7 @@ export async function runTickerIntelligenceAgent(prompt) {
       "Headline sensitivity",
     ],
     confidence: quote ? 70 : 48,
-    sources: quote ? ["Finnhub", "Brieftick"] : ["Brieftick preview"],
+    sources: quote ? ["Finnhub", "FORGENIQ"] : ["FORGENIQ preview"],
     mode: "ticker",
     mockData: !quote,
   });

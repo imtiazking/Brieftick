@@ -62,8 +62,8 @@ export async function runPortfolioLogic(ctx) {
         sources: ctx.fusion
           ? fusionAttributionSources(ctx.fusion)
           : usingSample
-            ? ["Sample book · Brieftick Logic"]
-            : ["Portfolio Context", "Brieftick Logic"],
+            ? ["Sample book · FORGENIQ Logic"]
+            : ["Portfolio Context", "FORGENIQ Logic"],
         mode: "portfolio",
         modeLabel: ctx.responsePlan?.label || shaped.title,
         mockData: usingSample,
@@ -87,7 +87,7 @@ export async function runPortfolioLogic(ctx) {
 
   const focus = shaped.llmFocus || prompt;
   const ai = await callLogicLLM(
-    `Brieftick Portfolio Logic. Answer ONLY this question: "${focus}". Do not open with a generic AI concentration summary unless that is what was asked. Never recommend trades.`,
+    `FORGENIQ Portfolio Logic. Answer ONLY this question: "${focus}". Do not open with a generic AI concentration summary unless that is what was asked. Never recommend trades.`,
     `${prompt}\nHoldings:\n${bookCtx}\nTop3 weight: ${top3Weight}%\n${buildFusionPromptExtras(ctx, top3[0]?.symbol || "SPY")}`,
     700
   );
@@ -120,8 +120,8 @@ export async function runPortfolioLogic(ctx) {
       sources: ctx.fusion
         ? fusionAttributionSources(ctx.fusion)
         : holdings.length
-          ? ["Portfolio Context", "Finnhub", "Brieftick Logic"]
-          : ["Sample book · Brieftick Logic"],
+          ? ["Portfolio Context", "Finnhub", "FORGENIQ Logic"]
+          : ["Sample book · FORGENIQ Logic"],
       mode: "portfolio",
       mockData: !holdings.length,
       optionalCards: {

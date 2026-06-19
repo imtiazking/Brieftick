@@ -27,7 +27,7 @@ const PANEL_SHELL = `
     </section>
   </article>`;
 
-/** Flagship Brieftick Briefing panel */
+/** Flagship FORGENIQ Briefing panel */
 const FLAGSHIP_PANEL_SHELL = `
   <article class="briefing-panel" id="wheelIntelPanel">
     <header class="briefing-panel__hero">
@@ -95,10 +95,10 @@ function bootWheelLab(config, meta = {}) {
 
   if (!isProduction) {
     document.title = isFlagship
-      ? `${config.title} · Design Lab · Brieftick`
-      : `${config.title} · Wheel System · Brieftick`;
+      ? `${config.title} · Design Lab · FORGENIQ`
+      : `${config.title} · Wheel System · FORGENIQ`;
   } else {
-    document.title = `What's Moving · Brieftick`;
+    document.title = `What's Moving · FORGENIQ`;
   }
 
   const titleEl = document.getElementById("wheelLabTitle");

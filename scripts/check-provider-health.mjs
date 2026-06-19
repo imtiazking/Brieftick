@@ -2,13 +2,13 @@
  * CLI provider health check (production-safe).
  *
  * Env only (no secret):
- *   node scripts/check-provider-health.mjs https://www.brieftick.com
+ *   node scripts/check-provider-health.mjs https://www.forgeniq.com
  *
  * Live probes (requires HEALTH_PROBE_SECRET):
- *   node scripts/check-provider-health.mjs https://www.brieftick.com YOUR_SECRET
+ *   node scripts/check-provider-health.mjs https://www.forgeniq.com YOUR_SECRET
  */
 
-const base = (process.argv[2] || 'https://www.brieftick.com').replace(/\/$/, '');
+const base = (process.argv[2] || 'https://www.forgeniq.com').replace(/\/$/, '');
 const secret = process.argv[3];
 const probe = Boolean(secret);
 

@@ -311,7 +311,7 @@ function fillRiver() {
   const el = document.getElementById("dashLabRiver");
   if (!el) return;
   const fallback =
-    "SPY +0.48% · QQQ +0.62% · NVDA −1.24% · VIX 14.2 · AAPL +0.82% · BRIEFTICK · DASHBOARD LAB · ";
+    "SPY +0.48% · QQQ +0.62% · NVDA −1.24% · VIX 14.2 · AAPL +0.82% · FORGENIQ · DASHBOARD LAB · ";
   el.textContent = fallback.repeat(6);
 }
 

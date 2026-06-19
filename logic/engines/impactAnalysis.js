@@ -57,7 +57,7 @@ SPY: ${spy?.pctChange != null ? `${spy.pctChange >= 0 ? "+" : ""}${spy.pctChange
 VOL: ${vixHint}`;
 
   const ai = await callLogicLLM(
-    `You are Brieftick Logic scenario impact analysis. Educational market intelligence only.
+    `You are FORGENIQ Logic scenario impact analysis. Educational market intelligence only.
 Rules:
 - Never predict exact outcomes or assign numeric probabilities.
 - Use phrases like: low probability, moderate probability, elevated likelihood, markets appear to be pricing in, investors may interpret.
@@ -76,7 +76,7 @@ Rules:
       scenarioId: frame.id,
       usedAI: true,
       mockData: !fusion?.live,
-      sources: ai.sources?.length ? ai.sources : ["Brieftick Logic · Scenario Engine"],
+      sources: ai.sources?.length ? ai.sources : ["FORGENIQ Logic · Scenario Engine"],
     };
   }
 
@@ -182,7 +182,7 @@ function buildTemplateImpact(scenarioResult, ctx, failedSources, portSymbols, sp
       `Moderate probability path: ${frame.bullishOutcomes[0]}`,
     ],
     confidence: 58,
-    sources: ["Brieftick Logic · Scenario Engine"],
+    sources: ["FORGENIQ Logic · Scenario Engine"],
     mode: "scenario",
     modeLabel: "Scenario Logic",
     mockData: true,
@@ -241,7 +241,7 @@ TAPE: ${[tape, energy].filter(Boolean).join(" · ") || "limited"}
 FRAMING: ${frame.pricingInterpretation}`;
 
   const ai = await callLogicLLM(
-    `You are Brieftick Logic — geopolitical market briefing. Answer the user's question directly in the first card.
+    `You are FORGENIQ Logic — geopolitical market briefing. Answer the user's question directly in the first card.
 Rules:
 - MAX 2 short sentences per card field. No filler like "indices tracked" or "volatility monitored".
 - Lead with what the conflict headline means for markets NOW.
@@ -262,7 +262,7 @@ JSON cards: snapshot (direct answer), catalyst (key headline driver), macroConte
       scenarioId: frame.id,
       usedAI: true,
       mockData: !fusion?.live,
-      sources: ai.sources?.length ? ai.sources : ["Brieftick Logic · Geopolitical Briefing"],
+      sources: ai.sources?.length ? ai.sources : ["FORGENIQ Logic · Geopolitical Briefing"],
     };
   }
 
@@ -382,7 +382,7 @@ function buildBriefingTemplate(
       keyDrivers: topHeadlines.slice(0, 3).map((n) => n.headline),
       signals: ["Headline-driven", "Oil / defense channel", tape || "Tape mixed"],
       confidence: topHeadlines.length >= 2 ? 64 : 52,
-      sources: ["Brieftick Logic · Geopolitical Briefing"],
+      sources: ["FORGENIQ Logic · Geopolitical Briefing"],
       mode: "scenario",
       modeLabel: "Geopolitical Briefing",
       scenarioId: frame.id,

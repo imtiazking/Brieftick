@@ -112,7 +112,7 @@ ${ctx.mode === "causal" ? "" : `TAPE: ${tape || "limited"}`}
 ${ctx.mode === "causal" ? "" : buildFusionPromptExtras(ctx, "SPY")}`;
 
   const ai = await callLogicLLM(
-    `You are Brieftick Logic. Answer the user's market question in plain English.
+    `You are FORGENIQ Logic. Answer the user's market question in plain English.
 Rules:
 - Put the direct answer in "directAnswer" (2-3 sentences max). Answer the question in sentence 1.
 - Each card field max 2 short sentences. No generic filler ("indices tracked", "volatility monitored").
@@ -166,7 +166,7 @@ Return JSON with: title, directAnswer, summary, keyDrivers, signals, confidence,
     keyDrivers: top.slice(0, 3).map((n) => n.headline),
     signals: ["Topic-filtered headlines", tape || "Tape limited"],
     confidence: top.length >= 2 ? 62 : 48,
-    sources: ["Brieftick Logic · Briefing"],
+    sources: ["FORGENIQ Logic · Briefing"],
     mode: "briefing",
     modeLabel: frame.title,
     mockData: !fusion?.live,

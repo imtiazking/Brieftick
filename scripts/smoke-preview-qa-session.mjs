@@ -15,7 +15,7 @@ const qa = await page.evaluate(() => ({
   active: window.isPreviewQaActive?.(),
   dashboardRoute: window.isPreviewQaRoute?.("dashboard"),
   scannerRoute: window.isPreviewQaRoute?.("scanner"),
-  production: /^(www\.)?brieftick\.com$/i.test(location.hostname),
+  production: /^(www\.)?(forgeniq|brieftick)\.com$/i.test(location.hostname),
 }));
 
 checks.qaModeActive = qa.active === true;

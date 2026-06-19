@@ -141,7 +141,7 @@ const PROVIDERS = [
       const url =
         `https://api.polygon.io/v3/snapshot/options/SPY?limit=2&apiKey=${encodeURIComponent(key)}`;
       const { httpStatus, body } = await fetchProbe(url, {
-        headers: { 'User-Agent': 'BriefTick/1.0 health-probe' },
+        headers: { 'User-Agent': 'FORGENIQ/1.0 health-probe' },
       });
       const status = classifyProbe(httpStatus, body);
       if (status === 'ok' && Array.isArray(body?.results)) {
@@ -270,7 +270,7 @@ const PROVIDERS = [
       try {
         const r = await fetch(url, {
           signal: ctrl.signal,
-          headers: { 'User-Agent': 'BriefTick/1.0 health-probe', Accept: 'text/csv,*/*' },
+          headers: { 'User-Agent': 'FORGENIQ/1.0 health-probe', Accept: 'text/csv,*/*' },
         });
         const text = await r.text();
         if (r.status >= 200 && r.status < 300 && text.includes('VIXCLS')) {
@@ -304,7 +304,7 @@ const PROVIDERS = [
       const url =
         'https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?interval=1d&range=5d';
       const { httpStatus, body } = await fetchProbe(url, {
-        headers: { 'User-Agent': 'BriefTick/1.0 health-probe' },
+        headers: { 'User-Agent': 'FORGENIQ/1.0 health-probe' },
       });
       if (httpStatus >= 200 && httpStatus < 300 && body?.chart?.result?.[0]) {
         return { lastTestStatus: 'ok', httpStatus, message: 'Index chart reachable', probe: '^GSPC' };

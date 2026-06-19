@@ -82,7 +82,7 @@ export function buildFallbackResponse(ctx) {
     "Headline and policy channel remain the primary catalyst surface";
 
   return buildLogicResponse({
-    title: titleByMode[mode] || "Brieftick Logic · Intelligence",
+    title: titleByMode[mode] || "FORGENIQ Logic · Intelligence",
     summary: summaryParts.filter(Boolean).join(" "),
     cards: {
       snapshot: pctStr
@@ -110,7 +110,7 @@ export function buildFallbackResponse(ctx) {
     confidence: fusion?.live ? 48 : 38,
     sources: fusion
       ? fusionAttributionSources(fusion)
-      : ["Brieftick Logic", "Macro Feed"],
+      : ["FORGENIQ Logic", "Macro Feed"],
     disclaimer: LOGIC_DISCLAIMER,
     mode,
     dataLimited: true,

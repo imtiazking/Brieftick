@@ -1,5 +1,5 @@
 /**
- * Brieftick Logic — Free vs Terminal access rules.
+ * FORGENIQ Logic — Free vs Terminal access rules.
  * @module logic/freeAccess
  */
 

@@ -1,6 +1,20 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "brieftick.com" }],
+      "destination": "https://www.forgeniq.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.brieftick.com" }],
+      "destination": "https://www.forgeniq.com/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/dashboard-preview", "destination": "/dashboard-preview.html" },
     { "source": "/dashboard-design-lab", "destination": "/dashboard-design-lab.html" },
@@ -57,7 +71,14 @@
     { "source": "/design-lab/broker-intelligence/portfolio", "destination": "/design-lab/broker-intelligence/portfolio.html" },
     { "source": "/design-lab/portfolio-intelligence", "destination": "/design-lab/portfolio-intelligence/index.html" },
     { "source": "/design-lab/editorial-intelligence", "destination": "/design-lab/editorial-intelligence/index.html" },
-    { "source": "/design-lab/hero-identity-lab", "destination": "/design-lab/hero-identity-lab/index.html" }
+    { "source": "/design-lab/hero-identity-lab", "destination": "/design-lab/hero-identity-lab/index.html" },
+    { "source": "/design-lab/editorial-typeface-lab", "destination": "/design-lab/editorial-typeface-lab/index.html" },
+    { "source": "/design-lab/didonesque-ghost-lab", "destination": "/design-lab/didonesque-ghost-lab/index.html" },
+    { "source": "/design-lab/luxury-editorial-font-lab", "destination": "/design-lab/luxury-editorial-font-lab/index.html" },
+    { "source": "/design-lab/editorial-composition-lab", "destination": "/design-lab/editorial-composition-lab/index.html" },
+    { "source": "/design-lab/editorial-entrance-lab", "destination": "/design-lab/editorial-entrance-lab/index.html" },
+    { "source": "/design-lab/editorial-reveal-lab", "destination": "/design-lab/editorial-reveal-lab/index.html" },
+    { "source": "/design-lab/brieftick-logo", "destination": "/design-lab/brieftick-logo/index.html" }
   ],
   "headers": [
     {

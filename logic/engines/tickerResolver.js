@@ -171,7 +171,7 @@ export function buildTickerUnresolvedResponse(resolution) {
     keyDrivers: ["Unresolved ticker"],
     signals: ["Needs clarification"],
     confidence: 100,
-    sources: ["Brieftick Logic"],
+    sources: ["FORGENIQ Logic"],
     disclaimer: LOGIC_DISCLAIMER,
     mode: "ticker",
     dataLimited: true,

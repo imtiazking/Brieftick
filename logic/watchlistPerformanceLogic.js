@@ -60,7 +60,7 @@ export async function runWatchlistPerformanceLogic(ctx) {
           "No watchlist symbols found — save tickers in Portfolio & watchlist, or name them in your question (e.g. NVDA, MSFT).",
         ],
       signals: ["Add symbols to personalize"],
-      sources: ["Brieftick Logic"],
+      sources: ["FORGENIQ Logic"],
     });
   }
 
@@ -100,7 +100,7 @@ export async function runWatchlistPerformanceLogic(ctx) {
       },
       keyDrivers: ["Invalid watchlist symbols"],
       signals: [],
-      sources: ["Brieftick Logic"],
+      sources: ["FORGENIQ Logic"],
     });
   }
 
@@ -150,7 +150,7 @@ export async function runWatchlistPerformanceLogic(ctx) {
       signals: validRows
         .slice(0, 3)
         .map((r) => `${r.symbol}: ${r.pct >= 0 ? "+" : ""}${r.pct.toFixed(2)}%`),
-      sources: ctx.fusion ? fusionAttributionSources(ctx.fusion) : ["Live quotes", "Brieftick Logic"],
+      sources: ctx.fusion ? fusionAttributionSources(ctx.fusion) : ["Live quotes", "FORGENIQ Logic"],
       optionalCards: {
         relatedMovers: ranking,
       },

@@ -1,4 +1,4 @@
-# Brieftick Logic — Personalized AI-Native Intelligence (Preview)
+# FORGENIQ Logic — Personalized AI-Native Intelligence (Preview)
 
 **Preview only.** No production merge without approval.
 

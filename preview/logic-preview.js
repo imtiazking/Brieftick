@@ -1,5 +1,5 @@
 /**
- * Brieftick Logic — preview UI (Logic Terminal).
+ * FORGENIQ Logic — preview UI (Logic Terminal).
  */
 import { LOGIC_MODES, buildLogicResponse, LOGIC_DISCLAIMER, LIMITED_DATA_MSG } from "../logic/types.js";
 import { detectIntent, routeLogicPrompt } from "../logic/logicRouter.js";
@@ -58,7 +58,7 @@ let logicPageInitialized = false;
 
 function logicLog(event, data) {
   const payload = data !== undefined ? data : "";
-  console.log(`[Brieftick Logic] ${event}`, payload);
+  console.log(`[FORGENIQ Logic] ${event}`, payload);
 }
 
 function escapeHtml(s) {
@@ -332,7 +332,7 @@ function renderAccessBlockedResponse(prompt, reason) {
     keyDrivers: ["Free tier limit", "Terminal unlocks full Ask Logic"],
     signals: [isLimit ? "5/5 used" : "Upgrade required"],
     confidence: 100,
-    sources: ["Brieftick Logic · access"],
+    sources: ["FORGENIQ Logic · access"],
     disclaimer: LOGIC_DISCLAIMER,
     mode: activeMode,
     mockData: true,
@@ -391,7 +391,7 @@ function buildMockResponse(prompt, mode) {
     keyDrivers: ["Sector sentiment", "Macro backdrop"],
     signals: [`${sym} · preview`],
     confidence: 58,
-    sources: ["Brieftick Logic · preview mock"],
+    sources: ["FORGENIQ Logic · preview mock"],
     disclaimer: LOGIC_DISCLAIMER,
     mode: mode || "ticker",
     mockData: true,

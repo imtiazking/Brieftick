@@ -43,7 +43,7 @@ Supply chain: ${model.supplyChainNote}
 ${headlineSupport ? `OPTIONAL headline context (support only, never lead answer): ${headlineSupport}` : ""}`;
 
   const ai = await callLogicLLM(
-    `You are Brieftick Logic causal reasoning engine. Educational market intelligence only.
+    `You are FORGENIQ Logic causal reasoning engine. Educational market intelligence only.
 Rules:
 - Answer the user's question with CAUSAL MECHANISM first. Never lead with a Reuters headline or index tape.
 - directAnswer: 2-3 sentences naming sector winners AND losers and pricing power shift.
@@ -69,7 +69,7 @@ Rules:
       questionKind: ctx.questionKind || "causal",
       usedAI: true,
       mockData: !fusion?.live,
-      sources: ["Brieftick Logic · Causal Reasoning"],
+      sources: ["FORGENIQ Logic · Causal Reasoning"],
     };
     return composeLogicResponse(merged, { ...ctx, mode: "causal", skipTape: true });
   }
@@ -78,7 +78,7 @@ Rules:
   const partial = buildLogicResponse({
     ...built,
     confidence: 66,
-    sources: ["Brieftick Logic · Causal Reasoning"],
+    sources: ["FORGENIQ Logic · Causal Reasoning"],
     mode: "causal",
     modeLabel: "Causal Market Logic",
     mockData: !fusion?.live,

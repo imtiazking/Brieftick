@@ -29,7 +29,7 @@
     var el = document.getElementById(inputId);
     var v = (el && el.value ? el.value : "").trim();
     if (!v) return false;
-    console.log("[Brieftick Logic] submitted prompt (early guard):", v);
+    console.log("[FORGENIQ Logic] submitted prompt (early guard):", v);
     if (typeof window.submitLogicQuery === "function") {
       window.submitLogicQuery(v);
       if (el) el.value = "";
@@ -42,7 +42,7 @@
       if (el) el.value = "";
     } else {
       window.__logicPendingPrompt = v;
-      console.warn("[Brieftick Logic] module not ready — queued prompt");
+      console.warn("[FORGENIQ Logic] module not ready — queued prompt");
     }
     return false;
   }
@@ -68,7 +68,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="brieftick-build" content="premium-signals-20260605">
-<title>BriefTick - Markets, briefly.</title>
+<title>FORGENIQ — Markets, briefly.</title>
+<meta name="description" content="FORGENIQ translates complex market signals into plain-English intelligence — story-first context for investors, without the jargon.">
+<link rel="canonical" href="https://www.forgeniq.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FORGENIQ">
+<meta property="og:title" content="FORGENIQ — Markets, briefly.">
+<meta property="og:description" content="Story-first market intelligence in plain English. Understand what moves markets and why.">
+<meta property="og:url" content="https://www.forgeniq.com/">
+<meta property="og:image" content="https://www.forgeniq.com/brand/forgeniq-logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FORGENIQ — Markets, briefly.">
+<meta name="twitter:description" content="Story-first market intelligence in plain English. Understand what moves markets and why.">
+<meta name="twitter:image" content="https://www.forgeniq.com/brand/forgeniq-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Instrument+Serif&family=JetBrains+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2981,7 +2993,7 @@ h1,h2,h3{
 }
 
 /* ================================================================
-   BRIEFTICK LOGIC (PREVIEW — scoped to #page-logic only)
+   FORGENIQ LOGIC (PREVIEW — scoped to #page-logic only)
 ================================================================ */
 #page-logic{background:var(--bg-0);min-height:calc(100vh - 120px)}
 .logic-wrap{max-width:1440px;margin:0 auto;padding:20px 24px 32px;display:flex;flex-direction:column;gap:16px;min-height:calc(100vh - 140px)}
@@ -3533,10 +3545,10 @@ h1,h2,h3{
     <div id="raForm">
       <!-- Logo -->
       <div style="margin-bottom:18px">
-        <img src="/logo-transparent.png" alt="Brieftick" style="height:38px;width:auto;display:block;object-fit:contain">
+        <img src="/brand/forgeniq-logo.png" alt="FORGENIQ" style="height:38px;width:auto;display:block;object-fit:contain">
       </div>
       <h2 class="ra-title">Understand <em>what moves</em> markets.</h2>
-      <p class="ra-sub">Contact the Brieftick team for partnerships, institutional access, product feedback, or platform enquiries.</p>
+      <p class="ra-sub">Contact the FORGENIQ team for partnerships, institutional access, product feedback, or platform enquiries.</p>
       <div class="ra-field">
         <label class="ra-label" for="raName">Your name</label>
         <input class="ra-input" id="raName" type="text" placeholder="First name" autocomplete="name"/>
@@ -3562,7 +3574,7 @@ h1,h2,h3{
         <textarea class="ra-input" id="raMsg" rows="2" placeholder="How can we help you?" style="resize:vertical;min-height:60px"></textarea>
       </div>
       <div id="raErrorMsg" style="display:none" class="ra-error"></div>
-      <button class="ra-submit" id="raSubmitBtn" onclick="submitRequestAccess()">Contact Brieftick →</button>
+      <button class="ra-submit" id="raSubmitBtn" onclick="submitRequestAccess()">Contact FORGENIQ →</button>
       <p class="ra-privacy">We typically reply within 1–2 business days.<br>You can also <a onclick="routeWithAuth('dashboard');closeRequestAccess()" style="color:var(--gold);cursor:pointer;text-decoration:underline">explore the platform</a>.</p>
     </div>
     <div id="raSuccess" class="ra-success" style="display:none">
@@ -3603,7 +3615,10 @@ h1,h2,h3{
 <nav class="nav nav-a" id="siteNav" aria-label="Site navigation">
   <div class="nav-a__start">
     <div class="brand split-brand" onclick="route('landing')" id="navBrand">
-      <img src="/logo-transparent.png" alt="Brieftick" class="split-brand-img" width="160" height="52">
+      <span class="split-brand__clip">
+        <img src="/brand/forgeniq-logo.png" alt="FORGENIQ" class="split-brand-img split-brand-img--full" width="1024" height="512">
+        <img src="/brand/forgeniq-symbol-white.png" alt="FORGENIQ" class="split-brand-img split-brand-img--symbol" width="512" height="512">
+      </span>
     </div>
     <div class="nav-links nav-a__links" id="navLinks">
       <button type="button" class="nav-link" data-route="landing">Home</button>
@@ -3786,7 +3801,7 @@ h1,h2,h3{
      LANDING PAGE
 ============================================================ -->
 <section class="page active" id="page-landing">
-  <div id="splitLandingMount" class="split-landing-mount" aria-label="Brieftick landing"></div>
+  <div id="splitLandingMount" class="split-landing-mount" aria-label="FORGENIQ landing"></div>
 </section>
 
 <!-- ============================================================
@@ -3858,7 +3873,7 @@ h1,h2,h3{
           </div>
           <div id="vixIntradayStrip" style="display:none;margin-top:10px;padding:8px 10px;border-radius:6px;background:rgba(78,168,255,0.05);border:1px solid rgba(78,168,255,0.2);font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:0.06em"></div>
           <div id="vixExplanation" style="margin-top:10px;padding:12px 14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:12px;line-height:1.55;color:var(--ink-dim)">
-            <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px" id="vixExplanationLabel">BriefTick read</div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px" id="vixExplanationLabel">FORGENIQ read</div>
             <div id="vixExplanationText">Loading volatility context…</div>
           </div>
         </div>
@@ -3873,7 +3888,7 @@ h1,h2,h3{
           <div class="risk-state neutral" id="riskRegimeLabel">CALCULATING</div>
           <div class="risk-score-row"><span id="riskScore">-- / 100</span><span id="riskAgreement">0 of 5 signals</span></div>
           <div class="risk-components" id="riskComponents"></div>
-          <div class="risk-explain" id="riskExplanation"><b>BriefTick read:</b> Calculating volatility, equity momentum, sector rotation and news stress.</div>
+          <div class="risk-explain" id="riskExplanation"><b>FORGENIQ read:</b> Calculating volatility, equity momentum, sector rotation and news stress.</div>
           <button class="ai-gen-btn risk-ai-btn" onclick="generateRiskAIExplanation()" id="riskAiBtn">Generate explanation</button>
         </div>
       </div>
@@ -4114,7 +4129,7 @@ h1,h2,h3{
       <!-- AI summary -->
       <div class="panel col-6">
         <div class="panel-head">
-          <span class="ttl"><b>08</b> Brieftick · Session Summary</span>
+          <span class="ttl"><b>08</b> FORGENIQ · Session Summary</span>
           <span class="meta" id="sessionSummaryMeta">Loading…</span>
         </div>
         <div class="panel-body" style="padding:20px 18px" id="sessionSummaryBody">
@@ -4255,7 +4270,7 @@ h1,h2,h3{
     <header class="pi-header">
       <h1>Portfolio Insights</h1>
       <p class="pi-header__sub">Understand what you own.<br>Understand what to do next.</p>
-      <p class="pi-header__tagline">Brieftick explains. Your broker executes.</p>
+      <p class="pi-header__tagline">FORGENIQ explains. Your broker executes.</p>
     </header>
 
     <aside class="pi-intro" id="piIntro" hidden aria-labelledby="piIntroTitle">
@@ -4342,7 +4357,7 @@ h1,h2,h3{
         <h2>Ready to act</h2>
         <p class="pi-execution__support">
           You stay in control.<br>
-          Brieftick provides intelligence.<br>
+          FORGENIQ provides intelligence.<br>
           Your broker handles execution.
         </p>
         <button
@@ -4374,7 +4389,7 @@ h1,h2,h3{
     </section>
 
     <footer class="pi-disclaimer" role="note">
-      Brieftick provides market intelligence only and does not hold funds or place orders.
+      FORGENIQ provides market intelligence only and does not hold funds or place orders.
       Illustrative portfolio data — connect your broker when available.
     </footer>
   </div>
@@ -4400,12 +4415,12 @@ h1,h2,h3{
       <p class="pi-handoff__label" id="piHandoffCompaniesLabel">Your selected companies:</p>
       <p class="pi-handoff__tickers" id="piHandoffTickers" aria-label="Selected companies"></p>
       <p class="pi-handoff__mock" id="piHandoffDisclaimer">
-        Brieftick does not place trades or hold funds.
+        FORGENIQ does not place trades or hold funds.
         Trading212 opens in a new tab, where you stay in control.
       </p>
       <div class="pi-handoff__actions">
         <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-open-in-broker>Open Trading212</button>
-        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Stay in Brieftick</button>
+        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Stay in FORGENIQ</button>
       </div>
     </div>
   </div>
@@ -4527,7 +4542,7 @@ h1,h2,h3{
         </div>
         <div class="portfolio-builder__intro">
           <h3>Build your portfolio</h3>
-          <p>Paste tickers with weights (one per line). BriefTick summarizes sectors and risk in plain English. Data stays in this browser.</p>
+          <p>Paste tickers with weights (one per line). FORGENIQ summarizes sectors and risk in plain English. Data stays in this browser.</p>
           <div class="portfolio-help">
             Format examples:<br>
             NVDA 12.4<br>
@@ -4669,7 +4684,7 @@ h1,h2,h3{
     </section>
 
     <div style="margin-top:20px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7">
-      <b style="color:var(--gold)">PORTFOLIO INTELLIGENCE - NOT ADVICE.</b> All metrics are descriptive. BriefTick does not provide investment recommendations and does not know your goals, time horizon, tax situation or risk tolerance. Discuss any portfolio decisions with a qualified, licensed advisor.
+      <b style="color:var(--gold)">PORTFOLIO INTELLIGENCE - NOT ADVICE.</b> All metrics are descriptive. FORGENIQ does not provide investment recommendations and does not know your goals, time horizon, tax situation or risk tolerance. Discuss any portfolio decisions with a qualified, licensed advisor.
     </div>
   </div>
 </section>
@@ -4684,7 +4699,7 @@ h1,h2,h3{
       <h1>Two plans. <em>One goal.</em></h1>
       <p>Explore story-first market intelligence for free. Unlock connected stories and full module depth with Terminal.</p>
       <p class="section-eyebrow">12 modules · one graph</p>
-      <p>Every Brieftick module connects through the same intelligence graph, linking portfolios, earnings, macro signals, options, insiders, market stories, and Deep Dive investigations.</p>
+      <p>Every FORGENIQ module connects through the same intelligence graph, linking portfolios, earnings, macro signals, options, insiders, market stories, and Deep Dive investigations.</p>
     </div>
 
     <!-- 2-tier grid -->
@@ -4788,7 +4803,7 @@ h1,h2,h3{
         <div class="how-step">
           <div class="how-num">02</div>
           <div class="how-title">Understand why stocks move</div>
-          <div class="how-body">Search any ticker. Brieftick breaks down exactly what is driving the price move.</div>
+          <div class="how-body">Search any ticker. FORGENIQ breaks down exactly what is driving the price move.</div>
         </div>
         <div class="how-step">
           <div class="how-num">03</div>
@@ -4812,7 +4827,7 @@ h1,h2,h3{
       Cancel anytime. <strong>No hidden fees.</strong> Educational platform only. Not financial advice.
     </div>
     <div style="text-align:center;margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.06em">
-      Brieftick is a live market intelligence platform. Not a broker. Not a registered adviser.
+      FORGENIQ is a live market intelligence platform. Not a broker. Not a registered adviser.
     </div>
 
   </div>
@@ -4911,7 +4926,7 @@ h1,h2,h3{
     <div class="scanner-ai-summary">
       <h3>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--gold)" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Brieftick &middot; Scan summary
+        FORGENIQ &middot; Scan summary
       </h3>
       <div id="scannerAISummaryText" style="color:var(--ink-faint);font-style:italic">
         Run the scanner to generate a market summary.
@@ -5129,7 +5144,7 @@ h1,h2,h3{
     <div class="options-ai-box">
       <h3>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--gold)" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Brieftick · Options Flow Analysis
+        FORGENIQ · Options Flow Analysis
       </h3>
       <div id="optAIText" style="font-size:13px;color:var(--ink-faint);font-style:italic;line-height:1.7">Load preview data to generate sample AI commentary. Live options flow coming soon.</div>
       <button onclick="generateOptionsAI()" id="optAIBtn" style="margin-top:12px;padding:8px 16px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:var(--gold);border-radius:7px;font-family:inherit;font-size:12px;cursor:pointer;display:none">
@@ -5263,7 +5278,7 @@ h1,h2,h3{
 </section>
 
 <!-- ============================================================
-     BRIEFTICK LOGIC (PREVIEW)
+     FORGENIQ LOGIC (PREVIEW)
 ============================================================ -->
 <section class="page" id="page-logic">
   <div class="logic-env" aria-hidden="true">
@@ -5344,13 +5359,13 @@ h1,h2,h3{
     <!-- Hero -->
     <div class="about-hero">
       <h1>Markets move fast.<br><span id="aboutFlip1">Understanding them</span><br>shouldn't require a <em><span id="aboutFlip2">Bloomberg terminal.</span></em></h1>
-      <p>Brieftick was built for a simple reason: story-first market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by translating complex market signals into plain English, explainable context for everyone from seasoned traders to first-time investors.</p>
+      <p>FORGENIQ was built for a simple reason: story-first market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by translating complex market signals into plain English, explainable context for everyone from seasoned traders to first-time investors.</p>
     </div>
 
     <!-- Mission -->
     <div class="about-section">
       <h2>Democratise market intelligence.</h2>
-      <p>The same tools that help hedge funds understand why markets are moving have historically been inaccessible to individual investors. Brieftick closes that gap. Not by simplifying the data, but by making it legible.</p>
+      <p>The same tools that help hedge funds understand why markets are moving have historically been inaccessible to individual investors. FORGENIQ closes that gap. Not by simplifying the data, but by making it legible.</p>
       <p>We lead with stories: short, connected narratives. Then we show the data behind them. Portfolio, markets, insiders, options, and macro signals all connect through the same intelligence graph, so you always know what you're looking at and why it matters.</p>
       <p>We pull from live earnings feeds, macro event trackers, options flow, insider disclosures, sentiment models, and AI briefings. We surface what matters, when it matters, in plain English.</p>
     </div>
@@ -5382,7 +5397,7 @@ h1,h2,h3{
         <div class="about-principle">
           <div class="about-principle-num">01</div>
           <h3>Explain the why, not just the what</h3>
-          <p>A price move without context is noise. Brieftick always answers the follow-up question: why is this happening and what's driving it.</p>
+          <p>A price move without context is noise. FORGENIQ always answers the follow-up question: why is this happening and what's driving it.</p>
         </div>
         <div class="about-principle">
           <div class="about-principle-num">02</div>
@@ -5402,19 +5417,19 @@ h1,h2,h3{
         <div class="about-principle">
           <div class="about-principle-num">05</div>
           <h3>Built with users, not for them</h3>
-          <p>Brieftick is in active beta. Every feature has been shaped by feedback from traders, investors and analysts using it in real markets.</p>
+          <p>FORGENIQ is in active beta. Every feature has been shaped by feedback from traders, investors and analysts using it in real markets.</p>
         </div>
         <div class="about-principle">
           <div class="about-principle-num">06</div>
           <h3>Deep context, human language</h3>
-          <p>Whether you're managing a portfolio or learning how markets work, Brieftick meets you where you are. Explainable investing. No jargon required.</p>
+          <p>Whether you're managing a portfolio or learning how markets work, FORGENIQ meets you where you are. Explainable investing. No jargon required.</p>
         </div>
       </div>
     </div>
 
     <!-- What we cover -->
     <div class="about-section">
-      <h2>What Brieftick covers.</h2>
+      <h2>What FORGENIQ covers.</h2>
       <p>Live market intelligence across equities, ETFs, macro events, earnings, options flow, insider transactions, congressional disclosures, sector rotation, volatility, sentiment, and AI-generated briefings. Updated in real time during market hours, with full historical pattern matching and correlation analysis.</p>
       <p>Built on data from Finnhub, Polygon.io, SEC EDGAR, Alpha Vantage, Anthropic Claude, and FRED. All routed through a secure proxy so your API keys stay private.</p>
     </div>
@@ -5422,7 +5437,7 @@ h1,h2,h3{
     <!-- CTA -->
     <div class="about-cta-box">
       <h2>Ready to understand the market?</h2>
-      <p>Brieftick is in private beta. Sign up free and start exploring market intelligence instantly.</p>
+      <p>FORGENIQ is in private beta. Sign up free and start exploring market intelligence instantly.</p>
       <button class="btn-primary" onclick="clerkSignUp()">Start Free →</button>
     </div>
 
@@ -5442,15 +5457,15 @@ h1,h2,h3{
     <div class="legal-body">
       <div class="legal-placeholder">⚠ Placeholder document. Replace with your legal terms before public launch. Use a service like <b>termly.io</b> or consult a solicitor.</div>
       <h3>1. Nature of the service</h3>
-      <p>BriefTick provides <strong>educational market intelligence only</strong>. Nothing on this platform constitutes financial advice, investment advice, or a recommendation to buy, sell or hold any security, fund, or other financial instrument.</p>
+      <p>FORGENIQ provides <strong>educational market intelligence only</strong>. Nothing on this platform constitutes financial advice, investment advice, or a recommendation to buy, sell or hold any security, fund, or other financial instrument.</p>
       <h3>2. No investment advice</h3>
-      <p>BriefTick is not a registered investment adviser, broker-dealer, or fiduciary. All content, including summaries, market commentary, correlation data, and risk indicators, is for informational and educational purposes only. You should always conduct your own research and consult a qualified financial adviser before making any investment decisions.</p>
+      <p>FORGENIQ is not a registered investment adviser, broker-dealer, or fiduciary. All content, including summaries, market commentary, correlation data, and risk indicators, is for informational and educational purposes only. You should always conduct your own research and consult a qualified financial adviser before making any investment decisions.</p>
       <h3>3. Accuracy of information</h3>
-      <p>Market data is sourced from third-party providers (Twelve Data, Finnhub, Alpha Vantage, FRED). BriefTick makes no warranty, express or implied, as to the accuracy, timeliness or completeness of any data or AI-generated content. Past performance is not indicative of future results.</p>
+      <p>Market data is sourced from third-party providers (Twelve Data, Finnhub, Alpha Vantage, FRED). FORGENIQ makes no warranty, express or implied, as to the accuracy, timeliness or completeness of any data or AI-generated content. Past performance is not indicative of future results.</p>
       <h3>4. AI-generated content</h3>
       <p>Certain features use large language models (Anthropic Claude) to generate market summaries. AI outputs may contain errors, outdated information, or hallucinations. All AI-generated content should be independently verified before reliance.</p>
       <h3>5. Acceptable use</h3>
-      <p>You agree not to reproduce, redistribute, or commercially exploit any content from BriefTick without express written permission.</p>
+      <p>You agree not to reproduce, redistribute, or commercially exploit any content from FORGENIQ without express written permission.</p>
       <h3>6. Changes to these terms</h3>
       <p>We reserve the right to update these Terms at any time. Continued use of the platform following changes constitutes acceptance of the revised Terms.</p>
       <p style="color:var(--ink-faint);font-size:11px;margin-top:20px">Last updated: May 2026 · This is a placeholder document.</p>
@@ -5468,13 +5483,13 @@ h1,h2,h3{
       <div class="legal-placeholder">⚠ Placeholder document. Replace with a proper Privacy Policy before collecting emails. Use <b>privacypolicygenerator.info</b> or consult a solicitor.</div>
       <h3>What we collect</h3>
       <p>When you request beta access, we collect your <strong>name</strong>, <strong>email address</strong>, stated role, and optional message. We do not collect payment information.</p>
-      <p>When you use the dashboard, no personal data or portfolio information is sent to our servers. Watchlist and portfolio data is stored locally in your browser (localStorage) and never transmitted to BriefTick.</p>
+      <p>When you use the dashboard, no personal data or portfolio information is sent to our servers. Watchlist and portfolio data is stored locally in your browser (localStorage) and never transmitted to FORGENIQ.</p>
       <h3>How we use your data</h3>
       <p>Your email is used solely to contact you about beta access and product updates. We do not sell, rent or share your personal data with third parties for marketing purposes.</p>
       <h3>API keys</h3>
-      <p>If you add API keys via the Settings panel, they are stored locally in your browser and sent only to the respective provider (Anthropic, Twelve Data, Finnhub, Alpha Vantage) via our server-side proxy. Keys are never logged or stored on BriefTick servers.</p>
+      <p>If you add API keys via the Settings panel, they are stored locally in your browser and sent only to the respective provider (Anthropic, Twelve Data, Finnhub, Alpha Vantage) via our server-side proxy. Keys are never logged or stored on FORGENIQ servers.</p>
       <h3>Cookies</h3>
-      <p>BriefTick uses only functional localStorage entries (watchlist, portfolio, API keys, onboarding state). We do not use advertising cookies or third-party tracking.</p>
+      <p>FORGENIQ uses only functional localStorage entries (watchlist, portfolio, API keys, onboarding state). We do not use advertising cookies or third-party tracking.</p>
       <h3>Your rights</h3>
       <p>You may request deletion of your personal data at any time by contacting us. We will process requests within 30 days.</p>
       <h3>Contact</h3>
@@ -5487,16 +5502,16 @@ h1,h2,h3{
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="/logo-transparent.png" alt="BriefTick" style="height:52px;width:auto;display:block;object-fit:contain;margin-bottom:12px">
+      <img src="/brand/forgeniq-logo.png" alt="FORGENIQ" style="height:52px;width:auto;display:block;object-fit:contain;margin-bottom:12px">
       <p class="tagline">Story-first market intelligence. Understand <em>why</em> markets move through connected narratives, before the noise gets you. Educational context only, not financial advice.</p>
       <div class="footer-social">
-        <a href="https://x.com/Brieftick" target="_blank" rel="noopener" title="X / Twitter">
+        <a href="https://x.com/FORGENIQ" target="_blank" rel="noopener" title="X / Twitter">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
-        <a href="https://www.linkedin.com/in/brieftick-26832a186/" target="_blank" rel="noopener" title="LinkedIn">
+        <a href="https://www.linkedin.com/company/forgeniq" target="_blank" rel="noopener" title="LinkedIn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         </a>
-        <a href="https://www.instagram.com/brieftick/" target="_blank" rel="noopener" title="Instagram">
+        <a href="https://www.instagram.com/forgeniq/" target="_blank" rel="noopener" title="Instagram">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.766 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
         </a>
       </div>
@@ -5517,7 +5532,7 @@ h1,h2,h3{
     <div class="footer-col">
       <h5>Contact &amp; Legal</h5>
       <ul>
-        <li onclick="routeWithAuth('about')">About Brieftick</li>
+        <li onclick="routeWithAuth('about')">About FORGENIQ</li>
         <li onclick="openRequestAccess()">Contact us</li>
       </ul>
       <div style="margin-top:20px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.08em;line-height:1.7">
@@ -5528,9 +5543,9 @@ h1,h2,h3{
 
   <div class="footer-bottom">
     <div class="disclaimer">
-      <b>BriefTick provides educational market intelligence only. Not financial advice.</b> Nothing on this site constitutes a recommendation to buy, sell or hold any security. We are not a broker-dealer, investment adviser or fiduciary. Markets are inherently risky; past performance is not indicative of future results. Always do your own research.
+      <b>FORGENIQ provides educational market intelligence only. Not financial advice.</b> Nothing on this site constitutes a recommendation to buy, sell or hold any security. We are not a broker-dealer, investment adviser or fiduciary. Markets are inherently risky; past performance is not indicative of future results. Always do your own research.
     </div>
-    <div class="copyright">© 2026 BRIEFTICK</div>
+    <div class="copyright">© 2026 FORGENIQ</div>
   </div>
 </footer>
 
@@ -6090,13 +6105,13 @@ async function refreshVixExplanation(){
   // Heuristic explanation immediately
   const heuristic = buildVixHeuristicExplanation(vixValue, headlines);
   textEl.innerHTML = heuristic;
-  if(labelEl) labelEl.textContent = 'BriefTick read';
+  if(labelEl) labelEl.textContent = 'FORGENIQ read';
 
   // AI enrichment if Anthropic available
   if(!BriefTickAPI.keys.anthropic) return;
 
   try {
-    if(labelEl) labelEl.textContent = 'Brieftick · generating…';
+    if(labelEl) labelEl.textContent = 'FORGENIQ · generating…';
     const regime = vixValue < 15 ? 'CALM' : vixValue < 20 ? 'NORMAL' : vixValue < 25 ? 'ELEVATED' : vixValue < 35 ? 'STRESSED' : 'PANIC';
     const newsCtx = headlines.slice(0,5).map(h=>`- ${h}`).join('\n');
     const prompt = `You are a market intelligence analyst. The CBOE VIX is currently ${vixValue.toFixed(1)} (regime: ${regime}).
@@ -6114,7 +6129,7 @@ Be specific, factual, plain English. No jargon. No investment advice. Educationa
     if(result && result.trim()){
       textEl.innerHTML = result.trim();
       if(labelEl){
-        labelEl.textContent = 'Brieftick';
+        labelEl.textContent = 'FORGENIQ';
         labelEl.style.color = 'var(--gold)';
       }
     }
@@ -6199,7 +6214,7 @@ async function generateRiskAIExplanation(opts){
   }
 
   if(!BriefTickAPI.keys.anthropic){
-    if(out) out.innerHTML = '<b>Brieftick:</b> Anthropic is not connected. Showing rules-based regime explanation.';
+    if(out) out.innerHTML = '<b>FORGENIQ:</b> Anthropic is not connected. Showing rules-based regime explanation.';
     return;
   }
 
@@ -6938,7 +6953,7 @@ const BriefTickAPI={
       // Still produce a useful response for valid symbols when quote/news data
       // is temporarily unavailable (common on free API tiers). The prompt is
       // explicit that live data is unavailable so the model does not invent it.
-      news = [{headline:'Live quote/news providers unavailable or rate-limited for this symbol.', source:'BriefTick'}];
+      news = [{headline:'Live quote/news providers unavailable or rate-limited for this symbol.', source:'FORGENIQ'}];
     }
 
     const newsContext = news.slice(0,5).map(n=>`- ${n.headline} (${n.source})`).join('\n');
@@ -7082,7 +7097,7 @@ function loadKeysFromStorage(){
     if(saved.alphavantage) BriefTickAPI.keys.alphavantage = saved.alphavantage;
     if(saved.polygon)      BriefTickAPI.keys.polygon      = saved.polygon;
   } catch(e) {
-    console.warn('[BriefTick] Failed to load saved keys:', e.message);
+    console.warn('[FORGENIQ] Failed to load saved keys:', e.message);
   }
 }
 loadKeysFromStorage();
@@ -7480,7 +7495,7 @@ function _briefSetNoKey(){
     <div class="brief-section" style="margin-top:0">
       <h2><span class="num">→</span> Get your daily brief</h2>
       <div class="brief-text">
-        <p>BriefTick generates a full daily market brief from live quotes, today's headlines, and macro context, written in plain English, in the style of a hedge fund morning memo.</p>
+        <p>FORGENIQ generates a full daily market brief from live quotes, today's headlines, and macro context, written in plain English, in the style of a hedge fund morning memo.</p>
         <p>To activate it, <b>connect your Anthropic API key</b> using the settings panel. The free Claude tier handles hundreds of briefings per month.</p>
       </div>
       <button class="btn-primary" onclick="openSettings()" style="margin-top:8px">Connect Anthropic →</button>
@@ -13499,7 +13514,7 @@ async function generateScannerSummary() {
   el.textContent = 'Generating AI market summary…';
   const top5 = sortScannerResults(scannerMode).slice(0, 5);
   const list = top5.map(s => `${s.sym} (${s.pctChange >= 0 ? '+' : ''}${s.pctChange.toFixed(2)}%, score ${s.score})`).join(', ');
-  const prompt = `You are a market analyst. Today's top ${scannerMode} movers in the BriefTick scanner are: ${list}. In 4-5 sentences, provide a sharp market commentary: what themes are driving these moves, what sector rotation is visible, and what this signals about broader market sentiment today.`;
+  const prompt = `You are a market analyst. Today's top ${scannerMode} movers in the FORGENIQ scanner are: ${list}. In 4-5 sentences, provide a sharp market commentary: what themes are driving these moves, what sector rotation is visible, and what this signals about broader market sentiment today.`;
   const res = await BriefTickAPI._claudeCall(prompt, 320);
   el.textContent = res || 'Add an Anthropic API key in Settings to generate AI summaries.';
 }
@@ -14672,7 +14687,7 @@ window.addEventListener('load', () => {
   var s = document.querySelector('script[type="module"][src*="logic-preview"]');
   if (!s) return;
   s.addEventListener("error", function () {
-    console.error("[Brieftick Logic] module failed to load — using conversational inline fallback");
+    console.error("[FORGENIQ Logic] module failed to load — using conversational inline fallback");
     if (typeof window.submitLogicQuery === "function") return;
     window.submitLogicQuery = function (prompt) {
       var el = document.getElementById("logicResultContent");

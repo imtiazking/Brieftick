@@ -46,7 +46,7 @@ QQQ: ${qqqPct != null ? `${qqqPct >= 0 ? "+" : ""}${qqqPct.toFixed(2)}%` : "unav
 ${buildFusionPromptExtras(ctx, "SPY")}`;
 
   const ai = await callLogicLLM(
-    "You are Brieftick Logic — calm institutional market pulse. No trade advice.",
+    "You are FORGENIQ Logic — calm institutional market pulse. No trade advice.",
     `${prompt}\n\n${marketCtx}`,
     650
   );
@@ -94,7 +94,7 @@ ${buildFusionPromptExtras(ctx, "SPY")}`;
       confidence: fusion?.live && spyPct != null ? 72 : 52,
       sources: fusion
         ? fusionAttributionSources(fusion)
-        : ["Brieftick Logic"],
+        : ["FORGENIQ Logic"],
       mode: "market-pulse",
       mockData: !fusion?.live,
     },

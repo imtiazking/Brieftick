@@ -11,7 +11,7 @@ QUOTES:\nSPY: ${spy ? `${spy.pctChange >= 0 ? "+" : ""}${spy.pctChange?.toFixed(
 QQQ: ${qqq ? `${qqq.pctChange >= 0 ? "+" : ""}${qqq.pctChange?.toFixed(2)}%` : "unavailable"}`;
 
   const ai = await callAgentLLM(
-    "You are a calm institutional market strategist for Brieftick. Explain overall market direction. No buy/sell/hold. Plain English.",
+    "You are a calm institutional market strategist for FORGENIQ. Explain overall market direction. No buy/sell/hold. Plain English.",
     `${prompt || "Explain today's market pulse"}\n\n${ctx}`,
     650
   );
@@ -37,7 +37,7 @@ QQQ: ${qqq ? `${qqq.pctChange >= 0 ? "+" : ""}${qqq.pctChange?.toFixed(2)}%` : "
     ],
     signals: [tone, spy?.pctChange >= 0 ? "Equities firm" : "Equities soft", "Macro data in focus"],
     confidence: live ? 68 : 52,
-    sources: live ? ["Finnhub", "Brieftick"] : ["Brieftick preview sample"],
+    sources: live ? ["Finnhub", "FORGENIQ"] : ["FORGENIQ preview sample"],
     mode: "market-pulse",
     mockData: !live,
   });

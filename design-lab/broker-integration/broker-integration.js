@@ -85,7 +85,7 @@ function openHandoff(label, tickers) {
 
   if (handoffTitle) handoffTitle.textContent = "Continue to broker";
   if (handoffContext) {
-    handoffContext.textContent = `You are leaving Brieftick to view "${label}" in Trading212. This is a design prototype — no account linking or orders are placed.`;
+    handoffContext.textContent = `You are leaving FORGENIQ to view "${label}" in Trading212. This is a design prototype — no account linking or orders are placed.`;
   }
   if (handoffNames) renderTickers(handoffNames, list);
 

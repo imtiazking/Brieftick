@@ -55,7 +55,7 @@ export async function runSectorRotationAgent(prompt) {
     ],
     signals: ["Rotation active", "Breadth uneven", "Macro-linked"],
     confidence: live ? 67 : 55,
-    sources: live ? ["Finnhub sector ETFs", "Brieftick"] : ["Preview estimates"],
+    sources: live ? ["Finnhub sector ETFs", "FORGENIQ"] : ["Preview estimates"],
     mode: "sector-rotation",
     mockData: !live,
   });

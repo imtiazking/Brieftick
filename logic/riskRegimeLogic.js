@@ -29,7 +29,7 @@ export async function runRiskRegimeLogic(ctx) {
   else if (normalized.includes("volatile")) signal = "Volatile";
 
   const ai = await callLogicLLM(
-    "Brieftick Risk Regime Logic — institutional risk conditions. No advice.",
+    "FORGENIQ Risk Regime Logic — institutional risk conditions. No advice.",
     `${prompt}\nRegime: ${regime}\nVIX: ${vixLabel}\nHeadlines: ${headlines.map((h) => h.headline).join("; ")}\n${buildFusionPromptExtras(ctx, "SPY")}`,
     600
   );
@@ -60,7 +60,7 @@ export async function runRiskRegimeLogic(ctx) {
       confidence: ctx.fusion?.live ? 72 : 58,
       sources: ctx.fusion
         ? fusionAttributionSources(ctx.fusion)
-        : ["Macro Feed", "Brieftick Logic"],
+        : ["Macro Feed", "FORGENIQ Logic"],
       mode: "risk-regime",
       mockData: !ctx.fusion?.live,
       optionalCards: { riskSignal: `${signal} regime · vol ${vixLabel}` },

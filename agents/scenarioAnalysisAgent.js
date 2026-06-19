@@ -57,7 +57,7 @@ export async function runScenarioAnalysisAgent(prompt) {
     keyDrivers: tpl.drivers,
     signals: tpl.signals,
     confidence: 58,
-    sources: ["Brieftick scenario engine · preview"],
+    sources: ["FORGENIQ scenario engine · preview"],
     mode: "scenario",
     mockData: true,
   });

@@ -102,7 +102,7 @@ checks.handoffCopy =
   /does not place trades or hold funds/i.test(handoffDisclaimer || "") &&
   /opens in a new tab/i.test(handoffDisclaimer || "") &&
   handoffOpenBtn?.trim() === "Open Trading212" &&
-  handoffStayBtn?.trim() === "Stay in Brieftick";
+  handoffStayBtn?.trim() === "Stay in FORGENIQ";
 
 await page.evaluate(() => {
   window.__piTestOpen = null;

@@ -87,7 +87,7 @@ await browser.close();
 const failed =
   results.errors.length > 0 ||
   results.checks.completionTitle?.trim() !== "Mission Complete" ||
-  results.checks.completionSub?.trim() !== "You now understand how Brieftick works." ||
+  results.checks.completionSub?.trim() !== "You now understand how FORGENIQ works." ||
   results.checks.nextStepBody?.trim() !== "Build your first investment basket." ||
   results.checks.enterCta?.trim() !== "Open Portfolio Insights" ||
   !results.checks.missionPathClosed?.rootHidden ||

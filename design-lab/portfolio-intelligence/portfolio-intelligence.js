@@ -144,7 +144,7 @@ function init() {
 
     if (handoffTitle) handoffTitle.textContent = "Continue with Trading212";
     if (handoffBody) {
-      handoffBody.textContent = `Prototype handoff for "${label}". View in broker — Brieftick does not place orders or hold funds.`;
+      handoffBody.textContent = `Prototype handoff for "${label}". View in broker — FORGENIQ does not place orders or hold funds.`;
     }
     if (handoffTickers) {
       handoffTickers.textContent = list.length ? formatTickerLine(list) : "No companies selected";

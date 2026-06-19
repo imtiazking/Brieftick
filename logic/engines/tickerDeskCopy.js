@@ -197,7 +197,7 @@ export function buildTickerDeskLogicResponse(ctx, symbol, displayName, quote, he
       ? [`${symbol} ${quote.pctChange >= 0 ? "+" : ""}${quote.pctChange.toFixed(2)}%`]
       : [`${symbol} · desk read`],
     confidence: quote ? 58 : 48,
-    sources: ctx.fusion ? ["Brieftick Logic"] : ["Brieftick Logic · desk"],
+    sources: ctx.fusion ? ["FORGENIQ Logic"] : ["FORGENIQ Logic · desk"],
     disclaimer: LOGIC_DISCLAIMER,
     mode: "ticker",
     primarySymbol: symbol,

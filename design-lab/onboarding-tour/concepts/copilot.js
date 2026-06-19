@@ -19,7 +19,7 @@ export function initCopilot({ steps, root, stepThreeVariant = "discover" }) {
         <header class="copilot__head">
           <div class="copilot__avatar">AI</div>
           <div>
-            <strong>Brieftick Co-Pilot</strong>
+            <strong>FORGENIQ Co-Pilot</strong>
             <span>Guided conversation · not financial advice</span>
           </div>
           <button type="button" class="copilot__skip" data-skip>Skip</button>

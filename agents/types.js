@@ -1,5 +1,5 @@
 /**
- * Brieftick AI Market Agent — shared types & response helpers.
+ * FORGENIQ AI Market Agent — shared types & response helpers.
  * @module agents/types
  */
 
@@ -78,7 +78,7 @@ export function buildAgentResponse(partial) {
     keyDrivers: partial.keyDrivers || [],
     signals: partial.signals || [],
     confidence: typeof partial.confidence === "number" ? partial.confidence : 62,
-    sources: partial.sources || ["Brieftick intelligence layer"],
+    sources: partial.sources || ["FORGENIQ intelligence layer"],
     disclaimer: partial.disclaimer || AGENT_DISCLAIMER,
     mode: partial.mode,
     usedAI: !!partial.usedAI,

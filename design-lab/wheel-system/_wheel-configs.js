@@ -297,13 +297,13 @@ export const INTELLIGENCE_WHEEL = {
   },
 };
 
-/* ── Flagship: Brieftick Briefing Wheel (design-lab final) ─────── */
+/* ── Flagship: FORGENIQ Briefing Wheel (design-lab final) ─────── */
 
 export const BRIEFING_WHEEL = {
   id: "briefing",
   layout: "briefingRail",
   flagship: true,
-  title: "Brieftick Briefing",
+  title: "FORGENIQ Briefing",
   subtitle: "Today's market briefing · drag the wheel or use arrow keys",
   pulseTag: "Today's market briefing",
   pulseHeadline: "Risk-on close · AI and megacap tech firm · Regional banks weak",

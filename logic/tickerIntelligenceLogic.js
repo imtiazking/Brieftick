@@ -123,7 +123,7 @@ async function runMultiTickerIntelligence(ctx, symbols) {
         r.pct == null ? `${r.symbol}: delayed` : `${r.symbol}: ${r.pct >= 0 ? "+" : ""}${r.pct.toFixed(2)}%`
       ),
       confidence: rows.some((r) => r.pct != null) ? 72 : 50,
-      sources: fusion ? fusionAttributionSources(fusion) : ["Live quotes", "Brieftick Logic"],
+      sources: fusion ? fusionAttributionSources(fusion) : ["Live quotes", "FORGENIQ Logic"],
       mode: "ticker",
       primarySymbol: symbols[0],
     }),
@@ -227,7 +227,7 @@ export async function runTickerIntelligenceLogic(ctx) {
   }
 
   const ai = await callLogicLLM(
-    "You are Brieftick Logic — institutional ticker intelligence. Plain prose only; answer ONLY for the symbol named. Do not discuss SPY unless the symbol is SPY. No recommendations.",
+    "You are FORGENIQ Logic — institutional ticker intelligence. Plain prose only; answer ONLY for the symbol named. Do not discuss SPY unless the symbol is SPY. No recommendations.",
     `Symbol: ${symbol} (${displayName}) — answer for this symbol only.\nQuery type: ${isNewsQuery ? "news focus" : "price context"}\nPrompt: ${prompt}\n${buildFusionPromptExtras(ctx, symbol)}`,
     750
   );
@@ -260,7 +260,7 @@ export async function runTickerIntelligenceLogic(ctx) {
   desk.confidence = quote && fusion?.live ? 68 : 52;
   desk.sources = fusion
     ? fusionAttributionSources(fusion)
-    : ["Brieftick Logic"];
+    : ["FORGENIQ Logic"];
   desk.mockData = !quote || !fusion?.live;
   if (ctx.memory?.watchlist?.length) {
     desk.optionalCards = {

@@ -31,7 +31,7 @@ Positioning/narrative: ${model.positioningNarrative}
 Drivers: ${model.keyDrivers.join(" | ")}`;
 
   const ai = await callLogicLLM(
-    `You are Brieftick Logic macro interpretation. Explain nuanced macro concepts for investors.
+    `You are FORGENIQ Logic macro interpretation. Explain nuanced macro concepts for investors.
 Rules:
 - Answer the question directly in directAnswer (2-3 sentences). No Reuters. No SPY tape.
 - Never start with "Markets may read this through..."
@@ -94,6 +94,6 @@ function scrubMacroAi(ai, model) {
       aiSummary: strip(cards.aiSummary) || model.directAnswer,
     },
     keyDrivers: ai.keyDrivers?.length ? ai.keyDrivers : model.keyDrivers,
-    sources: ["Brieftick Logic · Macro Interpretation"],
+    sources: ["FORGENIQ Logic · Macro Interpretation"],
   };
 }

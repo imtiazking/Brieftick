@@ -1,5 +1,5 @@
 /**
- * Brieftick Logic — structured intelligence pipeline orchestrator.
+ * FORGENIQ Logic — structured intelligence pipeline orchestrator.
  *
  * Prompt → entityResolver → userContext → route → intent + mode → fetch → Logic module
  *       → sourceRouter → multiSourceFetch → dataFusion → Logic module → fallbackIntelligence
@@ -94,7 +94,7 @@ export function finalizeLogicResponse(res, ctx) {
   out = applyConfidenceEngine(out, ctx.fusion, ctx.primaryEntity, ctx);
 
   if (!out.sources?.length) {
-    out.sources = ["Brieftick Logic"];
+    out.sources = ["FORGENIQ Logic"];
   }
 
   out = composeLogicResponse(out, ctx);

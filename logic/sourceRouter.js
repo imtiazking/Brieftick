@@ -20,7 +20,7 @@ const PROVIDER_META = {
   polygon: { label: "Polygon", types: ["quote"] },
   macro: { label: "Macro Feed", types: ["macro", "risk", "volatility"] },
   portfolio: { label: "Portfolio Context", types: ["portfolio"] },
-  brieftick: { label: "Brieftick Logic", types: ["fallback"] },
+  brieftick: { label: "FORGENIQ Logic", types: ["fallback"] },
 };
 
 /**
@@ -140,6 +140,6 @@ export function formatSourceAttribution(providers, failed = []) {
     .filter((p) => p !== "brieftick")
     .map((p) => PROVIDER_META[p]?.label || p)
     .slice(0, 5);
-  if (!labels.length) return ["Brieftick Logic"];
-  return [...new Set([...labels, "Brieftick Logic"])];
+  if (!labels.length) return ["FORGENIQ Logic"];
+  return [...new Set([...labels, "FORGENIQ Logic"])];
 }

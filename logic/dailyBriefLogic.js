@@ -25,7 +25,7 @@ export async function runDailyBriefLogic(ctx) {
           keyDrivers: ["Index tone", "Macro calendar", "Headline risk"],
           signals: ["Session recap", "Watch macro prints"],
           confidence: 76,
-          sources: ["Finnhub", "Brieftick Logic"],
+          sources: ["Finnhub", "FORGENIQ Logic"],
           mode: "daily-brief",
           usedAI: true,
         });
@@ -37,7 +37,7 @@ export async function runDailyBriefLogic(ctx) {
 
   const watch = getWatchlist();
   const ai = await callLogicLLM(
-    "Brieftick Daily Brief Logic — concise institutional recap. No recommendations.",
+    "FORGENIQ Daily Brief Logic — concise institutional recap. No recommendations.",
     `${prompt}\nWatchlist: ${watch.join(", ") || "none"}`,
     800
   );
@@ -65,7 +65,7 @@ export async function runDailyBriefLogic(ctx) {
       ],
       signals: ["Selective leadership", "Headline-sensitive tape"],
       confidence: 60,
-      sources: ["Brieftick Logic Preview"],
+      sources: ["FORGENIQ Logic Preview"],
       mode: "daily-brief",
       mockData: true,
     },

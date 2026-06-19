@@ -37,7 +37,7 @@ export async function runRiskRegimeAgent(prompt) {
     ],
     signals: [signal, `Volatility: ${vixLabel}`, "Monitor macro catalysts"],
     confidence: live ? 72 : 58,
-    sources: ["Brieftick Risk Regime", live ? "Finnhub" : "preview"],
+    sources: ["FORGENIQ Risk Regime", live ? "Finnhub" : "preview"],
     mode: "risk-regime",
     mockData: !live,
   });

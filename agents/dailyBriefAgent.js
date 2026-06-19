@@ -14,7 +14,7 @@ export async function runDailyBriefAgent(prompt) {
           keyDrivers: ["Index tone", "Macro calendar", "Headline risk"],
           signals: ["Session recap", "Watch macro prints"],
           confidence: 76,
-          sources: ["Finnhub", "Anthropic · Brieftick"],
+          sources: ["Finnhub", "Anthropic · FORGENIQ"],
           mode: "daily-brief",
           usedAI: true,
         });
@@ -42,7 +42,7 @@ export async function runDailyBriefAgent(prompt) {
     ],
     signals: ["Selective leadership", "Volatility monitored", "Headline-sensitive tape"],
     confidence: 60,
-    sources: ["Brieftick preview"],
+    sources: ["FORGENIQ preview"],
     mode: "daily-brief",
     mockData: true,
   });
