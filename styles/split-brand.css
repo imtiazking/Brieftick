@@ -1,119 +1,110 @@
-/**
- * Shared FORGENIQ nav logo — uploaded brand asset (pixel-accurate).
- * Full lockup on desktop; dedicated symbol asset on mobile.
- */
-
-@keyframes splitMarkReveal {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 12px, 0);
-  }
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.brand.split-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-  cursor: pointer;
-}
-
-.split-brand__clip {
-  display: block;
-  line-height: 0;
-  flex-shrink: 0;
-  background: transparent;
-}
-
-.split-brand-img {
-  display: block;
-  width: auto;
-  height: clamp(40px, 5vw, 52px);
-  max-height: 52px;
-  object-fit: contain;
-  object-position: left center;
-  image-rendering: auto;
-}
-
-.split-brand-img--symbol {
-  display: none;
-}
-
-html[data-theme="split"] .split-brand__clip {
-  opacity: 0;
-  animation: splitMarkReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
-}
-
-html[data-theme="logic"] .split-brand__clip {
-  opacity: 1;
-}
-
-@media (max-width: 768px) {
-  .split-brand-img--full {
-    height: clamp(36px, 8vw, 48px);
-    max-height: 48px;
-  }
-}
-
-@media (max-width: 480px) {
-  .split-brand-img--full {
-    display: none;
-  }
-
-  .split-brand-img--symbol {
-    display: block;
-    height: clamp(32px, 9vw, 38px);
-    width: clamp(32px, 9vw, 38px);
-    max-height: none;
-    object-fit: contain;
-    object-position: center;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html[data-theme="split"] .split-brand__clip {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
-/* ── Landing page header only (larger; true-alpha PNG, no blend hacks) ── */
-html:has(#page-landing.active) #navBrand.split-brand,
-html:has(#page-landing.active) #navBrand .split-brand__clip {
-  background: none;
-}
-
-html:has(#page-landing.active) #navBrand .split-brand-img--full {
-  height: clamp(64px, 8.2vw, 88px);
-  max-height: 88px;
-  width: auto;
-  object-fit: contain;
-}
-
-@media (max-width: 768px) {
-  html:has(#page-landing.active) #navBrand .split-brand-img--full {
-    height: clamp(56px, 11vw, 76px);
-    max-height: 76px;
-  }
-}
-
-@media (max-width: 480px) {
-  html:has(#page-landing.active) #navBrand .split-brand-img--full {
-    display: none;
-  }
-
-  html:has(#page-landing.active) #navBrand .split-brand-img--symbol {
-    display: block;
-    height: clamp(44px, 11vw, 54px);
-    width: clamp(44px, 11vw, 54px);
-    max-height: none;
-    object-fit: contain;
-    object-position: center;
-  }
-}
-
+/**
+ * Shared FORGENIQ nav logo — uploaded brand asset (pixel-accurate).
+ * Full lockup on all breakpoints; mobile scales via max-width only.
+ */
+
+@keyframes splitMarkReveal {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.brand.split-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.split-brand__clip {
+  display: block;
+  line-height: 0;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+.split-brand-img {
+  display: block;
+  width: auto;
+  height: clamp(40px, 5vw, 52px);
+  max-height: 52px;
+  object-fit: contain;
+  object-position: left center;
+  image-rendering: auto;
+}
+
+.split-brand-img--full {
+  display: block;
+}
+
+html[data-theme="split"] .split-brand__clip {
+  opacity: 0;
+  animation: splitMarkReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
+}
+
+html[data-theme="logic"] .split-brand__clip {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .split-brand-img--full {
+    height: clamp(36px, 8vw, 48px);
+    max-height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .split-brand-img--full {
+    width: auto;
+    max-width: clamp(150px, 40vw, 180px);
+    height: auto;
+    max-height: clamp(34px, 9vw, 42px);
+    object-fit: contain;
+    object-position: left center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="split"] .split-brand__clip {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ── Landing page header only (larger; true-alpha PNG, no blend hacks) ── */
+html:has(#page-landing.active) #navBrand.split-brand,
+html:has(#page-landing.active) #navBrand .split-brand__clip {
+  background: none;
+}
+
+html:has(#page-landing.active) #navBrand .split-brand-img--full {
+  height: clamp(64px, 8.2vw, 88px);
+  max-height: 88px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  html:has(#page-landing.active) #navBrand .split-brand-img--full {
+    height: clamp(56px, 11vw, 76px);
+    max-height: 76px;
+  }
+}
+
+@media (max-width: 480px) {
+  html:has(#page-landing.active) #navBrand .split-brand-img--full {
+    max-width: clamp(150px, 42vw, 180px);
+    height: auto;
+    max-height: clamp(40px, 10vw, 48px);
+    object-fit: contain;
+    object-position: left center;
+  }
+}
+
