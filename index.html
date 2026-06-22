@@ -4209,7 +4209,7 @@ window.BrieftickQuoteRouter = quoteRouter;
       </div>
     </header>
 
-    <p class="earn-v2-disclosure" id="earnDataDisclosure">Illustrative earnings data — live earnings integration pending.</p>
+    <p class="earn-v2-disclosure" id="earnDataDisclosure">Loading earnings calendar…</p>
 
     <nav class="earn-v2-tabs" aria-label="Earnings views">
       <button type="button" class="earn-v2-tab is-active" data-earn-tab="cal">Calendar</button>
@@ -4260,7 +4260,7 @@ window.BrieftickQuoteRouter = quoteRouter;
       <div class="panel" id="earnAnalysisPanel" aria-live="polite"></div>
     </section>
 
-    <p class="earn-v2-foot"><b>Educational only.</b> Not investment advice. Expected moves and impact tiers are illustrative models, not forecasts.</p>
+    <p class="earn-v2-foot"><b>Educational only.</b> Not investment advice. Expected moves and impact tiers are modelled estimates, not forecasts.</p>
   </div>
 
 </section>
@@ -4846,11 +4846,12 @@ window.BrieftickQuoteRouter = quoteRouter;
     <!-- Terminal teaser strip -->
     <div class="teaser-strip" onclick="route('pricing')">
       <svg class="ts-lock" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <span>Free plan: lite mode only. Showing top 10 results, estimated data.</span>
+      <span>Free plan: lite mode only. Showing top 10 results.</span>
       <span class="ts-cta">Unlock Terminal →</span>
     </div>
     <header class="discover-hero">
       <h1>Discover</h1>
+      <span class="earn-v2-data-badge" id="discoverLiveBadge">Live quotes · curated stories</span>
       <p class="discover-hero__lead">Start with the stories moving the market. Each narrative shows what's happening, why it matters, and which names are exposed. Stocks come at the end, not the beginning.</p>
     </header>
 
@@ -5612,6 +5613,9 @@ function route(name){
   if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
   if ((name === 'dashboard' || name === 'landing') && typeof liveRefreshDashboard === 'function') {
     liveRefreshDashboard().catch(() => {});
+  }
+  if (name === 'scanner' && typeof runScanner === 'function') {
+    setTimeout(() => runScanner().catch(() => {}), 0);
   }
 }
 
