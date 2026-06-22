@@ -5610,6 +5610,9 @@ function route(name){
   }
   window.scrollTo({top:0,behavior:'instant'});
   if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
+  if ((name === 'dashboard' || name === 'landing') && typeof liveRefreshDashboard === 'function') {
+    liveRefreshDashboard().catch(() => {});
+  }
 }
 
 /* Route with auth — must be defined before nav listeners attach */
