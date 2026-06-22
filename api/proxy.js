@@ -51,6 +51,26 @@ function staleSet(key, value) {
 }
 
 let twelveDataCircuitUntil = 0;
+let twelveDataQuotaExhausted = false;
+
+function msUntilUtcMidnight() {
+  const now = new Date();
+  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+  return Math.max(60_000, next.getTime() - now.getTime());
+}
+
+function openTwelveDataCircuit(reason, data) {
+  const msg = String(data?.message || data?.detail || '');
+  const daily = /daily|API credits|credits were used/i.test(msg);
+  if (daily) {
+    twelveDataQuotaExhausted = true;
+    twelveDataCircuitUntil = Date.now() + msUntilUtcMidnight();
+    console.warn('[proxy/twelvedata] daily quota exhausted — circuit until UTC midnight', { reason });
+  } else {
+    twelveDataCircuitUntil = Date.now() + 30 * 60_000;
+    console.warn('[proxy/twelvedata] 429 — circuit open 30min', { reason });
+  }
+}
 
 // CORS: allow any origin to hit /api/* so the same code works locally + on Vercel.
 function setCors(res) {
@@ -79,7 +99,7 @@ async function proxyTwelveData(req, res) {
     return res.status(200).json(cached);
   }
 
-  if (Date.now() < twelveDataCircuitUntil) {
+  if (Date.now() < twelveDataCircuitUntil || twelveDataQuotaExhausted) {
     const stale = staleGet(cacheKey);
     if (stale) {
       res.setHeader('x-brieftick-cache', 'STALE');
@@ -88,7 +108,10 @@ async function proxyTwelveData(req, res) {
     return res.status(429).json({
       status: 'error',
       code: 429,
-      message: 'Twelve Data circuit open — retry after cooldown',
+      message: twelveDataQuotaExhausted
+        ? 'Twelve Data daily quota exhausted — fallback disabled until UTC midnight'
+        : 'Twelve Data circuit open — retry after cooldown',
+      circuitOpen: true,
     });
   }
 
@@ -96,8 +119,7 @@ async function proxyTwelveData(req, res) {
     const r = await fetch(url);
     const data = await r.json();
     if (r.status === 429 || data?.code === 429) {
-      twelveDataCircuitUntil = Date.now() + 5 * 60_000;
-      console.warn('[proxy/twelvedata] 429 — circuit open 5min', { endpoint, symbol: params.symbol });
+      openTwelveDataCircuit(endpoint, data);
       const stale = staleGet(cacheKey);
       if (stale) {
         res.setHeader('x-brieftick-cache', 'STALE');
@@ -426,7 +448,13 @@ const FRED_RELEASE_LABELS = new Map([
 async function proxyFredCalendar(req, res) {
   const key = process.env.FRED_API_KEY;
   if (!key) {
-    return res.status(500).json({ error: 'FRED_API_KEY not set on server' });
+    return res.status(200).json({
+      ok: false,
+      source: 'fred',
+      events: [],
+      error: 'FRED_API_KEY not configured',
+      hint: 'Set FRED_API_KEY on Vercel for live US economic calendar',
+    });
   }
   const today = new Date();
   const end = new Date(today.getTime() + 7 * 86400000);
@@ -634,7 +662,7 @@ async function proxyPolygon(req, res) {
 }
 
 async function proxyStatus(req, res) {
-  const { buildProviderStatusResponse } = await import('./provider-health.js');
+  const { buildProviderStatusResponse } = require('./provider-health.js');
   const { status, body } = await buildProviderStatusResponse(req);
   res.setHeader('Cache-Control', 'no-store');
   return res.status(status).json(body);

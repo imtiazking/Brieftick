@@ -5810,35 +5810,66 @@ function spark(svgRaw, color){
 }
 
 /* ============================================================
-   DASHBOARD DATA
+   DASHBOARD DATA — live prices only (no seeded quote values)
 ============================================================ */
-const movers=[
-  // Fallback snapshot shown immediately. Live quotes overwrite these rows
-  // when Twelve Data has credits available, so the panel never looks empty.
-  ['NVDA','NVIDIA','219.46','+1.98',1.98,7],
-  ['AMD','Adv. Micro Dev.','164.28','-3.44',-3.44,3],
-  ['XOM','Exxon Mobil','118.62','+1.18',1.18,2],
-  ['META','Meta Platforms','568.42','-0.84',-0.84,5],
-  ['TSLA','Tesla','184.92','-1.42',-1.42,4],
-  ['JPM','JPMorgan','204.18','+0.74',0.74,1],
-  ['CVX','Chevron','162.40','+0.96',0.96,8],
-  ['AAPL','Apple','219.84','+0.22',0.22,9],
-  ['MSFT','Microsoft','412.74','-0.53',-0.53,6],
-  ['AVGO','Broadcom','1,386.20','-1.18',-1.18,11],
-];
-document.getElementById('moversList').innerHTML=movers.map(([s,n,p,c,d,seed])=>{
-  const series=genSeries(20,3,d*0.4,seed);
-  const cls = d>0 ? 'up' : (d<0 ? 'dn' : 'flat');
-  const color = d>0 ? '#3ddc97' : (d<0 ? '#ff5b6e' : '#5a6577');
-  const chgText = c === '-' ? '-' : c+'%';
-  return `<div class="mover">
-    <div class="sym">${s}</div>
-    <div class="name">${n}</div>
-    <div>${spark(series,color)}</div>
-    <div class="price">${p}</div>
-    <div class="chg ${cls}">${chgText}</div>
+const LIVE_PRICE_LOADING = 'Loading live price…';
+const LIVE_PRICE_UNAVAILABLE = 'Price temporarily unavailable';
+
+/** @param {object | null | undefined} q */
+function isLiveQuoteForDisplay(q) {
+  return !!(q && Number.isFinite(q.price) && q.price > 0 && (q._provider || q.quotedAt));
+}
+
+/** @param {object | null | undefined} q */
+function formatLivePriceCell(q) {
+  if (!q) return LIVE_PRICE_LOADING;
+  if (!isLiveQuoteForDisplay(q)) return LIVE_PRICE_UNAVAILABLE;
+  return q.price.toFixed(2);
+}
+
+function renderMoverRow(sym, name, seed, priceHtml, chgHtml) {
+  const series = genSeries(20, 3, 0, seed);
+  return `<div class="mover" data-sym="${sym}">
+    <div class="sym">${sym}</div>
+    <div class="name">${name}</div>
+    <div>${spark(series, '#5a6577')}</div>
+    <div class="price" data-live-price>${priceHtml}</div>
+    <div class="chg flat" data-live-chg>${chgHtml}</div>
   </div>`;
-}).join('');
+}
+
+function applyQuotesToMovers(quotes) {
+  document.querySelectorAll('#moversList .mover').forEach(row => {
+    const sym = row.querySelector('.sym')?.textContent?.trim();
+    const q = sym && quotes[sym];
+    const priceEl = row.querySelector('.price, [data-live-price]');
+    const chgEl = row.querySelector('.chg, [data-live-chg]');
+    if (!priceEl) return;
+    if (!isLiveQuoteForDisplay(q)) {
+      priceEl.textContent = q ? LIVE_PRICE_UNAVAILABLE : LIVE_PRICE_LOADING;
+      if (chgEl) { chgEl.textContent = '—'; chgEl.className = 'chg flat'; }
+      return;
+    }
+    priceEl.textContent = q.price.toFixed(2);
+    row.dataset.liveQuote = '1';
+    row.dataset.quotedAt = q.quotedAt || '';
+    if (chgEl) {
+      const sign = q.pctChange >= 0 ? '+' : '';
+      chgEl.textContent = `${sign}${q.pctChange.toFixed(2)}%`;
+      chgEl.className = 'chg ' + (q.pctChange > 0 ? 'up' : q.pctChange < 0 ? 'dn' : 'flat');
+    }
+  });
+}
+window.applyQuotesToMovers = applyQuotesToMovers;
+
+const movers=[
+  ['NVDA','NVIDIA',7],['AMD','Adv. Micro Dev.',3],['XOM','Exxon Mobil',2],['META','Meta Platforms',5],
+  ['TSLA','Tesla',4],['JPM','JPMorgan',1],['CVX','Chevron',8],['AAPL','Apple',9],
+  ['MSFT','Microsoft',6],['AVGO','Broadcom',11],
+];
+document.getElementById('moversList').innerHTML = movers.map(([s,n,seed]) =>
+  renderMoverRow(s, n, seed, LIVE_PRICE_LOADING, '—')
+).join('');
 
 /* Sector heatmap */
 const sectors=[
@@ -7795,25 +7826,11 @@ async function liveRefreshDashboard(){
   const stripEquities = LT
     ? LT.landingEquitySymbolsFromTickerData(tickerData)
     : tickerData.map(r => r[0]);
-  const extra = moversSymbols.filter(s => !stripEquities.includes(s));
-  let quotes = {};
-  if (extra.length) {
-    quotes = await fetchLiveQuotes(extra);
-    document.querySelectorAll('#moversList .mover').forEach(row => {
-      const sym = row.querySelector('.sym')?.textContent?.trim();
-      const q = sym && quotes[sym];
-      if (!q || isNaN(q.price)) return;
-      const priceEl = row.querySelector('.price');
-      const chgEl = row.querySelector('.chg');
-      if (priceEl) priceEl.textContent = q.price.toFixed(2);
-      if (chgEl) {
-        const sign = q.pctChange >= 0 ? '+' : '';
-        chgEl.textContent = `${sign}${q.pctChange.toFixed(2)}%`;
-        chgEl.classList.toggle('up', q.pctChange >= 0);
-        chgEl.classList.toggle('dn', q.pctChange < 0);
-      }
-    });
+  if (moversSymbols.length) {
+    const moverQuotes = await fetchLiveQuotes(moversSymbols);
+    applyQuotesToMovers(moverQuotes);
   }
+  let quotes = {};
 
   const allForRisk = await fetchLiveQuotes(stripEquities.slice(0, 24));
   if (Object.keys(allForRisk).length) {
@@ -8655,7 +8672,7 @@ function inferNewsTags(text){
    WHY IS IT MOVING DATA
 ============================================================ */
 const wimDB={
-  'NVDA':{name:'NVIDIA CORP · NASDAQ', price:'487.32', chg:'−14.86  (−2.96%)', chgColor:'#ff5b6e',
+  'NVDA':{name:'NVIDIA CORP · NASDAQ', price:'—', chg:'Loading live price…', chgColor:'var(--ink-faint)',
     summary:`NVDA is selling off today primarily on <b>renewed concern around AI capex sustainability</b>. A <b>major hyperscaler signalled a pause</b> in next-quarter datacentre orders, which the market read as a leading indicator for the broader AI-infrastructure complex. Compounding this, <b>10Y yields ticked back above 4.42%</b>, increasing duration pressure on long-duration growth names. Sector-wide weakness is showing classic reaction-chain patterns. Historically, similar setups have led to <b>−4 to −7% drawdowns over 5 sessions</b> before stabilising - though outcomes vary materially with macro tone.`,
     reasons:[
       ['AI capex sustainability concerns','A top-3 hyperscaler signalled a Q3 datacentre order pause; market read this as a leading indicator for the broader AI infrastructure complex.','42%'],
@@ -8676,7 +8693,7 @@ const wimDB={
       ['Technical setup','Failure at 252 resistance triggered short-term momentum reversal.','7%'],
     ], sym:'TSLA', trend:-0.25
   },
-  'AAPL':{name:'APPLE INC · NASDAQ', price:'219.84', chg:'+0.48  (+0.22%)', chgColor:'#3ddc97',
+  'AAPL':{name:'APPLE INC · NASDAQ', price:'—', chg:'Loading live price…', chgColor:'var(--ink-faint)',
     summary:`AAPL is trading marginally higher in a <b>defensive bid</b> as the broader AI-infrastructure complex weakens. Apple's relative outperformance today reflects its <b>quality-defensive characteristics</b> - strong balance sheet, services moat, lower sensitivity to AI capex narrative. Overall move is small and <b>within typical session noise</b>.`,
     reasons:[
       ['Defensive rotation','Quality-defensive names bid as AI infra weakens; flows visible from sector ETFs.','34%'],
@@ -8726,7 +8743,7 @@ const wimDB={
       ['Technical breakdown','Lost 50-day MA on heavy volume; momentum funds rotating out.','7%'],
     ], sym:'AMD', trend:-0.45
   },
-  'MSFT':{name:'MICROSOFT CORP · NASDAQ', price:'412.74', chg:'−2.18  (−0.53%)', chgColor:'#ff5b6e',
+  'MSFT':{name:'MICROSOFT CORP · NASDAQ', price:'—', chg:'Loading live price…', chgColor:'var(--ink-faint)',
     summary:`MSFT is drifting lower on <b>Azure capex narrative sympathy</b>, with the hyperscaler pause story directly relevant to Microsoft's own AI infrastructure spending plans. The move is <b>contained relative to AMD/NVDA</b>, reflecting MSFT's diversified revenue base and defensive software characteristics that buffer against pure-play AI exposure.`,
     reasons:[
       ['Azure capex focus','Hyperscaler pause directly relevant to Microsoft\'s own AI infra spend trajectory.','30%'],
@@ -8782,9 +8799,9 @@ function loadWim(sym){
   const d=wimDB[sym]||wimDB['NVDA'];
   document.getElementById('wimSym').textContent=sym;
   document.getElementById('wimName').textContent=d.name;
-  document.getElementById('wimPrice').textContent=d.price;
-  document.getElementById('wimChg').textContent=d.chg;
-  document.getElementById('wimChg').style.color=d.chgColor;
+  document.getElementById('wimPrice').textContent=LIVE_PRICE_LOADING;
+  document.getElementById('wimChg').textContent='—';
+  document.getElementById('wimChg').style.color='var(--ink-faint)';
   document.getElementById('wimSummary').innerHTML=d.summary;
   wimReasonsEl.innerHTML=d.reasons.map(([t,desc,w],i)=>`
     <div class="reason">
@@ -8806,55 +8823,32 @@ function loadWim(sym){
 
   // Flag that WIM has loaded for this symbol — auto-gen fires once Clerk confirms Free plan
   window._wimLastSym = sym;
-  document.getElementById('wimPrice').textContent = '—';
-  document.getElementById('wimChg').textContent = 'Loading live price…';
-  document.getElementById('wimChg').style.color = 'var(--ink-faint)';
-  const srcEl = document.getElementById('wimPriceSource');
-  if(srcEl) srcEl.textContent = '';
+  const srcEl0 = document.getElementById('wimPriceSource');
+  if(srcEl0) srcEl0.textContent = '';
 
-  // Fetch live quote — Finnhub first, then Twelve Data fallback
-  // UK tickers (.L suffix) are passed as-is; Finnhub supports LSE format
+  // Fetch live quote via quoteRouter (Finnhub → Yahoo → AV → cache; TD last resort only)
   (async () => {
     const priceEl = document.getElementById('wimPrice');
     const chgEl   = document.getElementById('wimChg');
     const srcEl   = document.getElementById('wimPriceSource');
-    // Guard: abort if symbol changed while we were fetching
     const guard = () => document.getElementById('wimSym').textContent !== sym;
 
     let q = null;
     let provider = null;
 
-    // 1. Try Finnhub (real-time, no daily limit)
     try {
-      const quotes = await getFinnhubQuotes([sym]);
-      if(quotes[sym] && quotes[sym].price > 0) {
-        q = quotes[sym];
-        provider = 'Finnhub';
-        console.log(`[WIM price] Finnhub OK for ${sym}:`, q.price);
+      const quotes = await fetchLiveQuotes([sym]);
+      q = quotes[sym];
+      if (q && isLiveQuoteForDisplay(q)) {
+        provider = q._provider || 'live';
       } else {
-        console.warn(`[WIM price] Finnhub returned no price for ${sym}:`, quotes[sym]);
+        q = null;
       }
-    } catch(e) {
-      console.warn(`[WIM price] Finnhub error for ${sym}:`, e.message);
+    } catch (e) {
+      console.warn(`[WIM price] live quote error for ${sym}:`, e.message);
     }
 
-    // 2. Fallback: Twelve Data
-    if(!q) {
-      try {
-        const res = await BriefTickAPI.getQuote(sym);
-        if(res && res.price > 0) {
-          q = res;
-          provider = 'Twelve Data';
-          console.log(`[WIM price] Twelve Data OK for ${sym}:`, q.price);
-        } else {
-          console.warn(`[WIM price] Twelve Data returned no price for ${sym}:`, res);
-        }
-      } catch(e) {
-        console.warn(`[WIM price] Twelve Data error for ${sym}:`, e.message);
-      }
-    }
-
-    if(guard()) return; // symbol changed — discard
+    if(guard()) return;
 
     if(q && q.price > 0) {
       const isUp  = q.pctChange >= 0;
@@ -12134,46 +12128,25 @@ const MOVERS_MARKETS = {
   us: {
     label: 'S&P 500',
     stocks: [
-      ['NVDA','NVIDIA Corp','219.46','+1.98',1.98,7],
-      ['AMD','Adv. Micro Dev.','164.28','-3.44',-3.44,3],
-      ['XOM','Exxon Mobil','118.62','+1.18',1.18,2],
-      ['META','Meta Platforms','568.42','-0.84',-0.84,5],
-      ['TSLA','Tesla','184.92','-1.42',-1.42,4],
-      ['JPM','JPMorgan','204.18','+0.74',0.74,1],
-      ['CVX','Chevron','162.40','+0.96',0.96,8],
-      ['AAPL','Apple','189.84','+0.22',0.22,9],
-      ['MSFT','Microsoft','415.32','-0.53',-0.53,6],
-      ['AVGO','Broadcom','1386.20','-1.18',-1.18,11],
+      ['NVDA','NVIDIA Corp',7],['AMD','Adv. Micro Dev.',3],['XOM','Exxon Mobil',2],['META','Meta Platforms',5],
+      ['TSLA','Tesla',4],['JPM','JPMorgan',1],['CVX','Chevron',8],['AAPL','Apple',9],
+      ['MSFT','Microsoft',6],['AVGO','Broadcom',11],
     ],
   },
   lse: {
     label: 'FTSE 100',
     stocks: [
-      ['SHEL','Shell plc','28.42','+1.44',1.44,12],
-      ['HSBA','HSBC Holdings','7.18','+0.56',0.56,13],
-      ['AZN','AstraZeneca','124.60','+2.12',2.12,14],
-      ['ULVR','Unilever','44.28','-0.38',-0.38,15],
-      ['BP','BP plc','4.86','+1.02',1.02,16],
-      ['RIO','Rio Tinto','54.82','-0.62',-0.62,17],
-      ['GSK','GSK plc','17.36','+0.84',0.84,18],
-      ['VOD','Vodafone','0.74','-1.24',-1.24,19],
-      ['LSEG','LSEG','102.40','+0.48',0.48,20],
-      ['BAB','BAE Systems','13.62','+1.88',1.88,21],
+      ['SHEL','Shell plc',12],['HSBA','HSBC Holdings',13],['AZN','AstraZeneca',14],['ULVR','Unilever',15],
+      ['BP','BP plc',16],['RIO','Rio Tinto',17],['GSK','GSK plc',18],['VOD','Vodafone',19],
+      ['LSEG','LSEG',20],['BAB','BAE Systems',21],
     ],
   },
   sgx: {
     label: 'SGX / STI',
     stocks: [
-      ['D05','DBS Group','38.42','+0.78',0.78,22],
-      ['O39','OCBC Bank','14.62','+0.42',0.42,23],
-      ['U11','UOB','31.84','+0.62',0.62,24],
-      ['Z74','SingTel','2.88','-0.34',-0.34,25],
-      ['C6L','Singapore Airlines','7.14','+1.12',1.12,26],
-      ['F34','Wilmar Intl','3.22','-0.62',-0.62,27],
-      ['C09','City Developments','6.18','+0.32',0.32,28],
-      ['BS6','Yangzijiang Ship.','2.44','+2.18',2.18,29],
-      ['S68','SGX Ltd','11.22','+0.44',0.44,30],
-      ['V03','Venture Corp','14.82','-0.28',-0.28,31],
+      ['D05','DBS Group',22],['O39','OCBC Bank',23],['U11','UOB',24],['Z74','SingTel',25],
+      ['C6L','Singapore Airlines',26],['F34','Wilmar Intl',27],['C09','City Developments',28],['BS6','Yangzijiang Ship.',29],
+      ['S68','SGX Ltd',30],['V03','Venture Corp',31],
     ],
   },
 };
@@ -12194,19 +12167,14 @@ function renderMovers(market) {
   list.style.transition = 'opacity 0.25s';
   list.style.opacity = '0';
   setTimeout(() => {
-    list.innerHTML = data.stocks.map(([s,n,p,c,d,seed]) => {
-      const series = genSeries(20, 3, d*0.4, seed);
-      const cls    = d > 0 ? 'up' : (d < 0 ? 'dn' : 'flat');
-      const color  = d > 0 ? '#3ddc97' : (d < 0 ? '#ff5b6e' : '#5a6577');
-      return `<div class="mover">
-        <div class="sym">${s}</div>
-        <div class="name">${n}</div>
-        <div>${spark(series,color)}</div>
-        <div class="price">${p}</div>
-        <div class="chg ${cls}">${c}%</div>
-      </div>`;
-    }).join('');
+    list.innerHTML = data.stocks.map(([s, n, seed]) =>
+      renderMoverRow(s, n, seed, LIVE_PRICE_LOADING, '—')
+    ).join('');
     list.style.opacity = '1';
+    if (market === 'us' && typeof fetchLiveQuotes === 'function') {
+      const syms = data.stocks.map(r => r[0]);
+      fetchLiveQuotes(syms).then(q => applyQuotesToMovers(q)).catch(() => {});
+    }
   }, 260);
 
   // Update tab active states
@@ -13292,7 +13260,7 @@ function renderScannerResults() {
           <div style="margin-top:5px;font-size:10px;color:var(--ink-faint);letter-spacing:.05em">${escapeHtml(s.sector)}</div>
         </div>
         <div class="scanner-card-change">
-          <div class="scanner-card-price">${s.close > 0 ? '$'+s.close.toFixed(2) : '<span style="font-size:11px;font-weight:400;color:var(--ink-faint)">Price temporarily unavailable</span>'}</div>
+          <div class="scanner-card-price">${s.hasData && s.close > 0 ? '$'+s.close.toFixed(2) : '<span style="font-size:11px;font-weight:400;color:var(--ink-faint)">' + (s.close > 0 ? LIVE_PRICE_UNAVAILABLE : LIVE_PRICE_LOADING) + '</span>'}</div>
           <div class="scanner-card-pct ${dir}">${s.close > 0 ? sign+s.pctChange.toFixed(2)+'%' : '—'}</div>
         </div>
       </div>

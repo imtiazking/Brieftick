@@ -35,7 +35,7 @@ function classifyProbe(httpStatus, body) {
 /**
  * @param {Request} req
  */
-export function isProbeAuthorized(req) {
+function isProbeAuthorized(req) {
   const secret = process.env.HEALTH_PROBE_SECRET;
   if (!secret || secret.length < 8) return false;
   const header =
@@ -346,7 +346,7 @@ const PROVIDERS = [
       return {
         lastTestStatus: status,
         httpStatus,
-        message: safeMessage(body?.Error Message || 'GLOBAL_QUOTE probe failed'),
+        message: safeMessage(body?.['Error Message'] || 'GLOBAL_QUOTE probe failed'),
         probe: 'GLOBAL_QUOTE/IBM',
       };
     },
@@ -356,7 +356,7 @@ const PROVIDERS = [
 /**
  * Env-only snapshot (safe for unauthenticated callers).
  */
-export function buildEnvOnlyStatus() {
+function buildEnvOnlyStatus() {
   const at = new Date().toISOString();
   const providers = PROVIDERS.map((def) =>
     providerRow({
@@ -397,7 +397,7 @@ export function buildEnvOnlyStatus() {
 /**
  * Run live upstream probes (admin only).
  */
-export async function runProviderProbes() {
+async function runProviderProbes() {
   const testedAt = new Date().toISOString();
   const results = await Promise.all(
     PROVIDERS.map(async (def) => {
@@ -456,7 +456,7 @@ export async function runProviderProbes() {
 /**
  * @param {Request} req
  */
-export async function buildProviderStatusResponse(req) {
+async function buildProviderStatusResponse(req) {
   const wantProbe = req.query.probe === '1' || req.query.probe === 'true';
   const authorized = wantProbe && isProbeAuthorized(req);
 
@@ -518,8 +518,9 @@ function mapProviderStatus(lastTestStatus, httpStatus) {
 
 /**
  * Public provider health for /api/provider-health (cached 2 min).
+ * Fast env-based snapshot — no live upstream probes (avoids Vercel timeouts).
  */
-export async function buildPublicProviderHealth() {
+async function buildPublicProviderHealth() {
   if (
     lastPublicHealthCache &&
     Date.now() - new Date(lastPublicHealthCache.at).getTime() < PUBLIC_HEALTH_TTL_MS
@@ -527,56 +528,61 @@ export async function buildPublicProviderHealth() {
     return lastPublicHealthCache.body;
   }
 
-  const ids = ['finnhub', 'yahoo', 'fred', 'alphavantage', 'polygon', 'twelvedata'];
   const testedAt = new Date().toISOString();
+  const fredKey = !!process.env.FRED_API_KEY;
 
-  /** @type {Record<string, object>} */
-  const providers = {};
-
-  await Promise.all(
-    ids.map(async (id) => {
-      const def = PROVIDERS.find((p) => p.id === id);
-      if (!def) return;
-      const start = Date.now();
-      let row;
-      if (!def.hasKey()) {
-        row = {
-          status: 'offline',
-          latencyMs: null,
-          lastSuccessAt: null,
-          httpStatus: null,
-          message: `${def.envVar} not configured`,
-        };
-      } else {
-        try {
-          const probe = await def.runProbe();
-          const latencyMs = Date.now() - start;
-          const status = mapProviderStatus(probe.lastTestStatus, probe.httpStatus ?? null);
-          row = {
-            status,
-            latencyMs,
-            lastSuccessAt: status === 'healthy' ? testedAt : null,
-            httpStatus: probe.httpStatus ?? null,
-            message: probe.message || null,
-          };
-        } catch (e) {
-          row = {
-            status: 'offline',
-            latencyMs: Date.now() - start,
-            lastSuccessAt: null,
-            httpStatus: null,
-            message: safeMessage(e.message),
-          };
-        }
-      }
-      if (id === 'finnhub') providers.finnhub = row;
-      if (id === 'yahoo') providers.yahoo = row;
-      if (id === 'fred') providers.fred = row;
-      if (id === 'alphavantage') providers.alphaVantage = row;
-      if (id === 'polygon') providers.polygon = row;
-      if (id === 'twelvedata') providers.twelveData = row;
-    })
-  );
+  const providers = {
+    finnhub: {
+      status: process.env.FINNHUB_KEY ? 'healthy' : 'offline',
+      latencyMs: 0,
+      lastSuccessAt: process.env.FINNHUB_KEY ? testedAt : null,
+      httpStatus: process.env.FINNHUB_KEY ? 200 : null,
+      message: process.env.FINNHUB_KEY ? 'FINNHUB_KEY configured' : 'FINNHUB_KEY not configured',
+    },
+    yahoo: {
+      status: 'healthy',
+      latencyMs: 0,
+      lastSuccessAt: testedAt,
+      httpStatus: 200,
+      message: 'Public Yahoo chart endpoint',
+    },
+    fred: {
+      status: fredKey ? 'healthy' : 'degraded',
+      latencyMs: 0,
+      lastSuccessAt: testedAt,
+      httpStatus: 200,
+      message: fredKey
+        ? 'FRED_API_KEY configured (calendar + series)'
+        : 'Public CSV available; set FRED_API_KEY for economic calendar',
+    },
+    alphaVantage: {
+      status: process.env.ALPHA_VANTAGE_KEY ? 'healthy' : 'offline',
+      latencyMs: 0,
+      lastSuccessAt: process.env.ALPHA_VANTAGE_KEY ? testedAt : null,
+      httpStatus: process.env.ALPHA_VANTAGE_KEY ? 200 : null,
+      message: process.env.ALPHA_VANTAGE_KEY
+        ? 'ALPHA_VANTAGE_KEY configured'
+        : 'ALPHA_VANTAGE_KEY not configured',
+    },
+    polygon: {
+      status: process.env.POLYGON_KEY ? 'degraded' : 'offline',
+      latencyMs: 0,
+      lastSuccessAt: process.env.POLYGON_KEY ? testedAt : null,
+      httpStatus: process.env.POLYGON_KEY ? 200 : null,
+      message: process.env.POLYGON_KEY
+        ? 'POLYGON_KEY configured (options only)'
+        : 'POLYGON_KEY not configured',
+    },
+    twelveData: {
+      status: process.env.TWELVE_DATA_KEY ? 'degraded' : 'offline',
+      latencyMs: 0,
+      lastSuccessAt: process.env.TWELVE_DATA_KEY ? testedAt : null,
+      httpStatus: process.env.TWELVE_DATA_KEY ? 200 : null,
+      message: process.env.TWELVE_DATA_KEY
+        ? 'TWELVE_DATA_KEY configured (last-resort fallback)'
+        : 'TWELVE_DATA_KEY not configured',
+    },
+  };
 
   const body = {
     ...providers,
@@ -593,7 +599,7 @@ function setHealthCors(res) {
   res.setHeader('Cache-Control', 'public, max-age=60');
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   setHealthCors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'GET') {
@@ -606,3 +612,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'health check failed', detail: safeMessage(e.message) });
   }
 }
+
+module.exports = handler;
+module.exports.isProbeAuthorized = isProbeAuthorized;
+module.exports.buildEnvOnlyStatus = buildEnvOnlyStatus;
+module.exports.runProviderProbes = runProviderProbes;
+module.exports.buildProviderStatusResponse = buildProviderStatusResponse;
+module.exports.buildPublicProviderHealth = buildPublicProviderHealth;

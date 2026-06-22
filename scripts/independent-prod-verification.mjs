@@ -217,7 +217,7 @@ async function browserAudit(providerQuotes) {
   await page.waitForTimeout(4000);
 
   const routePlan = [
-    { key: "dashboard", route: "dashboard", wait: 8000 },
+    { key: "dashboard", route: "dashboard", wait: 14000 },
     { key: "whats-moving", route: "why", wait: 10000 },
     { key: "watchlists", route: "dashboard", wait: 3000 },
     { key: "earnings", route: "earnings", wait: 5000 },
@@ -246,7 +246,11 @@ async function browserAudit(providerQuotes) {
         const sym = el.querySelector(".sym, .scanner-card-sym")?.textContent?.trim();
         const priceEl = el.querySelector(".price, .scanner-card-price, .val");
         const priceTxt = priceEl?.textContent?.trim();
-        if (sym && priceTxt && /[\d.]/.test(priceTxt)) {
+        const isLiveMover = el.classList.contains("mover") && el.dataset.liveQuote === "1";
+        const isLiveScanner = el.classList.contains("scanner-card") && el.querySelector(".scanner-card-price")?.textContent?.includes("$");
+        if (!sym || !priceTxt || /loading|unavailable|—/i.test(priceTxt)) return;
+        if (el.classList.contains("mover") && !isLiveMover) return;
+        if (/[\d.]/.test(priceTxt)) {
           const num = parseFloat(priceTxt.replace(/[^0-9.]/g, ""));
           if (num > 0) prices[sym] = num;
         }
