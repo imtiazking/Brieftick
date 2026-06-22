@@ -52,11 +52,23 @@ function staleSet(key, value) {
 
 let twelveDataCircuitUntil = 0;
 let twelveDataQuotaExhausted = false;
+let finnhubCircuitUntil = 0;
+let polygonOfflineUntil = 0;
+const POLYGON_OFFLINE_MS = 30 * 60_000;
+const FINNHUB_CIRCUIT_MS = 90_000;
 
 function msUntilUtcMidnight() {
   const now = new Date();
   const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
   return Math.max(60_000, next.getTime() - now.getTime());
+}
+
+function isTwelveDataBlocked() {
+  const flag = process.env.TWELVE_DATA_DISABLED;
+  if (flag === '1' || flag === 'true' || flag === 'yes') return true;
+  if (twelveDataQuotaExhausted) return true;
+  if (Date.now() < twelveDataCircuitUntil) return true;
+  return false;
 }
 
 function openTwelveDataCircuit(reason, data) {
@@ -99,19 +111,21 @@ async function proxyTwelveData(req, res) {
     return res.status(200).json(cached);
   }
 
-  if (Date.now() < twelveDataCircuitUntil || twelveDataQuotaExhausted) {
+  if (isTwelveDataBlocked()) {
     const stale = staleGet(cacheKey);
     if (stale) {
       res.setHeader('x-brieftick-cache', 'STALE');
       return res.status(200).json(stale);
     }
-    return res.status(429).json({
-      status: 'error',
-      code: 429,
-      message: twelveDataQuotaExhausted
-        ? 'Twelve Data daily quota exhausted — fallback disabled until UTC midnight'
-        : 'Twelve Data circuit open — retry after cooldown',
+    return res.status(503).json({
+      ok: false,
+      provider: 'twelvedata',
+      disabled: true,
       circuitOpen: true,
+      unavailable: true,
+      message: twelveDataQuotaExhausted || process.env.TWELVE_DATA_DISABLED
+        ? 'Twelve Data disabled — quota exhausted or TWELVE_DATA_DISABLED'
+        : 'Twelve Data circuit open — retry after cooldown',
     });
   }
 
@@ -125,7 +139,14 @@ async function proxyTwelveData(req, res) {
         res.setHeader('x-brieftick-cache', 'STALE');
         return res.status(200).json(stale);
       }
-      return res.status(429).json({ status: 'error', code: 429, message: 'Rate limited', ...data });
+      return res.status(503).json({
+        ok: false,
+        provider: 'twelvedata',
+        circuitOpen: true,
+        rateLimited: true,
+        message: 'Twelve Data rate limited',
+        detail: data?.message || 'upstream 429',
+      });
     }
     if (r.status >= 200 && r.status < 300 && !(data && data.code)) {
       cacheSet(cacheKey, data);
@@ -158,7 +179,7 @@ async function proxyFinnhub(req, res) {
   if (endpoint === 'company-news') ttl = 5 * 60_000;
   else if (endpoint.startsWith('calendar/earnings')) ttl = 30 * 60_000;
   else if (endpoint === 'news') ttl = 60_000;
-  else if (endpoint === 'quote') ttl = 30_000;
+  else if (endpoint === 'quote') ttl = 5 * 60_000;
   else if (endpoint === 'search') ttl = 60 * 60_000;
 
   const cached = cacheGet(cacheKey, ttl);
@@ -167,13 +188,44 @@ async function proxyFinnhub(req, res) {
     return res.status(200).json(cached);
   }
 
+  if (endpoint === 'quote' && Date.now() < finnhubCircuitUntil) {
+    const stale = staleGet(cacheKey);
+    if (stale) {
+      res.setHeader('x-brieftick-cache', 'STALE');
+      return res.status(200).json(stale);
+    }
+    return res.status(503).json({
+      ok: false,
+      provider: 'finnhub',
+      circuitOpen: true,
+      rateLimited: true,
+      message: 'Finnhub circuit open — serving cache only',
+    });
+  }
+
   try {
     const r = await fetch(url);
     const data = await r.json();
     if (r.status === 429) {
-      return res.status(429).json({ error: 'Rate limited', ...data });
+      if (endpoint === 'quote') finnhubCircuitUntil = Date.now() + FINNHUB_CIRCUIT_MS;
+      const stale = staleGet(cacheKey);
+      if (stale) {
+        res.setHeader('x-brieftick-cache', 'STALE');
+        return res.status(200).json(stale);
+      }
+      return res.status(503).json({
+        ok: false,
+        provider: 'finnhub',
+        rateLimited: true,
+        circuitOpen: endpoint === 'quote',
+        message: 'Finnhub rate limited',
+        ...data,
+      });
     }
-    if (r.status < 400) cacheSet(cacheKey, data);
+    if (r.status < 400) {
+      cacheSet(cacheKey, data);
+      if (endpoint === 'quote' && data?.c > 0) staleSet(cacheKey, data);
+    }
     res.setHeader('x-brieftick-cache', 'MISS');
     return res.status(r.status >= 400 ? r.status : 200).json(data);
   } catch (e) {
@@ -609,6 +661,22 @@ async function proxyPolygon(req, res) {
   const ttl = endpoint.includes('snapshot') ? 60_000 : 60 * 60_000;
   const cached = cacheGet(cacheKey, ttl);
   if (cached) { res.setHeader('x-brieftick-cache', 'HIT'); return res.status(200).json(cached); }
+
+  if (Date.now() < polygonOfflineUntil) {
+    const stale = staleGet(cacheKey);
+    if (stale) {
+      res.setHeader('x-brieftick-cache', 'STALE');
+      return res.status(200).json(stale);
+    }
+    return res.status(503).json({
+      error: 'Polygon temporarily offline',
+      failureReason: 'circuit_open',
+      circuitOpen: true,
+      provider: 'polygon',
+      endpoint,
+    });
+  }
+
   try {
     const qs = new URLSearchParams({ ...params, apiKey: key }).toString();
     const url = `https://api.polygon.io/${endpoint}?${qs}`;
@@ -620,6 +688,9 @@ async function proxyPolygon(req, res) {
       data = null;
     }
     if (!r.ok) {
+      if (r.status === 403 || r.status === 502 || r.status >= 500) {
+        polygonOfflineUntil = Date.now() + POLYGON_OFFLINE_MS;
+      }
       console.warn('[proxy/polygon] upstream error', {
         endpoint,
         httpStatus: r.status,
@@ -631,10 +702,11 @@ async function proxyPolygon(req, res) {
         res.setHeader('x-brieftick-cache', 'STALE');
         return res.status(200).json(stale);
       }
-      return res.status(502).json({
+      return res.status(503).json({
         error: 'Polygon fetch failed',
         failureReason: 'upstream_error',
         upstreamStatus: r.status,
+        circuitOpen: Date.now() < polygonOfflineUntil,
         endpoint,
         detail: data?.error || data?.message || `HTTP ${r.status}`,
       });
@@ -652,9 +724,10 @@ async function proxyPolygon(req, res) {
       res.setHeader('x-brieftick-cache', 'STALE');
       return res.status(200).json(stale);
     }
-    return res.status(502).json({
+    return res.status(503).json({
       error: 'Polygon fetch failed',
       failureReason: 'network_error',
+      circuitOpen: true,
       endpoint,
       detail: e.message,
     });

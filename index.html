@@ -6940,7 +6940,7 @@ Be specific, factual, and analytical. NO buy/sell recommendations. NO investment
     // Use Finnhub for real-time quotes
     let quotesRaw = {};
     try {
-      quotesRaw = await getFinnhubQuotes(symbols);
+      quotesRaw = await fetchLiveQuotes(symbols);
     } catch(_) {
       try { quotesRaw = await this.getQuotes(symbols); } catch(__) {}
     }
@@ -7616,30 +7616,21 @@ function _mapFinnhubSymbol(sym) {
 }
 
 async function getFinnhubQuotes(symbols) {
-  const BATCH = 10;
+  const QR = window.BrieftickQuoteRouter;
+  const raw = QR ? await QR.getQuotes(symbols) : await fetchLiveQuotes(symbols);
   const out = {};
-  const unique = [...new Set(symbols.map(s => String(s || '').trim()).filter(Boolean))];
-  for (let i = 0; i < unique.length; i += BATCH) {
-    const batch = unique.slice(i, i + BATCH);
-    await Promise.all(batch.map(async sym => {
-      const fhSym = _mapFinnhubSymbol(sym);
-      try {
-        const res = await fetch(`/api/proxy?provider=finnhub&endpoint=quote&symbol=${encodeURIComponent(fhSym)}`);
-        const d = await res.json();
-        if (d && typeof d.c === 'number' && d.c > 0) {
-          out[sym] = {
-            price: d.c,
-            pctChange: typeof d.dp === 'number' ? d.dp : 0,
-            change: typeof d.d === 'number' ? d.d : 0,
-            high: d.h,
-            low: d.l,
-            open: d.o,
-            prevClose: d.pc,
-          };
-        }
-      } catch(_) {}
-    }));
-    if (i + BATCH < unique.length) await new Promise(r => setTimeout(r, 180));
+  for (const [sym, q] of Object.entries(raw || {})) {
+    if (q && Number.isFinite(q.price) && q.price > 0) {
+      out[sym] = {
+        price: q.price,
+        pctChange: typeof q.pctChange === 'number' ? q.pctChange : 0,
+        change: typeof q.change === 'number' ? q.change : 0,
+        high: q.high,
+        low: q.low,
+        open: q.open,
+        prevClose: q.previousClose,
+      };
+    }
   }
   return out;
 }
@@ -7648,42 +7639,34 @@ async function getFinnhubQuotes(symbols) {
 async function fetchLiveQuotes(symbols) {
   const QR = window.BrieftickQuoteRouter;
   if (QR) return QR.getQuotes(symbols);
-  const list = [...new Set(symbols.map(s => String(s || '').trim()).filter(Boolean))];
-  if (!list.length) return {};
-  let quotes = {};
-  try {
-    quotes = await getFinnhubQuotes(list);
-  } catch(e) {
-    console.warn('[quotes] Finnhub batch failed:', e.message);
+  if (typeof BriefTickAPI?.getQuotes === 'function') {
+    try { return await BriefTickAPI.getQuotes(symbols); } catch(_) {}
   }
-  const missing = list.filter(s => !quotes[s] || isNaN(quotes[s].price));
-  if (missing.length) {
-    for (const sym of missing) {
-      try {
-        const q = await BriefTickAPI.getQuote(sym);
-        if (q && !isNaN(q.price)) quotes[sym] = q;
-      } catch(_) {}
-    }
-  }
-  return quotes;
+  return {};
 }
 window.fetchLiveQuotes = fetchLiveQuotes;
 
 async function _fetchLandingMacroQuotes() {
   const LT = window.BrieftickLandingTicker;
   if (!LT) return {};
-  const out = {};
   const macroSyms = [...LT.LANDING_MACRO_SYMBOLS].filter(s => s !== 'VIX' && s !== '10Y');
+  const toFetch = new Set();
+  for (const displaySym of macroSyms) {
+    const fetchSym = LT.LANDING_MACRO_FETCH_MAP[displaySym];
+    if (fetchSym) toFetch.add(fetchSym);
+    const proxy = LT.LANDING_MACRO_ETF_PROXY[displaySym];
+    if (proxy) toFetch.add(proxy);
+  }
+  const quotes = await fetchLiveQuotes([...toFetch]);
+  const out = {};
   for (const displaySym of macroSyms) {
     const fetchSym = LT.LANDING_MACRO_FETCH_MAP[displaySym];
     if (!fetchSym) continue;
-    try {
-      let q = await BriefTickAPI.getQuote(fetchSym);
-      if ((!q || isNaN(q.price)) && LT.LANDING_MACRO_ETF_PROXY[displaySym]) {
-        q = await BriefTickAPI.getQuote(LT.LANDING_MACRO_ETF_PROXY[displaySym]);
-      }
-      if (q && !isNaN(q.price)) out[displaySym] = q;
-    } catch(_) {}
+    let q = quotes[fetchSym];
+    if ((!q || isNaN(q.price)) && LT.LANDING_MACRO_ETF_PROXY[displaySym]) {
+      q = quotes[LT.LANDING_MACRO_ETF_PROXY[displaySym]];
+    }
+    if (q && !isNaN(q.price)) out[displaySym] = q;
   }
   return out;
 }
@@ -7927,7 +7910,7 @@ async function liveRefreshTelemetryOverlay() {
 
   try {
     const syms = REGIONS.map(r => r.sym);
-    const quotes = await getFinnhubQuotes(syms).catch(() => ({}));
+    const quotes = await fetchLiveQuotes(syms).catch(() => ({}));
     const now = new Date();
 
     REGIONS.forEach(region => {
@@ -12642,7 +12625,7 @@ async function loadOptionsData() {
   applyOptionsUserFacingCopy();
 
   let liveOk = false;
-  if (hasPolygonOptionsKey()) {
+  if (hasPolygonOptionsKey() && !isPolygonOffline()) {
     try {
       liveOk = await fetchLiveOptionsData();
     } catch (e) {
@@ -12668,7 +12651,16 @@ async function loadOptionsData() {
   applyOptionsUserFacingCopy();
 }
 
+const POLYGON_OFFLINE_MS = 30 * 60_000;
+function isPolygonOffline() {
+  return Date.now() < (window._polygonOfflineUntil || 0);
+}
+function markPolygonOffline() {
+  window._polygonOfflineUntil = Date.now() + POLYGON_OFFLINE_MS;
+}
+
 async function fetchLiveOptionsData() {
+  if (isPolygonOffline()) return false;
   // Fetch unusual options activity from Polygon snapshots for top symbols
   const polygonKey = BriefTickAPI.keys.polygon;
   const polygonHeaders = polygonKey && polygonKey !== '_server_'
@@ -12681,7 +12673,13 @@ async function fetchLiveOptionsData() {
       const res = await fetch(`/api/proxy?provider=polygon&endpoint=v3/snapshot/options/${sym}&limit=20&sort=volume&order=desc`,
         { headers: polygonHeaders });
       const data = await res.json();
-      if (!res.ok || data?.error || String(data?.detail || '').includes('403')) continue;
+      if (!res.ok || data?.error || data?.circuitOpen || String(data?.detail || '').includes('403')) {
+        if (res.status === 403 || res.status === 502 || res.status === 503 || data?.circuitOpen) {
+          markPolygonOffline();
+          return false;
+        }
+        continue;
+      }
       const results = data.results || [];
       results.slice(0,4).forEach(r => {
         const d = r.details || {};

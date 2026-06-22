@@ -574,13 +574,25 @@ async function buildPublicProviderHealth() {
         : 'POLYGON_KEY not configured',
     },
     twelveData: {
-      status: process.env.TWELVE_DATA_KEY ? 'degraded' : 'offline',
+      status: (() => {
+        const flag = process.env.TWELVE_DATA_DISABLED;
+        if (flag === '1' || flag === 'true' || flag === 'yes') return 'offline';
+        return process.env.TWELVE_DATA_KEY ? 'degraded' : 'offline';
+      })(),
       latencyMs: 0,
-      lastSuccessAt: process.env.TWELVE_DATA_KEY ? testedAt : null,
+      lastSuccessAt: process.env.TWELVE_DATA_KEY && !['1', 'true', 'yes'].includes(String(process.env.TWELVE_DATA_DISABLED || ''))
+        ? testedAt
+        : null,
       httpStatus: process.env.TWELVE_DATA_KEY ? 200 : null,
-      message: process.env.TWELVE_DATA_KEY
-        ? 'TWELVE_DATA_KEY configured (last-resort fallback)'
-        : 'TWELVE_DATA_KEY not configured',
+      message: (() => {
+        const flag = process.env.TWELVE_DATA_DISABLED;
+        if (flag === '1' || flag === 'true' || flag === 'yes') {
+          return 'TWELVE_DATA_DISABLED — fallback disabled';
+        }
+        return process.env.TWELVE_DATA_KEY
+          ? 'TWELVE_DATA_KEY configured (last-resort fallback)'
+          : 'TWELVE_DATA_KEY not configured';
+      })(),
     },
   };
 
