@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Earnings · Beginner-first · Design Lab · FORGENIQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/earnings-beginner/_earnings-beginner.css">
+</head>
+<body class="earn-v2">
+  <header class="earn-v2-chrome">
+    <strong>Earnings · beginner-first preview</strong>
+    <span class="earn-v2-preview-pill">Design lab · not production</span>
+    <a href="/design-lab.html">← Design lab</a>
+  </header>
+
+  <main class="earn-v2">
+    <header class="earn-v2-hero">
+      <div>
+        <h1>Earnings</h1>
+        <p class="earn-v2-hero-sub">See who reports this week, why it matters, and what could move—without the jargon.</p>
+      </div>
+      <div class="earn-v2-hero-meta">
+        <span class="earn-v2-data-badge" id="earnDataBadge">Demo data</span>
+        <span class="earn-v2-report-count" id="earnReportCount">— reports this week</span>
+      </div>
+    </header>
+
+    <p class="earn-v2-disclosure" id="earnDataDisclosure"></p>
+
+    <nav class="earn-v2-tabs" aria-label="Earnings views">
+      <button type="button" class="earn-v2-tab is-active" data-earn-tab="cal">Calendar</button>
+      <button type="button" class="earn-v2-tab" data-earn-tab="ai">Analysis</button>
+      <button type="button" class="earn-v2-tab" data-earn-tab="live" hidden>Live feed</button>
+      <button type="button" class="earn-v2-tab" data-earn-tab="impact" hidden>Related impact</button>
+      <button type="button" class="earn-v2-tab" data-earn-tab="guidance" hidden>Guidance</button>
+      <button type="button" class="earn-v2-tab" data-earn-tab="risk" hidden>Portfolio risk</button>
+    </nav>
+
+    <!-- Calendar -->
+    <section class="earn-v2-section is-active" data-earn="cal" id="earnCalTab">
+      <div id="earnDetailHero" class="earn-v2-detail-hero" aria-live="polite"></div>
+
+      <div class="earn-v2-section-head earn-v2-section-head--tight">
+        <h2>This week's calendar</h2>
+        <p>Ticker · why it matters (sector theme) · impact. Hover a card for timing and expected move.</p>
+      </div>
+
+      <div class="earn-v2-cal-scroll" id="earnCalScroll">
+        <div class="earn-v2-cal-grid" id="calGrid"></div>
+      </div>
+
+      <div class="earn-v2-cal-legend">
+        <span><i style="width:10px;height:10px;border-radius:3px;background:rgba(78,168,255,0.3);display:inline-block"></i> Before open</span>
+        <span><i style="width:10px;height:10px;border-radius:3px;background:rgba(212,168,90,0.3);display:inline-block"></i> After close</span>
+        <span>Hover for timing · move · why it matters</span>
+      </div>
+
+      <div class="earn-v2-section-head earn-v2-section-head--spaced">
+        <h2>Most important earnings</h2>
+        <p>Up to five reports likely to matter most—tap any card to focus.</p>
+      </div>
+
+      <div class="earn-v2-controls">
+        <input class="earn-v2-search" id="earnSearch" type="search" placeholder="Search company or ticker" autocomplete="off" spellcheck="false">
+        <button type="button" class="earn-v2-chip is-active" data-earn-filter="all">All</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Tech">Tech</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Financials">Banks</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Energy">Energy</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="mega">Megacap</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="bigmove">Big expected moves</button>
+      </div>
+
+      <div class="earn-v2-imp-grid" id="impGrid"></div>
+    </section>
+
+    <!-- Live feed (hidden until real feed is wired) -->
+    <section class="earn-v2-section" data-earn="live" hidden>
+      <div class="earn-v2-section-head">
+        <h2>Live results</h2>
+        <p>What just printed and how the market reacted—in plain English.</p>
+      </div>
+      <div class="panel" id="liveResultCard"></div>
+      <div class="earn-v2-section-head" style="margin-top:24px">
+        <h2>Today's movers</h2>
+        <p>Quick read on how reporting stocks traded after their numbers.</p>
+      </div>
+      <div class="panel" id="earnHeat" style="display:flex;flex-direction:column;gap:8px"></div>
+    </section>
+
+    <!-- Analysis (updates with selected company) -->
+    <section class="earn-v2-section" data-earn="ai" id="earnAnalysisTab">
+      <div class="earn-v2-section-head">
+        <h2>What to know before the report</h2>
+        <p>Plain-English context for the company you selected on Calendar—sample preview copy until live data is connected.</p>
+      </div>
+      <div class="panel" id="earnAnalysisPanel" aria-live="polite"></div>
+    </section>
+
+    <!-- Impact (hidden for v1) -->
+    <section class="earn-v2-section" data-earn="impact" hidden>
+      <div class="earn-v2-section-head">
+        <h2>Who else might move</h2>
+        <p>When a bellwether reports, related stocks often follow.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="panel">
+          <h3 style="font-family:var(--earn-mono);font-size:10px;color:var(--earn-green);letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px">If NVIDIA beats</h3>
+          <p style="margin:0;font-size:14px;line-height:1.55;color:var(--earn-dim)">AMD, Broadcom, memory chips, and tech indexes often get a sympathy bid.</p>
+        </div>
+        <div class="panel">
+          <h3 style="font-family:var(--earn-mono);font-size:10px;color:var(--earn-red);letter-spacing:0.1em;text-transform:uppercase;margin:0 0 12px">If NVIDIA misses</h3>
+          <p style="margin:0;font-size:14px;line-height:1.55;color:var(--earn-dim)">AI hardware names and growth ETFs may give back recent gains quickly.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guidance (hidden for v1) -->
+    <section class="earn-v2-section" data-earn="guidance" hidden>
+      <div class="earn-v2-section-head">
+        <h2>Guidance changes</h2>
+        <p>When management raises or cuts the outlook, markets often react more than to the past quarter alone.</p>
+      </div>
+      <div class="panel">
+        <p style="margin:0;font-size:14px;line-height:1.6"><strong style="color:var(--earn-green)">NVIDIA raised</strong> next-quarter revenue guidance—read as continued AI demand.</p>
+        <p style="margin:14px 0 0;font-size:14px;line-height:1.6"><strong style="color:var(--earn-red)">Tesla withdrew</strong> full-year delivery guidance—read as uncertainty on demand.</p>
+      </div>
+    </section>
+
+    <!-- Risk (hidden for v1) -->
+    <section class="earn-v2-section" data-earn="risk" hidden>
+      <div class="earn-v2-section-head">
+        <h2>Your portfolio &amp; earnings week</h2>
+        <p>How concentrated your holdings are around upcoming reports.</p>
+      </div>
+      <div class="panel">
+        <p style="font-size:14px;line-height:1.6;color:var(--earn-dim);margin:0 0 14px">Example: three of your largest positions report within seven days. That means a larger share of your portfolio is exposed to earnings surprises than usual.</p>
+        <p style="margin:0;font-size:13px;color:var(--earn-faint)"><b style="color:var(--earn-gold)">Educational only.</b> Observations—not advice to buy or sell.</p>
+      </div>
+    </section>
+
+    <p class="earn-v2-foot"><b>Earnings v1 preview.</b> Calendar, quick brief, expected move, impact level, what to watch, and market reaction (sample data). Not a live earnings engine, portfolio risk tool, or connected guidance feed. Production Earnings is unchanged.</p>
+  </main>
+
+  <script type="module" src="/design-lab/earnings-beginner/earnings-beginner.js"></script>
+</body>
+</html>

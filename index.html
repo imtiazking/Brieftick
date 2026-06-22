@@ -67,7 +67,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="brieftick-build" content="premium-signals-20260605">
+<meta name="forgeniq-build" content="premium-signals-20260605">
 <title>FORGENIQ — Markets, briefly.</title>
 <meta name="description" content="FORGENIQ translates complex market signals into plain-English intelligence — story-first context for investors, without the jargon.">
 <link rel="canonical" href="https://www.forgeniq.com/">
@@ -3509,6 +3509,10 @@ h1,h2,h3{
 <link rel="stylesheet" href="/styles/discover-market-story.css">
 <script type="module" src="/lib/ticker-deep-dive.bridge.js"></script>
 <script type="module" src="/lib/live-data-badge.js"></script>
+<script type="module">
+import * as quoteRouter from "/lib/quoteRouter.js";
+window.BrieftickQuoteRouter = quoteRouter;
+</script>
 <script type="module" src="/lib/provider-health.js"></script>
 <script type="module" src="/lib/briefing-wheel.boot.js"></script>
 <script type="module" src="/lib/earnings-beginner.js"></script>
@@ -5861,10 +5865,9 @@ renderSectorHeatmap();
 // minute limit. Keep an immediate factor-map fallback visible, then only try a
 // live sector refresh after the priority dashboard quote batch has had time to cool down.
 async function liveRefreshSectors(){
-  if(!BriefTickAPI.keys.twelvedata) return;
   if(Date.now() < (BriefTickAPI._quotesCooldownUntil || 0)) return;
   const tickers = sectors.map(s => s[3]);
-  const quotes = await BriefTickAPI.getQuotes(tickers);
+  const quotes = await fetchLiveQuotes(tickers);
   let updated = 0;
   sectors.forEach(s => {
     const q = quotes[s[3]];
@@ -6005,7 +6008,7 @@ async function liveRefreshVix(){
 
 async function _refreshVixIntraday(){
   const strip = document.getElementById('vixIntradayStrip');
-  if(!strip || !BriefTickAPI.keys.twelvedata) return;
+  if(!strip) return;
 
   if(!isUSMarketOpen()){
     strip.style.display = 'none';
@@ -6374,9 +6377,9 @@ function renderWatchlist(quotes){
   }).join('');
 }
 async function refreshWatchlistQuotes(){
-  if(!watchlistSymbols.length || !BriefTickAPI.keys.twelvedata) return;
+  if(!watchlistSymbols.length) return;
   try{
-    const quotes = await BriefTickAPI.getQuotes(watchlistSymbols);
+    const quotes = await fetchLiveQuotes(watchlistSymbols);
     renderWatchlist(quotes);
   }catch(e){
     console.warn('[watchlist] quote refresh failed:', e.message);
@@ -6632,144 +6635,60 @@ const BriefTickAPI={
       if(!r.ok) throw new Error('HTTP '+r.status);
       return await r.json();
     }catch(e){
-      console.warn('[BriefTickAPI]', url, e.message);
+      console.warn('[FORGENIQ API]', url, e.message);
       return null;
     }
   },
 
-  /* TWELVE DATA - real-time (15-min delayed) quote */
+  /* Quote — Finnhub → Yahoo → Alpha Vantage → cache → Twelve Data (via quoteRouter) */
   async getQuote(symbol){
-    const ck = 'q:'+symbol;
-    const cached = this._cacheGet(ck, 60_000); // 60s cache
-    if(cached) return cached;
-    // Use Finnhub as primary (real-time, no daily limit)
-    try {
-      const fh = await this._fetch(`/api/proxy?provider=finnhub&endpoint=quote&symbol=${encodeURIComponent(symbol)}`);
-      if(fh && fh.c && fh.c > 0){
-        const result = {
-          symbol, name: symbol,
-          price: fh.c, change: fh.d || 0, pctChange: fh.dp || 0,
-          open: fh.o, high: fh.h, low: fh.l, previousClose: fh.pc,
-          volume: 0, currency: 'USD', isMarketOpen: fh.t > 0,
-        };
-        this._cacheSet(ck, result);
-        return result;
+    const QR = window.BrieftickQuoteRouter;
+    if (QR) {
+      const q = await QR.getQuote(symbol);
+      if (q) {
+        const ck = 'q:'+String(symbol).toUpperCase();
+        this._cacheSet(ck, q);
       }
-    } catch(_) {}
-    // Fallback to Twelve Data
-    const url = `/api/proxy?provider=twelvedata&endpoint=quote&symbol=${encodeURIComponent(symbol)}`;
-    const d = await this._fetch(url);
-    if(!d || d.status==='error' || d.code) return null;
-    const result = {
-      symbol: d.symbol, name: d.name,
-      price: parseFloat(d.close), change: parseFloat(d.change),
-      pctChange: parseFloat(d.percent_change), open: parseFloat(d.open),
-      high: parseFloat(d.high), low: parseFloat(d.low),
-      previousClose: parseFloat(d.previous_close), volume: parseInt(d.volume),
-      currency: d.currency, exchange: d.exchange, isMarketOpen: d.is_market_open,
-    };
-    this._cacheSet(ck, result);
-    return result;
+      return q;
+    }
+    const ck = 'q:'+symbol;
+    const cached = this._cacheGet(ck, 5*60_000);
+    if(cached) return cached;
+    return null;
   },
 
-  /* TWELVE DATA - batch quotes with per-symbol caching + rate-limit cooldown.
-     Free tier: 8 symbols/request, 8 requests/min, 800/day. To respect this:
-     - Cache each symbol individually for 5 minutes
-     - On 429, set a 60s cooldown where we serve cache-only (no new API calls)
-     - Only fetch symbols that are missing from cache
-     - Chunk into groups of 8, sequentially */
   _quotesCooldownUntil: 0,
   async getQuotes(symbols){
-    const QUOTE_TTL = 5 * 60_000; // 5 minutes
-    const out = {};
-    const missing = [];
-
-    // 1. Cache lookup per symbol
-    for(const sym of symbols){
-      const cached = this._cacheGet('q:'+sym, QUOTE_TTL);
-      if(cached) out[sym] = cached;
-      else missing.push(sym);
-    }
-    if(missing.length === 0) return out;
-
-    // 2. If we're cooling down from a 429, fall back to stale cache for missing symbols
-    if(Date.now() < this._quotesCooldownUntil){
-      for(const sym of missing){
-        const stale = this._cacheGetStale('q:'+sym);
-        if(stale){ out[sym] = {...stale, _stale: true}; }
+    const QR = window.BrieftickQuoteRouter;
+    if (QR) {
+      const out = await QR.getQuotes(symbols);
+      for (const [sym, q] of Object.entries(out || {})) {
+        if (q) this._cacheSet('q:'+sym, q);
       }
       return out;
     }
-
-    // 3. Chunk missing symbols into groups of 8, fetch sequentially
-    const CHUNK = 8;
-    for(let i = 0; i < missing.length; i += CHUNK){
-      const chunk = missing.slice(i, i+CHUNK);
-      const list = chunk.join(',');
-      const url = `/api/proxy?provider=twelvedata&endpoint=quote&symbol=${encodeURIComponent(list)}`;
-      const d = await this._fetch(url);
-      if(!d) continue;
-      // Top-level error detection
-      if(d.code === 429){
-        console.warn('[getQuotes] Twelve Data rate limit hit. Cooling down for 60s. Serving stale cache for missing symbols.');
-        this._quotesCooldownUntil = Date.now() + 60_000;
-        // Fall back to stale cache for any symbols still missing
-        for(const sym of missing){
-          if(!out[sym]){
-            const stale = this._cacheGetStale('q:'+sym);
-            if(stale){ out[sym] = {...stale, _stale: true}; }
-          }
-        }
-        return out;
-      }
-      if(d.code === 401){
-        console.warn('[getQuotes] Twelve Data key invalid.');
-        return out;
-      }
-      // Parse - single-symbol response has top-level keys, multi has SYM-keyed sub-objects
-      if(d.symbol){
-        const q = {
-          price: parseFloat(d.close),
-          pctChange: parseFloat(d.percent_change),
-          change: parseFloat(d.change),
-          name: d.name,
-        };
-        if(!isNaN(q.price)){
-          out[d.symbol] = q;
-          this._cacheSet('q:'+d.symbol, q);
-        }
-      } else {
-        for(const sym of chunk){
-          const r = d[sym];
-          if(r && !r.code && r.close != null){
-            const q = {
-              price: parseFloat(r.close),
-              pctChange: parseFloat(r.percent_change),
-              change: parseFloat(r.change),
-              name: r.name,
-            };
-            if(!isNaN(q.price)){
-              out[sym] = q;
-              this._cacheSet('q:'+sym, q);
-            }
-          }
-        }
-      }
+    const QUOTE_TTL = 5 * 60_000;
+    const out = {};
+    for(const sym of symbols){
+      const cached = this._cacheGet('q:'+sym, QUOTE_TTL);
+      if(cached) out[sym] = cached;
     }
     return out;
   },
 
-  /* TWELVE DATA - historical time series */
+  /* Daily closes — Yahoo → cache → Twelve Data (via quoteRouter) */
   async getTimeSeries(symbol, interval='1day', outputsize=30){
+    const QR = window.BrieftickQuoteRouter;
+    if (QR) {
+      const series = await QR.getDailyCloses(symbol, interval, outputsize);
+      if (series) {
+        const ck = `ts:${symbol}:${interval}:${outputsize}`;
+        this._cacheSet(ck, series);
+      }
+      return series;
+    }
     const ck = `ts:${symbol}:${interval}:${outputsize}`;
-    const cached = this._cacheGet(ck, 5*60_000); // 5min cache
-    if(cached) return cached;
-    const url = `/api/proxy?provider=twelvedata&endpoint=time_series&symbol=${symbol}&interval=${interval}&outputsize=${outputsize}`;
-    const d = await this._fetch(url);
-    if(!d || !d.values) return null;
-    const series = d.values.map(v => parseFloat(v.close)).reverse();
-    this._cacheSet(ck, series);
-    return series;
+    return this._cacheGet(ck, 5*60_000) || this._cacheGetStale(ck);
   },
 
   /* FINNHUB - company news for a symbol */
@@ -6907,7 +6826,7 @@ const BriefTickAPI={
   ============================================================ */
   async _claudeCall(prompt, maxTokens=600){
     if(!this.keys.anthropic){
-      console.warn('[BriefTickAPI] No Anthropic key set. Open settings to add one.');
+      console.warn('[FORGENIQ API] No Anthropic key set. Open settings to add one.');
       return null;
     }
     try {
@@ -6925,13 +6844,13 @@ const BriefTickAPI={
       if(d.type === 'error' || !r.ok){
         const errType = d?.error?.type || 'unknown';
         const errMsg  = d?.error?.message || `HTTP ${r.status}`;
-        console.warn('[BriefTickAPI] Anthropic error:', errType, errMsg);
+        console.warn('[FORGENIQ API] Anthropic error:', errType, errMsg);
         // Throw so the calling function can show the real error
         throw new Error(`Anthropic: ${errMsg}`);
       }
       return d.content?.[0]?.text || null;
     } catch(e){
-      console.warn('[BriefTickAPI] Claude call failed:', e.message);
+      console.warn('[FORGENIQ API] Claude call failed:', e.message);
       throw e; // re-throw so callers can show the real reason
     }
   },
@@ -7694,8 +7613,10 @@ async function getFinnhubQuotes(symbols) {
   return out;
 }
 
-/** Finnhub → Polygon snapshot → Twelve Data (same priority as Movers). */
+/** Finnhub → Yahoo → Alpha Vantage → cache (quoteRouter). Polygon removed from stock quotes. */
 async function fetchLiveQuotes(symbols) {
+  const QR = window.BrieftickQuoteRouter;
+  if (QR) return QR.getQuotes(symbols);
   const list = [...new Set(symbols.map(s => String(s || '').trim()).filter(Boolean))];
   if (!list.length) return {};
   let quotes = {};
@@ -7706,23 +7627,11 @@ async function fetchLiveQuotes(symbols) {
   }
   const missing = list.filter(s => !quotes[s] || isNaN(quotes[s].price));
   if (missing.length) {
-    try {
-      const poly = await getPolygonQuotes(missing);
-      missing.forEach(s => {
-        const p = poly[s] || poly[_mapFinnhubSymbol(s)];
-        if (p && !isNaN(p.price)) quotes[s] = p;
-      });
-    } catch(e) {
-      console.warn('[quotes] Polygon fallback:', e.message);
-    }
-  }
-  const stillMissing = list.filter(s => !quotes[s] || isNaN(quotes[s].price));
-  if (stillMissing.length && BriefTickAPI.keys.twelvedata && Date.now() >= (BriefTickAPI._quotesCooldownUntil || 0)) {
-    try {
-      const td = await BriefTickAPI.getQuotes(stillMissing.slice(0, 12));
-      stillMissing.forEach(s => { if (td[s] && !isNaN(td[s].price)) quotes[s] = td[s]; });
-    } catch(e) {
-      console.warn('[quotes] Twelve Data fallback:', e.message);
+    for (const sym of missing) {
+      try {
+        const q = await BriefTickAPI.getQuote(sym);
+        if (q && !isNaN(q.price)) quotes[sym] = q;
+      } catch(_) {}
     }
   }
   return quotes;
@@ -7731,7 +7640,7 @@ window.fetchLiveQuotes = fetchLiveQuotes;
 
 async function _fetchLandingMacroQuotes() {
   const LT = window.BrieftickLandingTicker;
-  if (!LT || !BriefTickAPI.keys.twelvedata) return {};
+  if (!LT) return {};
   const out = {};
   const macroSyms = [...LT.LANDING_MACRO_SYMBOLS].filter(s => s !== 'VIX' && s !== '10Y');
   for (const displaySym of macroSyms) {
@@ -8287,45 +8196,21 @@ renderSocialFeatured();
 /* Macro events */
 /* ============================================================
    MACRO EVENT TRACKER
-   Live: Finnhub economic calendar for the next 7 days.
-   Falls back to a date-aware heuristic calendar built from
-   recurring monthly/weekly US economic releases.
+   Live: FRED release calendar for the next 7 days.
 ============================================================ */
-function _macroFallbackEvents(){
-  // Build a date-aware list of recurring events for the next 7 days.
-  // Scheduled release days are heuristic (first/second/third week patterns).
-  const now = new Date();
-  const dow = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const items = [];
-  for(let i = 0; i < 7; i++){
-    const d = new Date(now);
-    d.setDate(d.getDate() + i);
-    const day = dow[d.getDay()];
-    const label = i===0 ? 'Today' : i===1 ? 'Tomorrow' : `${day} ${d.getDate()} ${mon[d.getMonth()]}`;
-    // Emit recurring events on their standard weekday
-    if(d.getDay() === 2){ // Tuesday
-      items.push({when:label+' 13:30', imp:'high', ev:'Retail Sales / CPI data window', det:'Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.'});
-    }
-    if(d.getDay() === 3){ // Wednesday
-      items.push({when:label+' 19:00', imp:'med', ev:'Fed communications window', det:'FOMC minutes, Fed speaker appearances, or policy signals often fall mid-week.'});
-    }
-    if(d.getDay() === 4){ // Thursday
-      items.push({when:label+' 13:30', imp:'med', ev:'Jobless Claims · Weekly', det:'Initial + continuing claims; read-through to labor market health.'});
-    }
-    if(d.getDay() === 5){ // Friday
-      items.push({when:label+' 13:30', imp:'high', ev:'NFP / Employment window', det:'Nonfarm payrolls on first Friday of month; strong market-moving potential.'});
-    }
-  }
-  if(items.length === 0){
-    items.push({when:'This week', imp:'low', ev:'Quiet macro calendar', det:'No major scheduled releases in the next 7 days. Earnings season may dominate.'});
-  }
-  return items;
+function renderMacroUnavailable(message) {
+  const el = document.getElementById('macroEvents');
+  if (!el) return;
+  el.innerHTML = `<div class="macro-event"><div class="macro-content"><div class="ev">${escapeHtml(message)}</div><div class="det">Scheduled US economic releases from Federal Reserve Economic Data.</div></div></div>`;
 }
 
 function renderMacroEvents(items){
   const el = document.getElementById('macroEvents');
   if(!el) return;
+  if (!items.length) {
+    renderMacroUnavailable('Economic calendar temporarily unavailable');
+    return;
+  }
   el.innerHTML = items.map(({when,imp,ev,det})=>
     `<div class="macro-event">
       <div class="macro-when">${escapeHtml(when)}</div>
@@ -8338,38 +8223,34 @@ function renderMacroEvents(items){
 }
 
 async function liveRefreshMacroEvents(){
-  // Show heuristic fallback immediately
-  renderMacroEvents(_macroFallbackEvents());
   const meta = document.getElementById('macroEventsMeta');
-  if(meta) meta.textContent = 'Heuristic · loading';
-
-  if(!BriefTickAPI.keys.finnhub) return;
+  if(meta) meta.textContent = 'Loading…';
+  renderMacroUnavailable('Loading economic calendar…');
 
   try {
-    const today = new Date();
-    const end = new Date(today.getTime() + 7*86400000);
-    const fmt = d => d.toISOString().slice(0,10);
-    const url = `/api/proxy?provider=finnhub&endpoint=calendar/economic&from=${fmt(today)}&to=${fmt(end)}`;
+    const url = '/api/proxy?provider=fred&endpoint=calendar';
     const r = await fetch(url);
     if(!r.ok) throw new Error('HTTP '+r.status);
     const data = await r.json();
-    const events = (data.economicCalendar || data.events || []);
-    if(!events.length){ if(meta) meta.textContent = 'Heuristic'; return; }
+    const events = data.events || [];
+    if(!events.length){
+      renderMacroUnavailable('Economic calendar temporarily unavailable');
+      if(meta) meta.textContent = 'Unavailable';
+      return;
+    }
 
-    const impMap = {1:'low',2:'med',3:'high'};
-    const items = events.slice(0,8).map(e=>{
-      const d = new Date(e.time || e.date);
-      const day = isNaN(d) ? (e.date||'') : d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
-      const time = isNaN(d) ? '' : ' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-      const imp = impMap[e.impact] || 'low';
-      return {when: day+time, imp, ev: e.event||e.name||'Economic release', det: e.unit||e.country||''};
+    const items = events.slice(0, 8).map(e => {
+      const d = new Date(e.when);
+      const day = isNaN(d) ? e.when : d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+      return { when: day, imp: e.imp || 'med', ev: e.ev, det: e.det || 'US · FRED' };
     });
 
     renderMacroEvents(items);
-    if(meta) meta.textContent = 'Live · Finnhub';
+    if(meta) meta.textContent = 'Live · FRED';
   } catch(e){
-    console.warn('[macro] Finnhub economic calendar failed:', e.message);
-    if(meta) meta.textContent = 'Heuristic';
+    console.warn('[macro] FRED economic calendar failed:', e.message);
+    renderMacroUnavailable('Economic calendar temporarily unavailable');
+    if(meta) meta.textContent = 'Unavailable';
   }
 }
 
@@ -8384,15 +8265,12 @@ liveRefreshMacroEvents();
 ============================================================ */
 const CORR_SYMS = ['NVDA','AMD','AVGO','MSFT','META','SPY'];
 
-// Static fallback snapshot (used until live data arrives)
-const CORR_FALLBACK = [
-  [1.00,0.86,0.78,0.62,0.58,0.71],
-  [0.86,1.00,0.74,0.54,0.51,0.66],
-  [0.78,0.74,1.00,0.51,0.49,0.61],
-  [0.62,0.54,0.51,1.00,0.68,0.78],
-  [0.58,0.51,0.49,0.68,1.00,0.74],
-  [0.71,0.66,0.61,0.78,0.74,1.00],
-];
+function renderCorrUnavailable(message) {
+  const el = document.getElementById('corrMatrix');
+  if (el) {
+    el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--ink-faint);font-size:13px;line-height:1.6">${escapeHtml(message)}</div>`;
+  }
+}
 
 function pearsonR(a, b){
   const n = Math.min(a.length, b.length);
@@ -8429,42 +8307,47 @@ function renderCorrMatrix(matrix, syms, note){
   if(el) el.innerHTML = html;
 }
 
-// Paint static fallback instantly
-renderCorrMatrix(CORR_FALLBACK, CORR_SYMS, 'Pearson 30-day rolling (static snapshot). Live calculation loading…');
+// Show loading state until live data arrives
+renderCorrUnavailable('Calculating 30-day correlations…');
 
 async function liveRefreshCorrelation(){
   const meta = document.getElementById('corrMeta');
-  if(!BriefTickAPI.keys.twelvedata){ if(meta) meta.textContent = 'Static snapshot'; return; }
   try {
     if(meta) meta.textContent = 'Fetching…';
-    // Fetch 30d daily closes for all symbols sequentially to avoid rate limits
     const series = {};
     for(const sym of CORR_SYMS){
       try {
         const s = await BriefTickAPI.getTimeSeries(sym, '1day', 30);
         if(s && s.length >= 10) series[sym] = s;
-      } catch(e){ /* keep existing */ }
+      } catch(e){ /* skip */ }
     }
     const available = CORR_SYMS.filter(s => series[s]);
-    if(available.length < 2){ if(meta) meta.textContent = 'Insufficient data'; return; }
+    if(available.length < 2){
+      renderCorrUnavailable('Correlation data temporarily unavailable');
+      if(meta) meta.textContent = 'Unavailable';
+      return;
+    }
 
-    // Compute returns (daily % changes) for Pearson
     const returns = {};
     for(const sym of available){
       const prices = series[sym];
       returns[sym] = prices.slice(1).map((p,i) => prices[i] > 0 ? (p - prices[i]) / prices[i] : 0);
     }
 
-    // Build matrix (for symbols with data; fill static fallback for missing)
     const matrix = CORR_SYMS.map((a,i) =>
       CORR_SYMS.map((b,j) => {
         if(i===j) return 1.00;
         if(returns[a] && returns[b]) return parseFloat(pearsonR(returns[a], returns[b]).toFixed(2));
-        return CORR_FALLBACK[i][j]; // fallback for any missing symbol
+        return null;
       })
     );
 
-    // Describe the highest correlation pair
+    if (matrix.flat().some(v => v === null)) {
+      renderCorrUnavailable('Correlation data temporarily unavailable');
+      if(meta) meta.textContent = 'Unavailable';
+      return;
+    }
+
     let maxPair='', maxV=0;
     for(let i=0;i<CORR_SYMS.length;i++) for(let j=i+1;j<CORR_SYMS.length;j++){
       if(matrix[i][j]>maxV){ maxV=matrix[i][j]; maxPair=`${CORR_SYMS[i]}/${CORR_SYMS[j]}`; }
@@ -8473,10 +8356,10 @@ async function liveRefreshCorrelation(){
     const note = `Pearson 30D · live closes · ${available.length}/${CORR_SYMS.length} symbols. Highest pair: ${maxPair} at ${maxV.toFixed(2)}, ${regime} co-movement.`;
     renderCorrMatrix(matrix, CORR_SYMS, note);
     if(meta) meta.textContent = `Live · ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}`;
-    console.log('[corr] live correlation matrix computed for', available.length, 'symbols');
   } catch(e){
     console.warn('[corr] live refresh failed:', e.message);
-    if(meta) meta.textContent = 'Static snapshot';
+    renderCorrUnavailable('Correlation data temporarily unavailable');
+    if(meta) meta.textContent = 'Unavailable';
   }
 }
 window.liveRefreshCorrelation = liveRefreshCorrelation;
@@ -10632,16 +10515,8 @@ async function liveRefreshPortfolioCluster(){
     return;
   }
 
-  if(!BriefTickAPI.keys.twelvedata){
-    if(status) status.textContent = 'Estimated (no Twelve Data key)';
-    renderPortfolioCluster(holdings, null);
-    syncPortfolioRelationshipFromCluster();
-    if(btn){ btn.disabled = false; btn.textContent = '↻ Recalculate'; }
-    return;
-  }
-
   try {
-    // Fetch 30D daily closes for up to 12 holdings (rate-limit aware)
+    // Fetch 30D daily closes for up to 12 holdings via quoteRouter (Yahoo primary)
     const syms = holdings.slice(0,12).map(h=>h.symbol);
     const series = {};
     for(const sym of syms){
@@ -12756,23 +12631,21 @@ function hasPolygonOptionsKey() {
   return k === '_server_' || (typeof k === 'string' && k.length > 4 && k !== 'demo');
 }
 
-const OPTIONS_BETA_NOTICE_HTML =
-  '<strong style="color:var(--gold)">Options Beta</strong> — Live options flow coming soon. Tables below are preview data while we connect live flow for Terminal subscribers.';
+const OPTIONS_COMING_SOON_HTML =
+  '<strong style="color:var(--gold)">Coming Soon</strong> — Live options flow is not yet available. We are connecting institutional-grade options data for Terminal subscribers.';
 
 function applyOptionsUserFacingCopy() {
   const badge = document.getElementById('optionsLiveBadge');
   const sub = document.getElementById('optionsLiveBadgeSub');
-  if (window.BrieftickLiveBadge?.applyOptionsBetaBadge) {
-    window.BrieftickLiveBadge.applyOptionsBetaBadge(badge, sub);
-  } else if (badge) {
-    badge.className = 'bt-live-badge bt-live-badge--options-beta';
-    badge.textContent = 'Options Beta';
+  if (badge) {
+    badge.className = 'bt-live-badge bt-live-badge--coming-soon';
+    badge.textContent = 'Coming Soon';
     badge.title = 'Live options flow coming soon';
     if (sub) sub.textContent = 'Live options flow coming soon';
   }
   const notice = document.getElementById('optPlanNotice');
   if (notice) {
-    notice.innerHTML = OPTIONS_BETA_NOTICE_HTML;
+    notice.innerHTML = OPTIONS_COMING_SOON_HTML;
     notice.style.display = '';
   }
 }
@@ -12781,23 +12654,23 @@ function setOptionsLiveBadge() {
   applyOptionsUserFacingCopy();
 }
 
-function paintIllustrativeOptions() {
-  const demo = generateDemoOptionsData();
-  optionsUnusualData = demo.unusual;
-  optionsDarkData = demo.dark;
-  optionsFlowData = demo.flow;
-  optionsDataMode = 'illustrative';
-  const notice = document.getElementById('optPlanNotice');
-  if (notice) notice.style.display = '';
-  setOptionsLiveBadge();
+function paintOptionsComingSoon() {
+  optionsUnusualData = [];
+  optionsDarkData = [];
+  optionsFlowData = [];
+  optionsDataMode = 'unavailable';
+  applyOptionsUserFacingCopy();
 }
 
 async function loadOptionsData() {
   optionsLoaded = true;
   const grid = document.getElementById('optUnusualGrid');
-  if (grid) {
-    grid.innerHTML = '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px">Loading preview…</div>';
-  }
+  const flowEl = document.getElementById('optFlowGrid');
+  const darkEl = document.getElementById('optDarkGrid');
+  const emptyMsg = '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px;line-height:1.6">Coming Soon — live options flow is not yet available.</div>';
+  if (grid) grid.innerHTML = emptyMsg;
+  if (flowEl) flowEl.innerHTML = emptyMsg;
+  if (darkEl) darkEl.innerHTML = emptyMsg;
   applyOptionsUserFacingCopy();
 
   let liveOk = false;
@@ -12809,13 +12682,10 @@ async function loadOptionsData() {
     }
   }
 
-  if (liveOk) {
-    optionsDataMode = 'mixed';
-    const demo = generateDemoOptionsData();
-    optionsDarkData = demo.dark;
-    optionsFlowData = demo.flow;
+  if (!liveOk) {
+    paintOptionsComingSoon();
   } else {
-    paintIllustrativeOptions();
+    optionsDataMode = 'live';
   }
   applyOptionsUserFacingCopy();
 
@@ -12825,7 +12695,8 @@ async function loadOptionsData() {
   updateOptionsStats();
   if (typeof window.refreshOptionsStorySummary === 'function') window.refreshOptionsStorySummary();
   buildDefaultChain();
-  document.getElementById('optAIBtn').style.display = '';
+  const aiBtn = document.getElementById('optAIBtn');
+  if (aiBtn) aiBtn.style.display = liveOk ? '' : 'none';
   applyOptionsUserFacingCopy();
 }
 
@@ -13158,11 +13029,14 @@ let scannerRunning = false;
 // Pre-seed with demo data so the page is never blank; overwritten by live scan
 let scannerResults = [];
 window.addEventListener('load', () => {
-  scannerResults = generateDemoScannerResults();
-  renderScannerResults();
-  document.getElementById('scannerStatLabel').textContent =
-    'Showing estimated data. Click Run scan to fetch live prices';
-  document.getElementById('scannerSumBtn').style.display = '';
+  const grid = document.getElementById('scannerGrid');
+  if (grid) {
+    grid.innerHTML = '<div style="padding:32px;text-align:center;color:var(--ink-faint);font-size:13px;line-height:1.6">Click <strong>Run scan</strong> to fetch live prices and rank movers.</div>';
+  }
+  const stat = document.getElementById('scannerStatLabel');
+  if (stat) stat.textContent = 'Run scan for live market data';
+  const sumBtn = document.getElementById('scannerSumBtn');
+  if (sumBtn) sumBtn.style.display = 'none';
 });
 
 // Filter chip clicks
@@ -13233,9 +13107,9 @@ async function runScanner() {
   try {
     // Use Finnhub for real-time quotes (no daily limit, 60 calls/min free)
     const symbols = SCANNER_UNIVERSE.map(s => s.sym);
-    const finnhubQuotes = await getFinnhubQuotes(symbols);
+    const finnhubQuotes = await fetchLiveQuotes(symbols);
 
-    // Score each stock using Finnhub data
+    // Score each stock using live quote data
     scannerResults = SCANNER_UNIVERSE.map(stock => {
       const q = finnhubQuotes[stock.sym] || {};
       const close = q.price || 0;
@@ -13271,24 +13145,27 @@ async function runScanner() {
     }).filter(s => s.hasData);
 
     if (!scannerResults.length) {
-      // All API calls failed - show demo/seeded data so the page is never blank
-      scannerResults = generateDemoScannerResults();
       document.getElementById('scannerStatLabel').textContent =
-        'Live data unavailable. Showing estimated data. Check Finnhub API key in Settings.';
-    }
-    renderScannerResults();
-    document.getElementById('scannerSumBtn').style.display = '';
-    if (scannerResults.length) {
+        'Live quotes temporarily unavailable. Try again in a few minutes.';
+      const grid = document.getElementById('scannerGrid');
+      if (grid) {
+        grid.innerHTML = '<div style="grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--ink-faint);font-size:13px;line-height:1.6">Price data temporarily unavailable.<br>Click Run scan to retry.</div>';
+      }
+    } else {
+      renderScannerResults();
+      document.getElementById('scannerSumBtn').style.display = '';
       document.getElementById('scannerAISummaryText').textContent = 'Scanner complete. Click "Regenerate Summary" or wait for auto-summary…';
       await generateScannerSummary();
     }
 
   } catch(err) {
-    // Even the outer try failed — show demo data
-    scannerResults = generateDemoScannerResults();
-    document.getElementById('scannerStatLabel').textContent = 'Live data unavailable. Showing estimated data.';
-    renderScannerResults();
-    document.getElementById('scannerSumBtn').style.display = '';
+    console.warn('[scanner] run failed:', err.message);
+    scannerResults = [];
+    document.getElementById('scannerStatLabel').textContent = 'Scan failed — try again shortly.';
+    const grid = document.getElementById('scannerGrid');
+    if (grid) {
+      grid.innerHTML = '<div style="grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--ink-faint);font-size:13px">Price data temporarily unavailable.</div>';
+    }
   }
 
   btn.disabled = false;
@@ -13415,8 +13292,8 @@ function renderScannerResults() {
           <div style="margin-top:5px;font-size:10px;color:var(--ink-faint);letter-spacing:.05em">${escapeHtml(s.sector)}</div>
         </div>
         <div class="scanner-card-change">
-          <div class="scanner-card-price">$${s.close.toFixed(2)}</div>
-          <div class="scanner-card-pct ${dir}">${sign}${s.pctChange.toFixed(2)}%</div>
+          <div class="scanner-card-price">${s.close > 0 ? '$'+s.close.toFixed(2) : '<span style="font-size:11px;font-weight:400;color:var(--ink-faint)">Price temporarily unavailable</span>'}</div>
+          <div class="scanner-card-pct ${dir}">${s.close > 0 ? sign+s.pctChange.toFixed(2)+'%' : '—'}</div>
         </div>
       </div>
       <div class="scanner-why-here">${whyLine}</div>
@@ -13559,14 +13436,10 @@ document.querySelectorAll('.nav-link').forEach(l => {
 
 async function loadInsiders() {
   const tbody = document.getElementById('insidersCorpBody');
-  // Always show demo data immediately so page is never blank
-  if (!insidersCorpData.length) {
-    insidersCorpData = generateDemoInsiderData();
-    renderInsidersTable(insidersCorpData);
-    updateInsidersStats();
-    document.getElementById('insidersAIBtn').style.display = '';
+  insidersCorpData = [];
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="9" style="padding:12px 14px;color:var(--ink-faint);font-size:12px">Fetching live SEC filings…</td></tr>';
   }
-  tbody.innerHTML = '<tr><td colspan="9" style="padding:12px 14px;color:var(--ink-faint);font-size:12px">Fetching live SEC filings…</td></tr>';
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
@@ -13594,13 +13467,19 @@ async function loadInsiders() {
       insidersCorpData = liveData;
       renderInsidersTable(insidersCorpData);
       updateInsidersStats();
-    } else {
-      // Re-render the demo data that was already loaded
-      renderInsidersTable(insidersCorpData);
+      const aiBtn = document.getElementById('insidersAIBtn');
+      if (aiBtn) aiBtn.style.display = '';
+      return;
     }
+    throw new Error('No parseable filings');
   } catch(err) {
-    // Live fetch failed — demo data already rendered, just restore it
-    renderInsidersTable(insidersCorpData);
+    console.warn('[insiders] live fetch failed:', err.message);
+    insidersCorpData = [];
+    if (tbody) {
+      tbody.innerHTML = '<tr><td colspan="9" style="padding:20px 14px;color:var(--ink-faint);font-size:12px;line-height:1.6">Live SEC filings temporarily unavailable. Try again shortly.</td></tr>';
+    }
+    const aiBtn = document.getElementById('insidersAIBtn');
+    if (aiBtn) aiBtn.style.display = 'none';
   }
 }
 
@@ -13686,17 +13565,14 @@ function updateInsidersStats() {
 // Political trades – fetch from public House Stock Watcher API
 async function loadPoliticalTrades() {
   politicsPage = 0;
-  // Always show demo data immediately
-  if (!politicsData.length) {
-    politicsData = generateDemoPoliticsData();
-    renderPoliticsCards();
-    document.getElementById('politicsAIBtn').style.display = '';
+  politicsData = [];
+  const container = document.getElementById('politicsCardsContainer');
+  if (container) {
+    container.innerHTML = '<div class="insiders-empty">Loading congressional disclosures…</div>';
   }
-  // Try to fetch live data in background
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 10000);
-    // Proxy through our server to avoid CORS
     const res = await fetch('/api/proxy?provider=politicaltrades', { signal: controller.signal });
     clearTimeout(timeout);
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -13710,11 +13586,19 @@ async function loadPoliticalTrades() {
       if (typeof window.refreshInsiderSmartMoneySummary === 'function') {
         window.refreshInsiderSmartMoneySummary();
       }
+      const aiBtn = document.getElementById('politicsAIBtn');
+      if (aiBtn) aiBtn.style.display = '';
+      return;
     }
-  } catch(_) {
-    // demo data already shown, nothing more to do
+  } catch(e) {
+    console.warn('[politics] live fetch failed:', e.message);
   }
-  document.getElementById('politicsAIBtn').style.display = '';
+  politicsData = [];
+  if (container) {
+    container.innerHTML = '<div class="insiders-empty"><strong style="color:var(--gold)">Coming Soon</strong><br>Congressional trade disclosures are temporarily unavailable.</div>';
+  }
+  const aiBtn = document.getElementById('politicsAIBtn');
+  if (aiBtn) aiBtn.style.display = 'none';
 }
 
 function generateDemoPoliticsData() {

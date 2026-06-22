@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>FORGENIQ Logo Lab · Design Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/split-nav-a.css">
+  <link rel="stylesheet" href="/styles/split-brand.css">
+  <link rel="stylesheet" href="/design-lab/brieftick-logo/brieftick-logo-lab.css">
+</head>
+<body>
+  <div class="bll-shell">
+    <header class="bll-chrome">
+      <div class="bll-chrome__start">
+        <strong>Design Lab · FORGENIQ Logo</strong>
+        <span class="bll-chrome__note">Uploaded asset · placement &amp; size only</span>
+      </div>
+      <a class="bll-chrome__back" href="/">← FORGENIQ</a>
+    </header>
+
+    <main class="bll-main">
+      <aside class="bll-controls" aria-label="Logo placement controls">
+        <h2 class="bll-controls__title">Controls</h2>
+        <p class="bll-controls__hint">Adjust placement and size only. The logo image is never modified.</p>
+
+        <label class="bll-control">
+          <span>Logo width <em id="bllValWidth">104px</em></span>
+          <input type="range" id="bllWidth" min="72" max="160" value="104" step="1">
+        </label>
+        <label class="bll-control">
+          <span>Navbar height <em id="bllValNavH">88px</em></span>
+          <input type="range" id="bllNavH" min="64" max="120" value="88" step="1">
+        </label>
+        <label class="bll-control">
+          <span>Left padding <em id="bllValPadL">28px</em></span>
+          <input type="range" id="bllPadL" min="12" max="48" value="28" step="1">
+        </label>
+        <label class="bll-control">
+          <span>Top padding <em id="bllValPadT">16px</em></span>
+          <input type="range" id="bllPadT" min="8" max="32" value="16" step="1">
+        </label>
+
+        <div class="bll-info" id="bllInfo" aria-live="polite">
+          <h3>Logo information</h3>
+          <dl>
+            <dt>Asset</dt><dd>Production brand logo (PNG)</dd>
+            <dt>Native size</dt><dd>1024 × 512 px (RGBA)</dd>
+            <dt>Rendered width</dt><dd id="bllInfoW">—</dd>
+            <dt>Rendered height</dt><dd id="bllInfoH">—</dd>
+            <dt>Navbar height</dt><dd id="bllInfoNavH">—</dd>
+            <dt>Left padding</dt><dd id="bllInfoPadL">—</dd>
+            <dt>Top padding</dt><dd id="bllInfoPadT">—</dd>
+          </dl>
+        </div>
+      </aside>
+
+      <div class="bll-previews">
+        <section class="bll-panel">
+          <h2 class="bll-panel__title">Chosen Logo Direction</h2>
+          <p class="bll-panel__sub">Reference asset at full size (source of truth)</p>
+          <div class="bll-ref">
+            <img src="/brand/forgeniq-logo.png" alt="FORGENIQ logo reference" class="bll-ref__img" width="1024" height="512">
+          </div>
+        </section>
+
+        <section class="bll-panel">
+          <h2 class="bll-panel__title">Navbar Preview</h2>
+          <p class="bll-panel__sub">Dark navbar matching the live site</p>
+          <div class="bll-navbar" id="bllNavbar">
+            <div class="bll-navbar__inner" id="bllNavbarInner">
+              <div class="brand split-brand bll-brand-slot">
+                <span class="split-brand__clip">
+                  <img src="/brand/forgeniq-logo.png" alt="FORGENIQ" class="split-brand-img bll-logo-target" width="1024" height="512">
+                </span>
+              </div>
+              <div class="bll-navbar__links">
+                <span>Home</span><span>Pricing</span><span>About</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bll-panel">
+          <h2 class="bll-panel__title">Landing Page Preview</h2>
+          <p class="bll-panel__sub">Current landing header structure</p>
+          <div class="bll-landing-mock">
+            <nav class="nav nav-a bll-landing-nav" id="bllLandingNav">
+              <div class="nav-a__start bll-landing-nav__start" id="bllLandingStart">
+                <div class="brand split-brand">
+                  <span class="split-brand__clip">
+                    <img src="/brand/forgeniq-logo.png" alt="FORGENIQ" class="split-brand-img bll-logo-target" width="1024" height="512">
+                  </span>
+                </div>
+                <div class="bll-landing-links">
+                  <span>Home</span><span>Dashboard</span><span>Pricing</span>
+                </div>
+              </div>
+            </nav>
+            <div class="bll-landing-hero" aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <section class="bll-panel">
+          <h2 class="bll-panel__title">Mobile Preview</h2>
+          <p class="bll-panel__sub">Narrow header · symbol-only when space is tight</p>
+          <div class="bll-mobile-frame">
+            <header class="bll-mobile-header" id="bllMobileHeader">
+              <span class="split-brand__clip split-brand__clip--symbol">
+                <img src="/brand/forgeniq-logo.png" alt="FORGENIQ" class="split-brand-img bll-logo-target bll-logo-target--symbol" width="1024" height="512">
+              </span>
+              <span class="bll-mobile-menu" aria-hidden="true">☰</span>
+            </header>
+          </div>
+        </section>
+
+        <section class="bll-panel">
+          <h2 class="bll-panel__title">App Icon Preview</h2>
+          <p class="bll-panel__sub">Symbol crop from the same uploaded asset</p>
+          <div class="bll-icons">
+            <div class="bll-icon bll-icon--favicon">
+              <img src="/brand/forgeniq-logo.png" alt="" class="bll-icon__img" width="1024" height="512">
+              <span>Favicon 32</span>
+            </div>
+            <div class="bll-icon bll-icon--app">
+              <img src="/brand/forgeniq-logo.png" alt="" class="bll-icon__img" width="1024" height="512">
+              <span>App 180</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="/design-lab/brieftick-logo/brieftick-logo-lab.js" defer></script>
+</body>
+</html>

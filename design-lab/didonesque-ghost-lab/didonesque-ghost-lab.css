@@ -1,0 +1,520 @@
+/**
+ * Concept 31 — Didonesque Ghost Lab
+ * Didonesque Ghost Light only — 8 editorial treatment variants.
+ */
+
+@font-face {
+  font-family: "Didonesque Ghost Light";
+  src:
+    url("/design-lab/didonesque-ghost-lab/fonts/DidonesqueGhost-Light.woff2") format("woff2"),
+    url("/design-lab/didonesque-ghost-lab/fonts/DidonesqueGhost-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Didonesque Ghost Light";
+  src:
+    url("/design-lab/didonesque-ghost-lab/fonts/DidonesqueGhost-LightItalic.woff2") format("woff2"),
+    url("/design-lab/didonesque-ghost-lab/fonts/DidonesqueGhost-LightItalic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Refined editorial palette — silver dominant, gold accent */
+  --dgl-gold-highlight: #f6e2a6;
+  --dgl-gold-mid: #d8b05a;
+  --dgl-gold-shadow: #8a6423;
+  --dgl-gold: var(--dgl-gold-mid);
+  --dgl-gold-bright: var(--dgl-gold-highlight);
+  --dgl-void: #0a0b0e;
+  --dgl-void-warm: #12100c;
+  --dgl-silver: #f0ece6;
+  --dgl-font: "Didonesque Ghost Light", serif;
+  --dgl-mono: "JetBrains Mono", ui-monospace, monospace;
+  --dgl-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Concept C baseline (Variant A) — reference benchmark */
+  --dgl-scale: clamp(3.25rem, 13.5vw, 10.5rem);
+  --dgl-lh: 0.86;
+  --dgl-track: -0.04em;
+  --dgl-split-gap: -0.02em;
+  --dgl-pad-left: clamp(0.5rem, 3vw, 2rem);
+  --dgl-stage-pad: clamp(1.5rem, 4vw, 3rem);
+  --dgl-grain-opacity: 0.32;
+  --dgl-glow-gold: 0.05;
+  --dgl-the-size: 0.22em;
+
+  /* Polished champagne silver — primary visual (≈75–80% coverage) */
+  --dgl-silver-base: #ece8e2;
+  --dgl-silver-base-shadow: none;
+  --dgl-silver-shine: linear-gradient(
+    165deg,
+    #e4e0da 0%,
+    #f6f2ec 18%,
+    #ffffff 38%,
+    #f8f4ee 52%,
+    #ffffff 68%,
+    #f0ece6 84%,
+    #e8e4de 100%
+  );
+  --dgl-silver-filter: drop-shadow(0 4px 22px rgba(0, 0, 0, 0.28));
+
+  /* Refined gold accent — luxury watch palette (≈20–25% coverage) */
+  --dgl-gold-base: #d8b05a;
+  --dgl-gold-base-shadow: none;
+  --dgl-gold-shine: linear-gradient(
+    158deg,
+    #8a6423 0%,
+    #a88438 22%,
+    #d8b05a 48%,
+    #f6e2a6 58%,
+    #d8b05a 78%,
+    #8a6423 100%
+  );
+  --dgl-gold-filter: drop-shadow(0 3px 16px rgba(138, 100, 35, 0.16));
+
+  --dgl-the-color: #d8b05a;
+  --dgl-the-shadow: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--dgl-font);
+  font-weight: 300;
+  font-synthesis: none;
+  background: var(--dgl-void);
+  color: var(--dgl-silver);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.dgl-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chrome */
+.dgl-chrome {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  padding: 0.75rem clamp(0.85rem, 2.5vw, 1.4rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(6, 7, 10, 0.82);
+  backdrop-filter: blur(14px);
+  font-family: var(--dgl-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dgl-chrome strong {
+  color: var(--dgl-gold);
+  font-weight: 500;
+}
+
+.dgl-chrome__note {
+  margin-left: 0.45rem;
+  opacity: 0.65;
+}
+
+.dgl-chrome__back {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.dgl-chrome__back:hover {
+  color: var(--dgl-silver);
+}
+
+.dgl-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  justify-content: center;
+}
+
+.dgl-switcher__btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(255, 255, 255, 0.48);
+  font-family: var(--dgl-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.32rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.dgl-switcher__btn:hover {
+  color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(212, 168, 90, 0.22);
+}
+
+.dgl-switcher__btn.is-active {
+  color: var(--dgl-gold-bright);
+  border-color: rgba(212, 168, 90, 0.42);
+  background: rgba(212, 168, 90, 0.09);
+}
+
+/* Stage */
+.dgl-stage {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 110px);
+  padding: var(--dgl-stage-pad);
+  overflow: hidden;
+}
+
+.dgl-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.dgl-atmosphere__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 88% 42%, rgba(212, 168, 90, var(--dgl-glow-gold)), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 12% 78%, rgba(120, 130, 160, 0.06), transparent 55%),
+    linear-gradient(165deg, #060608 0%, var(--dgl-void) 45%, var(--dgl-void-warm) 100%);
+}
+
+.dgl-atmosphere__grain {
+  position: absolute;
+  inset: 0;
+  opacity: var(--dgl-grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.dgl-hero {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1120px);
+  isolation: isolate;
+}
+
+/* Masthead — Concept C hierarchy */
+.dgl-masthead {
+  isolation: isolate;
+  text-align: left;
+  padding-left: var(--dgl-pad-left);
+}
+
+.dgl-headline {
+  font-family: var(--dgl-font);
+  font-weight: 300;
+  font-synthesis: none;
+  font-size: var(--dgl-scale);
+  line-height: var(--dgl-lh);
+  letter-spacing: var(--dgl-track);
+  text-transform: uppercase;
+}
+
+.dgl-line {
+  display: block;
+  position: relative;
+}
+
+.dgl-line--split {
+  margin-bottom: var(--dgl-split-gap);
+}
+
+.dgl-line--italic {
+  font-style: italic;
+  font-weight: 300;
+  font-synthesis: none;
+}
+
+.dgl-line--without {
+  display: flex;
+  align-items: baseline;
+  gap: 0.12em;
+  flex-wrap: wrap;
+}
+
+/* Dual-layer metallic */
+.dgl-metallic {
+  background: none;
+  background-image: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: inherit;
+  color: inherit;
+  filter: none;
+}
+
+.dgl-metallic--inline {
+  display: inline-block;
+  position: relative;
+}
+
+.dgl-metallic__base,
+.dgl-metallic__shine {
+  display: block;
+}
+
+.dgl-metallic__shine {
+  position: absolute;
+  inset: 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.dgl-metallic--silver {
+  filter: var(--dgl-silver-filter);
+}
+
+.dgl-metallic--silver .dgl-metallic__base {
+  color: var(--dgl-silver-base);
+  text-shadow: var(--dgl-silver-base-shadow);
+}
+
+.dgl-metallic--silver .dgl-metallic__shine {
+  background-image: var(--dgl-silver-shine);
+  background-size: 100% 100%;
+}
+
+.dgl-metallic--gold {
+  filter: var(--dgl-gold-filter);
+}
+
+.dgl-metallic--gold .dgl-metallic__base {
+  color: var(--dgl-gold-base);
+  text-shadow: var(--dgl-gold-base-shadow);
+}
+
+.dgl-metallic--gold .dgl-metallic__shine {
+  background-image: var(--dgl-gold-shine);
+  background-size: 100% 100%;
+}
+
+.dgl-the {
+  font-family: var(--dgl-font);
+  font-size: var(--dgl-the-size);
+  font-style: italic;
+  font-weight: 300;
+  font-synthesis: none;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-color: rgba(216, 176, 90, 0.38);
+  color: var(--dgl-the-color);
+  text-shadow: var(--dgl-the-shadow);
+  margin-left: 0.15em;
+  align-self: center;
+}
+
+.dgl-foot {
+  position: relative;
+  z-index: 10;
+  padding: 0.75rem clamp(0.85rem, 2.5vw, 1.4rem);
+  font-family: var(--dgl-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ══════════════════════════════════════
+   B — Rich Gold (deeper accent, still editorial)
+   ══════════════════════════════════════ */
+html[data-dgl-variant="b"] {
+  --dgl-gold-shine: linear-gradient(
+    152deg,
+    #8a6423 0%,
+    #9a7030 20%,
+    #d8b05a 46%,
+    #f6e2a6 54%,
+    #d8b05a 72%,
+    #8a6423 100%
+  );
+  --dgl-gold-filter: drop-shadow(0 3px 18px rgba(138, 100, 35, 0.22));
+  --dgl-glow-gold: 0.07;
+}
+
+/* ══════════════════════════════════════
+   C — Polished Chrome
+   ══════════════════════════════════════ */
+html[data-dgl-variant="c"] {
+  --dgl-silver-base: #f0ece6;
+  --dgl-silver-shine: linear-gradient(
+    162deg,
+    #ece8e2 0%,
+    #faf8f4 16%,
+    #ffffff 36%,
+    #ffffff 54%,
+    #faf6f0 70%,
+    #ffffff 86%,
+    #f4f0ea 100%
+  );
+  --dgl-silver-filter:
+    drop-shadow(0 4px 20px rgba(0, 0, 0, 0.24))
+    drop-shadow(0 0 20px rgba(255, 255, 255, 0.04));
+}
+
+/* ══════════════════════════════════════
+   D — Bloomberg Editorial
+   ══════════════════════════════════════ */
+html[data-dgl-variant="d"] {
+  --dgl-track: -0.035em;
+  --dgl-lh: 0.88;
+  --dgl-grain-opacity: 0.12;
+  --dgl-glow-gold: 0.08;
+}
+
+html[data-dgl-variant="d"] .dgl-masthead::before {
+  content: "";
+  display: block;
+  width: min(100%, 420px);
+  height: 1px;
+  margin-bottom: 1.75rem;
+  background: linear-gradient(90deg, var(--dgl-gold-mid), transparent 70%);
+  opacity: 0.45;
+}
+
+html[data-dgl-variant="d"] .dgl-atmosphere__glow {
+  background: linear-gradient(180deg, #0c0d10 0%, var(--dgl-void) 100%);
+}
+
+/* ══════════════════════════════════════
+   E — Luxury Annual Report
+   ══════════════════════════════════════ */
+html[data-dgl-variant="e"] {
+  --dgl-lh: 0.9;
+  --dgl-track: -0.035em;
+  --dgl-split-gap: -0.015em;
+  --dgl-pad-left: clamp(1rem, 4.5vw, 3rem);
+}
+
+html[data-dgl-variant="e"] .dgl-masthead {
+  padding-top: 0.5rem;
+}
+
+/* ══════════════════════════════════════
+   F — Fashion Cover
+   ══════════════════════════════════════ */
+html[data-dgl-variant="f"] {
+  --dgl-scale: clamp(3.5rem, 14.5vw, 11.5rem);
+  --dgl-lh: 0.82;
+  --dgl-split-gap: -0.045em;
+  --dgl-track: -0.042em;
+}
+
+/* ══════════════════════════════════════
+   G — Ghost Minimal
+   ══════════════════════════════════════ */
+html[data-dgl-variant="g"] {
+  --dgl-lh: 0.92;
+  --dgl-split-gap: -0.01em;
+  --dgl-stage-pad: clamp(2.5rem, 8vw, 5rem);
+  --dgl-pad-left: clamp(1.25rem, 5vw, 3.5rem);
+  --dgl-grain-opacity: 0.18;
+  --dgl-glow-gold: 0.08;
+}
+
+html[data-dgl-variant="g"] .dgl-stage {
+  align-items: center;
+}
+
+html[data-dgl-variant="g"] .dgl-masthead {
+  padding-top: clamp(1rem, 4vh, 2.5rem);
+  padding-bottom: clamp(1rem, 4vh, 2.5rem);
+}
+
+/* ══════════════════════════════════════
+   H — Signature FORGENIQ
+   ══════════════════════════════════════ */
+html[data-dgl-variant="h"] {
+  --dgl-pad-left: clamp(1.25rem, 4vw, 2.75rem);
+  --dgl-glow-gold: 0.06;
+}
+
+html[data-dgl-variant="h"] .dgl-masthead {
+  border-left: 1px solid transparent;
+  border-image: linear-gradient(180deg, transparent, var(--dgl-gold-mid) 35%, var(--dgl-gold-highlight) 65%, transparent) 1;
+  padding-left: calc(var(--dgl-pad-left) + 0.65rem);
+}
+
+html[data-dgl-variant="h"] .dgl-metallic--silver .dgl-metallic__shine {
+  background-image: linear-gradient(
+    168deg,
+    #e8e4de 0%,
+    #f8f4ee 24%,
+    #ffffff 46%,
+    #f0ece6 70%,
+    #faf6f0 100%
+  );
+}
+
+html[data-dgl-variant="h"] .dgl-line--without {
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 640px) {
+  .dgl-chrome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  html[data-dgl-variant="g"] .dgl-masthead {
+    padding-left: 0;
+  }
+
+  .dgl-masthead {
+    padding-left: 0;
+  }
+
+  html[data-dgl-variant="h"] .dgl-masthead {
+    border-left: none;
+    padding-left: 0;
+    border-top: 2px solid;
+    border-image: linear-gradient(90deg, var(--dgl-gold), transparent) 1;
+    padding-top: 1rem;
+  }
+
+  .dgl-headline {
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+  }
+
+  .dgl-the {
+    font-size: 0.28em;
+  }
+}

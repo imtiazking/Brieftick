@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insider Story · Design Lab · FORGENIQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/insider-story/vars.css">
+  <link rel="stylesheet" href="/design-lab/insider-story/insider-story.css">
+</head>
+<body>
+  <header class="is-chrome">
+    <a href="/">← FORGENIQ</a>
+    <span class="is-preview-badge">Design-lab preview · illustrative insider data</span>
+    <a href="/design-lab/discover-market-story">Discover Story</a>
+  </header>
+
+  <main class="is-wrap">
+    <header class="is-hero">
+      <div class="eyebrow">Design Lab</div>
+      <h1>Insider &amp; Political Trades</h1>
+      <p>Story-first concepts for insider filings, political disclosures, and cluster activity — before users hit the raw table.</p>
+    </header>
+
+    <nav class="is-concept-switch" aria-label="Design concepts">
+      <button type="button" class="is-concept-btn active" data-concept="a">
+        Concept A
+        <span>Insider Story</span>
+      </button>
+      <button type="button" class="is-concept-btn" data-concept="b">
+        Concept B
+        <span>Smart Money Flow</span>
+      </button>
+      <button type="button" class="is-concept-btn" data-concept="c">
+        Concept C
+        <span>Notable Activity</span>
+      </button>
+    </nav>
+
+    <section class="is-concept-panel active" id="conceptPanelA" data-concept="a" aria-label="Concept A — Insider Story"></section>
+    <section class="is-concept-panel" id="conceptPanelB" data-concept="b" aria-label="Concept B — Smart Money Flow"></section>
+    <section class="is-concept-panel" id="conceptPanelC" data-concept="c" aria-label="Concept C — Notable Activity"></section>
+
+    <section class="is-data-section" id="isDataSection" aria-label="Activity data">
+      <div class="is-data-header">
+        <div>
+          <h3>Recent activity</h3>
+          <p>Corporate insiders, political disclosures, and filing clusters</p>
+        </div>
+        <span class="is-filter-hint" id="isFilterHint" aria-live="polite"></span>
+      </div>
+
+      <div class="is-tabs" role="tablist">
+        <button type="button" class="is-tab active" data-tab="corporate" role="tab" aria-selected="true">Corporate Insiders</button>
+        <button type="button" class="is-tab" data-tab="politics" role="tab">Political Disclosures</button>
+        <button type="button" class="is-tab" data-tab="clusters" role="tab">Notable Clusters</button>
+      </div>
+
+      <div class="is-toolbar">
+        <input type="search" class="is-search" id="isSearch" placeholder="Search ticker, name, or sector…" autocomplete="off">
+      </div>
+
+      <div class="is-table-wrap">
+        <table class="is-table" aria-label="Insider activity table">
+          <thead id="isTableHead"></thead>
+          <tbody id="isTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/design-lab/insider-story/insider-story.js"></script>
+</body>
+</html>

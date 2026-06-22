@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="split">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>FORGENIQ Briefing · Design Lab</title>
+  <link rel="canonical" href="/design-lab/wheel-system/briefing">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/split-brand.css">
+  <link rel="stylesheet" href="/styles/split-theme.css">
+  <link rel="stylesheet" href="/styles/dashboard-design-lab.css">
+  <link rel="stylesheet" href="/styles/dashboard-preview.css">
+  <link rel="stylesheet" href="/design-lab/wheel-system/_wheel-lab.css">
+  <link rel="stylesheet" href="/design-lab/wheel-system/_wheel-briefing.css">
+  <link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">
+</head>
+<body class="dash-preview-body dash-lab-body wheel-system-lab wheel-briefing-lab wheel-flagship-lab" data-dash-lab-concept="wheel">
+  <div class="split-atmosphere" aria-hidden="true">
+    <div class="split-atmosphere__dual"><span></span><span></span></div>
+    <div class="split-atmosphere__fog"></div>
+    <div class="split-atmosphere__vignette"></div>
+  </div>
+  <header class="wheel-lab-chrome">
+    <strong id="wheelLabTitle">FORGENIQ Briefing</strong>
+    <a href="/design-lab/wheel-system">← Design lab</a>
+  </header>
+  <main class="wheel-lab-main dash-preview-main">
+    <div class="dash-preview-wheel-wrap wheel-lab-scene">
+      <section id="panelWheel" class="dash-lab-panel is-active" aria-label="FORGENIQ Briefing">
+        <div class="dash-lab-env" aria-hidden="true">
+          <div class="dash-lab-env__haze"></div>
+          <div class="dash-lab-env__vignette"></div>
+        </div>
+        <div class="intel-wheel-scene briefing-scene briefing-scene--flagship">
+          <header class="wheel-pulse-strip" id="wheelPulseStrip"></header>
+          <p class="intel-wheel__hint" id="wheelLabSubtitle">—</p>
+          <div class="briefing-stage" id="briefingStage">
+            <aside class="briefing-rail" aria-label="Briefing intelligence rail">
+              <p class="briefing-rail__title">Briefing wheel</p>
+              <div class="briefing-rail__wheel">
+                <div class="intel-wheel__viewport" id="wheelViewport" tabindex="0" aria-label="Briefing wheel"></div>
+              </div>
+              <div class="briefing-snapshot" aria-label="Market snapshot" data-market-snapshot>
+                <!-- Rows injected by market-snapshot.js from lib/marketDataService.js -->
+              </div>
+            </aside>
+            <div class="briefing-main" id="wheelEngine" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <p class="briefing-provenance-wrap" aria-live="polite">
+    <span class="briefing-provenance-badge is-mixed" id="briefingProvenanceBadge">Data: …</span>
+    <span class="briefing-provenance-detail" id="briefingProvenanceDetail">Loading live quotes…</span>
+  </p>
+  <p class="flagship-lab-note">Design lab · Briefing Wheel Phase 1 preview · not production</p>
+  <script type="module" src="/design-lab/wheel-system/briefing/boot-live.js"></script>
+</body>
+</html>

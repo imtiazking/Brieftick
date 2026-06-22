@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Options Flow · Options Story (design lab)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/options-story/vars.css">
+  <link rel="stylesheet" href="/design-lab/options-story/options-story.css">
+</head>
+<body>
+  <header class="os-chrome">
+    <a href="/">← FORGENIQ</a>
+    <span class="os-preview-badge">Design-lab preview · illustrative options data</span>
+    <a href="/design-lab/insider-story">Insider Story</a>
+  </header>
+
+  <main class="os-wrap">
+    <header class="os-hero">
+      <div class="eyebrow">Design Lab</div>
+      <h1>Options Flow &amp; Unusual Activity</h1>
+      <p>Design-lab concept only. Production options page is unchanged.</p>
+    </header>
+
+    <div id="optionsStoryMount"></div>
+
+    <section class="os-data-section" id="osDataSection" aria-label="Options activity data">
+      <div class="os-data-header">
+        <div>
+          <h3>Activity data</h3>
+          <p>Investigate individual prints below</p>
+        </div>
+        <span class="os-filter-hint" id="osFilterHint" aria-live="polite"></span>
+      </div>
+
+      <div class="os-tabs" role="tablist">
+        <button type="button" class="os-tab active" data-tab="unusual" role="tab" aria-selected="true">Unusual Activity</button>
+        <button type="button" class="os-tab" data-tab="chain" role="tab">Options Chain</button>
+        <button type="button" class="os-tab" data-tab="heatmap" role="tab">Flow Heatmap</button>
+        <button type="button" class="os-tab" data-tab="darkpool" role="tab">Dark Pool</button>
+      </div>
+
+      <div class="os-toolbar" id="osToolbar">
+        <input type="search" class="os-search" id="osSearch" placeholder="Filter by ticker…" autocomplete="off">
+        <select class="os-filter" id="osTypeFilter" aria-label="Contract type">
+          <option value="">All types</option>
+          <option value="CALL">Calls only</option>
+          <option value="PUT">Puts only</option>
+        </select>
+        <select class="os-filter" id="osSentFilter" aria-label="Sentiment">
+          <option value="">All sentiment</option>
+          <option value="bullish">Bullish</option>
+          <option value="bearish">Bearish</option>
+        </select>
+      </div>
+
+      <div id="osTabPanel">
+        <div class="os-table-wrap">
+          <table class="os-table" aria-label="Unusual options activity">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Ticker</th>
+                <th>Type</th>
+                <th>Strike</th>
+                <th>Expiry</th>
+                <th>Premium</th>
+                <th>Volume</th>
+                <th>OI</th>
+                <th>Vol/OI</th>
+                <th>IV</th>
+                <th>Spot</th>
+                <th>Sentiment</th>
+              </tr>
+            </thead>
+            <tbody id="osTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/design-lab/options-story/options-story.js"></script>
+</body>
+</html>

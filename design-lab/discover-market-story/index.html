@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Discover Stocks · Today's Market Story (design lab)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab/discover-market-story/vars.css">
+  <link rel="stylesheet" href="/design-lab/discover-market-story/discover-market-story.css">
+  <link rel="stylesheet" href="/design-lab/move-together/story/story-embed.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter Tight", system-ui, sans-serif;
+      background: var(--void);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 168, 90, 0.08), transparent),
+        linear-gradient(180deg, #080a12, #06080f);
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="dms-page">
+    <header class="dms-chrome">
+      <strong>Design lab · Discover narrative</strong>
+      <nav>
+        <a href="/design-lab/move-together">← Move Together</a>
+        <a href="/design-lab/portfolio-relationship-story">Portfolio story</a>
+      </nav>
+    </header>
+
+    <p class="dms-banner" role="status">
+      Preview only · illustrative market data · not linked from production Discover Stocks
+    </p>
+
+    <header class="dms-hero">
+      <h1>Discover Stocks</h1>
+      <p class="dms-hero__lead">Today's market story first — then scan names and Deep Dive.</p>
+    </header>
+
+  <!-- Today's Market Story -->
+    <section class="dms-story is-theme-active" id="dmsStory" aria-labelledby="dmsStoryEyebrow">
+      <p class="dms-story__eyebrow" id="dmsStoryEyebrow">Today's Market Story</p>
+      <h2 class="dms-story__title" id="dmsThemeTitle">AI Infrastructure Leads Markets</h2>
+      <p class="dms-story__body" id="dmsStoryBody">
+        NVIDIA, AMD and Broadcom are among today's strongest names as investors continue to favour companies benefiting from AI infrastructure spending and data-centre demand.
+      </p>
+
+      <div class="dms-theme-chips" id="dmsThemeChips" role="tablist" aria-label="Market themes"></div>
+
+      <div class="dms-names" id="dmsNames" aria-label="Key names in this theme">
+        <div class="dms-key-names dms-key-names--default" id="dmsKeyNamesDefault"></div>
+        <button type="button" class="dms-names-toggle" id="dmsNamesToggle" aria-expanded="false" aria-controls="dmsNamesExpanded">
+          Show more names
+        </button>
+        <div class="dms-names-expanded" id="dmsNamesExpanded" hidden>
+          <div id="dmsNamesGroups"></div>
+          <button type="button" class="dms-add-stock-toggle" id="dmsAddStockToggle" aria-expanded="false" aria-controls="dmsCustomAdd">
+            Add stock
+          </button>
+          <div class="dms-custom-add" id="dmsCustomAdd" hidden>
+            <div class="dms-custom-add__row">
+              <input
+                type="text"
+                id="dmsCustomInput"
+                class="dms-custom-input"
+                placeholder="Tesla, Nvidia — or TSLA, NVDA"
+                spellcheck="false"
+                autocomplete="off"
+                aria-label="Company name or ticker"
+                aria-describedby="dmsCustomMsg"
+              />
+              <button type="button" class="dms-custom-add-btn" id="dmsCustomAddBtn">Add</button>
+            </div>
+            <p class="dms-custom-msg" id="dmsCustomMsg" role="status" aria-live="polite"></p>
+            <div class="dms-custom-resolver" id="dmsCustomResolver" hidden></div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="dms-explore-btn" id="dmsExploreBtn">
+        Explore Theme →
+      </button>
+    </section>
+
+    <!-- Discover scanner (unchanged structure below story) -->
+    <div class="dms-scanner-controls" role="toolbar" aria-label="Scan modes">
+      <button type="button" class="dms-filter-chip active" data-scan="momentum">Big Movers</button>
+      <button type="button" class="dms-filter-chip" data-scan="breakout">Near 52-Week Highs</button>
+      <button type="button" class="dms-filter-chip" data-scan="volume">Unusual Volume</button>
+      <button type="button" class="dms-filter-chip" data-scan="sector">Today's Leaders</button>
+    </div>
+
+    <p class="dms-stats" id="dmsStats">6 stocks · illustrative preview</p>
+
+    <div class="dms-grid" id="dmsGrid" aria-live="polite"></div>
+
+    <p style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;line-height:1.7;max-width:72ch">
+      Production Discover Stocks at <code>/#page-scanner</code> is unchanged. This page is a design-lab experiment at
+      <code>/design-lab/discover-market-story</code>.
+    </p>
+  </div>
+
+  <!-- Relationship Story panel -->
+  <div class="dms-rel-panel" id="dmsRelPanel" hidden role="dialog" aria-modal="true" aria-labelledby="dmsRelTitle">
+    <div class="dms-rel-panel__backdrop" aria-hidden="true"></div>
+    <div class="dms-rel-panel__sheet">
+      <header class="dms-rel-panel__head">
+        <div>
+          <h3 id="dmsRelTitle">Why they move together</h3>
+          <p id="dmsRelThemeLabel">AI Infrastructure</p>
+        </div>
+        <button type="button" class="dms-rel-close" id="dmsRelClose" aria-label="Close panel">×</button>
+      </header>
+      <div class="dms-rel-mount" id="dmsRelMount" aria-label="Relationship story"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/design-lab/discover-market-story/discover-market-story.js"></script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+/**
+ * Concept 30 — Editorial Typeface Lab
+ * Concept C composition locked — typeface is the only variable.
+ */
+
+:root {
+  --etl-gold: #d4a85a;
+  --etl-gold-bright: #e8c98a;
+  --etl-void: #0a0b0e;
+  --etl-void-warm: #12100c;
+  --etl-silver: #ece8e0;
+  --etl-mono: "JetBrains Mono", ui-monospace, monospace;
+  --etl-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --etl-display: "Bodoni Moda", Georgia, serif;
+}
+
+/* ── Typeface variants (only variable in this lab) ── */
+html[data-etl-font="canela"] {
+  --etl-display: "Canela", "Libre Caslon Display", Georgia, serif;
+}
+
+html[data-etl-font="pp-editorial"] {
+  --etl-display: "PP Editorial New", "Gambetta", Georgia, serif;
+}
+
+html[data-etl-font="noe"] {
+  --etl-display: "Noe Display", "Fraunces", Georgia, serif;
+}
+
+html[data-etl-font="saol"] {
+  --etl-display: "Saol Display", "Libre Caslon Display", Georgia, serif;
+}
+
+html[data-etl-font="bodoni"] {
+  --etl-display: "Bodoni Moda", Georgia, serif;
+}
+
+html[data-etl-font="cormorant"] {
+  --etl-display: "Cormorant Garamond", Georgia, serif;
+}
+
+html[data-etl-font="didot"] {
+  --etl-display: "Didot", "GFS Didot", Georgia, serif;
+}
+
+html[data-etl-font="playfair"] {
+  --etl-display: "Playfair Display", Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--etl-display);
+  background: var(--etl-void);
+  color: var(--etl-silver);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.etl-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chrome */
+.etl-chrome {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  padding: 0.75rem clamp(0.85rem, 2.5vw, 1.4rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(6, 7, 10, 0.82);
+  backdrop-filter: blur(14px);
+  font-family: var(--etl-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.etl-chrome strong {
+  color: var(--etl-gold);
+  font-weight: 500;
+}
+
+.etl-chrome__note {
+  margin-left: 0.45rem;
+  opacity: 0.65;
+}
+
+.etl-chrome__back {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.etl-chrome__back:hover {
+  color: var(--etl-silver);
+}
+
+.etl-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+.etl-switcher__btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(255, 255, 255, 0.48);
+  font-family: var(--etl-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.etl-switcher__btn:hover {
+  color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(212, 168, 90, 0.22);
+}
+
+.etl-switcher__btn.is-active {
+  color: var(--etl-gold-bright);
+  border-color: rgba(212, 168, 90, 0.42);
+  background: rgba(212, 168, 90, 0.09);
+}
+
+/* Stage */
+.etl-stage {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 110px);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  overflow: hidden;
+}
+
+.etl-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.etl-atmosphere__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 88% 42%, rgba(212, 168, 90, 0.14), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 12% 78%, rgba(120, 130, 160, 0.06), transparent 55%),
+    linear-gradient(165deg, #060608 0%, var(--etl-void) 45%, var(--etl-void-warm) 100%);
+}
+
+.etl-atmosphere__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.etl-hero {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1120px);
+  isolation: isolate;
+}
+
+/* Masthead — Concept C editorial hierarchy (locked) */
+.etl-masthead {
+  isolation: isolate;
+  text-align: left;
+  padding-left: clamp(0.5rem, 3vw, 2rem);
+}
+
+.etl-headline {
+  font-family: var(--etl-display);
+  font-weight: 500;
+  font-size: clamp(3.25rem, 13.5vw, 10.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.etl-line {
+  display: block;
+  position: relative;
+}
+
+.etl-line--split {
+  margin-bottom: -0.02em;
+}
+
+.etl-line--italic {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.etl-line--without {
+  display: flex;
+  align-items: baseline;
+  gap: 0.12em;
+  flex-wrap: wrap;
+}
+
+/* Dual-layer metallic — identical to Concept C */
+.etl-metallic {
+  background: none;
+  background-image: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: inherit;
+  color: inherit;
+  filter: none;
+}
+
+.etl-metallic--inline {
+  display: inline-block;
+  position: relative;
+}
+
+.etl-metallic__base,
+.etl-metallic__shine {
+  display: block;
+}
+
+.etl-metallic__shine {
+  position: absolute;
+  inset: 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.etl-metallic--silver {
+  filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.22));
+}
+
+.etl-metallic--silver .etl-metallic__base {
+  color: #ddd9d1;
+  text-shadow:
+    0 1px 0 #ece8e0,
+    0 -1px 0 #c4c0b8;
+}
+
+.etl-metallic--silver .etl-metallic__shine {
+  background-image: linear-gradient(
+    168deg,
+    #e4e0d8 0%,
+    #f8f4ec 22%,
+    #ffffff 44%,
+    #f0ece4 62%,
+    #ffffff 80%,
+    #e8e4dc 100%
+  );
+  background-size: 100% 100%;
+}
+
+.etl-metallic--gold {
+  filter:
+    drop-shadow(0 2px 10px rgba(180, 130, 40, 0.45))
+    drop-shadow(0 6px 28px rgba(212, 168, 90, 0.38))
+    drop-shadow(0 0 48px rgba(232, 200, 138, 0.12));
+}
+
+.etl-metallic--gold .etl-metallic__base {
+  color: #c9983a;
+  text-shadow:
+    0 1px 0 #fff4d8,
+    0 2px 0 #f0d080,
+    0 -1px 0 #a87830,
+    0 -2px 0 #8a6428;
+}
+
+.etl-metallic--gold .etl-metallic__shine {
+  background-image: linear-gradient(
+    154deg,
+    #c09038 0%,
+    #d4a85a 14%,
+    #e8c070 30%,
+    #f5d888 44%,
+    #fff8ec 52%,
+    #fff4d8 58%,
+    #f0d080 72%,
+    #e8b850 86%,
+    #c9983a 100%
+  );
+  background-size: 100% 100%;
+}
+
+.etl-the {
+  font-family: var(--etl-display);
+  font-size: 0.22em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-color: rgba(212, 168, 90, 0.55);
+  color: #e8c070;
+  text-shadow:
+    0 1px 0 #fff4d8,
+    0 -1px 0 #a87830;
+  margin-left: 0.15em;
+  align-self: center;
+}
+
+.etl-foot {
+  position: relative;
+  z-index: 10;
+  padding: 0.75rem clamp(0.85rem, 2.5vw, 1.4rem);
+  font-family: var(--etl-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 640px) {
+  .etl-chrome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .etl-masthead {
+    padding-left: 0;
+  }
+
+  .etl-headline {
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+  }
+
+  .etl-the {
+    font-size: 0.28em;
+  }
+}

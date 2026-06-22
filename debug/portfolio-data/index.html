@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio quotes debug · FORGENIQ</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+    body { margin: 0; padding: 1.5rem; max-width: 1200px; }
+    h1 { font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem; }
+    p.meta { color: #8b949e; margin: 0 0 1rem; font-size: 0.85rem; }
+    button {
+      background: #238636;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font: inherit;
+      margin-bottom: 1rem;
+    }
+    button:disabled { opacity: 0.5; cursor: wait; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 2rem; }
+    th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #21262d; vertical-align: top; }
+    th { color: #8b949e; font-weight: 500; }
+    tr.ok td:first-child { color: #3fb950; }
+    tr.fail td:first-child { color: #f85149; }
+    .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; }
+    .badge-ok { background: #23863633; color: #3fb950; }
+    .badge-fail { background: #da363333; color: #f85149; }
+    pre {
+      background: #161b22;
+      padding: 0.75rem;
+      border-radius: 6px;
+      overflow: auto;
+      max-height: 280px;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Portfolio quotes debug</h1>
+  <p class="meta">
+    Per-symbol provider order: Yahoo chart → Finnhub quote → Twelve Data quote.
+    Retries at 3s, 8s, and 15s on the Portfolio page.
+  </p>
+  <button type="button" id="run">Probe sample portfolio (14 tickers)</button>
+  <span id="status"></span>
+
+  <table id="rows">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Success</th>
+        <th>Provider</th>
+        <th>Price</th>
+        <th>% change</th>
+        <th>Error / attempt trail</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2 style="font-size:1rem;color:#58a6ff">Raw log</h2>
+  <pre id="log">Click “Probe sample portfolio”.</pre>
+
+  <script type="module">
+    import {
+      fetchPortfolioDebugSnapshot,
+      PORTFOLIO_SAMPLE_SYMBOLS,
+    } from "/lib/portfolio-quotes.js";
+
+    const btn = document.getElementById("run");
+    const status = document.getElementById("status");
+    const tbody = document.querySelector("#rows tbody");
+    const logEl = document.getElementById("log");
+
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      status.textContent = " Probing…";
+      tbody.innerHTML = "";
+      try {
+        const snap = await fetchPortfolioDebugSnapshot(PORTFOLIO_SAMPLE_SYMBOLS);
+        for (const row of snap.symbols) {
+          const tr = document.createElement("tr");
+          tr.className = row.success ? "ok" : "fail";
+          const trail = row.attempts
+            .map((a) => `${a.provider}: ${a.ok ? "ok" : a.error || "fail"}`)
+            .join(" → ");
+          tr.innerHTML = `
+            <td>${row.symbol}</td>
+            <td><span class="badge ${row.success ? "badge-ok" : "badge-fail"}">${row.success ? "ok" : "fail"}</span></td>
+            <td>${row.provider}</td>
+            <td>${row.price != null ? row.price : "—"}</td>
+            <td>${row.percentChange != null ? row.percentChange.toFixed(2) + "%" : "—"}</td>
+            <td>${row.error || trail}</td>
+          `;
+          tbody.appendChild(tr);
+        }
+        const ok = snap.symbols.filter((r) => r.success).length;
+        status.textContent = ` ${ok}/${snap.symbols.length} loaded · ${snap.at}`;
+        logEl.textContent = JSON.stringify(snap, null, 2);
+      } catch (e) {
+        status.textContent = " Error: " + e.message;
+        logEl.textContent = String(e.stack || e);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

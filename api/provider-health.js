@@ -318,6 +318,39 @@ const PROVIDERS = [
       };
     },
   },
+  {
+    id: 'alphavantage',
+    name: 'Alpha Vantage',
+    envVar: 'ALPHA_VANTAGE_KEY',
+    hasKey: () => !!process.env.ALPHA_VANTAGE_KEY,
+    async runProbe() {
+      const key = process.env.ALPHA_VANTAGE_KEY;
+      if (!key) {
+        return { lastTestStatus: 'error', httpStatus: null, message: 'ALPHA_VANTAGE_KEY not set' };
+      }
+      const url =
+        `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=${encodeURIComponent(key)}`;
+      const { httpStatus, body } = await fetchProbe(url);
+      if (body?.Note || body?.Information) {
+        return {
+          lastTestStatus: 'rate_limited',
+          httpStatus: httpStatus || 200,
+          message: safeMessage(body.Note || body.Information),
+          probe: 'GLOBAL_QUOTE/IBM',
+        };
+      }
+      const status = classifyProbe(httpStatus, body);
+      if (status === 'ok' && body?.['Global Quote']?.['05. price']) {
+        return { lastTestStatus: 'ok', httpStatus, message: 'GLOBAL_QUOTE returned price', probe: 'GLOBAL_QUOTE/IBM' };
+      }
+      return {
+        lastTestStatus: status,
+        httpStatus,
+        message: safeMessage(body?.Error Message || 'GLOBAL_QUOTE probe failed'),
+        probe: 'GLOBAL_QUOTE/IBM',
+      };
+    },
+  },
 ];
 
 /**
@@ -351,7 +384,7 @@ export function buildEnvOnlyStatus() {
 
   return {
     ...legacy,
-    schema: 'brieftick-provider-health-v1',
+    schema: 'forgeniq-provider-health-v1',
     at,
     probeAuthorized: false,
     probeHint:
@@ -442,7 +475,7 @@ export async function buildProviderStatusResponse(req) {
       status: 200,
       body: {
         ...legacy,
-        schema: 'brieftick-provider-health-v1',
+        schema: 'forgeniq-provider-health-v1',
         at: report.at,
         probeAuthorized: true,
         providers: report.providers,
@@ -464,4 +497,112 @@ export async function buildProviderStatusResponse(req) {
   }
 
   return { status: 200, body: buildEnvOnlyStatus() };
+}
+
+/** @type {{ at: string, body: object } | null} */
+let lastPublicHealthCache = null;
+const PUBLIC_HEALTH_TTL_MS = 2 * 60_000;
+
+/**
+ * Map probe result to healthy | degraded | offline.
+ * @param {string} lastTestStatus
+ * @param {number|null} httpStatus
+ */
+function mapProviderStatus(lastTestStatus, httpStatus) {
+  if (lastTestStatus === 'ok') return 'healthy';
+  if (lastTestStatus === 'rate_limited' || lastTestStatus === 'delayed') return 'degraded';
+  if (httpStatus === 429) return 'degraded';
+  if (httpStatus >= 200 && httpStatus < 300) return 'degraded';
+  return 'offline';
+}
+
+/**
+ * Public provider health for /api/provider-health (cached 2 min).
+ */
+export async function buildPublicProviderHealth() {
+  if (
+    lastPublicHealthCache &&
+    Date.now() - new Date(lastPublicHealthCache.at).getTime() < PUBLIC_HEALTH_TTL_MS
+  ) {
+    return lastPublicHealthCache.body;
+  }
+
+  const ids = ['finnhub', 'yahoo', 'fred', 'alphavantage', 'polygon', 'twelvedata'];
+  const testedAt = new Date().toISOString();
+
+  /** @type {Record<string, object>} */
+  const providers = {};
+
+  await Promise.all(
+    ids.map(async (id) => {
+      const def = PROVIDERS.find((p) => p.id === id);
+      if (!def) return;
+      const start = Date.now();
+      let row;
+      if (!def.hasKey()) {
+        row = {
+          status: 'offline',
+          latencyMs: null,
+          lastSuccessAt: null,
+          httpStatus: null,
+          message: `${def.envVar} not configured`,
+        };
+      } else {
+        try {
+          const probe = await def.runProbe();
+          const latencyMs = Date.now() - start;
+          const status = mapProviderStatus(probe.lastTestStatus, probe.httpStatus ?? null);
+          row = {
+            status,
+            latencyMs,
+            lastSuccessAt: status === 'healthy' ? testedAt : null,
+            httpStatus: probe.httpStatus ?? null,
+            message: probe.message || null,
+          };
+        } catch (e) {
+          row = {
+            status: 'offline',
+            latencyMs: Date.now() - start,
+            lastSuccessAt: null,
+            httpStatus: null,
+            message: safeMessage(e.message),
+          };
+        }
+      }
+      if (id === 'finnhub') providers.finnhub = row;
+      if (id === 'yahoo') providers.yahoo = row;
+      if (id === 'fred') providers.fred = row;
+      if (id === 'alphavantage') providers.alphaVantage = row;
+      if (id === 'polygon') providers.polygon = row;
+      if (id === 'twelvedata') providers.twelveData = row;
+    })
+  );
+
+  const body = {
+    ...providers,
+    timestamp: testedAt,
+    schema: 'forgeniq-provider-health-v2',
+  };
+  lastPublicHealthCache = { at: testedAt, body };
+  return body;
+}
+
+function setHealthCors(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Cache-Control', 'public, max-age=60');
+}
+
+export default async function handler(req, res) {
+  setHealthCors(res);
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'method not allowed' });
+  }
+  try {
+    const body = await buildPublicProviderHealth();
+    return res.status(200).json(body);
+  } catch (e) {
+    return res.status(500).json({ error: 'health check failed', detail: safeMessage(e.message) });
+  }
 }

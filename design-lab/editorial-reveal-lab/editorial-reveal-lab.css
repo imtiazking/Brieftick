@@ -1,0 +1,700 @@
+/**
+ * Concept 37 — Editorial Reveal Lab
+ * Production Editorial Minimal typography locked — reveal is the only variable.
+ */
+
+:root {
+  --erl-gold-highlight: #f6e2a6;
+  --erl-gold-mid: #d8b05a;
+  --erl-font: "Bodoni Moda", Georgia, serif;
+  --erl-mono: "JetBrains Mono", ui-monospace, monospace;
+  --erl-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --erl-ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--erl-font);
+  font-weight: 400;
+  background: #020204;
+  color: #ece8e2;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.erl-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Chrome ─────────────────────────────────────────────────── */
+
+.erl-chrome {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem 0.85rem;
+  padding: 0.7rem clamp(0.85rem, 2.5vw, 1.4rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(6, 7, 10, 0.82);
+  backdrop-filter: blur(14px);
+  font-family: var(--erl-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.erl-chrome strong {
+  color: var(--erl-gold-mid);
+  font-weight: 500;
+}
+
+.erl-chrome__note {
+  margin-left: 0.4rem;
+  opacity: 0.65;
+}
+
+.erl-chrome__end {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.erl-chrome__back {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.erl-chrome__back:hover {
+  color: #f0ece6;
+}
+
+.erl-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.26rem;
+  justify-content: center;
+}
+
+.erl-switcher__btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(255, 255, 255, 0.48);
+  font-family: var(--erl-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  min-width: 2rem;
+  padding: 0.32rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.erl-switcher__btn:hover {
+  color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(212, 168, 90, 0.22);
+}
+
+.erl-switcher__btn.is-active {
+  color: var(--erl-gold-highlight);
+  border-color: rgba(212, 168, 90, 0.42);
+  background: rgba(212, 168, 90, 0.09);
+}
+
+.erl-winner {
+  appearance: none;
+  border: 1px solid rgba(212, 168, 90, 0.28);
+  background: rgba(212, 168, 90, 0.06);
+  color: var(--erl-gold-mid);
+  font-family: var(--erl-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.34rem 0.65rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.erl-winner:hover {
+  border-color: rgba(212, 168, 90, 0.45);
+  color: var(--erl-gold-highlight);
+}
+
+.erl-winner.is-saved {
+  border-color: rgba(212, 168, 90, 0.55);
+  background: rgba(212, 168, 90, 0.14);
+  color: var(--erl-gold-highlight);
+}
+
+.erl-winner-note {
+  font-size: 0.5rem;
+  letter-spacing: 0.06em;
+  color: rgba(212, 168, 90, 0.72);
+}
+
+/* ── Stage & production background ──────────────────────────── */
+
+.erl-stage {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 110px);
+  padding: 64px 32px 80px;
+  overflow: hidden;
+}
+
+.erl-env {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: #020204;
+}
+
+.erl-env__fog {
+  position: absolute;
+  inset: -12%;
+  opacity: 0.42;
+  background:
+    radial-gradient(ellipse 70% 55% at 58% 42%, rgba(212, 168, 90, 0.22), transparent 55%),
+    radial-gradient(ellipse 50% 45% at 72% 68%, rgba(78, 120, 200, 0.14), transparent 50%);
+  filter: blur(40px);
+}
+
+.erl-env__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black, transparent 75%);
+}
+
+.erl-env__glow {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: min(50vw, 420px);
+  height: min(50vw, 420px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(212, 168, 90, 0.28), transparent 65%);
+  filter: blur(50px);
+  opacity: 0.32;
+}
+
+.erl-env__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 25%, rgba(0, 0, 0, 0.75));
+}
+
+.erl-env__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.erl-hero {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 960px);
+  text-align: center;
+  isolation: isolate;
+}
+
+.erl-masthead {
+  isolation: isolate;
+}
+
+.erl-reveal-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+/* ── Production Editorial Minimal typography (locked) ───────── */
+
+.erl-headline {
+  font-family: var(--erl-font);
+  font-weight: 400;
+  font-optical-sizing: auto;
+  font-synthesis: none;
+  font-size: clamp(2.5rem, 10vw, 7.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.erl-line {
+  display: block;
+  position: relative;
+}
+
+.erl-line__curtain {
+  display: block;
+}
+
+.erl-line__curtain--flex {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.12em;
+  flex-wrap: wrap;
+}
+
+.erl-line--split {
+  margin-bottom: 0;
+}
+
+.erl-line--italic {
+  font-style: italic;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+.erl-line--without {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.12em;
+  flex-wrap: wrap;
+}
+
+.erl-metallic {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: inherit;
+  color: inherit;
+}
+
+.erl-metallic--inline {
+  display: inline-block;
+  position: relative;
+}
+
+.erl-metallic__base,
+.erl-metallic__shine {
+  display: block;
+}
+
+.erl-metallic__shine {
+  position: absolute;
+  inset: 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  background-size: 165% 100%;
+  background-position: 0% center;
+  background-repeat: no-repeat;
+}
+
+.erl-line:nth-child(1) .erl-metallic__shine { background-position: -5% center; }
+.erl-line:nth-child(2) .erl-metallic__shine { background-position: 0% center; }
+.erl-line:nth-child(3) .erl-metallic__shine { background-position: 5% center; }
+.erl-line:nth-child(4) .erl-metallic__shine { background-position: 10% center; }
+
+.erl-metallic--silver {
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.18));
+}
+
+.erl-metallic--silver .erl-metallic__base {
+  color: #ece8e2;
+}
+
+.erl-metallic--silver .erl-metallic__shine {
+  background-image: linear-gradient(
+    90deg,
+    #d0ccc6 0%,
+    #e0dcd6 10%,
+    #f0ece6 24%,
+    #ffffff 42%,
+    #faf6f0 58%,
+    #ffffff 74%,
+    #f4f0ea 88%,
+    #dcd8d2 100%
+  );
+}
+
+.erl-metallic--gold {
+  filter: drop-shadow(0 2px 10px rgba(138, 100, 35, 0.1));
+}
+
+.erl-metallic--gold .erl-metallic__base {
+  color: #d8b05a;
+}
+
+.erl-metallic--gold .erl-metallic__shine {
+  background-image: linear-gradient(
+    90deg,
+    #8a6423 0%,
+    #9a7430 14%,
+    #b89040 30%,
+    #d8b05a 46%,
+    #f6e2a6 56%,
+    #e8c878 68%,
+    #d8b05a 82%,
+    #8a6423 100%
+  );
+}
+
+.erl-the {
+  font-family: var(--erl-font);
+  font-size: 0.22em;
+  font-style: italic;
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-color: rgba(216, 176, 90, 0.38);
+  color: #d8b05a;
+  margin-left: 0.15em;
+  align-self: center;
+}
+
+.erl-foot {
+  position: relative;
+  z-index: 2;
+  padding: 0.85rem clamp(0.85rem, 2.5vw, 1.4rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--erl-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.32);
+  text-align: center;
+}
+
+/* ── FX layers (hidden unless active variant) ───────────────── */
+
+.erl-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ── Shared keyframes ───────────────────────────────────────── */
+
+@keyframes erlHazeClear {
+  from {
+    opacity: 1;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+  }
+}
+
+@keyframes erlSignalsIn {
+  0% { opacity: 0; }
+  18% { opacity: 0.85; }
+  55% { opacity: 0.7; }
+  100% { opacity: 0; }
+}
+
+@keyframes erlCurtainUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes erlMorningLine {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes erlScanLine {
+  from { left: -4%; opacity: 0.9; }
+  to { left: 104%; opacity: 0; }
+}
+
+@keyframes erlScanReveal {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
+}
+
+@keyframes erlMarketPulse {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  50% {
+    filter: brightness(1.12);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+@keyframes erlPulseGlow {
+  0% { opacity: 0.45; }
+  45% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+@keyframes erlGoldFinish {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes erlInstitutional {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+
+/* ── I — Market Noise Dissolves ─────────────────────────────── */
+
+html[data-erl-variant="i"] .erl-fx--haze {
+  visibility: visible;
+  opacity: 1;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 48%, rgba(140, 145, 155, 0.38), rgba(20, 22, 28, 0.55) 70%),
+    linear-gradient(180deg, rgba(30, 32, 38, 0.42), rgba(10, 11, 14, 0.48));
+  animation: erlHazeClear 1.2s var(--erl-ease-slow) forwards;
+}
+
+html[data-erl-variant="i"] .erl-headline {
+  opacity: 1;
+}
+
+/* ── J — Connected Signals ──────────────────────────────────── */
+
+html[data-erl-variant="j"] .erl-fx--signals {
+  visibility: visible;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+}
+
+html[data-erl-variant="j"] .erl-signals-group {
+  animation: erlSignalsIn 1.5s var(--erl-ease) forwards;
+}
+
+html[data-erl-variant="j"] .erl-sig-dot {
+  fill: var(--erl-gold-mid);
+  opacity: 0.9;
+}
+
+html[data-erl-variant="j"] .erl-sig-line {
+  stroke: rgba(216, 176, 90, 0.55);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── K — Editorial Curtain ──────────────────────────────────── */
+
+html[data-erl-variant="k"] .erl-line {
+  overflow: hidden;
+}
+
+html[data-erl-variant="k"] .erl-line__curtain {
+  animation: erlCurtainUp 0.55s var(--erl-ease-slow) both;
+}
+
+html[data-erl-variant="k"] .erl-line[data-erl-line="1"] .erl-line__curtain { animation-delay: 0ms; }
+html[data-erl-variant="k"] .erl-line[data-erl-line="2"] .erl-line__curtain { animation-delay: 120ms; }
+html[data-erl-variant="k"] .erl-line[data-erl-line="3"] .erl-line__curtain { animation-delay: 240ms; }
+html[data-erl-variant="k"] .erl-line[data-erl-line="4"] .erl-line__curtain { animation-delay: 360ms; }
+
+/* ── L — Morning Brief ──────────────────────────────────────── */
+
+html[data-erl-variant="l"] .erl-line {
+  opacity: 0;
+  animation: erlMorningLine 0.7s var(--erl-ease-slow) both;
+}
+
+html[data-erl-variant="l"] .erl-line[data-erl-line="1"] { animation-delay: 0ms; }
+html[data-erl-variant="l"] .erl-line[data-erl-line="2"] { animation-delay: 200ms; }
+html[data-erl-variant="l"] .erl-line[data-erl-line="3"] { animation-delay: 400ms; }
+html[data-erl-variant="l"] .erl-line[data-erl-line="4"] { animation-delay: 600ms; }
+
+/* ── M — Intelligence Loading ───────────────────────────────── */
+
+html[data-erl-variant="m"] .erl-headline {
+  animation: erlScanReveal 1.2s var(--erl-ease-slow) both;
+}
+
+html[data-erl-variant="m"] .erl-fx--scan {
+  visibility: visible;
+  opacity: 1;
+  top: 50%;
+  bottom: auto;
+  height: 1px;
+  width: 28%;
+  left: -4%;
+  transform: translateY(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(236, 232, 226, 0.15) 20%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(236, 232, 226, 0.15) 80%,
+    transparent
+  );
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.22);
+  animation: erlScanLine 1.2s var(--erl-ease) forwards;
+}
+
+/* ── N — Market Pulse ───────────────────────────────────────── */
+
+html[data-erl-variant="n"] .erl-headline {
+  animation: erlMarketPulse 1.2s var(--erl-ease-slow) both;
+}
+
+html[data-erl-variant="n"] .erl-fx--pulse {
+  visibility: visible;
+  opacity: 1;
+  background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(212, 168, 90, 0.14), transparent 68%);
+  animation: erlPulseGlow 1.2s var(--erl-ease) forwards;
+}
+
+/* ── O — Gold Accent Reveal ───────────────────────────────── */
+
+@keyframes erlGoldBase {
+  from { color: #ece8e2; }
+  to { color: #d8b05a; }
+}
+
+@keyframes erlGoldThe {
+  from {
+    color: #c8c4be;
+    text-decoration-color: rgba(200, 196, 190, 0.35);
+  }
+  to {
+    color: #d8b05a;
+    text-decoration-color: rgba(216, 176, 90, 0.38);
+  }
+}
+
+@keyframes erlGoldFilter {
+  from { filter: drop-shadow(0 2px 10px rgba(138, 100, 35, 0)); }
+  to { filter: drop-shadow(0 2px 10px rgba(138, 100, 35, 0.1)); }
+}
+
+html[data-erl-variant="o"] .erl-gold-part .erl-metallic__shine {
+  opacity: 0;
+  animation: erlGoldFinish 0.75s var(--erl-ease-slow) both;
+  animation-delay: 0.65s;
+}
+
+html[data-erl-variant="o"] .erl-gold-part .erl-metallic--gold .erl-metallic__base {
+  color: #ece8e2;
+  animation: erlGoldBase 0.75s var(--erl-ease-slow) both;
+  animation-delay: 0.65s;
+}
+
+html[data-erl-variant="o"] .erl-the {
+  color: #c8c4be;
+  text-decoration-color: rgba(200, 196, 190, 0.35);
+  animation: erlGoldThe 0.75s var(--erl-ease-slow) both;
+  animation-delay: 0.72s;
+}
+
+html[data-erl-variant="o"] .erl-metallic--gold.erl-gold-part {
+  animation: erlGoldFilter 0.5s var(--erl-ease-slow) both;
+  animation-delay: 1.1s;
+}
+
+/* ── P — Institutional Reveal ───────────────────────────────── */
+
+html[data-erl-variant="p"] .erl-headline {
+  animation: erlInstitutional 0.8s var(--erl-ease) both;
+}
+
+/* ── Mobile typography (production) ─────────────────────────── */
+
+@media (max-width: 560px) {
+  .erl-stage {
+    padding: 48px 20px 64px;
+  }
+
+  .erl-headline {
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+  }
+
+  .erl-the {
+    font-size: 0.28em;
+  }
+}
+
+@media (max-width: 640px) {
+  .erl-chrome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-erl-variant] .erl-headline,
+  html[data-erl-variant] .erl-line,
+  html[data-erl-variant] .erl-line__curtain,
+  html[data-erl-variant] .erl-fx,
+  html[data-erl-variant] .erl-signals-group,
+  html[data-erl-variant] .erl-gold-part,
+  html[data-erl-variant] .erl-gold-part * {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    visibility: visible !important;
+  }
+
+  html[data-erl-variant="o"] .erl-gold-part .erl-metallic--gold .erl-metallic__base {
+    color: #d8b05a !important;
+  }
+
+  html[data-erl-variant="o"] .erl-the {
+    color: #d8b05a !important;
+  }
+
+  html[data-erl-variant="o"] .erl-metallic__shine {
+    opacity: 1 !important;
+  }
+}

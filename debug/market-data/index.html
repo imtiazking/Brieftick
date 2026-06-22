@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Market data debug · FORGENIQ</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+    body { margin: 0; padding: 1.5rem; max-width: 1200px; }
+    h1 { font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem; }
+    p.meta { color: #8b949e; margin: 0 0 1rem; font-size: 0.85rem; }
+    button {
+      background: #238636;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font: inherit;
+      margin-bottom: 1rem;
+    }
+    button:disabled { opacity: 0.5; cursor: wait; }
+    section { margin-bottom: 2rem; }
+    h2 { font-size: 1rem; margin: 0 0 0.75rem; color: #58a6ff; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #21262d; vertical-align: top; }
+    th { color: #8b949e; font-weight: 500; }
+    tr.ok td:first-child { color: #3fb950; }
+    tr.fail td:first-child { color: #f85149; }
+    tr.proxy td:first-child { color: #d29922; }
+    pre {
+      background: #161b22;
+      padding: 0.75rem;
+      border-radius: 6px;
+      overflow: auto;
+      max-height: 320px;
+      font-size: 0.75rem;
+    }
+    .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.7rem; }
+    .badge-ok { background: #23863633; color: #3fb950; }
+    .badge-proxy { background: #9e6a0333; color: #d29922; }
+    .badge-fail { background: #da363333; color: #f85149; }
+  </style>
+</head>
+<body>
+  <h1>Market data debug</h1>
+  <p class="meta">
+    Provider priority: Yahoo delayed chart → FRED macro → Finnhub/Twelve Data (ETF proxies only).
+    Macro cache ~10 min · ETF cache ~45 s.
+  </p>
+  <button type="button" id="run">Run full probe</button>
+  <span id="status"></span>
+
+  <section>
+    <h2>Snapshot rows</h2>
+    <table id="rows">
+      <thead>
+        <tr>
+          <th>Row</th>
+          <th>Status</th>
+          <th>Source</th>
+          <th>Level</th>
+          <th>Change</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Provider attempts (in order)</h2>
+    <table id="attempts">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Symbol</th>
+          <th>Result</th>
+          <th>Failure</th>
+          <th>Cache</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Raw JSON</h2>
+    <pre id="raw">Click “Run full probe”…</pre>
+  </section>
+
+  <script type="module">
+    import {
+      fetchMarketDataDebugSnapshot,
+      ROW_ORDER,
+      failureReasonLabel,
+    } from "/lib/marketDataService.js";
+
+    const runBtn = document.getElementById("run");
+    const statusEl = document.getElementById("status");
+    const rowsBody = document.querySelector("#rows tbody");
+    const attemptsBody = document.querySelector("#attempts tbody");
+    const rawEl = document.getElementById("raw");
+
+    async function runProbe() {
+      runBtn.disabled = true;
+      statusEl.textContent = " Probing…";
+      try {
+        const data = await fetchMarketDataDebugSnapshot();
+        statusEl.textContent = ` Done ${data.fetchedAt}`;
+        rawEl.textContent = JSON.stringify(data, null, 2);
+
+        rowsBody.innerHTML = "";
+        for (const key of ROW_ORDER) {
+          const inst = data.rows[key];
+          const tr = document.createElement("tr");
+          tr.className =
+            inst.status === "ok"
+              ? "ok"
+              : inst.status === "proxy"
+                ? "proxy"
+                : "fail";
+          tr.innerHTML = `
+            <td>${key}</td>
+            <td><span class="badge badge-${inst.status === "ok" ? "ok" : inst.status === "proxy" ? "proxy" : "fail"}">${inst.status}</span></td>
+            <td>${inst.source || "—"}</td>
+            <td>${inst.value != null ? inst.value : "—"}</td>
+            <td>${inst.changePercent != null ? inst.changePercent.toFixed(2) + "%" : inst.change ?? "—"}</td>
+            <td>${inst.isProxy ? `Proxy ${inst.proxySymbol}` : inst.rowMessage || inst.error || ""}${inst.fredDate ? ` · FRED ${inst.fredDate}` : ""}</td>`;
+          rowsBody.appendChild(tr);
+        }
+
+        attemptsBody.innerHTML = "";
+        for (const a of data.attempts) {
+          const tr = document.createElement("tr");
+          tr.className = a.ok ? "ok" : "fail";
+          tr.innerHTML = `
+            <td>${a.provider}</td>
+            <td>${a.symbol}</td>
+            <td>${a.ok ? "ok" : "fail"}</td>
+            <td>${a.failureReason ? failureReasonLabel(a.failureReason) : "—"}</td>
+            <td>${a.cachedMsAgo != null ? `${Math.round(a.cachedMsAgo / 1000)}s ago` : "—"}</td>
+            <td>${a.message || JSON.stringify(a.responsePreview || "").slice(0, 120)}</td>`;
+          attemptsBody.appendChild(tr);
+        }
+      } catch (e) {
+        statusEl.textContent = ` Error: ${e.message}`;
+        rawEl.textContent = String(e.stack || e);
+      } finally {
+        runBtn.disabled = false;
+      }
+    }
+
+    runBtn.addEventListener("click", runProbe);
+    runProbe();
+  </script>
+</body>
+</html>

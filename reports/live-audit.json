@@ -1,0 +1,204 @@
+{
+  "generatedAt": "2026-06-22T10:47:45.776Z",
+  "baseUrl": "https://www.forgeniq.com",
+  "providerHealth": {
+    "error": 500,
+    "latencyMs": 1077
+  },
+  "modules": [
+    {
+      "id": "dashboard",
+      "status": "live",
+      "provider": "finnhub-quote+yahoo-chart",
+      "latencyMs": 282,
+      "lastUpdate": "2026-06-22T10:47:43.967Z",
+      "errors": [],
+      "probes": [
+        {
+          "probe": "finnhub-quote",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 222,
+          "cache": "MISS",
+          "error": null
+        },
+        {
+          "probe": "yahoo-chart",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 282,
+          "cache": "MISS",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "whats-moving",
+      "status": "live",
+      "provider": "finnhub-quote",
+      "latencyMs": 108,
+      "lastUpdate": "2026-06-22T10:47:44.077Z",
+      "errors": [],
+      "probes": [
+        {
+          "probe": "finnhub-quote",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 108,
+          "cache": "HIT",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "watchlists",
+      "status": "live",
+      "provider": "finnhub-quote",
+      "latencyMs": 135,
+      "lastUpdate": "2026-06-22T10:47:44.212Z",
+      "errors": [],
+      "probes": [
+        {
+          "probe": "finnhub-quote",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 135,
+          "cache": "HIT",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "earnings",
+      "status": "live",
+      "provider": "finnhub-earnings",
+      "latencyMs": 160,
+      "lastUpdate": "2026-06-22T10:47:44.375Z",
+      "errors": [],
+      "probes": [
+        {
+          "probe": "finnhub-earnings",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 160,
+          "cache": "MISS",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "market-risk",
+      "status": "live",
+      "provider": "fred-vix+yahoo-chart",
+      "latencyMs": 122,
+      "lastUpdate": "2026-06-22T10:47:44.604Z",
+      "errors": [],
+      "probes": [
+        {
+          "probe": "fred-vix",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 122,
+          "cache": "HIT",
+          "error": null
+        },
+        {
+          "probe": "yahoo-chart",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 106,
+          "cache": "HIT",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "discover",
+      "status": "live",
+      "provider": "finnhub-quote",
+      "latencyMs": 116,
+      "lastUpdate": "2026-06-22T10:47:44.720Z",
+      "errors": [],
+      "probes": [
+        {
+          "probe": "finnhub-quote",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 116,
+          "cache": "HIT",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "options",
+      "status": "coming_soon",
+      "provider": "polygon",
+      "latencyMs": 143,
+      "lastUpdate": "2026-06-22T10:47:44.864Z",
+      "errors": [
+        "polygon-options: HTTP 502"
+      ],
+      "probes": [
+        {
+          "probe": "polygon-options",
+          "ok": false,
+          "status": 502,
+          "latencyMs": 143,
+          "cache": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "correlation",
+      "status": "live",
+      "provider": "yahoo-series",
+      "latencyMs": 189,
+      "lastUpdate": "2026-06-22T10:47:45.054Z",
+      "errors": [],
+      "probes": [
+        {
+          "probe": "yahoo-series",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 189,
+          "cache": "MISS",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "smart-money",
+      "status": "live",
+      "provider": "sec-form4+politicaltrades",
+      "latencyMs": 363,
+      "lastUpdate": "2026-06-22T10:47:45.776Z",
+      "errors": [],
+      "probes": [
+        {
+          "probe": "sec-form4",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 279,
+          "cache": "MISS",
+          "error": null
+        },
+        {
+          "probe": "politicaltrades",
+          "ok": true,
+          "status": 200,
+          "latencyMs": 363,
+          "cache": null,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "live": 8,
+    "partial": 0,
+    "coming_soon": 1,
+    "mock": 0
+  }
+}

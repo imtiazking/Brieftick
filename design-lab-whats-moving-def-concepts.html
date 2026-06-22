@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>What's Moving · Concepts D E F · FORGENIQ Design Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4a85a;
+      --gold-soft: rgba(212, 168, 90, 0.2);
+      --up: #3ecf8e;
+      --dn: #f07178;
+      --warn: #e8b86a;
+      --void: #020204;
+      --panel: #0c0d14;
+      --line: rgba(255, 255, 255, 0.08);
+      --muted: #6b7280;
+      --text: #e8ecf5;
+      --display: "Playfair Display", serif;
+      --body: "Inter Tight", sans-serif;
+      --mono: "JetBrains Mono", monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--body); background: var(--void); color: var(--text); min-height: 100vh; }
+
+    .lab-top {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+      padding: 12px 20px; border-bottom: 1px solid var(--line);
+      background: rgba(2, 2, 4, 0.95); backdrop-filter: blur(12px);
+    }
+    .lab-top strong { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+    .lab-top span { font-size: 11px; color: var(--muted); }
+    .lab-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .lab-tab {
+      padding: 8px 14px; border: 1px solid var(--line); border-radius: 6px;
+      background: transparent; color: var(--muted); font-family: var(--mono);
+      font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+    }
+    .lab-tab.is-active { background: var(--gold); color: #0a0a0c; border-color: var(--gold); }
+    .lab-stage { max-width: 1100px; margin: 0 auto; padding: 28px 20px 72px; }
+    .panel { display: none; }
+    .panel.is-active { display: block; animation: rise 0.45s ease; }
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+
+    .meta { margin-bottom: 24px; }
+    .meta-tag { font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .meta h1 { font-family: var(--display); font-size: 28px; font-weight: 500; margin-bottom: 8px; }
+    .meta p { font-size: 14px; line-height: 1.6; color: #8a94a8; max-width: 58ch; }
+
+    .frame {
+      border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+      background: var(--panel); box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+    }
+    .frame-bar {
+      padding: 8px 14px; border-bottom: 1px solid var(--line);
+      font-family: var(--mono); font-size: 7px; color: var(--muted); letter-spacing: 0.08em;
+      background: rgba(0,0,0,0.35);
+    }
+    .mock-nav {
+      padding: 10px 16px; border-bottom: 1px solid var(--line);
+      font-family: var(--mono); font-size: 7px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+    }
+    .mock-nav em { font-style: normal; color: var(--gold); }
+    .mock-body { padding: 20px 20px 28px; }
+
+    /* ── D Story-first ── */
+    .d-hero {
+      font-family: var(--display);
+      font-size: 26px;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .d-hero em { font-style: italic; color: var(--gold); }
+    .d-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+    .d-story {
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), transparent);
+    }
+    .d-story__tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .d-story h3 {
+      font-family: var(--display);
+      font-size: 20px;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+    .d-story p { font-size: 14px; line-height: 1.55; color: #a8b0c0; margin-bottom: 16px; }
+    .d-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .d-chip {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.25);
+      font-size: 13px;
+    }
+    .d-chip strong { font-weight: 600; }
+    .d-chip span.up { color: var(--up); font-family: var(--mono); font-size: 12px; }
+    .d-chip span.dn { color: var(--dn); font-family: var(--mono); font-size: 12px; }
+    .d-chip button {
+      margin-left: 4px; padding: 0; border: none; background: none;
+      color: var(--gold); font-size: 11px; cursor: pointer; font-family: var(--body);
+    }
+
+    /* ── E Sector-first ── */
+    .e-intro { margin-bottom: 20px; }
+    .e-intro h2 { font-family: var(--display); font-size: 24px; margin-bottom: 6px; }
+    .e-balance {
+      display: flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap;
+    }
+    .e-balance__item {
+      flex: 1; min-width: 140px;
+      padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line);
+    }
+    .e-balance__item strong {
+      display: block; font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;
+    }
+    .e-balance__item.lead strong { color: var(--up); }
+    .e-balance__item.lag strong { color: var(--dn); }
+    .e-balance__item p { font-size: 13px; line-height: 1.4; color: #9aa3b5; }
+    .e-sectors { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .e-sectors { grid-template-columns: 1fr; } }
+    .e-sector {
+      padding: 16px; border-radius: 14px; border: 1px solid var(--line);
+      position: relative; overflow: hidden;
+    }
+    .e-sector.is-hot { border-color: rgba(62, 207, 142, 0.35); }
+    .e-sector.is-cold { border-color: rgba(240, 113, 120, 0.25); opacity: 0.92; }
+    .e-sector__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .e-sector__name { font-weight: 600; font-size: 15px; }
+    .e-sector__badge {
+      font-family: var(--mono); font-size: 9px; padding: 4px 8px; border-radius: 99px;
+    }
+    .e-sector__badge.up { background: var(--up); color: #041208; }
+    .e-sector__badge.dn { background: rgba(240,113,120,0.2); color: var(--dn); }
+    .e-sector__why { font-size: 12px; line-height: 1.45; color: var(--muted); margin-bottom: 12px; }
+    .e-sector__names { font-size: 13px; color: #c5ccd8; }
+    .e-sector__names span { color: var(--gold); cursor: pointer; }
+
+    /* ── F Beginner-first ── */
+    .f-brief {
+      padding: 22px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      border: 1px solid var(--gold-soft);
+      background: radial-gradient(ellipse at top left, rgba(212,168,90,0.12), transparent 60%);
+    }
+    .f-brief__label {
+      font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+    }
+    .f-brief h2 {
+      font-family: var(--display);
+      font-size: 22px;
+      line-height: 1.35;
+      margin-bottom: 14px;
+    }
+    .f-brief p { font-size: 15px; line-height: 1.6; color: #b8c0d0; }
+    .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+    @media (max-width: 640px) { .f-grid { grid-template-columns: 1fr; } }
+    .f-block {
+      padding: 18px; border-radius: 14px; border: 1px solid var(--line);
+    }
+    .f-block h3 {
+      font-size: 12px; font-family: var(--mono); letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .f-block--opp { border-color: rgba(62, 207, 142, 0.3); }
+    .f-block--opp h3 { color: var(--up); }
+    .f-block--risk { border-color: rgba(240, 113, 120, 0.25); }
+    .f-block--risk h3 { color: var(--dn); }
+    .f-block ul { list-style: none; font-size: 14px; line-height: 1.5; color: #a8b0c0; }
+    .f-block li { margin-bottom: 8px; padding-left: 14px; position: relative; }
+    .f-block li::before { content: "→"; position: absolute; left: 0; opacity: 0.5; }
+    .f-section-title {
+      font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+    }
+    .f-stocks { display: flex; flex-direction: column; gap: 10px; }
+    .f-stock {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 16px; border-radius: 12px;
+      border: 1px solid var(--line); background: rgba(255,255,255,0.02);
+    }
+    .f-stock__icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: grid; place-items: center; font-weight: 600; font-size: 11px;
+      background: rgba(255,255,255,0.06); flex-shrink: 0;
+    }
+    .f-stock__body strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .f-stock__body p { font-size: 13px; line-height: 1.45; color: var(--muted); }
+    .f-stock__link {
+      margin-left: auto; align-self: center; flex-shrink: 0;
+      font-size: 11px; color: var(--gold); white-space: nowrap;
+    }
+
+    .notes {
+      margin-top: 28px; padding: 18px; border: 1px dashed var(--line);
+      border-radius: 8px; font-size: 13px; line-height: 1.55; color: #7a8498;
+    }
+    .notes h4 { font-family: var(--mono); font-size: 9px; color: var(--gold); margin-bottom: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .notes ul { list-style: none; display: grid; gap: 6px; }
+    .notes li::before { content: "· "; color: var(--gold); }
+  </style>
+</head>
+<body>
+  <header class="lab-top">
+    <div>
+      <strong>Design lab · DEF</strong>
+      <span> · Narrative concepts · Not table layouts</span>
+    </div>
+    <nav class="lab-tabs">
+      <button type="button" class="lab-tab is-active" data-panel="d">D · Story-first</button>
+      <button type="button" class="lab-tab" data-panel="e">E · Sector-first</button>
+      <button type="button" class="lab-tab" data-panel="f">F · Beginner-first</button>
+    </nav>
+  </header>
+
+  <main class="lab-stage">
+    <!-- CONCEPT D -->
+    <section class="panel is-active" id="panel-d">
+      <div class="meta">
+        <span class="meta-tag">Concept D</span>
+        <h1>Story-first</h1>
+        <p>Today's market is told as 3–4 short chapters. Each story explains a theme; stocks appear as evidence, not the headline.</p>
+      </div>
+      <div class="frame">
+        <div class="frame-bar">Mobile + desktop · scroll narrative</div>
+        <nav class="mock-nav">Dashboard · <em>What's Moving</em> · Discover Stocks</nav>
+        <div class="mock-body">
+          <h2 class="d-hero">Three stories are moving the market <em>today</em></h2>
+          <p class="d-sub">Read the themes first. Tap a stock when you want the full picture.</p>
+
+          <article class="d-story">
+            <span class="d-story__tag">Story 1 · Leading theme</span>
+            <h3>AI demand is lifting chip stocks again</h3>
+            <p>Investors are betting that big tech will keep spending on data centers. When that happens, companies that make chips often rise together—even if you do not follow every earnings report.</p>
+            <div class="d-chips">
+              <div class="d-chip"><strong>NVDA</strong> <span class="up">+1.98%</span> <button type="button">Why →</button></div>
+              <div class="d-chip"><strong>AMD</strong> <span class="up">+1.12%</span> <button type="button">Why →</button></div>
+            </div>
+          </article>
+
+          <article class="d-story">
+            <span class="d-story__tag">Story 2</span>
+            <h3>Oil is firm, and energy names are catching up</h3>
+            <p>When oil prices hold steady, energy producers often benefit. Think of it as the market pricing in steady fuel demand—not a single company's surprise.</p>
+            <div class="d-chips">
+              <div class="d-chip"><strong>XOM</strong> <span class="up">+1.18%</span> <button type="button">Why →</button></div>
+              <div class="d-chip"><strong>CVX</strong> <span class="up">+0.84%</span> <button type="button">Why →</button></div>
+            </div>
+          </article>
+
+          <article class="d-story">
+            <span class="d-story__tag">Story 3 · Caution</span>
+            <h3>Banks are drifting lower as yields ease</h3>
+            <p>When interest rates expectations fall, banks can lag. Money is rotating into tech instead—a common “risk-on” pattern beginners often miss.</p>
+            <div class="d-chips">
+              <div class="d-chip"><strong>JPM</strong> <span class="dn">−0.41%</span> <button type="button">Why →</button></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="notes">
+        <h4>Design intent</h4>
+        <ul>
+          <li>Page answers: “What is the market talking about?” before “which tickers?”</li>
+          <li>Stories map to <code>MOVER_STORIES</code> / session narrative engine—not a sortable list</li>
+          <li>Deep Dive opens from chip “Why →” only; no rank column, no % leaderboard hero</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONCEPT E -->
+    <section class="panel" id="panel-e">
+      <div class="meta">
+        <span class="meta-tag">Concept E</span>
+        <h1>Sector-first</h1>
+        <p>Organize by where companies live in the economy. Users learn which industries are winning or losing, then meet representative stocks.</p>
+      </div>
+      <div class="frame">
+        <div class="frame-bar">Sector map · tap sector to expand (v2)</div>
+        <nav class="mock-nav">Dashboard · <em>What's Moving</em></nav>
+        <div class="mock-body">
+          <div class="e-intro">
+            <h2>Who's leading today?</h2>
+            <p class="d-sub" style="margin:0">Sectors group similar businesses. When a sector moves, it usually means a shared story—not luck on one stock.</p>
+          </div>
+          <div class="e-balance">
+            <div class="e-balance__item lead">
+              <strong>Leading</strong>
+              <p>Technology & Energy are carrying the session. Money is flowing into growth and commodities.</p>
+            </div>
+            <div class="e-balance__item lag">
+              <strong>Lagging</strong>
+              <p>Financials are soft. Investors are less excited about banks when yields drift down.</p>
+            </div>
+          </div>
+          <div class="e-sectors">
+            <div class="e-sector is-hot">
+              <div class="e-sector__head">
+                <span class="e-sector__name">Technology</span>
+                <span class="e-sector__badge up">Leading</span>
+              </div>
+              <p class="e-sector__why">AI spending hopes are lifting chip and platform names.</p>
+              <p class="e-sector__names">In focus: <span>NVDA</span> · <span>META</span> · <span>MSFT</span></p>
+            </div>
+            <div class="e-sector is-hot">
+              <div class="e-sector__head">
+                <span class="e-sector__name">Energy</span>
+                <span class="e-sector__badge up">Leading</span>
+              </div>
+              <p class="e-sector__why">Oil is steady; producers are bid alongside the broad market.</p>
+              <p class="e-sector__names">In focus: <span>XOM</span> · <span>CVX</span></p>
+            </div>
+            <div class="e-sector">
+              <div class="e-sector__head">
+                <span class="e-sector__name">Healthcare</span>
+                <span class="e-sector__badge dn" style="background:rgba(255,255,255,0.06);color:var(--muted)">Quiet</span>
+              </div>
+              <p class="e-sector__why">Defensive names are flat—no dominant headline today.</p>
+              <p class="e-sector__names">Watching: <span>JNJ</span> · <span>UNH</span></p>
+            </div>
+            <div class="e-sector is-cold">
+              <div class="e-sector__head">
+                <span class="e-sector__name">Financials</span>
+                <span class="e-sector__badge dn">Lagging</span>
+              </div>
+              <p class="e-sector__why">Lower rate expectations pressure bank margins.</p>
+              <p class="e-sector__names">In focus: <span>JPM</span> · <span>BAC</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <h4>Design intent</h4>
+        <ul>
+          <li>Teaches sector vocabulary passively (Technology, Energy, etc.)</li>
+          <li>“Leading / Lagging / Quiet” replaces Gainers/Losers tabs</li>
+          <li>Tap sector → expand story + 2–4 stocks; tap symbol → Deep Dive</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONCEPT F -->
+    <section class="panel" id="panel-f">
+      <div class="meta">
+        <span class="meta-tag">Concept F</span>
+        <h1>Beginner-first briefing</h1>
+        <p>Start with a 30-second plain-English brief: what's going well, what to watch out for. Stocks appear only after context lands.</p>
+      </div>
+      <div class="frame">
+        <div class="frame-bar">Briefing → opportunities / risks → stocks behind the story</div>
+        <nav class="mock-nav">Dashboard · <em>What's Moving</em></nav>
+        <div class="mock-body">
+          <div class="f-brief">
+            <p class="f-brief__label">Today's 30-second brief</p>
+            <h2>The market is upbeat, led by tech and energy—but banks are slipping.</h2>
+            <p>That usually means investors feel okay taking risk (tech) while still caring about oil (energy). When banks lag, it often signals lower interest-rate expectations—not panic.</p>
+          </div>
+
+          <div class="f-grid">
+            <div class="f-block f-block--opp">
+              <h3>Opportunities today</h3>
+              <ul>
+                <li>Chip makers riding AI demand</li>
+                <li>Energy names if oil stays firm</li>
+              </ul>
+            </div>
+            <div class="f-block f-block--risk">
+              <h3>Risks to know</h3>
+              <ul>
+                <li>Banks sensitive to rate cuts</li>
+                <li>Big tech already up—moves can reverse fast</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="f-section-title">Stocks behind today's story</p>
+          <div class="f-stocks">
+            <div class="f-stock">
+              <div class="f-stock__icon">NV</div>
+              <div class="f-stock__body">
+                <strong>NVIDIA — the AI trade in one name</strong>
+                <p>Often moves when investors bet data-center spending will stay strong.</p>
+              </div>
+              <span class="f-stock__link">Learn why →</span>
+            </div>
+            <div class="f-stock">
+              <div class="f-stock__icon">XO</div>
+              <div class="f-stock__body">
+                <strong>Exxon — energy when oil cooperates</strong>
+                <p>Rises with oil when the market likes commodity exposure.</p>
+              </div>
+              <span class="f-stock__link">Learn why →</span>
+            </div>
+            <div class="f-stock">
+              <div class="f-stock__icon">JP</div>
+              <div class="f-stock__body">
+                <strong>JPMorgan — banks when rates matter</strong>
+                <p>Can fall when investors expect lower rates ahead.</p>
+              </div>
+              <span class="f-stock__link">Learn why →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <h4>Design intent</h4>
+        <ul>
+          <li>Zero finance jargon above the fold: no “movers”, “session”, “breadth”</li>
+          <li>Opportunity / Risk framing teaches how to read a day without predicting returns</li>
+          <li>Each stock row explains <em>role in the story</em>, not rank or %</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.querySelectorAll('.lab-tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.panel;
+        document.querySelectorAll('.lab-tab').forEach((b) => b.classList.toggle('is-active', b === btn));
+        document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('is-active', p.id === 'panel-' + id));
+      });
+    });
+  </script>
+</body>
+</html>

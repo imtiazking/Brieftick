@@ -1,0 +1,65 @@
+  <div class="earn-v2">
+    <header class="earn-v2-hero">
+      <div>
+        <h1>Earnings</h1>
+        <p class="earn-v2-hero-sub">See who reports this week, why it matters, and what could move—without the jargon.</p>
+      </div>
+      <div class="earn-v2-hero-meta">
+        <span class="earn-v2-data-badge" id="earnDataBadge">Illustrative</span>
+        <span class="earn-v2-report-count" id="earnReportCount">— reports this week</span>
+      </div>
+    </header>
+
+    <p class="earn-v2-disclosure" id="earnDataDisclosure">Illustrative earnings data — live earnings integration pending.</p>
+
+    <nav class="earn-v2-tabs" aria-label="Earnings views">
+      <button type="button" class="earn-v2-tab is-active" data-earn-tab="cal">Calendar</button>
+      <button type="button" class="earn-v2-tab" data-earn-tab="ai">Analysis</button>
+    </nav>
+
+    <section class="earn-v2-section is-active" data-earn="cal" id="earnCalTab">
+      <div id="earnDetailHero" class="earn-v2-detail-hero" aria-live="polite"></div>
+
+      <div class="earn-v2-section-head earn-v2-section-head--tight">
+        <h2>This week's calendar</h2>
+        <p>Ticker · why it matters (sector theme) · impact. Hover a card for timing and expected move.</p>
+      </div>
+
+      <div class="earn-v2-cal-scroll" id="earnCalScroll">
+        <div class="earn-v2-cal-grid" id="calGrid"></div>
+      </div>
+
+      <div class="earn-v2-cal-legend">
+        <span><i style="width:10px;height:10px;border-radius:3px;background:rgba(78,168,255,0.3);display:inline-block"></i> Before open</span>
+        <span><i style="width:10px;height:10px;border-radius:3px;background:rgba(212,168,90,0.3);display:inline-block"></i> After close</span>
+        <span>Hover for timing · move · why it matters</span>
+      </div>
+
+      <div class="earn-v2-section-head earn-v2-section-head--spaced">
+        <h2>Most important earnings</h2>
+        <p>Up to five reports likely to matter most—tap any card to focus.</p>
+      </div>
+
+      <div class="earn-v2-controls">
+        <input class="earn-v2-search" id="earnSearch" type="search" placeholder="Search company or ticker" autocomplete="off" spellcheck="false">
+        <button type="button" class="earn-v2-chip is-active" data-earn-filter="all">All</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Tech">Tech</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Financials">Banks</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="Energy">Energy</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="mega">Megacap</button>
+        <button type="button" class="earn-v2-chip" data-earn-filter="bigmove">Big expected moves</button>
+      </div>
+
+      <div class="earn-v2-imp-grid" id="impGrid"></div>
+    </section>
+
+    <section class="earn-v2-section" data-earn="ai" id="earnAnalysisTab">
+      <div class="earn-v2-section-head">
+        <h2>What to know before the report</h2>
+        <p>Plain-English context for the company you selected on Calendar.</p>
+      </div>
+      <div class="panel" id="earnAnalysisPanel" aria-live="polite"></div>
+    </section>
+
+    <p class="earn-v2-foot"><b>Educational only.</b> Not investment advice. Expected moves and impact tiers are illustrative models, not forecasts.</p>
+  </div>

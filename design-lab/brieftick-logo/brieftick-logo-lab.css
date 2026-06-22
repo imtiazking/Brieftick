@@ -1,0 +1,374 @@
+/**
+ * FORGENIQ Logo Lab — placement previews only.
+ */
+
+:root {
+  --bll-bg: #05060a;
+  --bll-panel: rgba(255, 255, 255, 0.03);
+  --bll-border: rgba(255, 255, 255, 0.08);
+  --bll-gold: #d4a85a;
+  --bll-mono: "JetBrains Mono", ui-monospace, monospace;
+  --bll-body: "Inter Tight", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--bll-body);
+  background: var(--bll-bg);
+  color: #e8ecf5;
+  min-height: 100vh;
+}
+
+.bll-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bll-chrome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.7rem clamp(0.85rem, 2.5vw, 1.4rem);
+  border-bottom: 1px solid var(--bll-border);
+  background: rgba(6, 7, 10, 0.9);
+  font-family: var(--bll-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.bll-chrome strong {
+  color: var(--bll-gold);
+}
+
+.bll-chrome__note {
+  margin-left: 0.4rem;
+  opacity: 0.65;
+}
+
+.bll-chrome__back {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+}
+
+.bll-chrome__back:hover {
+  color: #f0ece6;
+}
+
+.bll-main {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) 1fr;
+  gap: 0;
+  flex: 1;
+}
+
+.bll-controls {
+  padding: 1.25rem;
+  border-right: 1px solid var(--bll-border);
+  background: rgba(0, 0, 0, 0.25);
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.bll-controls__title {
+  font-size: 0.72rem;
+  font-family: var(--bll-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bll-gold);
+  margin-bottom: 0.35rem;
+}
+
+.bll-controls__hint {
+  font-size: 0.78rem;
+  color: rgba(232, 236, 245, 0.5);
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+}
+
+.bll-control {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.78rem;
+  color: rgba(232, 236, 245, 0.72);
+}
+
+.bll-control span {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.bll-control em {
+  font-style: normal;
+  font-family: var(--bll-mono);
+  font-size: 0.68rem;
+  color: var(--bll-gold);
+}
+
+.bll-control input[type="range"] {
+  width: 100%;
+  accent-color: var(--bll-gold);
+}
+
+.bll-info {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--bll-border);
+  font-size: 0.75rem;
+}
+
+.bll-info h3 {
+  font-family: var(--bll-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.65rem;
+}
+
+.bll-info dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 0.75rem;
+}
+
+.bll-info dt {
+  color: rgba(232, 236, 245, 0.45);
+  font-family: var(--bll-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+}
+
+.bll-info dd {
+  color: rgba(232, 236, 245, 0.82);
+  font-family: var(--bll-mono);
+  font-size: 0.68rem;
+}
+
+.bll-previews {
+  padding: 1.25rem clamp(1rem, 3vw, 2rem) 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bll-panel {
+  background: var(--bll-panel);
+  border: 1px solid var(--bll-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.bll-panel__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.bll-panel__sub {
+  font-size: 0.78rem;
+  color: rgba(232, 236, 245, 0.48);
+  margin-bottom: 1rem;
+}
+
+.bll-ref {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #05060a;
+  background-image:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.06) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.06) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.06) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.06) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  border-radius: 6px;
+}
+
+.bll-ref__img {
+  width: min(100%, 640px);
+  height: auto;
+  display: block;
+  image-rendering: auto;
+}
+
+.bll-navbar {
+  background: linear-gradient(180deg, rgba(5, 6, 10, 0.92), rgba(5, 6, 10, 0.75));
+  border: 1px solid var(--bll-border);
+  border-radius: 6px;
+  min-height: var(--bll-nav-h, 88px);
+}
+
+.bll-navbar__inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: var(--bll-pad-t, 16px) var(--bll-pad-l, 28px) 12px;
+  min-height: var(--bll-nav-h, 88px);
+}
+
+.bll-navbar__links {
+  display: flex;
+  gap: 1.25rem;
+  padding-top: 14px;
+  font-size: 12px;
+  color: rgba(232, 236, 245, 0.55);
+}
+
+.bll-landing-mock {
+  border: 1px solid var(--bll-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #020204;
+}
+
+.bll-landing-nav {
+  position: relative !important;
+  padding: var(--bll-pad-t, 16px) clamp(20px, 3vw, 36px) 12px !important;
+}
+
+.bll-landing-nav__start {
+  padding-left: var(--bll-pad-l, 0px);
+}
+
+.bll-landing-links {
+  display: flex;
+  gap: 1.25rem;
+  padding-top: 14px;
+  font-size: 12px;
+  color: rgba(232, 236, 245, 0.55);
+}
+
+.bll-landing-hero {
+  height: 120px;
+  background:
+    radial-gradient(ellipse 70% 55% at 58% 42%, rgba(212, 168, 90, 0.15), transparent 55%),
+    #020204;
+}
+
+.bll-mobile-frame {
+  max-width: 390px;
+  border: 1px solid var(--bll-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #05060a;
+}
+
+.bll-mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  min-height: 56px;
+  background: rgba(5, 6, 10, 0.95);
+  border-bottom: 1px solid var(--bll-border);
+}
+
+.bll-mobile-menu {
+  font-size: 1.1rem;
+  color: rgba(232, 236, 245, 0.55);
+}
+
+.bll-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-end;
+}
+
+.bll-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--bll-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.45);
+}
+
+.bll-icon--favicon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+}
+
+.bll-icon--app {
+  width: 80px;
+  height: 80px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.bll-icon__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 14%;
+  display: block;
+}
+
+.split-brand__clip--symbol {
+  --split-brand-symbol: 36px;
+  width: var(--split-brand-symbol);
+  height: var(--split-brand-symbol);
+  overflow: hidden;
+}
+
+.split-brand__clip--symbol .split-brand-img {
+  width: calc(var(--split-brand-symbol) * 2.6) !important;
+  height: calc(var(--split-brand-symbol) * 1.3) !important;
+  max-height: none !important;
+  object-fit: cover;
+  object-position: center 14%;
+  margin-left: calc((var(--split-brand-symbol) - var(--split-brand-symbol) * 2.6) / 2);
+}
+
+/* Lab overrides — sizing via JS variables only */
+.bll-logo-target {
+  width: var(--bll-logo-w, 104px) !important;
+  height: auto !important;
+  max-height: none !important;
+  filter: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+.bll-logo-target--symbol {
+  width: 36px !important;
+}
+
+@media (max-width: 900px) {
+  .bll-main {
+    grid-template-columns: 1fr;
+  }
+
+  .bll-controls {
+    position: static;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--bll-border);
+  }
+}

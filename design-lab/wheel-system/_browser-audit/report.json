@@ -1,0 +1,80 @@
+{
+  "url": "http://localhost:3457/design-lab/wheel-system/dashboard",
+  "timestamp": "2026-06-02T17:52:34.247Z",
+  "httpStatus": 200,
+  "console": [],
+  "network": [
+    {
+      "url": "http://localhost:3457/design-lab/wheel-system/dashboard/boot.js",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "http://localhost:3457/design-lab/wheel-system/_wheel-lab-core.js",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "http://localhost:3457/design-lab/wheel-system/_wheel-configs.js",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "http://localhost:3457/preview/dashboard-design-wheel.js",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "http://localhost:3457/styles/dashboard-preview.css",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "dom": {
+    "title": "Dashboard Wheel 2.0 · Wheel System · FORGENIQ",
+    "hasPanelWheel": true,
+    "panelWheelId": "panelWheel",
+    "bodyClasses": "dash-preview-body dash-lab-body wheel-system-lab",
+    "viewportChildCount": 2,
+    "trackExists": true,
+    "focusExists": true,
+    "chipCount": 6,
+    "labelCount": 6,
+    "chipLabels": [
+      "Mood",
+      "Macro",
+      "Themes",
+      "Regions",
+      "Risks",
+      "Outlook"
+    ],
+    "hasGlobe": false,
+    "hasIntelPanel": true,
+    "headline": "Investors are in a risk-on mood",
+    "sectorCards": 4,
+    "layerBadge": "Market mood",
+    "debugPanel": "\n\n    Wheel lab debug\n\n    \n\n      Route/design-lab/wheel-system/dashboard\n\n      ConfigDASHBOARD_WHEEL\n\n      Segments6 — Mood, Macro, Themes, Regions, Risks, Outlook\n\n      createIntelligenceWheelOK\n\n    "
+  },
+  "computed": {
+    "viewport": {
+      "height": "96px",
+      "overflow": "hidden",
+      "opacity": "1",
+      "zIndex": "4",
+      "maskImage": "linear-gradient(90deg, rgba(0, 0, 0, 0) "
+    },
+    "scene": {
+      "display": "grid",
+      "zIndex": "3",
+      "gridTemplateRows": "81.1875px 26px 861.859px 0px"
+    },
+    "engine": {
+      "display": "block",
+      "opacity": "1",
+      "visibility": "visible",
+      "height": "849.859px"
+    }
+  },
+  "errors": [],
+  "pass": true
+}

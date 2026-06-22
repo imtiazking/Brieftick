@@ -17,7 +17,7 @@ const PATTERNS = [
 ];
 
 const INTERNAL_LINE =
-  /BriefTickAPI|Brieftick[A-Z]|getBrieftick|brieftick[_-]|x-brieftick|brieftick-build|brieftick\.com\)|brieftick\.vercel|_briefTick|brieftick:|brieftick-beta|brieftick-provider|brieftick-logo|brieftick-logo-lab|\/brand\/brieftick|href=|src=|content=|name="brieftick|console\.(log|warn)|\/\/|\/\*|\*\/|schema:|package\.json/;
+  /BriefTickAPI|Brieftick[A-Z]|getBrieftick|brieftick[_-]|x-brieftick|forgeniq-build|brieftick-build|brieftick\.com\)|brieftick\.vercel|_briefTick|brieftick:|forgeniq-beta|brieftick-beta|forgeniq-provider|brieftick-provider|brieftick-logo|brieftick-logo-lab|\/brand\/brieftick|href=|src=|content=|name="brieftick|console\.(log|warn)|\/\/|\/\*|\*\/|schema:|package\.json/;
 
 function walk(dir, out = []) {
   for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {

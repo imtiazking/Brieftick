@@ -5,7 +5,7 @@
  * server-side, and caches responses so visitors share API calls.
  *
  * Cache TTLs:
- *   - Quotes & time series (Twelve Data) ........... 30s
+ *   - Quotes & time series (Twelve Data) ........... 5min (+ stale on 429)
  *   - News headlines (Finnhub) ..................... 60s
  *   - Company news (Finnhub) ....................... 5min
  *   - Earnings calendar (Finnhub) .................. 30min
@@ -39,6 +39,19 @@ function cacheSet(key, value) {
   }
 }
 
+/** @type {Map<string, { t: number, v: unknown }>} */
+const staleCache = new Map();
+
+function staleGet(key) {
+  return staleCache.get(key)?.v ?? null;
+}
+
+function staleSet(key, value) {
+  staleCache.set(key, { t: Date.now(), v: value });
+}
+
+let twelveDataCircuitUntil = 0;
+
 // CORS: allow any origin to hit /api/* so the same code works locally + on Vercel.
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -58,25 +71,52 @@ async function proxyTwelveData(req, res) {
   const qs = new URLSearchParams({ ...params, apikey: key }).toString();
   const url = `https://api.twelvedata.com/${endpoint}?${qs}`;
   const cacheKey = `td:${endpoint}:${new URLSearchParams(params).toString()}`;
+  const TTL = 5 * 60_000;
 
-  // 30s cache for quotes & time series
-  const cached = cacheGet(cacheKey, 30_000);
+  const cached = cacheGet(cacheKey, TTL);
   if (cached) {
     res.setHeader('x-brieftick-cache', 'HIT');
     return res.status(200).json(cached);
   }
 
+  if (Date.now() < twelveDataCircuitUntil) {
+    const stale = staleGet(cacheKey);
+    if (stale) {
+      res.setHeader('x-brieftick-cache', 'STALE');
+      return res.status(200).json(stale);
+    }
+    return res.status(429).json({
+      status: 'error',
+      code: 429,
+      message: 'Twelve Data circuit open — retry after cooldown',
+    });
+  }
+
   try {
     const r = await fetch(url);
     const data = await r.json();
-    if (r.status === 429) {
+    if (r.status === 429 || data?.code === 429) {
+      twelveDataCircuitUntil = Date.now() + 5 * 60_000;
+      console.warn('[proxy/twelvedata] 429 — circuit open 5min', { endpoint, symbol: params.symbol });
+      const stale = staleGet(cacheKey);
+      if (stale) {
+        res.setHeader('x-brieftick-cache', 'STALE');
+        return res.status(200).json(stale);
+      }
       return res.status(429).json({ status: 'error', code: 429, message: 'Rate limited', ...data });
     }
-    // Don't cache rate-limit errors
-    if (!(data && data.code === 429)) cacheSet(cacheKey, data);
+    if (r.status >= 200 && r.status < 300 && !(data && data.code)) {
+      cacheSet(cacheKey, data);
+      staleSet(cacheKey, data);
+    }
     res.setHeader('x-brieftick-cache', 'MISS');
     return res.status(r.status >= 400 ? r.status : 200).json(data);
   } catch (e) {
+    const stale = staleGet(cacheKey);
+    if (stale) {
+      res.setHeader('x-brieftick-cache', 'STALE');
+      return res.status(200).json(stale);
+    }
     return res.status(502).json({ error: 'upstream fetch failed', detail: e.message });
   }
 }
@@ -193,15 +233,17 @@ async function proxyYahooChart(req, res) {
     });
   }
 
-  const cacheKey = `yahoo:chart:${symbol}`;
-  const cacheTtl = YAHOO_INDEX_SYMBOLS.has(symbol) ? 10 * 60_000 : 45_000;
+  const range = String(req.query.range || '5d').replace(/[^a-z0-9]/gi, '') || '5d';
+  const wantCloses = req.query.closes === '1' || req.query.closes === 'true';
+  const cacheKey = `yahoo:chart:${symbol}:${range}${wantCloses ? ':closes' : ''}`;
+  const cacheTtl = YAHOO_INDEX_SYMBOLS.has(symbol) ? 10 * 60_000 : 5 * 60_000;
   const cached = cacheGet(cacheKey, cacheTtl);
   if (cached) {
     res.setHeader('x-brieftick-cache', 'HIT');
     return res.status(200).json(cached);
   }
 
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`;
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=${encodeURIComponent(range)}`;
   try {
     const r = await fetch(url, {
       headers: { 'User-Agent': 'FORGENIQ/1.0 market-snapshot' },
@@ -237,6 +279,7 @@ async function proxyYahooChart(req, res) {
       change,
       changePercent,
       previousClose: prev,
+      closes: wantCloses ? closes : undefined,
       updatedAt: meta?.regularMarketTime
         ? new Date(meta.regularMarketTime * 1000).toISOString()
         : new Date().toISOString(),
@@ -369,7 +412,81 @@ async function fetchFredCsv(series, attempt = 1) {
   }
 }
 
+/** High-impact US releases for economic calendar (FRED release_id → label). */
+const FRED_RELEASE_LABELS = new Map([
+  [10, 'Consumer Price Index'],
+  [50, 'Employment Situation'],
+  [53, 'Gross Domestic Product'],
+  [101, 'Retail Sales'],
+  [180, 'Producer Price Index'],
+  [194, 'FOMC Press Release'],
+  [206, 'Industrial Production'],
+]);
+
+async function proxyFredCalendar(req, res) {
+  const key = process.env.FRED_API_KEY;
+  if (!key) {
+    return res.status(500).json({ error: 'FRED_API_KEY not set on server' });
+  }
+  const today = new Date();
+  const end = new Date(today.getTime() + 7 * 86400000);
+  const fmt = (d) => d.toISOString().slice(0, 10);
+  const realtimeStart = fmt(today);
+  const realtimeEnd = fmt(end);
+  const cacheKey = `fred:calendar:${realtimeStart}:${realtimeEnd}`;
+  const cached = cacheGet(cacheKey, 30 * 60_000);
+  if (cached) {
+    res.setHeader('x-brieftick-cache', 'HIT');
+    return res.status(200).json(cached);
+  }
+
+  const url =
+    `https://api.stlouisfed.org/fred/releases/dates?api_key=${encodeURIComponent(key)}` +
+    `&file_type=json&realtime_start=${realtimeStart}&realtime_end=${realtimeEnd}` +
+    `&include_release_dates_with_no_data=true&sort_order=asc&limit=100`;
+
+  try {
+    const r = await fetch(url, { headers: { 'User-Agent': 'FORGENIQ/1.0' } });
+    const body = await r.json();
+    if (!r.ok || body?.error_message) {
+      console.warn('[proxy/fred/calendar] upstream error', {
+        httpStatus: r.status,
+        message: body?.error_message || 'unknown',
+      });
+      return res.status(r.status >= 400 ? r.status : 502).json({
+        ok: false,
+        error: 'FRED calendar fetch failed',
+        detail: body?.error_message || `HTTP ${r.status}`,
+      });
+    }
+    const rows = (body.release_dates || [])
+      .filter((row) => FRED_RELEASE_LABELS.has(row.release_id))
+      .map((row) => {
+        const label = FRED_RELEASE_LABELS.get(row.release_id) || 'Economic release';
+        const imp =
+          row.release_id === 50 || row.release_id === 10 ? 'high'
+            : row.release_id === 194 ? 'med'
+              : 'med';
+        return {
+          when: row.date,
+          imp,
+          ev: label,
+          det: 'US · Federal Reserve Economic Data',
+          releaseId: row.release_id,
+        };
+      });
+    const data = { ok: true, source: 'fred', events: rows, from: realtimeStart, to: realtimeEnd };
+    cacheSet(cacheKey, data);
+    res.setHeader('x-brieftick-cache', 'MISS');
+    return res.status(200).json(data);
+  } catch (e) {
+    return res.status(502).json({ error: 'FRED calendar fetch failed', detail: e.message });
+  }
+}
+
 async function proxyFred(req, res) {
+  if (req.query.endpoint === 'calendar') return proxyFredCalendar(req, res);
+
   const series = req.query.series || 'VIXCLS';
   if (!FRED_ALLOWED_SERIES.has(series)) {
     return res.status(400).json({ error: 'unsupported FRED series', allowed: [...FRED_ALLOWED_SERIES] });
@@ -468,13 +585,51 @@ async function proxyPolygon(req, res) {
     const qs = new URLSearchParams({ ...params, apiKey: key }).toString();
     const url = `https://api.polygon.io/${endpoint}?${qs}`;
     const r = await fetch(url, { headers: { 'User-Agent': 'FORGENIQ/1.0' } });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const data = await r.json();
-    if (data.status !== 'ERROR') cacheSet(cacheKey, data);
+    let data = null;
+    try {
+      data = await r.json();
+    } catch {
+      data = null;
+    }
+    if (!r.ok) {
+      console.warn('[proxy/polygon] upstream error', {
+        endpoint,
+        httpStatus: r.status,
+        polygonStatus: data?.status,
+        message: data?.error || data?.message,
+      });
+      const stale = staleGet(cacheKey);
+      if (stale) {
+        res.setHeader('x-brieftick-cache', 'STALE');
+        return res.status(200).json(stale);
+      }
+      return res.status(502).json({
+        error: 'Polygon fetch failed',
+        failureReason: 'upstream_error',
+        upstreamStatus: r.status,
+        endpoint,
+        detail: data?.error || data?.message || `HTTP ${r.status}`,
+      });
+    }
+    if (data.status !== 'ERROR') {
+      cacheSet(cacheKey, data);
+      staleSet(cacheKey, data);
+    }
     res.setHeader('x-brieftick-cache', 'MISS');
     return res.status(200).json(data);
   } catch (e) {
-    return res.status(502).json({ error: 'Polygon fetch failed', detail: e.message });
+    console.warn('[proxy/polygon] fetch exception', { endpoint, detail: e.message });
+    const stale = staleGet(cacheKey);
+    if (stale) {
+      res.setHeader('x-brieftick-cache', 'STALE');
+      return res.status(200).json(stale);
+    }
+    return res.status(502).json({
+      error: 'Polygon fetch failed',
+      failureReason: 'network_error',
+      endpoint,
+      detail: e.message,
+    });
   }
 }
 

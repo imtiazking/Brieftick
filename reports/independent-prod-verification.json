@@ -1,0 +1,1883 @@
+{
+  "generatedAt": "2026-06-22T11:21:45.733Z",
+  "baseUrl": "https://www.forgeniq.com",
+  "section1_providers": [
+    {
+      "provider": "finnhub",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=AAPL",
+      "httpStatus": 200,
+      "latencyMs": 231,
+      "cache": "MISS",
+      "status": "healthy",
+      "timestamp": "2026-06-22T11:20:39.286Z",
+      "evidence": "AAPL close=298.01",
+      "rawError": null
+    },
+    {
+      "provider": "yahoo",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=SPY",
+      "httpStatus": 200,
+      "latencyMs": 233,
+      "cache": "MISS",
+      "status": "healthy",
+      "timestamp": "2026-06-22T11:20:39.520Z",
+      "evidence": "SPY price=746.74",
+      "rawError": null
+    },
+    {
+      "provider": "alphavantage",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=alphavantage&function=GLOBAL_QUOTE&symbol=IBM",
+      "httpStatus": 200,
+      "latencyMs": 184,
+      "cache": "MISS",
+      "status": "healthy",
+      "timestamp": "2026-06-22T11:20:39.704Z",
+      "evidence": "IBM=249.1000",
+      "rawError": null
+    },
+    {
+      "provider": "fred",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=fred&series=VIXCLS",
+      "httpStatus": 200,
+      "latencyMs": 144,
+      "cache": "MISS",
+      "status": "healthy",
+      "timestamp": "2026-06-22T11:20:39.849Z",
+      "evidence": "VIXCLS=18.44 @ 2026-06-17",
+      "rawError": null
+    },
+    {
+      "provider": "fred-calendar",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=fred&endpoint=calendar",
+      "httpStatus": 200,
+      "latencyMs": 111,
+      "cache": "HIT",
+      "status": "healthy",
+      "timestamp": "2026-06-22T11:20:39.960Z",
+      "evidence": "{\"series\":\"VIXCLS\",\"date\":\"2026-06-17\",\"value\":18.44,\"previousDate\":\"2026-06-16\",\"previousValue\":16.41,\"change\":2.030000",
+      "rawError": null
+    },
+    {
+      "provider": "polygon",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=polygon&endpoint=v3/snapshot/options/SPY&limit=2",
+      "httpStatus": 502,
+      "latencyMs": 158,
+      "cache": null,
+      "status": "offline",
+      "timestamp": "2026-06-22T11:20:40.118Z",
+      "evidence": "{\"error\":\"Polygon fetch failed\",\"detail\":\"HTTP 403\"}",
+      "rawError": "Polygon fetch failed"
+    },
+    {
+      "provider": "polygon-stocks",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=polygon&endpoint=v2/snapshot/locale/us/markets/stocks/tickers&tickers=AAPL",
+      "httpStatus": 502,
+      "latencyMs": 254,
+      "cache": null,
+      "status": "offline",
+      "timestamp": "2026-06-22T11:20:40.373Z",
+      "evidence": "{\"error\":\"Polygon fetch failed\",\"detail\":\"HTTP 403\"}",
+      "rawError": "Polygon fetch failed"
+    },
+    {
+      "provider": "twelvedata",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=AAPL",
+      "httpStatus": 429,
+      "latencyMs": 143,
+      "cache": null,
+      "status": "degraded",
+      "timestamp": "2026-06-22T11:20:40.517Z",
+      "evidence": "{\"status\":\"error\",\"code\":429,\"message\":\"You have run out of API credits for the day. 3029 API credits were used, with th",
+      "rawError": "You have run out of API credits for the day. 3029 API credits were used, with the current limit being 800. Wait for the next day or consider switching to a paid plan that will remove daily limits at https://twelvedata.com/pricing"
+    },
+    {
+      "provider": "finnhub-earnings",
+      "endpoint": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=calendar/earnings&from=2026-06-20&to=2026-07-06",
+      "httpStatus": 200,
+      "latencyMs": 186,
+      "cache": "MISS",
+      "status": "healthy",
+      "timestamp": "2026-06-22T11:20:40.707Z",
+      "evidence": "161 events",
+      "rawError": null
+    }
+  ],
+  "section1_summary": {
+    "finnhub": "healthy",
+    "yahoo": "healthy",
+    "alphavantage": "healthy",
+    "fred": "healthy",
+    "polygon": "offline",
+    "twelvedata": "degraded"
+  },
+  "section2_quoteComparison": [
+    {
+      "symbol": "AAPL",
+      "providerPrice": 298.01,
+      "provider": "finnhub",
+      "displayedOnSite": 219.84,
+      "variancePct": 26.230663400557024,
+      "pass": false
+    },
+    {
+      "symbol": "NVDA",
+      "providerPrice": 210.69,
+      "provider": "finnhub",
+      "displayedOnSite": 875.42,
+      "variancePct": 315.50144762447195,
+      "pass": false
+    },
+    {
+      "symbol": "MSFT",
+      "providerPrice": 379.4,
+      "provider": "finnhub",
+      "displayedOnSite": 412.74,
+      "variancePct": 8.787559304164478,
+      "pass": false
+    },
+    {
+      "symbol": "SPY",
+      "providerPrice": 746.74,
+      "provider": "finnhub",
+      "displayedOnSite": null,
+      "variancePct": null,
+      "pass": null
+    },
+    {
+      "symbol": "QQQ",
+      "providerPrice": 740.62,
+      "provider": "finnhub",
+      "displayedOnSite": null,
+      "variancePct": null,
+      "pass": null
+    }
+  ],
+  "section2_providerQuotes": {
+    "AAPL": {
+      "finnhub": {
+        "price": 298.01,
+        "pctChange": 0.6961,
+        "ts": "2026-06-18T20:00:00.000Z"
+      },
+      "yahoo": {
+        "price": 298.01,
+        "pctChange": 0.8050603795284631,
+        "ts": "2026-06-18T20:00:01.000Z"
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    },
+    "NVDA": {
+      "finnhub": {
+        "price": 210.69,
+        "pctChange": 2.9514,
+        "ts": "2026-06-18T20:00:00.000Z"
+      },
+      "yahoo": {
+        "price": 210.69,
+        "pctChange": 2.840825889588516,
+        "ts": "2026-06-18T20:00:00.000Z"
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    },
+    "MSFT": {
+      "finnhub": {
+        "price": 379.4,
+        "pctChange": 0.1293,
+        "ts": "2026-06-18T20:00:00.000Z"
+      },
+      "yahoo": {
+        "price": 379.4,
+        "pctChange": -2.802684838858431,
+        "ts": "2026-06-18T20:00:01.000Z"
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    },
+    "SPY": {
+      "finnhub": {
+        "price": 746.74,
+        "pctChange": 0.7801,
+        "ts": "2026-06-18T20:00:00.000Z"
+      },
+      "yahoo": {
+        "price": 746.74,
+        "pctChange": 1.2171980047712017,
+        "ts": "2026-06-18T20:00:00.000Z"
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    },
+    "QQQ": {
+      "finnhub": {
+        "price": 740.62,
+        "pctChange": 2.5065,
+        "ts": "2026-06-18T20:00:00.000Z"
+      },
+      "yahoo": {
+        "price": 740.62,
+        "pctChange": 3.276996876394467,
+        "ts": "2026-06-18T20:00:01.000Z"
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    }
+  },
+  "section2_displayedQuotes": {
+    "NVDA": 875.42,
+    "AMD": 164.28,
+    "XOM": 118.62,
+    "META": 519.87,
+    "TSLA": 184.92,
+    "JPM": 204.18,
+    "CVX": 162.4,
+    "AAPL": 219.84,
+    "MSFT": 412.74,
+    "AVGO": 1386.2,
+    "GS": 468.93
+  },
+  "section3_modules": {
+    "dashboard": {
+      "route": "dashboard",
+      "classification": "live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Delayed"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": false,
+          "illustrative": false,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 155,
+        "newConsoleErrors": 155
+      }
+    },
+    "whats-moving": {
+      "route": "why",
+      "classification": "mock",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": false,
+          "illustrative": true,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 67,
+        "newConsoleErrors": 67
+      }
+    },
+    "watchlists": {
+      "route": "dashboard",
+      "classification": "live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": false,
+          "illustrative": false,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 2,
+        "newConsoleErrors": 2
+      }
+    },
+    "earnings": {
+      "route": "earnings",
+      "classification": "mock",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": true,
+          "illustrative": true,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 0,
+        "newConsoleErrors": 0
+      }
+    },
+    "market-risk": {
+      "route": "dashboard",
+      "classification": "live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": false,
+          "illustrative": false,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 0,
+        "newConsoleErrors": 0
+      }
+    },
+    "discover": {
+      "route": "scanner",
+      "classification": "mock",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": false,
+          "illustrative": true,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 0,
+        "newConsoleErrors": 0
+      }
+    },
+    "correlation": {
+      "route": "dashboard",
+      "classification": "live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": false,
+          "illustrative": false,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 0,
+        "newConsoleErrors": 0
+      }
+    },
+    "smart-money": {
+      "route": "insiders",
+      "classification": "live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": false,
+          "illustrative": false,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 0,
+        "newConsoleErrors": 0
+      }
+    },
+    "macro": {
+      "route": "dashboard",
+      "classification": "live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": false,
+          "illustrative": false,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 0,
+        "newConsoleErrors": 0
+      }
+    },
+    "options": {
+      "route": "options",
+      "classification": "coming-soon",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Heuristic"
+        },
+        {
+          "id": "corrMeta",
+          "text": "Calculating…"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "evidence": {
+        "patterns": {
+          "comingSoon": true,
+          "illustrative": true,
+          "unavailable": false,
+          "mockDemo": false,
+          "nancyPelosi": false,
+          "demoStrikes": false
+        },
+        "macroSnippet": "\n      Tomorrow 13:30\n      \n        Retail Sales / CPI data window\n        Watch for Consumer Price Index, Retail Sales, PPI on rotating Tuesday cycle.\n      \n      high impact\n    \n      Wed 24 Jun 19:00\n      \n        Fed communications window\n        FOMC minutes, Fed speaker appearances, or pol",
+        "corrSnippet": "NVDAAMDAVGOMSFTMETASPYNVDA1.000.860.780.620.580.71AMD0.861.000.740.540.510.66AVGO0.780.741.000.510.490.61MSFT0.620.540.511.000.680.78META0.580.510.490.681.000.74SPY0.710.660.610.780.741.00Pearson 30-d",
+        "optionsSnippet": "",
+        "newNetworkErrors": 0,
+        "newConsoleErrors": 0
+      }
+    }
+  },
+  "section4_mockFindings": [
+    {
+      "module": "whats-moving",
+      "pattern": "illustrative",
+      "route": "why"
+    },
+    {
+      "module": "earnings",
+      "pattern": "comingSoon",
+      "route": "earnings"
+    },
+    {
+      "module": "earnings",
+      "pattern": "illustrative",
+      "route": "earnings"
+    },
+    {
+      "module": "discover",
+      "pattern": "illustrative",
+      "route": "scanner"
+    },
+    {
+      "module": "options",
+      "pattern": "comingSoon",
+      "route": "options"
+    },
+    {
+      "module": "options",
+      "pattern": "illustrative",
+      "route": "options"
+    }
+  ],
+  "section5_network": {
+    "requests": [],
+    "errors": [
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=calendar/economic&from=2026-06-22&to=2026-06-29",
+        "status": 403
+      },
+      {
+        "url": "https://unpkg.com/three-globe@2.30.0/example/img/earth-clouds.png",
+        "failed": "net::ERR_FAILED"
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=polygon&endpoint=v3/snapshot/options/NVDA&limit=20&sort=volume&order=desc",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=polygon&endpoint=v3/snapshot/options/TSLA&limit=20&sort=volume&order=desc",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=polygon&endpoint=v3/snapshot/options/SPY&limit=20&sort=volume&order=desc",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=polygon&endpoint=v3/snapshot/options/META&limit=20&sort=volume&order=desc",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=BTC%2FUSD",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=ETH%2FUSD",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=XAU%2FUSD",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=WTI%2FUSD",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=DX-Y.NYB",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=EUR%2FUSD",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=AAPL",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=TSLA",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=CVX",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=AMD",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLK",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLV",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=MSFT",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=JPM",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=NVDA",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=polygon&endpoint=v2/snapshot/locale/us/markets/stocks/tickers&tickers=XLK%2CXLV",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=polygon&endpoint=v2/snapshot/locale/us/markets/stocks/tickers&tickers=NVDA%2CAMD%2CTSLA%2CJPM%2CCVX%2CAAPL",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=XLK%2CXLV",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=NVDA%2CAMD%2CTSLA%2CJPM%2CCVX%2CAAPL%2CMSFT",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=NVDA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMD&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AVGO&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=MSFT&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=META&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=GOOGL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=SPY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLV",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLP",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLK",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLE",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=QQQ",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=SPY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AAPL&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=NVDA",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLC",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLI",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=MSFT",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLRE",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=AAPL",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=SPY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLU",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=AMZN&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=AMZN",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=GOOGL",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=JPM",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=NFLX",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=AVGO",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=AMD",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=META",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=TSLA",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=TSLA&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=GS",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=CVX",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XOM",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=PG",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=JNJ",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=WMT",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=UNH",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=BAC",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=QCOM",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=TSM",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=MU",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=ORCL",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=MCHP",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=INTC",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=SNDK",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=CRM",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=JPM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=IBM",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=BAC&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=SPY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=time_series&symbol=XOM&interval=1day&outputsize=30",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=SPY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=SPY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=QQQ",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=XLK",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=XLE",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=XLV",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=XLP",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=XLY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=XLI",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=SPY",
+        "status": 429
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=SPY",
+        "status": 429
+      }
+    ],
+    "counts": {
+      "total": 569,
+      "e429": 262,
+      "e5xx": 6,
+      "failed": 1,
+      "apiFailed": 0
+    }
+  },
+  "section5_consoleErrors": [
+    "Failed to load resource: the server responded with a status of 403 ()",
+    "Access to image at 'https://unpkg.com/three-globe@2.30.0/example/img/earth-clouds.png' from origin 'https://www.forgeniq.com' has been blocked by CORS policy: No 'Access-Control-Al",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 502 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 502 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 502 ()",
+    "Failed to load resource: the server responded with a status of 502 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()",
+    "Failed to load resource: the server responded with a status of 429 ()"
+  ],
+  "section6_providerHealth": {
+    "endpoint": "https://www.forgeniq.com/api/provider-health",
+    "httpStatus": 500,
+    "latencyMs": 266,
+    "body": {
+      "_raw": "A server error has occurred\n\nFUNCTION_INVOCATION_FAILED\n\nlhr1::rzztk-1782127240666-c5e212ed1c9b\n"
+    },
+    "functional": false
+  },
+  "section7_dataHonestyScore": 48,
+  "section8_verdict": "C",
+  "pageMeta": {
+    "title": "What's Moving · FORGENIQ",
+    "description": "FORGENIQ translates complex market signals into plain-English intelligence — story-first context for investors, without the jargon."
+  }
+}

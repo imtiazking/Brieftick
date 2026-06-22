@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>What's Moving v2 · Visual Concepts · FORGENIQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #d4a85a;
+      --gold-dim: rgba(212, 168, 90, 0.35);
+      --up: #3ecf8e;
+      --up-bg: rgba(62, 207, 142, 0.12);
+      --dn: #f07178;
+      --dn-bg: rgba(240, 113, 120, 0.12);
+      --void: #020204;
+      --panel: #0a0b10;
+      --line: rgba(255, 255, 255, 0.07);
+      --muted: #6b7280;
+      --text: #e8ecf5;
+      --display: "Playfair Display", serif;
+      --body: "Inter Tight", sans-serif;
+      --mono: "JetBrains Mono", monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--body);
+      background: var(--void);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Lab chrome ── */
+    .lab-top {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(2, 2, 4, 0.94);
+      backdrop-filter: blur(16px);
+    }
+    .lab-brand strong {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .lab-brand span { font-size: 11px; color: var(--muted); display: block; margin-top: 2px; }
+    .lab-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .lab-tab {
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .lab-tab:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .lab-tab.is-active { background: var(--gold); color: #0a0a0c; border-color: var(--gold); }
+    .lab-note {
+      margin-left: auto;
+      font-size: 10px;
+      color: var(--muted);
+      max-width: 28ch;
+      text-align: right;
+      line-height: 1.4;
+    }
+    .lab-links {
+      display: flex;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.08em;
+    }
+    .lab-links a {
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .lab-links a:hover { color: var(--gold); border-color: var(--gold-dim); }
+    .lab-links a.is-active { color: var(--gold); border-color: var(--gold); }
+    .lab-stage { max-width: 1400px; margin: 0 auto; padding: 28px 20px 80px; }
+    .concept-panel { display: none; animation: fadeUp 0.5s ease; }
+    .concept-panel.is-active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .concept-header { margin-bottom: 28px; }
+    .concept-tag {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .concept-header h1 {
+      font-family: var(--display);
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .concept-header p { font-size: 14px; line-height: 1.6; color: #8a94a8; max-width: 62ch; }
+    .concept-traits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .concept-traits span {
+      font-family: var(--mono);
+      font-size: 7px;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr min(380px, 100%);
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .preview-grid { grid-template-columns: 1fr; }
+      .lab-note { display: none; }
+    }
+
+    .preview-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* Device frames */
+    .frame-desktop {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+    .frame-desktop__bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.4);
+      border-bottom: 1px solid var(--line);
+    }
+    .frame-desktop__bar i {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+    }
+    .frame-desktop__bar span {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 7px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .frame-mobile {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+      max-width: 380px;
+      margin: 0 auto;
+    }
+    .frame-mobile__notch {
+      height: 28px;
+      background: rgba(0,0,0,0.35);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 6px;
+    }
+    .frame-mobile__notch span {
+      width: 72px; height: 5px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 99px;
+    }
+
+    /* Shared app chrome (mock) */
+    .mock-nav {
+      display: flex;
+      gap: 4px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .mock-nav em {
+      font-style: normal;
+      color: var(--gold);
+      padding: 4px 8px;
+      background: rgba(212,168,90,0.12);
+      border-radius: 4px;
+    }
+    .mock-page { padding: 20px 20px 28px; min-height: 520px; }
+    .mock-title {
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .mock-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .mock-meta {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.06em;
+      color: #4a5568;
+      margin-bottom: 18px;
+    }
+    .mock-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .mock-tab {
+      padding: 8px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: transparent;
+    }
+    .mock-tab.is-on {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .mock-tab .count { opacity: 0.55; font-weight: 400; margin-left: 4px; }
+    .mock-footer {
+      margin-top: 20px;
+      font-size: 10px;
+      color: #4a5568;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .pct-up { color: var(--up); }
+    .pct-dn { color: var(--dn); }
+    .spark {
+      display: block;
+      width: 48px;
+      height: 20px;
+    }
+
+    /* ── CONCEPT A: Simple list ── */
+    .a-list { border-top: 1px solid var(--line); }
+    .a-row {
+      display: grid;
+      grid-template-columns: 28px 56px 1fr 52px 72px 88px;
+      gap: 10px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+    .a-row__rank { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .a-row__sym { font-weight: 600; font-size: 14px; }
+    .a-row__name { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .a-row__price { font-family: var(--mono); font-size: 11px; color: #9aa3b5; text-align: right; }
+    .a-row__pct { font-family: var(--mono); font-size: 13px; font-weight: 500; text-align: right; }
+    .a-row__cta {
+      font-size: 11px;
+      color: var(--gold);
+      text-align: right;
+      white-space: nowrap;
+    }
+    .a-row__cta::after { content: " →"; }
+
+    .a-mobile .a-row {
+      grid-template-columns: 24px 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 4px 12px;
+      padding: 16px 0;
+    }
+    .a-mobile .a-row__rank { grid-row: 1 / 3; align-self: center; }
+    .a-mobile .a-row__sym { grid-column: 2; font-size: 15px; }
+    .a-mobile .a-row__name { grid-column: 2; grid-row: 2; font-size: 11px; }
+    .a-mobile .a-row__spark { display: none; }
+    .a-mobile .a-row__price { display: none; }
+    .a-mobile .a-row__pct { grid-column: 3; grid-row: 1; font-size: 15px; }
+    .a-mobile .a-row__cta { grid-column: 3; grid-row: 2; font-size: 10px; text-align: right; }
+
+    /* ── CONCEPT B: Bloomberg board ── */
+    .b-board {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .b-board__head {
+      display: grid;
+      grid-template-columns: 32px 64px 1fr 80px 72px 56px 100px;
+      gap: 8px;
+      padding: 8px 12px;
+      background: rgba(212,168,90,0.08);
+      border-bottom: 1px solid var(--gold-dim);
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .b-row {
+      display: grid;
+      grid-template-columns: 32px 64px 1fr 80px 72px 56px 100px;
+      gap: 8px;
+      padding: 10px 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.15s;
+    }
+    .b-row:hover { background: rgba(255,255,255,0.03); }
+    .b-row:nth-child(even) { background: rgba(255,255,255,0.015); }
+    .b-row__sym { font-weight: 600; color: #fff; }
+    .b-row__name { color: var(--muted); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .b-row__vol { color: #7a8498; font-size: 10px; }
+    .b-row__chg-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .b-row__chg-bar i {
+      display: block;
+      height: 100%;
+      border-radius: 2px;
+    }
+    .b-row__chg-bar i.up { background: var(--up); width: 72%; }
+    .b-row__chg-bar i.dn { background: var(--dn); width: 45%; margin-left: auto; }
+    .b-mood {
+      display: flex;
+      gap: 16px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+    .b-mood span { color: var(--muted); }
+    .b-mood strong.up { color: var(--up); }
+    .b-mood strong.dn { color: var(--dn); }
+    .b-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--line);
+      margin-bottom: 0;
+    }
+    .b-tabs .mock-tab {
+      border: none;
+      border-radius: 0;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      padding: 10px 18px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .b-tabs .mock-tab.is-on {
+      background: transparent;
+      border-bottom-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .b-mobile .b-board__head { display: none; }
+    .b-mobile .b-row {
+      grid-template-columns: 48px 1fr 64px;
+      font-size: 12px;
+    }
+    .b-mobile .b-row__vol,
+    .b-mobile .b-row__spark,
+    .b-mobile .b-row__bar { display: none; }
+
+    /* ── CONCEPT C: Retail cards ── */
+    .c-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 18px;
+      scrollbar-width: none;
+    }
+    .c-strip::-webkit-scrollbar { display: none; }
+    .c-pill {
+      flex: 0 0 auto;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      min-width: 100px;
+    }
+    .c-pill strong { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .c-pill em { font-style: normal; font-size: 18px; font-weight: 600; }
+    .c-pill em.up { color: var(--up); }
+    .c-pill em.dn { color: var(--dn); }
+
+    .c-cards { display: flex; flex-direction: column; gap: 12px; }
+    .c-card {
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .c-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--up);
+    }
+    .c-card.is-down::before { background: var(--dn); }
+    .c-card__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .c-card__rank {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .c-card__sym { font-size: 20px; font-weight: 600; }
+    .c-card__name { font-size: 12px; color: var(--muted); }
+    .c-card__pct {
+      font-size: 24px;
+      font-weight: 600;
+      font-family: var(--mono);
+    }
+    .c-card__pct.up { color: var(--up); }
+    .c-card__pct.dn { color: var(--dn); }
+    .c-card__teaser {
+      font-size: 13px;
+      line-height: 1.45;
+      color: #9aa3b5;
+      margin: 12px 0 14px;
+    }
+    .c-card__foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .c-card__price {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .c-card__btn {
+      padding: 10px 16px;
+      border-radius: 99px;
+      background: var(--gold);
+      color: #0a0a0c;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+    }
+    .c-card__spark-bg {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.25;
+    }
+
+    .annotation {
+      margin-top: 32px;
+      padding: 20px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.02);
+    }
+    .annotation h3 {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .annotation ul {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+    .annotation li {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #8a94a8;
+      padding-left: 16px;
+      position: relative;
+    }
+    .annotation li::before {
+      content: "·";
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+      font-size: 12px;
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      text-align: left;
+    }
+    .compare-table th {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <header class="lab-top">
+    <div class="lab-brand">
+      <strong>Design lab</strong>
+      <span>What's Moving v2 · Visual concepts only</span>
+    </div>
+    <nav class="lab-tabs" aria-label="Concepts">
+      <button type="button" class="lab-tab is-active" data-concept="a">Concept A · Simple list</button>
+      <button type="button" class="lab-tab" data-concept="b">Concept B · Movers board</button>
+      <button type="button" class="lab-tab" data-concept="c">Concept C · Retail cards</button>
+    </nav>
+    <p class="lab-note">Static mockups · Approved IA · No app wiring</p>
+    <nav class="lab-links" aria-label="Direct concept links">
+      <a href="/design-lab/whats-moving-v2/a">A</a>
+      <a href="/design-lab/whats-moving-v2/b">B</a>
+      <a href="/design-lab/whats-moving-v2/c">C</a>
+    </nav>
+  </header>
+
+  <main class="lab-stage">
+    <!-- ═══ CONCEPT A ═══ -->
+    <section class="concept-panel is-active" id="concept-a">
+      <header class="concept-header">
+        <span class="concept-tag">Concept A</span>
+        <h1>Very simple list</h1>
+        <p>
+          Maximum clarity for beginners: one column, scan top-to-bottom, minimal chrome.
+          Answers “what’s up / down / busy” in under three seconds. Feels like Apple Stocks or a clean watchlist—not a terminal.
+        </p>
+        <div class="concept-traits">
+          <span>Lowest cognitive load</span>
+          <span>Best 3-second test</span>
+          <span>Cheapest to build</span>
+          <span>Desktop table · Mobile stacked row</span>
+        </div>
+      </header>
+
+      <div class="preview-grid">
+        <div>
+          <p class="preview-label">Desktop · App shell</p>
+          <div class="frame-desktop">
+            <div class="frame-desktop__bar">
+              <i></i><i></i><i></i>
+              <span>forgeniq.com · What's Moving</span>
+            </div>
+            <nav class="mock-nav">
+              Dashboard · <em>What's Moving</em> · Discover Stocks · …
+            </nav>
+            <div class="mock-page">
+              <h2 class="mock-title">What's Moving</h2>
+              <p class="mock-sub">Stocks moving the most today</p>
+              <p class="mock-meta">US market · Prices update live</p>
+              <div class="mock-tabs">
+                <span class="mock-tab is-on">Gaining <span class="count">(6)</span></span>
+                <span class="mock-tab">Falling <span class="count">(3)</span></span>
+                <span class="mock-tab">Most active <span class="count">(9)</span></span>
+              </div>
+              <div class="a-list">
+                <div class="a-row">
+                  <span class="a-row__rank">1</span>
+                  <span class="a-row__sym">NVDA</span>
+                  <span class="a-row__name">NVIDIA</span>
+                  <svg class="spark a-row__spark" viewBox="0 0 48 20"><polyline fill="none" stroke="#3ecf8e" stroke-width="1.5" points="0,16 8,14 16,12 24,8 32,6 40,4 48,2"/></svg>
+                  <span class="a-row__price">$219.46</span>
+                  <span class="a-row__pct pct-up">+1.98%</span>
+                  <span class="a-row__cta">Why it's moving</span>
+                </div>
+                <div class="a-row">
+                  <span class="a-row__rank">2</span>
+                  <span class="a-row__sym">XOM</span>
+                  <span class="a-row__name">Exxon Mobil</span>
+                  <svg class="spark a-row__spark" viewBox="0 0 48 20"><polyline fill="none" stroke="#3ecf8e" stroke-width="1.5" points="0,14 12,12 24,10 36,6 48,4"/></svg>
+                  <span class="a-row__price">$118.62</span>
+                  <span class="a-row__pct pct-up">+1.18%</span>
+                  <span class="a-row__cta">Why it's moving</span>
+                </div>
+                <div class="a-row">
+                  <span class="a-row__rank">3</span>
+                  <span class="a-row__sym">META</span>
+                  <span class="a-row__name">Meta Platforms</span>
+                  <svg class="spark a-row__spark" viewBox="0 0 48 20"><polyline fill="none" stroke="#3ecf8e" stroke-width="1.5" points="0,12 16,10 32,8 48,5"/></svg>
+                  <span class="a-row__price">$612.40</span>
+                  <span class="a-row__pct pct-up">+0.94%</span>
+                  <span class="a-row__cta">Why it's moving</span>
+                </div>
+                <div class="a-row">
+                  <span class="a-row__rank">4</span>
+                  <span class="a-row__sym">TSLA</span>
+                  <span class="a-row__name">Tesla</span>
+                  <svg class="spark a-row__spark" viewBox="0 0 48 20"><polyline fill="none" stroke="#f07178" stroke-width="1.5" points="0,4 12,8 24,12 36,14 48,16"/></svg>
+                  <span class="a-row__price">$248.90</span>
+                  <span class="a-row__pct pct-dn">−0.62%</span>
+                  <span class="a-row__cta">Why it's moving</span>
+                </div>
+              </div>
+              <p class="mock-footer">Tap a stock for the full story · Not investment advice</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="preview-label">Mobile</p>
+          <div class="frame-mobile">
+            <div class="frame-mobile__notch"><span></span></div>
+            <nav class="mock-nav"><em>What's Moving</em> · Discover · …</nav>
+            <div class="mock-page a-mobile" style="padding:16px; min-height:480px;">
+              <h2 class="mock-title" style="font-size:20px;">What's Moving</h2>
+              <p class="mock-sub">Stocks moving the most today</p>
+              <div class="mock-tabs" style="flex-wrap:nowrap; overflow-x:auto;">
+                <span class="mock-tab is-on">Gaining (6)</span>
+                <span class="mock-tab">Falling</span>
+                <span class="mock-tab">Most active</span>
+              </div>
+              <div class="a-list">
+                <div class="a-row">
+                  <span class="a-row__rank">1</span>
+                  <span class="a-row__sym">NVDA</span>
+                  <span class="a-row__name">NVIDIA</span>
+                  <span class="a-row__pct pct-up">+1.98%</span>
+                  <span class="a-row__cta">Why it's moving</span>
+                </div>
+                <div class="a-row">
+                  <span class="a-row__rank">2</span>
+                  <span class="a-row__sym">XOM</span>
+                  <span class="a-row__name">Exxon Mobil</span>
+                  <span class="a-row__pct pct-up">+1.18%</span>
+                  <span class="a-row__cta">Why it's moving</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotation">
+        <h3>Design notes · Concept A</h3>
+        <ul>
+          <li><strong>Hierarchy:</strong> Rank → Symbol → Name → % (price optional on mobile).</li>
+          <li><strong>Row action:</strong> Whole row + text link “Why it's moving” → Deep Dive (Overview tab).</li>
+          <li><strong>No teaser line</strong> on v1—keeps rows to two visual lines on phone.</li>
+          <li><strong>Dashboard link:</strong> Wheel shows top 5; footer “See all movers” lands here.</li>
+          <li><strong>Risk:</strong> Can feel sparse vs premium FORGENIQ wheel—compensate with typography, not widgets.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══ CONCEPT B ═══ -->
+    <section class="concept-panel" id="concept-b">
+      <header class="concept-header">
+        <span class="concept-tag">Concept B</span>
+        <h1>Bloomberg-style movers board</h1>
+        <p>
+          Dense, scannable grid for users who want “market tape” energy without jargon.
+          Column headers in plain English; mini change bars instead of IV/greeks.
+          Still beginner-safe if labels stay human (“Change today”, not “Chg %”).
+        </p>
+        <div class="concept-traits">
+          <span>High information density</span>
+          <span>Pro-adjacent · not pro-only</span>
+          <span>Session mood strip</span>
+          <span>Underline tabs (terminal cue)</span>
+        </div>
+      </header>
+
+      <div class="preview-grid">
+        <div>
+          <p class="preview-label">Desktop · Movers board</p>
+          <div class="frame-desktop">
+            <div class="frame-desktop__bar"><i></i><i></i><i></i><span>Concept B · Board view</span></div>
+            <nav class="mock-nav">Dashboard · <em>What's Moving</em> · Discover Stocks</nav>
+            <div class="mock-page">
+              <h2 class="mock-title">What's Moving</h2>
+              <p class="mock-sub">Stocks moving the most today</p>
+              <div class="b-mood">
+                <span>Session:</span>
+                <strong class="up">Tech leading</strong>
+                <span>·</span>
+                <strong class="dn">Banks soft</strong>
+                <span>·</span>
+                <span>Updated 12s ago</span>
+              </div>
+              <div class="mock-tabs b-tabs">
+                <span class="mock-tab is-on">Gaining (6)</span>
+                <span class="mock-tab">Falling (3)</span>
+                <span class="mock-tab">Most active (9)</span>
+              </div>
+              <div class="b-board">
+                <div class="b-board__head">
+                  <span>#</span><span>Symbol</span><span>Company</span><span>Price</span><span>Today</span><span></span><span></span>
+                </div>
+                <div class="b-row">
+                  <span>1</span>
+                  <span class="b-row__sym">NVDA</span>
+                  <span class="b-row__name">NVIDIA Corp</span>
+                  <span>$219.46</span>
+                  <span class="pct-up">+1.98%</span>
+                  <span class="b-row__spark"><svg class="spark" viewBox="0 0 48 20"><polyline fill="none" stroke="#3ecf8e" stroke-width="1.5" points="0,16 48,2"/></svg></span>
+                  <span class="b-row__bar"><span class="b-row__chg-bar"><i class="up"></i></span></span>
+                </div>
+                <div class="b-row">
+                  <span>2</span>
+                  <span class="b-row__sym">XOM</span>
+                  <span class="b-row__name">Exxon Mobil</span>
+                  <span>$118.62</span>
+                  <span class="pct-up">+1.18%</span>
+                  <span class="b-row__spark"><svg class="spark" viewBox="0 0 48 20"><polyline fill="none" stroke="#3ecf8e" stroke-width="1.5" points="0,14 48,4"/></svg></span>
+                  <span class="b-row__bar"><span class="b-row__chg-bar"><i class="up" style="width:55%"></i></span></span>
+                </div>
+                <div class="b-row">
+                  <span>3</span>
+                  <span class="b-row__sym">JPM</span>
+                  <span class="b-row__name">JPMorgan Chase</span>
+                  <span>$248.10</span>
+                  <span class="pct-dn">−0.41%</span>
+                  <span class="b-row__spark"><svg class="spark" viewBox="0 0 48 20"><polyline fill="none" stroke="#f07178" stroke-width="1.5" points="0,4 48,16"/></svg></span>
+                  <span class="b-row__bar"><span class="b-row__chg-bar"><i class="dn"></i></span></span>
+                </div>
+              </div>
+              <p class="mock-footer" style="text-align:left; margin-top:14px; font-family:var(--mono); font-size:9px;">
+                Row click → Deep Dive · Double-click optional for power users later
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="preview-label">Mobile · Compressed board</p>
+          <div class="frame-mobile">
+            <div class="frame-mobile__notch"><span></span></div>
+            <div class="mock-page b-mobile" style="padding:14px;">
+              <h2 class="mock-title" style="font-size:18px;">What's Moving</h2>
+              <div class="b-mood" style="flex-wrap:wrap; font-size:9px; padding:8px;">Tech leading · Updated 12s</div>
+              <div class="mock-tabs b-tabs" style="margin-bottom:8px;">
+                <span class="mock-tab is-on">Gaining</span>
+                <span class="mock-tab">Falling</span>
+                <span class="mock-tab">Active</span>
+              </div>
+              <div class="b-board">
+                <div class="b-row">
+                  <span class="pct-up" style="font-weight:600;">1</span>
+                  <span><strong>NVDA</strong><br><span class="b-row__name">NVIDIA</span></span>
+                  <span class="pct-up" style="text-align:right;">+1.98%</span>
+                </div>
+                <div class="b-row">
+                  <span>2</span>
+                  <span><strong>XOM</strong><br><span class="b-row__name">Exxon</span></span>
+                  <span class="pct-up" style="text-align:right;">+1.18%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotation">
+        <h3>Design notes · Concept B</h3>
+        <ul>
+          <li><strong>Mood strip</strong> reuses wheel/session copy—one line, not a second story panel.</li>
+          <li><strong>Change bars</strong> visualize magnitude without “relative volume” labels.</li>
+          <li><strong>Row → Deep Dive</strong> on click; no inline WIM. Optional keyboard row focus.</li>
+          <li><strong>Beginner guardrail:</strong> Hide “Vol”, “RVol”, “Sector” until v1.1; keep 5–6 columns max.</li>
+          <li><strong>Risk:</strong> Can intimidate if headers slip into terminal slang—copy review is critical.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══ CONCEPT C ═══ -->
+    <section class="concept-panel" id="concept-c">
+      <header class="concept-header">
+        <span class="concept-tag">Concept C</span>
+        <h1>Retail-first card layout</h1>
+        <p>
+          Robinhood / Cash App energy: each mover is a card with a plain-English teaser and a gold CTA.
+          Best when you want emotion and story hints on the list itself—still opens Deep Dive for full analysis.
+        </p>
+        <div class="concept-traits">
+          <span>Highest approachability</span>
+          <span>Teaser from MOVER_STORIES</span>
+          <span>Summary pills (up / down / active)</span>
+          <span>More vertical scroll on mobile</span>
+        </div>
+      </header>
+
+      <div class="preview-grid">
+        <div>
+          <p class="preview-label">Desktop · Card stack</p>
+          <div class="frame-desktop">
+            <div class="frame-desktop__bar"><i></i><i></i><i></i><span>Concept C · Cards</span></div>
+            <nav class="mock-nav">Dashboard · <em>What's Moving</em> · Discover Stocks</nav>
+            <div class="mock-page">
+              <h2 class="mock-title">What's Moving</h2>
+              <p class="mock-sub">Stocks moving the most today</p>
+              <div class="c-strip">
+                <div class="c-pill"><strong>Gaining</strong><em class="up">6</em></div>
+                <div class="c-pill"><strong>Falling</strong><em class="dn">3</em></div>
+                <div class="c-pill"><strong>Most active</strong><em>9</em></div>
+              </div>
+              <div class="mock-tabs">
+                <span class="mock-tab is-on">Gaining</span>
+                <span class="mock-tab">Falling</span>
+                <span class="mock-tab">Most active</span>
+              </div>
+              <div class="c-cards">
+                <article class="c-card">
+                  <svg class="c-card__spark-bg spark" width="80" height="36" viewBox="0 0 48 20"><polyline fill="none" stroke="#3ecf8e" stroke-width="2" points="0,16 48,2"/></svg>
+                  <p class="c-card__rank">#1 · Gaining today</p>
+                  <div class="c-card__top">
+                    <div>
+                      <p class="c-card__sym">NVDA</p>
+                      <p class="c-card__name">NVIDIA</p>
+                    </div>
+                    <p class="c-card__pct up">+1.98%</p>
+                  </div>
+                  <p class="c-card__teaser">Chip names are rallying as investors bet on strong AI demand this week.</p>
+                  <div class="c-card__foot">
+                    <span class="c-card__price">$219.46</span>
+                    <button type="button" class="c-card__btn">Why it's moving</button>
+                  </div>
+                </article>
+                <article class="c-card">
+                  <p class="c-card__rank">#2 · Gaining today</p>
+                  <div class="c-card__top">
+                    <div>
+                      <p class="c-card__sym">XOM</p>
+                      <p class="c-card__name">Exxon Mobil</p>
+                    </div>
+                    <p class="c-card__pct up">+1.18%</p>
+                  </div>
+                  <p class="c-card__teaser">Oil is firm today and energy stocks are catching a bid with the broad market.</p>
+                  <div class="c-card__foot">
+                    <span class="c-card__price">$118.62</span>
+                    <button type="button" class="c-card__btn">Why it's moving</button>
+                  </div>
+                </article>
+                <article class="c-card is-down">
+                  <p class="c-card__rank">#3 · Falling today</p>
+                  <div class="c-card__top">
+                    <div>
+                      <p class="c-card__sym">JPM</p>
+                      <p class="c-card__name">JPMorgan Chase</p>
+                    </div>
+                    <p class="c-card__pct dn">−0.41%</p>
+                  </div>
+                  <p class="c-card__teaser">Banks are lagging as yields ease and traders rotate into tech.</p>
+                  <div class="c-card__foot">
+                    <span class="c-card__price">$248.10</span>
+                    <button type="button" class="c-card__btn">Why it's moving</button>
+                  </div>
+                </article>
+              </div>
+              <p class="mock-footer">Want to scan more names? <span style="color:var(--gold);">Discover Stocks →</span></p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="preview-label">Mobile · Full-width cards</p>
+          <div class="frame-mobile">
+            <div class="frame-mobile__notch"><span></span></div>
+            <div class="mock-page" style="padding:14px;">
+              <h2 class="mock-title" style="font-size:20px;">What's Moving</h2>
+              <p class="mock-sub">Stocks moving the most today</p>
+              <div class="c-strip">
+                <div class="c-pill"><strong>Up</strong><em class="up">6</em></div>
+                <div class="c-pill"><strong>Down</strong><em class="dn">3</em></div>
+              </div>
+              <div class="c-cards">
+                <article class="c-card" style="padding:14px;">
+                  <div class="c-card__top">
+                    <div><p class="c-card__sym" style="font-size:18px;">NVDA</p><p class="c-card__name">NVIDIA</p></div>
+                    <p class="c-card__pct up" style="font-size:20px;">+1.98%</p>
+                  </div>
+                  <p class="c-card__teaser" style="font-size:12px;">Chip names are rallying on AI demand hopes.</p>
+                  <button type="button" class="c-card__btn" style="width:100%; margin-top:10px;">Why it's moving</button>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotation">
+        <h3>Design notes · Concept C</h3>
+        <ul>
+          <li><strong>Teaser</strong> = truncated <code>MOVER_STORIES.lead</code> (max ~2 lines)—bridges Dashboard story panel and full Deep Dive.</li>
+          <li><strong>CTA button</strong> is explicit for beginners; card tap also opens Deep Dive.</li>
+          <li><strong>Top pills</strong> answer “how many up/down?” before scrolling—helps 3-second comprehension.</li>
+          <li><strong>Discover Stocks</strong> footer reinforces IA split (today’s tape vs find ideas).</li>
+          <li><strong>Risk:</strong> Longest page, slowest scan for “just show me the list”; cap teasers strictly.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Comparison (always visible at bottom when any concept open - show on all) -->
+    <section style="margin-top:48px; padding-top:32px; border-top:1px solid var(--line);">
+      <span class="concept-tag">Shared IA (all concepts)</span>
+      <h2 style="font-family:var(--display); font-size:22px; margin:8px 0 16px;">Comparison matrix</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>A · Simple list</th>
+            <th>B · Movers board</th>
+            <th>C · Retail cards</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>3-second clarity</td><td>★★★★★</td><td>★★★★</td><td>★★★★</td></tr>
+          <tr><td>Mobile thumb targets</td><td>★★★★</td><td>★★★</td><td>★★★★★</td></tr>
+          <tr><td>Reuse wheel row/spark</td><td>★★★★★</td><td>★★★★★</td><td>★★★</td></tr>
+          <tr><td>Story without Deep Dive</td><td>None</td><td>Mood strip only</td><td>Teaser per card</td></tr>
+          <tr><td>Deep Dive entry</td><td>Row / “Why it's moving”</td><td>Row click</td><td>Button + card</td></tr>
+          <tr><td>Build effort</td><td>Low</td><td>Medium</td><td>Medium–high</td></tr>
+          <tr><td>Recommended default</td><td><strong style="color:var(--gold);">v1 ship candidate</strong></td><td>Power-user alt</td><td>Marketing / onboarding alt</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    const VALID = new Set(['a', 'b', 'c']);
+
+    function conceptFromLocation() {
+      const pathMatch = location.pathname.match(/whats-moving-v2\/([abc])$/i);
+      if (pathMatch) return pathMatch[1].toLowerCase();
+      const q = new URLSearchParams(location.search).get('concept');
+      if (q && VALID.has(q.toLowerCase())) return q.toLowerCase();
+      return 'a';
+    }
+
+    function setConcept(id, pushUrl) {
+      if (!VALID.has(id)) id = 'a';
+      document.querySelectorAll('.lab-tab').forEach((b) => {
+        b.classList.toggle('is-active', b.dataset.concept === id);
+      });
+      document.querySelectorAll('.concept-panel').forEach((p) => {
+        p.classList.toggle('is-active', p.id === 'concept-' + id);
+      });
+      document.querySelectorAll('.lab-links a').forEach((a) => {
+        a.classList.toggle('is-active', a.getAttribute('href').endsWith('/' + id));
+      });
+      if (pushUrl) {
+        const next = '/design-lab/whats-moving-v2/' + id;
+        if (location.pathname !== next) {
+          history.replaceState(null, '', next);
+        }
+      }
+    }
+
+    document.querySelectorAll('.lab-tab').forEach((btn) => {
+      btn.addEventListener('click', () => setConcept(btn.dataset.concept, true));
+    });
+
+    window.addEventListener('popstate', () => setConcept(conceptFromLocation(), false));
+    setConcept(conceptFromLocation(), false);
+  </script>
+</body>
+</html>

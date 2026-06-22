@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     role: role.trim().slice(0, 60),
     message: message.trim().slice(0, 500),
     timestamp: new Date().toISOString(),
-    source: 'brieftick-beta-signup',
+    source: 'forgeniq-beta-signup',
   };
 
   const errors = [];

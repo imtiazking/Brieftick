@@ -1,0 +1,398 @@
+/**
+ * Concept 34 — Luxury Editorial Font Lab
+ * Concept C composition locked — font is the only variable.
+ */
+
+:root {
+  --lefl-gold-highlight: #f6e2a6;
+  --lefl-gold-mid: #d8b05a;
+  --lefl-gold-shadow: #8a6423;
+  --lefl-gold: var(--lefl-gold-mid);
+  --lefl-gold-bright: var(--lefl-gold-highlight);
+  --lefl-void: #0a0b0e;
+  --lefl-void-warm: #12100c;
+  --lefl-silver: #f0ece6;
+  --lefl-font: "Bodoni Moda", Georgia, serif;
+  --lefl-weight: 400;
+  --lefl-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Concept C layout — locked */
+  --lefl-scale: clamp(3.25rem, 13.5vw, 10.5rem);
+  --lefl-lh: 0.86;
+  --lefl-track: -0.04em;
+  --lefl-split-gap: -0.02em;
+  --lefl-pad-left: clamp(0.5rem, 3vw, 2rem);
+  --lefl-stage-pad: clamp(1.5rem, 4vw, 3rem);
+  --lefl-grain-opacity: 0.32;
+  --lefl-glow-gold: 0.05;
+  --lefl-the-size: 0.22em;
+
+  /* Silver / gold metallic — locked */
+  --lefl-silver-base: #ece8e2;
+  --lefl-silver-base-shadow: none;
+  --lefl-silver-shine: linear-gradient(
+    165deg,
+    #e4e0da 0%,
+    #f6f2ec 18%,
+    #ffffff 38%,
+    #f8f4ee 52%,
+    #ffffff 68%,
+    #f0ece6 84%,
+    #e8e4de 100%
+  );
+  --lefl-silver-filter: drop-shadow(0 4px 22px rgba(0, 0, 0, 0.28));
+
+  --lefl-gold-base: #d8b05a;
+  --lefl-gold-base-shadow: none;
+  --lefl-gold-shine: linear-gradient(
+    158deg,
+    #8a6423 0%,
+    #a88438 22%,
+    #d8b05a 48%,
+    #f6e2a6 58%,
+    #d8b05a 78%,
+    #8a6423 100%
+  );
+  --lefl-gold-filter: drop-shadow(0 3px 16px rgba(138, 100, 35, 0.16));
+
+  --lefl-the-color: #d8b05a;
+  --lefl-the-shadow: none;
+}
+
+/* ── Font variants (only variable) ── */
+html[data-lefl-font="bodoni-moda"] {
+  --lefl-font: "Bodoni Moda", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+html[data-lefl-font="prata"] {
+  --lefl-font: "Prata", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+html[data-lefl-font="cormorant"] {
+  --lefl-font: "Cormorant Garamond", Georgia, serif;
+  --lefl-weight: 300;
+}
+
+html[data-lefl-font="playfair"] {
+  --lefl-font: "Playfair Display", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+html[data-lefl-font="dm-serif"] {
+  --lefl-font: "DM Serif Display", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+html[data-lefl-font="oranienbaum"] {
+  --lefl-font: "Oranienbaum", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+html[data-lefl-font="libre-bodoni"] {
+  --lefl-font: "Libre Bodoni", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+html[data-lefl-font="vidaloka"] {
+  --lefl-font: "Vidaloka", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+html[data-lefl-font="gfs-didot"] {
+  --lefl-font: "GFS Didot", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+html[data-lefl-font="eb-garamond"] {
+  --lefl-font: "EB Garamond", Georgia, serif;
+  --lefl-weight: 400;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--lefl-font);
+  font-weight: var(--lefl-weight);
+  font-synthesis: none;
+  background: var(--lefl-void);
+  color: var(--lefl-silver);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.lefl-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.lefl-chrome {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem 0.85rem;
+  padding: 0.7rem clamp(0.85rem, 2.5vw, 1.4rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(6, 7, 10, 0.82);
+  backdrop-filter: blur(14px);
+  font-family: var(--lefl-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.lefl-chrome strong {
+  color: var(--lefl-gold);
+  font-weight: 500;
+}
+
+.lefl-chrome__note {
+  margin-left: 0.4rem;
+  opacity: 0.65;
+}
+
+.lefl-chrome__back {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.lefl-chrome__back:hover {
+  color: var(--lefl-silver);
+}
+
+.lefl-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.26rem;
+  justify-content: center;
+}
+
+.lefl-switcher__btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(255, 255, 255, 0.48);
+  font-family: var(--lefl-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.48rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.lefl-switcher__btn:hover {
+  color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(212, 168, 90, 0.22);
+}
+
+.lefl-switcher__btn.is-active {
+  color: var(--lefl-gold-bright);
+  border-color: rgba(212, 168, 90, 0.42);
+  background: rgba(212, 168, 90, 0.09);
+}
+
+.lefl-stage {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 110px);
+  padding: var(--lefl-stage-pad);
+  overflow: hidden;
+}
+
+.lefl-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.lefl-atmosphere__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 88% 42%, rgba(212, 168, 90, var(--lefl-glow-gold)), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 12% 78%, rgba(120, 130, 160, 0.06), transparent 55%),
+    linear-gradient(165deg, #060608 0%, var(--lefl-void) 45%, var(--lefl-void-warm) 100%);
+}
+
+.lefl-atmosphere__grain {
+  position: absolute;
+  inset: 0;
+  opacity: var(--lefl-grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.lefl-hero {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1120px);
+  isolation: isolate;
+}
+
+.lefl-masthead {
+  isolation: isolate;
+  text-align: left;
+  padding-left: var(--lefl-pad-left);
+}
+
+.lefl-headline {
+  font-family: var(--lefl-font);
+  font-weight: var(--lefl-weight);
+  font-synthesis: none;
+  font-size: var(--lefl-scale);
+  line-height: var(--lefl-lh);
+  letter-spacing: var(--lefl-track);
+  text-transform: uppercase;
+}
+
+.lefl-line {
+  display: block;
+  position: relative;
+}
+
+.lefl-line--split {
+  margin-bottom: var(--lefl-split-gap);
+}
+
+.lefl-line--italic {
+  font-style: italic;
+  font-weight: var(--lefl-weight);
+  font-synthesis: none;
+}
+
+.lefl-line--without {
+  display: flex;
+  align-items: baseline;
+  gap: 0.12em;
+  flex-wrap: wrap;
+}
+
+.lefl-metallic {
+  background: none;
+  background-image: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: inherit;
+  color: inherit;
+  filter: none;
+}
+
+.lefl-metallic--inline {
+  display: inline-block;
+  position: relative;
+}
+
+.lefl-metallic__base,
+.lefl-metallic__shine {
+  display: block;
+}
+
+.lefl-metallic__shine {
+  position: absolute;
+  inset: 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.lefl-metallic--silver {
+  filter: var(--lefl-silver-filter);
+}
+
+.lefl-metallic--silver .lefl-metallic__base {
+  color: var(--lefl-silver-base);
+  text-shadow: var(--lefl-silver-base-shadow);
+}
+
+.lefl-metallic--silver .lefl-metallic__shine {
+  background-image: var(--lefl-silver-shine);
+  background-size: 100% 100%;
+}
+
+.lefl-metallic--gold {
+  filter: var(--lefl-gold-filter);
+}
+
+.lefl-metallic--gold .lefl-metallic__base {
+  color: var(--lefl-gold-base);
+  text-shadow: var(--lefl-gold-base-shadow);
+}
+
+.lefl-metallic--gold .lefl-metallic__shine {
+  background-image: var(--lefl-gold-shine);
+  background-size: 100% 100%;
+}
+
+.lefl-the {
+  font-family: var(--lefl-font);
+  font-size: var(--lefl-the-size);
+  font-style: italic;
+  font-weight: var(--lefl-weight);
+  font-synthesis: none;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-color: rgba(216, 176, 90, 0.38);
+  color: var(--lefl-the-color);
+  text-shadow: var(--lefl-the-shadow);
+  margin-left: 0.15em;
+  align-self: center;
+}
+
+.lefl-foot {
+  position: relative;
+  z-index: 10;
+  padding: 0.75rem clamp(0.85rem, 2.5vw, 1.4rem);
+  font-family: var(--lefl-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 640px) {
+  .lefl-chrome {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lefl-masthead {
+    padding-left: 0;
+  }
+
+  .lefl-headline {
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+  }
+
+  .lefl-the {
+    font-size: 0.28em;
+  }
+}
