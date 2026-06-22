@@ -55,7 +55,22 @@ let twelveDataQuotaExhausted = false;
 let finnhubCircuitUntil = 0;
 let polygonOfflineUntil = 0;
 const POLYGON_OFFLINE_MS = 30 * 60_000;
-const FINNHUB_CIRCUIT_MS = 90_000;
+const FINNHUB_CIRCUIT_MS = 45_000;
+const FINNHUB_429_WINDOW_MS = 30_000;
+const FINNHUB_429_TRIP = 12;
+let finnhub429Window = { start: 0, count: 0 };
+
+function noteFinnhub429() {
+  const now = Date.now();
+  if (now - finnhub429Window.start > FINNHUB_429_WINDOW_MS) {
+    finnhub429Window = { start: now, count: 1 };
+  } else {
+    finnhub429Window.count += 1;
+  }
+  if (finnhub429Window.count >= FINNHUB_429_TRIP) {
+    finnhubCircuitUntil = now + FINNHUB_CIRCUIT_MS;
+  }
+}
 
 function msUntilUtcMidnight() {
   const now = new Date();
@@ -207,7 +222,7 @@ async function proxyFinnhub(req, res) {
     const r = await fetch(url);
     const data = await r.json();
     if (r.status === 429) {
-      if (endpoint === 'quote') finnhubCircuitUntil = Date.now() + FINNHUB_CIRCUIT_MS;
+      if (endpoint === 'quote') noteFinnhub429();
       const stale = staleGet(cacheKey);
       if (stale) {
         res.setHeader('x-brieftick-cache', 'STALE');
@@ -217,7 +232,7 @@ async function proxyFinnhub(req, res) {
         ok: false,
         provider: 'finnhub',
         rateLimited: true,
-        circuitOpen: endpoint === 'quote',
+        circuitOpen: endpoint === 'quote' && Date.now() < finnhubCircuitUntil,
         message: 'Finnhub rate limited',
         ...data,
       });
