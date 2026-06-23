@@ -139,17 +139,6 @@ body::after{
   opacity:0.04;mix-blend-mode:overlay;
 }
 
-/* ---------- TICKER (hidden data source for cinematic river) ---------- */
-.global-ticker{
-  display:none !important;
-}
-.ticker-track{display:flex;gap:48px;white-space:nowrap}
-.ticker-item{display:flex;gap:8px;align-items:center;color:var(--ink-dim)}
-.ticker-item .sym{color:var(--ink);letter-spacing:0.06em}
-.ticker-item .up{color:var(--green)}
-.ticker-item .dn{color:var(--red)}
-@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
 /* ---------- NAV ---------- */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:99;
@@ -3609,10 +3598,6 @@ window.BrieftickQuoteRouter = quoteRouter;
 <!-- Mission Path mounts here (first-login onboarding) -->
 <div id="missionPathRoot" aria-live="polite"></div>
 
-<div class="global-ticker" aria-hidden="true">
-  <div class="ticker-track" id="ticker"></div>
-</div>
-
 <!-- ===== NAV — Concept A: Floating Minimal ===== -->
 <nav class="nav nav-a" id="siteNav" aria-label="Site navigation">
   <div class="nav-a__start">
@@ -5609,7 +5594,7 @@ function route(name){
   }
   window.scrollTo({top:0,behavior:'instant'});
   if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
-  if ((name === 'dashboard' || name === 'landing') && typeof liveRefreshDashboard === 'function') {
+  if (name === 'dashboard' && typeof liveRefreshDashboard === 'function') {
     liveRefreshDashboard().catch(() => {});
   }
   if (name === 'scanner' && typeof runScanner === 'function') {
@@ -5680,23 +5665,6 @@ window.routeWithAuth = routeWithAuth;
 document.querySelectorAll('.nav-link').forEach(l=>{
   l.addEventListener('click',()=>routeWithAuth(l.dataset.route));
 });
-
-/* ============================================================
-   GLOBAL TICKER
-============================================================ */
-const tickerData=[
-  ['SPY','…','…','flat'],['QQQ','…','…','flat'],['DIA','…','…','flat'],
-  ['IWM','…','…','flat'],['VIX','…','…','flat'],['NVDA','…','…','flat'],
-  ['TSLA','…','…','flat'],['AAPL','…','…','flat'],['AMD','…','…','flat'],
-  ['META','…','…','flat'],['MSFT','…','…','flat'],['GOOGL','…','…','flat'],
-  ['AMZN','…','…','flat'],['BRK.B','…','…','flat'],['JPM','…','…','flat'],
-  ['XOM','…','…','flat'],['CVX','…','…','flat'],
-];
-const tickerEl=document.getElementById('ticker');
-const ticks=[...tickerData,...tickerData].map(([s,p,c,d])=>
-  `<div class="ticker-item"><span class="sym">${s}</span><span>${p}</span><span class="${d}">${c}</span></div>`
-).join('');
-tickerEl.innerHTML=ticks;
 
 /* ============================================================
    FEATURE GRID
@@ -6086,7 +6054,7 @@ async function _refreshVixIntraday(){
 function _scheduleVixIntradayAutoRefresh(){
   if(_vixIntradayInterval) BTRuntime.clearInterval(_vixIntradayInterval);
   _vixIntradayInterval = BTRuntime.setInterval(async()=>{
-    if(!BTRuntime.isPage('landing','dashboard')) return;
+    if(!BTRuntime.isPage('dashboard')) return;
     if(!isUSMarketOpen()){ BTRuntime.clearInterval(_vixIntradayInterval); _vixIntradayInterval = null; return; }
     await _refreshVixIntraday();
   }, 5 * 60_000); // every 5 minutes during market hours
@@ -7656,125 +7624,28 @@ async function fetchLiveQuotes(symbols) {
 }
 window.fetchLiveQuotes = fetchLiveQuotes;
 
-async function _fetchLandingMacroQuotes() {
-  return {};
-}
+const DASHBOARD_QUOTE_SYMBOLS = [
+  'SPY','QQQ','DIA','IWM','VIX','NVDA','TSLA','AAPL','AMD',
+  'META','MSFT','GOOGL','AMZN','BRK.B','JPM','XOM','CVX',
+];
 
-function _applyQuotesToGlobalTicker(quotes) {
-  const patch = window.BrieftickLandingTicker?.patchGlobalTickerItem;
-  document.querySelectorAll('#ticker .ticker-item').forEach(item => {
-    const sym = item.querySelector('.sym')?.textContent?.trim();
-    if (!sym || !quotes[sym]) return;
-    if (patch) patch(item, sym, quotes[sym]);
-    else {
-      const q = quotes[sym];
-      const spans = item.querySelectorAll('span');
-      if (spans[1]) spans[1].textContent = q.price.toFixed(2);
-      if (spans[2]) {
-        const sign = q.pctChange >= 0 ? '+' : '';
-        spans[2].textContent = `${sign}${q.pctChange.toFixed(2)}%`;
-        spans[2].classList.toggle('up', q.pctChange >= 0);
-        spans[2].classList.toggle('dn', q.pctChange < 0);
-      }
-      item.dataset.live = 'live';
-    }
-  });
-}
-
-function _applyQuotesToHeroStrip(quotes) {
-  const patch = window.BrieftickLandingTicker?.patchHeroStripMarket;
-  const strip = document.getElementById('hvMarketStrip');
-  if (!strip) return;
-  strip.querySelectorAll('.hv-market').forEach(el => {
-    const sym = el.dataset.sym || el.querySelector('.sym')?.textContent?.trim();
-    if (!sym) return;
-    if (sym === 'VIX' && typeof _vixFredValue === 'number' && !isNaN(_vixFredValue)) {
-      const vixQ = quotes.VIX || { price: _vixFredValue, pctChange: 0, change: 0 };
-      if (patch) patch(el, 'VIX', vixQ);
-      else {
-        const valEl = el.querySelector('.val');
-        if (valEl) valEl.textContent = _vixFredValue.toFixed(2);
-      }
-      return;
-    }
-    if (sym === '10Y') return;
-    const q = quotes[sym];
-    if (!q) return;
-    if (patch) patch(el, sym, q);
-  });
-}
-
-function _patchHeroQuoteFromBatch(quotes) {
-  const sym = document.getElementById('hvSym')?.textContent?.trim();
-  if (!sym || !quotes[sym]) return;
-  const q = quotes[sym];
-  const priceEl = document.querySelector('.hv-quote-price');
-  const chgEl = document.querySelector('.hv-quote-chg');
-  if (priceEl) priceEl.textContent = q.price.toFixed(2);
-  if (chgEl && typeof q.pctChange === 'number') {
-    const sign = q.pctChange >= 0 ? '+' : '';
-    chgEl.textContent = `${sign}${(q.change ?? 0).toFixed(2)}  (${sign}${q.pctChange.toFixed(2)}%)`;
-    chgEl.style.color = q.pctChange >= 0 ? 'var(--green)' : 'var(--red)';
-  }
-}
-
-let _landingTickerRefreshInFlight = false;
-async function refreshLandingTickerQuotes() {
-  if (!BTRuntime.isActive()) return;
-  if (_landingTickerRefreshInFlight) return;
-  _landingTickerRefreshInFlight = true;
-  try {
-    const LT = window.BrieftickLandingTicker;
-    const equities = LT
-      ? LT.landingEquitySymbolsFromTickerData(tickerData)
-      : tickerData.map(r => r[0]).filter(s => s !== 'VIX');
-    const heroStrip = LT ? LT.HERO_STRIP_SYMBOLS.filter(s => s !== 'VIX' && s !== '10Y') : ['SPY','QQQ','DIA'];
-    const heroSym = document.getElementById('hvSym')?.textContent?.trim();
-    const fetchList = [...new Set([...equities, ...heroStrip, heroSym].filter(Boolean))];
-
-    const quotes = await fetchLiveQuotes(fetchList);
-    if (typeof _vixFredValue === 'number' && !isNaN(_vixFredValue)) {
-      quotes.VIX = { price: _vixFredValue, pctChange: 0, change: 0 };
-    }
-
-    _applyQuotesToHeroStrip(quotes);
-    _patchHeroQuoteFromBatch(quotes);
-  } catch(e) {
-    console.warn('[landing ticker]', e.message);
-  } finally {
-    _landingTickerRefreshInFlight = false;
-  }
-}
-
-/* ----------------------------------------------------------------
-   Polygon.io quote helper — uses snapshot endpoint for real-time
-   prices. Falls back to Twelve Data when Polygon key not available.
-   Returns same shape as BriefTickAPI.getQuotes: {SYM: {price, pctChange, change}}
----------------------------------------------------------------- */
 async function getPolygonQuotes(symbols) {
   return {};
 }
 
 async function liveRefreshDashboard(){
   if(!BTRuntime.isActive()) return;
-  if(!BTRuntime.isPage('landing','dashboard')) return;
+  if(!BTRuntime.isPage('dashboard')) return;
   try {
     await liveRefreshVix();
   } catch(e) { console.warn('[VIX data]', e.message); }
-
-  await refreshLandingTickerQuotes();
-
-  if(!BTRuntime.isPage('dashboard')) return;
 
   const moversSymbols = [];
   document.querySelectorAll('#moversList .mover .sym').forEach(el => {
     const s = el.textContent.trim();
     if (s) moversSymbols.push(s);
   });
-  const LT = window.BrieftickLandingTicker;
-  const stripEquities = LT
-    ? LT.landingEquitySymbolsFromTickerData(tickerData)
-    : tickerData.map(r => r[0]);
+  const stripEquities = DASHBOARD_QUOTE_SYMBOLS;
   if (moversSymbols.length) {
     const moverQuotes = await fetchLiveQuotes(moversSymbols);
     applyQuotesToMovers(moverQuotes);
@@ -7832,13 +7703,10 @@ async function liveRefreshDashboard(){
   setTimeout(()=>{indicator.style.transition='opacity 1s'; indicator.style.opacity='0.5';}, 5000);
 }
 
-/* Run as soon as DOM is ready. Ticker strip shows … until first live batch lands. */
+/* Run as soon as DOM is ready — dashboard live refresh only */
 window.addEventListener('load', () => {
-  if (BTRuntime.isActive() && BTRuntime.isPage('landing', 'dashboard')) liveRefreshDashboard();
+  if (BTRuntime.isActive() && BTRuntime.isPage('dashboard')) liveRefreshDashboard();
 });
-BTRuntime.setInterval(() => {
-  if (BTRuntime.isPage('landing', 'dashboard')) refreshLandingTickerQuotes().catch(() => {});
-}, 30_000);
 
 /* ================================================================
    TELEMETRY OVERLAY — live ETF data for regional cards

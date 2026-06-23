@@ -225,7 +225,7 @@ async function browserAudit(providerQuotes) {
       const badges = [...document.querySelectorAll(".bt-live-badge, #dashLiveBadge, #whmBriefingBadge, #optionsLiveBadge, #earnDataBadge, #corrMeta, #macroEventsMeta")]
         .map((el) => ({ id: el.id || el.className?.slice?.(0, 40), text: el.textContent?.trim()?.slice(0, 80) }));
       const prices = {};
-      document.querySelectorAll("#moversList .mover, #ticker .ticker-item, .scanner-card").forEach((el) => {
+      document.querySelectorAll("#moversList .mover, .scanner-card").forEach((el) => {
         const sym = el.querySelector(".sym, .scanner-card-sym")?.textContent?.trim();
         const priceEl = el.querySelector(".price, .scanner-card-price, .val");
         const priceTxt = priceEl?.textContent?.trim();

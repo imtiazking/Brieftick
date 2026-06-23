@@ -963,7 +963,7 @@ html[data-split-about] #page-about .about-wrap {
   z-index: 2;
   max-width: 860px;
   margin: 0 auto;
-  padding: 48px 24px 100px;
+  padding: 48px 24px 64px;
 }
 html[data-split-about] .about-video-bg {
   display: none !important;
