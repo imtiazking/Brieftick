@@ -185,6 +185,14 @@
   color: rgba(180, 210, 230, 0.78);
 }
 
+.news-live-panel__source {
+  margin: 0 0 10px;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: rgba(180, 195, 220, 0.58);
+  line-height: 1.45;
+}
+
 .news-live-panel__updated::before {
   content: "·";
   margin-right: 14px;
