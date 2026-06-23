@@ -3435,94 +3435,147 @@ h1,h2,h3{
   margin-bottom:12px;letter-spacing:-0.01em}
 .about-cta-box p{font-size:14px;color:var(--ink-dim);margin-bottom:24px;line-height:1.6}
 </style>
-  <!-- GSAP 3 + ScrollTrigger via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-
-  <!-- Three.js for 3D globe (legacy dashboard telemetry) -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <!-- ES module map for Intelligence Wheel News globe (matches dashboard-preview.html) -->
-  <script type="importmap" data-bt-wheel-importmap>
-  {
-    "imports": {
-      "three": "https://esm.sh/three@0.160.0",
-      "three-conic-polygon-geometry": "https://esm.sh/three-conic-polygon-geometry@2.1.1?external=three",
-      "three-geojson-geometry": "https://esm.sh/three-geojson-geometry@2.1.1?external=three"
-    }
-  }
+  <!-- GSAP 3 + ScrollTrigger — deferred on mobile marketing viewports -->
+  <script>
+    window.__BT_MOBILE_CONVERSION__ = window.matchMedia('(max-width: 768px)').matches;
   </script>
-  <!-- Clerk JS SDK -->
-  <script
-    async
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_YmVsb3ZlZC13cmVuLTEwLmNsZXJrLmFjY291bnRzLmRldiQ"
-    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
-    type="text/javascript"
-  ></script>
-<script type="module" src="/lib/moversSymbolLookup.bridge.js"></script>
-<script type="module" src="/lib/landingTickerQuotes.bridge.js"></script>
+  <script>
+    if (!window.__BT_MOBILE_CONVERSION__) {
+      var _gsap = document.createElement('script');
+      _gsap.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js';
+      document.head.appendChild(_gsap);
+      var _st = document.createElement('script');
+      _st.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js';
+      document.head.appendChild(_st);
+    }
+  </script>
+
+  <!-- Three.js — load on desktop only; dashboard loads on demand when needed on mobile -->
+  <script>
+    if (!window.__BT_MOBILE_CONVERSION__) {
+      var _three = document.createElement('script');
+      _three.src = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';
+      document.head.appendChild(_three);
+    }
+  </script>
+  <!-- ES module map — desktop / dashboard only -->
+  <script>
+    if (!window.__BT_MOBILE_CONVERSION__) {
+      var _map = document.createElement('script');
+      _map.type = 'importmap';
+      _map.setAttribute('data-bt-wheel-importmap', '');
+      _map.textContent = JSON.stringify({
+        imports: {
+          three: 'https://esm.sh/three@0.160.0',
+          'three-conic-polygon-geometry': 'https://esm.sh/three-conic-polygon-geometry@2.1.1?external=three',
+          'three-geojson-geometry': 'https://esm.sh/three-geojson-geometry@2.1.1?external=three',
+        },
+      });
+      document.head.appendChild(_map);
+    }
+  </script>
+  <!-- Clerk JS SDK — deferred on mobile until auth interaction -->
+  <script>
+    window.__btEnsureClerk = function (cb) {
+      if (window.Clerk) {
+        cb?.();
+        return Promise.resolve(window.Clerk);
+      }
+      if (!window.__btClerkLoading) {
+        window.__btClerkLoading = new Promise(function (resolve) {
+          var s = document.createElement('script');
+          s.async = true;
+          s.crossOrigin = 'anonymous';
+          s.setAttribute('data-clerk-publishable-key', 'pk_test_YmVsb3ZlZC13cmVuLTEwLmNsZXJrLmFjY291bnRzLmRldiQ');
+          s.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
+          s.onload = function () { resolve(window.Clerk); cb?.(); };
+          document.head.appendChild(s);
+        });
+      }
+      return window.__btClerkLoading.then(function (c) { cb?.(); return c; });
+    };
+    if (!window.__BT_MOBILE_CONVERSION__) {
+      window.__btEnsureClerk();
+    }
+  </script>
+<link rel="preload" as="image" href="/brand/forgeniq-logo.png" fetchpriority="high">
 <link rel="stylesheet" href="/styles/split-theme.css">
 <link rel="stylesheet" href="/styles/split-cinematic.css">
 <link rel="stylesheet" href="/styles/split-nav-a.css">
+<link rel="stylesheet" href="/styles/mobile-conversion.css">
 <link rel="stylesheet" href="/styles/split-brand.css">
 <link rel="stylesheet" href="/styles/split-app-cards.css">
-<link rel="stylesheet" href="/styles/logic-cinematic.css">
-<link rel="stylesheet" href="/styles/logic-nucleus-centre.css">
-<link rel="stylesheet" href="/styles/ticker-deep-dive.css">
-<link rel="stylesheet" href="/styles/portfolio-simplified.css">
-<link rel="stylesheet" href="/design-lab/move-together/story/story-embed.css">
-<link rel="stylesheet" href="/styles/scanner-market-story.css">
-<link rel="stylesheet" href="/styles/insiders-smart-money.css">
-<link rel="stylesheet" href="/styles/options-story.css">
-<link rel="stylesheet" href="/styles/dashboard-design-lab.css">
-<link rel="stylesheet" href="/styles/dashboard-rail-modules.css">
-<link rel="stylesheet" href="/styles/live-data-badge.css">
-<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">
-<link rel="stylesheet" href="/styles/dashboard-movers-intel.css">
-<link rel="stylesheet" href="/styles/dashboard-news-narrative.css">
-<link rel="stylesheet" href="/styles/dashboard-intel-charts.css">
-<link rel="stylesheet" href="/styles/dashboard-preview.css">
-<link rel="stylesheet" href="/styles/dashboard-briefing-story.css">
-<link rel="stylesheet" href="/styles/dashboard-watchlist-intel.css">
-<link rel="stylesheet" href="/styles/dashboard-connected-markets.css">
-<link rel="stylesheet" href="/styles/dashboard-in-app-wheel.css">
-<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-lab.css">
-<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-briefing.css">
-<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">
-<link rel="stylesheet" href="/styles/whats-moving-briefing.css">
-<link rel="stylesheet" href="/styles/earnings-beginner.css">
-<link rel="stylesheet" href="/styles/portfolio-insights.css">
-<link rel="stylesheet" href="/styles/mission-path.css">
-<link rel="stylesheet" href="/styles/discover-market-story.css">
-<script type="module" src="/lib/ticker-deep-dive.bridge.js"></script>
-<script type="module" src="/lib/live-data-badge.js"></script>
-<script type="module">
-import * as quoteRouter from "/lib/quoteRouter.js";
-window.BrieftickQuoteRouter = quoteRouter;
+<script>
+  if (window.__BT_MOBILE_CONVERSION__) {
+    window.__btEnableAppStyles = function () {
+      document.querySelectorAll('link[data-bt-app-css]').forEach(function (l) {
+        l.media = 'all';
+      });
+    };
+    document.write([
+      '<link rel="stylesheet" href="/styles/logic-cinematic.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/logic-nucleus-centre.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/ticker-deep-dive.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/portfolio-simplified.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/design-lab/move-together/story/story-embed.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/scanner-market-story.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/insiders-smart-money.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/options-story.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-design-lab.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-rail-modules.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/live-data-badge.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-movers-intel.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-news-narrative.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-intel-charts.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-preview.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-briefing-story.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-watchlist-intel.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-connected-markets.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/dashboard-in-app-wheel.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-lab.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-briefing.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/whats-moving-briefing.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/earnings-beginner.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/portfolio-insights.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/mission-path.css" data-bt-app-css media="print">',
+      '<link rel="stylesheet" href="/styles/discover-market-story.css" data-bt-app-css media="print">'
+    ].join(''));
+  } else {
+    document.write([
+      '<link rel="stylesheet" href="/styles/logic-cinematic.css">',
+      '<link rel="stylesheet" href="/styles/logic-nucleus-centre.css">',
+      '<link rel="stylesheet" href="/styles/ticker-deep-dive.css">',
+      '<link rel="stylesheet" href="/styles/portfolio-simplified.css">',
+      '<link rel="stylesheet" href="/design-lab/move-together/story/story-embed.css">',
+      '<link rel="stylesheet" href="/styles/scanner-market-story.css">',
+      '<link rel="stylesheet" href="/styles/insiders-smart-money.css">',
+      '<link rel="stylesheet" href="/styles/options-story.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-design-lab.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-rail-modules.css">',
+      '<link rel="stylesheet" href="/styles/live-data-badge.css">',
+      '<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-flagship.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-movers-intel.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-news-narrative.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-intel-charts.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-preview.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-briefing-story.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-watchlist-intel.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-connected-markets.css">',
+      '<link rel="stylesheet" href="/styles/dashboard-in-app-wheel.css">',
+      '<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-lab.css">',
+      '<link rel="stylesheet" href="/design-lab/wheel-system/_wheel-briefing.css">',
+      '<link rel="stylesheet" href="/styles/whats-moving-briefing.css">',
+      '<link rel="stylesheet" href="/styles/earnings-beginner.css">',
+      '<link rel="stylesheet" href="/styles/portfolio-insights.css">',
+      '<link rel="stylesheet" href="/styles/mission-path.css">',
+      '<link rel="stylesheet" href="/styles/discover-market-story.css">'
+    ].join(''));
+  }
 </script>
-<script type="module" src="/lib/provider-health.js"></script>
-<script type="module" src="/lib/briefing-wheel.boot.js"></script>
-<script type="module" src="/lib/earnings-beginner.js"></script>
-<script src="/lib/earnings-route.js"></script>
-<script type="module" src="/lib/portfolio-insights.js"></script>
-<script src="/lib/portfolio-insights-route.js"></script>
-<script type="module" src="/lib/split-theme.bridge.js"></script>
-<script type="module" src="/lib/split-landing.bridge.js"></script>
-<script type="module" src="/lib/logic-cinematic.bridge.js"></script>
-<script type="module" src="/lib/portfolio-deep-dive.js"></script>
-<script type="module" src="/lib/scanner-deep-dive.js"></script>
-<script type="module" src="/lib/logic-deep-dive.js"></script>
-<script type="module" src="/lib/portfolio-quotes.js"></script>
-<script type="module" src="/lib/portfolio-layout.js"></script>
-<script type="module" src="/lib/portfolio-relationship-story.js"></script>
-<script type="module" src="/lib/discover-market-story.js"></script>
-<script type="module" src="/lib/insider-smart-money.js"></script>
-<script type="module" src="/lib/options-story.js"></script>
-<script type="module" src="/lib/terminal-access.bridge.js"></script>
-<script type="module" src="/lib/market-risk-runner.js"></script>
-<script type="module" src="/lib/dashboard-news-story-runner.js"></script>
-<script type="module" src="/lib/dashboard-wheel.bridge.js"></script>
-<script type="module" src="/lib/mission-path/index.js"></script>
+<script type="module" src="/lib/entry.bridge.js"></script>
+<script src="/lib/earnings-route.js" defer></script>
+<script src="/lib/portfolio-insights-route.js" defer></script>
 </head>
 <body>
 
@@ -3636,6 +3689,17 @@ window.BrieftickQuoteRouter = quoteRouter;
         <span class="auth-plan-badge free" id="authPlanBadge">Free</span>
         <div id="clerkUserButton"></div>
       </div>
+    </div>
+    <button type="button" class="nav-a__menu-btn" id="navMenuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+      <span class="nav-a__menu-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav-a__drawer" id="navDrawer" aria-hidden="true">
+    <div class="nav-a__drawer-backdrop" id="navDrawerBackdrop"></div>
+    <div class="nav-a__drawer-panel" role="dialog" aria-label="Navigation menu">
+      <button type="button" class="nav-a__drawer-close" id="navDrawerClose" aria-label="Close menu">×</button>
+      <div class="nav-a__drawer-links" id="navDrawerLinks"></div>
+      <div class="nav-a__drawer-auth" id="navDrawerAuth"></div>
     </div>
   </div>
 </nav>
@@ -5345,11 +5409,16 @@ window.BrieftickQuoteRouter = quoteRouter;
     <!-- Hero -->
     <div class="about-hero">
       <h1>Markets move fast.<br><span id="aboutFlip1">Understanding them</span><br>shouldn't require a <em><span id="aboutFlip2">Bloomberg terminal.</span></em></h1>
-      <p>FORGENIQ was built for a simple reason: story-first market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by translating complex market signals into plain English, explainable context for everyone from seasoned traders to first-time investors.</p>
+      <p class="about-hero-desc about-hero-desc--full">FORGENIQ was built for a simple reason: story-first market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by translating complex market signals into plain English, explainable context for everyone from seasoned traders to first-time investors.</p>
+      <p class="about-hero-desc about-hero-desc--short">Story-first market intelligence in plain English — built for investors who want context, not jargon.</p>
+      <div class="about-hero-cta about-hero-cta--mobile">
+        <button type="button" class="btn-primary about-hero-cta__btn" onclick="clerkSignUp()">Start Free</button>
+        <a href="#about-mission" class="about-hero-cta__continue">Continue reading ↓</a>
+      </div>
     </div>
 
     <!-- Mission -->
-    <div class="about-section">
+    <div class="about-section" id="about-mission">
       <h2>Democratise market intelligence.</h2>
       <p>The same tools that help hedge funds understand why markets are moving have historically been inaccessible to individual investors. FORGENIQ closes that gap. Not by simplifying the data, but by making it legible.</p>
       <p>We lead with stories: short, connected narratives. Then we show the data behind them. Portfolio, markets, insiders, options, and macro signals all connect through the same intelligence graph, so you always know what you're looking at and why it matters.</p>
@@ -5571,6 +5640,9 @@ const BTRuntime = (() => {
 function route(name){
   if (name === 'impact' || name === 'brief') name = 'why';
   if (name === 'options') name = 'dashboard';
+  if (typeof window.__btLoadAppModules === 'function' && !['landing', 'pricing', 'about'].includes(name)) {
+    window.__btLoadAppModules();
+  }
   window._activeRoute = name;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const target=document.getElementById('page-'+name);
@@ -11348,8 +11420,8 @@ function loadWimWithLimit(sym) {
 // Access helpers are set by /lib/terminal-access.bridge.js (hasTerminalAccess, isAdmin, isTerminal, isFree).
 
 // Global auth helpers (also used before Clerk loads)
-window.clerkSignIn  = () => window.Clerk?.openSignIn();
-window.clerkSignUp  = () => window.Clerk?.openSignUp();
+window.clerkSignIn  = () => window.__btEnsureClerk?.(() => window.Clerk?.openSignIn()) ?? window.Clerk?.openSignIn();
+window.clerkSignUp  = () => window.__btEnsureClerk?.(() => window.Clerk?.openSignUp()) ?? window.Clerk?.openSignUp();
 
 // On page load: if public user somehow lands on a protected tab, redirect to landing
 window.addEventListener('load', () => {
@@ -12134,6 +12206,10 @@ function initHeroAmbient() {
    CINEMATIC UPGRADE — GSAP Motion System
 ================================================================ */
 function initGSAP() {
+  if (window.__BT_MOBILE_CONVERSION__ || window.matchMedia('(max-width: 768px)').matches) {
+    document.querySelectorAll('.gsap-hero-el').forEach(el => { el.style.opacity = '1'; });
+    return;
+  }
   if (typeof gsap === 'undefined') {
     // GSAP failed to load — make sure all elements are visible
     document.querySelectorAll('.gsap-hero-el').forEach(el => { el.style.opacity = '1'; });
@@ -12240,9 +12316,11 @@ function initGSAP() {
 }
 
 window.addEventListener('load', () => {
-  initHeroAmbient();
+  if (!window.__BT_MOBILE_CONVERSION__ && !window.matchMedia('(max-width: 768px)').matches) {
+    initHeroAmbient();
+    initDashTelemetry();
+  }
   initGSAP();
-  initDashTelemetry();
 });
 
 /* ================================================================
