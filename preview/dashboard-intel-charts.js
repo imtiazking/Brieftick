@@ -58,7 +58,7 @@ const PROBES = {
     edge: (headline) => headline,
   },
   alerts: {
-    default: "Tap a card to see what could move markets this week.",
+    default: "Tap a card to see what could move markets on that date.",
   },
   session: {
     default: "Drag along the session — explore the tape.",
@@ -615,7 +615,10 @@ function bindAlertsStack(hero) {
   });
 
   if (items[0]) activate(items[0]);
-  else setProbe(hero, PROBES.alerts.default);
+  else {
+    const empty = stack.querySelector("[data-what-matters-empty]");
+    setProbe(hero, empty ? empty.textContent.trim() : PROBES.alerts.default);
+  }
 }
 
 function bindSessionChart(hero) {

@@ -42,7 +42,7 @@ export const RAIL_SECTIONS = [
   { id: "signals", label: "SIGNALS", code: "06", title: "Signal Intelligence Feed", meta: "8 headlines · mock" },
   { id: "news", label: "NEWS", code: "10", title: "News Intelligence", meta: "Live ↻ 60s" },
   { id: "correlation", label: "MOVES TOGETHER", code: "09", title: "Moves Together", meta: "Who rises & falls together" },
-  { id: "alerts", label: "WHAT MATTERS", code: "S1", title: "What to Watch", meta: "This week · plain English" },
+  { id: "alerts", label: "WHAT MATTERS", code: "S1", title: "What Matters", meta: "Live · FRED / Finnhub" },
   { id: "watchlist", label: "WATCHLIST", code: "05", title: "Watchlist", meta: "Design lab book" },
   { id: "session", label: "SESSION", code: "08", title: "Today's Briefing", meta: "Live · preview" },
 ];
@@ -174,86 +174,6 @@ const WATCHLIST = [
 ];
 
 /** @typedef {'high' | 'medium' | 'low'} AlertImportance */
-
-/**
- * What Matters — plain-English calendar items (preview mock).
- * @type {Array<{ id: string, type: string, title: string, why: string, impact: string[], importance: AlertImportance, explain: string }>}
- */
-const ALERTS = [
-  {
-    id: "fed-speakers",
-    type: "Central Bank",
-    title: "Fed Officials Speaking This Week",
-    why: "When central bankers talk, investors listen for clues about interest rates and the economy.",
-    impact: ["Interest Rates", "Banks", "Stock Market"],
-    importance: "high",
-    explain:
-      "Several Federal Reserve officials are speaking this week. If they sound worried about inflation, investors may expect rates to stay higher for longer — which can pressure technology and other growth stocks. If they sound more relaxed, stocks may get a short-term boost.",
-  },
-  {
-    id: "cpi",
-    type: "Inflation",
-    title: "Inflation Report Tomorrow",
-    why: "Higher inflation could keep interest rates higher, which often weighs on stock prices.",
-    impact: ["Technology", "Bonds", "US Dollar"],
-    importance: "high",
-    explain:
-      "The Consumer Price Index (CPI) shows how fast everyday prices are rising. A higher-than-expected number can make investors nervous that the Fed will keep rates high. That tends to hurt rate-sensitive areas like technology first, while bonds and the dollar often react quickly too.",
-  },
-  {
-    id: "sec-reform",
-    type: "Rules",
-    title: "Stock Market Rule Changes Under Review",
-    why: "New trading rules can change costs and behaviour for brokers and exchanges over time.",
-    impact: ["Financials", "Brokers"],
-    importance: "low",
-    explain:
-      "Regulators are gathering public comments on how US stock markets operate. This rarely moves the whole market overnight, but it matters for brokers, exchanges, and how trading fees work in the long run.",
-  },
-  {
-    id: "opec",
-    type: "Energy",
-    title: "Oil Producers Meeting on Supply",
-    why: "Oil prices affect energy stocks, transport costs, and how investors think about inflation.",
-    impact: ["Energy", "Transportation", "Inflation"],
-    importance: "medium",
-    explain:
-      "OPEC+ sets guidance on oil production. If producers signal tighter supply, oil prices can rise — helping energy companies but raising costs for airlines, shipping, and consumers. That can feed back into inflation expectations.",
-  },
-];
-
-/** @param {AlertImportance} level */
-function alertImportanceLabel(level) {
-  if (level === "high") return "High";
-  if (level === "medium") return "Medium";
-  return "Low";
-}
-
-/** @param {typeof ALERTS[0]} alert @param {number} index */
-function renderAlertCard(alert, index) {
-  const imp = alert.importance;
-  const impactTags = alert.impact
-    .map((tag) => `<span class="alert-impact-tag">${esc(tag)}</span>`)
-    .join("");
-  const tier = index === 0 ? " alert-visual--primary is-active" : "";
-  return `<div class="alert-visual${tier}" role="button" tabindex="0" data-alert-id="${esc(alert.id)}">
-    <span class="alert-visual__type">${esc(alert.type)}</span>
-    <div class="alert-visual__body">
-      <span class="alert-visual__head">${esc(alert.title)}</span>
-      <p class="alert-visual__why"><span class="alert-visual__label">Why it matters:</span> ${esc(alert.why)}</p>
-      <div class="alert-visual__impacts">
-        <span class="alert-visual__label">Potential impact:</span>
-        ${impactTags}
-      </div>
-      <p class="alert-visual__importance-row">
-        <span class="alert-visual__label">Importance:</span>
-        <span class="alert-visual__importance alert-visual__importance--${imp}">${esc(alertImportanceLabel(imp))}</span>
-      </p>
-      <button type="button" class="alert-visual__toggle" aria-expanded="false">Learn more</button>
-      <div class="alert-visual__expand" hidden><p>${esc(alert.explain)}</p></div>
-    </div>
-  </div>`;
-}
 
 function esc(s) {
   return String(s || "")
@@ -657,8 +577,12 @@ function heroConnectedMarkets() {
   </div>`;
 }
 
-function heroAlertsStack() {
-  return ALERTS.slice(0, 3).map((a, i) => renderAlertCard(a, i)).join("");
+function heroAlertsStackShell() {
+  return `<p class="what-matters__source" data-what-matters-source>Live · FRED / Finnhub</p>
+    <div class="what-matters__stack" data-what-matters-stack>
+      <p class="what-matters__loading">Loading live market calendar…</p>
+    </div>
+    <p class="what-matters__refreshed" data-what-matters-refreshed aria-live="polite"></p>`;
 }
 
 function heroSessionChart() {
@@ -905,8 +829,8 @@ const MOVES_TOGETHER_EXPLAIN = {
 };
 
 const ALERTS_EXPLAIN = {
-  what: "These are the main events and stories that could move markets this week — explained in plain English.",
-  why: "Knowing what is coming helps you understand sudden price moves instead of being surprised by them.",
+  what: "Dated macro releases and mega-cap earnings that can move rates, sectors, and index leadership.",
+  why: "Each card is sourced from FRED or Finnhub — no static templates.",
   matters: "Tap a card to focus on it, then use Learn more for a fuller explanation without jargon.",
 };
 
@@ -953,15 +877,24 @@ function renderCorrelation() {
   );
 }
 
-function renderAlerts() {
-  return renderIntelSurface(
-    `<div class="live-chart alerts-stack-hero">${heroAlertsStack()}
-      <p class="live-chart__hint">Tap a card to focus · Learn more for the full story</p>
-      <p class="live-chart__probe" aria-live="polite"></p>
-    </div>`,
-    "Inflation data and Fed comments are the biggest things to watch this week — they can move rates and stocks quickly.",
-    ALERTS_EXPLAIN
-  );
+function renderAlerts(section) {
+  return `<div class="rail-module rail-module--intel rail-module--what-matters" data-wheel-id="alerts">
+    <header class="rail-module__head">
+      <span class="rail-module__title"><b>${esc(section.code)}</b> ${esc(section.title)}</span>
+      <span class="rail-module__meta">${esc(section.meta)}</span>
+      <span data-dash-live-badge></span>
+    </header>
+    <div class="intel-hero">
+      <div class="live-chart alerts-stack-hero" data-what-matters-root>
+        ${heroAlertsStackShell()}
+        <p class="live-chart__hint">Tap a card to focus · Learn more for the full story</p>
+        <p class="live-chart__probe" aria-live="polite"></p>
+      </div>
+    </div>
+    <p class="intel-takeaway">Loading live market calendar…</p>
+    <button type="button" class="intel-explain-toggle" aria-expanded="false">Understand this</button>
+    <article class="intel-explain" hidden>${focusDetailBlocks(ALERTS_EXPLAIN)}</article>
+  </div>`;
 }
 
 function renderWatchlist(section) {

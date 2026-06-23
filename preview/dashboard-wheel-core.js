@@ -49,7 +49,7 @@ export function selectWheelModule(id) {
     stage.classList.add("is-visible");
     bindIntelligenceModule(stage, id);
     bindInteractiveCharts(stage, id);
-    if (id === "movers" || id === "heatmap" || id === "volatility" || id === "news") {
+    if (id === "movers" || id === "heatmap" || id === "volatility" || id === "news" || id === "alerts") {
       scheduleModuleHydrate(id, stage);
     }
   });
