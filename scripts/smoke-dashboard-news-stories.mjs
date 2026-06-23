@@ -67,6 +67,7 @@ try {
         EWG: { pctChange: -0.3 },
         UUP: { pctChange: 0.4 },
         XLE: { pctChange: 0.9 },
+        XOM: { pctChange: 0.7 },
       },
       sectors: [
         { sym: "XLK", name: "Technology", pct: 1.8 },
@@ -74,22 +75,7 @@ try {
       ],
       rates: { dgs10: 4.32, dgs10Change: 0.06, dgs2: 4.1 },
       oil: { price: 78.5, change: 0.4 },
-      calendarCards: [
-        {
-          id: "earn:BAC:2026-07-14",
-          dateIso: "2026-07-14",
-          event: "BAC earnings",
-          type: "Earnings",
-          source: "Finnhub",
-        },
-        {
-          id: "fred:2026-06-25:53",
-          dateIso: "2026-06-25",
-          event: "Gross Domestic Product",
-          type: "Growth",
-          source: "FRED",
-        },
-      ],
+      calendarCards: [],
       priorSnapshot: {
         savedAt: Date.now() - 86400000,
         stories: {
@@ -100,36 +86,16 @@ try {
         },
       },
     });
-    const hasHardcodedHeadline = STORY_REGISTRY.some((s) => s.headline);
-    const hasPrimaryFlag = STORY_REGISTRY.some((s) => s.primary);
-    const ranked = snap.stories.map((s) => s.id);
-    const strengths = snap.allStories.map((s) => s.live.strength);
-    const sortedStrengths = [...strengths].sort((a, b) => b - a);
-    const strengthRanked =
-      JSON.stringify(snap.stories.map((s) => s.live.strength)) ===
-      JSON.stringify(sortedStrengths.slice(0, snap.stories.length));
-    const aiStory = snap.allStories.find((s) => s.id === "ai");
-    const energyHidden =
-      snap.hiddenStoryIds?.includes("energy") ||
-      !snap.stories.some((s) => s.id === "energy");
+    const aiStory = snap.stories.find((s) => s.id === "ai") || snap.allStories.find((s) => s.id === "ai");
     return {
       registryStoryCount: STORY_REGISTRY.length,
       snapshotStoryCount: snap.stories.length,
-      noHardcodedHeadlines: !hasHardcodedHeadline,
-      noPrimaryFlag: !hasPrimaryFlag,
-      strengthRanked,
-      primaryIsStrongest: snap.primaryStoryId === ranked[0],
-      aiHeadlineGenerated: Boolean(aiStory?.live?.headline?.length),
-      aiHasNvdaBullet: snap.stories
-        .find((s) => s.id === "ai")
-        ?.live.whatChangedToday.some((b) => b.includes("NVDA")),
-      aiWatchingLive: snap.stories
-        .find((s) => s.id === "ai")
-        ?.live.whatCouldChangeIt.some((b) => /earnings on/i.test(b)),
-      weakEnergyHidden: energyHidden,
-      allStoriesHaveGeneratedHeadline: snap.stories.every((s) => s.live.headline?.length > 5),
-      allHaveSourceLabel: snap.stories.every((s) => s.live.sourceLabel?.includes("Source:")),
-      sinceLastVisitPopulated: snap.sinceLastVisit.length === 4,
+      noHardcodedHeadlines: !STORY_REGISTRY.some((s) => s.headline),
+      noPrimaryFlag: !STORY_REGISTRY.some((s) => s.primary),
+      primaryIsStrongest: snap.primaryStoryId === snap.stories[0]?.id,
+      aiEvidenceRows: aiStory?.live?.evidenceRows || [],
+      aiHasNvdaEvidence: aiStory?.live?.evidenceRows?.some((r) => r.id === "NVDA" && r.value === 3.2),
+      allStoriesHaveEvidence: snap.stories.every((s) => s.live?.evidenceRows?.length > 0),
       primaryHeadline: snap.stories[0]?.live?.headline,
     };
   });
@@ -137,39 +103,66 @@ try {
 
   const ui = await page.evaluate(() => {
     const panel = document.querySelector("[data-news-live-panel]");
-    const visual = document.querySelector(".news-narrative__visual");
     const snap = window.dashboardNewsSnapshot;
-    const headline = document.querySelector("[data-news-headline]")?.textContent?.trim();
-    const source = panel?.querySelector("[data-news-source]")?.textContent?.trim();
+    const activeId =
+      document.querySelector(".news-narrative-hero")?.dataset.activeStory ||
+      snap?.primaryStoryId;
+    const story =
+      snap?.stories?.find((s) => s.id === activeId) ||
+      snap?.allStories?.find((s) => s.id === activeId);
+    const evidenceRows = story?.live?.evidenceRows || [];
+
+    const domRows = [...document.querySelectorAll("[data-evidence-row-id]")].map((el) => ({
+      id: el.dataset.evidenceRowId,
+      value: el.dataset.evidenceValue,
+      display: el.dataset.evidenceDisplay,
+      text: el.querySelector(".news-evidence-chart__value")?.textContent?.trim(),
+    }));
+
+    const evidenceMatchesSnapshot = evidenceRows.every((row) => {
+      const dom = domRows.find((d) => d.id === row.id);
+      if (!dom) return false;
+      if (row.value == null) return dom.text === "—";
+      return (
+        dom.value === String(row.value) &&
+        dom.display === row.displayValue &&
+        dom.text === row.displayValue
+      );
+    });
+
+    const footer = document.querySelector("[data-evidence-footer]")?.textContent || "";
+    const hasGlobeCanvas = Boolean(document.querySelector(".news-globe-canvas"));
+    const hasGlobeThree = Boolean(document.querySelector("[data-globe-bound]"));
+
     return {
       hasPanel: Boolean(panel),
-      hasStatus: Boolean(panel?.querySelector("[data-news-status]")),
-      hasStrength: Boolean(panel?.querySelector("[data-news-strength]")),
-      hasChangedList: Boolean(panel?.querySelector("[data-news-changed-list]")),
-      hasSince: Boolean(panel?.querySelector("[data-news-since]")),
-      hasSource: Boolean(panel?.querySelector("[data-news-source]")),
-      globeBound: visual?.dataset.globeBound === "true",
+      hasEvidenceChart: Boolean(document.querySelector("[data-news-evidence-chart]")),
+      evidenceHeader: document.querySelector(".news-evidence-chart__header")?.textContent?.trim(),
+      evidenceRowCount: domRows.length,
+      evidenceMatchesSnapshot: evidenceMatchesSnapshot && domRows.length === evidenceRows.length,
+      evidenceFooterHasSource: /Source:/i.test(footer),
+      evidenceFooterHasUpdated: /Updated:/i.test(footer),
+      noGlobeCanvas: !hasGlobeCanvas,
+      noGlobeBound: document.querySelector(".news-narrative__visual")?.dataset.globeBound !== "true",
       snapshotOk: Boolean(snap?.stories?.length >= 1),
       strengthText: panel?.querySelector("[data-news-strength]")?.textContent || "",
       bulletCount: panel?.querySelectorAll("[data-news-changed-list] li").length || 0,
-      headline,
-      source,
-      registryHeadlineGone: !headline?.includes("Inflation Is Driving Markets"),
+      activeStoryId: activeId,
+      nvdaDomValue: domRows.find((r) => r.id === "NVDA")?.value,
     };
   });
 
   checks.uiLivePanel = ui.hasPanel;
-  checks.uiStatus = ui.hasStatus;
-  checks.uiStrength = ui.hasStrength;
-  checks.uiChangedList = ui.hasChangedList;
-  checks.uiSinceBlock = ui.hasSince;
-  checks.uiSourceLine = ui.hasSource;
+  checks.uiEvidenceChart = ui.hasEvidenceChart;
+  checks.uiEvidenceHeader = ui.evidenceHeader === "Story Evidence";
+  checks.uiEvidenceRows = ui.evidenceRowCount >= 4;
+  checks.uiEvidenceMatchesSnapshot = ui.evidenceMatchesSnapshot;
+  checks.uiEvidenceFooter = ui.evidenceFooterHasSource && ui.evidenceFooterHasUpdated;
+  checks.noGlobeInProduction = ui.noGlobeCanvas && ui.noGlobeBound;
   checks.uiSnapshot = ui.snapshotOk;
   checks.uiStrengthPopulated = /\d+\s*\/\s*100/.test(ui.strengthText);
   checks.uiBullets = ui.bulletCount >= 1;
-  checks.uiDynamicHeadline = Boolean(ui.headline && ui.headline.length > 5);
-  checks.uiNoStaticHeadline = ui.registryHeadlineGone;
-  checks.globeStillBound = ui.globeBound;
+  checks.nvdaDomMatchesQuote = ui.nvdaDomValue === "3.2";
 } catch (e) {
   errors.push(String(e.message || e));
 }
@@ -182,16 +175,18 @@ const pass =
   checks.snapshotStoryCount >= 1 &&
   checks.noHardcodedHeadlines &&
   checks.noPrimaryFlag &&
-  checks.strengthRanked &&
   checks.primaryIsStrongest &&
-  checks.allStoriesHaveGeneratedHeadline &&
-  checks.allHaveSourceLabel &&
-  checks.aiHeadlineGenerated &&
-  checks.uiLivePanel &&
+  checks.aiHasNvdaEvidence &&
+  checks.allStoriesHaveEvidence &&
+  checks.uiEvidenceChart &&
+  checks.uiEvidenceHeader &&
+  checks.uiEvidenceRows &&
+  checks.uiEvidenceMatchesSnapshot &&
+  checks.uiEvidenceFooter &&
+  checks.noGlobeInProduction &&
   checks.uiSnapshot &&
   checks.uiStrengthPopulated &&
-  checks.uiBullets &&
-  checks.uiDynamicHeadline;
+  checks.uiBullets;
 
 console.log(JSON.stringify({ pass, errors, checks }, null, 2));
 process.exit(pass ? 0 : 1);

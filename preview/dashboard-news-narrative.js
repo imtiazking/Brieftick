@@ -3,7 +3,7 @@
  * @module preview/dashboard-news-narrative
  */
 
-import { bindNewsGlobeInteraction } from "./dashboard-news-globe.js";
+import { renderNewsEvidenceChartShell } from "/lib/dashboard-news-evidence-chart.js";
 import { STORY_REGISTRY_BY_ID } from "/lib/dashboard-news-story-registry.js";
 
 const PRIMARY_KICKER = "What markets are watching";
@@ -25,12 +25,7 @@ function esc(s) {
  * @returns {string}
  */
 function renderNewsVisual(storyId) {
-  return `<div class="news-narrative__visual" data-visual="${esc(storyId)}" data-globe-ready="true">
-    <div class="news-globe-stage" data-globe-stage>
-      <canvas class="news-globe-canvas" aria-hidden="true"></canvas>
-      <div class="news-globe-hit" data-globe-hit aria-hidden="true"></div>
-    </div>
-  </div>`;
+  return renderNewsEvidenceChartShell(storyId);
 }
 
 /**
@@ -247,7 +242,6 @@ export function bindNewsNarrative(root) {
 
   const hero = wrap.querySelector(".news-narrative__hero");
   const heroContent = wrap.querySelector(".news-narrative__hero-content");
-  const visual = wrap.querySelector(".news-narrative__visual");
   const pulse = wrap.querySelector(".news-timeline__pulse");
 
   if (!hero || !heroContent) return;
@@ -319,20 +313,19 @@ export function bindNewsNarrative(root) {
     }
 
     heroContent.innerHTML = renderHeroContent(story, isPrimaryStory);
-    applySnapshot();
 
-    if (visual) {
-      visual.dataset.visual = id;
-      const globeIntent = isSelect ? "select" : "preview";
-      if (typeof visual._globeSetStory === "function") {
-        visual._globeSetStory(id, { intent: globeIntent });
+    const heroGrid = wrap.querySelector(".news-narrative__hero-grid");
+    const oldVisual = wrap.querySelector(".news-narrative__visual");
+    if (heroGrid) {
+      const visualHtml = renderNewsVisual(id);
+      if (oldVisual) {
+        oldVisual.outerHTML = visualHtml;
       } else {
-        visual._globeCanvas?.setStory?.(id, { intent: globeIntent });
+        heroGrid.insertAdjacentHTML("beforeend", visualHtml);
       }
-      visual.classList.remove("is-updating");
-      void visual.offsetWidth;
-      visual.classList.add("is-updating");
     }
+
+    applySnapshot();
 
     hero.classList.remove("is-visible");
     requestAnimationFrame(() => hero.classList.add("is-visible"));
@@ -393,19 +386,7 @@ export function bindNewsNarrative(root) {
     applyStory(focusBtn, "select");
   }
 
-  if (visual) {
-    if (visual._globeTeardown) visual._globeTeardown();
-    requestAnimationFrame(() => {
-      if (!visual.isConnected) return;
-      visual._globeTeardown = bindNewsGlobeInteraction(visual);
-    });
-  }
-
   return () => {
     document.removeEventListener("bt_news_stories_updated", onStoriesUpdated);
-    if (visual?._globeTeardown) {
-      visual._globeTeardown();
-      visual._globeTeardown = null;
-    }
   };
 }
