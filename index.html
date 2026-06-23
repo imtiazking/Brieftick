@@ -141,9 +141,7 @@ body::after{
 
 /* ---------- TICKER (hidden data source for cinematic river) ---------- */
 .global-ticker{
-  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
-  clip:rect(0,0,0,0);white-space:nowrap;border:0;
-  pointer-events:none;visibility:hidden;
+  display:none !important;
 }
 .ticker-track{display:flex;gap:48px;white-space:nowrap}
 .ticker-item{display:flex;gap:8px;align-items:center;color:var(--ink-dim)}
@@ -3632,7 +3630,6 @@ window.BrieftickQuoteRouter = quoteRouter;
       <button type="button" class="nav-link app-tab" data-route="scanner">Discover <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <button type="button" class="nav-link app-tab" data-route="portfolio-insights">Portfolio Insights</button>
       <button type="button" class="nav-link app-tab" data-route="insiders">Insider <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-      <button type="button" class="nav-link app-tab" data-route="options">Options <span class="nav-beta-pill">Beta</span> <svg class="nav-lock" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <button type="button" class="nav-link nav-link--logic app-tab logic-preview-tab" data-route="logic" id="navLogicTab" style="display:none">Logic</button>
       <button type="button" class="nav-link" data-route="pricing">Pricing</button>
       <button type="button" class="nav-link" data-route="about">About</button>
@@ -5588,6 +5585,7 @@ const BTRuntime = (() => {
 ============================================================ */
 function route(name){
   if (name === 'impact' || name === 'brief') name = 'why';
+  if (name === 'options') name = 'dashboard';
   window._activeRoute = name;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const target=document.getElementById('page-'+name);
@@ -5692,9 +5690,7 @@ const tickerData=[
   ['TSLA','…','…','flat'],['AAPL','…','…','flat'],['AMD','…','…','flat'],
   ['META','…','…','flat'],['MSFT','…','…','flat'],['GOOGL','…','…','flat'],
   ['AMZN','…','…','flat'],['BRK.B','…','…','flat'],['JPM','…','…','flat'],
-  ['XOM','…','…','flat'],['CVX','…','…','flat'],['BTC','…','…','flat'],
-  ['ETH','…','…','flat'],['GOLD','…','…','flat'],['CRUDE','…','…','flat'],
-  ['DXY','…','…','flat'],['10Y','…','…','flat'],['EUR/USD','…','…','flat']
+  ['XOM','…','…','flat'],['CVX','…','…','flat'],
 ];
 const tickerEl=document.getElementById('ticker');
 const ticks=[...tickerData,...tickerData].map(([s,p,c,d])=>
@@ -5728,7 +5724,7 @@ const featureData=[
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="8" x2="11" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'],
   ['Smart Money Flow','Insider and political activity organized into a clear flow story: who is buying, who is selling, and where activity is clustering.','module 11',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M17 3l1.5 1.5L22 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'],
-  ['Options Story','Today\'s options positioning explained in plain English before unusual activity, chains, and flow data.','module 12',
+  ['Options Story','Options flow and unusual activity — coming in a future Terminal release.','module 12',
    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 17 L8 12 L12 15 L16 9 L21 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21" cy="11" r="2" fill="currentColor"/><path d="M3 21 L21 21" stroke="currentColor" stroke-width="1" opacity="0.3"/></svg>'],
 ];
 window.BT_FEATURE_DATA = featureData;
@@ -5738,12 +5734,19 @@ const featureRoutes = {
   'Deep Dive':'why','Correlation Engine':'portfolio',
   'Ask Logic':'logic','Sector Rotation':'dashboard',
   'Discover Stocks':'scanner','Smart Money Flow':'insiders',
-  'Options Story':'options',
 };
 window.BT_FEATURE_DATA = featureData;
 const _featureGridEl = document.getElementById('featureGrid');
 if (_featureGridEl) _featureGridEl.innerHTML=featureData.map(([t,d,tag,icon])=>{
-  const dest = featureRoutes[t] || 'dashboard';
+  const dest = featureRoutes[t] || (t === 'Options Story' ? null : 'dashboard');
+  if (!dest) {
+    return `<div class="feature" style="cursor:default;opacity:0.85" title="Options — coming soon">
+    <div class="feature-icon">${icon}</div>
+    <h3>${t}</h3>
+    <p>${d}</p>
+    <div class="feature-tag">${tag} · Coming soon</div>
+  </div>`;
+  }
   return `<div class="feature" style="cursor:pointer" onclick="routeWithAuth('${dest}')" title="Open ${t}">
     <div class="feature-icon">${icon}</div>
     <h3>${t}</h3>
@@ -7654,28 +7657,7 @@ async function fetchLiveQuotes(symbols) {
 window.fetchLiveQuotes = fetchLiveQuotes;
 
 async function _fetchLandingMacroQuotes() {
-  const LT = window.BrieftickLandingTicker;
-  if (!LT) return {};
-  const macroSyms = [...LT.LANDING_MACRO_SYMBOLS].filter(s => s !== 'VIX' && s !== '10Y');
-  const toFetch = new Set();
-  for (const displaySym of macroSyms) {
-    const fetchSym = LT.LANDING_MACRO_FETCH_MAP[displaySym];
-    if (fetchSym) toFetch.add(fetchSym);
-    const proxy = LT.LANDING_MACRO_ETF_PROXY[displaySym];
-    if (proxy) toFetch.add(proxy);
-  }
-  const quotes = await fetchLiveQuotes([...toFetch]);
-  const out = {};
-  for (const displaySym of macroSyms) {
-    const fetchSym = LT.LANDING_MACRO_FETCH_MAP[displaySym];
-    if (!fetchSym) continue;
-    let q = quotes[fetchSym];
-    if ((!q || isNaN(q.price)) && LT.LANDING_MACRO_ETF_PROXY[displaySym]) {
-      q = quotes[LT.LANDING_MACRO_ETF_PROXY[displaySym]];
-    }
-    if (q && !isNaN(q.price)) out[displaySym] = q;
-  }
-  return out;
+  return {};
 }
 
 function _applyQuotesToGlobalTicker(quotes) {
@@ -7745,23 +7727,18 @@ async function refreshLandingTickerQuotes() {
     const LT = window.BrieftickLandingTicker;
     const equities = LT
       ? LT.landingEquitySymbolsFromTickerData(tickerData)
-      : tickerData.map(r => r[0]).filter(s => !['VIX','BTC','ETH','GOLD','CRUDE','DXY','10Y','EUR/USD'].includes(s));
+      : tickerData.map(r => r[0]).filter(s => s !== 'VIX');
     const heroStrip = LT ? LT.HERO_STRIP_SYMBOLS.filter(s => s !== 'VIX' && s !== '10Y') : ['SPY','QQQ','DIA'];
     const heroSym = document.getElementById('hvSym')?.textContent?.trim();
     const fetchList = [...new Set([...equities, ...heroStrip, heroSym].filter(Boolean))];
 
     const quotes = await fetchLiveQuotes(fetchList);
-    const macro = await _fetchLandingMacroQuotes();
     if (typeof _vixFredValue === 'number' && !isNaN(_vixFredValue)) {
-      macro.VIX = { price: _vixFredValue, pctChange: 0, change: 0 };
+      quotes.VIX = { price: _vixFredValue, pctChange: 0, change: 0 };
     }
-    const merged = { ...quotes, ...macro };
 
-    _applyQuotesToGlobalTicker(merged);
-    _applyQuotesToHeroStrip(merged);
-    _patchHeroQuoteFromBatch(merged);
-
-    if (LT) LT.markStaleTickerPlaceholders('#ticker', equities);
+    _applyQuotesToHeroStrip(quotes);
+    _patchHeroQuoteFromBatch(quotes);
   } catch(e) {
     console.warn('[landing ticker]', e.message);
   } finally {
@@ -7775,25 +7752,7 @@ async function refreshLandingTickerQuotes() {
    Returns same shape as BriefTickAPI.getQuotes: {SYM: {price, pctChange, change}}
 ---------------------------------------------------------------- */
 async function getPolygonQuotes(symbols) {
-  const key = BriefTickAPI.keys.polygon;
-  const headers = key && key !== '_server_' ? { 'x-polygon-key': key } : {};
-  // Polygon batch snapshot: up to 100 tickers per call
-  const joined = symbols.join(',');
-  const url = `/api/proxy?provider=polygon&endpoint=v2/snapshot/locale/us/markets/stocks/tickers&tickers=${encodeURIComponent(joined)}`;
-  const res = await fetch(url, { headers });
-  if (!res.ok) throw new Error('Polygon snapshot HTTP ' + res.status);
-  const data = await res.json();
-  if (data.status === 'ERROR' || data.error) throw new Error(data.error || data.message || 'Polygon error');
-  const out = {};
-  (data.tickers || []).forEach(t => {
-    const day = t.day || {};
-    const prevDay = t.prevDay || {};
-    const price = day.c || t.lastTrade?.p || 0;
-    const prevClose = prevDay.c || 0;
-    const pctChange = prevClose > 0 ? ((price - prevClose) / prevClose) * 100 : (t.todaysChangePerc || 0);
-    out[t.ticker] = { price, pctChange, change: price - prevClose, name: t.ticker };
-  });
-  return out;
+  return {};
 }
 
 async function liveRefreshDashboard(){
@@ -12408,10 +12367,6 @@ function initGSAP() {
         window._insidersLoaded = true;
         loadInsiders(); loadPoliticalTrades();
       }
-      if (name === 'options' && typeof loadOptionsData === 'function' && !window._optionsLoaded && _clerkUser) {
-        window._optionsLoaded = true;
-        loadOptionsData();
-      }
     };
   });
 }
@@ -12517,9 +12472,6 @@ document.querySelectorAll('.options-tab').forEach(tab => {
     l.onclick = () => {
       if (prev) prev.call(l);
       else route(l.dataset.route);
-      if (l.dataset.route === 'options' && !optionsLoaded) {
-        loadOptionsData();
-      }
     };
   });
 })();
@@ -12622,39 +12574,7 @@ function paintOptionsComingSoon() {
 
 async function loadOptionsData() {
   optionsLoaded = true;
-  const grid = document.getElementById('optUnusualGrid');
-  const flowEl = document.getElementById('optFlowGrid');
-  const darkEl = document.getElementById('optDarkGrid');
-  const emptyMsg = '<div style="padding:40px;text-align:center;color:var(--ink-faint);font-size:13px;line-height:1.6">Coming Soon — live options flow is not yet available.</div>';
-  if (grid) grid.innerHTML = emptyMsg;
-  if (flowEl) flowEl.innerHTML = emptyMsg;
-  if (darkEl) darkEl.innerHTML = emptyMsg;
-  applyOptionsUserFacingCopy();
-
-  let liveOk = false;
-  if (hasPolygonOptionsKey() && !isPolygonOffline()) {
-    try {
-      liveOk = await fetchLiveOptionsData();
-    } catch (e) {
-      console.warn('[Options] Live Polygon data failed:', e.message);
-    }
-  }
-
-  if (!liveOk) {
-    paintOptionsComingSoon();
-  } else {
-    optionsDataMode = 'live';
-  }
-  applyOptionsUserFacingCopy();
-
-  renderUnusualActivity();
-  renderFlowHeatmap();
-  renderDarkPool();
-  updateOptionsStats();
-  if (typeof window.refreshOptionsStorySummary === 'function') window.refreshOptionsStorySummary();
-  buildDefaultChain();
-  const aiBtn = document.getElementById('optAIBtn');
-  if (aiBtn) aiBtn.style.display = liveOk ? '' : 'none';
+  paintOptionsComingSoon();
   applyOptionsUserFacingCopy();
 }
 
@@ -12667,55 +12587,6 @@ function markPolygonOffline() {
 }
 
 async function fetchLiveOptionsData() {
-  if (isPolygonOffline()) return false;
-  // Fetch unusual options activity from Polygon snapshots for top symbols
-  const polygonKey = BriefTickAPI.keys.polygon;
-  const polygonHeaders = polygonKey && polygonKey !== '_server_'
-    ? { 'x-polygon-key': polygonKey } : {};
-
-  const symbols = ['NVDA','TSLA','SPY','META','AAPL','AMD','QQQ','MSFT'];
-  const liveUnusual = [];
-  for (const sym of symbols.slice(0,4)) { // limit to 4 to respect rate limits
-    try {
-      const res = await fetch(`/api/proxy?provider=polygon&endpoint=v3/snapshot/options/${sym}&limit=20&sort=volume&order=desc`,
-        { headers: polygonHeaders });
-      const data = await res.json();
-      if (!res.ok || data?.error || data?.circuitOpen || String(data?.detail || '').includes('403')) {
-        if (res.status === 403 || res.status === 502 || res.status === 503 || data?.circuitOpen) {
-          markPolygonOffline();
-          return false;
-        }
-        continue;
-      }
-      const results = data.results || [];
-      results.slice(0,4).forEach(r => {
-        const d = r.details || {};
-        const g = r.greeks || {};
-        const q = r.day || {};
-        if (!q.volume) return;
-        const volOiRatio = d.open_interest > 0 ? (q.volume / d.open_interest) : 1;
-        if (volOiRatio < 1.5) return;
-        liveUnusual.push({
-          time: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),
-          sym, type: d.contract_type === 'call' ? 'CALL' : 'PUT',
-          strike: d.strike_price || 0,
-          expiry: d.expiration_date || '',
-          premium: formatPremium((q.vwap||0) * (q.volume||0) * 100),
-          volume: q.volume || 0,
-          oi: d.open_interest || 0,
-          iv: Math.round((g.implied_volatility||0) * 100 * 10) / 10,
-          spot: r.underlying_asset?.price || 0,
-          sentiment: d.contract_type === 'call' ? 'bullish' : 'bearish',
-        });
-      });
-    } catch(_) {}
-    await new Promise(r => setTimeout(r, 250));
-  }
-  if (liveUnusual.length >= 3) {
-    optionsUnusualData = liveUnusual;
-    optionsDataMode = 'live';
-    return true;
-  }
   return false;
 }
 
@@ -12950,10 +12821,7 @@ window.loadChainForSym = loadChainForSym;
 window.selectExpiry = selectExpiry;
 window.generateOptionsAI = generateOptionsAI;
 
-// Pre-load options data on page load
-window.addEventListener('load', () => {
-  loadOptionsData();
-});
+// Options beta disabled — no Polygon fetches on load
 
 /* ================================================================
    SCANNER – AI Market Intelligence Scanner

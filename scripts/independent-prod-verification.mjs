@@ -106,22 +106,6 @@ async function probeProviders() {
           : JSON.stringify(b).slice(0, 120),
     },
     {
-      id: "polygon",
-      endpoint: `/api/proxy?provider=polygon&endpoint=v3/snapshot/options/SPY&limit=2`,
-      evidence: (b) =>
-        b?.results?.length
-          ? `${b.results.length} contracts`
-          : JSON.stringify(b).slice(0, 120),
-    },
-    {
-      id: "polygon-stocks",
-      endpoint: `/api/proxy?provider=polygon&endpoint=v2/snapshot/locale/us/markets/stocks/tickers&tickers=AAPL`,
-      evidence: (b) =>
-        b?.tickers?.length
-          ? `tickers=${b.tickers.length}`
-          : JSON.stringify(b).slice(0, 120),
-    },
-    {
       id: "twelvedata",
       endpoint: `/api/proxy?provider=twelvedata&endpoint=quote&symbol=AAPL`,
       evidence: (b) =>
@@ -226,7 +210,6 @@ async function browserAudit(providerQuotes) {
     { key: "correlation", route: "dashboard", wait: 3000 },
     { key: "smart-money", route: "insiders", wait: 6000 },
     { key: "macro", route: "dashboard", wait: 3000 },
-    { key: "options", route: "options", wait: 6000 },
   ];
 
   const displayedQuotes = {};
@@ -275,9 +258,7 @@ async function browserAudit(providerQuotes) {
     const newConsErrs = consoleErrors.length - cBefore;
 
     let classification = "unknown";
-    if (step.key === "options") {
-      classification = snap.patterns.comingSoon || /coming soon/i.test(snap.optionsGrid) ? "coming-soon" : snap.patterns.illustrative ? "mock" : "broken";
-    } else if (snap.patterns.mockDemo || snap.patterns.illustrative) {
+    if (snap.patterns.mockDemo || snap.patterns.illustrative) {
       classification = "mock";
     } else if (snap.patterns.comingSoon) {
       classification = "coming-soon";
@@ -344,7 +325,7 @@ async function main() {
   const browser = await browserAudit(providerQuotes);
 
   const providerSummary = {};
-  for (const id of ["finnhub", "yahoo", "alphavantage", "fred", "polygon", "twelvedata"]) {
+  for (const id of ["finnhub", "yahoo", "alphavantage", "fred", "twelvedata"]) {
     const rows = providerProbes.filter((p) => p.provider === id || p.provider.startsWith(id));
     const healthy = rows.some((r) => r.status === "healthy");
     const degraded = rows.some((r) => r.status === "degraded");
