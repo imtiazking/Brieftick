@@ -133,14 +133,37 @@ try {
     const stage = document.getElementById("wheelModuleStage");
     const gauge = stage?.querySelector(".live-gauge");
     const moodLabel = gauge?.querySelector(".live-gauge__headline-mood")?.textContent?.trim();
+    const compositeHeadline = gauge
+      ?.querySelector(".live-gauge__composite-score")
+      ?.textContent?.trim();
+    const vixDisplay = gauge?.querySelector(".gauge-vix-value")?.textContent?.trim();
+    const vixAsOf = gauge?.querySelector("[data-vix-asof]")?.textContent?.trim();
     const dataVix = gauge?.dataset?.vix;
     const rs = window.riskState;
+    const scoreStr = rs?.score != null ? String(Math.round(rs.score)) : null;
+    const rawVixStr = rs?.vix != null ? rs.vix.toFixed(1) : null;
+    const gaugeVixStr = rs?.gaugeVix != null ? rs.gaugeVix.toFixed(1) : null;
     return {
       hasGauge: !!gauge,
       moodLabel,
+      compositeHeadline,
+      vixDisplay,
+      vixAsOf,
       dataVix,
       rsLabel: rs?.label,
       labelsMatch: moodLabel === rs?.label,
+      compositeShown: compositeHeadline === scoreStr,
+      vixSeparate:
+        rs?.vix != null
+          ? vixDisplay === rawVixStr && compositeHeadline !== rawVixStr
+          : !!gauge?.querySelector(".gauge-vix-value"),
+      needleMatchesComposite:
+        dataVix && gaugeVixStr
+          ? Math.abs(parseFloat(dataVix) - parseFloat(gaugeVixStr)) < 0.2
+          : false,
+      noMisleadingVixScore:
+        !gauge?.textContent?.includes("Risk Score:") ||
+        !/Risk Score:\s*[\d.]+\s*VIX/i.test(gauge?.textContent || ""),
     };
   });
 
@@ -153,6 +176,29 @@ try {
   } else {
     pass("Gauge label present", riskModule.moodLabel || "loading");
   }
+
+  if (riskModule.compositeShown) {
+    pass("Composite score shown as primary", riskModule.compositeHeadline);
+  } else {
+    fail("Composite score shown as primary", JSON.stringify(riskModule));
+  }
+
+  if (riskModule.vixSeparate) {
+    pass("VIX shown separately from composite", `vix=${riskModule.vixDisplay}`);
+  } else if (riskModule.vixDisplay === "—") {
+    pass("VIX secondary row present", "awaiting FRED");
+  } else {
+    fail("VIX shown separately from composite", JSON.stringify(riskModule));
+  }
+
+  if (riskModule.needleMatchesComposite) {
+    pass("Needle data-vix matches composite gaugeVix", riskModule.dataVix);
+  } else {
+    fail("Needle data-vix matches composite gaugeVix", JSON.stringify(riskModule));
+  }
+
+  if (riskModule.noMisleadingVixScore) pass("No misleading Risk Score: X VIX copy");
+  else fail("Misleading Risk Score: X VIX copy still present");
 
   // Pulse strip
   const pulse = await page.evaluate(() => {

@@ -383,16 +383,33 @@ function moodListHtml(items) {
   return `<ul class="market-mood-list">${items.map((line) => `<li>${esc(line)}</li>`).join("")}</ul>`;
 }
 
+function formatFredVixAsOf(iso) {
+  if (!iso) return "As of —";
+  try {
+    const d = new Date(String(iso).includes("T") ? iso : `${iso}T12:00:00`);
+    return `As of ${d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}`;
+  } catch {
+    return `As of ${iso}`;
+  }
+}
+
 function heroVolatilityGauge() {
   const rs = typeof window !== "undefined" ? window.riskState : null;
-  const score = rs?.gaugeVix ?? 18;
-  const moodId = rs?.moodId ?? moodZoneFromVix(score).id;
-  const mood = moodZoneFromVix(score);
+  const needleVix = rs?.gaugeVix ?? 18;
+  const moodId = rs?.moodId ?? moodZoneFromVix(needleVix).id;
+  const mood = moodZoneFromVix(needleVix);
   const label = rs?.label || "Loading…";
-  const riskPct = vixToRiskScorePercent(score);
-  const geom = gaugeArcGeometry(score);
+  const compositeScore =
+    rs?.score != null && !Number.isNaN(rs.score) ? Math.round(rs.score) : "—";
+  const riskPct = vixToRiskScorePercent(needleVix);
+  const geom = gaugeArcGeometry(needleVix);
   const vixDisplay = rs?.vix != null ? rs.vix.toFixed(1) : "—";
-  return `<div class="live-chart live-gauge" data-vix="${score}" data-mood="${moodId}" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${riskPct.toFixed(0)}" aria-label="Market risk gauge · ${esc(label)}">
+  const vixAsOf = formatFredVixAsOf(
+    typeof window !== "undefined" ? window._vixFredDate : null
+  );
+  const ariaNow =
+    rs?.score != null && !Number.isNaN(rs.score) ? Math.round(rs.score) : riskPct.toFixed(0);
+  return `<div class="live-chart live-gauge" data-vix="${needleVix}" data-composite-score="${compositeScore}" data-mood="${moodId}" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${ariaNow}" aria-label="Market risk gauge · composite score ${compositeScore} · ${esc(label)}">
     <svg class="live-gauge__svg" viewBox="0 0 200 120" aria-label="Interactive market mood gauge">
       <path class="live-gauge__track" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" stroke-linecap="round"/>
       <path class="live-gauge__fill" d="M 24 100 A 76 76 0 0 1 176 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="calc(100 - var(--gauge-fill, 35))"/>
@@ -420,8 +437,10 @@ function heroVolatilityGauge() {
     </svg>
     <div class="live-gauge__headline" aria-live="polite">
       <span class="live-gauge__headline-kicker">Market Risk</span>
+      <strong class="live-gauge__composite-score gauge-composite-value" data-composite-score>${esc(String(compositeScore))}</strong>
+      <span class="live-gauge__composite-label">Composite Risk Score</span>
       <strong class="live-gauge__headline-mood" data-mood-label>${esc(label)}</strong>
-      <span class="live-gauge__headline-zone" data-mood-zone>VIX ${esc(vixDisplay)} · composite gauge</span>
+      <span class="live-gauge__headline-zone" data-mood-zone>Regime · needle reflects composite score</span>
     </div>
     <div class="live-gauge__zone-legend" data-zone-legend role="group" aria-label="Mood zones">
       ${gaugeZoneLegendHtml()}
@@ -429,11 +448,20 @@ function heroVolatilityGauge() {
     <p class="live-gauge__zone-tip" data-zone-tip hidden></p>
     <div class="live-gauge__rating" aria-live="polite">
       <p class="live-gauge__rating-row live-gauge__rating-row--score">
-        <span class="live-gauge__rating-label">Risk Score:</span>
-        <strong class="live-gauge__rating-score"><span class="live-gauge__value gauge-value">${esc(vixDisplay)}</span> VIX</strong>
+        <span class="live-gauge__rating-label">Composite Risk Score</span>
+        <strong class="live-gauge__rating-score"><span class="gauge-composite-value live-gauge__value">${esc(String(compositeScore))}</span><span class="gauge-composite-suffix">/100</span></strong>
+      </p>
+      <p class="live-gauge__rating-row live-gauge__rating-row--regime">
+        <span class="live-gauge__rating-label">Regime</span>
+        <strong class="live-gauge__regime" data-mood-label-regime>${esc(label)}</strong>
+      </p>
+      <p class="live-gauge__rating-row live-gauge__rating-row--vix-secondary">
+        <span class="live-gauge__rating-label">VIX (FRED Close)</span>
+        <strong class="live-gauge__vix-secondary"><span class="gauge-vix-value">${esc(vixDisplay)}</span></strong>
+        <span class="live-gauge__vix-asof" data-vix-asof>${esc(vixAsOf)}</span>
       </p>
       <p class="live-gauge__rating-row">
-        <span class="live-gauge__rating-label">Confidence Level:</span>
+        <span class="live-gauge__rating-label">Confidence Level</span>
         <strong class="live-gauge__confidence" data-mood-confidence>${esc(rs?.confidence || mood.confidence)}</strong>
       </p>
     </div>

@@ -13,6 +13,7 @@ import {
   vixFromArcAngleRad,
   vixToRiskScorePercent,
 } from "./market-mood.js";
+import { formatFredVixAsOf } from "/lib/market-risk-ui.js";
 import { getFlowIndustryDetail, renderFlowDetailContent } from "./flow-bubble-detail.js";
 
 const PROBES = {
@@ -83,9 +84,10 @@ function bindLiveGauge(hero) {
 
   const needleLine = wrap.querySelector(".live-gauge__needle-line");
   const marker = wrap.querySelector(".live-gauge__marker");
-  const valueEl = wrap.querySelector(".live-gauge__value");
   const moodLabelEl = wrap.querySelector("[data-mood-label]");
+  const regimeLabelEl = wrap.querySelector("[data-mood-label-regime]");
   const moodZoneEl = wrap.querySelector("[data-mood-zone]");
+  const vixAsOfEl = wrap.querySelector("[data-vix-asof]");
   const zoneLegend = wrap.querySelector("[data-zone-legend]");
   const confidenceEl = wrap.querySelector("[data-mood-confidence]");
   const zoneTipEl = wrap.querySelector("[data-zone-tip]");
@@ -127,15 +129,30 @@ function bindLiveGauge(hero) {
       marker.setAttribute("cy", String(geom.markerY));
       marker.setAttribute("fill", rs?.mood?.color || m.color);
     }
-    if (valueEl) {
-      valueEl.textContent =
-        rs?.vix != null && !Number.isNaN(rs.vix) ? rs.vix.toFixed(1) : riskPct.toFixed(1);
+    const compositeScore =
+      rs?.score != null && !Number.isNaN(rs.score)
+        ? Math.round(rs.score)
+        : Math.round(riskPct);
+    wrap.querySelectorAll(".gauge-composite-value").forEach((el) => {
+      el.textContent = String(compositeScore);
+    });
+    if (rs?.score != null && !Number.isNaN(rs.score)) {
+      wrap.dataset.compositeScore = String(compositeScore);
+    }
+    const vixEl = wrap.querySelector(".gauge-vix-value");
+    if (vixEl) {
+      vixEl.textContent =
+        rs?.vix != null && !Number.isNaN(rs.vix) ? rs.vix.toFixed(1) : "—";
+    }
+    if (vixAsOfEl && typeof window !== "undefined" && window._vixFredDate) {
+      vixAsOfEl.textContent = formatFredVixAsOf(window._vixFredDate);
     }
     if (confidenceEl) confidenceEl.textContent = rs?.confidence || m.confidence;
     if (moodLabelEl) moodLabelEl.textContent = liveRegime || m.label;
+    if (regimeLabelEl) regimeLabelEl.textContent = liveRegime || m.label;
     if (moodZoneEl) {
       moodZoneEl.textContent = liveRegime
-        ? `VIX ${rs?.vix != null ? rs.vix.toFixed(1) : "—"} · composite gauge`
+        ? "Regime · needle reflects composite score"
         : `Current Zone: ${m.label}`;
     }
     if (zoneLegend) {

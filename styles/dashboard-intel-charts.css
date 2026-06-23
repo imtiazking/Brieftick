@@ -169,6 +169,64 @@
   color: #e8c178;
 }
 
+.gauge-composite-suffix {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(232, 236, 245, 0.45);
+  margin-left: 2px;
+}
+
+.live-gauge__rating-row--regime .live-gauge__regime {
+  font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.live-gauge__rating-row--vix-secondary {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+  color: rgba(232, 236, 245, 0.55);
+}
+
+.live-gauge__rating-row--vix-secondary .live-gauge__rating-label {
+  color: rgba(232, 236, 245, 0.38);
+}
+
+.live-gauge__vix-secondary {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(232, 236, 245, 0.72);
+}
+
+.live-gauge__vix-asof {
+  flex-basis: 100%;
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: rgba(232, 236, 245, 0.38);
+}
+
+.live-gauge__composite-score {
+  font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+  font-size: clamp(2rem, 7vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #e8c178;
+}
+
+.live-gauge__composite-label {
+  font-family: var(--dash-mono, "JetBrains Mono", monospace);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 236, 245, 0.42);
+}
+
 .live-gauge__confidence {
   font-family: var(--dash-mono, "JetBrains Mono", monospace);
   font-size: 13px;
@@ -195,7 +253,7 @@
 
 .live-gauge__headline-mood {
   font-family: var(--dash-display, "Playfair Display", Georgia, serif);
-  font-size: clamp(1.5rem, 5vw, 1.85rem);
+  font-size: clamp(1.1rem, 4vw, 1.35rem);
   font-weight: 500;
   line-height: 1.15;
   color: rgba(255, 255, 255, 0.96);
@@ -1519,7 +1577,11 @@
   }
 
   .live-gauge__headline-mood {
-    font-size: 1.45rem;
+    font-size: 1.15rem;
+  }
+
+  .live-gauge__composite-score {
+    font-size: 2rem;
   }
 
   .live-gauge__rating-score {
