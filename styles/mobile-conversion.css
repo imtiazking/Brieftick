@@ -17,6 +17,7 @@
     gap: 12px;
     padding: 10px 16px;
     min-height: 56px;
+    z-index: 200 !important;
   }
 
   .nav-a__start {
@@ -355,6 +356,12 @@
 
   #page-about .about-principles {
     grid-template-columns: 1fr !important;
+  }
+
+  #page-about .about-wrap,
+  #page-about .about-section p {
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   #page-about .about-hero h1,
