@@ -321,8 +321,7 @@
   }
 
   /* ── Mobile immersive atmosphere (CSS-only, no canvas/GSAP) ── */
-  .cw-mobile-bg,
-  html[data-split-about] #splitAboutMount {
+  .cw-mobile-bg {
     position: fixed;
     inset: 0;
     z-index: 0;
@@ -337,8 +336,7 @@
       linear-gradient(180deg, #050608 0%, #08090b 48%, #040506 100%);
   }
 
-  .cw-mobile-bg::before,
-  html[data-split-about] #splitAboutMount::before {
+  .cw-mobile-bg::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -390,8 +388,7 @@
     mask-image: linear-gradient(180deg, #000 0%, #000 58%, transparent 92%);
   }
 
-  .cw-mobile-bg::after,
-  html[data-split-about] #splitAboutMount::after {
+  .cw-mobile-bg::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -422,6 +419,35 @@
 
   html[data-split-about] #splitAboutMount .cw-env {
     pointer-events: none;
+  }
+
+  /* About mount: absolute inside page (Safari fixed overlay bug) */
+  html[data-mobile-conversion][data-split-about] #page-about.active #splitAboutMount {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  html[data-mobile-conversion][data-split-about] #page-about.active #splitAboutMount .cw-mobile-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100svh;
+  }
+
+  html[data-split-landing] #page-landing:not(.active) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
   }
 
   html[data-split-landing] .split-atmosphere,
@@ -621,14 +647,20 @@
     display: block !important;
     min-height: 100svh;
     height: auto !important;
-    overflow-x: hidden;
-    overflow-y: visible;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    isolation: isolate;
+  }
+
+  html[data-mobile-conversion] #page-about.active {
+    overflow: visible !important;
   }
 
   html[data-split-about] #page-about.active .about-wrap,
   html[data-split-pricing] #page-pricing.active .pricing {
     position: relative;
-    z-index: 2;
+    z-index: 10;
+    isolation: isolate;
     pointer-events: auto;
   }
 }

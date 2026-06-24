@@ -67,24 +67,50 @@ async function checkViewport(browser, width) {
   await page.click("#navMenuBtn");
   await page.waitForTimeout(400);
   await page.click("#navDrawerLinks .nav-link[data-route='about']");
-  await page.waitForTimeout(1500);
-  result.aboutRoute = await page.evaluate(() => ({
-    activeRoute: window._activeRoute,
-    pageActive: document.getElementById("page-about")?.classList.contains("active"),
-    pageDisplay: document.getElementById("page-about")
-      ? getComputedStyle(document.getElementById("page-about")).display
-      : null,
-    splitAbout: document.documentElement.hasAttribute("data-split-about"),
-    splitLanding: document.documentElement.hasAttribute("data-split-landing"),
-    aboutVisible: (() => {
-      const el = document.querySelector("#page-about .about-wrap, #page-about .about-hero");
-      if (!el) return false;
-      const r = el.getBoundingClientRect();
-      return r.height > 0 && r.width > 0;
-    })(),
-    scrollHeight: document.documentElement.scrollHeight,
-    hScroll: document.documentElement.scrollWidth > document.documentElement.clientWidth,
-  }));
+  await page.waitForTimeout(2000);
+  if (width === 390) {
+    await page.screenshot({
+      path: `reports/mobile-about-diagnosis/verify-about-${width}.png`,
+      fullPage: true,
+    });
+  }
+  result.aboutRoute = await page.evaluate(() => {
+    const mission = document.querySelector("#about-mission h2");
+    const topEl = document.elementFromPoint(195, 320);
+    const mount = document.querySelector("#splitAboutMount");
+    return {
+      activeRoute: window._activeRoute,
+      pageActive: document.getElementById("page-about")?.classList.contains("active"),
+      pageDisplay: document.getElementById("page-about")
+        ? getComputedStyle(document.getElementById("page-about")).display
+        : null,
+      pageZIndex: document.getElementById("page-about")
+        ? getComputedStyle(document.getElementById("page-about")).zIndex
+        : null,
+      splitAbout: document.documentElement.hasAttribute("data-split-about"),
+      splitLanding: document.documentElement.hasAttribute("data-split-landing"),
+      mobileBgMounted: !!mount?.querySelector(".cw-mobile-bg"),
+      mountPosition: mount ? getComputedStyle(mount).position : null,
+      democratiseText: mission?.textContent?.trim() ?? null,
+      democratiseVisible:
+        !!mission &&
+        mission.getBoundingClientRect().height > 0 &&
+        getComputedStyle(mission).opacity !== "0" &&
+        getComputedStyle(mission).visibility !== "hidden",
+      bodyIncludesDemocratise: document.body.innerText.includes("Democratise market intelligence"),
+      elementFromPoint: topEl
+        ? `${topEl.tagName}.${(topEl.className || "").toString().split(" ")[0] || ""}`
+        : null,
+      aboutVisible: (() => {
+        const el = document.querySelector("#page-about .about-wrap");
+        if (!el) return false;
+        const r = el.getBoundingClientRect();
+        return r.height > 0 && r.width > 0;
+      })(),
+      scrollHeight: document.documentElement.scrollHeight,
+      hScroll: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    };
+  });
 
   // Direct hash/tab routes
   await page.goto(BASE + "/?tab=pricing", { waitUntil: "load", timeout: 90000 });
@@ -118,6 +144,9 @@ async function checkViewport(browser, width) {
     result.aboutRoute?.activeRoute === "about" &&
     result.aboutRoute?.pageActive &&
     result.aboutRoute?.aboutVisible &&
+    result.aboutRoute?.bodyIncludesDemocratise &&
+    result.aboutRoute?.democratiseVisible &&
+    result.aboutRoute?.mobileBgMounted &&
     result.directPricing &&
     result.directAbout &&
     result.desktopNav?.pricing &&

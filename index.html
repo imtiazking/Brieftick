@@ -5659,8 +5659,14 @@ function route(name){
   if(name === 'portfolio-insights' && typeof window.mountPortfolioInsights === 'function'){
     requestAnimationFrame(()=>window.mountPortfolioInsights());
   }
-  window.scrollTo({top:0,behavior:'instant'});
   if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
+  try {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  } catch (_) {
+    window.scrollTo(0, 0);
+  }
   if (name === 'dashboard' && typeof liveRefreshDashboard === 'function') {
     liveRefreshDashboard().catch(() => {});
   }
