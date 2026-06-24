@@ -18,6 +18,13 @@
     padding: 10px 16px;
     min-height: 56px;
     z-index: 200 !important;
+    pointer-events: auto;
+  }
+
+  .nav-a__end,
+  .nav-a__end .auth-signup-btn,
+  .nav-a__menu-btn {
+    pointer-events: auto;
   }
 
   .nav-a__start {
@@ -290,13 +297,28 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    pointer-events: none;
     overflow: hidden;
+  }
+
+  html[data-split-landing] .split-landing-mount .cw-mobile-bg,
+  html[data-split-about] #splitAboutMount .cw-env {
+    pointer-events: none;
   }
 
   .cw--mobile-static {
     position: relative;
     z-index: 1;
+    pointer-events: auto;
+  }
+
+  .cw--mobile-static .cw-scenes,
+  .cw--mobile-static .cw-scene,
+  .cw--mobile-static .cw-scene-inner,
+  .cw--mobile-static .cw-hero-ctas--mobile,
+  .cw--mobile-static .cw-hero-cta-btn,
+  .cw--mobile-static button,
+  .cw--mobile-static a {
+    pointer-events: auto;
   }
 
   .cw-scene--hero .cw-ed-line__curtain {
@@ -404,6 +426,13 @@
   .about-stat {
     min-width: 0;
     flex: 1 1 calc(50% - 8px);
+  }
+
+  #page-about .about-wrap,
+  #page-about .about-hero-cta--mobile,
+  #page-about .about-hero-cta__btn,
+  #page-about .about-hero-cta__continue {
+    pointer-events: auto;
   }
 
   .about-hero-cta--mobile {
