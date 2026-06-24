@@ -281,28 +281,125 @@
     display: none !important;
   }
 
-  .cw-mobile-bg {
+  /* ── Mobile immersive atmosphere (CSS-only, no canvas/GSAP) ── */
+  .cw-mobile-bg,
+  html[data-split-about] #splitAboutMount {
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    overflow: hidden;
+    isolation: isolate;
     background:
-      radial-gradient(ellipse 90% 55% at 50% -8%, rgba(212, 168, 90, 0.14), transparent 58%),
-      radial-gradient(ellipse 70% 45% at 100% 35%, rgba(78, 120, 200, 0.08), transparent 55%),
-      linear-gradient(180deg, #06080f 0%, #05060a 42%, #040508 100%);
+      radial-gradient(ellipse 100% 85% at 50% 42%, transparent 28%, rgba(0, 0, 0, 0.62) 100%),
+      radial-gradient(circle at 18% 35%, rgba(40, 80, 140, 0.24), transparent 42%),
+      radial-gradient(circle at 82% 30%, rgba(185, 135, 55, 0.2), transparent 45%),
+      radial-gradient(ellipse 55% 40% at 50% 18%, rgba(78, 120, 200, 0.08), transparent 62%),
+      linear-gradient(180deg, #050608 0%, #08090b 48%, #040506 100%);
   }
 
-  html[data-split-landing] .split-landing-mount,
-  html[data-split-about] #splitAboutMount {
+  .cw-mobile-bg::before,
+  html[data-split-about] #splitAboutMount::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent calc(14% - 0.5px),
+        rgba(100, 145, 210, 0.035) calc(14% - 0.5px),
+        rgba(100, 145, 210, 0.065) 14%,
+        transparent calc(14% + 14px)
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent calc(34% - 0.5px),
+        rgba(130, 165, 220, 0.025) calc(34% - 0.5px),
+        rgba(130, 165, 220, 0.05) 34%,
+        transparent calc(34% + 10px)
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent calc(52% - 0.5px),
+        rgba(170, 195, 235, 0.02) calc(52% - 0.5px),
+        rgba(170, 195, 235, 0.045) 52%,
+        transparent calc(52% + 8px)
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent calc(72% - 0.5px),
+        rgba(212, 168, 90, 0.02) calc(72% - 0.5px),
+        rgba(212, 168, 90, 0.04) 72%,
+        transparent calc(72% + 12px)
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent calc(88% - 0.5px),
+        rgba(185, 135, 55, 0.018) calc(88% - 0.5px),
+        rgba(185, 135, 55, 0.038) 88%,
+        transparent calc(88% + 9px)
+      ),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 22%, transparent 72%, rgba(0, 0, 0, 0.14) 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 58%, transparent 92%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 58%, transparent 92%);
+  }
+
+  .cw-mobile-bg::after,
+  html[data-split-about] #splitAboutMount::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.14;
+    background-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E"),
+      radial-gradient(circle at 8% 14%, rgba(255, 255, 255, 0.42) 0.45px, transparent 0.55px),
+      radial-gradient(circle at 22% 68%, rgba(255, 255, 255, 0.28) 0.4px, transparent 0.5px),
+      radial-gradient(circle at 41% 28%, rgba(255, 255, 255, 0.32) 0.35px, transparent 0.45px),
+      radial-gradient(circle at 63% 52%, rgba(212, 168, 90, 0.35) 0.4px, transparent 0.5px),
+      radial-gradient(circle at 79% 22%, rgba(255, 255, 255, 0.3) 0.35px, transparent 0.45px),
+      radial-gradient(circle at 91% 74%, rgba(255, 255, 255, 0.25) 0.35px, transparent 0.45px);
+    background-size: 180px 180px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    mix-blend-mode: overlay;
+  }
+
+  html[data-split-landing] .split-landing-mount {
     position: absolute;
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    pointer-events: none;
   }
 
-  html[data-split-landing] .split-landing-mount .cw-mobile-bg,
+  html[data-split-landing] .split-landing-mount .cw-mobile-bg {
+    pointer-events: none;
+  }
+
   html[data-split-about] #splitAboutMount .cw-env {
     pointer-events: none;
+  }
+
+  html[data-split-landing] .split-atmosphere,
+  html[data-split-about] .split-atmosphere,
+  html[data-split-landing] body > .split-river,
+  html[data-split-about] body > .split-river {
+    display: none !important;
+  }
+
+  html[data-split-about] #page-about {
+    background: #050608;
+  }
+
+  html[data-split-about] #page-about .about-wrap {
+    position: relative;
+    z-index: 2;
   }
 
   .cw--mobile-static {
