@@ -103,8 +103,33 @@
     white-space: nowrap;
   }
 
-  .nav-a__end .nav-settings,
-  .nav-a__end #authSignedIn {
+  .nav-a__end .nav-settings {
+    display: none !important;
+  }
+
+  html[data-mobile-conversion] .nav-a__end #authSignedOut {
+    display: flex !important;
+  }
+
+  html[data-mobile-conversion] .nav-a__end #authSignedIn {
+    display: none !important;
+  }
+
+  html[data-mobile-conversion] body.bt-mobile-authed .nav-a__end #authSignedOut {
+    display: none !important;
+  }
+
+  html[data-mobile-conversion] body.bt-mobile-authed .nav-a__end #authSignedIn {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+  }
+
+  html[data-mobile-conversion] body.bt-mobile-authed .nav-a__end .auth-signup-btn {
+    display: none !important;
+  }
+
+  html[data-mobile-conversion] body.bt-mobile-authed .nav-a__end .auth-plan-badge {
     display: none !important;
   }
 
@@ -250,12 +275,32 @@
   }
 
   .nav-a__drawer-auth .auth-signin-btn,
-  .nav-a__drawer-auth .auth-signup-btn {
+  .nav-a__drawer-auth .nav-drawer-signin,
+  .nav-a__drawer-auth .auth-signup-btn,
+  .nav-a__drawer-auth .nav-drawer-signup,
+  .nav-a__drawer-auth .nav-drawer-dashboard {
     min-height: 48px;
     width: 100%;
     justify-content: center;
     text-align: center;
     border-radius: 12px;
+  }
+
+  /* Clerk modal must sit above drawer + landing atmosphere on mobile */
+  .cl-modalBackdrop,
+  .cl-modalContent,
+  #clerk-components {
+    pointer-events: auto !important;
+  }
+
+  .cl-modalContent {
+    z-index: 10001 !important;
+  }
+
+  .cl-formButtonPrimary,
+  .cl-socialButtonsBlockButton,
+  .cl-formFieldInput {
+    touch-action: manipulation;
   }
 
   body.nav-drawer-open {

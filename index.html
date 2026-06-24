@@ -1964,6 +1964,24 @@ html.bt-paused *, html.bt-paused *::before, html.bt-paused *::after { animation-
 .cl-footerActionLink {
   color: #d4a85a !important;
 }
+.cl-formFieldErrorText,
+.cl-formFieldError {
+  color: #ff5b6e !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.cl-modalBackdrop {
+  z-index: 10000 !important;
+}
+.cl-modalContent {
+  z-index: 10001 !important;
+  pointer-events: auto !important;
+}
+.cl-formButtonPrimary,
+.cl-socialButtonsBlockButton {
+  touch-action: manipulation;
+  cursor: pointer;
+}
 .cl-identityPreviewText,
 .cl-userPreviewTextContainer {
   color: #e8ecf5 !important;
@@ -10980,6 +10998,7 @@ window.initClerk = initClerk;
 async function _onAuthChange(user) {
   _clerkUser = user || null;
   window._clerkUser = _clerkUser;
+  document.body.classList.toggle('bt-mobile-authed', !!user);
   if (user && typeof window.btQaRememberClerkUser === 'function') {
     window.btQaRememberClerkUser(user);
   }
@@ -11010,6 +11029,9 @@ async function _onAuthChange(user) {
     }
     if (typeof window.BrieftickSplitLanding?.syncCtas === 'function') {
       window.BrieftickSplitLanding.syncCtas();
+    }
+    if (typeof window.BrieftickMobileNav?.refreshDrawerAuth === 'function') {
+      window.BrieftickMobileNav.refreshDrawerAuth();
     }
     return;
   }
@@ -11069,6 +11091,26 @@ async function _onAuthChange(user) {
 
   if (typeof window.BrieftickSplitLanding?.syncCtas === 'function') {
     window.BrieftickSplitLanding.syncCtas();
+  }
+
+  if (typeof window.BrieftickMobileNav?.refreshDrawerAuth === 'function') {
+    window.BrieftickMobileNav.refreshDrawerAuth();
+  }
+
+  // Mobile: after sign-in on marketing pages, route to dashboard so login has a visible outcome
+  if (user && window.matchMedia('(max-width: 768px)').matches) {
+    try {
+      const hasIntent = sessionStorage.getItem('bt_nav_intent') || sessionStorage.getItem('bt_checkout_intent');
+      if (!hasIntent) {
+        const activeId = document.querySelector('.page.active')?.id?.replace('page-', '');
+        if (activeId && _PUBLIC_TABS.has(activeId)) {
+          setTimeout(() => {
+            if (window.Clerk?.close) window.Clerk.close();
+            window.routeWithAuth?.('dashboard');
+          }, 500);
+        }
+      }
+    } catch (_) {}
   }
 
   if (typeof window.MissionPathController?.onAuthReady === 'function') {
