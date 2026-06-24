@@ -850,6 +850,7 @@ body[data-dash-lab-concept="wheel"] #panelWheel.is-active .intel-wheel-scene {
   margin: 0 auto 18px;
   padding: 0 12px 14px;
   text-align: center;
+  pointer-events: none;
 }
 
 .wheel-pulse-strip__tag {
@@ -890,7 +891,7 @@ body[data-dash-lab-concept="wheel"] #panelWheel.is-active .intel-wheel-scene {
   margin-bottom: 28px;
   overflow: hidden;
   cursor: grab;
-  touch-action: pan-y;
+  touch-action: manipulation;
   user-select: none;
   -webkit-mask-image: linear-gradient(
     90deg,

@@ -5648,12 +5648,29 @@ const BTRuntime = (() => {
 let _cgPhysicsRAF = null;
 let _cgPhysicsState = null;
 
+function _scheduleAppRouteMount(name) {
+  const run = () => {
+    if (name === 'why' && typeof window.mountWhatsMovingBriefing === 'function') {
+      requestAnimationFrame(() => window.mountWhatsMovingBriefing());
+    }
+    if (name === 'earnings' && typeof window.mountEarningsPage === 'function') {
+      requestAnimationFrame(() => window.mountEarningsPage());
+    }
+    if (name === 'portfolio-insights' && typeof window.mountPortfolioInsights === 'function') {
+      requestAnimationFrame(() => window.mountPortfolioInsights());
+    }
+  };
+  const needsApp = !['landing', 'pricing', 'about'].includes(name);
+  if (needsApp && typeof window.__btLoadAppModules === 'function') {
+    window.__btLoadAppModules().then(run).catch(run);
+  } else {
+    run();
+  }
+}
+
 function route(name){
   if (name === 'impact' || name === 'brief') name = 'why';
   if (name === 'options') name = 'dashboard';
-  if (typeof window.__btLoadAppModules === 'function' && !['landing', 'pricing', 'about'].includes(name)) {
-    window.__btLoadAppModules();
-  }
   window._activeRoute = name;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const target=document.getElementById('page-'+name);
@@ -5668,15 +5685,7 @@ function route(name){
   if(name === 'portfolio' && typeof refreshPortfolioAnalysis === 'function'){
     setTimeout(()=>refreshPortfolioAnalysis(null, false), 0);
   }
-  if(name === 'why' && typeof window.mountWhatsMovingBriefing === 'function'){
-    requestAnimationFrame(()=>window.mountWhatsMovingBriefing());
-  }
-  if(name === 'earnings' && typeof window.mountEarningsPage === 'function'){
-    requestAnimationFrame(()=>window.mountEarningsPage());
-  }
-  if(name === 'portfolio-insights' && typeof window.mountPortfolioInsights === 'function'){
-    requestAnimationFrame(()=>window.mountPortfolioInsights());
-  }
+  _scheduleAppRouteMount(name);
   if (window.BrieftickSplitTheme) window.BrieftickSplitTheme.onRoute(name);
   try {
     window.scrollTo(0, 0);
@@ -5727,7 +5736,7 @@ function routeWithAuth(name) {
     if (typeof window.btQaSaveRoute === 'function') window.btQaSaveRoute(name);
     return;
   }
-  if (name === 'logic' && (isLogicPreviewActive() || typeof _clerkUser !== 'undefined' && _clerkUser)) {
+  if (name === 'logic' && (isLogicPreviewActive() || window._clerkUser)) {
     window.route(name);
     return;
   }
@@ -5739,12 +5748,12 @@ function routeWithAuth(name) {
     if (typeof window.btRedirectToWheelDashboard === 'function' && window.btRedirectToWheelDashboard()) {
       return;
     }
-    if (isDashboardPreviewActive() || (typeof _clerkUser !== 'undefined' && _clerkUser)) {
+    if (isDashboardPreviewActive() || window._clerkUser) {
       window.route(name);
       return;
     }
   }
-  if (typeof _clerkUser === 'undefined' || !_clerkUser) {
+  if (!window._clerkUser) {
     try { sessionStorage.setItem('bt_nav_intent', name); } catch (_) {}
     const openGate = () => window.Clerk?.openSignUp?.();
     if (typeof window.ensureClerkReady === 'function') {
