@@ -3477,22 +3477,37 @@ h1,h2,h3{
   <!-- Clerk JS SDK — deferred on mobile until auth interaction -->
   <script>
     window.__btEnsureClerk = function (cb) {
-      if (window.Clerk) {
-        cb?.();
-        return Promise.resolve(window.Clerk);
+      if (window.__btClerkInitialized && window.Clerk) {
+        const done = cb?.();
+        return Promise.resolve(done).then(() => window.Clerk);
       }
       if (!window.__btClerkLoading) {
-        window.__btClerkLoading = new Promise(function (resolve) {
+        window.__btClerkLoading = new Promise(function (resolve, reject) {
           var s = document.createElement('script');
           s.async = true;
           s.crossOrigin = 'anonymous';
           s.setAttribute('data-clerk-publishable-key', 'pk_test_YmVsb3ZlZC13cmVuLTEwLmNsZXJrLmFjY291bnRzLmRldiQ');
           s.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
-          s.onload = function () { resolve(window.Clerk); cb?.(); };
+          s.onerror = function () { reject(new Error('Clerk script failed to load')); };
+          s.onload = function () {
+            var boot = typeof window.initClerk === 'function'
+              ? window.initClerk()
+              : Promise.resolve();
+            Promise.resolve(boot).then(function () {
+              resolve(window.Clerk);
+              cb?.();
+            }).catch(reject);
+          };
           document.head.appendChild(s);
         });
       }
-      return window.__btClerkLoading.then(function (c) { cb?.(); return c; });
+      return window.__btClerkLoading.then(function (c) {
+        if (!window.__btClerkInitialized && typeof window.initClerk === 'function') {
+          return window.initClerk().then(function () { cb?.(); return c; });
+        }
+        cb?.();
+        return c;
+      });
     };
     if (!window.__BT_MOBILE_CONVERSION__) {
       window.__btEnsureClerk();
@@ -3683,7 +3698,7 @@ h1,h2,h3{
     <div class="auth-area" id="authArea">
       <div id="authSignedOut" style="display:flex;gap:8px;align-items:center">
         <button type="button" class="auth-signin-btn" id="authSignInBtn">Sign In</button>
-        <button type="button" class="auth-signup-btn" id="authSignUpBtn">Start Free</button>
+        <button type="button" class="auth-signup-btn mobile-start-free" id="authSignUpBtn" data-auth-action="signup">Start Free</button>
       </div>
       <div id="authSignedIn" style="display:none;align-items:center;gap:10px">
         <span class="auth-plan-badge free" id="authPlanBadge">Free</span>
@@ -5727,7 +5742,12 @@ function routeWithAuth(name) {
   }
   if (typeof _clerkUser === 'undefined' || !_clerkUser) {
     try { sessionStorage.setItem('bt_nav_intent', name); } catch (_) {}
-    window.Clerk?.openSignUp();
+    const openGate = () => window.Clerk?.openSignUp?.();
+    if (typeof window.ensureClerkReady === 'function') {
+      window.ensureClerkReady().then(openGate).catch(() => {});
+    } else {
+      openGate();
+    }
     return;
   }
   window.route(name);
@@ -10913,6 +10933,8 @@ function _refreshScannerOnAccessChange() {
 
 async function initClerk() {
   if (!window.Clerk) return;
+  if (window.__btClerkInitialized) return window.__btClerkInitPromise;
+  window.__btClerkInitPromise = (async () => {
   try {
     await window.Clerk.load({
       appearance: {
@@ -10963,10 +10985,14 @@ async function initClerk() {
     // Listen for future sign-in / sign-out events
     window.Clerk.addListener(({ user }) => _onAuthChange(user));
 
+    window.__btClerkInitialized = true;
   } catch (e) {
     console.warn('[Clerk] init failed:', e.message);
   }
+  })();
+  return window.__btClerkInitPromise;
 }
+window.initClerk = initClerk;
 
 async function _onAuthChange(user) {
   _clerkUser = user || null;
@@ -11420,8 +11446,14 @@ function loadWimWithLimit(sym) {
 // Access helpers are set by /lib/terminal-access.bridge.js (hasTerminalAccess, isAdmin, isTerminal, isFree).
 
 // Global auth helpers (also used before Clerk loads)
-window.clerkSignIn  = () => window.__btEnsureClerk?.(() => window.Clerk?.openSignIn()) ?? window.Clerk?.openSignIn();
-window.clerkSignUp  = () => window.__btEnsureClerk?.(() => window.Clerk?.openSignUp()) ?? window.Clerk?.openSignUp();
+window.clerkSignIn  = () => window.ensureClerkReady?.().then(() => window.Clerk?.openSignIn?.());
+window.clerkSignUp  = () => window.ensureClerkReady?.().then(() => window.Clerk?.openSignUp?.());
+window.ensureClerkReady = async function () {
+  if (window.__btClerkInitialized && window.Clerk) return window.Clerk;
+  if (typeof window.__btEnsureClerk === 'function') await window.__btEnsureClerk();
+  if (typeof window.initClerk === 'function' && !window.__btClerkInitialized) await window.initClerk();
+  return window.Clerk;
+};
 
 // On page load: if public user somehow lands on a protected tab, redirect to landing
 window.addEventListener('load', () => {
