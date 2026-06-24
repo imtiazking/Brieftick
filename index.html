@@ -3428,7 +3428,9 @@ h1,h2,h3{
 .about-stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:28px 0}
 .about-stat{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px}
 .about-stat-val{font-family:var(--display);font-size:32px;font-weight:700;color:var(--gold);line-height:1}
-.about-stat-label{font-size:12px;color:var(--ink-dim);margin-top:6px;line-height:1.4}
+.about-stat-label{font-size:12px;color:var(--ink-dim);margin-top:6px;line-height:1.4;display:flex;flex-direction:column;gap:4px}
+.about-stat-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(232,236,245,.78)}
+.about-stat-detail{font-size:12px;color:var(--ink-dim);line-height:1.45}
 .about-cta-box{background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(212,175,55,.03));
   border:1px solid rgba(212,175,55,.25);border-radius:16px;padding:40px;text-align:center;margin-top:48px}
 .about-cta-box h2{font-family:var(--display);font-size:clamp(20px,2.5vw,30px);font-weight:600;
@@ -5384,7 +5386,7 @@ h1,h2,h3{
     <div class="about-hero">
       <h1>Markets move fast.<br><span id="aboutFlip1">Understanding them</span><br>shouldn't require a <em><span id="aboutFlip2">Bloomberg terminal.</span></em></h1>
       <p class="about-hero-desc about-hero-desc--full">FORGENIQ was built for a simple reason: story-first market intelligence has always been locked behind expensive platforms, jargon, and noise. We're changing that by translating complex market signals into plain English, explainable context for everyone from seasoned traders to first-time investors.</p>
-      <p class="about-hero-desc about-hero-desc--short">Story-first market intelligence in plain English — built for investors who want context, not jargon.</p>
+      <p class="about-hero-desc about-hero-desc--short">Story-first market intelligence in plain English, built for investors who want context, not jargon.</p>
       <div class="about-hero-cta about-hero-cta--mobile">
         <button type="button" class="btn-primary about-hero-cta__btn" onclick="clerkSignUp()">Start Free</button>
         <a href="#about-mission" class="about-hero-cta__continue">Continue reading ↓</a>
@@ -5393,6 +5395,7 @@ h1,h2,h3{
 
     <!-- Mission -->
     <div class="about-section" id="about-mission">
+      <p class="about-section-label">Our mission</p>
       <h2>Democratise market intelligence.</h2>
       <p>The same tools that help hedge funds understand why markets are moving have historically been inaccessible to individual investors. FORGENIQ closes that gap. Not by simplifying the data, but by making it legible.</p>
       <p>We lead with stories: short, connected narratives. Then we show the data behind them. Portfolio, markets, insiders, options, and macro signals all connect through the same intelligence graph, so you always know what you're looking at and why it matters.</p>
@@ -5403,25 +5406,36 @@ h1,h2,h3{
     <div class="about-stat-row">
       <div class="about-stat">
         <div class="about-stat-val">12</div>
-        <div class="about-stat-label">modules · one intelligence graph</div>
+        <div class="about-stat-label">
+          <span class="about-stat-kicker">Modules</span>
+          <span class="about-stat-detail">One intelligence graph</span>
+        </div>
       </div>
       <div class="about-stat">
         <div class="about-stat-val">35+</div>
-        <div class="about-stat-label">Live data sources including Finnhub, Polygon, SEC EDGAR</div>
+        <div class="about-stat-label">
+          <span class="about-stat-kicker">Live data sources</span>
+          <span class="about-stat-detail">Finnhub, Polygon, SEC EDGAR</span>
+        </div>
       </div>
       <div class="about-stat">
-        <div class="about-stat-val">Real‑time</div>
-        <div class="about-stat-label">Market data with no daily credit limits on core feeds</div>
+        <div class="about-stat-val">Real-time</div>
+        <div class="about-stat-label">
+          <span class="about-stat-detail">Market data with no daily credit limits on core feeds</span>
+        </div>
       </div>
       <div class="about-stat">
-        <div class="about-stat-val">Story‑first</div>
-        <div class="about-stat-label">Connected narratives and plain-English context before the tables</div>
+        <div class="about-stat-val">Story-first</div>
+        <div class="about-stat-label">
+          <span class="about-stat-detail">Connected narratives and plain-English context before the tables</span>
+        </div>
       </div>
     </div>
 
     <!-- Principles -->
     <div class="about-section">
-      <h2>Principles we build by.</h2>
+      <p class="about-section-label">Principles</p>
+      <h2>What we build by.</h2>
       <div class="about-principles">
         <div class="about-principle">
           <div class="about-principle-num">01</div>
@@ -5458,6 +5472,7 @@ h1,h2,h3{
 
     <!-- What we cover -->
     <div class="about-section">
+      <p class="about-section-label">Coverage</p>
       <h2>What FORGENIQ covers.</h2>
       <p>Live market intelligence across equities, ETFs, macro events, earnings, insider transactions, congressional disclosures, sector context, volatility, sentiment, and AI-generated briefings. Updated during market hours with correlation analysis and story-led navigation into Deep Dive.</p>
       <p>Built on data from Finnhub, Polygon.io, SEC EDGAR, Alpha Vantage, Anthropic Claude, and FRED. All routed through a secure proxy so your API keys stay private.</p>
