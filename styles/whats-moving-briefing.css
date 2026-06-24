@@ -151,6 +151,150 @@ html[data-theme="split"] #page-why .whats-moving-briefing {
 
 @media (max-width: 720px) {
   .whats-moving-briefing {
-    padding: 16px 14px 40px;
+    padding: 16px 14px 32px;
+  }
+
+  .wm-briefing-header .meta {
+    display: none;
+  }
+
+  .whats-moving-briefing .intel-wheel__viewport--vertical {
+    height: 200px;
+    min-height: 200px;
+    max-height: 220px;
+  }
+
+  .whats-moving-briefing .intel-wheel__viewport--vertical .intel-wheel__chip {
+    flex: 0 0 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .whats-moving-briefing .intel-wheel__focus--vertical {
+    height: 44px;
+  }
+
+  .briefing-panel {
+    padding: 20px 16px 24px;
+  }
+
+  .briefing-panel__headline {
+    font-size: clamp(22px, 6vw, 28px);
+  }
+
+  .briefing-panel__section {
+    margin-bottom: 16px;
+  }
+
+  /* Market snapshot — Today tab only; collapsed by default */
+  #page-why .briefing-snapshot-wrap:not(.is-today-segment) {
+    display: none;
+  }
+
+  #page-why .briefing-snapshot-wrap {
+    margin-top: 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(4, 6, 12, 0.55);
+  }
+
+  #page-why .briefing-snapshot-wrap__toggle {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 14px;
+    font-family: var(--dash-mono, "JetBrains Mono", monospace);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(212, 168, 90, 0.85);
+    touch-action: manipulation;
+  }
+
+  #page-why .briefing-snapshot-wrap__toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  #page-why .briefing-snapshot-wrap__toggle::after {
+    content: " ▸";
+    float: right;
+    opacity: 0.7;
+  }
+
+  #page-why .briefing-snapshot-wrap[open] .briefing-snapshot-wrap__toggle::after {
+    content: " ▾";
+  }
+
+  #page-why .briefing-snapshot-wrap .briefing-snapshot {
+    padding: 0 12px 12px;
+    border: none;
+    background: transparent;
+  }
+
+  #page-why .briefing-snapshot-wrap .briefing-snapshot__title {
+    display: none;
+  }
+
+  #page-why .briefing-snapshot-wrap .briefing-snapshot__note {
+    font-size: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* Per-tab editorial focus — less repeated blocks */
+  #wheelIntelPanel[data-whm-segment="why"] [data-whm-section="why"],
+  #wheelIntelPanel[data-whm-segment="why"] [data-whm-section="sectors"],
+  #wheelIntelPanel[data-whm-segment="why"] [data-whm-section="reaction"],
+  #wheelIntelPanel[data-whm-segment="why"] [data-whm-section="stocks"],
+  #wheelIntelPanel[data-whm-segment="why"] [data-whm-section="watch"],
+  #wheelIntelPanel[data-whm-segment="why"] #wheelDataCards {
+    display: none !important;
+  }
+
+  #wheelIntelPanel[data-whm-segment="winners"] [data-whm-section="why"],
+  #wheelIntelPanel[data-whm-segment="winners"] [data-whm-section="happened"],
+  #wheelIntelPanel[data-whm-segment="winners"] [data-whm-section="reaction"],
+  #wheelIntelPanel[data-whm-segment="winners"] [data-whm-section="watch"],
+  #wheelIntelPanel[data-whm-segment="losers"] [data-whm-section="why"],
+  #wheelIntelPanel[data-whm-segment="losers"] [data-whm-section="happened"],
+  #wheelIntelPanel[data-whm-segment="losers"] [data-whm-section="reaction"],
+  #wheelIntelPanel[data-whm-segment="losers"] [data-whm-section="watch"],
+  #wheelIntelPanel[data-whm-segment="next"] [data-whm-section="why"],
+  #wheelIntelPanel[data-whm-segment="next"] [data-whm-section="happened"],
+  #wheelIntelPanel[data-whm-segment="next"] [data-whm-section="sectors"],
+  #wheelIntelPanel[data-whm-segment="next"] [data-whm-section="reaction"],
+  #wheelIntelPanel[data-whm-segment="next"] [data-whm-section="stocks"],
+  #wheelIntelPanel[data-whm-segment="next"] #wheelDataCards {
+    display: none !important;
+  }
+
+  #wheelIntelPanel[data-whm-segment="today"] .briefing-panel__hero {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+  }
+}
+
+/* Desktop — snapshot always visible in rail; no collapse chrome */
+@media (min-width: 769px) {
+  #page-why .briefing-snapshot-wrap {
+    display: block;
+    border: none;
+    background: transparent;
+    margin-top: 0;
+  }
+
+  #page-why .briefing-snapshot-wrap__toggle {
+    display: none;
+  }
+
+  #page-why .briefing-snapshot-wrap .briefing-snapshot {
+    display: block !important;
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(4, 6, 12, 0.85);
+  }
+
+  #page-why .briefing-snapshot-wrap .briefing-snapshot__title {
+    display: block;
   }
 }

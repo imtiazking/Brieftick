@@ -34,20 +34,20 @@ const FLAGSHIP_PANEL_SHELL = `
       <span class="briefing-panel__segment" id="wheelLayerBadge">Today</span>
       <h1 class="briefing-panel__headline" id="wheelHeadline">—</h1>
     </header>
-    <section class="briefing-panel__section" aria-labelledby="wheelHappenedLabel">
+    <section class="briefing-panel__section" data-whm-section="happened" aria-labelledby="wheelHappenedLabel">
       <h2 class="briefing-panel__label" id="wheelHappenedLabel">What happened</h2>
       <p class="briefing-panel__body" id="wheelExplanation">—</p>
     </section>
-    <section class="briefing-panel__section" aria-labelledby="wheelWhyLabel">
+    <section class="briefing-panel__section" data-whm-section="why" aria-labelledby="wheelWhyLabel">
       <h2 class="briefing-panel__label" id="wheelWhyLabel">Why it matters</h2>
       <p class="briefing-panel__body" id="wheelWhy">—</p>
     </section>
-    <div class="briefing-panel__cards" id="wheelDataCards"></div>
-    <section class="briefing-panel__section" aria-labelledby="wheelStocksLabel">
+    <div class="briefing-panel__cards" id="wheelDataCards" data-whm-section="sectors"></div>
+    <section class="briefing-panel__section" data-whm-section="stocks" aria-labelledby="wheelStocksLabel">
       <h2 class="briefing-panel__label" id="wheelStocksLabel">Stocks affected</h2>
       <div class="briefing-panel__stocks" id="wheelStocks"></div>
     </section>
-    <section class="briefing-panel__section" aria-labelledby="wheelWatchLabel">
+    <section class="briefing-panel__section" data-whm-section="watch" aria-labelledby="wheelWatchLabel">
       <h2 class="briefing-panel__label" id="wheelWatchLabel">Watch next</h2>
       <ul class="briefing-panel__watch" id="wheelWatch"></ul>
     </section>
@@ -157,12 +157,47 @@ function bootWheelLab(config, meta = {}) {
   let activeSegment = sections[0].id;
   let diveContext = "";
 
-  function renderDataCards(layer) {
+  function isWhmMobileSlim() {
+    return (
+      isFlagship &&
+      isProduction &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 768px)").matches
+    );
+  }
+
+  function syncWhmMobileChrome(segmentId) {
+    if (!isFlagship || !isProduction) return;
+    const page = document.getElementById("page-why");
+    const panel = document.getElementById("wheelIntelPanel");
+    const snapWrap = document.getElementById("whmSnapshotWrap");
+    if (page) page.dataset.whmSegment = segmentId;
+    if (panel) panel.dataset.whmSegment = segmentId;
+    if (snapWrap) {
+      snapWrap.classList.toggle("is-today-segment", segmentId === "today");
+      if (segmentId !== "today") snapWrap.removeAttribute("open");
+      else if (window.matchMedia("(min-width: 769px)").matches) snapWrap.setAttribute("open", "");
+    }
+  }
+
+  function syncSnapshotDesktopOpen() {
+    const snapWrap = document.getElementById("whmSnapshotWrap");
+    if (!snapWrap) return;
+    if (window.matchMedia("(min-width: 769px)").matches) {
+      snapWrap.setAttribute("open", "");
+    }
+  }
+
+  function renderDataCards(layer, segmentId) {
     const root = document.getElementById("wheelDataCards");
     if (!root) return;
     const sectors = layer.sectors || [];
     const cardClass = isFlagship ? "briefing-data-card" : "intel-data-card";
     const gridClass = isFlagship ? "briefing-data-card__grid" : "intel-data-card__grid";
+    const slim = isWhmMobileSlim();
+    const showSectors = !slim || ["today", "winners", "losers"].includes(segmentId);
+    const showReaction = !slim || segmentId === "today";
+
     const sectorCards = sectors
       .map(
         (s) => `
@@ -177,18 +212,26 @@ function bootWheelLab(config, meta = {}) {
     const blockClass = isFlagship ? "briefing-panel__section" : "intel-panel__block";
     const labelClass = isFlagship ? "briefing-panel__label" : "intel-panel__label";
 
-    root.innerHTML = `
-      <section class="${blockClass}" aria-labelledby="wheelSectorsLabel">
+    const sectorsBlock = showSectors
+      ? `
+      <section class="${blockClass}" data-whm-section="sectors" aria-labelledby="wheelSectorsLabel">
         <h2 class="${labelClass}" id="wheelSectorsLabel">${esc(panelLabels.sectors)}</h2>
         <div class="${gridClass}">${sectorCards}</div>
-      </section>
-      <section class="${blockClass}" aria-labelledby="wheelReactionLabel">
+      </section>`
+      : "";
+
+    const reactionBlock = showReaction
+      ? `
+      <section class="${blockClass}" data-whm-section="reaction" aria-labelledby="wheelReactionLabel">
         <h2 class="${labelClass}" id="wheelReactionLabel">${esc(panelLabels.reaction)}</h2>
         <div class="${cardClass} ${cardClass}--wide">
           <span class="${cardClass}__kicker">Session tape</span>
           <p class="${cardClass}__copy">${esc(layer.reaction || "—")}</p>
         </div>
-      </section>`;
+      </section>`
+      : "";
+
+    root.innerHTML = sectorsBlock + reactionBlock;
   }
 
   function renderStocks(stocks) {
@@ -240,7 +283,8 @@ function bootWheelLab(config, meta = {}) {
           if (headline) headline.textContent = layer.headline || "—";
           if (explanation) explanation.textContent = layer.explanation || "—";
           if (why) why.textContent = layer.whyItMatters || "—";
-          renderDataCards(layer);
+          syncWhmMobileChrome(segmentId);
+          renderDataCards(layer, segmentId);
           renderStocks(layer.stocks);
           renderWatch(layer.watchNext);
         } catch (err) {
@@ -286,6 +330,17 @@ function bootWheelLab(config, meta = {}) {
   }
 
   applyLayer(sections[0].id);
+  if (isFlagship && isProduction) {
+    syncSnapshotDesktopOpen();
+    window.addEventListener(
+      "resize",
+      () => {
+        syncSnapshotDesktopOpen();
+        applyLayer(activeSegment);
+      },
+      { passive: true }
+    );
+  }
   if (!isFlagship) mountDebugPanel({ route, configKey, sections, wheelInitOk, wheelInitError });
 }
 

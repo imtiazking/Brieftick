@@ -4229,9 +4229,12 @@ h1,h2,h3{
           <div class="briefing-rail__wheel">
             <div class="intel-wheel__viewport intel-wheel__viewport--vertical" id="whmWheelViewport" tabindex="0" aria-label="Briefing wheel"></div>
           </div>
-          <div class="briefing-snapshot" aria-label="Market snapshot" data-market-snapshot>
-            <!-- Live rows injected by lib/market-snapshot.js -->
-          </div>
+          <details class="briefing-snapshot-wrap" id="whmSnapshotWrap">
+            <summary class="briefing-snapshot-wrap__toggle">Show market snapshot</summary>
+            <div class="briefing-snapshot" aria-label="Market snapshot" data-market-snapshot>
+              <!-- Live rows injected by lib/market-snapshot.js -->
+            </div>
+          </details>
         </aside>
         <div class="briefing-main" id="whmWheelEngine" aria-live="polite"></div>
       </div>
