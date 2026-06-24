@@ -5626,6 +5626,10 @@ const BTRuntime = (() => {
 /* ============================================================
    ROUTING
 ============================================================ */
+/* Declared before route() — early ?tab= boot calls route before contagion physics block runs. */
+let _cgPhysicsRAF = null;
+let _cgPhysicsState = null;
+
 function route(name){
   if (name === 'impact' || name === 'brief') name = 'why';
   if (name === 'options') name = 'dashboard';
@@ -5636,8 +5640,10 @@ function route(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const target=document.getElementById('page-'+name);
   if(target) target.classList.add('active');
-  if (_cgPhysicsRAF) { cancelAnimationFrame(_cgPhysicsRAF); _cgPhysicsRAF = null; }
-  if (_pc3d && _pc3d.raf) { cancelAnimationFrame(_pc3d.raf); _pc3d.raf = null; }
+  try {
+    if (_cgPhysicsRAF) { cancelAnimationFrame(_cgPhysicsRAF); _cgPhysicsRAF = null; }
+    if (_pc3d && _pc3d.raf) { cancelAnimationFrame(_pc3d.raf); _pc3d.raf = null; }
+  } catch (_) { /* early ?tab= boot before portfolio 3D init */ }
   document.querySelectorAll('.nav-link').forEach(l=>{
     l.classList.toggle('active', l.dataset.route===name);
   });
@@ -9387,9 +9393,6 @@ function drawContagion(sym, centerColor){
  * Runs at requestAnimationFrame rate. The loop self-cancels when the SVG is
  * removed or replaced (next drawContagion call cancels the previous loop).
  */
-let _cgPhysicsRAF = null;
-let _cgPhysicsState = null;
-
 function _installContagionCursorPhysics(peerCount, cx, cy){
   // Cancel any prior loop from a previous render
   if(_cgPhysicsRAF){ cancelAnimationFrame(_cgPhysicsRAF); _cgPhysicsRAF = null; }

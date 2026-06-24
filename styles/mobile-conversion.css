@@ -612,6 +612,25 @@
     min-height: 100svh;
     max-width: 100vw;
   }
+
+  /* About/Pricing: stay above any stale landing stack when routed on mobile */
+  html[data-mobile-conversion] #page-about.active,
+  html[data-mobile-conversion] #page-pricing.active {
+    position: relative;
+    z-index: 5;
+    display: block !important;
+    min-height: 100svh;
+    height: auto !important;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  html[data-split-about] #page-about.active .about-wrap,
+  html[data-split-pricing] #page-pricing.active .pricing {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+  }
 }
 
 /* Desktop: hide mobile-only chrome */
