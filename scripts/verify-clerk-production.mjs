@@ -101,7 +101,7 @@ async function main() {
   await page.waitForTimeout(3000);
   await page.click("#navMenuBtn", { timeout: 10000 });
   await page.waitForTimeout(600);
-  const drawerSignIn = page.locator(".nav-a__drawer-auth .auth-signin-btn, [data-auth-action='signin']").first();
+  const drawerSignIn = page.locator("#navDrawerAuth .auth-signin-btn").first();
   if ((await drawerSignIn.count()) > 0) {
     await drawerSignIn.click({ timeout: 15000 });
     await page.waitForTimeout(5000);
