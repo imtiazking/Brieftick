@@ -6,14 +6,8 @@
   <title>Payment Successful · FORGENIQ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <!-- Clerk JS for token retrieval -->
-  <script
-    async
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_YmVsb3ZlZC13cmVuLTEwLmNsZXJrLmFjY291bnRzLmRldiQ"
-    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
-    type="text/javascript"
-  ></script>
+  <!-- Clerk JS — key loaded from /api/public-config -->
+  <script src="/lib/clerk-runtime.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -165,6 +159,13 @@
     const statusEl  = document.getElementById('statusMsg');
 
     async function activateTerminal() {
+      try {
+        await window.__btLoadClerkFromConfig();
+      } catch (e) {
+        statusEl.textContent = 'Terminal access activated.';
+        statusEl.classList.add('confirmed');
+        return;
+      }
       if (!window.Clerk) {
         statusEl.textContent = 'Terminal access activated.';
         statusEl.classList.add('confirmed');

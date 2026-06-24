@@ -3474,43 +3474,11 @@ h1,h2,h3{
       document.head.appendChild(_map);
     }
   </script>
-  <!-- Clerk JS SDK — deferred on mobile until auth interaction -->
+  <!-- Clerk JS SDK — key from /api/public-config; deferred on mobile until auth interaction -->
+  <script src="/lib/clerk-runtime.js"></script>
   <script>
-    window.__btEnsureClerk = function (cb) {
-      if (window.__btClerkInitialized && window.Clerk) {
-        const done = cb?.();
-        return Promise.resolve(done).then(() => window.Clerk);
-      }
-      if (!window.__btClerkLoading) {
-        window.__btClerkLoading = new Promise(function (resolve, reject) {
-          var s = document.createElement('script');
-          s.async = true;
-          s.crossOrigin = 'anonymous';
-          s.setAttribute('data-clerk-publishable-key', 'pk_test_YmVsb3ZlZC13cmVuLTEwLmNsZXJrLmFjY291bnRzLmRldiQ');
-          s.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
-          s.onerror = function () { reject(new Error('Clerk script failed to load')); };
-          s.onload = function () {
-            var boot = typeof window.initClerk === 'function'
-              ? window.initClerk()
-              : Promise.resolve();
-            Promise.resolve(boot).then(function () {
-              resolve(window.Clerk);
-              cb?.();
-            }).catch(reject);
-          };
-          document.head.appendChild(s);
-        });
-      }
-      return window.__btClerkLoading.then(function (c) {
-        if (!window.__btClerkInitialized && typeof window.initClerk === 'function') {
-          return window.initClerk().then(function () { cb?.(); return c; });
-        }
-        cb?.();
-        return c;
-      });
-    };
     if (!window.__BT_MOBILE_CONVERSION__) {
-      window.__btEnsureClerk();
+      window.__btEnsureClerk().catch(function () {});
     }
   </script>
 <link rel="preload" as="image" href="/brand/forgeniq-logo.png" fetchpriority="high">
@@ -3697,7 +3665,7 @@ h1,h2,h3{
     </button>
     <div class="auth-area" id="authArea">
       <div id="authSignedOut" style="display:flex;gap:8px;align-items:center">
-        <button type="button" class="auth-signin-btn" id="authSignInBtn">Sign In</button>
+        <button type="button" class="auth-signin-btn" id="authSignInBtn" data-auth-action="signin">Sign In</button>
         <button type="button" class="auth-signup-btn mobile-start-free" id="authSignUpBtn" data-auth-action="signup">Start Free</button>
       </div>
       <div id="authSignedIn" style="display:none;align-items:center;gap:10px">
