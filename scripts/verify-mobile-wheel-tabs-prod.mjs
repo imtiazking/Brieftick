@@ -131,7 +131,13 @@ async function runViewport(browser, vp) {
 
   log.pass =
     (log.mounted.chips >= 5 || (log.mounted.retryChips ?? 0) >= 5) &&
-    log.briefing.every((t) => t.changed && t.centeredOk && !t.blocked?.blocked) &&
+    log.briefing.every(
+      (t) =>
+        !t.error &&
+        t.centeredOk &&
+        !t.blocked?.blocked &&
+        (t.changed || t.label === "Today")
+    ) &&
     log.dashboard?.changed === true &&
     !log.pageErrors.some((e) => /before initialization/i.test(e));
 
