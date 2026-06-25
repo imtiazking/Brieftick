@@ -78,13 +78,13 @@ html[data-theme="logic"] .split-brand__clip {
   }
 }
 
-/* ── Marketing hero nav (landing + about; true-alpha PNG, no blend hacks) ── */
-html:has(#page-landing.active, #page-about.active) #navBrand.split-brand,
-html:has(#page-landing.active, #page-about.active) #navBrand .split-brand__clip {
+/* ── Marketing hero nav (landing + about + pricing; true-alpha PNG, no blend hacks) ── */
+html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand.split-brand,
+html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand__clip {
   background: none;
 }
 
-html:has(#page-landing.active, #page-about.active) #navBrand .split-brand-img--full {
+html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand-img--full {
   height: clamp(64px, 8.2vw, 88px);
   max-height: 88px;
   width: auto;
@@ -92,14 +92,14 @@ html:has(#page-landing.active, #page-about.active) #navBrand .split-brand-img--f
 }
 
 @media (max-width: 768px) {
-  html:has(#page-landing.active, #page-about.active) #navBrand .split-brand-img--full {
+  html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand-img--full {
     height: clamp(56px, 11vw, 76px);
     max-height: 76px;
   }
 }
 
 @media (max-width: 480px) {
-  html:has(#page-landing.active, #page-about.active) #navBrand .split-brand-img--full {
+  html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand-img--full {
     max-width: clamp(150px, 42vw, 180px);
     height: auto;
     max-height: clamp(40px, 10vw, 48px);
