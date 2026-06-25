@@ -33,6 +33,11 @@ checks.companyLabel = await page
   .locator("#page-portfolio-insights [data-selected-count]")
   .first()
   .textContent();
+checks.executionLabel = await page.locator("#piReadyLabel").textContent();
+checks.executionTitle = await page.locator("#piReady .pi-execution h2").textContent();
+checks.brokersLabel = await page.locator("#piBrokersLabel").textContent();
+checks.brokersSub = await page.locator("#piBrokersSub").textContent();
+checks.disclaimer = await page.locator(".pi-disclaimer").textContent();
 
 await page.locator("#page-portfolio-insights [data-pi-intro-dismiss]").click();
 checks.introDismissed = await page.evaluate(
@@ -58,6 +63,10 @@ checks.continueEnabled = !(await page
   .locator("#page-portfolio-insights [data-basket-continue]")
   .first()
   .isDisabled());
+checks.continueBtnLabel = await page
+  .locator("#page-portfolio-insights [data-basket-continue]")
+  .first()
+  .textContent();
 checks.openBasketEnabled = !(await page
   .locator("#page-portfolio-insights [data-open-basket]")
   .first()
@@ -83,39 +92,33 @@ checks.basketReviewTitle = await page.locator("#piBasketReviewTitle").textConten
 checks.basketReviewTickers = await page.locator("#piBasketReviewTickers").textContent();
 checks.basketReviewCount = await page.locator("#piBasketReviewCount").textContent();
 checks.basketReviewRisk = await page.locator("#piBasketReviewRisk").textContent();
+checks.basketReviewContinue = await page.locator("[data-basket-review-continue]").textContent();
 
 await page.locator("[data-basket-review-continue]").click();
-checks.handoffOpen = await page.evaluate(
-  () => document.getElementById("piHandoff")?.classList.contains("is-open")
+checks.executionModalOpen = await page.evaluate(
+  () => document.getElementById("piExecutionModal")?.classList.contains("is-open")
 );
 
-const handoffTickers = await page.locator("#piHandoffTickers").textContent();
-const handoffLabel = await page.locator("#piHandoffCompaniesLabel").textContent();
-const handoffDisclaimer = await page.locator("#piHandoffDisclaimer").textContent();
-const handoffOpenBtn = await page.locator("[data-open-in-broker]").textContent();
-const handoffStayBtn = await page
-  .locator("#piHandoff button[data-handoff-close]")
-  .textContent();
-checks.handoffHasSelection = (handoffTickers || "").trim() === "NVDA";
-checks.handoffCopy =
-  handoffLabel?.trim() === "Your selected companies:" &&
-  /does not place trades or hold funds/i.test(handoffDisclaimer || "") &&
-  /opens in a new tab/i.test(handoffDisclaimer || "") &&
-  handoffOpenBtn?.trim() === "Open Trading212" &&
-  handoffStayBtn?.trim() === "Stay in FORGENIQ";
+const executionTitle = await page.locator("#piExecutionTitle").textContent();
+const executionLead = await page.locator(".pi-exec-modal__lead").textContent();
+const executionTickers = await page.locator("#piExecutionTickers").textContent();
+const brokerCount = await page.locator("#piExecutionBrokers .pi-exec-broker").count();
+const exportBtn = await page.locator("[data-export-csv]").textContent();
+const copyBtn = await page.locator("[data-copy-tickers]").textContent();
+const closeBtn = await page.locator("[data-execution-close]").last().textContent();
+const openBrokerHidden = await page.locator("#piOpenBrokerBtn").isHidden();
 
-await page.evaluate(() => {
-  window.__piTestOpen = null;
-  window.open = (url) => {
-    window.__piTestOpen = url;
-    return null;
-  };
-});
-await page.locator("[data-open-in-broker]").click();
-checks.trading212Url = await page.evaluate(() => window.__piTestOpen);
-checks.handoffStaysOpen = await page.evaluate(
-  () => document.getElementById("piHandoff")?.classList.contains("is-open")
-);
+checks.executionCopy =
+  executionTitle?.trim() === "Execution" &&
+  /Choose where you'd like to execute your basket/i.test(executionLead || "") &&
+  (executionTickers || "").trim() === "NVDA" &&
+  brokerCount === 4 &&
+  exportBtn?.trim() === "Export CSV" &&
+  copyBtn?.trim() === "Copy ticker list" &&
+  closeBtn?.trim() === "Close" &&
+  openBrokerHidden;
+
+checks.integrationsRendered = await page.locator("#piBrokers .pi-broker").count();
 
 await browser.close();
 
@@ -131,20 +134,26 @@ const failed =
   checks.singleCompanyLabel?.trim() !== "1 company selected" ||
   checks.headline?.trim() !== "Portfolio Insights" ||
   checks.basketsRendered !== 4 ||
+  checks.executionLabel?.trim() !== "Execution" ||
+  checks.executionTitle?.trim() !== "Execution" ||
+  checks.brokersLabel?.trim() !== "Broker Integrations" ||
+  !/Connect your preferred broker when available/i.test(checks.brokersSub || "") ||
+  !/independent market intelligence platform/i.test(checks.disclaimer || "") ||
+  !/never hold client funds or execute trades/i.test(checks.disclaimer || "") ||
   !checks.continueDisabled ||
   !checks.openBasketDisabled ||
   !checks.continueEnabled ||
+  !/Continue to Broker/i.test(checks.continueBtnLabel || "") ||
   !checks.openBasketEnabled ||
   !checks.basketReviewOpen ||
   checks.basketReviewTitle?.trim() !== "AI Infrastructure Basket" ||
   checks.basketReviewTickers?.trim() !== "NVDA" ||
   checks.basketReviewCount?.trim() !== "1 company selected" ||
   !checks.basketReviewRisk?.includes("Risk note") ||
-  !checks.handoffOpen ||
-  !checks.handoffHasSelection ||
-  !checks.handoffCopy ||
-  checks.trading212Url !== "https://www.trading212.com/" ||
-  !checks.handoffStaysOpen;
+  !/Continue to Broker/i.test(checks.basketReviewContinue || "") ||
+  !checks.executionModalOpen ||
+  !checks.executionCopy ||
+  checks.integrationsRendered !== 4;
 
 console.log(JSON.stringify({ checks, errors }, null, 2));
 process.exit(failed ? 1 : 0);

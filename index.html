@@ -4407,13 +4407,19 @@ h1,h2,h3{
     </section>
 
     <section class="pi-section" id="piReady" aria-labelledby="piReadyLabel">
-      <p class="pi-section__label" id="piReadyLabel">Ready to act</p>
+      <p class="pi-section__label" id="piReadyLabel">Execution</p>
       <article class="pi-execution">
-        <h2>Ready to act</h2>
+        <div class="pi-execution__head">
+          <span class="pi-execution__shield" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.5L4.5 5.5V11.5C4.5 16.45 7.58 21.08 12 22.5C16.42 21.08 19.5 16.45 19.5 11.5V5.5L12 2.5Z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h2>Execution</h2>
+        </div>
         <p class="pi-execution__support">
-          You stay in control.<br>
-          FORGENIQ provides intelligence.<br>
-          Your broker handles execution.
+          FORGENIQ provides the intelligence.<br>
+          Your broker executes the trade.
         </p>
         <button
           type="button"
@@ -4422,7 +4428,7 @@ h1,h2,h3{
           data-handoff-label="AI Infrastructure"
           data-tickers="NVDA,AMD,AVGO,MSFT,ANET"
         >
-          Continue with Trading212
+          Continue to Broker
         </button>
       </article>
     </section>
@@ -4433,19 +4439,15 @@ h1,h2,h3{
       <div class="pi-baskets" id="piBaskets"></div>
     </section>
 
-    <section class="pi-section" id="piBrokersSection" aria-labelledby="piBrokersLabel" data-future-placeholder="connected-brokers">
-      <p class="pi-section__label" id="piBrokersLabel">Connected Brokers</p>
-      <div class="pi-brokers">
-        <div class="pi-broker"><span class="pi-broker__name">Trading212</span><span class="pi-broker__status">Coming Soon</span></div>
-        <div class="pi-broker"><span class="pi-broker__name">Interactive Brokers</span><span class="pi-broker__status">Coming Soon</span></div>
-        <div class="pi-broker"><span class="pi-broker__name">eToro</span><span class="pi-broker__status">Coming Soon</span></div>
-        <div class="pi-broker"><span class="pi-broker__name">IG</span><span class="pi-broker__status">Coming Soon</span></div>
-      </div>
+    <section class="pi-section" id="piBrokersSection" aria-labelledby="piBrokersLabel" data-future-placeholder="broker-integrations">
+      <p class="pi-section__label" id="piBrokersLabel">Broker Integrations</p>
+      <p class="pi-section__sub" id="piBrokersSub">Connect your preferred broker when available.</p>
+      <div class="pi-brokers" id="piBrokers" aria-live="polite"></div>
     </section>
 
     <footer class="pi-disclaimer" role="note">
-      FORGENIQ provides market intelligence only and does not hold funds or place orders.
-      Illustrative portfolio data — connect your broker when available.
+      <p>FORGENIQ is an independent market intelligence platform.</p>
+      <p>We never hold client funds or execute trades. Execution always takes place through your chosen broker.</p>
     </footer>
   </div>
 
@@ -4457,31 +4459,40 @@ h1,h2,h3{
       <p class="pi-basket-review__count" id="piBasketReviewCount"></p>
       <p class="pi-basket-review__risk" id="piBasketReviewRisk"></p>
       <div class="pi-basket-review__actions">
-        <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-basket-review-continue>Continue with Trading212</button>
+        <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-basket-review-continue>Continue to Broker</button>
         <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-basket-review-close>Close</button>
       </div>
     </div>
   </div>
 
-  <div class="pi-handoff" id="piHandoff" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="piHandoffTitle">
-    <div class="pi-handoff__backdrop" data-handoff-close tabindex="-1"></div>
-    <div class="pi-handoff__sheet">
-      <h2 id="piHandoffTitle">Continue with Trading212</h2>
-      <p class="pi-handoff__label" id="piHandoffCompaniesLabel">Your selected companies:</p>
-      <p class="pi-handoff__tickers" id="piHandoffTickers" aria-label="Selected companies"></p>
-      <p class="pi-handoff__mock" id="piHandoffDisclaimer">
-        FORGENIQ does not place trades or hold funds.
-        Trading212 opens in a new tab, where you stay in control.
-      </p>
-      <div class="pi-handoff__actions">
-        <button type="button" class="pi-btn pi-btn--gold pi-btn--block" data-open-in-broker>Open Trading212</button>
-        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-handoff-close>Stay in FORGENIQ</button>
+  <div class="pi-exec-modal" id="piExecutionModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="piExecutionTitle">
+    <div class="pi-exec-modal__backdrop" data-execution-close tabindex="-1"></div>
+    <div class="pi-exec-modal__sheet">
+      <nav class="pi-exec-modal__path" aria-label="Execution flow">
+        <ol>
+          <li>Portfolio Insights</li>
+          <li>Build Basket</li>
+          <li>Review Basket</li>
+          <li>Execution</li>
+          <li aria-current="step">Choose Broker</li>
+        </ol>
+      </nav>
+      <h2 id="piExecutionTitle">Execution</h2>
+      <p class="pi-exec-modal__lead">Choose where you'd like to execute your basket.</p>
+      <p class="pi-exec-modal__tickers" id="piExecutionTickers" aria-label="Selected companies"></p>
+      <div class="pi-exec-modal__brokers" id="piExecutionBrokers" role="listbox" aria-label="Brokers"></div>
+      <div class="pi-exec-modal__divider" aria-hidden="true"></div>
+      <div class="pi-exec-modal__utilities">
+        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-export-csv>Export CSV</button>
+        <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-copy-tickers>Copy ticker list</button>
       </div>
+      <button type="button" class="pi-btn pi-btn--gold pi-btn--block pi-exec-modal__open" id="piOpenBrokerBtn" data-open-broker hidden>Open Broker</button>
+      <button type="button" class="pi-btn pi-btn--ghost pi-btn--block" data-execution-close>Close</button>
     </div>
   </div>
 
-  <aside class="pi-sticky" id="piSticky" aria-label="Ready to act" hidden>
-    <p class="pi-sticky__label">Ready to act</p>
+  <aside class="pi-sticky" id="piSticky" aria-label="Execution" hidden>
+    <p class="pi-sticky__label">Execution</p>
     <p class="pi-sticky__context">Your portfolio has High AI Infrastructure exposure.</p>
     <button
       type="button"
@@ -4490,7 +4501,7 @@ h1,h2,h3{
       data-handoff-label="AI Infrastructure"
       data-tickers="NVDA,AMD,AVGO,MSFT,ANET"
     >
-      Continue with Trading212
+      Continue to Broker
     </button>
   </aside>
 
