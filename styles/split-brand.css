@@ -105,6 +105,8 @@ html:has(#page-landing.active, #page-about.active) #navBrand .split-brand-img--f
     max-height: clamp(40px, 10vw, 48px);
     object-fit: contain;
     object-position: left center;
+    transform: scale(1.1);
+    transform-origin: left center;
   }
 }
 
