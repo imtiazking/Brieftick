@@ -8,7 +8,7 @@ import { join } from "path";
 import { createHash } from "crypto";
 
 const base = (process.argv[2] || "http://localhost:3000").replace(/\/$/, "");
-const outDir = join(process.cwd(), "debug", "logo-preview", "hero-parity");
+const outDir = join(process.cwd(), "debug", "logo-preview", process.env.LOGO_PARITY_OUT || "hero-parity");
 mkdirSync(outDir, { recursive: true });
 
 const ROUTES = ["landing", "about", "pricing"];
@@ -22,7 +22,7 @@ const SCENARIOS = [
 const STYLE_KEYS = [
   "src", "className", "width", "height", "left", "brandLeft", "brandTop",
   "objectFit", "objectPosition", "maxHeight", "maxWidth", "transform",
-  "clipBackground", "aspectRatio", "hasSymbolFallback", "hasCheckerboard", "isClipped", "stretchDelta", "gapToMenu",
+  "clipBackground", "aspectRatio", "hasSymbolFallback", "hasCheckerboard", "isClipped", "stretchDelta", "gapToMenu", "navHeight",
 ];
 
 function hash(buf) {
@@ -60,6 +60,7 @@ async function collectMetrics(page) {
     const img = document.querySelector("#navBrand .split-brand-img--full");
     const clip = document.querySelector("#navBrand .split-brand__clip");
     const menu = document.querySelector(".nav-a__menu-btn");
+    const nav = document.getElementById("siteNav");
     if (!brand || !img) return null;
     const ir = img.getBoundingClientRect();
     const br = brand.getBoundingClientRect();
@@ -88,6 +89,7 @@ async function collectMetrics(page) {
       isClipped: ir.width < 1 || ir.height < 1,
       stretchDelta: Math.round(Math.abs(naturalAR - displayAR) * 1000) / 1000,
       gapToMenu: mr ? Math.round((mr.left - ir.right) * 100) / 100 : null,
+      navHeight: nav ? Math.round(nav.getBoundingClientRect().height * 100) / 100 : null,
     };
   });
 }
@@ -110,6 +112,9 @@ function compareAll(label, metrics, failures) {
     if (!transparentBg(cur.clipBackground)) failures.push(`${label}: ${route} clip not transparent`);
     if (label.startsWith("mobile") && cur.gapToMenu !== null && cur.gapToMenu < 8) {
       failures.push(`${label}: ${route} hamburger overlap (gap ${cur.gapToMenu}px)`);
+    }
+    if (label.startsWith("mobile") && cur.navHeight !== null && cur.navHeight > 64.5) {
+      failures.push(`${label}: ${route} nav height increased to ${cur.navHeight}px`);
     }
   }
 }
