@@ -7,7 +7,12 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "brand" / "forgeniq-logo.png"
+# Use approved black-background master — never the deployed web asset (may be re-exported).
+SOURCE = Path(
+    r"C:\Users\imtia\.cursor\projects\c-Users-imtia-OneDrive-Desktop-Brieftick\assets"
+    r"\c__Users_imtia_AppData_Roaming_Cursor_User_workspaceStorage_7dab5a120509bc7beb1609def2cfe860_images"
+    r"_forgeniq_logo_black_-525de6a0-fc22-4b13-bdda-872f4d28e9df.png"
+)
 
 LOCKUP_OUTPUTS = [
     ROOT / "brand" / "forgeniq-logo.png",
