@@ -503,7 +503,7 @@
   /* About mount: absolute inside page (Safari fixed overlay bug) */
   html[data-mobile-conversion][data-split-about] #page-about.active #splitAboutMount {
     position: absolute;
-    inset: 0 auto auto 0;
+    inset: 0;
     width: 100%;
     min-height: 100%;
     height: 100%;
@@ -512,12 +512,26 @@
     overflow: hidden;
   }
 
+  /* About mobile: full-bleed atmosphere from viewport top (match landing cw-mobile-bg) */
+  html[data-split-about] main {
+    padding-top: 0 !important;
+  }
+
   html[data-mobile-conversion][data-split-about] #page-about.active #splitAboutMount .cw-mobile-bg {
-    position: absolute;
-    inset: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     min-height: 100svh;
+    min-height: 100dvh;
+  }
+
+  html[data-mobile-conversion][data-split-about] #page-about.active #splitAboutMount .cw-mobile-bg::before,
+  html[data-mobile-conversion][data-split-about] #page-about.active #splitAboutMount .cw-mobile-bg::after {
+    inset: 0;
   }
 
   html[data-split-landing] #page-landing:not(.active) {
@@ -637,6 +651,10 @@
   .about-wrap {
     padding: 24px 18px 72px;
     overflow-x: hidden;
+  }
+
+  html[data-split-about] #page-about .about-wrap {
+    padding-top: calc(64px + 24px);
   }
 
   .about-hero {
