@@ -721,6 +721,150 @@
   }
 }
 
+/* Money Flow — touch-first mobile (≤768px, JS adds .is-mobile) */
+@media (max-width: 768px) {
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__split {
+    flex-direction: column;
+    padding-right: 0;
+    gap: 10px;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__canvas {
+    min-height: min(400px, 54vh);
+    height: auto;
+    padding: 18px 12px 14px;
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__stage {
+    min-height: 280px;
+    touch-action: none;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__cluster {
+    width: 100%;
+    min-height: 280px;
+    max-height: 320px;
+    padding: 22px 18px;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubble {
+    transition:
+      transform 0.22s ease,
+      opacity 0.28s ease,
+      filter 0.28s ease;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubble__drift,
+  .flow-bubbles-hero.is-mobile .flow-bubble__sphere,
+  .flow-bubbles-hero.is-mobile .flow-bubble__halo {
+    animation: none;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubble__label {
+    display: none;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubble::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(var(--hit, 44px), 44px);
+    height: max(var(--hit, 44px), 44px);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: auto;
+  }
+
+  .flow-bubbles-hero.is-mobile.has-focus .flow-bubble:not(.is-focused) {
+    opacity: 0.36;
+    filter: brightness(0.78) saturate(0.82);
+  }
+
+  .flow-bubbles-hero.is-mobile.has-focus .flow-bubble.is-focused {
+    --scale: 1.12;
+    z-index: 12;
+    opacity: 1;
+    filter: brightness(1.08) saturate(1.06);
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__detail {
+    position: relative;
+    flex: 0 0 auto;
+    width: 100%;
+    margin-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px 12px 8px 8px;
+    padding: 12px 14px 14px;
+    background: rgba(12, 10, 22, 0.92);
+    box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  .flow-bubbles-hero.is-mobile.has-flow-detail .flow-bubbles-hero__canvas {
+    min-height: min(420px, 58vh);
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__detail-net {
+    margin: 0 0 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__detail-net-val {
+    font-family: var(--dash-display, "Playfair Display", Georgia, serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: #f0e8ff;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__detail-net-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.48);
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__detail-movers {
+    margin: 4px 0 0;
+    padding-left: 16px;
+    list-style: disc;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__detail-mover {
+    font-size: 11px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__detail-ai {
+    font-size: 11px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__detail-cta {
+    margin-top: 10px;
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid rgba(140, 110, 210, 0.45);
+    border-radius: 8px;
+    background: rgba(100, 75, 160, 0.22);
+    color: #e8dcff;
+    font-family: var(--dash-mono, "JetBrains Mono", monospace);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .flow-bubbles-hero.is-mobile .flow-bubbles-hero__story {
+    display: none;
+  }
+}
+
 .flow-bubbles-hero__cluster::before {
   content: "";
   position: absolute;

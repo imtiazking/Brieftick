@@ -103,9 +103,36 @@ export function renderFlowDetailPanelShell() {
 
 /**
  * @param {FlowIndustryDetail} detail
+ * @param {{ mobile?: boolean, pct?: number | null }} [options]
  * @returns {string}
  */
-export function renderFlowDetailContent(detail) {
+export function renderFlowDetailContent(detail, options = {}) {
+  const { mobile, pct } = options;
+
+  if (mobile) {
+    const movers = detail.examples
+      .map((ex) => `<li class="flow-bubbles-hero__detail-mover">${escapeHtml(ex)}</li>`)
+      .join("");
+    const netFlow =
+      pct != null
+        ? `<p class="flow-bubbles-hero__detail-net"><span class="flow-bubbles-hero__detail-net-val">${pct}%</span><span class="flow-bubbles-hero__detail-net-label">net capital share today</span></p>`
+        : "";
+    return `<header class="flow-bubbles-hero__detail-head">
+      <h3 class="flow-bubbles-hero__detail-title">${escapeHtml(detail.name)}</h3>
+      <span class="flow-bubbles-hero__detail-flow flow-bubbles-hero__detail-flow--${detail.direction}">${escapeHtml(detail.directionLabel)}</span>
+    </header>
+    ${netFlow}
+    <p class="flow-bubbles-hero__detail-row flow-bubbles-hero__detail-row--movers">
+      <span class="flow-bubbles-hero__detail-label">Top movers</span>
+      <ul class="flow-bubbles-hero__detail-movers">${movers}</ul>
+    </p>
+    <p class="flow-bubbles-hero__detail-row flow-bubbles-hero__detail-ai">
+      <span class="flow-bubbles-hero__detail-label">Quick read</span>
+      ${escapeHtml(detail.because)}
+    </p>
+    <button type="button" class="flow-bubbles-hero__detail-cta" data-flow-analysis>Open Full Analysis</button>`;
+  }
+
   const examples = detail.examples.map((ex) => escapeHtml(ex)).join(", ");
   return `<header class="flow-bubbles-hero__detail-head">
       <h3 class="flow-bubbles-hero__detail-title">${escapeHtml(detail.name)}</h3>

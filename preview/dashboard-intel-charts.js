@@ -15,6 +15,7 @@ import {
 } from "./market-mood.js";
 import { formatFredVixAsOf } from "/lib/market-risk-ui.js";
 import { getFlowIndustryDetail, renderFlowDetailContent } from "./flow-bubble-detail.js";
+import { isFlowMobileViewport, bindFlowMapMobile } from "./flow-bubble-mobile.js";
 
 const PROBES = {
   volatility: {
@@ -367,6 +368,23 @@ function bindFlowMap(hero) {
   const detailPanel = map.querySelector("[data-flow-detail]");
   const detailBody = map.querySelector("[data-flow-detail-body]");
   const detailClose = map.querySelector("[data-flow-detail-close]");
+
+  if (isFlowMobileViewport()) {
+    const stage = map.querySelector(".flow-bubbles-hero__stage");
+    setFlowStory(map, "default");
+    return bindFlowMapMobile({
+      map,
+      cluster,
+      stage,
+      stageHit,
+      bubbleEls,
+      detailPanel,
+      detailBody,
+      detailClose,
+      setFlowStory,
+    });
+  }
+
   const coarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
   let detailPinned = false;
 

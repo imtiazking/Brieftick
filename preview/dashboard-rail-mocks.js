@@ -434,6 +434,7 @@ function heroFlowMap() {
       type="button"
       class="flow-bubble flow-bubble--tier-${tier}${leaderCls}${outCls}"
       data-flow-id="${esc(b.id)}"
+      data-flow-pct="${b.pct}"
       data-anchor-x="${b.x}"
       data-anchor-y="${b.y}"
       style="--size:${size}px;--x:${b.x}%;--y:${b.y}%;--delay:${b.delay};--pct:${b.pct};--tier:${tier}"
