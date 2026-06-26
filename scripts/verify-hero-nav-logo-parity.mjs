@@ -14,15 +14,17 @@ mkdirSync(outDir, { recursive: true });
 const ROUTES = ["landing", "about", "pricing"];
 const SCENARIOS = [
   { label: "desktop", width: 1440, height: 900 },
+  { label: "mobile-320", width: 320, height: 844 },
+  { label: "mobile-375", width: 375, height: 844 },
   { label: "mobile-390", width: 390, height: 844 },
-  { label: "mobile-412", width: 412, height: 915 },
+  { label: "mobile-414", width: 414, height: 915 },
   { label: "mobile-430", width: 430, height: 932 },
 ];
 
 const STYLE_KEYS = [
   "src", "className", "width", "height", "left", "brandLeft", "brandTop",
   "objectFit", "objectPosition", "maxHeight", "maxWidth", "transform",
-  "clipBackground", "aspectRatio", "hasSymbolFallback", "hasCheckerboard", "isClipped", "stretchDelta", "gapToMenu", "navHeight",
+  "clipBackground", "aspectRatio", "hasSymbolFallback", "hasCheckerboard", "isClipped", "stretchDelta", "gapToMenu", "navHeight", "scrollOverflow",
 ];
 
 function hash(buf) {
@@ -90,6 +92,7 @@ async function collectMetrics(page) {
       stretchDelta: Math.round(Math.abs(naturalAR - displayAR) * 1000) / 1000,
       gapToMenu: mr ? Math.round((mr.left - ir.right) * 100) / 100 : null,
       navHeight: nav ? Math.round(nav.getBoundingClientRect().height * 100) / 100 : null,
+      scrollOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
     };
   });
 }
@@ -115,6 +118,9 @@ function compareAll(label, metrics, failures) {
     }
     if (label.startsWith("mobile") && cur.navHeight !== null && cur.navHeight > 64.5) {
       failures.push(`${label}: ${route} nav height increased to ${cur.navHeight}px`);
+    }
+    if (label.startsWith("mobile") && cur.scrollOverflow) {
+      failures.push(`${label}: ${route} horizontal scroll detected`);
     }
   }
 }
