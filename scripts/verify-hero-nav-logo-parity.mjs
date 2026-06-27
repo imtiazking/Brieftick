@@ -14,10 +14,10 @@ mkdirSync(outDir, { recursive: true });
 const ROUTES = ["landing", "about", "pricing"];
 const SCENARIOS = [
   { label: "desktop", width: 1440, height: 900 },
+  { label: "tablet-768", width: 768, height: 1024 },
+  { label: "tablet-1024", width: 1024, height: 900 },
   { label: "mobile-320", width: 320, height: 844 },
-  { label: "mobile-375", width: 375, height: 844 },
   { label: "mobile-390", width: 390, height: 844 },
-  { label: "mobile-414", width: 414, height: 915 },
   { label: "mobile-430", width: 430, height: 932 },
 ];
 
