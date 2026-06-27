@@ -1,0 +1,150 @@
+/**
+ * FORGENIQ Logo Variation 2 — production lockup.
+ * Symbol above vector wordmark · centred stack · transparent background.
+ */
+
+.fq2-logo-stacked {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-content: center;
+  width: var(--fq2-lockup-w, auto);
+  max-width: var(--fq2-lockup-max-w, none);
+  row-gap: var(--fq2-gap, 8px);
+  line-height: 0;
+  flex-shrink: 0;
+  cursor: inherit;
+  text-decoration: none;
+  background: transparent;
+  isolation: isolate;
+}
+
+.fq2-logo-stacked__symbol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  line-height: 0;
+  order: 1;
+}
+
+.fq2-logo-stacked__symbol img {
+  display: block;
+  width: var(--fq2-symbol-size, 72px);
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center center;
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden;
+}
+
+.fq2-logo-stacked__wordmark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  line-height: 0;
+  order: 2;
+}
+
+.fq2-logo-stacked__wordmark-svg {
+  display: block;
+  width: var(--fq2-word-display-w, 176px);
+  height: auto;
+  max-width: 100%;
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+}
+
+/* Site nav — mobile first, scales up at breakpoints */
+.fq2-logo-stacked--nav {
+  --fq2-lockup-w: 148px;
+  --fq2-lockup-max-w: min(46vw, 168px);
+  --fq2-word-display-w: 148px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.54);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.04);
+}
+
+@media (min-width: 390px) {
+  .fq2-logo-stacked--nav {
+    --fq2-lockup-w: 156px;
+    --fq2-word-display-w: 156px;
+  }
+}
+
+@media (min-width: 481px) {
+  .fq2-logo-stacked--nav {
+    --fq2-lockup-w: 176px;
+    --fq2-lockup-max-w: 200px;
+    --fq2-word-display-w: 176px;
+    --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.56);
+    --fq2-gap: calc(var(--fq2-word-display-w) * 0.042);
+  }
+}
+
+@media (min-width: 1024px) {
+  .fq2-logo-stacked--nav {
+    --fq2-lockup-w: 184px;
+    --fq2-word-display-w: 184px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .fq2-logo-stacked--nav {
+    --fq2-lockup-w: 192px;
+    --fq2-word-display-w: 192px;
+  }
+}
+
+html:has(#page-dashboard.active) #navBrand .fq2-logo-stacked--nav {
+  --fq2-lockup-w: 112px;
+  --fq2-lockup-max-w: none;
+  --fq2-word-display-w: 112px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.52);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.038);
+}
+
+.fq2-logo-stacked--nav-dashboard {
+  --fq2-lockup-w: 112px;
+  --fq2-word-display-w: 112px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.52);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.038);
+}
+
+.fq2-logo-stacked--footer {
+  --fq2-lockup-w: 168px;
+  --fq2-word-display-w: 168px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.55);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.042);
+  margin-bottom: 12px;
+}
+
+.fq2-logo-stacked--standalone-sm {
+  --fq2-lockup-w: 176px;
+  --fq2-word-display-w: 176px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.56);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.042);
+}
+
+.on-light .fq2-logo-stacked__symbol img,
+.on-light .fq2-logo-stacked__wordmark-svg {
+  filter: invert(1);
+}
+
+#navBrand.split-brand .split-brand__clip:has(.fq2-logo-stacked) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+}
+
+.ra-modal .fq2-logo-stacked--standalone-sm {
+  margin: 0 auto;
+}
+
+.mp-welcome__logo.fq2-logo-stacked {
+  margin: 0 auto 16px;
+}

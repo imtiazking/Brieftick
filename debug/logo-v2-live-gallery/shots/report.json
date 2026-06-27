@@ -1,0 +1,93 @@
+{
+  "base": "http://localhost:49696",
+  "capturedAt": "2026-06-27T18:47:17.732Z",
+  "variation": "variation-2-live",
+  "shots": [
+    {
+      "id": "01-desktop-1440-header",
+      "name": "Desktop header (1440px)",
+      "file": "01-desktop-1440-header.png"
+    },
+    {
+      "id": "02-tablet-1024-header",
+      "name": "Tablet header (1024px)",
+      "file": "02-tablet-1024-header.png"
+    },
+    {
+      "id": "03-mobile-390-header",
+      "name": "Mobile header (390px)",
+      "file": "03-mobile-390-header.png"
+    },
+    {
+      "id": "04-mobile-390-menu",
+      "name": "Mobile menu open (390px)",
+      "file": "04-mobile-390-menu.png"
+    },
+    {
+      "id": "05-footer",
+      "name": "Footer",
+      "file": "05-footer.png"
+    },
+    {
+      "id": "06-dashboard",
+      "name": "Dashboard preview chrome",
+      "file": "06-dashboard.png"
+    },
+    {
+      "id": "07-auth-modal",
+      "name": "Request access modal",
+      "file": "07-auth-modal.png"
+    },
+    {
+      "id": "08-dashboard-nav",
+      "name": "In-app dashboard nav",
+      "file": "08-dashboard-nav.png"
+    },
+    {
+      "id": "09-logo-crop",
+      "name": "Vector crispness (100% / 200%)",
+      "file": "09-logo-crop-100pct.png"
+    }
+  ],
+  "metrics": {
+    "desktop1440": {
+      "renderedW": 192,
+      "renderedH": 147.98,
+      "centerDeltaPx": 0.01,
+      "scrollOverflow": false,
+      "navOverlap": false,
+      "clipped": false,
+      "wordmarkMounted": true
+    },
+    "mobile390": {
+      "renderedW": 156,
+      "renderedH": 116.8,
+      "centerDeltaPx": 0.01,
+      "scrollOverflow": false,
+      "navOverlap": false,
+      "clipped": false,
+      "wordmarkMounted": true,
+      "gapToMenu": 162
+    },
+    "dashboardNav": {
+      "renderedW": 112,
+      "renderedH": 81.39,
+      "centerDeltaPx": 0.01,
+      "scrollOverflow": false,
+      "navOverlap": false,
+      "clipped": false,
+      "wordmarkMounted": true
+    }
+  },
+  "checks": {
+    "wordmarkVectorMounted": true,
+    "centredStack": true,
+    "mobileFits": true,
+    "noScrollOverflow": true,
+    "noNavOverlap": true,
+    "noClipping": true,
+    "transparentBackground": true,
+    "symbolAsset": "/brand/forgeniq-symbol-white.png"
+  },
+  "pass": true
+}
