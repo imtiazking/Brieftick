@@ -1,0 +1,192 @@
+{
+  "base": "http://localhost:49696",
+  "capturedAt": "2026-06-27T14:42:54.693Z",
+  "variation": "stacked-symbol-above-bold-wordmark",
+  "shots": [
+    {
+      "id": "01-desktop-1440-header",
+      "name": "Desktop header (1440px)",
+      "current": "01-desktop-1440-header-current.png",
+      "variation": "01-desktop-1440-header-variation.png",
+      "currentMetrics": {
+        "renderedW": 237.78,
+        "renderedH": 118.89,
+        "aspectRatio": 2,
+        "naturalW": 4096,
+        "isStacked": false,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 152,
+        "renderedH": 90.44,
+        "aspectRatio": 1.681,
+        "naturalW": 474,
+        "isStacked": true,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "02-tablet-1024-header",
+      "name": "Tablet header (1024px)",
+      "current": "02-tablet-1024-header-current.png",
+      "variation": "02-tablet-1024-header-variation.png",
+      "currentMetrics": {
+        "renderedW": 226.84,
+        "renderedH": 113.42,
+        "aspectRatio": 2,
+        "naturalW": 4096,
+        "isStacked": false,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 142,
+        "renderedH": 84.69,
+        "aspectRatio": 1.677,
+        "naturalW": 474,
+        "isStacked": true,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "03-mobile-390-header",
+      "name": "Mobile header (390px)",
+      "current": "03-mobile-390-header-current.png",
+      "variation": "03-mobile-390-header-variation.png",
+      "currentMetrics": {
+        "renderedW": 203.36,
+        "renderedH": 101.68,
+        "aspectRatio": 2,
+        "naturalW": 4096,
+        "isStacked": false,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 96,
+        "renderedH": 58,
+        "aspectRatio": 1.655,
+        "naturalW": 474,
+        "isStacked": true,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "04-mobile-390-menu",
+      "name": "Mobile menu open (390px)",
+      "current": "04-mobile-390-menu-current.png",
+      "variation": "04-mobile-390-menu-variation.png",
+      "currentMetrics": null,
+      "variationMetrics": null
+    },
+    {
+      "id": "05-footer",
+      "name": "Footer",
+      "current": "05-footer-current.png",
+      "variation": "05-footer-variation.png",
+      "currentMetrics": {
+        "renderedW": 119.6,
+        "renderedH": 59.8,
+        "aspectRatio": 2,
+        "naturalW": 4096,
+        "isStacked": false,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 108,
+        "renderedH": 65.06,
+        "aspectRatio": 1.66,
+        "naturalW": 474,
+        "isStacked": true,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "06-dashboard",
+      "name": "Dashboard",
+      "current": "06-dashboard-current.png",
+      "variation": "06-dashboard-variation.png",
+      "currentMetrics": {
+        "renderedW": 140.5,
+        "renderedH": 70.25,
+        "aspectRatio": 2,
+        "naturalW": 4096,
+        "isStacked": false,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 82,
+        "renderedH": 49.88,
+        "aspectRatio": 1.644,
+        "naturalW": 474,
+        "isStacked": true,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "07-auth-modal",
+      "name": "Authentication / request access modal",
+      "current": "07-auth-modal-current.png",
+      "variation": "07-auth-modal-variation.png",
+      "currentMetrics": {
+        "renderedW": 87.4,
+        "renderedH": 43.7,
+        "aspectRatio": 2,
+        "naturalW": 4096,
+        "isStacked": false,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 132,
+        "renderedH": 78.94,
+        "aspectRatio": 1.672,
+        "naturalW": 474,
+        "isStacked": true,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "08-standalone-dark",
+      "name": "Standalone on dark",
+      "current": "08-standalone-dark-current.png",
+      "variation": "08-standalone-dark-variation.png"
+    },
+    {
+      "id": "09-standalone-white",
+      "name": "Standalone on white",
+      "current": "09-standalone-white-current.png",
+      "variation": "09-standalone-white-variation.png"
+    }
+  ],
+  "metrics": {
+    "desktop1440": {
+      "nav": {
+        "renderedW": 152,
+        "renderedH": 90.44,
+        "aspectRatio": 1.681,
+        "naturalW": 474,
+        "isStacked": true,
+        "scrollOverflow": false
+      }
+    },
+    "mobile390": {
+      "nav": {
+        "renderedW": 96,
+        "renderedH": 58,
+        "aspectRatio": 1.655,
+        "naturalW": 474,
+        "isStacked": true,
+        "scrollOverflow": false
+      },
+      "gapToMenu": 222
+    }
+  },
+  "checks": {
+    "stackedLayoutApplied": true,
+    "mobileFitsCleanly": true,
+    "noMobileScrollOverflow": true,
+    "symbolAboveWordmark": "Visual — symbol slice uses forgeniq-symbol-white.png; wordmark below",
+    "wordmarkBold": "Path-based SVG (Inter Tight 700 outlines) — no PNG crop, no duplicate layers",
+    "assetsUnchanged": "forgeniq-logo.png + forgeniq-symbol-white.png only",
+    "productionUntouched": "Preview CSS/JS scoped to debug/logo-variation-preview/"
+  },
+  "pass": true
+}

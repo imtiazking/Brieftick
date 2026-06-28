@@ -1,0 +1,752 @@
+{
+  "baseUrl": "http://127.0.0.1:56106",
+  "generatedAt": "2026-06-24T16:02:37.749Z",
+  "lighthouse": {
+    "landing": {
+      "performance": 61,
+      "accessibility": 100,
+      "lcpMs": 9519,
+      "cls": 0.01253158301046556,
+      "fcpMs": 5625
+    },
+    "aboutPlaywright": {
+      "webLcpMs": null,
+      "webCls": 0
+    }
+  },
+  "devices": [
+    {
+      "id": "iphone-13",
+      "name": "iPhone 13",
+      "width": 390,
+      "height": 844,
+      "pages": {
+        "landing": {
+          "screenshot": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots/landing-iphone-13.png",
+          "metrics": {
+            "horizontalScroll": false,
+            "smallTextCount": 10,
+            "smallTextSamples": [
+              {
+                "fontSize": 10.374,
+                "sample": "the",
+                "cls": "cw-ed-the"
+              },
+              {
+                "fontSize": 8,
+                "sample": "What it does",
+                "cls": "cw-eyebrow"
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 01",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 02",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 03",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 04",
+                "cls": ""
+              }
+            ],
+            "primaryCtas": [
+              {
+                "text": "Start Free",
+                "top": 10,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 493,
+                "belowFold": false
+              },
+              {
+                "text": "Explore Dashboard",
+                "top": 553,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 3236,
+                "belowFold": true
+              },
+              {
+                "text": "Start Free →",
+                "top": 4184,
+                "belowFold": true
+              }
+            ],
+            "heroHeadline": "Investment\n            Investment\n          \n        \n        \n          \n            Intelligence\n ",
+            "heroFontPx": 37.05,
+            "heroVisible": true,
+            "heroCtaBelowFold": false,
+            "heroCtaTop": 493,
+            "webLcpMs": null,
+            "webCls": 0,
+            "animationCount": 5,
+            "hoverRuleCount": 196,
+            "videoCount": 0,
+            "canvasCount": 4,
+            "navVisible": true,
+            "hamburgerVisible": true,
+            "navLinksInline": false,
+            "mobileConversionFlag": true,
+            "hudHidden": true,
+            "pageId": "landing",
+            "activePageId": "page-landing"
+          }
+        },
+        "about": {
+          "screenshot": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots/about-iphone-13.png",
+          "metrics": {
+            "horizontalScroll": true,
+            "smallTextCount": 4,
+            "smallTextSamples": [
+              {
+                "fontSize": 10,
+                "sample": "01",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "02",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "03",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "04",
+                "cls": "about-principle-num"
+              }
+            ],
+            "primaryCtas": [
+              {
+                "text": "Start Free",
+                "top": 10,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 401,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free →",
+                "top": 3134,
+                "belowFold": true
+              },
+              {
+                "text": "Start Free →",
+                "top": 3757,
+                "belowFold": true
+              }
+            ],
+            "heroHeadline": "Markets move fast.Understanding themshouldn't require a Bloomberg terminal.",
+            "heroFontPx": 32,
+            "heroVisible": true,
+            "heroCtaBelowFold": false,
+            "heroCtaTop": 401,
+            "webLcpMs": null,
+            "webCls": 0,
+            "animationCount": 4,
+            "hoverRuleCount": 196,
+            "videoCount": 0,
+            "canvasCount": 4,
+            "navVisible": true,
+            "hamburgerVisible": true,
+            "navLinksInline": false,
+            "mobileConversionFlag": true,
+            "hudHidden": true,
+            "pageId": "about",
+            "activePageId": "page-about"
+          }
+        }
+      }
+    },
+    {
+      "id": "iphone-15-pro-max",
+      "name": "iPhone 15 Pro Max",
+      "width": 430,
+      "height": 932,
+      "pages": {
+        "landing": {
+          "screenshot": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots/landing-iphone-15-pro-max.png",
+          "metrics": {
+            "horizontalScroll": false,
+            "smallTextCount": 10,
+            "smallTextSamples": [
+              {
+                "fontSize": 8,
+                "sample": "What it does",
+                "cls": "cw-eyebrow"
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 01",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 02",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 03",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 04",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 05",
+                "cls": ""
+              }
+            ],
+            "primaryCtas": [
+              {
+                "text": "Start Free",
+                "top": 10,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 484,
+                "belowFold": false
+              },
+              {
+                "text": "Explore Dashboard",
+                "top": 544,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 3165,
+                "belowFold": true
+              },
+              {
+                "text": "Start Free →",
+                "top": 4066,
+                "belowFold": true
+              }
+            ],
+            "heroHeadline": "Investment\n            Investment\n          \n        \n        \n          \n            Intelligence\n ",
+            "heroFontPx": 40.85,
+            "heroVisible": true,
+            "heroCtaBelowFold": false,
+            "heroCtaTop": 484,
+            "webLcpMs": null,
+            "webCls": 0,
+            "animationCount": 5,
+            "hoverRuleCount": 196,
+            "videoCount": 0,
+            "canvasCount": 4,
+            "navVisible": true,
+            "hamburgerVisible": true,
+            "navLinksInline": false,
+            "mobileConversionFlag": true,
+            "hudHidden": true,
+            "pageId": "landing",
+            "activePageId": "page-landing"
+          }
+        },
+        "about": {
+          "screenshot": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots/about-iphone-15-pro-max.png",
+          "metrics": {
+            "horizontalScroll": false,
+            "smallTextCount": 6,
+            "smallTextSamples": [
+              {
+                "fontSize": 10,
+                "sample": "01",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "02",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "03",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "04",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "05",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "06",
+                "cls": "about-principle-num"
+              }
+            ],
+            "primaryCtas": [
+              {
+                "text": "Start Free",
+                "top": 10,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 372,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free →",
+                "top": 2914,
+                "belowFold": true
+              },
+              {
+                "text": "Start Free →",
+                "top": 3536,
+                "belowFold": true
+              }
+            ],
+            "heroHeadline": "Markets move fast.Understanding themshouldn't require a Bloomberg terminal.",
+            "heroFontPx": 32,
+            "heroVisible": true,
+            "heroCtaBelowFold": false,
+            "heroCtaTop": 372,
+            "webLcpMs": null,
+            "webCls": 0,
+            "animationCount": 4,
+            "hoverRuleCount": 196,
+            "videoCount": 0,
+            "canvasCount": 4,
+            "navVisible": true,
+            "hamburgerVisible": true,
+            "navLinksInline": false,
+            "mobileConversionFlag": true,
+            "hudHidden": true,
+            "pageId": "about",
+            "activePageId": "page-about"
+          }
+        }
+      }
+    },
+    {
+      "id": "samsung-s24",
+      "name": "Samsung S24",
+      "width": 412,
+      "height": 915,
+      "pages": {
+        "landing": {
+          "screenshot": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots/landing-samsung-s24.png",
+          "metrics": {
+            "horizontalScroll": false,
+            "smallTextCount": 11,
+            "smallTextSamples": [
+              {
+                "fontSize": 10.9592,
+                "sample": "the",
+                "cls": "cw-ed-the"
+              },
+              {
+                "fontSize": 8,
+                "sample": "What it does",
+                "cls": "cw-eyebrow"
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 01",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 02",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 03",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 04",
+                "cls": ""
+              }
+            ],
+            "primaryCtas": [
+              {
+                "text": "Start Free",
+                "top": 10,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 477,
+                "belowFold": false
+              },
+              {
+                "text": "Explore Dashboard",
+                "top": 537,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 3181,
+                "belowFold": true
+              },
+              {
+                "text": "Start Free →",
+                "top": 4083,
+                "belowFold": true
+              }
+            ],
+            "heroHeadline": "Investment\n            Investment\n          \n        \n        \n          \n            Intelligence\n ",
+            "heroFontPx": 39.14,
+            "heroVisible": true,
+            "heroCtaBelowFold": false,
+            "heroCtaTop": 477,
+            "webLcpMs": null,
+            "webCls": 0,
+            "animationCount": 5,
+            "hoverRuleCount": 196,
+            "videoCount": 0,
+            "canvasCount": 4,
+            "navVisible": true,
+            "hamburgerVisible": true,
+            "navLinksInline": false,
+            "mobileConversionFlag": true,
+            "hudHidden": true,
+            "pageId": "landing",
+            "activePageId": "page-landing"
+          }
+        },
+        "about": {
+          "screenshot": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots/about-samsung-s24.png",
+          "metrics": {
+            "horizontalScroll": false,
+            "smallTextCount": 6,
+            "smallTextSamples": [
+              {
+                "fontSize": 10,
+                "sample": "01",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "02",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "03",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "04",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "05",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "06",
+                "cls": "about-principle-num"
+              }
+            ],
+            "primaryCtas": [
+              {
+                "text": "Start Free",
+                "top": 10,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 372,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free →",
+                "top": 2988,
+                "belowFold": true
+              },
+              {
+                "text": "Start Free →",
+                "top": 3610,
+                "belowFold": true
+              }
+            ],
+            "heroHeadline": "Markets move fast.Understanding themshouldn't require a Bloomberg terminal.",
+            "heroFontPx": 32,
+            "heroVisible": true,
+            "heroCtaBelowFold": false,
+            "heroCtaTop": 372,
+            "webLcpMs": null,
+            "webCls": 0,
+            "animationCount": 4,
+            "hoverRuleCount": 196,
+            "videoCount": 0,
+            "canvasCount": 4,
+            "navVisible": true,
+            "hamburgerVisible": true,
+            "navLinksInline": false,
+            "mobileConversionFlag": true,
+            "hudHidden": true,
+            "pageId": "about",
+            "activePageId": "page-about"
+          }
+        }
+      }
+    },
+    {
+      "id": "ipad-mini",
+      "name": "iPad Mini",
+      "width": 744,
+      "height": 1133,
+      "pages": {
+        "landing": {
+          "screenshot": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots/landing-ipad-mini.png",
+          "metrics": {
+            "horizontalScroll": false,
+            "smallTextCount": 17,
+            "smallTextSamples": [
+              {
+                "fontSize": 9.328,
+                "sample": "the",
+                "cls": "cw-ed-the"
+              },
+              {
+                "fontSize": 8,
+                "sample": "What it does",
+                "cls": "cw-eyebrow"
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 01",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 02",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 03",
+                "cls": ""
+              },
+              {
+                "fontSize": 8,
+                "sample": "module 04",
+                "cls": ""
+              }
+            ],
+            "primaryCtas": [
+              {
+                "text": "Start Free",
+                "top": 26,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 490,
+                "belowFold": false
+              },
+              {
+                "text": "Explore Dashboard",
+                "top": 550,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 3181,
+                "belowFold": true
+              },
+              {
+                "text": "Start Free →",
+                "top": 3795,
+                "belowFold": true
+              }
+            ],
+            "heroHeadline": "Investment\n            Investment\n          \n        \n        \n          \n            Intelligence\n ",
+            "heroFontPx": 42.4,
+            "heroVisible": true,
+            "heroCtaBelowFold": false,
+            "heroCtaTop": 490,
+            "webLcpMs": null,
+            "webCls": 0,
+            "animationCount": 5,
+            "hoverRuleCount": 196,
+            "videoCount": 0,
+            "canvasCount": 4,
+            "navVisible": true,
+            "hamburgerVisible": true,
+            "navLinksInline": false,
+            "mobileConversionFlag": true,
+            "hudHidden": true,
+            "pageId": "landing",
+            "activePageId": "page-landing"
+          }
+        },
+        "about": {
+          "screenshot": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots/about-ipad-mini.png",
+          "metrics": {
+            "horizontalScroll": false,
+            "smallTextCount": 8,
+            "smallTextSamples": [
+              {
+                "fontSize": 10,
+                "sample": "01",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "02",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "03",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "04",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "05",
+                "cls": "about-principle-num"
+              },
+              {
+                "fontSize": 10,
+                "sample": "06",
+                "cls": "about-principle-num"
+              }
+            ],
+            "primaryCtas": [
+              {
+                "text": "Start Free",
+                "top": 12,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free",
+                "top": 343,
+                "belowFold": false
+              },
+              {
+                "text": "Start Free →",
+                "top": 2423,
+                "belowFold": true
+              },
+              {
+                "text": "Start Free →",
+                "top": 2944,
+                "belowFold": true
+              }
+            ],
+            "heroHeadline": "Markets move fast.Decoding themshouldn't require a institutional tools.",
+            "heroFontPx": 33.48,
+            "heroVisible": true,
+            "heroCtaBelowFold": false,
+            "heroCtaTop": 343,
+            "webLcpMs": null,
+            "webCls": 0,
+            "animationCount": 4,
+            "hoverRuleCount": 196,
+            "videoCount": 0,
+            "canvasCount": 4,
+            "navVisible": true,
+            "hamburgerVisible": true,
+            "navLinksInline": false,
+            "mobileConversionFlag": true,
+            "hudHidden": true,
+            "pageId": "about",
+            "activePageId": "page-about"
+          }
+        }
+      }
+    }
+  ],
+  "sprintValidation": {
+    "viewports": [
+      {
+        "id": "iphone-13",
+        "landing": {
+          "noHorizontalScroll": true,
+          "hamburgerVisible": true,
+          "navLinksHidden": true,
+          "ctaAboveFold": true,
+          "hudHidden": true
+        },
+        "about": {
+          "noHorizontalScroll": false,
+          "ctaAboveFold": true
+        }
+      },
+      {
+        "id": "iphone-15-pro-max",
+        "landing": {
+          "noHorizontalScroll": true,
+          "hamburgerVisible": true,
+          "navLinksHidden": true,
+          "ctaAboveFold": true,
+          "hudHidden": true
+        },
+        "about": {
+          "noHorizontalScroll": true,
+          "ctaAboveFold": true
+        }
+      },
+      {
+        "id": "samsung-s24",
+        "landing": {
+          "noHorizontalScroll": true,
+          "hamburgerVisible": true,
+          "navLinksHidden": true,
+          "ctaAboveFold": true,
+          "hudHidden": true
+        },
+        "about": {
+          "noHorizontalScroll": true,
+          "ctaAboveFold": true
+        }
+      }
+    ],
+    "lighthouse": {
+      "performance": 61,
+      "accessibility": 100,
+      "lcpMs": 9519,
+      "cls": 0.01253158301046556,
+      "fcpMs": 5625
+    },
+    "targets": {
+      "lighthousePerformanceMin": 80,
+      "lcpMsMax": 3000,
+      "clsMax": 0.05
+    },
+    "pass": false
+  }
+}

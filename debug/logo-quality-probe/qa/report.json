@@ -1,0 +1,72 @@
+{
+  "base": "http://localhost:52184",
+  "checks": [
+    {
+      "viewport": 320,
+      "dpr": 1,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 176.8,
+      "renderedH": 88.4,
+      "src": "http://localhost:52184/brand/forgeniq-logo.png",
+      "screenshot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-quality-probe\\qa\\logo-320@1x-200pct.png",
+      "hiResAsset": true
+    },
+    {
+      "viewport": 320,
+      "dpr": 2,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 176.8,
+      "renderedH": 88.4,
+      "src": "http://localhost:52184/brand/forgeniq-logo.png",
+      "screenshot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-quality-probe\\qa\\logo-320@2x-200pct.png",
+      "hiResAsset": true
+    },
+    {
+      "viewport": 390,
+      "dpr": 1,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 176.8,
+      "renderedH": 88.4,
+      "src": "http://localhost:52184/brand/forgeniq-logo.png",
+      "screenshot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-quality-probe\\qa\\logo-390@1x-200pct.png",
+      "hiResAsset": true
+    },
+    {
+      "viewport": 390,
+      "dpr": 2,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 176.8,
+      "renderedH": 88.4,
+      "src": "http://localhost:52184/brand/forgeniq-logo.png",
+      "screenshot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-quality-probe\\qa\\logo-390@2x-200pct.png",
+      "hiResAsset": true
+    },
+    {
+      "viewport": 1440,
+      "dpr": 1,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 206.8,
+      "renderedH": 103.4,
+      "src": "http://localhost:52184/brand/forgeniq-logo.png",
+      "screenshot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-quality-probe\\qa\\logo-1440@1x-200pct.png",
+      "hiResAsset": true
+    },
+    {
+      "viewport": 1440,
+      "dpr": 2,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 206.8,
+      "renderedH": 103.4,
+      "src": "http://localhost:52184/brand/forgeniq-logo.png",
+      "screenshot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-quality-probe\\qa\\logo-1440@2x-200pct.png",
+      "hiResAsset": true
+    }
+  ],
+  "pass": true
+}

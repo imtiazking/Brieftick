@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>FORGENIQ Logo Variation 1 · Vector Wordmark Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --panel: #12151c;
+      --border: rgba(255, 255, 255, 0.08);
+      --ink: #e8ecf4;
+      --muted: #8b95a8;
+      --gold: #d4a85a;
+      --current: #6b9fd4;
+      --variation: #5ecf8a;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; }
+    header { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); max-width: 1400px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 1.35rem; font-weight: 700; }
+    .sub { color: var(--muted); font-size: 0.9rem; max-width: 860px; }
+    .badge { display: inline-block; margin-top: 12px; padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(212, 168, 90, 0.15); color: var(--gold); border: 1px solid rgba(212, 168, 90, 0.35); }
+    main { max-width: 1400px; margin: 0 auto; padding: 24px; }
+    section { margin-bottom: 48px; }
+    h2 { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin: 0 0 16px; }
+    .compare { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+    .compare__title { padding: 12px 16px; font-size: 0.88rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    .compare__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .compare__col { border-right: 1px solid var(--border); }
+    .compare__col:last-child { border-right: none; }
+    .compare__label { padding: 8px 14px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .compare__label--current { color: var(--current); background: rgba(107, 159, 212, 0.08); }
+    .compare__label--variation { color: var(--variation); background: rgba(94, 207, 138, 0.08); }
+    .compare__img { display: block; width: 100%; height: auto; background: #0d0f14; }
+    .specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 16px 0 32px; }
+    .spec { padding: 10px 12px; border-radius: 8px; background: var(--panel); border: 1px solid var(--border); font-size: 0.78rem; }
+    .spec strong { display: block; color: var(--gold); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+    .crop-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .crop-block { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .crop-block__head { padding: 10px 14px; font-size: 0.82rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    .crop-block__sub { display: grid; grid-template-columns: 1fr 1fr; }
+    .crop-block__sub img { width: 100%; display: block; background: #111; }
+    .crop-block__sub span { padding: 6px 10px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); border-bottom: 1px solid var(--border); display: block; }
+    footer { padding: 24px; text-align: center; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+    code { font-size: 0.85em; }
+    @media (max-width: 720px) { .compare__grid, .crop-block__sub { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FORGENIQ Logo · Variation 1 (vector wordmark fix)</h1>
+    <p class="sub">
+      Symbol unchanged · wordmark is <strong>path-based SVG</strong> (Inter Tight 700 outlines) — no PNG crop, no duplicate-layer bold.
+      Left = Current horizontal lockup. Right = Variation 1 stacked layout.
+    </p>
+    <span class="badge">Not approved · Not deployed</span>
+    <div class="specs">
+      <div class="spec"><strong>Symbol</strong><code>forgeniq-symbol-white.png</code></div>
+      <div class="spec"><strong>Wordmark</strong><code>forgeniq-wordmark.svg</code> path vector</div>
+      <div class="spec"><strong>Layout</strong>Symbol above wordmark, centered</div>
+      <div class="spec"><strong>Scope</strong><code>debug/logo-variation-preview/</code> only</div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Headers</h2>
+
+      <article class="compare">
+        <div class="compare__title">Desktop header · 1440px</div>
+        <div class="compare__grid">
+          <div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/01-desktop-1440-header-current.png" alt=""></div>
+          <div class="compare__col"><div class="compare__label compare__label--variation">Variation 1</div><img class="compare__img" src="shots/01-desktop-1440-header-variation.png" alt=""></div>
+        </div>
+      </article>
+
+      <article class="compare">
+        <div class="compare__title">Mobile header · 390px</div>
+        <div class="compare__grid">
+          <div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/03-mobile-390-header-current.png" alt=""></div>
+          <div class="compare__col"><div class="compare__label compare__label--variation">Variation 1</div><img class="compare__img" src="shots/03-mobile-390-header-variation.png" alt=""></div>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <h2>Logo crops · desktop (1440px)</h2>
+      <div class="crop-row">
+        <div class="crop-block">
+          <div class="crop-block__head">100% zoom</div>
+          <div class="crop-block__sub">
+            <div><span style="color:var(--current)">Current</span><img src="shots/01-desktop-1440-current-crop-100pct.png" alt=""></div>
+            <div><span style="color:var(--variation)">Variation 1</span><img src="shots/01-desktop-1440-variation-crop-100pct.png" alt=""></div>
+          </div>
+        </div>
+        <div class="crop-block">
+          <div class="crop-block__head">200% zoom</div>
+          <div class="crop-block__sub">
+            <div><span style="color:var(--current)">Current</span><img src="shots/01-desktop-1440-current-crop-200pct.png" alt=""></div>
+            <div><span style="color:var(--variation)">Variation 1</span><img src="shots/01-desktop-1440-variation-crop-200pct.png" alt=""></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Logo crops · mobile (390px)</h2>
+      <div class="crop-row">
+        <div class="crop-block">
+          <div class="crop-block__head">100% zoom</div>
+          <div class="crop-block__sub">
+            <div><span style="color:var(--current)">Current</span><img src="shots/03-mobile-390-current-crop-100pct.png" alt=""></div>
+            <div><span style="color:var(--variation)">Variation 1</span><img src="shots/03-mobile-390-variation-crop-100pct.png" alt=""></div>
+          </div>
+        </div>
+        <div class="crop-block">
+          <div class="crop-block__head">200% zoom</div>
+          <div class="crop-block__sub">
+            <div><span style="color:var(--current)">Current</span><img src="shots/03-mobile-390-current-crop-200pct.png" alt=""></div>
+            <div><span style="color:var(--variation)">Variation 1</span><img src="shots/03-mobile-390-variation-crop-200pct.png" alt=""></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Start preview server: <code>npm run preview:logo-variation</code> then open
+    <code>http://localhost:49696/debug/logo-variation-preview/</code>
+    · Verify: <code>npm run verify:logo-variation-preview</code>
+  </footer>
+</body>
+</html>

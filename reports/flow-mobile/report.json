@@ -1,0 +1,335 @@
+{
+  "pass": false,
+  "baseUrl": "https://www.forgeniq.com",
+  "dashboardLoads": {
+    "active": true,
+    "wheel": true,
+    "legacyHidden": true
+  },
+  "desktopOk": {
+    "notMobile": true,
+    "bubbleCount": 5,
+    "hasHoverSpread": true
+  },
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 502 ()",
+    "Failed to load resource: the server responded with a status of 503 ()",
+    "Failed to load resource: the server responded with a status of 502 ()",
+    "Failed to load resource: the server responded with a status of 503 ()",
+    "Failed to load resource: the server responded with a status of 503 ()",
+    "Failed to load resource: the server responded with a status of 503 ()",
+    "Failed to load resource: the server responded with a status of 503 ()",
+    "Failed to load resource: the server responded with a status of 503 ()"
+  ],
+  "reports": [
+    {
+      "viewport": "iphone-13",
+      "opened": true,
+      "before": {
+        "isMobile": true,
+        "layoutSettled": true,
+        "bubbleCount": 5,
+        "allIdsPresent": true,
+        "minHitOk": true,
+        "overlapBlocksTap": false,
+        "horizontalOverflow": false,
+        "positions": [
+          {
+            "id": "technology",
+            "w": 75.67999267578125,
+            "h": 75.679931640625,
+            "hitMin": 75.67999267578125,
+            "x": 195,
+            "y": 604.265625,
+            "minHitOk": true
+          },
+          {
+            "id": "industrials",
+            "w": 49.02000427246094,
+            "h": 49.019989013671875,
+            "hitMin": 49.02000427246094,
+            "x": 136.09000396728516,
+            "y": 526.8656158447266,
+            "minHitOk": true
+          },
+          {
+            "id": "defensives",
+            "w": 45.579986572265625,
+            "h": 45.58001708984375,
+            "hitMin": 45.58001708984375,
+            "x": 255.1999969482422,
+            "y": 537.1856384277344,
+            "minHitOk": true
+          },
+          {
+            "id": "financials",
+            "w": 51.59999084472656,
+            "h": 51.60003662109375,
+            "hitMin": 51.60003662109375,
+            "x": 139.0999984741211,
+            "y": 676.5056457519531,
+            "minHitOk": true
+          },
+          {
+            "id": "energy",
+            "w": 59.33998107910156,
+            "h": 59.3399658203125,
+            "hitMin": 59.33998107910156,
+            "x": 248.74999237060547,
+            "y": 671.3456420898438,
+            "minHitOk": true
+          }
+        ]
+      },
+      "taps": [
+        {
+          "id": "technology",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "38%",
+          "title": "Technology"
+        },
+        {
+          "id": "energy",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "22%",
+          "title": "Energy"
+        },
+        {
+          "id": "financials",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "14%",
+          "title": "Financials"
+        },
+        {
+          "id": "industrials",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "11%",
+          "title": "Industrials"
+        },
+        {
+          "id": "defensives",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "8%",
+          "title": "Defensives"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "viewport": "samsung-s24",
+      "opened": true,
+      "before": {
+        "isMobile": true,
+        "layoutSettled": true,
+        "bubbleCount": 5,
+        "allIdsPresent": true,
+        "minHitOk": true,
+        "overlapBlocksTap": false,
+        "horizontalOverflow": false,
+        "positions": [
+          {
+            "id": "technology",
+            "w": 75.67999267578125,
+            "h": 75.679931640625,
+            "hitMin": 75.67999267578125,
+            "x": 206,
+            "y": 625,
+            "minHitOk": true
+          },
+          {
+            "id": "industrials",
+            "w": 49.02000427246094,
+            "h": 49.02001953125,
+            "hitMin": 49.02001953125,
+            "x": 140.49219512939453,
+            "y": 547.5999755859375,
+            "minHitOk": true
+          },
+          {
+            "id": "defensives",
+            "w": 45.58001708984375,
+            "h": 45.5799560546875,
+            "hitMin": 45.58001708984375,
+            "x": 271.494384765625,
+            "y": 557.9199829101562,
+            "minHitOk": true
+          },
+          {
+            "id": "financials",
+            "w": 51.600006103515625,
+            "h": 51.60003662109375,
+            "hitMin": 51.60003662109375,
+            "x": 145.16844177246094,
+            "y": 697.2400207519531,
+            "minHitOk": true
+          },
+          {
+            "id": "energy",
+            "w": 59.339996337890625,
+            "h": 59.3399658203125,
+            "hitMin": 59.339996337890625,
+            "x": 266.81813049316406,
+            "y": 692.0800170898438,
+            "minHitOk": true
+          }
+        ]
+      },
+      "taps": [
+        {
+          "id": "technology",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "38%",
+          "title": "Technology"
+        },
+        {
+          "id": "energy",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "22%",
+          "title": "Energy"
+        },
+        {
+          "id": "financials",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "14%",
+          "title": "Financials"
+        },
+        {
+          "id": "industrials",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "11%",
+          "title": "Industrials"
+        },
+        {
+          "id": "defensives",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "8%",
+          "title": "Defensives"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "viewport": "iphone-15-pro-max",
+      "opened": true,
+      "before": {
+        "isMobile": true,
+        "layoutSettled": true,
+        "bubbleCount": 5,
+        "allIdsPresent": true,
+        "minHitOk": true,
+        "overlapBlocksTap": false,
+        "horizontalOverflow": false,
+        "positions": [
+          {
+            "id": "technology",
+            "w": 75.67999267578125,
+            "h": 75.679931640625,
+            "hitMin": 75.67999267578125,
+            "x": 215,
+            "y": 625,
+            "minHitOk": true
+          },
+          {
+            "id": "industrials",
+            "w": 49.02000427246094,
+            "h": 49.02001953125,
+            "hitMin": 49.02001953125,
+            "x": 145.1653060913086,
+            "y": 547.5999755859375,
+            "minHitOk": true
+          },
+          {
+            "id": "defensives",
+            "w": 45.579986572265625,
+            "h": 45.5799560546875,
+            "hitMin": 45.579986572265625,
+            "x": 284.8212432861328,
+            "y": 557.9199829101562,
+            "minHitOk": true
+          },
+          {
+            "id": "financials",
+            "w": 51.600006103515625,
+            "h": 51.60003662109375,
+            "hitMin": 51.60003662109375,
+            "x": 150.15061950683594,
+            "y": 697.2400207519531,
+            "minHitOk": true
+          },
+          {
+            "id": "energy",
+            "w": 59.34002685546875,
+            "h": 59.3399658203125,
+            "hitMin": 59.34002685546875,
+            "x": 279.8359375,
+            "y": 692.0800170898438,
+            "minHitOk": true
+          }
+        ]
+      },
+      "taps": [
+        {
+          "id": "technology",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "38%",
+          "title": "Technology"
+        },
+        {
+          "id": "energy",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "22%",
+          "title": "Energy"
+        },
+        {
+          "id": "financials",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "14%",
+          "title": "Financials"
+        },
+        {
+          "id": "industrials",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "11%",
+          "title": "Industrials"
+        },
+        {
+          "id": "defensives",
+          "hasFocus": true,
+          "detailOpen": true,
+          "hasCta": true,
+          "netFlow": "8%",
+          "title": "Defensives"
+        }
+      ],
+      "pass": true
+    }
+  ]
+}

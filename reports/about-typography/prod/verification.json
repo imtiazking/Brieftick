@@ -1,0 +1,89 @@
+{
+  "commit": "1c141a3",
+  "baseUrl": "http://127.0.0.1:3460",
+  "deployed": true,
+  "screenshots": {
+    "desktop": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/about-typography/prod/desktop.png",
+    "mobile390": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/about-typography/prod/mobile-390.png",
+    "mobile412": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/about-typography/prod/mobile-412.png",
+    "mobile430": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/about-typography/prod/mobile-430.png"
+  },
+  "desktop": {
+    "metrics": {
+      "dashCount": 0,
+      "dashes": [],
+      "principles": 6,
+      "statRow": "194px 194px 194px 194px",
+      "sectionLabels": 3,
+      "hudText": "LIVE · BETA"
+    },
+    "startFreeModal": false,
+    "mobileStartFree": false,
+    "signInModal": false,
+    "errors": [
+      "public-config HTTP 404",
+      "public-config HTTP 404",
+      "public-config HTTP 404"
+    ]
+  },
+  "mobile": [
+    {
+      "viewport": 390,
+      "metrics": {
+        "dashCount": 0,
+        "dashes": [],
+        "docH": 4210,
+        "innerH": 844,
+        "scrollY": 2000,
+        "scrollWorks": true,
+        "horizontalScroll": true,
+        "ctaAboveFold": true,
+        "ctaTop": 401,
+        "hasStatKicker": true,
+        "heroShort": "Story-first market intelligence in plain English, built for investors who want context, not jargon."
+      },
+      "errors": [
+        "Cannot read properties of undefined (reading 'querySelectorAll')"
+      ]
+    },
+    {
+      "viewport": 412,
+      "metrics": {
+        "dashCount": 0,
+        "dashes": [],
+        "docH": 4063,
+        "innerH": 844,
+        "scrollY": 2000,
+        "scrollWorks": true,
+        "horizontalScroll": false,
+        "ctaAboveFold": true,
+        "ctaTop": 372,
+        "hasStatKicker": true,
+        "heroShort": "Story-first market intelligence in plain English, built for investors who want context, not jargon."
+      },
+      "errors": [
+        "Cannot read properties of undefined (reading 'querySelectorAll')"
+      ]
+    },
+    {
+      "viewport": 430,
+      "metrics": {
+        "dashCount": 0,
+        "dashes": [],
+        "docH": 3973,
+        "innerH": 844,
+        "scrollY": 2000,
+        "scrollWorks": true,
+        "horizontalScroll": false,
+        "ctaAboveFold": true,
+        "ctaTop": 372,
+        "hasStatKicker": true,
+        "heroShort": "Story-first market intelligence in plain English, built for investors who want context, not jargon."
+      },
+      "errors": [
+        "Cannot read properties of undefined (reading 'querySelectorAll')"
+      ]
+    }
+  ],
+  "pass": false
+}

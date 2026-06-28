@@ -1,0 +1,157 @@
+{
+  "base": "http://localhost:49696",
+  "capturedAt": "2026-06-27T17:55:18.035Z",
+  "variation": "variation-2-centred-stacked-vector",
+  "shots": [
+    {
+      "id": "01-desktop-1440-header",
+      "name": "Desktop header (1440px)",
+      "current": "01-desktop-1440-header-current.png",
+      "variation2": "01-desktop-1440-header-variation2.png",
+      "currentMetrics": {
+        "renderedW": 237.78,
+        "renderedH": 118.89,
+        "centerDeltaPx": null,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 192,
+        "renderedH": 147.98,
+        "centerDeltaPx": 0.01,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "02-tablet-1024-header",
+      "name": "Tablet header (1024px)",
+      "current": "02-tablet-1024-header-current.png",
+      "variation2": "02-tablet-1024-header-variation2.png",
+      "currentMetrics": {
+        "renderedW": 226.84,
+        "renderedH": 113.42,
+        "centerDeltaPx": null,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 184,
+        "renderedH": 141.81,
+        "centerDeltaPx": 0,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "03-mobile-390-header",
+      "name": "Mobile header (390px)",
+      "current": "03-mobile-390-header-current.png",
+      "variation2": "03-mobile-390-header-variation2.png",
+      "currentMetrics": {
+        "renderedW": 203.36,
+        "renderedH": 101.68,
+        "centerDeltaPx": null,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 156,
+        "renderedH": 116.8,
+        "centerDeltaPx": 0.01,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "04-mobile-390-menu",
+      "name": "Mobile menu open (390px)",
+      "current": "04-mobile-390-menu-current.png",
+      "variation2": "04-mobile-390-menu-variation2.png",
+      "currentMetrics": null,
+      "variationMetrics": null
+    },
+    {
+      "id": "05-footer",
+      "name": "Footer",
+      "current": "05-footer-current.png",
+      "variation2": "05-footer-variation2.png",
+      "currentMetrics": {
+        "renderedW": 119.6,
+        "renderedH": 59.8,
+        "centerDeltaPx": null,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 168,
+        "renderedH": 127.8,
+        "centerDeltaPx": 0.01,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "06-dashboard",
+      "name": "Dashboard",
+      "current": "06-dashboard-current.png",
+      "variation2": "06-dashboard-variation2.png",
+      "currentMetrics": {
+        "renderedW": 140.5,
+        "renderedH": 70.25,
+        "centerDeltaPx": null,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 112,
+        "renderedH": 81.39,
+        "centerDeltaPx": 0.01,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "07-auth-modal",
+      "name": "Authentication / request access modal",
+      "current": "07-auth-modal-current.png",
+      "variation2": "07-auth-modal-variation2.png",
+      "currentMetrics": {
+        "renderedW": 87.4,
+        "renderedH": 43.7,
+        "centerDeltaPx": null,
+        "scrollOverflow": false
+      },
+      "variationMetrics": {
+        "renderedW": 176,
+        "renderedH": 135.64,
+        "centerDeltaPx": 0.01,
+        "scrollOverflow": false
+      }
+    },
+    {
+      "id": "08-standalone-dark",
+      "current": "08-standalone-dark-current.png",
+      "variation2": "08-standalone-dark-variation2.png"
+    },
+    {
+      "id": "09-standalone-white",
+      "current": "09-standalone-white-current.png",
+      "variation2": "09-standalone-white-variation2.png"
+    }
+  ],
+  "metrics": {
+    "desktop1440": {
+      "renderedW": 192,
+      "renderedH": 147.98,
+      "centerDeltaPx": 0.01,
+      "scrollOverflow": false
+    },
+    "mobile390": {
+      "renderedW": 156,
+      "renderedH": 116.8,
+      "centerDeltaPx": 0.01,
+      "scrollOverflow": false,
+      "gapToMenu": 162
+    }
+  },
+  "checks": {
+    "symbolUnchanged": "forgeniq-symbol-white.png (approved extract)",
+    "wordmarkVector": "forgeniq-wordmark.svg Inter Tight 900 paths",
+    "centredStack": true,
+    "mobileFits": true,
+    "noScrollOverflow": true,
+    "previewOnly": true
+  },
+  "pass": true
+}

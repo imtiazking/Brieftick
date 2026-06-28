@@ -1,0 +1,184 @@
+{
+  "generatedAt": "2026-06-23T20:39:48.534Z",
+  "baseUrl": "https://www.forgeniq.com/",
+  "phase": "after",
+  "before": {
+    "note": "Prior audit — editorial primary (inflation), hardcoded headlines, registry order, weak stories always shown",
+    "exampleHeadlines": [
+      "Inflation Is Driving Markets",
+      "US Markets Are Outpacing Europe",
+      "Steady Oil Prices Are Helping Energy Stocks"
+    ],
+    "ranking": "Registry order with primary: true on inflation"
+  },
+  "after": {
+    "registryHasHeadlines": false,
+    "registryHasPrimary": false,
+    "primaryStoryId": "inflation",
+    "hiddenStoryIds": [
+      "ai"
+    ],
+    "visibleStories": [
+      {
+        "rank": 1,
+        "id": "inflation",
+        "headline": "Defensive Stocks Lead The Session",
+        "strength": 69,
+        "confidence": "high",
+        "confidencePct": 84,
+        "dataCoverage": 0.75,
+        "status": "stable",
+        "inputsUsed": [
+          "rates",
+          "financials",
+          "macro"
+        ],
+        "sourceLabel": "Source: FRED + Finnhub",
+        "updatedAtUtc": "23 Jun 2026, 20:39 UTC",
+        "whatChangedToday": [
+          "10Y Treasury yields rose to 4.51% (+5 bp vs prior)",
+          "Financials outperformed growth sectors",
+          "Technology -4.0%",
+          "Financials +0.6%"
+        ],
+        "whatCouldChangeIt": [
+          "Retail Sales on 23 Jun",
+          "Gross Domestic Product on 25 Jun",
+          "BAC earnings on 14 Jul"
+        ]
+      },
+      {
+        "rank": 2,
+        "id": "europe",
+        "headline": "US Markets Outperform Europe",
+        "strength": 59,
+        "confidence": "medium",
+        "confidencePct": 62,
+        "dataCoverage": 0.75,
+        "status": "stable",
+        "inputsUsed": [
+          "spread",
+          "dollar",
+          "us"
+        ],
+        "sourceLabel": "Source: FRED + Finnhub",
+        "updatedAtUtc": "23 Jun 2026, 20:39 UTC",
+        "whatChangedToday": [
+          "Dollar +1.7%",
+          "Dollar strengthened",
+          "US equities outpacing Europe (-1.5% vs -2.1%)"
+        ],
+        "whatCouldChangeIt": []
+      },
+      {
+        "rank": 3,
+        "id": "energy",
+        "headline": "Energy Weakens As Oil Falls",
+        "strength": 44,
+        "confidence": "medium",
+        "confidencePct": 62,
+        "dataCoverage": 0.75,
+        "status": "stable",
+        "inputsUsed": [
+          "xle",
+          "oil",
+          "relative"
+        ],
+        "sourceLabel": "Source: FRED + Finnhub",
+        "updatedAtUtc": "23 Jun 2026, 20:39 UTC",
+        "whatChangedToday": [
+          "Oil down on the session (84.65)",
+          "Energy names leading the broader market",
+          "Energy sector +0.7%"
+        ],
+        "whatCouldChangeIt": []
+      }
+    ],
+    "allStoriesRanked": [
+      {
+        "rank": 1,
+        "id": "inflation",
+        "headline": "Defensive Stocks Lead The Session",
+        "strength": 69,
+        "confidence": "high",
+        "hidden": false
+      },
+      {
+        "rank": 2,
+        "id": "europe",
+        "headline": "US Markets Outperform Europe",
+        "strength": 59,
+        "confidence": "medium",
+        "hidden": false
+      },
+      {
+        "rank": 3,
+        "id": "energy",
+        "headline": "Energy Weakens As Oil Falls",
+        "strength": 44,
+        "confidence": "medium",
+        "hidden": false
+      },
+      {
+        "rank": 4,
+        "id": "ai",
+        "headline": "AI And Chip Stocks Lead The Decline",
+        "strength": 15,
+        "confidence": "low",
+        "hidden": true
+      }
+    ],
+    "liveInputs": {
+      "quotes": {
+        "SPY": -1.4522,
+        "QQQ": -4.07930107526882,
+        "IWM": 0.23079011675264963,
+        "NVDA": -4.1265,
+        "XLV": 1.4128,
+        "XLK": -3.9626675009124535,
+        "XLU": 0.7375949932945871,
+        "XLE": 0.7399,
+        "XLF": 0.5974607916355494,
+        "EWG": -2.0554493307839543,
+        "UUP": 1.7161244190203806,
+        "XOM": 0.9099,
+        "AMD": -5.7611,
+        "AVGO": -3.0551,
+        "SOXX": -3.9875885114169876,
+        "CVX": 0.5255
+      },
+      "rates": {
+        "dgs10": 4.51,
+        "dgs2": 4.24,
+        "dgs10Change": 0.04999999999999982,
+        "dgs2Change": 0.04999999999999982
+      },
+      "oil": {
+        "price": 84.65,
+        "change": -3.969999999999999
+      },
+      "calendarEventCount": 4,
+      "impactItemCount": 10
+    },
+    "checks": {
+      "noHardcodedHeadlines": true,
+      "noPrimaryOverride": true,
+      "strengthBasedRanking": true,
+      "primaryIsTopVisible": true,
+      "allVisibleHaveLiveHeadlines": true,
+      "weakStoriesHidden": true
+    }
+  },
+  "ui": {
+    "headline": "Defensive Stocks Lead The Session",
+    "sourceLine": "Source: FRED + Finnhub · Updated: 23 Jun 2026, 20:39 UTC",
+    "timelineNodeCount": 3,
+    "visibleStoryIds": [
+      "inflation",
+      "energy",
+      "europe"
+    ]
+  },
+  "errors": [],
+  "pass": true
+}

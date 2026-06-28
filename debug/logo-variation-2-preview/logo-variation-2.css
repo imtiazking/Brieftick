@@ -1,0 +1,167 @@
+/**
+ * FORGENIQ Logo Variation 2 — preview only.
+ * Symbol above wordmark · centred lockup · crisp vector wordmark
+ */
+
+.fq2-logo-stacked {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-content: center;
+  width: var(--fq2-lockup-w, auto);
+  max-width: var(--fq2-lockup-max-w, none);
+  row-gap: var(--fq2-gap, 8px);
+  line-height: 0;
+  flex-shrink: 0;
+  cursor: inherit;
+  text-decoration: none;
+  background: transparent;
+  isolation: isolate;
+}
+
+.fq2-logo-stacked__symbol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  line-height: 0;
+  order: 1;
+}
+
+.fq2-logo-stacked__symbol img {
+  display: block;
+  width: var(--fq2-symbol-size, 72px);
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center center;
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden;
+}
+
+.fq2-logo-stacked__wordmark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  line-height: 0;
+  order: 2;
+}
+
+.fq2-logo-stacked__wordmark-svg {
+  display: block;
+  width: var(--fq2-word-display-w, 176px);
+  height: auto;
+  max-width: 100%;
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+}
+
+/* Marketing hero nav — desktop */
+.fq2-logo-stacked--nav-marketing {
+  --fq2-lockup-w: 176px;
+  --fq2-lockup-max-w: 200px;
+  --fq2-word-display-w: 176px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.56);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.042);
+}
+
+@media (min-width: 1024px) {
+  .fq2-logo-stacked--nav-marketing {
+    --fq2-lockup-w: 184px;
+    --fq2-word-display-w: 184px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .fq2-logo-stacked--nav-marketing {
+    --fq2-lockup-w: 192px;
+    --fq2-word-display-w: 192px;
+  }
+}
+
+/* Marketing hero nav — mobile */
+.fq2-logo-stacked--nav-mobile {
+  --fq2-lockup-w: 148px;
+  --fq2-lockup-max-w: min(46vw, 168px);
+  --fq2-word-display-w: 148px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.54);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.04);
+}
+
+@media (min-width: 390px) {
+  .fq2-logo-stacked--nav-mobile {
+    --fq2-lockup-w: 156px;
+    --fq2-word-display-w: 156px;
+  }
+}
+
+/* Dashboard / compact chrome */
+.fq2-logo-stacked--nav-dashboard {
+  --fq2-lockup-w: 112px;
+  --fq2-word-display-w: 112px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.52);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.038);
+}
+
+/* Footer */
+.fq2-logo-stacked--footer {
+  --fq2-lockup-w: 168px;
+  --fq2-word-display-w: 168px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.55);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.042);
+  margin-bottom: 12px;
+}
+
+/* Standalone / auth */
+.fq2-logo-stacked--standalone {
+  --fq2-lockup-w: 240px;
+  --fq2-word-display-w: 240px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.58);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.048);
+}
+
+.fq2-logo-stacked--standalone-sm {
+  --fq2-lockup-w: 176px;
+  --fq2-word-display-w: 176px;
+  --fq2-symbol-size: calc(var(--fq2-word-display-w) * 0.56);
+  --fq2-gap: calc(var(--fq2-word-display-w) * 0.042);
+}
+
+.fq2-variation-preview .split-brand__clip,
+.fq2-variation-preview .split-brand-img {
+  transform: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+.fq2-variation-preview #navBrand.split-brand,
+.fq2-variation-preview #navBrand .split-brand__clip {
+  background: none;
+  align-items: center;
+  max-width: none !important;
+}
+
+.fq2-variation-preview-active .nav-a__start .split-brand {
+  max-width: none !important;
+}
+
+.fq2-variation-preview-active .nav.nav-a,
+.fq2-variation-preview-active .nav-a__start {
+  overflow: visible;
+}
+
+.fq2-variation-preview-active .nav.nav-a {
+  align-items: center;
+  min-height: 72px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.on-light .fq2-logo-stacked__symbol img,
+.on-light .fq2-logo-stacked__wordmark-svg {
+  filter: invert(1);
+}
+

@@ -1,0 +1,37 @@
+{
+  "prod": "https://www.forgeniq.com",
+  "local": "http://localhost:49696",
+  "sizeChecks": [
+    {
+      "viewport": 320,
+      "prod": "176.8×88.4",
+      "local": "176.8×88.4",
+      "match": true,
+      "localNatural": "4096×2048"
+    },
+    {
+      "viewport": 390,
+      "prod": "176.8×88.4",
+      "local": "176.8×88.4",
+      "match": true,
+      "localNatural": "4096×2048"
+    },
+    {
+      "viewport": 768,
+      "prod": "178.6×89.3",
+      "local": "178.6×89.3",
+      "match": true,
+      "localNatural": "4096×2048"
+    },
+    {
+      "viewport": 1440,
+      "prod": "206.8×103.4",
+      "local": "206.8×103.4",
+      "match": true,
+      "localNatural": "4096×2048"
+    }
+  ],
+  "beforeFailures": [],
+  "afterFailures": [],
+  "pass": true
+}

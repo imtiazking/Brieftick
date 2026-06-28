@@ -1,0 +1,249 @@
+{
+  "pass": true,
+  "baseUrl": "https://www.forgeniq.com",
+  "reports": [
+    {
+      "viewport": "iphone-13",
+      "tabs": [
+        {
+          "label": "Today",
+          "segment": "today",
+          "badge": "Today",
+          "snapshotWrapVisible": true,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "happened",
+            "why",
+            "sectors",
+            "sectors",
+            "reaction",
+            "stocks",
+            "watch"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1998
+        },
+        {
+          "label": "Why",
+          "segment": "why",
+          "badge": "Why",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "happened"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1063
+        },
+        {
+          "label": "Winners",
+          "segment": "winners",
+          "badge": "Winners",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "sectors",
+            "sectors",
+            "stocks"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1288
+        },
+        {
+          "label": "Losers",
+          "segment": "losers",
+          "badge": "Losers",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "sectors",
+            "sectors",
+            "stocks"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1315
+        },
+        {
+          "label": "Next",
+          "segment": "next",
+          "badge": "Next",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "watch"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1100
+        }
+      ],
+      "snapshotLive": {
+        "open": true,
+        "rows": 8,
+        "hasLevels": true
+      },
+      "pass": true
+    },
+    {
+      "viewport": "samsung-s24",
+      "tabs": [
+        {
+          "label": "Today",
+          "segment": "today",
+          "badge": "Today",
+          "snapshotWrapVisible": true,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "happened",
+            "why",
+            "sectors",
+            "sectors",
+            "reaction",
+            "stocks",
+            "watch"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 2002
+        },
+        {
+          "label": "Why",
+          "segment": "why",
+          "badge": "Why",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "happened"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1068
+        },
+        {
+          "label": "Winners",
+          "segment": "winners",
+          "badge": "Winners",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "sectors",
+            "sectors",
+            "stocks"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1289
+        },
+        {
+          "label": "Losers",
+          "segment": "losers",
+          "badge": "Losers",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "sectors",
+            "sectors",
+            "stocks"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1288
+        },
+        {
+          "label": "Next",
+          "segment": "next",
+          "badge": "Next",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "watch"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1076
+        }
+      ],
+      "snapshotLive": {
+        "open": false,
+        "rows": 8,
+        "hasLevels": true
+      },
+      "pass": true
+    },
+    {
+      "viewport": "iphone-15-pro-max",
+      "tabs": [
+        {
+          "label": "Today",
+          "segment": "today",
+          "badge": "Today",
+          "snapshotWrapVisible": true,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "happened",
+            "why",
+            "sectors",
+            "sectors",
+            "reaction",
+            "stocks",
+            "watch"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1984
+        },
+        {
+          "label": "Why",
+          "segment": "why",
+          "badge": "Why",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "happened"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1045
+        },
+        {
+          "label": "Winners",
+          "segment": "winners",
+          "badge": "Winners",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "sectors",
+            "sectors",
+            "stocks"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1290
+        },
+        {
+          "label": "Losers",
+          "segment": "losers",
+          "badge": "Losers",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "sectors",
+            "sectors",
+            "stocks"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1291
+        },
+        {
+          "label": "Next",
+          "segment": "next",
+          "badge": "Next",
+          "snapshotWrapVisible": false,
+          "snapshotRowsInDom": 8,
+          "visibleSections": [
+            "watch"
+          ],
+          "horizontalOverflow": false,
+          "pageHeight": 1078
+        }
+      ],
+      "snapshotLive": {
+        "open": false,
+        "rows": 8,
+        "hasLevels": true
+      },
+      "pass": true
+    }
+  ]
+}

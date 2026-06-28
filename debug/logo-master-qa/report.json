@@ -1,0 +1,115 @@
+{
+  "prod": "https://www.forgeniq.com",
+  "local": "http://localhost:52184",
+  "before": [
+    {
+      "viewport": 390,
+      "dpr": 1,
+      "naturalW": 1024,
+      "naturalH": 512,
+      "renderedW": 176.8,
+      "renderedH": 88.4,
+      "zoomShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-master-qa\\before-prod-390@1x-200pct.png"
+    },
+    {
+      "viewport": 390,
+      "dpr": 2,
+      "naturalW": 1024,
+      "naturalH": 512,
+      "renderedW": 176.8,
+      "renderedH": 88.4,
+      "zoomShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-master-qa\\before-prod-390@2x-200pct.png"
+    },
+    {
+      "viewport": 1440,
+      "dpr": 1,
+      "naturalW": 1024,
+      "naturalH": 512,
+      "renderedW": 206.8,
+      "renderedH": 103.4,
+      "zoomShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-master-qa\\before-prod-1440@1x-200pct.png"
+    },
+    {
+      "viewport": 1440,
+      "dpr": 2,
+      "naturalW": 1024,
+      "naturalH": 512,
+      "renderedW": 206.8,
+      "renderedH": 103.4,
+      "zoomShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-master-qa\\before-prod-1440@2x-200pct.png"
+    }
+  ],
+  "after": [
+    {
+      "viewport": 390,
+      "dpr": 1,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 176.8,
+      "renderedH": 88.4,
+      "zoomShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-master-qa\\after-local-390@1x-200pct.png"
+    },
+    {
+      "viewport": 390,
+      "dpr": 2,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 176.8,
+      "renderedH": 88.4,
+      "zoomShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-master-qa\\after-local-390@2x-200pct.png"
+    },
+    {
+      "viewport": 1440,
+      "dpr": 1,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 206.8,
+      "renderedH": 103.4,
+      "zoomShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-master-qa\\after-local-1440@1x-200pct.png"
+    },
+    {
+      "viewport": 1440,
+      "dpr": 2,
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 206.8,
+      "renderedH": 103.4,
+      "zoomShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-master-qa\\after-local-1440@2x-200pct.png"
+    }
+  ],
+  "sizeParity": [
+    {
+      "viewport": 390,
+      "dpr": 1,
+      "prodRendered": "176.8×88.4",
+      "localRendered": "176.8×88.4",
+      "match": true,
+      "localNatural": "4096×2048"
+    },
+    {
+      "viewport": 390,
+      "dpr": 2,
+      "prodRendered": "176.8×88.4",
+      "localRendered": "176.8×88.4",
+      "match": true,
+      "localNatural": "4096×2048"
+    },
+    {
+      "viewport": 1440,
+      "dpr": 1,
+      "prodRendered": "206.8×103.4",
+      "localRendered": "206.8×103.4",
+      "match": true,
+      "localNatural": "4096×2048"
+    },
+    {
+      "viewport": 1440,
+      "dpr": 2,
+      "prodRendered": "206.8×103.4",
+      "localRendered": "206.8×103.4",
+      "match": true,
+      "localNatural": "4096×2048"
+    }
+  ],
+  "pass": true
+}

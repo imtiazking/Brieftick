@@ -1,0 +1,194 @@
+{
+  "baseUrl": "https://www.forgeniq.com",
+  "generatedAt": "2026-06-24T16:39:44.506Z",
+  "baseline": {
+    "landing": {
+      "performance": 64,
+      "lcpMs": 6048,
+      "cls": 0.0125,
+      "accessibility": 100
+    },
+    "about": {
+      "performance": null,
+      "lcpMs": null,
+      "cls": null,
+      "accessibility": 100
+    }
+  },
+  "lighthouse": {
+    "landing": {
+      "performance": 60,
+      "accessibility": 100,
+      "lcpMs": 7371,
+      "cls": 0,
+      "fcpMs": 6160
+    },
+    "about": {
+      "note": "SPA route — Playwright-collected vitals at 390px after client navigation",
+      "webLcpMs": null,
+      "webCls": 0,
+      "horizontalScroll": true,
+      "mobileAtmosphere": true,
+      "aboutMount": true,
+      "dataSplitAbout": true,
+      "accessibility": 100
+    }
+  },
+  "functional": {
+    "tapProbes": {
+      "startFree": {
+        "label": "Start Free",
+        "selector": ".cw-hero-cta-btn[data-split-action='signup']",
+        "found": true,
+        "blocked": false,
+        "topTag": "BUTTON",
+        "topCls": "cw-cta-pri cw-hero-cta-btn mobile-start-free"
+      },
+      "explore": {
+        "label": "Explore Dashboard",
+        "selector": ".cw-hero-cta-btn[data-split-action='demo']",
+        "found": true,
+        "blocked": false,
+        "topTag": "BUTTON",
+        "topCls": "cw-cta-sec cw-hero-cta-btn mobile-explore-dashboar"
+      },
+      "hamburger": {
+        "label": "Hamburger",
+        "selector": "#navMenuBtn",
+        "found": true,
+        "blocked": false,
+        "topTag": "SPAN",
+        "topCls": "nav-a__menu-icon"
+      }
+    },
+    "navStartFree": {
+      "clerkLoaded": true,
+      "modal": true
+    },
+    "heroStartFree": {
+      "clerkLoaded": true,
+      "modal": true
+    },
+    "exploreDashboard": {
+      "clerkLoaded": true,
+      "modal": true,
+      "navIntent": "dashboard"
+    },
+    "drawerOpens": true,
+    "drawerSignIn": {
+      "clerkLoaded": true,
+      "modal": true
+    },
+    "pricingRoute": true,
+    "aboutRoute": true,
+    "aboutVitals": {
+      "webLcpMs": null,
+      "webCls": 0,
+      "horizontalScroll": true,
+      "mobileAtmosphere": true,
+      "aboutMount": true,
+      "dataSplitAbout": true
+    },
+    "homeRoute": true,
+    "pass": true
+  },
+  "screenshots": [
+    {
+      "page": "landing",
+      "viewport": "iphone-13",
+      "path": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots-prod/landing-iphone-13.png",
+      "webLcpMs": null,
+      "webCls": 0,
+      "horizontalScroll": false,
+      "mobileAtmosphere": true,
+      "aboutMount": true,
+      "dataSplitAbout": false
+    },
+    {
+      "page": "about",
+      "viewport": "iphone-13",
+      "path": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots-prod/about-iphone-13.png",
+      "webLcpMs": null,
+      "webCls": 0,
+      "horizontalScroll": true,
+      "mobileAtmosphere": true,
+      "aboutMount": true,
+      "dataSplitAbout": true
+    },
+    {
+      "page": "landing",
+      "viewport": "samsung-s24",
+      "path": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots-prod/landing-samsung-s24.png",
+      "webLcpMs": null,
+      "webCls": 0,
+      "horizontalScroll": false,
+      "mobileAtmosphere": true,
+      "aboutMount": true,
+      "dataSplitAbout": false
+    },
+    {
+      "page": "about",
+      "viewport": "samsung-s24",
+      "path": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots-prod/about-samsung-s24.png",
+      "webLcpMs": null,
+      "webCls": 0,
+      "horizontalScroll": false,
+      "mobileAtmosphere": true,
+      "aboutMount": true,
+      "dataSplitAbout": true
+    },
+    {
+      "page": "landing",
+      "viewport": "iphone-15-pro-max",
+      "path": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots-prod/landing-iphone-15-pro-max.png",
+      "webLcpMs": null,
+      "webCls": 0,
+      "horizontalScroll": false,
+      "mobileAtmosphere": true,
+      "aboutMount": true,
+      "dataSplitAbout": false
+    },
+    {
+      "page": "about",
+      "viewport": "iphone-15-pro-max",
+      "path": "C:/Users/imtia/OneDrive/Desktop/Brieftick/reports/mobile-ux/screenshots-prod/about-iphone-15-pro-max.png",
+      "webLcpMs": null,
+      "webCls": 0,
+      "horizontalScroll": false,
+      "mobileAtmosphere": true,
+      "aboutMount": true,
+      "dataSplitAbout": true
+    }
+  ],
+  "comparison": {
+    "landing": {
+      "performance": {
+        "baseline": 64,
+        "current": 60,
+        "deltaPct": -6.2
+      },
+      "lcpMs": {
+        "baseline": 6048,
+        "current": 7371,
+        "deltaPct": 21.9
+      },
+      "cls": {
+        "baseline": 0.0125,
+        "current": 0,
+        "deltaPct": -100
+      },
+      "accessibility": {
+        "baseline": 100,
+        "current": 100,
+        "deltaPct": 0
+      }
+    }
+  },
+  "verdict": "REGRESS_OVER_10PCT — reduce grain opacity, remove beam animation, keep gradients only",
+  "atmosphereDeployed": {
+    "deployed": true,
+    "hasBefore": true,
+    "bgLayers": "radial-gradient(100% 85% at 50% 42%, rgba(0, 0, 0, 0) 28%, rgba(0, 0, 0, 0.62) 100%), radial-gradient(circle at 18% 35%,"
+  },
+  "errors": []
+}

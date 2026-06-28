@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Standalone · Variation 2</title>
+  <link rel="stylesheet" href="/debug/logo-variation-2-preview/logo-variation-2.css">
+  <script src="/debug/logo-variation-2-preview/forgeniq-wordmark.inline.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; }
+    .panels { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+    .panel { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; padding: 3rem; min-height: 420px; }
+    .panel--dark { background: #0a0c10; color: #eee; }
+    .panel--white { background: #fff; color: #333; }
+    .panel__label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; }
+    .side-by-side { display: flex; gap: 3rem; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .col { display: none; flex-direction: column; align-items: center; gap: 0.75rem; }
+    .col small { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.45; }
+    .lockup-current img { height: 52px; width: auto; object-fit: contain; }
+    body.capture-current .lockup-current { display: flex; }
+    body.capture-variation2 .lockup-variation2 { display: flex; }
+    .panel--white.capture-current .lockup-current img { filter: invert(1); }
+    .panel--white.capture-variation2.on-light .lockup-variation2 { display: flex; }
+  </style>
+</head>
+<body>
+  <div class="panels">
+    <div class="panel panel--dark" id="panel-dark">
+      <span class="panel__label">Dark background</span>
+      <div class="side-by-side">
+        <div class="col lockup-current"><small>Current</small><img src="/brand/forgeniq-logo.png" alt="FORGENIQ" width="4096" height="2048"></div>
+        <div class="col lockup-variation2">
+          <small>Variation 2</small>
+          <div class="fq2-logo-stacked fq2-logo-stacked--standalone" role="img" aria-label="FORGENIQ">
+            <span class="fq2-logo-stacked__symbol"><img src="/brand/forgeniq-symbol-white.png" alt="" width="474" height="474"></span>
+            <span class="fq2-logo-stacked__wordmark fq2-wordmark-slot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel--white on-light" id="panel-white">
+      <span class="panel__label">White background</span>
+      <div class="side-by-side">
+        <div class="col lockup-current"><small>Current</small><img src="/brand/forgeniq-logo.png" alt="FORGENIQ" width="4096" height="2048"></div>
+        <div class="col lockup-variation2">
+          <small>Variation 2</small>
+          <div class="fq2-logo-stacked fq2-logo-stacked--standalone" role="img" aria-label="FORGENIQ">
+            <span class="fq2-logo-stacked__symbol"><img src="/brand/forgeniq-symbol-white.png" alt="" width="474" height="474"></span>
+            <span class="fq2-logo-stacked__wordmark fq2-wordmark-slot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll(".fq2-wordmark-slot").forEach((el) => {
+      if (window.FQ2_WORDMARK_INLINE) el.innerHTML = window.FQ2_WORDMARK_INLINE;
+    });
+  </script>
+</body>
+</html>

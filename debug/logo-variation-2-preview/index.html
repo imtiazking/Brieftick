@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>FORGENIQ Logo · Variation 2 Preview</title>
+  <style>
+    :root { --bg:#0a0c10; --panel:#12151c; --border:rgba(255,255,255,.08); --ink:#e8ecf4; --muted:#8b95a8; --gold:#d4a85a; --current:#6b9fd4; --v2:#c9a04a; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
+    header, main { max-width:1400px; margin:0 auto; padding:24px; }
+    header { border-bottom:1px solid var(--border); }
+    h1 { margin:0 0 8px; font-size:1.35rem; }
+    .sub { color:var(--muted); max-width:880px; }
+    .badge { display:inline-block; margin-top:12px; padding:4px 10px; border-radius:999px; font-size:.75rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; background:rgba(201,160,74,.15); color:var(--v2); border:1px solid rgba(201,160,74,.35); }
+    h2 { font-size:.85rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin:32px 0 16px; }
+    .specs { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin:16px 0; }
+    .spec { padding:10px 12px; border-radius:8px; background:var(--panel); border:1px solid var(--border); font-size:.78rem; }
+    .spec strong { display:block; color:var(--gold); font-size:.65rem; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+    .compare { background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:20px; }
+    .compare__title { padding:12px 16px; font-weight:600; border-bottom:1px solid var(--border); }
+    .compare__grid { display:grid; grid-template-columns:1fr 1fr; }
+    .compare__col { border-right:1px solid var(--border); }
+    .compare__col:last-child { border-right:none; }
+    .compare__label { padding:8px 14px; font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; border-bottom:1px solid var(--border); }
+    .compare__label--current { color:var(--current); background:rgba(107,159,212,.08); }
+    .compare__label--v2 { color:var(--v2); background:rgba(201,160,74,.08); }
+    .compare__img { display:block; width:100%; height:auto; background:#0d0f14; }
+    .compare__img--white { background:#fff; }
+    .crop-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .crop-block { background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    .crop-block__head { padding:10px 14px; font-weight:600; border-bottom:1px solid var(--border); }
+    .crop-block__sub { display:grid; grid-template-columns:1fr 1fr; }
+    .crop-block__sub img { width:100%; display:block; background:#111; }
+    .crop-block__sub span { padding:6px 10px; font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); border-bottom:1px solid var(--border); display:block; }
+    footer { padding:24px; text-align:center; color:var(--muted); font-size:.8rem; border-top:1px solid var(--border); }
+    @media (max-width:720px) { .compare__grid, .crop-block__sub { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FORGENIQ Logo · Variation 2</h1>
+    <p class="sub">Symbol unchanged (crop from approved lockup) · centred above bold vector wordmark · Inter Tight 900 SVG paths · reference-scale spacing · preview only.</p>
+    <span class="badge">Not approved · Not deployed</span>
+    <div class="specs">
+      <div class="spec"><strong>Symbol</strong><code>forgeniq-symbol-white.png</code></div>
+      <div class="spec"><strong>Wordmark</strong><code>forgeniq-wordmark.svg</code> (900)</div>
+      <div class="spec"><strong>Layout</strong>Symbol centred over wordmark</div>
+      <div class="spec"><strong>Server</strong><code>npm run preview:logo-variation-2</code></div>
+    </div>
+  </header>
+  <main>
+    <h2>Headers &amp; contexts</h2>
+    <article class="compare"><div class="compare__title">Desktop header · 1440px</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/01-desktop-1440-header-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img" src="shots/01-desktop-1440-header-variation2.png" alt=""></div></div></article>
+    <article class="compare"><div class="compare__title">Tablet header · 1024px</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/02-tablet-1024-header-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img" src="shots/02-tablet-1024-header-variation2.png" alt=""></div></div></article>
+    <article class="compare"><div class="compare__title">Mobile header · 390px</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/03-mobile-390-header-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img" src="shots/03-mobile-390-header-variation2.png" alt=""></div></div></article>
+    <article class="compare"><div class="compare__title">Mobile menu open · 390px</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/04-mobile-390-menu-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img" src="shots/04-mobile-390-menu-variation2.png" alt=""></div></div></article>
+    <article class="compare"><div class="compare__title">Footer</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/05-footer-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img" src="shots/05-footer-variation2.png" alt=""></div></div></article>
+    <article class="compare"><div class="compare__title">Dashboard</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/06-dashboard-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img" src="shots/06-dashboard-variation2.png" alt=""></div></div></article>
+    <article class="compare"><div class="compare__title">Authentication · request access modal</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/07-auth-modal-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img" src="shots/07-auth-modal-variation2.png" alt=""></div></div></article>
+    <article class="compare"><div class="compare__title">Standalone · dark background</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img" src="shots/08-standalone-dark-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img" src="shots/08-standalone-dark-variation2.png" alt=""></div></div></article>
+    <article class="compare"><div class="compare__title">Standalone · white background</div><div class="compare__grid"><div class="compare__col"><div class="compare__label compare__label--current">Current</div><img class="compare__img compare__img--white" src="shots/09-standalone-white-current.png" alt=""></div><div class="compare__col"><div class="compare__label compare__label--v2">Variation 2</div><img class="compare__img compare__img--white" src="shots/09-standalone-white-variation2.png" alt=""></div></div></article>
+
+    <h2>Logo crops · desktop (1440px)</h2>
+    <div class="crop-row">
+      <div class="crop-block"><div class="crop-block__head">100% zoom</div><div class="crop-block__sub"><div><span style="color:var(--current)">Current</span><img src="shots/01-desktop-1440-current-crop-100pct.png" alt=""></div><div><span style="color:var(--v2)">Variation 2</span><img src="shots/01-desktop-1440-variation2-crop-100pct.png" alt=""></div></div></div>
+      <div class="crop-block"><div class="crop-block__head">200% zoom</div><div class="crop-block__sub"><div><span style="color:var(--current)">Current</span><img src="shots/01-desktop-1440-current-crop-200pct.png" alt=""></div><div><span style="color:var(--v2)">Variation 2</span><img src="shots/01-desktop-1440-variation2-crop-200pct.png" alt=""></div></div></div>
+    </div>
+
+    <h2>Logo crops · mobile (390px)</h2>
+    <div class="crop-row">
+      <div class="crop-block"><div class="crop-block__head">100% zoom</div><div class="crop-block__sub"><div><span style="color:var(--current)">Current</span><img src="shots/03-mobile-390-current-crop-100pct.png" alt=""></div><div><span style="color:var(--v2)">Variation 2</span><img src="shots/03-mobile-390-variation2-crop-100pct.png" alt=""></div></div></div>
+      <div class="crop-block"><div class="crop-block__head">200% zoom</div><div class="crop-block__sub"><div><span style="color:var(--current)">Current</span><img src="shots/03-mobile-390-current-crop-200pct.png" alt=""></div><div><span style="color:var(--v2)">Variation 2</span><img src="shots/03-mobile-390-variation2-crop-200pct.png" alt=""></div></div></div>
+    </div>
+
+    <h2>Logo crops · dashboard</h2>
+    <div class="crop-row">
+      <div class="crop-block"><div class="crop-block__head">100% zoom</div><div class="crop-block__sub"><div><span style="color:var(--current)">Current</span><img src="shots/06-dashboard-current-crop-100pct.png" alt=""></div><div><span style="color:var(--v2)">Variation 2</span><img src="shots/06-dashboard-variation2-crop-100pct.png" alt=""></div></div></div>
+      <div class="crop-block"><div class="crop-block__head">200% zoom</div><div class="crop-block__sub"><div><span style="color:var(--current)">Current</span><img src="shots/06-dashboard-current-crop-200pct.png" alt=""></div><div><span style="color:var(--v2)">Variation 2</span><img src="shots/06-dashboard-variation2-crop-200pct.png" alt=""></div></div></div>
+    </div>
+  </main>
+  <footer>
+    Start: <code>npm run preview:logo-variation-2</code> · Verify: <code>npm run verify:logo-variation-2-preview</code>
+  </footer>
+</body>
+</html>

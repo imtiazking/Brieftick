@@ -1,0 +1,113 @@
+{
+  "base": "http://localhost:49696",
+  "capturedAt": "2026-06-27T13:44:27.070Z",
+  "shots": [
+    {
+      "id": "desktop-header",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\01-desktop-1440-header.png"
+    },
+    {
+      "id": "desktop-footer-section",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\02b-desktop-1440-footer-section.png"
+    },
+    {
+      "id": "desktop-footer",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\02-desktop-1440-footer.png"
+    },
+    {
+      "id": "desktop-logo-100",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\desktop-1440-logo-crop-100pct.png"
+    },
+    {
+      "id": "desktop-logo-200",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\desktop-1440-logo-crop-200pct.png"
+    },
+    {
+      "id": "desktop-bg-0",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\desktop-1440-logo-on-dark.png"
+    },
+    {
+      "id": "desktop-bg-1",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\desktop-1440-logo-on-white.png"
+    },
+    {
+      "id": "desktop-bg-2",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\desktop-1440-logo-on-gold.png"
+    },
+    {
+      "id": "mobile-header",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\03-mobile-390-header.png"
+    },
+    {
+      "id": "mobile-menu",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\04-mobile-390-menu-open.png"
+    },
+    {
+      "id": "mobile-logo-100",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\mobile-390-logo-crop-100pct.png"
+    },
+    {
+      "id": "mobile-logo-200",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\mobile-390-logo-crop-200pct.png"
+    },
+    {
+      "id": "dashboard",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\05-dashboard-preview-header.png"
+    },
+    {
+      "id": "dashboard-logo-100",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\dashboard-logo-crop-100pct.png"
+    },
+    {
+      "id": "dashboard-logo-200",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\dashboard-logo-crop-200pct.png"
+    },
+    {
+      "id": "auth-signin",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\06-auth-signin-modal.png"
+    },
+    {
+      "id": "auth-nav",
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-qa-preview\\06-auth-nav-behind-modal.png"
+    }
+  ],
+  "metrics": {
+    "desktop": {
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 237.78,
+      "renderedH": 118.89,
+      "aspectRatio": 2,
+      "transform": "matrix(1.351, 0, 0, 1.351, 0, 0)",
+      "src": "http://localhost:49696/brand/forgeniq-logo.png"
+    },
+    "mobile": {
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 203.36,
+      "renderedH": 101.68,
+      "aspectRatio": 2,
+      "transform": "matrix(2.542, 0, 0, 2.542, 0, 0)",
+      "src": "http://localhost:49696/brand/forgeniq-logo.png"
+    },
+    "dashboard": {
+      "naturalW": 4096,
+      "naturalH": 2048,
+      "renderedW": 140.5,
+      "renderedH": 70.25,
+      "aspectRatio": 2,
+      "transform": "matrix(1.351, 0, 0, 1.351, 0, 0)",
+      "src": "http://localhost:49696/brand/forgeniq-logo.png"
+    }
+  },
+  "checks": {
+    "hiResAsset": true,
+    "desktopSizeApprox15pct": true,
+    "mobileSizeApprox15pct": true,
+    "aspectRatio2to1": true,
+    "scaleDesktop": "1.351 (was 1.175)",
+    "scaleMobile": "2.542 (was 2.21)",
+    "transparentBackground": "Verify logo-on-dark/white/gold crops in debug/logo-qa-preview/"
+  },
+  "pass": true
+}

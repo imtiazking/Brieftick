@@ -1,0 +1,71 @@
+{
+  "base": "http://localhost:49696",
+  "rows": [
+    {
+      "viewport": 320,
+      "renderedW": 203.36,
+      "renderedH": 101.68,
+      "navHeight": 64,
+      "gapToMenu": 44.64,
+      "scrollW": 320,
+      "clientW": 320,
+      "transform": "matrix(2.542, 0, 0, 2.542, 0, 0)",
+      "shot": "viewports/nav-320.png"
+    },
+    {
+      "viewport": 390,
+      "renderedW": 203.36,
+      "renderedH": 101.68,
+      "navHeight": 64,
+      "gapToMenu": 114.64,
+      "scrollW": 390,
+      "clientW": 390,
+      "transform": "matrix(2.542, 0, 0, 2.542, 0, 0)",
+      "shot": "viewports/nav-390.png"
+    },
+    {
+      "viewport": 430,
+      "renderedW": 218.61,
+      "renderedH": 109.31,
+      "navHeight": 64,
+      "gapToMenu": 139.39,
+      "scrollW": 430,
+      "clientW": 430,
+      "transform": "matrix(2.542, 0, 0, 2.542, 0, 0)",
+      "shot": "viewports/nav-430.png"
+    },
+    {
+      "viewport": 768,
+      "renderedW": 205.35,
+      "renderedH": 102.68,
+      "navHeight": 96,
+      "gapToMenu": 490.65,
+      "scrollW": 768,
+      "clientW": 768,
+      "transform": "matrix(1.351, 0, 0, 1.351, 0, 0)",
+      "shot": "viewports/nav-768.png"
+    },
+    {
+      "viewport": 1024,
+      "renderedW": 226.84,
+      "renderedH": 113.42,
+      "navHeight": 111.95,
+      "gapToMenu": -257.56,
+      "scrollW": 1024,
+      "clientW": 1024,
+      "transform": "matrix(1.351, 0, 0, 1.351, 0, 0)",
+      "shot": "viewports/nav-1024.png"
+    },
+    {
+      "viewport": 1440,
+      "renderedW": 237.78,
+      "renderedH": 118.89,
+      "navHeight": 116,
+      "gapToMenu": -273.78,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "transform": "matrix(1.351, 0, 0, 1.351, 0, 0)",
+      "shot": "viewports/nav-1440.png"
+    }
+  ]
+}

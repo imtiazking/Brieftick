@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rollback preview · f06210f vs current</title>
+<style>
+  body{margin:0;font-family:system-ui,sans-serif;background:#0a0c10;color:#e8ecf4;padding:24px}
+  h1{font-size:1.25rem} .sub{color:#8b95a8;max-width:900px;line-height:1.5}
+  .commit{background:#12151c;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px;margin:20px 0}
+  .commit code{color:#c9a04a}
+  section{margin:32px 0} h2{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:#c9a04a}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .card{background:#12151c;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+  .card h3{padding:10px 14px;margin:0;font-size:.78rem;border-bottom:1px solid rgba(255,255,255,.08)}
+  .card h3.current{color:#6b9fd4} .card h3.rollback{color:#7ec89a}
+  .card img{display:block;width:100%;height:auto;background:#111}
+  .metrics{padding:8px 14px;font-size:.72rem;color:#8b95a8}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<h1>Rollback preview — do not deploy until approved</h1>
+<p class="sub">Compare current HEAD vs proposed rollback commit <strong>f06210f</strong> (2026-06-25, before logo asset replacement and all scaling/V2 work).</p>
+<div class="commit"><strong>Proposed rollback:</strong> <code>f06210f</code> — feat: improve portfolio execution broker workflow<br>
+<strong>Current:</strong> <code>b9f0c6c</code></div>
+<section><h2>Landing · desktop</h2><div class="grid">
+    <div class="card"><h3 class="current">Current (production-like)</h3><img src="current-landing-desktop-hero.png" alt=""><div class="metrics">Logo 207×103px · nav 116px · transform matrix(1.175, 0, 0, 1.175, 0, 0) · V2 false</div></div>
+    <div class="card"><h3 class="rollback">Rollback f06210f</h3><img src="rollback-landing-desktop-hero.png" alt=""><div class="metrics">Logo 176×88px · nav 116px · transform none · V2 false</div></div>
+  </div></section><section><h2>Landing · mobile 390</h2><div class="grid">
+    <div class="card"><h3 class="current">Current (production-like)</h3><img src="current-landing-mobile-hero.png" alt=""><div class="metrics">Logo 177×88px · nav 64px · transform matrix(2.21, 0, 0, 2.21, 0, 0) · V2 false</div></div>
+    <div class="card"><h3 class="rollback">Rollback f06210f</h3><img src="rollback-landing-mobile-hero.png" alt=""><div class="metrics">Logo 80×40px · nav 64px · transform none · V2 false</div></div>
+  </div></section><section><h2>About · desktop</h2><div class="grid">
+    <div class="card"><h3 class="current">Current (production-like)</h3><img src="current-about-desktop-hero.png" alt=""><div class="metrics">Logo 207×103px · nav 116px · transform matrix(1.175, 0, 0, 1.175, 0, 0) · V2 false</div></div>
+    <div class="card"><h3 class="rollback">Rollback f06210f</h3><img src="rollback-about-desktop-hero.png" alt=""><div class="metrics">Logo 104×52px · nav 80px · transform none · V2 false</div></div>
+  </div></section><section><h2>About · mobile 390</h2><div class="grid">
+    <div class="card"><h3 class="current">Current (production-like)</h3><img src="current-about-mobile-hero.png" alt=""><div class="metrics">Logo 177×88px · nav 64px · transform matrix(2.21, 0, 0, 2.21, 0, 0) · V2 false</div></div>
+    <div class="card"><h3 class="rollback">Rollback f06210f</h3><img src="rollback-about-mobile-hero.png" alt=""><div class="metrics">Logo 70×35px · nav 64px · transform none · V2 false</div></div>
+  </div></section><section><h2>Pricing · desktop</h2><div class="grid">
+    <div class="card"><h3 class="current">Current (production-like)</h3><img src="current-pricing-desktop-hero.png" alt=""><div class="metrics">Logo 207×103px · nav 116px · transform matrix(1.175, 0, 0, 1.175, 0, 0) · V2 false</div></div>
+    <div class="card"><h3 class="rollback">Rollback f06210f</h3><img src="rollback-pricing-desktop-hero.png" alt=""><div class="metrics">Logo 104×52px · nav 80px · transform none · V2 false</div></div>
+  </div></section>
+</body></html>

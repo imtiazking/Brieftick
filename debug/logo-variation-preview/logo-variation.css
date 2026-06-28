@@ -1,0 +1,119 @@
+/**
+ * FORGENIQ Logo Variation 1 — preview only (symbol above vector wordmark).
+ * Symbol: forgeniq-symbol-white.png (unchanged)
+ * Wordmark: forgeniq-wordmark.svg (path-based vector, Inter Tight 700)
+ */
+
+.fq-logo-stacked {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32em;
+  line-height: 0;
+  flex-shrink: 0;
+  cursor: inherit;
+  text-decoration: none;
+  background: transparent;
+}
+
+.fq-logo-stacked__symbol {
+  display: block;
+  line-height: 0;
+}
+
+.fq-logo-stacked__symbol img {
+  display: block;
+  width: var(--fq-symbol-size, 48px);
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.fq-logo-stacked__wordmark {
+  display: block;
+  line-height: 0;
+}
+
+.fq-logo-stacked__wordmark-svg {
+  display: block;
+  width: var(--fq-word-display-w, 120px);
+  height: auto;
+  object-fit: contain;
+}
+
+/* Marketing hero nav — desktop */
+.fq-logo-stacked--nav-marketing {
+  --fq-symbol-size: 52px;
+  --fq-word-display-w: 132px;
+  gap: 0.24em;
+}
+
+@media (min-width: 1024px) {
+  .fq-logo-stacked--nav-marketing {
+    --fq-symbol-size: 56px;
+    --fq-word-display-w: 142px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .fq-logo-stacked--nav-marketing {
+    --fq-symbol-size: 60px;
+    --fq-word-display-w: 152px;
+  }
+}
+
+/* Marketing hero nav — mobile */
+.fq-logo-stacked--nav-mobile {
+  --fq-symbol-size: 34px;
+  --fq-word-display-w: 88px;
+  gap: 0.2em;
+}
+
+@media (min-width: 390px) {
+  .fq-logo-stacked--nav-mobile {
+    --fq-symbol-size: 38px;
+    --fq-word-display-w: 96px;
+  }
+}
+
+/* Dashboard / compact chrome */
+.fq-logo-stacked--nav-dashboard {
+  --fq-symbol-size: 32px;
+  --fq-word-display-w: 82px;
+  gap: 0.22em;
+}
+
+/* Footer */
+.fq-logo-stacked--footer {
+  --fq-symbol-size: 42px;
+  --fq-word-display-w: 108px;
+  gap: 0.26em;
+  margin-bottom: 12px;
+}
+
+/* Standalone / auth */
+.fq-logo-stacked--standalone {
+  --fq-symbol-size: 68px;
+  --fq-word-display-w: 176px;
+  gap: 0.28em;
+}
+
+.fq-logo-stacked--standalone-sm {
+  --fq-symbol-size: 52px;
+  --fq-word-display-w: 132px;
+  gap: 0.24em;
+}
+
+.fq-variation-preview .split-brand__clip,
+.fq-variation-preview .split-brand-img {
+  transform: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+.fq-variation-preview #navBrand.split-brand,
+.fq-variation-preview #navBrand .split-brand__clip {
+  background: none;
+  align-items: center;
+}

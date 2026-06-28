@@ -1,0 +1,733 @@
+{
+  "base": "https://www.forgeniq.com",
+  "checks": [
+    {
+      "viewport": 320,
+      "route": "landing",
+      "metrics": {
+        "width": 176.8,
+        "height": 88.4,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2.000000172610748,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 71.2
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 198.8000030517578,
+          "y": 32,
+          "tag": "BUTTON",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 102.4000015258789,
+          "y": -16.200000762939453,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 698,
+        "total": 15753
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\landing-nav-320.png"
+    },
+    {
+      "viewport": 320,
+      "route": "about",
+      "metrics": {
+        "width": 176.8,
+        "height": 88.4,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2.000000172610748,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 71.2
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 198.8000030517578,
+          "y": 32,
+          "tag": "BUTTON",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 102.4000015258789,
+          "y": -16.200000762939453,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 698,
+        "total": 15753
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\about-nav-320.png"
+    },
+    {
+      "viewport": 320,
+      "route": "pricing",
+      "metrics": {
+        "width": 176.8,
+        "height": 88.4,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2.000000172610748,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 71.2
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 198.8000030517578,
+          "y": 32,
+          "tag": "BUTTON",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 102.4000015258789,
+          "y": -16.200000762939453,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 698,
+        "total": 15753
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\pricing-nav-320.png"
+    },
+    {
+      "viewport": 390,
+      "route": "landing",
+      "metrics": {
+        "width": 176.8,
+        "height": 88.4,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2.000000172610748,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 141.2
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 198.8000030517578,
+          "y": 32,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 102.4000015258789,
+          "y": -16.200000762939453,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 698,
+        "total": 15753
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\landing-nav-390.png"
+    },
+    {
+      "viewport": 390,
+      "route": "about",
+      "metrics": {
+        "width": 176.8,
+        "height": 88.4,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2.000000172610748,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 141.2
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 198.8000030517578,
+          "y": 32,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 102.4000015258789,
+          "y": -16.200000762939453,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 698,
+        "total": 15753
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\about-nav-390.png"
+    },
+    {
+      "viewport": 390,
+      "route": "pricing",
+      "metrics": {
+        "width": 176.8,
+        "height": 88.4,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2.000000172610748,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 141.2
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 198.8000030517578,
+          "y": 32,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 102.4000015258789,
+          "y": -16.200000762939453,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 698,
+        "total": 15753
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\pricing-nav-390.png"
+    },
+    {
+      "viewport": 430,
+      "route": "landing",
+      "metrics": {
+        "width": 190.06,
+        "height": 95.03,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 167.94
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 212.05999755859375,
+          "y": 32,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 109.02999877929688,
+          "y": -19.514999389648438,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 795,
+        "total": 18336
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\landing-nav-430.png"
+    },
+    {
+      "viewport": 430,
+      "route": "about",
+      "metrics": {
+        "width": 190.06,
+        "height": 95.03,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 167.94
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 212.05999755859375,
+          "y": 32,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 109.02999877929688,
+          "y": -19.514999389648438,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 795,
+        "total": 18336
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\about-nav-430.png"
+    },
+    {
+      "viewport": 430,
+      "route": "pricing",
+      "metrics": {
+        "width": 190.06,
+        "height": 95.03,
+        "navHeight": 64,
+        "naturalAR": 2,
+        "displayAR": 2,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 167.94
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 32,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 212.05999755859375,
+          "y": 32,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 109.02999877929688,
+          "y": -19.514999389648438,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 795,
+        "total": 18336
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\pricing-nav-430.png"
+    },
+    {
+      "viewport": 768,
+      "route": "landing",
+      "metrics": {
+        "width": 178.6,
+        "height": 89.3,
+        "navHeight": 96,
+        "naturalAR": 2,
+        "displayAR": 2.0000001708711217,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 517.4
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 48,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 200.59999084472656,
+          "y": 48,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 103.29999542236328,
+          "y": -0.6499977111816406,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 767,
+        "total": 16110
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\landing-nav-768.png"
+    },
+    {
+      "viewport": 768,
+      "route": "about",
+      "metrics": {
+        "width": 178.6,
+        "height": 89.3,
+        "navHeight": 96,
+        "naturalAR": 2,
+        "displayAR": 2.0000001708711217,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 517.4
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 48,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 200.59999084472656,
+          "y": 48,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 103.29999542236328,
+          "y": -0.6499977111816406,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 767,
+        "total": 16110
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\about-nav-768.png"
+    },
+    {
+      "viewport": 768,
+      "route": "pricing",
+      "metrics": {
+        "width": 178.6,
+        "height": 89.3,
+        "navHeight": 96,
+        "naturalAR": 2,
+        "displayAR": 2.0000001708711217,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": 517.4
+      },
+      "samples": [
+        {
+          "x": 6,
+          "y": 48,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 200.59999084472656,
+          "y": 48,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 103.29999542236328,
+          "y": -0.6499977111816406,
+          "bg": null
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 767,
+        "total": 16110
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\pricing-nav-768.png"
+    },
+    {
+      "viewport": 1024,
+      "route": "landing",
+      "metrics": {
+        "width": 197.29,
+        "height": 98.64,
+        "navHeight": 111.95,
+        "naturalAR": 2,
+        "displayAR": 1.9999998453160301,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": -228.01
+      },
+      "samples": [
+        {
+          "x": 22.71875,
+          "y": 55.9765625,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 236.0085906982422,
+          "y": 55.9765625,
+          "tag": "BUTTON",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 129.3636703491211,
+          "y": 4.654102325439453,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 877,
+        "total": 19602
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\landing-nav-1024.png"
+    },
+    {
+      "viewport": 1024,
+      "route": "about",
+      "metrics": {
+        "width": 197.29,
+        "height": 98.64,
+        "navHeight": 111.95,
+        "naturalAR": 2,
+        "displayAR": 1.9999998453160301,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": -228.01
+      },
+      "samples": [
+        {
+          "x": 22.71875,
+          "y": 55.9765625,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 236.0085906982422,
+          "y": 55.9765625,
+          "tag": "BUTTON",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 129.3636703491211,
+          "y": 4.654102325439453,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 877,
+        "total": 19602
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\about-nav-1024.png"
+    },
+    {
+      "viewport": 1024,
+      "route": "pricing",
+      "metrics": {
+        "width": 197.29,
+        "height": 98.64,
+        "navHeight": 111.95,
+        "naturalAR": 2,
+        "displayAR": 1.9999998453160301,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": -228.01
+      },
+      "samples": [
+        {
+          "x": 22.71875,
+          "y": 55.9765625,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 236.0085906982422,
+          "y": 55.9765625,
+          "tag": "BUTTON",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 129.3636703491211,
+          "y": 4.654102325439453,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 877,
+        "total": 19602
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\pricing-nav-1024.png"
+    },
+    {
+      "viewport": 1440,
+      "route": "landing",
+      "metrics": {
+        "width": 206.8,
+        "height": 103.4,
+        "navHeight": 116,
+        "naturalAR": 2,
+        "displayAR": 2,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": -242.8
+      },
+      "samples": [
+        {
+          "x": 28,
+          "y": 58,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 250.79998779296875,
+          "y": 58,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 139.39999389648438,
+          "y": 4.3000030517578125,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 980,
+        "total": 21528
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\landing-nav-1440.png"
+    },
+    {
+      "viewport": 1440,
+      "route": "about",
+      "metrics": {
+        "width": 206.8,
+        "height": 103.4,
+        "navHeight": 116,
+        "naturalAR": 2,
+        "displayAR": 2,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": -242.8
+      },
+      "samples": [
+        {
+          "x": 28,
+          "y": 58,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 250.79998779296875,
+          "y": 58,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 139.39999389648438,
+          "y": 4.3000030517578125,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 980,
+        "total": 21528
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\about-nav-1440.png"
+    },
+    {
+      "viewport": 1440,
+      "route": "pricing",
+      "metrics": {
+        "width": 206.8,
+        "height": 103.4,
+        "navHeight": 116,
+        "naturalAR": 2,
+        "displayAR": 2,
+        "src": "/brand/forgeniq-logo.png",
+        "gapToMenu": -242.8
+      },
+      "samples": [
+        {
+          "x": 28,
+          "y": 58,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 250.79998779296875,
+          "y": 58,
+          "tag": "DIV",
+          "bg": "rgba(0, 0, 0, 0)"
+        },
+        {
+          "x": 139.39999389648438,
+          "y": 4.3000030517578125,
+          "tag": "NAV",
+          "bg": "rgba(0, 0, 0, 0)"
+        }
+      ],
+      "logoPixels": {
+        "minA": 0,
+        "maxA": 255,
+        "greyBox": 0,
+        "whiteLogo": 980,
+        "total": 21528
+      },
+      "navShot": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\debug\\logo-preview\\logo-upload-v2\\browser\\pricing-nav-1440.png"
+    }
+  ],
+  "pass": true,
+  "failures": []
+}

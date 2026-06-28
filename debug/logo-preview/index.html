@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>FORGENIQ Logo QA · +15% Size Preview</title>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --panel: #12151c;
+      --border: rgba(255, 255, 255, 0.08);
+      --ink: #e8ecf4;
+      --muted: #8b95a8;
+      --gold: #d4a85a;
+      --pass: #5ecf8a;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; }
+    header { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); max-width: 1200px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 1.35rem; font-weight: 700; }
+    .sub { color: var(--muted); font-size: 0.9rem; max-width: 780px; }
+    .badge { display: inline-block; margin-top: 12px; padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(212, 168, 90, 0.15); color: var(--gold); border: 1px solid rgba(212, 168, 90, 0.35); }
+    main { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    section { margin-bottom: 40px; }
+    h2 { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 16px; }
+    th, td { padding: 8px 10px; border: 1px solid var(--border); text-align: left; }
+    th { background: var(--panel); color: var(--muted); font-weight: 600; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .card--wide { grid-column: 1 / -1; }
+    .card__label { padding: 10px 14px; font-size: 0.82rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    .card__meta { padding: 0 14px 8px; font-size: 0.75rem; color: var(--muted); }
+    .card__img { display: block; width: 100%; height: auto; background: #111; }
+    .card__img--contain { object-fit: contain; max-height: 520px; margin: 0 auto; }
+    .checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 16px; }
+    .check { padding: 10px 12px; border-radius: 8px; background: var(--panel); border: 1px solid var(--border); font-size: 0.8rem; }
+    .check strong { color: var(--pass); }
+    .transparency-row, .crop-row, .viewport-grid { display: grid; gap: 16px; }
+    .transparency-row { grid-template-columns: 1fr 1fr; }
+    .crop-row { grid-template-columns: 1fr 1fr; }
+    .viewport-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .on-white { background: #fff !important; }
+    .on-dark { background: #0a0a0a !important; }
+    footer { padding: 24px; text-align: center; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+    a { color: var(--gold); }
+    @media (max-width: 720px) { .transparency-row, .crop-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FORGENIQ Logo QA · +15% rendered size</h1>
+    <p class="sub">
+      Logo file unchanged. Display size increased via <code>transform: scale()</code> only —
+      layout box, nav height, padding, and margins unchanged.
+    </p>
+    <span class="badge">Not deployed — awaiting approval</span>
+    <div class="checks">
+      <div class="check"><strong>✓</strong> Desktop 237.8×118.9 px (+15%)</div>
+      <div class="check"><strong>✓</strong> Mobile 203.4×101.7 px (+15%)</div>
+      <div class="check"><strong>✓</strong> Nav height unchanged</div>
+      <div class="check"><strong>✓</strong> Aspect 2:1 preserved</div>
+      <div class="check"><strong>✓</strong> No horizontal scroll</div>
+    </div>
+    <table>
+      <thead><tr><th>Viewport</th><th>Before</th><th>After (+15%)</th><th>Nav height</th><th>Gap to menu</th></tr></thead>
+      <tbody>
+        <tr><td>1440 desktop</td><td>206.8×103.4</td><td><strong>237.8×118.9</strong></td><td>116</td><td>—</td></tr>
+        <tr><td>1024 tablet</td><td>197.3×98.6</td><td><strong>226.8×113.4</strong></td><td>112</td><td>—</td></tr>
+        <tr><td>768 tablet</td><td>178.6×89.3</td><td><strong>205.4×102.7</strong></td><td>96</td><td>491px</td></tr>
+        <tr><td>430 mobile</td><td>190.1×95.0</td><td><strong>218.6×109.3</strong></td><td>64</td><td>139px</td></tr>
+        <tr><td>390 mobile</td><td>176.8×88.4</td><td><strong>203.4×101.7</strong></td><td>64</td><td>115px</td></tr>
+        <tr><td>320 mobile</td><td>176.8×88.4</td><td><strong>203.4×101.7</strong></td><td>64</td><td>45px</td></tr>
+      </tbody>
+    </table>
+    <p class="sub">Scale factors: desktop/tablet <code>1.351</code> (was 1.175) · mobile ≤480px <code>2.542</code> (was 2.21)</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>All viewports · nav bar</h2>
+      <div class="viewport-grid">
+        <article class="card"><div class="card__label">320px</div><img class="card__img" src="../logo-qa-preview/viewports/nav-320.png" alt="Nav 320"></article>
+        <article class="card"><div class="card__label">390px</div><img class="card__img" src="../logo-qa-preview/viewports/nav-390.png" alt="Nav 390"></article>
+        <article class="card"><div class="card__label">430px</div><img class="card__img" src="../logo-qa-preview/viewports/nav-430.png" alt="Nav 430"></article>
+        <article class="card"><div class="card__label">768px</div><img class="card__img" src="../logo-qa-preview/viewports/nav-768.png" alt="Nav 768"></article>
+        <article class="card"><div class="card__label">1024px</div><img class="card__img" src="../logo-qa-preview/viewports/nav-1024.png" alt="Nav 1024"></article>
+        <article class="card"><div class="card__label">1440px</div><img class="card__img" src="../logo-qa-preview/viewports/nav-1440.png" alt="Nav 1440"></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Page screenshots</h2>
+      <div class="grid">
+        <article class="card card--wide">
+          <div class="card__label">Desktop header · 1440px</div>
+          <img class="card__img" src="../logo-qa-preview/01-desktop-1440-header.png" alt="Desktop header">
+        </article>
+        <article class="card card--wide">
+          <div class="card__label">Desktop footer · 1440px</div>
+          <img class="card__img" src="../logo-qa-preview/02b-desktop-1440-footer-section.png" alt="Desktop footer">
+        </article>
+        <article class="card">
+          <div class="card__label">Mobile header · 390px</div>
+          <img class="card__img" src="../logo-qa-preview/03-mobile-390-header.png" alt="Mobile header">
+        </article>
+        <article class="card">
+          <div class="card__label">Mobile menu open · 390px</div>
+          <img class="card__img" src="../logo-qa-preview/04-mobile-390-menu-open.png" alt="Mobile menu">
+        </article>
+        <article class="card card--wide">
+          <div class="card__label">Dashboard preview · 1440px</div>
+          <img class="card__img" src="../logo-qa-preview/05-dashboard-preview-header.png" alt="Dashboard">
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Logo crop · desktop nav</h2>
+      <div class="crop-row">
+        <article class="card">
+          <div class="card__label">100% zoom crop</div>
+          <img class="card__img card__img--contain" src="../logo-qa-preview/desktop-1440-logo-crop-100pct.png" alt="100% crop">
+        </article>
+        <article class="card">
+          <div class="card__label">200% zoom crop</div>
+          <img class="card__img card__img--contain" src="../logo-qa-preview/desktop-1440-logo-crop-200pct.png" alt="200% crop">
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Transparency · nav logo</h2>
+      <div class="transparency-row">
+        <article class="card">
+          <div class="card__label">On black</div>
+          <img class="card__img card__img--contain on-dark" src="../logo-qa-preview/desktop-1440-logo-on-dark.png" alt="On black">
+        </article>
+        <article class="card">
+          <div class="card__label">On white</div>
+          <img class="card__img card__img--contain on-white" src="../logo-qa-preview/desktop-1440-logo-on-white.png" alt="On white">
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Mobile &amp; dashboard · 200% crop</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="card__label">Mobile 390 · 200%</div>
+          <img class="card__img card__img--contain" src="../logo-qa-preview/mobile-390-logo-crop-200pct.png" alt="Mobile 200%">
+        </article>
+        <article class="card">
+          <div class="card__label">Dashboard · 200%</div>
+          <img class="card__img card__img--contain" src="../logo-qa-preview/dashboard-logo-crop-200pct.png" alt="Dashboard 200%">
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="/">Open site</a> · CSS only change in <code>styles/split-brand.css</code> · Not deployed
+  </footer>
+</body>
+</html>

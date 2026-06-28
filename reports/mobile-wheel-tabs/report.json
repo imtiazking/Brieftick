@@ -1,0 +1,387 @@
+{
+  "pass": true,
+  "baseUrl": "https://www.forgeniq.com",
+  "reports": [
+    {
+      "viewport": "iphone-13",
+      "pageErrors": [],
+      "briefing": [
+        {
+          "label": "Today",
+          "before": {
+            "badge": "Today",
+            "headline": "The market closed mixed with −0.05% on the S&P 500"
+          },
+          "after": {
+            "badge": "Today",
+            "headline": "The market closed mixed with −0.05% on the S&P 500",
+            "centered": [
+              "Today"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": false,
+          "centeredOk": true
+        },
+        {
+          "label": "Why",
+          "before": {
+            "badge": "Today",
+            "headline": "The market closed mixed with −0.05% on the S&P 500"
+          },
+          "after": {
+            "badge": "Why",
+            "headline": "Second-tier chips rallied while Wall Street banks traded the rate story",
+            "centered": [
+              "Why"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Winners",
+          "before": {
+            "badge": "Why",
+            "headline": "Second-tier chips rallied while Wall Street banks traded the rate story"
+          },
+          "after": {
+            "badge": "Winners",
+            "headline": "TSM, JNJ, PG led the upside",
+            "centered": [
+              "Winners"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Losers",
+          "before": {
+            "badge": "Winners",
+            "headline": "TSM, JNJ, PG led the upside"
+          },
+          "after": {
+            "badge": "Losers",
+            "headline": "ORCL, QCOM, CVX absorbed the heaviest selling",
+            "centered": [
+              "Losers"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Next",
+          "before": {
+            "badge": "Losers",
+            "headline": "ORCL, QCOM, CVX absorbed the heaviest selling"
+          },
+          "after": {
+            "badge": "Next",
+            "headline": "Megacap earnings and cloud spend set the tone for tomorrow",
+            "centered": [
+              "Next"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        }
+      ],
+      "dashboard": {
+        "before": {
+          "centered": [
+            "Movers"
+          ],
+          "module": "rail-module rail-module--movers"
+        },
+        "after": {
+          "centered": [
+            "Sectors"
+          ],
+          "module": "rail-module rail-module--intel rail-module--sector"
+        },
+        "changed": true
+      },
+      "mounted": {
+        "route": "why",
+        "chips": 5,
+        "mountFn": "function"
+      },
+      "pass": true
+    },
+    {
+      "viewport": "samsung-s24",
+      "pageErrors": [],
+      "briefing": [
+        {
+          "label": "Today",
+          "before": {
+            "badge": "Today",
+            "headline": "The market closed lower with −2.28% on the S&P 500"
+          },
+          "after": {
+            "badge": "Today",
+            "headline": "The market closed lower with −2.28% on the S&P 500",
+            "centered": [
+              "Today"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": false,
+          "centeredOk": true
+        },
+        {
+          "label": "Why",
+          "before": {
+            "badge": "Today",
+            "headline": "The market closed lower with −2.28% on the S&P 500"
+          },
+          "after": {
+            "badge": "Why",
+            "headline": "Second-tier chips rallied while Wall Street banks traded the rate story",
+            "centered": [
+              "Why"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Winners",
+          "before": {
+            "badge": "Why",
+            "headline": "Second-tier chips rallied while Wall Street banks traded the rate story"
+          },
+          "after": {
+            "badge": "Winners",
+            "headline": "INTC, TSM, MU led the upside",
+            "centered": [
+              "Winners"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Losers",
+          "before": {
+            "badge": "Winners",
+            "headline": "INTC, TSM, MU led the upside"
+          },
+          "after": {
+            "badge": "Losers",
+            "headline": "ORCL, NFLX, QCOM absorbed the heaviest selling",
+            "centered": [
+              "Losers"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Next",
+          "before": {
+            "badge": "Losers",
+            "headline": "ORCL, NFLX, QCOM absorbed the heaviest selling"
+          },
+          "after": {
+            "badge": "Next",
+            "headline": "Megacap earnings and cloud spend set the tone for tomorrow",
+            "centered": [
+              "Next"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        }
+      ],
+      "dashboard": {
+        "before": {
+          "centered": [
+            "Movers"
+          ],
+          "module": "rail-module rail-module--movers"
+        },
+        "after": {
+          "centered": [
+            "Sectors"
+          ],
+          "module": "rail-module rail-module--intel rail-module--sector"
+        },
+        "changed": true
+      },
+      "mounted": {
+        "route": "why",
+        "chips": 5,
+        "mountFn": "function"
+      },
+      "pass": true
+    },
+    {
+      "viewport": "iphone-15-pro-max",
+      "pageErrors": [],
+      "briefing": [
+        {
+          "label": "Today",
+          "before": {
+            "badge": "Today",
+            "headline": "The market closed mixed with −0.05% on the S&P 500"
+          },
+          "after": {
+            "badge": "Today",
+            "headline": "The market closed mixed with −0.05% on the S&P 500",
+            "centered": [
+              "Today"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": false,
+          "centeredOk": true
+        },
+        {
+          "label": "Why",
+          "before": {
+            "badge": "Today",
+            "headline": "The market closed mixed with −0.05% on the S&P 500"
+          },
+          "after": {
+            "badge": "Why",
+            "headline": "Second-tier chips rallied while Wall Street banks traded the rate story",
+            "centered": [
+              "Why"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Winners",
+          "before": {
+            "badge": "Why",
+            "headline": "Second-tier chips rallied while Wall Street banks traded the rate story"
+          },
+          "after": {
+            "badge": "Winners",
+            "headline": "INTC, TSM, MU led the upside",
+            "centered": [
+              "Winners"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Losers",
+          "before": {
+            "badge": "Winners",
+            "headline": "INTC, TSM, MU led the upside"
+          },
+          "after": {
+            "badge": "Losers",
+            "headline": "ORCL, NFLX, QCOM absorbed the heaviest selling",
+            "centered": [
+              "Losers"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        },
+        {
+          "label": "Next",
+          "before": {
+            "badge": "Losers",
+            "headline": "ORCL, NFLX, QCOM absorbed the heaviest selling"
+          },
+          "after": {
+            "badge": "Next",
+            "headline": "Megacap earnings and cloud spend set the tone for tomorrow",
+            "centered": [
+              "Next"
+            ]
+          },
+          "blocked": {
+            "blocked": false,
+            "hit": "SPAN.intel-wheel__chip-label"
+          },
+          "changed": true,
+          "centeredOk": true
+        }
+      ],
+      "dashboard": {
+        "before": {
+          "centered": [
+            "Movers"
+          ],
+          "module": "rail-module rail-module--movers"
+        },
+        "after": {
+          "centered": [
+            "Sectors"
+          ],
+          "module": "rail-module rail-module--intel rail-module--sector"
+        },
+        "changed": true
+      },
+      "mounted": {
+        "route": "why",
+        "chips": 5,
+        "mountFn": "function"
+      },
+      "pass": true
+    }
+  ]
+}

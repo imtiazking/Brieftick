@@ -1,0 +1,712 @@
+{
+  "generatedAt": "2026-06-23T16:15:47.767Z",
+  "baseUrl": "https://www.forgeniq.com",
+  "landing": {
+    "ctas": {
+      "signInVisible": true,
+      "startFreeVisible": true,
+      "getStartedVisible": true,
+      "exploreDashboard": true
+    },
+    "links": [
+      {
+        "href": "https://console.anthropic.com",
+        "text": "console.anthropic.com"
+      },
+      {
+        "href": "https://twelvedata.com",
+        "text": "twelvedata.com"
+      },
+      {
+        "href": "https://finnhub.io",
+        "text": "finnhub.io"
+      },
+      {
+        "href": "https://www.alphavantage.co",
+        "text": "alphavantage.co"
+      },
+      {
+        "href": "https://polygon.io",
+        "text": "polygon.io"
+      },
+      {
+        "href": "https://x.com/FORGENIQ",
+        "text": ""
+      },
+      {
+        "href": "https://www.linkedin.com/company/forgeniq",
+        "text": ""
+      },
+      {
+        "href": "https://www.instagram.com/forgeniq/",
+        "text": ""
+      }
+    ],
+    "consoleErrors": [
+      "Access to image at 'https://unpkg.com/three-globe@2.30.0/example/img/earth-clouds.png' from origin 'https://www.forgeniq.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header i",
+      "Failed to load resource: net::ERR_FAILED",
+      "Failed to load resource: the server responded with a status of 502 ()"
+    ],
+    "hasTickerStrip": false,
+    "brokenLinks": []
+  },
+  "auth": {
+    "signup": {
+      "clicked": false,
+      "error": "page.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator('#authSignUpBtn')\n    - locator resolved to <button type=\"button\" id=\"authSignUpBtn\" class=\"auth-signup-btn\">Start Free</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"cl-modalBackdrop 🔒️ cl-internal-bkuiv1\">…</div> from <div id=\":r5:\" data-floating-ui-portal=\"\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"cl-modalBackdrop 🔒️ cl-internal-bkuiv1\">…</div> from <div id=\":r5:\" data-floating-ui-portal=\"\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    8 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"cl-modalBackdrop 🔒️ cl-internal-bkuiv1\">…</div> from <div id=\":r5:\" data-floating-ui-portal=\"\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 500ms\n"
+    },
+    "signIn": {
+      "clicked": false,
+      "error": "page.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator('#authSignInBtn')\n    - locator resolved to <button type=\"button\" id=\"authSignInBtn\" class=\"auth-signin-btn\">Sign In</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"cl-modalBackdrop 🔒️ cl-internal-bkuiv1\">…</div> from <div id=\":r5:\" data-floating-ui-portal=\"\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"cl-modalBackdrop 🔒️ cl-internal-bkuiv1\">…</div> from <div id=\":r5:\" data-floating-ui-portal=\"\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    7 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"cl-modalBackdrop 🔒️ cl-internal-bkuiv1\">…</div> from <div id=\":r5:\" data-floating-ui-portal=\"\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 500ms\n"
+    },
+    "signedIn": true,
+    "dashboardGate": {
+      "onDashboard": false,
+      "route": "landing"
+    },
+    "logout": {
+      "note": "Not tested — no credentials in automated audit; Clerk Sign In/Up UI verified"
+    }
+  },
+  "quoteComparison": [
+    {
+      "symbol": "AAPL",
+      "providerPrice": 298.38,
+      "provider": "finnhub",
+      "displayedOnSite": 298.29,
+      "variancePct": 0.03,
+      "pass": true
+    },
+    {
+      "symbol": "NVDA",
+      "providerPrice": 202.81,
+      "provider": "finnhub",
+      "displayedOnSite": 202.81,
+      "variancePct": 0,
+      "pass": true
+    },
+    {
+      "symbol": "MSFT",
+      "providerPrice": 371.74,
+      "provider": "finnhub",
+      "displayedOnSite": 372.42,
+      "variancePct": 0.183,
+      "pass": true
+    },
+    {
+      "symbol": "SPY",
+      "providerPrice": 737.53,
+      "provider": "finnhub",
+      "displayedOnSite": null,
+      "variancePct": null,
+      "pass": null
+    },
+    {
+      "symbol": "QQQ",
+      "providerPrice": 719.86,
+      "provider": "finnhub",
+      "displayedOnSite": null,
+      "variancePct": null,
+      "pass": null
+    }
+  ],
+  "providerQuotes": {
+    "AAPL": {
+      "finnhub": {
+        "price": 298.38,
+        "pctChange": 0.4613
+      },
+      "yahoo": {
+        "price": 298.15,
+        "pctChange": 0.5836313339180762
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    },
+    "NVDA": {
+      "finnhub": {
+        "price": 202.81,
+        "pctChange": -2.7989
+      },
+      "yahoo": {
+        "price": 202.871,
+        "pctChange": -4.508825606024938
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    },
+    "MSFT": {
+      "finnhub": {
+        "price": 371.74,
+        "pctChange": 1.1978
+      },
+      "yahoo": {
+        "price": 371.824,
+        "pctChange": -6.988192915749444
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    },
+    "SPY": {
+      "finnhub": {
+        "price": 737.53,
+        "pctChange": -0.9216
+      },
+      "yahoo": {
+        "price": 737.485,
+        "pctChange": -2.297868394207971
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    },
+    "QQQ": {
+      "finnhub": {
+        "price": 719.86,
+        "pctChange": -2.4514
+      },
+      "yahoo": {
+        "price": 720.195,
+        "pctChange": -3.199596774193542
+      },
+      "finnhubStatus": 200,
+      "yahooStatus": 200
+    }
+  },
+  "modules": {
+    "dashboard": {
+      "label": "Dashboard",
+      "route": "dashboard",
+      "status": "Live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Live · FRED"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Delayed"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "discoverLiveBadge",
+          "text": "Live quotes · curated stories"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "patterns": {
+        "comingSoon": false,
+        "illustrative": false,
+        "unavailable": false,
+        "mockDemo": false,
+        "seeded": false
+      },
+      "macroMeta": "Live · FRED",
+      "earnBadge": "Illustrative",
+      "newConsoleErrors": 6
+    },
+    "whats-moving": {
+      "label": "What's Moving",
+      "route": "why",
+      "status": "Live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Live · FRED"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Live"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "discoverLiveBadge",
+          "text": "Live quotes · curated stories"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "patterns": {
+        "comingSoon": false,
+        "illustrative": false,
+        "unavailable": false,
+        "mockDemo": false,
+        "seeded": false
+      },
+      "macroMeta": "Live · FRED",
+      "earnBadge": "Illustrative",
+      "newConsoleErrors": 11
+    },
+    "discover": {
+      "label": "Discover",
+      "route": "scanner",
+      "status": "Live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Live · FRED"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Live"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Illustrative"
+        },
+        {
+          "id": "discoverLiveBadge",
+          "text": "Live quotes · curated stories"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "patterns": {
+        "comingSoon": false,
+        "illustrative": false,
+        "unavailable": false,
+        "mockDemo": false,
+        "seeded": false
+      },
+      "macroMeta": "Live · FRED",
+      "earnBadge": "Illustrative",
+      "newConsoleErrors": 0
+    },
+    "earnings": {
+      "label": "Earnings",
+      "route": "earnings",
+      "status": "Live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Live · FRED"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Live"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "discoverLiveBadge",
+          "text": "Live quotes · curated stories"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "patterns": {
+        "comingSoon": false,
+        "illustrative": false,
+        "unavailable": false,
+        "mockDemo": false,
+        "seeded": false
+      },
+      "macroMeta": "Live · FRED",
+      "earnBadge": "Live calendar",
+      "newConsoleErrors": 0
+    },
+    "watchlists": {
+      "label": "Watchlists",
+      "route": "dashboard",
+      "status": "Live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Live · FRED"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Live"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "discoverLiveBadge",
+          "text": "Live quotes · curated stories"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "patterns": {
+        "comingSoon": false,
+        "illustrative": false,
+        "unavailable": false,
+        "mockDemo": false,
+        "seeded": false
+      },
+      "macroMeta": "Live · FRED",
+      "earnBadge": "Live calendar",
+      "newConsoleErrors": 1
+    },
+    "market-risk": {
+      "label": "Market Risk",
+      "route": "dashboard",
+      "status": "Live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Live · FRED"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Live"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "discoverLiveBadge",
+          "text": "Live quotes · curated stories"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "patterns": {
+        "comingSoon": false,
+        "illustrative": false,
+        "unavailable": false,
+        "mockDemo": false,
+        "seeded": false
+      },
+      "macroMeta": "Live · FRED",
+      "earnBadge": "Live calendar",
+      "newConsoleErrors": 1
+    },
+    "macro-calendar": {
+      "label": "Macro Calendar",
+      "route": "dashboard",
+      "status": "Live",
+      "badges": [
+        {
+          "id": "dashLiveBadge",
+          "text": "Live"
+        },
+        {
+          "id": "macroEventsMeta",
+          "text": "Live · FRED"
+        },
+        {
+          "id": "whmBriefingBadge",
+          "text": "Live"
+        },
+        {
+          "id": "earnDataBadge",
+          "text": "Live calendar"
+        },
+        {
+          "id": "discoverLiveBadge",
+          "text": "Live quotes · curated stories"
+        },
+        {
+          "id": "optionsLiveBadge",
+          "text": "Options Beta"
+        }
+      ],
+      "patterns": {
+        "comingSoon": false,
+        "illustrative": false,
+        "unavailable": false,
+        "mockDemo": false,
+        "seeded": false
+      },
+      "macroMeta": "Live · FRED",
+      "earnBadge": "Live calendar",
+      "newConsoleErrors": 1
+    }
+  },
+  "dataIntegrity": {
+    "findings": []
+  },
+  "providerProbes": [
+    {
+      "provider": "finnhub",
+      "httpStatus": 200,
+      "healthy": true,
+      "latencyMs": 257
+    },
+    {
+      "provider": "yahoo",
+      "httpStatus": 200,
+      "healthy": true,
+      "latencyMs": 217
+    },
+    {
+      "provider": "alphavantage",
+      "httpStatus": 200,
+      "healthy": true,
+      "latencyMs": 164
+    },
+    {
+      "provider": "fred",
+      "httpStatus": 200,
+      "healthy": true,
+      "latencyMs": 125
+    },
+    {
+      "provider": "fred-calendar",
+      "httpStatus": 200,
+      "healthy": true,
+      "latencyMs": 6415
+    }
+  ],
+  "providerSummary": {
+    "finnhub": "healthy",
+    "yahoo": "healthy",
+    "alphavantage": "healthy",
+    "fred": "healthy"
+  },
+  "providerHealth": {
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "finnhub": {
+        "status": "healthy",
+        "latencyMs": 0,
+        "lastSuccessAt": "2026-06-23T16:14:31.406Z",
+        "httpStatus": 200,
+        "message": "FINNHUB_KEY configured"
+      },
+      "yahoo": {
+        "status": "healthy",
+        "latencyMs": 0,
+        "lastSuccessAt": "2026-06-23T16:14:31.406Z",
+        "httpStatus": 200,
+        "message": "Public Yahoo chart endpoint"
+      },
+      "fred": {
+        "status": "healthy",
+        "latencyMs": 0,
+        "lastSuccessAt": "2026-06-23T16:14:31.406Z",
+        "httpStatus": 200,
+        "message": "FRED_API_KEY configured (calendar + series)"
+      },
+      "alphaVantage": {
+        "status": "healthy",
+        "latencyMs": 0,
+        "lastSuccessAt": "2026-06-23T16:14:31.406Z",
+        "httpStatus": 200,
+        "message": "ALPHA_VANTAGE_KEY configured"
+      },
+      "polygon": {
+        "status": "degraded",
+        "latencyMs": 0,
+        "lastSuccessAt": "2026-06-23T16:14:31.406Z",
+        "httpStatus": 200,
+        "message": "POLYGON_KEY configured (options only)"
+      },
+      "twelveData": {
+        "status": "offline",
+        "latencyMs": 0,
+        "lastSuccessAt": null,
+        "httpStatus": 200,
+        "message": "TWELVE_DATA_DISABLED — fallback disabled"
+      },
+      "timestamp": "2026-06-23T16:14:31.406Z",
+      "schema": "forgeniq-provider-health-v2"
+    }
+  },
+  "network": {
+    "e429": 0,
+    "e5xx": 33,
+    "errors": [
+      {
+        "url": "https://unpkg.com/three-globe@2.30.0/example/img/earth-clouds.png",
+        "failed": "net::ERR_FAILED"
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=CYBR",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLV",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLE",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=BRK.B",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLF",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=VIX",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=BRK.B",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=VIX",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=BRK.B",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=VIX",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=BRK.B",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=BRK.B",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=VIX",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=VIX",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=VIX",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLI",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLB",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=XLC",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=SOXX",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=PG",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=NFLX",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=INTC",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=QQQ",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=WMT",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=twelvedata&endpoint=quote&symbol=QQQ",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=QCOM",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=MU",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=SNDK",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=TSM",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=finnhub&endpoint=quote&symbol=MCHP",
+        "status": 503
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=VIX",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=VIX",
+        "status": 502
+      },
+      {
+        "url": "https://www.forgeniq.com/api/proxy?provider=yahoo&symbol=VIX",
+        "status": 502
+      }
+    ],
+    "failed": 1
+  },
+  "consoleErrors": [
+    "Access to image at 'https://unpkg.com/three-globe@2.30.0/example/img/earth-clouds.png' from origin 'https://www.forgeniq.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header i",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: the server responded with a status of 502 ()",
+    "Failed to load resource: the server responded with a status of 503 ()"
+  ],
+  "dataHonestyScore": 100,
+  "launchReadinessScore": 80,
+  "risks": [
+    "33 HTTP 5xx during audit session (mostly provider fallbacks under burst load)",
+    "Console errors on landing (3)",
+    "Sign In did not open Clerk UI in headless audit"
+  ],
+  "recommendation": "GO"
+}

@@ -1,0 +1,102 @@
+{
+  "pass": true,
+  "baseUrl": "https://www.forgeniq.com",
+  "reports": [
+    {
+      "viewport": "iphone-13",
+      "clerkRequests": [
+        {
+          "method": "POST",
+          "url": "https://clerk.forgeniq.com/v1/client/sign_ins?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        }
+      ],
+      "clerkResponses": [
+        {
+          "status": 422,
+          "url": "https://clerk.forgeniq.com/v1/client/sign_ins?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        }
+      ],
+      "pageErrors": [],
+      "events": [
+        "modal-open",
+        "filled-email",
+        "filled-password",
+        "clicked-submit"
+      ],
+      "submitBlocked": {
+        "blocked": false,
+        "top": "SPAN.cl-internal-2iusy0"
+      },
+      "signInPosts": 1,
+      "signedIn": false,
+      "errorVisible": true,
+      "mobileAuthedClass": false,
+      "onDashboard": false,
+      "pass": true
+    },
+    {
+      "viewport": "samsung-s24",
+      "clerkRequests": [
+        {
+          "method": "POST",
+          "url": "https://clerk.forgeniq.com/v1/client/sign_ins?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        }
+      ],
+      "clerkResponses": [
+        {
+          "status": 422,
+          "url": "https://clerk.forgeniq.com/v1/client/sign_ins?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        }
+      ],
+      "pageErrors": [],
+      "events": [
+        "modal-open",
+        "filled-email",
+        "filled-password",
+        "clicked-submit"
+      ],
+      "submitBlocked": {
+        "blocked": false,
+        "top": "SPAN.cl-internal-2iusy0"
+      },
+      "signInPosts": 1,
+      "signedIn": false,
+      "errorVisible": true,
+      "mobileAuthedClass": false,
+      "onDashboard": false,
+      "pass": true
+    },
+    {
+      "viewport": "iphone-15-pro-max",
+      "clerkRequests": [
+        {
+          "method": "POST",
+          "url": "https://clerk.forgeniq.com/v1/client/sign_ins?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        }
+      ],
+      "clerkResponses": [
+        {
+          "status": 422,
+          "url": "https://clerk.forgeniq.com/v1/client/sign_ins?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        }
+      ],
+      "pageErrors": [],
+      "events": [
+        "modal-open",
+        "filled-email",
+        "filled-password",
+        "clicked-submit"
+      ],
+      "submitBlocked": {
+        "blocked": false,
+        "top": "SPAN.cl-internal-2iusy0"
+      },
+      "signInPosts": 1,
+      "signedIn": false,
+      "errorVisible": true,
+      "mobileAuthedClass": false,
+      "onDashboard": false,
+      "pass": true
+    }
+  ]
+}

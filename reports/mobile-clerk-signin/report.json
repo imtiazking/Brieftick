@@ -1,0 +1,419 @@
+{
+  "pass": false,
+  "baseUrl": "https://www.forgeniq.com",
+  "reports": [
+    {
+      "viewport": "iphone-13",
+      "errors": [],
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 422 ()"
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "url": "https://www.forgeniq.com/lib/clerk-runtime.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://clerk.forgeniq.com/v1/environment?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        },
+        {
+          "method": "GET",
+          "url": "https://clerk.forgeniq.com/v1/client?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/framework_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/vendors_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/ui-common_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/signin_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/subscriptionDetails_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/signup_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/waitlist_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "method": "GET",
+          "url": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzNGYTBxQlpLZ0c4aGpMQndLd2NuRkJtdWtvMyJ9?width=400"
+        },
+        {
+          "method": "GET",
+          "url": "https://img.clerk.com/static/google.svg?width=160"
+        },
+        {
+          "method": "POST",
+          "url": "https://clerk.forgeniq.com/v1/client/sign_ins?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "url": "https://www.forgeniq.com/lib/clerk-runtime.js"
+        },
+        {
+          "status": 200,
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+        },
+        {
+          "status": 200,
+          "url": "https://clerk.forgeniq.com/v1/environment?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        },
+        {
+          "status": 200,
+          "url": "https://clerk.forgeniq.com/v1/client?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        },
+        {
+          "status": 200,
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/framework_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "status": 200,
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/vendors_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "status": 200,
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/ui-common_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "status": 200,
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/signin_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "status": 200,
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/subscriptionDetails_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "status": 200,
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/waitlist_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "status": 200,
+          "url": "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5.127.0/dist/signup_clerk.browser_636222_5.127.0.js"
+        },
+        {
+          "status": 200,
+          "url": "https://img.clerk.com/static/google.svg?width=160"
+        },
+        {
+          "status": 200,
+          "url": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzNGYTBxQlpLZ0c4aGpMQndLd2NuRkJtdWtvMyJ9?width=400"
+        },
+        {
+          "status": 422,
+          "url": "https://clerk.forgeniq.com/v1/client/sign_ins?__clerk_api_version=2025-11-10&_clerk_js_version=5.127.0"
+        }
+      ],
+      "events": [
+        "filled-email",
+        "filled-password",
+        "clicked-submit"
+      ],
+      "afterOpen": {
+        "clerkReady": true,
+        "modalVisible": true,
+        "backdrop": {
+          "zIndex": "10000",
+          "pe": "auto"
+        },
+        "modal": {
+          "zIndex": "auto",
+          "pe": "auto"
+        },
+        "email": {
+          "tag": "INPUT",
+          "class": "ra-input",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "inline-block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "auto",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "password": {
+          "tag": "INPUT",
+          "class": "",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "auto",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "submit": {
+          "tag": "BUTTON",
+          "class": "logic-hero-submit",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "none",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "bodyClass": "",
+        "drawerOpen": false
+      },
+      "beforeSubmit": {
+        "clerkReady": true,
+        "modalVisible": true,
+        "backdrop": {
+          "zIndex": "10000",
+          "pe": "auto"
+        },
+        "modal": {
+          "zIndex": "auto",
+          "pe": "auto"
+        },
+        "email": {
+          "tag": "INPUT",
+          "class": "ra-input",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "inline-block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "auto",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "password": {
+          "tag": "INPUT",
+          "class": "",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "auto",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "submit": {
+          "tag": "BUTTON",
+          "class": "logic-hero-submit",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "none",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "bodyClass": "",
+        "drawerOpen": false
+      },
+      "diag": {
+        "clicks": 1,
+        "submits": 1
+      },
+      "submitRequests": 1,
+      "submitResponses": 1,
+      "signedIn": false,
+      "afterSubmit": {
+        "clerkReady": true,
+        "modalVisible": true,
+        "backdrop": {
+          "zIndex": "10000",
+          "pe": "auto"
+        },
+        "modal": {
+          "zIndex": "auto",
+          "pe": "auto"
+        },
+        "email": {
+          "tag": "INPUT",
+          "class": "ra-input",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "inline-block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "auto",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "password": {
+          "tag": "INPUT",
+          "class": "",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "auto",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "submit": {
+          "tag": "BUTTON",
+          "class": "logic-hero-submit",
+          "rect": {
+            "top": 0,
+            "left": 0,
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "1",
+            "pointerEvents": "none",
+            "zIndex": "auto"
+          },
+          "center": {
+            "x": 0,
+            "y": 0
+          },
+          "topAtCenter": {
+            "tag": "DIV",
+            "class": "cl-modalBackdrop 🔒️ cl-internal-bkuiv1"
+          },
+          "blocked": true
+        },
+        "bodyClass": "",
+        "drawerOpen": false
+      },
+      "pass": false
+    }
+  ]
+}

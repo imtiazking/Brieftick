@@ -1,0 +1,148 @@
+{
+  "capturedAt": "2026-06-27T19:33:44.231Z",
+  "currentUrl": "http://localhost:49696",
+  "rollbackUrl": "http://localhost:49697",
+  "recommendedCommit": "f06210f",
+  "shots": [
+    {
+      "tag": "current",
+      "view": "landing-desktop",
+      "label": "Landing · desktop",
+      "nav": "current-landing-desktop-nav.png",
+      "hero": "current-landing-desktop-hero.png",
+      "metrics": {
+        "logoW": 207,
+        "logoH": 103,
+        "navH": 116,
+        "hasV2": false,
+        "logoTransform": "matrix(1.175, 0, 0, 1.175, 0, 0)"
+      }
+    },
+    {
+      "tag": "current",
+      "view": "landing-mobile",
+      "label": "Landing · mobile 390",
+      "nav": "current-landing-mobile-nav.png",
+      "hero": "current-landing-mobile-hero.png",
+      "metrics": {
+        "logoW": 177,
+        "logoH": 88,
+        "navH": 64,
+        "hasV2": false,
+        "logoTransform": "matrix(2.21, 0, 0, 2.21, 0, 0)"
+      }
+    },
+    {
+      "tag": "current",
+      "view": "about-desktop",
+      "label": "About · desktop",
+      "nav": "current-about-desktop-nav.png",
+      "hero": "current-about-desktop-hero.png",
+      "metrics": {
+        "logoW": 207,
+        "logoH": 103,
+        "navH": 116,
+        "hasV2": false,
+        "logoTransform": "matrix(1.175, 0, 0, 1.175, 0, 0)"
+      }
+    },
+    {
+      "tag": "current",
+      "view": "about-mobile",
+      "label": "About · mobile 390",
+      "nav": "current-about-mobile-nav.png",
+      "hero": "current-about-mobile-hero.png",
+      "metrics": {
+        "logoW": 177,
+        "logoH": 88,
+        "navH": 64,
+        "hasV2": false,
+        "logoTransform": "matrix(2.21, 0, 0, 2.21, 0, 0)"
+      }
+    },
+    {
+      "tag": "current",
+      "view": "pricing-desktop",
+      "label": "Pricing · desktop",
+      "nav": "current-pricing-desktop-nav.png",
+      "hero": "current-pricing-desktop-hero.png",
+      "metrics": {
+        "logoW": 207,
+        "logoH": 103,
+        "navH": 116,
+        "hasV2": false,
+        "logoTransform": "matrix(1.175, 0, 0, 1.175, 0, 0)"
+      }
+    },
+    {
+      "tag": "rollback-f06210f",
+      "view": "landing-desktop",
+      "label": "Landing · desktop",
+      "nav": "rollback-landing-desktop-nav.png",
+      "hero": "rollback-landing-desktop-hero.png",
+      "metrics": {
+        "logoW": 176,
+        "logoH": 88,
+        "navH": 116,
+        "hasV2": false,
+        "logoTransform": "none"
+      }
+    },
+    {
+      "tag": "rollback-f06210f",
+      "view": "landing-mobile",
+      "label": "Landing · mobile 390",
+      "nav": "rollback-landing-mobile-nav.png",
+      "hero": "rollback-landing-mobile-hero.png",
+      "metrics": {
+        "logoW": 80,
+        "logoH": 40,
+        "navH": 64,
+        "hasV2": false,
+        "logoTransform": "none"
+      }
+    },
+    {
+      "tag": "rollback-f06210f",
+      "view": "about-desktop",
+      "label": "About · desktop",
+      "nav": "rollback-about-desktop-nav.png",
+      "hero": "rollback-about-desktop-hero.png",
+      "metrics": {
+        "logoW": 104,
+        "logoH": 52,
+        "navH": 80,
+        "hasV2": false,
+        "logoTransform": "none"
+      }
+    },
+    {
+      "tag": "rollback-f06210f",
+      "view": "about-mobile",
+      "label": "About · mobile 390",
+      "nav": "rollback-about-mobile-nav.png",
+      "hero": "rollback-about-mobile-hero.png",
+      "metrics": {
+        "logoW": 70,
+        "logoH": 35,
+        "navH": 64,
+        "hasV2": false,
+        "logoTransform": "none"
+      }
+    },
+    {
+      "tag": "rollback-f06210f",
+      "view": "pricing-desktop",
+      "label": "Pricing · desktop",
+      "nav": "rollback-pricing-desktop-nav.png",
+      "hero": "rollback-pricing-desktop-hero.png",
+      "metrics": {
+        "logoW": 104,
+        "logoH": 52,
+        "navH": 80,
+        "hasV2": false,
+        "logoTransform": "none"
+      }
+    }
+  ]
+}

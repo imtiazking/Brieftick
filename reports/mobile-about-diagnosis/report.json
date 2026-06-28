@@ -1,0 +1,553 @@
+{
+  "baseUrl": "https://www.forgeniq.com",
+  "errors": [],
+  "before": {
+    "url": "https://www.forgeniq.com/",
+    "search": "",
+    "htmlAttrs": {
+      "splitLanding": true,
+      "splitAbout": false,
+      "splitPricing": false,
+      "mobileConversion": true,
+      "theme": "split"
+    },
+    "pageAbout": {
+      "exists": true,
+      "className": "page",
+      "active": false,
+      "style": {
+        "display": "none",
+        "visibility": "visible",
+        "opacity": "0",
+        "position": "relative",
+        "zIndex": "1",
+        "height": "auto",
+        "minHeight": "0px",
+        "overflow": "hidden",
+        "overflowY": "hidden",
+        "transform": "none",
+        "pointerEvents": "none"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "pageLanding": {
+      "active": true,
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "relative",
+        "zIndex": "4",
+        "height": "4290.95px",
+        "minHeight": "844px",
+        "overflow": "visible",
+        "overflowY": "visible",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 390,
+        "height": 4290.953125
+      }
+    },
+    "aboutWrap": {
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "relative",
+        "zIndex": "2",
+        "height": "auto",
+        "minHeight": "0px",
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      },
+      "textLen": 3793
+    },
+    "mission": {
+      "text": "Democratise market intelligence.",
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "static",
+        "zIndex": "auto",
+        "height": "auto",
+        "minHeight": "0px",
+        "overflow": "visible",
+        "overflowY": "visible",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      },
+      "visible": false
+    },
+    "splitAboutMount": {
+      "exists": true,
+      "innerHTMLLen": 0,
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "static",
+        "zIndex": "auto",
+        "height": "auto",
+        "minHeight": "0px",
+        "overflow": "visible",
+        "overflowY": "visible",
+        "transform": "none",
+        "pointerEvents": "none"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "elementFromPoint": {
+      "x": 195,
+      "y": 300,
+      "top": {
+        "tag": "SPAN",
+        "id": "",
+        "class": "cw-ed-metallic__shine"
+      },
+      "stack": [
+        {
+          "tag": "span",
+          "id": null,
+          "class": "cw-ed-metallic__shine"
+        },
+        {
+          "tag": "span",
+          "id": null,
+          "class": "cw-ed-metallic__base"
+        },
+        {
+          "tag": "span",
+          "id": null,
+          "class": "cw-ed-line__curtain"
+        },
+        {
+          "tag": "span",
+          "id": null,
+          "class": "cw-ed-line cw-ed-line--split cw-ed-line--italic cw-ed-metallic cw-ed-metallic--g"
+        },
+        {
+          "tag": "h1",
+          "id": null,
+          "class": "cw-hero-editorial"
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "class": "cw-scene-inner cw-hero-copy--stable"
+        },
+        {
+          "tag": "section",
+          "id": null,
+          "class": "cw-scene cw-scene--center cw-scene--hero has-revealed is-active"
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "class": "cw-scenes cw-scenes--mobile"
+        }
+      ]
+    },
+    "missionInViewport": false,
+    "bodyTextIncludes": false,
+    "scrollHeight": 4291,
+    "innerHeight": 844
+  },
+  "afterDrawer": {
+    "url": "https://www.forgeniq.com/",
+    "search": "",
+    "activeRoute": "about",
+    "htmlAttrs": {
+      "splitLanding": false,
+      "splitAbout": true,
+      "splitPricing": false,
+      "mobileConversion": true,
+      "theme": "split"
+    },
+    "pageAbout": {
+      "exists": true,
+      "className": "page active",
+      "active": true,
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "relative",
+        "zIndex": "5",
+        "height": "3353.91px",
+        "minHeight": "844px",
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 88,
+        "left": 0,
+        "width": 390,
+        "height": 3353.90625
+      }
+    },
+    "pageLanding": {
+      "active": false,
+      "style": {
+        "display": "none",
+        "visibility": "visible",
+        "opacity": "0",
+        "position": "relative",
+        "zIndex": "1",
+        "height": "auto",
+        "minHeight": "0px",
+        "overflow": "visible",
+        "overflowY": "visible",
+        "transform": "none",
+        "pointerEvents": "none"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "aboutWrap": {
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "relative",
+        "zIndex": "2",
+        "height": "3353.91px",
+        "minHeight": "0px",
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 88,
+        "left": 0,
+        "width": 390,
+        "height": 3353.90625
+      },
+      "textLen": 3789
+    },
+    "mission": {
+      "text": "Democratise market intelligence.",
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "static",
+        "zIndex": "auto",
+        "height": "27px",
+        "minHeight": "0px",
+        "overflow": "visible",
+        "overflowY": "visible",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 581.296875,
+        "left": 24,
+        "width": 342,
+        "height": 27
+      },
+      "visible": true
+    },
+    "splitAboutMount": {
+      "exists": true,
+      "innerHTMLLen": 0,
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "fixed",
+        "zIndex": "0",
+        "height": "844px",
+        "minHeight": "0px",
+        "overflow": "hidden",
+        "overflowY": "hidden",
+        "transform": "none",
+        "pointerEvents": "none"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    "elementFromPoint": {
+      "x": 195,
+      "y": 300,
+      "top": {
+        "tag": "P",
+        "id": "",
+        "class": "about-hero-desc about-hero-desc--short"
+      },
+      "stack": [
+        {
+          "tag": "p",
+          "id": null,
+          "class": "about-hero-desc about-hero-desc--short"
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "class": "about-hero"
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "class": "about-wrap"
+        },
+        {
+          "tag": "section",
+          "id": "page-about",
+          "class": "page active"
+        },
+        {
+          "tag": "main",
+          "id": null,
+          "class": null
+        },
+        {
+          "tag": "body",
+          "id": null,
+          "class": null
+        },
+        {
+          "tag": "html",
+          "id": null,
+          "class": null
+        }
+      ]
+    },
+    "missionInViewport": true,
+    "bodyTextIncludes": true,
+    "scrollHeight": 4210,
+    "innerHeight": 844
+  },
+  "afterTab": {
+    "url": "https://www.forgeniq.com/?tab=about",
+    "search": "?tab=about",
+    "activeRoute": "about",
+    "htmlAttrs": {
+      "splitLanding": false,
+      "splitAbout": true,
+      "splitPricing": false,
+      "mobileConversion": true,
+      "theme": "split"
+    },
+    "pageAbout": {
+      "exists": true,
+      "className": "page active",
+      "active": true,
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "relative",
+        "zIndex": "5",
+        "height": "3353.91px",
+        "minHeight": "844px",
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 88,
+        "left": 0,
+        "width": 390,
+        "height": 3353.90625
+      }
+    },
+    "pageLanding": {
+      "active": false,
+      "style": {
+        "display": "none",
+        "visibility": "visible",
+        "opacity": "0",
+        "position": "relative",
+        "zIndex": "1",
+        "height": "auto",
+        "minHeight": "0px",
+        "overflow": "visible",
+        "overflowY": "visible",
+        "transform": "none",
+        "pointerEvents": "none"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "aboutWrap": {
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "relative",
+        "zIndex": "2",
+        "height": "3353.91px",
+        "minHeight": "0px",
+        "overflow": "hidden auto",
+        "overflowY": "auto",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 88,
+        "left": 0,
+        "width": 390,
+        "height": 3353.90625
+      },
+      "textLen": 3793
+    },
+    "mission": {
+      "text": "Democratise market intelligence.",
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "static",
+        "zIndex": "auto",
+        "height": "27px",
+        "minHeight": "0px",
+        "overflow": "visible",
+        "overflowY": "visible",
+        "transform": "none",
+        "pointerEvents": "auto"
+      },
+      "rect": {
+        "top": 581.296875,
+        "left": 24,
+        "width": 342,
+        "height": 27
+      },
+      "visible": true
+    },
+    "splitAboutMount": {
+      "exists": true,
+      "innerHTMLLen": 0,
+      "style": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": "1",
+        "position": "fixed",
+        "zIndex": "0",
+        "height": "844px",
+        "minHeight": "0px",
+        "overflow": "hidden",
+        "overflowY": "hidden",
+        "transform": "none",
+        "pointerEvents": "none"
+      },
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    "elementFromPoint": {
+      "x": 195,
+      "y": 300,
+      "top": {
+        "tag": "P",
+        "id": "",
+        "class": "about-hero-desc about-hero-desc--short"
+      },
+      "stack": [
+        {
+          "tag": "p",
+          "id": null,
+          "class": "about-hero-desc about-hero-desc--short"
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "class": "about-hero"
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "class": "about-wrap"
+        },
+        {
+          "tag": "section",
+          "id": "page-about",
+          "class": "page active"
+        },
+        {
+          "tag": "main",
+          "id": null,
+          "class": null
+        },
+        {
+          "tag": "body",
+          "id": null,
+          "class": null
+        },
+        {
+          "tag": "html",
+          "id": null,
+          "class": null
+        }
+      ]
+    },
+    "missionInViewport": true,
+    "bodyTextIncludes": true,
+    "scrollHeight": 4210,
+    "innerHeight": 844
+  },
+  "pricing": {
+    "activeRoute": "pricing",
+    "pricingActive": true,
+    "text": "\n    \n      Two plans. One goal.\n      Explore story-first market intelligence f",
+    "rect": {
+      "x": 0,
+      "y": 88,
+      "width": 390,
+      "height": 4461.53125,
+      "top": 88,
+      "right": 390,
+      "bottom": 4549.53125,
+      "left": 0
+    },
+    "topAt300": "P"
+  },
+  "pass": true
+}
