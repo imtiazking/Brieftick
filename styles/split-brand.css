@@ -78,28 +78,32 @@ html[data-theme="logic"] .split-brand__clip {
   }
 }
 
-/* ── Marketing pages: landing, about, pricing (larger nav logo) ── */
+/* ── Marketing pages: landing, about, pricing ── */
 html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand.split-brand,
 html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand__clip {
   background: none;
 }
 
-html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand-img--full {
-  height: clamp(64px, 8.2vw, 88px);
-  max-height: 88px;
-  width: auto;
-  object-fit: contain;
+/* Desktop/web: larger nav logo (landing size on all marketing pages) */
+@media (min-width: 769px) {
+  html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand-img--full {
+    height: clamp(64px, 8.2vw, 88px);
+    max-height: 88px;
+    width: auto;
+    object-fit: contain;
+  }
 }
 
+/* Tablet/mobile: landing-only larger logo (unchanged) */
 @media (max-width: 768px) {
-  html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand-img--full {
+  html:has(#page-landing.active) #navBrand .split-brand-img--full {
     height: clamp(56px, 11vw, 76px);
     max-height: 76px;
   }
 }
 
 @media (max-width: 480px) {
-  html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand-img--full {
+  html:has(#page-landing.active) #navBrand .split-brand-img--full {
     max-width: clamp(150px, 42vw, 180px);
     height: auto;
     max-height: clamp(40px, 10vw, 48px);
