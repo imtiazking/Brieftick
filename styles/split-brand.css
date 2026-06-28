@@ -103,7 +103,7 @@ html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBra
 }
 
 @media (max-width: 480px) {
-  html:has(#page-landing.active) #navBrand .split-brand-img--full {
+  html:has(#page-landing.active, #page-about.active, #page-pricing.active) #navBrand .split-brand-img--full {
     max-width: clamp(150px, 42vw, 180px);
     height: auto;
     max-height: clamp(40px, 10vw, 48px);
