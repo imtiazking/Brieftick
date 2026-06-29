@@ -520,6 +520,21 @@
     min-height: 100svh;
   }
 
+  /* About phone: pull background mount to viewport top (main padding leaves void band) */
+  @media (max-width: 480px) {
+    html[data-mobile-conversion][data-split-about] #page-about.active #splitAboutMount {
+      position: fixed !important;
+      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      min-height: 100svh;
+      height: auto;
+    }
+  }
+
   html[data-split-landing] #page-landing:not(.active) {
     display: none !important;
     visibility: hidden !important;
