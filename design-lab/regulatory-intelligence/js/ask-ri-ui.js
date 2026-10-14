@@ -18,8 +18,10 @@ function modeBadge(analysis) {
 }
 
 function renderEvidenceUsed(retrieval) {
+  const count = retrieval?.resultCount ?? retrieval?.matchedRecordIds?.length ?? 0;
+  const header = `<p class="ri-muted" data-ask-ri-evidence-count data-count="${count}">Evidence used: ${count} records</p>`;
   if (!retrieval?.matchedRecordIds?.length) {
-    return '<p class="ri-muted">No RI records retrieved.</p>';
+    return `${header}<p class="ri-muted">No RI records retrieved.</p>`;
   }
   const rows = retrieval.matchedRecordIds
     .map(
@@ -27,16 +29,15 @@ function renderEvidenceUsed(retrieval) {
         `<li><strong>${esc(id)}</strong> (${esc(retrieval.recordTypes[id] || 'Record')}) — ${esc(retrieval.matchReasons[id] || '')}</li>`
     )
     .join('');
-  return `<ul class="ri-list">${rows}</ul>`;
+  return `${header}<ul class="ri-list">${rows}</ul>`;
 }
 
 function renderAskResult(state, last) {
   if (!last) return '<p class="ri-muted">Ask a question to retrieve evidence-backed intelligence.</p>';
   if (last.insufficient) {
-    return `<div data-ask-ri-result class="ri-ai-insufficient">
+    return `<div data-ask-ri-result class="ri-ai-insufficient" data-ask-ri-insufficient="true" data-provider-calls="0">
       <p><strong>INSUFFICIENT RI EVIDENCE</strong></p>
       <p class="ri-muted">${esc(last.message || '')}</p>
-      <p class="ri-muted">Evidence used: ${last.retrieval?.resultCount || 0} records</p>
       ${renderEvidenceUsed(last.retrieval)}
     </div>`;
   }
@@ -47,7 +48,8 @@ function renderAskResult(state, last) {
       ? '<p class="ri-ai-outdated">SOURCE CONTEXT HAS CHANGED · AI ANALYSIS OUTDATED · REVIEW MAY BE REQUIRED</p>'
       : '';
   const p = a.workflowPayload || a.originalAiOutput || {};
-  return `<div data-ask-ri-result>
+  const providerCalls = state._lastAskRiProviderCalls ?? 1;
+  return `<div data-ask-ri-result data-provider-calls="${providerCalls}">
     ${modeBadge(a)}
     <span class="ri-ai-review">SOURCE-GROUNDED · ${esc(a.reviewStatus)} · HUMAN REVIEW REQUIRED</span>
     ${outdated}

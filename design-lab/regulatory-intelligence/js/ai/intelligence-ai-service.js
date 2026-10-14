@@ -25,7 +25,7 @@ function pushAskHistory(state, entry) {
 export async function askRi(state, question, options = {}) {
   resetProviderCallCount();
   if (!canAskRi(state)) return { ok: false, code: 'FORBIDDEN' };
-  const parsed = parseAskQuery(question);
+  const parsed = parseAskQuery(question, state);
   const retrieval = retrieveRiRecords(state, question, { ...options, parsed });
   appendAiDomainAuditEvent(state, {
     type: AI_AUDIT_EVENT_TYPE.AI_RI_QUERY_REQUESTED,
@@ -34,7 +34,7 @@ export async function askRi(state, question, options = {}) {
     actor: state.currentDemoUserId,
   });
 
-  if (!retrieval.adequate || retrieval.resultCount === 0) {
+  if (!retrieval.adequate || retrieval.resultCount === 0 || retrieval.insufficientReason) {
     appendAiDomainAuditEvent(state, {
       type: AI_AUDIT_EVENT_TYPE.AI_RI_QUERY_INSUFFICIENT_EVIDENCE,
       query: question,
@@ -55,7 +55,7 @@ export async function askRi(state, question, options = {}) {
   let scenario = options.fixtureScenario;
   if (!scenario) {
     if (parsed.filters.intent === 'count-open-obligations') scenario = 'ai-019-count-obligations';
-    else if (parsed.filters.intent === 'basel-pra') scenario = 'ai-021-basel-ask';
+    else if (parsed.filters.intent === 'reviewed-cross-source') scenario = 'ai-021-basel-ask';
     else scenario = 'ai-006-ask-banking';
   }
 

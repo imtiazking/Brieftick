@@ -227,9 +227,21 @@ function resolveSelection(state, selection) {
 
         if (r) records.push(r);
 
+      } else if (item.recordType === 'ImplementationMapping') {
+        const m = state.internationalImplementationMappings?.find((x) => x.mappingId === item.recordId);
+        if (m) {
+          records.push({
+            recordId: m.mappingId,
+            recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
+            recordType: 'ImplementationMapping',
+            recordTitle: `Mapping ${m.mappingId}`,
+            internalRoute: '#/basel',
+            sourceContent: [m.mappingId, m.rationale, m.reviewStatus, m.baselRecordId, m.praPublicationId].filter(Boolean).join('\n'),
+          });
+        }
       } else if (item.recordType === 'Framework') {
 
-        const f = state.frameworks?.find((x) => x.id === item.recordId);
+        const f = (state.regulatoryFrameworks || state.frameworks || []).find((x) => x.id === item.recordId);
 
         if (f) {
           records.push({
@@ -238,7 +250,7 @@ function resolveSelection(state, selection) {
             recordType: 'Framework',
             recordTitle: f.name || f.label,
             internalRoute: `#/landscape/framework/${f.id}`,
-            sourceContent: [f.name, f.authority, f.coverageStatus].filter(Boolean).join('\n'),
+            sourceContent: [f.name, f.primaryAuthority, f.coverageStatus].filter(Boolean).join('\n'),
           });
         }
 

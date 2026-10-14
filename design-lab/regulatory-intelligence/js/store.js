@@ -834,6 +834,7 @@ export function rejectWorkflowDraft(analysisId, notes = '') {
 export async function runAskRiQuestion(question) {
   const res = await askRi(state, question);
   state._lastAskRi = res;
+  state._lastAskRiProviderCalls = res.providerCallCount ?? (res.insufficient ? 0 : 1);
   notify();
   return res;
 }

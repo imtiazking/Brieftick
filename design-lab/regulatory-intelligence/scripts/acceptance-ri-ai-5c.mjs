@@ -10,7 +10,15 @@ import {
   markAskRiOutdatedForChange,
 } from '../js/ai/intelligence-ai-service.js';
 import { runFixtureAiAnalysis } from '../js/ai/analysis-service.js';
-import { retrieveRiRecords, selectionFromRetrieval, computeDeterministicFacts, parseAskQuery } from '../js/ai/ri-retrieval.js';
+import {
+  retrieveRiRecords,
+  selectionFromRetrieval,
+  computeDeterministicFacts,
+  parseAskQuery,
+  validateRetrievalPrecision,
+  countOpenObligations,
+  OPEN_OBLIGATION_STATUSES,
+} from '../js/ai/ri-retrieval.js';
 import { deterministicTextDiff } from '../js/ai/text-diff.js';
 import { isAuditorReadOnly } from '../js/ai/persona-ai.js';
 import { spawn } from 'child_process';
@@ -65,7 +73,10 @@ async function main() {
   const echoed = countAsk.analysis?.originalAiOutput?.openObligationCount;
   pass('AI-019', echoed === facts.openObligationCount);
 
-  const ret = retrieveRiRecords(state, 'banking', { fixtureScenario: 'ai-006-ask-banking' });
+  const ret = retrieveRiRecords(state, 'banking', {
+    fixtureScenario: 'ai-006-ask-banking',
+    allowFixtureRetrieval: true,
+  });
   const bad20 = await runFixtureAiAnalysis(state, {
     taskType: AI_TASK_TYPE.AI_RI_QA,
     selection: selectionFromRetrieval(ret),
@@ -88,6 +99,49 @@ async function main() {
 
   const mem = await askRi(state, 'What is the capital requirement under EU CRD V in France?');
   pass('AI-024', mem.insufficient && mem.providerCallCount === 0);
+
+  const bankingQ = 'What regulatory changes currently affect the Banking sector?';
+  const bankingRet = retrieveRiRecords(state, bankingQ);
+  const bankingPrecision = validateRetrievalPrecision(state, { ...bankingRet, filters: { ...bankingRet.filters, sectorSlug: 'banking', requireCurrentlyRelevant: true } });
+  pass('TEST-13-banking-precision', bankingPrecision.ok && bankingRet.resultCount > 0);
+  pass(
+    'TEST-13-banking-no-generic-only',
+    !bankingRet.matchedRecordIds.some((id) => bankingRet.recordTypes[id] === 'Framework' && !bankingRet.matchReasons[id]?.includes('Banking'))
+  );
+
+  const reviewedMapping = (state.internationalImplementationMappings || []).find((m) => m.reviewStatus === 'REVIEWED');
+  const baselRet = retrieveRiRecords(state, 'What Basel developments are linked to PRA implementation?');
+  pass('TEST-13-basel-mapping-id', baselRet.reviewedMappingId === reviewedMapping?.mappingId);
+  pass(
+    'TEST-13-basel-triple',
+    reviewedMapping &&
+      baselRet.matchedRecordIds.includes(reviewedMapping.mappingId) &&
+      baselRet.matchedRecordIds.includes(reviewedMapping.baselRecordId) &&
+      baselRet.matchedRecordIds.includes(reviewedMapping.praPublicationId)
+  );
+  pass('TEST-13-basel-precision', validateRetrievalPrecision(state, baselRet).ok);
+
+  const wealthRet = retrieveRiRecords(state, 'What regulatory changes currently affect Wealth Management?');
+  pass('GATE-held-out-sector', wealthRet.resultCount > 0 && validateRetrievalPrecision(state, wealthRet).ok);
+
+  const tprQ = 'What TPR requirements are relevant to Pension Providers?';
+  const tprRet = retrieveRiRecords(state, tprQ);
+  pass('GATE-held-out-tpr', tprRet.resultCount > 0 && tprRet.filters.intent === 'regulator-sector-evidence');
+
+  const mifidNeg = await askRi(state, 'What are MiFID III requirements in Germany?');
+  pass('GATE-mifid-germany', mifidNeg.insufficient && mifidNeg.providerCallCount === 0);
+  const cbiNeg = await askRi(state, 'What does the Central Bank of Ireland require?');
+  pass('GATE-cbi-ireland', cbiNeg.insufficient && cbiNeg.providerCallCount === 0);
+
+  const openCount = countOpenObligations(state);
+  pass('TEST-13-open-definition', openCount === (state.obligations || []).filter((o) => OPEN_OBLIGATION_STATUSES.has(o.status)).length);
+  const openRet = retrieveRiRecords(state, 'How many open obligations are there?');
+  pass('TEST-13-open-retrieval', openRet.deterministicFacts.openObligationCount === openCount && openRet.resultCount > 0);
+
+  const frRet = retrieveRiRecords(state, 'What is the capital requirement under EU CRD V in France?');
+  pass('TEST-13-entity-gate-france', frRet.insufficientReason && frRet.resultCount === 0);
+  const cryptoRet = retrieveRiRecords(state, 'cryptoassets-only-special-sector-xyz regulatory changes');
+  pass('TEST-13-entity-gate-crypto', cryptoRet.insufficientReason && cryptoRet.resultCount === 0);
 
   const auditor = createFreshState();
   auditor.currentDemoUserId = auditor.people.find((p) => p.applicationRoleIds?.includes('AR-AUDIT-VIEWER'))?.id;
