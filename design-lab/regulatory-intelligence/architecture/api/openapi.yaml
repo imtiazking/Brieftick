@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: FORGENIQ Regulatory Intelligence API
+  version: 1.0.0
+  description: Production API contract (not implemented in Design Lab)
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /session:
+    get:
+      summary: Current session and tenant context
+      responses:
+        '200':
+          description: Session
+  /publications:
+    get:
+      summary: List publications
+      responses:
+        '200':
+          description: OK
+  /publications/{id}:
+    get:
+      summary: Get publication
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /changes:
+    get:
+      summary: List regulatory changes
+      responses:
+        '200':
+          description: OK
+  /changes/{id}:
+    get:
+      summary: Get regulatory change
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /assessments/{id}:
+    get:
+      summary: Get impact assessment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /assessments/{id}/submit:
+    post:
+      summary: Submit assessment for review
+      responses:
+        '200':
+          description: OK
+  /assessments/{id}/approve:
+    post:
+      summary: Approve assessment
+      responses:
+        '200':
+          description: OK
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /actions/{id}:
+    patch:
+      summary: Update action
+      responses:
+        '200':
+          description: OK
+  /evidence:
+    post:
+      summary: Register evidence metadata
+      responses:
+        '201':
+          description: Created
+  /evidence/{id}/review:
+    post:
+      summary: Review evidence
+      responses:
+        '200':
+          description: OK
+  /changes/{id}/governance:
+    get:
+      summary: Governance view for change
+      responses:
+        '200':
+          description: OK
+  /approval-steps/{id}/decision:
+    post:
+      summary: Record approval decision
+      responses:
+        '200':
+          description: OK
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /ai-analyses/{id}:
+    get:
+      summary: Get AI analysis
+      responses:
+        '200':
+          description: OK
+  /ai-analyses/{id}/review:
+    post:
+      summary: Record human AI review
+      responses:
+        '200':
+          description: OK
+  /ai/executions:
+    post:
+      summary: Request AI execution
+      responses:
+        '202':
+          description: Accepted
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /ai/executions/{id}:
+    get:
+      summary: Get AI execution record
+      responses:
+        '200':
+          description: OK
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /ai/executions/{id}/retry:
+    post:
+      summary: Retry failed AI execution
+      responses:
+        '202':
+          description: Accepted
+  /ai/entities/{entityType}/{entityId}/reanalyse:
+    post:
+      summary: Force re-analysis for entity
+      responses:
+        '202':
+          description: Accepted
+  /ai/providers:
+    get:
+      summary: List AI providers (no secrets)
+      responses:
+        '200':
+          description: OK
+  /ai/evaluations:
+    get:
+      summary: List evaluation runs
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Start evaluation run
+      responses:
+        '202':
+          description: Accepted
+  /assurance-reviews/{id}:
+    get:
+      summary: Get assurance review
+      responses:
+        '200':
+          description: OK
+  /findings/{id}/validate:
+    post:
+      summary: Validate assurance finding
+      responses:
+        '200':
+          description: OK
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /ingestion/runs:
+    get:
+      summary: List ingestion runs
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Trigger ingestion run
+      responses:
+        '202':
+          description: Accepted
+  /health/live:
+    get:
+      summary: Liveness
+      responses:
+        '200':
+          description: OK
+  /health/ready:
+    get:
+      summary: Readiness
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    ApiError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              example: APPROVAL_NOT_AUTHORISED
+            message:
+              type: string
+            correlationId:
+              type: string
+  responses:
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    Conflict:
+      description: Stale version or conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'

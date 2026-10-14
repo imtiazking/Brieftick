@@ -1,0 +1,149 @@
+/** Auto-updated by verify-ri-live-basel.mjs */
+export const BASEL_VERIFICATION_EVIDENCE = {
+  "schemaVersion": 1,
+  "verificationType": "BASEL BIS LIVE VERIFICATION",
+  "status": "LIVE_VERIFIED",
+  "authority": "Basel Committee on Banking Supervision",
+  "organisation": "Bank for International Settlements",
+  "officialHost": "www.bis.org",
+  "frameworkRootUrl": "https://www.bis.org/committees/bcbs/basel-framework",
+  "userAgent": "FORGENIQ-Regulatory-Intelligence-Design-Lab/1.0",
+  "lastVerifiedAt": "2026-10-14T11:38:21.475Z",
+  "verifiedFrameworkIds": [
+    "FWK-BASEL"
+  ],
+  "verifiedRecordIds": [
+    "BAS-TGT-FW-ROOT",
+    "BAS-TGT-CAP",
+    "BAS-TGT-CRE",
+    "BAS-TGT-OPE",
+    "BAS-TGT-SRP",
+    "BAS-TGT-DIS",
+    "BAS-TGT-PUBL-INDEX",
+    "BAS-TGT-PUBL-001"
+  ],
+  "targetRecords": [
+    {
+      "baselRecordId": "BAS-TGT-FW-ROOT",
+      "path": "/committees/bcbs/basel-framework",
+      "title": "Basel Committee on Banking Supervision",
+      "sourceHash": "80acc2d0b735301b263774d23c557e77304f947eedfb0d1ca6c658da7b55832f",
+      "canonicalUrl": "https://www.bis.org/committees/bcbs/basel-framework",
+      "documentType": "INTERNATIONAL_STANDARD",
+      "frameworkModule": null,
+      "versionStatus": "CURRENT",
+      "effectiveDate": null
+    },
+    {
+      "baselRecordId": "BAS-TGT-CAP",
+      "path": "/committees/bcbs/basel-framework/standard/cap",
+      "title": "Basel Committee on Banking Supervision",
+      "sourceHash": "1df41a6b9108c6ff0deac39ab2cb4148c79abc33e2b6e0bb7173886b3bbe4b83",
+      "canonicalUrl": "https://www.bis.org/committees/bcbs/basel-framework/standard/cap",
+      "documentType": "INTERNATIONAL_STANDARD",
+      "frameworkModule": "CAP",
+      "versionStatus": "CURRENT",
+      "effectiveDate": null
+    },
+    {
+      "baselRecordId": "BAS-TGT-CRE",
+      "path": "/committees/bcbs/basel-framework/standard/cre",
+      "title": "Basel Committee on Banking Supervision",
+      "sourceHash": "b723808900e0d6cadc9fc71aacfe4e739cc775f22ce5a51126ad6fc4ffaa0e11",
+      "canonicalUrl": "https://www.bis.org/committees/bcbs/basel-framework/standard/cre",
+      "documentType": "INTERNATIONAL_STANDARD",
+      "frameworkModule": "CRE",
+      "versionStatus": "CURRENT",
+      "effectiveDate": null
+    },
+    {
+      "baselRecordId": "BAS-TGT-OPE",
+      "path": "/committees/bcbs/basel-framework/standard/ope",
+      "title": "Basel Committee on Banking Supervision",
+      "sourceHash": "797d5cd2a4e1ed5b02d8ff6a0831f5ea09c9d33b2724d3b64ae0f890631496c8",
+      "canonicalUrl": "https://www.bis.org/committees/bcbs/basel-framework/standard/ope",
+      "documentType": "INTERNATIONAL_STANDARD",
+      "frameworkModule": "OPE",
+      "versionStatus": "CURRENT",
+      "effectiveDate": null
+    },
+    {
+      "baselRecordId": "BAS-TGT-SRP",
+      "path": "/committees/bcbs/basel-framework/standard/srp",
+      "title": "Basel Committee on Banking Supervision",
+      "sourceHash": "e2f36a65f1c02ec45844e6ab40f76fbba8874395c9fdb7e1d173334b034dbd1b",
+      "canonicalUrl": "https://www.bis.org/committees/bcbs/basel-framework/standard/srp",
+      "documentType": "INTERNATIONAL_STANDARD",
+      "frameworkModule": "SRP",
+      "versionStatus": "CURRENT",
+      "effectiveDate": null
+    },
+    {
+      "baselRecordId": "BAS-TGT-DIS",
+      "path": "/committees/bcbs/basel-framework/standard/dis",
+      "title": "Basel Committee on Banking Supervision",
+      "sourceHash": "6993c365388e1e7e70e3623d31a103d4dce6bf555e984ec91f1181751eb25104",
+      "canonicalUrl": "https://www.bis.org/committees/bcbs/basel-framework/standard/dis",
+      "documentType": "INTERNATIONAL_STANDARD",
+      "frameworkModule": "DIS",
+      "versionStatus": "CURRENT",
+      "effectiveDate": null
+    },
+    {
+      "baselRecordId": "BAS-TGT-PUBL-INDEX",
+      "path": "/committees/bcbs/publications",
+      "title": "Basel Committee on Banking Supervision",
+      "sourceHash": "b44342e7b5aeb1e12e20c25eb92b8f2106ab0c5a581e2fad1f0bcb4308519f01",
+      "canonicalUrl": "https://www.bis.org/committees/bcbs/publications",
+      "documentType": "BCBS_PUBLICATION",
+      "frameworkModule": null,
+      "versionStatus": "CURRENT",
+      "effectiveDate": null
+    },
+    {
+      "baselRecordId": "BAS-TGT-PUBL-001",
+      "path": "/publications/201712-standards-basel-iii-finalising-post-crisis-reforms",
+      "title": "Basel III: Finalising post-crisis reforms",
+      "sourceHash": "cda289b1eb496dab2b307dc29c1e219d59b1691b51a39ecca6180eec044f3221",
+      "canonicalUrl": "https://www.bis.org/publications/201712-standards-basel-iii-finalising-post-crisis-reforms",
+      "documentType": "FINAL_STANDARD",
+      "frameworkModule": null,
+      "versionStatus": "CURRENT",
+      "effectiveDate": null
+    }
+  ],
+  "sourceFamiliesVerified": [
+    "INTERNATIONAL_STANDARD",
+    "BCBS_PUBLICATION",
+    "FINAL_STANDARD"
+  ],
+  "securityChecksPassed": true,
+  "frameworkRootVerified": true,
+  "publicationLibraryVerified": true,
+  "checks": [
+    {
+      "name": "allowlist",
+      "ok": true
+    },
+    {
+      "name": "https",
+      "ok": true
+    },
+    {
+      "name": "block-localhost",
+      "ok": true
+    },
+    {
+      "name": "path-gate",
+      "ok": true
+    },
+    {
+      "name": "block-arbitrary",
+      "ok": true
+    },
+    {
+      "name": "targets",
+      "ok": true
+    }
+  ]
+};

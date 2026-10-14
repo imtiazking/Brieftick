@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "verificationType": "TPR LIVE VERIFICATION",
+  "status": "LIVE_VERIFIED",
+  "authority": "The Pensions Regulator",
+  "officialHost": "www.thepensionsregulator.gov.uk",
+  "sitemapUrl": "https://www.thepensionsregulator.gov.uk/sitemap.xml",
+  "documentLibraryUrl": "https://www.thepensionsregulator.gov.uk/document-library",
+  "userAgent": "FORGENIQ-Regulatory-Intelligence-Design-Lab/1.0",
+  "lastVerifiedAt": "2026-10-14T11:38:03.469Z",
+  "verifiedFrameworkIds": [
+    "FWK-TPR-REQ",
+    "FWK-TPR-GCOP"
+  ],
+  "verifiedRecordIds": [
+    "TPR-TGT-CODE-INDEX",
+    "TPR-TGT-CODE-MODULE",
+    "TPR-TGT-GUIDANCE",
+    "TPR-TGT-CONSULTATION",
+    "TPR-TGT-POLICY"
+  ],
+  "targetRecords": [
+    {
+      "tprRecordId": "TPR-TGT-CODE-INDEX",
+      "path": "/document-library/code-of-practice",
+      "title": "Code of practice",
+      "sourceHash": "fcc5c9a2967953b1e1521539c2b5f37bf1e119fa0ddff3871e7cde07cabf46c3",
+      "canonicalUrl": "https://www.thepensionsregulator.gov.uk/document-library/code-of-practice",
+      "documentType": "TPR_CODE"
+    },
+    {
+      "tprRecordId": "TPR-TGT-CODE-MODULE",
+      "path": "/document-library/code-of-practice/the-governing-body/board-structure-and-activities/role-of-the-governing-body",
+      "title": "Role of the governing body",
+      "sourceHash": "31090db14b2d5f77ee829cba569be8199e607d789121a3a60978b80c6c8bc806",
+      "canonicalUrl": "https://www.thepensionsregulator.gov.uk/document-library/code-of-practice/the-governing-body/board-structure-and-activities/role-of-the-governing-body",
+      "documentType": "TPR_CODE"
+    },
+    {
+      "tprRecordId": "TPR-TGT-GUIDANCE",
+      "path": "/document-library/scheme-management-detailed-guidance/administration-detailed-guidance/administration-guide-for-pension-schemes",
+      "title": "Administration of a pension scheme",
+      "sourceHash": "fab87d8d57fa50d95900ff06267ffa1b058c47c6e7c57a66632c46d14967c233",
+      "canonicalUrl": "https://www.thepensionsregulator.gov.uk/document-library/scheme-management-detailed-guidance/administration-detailed-guidance/administration-guide-for-pension-schemes",
+      "documentType": "TPR_GUIDANCE"
+    },
+    {
+      "tprRecordId": "TPR-TGT-CONSULTATION",
+      "path": "/document-library/consultations/statement-of-strategy-consultation",
+      "title": "Statement of strategy consultation",
+      "sourceHash": "19d67f56347f48de73334d2436f0469f177c05c5135060371caad97634f99fcc",
+      "canonicalUrl": "https://www.thepensionsregulator.gov.uk/document-library/consultations/statement-of-strategy-consultation",
+      "documentType": "TPR_CONSULTATION"
+    },
+    {
+      "tprRecordId": "TPR-TGT-POLICY",
+      "path": "/document-library/regulatory-and-enforcement-policies/automatic-enrolment-compliance-and-enforcement",
+      "title": "Automatic enrolment compliance and enforcement",
+      "sourceHash": "aca7f6e4ad4b893558bd6135b399cbf78180db524ebc15aec9697dedde63613c",
+      "canonicalUrl": "https://www.thepensionsregulator.gov.uk/document-library/regulatory-and-enforcement-policies/automatic-enrolment-compliance-and-enforcement",
+      "documentType": "TPR_POLICY"
+    }
+  ],
+  "sourceFamiliesVerified": [
+    "TPR_CODE",
+    "TPR_GUIDANCE",
+    "TPR_CONSULTATION",
+    "TPR_POLICY"
+  ],
+  "securityChecksPassed": true,
+  "sitemapVerified": true,
+  "documentLibraryVerified": true,
+  "checks": [
+    {
+      "name": "allowlist",
+      "ok": true
+    },
+    {
+      "name": "https",
+      "ok": true
+    },
+    {
+      "name": "block-localhost",
+      "ok": true
+    },
+    {
+      "name": "robots",
+      "ok": true
+    },
+    {
+      "name": "sitemap",
+      "ok": true
+    },
+    {
+      "name": "document-library",
+      "ok": true
+    },
+    {
+      "name": "targets",
+      "ok": true
+    }
+  ]
+}

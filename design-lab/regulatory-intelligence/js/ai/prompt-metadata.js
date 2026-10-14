@@ -1,0 +1,95 @@
+import {
+  AI_TASK_TYPE,
+  AI_OUTPUT_SCHEMA_VERSION,
+  AI_OUTPUT_SCHEMA_V16_CHANGE,
+  AI_OUTPUT_SCHEMA_V16_IA,
+  AI_OUTPUT_SCHEMA_V16_OBLIGATION,
+  AI_OUTPUT_SCHEMA_V16_POLICY,
+  AI_OUTPUT_SCHEMA_V16_RISK_CONTROL,
+} from './enums.js';
+
+/** Client-safe prompt catalog metadata — no prompt body text. */
+export const RI_SUMMARY_PROMPT_V1 = {
+  promptId: 'RI_SUMMARY_V1',
+  taskType: AI_TASK_TYPE.AI_SUMMARY,
+  version: '1.0.0',
+  contentHash: '8f2c4e1a9b0d3f7e6a5c4b3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2',
+  outputSchemaVersion: AI_OUTPUT_SCHEMA_VERSION,
+  status: 'ACTIVE',
+};
+
+export const RI_CHANGE_ANALYSIS_V1 = {
+  promptId: 'RI_CHANGE_ANALYSIS_V1',
+  taskType: AI_TASK_TYPE.AI_CHANGE_ANALYSIS,
+  version: '1.0.0',
+  contentHash: 'a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456',
+  outputSchemaVersion: AI_OUTPUT_SCHEMA_V16_CHANGE,
+  status: 'ACTIVE',
+};
+
+export const RI_IMPACT_ASSESSMENT_V1 = {
+  promptId: 'RI_IMPACT_ASSESSMENT_V1',
+  taskType: AI_TASK_TYPE.AI_IMPACT_ASSESSMENT,
+  version: '1.0.0',
+  contentHash: 'b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef12345678',
+  outputSchemaVersion: AI_OUTPUT_SCHEMA_V16_IA,
+  status: 'ACTIVE',
+};
+
+export const RI_OBLIGATION_SUGGESTION_V1 = {
+  promptId: 'RI_OBLIGATION_SUGGESTION_V1',
+  taskType: AI_TASK_TYPE.AI_OBLIGATION_SUGGESTION,
+  version: '1.0.0',
+  contentHash: 'c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890',
+  outputSchemaVersion: AI_OUTPUT_SCHEMA_V16_OBLIGATION,
+  status: 'ACTIVE',
+};
+
+export const RI_POLICY_IMPACT_V1 = {
+  promptId: 'RI_POLICY_IMPACT_V1',
+  taskType: AI_TASK_TYPE.AI_POLICY_IMPACT,
+  version: '1.0.0',
+  contentHash: 'd4e5f6789012345678901234567890abcdef1234567890abcdef1234567890ab',
+  outputSchemaVersion: AI_OUTPUT_SCHEMA_V16_POLICY,
+  status: 'ACTIVE',
+};
+
+export const RI_RISK_CONTROL_IMPACT_V1 = {
+  promptId: 'RI_RISK_CONTROL_IMPACT_V1',
+  taskType: AI_TASK_TYPE.AI_RISK_CONTROL_IMPACT,
+  version: '1.0.0',
+  contentHash: 'e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcd',
+  outputSchemaVersion: AI_OUTPUT_SCHEMA_V16_RISK_CONTROL,
+  status: 'ACTIVE',
+};
+
+const TASK_PROMPTS = {
+  [AI_TASK_TYPE.AI_SUMMARY]: RI_SUMMARY_PROMPT_V1,
+  [AI_TASK_TYPE.AI_CHANGE_ANALYSIS]: RI_CHANGE_ANALYSIS_V1,
+  [AI_TASK_TYPE.AI_SECTOR_MAPPING]: RI_CHANGE_ANALYSIS_V1,
+  [AI_TASK_TYPE.AI_FRAMEWORK_MAPPING]: RI_CHANGE_ANALYSIS_V1,
+  [AI_TASK_TYPE.AI_THEME_MAPPING]: RI_CHANGE_ANALYSIS_V1,
+  [AI_TASK_TYPE.AI_IMPACT_ASSESSMENT]: RI_IMPACT_ASSESSMENT_V1,
+  [AI_TASK_TYPE.AI_OBLIGATION_SUGGESTION]: RI_OBLIGATION_SUGGESTION_V1,
+  [AI_TASK_TYPE.AI_POLICY_IMPACT]: RI_POLICY_IMPACT_V1,
+  [AI_TASK_TYPE.AI_RISK_CONTROL_IMPACT]: RI_RISK_CONTROL_IMPACT_V1,
+};
+
+export function getPromptMetadataForTask(taskType) {
+  return TASK_PROMPTS[taskType] || null;
+}
+
+export function getPromptMetadataByClientRequest({ promptId, taskType }) {
+  const meta = getPromptMetadataForTask(taskType);
+  if (!meta || meta.promptId !== promptId) return null;
+  return meta;
+}
+
+export const ALL_PROMPT_METADATA_V16 = [
+  RI_SUMMARY_PROMPT_V1,
+  RI_CHANGE_ANALYSIS_V1,
+  RI_IMPACT_ASSESSMENT_V1,
+  RI_OBLIGATION_SUGGESTION_V1,
+  RI_POLICY_IMPACT_V1,
+  RI_RISK_CONTROL_IMPACT_V1,
+];
