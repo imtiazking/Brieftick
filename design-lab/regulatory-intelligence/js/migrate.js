@@ -22,7 +22,7 @@ import {
 import { validateMinimalState } from './platform/startup-validation.js';
 
 export { STORAGE_KEY_V2, STORAGE_KEY_V1 };
-export const SCHEMA_VERSION = 16;
+export const SCHEMA_VERSION = 17;
 
 export function createFreshState() {
   const state = buildSeedState();
@@ -248,11 +248,13 @@ function mergeWithSeed(saved) {
     applyBaselSeed(fresh);
   }
 
-  if ((saved.schemaVersion || 0) < 16 || !fresh.aiPromptCatalog?.length) {
+  if ((saved.schemaVersion || 0) < 17 || !fresh.aiPromptCatalog?.length) {
     applyAiDomainSeed(fresh, saved);
   } else {
     applyAiDomainSeed(fresh, saved);
   }
+
+  if (saved.riAskHistory) fresh.riAskHistory = saved.riAskHistory;
 
   fresh.schemaVersion = SCHEMA_VERSION;
   return fresh;

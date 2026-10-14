@@ -1,6 +1,7 @@
 import { AiProviderAdapter } from './provider-adapter.js';
 import { AI_PROVIDER_MODE, AI009_SYNTHETIC_CANARY } from './enums.js';
 import { fixtureStructuredForScenario, wrapFixtureResult } from './fixture-scenarios-5b.js';
+import { fixtureStructuredForScenario5c, wrapFixtureResult5c } from './fixture-scenarios-5c.js';
 
 export const FIXTURE_AI_PROVIDER_ID = 'AIPROV-FIXTURE-5A';
 
@@ -38,6 +39,9 @@ export class FixtureAiProvider extends AiProviderAdapter {
 
     const fiveB = fixtureStructuredForScenario(scenario, ctx, this.id);
     if (fiveB) return wrapFixtureResult(this.id, fiveB);
+
+    const fiveC = fixtureStructuredForScenario5c(scenario, ctx, this.id);
+    if (fiveC) return wrapFixtureResult5c(this.id, fiveC);
 
     if (scenario === 'ai-009-injection-compromise') {
       return {

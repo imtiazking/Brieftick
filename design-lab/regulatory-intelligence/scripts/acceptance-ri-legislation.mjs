@@ -36,7 +36,7 @@ const FIXTURE_LIVE_EVIDENCE = {
 };
 
 async function main() {
-  pass('schema-v16', SCHEMA_VERSION === 16);
+  pass('schema-v17', SCHEMA_VERSION === 17);
   const fresh = createFreshState();
   pass('records-seeded', (fresh.legislationRecords || []).length >= 7);
   pass('staging-seeded', (fresh.legislationStaging || []).length >= 1);
@@ -76,7 +76,7 @@ async function main() {
   pass('LEG-006-unavailable', failed.regulatoryFrameworks.find((f) => f.id === 'FWK-PSR')?.coverageStatus !== 'LIVE_SOURCE');
 
   const migrated = migrateSavedSnapshot({ schemaVersion: 11, scenarioId: 'consumer-duty', sectors: fresh.sectors });
-  pass('migration-v11-v16', migrated.schemaVersion === 16 && migrated.legislationRecords?.length >= 7);
+  pass('migration-v11-v17', migrated.schemaVersion === 17 && migrated.legislationRecords?.length >= 7);
   pass('migration-v12-v13-tpr', migrateSavedSnapshot({ schemaVersion: 12, scenarioId: 'consumer-duty' }).tprPublicationRecords?.length >= 5);
   pass('migration-v13-v14-basel', migrateSavedSnapshot({ schemaVersion: 13, scenarioId: 'consumer-duty' }).baselPublicationRecords?.length >= 8);
 

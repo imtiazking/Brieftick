@@ -30,7 +30,7 @@ function pass(label, ok, reason = '') {
 
 function main() {
   const fresh = createFreshState();
-  pass('Startup schema v16', fresh.schemaVersion === SCHEMA_VERSION);
+  pass('Startup schema v17', fresh.schemaVersion === SCHEMA_VERSION);
   pass('Minimal state validation', validateMinimalState(fresh).ok);
   pass('Platform config valid', validatePlatformConfig(fresh.platformConfig).ok);
 
@@ -55,7 +55,7 @@ function main() {
   const snap = { schemaVersion: 5, scenarioId: 'consumer-duty', publications: fresh.publications.slice(0, 2), changes: [] };
   const m1 = migrateSavedSnapshot(snap);
   const m2 = migrateSavedSnapshot(m1);
-  pass('Migration to v16', m1.schemaVersion === SCHEMA_VERSION);
+  pass('Migration to v17', m1.schemaVersion === SCHEMA_VERSION);
   pass('Migration idempotent count', m1.publications.length === m2.publications.length);
 
   const corrupt = migrateSavedSnapshot({ schemaVersion: 10, publications: null });

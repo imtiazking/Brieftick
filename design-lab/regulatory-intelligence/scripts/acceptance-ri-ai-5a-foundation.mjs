@@ -37,10 +37,10 @@ export async function runAi5aFoundationAcceptance() {
     R[id] = ok ? 'PASS' : `FAIL: ${reason}`;
   };
 
-  pass('schema-v16', SCHEMA_VERSION === 16);
+  pass('schema-v17', SCHEMA_VERSION === 17);
   const fresh = createFreshState();
-  pass('fresh-schema-v16', fresh.schemaVersion === 16);
-  pass('migration-v15-v16', migrateSavedSnapshot({ schemaVersion: 15, scenarioId: 'consumer-duty' }).schemaVersion === 16);
+  pass('fresh-schema-v17', fresh.schemaVersion === 17);
+  pass('migration-v16-v17', migrateSavedSnapshot({ schemaVersion: 16, scenarioId: 'consumer-duty' }).schemaVersion === 17);
   pass('ai-prompt-catalog', fresh.aiPromptCatalog?.some((p) => p.promptId === 'RI_SUMMARY_V1'));
   pass('ri-ai-results-array', Array.isArray(fresh.riAiAnalysisResults));
 

@@ -33,7 +33,7 @@ const FIXTURE_LIVE = {
 };
 
 async function main() {
-  pass('schema-v16', SCHEMA_VERSION === 16);
+  pass('schema-v17', SCHEMA_VERSION === 17);
   const fresh = createFreshState();
   pass('basel-records', (fresh.baselPublicationRecords || []).length >= 8);
   pass('implementation-mappings', (fresh.internationalImplementationMappings || []).length >= 1);
@@ -69,7 +69,7 @@ async function main() {
   applyBaselCoverage(down, { status: 'SOURCE_UNAVAILABLE', verifiedFrameworkIds: [], targetRecords: [] });
   pass('BAS-006-unavailable', down.regulatoryFrameworks.find((f) => f.id === 'FWK-BASEL')?.coverageStatus !== 'LIVE_SOURCE');
 
-  pass('migration-v13-v16', migrateSavedSnapshot({ schemaVersion: 13, scenarioId: 'consumer-duty' }).schemaVersion === 16);
+  pass('migration-v13-v17', migrateSavedSnapshot({ schemaVersion: 13, scenarioId: 'consumer-duty' }).schemaVersion === 17);
 
   const connector = createBaselConnector();
   pass('adapter-exists', Boolean(connector.verifyTargets));

@@ -10,6 +10,8 @@
 
 ### Schema
 
+- **v17** — Enhancement **5C Intelligence Assistant** (FINAL RI AI Design Lab phase): Ask RI, deterministic retrieval, insufficient-evidence gate, regulatory text comparison, Basel→PRA intelligence, executive/board summaries, audit AI-005–007 / AI-019–024, no deployment.
+- **RI AI DESIGN LAB: COMPLETE** (5A + 5B + 5C).
 - **v16** — Enhancement **5B Compliance Workflow AI**: change analysis, sector/framework/theme mapping suggestions, IA drafting assist, obligation suggestions, policy/risk/control impact hints, human edit traceability (`riAiWorkflowTraces`), audit events AI-002–004 / AI-014–018, no auto-approval or cascade.
 - **v15** — AI 5A domain foundation (`riAiAnalysisResults`, three-dimensional analysis state, `AiContextBuilder`, `FixtureAiProvider`, validator, citations, contextHash, audit, freshness, retention).
 - **Enhancement 5A COMPLETE** — AI Summary UI, fixture/live labelling, human review, OpenAI Responses provider + localhost-only bridge, source-grounded citations, AI-011–013 acceptance, no deployment.

@@ -73,7 +73,7 @@ const TRIAGE_BY_PUB = {
 };
 
 export function applyOperationalSeed(state) {
-  state.schemaVersion = 16;
+  state.schemaVersion = 17;
   state.mockIngestionRunCounter = 0;
   state.teams = TEAMS;
   state.people = PEOPLE;

@@ -288,7 +288,7 @@ async function main() {
     const raw = localStorage.getItem('forgeniq-ri-lab-v2');
     if (!raw) return false;
     const s = JSON.parse(raw);
-    return s.schemaVersion === 16;
+    return s.schemaVersion === 17;
   });
   pass(73, persisted);
 
@@ -299,7 +299,7 @@ async function main() {
   await page.waitForTimeout(500);
   pass(74, true);
   const seed = await page.evaluate(() => JSON.parse(localStorage.getItem('forgeniq-ri-lab-v2') || '{}'));
-  pass(75, seed.schemaVersion === 16 && (seed.people?.length || 0) >= 5 && seed.orgProfile?.version === 'ORG-DEMO-04');
+  pass(75, seed.schemaVersion === 17 && (seed.people?.length || 0) >= 5 && seed.orgProfile?.version === 'ORG-DEMO-04');
 
   await goto(page, '#/publication/PUB-001');
   for (const tab of ['Overview', 'Source', 'Changes', 'AI Analysis', 'Applicability', 'Related', 'Audit']) {

@@ -33,7 +33,7 @@ const FIXTURE_LIVE = {
 };
 
 async function main() {
-  pass('schema-v16', SCHEMA_VERSION === 16);
+  pass('schema-v17', SCHEMA_VERSION === 17);
   const fresh = createFreshState();
   pass('tpr-records', (fresh.tprPublicationRecords || []).length >= 5);
   pass('allowlist', assertUrlAllowed('https://www.thepensionsregulator.gov.uk/document-library', TPR_ALLOWED_HOSTS).ok);
@@ -65,7 +65,7 @@ async function main() {
   applyTprCoverage(down, { status: 'SOURCE_UNAVAILABLE', verifiedFrameworkIds: [], targetRecords: [] });
   pass('TPR-006-unavailable', down.regulatoryFrameworks.find((f) => f.id === 'FWK-TPR-REQ')?.coverageStatus === 'SOURCE_PLANNED');
 
-  pass('migration-v12-v16', migrateSavedSnapshot({ schemaVersion: 12, scenarioId: 'consumer-duty' }).schemaVersion === 16);
+  pass('migration-v12-v17', migrateSavedSnapshot({ schemaVersion: 12, scenarioId: 'consumer-duty' }).schemaVersion === 17);
 
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();

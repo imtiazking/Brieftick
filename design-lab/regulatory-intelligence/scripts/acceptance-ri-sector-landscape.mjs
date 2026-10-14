@@ -20,7 +20,7 @@ async function goto(page, hash) {
 
 async function main() {
   const fresh = createFreshState();
-  pass('schema-v16', fresh.schemaVersion === SCHEMA_VERSION && SCHEMA_VERSION === 16);
+  pass('schema-v17', fresh.schemaVersion === SCHEMA_VERSION && SCHEMA_VERSION === 17);
   pass('sectors-12', (fresh.sectors || []).length === 12);
   pass('sector-nav-12', LANDSCAPE_SECTOR_NAV.length === 12);
   pass('frameworks-mapped', (fresh.regulatoryFrameworks || []).length >= 30);

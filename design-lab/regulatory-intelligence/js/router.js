@@ -60,6 +60,7 @@ const KNOWN_TOP_LEVEL = new Set([
   'legislation',
   'tpr',
   'basel',
+  'ask-ri',
 ]);
 
 export function isKnownRoute(route) {

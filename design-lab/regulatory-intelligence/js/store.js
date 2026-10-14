@@ -55,6 +55,12 @@ import {
   createDraftObligationFromAnalysis,
   rejectWorkflowSuggestion,
 } from './ai/workflow-ai-service.js';
+import {
+  askRi,
+  compareRegulatoryText,
+  generateExecutiveSummary,
+  acceptExecutiveSummaryReview,
+} from './ai/intelligence-ai-service.js';
 import { AI_TASK_TYPE } from './ai/enums.js';
 import {
   buildWorkQueue,
@@ -821,6 +827,31 @@ export function acceptWorkflowDraft(analysisId, taskType) {
 
 export function rejectWorkflowDraft(analysisId, notes = '') {
   const res = rejectWorkflowSuggestion(state, analysisId, notes);
+  if (res.ok) notify();
+  return res;
+}
+
+export async function runAskRiQuestion(question) {
+  const res = await askRi(state, question);
+  state._lastAskRi = res;
+  notify();
+  return res;
+}
+
+export async function runAskRiComparison() {
+  const res = await compareRegulatoryText(state);
+  if (res.ok) notify();
+  return res;
+}
+
+export async function runAskRiBoardSummary() {
+  const res = await generateExecutiveSummary(state, { period: '2026-Q3', board: true });
+  if (res.ok) notify();
+  return res;
+}
+
+export function acceptAskRiBoardSummary(analysisId) {
+  const res = acceptExecutiveSummaryReview(state, analysisId);
   if (res.ok) notify();
   return res;
 }

@@ -61,6 +61,7 @@ import { viewAiOperations, viewAiExecutionDetail } from './ai-operations-views.j
 import { viewAdminHealth, viewAdminReadiness } from './admin-health-views.js';
 import { viewAdminAi } from './admin-ai-views.js';
 import { renderIaObligationPanel } from './ai-workflow-ui.js';
+import { renderAskRiPage } from './ask-ri-ui.js';
 import {
   viewAssuranceDashboard,
   viewAssuranceReview,
@@ -137,6 +138,8 @@ export function renderView(route) {
   switch (path || 'dashboard') {
     case 'change':
       return viewChange(id);
+    case 'ask-ri':
+      return viewAskRi();
     case 'dashboard':
       return viewDashboard();
     case 'intake':
@@ -301,6 +304,11 @@ export function renderView(route) {
     default:
       return viewDashboard();
   }
+}
+
+function viewAskRi() {
+  const s = getState();
+  return renderAskRiPage(s, { lastAsk: s._lastAskRi });
 }
 
 function viewDashboard() {

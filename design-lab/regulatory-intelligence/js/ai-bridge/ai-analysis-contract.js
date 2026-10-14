@@ -13,6 +13,7 @@ export {
   AI_TASK_TYPE,
 
   ACTIVE_TASK_TYPES_V16,
+  ACTIVE_TASK_TYPES_V17,
 
   statusForAnalysisErrorCode,
 

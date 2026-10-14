@@ -130,7 +130,7 @@ async function main() {
   const fresh = createFreshState();
   pass('Reset baseline providers', fresh.aiProviders?.length >= 2);
   pass('Reset fixture mode', fresh.platformConfig.aiExecutionMode === 'fixture');
-  pass('Schema v16', fresh.schemaVersion === 16);
+  pass('Schema v17', fresh.schemaVersion === 17);
   pass('Demos CHG-001 analysis', fresh.aiAnalyses?.some((a) => a.id === 'AIA-CHG-001-V2'));
 
   let fail = 0;

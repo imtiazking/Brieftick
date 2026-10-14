@@ -22,6 +22,21 @@ Implementation: `%LOCALAPPDATA%\forgeniq-ri\ri-ai-bridge` (override with `RI_AI_
 
 Client-safe shared modules: `js/ai/` (enums, context builder, validator, fixture provider) and `js/ai-bridge/ai-analysis-contract.js` (re-export shim).
 
+## Schema v17 — Intelligence Assistant (Enhancement 5C)
+
+- **RI schema:** `17` — Ask RI, deterministic `ri-retrieval.js`, insufficient-evidence short circuit (no provider call), text comparison (`text-diff.js` + AI interpretation), implementation mapping, management/board summaries (`intelligence-ai-service.js`), `riAskHistory`.
+- **Task types:** `AI_RI_QA`, `AI_TEXT_COMPARISON`, `AI_IMPLEMENTATION_MAPPING`, `AI_EXECUTIVE_SUMMARY`.
+- **Prompt metadata (client-safe):** `RI_ASK_V1`, `RI_TEXT_COMPARISON_V1`, `RI_IMPLEMENTATION_MAPPING_V1`, `RI_EXECUTIVE_SUMMARY_V1`.
+- **UI:** `#/ask-ri` — evidence-used panel, fixture/live badges, board summary human review.
+- **Acceptance:** `acceptance-ri-ai-5c.mjs`, `acceptance-ri-ai-5c-browser.mjs` (AI-005–007, AI-006B, AI-019–024).
+
+```bash
+node design-lab/regulatory-intelligence/scripts/acceptance-ri-ai-5c.mjs
+node design-lab/regulatory-intelligence/scripts/acceptance-ri-ai-5c-browser.mjs
+```
+
+**Bridge fingerprint (5C):** allowlist `ACTIVE_TASK_TYPES_V17` in `%LOCALAPPDATA%\forgeniq-ri\ri-ai-bridge` (`analyze-handler.js`).
+
 ## Schema v16 — Compliance Workflow AI (Enhancement 5B)
 
 - **RI schema:** `16` — extends v15 with workflow AI task types, `riAiWorkflowTraces`, and prompt metadata `RI_CHANGE_ANALYSIS_V1`, `RI_IMPACT_ASSESSMENT_V1`, `RI_OBLIGATION_SUGGESTION_V1`, `RI_POLICY_IMPACT_V1`, `RI_RISK_CONTROL_IMPACT_V1`.
@@ -82,4 +97,4 @@ node design-lab/regulatory-intelligence/scripts/verify-ri-live-ai.mjs
 - **Browser**: `LocalAiBridgeClient`, publication **AI Summary** panel (fixture + optional live), citations, review accept/reject, history, freshness; **Admin → AI** at `#/admin/ai`.
 - **Tests**: AI-001–010 (foundation), **AI-011** mock transport, **AI-012** bridge trust boundary, **AI-013** personas. Acceptance mock uses `RI_AI_BRIDGE_MOCK_OPENAI=1` (acceptance only, not production).
 - **Live verification**: `verify-ri-live-ai.mjs` reports `NOT CONFIGURED` when `OPENAI_API_KEY` or `RI_AI_MODEL` is absent.
-- **5C handoff**: Ask RI, executive summaries, semantic search, and production deployment remain out of scope.
+- **Production handoff**: OpenAI live, vector search, and production deployment remain out of scope for Design Lab.

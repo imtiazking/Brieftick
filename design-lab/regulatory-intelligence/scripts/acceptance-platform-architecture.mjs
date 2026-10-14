@@ -92,7 +92,7 @@ async function main() {
 
   pass(37, st.platformConfig.environment === 'design-lab');
   pass(38, st.platformConfig.adapterMode === 'local');
-  pass(39, st.schemaVersion === 16);
+  pass(39, st.schemaVersion === 17);
   pass(40, true);
 
   pass(41, existsSync(join(arch, 'target-architecture.md')));
@@ -153,7 +153,7 @@ async function main() {
   const platBody = await page.locator('body').innerText();
   pass(37, /design-lab/i.test(platBody));
   pass(38, /Local/i.test(platBody));
-  pass(39, /v16|Schema.*16/i.test(platBody) || st.schemaVersion === 16);
+  pass(39, /v17|Schema.*17/i.test(platBody) || st.schemaVersion === 17);
   pass(40, !/password|secret|apikey/i.test(platBody));
 
   await reset(page);
@@ -162,7 +162,7 @@ async function main() {
   pass(77, true);
   pass(78, st2.tenantContext?.tenantId === 'TEN-DEMO-001');
   pass(79, st2.platformConfig?.adapterMode === 'local');
-  pass(80, st2.schemaVersion === 16);
+  pass(80, st2.schemaVersion === 17);
   await browser.close();
   if (errs.length) console.log('Console errors:', errs.join('\n'));
 

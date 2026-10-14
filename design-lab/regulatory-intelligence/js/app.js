@@ -48,6 +48,10 @@ import {
   runObligationAi,
   acceptWorkflowDraft,
   rejectWorkflowDraft,
+  runAskRiQuestion,
+  runAskRiComparison,
+  runAskRiBoardSummary,
+  acceptAskRiBoardSummary,
 } from './store.js';
 import { LOCAL_AI_BRIDGE_ORIGIN } from './ai/ri-bridge-config.js';
 import { LANDSCAPE_SECTOR_NAV } from './landscape-seed.js';
@@ -67,6 +71,7 @@ const NAV_ACTIVE = {
   governance: [
     'governance',
     'ai-governance',
+    'ask-ri',
     'assurance',
     'risks',
     'risk',
@@ -121,6 +126,7 @@ const TOP_NAV = [
     label: 'Governance',
     items: [
       { path: 'governance', label: 'Governance' },
+      { path: 'ask-ri', label: 'Ask RI' },
       { path: 'ai-governance', label: 'AI Governance' },
       { path: 'assurance', label: 'Assurance' },
       { path: 'risks', label: 'Risks' },
@@ -991,6 +997,39 @@ function bindViewHandlers() {
       showToast(res.ok ? 'Suggestion rejected' : res.code || 'Denied');
       renderShell();
     });
+  });
+
+  document.querySelector('[data-ask-ri-submit]')?.addEventListener('click', async () => {
+    const q = document.getElementById('ask-ri-input')?.value?.trim();
+    if (!q) return;
+    const res = await runAskRiQuestion(q);
+    showToast(res.insufficient ? 'INSUFFICIENT RI EVIDENCE' : res.ok ? 'Ask RI complete' : res.code || 'Failed');
+    renderShell();
+  });
+  document.querySelectorAll('[data-ask-ri-suggest]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const q = btn.textContent?.trim();
+      const input = document.getElementById('ask-ri-input');
+      if (input) input.value = q;
+      const res = await runAskRiQuestion(q);
+      showToast(res.insufficient ? 'INSUFFICIENT RI EVIDENCE' : res.ok ? 'Ask RI complete' : res.code || 'Failed');
+      renderShell();
+    });
+  });
+  document.querySelector('[data-ask-ri-compare]')?.addEventListener('click', async () => {
+    const res = await runAskRiComparison();
+    showToast(res.ok ? 'Comparison complete' : res.code || 'Failed');
+    renderShell();
+  });
+  document.querySelector('[data-ask-ri-board]')?.addEventListener('click', async () => {
+    const res = await runAskRiBoardSummary();
+    showToast(res.ok ? 'Board summary draft generated' : res.code || 'Failed');
+    renderShell();
+  });
+  document.querySelector('[data-ask-ri-board-accept]')?.addEventListener('click', () => {
+    const res = acceptAskRiBoardSummary(document.querySelector('[data-ask-ri-board-accept]')?.dataset.analysisId);
+    showToast(res.ok ? 'Summary marked reviewed' : res.code || 'Denied');
+    renderShell();
   });
 
   const adminAi = document.querySelector('[data-admin-ai-panel]');

@@ -10,8 +10,8 @@ globalThis.localStorage = {
 // Fresh v2
 mem.delete(STORAGE_KEY_V2);
 const fresh = migratePersistedState();
-if (!fresh.changes?.some((c) => c.id === 'CHG-001') || fresh.schemaVersion !== 16) {
-  console.error('Fresh v16 FAIL', fresh.schemaVersion);
+if (!fresh.changes?.some((c) => c.id === 'CHG-001') || fresh.schemaVersion !== 17) {
+  console.error('Fresh v17 FAIL', fresh.schemaVersion);
   process.exit(1);
 }
 

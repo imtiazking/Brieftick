@@ -56,6 +56,21 @@ function hashContent(text) {
 
 function publicationRecord(state, id) {
 
+  const basel = state.baselPublicationRecords?.find((x) => x.id === id || x.baselRecordId === id);
+  if (basel) {
+    const text = [basel.title, basel.officialReference, basel.frameworkModule].filter(Boolean).join('\n');
+    return {
+      recordId: basel.baselRecordId || basel.id,
+      recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
+      recordType: 'Publication',
+      recordTitle: basel.title,
+      internalRoute: `#/basel/${basel.id}`,
+      recordVersion: basel.officialReference || 'v1',
+      contentHash: hashContent(text),
+      sourceContent: text,
+    };
+  }
+
   const p = state.publications?.find((x) => x.id === id);
 
   if (!p) return null;
@@ -122,7 +137,7 @@ function changeRecord(state, id) {
 
     recordTitle: c.title,
 
-    internalRoute: `#/changes/${c.id}`,
+    internalRoute: `#/change/${c.id}`,
 
     recordVersion: c.status || 'v1',
 
@@ -137,6 +152,20 @@ function changeRecord(state, id) {
 
 
 function officialSourceRecord(state, id) {
+
+  if (id === 'FIXTURE-PS24') {
+    const text =
+      'Firms must communicate clearly with customers during operational incidents affecting material services.\nAdditional paragraph added in amended version for version-detection testing.';
+    return {
+      recordId: id,
+      recordCategory: CONTEXT_RECORD_CATEGORY.OFFICIAL_SOURCE,
+      recordType: 'OfficialSource',
+      recordTitle: 'PS24/1 fixture comparison',
+      canonicalUrl: 'https://www.fca.org.uk/publications/policy/ps24-1',
+      contentHash: hashContent(text),
+      sourceContent: text,
+    };
+  }
 
   const raw = state.rawSourceItems?.find((x) => x.id === id || x.rawId === id);
 
@@ -197,6 +226,51 @@ function resolveSelection(state, selection) {
         const r = assessmentRecord(state, item.recordId);
 
         if (r) records.push(r);
+
+      } else if (item.recordType === 'Framework') {
+
+        const f = state.frameworks?.find((x) => x.id === item.recordId);
+
+        if (f) {
+          records.push({
+            recordId: f.id,
+            recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
+            recordType: 'Framework',
+            recordTitle: f.name || f.label,
+            internalRoute: `#/landscape/framework/${f.id}`,
+            sourceContent: [f.name, f.authority, f.coverageStatus].filter(Boolean).join('\n'),
+          });
+        }
+
+      } else if (item.recordType === 'Obligation') {
+
+        const o = state.obligations?.find((x) => x.id === item.recordId);
+
+        if (o) {
+          records.push({
+            recordId: o.id,
+            recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
+            recordType: 'Obligation',
+            recordTitle: o.title || o.id,
+            internalRoute: `#/obligation/${o.id}`,
+            sourceContent: [o.title, o.text, o.status].filter(Boolean).join('\n'),
+          });
+        }
+
+      } else if (item.recordType === 'Publication' || item.recordType === 'BaselRecord') {
+
+        const basel = state.baselPublicationRecords?.find((x) => x.id === item.recordId);
+
+        if (basel) {
+          records.push({
+            recordId: basel.id,
+            recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
+            recordType: 'Publication',
+            recordTitle: basel.title,
+            internalRoute: `#/basel/${basel.id}`,
+            sourceContent: [basel.title, basel.officialReference, basel.frameworkModule].filter(Boolean).join('\n'),
+          });
+        }
 
       }
 

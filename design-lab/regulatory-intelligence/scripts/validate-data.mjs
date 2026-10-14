@@ -163,8 +163,8 @@ if (state.orgProfile?.version && state.orgProfile.version !== 'ORG-DEMO-04') {
   errors.push('Unexpected org profile version');
 }
 
-if (state.schemaVersion !== 16) {
-  errors.push(`Expected schemaVersion 16, got ${state.schemaVersion}`);
+if (state.schemaVersion !== 17) {
+  errors.push(`Expected schemaVersion 17, got ${state.schemaVersion}`);
 }
 if ((state.tprPublicationRecords || []).length < 5) {
   errors.push('Expected at least 5 tprPublicationRecords');

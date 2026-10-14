@@ -28,6 +28,7 @@ export async function runFixtureAiAnalysis(state, options) {
     fixtureScenario = 'ai-001-summary',
     actor = state.currentDemoUserId,
     provider = new FixtureAiProvider(),
+    contextExtras = {},
   } = options;
 
   const builder = new AiContextBuilder(state);
@@ -35,6 +36,7 @@ export async function runFixtureAiAnalysis(state, options) {
   if (!contextBundle.ok) {
     return { ok: false, message: contextBundle.message };
   }
+  Object.assign(contextBundle, contextExtras);
 
   const analysisId = nextAnalysisId();
   auditAnalysisRequested(state, {
@@ -137,7 +139,7 @@ export async function runFixtureAiAnalysis(state, options) {
     outputSchemaVersion: contextBundle.promptMetadata.outputSchemaVersion,
     contextHash: contextBundle.contextHash,
     contextRecordIds: contextBundle.contextRecordIds,
-    summary: structured.summary,
+    summary: structured.summary || structured.answer || structured.interpretationSummary,
     findings: structured.findings || [],
     uncertainties: structured.uncertainties || [],
     suggestions: structured.areasRequiringReview || structured.suggestions || [],

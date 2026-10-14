@@ -37,3 +37,19 @@ export async function markAnalysesOutdated(state, { taskType, selection, promptM
   }
   return { updated, newHash, oldHash: state.riAiAnalysisResults?.[0]?.contextHash };
 }
+
+export function markAnalysesOutdatedForRecord(state, entityType, entityId) {
+  let updated = 0;
+  for (const a of state.riAiAnalysisResults || []) {
+    if (a.freshness !== AI_FRESHNESS.CURRENT) continue;
+    const hit =
+      a.entityType === entityType && a.entityId === entityId ||
+      (a.contextRecordIds || []).includes(entityId) ||
+      (a.retrieval?.matchedRecordIds || []).includes(entityId);
+    if (hit) {
+      a.freshness = AI_FRESHNESS.OUTDATED;
+      updated += 1;
+    }
+  }
+  return { updated };
+}

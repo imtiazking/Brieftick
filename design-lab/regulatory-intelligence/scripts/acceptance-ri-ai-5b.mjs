@@ -30,11 +30,11 @@ function runNode(rel) {
 }
 
 async function main() {
-  pass('schema-v16', SCHEMA_VERSION === 16);
+  pass('schema-v17', SCHEMA_VERSION === 17);
   const fresh = createFreshState();
-  pass('fresh-schema-v16', fresh.schemaVersion === 16);
-  const migrated = migrateSavedSnapshot({ ...fresh, schemaVersion: 15, riAiAnalysisResults: [{ analysisId: 'AIA-KEEP' }] });
-  pass('migration-v15-v16', migrated.schemaVersion === 16 && migrated.riAiAnalysisResults?.[0]?.analysisId === 'AIA-KEEP');
+  pass('fresh-schema-v17', fresh.schemaVersion === 17);
+  const migrated = migrateSavedSnapshot({ ...fresh, schemaVersion: 16, riAiAnalysisResults: [{ analysisId: 'AIA-KEEP' }] });
+  pass('migration-v16-v17', migrated.schemaVersion === 17 && migrated.riAiAnalysisResults?.[0]?.analysisId === 'AIA-KEEP');
 
   const state = createFreshState();
   state.currentDemoUserId = state.people.find((p) => p.applicationRoleIds?.includes('AR-REG-ANALYST'))?.id;

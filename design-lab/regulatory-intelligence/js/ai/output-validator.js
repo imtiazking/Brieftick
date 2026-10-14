@@ -5,9 +5,10 @@ import {
   AI_TASK_TYPE,
   AI_ANALYSIS_ERROR_CODES,
   CITATION_KIND,
-  ACTIVE_TASK_TYPES_V16,
+  ACTIVE_TASK_TYPES_V17,
 } from './enums.js';
 import { validateWorkflowCrossReferences } from './workflow-output-validator.js';
+import { validateIntelligenceOutput } from './intelligence-output-validator.js';
 import { assertSafeOfficialUrl } from './url-safety.js';
 import { excerptMeetsMinimum } from './excerpt-validation.js';
 import { dateSupportedInContext } from './date-validation.js';
@@ -27,7 +28,7 @@ export class AiOutputValidator {
 
   validateProviderOutput(taskType, output) {
     const errors = [];
-    if (!ACTIVE_TASK_TYPES_V16.includes(taskType)) {
+    if (!ACTIVE_TASK_TYPES_V17.includes(taskType)) {
       errors.push(`Unsupported active taskType ${taskType}`);
     }
     if (!output || typeof output !== 'object') {
@@ -62,8 +63,16 @@ export class AiOutputValidator {
     }
     const wf = validateWorkflowCrossReferences(this.state, taskType, output);
     if (!wf.ok) return wf;
-    if (!(output.uncertainties || []).length && taskType !== AI_TASK_TYPE.AI_SUMMARY) {
+    const intel = validateIntelligenceOutput(taskType, output, this.context);
+    if (!intel.ok) return this.failValidation(AI_ANALYSIS_ERROR_CODES.CONTEXT_HASH_MISMATCH, intel.message);
+    const needsUncertainty = ![
+      AI_TASK_TYPE.AI_SUMMARY,
+    ].includes(taskType);
+    if (needsUncertainty && !(output.uncertainties || []).length) {
       return this.failValidation(AI_ANALYSIS_ERROR_CODES.PROVIDER_ERROR, 'uncertainties required');
+    }
+    if (taskType === AI_TASK_TYPE.AI_RI_QA && !output.answer) {
+      return this.failValidation(AI_ANALYSIS_ERROR_CODES.PROVIDER_ERROR, 'answer required');
     }
     return { ok: true, output };
   }
@@ -93,9 +102,16 @@ export class AiOutputValidator {
   }
 
   recordExists(recordId, recordType) {
-    if (recordType === 'Publication') return this.state.publications?.some((p) => p.id === recordId);
+    if (recordType === 'Publication') {
+      return (
+        this.state.publications?.some((p) => p.id === recordId) ||
+        this.state.baselPublicationRecords?.some((p) => p.id === recordId || p.baselRecordId === recordId)
+      );
+    }
     if (recordType === 'Change') return this.state.changes?.some((c) => c.id === recordId);
     if (recordType === 'ImpactAssessment') return this.state.assessments?.some((a) => a.id === recordId);
+    if (recordType === 'Framework') return this.state.frameworks?.some((f) => f.id === recordId);
+    if (recordType === 'Obligation') return this.state.obligations?.some((o) => o.id === recordId);
     return this.contextIds.has(recordId);
   }
 

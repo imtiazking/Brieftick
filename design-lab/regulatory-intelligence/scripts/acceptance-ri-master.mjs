@@ -17,6 +17,7 @@ const SUITES = [
   'scripts/acceptance-ri-basel.mjs',
   'scripts/acceptance-ri-ai-5a.mjs',
   'scripts/acceptance-ri-ai-5b.mjs',
+  'scripts/acceptance-ri-ai-5c.mjs',
 ];
 
 function run(rel) {
