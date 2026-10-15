@@ -112,6 +112,9 @@ export class AiOutputValidator {
     if (recordType === 'ImpactAssessment') return this.state.assessments?.some((a) => a.id === recordId);
     if (recordType === 'Framework') return this.state.frameworks?.some((f) => f.id === recordId);
     if (recordType === 'Obligation') return this.state.obligations?.some((o) => o.id === recordId);
+    if (recordType === 'Action') return this.state.actions?.some((a) => a.id === recordId);
+    if (recordType === 'Risk') return this.state.risks?.some((r) => r.id === recordId);
+    if (recordType === 'Control') return this.state.controls?.some((c) => c.id === recordId);
     return this.contextIds.has(recordId);
   }
 

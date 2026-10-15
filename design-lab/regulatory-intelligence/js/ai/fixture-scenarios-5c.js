@@ -26,6 +26,133 @@ export function fixtureStructuredForScenario5c(scenario, ctx, providerId) {
     pub?.sourceContent?.slice(0, 80) ||
     'FCA Consumer Duty supervisory update PS26/14 requires firms to monitor customer outcomes by cohort.';
 
+  if (scenario === 'ai-obligation-predicate') {
+    const pr = ctx?.deterministicFacts?.predicateResult || {};
+    const ids = pr.qualifyingIds || [];
+    const label = pr.anchorLabel || 'matching';
+    const targetType = pr.targetType || 'Obligation';
+    const req = pr.requiredRelationships || [];
+    const excl = pr.excludedRelationships || [];
+    const targetWord = targetType === 'Change' ? 'changes' : 'obligations';
+
+    let answer;
+    if (ids.length === 0) {
+      answer = `No ${label} ${targetWord} meet this criterion in the current RI dataset.`;
+    } else if (targetType === 'Change' && excl.some((e) => e.type === 'ImpactAssessment')) {
+      const joined = ids.length === 1 ? ids[0] : `${ids.slice(0, -1).join(', ')} and ${ids[ids.length - 1]}`;
+      answer =
+        ids.length === 1
+          ? `1 regulatory change has no impact assessment: ${joined}.`
+          : `${ids.length} regulatory changes have no impact assessment: ${joined}.`;
+    } else if (req.some((r) => r.type === 'Evidence') && excl.some((e) => e.type === 'AssuranceFinding')) {
+      const joined = ids.length === 1 ? ids[0] : `${ids.slice(0, -1).join(', ')} and ${ids[ids.length - 1]}`;
+      answer = `${ids.length} ${label} obligations have qualifying evidence and no attributable assurance findings: ${joined}.`;
+    } else if (excl.some((e) => e.type === 'Evidence' && e.maximum === 0)) {
+      const joined = ids.length === 1 ? ids[0] : `${ids.slice(0, -1).join(', ')} and ${ids[ids.length - 1]}`;
+      answer =
+        ids.length === 1
+          ? `1 ${label} obligation has no attributable evidence: ${joined}.`
+          : `${ids.length} ${label} obligations have no attributable evidence: ${joined}.`;
+    } else if (req.some((r) => r.type === 'Evidence') && req.some((r) => r.type === 'AssuranceFinding')) {
+      const joined = ids.join(', ');
+      answer = `${ids.length} ${label} obligations have attributable evidence and assurance findings: ${joined}.`;
+    } else {
+      answer = `${ids.length} ${label} ${targetWord} match the requested relationship predicate: ${ids.join(', ')}.`;
+    }
+
+    return {
+      answer,
+      keyFindings: ids.map((id) => `Qualifying ${targetType} ${id} per deterministic predicate evaluation.`),
+      relatedObligations: targetType === 'Obligation' ? ids : [],
+      relatedChanges: targetType === 'Change' ? ids : [],
+      relatedActions: [],
+      uncertainties: ['Human review required'],
+      factTypes: { answer: 'DETERMINISTIC_PREDICATE', keyFindings: 'DETERMINISTIC_PREDICATE' },
+      citations: records.slice(0, 5).map((r) =>
+        citeFromCtx(ctx, r.recordId, r.recordType, r.internalRoute || `#/change/${r.recordId}`)
+      ),
+      deterministicFactsEcho: ctx?.deterministicFacts || {},
+    };
+  }
+
+  if (scenario === 'ai-006-deterministic-ask') {
+    const retrieval = ctx?.retrieval || {};
+    const byType = {};
+    for (const id of retrieval.matchedRecordIdsAll || retrieval.matchedRecordIds || []) {
+      const t = retrieval.recordTypes?.[id] || 'Record';
+      byType[t] = (byType[t] || 0) + 1;
+    }
+    const parts = Object.entries(byType)
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([t, n]) => `${n} ${t}(s)`);
+    const summary = parts.length ? parts.join('; ') : 'No RI records in retrieval scope.';
+    const changeIds = (retrieval.matchedRecordIdsAll || retrieval.matchedRecordIds || []).filter(
+      (id) => retrieval.recordTypes?.[id] === 'Change'
+    );
+    return {
+      answer: `AI SYNTHESIS: Deterministic retrieval returned ${retrieval.totalMatchingRecords ?? retrieval.resultCount ?? 0} record(s): ${summary}.`,
+      keyFindings: parts.length ? parts.map((p) => `Retrieved ${p}.`) : ['No qualifying records in retrieval boundary.'],
+      relatedChanges: changeIds,
+      relatedObligations: (retrieval.matchedRecordIdsAll || []).filter((id) => retrieval.recordTypes?.[id] === 'Obligation'),
+      relatedActions: (retrieval.matchedRecordIdsAll || []).filter((id) => retrieval.recordTypes?.[id] === 'Action'),
+      uncertainties: ['Human review required'],
+      factTypes: { answer: 'AI_SYNTHESIS', keyFindings: 'AI_SYNTHESIS' },
+      citations: records.slice(0, 5).map((r) => citeFromCtx(ctx, r.recordId, r.recordType, r.internalRoute || `#/change/${r.recordId}`)),
+      deterministicFactsEcho: ctx?.deterministicFacts || {},
+    };
+  }
+
+  if (scenario === 'ai-006-compound-ask') {
+    const ec = ctx?.retrieval?.evaluatedCounts || {};
+    const gaps = ctx?.retrieval?.secondaryGaps || [];
+    const changeCount = ctx?.retrieval?.primaryResultCount ?? 0;
+    const actionCount = ec.Action?.evaluated ? ec.Action.count : null;
+    const oblCount = ec.Obligation?.evaluated ? ec.Obligation.count : null;
+    const controlCount = ec.Control?.evaluated ? ec.Control.count : null;
+    const actionStatuses = ctx?.deterministicFacts?.linkedActionStatuses || [];
+    const statusLine =
+      actionStatuses.length > 0
+        ? `Action statuses from RI: ${actionStatuses.map((a) => `${a.actionId}=${a.status}`).join(', ')}.`
+        : '';
+    const openOblGap = gaps.includes('linked-open-obligations');
+    const countParts = [`${changeCount} primary Change record(s)`];
+    if (actionCount != null) countParts.push(`${actionCount} linked Action(s)`);
+    if (oblCount != null) countParts.push(`${oblCount} linked Obligation(s)`);
+    if (controlCount != null) countParts.push(`${controlCount} linked Control(s)`);
+    return {
+      answer: `AI SYNTHESIS: RI contains ${countParts.join('; ')} for the resolved graph anchor. ${statusLine}${
+        openOblGap ? ' No active + in-review obligations were found in RI.' : ''
+      }`.trim(),
+      keyFindings: [
+        `Primary Changes retrieved: ${changeCount}`,
+        actionCount == null
+          ? null
+          : actionCount === 0
+            ? gaps.includes('linked-actions')
+              ? 'No linked Action records are recorded for these Changes in RI.'
+              : `Linked Actions evaluated: ${actionCount}`
+            : `Linked Actions retrieved: ${actionCount}`,
+        oblCount == null
+          ? null
+          : oblCount === 0 && openOblGap
+            ? 'No active + in-review obligations were found in RI.'
+            : oblCount > 0
+              ? `Active + in-review Obligations retrieved: ${oblCount}`
+              : `Linked Obligations evaluated: ${oblCount}`,
+        controlCount != null && controlCount > 0 ? `Linked Controls retrieved: ${controlCount}` : null,
+        statusLine || null,
+      ].filter(Boolean),
+      relatedChanges: records.filter((r) => r.recordType === 'Change').map((r) => r.recordId),
+      relatedObligations: records.filter((r) => r.recordType === 'Obligation').map((r) => r.recordId),
+      relatedActions: records.filter((r) => r.recordType === 'Action').map((r) => r.recordId),
+      uncertainties: gaps.length ? [`RI has no records for secondary request(s): ${gaps.join(', ')}`] : ['Human review required'],
+      factTypes: { answer: 'AI_SYNTHESIS', keyFindings: 'AI_SYNTHESIS' },
+      citations: records.slice(0, 3).map((r) => citeFromCtx(ctx, r.recordId, r.recordType, r.internalRoute || `#/change/${r.recordId}`)),
+      deterministicFactsEcho: ctx?.deterministicFacts || {},
+      compoundEcho: { changeCount, actionCount, secondaryGaps: gaps },
+    };
+  }
+
   if (scenario === 'ai-006-ask-banking') {
     return {
       answer:
@@ -125,14 +252,28 @@ export function fixtureStructuredForScenario5c(scenario, ctx, providerId) {
   }
 
   if (scenario === 'ai-019-count-obligations') {
-    const count = ctx?.deterministicFacts?.openObligationCount ?? 0;
+    const open = ctx?.deterministicFacts?.openObligationCount ?? 0;
+    const draft = ctx?.deterministicFacts?.draftObligationCount ?? 0;
+    const overdue = ctx?.deterministicFacts?.overdueActiveCount ?? 0;
+    const inReview = ctx?.deterministicFacts?.reviewObligationCount ?? 0;
+    const unclassified = ctx?.deterministicFacts?.unclassifiedObligationStatuses || [];
+    const unclassifiedLine =
+      unclassified.length > 0
+        ? ` Unclassified obligation statuses for review: ${unclassified.map((u) => `${u.status} (${u.count})`).join(', ')}.`
+        : '';
+    const overdueLine = overdue > 0 ? ` ${overdue} of those active obligations are overdue.` : '';
     return {
-      answer: `AI SYNTHESIS: RI reports ${count} open obligations in the current demo portfolio (deterministic count).`,
-      keyFindings: [`Open obligation count (RI): ${count}`],
-      uncertainties: ['Status filters use Design Lab obligation workflow states'],
+      answer: `AI SYNTHESIS: RI reports ${open} active (open) and ${draft} draft obligations; ${inReview} in governance review.${overdueLine} Draft proposals are not counted as open.${unclassifiedLine}`,
+      keyFindings: [
+        `Active (open) obligation count (RI): ${open}`,
+        `Draft obligation count (RI): ${draft}`,
+        `In review: ${inReview}`,
+      ],
+      uncertainties: ['Open obligations = ACTIVE only; compound linked counts use Active + in-review (see docs/AI-REGULATORY-INTELLIGENCE.md)'],
       citations: records.slice(0, 1).map((r) => citeFromCtx(ctx, r.recordId, r.recordType, r.internalRoute || '#/obligations')),
       deterministicFactsEcho: ctx?.deterministicFacts || {},
-      openObligationCount: count,
+      openObligationCount: open,
+      draftObligationCount: draft,
     };
   }
 

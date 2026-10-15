@@ -98,3 +98,38 @@ node design-lab/regulatory-intelligence/scripts/verify-ri-live-ai.mjs
 - **Tests**: AI-001–010 (foundation), **AI-011** mock transport, **AI-012** bridge trust boundary, **AI-013** personas. Acceptance mock uses `RI_AI_BRIDGE_MOCK_OPENAI=1` (acceptance only, not production).
 - **Live verification**: `verify-ri-live-ai.mjs` reports `NOT CONFIGURED` when `OPENAI_API_KEY` or `RI_AI_MODEL` is absent.
 - **Production handoff**: OpenAI live, vector search, and production deployment remain out of scope for Design Lab.
+
+## Obligation portfolio taxonomy (Ask RI & UI)
+
+Implementation: `js/ai/obligation-portfolio.js`. Counts are always computed from hydrated RI records — never hard-coded.
+
+### Primary buckets (mutually exclusive)
+
+| Bucket | Meaning | Status labels (case-insensitive) |
+|--------|---------|----------------------------------|
+| **DRAFT** | Proposed / AI-suggested / awaiting human confirmation | `Draft` |
+| **ACTIVE** | Confirmed obligation still requiring implementation work | `Open`, `In Progress`, `Overdue` |
+| **REVIEW** | Confirmed obligation under governance or implementation review | `In Review` |
+| **CLOSED** | Terminal | `Complete`, `Historic`, `Closed` |
+| **UNCLASSIFIED** | Unknown labels until mapped | (everything else) |
+
+### Secondary flag
+
+- **`overdueActive`** — subset of **ACTIVE** with status `Overdue` (not a separate primary bucket; not double-counted in reconciliation).
+
+### User-facing labels (must not be mixed)
+
+- **“Open obligations”** — **ACTIVE** only. Used for Ask RI *“How many open obligations are there?”*, dashboard metric, obligations register row labelled “Open obligations”, and deterministic fact `openObligationCount`.
+- **“Active + in-review obligations”** — **ACTIVE ∪ REVIEW**. Used for landscape sector stats, sector overview samples, and graph/compound copy when reporting linked obligation counts (`obligationStatusIsOpenForLinkedWork`).
+
+**In Review** is never included in **“Open obligations”**.
+
+### Ask RI behaviour
+
+- Count question → `openObligationCount` = ACTIVE count; also exposes `draftObligationCount`, `reviewObligationCount`, `overdueActiveCount`, and full `obligationPortfolio` on deterministic facts.
+- Compound / graph queries that ask which obligations “remain open” or linked open **work** use ACTIVE ∪ REVIEW for traversal filters, but user-visible copy must say **active + in-review**, not “open”, unless the question is strictly the ACTIVE count.
+
+### Closed / unclassified
+
+- **CLOSED** obligations are excluded from open and linked-work counts.
+- **UNCLASSIFIED** statuses are surfaced in `unclassifiedObligationStatuses` for review; they are not treated as open or closed until mapped.

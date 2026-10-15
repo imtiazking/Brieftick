@@ -1,6 +1,14 @@
 import { esc } from './components.js';
 import { AI_FRESHNESS, AI_REVIEW_STATUS } from './ai/enums.js';
 import { canAskRi, canApproveExecutiveSummary, isAuditorReadOnly } from './ai/persona-ai.js';
+import { formatActionOverdueCustomerCopy } from './ai/ask-ri-provenance.js';
+import { SUPPORTED_QUESTION_EXAMPLES } from './ai/ri-interpreted-as.js';
+
+function formatEvidenceConfidence(analysis) {
+  const v = analysis?.evidenceConfidence;
+  if (v === 'HIGH' || v === 'MEDIUM' || v === 'LOW') return v;
+  return 'NOT ASSESSED';
+}
 
 const SUGGESTED = [
   'What regulatory changes currently affect the Banking sector?',
@@ -17,16 +25,95 @@ function modeBadge(analysis) {
   return '';
 }
 
+function resolveAskRetrieval(last) {
+  if (!last) return null;
+  const r = last.retrieval || last.analysis?.retrieval || null;
+  if (!r) return null;
+  if (!r.deterministicFacts?.predicateEvaluation && last.analysis?.retrieval?.deterministicFacts?.predicateEvaluation) {
+    r.deterministicFacts = {
+      ...(r.deterministicFacts || {}),
+      ...last.analysis.retrieval.deterministicFacts,
+    };
+  }
+  if (!r.predicateEvaluation && r.deterministicFacts?.predicateEvaluation) {
+    r.predicateEvaluation = r.deterministicFacts.predicateEvaluation;
+  }
+  const pr = r.deterministicFacts?.predicateResult;
+  if (!r.predicateEvaluation && pr?.predicateEvaluationComplete) {
+    r.predicateEvaluation = {
+      candidateCount: pr.candidateCount,
+      qualifyingCount: pr.qualifyingCount,
+      predicateEvaluationComplete: true,
+      requestedTargetType: pr.targetType,
+      anchorLabel: pr.anchorLabel,
+    };
+  }
+  return r;
+}
+
+function resolvePredicateEvaluation(retrieval) {
+  if (!retrieval) return null;
+  return (
+    retrieval.predicateEvaluation ||
+    retrieval.deterministicFacts?.predicateEvaluation ||
+    (retrieval.deterministicFacts?.predicateResult?.predicateEvaluationComplete
+      ? {
+          candidateCount: retrieval.deterministicFacts.predicateResult.candidateCount,
+          qualifyingCount: retrieval.deterministicFacts.predicateResult.qualifyingCount,
+          predicateEvaluationComplete: true,
+          requestedTargetType: retrieval.deterministicFacts.predicateResult.targetType,
+          anchorLabel: retrieval.deterministicFacts.predicateResult.anchorLabel,
+        }
+      : null)
+  );
+}
+
+function evidenceReason(retrieval, id) {
+  const display = retrieval?.displayReasons?.[id];
+  if (display) return display;
+  const raw = retrieval?.matchReasons?.[id] || '';
+  if (/change_links_|_for_|obligation_has_|assessment_for/i.test(raw)) return id;
+  return raw || id;
+}
+
 function renderEvidenceUsed(retrieval) {
-  const count = retrieval?.resultCount ?? retrieval?.matchedRecordIds?.length ?? 0;
-  const header = `<p class="ri-muted" data-ask-ri-evidence-count data-count="${count}">Evidence used: ${count} records</p>`;
+  const pred = resolvePredicateEvaluation(retrieval);
+  if (pred?.predicateEvaluationComplete) {
+    const cand = pred.candidateCount ?? 0;
+    const qual = pred.qualifyingCount ?? 0;
+    const target = pred.requestedTargetType || 'Record';
+    const anchor = pred.anchorLabel ? `${pred.anchorLabel} ` : '';
+    const header = `<p class="ri-muted" data-ask-ri-evidence-count data-count="${qual}" data-candidate-count="${cand}" data-qualifying-count="${qual}" data-predicate-evaluated="true" data-displayed="${qual}" data-truncated="false"><strong>${qual} qualifying records</strong></p>`;
+    const detail =
+      qual === 0
+        ? `<p class="ri-muted" data-ask-ri-zero-qualifiers="true">${cand} candidate ${anchor}${target}(s) were evaluated; none met the criteria.</p>`
+        : `<p class="ri-muted">${qual} of ${cand} candidate ${anchor}${target}(s) met the criteria.</p>`;
+    if (!retrieval?.matchedRecordIds?.length) {
+      return `${header}${detail}`;
+    }
+    const rows = retrieval.matchedRecordIds
+      .map(
+        (id) =>
+          `<li><strong>${esc(id)}</strong> (${esc(retrieval.recordTypes[id] || 'Record')}) — ${esc(evidenceReason(retrieval, id))}</li>`
+      )
+      .join('');
+    return `${header}${detail}<ul class="ri-list">${rows}</ul>`;
+  }
+
+  const total = retrieval?.totalMatchingRecords ?? retrieval?.resultCount ?? retrieval?.matchedRecordIds?.length ?? 0;
+  const shown = retrieval?.displayedEvidenceRecords ?? retrieval?.matchedRecordIds?.length ?? 0;
+  const truncated = retrieval?.evidenceDisplayTruncated === true;
+  const label = truncated
+    ? `Evidence used: ${total} matching records · showing ${shown}`
+    : `Evidence used: ${total} records`;
+  const header = `<p class="ri-muted" data-ask-ri-evidence-count data-count="${total}" data-displayed="${shown}" data-truncated="${truncated}">${label}</p>`;
   if (!retrieval?.matchedRecordIds?.length) {
     return `${header}<p class="ri-muted">No RI records retrieved.</p>`;
   }
   const rows = retrieval.matchedRecordIds
     .map(
       (id) =>
-        `<li><strong>${esc(id)}</strong> (${esc(retrieval.recordTypes[id] || 'Record')}) — ${esc(retrieval.matchReasons[id] || '')}</li>`
+        `<li><strong>${esc(id)}</strong> (${esc(retrieval.recordTypes[id] || 'Record')}) — ${esc(evidenceReason(retrieval, id))}</li>`
     )
     .join('');
   return `${header}<ul class="ri-list">${rows}</ul>`;
@@ -34,26 +121,85 @@ function renderEvidenceUsed(retrieval) {
 
 function renderAskResult(state, last) {
   if (!last) return '<p class="ri-muted">Ask a question to retrieve evidence-backed intelligence.</p>';
+  if (last.unresolved) {
+    const retrieval = resolveAskRetrieval(last);
+    const interpreted = retrieval?.interpretedAs
+      ? `<p class="ri-muted" data-ask-ri-interpreted-as><strong>Interpreted as:</strong> ${esc(retrieval.interpretedAs)}</p>`
+      : '';
+    const examples = (last.examples || SUPPORTED_QUESTION_EXAMPLES)
+      .map((ex) => `<li>${esc(ex)}</li>`)
+      .join('');
+    return `<div data-ask-ri-result class="ri-ai-unresolved" data-ask-ri-unresolved="true" data-provider-calls="0">
+      <p><strong>Could not safely interpret this question</strong></p>
+      <p class="ri-muted">${esc(last.message || "I couldn't safely interpret this question.")}</p>
+      ${interpreted}
+      <p class="ri-muted">Supported question structures include:</p>
+      <ul class="ri-list">${examples}</ul>
+    </div>`;
+  }
   if (last.insufficient) {
     return `<div data-ask-ri-result class="ri-ai-insufficient" data-ask-ri-insufficient="true" data-provider-calls="0">
       <p><strong>INSUFFICIENT RI EVIDENCE</strong></p>
       <p class="ri-muted">${esc(last.message || '')}</p>
-      ${renderEvidenceUsed(last.retrieval)}
+      ${renderEvidenceUsed(resolveAskRetrieval(last))}
+    </div>`;
+  }
+  if (last.zeroQualifiers) {
+    const retrieval = resolveAskRetrieval(last);
+    const interpreted = retrieval?.interpretedAs
+      ? `<p class="ri-muted" data-ask-ri-interpreted-as><strong>Interpreted as:</strong> ${esc(retrieval.interpretedAs)}</p>`
+      : '';
+    const pred = resolvePredicateEvaluation(retrieval);
+    const zeroCopy = pred?.predicateEvaluationComplete
+      ? renderEvidenceUsed(retrieval)
+      : `<p class="ri-muted" data-ask-ri-zero-qualifiers="true"><strong>0 qualifying records</strong></p>
+         <p class="ri-muted">RI recognises the resolved scope, but no records match the requested criteria in the current dataset.</p>`;
+    return `<div data-ask-ri-result data-ask-ri-zero-qualifiers="true" data-provider-calls="0">
+      ${interpreted}
+      ${zeroCopy}
+      <p class="ri-muted">Evidence confidence: NOT ASSESSED · Provider calls: 0</p>
     </div>`;
   }
   const a = last.analysis;
   if (!a) return '';
+  const askRetrieval = resolveAskRetrieval(last);
   const outdated =
     a.freshness === AI_FRESHNESS.OUTDATED
       ? '<p class="ri-ai-outdated">SOURCE CONTEXT HAS CHANGED · AI ANALYSIS OUTDATED · REVIEW MAY BE REQUIRED</p>'
       : '';
   const p = a.workflowPayload || a.originalAiOutput || {};
   const providerCalls = state._lastAskRiProviderCalls ?? 1;
-  return `<div data-ask-ri-result data-provider-calls="${providerCalls}">
+  const asOfIso = askRetrieval?.deterministicFacts?.asOfDate;
+  const asOfLabel = askRetrieval?.deterministicFacts?.asOfDateLabel;
+  const asOfBanner = asOfLabel
+    ? `<p class="ri-muted" data-ask-ri-as-of>Deterministic as-of date: <strong>${esc(asOfLabel)}</strong></p>`
+    : '';
+  const interpreted = askRetrieval?.interpretedAs
+    ? `<p class="ri-muted" data-ask-ri-interpreted-as><strong>Interpreted as:</strong> ${esc(askRetrieval.interpretedAs)}</p>`
+    : '';
+  const actionFacts = askRetrieval?.deterministicFacts?.linkedActionStatuses || [];
+  const actionStatusLine =
+    actionFacts.length > 0
+      ? `<p class="ri-muted">${actionFacts
+          .map((a) => {
+            const actionRec = { id: a.actionId, status: a.status, dueDate: a.dueDate };
+            const overdueCopy = formatActionOverdueCustomerCopy(actionRec, asOfIso, asOfLabel);
+            if (overdueCopy) return `${esc(overdueCopy)} (${esc(a.status)})`;
+            return `${esc(a.actionId)}: ${esc(a.status)}`;
+          })
+          .join(' · ')}</p>`
+      : '';
+  const predEval = resolvePredicateEvaluation(resolveAskRetrieval(last));
+  const supportedPredicate =
+    predEval?.predicateEvaluationComplete ? ' data-ask-ri-supported-query="true"' : '';
+  return `<div data-ask-ri-result data-provider-calls="${providerCalls}"${supportedPredicate}>
     ${modeBadge(a)}
     <span class="ri-ai-review">SOURCE-GROUNDED · ${esc(a.reviewStatus)} · HUMAN REVIEW REQUIRED</span>
     ${outdated}
-    <p class="ri-muted">Evidence confidence: ${esc(a.evidenceConfidence)} · Retrieved: ${esc(last.retrieval?.resultCount ?? 0)} records</p>
+    ${asOfBanner}
+    ${interpreted}
+    ${actionStatusLine}
+    <p class="ri-muted">Evidence confidence: ${esc(formatEvidenceConfidence(a))} · Retrieved: ${esc(askRetrieval?.totalMatchingRecords ?? askRetrieval?.resultCount ?? 0)} matching records${askRetrieval?.evidenceDisplayTruncated ? ` · showing ${askRetrieval?.displayedEvidenceRecords ?? 0}` : ''}</p>
     <h4>Answer</h4>
     <p>${esc(p.answer || a.summary || '')}</p>
     <p class="ri-muted"><em>AI SYNTHESIS — not regulator wording</em></p>
@@ -107,7 +253,7 @@ export function renderAskRiPage(state, { lastAsk } = {}) {
     (q) => `<button type="button" class="ri-btn ri-btn--ghost ri-btn--sm" data-ask-ri-suggest>${esc(q)}</button>`
   ).join(' ');
   const last = lastAsk || state._lastAskRi;
-  const retrieval = last?.retrieval;
+  const retrieval = resolveAskRetrieval(last);
   return `${pageHeader('Ask RI', 'Evidence-backed regulatory intelligence — not a generic chatbot.')}
   <section class="ri-panel ri-ask-ri" data-ask-ri-panel>
     <h2>Ask RI</h2>

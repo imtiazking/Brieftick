@@ -6,6 +6,7 @@ import {
   CONTEXT_RECORD_CATEGORY,
 } from './enums.js';
 import { AiContextBuilder } from './context-builder.js';
+import { getPromptMetadataForTask } from './prompt-metadata.js';
 import { FixtureAiProvider } from './fixture-ai-provider.js';
 import { AiOutputValidator } from './output-validator.js';
 import { scoreEvidenceConfidence } from './evidence-confidence.js';
@@ -32,7 +33,23 @@ export async function runFixtureAiAnalysis(state, options) {
   } = options;
 
   const builder = new AiContextBuilder(state);
-  const contextBundle = await builder.build({ taskType, selection });
+  let contextBundle = await builder.build({ taskType, selection });
+  if (!contextBundle.ok && contextExtras?.deterministicFacts?.predicateResult) {
+    const promptMeta = getPromptMetadataForTask(taskType);
+    if (promptMeta) {
+      contextBundle = {
+        ok: true,
+        taskType,
+        records: [],
+        contextRecordIds: [],
+        contextHash: 'predicate-deterministic-empty-selection',
+        promptMetadata: promptMeta,
+        truncated: false,
+        totalChars: 0,
+        canonicalPayload: { taskType, records: [] },
+      };
+    }
+  }
   if (!contextBundle.ok) {
     return { ok: false, message: contextBundle.message };
   }
@@ -119,7 +136,7 @@ export async function runFixtureAiAnalysis(state, options) {
 
   const structured = validated.output;
   const evidenceConfidence = scoreEvidenceConfidence({
-    findings: structured.findings || [],
+    findings: structured.findings || structured.keyFindings || [],
     citations: structured.citations || [],
     contextRecordIds: contextBundle.contextRecordIds,
   });

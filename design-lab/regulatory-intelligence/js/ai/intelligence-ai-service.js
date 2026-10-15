@@ -1,5 +1,7 @@
 import { AI_TASK_TYPE, AI_REVIEW_STATUS, AI_AUDIT_EVENT_TYPE } from './enums.js';
 import { retrieveRiRecords, selectionFromRetrieval, parseAskQuery, computeDeterministicFacts } from './ri-retrieval.js';
+import { ASK_RI_RESULT_STATES } from './ri-query-executor.js';
+import { SUPPORTED_QUESTION_EXAMPLES } from './ri-interpreted-as.js';
 import { deterministicTextDiff, FIXTURE_PS24_OLD, FIXTURE_PS24_NEW } from './text-diff.js';
 import { runFixtureAiAnalysis, persistAiAnalysis, updateReviewStatus } from './analysis-service.js';
 import { appendAiDomainAuditEvent } from './audit.js';
@@ -34,7 +36,20 @@ export async function askRi(state, question, options = {}) {
     actor: state.currentDemoUserId,
   });
 
-  if (!retrieval.adequate || retrieval.resultCount === 0 || retrieval.insufficientReason) {
+  if (retrieval.resultState === ASK_RI_RESULT_STATES.UNRESOLVED_QUERY_SEMANTICS) {
+    const unresolved = {
+      analysisId: null,
+      status: 'UNRESOLVED_QUERY_SEMANTICS',
+      message: "I couldn't safely interpret this question.",
+      examples: SUPPORTED_QUESTION_EXAMPLES,
+      retrieval,
+      providerCallCount: 0,
+    };
+    pushAskHistory(state, { question, retrieval, unresolved: true, at: new Date().toISOString() });
+    return { ok: true, unresolved: true, ...unresolved };
+  }
+
+  if (retrieval.resultState === ASK_RI_RESULT_STATES.INSUFFICIENT_EVIDENCE || (!retrieval.primaryAdequate && retrieval.insufficientReason)) {
     appendAiDomainAuditEvent(state, {
       type: AI_AUDIT_EVENT_TYPE.AI_RI_QUERY_INSUFFICIENT_EVIDENCE,
       query: question,
@@ -43,7 +58,7 @@ export async function askRi(state, question, options = {}) {
     const insufficient = {
       analysisId: null,
       status: 'INSUFFICIENT_RI_EVIDENCE',
-      message: 'No suitable verified RI records were found for this question.',
+      message: retrieval.insufficientReason || 'No suitable verified RI records were found for this question.',
       retrieval,
       providerCallCount: 0,
     };
@@ -51,12 +66,26 @@ export async function askRi(state, question, options = {}) {
     return { ok: true, insufficient: true, ...insufficient };
   }
 
+  if (retrieval.resultState === ASK_RI_RESULT_STATES.ZERO_QUALIFIERS) {
+    const zero = {
+      analysisId: null,
+      status: 'ZERO_QUALIFIERS',
+      message: 'Zero qualifying records in the current RI dataset for this interpreted query.',
+      retrieval,
+      providerCallCount: 0,
+    };
+    pushAskHistory(state, { question, retrieval, zeroQualifiers: true, at: new Date().toISOString() });
+    return { ok: true, zeroQualifiers: true, ...zero };
+  }
+
   const selection = selectionFromRetrieval(retrieval);
   let scenario = options.fixtureScenario;
   if (!scenario) {
     if (parsed.filters.intent === 'count-open-obligations') scenario = 'ai-019-count-obligations';
+    else if (retrieval.deterministicFacts?.predicateResult) scenario = 'ai-obligation-predicate';
     else if (parsed.filters.intent === 'reviewed-cross-source') scenario = 'ai-021-basel-ask';
-    else scenario = 'ai-006-ask-banking';
+    else if (parsed.filters?.compound) scenario = 'ai-006-compound-ask';
+    else scenario = 'ai-006-deterministic-ask';
   }
 
   const reviewed = (state.internationalImplementationMappings || []).find((m) => m.reviewStatus === 'REVIEWED');
@@ -193,8 +222,4 @@ export function markAskRiOutdatedForChange(state, changeId) {
     entityId: changeId,
     actor: state.currentDemoUserId,
   });
-}
-
-export function latestAskRiAnalysis(state) {
-  return (state.riAiAnalysisResults || []).find((a) => a.taskType === AI_TASK_TYPE.AI_RI_QA);
 }

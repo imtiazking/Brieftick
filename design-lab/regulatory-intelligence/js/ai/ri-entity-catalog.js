@@ -76,6 +76,25 @@ function wordBoundaryIncludes(hay, needle) {
   return re.test(hay);
 }
 
+/** Strip "-related" / " related" suffixes so catalogue aliases resolve before generic heuristics. */
+export function normalizeAskQuestionForEntityResolution(question) {
+  return String(question || '')
+    .replace(/\b([a-z0-9]+)-related\b/gi, '$1')
+    .replace(/\b([a-z0-9]+)\s+related\b/gi, '$1');
+}
+
+function phraseResolvesInCatalog(phrase, catalog) {
+  const p = norm(phrase);
+  if (!p) return true;
+  return (
+    resolveJurisdictionsInQuestion(phrase, catalog).length > 0 ||
+    resolveFrameworksInQuestion(phrase, catalog).length > 0 ||
+    resolveRegulatorsInQuestion(phrase, catalog).length > 0 ||
+    resolveSectorsInQuestion(phrase, catalog).length > 0 ||
+    resolveBaselSourcesInQuestion(phrase, catalog).length > 0
+  );
+}
+
 export function buildRiEntityCatalog(state) {
   const sectors = (state.sectors || []).map((s) => ({
     type: 'sector',
@@ -140,7 +159,7 @@ function resolveRegulatorByAlias(catalog, aliasEntry) {
 }
 
 export function resolveRegulatorsInQuestion(question, catalog) {
-  const lower = norm(question);
+  const lower = norm(normalizeAskQuestionForEntityResolution(question));
   const resolved = [];
   for (const entry of REGULATOR_ALIAS_ENTRIES) {
     if (!wordBoundaryIncludes(lower, entry.alias)) continue;
@@ -218,7 +237,7 @@ export function findUnresolvedConstraintPhrases(question, catalog) {
   while ((m = re.exec(question)) !== null) {
     const phrase = m[1].trim();
     const p = norm(phrase);
-    if (!p || QUERY_STOPWORDS.has(p) || p === 'the') continue;
+    if (!p || QUERY_STOPWORDS.has(p) || p === 'the' || p === 'them' || p === 'they' || p === 'those' || p === 'these') continue;
     const inCatalog =
       resolveJurisdictionsInQuestion(phrase, catalog).length > 0 ||
       resolveFrameworksInQuestion(phrase, catalog).length > 0 ||
@@ -231,27 +250,24 @@ export function findUnresolvedConstraintPhrases(question, catalog) {
 
 export function evaluateEntityConstraints(state, question) {
   const catalog = buildRiEntityCatalog(state);
-  const unresolvedPhrases = findUnresolvedConstraintPhrases(question, catalog);
+  const normalizedQuestion = normalizeAskQuestionForEntityResolution(question);
+  const unresolvedPhrases = findUnresolvedConstraintPhrases(normalizedQuestion, catalog).filter(
+    (p) => !phraseResolvesInCatalog(p, catalog)
+  );
   const resolved = {
     catalog,
-    sectors: resolveSectorsInQuestion(question, catalog),
-    regulators: resolveRegulatorsInQuestion(question, catalog),
-    frameworks: resolveFrameworksInQuestion(question, catalog),
-    jurisdictions: resolveJurisdictionsInQuestion(question, catalog),
-    baselSources: resolveBaselSourcesInQuestion(question, catalog),
+    sectors: resolveSectorsInQuestion(normalizedQuestion, catalog),
+    regulators: resolveRegulatorsInQuestion(normalizedQuestion, catalog),
+    frameworks: resolveFrameworksInQuestion(normalizedQuestion, catalog),
+    jurisdictions: resolveJurisdictionsInQuestion(normalizedQuestion, catalog),
+    baselSources: resolveBaselSourcesInQuestion(normalizedQuestion, catalog),
     unresolvedPhrases,
   };
 
   const blocking = [];
   unresolvedPhrases.forEach((p) => blocking.push({ kind: 'constraint_phrase', phrase: p }));
 
-  for (const phrase of unresolvedPhrases) {
-    if (/\b(mifid|crd|solvency|aifmd|emir|mar)\b/i.test(phrase) && !resolveFrameworksInQuestion(phrase, catalog).length) {
-      blocking.push({ kind: 'framework', phrase });
-    }
-  }
-
-  const authorityRequire = /\bwhat does (?:the )?(.+?) require\b/i.exec(question);
+  const authorityRequire = /\bwhat does (?:the )?(.+?) require\b/i.exec(normalizedQuestion);
   if (authorityRequire) {
     const authPhrase = authorityRequire[1].trim();
     if (authPhrase.length > 4 && !resolveRegulatorsInQuestion(authPhrase, catalog).length) {
@@ -259,25 +275,47 @@ export function evaluateEntityConstraints(state, question) {
     }
   }
 
-  for (const s of catalog.sectors) {
-    const slugPhrase = (s.slug || '').replace(/-/g, ' ');
-    if (wordBoundaryIncludes(question, slugPhrase) && !resolved.sectors.some((x) => x.id === s.id)) {
-      blocking.push({ kind: 'sector', phrase: s.slug });
-    }
-  }
-
-  const sectorExplicitUnknown = /\b([a-z0-9][a-z0-9-]{4,})\s+sector\b/i.exec(question);
+  const sectorExplicitUnknown = /\b([a-z0-9][a-z0-9-]{4,})\s+sector\b/i.exec(normalizedQuestion);
   if (sectorExplicitUnknown) {
     const slugGuess = sectorExplicitUnknown[1].toLowerCase();
     const known = catalog.sectors.some((s) => s.slug === slugGuess || norm(s.label) === slugGuess);
     if (!known) blocking.push({ kind: 'sector', phrase: slugGuess });
   }
 
-  const hyphenSectorLike = /\b([a-z0-9][a-z0-9-]{8,})\b[\s\S]{0,40}\bregulatory\b/i.exec(question);
-  if (hyphenSectorLike) {
-    const slugGuess = hyphenSectorLike[1].toLowerCase();
-    const known = catalog.sectors.some((s) => s.slug === slugGuess);
+  const regulatoryLead = /\b([a-z0-9][a-z0-9-]{8,})\s+regulatory\b/i.exec(normalizedQuestion);
+  if (regulatoryLead) {
+    const slugGuess = regulatoryLead[1].toLowerCase();
+    const known = catalog.sectors.some((s) => s.slug === slugGuess || s.id === slugGuess);
     if (!known) blocking.push({ kind: 'sector', phrase: slugGuess });
+  }
+
+  const acronymTokens = normalizedQuestion.match(/\b[A-Z]{2,6}\b/g) || [];
+  for (const token of acronymTokens) {
+    if (resolveRegulatorsInQuestion(token, catalog).length) continue;
+    if (resolveBaselSourcesInQuestion(token, catalog).length) continue;
+    if (catalog.regulators.some((r) => norm(r.shortName) === norm(token))) continue;
+    if (/\bwhat does\b/i.test(normalizedQuestion) || /\brequire/i.test(normalizedQuestion)) {
+      blocking.push({ kind: 'regulator', phrase: token });
+    }
+  }
+
+  /** Mixed-case authority tokens (e.g. internal capitals) in regulatory context, not in catalogue. */
+  const regulatoryContext = /\b(changes?|regulatory|requirements?|require|rules?|affect)\b/i.test(normalizedQuestion);
+  const mixedAuthorityTokens = normalizedQuestion.match(/\b[A-Z][a-z]+[A-Z][A-Za-z]{1,20}\b/g) || [];
+  if (regulatoryContext) {
+    for (const token of mixedAuthorityTokens) {
+      if (resolveRegulatorsInQuestion(token, catalog).length) continue;
+      if (resolveBaselSourcesInQuestion(token, catalog).length) continue;
+      blocking.push({ kind: 'regulator', phrase: token });
+    }
+  }
+
+  const germanMention = /\bgerman\b/i.test(normalizedQuestion);
+  if (
+    germanMention &&
+    !catalog.jurisdictions.some((j) => norm(j.label).includes('german') || norm(j.label).includes('germany'))
+  ) {
+    blocking.push({ kind: 'jurisdiction', phrase: 'German' });
   }
 
   return { ...resolved, blocking, insufficient: blocking.length > 0 };

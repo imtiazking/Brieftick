@@ -5,6 +5,7 @@ import { getTenantContext } from './platform/platform-tenant.js';
 import { getCorrelationId, beginCorrelation } from './platform/platform-correlation.js';
 import { assertPermission } from './platform/platform-permissions.js';
 import { filterByScenario } from './relationships.js';
+import { filterOpenWorkObligations, summarizeObligationPortfolio } from './ai/obligation-portfolio.js';
 import { syncGraphLinks } from './graph-sync.js';
 import {
   runMockIngestion,
@@ -551,9 +552,11 @@ export function computeDashboardStats() {
   const iaReview = ias.filter((a) => a.status === 'Review' || a.status === 'Under Review').length;
   const iaApproval = ias.filter((a) => a.status === 'Awaiting Approval').length;
 
-  const obls = scenarioFilter(state.obligations).filter((o) => o.status !== 'Complete' && o.status !== 'Historic');
+  const oblAll = scenarioFilter(state.obligations);
+  const oblPortfolio = summarizeObligationPortfolio(oblAll);
+  const obls = filterOpenWorkObligations(oblAll);
   const oblHigh = obls.filter((o) => o.priority === 'High').length;
-  const oblOverdue = obls.filter((o) => o.status === 'Overdue').length;
+  const oblOverdue = oblPortfolio.flags.overdueActive;
   const oblUnmapped = obls.filter((o) => o.coverage === 'None').length;
 
   const calEvents = scenarioFilter(state.calendarEvents);
@@ -587,7 +590,9 @@ export function computeDashboardStats() {
     iaDraft,
     iaReview,
     iaApproval,
-    openObligations: obls.length,
+    openObligations: oblPortfolio.counts.ACTIVE,
+    oblDraft: oblPortfolio.counts.DRAFT,
+    oblInReview: oblPortfolio.counts.REVIEW,
     oblHigh,
     oblOverdue,
     oblUnmapped,
@@ -834,7 +839,8 @@ export function rejectWorkflowDraft(analysisId, notes = '') {
 export async function runAskRiQuestion(question) {
   const res = await askRi(state, question);
   state._lastAskRi = res;
-  state._lastAskRiProviderCalls = res.providerCallCount ?? (res.insufficient ? 0 : 1);
+  state._lastAskRiProviderCalls =
+    res.providerCallCount ?? (res.insufficient || res.zeroQualifiers || res.unresolved ? 0 : 1);
   notify();
   return res;
 }

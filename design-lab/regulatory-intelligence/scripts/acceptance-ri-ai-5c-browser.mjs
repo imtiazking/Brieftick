@@ -14,6 +14,20 @@ const POSITIVE_QUESTIONS = [
   'How many open obligations are there?',
 ];
 
+const COMPOUND_BANKING =
+  'What regulatory changes currently affect the Banking sector, and what are the key compliance actions firms should take?';
+
+const COMPOUND_WEALTH =
+  'What regulatory changes currently affect Wealth Management, and which obligations remain open?';
+
+const CONSUMER_DUTY_ACTIONS =
+  'Which Consumer Duty changes have linked Actions, and what is the status of those Actions?';
+
+const BANKING_CONTROLS = 'What controls support Banking sector regulatory changes?';
+
+const OP_RES_OVERDUE =
+  'Which Operational Resilience actions are overdue, and which obligations are they linked to?';
+
 const HELD_OUT_POSITIVE = [
   { q: 'What regulatory changes currently affect Wealth Management?', id: 'held-out-wealth' },
   { q: 'What TPR requirements are relevant to Pension Providers?', id: 'held-out-tpr' },
@@ -81,10 +95,20 @@ async function main() {
         const raw = localStorage.getItem(key);
         if (!raw) return null;
         const s = JSON.parse(raw);
-        const OPEN = ['Draft', 'Open', 'In progress', 'Review', 'Active'];
-        return (s.obligations || []).filter((o) => OPEN.includes(o.status)).length;
+        const openStatus = (st) => {
+          const n = String(st || '').trim().toLowerCase();
+          return n === 'open' || n === 'in progress' || n === 'overdue';
+        };
+        return (s.obligations || []).filter((o) => openStatus(o.status)).length;
       }, STORAGE_KEY);
+      const truncated = await page.locator('[data-ask-ri-evidence-count]').first().getAttribute('data-truncated');
+      const displayed = Number(await page.locator('[data-ask-ri-evidence-count]').first().getAttribute('data-displayed'));
       pass(`e2e-open-count-match`, expected !== null && result.includes(String(expected)));
+      pass(
+        `e2e-open-truncation`,
+        expected !== null && (expected > displayed ? truncated === 'true' && result.includes('showing') : truncated === 'false')
+      );
+      pass(`e2e-open-confidence-nonempty`, /Evidence confidence:\s*(HIGH|MEDIUM|LOW)/i.test(result));
     }
 
     if (q.includes('Basel')) {
@@ -92,6 +116,87 @@ async function main() {
       pass(`e2e-basel-reviewed-mapping`, /ImplementationMapping|BAS-MAP/i.test(evidenceText));
     }
   }
+
+  await askViaUi(page, COMPOUND_BANKING);
+  const compoundBody = await page.locator('[data-ask-ri-result]').innerText();
+  const compoundTotal = Number(await page.locator('[data-ask-ri-evidence-count]').first().getAttribute('data-count'));
+  pass('e2e-compound-banking-not-insufficient', !compoundBody.includes('INSUFFICIENT RI EVIDENCE') && compoundTotal > 0);
+  pass('e2e-compound-banking-fixture', compoundBody.includes('AI FIXTURE') || compoundBody.includes('AI SYNTHESIS'));
+
+  await askViaUi(page, COMPOUND_WEALTH);
+  const wealthCompoundBody = await page.locator('[data-ask-ri-result]').innerText();
+  const wealthCompoundInsufficient = await page.locator('[data-ask-ri-result][data-ask-ri-insufficient="true"]').count();
+  pass('e2e-compound-wealth-not-insufficient', wealthCompoundInsufficient === 0 && !wealthCompoundBody.includes('INSUFFICIENT RI EVIDENCE'));
+  const wealthLinkedMatch =
+    wealthCompoundBody.match(/active \+ in-review Obligations?:\s*(\d+)/i) ||
+    wealthCompoundBody.match(/(\d+)\s+linked Obligation\(s\)/i);
+  pass(
+    'e2e-compound-wealth-partial',
+    wealthCompoundBody.includes('No active + in-review obligations') ||
+      /active \+ in-review obligations were not found/i.test(wealthCompoundBody) ||
+      wealthLinkedMatch !== null
+  );
+
+  await askViaUi(page, CONSUMER_DUTY_ACTIONS);
+  const cdBody = await page.locator('[data-ask-ri-result]').innerText();
+  const cdInsufficient = await page.locator('[data-ask-ri-result][data-ask-ri-insufficient="true"]').count();
+  const cdEvidence = Number(await page.locator('[data-ask-ri-evidence-count]').first().getAttribute('data-count'));
+  pass('e2e-consumer-duty-actions-not-insufficient', cdInsufficient === 0 && cdEvidence > 0);
+  pass('e2e-consumer-duty-actions-status', /Action|status/i.test(cdBody));
+
+  await askViaUi(page, BANKING_CONTROLS);
+  const ctrlBody = await page.locator('[data-ask-ri-result]').innerText();
+  const ctrlInsufficient = await page.locator('[data-ask-ri-result][data-ask-ri-insufficient="true"]').count();
+  pass('e2e-banking-controls-not-insufficient', ctrlInsufficient === 0 && !ctrlBody.includes('INSUFFICIENT RI EVIDENCE'));
+
+  await askViaUi(page, OP_RES_OVERDUE);
+  const opResBody = await page.locator('[data-ask-ri-result]').innerText();
+  const opResEvidence = await page.locator('[data-ask-ri-evidence]').innerText();
+  pass('e2e-opres-overdue-act031', opResEvidence.includes('ACT-031'));
+  pass('e2e-opres-overdue-obl0088', /OBL-0088/.test(opResEvidence));
+  pass(
+    'e2e-opres-overdue-as-of',
+    /Deterministic as-of date/i.test(opResBody) && /14 October 2026/i.test(opResBody)
+  );
+  pass('e2e-opres-overdue-no-raw-edges', !/change_links_|assessment_for_change/.test(opResEvidence));
+  pass(
+    'e2e-opres-overdue-status-line',
+    /was due on 10 October 2026/i.test(opResBody) && /overdue as of 14 October 2026/i.test(opResBody)
+  );
+
+  const CD_ZERO_PREDICATE =
+    'Which Consumer Duty obligations have evidence but no assurance findings?';
+  await askViaUi(page, CD_ZERO_PREDICATE);
+  const cdZeroBody = await page.locator('[data-ask-ri-result]').innerText();
+  const cdZeroEvidence = await page.locator('[data-ask-ri-evidence]').innerText();
+  pass('e2e-cd-zero-qualifier-not-insufficient', !cdZeroBody.includes('INSUFFICIENT RI EVIDENCE'));
+  pass(
+    'e2e-cd-zero-qualifier-supported',
+    (await page.locator('[data-ask-ri-result][data-ask-ri-supported-query="true"]').count()) === 1
+  );
+  pass(
+    'e2e-cd-zero-qualifier-predicate-eval',
+    (await page.locator('[data-ask-ri-evidence-count][data-predicate-evaluated="true"]').count()) >= 1
+  );
+  pass(
+    'e2e-cd-zero-qualifier-candidates',
+    Number(await page.locator('[data-ask-ri-evidence-count]').first().getAttribute('data-candidate-count')) === 3
+  );
+  const qualCount = Number(await page.locator('[data-ask-ri-evidence-count]').first().getAttribute('data-qualifying-count'));
+  pass('e2e-cd-zero-qualifier-count', qualCount === 1);
+  pass('e2e-cd-zero-qualifier-no-retrieved-msg', !cdZeroEvidence.includes('No RI records retrieved'));
+  pass('e2e-cd-zero-qualifier-no-generic-evidence-used', !/Evidence used:\s*0 records/i.test(cdZeroEvidence));
+  pass(
+    'e2e-cd-zero-qualifier-copy',
+    /1 qualifying records/i.test(cdZeroEvidence) &&
+      /3 candidate/i.test(cdZeroEvidence) &&
+      /met the criteria/i.test(cdZeroEvidence)
+  );
+
+  await askViaUi(page, 'What does OSFI require for Consumer Duty?');
+  const osfiBody = await page.locator('[data-ask-ri-result]').innerText();
+  pass('e2e-osfi-insufficient', osfiBody.includes('INSUFFICIENT RI EVIDENCE'));
+  pass('e2e-osfi-not-zero-qualifier', (await page.locator('[data-ask-ri-zero-qualifiers]').count()) === 0);
 
   for (const { q, id } of HELD_OUT_POSITIVE) {
     await askViaUi(page, q);

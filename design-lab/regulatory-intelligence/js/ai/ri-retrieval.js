@@ -11,9 +11,37 @@ import {
   resolveSectorsInQuestion,
   sectorRegulatorEvidence,
 } from './ri-entity-catalog.js';
+import { EVIDENCE_DISPLAY_CAP } from './ri-ask-planner.js';
+import { buildAskQueryPlan } from './ri-graph-plan.js';
+import { formatAsOfLabel, resolveHubChangeIds } from './ri-graph-traverse.js';
+import {
+  executeGraphPlan,
+  executeTargetPredicatePlan,
+  resolveAskRiResultState,
+  ASK_RI_RESULT_STATES,
+} from './ri-query-executor.js';
+import { buildInterpretedAsPlainEnglish as buildInterpretedAs, SUPPORTED_QUESTION_EXAMPLES } from './ri-interpreted-as.js';
 
-/** Documented OPEN obligation statuses (Design Lab). */
-export const OPEN_OBLIGATION_STATUSES = new Set(['Draft', 'Open', 'In progress', 'Review', 'Active']);
+export { SUPPORTED_QUESTION_EXAMPLES };
+import { HUB_NODE_TYPES } from './ri-graph-normalized.js';
+import { directEvidenceIds } from './obligation-attribution.js';
+import { actionsForChange, assessmentsForChange, obligationsForChange } from './ri-canonical-links.js';
+import { buildDisplayReasons } from './ask-ri-provenance.js';
+import { labTodayISO } from '../platform/clock.js';
+import {
+  countOpenObligationsInList,
+  obligationStatusIsOpen,
+  obligationStatusIsOpenForLinkedWork,
+  OPEN_OBLIGATION_STATUSES,
+  summarizeObligationPortfolio,
+} from './obligation-portfolio.js';
+
+export {
+  obligationStatusIsOpen,
+  obligationStatusIsOpenForLinkedWork,
+  OPEN_OBLIGATION_STATUSES,
+  summarizeObligationPortfolio,
+};
 
 const CHANGE_NOT_CURRENTLY_RELEVANT = new Set([
   'Complete',
@@ -29,18 +57,22 @@ export function parseAskQuery(question, state = null) {
   const lower = q.toLowerCase();
   const filters = { futureFacing: /\bupcoming\b|\bfuture\b|\bconsultation\b|\bnext year\b|\bhorizon\b|\bemerging\b/i.test(q) };
 
-  if (/how many open obligation/i.test(q)) filters.intent = 'count-open-obligations';
-
-  if (/currently affect|changes currently affect/i.test(lower)) {
-    filters.intent = 'sector-current-changes';
-    filters.requireCurrentlyRelevant = true;
-  }
-
+  let plan = null;
   if (state) {
+    plan = buildAskQueryPlan(q, state);
     const catalog = buildRiEntityCatalog(state);
-    const sectors = resolveSectorsInQuestion(q, catalog);
-    if (sectors.length === 1) filters.sectorId = sectors[0].id;
-    if (sectors.length === 1) filters.sectorSlug = sectors[0].slug;
+    const sectorEnt = plan.resolvedEntities.find((e) => e.type === 'Sector');
+    if (sectorEnt) {
+      filters.sectorId = sectorEnt.id;
+      filters.sectorSlug = sectorEnt.slug;
+    }
+    if (plan.temporalFilters?.includes('current')) filters.requireCurrentlyRelevant = true;
+    if (plan.secondaryIntents?.length) filters.secondaryIntents = plan.secondaryIntents;
+    filters.compound = plan.compound;
+
+    if (plan.aggregationRequests?.some((a) => a.type === 'count-open-obligations')) {
+      filters.intent = 'count-open-obligations';
+    }
 
     const basel = resolveBaselSourcesInQuestion(q, catalog);
     const regs = resolveRegulatorsInQuestion(q, catalog);
@@ -52,16 +84,30 @@ export function parseAskQuery(question, state = null) {
     }
 
     const tpr = regs.find((r) => /tpr|pensions regulator/i.test(`${r.shortName} ${r.label}`));
-    const pensionSector = sectors.find((s) => s.slug === 'pension-providers') || resolveSectorsInQuestion('pension providers', catalog)[0];
-    if (tpr && pensionSector && /requirements|relevant|linked|pension/i.test(lower)) {
+    const pensionSector = plan.resolvedEntities.find((s) => s.slug === 'pension-providers') || resolveSectorsInQuestion('pension providers', catalog)[0];
+    if (tpr && pensionSector && /requirements|relevant|linked|pension/i.test(lower) && !filters.intent) {
       filters.intent = 'regulator-sector-evidence';
       filters.regulatorId = tpr.id;
       filters.sectorId = pensionSector.id;
       filters.sectorSlug = pensionSector.slug;
     }
+
+    if (!plan.unresolvedSemantics) {
+      if (!filters.intent && plan.targetPredicate) {
+        filters.intent = 'target-predicate';
+      }
+
+      const graphPrimaryTypes = new Set(['Change', 'Obligation', 'Action', 'Control', 'Evidence', 'Assurance']);
+      if (!filters.intent && plan.resolvedEntities.length && plan.primaryTargetType && graphPrimaryTypes.has(plan.primaryTargetType)) {
+        filters.intent = 'graph-query';
+      }
+      if (!filters.intent && plan.resolvedEntities.length && (plan.relationshipRequests?.length || plan.secondaryIntents?.length)) {
+        filters.intent = 'graph-query';
+      }
+    }
   }
 
-  return { query: q, filters, lower };
+  return { query: q, filters, lower, plan };
 }
 
 export function changeIsCurrentlyRelevant(change, { futureFacing = false } = {}) {
@@ -89,8 +135,7 @@ export function changeTouchesSector(state, change, sectorId) {
   const pub = state.publications?.find((p) => p.id === change.publicationId);
   const pubSectors = pub?.sectorIds || pub?.affectedSectors || [];
   if (Array.isArray(pubSectors) && pubSectors.includes(sectorId)) return true;
-  const pubMapped = publicationsForSector(state, sectorId).some((p) => p.id === change.publicationId);
-  return pubMapped;
+  return publicationsForSector(state, sectorId).some((p) => p.id === change.publicationId);
 }
 
 function norm(s) {
@@ -98,13 +143,21 @@ function norm(s) {
 }
 
 export function countOpenObligations(state) {
-  return (state.obligations || []).filter((o) => OPEN_OBLIGATION_STATUSES.has(o.status)).length;
+  return countOpenObligationsInList(state.obligations || []);
 }
 
 export function computeDeterministicFacts(state, parsed) {
-  const facts = {};
+  const portfolio = summarizeObligationPortfolio(state.obligations || []);
+  const facts = {
+    obligationPortfolio: portfolio,
+    draftObligationCount: portfolio.counts.DRAFT,
+    reviewObligationCount: portfolio.counts.REVIEW,
+    overdueActiveCount: portfolio.flags.overdueActive,
+    unclassifiedObligationStatuses: portfolio.unclassifiedStatuses,
+    openObligationCount: portfolio.counts.ACTIVE,
+  };
   if (parsed.filters.intent === 'count-open-obligations' || /how many open obligation/i.test(parsed.query)) {
-    facts.openObligationCount = countOpenObligations(state);
+    facts.openObligationCount = portfolio.counts.ACTIVE;
   }
   facts.materialChangesOpenIa = (state.changes || []).filter((c) => {
     const mat = /high|medium/i.test(c.materiality || '');
@@ -114,7 +167,22 @@ export function computeDeterministicFacts(state, parsed) {
   return facts;
 }
 
-function emptyRetrieval(parsed, filters, timestamp, state, reason, debug = {}) {
+function emptyRetrieval(parsed, filters, timestamp, state, reason, debug = {}, resultState = ASK_RI_RESULT_STATES.INSUFFICIENT_EVIDENCE) {
+  const hubScoped = Boolean(
+    parsed.plan?.resolvedEntities?.some((e) => HUB_NODE_TYPES.has(e.type)) || parsed.plan?.targetPredicate?.anchors?.length
+  );
+  const stateResolved =
+    resultState ||
+    (reason === 'No discriminating RI retrieval intent'
+      ? ASK_RI_RESULT_STATES.UNRESOLVED_QUERY_SEMANTICS
+      : /Named entity not in RI evidence/i.test(reason)
+        ? ASK_RI_RESULT_STATES.INSUFFICIENT_EVIDENCE
+        : hubScoped
+          ? ASK_RI_RESULT_STATES.ZERO_QUALIFIERS
+          : ASK_RI_RESULT_STATES.INSUFFICIENT_EVIDENCE);
+  const primaryAdequate =
+    stateResolved === ASK_RI_RESULT_STATES.RESOLVED ||
+    stateResolved === ASK_RI_RESULT_STATES.ZERO_QUALIFIERS;
   return {
     query: parsed.query,
     matchedRecordIds: [],
@@ -123,8 +191,15 @@ function emptyRetrieval(parsed, filters, timestamp, state, reason, debug = {}) {
     retrievalTimestamp: timestamp,
     filters,
     resultCount: 0,
-    adequate: false,
-    insufficientReason: reason,
+    totalMatchingRecords: 0,
+    displayedEvidenceRecords: 0,
+    evidenceDisplayTruncated: false,
+    primaryResultCount: 0,
+    primaryAdequate,
+    adequate: primaryAdequate,
+    insufficientReason: stateResolved === ASK_RI_RESULT_STATES.INSUFFICIENT_EVIDENCE ? reason : null,
+    resultState: stateResolved,
+    interpretedAs: buildInterpretedAs(parsed.plan, filters, stateResolved),
     deterministicFacts: computeDeterministicFacts(state, parsed),
     debug,
   };
@@ -153,16 +228,44 @@ function reviewedMappingsForCrossSource(state, { sourceFamily, targetFamily }) {
 
 function retrieveSectorCurrentChanges(state, sectorId, filters, bucket) {
   const sector = getSectorById(state, sectorId);
-  if (!sector) return;
+  if (!sector) return [];
+  const changeIds = [];
   (state.changes || []).forEach((ch) => {
     if (filters.requireCurrentlyRelevant && !changeIsCurrentlyRelevant(ch, filters)) return;
     if (!changeTouchesSector(state, ch, sectorId)) return;
+    changeIds.push(ch.id);
     addMatch(bucket, ch.id, 'Change', `${sector.name}-linked Change (landscape / publication / business-line relationship)`);
     const pubId = ch.publicationId;
-    if (pubId && changeTouchesSector(state, ch, sectorId)) {
-      addMatch(bucket, pubId, 'Publication', `Source publication for ${sector.name}-linked Change`);
-    }
+    if (pubId) addMatch(bucket, pubId, 'Publication', `Source publication for ${sector.name}-linked Change`);
   });
+  return changeIds;
+}
+
+function expandLinkedFromChanges(state, changeIds, secondaryIntents, bucket, { openObligationsOnly = false } = {}) {
+  const summary = { linkedActionCount: 0, linkedObligationCount: 0, linkedAssessmentCount: 0, linkedRiskCount: 0, linkedControlCount: 0 };
+  const want = new Set(secondaryIntents || []);
+  for (const changeId of changeIds) {
+    if (want.has('linked-assessments')) {
+      assessmentsForChange(state, changeId).forEach((a) => {
+        summary.linkedAssessmentCount += 1;
+        addMatch(bucket, a.id, 'ImpactAssessment', `Impact Assessment linked to Change ${changeId}`);
+      });
+    }
+    if (want.has('linked-obligations') || want.has('linked-actions')) {
+      obligationsForChange(state, changeId).forEach((obl) => {
+        if (openObligationsOnly && !obligationStatusIsOpenForLinkedWork(obl.status)) return;
+        summary.linkedObligationCount += 1;
+        addMatch(bucket, obl.id, 'Obligation', `Obligation linked to Change ${changeId}`);
+      });
+    }
+    if (want.has('linked-actions')) {
+      actionsForChange(state, changeId).forEach((a) => {
+        summary.linkedActionCount += 1;
+        addMatch(bucket, a.id, 'Action', `Action sourced from obligation or assessment on Change ${changeId}`);
+      });
+    }
+  }
+  return summary;
 }
 
 function retrieveReviewedCrossSource(state, bucket) {
@@ -188,11 +291,83 @@ function retrieveRegulatorSectorEvidence(state, regulatorId, sectorId, bucket) {
   pack.obligations.forEach((o) => addMatch(bucket, o.id, 'Obligation', 'Sector obligation evidence'));
 }
 
+function prioritizeEvidenceIds(unique, recordTypes, plan) {
+  if (!plan) return unique;
+  const primary = plan.primaryTargetType;
+  const targets = new Set([primary, ...(plan.secondaryTargetTypes || [])]);
+  const score = (id) => {
+    const t = recordTypes[id];
+    if (t === primary) return 0;
+    if (targets.has(t)) return 1;
+    if (t === 'Action' || t === 'Obligation' || t === 'Control') return 2;
+    return 3;
+  };
+  return [...unique].sort((a, b) => score(a) - score(b));
+}
+
+function retrieveTargetPredicateMatches(state, plan, bucket, graphPathByRecordId) {
+  const exec = executeTargetPredicatePlan(state, plan, bucket, graphPathByRecordId);
+  if (!exec.predicateMeta) {
+    return { primaryCount: 0, predicateResult: null, scopeChangeIds: exec.scopeChangeIds || [], targetPredicateFacts: {} };
+  }
+  return {
+    primaryCount: exec.primaryCount,
+    scopeChangeIds: exec.scopeChangeIds,
+    ...exec.predicateMeta,
+  };
+}
+
+function packageRetrieval(unique, recordTypes, matchReasons, parsed, filters, timestamp, meta) {
+  const ordered = prioritizeEvidenceIds(unique, recordTypes, parsed.plan);
+  const total = ordered.length;
+  const displayed = ordered.slice(0, EVIDENCE_DISPLAY_CAP);
+  const deterministicFacts = meta.deterministicFacts || computeDeterministicFacts(meta.state, parsed);
+  const asOfDate = meta.asOfDate || deterministicFacts.asOfDate;
+  const asOfLabel = meta.asOfLabel || deterministicFacts.asOfDateLabel;
+  const displayReasons = buildDisplayReasons(meta.state, ordered, recordTypes, matchReasons, {
+    pathByRecordId: meta.graphPathByRecordId || {},
+    asOfDate,
+    asOfLabel,
+  });
+  return {
+    query: parsed.query,
+    matchedRecordIds: displayed,
+    matchedRecordIdsAll: ordered,
+    recordTypes,
+    matchReasons,
+    displayReasons,
+    retrievalTimestamp: timestamp,
+    filters,
+    plan: parsed.plan,
+    resultCount: total,
+    totalMatchingRecords: total,
+    displayedEvidenceRecords: displayed.length,
+    evidenceDisplayTruncated: total > displayed.length,
+    primaryResultCount: meta.primaryCount,
+    requestedTargetType: meta.requestedTargetType || parsed.plan?.primaryTargetType,
+    primaryResultIds: meta.primaryResultIds || [],
+    primaryAdequate: meta.primaryAdequate,
+    adequate: meta.primaryAdequate,
+    resultState: meta.resultState || ASK_RI_RESULT_STATES.RESOLVED,
+    interpretedAs: meta.interpretedAs,
+    compoundSummary: meta.compoundSummary,
+    evaluatedCounts: meta.evaluatedCounts,
+    evaluatedRelations: meta.evaluatedRelations,
+    reviewedMappingId: meta.reviewedMappingId,
+    deterministicFacts,
+    predicateEvaluation: deterministicFacts.predicateEvaluation,
+    secondaryGaps: meta.secondaryGaps,
+    graphConflicts: meta.graphConflicts || [],
+    pathByRecordId: meta.graphPathByRecordId || {},
+    debug: meta.debug,
+  };
+}
+
 export function validateRetrievalPrecision(state, retrieval) {
   const errors = [];
   const sectorId = retrieval.filters?.sectorId || (retrieval.filters?.sectorSlug ? getSectorBySlug(state, retrieval.filters.sectorSlug)?.id : null);
   const sector = sectorId ? getSectorById(state, sectorId) : null;
-  for (const id of retrieval.matchedRecordIds || []) {
+  for (const id of retrieval.matchedRecordIdsAll || retrieval.matchedRecordIds || []) {
     const type = retrieval.recordTypes[id];
     if (type === 'Change' && sectorId) {
       const ch = state.changes?.find((c) => c.id === id);
@@ -207,8 +382,9 @@ export function validateRetrievalPrecision(state, retrieval) {
     const mapping = mappings[0];
     if (!mapping) errors.push('missing reviewed mapping');
     else {
-      if (!retrieval.matchedRecordIds.includes(mapping.baselRecordId)) errors.push('missing Basel record');
-      if (mapping.praPublicationId && !retrieval.matchedRecordIds.includes(mapping.praPublicationId)) errors.push('missing PRA publication');
+      const ids = retrieval.matchedRecordIdsAll || retrieval.matchedRecordIds;
+      if (!ids.includes(mapping.baselRecordId)) errors.push('missing Basel record');
+      if (mapping.praPublicationId && !ids.includes(mapping.praPublicationId)) errors.push('missing PRA publication');
       if (!retrieval.reviewedMappingId) errors.push('missing mapping id on retrieval');
     }
   }
@@ -226,16 +402,20 @@ export function retrieveRiRecords(state, question, options = {}) {
 
   const entityEval = evaluateEntityConstraints(state, question);
   const debug = options.debugRetrieval
-    ? {
-        intent: filters.intent,
-        entityEval,
-        filters,
-      }
-    : {};
+    ? { intent: filters.intent, entityEval, filters, plan: parsed.plan }
+    : undefined;
 
   if (entityEval.insufficient) {
     const labels = entityEval.blocking.map((b) => `${b.kind}:${b.phrase}`).join('; ');
-    return emptyRetrieval(parsed, filters, timestamp, state, `Named entity not in RI evidence: ${labels}`, debug);
+    return emptyRetrieval(
+      parsed,
+      filters,
+      timestamp,
+      state,
+      `Named entity not in RI evidence: ${labels}`,
+      debug,
+      ASK_RI_RESULT_STATES.INSUFFICIENT_EVIDENCE
+    );
   }
 
   if (options.fixtureScenario === 'ai-006b-insufficient') {
@@ -243,62 +423,171 @@ export function retrieveRiRecords(state, question, options = {}) {
   }
 
   if (!filters.intent) {
-    return emptyRetrieval(parsed, filters, timestamp, state, 'No discriminating RI retrieval intent', debug);
+    return emptyRetrieval(
+      parsed,
+      filters,
+      timestamp,
+      state,
+      'No discriminating RI retrieval intent',
+      debug,
+      ASK_RI_RESULT_STATES.UNRESOLVED_QUERY_SEMANTICS
+    );
   }
 
   let reviewedMappingId = null;
+  let primaryChangeIds = [];
+  let primaryCount = 0;
+  let compoundSummary = null;
+  let evaluatedCounts = null;
+  let evaluatedRelations = [];
+  let metaActionFacts = null;
+  let retrievalGraphConflicts = [];
+  const secondaryGaps = [];
+  const graphPathByRecordId = {};
+  let retrievalAsOfDate = options.asOfDate || labTodayISO();
+  let predicateMeta = null;
 
-  if (filters.intent === 'sector-current-changes' && filters.sectorId) {
-    retrieveSectorCurrentChanges(state, filters.sectorId, filters, bucket);
+  if (filters.intent === 'target-predicate' && parsed.plan?.targetPredicate) {
+    const asOfDate = options.asOfDate || labTodayISO();
+    retrievalAsOfDate = asOfDate;
+    predicateMeta = retrieveTargetPredicateMatches(state, parsed.plan, bucket, graphPathByRecordId);
+    primaryCount = predicateMeta.primaryCount;
+  }
+
+  if (filters.intent === 'graph-query' && parsed.plan) {
+    const asOfDate = options.asOfDate || labTodayISO();
+    retrievalAsOfDate = asOfDate;
+    const graphResult = executeGraphPlan(state, parsed.plan, { asOfDate });
+    graphResult.bucket.matchedRecordIds.forEach((id) => {
+      bucket.matchedRecordIds.push(id);
+      bucket.recordTypes[id] = graphResult.bucket.recordTypes[id];
+      bucket.matchReasons[id] = graphResult.bucket.matchReasons[id];
+    });
+    Object.assign(graphPathByRecordId, graphResult.pathByRecordId);
+    compoundSummary = parsed.plan?.compound ? graphResult.summary : null;
+    evaluatedCounts = graphResult.evaluatedCounts;
+    evaluatedRelations = graphResult.evaluatedRelations || [];
+    secondaryGaps.push(...graphResult.secondaryGaps);
+    primaryCount = graphResult.primaryCount;
+    primaryChangeIds = graphResult.scopedChangeIds || [];
+    metaActionFacts = graphResult.metaActionFacts;
+    if (options.debugRetrieval && debug) debug.asOfDate = asOfDate;
   }
 
   if (filters.intent === 'reviewed-cross-source' || options.fixtureScenario === 'ai-005-implementation-mapping') {
     reviewedMappingId = retrieveReviewedCrossSource(state, bucket);
+    primaryCount = reviewedMappingId ? 1 : 0;
   }
 
   if (filters.intent === 'regulator-sector-evidence' && filters.regulatorId && filters.sectorId) {
     retrieveRegulatorSectorEvidence(state, filters.regulatorId, filters.sectorId, bucket);
+    primaryCount = bucket.matchedRecordIds.length;
   }
 
   if (filters.intent === 'count-open-obligations') {
-    (state.obligations || [])
-      .filter((o) => OPEN_OBLIGATION_STATUSES.has(o.status))
-      .slice(0, 12)
-      .forEach((o) => {
-        addMatch(bucket, o.id, 'Obligation', `Obligation status ${o.status} (OPEN definition)`);
-      });
+    const open = (state.obligations || []).filter((o) => obligationStatusIsOpen(o.status));
+    primaryCount = open.length;
+    open.forEach((o) => {
+      addMatch(bucket, o.id, 'Obligation', `Obligation status ${o.status} (OPEN definition)`);
+    });
   }
 
   if (options.allowFixtureRetrieval === true && options.fixtureScenario === 'ai-006-ask-banking' && matchedRecordIds.length === 0) {
     ['CHG-001', 'CHG-002', 'CHG-003', 'PUB-001'].forEach((id) => {
       addMatch(bucket, id, id.startsWith('CHG') ? 'Change' : 'Publication', 'Fixture retrieval set for AI-006 (unit test only)');
     });
+    primaryCount = 3;
   }
 
   const unique = [...new Set(matchedRecordIds)];
-  const deterministicFacts = computeDeterministicFacts(state, parsed);
-  const adequate = unique.length > 0;
+  const hubScoped =
+    filters.intent === 'graph-query' || filters.intent === 'target-predicate'
+      ? Boolean(
+          parsed.plan?.resolvedEntities?.some((e) => HUB_NODE_TYPES.has(e.type)) ||
+            parsed.plan?.targetPredicate?.anchors?.length
+        )
+      : false;
+  const qualifyingCount =
+    predicateMeta?.predicateEvaluation?.qualifyingCount ??
+    predicateMeta?.predicateResult?.qualifyingCount ??
+    (filters.intent === 'target-predicate' ? primaryCount : null);
 
-  if (options.debugRetrieval) {
+  const resultState = resolveAskRiResultState({
+    intent: filters.intent,
+    entityInsufficient: false,
+    hubScoped,
+    scopeChangeIds: predicateMeta?.scopeChangeIds || primaryChangeIds,
+    primaryCount:
+      filters.intent === 'count-open-obligations' ? countOpenObligations(state) : primaryCount,
+    qualifyingCount,
+    hasIntent: true,
+  });
+
+  const primaryAdequate =
+    resultState === ASK_RI_RESULT_STATES.RESOLVED || resultState === ASK_RI_RESULT_STATES.ZERO_QUALIFIERS;
+
+  if (
+    resultState === ASK_RI_RESULT_STATES.INSUFFICIENT_EVIDENCE ||
+    resultState === ASK_RI_RESULT_STATES.UNRESOLVED_QUERY_SEMANTICS
+  ) {
+    return emptyRetrieval(
+      parsed,
+      filters,
+      timestamp,
+      state,
+      'No suitable primary RI evidence for this question',
+      debug,
+      resultState
+    );
+  }
+
+  if (options.debugRetrieval && debug) {
     debug.candidateCount = matchedRecordIds.length;
     debug.matchedCount = unique.length;
     debug.matchedRecordIds = unique;
     debug.matchReasons = matchReasons;
+    debug.plan = parsed.plan;
+    debug.primaryChangeIds = primaryChangeIds;
   }
 
-  return {
-    query: parsed.query,
-    matchedRecordIds: unique,
-    recordTypes,
-    matchReasons,
-    retrievalTimestamp: timestamp,
-    filters,
-    resultCount: unique.length,
-    adequate,
-    reviewedMappingId,
-    deterministicFacts,
-    debug: options.debugRetrieval ? debug : undefined,
+  const packagedFacts = {
+    ...computeDeterministicFacts(state, parsed),
+    ...(metaActionFacts || {}),
+    ...(predicateMeta?.predicateResult ? { predicateResult: predicateMeta.predicateResult } : {}),
+    ...(predicateMeta?.targetPredicateFacts ? { targetPredicateFacts: predicateMeta.targetPredicateFacts } : {}),
+    ...(predicateMeta?.predicateEvaluation ? { predicateEvaluation: predicateMeta.predicateEvaluation } : {}),
   };
+  if (metaActionFacts?.asOfDate) {
+    packagedFacts.asOfDate = metaActionFacts.asOfDate;
+    packagedFacts.asOfDateLabel = metaActionFacts.asOfDateLabel;
+  } else if (filters.intent === 'graph-query') {
+    packagedFacts.asOfDate = retrievalAsOfDate;
+    packagedFacts.asOfDateLabel = formatAsOfLabel(retrievalAsOfDate);
+  }
+
+  return packageRetrieval(unique, recordTypes, matchReasons, parsed, filters, timestamp, {
+    state,
+    primaryCount,
+    primaryAdequate,
+    resultState,
+    interpretedAs: buildInterpretedAs(parsed.plan, filters, resultState, {
+      asOfDate: packagedFacts.asOfDate,
+      asOfLabel: packagedFacts.asOfDateLabel,
+    }),
+    compoundSummary,
+    evaluatedCounts,
+    evaluatedRelations,
+    reviewedMappingId,
+    secondaryGaps,
+    graphConflicts: retrievalGraphConflicts,
+    deterministicFacts: packagedFacts,
+    graphPathByRecordId,
+    asOfDate: packagedFacts.asOfDate,
+    asOfLabel: packagedFacts.asOfDateLabel,
+    requestedTargetType: predicateMeta?.requestedTargetType,
+    primaryResultIds: predicateMeta?.primaryResultIds,
+    debug,
+  });
 }
 
 export function selectionFromRetrieval(retrieval) {
@@ -316,5 +605,8 @@ function mapRecordTypeForContext(type) {
   if (type === 'Framework') return 'Framework';
   if (type === 'Theme') return 'Theme';
   if (type === 'Sector') return 'Sector';
+  if (type === 'Action') return 'Action';
+  if (type === 'Risk') return 'Risk';
+  if (type === 'Control') return 'Control';
   return type;
 }
