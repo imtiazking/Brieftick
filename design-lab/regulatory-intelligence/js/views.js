@@ -1,3 +1,4 @@
+import { summarizeObligationPortfolio, UI_LABEL_OPEN_OBLIGATIONS } from './ai/obligation-portfolio.js';
 import {
   getState,
   computeDashboardStats,
@@ -317,6 +318,7 @@ function viewDashboard() {
   const scopedPubs = scenarioFilter(s.publications);
   const scopedChanges = scenarioFilter(s.changes);
   const materialOpen = scopedChanges.filter((c) => c.materiality === 'High' && c.status !== 'Complete');
+  const openObl = stats.openObligations || 0;
   const overdueObl = stats.oblOverdue || 0;
   const headline =
     materialOpen.length > 0
@@ -345,7 +347,8 @@ function viewDashboard() {
     <div class="ri-priority-metrics">
       ${metric('Material changes', `<strong>${materialOpen.length}</strong>`, 'High materiality in flight')}
       ${metric('Awaiting review', `<strong>${stats.awaitingReview}</strong>`, 'Intake & applicability')}
-      ${metric('Overdue obligations', `<strong>${overdueObl}</strong>`, 'Implementation risk')}
+      ${metric(UI_LABEL_OPEN_OBLIGATIONS, `<strong>${openObl}</strong>`, 'Active implementation (Open / In Progress / Overdue)')}
+      ${metric('Overdue obligations', `<strong>${overdueObl}</strong>`, 'Subset of open obligations')}
       ${metric('Upcoming deadlines', `<strong>${stats.upcomingDeadlines}</strong>`, 'Next 30 days')}
     </div>
     ${renderDashboardMySectors(s)}
@@ -713,7 +716,7 @@ function viewAssessment(id) {
 function viewObligations() {
   const s = getState();
   const obls = scenarioFilter(s.obligations);
-  const open = obls.filter((o) => o.status !== 'Complete').length;
+  const portfolio = summarizeObligationPortfolio(obls);
   const rows = obls.map(
     (o) => `<tr class="ri-row-link">
       <td><a href="#/obligation/${o.id}">${esc(o.id)}</a></td>
@@ -728,8 +731,11 @@ function viewObligations() {
   );
   return `${pageHeader('Obligations', 'DEMO register')}
     <div class="ri-metrics-row">
-      <span>Total <strong>${obls.length}</strong></span>
-      <span>Open <strong>${open}</strong></span>
+      <span>Total <strong>${portfolio.counts.TOTAL}</strong></span>
+      <span>${UI_LABEL_OPEN_OBLIGATIONS} <strong>${portfolio.counts.ACTIVE}</strong></span>
+      <span>Draft <strong>${portfolio.counts.DRAFT}</strong></span>
+      <span>In review <strong>${portfolio.counts.REVIEW}</strong></span>
+      <span>Overdue (active) <strong>${portfolio.flags.overdueActive}</strong></span>
       <span>High <strong>${obls.filter((o) => o.priority === 'High').length}</strong></span>
     </div>
     ${dataTable(['ID', 'Statement', 'Source', 'Owner', 'Priority', 'Effective', 'Coverage', 'Status'], rows)}`;

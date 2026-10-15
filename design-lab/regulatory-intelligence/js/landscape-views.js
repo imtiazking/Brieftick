@@ -30,6 +30,10 @@ import {
   coverageLabel,
   mySectorIds,
 } from './landscape-helpers.js';
+import {
+  UI_LABEL_ACTIVE_IN_REVIEW_OBLIGATIONS,
+  obligationStatusIsOpenForLinkedWork,
+} from './ai/obligation-portfolio.js';
 import { renderPensionProvidersProvenance } from './tpr-views.js';
 import { renderBankingProvenance } from './basel-views.js';
 
@@ -82,7 +86,8 @@ export function viewLandscapeHome() {
           <dt>Live / partial / planned / reference</dt>
           <dd>${stats.liveCoverageCount} LIVE · ${stats.partialCoverageCount} PARTIAL · ${stats.plannedCount} PLANNED · ${stats.referenceCount} REFERENCE</dd>
           <dt>Recent changes (open)</dt><dd>${stats.recentChanges}</dd>
-          <dt>Open obligations</dt><dd>${stats.openObligations}</dd>
+          <dt>Active + in-review obligations</dt><dd>${stats.activeInReviewObligationCount}</dd>
+          <dt>Open obligations</dt><dd>${stats.openObligationCount}</dd>
           <dt>Last landscape review</dt><dd>${esc(stats.lastLandscapeReview)}</dd>
         </dl>
         <a class="ri-btn ri-btn--ghost" href="#/landscape/${esc(sec.slug)}">Open sector</a>
@@ -246,7 +251,9 @@ function renderSectorOverview(s, sector, cov) {
   const chgs = scenarioFilter(changesForSector(s, sector.id))
     .filter((c) => c.materiality === 'High')
     .slice(0, 5);
-  const obls = scenarioFilter(obligationsForSector(s, sector.id)).slice(0, 5);
+  const obls = scenarioFilter(obligationsForSector(s, sector.id))
+    .filter((o) => obligationStatusIsOpenForLinkedWork(o.status))
+    .slice(0, 5);
   const fw = frameworksForSector(s, sector.id).slice(0, 6);
   const themes = themesForSector(s, sector.id).slice(0, 8);
   const pensionLayer = sector.id === 'SEC-011' ? renderPensionProvidersProvenance(s) : '';
@@ -265,7 +272,7 @@ function renderSectorOverview(s, sector, cov) {
     </div>
     <section class="ri-panel"><h2>Latest publications</h2>${pubs.length ? `<ul>${pubs.map((p) => `<li>${linkRecord('Publication', p.id, p.title)}</li>`).join('')}</ul>` : emptyState('No mapped publications')}</section>
     <section class="ri-panel"><h2>High-impact changes</h2>${chgs.length ? `<ul>${chgs.map((c) => `<li>${linkRecord('Regulatory Change', c.id, c.title)}</li>`).join('')}</ul>` : emptyState('No mapped changes')}</section>
-    <section class="ri-panel"><h2>Open obligations</h2>${obls.length ? `<ul>${obls.map((o) => `<li>${linkRecord('Obligation', o.id, o.title)} — ${badge(o.status)}</li>`).join('')}</ul>` : emptyState('No mapped obligations')}</section>`;
+    <section class="ri-panel"><h2>${esc(UI_LABEL_ACTIVE_IN_REVIEW_OBLIGATIONS)}</h2>${obls.length ? `<ul>${obls.map((o) => `<li>${linkRecord('Obligation', o.id, o.title)} — ${badge(o.status)}</li>`).join('')}</ul>` : emptyState('No active or in-review obligations mapped to this sector')}</section>`;
 }
 
 function renderSectorFrameworks(s, sector) {

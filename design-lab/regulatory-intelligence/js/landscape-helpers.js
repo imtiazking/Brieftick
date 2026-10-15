@@ -1,4 +1,5 @@
 /** Sector regulatory landscape — query & display helpers (deterministic, no AI). */
+import { filterActiveObligations, filterOpenWorkObligations } from './ai/obligation-portfolio.js';
 
 export const COVERAGE_STATUSES = {
   LIVE_SOURCE: 'LIVE_SOURCE',
@@ -130,7 +131,8 @@ export function sectorSummaryStats(state, sector) {
     plannedCount: cov.counts.SOURCE_PLANNED,
     referenceCount: cov.counts.REFERENCE_ONLY,
     recentChanges: chgs.filter((c) => c.status !== 'Complete').length,
-    openObligations: obls.filter((o) => o.status !== 'Complete' && o.status !== 'Closed').length,
+    openObligationCount: filterActiveObligations(obls).length,
+    activeInReviewObligationCount: filterOpenWorkObligations(obls).length,
     lastLandscapeReview: live?.lastLandscapeReview || sector.lastLandscapeReview || '—',
   };
 }
