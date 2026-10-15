@@ -214,14 +214,56 @@ export function resolveFrameworksInQuestion(question, catalog) {
   const lower = norm(question);
   const resolved = [];
   for (const f of catalog.frameworks) {
-    const names = [f.label, f.shortName].filter((x) => x && x.length >= 4);
+    const names = [f.label, f.shortName, f.id].filter(Boolean);
     for (const n of names) {
+      const minLen = norm(n).length >= 4 ? 4 : 2;
+      if (n.length < minLen) continue;
       if (wordBoundaryIncludes(lower, n) && !resolved.some((x) => x.id === f.id)) {
         resolved.push(f);
       }
     }
   }
   return resolved;
+}
+
+function looksLikeUnknownRegulatorShape(phrase) {
+  const p = String(phrase || '').trim();
+  if (!p) return false;
+  if (/^[A-Z]{2,6}$/.test(p)) return true;
+  if (/^[A-Z][a-z]+[A-Z][A-Za-z]*$/.test(p)) return true;
+  if (/^[A-Za-z]+Fin$/i.test(p)) return true;
+  return false;
+}
+
+/** True when token appears in a handbook-style reference such as "SYSC 8". */
+function tokenInHandbookSectionRef(question, token) {
+  const esc = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`\\b${esc}\\s+\\d`, 'i').test(question);
+}
+
+function tokenCoveredByResolvedEntities(token, resolved) {
+  const t = norm(token);
+  if (!t) return false;
+  const entries = [
+    ...resolved.frameworks.flatMap((f) => [f.shortName, f.label, f.id]),
+    ...resolved.regulators.flatMap((r) => [r.shortName, r.label]),
+    ...resolved.sectors.flatMap((s) => [s.label, s.slug]),
+    ...resolved.baselSources.flatMap((b) => [b.label, b.id]),
+  ];
+  for (const raw of entries) {
+    const n = norm(raw);
+    if (!n) continue;
+    if (n === t) return true;
+    if (wordBoundaryIncludes(raw, token) || wordBoundaryIncludes(token, raw)) return true;
+    if (n.includes(t) && t.length >= 2) return true;
+  }
+  return false;
+}
+
+function pushBlocking(blocking, entry) {
+  const key = `${entry.kind}:${norm(entry.phrase)}`;
+  if (blocking.some((b) => `${b.kind}:${norm(b.phrase)}` === key)) return;
+  blocking.push(entry);
 }
 
 export function resolveJurisdictionsInQuestion(question, catalog) {
@@ -265,13 +307,23 @@ export function evaluateEntityConstraints(state, question) {
   };
 
   const blocking = [];
-  unresolvedPhrases.forEach((p) => blocking.push({ kind: 'constraint_phrase', phrase: p }));
+  unresolvedPhrases.forEach((p) => pushBlocking(blocking, { kind: 'constraint_phrase', phrase: p }));
 
   const authorityRequire = /\bwhat does (?:the )?(.+?) require\b/i.exec(normalizedQuestion);
   if (authorityRequire) {
     const authPhrase = authorityRequire[1].trim();
-    if (authPhrase.length > 4 && !resolveRegulatorsInQuestion(authPhrase, catalog).length) {
-      blocking.push({ kind: 'regulator', phrase: authPhrase });
+    const authKnown =
+      phraseResolvesInCatalog(authPhrase, catalog) ||
+      resolved.frameworks.some(
+        (f) => wordBoundaryIncludes(authPhrase, f.shortName) || wordBoundaryIncludes(authPhrase, f.label)
+      ) ||
+      resolved.regulators.some(
+        (r) => wordBoundaryIncludes(authPhrase, r.shortName) || wordBoundaryIncludes(authPhrase, r.label)
+      );
+    if (!authKnown && /\d/.test(authPhrase)) {
+      /* handbook section reference — defer to grammar planner, not entity insufficient */
+    } else if (!authKnown) {
+      pushBlocking(blocking, { kind: 'regulator', phrase: authPhrase });
     }
   }
 
@@ -279,34 +331,45 @@ export function evaluateEntityConstraints(state, question) {
   if (sectorExplicitUnknown) {
     const slugGuess = sectorExplicitUnknown[1].toLowerCase();
     const known = catalog.sectors.some((s) => s.slug === slugGuess || norm(s.label) === slugGuess);
-    if (!known) blocking.push({ kind: 'sector', phrase: slugGuess });
+    if (!known) pushBlocking(blocking, { kind: 'sector', phrase: slugGuess });
   }
 
   const regulatoryLead = /\b([a-z0-9][a-z0-9-]{8,})\s+regulatory\b/i.exec(normalizedQuestion);
   if (regulatoryLead) {
     const slugGuess = regulatoryLead[1].toLowerCase();
     const known = catalog.sectors.some((s) => s.slug === slugGuess || s.id === slugGuess);
-    if (!known) blocking.push({ kind: 'sector', phrase: slugGuess });
+    if (!known) pushBlocking(blocking, { kind: 'sector', phrase: slugGuess });
   }
 
+  const authorityQuestion = /\bwhat does\b/i.test(normalizedQuestion) || /\brequire/i.test(normalizedQuestion);
   const acronymTokens = normalizedQuestion.match(/\b[A-Z]{2,6}\b/g) || [];
   for (const token of acronymTokens) {
+    if (tokenCoveredByResolvedEntities(token, resolved)) continue;
+    if (tokenInHandbookSectionRef(normalizedQuestion, token)) continue;
+    if (phraseResolvesInCatalog(token, catalog)) continue;
+    if (resolveFrameworksInQuestion(token, catalog).length) continue;
     if (resolveRegulatorsInQuestion(token, catalog).length) continue;
     if (resolveBaselSourcesInQuestion(token, catalog).length) continue;
+    if (resolveSectorsInQuestion(token, catalog).length) continue;
     if (catalog.regulators.some((r) => norm(r.shortName) === norm(token))) continue;
-    if (/\bwhat does\b/i.test(normalizedQuestion) || /\brequire/i.test(normalizedQuestion)) {
-      blocking.push({ kind: 'regulator', phrase: token });
+    if (authorityQuestion && looksLikeUnknownRegulatorShape(token)) {
+      pushBlocking(blocking, { kind: 'regulator', phrase: token });
     }
   }
 
-  /** Mixed-case authority tokens (e.g. internal capitals) in regulatory context, not in catalogue. */
+  /** Mixed-case authority tokens in regulatory context, not in catalogue. */
   const regulatoryContext = /\b(changes?|regulatory|requirements?|require|rules?|affect)\b/i.test(normalizedQuestion);
   const mixedAuthorityTokens = normalizedQuestion.match(/\b[A-Z][a-z]+[A-Z][A-Za-z]{1,20}\b/g) || [];
   if (regulatoryContext) {
     for (const token of mixedAuthorityTokens) {
+      if (tokenCoveredByResolvedEntities(token, resolved)) continue;
+      if (phraseResolvesInCatalog(token, catalog)) continue;
+      if (resolveFrameworksInQuestion(token, catalog).length) continue;
       if (resolveRegulatorsInQuestion(token, catalog).length) continue;
       if (resolveBaselSourcesInQuestion(token, catalog).length) continue;
-      blocking.push({ kind: 'regulator', phrase: token });
+      if (looksLikeUnknownRegulatorShape(token)) {
+        pushBlocking(blocking, { kind: 'regulator', phrase: token });
+      }
     }
   }
 

@@ -263,12 +263,48 @@ function resolveSelection(state, selection) {
             recordId: o.id,
             recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
             recordType: 'Obligation',
-            recordTitle: o.title || o.id,
+            recordTitle: o.statement || o.title || o.id,
             internalRoute: `#/obligation/${o.id}`,
-            sourceContent: [o.title, o.text, o.status].filter(Boolean).join('\n'),
+            sourceContent: [o.statement, o.title, o.text, o.status].filter(Boolean).join('\n'),
           });
         }
 
+      } else if (item.recordType === 'Action') {
+        const act = state.actions?.find((x) => x.id === item.recordId);
+        if (act) {
+          records.push({
+            recordId: act.id,
+            recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
+            recordType: 'Action',
+            recordTitle: act.description || act.id,
+            internalRoute: `#/action/${act.id}`,
+            sourceContent: [act.description, act.status, act.sourceType, act.sourceId].filter(Boolean).join('\n'),
+          });
+        }
+      } else if (item.recordType === 'Risk') {
+        const r = state.risks?.find((x) => x.id === item.recordId);
+        if (r) {
+          records.push({
+            recordId: r.id,
+            recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
+            recordType: 'Risk',
+            recordTitle: r.title || r.id,
+            internalRoute: `#/risk/${r.id}`,
+            sourceContent: [r.title, r.category, r.status].filter(Boolean).join('\n'),
+          });
+        }
+      } else if (item.recordType === 'Control') {
+        const c = state.controls?.find((x) => x.id === item.recordId);
+        if (c) {
+          records.push({
+            recordId: c.id,
+            recordCategory: CONTEXT_RECORD_CATEGORY.RI_RECORD,
+            recordType: 'Control',
+            recordTitle: c.name || c.id,
+            internalRoute: `#/control/${c.id}`,
+            sourceContent: [c.name, c.effectiveness, c.status].filter(Boolean).join('\n'),
+          });
+        }
       } else if (item.recordType === 'Publication' || item.recordType === 'BaselRecord') {
 
         const basel = state.baselPublicationRecords?.find((x) => x.id === item.recordId);

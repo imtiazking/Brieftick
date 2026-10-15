@@ -10,8 +10,9 @@ import {
   getAssuranceReview,
   getAssuranceStaleness,
 } from './assurance-helpers.js';
+import { classifyObligationPrimaryStatus } from './ai/obligation-portfolio.js';
 
-export const DEMO_TODAY = '2026-10-07';
+export const DEMO_TODAY = '2026-10-14';
 export const DEMO_DUE_SOON_DAYS = 14;
 export const AI_PROVENANCE = {
   engine: 'FORGENIQ Regulatory Intelligence AI — Demo',
@@ -149,7 +150,7 @@ export function buildWorkQueue(state, scenarioId) {
   });
 
   filterByScenario(state.obligations, sid).forEach((o) => {
-    if (o.status !== 'Complete' && o.coverage !== 'Full') {
+    if (classifyObligationPrimaryStatus(o.status) !== 'CLOSED' && classifyObligationPrimaryStatus(o.status) !== 'DRAFT' && o.coverage !== 'Full') {
       items.push(workItem('Obligation', o.id, o.statement, o.ownerId || o.owner, o.priority, o.reviewDate || o.effectiveDate, o.status, o.scenario, null, 'Obligation review', getPerson(state, o.ownerId)?.teamId));
     }
   });

@@ -88,7 +88,7 @@ function main() {
   pass('Large data work queue', lg.changes.length >= 300);
   pass('Work queue timing recorded', timing.ms >= 0);
 
-  pass('Deterministic clock', DEMO_TODAY === '2026-10-07');
+  pass('Deterministic clock', DEMO_TODAY === '2026-10-14');
   pass('Dashboard renders', renderViewSafe('/dashboard').includes('Regulatory Intelligence'));
   pass('Admin health route', renderViewSafe('/admin/health').includes('Platform health'));
   pass('Audit route registered', renderViewSafe('/audit').includes('Audit Trail'));

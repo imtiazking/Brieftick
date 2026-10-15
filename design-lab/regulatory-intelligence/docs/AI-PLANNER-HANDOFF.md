@@ -117,12 +117,16 @@ Today `scoreEvidenceConfidence` in `evidence-confidence.js` runs on **fixture AI
 
 ## Entity constraints (catalogue-driven)
 
+Resolution order: **catalogue alias / structured match first**, then unknown-entity safeguards.
+
 - `-related` suffix stripped before resolution (e.g. TPR-related → TPR).
-- Unresolved `in/under/from` phrases block when not in catalogue.
-- Unknown sector slugs (`… sector`, long `… regulatory` lead-in).
-- All-caps acronyms in “what does X require” / “require” context if not in catalogue.
-- Mixed-case authority tokens (internal capitals) in regulatory context if not in catalogue.
+- Framework short names (length ≥ 2) and labels matched before acronym blocking.
+- `what does X require`: block only when `X` does not resolve to catalogue framework/regulator/sector/jurisdiction and is not a handbook section reference (contains a digit, e.g. SYSC 8).
+- All-caps tokens in authority questions: block only if not covered by resolved entities and not a handbook `TOKEN digit` reference.
+- Mixed-case internal-capital tokens in regulatory context if not in catalogue.
 - Nationality adjective “German” only when no matching jurisdiction in catalogue.
+
+Freeze regression: `scripts/acceptance-ask-ri-entity-freeze.mjs`.
 
 ## Default synthesis scenario
 
