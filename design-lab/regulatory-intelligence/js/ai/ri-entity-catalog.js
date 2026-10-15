@@ -231,7 +231,6 @@ function looksLikeUnknownRegulatorShape(phrase) {
   if (!p) return false;
   if (/^[A-Z]{2,6}$/.test(p)) return true;
   if (/^[A-Z][a-z]+[A-Z][A-Za-z]*$/.test(p)) return true;
-  if (/^[A-Za-z]+Fin$/i.test(p)) return true;
   return false;
 }
 
@@ -371,14 +370,6 @@ export function evaluateEntityConstraints(state, question) {
         pushBlocking(blocking, { kind: 'regulator', phrase: token });
       }
     }
-  }
-
-  const germanMention = /\bgerman\b/i.test(normalizedQuestion);
-  if (
-    germanMention &&
-    !catalog.jurisdictions.some((j) => norm(j.label).includes('german') || norm(j.label).includes('germany'))
-  ) {
-    blocking.push({ kind: 'jurisdiction', phrase: 'German' });
   }
 
   return { ...resolved, blocking, insufficient: blocking.length > 0 };
