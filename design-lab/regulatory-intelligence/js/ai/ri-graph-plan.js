@@ -131,11 +131,22 @@ export function buildAskQueryPlan(question, state) {
   const statusFilters = parseStatusFilters(q);
   const secondaryIntents = detectSecondaryIntents(q);
 
+  const mentionsChanges = /\bchanges?\b/i.test(q);
+  const mentionsObligations = /\bobligations?\b/i.test(q);
+  const asksWhichObligations = /\bwhich obligations?\b/i.test(q);
+  const dualChangeAndObligation =
+    mentionsChanges &&
+    mentionsObligations &&
+    /\band\b/i.test(q) &&
+    (asksWhichObligations || /\bobligations?\s+(are\s+)?linked\b/i.test(q));
+
   let primaryTargetType = null;
   if (/how many open obligation/i.test(q)) primaryTargetType = 'Obligation';
+  else if (dualChangeAndObligation) primaryTargetType = 'Change';
+  else if (asksWhichObligations || /\bobligations?\s+linked\s+to\b/i.test(q)) primaryTargetType = 'Obligation';
   else if (/\bcontrols\b/i.test(q)) primaryTargetType = 'Control';
-  else if (/\bobligations\b/i.test(q)) primaryTargetType = 'Obligation';
-  else if (/\bchanges\b|\bchange\b/i.test(q)) primaryTargetType = 'Change';
+  else if (mentionsObligations) primaryTargetType = 'Obligation';
+  else if (mentionsChanges) primaryTargetType = 'Change';
   else if (/\bactions\b/i.test(q)) primaryTargetType = 'Action';
   else if (/\bevidence\b/i.test(q) && /\bassurance\b/i.test(q)) primaryTargetType = 'Obligation';
   else if (/\bassurance\b/i.test(q)) primaryTargetType = 'Assurance';

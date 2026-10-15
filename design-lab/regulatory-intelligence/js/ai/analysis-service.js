@@ -13,6 +13,7 @@ import { scoreEvidenceConfidence } from './evidence-confidence.js';
 import { auditAnalysisRequested, auditAnalysisCompleted, auditValidationFailed } from './audit.js';
 import { assertAnalysisSizeAllowed, pruneAiAnalyses } from './retention.js';
 import { canMutateAiReviewState } from './persona-ai.js';
+import { validateAskRiAnswerAgainstRetrieval } from './ask-ri-answer-consistency.js';
 
 let analysisCounter = 1;
 
@@ -100,6 +101,46 @@ export async function runFixtureAiAnalysis(state, options) {
 
   const validator = new AiOutputValidator({ state, contextBundle });
   const validated = validator.validateProviderOutput(taskType, providerResult.structured);
+  if (validated.ok && taskType === AI_TASK_TYPE.AI_RI_QA && contextExtras.retrieval) {
+    const consistency = validateAskRiAnswerAgainstRetrieval(
+      { ...contextExtras.retrieval, state },
+      validated.output
+    );
+    if (!consistency.ok) {
+      auditValidationFailed(state, {
+        analysisId,
+        taskType,
+        providerMode: providerResult.providerMode,
+        provider: providerResult.provider,
+        model: providerResult.model,
+        promptVersion: contextBundle.promptMetadata.version,
+        contextHash: contextBundle.contextHash,
+        actor,
+        errorCode: 'ASK_RI_ANSWER_RETRIEVAL_MISMATCH',
+        errorMessage: consistency.errors.join('; '),
+      });
+      const analysis = {
+        analysisId,
+        taskType,
+        provider: providerResult.provider,
+        model: providerResult.model,
+        createdAt: new Date().toISOString(),
+        status: AI_ANALYSIS_STATUS.FAILED,
+        reviewStatus: AI_REVIEW_STATUS.AI_DRAFT,
+        freshness: AI_FRESHNESS.CURRENT,
+        errorCode: 'ASK_RI_ANSWER_RETRIEVAL_MISMATCH',
+        errorMessage: consistency.errors.join('; '),
+        providerMode: providerResult.providerMode,
+        contextHash: contextBundle.contextHash,
+        contextRecordIds: contextBundle.contextRecordIds,
+        promptId: contextBundle.promptMetadata.promptId,
+        promptVersion: contextBundle.promptMetadata.version,
+        promptHash: contextBundle.promptMetadata.contentHash,
+        outputSchemaVersion: contextBundle.promptMetadata.outputSchemaVersion,
+      };
+      return { ok: false, analysis, persistable: false };
+    }
+  }
   if (!validated.ok) {
     auditValidationFailed(state, {
       analysisId,

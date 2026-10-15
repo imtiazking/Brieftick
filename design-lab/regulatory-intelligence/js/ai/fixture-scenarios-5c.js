@@ -1,4 +1,5 @@
 import { AI_PROVIDER_MODE } from './enums.js';
+import { buildCompoundAskAnswerParts } from './ask-ri-answer-consistency.js';
 
 function citeRi(recordId, recordType, excerpt, route) {
   return {
@@ -103,45 +104,12 @@ export function fixtureStructuredForScenario5c(scenario, ctx, providerId) {
   }
 
   if (scenario === 'ai-006-compound-ask') {
-    const ec = ctx?.retrieval?.evaluatedCounts || {};
     const gaps = ctx?.retrieval?.secondaryGaps || [];
-    const changeCount = ctx?.retrieval?.primaryResultCount ?? 0;
-    const actionCount = ec.Action?.evaluated ? ec.Action.count : null;
-    const oblCount = ec.Obligation?.evaluated ? ec.Obligation.count : null;
-    const controlCount = ec.Control?.evaluated ? ec.Control.count : null;
-    const actionStatuses = ctx?.deterministicFacts?.linkedActionStatuses || [];
-    const statusLine =
-      actionStatuses.length > 0
-        ? `Action statuses from RI: ${actionStatuses.map((a) => `${a.actionId}=${a.status}`).join(', ')}.`
-        : '';
-    const openOblGap = gaps.includes('linked-open-obligations');
-    const countParts = [`${changeCount} primary Change record(s)`];
-    if (actionCount != null) countParts.push(`${actionCount} linked Action(s)`);
-    if (oblCount != null) countParts.push(`${oblCount} linked Obligation(s)`);
-    if (controlCount != null) countParts.push(`${controlCount} linked Control(s)`);
+    const { answer, keyFindings, primaryType, primaryCount } = buildCompoundAskAnswerParts(ctx);
+    const ec = ctx?.retrieval?.evaluatedCounts || {};
     return {
-      answer: `AI SYNTHESIS: RI contains ${countParts.join('; ')} for the resolved graph anchor. ${statusLine}${
-        openOblGap ? ' No active + in-review obligations were found in RI.' : ''
-      }`.trim(),
-      keyFindings: [
-        `Primary Changes retrieved: ${changeCount}`,
-        actionCount == null
-          ? null
-          : actionCount === 0
-            ? gaps.includes('linked-actions')
-              ? 'No linked Action records are recorded for these Changes in RI.'
-              : `Linked Actions evaluated: ${actionCount}`
-            : `Linked Actions retrieved: ${actionCount}`,
-        oblCount == null
-          ? null
-          : oblCount === 0 && openOblGap
-            ? 'No active + in-review obligations were found in RI.'
-            : oblCount > 0
-              ? `Active + in-review Obligations retrieved: ${oblCount}`
-              : `Linked Obligations evaluated: ${oblCount}`,
-        controlCount != null && controlCount > 0 ? `Linked Controls retrieved: ${controlCount}` : null,
-        statusLine || null,
-      ].filter(Boolean),
+      answer,
+      keyFindings,
       relatedChanges: records.filter((r) => r.recordType === 'Change').map((r) => r.recordId),
       relatedObligations: records.filter((r) => r.recordType === 'Obligation').map((r) => r.recordId),
       relatedActions: records.filter((r) => r.recordType === 'Action').map((r) => r.recordId),
@@ -149,7 +117,14 @@ export function fixtureStructuredForScenario5c(scenario, ctx, providerId) {
       factTypes: { answer: 'AI_SYNTHESIS', keyFindings: 'AI_SYNTHESIS' },
       citations: records.slice(0, 3).map((r) => citeFromCtx(ctx, r.recordId, r.recordType, r.internalRoute || `#/change/${r.recordId}`)),
       deterministicFactsEcho: ctx?.deterministicFacts || {},
-      compoundEcho: { changeCount, actionCount, secondaryGaps: gaps },
+      compoundEcho: {
+        primaryType,
+        primaryCount,
+        changeCount: ec.Change?.evaluated ? ec.Change.count : null,
+        actionCount: ec.Action?.evaluated ? ec.Action.count : null,
+        oblCount: ec.Obligation?.evaluated ? ec.Obligation.count : null,
+        secondaryGaps: gaps,
+      },
     };
   }
 

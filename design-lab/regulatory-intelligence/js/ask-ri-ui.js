@@ -14,8 +14,8 @@ const SUGGESTED = [
   'What regulatory changes currently affect the Banking sector?',
   'How many open obligations are there?',
   'What Basel developments are linked to PRA implementation?',
-  'What is the capital requirement under EU CRD V in France?',
-  'cryptoassets-only-special-sector-xyz regulatory changes',
+  'Which obligations are linked to Banking changes?',
+  'What regulatory changes currently affect the Banking sector, and which obligations are linked?',
 ];
 
 function modeBadge(analysis) {

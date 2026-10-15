@@ -94,7 +94,7 @@ export async function askRi(state, question, options = {}) {
     taskType: AI_TASK_TYPE.AI_RI_QA,
     selection,
     fixtureScenario: scenario,
-    contextExtras: { deterministicFacts: retrieval.deterministicFacts, retrieval, reviewedMapping: reviewed },
+    contextExtras: { deterministicFacts: retrieval.deterministicFacts, retrieval, reviewedMapping: reviewed, state },
   });
 
   if (result.analysis) {
