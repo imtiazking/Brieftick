@@ -4,6 +4,8 @@ import { RiDashboardMetrics } from '@/components/ri/ri-dashboard-metrics';
 import { RiDataGate } from '@/components/ri/ri-data-gate';
 import { RiEmptyState } from '@/components/ri/ri-empty-state';
 import { tryRiContext } from '@/lib/ri/context';
+import { RiLabPriorityMetrics } from '@/components/ri/ri-lab-priority-metrics';
+import { mapProductionDashboardToLabPriority } from '@/lib/ri/lab-compat';
 import { getDashboardSummary } from '@/lib/ri/services/dashboard';
 import { isSupabaseBrowserConfigured } from '@/lib/env';
 
@@ -28,6 +30,7 @@ export default async function RegulatoryIntelligenceDashboardPage() {
               Live regulator ingestion is not enabled for production sources. Empty counts are expected until
               controlled publications exist in your tenant.
             </div>
+            <RiLabPriorityMetrics metrics={mapProductionDashboardToLabPriority(summary!)} />
             <RiDashboardMetrics summary={summary!} />
             <div className="fg-card">
               <h2>Quick links</h2>

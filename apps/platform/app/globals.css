@@ -180,6 +180,15 @@ a:hover {
   margin-bottom: 1.25rem;
 }
 
+/* Design Lab golden-master priority strip (7C.1) */
+.ri-priority-metrics {
+  margin-bottom: 1rem;
+}
+
+.ri-priority-metric {
+  min-height: 5.5rem;
+}
+
 .fg-metric-card {
   display: flex;
   flex-direction: column;
