@@ -5,8 +5,15 @@
 .env.local
 .env.*.local
 node_modules/
+.next/
+dist/
+build/
+coverage/
+*.tsbuildinfo
 .vercel
 .env*
+!.env.example
+!**/.env.example
 
 # Generated Design Lab output (served under /design-lab/ when using local static server)
 design-lab/regulatory-intelligence/cache/

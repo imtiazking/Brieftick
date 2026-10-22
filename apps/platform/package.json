@@ -1,0 +1,30 @@
+{
+  "name": "@forgeniq/platform",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test:acceptance": "node ./scripts/acceptance-platform-foundation.mjs"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.36.0",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.86.0",
+    "next": "^15.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "^15.5.0",
+    "typescript": "^5.7.0"
+  }
+}
