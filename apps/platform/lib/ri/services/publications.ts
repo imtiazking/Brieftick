@@ -119,6 +119,32 @@ export async function getPublicationDetail(
     .eq('publication_id', publicationId)
     .order('created_at', { ascending: false });
 
+  const changeIds = (changes ?? []).map((c) => c.id);
+  const { data: impacts } = changeIds.length
+    ? await supabase
+        .from('impact_assessments')
+        .select('id, status, due_date, materiality, regulatory_change_id')
+        .eq('organisation_id', organisationId)
+        .in('regulatory_change_id', changeIds)
+        .order('created_at', { ascending: false })
+    : { data: [] };
+
+  const { data: versions } = await supabase
+    .from('regulatory_publication_versions')
+    .select('id, version_number, source_hash, retrieved_at, canonical_url, ingestion_run_id')
+    .eq('publication_id', publicationId)
+    .order('version_number', { ascending: false });
+
+  const { data: sourceMeta } = publication.source?.external_key
+    ? await supabase
+        .from('regulatory_sources')
+        .select(
+          'external_key, verification_status, coverage_verification_status, production_status, canonical_url',
+        )
+        .eq('external_key', publication.source.external_key)
+        .maybeSingle()
+    : { data: null };
+
   return {
     publication: {
       ...publication,
@@ -130,5 +156,8 @@ export async function getPublicationDetail(
     orgPublication: orgPub,
     applicability,
     changes: changes ?? [],
+    impacts: impacts ?? [],
+    versions: versions ?? [],
+    sourceMeta: sourceMeta ?? null,
   };
 }

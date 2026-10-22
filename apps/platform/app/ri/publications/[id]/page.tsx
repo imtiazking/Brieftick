@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { ShellLayout } from '@/components/shell-layout';
 import { RiDataGate } from '@/components/ri/ri-data-gate';
 import { RiStatusChip } from '@/components/ri/ri-status-chip';
+import { RiCatalogueStatusBanner } from '@/components/ri/ri-catalogue-status-banner';
 import { canRi } from '@/lib/ri/permissions';
 import {
   createChangeAction,
@@ -15,6 +16,10 @@ import { getPublicationDetail } from '@/lib/ri/services/publications';
 import { RELEVANCE_STATUSES, TRIAGE_STATUSES } from '@/lib/ri/validation';
 import { APPLICABILITY_RECOMMENDATIONS } from '@/lib/ri/enums';
 import { RiAiPlaceholder } from '@/components/ri/ri-ai-placeholder';
+
+function formatStatus(value: string | null | undefined) {
+  return (value || 'NOT_TESTED').replaceAll('_', ' ');
+}
 
 export default async function PublicationDetailPage({
   params,
@@ -39,7 +44,9 @@ export default async function PublicationDetailPage({
     throw e;
   }
 
-  const { publication, orgPublication, applicability, changes } = detail;
+  const { publication, orgPublication, applicability, changes, impacts, versions, sourceMeta } = detail;
+  const regulator = publication.regulator;
+  const source = publication.source;
   const canEdit = canRi(ctx.role, 'triage:write');
   const canApplicability = canRi(ctx.role, 'applicability:write');
   const canChange = canRi(ctx.role, 'change:write');
@@ -47,6 +54,7 @@ export default async function PublicationDetailPage({
     publication.data_origin === 'dev_fixture' ||
     publication.data_origin === 'test_fixture' ||
     publication.title.includes('TEST');
+  const currentVersion = versions[0];
 
   return (
     <ShellLayout title={publication.title} subtitle="Publication detail and organisation workflow">
@@ -58,6 +66,7 @@ export default async function PublicationDetailPage({
           <a href="#overview">Overview</a>
           <a href="#source">Source</a>
           <a href="#changes">Changes</a>
+          <a href="#impact">Impact</a>
           <a href="#applicability">Applicability</a>
           <a href="#linked">Linked records</a>
           <a href="#ai">AI summary</a>
@@ -65,20 +74,46 @@ export default async function PublicationDetailPage({
         <div className="fg-card" id="overview">
           <h2>Overview</h2>
           <p>{publication.summary ?? 'No summary stored for this publication.'}</p>
-          <p className="fg-muted">Type: {publication.publication_type}</p>
-        </div>
-        <div className="fg-card" id="source">
-          <h2>Source</h2>
           <ul className="fg-status-list">
-            <li><span>Regulator</span><span>{publication.regulator?.name}</span></li>
-            <li><span>Source</span><span>{publication.source?.name}</span></li>
-            <li><span>Canonical URL</span><span><a href={publication.canonical_url} rel="noopener noreferrer">{publication.canonical_url}</a></span></li>
+            <li><span>Type</span><span>{publication.publication_type}</span></li>
+            <li><span>Regulator</span><span>{regulator?.name ?? '—'} ({regulator?.external_key ?? '—'})</span></li>
+            <li><span>Source</span><span>{source?.name ?? '—'} ({source?.external_key ?? '—'})</span></li>
             <li><span>Publication date</span><span>{publication.publication_date ?? '—'}</span></li>
             <li><span>Effective date</span><span>{publication.effective_date ?? '—'}</span></li>
             <li><span>Consultation deadline</span><span>{publication.consultation_deadline ?? '—'}</span></li>
-            <li><span>Data origin</span><span>{publication.data_origin}</span></li>
-            <li><span>Content hash</span><span>{publication.source_hash ?? '—'}</span></li>
+            <li><span>Organisation triage</span><span>{orgPublication?.triage_status ?? 'NEW'}</span></li>
+            <li><span>Relevance</span><span>{orgPublication?.relevance_status ?? 'UNASSESSED'}</span></li>
+            <li><span>Materiality</span><span>{orgPublication?.materiality ?? '—'}</span></li>
           </ul>
+        </div>
+        <div className="fg-card" id="source">
+          <h2>Source &amp; provenance</h2>
+          <RiCatalogueStatusBanner />
+          <ul className="fg-status-list">
+            <li><span>Regulator ID</span><span>{regulator?.external_key ?? '—'}</span></li>
+            <li><span>Source ID</span><span>{source?.external_key ?? '—'}</span></li>
+            <li><span>Canonical URL</span><span><a href={publication.canonical_url} rel="noopener noreferrer">{publication.canonical_url}</a></span></li>
+            <li><span>Publication version</span><span>{currentVersion?.version_number ?? '—'}</span></li>
+            <li><span>Source hash</span><span>{currentVersion?.source_hash ?? publication.source_hash ?? '—'}</span></li>
+            <li><span>Retrieved at</span><span>{currentVersion?.retrieved_at ?? '—'}</span></li>
+            <li><span>Ingestion run</span><span>{currentVersion?.ingestion_run_id ?? '—'}</span></li>
+            <li><span>Data origin</span><span>{publication.data_origin}</span></li>
+            <li><span>Technical verification</span><span>{formatStatus(sourceMeta?.verification_status)}</span></li>
+            <li><span>Semantic coverage</span><span>{formatStatus(sourceMeta?.coverage_verification_status)}</span></li>
+            <li><span>Production enablement</span><span>{formatStatus(sourceMeta?.production_status === 'NOT_ENABLED' ? 'NOT ENABLED' : sourceMeta?.production_status)}</span></li>
+          </ul>
+          {versions.length > 1 && (
+            <>
+              <h3>Version history</h3>
+              <ul className="fg-link-list">
+                {versions.map((v) => (
+                  <li key={v.id}>
+                    v{v.version_number} · hash {v.source_hash ?? '—'} · retrieved {v.retrieved_at ?? '—'}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
 
         <div className="fg-card" id="triage">
@@ -112,9 +147,54 @@ export default async function PublicationDetailPage({
           )}
         </div>
 
+        <div className="fg-card" id="changes">
+          <h2>Changes</h2>
+          {changes.length === 0 ? (
+            <p className="fg-muted">No regulatory changes linked to this publication.</p>
+          ) : (
+            <ul className="fg-link-list">
+              {changes.map((c) => (
+                <li key={c.id}><Link href={`/ri/changes/${c.id}`}>{c.title}</Link> — <RiStatusChip label={c.status} /></li>
+              ))}
+            </ul>
+          )}
+          {canChange && (
+            <form action={createChangeAction} className="fg-form">
+              <input type="hidden" name="publication_id" value={id} />
+              <h3>Create change</h3>
+              <label>Title<input name="title" required /></label>
+              <label>Change type<input name="change_type" defaultValue="REGULATORY" required /></label>
+              <label>Description<textarea name="description" rows={3} /></label>
+              <label>Materiality<input name="materiality" /></label>
+              <label>Effective date<input name="effective_date" type="date" /></label>
+              <label>Implementation deadline<input name="implementation_deadline" type="date" /></label>
+              <button type="submit" className="fg-btn">Create regulatory change</button>
+            </form>
+          )}
+        </div>
+
+        <div className="fg-card" id="impact">
+          <h2>Impact</h2>
+          {impacts.length === 0 ? (
+            <p className="fg-muted">No impact assessments linked through regulatory changes.</p>
+          ) : (
+            <ul className="fg-link-list">
+              {impacts.map((ia) => (
+                <li key={ia.id}>
+                  <Link href={`/ri/impact-assessments/${ia.id}`}>Impact assessment</Link>
+                  {' — '}
+                  <RiStatusChip label={ia.status} />
+                  {ia.due_date ? ` · due ${ia.due_date}` : ''}
+                  {ia.materiality ? ` · ${ia.materiality}` : ''}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
         <div className="fg-card" id="applicability">
           <h2>Applicability (human determination)</h2>
-          <p className="fg-muted">No AI recommendation — record your organisation&apos;s manual assessment.</p>
+          <p className="fg-muted">AI recommendation is not enabled in production — record your organisation&apos;s manual assessment.</p>
           {canApplicability ? (
             <form action={saveApplicabilityAction} className="fg-form">
               <input type="hidden" name="publication_id" value={id} />
@@ -141,31 +221,10 @@ export default async function PublicationDetailPage({
           )}
         </div>
 
-        <div className="fg-card" id="changes">
-          <h2>Regulatory changes</h2>
-          <ul className="fg-link-list">
-            {changes.map((c) => (
-              <li key={c.id}><Link href={`/ri/changes/${c.id}`}>{c.title}</Link> — <RiStatusChip label={c.status} /></li>
-            ))}
-          </ul>
-          {canChange && (
-            <form action={createChangeAction} className="fg-form">
-              <input type="hidden" name="publication_id" value={id} />
-              <h3>Create change</h3>
-              <label>Title<input name="title" required /></label>
-              <label>Change type<input name="change_type" defaultValue="REGULATORY" required /></label>
-              <label>Description<textarea name="description" rows={3} /></label>
-              <label>Materiality<input name="materiality" /></label>
-              <label>Effective date<input name="effective_date" type="date" /></label>
-              <label>Implementation deadline<input name="implementation_deadline" type="date" /></label>
-              <button type="submit" className="fg-btn">Create regulatory change</button>
-            </form>
-          )}
-        </div>
         <div className="fg-card" id="linked">
           <h2>Linked records</h2>
-          <p>Changes: {changes.length} · Applicability: {applicability ? 'recorded' : 'none'}</p>
-          <p className="fg-muted">Impact assessments and obligations are linked from regulatory changes.</p>
+          <p>Changes: {changes.length} · Impact assessments: {impacts.length} · Applicability: {applicability ? 'recorded' : 'none'}</p>
+          <p className="fg-muted">Relationships are explicit publication → change → impact links only.</p>
         </div>
         <div id="ai">
           <RiAiPlaceholder title="AI Analysis" phase="Phase 8" />

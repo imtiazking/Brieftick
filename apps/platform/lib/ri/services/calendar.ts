@@ -1,27 +1,32 @@
 import 'server-only';
 
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { buildCalendarEventsFromRecords } from '@/lib/ri/lab-compat/calendar-parity.mjs';
+import { forwardWindowEnd } from '@/lib/ri/lab-compat/date-window.mjs';
 
 export type CalendarEvent = {
   id: string;
   date: string;
-  kind:
-    | 'publication'
-    | 'consultation'
-    | 'effective'
-    | 'obligation_due'
-    | 'impact_due'
-    | 'action_due';
+  kind: string;
   title: string;
   href: string;
+  recordId?: string;
+  recordType?: string;
 };
+
+function hrefForEvent(ev: { kind: string; recordId?: string }) {
+  if (!ev.recordId) return '/ri/calendar';
+  if (ev.kind === 'obligation_due' || ev.kind === 'implementation') return `/ri/obligations/${ev.recordId}`;
+  if (ev.kind === 'impact_due' || ev.kind === 'assessment') return `/ri/impact-assessments/${ev.recordId}`;
+  if (ev.kind === 'action_due' || ev.kind === 'action') return `/ri/actions/${ev.recordId}`;
+  return `/ri/publications/${ev.recordId}`;
+}
 
 export async function listCalendarEvents(
   supabase: SupabaseClient,
   organisationId: string,
   range: { from: string; to: string },
 ): Promise<CalendarEvent[]> {
-  const events: CalendarEvent[] = [];
   const { from, to } = range;
 
   const { data: pubs } = await supabase
@@ -29,92 +34,67 @@ export async function listCalendarEvents(
     .select('id, title, publication_date, effective_date, consultation_deadline')
     .limit(400);
 
-  for (const p of pubs ?? []) {
-    if (p.publication_date && p.publication_date >= from && p.publication_date <= to) {
-      events.push({
-        id: `pub-${p.id}-pd`,
-        date: p.publication_date,
-        kind: 'publication',
-        title: p.title,
-        href: `/ri/publications/${p.id}`,
-      });
-    }
-    if (p.effective_date && p.effective_date >= from && p.effective_date <= to) {
-      events.push({
-        id: `pub-${p.id}-eff`,
-        date: p.effective_date,
-        kind: 'effective',
-        title: `Effective: ${p.title}`,
-        href: `/ri/publications/${p.id}`,
-      });
-    }
-    if (p.consultation_deadline && p.consultation_deadline >= from && p.consultation_deadline <= to) {
-      events.push({
-        id: `pub-${p.id}-con`,
-        date: p.consultation_deadline,
-        kind: 'consultation',
-        title: `Consultation ends: ${p.title}`,
-        href: `/ri/publications/${p.id}`,
-      });
-    }
-  }
-
   const { data: obligations } = await supabase
     .from('regulatory_obligations')
-    .select('id, obligation_statement, due_date')
-    .eq('organisation_id', organisationId)
-    .not('due_date', 'is', null)
-    .gte('due_date', from)
-    .lte('due_date', to);
-
-  for (const o of obligations ?? []) {
-    if (!o.due_date) continue;
-    events.push({
-      id: `obl-${o.id}`,
-      date: o.due_date,
-      kind: 'obligation_due',
-      title: o.obligation_statement.slice(0, 80),
-      href: `/ri/obligations/${o.id}`,
-    });
-  }
+    .select('id, obligation_statement, due_date, effective_date')
+    .eq('organisation_id', organisationId);
 
   const { data: impacts } = await supabase
     .from('impact_assessments')
-    .select('id, status, due_date, materiality')
-    .eq('organisation_id', organisationId)
-    .not('due_date', 'is', null)
-    .gte('due_date', from)
-    .lte('due_date', to);
-
-  for (const i of impacts ?? []) {
-    if (!i.due_date) continue;
-    events.push({
-      id: `imp-${i.id}`,
-      date: i.due_date,
-      kind: 'impact_due',
-      title: `Impact assessment due (${i.status})`,
-      href: `/ri/impact-assessments/${i.id}`,
-    });
-  }
+    .select('id, status, due_date')
+    .eq('organisation_id', organisationId);
 
   const { data: actions } = await supabase
     .from('actions')
     .select('id, title, due_date')
-    .eq('organisation_id', organisationId)
-    .not('due_date', 'is', null)
-    .gte('due_date', from)
-    .lte('due_date', to);
+    .eq('organisation_id', organisationId);
 
-  for (const a of actions ?? []) {
-    if (!a.due_date) continue;
-    events.push({
-      id: `act-${a.id}`,
-      date: a.due_date,
-      kind: 'action_due',
-      title: a.title,
-      href: `/ri/actions/${a.id}`,
-    });
-  }
+  const raw = buildCalendarEventsFromRecords(
+    {
+      publications: (pubs ?? []).map((p) => ({
+        id: p.id,
+        title: p.title,
+        publication_date: p.publication_date,
+        effective_date: p.effective_date,
+        consultation_deadline: p.consultation_deadline,
+      })),
+      obligations: (obligations ?? []).map((o) => ({
+        id: o.id,
+        organisation_id: organisationId,
+        due_date: o.due_date,
+        effective_date: o.effective_date,
+        obligation_statement: o.obligation_statement,
+      })),
+      impacts: (impacts ?? []).map((i) => ({
+        id: i.id,
+        organisation_id: organisationId,
+        due_date: i.due_date,
+        status: i.status,
+      })),
+      actions: (actions ?? []).map((a) => ({
+        id: a.id,
+        organisation_id: organisationId,
+        due_date: a.due_date,
+        title: a.title,
+      })),
+      policies: [],
+    },
+    { from, to, organisationId },
+  );
 
-  return events.sort((a, b) => a.date.localeCompare(b.date));
+  return raw.map((e) => ({
+    id: e.id,
+    date: e.date,
+    kind: e.kind,
+    title: e.title,
+    href: hrefForEvent(e),
+    recordId: e.recordId,
+    recordType: e.recordType,
+  }));
+}
+
+export function defaultCalendarRange(windowDays = 90) {
+  const from = new Date().toISOString().slice(0, 10);
+  const to = forwardWindowEnd(from, windowDays);
+  return { from, to };
 }

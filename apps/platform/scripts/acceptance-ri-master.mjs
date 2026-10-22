@@ -39,6 +39,7 @@ const steps = [
   ['RI experience parity (Phase 7B)', 'npm', ['run', 'test:acceptance:phase7b'], platformRoot],
   ['RI Design Lab migration (Phase 7B.2)', 'npm', ['run', 'test:acceptance:phase7b2'], platformRoot],
   ['RI golden master core (Phase 7C.1)', 'npm', ['run', 'test:acceptance:phase7c1'], platformRoot],
+  ['RI golden master horizon/calendar/publications (Phase 7C.2)', 'npm', ['run', 'test:acceptance:phase7c2'], platformRoot],
   ['Reference catalogue', 'node', ['./scripts/acceptance-global-source-catalogue.mjs'], refDataRoot],
   ['Catalogue clean-clone', 'node', ['./scripts/acceptance-catalogue-clean-clone.mjs'], refDataRoot],
   ['Source semantics', 'node', ['./scripts/acceptance-source-semantics.mjs'], integrationsRoot],
