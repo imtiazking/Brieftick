@@ -11,6 +11,7 @@
     "test:acceptance": "node ./scripts/acceptance-platform-foundation.mjs",
     "test:acceptance:phase2": "node ./scripts/acceptance-phase-2-platform.mjs && node ./scripts/acceptance-phase-2-tenant-isolation.mjs",
     "test:acceptance:phase3": "node ./scripts/acceptance-phase-3-ri-schema.mjs",
+    "test:acceptance:phase3a": "node ./scripts/acceptance-phase-3a-local-db.mjs",
     "sync:reference-catalogue": "node ./scripts/sync-reference-catalogue.mjs"
   },
   "dependencies": {
@@ -26,8 +27,10 @@
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "embedded-postgres": "^18.4.0-beta.17",
     "eslint": "^9.16.0",
     "eslint-config-next": "^15.5.0",
+    "pg": "^8.23.1",
     "typescript": "^5.7.0"
   }
 }

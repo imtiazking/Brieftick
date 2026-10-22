@@ -28,3 +28,5 @@ integrations/regulatory-sources/evidence/*
 
 # Platform RI — generated catalogue upsert (run sync-reference-catalogue.mjs)
 apps/platform/supabase/seed/reference-catalogue.generated.sql
+apps/platform/.local-pg-verify/
+apps/platform/.local-pg-test/

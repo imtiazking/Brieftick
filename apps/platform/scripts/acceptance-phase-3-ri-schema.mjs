@@ -247,13 +247,8 @@ if (
   failMsg('ORG-A lifecycle isolation fixture: user_a cannot access ORG-B');
 } else pass('ORG-A cannot access ORG-B (app layer; RLS uses same membership function)');
 
-let localDb = 'NOT CONFIGURED';
-if (process.env.FORGENIQ_LOCAL_SUPABASE === '1') {
-  localDb = 'FAIL';
-  failMsg('FORGENIQ_LOCAL_SUPABASE=1 set but local migration runner not wired in CI');
-} else {
-  pass('LOCAL DB MIGRATION TEST: NOT CONFIGURED (static acceptance only)');
-}
+let localDb = 'NOT CONFIGURED (run npm run test:acceptance:phase3a for live local DB)';
+pass('Phase 3 static schema acceptance (live DB: test:acceptance:phase3a)');
 
 if (fail) {
   console.error(`\nPhase 3 RI schema acceptance: FAIL (${fail})`);
