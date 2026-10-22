@@ -36,6 +36,7 @@ export default async function RegulatoryIntelligenceDashboardPage() {
                 <li><Link href="/ri/horizon">Horizon scanning</Link></li>
                 <li><Link href="/ri/calendar">Regulatory calendar</Link></li>
                 <li><Link href="/ri/reporting">Management reporting</Link></li>
+                <li><Link href="/ri/landscape/catalogue">Global regulator catalogue</Link></li>
               </ul>
             </div>
           </>

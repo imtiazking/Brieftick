@@ -8,7 +8,7 @@ export function RiAiPlaceholder({
   return (
     <div className="fg-card fg-ai-placeholder">
       <h3>{title}</h3>
-      <p className="fg-muted">Coming in {phase} — no AI results are shown in this workspace yet.</p>
+      <p className="fg-muted">COMING IN {phase.toUpperCase()} — AI capability not yet enabled. No Design Lab AI fixtures are shown.</p>
     </div>
   );
 }

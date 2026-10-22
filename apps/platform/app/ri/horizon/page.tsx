@@ -5,6 +5,7 @@ import { RiEmptyState } from '@/components/ri/ri-empty-state';
 import { RiStatusChip } from '@/components/ri/ri-status-chip';
 import { tryRiContext } from '@/lib/ri/context';
 import { listHorizonPublications } from '@/lib/ri/services/horizon';
+import { getGlobalCatalogueView } from '@/lib/ri/catalogue-display';
 
 export default async function HorizonPage({
   searchParams,
@@ -13,6 +14,7 @@ export default async function HorizonPage({
 }) {
   const sp = await searchParams;
   const ctx = await tryRiContext();
+  const catalogue = await getGlobalCatalogueView();
   const rows =
     ctx
       ? await listHorizonPublications(ctx.supabase, ctx.organisationId, {
@@ -32,12 +34,22 @@ export default async function HorizonPage({
           <>
             <form className="fg-form fg-form--inline fg-card" method="get">
               <label>
-                Regulator key
-                <input name="regulator" placeholder="REG-FCA" defaultValue={sp.regulator ?? ''} />
+                Regulator
+                <select name="regulator" defaultValue={sp.regulator ?? ''}>
+                  <option value="">All catalogue regulators</option>
+                  {catalogue.regulators.map((r) => (
+                    <option key={r.id} value={r.id}>{r.shortName} ({r.id})</option>
+                  ))}
+                </select>
               </label>
               <label>
-                Source key
-                <input name="source" placeholder="SRC-PSR-UK-RULES" defaultValue={sp.source ?? ''} />
+                Source
+                <select name="source" defaultValue={sp.source ?? ''}>
+                  <option value="">All catalogue sources</option>
+                  {catalogue.sources.map((s) => (
+                    <option key={s.id} value={s.id}>{s.id}</option>
+                  ))}
+                </select>
               </label>
               <label>
                 From

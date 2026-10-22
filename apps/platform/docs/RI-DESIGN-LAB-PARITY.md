@@ -2,19 +2,23 @@
 
 **Frozen lab:** `d46ca1b` / `ri-design-lab-freeze` (`#/dashboard` reference)  
 **Production workspace:** `app.forgeniq.com/ri` (`apps/platform`)  
-**Phase 7B baseline:** experience parity (no runtime dependency on Design Lab)
+**Phase 7B baseline:** experience parity (no runtime dependency on Design Lab)  
+**Approved lab spec (7B.1):** `5f95f223` / `ri-design-lab-global-sources`  
+**Phase 7B.2:** production shell migration (`apps/platform` only)
 
 ## Summary counts
 
 | Status | Count |
 | --- | ---: |
 | Features inventoried | **52** |
-| PRODUCTION_COMPLETE | **19** |
-| BACKEND_COMPLETE_UI_MISSING | **11** |
-| PARTIAL | **9** |
-| WAIT_FOR_AI | **8** |
-| WAIT_FOR_ASK_RI | **1** |
-| DESIGN_LAB_ONLY | **4** |
+| MIGRATE_NOW (production route) | **28** |
+| PRODUCTION_COMPLETE | **22** |
+| BACKEND_COMPLETE_UI_MISSING | **9** |
+| PARTIAL | **8** |
+| WAIT_FOR_PHASE_8_AI | **8** |
+| WAIT_FOR_PRODUCTION_ASK_RI | **1** |
+| ADMIN_ONLY | **3** |
+| REFERENCE_ONLY | **5** |
 
 ## Traceability legend
 
@@ -26,6 +30,40 @@
 | WAIT_FOR_AI | Requires Phase 8+ AI |
 | WAIT_FOR_ASK_RI | Requires production Ask RI |
 | DESIGN_LAB_ONLY | Demo/lab-only; not ported |
+
+### Phase 7B.2 classification (client pages)
+
+| Class | Meaning |
+| --- | --- |
+| MIGRATE_NOW | Production route exists; uses DB + shared catalogue |
+| WAIT_FOR_PHASE_8_AI | Placeholder route; no lab AI fixtures |
+| WAIT_FOR_PRODUCTION_ASK_RI | Nav placeholder only |
+| ADMIN_ONLY | `/ri/admin/*` role-gated |
+| REFERENCE_ONLY | Lab demo / sector matrix not copied |
+
+| Page | Design Lab | Production | Class |
+| --- | --- | --- | --- |
+| Dashboard | `#/dashboard` | `/ri` | MIGRATE_NOW |
+| Horizon | `#/horizon` | `/ri/horizon` | MIGRATE_NOW |
+| Calendar | `#/calendar` | `/ri/calendar` | MIGRATE_NOW |
+| Publications | `#/library` | `/ri/publications` | MIGRATE_NOW |
+| Publication detail | `#/publication/*` | `/ri/publications/[id]` | MIGRATE_NOW |
+| Changes | `#/changes` | `/ri/changes` | MIGRATE_NOW |
+| Impact assessments | `#/assessments` | `/ri/impact-assessments` | MIGRATE_NOW |
+| Obligations | `#/obligations` | `/ri/obligations` | MIGRATE_NOW |
+| Policies / Risks / Controls / Actions / Evidence / Findings / Assurance | lab routes | `/ri/*` | MIGRATE_NOW |
+| Work queue | `#/work-queue` | `/ri/work-queue` | MIGRATE_NOW |
+| Regulatory landscape | `#/landscape` | `/ri/landscape` | MIGRATE_NOW |
+| Global catalogue | `#/landscape/catalogue` | `/ri/landscape/catalogue` | MIGRATE_NOW |
+| Reporting | `#/reports` | `/ri/reporting` | MIGRATE_NOW |
+| Governance | `#/governance` | `/ri/governance` | MIGRATE_NOW |
+| Sources / ingestion | `#/ingestion` | `/ri/admin/sources` | ADMIN_ONLY |
+| AI Governance / Operations | lab pages | `/ri/ai-*` | WAIT_FOR_PHASE_8_AI |
+| Ask RI | `#/ask-ri` | nav label | WAIT_FOR_PRODUCTION_ASK_RI |
+| Legislation / TPR / Basel staging | lab staging | connectors only | REFERENCE_ONLY |
+| Demo journey / board pack | lab | — | REFERENCE_ONLY |
+
+Visual checklist: `RI-VISUAL-PARITY-CHECKLIST.md`.
 
 ---
 
@@ -86,7 +124,8 @@
 
 | Capability | Design Lab | Production | Backend | Status | Gap / action |
 | --- | --- | --- | --- | --- | --- |
-| Regulatory landscape | `#/landscape` | — | catalogue | DESIGN_LAB_ONLY | Sector matrix FUTURE |
+| Regulatory landscape | `#/landscape` | `/ri/landscape` | `catalogue-display.ts` | PRODUCTION_COMPLETE | Sector matrix REFERENCE_ONLY |
+| Global regulator catalogue | `#/landscape/catalogue` | `/ri/landscape/catalogue` | `packages/reference-data` | PRODUCTION_COMPLETE | 36 reg / 41 src |
 | Legislation staging | `#/legislation` | connectors | SRC-UK-LEGISLATION-ATOM | PARTIAL | Ingestion not enabled |
 | TPR staging | `#/tpr` | connectors | SRC-TPR-DOCUMENT-LIBRARY | PARTIAL | Manifest mapped |
 | Basel staging | `#/basel` | connectors | SRC-BASEL-FRAMEWORK | PARTIAL | Manifest mapped |

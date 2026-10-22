@@ -16,6 +16,7 @@ const PRIMARY = [
   { href: '/ri/findings', label: 'Findings' },
   { href: '/ri/assurance', label: 'Assurance' },
   { href: '/ri/work-queue', label: 'Work Queue' },
+  { href: '/ri/landscape', label: 'Landscape' },
 ] as const;
 
 const SECONDARY = [
@@ -56,12 +57,12 @@ export function RiSubnav({ active }: { active?: string }) {
                 ? 'fg-ri-subnav__link fg-ri-subnav__link--active'
                 : `fg-ri-subnav__link${'muted' in l && l.muted ? ' fg-ri-subnav__link--soon' : ''}`
             }
-            title={'muted' in l && l.muted ? 'Foundation pending Phase 8' : undefined}
+            title={'muted' in l && l.muted ? 'COMING IN PHASE 8' : undefined}
           >
             {l.label}
           </Link>
         ))}
-        <span className="fg-ri-subnav__link fg-ri-subnav__link--soon" title="Production Ask RI — future phase">
+        <span className="fg-ri-subnav__link fg-ri-subnav__link--soon" title="COMING LATER — production Ask RI not implemented">
           Ask RI
         </span>
       </nav>

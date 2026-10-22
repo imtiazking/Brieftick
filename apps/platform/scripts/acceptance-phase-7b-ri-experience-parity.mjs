@@ -37,6 +37,7 @@ const routes = [
   'app/ri/horizon/page.tsx',
   'app/ri/calendar/page.tsx',
   'app/ri/work-queue/page.tsx',
+  'app/ri/landscape/page.tsx',
   'app/ri/reporting/page.tsx',
   'app/ri/governance/page.tsx',
   'app/ri/ai-governance/page.tsx',

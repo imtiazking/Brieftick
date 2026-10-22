@@ -1,7 +1,25 @@
 declare module '@forgeniq/reference-data' {
-  export const REGULATORS: { regulatorId: string }[];
-  export const REGULATORY_SOURCES: {
+  export type RegulatorRecord = {
+    regulatorId: string;
+    name: string;
+    acronym?: string;
+    jurisdiction?: string;
+    country?: string;
+    region?: string;
+  };
+  export type RegulatorySourceRecord = {
     sourceId: string;
-    integration?: { productionStatus?: 'NOT_ENABLED' | 'ENABLED' | 'DISABLED' };
-  }[];
+    regulatorId: string;
+    regulatorName?: string;
+    sourceType?: string;
+    jurisdiction?: string;
+    country?: string;
+    region?: string;
+    integration?: {
+      verificationStatus?: string;
+      productionStatus?: 'NOT_ENABLED' | 'ENABLED' | 'DISABLED';
+    };
+  };
+  export const REGULATORS: RegulatorRecord[];
+  export const REGULATORY_SOURCES: RegulatorySourceRecord[];
 }
