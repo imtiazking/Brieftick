@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { canRi } from '@/lib/ri/permissions';
+import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 import { parseOptionalDate, parseOptionalText, parseUuid } from '@/lib/ri/validation';
 
@@ -97,7 +98,7 @@ export async function updateImpactAssessment(
 
   const { data: existing } = await supabase
     .from('impact_assessments')
-    .select('status, updated_at, reviewer_user_id, approver_user_id')
+    .select('status, updated_at, reviewer_user_id, approver_user_id, owner_user_id')
     .eq('id', params.impactId)
     .single();
   if (!existing) throw new Error('not_found');
@@ -142,6 +143,10 @@ export async function updateImpactAssessment(
     });
   } else if (params.fields.action === 'approve') {
     if (!canRi(params.role, 'impact:approve')) throw new Error('insufficient_role');
+    assertImpactApproverSoD({
+      ownerUserId: existing.owner_user_id,
+      approverUserId: params.userId,
+    });
     update.status = 'APPROVED';
     update.approver_user_id = params.userId;
     update.approved_at = new Date().toISOString();

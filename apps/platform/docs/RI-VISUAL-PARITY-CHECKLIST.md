@@ -19,10 +19,11 @@
 | Findings | `#/finding` | `/ri/findings` | PASS | PASS | Action-sourced attribution only | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Assurance | `#/assurance` | `/ri/assurance` | PASS | PASS | Phase 7C.4 review linkage parity | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Trace | obligation lineage | `/ri/trace/[obligationId]` | PASS | PASS | Flagship chains harness | PASS_WITH_INTENTIONAL_DIFFERENCE |
-| Work queue | `#/work-queue` | `/ri/work-queue` | PASS | PASS | Team scope = assignable pool | PASS_WITH_INTENTIONAL_DIFFERENCE |
+| Work queue | `#/work-queue` | `/ri/work-queue` | PASS | PASS | Phase 7C.5 harness; no AI queue rows; team scope = org pool | PASS_WITH_INTENTIONAL_DIFFERENCE |
+| Governance | `#/governance` | `/ri/governance` | PASS | PARTIAL | `workflow_events` history; committee packs FUTURE | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Landscape home | `#/landscape` | `/ri/landscape` | PASS | PARTIAL | Sector matrix not ported | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Global catalogue | `#/landscape/catalogue` | `/ri/landscape/catalogue` | PASS | PASS | Shared `packages/reference-data` | PASS |
-| Reporting | `#/reports` | `/ri/reporting` | PASS | PASS | No AI board narrative | PASS |
+| Reporting | `#/reports` | `/ri/reporting` | PASS | PASS | Phase 7C.5 metrics harness; no AI board narrative | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Sources / ingestion | `#/ingestion` | `/ri/admin/sources` | PASS | PASS | Role-gated; NOT ENABLED banner | PASS |
 | AI Governance | `#/ai-governance` | `/ri/ai-governance` | PASS | PLACEHOLDER | COMING IN PHASE 8 | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | AI Operations | `#/ai-operations` | `/ri/ai-operations` | PASS | PLACEHOLDER | COMING IN PHASE 8 | PASS_WITH_INTENTIONAL_DIFFERENCE |

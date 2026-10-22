@@ -34,8 +34,29 @@ export default async function ReportingPage() {
             </div>
             <div className="fg-card">
               <h2>Control / assurance signals</h2>
-              <p>Open findings: {report.controlGaps}</p>
-              <p className="fg-muted">Assurance in flight: {report.assuranceOpen}</p>
+              <p>
+                Open findings:{' '}
+                <Link href="/ri/findings">{report.controlGaps}</Link>
+              </p>
+              <p>
+                Assurance in flight:{' '}
+                <Link href="/ri/assurance">{report.assuranceOpen}</Link>
+              </p>
+              <p>
+                Overdue actions:{' '}
+                <Link href="/ri/actions">{report.actionsOverdue}</Link>
+              </p>
+              <p>
+                Overdue obligations:{' '}
+                <Link href="/ri/obligations">{report.obligationsOverdue}</Link>
+              </p>
+            </div>
+            <div className="fg-card">
+              <h2>Operational queues</h2>
+              <ul className="fg-link-list">
+                <li><Link href="/ri/work-queue">Work queue</Link></li>
+                <li><Link href="/ri/governance">Governance register</Link></li>
+              </ul>
             </div>
           </>
         )}

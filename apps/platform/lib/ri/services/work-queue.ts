@@ -3,66 +3,134 @@ import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { isActionOverdue } from '@/lib/ri/action-overdue';
 import { OBLIGATION_STATUS_GROUPS } from '@/lib/ri/enums';
+import { deriveSlaPresentation } from '@/lib/ri/sla-presentation';
 
 export type WorkQueueItem = {
   id: string;
-  kind: string;
+  entityType: string;
+  recordId: string;
   title: string;
-  href: string;
-  dueDate: string | null;
   status: string | null;
-  assignee: string | null;
+  priority: string | null;
+  owner: string | null;
+  dueDate: string | null;
+  overdue: boolean;
+  slaState: string;
+  source: string | null;
+  regulator: string | null;
+  href: string;
 };
+
+const ACTIVE_OBL = [...OBLIGATION_STATUS_GROUPS.active];
+
+function toItem(params: {
+  entityType: string;
+  recordId: string;
+  title: string;
+  status: string | null;
+  priority?: string | null;
+  owner?: string | null;
+  dueDate?: string | null;
+  complete?: boolean;
+  source?: string | null;
+  regulator?: string | null;
+  href: string;
+}): WorkQueueItem {
+  const slaState = deriveSlaPresentation(params.dueDate ?? null, Boolean(params.complete));
+  const overdue = slaState === 'Overdue';
+  return {
+    id: `${params.entityType}-${params.recordId}`,
+    entityType: params.entityType,
+    recordId: params.recordId,
+    title: params.title,
+    status: params.status,
+    priority: params.priority ?? null,
+    owner: params.owner ?? null,
+    dueDate: params.dueDate ?? null,
+    overdue,
+    slaState,
+    source: params.source ?? null,
+    regulator: params.regulator ?? null,
+    href: params.href,
+  };
+}
 
 export async function buildWorkQueue(
   supabase: SupabaseClient,
   organisationId: string,
-  scope: 'mine' | 'team',
+  scope: 'all' | 'mine' | 'team',
   userId: string,
 ): Promise<WorkQueueItem[]> {
   const items: WorkQueueItem[] = [];
   const today = new Date().toISOString().slice(0, 10);
-  const activeObl = [...OBLIGATION_STATUS_GROUPS.active];
-
   const assigneeFilter = scope === 'mine' ? userId : undefined;
 
   const { data: orgPubs } = await supabase
     .from('organisation_publications')
-    .select('publication_id, triage_status, assigned_to, publication:regulatory_publications(title)')
+    .select(
+      'publication_id, triage_status, assigned_to, publication:regulatory_publications(title, regulator_code)',
+    )
     .eq('organisation_id', organisationId)
     .in('triage_status', ['NEW', 'IN_REVIEW']);
 
   for (const row of orgPubs ?? []) {
     if (assigneeFilter && row.assigned_to && row.assigned_to !== assigneeFilter) continue;
     const pub = Array.isArray(row.publication) ? row.publication[0] : row.publication;
-    items.push({
-      id: `triage-${row.publication_id}`,
-      kind: 'Publication triage',
-      title: pub?.title ?? 'Publication',
-      href: `/ri/publications/${row.publication_id}`,
-      dueDate: null,
-      status: row.triage_status,
-      assignee: row.assigned_to,
-    });
+    items.push(
+      toItem({
+        entityType: 'Publication',
+        recordId: row.publication_id,
+        title: pub?.title ?? 'Publication',
+        status: row.triage_status,
+        owner: row.assigned_to,
+        source: 'Triage',
+        regulator: pub?.regulator_code ?? null,
+        href: `/ri/publications/${row.publication_id}`,
+      }),
+    );
   }
 
   const { data: apps } = await supabase
     .from('applicability_assessments')
-    .select('id, publication_id, status, recommendation, publication:regulatory_publications(title)')
+    .select('id, publication_id, status, publication:regulatory_publications(title)')
     .eq('organisation_id', organisationId)
     .in('status', ['DRAFT', 'IN_REVIEW']);
 
   for (const a of apps ?? []) {
     const pub = Array.isArray(a.publication) ? a.publication[0] : a.publication;
-    items.push({
-      id: `app-${a.id}`,
-      kind: 'Applicability review',
-      title: pub?.title ?? 'Applicability',
-      href: `/ri/publications/${a.publication_id}`,
-      dueDate: null,
-      status: a.status,
-      assignee: null,
-    });
+    items.push(
+      toItem({
+        entityType: 'Publication',
+        recordId: a.publication_id,
+        title: `${pub?.title ?? 'Publication'} — applicability`,
+        status: a.status,
+        source: 'Applicability review',
+        href: `/ri/publications/${a.publication_id}`,
+      }),
+    );
+  }
+
+  const { data: changes } = await supabase
+    .from('regulatory_changes')
+    .select('id, title, status, materiality, owner_user_id, due_date')
+    .eq('organisation_id', organisationId)
+    .in('status', ['DRAFT', 'OPEN', 'IN_PROGRESS', 'IN_REVIEW']);
+
+  for (const c of changes ?? []) {
+    if (assigneeFilter && c.owner_user_id && c.owner_user_id !== assigneeFilter) continue;
+    items.push(
+      toItem({
+        entityType: 'Regulatory Change',
+        recordId: c.id,
+        title: c.title,
+        status: c.status,
+        priority: c.materiality,
+        owner: c.owner_user_id,
+        dueDate: c.due_date,
+        source: 'Change review',
+        href: `/ri/changes/${c.id}`,
+      }),
+    );
   }
 
   const { data: impacts } = await supabase
@@ -73,15 +141,19 @@ export async function buildWorkQueue(
 
   for (const i of impacts ?? []) {
     if (assigneeFilter && i.owner_user_id && i.owner_user_id !== assigneeFilter) continue;
-    items.push({
-      id: `imp-${i.id}`,
-      kind: 'Impact assessment',
-      title: `Impact assessment (${i.materiality ?? i.status})`,
-      href: `/ri/impact-assessments/${i.id}`,
-      dueDate: i.due_date,
-      status: i.status,
-      assignee: i.owner_user_id,
-    });
+    items.push(
+      toItem({
+        entityType: 'Impact Assessment',
+        recordId: i.id,
+        title: `Impact assessment (${i.materiality ?? i.status})`,
+        status: i.status,
+        priority: i.materiality,
+        owner: i.owner_user_id,
+        dueDate: i.due_date,
+        source: 'Assessment',
+        href: `/ri/impact-assessments/${i.id}`,
+      }),
+    );
   }
 
   const { data: obligations } = await supabase
@@ -90,87 +162,104 @@ export async function buildWorkQueue(
     .eq('organisation_id', organisationId);
 
   for (const o of obligations ?? []) {
-    const needsReview = o.status === 'IN_REVIEW';
+    const isDraft = o.status === 'DRAFT';
+    const isClosed = ['COMPLETE', 'HISTORIC', 'CLOSED'].includes(o.status);
+    if (isDraft || isClosed) continue;
     const overdue =
       o.status === 'OVERDUE' ||
-      (activeObl.includes(o.status as never) && o.due_date && o.due_date < today);
-    if (!needsReview && !overdue && !activeObl.includes(o.status as never)) continue;
+      (ACTIVE_OBL.includes(o.status as never) && o.due_date && o.due_date < today);
     if (assigneeFilter && o.owner_user_id && o.owner_user_id !== assigneeFilter) continue;
-    items.push({
-      id: `obl-${o.id}`,
-      kind: overdue ? 'Overdue obligation' : needsReview ? 'Obligation review' : 'Active obligation',
-      title: o.obligation_statement.slice(0, 100),
-      href: `/ri/obligations/${o.id}`,
-      dueDate: o.due_date,
-      status: o.status,
-      assignee: o.owner_user_id,
-    });
+    items.push(
+      toItem({
+        entityType: 'Obligation',
+        recordId: o.id,
+        title: o.obligation_statement.slice(0, 120),
+        status: o.status,
+        owner: o.owner_user_id,
+        dueDate: o.due_date,
+        source: overdue ? 'Overdue obligation' : 'Obligation review',
+        href: `/ri/obligations/${o.id}`,
+      }),
+    );
   }
 
   const { data: actions } = await supabase
     .from('actions')
-    .select('id, title, status, due_date, owner_user_id')
+    .select('id, title, status, due_date, owner_user_id, priority')
     .eq('organisation_id', organisationId);
 
   for (const a of actions ?? []) {
+    if (a.status === 'COMPLETE' || a.status === 'CLOSED') continue;
     const overdue = isActionOverdue(a.due_date, a.status);
     const dueSoon =
       a.due_date && a.due_date >= today && !overdue && ['OPEN', 'IN_PROGRESS'].includes(a.status);
-    if (!overdue && !dueSoon) continue;
+    if (!overdue && !dueSoon && !['OPEN', 'IN_PROGRESS'].includes(a.status)) continue;
     if (assigneeFilter && a.owner_user_id && a.owner_user_id !== assigneeFilter) continue;
-    items.push({
-      id: `act-${a.id}`,
-      kind: overdue ? 'Overdue action' : 'Action due',
-      title: a.title,
-      href: `/ri/actions/${a.id}`,
-      dueDate: a.due_date,
-      status: a.status,
-      assignee: a.owner_user_id,
-    });
+    items.push(
+      toItem({
+        entityType: 'Action',
+        recordId: a.id,
+        title: a.title,
+        status: a.status,
+        priority: a.priority,
+        owner: a.owner_user_id,
+        dueDate: a.due_date,
+        complete: false,
+        source: overdue ? 'Overdue action' : 'Implementation',
+        href: `/ri/actions/${a.id}`,
+      }),
+    );
   }
 
   const { data: findings } = await supabase
     .from('findings')
-    .select('id, title, status, due_date, owner_user_id')
+    .select('id, title, status, due_date, owner_user_id, severity')
     .eq('organisation_id', organisationId)
     .in('status', ['OPEN', 'IN_PROGRESS']);
 
   for (const f of findings ?? []) {
     if (assigneeFilter && f.owner_user_id && f.owner_user_id !== assigneeFilter) continue;
-    items.push({
-      id: `fnd-${f.id}`,
-      kind: 'Finding',
-      title: f.title,
-      href: `/ri/findings/${f.id}`,
-      dueDate: f.due_date,
-      status: f.status,
-      assignee: f.owner_user_id,
-    });
+    items.push(
+      toItem({
+        entityType: 'Finding',
+        recordId: f.id,
+        title: f.title,
+        status: f.status,
+        priority: f.severity,
+        owner: f.owner_user_id,
+        dueDate: f.due_date,
+        source: 'Finding remediation',
+        href: `/ri/findings/${f.id}`,
+      }),
+    );
   }
 
   const { data: assurance } = await supabase
     .from('assurance_reviews')
-    .select('id, review_type, result, next_review_date, reviewer_user_id')
+    .select('id, review_type, result, next_review_date, reviewer_user_id, status')
     .eq('organisation_id', organisationId);
 
   for (const ar of assurance ?? []) {
     if (ar.result === 'PASS') continue;
     if (assigneeFilter && ar.reviewer_user_id && ar.reviewer_user_id !== assigneeFilter) continue;
-    items.push({
-      id: `asr-${ar.id}`,
-      kind: 'Assurance review',
-      title: `${ar.review_type} (${ar.result})`,
-      href: `/ri/assurance/${ar.id}`,
-      dueDate: ar.next_review_date,
-      status: ar.result,
-      assignee: ar.reviewer_user_id,
-    });
+    items.push(
+      toItem({
+        entityType: 'Assurance Review',
+        recordId: ar.id,
+        title: `${ar.review_type} (${ar.result})`,
+        status: ar.result ?? ar.status,
+        owner: ar.reviewer_user_id,
+        dueDate: ar.next_review_date,
+        source: 'Assurance',
+        href: `/ri/assurance/${ar.id}`,
+      }),
+    );
   }
 
   return items.sort((a, b) => {
     if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate);
     if (a.dueDate) return -1;
     if (b.dueDate) return 1;
-    return 0;
+    return a.title.localeCompare(b.title);
   });
 }
