@@ -11,7 +11,9 @@ export default async function IngestionRunsAdminPage() {
   return (
     <ShellLayout title="RI ingestion runs" subtitle="Manual and test ingestion history">
       <RiDataGate>
-        <p><Link href="/ri/admin/sources">Source eligibility</Link></p>
+        <p>
+          <Link href="/ri/admin/sources">Sources</Link> · <Link href="/ri/admin/alerts">Alerts</Link>
+        </p>
         {runs.length === 0 ? (
           <div className="fg-card"><p>No ingestion runs yet. Use local CLI: npm run ri:ingest</p></div>
         ) : (
@@ -21,6 +23,8 @@ export default async function IngestionRunsAdminPage() {
                 <tr>
                   <th>Source</th>
                   <th>Status</th>
+                  <th>Trigger</th>
+                  <th>Attempt</th>
                   <th>Discovered</th>
                   <th>New</th>
                   <th>Updated</th>
@@ -35,6 +39,8 @@ export default async function IngestionRunsAdminPage() {
                       <Link href={`/ri/admin/ingestion/${r.id}`}>{r.source?.external_key ?? r.id.slice(0, 8)}</Link>
                     </td>
                     <td>{r.status}</td>
+                    <td>{r.trigger_type}</td>
+                    <td>{r.attempt_number}</td>
                     <td>{r.records_discovered}</td>
                     <td>{r.records_new}</td>
                     <td>{r.records_updated}</td>

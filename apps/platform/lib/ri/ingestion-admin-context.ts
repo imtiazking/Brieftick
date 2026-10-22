@@ -9,5 +9,5 @@ export async function requireIngestionAdminContext() {
   const org = await requireRole('COMPLIANCE_MANAGER');
   const supabase = await createSupabaseServerClient();
   if (!supabase) throw new RiConfigurationError();
-  return { ...org, supabase };
+  return { organisationId: org.organisationId, role: org.role, supabase };
 }

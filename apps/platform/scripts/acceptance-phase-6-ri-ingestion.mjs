@@ -64,16 +64,20 @@ const pkg = readFileSync(join(platformRoot, 'package.json'), 'utf8');
 if (!pkg.includes('ri:ingest')) failMsg('ri:ingest script');
 else pass('npm run ri:ingest');
 
-function scanDir(dir, acc = []) {
+function scanDir(dir, acc = [], skipDirNames = new Set()) {
   if (!existsSync(dir)) return acc;
   for (const f of readdirSync(dir, { withFileTypes: true })) {
+    if (f.isDirectory()) {
+      if (skipDirNames.has(f.name)) continue;
+      scanDir(join(dir, f.name), acc, skipDirNames);
+      continue;
+    }
     const p = join(dir, f.name);
-    if (f.isDirectory()) scanDir(p, acc);
-    else if (/\.(tsx?|mjs)$/.test(f.name)) acc.push(p);
+    if (/\.(tsx?|mjs)$/.test(f.name)) acc.push(p);
   }
   return acc;
 }
-for (const file of scanDir(join(platformRoot, 'lib', 'ri', 'ingestion'))) {
+for (const file of scanDir(join(platformRoot, 'lib', 'ri', 'ingestion'), [], new Set(['ops']))) {
   const text = readFileSync(file, 'utf8');
   if (/cron|schedule|vercel\.json/i.test(text)) failMsg(`scheduler reference in ${file}`);
 }

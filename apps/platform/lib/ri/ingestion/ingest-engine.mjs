@@ -20,6 +20,9 @@ export async function runSourceIngestion(client, params) {
     fixture,
     liveAllowed = false,
     maxItems = 3,
+    existingRunId = null,
+    triggerType = 'MANUAL',
+    attemptNumber = 1,
   } = params;
 
   const catalogue = getSourceById(sourceId);
@@ -39,13 +42,17 @@ export async function runSourceIngestion(client, params) {
     productionStatus: ids.productionStatus,
   });
 
-  const runInsert = await client.query(
-    `insert into ingestion_runs (source_id, run_type, status, started_at, initiated_by, environment)
-     values ($1, $2::ingestion_run_type, 'RUNNING'::ingestion_run_status, now(), $3, $4)
-     returning id`,
-    [ids.sourceUuid, runType, initiatedBy, environment],
-  );
-  const runId = runInsert.rows[0].id;
+  let runId = existingRunId;
+  if (!runId) {
+    const runInsert = await client.query(
+      `insert into ingestion_runs (
+        source_id, run_type, status, trigger_type, attempt_number, queued_at, started_at, initiated_by, environment
+      ) values ($1, $2::ingestion_run_type, 'RUNNING'::ingestion_run_status, $3::ingestion_trigger_type, $4, now(), now(), $5, $6)
+       returning id`,
+      [ids.sourceUuid, runType, triggerType, attemptNumber, initiatedBy, environment],
+    );
+    runId = runInsert.rows[0].id;
+  }
 
   const metrics = {
     discovered: 0,

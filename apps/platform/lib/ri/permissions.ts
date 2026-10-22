@@ -32,7 +32,9 @@ export type RiAction =
   | 'finding:close'
   | 'assurance:read'
   | 'assurance:write'
-  | 'ingestion:read';
+  | 'ingestion:read'
+  | 'ingestion:acknowledge'
+  | 'ingestion:run_test';
 
 const MATRIX: Record<RiAction, PlatformRole> = {
   'ri:read': 'VIEWER',
@@ -66,6 +68,8 @@ const MATRIX: Record<RiAction, PlatformRole> = {
   'assurance:read': 'VIEWER',
   'assurance:write': 'COMPLIANCE_MANAGER',
   'ingestion:read': 'COMPLIANCE_MANAGER',
+  'ingestion:acknowledge': 'COMPLIANCE_MANAGER',
+  'ingestion:run_test': 'COMPLIANCE_MANAGER',
 };
 
 export function canRi(role: PlatformRole | null | undefined, action: RiAction): boolean {
