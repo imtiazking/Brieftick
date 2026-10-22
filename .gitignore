@@ -30,3 +30,4 @@ integrations/regulatory-sources/evidence/*
 apps/platform/supabase/seed/reference-catalogue.generated.sql
 apps/platform/.local-pg-verify/
 apps/platform/.local-pg-test/
+apps/platform/.local-ingestion-raw/

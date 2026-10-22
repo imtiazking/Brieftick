@@ -14,6 +14,8 @@
     "test:acceptance:phase3a": "node ./scripts/acceptance-phase-3a-local-db.mjs",
     "test:acceptance:phase4": "node ./scripts/acceptance-phase-4-ri-workflow.mjs",
     "test:acceptance:phase5": "node ./scripts/acceptance-phase-5-ri-downstream.mjs",
+    "test:acceptance:phase6": "node ./scripts/acceptance-phase-6-ri-ingestion.mjs",
+    "ri:ingest": "node ./scripts/ri-ingest.mjs",
     "ri:seed-dev-publication": "node ./scripts/ri-seed-dev-publication.mjs",
     "sync:reference-catalogue": "node ./scripts/sync-reference-catalogue.mjs"
   },

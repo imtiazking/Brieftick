@@ -1,0 +1,15 @@
+{
+  "publications": [
+    {
+      "regulatorId": "REG-PSR-UK",
+      "sourceId": "SRC-PSR-UK-RULES",
+      "externalDocumentId": "fixture-psr-001",
+      "title": "TEST PSR publication fixture",
+      "publicationType": "policy_statement",
+      "canonicalUrl": "https://www.psr.org.uk/publications/fixture-psr-001",
+      "publicationDate": "2026-01-15",
+      "contentHash": "sha256-fixture-psr-v1",
+      "summary": "Development fixture — not live ingestion."
+    }
+  ]
+}

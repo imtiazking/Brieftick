@@ -1,0 +1,366 @@
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { getSourceById } from '../../../../../packages/reference-data/index.mjs';
+import { assessSourceIngestionEligibility } from './eligibility.mjs';
+import { retrieveNormalisedDocuments } from './adapter.mjs';
+import { resolveCatalogueIds } from './resolve-ids.mjs';
+
+const RAW_META_DIR = join(process.cwd(), '.local-ingestion-raw');
+
+/**
+ * @param {import('pg').Client} client
+ * @param {object} params
+ */
+export async function runSourceIngestion(client, params) {
+  const {
+    sourceId,
+    initiatedBy = 'cli',
+    environment = 'local',
+    runType = 'TEST',
+    fixture,
+    liveAllowed = false,
+    maxItems = 3,
+  } = params;
+
+  const catalogue = getSourceById(sourceId);
+  if (!catalogue) {
+    return {
+      runId: null,
+      status: 'FAILED',
+      metrics: { discovered: 0, new: 0, updated: 0, unchanged: 0, failed: 0 },
+      errorSummary: `unknown_source_${sourceId}`,
+      eligibility: { eligible: false, reason: 'unknown_source_id' },
+    };
+  }
+  const ids = await resolveCatalogueIds(client, catalogue.regulatorId, sourceId);
+
+  const eligibility = assessSourceIngestionEligibility(sourceId, {
+    ingestionMode: ids.ingestionMode,
+    productionStatus: ids.productionStatus,
+  });
+
+  const runInsert = await client.query(
+    `insert into ingestion_runs (source_id, run_type, status, started_at, initiated_by, environment)
+     values ($1, $2::ingestion_run_type, 'RUNNING'::ingestion_run_status, now(), $3, $4)
+     returning id`,
+    [ids.sourceUuid, runType, initiatedBy, environment],
+  );
+  const runId = runInsert.rows[0].id;
+
+  const metrics = {
+    discovered: 0,
+    new: 0,
+    updated: 0,
+    unchanged: 0,
+    failed: 0,
+  };
+  let runStatus = 'COMPLETED';
+  let errorSummary = null;
+
+  try {
+    if (!eligibility.eligible) {
+      throw new Error(`source_ineligible:${eligibility.reason}`);
+    }
+
+    let documents;
+    try {
+      documents = await retrieveNormalisedDocuments(sourceId, {
+        fixture,
+        liveAllowed,
+        maxItems,
+      });
+    } catch (e) {
+      throw new Error(`retrieval_failed:${e.message}`);
+    }
+
+    metrics.discovered = documents.length;
+
+    for (const doc of documents) {
+      const itemResult = await processDocument(client, {
+        runId,
+        sourceUuid: ids.sourceUuid,
+        regulatorUuid: ids.regulatorUuid,
+        doc,
+        eligibility,
+      });
+      if (itemResult.metric === 'failed') metrics.failed += 1;
+      else metrics[itemResult.metric] += 1;
+    }
+  } catch (e) {
+    runStatus = 'FAILED';
+    errorSummary = e.message;
+    if (metrics.discovered > 0 && metrics.failed < metrics.discovered) {
+      runStatus = 'PARTIAL';
+    }
+  }
+
+  await client.query(
+    `update ingestion_runs set
+      status = $2::ingestion_run_status,
+      completed_at = now(),
+      records_discovered = $3,
+      records_new = $4,
+      records_updated = $5,
+      records_unchanged = $6,
+      records_failed = $7,
+      error_summary = $8
+     where id = $1`,
+    [
+      runId,
+      runStatus,
+      metrics.discovered,
+      metrics.new,
+      metrics.updated,
+      metrics.unchanged,
+      metrics.failed,
+      errorSummary,
+    ],
+  );
+
+  return { runId, status: runStatus, metrics, errorSummary, eligibility };
+}
+
+async function processDocument(client, ctx) {
+  const { runId, sourceUuid, regulatorUuid, doc, eligibility } = ctx;
+  const itemBase = {
+    runId,
+    sourceUuid,
+    doc,
+  };
+
+  if (doc.contentClasses?.includes('SANCTIONS_DATA')) {
+    await insertItem(client, itemBase, {
+      retrieval: 'SKIPPED',
+      normalisation: 'INELIGIBLE',
+      error: 'sanctions_data_not_ri',
+    });
+    return { metric: 'failed' };
+  }
+
+  if (eligibility.horizonOnly && !eligibility.obligationGrade) {
+    doc.publicationType = doc.publicationType || 'horizon_reference';
+  }
+
+  persistRawMeta(runId, doc);
+
+  let existing = null;
+  if (doc.externalDocumentId) {
+    const r = await client.query(
+      `select id, source_hash, source_version from regulatory_publications
+       where source_id = $1 and external_document_id = $2`,
+      [sourceUuid, doc.externalDocumentId],
+    );
+    existing = r.rows[0] || null;
+  }
+  if (!existing && doc.canonicalUrl) {
+    const r = await client.query(
+      `select id, source_hash, source_version from regulatory_publications
+       where source_id = $1 and canonical_url = $2`,
+      [sourceUuid, doc.canonicalUrl],
+    );
+    existing = r.rows[0] || null;
+  }
+
+  if (existing && existing.source_hash === doc.contentHash) {
+    await insertItem(client, itemBase, {
+      retrieval: 'RETRIEVED',
+      normalisation: 'UNCHANGED',
+      publicationId: existing.id,
+    });
+    return { metric: 'unchanged' };
+  }
+
+  if (existing) {
+    const nextVersion = (parseInt(existing.source_version || '1', 10) || 1) + 1;
+    const provenance = buildProvenance(runId, doc);
+    await client.query(
+      `update regulatory_publications set
+        title = $2,
+        publication_type = $3,
+        summary = $4,
+        canonical_url = $5,
+        publication_date = $6::date,
+        effective_date = $7::date,
+        consultation_deadline = $8::date,
+        retrieved_at = $9::timestamptz,
+        source_hash = $10,
+        source_version = $11,
+        data_origin = $12,
+        provenance = $13::jsonb,
+        updated_at = now()
+       where id = $1`,
+      [
+        existing.id,
+        doc.title,
+        doc.publicationType,
+        doc.summary,
+        doc.canonicalUrl,
+        doc.publicationDate,
+        doc.effectiveDate,
+        doc.consultationDeadline,
+        doc.retrievedAt,
+        doc.contentHash,
+        String(nextVersion),
+        doc.dataOrigin,
+        JSON.stringify(provenance),
+      ],
+    );
+    await client.query(
+      `insert into regulatory_publication_versions
+        (publication_id, version_number, source_hash, canonical_url, retrieved_at, ingestion_run_id, provenance)
+       values ($1, $2, $3, $4, $5::timestamptz, $6, $7::jsonb)`,
+      [
+        existing.id,
+        nextVersion,
+        doc.contentHash,
+        doc.canonicalUrl,
+        doc.retrievedAt,
+        runId,
+        JSON.stringify(provenance),
+      ],
+    );
+    await insertItem(client, itemBase, {
+      retrieval: 'RETRIEVED',
+      normalisation: 'UPDATED',
+      publicationId: existing.id,
+    });
+    return { metric: 'updated' };
+  }
+
+  const provenance = buildProvenance(runId, doc);
+  const pub = await client.query(
+    `insert into regulatory_publications (
+      source_id, regulator_id, external_document_id, title, publication_type, summary,
+      canonical_url, publication_date, effective_date, consultation_deadline,
+      retrieved_at, source_hash, source_version, data_origin, provenance
+    ) values ($1,$2,$3,$4,$5,$6,$7,$8::date,$9::date,$10::date,$11::timestamptz,$12,$13,$14,$15::jsonb)
+    returning id`,
+    [
+      sourceUuid,
+      regulatorUuid,
+      doc.externalDocumentId,
+      doc.title,
+      doc.publicationType,
+      doc.summary,
+      doc.canonicalUrl,
+      doc.publicationDate,
+      doc.effectiveDate,
+      doc.consultationDeadline,
+      doc.retrievedAt,
+      doc.contentHash,
+      '1',
+      doc.dataOrigin,
+      JSON.stringify(provenance),
+    ],
+  );
+  const publicationId = pub.rows[0].id;
+  await client.query(
+    `insert into regulatory_publication_versions
+      (publication_id, version_number, source_hash, canonical_url, retrieved_at, ingestion_run_id, provenance)
+     values ($1, 1, $2, $3, $4::timestamptz, $5, $6::jsonb)`,
+    [publicationId, doc.contentHash, doc.canonicalUrl, doc.retrievedAt, runId, JSON.stringify(provenance)],
+  );
+  await insertItem(client, itemBase, {
+    retrieval: 'RETRIEVED',
+    normalisation: 'NEW',
+    publicationId,
+  });
+  return { metric: 'new' };
+}
+
+function buildProvenance(runId, doc) {
+  return {
+    ...doc.provenance,
+    ingestionRunId: runId,
+    regulatorId: doc.regulatorId,
+    sourceId: doc.sourceId,
+    canonicalUrl: doc.canonicalUrl,
+    contentHash: doc.contentHash,
+    retrievedAt: doc.retrievedAt,
+    externalDocumentId: doc.externalDocumentId,
+    contentClasses: doc.contentClasses ?? [],
+  };
+}
+
+async function insertItem(client, base, state) {
+  await client.query(
+    `insert into ingestion_items (
+      ingestion_run_id, source_id, external_document_id, canonical_url, title, publication_date,
+      content_type, source_hash, retrieval_status, normalisation_status, publication_id,
+      error_detail, retrieved_at
+    ) values ($1,$2,$3,$4,$5,$6::date,$7,$8,$9::ingestion_item_retrieval_status,$10::ingestion_item_normalisation_status,$11,$12,$13::timestamptz)`,
+    [
+      base.runId,
+      base.sourceUuid,
+      base.doc.externalDocumentId,
+      base.doc.canonicalUrl,
+      base.doc.title,
+      base.doc.publicationDate,
+      base.doc.publicationType,
+      base.doc.contentHash,
+      state.retrieval,
+      state.normalisation,
+      state.publicationId ?? null,
+      state.error ?? null,
+      base.doc.retrievedAt,
+    ],
+  );
+}
+
+function persistRawMeta(runId, doc) {
+  try {
+    mkdirSync(RAW_META_DIR, { recursive: true });
+    const key = `${doc.sourceId}-${doc.externalDocumentId || 'url'}`.replace(/[^a-zA-Z0-9_-]/g, '_');
+    writeFileSync(
+      join(RAW_META_DIR, `${runId}-${key}.meta.json`),
+      JSON.stringify(
+        {
+          runId,
+          title: doc.title,
+          canonicalUrl: doc.canonicalUrl,
+          contentHash: doc.contentHash,
+          retrievedAt: doc.retrievedAt,
+        },
+        null,
+        2,
+      ),
+    );
+  } catch {
+    /* local-only best effort */
+  }
+}
+
+/** Direct ingest for harness (skip eligibility/mode when testing version paths). */
+export async function ingestDocumentsForTest(client, params) {
+  const { sourceId, regulatorId, runType = 'TEST', initiatedBy = 'harness', documents } = params;
+  const ids = await resolveCatalogueIds(client, regulatorId, sourceId);
+  const runInsert = await client.query(
+    `insert into ingestion_runs (source_id, run_type, status, started_at, initiated_by, environment)
+     values ($1, $2::ingestion_run_type, 'RUNNING'::ingestion_run_status, now(), $3, 'local')
+     returning id`,
+    [ids.sourceUuid, runType, initiatedBy],
+  );
+  const runId = runInsert.rows[0].id;
+  const metrics = { discovered: documents.length, new: 0, updated: 0, unchanged: 0, failed: 0 };
+  const eligibility = assessSourceIngestionEligibility(sourceId, {
+    ingestionMode: 'TEST_ONLY',
+    productionStatus: ids.productionStatus,
+  });
+  for (const doc of documents) {
+    const r = await processDocument(client, {
+      runId,
+      sourceUuid: ids.sourceUuid,
+      regulatorUuid: ids.regulatorUuid,
+      doc,
+      eligibility,
+    });
+    metrics[r.metric] += 1;
+  }
+  await client.query(
+    `update ingestion_runs set status = 'COMPLETED'::ingestion_run_status, completed_at = now(),
+      records_discovered = $2, records_new = $3, records_updated = $4, records_unchanged = $5, records_failed = $6
+     where id = $1`,
+    [runId, metrics.discovered, metrics.new, metrics.updated, metrics.unchanged, metrics.failed],
+  );
+  return { runId, metrics };
+}

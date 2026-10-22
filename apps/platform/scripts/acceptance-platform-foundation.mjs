@@ -60,11 +60,16 @@ const forbiddenImports = [
 
 for (const f of sourceFiles) {
   const text = readFileSync(f, 'utf8');
+  const rel = f.replace(platformRoot, '').replace(/\\/g, '/');
+  const ingestionServerAdapter = rel.includes('/lib/ri/ingestion/');
   for (const bad of forbiddenImports) {
+    if (bad.includes('integrations/regulatory-sources/connectors') && ingestionServerAdapter) {
+      continue;
+    }
     if (text.includes(bad)) failMsg(`forbidden import reference ${bad} in ${f}`);
   }
 }
-pass('no design lab / production MI shell / connector imports');
+pass('no design lab / production MI shell / connector imports (ingestion adapter exempt)');
 
 const clientFiles = platformFiles.filter((p) => p.includes('client.ts') || p.includes('components'));
 for (const f of clientFiles) {
