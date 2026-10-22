@@ -134,6 +134,20 @@ export async function runPhase7OperationsVerification() {
       const retries = await processDueRetries(admin, { fixtureBySource: { 'SRC-PSR-UK-RULES': fixturePsr } });
       if (retries.length >= 1 && (retries[0].status === 'COMPLETED' || retries[0].metrics)) {
         pass('retry: transient then success');
+        const openPsr = await admin.query(
+          `select count(*)::int as n from operational_alerts o
+           join regulatory_sources s on s.id = o.source_id
+           where s.external_key = 'SRC-PSR-UK-RULES' and o.category = 'INGESTION_FAILURE' and o.status = 'OPEN'`,
+        );
+        const psrHealth = await admin.query(
+          `select o.health_status from regulatory_source_operations o
+           join regulatory_sources s on s.id = o.source_id
+           where s.external_key = 'SRC-PSR-UK-RULES'`,
+        );
+        if (openPsr.rows[0].n === 0) pass('recovery: ingestion failure alerts resolved');
+        else fail('recovery alerts still open');
+        if (psrHealth.rows[0]?.health_status === 'HEALTHY') pass('recovery: source health HEALTHY');
+        else fail(`recovery health ${psrHealth.rows[0]?.health_status}`);
       } else fail('retry success');
     } else fail('retryable classification');
 
