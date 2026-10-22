@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ShellLayout } from '@/components/shell-layout';
 import { RiDataGate } from '@/components/ri/ri-data-gate';
+import { RiStatusChip } from '@/components/ri/ri-status-chip';
 import { canRi } from '@/lib/ri/permissions';
 import { updateImpactAction } from '@/lib/ri/server-actions';
 import { tryRiContext } from '@/lib/ri/context';
@@ -33,8 +34,21 @@ export default async function ImpactDetailPage({ params }: { params: Promise<{ i
     <ShellLayout title="Impact assessment" subtitle="Linked to regulatory change">
       <RiDataGate>
         <div className="fg-card">
+          <h2>Overview</h2>
           <p>Change: {change?.id ? <Link href={`/ri/changes/${change.id}`}>{change.title}</Link> : '—'}</p>
-          <p>Status: {impact.status} · Approver: {impact.approver_user_id ?? '—'} (set by server on approve)</p>
+          <ul className="fg-status-list">
+            <li><span>Status</span><span><RiStatusChip label={impact.status} /></span></li>
+            <li><span>Materiality</span><span>{impact.materiality ?? '—'}</span></li>
+            <li><span>Due date</span><span>{impact.due_date ?? '—'}</span></li>
+            <li><span>Owner</span><span>{impact.owner_user_id ?? '—'}</span></li>
+            <li><span>Reviewer</span><span>{impact.reviewer_user_id ?? '—'}</span></li>
+            <li><span>Approver</span><span>{impact.approver_user_id ?? '—'}</span></li>
+          </ul>
+          <p className="fg-muted">Approver identity is set by the server on approve/reject — not from the client.</p>
+        </div>
+        <div className="fg-card">
+          <h2>Impact dimensions</h2>
+          <p className="fg-muted">No production AI suggestions — complete human impact analysis below.</p>
         </div>
         {canEdit && (
           <form action={updateImpactAction} className="fg-card fg-form">

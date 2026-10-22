@@ -16,7 +16,7 @@ export async function listChanges(supabase: SupabaseClient, organisationId: stri
     .from('regulatory_changes')
     .select(
       `
-      id, title, status, change_type, materiality, effective_date, implementation_deadline, owner_user_id,
+      id, external_key, title, status, change_type, materiality, effective_date, implementation_deadline, owner_user_id,
       publication:regulatory_publications(id, title)
     `,
     )

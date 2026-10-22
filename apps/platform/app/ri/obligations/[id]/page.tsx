@@ -39,6 +39,17 @@ export default async function ObligationDetailPage({ params }: { params: Promise
       <RiDataGate>
         <p><Link href={`/ri/trace/${id}`}>Full lifecycle trace</Link></p>
         <div className="fg-card">
+          <h2>Source &amp; citation</h2>
+          <ul className="fg-status-list">
+            <li><span>Publication</span><span>{pub?.id ? <Link href={`/ri/publications/${pub.id}`}>{pub.title}</Link> : '—'}</span></li>
+            <li><span>Citation</span><span>{obligation.citation ?? '—'}</span></li>
+            <li><span>Source section</span><span>{obligation.source_section ?? '—'}</span></li>
+            <li><span>Priority</span><span>{obligation.priority ?? '—'}</span></li>
+            <li><span>Effective</span><span>{obligation.effective_date ?? '—'}</span></li>
+            <li><span>Due</span><span>{obligation.due_date ?? '—'}</span></li>
+          </ul>
+        </div>
+        <div className="fg-card">
           <h2>Traceability</h2>
           <ol className="fg-trace">
             <li>Publication: {pub?.id ? <Link href={`/ri/publications/${pub.id}`}>{pub.title}</Link> : '—'}</li>

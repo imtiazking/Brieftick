@@ -225,6 +225,20 @@ a:hover {
   color: var(--fg-gold);
 }
 
+.ri-metrics-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+}
+
+.ri-metrics-row strong {
+  color: var(--fg-text);
+  margin-left: 0.25rem;
+}
+
 .fg-metric-card {
   display: flex;
   flex-direction: column;

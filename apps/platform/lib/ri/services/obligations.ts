@@ -8,15 +8,21 @@ import {
   parseRequiredText,
   parseUuid,
 } from '@/lib/ri/validation';
+import { summarizeProductionObligationRows } from '@/lib/ri/lab-compat/dashboard-parity.mjs';
+
+export function summarizeObligationListRows(rows: { status: string }[]) {
+  return summarizeProductionObligationRows(rows);
+}
 
 export async function listObligations(supabase: SupabaseClient, organisationId: string) {
   const { data, error } = await supabase
     .from('regulatory_obligations')
     .select(
       `
-      id, external_key, obligation_statement, status, priority, due_date, effective_date,
-      regulatory_change_id, publication_id,
-      change:regulatory_changes(id, title)
+      id, external_key, obligation_statement, status, priority, due_date, effective_date, owner_user_id,
+      regulatory_change_id, publication_id, citation,
+      change:regulatory_changes(id, title, external_key),
+      publication:regulatory_publications(id, title)
     `,
     )
     .eq('organisation_id', organisationId)

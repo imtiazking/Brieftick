@@ -33,6 +33,9 @@ export default async function ChangeDetailPage({ params }: { params: Promise<{ i
       <RiDataGate>
         <div className="fg-card">
           <h2>Traceability</h2>
+          {change.external_key && (
+            <p className="fg-muted">Reference ID: {change.external_key}</p>
+          )}
           <p>
             Publication:{' '}
             {pub?.id ? <Link href={`/ri/publications/${pub.id}`}>{pub.title}</Link> : '—'}

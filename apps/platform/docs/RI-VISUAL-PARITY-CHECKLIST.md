@@ -10,9 +10,9 @@
 | Calendar | `#/calendar` | `/ri/calendar` | PASS | PASS | Month grid depth reduced | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Publications | `#/library` | `/ri/publications` | PASS | PASS | Pagination via DB | PASS |
 | Publication detail | `#/publication/*` | `/ri/publications/[id]` | PASS | PARTIAL | AI tab placeholder Phase 8 | PASS_WITH_INTENTIONAL_DIFFERENCE |
-| Changes | `#/changes` | `/ri/changes` | PASS | PASS | — | PASS |
-| Impact assessments | `#/assessments` | `/ri/impact-assessments` | PASS | PARTIAL | Detail panels thinner than lab | PASS_WITH_INTENTIONAL_DIFFERENCE |
-| Obligations | `#/obligations` | `/ri/obligations` | PASS | PASS | Canonical obligation taxonomy | PASS |
+| Changes | `#/changes` | `/ri/changes` | PASS | PASS | Phase 7C.3 lab register columns; see `docs/visual-review/phase-7c3-lifecycle-parity.md` | PASS_WITH_INTENTIONAL_DIFFERENCE |
+| Impact assessments | `#/assessments` | `/ri/impact-assessments` | PASS | PASS | Phase 7C.3; no lab AI assessment panel | PASS_WITH_INTENTIONAL_DIFFERENCE |
+| Obligations | `#/obligations` | `/ri/obligations` | PASS | PASS | Phase 7C.3 metrics row + canonical taxonomy harness | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Policies / Risks / Controls | lab lists | `/ri/policies` etc. | PASS | PARTIAL | Version/testing UI FUTURE | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Actions | `#/actions` | `/ri/actions` | PASS | PASS | Overdue derived in service | PASS |
 | Evidence | `#/evidence` | `/ri/evidence` | PASS | PASS | No file upload yet | PASS_WITH_INTENTIONAL_DIFFERENCE |
