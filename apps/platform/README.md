@@ -17,8 +17,12 @@ Configure Clerk via `.env` (see `.env.example`). When keys are absent, middlewar
 ## Supabase
 
 - Browser: `lib/supabase/client.ts` (anon key only)
-- Server: `lib/supabase/server.ts` (SSR cookie client)
+- Server: `lib/supabase/server.ts` (SSR cookie client + Clerk bearer JWT)
 - Admin: `lib/supabase/admin.ts` (`server-only`, service role)
+
+## Tenancy (Phase 2)
+
+Organisations, memberships, platform roles, and RLS are defined in `supabase/migrations/`. See **`docs/TENANCY.md`** for Clerk → Supabase → RLS flow and future `organisation_id` on RI tables.
 
 Do not run migrations against production from this repo without an explicit runbook. Local CLI:
 

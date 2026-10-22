@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AppShell } from '@/components/app-shell';
+import { ShellLayout } from '@/components/shell-layout';
 import { isClerkConfigured } from '@/lib/env';
 
 export default function HomePage() {
@@ -8,7 +8,7 @@ export default function HomePage() {
     : 'Clerk is not configured in this environment — routes are open for local foundation builds only.';
 
   return (
-    <AppShell
+    <ShellLayout
       title="FORGENIQ application"
       subtitle="Single authenticated workspace for Regulatory Intelligence, Financial Crime, Operational Resilience and Market Intelligence."
     >
@@ -24,6 +24,6 @@ export default function HomePage() {
           <Link href="/ri">Open Regulatory Intelligence placeholder →</Link>
         </p>
       </div>
-    </AppShell>
+    </ShellLayout>
   );
 }
