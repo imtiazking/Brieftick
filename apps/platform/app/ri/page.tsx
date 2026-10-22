@@ -1,79 +1,59 @@
+import Link from 'next/link';
 import { ShellLayout } from '@/components/shell-layout';
+import { RiDataGate } from '@/components/ri/ri-data-gate';
 import { loadOrganisationShellContext } from '@/lib/auth/require-organisation';
 import { getCatalogueSummary } from '@/lib/catalogue';
-import { clerkConfigStatus, isClerkConfigured, supabaseConfigStatus } from '@/lib/env';
-import { LIFECYCLE_ENTITY_LABELS } from '@/lib/ri/schema-contracts';
+import { isSupabaseBrowserConfigured } from '@/lib/env';
 
-export default async function RegulatoryIntelligencePlaceholderPage() {
+export default async function RegulatoryIntelligenceHubPage() {
   const org = await loadOrganisationShellContext();
-  const clerk = clerkConfigStatus();
-  const supabase = supabaseConfigStatus();
   const catalogue = await getCatalogueSummary();
+  const dataReady = isSupabaseBrowserConfigured();
 
   return (
     <ShellLayout
       title="RI · Regulatory Intelligence"
-      subtitle="Production schema foundation — workflows not migrated."
+      subtitle="Publication → triage → applicability → change → impact → obligation"
     >
-      <div className="fg-card">
-        <h2>Regulatory Intelligence</h2>
-        <p>
-          <strong>Production schema foundation</strong> is defined in Supabase migrations. Design Lab
-          behaviour, Ask RI, AI analysis, and live ingestion are not enabled on this route.
-        </p>
-        <ul className="fg-status-list">
-          <li>
-            <span>Active organisation</span>
-            <span>{org.active?.organisationName ?? org.active?.organisationId ?? 'none'}</span>
-          </li>
-          <li>
-            <span>Current role</span>
-            <span>{org.active?.role ?? 'n/a'}</span>
-          </li>
-          <li>
-            <span>Catalogue regulators (reference)</span>
-            <span>{catalogue.regulatorCount}</span>
-          </li>
-          <li>
-            <span>Catalogue sources (reference)</span>
-            <span>{catalogue.sourceCount}</span>
-          </li>
-          <li>
-            <span>Sources enabled for production</span>
-            <span>0</span>
-          </li>
-          <li>
-            <span>Clerk (IdP)</span>
-            <span>{clerk}</span>
-          </li>
-          <li>
-            <span>Supabase client</span>
-            <span>{supabase}</span>
-          </li>
-          <li>
-            <span>RLS / tenant model</span>
-            <span>
-              {isClerkConfigured() && supabase !== 'not_configured'
-                ? 'migrations + membership RLS'
-                : 'not live verified'}
-            </span>
-          </li>
-        </ul>
-        <h3>Lifecycle entities in schema</h3>
-        <ul className="fg-status-list">
-          {LIFECYCLE_ENTITY_LABELS.map((label) => (
-            <li key={label}>
-              <span>{label}</span>
-              <span>available</span>
+      <RiDataGate>
+        <div className="fg-card">
+          <h2>Core workflow</h2>
+          <p>
+            Global regulator publications are shared. Organisation triage, applicability, changes,
+            impact assessments, and obligations are tenant-scoped with server-side authorisation.
+          </p>
+          <ul className="fg-status-list">
+            <li>
+              <span>Active organisation</span>
+              <span>{org.active?.organisationName ?? 'none'}</span>
             </li>
-          ))}
-        </ul>
-        <div className="fg-banner" role="status">
-          Global regulators and sources are shared reference data. Tenant tables require{' '}
-          <code>organisation_id</code> and membership-derived RLS. Relationship authority is explicit
-          (join tables); evidence and findings do not infer ownership via graph traversal.
+            <li>
+              <span>Your role</span>
+              <span>{org.active?.role ?? 'n/a'}</span>
+            </li>
+            <li>
+              <span>Reference catalogue sources</span>
+              <span>{catalogue.sourceCount}</span>
+            </li>
+            <li>
+              <span>Production sources enabled</span>
+              <span>{catalogue.productionEnabledSourceCount}</span>
+            </li>
+          </ul>
+          {dataReady && (
+            <ul className="fg-link-list">
+              <li><Link href="/ri/publications">Browse publications</Link></li>
+              <li><Link href="/ri/changes">Regulatory changes</Link></li>
+              <li><Link href="/ri/impact-assessments">Impact assessments</Link></li>
+              <li><Link href="/ri/obligations">Obligations</Link></li>
+            </ul>
+          )}
+          <div className="fg-banner" role="status">
+            Live regulator ingestion is not enabled. Empty lists are expected until controlled
+            publications exist (development fixtures are marked TEST / DEVELOPMENT DATA only).
+          </div>
         </div>
-      </div>
+      </RiDataGate>
     </ShellLayout>
   );
 }

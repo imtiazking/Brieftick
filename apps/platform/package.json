@@ -12,6 +12,8 @@
     "test:acceptance:phase2": "node ./scripts/acceptance-phase-2-platform.mjs && node ./scripts/acceptance-phase-2-tenant-isolation.mjs",
     "test:acceptance:phase3": "node ./scripts/acceptance-phase-3-ri-schema.mjs",
     "test:acceptance:phase3a": "node ./scripts/acceptance-phase-3a-local-db.mjs",
+    "test:acceptance:phase4": "node ./scripts/acceptance-phase-4-ri-workflow.mjs",
+    "ri:seed-dev-publication": "node ./scripts/ri-seed-dev-publication.mjs",
     "sync:reference-catalogue": "node ./scripts/sync-reference-catalogue.mjs"
   },
   "dependencies": {
