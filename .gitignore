@@ -14,3 +14,7 @@ design-lab/regulatory-intelligence/debug/
 design-lab/regulatory-intelligence/visual-review/
 debug/
 preview/
+
+# Regulatory Source Integration Lab — local live verification evidence (not public)
+integrations/regulatory-sources/evidence/*
+!integrations/regulatory-sources/evidence/.gitkeep

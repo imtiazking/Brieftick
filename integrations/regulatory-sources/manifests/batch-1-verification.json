@@ -1,0 +1,269 @@
+{
+  "manifestId": "batch-1-verification",
+  "generatedFrom": "integrations/regulatory-sources/evidence/batch-1-latest.json",
+  "generatedAt": "2026-10-22T11:16:02.493Z",
+  "labRunRetrievedAt": "2026-10-22T10:18:34.052Z",
+  "entries": [
+    {
+      "regulatorId": "REG-ICO",
+      "sourceId": "SRC-ICO-GUIDANCE",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:18:34.053Z",
+      "retrievalMethod": "official_sitemap",
+      "canonicalOfficialUrl": "https://ico.org.uk/action-weve-taken/decision-notices/2026/10/ic-442828-h7m6/",
+      "canonicalHostname": "ico.org.uk",
+      "canonicalRegulatoryContentUrl": "https://ico.org.uk/sitemap.xml",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "09e4a1d24bcdbbe6b7a3dbf199e5f1a11412e76155a8f1cd847ea99240ea72f0",
+          "representativeDocumentUrl": "https://ico.org.uk/action-weve-taken/decision-notices/2026/10/ic-442828-h7m6/",
+          "title": "Welsh Government | ICO"
+        },
+        {
+          "sha256": "aca61ea69884459300d8f00e207bc6566d6d13521130d6daf0bd68baaefe0305",
+          "representativeDocumentUrl": "https://ico.org.uk/action-weve-taken/decision-notices/2026/10/ic-544523-m0p2/",
+          "title": "Chief Constable Sussex Police | ICO"
+        },
+        {
+          "sha256": "d363ca71900c69a8d3a222151e57c296aea5e50bf7c96e5ff28c4875dbec8f51",
+          "representativeDocumentUrl": "https://ico.org.uk/action-weve-taken/decision-notices/2026/10/ic-433870-p9w4/",
+          "title": "South Oxfordshire District Council | ICO"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "ENFORCEMENT",
+        "REGULATORY_NOTICE"
+      ]
+    },
+    {
+      "regulatorId": "REG-PSR-UK",
+      "sourceId": "SRC-PSR-UK-RULES",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:18:43.361Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://www.psr.org.uk/publications/corporate-information/powers-and-procedures-guidance-september-2024/",
+      "canonicalHostname": "psr.org.uk",
+      "canonicalRegulatoryContentUrl": "https://www.psr.org.uk/publications/",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "730a6cfdaf2d56070bad8d54de1e788973f3b24b2dad957f8e24dcd95b3fcd0c",
+          "representativeDocumentUrl": "https://www.psr.org.uk/publications/corporate-information/powers-and-procedures-guidance-september-2024/",
+          "title": "Powers and Procedures Guidance September 2024 | Payment Systems Regulator"
+        },
+        {
+          "sha256": "9460a934a511c03d5544a8966f15651428b406aae606cc2b5e223f53c2a7d666",
+          "representativeDocumentUrl": "https://www.psr.org.uk/how-we-regulate/regulatory-framework/written-guidance/",
+          "title": "Written guidance | Payment Systems Regulator"
+        },
+        {
+          "sha256": "2fa5d2cd585c0406eb7f989085247955ac80012da11d2e34251e41dedbbb07a4",
+          "representativeDocumentUrl": "https://www.psr.org.uk/publications/corporate-information/psr-work-plan/",
+          "title": "PSR work plan | Payment Systems Regulator"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "SUPERVISORY_GUIDANCE",
+        "REGULATORY_NOTICE",
+        "POLICY_STATEMENT"
+      ]
+    },
+    {
+      "regulatorId": "REG-FRC",
+      "sourceId": "SRC-FRC-PUBLICATIONS",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:18:49.429Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://www.frc.org.uk/news-and-events/news/2026/10/new-thematic-reviews-provide-practical-examples-to-strengthen-corporate-reporting/",
+      "canonicalHostname": "frc.org.uk",
+      "canonicalRegulatoryContentUrl": "https://www.frc.org.uk/news-and-events/news",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "29e5a49b3259dbe6e3a100258e44ff33908b1ad3ee14bfd09ea1079962cefee3",
+          "representativeDocumentUrl": "https://www.frc.org.uk/news-and-events/news/2026/10/new-thematic-reviews-provide-practical-examples-to-strengthen-corporate-reporting/",
+          "title": "New thematic reviews provide practical examples to strengthen corporate reporting"
+        },
+        {
+          "sha256": "d9fdfc657d349120f6c8c8140f7c5deede998a2d24341effc5f56259126cbf9f",
+          "representativeDocumentUrl": "https://www.frc.org.uk/news-and-events/news/2026/10/frc-releases-guidance-to-support-auditors-get-ahead-on-reducing-boilerplate-language/",
+          "title": "FRC releases guidance to support auditors get ahead on reducing boilerplate language"
+        },
+        {
+          "sha256": "1747060dcdfe43415bf0da05804dd7dd59b49d423b010a435104eb5eb697784f",
+          "representativeDocumentUrl": "https://www.frc.org.uk/news-and-events/news/2026/10/sanctions-2026-10-07/",
+          "title": "Sanctions against Deloitte LLP"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "NEWS",
+        "PRESS_RELEASE",
+        "SUPERVISORY_GUIDANCE",
+        "ENFORCEMENT"
+      ]
+    },
+    {
+      "regulatorId": "REG-CMA-UK",
+      "sourceId": "SRC-CMA-UK-ENFORCEMENT",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:18:55.640Z",
+      "retrievalMethod": "official_atom",
+      "canonicalOfficialUrl": "https://www.gov.uk/government/news/aldi-and-lidl-will-be-subject-to-same-rules-as-major-supermarkets",
+      "canonicalHostname": "www.gov.uk",
+      "canonicalRegulatoryContentUrl": "https://www.gov.uk/government/organisations/competition-and-markets-authority.atom",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "5ced7bc23fc5b7602a881189734617096e542ebecddfe3086003bd315252c7ed",
+          "representativeDocumentUrl": "https://www.gov.uk/government/news/aldi-and-lidl-will-be-subject-to-same-rules-as-major-supermarkets",
+          "title": "Aldi and Lidl will be subject to same rules as major supermarkets"
+        },
+        {
+          "sha256": "1ec9e8e915d5999b87d57aa08424e2631530723f7b8f3d1414ffc5834c4c1c8f",
+          "representativeDocumentUrl": "https://www.gov.uk/cma-cases/potential-designation-of-aldi-and-lidl-under-the-groceries-market-investigation-controlled-land-order-2010",
+          "title": "Potential designation of Aldi and Lidl under the Groceries Market Investigation (Controlled Land) Order 2010"
+        },
+        {
+          "sha256": "03674e773750434753df9c51bf79695dfffa1b0a386b8d91882229978b6d6410",
+          "representativeDocumentUrl": "https://www.gov.uk/cma-cases/referral-of-the-proposed-critical-chemicals-resilience-fund-subsidy-scheme-by-the-department-for-business-innovation-science-and-trade",
+          "title": "Referral of the proposed Critical Chemicals Resilience Fund subsidy scheme by the Department for Business, Innovation, Science and Trade"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "productionStrategy": "DIRECT_OFFICIAL_FEED",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "ENFORCEMENT",
+        "REGULATORY_NOTICE",
+        "PRESS_RELEASE"
+      ]
+    },
+    {
+      "regulatorId": "REG-OFSI",
+      "sourceId": "SRC-OFSI-SANCTIONS-GUIDANCE",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:19:00.247Z",
+      "retrievalMethod": "official_atom",
+      "canonicalOfficialUrl": "https://www.gov.uk/government/publications/ofsi-general-licence-int202610050568",
+      "canonicalHostname": "www.gov.uk",
+      "canonicalRegulatoryContentUrl": "https://www.gov.uk/government/organisations/office-of-financial-sanctions-implementation.atom",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "163e7ad90d607a8c1f435551f6e1d8e7aea5e1f599079c8b7dc019ee03bc8079",
+          "representativeDocumentUrl": "https://www.gov.uk/government/publications/ofsi-general-licence-int202610050568",
+          "title": "Guidance: OFSI General Licence - INT/2026/10050568"
+        },
+        {
+          "sha256": "3deade93476fe41952d0f8a1ca2ad7c933b30210385e4fa012d6d1e14d9eab10",
+          "representativeDocumentUrl": "https://www.gov.uk/government/publications/uk-financial-sanctions-faqs",
+          "title": "Guidance: UK Financial Sanctions FAQs"
+        },
+        {
+          "sha256": "baf913bf72081fbcf34f227657e422f93b01e9115ea27cc8b78ff8a0ec7b3dfb",
+          "representativeDocumentUrl": "https://www.gov.uk/government/publications/ofsi-general-licence-int202611080040",
+          "title": "Guidance: OFSI General Licence - INT/2026/11080040"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "productionStrategy": "DIRECT_OFFICIAL_FEED",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "SANCTIONS_POLICY",
+        "GENERAL_LICENCE",
+        "SUPERVISORY_GUIDANCE"
+      ]
+    },
+    {
+      "regulatorId": "REG-SEC",
+      "sourceId": "SRC-SEC-RULES-PUBLICATIONS",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:19:08.060Z",
+      "retrievalMethod": "official_rss",
+      "canonicalOfficialUrl": "https://www.sec.gov/newsroom/press-releases/2026-108-sec-amf-announce-supervisory-mou-enhance-cooperation-investment-advisers-investment-service",
+      "canonicalHostname": "sec.gov",
+      "canonicalRegulatoryContentUrl": "https://www.sec.gov/news/pressreleases.rss",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "d4472676ef78fa677840213059a220e4727cf6df2880b41197c003007a11c493",
+          "representativeDocumentUrl": "https://www.sec.gov/newsroom/press-releases/2026-108-sec-amf-announce-supervisory-mou-enhance-cooperation-investment-advisers-investment-service",
+          "title": "SEC and AMF Announce Supervisory MOU To Enhance Cooperation for Investment Advisers and Investment Service Providers"
+        },
+        {
+          "sha256": "d149ac67b4cad65919b15b0f70f45f04e1752475f936e295f2efea3a43c05107",
+          "representativeDocumentUrl": "https://www.sec.gov/newsroom/press-releases/2026-107-sec-fsa-hold-autumn-financial-regulatory-dialogue",
+          "title": "SEC, FSA Hold Autumn Financial Regulatory Dialogue"
+        },
+        {
+          "sha256": "73a536088323e74ea10cfadf1aaf3e1360ba4212e5fc03cbda28c72ac86eecaf",
+          "representativeDocumentUrl": "https://www.sec.gov/newsroom/press-releases/2026-106-sec-announces-roundtable-machine-understandable-data-age-super-intelligence",
+          "title": "SEC Announces Roundtable on Machine-Understandable Data in the Age of Super Intelligence"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": "application/rss+xml; charset=utf-8",
+      "productionStrategy": "DIRECT_OFFICIAL_FEED",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "PRESS_RELEASE",
+        "NEWS"
+      ]
+    },
+    {
+      "regulatorId": "REG-FINRA",
+      "sourceId": "SRC-FINRA-RULEBOOK",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:19:12.775Z",
+      "retrievalMethod": "official_html_pattern",
+      "canonicalOfficialUrl": "https://www.finra.org/rules-guidance/notices/26-19",
+      "canonicalHostname": "finra.org",
+      "canonicalRegulatoryContentUrl": "https://www.finra.org/rules-guidance/notices",
+      "itemCount": 1,
+      "representativeDocuments": [
+        {
+          "sha256": "6aae378c2567848ce94cff1ede6cf4d19e8e6cb335ca66ee488705c214cc9805",
+          "representativeDocumentUrl": "https://www.finra.org/rules-guidance/notices/26-19",
+          "title": "Regulatory Notice 26-19 | FINRA.org"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "REGULATORY_NOTICE",
+        "RULEBOOK"
+      ]
+    }
+  ]
+}

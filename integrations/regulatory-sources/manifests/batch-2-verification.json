@@ -1,0 +1,322 @@
+{
+  "manifestId": "batch-2-verification",
+  "generatedFrom": "integrations/regulatory-sources/evidence/batch-2-latest.json",
+  "generatedAt": "2026-10-22T11:16:02.496Z",
+  "labRunRetrievedAt": "2026-10-22T10:57:54.972Z",
+  "entries": [
+    {
+      "regulatorId": "REG-IA-SA",
+      "sourceId": "SRC-IA-SA-REGULATIONS",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:57:54.974Z",
+      "retrievalMethod": "official_html_pattern",
+      "canonicalOfficialUrl": "https://www.ia.gov.sa/en/regulations-and-licenses",
+      "canonicalHostname": "www.ia.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://www.ia.gov.sa/en/regulations-and-licenses",
+      "itemCount": 1,
+      "representativeDocuments": [
+        {
+          "sha256": "60343d2a5cd88ee7a26e17e676cd5281da4c97f8762e5fea73e3d3fa52b0f40f",
+          "representativeDocumentUrl": "https://www.ia.gov.sa/en/regulations-and-licenses",
+          "title": "Regulations & Licenses"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "CONNECTIVITY_ONLY",
+      "contentClasses": [
+        "OTHER"
+      ]
+    },
+    {
+      "regulatorId": "REG-TADAWUL",
+      "sourceId": "SRC-TADAWUL-RULEBOOK",
+      "verificationStatus": "ACCESS_RESTRICTED",
+      "verifiedAt": "2026-10-22T10:57:57.676Z",
+      "retrievalMethod": "official_html_pattern",
+      "canonicalOfficialUrl": "https://www.saudiexchange.sa/",
+      "canonicalHostname": "www.saudiexchange.sa",
+      "canonicalRegulatoryContentUrl": "https://www.saudiexchange.sa/wps/portal/saudiexchange/rules-and-regulations/listing-rules",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": 403,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": "Integration Lab HTTP 403 on exchange rulebook paths; no WAF bypass.",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-SDAIA",
+      "sourceId": "SRC-SDAIA-PDPL",
+      "verificationStatus": "RESEARCH_REQUIRED",
+      "verifiedAt": "2026-10-22T10:57:57.952Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://sdaia.gov.sa/en",
+      "canonicalHostname": "sdaia.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://sdaia.gov.sa/en",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": "No listing links extracted",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-ZATCA",
+      "sourceId": "SRC-ZATCA-EINVOICING",
+      "verificationStatus": "RESEARCH_REQUIRED",
+      "verifiedAt": "2026-10-22T10:57:59.600Z",
+      "retrievalMethod": "official_document_library",
+      "canonicalOfficialUrl": "https://zatca.gov.sa/en/Rules/Lists/RulesList/AllItems.aspx",
+      "canonicalHostname": "zatca.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://zatca.gov.sa/en/Rules/Lists/RulesList/AllItems.aspx",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_DOCUMENT_LIBRARY",
+      "notes": "No document links in library index",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-MOCI-SA",
+      "sourceId": "SRC-MOCI-SA-COMPANIES-LAW",
+      "verificationStatus": "RETRIEVAL_FAILED",
+      "verifiedAt": "2026-10-22T10:58:01.734Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://mc.gov.sa/en/Pages/default.aspx",
+      "canonicalHostname": "mc.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://mc.gov.sa/en/Pages/default.aspx",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": "fetch failed",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-NCA-SA",
+      "sourceId": "SRC-NCA-SA-FRAMEWORKS",
+      "verificationStatus": "RESEARCH_REQUIRED",
+      "verifiedAt": "2026-10-22T10:58:02.140Z",
+      "retrievalMethod": "official_document_library",
+      "canonicalOfficialUrl": "https://nca.gov.sa/en/regulatory-documents/",
+      "canonicalHostname": "nca.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://nca.gov.sa/en/regulatory-documents/",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_DOCUMENT_LIBRARY",
+      "notes": "No document links in library index",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-SA-LEG",
+      "sourceId": "SRC-SA-LEGISLATION-GAZETTE",
+      "verificationStatus": "RETRIEVAL_FAILED",
+      "verifiedAt": "2026-10-22T10:58:04.012Z",
+      "retrievalMethod": "official_legislation_html",
+      "canonicalOfficialUrl": "https://laws.boe.gov.sa/BoeLaws/Laws",
+      "canonicalHostname": "laws.boe.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://laws.boe.gov.sa/BoeLaws/Laws",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": "fetch failed",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-SCA-UAE",
+      "sourceId": "SRC-SCA-UAE-REGULATIONS",
+      "verificationStatus": "RESEARCH_REQUIRED",
+      "verifiedAt": "2026-10-22T10:58:20.853Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://www.sca.gov.ae/",
+      "canonicalHostname": "www.uaecma.gov.ae",
+      "canonicalRegulatoryContentUrl": "https://www.uaecma.gov.ae/en/regulations.aspx",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": "sca.gov.ae redirects to uaecma.gov.ae (official SCA portal hostname).",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-FSRA",
+      "sourceId": "SRC-FSRA-RULEBOOK",
+      "verificationStatus": "ACCESS_RESTRICTED",
+      "verifiedAt": "2026-10-22T10:58:25.582Z",
+      "retrievalMethod": "official_rulebook_platform_html",
+      "canonicalOfficialUrl": "https://www.adgm.com/financial-services-regulatory-authority",
+      "canonicalHostname": "en.adgm.thomsonreuters.com",
+      "canonicalRegulatoryContentUrl": "https://en.adgm.thomsonreuters.com/rulebook/rulemaking-instruments",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": 403,
+      "contentType": null,
+      "productionStrategy": "OFFICIAL_STRUCTURED_ENDPOINT",
+      "notes": "ADGM FSRA rulebook delivered via Thomson Reuters host; HTTP 403 to lab client on rulebook platform (similar pattern to DFSA/CBUAE).",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-UAE-FIU",
+      "sourceId": "SRC-UAE-FIU-GUIDANCE",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:58:25.990Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://uaefiu.gov.ae/en/policies-guidance/frequently-asked-questions/",
+      "canonicalHostname": "www.uaefiu.gov.ae",
+      "canonicalRegulatoryContentUrl": "https://www.uaefiu.gov.ae/en",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "498a1901ff28090464b2d02b7cb823fed47936676bf50e6a24dcc26d39e841ed",
+          "representativeDocumentUrl": "https://uaefiu.gov.ae/en/policies-guidance/frequently-asked-questions/",
+          "title": "Frequently Asked Questions"
+        },
+        {
+          "sha256": "6dbd9f1d7ce0c1e88588e99d2608c2163222aa455a64c6ac802840ffab986cc3",
+          "representativeDocumentUrl": "https://uaefiu.gov.ae/en/policies-guidance/understanding-the-law/",
+          "title": "Understanding The Law"
+        },
+        {
+          "sha256": "bd6aa06a6b2c7391b7395495ca09166f9ad9c47838d3b37c2637027ee160d44a",
+          "representativeDocumentUrl": "https://uaefiu.gov.ae/en/policies-guidance/the-str-process/",
+          "title": "The STR Process"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "SUPERVISORY_GUIDANCE",
+        "POLICY_STATEMENT"
+      ]
+    },
+    {
+      "regulatorId": "REG-CFTC",
+      "sourceId": "SRC-CFTC-PUBLICATIONS",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:58:30.881Z",
+      "retrievalMethod": "official_html_pattern",
+      "canonicalOfficialUrl": "https://www.cftc.gov/PressRoom/PressReleases/9313-26",
+      "canonicalHostname": "www.cftc.gov",
+      "canonicalRegulatoryContentUrl": "https://www.cftc.gov/PressRoom/PressReleases/index.htm",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "a5ae3c977c43c4afc88353d85b695951ebac3686956ec469ff0ba5ae7b3aae75",
+          "representativeDocumentUrl": "https://www.cftc.gov/PressRoom/PressReleases/9313-26",
+          "title": "CFTC Secures Court Order Directing Louisiana Man and His Companies to Pay Over $9 Million in Forex Fraud | CFTC"
+        },
+        {
+          "sha256": "62b467d9ce5293dd782cb7486f9adcc8c60051550b01fa0cd9fda67c5591bc91",
+          "representativeDocumentUrl": "https://www.cftc.gov/PressRoom/PressReleases/9312-26",
+          "title": "CFTC’s Innovation Task Force Announces Agenda &amp; Panelists for Inaugural Frontier Forum on Super Intelligence | CFTC"
+        },
+        {
+          "sha256": "0e98824e3c49f645739943cc91b7b68a4f0faad097aba933ba9d94d8fd93fce8",
+          "representativeDocumentUrl": "https://www.cftc.gov/PressRoom/PressReleases/9311-26",
+          "title": "CFTC Secures Federal Court Orders Requiring Former Long Island Resident and His Firm to Pay Over $288 Million for Operating a Commodity Pool Ponzi Scheme | CFTC"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "PRESS_RELEASE",
+        "ENFORCEMENT"
+      ]
+    },
+    {
+      "regulatorId": "REG-FRB",
+      "sourceId": "SRC-FRB-SUPERVISION",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:58:36.980Z",
+      "retrievalMethod": "official_rss",
+      "canonicalOfficialUrl": "https://www.federalreserve.gov/newsevents/pressreleases/enforcement20261016a.htm",
+      "canonicalHostname": "www.federalreserve.gov",
+      "canonicalRegulatoryContentUrl": "https://www.federalreserve.gov/feeds/press_all.xml",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "762117de1904c1b576a0331b33072b97c9a590587fcbe4e696b3536b295060aa",
+          "representativeDocumentUrl": "https://www.federalreserve.gov/newsevents/pressreleases/enforcement20261016a.htm",
+          "title": "Federal Reserve Board announces termination of enforcement actions with Gardner Bancshares, Inc. and Small Business Bank"
+        },
+        {
+          "sha256": "ed6d4fb09f48ab6180facb833e12ae1ea8314ecae3b7cdf30f898e51f52ec718",
+          "representativeDocumentUrl": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261013a.htm",
+          "title": "Minutes of the Board's discount rate meetings on August 17, September 9, and September 16, 2026"
+        },
+        {
+          "sha256": "a7a6f26fa5e92e014c2ae0ff97e65a5e95a954883a209a4bd9fa6a96df279c52",
+          "representativeDocumentUrl": "https://www.federalreserve.gov/newsevents/pressreleases/other20261009a.htm",
+          "title": "Federal Reserve Board releases results of the 2025 Survey of Consumer Finances, which provides the public and policymakers with detailed insights into the economic condition of American families"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": "text/xml",
+      "productionStrategy": "DIRECT_OFFICIAL_FEED",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "PRESS_RELEASE",
+        "ENFORCEMENT",
+        "POLICY_STATEMENT",
+        "OTHER"
+      ]
+    },
+    {
+      "regulatorId": "REG-NFA",
+      "sourceId": "SRC-NFA-RULEBOOK",
+      "verificationStatus": "RESEARCH_REQUIRED",
+      "verifiedAt": "2026-10-22T10:59:33.012Z",
+      "retrievalMethod": "official_rss",
+      "canonicalOfficialUrl": "https://www.nfa.futures.org/news/rss.asp",
+      "canonicalHostname": "www.nfa.futures.org",
+      "canonicalRegulatoryContentUrl": "https://www.nfa.futures.org/news/rss.asp",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": 200,
+      "contentType": "text/html",
+      "productionStrategy": "DIRECT_OFFICIAL_FEED",
+      "notes": "No feed items parsed",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    }
+  ]
+}

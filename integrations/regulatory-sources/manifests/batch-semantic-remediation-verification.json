@@ -1,0 +1,368 @@
+{
+  "manifestId": "batch-semantic-remediation-verification",
+  "generatedFrom": "integrations/regulatory-sources/evidence/batch-semantic-remediation-latest.json",
+  "generatedAt": "2026-10-22T11:16:02.497Z",
+  "labRunRetrievedAt": "2026-10-22T11:11:59.498Z",
+  "entries": [
+    {
+      "regulatorId": "REG-VARA",
+      "sourceId": "SRC-VARA-RULEBOOK",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:11:59.499Z",
+      "retrievalMethod": "official_rulebook_discovery",
+      "canonicalOfficialUrl": "https://www.vara.ae/en/regulations/regulatory-notices/",
+      "canonicalHostname": "www.vara.ae",
+      "canonicalRegulatoryContentUrl": "https://www.vara.ae/en",
+      "itemCount": 1,
+      "representativeDocuments": [
+        {
+          "sha256": "a33656892236de55988e9bbea276a15586c777ea69ce0f16a11f731ce3025b28",
+          "representativeDocumentUrl": "https://www.vara.ae/en/regulations/regulatory-notices/",
+          "title": "VASP Registry - VARA"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "RULEBOOK",
+        "REGULATORY_NOTICE"
+      ]
+    },
+    {
+      "regulatorId": "REG-CFPB",
+      "sourceId": "SRC-CFPB-RULES",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:02.716Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://www.consumerfinance.gov/rules-policy/final-rules/financial-data-transparency-act-joint-data-standards/",
+      "canonicalHostname": "www.consumerfinance.gov",
+      "canonicalRegulatoryContentUrl": "https://www.consumerfinance.gov/rules-policy/final-rules/",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "4bdd127661150c84854ad66e3af1ef95192f265d3287690a37e7e21c85c0b675",
+          "representativeDocumentUrl": "https://www.consumerfinance.gov/rules-policy/final-rules/financial-data-transparency-act-joint-data-standards/",
+          "title": "Financial Data Transparency Act Joint Data Standards | Consumer Financial Protection Bureau"
+        },
+        {
+          "sha256": "e8c20ffe81a68fa6d514967732f048831696f27bbda22cf324cb3bc142b3dd6c",
+          "representativeDocumentUrl": "https://www.consumerfinance.gov/rules-policy/final-rules/small-business-lending-under-the-equal-credit-opportunity-act-regulation-b-2026/",
+          "title": "Small Business Lending under the Equal Credit Opportunity Act (Regulation B) | Consumer Financial Protection Bureau"
+        },
+        {
+          "sha256": "b398bc237fad37e56801f99ddd10b7347af7c62e9316f4e3198b589cea19cace",
+          "representativeDocumentUrl": "https://www.consumerfinance.gov/rules-policy/final-rules/equal-credit-opportunity-act-regulation-b/",
+          "title": "Equal Credit Opportunity Act (Regulation B) | Consumer Financial Protection Bureau"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "SECONDARY_LEGISLATION",
+        "REGULATORY_NOTICE"
+      ]
+    },
+    {
+      "regulatorId": "REG-SEC",
+      "sourceId": "SRC-SEC-RULEMAKING",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:07.358Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://www.sec.gov/rules-regulations/self-regulatory-organization-rulemaking/finra",
+      "canonicalHostname": "www.sec.gov",
+      "canonicalRegulatoryContentUrl": "https://www.sec.gov/rules-regulations",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "a3d44245d551e4a6487f8bcd45a7660c4d464fb7035d9672909f2df3559b79ec",
+          "representativeDocumentUrl": "https://www.sec.gov/rules-regulations/self-regulatory-organization-rulemaking/finra",
+          "title": "SEC.gov | Self-Regulatory Organization Rulemaking"
+        },
+        {
+          "sha256": "e1a08ceb7736a41b9966e3ab9e7b8dd153bff21e806219e980b2d9f425637c70",
+          "representativeDocumentUrl": "https://www.sec.gov/rules-regulations/self-regulatory-organization-rulemaking/msrb",
+          "title": "SEC.gov | Self-Regulatory Organization Rulemaking"
+        },
+        {
+          "sha256": "3da5f614f5a8c4792fd6c15e42ec25e42d2956869a853ec85b42c2b7ef4c38e0",
+          "representativeDocumentUrl": "https://www.sec.gov/rules-regulations/self-regulatory-organization-rulemaking/national-securities-exchanges",
+          "title": "SEC.gov | National Securities Exchanges - Current"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "REGULATORY_NOTICE",
+        "RULEBOOK"
+      ]
+    },
+    {
+      "regulatorId": "REG-CFTC",
+      "sourceId": "SRC-CFTC-RULEMAKING",
+      "verificationStatus": "RESEARCH_REQUIRED",
+      "verifiedAt": "2026-10-22T11:12:12.054Z",
+      "retrievalMethod": "official_federal_register_link",
+      "canonicalOfficialUrl": "https://www.cftc.gov/LawRegulation/FederalRegister/index.htm",
+      "canonicalHostname": "www.cftc.gov",
+      "canonicalRegulatoryContentUrl": "https://www.cftc.gov/LawRegulation/FederalRegister/index.htm",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": "No pattern links found",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    },
+    {
+      "regulatorId": "REG-SAMA",
+      "sourceId": "SRC-SAMA-RULEBOOK",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:12.123Z",
+      "retrievalMethod": "official_rulebook_html",
+      "canonicalOfficialUrl": "https://www.sama.gov.sa/",
+      "canonicalHostname": "rulebook.sama.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://rulebook.sama.gov.sa/en",
+      "itemCount": 1,
+      "representativeDocuments": [
+        {
+          "sha256": "2ba896c870b298025f0e2f79a6cd359da8b494e2245731216f003afce26b21bb",
+          "representativeDocumentUrl": "https://rulebook.sama.gov.sa/en",
+          "title": "Welcome to the SAMA Rulebook | SAMA Rulebook"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": "Primary www.sama.gov.sa TLS chain failed in Node lab client; verification used rulebook.sama.gov.sa without TLS bypass.",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "RULEBOOK",
+        "OTHER"
+      ]
+    },
+    {
+      "regulatorId": "REG-IA-SA",
+      "sourceId": "SRC-IA-SA-REGULATIONS",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:15.402Z",
+      "retrievalMethod": "official_html_pattern",
+      "canonicalOfficialUrl": "https://www.ia.gov.sa/en/regulations-and-licenses",
+      "canonicalHostname": "www.ia.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://www.ia.gov.sa/en/regulations-and-licenses",
+      "itemCount": 1,
+      "representativeDocuments": [
+        {
+          "sha256": "e1bcbb4f1af9ba7fc639bc06a9da10a29f4f8a4fd9c318f4e8be3ff495e2655f",
+          "representativeDocumentUrl": "https://www.ia.gov.sa/en/regulations-and-licenses",
+          "title": "Regulations & Licenses"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "CONNECTIVITY_ONLY",
+      "contentClasses": [
+        "OTHER"
+      ]
+    },
+    {
+      "regulatorId": "REG-VARA",
+      "sourceId": "SRC-VARA-REGULATORY-UPDATES",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:17.872Z",
+      "retrievalMethod": "official_html_listing",
+      "canonicalOfficialUrl": "https://www.vara.ae/en/news/vara-issues-updated-activity-rulebooks-to-strengthen-market-integrity-and-risk-oversight/",
+      "canonicalHostname": "www.vara.ae",
+      "canonicalRegulatoryContentUrl": "https://www.vara.ae/en/news",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "6a662a3e9de91c198ec8902cbea63c319fefa8abb89be179dcd41b9c34f11175",
+          "representativeDocumentUrl": "https://www.vara.ae/en/news/vara-issues-updated-activity-rulebooks-to-strengthen-market-integrity-and-risk-oversight/",
+          "title": "VARA Issues Updated Activity Rulebooks to Strengthen Market Integrity and Risk Oversight - VARA"
+        },
+        {
+          "sha256": "a682a6ccff64bf1a51fa4a40c60d789e6310e8c619023f5773e936211d3505c0",
+          "representativeDocumentUrl": "https://www.vara.ae/en/news/market-notice-market-wide-enforcements-pick-up-pace-as-final-vara-deadline-for-virtual-asset-service-provider-licensing-engagement-lapses/",
+          "title": "MARKET Notice: Market-wide enforcements pick-up pace as final VARA deadline for Virtual Asset Service Provider licensing engagement lapses - VARA"
+        },
+        {
+          "sha256": "8d8369b06fabaf2c82b0e4082beec6c17a52fa994f744cfae319ea97219c36c2",
+          "representativeDocumentUrl": "https://www.vara.ae/en/news/vara-moves-to-full-market-operations-with-leadership-transition-matthew-white-to-take-over-from-henson-orser-as-new-ceo/",
+          "title": "VARA moves to full-market operations with leadership transition - Matthew White to take over from Henson Orser as new CEO - VARA"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "NEWS",
+        "REGULATORY_NOTICE",
+        "PRESS_RELEASE"
+      ]
+    },
+    {
+      "regulatorId": "REG-FDIC",
+      "sourceId": "SRC-FDIC-GUIDANCE",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:24.093Z",
+      "retrievalMethod": "official_fil_index_pattern",
+      "canonicalOfficialUrl": "https://www.fdic.gov/news/financial-institution-letters/2026/consolidated-reports-condition-and-income-third-quarter",
+      "canonicalHostname": "www.fdic.gov",
+      "canonicalRegulatoryContentUrl": "https://www.fdic.gov/news/financial-institution-letters/index.html",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "bd0efadc324e56648cdf28c91c4d2f5380fc56fe4b41fe273c146304311ed9ea",
+          "representativeDocumentUrl": "https://www.fdic.gov/news/financial-institution-letters/2026/consolidated-reports-condition-and-income-third-quarter",
+          "title": "Consolidated Reports of Condition and Income for Third Quarter 2026 | FDIC.gov"
+        },
+        {
+          "sha256": "a7429f206afb8b90c202ba017f86778bace1b978f55084521a2163ba72ed9df3",
+          "representativeDocumentUrl": "https://www.fdic.gov/news/financial-institution-letters/2026/rescission-board-statement-development-and-communication",
+          "title": "Rescission of the Board Statement on the Development and Communication of Supervisory Recommendations | FDIC.gov"
+        },
+        {
+          "sha256": "d17e0448bbed7ae357271529522dd7b1cf45a1bc48d0e73ef1cdfc62fc0d92f7",
+          "representativeDocumentUrl": "https://www.fdic.gov/news/financial-institution-letters/2026/notice-proposed-rulemaking-state-bank-parity",
+          "title": "Notice of Proposed Rulemaking on State Bank Parity | FDIC.gov"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "SUPERVISORY_GUIDANCE",
+        "REGULATORY_NOTICE"
+      ]
+    },
+    {
+      "regulatorId": "REG-OCC",
+      "sourceId": "SRC-OCC-BULLETINS",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:30.457Z",
+      "retrievalMethod": "official_bulletin_pattern",
+      "canonicalOfficialUrl": "https://www.occ.gov/news-issuances/bulletins/2023/bulletin-2023-17.html",
+      "canonicalHostname": "www.occ.gov",
+      "canonicalRegulatoryContentUrl": "https://www.occ.gov/news-events/newsroom/",
+      "itemCount": 1,
+      "representativeDocuments": [
+        {
+          "sha256": "f4f10d50a9f89fb09d5b0e0908a359d57be0806a2e28041721cd9865cc83887b",
+          "representativeDocumentUrl": "https://www.occ.gov/news-issuances/bulletins/2023/bulletin-2023-17.html",
+          "title": "Third-Party Relationships: Interagency Guidance on Risk Management | OCC"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "SUPERVISORY_GUIDANCE",
+        "REGULATORY_NOTICE"
+      ]
+    },
+    {
+      "regulatorId": "REG-CFPB",
+      "sourceId": "SRC-CFPB-REGULATORY-UPDATES",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:32.069Z",
+      "retrievalMethod": "official_rss",
+      "canonicalOfficialUrl": "https://www.consumerfinance.gov/about-us/newsroom/cfpb-announces-new-initiative-to-address-occ-uncovered-debanking-by-large-banks/",
+      "canonicalHostname": "www.consumerfinance.gov",
+      "canonicalRegulatoryContentUrl": "https://www.consumerfinance.gov/about-us/newsroom/feed/",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "2d25e827ddf9cd414bb64a70750f43925d3f832843e1cf5f1d1358b441640277",
+          "representativeDocumentUrl": "https://www.consumerfinance.gov/about-us/newsroom/cfpb-announces-new-initiative-to-address-occ-uncovered-debanking-by-large-banks/",
+          "title": "CFPB Announces New Initiative to Address OCC-Uncovered Debanking by Large Banks"
+        },
+        {
+          "sha256": "d661a62a72b2f402fb37ca12807bcfae660ba63ba7a113a7862de85f98a1f8df",
+          "representativeDocumentUrl": "https://www.consumerfinance.gov/about-us/newsroom/cfpb-proud-to-support-the-national-strategy-for-financial-literacy/",
+          "title": "CFPB Proud to Support the National Strategy for Financial Literacy"
+        },
+        {
+          "sha256": "2069d99328d00e76986bb788d1c833ad3eb81ee1f588fee6be2c220b082e6605",
+          "representativeDocumentUrl": "https://www.consumerfinance.gov/about-us/newsroom/the-cfpb-to-cease-discretionary-publication-of-complaint-narratives-and-visualizations/",
+          "title": "The CFPB to Cease Discretionary Publication of Complaint Narratives and Visualizations"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": "application/rss+xml; charset=utf-8",
+      "productionStrategy": "DIRECT_OFFICIAL_FEED",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "CONNECTIVITY_ONLY",
+      "contentClasses": [
+        "NEWS",
+        "PRESS_RELEASE"
+      ]
+    },
+    {
+      "regulatorId": "REG-OFAC",
+      "sourceId": "SRC-OFAC-REGULATORY-UPDATES",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T11:12:36.644Z",
+      "retrievalMethod": "official_html_pattern",
+      "canonicalOfficialUrl": "https://ofac.treasury.gov/recent-actions/20261021",
+      "canonicalHostname": "ofac.treasury.gov",
+      "canonicalRegulatoryContentUrl": "https://ofac.treasury.gov/recent-actions",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "85a50463e72807ee68c0930eeefda3dceec25dc5c0ac881706ce234fef17c385",
+          "representativeDocumentUrl": "https://ofac.treasury.gov/recent-actions/20261021",
+          "title": "Iran-related Designations; Belarus and North Korea Designations Removals; Issuance of Iran-related and Russia-related General Licenses and Amended Frequently Asked Questions | Office of Foreign Assets Control"
+        },
+        {
+          "sha256": "c2aa611f6d32590851258feeddb4eca7ea2278d6420c6733129eae939cb82d79",
+          "representativeDocumentUrl": "https://ofac.treasury.gov/recent-actions/20261019",
+          "title": "Protecting American Intellectual Property Act of 2022 (PAIPA) Designations; Issuance of Associated General Licenses | Office of Foreign Assets Control"
+        },
+        {
+          "sha256": "64503cc3859c92b54bc1f920dd3ecb84d5878d3534b6f0d838106ab27a0afe61",
+          "representativeDocumentUrl": "https://ofac.treasury.gov/recent-actions/20261016",
+          "title": "Issuance of Amended Venezuela-related General License and Frequently Asked Question | Office of Foreign Assets Control"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "SANCTIONS_POLICY",
+        "GENERAL_LICENCE",
+        "REGULATORY_NOTICE"
+      ]
+    }
+  ]
+}

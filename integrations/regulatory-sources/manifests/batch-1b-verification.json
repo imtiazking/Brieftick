@@ -1,0 +1,132 @@
+{
+  "manifestId": "batch-1b-verification",
+  "generatedFrom": "integrations/regulatory-sources/evidence/batch-1b-latest.json",
+  "generatedAt": "2026-10-22T11:16:02.496Z",
+  "labRunRetrievedAt": "2026-10-22T10:31:59.841Z",
+  "entries": [
+    {
+      "regulatorId": "REG-SAMA",
+      "sourceId": "SRC-SAMA-RULEBOOK",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:31:59.842Z",
+      "retrievalMethod": "official_rulebook_html",
+      "canonicalOfficialUrl": "https://www.sama.gov.sa/",
+      "canonicalHostname": "rulebook.sama.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://rulebook.sama.gov.sa/en",
+      "itemCount": 1,
+      "representativeDocuments": [
+        {
+          "sha256": "2ba896c870b298025f0e2f79a6cd359da8b494e2245731216f003afce26b21bb",
+          "representativeDocumentUrl": "https://rulebook.sama.gov.sa/en",
+          "title": "Welcome to the SAMA Rulebook | SAMA Rulebook"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_HTML",
+      "notes": "Primary www.sama.gov.sa TLS chain failed in Node lab client; verification used rulebook.sama.gov.sa without TLS bypass.",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "PARTIALLY_VERIFIED",
+      "contentClasses": [
+        "RULEBOOK",
+        "OTHER"
+      ]
+    },
+    {
+      "regulatorId": "REG-CMA-SA",
+      "sourceId": "SRC-CMA-SA-RULES",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:32:03.247Z",
+      "retrievalMethod": "official_document_library",
+      "canonicalOfficialUrl": "https://cma.gov.sa/RulesRegulations/Pages/default.aspx",
+      "canonicalHostname": "cma.gov.sa",
+      "canonicalRegulatoryContentUrl": "https://cma.gov.sa/RulesRegulations/Pages/default.aspx",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "e32073ae2ff7b321e62fea60f69f167c1d68ac15c9fb16d647890f1b7403eab5",
+          "representativeDocumentUrl": "https://cma.gov.sa/RulesRegulations/Regulations/Documents/Instructions_of_Simplified_Investment_Funds_AR.pdf",
+          "title": "instructions_of_simplified_investment_funds_ar.pdf"
+        },
+        {
+          "sha256": "93e0023a92464015ac1678761b9fba5ba4ca14283288d54d2728a2083c14ff3b",
+          "representativeDocumentUrl": "https://cma.gov.sa/RulesRegulations/Regulations/Documents/Controls_for_the_Exclusion-ar2.pdf",
+          "title": "controls_for_the_exclusion ar2.pdf"
+        },
+        {
+          "sha256": "66a2b3c09ff9529546681cb10680913c6e3485bb492938a9b1986127186a5a45",
+          "representativeDocumentUrl": "https://cma.gov.sa/RulesRegulations/Regulations/Documents/Rules_for_Foreign_Investment_in_Securities_ar.pdf",
+          "title": "rules_for_foreign_investment_in_securities_ar.pdf"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "DIRECT_OFFICIAL_DOCUMENT_LIBRARY",
+      "notes": null,
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "SECONDARY_LEGISLATION",
+        "CIRCULAR",
+        "REGULATORY_NOTICE"
+      ]
+    },
+    {
+      "regulatorId": "REG-DFSA",
+      "sourceId": "SRC-DFSA-RULEBOOK",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-10-22T10:32:08.537Z",
+      "retrievalMethod": "official_rulebook_platform_html",
+      "canonicalOfficialUrl": "https://www.dfsa.ae/",
+      "canonicalHostname": "dfsaen.thomsonreuters.com",
+      "canonicalRegulatoryContentUrl": "https://dfsaen.thomsonreuters.com/rulebook/rulemaking-instruments",
+      "itemCount": 3,
+      "representativeDocuments": [
+        {
+          "sha256": "5f0532dc94285e7819450fa361db1c07564ce14c26dc86c77ae32f993d1511fc",
+          "representativeDocumentUrl": "https://dfsaen.thomsonreuters.com/rulebook/rmi-4462026-glossary-module-glo-rule-making-instrument-no-446-2026",
+          "title": "RMI 446/2026 Glossary Module (GLO) Rule-making Instrument (No. 446) 2026 | Rulebook"
+        },
+        {
+          "sha256": "035153c4202c9dd25b3c89a212dc816ff058f3dc3884598c1e7931d3f6c2fd2c",
+          "representativeDocumentUrl": "https://dfsaen.thomsonreuters.com/rulebook/rmi-4452026-islamic-finance-rules-ifr-rule-making-instrument-no-445-2026",
+          "title": "RMI 445/2026 Islamic Finance Rules (IFR) Rule-making Instrument (No. 445) 2026 | Rulebook"
+        },
+        {
+          "sha256": "c6c186b5c7d2ed37d631ecbeeaffdf048f6cf7af64cd128be9bbd4b494d9efb9",
+          "representativeDocumentUrl": "https://dfsaen.thomsonreuters.com/rulebook/rmi-4442026-conduct-business-module-cob-rule-making-instrument-no-444-2026",
+          "title": "RMI 444/2026 Conduct of Business Module (COB) Rule-making Instrument (No. 444) 2026 | Rulebook"
+        }
+      ],
+      "httpStatus": null,
+      "contentType": null,
+      "productionStrategy": "OFFICIAL_STRUCTURED_ENDPOINT",
+      "notes": "www.dfsa.ae returned HTTP 403 to Integration Lab; rulebook retrieved from DFSA-authorised Thomson Reuters delivery host.",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": [
+        "RULEBOOK",
+        "REGULATORY_NOTICE"
+      ]
+    },
+    {
+      "regulatorId": "REG-CBUAE",
+      "sourceId": "SRC-CBUAE-DIGITAL-RULEBOOK",
+      "verificationStatus": "ACCESS_RESTRICTED",
+      "verifiedAt": "2026-10-22T10:32:13.779Z",
+      "retrievalMethod": "official_digital_rulebook",
+      "canonicalOfficialUrl": "https://rulebook.centralbank.ae",
+      "canonicalHostname": "rulebook.centralbank.ae",
+      "canonicalRegulatoryContentUrl": "https://rulebook.centralbank.ae",
+      "itemCount": 0,
+      "representativeDocuments": [],
+      "httpStatus": 403,
+      "contentType": null,
+      "productionStrategy": "LICENSED_FEED_RECOMMENDED",
+      "notes": "Integration Lab HTTP 403 on rulebook.centralbank.ae; access controls not bypassed. Rulebook CNAMEs to Thomson Reuters hosting; cbuae.thomsonreuters.com alias not resolvable in lab DNS.",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "NOT_TESTED",
+      "contentClasses": []
+    }
+  ]
+}
