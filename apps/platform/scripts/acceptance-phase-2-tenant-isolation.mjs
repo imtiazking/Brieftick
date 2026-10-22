@@ -143,8 +143,8 @@ if (serverTs.includes('SERVICE_ROLE') || serverTs.includes('createSupabaseAdminC
 } else pass('user Supabase path avoids service role');
 
 const riPage = readFileSync(join(platformRoot, 'app', 'ri', 'page.tsx'), 'utf8');
-if (/design-lab|ask-ri|obligation/i.test(riPage)) failMsg('RI page must not import business features');
-else pass('/ri remains placeholder');
+if (/design-lab|ask-ri/i.test(riPage)) failMsg('RI page must not import Design Lab / Ask RI');
+else pass('/ri avoids Design Lab / Ask RI imports');
 
 const migrationsDir = join(platformRoot, 'supabase', 'migrations');
 const migrationFiles = readdirSync(migrationsDir).filter((f) => f.endsWith('.sql'));

@@ -9,7 +9,9 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:acceptance": "node ./scripts/acceptance-platform-foundation.mjs",
-    "test:acceptance:phase2": "node ./scripts/acceptance-phase-2-platform.mjs && node ./scripts/acceptance-phase-2-tenant-isolation.mjs"
+    "test:acceptance:phase2": "node ./scripts/acceptance-phase-2-platform.mjs && node ./scripts/acceptance-phase-2-tenant-isolation.mjs",
+    "test:acceptance:phase3": "node ./scripts/acceptance-phase-3-ri-schema.mjs",
+    "sync:reference-catalogue": "node ./scripts/sync-reference-catalogue.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.0",

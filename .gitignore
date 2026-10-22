@@ -25,3 +25,6 @@ preview/
 # Regulatory Source Integration Lab — local live verification evidence (not public)
 integrations/regulatory-sources/evidence/*
 !integrations/regulatory-sources/evidence/.gitkeep
+
+# Platform RI — generated catalogue upsert (run sync-reference-catalogue.mjs)
+apps/platform/supabase/seed/reference-catalogue.generated.sql
