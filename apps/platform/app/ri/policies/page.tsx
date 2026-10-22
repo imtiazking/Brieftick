@@ -35,13 +35,14 @@ export default async function PoliciesListPage() {
               <div className="fg-card fg-card--flush">
                 <table className="fg-table">
                   <thead>
-                    <tr><th>Name</th><th>Version</th><th>Status</th><th>Next review</th></tr>
+                    <tr><th>Name</th><th>Version</th><th>Owner</th><th>Status</th><th>Next review</th></tr>
                   </thead>
                   <tbody>
                     {rows.map((p) => (
                       <tr key={p.id}>
                         <td><Link href={`/ri/policies/${p.id}`}>{p.name}</Link></td>
                         <td>{p.version ?? '—'}</td>
+                        <td>{p.owner_user_id ?? '—'}</td>
                         <td><RiStatusChip label={p.status ?? '—'} /></td>
                         <td>{p.next_review_date ?? '—'}</td>
                       </tr>

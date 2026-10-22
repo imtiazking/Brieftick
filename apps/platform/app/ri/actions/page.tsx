@@ -34,12 +34,14 @@ export default async function ActionsListPage() {
               <div className="fg-card fg-card--flush">
                 <table className="fg-table">
                   <thead>
-                    <tr><th>Title</th><th>Status</th><th>Priority</th><th>Due</th><th>Overdue</th></tr>
+                    <tr><th>ID</th><th>Title</th><th>Owner</th><th>Status</th><th>Priority</th><th>Due</th><th>Overdue</th></tr>
                   </thead>
                   <tbody>
                     {rows.map((a) => (
                       <tr key={a.id}>
+                        <td>{a.id.slice(0, 8)}…</td>
                         <td><Link href={`/ri/actions/${a.id}`}>{a.title}</Link></td>
+                        <td>{a.owner_user_id ?? '—'}</td>
                         <td><RiStatusChip label={a.status} /></td>
                         <td>{a.priority ?? '—'}</td>
                         <td>{a.due_date ?? '—'}</td>
