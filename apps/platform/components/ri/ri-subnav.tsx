@@ -6,6 +6,13 @@ const LINKS = [
   { href: '/ri/changes', label: 'Changes' },
   { href: '/ri/impact-assessments', label: 'Impact' },
   { href: '/ri/obligations', label: 'Obligations' },
+  { href: '/ri/policies', label: 'Policies' },
+  { href: '/ri/risks', label: 'Risks' },
+  { href: '/ri/controls', label: 'Controls' },
+  { href: '/ri/actions', label: 'Actions' },
+  { href: '/ri/evidence', label: 'Evidence' },
+  { href: '/ri/findings', label: 'Findings' },
+  { href: '/ri/assurance', label: 'Assurance' },
 ] as const;
 
 export function RiSubnav({ active }: { active?: string }) {

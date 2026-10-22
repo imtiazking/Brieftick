@@ -1,4 +1,4 @@
-# RI permissions matrix (Phase 4)
+# RI permissions matrix (Phase 4–5)
 
 Server enforcement via `lib/ri/permissions.ts` and `requireRiContext(action)`.
 
@@ -14,6 +14,10 @@ Server enforcement via `lib/ri/permissions.ts` and `requireRiContext(action)`.
 | Impact approve / reject | COMPLIANCE_MANAGER |
 | Obligation write | ANALYST |
 | Obligation review-oriented transitions | REVIEWER |
+| Policy / risk / control / action / evidence write | ANALYST |
+| Finding write | ANALYST |
+| Finding close | COMPLIANCE_MANAGER |
+| Assurance write | COMPLIANCE_MANAGER |
 
 ADMIN and OWNER inherit COMPLIANCE_MANAGER rank via `roleAtLeast`.
 

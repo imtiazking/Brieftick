@@ -88,3 +88,14 @@ export function parseApplicabilityRecommendation(value: unknown) {
 export function parseObligationStatus(value: unknown) {
   return parseEnum(value, OBLIGATION_STATUSES, 'obligation_status');
 }
+
+export const ASSURANCE_RESULTS = [
+  'PASS',
+  'PASS_WITH_OBSERVATIONS',
+  'FAIL',
+  'NOT_TESTED',
+] as const;
+
+export function parseAssuranceResult(value: unknown) {
+  return parseEnum(value, ASSURANCE_RESULTS, 'assurance_result');
+}

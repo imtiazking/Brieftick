@@ -16,7 +16,22 @@ export type RiAction =
   | 'impact:approve'
   | 'obligation:read'
   | 'obligation:write'
-  | 'obligation:review';
+  | 'obligation:review'
+  | 'policy:read'
+  | 'policy:write'
+  | 'risk:read'
+  | 'risk:write'
+  | 'control:read'
+  | 'control:write'
+  | 'action:read'
+  | 'action:write'
+  | 'evidence:read'
+  | 'evidence:write'
+  | 'finding:read'
+  | 'finding:write'
+  | 'finding:close'
+  | 'assurance:read'
+  | 'assurance:write';
 
 const MATRIX: Record<RiAction, PlatformRole> = {
   'ri:read': 'VIEWER',
@@ -34,6 +49,21 @@ const MATRIX: Record<RiAction, PlatformRole> = {
   'obligation:read': 'VIEWER',
   'obligation:write': 'ANALYST',
   'obligation:review': 'REVIEWER',
+  'policy:read': 'VIEWER',
+  'policy:write': 'ANALYST',
+  'risk:read': 'VIEWER',
+  'risk:write': 'ANALYST',
+  'control:read': 'VIEWER',
+  'control:write': 'ANALYST',
+  'action:read': 'VIEWER',
+  'action:write': 'ANALYST',
+  'evidence:read': 'VIEWER',
+  'evidence:write': 'ANALYST',
+  'finding:read': 'VIEWER',
+  'finding:write': 'ANALYST',
+  'finding:close': 'COMPLIANCE_MANAGER',
+  'assurance:read': 'VIEWER',
+  'assurance:write': 'COMPLIANCE_MANAGER',
 };
 
 export function canRi(role: PlatformRole | null | undefined, action: RiAction): boolean {

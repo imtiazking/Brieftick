@@ -8,7 +8,14 @@ export async function assertRowInOrganisation(
     | 'applicability_assessments'
     | 'regulatory_changes'
     | 'impact_assessments'
-    | 'regulatory_obligations',
+    | 'regulatory_obligations'
+    | 'policies'
+    | 'risks'
+    | 'controls'
+    | 'actions'
+    | 'evidence_items'
+    | 'findings'
+    | 'assurance_reviews',
   id: string,
   organisationId: string,
 ) {
