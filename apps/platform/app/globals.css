@@ -5,6 +5,7 @@
   --fg-text: #e8edf4;
   --fg-muted: #9aa8bc;
   --fg-accent: #5b9fd4;
+  --fg-gold: #c9a962;
   --fg-radius: 10px;
   --fg-font: 'Inter', system-ui, sans-serif;
 }
@@ -126,6 +127,11 @@ a:hover {
   max-width: 1100px;
 }
 
+.fg-ri-layout ~ .fg-main,
+.fg-shell:has(.fg-ri-layout) .fg-main {
+  max-width: 1280px;
+}
+
 .fg-ri-layout {
   display: flex;
   flex-direction: column;
@@ -147,8 +153,99 @@ a:hover {
 }
 
 .fg-ri-subnav__link--active {
-  color: var(--fg-text);
+  color: var(--fg-gold);
   font-weight: 600;
+}
+
+.fg-ri-nav-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fg-ri-subnav--secondary {
+  padding-top: 0;
+  opacity: 0.92;
+}
+
+.fg-ri-subnav__link--soon {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.fg-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.fg-metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.1rem;
+  background: var(--fg-surface);
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.fg-metric-card:hover {
+  border-color: var(--fg-gold);
+  text-decoration: none;
+}
+
+.fg-metric-card--static {
+  cursor: default;
+}
+
+.fg-metric-card__value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--fg-gold);
+  line-height: 1.1;
+}
+
+.fg-metric-card__label {
+  font-size: 0.82rem;
+  color: var(--fg-text);
+}
+
+.fg-metric-card__hint {
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+}
+
+.fg-empty-state__title {
+  font-size: 1rem;
+  color: var(--fg-text);
+  margin: 0 0 0.5rem;
+}
+
+.fg-ai-placeholder h3 {
+  margin: 0 0 0.5rem;
+  color: var(--fg-gold);
+}
+
+.fg-ri-detail-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0 0 1rem;
+  padding: 0 0 0.5rem;
+  border-bottom: 1px solid var(--fg-border);
+}
+
+.fg-ri-detail-tabs a {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+.fg-ri-detail-tabs a:hover {
+  color: var(--fg-gold);
 }
 
 .fg-table {

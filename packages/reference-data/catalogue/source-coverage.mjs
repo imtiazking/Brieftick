@@ -316,4 +316,47 @@ export const SOURCE_COVERAGE_BY_ID = {
     catalogueRecommendation: 'KEEP',
     coverageNotes: 'Technical route unresolved; semantic rulebook/notices coverage not assessed.',
   },
+  'SRC-FCA-PUBLICATIONS-RSS': {
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['REGULATORY_NOTICE', 'POLICY_STATEMENT', 'SUPERVISORY_GUIDANCE'],
+    riUseCases: ['HORIZON_SCANNING', 'REGULATORY_CHANGE', 'GUIDANCE_MONITORING', 'REFERENCE_ONLY'],
+    catalogueRecommendation: 'KEEP',
+    coverageNotes:
+      'Production CONN-LEGACY-FCA mirrors Design Lab RSS route; representative fingerprints in core-legacy verification manifest.',
+  },
+  'SRC-PRA-PUBLICATIONS': {
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['SUPERVISORY_GUIDANCE', 'POLICY_STATEMENT', 'REGULATORY_NOTICE'],
+    riUseCases: ['HORIZON_SCANNING', 'REGULATORY_CHANGE', 'GUIDANCE_MONITORING', 'REFERENCE_ONLY'],
+    catalogueRecommendation: 'KEEP',
+    coverageNotes: 'BoE/PRA publications listing — production html listing connector.',
+  },
+  'SRC-HMT-PUBLICATIONS': {
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['POLICY_STATEMENT', 'CONSULTATION', 'REGULATORY_NOTICE'],
+    riUseCases: ['HORIZON_SCANNING', 'REGULATORY_CHANGE', 'REFERENCE_ONLY'],
+    catalogueRecommendation: 'KEEP',
+    coverageNotes: 'HM Treasury GOV.UK atom feed — policy and consultation horizon.',
+  },
+  'SRC-UK-LEGISLATION-ATOM': {
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['PRIMARY_LEGISLATION', 'SECONDARY_LEGISLATION'],
+    riUseCases: ['HORIZON_SCANNING', 'RULE_OBLIGATION_SOURCE', 'REFERENCE_ONLY'],
+    catalogueRecommendation: 'KEEP',
+    coverageNotes: 'legislation.gov.uk new legislation atom — Design Lab parity via production atom connector.',
+  },
+  'SRC-TPR-DOCUMENT-LIBRARY': {
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['SUPERVISORY_GUIDANCE', 'POLICY_STATEMENT', 'REGULATORY_NOTICE'],
+    riUseCases: ['HORIZON_SCANNING', 'REGULATORY_CHANGE', 'GUIDANCE_MONITORING', 'REFERENCE_ONLY'],
+    catalogueRecommendation: 'KEEP',
+    coverageNotes: 'TPR document library sitemap slice — pensions regulatory publications.',
+  },
+  'SRC-BASEL-FRAMEWORK': {
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['FRAMEWORK', 'STANDARD'],
+    riUseCases: ['HORIZON_SCANNING', 'REFERENCE_ONLY', 'GUIDANCE_MONITORING'],
+    catalogueRecommendation: 'KEEP',
+    coverageNotes: 'BIS Basel framework pages — international prudential standard monitoring.',
+  },
 };

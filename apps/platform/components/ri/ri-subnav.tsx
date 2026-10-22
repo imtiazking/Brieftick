@@ -1,7 +1,9 @@
 import Link from 'next/link';
 
-const LINKS = [
-  { href: '/ri', label: 'Overview' },
+const PRIMARY = [
+  { href: '/ri', label: 'Dashboard' },
+  { href: '/ri/horizon', label: 'Horizon' },
+  { href: '/ri/calendar', label: 'Calendar' },
   { href: '/ri/publications', label: 'Publications' },
   { href: '/ri/changes', label: 'Changes' },
   { href: '/ri/impact-assessments', label: 'Impact' },
@@ -13,20 +15,56 @@ const LINKS = [
   { href: '/ri/evidence', label: 'Evidence' },
   { href: '/ri/findings', label: 'Findings' },
   { href: '/ri/assurance', label: 'Assurance' },
+  { href: '/ri/work-queue', label: 'Work Queue' },
+] as const;
+
+const SECONDARY = [
+  { href: '/ri/reporting', label: 'Reporting' },
+  { href: '/ri/governance', label: 'Governance' },
+  { href: '/ri/ai-governance', label: 'AI Governance', muted: true },
+  { href: '/ri/ai-operations', label: 'AI Operations', muted: true },
+  { href: '/ri/admin/sources', label: 'Sources' },
+  { href: '/ri/admin/ingestion', label: 'Ingestion' },
+  { href: '/ri/admin/alerts', label: 'Alerts' },
 ] as const;
 
 export function RiSubnav({ active }: { active?: string }) {
   return (
-    <nav className="fg-ri-subnav" aria-label="Regulatory Intelligence">
-      {LINKS.map((l) => (
-        <Link
-          key={l.href}
-          href={l.href}
-          className={active === l.href ? 'fg-ri-subnav__link fg-ri-subnav__link--active' : 'fg-ri-subnav__link'}
-        >
-          {l.label}
-        </Link>
-      ))}
-    </nav>
+    <div className="fg-ri-nav-wrap">
+      <nav className="fg-ri-subnav" aria-label="Regulatory Intelligence">
+        {PRIMARY.map((l) => (
+          <Link
+            key={l.href}
+            href={l.href}
+            className={
+              active === l.href || (l.href === '/ri' && active === '/ri')
+                ? 'fg-ri-subnav__link fg-ri-subnav__link--active'
+                : 'fg-ri-subnav__link'
+            }
+          >
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+      <nav className="fg-ri-subnav fg-ri-subnav--secondary" aria-label="RI administration">
+        {SECONDARY.map((l) => (
+          <Link
+            key={l.href}
+            href={l.href}
+            className={
+              active === l.href
+                ? 'fg-ri-subnav__link fg-ri-subnav__link--active'
+                : `fg-ri-subnav__link${'muted' in l && l.muted ? ' fg-ri-subnav__link--soon' : ''}`
+            }
+            title={'muted' in l && l.muted ? 'Foundation pending Phase 8' : undefined}
+          >
+            {l.label}
+          </Link>
+        ))}
+        <span className="fg-ri-subnav__link fg-ri-subnav__link--soon" title="Production Ask RI — future phase">
+          Ask RI
+        </span>
+      </nav>
+    </div>
   );
 }

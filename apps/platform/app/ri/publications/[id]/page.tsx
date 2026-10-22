@@ -14,6 +14,7 @@ import { RiNotFoundError } from '@/lib/ri/errors';
 import { getPublicationDetail } from '@/lib/ri/services/publications';
 import { RELEVANCE_STATUSES, TRIAGE_STATUSES } from '@/lib/ri/validation';
 import { APPLICABILITY_RECOMMENDATIONS } from '@/lib/ri/enums';
+import { RiAiPlaceholder } from '@/components/ri/ri-ai-placeholder';
 
 export default async function PublicationDetailPage({
   params,
@@ -53,7 +54,20 @@ export default async function PublicationDetailPage({
         {isTest && (
           <div className="fg-banner fg-banner--warn">TEST / DEVELOPMENT DATA — not a live regulator record</div>
         )}
-        <div className="fg-card">
+        <nav className="fg-ri-detail-tabs" aria-label="Publication sections">
+          <a href="#overview">Overview</a>
+          <a href="#source">Source</a>
+          <a href="#changes">Changes</a>
+          <a href="#applicability">Applicability</a>
+          <a href="#linked">Linked records</a>
+          <a href="#ai">AI summary</a>
+        </nav>
+        <div className="fg-card" id="overview">
+          <h2>Overview</h2>
+          <p>{publication.summary ?? 'No summary stored for this publication.'}</p>
+          <p className="fg-muted">Type: {publication.publication_type}</p>
+        </div>
+        <div className="fg-card" id="source">
           <h2>Source</h2>
           <ul className="fg-status-list">
             <li><span>Regulator</span><span>{publication.regulator?.name}</span></li>
@@ -67,7 +81,7 @@ export default async function PublicationDetailPage({
           </ul>
         </div>
 
-        <div className="fg-card">
+        <div className="fg-card" id="triage">
           <h2>Organisation triage</h2>
           {canEdit ? (
             <form action={updateTriageAction} className="fg-form">
@@ -98,7 +112,7 @@ export default async function PublicationDetailPage({
           )}
         </div>
 
-        <div className="fg-card">
+        <div className="fg-card" id="applicability">
           <h2>Applicability (human determination)</h2>
           <p className="fg-muted">No AI recommendation — record your organisation&apos;s manual assessment.</p>
           {canApplicability ? (
@@ -127,7 +141,7 @@ export default async function PublicationDetailPage({
           )}
         </div>
 
-        <div className="fg-card">
+        <div className="fg-card" id="changes">
           <h2>Regulatory changes</h2>
           <ul className="fg-link-list">
             {changes.map((c) => (
@@ -147,6 +161,14 @@ export default async function PublicationDetailPage({
               <button type="submit" className="fg-btn">Create regulatory change</button>
             </form>
           )}
+        </div>
+        <div className="fg-card" id="linked">
+          <h2>Linked records</h2>
+          <p>Changes: {changes.length} · Applicability: {applicability ? 'recorded' : 'none'}</p>
+          <p className="fg-muted">Impact assessments and obligations are linked from regulatory changes.</p>
+        </div>
+        <div id="ai">
+          <RiAiPlaceholder title="AI Analysis" phase="Phase 8" />
         </div>
       </RiDataGate>
     </ShellLayout>

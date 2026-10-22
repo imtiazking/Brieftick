@@ -201,9 +201,14 @@ const riPage = readFileSync(join(platformRoot, 'app', 'ri', 'page.tsx'), 'utf8')
 if (/design-lab|ask-ri|openai|anthropic/i.test(riPage)) failMsg('RI page must not reference lab/AI');
 else pass('no Ask RI / AI on /ri');
 
-if (!riPage.includes('schema foundation') && !riPage.includes('Schema foundation')) {
-  failMsg('/ri must show schema foundation status');
-} else pass('/ri schema foundation messaging');
+if (
+  !riPage.includes('schema foundation') &&
+  !riPage.includes('Schema foundation') &&
+  !riPage.includes('getDashboardSummary') &&
+  !riPage.includes('Operational summary')
+) {
+  failMsg('/ri must show RI hub or dashboard status');
+} else pass('/ri hub messaging');
 
 if (!existsSync(join(platformRoot, 'docs', 'RELATIONSHIP-AUTHORITY.md'))) failMsg('RELATIONSHIP-AUTHORITY.md missing');
 else pass('relationship authority documented');

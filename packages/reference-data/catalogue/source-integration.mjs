@@ -11,9 +11,78 @@ const MANIFEST_BATCH_1B = 'integrations/regulatory-sources/manifests/batch-1b-ve
 const MANIFEST_BATCH_2 = 'integrations/regulatory-sources/manifests/batch-2-verification.json';
 const MANIFEST_SEMANTIC =
   'integrations/regulatory-sources/manifests/batch-semantic-remediation-verification.json';
+const MANIFEST_CORE_LEGACY =
+  'integrations/regulatory-sources/manifests/core-legacy-design-lab-parity.json';
 
 /** @type {Record<string, import('./types.mjs').SourceIntegrationRecord>} */
 export const SOURCE_INTEGRATION_BY_ID = {
+  'SRC-FCA-PUBLICATIONS-RSS': {
+    verificationStatus: 'LIVE_VERIFIED',
+    productionStatus: 'NOT_ENABLED',
+    verifiedAt: '2026-10-22T20:00:00.000Z',
+    verificationEvidenceRef: `${MANIFEST_CORE_LEGACY}#SRC-FCA-PUBLICATIONS-RSS`,
+    verifiedRetrievalMethod: 'official_rss',
+    productionStrategy: 'DIRECT_OFFICIAL_FEED',
+    canonicalRegulatoryContentUrl: 'https://www.fca.org.uk/publications/rss.xml',
+    canonicalContentHostname: 'www.fca.org.uk',
+    officialSupportingHostnames: ['fca.org.uk', 'www.fca.org.uk'],
+  },
+  'SRC-PRA-PUBLICATIONS': {
+    verificationStatus: 'LIVE_VERIFIED',
+    productionStatus: 'NOT_ENABLED',
+    verifiedAt: '2026-10-22T20:00:00.000Z',
+    verificationEvidenceRef: `${MANIFEST_CORE_LEGACY}#SRC-PRA-PUBLICATIONS`,
+    verifiedRetrievalMethod: 'official_html_listing',
+    productionStrategy: 'DIRECT_OFFICIAL_HTML',
+    canonicalRegulatoryContentUrl: 'https://www.bankofengland.co.uk/news/publications',
+    canonicalContentHostname: 'www.bankofengland.co.uk',
+    officialSupportingHostnames: ['bankofengland.co.uk', 'www.bankofengland.co.uk'],
+  },
+  'SRC-HMT-PUBLICATIONS': {
+    verificationStatus: 'LIVE_VERIFIED',
+    productionStatus: 'NOT_ENABLED',
+    verifiedAt: '2026-10-22T20:00:00.000Z',
+    verificationEvidenceRef: `${MANIFEST_CORE_LEGACY}#SRC-HMT-PUBLICATIONS`,
+    verifiedRetrievalMethod: 'official_atom',
+    productionStrategy: 'DIRECT_OFFICIAL_FEED',
+    canonicalRegulatoryContentUrl:
+      'https://www.gov.uk/government/organisations/hm-treasury.atom',
+    canonicalContentHostname: 'www.gov.uk',
+    officialSupportingHostnames: ['gov.uk', 'www.gov.uk'],
+  },
+  'SRC-UK-LEGISLATION-ATOM': {
+    verificationStatus: 'LIVE_VERIFIED',
+    productionStatus: 'NOT_ENABLED',
+    verifiedAt: '2026-10-22T20:00:00.000Z',
+    verificationEvidenceRef: `${MANIFEST_CORE_LEGACY}#SRC-UK-LEGISLATION-ATOM`,
+    verifiedRetrievalMethod: 'official_atom',
+    productionStrategy: 'DIRECT_OFFICIAL_FEED',
+    canonicalRegulatoryContentUrl: 'https://www.legislation.gov.uk/new/data.feed',
+    canonicalContentHostname: 'www.legislation.gov.uk',
+    officialSupportingHostnames: ['legislation.gov.uk', 'www.legislation.gov.uk'],
+  },
+  'SRC-TPR-DOCUMENT-LIBRARY': {
+    verificationStatus: 'LIVE_VERIFIED',
+    productionStatus: 'NOT_ENABLED',
+    verifiedAt: '2026-10-22T20:00:00.000Z',
+    verificationEvidenceRef: `${MANIFEST_CORE_LEGACY}#SRC-TPR-DOCUMENT-LIBRARY`,
+    verifiedRetrievalMethod: 'official_sitemap',
+    productionStrategy: 'DIRECT_OFFICIAL_HTML',
+    canonicalRegulatoryContentUrl: 'https://www.tpr.gov.uk/sitemap.xml',
+    canonicalContentHostname: 'www.tpr.gov.uk',
+    officialSupportingHostnames: ['tpr.gov.uk', 'www.tpr.gov.uk'],
+  },
+  'SRC-BASEL-FRAMEWORK': {
+    verificationStatus: 'LIVE_VERIFIED',
+    productionStatus: 'NOT_ENABLED',
+    verifiedAt: '2026-10-22T20:00:00.000Z',
+    verificationEvidenceRef: `${MANIFEST_CORE_LEGACY}#SRC-BASEL-FRAMEWORK`,
+    verifiedRetrievalMethod: 'official_html_pattern',
+    productionStrategy: 'DIRECT_OFFICIAL_HTML',
+    canonicalRegulatoryContentUrl: 'https://www.bis.org/basel_framework.htm',
+    canonicalContentHostname: 'www.bis.org',
+    officialSupportingHostnames: ['bis.org', 'www.bis.org'],
+  },
   'SRC-ICO-GUIDANCE': {
     verificationStatus: 'LIVE_VERIFIED',
     productionStatus: 'NOT_ENABLED',

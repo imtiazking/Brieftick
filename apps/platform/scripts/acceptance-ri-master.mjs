@@ -36,6 +36,7 @@ const steps = [
   ['RI downstream (Phase 5)', 'npm', ['run', 'test:acceptance:phase5'], platformRoot],
   ['RI ingestion (Phase 6)', 'npm', ['run', 'test:acceptance:phase6'], platformRoot],
   ['RI ingestion ops (Phase 7)', 'npm', ['run', 'test:acceptance:phase7'], platformRoot],
+  ['RI experience parity (Phase 7B)', 'npm', ['run', 'test:acceptance:phase7b'], platformRoot],
   ['Reference catalogue', 'node', ['./scripts/acceptance-global-source-catalogue.mjs'], refDataRoot],
   ['Catalogue clean-clone', 'node', ['./scripts/acceptance-catalogue-clean-clone.mjs'], refDataRoot],
   ['Source semantics', 'node', ['./scripts/acceptance-source-semantics.mjs'], integrationsRoot],

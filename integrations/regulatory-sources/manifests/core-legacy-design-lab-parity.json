@@ -1,0 +1,91 @@
+{
+  "manifestId": "core-legacy-design-lab-parity",
+  "description": "Maps frozen Design Lab legacy source verification to production integration connectors (bounded metadata; no raw bodies).",
+  "productionStatusPolicy": "NOT_ENABLED",
+  "entries": [
+    {
+      "sourceId": "SRC-FCA-PUBLICATIONS-RSS",
+      "regulatorId": "REG-FCA",
+      "productionConnectorId": "CONN-LEGACY-FCA",
+      "designLabArtifact": "design-lab/regulatory-intelligence/js/live-verification-evidence-data.js",
+      "verificationStatus": "LIVE_VERIFIED",
+      "representativeDocuments": [
+        {
+          "representativeDocumentUrl": "https://www.fca.org.uk/publications/rss.xml",
+          "sha256": "3d2daa603ee324d00adf319ac6196f6b9af06db6137ea92c8565fcfb924bfdcd",
+          "note": "Parity fingerprint (design-lab route); not a live crawl body hash."
+        }
+      ]
+    },
+    {
+      "sourceId": "SRC-PRA-PUBLICATIONS",
+      "regulatorId": "REG-PRA",
+      "productionConnectorId": "CONN-LEGACY-PRA",
+      "designLabArtifact": "design-lab/regulatory-intelligence/js/live-verification-evidence-data.js",
+      "verificationStatus": "LIVE_VERIFIED",
+      "representativeDocuments": [
+        {
+          "representativeDocumentUrl": "https://www.bankofengland.co.uk/news/publications",
+          "sha256": "952c2e13d571ebc97315239b77e7e9e73f157b459eeee2dbfbbdaf45cc5dd47f",
+          "note": "Parity fingerprint (design-lab route)."
+        }
+      ]
+    },
+    {
+      "sourceId": "SRC-HMT-PUBLICATIONS",
+      "regulatorId": "REG-HMT",
+      "productionConnectorId": "CONN-LEGACY-HMT",
+      "designLabArtifact": "design-lab/regulatory-intelligence/js/live-verification-evidence-data.js",
+      "verificationStatus": "LIVE_VERIFIED",
+      "representativeDocuments": [
+        {
+          "representativeDocumentUrl": "https://www.gov.uk/government/organisations/hm-treasury.atom",
+          "sha256": "7ca2271ed8558dae845fdaedf3fc103b0cac653bb5545bcd3be9e36520efb729",
+          "note": "Parity fingerprint (design-lab route)."
+        }
+      ]
+    },
+    {
+      "sourceId": "SRC-UK-LEGISLATION-ATOM",
+      "regulatorId": "REG-UK-LEG",
+      "productionConnectorId": "CONN-LEGACY-UK-LEG",
+      "designLabArtifact": "design-lab/regulatory-intelligence/js/legislation-verification-evidence-data.js",
+      "verificationStatus": "LIVE_VERIFIED",
+      "representativeDocuments": [
+        {
+          "representativeDocumentUrl": "https://www.legislation.gov.uk/new/data.feed",
+          "sha256": "8fd4993a93a53eca303694382d139e4d013bca535ad7d3d1c9fcd84f4d3da1a1",
+          "note": "Parity fingerprint (design-lab route)."
+        }
+      ]
+    },
+    {
+      "sourceId": "SRC-TPR-DOCUMENT-LIBRARY",
+      "regulatorId": "REG-TPR",
+      "productionConnectorId": "CONN-LEGACY-TPR",
+      "designLabArtifact": "design-lab/regulatory-intelligence/js/tpr-verification-evidence-data.js",
+      "verificationStatus": "LIVE_VERIFIED",
+      "representativeDocuments": [
+        {
+          "representativeDocumentUrl": "https://www.tpr.gov.uk/sitemap.xml",
+          "sha256": "17c6441a6b7bdad5ff4043bb9f9fa067a87ec347777a329c3a45c80d55580374",
+          "note": "Parity fingerprint (design-lab route)."
+        }
+      ]
+    },
+    {
+      "sourceId": "SRC-BASEL-FRAMEWORK",
+      "regulatorId": "REG-BIS",
+      "productionConnectorId": "CONN-LEGACY-BASEL",
+      "designLabArtifact": "design-lab/regulatory-intelligence/js/basel-verification-evidence-data.js",
+      "verificationStatus": "LIVE_VERIFIED",
+      "representativeDocuments": [
+        {
+          "representativeDocumentUrl": "https://www.bis.org/basel_framework.htm",
+          "sha256": "5505f3cabdbff9fa53d115e538ef269311a884859fbbce5fe9f31d9a8fc9deaf",
+          "note": "Parity fingerprint (design-lab route)."
+        }
+      ]
+    }
+  ]
+}

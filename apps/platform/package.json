@@ -16,6 +16,7 @@
     "test:acceptance:phase5": "node ./scripts/acceptance-phase-5-ri-downstream.mjs",
     "test:acceptance:phase6": "node ./scripts/acceptance-phase-6-ri-ingestion.mjs",
     "test:acceptance:phase7": "node ./scripts/acceptance-phase-7-ri-ingestion-ops.mjs",
+    "test:acceptance:phase7b": "node ./scripts/acceptance-phase-7b-ri-experience-parity.mjs",
     "test:acceptance:ri": "node ./scripts/acceptance-ri-master.mjs",
     "ri:ingest": "node ./scripts/ri-ingest.mjs",
     "ri:scheduler:test": "node ./scripts/ri-scheduler-test.mjs",
