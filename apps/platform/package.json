@@ -30,7 +30,11 @@
     "ri:ingest": "node ./scripts/ri-ingest.mjs",
     "ri:scheduler:test": "node ./scripts/ri-scheduler-test.mjs",
     "ri:seed-dev-publication": "node ./scripts/ri-seed-dev-publication.mjs",
-    "sync:reference-catalogue": "node ./scripts/sync-reference-catalogue.mjs"
+    "sync:reference-catalogue": "node ./scripts/sync-reference-catalogue.mjs",
+    "staging:apply-migrations": "node ./scripts/staging/apply-supabase-migrations.mjs",
+    "staging:apply-catalogue": "node ./scripts/staging/apply-reference-catalogue.mjs",
+    "staging:verify-db": "node ./scripts/staging/verify-staging-db.mjs",
+    "staging:smoke": "node ./scripts/staging/smoke-staging.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.0",
