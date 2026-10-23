@@ -25,6 +25,7 @@
     "test:acceptance:phase7c5": "node ./scripts/acceptance-phase-7c5-golden-master.mjs",
     "test:acceptance:phase7c6": "node ./scripts/acceptance-phase-7c6-golden-master.mjs",
     "test:acceptance:phase7c6a": "node ./scripts/acceptance-phase-7c6a-golden-master.mjs",
+    "test:acceptance:phase7c7": "node ./scripts/acceptance-phase-7c7-ask-ri-golden-master.mjs",
     "test:acceptance:ri": "node ./scripts/acceptance-ri-master.mjs",
     "ri:ingest": "node ./scripts/ri-ingest.mjs",
     "ri:scheduler:test": "node ./scripts/ri-scheduler-test.mjs",

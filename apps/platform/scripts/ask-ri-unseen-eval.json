@@ -1,0 +1,5 @@
+[
+  { "id": "U01", "question": "How many open obligations are there?", "expect": "ANSWERED_OR_ZERO" },
+  { "id": "U02", "question": "What does FINMA require for capital?", "expect": "UNRESOLVED_OR_BLOCKED" },
+  { "id": "U03", "question": "Which regulatory changes have policies but no linked controls?", "expect": "UNRESOLVED" }
+]

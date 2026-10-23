@@ -25,6 +25,7 @@ const SECONDARY = [
   { href: '/ri/ai', label: 'AI Review' },
   { href: '/ri/ai-governance', label: 'AI Governance' },
   { href: '/ri/ai-operations', label: 'AI Operations' },
+  { href: '/ri/ask', label: 'Ask RI' },
   { href: '/ri/admin/sources', label: 'Sources' },
   { href: '/ri/admin/ingestion', label: 'Ingestion' },
   { href: '/ri/admin/alerts', label: 'Alerts' },
@@ -63,9 +64,6 @@ export function RiSubnav({ active }: { active?: string }) {
             {l.label}
           </Link>
         ))}
-        <span className="fg-ri-subnav__link fg-ri-subnav__link--soon" title="COMING LATER — production Ask RI not implemented">
-          Ask RI
-        </span>
       </nav>
     </div>
   );

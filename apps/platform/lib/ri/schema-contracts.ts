@@ -30,6 +30,7 @@ export const TENANT_RI_TABLES = [
   'ai_analysis_citations',
   'ai_analysis_reviews',
   'ai_claim_materialisations',
+  'ask_ri_query_log',
 ] as const;
 
 export const GLOBAL_AI_REFERENCE_TABLES = ['ai_use_cases'] as const;

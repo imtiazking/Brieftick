@@ -29,6 +29,7 @@ export const WORKFLOW_EVENT_TYPES = [
   'AI_ANALYSIS_SUPERSEDED',
   'AI_CHANGE_MATERIALISED',
   'AI_OBLIGATION_MATERIALISED',
+  'ASK_RI_QUERY_COMPLETED',
 ] as const;
 
 export type WorkflowEventType = (typeof WORKFLOW_EVENT_TYPES)[number];

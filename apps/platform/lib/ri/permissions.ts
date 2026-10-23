@@ -38,7 +38,8 @@ export type RiAction =
   | 'ai:read'
   | 'ai:request'
   | 'ai:review'
-  | 'ai:governance';
+  | 'ai:governance'
+  | 'ask-ri:read';
 
 const MATRIX: Record<RiAction, PlatformRole> = {
   'ri:read': 'VIEWER',
@@ -78,6 +79,7 @@ const MATRIX: Record<RiAction, PlatformRole> = {
   'ai:request': 'ANALYST',
   'ai:review': 'REVIEWER',
   'ai:governance': 'COMPLIANCE_MANAGER',
+  'ask-ri:read': 'VIEWER',
 };
 
 export function canRi(role: PlatformRole | null | undefined, action: RiAction): boolean {

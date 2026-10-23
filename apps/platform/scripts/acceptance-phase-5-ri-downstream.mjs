@@ -88,21 +88,29 @@ function scanDir(dir, acc = []) {
   }
   return acc;
 }
-function isAiProductionPath(file) {
+function isAiOrAskRiProductionPath(file) {
   const rel = file.replaceAll('\\', '/');
   return (
     rel.includes('/lib/ri/ai/') ||
     rel.includes('/services/ai-analysis') ||
     rel.includes('server-actions-ai') ||
-    rel.includes('/app/ri/ai')
+    rel.includes('/app/ri/ai') ||
+    rel.includes('/lib/ri/ask-ri') ||
+    rel.includes('/app/ri/ask') ||
+    rel.includes('server-actions-ask-ri') ||
+    rel.includes('/services/ask-ri.') ||
+    rel.includes('/lab-compat/ask-ri') ||
+    rel.endsWith('/lib/ri/permissions.ts') ||
+    rel.endsWith('/lib/ri/schema-contracts.ts') ||
+    rel.endsWith('/lib/ri/workflow-events.ts')
   );
 }
 for (const file of [...scanDir(join(platformRoot, 'app', 'ri')), ...scanDir(join(platformRoot, 'lib', 'ri'))]) {
-  if (isAiProductionPath(file)) continue;
+  if (isAiOrAskRiProductionPath(file)) continue;
   const text = readFileSync(file, 'utf8');
   if (/openai|anthropic|ask-ri|ask_ri/i.test(text)) failMsg(`AI/Ask RI reference in ${file}`);
 }
-pass('no Ask RI in downstream lifecycle code (AI module isolated)');
+pass('no Ask RI in downstream lifecycle code (Ask RI module isolated)');
 
 const subnav = readFileSync(join(platformRoot, 'components', 'ri', 'ri-subnav.tsx'), 'utf8');
 for (const href of ['/ri/policies', '/ri/controls', '/ri/assurance']) {
