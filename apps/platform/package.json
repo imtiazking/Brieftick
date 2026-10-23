@@ -34,6 +34,8 @@
     "staging:apply-migrations": "node ./scripts/staging/apply-supabase-migrations.mjs",
     "staging:apply-catalogue": "node ./scripts/staging/apply-reference-catalogue.mjs",
     "staging:verify-db": "node ./scripts/staging/verify-staging-db.mjs",
+    "staging:verify-catalogue": "node ./scripts/staging/verify-staging-catalogue.mjs",
+    "staging:prepare-catalogue-batches": "node ./scripts/staging/apply-catalogue-batches.mjs",
     "staging:smoke": "node ./scripts/staging/smoke-staging.mjs"
   },
   "dependencies": {

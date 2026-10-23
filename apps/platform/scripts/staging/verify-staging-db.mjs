@@ -39,11 +39,13 @@ for (const [label, sql] of checks) {
     const row = rows[0];
     const val = row?.n ?? row?.ok ?? row?.rls;
     const pass =
-      label.startsWith('regulators') || label.startsWith('sources')
-        ? val >= 30
-        : label.includes('RLS')
-          ? val === true
-          : val === true || val > 0;
+      label === 'regulators'
+        ? val === 36
+        : label === 'sources'
+          ? val === 41
+          : label.includes('RLS')
+            ? val === true
+            : val === true || val > 0;
     console.log(`${pass ? 'PASS' : 'FAIL'}: ${label} → ${JSON.stringify(row)}`);
     if (!pass) fail += 1;
   } catch (e) {

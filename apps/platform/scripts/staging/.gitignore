@@ -1,1 +1,4 @@
 _lifecycle_part*.sql
+.catalogue-batches/
+.catalogue-chunks/
+.catalogue-full-apply.sql
