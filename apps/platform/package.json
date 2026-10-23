@@ -36,7 +36,8 @@
     "staging:verify-db": "node ./scripts/staging/verify-staging-db.mjs",
     "staging:verify-catalogue": "node ./scripts/staging/verify-staging-catalogue.mjs",
     "staging:prepare-catalogue-batches": "node ./scripts/staging/apply-catalogue-batches.mjs",
-    "staging:smoke": "node ./scripts/staging/smoke-staging.mjs"
+    "staging:smoke": "node ./scripts/staging/smoke-staging.mjs",
+    "staging:bootstrap-ri-owner": "node ./scripts/staging/bootstrap-ri-owner.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.0",
