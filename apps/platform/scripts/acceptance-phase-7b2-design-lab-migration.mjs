@@ -44,8 +44,21 @@ if (subnav.includes('/ri/landscape')) pass('subnav landscape');
 else failMsg('subnav landscape');
 
 const aiGov = readFileSync(join(platformRoot, 'app/ri/ai-governance/page.tsx'), 'utf8');
-if (aiGov.includes('RiAiPlaceholder')) pass('AI governance placeholder');
-else failMsg('AI governance placeholder');
+if (
+  !aiGov.includes('RiAiPlaceholder') &&
+  aiGov.includes('Governance and oversight of FORGENIQ AI') &&
+  aiGov.includes('AI_USE_CASE_CATALOG')
+) {
+  pass('AI governance productionised');
+} else failMsg('AI governance productionised');
+
+const aiOps = readFileSync(join(platformRoot, 'app/ri/ai-operations/page.tsx'), 'utf8');
+if (
+  !aiOps.includes('RiAiPlaceholder') &&
+  aiOps.includes('Operational monitoring of FORGENIQ AI')
+) {
+  pass('AI operations productionised');
+} else failMsg('AI operations productionised');
 
 function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {

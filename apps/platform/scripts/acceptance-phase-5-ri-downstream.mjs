@@ -88,11 +88,21 @@ function scanDir(dir, acc = []) {
   }
   return acc;
 }
+function isAiProductionPath(file) {
+  const rel = file.replaceAll('\\', '/');
+  return (
+    rel.includes('/lib/ri/ai/') ||
+    rel.includes('/services/ai-analysis') ||
+    rel.includes('server-actions-ai') ||
+    rel.includes('/app/ri/ai')
+  );
+}
 for (const file of [...scanDir(join(platformRoot, 'app', 'ri')), ...scanDir(join(platformRoot, 'lib', 'ri'))]) {
+  if (isAiProductionPath(file)) continue;
   const text = readFileSync(file, 'utf8');
   if (/openai|anthropic|ask-ri|ask_ri/i.test(text)) failMsg(`AI/Ask RI reference in ${file}`);
 }
-pass('no AI / Ask RI in RI downstream code');
+pass('no Ask RI in downstream lifecycle code (AI module isolated)');
 
 const subnav = readFileSync(join(platformRoot, 'components', 'ri', 'ri-subnav.tsx'), 'utf8');
 for (const href of ['/ri/policies', '/ri/controls', '/ri/assurance']) {

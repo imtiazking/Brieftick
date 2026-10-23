@@ -25,8 +25,10 @@
 | Global catalogue | `#/landscape/catalogue` | `/ri/landscape/catalogue` | PASS | PASS | Shared `packages/reference-data` | PASS |
 | Reporting | `#/reports` | `/ri/reporting` | PASS | PASS | Phase 7C.5 metrics harness; no AI board narrative | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Sources / ingestion | `#/ingestion` | `/ri/admin/sources` | PASS | PASS | Role-gated; NOT ENABLED banner | PASS |
-| AI Governance | `#/ai-governance` | `/ri/ai-governance` | PASS | PLACEHOLDER | COMING IN PHASE 8 | PASS_WITH_INTENTIONAL_DIFFERENCE |
-| AI Operations | `#/ai-operations` | `/ri/ai-operations` | PASS | PLACEHOLDER | COMING IN PHASE 8 | PASS_WITH_INTENTIONAL_DIFFERENCE |
+| AI Governance | `#/ai-governance` | `/ri/ai-governance` | PASS | PASS | Phase 7C.6; DB-backed runs when migrated | PASS_WITH_INTENTIONAL_DIFFERENCE |
+| AI Operations | `#/ai-operations` | `/ri/ai-operations` | PASS | PASS | Phase 7C.6 execution monitor | PASS_WITH_INTENTIONAL_DIFFERENCE |
+| Publication AI | publication AI panel | `/ri/publications/[id]#ai` | PASS | PASS | Fixture default; OpenAI optional | PASS_WITH_INTENTIONAL_DIFFERENCE |
+| AI review | `#/ai-analysis/*` | `/ri/ai`, `/ri/ai/[runId]` | PASS | PASS | Human accept / partial / reject | PASS_WITH_INTENTIONAL_DIFFERENCE |
 | Ask RI | `#/ask-ri` | nav label only | PASS | PLACEHOLDER | COMING LATER | PASS_WITH_INTENTIONAL_DIFFERENCE |
 
 **Overall visual parity:** PASS_WITH_INTENTIONAL_DIFFERENCES (auth shell, real data, placeholders for AI/Ask RI).

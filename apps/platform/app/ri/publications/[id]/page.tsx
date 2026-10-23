@@ -15,7 +15,8 @@ import { RiNotFoundError } from '@/lib/ri/errors';
 import { getPublicationDetail } from '@/lib/ri/services/publications';
 import { RELEVANCE_STATUSES, TRIAGE_STATUSES } from '@/lib/ri/validation';
 import { APPLICABILITY_RECOMMENDATIONS } from '@/lib/ri/enums';
-import { RiAiPlaceholder } from '@/components/ri/ri-ai-placeholder';
+import { RiPublicationAiPanel } from '@/components/ri/ri-publication-ai-panel';
+import { listAnalysisRuns } from '@/lib/ri/services/ai-analysis';
 
 function formatStatus(value: string | null | undefined) {
   return (value || 'NOT_TESTED').replaceAll('_', ' ');
@@ -45,6 +46,11 @@ export default async function PublicationDetailPage({
   }
 
   const { publication, orgPublication, applicability, changes, impacts, versions, sourceMeta } = detail;
+  const aiRuns = (await listAnalysisRuns(ctx.supabase, ctx.organisationId, 100)).filter(
+    (r) => r.publication_id === id,
+  );
+  const latestVersion =
+    [...versions].sort((a, b) => (b.version_number ?? 0) - (a.version_number ?? 0))[0] ?? null;
   const regulator = publication.regulator;
   const source = publication.source;
   const canEdit = canRi(ctx.role, 'triage:write');
@@ -227,7 +233,12 @@ export default async function PublicationDetailPage({
           <p className="fg-muted">Relationships are explicit publication → change → impact links only.</p>
         </div>
         <div id="ai">
-          <RiAiPlaceholder title="AI Analysis" phase="Phase 8" />
+          <RiPublicationAiPanel
+            publicationId={id}
+            publicationVersionId={latestVersion?.id ?? null}
+            runs={aiRuns}
+            canRequest={canRi(ctx.role, 'ai:request')}
+          />
         </div>
       </RiDataGate>
     </ShellLayout>

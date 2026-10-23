@@ -22,8 +22,9 @@ const PRIMARY = [
 const SECONDARY = [
   { href: '/ri/reporting', label: 'Reporting' },
   { href: '/ri/governance', label: 'Governance' },
-  { href: '/ri/ai-governance', label: 'AI Governance', muted: true },
-  { href: '/ri/ai-operations', label: 'AI Operations', muted: true },
+  { href: '/ri/ai', label: 'AI Review' },
+  { href: '/ri/ai-governance', label: 'AI Governance' },
+  { href: '/ri/ai-operations', label: 'AI Operations' },
   { href: '/ri/admin/sources', label: 'Sources' },
   { href: '/ri/admin/ingestion', label: 'Ingestion' },
   { href: '/ri/admin/alerts', label: 'Alerts' },

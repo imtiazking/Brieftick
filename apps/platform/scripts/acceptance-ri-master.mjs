@@ -43,6 +43,7 @@ const steps = [
   ['RI golden master lifecycle (Phase 7C.3)', 'npm', ['run', 'test:acceptance:phase7c3'], platformRoot],
   ['RI golden master downstream assurance (Phase 7C.4)', 'npm', ['run', 'test:acceptance:phase7c4'], platformRoot],
   ['RI golden master operations & reporting (Phase 7C.5)', 'npm', ['run', 'test:acceptance:phase7c5'], platformRoot],
+  ['RI golden master AI (Phase 7C.6)', 'npm', ['run', 'test:acceptance:phase7c6'], platformRoot],
   ['Reference catalogue', 'node', ['./scripts/acceptance-global-source-catalogue.mjs'], refDataRoot],
   ['Catalogue clean-clone', 'node', ['./scripts/acceptance-catalogue-clean-clone.mjs'], refDataRoot],
   ['Source semantics', 'node', ['./scripts/acceptance-source-semantics.mjs'], integrationsRoot],

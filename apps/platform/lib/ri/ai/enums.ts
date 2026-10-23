@@ -1,0 +1,48 @@
+/** AI domain enums — aligned with Design Lab golden master. */
+
+export const AI_EXECUTION_STATUS = {
+  REQUESTED: 'REQUESTED',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  VALIDATION_FAILED: 'VALIDATION_FAILED',
+} as const;
+
+export type AiExecutionStatus = (typeof AI_EXECUTION_STATUS)[keyof typeof AI_EXECUTION_STATUS];
+
+export const AI_REVIEW_STATUS = {
+  AI_DRAFT: 'AI_DRAFT',
+  HUMAN_REVIEW_REQUIRED: 'HUMAN_REVIEW_REQUIRED',
+  PARTIALLY_ACCEPTED: 'PARTIALLY_ACCEPTED',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  SUPERSEDED: 'SUPERSEDED',
+} as const;
+
+export type AiReviewStatus = (typeof AI_REVIEW_STATUS)[keyof typeof AI_REVIEW_STATUS];
+
+export const AI_FRESHNESS = {
+  CURRENT: 'CURRENT',
+  OUTDATED: 'OUTDATED',
+} as const;
+
+export type AiFreshness = (typeof AI_FRESHNESS)[keyof typeof AI_FRESHNESS];
+
+export const AI_CITATION_STATUS = {
+  VERIFIED: 'VERIFIED',
+  PARTIAL: 'PARTIAL',
+  UNVERIFIED: 'UNVERIFIED',
+  INVALID: 'INVALID',
+} as const;
+
+export const AI_PROVIDER_MODE = {
+  FIXTURE: 'FIXTURE',
+  OPENAI: 'OPENAI',
+} as const;
+
+export const PROCESSING_ELIGIBILITY = {
+  ELIGIBLE: 'ELIGIBLE',
+  METADATA_ONLY: 'METADATA_ONLY',
+  REVIEW_REQUIRED: 'REVIEW_REQUIRED',
+  NOT_ELIGIBLE: 'NOT_ELIGIBLE',
+} as const;

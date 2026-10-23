@@ -26,7 +26,12 @@ export const TENANT_RI_TABLES = [
   'assurance_reviews',
   'findings',
   'workflow_events',
+  'ai_analysis_runs',
+  'ai_analysis_citations',
+  'ai_analysis_reviews',
 ] as const;
+
+export const GLOBAL_AI_REFERENCE_TABLES = ['ai_use_cases'] as const;
 
 export const AUTHORITATIVE_JOIN_TABLES = [
   'obligation_policy_links',
