@@ -10,8 +10,32 @@ import { listAnalysisRuns } from '@/lib/ri/services/ai-analysis';
 
 export default async function AiGovernancePage() {
   const ctx = await tryRiContext();
-  const runs = ctx ? await listAnalysisRuns(ctx.supabase, ctx.organisationId, 30) : [];
+  const runs = ctx ? await listAnalysisRuns(ctx.supabase, ctx.organisationId, 50) : [];
   const providers = listProviderHealth();
+  let aiAssistedChanges = 0;
+  let aiAssistedObligations = 0;
+  if (ctx) {
+    const { count: chgN } = await ctx.supabase
+      .from('regulatory_changes')
+      .select('*', { count: 'exact', head: true })
+      .eq('organisation_id', ctx.organisationId)
+      .eq('origin', 'AI_ASSISTED');
+    const { count: oblN } = await ctx.supabase
+      .from('regulatory_obligations')
+      .select('*', { count: 'exact', head: true })
+      .eq('organisation_id', ctx.organisationId)
+      .eq('origin', 'AI_ASSISTED');
+    aiAssistedChanges = chgN ?? 0;
+    aiAssistedObligations = oblN ?? 0;
+  }
+  const stats = {
+    current: runs.filter((r) => r.freshness === 'CURRENT').length,
+    outdated: runs.filter((r) => r.freshness === 'OUTDATED').length,
+    accepted: runs.filter((r) => r.review_status === 'ACCEPTED').length,
+    partial: runs.filter((r) => r.review_status === 'PARTIALLY_ACCEPTED').length,
+    rejected: runs.filter((r) => r.review_status === 'REJECTED').length,
+    aiAssistedRecords: aiAssistedChanges + aiAssistedObligations,
+  };
 
   return (
     <ShellLayout
@@ -50,6 +74,17 @@ export default async function AiGovernancePage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="fg-card">
+              <h2>Review & freshness summary</h2>
+              <ul>
+                <li>Current analyses: {stats.current}</li>
+                <li>Outdated analyses: {stats.outdated}</li>
+                <li>Accepted reviews: {stats.accepted}</li>
+                <li>Partially accepted: {stats.partial}</li>
+                <li>Rejected: {stats.rejected}</li>
+                <li>AI-assisted RI records created: {stats.aiAssistedRecords}</li>
+              </ul>
             </div>
             <div className="fg-card">
               <h2>Provider / model posture</h2>

@@ -4,6 +4,7 @@ import { getSourceById } from '../../../../../packages/reference-data/index.mjs'
 import { assessSourceIngestionEligibility } from './eligibility.mjs';
 import { retrieveNormalisedDocuments } from './adapter.mjs';
 import { resolveCatalogueIds } from './resolve-ids.mjs';
+import { markAnalysesOutdatedForPublicationVersionSql } from '../ai/freshness-sql.mjs';
 
 const RAW_META_DIR = join(process.cwd(), '.local-ingestion-raw');
 
@@ -212,10 +213,11 @@ async function processDocument(client, ctx) {
         JSON.stringify(provenance),
       ],
     );
-    await client.query(
+    const verIns = await client.query(
       `insert into regulatory_publication_versions
         (publication_id, version_number, source_hash, canonical_url, retrieved_at, ingestion_run_id, provenance)
-       values ($1, $2, $3, $4, $5::timestamptz, $6, $7::jsonb)`,
+       values ($1, $2, $3, $4, $5::timestamptz, $6, $7::jsonb)
+       returning id`,
       [
         existing.id,
         nextVersion,
@@ -226,6 +228,7 @@ async function processDocument(client, ctx) {
         JSON.stringify(provenance),
       ],
     );
+    await markAnalysesOutdatedForPublicationVersionSql(client, existing.id, verIns.rows[0].id);
     await insertItem(client, itemBase, {
       retrieval: 'RETRIEVED',
       normalisation: 'UPDATED',

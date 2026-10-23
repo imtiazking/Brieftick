@@ -16,7 +16,7 @@ import { getPublicationDetail } from '@/lib/ri/services/publications';
 import { RELEVANCE_STATUSES, TRIAGE_STATUSES } from '@/lib/ri/validation';
 import { APPLICABILITY_RECOMMENDATIONS } from '@/lib/ri/enums';
 import { RiPublicationAiPanel } from '@/components/ri/ri-publication-ai-panel';
-import { listAnalysisRuns } from '@/lib/ri/services/ai-analysis';
+import { listAnalysisRunsForPublication } from '@/lib/ri/services/ai-analysis';
 
 function formatStatus(value: string | null | undefined) {
   return (value || 'NOT_TESTED').replaceAll('_', ' ');
@@ -46,11 +46,14 @@ export default async function PublicationDetailPage({
   }
 
   const { publication, orgPublication, applicability, changes, impacts, versions, sourceMeta } = detail;
-  const aiRuns = (await listAnalysisRuns(ctx.supabase, ctx.organisationId, 100)).filter(
-    (r) => r.publication_id === id,
-  );
   const latestVersion =
     [...versions].sort((a, b) => (b.version_number ?? 0) - (a.version_number ?? 0))[0] ?? null;
+  const aiRuns = await listAnalysisRunsForPublication(
+    ctx.supabase,
+    ctx.organisationId,
+    id,
+    latestVersion?.id ?? null,
+  );
   const regulator = publication.regulator;
   const source = publication.source;
   const canEdit = canRi(ctx.role, 'triage:write');

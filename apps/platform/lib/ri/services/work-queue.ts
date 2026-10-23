@@ -4,6 +4,8 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { isActionOverdue } from '@/lib/ri/action-overdue';
 import { OBLIGATION_STATUS_GROUPS } from '@/lib/ri/enums';
 import { deriveSlaPresentation } from '@/lib/ri/sla-presentation';
+import { AI_REVIEW_STATUS } from '@/lib/ri/ai/enums';
+import { AI_USE_CASE_CATALOG } from '@/lib/ri/ai/use-case-catalog';
 
 export type WorkQueueItem = {
   id: string;
@@ -64,6 +66,32 @@ export async function buildWorkQueue(
   const items: WorkQueueItem[] = [];
   const today = new Date().toISOString().slice(0, 10);
   const assigneeFilter = scope === 'mine' ? userId : undefined;
+
+  const { data: aiReviews } = await supabase
+    .from('ai_analysis_runs')
+    .select(
+      'id, use_case_id, review_status, requested_by, created_at, publication_id, freshness, execution_status',
+    )
+    .eq('organisation_id', organisationId)
+    .eq('review_status', AI_REVIEW_STATUS.HUMAN_REVIEW_REQUIRED)
+    .eq('freshness', 'CURRENT')
+    .eq('execution_status', 'COMPLETED');
+
+  for (const run of aiReviews ?? []) {
+    if (assigneeFilter && run.requested_by && run.requested_by !== assigneeFilter) continue;
+    const uc = AI_USE_CASE_CATALOG.find((u) => u.id === run.use_case_id);
+    items.push(
+      toItem({
+        entityType: 'AI_REVIEW',
+        recordId: run.id,
+        title: `${uc?.name ?? run.use_case_id} — AI review`,
+        status: run.review_status,
+        owner: run.requested_by,
+        source: uc?.analysisTypes[0] ?? 'AI review',
+        href: `/ri/ai/${run.id}`,
+      }),
+    );
+  }
 
   const { data: orgPubs } = await supabase
     .from('organisation_publications')

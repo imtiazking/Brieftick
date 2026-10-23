@@ -65,7 +65,12 @@ export function RiPublicationAiPanel({
                 <td className="ri-mono">{r.use_case_id}</td>
                 <td><RiStatusChip label={r.execution_status} /></td>
                 <td><RiStatusChip label={r.review_status} /></td>
-                <td>{r.freshness}</td>
+                <td>
+                  {r.freshness}
+                  {publicationVersionId && r.publication_version_id !== publicationVersionId ? (
+                    <span className="fg-muted"> (not current version)</span>
+                  ) : null}
+                </td>
                 <td className="ri-mono">{r.provider}</td>
                 <td><Link href={`/ri/ai/${r.id}`}>Review</Link></td>
               </tr>

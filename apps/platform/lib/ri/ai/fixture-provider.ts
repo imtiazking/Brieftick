@@ -50,13 +50,48 @@ export function createFixtureProvider() {
         };
       }
       const sections = request.context?.sourceSections || [];
-      const claims = sections.slice(0, 2).map((s, i) => ({
+      const analysisType = request.analysisType || 'Applicability Recommendation';
+      const sectionId = sections[0]?.sourceSectionId;
+
+      if (scenario === 'obligation-invalid-citation') {
+        return {
+          ok: true,
+          structured: {
+            confidence: 80,
+            claims: [
+              {
+                text: 'Invalid obligation claim',
+                confidence: 80,
+                sourceSectionIds: ['SRCSEC-DOES-NOT-EXIST'],
+              },
+            ],
+            candidates: [{ statement: 'Should not materialise', citation: 'n/a' }],
+          },
+          schemaName: 'ObligationExtractionResult',
+          latencyMs: 40,
+        };
+      }
+
+      let candidateCount = 2;
+      if (scenario === 'change-extraction-five') candidateCount = 5;
+
+      const claims = sections.slice(0, candidateCount).map((s, i) => ({
         text: `Fixture claim ${i + 1} grounded in ${s.citation || s.sourceSectionId}`,
         confidence: request.useCaseId === 'UC-RI-003' ? 86 : 84,
         sourceSectionIds: [s.sourceSectionId],
         claimType: request.analysisType || 'Recommendation',
         materiality: 'High',
       }));
+      while (claims.length < candidateCount && sectionId) {
+        const i = claims.length;
+        claims.push({
+          text: `Fixture claim ${i + 1} grounded in section`,
+          confidence: 84,
+          sourceSectionIds: [sectionId],
+          claimType: 'Recommendation',
+          materiality: 'High',
+        });
+      }
       if (!claims.length) {
         claims.push({
           text: 'Fixture recommendation without source (should fail citation policy)',
@@ -66,7 +101,25 @@ export function createFixtureProvider() {
           materiality: 'High',
         });
       }
-      const analysisType = request.analysisType || 'Applicability Recommendation';
+
+      const changeCandidates =
+        analysisType === 'Regulatory Change Extraction'
+          ? claims.map((_, i) => ({
+              title: `Fixture regulatory change ${i + 1}`,
+              changeType: 'POLICY',
+              materiality: 'High',
+            }))
+          : [];
+
+      const obligationCandidates =
+        analysisType === 'Obligation Extraction'
+          ? claims.map((c, i) => ({
+              statement: `Fixture obligation statement ${i + 1}`,
+              citation: c.sourceSectionIds?.[0] || 's1',
+              sourceSection: `Section ${i + 1}`,
+            }))
+          : [];
+
       const structured: Record<string, unknown> = {
         recommendation: analysisType === 'Applicability Recommendation' ? 'Applicable' : 'Classified',
         confidence: analysisType === 'Applicability Recommendation' ? 86 : 84,
@@ -74,14 +127,9 @@ export function createFixtureProvider() {
         classification: 'Consumer Duty / Outcomes',
         candidates:
           analysisType === 'Regulatory Change Extraction'
-            ? [{ title: 'Fixture change', materiality: 'High' }]
+            ? changeCandidates
             : analysisType === 'Obligation Extraction'
-              ? [
-                  {
-                    statement: 'Fixture obligation statement',
-                    sourceSectionIds: claims[0]?.sourceSectionIds || [],
-                  },
-                ]
+              ? obligationCandidates
               : [],
         dimensions: analysisType === 'Impact Suggestion' ? ['Operations', 'Compliance'] : [],
       };

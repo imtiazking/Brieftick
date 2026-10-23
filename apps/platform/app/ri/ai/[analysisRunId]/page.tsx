@@ -75,7 +75,12 @@ export default async function AiAnalysisReviewPage({
             </tbody>
           </table>
         </div>
-        {canReview && run.review_status !== 'ACCEPTED' && run.review_status !== 'REJECTED' ? (
+        {canReview &&
+        run.freshness !== 'OUTDATED' &&
+        run.review_status !== 'ACCEPTED' &&
+        run.review_status !== 'REJECTED' &&
+        run.review_status !== 'PARTIALLY_ACCEPTED' &&
+        run.review_status !== 'SUPERSEDED' ? (
           <div className="fg-card">
             <h2>Human decision</h2>
             <p className="fg-muted">Accept, partially accept, or reject — no auto-accept on completion.</p>

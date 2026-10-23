@@ -10,10 +10,13 @@ import {
   AI_REVIEW_STATUS,
   PROCESSING_ELIGIBILITY,
 } from '@/lib/ri/ai/enums';
-import { validateStructuredOutput } from '@/lib/ri/ai/output-schemas';
+import { validateStructuredOutput, mapSchemaForAnalysisType } from '@/lib/ri/ai/output-schemas';
 import { getAiProvider, resolveAiProviderMode, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/provider-registry';
 import { getUseCaseById } from '@/lib/ri/ai/use-case-catalog';
 import { assertCanRi } from '@/lib/ri/permissions';
+import { materialiseReviewedClaims } from '@/lib/ri/services/ai-materialisation';
+import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
+import { getLatestPublicationVersion } from '@/lib/ri/services/publication-versions';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 
 export type AnalysisRunRow = {
@@ -57,6 +60,23 @@ async function buildPublicationContext(
     ],
     allowedSectionIds: [sectionId],
   };
+}
+
+export async function listAnalysisRunsForPublication(
+  supabase: SupabaseClient,
+  organisationId: string,
+  publicationId: string,
+  currentVersionId: string | null,
+  limit = 50,
+): Promise<AnalysisRunRow[]> {
+  const runs = await listAnalysisRuns(supabase, organisationId, limit);
+  const filtered = runs.filter((r) => r.publication_id === publicationId);
+  return filtered.sort((a, b) => {
+    const aCurrent = currentVersionId && a.publication_version_id === currentVersionId ? 1 : 0;
+    const bCurrent = currentVersionId && b.publication_version_id === currentVersionId ? 1 : 0;
+    if (aCurrent !== bCurrent) return bCurrent - aCurrent;
+    return b.created_at.localeCompare(a.created_at);
+  });
 }
 
 export async function listAnalysisRuns(
@@ -116,11 +136,17 @@ export async function requestPublicationAnalysis(
     publicationVersionId: string;
     useCaseId: string;
     fixtureScenario?: string;
+    targetEntityId?: string;
   },
 ) {
   assertCanRi(params.role, 'ai:request');
   const useCase = getUseCaseById(params.useCaseId);
   if (!useCase || useCase.status !== 'Active') throw new Error('invalid_use_case');
+
+  const latest = await getLatestPublicationVersion(supabase, params.publicationId);
+  if (!latest || latest.id !== params.publicationVersionId) {
+    throw new Error('publication_version_not_current');
+  }
 
   const analysisType = useCase.analysisTypes[0];
   const ctx = await buildPublicationContext(supabase, params.publicationVersionId);
@@ -137,6 +163,7 @@ export async function requestPublicationAnalysis(
       use_case_id: params.useCaseId,
       publication_id: params.publicationId,
       publication_version_id: params.publicationVersionId,
+      target_entity_id: params.targetEntityId ?? null,
       execution_status: AI_EXECUTION_STATUS.RUNNING,
       review_status: AI_REVIEW_STATUS.AI_DRAFT,
       freshness: AI_FRESHNESS.CURRENT,
@@ -209,7 +236,7 @@ export async function requestPublicationAnalysis(
     schemaName?: string;
   };
   const schemaCheck = validateStructuredOutput(
-    successResult.schemaName || 'ApplicabilityResult',
+    successResult.schemaName || mapSchemaForAnalysisType(analysisType),
     successResult.structured,
   );
   if (!schemaCheck.ok) {
@@ -270,6 +297,15 @@ export async function requestPublicationAnalysis(
     toStatus: AI_EXECUTION_STATUS.COMPLETED,
   });
 
+  if (reviewStatus === AI_REVIEW_STATUS.HUMAN_REVIEW_REQUIRED) {
+    await recordAiNotificationEvent(supabase, {
+      eventType: 'AI_REVIEW_REQUIRED',
+      publicationId: params.publicationId,
+      organisationId: params.organisationId,
+      payload: { analysis_run_id: runRow.id, use_case_id: params.useCaseId },
+    });
+  }
+
   return { ok: true, runId: runRow.id, citationValid: cite.ok };
 }
 
@@ -288,7 +324,16 @@ export async function submitAnalysisReview(
 ) {
   assertCanRi(params.role, 'ai:review');
   const { run } = await getAnalysisRun(supabase, params.organisationId, params.runId);
-  if (run.review_status === AI_REVIEW_STATUS.ACCEPTED) throw new Error('already_reviewed');
+  if (
+    run.review_status === AI_REVIEW_STATUS.ACCEPTED ||
+    run.review_status === AI_REVIEW_STATUS.REJECTED ||
+    run.review_status === AI_REVIEW_STATUS.SUPERSEDED
+  ) {
+    throw new Error('already_reviewed');
+  }
+  if (run.freshness === AI_FRESHNESS.OUTDATED) {
+    throw new Error('analysis_outdated');
+  }
 
   const decision =
     params.decision === 'ACCEPTED'
@@ -297,15 +342,20 @@ export async function submitAnalysisReview(
         ? AI_REVIEW_STATUS.PARTIALLY_ACCEPTED
         : AI_REVIEW_STATUS.REJECTED;
 
-  await supabase.from('ai_analysis_reviews').insert({
-    organisation_id: params.organisationId,
-    analysis_run_id: params.runId,
-    decision,
-    reviewer_user_id: params.userId,
-    accepted_claim_indexes: params.acceptedClaimIndexes,
-    rejected_claim_indexes: params.rejectedClaimIndexes,
-    notes: params.notes ?? null,
-  });
+  const { data: reviewRow, error: reviewErr } = await supabase
+    .from('ai_analysis_reviews')
+    .insert({
+      organisation_id: params.organisationId,
+      analysis_run_id: params.runId,
+      decision,
+      reviewer_user_id: params.userId,
+      accepted_claim_indexes: params.acceptedClaimIndexes,
+      rejected_claim_indexes: params.rejectedClaimIndexes,
+      notes: params.notes ?? null,
+    })
+    .select('id')
+    .single();
+  if (reviewErr || !reviewRow) throw new Error(reviewErr?.message || 'review_insert_failed');
 
   await supabase
     .from('ai_analysis_runs')
@@ -330,11 +380,33 @@ export async function submitAnalysisReview(
     metadata: {
       origin: 'AI_ASSISTED',
       analysis_run_id: params.runId,
+      review_id: reviewRow.id,
       created_by_user_id: params.userId,
     },
   });
 
-  return { ok: true };
+  await recordAiNotificationEvent(supabase, {
+    eventType: 'AI_REVIEW_COMPLETED',
+    publicationId: run.publication_id,
+    organisationId: params.organisationId,
+    payload: {
+      analysis_run_id: params.runId,
+      review_id: reviewRow.id,
+      decision,
+    },
+  });
+
+  const { materialised } = await materialiseReviewedClaims(supabase, {
+    organisationId: params.organisationId,
+    userId: params.userId,
+    role: params.role,
+    runId: params.runId,
+    reviewId: reviewRow.id,
+    decision,
+    acceptedClaimIndexes: params.acceptedClaimIndexes,
+  });
+
+  return { ok: true, reviewId: reviewRow.id, materialised };
 }
 
 export function getProviderStatusForUi() {
