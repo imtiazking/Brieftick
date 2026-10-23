@@ -51,7 +51,7 @@ npm run sync:reference-catalogue
 npm run staging:apply-catalogue
 ```
 
-Expect **≥36 regulators** and **≥41 sources** (`staging:verify-db`).
+Expect **36 regulators** and **41 sources** (`staging:verify-db` or `staging:verify-catalogue` with `SUPABASE_ACCESS_TOKEN`).
 
 ### Clerk third-party auth (staging only)
 
