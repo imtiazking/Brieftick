@@ -89,6 +89,14 @@ else pass('/ri route file exists');
 if (!existsSync(join(platformRoot, 'app', 'health', 'page.tsx'))) failMsg('missing /health');
 else pass('/health route file exists');
 
+const signUpPage = join(platformRoot, 'app', 'sign-up', '[[...sign-up]]', 'page.tsx');
+if (!existsSync(signUpPage)) failMsg('missing /sign-up');
+else pass('/sign-up route file exists');
+
+const middlewareText = readFileSync(join(platformRoot, 'middleware.ts'), 'utf8');
+if (!/\/sign-up\(\.\*\)/.test(middlewareText)) failMsg('middleware must treat /sign-up as public');
+else pass('/sign-up is a public route in middleware');
+
 const frozenRouter = join(repoRoot, 'design-lab', 'regulatory-intelligence', 'js', 'router.js');
 if (!existsSync(frozenRouter)) failMsg('frozen RI path missing');
 else pass('frozen RI path present');

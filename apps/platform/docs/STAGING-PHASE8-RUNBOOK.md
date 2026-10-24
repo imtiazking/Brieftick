@@ -82,7 +82,7 @@ Set in **Project → Settings → Environment Variables** (never commit values):
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | **Same** Clerk application as www (`clerk.forgeniq.com`) |
 | `CLERK_SECRET_KEY` | Server only — same Clerk app secret as production www |
 | `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | `/sign-in` |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-in` |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-up` |
 | `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` | `/ri` |
 | `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` | `/ri` |
 | `NEXT_PUBLIC_SUPABASE_URL` | `https://lhgzdicffkhaaykzthep.supabase.co` |

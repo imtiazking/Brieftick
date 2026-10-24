@@ -9,7 +9,7 @@ if (!base) {
   process.exit(1);
 }
 
-const paths = ['/health', '/sign-in', '/ri', '/ri/ask', '/ri/ai', '/ri/ai-governance'];
+const paths = ['/health', '/sign-in', '/sign-up', '/ri', '/ri/ask', '/ri/ai', '/ri/ai-governance'];
 let fail = 0;
 for (const p of paths) {
   const url = `${base}${p}`;

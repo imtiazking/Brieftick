@@ -14,7 +14,7 @@ export default function SignInPage() {
 
   return (
     <main className="fg-main" style={{ display: 'flex', justifyContent: 'center' }}>
-      <SignIn />
+      <SignIn signUpUrl="/sign-up" fallbackRedirectUrl="/ri" />
     </main>
   );
 }
