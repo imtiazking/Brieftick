@@ -37,11 +37,14 @@
     "staging:verify-catalogue": "node ./scripts/staging/verify-staging-catalogue.mjs",
     "staging:prepare-catalogue-batches": "node ./scripts/staging/apply-catalogue-batches.mjs",
     "staging:smoke": "node ./scripts/staging/smoke-staging.mjs",
+    "test:acceptance:staging-smoke": "node ./scripts/acceptance-staging-smoke-contract.mjs",
     "staging:bootstrap-ri-owner": "node ./scripts/staging/bootstrap-ri-owner.mjs",
     "staging:bootstrap-platform-operator": "node ./scripts/staging/bootstrap-platform-operator.mjs --sql-only",
     "test:acceptance:phase8-security": "node ./scripts/acceptance-phase-8-security-rls.mjs",
     "test:acceptance:phase8-security:local-db": "node ./scripts/acceptance-phase-8-security-rls.mjs --local-db",
-    "test:acceptance:governance": "node ./scripts/acceptance-governance-workflow-events.mjs"
+    "test:acceptance:governance": "node ./scripts/acceptance-governance-workflow-events.mjs",
+    "test:acceptance:ai-providers": "node ./scripts/acceptance-ai-providers.mjs",
+    "test:acceptance:anthropic": "node ./scripts/acceptance-anthropic-provider.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.0",

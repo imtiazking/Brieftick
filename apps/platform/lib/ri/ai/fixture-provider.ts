@@ -27,6 +27,24 @@ export function createFixtureProvider() {
       if (scenario === 'timeout') {
         return { ok: false, code: AI_ERRORS.AI_TIMEOUT, message: 'Fixture: timeout' };
       }
+      if (scenario === 'health-check') {
+        return {
+          ok: true,
+          structured: {
+            recommendation: 'Not Applicable',
+            confidence: 100,
+            claims: [
+              {
+                text: 'Fixture provider health check',
+                confidence: 100,
+                sourceSectionIds: request.context?.sourceSections?.map((s) => s.sourceSectionId) ?? [],
+              },
+            ],
+          },
+          schemaName: 'ApplicabilityResult',
+          latencyMs: 1,
+        };
+      }
       if (scenario === 'malformed-output') {
         return { ok: true, structured: { broken: true }, schemaName: 'ApplicabilityResult' };
       }

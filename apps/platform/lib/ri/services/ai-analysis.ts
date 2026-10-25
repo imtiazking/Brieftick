@@ -11,7 +11,15 @@ import {
   PROCESSING_ELIGIBILITY,
 } from '@/lib/ri/ai/enums';
 import { validateStructuredOutput, mapSchemaForAnalysisType } from '@/lib/ri/ai/output-schemas';
-import { getAiProvider, resolveAiProviderMode, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/provider-registry';
+import {
+  getAiProvider,
+  resolveAiProviderMode,
+  resolveLiveProviderFallbackError,
+  resolveModelForProviderMode,
+  FIXTURE_PROVIDER_ID,
+} from '@/lib/ri/ai/provider-registry';
+import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
+import { AI_PROVIDER_MODE } from '@/lib/ri/ai/enums';
 import { getUseCaseById } from '@/lib/ri/ai/use-case-catalog';
 import { assertCanRi } from '@/lib/ri/permissions';
 import { materialiseReviewedClaims } from '@/lib/ri/services/ai-materialisation';
@@ -150,6 +158,10 @@ export async function requestPublicationAnalysis(
 
   const analysisType = useCase.analysisTypes[0];
   const ctx = await buildPublicationContext(supabase, params.publicationVersionId);
+  const fallbackCode = resolveLiveProviderFallbackError();
+  if (fallbackCode) {
+    throw new Error(fallbackCode);
+  }
   const providerMode = resolveAiProviderMode();
   const provider = getAiProvider(providerMode);
   const promptVersion = useCase.promptVersion;
@@ -168,7 +180,7 @@ export async function requestPublicationAnalysis(
       review_status: AI_REVIEW_STATUS.AI_DRAFT,
       freshness: AI_FRESHNESS.CURRENT,
       provider: provider.id,
-      model: providerMode === 'FIXTURE' ? 'fixture-ri' : 'openai',
+      model: resolveModelForProviderMode(providerMode),
       prompt_version: promptVersion,
       processing_eligibility: PROCESSING_ELIGIBILITY.REVIEW_REQUIRED,
       requested_by: params.userId,
@@ -411,14 +423,28 @@ export async function submitAnalysisReview(
 
 export function getProviderStatusForUi() {
   const mode = resolveAiProviderMode();
+  const anthropicConfigured = Boolean(
+    process.env.ANTHROPIC_API_KEY?.trim() || process.env.ANTHROPIC_KEY?.trim(),
+  );
+  const openAiConfigured = Boolean(process.env.OPENAI_API_KEY?.trim());
+  const executionEnabled = isRiAiExecutionEnabled();
+  let label = 'Fixture mode — deterministic acceptance provider.';
+  if (mode === AI_PROVIDER_MODE.ANTHROPIC && anthropicConfigured) {
+    label = executionEnabled
+      ? 'Anthropic Claude active (server-side); human review required before decisions.'
+      : 'Anthropic configured — live execution disabled (RI_AI_EXECUTION_ENABLED=false).';
+  } else if (mode === AI_PROVIDER_MODE.OPENAI && openAiConfigured) {
+    label = 'OpenAI configured (server-side); human review required before decisions.';
+  } else if (!anthropicConfigured && !openAiConfigured) {
+    label = 'No live provider key — fixture mode for development.';
+  }
   return {
     mode,
-    fixtureActive: mode === 'FIXTURE' || !process.env.OPENAI_API_KEY,
-    openAiConfigured: Boolean(process.env.OPENAI_API_KEY?.trim()),
-    label:
-      mode === 'OPENAI' && process.env.OPENAI_API_KEY
-        ? 'OpenAI configured (server-side)'
-        : 'AI provider not configured — fixture mode for development.',
+    fixtureActive: mode === AI_PROVIDER_MODE.FIXTURE,
+    anthropicConfigured,
+    openAiConfigured,
+    executionEnabled,
+    label,
   };
 }
 

@@ -38,6 +38,7 @@ export const AI_CITATION_STATUS = {
 export const AI_PROVIDER_MODE = {
   FIXTURE: 'FIXTURE',
   OPENAI: 'OPENAI',
+  ANTHROPIC: 'ANTHROPIC',
 } as const;
 
 export const PROCESSING_ELIGIBILITY = {

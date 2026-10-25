@@ -11,7 +11,9 @@ import { listAnalysisRuns } from '@/lib/ri/services/ai-analysis';
 export default async function AiGovernancePage() {
   const ctx = await tryRiContext();
   const runs = ctx ? await listAnalysisRuns(ctx.supabase, ctx.organisationId, 50) : [];
-  const providers = listProviderHealth();
+  const providers = await listProviderHealth(
+    ctx ? { supabase: ctx.supabase, organisationId: ctx.organisationId } : undefined,
+  );
   let aiAssistedChanges = 0;
   let aiAssistedObligations = 0;
   if (ctx) {
@@ -90,7 +92,10 @@ export default async function AiGovernancePage() {
               <h2>Provider / model posture</h2>
               <ul>
                 {providers.map((p) => (
-                  <li key={p.id}>{p.id} — {p.mode} — {p.status}</li>
+                  <li key={p.id}>
+                    {p.label} ({p.mode}){p.active ? ' — active runtime' : ''}: {p.status}
+                    {p.mode !== 'fixture' && !p.executionEnabled ? ' · live execution OFF' : ''}. {p.detail}
+                  </li>
                 ))}
               </ul>
             </div>
