@@ -65,8 +65,16 @@ export async function applySqlFile(client, path) {
   await client.query(sql);
 }
 
+async function ensureSupabaseApiRoles(adminClient) {
+  await adminClient.query(`
+    do $$ begin create role authenticated nologin; exception when duplicate_object then null; end $$;
+    do $$ begin create role anon nologin; exception when duplicate_object then null; end $$;
+  `);
+}
+
 export async function applyAllMigrations(adminClient) {
   await applySqlFile(adminClient, join(__dir, 'auth-jwt-shim.sql'));
+  await ensureSupabaseApiRoles(adminClient);
   const files = readdirSync(migrationsDir)
     .filter((f) => f.endsWith('.sql'))
     .sort();
@@ -90,6 +98,10 @@ export async function ensureAppRole(adminClient) {
     `alter default privileges in schema public grant select, insert, update, delete on tables to ${APP_ROLE}`,
   );
   await adminClient.query(`grant ${APP_ROLE} to postgres`);
+  for (const fn of ['public.is_platform_operator()', 'public.has_any_active_membership()']) {
+    await adminClient.query(`grant execute on function ${fn} to ${APP_ROLE}`).catch(() => {});
+  }
+  await adminClient.query(`grant select on table public.platform_operators to ${APP_ROLE}`).catch(() => {});
 }
 
 /** Session that enforces RLS (non-superuser) with simulated Clerk sub claim. */

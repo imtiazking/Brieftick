@@ -1,13 +1,13 @@
 import 'server-only';
 
-import { requireRole } from '@/lib/auth/require-organisation';
+import { requirePlatformOperator } from '@/lib/auth/platform-operator';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { RiConfigurationError } from '@/lib/ri/errors';
 
-/** OWNER / ADMIN / COMPLIANCE_MANAGER — operational ingestion views. */
+/** FORGENIQ platform operators only — not customer org ADMIN/COMPLIANCE_MANAGER. */
 export async function requireIngestionAdminContext() {
-  const org = await requireRole('COMPLIANCE_MANAGER');
+  const { userId } = await requirePlatformOperator();
   const supabase = await createSupabaseServerClient();
   if (!supabase) throw new RiConfigurationError();
-  return { organisationId: org.organisationId, role: org.role, supabase };
+  return { userId, supabase };
 }

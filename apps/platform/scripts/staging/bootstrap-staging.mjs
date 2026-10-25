@@ -27,7 +27,7 @@ function ownerBootstrapSql() {
     throw new Error('Set STAGING_CLERK_USER_ID to your Clerk user id (from dashboard after first sign-in).');
   }
   return `
--- FORGENIQ staging OWNER bootstrap (run once per environment)
+-- FORGENIQ staging OWNER bootstrap (run once per environment; SQL Editor / service role — not via Clerk JWT after phase8 security migration)
 insert into public.organisations (name, slug, status)
 values ('${orgName.replace(/'/g, "''")}', '${orgSlug.replace(/'/g, "''")}', 'active')
 on conflict (slug) do update set name = excluded.name

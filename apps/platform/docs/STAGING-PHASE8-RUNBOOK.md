@@ -154,6 +154,18 @@ node scripts/staging/bootstrap-staging.mjs
 
 4. Sign in again; confirm active organisation resolves to the bootstrapped org.
 
+### Platform operator (global ingestion / ops)
+
+After applying migration `20261025100000_phase8_security_hardening.sql`, register the RI staging administrator as a **platform operator** (separate from org `OWNER`):
+
+```powershell
+cd apps\platform
+$env:STAGING_CLERK_USER_ID = "user_xxxx"  # same RI admin Clerk id
+npm run staging:bootstrap-platform-operator
+```
+
+Run the printed SQL in Supabase SQL Editor. Without this row, `/ri/admin/*` and alert acknowledgement fail at RLS even for FORGENIQ `OWNER`.
+
 ---
 
 ## 6. Smoke and acceptance (staging)

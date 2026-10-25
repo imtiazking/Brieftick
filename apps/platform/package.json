@@ -37,7 +37,10 @@
     "staging:verify-catalogue": "node ./scripts/staging/verify-staging-catalogue.mjs",
     "staging:prepare-catalogue-batches": "node ./scripts/staging/apply-catalogue-batches.mjs",
     "staging:smoke": "node ./scripts/staging/smoke-staging.mjs",
-    "staging:bootstrap-ri-owner": "node ./scripts/staging/bootstrap-ri-owner.mjs"
+    "staging:bootstrap-ri-owner": "node ./scripts/staging/bootstrap-ri-owner.mjs",
+    "staging:bootstrap-platform-operator": "node ./scripts/staging/bootstrap-platform-operator.mjs --sql-only",
+    "test:acceptance:phase8-security": "node ./scripts/acceptance-phase-8-security-rls.mjs",
+    "test:acceptance:phase8-security:local-db": "node ./scripts/acceptance-phase-8-security-rls.mjs --local-db"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.0",
