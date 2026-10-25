@@ -49,7 +49,7 @@ export default async function GovernancePage() {
                   <tbody>
                     {events.map((e) => (
                       <tr key={e.id}>
-                        <td>{new Date(e.created_at).toISOString().slice(0, 16).replace('T', ' ')}</td>
+                        <td>{new Date(e.occurred_at).toISOString().slice(0, 16).replace('T', ' ')}</td>
                         <td>{e.event_type}</td>
                         <td className="ri-mono">{e.entity_type} {e.entity_id}</td>
                         <td>

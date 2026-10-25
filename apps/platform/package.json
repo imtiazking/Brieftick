@@ -40,7 +40,8 @@
     "staging:bootstrap-ri-owner": "node ./scripts/staging/bootstrap-ri-owner.mjs",
     "staging:bootstrap-platform-operator": "node ./scripts/staging/bootstrap-platform-operator.mjs --sql-only",
     "test:acceptance:phase8-security": "node ./scripts/acceptance-phase-8-security-rls.mjs",
-    "test:acceptance:phase8-security:local-db": "node ./scripts/acceptance-phase-8-security-rls.mjs --local-db"
+    "test:acceptance:phase8-security:local-db": "node ./scripts/acceptance-phase-8-security-rls.mjs --local-db",
+    "test:acceptance:governance": "node ./scripts/acceptance-governance-workflow-events.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.0",
