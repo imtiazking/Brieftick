@@ -42,6 +42,10 @@ export default async function ImpactDetailPage({
   const canEdit = canRi(ctx.role, 'impact:write');
   const canSubmit = canRi(ctx.role, 'impact:submit');
   const canApprove = canRi(ctx.role, 'impact:approve');
+  const isFinal = impact.status === 'APPROVED' || impact.status === 'REJECTED' || impact.status === 'CLOSED';
+  const canSubmitWorkflow = canSubmit && (impact.status === 'DRAFT' || impact.status === 'IN_PROGRESS');
+  const canDecideWorkflow = canApprove && impact.status === 'IN_REVIEW';
+  const canEditDraft = canEdit && !isFinal;
   const savedBanner =
     sp.saved === '1'
       ? 'Draft saved successfully.'
@@ -76,7 +80,10 @@ export default async function ImpactDetailPage({
           <h2>Impact dimensions</h2>
           <p className="fg-muted">No production AI suggestions — complete human impact analysis below.</p>
         </div>
-        {canEdit && (
+        {isFinal && (
+          <p className="fg-muted">This assessment is {impact.status.toLowerCase().replaceAll('_', ' ')} — workflow actions are closed.</p>
+        )}
+        {canEditDraft && (
           <form action={updateImpactAction} className="fg-card fg-form">
             <input type="hidden" name="impact_id" value={id} />
             <input type="hidden" name="updated_at" value={updatedAtForForm} />
@@ -90,10 +97,10 @@ export default async function ImpactDetailPage({
             <label>Due date<input type="date" name="due_date" defaultValue={impact.due_date ?? ''} /></label>
             <label>Business areas<input name="business_areas" defaultValue={detail.businessAreas.join(', ')} /></label>
             <button type="submit" className="fg-btn">Save draft</button>
-            {canSubmit && (
+            {canSubmitWorkflow && (
               <button type="submit" name="action" value="submit" className="fg-btn fg-btn--secondary">Submit for review</button>
             )}
-            {canApprove && (
+            {canDecideWorkflow && (
               <>
                 <button type="submit" name="action" value="approve" className="fg-btn">Approve</button>
                 <button type="submit" name="action" value="reject" className="fg-btn fg-btn--secondary">Reject</button>

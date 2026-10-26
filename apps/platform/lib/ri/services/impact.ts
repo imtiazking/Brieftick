@@ -4,6 +4,11 @@ import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { canRi } from '@/lib/ri/permissions';
 import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
+import { RiConflictError } from '@/lib/ri/errors';
+import {
+  assertImpactActionAllowed,
+  requiredStatusForImpactAction,
+} from '@/lib/ri/impact-workflow-guards.mjs';
 import { parseOptionalDate, parseOptionalText, parseUuid } from '@/lib/ri/validation';
 
 export async function listImpactAssessments(supabase: SupabaseClient, organisationId: string) {
@@ -128,50 +133,64 @@ export async function updateImpactAssessment(
     update.due_date = parseOptionalDate(params.fields.due_date);
   }
 
+  type PendingWorkflowEvent = {
+    eventType: 'IMPACT_SUBMITTED' | 'IMPACT_APPROVED' | 'IMPACT_REJECTED';
+    fromStatus: string;
+    toStatus: string;
+  };
+  let pendingEvent: PendingWorkflowEvent | null = null;
+  let requiredCurrentStatus: string | null = null;
+
   if (params.fields.action === 'submit') {
     if (!canRi(params.role, 'impact:submit')) throw new Error('insufficient_role');
+    try {
+      assertImpactActionAllowed('submit', existing.status);
+    } catch {
+      throw new RiConflictError('impact_invalid_transition');
+    }
+    requiredCurrentStatus = requiredStatusForImpactAction('submit', existing.status);
     update.status = 'IN_REVIEW';
     update.submitted_at = new Date().toISOString();
-    await recordWorkflowEvent(supabase, {
-      organisationId: params.organisationId,
-      entityType: 'impact_assessment',
-      entityId: params.impactId,
+    pendingEvent = {
       eventType: 'IMPACT_SUBMITTED',
-      actorUserId: params.userId,
       fromStatus: existing.status,
       toStatus: 'IN_REVIEW',
-    });
+    };
   } else if (params.fields.action === 'approve') {
     if (!canRi(params.role, 'impact:approve')) throw new Error('insufficient_role');
+    try {
+      assertImpactActionAllowed('approve', existing.status);
+    } catch {
+      throw new RiConflictError('impact_invalid_transition');
+    }
     assertImpactApproverSoD({
       ownerUserId: existing.owner_user_id,
       approverUserId: params.userId,
     });
+    requiredCurrentStatus = requiredStatusForImpactAction('approve', existing.status);
     update.status = 'APPROVED';
     update.approver_user_id = params.userId;
     update.approved_at = new Date().toISOString();
-    await recordWorkflowEvent(supabase, {
-      organisationId: params.organisationId,
-      entityType: 'impact_assessment',
-      entityId: params.impactId,
+    pendingEvent = {
       eventType: 'IMPACT_APPROVED',
-      actorUserId: params.userId,
       fromStatus: existing.status,
       toStatus: 'APPROVED',
-    });
+    };
   } else if (params.fields.action === 'reject') {
     if (!canRi(params.role, 'impact:approve')) throw new Error('insufficient_role');
+    try {
+      assertImpactActionAllowed('reject', existing.status);
+    } catch {
+      throw new RiConflictError('impact_invalid_transition');
+    }
+    requiredCurrentStatus = requiredStatusForImpactAction('reject', existing.status);
     update.status = 'REJECTED';
     update.approver_user_id = params.userId;
-    await recordWorkflowEvent(supabase, {
-      organisationId: params.organisationId,
-      entityType: 'impact_assessment',
-      entityId: params.impactId,
+    pendingEvent = {
       eventType: 'IMPACT_REJECTED',
-      actorUserId: params.userId,
       fromStatus: existing.status,
       toStatus: 'REJECTED',
-    });
+    };
   } else if (params.fields.action === 'mark_reviewed') {
     if (!canRi(params.role, 'impact:review')) throw new Error('insufficient_role');
     update.reviewer_user_id = params.userId;
@@ -182,14 +201,31 @@ export async function updateImpactAssessment(
     }
   }
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('impact_assessments')
     .update(update)
     .eq('id', params.impactId)
-    .eq('organisation_id', params.organisationId)
-    .select()
-    .single();
+    .eq('organisation_id', params.organisationId);
+  if (requiredCurrentStatus) {
+    query = query.eq('status', requiredCurrentStatus);
+  }
+  const { data, error } = await query.select().maybeSingle();
   if (error) throw new Error(error.message);
+  if (!data) {
+    throw new RiConflictError('impact_invalid_transition');
+  }
+
+  if (pendingEvent) {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'impact_assessment',
+      entityId: params.impactId,
+      eventType: pendingEvent.eventType,
+      actorUserId: params.userId,
+      fromStatus: pendingEvent.fromStatus,
+      toStatus: pendingEvent.toStatus,
+    });
+  }
 
   if (params.fields.business_areas !== undefined) {
     const areas = String(params.fields.business_areas)
