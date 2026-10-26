@@ -17,6 +17,7 @@ import { RELEVANCE_STATUSES, TRIAGE_STATUSES } from '@/lib/ri/validation';
 import { APPLICABILITY_RECOMMENDATIONS } from '@/lib/ri/enums';
 import { RiPublicationAiPanel } from '@/components/ri/ri-publication-ai-panel';
 import { listAnalysisRunsForPublication } from '@/lib/ri/services/ai-analysis';
+import { getPublicationSummaryVerificationNotice } from '@/lib/ri/publication-source-verification';
 
 function formatStatus(value: string | null | undefined) {
   return (value || 'NOT_TESTED').replaceAll('_', ' ');
@@ -64,6 +65,7 @@ export default async function PublicationDetailPage({
     publication.data_origin === 'test_fixture' ||
     publication.title.includes('TEST');
   const currentVersion = versions[0];
+  const summaryVerificationNotice = getPublicationSummaryVerificationNotice(publication.provenance);
 
   return (
     <ShellLayout title={publication.title} subtitle="Publication detail and organisation workflow">
@@ -82,6 +84,20 @@ export default async function PublicationDetailPage({
         </nav>
         <div className="fg-card" id="overview">
           <h2>Overview</h2>
+          {summaryVerificationNotice && (
+            <div className="fg-banner" role="status">
+              <p>{summaryVerificationNotice.message}</p>
+              <p className="fg-muted">
+                Summary last retrieved from source:{' '}
+                {new Date(summaryVerificationNotice.summaryRetrievedAt).toLocaleString('en-GB', {
+                  timeZone: 'UTC',
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}{' '}
+                UTC
+              </p>
+            </div>
+          )}
           <p>{publication.summary ?? 'No summary stored for this publication.'}</p>
           <ul className="fg-status-list">
             <li><span>Type</span><span>{publication.publication_type}</span></li>
