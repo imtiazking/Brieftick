@@ -43,6 +43,7 @@
     "test:acceptance:phase8-security": "node ./scripts/acceptance-phase-8-security-rls.mjs",
     "test:acceptance:phase8-security:local-db": "node ./scripts/acceptance-phase-8-security-rls.mjs --local-db",
     "test:acceptance:governance": "node ./scripts/acceptance-governance-workflow-events.mjs",
+    "test:acceptance:impact-draft": "node ./scripts/acceptance-impact-draft-save.mjs",
     "test:acceptance:ai-providers": "node ./scripts/acceptance-ai-providers.mjs",
     "test:acceptance:anthropic": "node ./scripts/acceptance-anthropic-provider.mjs"
   },

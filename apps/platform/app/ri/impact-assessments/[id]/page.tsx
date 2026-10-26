@@ -9,8 +9,21 @@ import { tryRiContext } from '@/lib/ri/context';
 import { RiNotFoundError } from '@/lib/ri/errors';
 import { getImpactDetail } from '@/lib/ri/services/impact';
 
-export default async function ImpactDetailPage({ params }: { params: Promise<{ id: string }> }) {
+const NOTICE_MESSAGES: Record<string, string> = {
+  submitted: 'Impact assessment submitted for review.',
+  approved: 'Impact assessment approved.',
+  rejected: 'Impact assessment rejected.',
+};
+
+export default async function ImpactDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ saved?: string; notice?: string }>;
+}) {
   const { id } = await params;
+  const sp = await searchParams;
   const ctx = await tryRiContext();
   if (!ctx) {
     return <ShellLayout title="Impact"><RiDataGate><p>Sign in required.</p></RiDataGate></ShellLayout>;
@@ -29,10 +42,23 @@ export default async function ImpactDetailPage({ params }: { params: Promise<{ i
   const canEdit = canRi(ctx.role, 'impact:write');
   const canSubmit = canRi(ctx.role, 'impact:submit');
   const canApprove = canRi(ctx.role, 'impact:approve');
+  const savedBanner =
+    sp.saved === '1'
+      ? 'Draft saved successfully.'
+      : sp.notice && NOTICE_MESSAGES[sp.notice]
+        ? NOTICE_MESSAGES[sp.notice]
+        : null;
+  const updatedAtForForm =
+    impact.updated_at != null ? String(impact.updated_at) : '';
 
   return (
     <ShellLayout title="Impact assessment" subtitle="Linked to regulatory change">
       <RiDataGate>
+        {savedBanner ? (
+          <div className="fg-banner" role="status">
+            {savedBanner}
+          </div>
+        ) : null}
         <div className="fg-card">
           <h2>Overview</h2>
           <p>Change: {change?.id ? <Link href={`/ri/changes/${change.id}`}>{change.title}</Link> : '—'}</p>
@@ -53,7 +79,7 @@ export default async function ImpactDetailPage({ params }: { params: Promise<{ i
         {canEdit && (
           <form action={updateImpactAction} className="fg-card fg-form">
             <input type="hidden" name="impact_id" value={id} />
-            <input type="hidden" name="updated_at" value={impact.updated_at} />
+            <input type="hidden" name="updated_at" value={updatedAtForForm} />
             <label>Business impact<textarea name="business_impact" rows={2} defaultValue={impact.business_impact ?? ''} /></label>
             <label>Operational<textarea name="operational_impact" rows={2} defaultValue={impact.operational_impact ?? ''} /></label>
             <label>Technology<textarea name="technology_impact" rows={2} defaultValue={impact.technology_impact ?? ''} /></label>

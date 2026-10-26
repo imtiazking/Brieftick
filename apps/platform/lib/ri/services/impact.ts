@@ -191,24 +191,26 @@ export async function updateImpactAssessment(
     .single();
   if (error) throw new Error(error.message);
 
-  if (params.fields.business_areas) {
+  if (params.fields.business_areas !== undefined) {
     const areas = String(params.fields.business_areas)
       .split(/[,;\n]/)
       .map((s) => s.trim())
       .filter(Boolean);
-    await supabase
+    const { error: deleteAreasError } = await supabase
       .from('impact_assessment_business_areas')
       .delete()
       .eq('impact_assessment_id', params.impactId)
       .eq('organisation_id', params.organisationId);
+    if (deleteAreasError) throw new Error(deleteAreasError.message);
     if (areas.length) {
-      await supabase.from('impact_assessment_business_areas').insert(
+      const { error: insertAreasError } = await supabase.from('impact_assessment_business_areas').insert(
         areas.map((business_area) => ({
           organisation_id: params.organisationId,
           impact_assessment_id: params.impactId,
           business_area,
         })),
       );
+      if (insertAreasError) throw new Error(insertAreasError.message);
     }
   }
 

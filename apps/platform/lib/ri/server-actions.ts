@@ -99,6 +99,8 @@ export async function createImpactAction(formData: FormData) {
 export async function updateImpactAction(formData: FormData) {
   const ctx = await requireRiContext('impact:write');
   rejectClientOrganisationId(formData.get('organisation_id') as string, ctx.organisationId);
+  const impactId = String(formData.get('impact_id') ?? '');
+  if (!impactId) throw new Error('missing_impact_id');
   const fields: Record<string, unknown> = {};
   for (const key of [
     'business_impact',
@@ -115,15 +117,27 @@ export async function updateImpactAction(formData: FormData) {
     const v = formData.get(key);
     if (v !== null && v !== undefined && v !== '') fields[key] = v;
   }
+  const workflowAction = typeof fields.action === 'string' ? fields.action : null;
   await updateImpactAssessment(ctx.supabase, {
     organisationId: ctx.organisationId,
-    impactId: String(formData.get('impact_id') ?? ''),
+    impactId,
     userId: ctx.userId,
     role: ctx.role,
     fields,
     expectedUpdatedAt: (formData.get('updated_at') as string) || null,
   });
+  revalidatePath(`/ri/impact-assessments/${impactId}`);
   revalidateRi();
+  if (workflowAction === 'submit') {
+    redirect(`/ri/impact-assessments/${impactId}?notice=submitted`);
+  }
+  if (workflowAction === 'approve') {
+    redirect(`/ri/impact-assessments/${impactId}?notice=approved`);
+  }
+  if (workflowAction === 'reject') {
+    redirect(`/ri/impact-assessments/${impactId}?notice=rejected`);
+  }
+  redirect(`/ri/impact-assessments/${impactId}?saved=1`);
 }
 
 export async function createObligationAction(formData: FormData) {
