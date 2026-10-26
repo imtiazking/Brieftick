@@ -21,9 +21,33 @@ export const HTTP_LIMITS = {
   maxRedirects: 5,
   maxResponseBytes: 2 * 1024 * 1024,
   maxItemsPerSource: 3,
+  /** Upper bound for manual pilot runs (e.g. FCA Phase 8B). */
+  maxItemsPilotCap: 5,
   maxRequestsPerConnector: 6,
   minIntervalMs: 1500,
 };
+
+/**
+ * Resolve how many feed items/documents a connector run may retrieve.
+ * Default runs stay at {@link HTTP_LIMITS.maxItemsPerSource}; connectors with
+ * `pilotMaxItems` honour explicit `options.maxItems` up to that pilot cap only.
+ *
+ * @param {{ maxItems?: number, pilotMaxItems?: number | null }} connector
+ * @param {{ maxItems?: number }} [options]
+ */
+export function resolveConnectorItemLimit(connector, options = {}) {
+  const base = connector.maxItems ?? HTTP_LIMITS.maxItemsPerSource;
+  const requested = options.maxItems;
+  if (requested == null || Number.isNaN(Number(requested))) {
+    return base;
+  }
+  const n = Math.max(1, Math.floor(Number(requested)));
+  const pilotCap = connector.pilotMaxItems ?? null;
+  if (pilotCap != null) {
+    return Math.min(n, pilotCap);
+  }
+  return Math.min(n, base);
+}
 
 /**
  * @param {object} partial
@@ -70,6 +94,7 @@ export function buildNormalisedPublication(partial) {
     contentHash: partial.contentHash,
     retrievedAt: partial.retrievedAt ?? new Date().toISOString(),
     dataOrigin: DATA_ORIGIN,
+    sourcePublishedAt: partial.sourcePublishedAt ?? null,
   };
 }
 

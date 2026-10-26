@@ -3,6 +3,7 @@
  * Patterns ported from frozen lab connectors; does not import design-lab at runtime.
  */
 import { createRssFeedConnector } from '../core/rss-connector.mjs';
+import { HTTP_LIMITS } from '../core/contract.mjs';
 import { createHtmlListingConnector } from '../core/html-listing-connector.mjs';
 import { createSitemapConnector } from '../core/sitemap-connector.mjs';
 import { createPatternHtmlConnector } from '../core/pattern-html-connector.mjs';
@@ -16,7 +17,7 @@ export const CORE_LEGACY_CONNECTORS = [
     feedUrl: 'https://www.fca.org.uk/publications/rss.xml',
     retrievalMethod: 'official_rss',
     publicationType: 'publication',
-    maxItems: 5,
+    pilotMaxItems: HTTP_LIMITS.maxItemsPilotCap,
   }),
   createHtmlListingConnector({
     connectorId: 'CONN-LEGACY-PRA',

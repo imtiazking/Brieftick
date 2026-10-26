@@ -50,6 +50,8 @@ const steps = [
   ['Catalogue clean-clone', 'node', ['./scripts/acceptance-catalogue-clean-clone.mjs'], refDataRoot],
   ['Source semantics', 'node', ['./scripts/acceptance-source-semantics.mjs'], integrationsRoot],
   ['Verification manifests', 'node', ['./scripts/acceptance-verification-manifests.mjs'], integrationsRoot],
+  ['FCA RSS Phase 8B (dates + pilot limits)', 'node', ['./scripts/acceptance-fca-rss-phase8b.mjs'], integrationsRoot],
+  ['FCA ingestion integration Phase 8B', 'npm', ['run', 'test:acceptance:phase8b-fca'], platformRoot],
 ];
 
 console.log('FORGENIQ RI master acceptance (Phases 1–7 + catalogue)\n');

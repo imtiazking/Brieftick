@@ -1,6 +1,7 @@
 import { getConnectorForSource } from './connector-registry.mjs';
 import { INGESTION_DATA_ORIGIN, INGESTION_PROVENANCE_ORIGIN } from './types.mjs';
 import { SOURCE_COVERAGE_BY_ID } from '../../../../../packages/reference-data/catalogue/source-coverage.mjs';
+import { resolveConnectorItemLimit } from '../../../../../integrations/regulatory-sources/core/contract.mjs';
 
 /**
  * Map integration connector output → production normalised documents.
@@ -17,15 +18,20 @@ export async function retrieveNormalisedDocuments(sourceId, options = {}) {
     throw new Error(`no_connector_for_${sourceId}`);
   }
 
+  const itemLimit = resolveConnectorItemLimit(
+    { maxItems: connector.maxItems, pilotMaxItems: connector.pilotMaxItems ?? null },
+    options,
+  );
+
   const result = await connector.verify({
     liveAllowed: options.liveAllowed === true,
-    maxItems: options.maxItems ?? 3,
+    maxItems: itemLimit,
   });
 
   const coverage = SOURCE_COVERAGE_BY_ID[sourceId];
   const contentClasses = coverage?.contentClasses ?? [];
 
-  return (result.publications || []).slice(0, options.maxItems ?? 3).map((pub) => ({
+  return (result.publications || []).slice(0, itemLimit).map((pub) => ({
     regulatorId: pub.regulatorId,
     sourceId: pub.sourceId,
     externalDocumentId: pub.externalId ?? null,
@@ -45,6 +51,7 @@ export async function retrieveNormalisedDocuments(sourceId, options = {}) {
       connectorId: connector.connectorId,
       retrievalMethod: connector.retrievalMethod,
       integrationSummaryStatus: result.summary?.verificationStatus ?? null,
+      sourcePublishedAt: pub.sourcePublishedAt ?? null,
     },
   }));
 }

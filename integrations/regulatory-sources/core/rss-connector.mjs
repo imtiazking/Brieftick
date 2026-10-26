@@ -9,6 +9,7 @@ import {
   buildNormalisedPublication,
   PROVENANCE_ORIGIN,
   HTTP_LIMITS,
+  resolveConnectorItemLimit,
 } from './contract.mjs';
 
 /**
@@ -20,6 +21,8 @@ import {
  * @param {string} config.feedUrl
  * @param {string} config.retrievalMethod
  * @param {string} [config.publicationType]
+ * @param {number} [config.maxItems]
+ * @param {number} [config.pilotMaxItems] Manual-run cap (e.g. 5 for FCA pilot); default runs use maxItems.
  */
 export function createRssFeedConnector(config) {
   const regulator = () => getRegulatorById(config.regulatorId);
@@ -32,11 +35,16 @@ export function createRssFeedConnector(config) {
     allowedHosts: config.allowedHosts,
     feedUrl: config.feedUrl,
     retrievalMethod: config.retrievalMethod,
-    maxItems: HTTP_LIMITS.maxItemsPerSource,
+    maxItems: config.maxItems ?? HTTP_LIMITS.maxItemsPerSource,
+    pilotMaxItems: config.pilotMaxItems ?? null,
     maxRequests: HTTP_LIMITS.maxRequestsPerConnector,
     publicationType: config.publicationType || 'publication',
 
     async verify(options = {}) {
+      const itemLimit = resolveConnectorItemLimit(
+        { maxItems: this.maxItems, pilotMaxItems: this.pilotMaxItems },
+        options,
+      );
       const liveAllowed = options.liveAllowed === true;
       const reg = regulator();
       const src = catalogueSource();
@@ -112,7 +120,7 @@ export function createRssFeedConnector(config) {
       }
 
       const xml = feedRes.body.toString('utf8');
-      const feedItems = parseFeedItems(xml, this.maxItems);
+      const feedItems = parseFeedItems(xml, itemLimit);
       if (feedItems.length === 0) {
         return {
           summary: buildVerificationResult({
@@ -132,6 +140,7 @@ export function createRssFeedConnector(config) {
       let requestCount = 1;
 
       for (const entry of feedItems) {
+        if (publications.length >= itemLimit) break;
         if (requestCount >= this.maxRequests) break;
         const linkGate = assertUrlAllowed(entry.link, config.allowedHosts);
         if (!linkGate.ok) continue;
@@ -140,7 +149,7 @@ export function createRssFeedConnector(config) {
         const docRes = await httpGet(entry.link, { allowedHosts: config.allowedHosts });
         if (!docRes.ok) continue;
 
-        const fp = await fingerprintContent(docRes.body);
+        const fp = await fingerprintContent(docRes.body, { contentType: docRes.contentType });
         const excerpt =
           docRes.contentType.includes('html')
             ? docRes.body.toString('utf8').replace(/<[^>]+>/g, ' ').slice(0, 400)
@@ -154,6 +163,7 @@ export function createRssFeedConnector(config) {
           retrievalMethod: config.retrievalMethod,
           feedUrl: config.feedUrl,
           retrievedAt,
+          sourcePublishedAt: entry.published ?? null,
         };
 
         items.push(
@@ -163,7 +173,7 @@ export function createRssFeedConnector(config) {
             httpStatus: docRes.httpStatus,
             contentType: docRes.contentType,
             title: entry.title,
-            publishedAt: entry.published || null,
+            publishedAt: entry.publicationDate || entry.published || null,
             sourceDocumentUrl: docRes.finalUrl,
             sourceDocumentId: entry.externalId || entry.link,
             contentHash: fp.hash,
@@ -178,7 +188,8 @@ export function createRssFeedConnector(config) {
             externalId: entry.externalId || null,
             title: entry.title,
             publicationType: this.publicationType,
-            publicationDate: entry.published || null,
+            publicationDate: entry.publicationDate || null,
+            sourcePublishedAt: entry.published ?? null,
             canonicalUrl: docRes.finalUrl,
             summary: excerpt,
             contentHash: fp.hash,

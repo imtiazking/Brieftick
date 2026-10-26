@@ -46,7 +46,8 @@
     "test:acceptance:impact-draft": "node ./scripts/acceptance-impact-draft-save.mjs",
     "test:acceptance:impact-governance": "node ./scripts/acceptance-impact-governance-transitions.mjs",
     "test:acceptance:ai-providers": "node ./scripts/acceptance-ai-providers.mjs",
-    "test:acceptance:anthropic": "node ./scripts/acceptance-anthropic-provider.mjs"
+    "test:acceptance:anthropic": "node ./scripts/acceptance-anthropic-provider.mjs",
+    "test:acceptance:phase8b-fca": "node ./scripts/acceptance-phase-8b-fca-ingestion.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.0",

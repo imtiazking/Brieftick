@@ -13,11 +13,18 @@ const __dir = dirname(fileURLToPath(import.meta.url));
 const platformRoot = join(__dir, '..');
 
 function parseArgs(argv) {
-  const out = { source: null, fixture: false, live: false, databaseUrl: process.env.FORGENIQ_LOCAL_PG_URL || null };
+  const out = {
+    source: null,
+    fixture: false,
+    live: false,
+    maxItems: null,
+    databaseUrl: process.env.FORGENIQ_LOCAL_PG_URL || null,
+  };
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--source' && argv[i + 1]) out.source = argv[++i];
     else if (argv[i] === '--fixture') out.fixture = true;
     else if (argv[i] === '--live') out.live = true;
+    else if (argv[i] === '--max-items' && argv[i + 1]) out.maxItems = Number(argv[++i]);
     else if (argv[i] === '--database-url' && argv[i + 1]) out.databaseUrl = argv[++i];
   }
   return out;
@@ -25,7 +32,9 @@ function parseArgs(argv) {
 
 const args = parseArgs(process.argv.slice(2));
 if (!args.source) {
-  console.error('Usage: npm run ri:ingest -- --source SRC-... [--fixture] [--live] [--database-url URL]');
+  console.error(
+    'Usage: npm run ri:ingest -- --source SRC-... [--fixture] [--live] [--max-items N] [--database-url URL]',
+  );
   process.exit(1);
 }
 
@@ -51,8 +60,10 @@ try {
     sourceId: args.source,
     fixture,
     liveAllowed: args.live,
+    maxItems: args.maxItems ?? undefined,
     runType: args.fixture ? 'TEST' : 'MANUAL',
     initiatedBy: 'ri-ingest-cli',
+    environment: process.env.FORGENIQ_INGEST_ENV || 'local',
   });
   console.log(JSON.stringify(result, null, 2));
   if (result.status === 'FAILED') process.exit(1);
