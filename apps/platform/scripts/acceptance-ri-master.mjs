@@ -53,6 +53,8 @@ const steps = [
   ['FCA RSS Phase 8B (dates + pilot limits)', 'node', ['./scripts/acceptance-fca-rss-phase8b.mjs'], integrationsRoot],
   ['FCA HTML quality Phase 8B', 'node', ['./scripts/acceptance-fca-html-quality.mjs'], integrationsRoot],
   ['FCA ingestion integration Phase 8B', 'npm', ['run', 'test:acceptance:phase8b-fca'], platformRoot],
+  ['Source snapshots Phase 8C.1b', 'node', ['./scripts/acceptance-phase-8c1-source-snapshots.mjs'], platformRoot],
+  ['Snapshot runtime Phase 8C.1d', 'node', ['./scripts/acceptance-phase-8c1-snapshot-runtime.mjs'], platformRoot],
 ];
 
 console.log('FORGENIQ RI master acceptance (Phases 1–7 + catalogue)\n');

@@ -96,6 +96,8 @@ export function buildNormalisedPublication(partial) {
     dataOrigin: DATA_ORIGIN,
     sourcePublishedAt: partial.sourcePublishedAt ?? null,
     publicationTypeInference: partial.publicationTypeInference ?? null,
+    evidenceCapture: partial.evidenceCapture ?? null,
+    contentType: partial.evidenceCapture?.contentType ?? partial.contentType ?? null,
   };
 }
 

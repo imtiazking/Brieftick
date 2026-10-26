@@ -47,7 +47,10 @@
     "test:acceptance:impact-governance": "node ./scripts/acceptance-impact-governance-transitions.mjs",
     "test:acceptance:ai-providers": "node ./scripts/acceptance-ai-providers.mjs",
     "test:acceptance:anthropic": "node ./scripts/acceptance-anthropic-provider.mjs",
-    "test:acceptance:phase8b-fca": "node ./scripts/acceptance-phase-8b-fca-ingestion.mjs"
+    "test:acceptance:phase8b-fca": "node ./scripts/acceptance-phase-8b-fca-ingestion.mjs",
+    "test:acceptance:phase8c1-snapshots": "node ./scripts/acceptance-phase-8c1-source-snapshots.mjs",
+    "test:acceptance:phase8c1-storage": "node ./scripts/acceptance-phase-8c1-snapshot-storage-contract.mjs",
+    "test:acceptance:phase8c1-runtime": "node ./scripts/acceptance-phase-8c1-snapshot-runtime.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.0",

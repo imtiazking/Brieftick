@@ -54,6 +54,8 @@ export async function retrieveNormalisedDocuments(sourceId, options = {}) {
       sourcePublishedAt: pub.sourcePublishedAt ?? null,
       ...(pub.publicationTypeInference ? { publicationTypeInference: pub.publicationTypeInference } : {}),
     },
+    evidenceCapture: pub.evidenceCapture ?? null,
+    contentType: pub.evidenceCapture?.contentType ?? pub.contentType ?? null,
   }));
 }
 
@@ -79,5 +81,7 @@ function mapFixtureDoc(sourceId, partial) {
       fixture: true,
       ...(partial.provenance || {}),
     },
+    evidenceCapture: partial.evidenceCapture ?? null,
+    contentType: partial.evidenceCapture?.contentType ?? partial.contentType ?? null,
   };
 }

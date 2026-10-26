@@ -5,6 +5,11 @@ import { assessSourceIngestionEligibility } from './eligibility.mjs';
 import { retrieveNormalisedDocuments } from './adapter.mjs';
 import { resolveCatalogueIds } from './resolve-ids.mjs';
 import { markAnalysesOutdatedForPublicationVersionSql } from '../ai/freshness-sql.mjs';
+import { isSnapshotPolicyEnabled } from './snapshot/policy.mjs';
+import { validateSnapshotEvidence } from './snapshot/evidence-validate.mjs';
+import { ensureSnapshotStorageReady, getSnapshotStorage } from './snapshot/runtime.mjs';
+import { uploadSnapshotEvidence } from './snapshot/upload.mjs';
+import { insertRegulatorySourceSnapshotRow } from './snapshot/persist-db.mjs';
 
 const RAW_META_DIR = join(process.cwd(), '.local-ingestion-raw');
 
@@ -70,6 +75,8 @@ export async function runSourceIngestion(client, params) {
       throw new Error(`source_ineligible:${eligibility.reason}`);
     }
 
+    await ensureSnapshotStorageReady({ environment });
+
     let documents;
     try {
       documents = await retrieveNormalisedDocuments(sourceId, {
@@ -90,6 +97,7 @@ export async function runSourceIngestion(client, params) {
         regulatorUuid: ids.regulatorUuid,
         doc,
         eligibility,
+        environment,
       });
       if (itemResult.metric === 'failed') metrics.failed += 1;
       else metrics[itemResult.metric] += 1;
@@ -129,12 +137,14 @@ export async function runSourceIngestion(client, params) {
 }
 
 async function processDocument(client, ctx) {
-  const { runId, sourceUuid, regulatorUuid, doc, eligibility } = ctx;
+  const { runId, sourceUuid, regulatorUuid, doc, eligibility, environment = 'local' } = ctx;
   const itemBase = {
     runId,
     sourceUuid,
     doc,
   };
+  const snapshotRequired = isSnapshotPolicyEnabled(doc);
+  const useTxn = snapshotRequired;
 
   if (doc.contentClasses?.includes('SANCTIONS_DATA')) {
     await insertItem(client, itemBase, {
@@ -178,6 +188,41 @@ async function processDocument(client, ctx) {
     return { metric: 'unchanged' };
   }
 
+  if (snapshotRequired) {
+    const evidenceCheck = validateSnapshotEvidence(doc);
+    if (!evidenceCheck.ok) {
+      await insertItem(client, itemBase, {
+        retrieval: 'FAILED',
+        normalisation: 'FAILED',
+        error: evidenceCheck.code,
+        publicationId: existing?.id ?? null,
+      });
+      return { metric: 'failed' };
+    }
+  }
+
+  let snapshotUpload = null;
+  if (snapshotRequired) {
+    try {
+      snapshotUpload = await uploadSnapshotEvidence(getSnapshotStorage({ environment }), {
+        evidenceCapture: doc.evidenceCapture,
+        contentHash: doc.contentHash,
+        connectorId: doc.provenance?.connectorId ?? 'unknown',
+        ingestionRunId: runId,
+      });
+    } catch (e) {
+      await insertItem(client, itemBase, {
+        retrieval: 'FAILED',
+        normalisation: 'FAILED',
+        error: `snapshot_upload_failed:${e.message}`,
+        publicationId: existing?.id ?? null,
+      });
+      return { metric: 'failed' };
+    }
+  }
+
+  if (useTxn) await client.query('BEGIN');
+  try {
   if (existing) {
     const nextVersion = (parseInt(existing.source_version || '1', 10) || 1) + 1;
     const provenance = buildProvenance(runId, doc);
@@ -229,11 +274,25 @@ async function processDocument(client, ctx) {
       ],
     );
     await markAnalysesOutdatedForPublicationVersionSql(client, existing.id, verIns.rows[0].id);
-    await insertItem(client, itemBase, {
+    if (snapshotRequired) {
+      await insertSnapshotForVersion(client, {
+        publicationId: existing.id,
+        publicationVersionId: verIns.rows[0].id,
+        runId,
+        doc,
+        snapshotUpload,
+        versionNumber: nextVersion,
+      });
+    }
+    const itemId = await insertItem(client, itemBase, {
       retrieval: 'RETRIEVED',
       normalisation: 'UPDATED',
       publicationId: existing.id,
     });
+    if (snapshotRequired && itemId) {
+      /* ingestion_item_id optional on snapshot — linked on next ingest enhancement */
+    }
+    if (useTxn) await client.query('COMMIT');
     return { metric: 'updated' };
   }
 
@@ -264,18 +323,84 @@ async function processDocument(client, ctx) {
     ],
   );
   const publicationId = pub.rows[0].id;
-  await client.query(
+  const verIns = await client.query(
     `insert into regulatory_publication_versions
       (publication_id, version_number, source_hash, canonical_url, retrieved_at, ingestion_run_id, provenance)
-     values ($1, 1, $2, $3, $4::timestamptz, $5, $6::jsonb)`,
+     values ($1, 1, $2, $3, $4::timestamptz, $5, $6::jsonb)
+     returning id`,
     [publicationId, doc.contentHash, doc.canonicalUrl, doc.retrievedAt, runId, JSON.stringify(provenance)],
   );
+  if (snapshotRequired) {
+    await insertSnapshotForVersion(client, {
+      publicationId,
+      publicationVersionId: verIns.rows[0].id,
+      runId,
+      doc,
+      snapshotUpload,
+      versionNumber: 1,
+    });
+  }
   await insertItem(client, itemBase, {
     retrieval: 'RETRIEVED',
     normalisation: 'NEW',
     publicationId,
   });
+  if (useTxn) await client.query('COMMIT');
   return { metric: 'new' };
+  } catch (e) {
+    if (useTxn) await client.query('ROLLBACK');
+    if (snapshotRequired) {
+      await insertItem(client, itemBase, {
+        retrieval: 'FAILED',
+        normalisation: 'FAILED',
+        error: `snapshot_db_failed:${e.message}`,
+        publicationId: existing?.id ?? null,
+      });
+      return { metric: 'failed' };
+    }
+    throw e;
+  }
+}
+
+async function insertSnapshotForVersion(client, params) {
+  const { publicationId, publicationVersionId, runId, doc, snapshotUpload } = params;
+  const ec = doc.evidenceCapture;
+  const snapshotId = await insertRegulatorySourceSnapshotRow(client, {
+    publicationId,
+    publicationVersionId,
+    ingestionRunId: runId,
+    ingestionItemId: null,
+    canonicalUrl: doc.canonicalUrl,
+    retrievedAt: doc.retrievedAt,
+    sourceFingerprint: doc.contentHash,
+    fingerprintAlgorithm: ec.fingerprint.algorithm,
+    fingerprintNormalisation: ec.fingerprint.normalisation,
+    rawContentSha256: ec.rawSha256,
+    normalisedHtmlSha256: ec.normalisedHtmlSha256,
+    normalisedTextSha256: ec.normalisedTextSha256,
+    rawStoragePath: snapshotUpload.paths.raw,
+    normalisedHtmlStoragePath: snapshotUpload.paths.html,
+    normalisedTextStoragePath: snapshotUpload.paths.text,
+    metadataStoragePath: snapshotUpload.paths.metadata,
+    contentType: ec.contentType,
+    byteSizeRaw: ec.rawBody.length,
+    byteSizeNormalisedHtml: Buffer.byteLength(ec.normalisedArticleHtml, 'utf8'),
+    byteSizeNormalisedText: Buffer.byteLength(ec.normalisedArticleText, 'utf8'),
+    licenceNotice: snapshotUpload.licenceNotice,
+    provenance: {
+      connectorId: doc.provenance?.connectorId,
+      sourceId: doc.sourceId,
+      regulatorId: doc.regulatorId,
+      finalUrl: ec.finalUrl,
+      snapshotUploadKind: 'content_addressed_v1',
+    },
+  });
+  await client.query(
+    `update regulatory_publication_versions
+     set provenance = provenance || $2::jsonb
+     where id = $1`,
+    [publicationVersionId, JSON.stringify({ snapshotId, snapshotRetention: 'regulatory_source_snapshots' })],
+  );
 }
 
 function buildProvenance(runId, doc) {
@@ -293,12 +418,13 @@ function buildProvenance(runId, doc) {
 }
 
 async function insertItem(client, base, state) {
-  await client.query(
+  const res = await client.query(
     `insert into ingestion_items (
       ingestion_run_id, source_id, external_document_id, canonical_url, title, publication_date,
       content_type, source_hash, retrieval_status, normalisation_status, publication_id,
       error_detail, retrieved_at
-    ) values ($1,$2,$3,$4,$5,$6::date,$7,$8,$9::ingestion_item_retrieval_status,$10::ingestion_item_normalisation_status,$11,$12,$13::timestamptz)`,
+    ) values ($1,$2,$3,$4,$5,$6::date,$7,$8,$9::ingestion_item_retrieval_status,$10::ingestion_item_normalisation_status,$11,$12,$13::timestamptz)
+    returning id`,
     [
       base.runId,
       base.sourceUuid,
@@ -306,7 +432,7 @@ async function insertItem(client, base, state) {
       base.doc.canonicalUrl,
       base.doc.title,
       base.doc.publicationDate,
-      base.doc.publicationType,
+      base.doc.contentType || base.doc.publicationType,
       base.doc.contentHash,
       state.retrieval,
       state.normalisation,
@@ -315,6 +441,7 @@ async function insertItem(client, base, state) {
       base.doc.retrievedAt,
     ],
   );
+  return res.rows[0]?.id ?? null;
 }
 
 function persistRawMeta(runId, doc) {
@@ -363,6 +490,7 @@ export async function ingestDocumentsForTest(client, params) {
       regulatorUuid: ids.regulatorUuid,
       doc,
       eligibility,
+      environment: 'local',
     });
     metrics[r.metric] += 1;
   }

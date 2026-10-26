@@ -8,6 +8,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runSourceIngestion } from '../lib/ri/ingestion/ingest-engine.mjs';
+import { ensureSnapshotStorageReady } from '../lib/ri/ingestion/snapshot/resolve-storage.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 const platformRoot = join(__dir, '..');
@@ -53,9 +54,12 @@ if (args.fixture) {
   fixture = JSON.parse(readFileSync(path, 'utf8'));
 }
 
+const ingestEnv = process.env.FORGENIQ_INGEST_ENV || process.env.FORGENIQ_ENV || 'local';
+
 const client = new pg.Client({ connectionString: args.databaseUrl });
 await client.connect();
 try {
+  await ensureSnapshotStorageReady({ environment: ingestEnv });
   const result = await runSourceIngestion(client, {
     sourceId: args.source,
     fixture,
@@ -63,7 +67,7 @@ try {
     maxItems: args.maxItems ?? undefined,
     runType: args.fixture ? 'TEST' : 'MANUAL',
     initiatedBy: 'ri-ingest-cli',
-    environment: process.env.FORGENIQ_INGEST_ENV || 'local',
+    environment: ingestEnv,
   });
   console.log(JSON.stringify(result, null, 2));
   if (result.status === 'FAILED') process.exit(1);

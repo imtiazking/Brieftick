@@ -2,6 +2,7 @@ import { getRegulatorById, getSourceById } from '../../../packages/reference-dat
 import { httpGet } from './http-client.mjs';
 import { parseFeedItems } from './rss.mjs';
 import { fingerprintContent } from './fingerprint.mjs';
+import { buildEvidenceCapture } from './evidence-capture.mjs';
 import { extractPublicationSummaryFromHtml } from './html-publication-text.mjs';
 import { assertUrlAllowed } from './url-safety.mjs';
 import {
@@ -154,6 +155,18 @@ export function createRssFeedConnector(config) {
         const fp = await fingerprintContent(docRes.body, { contentType: docRes.contentType });
         const html = docRes.contentType.includes('html') ? docRes.body.toString('utf8') : '';
         const excerpt = html ? extractPublicationSummaryFromHtml(html) : null;
+        let evidenceCapture = null;
+        if (docRes.contentType.includes('html')) {
+          evidenceCapture = await buildEvidenceCapture({
+            body: docRes.body,
+            contentType: docRes.contentType,
+            finalUrl: docRes.finalUrl,
+            connectorId: config.connectorId,
+          });
+          if (!evidenceCapture?.rawBody?.length) {
+            continue;
+          }
+        }
 
         let publicationType = this.publicationType;
         let publicationTypeInference = null;
@@ -206,8 +219,10 @@ export function createRssFeedConnector(config) {
             canonicalUrl: docRes.finalUrl,
             summary: excerpt,
             contentHash: fp.hash,
+            contentType: docRes.contentType,
             retrievedAt,
             publicationTypeInference,
+            evidenceCapture,
           }),
         );
       }
