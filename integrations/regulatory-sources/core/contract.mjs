@@ -95,6 +95,7 @@ export function buildNormalisedPublication(partial) {
     retrievedAt: partial.retrievedAt ?? new Date().toISOString(),
     dataOrigin: DATA_ORIGIN,
     sourcePublishedAt: partial.sourcePublishedAt ?? null,
+    publicationTypeInference: partial.publicationTypeInference ?? null,
   };
 }
 

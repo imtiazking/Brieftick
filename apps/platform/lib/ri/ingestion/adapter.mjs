@@ -52,6 +52,7 @@ export async function retrieveNormalisedDocuments(sourceId, options = {}) {
       retrievalMethod: connector.retrievalMethod,
       integrationSummaryStatus: result.summary?.verificationStatus ?? null,
       sourcePublishedAt: pub.sourcePublishedAt ?? null,
+      ...(pub.publicationTypeInference ? { publicationTypeInference: pub.publicationTypeInference } : {}),
     },
   }));
 }

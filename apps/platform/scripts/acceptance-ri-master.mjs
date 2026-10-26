@@ -51,6 +51,7 @@ const steps = [
   ['Source semantics', 'node', ['./scripts/acceptance-source-semantics.mjs'], integrationsRoot],
   ['Verification manifests', 'node', ['./scripts/acceptance-verification-manifests.mjs'], integrationsRoot],
   ['FCA RSS Phase 8B (dates + pilot limits)', 'node', ['./scripts/acceptance-fca-rss-phase8b.mjs'], integrationsRoot],
+  ['FCA HTML quality Phase 8B', 'node', ['./scripts/acceptance-fca-html-quality.mjs'], integrationsRoot],
   ['FCA ingestion integration Phase 8B', 'npm', ['run', 'test:acceptance:phase8b-fca'], platformRoot],
 ];
 

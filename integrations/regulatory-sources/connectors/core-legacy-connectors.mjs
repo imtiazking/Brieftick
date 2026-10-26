@@ -7,6 +7,7 @@ import { HTTP_LIMITS } from '../core/contract.mjs';
 import { createHtmlListingConnector } from '../core/html-listing-connector.mjs';
 import { createSitemapConnector } from '../core/sitemap-connector.mjs';
 import { createPatternHtmlConnector } from '../core/pattern-html-connector.mjs';
+import { inferFcaPublicationType } from './fca-publication-type.mjs';
 
 export const CORE_LEGACY_CONNECTORS = [
   createRssFeedConnector({
@@ -18,6 +19,7 @@ export const CORE_LEGACY_CONNECTORS = [
     retrievalMethod: 'official_rss',
     publicationType: 'publication',
     pilotMaxItems: HTTP_LIMITS.maxItemsPilotCap,
+    inferPublicationType: inferFcaPublicationType,
   }),
   createHtmlListingConnector({
     connectorId: 'CONN-LEGACY-PRA',

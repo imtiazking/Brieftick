@@ -2,6 +2,7 @@ import { getRegulatorById, getSourceById } from '../../../packages/reference-dat
 import { httpGet } from './http-client.mjs';
 import { parseFeedItems } from './rss.mjs';
 import { fingerprintContent } from './fingerprint.mjs';
+import { extractPublicationSummaryFromHtml } from './html-publication-text.mjs';
 import { assertUrlAllowed } from './url-safety.mjs';
 import {
   VERIFICATION_STATUS,
@@ -23,6 +24,7 @@ import {
  * @param {string} [config.publicationType]
  * @param {number} [config.maxItems]
  * @param {number} [config.pilotMaxItems] Manual-run cap (e.g. 5 for FCA pilot); default runs use maxItems.
+ * @param {(ctx: { title: string, canonicalUrl: string, html: string }) => { publicationType: string, publicationTypeInference?: object }} [config.inferPublicationType]
  */
 export function createRssFeedConnector(config) {
   const regulator = () => getRegulatorById(config.regulatorId);
@@ -150,10 +152,20 @@ export function createRssFeedConnector(config) {
         if (!docRes.ok) continue;
 
         const fp = await fingerprintContent(docRes.body, { contentType: docRes.contentType });
-        const excerpt =
-          docRes.contentType.includes('html')
-            ? docRes.body.toString('utf8').replace(/<[^>]+>/g, ' ').slice(0, 400)
-            : null;
+        const html = docRes.contentType.includes('html') ? docRes.body.toString('utf8') : '';
+        const excerpt = html ? extractPublicationSummaryFromHtml(html) : null;
+
+        let publicationType = this.publicationType;
+        let publicationTypeInference = null;
+        if (typeof config.inferPublicationType === 'function' && html) {
+          const inferred = config.inferPublicationType({
+            title: entry.title,
+            canonicalUrl: docRes.finalUrl,
+            html,
+          });
+          if (inferred?.publicationType) publicationType = inferred.publicationType;
+          publicationTypeInference = inferred?.publicationTypeInference ?? null;
+        }
 
         const provenance = {
           origin: PROVENANCE_ORIGIN,
@@ -164,6 +176,7 @@ export function createRssFeedConnector(config) {
           feedUrl: config.feedUrl,
           retrievedAt,
           sourcePublishedAt: entry.published ?? null,
+          ...(publicationTypeInference ? { publicationTypeInference } : {}),
         };
 
         items.push(
@@ -187,13 +200,14 @@ export function createRssFeedConnector(config) {
             sourceId: config.sourceId,
             externalId: entry.externalId || null,
             title: entry.title,
-            publicationType: this.publicationType,
+            publicationType,
             publicationDate: entry.publicationDate || null,
             sourcePublishedAt: entry.published ?? null,
             canonicalUrl: docRes.finalUrl,
             summary: excerpt,
             contentHash: fp.hash,
             retrievedAt,
+            publicationTypeInference,
           }),
         );
       }
