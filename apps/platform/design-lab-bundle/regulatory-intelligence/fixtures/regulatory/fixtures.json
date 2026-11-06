@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "fixtures": [
+    {
+      "id": "fca-ps24-1-v1",
+      "source": "SRC-FCA",
+      "connector": "CONN-FCA-001",
+      "scenario": "duplicate-test-v1",
+      "originalOfficialUrl": "https://www.fca.org.uk/publication/policy/ps24-1.pdf",
+      "capturedAt": "2026-09-01T10:00:00Z",
+      "reference": "PS24/1",
+      "title": "Fixture: FCA Policy Statement on operational resilience communications",
+      "publicationType": "Policy Statement",
+      "publishedAt": "2024-03-15",
+      "contentType": "text/html",
+      "fixtureFile": "fca/ps24-1-v1.html",
+      "checksum": "fixture-sha256-v1-placeholder",
+      "documentUrls": ["https://www.fca.org.uk/publication/policy/ps24-1.pdf"]
+    },
+    {
+      "id": "fca-ps24-1-v2",
+      "source": "SRC-FCA",
+      "connector": "CONN-FCA-001",
+      "scenario": "version-update-test",
+      "originalOfficialUrl": "https://www.fca.org.uk/publication/policy/ps24-1.pdf",
+      "capturedAt": "2026-09-15T10:00:00Z",
+      "reference": "PS24/1",
+      "title": "Fixture: FCA Policy Statement on operational resilience communications (amended)",
+      "publicationType": "Policy Statement",
+      "publishedAt": "2024-03-15",
+      "contentType": "text/html",
+      "fixtureFile": "fca/ps24-1-v2.html",
+      "checksum": "fixture-sha256-v2-placeholder",
+      "documentUrls": ["https://www.fca.org.uk/publication/policy/ps24-1.pdf"]
+    },
+    {
+      "id": "pra-ss5-21-fixture",
+      "source": "SRC-PRA",
+      "connector": "CONN-PRA-001",
+      "scenario": "pra-standard",
+      "originalOfficialUrl": "https://www.bankofengland.co.uk/prudential-regulation/publication/2021/may/the-pras-approach-to-branch-and-subsidiary-supervision-ss5-21",
+      "capturedAt": "2026-08-10T12:00:00Z",
+      "reference": "SS5/21",
+      "title": "Fixture: The PRA's approach to branch and subsidiary supervision",
+      "publicationType": "Supervisory Statement",
+      "publishedAt": "2021-05-28",
+      "contentType": "text/html",
+      "fixtureFile": "pra/ss5-21.html",
+      "checksum": "fixture-pra-ss521",
+      "documentUrls": []
+    },
+    {
+      "id": "fca-malformed-fixture",
+      "source": "SRC-FCA",
+      "connector": "CONN-FCA-001",
+      "scenario": "parser-structure-failure",
+      "originalOfficialUrl": "https://www.fca.org.uk/publication/broken-layout",
+      "capturedAt": "2026-08-01T09:00:00Z",
+      "reference": "FG-BROKEN",
+      "title": "Fixture: Malformed layout",
+      "publicationType": "Finalised Guidance",
+      "publishedAt": "2026-01-01",
+      "contentType": "text/html",
+      "fixtureFile": "fca/malformed.html",
+      "checksum": "fixture-malformed",
+      "documentUrls": []
+    }
+  ]
+}

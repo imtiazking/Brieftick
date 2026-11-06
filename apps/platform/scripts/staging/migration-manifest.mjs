@@ -21,6 +21,17 @@ export const STAGING_MIGRATION_STEPS = [
   { name: '20260325120000_ri_ai', path: join(migrationsDir, '20260325120000_ri_ai.sql') },
   { name: '20260325130000_ri_ai_lineage', path: join(migrationsDir, '20260325130000_ri_ai_lineage.sql') },
   { name: '20260325140000_ri_ask_ri', path: join(migrationsDir, '20260325140000_ri_ask_ri.sql') },
+  { name: 'phase8_security_hardening', path: join(migrationsDir, '20261025100000_phase8_security_hardening.sql') },
+  { name: '20261026120000_ri_source_snapshots', path: join(migrationsDir, '20261026120000_ri_source_snapshots.sql') },
+  { name: '20261026140000_ri_extraction_revisions', path: join(migrationsDir, '20261026140000_ri_extraction_revisions.sql') },
+  {
+    name: '20261028153000_ri_source_monitoring_config_atomic',
+    path: join(migrationsDir, '20261028153000_ri_source_monitoring_config_atomic.sql'),
+  },
+  {
+    name: '20261106120000_risk_control_evidence_metadata_provenance',
+    path: join(migrationsDir, '20261106120000_risk_control_evidence_metadata_provenance.sql'),
+  },
 ];
 
 /** Legacy MCP names that may exist without full DDL — do not treat as complete. */

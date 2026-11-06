@@ -100,6 +100,22 @@ const PREFLIGHT = {
   '20260325140000_ri_ask_ri': `select exists (
     select 1 from information_schema.tables where table_schema='public' and table_name='ask_ri_query_log'
   ) as ok`,
+  phase8_security_hardening: `select exists (
+    select 1 from information_schema.tables where table_schema='public' and table_name='platform_operators'
+  ) as ok`,
+  '20261026120000_ri_source_snapshots': `select exists (
+    select 1 from information_schema.tables where table_schema='public' and table_name='regulatory_source_snapshots'
+  ) as ok`,
+  '20261026140000_ri_extraction_revisions': `select exists (
+    select 1 from information_schema.tables where table_schema='public' and table_name='regulatory_source_extraction_revisions'
+  ) as ok`,
+  '20261028153000_ri_source_monitoring_config_atomic': `select to_regprocedure(
+    'public.apply_source_monitoring_configuration_with_audit(text,uuid,text,text,jsonb)'
+  ) is not null as ok`,
+  '20261106120000_risk_control_evidence_metadata_provenance': `select exists (
+    select 1 from information_schema.columns
+    where table_schema='public' and table_name='risks' and column_name='metadata'
+  ) as ok`,
 };
 
 async function preflightOk(name) {
