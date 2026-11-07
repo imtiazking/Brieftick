@@ -47,3 +47,33 @@ export function getSupabaseAnonKey(): string | undefined {
 export function getSupabaseUrl(): string | undefined {
   return supabaseUrl;
 }
+
+/** Supabase project ref from NEXT_PUBLIC_SUPABASE_URL (e.g. lhgzdicffkhaaykzthep). */
+export function getSupabaseProjectRef(): string | null {
+  if (!supabaseUrl) return null;
+  const match = supabaseUrl.match(/^https:\/\/([^.]+)\.supabase\.co/i);
+  return match?.[1] ?? null;
+}
+
+export type ClerkKeyKind = 'production' | 'development' | 'unknown';
+
+export function getClerkPublishableKeyKind(): ClerkKeyKind {
+  if (pk?.startsWith('pk_live_')) return 'production';
+  if (pk?.startsWith('pk_test_')) return 'development';
+  return 'unknown';
+}
+
+export function getClerkSecretKeyKind(): ClerkKeyKind {
+  if (clerkSecret?.startsWith('sk_live_')) return 'production';
+  if (clerkSecret?.startsWith('sk_test_')) return 'development';
+  return 'unknown';
+}
+
+export function clerkKeyPairAligned(): boolean {
+  const pkKind = getClerkPublishableKeyKind();
+  const skKind = getClerkSecretKeyKind();
+  if (pkKind === 'unknown' || skKind === 'unknown') return false;
+  return pkKind === skKind;
+}
+
+export const FORGENIQ_RI_STAGING_SUPABASE_PROJECT_REF = 'lhgzdicffkhaaykzthep';
