@@ -37,8 +37,13 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/design-lab/regulatory-intelligence',
+        destination: '/design-lab/regulatory-intelligence/index.html',
+        permanent: false,
+      },
+      {
         source: '/design-lab/regulatory-intelligence/',
-        destination: '/design-lab/regulatory-intelligence',
+        destination: '/design-lab/regulatory-intelligence/index.html',
         permanent: false,
       },
     ];
