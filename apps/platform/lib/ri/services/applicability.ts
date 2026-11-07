@@ -29,9 +29,14 @@ export async function saveApplicabilityAssessment(
   },
 ) {
   const recommendation = parseApplicabilityRecommendation(params.recommendation);
-  const status = params.status
-    ? parseEnum(params.status, APP_STATUSES, 'applicability_status')
-    : 'DRAFT';
+  let status: (typeof APP_STATUSES)[number] = 'DRAFT';
+  if (params.status) {
+    const parsed = parseEnum(params.status, APP_STATUSES, 'applicability_status');
+    if (parsed !== 'DRAFT') {
+      throw new Error('applicability_status_use_workflow');
+    }
+    status = parsed;
+  }
 
   const body = {
     organisation_id: params.organisationId,
@@ -44,8 +49,8 @@ export async function saveApplicabilityAssessment(
     affected_regulated_activities: parseStringList(params.affectedRegulatedActivities),
     override_reason: parseOptionalText(params.overrideReason, 4000),
     status,
-    reviewed_by: status === 'APPROVED' ? params.userId : null,
-    reviewed_at: status === 'APPROVED' ? new Date().toISOString() : null,
+    reviewed_by: null,
+    reviewed_at: null,
   };
 
   let row;

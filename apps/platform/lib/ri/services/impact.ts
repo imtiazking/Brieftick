@@ -3,7 +3,13 @@ import type { PlatformRole } from '@/lib/roles';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { canRi } from '@/lib/ri/permissions';
 import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
+import { assertActiveOrganisationAssignee } from '@/lib/ri/organisation-assignee';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
+import {
+  buildLockedChildMetadataFromParentChange,
+  workflowMetadataForChildRecordCreate,
+} from '@/lib/ri/lab-api/child-record-provenance';
+import { fanOutTenantNotification } from '@/lib/ri/services/tenant-notification-fanout';
 import { RiConflictError } from '@/lib/ri/errors';
 import {
   assertImpactActionAllowed,
@@ -16,8 +22,8 @@ export async function listImpactAssessments(supabase: SupabaseClient, organisati
     .from('impact_assessments')
     .select(
       `
-      id, status, materiality, due_date, owner_user_id, regulatory_change_id,
-      change:regulatory_changes(id, title)
+      id, status, materiality, due_date, owner_user_id, regulatory_change_id, metadata,
+      change:regulatory_changes(id, title, description, external_key, origin, publication_id, metadata)
     `,
     )
     .eq('organisation_id', organisationId)
@@ -37,6 +43,17 @@ export async function createImpactAssessment(
 ) {
   const changeId = parseUuid(params.regulatoryChangeId, 'regulatory_change_id');
   await assertRowInOrganisation(supabase, 'regulatory_changes', changeId, params.organisationId);
+  const { data: change } = await supabase
+    .from('regulatory_changes')
+    .select('id, title, description, external_key, origin, publication_id, metadata')
+    .eq('id', changeId)
+    .single();
+  if (!change) throw new Error('not_found');
+
+  const { metadata: rowMetadata, recordProvenance, labClass } = buildLockedChildMetadataFromParentChange({
+    parentChange: change,
+    actorUserId: params.userId,
+  });
 
   const { data, error } = await supabase
     .from('impact_assessments')
@@ -45,10 +62,41 @@ export async function createImpactAssessment(
       regulatory_change_id: changeId,
       status: 'DRAFT',
       owner_user_id: params.userId,
+      metadata: rowMetadata,
     })
     .select()
     .single();
   if (error) throw new Error(error.message);
+
+  const { count: existingCreatedEvents } = await supabase
+    .from('workflow_events')
+    .select('id', { count: 'exact', head: true })
+    .eq('organisation_id', params.organisationId)
+    .eq('entity_type', 'impact_assessment')
+    .eq('entity_id', data.id)
+    .eq('event_type', 'IMPACT_CREATED');
+  if (!existingCreatedEvents) {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'impact_assessment',
+      entityId: data.id,
+      eventType: 'IMPACT_CREATED',
+      actorUserId: params.userId,
+      toStatus: 'DRAFT',
+      metadata: {
+        ...workflowMetadataForChildRecordCreate({
+          recordProvenance,
+          parentChangeId: changeId,
+          actorUserId: params.userId,
+          labClass,
+        }),
+        impactAssessmentId: data.id,
+        organisationId: params.organisationId,
+        parentRegulatoryChangeId: changeId,
+      },
+    });
+  }
+
   return data;
 }
 
@@ -64,7 +112,7 @@ export async function getImpactDetail(
       `
       *,
       change:regulatory_changes(
-        id, title, publication_id,
+        id, title, publication_id, description, external_key, origin, metadata,
         publication:regulatory_publications(id, title)
       )
     `,
@@ -131,6 +179,14 @@ export async function updateImpactAssessment(
   }
   if ('due_date' in params.fields) {
     update.due_date = parseOptionalDate(params.fields.due_date);
+  }
+  if ('owner_user_id' in params.fields && !params.fields.action) {
+    const assignee = await assertActiveOrganisationAssignee(
+      supabase,
+      params.organisationId,
+      String(params.fields.owner_user_id),
+    );
+    update.owner_user_id = assignee.clerkUserId;
   }
 
   type PendingWorkflowEvent = {
@@ -224,6 +280,45 @@ export async function updateImpactAssessment(
       actorUserId: params.userId,
       fromStatus: pendingEvent.fromStatus,
       toStatus: pendingEvent.toStatus,
+    });
+    if (pendingEvent.eventType === 'IMPACT_SUBMITTED') {
+      const fanOut = await fanOutTenantNotification(supabase, {
+        organisationId: params.organisationId,
+        createdByUserId: params.userId,
+        notificationType: 'APPROVAL_REQUEST',
+        severity: 'HIGH',
+        title: 'Impact assessment awaiting approval',
+        message: 'An impact assessment was submitted for checker approval.',
+        entityType: 'impact_assessment',
+        entityId: params.impactId,
+        linkPath: `#/assessment/${params.impactId}`,
+        workflowEntityType: 'impact_assessment',
+        workflowEntityId: params.impactId,
+      });
+      if (!fanOut.delivered && !fanOut.retryQueued) {
+        console.error('[impact] notification_fan_out_unrecoverable', {
+          impactId: params.impactId,
+          reason: fanOut.reason,
+        });
+      }
+    }
+  }
+
+  if (
+    'owner_user_id' in update &&
+    data.owner_user_id &&
+    data.owner_user_id !== existing.owner_user_id
+  ) {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'impact_assessment',
+      entityId: params.impactId,
+      eventType: 'IMPACT_OWNER_ASSIGNED',
+      actorUserId: params.userId,
+      metadata: {
+        from_owner_user_id: existing.owner_user_id,
+        to_owner_user_id: data.owner_user_id,
+      },
     });
   }
 

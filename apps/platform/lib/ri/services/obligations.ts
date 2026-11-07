@@ -1,5 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import {
+  buildLockedChildMetadataFromParentChange,
+  workflowMetadataForChildRecordCreate,
+} from '@/lib/ri/lab-api/child-record-provenance';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 import {
   parseOptionalDate,
@@ -9,6 +13,7 @@ import {
   parseUuid,
 } from '@/lib/ri/validation';
 import { summarizeProductionObligationRows } from '@/lib/ri/lab-compat/dashboard-parity.mjs';
+import { assertActiveOrganisationAssignee } from '@/lib/ri/organisation-assignee';
 
 export function summarizeObligationListRows(rows: { status: string }[]) {
   return summarizeProductionObligationRows(rows);
@@ -20,8 +25,8 @@ export async function listObligations(supabase: SupabaseClient, organisationId: 
     .select(
       `
       id, external_key, obligation_statement, status, priority, due_date, effective_date, owner_user_id,
-      regulatory_change_id, publication_id, citation,
-      change:regulatory_changes(id, title, external_key),
+      regulatory_change_id, publication_id, citation, metadata,
+      change:regulatory_changes(id, title, external_key, origin, description, publication_id, metadata),
       publication:regulatory_publications(id, title)
     `,
     )
@@ -50,12 +55,16 @@ export async function createObligation(
   await assertRowInOrganisation(supabase, 'regulatory_changes', changeId, params.organisationId);
   const { data: change } = await supabase
     .from('regulatory_changes')
-    .select('publication_id')
+    .select('id, title, description, external_key, origin, publication_id, metadata')
     .eq('id', changeId)
     .single();
   if (!change) throw new Error('not_found');
 
   const status = params.status ? parseObligationStatus(params.status) : 'DRAFT';
+  const { metadata: rowMetadata, recordProvenance, labClass } = buildLockedChildMetadataFromParentChange({
+    parentChange: change,
+    actorUserId: params.userId,
+  });
 
   const { data, error } = await supabase
     .from('regulatory_obligations')
@@ -71,6 +80,7 @@ export async function createObligation(
       due_date: parseOptionalDate(params.dueDate),
       owner_user_id: params.userId,
       status,
+      metadata: rowMetadata,
     })
     .select()
     .single();
@@ -83,6 +93,12 @@ export async function createObligation(
     eventType: 'OBLIGATION_CREATED',
     actorUserId: params.userId,
     toStatus: status,
+    metadata: workflowMetadataForChildRecordCreate({
+      recordProvenance,
+      parentChangeId: changeId,
+      actorUserId: params.userId,
+      labClass,
+    }),
   });
 
   return data;
@@ -116,13 +132,30 @@ export async function getObligationDetail(
   if (error) throw new Error(error.message);
 
   const change = Array.isArray(data.change) ? data.change[0] : data.change;
-  const { data: impacts } = await supabase
-    .from('impact_assessments')
-    .select('id, status, materiality')
-    .eq('organisation_id', organisationId)
-    .eq('regulatory_change_id', data.regulatory_change_id);
+  const [{ data: impacts }, { data: riskLinks }, { data: controlLinks }] = await Promise.all([
+    supabase
+      .from('impact_assessments')
+      .select('id, status, materiality')
+      .eq('organisation_id', organisationId)
+      .eq('regulatory_change_id', data.regulatory_change_id),
+    supabase
+      .from('obligation_risk_links')
+      .select('risk:risks(id, title)')
+      .eq('organisation_id', organisationId)
+      .eq('obligation_id', obligationId),
+    supabase
+      .from('obligation_control_links')
+      .select('control:controls(id, name)')
+      .eq('organisation_id', organisationId)
+      .eq('obligation_id', obligationId),
+  ]);
 
-  return { obligation: { ...data, change }, impacts: impacts ?? [] };
+  const risks = (riskLinks ?? []).map((r) => (Array.isArray(r.risk) ? r.risk[0] : r.risk)).filter(Boolean);
+  const controls = (controlLinks ?? [])
+    .map((r) => (Array.isArray(r.control) ? r.control[0] : r.control))
+    .filter(Boolean);
+
+  return { obligation: { ...data, change }, impacts: impacts ?? [], risks, controls };
 }
 
 export async function updateObligation(
@@ -143,7 +176,7 @@ export async function updateObligation(
   );
   const { data: existing } = await supabase
     .from('regulatory_obligations')
-    .select('status, updated_at')
+    .select('status, updated_at, owner_user_id')
     .eq('id', params.obligationId)
     .single();
   if (!existing) throw new Error('not_found');
@@ -171,6 +204,14 @@ export async function updateObligation(
     update.effective_date = parseOptionalDate(params.fields.effective_date);
   }
   if ('due_date' in params.fields) update.due_date = parseOptionalDate(params.fields.due_date);
+  if ('owner_user_id' in params.fields) {
+    const assignee = await assertActiveOrganisationAssignee(
+      supabase,
+      params.organisationId,
+      String(params.fields.owner_user_id),
+    );
+    update.owner_user_id = assignee.clerkUserId;
+  }
   if ('status' in params.fields) {
     const next = parseObligationStatus(params.fields.status);
     update.status = next;
@@ -193,5 +234,22 @@ export async function updateObligation(
     .select()
     .single();
   if (error) throw new Error(error.message);
+  if (
+    'owner_user_id' in update &&
+    data.owner_user_id &&
+    data.owner_user_id !== existing.owner_user_id
+  ) {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'regulatory_obligation',
+      entityId: params.obligationId,
+      eventType: 'OBLIGATION_OWNER_ASSIGNED',
+      actorUserId: params.userId,
+      metadata: {
+        from_owner_user_id: existing.owner_user_id,
+        to_owner_user_id: data.owner_user_id,
+      },
+    });
+  }
   return data;
 }

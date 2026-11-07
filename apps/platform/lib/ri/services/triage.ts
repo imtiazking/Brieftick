@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
+import { createTenantNotification } from '@/lib/ri/services/tenant-notifications';
 import {
   parseEnum,
   parseOptionalText,
@@ -25,6 +26,10 @@ export async function upsertOrganisationTriage(
     ? parseEnum(params.relevanceStatus, RELEVANCE_STATUSES, 'relevance_status')
     : null;
 
+  const closedTriage =
+    triageStatus === 'CLOSED' || relevanceStatus === 'NOT_RELEVANT';
+  const defaultSlaDue = () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
   const { data: existing } = await supabase
     .from('organisation_publications')
     .select('*')
@@ -46,6 +51,9 @@ export async function upsertOrganisationTriage(
     materiality: parseOptionalText(params.materiality, 200),
     assigned_to: parseOptionalText(params.assignedTo, 200),
     reviewed_at: new Date().toISOString(),
+    triage_sla_due: closedTriage
+      ? null
+      : existing?.triage_sla_due ?? defaultSlaDue(),
   };
 
   let row;
@@ -78,6 +86,37 @@ export async function upsertOrganisationTriage(
     fromStatus: existing?.triage_status ?? null,
     toStatus: triageStatus,
   });
+
+  const assignee = parseOptionalText(params.assignedTo, 200);
+  if (assignee && assignee !== existing?.assigned_to) {
+    await createTenantNotification(supabase, {
+      organisationId: params.organisationId,
+      createdByUserId: params.userId,
+      recipientUserId: assignee,
+      notificationType: 'ASSIGNMENT',
+      severity: 'MEDIUM',
+      title: 'Intake assignment',
+      message: `You were assigned to triage publication ${params.publicationId.slice(0, 8)}…`,
+      entityType: 'publication',
+      entityId: params.publicationId,
+      linkPath: `#/intake/${params.publicationId}`,
+    });
+  }
+
+  if (!existing || existing.triage_status !== triageStatus) {
+    await createTenantNotification(supabase, {
+      organisationId: params.organisationId,
+      createdByUserId: params.userId,
+      notificationType: 'TRIAGE',
+      severity: triageStatus === 'IN_REVIEW' ? 'HIGH' : 'MEDIUM',
+      title: 'Intake triage updated',
+      message: `Triage status is now ${triageStatus.replace(/_/g, ' ')}.`,
+      entityType: 'publication',
+      entityId: params.publicationId,
+      linkPath: `#/intake/${params.publicationId}`,
+      payload: { triage_status: triageStatus, relevance_status: relevanceStatus },
+    });
+  }
 
   return row;
 }

@@ -42,6 +42,7 @@ export type AnalysisRunRow = {
   structured_output: Record<string, unknown> | null;
   error_code: string | null;
   latency_ms: number | null;
+  idempotency_key?: string | null;
   created_at: string;
   completed_at: string | null;
 };
@@ -50,14 +51,24 @@ async function buildPublicationContext(
   supabase: SupabaseClient,
   publicationVersionId: string,
 ) {
-  const { data: version } = await supabase
+  const { data: version, error: versionError } = await supabase
     .from('regulatory_publication_versions')
-    .select('id, version_number, full_text, summary')
+    .select('id, version_number, publication_id')
     .eq('id', publicationVersionId)
     .single();
-  if (!version) throw new Error('publication_version_not_found');
+  if (versionError || !version) throw new Error('publication_version_not_found');
+
+  const { data: publication } = await supabase
+    .from('regulatory_publications')
+    .select('title, summary')
+    .eq('id', version.publication_id)
+    .maybeSingle();
+
   const sectionId = `SRCSEC-${String(version.id).replace(/-/g, '').slice(0, 12)}`;
-  const text = version.full_text || version.summary || 'Publication source text unavailable.';
+  const text =
+    publication?.summary?.trim() ||
+    publication?.title?.trim() ||
+    'Publication source text unavailable.';
   return {
     sourceSections: [
       {
@@ -95,7 +106,7 @@ export async function listAnalysisRuns(
   const { data, error } = await supabase
     .from('ai_analysis_runs')
     .select(
-      'id, organisation_id, use_case_id, publication_id, publication_version_id, execution_status, review_status, freshness, provider, model, prompt_version, structured_output, error_code, latency_ms, created_at, completed_at',
+      'id, organisation_id, use_case_id, publication_id, publication_version_id, execution_status, review_status, freshness, provider, model, prompt_version, structured_output, error_code, latency_ms, created_at, completed_at, idempotency_key',
     )
     .eq('organisation_id', organisationId)
     .order('created_at', { ascending: false })
@@ -168,7 +179,9 @@ export async function requestPublicationAnalysis(
 
   const idempotencyKey = `${params.useCaseId}:${params.publicationVersionId}:${params.organisationId}`;
 
-  const { data: runRow, error: insertErr } = await supabase
+  let runRow: AnalysisRunRow | null = null;
+
+  const { data: insertedRun, error: insertErr } = await supabase
     .from('ai_analysis_runs')
     .insert({
       organisation_id: params.organisationId,
@@ -193,14 +206,46 @@ export async function requestPublicationAnalysis(
     if (insertErr.code === '23505') {
       const { data: existing } = await supabase
         .from('ai_analysis_runs')
-        .select('id')
+        .select('id, execution_status')
         .eq('organisation_id', params.organisationId)
         .eq('idempotency_key', idempotencyKey)
         .single();
-      if (existing) return { ok: true, reused: true, runId: existing.id };
+      if (existing && existing.execution_status !== AI_EXECUTION_STATUS.FAILED) {
+        return { ok: true, reused: true, runId: existing.id };
+      }
+      if (existing?.id) {
+        await supabase.from('ai_analysis_runs').delete().eq('id', existing.id);
+      }
+    } else {
+      throw new Error(insertErr.message);
     }
-    throw new Error(insertErr.message);
+    const retry = await supabase
+      .from('ai_analysis_runs')
+      .insert({
+        organisation_id: params.organisationId,
+        use_case_id: params.useCaseId,
+        publication_id: params.publicationId,
+        publication_version_id: params.publicationVersionId,
+        target_entity_id: params.targetEntityId ?? null,
+        execution_status: AI_EXECUTION_STATUS.RUNNING,
+        review_status: AI_REVIEW_STATUS.AI_DRAFT,
+        freshness: AI_FRESHNESS.CURRENT,
+        provider: provider.id,
+        model: resolveModelForProviderMode(providerMode),
+        prompt_version: promptVersion,
+        processing_eligibility: PROCESSING_ELIGIBILITY.REVIEW_REQUIRED,
+        requested_by: params.userId,
+        idempotency_key: idempotencyKey,
+      })
+      .select()
+      .single();
+    if (retry.error) throw new Error(retry.error.message);
+    runRow = retry.data as AnalysisRunRow;
+  } else {
+    runRow = insertedRun as AnalysisRunRow;
   }
+
+  if (!runRow) throw new Error('ai_analysis_run_insert_failed');
 
   await recordWorkflowEvent(supabase, {
     organisationId: params.organisationId,

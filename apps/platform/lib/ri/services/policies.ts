@@ -3,6 +3,8 @@ import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { RiNotFoundError } from '@/lib/ri/errors';
 import { parseOptionalDate, parseOptionalText, parseRequiredText } from '@/lib/ri/validation';
 
+import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
+
 export async function listPolicies(supabase: SupabaseClient, organisationId: string) {
   const { data, error } = await supabase
     .from('policies')
@@ -34,6 +36,14 @@ export async function createPolicy(
     .select()
     .single();
   if (error) throw new Error(error.message);
+  await recordWorkflowEvent(supabase, {
+    organisationId,
+    entityType: 'policy',
+    entityId: data.id,
+    eventType: 'POLICY_CREATED',
+    actorUserId: userId,
+    toStatus: String(data.status ?? 'DRAFT'),
+  });
   return data;
 }
 
@@ -70,9 +80,14 @@ export async function updatePolicy(
   policyId: string,
   fields: Record<string, unknown>,
   expectedUpdatedAt?: string | null,
+  actorUserId?: string | null,
 ) {
   await assertRowInOrganisation(supabase, 'policies', policyId, organisationId);
-  const { data: existing } = await supabase.from('policies').select('updated_at').eq('id', policyId).single();
+  const { data: existing } = await supabase
+    .from('policies')
+    .select('updated_at, status, version')
+    .eq('id', policyId)
+    .single();
   if (!existing) throw new RiNotFoundError();
   if (expectedUpdatedAt && new Date(existing.updated_at).getTime() !== new Date(expectedUpdatedAt).getTime()) {
     throw new Error('stale_record');
@@ -91,5 +106,16 @@ export async function updatePolicy(
     .select()
     .single();
   if (error) throw new Error(error.message);
+  if (actorUserId && ('status' in fields || 'version' in fields)) {
+    await recordWorkflowEvent(supabase, {
+      organisationId,
+      entityType: 'policy',
+      entityId: policyId,
+      eventType: 'status' in fields ? 'POLICY_STATUS_CHANGED' : 'POLICY_VERSION_UPDATED',
+      actorUserId,
+      fromStatus: existing.status ? String(existing.status) : null,
+      toStatus: 'status' in fields ? String(data.status) : String(data.version),
+    });
+  }
   return data;
 }

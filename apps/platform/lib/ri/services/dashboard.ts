@@ -3,6 +3,29 @@ import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { isActionOverdue } from '@/lib/ri/action-overdue';
 import { OBLIGATION_STATUS_GROUPS } from '@/lib/ri/enums';
+import { listPendingGovernanceItems } from '@/lib/ri/services/governance-queue';
+import { countUnreadTenantNotifications } from '@/lib/ri/services/tenant-notifications';
+import { filterPendingGovernanceForLabScope } from '@/lib/ri/uat-record-provenance';
+import {
+  classifyObligationForLab,
+  obligationLabProvenanceInputFromRow,
+  recordKindForObligationLabClass,
+} from '@/lib/ri/lab-api/obligation-lab-provenance';
+import {
+  classifyImpactForLab,
+  impactLabProvenanceInputFromRow,
+  recordKindForImpactLabClass,
+} from '@/lib/ri/lab-api/impact-lab-provenance';
+import {
+  partitionControlsForLabScope,
+  partitionRisksForLabScope,
+  riskLabProvenanceInputFromRow,
+  controlLabProvenanceInputFromRow,
+} from '@/lib/ri/lab-api/risk-control-lab-provenance';
+import {
+  isOperationalDashboardProvenance,
+  resolveRecordProvenance,
+} from '@/lib/ri/record-provenance';
 
 export type DashboardSummary = {
   publicationsNew30d: number;
@@ -16,6 +39,11 @@ export type DashboardSummary = {
   findingsOpen: number;
   assuranceOpen: number;
   impactsInProgress: number;
+  impactsInReview: number;
+  pendingApprovals: number;
+  risksOpen: number;
+  controlsTracked: number;
+  unreadNotifications: number;
   upcomingDeadlines: number;
   sourceHealth?: { healthy: number; degraded: number; failing: number; stale: number };
 };
@@ -27,6 +55,8 @@ const FINDING_OPEN = ['OPEN', 'IN_PROGRESS'];
 export async function getDashboardSummary(
   supabase: SupabaseClient,
   organisationId: string,
+  userId?: string | null,
+  options?: { excludeSyntheticUat?: boolean },
 ): Promise<DashboardSummary> {
   const today = new Date().toISOString().slice(0, 10);
   const inSeven = new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10);
@@ -41,6 +71,8 @@ export async function getDashboardSummary(
     findings,
     assurance,
     impacts,
+    risks,
+    controls,
   ] = await Promise.all([
     supabase
       .from('regulatory_publications')
@@ -53,11 +85,13 @@ export async function getDashboardSummary(
       .in('triage_status', ['NEW', 'IN_REVIEW']),
     supabase
       .from('regulatory_changes')
-      .select('id, status')
+      .select('id, status, title, description, external_key, origin, metadata')
       .eq('organisation_id', organisationId),
     supabase
       .from('regulatory_obligations')
-      .select('id, status, due_date')
+      .select(
+        'id, status, due_date, obligation_statement, external_key, metadata, regulatory_change_id, change:regulatory_changes(origin, metadata, external_key, title, description, publication_id)',
+      )
       .eq('organisation_id', organisationId),
     supabase
       .from('actions')
@@ -65,19 +99,81 @@ export async function getDashboardSummary(
       .eq('organisation_id', organisationId),
     supabase
       .from('findings')
-      .select('id, status')
+      .select('id, status, title')
       .eq('organisation_id', organisationId),
     supabase
       .from('assurance_reviews')
-      .select('id, result, next_review_date')
+      .select('id, result, next_review_date, review_type')
       .eq('organisation_id', organisationId),
     supabase
       .from('impact_assessments')
-      .select('id, status, due_date')
+      .select(
+        'id, status, due_date, metadata, regulatory_change_id, change:regulatory_changes(title, description, external_key, origin, metadata)',
+      )
       .eq('organisation_id', organisationId),
+    supabase.from('risks').select('id, status, title, description, metadata').eq('organisation_id', organisationId),
+    supabase.from('controls').select('id, status, name, description, metadata').eq('organisation_id', organisationId),
   ]);
 
-  const oblRows = obligations.data ?? [];
+  const excludeSynthetic = options?.excludeSyntheticUat === true;
+  let changeRows = changes.data ?? [];
+  let oblRows = obligations.data ?? [];
+  let findingRows = findings.data ?? [];
+  let impactRows = impacts.data ?? [];
+  let riskRows = risks.data ?? [];
+  let controlRows = controls.data ?? [];
+  let assuranceRows = assurance.data ?? [];
+
+  if (excludeSynthetic) {
+    changeRows = changeRows.filter((c) =>
+      isOperationalDashboardProvenance(
+        resolveRecordProvenance({
+          title: c.title,
+          description: c.description,
+          externalKey: c.external_key,
+          origin: (c as { origin?: string }).origin,
+          metadata: (c as { metadata?: Record<string, unknown> }).metadata ?? null,
+        }),
+      ),
+    );
+    oblRows = oblRows.filter((o) => {
+      const ch = Array.isArray(o.change) ? o.change[0] : o.change;
+      const kind = recordKindForObligationLabClass(
+        classifyObligationForLab(
+          obligationLabProvenanceInputFromRow({
+            metadata: (o as { metadata?: Record<string, unknown> }).metadata ?? null,
+            change: ch ?? null,
+          }),
+        ),
+      );
+      return isOperationalDashboardProvenance(kind);
+    });
+    findingRows = findingRows.filter((f) =>
+      isOperationalDashboardProvenance(resolveRecordProvenance({ title: f.title })),
+    );
+    impactRows = impactRows.filter((i) => {
+      const ch = Array.isArray(i.change) ? i.change[0] : i.change;
+      const kind = recordKindForImpactLabClass(
+        classifyImpactForLab(
+          impactLabProvenanceInputFromRow({
+            metadata: (i as { metadata?: Record<string, unknown> }).metadata ?? null,
+            change: ch ?? null,
+          }),
+        ),
+      );
+      return isOperationalDashboardProvenance(kind);
+    });
+    riskRows = partitionRisksForLabScope(riskRows, 'operational', (r) =>
+      riskLabProvenanceInputFromRow(r),
+    ).operational;
+    controlRows = partitionControlsForLabScope(controlRows, 'operational', (c) =>
+      controlLabProvenanceInputFromRow(c),
+    ).operational;
+    assuranceRows = assuranceRows.filter((a) =>
+      isOperationalDashboardProvenance(resolveRecordProvenance({ title: a.review_type })),
+    );
+  }
+
   const activeObl = oblRows.filter((o) => ACTIVE_OBLIGATION.includes(o.status as never));
   const overdueObl = oblRows.filter(
     (o) =>
@@ -96,17 +192,34 @@ export async function getDashboardSummary(
       !isActionOverdue(a.due_date, a.status),
   );
 
-  const openChanges = (changes.data ?? []).filter((c) => CHANGE_OPEN.includes(c.status));
-  const openFindings = (findings.data ?? []).filter((f) => FINDING_OPEN.includes(f.status));
-  const openAssurance = (assurance.data ?? []).filter(
+  const openChanges = changeRows.filter((c) => CHANGE_OPEN.includes(c.status));
+  const openFindings = findingRows.filter((f) => FINDING_OPEN.includes(f.status));
+  const openAssurance = assuranceRows.filter(
     (a) => a.result === 'FAIL' || a.result === 'PARTIAL' || a.result === 'OPEN',
   );
-  const impactsActive = (impacts.data ?? []).filter((i) =>
+  const impactsActive = impactRows.filter((i) =>
     ['DRAFT', 'IN_REVIEW', 'IN_PROGRESS'].includes(i.status),
   );
+  const impactsInReview = impactRows.filter((i) => i.status === 'IN_REVIEW');
+
+  let pending = await listPendingGovernanceItems(supabase, organisationId);
+  if (excludeSynthetic) {
+    pending = filterPendingGovernanceForLabScope(pending, 'operational').items;
+  }
+  let unreadNotifications = 0;
+  if (userId) {
+    try {
+      unreadNotifications = await countUnreadTenantNotifications(supabase, organisationId, userId);
+    } catch {
+      unreadNotifications = 0;
+    }
+  }
+
+  const risksOpen = riskRows.filter((r) => r.status !== 'CLOSED' && r.status !== 'ACCEPTED').length;
+  const controlsTracked = controlRows.length;
 
   let upcomingDeadlines = overdueObl.length + overdueActions.length;
-  upcomingDeadlines += (impacts.data ?? []).filter(
+  upcomingDeadlines += impactRows.filter(
     (i) => i.due_date && i.due_date >= today && i.due_date <= inSeven,
   ).length;
 
@@ -137,6 +250,11 @@ export async function getDashboardSummary(
     findingsOpen: openFindings.length,
     assuranceOpen: openAssurance.length,
     impactsInProgress: impactsActive.length,
+    impactsInReview: impactsInReview.length,
+    pendingApprovals: pending.length,
+    risksOpen,
+    controlsTracked,
+    unreadNotifications,
     upcomingDeadlines,
     sourceHealth,
   };

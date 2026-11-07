@@ -11,6 +11,12 @@ export type PublicationListRow = {
   canonical_url: string;
   data_origin: string;
   source_hash: string | null;
+  source_version: string | null;
+  external_document_id: string | null;
+  summary: string | null;
+  retrieved_at: string | null;
+  provenance: Record<string, unknown> | null;
+  versionCount: number;
   regulator: { name: string; acronym: string; external_key: string } | null;
   source: { name: string; external_key: string } | null;
   orgState: {
@@ -18,6 +24,7 @@ export type PublicationListRow = {
     relevance_status: string | null;
     materiality: string | null;
     assigned_to: string | null;
+    triage_sla_due: string | null;
   } | null;
   applicability: { recommendation: string; status: string } | null;
 };
@@ -31,7 +38,7 @@ export async function listPublicationsForOrganisation(
     .select(
       `
       id, title, publication_type, publication_date, effective_date, consultation_deadline,
-      canonical_url, data_origin, source_hash,
+      canonical_url, data_origin, source_hash, source_version, external_document_id, summary, retrieved_at, provenance,
       regulator:regulators(name, acronym, external_key),
       source:regulatory_sources(name, external_key)
     `,
@@ -45,7 +52,7 @@ export async function listPublicationsForOrganisation(
   const ids = publications.map((p) => p.id);
   const { data: orgRows } = await supabase
     .from('organisation_publications')
-    .select('publication_id, triage_status, relevance_status, materiality, assigned_to')
+    .select('publication_id, triage_status, relevance_status, materiality, assigned_to, triage_sla_due')
     .eq('organisation_id', organisationId)
     .in('publication_id', ids);
 
@@ -55,6 +62,17 @@ export async function listPublicationsForOrganisation(
     .eq('organisation_id', organisationId)
     .in('publication_id', ids)
     .order('updated_at', { ascending: false });
+
+  const { data: versionRows } = await supabase
+    .from('regulatory_publication_versions')
+    .select('publication_id')
+    .in('publication_id', ids);
+
+  const versionCountByPub = new Map<string, number>();
+  for (const row of versionRows ?? []) {
+    const pid = row.publication_id as string;
+    versionCountByPub.set(pid, (versionCountByPub.get(pid) ?? 0) + 1);
+  }
 
   const orgByPub = new Map(orgRows?.map((r) => [r.publication_id, r]));
   const appByPub = new Map<string, { recommendation: string; status: string }>();
@@ -73,6 +91,8 @@ export async function listPublicationsForOrganisation(
     source: Array.isArray(p.source) ? p.source[0] : p.source,
     orgState: orgByPub.get(p.id) ?? null,
     applicability: appByPub.get(p.id) ?? null,
+    versionCount: versionCountByPub.get(p.id) ?? 0,
+    provenance: (p.provenance as Record<string, unknown>) ?? null,
   })) as PublicationListRow[];
 }
 
