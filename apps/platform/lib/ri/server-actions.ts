@@ -65,6 +65,7 @@ export async function createChangeAction(formData: FormData) {
     materiality: (formData.get('materiality') as string) || null,
     effectiveDate: (formData.get('effective_date') as string) || null,
     implementationDeadline: (formData.get('implementation_deadline') as string) || null,
+    creationMode: 'operational',
   });
   revalidateRi();
   redirect(`/ri/changes/${row.id}`);

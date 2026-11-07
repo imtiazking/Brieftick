@@ -85,12 +85,19 @@ export async function linkObligationPolicyAction(formData: FormData) {
 
 export async function createRiskAction(formData: FormData) {
   const ctx = await requireRiContext('risk:write');
-  const row = await createRisk(ctx.supabase, ctx.organisationId, ctx.userId, {
-    title: formData.get('title'),
-    description: formData.get('description'),
-    category: formData.get('category'),
-    inherent_risk: formData.get('inherent_risk'),
-    residual_risk: formData.get('residual_risk'),
+  const row = await createRisk(ctx.supabase, {
+    organisationId: ctx.organisationId,
+    userId: ctx.userId,
+    role: ctx.role,
+    fields: {
+      title: formData.get('title'),
+      description: formData.get('description'),
+      category: formData.get('category'),
+      inherent_risk: formData.get('inherent_risk'),
+      residual_risk: formData.get('residual_risk'),
+      creationMode: formData.get('creationMode'),
+      regulatoryObligationId: formData.get('regulatory_obligation_id'),
+    },
   });
   revalidateRi();
   redirect(`/ri/risks/${row.id}`);
@@ -129,11 +136,18 @@ export async function linkObligationRiskAction(formData: FormData) {
 
 export async function createControlAction(formData: FormData) {
   const ctx = await requireRiContext('control:write');
-  const row = await createControl(ctx.supabase, ctx.organisationId, ctx.userId, {
-    name: formData.get('name'),
-    description: formData.get('description'),
-    control_type: formData.get('control_type'),
-    effectiveness: formData.get('effectiveness'),
+  const row = await createControl(ctx.supabase, {
+    organisationId: ctx.organisationId,
+    userId: ctx.userId,
+    role: ctx.role,
+    fields: {
+      name: formData.get('name'),
+      description: formData.get('description'),
+      control_type: formData.get('control_type'),
+      effectiveness: formData.get('effectiveness'),
+      creationMode: formData.get('creationMode'),
+      riskId: formData.get('risk_id'),
+    },
   });
   revalidateRi();
   redirect(`/ri/controls/${row.id}`);
@@ -218,12 +232,19 @@ export async function updateActionDownstreamAction(formData: FormData) {
 
 export async function createEvidenceAction(formData: FormData) {
   const ctx = await requireRiContext('evidence:write');
-  const row = await createEvidence(ctx.supabase, ctx.organisationId, ctx.userId, {
-    title: formData.get('title'),
-    evidence_type: formData.get('evidence_type'),
-    description: formData.get('description'),
-    source_url: formData.get('source_url'),
-    source_hash: formData.get('source_hash'),
+  const row = await createEvidence(ctx.supabase, {
+    organisationId: ctx.organisationId,
+    userId: ctx.userId,
+    role: ctx.role,
+    fields: {
+      title: formData.get('title'),
+      evidence_type: formData.get('evidence_type'),
+      description: formData.get('description'),
+      source_url: formData.get('source_url'),
+      source_hash: formData.get('source_hash'),
+      creationMode: formData.get('creationMode'),
+      controlId: formData.get('control_id'),
+    },
   });
   const obligationId = formData.get('obligation_id') as string;
   const controlId = formData.get('control_id') as string;

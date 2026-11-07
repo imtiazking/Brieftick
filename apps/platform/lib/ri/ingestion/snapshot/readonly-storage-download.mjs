@@ -7,7 +7,7 @@ import { URL } from 'node:url';
 export async function drainNetworkResources() {
   await new Promise((resolve) => setImmediate(resolve));
   try {
-    const undici = await import('undici');
+    const undici = await import(/* webpackIgnore: true */ 'undici');
     const dispatcher = undici.getGlobalDispatcher?.();
     if (dispatcher) {
       if (typeof dispatcher.destroy === 'function') {
