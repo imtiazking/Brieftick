@@ -545,7 +545,7 @@ async function main() {
         );
         const evBody = await ev.json().catch(() => ({}));
         const linked = (evBody.events || []).some(
-          (e) => e.eventType === 'RISK_LINKED' && e.metadata?.linkedEntityId === manualRisk.id,
+          (e) => e.eventType === 'RISK_LINKED' && e.metadata?.risk_id === manualRisk.id,
         );
         if (linkRes?.status() === 200 && linked) {
           pass('browser_manual_journey_risk_link', manualRisk.id);
