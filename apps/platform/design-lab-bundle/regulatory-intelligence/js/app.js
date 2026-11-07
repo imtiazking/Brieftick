@@ -1095,27 +1095,6 @@ function bindViewHandlers() {
     });
   });
 
-  document.querySelectorAll('[data-connected-link]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const linkType = btn.dataset.connectedLink;
-      const leftId = btn.dataset.leftId;
-      const rightId = btn.closest('.ri-panel')?.querySelector('[data-connected-link-right]')?.value?.trim();
-      if (!linkType || !leftId || !rightId) {
-        showToast('Enter target id');
-        return;
-      }
-      btn.disabled = true;
-      try {
-        await postConnectedLink(getState(), linkType, leftId, rightId);
-        showToast('Link created');
-        renderShell();
-      } catch (e) {
-        showToast(e?.message || 'Link failed');
-        btn.disabled = false;
-      }
-    });
-  });
-
   document.querySelectorAll('[data-connected-risk-save]').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.riskId;
@@ -2367,6 +2346,38 @@ function syncModeChrome() {
 
 let lastConnectivityMode = null;
 
+function initConnectedLinkDelegation() {
+  if (document.documentElement.dataset.connectedLinkDelegation === '1') return;
+  document.documentElement.dataset.connectedLinkDelegation = '1';
+  document.addEventListener('click', async (ev) => {
+    const btn = ev.target.closest('[data-ri-post-link]');
+    if (!btn || btn.disabled) return;
+    const linkType = btn.getAttribute('data-link-type');
+    const leftId = btn.getAttribute('data-left-id');
+    const panel = btn.closest('[data-connected-link-panel]');
+    const targetSel =
+      linkType === 'obligation_control'
+        ? '[data-connected-link-control-target]'
+        : '[data-connected-link-target]';
+    const targetInput = panel?.querySelector(targetSel);
+    const rightId = targetInput?.value?.trim();
+    if (!linkType || !leftId || !rightId) {
+      showToast(linkType === 'obligation_control' ? 'Enter control UUID' : 'Enter risk UUID');
+      return;
+    }
+    btn.disabled = true;
+    try {
+      await postConnectedLink(getState(), linkType, leftId, rightId);
+      showToast(linkType === 'obligation_risk' ? 'Risk linked' : 'Control linked');
+      if (targetInput) targetInput.value = '';
+      renderShell();
+    } catch (e) {
+      showToast(e?.message || 'Link failed');
+      btn.disabled = false;
+    }
+  });
+}
+
 function initConnectedWriteDelegation() {
   if (document.documentElement.dataset.connectedWriteDelegation === '1') return;
   document.documentElement.dataset.connectedWriteDelegation = '1';
@@ -2415,6 +2426,7 @@ function init() {
   }
   renderChrome();
   bindChromeHandlers();
+  initConnectedLinkDelegation();
   initConnectedWriteDelegation();
   subscribe(() => {
     const mode = getState().connectivity?.mode;

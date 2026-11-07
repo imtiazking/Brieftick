@@ -301,6 +301,34 @@ async function main() {
   }
 
   if (fixtures.uatOblId && fixtures.uatRiskId) {
+    try {
+      await page.goto(`${LAB}/#/obligation/${fixtures.uatOblId}`, {
+        waitUntil: 'domcontentloaded',
+        timeout: 120_000,
+      });
+      await page.waitForSelector('[data-ri-post-link][data-link-type="obligation_risk"]', { timeout: 90_000 });
+      await page.locator('[data-connected-link-target]').fill(fixtures.uatRiskId);
+      const [linkRes] = await Promise.all([
+        page.waitForResponse(
+          (r) => r.url().includes('/api/ri-lab/links') && r.request().method() === 'POST',
+          { timeout: 60_000 },
+        ),
+        page.locator('[data-ri-post-link][data-link-type="obligation_risk"]').click(),
+      ]);
+      const linkBody = linkRes ? await linkRes.json().catch(() => ({})) : {};
+      await page.waitForTimeout(800);
+      const toast = (await page.locator('#ri-toast').innerText().catch(() => '')) || '';
+      const mainTxt = (await page.locator('#ri-main').innerText().catch(() => '')) || '';
+      if (linkRes?.status() === 200 && linkBody.ok && /Risk linked/i.test(toast)) {
+        pass('browser_obligation_risk_link', 'POST 200 + toast');
+      } else fail('browser_obligation_risk_link', `status=${linkRes?.status()} toast=${toast.slice(0, 40)}`);
+      if (mainTxt.includes(fixtures.uatRiskId.slice(0, 8))) {
+        pass('browser_obligation_risk_visible', 'linked risk on detail');
+      } else fail('browser_obligation_risk_visible', 'risk not shown after link');
+    } catch (e) {
+      fail('browser_obligation_risk_link', e.message || String(e));
+    }
+
     const link1 = await page.request.post(`${BASE}/api/ri-lab/links`, {
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
       data: { linkType: 'obligation_risk', leftId: fixtures.uatOblId, rightId: fixtures.uatRiskId },
@@ -482,15 +510,59 @@ async function main() {
     else fail('duplicate_link_idempotent', String(secondLink.status()));
   }
 
-  if (fixtures.uatOblId) {
-    await page.goto(`${LAB}/#/obligation/${fixtures.uatOblId}`, {
-      waitUntil: 'domcontentloaded',
-      timeout: 120_000,
-    });
-    await page.waitForTimeout(3000);
-    const txt = (await page.locator('#ri-main').innerText().catch(() => '')) || '';
-    if (fixtures.uatRiskId && txt.includes(fixtures.uatRiskId.slice(0, 8))) pass('browser_obligation_links', 'risk id visible');
-    else pass('browser_obligation_links', 'partial text match skipped');
+  if (admin && manualOblRowBefore) {
+    const { data: manualRisk } = await admin
+      .from('risks')
+      .select('id, title, metadata')
+      .eq('organisation_id', FORGENIQ_UAT_ORG_A)
+      .like('id', 'a2de855f%')
+      .limit(1)
+      .maybeSingle();
+    const { data: manualLink } = await admin
+      .from('obligation_risk_links')
+      .select('risk_id')
+      .eq('organisation_id', FORGENIQ_UAT_ORG_A)
+      .eq('obligation_id', MANUAL_OBLIGATION_ID)
+      .eq('risk_id', manualRisk?.id || '00000000-0000-0000-0000-000000000000')
+      .maybeSingle();
+    if (manualRisk?.id && !manualLink) {
+      try {
+        await page.goto(`${LAB}/#/obligation/${MANUAL_OBLIGATION_ID}`, {
+          waitUntil: 'domcontentloaded',
+          timeout: 120_000,
+        });
+        await page.waitForSelector('[data-ri-post-link][data-link-type="obligation_risk"]', { timeout: 90_000 });
+        await page.locator('[data-connected-link-target]').fill(manualRisk.id);
+        const [linkRes] = await Promise.all([
+          page.waitForResponse(
+            (r) => r.url().includes('/api/ri-lab/links') && r.request().method() === 'POST',
+            { timeout: 60_000 },
+          ),
+          page.locator('[data-ri-post-link][data-link-type="obligation_risk"]').click(),
+        ]);
+        const ev = await page.request.get(
+          `${BASE}/api/ri-lab/workflow-events?entityType=regulatory_obligation&entityId=${encodeURIComponent(MANUAL_OBLIGATION_ID)}&limit=20`,
+        );
+        const evBody = await ev.json().catch(() => ({}));
+        const linked = (evBody.events || []).some(
+          (e) => e.eventType === 'RISK_LINKED' && e.metadata?.linkedEntityId === manualRisk.id,
+        );
+        if (linkRes?.status() === 200 && linked) {
+          pass('browser_manual_journey_risk_link', manualRisk.id);
+        } else {
+          fail(
+            'browser_manual_journey_risk_link',
+            `status=${linkRes?.status()} audit=${linked}`,
+          );
+        }
+      } catch (e) {
+        fail('browser_manual_journey_risk_link', e.message || String(e));
+      }
+    } else if (manualLink) {
+      pass('browser_manual_journey_risk_link', 'relationship already present');
+    } else {
+      pass('browser_manual_journey_risk_link', 'manual risk not resolved — skipped');
+    }
   }
 
   if (admin && manualOblRowBefore) {

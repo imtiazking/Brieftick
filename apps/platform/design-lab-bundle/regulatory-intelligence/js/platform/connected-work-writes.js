@@ -5,6 +5,7 @@ import { notify } from '../store.js';
 import { savePersistedJson, STORAGE_KEY_V2 } from './platform-persistence.js';
 import { persistableLabState } from './ask-ri-session.mjs';
 import {
+  fetchConnectedObligationDetail,
   initConnectedCatalogueState,
   mergeControlCatalogueRow,
   mergeImpactCatalogueRow,
@@ -205,8 +206,28 @@ function linkAuditEntities(linkType, leftId, rightId) {
   }
 }
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function formatConnectedLinkClientError(body, fallback) {
+  if (!body || typeof body !== 'object') return fallback;
+  const detail = typeof body.detail === 'string' ? body.detail : '';
+  const err = typeof body.error === 'string' ? body.error : '';
+  if (err === 'validation_error' && detail) {
+    if (detail.includes('left_id') || detail.includes('right_id')) return 'Enter a full record UUID';
+    return detail;
+  }
+  if (err === 'provenance_link_mismatch') return 'Provenance mismatch — link records from the same UAT or operational class';
+  if (err === 'forbidden') return 'Insufficient permission to create this link';
+  if (err === 'connected_writes_disabled') return 'Connected writes are disabled on staging';
+  return detail || err || fallback;
+}
+
 export async function postConnectedLink(state, linkType, leftId, rightId) {
   const base = apiBase(state);
+  if (!UUID_RE.test(leftId) || !UUID_RE.test(rightId)) {
+    throw new Error('Enter a full record UUID');
+  }
   const res = await fetch(`${base}/links`, {
     method: 'POST',
     credentials: 'same-origin',
@@ -214,7 +235,14 @@ export async function postConnectedLink(state, linkType, leftId, rightId) {
     body: JSON.stringify({ linkType, leftId, rightId }),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'link_failed');
+  if (!res.ok || !body.ok) throw new Error(formatConnectedLinkClientError(body, 'link_failed'));
+  const cat = initConnectedCatalogueState(state);
+  if (linkType === 'obligation_risk' || linkType === 'obligation_control') {
+    delete cat.obligationDetailsById?.[leftId];
+    await fetchConnectedObligationDetail(state, leftId).catch(() => null);
+  } else if (linkType === 'risk_control') {
+    delete cat.riskDetailsById?.[leftId];
+  }
   for (const [etype, eid] of linkAuditEntities(linkType, leftId, rightId)) {
     await refreshConnectedEntityWorkflowEvents(state, etype, eid);
   }

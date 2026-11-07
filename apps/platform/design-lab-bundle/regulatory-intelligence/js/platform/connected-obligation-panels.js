@@ -57,13 +57,39 @@ export function renderConnectedCreateObligationPanel(changeId) {
 
 export function renderConnectedObligationLinkPanel(id, o) {
   if (!isConnectedObligationWritesEnabled(getState())) return '';
-  return `<section class="ri-panel">
+  const s = getState();
+  const cat = getConnectedCatalogue(s);
+  const riskPick = [];
+  const seenRisk = new Set();
+  for (const r of [...(cat.authorisedUatRisks || []), ...(cat.risks || [])]) {
+    if (!r?.id || seenRisk.has(r.id)) continue;
+    seenRisk.add(r.id);
+    riskPick.push(`<option value="${esc(r.id)}">${esc(r.title || r.id.slice(0, 8))}</option>`);
+  }
+  const controlPick = [];
+  const seenCtrl = new Set();
+  for (const c of [...(cat.authorisedUatControls || []), ...(cat.controls || [])]) {
+    if (!c?.id || seenCtrl.has(c.id)) continue;
+    seenCtrl.add(c.id);
+    controlPick.push(`<option value="${esc(c.id)}">${esc(c.name || c.title || c.id.slice(0, 8))}</option>`);
+  }
+  const listId = `connected-link-targets-${esc(id).replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  return `<section class="ri-panel" data-connected-link-panel data-obligation-id="${esc(id)}">
     <h2>Link risk or control</h2>
-    <div class="ri-form__actions">
-      <input data-connected-link-right placeholder="Risk or control UUID" aria-label="Target record id" />
-      <button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-connected-link="obligation_risk" data-left-id="${esc(id)}">Link risk</button>
-      <button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-connected-link="obligation_control" data-left-id="${esc(id)}">Link control</button>
+    <div class="ri-form">
+      <label>Risk ID
+        <input data-connected-link-target list="${listId}-risks" placeholder="Full risk UUID" autocomplete="off" />
+      </label>
+      <label>Control ID
+        <input data-connected-link-control-target list="${listId}-controls" placeholder="Full control UUID" autocomplete="off" />
+      </label>
+      <datalist id="${listId}-risks">${riskPick.join('')}</datalist>
+      <datalist id="${listId}-controls">${controlPick.join('')}</datalist>
     </div>
-    <p class="ri-muted">Paste a tenant risk or control id from the register.</p>
+    <div class="ri-form__actions">
+      <button type="button" class="ri-btn ri-btn--sm ri-btn--primary" data-ri-post-link data-link-type="obligation_risk" data-left-id="${esc(id)}">Link risk</button>
+      <button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-ri-post-link data-link-type="obligation_control" data-left-id="${esc(id)}">Link control</button>
+    </div>
+    <p class="ri-muted">Choose from the register list or paste the full UUID. Short prefixes are not accepted.</p>
   </section>`;
 }
