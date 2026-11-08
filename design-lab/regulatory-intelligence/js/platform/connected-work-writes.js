@@ -5,7 +5,9 @@ import { notify } from '../store.js';
 import { savePersistedJson, STORAGE_KEY_V2 } from './platform-persistence.js';
 import { persistableLabState } from './ask-ri-session.mjs';
 import {
+  fetchConnectedControlDetail,
   fetchConnectedObligationDetail,
+  fetchConnectedRiskDetail,
   initConnectedCatalogueState,
   mergeControlCatalogueRow,
   mergeImpactCatalogueRow,
@@ -251,6 +253,9 @@ export async function postConnectedLink(state, linkType, leftId, rightId) {
     await fetchConnectedObligationDetail(state, leftId).catch(() => null);
   } else if (linkType === 'risk_control') {
     delete cat.riskDetailsById?.[leftId];
+    await fetchConnectedRiskDetail(state, leftId).catch(() => null);
+    delete cat.controlDetailsById?.[rightId];
+    await fetchConnectedControlDetail(state, rightId).catch(() => null);
   }
   for (const [etype, eid] of linkAuditEntities(linkType, leftId, rightId)) {
     await refreshConnectedEntityWorkflowEvents(state, etype, eid);

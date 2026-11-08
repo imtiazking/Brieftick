@@ -64,6 +64,7 @@ import {
   renderConnectedRiskEditPanel,
   renderConnectedRiskCreateBanner,
   renderConnectedControlCreateBanner,
+  renderConnectedRiskLinkPanel,
   renderConnectedRiskWorkflowPanel,
   renderConnectedControlWorkflowPanel,
 } from './platform/connected-risk-control-panels.js';
@@ -1372,7 +1373,11 @@ function viewRisk(id) {
   const connected = isConnectedBackendActive(s) && r._connected;
   if (connected) {
     const controls = (r.controlIds || [])
-      .map((cid) => `<li><a href="#/control/${esc(cid)}">${esc(String(cid).slice(0, 8))}…</a></li>`)
+      .map((cid) => {
+        const c = getControl(cid);
+        const label = c?.name || c?.title || `${String(cid).slice(0, 8)}…`;
+        return `<li><a href="#/control/${esc(cid)}">${esc(label)}</a> <span class="ri-muted ri-mono" title="${esc(cid)}">${esc(String(cid).slice(0, 8))}…</span></li>`;
+      })
       .join('');
     const obligations = (r.obligationIds || [])
       .map((oid) => `<li><a href="#/obligation/${esc(oid)}">${esc(String(oid).slice(0, 8))}…</a></li>`)
@@ -1390,7 +1395,8 @@ function viewRisk(id) {
         <dt>Review date</dt><dd>${formatDate(r.reviewDate)}</dd></dl>
       ${renderConnectedRiskEditPanel(id, r)}
       <section><h3>Linked obligations</h3>${obligations ? `<ul>${obligations}</ul>` : '<p class="ri-muted">No linked obligations.</p>'}</section>
-      <section><h3>Linked controls</h3>${controls ? `<ul>${controls}</ul>` : '<p class="ri-muted">No linked controls.</p>'}</section>
+      <section class="ri-panel"><h3>Linked controls</h3>${controls ? `<ul>${controls}</ul>` : '<p class="ri-muted">No linked controls.</p>'}</section>
+      ${renderConnectedRiskLinkPanel(id)}
       ${renderConnectedRiskWorkflowPanel(id)}`;
   }
   let why = '';

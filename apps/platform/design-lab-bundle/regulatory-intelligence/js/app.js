@@ -2314,19 +2314,26 @@ function initConnectedLinkDelegation() {
     const leftId = btn.getAttribute('data-left-id');
     const panel = btn.closest('[data-connected-link-panel]');
     const targetSel =
-      linkType === 'obligation_control'
+      linkType === 'obligation_control' || linkType === 'risk_control'
         ? '[data-connected-link-control-target]'
         : '[data-connected-link-target]';
     const targetInput = panel?.querySelector(targetSel);
     const rightId = targetInput?.value?.trim();
     if (!linkType || !leftId || !rightId) {
-      showToast(linkType === 'obligation_control' ? 'Enter control UUID' : 'Enter risk UUID');
+      const needControl = linkType === 'obligation_control' || linkType === 'risk_control';
+      showToast(needControl ? 'Enter control UUID' : 'Enter risk UUID');
       return;
     }
     btn.disabled = true;
     try {
       await postConnectedLink(getState(), linkType, leftId, rightId);
-      showToast(linkType === 'obligation_risk' ? 'Risk linked' : 'Control linked');
+      const linkToast =
+        linkType === 'obligation_risk'
+          ? 'Risk linked'
+          : linkType === 'risk_control'
+            ? 'Control linked to risk'
+            : 'Control linked';
+      showToast(linkToast);
       if (targetInput) targetInput.value = '';
       renderShell();
     } catch (e) {

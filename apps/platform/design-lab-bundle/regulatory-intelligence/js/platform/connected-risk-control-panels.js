@@ -1,5 +1,6 @@
 import { esc, badge } from '../components.js';
 import { getState } from '../store.js';
+import { getConnectedCatalogue } from './connected-catalogue.js';
 import { getConnectedEntityWorkflowEvents } from './connected-entity-audit.js';
 import { isConnectedControlWritesEnabled, isConnectedRiskWritesEnabled } from './connected-mode.js';
 import { renderConnectedWorkflowEventsTable } from './connected-governance-ui.js';
@@ -87,6 +88,36 @@ export function renderConnectedControlCreateBanner() {
       </label>
     </div>
     <button type="button" class="ri-btn ri-btn--primary" data-connected-create-control-btn>Create</button>
+  </section>`;
+}
+
+export function renderConnectedRiskLinkPanel(riskId) {
+  if (!isConnectedRiskWritesEnabled(getState())) return '';
+  const cat = getConnectedCatalogue(getState());
+  const controlPick = [];
+  const seenCtrl = new Set();
+  for (const c of [...(cat.authorisedUatControls || []), ...(cat.controls || [])]) {
+    if (!c?.id || seenCtrl.has(c.id)) continue;
+    seenCtrl.add(c.id);
+    const prov = c.dataProvenance === 'uat_authorised' ? ' · UAT' : '';
+    controlPick.push(
+      `<option value="${esc(c.id)}">${esc(c.name || c.title || c.id.slice(0, 8))}${prov}</option>`,
+    );
+  }
+  const listId = `connected-risk-link-controls-${esc(riskId).replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  return `<section class="ri-panel" data-connected-link-panel data-risk-id="${esc(riskId)}">
+    <h2>Link control</h2>
+    <p class="ri-muted">Maps an existing tenant control to this risk. Both records must share the same lab provenance class (e.g. authorised UAT).</p>
+    <div class="ri-form">
+      <label>Control ID
+        <input data-connected-link-control-target list="${listId}" placeholder="Full control UUID" autocomplete="off" />
+      </label>
+      <datalist id="${listId}">${controlPick.join('')}</datalist>
+    </div>
+    <div class="ri-form__actions">
+      <button type="button" class="ri-btn ri-btn--primary" data-ri-post-link data-link-type="risk_control" data-left-id="${esc(riskId)}">Link control</button>
+    </div>
+    <p class="ri-muted">Pick from the register or paste the full UUID. ID prefixes are not accepted.</p>
   </section>`;
 }
 
