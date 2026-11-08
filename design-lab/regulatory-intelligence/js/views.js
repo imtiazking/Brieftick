@@ -293,6 +293,7 @@ export function renderView(route) {
       return viewPolicies();
     case 'policy':
       return viewPolicy(id);
+    case 'issues':
     case 'actions':
       return viewActions();
     case 'action':
@@ -1633,7 +1634,7 @@ function viewAction(id) {
       { label: 'Due', value: formatDate(a.dueDate) },
     ], [
       { label: 'Regulatory Intelligence', href: '#/dashboard' },
-      { label: 'Issues & Actions', href: '#/actions' },
+      { label: 'Issues & Actions', href: '#/issues' },
       { label: a.id },
     ])}
     <dl class="ri-dl"><dt>Owner</dt><dd>${esc(personName(s, a.ownerId) || a.owner)}</dd><dt>Source</dt><dd>${esc(a.sourceType)} ${esc(a.sourceId || '')}</dd>

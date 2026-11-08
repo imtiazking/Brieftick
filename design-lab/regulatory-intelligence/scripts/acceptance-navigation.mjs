@@ -3,7 +3,9 @@
  */
 import { chromium } from 'playwright';
 
-const BASE = 'http://localhost:3000/design-lab/regulatory-intelligence/?v=nav-accept';
+const BASE =
+  process.env.RI_NAV_ACCEPT_BASE ||
+  'http://localhost:3000/design-lab/regulatory-intelligence/?v=nav-accept';
 const WIDTHS = [1440, 1280, 1024];
 const R = {};
 
@@ -31,7 +33,12 @@ async function main() {
   page.on('pageerror', (e) => errors.push(String(e)));
 
   await page.goto(BASE, { waitUntil: 'domcontentloaded' });
-  await page.evaluate(() => localStorage.removeItem('forgeniq-ri-lab-v2'));
+  await page.evaluate(() => {
+    localStorage.removeItem('forgeniq-ri-lab-v2');
+    localStorage.setItem('forgeniq-ri-presentation-mode', '1');
+  });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(400);
 
   pass(1, (await page.locator('.ri-nav').count()) === 0, 'sidebar still present');
   pass(2, (await page.locator('.ri-topnav').count()) === 1);
@@ -59,6 +66,20 @@ async function main() {
   await page.click('a.ri-topnav__menu-link[href="#/governance"]');
   await page.waitForTimeout(200);
   pass(8, page.url().includes('#/governance'));
+  await page.click('.ri-topnav__trigger[data-nav-group="governance"]');
+  await page.waitForTimeout(150);
+  await page.click('a.ri-topnav__menu-link[href="#/issues"]');
+  await page.waitForTimeout(300);
+  const issuesHead = await page.locator('.ri-page-head h1').first().innerText().catch(() => '');
+  const issuesBody = await page.locator('body').innerText();
+  pass(
+    25,
+    page.url().includes('#/issues') &&
+      (issuesHead.includes('Issues') || issuesBody.includes('Issues & Actions')) &&
+      !issuesBody.includes('No view is registered'),
+    `url=${page.url()} title=${issuesHead.slice(0, 40)}`,
+  );
+  pass(26, page.url().includes('#/issues') && (await page.locator('.ri-not-found').count()) === 0, 'not-found shell');
 
   await goto(page, '#/reports/board');
   const reportsTrigger = page.locator('.ri-topnav__trigger[data-nav-group="reports"]');

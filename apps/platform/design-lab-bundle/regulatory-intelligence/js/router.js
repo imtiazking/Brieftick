@@ -45,6 +45,7 @@ const KNOWN_TOP_LEVEL = new Set([
   'control',
   'policies',
   'policy',
+  'issues',
   'actions',
   'action',
   'evidence',

@@ -2,6 +2,12 @@ import { renderView } from './views.js';
 import { viewErrorBoundary, viewPageNotFound } from './error-views.js';
 import { perfMark, perfMeasure } from './platform/performance.js';
 import { telemetry } from './platform/telemetry.js';
+import { getState } from './store.js';
+import {
+  connectivityGateAllowsRoute,
+  renderConnectivityAccessGate,
+  shouldBlockLabViewsForConnectivity,
+} from './platform/connectivity-gate.js';
 
 /** Must match top-level segments handled in views.js */
 const KNOWN_TOP_LEVEL = new Set([
@@ -39,6 +45,7 @@ const KNOWN_TOP_LEVEL = new Set([
   'control',
   'policies',
   'policy',
+  'issues',
   'actions',
   'action',
   'evidence',
@@ -74,6 +81,10 @@ export function renderViewSafe(route) {
   try {
     if (!isKnownRoute(route)) {
       return viewPageNotFound(route);
+    }
+    const state = getState();
+    if (shouldBlockLabViewsForConnectivity(state) && !connectivityGateAllowsRoute(state, route)) {
+      return renderConnectivityAccessGate(state);
     }
     return renderView(route);
   } catch (err) {

@@ -64,6 +64,19 @@ if (!views.includes('getViewAuthorisedUatActions') || !views.includes('renderCon
   pass('ui_list', 'operational vs authorised UAT registers');
 }
 
+const router = readFileSync(join(lab, 'js/router.js'), 'utf8');
+const appJs = readFileSync(join(lab, 'js/app.js'), 'utf8');
+if (!router.includes("'issues'") || !views.includes("case 'issues':")) {
+  failTest('route_issues', 'issues list route must be registered in router + views');
+} else {
+  pass('route_issues', '#/issues dispatches to viewActions');
+}
+if (!appJs.includes("path: 'issues', label: 'Issues & Actions'")) {
+  failTest('nav_issues', 'Governance menu must link to #/issues');
+} else {
+  pass('nav_issues', 'Issues & Actions → #/issues');
+}
+
 const prov = readFileSync(join(platform, 'lib/ri/lab-api/action-lab-provenance.ts'), 'utf8');
 if (!prov.includes('partitionActionsForLabScope')) {
   failTest('provenance', 'action lab partition');
