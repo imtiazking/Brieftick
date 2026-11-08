@@ -100,49 +100,76 @@ export async function createRiAction(
     .single();
   if (error) throw new Error(error.message);
 
-  if (params.obligationId) {
-    await assertRowInOrganisation(
-      supabase,
-      'regulatory_obligations',
-      params.obligationId,
-      params.organisationId,
-    );
-    await supabase.from('action_obligation_links').insert({
-      organisation_id: params.organisationId,
-      action_id: data.id,
-      obligation_id: params.obligationId,
-    });
-  }
-  if (params.controlId) {
-    await assertRowInOrganisation(supabase, 'controls', params.controlId, params.organisationId);
-    await supabase.from('action_control_gap_links').insert({
-      organisation_id: params.organisationId,
-      action_id: data.id,
-      control_id: params.controlId,
-    });
-  }
-  if (params.impactId) {
-    await assertRowInOrganisation(
-      supabase,
-      'impact_assessments',
-      params.impactId,
-      params.organisationId,
-    );
-    await supabase.from('action_impact_assessment_links').insert({
-      organisation_id: params.organisationId,
-      action_id: data.id,
-      impact_assessment_id: params.impactId,
-    });
-  }
+  const rollbackAction = async () => {
+    await supabase
+      .from('action_obligation_links')
+      .delete()
+      .eq('action_id', data.id)
+      .eq('organisation_id', params.organisationId);
+    await supabase
+      .from('action_control_gap_links')
+      .delete()
+      .eq('action_id', data.id)
+      .eq('organisation_id', params.organisationId);
+    await supabase
+      .from('action_impact_assessment_links')
+      .delete()
+      .eq('action_id', data.id)
+      .eq('organisation_id', params.organisationId);
+    await supabase.from('actions').delete().eq('id', data.id).eq('organisation_id', params.organisationId);
+  };
 
-  await recordWorkflowEvent(supabase, {
-    organisationId: params.organisationId,
-    entityType: 'action',
-    entityId: data.id,
-    eventType: 'ACTION_CREATED',
-    actorUserId: params.userId,
-    toStatus: 'OPEN',
-  });
+  try {
+    if (params.obligationId) {
+      await assertRowInOrganisation(
+        supabase,
+        'regulatory_obligations',
+        params.obligationId,
+        params.organisationId,
+      );
+      const { error: linkErr } = await supabase.from('action_obligation_links').insert({
+        organisation_id: params.organisationId,
+        action_id: data.id,
+        obligation_id: params.obligationId,
+      });
+      if (linkErr) throw new Error(linkErr.message);
+    }
+    if (params.controlId) {
+      await assertRowInOrganisation(supabase, 'controls', params.controlId, params.organisationId);
+      const { error: linkErr } = await supabase.from('action_control_gap_links').insert({
+        organisation_id: params.organisationId,
+        action_id: data.id,
+        control_id: params.controlId,
+      });
+      if (linkErr) throw new Error(linkErr.message);
+    }
+    if (params.impactId) {
+      await assertRowInOrganisation(
+        supabase,
+        'impact_assessments',
+        params.impactId,
+        params.organisationId,
+      );
+      const { error: linkErr } = await supabase.from('action_impact_assessment_links').insert({
+        organisation_id: params.organisationId,
+        action_id: data.id,
+        impact_assessment_id: params.impactId,
+      });
+      if (linkErr) throw new Error(linkErr.message);
+    }
+
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'action',
+      entityId: data.id,
+      eventType: 'ACTION_CREATED',
+      actorUserId: params.userId,
+      toStatus: 'OPEN',
+    });
+  } catch (linkOrAuditErr) {
+    await rollbackAction();
+    throw linkOrAuditErr;
+  }
   return data;
 }
 

@@ -12,6 +12,7 @@ const ENTITY_TABLE: Record<
   | 'impact_assessments'
   | 'risks'
   | 'controls'
+  | 'actions'
   | 'evidence_items'
 > = {
   regulatory_change: 'regulatory_changes',
@@ -19,6 +20,7 @@ const ENTITY_TABLE: Record<
   impact_assessment: 'impact_assessments',
   risk: 'risks',
   control: 'controls',
+  action: 'actions',
   evidence_item: 'evidence_items',
 };
 

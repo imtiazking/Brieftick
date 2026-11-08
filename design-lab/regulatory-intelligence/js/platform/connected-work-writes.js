@@ -63,6 +63,10 @@ function formatConnectedPatchError(body, fallback) {
   if (body.error === 'validation_error' && body.detail) return body.detail;
   if (body.error === 'connected_writes_disabled') return 'Connected writes are disabled on staging';
   if (body.error === 'forbidden') return 'Insufficient permission to update this record';
+  if (body.error === 'internal_error') {
+    return 'The server could not complete this request. Refresh Issues & Actions — if the record appears, do not submit again.';
+  }
+  if (body.error === 'invalid_entity_type') return 'Workflow audit is not available for this entity type yet';
   return body.detail || body.error || fallback;
 }
 
@@ -374,7 +378,11 @@ export async function createConnectedAction(state, payload) {
   const cat = initConnectedCatalogueState(state);
   if (body.action) {
     mergeActionCatalogueRow(cat, body.action);
-    await refreshConnectedEntityWorkflowEvents(state, 'action', body.action.id);
+    try {
+      await refreshConnectedEntityWorkflowEvents(state, 'action', body.action.id);
+    } catch (auditErr) {
+      console.warn('[ri-lab] action entity audit refresh failed after create', auditErr?.message || auditErr);
+    }
   }
   await refreshConnectedWorkflowEvents(state);
   savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));

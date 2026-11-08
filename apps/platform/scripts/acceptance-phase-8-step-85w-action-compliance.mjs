@@ -77,6 +77,13 @@ if (!appJs.includes("path: 'issues', label: 'Issues & Actions'")) {
   pass('nav_issues', 'Issues & Actions → #/issues');
 }
 
+const wfRoute = readFileSync(join(platform, 'app/api/ri-lab/workflow-events/route.ts'), 'utf8');
+if (!wfRoute.includes("action: 'actions'")) {
+  failTest('workflow_entity', 'workflow-events must scope entityType action → actions table');
+} else {
+  pass('workflow_entity', 'entity audit after action create');
+}
+
 const prov = readFileSync(join(platform, 'lib/ri/lab-api/action-lab-provenance.ts'), 'utf8');
 if (!prov.includes('partitionActionsForLabScope')) {
   failTest('provenance', 'action lab partition');

@@ -86,6 +86,15 @@ export function labApiErrorResponse(err: unknown): NextResponse {
   if (err instanceof Error && err.message === 'not_found') {
     return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 });
   }
+  if (err instanceof Error && err.message === 'invalid_entity_type') {
+    return NextResponse.json({ ok: false, error: 'invalid_entity_type' }, { status: 400 });
+  }
+  if (err instanceof Error && err.message === 'entity_type_required') {
+    return NextResponse.json({ ok: false, error: 'entity_type_required' }, { status: 400 });
+  }
+  if (err instanceof Error && err.message === 'entity_id_required') {
+    return NextResponse.json({ ok: false, error: 'entity_id_required' }, { status: 400 });
+  }
   if (err instanceof Error && err.message === 'impact_locked') {
     return NextResponse.json({ ok: false, error: 'impact_locked' }, { status: 409 });
   }
@@ -100,6 +109,10 @@ export function labApiErrorResponse(err: unknown): NextResponse {
       },
       { status: 403 },
     );
+  }
+  if (process.env.NODE_ENV !== 'test') {
+    const msg = err instanceof Error ? err.message : 'unknown';
+    console.error('[ri-lab] internal_error', msg.slice(0, 240));
   }
   return NextResponse.json({ ok: false, error: 'internal_error' }, { status: 500 });
 }
