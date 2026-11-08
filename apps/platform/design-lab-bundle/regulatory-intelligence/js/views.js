@@ -27,6 +27,7 @@ import {
   getViewPolicies,
   getViewEvidence,
   getViewActions,
+  getViewAuthorisedUatActions,
   getViewFindings,
   getViewAssuranceReviews,
   getViewWorkflowEvents,
@@ -43,7 +44,14 @@ import {
 } from './store.js';
 import { connectedCatalogueBanner, getConnectedCatalogue, getConnectedAssigneeLabel, isConnectedCatalogueReady } from './platform/connected-catalogue.js';
 import { getConnectedDashboardMetrics } from './platform/connected-notifications.js';
-import { isConnectedBackendActive, isConnectedChangeWritesEnabled, isConnectedPolicyWritesEnabled, isConnectedEvidenceWritesEnabled, isConnectedModeIntent } from './platform/connected-mode.js';
+import {
+  isConnectedBackendActive,
+  isConnectedChangeWritesEnabled,
+  isConnectedPolicyWritesEnabled,
+  isConnectedEvidenceWritesEnabled,
+  isConnectedActionWritesEnabled,
+  isConnectedModeIntent,
+} from './platform/connected-mode.js';
 import {
   assertConnectedCatalogueReady,
   guardConnectedDemoSubroute,
@@ -68,6 +76,11 @@ import {
   renderConnectedRiskWorkflowPanel,
   renderConnectedControlWorkflowPanel,
 } from './platform/connected-risk-control-panels.js';
+import {
+  renderConnectedActionCreateBanner,
+  renderConnectedActionEditPanel,
+  renderConnectedActionWorkflowPanel,
+} from './platform/connected-action-panels.js';
 import {
   renderConnectedEvidenceCreatePanel,
   renderConnectedEvidenceUploadPanel,
@@ -1541,7 +1554,9 @@ function viewPolicy(id) {
 function viewActions() {
   const s = getState();
   const connected = isConnectedBackendActive(s);
+  const writes = connected && isConnectedActionWritesEnabled(s);
   const list = connected ? getViewActions() : scenarioFilter(s.actions);
+  const uatList = connected ? getViewAuthorisedUatActions() : [];
   const rows = list.map((a) => {
     const cls = a.overdue || a.status === 'Overdue' ? 'ri-row--danger' : a.status === 'Due Soon' ? 'ri-row--warn' : '';
     const desc = a.description || a.title || '';
@@ -1549,26 +1564,67 @@ function viewActions() {
       <td>${esc(a.sourceType || '—')}</td><td>${esc(a.owner || '—')}</td><td>${badge(a.priority || '—')}</td>
       <td>${formatDate(a.dueDate)}</td><td>${badge(a.status)}</td></tr>`;
   });
-  return `${pageHeader('Issues & Actions', connected ? 'Tenant remediation actions · connected read-only' : 'DEMO')}
+  const uatRows = uatList.map(
+    (a) => `<tr><td><a href="#/action/${a.id}">${esc(a.externalKey || a.id.slice(0, 8))}</a></td><td>${esc(a.title || a.description || '')}</td><td>${badge(a.dataProvenance || 'uat_authorised')}</td>
+      <td>${esc(a.owner || '—')}</td><td>${formatDate(a.dueDate)}</td><td>${badge(a.status)}</td></tr>`,
+  );
+  const uatSection = connected
+    ? `<section class="ri-panel"><h2>Authorised UAT remediation actions</h2>
+        <p class="ri-muted">Excluded from operational governance metrics when <code>dataScope=operational</code>.</p>
+        ${
+          uatRows.length
+            ? dataTable(['ID', 'Title', 'Provenance', 'Owner', 'Due', 'Status'], uatRows)
+            : '<p class="ri-muted">No authorised UAT actions in this tenant yet.</p>'
+        }</section>`
+    : '';
+  const subtitle = connected
+    ? writes
+      ? 'Tenant remediation actions · connected read/write when enabled'
+      : 'Tenant remediation actions · connected read-only'
+    : 'DEMO';
+  return `${pageHeader('Issues & Actions', subtitle)}
     ${connected ? connectedCatalogueBanner(s) : ''}
-    ${connected ? connectedReadOnlyGovernanceBanner() : ''}
-    ${rows.length ? dataTable(['ID', 'Description', 'Source', 'Owner', 'Priority', 'Due', 'Status'], rows) : connected ? connectedRegisterEmpty('actions') : dataTable(['ID', 'Description', 'Source', 'Owner', 'Priority', 'Due', 'Status'], rows)}`;
+    ${connected ? (writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner()) : ''}
+    ${writes ? renderConnectedActionCreateBanner() : ''}
+    <section class="ri-panel"><h2>Operational action register</h2>
+    ${rows.length ? dataTable(['ID', 'Description', 'Source', 'Owner', 'Priority', 'Due', 'Status'], rows) : connected ? connectedRegisterEmpty('actions') : dataTable(['ID', 'Description', 'Source', 'Owner', 'Priority', 'Due', 'Status'], rows)}
+    </section>
+    ${uatSection}`;
 }
 
 function viewAction(id) {
   const a = getAction(id);
   if (!a) return notFound('Action', id);
   const s = getState();
+  const writes = isConnectedActionWritesEnabled(s);
   if (isConnectedBackendActive(s) && a._connected) {
+    const obligations = (a.obligationIds || [])
+      .map((oid) => `<li><a href="#/obligation/${esc(oid)}">${esc(String(oid).slice(0, 8))}…</a></li>`)
+      .join('');
+    const controls = (a.controlIds || [])
+      .map((cid) => {
+        const c = getControl(cid);
+        const label = c?.name || c?.title || `${String(cid).slice(0, 8)}…`;
+        return `<li><a href="#/control/${esc(cid)}">${esc(label)}</a></li>`;
+      })
+      .join('');
     return `${connectedCatalogueBanner(s)}
-      ${connectedReadOnlyGovernanceBanner()}
-      ${entityHero(a.id.slice(0, 8), a.description, [
+      ${writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner()}
+      ${entityHero(a.id.slice(0, 8), a.title || a.description, [
         { label: 'Status', value: a.status, badge: true },
         { label: 'Priority', value: a.priority || '—', badge: true },
         { label: 'Owner', value: a.owner || '—' },
         { label: 'Due', value: formatDate(a.dueDate) },
+        { label: 'Provenance', value: a.dataProvenance || '—', badge: true },
       ])}
-      <p class="ri-muted">Assignment and status changes are disabled in connected read-only mode.</p>`;
+      <dl class="ri-dl">
+        <dt>Lab class</dt><dd>${esc(a.labClassificationLabel || a.labClassification || '—')}</dd>
+        <dt>Description</dt><dd>${esc(a.description || '—')}</dd>
+      </dl>
+      <section><h3>Linked obligations</h3>${obligations ? `<ul>${obligations}</ul>` : '<p class="ri-muted">No linked obligations.</p>'}</section>
+      <section><h3>Linked controls</h3>${controls ? `<ul>${controls}</ul>` : '<p class="ri-muted">No linked controls.</p>'}</section>
+      ${writes ? renderConnectedActionEditPanel(id, a) : '<p class="ri-muted">Assignment and status changes are disabled when action writes are off.</p>'}
+      ${renderConnectedActionWorkflowPanel(id)}`;
   }
   return `${entityHero(a.id, a.description, [
       { label: 'Status', value: a.status, badge: true },

@@ -1,13 +1,19 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { PlatformRole } from '@/lib/roles';
 import { isActionOverdue } from '@/lib/ri/action-overdue';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { resolveActionCreateMetadata } from '@/lib/ri/lab-api/action-lab-provenance';
+import type { ChangeCreateMode } from '@/lib/ri/lab-api/change-create-provenance';
+import { LAB_PROVENANCE_LOCKED_KEY } from '@/lib/ri/lab-api/change-create-provenance';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 import { parseOptionalDate, parseOptionalText, parseRequiredText } from '@/lib/ri/validation';
 
 export async function listRiActions(supabase: SupabaseClient, organisationId: string) {
   const { data, error } = await supabase
     .from('actions')
-    .select('id, title, status, priority, due_date, escalation_status, owner_user_id')
+    .select(
+      'id, title, description, status, priority, due_date, escalation_status, owner_user_id, updated_at, metadata',
+    )
     .eq('organisation_id', organisationId)
     .order('created_at', { ascending: false });
   if (error) throw new Error(error.message);
@@ -15,6 +21,49 @@ export async function listRiActions(supabase: SupabaseClient, organisationId: st
     ...a,
     overdue: isActionOverdue(a.due_date, a.status),
   }));
+}
+
+export async function createLabRiAction(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    userId: string;
+    role: PlatformRole;
+    title: string;
+    sourceType: string;
+    description?: string | null;
+    priority?: string | null;
+    dueDate?: string | null;
+    ownerUserId?: string | null;
+    creationMode: ChangeCreateMode;
+    obligationId?: string | null;
+    controlId?: string | null;
+    riskId?: string | null;
+  },
+) {
+  const { metadata } = await resolveActionCreateMetadata({
+    supabase,
+    organisationId: params.organisationId,
+    actorUserId: params.userId,
+    role: params.role,
+    creationMode: params.creationMode,
+    obligationId: params.obligationId ?? null,
+    controlId: params.controlId ?? null,
+    riskId: params.riskId ?? null,
+  });
+  return createRiAction(supabase, {
+    organisationId: params.organisationId,
+    userId: params.userId,
+    title: params.title,
+    sourceType: params.sourceType,
+    description: params.description,
+    priority: params.priority,
+    dueDate: params.dueDate,
+    obligationId: params.obligationId,
+    controlId: params.controlId,
+    metadata,
+    ownerUserId: params.ownerUserId,
+  });
 }
 
 export async function createRiAction(
@@ -30,6 +79,8 @@ export async function createRiAction(
     obligationId?: string | null;
     controlId?: string | null;
     impactId?: string | null;
+    metadata?: Record<string, unknown>;
+    ownerUserId?: string | null;
   },
 ) {
   const { data, error } = await supabase
@@ -39,7 +90,8 @@ export async function createRiAction(
       title: parseRequiredText(params.title, 'title', 500),
       description: parseOptionalText(params.description, 8000),
       source_type: parseRequiredText(params.sourceType, 'source_type', 100),
-      owner_user_id: params.userId,
+      owner_user_id: params.ownerUserId ?? params.userId,
+      metadata: params.metadata ?? {},
       priority: parseOptionalText(params.priority, 100),
       due_date: parseOptionalDate(params.dueDate),
       status: 'OPEN',
@@ -112,6 +164,16 @@ export async function getRiActionDetail(
     .select('evidence:evidence_items(id, title)')
     .eq('organisation_id', organisationId)
     .eq('action_id', actionId);
+  const { data: obligations } = await supabase
+    .from('action_obligation_links')
+    .select('obligation:regulatory_obligations(id, obligation_statement)')
+    .eq('organisation_id', organisationId)
+    .eq('action_id', actionId);
+  const { data: controls } = await supabase
+    .from('action_control_gap_links')
+    .select('control:controls(id, name)')
+    .eq('organisation_id', organisationId)
+    .eq('action_id', actionId);
   const { data: findings } = await supabase
     .from('finding_action_links')
     .select('finding:findings(id, title)')
@@ -119,6 +181,12 @@ export async function getRiActionDetail(
     .eq('action_id', actionId);
   return {
     action: { ...data, overdue: isActionOverdue(data.due_date, data.status) },
+    obligations: (obligations ?? [])
+      .map((o) => (Array.isArray(o.obligation) ? o.obligation[0] : o.obligation))
+      .filter(Boolean),
+    controls: (controls ?? [])
+      .map((c) => (Array.isArray(c.control) ? c.control[0] : c.control))
+      .filter(Boolean),
     evidence: (evidence ?? []).map((e) => (Array.isArray(e.evidence) ? e.evidence[0] : e.evidence)),
     findings: (findings ?? []).map((f) => (Array.isArray(f.finding) ? f.finding[0] : f.finding)),
   };
@@ -137,7 +205,7 @@ export async function updateRiAction(
   await assertRowInOrganisation(supabase, 'actions', params.actionId, params.organisationId);
   const { data: existing } = await supabase
     .from('actions')
-    .select('status, updated_at, owner_user_id')
+    .select('status, updated_at, owner_user_id, metadata')
     .eq('id', params.actionId)
     .single();
   if (!existing) throw new Error('not_found');
@@ -147,8 +215,28 @@ export async function updateRiAction(
   ) {
     throw new Error('stale_record');
   }
+  if (
+    existing?.metadata &&
+    typeof existing.metadata === 'object' &&
+    (existing.metadata as Record<string, unknown>)[LAB_PROVENANCE_LOCKED_KEY] === true
+  ) {
+    for (const k of ['metadata', 'recordProvenance', 'record_provenance', LAB_PROVENANCE_LOCKED_KEY]) {
+      if (k in params.fields) throw new Error('provenance_locked');
+    }
+  }
   const update: Record<string, unknown> = {};
   if ('title' in params.fields) update.title = parseRequiredText(params.fields.title, 'title', 500);
+  if ('owner_user_id' in params.fields && params.fields.owner_user_id) {
+    update.owner_user_id = parseRequiredText(params.fields.owner_user_id, 'owner_user_id', 128);
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'action',
+      entityId: params.actionId,
+      eventType: 'ACTION_ASSIGNED',
+      actorUserId: params.userId,
+      metadata: { owner_user_id: update.owner_user_id },
+    });
+  }
   if ('description' in params.fields) update.description = parseOptionalText(params.fields.description, 8000);
   if ('priority' in params.fields) update.priority = parseOptionalText(params.fields.priority, 100);
   if ('due_date' in params.fields) update.due_date = parseOptionalDate(params.fields.due_date);

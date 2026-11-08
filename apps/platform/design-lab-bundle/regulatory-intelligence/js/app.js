@@ -115,6 +115,8 @@ import {
   createConnectedRisk,
   patchConnectedControl,
   createConnectedControl,
+  createConnectedAction,
+  patchConnectedAction,
   createConnectedEvidence,
   patchConnectedPublicationApplicability,
   patchConnectedApplicabilityWorkflow,
@@ -145,6 +147,7 @@ import {
   scheduleConnectedObligationDetailFetch,
   scheduleConnectedRiskDetailFetch,
   scheduleConnectedControlDetailFetch,
+  scheduleConnectedActionDetailFetch,
   scheduleConnectedEvidenceDetailFetch,
   scheduleConnectedIngestionRunDetailFetch,
   initConnectedCatalogueState,
@@ -746,6 +749,17 @@ function bindViewHandlers() {
       .catch(() => {});
   }
 
+  const actionDetailMatch = route.match(/^\/action\/([^/]+)/);
+  if (actionDetailMatch && isConnectedBackendActive()) {
+    const actionId = actionDetailMatch[1];
+    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'action', actionId)
+      ?.then(() => renderShell())
+      .catch(() => {});
+    scheduleConnectedActionDetailFetch(getState(), actionId)
+      ?.then(() => renderShell())
+      .catch(() => {});
+  }
+
   const evidenceDetailMatch = route.match(/^\/evidence\/([^/]+)/);
   if (evidenceDetailMatch && isConnectedBackendActive()) {
     scheduleConnectedEvidenceDetailFetch(getState(), evidenceDetailMatch[1])
@@ -1125,6 +1139,44 @@ function bindViewHandlers() {
       btnEv.target.disabled = false;
     }
   });
+  }
+
+  const actionCreateBtn = document.querySelector('[data-connected-create-action-btn]');
+  if (actionCreateBtn && !actionCreateBtn.dataset.riBoundCreateAction) {
+    actionCreateBtn.dataset.riBoundCreateAction = '1';
+    actionCreateBtn.addEventListener('click', async (btnEv) => {
+      const panel = document.querySelector('[data-connected-create-action]');
+      const title = panel?.querySelector('[data-connected-action-create-title]')?.value?.trim();
+      if (!title) {
+        showToast('Title required');
+        return;
+      }
+      const obligationId = panel?.querySelector('[data-connected-action-create-obligation]')?.value?.trim() || undefined;
+      const riskId = panel?.querySelector('[data-connected-action-create-risk]')?.value?.trim() || undefined;
+      const controlId = panel?.querySelector('[data-connected-action-create-control]')?.value?.trim() || undefined;
+      const ownerUserId = panel?.querySelector('[data-connected-action-create-owner]')?.value?.trim() || undefined;
+      const payload = {
+        title,
+        description: panel?.querySelector('[data-connected-action-create-description]')?.value?.trim() || undefined,
+        priority: panel?.querySelector('[data-connected-action-create-priority]')?.value?.trim() || undefined,
+        due_date: panel?.querySelector('[data-connected-action-create-due]')?.value || undefined,
+        creationMode: panel?.querySelector('[data-connected-action-create-mode]')?.value || 'uat_authorised',
+        obligationId: obligationId || undefined,
+        riskId: riskId || undefined,
+        controlId: controlId || undefined,
+        owner_user_id: ownerUserId || undefined,
+      };
+      btnEv.target.disabled = true;
+      try {
+        const action = await createConnectedAction(getState(), payload);
+        showToast('Action created');
+        if (action?.id) location.hash = `#/action/${action.id}`;
+        else renderShell();
+      } catch (e) {
+        showToast(e?.message || 'Create failed');
+        btnEv.target.disabled = false;
+      }
+    });
   }
 
   const controlCreateBtn = document.querySelector('[data-connected-create-control-btn]');
@@ -2366,6 +2418,29 @@ function initConnectedWriteDelegation() {
         } catch (e) {
           showToast(e?.message || 'Save failed');
           riskBtn.disabled = false;
+        }
+        return;
+      }
+
+      const actionBtn = ev.target.closest('[data-connected-action-save]');
+      if (actionBtn && !actionBtn.disabled) {
+        const id = actionBtn.dataset.actionId;
+        const panel = actionBtn.closest('[data-connected-action-panel]');
+        if (!id || !panel) return;
+        const fields = {};
+        panel.querySelectorAll('[data-connected-action-field]').forEach((el) => {
+          fields[el.dataset.connectedActionField] = el.value;
+        });
+        const ownerPick = panel.querySelector('[data-connected-action-owner-select]')?.value?.trim();
+        if (ownerPick) fields.owner_user_id = ownerPick;
+        actionBtn.disabled = true;
+        try {
+          await patchConnectedAction(getState(), id, fields, actionBtn.dataset.expectedUpdatedAt || null);
+          showToast('Action saved');
+          renderShell();
+        } catch (e) {
+          showToast(e?.message || 'Save failed');
+          actionBtn.disabled = false;
         }
         return;
       }

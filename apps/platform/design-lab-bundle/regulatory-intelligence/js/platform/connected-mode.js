@@ -175,6 +175,13 @@ export function isConnectedEvidenceWritesEnabled(state = getState()) {
   );
 }
 
+export function isConnectedActionWritesEnabled(state = getState()) {
+  return Boolean(
+    isConnectedBackendActive(state) &&
+      state.platformConfig?.backendSession?.writeCapabilities?.actions === true,
+  );
+}
+
 export function isConnectedFindingWritesEnabled(state = getState()) {
   return Boolean(
     isConnectedBackendActive(state) &&

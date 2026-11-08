@@ -29,6 +29,8 @@ const EMPTY = {
   authorisedUatImpacts: [],
   authorisedUatRisks: [],
   authorisedUatControls: [],
+  authorisedUatActions: [],
+  actionProvenance: null,
   impactProvenance: null,
   riskProvenance: null,
   controlProvenance: null,
@@ -42,6 +44,7 @@ const EMPTY = {
   obligationDetailsById: {},
   riskDetailsById: {},
   controlDetailsById: {},
+  actionDetailsById: {},
   evidenceDetailsById: {},
   tenantWorkCounts: { changes: 0, impacts: 0, obligations: 0, risks: 0, controls: 0 },
   tenantGovernanceCounts: {
@@ -153,6 +156,32 @@ export function mergeRiskCatalogueRow(cat, risk) {
   cat.tenantWorkCounts = {
     ...(cat.tenantWorkCounts || {}),
     risks: (cat.risks || []).filter(isOperationalLabRow).length,
+  };
+}
+
+/** Merge action row into operational vs authorised UAT registers (BUS-UAT-013). */
+export function mergeActionCatalogueRow(cat, action) {
+  if (!action?.id) return;
+  cat.actionDetailsById = cat.actionDetailsById || {};
+  cat.actionDetailsById[action.id] = { ...cat.actionDetailsById[action.id], ...action, _connected: true };
+  if (isAuthorisedUatLabRow(action)) {
+    cat.authorisedUatActions = cat.authorisedUatActions || [];
+    const uatIdx = cat.authorisedUatActions.findIndex((x) => x.id === action.id);
+    if (uatIdx >= 0)
+      cat.authorisedUatActions[uatIdx] = { ...cat.authorisedUatActions[uatIdx], ...action, _connected: true };
+    else cat.authorisedUatActions.unshift({ ...action, _connected: true });
+    return;
+  }
+  if (!isOperationalLabRow(action)) return;
+  const idx = (cat.actions || []).findIndex((a) => a.id === action.id);
+  if (idx >= 0) cat.actions[idx] = { ...cat.actions[idx], ...action, _connected: true };
+  else {
+    cat.actions = cat.actions || [];
+    cat.actions.unshift({ ...action, _connected: true });
+  }
+  cat.tenantGovernanceCounts = {
+    ...(cat.tenantGovernanceCounts || {}),
+    actions: (cat.actions || []).filter(isOperationalLabRow).length,
   };
 }
 
@@ -352,6 +381,8 @@ async function loadConnectedCatalogueInner(state, cat) {
     cat.findings = Array.isArray(govBody.findings) ? govBody.findings : [];
     cat.assuranceReviews = Array.isArray(govBody.assuranceReviews) ? govBody.assuranceReviews : [];
     cat.actions = Array.isArray(govBody.actions) ? govBody.actions : [];
+    cat.authorisedUatActions = Array.isArray(govBody.authorisedUatActions) ? govBody.authorisedUatActions : [];
+    cat.actionProvenance = govBody.actionProvenance ?? null;
     cat.workflowEvents = Array.isArray(govBody.workflowEvents) ? govBody.workflowEvents : [];
     cat.aiAnalysisRuns = Array.isArray(govBody.aiAnalysisRuns) ? govBody.aiAnalysisRuns : [];
     cat.authorisedUatAiAnalysisRuns = Array.isArray(govBody.authorisedUatAiAnalysisRuns)
@@ -431,6 +462,8 @@ async function loadConnectedCatalogueInner(state, cat) {
     cat.authorisedUatImpacts = [];
     cat.authorisedUatRisks = [];
     cat.authorisedUatControls = [];
+    cat.authorisedUatActions = [];
+    cat.actionProvenance = null;
     cat.impactProvenance = null;
     cat.riskProvenance = null;
     cat.controlProvenance = null;
@@ -651,6 +684,33 @@ export function fetchConnectedRiskDetail(state, riskId) {
 
 export function fetchConnectedControlDetail(state, controlId) {
   return fetchConnectedEntityDetail(state, 'controls', controlId, 'controls', 'controlDetailsById', 'control');
+}
+
+export async function fetchConnectedActionDetail(state, actionId) {
+  const cat = initConnectedCatalogueState(state);
+  const base = apiBase(state).replace(/\/$/, '');
+  const res = await fetch(`${base}/actions/${encodeURIComponent(actionId)}`, {
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json' },
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) {
+    const err = new Error(body.error || 'action_detail_failed');
+    err.status = res.status;
+    throw err;
+  }
+  if (body.action) {
+    const merged = { ...body.action, _connected: true };
+    mergeActionCatalogueRow(cat, merged);
+    cat.actionDetailsById[actionId] = { ...cat.actionDetailsById[actionId], ...merged };
+  }
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+  return body.action;
+}
+
+export function scheduleConnectedActionDetailFetch(state, actionId) {
+  return scheduleConnectedDetailFetch(state, 'actionDetailsById', actionId, fetchConnectedActionDetail);
 }
 
 export function fetchConnectedEvidenceDetail(state, evidenceId) {

@@ -21,6 +21,11 @@ import {
   riskLabProvenanceInputFromRow,
   controlLabProvenanceInputFromRow,
 } from '@/lib/ri/lab-api/risk-control-lab-provenance';
+import {
+  classifyActionForLab,
+  recordKindForActionLabClass,
+  labChangeClassificationLabel as actionLabClassificationLabel,
+} from '@/lib/ri/lab-api/action-lab-provenance';
 
 function ownerLabel(ownerUserId: string | null | undefined): string {
   if (!ownerUserId) return '—';
@@ -124,12 +129,17 @@ export type LabAssuranceReviewView = {
 export type LabActionView = {
   id: string;
   title: string;
+  description: string | null;
   status: string;
   priority: string | null;
   dueDate: string | null;
   owner: string;
   ownerId: string | null;
   overdue: boolean;
+  updatedAt: string | null;
+  dataProvenance: RecordProvenanceKind;
+  labClassification: ChangeLabClass;
+  labClassificationLabel: string;
   tenantScope: true;
   _connected: true;
 };
@@ -285,15 +295,21 @@ export function mapAssuranceRowToLabView(row: Record<string, unknown>): LabAssur
 }
 
 export function mapActionRowToLabView(row: Record<string, unknown>): LabActionView {
+  const labClass = classifyActionForLab({ metadata: (row.metadata as Record<string, unknown>) ?? null });
   return {
     id: String(row.id),
     title: String(row.title ?? ''),
+    description: (row.description as string) ?? null,
     status: mapStatus(row.status as string, 'Open'),
     priority: (row.priority as string) ?? null,
     dueDate: (row.due_date as string) ?? null,
     ownerId: (row.owner_user_id as string) ?? null,
     owner: ownerLabel(row.owner_user_id as string),
     overdue: Boolean(row.overdue),
+    updatedAt: (row.updated_at as string) ?? null,
+    dataProvenance: recordKindForActionLabClass(labClass),
+    labClassification: labClass,
+    labClassificationLabel: actionLabClassificationLabel(labClass),
     tenantScope: true,
     _connected: true,
   };

@@ -13,6 +13,7 @@ import {
   mergeImpactCatalogueRow,
   mergeObligationCatalogueRow,
   mergeRiskCatalogueRow,
+  mergeActionCatalogueRow,
 } from './connected-catalogue.js';
 import {
   refreshConnectedEntityWorkflowEvents,
@@ -341,6 +342,44 @@ export async function createConnectedControl(state, payload) {
   savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();
   return body.control;
+}
+
+export async function patchConnectedAction(state, actionId, fields, expectedUpdatedAt = null) {
+  const body = await patchEntity(state, `/actions/${encodeURIComponent(actionId)}`, {
+    ...fields,
+    expectedUpdatedAt,
+  });
+  const cat = initConnectedCatalogueState(state);
+  if (body.action) {
+    const merged = { ...body.action, _connected: true };
+    mergeActionCatalogueRow(cat, merged);
+    await refreshConnectedEntityWorkflowEvents(state, 'action', actionId);
+  }
+  await refreshConnectedWorkflowEvents(state);
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+  return body.action;
+}
+
+export async function createConnectedAction(state, payload) {
+  const base = apiBase(state);
+  const res = await fetch(`${base}/actions`, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(formatConnectedPatchError(body, body.error || 'action_create_failed'));
+  const cat = initConnectedCatalogueState(state);
+  if (body.action) {
+    mergeActionCatalogueRow(cat, body.action);
+    await refreshConnectedEntityWorkflowEvents(state, 'action', body.action.id);
+  }
+  await refreshConnectedWorkflowEvents(state);
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+  return body.action;
 }
 
 export async function createConnectedEvidence(state, payload) {

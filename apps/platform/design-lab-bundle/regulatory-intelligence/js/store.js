@@ -1,4 +1,4 @@
-import { SCENARIOS } from './seed-data.js';
+﻿import { SCENARIOS } from './seed-data.js';
 import { migratePersistedState, createFreshState, clearAllLabStorage } from './migrate.js';
 import { STORAGE_KEY_V2, savePersistedJson } from './platform/platform-persistence.js';
 import { getTenantContext } from './platform/platform-tenant.js';
@@ -229,6 +229,13 @@ export function getViewAuthorisedUatRisks() {
 export function getViewAuthorisedUatControls() {
   if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
     return getConnectedCatalogue(state).authorisedUatControls || [];
+  }
+  return [];
+}
+
+export function getViewAuthorisedUatActions() {
+  if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
+    return getConnectedCatalogue(state).authorisedUatActions || [];
   }
   return [];
 }
@@ -949,16 +956,28 @@ export function getEvidence(id) {
 export function getAction(id) {
   if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
     const cat = getConnectedCatalogue(state);
-    const row = cat.actions?.find((a) => a.id === id);
-    if (row) {
+    const fromList =
+      cat.actions?.find((a) => a.id === id) || cat.authorisedUatActions?.find((a) => a.id === id);
+    const detail = cat.actionDetailsById?.[id];
+    if (fromList || detail) {
+      const row = { ...fromList, ...detail, _connected: true };
       return {
+        ...row,
         id: row.id,
-        description: row.title,
+        title: row.title,
+        description: row.description ?? row.title,
         status: row.status,
+        statusCode: row.statusCode,
         priority: row.priority,
         dueDate: row.dueDate,
         owner: row.owner,
         ownerId: row.ownerId,
+        updatedAt: row.updatedAt,
+        obligationIds: row.obligationIds,
+        controlIds: row.controlIds,
+        dataProvenance: row.dataProvenance,
+        labClassification: row.labClassification,
+        labClassificationLabel: row.labClassificationLabel,
         _connected: true,
       };
     }

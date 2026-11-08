@@ -22,6 +22,10 @@ import {
   controlLabProvenanceInputFromRow,
   riskLabProvenanceInputFromRow,
 } from '@/lib/ri/lab-api/risk-control-lab-provenance';
+import {
+  actionLabProvenanceInputFromRow,
+  partitionActionsForLabScope,
+} from '@/lib/ri/lab-api/action-lab-provenance';
 import { listAnalysisRuns } from '@/lib/ri/services/ai-analysis';
 import { listAssuranceReviews } from '@/lib/ri/services/assurance';
 import { listControls } from '@/lib/ri/services/controls';
@@ -153,11 +157,11 @@ export async function GET(request: Request) {
       scope,
       (r) => ({ title: r.review_type }),
     );
-    const { rows: actionRows, excludedSyntheticCount: exActions } = filterRowsByLabDataScope(
-      actionRowsRaw,
-      scope,
-      (r) => ({ title: r.title }),
+    const actionPartition = partitionActionsForLabScope(actionRowsRaw, scope, (r) =>
+      actionLabProvenanceInputFromRow(r as { metadata?: Record<string, unknown> | null }),
     );
+    const actionRows = scope === 'operational' ? actionPartition.operational : actionRowsRaw;
+    const exActions = actionPartition.excludedFromOperationalCount;
     mergeExcluded(scopeMeta, 'impactAssessments', exImpacts);
     mergeExcluded(scopeMeta, 'risks', exRisks);
     mergeExcluded(scopeMeta, 'controls', exControls);
@@ -255,6 +259,15 @@ export async function GET(request: Request) {
       authorisedUatEvidence: evidencePartition.authorisedUat.map((r) =>
         mapEvidenceRowToLabView(r as Record<string, unknown>),
       ),
+      authorisedUatActions: actionPartition.authorisedUat.map((r) =>
+        mapActionRowToLabView(r as Record<string, unknown>),
+      ),
+      actionProvenance: {
+        operational: actionPartition.operational.length,
+        uatAuthorised: actionPartition.authorisedUat.length,
+        unverified: actionPartition.unverified.length,
+        syntheticUat: actionPartition.syntheticUat.length,
+      },
     });
   } catch (err) {
     return labApiErrorResponse(err);

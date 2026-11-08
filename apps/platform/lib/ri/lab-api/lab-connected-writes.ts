@@ -60,6 +60,10 @@ export function resolveLabPolicyWritesEnabled(role: PlatformRole): boolean {
   return resolveLabWrite(role, 'policy:write');
 }
 
+export function resolveLabActionWritesEnabled(role: PlatformRole): boolean {
+  return resolveLabWrite(role, 'action:write');
+}
+
 export function resolveLabAiReviewWritesEnabled(role: PlatformRole): boolean {
   return resolveLabWrite(role, 'ai:review');
 }
@@ -80,6 +84,7 @@ export function resolveLabAnyConnectedWritesEnabled(role: PlatformRole): boolean
     resolveLabAssuranceWritesEnabled(role) ||
     resolveLabTriageWritesEnabled(role) ||
     resolveLabPolicyWritesEnabled(role) ||
+    resolveLabActionWritesEnabled(role) ||
     resolveLabAiReviewWritesEnabled(role)
   );
 }
@@ -114,6 +119,10 @@ export function assertLabEvidenceWritesEnabled(role: PlatformRole): void {
   assertLabConnectedWrite(role, 'evidence:write');
 }
 
+export function assertLabActionWritesEnabled(role: PlatformRole): void {
+  assertLabConnectedWrite(role, 'action:write');
+}
+
 export function assertLabFindingWritesEnabled(role: PlatformRole): void {
   assertLabConnectedWrite(role, 'finding:write');
 }
@@ -131,6 +140,7 @@ export function buildLabWriteCapabilities(role: PlatformRole) {
     triage: resolveLabTriageWritesEnabled(role),
     applicabilityWorkflow: resolveLabApplicabilityWorkflowEnabled(role),
     policies: resolveLabPolicyWritesEnabled(role),
+    actions: resolveLabActionWritesEnabled(role),
     aiReview: resolveLabAiReviewWritesEnabled(role),
   };
 }
