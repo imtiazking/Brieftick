@@ -2,6 +2,11 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
 import { isActionOverdue } from '@/lib/ri/action-overdue';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import {
+  buildActionCreateIdempotencyKey,
+  findLabActionByCreateIdempotencyKey,
+  LAB_ACTION_CREATE_IDEMPOTENCY_KEY,
+} from '@/lib/ri/lab-api/lab-action-idempotency';
 import { resolveActionCreateMetadata } from '@/lib/ri/lab-api/action-lab-provenance';
 import type { ChangeCreateMode } from '@/lib/ri/lab-api/change-create-provenance';
 import { LAB_PROVENANCE_LOCKED_KEY } from '@/lib/ri/lab-api/change-create-provenance';
@@ -39,8 +44,29 @@ export async function createLabRiAction(
     obligationId?: string | null;
     controlId?: string | null;
     riskId?: string | null;
+    idempotencyKey?: string | null;
   },
 ) {
+  const idempotencyKey = buildActionCreateIdempotencyKey({
+    organisationId: params.organisationId,
+    title: params.title,
+    creationMode: params.creationMode,
+    obligationId: params.obligationId ?? null,
+    controlId: params.controlId ?? null,
+    riskId: params.riskId ?? null,
+    ownerUserId: params.ownerUserId ?? null,
+    dueDate: params.dueDate ?? null,
+    clientKey: params.idempotencyKey ?? null,
+  });
+  const existing = await findLabActionByCreateIdempotencyKey(
+    supabase,
+    params.organisationId,
+    idempotencyKey,
+  );
+  if (existing) {
+    return { row: existing, replayed: true as const };
+  }
+
   const { metadata } = await resolveActionCreateMetadata({
     supabase,
     organisationId: params.organisationId,
@@ -51,7 +77,11 @@ export async function createLabRiAction(
     controlId: params.controlId ?? null,
     riskId: params.riskId ?? null,
   });
-  return createRiAction(supabase, {
+  const mergedMetadata = {
+    ...metadata,
+    [LAB_ACTION_CREATE_IDEMPOTENCY_KEY]: idempotencyKey,
+  };
+  const row = await createRiAction(supabase, {
     organisationId: params.organisationId,
     userId: params.userId,
     title: params.title,
@@ -61,9 +91,10 @@ export async function createLabRiAction(
     dueDate: params.dueDate,
     obligationId: params.obligationId,
     controlId: params.controlId,
-    metadata,
+    metadata: mergedMetadata,
     ownerUserId: params.ownerUserId,
   });
+  return { row, replayed: false as const };
 }
 
 export async function createRiAction(
@@ -83,6 +114,8 @@ export async function createRiAction(
     ownerUserId?: string | null;
   },
 ) {
+  const insertMetadata =
+    params.metadata && typeof params.metadata === 'object' ? { ...params.metadata } : {};
   const { data, error } = await supabase
     .from('actions')
     .insert({
@@ -91,7 +124,7 @@ export async function createRiAction(
       description: parseOptionalText(params.description, 8000),
       source_type: parseRequiredText(params.sourceType, 'source_type', 100),
       owner_user_id: params.ownerUserId ?? params.userId,
-      metadata: params.metadata ?? {},
+      metadata: insertMetadata,
       priority: parseOptionalText(params.priority, 100),
       due_date: parseOptionalDate(params.dueDate),
       status: 'OPEN',

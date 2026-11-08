@@ -2,6 +2,7 @@ import 'server-only';
 
 import { RiValidationError } from '@/lib/ri/errors';
 import { parseLabActionParentIds } from '@/lib/ri/lab-api/action-lab-provenance';
+import { normalizeActionIdempotencyKey } from '@/lib/ri/lab-api/lab-action-idempotency';
 import { parseOptionalDate, parseOptionalText, parseRequiredText } from '@/lib/ri/validation';
 
 export function parseLabActionCreateBody(body: unknown) {
@@ -19,6 +20,7 @@ export function parseLabActionCreateBody(body: unknown) {
       raw.owner_user_id === null || raw.owner_user_id === undefined || raw.owner_user_id === ''
         ? null
         : parseRequiredText(raw.owner_user_id, 'owner_user_id', 128),
+    idempotencyKey: normalizeActionIdempotencyKey(raw.idempotency_key),
     ...parents,
   };
 }

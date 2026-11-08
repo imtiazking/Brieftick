@@ -359,7 +359,11 @@ export async function patchConnectedAction(state, actionId, fields, expectedUpda
     mergeActionCatalogueRow(cat, merged);
     await refreshConnectedEntityWorkflowEvents(state, 'action', actionId);
   }
-  await refreshConnectedWorkflowEvents(state);
+  try {
+    await refreshConnectedWorkflowEvents(state);
+  } catch (govErr) {
+    console.warn('[ri-lab] governance refresh failed after action create', govErr?.message || govErr);
+  }
   savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();
   return body.action;
@@ -384,7 +388,11 @@ export async function createConnectedAction(state, payload) {
       console.warn('[ri-lab] action entity audit refresh failed after create', auditErr?.message || auditErr);
     }
   }
-  await refreshConnectedWorkflowEvents(state);
+  try {
+    await refreshConnectedWorkflowEvents(state);
+  } catch (govErr) {
+    console.warn('[ri-lab] governance refresh failed after action create', govErr?.message || govErr);
+  }
   savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();
   return body.action;

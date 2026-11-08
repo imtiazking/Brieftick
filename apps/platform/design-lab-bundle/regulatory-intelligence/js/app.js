@@ -1156,6 +1156,10 @@ function bindViewHandlers() {
       const riskId = panel?.querySelector('[data-connected-action-create-risk]')?.value?.trim() || undefined;
       const controlId = panel?.querySelector('[data-connected-action-create-control]')?.value?.trim() || undefined;
       const ownerUserId = panel?.querySelector('[data-connected-action-create-owner]')?.value?.trim() || undefined;
+      if (panel && !panel.dataset.createIdempotencyKey) {
+        panel.dataset.createIdempotencyKey =
+          typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `idem-${Date.now()}`;
+      }
       const payload = {
         title,
         description: panel?.querySelector('[data-connected-action-create-description]')?.value?.trim() || undefined,
@@ -1166,11 +1170,13 @@ function bindViewHandlers() {
         riskId: riskId || undefined,
         controlId: controlId || undefined,
         owner_user_id: ownerUserId || undefined,
+        idempotency_key: panel?.dataset.createIdempotencyKey || undefined,
       };
       btnEv.target.disabled = true;
       try {
         const action = await createConnectedAction(getState(), payload);
-        showToast('Action created');
+        const shortId = action?.id ? `${action.id.slice(0, 8)}…` : '';
+        showToast(action?.id ? `Action created · ${shortId} (${action.id})` : 'Action created');
         if (action?.id) location.hash = `#/action/${action.id}`;
         else renderShell();
       } catch (e) {

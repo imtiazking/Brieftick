@@ -77,6 +77,13 @@ if (!appJs.includes("path: 'issues', label: 'Issues & Actions'")) {
   pass('nav_issues', 'Issues & Actions → #/issues');
 }
 
+const idem = readFileSync(join(platform, 'lib/ri/lab-api/lab-action-idempotency.ts'), 'utf8');
+if (!idem.includes('findLabActionByCreateIdempotencyKey')) {
+  failTest('idempotency', 'action create idempotency helper required');
+} else {
+  pass('idempotency', 'labCreateIdempotencyKey replay');
+}
+
 const wfRoute = readFileSync(join(platform, 'app/api/ri-lab/workflow-events/route.ts'), 'utf8');
 if (!wfRoute.includes("action: 'actions'")) {
   failTest('workflow_entity', 'workflow-events must scope entityType action → actions table');

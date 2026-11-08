@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const ctx = await requireRiContext('action:write');
     assertLabActionWritesEnabled(ctx.role);
     const body = parseLabActionCreateBody(await request.json());
-    const row = await createLabRiAction(ctx.supabase, {
+    const result = await createLabRiAction(ctx.supabase, {
       organisationId: ctx.organisationId,
       userId: ctx.userId,
       role: ctx.role,
@@ -38,10 +38,15 @@ export async function POST(request: Request) {
       obligationId: body.obligationId,
       controlId: body.controlId,
       riskId: body.riskId,
+      idempotencyKey: body.idempotencyKey,
     });
     return NextResponse.json(
-      { ok: true, action: mapActionRowToLabView(row as Record<string, unknown>) },
-      { status: 201 },
+      {
+        ok: true,
+        action: mapActionRowToLabView(result.row as Record<string, unknown>),
+        idempotentReplay: result.replayed,
+      },
+      { status: result.replayed ? 200 : 201 },
     );
   } catch (err) {
     return labApiErrorResponse(err);
