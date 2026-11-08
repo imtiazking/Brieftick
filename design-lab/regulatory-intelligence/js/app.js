@@ -1095,27 +1095,6 @@ function bindViewHandlers() {
     });
   });
 
-  document.querySelectorAll('[data-connected-risk-save]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const id = btn.dataset.riskId;
-      const panel = btn.closest('[data-connected-risk-panel]');
-      if (!id || !panel) return;
-      const fields = {};
-      panel.querySelectorAll('[data-connected-risk-field]').forEach((el) => {
-        fields[el.dataset.connectedRiskField] = el.value;
-      });
-      btn.disabled = true;
-      try {
-        await patchConnectedRisk(getState(), id, fields, btn.dataset.expectedUpdatedAt || null);
-        showToast('Risk saved');
-        renderShell();
-      } catch (e) {
-        showToast(e?.message || 'Save failed');
-        btn.disabled = false;
-      }
-    });
-  });
-
   const riskCreateBtn = document.querySelector('[data-connected-create-risk-btn]');
   if (riskCreateBtn && !riskCreateBtn.dataset.riBoundCreateRisk) {
     riskCreateBtn.dataset.riBoundCreateRisk = '1';
@@ -1147,27 +1126,6 @@ function bindViewHandlers() {
     }
   });
   }
-
-  document.querySelectorAll('[data-connected-control-save]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const id = btn.dataset.controlId;
-      const panel = btn.closest('[data-connected-control-panel]');
-      if (!id || !panel) return;
-      const fields = {};
-      panel.querySelectorAll('[data-connected-control-field]').forEach((el) => {
-        fields[el.dataset.connectedControlField] = el.value;
-      });
-      btn.disabled = true;
-      try {
-        await patchConnectedControl(getState(), id, fields, btn.dataset.expectedUpdatedAt || null);
-        showToast('Control saved');
-        renderShell();
-      } catch (e) {
-        showToast(e?.message || 'Save failed');
-        btn.disabled = false;
-      }
-    });
-  });
 
   const controlCreateBtn = document.querySelector('[data-connected-create-control-btn]');
   if (controlCreateBtn && !controlCreateBtn.dataset.riBoundCreateControl) {
@@ -2384,6 +2342,48 @@ function initConnectedWriteDelegation() {
   document.addEventListener(
     'click',
     async (ev) => {
+      const riskBtn = ev.target.closest('[data-connected-risk-save]');
+      if (riskBtn && !riskBtn.disabled) {
+        const id = riskBtn.dataset.riskId;
+        const panel = riskBtn.closest('[data-connected-risk-panel]');
+        if (!id || !panel) return;
+        const fields = {};
+        panel.querySelectorAll('[data-connected-risk-field]').forEach((el) => {
+          fields[el.dataset.connectedRiskField] = el.value;
+        });
+        riskBtn.disabled = true;
+        try {
+          await patchConnectedRisk(getState(), id, fields, riskBtn.dataset.expectedUpdatedAt || null);
+          showToast('Risk saved');
+          renderShell();
+        } catch (e) {
+          showToast(e?.message || 'Save failed');
+          riskBtn.disabled = false;
+        }
+        return;
+      }
+
+      const controlBtn = ev.target.closest('[data-connected-control-save]');
+      if (controlBtn && !controlBtn.disabled) {
+        const id = controlBtn.dataset.controlId;
+        const panel = controlBtn.closest('[data-connected-control-panel]');
+        if (!id || !panel) return;
+        const fields = {};
+        panel.querySelectorAll('[data-connected-control-field]').forEach((el) => {
+          fields[el.dataset.connectedControlField] = el.value;
+        });
+        controlBtn.disabled = true;
+        try {
+          await patchConnectedControl(getState(), id, fields, controlBtn.dataset.expectedUpdatedAt || null);
+          showToast('Control saved');
+          renderShell();
+        } catch (e) {
+          showToast(e?.message || 'Save failed');
+          controlBtn.disabled = false;
+        }
+        return;
+      }
+
       const metaBtn = ev.target.closest('[data-connected-change-metadata-save]');
       if (!metaBtn || metaBtn.disabled) return;
       const changeId = metaBtn.dataset.changeId;

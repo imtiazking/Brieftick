@@ -54,6 +54,15 @@ async function refreshConnectedWorkflowEvents(state) {
   cat.workflowEvents = Array.isArray(body.workflowEvents) ? body.workflowEvents : cat.workflowEvents;
 }
 
+function formatConnectedPatchError(body, fallback) {
+  if (!body || typeof body !== 'object') return fallback;
+  if (body.error === 'stale_record') return 'Record was updated elsewhere — refresh and save again';
+  if (body.error === 'validation_error' && body.detail) return body.detail;
+  if (body.error === 'connected_writes_disabled') return 'Connected writes are disabled on staging';
+  if (body.error === 'forbidden') return 'Insufficient permission to update this record';
+  return body.detail || body.error || fallback;
+}
+
 async function patchEntity(state, path, payload) {
   const base = apiBase(state);
   const res = await fetch(`${base}${path}`, {
@@ -63,7 +72,7 @@ async function patchEntity(state, path, payload) {
     body: JSON.stringify(payload),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'update_failed');
+  if (!res.ok || !body.ok) throw new Error(formatConnectedPatchError(body, 'update_failed'));
   return body;
 }
 
@@ -253,7 +262,13 @@ export async function postConnectedLink(state, linkType, leftId, rightId) {
 
 export async function patchConnectedRisk(state, riskId, fields, expectedUpdatedAt = null) {
   const body = await patchEntity(state, `/risks/${encodeURIComponent(riskId)}`, { ...fields, expectedUpdatedAt });
+  const cat = initConnectedCatalogueState(state);
+  if (body.risk) {
+    mergeRiskCatalogueRow(cat, { ...body.risk, _connected: true });
+    await refreshConnectedEntityWorkflowEvents(state, 'risk', riskId);
+  }
   await refreshConnectedWorkflowEvents(state);
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();
   return body.risk;
 }
@@ -280,7 +295,24 @@ export async function createConnectedRisk(state, payload) {
 }
 
 export async function patchConnectedControl(state, controlId, fields, expectedUpdatedAt = null) {
-  const body = await patchEntity(state, `/controls/${encodeURIComponent(controlId)}`, { ...fields, expectedUpdatedAt });
+  const body = await patchEntity(state, `/controls/${encodeURIComponent(controlId)}`, {
+    ...fields,
+    expectedUpdatedAt,
+  });
+  const cat = initConnectedCatalogueState(state);
+  if (body.control) {
+    const merged = { ...body.control, _connected: true };
+    const prev = cat.controlDetailsById?.[controlId];
+    if (prev) {
+      if (prev.riskIds && merged.riskIds == null) merged.riskIds = prev.riskIds;
+      if (prev.obligationIds && merged.obligationIds == null) merged.obligationIds = prev.obligationIds;
+      if (prev.evidenceIds && merged.evidenceIds == null) merged.evidenceIds = prev.evidenceIds;
+    }
+    mergeControlCatalogueRow(cat, merged);
+    await refreshConnectedEntityWorkflowEvents(state, 'control', controlId);
+  }
+  await refreshConnectedWorkflowEvents(state);
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();
   return body.control;
 }

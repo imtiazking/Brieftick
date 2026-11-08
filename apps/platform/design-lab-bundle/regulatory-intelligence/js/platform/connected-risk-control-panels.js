@@ -1,5 +1,6 @@
 import { esc, badge } from '../components.js';
-import { getState, getViewWorkflowEvents } from '../store.js';
+import { getState } from '../store.js';
+import { getConnectedEntityWorkflowEvents } from './connected-entity-audit.js';
 import { isConnectedControlWritesEnabled, isConnectedRiskWritesEnabled } from './connected-mode.js';
 import { renderConnectedWorkflowEventsTable } from './connected-governance-ui.js';
 
@@ -90,17 +91,13 @@ export function renderConnectedControlCreateBanner() {
 }
 
 export function renderConnectedRiskWorkflowPanel(riskId) {
-  const events = getViewWorkflowEvents().filter(
-    (e) => e.entityType === 'risk' || (e.metadata?.risk_id === riskId),
-  );
+  const events = getConnectedEntityWorkflowEvents(getState(), 'risk', riskId);
   return `<section class="ri-panel"><h2>Related workflow</h2>
-    ${renderConnectedWorkflowEventsTable(events.slice(0, 15), 'No linked workflow events')}</section>`;
+    ${renderConnectedWorkflowEventsTable(events.slice(0, 15), 'No workflow events for this risk')}</section>`;
 }
 
 export function renderConnectedControlWorkflowPanel(controlId) {
-  const events = getViewWorkflowEvents().filter(
-    (e) => e.entityType === 'control' || e.metadata?.control_id === controlId,
-  );
+  const events = getConnectedEntityWorkflowEvents(getState(), 'control', controlId);
   return `<section class="ri-panel"><h2>Related workflow</h2>
-    ${renderConnectedWorkflowEventsTable(events.slice(0, 15), 'No linked workflow events')}</section>`;
+    ${renderConnectedWorkflowEventsTable(events.slice(0, 15), 'No workflow events for this control')}</section>`;
 }
