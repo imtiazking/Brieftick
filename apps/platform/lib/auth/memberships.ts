@@ -1,47 +1,16 @@
 import 'server-only';
 
-import { isPlatformRole } from '@/lib/roles';
-import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { queryMembershipsForClerkUser } from '@/lib/auth/membership-query';
 import type { MembershipRecord } from '@/lib/auth/tenant-access';
 import { requireUser } from '@/lib/auth/session';
-
-type DbMembershipRow = {
-  organisation_id: string;
-  clerk_user_id: string;
-  role: string;
-  status: string;
-};
-
-function mapRow(row: DbMembershipRow): MembershipRecord | null {
-  if (!isPlatformRole(row.role)) return null;
-  const status = row.status as MembershipRecord['status'];
-  if (status !== 'active' && status !== 'invited' && status !== 'removed') return null;
-  return {
-    organisationId: row.organisation_id,
-    clerkUserId: row.clerk_user_id,
-    role: row.role,
-    status,
-  };
-}
+import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 export async function getMembershipsForClerkUser(userId: string): Promise<MembershipRecord[]> {
-  const supabase = await createSupabaseServerClient();
-  if (!supabase) {
+  const result = await queryMembershipsForClerkUser(userId);
+  if (!result.ok) {
     return [];
   }
-
-  const { data, error } = await supabase
-    .from('organisation_memberships')
-    .select('organisation_id, clerk_user_id, role, status')
-    .eq('clerk_user_id', userId);
-
-  if (error || !data) {
-    return [];
-  }
-
-  return data
-    .map((row) => mapRow(row as DbMembershipRow))
-    .filter((m): m is MembershipRecord => m !== null);
+  return result.memberships;
 }
 
 export async function getMembershipsForCurrentUser(): Promise<MembershipRecord[]> {
