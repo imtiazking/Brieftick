@@ -26,6 +26,25 @@ if (!findingsSvc.includes('linkFindingControl') || !findingsSvc.includes('metada
 } else {
   pass('server_create', 'finding provenance + control link on create');
 }
+if (!findingsSvc.includes('loadFindingLinkedControls')) {
+  failTest('server_detail', 'getFindingDetail must load control links in two-step query');
+} else {
+  pass('server_detail', 'finding control link resolution');
+}
+
+const govView = readFileSync(join(platform, 'lib/ri/lab-api/lab-governance-view.ts'), 'utf8');
+if (!govView.includes('parentRiskId') || !govView.includes('findingRelationshipFieldsFromMetadata')) {
+  failTest('lab_view', 'mapFindingRowToLabView must expose metadata lineage');
+} else {
+  pass('lab_view', 'parentRiskId/parentControlId on lab view');
+}
+
+const postRoute = readFileSync(join(platform, 'app/api/ri-lab/findings/route.ts'), 'utf8');
+if (!postRoute.includes('getFindingDetail')) {
+  failTest('post_detail', 'POST must return hydrated finding with links');
+} else {
+  pass('post_detail', 'create response includes relationships');
+}
 
 const prov = readFileSync(join(platform, 'lib/ri/lab-api/risk-control-lab-provenance.ts'), 'utf8');
 if (!prov.includes('partitionFindingsForLabScope') || !prov.includes('resolveFindingCreateMetadata')) {

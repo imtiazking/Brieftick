@@ -827,15 +827,28 @@ export async function fetchConnectedFindingDetail(state, findingId) {
   if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
 
   if (body.finding) {
-    const linkedControls = (body.linkedControls ?? body.finding.linkedControls ?? []).filter((c) => c?.id);
+    const meta = body.detail?.metadata ?? body.finding.metadata ?? null;
+    const metaRisk =
+      typeof meta?.parentRiskId === 'string' ? meta.parentRiskId : body.finding.parentRiskId ?? null;
+    const metaControl =
+      typeof meta?.parentControlId === 'string' ? meta.parentControlId : body.finding.parentControlId ?? null;
+    let linkedControls = (body.linkedControls ?? body.finding.linkedControls ?? []).filter((c) => c?.id);
+    if (!linkedControls.length && metaControl) {
+      const controls = [...(cat.controls || []), ...(cat.authorisedUatControls || [])];
+      const ctrl = controls.find((c) => c.id === metaControl);
+      linkedControls = [{ id: metaControl, name: ctrl?.name || ctrl?.title || '' }];
+    }
     const linkedActions = (body.linkedActions ?? body.finding.linkedActions ?? []).filter((a) => a?.id);
     const merged = {
       ...body.finding,
       linkedControls,
       linkedActions,
-      controlIds: body.finding.controlIds ?? linkedControls.map((c) => c.id),
+      controlIds: body.finding.controlIds?.length
+        ? body.finding.controlIds
+        : linkedControls.map((c) => c.id),
+      parentControlId: metaControl,
       actionIds: body.finding.actionIds ?? linkedActions.map((a) => a.id),
-      parentRiskId: body.parentRiskId ?? body.finding.parentRiskId ?? null,
+      parentRiskId: body.parentRiskId ?? metaRisk,
       _detailHydrated: true,
       _connected: true,
     };

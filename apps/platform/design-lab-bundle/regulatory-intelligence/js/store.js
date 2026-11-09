@@ -372,6 +372,7 @@ export function getFinding(id) {
         actionIds: row.actionIds,
         linkedActions: row.linkedActions,
         parentRiskId: row.parentRiskId,
+        parentControlId: row.parentControlId,
         dataProvenance: row.dataProvenance,
         labClassification: row.labClassification,
         labClassificationLabel: row.labClassificationLabel,

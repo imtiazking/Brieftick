@@ -97,6 +97,28 @@ export async function createFinding(
   return data;
 }
 
+async function loadFindingLinkedControls(
+  supabase: SupabaseClient,
+  organisationId: string,
+  findingId: string,
+): Promise<Array<{ id: string; name: string }>> {
+  const { data: links, error: linkErr } = await supabase
+    .from('finding_control_links')
+    .select('control_id')
+    .eq('organisation_id', organisationId)
+    .eq('finding_id', findingId);
+  if (linkErr) throw new Error(linkErr.message);
+  const controlIds = [...new Set((links ?? []).map((r) => r.control_id).filter(Boolean))];
+  if (!controlIds.length) return [];
+  const { data: controls, error: ctrlErr } = await supabase
+    .from('controls')
+    .select('id, name')
+    .eq('organisation_id', organisationId)
+    .in('id', controlIds);
+  if (ctrlErr) throw new Error(ctrlErr.message);
+  return (controls ?? []).map((c) => ({ id: String(c.id), name: String(c.name ?? '') }));
+}
+
 export async function getFindingDetail(
   supabase: SupabaseClient,
   organisationId: string,
@@ -110,12 +132,8 @@ export async function getFindingDetail(
     .eq('organisation_id', organisationId)
     .single();
   if (error) throw new Error(error.message);
-  const [controls, actions, assurance] = await Promise.all([
-    supabase
-      .from('finding_control_links')
-      .select('control:controls(id, name)')
-      .eq('organisation_id', organisationId)
-      .eq('finding_id', findingId),
+  const [linkedControls, actions, assurance] = await Promise.all([
+    loadFindingLinkedControls(supabase, organisationId, findingId),
     supabase
       .from('finding_action_links')
       .select('action:actions(id, title)')
@@ -127,9 +145,11 @@ export async function getFindingDetail(
       .eq('organisation_id', organisationId)
       .eq('finding_id', findingId),
   ]);
+  if (actions.error) throw new Error(actions.error.message);
+  if (assurance.error) throw new Error(assurance.error.message);
   return {
     finding: data,
-    controls: (controls.data ?? []).map((r) => (Array.isArray(r.control) ? r.control[0] : r.control)),
+    controls: linkedControls,
     actions: (actions.data ?? []).map((r) => (Array.isArray(r.action) ? r.action[0] : r.action)),
     assurance: (assurance.data ?? []).map((r) =>
       Array.isArray(r.assurance) ? r.assurance[0] : r.assurance,

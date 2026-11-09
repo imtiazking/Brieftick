@@ -34,10 +34,13 @@ export function renderConnectedFindingCreatePanel() {
 
 export function renderConnectedFindingLinkPanel(findingId, f) {
   if (!isConnectedFindingWritesEnabled(getState())) return '';
+  const controlIds =
+    (f?.controlIds?.length ? f.controlIds : null) ||
+    (f?.parentControlId ? [f.parentControlId] : []);
   const linked =
     (f?.linkedControls || []).length > 0
       ? f.linkedControls
-      : (f?.controlIds || []).map((id) => ({
+      : controlIds.map((id) => ({
           id,
           name: getControl(id)?.name || getControl(id)?.title || '',
         }));

@@ -4,7 +4,11 @@
 import { notify } from '../store.js';
 import { savePersistedJson, STORAGE_KEY_V2 } from './platform-persistence.js';
 import { persistableLabState } from './ask-ri-session.mjs';
-import { initConnectedCatalogueState, mergeFindingCatalogueRow } from './connected-catalogue.js';
+import {
+  initConnectedCatalogueState,
+  mergeFindingCatalogueRow,
+  fetchConnectedFindingDetail,
+} from './connected-catalogue.js';
 import { isConnectedFindingWritesEnabled, isConnectedPolicyWritesEnabled } from './connected-mode.js';
 
 function apiBase(state) {
@@ -92,6 +96,11 @@ export async function createConnectedFinding(state, fields) {
   if (!res.ok || !body.ok) throw new Error(body.error || 'finding_create_failed');
   const cat = initConnectedCatalogueState(state);
   mergeFindingCatalogueRow(cat, { ...body.finding, _connected: true });
+  try {
+    await fetchConnectedFindingDetail(state, body.finding.id);
+  } catch {
+    /* create must not fail when detail refresh fails */
+  }
   savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();
   return body;

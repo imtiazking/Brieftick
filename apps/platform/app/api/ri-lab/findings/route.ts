@@ -4,7 +4,7 @@ import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { mapFindingRowToLabView } from '@/lib/ri/lab-api/lab-governance-view';
 import { assertLabFindingWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
 import { parseLabFindingCreateBody } from '@/lib/ri/lab-api/lab-link-write';
-import { createFinding, listFindings } from '@/lib/ri/services/findings';
+import { createFinding, getFindingDetail, listFindings } from '@/lib/ri/services/findings';
 
 export async function GET() {
   try {
@@ -28,8 +28,24 @@ export async function POST(request: Request) {
       role: ctx.role,
       fields,
     });
+    const detail = await getFindingDetail(ctx.supabase, ctx.organisationId, String(row.id));
+    const finding = mapFindingRowToLabView(detail.finding as Record<string, unknown>);
+    const linkedControls = (detail.controls ?? []).map((c) => ({
+      id: String(c.id),
+      name: String(c.name ?? ''),
+    }));
     return NextResponse.json(
-      { ok: true, finding: mapFindingRowToLabView(row as Record<string, unknown>) },
+      {
+        ok: true,
+        finding: {
+          ...finding,
+          controlIds: linkedControls.map((c) => c.id),
+          linkedControls,
+          parentRiskId: finding.parentRiskId ?? null,
+        },
+        linkedControls,
+        parentRiskId: finding.parentRiskId ?? null,
+      },
       { status: 201 },
     );
   } catch (err) {

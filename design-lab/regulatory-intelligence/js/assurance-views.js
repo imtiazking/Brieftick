@@ -385,7 +385,22 @@ export function viewFindingsList() {
 export function viewFinding(id) {
   const s = getState();
   if (isConnectedBackendActive(s)) {
+    const cat = getConnectedCatalogue(s);
+    const detail = cat.findingDetailsById?.[id];
+    const fromList =
+      cat.findings?.find((x) => x.id === id) || cat.authorisedUatFindings?.find((x) => x.id === id);
+    if (!fromList && !detail) {
+      return `${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyGovernanceBanner(s)}
+        <p class="ri-muted" data-connected-finding-loading="true">Loading tenant finding from staging…</p>`;
+    }
     const f = getFinding(id);
+    if (f && detail?._detailHydrated !== true && !f.parentRiskId && !(f.linkedControls || []).length) {
+      return `${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyGovernanceBanner(s)}
+        ${pageHeader(f.title || id.slice(0, 8), id.slice(0, 8))}
+        <p class="ri-muted" data-connected-finding-loading="true">Loading finding relationships from staging…</p>`;
+    }
     if (!f) {
       return `${connectedCatalogueBanner(s)}
         ${connectedReadOnlyGovernanceBanner(s)}

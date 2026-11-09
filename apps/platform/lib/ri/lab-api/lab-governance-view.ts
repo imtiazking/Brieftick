@@ -118,12 +118,23 @@ export type LabFindingView = {
   ownerId: string | null;
   description?: string | null;
   updatedAt?: string | null;
+  parentRiskId?: string | null;
+  parentControlId?: string | null;
+  controlIds?: string[];
   dataProvenance?: RecordProvenanceKind;
   labClassification?: ChangeLabClass;
   labClassificationLabel?: string;
   tenantScope: true;
   _connected: true;
 };
+
+export function findingRelationshipFieldsFromMetadata(
+  metadata: Record<string, unknown> | null | undefined,
+): { parentRiskId: string | null; parentControlId: string | null } {
+  const parentRiskId = typeof metadata?.parentRiskId === 'string' ? metadata.parentRiskId : null;
+  const parentControlId = typeof metadata?.parentControlId === 'string' ? metadata.parentControlId : null;
+  return { parentRiskId, parentControlId };
+}
 
 export type LabAssuranceReviewView = {
   id: string;
@@ -281,6 +292,8 @@ export function mapEvidenceRowToLabView(row: Record<string, unknown>): LabEviden
 
 export function mapFindingRowToLabView(row: Record<string, unknown>): LabFindingView {
   const labClass = classifyRiskForLab(riskLabProvenanceInputFromRow(row));
+  const meta = (row.metadata as Record<string, unknown> | null | undefined) ?? null;
+  const { parentRiskId, parentControlId } = findingRelationshipFieldsFromMetadata(meta);
   return {
     id: String(row.id),
     title: String(row.title ?? ''),
@@ -291,6 +304,9 @@ export function mapFindingRowToLabView(row: Record<string, unknown>): LabFinding
     owner: ownerLabel(row.owner_user_id as string),
     description: (row.description as string) ?? null,
     updatedAt: (row.updated_at as string) ?? null,
+    parentRiskId,
+    parentControlId,
+    ...(parentControlId ? { controlIds: [parentControlId] } : {}),
     dataProvenance: recordKindForRiskControlLabClass(labClass),
     labClassification: labClass,
     labClassificationLabel: labChangeClassificationLabel(labClass),

@@ -287,6 +287,14 @@ function mergeWithSeed(saved) {
     if (findingDetails && typeof findingDetails === 'object') {
       for (const [id, row] of Object.entries(findingDetails)) {
         if (!row || row._detailHydrated !== true) delete findingDetails[id];
+        else if (
+          !row.parentRiskId &&
+          !(row.linkedControls || []).length &&
+          !(row.controlIds || []).length &&
+          !row.parentControlId
+        ) {
+          delete findingDetails[id];
+        }
       }
     }
     const entityAudit = fresh.connectedCatalogue.entityWorkflowEventsByKey;
