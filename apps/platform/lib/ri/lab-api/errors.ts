@@ -98,6 +98,31 @@ export function labApiErrorResponse(err: unknown): NextResponse {
   if (err instanceof Error && err.message === 'impact_locked') {
     return NextResponse.json({ ok: false, error: 'impact_locked' }, { status: 409 });
   }
+  if (err instanceof Error && err.message === 'evidence_duplicate_content') {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: 'evidence_duplicate_content',
+        message: 'This file matches the latest uploaded version (duplicate content).',
+      },
+      { status: 409 },
+    );
+  }
+  if (err instanceof Error && err.message === 'evidence_invalid_content_type') {
+    return NextResponse.json({ ok: false, error: 'evidence_invalid_content_type' }, { status: 400 });
+  }
+  if (err instanceof Error && err.message === 'evidence_invalid_size') {
+    return NextResponse.json({ ok: false, error: 'evidence_invalid_size' }, { status: 400 });
+  }
+  if (err instanceof Error && err.message === 'evidence_no_file') {
+    return NextResponse.json({ ok: false, error: 'evidence_no_file' }, { status: 404 });
+  }
+  if (err instanceof Error && err.message === 'evidence_storage_cross_tenant') {
+    return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 });
+  }
+  if (err instanceof Error && err.message === 'missing_file') {
+    return NextResponse.json({ ok: false, error: 'missing_file' }, { status: 400 });
+  }
   if (err instanceof Error && err.message === 'segregation_of_duties') {
     return NextResponse.json(
       {

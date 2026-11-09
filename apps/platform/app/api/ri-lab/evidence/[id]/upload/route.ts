@@ -25,7 +25,7 @@ export async function POST(request: Request, { params }: Params) {
     const form = await request.formData();
     const file = form.get('file');
     if (!(file instanceof File)) {
-      return NextResponse.json({ error: 'missing_file' }, { status: 400 });
+      return NextResponse.json({ ok: false, error: 'missing_file' }, { status: 400 });
     }
     const bytes = Buffer.from(await file.arrayBuffer());
     const version = await uploadTenantEvidenceVersion(ctx.supabase, {

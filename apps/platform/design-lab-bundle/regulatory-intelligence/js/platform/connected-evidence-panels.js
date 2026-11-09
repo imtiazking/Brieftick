@@ -27,6 +27,26 @@ export function renderConnectedEvidenceCreatePanel() {
   </section>`;
 }
 
+export function renderConnectedEvidenceVersionsPanel(e) {
+  const versions = Array.isArray(e?.versions) ? e.versions : [];
+  if (!versions.length) {
+    return `<section class="ri-panel"><h2>File versions</h2><p class="ri-muted">No files uploaded yet.</p></section>`;
+  }
+  const rows = versions
+    .map(
+      (v) =>
+        `<tr><td class="ri-mono">v${esc(String(v.versionNumber ?? '—'))}</td>` +
+        `<td>${esc(v.filename || '—')}</td>` +
+        `<td>${esc(v.contentType || '—')}</td>` +
+        `<td>${esc(v.byteSize != null ? String(v.byteSize) : '—')}</td>` +
+        `<td>${formatDate(v.uploadedAt)}</td></tr>`,
+    )
+    .join('');
+  return `<section class="ri-panel"><h2>File versions</h2>
+    <table class="ri-table"><thead><tr><th>Ver</th><th>File</th><th>Type</th><th>Bytes</th><th>Uploaded</th></tr></thead>
+    <tbody>${rows}</tbody></table></section>`;
+}
+
 export function renderConnectedEvidenceUploadPanel(evidenceId) {
   if (!isConnectedEvidenceWritesEnabled(getState())) return '';
   return `<section class="ri-panel" data-connected-evidence-upload-panel="${esc(evidenceId)}">

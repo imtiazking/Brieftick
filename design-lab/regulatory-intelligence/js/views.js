@@ -85,6 +85,7 @@ import {
 import {
   renderConnectedEvidenceCreatePanel,
   renderConnectedEvidenceUploadPanel,
+  renderConnectedEvidenceVersionsPanel,
   renderConnectedEvidenceLinkPanel,
   renderConnectedEvidenceWorkflowPanel,
 } from './platform/connected-evidence-panels.js';
@@ -1715,6 +1716,7 @@ function viewEvidenceDetail(id) {
         <dt>Source hash</dt><dd class="ri-mono">${esc(e.sourceHash || '—')}</dd>
         <dt>Recorded</dt><dd>${formatDate(e.createdAt)}</dd></dl>
       ${writes ? renderConnectedEvidenceLinkPanel(id, e) : ''}
+      ${renderConnectedEvidenceVersionsPanel(e)}
       ${writes ? renderConnectedEvidenceUploadPanel(id) : ''}
       ${renderConnectedEvidenceWorkflowPanel(id)}`;
   }

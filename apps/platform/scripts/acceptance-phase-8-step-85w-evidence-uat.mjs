@@ -62,9 +62,27 @@ if (!appJs.includes('creationMode') || !appJs.includes('controlId')) {
   pass('app_create', 'create payload wired');
 }
 
-const upload = join(platform, 'app/api/ri-lab/evidence/[id]/upload/route.ts');
-if (!existsSync(upload)) failTest('upload', 'missing upload route');
+const upload = readFileSync(join(platform, 'app/api/ri-lab/evidence/[id]/upload/route.ts'), 'utf8');
+if (!upload.includes('uploadTenantEvidenceVersion')) failTest('upload', 'missing upload route');
 else pass('upload', 'secure file upload API');
+
+const detailRoute = readFileSync(join(platform, 'app/api/ri-lab/evidence/[id]/route.ts'), 'utf8');
+if (!detailRoute.includes('versions')) failTest('detail_versions', 'evidence GET must expose file versions');
+else pass('detail_versions', 'versions on evidence detail API');
+
+const writes = readFileSync(join(lab, 'js/platform/connected-work-writes.js'), 'utf8');
+if (!writes.includes('formatEvidenceUploadError') || !writes.includes('fetchConnectedEvidenceDetail')) {
+  failTest('upload_ui', 'connected upload must map errors and refresh detail');
+} else {
+  pass('upload_ui', 'upload error mapping + detail refresh');
+}
+
+const panV = readFileSync(join(lab, 'js/platform/connected-evidence-panels.js'), 'utf8');
+if (!panV.includes('renderConnectedEvidenceVersionsPanel')) {
+  failTest('versions_ui', 'evidence detail must list file versions');
+} else {
+  pass('versions_ui', 'versions panel');
+}
 
 if (!fail) console.log('\nacceptance-phase-8-step-85w-evidence-uat: PASS\n');
 else {

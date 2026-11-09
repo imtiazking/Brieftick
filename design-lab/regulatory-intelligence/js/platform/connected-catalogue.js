@@ -758,7 +758,11 @@ export async function fetchConnectedEvidenceDetail(state, evidenceId) {
     throw err;
   }
   if (body.evidence) {
-    const merged = { ...body.evidence, _connected: true };
+    const merged = {
+      ...body.evidence,
+      versions: body.versions ?? body.evidence.versions ?? [],
+      _connected: true,
+    };
     mergeEvidenceCatalogueRow(cat, merged);
     cat.evidenceDetailsById[evidenceId] = { ...cat.evidenceDetailsById[evidenceId], ...merged };
   }

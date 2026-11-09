@@ -200,7 +200,6 @@ export async function uploadTenantEvidenceVersion(
       ...cleanupContext,
       message: auditError instanceof Error ? auditError.message : String(auditError),
     });
-    throw auditError;
   }
 
   return versionRow;

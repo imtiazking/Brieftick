@@ -114,7 +114,7 @@ export async function getEvidenceDetail(
 
   const versions = await supabase
     .from('evidence_versions')
-    .select('id, version_number, content_type, byte_size, source_hash, uploaded_by, created_at')
+    .select('id, version_number, storage_path, content_type, byte_size, source_hash, uploaded_by, created_at')
     .eq('organisation_id', organisationId)
     .eq('evidence_id', evidenceId)
     .order('version_number', { ascending: false });

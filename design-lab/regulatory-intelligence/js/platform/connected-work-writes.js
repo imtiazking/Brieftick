@@ -15,6 +15,7 @@ import {
   mergeRiskCatalogueRow,
   mergeActionCatalogueRow,
   mergeEvidenceCatalogueRow,
+  fetchConnectedEvidenceDetail,
 } from './connected-catalogue.js';
 import {
   refreshConnectedEntityWorkflowEvents,
@@ -447,6 +448,25 @@ export async function fetchConnectedGovernancePending(state) {
   return body.pending || [];
 }
 
+const EVIDENCE_UPLOAD_ERROR_MESSAGES = {
+  evidence_duplicate_content:
+    'This file matches the latest version (duplicate content). Change the file content before uploading again.',
+  evidence_invalid_content_type: 'Unsupported file type. Use PDF, PNG, JPEG, or TXT.',
+  evidence_invalid_size: 'File must be non-empty and under 5MB.',
+  evidence_no_file: 'No file is attached to this evidence yet.',
+  missing_file: 'Choose a file before uploading.',
+  internal_error: 'Upload failed due to a server error.',
+  forbidden: 'You do not have permission to upload evidence.',
+  connected_writes_disabled: 'Evidence uploads are disabled in this session.',
+};
+
+export function formatEvidenceUploadError(body) {
+  const code = body?.error;
+  if (code && EVIDENCE_UPLOAD_ERROR_MESSAGES[code]) return EVIDENCE_UPLOAD_ERROR_MESSAGES[code];
+  if (typeof body?.message === 'string' && body.message.trim()) return body.message.trim();
+  return code || 'Evidence upload failed';
+}
+
 export async function uploadConnectedEvidenceFile(state, evidenceId, file) {
   const base = apiBase(state);
   const form = new FormData();
@@ -457,8 +477,17 @@ export async function uploadConnectedEvidenceFile(state, evidenceId, file) {
     body: form,
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'evidence_upload_failed');
-  await refreshConnectedWorkflowEvents(state);
+  if (!res.ok || !body.ok) throw new Error(formatEvidenceUploadError(body));
+  try {
+    await refreshConnectedEntityWorkflowEvents(state, 'evidence_item', evidenceId);
+  } catch (refreshErr) {
+    console.warn('[connected] evidence upload workflow refresh failed', refreshErr);
+  }
+  try {
+    await fetchConnectedEvidenceDetail(state, evidenceId);
+  } catch (refreshErr) {
+    console.warn('[connected] evidence upload detail refresh failed', refreshErr);
+  }
   notify();
   return body.version;
 }
