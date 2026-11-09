@@ -85,7 +85,13 @@ import { libraryPublicationSearchText } from './platform/connected-display.js';
 import {
   markConnectedNotificationRead,
   getConnectedNotificationsUnreadCount,
+  loadConnectedNotifications,
 } from './platform/connected-notifications.js';
+import {
+  clearAttentionCentreQuery,
+  readAttentionCentreQueryFromDom,
+  setAttentionCentreQuery,
+} from './platform/notification-attention.js';
 import { patchConnectedIntakeTriage } from './platform/connected-intake-writes.js';
 import { createConnectedRegulatoryChange, patchConnectedChange } from './platform/connected-change-writes.js';
 import {
@@ -2089,6 +2095,50 @@ function bindViewHandlers() {
       renderShell();
     }
   });
+
+  const attentionApply = document.querySelector('[data-attention-apply]');
+  if (attentionApply && !attentionApply.dataset.riBoundAttentionApply) {
+    attentionApply.dataset.riBoundAttentionApply = '1';
+    const runAttentionQuery = async () => {
+      setAttentionCentreQuery(readAttentionCentreQueryFromDom());
+      if (isConnectedBackendActive(getState())) {
+        try {
+          await loadConnectedNotifications(getState());
+        } catch (e) {
+          showToast(e?.message || 'Notification search failed');
+        }
+        renderShell();
+        return;
+      }
+      renderShell();
+    };
+    attentionApply.addEventListener('click', () => {
+      void runAttentionQuery();
+    });
+    const searchInput = document.querySelector('[data-attention-search]');
+    searchInput?.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') {
+        ev.preventDefault();
+        void runAttentionQuery();
+      }
+    });
+  }
+
+  const attentionClear = document.querySelector('[data-attention-clear]');
+  if (attentionClear && !attentionClear.dataset.riBoundAttentionClear) {
+    attentionClear.dataset.riBoundAttentionClear = '1';
+    attentionClear.addEventListener('click', async () => {
+      clearAttentionCentreQuery();
+      if (isConnectedBackendActive(getState())) {
+        try {
+          await loadConnectedNotifications(getState());
+        } catch (e) {
+          showToast(e?.message || 'Notification reload failed');
+        }
+      }
+      renderShell();
+    });
+  }
 
   document.querySelectorAll('[data-mark-read]').forEach((btn) => {
     btn.addEventListener('click', async () => {

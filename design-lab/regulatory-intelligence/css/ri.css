@@ -174,6 +174,28 @@ html[data-theme="split"] body.ri-body {
   border-radius: 99px;
 }
 
+.ri-connected-banner {
+  margin: 0 0 1rem;
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: inherit;
+}
+.ri-connected-banner--error {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.4);
+}
+.ri-connected-banner--loading {
+  opacity: 0.85;
+}
+
+.ri-lab-pill--connected {
+  color: var(--ri-teal, #5eb8b8);
+  border-color: rgba(94, 184, 184, 0.45);
+}
+
 .ri-scenario {
   display: flex;
   align-items: center;
@@ -597,6 +619,130 @@ html[data-theme="split"] body.ri-body {
   font-size: 14px;
 }
 
+.ri-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow: auto;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--ri-line);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.ri-picker-option {
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ri-text);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ri-picker-option:hover,
+.ri-picker-option:focus-visible {
+  border-color: var(--ri-accent);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ri-picker-option[hidden] {
+  display: none;
+}
+
+.ri-form--create-change .ri-form__row {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.ri-form--create-change .ri-search-full {
+  max-width: none;
+  width: 100%;
+}
+
+.ri-form--create-change .ri-form__actions {
+  margin-top: 8px;
+}
+
+.ri-create-mode {
+  border: 1px solid var(--ri-line);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.ri-create-mode legend {
+  padding: 0 6px;
+  font-size: 13px;
+  color: var(--ri-muted);
+}
+
+.ri-radio {
+  display: block;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.ri-create-change-selected {
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.ri-picker-list--compact {
+  max-height: 160px;
+}
+
+.ri-pub-combobox {
+  position: relative;
+  max-width: 520px;
+}
+
+.ri-pub-combobox__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--ri-line);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--ri-text);
+  font-size: 14px;
+  font-family: var(--ri-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.ri-pub-combobox__trigger[aria-expanded='true'] {
+  border-color: var(--ri-accent);
+}
+
+.ri-pub-combobox__menu {
+  position: absolute;
+  z-index: 40;
+  left: 0;
+  right: 0;
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--ri-line);
+  background: var(--ri-panel);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.ri-pub-combobox__menu .ri-search-full {
+  max-width: none;
+  margin-bottom: 8px;
+}
+
+.ri-pub-combobox__count {
+  margin: 0 0 6px;
+  font-size: 12px;
+}
+
 .ri-select {
   padding: 10px 14px;
   min-height: 40px;
@@ -606,6 +752,27 @@ html[data-theme="split"] body.ri-body {
   color: var(--ri-text);
   font-size: 14px;
   font-family: var(--ri-body);
+}
+
+.ri-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: flex-end;
+  margin-top: 12px;
+}
+
+.ri-filter-bar label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ri-muted);
+}
+
+.ri-field--search .ri-search-full {
+  width: 100%;
+  max-width: 520px;
 }
 .ri-toolbar label.ri-search { flex: 1; min-width: 200px; max-width: 420px; }
 
@@ -1041,6 +1208,24 @@ html[data-theme="split"] body.ri-body {
   padding: 8px;
   border-top: 1px solid var(--ri-line);
   margin-top: 40px;
+}
+
+.ri-environment-banner--staging {
+  color: var(--ri-teal, #5eb8b8);
+  border-top-color: rgba(94, 184, 184, 0.35);
+}
+
+.ri-environment-banner--demo {
+  color: #8a6a00;
+  background: rgba(255, 193, 7, 0.12);
+  border-top: 2px solid rgba(255, 193, 7, 0.45);
+  font-weight: 600;
+}
+
+.ri-environment-banner--error {
+  color: #c62828;
+  background: rgba(198, 40, 40, 0.08);
+  border-top: 2px solid rgba(198, 40, 40, 0.35);
 }
 
 @media (max-width: 900px) {

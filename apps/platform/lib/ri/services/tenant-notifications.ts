@@ -98,15 +98,47 @@ export async function listTenantNotifications(
   supabase: SupabaseClient,
   organisationId: string,
   userId: string,
-  options: { limit?: number; unreadOnly?: boolean } = {},
+  options: {
+    limit?: number;
+    unreadOnly?: boolean;
+    severity?: TenantNotificationSeverity | null;
+    notificationType?: TenantNotificationType | null;
+    dateFrom?: string | null;
+    dateTo?: string | null;
+    search?: string | null;
+    sortAsc?: boolean;
+    fetchLimit?: number;
+  } = {},
 ): Promise<Array<TenantNotificationRow & { effectiveRead: boolean }>> {
-  const limit = Math.min(options.limit ?? 100, 200);
-  const { data, error } = await supabase
+  const limit = Math.min(options.fetchLimit ?? options.limit ?? 100, 500);
+  let query = supabase
     .from('tenant_notifications')
     .select('*')
     .eq('organisation_id', organisationId)
-    .or(`recipient_user_id.is.null,recipient_user_id.eq.${userId}`)
-    .order('created_at', { ascending: false })
+    .or(`recipient_user_id.is.null,recipient_user_id.eq.${userId}`);
+
+  if (options.notificationType) {
+    query = query.eq('notification_type', options.notificationType);
+  }
+  if (options.severity) {
+    query = query.eq('severity', options.severity);
+  }
+  if (options.dateFrom) {
+    query = query.gte('created_at', `${options.dateFrom}T00:00:00.000Z`);
+  }
+  if (options.dateTo) {
+    query = query.lte('created_at', `${options.dateTo}T23:59:59.999Z`);
+  }
+  if (options.search?.trim()) {
+    const pattern = options.search.trim().replace(/[%_\\,]/g, '').slice(0, 120);
+    const ilike = `%${pattern}%`;
+    query = query.or(
+      `message.ilike.${ilike},title.ilike.${ilike},entity_id.ilike.${ilike},notification_type.ilike.${ilike}`,
+    );
+  }
+
+  const { data, error } = await query
+    .order('created_at', { ascending: options.sortAsc === true })
     .limit(limit);
   if (error) throw new Error(error.message);
   const rows = (data ?? []) as TenantNotificationRow[];

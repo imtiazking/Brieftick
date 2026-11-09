@@ -753,6 +753,27 @@ html[data-theme="split"] body.ri-body {
   font-size: 14px;
   font-family: var(--ri-body);
 }
+
+.ri-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: flex-end;
+  margin-top: 12px;
+}
+
+.ri-filter-bar label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ri-muted);
+}
+
+.ri-field--search .ri-search-full {
+  width: 100%;
+  max-width: 520px;
+}
 .ri-toolbar label.ri-search { flex: 1; min-width: 200px; max-width: 420px; }
 
 .ri-metrics-row {

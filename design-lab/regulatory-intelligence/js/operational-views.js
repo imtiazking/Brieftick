@@ -2,12 +2,38 @@ import {
   getState,
   scenarioFilter,
   getPublication,
+  getViewPublications,
   getDemoUser,
   buildWorkQueue,
   buildNotifications,
   pipelineCounts,
   personName,
+  getViewChanges,
+  getViewOperationalAlerts,
+  getConnectedOperationsNotes,
 } from './store.js';
+import { connectedCatalogueBanner, getConnectedAssigneeLabel } from './platform/connected-catalogue.js';
+import { isConnectedBackendActive, isConnectedChangeWritesEnabled } from './platform/connected-mode.js';
+import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
+import { connectedReadOnlyOperationsBanner, renderConnectedOperationalAlertsTable } from './platform/connected-operations-ui.js';
+import { connectedIntakeRowCells, connectedWorkModeBanner } from './platform/connected-display.js';
+import { connectedIntakeTriageEnabled } from './platform/connected-intake-writes.js';
+import { getConnectedNotifications } from './platform/connected-notifications.js';
+import {
+  filterNotificationsClient,
+  getAttentionCentreQuery,
+  renderAttentionCentreControls,
+} from './platform/notification-attention.js';
+import {
+  connectedReadOnlyGovernanceBanner,
+  renderConnectedGovernanceMetrics,
+} from './platform/connected-governance-ui.js';
+import {
+  fetchConnectedExecutiveReport,
+  renderConnectedExecutiveReport,
+  renderConnectedReportingPeriodSelector,
+} from './platform/connected-reporting.js';
+import { getConnectedGovernanceMetrics } from './store.js';
 import { orgFactorBullets, relatedForPublication } from './seed-operational.js';
 import { isIntakeCandidate, slaStatus, slaBadgeClass, teamMemberIds } from './workflow-helpers.js';
 import { governanceMetrics, getClosureReadiness } from './governance-helpers.js';
@@ -30,10 +56,39 @@ import {
 
 export function viewIntakeList() {
   const s = getState();
-  let pubs = scenarioFilter(s.publications).filter(isIntakeCandidate);
-  pubs = pubs.sort((a, b) => (b.detectedAt || '').localeCompare(a.detectedAt || ''));
+  const connected = isConnectedBackendActive(s);
+  let pubs = getViewPublications().filter(isIntakeCandidate);
+  pubs = pubs.sort((a, b) => {
+    const da = b.display?.detectedAt || b.detectedAt || '';
+    const db = a.display?.detectedAt || a.detectedAt || '';
+    return String(da).localeCompare(String(db));
+  });
 
   const rows = pubs.map((p) => {
+    if (connected) {
+      const c = connectedIntakeRowCells(p);
+      if (!c) {
+        return `<tr data-intake-row><td colspan="15" class="ri-muted">Missing display mapping for ${esc(p.id)}</td></tr>`;
+      }
+      const search = `${p.title} ${c.reference} ${c.topic}`;
+      return `<tr data-intake-row data-regulator="${esc(p.regulator)}" data-topic="${esc(c.topic)}" data-status="${esc(c.triage)}" data-priority="${esc(c.aiPriority)}" data-type="${esc(c.publicationType)}" data-search="${esc(search)}">
+      <td>${badge(p.regulator)}</td>
+      <td class="ri-table__title"><a class="ri-table__title-link" href="#/intake/${p.id}">${esc(p.title)}</a><span class="ri-mono ri-table__ref">${esc(c.reference)}</span>${c.fixtureNote || ''}</td>
+      <td class="ri-mono">${esc(c.reference)}</td>
+      <td>${esc(c.publicationType)}</td>
+      <td>${c.published}</td>
+      <td>${c.detected}</td>
+      <td>${esc(c.topic)}</td>
+      <td>UK</td>
+      <td>${esc(c.aiRelevance)}</td>
+      <td>${esc(c.aiPriority)}</td>
+      <td>${esc(c.classification)}</td>
+      <td>${esc(c.businessAreas)}</td>
+      <td>${esc(c.triage)}</td>
+      <td>${esc(c.reviewer)}</td>
+      <td>${esc(c.sla)}</td>
+    </tr>`;
+    }
     const sla = slaStatus(p.triageSlaDue, p.triageStatus === 'Accepted' || p.intakeAccepted);
     const inWorkflow = p.intakeAccepted ? '<span class="ri-muted">In RI workflow</span>' : '';
     return `<tr data-intake-row data-regulator="${esc(p.regulator)}" data-topic="${esc(p.topic)}" data-status="${esc(p.triageStatus)}" data-priority="${esc(p.aiPriority || p.priority)}" data-reviewer="${esc(p.assignedReviewerId || '')}" data-type="${esc(p.publicationType)}" data-search="${esc(`${p.title} ${p.reference} ${p.topic}`)}">
@@ -55,7 +110,8 @@ export function viewIntakeList() {
     </tr>`;
   });
 
-  return `${pageHeader('Regulatory Intake', 'Incoming publications for triage and assignment — mock regulatory content')}
+  return `${pageHeader('Regulatory Intake', connected ? 'Global catalogue publications · connected read-only' : 'Incoming publications for triage and assignment — mock regulatory content')}
+    ${connected ? connectedCatalogueBanner(s) : ''}
     <div class="ri-toolbar ri-toolbar--wrap">
       <label class="ri-search"><span class="sr-only">Search</span>
         <input type="search" id="intake-search" placeholder="Search title, reference, topic…" data-intake-filter="search" />
@@ -78,10 +134,17 @@ export function viewIntakeDetail(pubId) {
   const p = getPublication(pubId);
   if (!p) return notFoundState('Publication', pubId);
   const s = getState();
-  const analysis = s.publicationAnalysis?.[pubId];
-  const related = (s.relatedPublications || []).filter((r) => r.fromId === pubId || r.toId === pubId);
-  const orgFactors = orgFactorBullets(s.orgProfile || {});
-  const otherPub = (id) => getPublication(id);
+  const connected = isConnectedBackendActive(s);
+  const detail = p._detail;
+  const analysis = connected ? null : s.publicationAnalysis?.[pubId];
+  const related = connected
+    ? []
+    : (s.relatedPublications || []).filter((r) => r.fromId === pubId || r.toId === pubId);
+  const orgFactors = connected ? [] : orgFactorBullets(s.orgProfile || {});
+  const otherPub = (id) => {
+    if (connected) return getViewPublications().find((x) => x.id === id);
+    return getPublication(id);
+  };
 
   const relRows = related.map((r) => {
     const targetId = r.fromId === pubId ? r.toId : r.fromId;
@@ -97,15 +160,28 @@ export function viewIntakeDetail(pubId) {
     </tr>`;
   });
 
-  return `${entityHero(p.id, p.title, [
-      { label: 'Regulator', value: p.regulator, badge: true },
-      { label: 'Reference', value: p.reference, mono: true },
-      { label: 'Triage', value: p.triageStatus, badge: true },
-      { label: 'AI relevance', value: p.aiRelevanceScore != null ? `${p.aiRelevanceScore}%` : '—', mono: true },
-      { label: 'Priority', value: p.aiPriority || p.priority, badge: true },
-      { label: 'Reviewer', value: personName(s, p.assignedReviewerId) || 'Unassigned' },
-      { label: 'SLA due', value: formatDate(p.triageSlaDue) },
-    ], [
+  const d = p.display;
+  const heroMeta = connected && d
+    ? [
+        { label: 'Regulator', value: p.regulator, badge: true },
+        { label: 'Reference', value: d.reference, mono: true },
+        { label: 'Triage', value: d.triage, badge: true },
+        { label: 'AI relevance', value: d.aiRelevance, mono: true },
+        { label: 'Priority', value: d.aiPriority, badge: true },
+        { label: 'Classification', value: d.classification, badge: true },
+        { label: 'Detected', value: d.detectedAt ? formatDateTime(d.detectedAt) : '—' },
+      ]
+    : [
+        { label: 'Regulator', value: p.regulator, badge: true },
+        { label: 'Reference', value: p.reference, mono: true },
+        { label: 'Triage', value: p.triageStatus, badge: true },
+        { label: 'AI relevance', value: p.aiRelevanceScore != null ? `${p.aiRelevanceScore}%` : '—', mono: true },
+        { label: 'Priority', value: p.aiPriority || p.priority, badge: true },
+        { label: 'Reviewer', value: personName(s, p.assignedReviewerId) || 'Unassigned' },
+        { label: 'SLA due', value: formatDate(p.triageSlaDue) },
+      ];
+
+  return `${entityHero(p.id, p.title, heroMeta, [
       { label: 'Regulatory Intelligence', href: '#/dashboard' },
       { label: 'Intake', href: '#/intake' },
       { label: p.id },
@@ -114,18 +190,30 @@ export function viewIntakeDetail(pubId) {
 
     <section class="ri-subsection"><h2>Detection</h2>
       <dl class="ri-dl">
-        <dt>Detected</dt><dd>${p.detectedAt ? formatDateTime(p.detectedAt) : '—'}</dd>
-        <dt>Source</dt><dd>${esc(p.sourceLabel || 'Mock connector')}</dd>
+        <dt>Detected</dt><dd>${connected && d ? (d.detectedAt ? formatDateTime(d.detectedAt) : '—') : p.detectedAt ? formatDateTime(p.detectedAt) : '—'}</dd>
+        <dt>Source</dt><dd>${esc(p.sourceLabel || (connected ? '—' : 'Mock connector'))}</dd>
         <dt>Regulator</dt><dd>${esc(p.regulator)}</dd>
-        <dt>Reference</dt><dd>${esc(p.reference)}</dd>
-        <dt>URL</dt><dd><a href="${esc(p.sourceUrl)}">Mock source document</a></dd>
-        <dt>Type</dt><dd>${esc(p.publicationType)}</dd>
+        <dt>Reference</dt><dd>${esc(connected && d ? d.reference : p.reference)}</dd>
+        <dt>URL</dt><dd>${p.sourceUrl ? `<a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener noreferrer">Canonical source</a>` : '—'}</dd>
+        ${connected && detail?.versions?.length ? `<dt>Ingestion versions</dt><dd>${detail.versions.length} stored version(s)</dd>` : ''}
+        ${connected && detail?.sourceMeta ? `<dt>Source verification</dt><dd>${esc(detail.sourceMeta.verification_status || '—')} · ${esc(detail.sourceMeta.production_status || '')}</dd>` : ''}
+        <dt>Type</dt><dd>${esc(connected && d ? d.publicationType : p.publicationType)}</dd>
         <dt>Jurisdiction</dt><dd>${esc(p.jurisdiction || 'UK')}</dd>
+        ${connected && d ? `<dt>Data origin</dt><dd>${esc(d.dataOriginLabel)} · ${esc(d.catalogueKind)}</dd>` : ''}
       </dl>
     </section>
 
-    <section class="ri-subsection"><h2>AI classification</h2>
-      ${aiRecommendation({
+    <section class="ri-subsection"><h2>${connected ? 'Applicability (persisted)' : 'AI classification'}</h2>
+      ${
+        connected && d
+          ? `<p class="ri-muted">No AI intake analysis in connected mode unless persisted in RI AI tables.</p>
+      <dl class="ri-dl">
+        <dt>Classification</dt><dd>${esc(d.classification)}</dd>
+        <dt>AI relevance</dt><dd>${esc(d.aiRelevance)}</dd>
+        <dt>Priority (materiality)</dt><dd>${esc(d.aiPriority)}</dd>
+        <dt>Business areas</dt><dd>${esc(d.businessAreas)}</dd>
+      </dl>`
+          : `${aiRecommendation({
         recommendation: p.applicabilityRecommendation,
         confidence: p.aiRelevanceScore ?? p.applicabilityConfidence,
         reasoning: analysis?.reasoning || p.aiSummary,
@@ -146,36 +234,69 @@ export function viewIntakeDetail(pubId) {
         <p class="ri-muted"><strong>Why is this publication considered high relevance? (DEMO)</strong></p>
         <ul>${orgFactors.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>
       </div>
-      ${aiProvenancePanel(analysis?.aiGovernance || { generatedAt: p.aiGeneratedAt, humanReviewStatus: p.aiHumanReviewStatus }, orgFactors)}
+      ${aiProvenancePanel(analysis?.aiGovernance || { generatedAt: p.aiGeneratedAt, humanReviewStatus: p.aiHumanReviewStatus }, orgFactors)}`
+      }
     </section>
 
     <section class="ri-subsection"><h2>Possible related publications</h2>
-      <p class="ri-muted">AI-assisted duplicate / related-document detection (DEMO — not live FCA matching).</p>
+      <p class="ri-muted">${connected ? 'Related-publication graph unavailable in connected read-only mode.' : 'AI-assisted duplicate / related-document detection (DEMO — not live FCA matching).'}</p>
       ${dataTable(['ID', 'Title', 'Regulator', 'Relationship', 'Similarity', 'Reason', 'Date'], relRows, 'No related publications in seed')}
     </section>
 
     <section class="ri-subsection" data-intake-pub="${esc(pubId)}"><h2>Triage decision</h2>
-      <div class="ri-form__actions">
-        <button type="button" class="ri-btn ri-btn--primary" data-triage="accept">Accept for assessment</button>
-        <button type="button" class="ri-btn ri-btn--ghost" data-triage="not-relevant">Mark not relevant</button>
-        <button type="button" class="ri-btn ri-btn--ghost" data-triage="escalate">Escalate</button>
-        <button type="button" class="ri-btn ri-btn--ghost" data-triage="request-review">Request additional review</button>
+      ${connected && !connectedIntakeTriageEnabled(s) ? '<p class="ri-muted">Enable connected writes on the platform server to persist triage decisions.</p>' : ''}
+      ${connected && connectedIntakeTriageEnabled(s) ? connectedWorkModeBanner(s) : ''}
+      <div class="ri-form__actions"${connected && !connectedIntakeTriageEnabled(s) ? ' hidden' : connected ? '' : ''}>
+        <button type="button" class="ri-btn ri-btn--primary" data-triage="accept" ${connected ? 'data-connected-triage="1"' : ''}>Accept for assessment</button>
+        <button type="button" class="ri-btn ri-btn--ghost" data-triage="not-relevant" ${connected ? 'data-connected-triage="1"' : ''}>Mark not relevant</button>
+        <button type="button" class="ri-btn ri-btn--ghost" data-triage="escalate" ${connected ? 'data-connected-triage="1"' : ''}>Escalate</button>
+        <button type="button" class="ri-btn ri-btn--ghost" data-triage="request-review" ${connected ? 'data-connected-triage="1"' : ''}>Request additional review</button>
       </div>
-      <div class="ri-form ri-form--inline" style="margin-top:12px">
-        <label>Assign reviewer
-          <select id="intake-assignee" data-assign-select>
-            ${(s.people || []).map((u) => `<option value="${esc(u.id)}">${esc(u.name)}</option>`).join('')}
-          </select>
+      <div class="ri-form ri-form--inline" style="margin-top:12px"${connected && !connectedIntakeTriageEnabled(s) ? ' hidden' : ''}>
+        <label>Assign reviewer (Clerk user id)
+          <input type="text" id="intake-assignee" data-assign-select placeholder="user_…" value="" />
         </label>
-        <label>Due date <input type="date" id="intake-due" value="${esc(p.triageSlaDue || '')}" /></label>
-        <button type="button" class="ri-btn ri-btn--sm ri-btn--primary" data-intake-assign>Assign reviewer</button>
+        <button type="button" class="ri-btn ri-btn--sm ri-btn--primary" data-intake-assign ${connected ? 'data-connected-intake-assign="1"' : ''}>Assign reviewer</button>
       </div>
+      ${
+        connected && connectedIntakeTriageEnabled(s) && isConnectedChangeWritesEnabled(s)
+          ? `<div class="ri-panel ri-panel--compact" style="margin-top:12px" data-connected-intake-create-change="${esc(pubId)}">
+            <h3>Progress to regulatory change</h3>
+            <p class="ri-muted">Register a tenant change linked to this publication after triage acceptance.</p>
+            <label>Change title <input type="text" data-intake-change-title value="${esc(p.title || '')}" maxlength="500" /></label>
+            <button type="button" class="ri-btn ri-btn--primary" data-connected-intake-create-change-submit>Register regulatory change</button>
+          </div>`
+          : ''
+      }
       <p><a class="ri-btn ri-btn--ghost" href="#/publication/${p.id}">Open publication record</a></p>
     </section>`;
 }
 
 export function viewWorkQueue() {
   const s = getState();
+  const connected = isConnectedBackendActive(s);
+  if (connected) {
+    const changes = getViewChanges();
+    const rows = changes.map(
+      (c) => `<tr>
+      <td class="ri-table__title"><a class="ri-table__title-link" href="#/change/${esc(c.id)}">${esc(c.title)}</a></td>
+      <td>Regulatory Change</td>
+      <td class="ri-mono"><a href="#/change/${esc(c.id)}">${esc(c.externalKey || c.id.slice(0, 8))}</a></td>
+      <td>${esc(getConnectedAssigneeLabel(s, c.ownerId))}</td>
+      <td>${badge(c.materiality)}</td>
+      <td>${formatDate(c.dueDate)}</td>
+      <td>${badge(c.status)}</td>
+      <td>—</td>
+      <td>—</td>
+      <td>${esc(c.regulator || '—')}</td>
+    </tr>`,
+    );
+    return `${pageHeader('Work Queue', 'Tenant regulatory changes · connected catalogue')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedWorkModeBanner(s)}
+      <p class="ri-muted">Production work items derived from tenant regulatory changes (owner and status from staging). Demo SLA personas are not used.</p>
+      ${dataTable(['Item', 'Type', 'ID', 'Owner', 'Priority', 'Due', 'Status', 'SLA', 'Scenario', 'Regulator'], rows, 'No tenant changes in work queue')}`;
+  }
   const demo = getDemoUser();
   let items = buildWorkQueue(s, s.scenarioId);
   const demoTeam = demo?.teamId;
@@ -231,9 +352,48 @@ function workHref(w) {
   return `#/${m[w.entityType] || 'dashboard'}`;
 }
 
+function notificationTableRows(notes) {
+  return notes.map(
+      (n) => `<tr class="ri-note-row${n.read ? ' is-read' : ''}" data-note-id="${esc(n.id)}">
+      <td>${badge(n.severity)}</td>
+      <td>${esc(n.type)}</td>
+      <td>${esc(n.entityType)} ${esc(n.entityId)}</td>
+      <td>${formatDate(n.at)}</td>
+      <td>${esc(n.message)}</td>
+      <td><a href="${esc(n.href)}" data-note-link="${esc(n.id)}">Open</a></td>
+      <td>${n.read ? 'Read' : `<button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-mark-read="${esc(n.id)}" data-connected-mark-read="1">Mark read</button>`}</td>
+    </tr>`,
+  );
+}
+
 export function viewNotifications() {
   const s = getState();
+  const query = getAttentionCentreQuery(s);
+  if (isConnectedBackendActive(s)) {
+    const notes = getConnectedNotifications(s);
+    const meta = s.connectedCatalogue?.notificationsMeta || {};
+    const alerts = getViewOperationalAlerts();
+    const rows = notificationTableRows(notes);
+  const emptyMessage = query.q?.trim()
+    ? 'No notifications match your search and filters.'
+    : 'No tenant notifications yet';
+    return `${pageHeader({
+      eyebrow: 'ATTENTION CENTRE',
+      title: 'Exceptions, escalations and deadlines',
+      subtitle: 'Tenant in-app notifications · external delivery disabled',
+      actions: `<a class="ri-btn ri-btn--ghost" href="#/work">Work queue</a>`,
+    })}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyOperationsBanner()}
+      ${renderAttentionCentreControls(query, { totalMatching: meta.totalMatching })}
+      ${sectionHeader('NOTIFICATIONS', 'Tenant register', '')}
+      ${dataTable(['Severity', 'Type', 'Entity', 'Date', 'Message', 'Link', 'State'], rows, emptyMessage)}
+      <section class="ri-panel"><h2>Operational alerts</h2>
+        ${renderConnectedOperationalAlertsTable(alerts)}
+      </section>`;
+  }
   const notes = buildNotifications(s, s.scenarioId);
+  const filtered = filterNotificationsClient(notes, query);
   const highlights = notes
     .filter((n) => !n.read && (n.severity === 'High' || n.severity === 'Critical'))
     .slice(0, 4)
@@ -249,17 +409,12 @@ export function viewNotifications() {
       })
     )
     .join('');
-  const rows = notes.map(
-    (n) => `<tr class="ri-note-row${n.read ? ' is-read' : ''} ri-note-row--${esc(n.severity?.toLowerCase() || 'medium')}" data-note-id="${esc(n.id)}">
-      <td>${badge(n.severity)}</td>
-      <td>${esc(n.type)}</td>
-      <td>${esc(n.entityType)} ${esc(n.entityId)}</td>
-      <td>${formatDate(n.at)}</td>
-      <td>${esc(n.message)}</td>
-      <td><a href="${esc(n.href)}" data-note-link="${esc(n.id)}">Open</a></td>
-      <td>${n.read ? 'Read' : `<button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-mark-read="${esc(n.id)}">Mark read</button>`}</td>
-    </tr>`
+  const rows = notificationTableRows(filtered.notifications).map((html) =>
+    html.replace('data-connected-mark-read="1"', ''),
   );
+  const demoEmpty = query.q?.trim()
+    ? 'No notifications match your search and filters.'
+    : 'No notifications for this scenario';
   return `${pageHeader({
     eyebrow: 'ATTENTION CENTRE',
     title: 'Exceptions, escalations and deadlines',
@@ -267,12 +422,20 @@ export function viewNotifications() {
     actions: `<a class="ri-btn ri-btn--ghost" href="#/work">Work queue</a>`,
   })}
     ${highlights ? `<div class="ri-attention-stack">${highlights}</div>` : ''}
+    ${renderAttentionCentreControls(query, { totalMatching: filtered.totalMatching })}
     ${sectionHeader('ALL NOTIFICATIONS', 'Full register', '')}
-    ${dataTable(['Severity', 'Type', 'Entity', 'Date', 'Message', 'Link', 'State'], rows, 'No notifications for this scenario')}`;
+    ${dataTable(['Severity', 'Type', 'Entity', 'Date', 'Message', 'Link', 'State'], rows, demoEmpty)}`;
 }
 
 export function viewReportsExecutive() {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    return `${pageHeader('Executive Summary', 'Connected tenant reporting')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyGovernanceBanner(s)}
+      ${renderConnectedReportingPeriodSelector()}
+      <div data-connected-executive-report-load class="ri-muted">Loading executive metrics…</div>`;
+  }
   const pipe = pipelineCounts(s, s.scenarioId);
   const pubs = scenarioFilter(s.publications);
   const highMat = scenarioFilter(s.changes).filter((c) => c.materiality === 'High' && c.status !== 'Complete');
@@ -318,6 +481,20 @@ export function viewReportsExecutive() {
 
 export function viewReportsExtended(sub) {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    if (sub === 'governance') {
+      return `${pageHeader('Governance & assurance report', 'Connected read-only')}
+        ${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyGovernanceBanner()}
+        ${renderConnectedGovernanceMetrics(getConnectedGovernanceMetrics())}
+        <p class="ri-muted">Demo pipeline, exposure and closure matrices are hidden in connected mode. Use Governance register and Assurance dashboard for tenant records.</p>
+        <p><a href="#/governance">Governance register</a> · <a href="#/assurance">Assurance dashboard</a> · <a href="#/reports">Executive summary</a></p>`;
+    }
+    return `${pageHeader('Report unavailable', 'Connected read-only — demonstration analytics only')}
+      ${connectedCatalogueBanner(s)}
+      <p class="ri-muted">Extended report “${esc(sub || 'default')}” uses Design Lab demonstration data and is not shown in connected mode.</p>
+      <p><a href="#/reports">Executive summary (connected)</a> · <a href="#/reports/governance">Governance metrics (connected)</a></p>`;
+  }
   const pipe = pipelineCounts(s, s.scenarioId);
   if (sub === 'pipeline') {
     return `${pageHeader('Regulatory Change Pipeline', 'Volume and stage of regulatory changes in the selected demo scenario')}<ul class="ri-stats-inline">
@@ -377,6 +554,11 @@ export function viewReportsExtended(sub) {
 }
 
 export function viewAdminOrganisation() {
+  const blocked = guardConnectedDemoSubroute('Organisation profile', {
+    subtitle: 'AI reasoning demo profile',
+    links: '<p><a href="#/admin">Administration</a></p>',
+  });
+  if (blocked) return blocked;
   const p = getState().orgProfile;
   if (!p) return `${pageHeader('Organisation profile', '')}<p class="ri-muted">No profile.</p>`;
   return `${pageHeader('Organisation profile', `${p.version} · DEMO profile for AI reasoning`)}

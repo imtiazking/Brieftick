@@ -302,8 +302,6 @@ function renderPublicationAiTabConnected(p) {
     const preview = r.findingsPreview ? esc(String(r.findingsPreview).slice(0, 120)) + (String(r.findingsPreview).length > 120 ? '…' : '') : '—';
     return `<tr>
       <td><a href="#/ai-analysis/${esc(r.id)}">${esc(r.useCaseId || '—')}</a></td>
-      <td>${esc(r.provider || '—')}</td>
-      <td>${esc(r.model || '—')}</td>
       <td>${badge(r.executionStatus || '—')}</td>
       <td>${formatDateTime(r.completedAt || r.createdAt)}</td>
       <td>${badge(r.labClassificationLabel || r.labClassification || '—')}</td>
@@ -313,9 +311,9 @@ function renderPublicationAiTabConnected(p) {
   });
   return `<section class="ri-panel">
     <h3>Persisted AI analyses (connected staging)</h3>
-    <p class="ri-muted">${runs.length} run(s) for this publication — open a row to inspect findings, citations and review status.</p>
+    <p class="ri-muted">${runs.length} run(s) for this publication — open a row to inspect findings, citations and review status. Provider and model details remain in AI Governance.</p>
     ${dataTable(
-      ['Use case', 'Provider', 'Model', 'Execution', 'Completed', 'Classification', 'Findings preview', 'Claims'],
+      ['Analysis', 'Status', 'Completed', 'Classification', 'Findings preview', 'Claims'],
       rows,
     )}
   </section>`;

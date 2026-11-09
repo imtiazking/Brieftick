@@ -20,6 +20,11 @@ import { connectedIntakeRowCells, connectedWorkModeBanner } from './platform/con
 import { connectedIntakeTriageEnabled } from './platform/connected-intake-writes.js';
 import { getConnectedNotifications } from './platform/connected-notifications.js';
 import {
+  filterNotificationsClient,
+  getAttentionCentreQuery,
+  renderAttentionCentreControls,
+} from './platform/notification-attention.js';
+import {
   connectedReadOnlyGovernanceBanner,
   renderConnectedGovernanceMetrics,
 } from './platform/connected-governance-ui.js';
@@ -347,12 +352,8 @@ function workHref(w) {
   return `#/${m[w.entityType] || 'dashboard'}`;
 }
 
-export function viewNotifications() {
-  const s = getState();
-  if (isConnectedBackendActive(s)) {
-    const notes = getConnectedNotifications(s);
-    const alerts = getViewOperationalAlerts();
-    const rows = notes.map(
+function notificationTableRows(notes) {
+  return notes.map(
       (n) => `<tr class="ri-note-row${n.read ? ' is-read' : ''}" data-note-id="${esc(n.id)}">
       <td>${badge(n.severity)}</td>
       <td>${esc(n.type)}</td>
@@ -362,7 +363,20 @@ export function viewNotifications() {
       <td><a href="${esc(n.href)}" data-note-link="${esc(n.id)}">Open</a></td>
       <td>${n.read ? 'Read' : `<button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-mark-read="${esc(n.id)}" data-connected-mark-read="1">Mark read</button>`}</td>
     </tr>`,
-    );
+  );
+}
+
+export function viewNotifications() {
+  const s = getState();
+  const query = getAttentionCentreQuery(s);
+  if (isConnectedBackendActive(s)) {
+    const notes = getConnectedNotifications(s);
+    const meta = s.connectedCatalogue?.notificationsMeta || {};
+    const alerts = getViewOperationalAlerts();
+    const rows = notificationTableRows(notes);
+  const emptyMessage = query.q?.trim()
+    ? 'No notifications match your search and filters.'
+    : 'No tenant notifications yet';
     return `${pageHeader({
       eyebrow: 'ATTENTION CENTRE',
       title: 'Exceptions, escalations and deadlines',
@@ -371,13 +385,15 @@ export function viewNotifications() {
     })}
       ${connectedCatalogueBanner(s)}
       ${connectedReadOnlyOperationsBanner()}
+      ${renderAttentionCentreControls(query, { totalMatching: meta.totalMatching })}
       ${sectionHeader('NOTIFICATIONS', 'Tenant register', '')}
-      ${dataTable(['Severity', 'Type', 'Entity', 'Date', 'Message', 'Link', 'State'], rows, 'No tenant notifications yet')}
+      ${dataTable(['Severity', 'Type', 'Entity', 'Date', 'Message', 'Link', 'State'], rows, emptyMessage)}
       <section class="ri-panel"><h2>Operational alerts</h2>
         ${renderConnectedOperationalAlertsTable(alerts)}
       </section>`;
   }
   const notes = buildNotifications(s, s.scenarioId);
+  const filtered = filterNotificationsClient(notes, query);
   const highlights = notes
     .filter((n) => !n.read && (n.severity === 'High' || n.severity === 'Critical'))
     .slice(0, 4)
@@ -393,17 +409,12 @@ export function viewNotifications() {
       })
     )
     .join('');
-  const rows = notes.map(
-    (n) => `<tr class="ri-note-row${n.read ? ' is-read' : ''} ri-note-row--${esc(n.severity?.toLowerCase() || 'medium')}" data-note-id="${esc(n.id)}">
-      <td>${badge(n.severity)}</td>
-      <td>${esc(n.type)}</td>
-      <td>${esc(n.entityType)} ${esc(n.entityId)}</td>
-      <td>${formatDate(n.at)}</td>
-      <td>${esc(n.message)}</td>
-      <td><a href="${esc(n.href)}" data-note-link="${esc(n.id)}">Open</a></td>
-      <td>${n.read ? 'Read' : `<button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-mark-read="${esc(n.id)}">Mark read</button>`}</td>
-    </tr>`
+  const rows = notificationTableRows(filtered.notifications).map((html) =>
+    html.replace('data-connected-mark-read="1"', ''),
   );
+  const demoEmpty = query.q?.trim()
+    ? 'No notifications match your search and filters.'
+    : 'No notifications for this scenario';
   return `${pageHeader({
     eyebrow: 'ATTENTION CENTRE',
     title: 'Exceptions, escalations and deadlines',
@@ -411,8 +422,9 @@ export function viewNotifications() {
     actions: `<a class="ri-btn ri-btn--ghost" href="#/work">Work queue</a>`,
   })}
     ${highlights ? `<div class="ri-attention-stack">${highlights}</div>` : ''}
+    ${renderAttentionCentreControls(query, { totalMatching: filtered.totalMatching })}
     ${sectionHeader('ALL NOTIFICATIONS', 'Full register', '')}
-    ${dataTable(['Severity', 'Type', 'Entity', 'Date', 'Message', 'Link', 'State'], rows, 'No notifications for this scenario')}`;
+    ${dataTable(['Severity', 'Type', 'Entity', 'Date', 'Message', 'Link', 'State'], rows, demoEmpty)}`;
 }
 
 export function viewReportsExecutive() {

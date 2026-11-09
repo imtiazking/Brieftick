@@ -23,6 +23,7 @@ import {
   pageHeader,
   detailTabs,
   formatDate,
+  formatDateTime,
   linkRecord,
   renderCitation,
   renderRelatedGroups,
@@ -36,6 +37,9 @@ import { getCurrentAnalysis } from './ai-governance-helpers.js';
 import { renderAiSummaryPanel } from './ai-summary-ui.js';
 import { renderChangeAnalysisPanel } from './ai-workflow-ui.js';
 import { canGenerateAiSummary, canMutateAiReviewState, isAuditorReadOnly } from './ai/persona-ai.js';
+import { isConnectedBackendActive } from './platform/connected-mode.js';
+import { connectedCatalogueBanner, getConnectedAssigneeLabel } from './platform/connected-catalogue.js';
+import { getViewAiAnalysisRunsForPublication } from './store.js';
 
 const PUB_TABS = ['Overview', 'Source', 'Changes', 'AI Analysis', 'Applicability', 'Related Records', 'Audit History'];
 
@@ -49,7 +53,8 @@ export function viewPublication(routeParts) {
   if (!p) return notFoundState('Publication', id);
 
   const s = getState();
-  const related = collectRelatedForPublication(id);
+  const connected = isConnectedBackendActive(s);
+  const related = connected ? { changes: (p._detail?.changes || []).map((c) => ({ id: c.id, title: c.title })) } : collectRelatedForPublication(id);
   const analysis = s.publicationAnalysis?.[id];
   const override = s.applicabilityOverrides?.[id];
   const decisionMeta = p.decisionMeta || override;
@@ -68,7 +73,7 @@ export function viewPublication(routeParts) {
       panel = renderChangesTab(id);
       break;
     case 'AI Analysis':
-      panel = renderAiTab(p, analysis);
+      panel = connected ? renderPublicationAiTabConnected(p) : renderAiTab(p, analysis);
       break;
     case 'Applicability':
       panel = renderApplicabilityTab(p, decisionMeta);
@@ -83,24 +88,40 @@ export function viewPublication(routeParts) {
       panel = renderOverview(p, related);
   }
 
+  const refLabel = connected && p.display ? p.display.reference : p.reference;
+  const typeLabel = connected && p.display ? p.display.publicationType : p.publicationType;
+  const heroRefs = connected && p.display ? `${refLabel} · ${typeLabel}` : `${p.id} · ${p.reference}`;
+  const crumbLabel = connected && p.display && refLabel !== '—' ? refLabel : p.id;
   return `
     ${entityHero(p.id, p.title, [
       { label: 'Regulator', value: p.regulator, badge: true },
-      { label: 'Reference', value: p.reference, mono: true },
-      { label: 'Priority', value: p.priority, badge: true },
-      { label: 'Applicability', value: p.applicabilityDecision || p.applicabilityRecommendation, badge: true },
-      { label: 'Workflow', value: p.workflowStatus, badge: true },
+      { label: 'Reference', value: refLabel, mono: true },
+      {
+        label: 'Priority',
+        value: connected && p.display ? p.display.aiPriority : p.priority,
+        badge: true,
+      },
+      {
+        label: 'Applicability',
+        value: connected && p.display ? p.display.classification : p.applicabilityDecision || p.applicabilityRecommendation,
+        badge: true,
+      },
+      {
+        label: 'Workflow',
+        value: connected && p.display ? p.display.triage : p.workflowStatus,
+        badge: true,
+      },
       { label: 'Effective', value: formatDate(p.effectiveDate) },
     ], [
       { label: 'Regulatory Intelligence', href: '#/dashboard' },
       { label: 'Publications', href: '#/library' },
-      { label: p.id },
+      { label: crumbLabel },
     ], {
       eyebrow: 'REGULATORY PUBLICATION',
-      refs: `${p.id} · ${p.reference}`,
-      narrative: p.aiSummary,
+      refs: heroRefs,
+      narrative: connected ? (p.summary || '') : p.aiSummary,
     })}
-    <p class="ri-mock-inline">Mock regulatory publication — synthetic DEMO text only.</p>
+    ${connected ? connectedCatalogueBanner(s) : '<p class="ri-mock-inline">Mock regulatory publication — synthetic DEMO text only.</p>'}
     ${tabsHtml}
     <div class="ri-tab-panels" data-pub-id="${esc(id)}" data-highlight-section="${esc(highlightSection || '')}">
       ${panel}
@@ -114,6 +135,37 @@ export function viewPublication(routeParts) {
 
 function renderOverview(p, related) {
   const s = getState();
+  const connected = isConnectedBackendActive(s);
+  if (connected && p.display) {
+    const d = p.display;
+    return `
+    <div class="ri-detail-grid" data-tab-panel="Overview">
+      <dl class="ri-dl">
+        <dt>Regulator</dt><dd>${esc(p.regulator)}</dd>
+        <dt>Reference</dt><dd>${esc(d.reference)} <span class="ri-muted">(${esc(d.referenceSource)})</span></dd>
+        <dt>Type</dt><dd>${esc(d.publicationType)}</dd>
+        <dt>Published</dt><dd>${formatDate(p.publishedDate)}</dd>
+        <dt>Effective</dt><dd>${formatDate(p.effectiveDate)}</dd>
+        <dt>Detected / retrieved</dt><dd>${d.detectedAt ? formatDate(d.detectedAt) : '—'}</dd>
+        <dt>Classification</dt><dd>${esc(d.classification)}</dd>
+        <dt>Triage</dt><dd>${esc(d.triage)}</dd>
+        <dt>Catalogue kind</dt><dd>${esc(d.catalogueKind)} · ${esc(d.dataOriginLabel)}</dd>
+        <dt>Ingestion versions</dt><dd>${esc(d.libraryStatus)} · ${esc(d.libraryVersion)} <span class="ri-muted">(${esc(d.libraryVersionSource)}; not extraction revisions)</span></dd>
+        <dt>Consultation deadline</dt><dd>${
+          p.consultationDeadline || d.consultationDeadlineStructured
+            ? formatDate(p.consultationDeadline || d.consultationDeadlineStructured)
+            : d.consultationDeadlineCandidate
+              ? `${formatDate(d.consultationDeadlineCandidate)} <span class="ri-muted">(unverified — parsed from summary text)</span>`
+              : '—'
+        }</dd>
+      </dl>
+      <div>
+        <p class="ri-muted">Topic (summary or type): ${esc(d.topic)}</p>
+        <h4 class="ri-subhead">Linked regulatory changes</h4>
+        <ul>${related.changes.map((c) => `<li><a href="#/change/${c.id}">${esc(c.id)}</a> — ${esc(c.title)}</li>`).join('') || '<li class="ri-muted">None persisted for tenant</li>'}</ul>
+      </div>
+    </div>`;
+  }
   const aiPanel = renderAiSummaryPanel(p.id, s, {
     canGenerate: canGenerateAiSummary(s),
     canReview: canMutateAiReviewState(s),
@@ -147,6 +199,22 @@ function renderOverview(p, related) {
 
 function renderSource(pubId, highlightSection) {
   const s = getState();
+  const p = getPublication(pubId);
+  if (isConnectedBackendActive(s) && p?.sourceUrl) {
+    const detail = p._detail;
+    const versions = detail?.versions || [];
+    return `<div class="ri-source-read" data-tab-panel="Source">
+      <p><span class="ri-label">Canonical URL</span> <a href="${esc(p.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(p.sourceUrl)}</a></p>
+      <p><span class="ri-label">Data origin</span> ${esc(p.dataOrigin || detail?.publication?.data_origin || 'catalogue')}</p>
+      ${
+        versions.length
+          ? `<h3>regulatory_publication_versions (${versions.length})</h3><ul class="ri-list-compact">${versions.map((v) => `<li>v${esc(String(v.version_number))} · retrieved ${esc(v.retrieved_at || '—')}</li>`).join('')}</ul>`
+          : p.display?.libraryVersionSource === 'regulatory_publications.source_hash'
+            ? `<p class="ri-muted">No regulatory_publication_versions rows visible; ingestion fingerprint present on publication (source_hash / source_version).</p>`
+            : '<p class="ri-muted">No regulatory_publication_versions rows for this publication.</p>'
+      }
+    </div>`;
+  }
   const doc = s.sourceDocuments?.[pubId];
   if (!doc) {
     return `<p class="ri-muted">No mock source document for this publication.</p>`;
@@ -183,20 +251,34 @@ function renderSource(pubId, highlightSection) {
 }
 
 function renderChangesTab(pubId) {
+  const s = getState();
+  const connected = isConnectedBackendActive(s);
   const changes = getChangesForPublication(pubId);
-  if (!changes.length) return '<p class="ri-muted">No regulatory changes identified.</p>';
+  if (!changes.length) {
+    return connected
+      ? `<p class="ri-muted">No operational or authorised UAT regulatory changes are linked to this publication in the connected staging register. Unverified tenant rows are listed only in the Regulatory Changes audit view.</p>`
+      : '<p class="ri-muted">No regulatory changes identified.</p>';
+  }
   return changes
     .map((c) => {
       const ias = (c.linkedAssessmentIds || []).map((id) => getAssessment(id)).filter(Boolean);
       const obls = (c.linkedObligationIds || []).map((id) => getObligation(id)).filter(Boolean);
+      const owner = connected ? getConnectedAssigneeLabel(s, c.ownerId) : '—';
+      const pub = getPublication(c.publicationId);
+      const pubLabel = c.publicationTitle || pub?.title || c.publicationId;
+      const prov = connected ? badge(c.labClassificationLabel || c.labClassification || '—') : '';
       return `
       <article class="ri-change-card">
         <header>
-          <a href="#/change/${c.id}"><strong>${esc(c.id)}</strong></a>
+          <a href="#/change/${c.id}"><strong>${esc(c.id.slice(0, 8))}…</strong></a>
           <h3><a href="#/change/${c.id}">${esc(c.title)}</a></h3>
         </header>
-        <p>${esc(c.description)}</p>
+        <p>${esc(c.description || '')}</p>
         <dl class="ri-dl ri-dl--compact">
+          ${connected ? `<dt>Provenance</dt><dd>${prov}</dd>` : ''}
+          <dt>Publication</dt><dd><a href="#/publication/${esc(c.publicationId)}">${esc(pubLabel)}</a></dd>
+          <dt>Owner</dt><dd>${esc(owner)}</dd>
+          <dt>Implementation deadline</dt><dd>${c.dueDate ? formatDate(c.dueDate) : '—'}</dd>
           <dt>Citation</dt><dd>${renderCitation(pubId, c.sourceCitation, c.sourceSection)}</dd>
           <dt>Effective</dt><dd>${formatDate(c.effectiveDate)}</dd>
           <dt>Materiality</dt><dd>${badge(c.materiality)}</dd>
@@ -209,6 +291,32 @@ function renderChangesTab(pubId) {
       </article>`;
     })
     .join('');
+}
+
+function renderPublicationAiTabConnected(p) {
+  const runs = getViewAiAnalysisRunsForPublication(p.id);
+  if (!runs.length) {
+    return `<p class="ri-muted">No persisted AI analysis runs are linked to this publication in the connected staging register. Completed analyses appear here when tenant APIs return operational or authorised UAT runs for this record.</p>`;
+  }
+  const rows = runs.map((r) => {
+    const preview = r.findingsPreview ? esc(String(r.findingsPreview).slice(0, 120)) + (String(r.findingsPreview).length > 120 ? '…' : '') : '—';
+    return `<tr>
+      <td><a href="#/ai-analysis/${esc(r.id)}">${esc(r.useCaseId || '—')}</a></td>
+      <td>${badge(r.executionStatus || '—')}</td>
+      <td>${formatDateTime(r.completedAt || r.createdAt)}</td>
+      <td>${badge(r.labClassificationLabel || r.labClassification || '—')}</td>
+      <td>${preview}</td>
+      <td>${r.claimsCount != null ? esc(String(r.claimsCount)) : '—'}</td>
+    </tr>`;
+  });
+  return `<section class="ri-panel">
+    <h3>Persisted AI analyses (connected staging)</h3>
+    <p class="ri-muted">${runs.length} run(s) for this publication — open a row to inspect findings, citations and review status. Provider and model details remain in AI Governance.</p>
+    ${dataTable(
+      ['Analysis', 'Status', 'Completed', 'Classification', 'Findings preview', 'Claims'],
+      rows,
+    )}
+  </section>`;
 }
 
 function renderAiTab(p, analysis) {
