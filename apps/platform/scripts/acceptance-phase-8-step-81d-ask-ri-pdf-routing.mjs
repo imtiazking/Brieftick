@@ -40,14 +40,18 @@ const emptyPdf = runAskRiDeterministic(
   },
   cp26Q,
 );
-if (emptyPdf.queryPlan?.mode === 'publication_pdf_primary_v1') {
-  pass('CP26 question stays on pdf_primary_v1 when evidence empty');
-} else failMsg(`empty pdf plan ${JSON.stringify(emptyPdf.queryPlan)}`);
+const cp26CatalogueMode =
+  emptyPdf.queryPlan?.mode === 'publication_pdf_primary_v1' ||
+  emptyPdf.queryPlan?.mode === 'catalogue_publication_evidence_v1';
+if (cp26CatalogueMode) pass('CP26 question stays on catalogue evidence plan when PDF empty');
+else failMsg(`empty pdf plan ${JSON.stringify(emptyPdf.queryPlan)}`);
 if (!String(emptyPdf.answer || '').includes('Record records')) {
   pass('CP26 empty-pdf answer avoids generic Record copy');
 } else failMsg('misleading Record message on CP26 pdf failure');
-if (emptyPdf.execution?.evidenceSource === 'pdf_primary_v1') pass('CP26 empty-pdf execution tagged pdf_primary_v1');
-else failMsg('execution source');
+const cp26EvidenceSource = emptyPdf.execution?.evidenceSource;
+if (cp26EvidenceSource === 'pdf_primary_v1' || cp26EvidenceSource === 'catalogue_publication_evidence_v1') {
+  pass('CP26 empty-pdf execution tagged catalogue/pdf source');
+} else failMsg(`execution source ${cp26EvidenceSource}`);
 
 const cdEmpty = runAskRiDeterministic(
   {
@@ -56,8 +60,11 @@ const cdEmpty = runAskRiDeterministic(
   },
   CONSUMER_DUTY_FAIR_VALUE_ASK_RI_QUESTION,
 );
-if (cdEmpty.queryPlan?.mode === 'publication_pdf_primary_v1') pass('Consumer Duty title question uses pdf plan');
-else failMsg('Consumer Duty pdf plan');
+const cdMode =
+  cdEmpty.queryPlan?.mode === 'publication_pdf_primary_v1' ||
+  cdEmpty.queryPlan?.mode === 'catalogue_publication_evidence_v1';
+if (cdMode) pass('Consumer Duty title question uses catalogue evidence plan');
+else failMsg('Consumer Duty evidence plan');
 if (!String(cdEmpty.answer || '').includes('Record records')) pass('Consumer Duty avoids Record message');
 else failMsg('Consumer Duty Record fallback');
 

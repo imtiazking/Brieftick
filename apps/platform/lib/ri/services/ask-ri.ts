@@ -59,6 +59,7 @@ export async function askRiProduction(
     const pdfMeta = state.publicationPdfEvidenceLoadMeta as Record<string, unknown> | undefined;
     console.info('[ask-ri] planner_result', {
       questionLength: params.question.length,
+      htmlLoaded: (state.publicationHtmlEvidence as unknown[] | undefined)?.length ?? 0,
       pdfLoaded: (state.publicationPdfEvidence as unknown[] | undefined)?.length ?? 0,
       pdfLoadErrors: (state.publicationPdfEvidenceErrors as { code?: string; postgrestCode?: string }[] | undefined)?.map(
         (e) => ({ code: e.code, postgrestCode: e.postgrestCode }),

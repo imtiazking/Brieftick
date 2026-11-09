@@ -9,6 +9,11 @@ import {
   selectBestPublicationPdfEvidence,
 } from '../lib/ri/ask-ri/publication-pdf-question-match.mjs';
 import { runAskRiDeterministic } from '../lib/ri/ask-ri/run-ask-ri.mjs';
+import {
+  answerAskRiFromPublicationHtmlEvidence,
+  buildHtmlArticleEvidenceBlocks,
+  buildPublicationHtmlEvidenceIndex,
+} from '../lib/ri/ask-ri/publication-html-evidence.mjs';
 import { buildPdfEvidenceBlocks } from '../../../integrations/regulatory-sources/core/pdf-evidence-blocks.mjs';
 import {
   answerAskRiFromPublicationPdfEvidence,
@@ -100,6 +105,68 @@ const best = selectBestPublicationPdfEvidence([enrichedEvidence], CONSUMER_DUTY_
 if (best?.publicationId === FAIR_VALUE_PUB_ID) pass('Best evidence selects Fair value publication');
 else failMsg('Best evidence not selected');
 
+const fairValueHtmlText = [
+  'Fair value in consumer finance — FCA supervisory perspective (October 2026).',
+  'This webpage discusses PRIN 2A.4 and references FG22/5 Chapter 7 for Consumer Duty fair value guidance.',
+  'Firms must assess whether retail customers receive fair value. The examples below illustrate good and poor practice and are not themselves new obligations.',
+  'Example of good practice: a firm reviews product value using clear metrics and documents outcomes for the board.',
+].join('\n\n');
+
+const htmlIndex = buildPublicationHtmlEvidenceIndex(
+  {
+    publication_id: FAIR_VALUE_PUB_ID,
+    id: 'rev-html-fv-test',
+    canonical_url: 'https://www.fca.org.uk/publications/policy-statements/fair-value-in-consumer-finance',
+    extraction_quality: { webpageExtraction: { status: 'complete' }, obligationGradeSuitable: false },
+    publication_metadata: { title: 'Fair value in consumer finance' },
+    pdf_attachments: [{ title: 'FG22/5', url: 'https://www.fca.org.uk/publication/fg22-5.pdf' }],
+  },
+  {
+    text: fairValueHtmlText,
+    metaParsed: {},
+    integrityVerified: true,
+  },
+);
+
+const htmlEvidence = {
+  ...htmlIndex,
+  publicationTitle: 'Fair value in consumer finance',
+  publicationReference: 'fair-value-in-consumer-finance',
+  regulatorShortName: 'FCA',
+  regulatorLabel: 'Financial Conduct Authority',
+  integrityVerified: true,
+  evidenceBlocks: buildHtmlArticleEvidenceBlocks({
+    publicationId: FAIR_VALUE_PUB_ID,
+    extractionRevisionId: 'rev-html-fv-test',
+    normalisedArticleText: fairValueHtmlText,
+  }),
+};
+
+const htmlDirect = answerAskRiFromPublicationHtmlEvidence(
+  htmlEvidence,
+  CONSUMER_DUTY_FAIR_VALUE_ASK_RI_QUESTION,
+);
+if (htmlDirect.status === 'ANSWERED' && (htmlDirect.citations?.length || 0) >= 1) {
+  pass(`html_article_v2 direct answer with ${htmlDirect.citations.length} citation(s)`);
+  const hasWebCitation = htmlDirect.citations.some((c) => c.type === 'html_article_v2' && c.sourceUrl);
+  if (hasWebCitation) pass('html citation includes canonical webpage URL');
+  else failMsg('html citation missing sourceUrl');
+} else failMsg(`html direct status ${htmlDirect.status}`);
+
+const htmlRun = runAskRiDeterministic(
+  {
+    publicationHtmlEvidence: [htmlEvidence],
+    publicationHtmlEvidenceErrors: [],
+    publicationPdfEvidence: [],
+    publicationPdfEvidenceErrors: [{ code: 'revision_query_zero_rows' }],
+  },
+  CONSUMER_DUTY_FAIR_VALUE_ASK_RI_QUESTION,
+);
+if (htmlRun.execution?.evidenceSource === 'html_article_v2') pass('html-only run uses html_article_v2');
+else failMsg(`html-only evidence source ${htmlRun.execution?.evidenceSource}`);
+if (htmlRun.status === 'ANSWERED') pass('html-only ANSWERED without pdf_primary_v1');
+else failMsg(`html-only status ${htmlRun.status}`);
+
 const directAnswer = answerAskRiFromPublicationPdfEvidence(
   enrichedEvidence,
   CONSUMER_DUTY_FAIR_VALUE_ASK_RI_QUESTION,
@@ -128,8 +195,11 @@ const emptyPdf = runAskRiDeterministic(
   CONSUMER_DUTY_FAIR_VALUE_ASK_RI_QUESTION,
 );
 
-if (emptyPdf.queryPlan?.mode === 'publication_pdf_primary_v1') pass('empty PDF stays on pdf plan');
-else failMsg(`empty pdf plan ${JSON.stringify(emptyPdf.queryPlan)}`);
+const emptyMode =
+  emptyPdf.queryPlan?.mode === 'publication_pdf_primary_v1' ||
+  emptyPdf.queryPlan?.mode === 'catalogue_publication_evidence_v1';
+if (emptyMode) pass('empty catalogue stays on publication evidence plan');
+else failMsg(`empty plan ${JSON.stringify(emptyPdf.queryPlan)}`);
 
 if (!String(emptyPdf.answer || '').includes('Record records')) pass('empty PDF avoids Record message');
 else failMsg('Record message on empty PDF Consumer Duty question');

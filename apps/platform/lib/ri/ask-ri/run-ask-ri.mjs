@@ -5,6 +5,7 @@ import { parseAskQuery, retrieveRiRecords } from './port/ai/ri-retrieval.js';
 import { ASK_RI_RESULT_STATES } from './port/ai/ri-query-executor.js';
 import { buildInterpretedAsPlainEnglish } from './port/ai/ri-interpreted-as.js';
 import { answerAskRiFromBestPublicationPdfEvidence } from './publication-pdf-evidence.mjs';
+import { answerAskRiFromBestPublicationHtmlEvidence } from './publication-html-evidence.mjs';
 import { questionMentionsPublicationReference } from './publication-pdf-question-match.mjs';
 
 export { ASK_RI_RESULT_STATES };
@@ -30,32 +31,75 @@ function deterministicAnswer(retrieval) {
   return `Found ${count} ${primary} record(s) matching the verified query plan${ids.length ? `: ${ids.join(', ')}` : ''}.`;
 }
 
-function pdfInterpretedAs() {
-  return 'Publication primary PDF evidence (physical page citations; consultation-stage where applicable; not binding obligations).';
+function catalogueInterpretedAs(modes = []) {
+  const parts = [];
+  if (modes.includes('html_article_v2')) {
+    parts.push('FCA webpage (html_article_v2) with section-level citations');
+  }
+  if (modes.includes('pdf_primary_v1')) {
+    parts.push('primary PDF (pdf_primary_v1) with physical page citations where indexed');
+  }
+  return `${parts.join('; ')}. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.`;
 }
 
-function buildPdfPrimaryResult(question, pdfAnswer) {
+function buildCatalogueEvidenceResult(question, payload) {
+  const {
+    status,
+    answer,
+    citations = [],
+    audit = {},
+    mode,
+    htmlAnswer,
+    pdfAnswer,
+    pdfSupplement,
+  } = payload;
+  const modes = [];
+  if (htmlAnswer) modes.push('html_article_v2');
+  if (pdfAnswer || pdfSupplement) modes.push('pdf_primary_v1');
   return {
     question,
-    interpretedAs: pdfInterpretedAs(),
-    status: pdfAnswer.status,
-    answer: pdfAnswer.answer,
+    interpretedAs: catalogueInterpretedAs(modes),
+    status,
+    answer,
     records: [],
     recordCount: 0,
-    citations: pdfAnswer.citations || [],
-    evidence: (pdfAnswer.citations || []).map((c) => c.evidenceId),
-    queryPlan: { mode: 'publication_pdf_primary_v1' },
+    citations,
+    evidence: citations.map((c) => c.evidenceId).filter(Boolean),
+    queryPlan: { mode: mode || 'catalogue_publication_evidence_v1', modes },
     execution: {
-      resultState: pdfAnswer.status,
+      resultState: status,
       providerUsed: false,
-      evidenceSource: 'pdf_primary_v1',
-      humanReviewStatus: pdfAnswer.audit?.humanReviewStatus,
-      mustNotPresentAsBindingObligation: pdfAnswer.audit?.mustNotPresentAsBindingObligation,
-      matchScore: pdfAnswer.audit?.matchScore,
-      publicationReference: pdfAnswer.audit?.publicationReference,
+      evidenceSource: modes[0] || 'catalogue_publication_evidence_v1',
+      humanReviewStatus: audit.humanReviewStatus,
+      mustNotPresentAsBindingObligation: audit.mustNotPresentAsBindingObligation,
+      matchScore: audit.matchScore,
+      publicationReference: audit.publicationReference,
+      supplementaryPdfAttached: Boolean(pdfSupplement),
     },
-    publicationPdf: pdfAnswer,
+    publicationPdf: pdfAnswer || pdfSupplement || undefined,
+    publicationHtml: htmlAnswer || undefined,
   };
+}
+
+function mergeCatalogueCitations(htmlCitations = [], pdfCitations = [], primaryPublicationId) {
+  const markPdf = pdfCitations.map((c) => ({
+    ...c,
+    citationLabel: c.citationLabel?.includes('—')
+      ? c.citationLabel
+      : `${c.citationLabel || 'PDF'} (separate catalogue publication; not the FCA webpage)`,
+    attributedPublicationId: c.publicationId,
+    distinctFromPublicationId: primaryPublicationId,
+  }));
+  const combined = [...htmlCitations, ...markPdf];
+  const seen = new Set();
+  const out = [];
+  for (const c of combined) {
+    const key = `${c.type}:${c.publicationId}:${c.evidenceId || c.physicalPageNumber}:${c.sectionReference || ''}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(c);
+  }
+  return out.slice(0, 12);
 }
 
 function pdfLoadFailureAnswer(errors) {
@@ -102,89 +146,112 @@ function pdfLoadFailureStatus(errors) {
   return pdfLoadFailureIsTechnical(errors) ? 'EVIDENCE_RETRIEVAL_ERROR' : 'INSUFFICIENT_EVIDENCE';
 }
 
+function catalogueLoadFailureAnswer(htmlErrors, pdfErrors) {
+  const codes = [...new Set([...(htmlErrors || []), ...(pdfErrors || [])].map((e) => e.code).filter(Boolean))];
+  const primary = codes[0];
+  if (primary === 'html_revision_query_zero_rows' && codes.includes('revision_query_zero_rows')) {
+    return 'This FCA publication is available as a webpage (html_article_v2) but no pdf_primary_v1 revision is indexed for it. Primary PDF citations are unavailable until genuine PDF evidence is ingested separately (e.g. FG22/5).';
+  }
+  if (primary === 'html_revision_query_zero_rows') {
+    return 'No html_article_v2 extraction revision exists for the referenced FCA webpage publication.';
+  }
+  return pdfLoadFailureAnswer(pdfErrors);
+}
+
 export function runAskRiDeterministic(state, question) {
   const pdfEvidenceList = state.publicationPdfEvidence || [];
   const pdfErrors = state.publicationPdfEvidenceErrors || [];
+  const htmlEvidenceList = state.publicationHtmlEvidence || [];
+  const htmlErrors = state.publicationHtmlEvidenceErrors || [];
   const mentionsPublication = questionMentionsPublicationReference(question);
 
-  if (pdfEvidenceList.length) {
-    const pdfAnswer = answerAskRiFromBestPublicationPdfEvidence(pdfEvidenceList, question);
-    if (
-      pdfAnswer.status === 'ANSWERED' ||
-      pdfAnswer.status === 'INSUFFICIENT_EVIDENCE' ||
-      pdfAnswer.status === 'UNRESOLVED'
-    ) {
-      return buildPdfPrimaryResult(question, pdfAnswer);
-    }
-  }
-
   if (mentionsPublication) {
-    const answer =
-      pdfErrors?.length > 0
-        ? pdfLoadFailureAnswer(pdfErrors)
-        : 'Publication-scoped question did not resolve to verified primary PDF evidence (catalogue title, CP reference, or publication id). No answer was taken from generic tenant Record retrieval.';
+    if (htmlEvidenceList.length) {
+      const htmlAnswer = answerAskRiFromBestPublicationHtmlEvidence(htmlEvidenceList, question);
+      if (htmlAnswer.status === 'ANSWERED') {
+        const primaryId = htmlEvidenceList[0]?.publicationId;
+        let pdfSupplement = null;
+        let citations = [...(htmlAnswer.citations || [])];
+        let answer = htmlAnswer.answer;
+        if (pdfEvidenceList.length && /pdf|FG\s*22|fg22/i.test(question)) {
+          pdfSupplement = answerAskRiFromBestPublicationPdfEvidence(pdfEvidenceList, question);
+          if (pdfSupplement.status === 'ANSWERED' && pdfSupplement.citations?.length) {
+            citations = mergeCatalogueCitations(citations, pdfSupplement.citations, primaryId);
+            answer = `${answer}\n\nRelated indexed PDF guidance: ${pdfSupplement.citations[0]?.publicationTitle || 'see PDF citations below'} — citations are from a separate catalogue publication, not the webpage HTML.`;
+          } else if (pdfSupplement.status === 'INSUFFICIENT_EVIDENCE') {
+            answer = `${answer}\n\nPDF supplement: ${pdfSupplement.answer || 'FG22/5 or other linked PDF is not indexed with pdf_primary_v1 in this environment.'}`;
+          }
+        }
+        return buildCatalogueEvidenceResult(question, {
+          status: 'ANSWERED',
+          answer,
+          citations,
+          audit: htmlAnswer.audit,
+          mode: 'catalogue_publication_evidence_v1',
+          htmlAnswer,
+          pdfSupplement,
+        });
+      }
+      if (htmlAnswer.status === 'INSUFFICIENT_EVIDENCE' || htmlAnswer.status === 'UNRESOLVED') {
+        if (pdfEvidenceList.length) {
+          const pdfAnswer = answerAskRiFromBestPublicationPdfEvidence(pdfEvidenceList, question);
+          if (
+            pdfAnswer.status === 'ANSWERED' ||
+            pdfAnswer.status === 'INSUFFICIENT_EVIDENCE' ||
+            pdfAnswer.status === 'UNRESOLVED'
+          ) {
+            return buildCatalogueEvidenceResult(question, {
+              status: pdfAnswer.status,
+              answer: pdfAnswer.answer,
+              citations: pdfAnswer.citations || [],
+              audit: pdfAnswer.audit,
+              mode: 'publication_pdf_primary_v1',
+              pdfAnswer,
+            });
+          }
+        }
+        return buildCatalogueEvidenceResult(question, {
+          status: htmlAnswer.status,
+          answer: htmlAnswer.answer,
+          citations: [],
+          audit: htmlAnswer.audit,
+          mode: 'html_article_v2',
+          htmlAnswer,
+        });
+      }
+    }
+
+    if (pdfEvidenceList.length) {
+      const pdfAnswer = answerAskRiFromBestPublicationPdfEvidence(pdfEvidenceList, question);
+      if (
+        pdfAnswer.status === 'ANSWERED' ||
+        pdfAnswer.status === 'INSUFFICIENT_EVIDENCE' ||
+        pdfAnswer.status === 'UNRESOLVED'
+      ) {
+        return buildCatalogueEvidenceResult(question, {
+          status: pdfAnswer.status,
+          answer: pdfAnswer.answer,
+          citations: pdfAnswer.citations || [],
+          audit: pdfAnswer.audit,
+          mode: 'publication_pdf_primary_v1',
+          pdfAnswer,
+        });
+      }
+    }
+
+    const answer = catalogueLoadFailureAnswer(htmlErrors, pdfErrors);
     const failureStatus =
-      pdfErrors?.length > 0 ? pdfLoadFailureStatus(pdfErrors) : 'INSUFFICIENT_EVIDENCE';
-    return {
-      question,
-      interpretedAs: pdfInterpretedAs(),
+      pdfLoadFailureIsTechnical([...htmlErrors, ...pdfErrors]) ? 'EVIDENCE_RETRIEVAL_ERROR' : 'INSUFFICIENT_EVIDENCE';
+    return buildCatalogueEvidenceResult(question, {
       status: failureStatus,
       answer,
-      records: [],
-      recordCount: 0,
       citations: [],
-      evidence: [],
-      queryPlan: {
-        mode: 'publication_pdf_primary_v1',
-        pdfEvidenceLoaded: false,
-        loadErrorCodes: [...new Set(pdfErrors.map((e) => e.code).filter(Boolean))],
+      audit: {
+        evidenceSource: 'catalogue_publication_evidence_v1',
+        loadErrorCodes: [...htmlErrors, ...pdfErrors].map((e) => e.code),
       },
-      execution: {
-        resultState: failureStatus,
-        providerUsed: false,
-        evidenceSource: 'pdf_primary_v1',
-        pdfEvidenceLoaded: false,
-        technicalRetrievalFailure: pdfLoadFailureIsTechnical(pdfErrors),
-      },
-      publicationPdf: {
-        status: failureStatus,
-        answer,
-        citations: [],
-        audit: {
-          evidenceSource: 'pdf_primary_v1',
-          loadErrorCodes: pdfErrors.map((e) => e.code),
-          technicalRetrievalFailure: pdfLoadFailureIsTechnical(pdfErrors),
-        },
-      },
-    };
-  }
-
-  if (questionMentionsPublicationReference(question)) {
-    return {
-      question,
-      interpretedAs: pdfInterpretedAs(),
-      status: 'INSUFFICIENT_EVIDENCE',
-      answer:
-        'Publication-named question could not be mapped to loaded primary PDF evidence. Generic tenant Record retrieval was not used.',
-      records: [],
-      recordCount: 0,
-      citations: [],
-      evidence: [],
-      queryPlan: { mode: 'publication_pdf_primary_v1', pdfEvidenceLoaded: false, defensiveGuard: true },
-      execution: {
-        resultState: 'INSUFFICIENT_EVIDENCE',
-        providerUsed: false,
-        evidenceSource: 'pdf_primary_v1',
-        pdfEvidenceLoaded: false,
-      },
-      publicationPdf: {
-        status: 'INSUFFICIENT_EVIDENCE',
-        answer:
-          'Publication-named question could not be mapped to loaded primary PDF evidence. Generic tenant Record retrieval was not used.',
-        citations: [],
-        audit: { evidenceSource: 'pdf_primary_v1', defensiveGuard: true },
-      },
-    };
+      mode: 'catalogue_publication_evidence_v1',
+    });
   }
 
   const parsed = parseAskQuery(question, state);

@@ -165,7 +165,13 @@ export function scorePublicationQuestionMatch(evidence, question, options = {}) 
     if (q.includes(phrase)) score += 3;
   }
 
-  if (enriched.structured?.pageBoundaryConfirmed !== true) score = Math.min(score, 5);
+  const htmlArticleEvidence =
+    enriched.extractionProfile === 'html_article_v2' ||
+    enriched.evidenceMedium === 'fca_webpage' ||
+    (enriched.evidenceBlocks?.length && !enriched.structured);
+  if (!htmlArticleEvidence && enriched.structured?.pageBoundaryConfirmed !== true) {
+    score = Math.min(score, 5);
+  }
 
   return score;
 }

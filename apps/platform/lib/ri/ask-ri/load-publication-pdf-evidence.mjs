@@ -9,6 +9,10 @@ import { DEFAULT_SNAPSHOT_BUCKET } from '../ingestion/snapshot/staging-constants
 import { downloadPrivateStorageObject } from '../ingestion/snapshot/readonly-storage-download.mjs';
 import { buildPublicationPdfEvidenceIndex } from './publication-pdf-evidence.mjs';
 import {
+  loadPublicationHtmlEvidenceForAskRi,
+  resolveSupplementaryPdfPublicationIds,
+} from './load-publication-html-evidence.mjs';
+import {
   extractPublicationTitlePhrases,
   questionMentionsPublicationReference,
 } from './publication-pdf-question-match.mjs';
@@ -358,21 +362,49 @@ export async function attachPublicationPdfEvidenceToAskRiState(state, adminSupab
     return { evidence: [], errors: [resolveError] };
   }
 
+  const htmlLoaded = scopedPublicationIds.length
+    ? await loadPublicationHtmlEvidenceForAskRi(adminSupabase, {
+        projectUrl,
+        serviceRoleKey,
+        publicationIds: scopedPublicationIds,
+      })
+    : { evidence: [], errors: [] };
+
+  const supplementaryPdfIds = scopedPublicationIds.length
+    ? await resolveSupplementaryPdfPublicationIds(
+        adminSupabase,
+        question,
+        scopedPublicationIds,
+        htmlLoaded.evidence,
+      )
+    : [];
+
+  const pdfPublicationIds = [
+    ...new Set([...scopedPublicationIds, ...supplementaryPdfIds]),
+  ].filter(Boolean);
+
   const loaded = await loadPublicationPdfEvidenceForAskRi(adminSupabase, {
     projectUrl,
     serviceRoleKey,
-    publicationIds: scopedPublicationIds.length ? scopedPublicationIds : undefined,
+    publicationIds: pdfPublicationIds.length ? pdfPublicationIds : undefined,
   });
 
+  state.publicationHtmlEvidence = htmlLoaded.evidence;
+  state.publicationHtmlEvidenceErrors = htmlLoaded.errors;
   state.publicationPdfEvidence = loaded.evidence;
   state.publicationPdfEvidenceErrors = loaded.errors;
   state.publicationPdfEvidenceLoadMeta = {
     scopedPublicationIds: scopedPublicationIds.length ? scopedPublicationIds : null,
+    supplementaryPdfPublicationIds: supplementaryPdfIds.length ? supplementaryPdfIds : null,
     publicationResolveMethod: resolveMethod ?? null,
     targetedLoad: true,
+    htmlLoadedCount: htmlLoaded.evidence?.length ?? 0,
+    pdfLoadedCount: loaded.evidence?.length ?? 0,
+    htmlErrorCount: htmlLoaded.errors?.length ?? 0,
+    pdfErrorCount: loaded.errors?.length ?? 0,
     loadedCount: loaded.evidence?.length ?? 0,
     errorCount: loaded.errors?.length ?? 0,
   };
-  return loaded;
+  return { html: htmlLoaded, pdf: loaded };
 }
 

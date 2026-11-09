@@ -32,9 +32,11 @@ function mapCitationForLab(c: PdfCitation | Record<string, unknown>) {
   const page =
     row.physicalPageNumber != null ? ` · physical page ${row.physicalPageNumber}` : '';
   const citationKind =
-    row.type === 'primary_pdf' || row.citationLabel?.includes('PDF')
-      ? `${regulator} — ${ref}${page}`
-      : row.citationLabel || `${regulator} — ${ref}${page}`;
+    row.type === 'html_article_v2'
+      ? row.citationLabel || `${regulator} — ${ref} — webpage section`
+      : row.type === 'primary_pdf' || row.citationLabel?.includes('PDF')
+        ? `${regulator} — ${ref}${page}`
+        : row.citationLabel || `${regulator} — ${ref}${page}`;
   return {
     citationKind,
     recordId: ref,
@@ -48,6 +50,8 @@ function mapCitationForLab(c: PdfCitation | Record<string, unknown>) {
     extractionRevisionId: row.extractionRevisionId,
     regulatoryStatus: row.regulatoryStatus,
     citationType: row.type || 'primary_pdf',
+    sectionReference: (row as { sectionReference?: string }).sectionReference,
+    attributedPublicationId: (row as { attributedPublicationId?: string }).attributedPublicationId,
   };
 }
 
@@ -135,44 +139,47 @@ export function mapAskRiProductionToLabLastAsk(result: AskRiResponse) {
   const connected = true;
 
   const pdf = result.publicationPdf as PublicationPdfAnswer | undefined;
-  if (pdf) {
-    if (pdf.status === 'EVIDENCE_RETRIEVAL_ERROR' || result.status === 'EVIDENCE_RETRIEVAL_ERROR') {
+  const html = (result as { publicationHtml?: PublicationPdfAnswer }).publicationHtml;
+  const catalogueEvidence = pdf || html;
+  if (catalogueEvidence) {
+    const active = catalogueEvidence;
+    if (active.status === 'EVIDENCE_RETRIEVAL_ERROR' || result.status === 'EVIDENCE_RETRIEVAL_ERROR') {
       return {
         ok: true,
         connected,
         technicalError: true,
-        message: pdf.answer || result.answer,
+        message: active.answer || result.answer,
         retrieval,
         providerCallCount,
       };
     }
-    if (pdf.status === 'UNRESOLVED' || result.status === 'UNRESOLVED') {
+    if (active.status === 'UNRESOLVED' || result.status === 'UNRESOLVED') {
       return {
         ok: true,
         connected,
         unresolved: true,
-        message: pdf.answer || result.answer || 'Could not map question to verified publication evidence.',
+        message: active.answer || result.answer || 'Could not map question to verified publication evidence.',
         retrieval: { ...retrieval, interpretedAs: result.interpretedAs },
         providerCallCount,
       };
     }
-    if (pdf.status === 'INSUFFICIENT_EVIDENCE' || result.status === 'INSUFFICIENT_EVIDENCE') {
+    if (active.status === 'INSUFFICIENT_EVIDENCE' || result.status === 'INSUFFICIENT_EVIDENCE') {
       return {
         ok: true,
         connected,
         insufficient: true,
-        message: pdf.answer || result.answer,
+        message: active.answer || result.answer,
         retrieval,
         providerCallCount,
       };
     }
-    const citations = (pdf.citations || result.citations || []) as PdfCitation[];
+    const citations = (result.citations || active.citations || []) as PdfCitation[];
     return {
       ok: true,
       connected,
       providerCallCount,
       retrieval: pdfRetrievalFromCitations(result, citations),
-      analysis: answeredAnalysis(result, pdf.answer || result.answer, citations, pdf),
+      analysis: answeredAnalysis(result, active.answer || result.answer, citations, pdf),
       productionStatus: result.status,
     };
   }
