@@ -9,9 +9,11 @@ import {
   buildHtmlArticleEvidenceBlocks,
   buildPublicationHtmlEvidenceIndex,
 } from './publication-html-evidence.mjs';
+import { questionRequestsPdfSupplement } from './publication-question-scope.mjs';
 
 const REVISION_COLUMNS = `id,
   publication_id,
+  publication_version_id,
   source_snapshot_id,
   extraction_profile,
   raw_content_sha256,
@@ -51,7 +53,7 @@ export async function resolveSupplementaryPdfPublicationIds(
     needles.add('fg22-5');
     needles.add('FG22');
   }
-  if (/\bpdf\b/i.test(q)) {
+  if (questionRequestsPdfSupplement(q)) {
     needles.add('FG22/5');
   }
   for (const ev of htmlEvidenceLoaded) {
@@ -71,6 +73,61 @@ export async function resolveSupplementaryPdfPublicationIds(
     }
   }
   return [...resolved];
+}
+
+async function fetchHtmlArticleV2RevisionRows(adminSupabase, publicationIds) {
+  const { data: byPublicationId, error: byPubError } = await adminSupabase
+    .from('regulatory_source_extraction_revisions')
+    .select(REVISION_COLUMNS)
+    .eq('extraction_profile', EXTRACTION_PROFILE_HTML_ARTICLE_V2)
+    .in('publication_id', publicationIds)
+    .order('created_at', { ascending: false })
+    .limit(24);
+
+  if (byPubError) {
+    return { rows: [], error: byPubError, lookup: 'publication_id' };
+  }
+  if (byPublicationId?.length) {
+    return { rows: byPublicationId, error: null, lookup: 'publication_id' };
+  }
+
+  const { data: versions, error: versionError } = await adminSupabase
+    .from('regulatory_publication_versions')
+    .select('id, publication_id, version_number')
+    .in('publication_id', publicationIds)
+    .order('version_number', { ascending: false })
+    .limit(12);
+
+  if (versionError) {
+    return { rows: [], error: versionError, lookup: 'publication_version' };
+  }
+  const versionIds = [...new Set((versions || []).map((v) => v.id).filter(Boolean))];
+  const versionIdToPublicationId = new Map((versions || []).map((v) => [v.id, v.publication_id]));
+  if (!versionIds.length) {
+    return { rows: [], error: null, lookup: 'publication_version', versionCount: 0 };
+  }
+
+  const { data: byVersionId, error: byVerError } = await adminSupabase
+    .from('regulatory_source_extraction_revisions')
+    .select(REVISION_COLUMNS)
+    .eq('extraction_profile', EXTRACTION_PROFILE_HTML_ARTICLE_V2)
+    .in('publication_version_id', versionIds)
+    .order('created_at', { ascending: false })
+    .limit(24);
+
+  if (byVerError) {
+    return { rows: [], error: byVerError, lookup: 'publication_version' };
+  }
+  const rows = (byVersionId || []).map((row) => {
+    const publicationId = row.publication_id || versionIdToPublicationId.get(row.publication_version_id);
+    return publicationId ? { ...row, publication_id: publicationId } : row;
+  });
+  return {
+    rows,
+    error: null,
+    lookup: 'publication_version',
+    versionCount: versionIds.length,
+  };
 }
 
 /**
@@ -95,18 +152,16 @@ export async function loadPublicationHtmlEvidenceForAskRi(adminSupabase, options
     };
   }
 
-  const { data: rows, error } = await adminSupabase
-    .from('regulatory_source_extraction_revisions')
-    .select(REVISION_COLUMNS)
-    .eq('extraction_profile', EXTRACTION_PROFILE_HTML_ARTICLE_V2)
-    .in('publication_id', options.publicationIds)
-    .order('created_at', { ascending: false })
-    .limit(16);
-
-  if (error) {
-    return { evidence: [], errors: [{ code: 'html_revision_query_failed', message: error.message }] };
+  const revisionQuery = await fetchHtmlArticleV2RevisionRows(adminSupabase, options.publicationIds);
+  if (revisionQuery.error) {
+    return {
+      evidence: [],
+      errors: [{ code: 'html_revision_query_failed', message: revisionQuery.error.message }],
+      lookup: revisionQuery.lookup,
+    };
   }
 
+  const rows = revisionQuery.rows;
   if (!rows?.length) {
     return {
       evidence: [],
@@ -115,17 +170,42 @@ export async function loadPublicationHtmlEvidenceForAskRi(adminSupabase, options
           code: 'html_revision_query_zero_rows',
           message: 'No html_article_v2 extraction revisions for scoped publications.',
           publicationIds: options.publicationIds,
+          lookup: revisionQuery.lookup,
+          publicationVersionCount: revisionQuery.versionCount ?? null,
         },
       ],
+      lookup: revisionQuery.lookup,
     };
   }
 
   const latestByPublication = new Map();
+  const preLoadErrors = [];
   for (const row of rows) {
-    if (!latestByPublication.has(row.publication_id)) latestByPublication.set(row.publication_id, row);
+    const publicationKey = row.publication_id;
+    if (!publicationKey) {
+      preLoadErrors.push({ code: 'html_revision_missing_publication_id', revisionId: row.id });
+      continue;
+    }
+    if (!latestByPublication.has(publicationKey)) latestByPublication.set(publicationKey, row);
   }
 
   const publicationIds = [...latestByPublication.keys()];
+  if (!publicationIds.length && rows.length) {
+    return {
+      evidence: [],
+      errors: [
+        {
+          code: 'html_revision_rows_unmapped',
+          message: 'html_article_v2 revision rows could not be mapped to publication_id.',
+          revisionRowsFound: rows.length,
+        },
+        ...preLoadErrors,
+      ],
+      lookup: revisionQuery.lookup,
+      revisionRowsFound: rows.length,
+      versionCount: revisionQuery.versionCount ?? null,
+    };
+  }
   const { data: pubs, error: pubError } = await adminSupabase
     .from('regulatory_publications')
     .select(
@@ -140,7 +220,7 @@ export async function loadPublicationHtmlEvidenceForAskRi(adminSupabase, options
 
   const pubById = new Map((pubs || []).map((p) => [p.id, p]));
   const evidence = [];
-  const errors = [];
+  const errors = [...preLoadErrors];
 
   for (const row of latestByPublication.values()) {
     const pub = pubById.get(row.publication_id);
@@ -214,5 +294,11 @@ export async function loadPublicationHtmlEvidenceForAskRi(adminSupabase, options
     }
   }
 
-  return { evidence, errors };
+  return {
+    evidence,
+    errors,
+    lookup: revisionQuery.lookup,
+    revisionRowsFound: rows.length,
+    versionCount: revisionQuery.versionCount ?? null,
+  };
 }

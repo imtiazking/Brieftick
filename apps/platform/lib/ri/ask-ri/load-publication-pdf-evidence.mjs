@@ -115,6 +115,20 @@ export async function resolveCataloguePublicationIdsForQuestion(adminSupabase, q
     }
   }
 
+  if (/\bfair[- ]value\b/i.test(q) && /\bconsumer finance\b/i.test(q)) {
+    const { data: slugRows, error: slugError } = await adminSupabase
+      .from('regulatory_publications')
+      .select('id, title, canonical_url')
+      .or(
+        'canonical_url.ilike.%fair-value-consumer-finance%,canonical_url.ilike.%good-and-poor-practice%fair-value%',
+      )
+      .limit(4);
+    if (slugError) return { ids: [], error: formatPostgrestError(slugError) };
+    for (const row of slugRows || []) {
+      if (row.id) resolved.add(row.id);
+    }
+  }
+
   const titlePhrases = extractPublicationTitlePhrases(q);
   for (const phrase of titlePhrases) {
     const escaped = escapePostgrestIlike(phrase.slice(0, 160));
@@ -400,6 +414,9 @@ export async function attachPublicationPdfEvidenceToAskRiState(state, adminSupab
     targetedLoad: true,
     htmlLoadedCount: htmlLoaded.evidence?.length ?? 0,
     pdfLoadedCount: loaded.evidence?.length ?? 0,
+    htmlRevisionLookup: htmlLoaded.lookup ?? null,
+    htmlRevisionRowsFound: htmlLoaded.revisionRowsFound ?? null,
+    publicationVersionCount: htmlLoaded.errors?.[0]?.publicationVersionCount ?? htmlLoaded.versionCount ?? null,
     htmlErrorCount: htmlLoaded.errors?.length ?? 0,
     pdfErrorCount: loaded.errors?.length ?? 0,
     loadedCount: loaded.evidence?.length ?? 0,

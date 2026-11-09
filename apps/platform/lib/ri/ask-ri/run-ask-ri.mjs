@@ -7,6 +7,7 @@ import { buildInterpretedAsPlainEnglish } from './port/ai/ri-interpreted-as.js';
 import { answerAskRiFromBestPublicationPdfEvidence } from './publication-pdf-evidence.mjs';
 import { answerAskRiFromBestPublicationHtmlEvidence } from './publication-html-evidence.mjs';
 import { questionMentionsPublicationReference } from './publication-pdf-question-match.mjs';
+import { questionRequestsPdfSupplement } from './publication-question-scope.mjs';
 
 export { ASK_RI_RESULT_STATES };
 
@@ -146,16 +147,23 @@ function pdfLoadFailureStatus(errors) {
   return pdfLoadFailureIsTechnical(errors) ? 'EVIDENCE_RETRIEVAL_ERROR' : 'INSUFFICIENT_EVIDENCE';
 }
 
-function catalogueLoadFailureAnswer(htmlErrors, pdfErrors) {
+function catalogueLoadFailureAnswer(htmlErrors, pdfErrors, meta = {}) {
   const codes = [...new Set([...(htmlErrors || []), ...(pdfErrors || [])].map((e) => e.code).filter(Boolean))];
-  const primary = codes[0];
-  if (primary === 'html_revision_query_zero_rows' && codes.includes('revision_query_zero_rows')) {
-    return 'This FCA publication is available as a webpage (html_article_v2) but no pdf_primary_v1 revision is indexed for it. Primary PDF citations are unavailable until genuine PDF evidence is ingested separately (e.g. FG22/5).';
+  if (codes.includes('html_integrity_mismatch') || codes.includes('html_text_integrity_mismatch')) {
+    return 'Stored FCA webpage evidence failed SHA-256 verification; html_article_v2 citations are blocked.';
   }
-  if (primary === 'html_revision_query_zero_rows') {
-    return 'No html_article_v2 extraction revision exists for the referenced FCA webpage publication.';
+  if (codes.includes('html_revision_query_zero_rows')) {
+    const versions = meta.publicationVersionCount;
+    const scoped = meta.scopedPublicationIds?.join(', ') || 'unknown';
+    return `No html_article_v2 extraction revision could be loaded for catalogue publication(s) ${scoped}${versions != null ? ` (${versions} publication version row(s) checked)` : ''}. Webpage evidence is not available to Ask RI without an indexed html_article_v2 revision.`;
   }
-  return pdfLoadFailureAnswer(pdfErrors);
+  if (codes.includes('revision_query_zero_rows')) {
+    const wantsPdf = codes.length === 1;
+    if (wantsPdf) {
+      return 'No pdf_primary_v1 extraction revision is indexed for the referenced publication. This HTML publication does not require a PDF to answer webpage-scoped questions.';
+    }
+  }
+  return pdfLoadFailureAnswer(pdfErrors.length ? pdfErrors : htmlErrors);
 }
 
 export function runAskRiDeterministic(state, question) {
@@ -173,7 +181,7 @@ export function runAskRiDeterministic(state, question) {
         let pdfSupplement = null;
         let citations = [...(htmlAnswer.citations || [])];
         let answer = htmlAnswer.answer;
-        if (pdfEvidenceList.length && /pdf|FG\s*22|fg22/i.test(question)) {
+        if (pdfEvidenceList.length && questionRequestsPdfSupplement(question)) {
           pdfSupplement = answerAskRiFromBestPublicationPdfEvidence(pdfEvidenceList, question);
           if (pdfSupplement.status === 'ANSWERED' && pdfSupplement.citations?.length) {
             citations = mergeCatalogueCitations(citations, pdfSupplement.citations, primaryId);
@@ -239,7 +247,7 @@ export function runAskRiDeterministic(state, question) {
       }
     }
 
-    const answer = catalogueLoadFailureAnswer(htmlErrors, pdfErrors);
+    const answer = catalogueLoadFailureAnswer(htmlErrors, pdfErrors, state.publicationPdfEvidenceLoadMeta || {});
     const failureStatus =
       pdfLoadFailureIsTechnical([...htmlErrors, ...pdfErrors]) ? 'EVIDENCE_RETRIEVAL_ERROR' : 'INSUFFICIENT_EVIDENCE';
     return buildCatalogueEvidenceResult(question, {

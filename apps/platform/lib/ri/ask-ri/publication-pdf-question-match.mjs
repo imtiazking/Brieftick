@@ -24,6 +24,8 @@ export function extractPublicationTitlePhrases(question) {
   }
   const named = q.match(/\bpublication\s+['"]([^'"]+)['"]/i);
   if (named?.[1]?.trim()) phrases.push(named[1].trim());
+  const webpage = q.match(/\bwebpage\s+['"]([^'"]+)['"]/i);
+  if (webpage?.[1]?.trim()) phrases.push(webpage[1].trim());
   return [...new Set(phrases)];
 }
 
@@ -39,11 +41,15 @@ export function questionMentionsPublicationReference(question) {
   }
   if (PUBLICATION_UUID_RE.test(q)) return true;
   if (/\b(?:FCA|PRA|regulatory)\s+publication\s+['"]/i.test(q)) return true;
+  if (/\b(?:FCA|PRA)\s+webpage\s+['"]/i.test(q)) return true;
   if (/\bpublication\s+['"][^'"]+['"]/i.test(q)) return true;
+  if (/\bwebpage\s+['"][^'"]+['"]/i.test(q)) return true;
   const quotes = extractPublicationTitlePhrases(q);
   if (
     quotes.some((p) => p.length >= 10) &&
-    /\b(fair value|consumer duty|consumer finance|source evidence|pdf citation|primary pdf)/i.test(q)
+    /\b(fair[- ]value|consumer duty|consumer finance|source evidence|pdf citation|primary pdf|webpage|html[- ]only)/i.test(
+      q,
+    )
   ) {
     return true;
   }

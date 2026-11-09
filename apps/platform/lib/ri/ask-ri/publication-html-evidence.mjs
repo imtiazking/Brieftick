@@ -98,8 +98,10 @@ export function answerAskRiFromPublicationHtmlEvidence(publicationEvidence, ques
     };
   }
 
-  const webOk = ctx.extractionQuality?.webpageExtraction?.status === 'complete';
-  if (!webOk) {
+  const webStatus = String(ctx.extractionQuality?.webpageExtraction?.status || '').toLowerCase();
+  const webOk = webStatus === 'complete' || webStatus === 'pass' || webStatus === 'ok';
+  const textLen = String(ctx.normalisedArticleText || '').trim().length;
+  if (!webOk && textLen < 80) {
     return {
       status: 'INSUFFICIENT_EVIDENCE',
       answer: 'Webpage extraction is not marked complete for this publication version.',

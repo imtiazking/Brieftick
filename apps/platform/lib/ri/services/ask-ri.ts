@@ -54,6 +54,11 @@ export async function askRiProduction(
   }
 
   const result = runAskRiDeterministic(state, params.question) as AskRiResponse;
+  const { buildAskRiEvidenceTrace } = await import('@/lib/ri/ask-ri/ask-ri-trace.mjs');
+  (result as AskRiResponse & { askRiTrace?: unknown }).askRiTrace = buildAskRiEvidenceTrace(
+    state,
+    result,
+  );
 
   if (process.env.ASK_RI_DIAGNOSTICS === '1') {
     const pdfMeta = state.publicationPdfEvidenceLoadMeta as Record<string, unknown> | undefined;

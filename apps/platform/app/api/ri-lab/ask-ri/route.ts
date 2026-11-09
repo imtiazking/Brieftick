@@ -24,11 +24,17 @@ export async function POST(request: Request) {
     });
 
     const lastAsk = mapAskRiProductionToLabLastAsk(result);
+    const trace =
+      process.env.ASK_RI_TRACE === '1' || process.env.ASK_RI_DIAGNOSTICS === '1'
+        ? (result as { askRiTrace?: unknown }).askRiTrace
+        : undefined;
+
     return NextResponse.json({
       ok: true,
       lastAsk,
       status: result.status,
       interpretedAs: result.interpretedAs,
+      ...(trace ? { askRiTrace: trace } : {}),
     });
   } catch (err) {
     if (err instanceof Error) {
