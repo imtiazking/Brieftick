@@ -19,24 +19,34 @@ import {
 } from './lab-org-context.js';
 import { loadConnectedCatalogue } from './connected-catalogue.js';
 import { clearConnectedLandscape, loadConnectedLandscape } from './connected-landscape.js';
+import {
+  applyPersistedConnectedRestore,
+  canRestorePersistedConnectedSession,
+} from './lab-bootstrap-coordinator.js';
 
 export async function probeBackendAvailability(apiBaseUrl) {
   const adapter = createApiPlatformAdapter({ apiBaseUrl });
   return adapter.probe();
 }
 
-export async function activateConnectedBackend(state) {
+/** Clerk session + organisation + platform config (no tenant catalogue). */
+export async function activateConnectedSession(state) {
   const apiBaseUrl = state.platformConfig?.apiBaseUrl || '/api/ri-lab';
   const adapter = createApiPlatformAdapter({ apiBaseUrl });
+  await refreshLabOrganisationContext(state);
+  await ensureSupabaseOrganisationActive();
+  const { session, readiness } = await adapter.bootstrap();
+  if (!session?.ok || !readiness?.ok) {
+    throw new Error(readiness?.error || session?.error || 'backend_not_ready');
+  }
+  setConnectedModePreference(true);
+  applyConnectedPlatformConfig(state, session, readiness);
+  return { ok: true, session, readiness };
+}
+
+export async function activateConnectedBackend(state) {
   try {
-    await refreshLabOrganisationContext(state);
-    await ensureSupabaseOrganisationActive();
-    const { session, readiness } = await adapter.bootstrap();
-    if (!session?.ok || !readiness?.ok) {
-      throw new Error(readiness?.error || session?.error || 'backend_not_ready');
-    }
-    setConnectedModePreference(true);
-    applyConnectedPlatformConfig(state, session, readiness);
+    const { session, readiness } = await activateConnectedSession(state);
     const catalogue = await loadConnectedCatalogue(state);
     if (!catalogue.ok) {
       const detail =
@@ -85,7 +95,15 @@ async function probeClerkLabSession(apiBaseUrl) {
   return { status: res.status, ok: res.ok && body?.ok === true, body };
 }
 
-export async function bootstrapLabConnectivity(state) {
+/**
+ * @param {object} [options]
+ * @param {boolean} [options.hardReset] Force connecting gate (retry / first connect).
+ * @param {boolean} [options.softRefresh] Background validation — keep UI usable when session is restored from persistence.
+ */
+export async function bootstrapLabConnectivity(state, options = {}) {
+  const softRefresh = options.softRefresh === true;
+  const hardReset = options.hardReset === true || (!softRefresh && options.hardReset !== false);
+
   if (isPresentationModeRequested()) {
     state.connectivity = {
       mode: 'presentation',
@@ -102,16 +120,24 @@ export async function bootstrapLabConnectivity(state) {
   }
 
   const apiBaseUrl = state.platformConfig?.apiBaseUrl || '/api/ri-lab';
-  if (state.platformConfig) {
-    state.platformConfig.backendReady = false;
+  if (softRefresh && canRestorePersistedConnectedSession(state)) {
+    applyPersistedConnectedRestore(state);
+    delete state.connectivity.backgroundRefresh;
+    notify();
+  } else if (hardReset) {
+    if (state.platformConfig) {
+      state.platformConfig.backendReady = false;
+    }
+    state.connectivity = {
+      ...(state.connectivity || {}),
+      mode: 'connecting',
+      connectingSince: new Date().toISOString(),
+      lastCheckedAt: new Date().toISOString(),
+      error: null,
+      backgroundRefresh: false,
+    };
+    notify();
   }
-  state.connectivity = {
-    ...(state.connectivity || {}),
-    mode: 'connecting',
-    lastCheckedAt: new Date().toISOString(),
-    error: null,
-  };
-  notify();
 
   let probe;
   try {
@@ -143,7 +169,7 @@ export async function bootstrapLabConnectivity(state) {
   let result;
   try {
     result = await withTimeout(
-      activateConnectedBackend(state),
+      activateConnectedSession(state),
       CONNECT_BOOTSTRAP_TIMEOUT_MS,
       'connect_timeout',
     );
@@ -155,6 +181,13 @@ export async function bootstrapLabConnectivity(state) {
   if (!result.ok) {
     return { mode: 'connected_error', error: result.error };
   }
+  delete state.connectivity.backgroundRefresh;
+  state.connectivity = {
+    ...(state.connectivity || {}),
+    mode: 'connected',
+    error: null,
+    lastCheckedAt: new Date().toISOString(),
+  };
   applyAskRiSessionRestore();
   notify();
   const cat = state.connectedCatalogue;

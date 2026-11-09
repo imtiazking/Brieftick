@@ -58,7 +58,10 @@ export function renderConnectivityAccessGate(state) {
       title: 'Connecting…',
       subtitle: 'Loading Clerk session, active organisation, and tenant catalogue.',
     })}
-    <section class="ri-panel"><p class="ri-muted">Demonstration data stays hidden until connected services respond or an error is shown.</p></section>`;
+    <section class="ri-panel">
+      <p class="ri-muted">Demonstration data stays hidden until connected services respond or an error is shown.</p>
+      <p class="ri-muted">If this persists beyond 25 seconds, use <strong>Retry connection</strong> or run <code>__FORGENIQ_RI_CONNECTIVITY_DIAG__()</code> in the browser console and share the output.</p>
+    </section>`;
   }
   return `${pageHeader({
     eyebrow: 'CONNECTED STAGING',

@@ -173,6 +173,13 @@ import {
   refreshLabOrganisationContext,
   setActiveOrganisation,
 } from './platform/lab-connectivity.js';
+import {
+  applyPersistedConnectedRestore,
+  canRestorePersistedConnectedSession,
+  connectivityDiagSnapshot,
+  runBootstrapSingleton,
+  startConnectingWatchdog,
+} from './platform/lab-bootstrap-coordinator.js';
 
 const NAV_ACTIVE = {
   landscape: ['landscape'],
@@ -830,7 +837,7 @@ function bindViewHandlers() {
   });
 
   connectPanel?.addEventListener('click', async () => {
-    const res = await bootstrapLabConnectivity(getState());
+    const res = await runBootstrapSingleton(() => bootstrapLabConnectivity(getState(), { hardReset: true }));
     if (res.mode === 'connected') showToast('Connected to FORGENIQ backend');
     else showToast(getState().connectivity?.error || 'Backend connection failed');
     renderChrome();
@@ -839,7 +846,7 @@ function bindViewHandlers() {
     renderShell();
   });
   document.querySelector('[data-ri-reconnect-backend]')?.addEventListener('click', async () => {
-    const res = await bootstrapLabConnectivity(getState());
+    const res = await runBootstrapSingleton(() => bootstrapLabConnectivity(getState(), { hardReset: true }));
     if (res.mode === 'connected') showToast('Reconnected to FORGENIQ backend');
     else showToast(getState().connectivity?.error || 'Reconnection failed');
     renderChrome();
@@ -870,7 +877,7 @@ function bindViewHandlers() {
     btn.addEventListener('click', async () => {
       btn.disabled = true;
       showToast('Retrying connection…');
-      await bootstrapLabConnectivity(getState());
+      await runBootstrapSingleton(() => bootstrapLabConnectivity(getState(), { hardReset: true }));
       renderChrome();
       bindChromeHandlers();
       syncModeChrome();
@@ -2625,15 +2632,37 @@ function initConnectedWriteDelegation() {
 function init() {
   initStore();
   initCreateChangePublicationComboboxHandlers();
+  let bootstrapOptions = { hardReset: true };
   if (shouldAutoConnectToBackend()) {
     const st = getState();
-    st.connectivity = {
-      ...(st.connectivity || {}),
-      mode: 'connecting',
-      lastCheckedAt: new Date().toISOString(),
-      error: null,
-    };
+    if (canRestorePersistedConnectedSession(st)) {
+      applyPersistedConnectedRestore(st);
+      bootstrapOptions = { softRefresh: true, hardReset: false };
+    } else {
+      st.connectivity = {
+        ...(st.connectivity || {}),
+        mode: 'connecting',
+        connectingSince: new Date().toISOString(),
+        lastCheckedAt: new Date().toISOString(),
+        error: null,
+      };
+    }
   }
+  if (typeof window !== 'undefined') {
+    window.__FORGENIQ_RI_CONNECTIVITY_DIAG__ = () => connectivityDiagSnapshot();
+  }
+  startConnectingWatchdog(() => {
+    const st = getState();
+    if (st.connectivity?.mode === 'connecting') {
+      markConnectedBackendUnavailable(st, 'connect_watchdog_timeout');
+      notify();
+      lastConnectivityMode = st.connectivity?.mode;
+      renderChrome();
+      bindChromeHandlers();
+      syncModeChrome();
+      renderShell();
+    }
+  });
   renderChrome();
   bindChromeHandlers();
   initConnectedLinkDelegation();
@@ -2652,7 +2681,7 @@ function init() {
   if (!location.hash) location.hash = '#/dashboard';
   renderShell();
   syncModeChrome();
-  bootstrapLabConnectivity(getState())
+  runBootstrapSingleton(() => bootstrapLabConnectivity(getState(), bootstrapOptions))
     .then((boot) => {
       applyAskRiSessionRestore();
       notify();

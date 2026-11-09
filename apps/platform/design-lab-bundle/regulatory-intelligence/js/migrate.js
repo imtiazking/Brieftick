@@ -265,6 +265,16 @@ function mergeWithSeed(saved) {
         ...(saved.platformConfig?.featureFlags || {}),
       },
     };
+    const sessionOk = saved.platformConfig?.backendSession?.ok === true;
+    const wasConnected = saved.connectivity?.mode === 'connected';
+    if (sessionOk && wasConnected && saved.platformConfig?.adapterMode === 'api') {
+      fresh.platformConfig.backendReady = true;
+      fresh.platformConfig.adapterMode = 'api';
+      fresh.platformConfig.featureFlags = {
+        ...(fresh.platformConfig.featureFlags || {}),
+        apiAdapter: true,
+      };
+    }
   }
   if (saved.connectivity) {
     fresh.connectivity = { ...saved.connectivity };
