@@ -572,7 +572,7 @@ export async function linkAssuranceControl(
   await recordDualEntityLinkEvents(supabase, {
     organisationId,
     userId,
-    eventType: 'ASSURANCE_COMPLETED',
+    eventType: 'ASSURANCE_CONTROL_LINKED',
     left: { entityType: 'assurance_review', entityId: a, labClass: arClass },
     right: { entityType: 'control', entityId: b, labClass: ctrlClass },
     baseExtra: { assurance_review_id: a, control_id: b },
@@ -600,7 +600,7 @@ export async function linkAssuranceObligation(
       organisationId,
       entityType: 'assurance_review_obligation_link',
       entityId: a,
-      eventType: 'ASSURANCE_COMPLETED',
+      eventType: 'ASSURANCE_OBLIGATION_LINKED',
       userId,
       metadata: { obligation_id: b },
     },

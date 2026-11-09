@@ -87,6 +87,33 @@ if (!links.includes('classifyAssuranceForLab') || !links.includes('assertLabClas
 } else {
   pass('link_prov', 'cross-provenance link rejection');
 }
+if (!links.includes("eventType: 'ASSURANCE_CONTROL_LINKED'")) {
+  failTest('link_audit_semantics', 'control link must not emit ASSURANCE_COMPLETED');
+} else {
+  pass('link_audit_semantics', 'ASSURANCE_CONTROL_LINKED on link');
+}
+if (
+  assuranceSvc.includes("eventType: 'ASSURANCE_COMPLETED'") ||
+  !assuranceSvc.includes('ASSURANCE_REVIEW_CREATED')
+) {
+  failTest('create_audit_semantics', 'create must not emit ASSURANCE_COMPLETED');
+} else {
+  pass('create_audit_semantics', 'ASSURANCE_REVIEW_CREATED only on insert path');
+}
+
+const workflowTypes = readFileSync(join(platform, 'lib/ri/workflow-events.ts'), 'utf8');
+if (!workflowTypes.includes('ASSURANCE_CONTROL_LINKED') || !workflowTypes.includes('ASSURANCE_RESULT_CHANGED')) {
+  failTest('workflow_types', 'assurance workflow event vocabulary');
+} else {
+  pass('workflow_types', 'link + result event types registered');
+}
+
+const govUi = readFileSync(join(lab, 'js/platform/connected-governance-ui.js'), 'utf8');
+if (!govUi.includes('legacy link')) {
+  failTest('legacy_label', 'UI legacy label for misleading ASSURANCE_COMPLETED');
+} else {
+  pass('legacy_label', 'append-only audit display annotation');
+}
 
 const pan = readFileSync(join(lab, 'js/platform/connected-assurance-panels.js'), 'utf8');
 if (!pan.includes('data-connected-assurance-create-mode') || !pan.includes('assurance_control')) {

@@ -88,9 +88,6 @@ export async function createAssuranceReview(
     .select()
     .single();
   if (error) throw new Error(error.message);
-  if (controlId) {
-    await linkAssuranceControl(supabase, params.organisationId, data.id, controlId, params.userId);
-  }
   await recordWorkflowEvent(supabase, {
     organisationId: params.organisationId,
     entityType: 'assurance_review',
@@ -100,6 +97,9 @@ export async function createAssuranceReview(
     toStatus: result,
     metadata: controlId ? { control_id: controlId } : {},
   });
+  if (controlId) {
+    await linkAssuranceControl(supabase, params.organisationId, data.id, controlId, params.userId);
+  }
   return data;
 }
 
