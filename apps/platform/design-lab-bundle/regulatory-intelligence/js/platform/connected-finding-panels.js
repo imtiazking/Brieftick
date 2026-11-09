@@ -32,8 +32,21 @@ export function renderConnectedFindingCreatePanel() {
   </section>`;
 }
 
-export function renderConnectedFindingLinkPanel(findingId, f) {
+export function renderConnectedFindingLinkPanel(findingId, f, loadState = {}) {
   if (!isConnectedFindingWritesEnabled(getState())) return '';
+  if (loadState.loading) {
+    return `<section class="ri-panel" data-connected-link-panel data-finding-id="${esc(findingId)}">
+      <h2>Risk &amp; control linkage</h2>
+      <p class="ri-muted" data-connected-finding-links-loading="true">Loading risk and control relationships from staging…</p>
+    </section>`;
+  }
+  if (loadState.error) {
+    return `<section class="ri-panel ri-panel--warn" data-connected-link-panel data-finding-id="${esc(findingId)}">
+      <h2>Risk &amp; control linkage</h2>
+      <p role="alert">Relationship load failed: ${esc(loadState.error)}</p>
+      <p class="ri-muted">Use <strong>Retry load</strong> above to refetch authoritative finding detail.</p>
+    </section>`;
+  }
   const controlIds =
     (f?.controlIds?.length ? f.controlIds : null) ||
     (f?.parentControlId ? [f.parentControlId] : []);
@@ -66,7 +79,15 @@ export function renderConnectedFindingLinkPanel(findingId, f) {
   </section>`;
 }
 
-export function renderConnectedFindingWorkflowPanel(findingId) {
+export function renderConnectedFindingWorkflowPanel(findingId, loadState = {}) {
+  if (loadState.loading) {
+    return `<section class="ri-panel"><h2>Audit history</h2>
+      <p class="ri-muted" data-connected-finding-audit-loading="true">Loading workflow events from staging…</p></section>`;
+  }
+  if (loadState.error) {
+    return `<section class="ri-panel ri-panel--warn"><h2>Audit history</h2>
+      <p role="alert">Could not load workflow events: ${esc(loadState.error)}</p></section>`;
+  }
   const events = getConnectedEntityWorkflowEvents(getState(), 'finding', findingId);
   return `<section class="ri-panel"><h2>Audit history</h2>
     ${renderConnectedWorkflowEventsTable(events, 'No workflow events for this finding yet')}</section>`;

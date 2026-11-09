@@ -20,6 +20,30 @@ export function getConnectedEntityWorkflowEvents(state, entityType, entityId) {
   return cat.entityWorkflowEventsByKey[entityKey(entityType, entityId)] || [];
 }
 
+export function getEntityWorkflowEventsLoadError(state, entityType, entityId) {
+  const cat = state.connectedCatalogue;
+  if (!cat?.entityWorkflowEventsLoadErrorByKey) return null;
+  return cat.entityWorkflowEventsLoadErrorByKey[entityKey(entityType, entityId)] || null;
+}
+
+export function isEntityWorkflowEventsLoading(state, entityType, entityId) {
+  const cat = state.connectedCatalogue;
+  const key = entityKey(entityType, entityId);
+  if (cat?._entityAuditInflight?.[key]) return true;
+  return cat?.entityWorkflowEventsLoadStateByKey?.[key] === 'loading';
+}
+
+export function recordEntityWorkflowEventsLoadFailure(state, entityType, entityId, message) {
+  const cat = initConnectedCatalogueState(state);
+  const key = entityKey(entityType, entityId);
+  cat.entityWorkflowEventsLoadStateByKey = cat.entityWorkflowEventsLoadStateByKey || {};
+  cat.entityWorkflowEventsLoadErrorByKey = cat.entityWorkflowEventsLoadErrorByKey || {};
+  cat.entityWorkflowEventsLoadStateByKey[key] = 'error';
+  cat.entityWorkflowEventsLoadErrorByKey[key] = message || 'entity_workflow_events_failed';
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+}
+
 /**
  * @returns {Promise<unknown[]>|null} null when cached or in flight
  */
@@ -27,9 +51,12 @@ export function scheduleConnectedEntityWorkflowEventsFetch(state, entityType, en
   const cat = initConnectedCatalogueState(state);
   const key = entityKey(entityType, entityId);
   cat.entityWorkflowEventsByKey = cat.entityWorkflowEventsByKey || {};
-  if (cat.entityWorkflowEventsByKey[key]) return null;
+  cat.entityWorkflowEventsLoadStateByKey = cat.entityWorkflowEventsLoadStateByKey || {};
+  const loadState = cat.entityWorkflowEventsLoadStateByKey[key];
+  if (loadState === 'loaded') return null;
   cat._entityAuditInflight = cat._entityAuditInflight || {};
   if (cat._entityAuditInflight[key]) return cat._entityAuditInflight[key];
+  cat.entityWorkflowEventsLoadStateByKey[key] = 'loading';
   cat._entityAuditInflight[key] = fetchConnectedEntityWorkflowEvents(state, entityType, entityId).finally(
     () => {
       delete cat._entityAuditInflight[key];
@@ -51,14 +78,22 @@ export async function fetchConnectedEntityWorkflowEvents(state, entityType, enti
     headers: { Accept: 'application/json' },
   });
   const body = await res.json().catch(() => ({}));
+  const key = entityKey(entityType, entityId);
+  cat.entityWorkflowEventsLoadStateByKey = cat.entityWorkflowEventsLoadStateByKey || {};
+  cat.entityWorkflowEventsLoadErrorByKey = cat.entityWorkflowEventsLoadErrorByKey || {};
   if (!res.ok || !body.ok) {
     const err = new Error(body.error || 'entity_workflow_events_failed');
     err.status = res.status;
+    cat.entityWorkflowEventsLoadStateByKey[key] = 'error';
+    cat.entityWorkflowEventsLoadErrorByKey[key] = err.message;
+    savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+    notify();
     throw err;
   }
-  const key = entityKey(entityType, entityId);
   cat.entityWorkflowEventsByKey = cat.entityWorkflowEventsByKey || {};
   cat.entityWorkflowEventsByKey[key] = Array.isArray(body.events) ? body.events : [];
+  cat.entityWorkflowEventsLoadStateByKey[key] = 'loaded';
+  delete cat.entityWorkflowEventsLoadErrorByKey[key];
   savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();
   return cat.entityWorkflowEventsByKey[key];
@@ -69,5 +104,7 @@ export async function refreshConnectedEntityWorkflowEvents(state, entityType, en
   const cat = initConnectedCatalogueState(state);
   const key = entityKey(entityType, entityId);
   if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[key];
+  if (cat.entityWorkflowEventsLoadStateByKey) delete cat.entityWorkflowEventsLoadStateByKey[key];
+  if (cat.entityWorkflowEventsLoadErrorByKey) delete cat.entityWorkflowEventsLoadErrorByKey[key];
   return fetchConnectedEntityWorkflowEvents(state, entityType, entityId);
 }

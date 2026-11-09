@@ -52,7 +52,15 @@ import { getEvidenceAssuranceStatus } from './governance-helpers.js';
 import { filterByScenario } from './relationships.js';
 import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
 import { isConnectedBackendActive } from './platform/connected-mode.js';
-import { connectedCatalogueBanner, getConnectedCatalogue } from './platform/connected-catalogue.js';
+import {
+  connectedCatalogueBanner,
+  findingHasRelationshipHints,
+  getConnectedCatalogue,
+} from './platform/connected-catalogue.js';
+import {
+  getEntityWorkflowEventsLoadError,
+  isEntityWorkflowEventsLoading,
+} from './platform/connected-entity-audit.js';
 import { connectedWorkModeBanner } from './platform/connected-display.js';
 import { isConnectedFindingWritesEnabled } from './platform/connected-mode.js';
 import {
@@ -382,16 +390,6 @@ export function viewFindingsList() {
     ${uatSection}`;
 }
 
-function findingHasRelationshipHints(f) {
-  if (!f) return false;
-  return Boolean(
-    f.parentRiskId ||
-      f.parentControlId ||
-      (f.controlIds && f.controlIds.length) ||
-      (f.linkedControls && f.linkedControls.length),
-  );
-}
-
 export function viewFinding(id) {
   const s = getState();
   if (isConnectedBackendActive(s)) {
@@ -410,9 +408,17 @@ export function viewFinding(id) {
         ${connectedReadOnlyGovernanceBanner(s)}
         <p class="ri-muted" data-connected-finding-loading="true">Loading tenant finding from staging…</p>`;
     }
-    const detailPending =
-      detail?._detailHydrated !== true && !findingHasRelationshipHints(f) && !detail?._detailLoadError;
+    const detailInflight = Boolean(cat._detailInflight?.[`findingDetailsById:${id}`]);
+    const relationshipsResolved =
+      findingHasRelationshipHints(f) || detail?._detailHydrated === true || Boolean(detail?._detailLoadError);
+    const detailPending = !relationshipsResolved && (detailInflight || detail?._detailHydrated !== true);
     const detailError = detail?._detailLoadError;
+    const linkPanelState = {
+      loading: detailPending && !detailError,
+      error: detailError || null,
+    };
+    const auditLoading = isEntityWorkflowEventsLoading(s, 'finding', id);
+    const auditError = getEntityWorkflowEventsLoadError(s, 'finding', id);
     const writes = isConnectedFindingWritesEnabled(s);
     return `${connectedCatalogueBanner(s)}
       ${writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner(s)}
@@ -427,9 +433,9 @@ export function viewFinding(id) {
         <dt>Due</dt><dd>${formatDate(f.dueDate)}</dd>
         <dt>Description</dt><dd>${esc(f.description || '—')}</dd>
       </dl>
-      ${writes ? renderConnectedFindingLinkPanel(id, f) : ''}
+      ${writes ? renderConnectedFindingLinkPanel(id, f, linkPanelState) : ''}
       ${writes ? renderConnectedFindingRemediationPanel(id, f) : '<p class="ri-muted">Finding writes disabled in this session.</p>'}
-      ${renderConnectedFindingWorkflowPanel(id)}`;
+      ${renderConnectedFindingWorkflowPanel(id, { loading: auditLoading, error: auditError })}`;
   }
   const f = (s.assuranceFindings || []).find((x) => x.id === id);
   if (!f) return notFoundState('Assurance Finding', id);

@@ -556,6 +556,10 @@ async function loadConnectedCatalogueInner(state, cat) {
 export async function ensureConnectedCatalogueLoaded(state) {
   if (!isConnectedBackendActive(state)) return { ok: true, skipped: true };
   const cat = getConnectedCatalogue(state);
+  if (cat.status === 'ready' && connectedCatalogueHasStaleFindingLineage(cat)) {
+    cat.status = 'idle';
+    cat._staleFindingLineageRefresh = true;
+  }
   if (cat.status === 'ready') return { ok: true, cached: true };
   if (cat.status === 'error') return { ok: false, error: cat.error };
   return loadConnectedCatalogue(state);
@@ -566,6 +570,34 @@ function upsertConnectedLabPublication(cat, labPublication) {
   const idx = cat.publications.findIndex((p) => p.id === labPublication.id);
   if (idx >= 0) cat.publications[idx] = labPublication;
   else cat.publications.push(labPublication);
+}
+
+/** Whether a finding row exposes risk/control relationship fields for the detail page. */
+export function findingHasRelationshipHints(f) {
+  if (!f) return false;
+  return Boolean(
+    f.parentRiskId ||
+      f.parentControlId ||
+      (f.controlIds && f.controlIds.length) ||
+      (f.linkedControls && f.linkedControls.length),
+  );
+}
+
+/** Authorised UAT finding in catalogue missing lineage that detail API should hydrate. */
+export function findingCatalogueRowNeedsDetailLineage(f) {
+  if (!f?.id) return false;
+  const uat =
+    f.dataProvenance === 'uat_authorised' ||
+    f.labClassification === 'uat_authorised' ||
+    f.recordProvenance === 'uat_authorised';
+  if (!uat) return false;
+  return !findingHasRelationshipHints(f);
+}
+
+function connectedCatalogueHasStaleFindingLineage(cat) {
+  if (!cat) return false;
+  const lists = [...(cat.authorisedUatFindings || []), ...(cat.findings || [])];
+  return lists.some((f) => findingCatalogueRowNeedsDetailLineage(f));
 }
 
 /**
@@ -857,9 +889,19 @@ export async function fetchConnectedFindingDetail(state, findingId) {
   }
   const auditKey = `finding:${findingId}`;
   if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
+  if (cat.entityWorkflowEventsLoadStateByKey) delete cat.entityWorkflowEventsLoadStateByKey[auditKey];
+  if (cat.entityWorkflowEventsLoadErrorByKey) delete cat.entityWorkflowEventsLoadErrorByKey[auditKey];
 
   if (body.finding) {
-    const meta = body.detail?.metadata ?? body.finding.metadata ?? null;
+    const rawMeta = body.detail?.metadata ?? body.finding.metadata ?? null;
+    let meta = rawMeta;
+    if (typeof rawMeta === 'string') {
+      try {
+        meta = JSON.parse(rawMeta);
+      } catch {
+        meta = null;
+      }
+    }
     const metaRisk =
       typeof meta?.parentRiskId === 'string' ? meta.parentRiskId : body.finding.parentRiskId ?? null;
     const metaControl =
@@ -887,13 +929,26 @@ export async function fetchConnectedFindingDetail(state, findingId) {
     };
     mergeFindingCatalogueRow(cat, merged);
     cat.findingDetailsById[findingId] = { ...cat.findingDetailsById[findingId], ...merged };
+    savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+    notify();
+    return body.finding;
   }
-  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
-  notify();
-  return body.finding;
+  const err = new Error('finding_detail_missing_body');
+  err.status = res.status;
+  throw err;
 }
 
 export function scheduleConnectedFindingDetailFetch(state, findingId) {
+  const cat = initConnectedCatalogueState(state);
+  const fromList =
+    cat.findings?.find((f) => f.id === findingId) ||
+    cat.authorisedUatFindings?.find((f) => f.id === findingId);
+  const cached = cat.findingDetailsById?.[findingId];
+  if (fromList && findingCatalogueRowNeedsDetailLineage(fromList)) {
+    if (cached?._detailHydrated === true && !findingDetailHasLineage(cached)) {
+      delete cat.findingDetailsById[findingId];
+    }
+  }
   return scheduleConnectedDetailFetch(state, 'findingDetailsById', findingId, fetchConnectedFindingDetail);
 }
 
@@ -902,6 +957,10 @@ export function forceRefetchConnectedFindingDetail(state, findingId) {
   const cat = initConnectedCatalogueState(state);
   if (cat.findingDetailsById) delete cat.findingDetailsById[findingId];
   if (cat._detailInflight) delete cat._detailInflight[`findingDetailsById:${findingId}`];
+  const auditKey = `finding:${findingId}`;
+  if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
+  if (cat.entityWorkflowEventsLoadStateByKey) delete cat.entityWorkflowEventsLoadStateByKey[auditKey];
+  if (cat.entityWorkflowEventsLoadErrorByKey) delete cat.entityWorkflowEventsLoadErrorByKey[auditKey];
   return scheduleConnectedFindingDetailFetch(state, findingId);
 }
 

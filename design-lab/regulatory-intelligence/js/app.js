@@ -159,7 +159,10 @@ import {
   scheduleConnectedIngestionRunDetailFetch,
   initConnectedCatalogueState,
 } from './platform/connected-catalogue.js';
-import { scheduleConnectedEntityWorkflowEventsFetch } from './platform/connected-entity-audit.js';
+import {
+  recordEntityWorkflowEventsLoadFailure,
+  scheduleConnectedEntityWorkflowEventsFetch,
+} from './platform/connected-entity-audit.js';
 import { ensureConnectedLandscapeLoaded } from './platform/connected-landscape.js';
 import {
   activateConnectedBackend,
@@ -784,7 +787,15 @@ function bindViewHandlers() {
     const findingId = findingDetailMatch[1];
     scheduleConnectedEntityWorkflowEventsFetch(getState(), 'finding', findingId)
       ?.then(() => renderShell())
-      .catch(() => {});
+      .catch((e) => {
+        recordEntityWorkflowEventsLoadFailure(
+          getState(),
+          'finding',
+          findingId,
+          e?.message || 'entity_workflow_events_failed',
+        );
+        renderShell();
+      });
     scheduleConnectedFindingDetailFetch(getState(), findingId)
       ?.then(() => renderShell())
       .catch((e) => {

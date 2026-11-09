@@ -128,6 +128,24 @@ export type LabFindingView = {
   _connected: true;
 };
 
+export function parseLabRowMetadata(
+  raw: unknown,
+): Record<string, unknown> | null | undefined {
+  if (raw === null || raw === undefined) return null;
+  if (typeof raw === 'string') {
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)
+        ? (parsed as Record<string, unknown>)
+        : null;
+    } catch {
+      return null;
+    }
+  }
+  if (typeof raw === 'object' && !Array.isArray(raw)) return raw as Record<string, unknown>;
+  return null;
+}
+
 export function findingRelationshipFieldsFromMetadata(
   metadata: Record<string, unknown> | null | undefined,
 ): { parentRiskId: string | null; parentControlId: string | null } {
@@ -292,7 +310,7 @@ export function mapEvidenceRowToLabView(row: Record<string, unknown>): LabEviden
 
 export function mapFindingRowToLabView(row: Record<string, unknown>): LabFindingView {
   const labClass = classifyRiskForLab(riskLabProvenanceInputFromRow(row));
-  const meta = (row.metadata as Record<string, unknown> | null | undefined) ?? null;
+  const meta = parseLabRowMetadata(row.metadata) ?? null;
   const { parentRiskId, parentControlId } = findingRelationshipFieldsFromMetadata(meta);
   return {
     id: String(row.id),

@@ -22,7 +22,7 @@ import {
 import { validateMinimalState } from './platform/startup-validation.js';
 
 export { STORAGE_KEY_V2, STORAGE_KEY_V1 };
-export const SCHEMA_VERSION = 17;
+export const SCHEMA_VERSION = 18;
 
 export function createFreshState() {
   const state = buildSeedState();
@@ -309,10 +309,33 @@ function mergeWithSeed(saved) {
         }
         if (key.startsWith('finding:')) {
           const findingId = key.slice('finding:'.length);
-          if (fresh.connectedCatalogue.findingDetailsById?.[findingId]?._detailHydrated !== true) {
+          const events = entityAudit[key];
+          const staleDetail = fresh.connectedCatalogue.findingDetailsById?.[findingId]?._detailHydrated !== true;
+          const emptyAudit = Array.isArray(events) && events.length === 0;
+          if (staleDetail || emptyAudit) {
             delete entityAudit[key];
+            if (fresh.connectedCatalogue.entityWorkflowEventsLoadStateByKey) {
+              delete fresh.connectedCatalogue.entityWorkflowEventsLoadStateByKey[key];
+            }
+            if (fresh.connectedCatalogue.entityWorkflowEventsLoadErrorByKey) {
+              delete fresh.connectedCatalogue.entityWorkflowEventsLoadErrorByKey[key];
+            }
           }
         }
+      }
+    }
+    if ((saved.schemaVersion || 0) < 18 && fresh.connectedCatalogue.status === 'ready') {
+      const uatRows = fresh.connectedCatalogue.authorisedUatFindings || [];
+      const needsLineage = uatRows.some(
+        (f) =>
+          (f?.dataProvenance === 'uat_authorised' || f?.labClassification === 'uat_authorised') &&
+          !f?.parentRiskId &&
+          !f?.parentControlId &&
+          !(f?.controlIds || []).length &&
+          !(f?.linkedControls || []).length,
+      );
+      if (needsLineage) {
+        fresh.connectedCatalogue.status = 'idle';
       }
     }
   }

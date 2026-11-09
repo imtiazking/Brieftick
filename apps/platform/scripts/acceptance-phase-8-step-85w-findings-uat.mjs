@@ -38,6 +38,11 @@ if (!govView.includes('parentRiskId') || !govView.includes('findingRelationshipF
 } else {
   pass('lab_view', 'parentRiskId/parentControlId on lab view');
 }
+if (!govView.includes('parseLabRowMetadata')) {
+  failTest('lab_metadata', 'metadata must parse string JSON for lineage fields');
+} else {
+  pass('lab_metadata', 'parseLabRowMetadata');
+}
 
 const postRoute = readFileSync(join(platform, 'app/api/ri-lab/findings/route.ts'), 'utf8');
 if (!postRoute.includes('getFindingDetail')) {
@@ -145,6 +150,25 @@ if (!catRetry.includes('recordFindingDetailLoadFailure') || !catRetry.includes('
   failTest('detail_error', 'finding detail must record errors and support retry');
 } else {
   pass('detail_error', 'detail failure + retry path');
+}
+if (!catRetry.includes('connectedCatalogueHasStaleFindingLineage') || !catRetry.includes('findingCatalogueRowNeedsDetailLineage')) {
+  failTest('catalogue_stale', 'must refresh stale finding lineage in connected catalogue');
+} else {
+  pass('catalogue_stale', 'stale UAT finding lineage refresh');
+}
+
+const entityAudit = readFileSync(join(lab, 'js/platform/connected-entity-audit.js'), 'utf8');
+if (!entityAudit.includes('entityWorkflowEventsLoadStateByKey') || entityAudit.includes('if (cat.entityWorkflowEventsByKey[key]) return null')) {
+  failTest('audit_cache', 'entity audit must not treat empty [] as permanent cache');
+} else {
+  pass('audit_cache', 'entity workflow load markers');
+}
+
+const linkPan = readFileSync(join(lab, 'js/platform/connected-finding-panels.js'), 'utf8');
+if (!linkPan.includes('Relationship load failed') || !linkPan.includes('loadState.loading')) {
+  failTest('link_panel_errors', 'link panel must distinguish load failure from empty data');
+} else {
+  pass('link_panel_errors', 'relationship failure vs empty');
 }
 
 const migSql = readFileSync(
