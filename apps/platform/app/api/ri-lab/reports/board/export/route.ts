@@ -15,6 +15,9 @@ export async function GET(request: Request) {
     const generatedAt = new Date().toISOString();
     const lines = buildBoardReportPdfLines({
       organisationId: ctx.organisationId,
+      organisationName: ctx.organisationName,
+      dataPopulation: report.dataPopulation,
+      metricsNote: report.metricsNote,
       generatedAt,
       reportingPeriod: report.reportingPeriod,
       summary: {
@@ -38,6 +41,7 @@ export async function GET(request: Request) {
         'Content-Disposition': `attachment; filename="${filename}"`,
         'Cache-Control': 'no-store',
         'X-Forgeniq-Reporting-Period': period.label,
+        'X-Forgeniq-Data-Population': report.dataPopulation,
       },
     });
   } catch (err) {

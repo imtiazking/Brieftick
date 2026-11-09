@@ -23,7 +23,7 @@ export function renderConnectedReportingPeriodSelector() {
       </select>
     </label>
     <button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-connected-reporting-refresh>Refresh reports</button>
-    <p class="ri-muted">Snapshot metrics reflect current open counts; activity figures filter events created in the period.</p>
+    <p class="ri-muted">Operational data scope only (excludes authorised UAT). Snapshot = current open counts; period activity = rows created/submitted in the window.</p>
   </section>`;
 }
 
@@ -74,7 +74,7 @@ export function renderConnectedExecutiveReport(body) {
   const period = body.reportingPeriod?.label || 'Last 30 days';
   return `<section class="ri-panel" data-connected-executive-report="true">
     <h2>Tenant executive metrics</h2>
-    <p class="ri-muted">Period: <strong>${period}</strong>. ${body.metricsNote || ''}</p>
+    <p class="ri-muted">Period: <strong>${period}</strong>. Population: <strong>${body.dataPopulation || 'operational'}</strong>. ${body.metricsNote || ''}</p>
     <div class="ri-module-grid">
       <article class="ri-panel"><h3>Open changes (snapshot)</h3><p class="ri-module__value">${s.changesOpen ?? 0}</p></article>
       <article class="ri-panel"><h3>Impacts in progress</h3><p class="ri-module__value">${s.impactsInProgress ?? 0}</p></article>

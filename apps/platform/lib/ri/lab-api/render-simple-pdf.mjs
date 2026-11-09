@@ -1,7 +1,18 @@
 /** Minimal single-page PDF (text lines only) — shared with acceptance tests. */
 
+export function toPdfAscii(text) {
+  return String(text)
+    .replace(/\u2014/g, '--')
+    .replace(/\u2013/g, '-')
+    .replace(/\u2192/g, '->')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201c\u201d]/g, '"')
+    .replace(/[^\x20-\x7E]/g, '?');
+}
+
 export function renderSimpleTextPdf(lines) {
-  const sanitized = lines.map((line) => String(line).replace(/[^\x20-\x7E]/g, '?').slice(0, 120));
+  const sanitized = lines.map((line) => toPdfAscii(line).slice(0, 120));
   const contentLines = ['BT', '/F1 10 Tf', '50 750 Td'];
   sanitized.forEach((line, i) => {
     const escaped = line.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
@@ -37,16 +48,25 @@ export function renderSimpleTextPdf(lines) {
 }
 
 export function buildBoardReportPdfLines(params) {
+  const orgLabel =
+    params.organisationName?.trim() ||
+    params.organisationLabel?.trim() ||
+    params.organisationId ||
+    'Unknown organisation';
+  const tenantRef = params.organisationId ? ` (tenant id: ${params.organisationId})` : '';
   const periodLine = params.reportingPeriod
-    ? `Reporting period (activity filter): ${params.reportingPeriod.label} (${params.reportingPeriod.startDate} to ${params.reportingPeriod.endDate})`
+    ? `Reporting period: ${params.reportingPeriod.label} (${params.reportingPeriod.startDate} to ${params.reportingPeriod.endDate})`
     : 'Reporting period: default (see API period parameter)';
+  const scopeLine = `Data population: ${params.dataPopulation || 'operational'} (board metrics exclude authorised UAT and synthetic acceptance fixtures)`;
+
   const lines = [
-    'FORGENIQ Regulatory Intelligence — Board Report',
-    `Organisation: ${params.organisationId}`,
+    'FORGENIQ Regulatory Intelligence - Board Report',
+    `Organisation: ${orgLabel}${tenantRef}`,
     `Generated: ${params.generatedAt}`,
     periodLine,
+    scopeLine,
     '',
-    'Executive counts (current tenant snapshot — not historical reconstruction):',
+    '=== Snapshot metrics (current open/active counts as of generation time) ===',
     `Open changes: ${params.summary.changesOpen ?? 0}`,
     `Impacts in progress: ${params.summary.impactsInProgress ?? 0}`,
     `Active obligations: ${params.summary.obligationsActive ?? 0}`,
@@ -58,22 +78,27 @@ export function buildBoardReportPdfLines(params) {
   if (params.activityInPeriod) {
     lines.push(
       '',
-      'Activity registered within reporting period:',
+      '=== Period activity (created/submitted/occurred within reporting window) ===',
       `Changes registered: ${params.activityInPeriod.changesRegistered ?? 0}`,
       `Impact submissions: ${params.activityInPeriod.impactsSubmitted ?? 0}`,
       `Findings opened: ${params.activityInPeriod.findingsOpened ?? 0}`,
       `Workflow events: ${params.activityInPeriod.workflowEvents ?? 0}`,
     );
   }
-  lines.push('', 'Material changes in period (sample):');
+  lines.push('', '=== Material operational changes in period (sample) ===');
   if (!params.materialChanges.length) {
-    lines.push('(none matching period filter)');
+    lines.push('(none in operational population for this period)');
   } else {
     params.materialChanges.slice(0, 12).forEach((c) => {
-      lines.push(`- ${c.title} [${c.materiality ?? '—'}]`);
+      lines.push(`- ${c.title} [${c.materiality ?? '-'}]`);
     });
   }
-  lines.push('', 'Traceability: snapshot counts from live tenant rows; period block filters by created/submitted timestamps.');
-  lines.push('No compliance score or narrative conclusion is generated.');
+  lines.push(
+    '',
+    'Definitions: Snapshot = live tenant rows by status now. Period = rows timestamped inside the window.',
+    params.metricsNote ||
+      'Traceability: counts from live tenant data; authorised UAT excluded from operational board reporting.',
+    'No compliance score or narrative conclusion is generated.',
+  );
   return lines;
 }

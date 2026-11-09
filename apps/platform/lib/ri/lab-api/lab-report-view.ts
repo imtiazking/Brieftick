@@ -7,6 +7,7 @@ import type { ReportingPeriod } from '@/lib/ri/reporting-period';
 export type LabExecutiveReportPayload = {
   generatedAt: string;
   tenantScope: true;
+  dataPopulation: ManagementReport['dataPopulation'];
   reportingPeriod?: ReportingPeriod;
   metricsNote?: string;
   activityInPeriod?: ManagementReport['activityInPeriod'];
@@ -22,6 +23,7 @@ export type LabExecutiveReportPayload = {
 export type LabBoardReportPayload = {
   generatedAt: string;
   tenantScope: true;
+  dataPopulation: ManagementReport['dataPopulation'];
   reportingPeriod?: ReportingPeriod;
   metricsNote?: string;
   activityInPeriod?: ManagementReport['activityInPeriod'];
@@ -43,6 +45,7 @@ export function buildLabExecutiveReport(report: ManagementReport): LabExecutiveR
   return {
     generatedAt: new Date().toISOString(),
     tenantScope: true,
+    dataPopulation: report.dataPopulation,
     reportingPeriod,
     metricsNote,
     activityInPeriod,
@@ -73,6 +76,7 @@ export function buildLabBoardReport(report: ManagementReport): LabBoardReportPay
   return {
     generatedAt: new Date().toISOString(),
     tenantScope: true,
+    dataPopulation: report.dataPopulation,
     reportingPeriod: report.reportingPeriod,
     metricsNote: report.metricsNote,
     activityInPeriod: report.activityInPeriod,
