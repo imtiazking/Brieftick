@@ -12,12 +12,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     const ctx = await requireRiContext('action:read');
     const detail = await getRiActionDetail(ctx.supabase, ctx.organisationId, id);
     const action = mapActionRowToLabView(detail.action as Record<string, unknown>);
-    const raw = detail.action as { status?: string };
     return NextResponse.json({
       ok: true,
       action: {
         ...action,
-        statusCode: raw.status ?? null,
         obligationIds: detail.obligations?.map((o) => o?.id).filter(Boolean) ?? [],
         controlIds: detail.controls?.map((c) => c?.id).filter(Boolean) ?? [],
         evidenceIds: detail.evidence?.map((e) => e?.id).filter(Boolean) ?? [],

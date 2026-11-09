@@ -4,6 +4,7 @@ import { getConnectedAssigneeLabel, getConnectedCatalogue } from './connected-ca
 import { isConnectedActionWritesEnabled } from './connected-mode.js';
 import { renderConnectedWorkflowEventsTable } from './connected-governance-ui.js';
 import { getConnectedEntityWorkflowEvents } from './connected-entity-audit.js';
+import { resolveActionStatusCode } from './action-status-code.js';
 
 export function renderConnectedActionCreateBanner() {
   if (!isConnectedActionWritesEnabled(getState())) return '';
@@ -50,15 +51,22 @@ export function renderConnectedActionEditPanel(id, a) {
     .join('');
   const prov = a.dataProvenance || '—';
   const lab = a.labClassificationLabel || a.labClassification || '';
-  const statusRaw = a.statusCode || String(a.status || 'OPEN').toUpperCase().replace(/\s+/g, '_');
-  return `<section class="ri-panel" data-connected-action-panel="${esc(id)}">
+  const statusRaw = resolveActionStatusCode(a);
+  const dueIso = a.dueDate ? String(a.dueDate).slice(0, 10) : '';
+  const titleVal = a.title || a.description || '';
+  return `<section class="ri-panel" data-connected-action-panel="${esc(id)}"
+    data-initial-title="${esc(titleVal)}"
+    data-initial-description="${esc(a.description || '')}"
+    data-initial-priority="${esc(a.priority || '')}"
+    data-initial-due-date="${esc(dueIso)}"
+    data-initial-status="${esc(statusRaw)}">
     <h2>Update action</h2>
     <p class="ri-muted">Provenance: <strong>${esc(prov)}</strong>${lab ? ` · ${esc(lab)}` : ''}</p>
     <div class="ri-form">
-      <label>Title <input data-connected-action-field="title" value="${esc(a.title || a.description || '')}" /></label>
+      <label>Title <input data-connected-action-field="title" value="${esc(titleVal)}" /></label>
       <label>Description <textarea data-connected-action-field="description" rows="2">${esc(a.description || '')}</textarea></label>
       <label>Priority <input data-connected-action-field="priority" value="${esc(a.priority || '')}" /></label>
-      <label>Due date <input type="date" data-connected-action-field="due_date" value="${esc(String(a.dueDate || '').slice(0, 10))}" /></label>
+      <label>Due date <input type="date" data-connected-action-field="due_date" value="${esc(dueIso)}" /></label>
       <label>Status
         <select data-connected-action-field="status">
           ${['OPEN', 'IN_PROGRESS', 'COMPLETE', 'BLOCKED', 'CLOSED'].map(

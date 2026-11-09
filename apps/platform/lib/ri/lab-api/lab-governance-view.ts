@@ -40,6 +40,11 @@ function mapStatus(raw: string | null | undefined, fallback = '—'): string {
     .join(' ');
 }
 
+export function actionRowStatusCode(raw: string | null | undefined): string {
+  if (!raw?.trim()) return 'OPEN';
+  return raw.trim().toUpperCase();
+}
+
 export type LabRiskView = {
   id: string;
   title: string;
@@ -130,6 +135,8 @@ export type LabActionView = {
   id: string;
   title: string;
   description: string | null;
+  /** Persisted DB status code (e.g. IN_PROGRESS). */
+  statusCode: string;
   status: string;
   priority: string | null;
   dueDate: string | null;
@@ -296,11 +303,13 @@ export function mapAssuranceRowToLabView(row: Record<string, unknown>): LabAssur
 
 export function mapActionRowToLabView(row: Record<string, unknown>): LabActionView {
   const labClass = classifyActionForLab({ metadata: (row.metadata as Record<string, unknown>) ?? null });
+  const statusCode = actionRowStatusCode(row.status as string);
   return {
     id: String(row.id),
     title: String(row.title ?? ''),
     description: (row.description as string) ?? null,
-    status: mapStatus(row.status as string, 'Open'),
+    statusCode,
+    status: mapStatus(statusCode, 'Open'),
     priority: (row.priority as string) ?? null,
     dueDate: (row.due_date as string) ?? null,
     ownerId: (row.owner_user_id as string) ?? null,

@@ -155,10 +155,10 @@ const appJs = readFileSync(
   join(__dir, '..', '..', '..', 'design-lab', 'regulatory-intelligence', 'js', 'app.js'),
   'utf8',
 );
-if (!appJs.includes('data-connected-action-field')) {
-  failTest('frontend', 'action save collects panel fields');
+if (!appJs.includes('collectConnectedActionPatchFields')) {
+  failTest('frontend', 'action save must diff fields before PATCH');
 } else {
-  pass('frontend', 'panel fields sent — server gates spurious audit (documented)');
+  pass('frontend', 'dirty-only action PATCH');
 }
 
 if (!fail) console.log('\nacceptance-phase-8-step-85w-action-patch-audit: PASS\n');

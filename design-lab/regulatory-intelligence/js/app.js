@@ -125,6 +125,7 @@ import {
   fetchConnectedGovernancePending,
   createConnectedAssuranceReview,
 } from './platform/connected-work-writes.js';
+import { collectConnectedActionPatchFields } from './platform/connected-action-patch-fields.js';
 import {
   fetchConnectedBoardReport,
   fetchConnectedExecutiveReport,
@@ -2434,12 +2435,11 @@ function initConnectedWriteDelegation() {
         const id = actionBtn.dataset.actionId;
         const panel = actionBtn.closest('[data-connected-action-panel]');
         if (!id || !panel) return;
-        const fields = {};
-        panel.querySelectorAll('[data-connected-action-field]').forEach((el) => {
-          fields[el.dataset.connectedActionField] = el.value;
-        });
-        const ownerPick = panel.querySelector('[data-connected-action-owner-select]')?.value?.trim();
-        if (ownerPick) fields.owner_user_id = ownerPick;
+        const fields = collectConnectedActionPatchFields(panel);
+        if (!Object.keys(fields).length) {
+          showToast('No changes to save');
+          return;
+        }
         actionBtn.disabled = true;
         try {
           await patchConnectedAction(getState(), id, fields, actionBtn.dataset.expectedUpdatedAt || null);
