@@ -256,6 +256,52 @@ function mergeWithSeed(saved) {
 
   if (saved.riAskHistory) fresh.riAskHistory = saved.riAskHistory;
 
+  if (saved.platformConfig) {
+    fresh.platformConfig = {
+      ...fresh.platformConfig,
+      ...saved.platformConfig,
+      featureFlags: {
+        ...(fresh.platformConfig?.featureFlags || {}),
+        ...(saved.platformConfig?.featureFlags || {}),
+      },
+    };
+  }
+  if (saved.connectivity) {
+    fresh.connectivity = { ...saved.connectivity };
+    delete fresh.connectivity._orgContextLoaded;
+  }
+  if (saved.connectedCatalogue) {
+    fresh.connectedCatalogue = { ...saved.connectedCatalogue };
+    if (fresh.connectedCatalogue.status === 'loading') {
+      fresh.connectedCatalogue.status = fresh.connectedCatalogue.error ? 'error' : 'idle';
+    }
+    delete fresh.connectedCatalogue._loadInflight;
+    delete fresh.connectedCatalogue._detailInflight;
+    const evidenceDetails = fresh.connectedCatalogue.evidenceDetailsById;
+    if (evidenceDetails && typeof evidenceDetails === 'object') {
+      for (const [id, row] of Object.entries(evidenceDetails)) {
+        if (!row || row._detailHydrated !== true) delete evidenceDetails[id];
+      }
+    }
+    const entityAudit = fresh.connectedCatalogue.entityWorkflowEventsByKey;
+    if (entityAudit && typeof entityAudit === 'object') {
+      for (const key of Object.keys(entityAudit)) {
+        if (!key.startsWith('evidence_item:')) continue;
+        const evidenceId = key.slice('evidence_item:'.length);
+        if (fresh.connectedCatalogue.evidenceDetailsById?.[evidenceId]?._detailHydrated !== true) {
+          delete entityAudit[key];
+        }
+      }
+    }
+  }
+  if (saved.connectedLandscape) {
+    fresh.connectedLandscape = { ...saved.connectedLandscape };
+    if (fresh.connectedLandscape.status === 'loading') {
+      fresh.connectedLandscape.status = fresh.connectedLandscape.error ? 'error' : 'idle';
+    }
+    delete fresh.connectedLandscape._loadInflight;
+  }
+
   fresh.schemaVersion = SCHEMA_VERSION;
   return fresh;
 }

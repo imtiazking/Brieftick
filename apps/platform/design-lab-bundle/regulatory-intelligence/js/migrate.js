@@ -277,6 +277,22 @@ function mergeWithSeed(saved) {
     }
     delete fresh.connectedCatalogue._loadInflight;
     delete fresh.connectedCatalogue._detailInflight;
+    const evidenceDetails = fresh.connectedCatalogue.evidenceDetailsById;
+    if (evidenceDetails && typeof evidenceDetails === 'object') {
+      for (const [id, row] of Object.entries(evidenceDetails)) {
+        if (!row || row._detailHydrated !== true) delete evidenceDetails[id];
+      }
+    }
+    const entityAudit = fresh.connectedCatalogue.entityWorkflowEventsByKey;
+    if (entityAudit && typeof entityAudit === 'object') {
+      for (const key of Object.keys(entityAudit)) {
+        if (!key.startsWith('evidence_item:')) continue;
+        const evidenceId = key.slice('evidence_item:'.length);
+        if (fresh.connectedCatalogue.evidenceDetailsById?.[evidenceId]?._detailHydrated !== true) {
+          delete entityAudit[key];
+        }
+      }
+    }
   }
   if (saved.connectedLandscape) {
     fresh.connectedLandscape = { ...saved.connectedLandscape };

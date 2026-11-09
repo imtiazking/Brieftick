@@ -1,5 +1,5 @@
 import { esc, badge, formatDate } from '../components.js';
-import { getState } from '../store.js';
+import { getControl, getState } from '../store.js';
 import { isConnectedEvidenceWritesEnabled, isConnectedFindingWritesEnabled } from './connected-mode.js';
 import { renderConnectedWorkflowEventsTable } from './connected-governance-ui.js';
 import { getConnectedEntityWorkflowEvents } from './connected-entity-audit.js';
@@ -62,8 +62,18 @@ export function renderConnectedEvidenceUploadPanel(evidenceId) {
 
 export function renderConnectedEvidenceLinkPanel(evidenceId, e) {
   if (!isConnectedEvidenceWritesEnabled(getState())) return '';
-  const controls = (e?.controlIds || [])
-    .map((cid) => `<li><a href="#/control/${esc(cid)}">${esc(String(cid).slice(0, 8))}…</a></li>`)
+  const linked =
+    (e?.linkedControls || []).length > 0
+      ? e.linkedControls
+      : (e?.controlIds || []).map((id) => ({
+          id,
+          name: getControl(id)?.name || getControl(id)?.title || '',
+        }));
+  const controls = linked
+    .map((c) => {
+      const label = c.name?.trim() ? c.name : `${String(c.id).slice(0, 8)}…`;
+      return `<li><a href="#/control/${esc(c.id)}">${esc(label)}</a></li>`;
+    })
     .join('');
   return `<section class="ri-panel" data-connected-link-panel data-evidence-id="${esc(evidenceId)}">
     <h2>Control linkage</h2>

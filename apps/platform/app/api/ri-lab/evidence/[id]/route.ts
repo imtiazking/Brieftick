@@ -10,6 +10,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     const ctx = await requireRiContext('evidence:read');
     const detail = await getEvidenceDetail(ctx.supabase, ctx.organisationId, id);
     const evidence = mapEvidenceRowToLabView(detail.evidence as Record<string, unknown>);
+    const linkedControls =
+      detail.controls
+        ?.map((c) => (c?.id ? { id: String(c.id), name: String((c as { name?: string }).name ?? '') } : null))
+        .filter(Boolean) ?? [];
     const versions = (detail.versions ?? []).map((v) => {
       const row = v as Record<string, unknown>;
       const storagePath = typeof row.storage_path === 'string' ? row.storage_path : '';
@@ -32,8 +36,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
         controlIds: detail.controls?.map((c) => c?.id).filter(Boolean) ?? [],
         actionIds: detail.actions?.map((a) => a?.id).filter(Boolean) ?? [],
         regulatoryChangeIds: detail.changes?.map((c) => c?.id).filter(Boolean) ?? [],
+        linkedControls,
         versions,
       },
+      linkedControls,
       versions,
       detail: detail.evidence,
     });

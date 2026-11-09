@@ -84,6 +84,30 @@ if (!panV.includes('renderConnectedEvidenceVersionsPanel')) {
   pass('versions_ui', 'versions panel');
 }
 
+const catHydrate = readFileSync(join(lab, 'js/platform/connected-catalogue.js'), 'utf8');
+if (
+  !catHydrate.includes('_detailHydrated') ||
+  catHydrate.includes('evidenceDetailsById[evidence.id] =')
+) {
+  failTest('detail_hydrate', 'evidence detail must hydrate via GET /evidence/:id');
+} else {
+  pass('detail_hydrate', 'evidence detail hydration guard');
+}
+
+const detailRouteHydrate = readFileSync(join(platform, 'app/api/ri-lab/evidence/[id]/route.ts'), 'utf8');
+if (!detailRouteHydrate.includes('linkedControls')) {
+  failTest('linked_controls_api', 'evidence detail API must expose linked controls');
+} else {
+  pass('linked_controls_api', 'linkedControls on detail API');
+}
+
+const migrate = readFileSync(join(lab, 'js/migrate.js'), 'utf8');
+if (!migrate.includes('_detailHydrated')) {
+  failTest('migrate_stale', 'migrate must drop stale evidence detail cache');
+} else {
+  pass('migrate_stale', 'stale evidence cache purge on load');
+}
+
 if (!fail) console.log('\nacceptance-phase-8-step-85w-evidence-uat: PASS\n');
 else {
   console.error(`\nacceptance-phase-8-step-85w-evidence-uat: FAIL (${fail})\n`);

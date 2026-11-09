@@ -164,8 +164,6 @@ export function mergeRiskCatalogueRow(cat, risk) {
 /** Merge evidence row into operational vs authorised UAT registers (BUS-UAT-014). */
 export function mergeEvidenceCatalogueRow(cat, evidence) {
   if (!evidence?.id) return;
-  cat.evidenceDetailsById = cat.evidenceDetailsById || {};
-  cat.evidenceDetailsById[evidence.id] = { ...cat.evidenceDetailsById[evidence.id], ...evidence, _connected: true };
   if (isAuthorisedUatLabRow(evidence)) {
     cat.authorisedUatEvidence = cat.authorisedUatEvidence || [];
     const uatIdx = cat.authorisedUatEvidence.findIndex((x) => x.id === evidence.id);
@@ -551,7 +549,11 @@ function upsertConnectedLabPublication(cat, labPublication) {
  */
 function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
   const cat = initConnectedCatalogueState(state);
-  if (cat[detailsKey]?.[id]) return null;
+  const cached = cat[detailsKey]?.[id];
+  if (cached) {
+    const evidenceHydrated = detailsKey !== 'evidenceDetailsById' || cached._detailHydrated === true;
+    if (evidenceHydrated) return null;
+  }
   cat._detailInflight = cat._detailInflight || {};
   const token = `${detailsKey}:${id}`;
   if (cat._detailInflight[token]) return cat._detailInflight[token];
@@ -757,10 +759,17 @@ export async function fetchConnectedEvidenceDetail(state, evidenceId) {
     err.status = res.status;
     throw err;
   }
+  const auditKey = `evidence_item:${evidenceId}`;
+  if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
+
   if (body.evidence) {
+    const linkedControls = (body.linkedControls ?? body.evidence.linkedControls ?? []).filter((c) => c?.id);
     const merged = {
       ...body.evidence,
       versions: body.versions ?? body.evidence.versions ?? [],
+      linkedControls,
+      controlIds: body.evidence.controlIds ?? linkedControls.map((c) => c.id),
+      _detailHydrated: true,
       _connected: true,
     };
     mergeEvidenceCatalogueRow(cat, merged);

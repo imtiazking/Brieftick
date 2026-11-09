@@ -955,15 +955,20 @@ export function getEvidence(id) {
       cat.evidence?.find((e) => e.id === id) || cat.authorisedUatEvidence?.find((e) => e.id === id);
     const detail = cat.evidenceDetailsById?.[id];
     if (detail || fromList) {
-      const row = { ...fromList, ...detail, _connected: true };
+      const row = { ...(fromList || {}), ...(detail || {}), _connected: true };
+      if (detail?._detailHydrated !== true && fromList?.sourceHash && !detail?.sourceHash) {
+        row.sourceHash = fromList.sourceHash;
+      }
       return {
         ...row,
         id: row.id,
         title: row.title,
         evidenceType: row.evidenceType,
-        sourceHash: row.sourceHash,
+        sourceHash: row.sourceHash ?? null,
         createdAt: row.createdAt,
         controlIds: row.controlIds,
+        linkedControls: row.linkedControls,
+        versions: row.versions,
         dataProvenance: row.dataProvenance,
         labClassification: row.labClassification,
         labClassificationLabel: row.labClassificationLabel,
