@@ -3,6 +3,7 @@
  */
 import { isConnectedBackendActive } from './connected-mode.js';
 import { notify } from '../store.js';
+import { coerceInflightPromise } from './schedule-async.js';
 import { savePersistedJson, STORAGE_KEY_V2 } from './platform-persistence.js';
 import { persistableLabState } from './ask-ri-session.mjs';
 
@@ -602,7 +603,7 @@ function connectedCatalogueHasStaleFindingLineage(cat) {
 
 /**
  * Fetch entity detail once per id (avoids renderShell ↔ notify ↔ refetch loops).
- * @returns {Promise<unknown>|null} null when cached or already in flight
+ * @returns {Promise<unknown>} resolves with cached or freshly loaded detail
  */
 function findingDetailHasLineage(cached) {
   if (!cached) return false;
@@ -624,11 +625,13 @@ function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
     if (needsHydration && detailsKey === 'findingDetailsById' && cached._detailHydrated === true) {
       if (!findingDetailHasLineage(cached)) hydrated = false;
     }
-    if (hydrated) return null;
+    if (hydrated) return Promise.resolve(cached);
   }
   cat._detailInflight = cat._detailInflight || {};
   const token = `${detailsKey}:${id}`;
-  if (cat._detailInflight[token]) return cat._detailInflight[token];
+  const inflight = coerceInflightPromise(cat._detailInflight[token]);
+  if (inflight) return inflight;
+  if (cat._detailInflight[token]) delete cat._detailInflight[token];
   cat._detailInflight[token] = fetcher(state, id).finally(() => {
     delete cat._detailInflight[token];
   });
@@ -661,10 +664,14 @@ export function scheduleConnectedIngestionRunDetailFetch(state, runId) {
 
 export function scheduleConnectedPublicationDetailFetch(state, publicationId) {
   const cat = initConnectedCatalogueState(state);
-  if (cat.detailsById?.[publicationId]) return null;
+  if (cat.detailsById?.[publicationId]) {
+    return Promise.resolve(cat.detailsById[publicationId]);
+  }
   cat._detailInflight = cat._detailInflight || {};
   const token = `detailsById:${publicationId}`;
-  if (cat._detailInflight[token]) return cat._detailInflight[token];
+  const inflight = coerceInflightPromise(cat._detailInflight[token]);
+  if (inflight) return inflight;
+  if (cat._detailInflight[token]) delete cat._detailInflight[token];
   cat._detailInflight[token] = fetchConnectedPublicationDetail(state, publicationId).finally(() => {
     delete cat._detailInflight[token];
   });

@@ -163,6 +163,7 @@ import {
   recordEntityWorkflowEventsLoadFailure,
   scheduleConnectedEntityWorkflowEventsFetch,
 } from './platform/connected-entity-audit.js';
+import { runScheduledTask } from './platform/schedule-async.js';
 import { ensureConnectedLandscapeLoaded } from './platform/connected-landscape.js';
 import {
   activateConnectedBackend,
@@ -694,100 +695,89 @@ function bindViewHandlers() {
   const route = getRoute();
   const pubDetailMatch = route.match(/^\/(?:publication|intake)\/([^/]+)/);
   if (pubDetailMatch && isConnectedBackendActive()) {
-    scheduleConnectedPublicationDetailFetch(getState(), pubDetailMatch[1])
-      ?.then(() => renderShell())
-      .catch(() => {});
+    runScheduledTask(scheduleConnectedPublicationDetailFetch(getState(), pubDetailMatch[1]), () =>
+      renderShell(),
+    () => {});
   }
 
   const changeDetailMatch = route.match(/^\/change\/([^/]+)/);
   if (changeDetailMatch && isConnectedBackendActive()) {
     const changeId = changeDetailMatch[1];
-    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'regulatory_change', changeId)
-      ?.then(() => renderShell())
-      .catch(() => {});
-    scheduleConnectedChangeDetailFetch(getState(), changeId)
-      ?.then(() => renderShell())
-      .catch((err) => {
-        telemetry.app('error', 'Connected change detail load failed', {
-          changeId,
-          message: err?.message,
-        });
-        renderShell();
+    runScheduledTask(
+      scheduleConnectedEntityWorkflowEventsFetch(getState(), 'regulatory_change', changeId),
+      () => renderShell(),
+      () => {},
+    );
+    runScheduledTask(scheduleConnectedChangeDetailFetch(getState(), changeId), () => renderShell(), (err) => {
+      telemetry.app('error', 'Connected change detail load failed', {
+        changeId,
+        message: err?.message,
       });
+      renderShell();
+    });
   }
 
   const assessmentDetailMatch = route.match(/^\/assessment\/([^/]+)/);
   if (assessmentDetailMatch && isConnectedBackendActive()) {
     const assessmentId = assessmentDetailMatch[1];
-    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'impact_assessment', assessmentId)
-      ?.then(() => renderShell())
-      .catch(() => {});
-    scheduleConnectedAssessmentDetailFetch(getState(), assessmentId)
-      ?.then(() => renderShell())
-      .catch(() => {});
+    runScheduledTask(
+      scheduleConnectedEntityWorkflowEventsFetch(getState(), 'impact_assessment', assessmentId),
+      () => renderShell(),
+      () => {},
+    );
+    runScheduledTask(scheduleConnectedAssessmentDetailFetch(getState(), assessmentId), () => renderShell(), () => {});
   }
 
   const obligationDetailMatch = route.match(/^\/obligation\/([^/]+)/);
   if (obligationDetailMatch && isConnectedBackendActive()) {
     const obligationId = obligationDetailMatch[1];
-    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'regulatory_obligation', obligationId)
-      ?.then(() => renderShell())
-      .catch(() => {});
-    scheduleConnectedObligationDetailFetch(getState(), obligationId)
-      ?.then(() => renderShell())
-      .catch(() => {});
+    runScheduledTask(
+      scheduleConnectedEntityWorkflowEventsFetch(getState(), 'regulatory_obligation', obligationId),
+      () => renderShell(),
+      () => {},
+    );
+    runScheduledTask(scheduleConnectedObligationDetailFetch(getState(), obligationId), () => renderShell(), () => {});
   }
 
   const riskDetailMatch = route.match(/^\/risk\/([^/]+)/);
   if (riskDetailMatch && isConnectedBackendActive()) {
     const riskId = riskDetailMatch[1];
-    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'risk', riskId)
-      ?.then(() => renderShell())
-      .catch(() => {});
-    scheduleConnectedRiskDetailFetch(getState(), riskId)
-      ?.then(() => renderShell())
-      .catch(() => {});
+    runScheduledTask(scheduleConnectedEntityWorkflowEventsFetch(getState(), 'risk', riskId), () => renderShell(), () => {});
+    runScheduledTask(scheduleConnectedRiskDetailFetch(getState(), riskId), () => renderShell(), () => {});
   }
 
   const controlDetailMatch = route.match(/^\/control\/([^/]+)/);
   if (controlDetailMatch && isConnectedBackendActive()) {
     const controlId = controlDetailMatch[1];
-    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'control', controlId)
-      ?.then(() => renderShell())
-      .catch(() => {});
-    scheduleConnectedControlDetailFetch(getState(), controlId)
-      ?.then(() => renderShell())
-      .catch(() => {});
+    runScheduledTask(scheduleConnectedEntityWorkflowEventsFetch(getState(), 'control', controlId), () => renderShell(), () => {});
+    runScheduledTask(scheduleConnectedControlDetailFetch(getState(), controlId), () => renderShell(), () => {});
   }
 
   const actionDetailMatch = route.match(/^\/action\/([^/]+)/);
   if (actionDetailMatch && isConnectedBackendActive()) {
     const actionId = actionDetailMatch[1];
-    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'action', actionId)
-      ?.then(() => renderShell())
-      .catch(() => {});
-    scheduleConnectedActionDetailFetch(getState(), actionId)
-      ?.then(() => renderShell())
-      .catch(() => {});
+    runScheduledTask(scheduleConnectedEntityWorkflowEventsFetch(getState(), 'action', actionId), () => renderShell(), () => {});
+    runScheduledTask(scheduleConnectedActionDetailFetch(getState(), actionId), () => renderShell(), () => {});
   }
 
   const evidenceDetailMatch = route.match(/^\/evidence\/([^/]+)/);
   if (evidenceDetailMatch && isConnectedBackendActive()) {
     const evidenceId = evidenceDetailMatch[1];
-    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'evidence_item', evidenceId)
-      ?.then(() => renderShell())
-      .catch(() => {});
-    scheduleConnectedEvidenceDetailFetch(getState(), evidenceId)
-      ?.then(() => renderShell())
-      .catch(() => {});
+    runScheduledTask(
+      scheduleConnectedEntityWorkflowEventsFetch(getState(), 'evidence_item', evidenceId),
+      () => renderShell(),
+      () => {},
+    );
+    runScheduledTask(scheduleConnectedEvidenceDetailFetch(getState(), evidenceId), () => renderShell(), () => {});
   }
 
   const findingDetailMatch = route.match(/^\/finding\/([^/]+)/);
   if (findingDetailMatch && isConnectedBackendActive()) {
     const findingId = findingDetailMatch[1];
-    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'finding', findingId)
-      ?.then(() => renderShell())
-      .catch((e) => {
+    runScheduledTask(
+      scheduleConnectedEntityWorkflowEventsFetch(getState(), 'finding', findingId),
+      () => renderShell(),
+      (e) => {
         recordEntityWorkflowEventsLoadFailure(
           getState(),
           'finding',
@@ -795,20 +785,23 @@ function bindViewHandlers() {
           e?.message || 'entity_workflow_events_failed',
         );
         renderShell();
-      });
-    scheduleConnectedFindingDetailFetch(getState(), findingId)
-      ?.then(() => renderShell())
-      .catch((e) => {
+      },
+    );
+    runScheduledTask(
+      scheduleConnectedFindingDetailFetch(getState(), findingId),
+      () => renderShell(),
+      (e) => {
         recordFindingDetailLoadFailure(getState(), findingId, e?.message || 'finding_detail_failed');
         renderShell();
-      });
+      },
+    );
   }
 
   const ingestionRunMatch = route.match(/^\/ingestion\/run\/([^/]+)/);
   if (ingestionRunMatch && isConnectedBackendActive()) {
-    scheduleConnectedIngestionRunDetailFetch(getState(), ingestionRunMatch[1])
-      ?.then(() => renderShell())
-      .catch(() => {});
+    runScheduledTask(scheduleConnectedIngestionRunDetailFetch(getState(), ingestionRunMatch[1]), () =>
+      renderShell(),
+    () => {});
   }
 
   const connectPanel = document.querySelector('[data-ri-connect-backend]');

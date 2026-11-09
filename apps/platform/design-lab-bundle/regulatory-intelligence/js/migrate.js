@@ -22,7 +22,7 @@ import {
 import { validateMinimalState } from './platform/startup-validation.js';
 
 export { STORAGE_KEY_V2, STORAGE_KEY_V1 };
-export const SCHEMA_VERSION = 18;
+export const SCHEMA_VERSION = 19;
 
 export function createFreshState() {
   const state = buildSeedState();
@@ -277,6 +277,7 @@ function mergeWithSeed(saved) {
     }
     delete fresh.connectedCatalogue._loadInflight;
     delete fresh.connectedCatalogue._detailInflight;
+    delete fresh.connectedCatalogue._entityAuditInflight;
     const evidenceDetails = fresh.connectedCatalogue.evidenceDetailsById;
     if (evidenceDetails && typeof evidenceDetails === 'object') {
       for (const [id, row] of Object.entries(evidenceDetails)) {

@@ -157,6 +157,13 @@ if (!catRetry.includes('connectedCatalogueHasStaleFindingLineage') || !catRetry.
   pass('catalogue_stale', 'stale UAT finding lineage refresh');
 }
 
+const scheduleAsync = readFileSync(join(lab, 'js/platform/schedule-async.js'), 'utf8');
+if (!scheduleAsync.includes('runScheduledTask') || !scheduleAsync.includes('isPromiseLike')) {
+  failTest('schedule_async', 'schedule-async helper required for Promise contract');
+} else {
+  pass('schedule_async', 'runScheduledTask + isPromiseLike');
+}
+
 const entityAudit = readFileSync(join(lab, 'js/platform/connected-entity-audit.js'), 'utf8');
 if (!entityAudit.includes('entityWorkflowEventsLoadStateByKey') || entityAudit.includes('if (cat.entityWorkflowEventsByKey[key]) return null')) {
   failTest('audit_cache', 'entity audit must not treat empty [] as permanent cache');

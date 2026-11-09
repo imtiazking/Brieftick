@@ -5,6 +5,7 @@ import { notify } from '../store.js';
 import { savePersistedJson, STORAGE_KEY_V2 } from './platform-persistence.js';
 import { persistableLabState } from './ask-ri-session.mjs';
 import { initConnectedCatalogueState } from './connected-catalogue.js';
+import { coerceInflightPromise } from './schedule-async.js';
 
 function apiBase(state) {
   return (state.platformConfig?.apiBaseUrl || '/api/ri-lab').replace(/\/$/, '');
@@ -45,7 +46,7 @@ export function recordEntityWorkflowEventsLoadFailure(state, entityType, entityI
 }
 
 /**
- * @returns {Promise<unknown[]>|null} null when cached or in flight
+ * @returns {Promise<unknown[]>} resolves when events are cached or freshly loaded
  */
 export function scheduleConnectedEntityWorkflowEventsFetch(state, entityType, entityId) {
   const cat = initConnectedCatalogueState(state);
@@ -53,9 +54,16 @@ export function scheduleConnectedEntityWorkflowEventsFetch(state, entityType, en
   cat.entityWorkflowEventsByKey = cat.entityWorkflowEventsByKey || {};
   cat.entityWorkflowEventsLoadStateByKey = cat.entityWorkflowEventsLoadStateByKey || {};
   const loadState = cat.entityWorkflowEventsLoadStateByKey[key];
-  if (loadState === 'loaded') return null;
+  if (loadState === 'loaded') {
+    return Promise.resolve(cat.entityWorkflowEventsByKey[key] || []);
+  }
   cat._entityAuditInflight = cat._entityAuditInflight || {};
-  if (cat._entityAuditInflight[key]) return cat._entityAuditInflight[key];
+  const inflight = coerceInflightPromise(cat._entityAuditInflight[key]);
+  if (inflight) return inflight;
+  if (cat._entityAuditInflight[key]) delete cat._entityAuditInflight[key];
+  if (loadState === 'loading') {
+    delete cat.entityWorkflowEventsLoadStateByKey[key];
+  }
   cat.entityWorkflowEventsLoadStateByKey[key] = 'loading';
   cat._entityAuditInflight[key] = fetchConnectedEntityWorkflowEvents(state, entityType, entityId).finally(
     () => {

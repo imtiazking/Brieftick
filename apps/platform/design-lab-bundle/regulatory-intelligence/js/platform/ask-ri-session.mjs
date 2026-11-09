@@ -93,5 +93,12 @@ export function persistableLabState(state) {
     _lastAskRiProviderCalls,
     ...rest
   } = state;
+  if (rest.connectedCatalogue && typeof rest.connectedCatalogue === 'object') {
+    const cat = { ...rest.connectedCatalogue };
+    delete cat._detailInflight;
+    delete cat._entityAuditInflight;
+    delete cat._loadInflight;
+    rest.connectedCatalogue = cat;
+  }
   return rest;
 }
