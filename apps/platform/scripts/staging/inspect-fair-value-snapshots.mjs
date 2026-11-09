@@ -47,6 +47,16 @@ const { data: pdfRevisions } = await admin
   .eq('extraction_profile', 'pdf_primary_v1')
   .limit(20);
 
+let pdfPubDetails = [];
+for (const row of pdfRevisions || []) {
+  const { data: pub } = await admin
+    .from('regulatory_publications')
+    .select('id, title, canonical_url, external_document_id')
+    .eq('id', row.publication_id)
+    .maybeSingle();
+  pdfPubDetails.push({ revision: row, publication: pub });
+}
+
 let fgRevs = [];
 for (const row of fg || []) {
   const { data } = await admin
@@ -67,7 +77,7 @@ console.log(
       snapshots: snaps,
       latestV4: v4,
       fg22Catalogue: fgRevs,
-      pdfPrimaryV1Revisions: pdfRevisions,
+      pdfPrimaryV1Revisions: pdfPubDetails,
     },
     null,
     2,
