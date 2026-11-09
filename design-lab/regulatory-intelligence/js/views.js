@@ -163,6 +163,7 @@ import { renderAskRiPage } from './ask-ri-ui.js';
 import {
   viewAssuranceDashboard,
   viewAssuranceReview,
+  viewFindingsList,
   viewFinding,
   viewManagementAttestation,
   viewAssurancePack,
@@ -324,6 +325,8 @@ export function renderView(route) {
       return viewBoardReport();
     case 'assurance':
       return id ? viewAssuranceReview(id) : viewAssuranceDashboard();
+    case 'findings':
+      return viewFindingsList();
     case 'finding':
       return viewFinding(id);
     case 'management-attestation':

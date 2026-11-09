@@ -11,6 +11,7 @@ const LINK_TYPES = [
   'evidence_control',
   'evidence_regulatory_change',
   'assurance_control',
+  'finding_control',
 ] as const;
 
 export type LabLinkType = (typeof LINK_TYPES)[number];
@@ -89,6 +90,26 @@ export function parseLabEvidenceCreateBody(body: unknown): Record<string, unknow
   if (raw.creationMode !== undefined) fields.creationMode = raw.creationMode;
   if (raw.controlId !== undefined) fields.controlId = raw.controlId;
   if (raw.control_id !== undefined) fields.control_id = raw.control_id;
+  return fields;
+}
+
+export function parseLabFindingCreateBody(body: unknown): Record<string, unknown> {
+  if (!body || typeof body !== 'object') throw new RiValidationError('invalid_body');
+  const raw = body as Record<string, unknown>;
+  if ('metadata' in raw || 'recordProvenance' in raw || 'record_provenance' in raw) {
+    throw new RiValidationError('client_provenance_rejected');
+  }
+  const fields: Record<string, unknown> = {
+    title: parseRequiredText(raw.title, 'title', 500),
+    description: parseOptionalText(raw.description, 8000),
+    severity: parseRequiredText(raw.severity ?? raw.severityCode, 'severity', 50),
+    due_date: raw.due_date ?? raw.dueDate,
+  };
+  if (raw.creationMode !== undefined) fields.creationMode = raw.creationMode;
+  if (raw.controlId !== undefined) fields.controlId = raw.controlId;
+  if (raw.control_id !== undefined) fields.control_id = raw.control_id;
+  if (raw.riskId !== undefined) fields.riskId = raw.riskId;
+  if (raw.risk_id !== undefined) fields.risk_id = raw.risk_id;
   return fields;
 }
 

@@ -2,7 +2,9 @@
  * Connected policy register writes.
  */
 import { notify } from '../store.js';
-import { initConnectedCatalogueState } from './connected-catalogue.js';
+import { savePersistedJson, STORAGE_KEY_V2 } from './platform-persistence.js';
+import { persistableLabState } from './ask-ri-session.mjs';
+import { initConnectedCatalogueState, mergeFindingCatalogueRow } from './connected-catalogue.js';
 import { isConnectedFindingWritesEnabled, isConnectedPolicyWritesEnabled } from './connected-mode.js';
 
 function apiBase(state) {
@@ -89,23 +91,8 @@ export async function createConnectedFinding(state, fields) {
   const body = await res.json().catch(() => ({}));
   if (!res.ok || !body.ok) throw new Error(body.error || 'finding_create_failed');
   const cat = initConnectedCatalogueState(state);
-  cat.findings = cat.findings || [];
-  cat.findings.unshift({ ...body.finding, _connected: true });
+  mergeFindingCatalogueRow(cat, { ...body.finding, _connected: true });
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();
   return body;
-}
-
-export function renderConnectedFindingCreatePanel() {
-  return `<section class="ri-panel" data-connected-finding-create="true">
-    <h3>Create assurance finding (connected)</h3>
-    <div class="ri-form">
-      <label>Title <input data-connected-finding-title type="text" /></label>
-      <label>Severity
-        <select data-connected-finding-severity>
-          <option>HIGH</option><option>MEDIUM</option><option>LOW</option>
-        </select>
-      </label>
-      <button type="button" class="ri-btn ri-btn--primary" data-connected-finding-submit>Create finding</button>
-    </div>
-  </section>`;
 }

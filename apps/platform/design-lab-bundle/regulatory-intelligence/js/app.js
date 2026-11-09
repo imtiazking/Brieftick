@@ -152,6 +152,7 @@ import {
   scheduleConnectedControlDetailFetch,
   scheduleConnectedActionDetailFetch,
   scheduleConnectedEvidenceDetailFetch,
+  scheduleConnectedFindingDetailFetch,
   scheduleConnectedIngestionRunDetailFetch,
   initConnectedCatalogueState,
 } from './platform/connected-catalogue.js';
@@ -771,6 +772,17 @@ function bindViewHandlers() {
       ?.then(() => renderShell())
       .catch(() => {});
     scheduleConnectedEvidenceDetailFetch(getState(), evidenceId)
+      ?.then(() => renderShell())
+      .catch(() => {});
+  }
+
+  const findingDetailMatch = route.match(/^\/finding\/([^/]+)/);
+  if (findingDetailMatch && isConnectedBackendActive()) {
+    const findingId = findingDetailMatch[1];
+    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'finding', findingId)
+      ?.then(() => renderShell())
+      .catch(() => {});
+    scheduleConnectedFindingDetailFetch(getState(), findingId)
       ?.then(() => renderShell())
       .catch(() => {});
   }
@@ -1662,15 +1674,32 @@ function bindViewHandlers() {
 
   document.querySelector('[data-connected-finding-submit]')?.addEventListener('click', async () => {
     const title = document.querySelector('[data-connected-finding-title]')?.value?.trim();
+    const description = document.querySelector('[data-connected-finding-description]')?.value?.trim();
     const severity = document.querySelector('[data-connected-finding-severity]')?.value || 'MEDIUM';
+    const dueDate = document.querySelector('[data-connected-finding-due]')?.value || null;
+    const controlId = document.querySelector('[data-connected-finding-control]')?.value?.trim();
+    const riskId = document.querySelector('[data-connected-finding-risk]')?.value?.trim();
+    const creationMode = document.querySelector('[data-connected-finding-create-mode]')?.value || 'uat_authorised';
     if (!title) {
       showToast('Finding title is required');
+      return;
+    }
+    if (creationMode === 'uat_authorised' && !controlId && !riskId) {
+      showToast('Authorised UAT findings need a control or risk UUID');
       return;
     }
     const btn = document.querySelector('[data-connected-finding-submit]');
     if (btn) btn.disabled = true;
     try {
-      const body = await createConnectedFinding(getState(), { title, severity, status: 'OPEN' });
+      const body = await createConnectedFinding(getState(), {
+        title,
+        description,
+        severity,
+        due_date: dueDate,
+        creationMode,
+        ...(controlId ? { controlId } : {}),
+        ...(riskId ? { riskId } : {}),
+      });
       showToast('Finding created');
       location.hash = `#/finding/${body.finding.id}`;
     } catch (e) {
@@ -1687,7 +1716,10 @@ function bindViewHandlers() {
     if (!findingId || !status) return;
     btn.disabled = true;
     try {
-      await patchConnectedFinding(getState(), findingId, { status });
+      await patchConnectedFinding(getState(), findingId, {
+        status,
+        expectedUpdatedAt: btn.dataset.expectedUpdatedAt || null,
+      });
       showToast('Finding updated');
       renderShell();
     } catch (e) {
@@ -2423,13 +2455,20 @@ function initConnectedLinkDelegation() {
     const leftId = btn.getAttribute('data-left-id');
     const panel = btn.closest('[data-connected-link-panel]');
     const targetSel =
-      linkType === 'obligation_control' || linkType === 'risk_control' || linkType === 'evidence_control'
+      linkType === 'obligation_control' ||
+      linkType === 'risk_control' ||
+      linkType === 'evidence_control' ||
+      linkType === 'finding_control'
         ? '[data-connected-link-control-target]'
         : '[data-connected-link-target]';
     const targetInput = panel?.querySelector(targetSel);
     const rightId = targetInput?.value?.trim();
     if (!linkType || !leftId || !rightId) {
-      const needControl = linkType === 'obligation_control' || linkType === 'risk_control';
+      const needControl =
+        linkType === 'obligation_control' ||
+        linkType === 'risk_control' ||
+        linkType === 'evidence_control' ||
+        linkType === 'finding_control';
       showToast(needControl ? 'Enter control UUID' : 'Enter risk UUID');
       return;
     }
@@ -2443,7 +2482,9 @@ function initConnectedLinkDelegation() {
             ? 'Control linked to risk'
             : linkType === 'evidence_control'
               ? 'Control linked to evidence'
-              : 'Control linked';
+              : linkType === 'finding_control'
+                ? 'Control linked to finding'
+                : 'Control linked';
       showToast(linkToast);
       if (targetInput) targetInput.value = '';
       renderShell();

@@ -50,7 +50,34 @@ import {
 } from './assurance-helpers.js';
 import { getEvidenceAssuranceStatus } from './governance-helpers.js';
 import { filterByScenario } from './relationships.js';
-
+import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
+import { isConnectedBackendActive } from './platform/connected-mode.js';
+import { connectedCatalogueBanner, getConnectedCatalogue } from './platform/connected-catalogue.js';
+import { connectedWorkModeBanner } from './platform/connected-display.js';
+import { isConnectedFindingWritesEnabled } from './platform/connected-mode.js';
+import {
+  renderConnectedFindingCreatePanel,
+  renderConnectedFindingLinkPanel,
+  renderConnectedFindingRemediationPanel,
+  renderConnectedFindingWorkflowPanel,
+} from './platform/connected-finding-panels.js';
+import {
+  getViewAssuranceReviews,
+  getViewFindings,
+  getViewAuthorisedUatFindings,
+  getFinding,
+  getConnectedGovernanceMetrics,
+} from './store.js';
+import {
+  connectedReadOnlyGovernanceBanner,
+  connectedRegisterEmpty,
+  connectedAssuranceResultBadge,
+  renderConnectedGovernanceMetrics,
+} from './platform/connected-governance-ui.js';
+import {
+  renderConnectedAssuranceCreatePanel,
+  renderConnectedAssuranceHistoryNote,
+} from './platform/connected-assurance-panels.js';
 export function renderDashboardAssuranceSummary() {
   const s = getState();
   const m = assuranceMetrics(s, s.scenarioId);
@@ -134,6 +161,33 @@ export function renderObligationCoveragePanel(obligationId) {
 
 export function viewAssuranceDashboard() {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const reviews = getViewAssuranceReviews();
+    const findings = getViewFindings();
+    const reviewRows = reviews.map(
+      (r) => `<tr><td><a href="#/assurance/${esc(r.id)}">${esc(r.id.slice(0, 8))}…</a></td>
+        <td>${esc(r.reviewType)}</td><td>${connectedAssuranceResultBadge(r.result)}</td>
+        <td>${formatDate(r.reviewDate)}</td><td>${esc(r.reviewer || '—')}</td></tr>`,
+    );
+    const findingRows = findings.map(
+      (f) => `<tr><td><a href="#/finding/${esc(f.id)}">${esc(f.id.slice(0, 8))}…</a></td>
+        <td>${esc(f.title)}</td><td>${badge(f.severity)}</td><td>${badge(f.status)}</td><td>${formatDate(f.dueDate)}</td></tr>`,
+    );
+    return `${pageHeader('Assurance', 'Tenant assurance reviews and findings · connected')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyGovernanceBanner(s)}
+      ${renderConnectedAssuranceCreatePanel()}
+      ${renderConnectedFindingCreatePanel()}
+      ${renderConnectedAssuranceHistoryNote()}
+      <section class="ri-panel"><h2>Assurance reviews</h2>
+        ${reviewRows.length ? dataTable(['ID', 'Type', 'Result', 'Review date', 'Reviewer'], reviewRows) : connectedRegisterEmpty('assurance reviews')}
+        <p class="ri-muted">Pass/fail shown only from persisted <code>assurance_reviews.result</code> — not inferred from controls.</p>
+      </section>
+      <section class="ri-panel"><h2>Findings</h2>
+        ${findingRows.length ? dataTable(['ID', 'Title', 'Severity', 'Status', 'Due'], findingRows) : connectedRegisterEmpty('findings')}
+      </section>
+      <p class="ri-muted">Board packs, management attestations and demo assurance opinions are unavailable in connected mode (Design Lab demonstration only).</p>`;
+  }
   const m = assuranceMetrics(s, s.scenarioId);
   const reviews = filterAssuranceReviews(s, s.scenarioId);
   const findings = (s.assuranceFindings || []).filter((f) => {
@@ -202,6 +256,16 @@ export function viewAssuranceDashboard() {
 
 export function viewAssuranceReview(id) {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const r = getViewAssuranceReviews().find((x) => x.id === id);
+    if (!r) return notFoundState('Assurance Review', id);
+    return `${pageHeader(r.reviewType || 'Assurance review', r.id.slice(0, 8))}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyGovernanceBanner()}
+      <p>${connectedAssuranceResultBadge(r.result)} · ${badge(r.status)}</p>
+      <dl class="ri-dl"><dt>Reviewer</dt><dd>${esc(r.reviewer || '—')}</dd><dt>Review date</dt><dd>${formatDate(r.reviewDate)}</dt></dl>
+      <p class="ri-muted">Demo assurance methodology, opinions and control-test linkages are not shown in Connected mode.</p>`;
+  }
   const r = getAssuranceReview(s, id);
   if (!r) return notFoundState('Assurance Review', id);
   const indep = getIndependenceStatus(s, r);
@@ -282,8 +346,67 @@ export function viewAssuranceReview(id) {
     </section>`;
 }
 
+export function viewFindingsList() {
+  const s = getState();
+  const connected = isConnectedBackendActive(s);
+  const writes = connected && isConnectedFindingWritesEnabled(s);
+  const list = connected ? getViewFindings() : [];
+  const uatList = connected ? getViewAuthorisedUatFindings() : [];
+  const rows = list.map(
+    (f) => `<tr><td><a href="#/finding/${esc(f.id)}">${esc(f.id.slice(0, 8))}</a></td><td>${esc(f.title)}</td>
+      <td>${badge(f.severity)}</td><td>${badge(f.status)}</td><td>${esc(f.owner || '—')}</td><td>${formatDate(f.dueDate)}</td>
+      <td>${badge(f.dataProvenance || 'operational')}</td></tr>`,
+  );
+  const uatRows = uatList.map(
+    (f) => `<tr><td><a href="#/finding/${esc(f.id)}">${esc(f.id.slice(0, 8))}</a></td><td>${esc(f.title)}</td>
+      <td>${badge(f.severity)}</td><td>${badge(f.status)}</td><td>${esc(f.owner || '—')}</td><td>${formatDate(f.dueDate)}</td>
+      <td>${badge(f.dataProvenance || 'uat_authorised')}</td></tr>`,
+  );
+  const uatSection = connected
+    ? `<section class="ri-panel"><h2>Authorised UAT findings register</h2>
+    ${uatRows.length ? dataTable(['ID', 'Title', 'Severity', 'Status', 'Owner', 'Due', 'Provenance'], uatRows) : connectedRegisterEmpty('Authorised UAT findings')}
+    </section>`
+    : '';
+  const subtitle = connected
+    ? writes
+      ? 'Tenant assurance findings · connected read/write when enabled'
+      : 'Tenant assurance findings · connected read-only'
+    : 'DEMO';
+  return `${pageHeader('Findings', subtitle)}
+    ${connected ? connectedCatalogueBanner(s) : ''}
+    ${connected ? (writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner()) : ''}
+    ${writes ? renderConnectedFindingCreatePanel() : ''}
+    <section class="ri-panel"><h2>Operational findings register</h2>
+    ${rows.length ? dataTable(['ID', 'Title', 'Severity', 'Status', 'Owner', 'Due', 'Provenance'], rows) : connected ? connectedRegisterEmpty('findings') : '<p class="ri-muted">Connect staging to load findings.</p>'}
+    </section>
+    ${uatSection}`;
+}
+
 export function viewFinding(id) {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const f = getFinding(id);
+    if (!f) {
+      return `${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyGovernanceBanner(s)}
+        <p class="ri-muted" data-connected-finding-loading="true">Loading tenant finding from staging…</p>`;
+    }
+    const writes = isConnectedFindingWritesEnabled(s);
+    return `${connectedCatalogueBanner(s)}
+      ${writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner(s)}
+      ${pageHeader(f.title, f.id.slice(0, 8))}
+      <p>${badge(f.severity)} · ${badge(f.status)} · ${badge(f.dataProvenance || f.labClassification || '—')}</p>
+      <dl class="ri-dl">
+        <dt>Provenance</dt><dd>${badge(f.dataProvenance || '—')}</dd>
+        <dt>Lab class</dt><dd>${esc(f.labClassificationLabel || '—')}</dd>
+        <dt>Owner</dt><dd>${esc(f.owner || '—')}</dd>
+        <dt>Due</dt><dd>${formatDate(f.dueDate)}</dd>
+        <dt>Description</dt><dd>${esc(f.description || '—')}</dd>
+      </dl>
+      ${writes ? renderConnectedFindingLinkPanel(id, f) : ''}
+      ${writes ? renderConnectedFindingRemediationPanel(id, f) : '<p class="ri-muted">Finding writes disabled in this session.</p>'}
+      ${renderConnectedFindingWorkflowPanel(id)}`;
+  }
   const f = (s.assuranceFindings || []).find((x) => x.id === id);
   if (!f) return notFoundState('Assurance Finding', id);
   const review = getAssuranceReview(s, f.assuranceReviewId);
@@ -316,6 +439,10 @@ export function viewFinding(id) {
 }
 
 export function viewManagementAttestation(id) {
+  const blocked = guardConnectedDemoSubroute('Management attestation', {
+    links: '<p><a href="#/assurance">Assurance dashboard</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const a = getManagementAttestation(s, id);
   if (!a) return notFoundState('Management Attestation', id);
@@ -338,6 +465,10 @@ export function viewManagementAttestation(id) {
 }
 
 export function viewAssurancePack(id) {
+  const blocked = guardConnectedDemoSubroute('Assurance pack', {
+    links: '<p><a href="#/assurance">Assurance dashboard</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const pack = getAssurancePack(s, id);
   if (!pack) return notFoundState('Assurance Pack', id);
@@ -373,6 +504,41 @@ export function viewAssurancePack(id) {
 
 export function viewBoardReport() {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const cat = getConnectedCatalogue(s);
+    const payload = cat.boardReport;
+    if (!payload?.report) {
+      return `${pageHeader('Board report', 'Connected tenant metrics')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedWorkModeBanner(s)}
+      <p class="ri-muted" data-connected-board-report-load="1">Loading board report from tenant data…</p>`;
+    }
+    const r = payload.report;
+    const materialRows = (payload.materialChanges || []).map(
+      (c) =>
+        `<tr class="ri-row-link"><td><a href="#/change/${esc(c.id)}">${esc(c.title)}</a></td><td>${badge(c.materiality || '—')}</td></tr>`,
+    );
+    return `${pageHeader('Board report', 'Traceable tenant metrics — no invented compliance scores')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedWorkModeBanner(s)}
+      ${sectionHeader('EXECUTIVE COUNTS', 'Operational register totals', 'Each figure is counted from underlying tenant records.')}
+      <section class="ri-board-section ri-metrics-row">
+        <span>Open changes <strong>${r.changesOpen ?? 0}</strong></span>
+        <span>Impact assessments in progress <strong>${r.impactsInProgress ?? 0}</strong></span>
+        <span>Active obligations <strong>${r.obligationsActive ?? 0}</strong></span>
+        <span>Overdue obligations <strong>${r.obligationsOverdue ?? 0}</strong></span>
+        <span>Open findings <strong>${r.findingsOpen ?? 0}</strong></span>
+        <span>Control gaps (open findings) <strong>${payload.controlGaps ?? 0}</strong></span>
+        <span>Assurance reviews open <strong>${r.assuranceOpen ?? 0}</strong></span>
+        <span>Actions overdue <strong>${r.actionsOverdue ?? 0}</strong></span>
+      </section>
+      ${sectionHeader('MATERIAL CHANGES', 'High / medium materiality (open pipeline)', '')}
+      <section class="ri-board-section">
+        ${materialRows.length ? dataTable(['Change', 'Materiality'], materialRows) : '<p class="ri-muted">No material changes in the open pipeline for this organisation.</p>'}
+      </section>
+      <p class="ri-muted">Generated ${formatDate(payload.generatedAt)} · Demo board packs and narrative opinions remain hidden in connected mode.</p>
+      <p><a class="ri-btn ri-btn--primary" href="/api/ri-lab/reports/board/export" download>Download board report (PDF)</a></p>`;
+  }
   const cur = getCurrentReportingPeriod(s);
   const prev = getPreviousReportingPeriod(s);
   const attention = getBoardAttentionItems(s, s.scenarioId);
@@ -466,6 +632,10 @@ export function viewBoardReport() {
 }
 
 export function viewBoardPack(id) {
+  const blocked = guardConnectedDemoSubroute('Board pack', {
+    links: '<p><a href="#/reports/board">Board report</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const p = getBoardPack(s, id);
   if (!p) return notFoundState('Board Pack', id);
@@ -499,6 +669,10 @@ export function viewBoardPack(id) {
 }
 
 export function viewPeriodChanges() {
+  const blocked = guardConnectedDemoSubroute('Period change comparison', {
+    links: '<p><a href="#/reports/executive">Executive summary</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const cur = getCurrentReportingPeriod(s);
   const prev = getPreviousReportingPeriod(s);
@@ -515,6 +689,14 @@ export function viewPeriodChanges() {
 
 export function viewAssuranceReport(sub) {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    return `${pageHeader('Assurance reporting', 'Connected read-only')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyGovernanceBanner()}
+      <p class="ri-muted">Assurance sub-reports (obligation matrices, control coverage tables, demo opinions) use Design Lab demonstration data and are not shown in connected mode.</p>
+      <p>Open <a href="#/assurance">Assurance dashboard</a> for persisted <code>assurance_reviews</code> and <code>findings</code>.</p>
+      <p class="ri-muted">Requested view: ${esc(sub || 'index')}</p>`;
+  }
   if (sub === 'obligation-assurance') {
     const rows = scenarioFilter(s.obligations).map((o) => {
       const cov = getObligationCoverage(s, o.id);

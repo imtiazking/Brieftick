@@ -12,7 +12,32 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     const ctx = await requireRiContext('finding:read');
     const detail = await getFindingDetail(ctx.supabase, ctx.organisationId, id);
     const finding = mapFindingRowToLabView(detail.finding as Record<string, unknown>);
-    return NextResponse.json({ ok: true, finding, detail: detail.finding });
+    const linkedControls: Array<{ id: string; name: string }> = [];
+    for (const c of detail.controls ?? []) {
+      if (c?.id) linkedControls.push({ id: String(c.id), name: String((c as { name?: string }).name ?? '') });
+    }
+    const linkedActions: Array<{ id: string; title: string }> = [];
+    for (const a of detail.actions ?? []) {
+      if (a?.id) linkedActions.push({ id: String(a.id), title: String((a as { title?: string }).title ?? '') });
+    }
+    const meta = (detail.finding as { metadata?: Record<string, unknown> })?.metadata;
+    const parentRiskId =
+      typeof meta?.parentRiskId === 'string' ? meta.parentRiskId : null;
+    return NextResponse.json({
+      ok: true,
+      finding: {
+        ...finding,
+        controlIds: linkedControls.map((c) => c.id),
+        actionIds: linkedActions.map((a) => a.id),
+        parentRiskId,
+        linkedControls,
+        linkedActions,
+      },
+      linkedControls,
+      linkedActions,
+      parentRiskId,
+      detail: detail.finding,
+    });
   } catch (err) {
     return labApiErrorResponse(err);
   }

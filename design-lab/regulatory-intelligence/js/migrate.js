@@ -283,13 +283,27 @@ function mergeWithSeed(saved) {
         if (!row || row._detailHydrated !== true) delete evidenceDetails[id];
       }
     }
+    const findingDetails = fresh.connectedCatalogue.findingDetailsById;
+    if (findingDetails && typeof findingDetails === 'object') {
+      for (const [id, row] of Object.entries(findingDetails)) {
+        if (!row || row._detailHydrated !== true) delete findingDetails[id];
+      }
+    }
     const entityAudit = fresh.connectedCatalogue.entityWorkflowEventsByKey;
     if (entityAudit && typeof entityAudit === 'object') {
       for (const key of Object.keys(entityAudit)) {
-        if (!key.startsWith('evidence_item:')) continue;
-        const evidenceId = key.slice('evidence_item:'.length);
-        if (fresh.connectedCatalogue.evidenceDetailsById?.[evidenceId]?._detailHydrated !== true) {
-          delete entityAudit[key];
+        if (key.startsWith('evidence_item:')) {
+          const evidenceId = key.slice('evidence_item:'.length);
+          if (fresh.connectedCatalogue.evidenceDetailsById?.[evidenceId]?._detailHydrated !== true) {
+            delete entityAudit[key];
+          }
+          continue;
+        }
+        if (key.startsWith('finding:')) {
+          const findingId = key.slice('finding:'.length);
+          if (fresh.connectedCatalogue.findingDetailsById?.[findingId]?._detailHydrated !== true) {
+            delete entityAudit[key];
+          }
         }
       }
     }

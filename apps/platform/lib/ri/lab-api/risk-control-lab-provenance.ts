@@ -146,6 +146,14 @@ export function partitionEvidenceForLabScope<T>(
   return partitionRisksForLabScope(rows, scope, toInput);
 }
 
+export function partitionFindingsForLabScope<T>(
+  rows: T[],
+  scope: LabDataScope,
+  toInput: (row: T) => RiskControlLabProvenanceInput,
+): RiskControlLabPartition<T> {
+  return partitionRisksForLabScope(rows, scope, toInput);
+}
+
 export function recordKindForRiskControlLabClass(cls: ChangeLabClass): RecordProvenanceKind {
   return recordKindForChangeLabClass(cls);
 }
@@ -243,6 +251,102 @@ export async function resolveControlCreateMetadata(params: {
       [LAB_PROVENANCE_RECORDED_AT_KEY]: recordedAt,
       [LAB_PROVENANCE_RECORDED_BY_KEY]: params.actorUserId,
       [LAB_PARENT_RISK_IDS_KEY]: [risk.id],
+      ...(riskClass === 'operational' ? { [LAB_CREATION_MODE_KEY]: 'operational' } : {}),
+      ...(riskClass === 'uat_authorised' ? { [LAB_CREATION_MODE_KEY]: 'uat_authorised' } : {}),
+    };
+    return { metadata, labClass: riskClass, recordProvenance: riskProv };
+  }
+  assertChangeCreateModeAllowed(params.role, params.creationMode);
+  const recordProvenance = recordProvenanceKindForCreateMode(params.creationMode);
+  const labClass: ChangeLabClass = params.creationMode === 'operational' ? 'operational' : 'uat_authorised';
+  const metadata: Record<string, unknown> = {
+    [RECORD_PROVENANCE_METADATA_KEY]: recordProvenance,
+    [LAB_PROVENANCE_LOCKED_KEY]: true,
+    [LAB_PROVENANCE_RECORDED_AT_KEY]: recordedAt,
+    [LAB_PROVENANCE_RECORDED_BY_KEY]: params.actorUserId,
+    [LAB_CREATION_MODE_KEY]: params.creationMode,
+  };
+  return { metadata, labClass, recordProvenance };
+}
+
+export async function resolveFindingCreateMetadata(params: {
+  supabase: import('@supabase/supabase-js').SupabaseClient;
+  organisationId: string;
+  actorUserId: string;
+  role: PlatformRole;
+  creationMode: ChangeCreateMode;
+  controlId: string | null;
+  riskId: string | null;
+}): Promise<{ metadata: Record<string, unknown>; labClass: ChangeLabClass; recordProvenance: RecordProvenanceKind }> {
+  const recordedAt = new Date().toISOString();
+  if (params.controlId) {
+    const { data: ctrl, error } = await params.supabase
+      .from('controls')
+      .select('id, metadata')
+      .eq('id', params.controlId)
+      .eq('organisation_id', params.organisationId)
+      .single();
+    if (error || !ctrl) throw new Error('not_found');
+    const ctrlClass = classifyControlForLab(controlLabProvenanceInputFromRow(ctrl));
+    const ctrlProv = recordKindForRiskControlLabClass(ctrlClass);
+    if (ctrlClass !== 'operational' && ctrlClass !== 'uat_authorised') {
+      throw new Error('control_provenance_unverified');
+    }
+    assertChangeCreateModeAllowed(params.role, params.creationMode);
+    const modeProv = recordProvenanceKindForCreateMode(params.creationMode);
+    if (modeProv !== ctrlProv) {
+      throw new Error('creation_mode_parent_mismatch');
+    }
+    let parentRiskId: string | undefined;
+    if (params.riskId) {
+      const { data: risk, error: riskErr } = await params.supabase
+        .from('risks')
+        .select('id, metadata')
+        .eq('id', params.riskId)
+        .eq('organisation_id', params.organisationId)
+        .single();
+      if (riskErr || !risk) throw new Error('not_found');
+      const riskClass = classifyRiskForLab(riskLabProvenanceInputFromRow(risk));
+      const riskProv = recordKindForRiskControlLabClass(riskClass);
+      if (riskProv !== ctrlProv) throw new Error('provenance_link_mismatch');
+      parentRiskId = String(risk.id);
+    }
+    const metadata: Record<string, unknown> = {
+      [RECORD_PROVENANCE_METADATA_KEY]: ctrlProv,
+      [LAB_PROVENANCE_LOCKED_KEY]: true,
+      [LAB_PROVENANCE_RECORDED_AT_KEY]: recordedAt,
+      [LAB_PROVENANCE_RECORDED_BY_KEY]: params.actorUserId,
+      parentControlId: ctrl.id,
+      ...(parentRiskId ? { parentRiskId } : {}),
+      ...(ctrlClass === 'operational' ? { [LAB_CREATION_MODE_KEY]: 'operational' } : {}),
+      ...(ctrlClass === 'uat_authorised' ? { [LAB_CREATION_MODE_KEY]: 'uat_authorised' } : {}),
+    };
+    return { metadata, labClass: ctrlClass, recordProvenance: ctrlProv };
+  }
+  if (params.riskId) {
+    const { data: risk, error } = await params.supabase
+      .from('risks')
+      .select('id, metadata')
+      .eq('id', params.riskId)
+      .eq('organisation_id', params.organisationId)
+      .single();
+    if (error || !risk) throw new Error('not_found');
+    const riskClass = classifyRiskForLab(riskLabProvenanceInputFromRow(risk));
+    const riskProv = recordKindForRiskControlLabClass(riskClass);
+    if (riskClass !== 'operational' && riskClass !== 'uat_authorised') {
+      throw new Error('risk_provenance_unverified');
+    }
+    assertChangeCreateModeAllowed(params.role, params.creationMode);
+    const modeProv = recordProvenanceKindForCreateMode(params.creationMode);
+    if (modeProv !== riskProv) {
+      throw new Error('creation_mode_parent_mismatch');
+    }
+    const metadata: Record<string, unknown> = {
+      [RECORD_PROVENANCE_METADATA_KEY]: riskProv,
+      [LAB_PROVENANCE_LOCKED_KEY]: true,
+      [LAB_PROVENANCE_RECORDED_AT_KEY]: recordedAt,
+      [LAB_PROVENANCE_RECORDED_BY_KEY]: params.actorUserId,
+      parentRiskId: risk.id,
       ...(riskClass === 'operational' ? { [LAB_CREATION_MODE_KEY]: 'operational' } : {}),
       ...(riskClass === 'uat_authorised' ? { [LAB_CREATION_MODE_KEY]: 'uat_authorised' } : {}),
     };

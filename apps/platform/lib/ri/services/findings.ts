@@ -1,12 +1,27 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { PlatformRole } from '@/lib/roles';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { LAB_PROVENANCE_LOCKED_KEY } from '@/lib/ri/lab-api/change-create-provenance';
+import { parseCreationModeField, resolveFindingCreateMetadata } from '@/lib/ri/lab-api/risk-control-lab-provenance';
+import { linkFindingControl } from '@/lib/ri/links';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
-import { parseOptionalDate, parseOptionalText, parseRequiredText } from '@/lib/ri/validation';
+import { parseOptionalDate, parseOptionalText, parseRequiredText, parseUuid } from '@/lib/ri/validation';
+
+const LOCKED_METADATA_KEYS = new Set([
+  'recordProvenance',
+  'record_provenance',
+  LAB_PROVENANCE_LOCKED_KEY,
+  'labCreationMode',
+  'labProvenanceRecordedAt',
+  'labProvenanceRecordedByUserId',
+  'parentControlId',
+  'parentRiskId',
+]);
 
 export async function listFindings(supabase: SupabaseClient, organisationId: string) {
   const { data, error } = await supabase
     .from('findings')
-    .select('id, title, severity, status, due_date, owner_user_id')
+    .select('id, title, description, severity, status, due_date, owner_user_id, metadata, created_at, updated_at')
     .eq('organisation_id', organisationId)
     .order('created_at', { ascending: false });
   if (error) throw new Error(error.message);
@@ -15,31 +30,69 @@ export async function listFindings(supabase: SupabaseClient, organisationId: str
 
 export async function createFinding(
   supabase: SupabaseClient,
-  organisationId: string,
-  userId: string,
-  fields: Record<string, unknown>,
+  params: {
+    organisationId: string;
+    userId: string;
+    role: PlatformRole;
+    fields: Record<string, unknown>;
+  },
 ) {
+  const raw = { ...params.fields };
+  if ('metadata' in raw || 'recordProvenance' in raw) {
+    throw new Error('client_provenance_rejected');
+  }
+  const controlIdRaw = raw.controlId ?? raw.control_id;
+  const riskIdRaw = raw.riskId ?? raw.risk_id;
+  const controlId =
+    controlIdRaw === null || controlIdRaw === undefined || controlIdRaw === ''
+      ? null
+      : parseUuid(controlIdRaw, 'control_id');
+  const riskId =
+    riskIdRaw === null || riskIdRaw === undefined || riskIdRaw === ''
+      ? null
+      : parseUuid(riskIdRaw, 'risk_id');
+  const creationMode = parseCreationModeField(raw.creationMode);
+  const { metadata } = await resolveFindingCreateMetadata({
+    supabase,
+    organisationId: params.organisationId,
+    actorUserId: params.userId,
+    role: params.role,
+    creationMode,
+    controlId,
+    riskId,
+  });
+  for (const k of Object.keys(raw)) {
+    if (LOCKED_METADATA_KEYS.has(k)) throw new Error('provenance_locked');
+  }
   const { data, error } = await supabase
     .from('findings')
     .insert({
-      organisation_id: organisationId,
-      title: parseRequiredText(fields.title, 'title', 500),
-      description: parseOptionalText(fields.description, 8000),
-      severity: parseRequiredText(fields.severity, 'severity', 50),
+      organisation_id: params.organisationId,
+      title: parseRequiredText(raw.title, 'title', 500),
+      description: parseOptionalText(raw.description, 8000),
+      severity: parseRequiredText(raw.severity, 'severity', 50),
       status: 'OPEN',
-      owner_user_id: userId,
-      due_date: parseOptionalDate(fields.due_date),
+      owner_user_id: params.userId,
+      due_date: parseOptionalDate(raw.due_date),
+      metadata,
     })
     .select()
     .single();
   if (error) throw new Error(error.message);
+  if (controlId) {
+    await linkFindingControl(supabase, params.organisationId, data.id, controlId, params.userId);
+  }
   await recordWorkflowEvent(supabase, {
-    organisationId,
+    organisationId: params.organisationId,
     entityType: 'finding',
     entityId: data.id,
     eventType: 'FINDING_CREATED',
-    actorUserId: userId,
+    actorUserId: params.userId,
     toStatus: 'OPEN',
+    metadata: {
+      ...(controlId ? { control_id: controlId } : {}),
+      ...(riskId ? { risk_id: riskId } : {}),
+    },
   });
   return data;
 }

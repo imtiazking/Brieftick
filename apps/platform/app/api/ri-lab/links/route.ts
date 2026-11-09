@@ -8,6 +8,7 @@ import {
   linkEvidenceObligation,
   linkEvidenceRegulatoryChange,
   linkAssuranceControl,
+  linkFindingControl,
   linkObligationControl,
   linkObligationRisk,
   linkRiskControl,
@@ -81,6 +82,16 @@ export async function POST(request: Request) {
       case 'assurance_control':
         assertLabConnectedWrite(ctx.role, 'assurance:write');
         await linkAssuranceControl(
+          ctx.supabase,
+          ctx.organisationId,
+          body.leftId,
+          body.rightId,
+          ctx.userId,
+        );
+        break;
+      case 'finding_control':
+        assertLabConnectedWrite(ctx.role, 'finding:write');
+        await linkFindingControl(
           ctx.supabase,
           ctx.organisationId,
           body.leftId,

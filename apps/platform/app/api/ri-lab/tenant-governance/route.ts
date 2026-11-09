@@ -18,6 +18,7 @@ import { isSyntheticUatRecord } from '@/lib/ri/uat-record-provenance';
 import {
   partitionControlsForLabScope,
   partitionEvidenceForLabScope,
+  partitionFindingsForLabScope,
   partitionRisksForLabScope,
   controlLabProvenanceInputFromRow,
   riskLabProvenanceInputFromRow,
@@ -147,11 +148,11 @@ export async function GET(request: Request) {
     );
     const evidenceRows = scope === 'operational' ? evidencePartition.operational : evidenceRowsRaw;
     const exEvidence = evidencePartition.excludedFromOperationalCount;
-    const { rows: findingRows, excludedSyntheticCount: exFindings } = filterRowsByLabDataScope(
-      findingRowsRaw,
-      scope,
-      (r) => ({ title: r.title }),
+    const findingPartition = partitionFindingsForLabScope(findingRowsRaw, scope, (r) =>
+      riskLabProvenanceInputFromRow(r),
     );
+    const findingRows = scope === 'operational' ? findingPartition.operational : findingRowsRaw;
+    const exFindings = findingPartition.excludedFromOperationalCount;
     const { rows: assuranceRows, excludedSyntheticCount: exAssurance } = filterRowsByLabDataScope(
       assuranceRowsRaw,
       scope,
@@ -227,6 +228,15 @@ export async function GET(request: Request) {
       policies: policyRows.map((r) => mapPolicyRowToLabView(r as Record<string, unknown>)),
       evidence: evidenceRows.map((r) => mapEvidenceRowToLabView(r as Record<string, unknown>)),
       findings: findingRows.map((r) => mapFindingRowToLabView(r as Record<string, unknown>)),
+      authorisedUatFindings: findingPartition.authorisedUat.map((r) =>
+        mapFindingRowToLabView(r as Record<string, unknown>),
+      ),
+      findingProvenance: {
+        operational: findingPartition.operational.length,
+        uatAuthorised: findingPartition.authorisedUat.length,
+        unverified: findingPartition.unverified.length,
+        syntheticUat: findingPartition.syntheticUat.length,
+      },
       assuranceReviews: assuranceRows.map((r) =>
         mapAssuranceRowToLabView(r as Record<string, unknown>),
       ),

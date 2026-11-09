@@ -341,6 +341,47 @@ export function getViewFindings() {
   return scenarioFilter(state.findings || []);
 }
 
+export function getViewAuthorisedUatFindings() {
+  if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
+    return getConnectedCatalogue(state).authorisedUatFindings || [];
+  }
+  return [];
+}
+
+export function getFinding(id) {
+  if (isConnectedBackendActive(state)) {
+    const cat = getConnectedCatalogue(state);
+    const fromList =
+      cat.findings?.find((f) => f.id === id) || cat.authorisedUatFindings?.find((f) => f.id === id);
+    const detail = cat.findingDetailsById?.[id];
+    if (detail || fromList) {
+      const row = { ...(fromList || {}), ...(detail || {}), _connected: true };
+      return {
+        ...row,
+        id: row.id,
+        title: row.title,
+        severity: row.severity,
+        status: row.status,
+        owner: row.owner,
+        ownerId: row.ownerId,
+        dueDate: row.dueDate,
+        description: row.description,
+        updatedAt: row.updatedAt,
+        controlIds: row.controlIds,
+        linkedControls: row.linkedControls,
+        actionIds: row.actionIds,
+        linkedActions: row.linkedActions,
+        parentRiskId: row.parentRiskId,
+        dataProvenance: row.dataProvenance,
+        labClassification: row.labClassification,
+        labClassificationLabel: row.labClassificationLabel,
+        _connected: true,
+      };
+    }
+  }
+  return (state.assuranceFindings || []).find((f) => f.id === id);
+}
+
 export function getViewAssuranceReviews() {
   if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
     return getConnectedCatalogue(state).assuranceReviews || [];

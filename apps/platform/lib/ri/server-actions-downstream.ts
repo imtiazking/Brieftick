@@ -283,11 +283,16 @@ export async function linkEvidenceAction(formData: FormData) {
 
 export async function createFindingAction(formData: FormData) {
   const ctx = await requireRiContext('finding:write');
-  const row = await createFinding(ctx.supabase, ctx.organisationId, ctx.userId, {
-    title: formData.get('title'),
-    description: formData.get('description'),
-    severity: formData.get('severity'),
-    due_date: formData.get('due_date'),
+  const row = await createFinding(ctx.supabase, {
+    organisationId: ctx.organisationId,
+    userId: ctx.userId,
+    role: ctx.role,
+    fields: {
+      title: formData.get('title'),
+      description: formData.get('description'),
+      severity: formData.get('severity'),
+      due_date: formData.get('due_date'),
+    },
   });
   const controlId = formData.get('control_id') as string;
   const actionId = formData.get('action_id') as string;

@@ -55,8 +55,19 @@ import { isConnectedBackendActive } from './platform/connected-mode.js';
 import { connectedCatalogueBanner, getConnectedCatalogue } from './platform/connected-catalogue.js';
 import { connectedWorkModeBanner } from './platform/connected-display.js';
 import { isConnectedFindingWritesEnabled } from './platform/connected-mode.js';
-import { renderConnectedFindingWorkflowPanel } from './platform/connected-finding-writes.js';
-import { getViewAssuranceReviews, getViewFindings, getConnectedGovernanceMetrics } from './store.js';
+import {
+  renderConnectedFindingCreatePanel,
+  renderConnectedFindingLinkPanel,
+  renderConnectedFindingRemediationPanel,
+  renderConnectedFindingWorkflowPanel,
+} from './platform/connected-finding-panels.js';
+import {
+  getViewAssuranceReviews,
+  getViewFindings,
+  getViewAuthorisedUatFindings,
+  getFinding,
+  getConnectedGovernanceMetrics,
+} from './store.js';
 import {
   connectedReadOnlyGovernanceBanner,
   connectedRegisterEmpty,
@@ -67,8 +78,6 @@ import {
   renderConnectedAssuranceCreatePanel,
   renderConnectedAssuranceHistoryNote,
 } from './platform/connected-assurance-panels.js';
-import { renderConnectedFindingCreatePanel } from './platform/connected-policy-panels.js';
-
 export function renderDashboardAssuranceSummary() {
   const s = getState();
   const m = assuranceMetrics(s, s.scenarioId);
@@ -337,19 +346,66 @@ export function viewAssuranceReview(id) {
     </section>`;
 }
 
+export function viewFindingsList() {
+  const s = getState();
+  const connected = isConnectedBackendActive(s);
+  const writes = connected && isConnectedFindingWritesEnabled(s);
+  const list = connected ? getViewFindings() : [];
+  const uatList = connected ? getViewAuthorisedUatFindings() : [];
+  const rows = list.map(
+    (f) => `<tr><td><a href="#/finding/${esc(f.id)}">${esc(f.id.slice(0, 8))}</a></td><td>${esc(f.title)}</td>
+      <td>${badge(f.severity)}</td><td>${badge(f.status)}</td><td>${esc(f.owner || '—')}</td><td>${formatDate(f.dueDate)}</td>
+      <td>${badge(f.dataProvenance || 'operational')}</td></tr>`,
+  );
+  const uatRows = uatList.map(
+    (f) => `<tr><td><a href="#/finding/${esc(f.id)}">${esc(f.id.slice(0, 8))}</a></td><td>${esc(f.title)}</td>
+      <td>${badge(f.severity)}</td><td>${badge(f.status)}</td><td>${esc(f.owner || '—')}</td><td>${formatDate(f.dueDate)}</td>
+      <td>${badge(f.dataProvenance || 'uat_authorised')}</td></tr>`,
+  );
+  const uatSection = connected
+    ? `<section class="ri-panel"><h2>Authorised UAT findings register</h2>
+    ${uatRows.length ? dataTable(['ID', 'Title', 'Severity', 'Status', 'Owner', 'Due', 'Provenance'], uatRows) : connectedRegisterEmpty('Authorised UAT findings')}
+    </section>`
+    : '';
+  const subtitle = connected
+    ? writes
+      ? 'Tenant assurance findings · connected read/write when enabled'
+      : 'Tenant assurance findings · connected read-only'
+    : 'DEMO';
+  return `${pageHeader('Findings', subtitle)}
+    ${connected ? connectedCatalogueBanner(s) : ''}
+    ${connected ? (writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner()) : ''}
+    ${writes ? renderConnectedFindingCreatePanel() : ''}
+    <section class="ri-panel"><h2>Operational findings register</h2>
+    ${rows.length ? dataTable(['ID', 'Title', 'Severity', 'Status', 'Owner', 'Due', 'Provenance'], rows) : connected ? connectedRegisterEmpty('findings') : '<p class="ri-muted">Connect staging to load findings.</p>'}
+    </section>
+    ${uatSection}`;
+}
+
 export function viewFinding(id) {
   const s = getState();
   if (isConnectedBackendActive(s)) {
-    const f = getViewFindings().find((x) => x.id === id);
-    if (!f) return notFoundState('Finding', id);
+    const f = getFinding(id);
+    if (!f) {
+      return `${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyGovernanceBanner(s)}
+        <p class="ri-muted" data-connected-finding-loading="true">Loading tenant finding from staging…</p>`;
+    }
     const writes = isConnectedFindingWritesEnabled(s);
-    return `${pageHeader(f.title, f.id.slice(0, 8))}
-      ${connectedCatalogueBanner(s)}
-      ${writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner()}
-      <p>${badge(f.severity)} · ${badge(f.status)}</p>
-      <dl class="ri-dl"><dt>Owner</dt><dd>${esc(f.owner || '—')}</dd><dt>Due</dt><dd>${formatDate(f.dueDate)}</dd></dl>
-      ${writes ? renderConnectedFindingWorkflowPanel(f) : '<p class="ri-muted">Enable connected finding writes to update remediation status.</p>'}
-      <p><a href="#/audit">Audit trail</a> — workflow events for this finding</p>`;
+    return `${connectedCatalogueBanner(s)}
+      ${writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner(s)}
+      ${pageHeader(f.title, f.id.slice(0, 8))}
+      <p>${badge(f.severity)} · ${badge(f.status)} · ${badge(f.dataProvenance || f.labClassification || '—')}</p>
+      <dl class="ri-dl">
+        <dt>Provenance</dt><dd>${badge(f.dataProvenance || '—')}</dd>
+        <dt>Lab class</dt><dd>${esc(f.labClassificationLabel || '—')}</dd>
+        <dt>Owner</dt><dd>${esc(f.owner || '—')}</dd>
+        <dt>Due</dt><dd>${formatDate(f.dueDate)}</dd>
+        <dt>Description</dt><dd>${esc(f.description || '—')}</dd>
+      </dl>
+      ${writes ? renderConnectedFindingLinkPanel(id, f) : ''}
+      ${writes ? renderConnectedFindingRemediationPanel(id, f) : '<p class="ri-muted">Finding writes disabled in this session.</p>'}
+      ${renderConnectedFindingWorkflowPanel(id)}`;
   }
   const f = (s.assuranceFindings || []).find((x) => x.id === id);
   if (!f) return notFoundState('Assurance Finding', id);

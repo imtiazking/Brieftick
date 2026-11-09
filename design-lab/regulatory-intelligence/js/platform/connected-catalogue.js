@@ -31,6 +31,9 @@ const EMPTY = {
   authorisedUatControls: [],
   authorisedUatActions: [],
   authorisedUatEvidence: [],
+  authorisedUatFindings: [],
+  findingDetailsById: {},
+  findingProvenance: null,
   evidenceProvenance: null,
   actionProvenance: null,
   impactProvenance: null,
@@ -159,6 +162,26 @@ export function mergeRiskCatalogueRow(cat, risk) {
     ...(cat.tenantWorkCounts || {}),
     risks: (cat.risks || []).filter(isOperationalLabRow).length,
   };
+}
+
+/** Merge finding row into operational vs authorised UAT registers (BUS-UAT-015). */
+export function mergeFindingCatalogueRow(cat, finding) {
+  if (!finding?.id) return;
+  if (isAuthorisedUatLabRow(finding)) {
+    cat.authorisedUatFindings = cat.authorisedUatFindings || [];
+    const uatIdx = cat.authorisedUatFindings.findIndex((x) => x.id === finding.id);
+    if (uatIdx >= 0)
+      cat.authorisedUatFindings[uatIdx] = { ...cat.authorisedUatFindings[uatIdx], ...finding, _connected: true };
+    else cat.authorisedUatFindings.unshift({ ...finding, _connected: true });
+    return;
+  }
+  if (!isOperationalLabRow(finding)) return;
+  const idx = (cat.findings || []).findIndex((f) => f.id === finding.id);
+  if (idx >= 0) cat.findings[idx] = { ...cat.findings[idx], ...finding, _connected: true };
+  else {
+    cat.findings = cat.findings || [];
+    cat.findings.unshift({ ...finding, _connected: true });
+  }
 }
 
 /** Merge evidence row into operational vs authorised UAT registers (BUS-UAT-014). */
@@ -409,6 +432,8 @@ async function loadConnectedCatalogueInner(state, cat) {
     cat.actions = Array.isArray(govBody.actions) ? govBody.actions : [];
     cat.authorisedUatActions = Array.isArray(govBody.authorisedUatActions) ? govBody.authorisedUatActions : [];
     cat.authorisedUatEvidence = Array.isArray(govBody.authorisedUatEvidence) ? govBody.authorisedUatEvidence : [];
+    cat.authorisedUatFindings = Array.isArray(govBody.authorisedUatFindings) ? govBody.authorisedUatFindings : [];
+    cat.findingProvenance = govBody.findingProvenance ?? null;
     cat.evidenceProvenance = govBody.evidenceProvenance ?? null;
     cat.actionProvenance = govBody.actionProvenance ?? null;
     cat.workflowEvents = Array.isArray(govBody.workflowEvents) ? govBody.workflowEvents : [];
@@ -551,8 +576,9 @@ function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
   const cat = initConnectedCatalogueState(state);
   const cached = cat[detailsKey]?.[id];
   if (cached) {
-    const evidenceHydrated = detailsKey !== 'evidenceDetailsById' || cached._detailHydrated === true;
-    if (evidenceHydrated) return null;
+    const needsHydration = detailsKey === 'evidenceDetailsById' || detailsKey === 'findingDetailsById';
+  const hydrated = !needsHydration || cached._detailHydrated === true;
+    if (hydrated) return null;
   }
   cat._detailInflight = cat._detailInflight || {};
   const token = `${detailsKey}:${id}`;
@@ -782,6 +808,47 @@ export async function fetchConnectedEvidenceDetail(state, evidenceId) {
 
 export function scheduleConnectedEvidenceDetailFetch(state, evidenceId) {
   return scheduleConnectedDetailFetch(state, 'evidenceDetailsById', evidenceId, fetchConnectedEvidenceDetail);
+}
+
+export async function fetchConnectedFindingDetail(state, findingId) {
+  const cat = initConnectedCatalogueState(state);
+  const base = apiBase(state).replace(/\/$/, '');
+  const res = await fetch(`${base}/findings/${encodeURIComponent(findingId)}`, {
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json' },
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) {
+    const err = new Error(body.error || 'finding_detail_failed');
+    err.status = res.status;
+    throw err;
+  }
+  const auditKey = `finding:${findingId}`;
+  if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
+
+  if (body.finding) {
+    const linkedControls = (body.linkedControls ?? body.finding.linkedControls ?? []).filter((c) => c?.id);
+    const linkedActions = (body.linkedActions ?? body.finding.linkedActions ?? []).filter((a) => a?.id);
+    const merged = {
+      ...body.finding,
+      linkedControls,
+      linkedActions,
+      controlIds: body.finding.controlIds ?? linkedControls.map((c) => c.id),
+      actionIds: body.finding.actionIds ?? linkedActions.map((a) => a.id),
+      parentRiskId: body.parentRiskId ?? body.finding.parentRiskId ?? null,
+      _detailHydrated: true,
+      _connected: true,
+    };
+    mergeFindingCatalogueRow(cat, merged);
+    cat.findingDetailsById[findingId] = { ...cat.findingDetailsById[findingId], ...merged };
+  }
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+  return body.finding;
+}
+
+export function scheduleConnectedFindingDetailFetch(state, findingId) {
+  return scheduleConnectedDetailFetch(state, 'findingDetailsById', findingId, fetchConnectedFindingDetail);
 }
 
 export async function fetchConnectedIngestionRunDetail(state, runId) {

@@ -116,6 +116,11 @@ export type LabFindingView = {
   dueDate: string | null;
   owner: string;
   ownerId: string | null;
+  description?: string | null;
+  updatedAt?: string | null;
+  dataProvenance?: RecordProvenanceKind;
+  labClassification?: ChangeLabClass;
+  labClassificationLabel?: string;
   tenantScope: true;
   _connected: true;
 };
@@ -275,6 +280,7 @@ export function mapEvidenceRowToLabView(row: Record<string, unknown>): LabEviden
 }
 
 export function mapFindingRowToLabView(row: Record<string, unknown>): LabFindingView {
+  const labClass = classifyRiskForLab(riskLabProvenanceInputFromRow(row));
   return {
     id: String(row.id),
     title: String(row.title ?? ''),
@@ -283,6 +289,11 @@ export function mapFindingRowToLabView(row: Record<string, unknown>): LabFinding
     dueDate: (row.due_date as string) ?? null,
     ownerId: (row.owner_user_id as string) ?? null,
     owner: ownerLabel(row.owner_user_id as string),
+    description: (row.description as string) ?? null,
+    updatedAt: (row.updated_at as string) ?? null,
+    dataProvenance: recordKindForRiskControlLabClass(labClass),
+    labClassification: labClass,
+    labClassificationLabel: labChangeClassificationLabel(labClass),
     tenantScope: true,
     _connected: true,
   };

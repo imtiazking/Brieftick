@@ -16,6 +16,7 @@ import {
   mergeActionCatalogueRow,
   mergeEvidenceCatalogueRow,
   fetchConnectedEvidenceDetail,
+  fetchConnectedFindingDetail,
 } from './connected-catalogue.js';
 import {
   refreshConnectedEntityWorkflowEvents,
@@ -209,6 +210,11 @@ function linkAuditEntities(linkType, leftId, rightId) {
         ['evidence_item', leftId],
         ['control', rightId],
       ];
+    case 'finding_control':
+      return [
+        ['finding', leftId],
+        ['control', rightId],
+      ];
     default:
       return [];
   }
@@ -251,6 +257,11 @@ export async function postConnectedLink(state, linkType, leftId, rightId) {
   } else if (linkType === 'risk_control') {
     delete cat.riskDetailsById?.[leftId];
     await fetchConnectedRiskDetail(state, leftId).catch(() => null);
+    delete cat.controlDetailsById?.[rightId];
+    await fetchConnectedControlDetail(state, rightId).catch(() => null);
+  } else if (linkType === 'finding_control') {
+    delete cat.findingDetailsById?.[leftId];
+    await fetchConnectedFindingDetail(state, leftId).catch(() => null);
     delete cat.controlDetailsById?.[rightId];
     await fetchConnectedControlDetail(state, rightId).catch(() => null);
   }

@@ -14,6 +14,7 @@ const ENTITY_TABLE: Record<
   | 'controls'
   | 'actions'
   | 'evidence_items'
+  | 'findings'
 > = {
   regulatory_change: 'regulatory_changes',
   regulatory_obligation: 'regulatory_obligations',
@@ -22,6 +23,7 @@ const ENTITY_TABLE: Record<
   control: 'controls',
   action: 'actions',
   evidence_item: 'evidence_items',
+  finding: 'findings',
 };
 
 export async function GET(request: Request) {
