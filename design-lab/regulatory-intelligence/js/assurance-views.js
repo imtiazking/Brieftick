@@ -382,6 +382,16 @@ export function viewFindingsList() {
     ${uatSection}`;
 }
 
+function findingHasRelationshipHints(f) {
+  if (!f) return false;
+  return Boolean(
+    f.parentRiskId ||
+      f.parentControlId ||
+      (f.controlIds && f.controlIds.length) ||
+      (f.linkedControls && f.linkedControls.length),
+  );
+}
+
 export function viewFinding(id) {
   const s = getState();
   if (isConnectedBackendActive(s)) {
@@ -395,21 +405,20 @@ export function viewFinding(id) {
         <p class="ri-muted" data-connected-finding-loading="true">Loading tenant finding from staging…</p>`;
     }
     const f = getFinding(id);
-    if (f && detail?._detailHydrated !== true && !f.parentRiskId && !(f.linkedControls || []).length) {
-      return `${connectedCatalogueBanner(s)}
-        ${connectedReadOnlyGovernanceBanner(s)}
-        ${pageHeader(f.title || id.slice(0, 8), id.slice(0, 8))}
-        <p class="ri-muted" data-connected-finding-loading="true">Loading finding relationships from staging…</p>`;
-    }
     if (!f) {
       return `${connectedCatalogueBanner(s)}
         ${connectedReadOnlyGovernanceBanner(s)}
         <p class="ri-muted" data-connected-finding-loading="true">Loading tenant finding from staging…</p>`;
     }
+    const detailPending =
+      detail?._detailHydrated !== true && !findingHasRelationshipHints(f) && !detail?._detailLoadError;
+    const detailError = detail?._detailLoadError;
     const writes = isConnectedFindingWritesEnabled(s);
     return `${connectedCatalogueBanner(s)}
       ${writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner(s)}
       ${pageHeader(f.title, f.id.slice(0, 8))}
+      ${detailPending ? '<p class="ri-muted" data-connected-finding-loading="true">Refreshing finding relationships from staging…</p>' : ''}
+      ${detailError ? `<div class="ri-panel ri-panel--warn" role="alert"><p>Could not refresh finding relationships: ${esc(detailError)}</p><button type="button" class="ri-btn ri-btn--ghost" data-connected-finding-retry="${esc(id)}">Retry load</button></div>` : ''}
       <p>${badge(f.severity)} · ${badge(f.status)} · ${badge(f.dataProvenance || f.labClassification || '—')}</p>
       <dl class="ri-dl">
         <dt>Provenance</dt><dd>${badge(f.dataProvenance || '—')}</dd>

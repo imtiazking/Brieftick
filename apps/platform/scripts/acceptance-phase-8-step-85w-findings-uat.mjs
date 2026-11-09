@@ -130,6 +130,23 @@ if (!migrate.includes('findingDetailsById')) {
   pass('migrate_stale', 'stale finding cache purge on load');
 }
 
+const assuranceHydrate = readFileSync(join(lab, 'js/assurance-views.js'), 'utf8');
+if (
+  assuranceHydrate.includes('Loading finding relationships from staging') &&
+  !assuranceHydrate.includes('findingHasRelationshipHints')
+) {
+  failTest('detail_blocking', 'finding detail must not block full page on relationship load');
+} else {
+  pass('detail_blocking', 'non-blocking relationship refresh');
+}
+
+const catRetry = readFileSync(join(lab, 'js/platform/connected-catalogue.js'), 'utf8');
+if (!catRetry.includes('recordFindingDetailLoadFailure') || !catRetry.includes('forceRefetchConnectedFindingDetail')) {
+  failTest('detail_error', 'finding detail must record errors and support retry');
+} else {
+  pass('detail_error', 'detail failure + retry path');
+}
+
 const migSql = readFileSync(
   join(platform, 'supabase/migrations/20261109140000_findings_metadata_provenance.sql'),
   'utf8',

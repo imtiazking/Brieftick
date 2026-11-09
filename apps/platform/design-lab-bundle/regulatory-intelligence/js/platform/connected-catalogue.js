@@ -572,12 +572,26 @@ function upsertConnectedLabPublication(cat, labPublication) {
  * Fetch entity detail once per id (avoids renderShell ↔ notify ↔ refetch loops).
  * @returns {Promise<unknown>|null} null when cached or already in flight
  */
+function findingDetailHasLineage(cached) {
+  if (!cached) return false;
+  return Boolean(
+    cached.parentRiskId ||
+      cached.parentControlId ||
+      (cached.controlIds && cached.controlIds.length) ||
+      (cached.linkedControls && cached.linkedControls.length) ||
+      cached._detailLoadError,
+  );
+}
+
 function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
   const cat = initConnectedCatalogueState(state);
   const cached = cat[detailsKey]?.[id];
   if (cached) {
     const needsHydration = detailsKey === 'evidenceDetailsById' || detailsKey === 'findingDetailsById';
-  const hydrated = !needsHydration || cached._detailHydrated === true;
+    let hydrated = !needsHydration || cached._detailHydrated === true;
+    if (needsHydration && detailsKey === 'findingDetailsById' && cached._detailHydrated === true) {
+      if (!findingDetailHasLineage(cached)) hydrated = false;
+    }
     if (hydrated) return null;
   }
   cat._detailInflight = cat._detailInflight || {};
@@ -810,6 +824,24 @@ export function scheduleConnectedEvidenceDetailFetch(state, evidenceId) {
   return scheduleConnectedDetailFetch(state, 'evidenceDetailsById', evidenceId, fetchConnectedEvidenceDetail);
 }
 
+export function recordFindingDetailLoadFailure(state, findingId, message) {
+  const cat = initConnectedCatalogueState(state);
+  cat.findingDetailsById = cat.findingDetailsById || {};
+  const fromList =
+    cat.findings?.find((f) => f.id === findingId) ||
+    cat.authorisedUatFindings?.find((f) => f.id === findingId);
+  cat.findingDetailsById[findingId] = {
+    ...(fromList || {}),
+    ...(cat.findingDetailsById[findingId] || {}),
+    id: findingId,
+    _detailHydrated: true,
+    _detailLoadError: message || 'finding_detail_failed',
+    _connected: true,
+  };
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+}
+
 export async function fetchConnectedFindingDetail(state, findingId) {
   const cat = initConnectedCatalogueState(state);
   const base = apiBase(state).replace(/\/$/, '');
@@ -819,7 +851,7 @@ export async function fetchConnectedFindingDetail(state, findingId) {
   });
   const body = await res.json().catch(() => ({}));
   if (!res.ok || !body.ok) {
-    const err = new Error(body.error || 'finding_detail_failed');
+    const err = new Error(body.error || body.detail || 'finding_detail_failed');
     err.status = res.status;
     throw err;
   }
@@ -846,10 +878,11 @@ export async function fetchConnectedFindingDetail(state, findingId) {
       controlIds: body.finding.controlIds?.length
         ? body.finding.controlIds
         : linkedControls.map((c) => c.id),
-      parentControlId: metaControl,
+      parentControlId: metaControl ?? body.finding.parentControlId ?? null,
       actionIds: body.finding.actionIds ?? linkedActions.map((a) => a.id),
-      parentRiskId: body.parentRiskId ?? metaRisk,
+      parentRiskId: body.parentRiskId ?? metaRisk ?? body.finding.parentRiskId ?? null,
       _detailHydrated: true,
+      _detailLoadError: null,
       _connected: true,
     };
     mergeFindingCatalogueRow(cat, merged);
@@ -862,6 +895,14 @@ export async function fetchConnectedFindingDetail(state, findingId) {
 
 export function scheduleConnectedFindingDetailFetch(state, findingId) {
   return scheduleConnectedDetailFetch(state, 'findingDetailsById', findingId, fetchConnectedFindingDetail);
+}
+
+/** Clear cached detail and refetch (retry after load error). */
+export function forceRefetchConnectedFindingDetail(state, findingId) {
+  const cat = initConnectedCatalogueState(state);
+  if (cat.findingDetailsById) delete cat.findingDetailsById[findingId];
+  if (cat._detailInflight) delete cat._detailInflight[`findingDetailsById:${findingId}`];
+  return scheduleConnectedFindingDetailFetch(state, findingId);
 }
 
 export async function fetchConnectedIngestionRunDetail(state, runId) {

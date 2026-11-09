@@ -153,6 +153,9 @@ import {
   scheduleConnectedActionDetailFetch,
   scheduleConnectedEvidenceDetailFetch,
   scheduleConnectedFindingDetailFetch,
+  recordFindingDetailLoadFailure,
+  fetchConnectedFindingDetail,
+  forceRefetchConnectedFindingDetail,
   scheduleConnectedIngestionRunDetailFetch,
   initConnectedCatalogueState,
 } from './platform/connected-catalogue.js';
@@ -784,7 +787,10 @@ function bindViewHandlers() {
       .catch(() => {});
     scheduleConnectedFindingDetailFetch(getState(), findingId)
       ?.then(() => renderShell())
-      .catch(() => {});
+      .catch((e) => {
+        recordFindingDetailLoadFailure(getState(), findingId, e?.message || 'finding_detail_failed');
+        renderShell();
+      });
   }
 
   const ingestionRunMatch = route.match(/^\/ingestion\/run\/([^/]+)/);
@@ -1705,6 +1711,24 @@ function bindViewHandlers() {
     } catch (e) {
       showToast(e?.message || 'Finding create failed');
       if (btn) btn.disabled = false;
+    }
+  });
+
+  document.querySelector('[data-connected-finding-retry]')?.addEventListener('click', async (ev) => {
+    const btn = ev.currentTarget;
+    const findingId = btn.getAttribute('data-connected-finding-retry');
+    if (!findingId || btn.disabled) return;
+    btn.disabled = true;
+    try {
+      await forceRefetchConnectedFindingDetail(getState(), findingId);
+      showToast('Finding detail refreshed');
+      renderShell();
+    } catch (e) {
+      recordFindingDetailLoadFailure(getState(), findingId, e?.message || 'finding_detail_failed');
+      showToast(e?.message || 'Retry failed');
+      renderShell();
+    } finally {
+      btn.disabled = false;
     }
   });
 

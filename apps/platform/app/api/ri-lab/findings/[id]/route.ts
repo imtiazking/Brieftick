@@ -46,6 +46,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
         controlIds: linkedControls.map((c) => c.id),
         actionIds: linkedActions.map((a) => a.id),
         parentRiskId,
+        parentControlId,
         linkedControls,
         linkedActions,
       },
