@@ -127,6 +127,10 @@ export function assertLabFindingWritesEnabled(role: PlatformRole): void {
   assertLabConnectedWrite(role, 'finding:write');
 }
 
+export function assertLabAssuranceWritesEnabled(role: PlatformRole): void {
+  assertLabConnectedWrite(role, 'assurance:write');
+}
+
 export function buildLabWriteCapabilities(role: PlatformRole) {
   return {
     changeManagement: resolveLabChangeWritesEnabled(role),

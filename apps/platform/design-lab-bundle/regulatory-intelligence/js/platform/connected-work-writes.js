@@ -50,8 +50,11 @@ async function refreshConnectedWorkflowEvents(state) {
   cat.workflowEvents = Array.isArray(body.workflowEvents) ? body.workflowEvents : cat.workflowEvents;
 }
 
-function formatConnectedPatchError(body, fallback) {
+export function formatConnectedPatchError(body, fallback) {
   if (!body || typeof body !== 'object') return fallback;
+  if (body.error === 'unauthorized') {
+    return 'Session expired or not sent — refresh, sign in again, then retry Save outcome';
+  }
   if (body.error === 'stale_record') return 'Record was updated elsewhere — refresh and save again';
   if (body.error === 'validation_error' && body.detail) return body.detail;
   if (body.error === 'connected_writes_disabled') return 'Connected writes are disabled on staging';

@@ -11,6 +11,7 @@ import { savePersistedJson, STORAGE_KEY_V2 } from './platform-persistence.js';
 import { persistableLabState } from './ask-ri-session.mjs';
 import { refreshConnectedEntityWorkflowEvents } from './connected-entity-audit.js';
 import { isConnectedAssuranceWritesEnabled } from './connected-mode.js';
+import { formatConnectedPatchError } from './connected-work-writes.js';
 
 function apiBase(state) {
   return (state.platformConfig?.apiBaseUrl || '/api/ri-lab').replace(/\/$/, '');
@@ -22,6 +23,7 @@ export async function createConnectedAssuranceReview(state, payload) {
   const res = await fetch(`${base}/assurance-reviews`, {
     method: 'POST',
     credentials: 'same-origin',
+    cache: 'no-store',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     body: JSON.stringify({
       review_type: payload.review_type,
@@ -32,7 +34,9 @@ export async function createConnectedAssuranceReview(state, payload) {
     }),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'assurance_create_failed');
+  if (!res.ok || !body.ok) {
+    throw new Error(formatConnectedPatchError(body, body.error || 'assurance_create_failed'));
+  }
   const cat = initConnectedCatalogueState(state);
   if (body.assuranceReview) mergeAssuranceCatalogueRow(cat, { ...body.assuranceReview, _connected: true });
   try {
@@ -48,14 +52,27 @@ export async function createConnectedAssuranceReview(state, payload) {
 export async function patchConnectedAssuranceReview(state, assuranceId, fields) {
   if (!isConnectedAssuranceWritesEnabled(state)) throw new Error('connected_writes_disabled');
   const base = apiBase(state);
+  const sessionRes = await fetch(`${base}/session`, {
+    method: 'GET',
+    credentials: 'same-origin',
+    cache: 'no-store',
+    headers: { Accept: 'application/json' },
+  });
+  const sessionBody = await sessionRes.json().catch(() => ({}));
+  if (!sessionRes.ok || sessionBody?.ok !== true) {
+    throw new Error(formatConnectedPatchError(sessionBody, 'Session not available — sign in and retry'));
+  }
   const res = await fetch(`${base}/assurance-reviews/${encodeURIComponent(assuranceId)}`, {
     method: 'PATCH',
     credentials: 'same-origin',
+    cache: 'no-store',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     body: JSON.stringify(fields),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'assurance_update_failed');
+  if (!res.ok || !body.ok) {
+    throw new Error(formatConnectedPatchError(body, body.error || 'assurance_update_failed'));
+  }
   const cat = initConnectedCatalogueState(state);
   if (body.assuranceReview) mergeAssuranceCatalogueRow(cat, { ...body.assuranceReview, _connected: true });
   try {

@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import { requireRiContext } from '@/lib/ri/context';
 import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { mapAssuranceRowToLabView } from '@/lib/ri/lab-api/lab-governance-view';
-import { assertLabConnectedWrite } from '@/lib/ri/lab-api/lab-connected-writes';
+import { assertLabAssuranceWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
+
+export const dynamic = 'force-dynamic';
 import { parseLabAssuranceCreateBody } from '@/lib/ri/lab-api/lab-link-write';
 import { createAssuranceReview, getAssuranceDetail, listAssuranceReviews } from '@/lib/ri/services/assurance';
 
@@ -22,7 +24,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const ctx = await requireRiContext('assurance:write');
-    assertLabConnectedWrite(ctx.role, 'assurance:write');
+    assertLabAssuranceWritesEnabled(ctx.role);
     const fields = parseLabAssuranceCreateBody(await request.json());
     const row = await createAssuranceReview(ctx.supabase, {
       organisationId: ctx.organisationId,

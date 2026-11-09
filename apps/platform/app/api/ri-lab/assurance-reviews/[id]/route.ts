@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server';
 import { requireRiContext } from '@/lib/ri/context';
 import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { mapAssuranceRowToLabView, parseLabRowMetadata } from '@/lib/ri/lab-api/lab-governance-view';
-import { assertLabConnectedWrite } from '@/lib/ri/lab-api/lab-connected-writes';
+import { assertLabAssuranceWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
 import { parseLabAssurancePatchBody } from '@/lib/ri/lab-api/lab-link-write';
 import { getAssuranceDetail, updateAssuranceReview } from '@/lib/ri/services/assurance';
+import { parseUuid } from '@/lib/ri/validation';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -57,21 +60,25 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = await params;
+    const { id: rawId } = await params;
+    const assuranceId = parseUuid(rawId, 'assurance_review_id');
     const ctx = await requireRiContext('assurance:write');
-    assertLabConnectedWrite(ctx.role, 'assurance:write');
+    assertLabAssuranceWritesEnabled(ctx.role);
     const patch = parseLabAssurancePatchBody(await request.json());
     const row = await updateAssuranceReview(ctx.supabase, {
       organisationId: ctx.organisationId,
-      assuranceId: id,
+      assuranceId,
       userId: ctx.userId,
       fields: patch.fields,
       expectedUpdatedAt: patch.expectedUpdatedAt,
     });
-    return NextResponse.json({
-      ok: true,
-      assuranceReview: mapAssuranceRowToLabView(row as Record<string, unknown>),
-    });
+    return NextResponse.json(
+      {
+        ok: true,
+        assuranceReview: mapAssuranceRowToLabView(row as Record<string, unknown>),
+      },
+      { headers: { 'Cache-Control': 'private, no-store' } },
+    );
   } catch (err) {
     return labApiErrorResponse(err);
   }

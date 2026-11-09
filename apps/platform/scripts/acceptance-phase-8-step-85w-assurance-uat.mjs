@@ -73,6 +73,35 @@ if (!detailRoute.includes('PATCH') || !detailRoute.includes('linkedControls')) {
 } else {
   pass('detail_api', 'detail + patch routes');
 }
+if (
+  !detailRoute.includes('assertLabAssuranceWritesEnabled') ||
+  !detailRoute.includes("parseUuid(rawId, 'assurance_review_id')")
+) {
+  failTest('patch_auth_parity', 'PATCH must gate writes like POST and validate id');
+} else {
+  pass('patch_auth_parity', 'assertLabAssuranceWritesEnabled + parseUuid on PATCH');
+}
+
+const postRouteWrites = readFileSync(join(platform, 'app/api/ri-lab/assurance-reviews/route.ts'), 'utf8');
+if (!postRouteWrites.includes('assertLabAssuranceWritesEnabled')) {
+  failTest('post_writes_gate', 'POST must use assertLabAssuranceWritesEnabled');
+} else {
+  pass('post_writes_gate', 'assurance POST write gate');
+}
+
+const assuranceWrites = readFileSync(
+  join(lab, 'js/platform/connected-assurance-writes.js'),
+  'utf8',
+);
+if (
+  !assuranceWrites.includes('formatConnectedPatchError') ||
+  !assuranceWrites.includes("cache: 'no-store'") ||
+  !assuranceWrites.includes('/session')
+) {
+  failTest('client_patch', 'assurance PATCH must probe session and map errors');
+} else {
+  pass('client_patch', 'session preflight + patch error mapping');
+}
 
 const dashboard = readFileSync(join(platform, 'lib/ri/services/dashboard.ts'), 'utf8');
 if (!dashboard.includes('partitionAssuranceReviewsForLabScope')) {

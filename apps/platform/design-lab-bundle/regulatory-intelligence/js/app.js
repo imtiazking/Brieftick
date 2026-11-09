@@ -1501,28 +1501,32 @@ function bindViewHandlers() {
     }
   });
 
-  document.querySelector('[data-connected-assurance-save-outcome]')?.addEventListener('click', async () => {
-    const panel = document.querySelector('[data-connected-assurance-outcome]');
-    const assuranceId = panel?.dataset?.connectedAssuranceOutcome;
-    if (!assuranceId) return;
-    const result = panel?.querySelector('[data-connected-assurance-outcome-result]')?.value;
-    const notes = panel?.querySelector('[data-connected-assurance-outcome-notes]')?.value?.trim();
-    const r = getConnectedAssurance(assuranceId);
-    const btn = panel?.querySelector('[data-connected-assurance-save-outcome]');
-    if (btn) btn.disabled = true;
-    try {
-      await patchConnectedAssuranceReview(getState(), assuranceId, {
-        result,
-        notes,
-        ...(r?.updatedAt ? { expectedUpdatedAt: r.updatedAt } : {}),
-      });
-      showToast('Assurance outcome saved');
-      renderShell();
-    } catch (e) {
-      showToast(e?.message || 'Save failed');
-      if (btn) btn.disabled = false;
-    }
-  });
+  const assuranceSaveBtn = document.querySelector('[data-connected-assurance-save-outcome]');
+  if (assuranceSaveBtn && !assuranceSaveBtn.dataset.riBoundAssuranceSave) {
+    assuranceSaveBtn.dataset.riBoundAssuranceSave = '1';
+    assuranceSaveBtn.addEventListener('click', async (ev) => {
+      const btn = ev.currentTarget;
+      const panel = btn.closest('[data-connected-assurance-outcome]');
+      const assuranceId = panel?.dataset?.connectedAssuranceOutcome;
+      if (!assuranceId) return;
+      const result = panel?.querySelector('[data-connected-assurance-outcome-result]')?.value;
+      const notes = panel?.querySelector('[data-connected-assurance-outcome-notes]')?.value?.trim();
+      const r = getConnectedAssurance(assuranceId);
+      btn.disabled = true;
+      try {
+        await patchConnectedAssuranceReview(getState(), assuranceId, {
+          result,
+          notes,
+          ...(r?.updatedAt ? { expectedUpdatedAt: r.updatedAt } : {}),
+        });
+        showToast('Assurance outcome saved');
+        renderShell();
+      } catch (e) {
+        showToast(e?.message || 'Save failed');
+        btn.disabled = false;
+      }
+    });
+  }
 
   document.querySelectorAll('[data-connected-evidence-upload]').forEach((btn) => {
     if (btn.dataset.riBoundEvidenceUpload) return;
