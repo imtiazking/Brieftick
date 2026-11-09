@@ -1,5 +1,10 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
+import {
+  actionOwnerValueEqual,
+  actionStatusValueEqual,
+  planActionPatchAuditEvents,
+} from '@/lib/ri/action-update-audit';
 import { isActionOverdue } from '@/lib/ri/action-overdue';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import {
@@ -265,7 +270,9 @@ export async function updateRiAction(
   await assertRowInOrganisation(supabase, 'actions', params.actionId, params.organisationId);
   const { data: existing } = await supabase
     .from('actions')
-    .select('status, updated_at, owner_user_id, metadata')
+    .select(
+      'title, description, status, priority, due_date, escalation_status, updated_at, owner_user_id, metadata',
+    )
     .eq('id', params.actionId)
     .single();
   if (!existing) throw new Error('not_found');
@@ -284,52 +291,95 @@ export async function updateRiAction(
       if (k in params.fields) throw new Error('provenance_locked');
     }
   }
+  const parsedOwnerInPatch =
+    'owner_user_id' in params.fields && params.fields.owner_user_id
+      ? parseRequiredText(params.fields.owner_user_id, 'owner_user_id', 128)
+      : undefined;
+  const parsedStatusInPatch = 'status' in params.fields
+    ? (parseOptionalText(params.fields.status, 50) ?? existing.status)
+    : undefined;
+  const assignOwnerSelf =
+    'assign_owner' in params.fields && params.fields.assign_owner === 'self' ? params.userId : undefined;
+
+  const auditPlan = planActionPatchAuditEvents({
+    existingStatus: existing.status,
+    existingOwnerUserId: existing.owner_user_id,
+    requestedStatus: parsedStatusInPatch,
+    requestedOwnerUserId: parsedOwnerInPatch,
+    assignOwnerSelfUserId: assignOwnerSelf,
+  });
+
   const update: Record<string, unknown> = {};
-  if ('title' in params.fields) update.title = parseRequiredText(params.fields.title, 'title', 500);
-  if ('owner_user_id' in params.fields && params.fields.owner_user_id) {
-    update.owner_user_id = parseRequiredText(params.fields.owner_user_id, 'owner_user_id', 128);
+  if ('title' in params.fields) {
+    const next = parseRequiredText(params.fields.title, 'title', 500);
+    if (next !== existing.title) update.title = next;
+  }
+  if (parsedOwnerInPatch !== undefined && !actionOwnerValueEqual(existing.owner_user_id, parsedOwnerInPatch)) {
+    update.owner_user_id = parsedOwnerInPatch;
+  }
+  if ('description' in params.fields) {
+    const next = parseOptionalText(params.fields.description, 8000);
+    const prev = existing.description ?? null;
+    if (next !== prev) update.description = next;
+  }
+  if ('priority' in params.fields) {
+    const next = parseOptionalText(params.fields.priority, 100);
+    const prev = existing.priority ?? null;
+    if (next !== prev) update.priority = next;
+  }
+  if ('due_date' in params.fields) {
+    const next = parseOptionalDate(params.fields.due_date);
+    const prev = existing.due_date ?? null;
+    if (next !== prev) update.due_date = next;
+  }
+  if ('escalation_status' in params.fields) {
+    const next = parseOptionalText(params.fields.escalation_status, 100);
+    const prev = existing.escalation_status ?? null;
+    if (next !== prev) update.escalation_status = next;
+  }
+  if (parsedStatusInPatch !== undefined && !actionStatusValueEqual(existing.status, parsedStatusInPatch)) {
+    update.status = parsedStatusInPatch;
+    if (parsedStatusInPatch === 'COMPLETE' || parsedStatusInPatch === 'CLOSED') {
+      update.completed_at = new Date().toISOString();
+    }
+  }
+  if (assignOwnerSelf !== undefined && !actionOwnerValueEqual(existing.owner_user_id, assignOwnerSelf)) {
+    update.owner_user_id = assignOwnerSelf;
+  }
+
+  if (auditPlan.emitOwnerAssigned && auditPlan.assigneeUserId) {
     await recordWorkflowEvent(supabase, {
       organisationId: params.organisationId,
       entityType: 'action',
       entityId: params.actionId,
       eventType: 'ACTION_ASSIGNED',
       actorUserId: params.userId,
-      metadata: { owner_user_id: update.owner_user_id },
+      metadata: { owner_user_id: auditPlan.assigneeUserId },
     });
   }
-  if ('description' in params.fields) update.description = parseOptionalText(params.fields.description, 8000);
-  if ('priority' in params.fields) update.priority = parseOptionalText(params.fields.priority, 100);
-  if ('due_date' in params.fields) update.due_date = parseOptionalDate(params.fields.due_date);
-  if ('escalation_status' in params.fields) {
-    update.escalation_status = parseOptionalText(params.fields.escalation_status, 100);
-  }
-  if ('status' in params.fields) {
-    const next = parseOptionalText(params.fields.status, 50) ?? existing.status;
-    update.status = next;
-    if (next === 'COMPLETE' || next === 'CLOSED') {
-      update.completed_at = new Date().toISOString();
-    }
+  if (auditPlan.emitStatusChanged && auditPlan.statusTo) {
     await recordWorkflowEvent(supabase, {
       organisationId: params.organisationId,
       entityType: 'action',
       entityId: params.actionId,
       eventType: 'ACTION_STATUS_CHANGED',
       actorUserId: params.userId,
-      fromStatus: existing.status,
-      toStatus: next,
+      fromStatus: auditPlan.statusFrom,
+      toStatus: auditPlan.statusTo,
     });
   }
-  if ('assign_owner' in params.fields && params.fields.assign_owner === 'self') {
-    update.owner_user_id = params.userId;
-    await recordWorkflowEvent(supabase, {
-      organisationId: params.organisationId,
-      entityType: 'action',
-      entityId: params.actionId,
-      eventType: 'ACTION_ASSIGNED',
-      actorUserId: params.userId,
-      metadata: { owner_user_id: params.userId },
-    });
+
+  if (!Object.keys(update).length) {
+    const { data: current, error: readErr } = await supabase
+      .from('actions')
+      .select()
+      .eq('id', params.actionId)
+      .eq('organisation_id', params.organisationId)
+      .single();
+    if (readErr) throw new Error(readErr.message);
+    return { ...current, overdue: isActionOverdue(current.due_date, current.status) };
   }
+
   const { data, error } = await supabase
     .from('actions')
     .update(update)
