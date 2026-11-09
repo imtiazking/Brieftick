@@ -302,6 +302,12 @@ function mergeWithSeed(saved) {
         if (!row || row._detailHydrated !== true) delete evidenceDetails[id];
       }
     }
+    const assuranceDetails = fresh.connectedCatalogue.assuranceDetailsById;
+    if (assuranceDetails && typeof assuranceDetails === 'object') {
+      for (const [id, row] of Object.entries(assuranceDetails)) {
+        if (!row || row._detailHydrated !== true) delete assuranceDetails[id];
+      }
+    }
     const findingDetails = fresh.connectedCatalogue.findingDetailsById;
     if (findingDetails && typeof findingDetails === 'object') {
       for (const [id, row] of Object.entries(findingDetails)) {
@@ -332,6 +338,20 @@ function mergeWithSeed(saved) {
           const staleDetail = fresh.connectedCatalogue.findingDetailsById?.[findingId]?._detailHydrated !== true;
           const emptyAudit = Array.isArray(events) && events.length === 0;
           if (staleDetail || emptyAudit) {
+            delete entityAudit[key];
+            if (fresh.connectedCatalogue.entityWorkflowEventsLoadStateByKey) {
+              delete fresh.connectedCatalogue.entityWorkflowEventsLoadStateByKey[key];
+            }
+            if (fresh.connectedCatalogue.entityWorkflowEventsLoadErrorByKey) {
+              delete fresh.connectedCatalogue.entityWorkflowEventsLoadErrorByKey[key];
+            }
+          }
+          continue;
+        }
+        if (key.startsWith('assurance_review:')) {
+          const assuranceId = key.slice('assurance_review:'.length);
+          const staleDetail = fresh.connectedCatalogue.assuranceDetailsById?.[assuranceId]?._detailHydrated !== true;
+          if (staleDetail) {
             delete entityAudit[key];
             if (fresh.connectedCatalogue.entityWorkflowEventsLoadStateByKey) {
               delete fresh.connectedCatalogue.entityWorkflowEventsLoadStateByKey[key];

@@ -16,6 +16,8 @@ import {
 } from '@/lib/ri/lab-api/change-lab-provenance';
 import { recordKindForRiskControlLabClass } from '@/lib/ri/lab-api/risk-control-lab-provenance';
 import {
+  assuranceLabProvenanceInputFromRow,
+  classifyAssuranceForLab,
   classifyRiskForLab,
   classifyControlForLab,
   riskLabProvenanceInputFromRow,
@@ -159,8 +161,14 @@ export type LabAssuranceReviewView = {
   reviewType: string;
   result: string;
   reviewDate: string | null;
+  notes: string | null;
   reviewer: string;
   reviewerId: string | null;
+  updatedAt: string | null;
+  parentControlId: string | null;
+  dataProvenance: RecordProvenanceKind;
+  labClassification: ChangeLabClass;
+  labClassificationLabel: string;
   tenantScope: true;
   _connected: true;
 };
@@ -334,13 +342,23 @@ export function mapFindingRowToLabView(row: Record<string, unknown>): LabFinding
 }
 
 export function mapAssuranceRowToLabView(row: Record<string, unknown>): LabAssuranceReviewView {
+  const labClass = classifyAssuranceForLab(assuranceLabProvenanceInputFromRow(row));
+  const meta = parseLabRowMetadata(row.metadata) ?? null;
+  const parentControlId = typeof meta?.parentControlId === 'string' ? meta.parentControlId : null;
   return {
     id: String(row.id),
     reviewType: String(row.review_type ?? '—'),
     result: String(row.result ?? '—'),
     reviewDate: (row.review_date as string) ?? null,
+    notes: (row.notes as string) ?? null,
     reviewerId: (row.reviewer_user_id as string) ?? null,
     reviewer: ownerLabel(row.reviewer_user_id as string),
+    updatedAt: (row.updated_at as string) ?? null,
+    parentControlId,
+    ...(parentControlId ? { controlIds: [parentControlId] } : {}),
+    dataProvenance: recordKindForRiskControlLabClass(labClass),
+    labClassification: labClass,
+    labClassificationLabel: labChangeClassificationLabel(labClass),
     tenantScope: true,
     _connected: true,
   };

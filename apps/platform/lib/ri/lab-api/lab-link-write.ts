@@ -1,7 +1,8 @@
 import 'server-only';
 
+import { parseChangeCreateMode } from '@/lib/ri/lab-api/change-create-provenance';
 import { RiValidationError } from '@/lib/ri/errors';
-import { parseOptionalText, parseRequiredText, parseUuid } from '@/lib/ri/validation';
+import { parseAssuranceResult, parseOptionalText, parseRequiredText, parseUuid } from '@/lib/ri/validation';
 
 const LINK_TYPES = [
   'obligation_risk',
@@ -127,6 +128,42 @@ export function parseLabFindingPatchBody(body: unknown): {
   for (const key of ['title', 'description', 'severity', 'due_date', 'status']) {
     if (key in raw) fields[key] = raw[key];
   }
+  if (!Object.keys(fields).length) throw new RiValidationError('missing_patch_fields');
+  return { fields, expectedUpdatedAt };
+}
+
+export function parseLabAssuranceCreateBody(body: unknown): Record<string, unknown> {
+  if (!body || typeof body !== 'object') throw new RiValidationError('invalid_body');
+  const raw = body as Record<string, unknown>;
+  if ('metadata' in raw || 'recordProvenance' in raw || 'record_provenance' in raw) {
+    throw new RiValidationError('client_provenance_rejected');
+  }
+  const fields: Record<string, unknown> = {
+    review_type: parseRequiredText(raw.review_type ?? raw.reviewType, 'review_type', 200),
+    result: parseAssuranceResult(raw.result ?? 'NOT_TESTED'),
+    notes: parseOptionalText(raw.notes, 8000),
+    review_date: raw.review_date ?? raw.reviewDate,
+    next_review_date: raw.next_review_date ?? raw.nextReviewDate,
+    creationMode: parseChangeCreateMode(raw.creationMode, { defaultMode: 'uat_authorised' }),
+  };
+  if (raw.controlId !== undefined) fields.controlId = raw.controlId;
+  if (raw.control_id !== undefined) fields.control_id = raw.control_id;
+  return fields;
+}
+
+export function parseLabAssurancePatchBody(body: unknown): {
+  fields: Record<string, unknown>;
+  expectedUpdatedAt: string | null;
+} {
+  if (!body || typeof body !== 'object') throw new RiValidationError('invalid_body');
+  const raw = body as Record<string, unknown>;
+  const expectedUpdatedAt =
+    raw.expectedUpdatedAt === null || raw.expectedUpdatedAt === undefined || raw.expectedUpdatedAt === ''
+      ? null
+      : parseRequiredText(raw.expectedUpdatedAt, 'expected_updated_at', 64);
+  const fields: Record<string, unknown> = {};
+  if ('result' in raw) fields.result = parseAssuranceResult(raw.result);
+  if ('notes' in raw) fields.notes = parseOptionalText(raw.notes, 8000);
   if (!Object.keys(fields).length) throw new RiValidationError('missing_patch_fields');
   return { fields, expectedUpdatedAt };
 }

@@ -16,10 +16,12 @@ import {
 } from '@/lib/ri/lab-api/ai-run-lab-provenance';
 import { isSyntheticUatRecord } from '@/lib/ri/uat-record-provenance';
 import {
+  partitionAssuranceReviewsForLabScope,
   partitionControlsForLabScope,
   partitionEvidenceForLabScope,
   partitionFindingsForLabScope,
   partitionRisksForLabScope,
+  assuranceLabProvenanceInputFromRow,
   controlLabProvenanceInputFromRow,
   riskLabProvenanceInputFromRow,
 } from '@/lib/ri/lab-api/risk-control-lab-provenance';
@@ -153,11 +155,11 @@ export async function GET(request: Request) {
     );
     const findingRows = scope === 'operational' ? findingPartition.operational : findingRowsRaw;
     const exFindings = findingPartition.excludedFromOperationalCount;
-    const { rows: assuranceRows, excludedSyntheticCount: exAssurance } = filterRowsByLabDataScope(
-      assuranceRowsRaw,
-      scope,
-      (r) => ({ title: r.review_type }),
+    const assurancePartition = partitionAssuranceReviewsForLabScope(assuranceRowsRaw, scope, (r) =>
+      assuranceLabProvenanceInputFromRow(r),
     );
+    const assuranceRows = scope === 'operational' ? assurancePartition.operational : assuranceRowsRaw;
+    const exAssurance = assurancePartition.excludedFromOperationalCount;
     const actionPartition = partitionActionsForLabScope(actionRowsRaw, scope, (r) =>
       actionLabProvenanceInputFromRow(r as { metadata?: Record<string, unknown> | null }),
     );
@@ -240,6 +242,15 @@ export async function GET(request: Request) {
       assuranceReviews: assuranceRows.map((r) =>
         mapAssuranceRowToLabView(r as Record<string, unknown>),
       ),
+      authorisedUatAssuranceReviews: assurancePartition.authorisedUat.map((r) =>
+        mapAssuranceRowToLabView(r as Record<string, unknown>),
+      ),
+      assuranceProvenance: {
+        operational: assurancePartition.operational.length,
+        uatAuthorised: assurancePartition.authorisedUat.length,
+        unverified: assurancePartition.unverified.length,
+        syntheticUat: assurancePartition.syntheticUat.length,
+      },
       actions: actionRows.map((r) => mapActionRowToLabView(r as Record<string, unknown>)),
       workflowEvents: workflowEvents.map(mapWorkflowEventToLabView),
       aiAnalysisRuns: aiRuns.map((r) => mapAiRunToLabView(r)),

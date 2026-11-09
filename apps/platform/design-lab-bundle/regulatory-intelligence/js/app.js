@@ -57,6 +57,7 @@ import {
   applyAskRiSessionRestore,
   notify,
   getViewPublications,
+  getConnectedAssurance,
 } from './store.js';
 import { LOCAL_AI_BRIDGE_ORIGIN } from './ai/ri-bridge-config.js';
 import { LANDSCAPE_SECTOR_NAV } from './landscape-seed.js';
@@ -127,6 +128,7 @@ import {
   fetchConnectedGovernancePending,
   createConnectedAssuranceReview,
 } from './platform/connected-work-writes.js';
+import { patchConnectedAssuranceReview } from './platform/connected-assurance-writes.js';
 import { refreshConnectedEntityWorkflowEvents } from './platform/connected-entity-audit.js';
 import { collectConnectedActionPatchFields } from './platform/connected-action-patch-fields.js';
 import {
@@ -157,6 +159,9 @@ import {
   recordFindingDetailLoadFailure,
   fetchConnectedFindingDetail,
   forceRefetchConnectedFindingDetail,
+  scheduleConnectedAssuranceDetailFetch,
+  recordAssuranceDetailLoadFailure,
+  forceRefetchConnectedAssuranceDetail,
   scheduleConnectedIngestionRunDetailFetch,
   initConnectedCatalogueState,
 } from './platform/connected-catalogue.js';
@@ -790,6 +795,27 @@ function scheduleConnectedDetailLoadsForRoute(route) {
     );
     runScheduledTask(scheduleConnectedFindingDetailFetch(getState(), findingId), undefined, (e) => {
       recordFindingDetailLoadFailure(getState(), findingId, e?.message || 'finding_detail_failed');
+    });
+    return;
+  }
+
+  const assuranceDetailMatch = route.match(/^\/assurance\/([^/]+)/);
+  if (assuranceDetailMatch) {
+    const assuranceId = assuranceDetailMatch[1];
+    runScheduledTask(
+      scheduleConnectedEntityWorkflowEventsFetch(getState(), 'assurance_review', assuranceId),
+      undefined,
+      (e) => {
+        recordEntityWorkflowEventsLoadFailure(
+          getState(),
+          'assurance_review',
+          assuranceId,
+          e?.message || 'entity_workflow_events_failed',
+        );
+      },
+    );
+    runScheduledTask(scheduleConnectedAssuranceDetailFetch(getState(), assuranceId), undefined, (e) => {
+      recordAssuranceDetailLoadFailure(getState(), assuranceId, e?.message || 'assurance_detail_failed');
     });
     return;
   }
@@ -1437,18 +1463,63 @@ function bindViewHandlers() {
     const result = panel?.querySelector('[data-connected-assurance-result]')?.value;
     const notes = panel?.querySelector('[data-connected-assurance-notes]')?.value?.trim();
     const controlId = panel?.querySelector('[data-connected-assurance-control-id]')?.value?.trim();
+    const creationMode = panel?.querySelector('[data-connected-assurance-create-mode]')?.value || 'uat_authorised';
     if (!reviewType) {
       showToast('Review type required');
+      return;
+    }
+    if (creationMode === 'uat_authorised' && !controlId) {
+      showToast('Authorised UAT assurance should link a control UUID');
       return;
     }
     const btn = panel.querySelector('[data-connected-create-assurance-review]');
     if (btn) btn.disabled = true;
     try {
-      await createConnectedAssuranceReview(getState(), { review_type: reviewType, result, notes, controlId });
+      const body = await createConnectedAssuranceReview(getState(), {
+        review_type: reviewType,
+        result,
+        notes,
+        creationMode,
+        ...(controlId ? { controlId } : {}),
+      });
       showToast('Assurance review created');
-      renderShell();
+      location.hash = `#/assurance/${body.assuranceReview.id}`;
     } catch (e) {
       showToast(e?.message || 'Create failed');
+      if (btn) btn.disabled = false;
+    }
+  });
+
+  document.querySelector('[data-connected-assurance-retry]')?.addEventListener('click', async (ev) => {
+    const assuranceId = ev.currentTarget?.dataset?.connectedAssuranceRetry;
+    if (!assuranceId) return;
+    try {
+      await forceRefetchConnectedAssuranceDetail(getState(), assuranceId);
+      renderShell();
+    } catch (e) {
+      showToast(e?.message || 'Retry failed');
+    }
+  });
+
+  document.querySelector('[data-connected-assurance-save-outcome]')?.addEventListener('click', async () => {
+    const panel = document.querySelector('[data-connected-assurance-outcome]');
+    const assuranceId = panel?.dataset?.connectedAssuranceOutcome;
+    if (!assuranceId) return;
+    const result = panel?.querySelector('[data-connected-assurance-outcome-result]')?.value;
+    const notes = panel?.querySelector('[data-connected-assurance-outcome-notes]')?.value?.trim();
+    const r = getConnectedAssurance(assuranceId);
+    const btn = panel?.querySelector('[data-connected-assurance-save-outcome]');
+    if (btn) btn.disabled = true;
+    try {
+      await patchConnectedAssuranceReview(getState(), assuranceId, {
+        result,
+        notes,
+        ...(r?.updatedAt ? { expectedUpdatedAt: r.updatedAt } : {}),
+      });
+      showToast('Assurance outcome saved');
+      renderShell();
+    } catch (e) {
+      showToast(e?.message || 'Save failed');
       if (btn) btn.disabled = false;
     }
   });

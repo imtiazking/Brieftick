@@ -63,7 +63,7 @@ import {
   isEntityWorkflowEventsLoading,
 } from './platform/connected-entity-audit.js';
 import { connectedWorkModeBanner } from './platform/connected-display.js';
-import { isConnectedFindingWritesEnabled } from './platform/connected-mode.js';
+import { isConnectedFindingWritesEnabled, isConnectedAssuranceWritesEnabled } from './platform/connected-mode.js';
 import {
   renderConnectedFindingCreatePanel,
   renderConnectedFindingRelationshipsPanel,
@@ -72,9 +72,11 @@ import {
 } from './platform/connected-finding-panels.js';
 import {
   getViewAssuranceReviews,
+  getViewAuthorisedUatAssuranceReviews,
   getViewFindings,
   getViewAuthorisedUatFindings,
   getFinding,
+  getConnectedAssurance,
   getConnectedGovernanceMetrics,
 } from './store.js';
 import {
@@ -86,6 +88,9 @@ import {
 import {
   renderConnectedAssuranceCreatePanel,
   renderConnectedAssuranceHistoryNote,
+  renderConnectedAssuranceRelationshipsPanel,
+  renderConnectedAssuranceOutcomePanel,
+  renderConnectedAssuranceWorkflowPanel,
 } from './platform/connected-assurance-panels.js';
 export function renderDashboardAssuranceSummary() {
   const s = getState();
@@ -172,27 +177,40 @@ export function viewAssuranceDashboard() {
   const s = getState();
   if (isConnectedBackendActive(s)) {
     const reviews = getViewAssuranceReviews();
+    const uatReviews = getViewAuthorisedUatAssuranceReviews();
     const findings = getViewFindings();
+    const writesAssurance = isConnectedAssuranceWritesEnabled(s);
     const reviewRows = reviews.map(
       (r) => `<tr><td><a href="#/assurance/${esc(r.id)}">${esc(r.id.slice(0, 8))}…</a></td>
         <td>${esc(r.reviewType)}</td><td>${connectedAssuranceResultBadge(r.result)}</td>
-        <td>${formatDate(r.reviewDate)}</td><td>${esc(r.reviewer || '—')}</td></tr>`,
+        <td>${formatDate(r.reviewDate)}</td><td>${esc(r.reviewer || '—')}</td>
+        <td>${badge(r.dataProvenance || 'operational')}</td></tr>`,
+    );
+    const uatReviewRows = uatReviews.map(
+      (r) => `<tr><td><a href="#/assurance/${esc(r.id)}">${esc(r.id.slice(0, 8))}…</a></td>
+        <td>${esc(r.reviewType)}</td><td>${connectedAssuranceResultBadge(r.result)}</td>
+        <td>${formatDate(r.reviewDate)}</td><td>${esc(r.reviewer || '—')}</td>
+        <td>${badge(r.dataProvenance || 'uat_authorised')}</td></tr>`,
     );
     const findingRows = findings.map(
       (f) => `<tr><td><a href="#/finding/${esc(f.id)}">${esc(f.id.slice(0, 8))}…</a></td>
         <td>${esc(f.title)}</td><td>${badge(f.severity)}</td><td>${badge(f.status)}</td><td>${formatDate(f.dueDate)}</td></tr>`,
     );
-    return `${pageHeader('Assurance', 'Tenant assurance reviews and findings · connected')}
+    const uatAssuranceSection = `<section class="ri-panel"><h2>Authorised UAT assurance register</h2>
+        ${uatReviewRows.length ? dataTable(['ID', 'Type', 'Result', 'Review date', 'Reviewer', 'Provenance'], uatReviewRows) : connectedRegisterEmpty('Authorised UAT assurance reviews')}
+      </section>`;
+    return `${pageHeader('Assurance', writesAssurance ? 'Tenant assurance · connected read/write' : 'Tenant assurance · connected read-only')}
       ${connectedCatalogueBanner(s)}
-      ${connectedReadOnlyGovernanceBanner(s)}
+      ${writesAssurance ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner(s)}
       ${renderConnectedAssuranceCreatePanel()}
       ${renderConnectedFindingCreatePanel()}
       ${renderConnectedAssuranceHistoryNote()}
-      <section class="ri-panel"><h2>Assurance reviews</h2>
-        ${reviewRows.length ? dataTable(['ID', 'Type', 'Result', 'Review date', 'Reviewer'], reviewRows) : connectedRegisterEmpty('assurance reviews')}
-        <p class="ri-muted">Pass/fail shown only from persisted <code>assurance_reviews.result</code> — not inferred from controls.</p>
+      <section class="ri-panel"><h2>Operational assurance register</h2>
+        ${reviewRows.length ? dataTable(['ID', 'Type', 'Result', 'Review date', 'Reviewer', 'Provenance'], reviewRows) : connectedRegisterEmpty('operational assurance reviews')}
+        <p class="ri-muted">Operational dashboard metrics exclude Authorised UAT reviews (metadata partition).</p>
       </section>
-      <section class="ri-panel"><h2>Findings</h2>
+      ${uatAssuranceSection}
+      <section class="ri-panel"><h2>Operational findings</h2>
         ${findingRows.length ? dataTable(['ID', 'Title', 'Severity', 'Status', 'Due'], findingRows) : connectedRegisterEmpty('findings')}
       </section>
       <p class="ri-muted">Board packs, management attestations and demo assurance opinions are unavailable in connected mode (Design Lab demonstration only).</p>`;
@@ -266,14 +284,51 @@ export function viewAssuranceDashboard() {
 export function viewAssuranceReview(id) {
   const s = getState();
   if (isConnectedBackendActive(s)) {
-    const r = getViewAssuranceReviews().find((x) => x.id === id);
-    if (!r) return notFoundState('Assurance Review', id);
-    return `${pageHeader(r.reviewType || 'Assurance review', r.id.slice(0, 8))}
-      ${connectedCatalogueBanner(s)}
-      ${connectedReadOnlyGovernanceBanner()}
-      <p>${connectedAssuranceResultBadge(r.result)} · ${badge(r.status)}</p>
-      <dl class="ri-dl"><dt>Reviewer</dt><dd>${esc(r.reviewer || '—')}</dd><dt>Review date</dt><dd>${formatDate(r.reviewDate)}</dt></dl>
-      <p class="ri-muted">Demo assurance methodology, opinions and control-test linkages are not shown in Connected mode.</p>`;
+    const cat = getConnectedCatalogue(s);
+    const detail = cat.assuranceDetailsById?.[id];
+    const fromList =
+      cat.assuranceReviews?.find((x) => x.id === id) ||
+      cat.authorisedUatAssuranceReviews?.find((x) => x.id === id);
+    if (!fromList && !detail) {
+      if (isConnectedCatalogueReady(s)) {
+        return `${connectedCatalogueBanner(s)}
+          ${connectedReadOnlyGovernanceBanner(s)}
+          ${notFoundState('Assurance review', id)}`;
+      }
+      return `${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyGovernanceBanner(s)}
+        <p class="ri-muted" data-connected-assurance-loading="true">Loading tenant assurance review from staging…</p>`;
+    }
+    const r = getConnectedAssurance(id);
+    if (!r) {
+      return `${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyGovernanceBanner(s)}
+        <p class="ri-muted" data-connected-assurance-loading="true">Loading tenant assurance review from staging…</p>`;
+    }
+    const detailInflight = Boolean(cat._detailInflight?.[`assuranceDetailsById:${id}`]);
+    const detailError = detail?._detailLoadError;
+    const linkPanelState = {
+      loading: detailInflight && !detailError,
+      error: detailError || null,
+    };
+    const auditLoading = isEntityWorkflowEventsLoading(s, 'assurance_review', id);
+    const auditError = getEntityWorkflowEventsLoadError(s, 'assurance_review', id);
+    const writes = isConnectedAssuranceWritesEnabled(s);
+    return `${connectedCatalogueBanner(s)}
+      ${writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner(s)}
+      ${pageHeader(r.reviewType || 'Assurance review', r.id.slice(0, 8))}
+      <p><a href="#/assurance">← Assurance dashboard</a></p>
+      <p>${connectedAssuranceResultBadge(r.result)} · ${badge(r.dataProvenance || r.labClassification || '—')}</p>
+      <dl class="ri-dl">
+        <dt>Provenance</dt><dd>${badge(r.dataProvenance || '—')}</dd>
+        <dt>Lab class</dt><dd>${esc(r.labClassificationLabel || '—')}</dt>
+        <dt>Reviewer</dt><dd>${esc(r.reviewer || '—')}</dd>
+        <dt>Review date</dt><dd>${formatDate(r.reviewDate)}</dt>
+        <dt>Notes</dt><dd>${esc(r.notes || '—')}</dd>
+      </dl>
+      ${renderConnectedAssuranceRelationshipsPanel(id, r, linkPanelState)}
+      ${renderConnectedAssuranceOutcomePanel(id, r)}
+      ${renderConnectedAssuranceWorkflowPanel(id, { loading: auditLoading, error: auditError })}`;
   }
   const r = getAssuranceReview(s, id);
   if (!r) return notFoundState('Assurance Review', id);

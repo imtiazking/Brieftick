@@ -6,6 +6,8 @@ import { workflowMetadataForProvenance, type RecordProvenanceKind } from '@/lib/
 import type { ChangeLabClass } from '@/lib/ri/lab-api/change-lab-provenance';
 import { classifyObligationForLab, obligationLabProvenanceInputFromRow } from '@/lib/ri/lab-api/obligation-lab-provenance';
 import {
+  assuranceLabProvenanceInputFromRow,
+  classifyAssuranceForLab,
   classifyControlForLab,
   classifyRiskForLab,
   controlLabProvenanceInputFromRow,
@@ -552,19 +554,29 @@ export async function linkAssuranceControl(
     { table: 'assurance_reviews', id: assuranceId },
     { table: 'controls', id: controlId },
   );
-  await insertLink(
-    supabase,
-    'assurance_review_control_links',
-    { organisation_id: organisationId, assurance_review_id: a, control_id: b },
-    {
-      organisationId,
-      entityType: 'assurance_review_control_link',
-      entityId: a,
-      eventType: 'ASSURANCE_COMPLETED',
-      userId,
-      metadata: { control_id: b },
-    },
-  );
+  const [{ data: arRow }, { data: ctrlRow }] = await Promise.all([
+    supabase.from('assurance_reviews').select('id, metadata').eq('id', a).eq('organisation_id', organisationId).single(),
+    supabase.from('controls').select('id, metadata').eq('id', b).eq('organisation_id', organisationId).single(),
+  ]);
+  if (!arRow || !ctrlRow) throw new Error('not_found');
+  const arClass = classifyAssuranceForLab(assuranceLabProvenanceInputFromRow(arRow));
+  const ctrlClass = classifyControlForLab(controlLabProvenanceInputFromRow(ctrlRow));
+  assertLabClassesCompatibleForLink(arClass, ctrlClass);
+
+  const inserted = await insertLinkRow(supabase, 'assurance_review_control_links', {
+    organisation_id: organisationId,
+    assurance_review_id: a,
+    control_id: b,
+  });
+  if (!inserted) return;
+  await recordDualEntityLinkEvents(supabase, {
+    organisationId,
+    userId,
+    eventType: 'ASSURANCE_COMPLETED',
+    left: { entityType: 'assurance_review', entityId: a, labClass: arClass },
+    right: { entityType: 'control', entityId: b, labClass: ctrlClass },
+    baseExtra: { assurance_review_id: a, control_id: b },
+  });
 }
 
 export async function linkAssuranceObligation(

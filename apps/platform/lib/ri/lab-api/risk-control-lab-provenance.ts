@@ -154,6 +154,88 @@ export function partitionFindingsForLabScope<T>(
   return partitionRisksForLabScope(rows, scope, toInput);
 }
 
+export function classifyAssuranceForLab(input: RiskControlLabProvenanceInput): ChangeLabClass {
+  return classifyRiskForLab(input);
+}
+
+export function assuranceLabProvenanceInputFromRow(row: {
+  metadata?: Record<string, unknown> | null;
+}): RiskControlLabProvenanceInput {
+  return { metadata: row.metadata ?? null, parentObligation: null };
+}
+
+export function partitionAssuranceReviewsForLabScope<T>(
+  rows: T[],
+  scope: LabDataScope,
+  toInput: (row: T) => RiskControlLabProvenanceInput,
+): RiskControlLabPartition<T> {
+  const operational: T[] = [];
+  const authorisedUat: T[] = [];
+  const unverified: T[] = [];
+  const syntheticUat: T[] = [];
+  for (const row of rows) {
+    const cls = classifyAssuranceForLab(toInput(row));
+    if (cls === 'operational') operational.push(row);
+    else if (cls === 'uat_authorised') authorisedUat.push(row);
+    else if (cls === 'synthetic_uat') syntheticUat.push(row);
+    else unverified.push(row);
+  }
+  const excludedFromOperationalCount =
+    scope === 'operational' ? authorisedUat.length + unverified.length + syntheticUat.length : 0;
+  return { operational, authorisedUat, unverified, syntheticUat, excludedFromOperationalCount };
+}
+
+export async function resolveAssuranceCreateMetadata(params: {
+  supabase: import('@supabase/supabase-js').SupabaseClient;
+  organisationId: string;
+  actorUserId: string;
+  role: PlatformRole;
+  creationMode: ChangeCreateMode;
+  controlId: string | null;
+}): Promise<{ metadata: Record<string, unknown>; labClass: ChangeLabClass; recordProvenance: RecordProvenanceKind }> {
+  const recordedAt = new Date().toISOString();
+  if (params.controlId) {
+    const { data: ctrl, error } = await params.supabase
+      .from('controls')
+      .select('id, metadata')
+      .eq('id', params.controlId)
+      .eq('organisation_id', params.organisationId)
+      .single();
+    if (error || !ctrl) throw new Error('not_found');
+    const ctrlClass = classifyControlForLab(controlLabProvenanceInputFromRow(ctrl));
+    const ctrlProv = recordKindForRiskControlLabClass(ctrlClass);
+    if (ctrlClass !== 'operational' && ctrlClass !== 'uat_authorised') {
+      throw new Error('control_provenance_unverified');
+    }
+    assertChangeCreateModeAllowed(params.role, params.creationMode);
+    const modeProv = recordProvenanceKindForCreateMode(params.creationMode);
+    if (modeProv !== ctrlProv) {
+      throw new Error('creation_mode_parent_mismatch');
+    }
+    const metadata: Record<string, unknown> = {
+      [RECORD_PROVENANCE_METADATA_KEY]: ctrlProv,
+      [LAB_PROVENANCE_LOCKED_KEY]: true,
+      [LAB_PROVENANCE_RECORDED_AT_KEY]: recordedAt,
+      [LAB_PROVENANCE_RECORDED_BY_KEY]: params.actorUserId,
+      parentControlId: ctrl.id,
+      ...(ctrlClass === 'operational' ? { [LAB_CREATION_MODE_KEY]: 'operational' } : {}),
+      ...(ctrlClass === 'uat_authorised' ? { [LAB_CREATION_MODE_KEY]: 'uat_authorised' } : {}),
+    };
+    return { metadata, labClass: ctrlClass, recordProvenance: ctrlProv };
+  }
+  assertChangeCreateModeAllowed(params.role, params.creationMode);
+  const recordProvenance = recordProvenanceKindForCreateMode(params.creationMode);
+  const labClass: ChangeLabClass = params.creationMode === 'operational' ? 'operational' : 'uat_authorised';
+  const metadata: Record<string, unknown> = {
+    [RECORD_PROVENANCE_METADATA_KEY]: recordProvenance,
+    [LAB_PROVENANCE_LOCKED_KEY]: true,
+    [LAB_PROVENANCE_RECORDED_AT_KEY]: recordedAt,
+    [LAB_PROVENANCE_RECORDED_BY_KEY]: params.actorUserId,
+    [LAB_CREATION_MODE_KEY]: params.creationMode,
+  };
+  return { metadata, labClass, recordProvenance };
+}
+
 export function recordKindForRiskControlLabClass(cls: ChangeLabClass): RecordProvenanceKind {
   return recordKindForChangeLabClass(cls);
 }

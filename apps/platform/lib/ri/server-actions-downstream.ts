@@ -324,11 +324,17 @@ export async function updateFindingAction(formData: FormData) {
 
 export async function createAssuranceAction(formData: FormData) {
   const ctx = await requireRiContext('assurance:write');
-  const row = await createAssuranceReview(ctx.supabase, ctx.organisationId, ctx.userId, {
-    review_type: formData.get('review_type'),
-    result: formData.get('result'),
-    notes: formData.get('notes'),
-    next_review_date: formData.get('next_review_date'),
+  const row = await createAssuranceReview(ctx.supabase, {
+    organisationId: ctx.organisationId,
+    userId: ctx.userId,
+    role: ctx.role,
+    fields: {
+      review_type: formData.get('review_type'),
+      result: formData.get('result'),
+      notes: formData.get('notes'),
+      next_review_date: formData.get('next_review_date'),
+    },
+    defaultCreationMode: 'operational',
   });
   const controlId = formData.get('control_id') as string;
   const obligationId = formData.get('obligation_id') as string;

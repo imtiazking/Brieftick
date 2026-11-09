@@ -17,8 +17,10 @@ import {
   recordKindForImpactLabClass,
 } from '@/lib/ri/lab-api/impact-lab-provenance';
 import {
+  partitionAssuranceReviewsForLabScope,
   partitionControlsForLabScope,
   partitionRisksForLabScope,
+  assuranceLabProvenanceInputFromRow,
   riskLabProvenanceInputFromRow,
   controlLabProvenanceInputFromRow,
 } from '@/lib/ri/lab-api/risk-control-lab-provenance';
@@ -103,7 +105,7 @@ export async function getDashboardSummary(
       .eq('organisation_id', organisationId),
     supabase
       .from('assurance_reviews')
-      .select('id, result, next_review_date, review_type')
+      .select('id, result, next_review_date, review_type, metadata')
       .eq('organisation_id', organisationId),
     supabase
       .from('impact_assessments')
@@ -169,9 +171,11 @@ export async function getDashboardSummary(
     controlRows = partitionControlsForLabScope(controlRows, 'operational', (c) =>
       controlLabProvenanceInputFromRow(c),
     ).operational;
-    assuranceRows = assuranceRows.filter((a) =>
-      isOperationalDashboardProvenance(resolveRecordProvenance({ title: a.review_type })),
-    );
+    assuranceRows = partitionAssuranceReviewsForLabScope(
+      assuranceRows,
+      'operational',
+      (a) => assuranceLabProvenanceInputFromRow(a),
+    ).operational;
   }
 
   const activeObl = oblRows.filter((o) => ACTIVE_OBLIGATION.includes(o.status as never));

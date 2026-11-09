@@ -33,8 +33,11 @@ const EMPTY = {
   authorisedUatActions: [],
   authorisedUatEvidence: [],
   authorisedUatFindings: [],
+  authorisedUatAssuranceReviews: [],
   findingDetailsById: {},
+  assuranceDetailsById: {},
   findingProvenance: null,
+  assuranceProvenance: null,
   evidenceProvenance: null,
   actionProvenance: null,
   impactProvenance: null,
@@ -186,6 +189,30 @@ export function mergeFindingCatalogueRow(cat, finding) {
   else {
     cat.findings = cat.findings || [];
     cat.findings.unshift({ ...finding, _connected: true });
+  }
+}
+
+/** Merge assurance review into operational vs authorised UAT registers (BUS-UAT-016). */
+export function mergeAssuranceCatalogueRow(cat, review) {
+  if (!review?.id) return;
+  if (isAuthorisedUatLabRow(review)) {
+    cat.authorisedUatAssuranceReviews = cat.authorisedUatAssuranceReviews || [];
+    const uatIdx = cat.authorisedUatAssuranceReviews.findIndex((x) => x.id === review.id);
+    if (uatIdx >= 0) {
+      cat.authorisedUatAssuranceReviews[uatIdx] = {
+        ...cat.authorisedUatAssuranceReviews[uatIdx],
+        ...review,
+        _connected: true,
+      };
+    } else cat.authorisedUatAssuranceReviews.unshift({ ...review, _connected: true });
+    return;
+  }
+  if (!isOperationalLabRow(review)) return;
+  const idx = (cat.assuranceReviews || []).findIndex((r) => r.id === review.id);
+  if (idx >= 0) cat.assuranceReviews[idx] = { ...cat.assuranceReviews[idx], ...review, _connected: true };
+  else {
+    cat.assuranceReviews = cat.assuranceReviews || [];
+    cat.assuranceReviews.unshift({ ...review, _connected: true });
   }
 }
 
@@ -438,7 +465,11 @@ async function loadConnectedCatalogueInner(state, cat) {
     cat.authorisedUatActions = Array.isArray(govBody.authorisedUatActions) ? govBody.authorisedUatActions : [];
     cat.authorisedUatEvidence = Array.isArray(govBody.authorisedUatEvidence) ? govBody.authorisedUatEvidence : [];
     cat.authorisedUatFindings = Array.isArray(govBody.authorisedUatFindings) ? govBody.authorisedUatFindings : [];
+    cat.authorisedUatAssuranceReviews = Array.isArray(govBody.authorisedUatAssuranceReviews)
+      ? govBody.authorisedUatAssuranceReviews
+      : [];
     cat.findingProvenance = govBody.findingProvenance ?? null;
+    cat.assuranceProvenance = govBody.assuranceProvenance ?? null;
     cat.evidenceProvenance = govBody.evidenceProvenance ?? null;
     cat.actionProvenance = govBody.actionProvenance ?? null;
     cat.workflowEvents = Array.isArray(govBody.workflowEvents) ? govBody.workflowEvents : [];
@@ -621,7 +652,10 @@ function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
   const cat = initConnectedCatalogueState(state);
   const cached = cat[detailsKey]?.[id];
   if (cached) {
-    const needsHydration = detailsKey === 'evidenceDetailsById' || detailsKey === 'findingDetailsById';
+    const needsHydration =
+      detailsKey === 'evidenceDetailsById' ||
+      detailsKey === 'findingDetailsById' ||
+      detailsKey === 'assuranceDetailsById';
     let hydrated = !needsHydration || cached._detailHydrated === true;
     if (needsHydration && detailsKey === 'findingDetailsById' && cached._detailHydrated === true) {
       if (!findingDetailHasLineage(cached)) hydrated = false;
@@ -968,6 +1002,107 @@ export function scheduleConnectedFindingDetailFetch(state, findingId) {
 }
 
 /** Clear cached detail and refetch (retry after load error). */
+export function recordAssuranceDetailLoadFailure(state, assuranceId, message) {
+  const cat = initConnectedCatalogueState(state);
+  cat.assuranceDetailsById = cat.assuranceDetailsById || {};
+  const fromList =
+    cat.assuranceReviews?.find((r) => r.id === assuranceId) ||
+    cat.authorisedUatAssuranceReviews?.find((r) => r.id === assuranceId);
+  cat.assuranceDetailsById[assuranceId] = {
+    ...(fromList || {}),
+    ...(cat.assuranceDetailsById[assuranceId] || {}),
+    id: assuranceId,
+    _detailHydrated: true,
+    _detailLoadError: message || 'assurance_detail_failed',
+    _connected: true,
+  };
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+}
+
+export async function fetchConnectedAssuranceDetail(state, assuranceId) {
+  const cat = initConnectedCatalogueState(state);
+  const base = apiBase(state).replace(/\/$/, '');
+  const res = await fetch(`${base}/assurance-reviews/${encodeURIComponent(assuranceId)}`, {
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json' },
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) {
+    const err = new Error(body.error || body.detail || 'assurance_detail_failed');
+    err.status = res.status;
+    throw err;
+  }
+  const auditKey = `assurance_review:${assuranceId}`;
+  if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
+  if (cat.entityWorkflowEventsLoadStateByKey) delete cat.entityWorkflowEventsLoadStateByKey[auditKey];
+  if (cat.entityWorkflowEventsLoadErrorByKey) delete cat.entityWorkflowEventsLoadErrorByKey[auditKey];
+
+  if (body.assuranceReview) {
+    const rawMeta = body.detail?.metadata ?? body.assuranceReview.metadata ?? null;
+    let meta = rawMeta;
+    if (typeof rawMeta === 'string') {
+      try {
+        meta = JSON.parse(rawMeta);
+      } catch {
+        meta = null;
+      }
+    }
+    const metaControl =
+      typeof meta?.parentControlId === 'string' ? meta.parentControlId : body.assuranceReview.parentControlId ?? null;
+    let linkedControls = (body.linkedControls ?? body.assuranceReview.linkedControls ?? []).filter((c) => c?.id);
+    if (!linkedControls.length && metaControl) {
+      const controls = [...(cat.controls || []), ...(cat.authorisedUatControls || [])];
+      const ctrl = controls.find((c) => c.id === metaControl);
+      linkedControls = [{ id: metaControl, name: ctrl?.name || ctrl?.title || '' }];
+    }
+    const merged = {
+      ...body.assuranceReview,
+      notes: body.assuranceReview.notes ?? body.detail?.notes ?? null,
+      linkedControls,
+      controlIds: body.assuranceReview.controlIds?.length
+        ? body.assuranceReview.controlIds
+        : linkedControls.map((c) => c.id),
+      parentControlId: metaControl ?? body.assuranceReview.parentControlId ?? null,
+      _detailHydrated: true,
+      _detailLoadError: null,
+      _connected: true,
+    };
+    cat.assuranceDetailsById[assuranceId] = merged;
+    mergeAssuranceCatalogueRow(cat, merged);
+  }
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+  return body.assuranceReview;
+}
+
+export function scheduleConnectedAssuranceDetailFetch(state, assuranceId) {
+  const cat = initConnectedCatalogueState(state);
+  cat.assuranceDetailsById = cat.assuranceDetailsById || {};
+  const fromList =
+    cat.assuranceReviews?.find((r) => r.id === assuranceId) ||
+    cat.authorisedUatAssuranceReviews?.find((r) => r.id === assuranceId);
+  const token = `assuranceDetailsById:${assuranceId}`;
+  const inflight = coerceInflightPromise(cat._detailInflight?.[token]);
+  if (inflight) return inflight;
+  const cached = cat.assuranceDetailsById?.[assuranceId];
+  if (fromList && cached?._detailHydrated === true && !cached._detailLoadError) {
+    return Promise.resolve(cached);
+  }
+  return scheduleConnectedDetailFetch(state, 'assuranceDetailsById', assuranceId, fetchConnectedAssuranceDetail);
+}
+
+export function forceRefetchConnectedAssuranceDetail(state, assuranceId) {
+  const cat = initConnectedCatalogueState(state);
+  if (cat.assuranceDetailsById) delete cat.assuranceDetailsById[assuranceId];
+  if (cat._detailInflight) delete cat._detailInflight[`assuranceDetailsById:${assuranceId}`];
+  const auditKey = `assurance_review:${assuranceId}`;
+  if (cat.entityWorkflowEventsByKey) delete cat.entityWorkflowEventsByKey[auditKey];
+  if (cat.entityWorkflowEventsLoadStateByKey) delete cat.entityWorkflowEventsLoadStateByKey[auditKey];
+  if (cat.entityWorkflowEventsLoadErrorByKey) delete cat.entityWorkflowEventsLoadErrorByKey[auditKey];
+  return scheduleConnectedAssuranceDetailFetch(state, assuranceId);
+}
+
 export function forceRefetchConnectedFindingDetail(state, findingId) {
   const cat = initConnectedCatalogueState(state);
   if (cat.findingDetailsById) delete cat.findingDetailsById[findingId];

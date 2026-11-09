@@ -393,6 +393,45 @@ export function getViewAssuranceReviews() {
   return scenarioFilter(state.assuranceReviews || []);
 }
 
+export function getViewAuthorisedUatAssuranceReviews() {
+  if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
+    return getConnectedCatalogue(state).authorisedUatAssuranceReviews || [];
+  }
+  return [];
+}
+
+export function getConnectedAssurance(id) {
+  if (isConnectedBackendActive(state)) {
+    const cat = getConnectedCatalogue(state);
+    const fromList =
+      cat.assuranceReviews?.find((r) => r.id === id) ||
+      cat.authorisedUatAssuranceReviews?.find((r) => r.id === id);
+    const detail = cat.assuranceDetailsById?.[id];
+    if (detail || fromList) {
+      const row = { ...(fromList || {}), ...(detail || {}), _connected: true };
+      return {
+        ...row,
+        id: row.id,
+        reviewType: row.reviewType,
+        result: row.result,
+        notes: row.notes,
+        reviewDate: row.reviewDate,
+        reviewer: row.reviewer,
+        reviewerId: row.reviewerId,
+        updatedAt: row.updatedAt,
+        controlIds: row.controlIds,
+        linkedControls: row.linkedControls,
+        parentControlId: row.parentControlId,
+        dataProvenance: row.dataProvenance,
+        labClassification: row.labClassification,
+        labClassificationLabel: row.labClassificationLabel,
+        _connected: true,
+      };
+    }
+  }
+  return null;
+}
+
 export function getViewActions() {
   if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
     return getConnectedCatalogue(state).actions || [];

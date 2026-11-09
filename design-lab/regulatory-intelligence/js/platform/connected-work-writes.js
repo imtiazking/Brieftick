@@ -604,24 +604,4 @@ export async function downloadConnectedEvidenceVersion(state, evidenceId, versio
   });
 }
 
-export async function createConnectedAssuranceReview(state, payload) {
-  const base = apiBase(state);
-  const res = await fetch(`${base}/assurance-reviews`, {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      review_type: payload.review_type,
-      result: payload.result,
-      notes: payload.notes || null,
-    }),
-  });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'assurance_create_failed');
-  if (payload.controlId && body.assuranceReview?.id) {
-    await postConnectedLink(state, 'assurance_control', body.assuranceReview.id, payload.controlId);
-  }
-  await refreshConnectedWorkflowEvents(state);
-  notify();
-  return body.assuranceReview;
-}
+export { createConnectedAssuranceReview } from './connected-assurance-writes.js';
