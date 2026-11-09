@@ -4,6 +4,7 @@ import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { parseOptionalText, parseRequiredText, parseUuid } from '@/lib/ri/validation';
 import { LAB_PROVENANCE_LOCKED_KEY } from '@/lib/ri/lab-api/change-create-provenance';
 import { parseCreationModeField, resolveEvidenceCreateMetadata } from '@/lib/ri/lab-api/risk-control-lab-provenance';
+import { linkEvidenceControl } from '@/lib/ri/links';
 
 const LOCKED_METADATA_KEYS = new Set([
   'recordProvenance',
@@ -69,6 +70,9 @@ export async function createEvidence(
     .select()
     .single();
   if (error) throw new Error(error.message);
+  if (controlId) {
+    await linkEvidenceControl(supabase, params.organisationId, data.id, controlId, params.userId);
+  }
   return data;
 }
 

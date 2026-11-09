@@ -14,6 +14,7 @@ import {
   mergeObligationCatalogueRow,
   mergeRiskCatalogueRow,
   mergeActionCatalogueRow,
+  mergeEvidenceCatalogueRow,
 } from './connected-catalogue.js';
 import {
   refreshConnectedEntityWorkflowEvents,
@@ -32,17 +33,7 @@ function mergeObligation(cat, obligation) {
 }
 
 function mergeEvidence(cat, evidence) {
-  if (!evidence?.id) return;
-  const merged = { ...evidence, _connected: true };
-  cat.evidenceDetailsById = cat.evidenceDetailsById || {};
-  cat.evidenceDetailsById[evidence.id] = { ...cat.evidenceDetailsById[evidence.id], ...merged };
-  const idx = (cat.evidence || []).findIndex((e) => e.id === evidence.id);
-  if (idx >= 0) cat.evidence[idx] = { ...cat.evidence[idx], ...merged };
-  else {
-    cat.evidence = cat.evidence || [];
-    cat.evidence.unshift(merged);
-  }
-  cat.tenantWorkCounts = { ...(cat.tenantWorkCounts || {}), evidence: cat.evidence.length };
+  mergeEvidenceCatalogueRow(cat, evidence);
 }
 
 async function refreshConnectedWorkflowEvents(state) {
@@ -409,7 +400,14 @@ export async function createConnectedEvidence(state, payload) {
   const body = await res.json().catch(() => ({}));
   if (!res.ok || !body.ok) throw new Error(body.error || 'evidence_create_failed');
   const cat = initConnectedCatalogueState(state);
-  if (body.evidence) mergeEvidence(cat, body.evidence);
+  if (body.evidence) {
+    mergeEvidence(cat, body.evidence);
+    try {
+      await refreshConnectedEntityWorkflowEvents(state, 'evidence_item', body.evidence.id);
+    } catch (auditErr) {
+      console.warn('[ri-lab] evidence entity audit refresh failed after create', auditErr?.message || auditErr);
+    }
+  }
   await refreshConnectedWorkflowEvents(state);
   savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();

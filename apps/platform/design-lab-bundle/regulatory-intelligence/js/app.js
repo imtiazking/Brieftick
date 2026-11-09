@@ -764,7 +764,11 @@ function bindViewHandlers() {
 
   const evidenceDetailMatch = route.match(/^\/evidence\/([^/]+)/);
   if (evidenceDetailMatch && isConnectedBackendActive()) {
-    scheduleConnectedEvidenceDetailFetch(getState(), evidenceDetailMatch[1])
+    const evidenceId = evidenceDetailMatch[1];
+    scheduleConnectedEntityWorkflowEventsFetch(getState(), 'evidence_item', evidenceId)
+      ?.then(() => renderShell())
+      .catch(() => {});
+    scheduleConnectedEvidenceDetailFetch(getState(), evidenceId)
       ?.then(() => renderShell())
       .catch(() => {});
   }
@@ -1232,11 +1236,20 @@ function bindViewHandlers() {
     }
     btnEv.target.disabled = true;
     try {
+      const creationMode = panel?.querySelector('[data-connected-evidence-create-mode]')?.value || 'uat_authorised';
+      const controlId = panel?.querySelector('[data-connected-evidence-create-control]')?.value?.trim() || '';
+      if (creationMode === 'uat_authorised' && !controlId) {
+        showToast('Authorised UAT evidence requires a control UUID');
+        btnEv.target.disabled = false;
+        return;
+      }
       const ev = await createConnectedEvidence(getState(), {
         title,
         evidenceType,
         description: panel?.querySelector('[data-connected-evidence-description]')?.value?.trim() || null,
-        sourceHash: panel?.querySelector('[data-connected-evidence-hash]')?.value?.trim() || null,
+        sourceHash: panel?.querySelector('[data-connected-evidence-hash]')?.value?.trim() || undefined,
+        creationMode,
+        controlId: controlId || undefined,
       });
       showToast('Evidence registered');
       if (ev?.id) location.hash = `#/evidence/${ev.id}`;
@@ -2374,7 +2387,7 @@ function initConnectedLinkDelegation() {
     const leftId = btn.getAttribute('data-left-id');
     const panel = btn.closest('[data-connected-link-panel]');
     const targetSel =
-      linkType === 'obligation_control' || linkType === 'risk_control'
+      linkType === 'obligation_control' || linkType === 'risk_control' || linkType === 'evidence_control'
         ? '[data-connected-link-control-target]'
         : '[data-connected-link-target]';
     const targetInput = panel?.querySelector(targetSel);
@@ -2392,7 +2405,9 @@ function initConnectedLinkDelegation() {
           ? 'Risk linked'
           : linkType === 'risk_control'
             ? 'Control linked to risk'
-            : 'Control linked';
+            : linkType === 'evidence_control'
+              ? 'Control linked to evidence'
+              : 'Control linked';
       showToast(linkToast);
       if (targetInput) targetInput.value = '';
       renderShell();

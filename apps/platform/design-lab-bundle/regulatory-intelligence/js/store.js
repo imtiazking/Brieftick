@@ -314,6 +314,13 @@ export function getViewPolicies() {
   return scenarioFilter(state.policies);
 }
 
+export function getViewAuthorisedUatEvidence() {
+  if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
+    return getConnectedCatalogue(state).authorisedUatEvidence || [];
+  }
+  return [];
+}
+
 export function getViewEvidence() {
   if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
     return getConnectedCatalogue(state).evidence || [];
@@ -944,10 +951,24 @@ export function getPolicy(id) {
 export function getEvidence(id) {
   if (isConnectedBackendActive(state)) {
     const cat = getConnectedCatalogue(state);
-    const fromList = cat.evidence?.find((e) => e.id === id);
+    const fromList =
+      cat.evidence?.find((e) => e.id === id) || cat.authorisedUatEvidence?.find((e) => e.id === id);
     const detail = cat.evidenceDetailsById?.[id];
     if (detail || fromList) {
-      return { ...fromList, ...detail, _connected: true };
+      const row = { ...fromList, ...detail, _connected: true };
+      return {
+        ...row,
+        id: row.id,
+        title: row.title,
+        evidenceType: row.evidenceType,
+        sourceHash: row.sourceHash,
+        createdAt: row.createdAt,
+        controlIds: row.controlIds,
+        dataProvenance: row.dataProvenance,
+        labClassification: row.labClassification,
+        labClassificationLabel: row.labClassificationLabel,
+        _connected: true,
+      };
     }
   }
   return state.evidence.find((e) => e.id === id);

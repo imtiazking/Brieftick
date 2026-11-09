@@ -26,6 +26,7 @@ import {
   getViewAuthorisedUatControls,
   getViewPolicies,
   getViewEvidence,
+  getViewAuthorisedUatEvidence,
   getViewActions,
   getViewAuthorisedUatActions,
   getViewFindings,
@@ -84,6 +85,7 @@ import {
 import {
   renderConnectedEvidenceCreatePanel,
   renderConnectedEvidenceUploadPanel,
+  renderConnectedEvidenceLinkPanel,
   renderConnectedEvidenceWorkflowPanel,
 } from './platform/connected-evidence-panels.js';
 import {
@@ -1659,10 +1661,24 @@ function viewEvidenceList() {
   const connected = isConnectedBackendActive(s);
   const writes = connected && isConnectedEvidenceWritesEnabled(s);
   const list = connected ? getViewEvidence() : scenarioFilter(s.evidence);
+  const uatList = connected ? getViewAuthorisedUatEvidence() : [];
   const rows = list.map(
     (e) => `<tr><td><a href="#/evidence/${e.id}">${esc(e.externalKey || e.id.slice(0, 8))}</a></td><td>${esc(e.title || e.fileName || '—')}</td>
-      <td>${esc(e.evidenceType || '—')}</td><td>${formatDate(e.createdAt || e.uploadedDate)}</td><td>${connected ? '—' : badge(e.approvalStatus)}</td></tr>`,
+      <td>${esc(e.evidenceType || '—')}</td><td>${formatDate(e.createdAt || e.uploadedDate)}</td><td>${connected ? badge(e.dataProvenance || 'operational') : badge(e.approvalStatus)}</td></tr>`,
   );
+  const uatRows = uatList.map(
+    (e) => `<tr><td><a href="#/evidence/${e.id}">${esc(e.id.slice(0, 8))}</a></td><td>${esc(e.title || '—')}</td>
+      <td>${esc(e.evidenceType || '—')}</td><td>${badge(e.dataProvenance || 'uat_authorised')}</td><td>${formatDate(e.createdAt)}</td></tr>`,
+  );
+  const uatSection = connected
+    ? `<section class="ri-panel"><h2>Authorised UAT evidence</h2>
+        <p class="ri-muted">Excluded from operational governance metrics when <code>dataScope=operational</code>.</p>
+        ${
+          uatRows.length
+            ? dataTable(['ID', 'Title', 'Type', 'Provenance', 'Recorded'], uatRows)
+            : '<p class="ri-muted">No authorised UAT evidence in this tenant yet.</p>'
+        }</section>`
+    : '';
   const subtitle = connected
     ? writes
       ? 'Tenant evidence · connected read/write when enabled'
@@ -1672,7 +1688,10 @@ function viewEvidenceList() {
     ${connected ? connectedCatalogueBanner(s) : ''}
     ${connected ? (writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner()) : ''}
     ${writes ? renderConnectedEvidenceCreatePanel() : ''}
-    ${rows.length ? dataTable(['ID', 'Title', 'Type', 'Date', 'Status'], rows) : connected ? connectedRegisterEmpty('evidence items') : dataTable(['ID', 'File', 'Type', 'Date', 'Status'], rows)}`;
+    <section class="ri-panel"><h2>Operational evidence register</h2>
+    ${rows.length ? dataTable(['ID', 'Title', 'Type', 'Date', 'Provenance'], rows) : connected ? connectedRegisterEmpty('evidence items') : dataTable(['ID', 'File', 'Type', 'Date', 'Status'], rows)}
+    </section>
+    ${uatSection}`;
 }
 
 function viewEvidenceDetail(id) {
@@ -1686,14 +1705,18 @@ function viewEvidenceDetail(id) {
   }
   if (!e) return notFound('Evidence', id);
   if (connectedActive && e._connected) {
+    const writes = isConnectedEvidenceWritesEnabled(s);
     return `${connectedCatalogueBanner(s)}
-      ${connectedReadOnlyGovernanceBanner(s)}
+      ${writes ? connectedWorkModeBanner(s) : connectedReadOnlyGovernanceBanner(s)}
       ${pageHeader(e.title || e.id.slice(0, 8), e.id.slice(0, 8))}
       <dl class="ri-dl"><dt>Type</dt><dd>${esc(e.evidenceType)}</dd>
+        <dt>Provenance</dt><dd>${badge(e.dataProvenance || e.labClassification || '—')}</dt>
+        <dt>Lab class</dt><dd>${esc(e.labClassificationLabel || '—')}</dd>
         <dt>Source hash</dt><dd class="ri-mono">${esc(e.sourceHash || '—')}</dd>
         <dt>Recorded</dt><dd>${formatDate(e.createdAt)}</dd></dl>
-      ${renderConnectedEvidenceUploadPanel(id)}
-      ${renderConnectedEvidenceWorkflowPanel()}`;
+      ${writes ? renderConnectedEvidenceLinkPanel(id, e) : ''}
+      ${writes ? renderConnectedEvidenceUploadPanel(id) : ''}
+      ${renderConnectedEvidenceWorkflowPanel(id)}`;
   }
   return `${pageHeader(e.fileName, e.id)}
     <p class="ri-muted">DEMO — no real file storage</p>

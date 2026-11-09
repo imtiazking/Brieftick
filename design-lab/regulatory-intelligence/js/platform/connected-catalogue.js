@@ -30,6 +30,8 @@ const EMPTY = {
   authorisedUatRisks: [],
   authorisedUatControls: [],
   authorisedUatActions: [],
+  authorisedUatEvidence: [],
+  evidenceProvenance: null,
   actionProvenance: null,
   impactProvenance: null,
   riskProvenance: null,
@@ -156,6 +158,32 @@ export function mergeRiskCatalogueRow(cat, risk) {
   cat.tenantWorkCounts = {
     ...(cat.tenantWorkCounts || {}),
     risks: (cat.risks || []).filter(isOperationalLabRow).length,
+  };
+}
+
+/** Merge evidence row into operational vs authorised UAT registers (BUS-UAT-014). */
+export function mergeEvidenceCatalogueRow(cat, evidence) {
+  if (!evidence?.id) return;
+  cat.evidenceDetailsById = cat.evidenceDetailsById || {};
+  cat.evidenceDetailsById[evidence.id] = { ...cat.evidenceDetailsById[evidence.id], ...evidence, _connected: true };
+  if (isAuthorisedUatLabRow(evidence)) {
+    cat.authorisedUatEvidence = cat.authorisedUatEvidence || [];
+    const uatIdx = cat.authorisedUatEvidence.findIndex((x) => x.id === evidence.id);
+    if (uatIdx >= 0)
+      cat.authorisedUatEvidence[uatIdx] = { ...cat.authorisedUatEvidence[uatIdx], ...evidence, _connected: true };
+    else cat.authorisedUatEvidence.unshift({ ...evidence, _connected: true });
+    return;
+  }
+  if (!isOperationalLabRow(evidence)) return;
+  const idx = (cat.evidence || []).findIndex((e) => e.id === evidence.id);
+  if (idx >= 0) cat.evidence[idx] = { ...cat.evidence[idx], ...evidence, _connected: true };
+  else {
+    cat.evidence = cat.evidence || [];
+    cat.evidence.unshift({ ...evidence, _connected: true });
+  }
+  cat.tenantGovernanceCounts = {
+    ...(cat.tenantGovernanceCounts || {}),
+    evidence: (cat.evidence || []).filter(isOperationalLabRow).length,
   };
 }
 
@@ -382,6 +410,8 @@ async function loadConnectedCatalogueInner(state, cat) {
     cat.assuranceReviews = Array.isArray(govBody.assuranceReviews) ? govBody.assuranceReviews : [];
     cat.actions = Array.isArray(govBody.actions) ? govBody.actions : [];
     cat.authorisedUatActions = Array.isArray(govBody.authorisedUatActions) ? govBody.authorisedUatActions : [];
+    cat.authorisedUatEvidence = Array.isArray(govBody.authorisedUatEvidence) ? govBody.authorisedUatEvidence : [];
+    cat.evidenceProvenance = govBody.evidenceProvenance ?? null;
     cat.actionProvenance = govBody.actionProvenance ?? null;
     cat.workflowEvents = Array.isArray(govBody.workflowEvents) ? govBody.workflowEvents : [];
     cat.aiAnalysisRuns = Array.isArray(govBody.aiAnalysisRuns) ? govBody.aiAnalysisRuns : [];
@@ -463,6 +493,7 @@ async function loadConnectedCatalogueInner(state, cat) {
     cat.authorisedUatRisks = [];
     cat.authorisedUatControls = [];
     cat.authorisedUatActions = [];
+    cat.authorisedUatEvidence = [];
     cat.actionProvenance = null;
     cat.impactProvenance = null;
     cat.riskProvenance = null;
@@ -713,8 +744,27 @@ export function scheduleConnectedActionDetailFetch(state, actionId) {
   return scheduleConnectedDetailFetch(state, 'actionDetailsById', actionId, fetchConnectedActionDetail);
 }
 
-export function fetchConnectedEvidenceDetail(state, evidenceId) {
-  return fetchConnectedEntityDetail(state, 'evidence', evidenceId, 'evidence', 'evidenceDetailsById', 'evidence');
+export async function fetchConnectedEvidenceDetail(state, evidenceId) {
+  const cat = initConnectedCatalogueState(state);
+  const base = apiBase(state).replace(/\/$/, '');
+  const res = await fetch(`${base}/evidence/${encodeURIComponent(evidenceId)}`, {
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json' },
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) {
+    const err = new Error(body.error || 'evidence_detail_failed');
+    err.status = res.status;
+    throw err;
+  }
+  if (body.evidence) {
+    const merged = { ...body.evidence, _connected: true };
+    mergeEvidenceCatalogueRow(cat, merged);
+    cat.evidenceDetailsById[evidenceId] = { ...cat.evidenceDetailsById[evidenceId], ...merged };
+  }
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
+  notify();
+  return body.evidence;
 }
 
 export function scheduleConnectedEvidenceDetailFetch(state, evidenceId) {
