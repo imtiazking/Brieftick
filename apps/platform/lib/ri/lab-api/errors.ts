@@ -123,6 +123,19 @@ export function labApiErrorResponse(err: unknown): NextResponse {
   if (err instanceof Error && err.message === 'missing_file') {
     return NextResponse.json({ ok: false, error: 'missing_file' }, { status: 400 });
   }
+  if (err instanceof Error && err.message === 'evidence_version_not_found') {
+    return NextResponse.json({ ok: false, error: 'evidence_version_not_found' }, { status: 404 });
+  }
+  if (err instanceof Error && err.message === 'evidence_preview_unavailable') {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: 'evidence_preview_unavailable',
+        message: 'This file type cannot be previewed in the browser. Use Download file instead.',
+      },
+      { status: 415 },
+    );
+  }
   if (err instanceof Error && err.message === 'segregation_of_duties') {
     return NextResponse.json(
       {

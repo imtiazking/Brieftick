@@ -27,23 +27,51 @@ export function renderConnectedEvidenceCreatePanel() {
   </section>`;
 }
 
+function formatEvidenceFileTypeLabel(contentType) {
+  const ct = String(contentType || '').toLowerCase();
+  if (ct === 'text/plain') return 'TXT';
+  if (ct === 'application/pdf') return 'PDF';
+  if (ct === 'image/png') return 'PNG';
+  if (ct === 'image/jpeg') return 'JPEG';
+  return contentType || '—';
+}
+
+function formatEvidenceByteSize(bytes) {
+  if (bytes == null) return '—';
+  const n = Number(bytes);
+  if (!Number.isFinite(n)) return '—';
+  if (n < 1024) return `${n} bytes`;
+  return `${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
+}
+
 export function renderConnectedEvidenceVersionsPanel(e) {
+  const evidenceId = e?.id;
   const versions = Array.isArray(e?.versions) ? e.versions : [];
   if (!versions.length) {
     return `<section class="ri-panel"><h2>File versions</h2><p class="ri-muted">No files uploaded yet.</p></section>`;
   }
   const rows = versions
-    .map(
-      (v) =>
-        `<tr><td class="ri-mono">v${esc(String(v.versionNumber ?? '—'))}</td>` +
-        `<td>${esc(v.filename || '—')}</td>` +
-        `<td>${esc(v.contentType || '—')}</td>` +
-        `<td>${esc(v.byteSize != null ? String(v.byteSize) : '—')}</td>` +
-        `<td>${formatDate(v.uploadedAt)}</td></tr>`,
-    )
+    .map((v) => {
+      const ver = esc(String(v.versionNumber ?? '—'));
+      const fn = esc(v.filename || '—');
+      const actions =
+        evidenceId && v.versionNumber != null
+          ? `<button type="button" class="ri-btn ri-btn--ghost ri-btn--sm" data-connected-evidence-version-preview data-evidence-id="${esc(evidenceId)}" data-version-number="${esc(String(v.versionNumber))}" data-filename="${fn}">Preview</button> ` +
+            `<button type="button" class="ri-btn ri-btn--ghost ri-btn--sm" data-connected-evidence-version-download data-evidence-id="${esc(evidenceId)}" data-version-number="${esc(String(v.versionNumber))}" data-filename="${fn}">Download</button>`
+          : '—';
+      return (
+        `<tr><td class="ri-mono">v${ver}</td>` +
+        `<td>${fn}</td>` +
+        `<td>${esc(formatEvidenceFileTypeLabel(v.contentType))}</td>` +
+        `<td>${esc(formatEvidenceByteSize(v.byteSize))}</td>` +
+        `<td>${formatDate(v.uploadedAt)}</td>` +
+        `<td class="ri-actions">${actions}</td></tr>`
+      );
+    })
     .join('');
-  return `<section class="ri-panel"><h2>File versions</h2>
-    <table class="ri-table"><thead><tr><th>Ver</th><th>File</th><th>Type</th><th>Bytes</th><th>Uploaded</th></tr></thead>
+  return `<section class="ri-panel" data-connected-evidence-versions><h2>File versions</h2>
+    <p class="ri-muted">Preview uses a short-lived signed URL. Download is served through the authenticated API with the original filename.</p>
+    <table class="ri-table"><thead><tr><th>Ver</th><th>File</th><th>Type</th><th>Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
     <tbody>${rows}</tbody></table></section>`;
 }
 
@@ -56,7 +84,6 @@ export function renderConnectedEvidenceUploadPanel(evidenceId) {
       <input type="file" data-connected-evidence-file accept=".pdf,.png,.jpg,.jpeg,.txt" />
     </label>
     <button type="button" class="ri-btn ri-btn--primary" data-connected-evidence-upload data-evidence-id="${esc(evidenceId)}">Upload version</button>
-    <button type="button" class="ri-btn ri-btn--ghost" data-connected-evidence-download data-evidence-id="${esc(evidenceId)}">Get download link</button>
   </section>`;
 }
 

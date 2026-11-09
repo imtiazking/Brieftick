@@ -3,7 +3,7 @@ import 'server-only';
 import { createHash } from 'node:crypto';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
-import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
+import { recordWorkflowEvent, type WorkflowEventType } from '@/lib/ri/workflow-events';
 import {
   EVIDENCE_UPLOAD_CLEANUP_FAILED,
   removeTenantEvidenceStorageObject,
@@ -203,6 +203,187 @@ export async function uploadTenantEvidenceVersion(
   }
 
   return versionRow;
+}
+
+export type TenantEvidenceVersionRow = {
+  id: string;
+  version_number: number;
+  storage_path: string;
+  content_type: string;
+  byte_size: number;
+  source_hash: string;
+};
+
+export function evidenceFilenameFromStoragePath(storagePath: string): string {
+  return sanitizeEvidenceFilename(storagePath.split('/').pop() || 'evidence.bin');
+}
+
+export function isEvidencePreviewableContentType(contentType: string): boolean {
+  return ALLOWED_CONTENT_TYPES.has(contentType);
+}
+
+export async function getTenantEvidenceVersionRow(
+  supabase: SupabaseClient,
+  organisationId: string,
+  evidenceId: string,
+  versionNumber: number,
+): Promise<TenantEvidenceVersionRow> {
+  if (!Number.isInteger(versionNumber) || versionNumber < 1) {
+    throw new Error('evidence_version_not_found');
+  }
+  await assertRowInOrganisation(supabase, 'evidence_items', evidenceId, organisationId);
+  const { data, error } = await supabase
+    .from('evidence_versions')
+    .select('id, version_number, storage_path, content_type, byte_size, source_hash')
+    .eq('organisation_id', organisationId)
+    .eq('evidence_id', evidenceId)
+    .eq('version_number', versionNumber)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data?.storage_path) throw new Error('evidence_version_not_found');
+  assertTenantEvidencePathForOrganisation(data.storage_path, organisationId);
+  return data as TenantEvidenceVersionRow;
+}
+
+export async function recordEvidenceFileAccessEvent(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    evidenceId: string;
+    userId: string | null;
+    versionNumber: number;
+    eventType: Extract<WorkflowEventType, 'EVIDENCE_PREVIEWED' | 'EVIDENCE_DOWNLOADED'>;
+    sourceHash: string;
+    storagePath: string;
+    filename: string;
+  },
+): Promise<void> {
+  try {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'evidence_item',
+      entityId: params.evidenceId,
+      eventType: params.eventType,
+      actorUserId: params.userId,
+      fromStatus: String(params.versionNumber),
+      toStatus: String(params.versionNumber),
+      metadata: {
+        source_hash: params.sourceHash,
+        storage_path: params.storagePath,
+        filename: params.filename,
+        version_number: params.versionNumber,
+      },
+    });
+  } catch (auditError) {
+    console.error('[EVIDENCE_ACCESS_AUDIT_FAILED]', {
+      evidenceId: params.evidenceId,
+      versionNumber: params.versionNumber,
+      eventType: params.eventType,
+      message: auditError instanceof Error ? auditError.message : String(auditError),
+    });
+  }
+}
+
+export async function createTenantEvidenceVersionPreviewUrl(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    evidenceId: string;
+    versionNumber: number;
+    userId: string | null;
+    expiresInSeconds?: number;
+  },
+): Promise<{
+  signedUrl: string;
+  storagePath: string;
+  expiresIn: number;
+  filename: string;
+  contentType: string;
+  versionNumber: number;
+  sourceHash: string;
+  previewable: boolean;
+}> {
+  const row = await getTenantEvidenceVersionRow(
+    supabase,
+    params.organisationId,
+    params.evidenceId,
+    params.versionNumber,
+  );
+  if (!isEvidencePreviewableContentType(row.content_type)) {
+    throw new Error('evidence_preview_unavailable');
+  }
+  const filename = evidenceFilenameFromStoragePath(row.storage_path);
+  const expiresIn = params.expiresInSeconds ?? 60;
+  const { data: signed, error: signError } = await supabase.storage
+    .from(TENANT_EVIDENCE_BUCKET)
+    .createSignedUrl(row.storage_path, expiresIn);
+  if (signError || !signed?.signedUrl) throw new Error(signError?.message || 'evidence_download_unavailable');
+  await recordEvidenceFileAccessEvent(supabase, {
+    organisationId: params.organisationId,
+    evidenceId: params.evidenceId,
+    userId: params.userId,
+    versionNumber: row.version_number,
+    eventType: 'EVIDENCE_PREVIEWED',
+    sourceHash: row.source_hash,
+    storagePath: row.storage_path,
+    filename,
+  });
+  return {
+    signedUrl: signed.signedUrl,
+    storagePath: row.storage_path,
+    expiresIn,
+    filename,
+    contentType: row.content_type,
+    versionNumber: row.version_number,
+    sourceHash: row.source_hash,
+    previewable: true,
+  };
+}
+
+export async function downloadTenantEvidenceVersionContent(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    evidenceId: string;
+    versionNumber: number;
+    userId: string | null;
+  },
+): Promise<{ bytes: Buffer; contentType: string; filename: string; sourceHash: string; storagePath: string }> {
+  const row = await getTenantEvidenceVersionRow(
+    supabase,
+    params.organisationId,
+    params.evidenceId,
+    params.versionNumber,
+  );
+  const { data, error } = await supabase.storage.from(TENANT_EVIDENCE_BUCKET).download(row.storage_path);
+  if (error) throw new Error(error.message);
+  const bytes = Buffer.from(await data.arrayBuffer());
+  if (bytes.length !== row.byte_size) {
+    console.error('[EVIDENCE_DOWNLOAD_SIZE_MISMATCH]', {
+      evidenceId: params.evidenceId,
+      versionNumber: row.version_number,
+      expected: row.byte_size,
+      actual: bytes.length,
+    });
+  }
+  const filename = evidenceFilenameFromStoragePath(row.storage_path);
+  await recordEvidenceFileAccessEvent(supabase, {
+    organisationId: params.organisationId,
+    evidenceId: params.evidenceId,
+    userId: params.userId,
+    versionNumber: row.version_number,
+    eventType: 'EVIDENCE_DOWNLOADED',
+    sourceHash: row.source_hash,
+    storagePath: row.storage_path,
+    filename,
+  });
+  return {
+    bytes,
+    contentType: row.content_type,
+    filename,
+    sourceHash: row.source_hash,
+    storagePath: row.storage_path,
+  };
 }
 
 export async function createTenantEvidenceDownloadUrl(

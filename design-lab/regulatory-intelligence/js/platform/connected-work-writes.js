@@ -492,6 +492,22 @@ export async function uploadConnectedEvidenceFile(state, evidenceId, file) {
   return body.version;
 }
 
+const EVIDENCE_FILE_ERROR_MESSAGES = {
+  evidence_version_not_found: 'That evidence version was not found.',
+  evidence_preview_unavailable: 'This file cannot be previewed in the browser. Use Download instead.',
+  evidence_download_unavailable: 'Download is not available for this version.',
+  evidence_no_file: 'No file is attached to this evidence yet.',
+  forbidden: 'You do not have permission to access this file.',
+  unauthorized: 'Sign in again to access evidence files.',
+};
+
+export function formatEvidenceFileAccessError(body) {
+  const code = body?.error;
+  if (code && EVIDENCE_FILE_ERROR_MESSAGES[code]) return EVIDENCE_FILE_ERROR_MESSAGES[code];
+  if (typeof body?.message === 'string' && body.message.trim()) return body.message.trim();
+  return code || 'Evidence file access failed';
+}
+
 export async function fetchConnectedEvidenceDownloadUrl(state, evidenceId) {
   const base = apiBase(state);
   const res = await fetch(`${base}/evidence/${encodeURIComponent(evidenceId)}/download`, {
@@ -499,8 +515,82 @@ export async function fetchConnectedEvidenceDownloadUrl(state, evidenceId) {
     headers: { Accept: 'application/json' },
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'evidence_download_unavailable');
+  if (!res.ok || !body.ok) throw new Error(formatEvidenceFileAccessError(body));
   return body;
+}
+
+/** @type {Map<string, Promise<unknown>>} */
+const evidenceFileInflight = new Map();
+
+function evidenceFileInflightKey(kind, evidenceId, versionNumber) {
+  return `${kind}:${evidenceId}:${versionNumber}`;
+}
+
+async function withEvidenceFileInflight(key, fn) {
+  if (evidenceFileInflight.has(key)) return evidenceFileInflight.get(key);
+  const p = fn().finally(() => evidenceFileInflight.delete(key));
+  evidenceFileInflight.set(key, p);
+  return p;
+}
+
+export async function previewConnectedEvidenceVersion(state, evidenceId, versionNumber) {
+  const base = apiBase(state);
+  const key = evidenceFileInflightKey('preview', evidenceId, versionNumber);
+  return withEvidenceFileInflight(key, async () => {
+    const res = await fetch(
+      `${base}/evidence/${encodeURIComponent(evidenceId)}/versions/${encodeURIComponent(String(versionNumber))}/access?intent=preview`,
+      { credentials: 'same-origin', headers: { Accept: 'application/json' } },
+    );
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok || !body.ok) throw new Error(formatEvidenceFileAccessError(body));
+    if (!body.signedUrl) throw new Error('Preview link unavailable');
+    return body;
+  });
+}
+
+function parseContentDispositionFilename(header) {
+  if (!header) return null;
+  const star = /filename\*=UTF-8''([^;]+)/i.exec(header);
+  if (star?.[1]) {
+    try {
+      return decodeURIComponent(star[1]);
+    } catch {
+      return star[1];
+    }
+  }
+  const plain = /filename="([^"]+)"/i.exec(header);
+  return plain?.[1] || null;
+}
+
+export async function downloadConnectedEvidenceVersion(state, evidenceId, versionNumber, filenameHint) {
+  const base = apiBase(state);
+  const key = evidenceFileInflightKey('download', evidenceId, versionNumber);
+  return withEvidenceFileInflight(key, async () => {
+    const res = await fetch(
+      `${base}/evidence/${encodeURIComponent(evidenceId)}/versions/${encodeURIComponent(String(versionNumber))}/content?disposition=attachment`,
+      { credentials: 'same-origin' },
+    );
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(formatEvidenceFileAccessError(body));
+    }
+    const blob = await res.blob();
+    const filename =
+      parseContentDispositionFilename(res.headers.get('Content-Disposition')) || filenameHint || 'evidence-file';
+    const objectUrl = URL.createObjectURL(blob);
+    try {
+      const anchor = document.createElement('a');
+      anchor.href = objectUrl;
+      anchor.download = filename;
+      anchor.rel = 'noopener';
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+    } finally {
+      URL.revokeObjectURL(objectUrl);
+    }
+    return { filename, bytes: blob.size };
+  });
 }
 
 export async function createConnectedAssuranceReview(state, payload) {

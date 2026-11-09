@@ -121,10 +121,12 @@ import {
   patchConnectedPublicationApplicability,
   patchConnectedApplicabilityWorkflow,
   uploadConnectedEvidenceFile,
-  fetchConnectedEvidenceDownloadUrl,
+  previewConnectedEvidenceVersion,
+  downloadConnectedEvidenceVersion,
   fetchConnectedGovernancePending,
   createConnectedAssuranceReview,
 } from './platform/connected-work-writes.js';
+import { refreshConnectedEntityWorkflowEvents } from './platform/connected-entity-audit.js';
 import { collectConnectedActionPatchFields } from './platform/connected-action-patch-fields.js';
 import {
   fetchConnectedBoardReport,
@@ -1455,18 +1457,52 @@ function bindViewHandlers() {
     });
   });
 
-  document.querySelectorAll('[data-connected-evidence-download]').forEach((btn) => {
+  async function bindEvidenceVersionFileAction(btn, action) {
+    if (btn.dataset.riBoundEvidenceFileAction) return;
+    btn.dataset.riBoundEvidenceFileAction = '1';
     btn.addEventListener('click', async () => {
       const evidenceId = btn.dataset.evidenceId;
-      if (!evidenceId) return;
+      const versionNumber = Number(btn.dataset.versionNumber);
+      const filenameHint = btn.dataset.filename || undefined;
+      if (!evidenceId || !Number.isInteger(versionNumber)) return;
+      const label = action === 'preview' ? 'Preview' : 'Download';
+      const priorText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Loading…';
       try {
-        const body = await fetchConnectedEvidenceDownloadUrl(getState(), evidenceId);
-        showToast(`Download link (${body.expiresIn}s TTL)`);
-        window.open(body.signedUrl, '_blank', 'noopener,noreferrer');
+        if (action === 'preview') {
+          const body = await previewConnectedEvidenceVersion(getState(), evidenceId, versionNumber);
+          const opened = window.open(body.signedUrl, '_blank', 'noopener,noreferrer');
+          if (!opened) showToast('Allow pop-ups to preview this file, or use Download.');
+          else showToast(`Preview opened (${body.expiresIn}s link)`);
+        } else {
+          const result = await downloadConnectedEvidenceVersion(getState(), evidenceId, versionNumber, filenameHint);
+          showToast(`Downloaded ${result.filename}`);
+        }
+        try {
+          await refreshConnectedEntityWorkflowEvents(getState(), 'evidence_item', evidenceId);
+        } catch {
+          /* audit refresh must not block file access */
+        }
+        renderShell();
       } catch (e) {
-        showToast(e?.message || 'Download unavailable');
+        const msg = e?.message || `${label} failed`;
+        showToast(msg);
+        if (action === 'preview' && /preview/i.test(msg)) {
+          showToast('Use Download file for this version.');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = priorText || label;
       }
     });
+  }
+
+  document.querySelectorAll('[data-connected-evidence-version-preview]').forEach((btn) => {
+    bindEvidenceVersionFileAction(btn, 'preview');
+  });
+  document.querySelectorAll('[data-connected-evidence-version-download]').forEach((btn) => {
+    bindEvidenceVersionFileAction(btn, 'download');
   });
 
   document.querySelector('[data-connected-applicability-save]')?.addEventListener('click', async (btnEv) => {

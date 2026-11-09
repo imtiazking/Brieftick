@@ -108,6 +108,16 @@ if (!migrate.includes('_detailHydrated')) {
   pass('migrate_stale', 'stale evidence cache purge on load');
 }
 
+const fileAccessRoute = join(
+  platform,
+  'app/api/ri-lab/evidence/[id]/versions/[versionNumber]/content/route.ts',
+);
+if (!existsSync(fileAccessRoute)) {
+  failTest('file_access', 'version-scoped content route required');
+} else {
+  pass('file_access', 'historical version download route');
+}
+
 if (!fail) console.log('\nacceptance-phase-8-step-85w-evidence-uat: PASS\n');
 else {
   console.error(`\nacceptance-phase-8-step-85w-evidence-uat: FAIL (${fail})\n`);
