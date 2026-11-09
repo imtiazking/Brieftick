@@ -73,6 +73,7 @@ import {
   isConnectedModeIntent,
   isConnectedLabWritesEnabled,
   isPresentationModeRequested,
+  markConnectedBackendUnavailable,
   shouldAutoConnectToBackend,
   shouldHideDemoRegulatoryData,
   syncEnvironmentFooterBanner,
@@ -2652,22 +2653,30 @@ function init() {
   renderShell();
   syncModeChrome();
   bootstrapLabConnectivity(getState())
-    .then(() => {
+    .then((boot) => {
       applyAskRiSessionRestore();
       notify();
-      return Promise.all([
-        ensureConnectedCatalogueLoaded(getState()),
-        ensureConnectedLandscapeLoaded(getState()),
-      ]);
-    })
-    .then(() => {
       lastConnectivityMode = getState().connectivity?.mode;
       renderChrome();
       bindChromeHandlers();
       syncModeChrome();
       renderShell();
+      if (boot?.mode === 'connected') {
+        void Promise.all([
+          ensureConnectedCatalogueLoaded(getState()),
+          ensureConnectedLandscapeLoaded(getState()),
+        ]).finally(() => {
+          syncModeChrome();
+          renderShell();
+        });
+      }
     })
-    .catch(() => {
+    .catch((e) => {
+      const st = getState();
+      if (st.connectivity?.mode === 'connecting') {
+        markConnectedBackendUnavailable(st, e?.message || 'bootstrap_failed');
+        notify();
+      }
       syncModeChrome();
       renderShell();
     });

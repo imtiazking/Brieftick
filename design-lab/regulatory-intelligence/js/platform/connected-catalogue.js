@@ -557,12 +557,9 @@ async function loadConnectedCatalogueInner(state, cat) {
 export async function ensureConnectedCatalogueLoaded(state) {
   if (!isConnectedBackendActive(state)) return { ok: true, skipped: true };
   const cat = getConnectedCatalogue(state);
-  if (cat.status === 'ready' && connectedCatalogueHasStaleFindingLineage(cat)) {
-    cat.status = 'idle';
-    cat._staleFindingLineageRefresh = true;
-  }
   if (cat.status === 'ready') return { ok: true, cached: true };
   if (cat.status === 'error') return { ok: false, error: cat.error };
+  if (cat._loadInflight) return cat._loadInflight;
   return loadConnectedCatalogue(state);
 }
 

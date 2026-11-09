@@ -113,7 +113,18 @@ export async function bootstrapLabConnectivity(state) {
   };
   notify();
 
-  const probe = await probeClerkLabSession(apiBaseUrl);
+  let probe;
+  try {
+    probe = await withTimeout(
+      probeClerkLabSession(apiBaseUrl),
+      CONNECT_BOOTSTRAP_TIMEOUT_MS,
+      'session_probe_timeout',
+    );
+  } catch (e) {
+    markConnectedBackendUnavailable(state, e?.message || 'session_probe_timeout');
+    notify();
+    return { mode: 'connected_error', error: e };
+  }
   if (probe.status === 401 || probe.body?.error === 'unauthorized') {
     state.connectivity = {
       mode: 'auth_required',
@@ -146,7 +157,39 @@ export async function bootstrapLabConnectivity(state) {
   }
   applyAskRiSessionRestore();
   notify();
-  await Promise.all([loadConnectedCatalogue(state), loadConnectedLandscape(state)]);
+  const cat = state.connectedCatalogue;
+  const catFresh =
+    cat?.status === 'ready' &&
+    cat.loadedAt &&
+    Date.now() - new Date(cat.loadedAt).getTime() < 120_000;
+  const landscape = state.connectedLandscape;
+  const landscapeFresh =
+    landscape?.status === 'ready' &&
+    landscape.loadedAt &&
+    Date.now() - new Date(landscape.loadedAt).getTime() < 120_000;
+  const followUpLoads = [];
+  if (!catFresh) followUpLoads.push(loadConnectedCatalogue(state));
+  if (!landscapeFresh) followUpLoads.push(loadConnectedLandscape(state));
+  if (!followUpLoads.length) {
+    notify();
+    return { mode: 'connected' };
+  }
+  try {
+    await withTimeout(Promise.all(followUpLoads), CONNECT_BOOTSTRAP_TIMEOUT_MS, 'bootstrap_catalogue_timeout');
+  } catch (e) {
+    const cat = state.connectedCatalogue || {};
+    if (cat.status === 'loading') cat.status = 'error';
+    cat.error = e?.message || 'bootstrap_catalogue_timeout';
+    state.connectedCatalogue = cat;
+    state.connectivity = {
+      ...(state.connectivity || {}),
+      mode: 'connected',
+      catalogueWarning: cat.error,
+      lastCheckedAt: new Date().toISOString(),
+    };
+    notify();
+    return { mode: 'connected', catalogueWarning: cat.error };
+  }
   notify();
   return { mode: 'connected' };
 }

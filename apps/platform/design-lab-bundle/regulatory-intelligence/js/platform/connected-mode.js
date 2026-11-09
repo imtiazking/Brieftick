@@ -2,6 +2,7 @@
  * Demo vs connected backend mode (Step 81B).
  */
 import { getState } from '../store.js';
+import { persistableLabState } from './ask-ri-session.mjs';
 import { savePersistedJson, STORAGE_KEY_V2 } from './platform-persistence.js';
 
 export const CONNECTED_MODE_STORAGE_KEY = 'forgeniq-ri-connected-mode';
@@ -263,7 +264,7 @@ export function applyConnectedPlatformConfig(state, sessionPayload, readinessPay
     lastCheckedAt: new Date().toISOString(),
     error: null,
   };
-  savePersistedJson(STORAGE_KEY_V2, state);
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
 }
 
 export function markConnectedBackendUnavailable(state, errorMessage = null) {
@@ -296,7 +297,7 @@ export function markConnectedBackendUnavailable(state, errorMessage = null) {
     lastCheckedAt: new Date().toISOString(),
     error: errorMessage,
   };
-  savePersistedJson(STORAGE_KEY_V2, state);
+  savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
 }
 
 export function enterPresentationMode(state) {

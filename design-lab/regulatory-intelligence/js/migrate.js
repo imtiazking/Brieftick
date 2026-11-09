@@ -269,6 +269,14 @@ function mergeWithSeed(saved) {
   if (saved.connectivity) {
     fresh.connectivity = { ...saved.connectivity };
     delete fresh.connectivity._orgContextLoaded;
+    if (fresh.connectivity.mode === 'connecting') {
+      fresh.connectivity = {
+        ...fresh.connectivity,
+        mode: 'connected_error',
+        error: fresh.connectivity.error || 'interrupted_connect',
+        lastCheckedAt: new Date().toISOString(),
+      };
+    }
   }
   if (saved.connectedCatalogue) {
     fresh.connectedCatalogue = { ...saved.connectedCatalogue };
@@ -325,19 +333,20 @@ function mergeWithSeed(saved) {
         }
       }
     }
-    if ((saved.schemaVersion || 0) < 18 && fresh.connectedCatalogue.status === 'ready') {
-      const uatRows = fresh.connectedCatalogue.authorisedUatFindings || [];
-      const needsLineage = uatRows.some(
+    const uatNeedsLineage =
+      fresh.connectedCatalogue.status === 'ready' &&
+      [...(fresh.connectedCatalogue.authorisedUatFindings || []), ...(fresh.connectedCatalogue.findings || [])].some(
         (f) =>
-          (f?.dataProvenance === 'uat_authorised' || f?.labClassification === 'uat_authorised') &&
+          (f?.dataProvenance === 'uat_authorised' ||
+            f?.labClassification === 'uat_authorised' ||
+            f?.recordProvenance === 'uat_authorised') &&
           !f?.parentRiskId &&
           !f?.parentControlId &&
           !(f?.controlIds || []).length &&
           !(f?.linkedControls || []).length,
       );
-      if (needsLineage) {
-        fresh.connectedCatalogue.status = 'idle';
-      }
+    if ((saved.schemaVersion || 0) < 19 && uatNeedsLineage) {
+      fresh.connectedCatalogue.status = 'idle';
     }
   }
   if (saved.connectedLandscape) {
