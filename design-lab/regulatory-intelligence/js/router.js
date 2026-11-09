@@ -58,6 +58,7 @@ const KNOWN_TOP_LEVEL = new Set([
   'attestation',
   'exception',
   'control-test',
+  'findings',
   'finding',
   'management-attestation',
   'assurance-pack',

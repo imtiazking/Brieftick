@@ -62,6 +62,13 @@ if (!views.includes("case 'findings'") || !views.includes('viewFindingsList')) {
   pass('route', 'findings register route');
 }
 
+const router = readFileSync(join(lab, 'js/router.js'), 'utf8');
+if (!router.includes("'findings'")) {
+  failTest('router_allowlist', 'KNOWN_TOP_LEVEL must include findings (renderViewSafe gate)');
+} else {
+  pass('router_allowlist', 'findings allowed before renderView');
+}
+
 const assurance = readFileSync(join(lab, 'js/assurance-views.js'), 'utf8');
 if (!assurance.includes('viewFindingsList') || !assurance.includes('Authorised UAT findings register')) {
   failTest('register_ui', 'findings list UAT section');
