@@ -392,6 +392,18 @@ export function viewFindingsList() {
 }
 
 export function viewFinding(id) {
+  try {
+    return viewFindingInner(id);
+  } catch (err) {
+    return `${pageHeader('Finding detail error', id || '—')}
+      <section class="ri-panel ri-panel--warn" role="alert">
+        <p>This finding view failed to render: ${esc(err?.message || String(err))}</p>
+        <p><a class="ri-btn ri-btn--ghost" href="#/findings">Back to findings register</a></p>
+      </section>`;
+  }
+}
+
+function viewFindingInner(id) {
   const s = getState();
   if (isConnectedBackendActive(s)) {
     const cat = getConnectedCatalogue(s);

@@ -5,13 +5,20 @@ export function isPromiseLike(value) {
 }
 
 /**
- * Chain render/handlers only when schedule* returned a real Promise.
+ * Chain optional handlers when schedule* returned a real Promise.
  * Avoids `(null?.then(...)).catch(...)` which throws because `.catch` binds to undefined.
+ *
+ * Detail fetches should omit onFulfilled when notify() already triggers subscribe → renderShell.
+ * Passing renderShell as onFulfilled on every bindViewHandlers pass causes infinite loops when
+ * schedule* returns Promise.resolve(cached).
  */
 export function runScheduledTask(task, onFulfilled, onRejected) {
   if (!isPromiseLike(task)) return undefined;
-  if (onRejected) return task.then(onFulfilled, onRejected);
-  return task.then(onFulfilled);
+  const fulfilled = typeof onFulfilled === 'function' ? onFulfilled : undefined;
+  const rejected = typeof onRejected === 'function' ? onRejected : undefined;
+  if (rejected) return task.then(fulfilled, rejected);
+  if (fulfilled) return task.then(fulfilled);
+  return task;
 }
 
 /** Drop persisted non-Promise placeholders left from JSON round-trip. */
