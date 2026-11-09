@@ -107,7 +107,10 @@ export function answerAskRiFromPublicationPdfEvidence(publicationEvidence, quest
     };
   }
 
-  if (!findingsResult.ok) {
+  let validated = { accepted: [], rejected: [] };
+  if (findingsResult.ok) {
+    validated = validateFindingsEvidenceAnchors(findingsResult.findings);
+  } else if (rankedBlocks.length === 0) {
     return {
       status: 'INSUFFICIENT_EVIDENCE',
       answer: findingsResult.message,
@@ -122,7 +125,6 @@ export function answerAskRiFromPublicationPdfEvidence(publicationEvidence, quest
     };
   }
 
-  const validated = validateFindingsEvidenceAnchors(findingsResult.findings);
   const proposals = validated.accepted.filter((f) => f.regulatoryStatus === 'proposed');
 
   const citationSource = buildPdfCitationContext(publicationEvidenceCtx, analysis);
@@ -277,6 +279,12 @@ function composeSubstantivePdfAnswer({ question, citationSource, analysis, valid
   }
 
   const q = String(question || '').toLowerCase();
+  const asksFairValue = /fair value|consumer duty|consumer finance/.test(q);
+  if (asksFairValue && rankedBlocks.length && !proposalSummaries.length) {
+    parts.push(
+      'Source passages below describe Consumer Duty fair value expectations from the primary PDF. This is not a firm-specific obligation register and does not invent compliance deadlines.',
+    );
+  }
   const asksControls = /financial crime|control|aml|fraud|sanction|due diligence|systems and controls/.test(q);
   if (asksControls && analysis.applicability?.businessFunctions?.length) {
     const areas = analysis.applicability.businessFunctions

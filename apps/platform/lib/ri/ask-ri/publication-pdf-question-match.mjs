@@ -3,19 +3,51 @@
  */
 
 const TOKEN_RE = /[a-z0-9]+/gi;
+const PUBLICATION_UUID_RE =
+  /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/i;
 
 /** Step 80 live verifier sample (also used in regression tests). */
 export const STEP80_ASK_RI_SAMPLE_QUESTION =
   'What changes is the FCA proposing in CP26/38, and which financial crime controls may be affected?';
 
-/** True when the question names a consultation paper / publication reference (e.g. CP26/38). */
+/** BUS-UAT-018 — Consumer Duty fair-value publication question (staging catalogue). */
+export const CONSUMER_DUTY_FAIR_VALUE_ASK_RI_QUESTION =
+  "What Consumer Duty fair-value obligations are associated with the FCA publication 'Fair value in consumer finance'? Show the source evidence, including PDF citations. Do not invent regulatory deadlines.";
+
+/** Quoted phrases that may name a catalogue publication title. */
+export function extractPublicationTitlePhrases(question) {
+  const q = String(question || '');
+  const phrases = [];
+  for (const m of q.matchAll(/['"]([^'"]{6,240})['"]/g)) {
+    const p = m[1].trim();
+    if (p) phrases.push(p);
+  }
+  const named = q.match(/\bpublication\s+['"]([^'"]+)['"]/i);
+  if (named?.[1]?.trim()) phrases.push(named[1].trim());
+  return [...new Set(phrases)];
+}
+
+/** True when the question names a consultation paper / catalogue publication (CP ref, UUID, or quoted title). */
 export function questionMentionsPublicationReference(question) {
   const q = String(question || '');
-  return (
+  if (
     /\bcp\s*\d+\s*\/\s*\d+\b/i.test(q) ||
     /\bcp\s*\d+\s*[-/]\s*\d+\b/i.test(q) ||
     /\bconsultation paper\b/i.test(q)
-  );
+  ) {
+    return true;
+  }
+  if (PUBLICATION_UUID_RE.test(q)) return true;
+  if (/\b(?:FCA|PRA|regulatory)\s+publication\s+['"]/i.test(q)) return true;
+  if (/\bpublication\s+['"][^'"]+['"]/i.test(q)) return true;
+  const quotes = extractPublicationTitlePhrases(q);
+  if (
+    quotes.some((p) => p.length >= 10) &&
+    /\b(fair value|consumer duty|consumer finance|source evidence|pdf citation|primary pdf)/i.test(q)
+  ) {
+    return true;
+  }
+  return false;
 }
 
 function tokens(text) {
@@ -118,7 +150,17 @@ export function scorePublicationQuestionMatch(evidence, question, options = {}) 
     'sanctions screening',
     'aml',
     'money laundering',
+    'fair value',
+    'consumer duty',
+    'consumer finance',
   ];
+
+  for (const phrase of extractPublicationTitlePhrases(question)) {
+    const p = phrase.toLowerCase().trim();
+    if (p.length >= 6 && (title.includes(p) || title.replace(/\s+/g, ' ').includes(p))) {
+      score += 48;
+    }
+  }
   for (const phrase of topicPhrases) {
     if (q.includes(phrase)) score += 3;
   }

@@ -8,7 +8,20 @@ import { EXTRACTION_PROFILE_PDF_PRIMARY_V1 } from '../ingestion/snapshot/extract
 import { DEFAULT_SNAPSHOT_BUCKET } from '../ingestion/snapshot/staging-constants.mjs';
 import { downloadPrivateStorageObject } from '../ingestion/snapshot/readonly-storage-download.mjs';
 import { buildPublicationPdfEvidenceIndex } from './publication-pdf-evidence.mjs';
-import { questionMentionsPublicationReference } from './publication-pdf-question-match.mjs';
+import {
+  extractPublicationTitlePhrases,
+  questionMentionsPublicationReference,
+} from './publication-pdf-question-match.mjs';
+
+const PUBLICATION_UUID_RE =
+  /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/i;
+
+function escapePostgrestIlike(value) {
+  return String(value || '')
+    .replace(/\\/g, '\\\\')
+    .replace(/%/g, '\\%')
+    .replace(/_/g, '\\_');
+}
 
 const MAX_PDF_PUBLICATIONS = 32;
 const REVISION_COLUMNS = `id,
@@ -53,28 +66,80 @@ function formatPostgrestError(error) {
  */
 export async function resolveCataloguePublicationIdsForQuestion(adminSupabase, question) {
   const q = String(question || '');
-  const cp = q.match(/\bcp\s*(\d+)\s*\/\s*(\d+)\b/i);
-  if (!cp) return { ids: [], error: null };
+  const resolved = new Set();
 
-  const n1 = cp[1];
-  const n2 = cp[2];
-  const slugHyphen = `cp${n1}-${n2}`;
-  const refSlash = `CP${n1}/${n2}`;
-
-  const { data, error } = await adminSupabase
-    .from('regulatory_publications')
-    .select('id, external_document_id, canonical_url')
-    .or(
-      `canonical_url.ilike.%${slugHyphen}%,external_document_id.ilike.%${refSlash}%,external_document_id.ilike.%CP${n1}%2F${n2}%`,
-    )
-    .limit(8);
-
-  if (error) {
-    return { ids: [], error: formatPostgrestError(error) };
+  const uuidMatch = PUBLICATION_UUID_RE.exec(q);
+  if (uuidMatch) {
+    const { data, error } = await adminSupabase
+      .from('regulatory_publications')
+      .select('id')
+      .eq('id', uuidMatch[0])
+      .limit(1);
+    if (error) return { ids: [], error: formatPostgrestError(error) };
+    for (const row of data || []) {
+      if (row.id) resolved.add(row.id);
+    }
+    if (resolved.size) {
+      return { ids: [...resolved], error: null, resolveMethod: 'uuid' };
+    }
   }
 
-  const ids = [...new Set((data || []).map((row) => row.id).filter(Boolean))];
-  return { ids, error: null };
+  const cp = q.match(/\bcp\s*(\d+)\s*\/\s*(\d+)\b/i);
+  if (cp) {
+    const n1 = cp[1];
+    const n2 = cp[2];
+    const slugHyphen = `cp${n1}-${n2}`;
+    const refSlash = `CP${n1}/${n2}`;
+
+    const { data, error } = await adminSupabase
+      .from('regulatory_publications')
+      .select('id, external_document_id, canonical_url')
+      .or(
+        `canonical_url.ilike.%${slugHyphen}%,external_document_id.ilike.%${refSlash}%,external_document_id.ilike.%CP${n1}%2F${n2}%`,
+      )
+      .limit(8);
+
+    if (error) {
+      return { ids: [], error: formatPostgrestError(error) };
+    }
+
+    for (const row of data || []) {
+      if (row.id) resolved.add(row.id);
+    }
+    if (resolved.size) {
+      return { ids: [...resolved], error: null, resolveMethod: 'cp_reference' };
+    }
+  }
+
+  const titlePhrases = extractPublicationTitlePhrases(q);
+  for (const phrase of titlePhrases) {
+    const escaped = escapePostgrestIlike(phrase.slice(0, 160));
+    const { data: exactRows, error: exactError } = await adminSupabase
+      .from('regulatory_publications')
+      .select('id, title')
+      .ilike('title', escaped)
+      .limit(4);
+    if (exactError) return { ids: [], error: formatPostgrestError(exactError) };
+    for (const row of exactRows || []) {
+      if (row.id) resolved.add(row.id);
+    }
+
+    const { data: fuzzyRows, error: fuzzyError } = await adminSupabase
+      .from('regulatory_publications')
+      .select('id, title')
+      .ilike('title', `%${escaped}%`)
+      .limit(6);
+    if (fuzzyError) return { ids: [], error: formatPostgrestError(fuzzyError) };
+    for (const row of fuzzyRows || []) {
+      if (row.id) resolved.add(row.id);
+    }
+  }
+
+  if (resolved.size) {
+    return { ids: [...resolved], error: null, resolveMethod: 'title_phrase' };
+  }
+
+  return { ids: [], error: null, resolveMethod: 'none' };
 }
 
 /**
@@ -281,8 +346,11 @@ export async function attachPublicationPdfEvidenceToAskRiState(state, adminSupab
     return { evidence: [], errors: [] };
   }
 
-  const { ids: scopedPublicationIds, error: resolveError } =
-    await resolveCataloguePublicationIdsForQuestion(adminSupabase, question);
+  const {
+    ids: scopedPublicationIds,
+    error: resolveError,
+    resolveMethod,
+  } = await resolveCataloguePublicationIdsForQuestion(adminSupabase, question);
   if (resolveError) {
     state.publicationPdfEvidence = [];
     state.publicationPdfEvidenceErrors = [resolveError];
@@ -300,6 +368,7 @@ export async function attachPublicationPdfEvidenceToAskRiState(state, adminSupab
   state.publicationPdfEvidenceErrors = loaded.errors;
   state.publicationPdfEvidenceLoadMeta = {
     scopedPublicationIds: scopedPublicationIds.length ? scopedPublicationIds : null,
+    publicationResolveMethod: resolveMethod ?? null,
     targetedLoad: true,
     loadedCount: loaded.evidence?.length ?? 0,
     errorCount: loaded.errors?.length ?? 0,
