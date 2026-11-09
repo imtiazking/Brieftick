@@ -41,6 +41,10 @@ function renderCitationRow(c) {
   const ref = c.publicationReference || c.recordId || c.publicationTitle || 'Source';
   const regulator =
     c.regulatorShortName || (c.citationKind || '').split('—')[0]?.trim() || 'Regulator';
+  const section =
+    c.sectionReference && c.citationType === 'html_article_v2'
+      ? ` · ${esc(String(c.sectionReference))}`
+      : '';
   const page =
     c.physicalPageNumber != null ? ` · physical page ${esc(String(c.physicalPageNumber))}` : '';
   const title = c.publicationTitle && c.publicationTitle !== ref ? ` (${esc(c.publicationTitle)})` : '';
@@ -51,10 +55,12 @@ function renderCitationRow(c) {
       : `${esc(regulator)} — ${esc(ref)}`;
   const excerpt = (c.excerpt || '').slice(0, 220);
   const kind =
-    c.citationType === 'primary_pdf' || /PDF/i.test(c.citationKind || '')
-      ? 'Primary PDF evidence'
-      : c.citationKind || 'Citation';
-  return `<li><strong>${esc(kind)}</strong> · ${pubLink}${title}${page}${excerpt ? ` — ${esc(excerpt)}` : ''}</li>`;
+    c.citationType === 'html_article_v2'
+      ? 'FCA webpage evidence'
+      : c.citationType === 'primary_pdf' || /PDF/i.test(c.citationKind || '')
+        ? 'Primary PDF evidence'
+        : c.citationKind || 'Citation';
+  return `<li><strong>${esc(kind)}</strong> · ${pubLink}${title}${section}${page}${excerpt ? ` — ${esc(excerpt)}` : ''}</li>`;
 }
 
 function resolveAskRetrieval(last) {
@@ -109,8 +115,15 @@ function evidenceReason(retrieval, id) {
 }
 
 function renderEvidenceUsed(retrieval, analysis) {
-  if (retrieval?.evidenceSource === 'pdf_primary_v1' && analysis?.citations?.length) {
-    return `<p class="ri-muted" data-ask-ri-evidence-count data-count="${analysis.citations.length}"><strong>${analysis.citations.length} primary PDF page citation(s)</strong></p>
+  if (
+    (retrieval?.evidenceSource === 'pdf_primary_v1' || retrieval?.evidenceSource === 'html_article_v2') &&
+    analysis?.citations?.length
+  ) {
+    const label =
+      retrieval.evidenceSource === 'html_article_v2'
+        ? `${analysis.citations.length} FCA webpage citation(s)`
+        : `${analysis.citations.length} primary PDF page citation(s)`;
+    return `<p class="ri-muted" data-ask-ri-evidence-count data-count="${analysis.citations.length}"><strong>${label}</strong></p>
       <ul class="ri-list">${analysis.citations.map((c) => renderCitationRow(c)).join('')}</ul>`;
   }
   const pred = resolvePredicateEvaluation(retrieval);
@@ -267,8 +280,16 @@ function renderAskResult(state, last) {
     : '';
   const synthesisNote =
     a.providerMode === 'PRODUCTION'
-      ? '<p class="ri-muted"><em>Deterministic source-grounded synthesis from verified PDF evidence — not generative AI output.</em></p>'
+      ? askRetrieval?.evidenceSource === 'html_article_v2'
+        ? '<p class="ri-muted"><em>Deterministic source-grounded synthesis from verified FCA webpage evidence — not generative AI output.</em></p>'
+        : '<p class="ri-muted"><em>Deterministic source-grounded synthesis from verified catalogue evidence — not generative AI output.</em></p>'
       : '<p class="ri-muted"><em>AI SYNTHESIS — not regulator wording</em></p>';
+  const evidenceCountLabel =
+    askRetrieval?.evidenceSource === 'pdf_primary_v1'
+      ? `${askRetrieval?.totalMatchingRecords ?? 0} PDF page citations`
+      : askRetrieval?.evidenceSource === 'html_article_v2'
+        ? `${askRetrieval?.totalMatchingRecords ?? a?.citations?.length ?? 0} webpage citation(s)`
+        : `${askRetrieval?.totalMatchingRecords ?? askRetrieval?.resultCount ?? 0} matching records`;
   return `<div data-ask-ri-result data-provider-calls="${providerCalls}"${supportedPredicate}>
     ${restoredBanner}
     ${modeBadge(a)}
@@ -278,7 +299,7 @@ function renderAskResult(state, last) {
     ${questionLine}
     ${interpreted}
     ${actionStatusLine}
-    <p class="ri-muted">Evidence confidence: ${esc(formatEvidenceConfidence(a))} · ${esc(retrieval?.evidenceSource === 'pdf_primary_v1' ? `${askRetrieval?.totalMatchingRecords ?? 0} PDF page citations` : `${askRetrieval?.totalMatchingRecords ?? askRetrieval?.resultCount ?? 0} matching records`)}${askRetrieval?.evidenceDisplayTruncated ? ` · showing ${askRetrieval?.displayedEvidenceRecords ?? 0}` : ''}</p>
+    <p class="ri-muted">Evidence confidence: ${esc(formatEvidenceConfidence(a))} · ${esc(evidenceCountLabel)}${askRetrieval?.evidenceDisplayTruncated ? ` · showing ${askRetrieval?.displayedEvidenceRecords ?? 0}` : ''}</p>
     <h4>Answer</h4>
     <p>${esc(p.answer || a.summary || '')}</p>
     ${synthesisNote}

@@ -3,6 +3,8 @@ import { AI_FRESHNESS, AI_REVIEW_STATUS } from './ai/enums.js';
 import { canAskRi, canApproveExecutiveSummary, isAuditorReadOnly } from './ai/persona-ai.js';
 import { formatActionOverdueCustomerCopy } from './ai/ask-ri-provenance.js';
 import { SUPPORTED_QUESTION_EXAMPLES } from './ai/ri-interpreted-as.js';
+import { isConnectedBackendActive, isConnectedModeIntent } from './platform/connected-mode.js';
+import { connectedCatalogueBanner } from './platform/connected-catalogue.js';
 
 function formatEvidenceConfidence(analysis) {
   const v = analysis?.evidenceConfidence;
@@ -18,11 +20,47 @@ const SUGGESTED = [
   'What regulatory changes currently affect the Banking sector, and which obligations are linked?',
 ];
 
+const CONNECTED_SUGGESTED = [
+  'What changes is the FCA proposing in CP26/38, and which financial crime controls may be affected?',
+  'How many open obligations are there?',
+  'What regulatory changes are recorded for our organisation?',
+];
+
 function modeBadge(analysis) {
   if (!analysis) return '';
+  if (analysis.providerMode === 'PRODUCTION') {
+    return '<span class="ri-ai-mode ri-ai-mode--live">PRODUCTION ASK RI</span>';
+  }
   if (analysis.providerMode === 'FIXTURE') return '<span class="ri-ai-mode ri-ai-mode--fixture">AI FIXTURE</span>';
   if (analysis.providerMode === 'OPENAI') return '<span class="ri-ai-mode ri-ai-mode--live">AI LIVE</span>';
   return '';
+}
+
+function renderCitationRow(c) {
+  const pubId = c.sourceRecordId || c.publicationId;
+  const ref = c.publicationReference || c.recordId || c.publicationTitle || 'Source';
+  const regulator =
+    c.regulatorShortName || (c.citationKind || '').split('—')[0]?.trim() || 'Regulator';
+  const section =
+    c.sectionReference && c.citationType === 'html_article_v2'
+      ? ` · ${esc(String(c.sectionReference))}`
+      : '';
+  const page =
+    c.physicalPageNumber != null ? ` · physical page ${esc(String(c.physicalPageNumber))}` : '';
+  const title = c.publicationTitle && c.publicationTitle !== ref ? ` (${esc(c.publicationTitle)})` : '';
+  const pubLink = pubId
+    ? `<a href="#/publication/${esc(pubId)}">${esc(regulator)} — ${esc(ref)}</a>`
+    : c.sourceUrl
+      ? `<a href="${esc(c.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(regulator)} — ${esc(ref)}</a>`
+      : `${esc(regulator)} — ${esc(ref)}`;
+  const excerpt = (c.excerpt || '').slice(0, 220);
+  const kind =
+    c.citationType === 'html_article_v2'
+      ? 'FCA webpage evidence'
+      : c.citationType === 'primary_pdf' || /PDF/i.test(c.citationKind || '')
+        ? 'Primary PDF evidence'
+        : c.citationKind || 'Citation';
+  return `<li><strong>${esc(kind)}</strong> · ${pubLink}${title}${section}${page}${excerpt ? ` — ${esc(excerpt)}` : ''}</li>`;
 }
 
 function resolveAskRetrieval(last) {
@@ -76,7 +114,18 @@ function evidenceReason(retrieval, id) {
   return raw || id;
 }
 
-function renderEvidenceUsed(retrieval) {
+function renderEvidenceUsed(retrieval, analysis) {
+  if (
+    (retrieval?.evidenceSource === 'pdf_primary_v1' || retrieval?.evidenceSource === 'html_article_v2') &&
+    analysis?.citations?.length
+  ) {
+    const label =
+      retrieval.evidenceSource === 'html_article_v2'
+        ? `${analysis.citations.length} FCA webpage citation(s)`
+        : `${analysis.citations.length} primary PDF page citation(s)`;
+    return `<p class="ri-muted" data-ask-ri-evidence-count data-count="${analysis.citations.length}"><strong>${label}</strong></p>
+      <ul class="ri-list">${analysis.citations.map((c) => renderCitationRow(c)).join('')}</ul>`;
+  }
   const pred = resolvePredicateEvaluation(retrieval);
   if (pred?.predicateEvaluationComplete) {
     const cand = pred.candidateCount ?? 0;
@@ -120,7 +169,31 @@ function renderEvidenceUsed(retrieval) {
 }
 
 function renderAskResult(state, last) {
-  if (!last) return '<p class="ri-muted">Ask a question to retrieve evidence-backed intelligence.</p>';
+  if (!last && !state._askRiPending) {
+    return '<p class="ri-muted">Ask a question to retrieve evidence-backed intelligence.</p>';
+  }
+  if (state._askRiPending) {
+    const q = state._askRiLastQuestion || state._askRiDraft || '';
+    return `<div data-ask-ri-result class="ri-ask-ri-processing" data-ask-ri-pending="true" data-provider-calls="0">
+      <p><strong>Processing your question…</strong></p>
+      ${q ? `<p class="ri-muted" data-ask-ri-submitted-question><strong>Question:</strong> ${esc(q)}</p>` : ''}
+    </div>`;
+  }
+  if (last.authError) {
+    return `<div data-ask-ri-result class="ri-ai-auth-error" data-ask-ri-auth-error="true" data-provider-calls="0">
+      <p><strong>Authentication or permission required</strong></p>
+      <p class="ri-muted">${esc(last.message || 'You need Ask RI read access for this organisation.')}</p>
+      ${last.question ? `<p class="ri-muted"><strong>Question:</strong> ${esc(last.question)}</p>` : ''}
+    </div>`;
+  }
+  if (last.backendError || last.ok === false) {
+    return `<div data-ask-ri-result class="ri-ai-backend-error" data-ask-ri-backend-error="true" data-provider-calls="0">
+      <p><strong>Ask RI could not complete</strong></p>
+      <p class="ri-muted">${esc(last.message || 'The server could not process this question. No demo answer is shown in connected mode.')}</p>
+      ${last.errorCode ? `<p class="ri-muted">Reference: ${esc(last.errorCode)}</p>` : ''}
+      ${last.question ? `<p class="ri-muted"><strong>Question:</strong> ${esc(last.question)}</p>` : ''}
+    </div>`;
+  }
   if (last.unresolved) {
     const retrieval = resolveAskRetrieval(last);
     const interpreted = retrieval?.interpretedAs
@@ -135,6 +208,13 @@ function renderAskResult(state, last) {
       ${interpreted}
       <p class="ri-muted">Supported question structures include:</p>
       <ul class="ri-list">${examples}</ul>
+    </div>`;
+  }
+  if (last.technicalError) {
+    return `<div data-ask-ri-result class="ri-ai-technical-error" data-ask-ri-technical-error="true" data-provider-calls="0">
+      <p><strong>Technical evidence retrieval error</strong></p>
+      <p class="ri-muted">${esc(last.message || 'Verified publication evidence could not be loaded from the server.')}</p>
+      ${last.question ? `<p class="ri-muted"><strong>Question:</strong> ${esc(last.question)}</p>` : ''}
     </div>`;
   }
   if (last.insufficient) {
@@ -192,23 +272,43 @@ function renderAskResult(state, last) {
   const predEval = resolvePredicateEvaluation(resolveAskRetrieval(last));
   const supportedPredicate =
     predEval?.predicateEvaluationComplete ? ' data-ask-ri-supported-query="true"' : '';
+  const questionLine = last.question
+    ? `<p class="ri-muted" data-ask-ri-submitted-question><strong>Question:</strong> ${esc(last.question)}</p>`
+    : '';
+  const restoredBanner = last.restoredFromSession
+    ? `<p class="ri-alert" data-ask-ri-restored="true">Previous production answer restored for this browser session and organisation (not from demo fixtures).</p>`
+    : '';
+  const synthesisNote =
+    a.providerMode === 'PRODUCTION'
+      ? askRetrieval?.evidenceSource === 'html_article_v2'
+        ? '<p class="ri-muted"><em>Deterministic source-grounded synthesis from verified FCA webpage evidence — not generative AI output.</em></p>'
+        : '<p class="ri-muted"><em>Deterministic source-grounded synthesis from verified catalogue evidence — not generative AI output.</em></p>'
+      : '<p class="ri-muted"><em>AI SYNTHESIS — not regulator wording</em></p>';
+  const evidenceCountLabel =
+    askRetrieval?.evidenceSource === 'pdf_primary_v1'
+      ? `${askRetrieval?.totalMatchingRecords ?? 0} PDF page citations`
+      : askRetrieval?.evidenceSource === 'html_article_v2'
+        ? `${askRetrieval?.totalMatchingRecords ?? a?.citations?.length ?? 0} webpage citation(s)`
+        : `${askRetrieval?.totalMatchingRecords ?? askRetrieval?.resultCount ?? 0} matching records`;
   return `<div data-ask-ri-result data-provider-calls="${providerCalls}"${supportedPredicate}>
+    ${restoredBanner}
     ${modeBadge(a)}
-    <span class="ri-ai-review">SOURCE-GROUNDED · ${esc(a.reviewStatus)} · HUMAN REVIEW REQUIRED</span>
+    <span class="ri-ai-review">SOURCE-GROUNDED · Human review required</span>
     ${outdated}
     ${asOfBanner}
+    ${questionLine}
     ${interpreted}
     ${actionStatusLine}
-    <p class="ri-muted">Evidence confidence: ${esc(formatEvidenceConfidence(a))} · Retrieved: ${esc(askRetrieval?.totalMatchingRecords ?? askRetrieval?.resultCount ?? 0)} matching records${askRetrieval?.evidenceDisplayTruncated ? ` · showing ${askRetrieval?.displayedEvidenceRecords ?? 0}` : ''}</p>
+    <p class="ri-muted">Evidence confidence: ${esc(formatEvidenceConfidence(a))} · ${esc(evidenceCountLabel)}${askRetrieval?.evidenceDisplayTruncated ? ` · showing ${askRetrieval?.displayedEvidenceRecords ?? 0}` : ''}</p>
     <h4>Answer</h4>
     <p>${esc(p.answer || a.summary || '')}</p>
-    <p class="ri-muted"><em>AI SYNTHESIS — not regulator wording</em></p>
+    ${synthesisNote}
     <h4>Key findings</h4>
     <ul>${(p.keyFindings || []).map((f) => `<li>${esc(f)}</li>`).join('') || '<li class="ri-muted">—</li>'}</ul>
     <h4>Uncertainties</h4>
     <ul>${(p.uncertainties || a.uncertainties || []).map((u) => `<li>${esc(u)}</li>`).join('')}</ul>
     <h4>Source evidence</h4>
-    <ul>${(a.citations || []).map((c) => `<li>${esc(c.citationKind)} · ${esc(c.recordId || c.sourceRecordId)} — ${esc((c.excerpt || '').slice(0, 100))}</li>`).join('')}</ul>
+    <ul>${(a.citations || []).map((c) => renderCitationRow(c)).join('') || '<li class="ri-muted">—</li>'}</ul>
   </div>`;
 }
 
@@ -247,29 +347,57 @@ function renderBoardPanel(state) {
   </section>`;
 }
 
+function renderConnectedDemoPanelsUnavailable() {
+  return `<section class="ri-panel ri-panel--compact">
+    <h3>Compare regulatory versions / Board summary</h3>
+    <p class="ri-muted">Fixture comparison and board summary drafts are demo-only. Connected mode uses production Ask RI Q&amp;A only.</p>
+  </section>`;
+}
+
 export function renderAskRiPage(state, { lastAsk } = {}) {
+  const connected = isConnectedBackendActive(state);
+  const connectedIntent = isConnectedModeIntent(state);
   const canQuery = canAskRi(state);
-  const suggestions = SUGGESTED.map(
-    (q) => `<button type="button" class="ri-btn ri-btn--ghost ri-btn--sm" data-ask-ri-suggest>${esc(q)}</button>`
-  ).join(' ');
+  const suggestionList = connectedIntent ? CONNECTED_SUGGESTED : SUGGESTED;
+  const suggestions = suggestionList
+    .map((q) => `<button type="button" class="ri-btn ri-btn--ghost ri-btn--sm" data-ask-ri-suggest>${esc(q)}</button>`)
+    .join(' ');
   const last = lastAsk || state._lastAskRi;
   const retrieval = resolveAskRetrieval(last);
-  return `${pageHeader('Ask RI', 'Evidence-backed regulatory intelligence — not a generic chatbot.')}
+  const subtitle = connected
+    ? 'Production Ask RI — tenant-scoped RI data and verified publication PDF evidence (read-only).'
+    : connectedIntent
+      ? 'Connected mode — production Ask RI only (reconnect if the backend session was lost).'
+      : 'Evidence-backed regulatory intelligence — not a generic chatbot.';
+  const pending = state._askRiPending === true;
+  const draft = state._askRiDraft || '';
+  const showStandaloneEvidence =
+    !last?.analysis || last.insufficient || last.unresolved || last.technicalError;
+  const evidenceBlock = showStandaloneEvidence
+    ? `<h3>Evidence used</h3>
+    <div data-ask-ri-evidence>${renderEvidenceUsed(retrieval, last?.analysis)}</div>`
+    : '';
+  return `${pageHeader('Ask RI', subtitle)}
+  ${connected ? connectedCatalogueBanner(state) : connectedIntent ? `<p class="ri-alert">Connected mode: demonstration Ask RI fixtures are disabled. Reconnect from Administration → Platform architecture if questions cannot reach the server.</p>` : ''}
   <section class="ri-panel ri-ask-ri" data-ask-ri-panel>
     <h2>Ask RI</h2>
-    <p class="ri-muted">Retrieval runs before AI. Answers use verified official sources and approved RI records only.</p>
+    <p class="ri-muted">${
+      connected
+        ? 'Questions run on the server via the same engine as /ri/ask. No mock fixture AI in connected mode.'
+        : connectedIntent
+          ? 'Questions use the production Ask RI API when the backend session is active. No fixture AI runs in connected mode.'
+          : 'Retrieval runs before AI. Answers use verified official sources and approved RI records only.'
+    }</p>
     <div class="ri-ask-ri-form">
       <label for="ask-ri-input">Question</label>
-      <textarea id="ask-ri-input" rows="3" class="ri-input" ${canQuery ? '' : 'disabled'}></textarea>
-      <button type="button" class="ri-btn ri-btn--primary" data-ask-ri-submit ${canQuery ? '' : 'disabled'}>Ask</button>
+      <textarea id="ask-ri-input" rows="3" class="ri-input" ${canQuery && !pending ? '' : 'disabled'}>${esc(draft)}</textarea>
+      <button type="button" class="ri-btn ri-btn--primary" data-ask-ri-submit ${canQuery && !pending ? '' : 'disabled'}>${pending ? 'Processing…' : 'Ask'}</button>
     </div>
     <div class="ri-ask-ri-suggestions"><p class="ri-muted">Suggested questions</p>${suggestions}</div>
-    <h3>Evidence used</h3>
-    <div data-ask-ri-evidence>${renderEvidenceUsed(retrieval)}</div>
+    ${evidenceBlock}
     ${renderAskResult(state, last)}
   </section>
-  ${renderComparePanel(state)}
-  ${renderBoardPanel(state)}`;
+  ${connectedIntent ? renderConnectedDemoPanelsUnavailable() : `${renderComparePanel(state)}${renderBoardPanel(state)}`}`;
 }
 
 function pageHeader(title, subtitle) {
