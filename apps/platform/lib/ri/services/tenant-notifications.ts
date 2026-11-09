@@ -94,23 +94,34 @@ export async function tryCreateTenantNotification(
   }
 }
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+/** Max tenant notification rows scanned per Attention Centre search (paginated). */
+export const NOTIFICATION_SEARCH_SCAN_CAP = 5000;
+export const NOTIFICATION_SEARCH_PAGE_SIZE = 500;
+
+export type ListTenantNotificationOptions = {
+  limit?: number;
+  unreadOnly?: boolean;
+  severity?: TenantNotificationSeverity | null;
+  notificationType?: TenantNotificationType | null;
+  dateFrom?: string | null;
+  dateTo?: string | null;
+  sortAsc?: boolean;
+  fetchLimit?: number;
+  offset?: number;
+  entityId?: string | null;
+};
+
 export async function listTenantNotifications(
   supabase: SupabaseClient,
   organisationId: string,
   userId: string,
-  options: {
-    limit?: number;
-    unreadOnly?: boolean;
-    severity?: TenantNotificationSeverity | null;
-    notificationType?: TenantNotificationType | null;
-    dateFrom?: string | null;
-    dateTo?: string | null;
-    search?: string | null;
-    sortAsc?: boolean;
-    fetchLimit?: number;
-  } = {},
+  options: ListTenantNotificationOptions = {},
 ): Promise<Array<TenantNotificationRow & { effectiveRead: boolean }>> {
   const limit = Math.min(options.fetchLimit ?? options.limit ?? 100, 500);
+  const offset = Math.max(options.offset ?? 0, 0);
   let query = supabase
     .from('tenant_notifications')
     .select('*')
@@ -129,17 +140,13 @@ export async function listTenantNotifications(
   if (options.dateTo) {
     query = query.lte('created_at', `${options.dateTo}T23:59:59.999Z`);
   }
-  if (options.search?.trim()) {
-    const pattern = options.search.trim().replace(/[%_\\,]/g, '').slice(0, 120);
-    const ilike = `%${pattern}%`;
-    query = query.or(
-      `message.ilike.${ilike},title.ilike.${ilike},entity_id.ilike.${ilike},notification_type.ilike.${ilike}`,
-    );
+  if (options.entityId) {
+    query = query.eq('entity_id', options.entityId);
   }
 
   const { data, error } = await query
     .order('created_at', { ascending: options.sortAsc === true })
-    .limit(limit);
+    .range(offset, offset + limit - 1);
   if (error) throw new Error(error.message);
   const rows = (data ?? []) as TenantNotificationRow[];
   const broadcastIds = rows.filter((r) => !r.recipient_user_id).map((r) => r.id);
@@ -163,6 +170,45 @@ export async function listTenantNotifications(
     return enriched.filter((r) => !r.effectiveRead);
   }
   return enriched;
+}
+
+/**
+ * Load tenant notifications for Attention Centre search.
+ * Search text matching runs in the lab API layer — not via PostgREST ilike on uuid/enum columns.
+ */
+export async function listTenantNotificationsForAttentionSearch(
+  supabase: SupabaseClient,
+  organisationId: string,
+  userId: string,
+  options: ListTenantNotificationOptions & { search?: string | null },
+): Promise<Array<TenantNotificationRow & { effectiveRead: boolean }>> {
+  const search = options.search?.trim() || null;
+  const { search: _drop, ...base } = options;
+
+  if (!search) {
+    return listTenantNotifications(supabase, organisationId, userId, base);
+  }
+
+  if (UUID_RE.test(search)) {
+    return listTenantNotifications(supabase, organisationId, userId, {
+      ...base,
+      entityId: search,
+      fetchLimit: 100,
+      offset: 0,
+    });
+  }
+
+  const all: Array<TenantNotificationRow & { effectiveRead: boolean }> = [];
+  for (let off = 0; off < NOTIFICATION_SEARCH_SCAN_CAP; off += NOTIFICATION_SEARCH_PAGE_SIZE) {
+    const chunk = await listTenantNotifications(supabase, organisationId, userId, {
+      ...base,
+      fetchLimit: NOTIFICATION_SEARCH_PAGE_SIZE,
+      offset: off,
+    });
+    all.push(...chunk);
+    if (chunk.length < NOTIFICATION_SEARCH_PAGE_SIZE) break;
+  }
+  return all;
 }
 
 export async function markTenantNotificationRead(

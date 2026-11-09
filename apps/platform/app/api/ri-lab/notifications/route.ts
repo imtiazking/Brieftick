@@ -7,7 +7,7 @@ import { applyLabNotificationQueryFilters, parseLabNotificationQuery } from '@/l
 import {
   countUnreadTenantNotifications,
   listAiNotificationEventsForTenant,
-  listTenantNotifications,
+  listTenantNotificationsForAttentionSearch,
   markTenantNotificationRead,
   type TenantNotificationType,
 } from '@/lib/ri/services/tenant-notifications';
@@ -42,15 +42,24 @@ export async function GET(request: Request) {
     const tenantType: TenantNotificationType | null =
       query.type && query.type !== 'AI_REVIEW' ? query.type : null;
 
-    const rows = await listTenantNotifications(ctx.supabase, ctx.organisationId, ctx.userId, {
-      fetchLimit: filteredMode ? 500 : query.limit + query.offset,
-      notificationType: tenantType,
-      severity: query.severity,
-      dateFrom: query.dateFrom,
-      dateTo: query.dateTo,
-      search: query.search,
-      sortAsc: query.sort === 'oldest',
-    });
+    let rows;
+    try {
+      rows = await listTenantNotificationsForAttentionSearch(ctx.supabase, ctx.organisationId, ctx.userId, {
+        fetchLimit: query.search ? undefined : Math.min(query.limit + query.offset, 500),
+        notificationType: tenantType,
+        severity: query.severity,
+        dateFrom: query.dateFrom,
+        dateTo: query.dateTo,
+        search: query.search,
+        sortAsc: query.sort === 'oldest',
+      });
+    } catch (loadErr) {
+      if (query.search) {
+        console.error('[ri-lab] notification_search_failed', loadErr instanceof Error ? loadErr.message.slice(0, 200) : 'unknown');
+        throw new Error('notification_search_failed');
+      }
+      throw loadErr;
+    }
     const tenantNotes = rows.map((row) =>
       mapTenantNotificationToLabView(row, { read: row.effectiveRead }),
     );

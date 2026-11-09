@@ -45,10 +45,29 @@ if (!gov.includes("'Provider'")) {
 }
 
 const notifRoute = readFileSync(join(platform, 'app/api/ri-lab/notifications/route.ts'), 'utf8');
+const tenantSvc = readFileSync(join(platform, 'lib/ri/services/tenant-notifications.ts'), 'utf8');
 if (!notifRoute.includes('parseLabNotificationQuery') || !notifRoute.includes('totalMatching')) {
   failTest('ri_notif_api', 'notifications API must support tenant-scoped query');
 } else {
   pass('ri_notif_api', 'server-side notification query');
+}
+if (tenantSvc.includes('entity_id.ilike') || tenantSvc.includes('notification_type.ilike')) {
+  failTest('ri_notif_db_search', 'must not ilike uuid/enum notification columns');
+} else {
+  pass('ri_notif_db_search', 'search avoids invalid PostgREST ilike on uuid/enum');
+}
+if (
+  !tenantSvc.includes('listTenantNotificationsForAttentionSearch') ||
+  !tenantSvc.includes('NOTIFICATION_SEARCH_SCAN_CAP')
+) {
+  failTest('ri_notif_paginate', 'paginated tenant scan for text search');
+} else {
+  pass('ri_notif_paginate', 'attention search pagination cap');
+}
+if (!readFileSync(join(platform, 'lib/ri/lab-api/errors.ts'), 'utf8').includes('notification_search_failed')) {
+  failTest('ri_notif_error', 'user-facing notification search error mapping');
+} else {
+  pass('ri_notif_error', 'notification_search_failed response');
 }
 
 const opViews = readFileSync(join(lab, 'js/operational-views.js'), 'utf8');

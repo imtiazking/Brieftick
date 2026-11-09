@@ -83,6 +83,16 @@ export function labApiErrorResponse(err: unknown): NextResponse {
   if (err instanceof Error && err.message === 'client_provenance_rejected') {
     return NextResponse.json({ ok: false, error: 'client_provenance_rejected' }, { status: 400 });
   }
+  if (err instanceof Error && err.message === 'notification_search_failed') {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: 'notification_search_failed',
+        message: 'Unable to search notifications. Please try again.',
+      },
+      { status: 503 },
+    );
+  }
   if (err instanceof Error && err.message === 'not_found') {
     return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 });
   }
