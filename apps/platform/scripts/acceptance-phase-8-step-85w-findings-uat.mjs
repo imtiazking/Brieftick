@@ -177,6 +177,21 @@ if (!linkPan.includes('Relationship load failed') || !linkPan.includes('loadStat
 } else {
   pass('link_panel_errors', 'relationship failure vs empty');
 }
+if (
+  !linkPan.includes('renderConnectedFindingRelationshipsPanel') ||
+  linkPan.includes('if (!isConnectedFindingWritesEnabled(getState())) return \'\';\n  if (loadState.loading)')
+) {
+  failTest('readonly_relationships', 'relationships panel must render without finding write capability');
+} else {
+  pass('readonly_relationships', 'read-only sessions see risk/control linkage');
+}
+
+const assuranceDetail = readFileSync(join(lab, 'js/assurance-views.js'), 'utf8');
+if (!assuranceDetail.includes('renderConnectedFindingRelationshipsPanel(id, f, linkPanelState)')) {
+  failTest('detail_relationships', 'finding detail must always render relationships panel when connected');
+} else {
+  pass('detail_relationships', 'connected detail includes relationships');
+}
 
 const migSql = readFileSync(
   join(platform, 'supabase/migrations/20261109140000_findings_metadata_provenance.sql'),

@@ -56,6 +56,7 @@ import {
   connectedCatalogueBanner,
   findingHasRelationshipHints,
   getConnectedCatalogue,
+  isConnectedCatalogueReady,
 } from './platform/connected-catalogue.js';
 import {
   getEntityWorkflowEventsLoadError,
@@ -65,7 +66,7 @@ import { connectedWorkModeBanner } from './platform/connected-display.js';
 import { isConnectedFindingWritesEnabled } from './platform/connected-mode.js';
 import {
   renderConnectedFindingCreatePanel,
-  renderConnectedFindingLinkPanel,
+  renderConnectedFindingRelationshipsPanel,
   renderConnectedFindingRemediationPanel,
   renderConnectedFindingWorkflowPanel,
 } from './platform/connected-finding-panels.js';
@@ -398,6 +399,11 @@ export function viewFinding(id) {
     const fromList =
       cat.findings?.find((x) => x.id === id) || cat.authorisedUatFindings?.find((x) => x.id === id);
     if (!fromList && !detail) {
+      if (isConnectedCatalogueReady(s)) {
+        return `${connectedCatalogueBanner(s)}
+          ${connectedReadOnlyGovernanceBanner(s)}
+          ${notFoundState('Assurance Finding', id)}`;
+      }
       return `${connectedCatalogueBanner(s)}
         ${connectedReadOnlyGovernanceBanner(s)}
         <p class="ri-muted" data-connected-finding-loading="true">Loading tenant finding from staging…</p>`;
@@ -411,10 +417,10 @@ export function viewFinding(id) {
     const detailInflight = Boolean(cat._detailInflight?.[`findingDetailsById:${id}`]);
     const relationshipsResolved =
       findingHasRelationshipHints(f) || detail?._detailHydrated === true || Boolean(detail?._detailLoadError);
-    const detailPending = !relationshipsResolved && (detailInflight || detail?._detailHydrated !== true);
+    const detailPending = !relationshipsResolved && detailInflight;
     const detailError = detail?._detailLoadError;
     const linkPanelState = {
-      loading: detailPending && !detailError,
+      loading: detailPending && !detailError && !findingHasRelationshipHints(f),
       error: detailError || null,
     };
     const auditLoading = isEntityWorkflowEventsLoading(s, 'finding', id);
@@ -433,8 +439,8 @@ export function viewFinding(id) {
         <dt>Due</dt><dd>${formatDate(f.dueDate)}</dd>
         <dt>Description</dt><dd>${esc(f.description || '—')}</dd>
       </dl>
-      ${writes ? renderConnectedFindingLinkPanel(id, f, linkPanelState) : ''}
-      ${writes ? renderConnectedFindingRemediationPanel(id, f) : '<p class="ri-muted">Finding writes disabled in this session.</p>'}
+      ${renderConnectedFindingRelationshipsPanel(id, f, linkPanelState)}
+      ${writes ? renderConnectedFindingRemediationPanel(id, f) : '<p class="ri-muted">Finding status updates are read-only in this session.</p>'}
       ${renderConnectedFindingWorkflowPanel(id, { loading: auditLoading, error: auditError })}`;
   }
   const f = (s.assuranceFindings || []).find((x) => x.id === id);

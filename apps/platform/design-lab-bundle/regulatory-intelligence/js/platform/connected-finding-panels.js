@@ -32,21 +32,7 @@ export function renderConnectedFindingCreatePanel() {
   </section>`;
 }
 
-export function renderConnectedFindingLinkPanel(findingId, f, loadState = {}) {
-  if (!isConnectedFindingWritesEnabled(getState())) return '';
-  if (loadState.loading) {
-    return `<section class="ri-panel" data-connected-link-panel data-finding-id="${esc(findingId)}">
-      <h2>Risk &amp; control linkage</h2>
-      <p class="ri-muted" data-connected-finding-links-loading="true">Loading risk and control relationships from staging…</p>
-    </section>`;
-  }
-  if (loadState.error) {
-    return `<section class="ri-panel ri-panel--warn" data-connected-link-panel data-finding-id="${esc(findingId)}">
-      <h2>Risk &amp; control linkage</h2>
-      <p role="alert">Relationship load failed: ${esc(loadState.error)}</p>
-      <p class="ri-muted">Use <strong>Retry load</strong> above to refetch authoritative finding detail.</p>
-    </section>`;
-  }
+function renderFindingRelationshipBody(findingId, f) {
   const controlIds =
     (f?.controlIds?.length ? f.controlIds : null) ||
     (f?.parentControlId ? [f.parentControlId] : []);
@@ -67,16 +53,44 @@ export function renderConnectedFindingLinkPanel(findingId, f, loadState = {}) {
   const risk = riskId ? getRisk(riskId) : null;
   const riskLine = riskId
     ? `<p>Related risk: <a href="#/risk/${esc(riskId)}">${esc(risk?.title || `${String(riskId).slice(0, 8)}…`)}</a></p>`
-    : '';
-  return `<section class="ri-panel" data-connected-link-panel data-finding-id="${esc(findingId)}">
-    <h2>Risk &amp; control linkage</h2>
-    ${riskLine || '<p class="ri-muted">No related risk recorded on finding metadata.</p>'}
-    ${controls ? `<p>Linked controls:</p><ul>${controls}</ul>` : '<p class="ri-muted">No linked controls yet.</p>'}
+    : '<p class="ri-muted">No related risk recorded on finding metadata.</p>';
+  const writeForm = isConnectedFindingWritesEnabled(getState())
+    ? `<div class="ri-form ri-form--compact">
     <label>Control UUID
       <input data-connected-link-control-target placeholder="Full control UUID" autocomplete="off" />
     </label>
     <button type="button" class="ri-btn ri-btn--primary" data-ri-post-link data-link-type="finding_control" data-left-id="${esc(findingId)}">Link control</button>
+  </div>`
+    : '';
+  return `${riskLine}
+    ${controls ? `<p>Linked control${linked.length === 1 ? '' : 's'}:</p><ul>${controls}</ul>` : '<p class="ri-muted">No linked controls yet.</p>'}
+    ${writeForm}`;
+}
+
+/** Read-only + write linkage UI (always shown when connected finding detail renders). */
+export function renderConnectedFindingRelationshipsPanel(findingId, f, loadState = {}) {
+  if (loadState.loading) {
+    return `<section class="ri-panel" data-connected-link-panel data-finding-id="${esc(findingId)}">
+      <h2>Risk &amp; control linkage</h2>
+      <p class="ri-muted" data-connected-finding-links-loading="true">Loading risk and control relationships from staging…</p>
+    </section>`;
+  }
+  if (loadState.error) {
+    return `<section class="ri-panel ri-panel--warn" data-connected-link-panel data-finding-id="${esc(findingId)}">
+      <h2>Risk &amp; control linkage</h2>
+      <p role="alert">Relationship load failed: ${esc(loadState.error)}</p>
+      <p class="ri-muted">Use <strong>Retry load</strong> above to refetch authoritative finding detail.</p>
+    </section>`;
+  }
+  return `<section class="ri-panel" data-connected-link-panel data-finding-id="${esc(findingId)}">
+    <h2>Risk &amp; control linkage</h2>
+    ${renderFindingRelationshipBody(findingId, f)}
   </section>`;
+}
+
+/** @deprecated use renderConnectedFindingRelationshipsPanel */
+export function renderConnectedFindingLinkPanel(findingId, f, loadState = {}) {
+  return renderConnectedFindingRelationshipsPanel(findingId, f, loadState);
 }
 
 export function renderConnectedFindingWorkflowPanel(findingId, loadState = {}) {

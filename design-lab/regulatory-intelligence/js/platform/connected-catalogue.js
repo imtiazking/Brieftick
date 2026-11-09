@@ -137,7 +137,11 @@ function isOperationalLabRow(row) {
 }
 
 function isAuthorisedUatLabRow(row) {
-  return row?.dataProvenance === 'uat_authorised' || row?.labClassification === 'uat_authorised';
+  return (
+    row?.dataProvenance === 'uat_authorised' ||
+    row?.labClassification === 'uat_authorised' ||
+    row?.recordProvenance === 'uat_authorised'
+  );
 }
 
 /** Merge risk row into operational vs authorised UAT registers (BUS-UAT-012). */
@@ -947,11 +951,18 @@ export function scheduleConnectedFindingDetailFetch(state, findingId) {
   const fromList =
     cat.findings?.find((f) => f.id === findingId) ||
     cat.authorisedUatFindings?.find((f) => f.id === findingId);
+  const token = `findingDetailsById:${findingId}`;
+  const findingInflight = coerceInflightPromise(cat._detailInflight?.[token]);
+  if (findingInflight) return findingInflight;
   const cached = cat.findingDetailsById?.[findingId];
-  if (fromList && findingCatalogueRowNeedsDetailLineage(fromList)) {
-    if (cached?._detailHydrated === true && !findingDetailHasLineage(cached)) {
-      delete cat.findingDetailsById[findingId];
-    }
+  if (
+    fromList &&
+    findingCatalogueRowNeedsDetailLineage(fromList) &&
+    cached?._detailHydrated === true &&
+    !findingDetailHasLineage(cached) &&
+    !cached?._detailLoadError
+  ) {
+    delete cat.findingDetailsById[findingId];
   }
   return scheduleConnectedDetailFetch(state, 'findingDetailsById', findingId, fetchConnectedFindingDetail);
 }
