@@ -8,7 +8,7 @@
  *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --dry-run
  *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --model=claude-haiku-5-5 --out=...
  */
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { loadLocalEnvFile } from '../lib/ri/reasoner/load-local-env.mjs';
 import { runEvalSuiteV2 } from '../lib/ri/eval/run-eval-suite-v2.mjs';
@@ -17,27 +17,7 @@ import { resolveV2EvalModel, V2_EVAL_BUDGET_USD } from '../lib/ri/reasoner/anthr
 import { isV2LiveReasoningEnabled } from '../lib/ri/reasoner/invoke-anthropic-reasoner.mjs';
 import { execSync } from 'node:child_process';
 
-const PLATFORM_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const RUNS_DIR = join(REPO_ROOT, 'docs', 'eval', 'runs');
-
-function loadLocalEnvFile() {
-  const candidates = [join(PLATFORM_ROOT, '.env.local'), join(PLATFORM_ROOT, '.env')];
-  for (const path of candidates) {
-    if (!existsSync(path)) continue;
-    for (const line of readFileSync(path, 'utf8').split('\n')) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const eq = trimmed.indexOf('=');
-      if (eq <= 0) continue;
-      const key = trimmed.slice(0, eq).trim();
-      let val = trimmed.slice(eq + 1).trim();
-      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-        val = val.slice(1, -1);
-      }
-      if (!process.env[key]) process.env[key] = val;
-    }
-  }
-}
 
 function sanitizeEvalReport(report) {
   const slimResults = (report.results || []).map((r) => ({
