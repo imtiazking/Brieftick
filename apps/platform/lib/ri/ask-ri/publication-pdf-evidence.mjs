@@ -11,6 +11,7 @@ import {
   rankEvidenceBlocksForQuestion,
   scorePublicationQuestionMatch,
   selectBestPublicationPdfEvidence,
+  selectRankedBlocksForCitations,
   STEP80_ASK_RI_SAMPLE_QUESTION,
 } from './publication-pdf-question-match.mjs';
 
@@ -125,24 +126,34 @@ export function answerAskRiFromPublicationPdfEvidence(publicationEvidence, quest
     };
   }
 
-  const proposals = validated.accepted.filter((f) => f.regulatoryStatus === 'proposed');
-
   const citationSource = buildPdfCitationContext(publicationEvidenceCtx, analysis);
 
-  const citationsFromFindings = proposals.slice(0, 5).map((f) =>
-    formatPrimaryPdfCitation(citationSource, f),
-  );
-
-  const citationsFromBlocks = rankedBlocks.slice(0, 5).map((r) =>
+  const citationRanked = selectRankedBlocksForCitations(rankedBlocks, 5);
+  const citationsFromBlocks = citationRanked.map((r) =>
     formatPrimaryPdfCitation(citationSource, {
       sourcePdfEvidenceId: r.block.documentEvidenceId,
       supportingPageNumber: r.block.pageNumber,
       supportingExcerpt: r.block.extractedText,
-      regulatoryStatus: analysis.regulatoryStatus?.phase === 'consultation' ? 'proposed' : 'source_supported',
+      sectionReference: r.block.sectionReference,
+      regulatoryStatus: analysis.consultationPreserved === true ? 'proposed' : 'finalised_guidance',
     }),
   );
 
-  const citations = dedupeCitations([...citationsFromFindings, ...citationsFromBlocks]).slice(0, 8);
+  const proposals =
+    analysis.consultationPreserved === true
+      ? validated.accepted.filter((f) => f.regulatoryStatus === 'proposed')
+      : [];
+  const citationsFromFindings = proposals.slice(0, 3).map((f) =>
+    formatPrimaryPdfCitation(citationSource, {
+      ...f,
+      regulatoryStatus: 'proposed',
+    }),
+  );
+
+  const citations =
+    analysis.consultationPreserved === true
+      ? dedupeCitations([...citationsFromFindings, ...citationsFromBlocks]).slice(0, 8)
+      : dedupeCitations([...citationsFromBlocks, ...citationsFromFindings]).slice(0, 8);
 
   const composed = composeSubstantivePdfAnswer({
     question,
@@ -162,7 +173,7 @@ export function answerAskRiFromPublicationPdfEvidence(publicationEvidence, quest
         providerUsed: false,
         evidenceSource: 'pdf_primary_v1',
         humanReviewStatus: 'pending_review',
-        mustNotPresentAsBindingObligation: true,
+        mustNotPresentAsBindingObligation: analysis.consultationPreserved === true,
         matchScore,
         publicationReference: publicationEvidenceCtx.publicationReference,
       },
@@ -181,9 +192,16 @@ export function answerAskRiFromPublicationPdfEvidence(publicationEvidence, quest
       providerUsed: false,
       evidenceSource: 'pdf_primary_v1',
       humanReviewStatus: 'pending_review',
-      mustNotPresentAsBindingObligation: true,
+      consultationPreserved: analysis.consultationPreserved === true,
+      mustNotPresentAsBindingObligation: analysis.consultationPreserved === true,
+      isFinalisedGuidance: analysis.isFinalisedGuidance === true,
       matchScore,
       synthesisMode: 'deterministic_source_grounded',
+      topRankedPages: citationRanked.map((r) => ({
+        pageNumber: r.block.pageNumber,
+        score: r.score,
+        sectionReference: r.block.sectionReference || null,
+      })),
     },
   };
 }
@@ -206,38 +224,75 @@ export function answerAskRiFromBestPublicationPdfEvidence(evidenceList, question
 }
 
 function buildPdfCitationContext(publicationEvidence, analysis) {
+  const meta = publicationEvidence.publicationMetadata || {};
+  const primaryPdfSourceUrl = resolvePrimaryPdfSourceUrl(publicationEvidence, meta);
   return {
     regulatoryAuthority: publicationEvidence.regulatorLabel || 'Regulatory authority',
     regulatorShortName: publicationEvidence.regulatorShortName,
     publicationTitle: publicationEvidence.publicationTitle,
     publicationReference: publicationEvidence.publicationReference,
     sourceUrl: publicationEvidence.canonicalUrl,
+    cataloguePublicationUrl: publicationEvidence.canonicalUrl,
+    primaryPdfSourceUrl,
     extractionRevisionId: publicationEvidence.extractionRevisionId,
     publicationId: publicationEvidence.publicationId,
     consultationPreserved: analysis.consultationPreserved === true,
+    isFinalisedGuidance: analysis.isFinalisedGuidance === true,
   };
+}
+
+function resolvePrimaryPdfSourceUrl(publicationEvidence, meta = {}) {
+  const candidates = [
+    meta.primaryPdfUrl,
+    meta.canonicalPdfUrl,
+    meta.primary_pdf_url,
+    publicationEvidence.primaryPdfUrl,
+    publicationEvidence.canonicalUrl,
+  ].filter(Boolean);
+  for (const u of candidates) {
+    if (/\.pdf(\?|#|$)/i.test(String(u))) return String(u).split('#')[0];
+    if (/\/publication\/finalised-guidance\//i.test(String(u))) return String(u);
+  }
+  return null;
+}
+
+function buildPrimaryPdfPageUrl(pdfUrl, pageNumber) {
+  if (!pdfUrl || pageNumber == null) return null;
+  const base = String(pdfUrl).split('#')[0];
+  return `${base}#page=${pageNumber}`;
 }
 
 function formatPrimaryPdfCitation(ctx, finding) {
   const page = finding.supportingPageNumber;
-  const status = finding.regulatoryStatus === 'proposed' ? 'consultation proposal' : finding.regulatoryStatus;
+  const status =
+    finding.regulatoryStatus === 'proposed'
+      ? 'consultation proposal'
+      : finding.regulatoryStatus === 'finalised_guidance' || ctx.isFinalisedGuidance
+        ? 'finalised FCA guidance'
+        : finding.regulatoryStatus;
   const ref = ctx.publicationReference || ctx.publicationTitle || 'Publication';
   const regulator = ctx.regulatorShortName || ctx.regulatoryAuthority || 'Regulator';
+  const primaryPdfPageUrl = buildPrimaryPdfPageUrl(ctx.primaryPdfSourceUrl, page);
+  const section = finding.sectionReference ? ` · ${finding.sectionReference}` : '';
   return {
     type: 'primary_pdf',
     regulatoryAuthority: ctx.regulatoryAuthority,
     regulatorShortName: ctx.regulatorShortName,
     publicationTitle: ctx.publicationTitle,
     publicationReference: ctx.publicationReference,
-    sourceUrl: ctx.sourceUrl,
+    sourceUrl: primaryPdfPageUrl || ctx.primaryPdfSourceUrl || ctx.sourceUrl,
+    cataloguePublicationUrl: ctx.cataloguePublicationUrl || ctx.sourceUrl,
+    primaryPdfSourceUrl: ctx.primaryPdfSourceUrl,
+    primaryPdfPageUrl,
     physicalPageNumber: page,
     pageNumber: page,
+    sectionReference: finding.sectionReference || null,
     excerpt: String(finding.supportingExcerpt || '').slice(0, 600),
     extractionRevisionId: ctx.extractionRevisionId,
     publicationId: ctx.publicationId,
     evidenceId: finding.sourcePdfEvidenceId,
     regulatoryStatus: finding.regulatoryStatus,
-    citationLabel: `${regulator} — ${ref} — physical page ${page} (${status}; PDF evidence)`,
+    citationLabel: `${regulator} — ${ref} — physical page ${page}${section} (${status}; PDF evidence)`,
     mustNotPresentAsBindingObligation: ctx.consultationPreserved,
   };
 }
@@ -253,13 +308,18 @@ function composeSubstantivePdfAnswer({ question, citationSource, analysis, valid
   const refLabel = citationSource.publicationReference || citationSource.publicationTitle || 'this publication';
   const stageLabel = analysis.consultationPreserved
     ? 'FCA consultation proposals (not final binding rules)'
-    : 'source-supported regulatory material';
+    : analysis.isFinalisedGuidance
+      ? 'FCA finalised non-Handbook guidance (source-supported)'
+      : 'source-supported regulatory material';
 
-  const proposalSummaries = validated.accepted
-    .filter((f) => f.regulatoryStatus === 'proposed' || f.factClass === 'source_supported_fact')
-    .slice(0, 4)
-    .map((f) => String(f.analysisExplanation || '').replace(/\s+/g, ' ').trim())
-    .filter(Boolean);
+  const proposalSummaries =
+    analysis.consultationPreserved === true
+      ? validated.accepted
+          .filter((f) => f.regulatoryStatus === 'proposed' || f.factClass === 'source_supported_fact')
+          .slice(0, 4)
+          .map((f) => String(f.analysisExplanation || '').replace(/\s+/g, ' ').trim())
+          .filter(Boolean)
+      : [];
 
   const parts = [];
   parts.push(
@@ -271,9 +331,11 @@ function composeSubstantivePdfAnswer({ question, citationSource, analysis, valid
       `Proposed changes and consultation themes evidenced in the PDF include: ${proposalSummaries.map((s, i) => `(${i + 1}) ${s.slice(0, 280)}${s.length > 280 ? '…' : ''}`).join(' ')}`,
     );
   } else if (rankedBlocks.length) {
-    const snippets = rankedBlocks.slice(0, 3).map((r) => {
+    const top = selectRankedBlocksForCitations(rankedBlocks, 3);
+    const snippets = top.map((r) => {
       const t = String(r.block.extractedText || '').replace(/\s+/g, ' ').trim();
-      return `page ${r.block.pageNumber}: "${t.slice(0, 160)}${t.length > 160 ? '…' : ''}"`;
+      const sect = r.block.sectionReference ? ` (${r.block.sectionReference})` : '';
+      return `physical page ${r.block.pageNumber}${sect}: "${t.slice(0, 160)}${t.length > 160 ? '…' : ''}"`;
     });
     parts.push(`Relevant verified passages include ${snippets.join('; ')}.`);
   }
@@ -282,7 +344,7 @@ function composeSubstantivePdfAnswer({ question, citationSource, analysis, valid
   const asksFairValue = /fair value|consumer duty|consumer finance/.test(q);
   if (asksFairValue && rankedBlocks.length && !proposalSummaries.length) {
     parts.push(
-      'Source passages below describe Consumer Duty fair value expectations from the primary PDF. This is not a firm-specific obligation register and does not invent compliance deadlines.',
+      'Chapter 7 (The price and value outcome) and linked paragraphs in the primary PDF describe Consumer Duty fair-value expectations. This is FCA finalised guidance — binding Consumer Duty rules remain in PRIN 2A in the Handbook. This is not a firm-specific obligation register and does not invent compliance deadlines.',
     );
   }
   const asksControls = /financial crime|control|aml|fraud|sanction|due diligence|systems and controls/.test(q);

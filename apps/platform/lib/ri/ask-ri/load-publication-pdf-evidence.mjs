@@ -291,6 +291,17 @@ export async function loadPublicationPdfEvidenceForAskRi(adminSupabase, options)
         structured,
       );
 
+      const mergedMetadata = {
+        ...(row.publication_metadata || {}),
+        publicationType: row.publication_metadata?.publicationType || pub?.publication_type || null,
+        primaryPdfUrl:
+          row.publication_metadata?.primaryPdfUrl ||
+          row.publication_metadata?.canonicalPdfUrl ||
+          (typeof pub?.canonical_url === 'string' && /\.pdf(\?|#|$)/i.test(pub.canonical_url)
+            ? pub.canonical_url
+            : null),
+      };
+
       const index = buildPublicationPdfEvidenceIndex(
         {
           revision_id: row.id,
@@ -298,7 +309,7 @@ export async function loadPublicationPdfEvidenceForAskRi(adminSupabase, options)
           publication_id: row.publication_id,
           extraction_profile: row.extraction_profile,
           raw_content_sha256: row.raw_content_sha256,
-          publication_metadata: row.publication_metadata,
+          publication_metadata: mergedMetadata,
           canonical_url: pub?.canonical_url,
           extraction_quality: row.extraction_quality,
         },

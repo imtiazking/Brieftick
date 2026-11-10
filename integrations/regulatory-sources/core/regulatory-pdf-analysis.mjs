@@ -34,7 +34,7 @@ export function analyzeRegulatoryPdfDocument(input) {
   const url = String(input.canonicalUrl || meta.canonicalUrl || '').toLowerCase();
 
   const publicationClassification = classifyPublication(meta, url, fullText);
-  const regulatoryStatus = deriveRegulatoryStatus(publicationClassification, fullText);
+  const regulatoryStatus = deriveRegulatoryStatus(publicationClassification, fullText, meta);
   const developments = extractDevelopments(fullText, regulatoryStatus);
   const applicability = inferApplicability(fullText, publicationClassification);
 
@@ -46,14 +46,29 @@ export function analyzeRegulatoryPdfDocument(input) {
     applicability,
     consultationPreserved:
       publicationClassification.primaryClass === 'consultation_paper' &&
-      regulatoryStatus.bindingObligationsDetected === false,
+      regulatoryStatus.bindingObligationsDetected === false &&
+      regulatoryStatus.isFinalisedGuidance !== true,
+    isFinalisedGuidance: regulatoryStatus.isFinalisedGuidance === true,
   };
+}
+
+function resolveFinalisedGuidance(meta, url, text) {
+  const pubType = String(
+    meta.publicationType || meta.publication_type || meta.publicationTypeLabel || '',
+  ).toLowerCase();
+  if (pubType.includes('finalised') || pubType.includes('finalized')) return true;
+  if (/publication\/finalised-guidance\//i.test(url)) return true;
+  if (/final\s+non-handbook guidance/i.test(text.slice(0, 12000))) return true;
+  return false;
 }
 
 function classifyPublication(meta, url, text) {
   const label = String(meta.publicationTypeLabel || '').toLowerCase();
+  const finalised = resolveFinalisedGuidance(meta, url, text);
   let primaryClass = 'other_regulatory_publication';
-  if (label.includes('consultation') || url.includes('consultation-papers') || /consultation paper/i.test(text)) {
+  if (finalised) {
+    primaryClass = 'guidance';
+  } else if (label.includes('consultation') || url.includes('consultation-papers') || /consultation paper/i.test(text)) {
     primaryClass = 'consultation_paper';
   } else if (/policy statement/i.test(text) || label.includes('policy statement')) {
     primaryClass = 'policy_statement';
@@ -71,9 +86,12 @@ function classifyPublication(meta, url, text) {
   };
 }
 
-function deriveRegulatoryStatus(publicationClassification, text) {
-  const isConsultation = publicationClassification.primaryClass === 'consultation_paper';
-  const proposes = /\b(propose|proposing|we propose|consultation)\b/i.test(text);
+function deriveRegulatoryStatus(publicationClassification, text, meta = {}) {
+  const isFinalisedGuidance = resolveFinalisedGuidance(meta, '', text);
+  const isConsultation =
+    publicationClassification.primaryClass === 'consultation_paper' && !isFinalisedGuidance;
+  const proposes =
+    !isFinalisedGuidance && /\b(propose|proposing|we propose|consultation)\b/i.test(text);
   const bindingLanguage = /\b(must|shall|required to|is required)\b/i.test(text) && !isConsultation;
   return {
     phase: isConsultation ? 'consultation' : proposes ? 'proposed' : 'published_or_informational',
@@ -84,6 +102,7 @@ function deriveRegulatoryStatus(publicationClassification, text) {
     informationalContent: !isConsultation && !bindingLanguage,
     bindingObligationsDetected: bindingLanguage && !isConsultation,
     mustNotTreatProposalsAsBinding: isConsultation,
+    isFinalisedGuidance,
   };
 }
 

@@ -80,11 +80,15 @@ function renderCitationRow(c) {
   const page =
     c.physicalPageNumber != null ? ` · physical page ${esc(String(c.physicalPageNumber))}` : '';
   const title = c.publicationTitle && c.publicationTitle !== ref ? ` (${esc(c.publicationTitle)})` : '';
-  const pubLink = pubId
+  const fcaPdf = c.primaryPdfPageUrl || c.primaryPdfSourceUrl;
+  let pubLink = pubId
     ? `<a href="#/publication/${esc(pubId)}">${esc(regulator)} — ${esc(ref)}</a>`
     : c.sourceUrl
       ? `<a href="${esc(c.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(regulator)} — ${esc(ref)}</a>`
       : `${esc(regulator)} — ${esc(ref)}`;
+  if (pubId && fcaPdf && (c.citationType === 'primary_pdf' || c.type === 'primary_pdf')) {
+    pubLink += ` · <a href="${esc(fcaPdf)}" target="_blank" rel="noopener noreferrer">Original FCA PDF${page ? page : ''}</a>`;
+  }
   const excerpt = (c.excerpt || '').slice(0, 220);
   const kind =
     c.citationType === 'html_article_v2'

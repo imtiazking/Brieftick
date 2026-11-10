@@ -194,25 +194,159 @@ export function selectBestPublicationPdfEvidence(evidenceList, question) {
   return ranked[0]?.evidence || null;
 }
 
+const QUESTION_STOP = new Set([
+  'what',
+  'does',
+  'the',
+  'fca',
+  'how',
+  'might',
+  'about',
+  'changes',
+  'proposed',
+  'say',
+  'show',
+  'including',
+  'associated',
+  'with',
+  'publication',
+  'source',
+  'evidence',
+  'citations',
+  'invent',
+  'regulatory',
+  'deadlines',
+  'obligations',
+  'duty',
+]);
+
+const TOPICAL_PHRASES = [
+  'fair value',
+  'fair-value',
+  'consumer duty',
+  'consumer finance',
+  'price and value',
+  'value outcome',
+  'assessing value',
+  'value assessment',
+  'monitoring value',
+];
+
+function normalisePhrase(p) {
+  return String(p || '').toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+function questionTopicAnchors(question) {
+  const q = normalisePhrase(question);
+  const anchors = [];
+  for (const phrase of TOPICAL_PHRASES) {
+    const norm = phrase.replace('-', ' ');
+    if (q.includes(norm) || q.includes(phrase)) anchors.push(norm);
+  }
+  if (/fair[- ]?value|consumer duty/i.test(q)) {
+    anchors.push('chapter 7', 'price and value');
+  }
+  return [...new Set(anchors)];
+}
+
+function isFrontMatterOrNavigationalBlock(block) {
+  const text = String(block.extractedText || '');
+  const textLc = text.toLowerCase().replace(/\s+/g, ' ').trim();
+  const section = String(block.sectionReference || '').toLowerCase();
+  const haystack = `${section} ${textLc}`;
+
+  if (/^(about this|who should read|foreword|ministerial|summary of (changes|feedback)|how to respond)/i.test(textLc)) {
+    return true;
+  }
+  if (/table of contents\b|^contents\b/i.test(textLc) && textLc.length < 1200) return true;
+  if (/^chapter\s+\d+\s*[-–—]\s*chapter\s+\d+/i.test(textLc) && textLc.length < 400) return true;
+
+  const substantiveTopic =
+    /chapter\s*7|price and value outcome|the price and value|\b7\.\d{1,2}\b|assessing value|value assessment and monitoring/i.test(
+      haystack,
+    );
+  if (substantiveTopic) return false;
+
+  const pageNum = block.pageNumber;
+  if (pageNum != null && pageNum <= 8) {
+  const looksLikeIntro =
+      /(finalised guidance|finalized guidance|consumer duty|fg\s*22|this guidance|we are publishing|sets out our expectations)/i.test(
+        textLc,
+      ) && !/7\.\d+|chapter\s*7|price and value|assessing value/i.test(haystack);
+    if (looksLikeIntro) return true;
+  }
+  return false;
+}
+
 /**
- * Rank evidence blocks by keyword overlap with the question (physical-page citations only).
+ * Lexical + topical relevance score for a single evidence block (higher = more substantively on-topic).
+ * @param {string} question
+ * @param {object} block
+ */
+export function scoreEvidenceBlockForQuestion(question, block) {
+  const qLc = normalisePhrase(question);
+  const text = String(block.extractedText || '');
+  const textLc = text.toLowerCase();
+  const section = String(block.sectionReference || '');
+  let score = 0;
+
+  for (const anchor of questionTopicAnchors(question)) {
+    if (textLc.includes(anchor) || section.toLowerCase().includes(anchor)) score += 14;
+  }
+
+  const qTokens = tokens(question);
+  const keywords = [...qTokens].filter((t) => t.length > 3 && !QUESTION_STOP.has(t));
+  let hits = 0;
+  for (const k of keywords) {
+    if (textLc.includes(k)) {
+      hits += 1;
+      score += k.length >= 8 ? 4 : 2;
+    }
+  }
+
+  if (/fair[- ]?value|consumer duty|consumer finance|obligation/i.test(qLc)) {
+    if (/chapter\s*7|price and value|the price and value outcome/i.test(`${section} ${textLc}`)) score += 30;
+    if (/^7\.\d+/i.test(section) || /\b7\.\d{1,2}\b/.test(text.slice(0, 200))) score += 24;
+    if (block.kind === 'numbered_clause' && /^7\./i.test(section)) score += 28;
+    if (/assessing value|value assessment|monitoring value|fair value for customers/i.test(textLc)) score += 18;
+  }
+
+  if (text.length >= 140) score += 4;
+  if (text.length >= 80 && /\b(should|must|firms?|customers?|products?|price|value|outcome)\b/i.test(text)) score += 3;
+
+  if (isFrontMatterOrNavigationalBlock(block)) score -= 90;
+  if (text.length < 50 && hits <= 1) score -= 25;
+
+  return Math.max(0, score);
+}
+
+/**
+ * Rank evidence blocks by topical relevance (physical-page citations only).
  * @param {string} question
  * @param {object[]} blocks
  */
 export function rankEvidenceBlocksForQuestion(question, blocks) {
-  const qTokens = tokens(question);
-  const stop = new Set(['what', 'does', 'the', 'fca', 'how', 'might', 'about', 'changes', 'proposed', 'say']);
-  const keywords = [...qTokens].filter((t) => t.length > 3 && !stop.has(t));
-
   return (blocks || [])
     .map((b) => {
-      const text = String(b.extractedText || '').toLowerCase();
-      let hits = 0;
-      for (const k of keywords) {
-        if (text.includes(k)) hits += 1;
-      }
-      return { block: b, hits };
+      const score = scoreEvidenceBlockForQuestion(question, b);
+      return { block: b, score, hits: score > 0 ? 1 : 0 };
     })
-    .filter((r) => r.hits > 0)
-    .sort((a, b) => b.hits - a.hits);
+    .filter((r) => r.score > 0)
+    .sort((a, b) => b.score - a.score);
+}
+
+/**
+ * Prefer substantively scored blocks for citation surfaces (drops weak intro/navigational hits when richer evidence exists).
+ * @param {ReturnType<typeof rankEvidenceBlocksForQuestion>} ranked
+ * @param {number} max
+ */
+export function selectRankedBlocksForCitations(ranked, max = 5) {
+  if (!ranked?.length) return [];
+  const withoutFront = ranked.filter((r) => !isFrontMatterOrNavigationalBlock(r.block));
+  const substantive = withoutFront.filter((r) => r.score >= 24);
+  if (substantive.length >= 2) return substantive.slice(0, max);
+  const moderate = withoutFront.filter((r) => r.score >= 14);
+  if (moderate.length >= 2) return moderate.slice(0, max);
+  const use = withoutFront.length ? withoutFront : ranked;
+  return use.slice(0, max);
 }

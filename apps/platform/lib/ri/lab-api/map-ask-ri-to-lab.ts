@@ -54,6 +54,9 @@ function mapCitationForLab(c: PdfCitation | Record<string, unknown>) {
     publicationReference: row.publicationReference,
     publicationId: row.publicationId,
     sourceUrl: row.sourceUrl,
+    cataloguePublicationUrl: (row as { cataloguePublicationUrl?: string }).cataloguePublicationUrl,
+    primaryPdfSourceUrl: (row as { primaryPdfSourceUrl?: string }).primaryPdfSourceUrl,
+    primaryPdfPageUrl: (row as { primaryPdfPageUrl?: string }).primaryPdfPageUrl,
     extractionRevisionId: row.extractionRevisionId,
     regulatoryStatus: row.regulatoryStatus,
     citationType: row.type || 'primary_pdf',
@@ -155,7 +158,7 @@ function answeredAnalysis(
   const keyFindings = htmlKeyFindings.length ? htmlKeyFindings : pdfKeyFindings;
   const uncertainties = [
     ...((htmlAudit?.uncertainties as string[] | undefined) || []),
-    ...(pdfAudit?.mustNotPresentAsBindingObligation
+    ...(pdfAudit?.consultationPreserved === true
       ? ['Consultation-stage proposals — not binding obligations until FCA finalises rules and human review completes.']
       : []),
   ].filter(Boolean);
