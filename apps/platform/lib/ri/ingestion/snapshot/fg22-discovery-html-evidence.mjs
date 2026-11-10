@@ -55,6 +55,17 @@ function isFg22PdfCanonicalPublication(publication) {
  * @param {object} [snapshot] regulatory_source_snapshots row (subset)
  * @param {object} [revisionRow] extraction revision row (optional metadata shortcut)
  */
+/**
+ * Whether an html_article_v2 revision may be used as substantive regulatory text (obligation / AI grounding).
+ *
+ * @param {object} publication
+ * @param {object} [snapshot]
+ * @param {object} [revisionRow]
+ */
+export function isSubstantiveHtmlArticleV2Evidence(publication, snapshot, revisionRow) {
+  return !classifyFg22HtmlArticleV2Evidence(publication, snapshot, revisionRow).discoveryOnly;
+}
+
 export function classifyFg22HtmlArticleV2Evidence(publication, snapshot, revisionRow) {
   const stampedRole =
     revisionRow?.publication_metadata?.htmlSnapshotRole ||

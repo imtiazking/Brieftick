@@ -10,6 +10,7 @@ import {
 } from '../lib/ri/ingestion/snapshot/fg22-discovery-html-evidence.mjs';
 import { FG22_5_STAGING } from '../lib/ri/ingestion/snapshot/fg22-5-staging-identity.mjs';
 import { FAIR_VALUE_CONSUMER_FINANCE_PUBLICATION_ID } from '../lib/ri/ask-ri/publication-question-scope.mjs';
+import { assessObligationGradePosture } from '../lib/ri/ingestion/snapshot/obligation-grade-policy.mjs';
 
 let fail = 0;
 const pass = (m) => console.log(`PASS: ${m}`);
@@ -59,6 +60,20 @@ const fairHtmlClass = classifyFg22HtmlArticleV2Evidence(fairValuePub, null, {
 });
 if (!fairHtmlClass.discoveryOnly) pass('Fair Value HTML not suppressed by FG22 identity rule');
 else failMsg('Fair Value must remain substantive html_article_v2');
+
+const fg22Obligation = assessObligationGradePosture(
+  { obligationGradeSuitable: true, webpageExtraction: { status: 'complete', confidence: 'high' } },
+  { primaryDocument: { completeness: 'captured', extractionStatus: 'complete' } },
+  { evidenceBlocksCount: 5, findingsWithAnchors: 2, consultationPreserved: true, humanReviewStatus: 'approved_for_obligation_use' },
+  {
+    publication: fg22Pub,
+    snapshot: hubSnap,
+    revisionRow: unstampedRev,
+  },
+);
+if (fg22Obligation.fg22DiscoveryHtmlBlocked && fg22Obligation.obligationGradeSuitable === false) {
+  pass('obligation-grade posture blocks unstamped FG22 discovery HTML');
+} else failMsg('obligation-grade FG22 block');
 
 const stampedClass = classifyFg22HtmlArticleV2Evidence(fg22Pub, null, {
   publication_metadata: { htmlSnapshotRole: 'fca_link_discovery_only' },
