@@ -1,0 +1,2305 @@
+{
+  "evaluationVersion": "ask-ri-v2-eval-suite-v2.1",
+  "schemaVersion": 2.1,
+  "createdAt": "2026-11-10",
+  "datasetMetadata": {
+    "title": "FORGENIQ Ask RI V2 evaluation suite (gold-standard v2.1)",
+    "phase": "2A.5",
+    "authoredQuestionCount": 45,
+    "operatorHeldOutCount": 10,
+    "totalCaseRecords": 55,
+    "expertReviewedReferenceCount": 0,
+    "provisionalReferenceCount": 45,
+    "engineBaseline": "deterministic_connected_ask_ri",
+    "stagingPublicationAnchors": {
+      "FAIR_VALUE_CONSUMER_FINANCE_PUBLICATION_ID": "56b0beca-d8c3-4267-a794-9079009af661",
+      "FAIR_VALUE_HTML_REVISION_ID": "613c078c-3639-4ce5-9666-73c5352f44fd",
+      "FG22_5_PDF_PUBLICATION_ID": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+      "FG22_5_PDF_REVISION_ID": "56fd1525-7f30-401e-82fd-16abf90100aa",
+      "CP26_38_PUBLICATION_ID": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+      "CP26_38_HTML_REVISION_ID": "50197cc3-c7e7-4835-b566-f6174105eba2",
+      "CP26_38_PDF_REVISION_ID": "c003a60a-eff8-4152-a2ce-47e20a206e29"
+    },
+    "notes": "responseState separates ideal platform behaviour from harness PASS/PARTIAL/FAIL. PROVISIONAL references.",
+    "derivedFrom": "ask-ri-v2-eval-suite-v2",
+    "derivedFromCommit": "a81c6d2f66548ffe10c7db0c6b2fb57841081452"
+  },
+  "scoringRubricVersion": "ask-ri-v2-rubric-v2.1",
+  "scoringDimensions": [
+    {
+      "id": "D01",
+      "name": "question_understanding"
+    },
+    {
+      "id": "D02",
+      "name": "publication_selection"
+    },
+    {
+      "id": "D03",
+      "name": "evidence_relevance"
+    },
+    {
+      "id": "D04",
+      "name": "citation_correctness"
+    },
+    {
+      "id": "D05",
+      "name": "regulatory_status"
+    },
+    {
+      "id": "D06",
+      "name": "answer_completeness"
+    },
+    {
+      "id": "D07",
+      "name": "control_impact_interpretation"
+    },
+    {
+      "id": "D08",
+      "name": "unsupported_claims"
+    },
+    {
+      "id": "D09",
+      "name": "uncertainty_handling"
+    },
+    {
+      "id": "D10",
+      "name": "cross_domain_reliability"
+    },
+    {
+      "id": "D11",
+      "name": "tenant_security"
+    }
+  ],
+  "compositeMeasures": [
+    "evidence_confidence",
+    "regulatory_interpretation_quality",
+    "question_completeness"
+  ],
+  "criticalFailureConditions": [
+    {
+      "id": "CF-01",
+      "description": "Invented binding regulatory obligations"
+    },
+    {
+      "id": "CF-02",
+      "description": "Fabricated regulatory deadlines"
+    },
+    {
+      "id": "CF-03",
+      "description": "Citations do not substantiate material claims"
+    },
+    {
+      "id": "CF-04",
+      "description": "Evidence attributed to wrong publication"
+    },
+    {
+      "id": "CF-05",
+      "description": "Superseded versions presented as current"
+    },
+    {
+      "id": "CF-06",
+      "description": "Consultation presented as final requirements"
+    },
+    {
+      "id": "CF-07",
+      "description": "Guidance represented as legislation"
+    },
+    {
+      "id": "CF-08",
+      "description": "Unsupported inference presented as FCA requirement"
+    },
+    {
+      "id": "CF-09",
+      "description": "Cross-tenant data exposure"
+    },
+    {
+      "id": "CF-10",
+      "description": "Fabricated regulatory evidence"
+    }
+  ],
+  "overallOutcomeRules": {
+    "criticalFailureCapsOutcome": "FAIL",
+    "citationCountDoesNotImplyPass": true,
+    "provisionalReferencesRequireSmeForGoldPass": true
+  },
+  "cases": [
+    {
+      "testId": "EVAL-A-01",
+      "questionCategory": "A",
+      "regulatoryDomain": "Consumer Duty / fair value",
+      "question": "Using the FCA webpage Fair value in consumer finance, summarise the main supervisory themes firms should consider for fair value assessments.",
+      "expectedIntent": "catalogue_html_summary",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661"
+      ],
+      "expectedSourceVersions": [
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "profile": "html_article_v2",
+          "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd"
+        }
+      ],
+      "expectedCitationSections": [
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "type": "html_article_v2",
+          "section": "thematic"
+        }
+      ],
+      "requiredAnswerThemes": [
+        "fair value under Consumer Duty",
+        "supervisory good and poor practice examples",
+        "PRIN 2A binding context distinguished from examples"
+      ],
+      "expectedRegulatoryStatus": "supervisory_examples_with_handbook_context",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [
+        "Template synthesis may omit lifecycle monitoring themes"
+      ],
+      "prohibitedClaims": [
+        "invented compliance deadlines"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": {
+        "refs": [
+          "fg22-5-staging-identity.mjs"
+        ]
+      },
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "requiresSemanticPublicationDiscovery": false,
+        "notes": "Named FCA webpage title should resolve to Fair value catalogue HTML without quoted-title gate."
+      },
+      "currentEngineLimitations": [
+        "Publication gate may not treat unquoted webpage title as catalogue-scoped (tenant path or insufficient).",
+        "Deterministic HTML synthesis may omit themes."
+      ],
+      "v1ExpectedResultClassification": "ANSWERED"
+    },
+    {
+      "testId": "EVAL-A-02",
+      "questionCategory": "A",
+      "regulatoryDomain": "Consumer Duty / fair value",
+      "question": "Summarise FG22/5 expectations on fair value for consumer finance firms, citing the primary PDF.",
+      "expectedIntent": "catalogue_pdf_summary",
+      "expectedPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "profile": "pdf_primary_v1",
+          "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa"
+        }
+      ],
+      "expectedCitationSections": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "pages": [
+            58,
+            64,
+            66,
+            67
+          ],
+          "referenceReviewStatus": "PROVISIONAL"
+        }
+      ],
+      "requiredAnswerThemes": [
+        "assess fair value before offer",
+        "monitor through product lifecycle",
+        "customer groups and vulnerability",
+        "distribution chain value"
+      ],
+      "expectedRegulatoryStatus": "finalised_guidance",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "FG22 creates new statutory duties"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": {
+        "refs": [
+          "acceptance-phase-8-bus-uat-018-pdf-ranking.mjs"
+        ]
+      },
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-A-03",
+      "questionCategory": "A",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "What is the regulatory objective of FG22/5 in relation to the Consumer Duty?",
+      "expectedIntent": "catalogue_pdf_objective",
+      "expectedPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "non-Handbook guidance",
+        "Consumer Duty fair value expectations",
+        "does not create new legal obligations"
+      ],
+      "expectedRegulatoryStatus": "finalised_guidance",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-A-04",
+      "questionCategory": "A",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "Which firm types does the Fair Value supervisory webpage primarily address?",
+      "expectedIntent": "catalogue_html_affected_firms",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "consumer finance firms",
+        "supervisory examples"
+      ],
+      "expectedRegulatoryStatus": "supervisory_observation",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "notes": "Supervisory webpage should resolve via title/semantic match."
+      },
+      "currentEngineLimitations": [
+        "questionMentionsPublicationReference may be false without explicit publication phrase."
+      ],
+      "v1ExpectedResultClassification": "ANSWERED"
+    },
+    {
+      "testId": "EVAL-A-05",
+      "questionCategory": "A",
+      "regulatoryDomain": "Financial crime",
+      "question": "What is CP26/38 about at a high level?",
+      "expectedIntent": "catalogue_summary",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "profile": "pdf_primary_v1",
+          "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29"
+        }
+      ],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "Financial Crime Guide updates",
+        "consultation proposals"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": {
+        "refs": [
+          "cp26-38-staging-identity.mjs"
+        ]
+      },
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-B-01",
+      "questionCategory": "B",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "Does PRIN 2A.4 create a binding fair value obligation for firms?",
+      "expectedIntent": "regulatory_status_handbook",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "PRIN 2A binding",
+        "FG22 is non-Handbook guidance"
+      ],
+      "expectedRegulatoryStatus": "binding_handbook_vs_guidance",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "claims that FG22 creates statute"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-B-02",
+      "questionCategory": "B",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "What evidence should firms retain to demonstrate fair value assessments?",
+      "expectedIntent": "compliance_evidence_theme",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "documentation and monitoring evidence"
+      ],
+      "expectedRegulatoryStatus": "guidance_and_handbook",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "Engine may not enumerate evidence types without explicit passages"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "notes": "Evidence-backed documentation themes from HTML/PDF, not generic templates. Fair value evidence types supported in FG22/Fair Value HTML — ideal substantive ANSWERED.",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "Template synthesis may not enumerate evidence types without explicit passages."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS"
+    },
+    {
+      "testId": "EVAL-B-03",
+      "questionCategory": "B",
+      "regulatoryDomain": "Handbook",
+      "question": "What does COBS require for suitability assessments?",
+      "expectedIntent": "handbook_out_of_catalogue",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "no COBS corpus in catalogue path"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "knownLimitations": [
+        "May route to tenant graph with generic record message"
+      ],
+      "prohibitedClaims": [
+        "invented COBS rules"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "NOT_IN_SUITE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "currentEngineLimitations": [
+        "May route to tenant graph with generic record message"
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      }
+    },
+    {
+      "testId": "EVAL-B-04",
+      "questionCategory": "B",
+      "regulatoryDomain": "Supervisory",
+      "question": "Are good practice examples on the Fair Value webpage binding requirements?",
+      "expectedIntent": "distinguish_guidance_examples",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "supervisory examples are not new obligations"
+      ],
+      "expectedRegulatoryStatus": "supervisory_observation",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "examples presented as legal duties"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-C-01",
+      "questionCategory": "C",
+      "regulatoryDomain": "Financial crime",
+      "question": "What changes is the FCA proposing in CP26/38, and which financial crime controls may be affected?",
+      "expectedIntent": "consultation_impact",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "profile": "pdf_primary_v1",
+          "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29"
+        }
+      ],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "consultation proposals only",
+        "business function applicability",
+        "control impact narrative"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "Weak control-impact narrative in deterministic templates"
+      ],
+      "prohibitedClaims": [
+        "binding obligations from CP26"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": {
+        "refs": [
+          "STEP80_ASK_RI_SAMPLE_QUESTION"
+        ]
+      },
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresControlImpactReasoning": true,
+        "notes": "Grounded summary of proposals plus reasoned (labelled) control-impact implications from CP26 PDF/HTML. CP26 PDF/HTML proposals support grounded summary + control mapping.",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "Deterministic PDF template weak on financial-crime control mapping.",
+        "May surface unrelated uncertainties from other publications."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS"
+    },
+    {
+      "testId": "EVAL-C-02",
+      "questionCategory": "C",
+      "regulatoryDomain": "Financial crime",
+      "question": "Is CP26/38 finalised FCA guidance or a consultation?",
+      "expectedIntent": "consultation_status",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "consultation",
+        "not binding requirements"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "consultation presented as final rule"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-C-03",
+      "questionCategory": "C",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "Is FG22/5 still a consultation or finalised guidance?",
+      "expectedIntent": "publication_status_fg22",
+      "expectedPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "finalised guidance"
+      ],
+      "expectedRegulatoryStatus": "finalised_guidance",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [
+        "Historical misclassification risk on keyword scan"
+      ],
+      "prohibitedClaims": [
+        "consultation warning on FG22"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "Historical misclassification risk on keyword scan"
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-C-04",
+      "questionCategory": "C",
+      "regulatoryDomain": "Financial crime",
+      "question": "What is the consultation deadline for CP26/38?",
+      "expectedIntent": "deadline_factual",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [
+        {
+          "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29"
+        }
+      ],
+      "expectedCitationSections": [
+        {
+          "sourceDocument": "cp26_primary_pdf",
+          "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+          "pages": [
+            14
+          ],
+          "sectionLabel": "Chapter 3 How to respond"
+        }
+      ],
+      "requiredAnswerThemes": [
+        "consultation comments due by 24 December 2026",
+        "consultation response deadline distinct from implementation or compliance dates"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [
+        "Must not invent closing dates beyond indexed evidence"
+      ],
+      "prohibitedClaims": [
+        "fabricated closing dates",
+        "24 December 2026 as mandatory firm compliance implementation date",
+        "binding compliance implementation date"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "currentEngineLimitations": [
+        "Publication gate may block CP26 attachment when question names CP code without full gate phrase.",
+        "May return insufficient despite indexed deadline in pack."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Frozen CP26/38 PDF p14 and HTML metadata both record consultation close 24 December 2026."
+      }
+    },
+    {
+      "testId": "EVAL-C-05",
+      "questionCategory": "C",
+      "regulatoryDomain": "Cross-status",
+      "question": "What is the difference between proposed CP26 financial crime rules and finalised FG22 fair value guidance?",
+      "expectedIntent": "cross_publication_status",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "consultation vs finalised guidance"
+      ],
+      "expectedRegulatoryStatus": "mixed",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "No production compare path"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "currentEngineLimitations": [
+        "No production compare path"
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Both publications in pack; ideal ANSWERED with consultation vs finalised framing."
+      }
+    },
+    {
+      "testId": "EVAL-D-01",
+      "questionCategory": "D",
+      "regulatoryDomain": "Financial crime",
+      "question": "What fraud prevention changes does CP26/38 propose?",
+      "expectedIntent": "cp26_fraud_theme",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "fraud prevention proposals"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-D-02",
+      "questionCategory": "D",
+      "regulatoryDomain": "Financial crime",
+      "question": "What does CP26/38 say about AML transaction monitoring?",
+      "expectedIntent": "cp26_aml_theme",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "AML or monitoring proposals if evidenced"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Named CP26; AML monitoring themes in indexed CP26 extract."
+      }
+    },
+    {
+      "testId": "EVAL-D-03",
+      "questionCategory": "D",
+      "regulatoryDomain": "Financial crime",
+      "question": "How might sanctions screening controls be affected by CP26/38?",
+      "expectedIntent": "control_impact_sanctions",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "sanctions screening impact"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "D07 expected weak under templates"
+      ],
+      "prohibitedClaims": [
+        "mandatory control changes stated as fact"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "currentEngineLimitations": [
+        "D07 expected weak under templates"
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Named CP26; sanctions section in pack."
+      }
+    },
+    {
+      "testId": "EVAL-D-04",
+      "questionCategory": "D",
+      "regulatoryDomain": "Financial crime",
+      "question": "Does CP26/38 address proliferation financing risks?",
+      "expectedIntent": "cp26_pf_theme",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "proliferation financing if in document"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Named CP26; proliferation financing proposals in pack."
+      }
+    },
+    {
+      "testId": "EVAL-D-05",
+      "questionCategory": "D",
+      "regulatoryDomain": "Financial crime",
+      "question": "What governance expectations does CP26/38 propose for financial crime?",
+      "expectedIntent": "fc_governance",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "governance proposals"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Named CP26; governance proposals in pack."
+      }
+    },
+    {
+      "testId": "EVAL-E-01",
+      "questionCategory": "E",
+      "regulatoryDomain": "Financial crime",
+      "question": "Which business functions might CP26/38 affect according to the publication?",
+      "expectedIntent": "applicability_functions",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "business function labels from evidence"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresControlImpactReasoning": true,
+        "responseState": "ANSWERED",
+        "notes": "Applicability themes supported with consultation labelling."
+      },
+      "currentEngineLimitations": [
+        "inferApplicability labels only; limited narrative synthesis."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS"
+    },
+    {
+      "testId": "EVAL-E-02",
+      "questionCategory": "E",
+      "regulatoryDomain": "Financial crime",
+      "question": "What operational changes might firms need if CP26/38 proposals are adopted?",
+      "expectedIntent": "reasoned_operational_impact",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "operational change as reasoned implication"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "mandatory operational change stated as fact"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresReasonedImplications": true,
+        "mustNotPresentAsBinding": true,
+        "responseState": "ANSWERED",
+        "notes": "Operational change themes from CP26 proposals."
+      },
+      "currentEngineLimitations": [
+        "No structured reasoned-implication composer."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS"
+    },
+    {
+      "testId": "EVAL-E-03",
+      "questionCategory": "E",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "What compliance monitoring might Fair Value guidance imply for firms?",
+      "expectedIntent": "monitoring_implications",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "ongoing monitoring"
+      ],
+      "expectedRegulatoryStatus": "guidance",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Fair Value monitoring themes in HTML/PDF packs."
+      }
+    },
+    {
+      "testId": "EVAL-E-04",
+      "questionCategory": "E",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "What organisational assessments might Fair Value and FG22 themes imply?",
+      "expectedIntent": "assessment_implications",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "fair value assessment process"
+      ],
+      "expectedRegulatoryStatus": "guidance",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Organisational assessment themes from fair value guidance."
+      }
+    },
+    {
+      "testId": "EVAL-F-01",
+      "questionCategory": "F",
+      "regulatoryDomain": "Tenant RI",
+      "question": "What regulatory changes are open for our organisation?",
+      "expectedIntent": "tenant_graph_changes",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "open or in-scope changes listed"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "Answer may be record count only"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": true,
+      "evidenceAvailability": "TENANT_FIXTURE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": {
+        "refs": [
+          "acceptance-phase-8-step-81d-ask-ri-pdf-routing.mjs"
+        ]
+      },
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSubstantiveTenantAnswer": true,
+        "notes": "Ideal: summarise open changes with regulatory context; not only record IDs/counts. Tenant fixture supports substantive open-change summary (not counts-only).",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "Deterministic tenant path returns record counts or ID lists."
+      ],
+      "v1ExpectedResultClassification": "ANSWERED"
+    },
+    {
+      "testId": "EVAL-F-02",
+      "questionCategory": "F",
+      "regulatoryDomain": "Tenant RI",
+      "question": "How many open obligations do we have?",
+      "expectedIntent": "tenant_count_obligations",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "count of open obligations"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": true,
+      "evidenceAvailability": "TENANT_FIXTURE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSubstantiveTenantAnswer": true,
+        "notes": "Count acceptable if predicate-complete and accurate."
+      },
+      "currentEngineLimitations": [
+        "Numeric count answer only when graph predicate resolves."
+      ],
+      "v1ExpectedResultClassification": "ANSWERED"
+    },
+    {
+      "testId": "EVAL-F-03",
+      "questionCategory": "F",
+      "regulatoryDomain": "Tenant RI",
+      "question": "Which controls are linked to open Consumer Duty obligations?",
+      "expectedIntent": "tenant_graph_controls",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "control-obligation linkage"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "Requires predicate-supported graph question"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": true,
+      "evidenceAvailability": "TENANT_FIXTURE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSubstantiveTenantAnswer": true,
+        "notes": "Linked controls with obligation context. Tenant graph links support control listing with context.",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "Graph retrieval without narrative synthesis."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS"
+    },
+    {
+      "testId": "EVAL-F-04",
+      "questionCategory": "F",
+      "regulatoryDomain": "Tenant RI",
+      "question": "What impact assessments are in draft status?",
+      "expectedIntent": "tenant_impact_assessments",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "draft impact assessment records"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": true,
+      "evidenceAvailability": "TENANT_FIXTURE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSubstantiveTenantAnswer": true
+      },
+      "currentEngineLimitations": [
+        "Record listing without interpretation."
+      ],
+      "v1ExpectedResultClassification": "ANSWERED"
+    },
+    {
+      "testId": "EVAL-F-05",
+      "questionCategory": "F",
+      "regulatoryDomain": "Tenant RI",
+      "question": "Where is evidence missing for our open obligations?",
+      "expectedIntent": "tenant_missing_evidence",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "missing evidence acknowledgement"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": true,
+      "evidenceAvailability": "TENANT_FIXTURE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSubstantiveTenantAnswer": true,
+        "notes": "Explicit missing-evidence gaps per obligation. Missing-evidence narrative is ANSWERED with gaps, not gate failure.",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "Limited missing-evidence narrative."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS"
+    },
+    {
+      "testId": "EVAL-G-01",
+      "questionCategory": "G",
+      "regulatoryDomain": "Cross-source",
+      "question": "Using only the Fair Value HTML webpage, explain fair value assessments without PDF.",
+      "expectedIntent": "html_only_scope",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [
+        {
+          "type": "html_article_v2",
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661"
+        }
+      ],
+      "requiredAnswerThemes": [
+        "HTML-only substantive answer",
+        "no PDF citations"
+      ],
+      "expectedRegulatoryStatus": "supervisory_examples",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [
+        "questionRequestsPdfSupplement must be false"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "questionRequestsPdfSupplement must be false"
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-G-02",
+      "questionCategory": "G",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "In FG22/5 Consumer Duty guidance, what does the FCA expect on fair value assessments and product lifecycle monitoring? Also consider the FCA webpage Fair value in consumer finance and provide FG22/5 PDF page citations.",
+      "expectedIntent": "mixed_html_pdf",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "profile": "html_article_v2",
+          "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd"
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "profile": "pdf_primary_v1",
+          "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa"
+        }
+      ],
+      "expectedCitationSections": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "pages": [
+            58,
+            64,
+            66,
+            67
+          ],
+          "referenceReviewStatus": "PROVISIONAL"
+        }
+      ],
+      "requiredAnswerThemes": [
+        "mixed synthesis lead paragraph",
+        "HTML and PDF in key findings",
+        "Chapter 7 fair value themes where indexed"
+      ],
+      "expectedRegulatoryStatus": "finalised_guidance_plus_supervisory_examples",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": {
+        "refs": [
+          "CONSUMER_DUTY_FAIR_VALUE_ASK_RI_QUESTION",
+          "acceptance-phase-8-bus-uat-018-mixed-answer.mjs"
+        ]
+      },
+      "v1ExpectedResultClassification": "ANSWERED",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-G-03",
+      "questionCategory": "G",
+      "regulatoryDomain": "Cross-source",
+      "question": "Compare CP26/38 proposals with FG22/5 fair value guidance.",
+      "expectedIntent": "multi_publication_compare",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "status distinction consultation vs finalised guidance"
+      ],
+      "expectedRegulatoryStatus": "mixed",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "No dedicated compare composer"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": true,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresMultiPublicationCompare": true,
+        "notes": "Status-aware comparison CP26 consultation vs FG22 finalised guidance. Cross-publication compare ideal ANSWERED; quality graded by harness.",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "No production cross-publication compare composer."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS"
+    },
+    {
+      "testId": "EVAL-G-04",
+      "questionCategory": "G",
+      "regulatoryDomain": "Hybrid",
+      "question": "For CP26/38 proposals, list our open financial crime obligations and cite CP26.",
+      "expectedIntent": "catalogue_plus_tenant",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "tenant obligation records",
+        "CP26 citations"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "Catalogue and tenant branches mutually exclusive today"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": true,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresCatalogueAndTenantFusion": true,
+        "notes": "CP26 citations plus tenant obligation records in one answer. Catalogue+tenant fusion ideal ANSWERED; engine may partial on dimensions.",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "Catalogue and tenant branches mutually exclusive in runAskRiDeterministic."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS"
+    },
+    {
+      "testId": "EVAL-H-01",
+      "questionCategory": "H",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "How does the FCA expect firms to monitor customer outcomes for fair value?",
+      "expectedIntent": "semantic_discovery_consumer_duty",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "discovery without explicit publication title in question"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [
+        "Publication gate may skip catalogue load"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "requiresEvidenceGroundedAnswer": true,
+        "notes": "Semantic discovery should attach Fair Value HTML and/or FG22 PDF from indexed catalogue."
+      },
+      "currentEngineLimitations": [
+        "questionMentionsPublicationReference false → catalogue packs not attached in production/harness gate simulation."
+      ],
+      "v1ExpectedResultClassification": "INSUFFICIENT_EVIDENCE_OR_UNRESOLVED"
+    },
+    {
+      "testId": "EVAL-H-02",
+      "questionCategory": "H",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "What evidence should firms retain to demonstrate fair value?",
+      "expectedIntent": "semantic_discovery_evidence",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "Publication gate"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Semantic discovery should still produce evidence-grounded ANSWERED."
+      },
+      "currentEngineLimitations": [
+        "Publication gate blocks catalogue without explicit reference."
+      ],
+      "v1ExpectedResultClassification": "INSUFFICIENT_EVIDENCE_OR_UNRESOLVED"
+    },
+    {
+      "testId": "EVAL-H-03",
+      "questionCategory": "H",
+      "regulatoryDomain": "Financial crime",
+      "question": "What is the FCA proposing to change in financial crime guidance this year?",
+      "expectedIntent": "semantic_discovery_fc",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "notes": "Should discover CP26/38 or relevant FC consultation in catalogue. Semantic CP26 discovery supported in frozen pack.",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "No semantic catalogue search."
+      ],
+      "v1ExpectedResultClassification": "INSUFFICIENT_EVIDENCE_OR_UNRESOLVED"
+    },
+    {
+      "testId": "EVAL-H-04",
+      "questionCategory": "H",
+      "regulatoryDomain": "Financial crime",
+      "question": "How should firms strengthen fraud controls in retail banking?",
+      "expectedIntent": "semantic_discovery_fraud",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [
+        {
+          "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29"
+        }
+      ],
+      "expectedCitationSections": [
+        {
+          "sourceDocument": "cp26_primary_pdf",
+          "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+          "pages": [
+            6,
+            7,
+            8
+          ],
+          "sectionLabel": "Chapter 2 proposed fraud changes (consultation narrative)"
+        },
+        {
+          "sourceDocument": "cp26_primary_pdf",
+          "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+          "pages": [
+            42,
+            43,
+            44
+          ],
+          "sectionLabel": "Appendix 1 draft FCG fraud controls excerpt"
+        }
+      ],
+      "requiredAnswerThemes": [
+        "authorised push payment (APP) fraud",
+        "money mules and proceeds of fraud",
+        "fraud monitoring and red flags",
+        "onboarding and financial crime controls",
+        "consultation / proposed guidance — not newly binding rules"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "consultation proposals stated as binding rules",
+        "binding obligation"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "notes": "Indexed CP26/38 fraud material supports substantive answer without explicit publication name.",
+        "responseState": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "requiresEvidenceGroundedAnswer": true,
+        "mustNotPresentAsBinding": true
+      },
+      "currentEngineLimitations": [
+        "No semantic catalogue discovery; tenant path may misfire.",
+        "Deterministic templates may omit draft FCG appendix content."
+      ],
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "testId": "EVAL-H-05",
+      "questionCategory": "H",
+      "regulatoryDomain": "Consumer Duty",
+      "question": "Explain Consumer Duty fair value for insurers.",
+      "expectedIntent": "semantic_discovery_sector",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [
+        "Sector scoping weak"
+      ],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "notes": "Sector-aware fair value guidance with caveats for insurers. Fair value insurer scope answerable from indexed guidance with caveats.",
+        "responseState": "ANSWERED"
+      },
+      "currentEngineLimitations": [
+        "Weak sector scoping; publication gate."
+      ],
+      "v1ExpectedResultClassification": "PARTIAL_PASS_OR_UNRESOLVED"
+    },
+    {
+      "testId": "EVAL-I-01",
+      "questionCategory": "I",
+      "regulatoryDomain": "General",
+      "question": "Summarise FCA Policy Statement PS99/99 on cryptoassets.",
+      "expectedIntent": "missing_publication",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "acknowledge missing evidence"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "fabricated PS summary"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "NOT_IN_SUITE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      }
+    },
+    {
+      "testId": "EVAL-I-02",
+      "questionCategory": "I",
+      "regulatoryDomain": "Financial crime",
+      "question": "When must we comply with CP26/38 by law?",
+      "expectedIntent": "unsupported_deadline",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "CP26/38 is a consultation paper not in-force binding law",
+        "refute premise that CP26/38 alone imposes a legal compliance deadline",
+        "distinguish existing MLR/FSMA obligations from proposed guide updates"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "binding compliance date",
+        "fabricated implementation dates",
+        "must comply with CP26/38 by law"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "currentEngineLimitations": [
+        "May return generic insufficient without explicit premise refutation."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "idealScoringClassification": "PASS_WITH_REFUTATION",
+        "mustRefuteFalsePremise": true,
+        "notes": "Answered refutation with consultation grounding — not insufficient silence."
+      }
+    },
+    {
+      "testId": "EVAL-I-03",
+      "questionCategory": "I",
+      "regulatoryDomain": "Tenant",
+      "question": "Has our board approved the Consumer Duty gap analysis?",
+      "expectedIntent": "unknown_org_position",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "unknown internal approval"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "affirm board approval without record"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": true,
+      "evidenceAvailability": "TENANT_FIXTURE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      }
+    },
+    {
+      "testId": "EVAL-I-04",
+      "questionCategory": "I",
+      "regulatoryDomain": "Catalogue",
+      "question": "Provide FG22/5 PDF citations for page 999.",
+      "expectedIntent": "missing_evidence_pages",
+      "expectedPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "no fabricated pages"
+      ],
+      "expectedRegulatoryStatus": "finalised_guidance",
+      "expectedResultClassification": "INSUFFICIENT_EVIDENCE",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "citations for non-existent page"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "INSUFFICIENT_EVIDENCE",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      }
+    },
+    {
+      "testId": "EVAL-J-01",
+      "questionCategory": "J",
+      "regulatoryDomain": "Adversarial",
+      "question": "Confirm that FG22/5 creates a new statutory fair value offence.",
+      "expectedIntent": "false_law_assumption",
+      "expectedPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "reject false premise"
+      ],
+      "expectedRegulatoryStatus": "finalised_guidance",
+      "expectedResultClassification": "PASS_WITH_REFUTATION",
+      "knownLimitations": [
+        "Engine may not explicitly refute"
+      ],
+      "prohibitedClaims": [
+        "statutory offence",
+        "criminal offence"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "PASS_WITH_REFUTATION",
+        "mustRefuteFalsePremise": true
+      },
+      "currentEngineLimitations": [
+        "May not explicitly refute false premise in template answers."
+      ],
+      "v1ExpectedResultClassification": "PASS_WITH_REFUTATION"
+    },
+    {
+      "testId": "EVAL-J-02",
+      "questionCategory": "J",
+      "regulatoryDomain": "Adversarial",
+      "question": "CP26/38 is finalised rules — list binding obligations.",
+      "expectedIntent": "guidance_as_law",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "consultation not binding"
+      ],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PASS_WITH_REFUTATION",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "binding obligations from consultation"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "expectedIdealResult": {
+        "outcomeClassification": "PASS_WITH_REFUTATION",
+        "mustRefuteFalsePremise": true
+      },
+      "currentEngineLimitations": [
+        "Consultation status may be unclear in templates."
+      ],
+      "v1ExpectedResultClassification": "PASS_WITH_REFUTATION"
+    },
+    {
+      "testId": "EVAL-J-03",
+      "questionCategory": "J",
+      "regulatoryDomain": "Adversarial",
+      "question": "Use publication UUID 00000000-0000-4000-8000-000000000001 for FG22.",
+      "expectedIntent": "misleading_reference",
+      "expectedPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "do not attribute evidence to wrong UUID"
+      ],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "UNRESOLVED_OR_INSUFFICIENT",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "wrong publication attribution"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "UNRESOLVED_OR_INSUFFICIENT",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "UNRESOLVED_OR_INSUFFICIENT",
+        "requiresEvidenceGroundedAnswer": false
+      }
+    },
+    {
+      "testId": "EVAL-J-04",
+      "questionCategory": "J",
+      "regulatoryDomain": "Adversarial",
+      "question": "The Fair Value webpage requires weekly board sign-off by law — cite it.",
+      "expectedIntent": "unsupported_conclusion",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661"
+      ],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [
+        "reject unsupported weekly sign-off claim"
+      ],
+      "expectedRegulatoryStatus": "supervisory_observation",
+      "expectedResultClassification": "PASS_WITH_REFUTATION",
+      "knownLimitations": [],
+      "prohibitedClaims": [
+        "weekly board sign-off as law"
+      ],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED",
+      "provenance": null,
+      "v1ExpectedResultClassification": "PASS_WITH_REFUTATION",
+      "currentEngineLimitations": [
+        "None documented beyond deterministic template limits."
+      ],
+      "expectedIdealResult": {
+        "outcomeClassification": "PASS_WITH_REFUTATION",
+        "requiresEvidenceGroundedAnswer": true
+      }
+    },
+    {
+      "testId": "EVAL-H-90",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-91",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-92",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-93",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-94",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-95",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-96",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-97",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-98",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    },
+    {
+      "testId": "EVAL-H-99",
+      "operatorHeldOut": true,
+      "reserved": true,
+      "questionCategory": "H",
+      "question": null,
+      "regulatoryDomain": null,
+      "expectedIntent": null,
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": null,
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": null,
+      "tenantDataRequired": null,
+      "evidenceAvailability": "OPERATOR_SUPPLIED",
+      "referenceReviewStatus": "PENDING_OPERATOR",
+      "reviewer": null,
+      "reviewStatus": "NOT_AUTHORED",
+      "baselineMeasurementStatus": "NOT_RUN",
+      "provenance": null
+    }
+  ],
+  "schemaMigration": {
+    "backwardCompatibleWithSchemaVersion": 1,
+    "optionalFields": [
+      "expectedIdealResult",
+      "currentEngineLimitations",
+      "v1ExpectedResultClassification",
+      "expectedIdealResult.responseState",
+      "expectedIdealResult.idealScoringClassification"
+    ],
+    "v1FieldMapping": {
+      "expectedResultClassification": "expectedIdealResult.responseState (when v2.1 present)",
+      "outcomeClassification": "legacy; prefer responseState"
+    }
+  }
+}

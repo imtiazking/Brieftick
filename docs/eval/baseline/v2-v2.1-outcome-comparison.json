@@ -1,0 +1,1023 @@
+{
+  "comparedAt": "2026-11-10",
+  "aggregate": {
+    "v2Frozen": {
+      "FAIL": 24,
+      "PASS": 4,
+      "CORRECT_INSUFFICIENT_EVIDENCE": 4,
+      "PARTIAL_PASS": 12,
+      "NOT_MEASURED": 1
+    },
+    "v2RescoreRubricV21": {
+      "FAIL": 25,
+      "PASS": 13,
+      "CORRECT_INSUFFICIENT_EVIDENCE": 5,
+      "PARTIAL_PASS": 2
+    },
+    "v2_1": {
+      "FAIL": 24,
+      "PASS": 13,
+      "CORRECT_INSUFFICIENT_EVIDENCE": 4,
+      "PARTIAL_PASS": 4
+    }
+  },
+  "outcomeDeltas": [
+    {
+      "testId": "EVAL-C-01",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-C-04",
+      "v2Frozen": "FAIL",
+      "v21": "PARTIAL_PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-D-02",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-D-03",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-D-04",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-D-05",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-E-01",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-E-02",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-F-02",
+      "v2Frozen": "PASS",
+      "v21": "PARTIAL_PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 3,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 3,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-G-03",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 2,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 2,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-G-04",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-H-03",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "FAIL",
+      "v2Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-H-04",
+      "v2Frozen": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "v21": "FAIL",
+      "v2Dims": {
+        "D01": 1,
+        "D02": 3,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-I-02",
+      "v2Frozen": "FAIL",
+      "v21": "PARTIAL_PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-I-04",
+      "v2Frozen": "NOT_MEASURED",
+      "v21": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "v2Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-J-03",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    }
+  ],
+  "improved": [
+    {
+      "testId": "EVAL-C-01",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-C-04",
+      "v2Frozen": "FAIL",
+      "v21": "PARTIAL_PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-D-02",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-D-03",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-D-04",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-D-05",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-E-01",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-E-02",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-G-03",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 2,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 2,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-G-04",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-I-02",
+      "v2Frozen": "FAIL",
+      "v21": "PARTIAL_PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-I-04",
+      "v2Frozen": "NOT_MEASURED",
+      "v21": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "v2Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-J-03",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    }
+  ],
+  "decreased": [
+    {
+      "testId": "EVAL-F-02",
+      "v2Frozen": "PASS",
+      "v21": "PARTIAL_PASS",
+      "v2Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 3,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 3,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-H-03",
+      "v2Frozen": "PARTIAL_PASS",
+      "v21": "FAIL",
+      "v2Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    },
+    {
+      "testId": "EVAL-H-04",
+      "v2Frozen": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "v21": "FAIL",
+      "v2Dims": {
+        "D01": 1,
+        "D02": 3,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "v21Dims": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D04": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      }
+    }
+  ],
+  "rubricOnlyRescoreNote": "v2-rescore isolates scorer changes without v2.1 suite edits"
+}

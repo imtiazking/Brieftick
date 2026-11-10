@@ -39,6 +39,10 @@ export function validateEvalSuite(doc, { allowOperatorHeldOut = true, requireQue
     errors.push('scoring_dimensions_empty');
   }
 
+  if (doc.schemaVersion != null && Number(doc.schemaVersion) > 2.1) {
+    errors.push('unsupported_schema_version');
+  }
+
   return { ok: errors.length === 0, errors };
 }
 

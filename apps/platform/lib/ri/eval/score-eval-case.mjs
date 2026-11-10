@@ -17,6 +17,69 @@ const SME_DIMENSIONS = new Set([
   'D04',
 ]);
 
+/** Map legacy evaluation-grade labels to production-style response states. */
+export function mapLegacyIdealToResponseState(classification) {
+  if (!classification) return 'ANSWERED';
+  const c = String(classification);
+  if (c === 'PARTIAL_PASS') return 'ANSWERED';
+  if (c === 'CORRECT_INSUFFICIENT_EVIDENCE') return 'INSUFFICIENT_EVIDENCE';
+  if (c === 'INSUFFICIENT_EVIDENCE_OR_UNRESOLVED') return 'INSUFFICIENT_EVIDENCE';
+  if (c === 'PASS_WITH_REFUTATION') return 'ANSWERED';
+  if (c === 'UNRESOLVED_OR_INSUFFICIENT') return 'UNRESOLVED_QUERY_SEMANTICS';
+  if (c === 'PARTIAL_PASS_OR_UNRESOLVED') return 'ANSWERED';
+  return c;
+}
+
+/** Ideal platform response state (not harness outcome grade). */
+export function resolveIdealResponseState(caseRow) {
+  return (
+    caseRow.expectedIdealResult?.responseState ||
+    mapLegacyIdealToResponseState(caseRow.expectedIdealResult?.outcomeClassification) ||
+    mapLegacyIdealToResponseState(caseRow.expectedResultClassification) ||
+    'ANSWERED'
+  );
+}
+
+/** Optional harness-only scoring class (e.g. refutation). */
+export function resolveIdealScoringClassification(caseRow) {
+  return (
+    caseRow.expectedIdealResult?.idealScoringClassification ||
+    caseRow.expectedIdealResult?.outcomeClassification ||
+    caseRow.expectedResultClassification ||
+    'ANSWERED'
+  );
+}
+
+/** v1-compatible: resolves ideal response state for dimension scoring. */
+export function resolveIdealOutcomeClassification(caseRow) {
+  return resolveIdealResponseState(caseRow);
+}
+
+function refutesFalsePremise(answer, caseRow) {
+  const ideal = caseRow.expectedIdealResult || {};
+  if (!ideal.mustRefuteFalsePremise) return true;
+  return (
+    /consultation|propos(ed|al)|not in force/i.test(answer) &&
+    (/no binding|does not (impose|create)|not a legal compliance|no compliance deadline/i.test(answer) ||
+      /cannot identify.*(?:binding|legal).*deadline/i.test(answer))
+  );
+}
+
+function gradeAnsweredOutcome({ status, dims, idealScoring, answer, caseRow, prohibitedHit }) {
+  if (idealScoring === 'PASS_WITH_REFUTATION' || caseRow.expectedIdealResult?.mustRefuteFalsePremise) {
+    if (prohibitedHit) return 'FAIL';
+    if (refutesFalsePremise(answer, caseRow) && (status === 'ANSWERED' || status === 'INSUFFICIENT_EVIDENCE')) {
+      return 'PASS';
+    }
+    if (status === 'ANSWERED') return 'PARTIAL_PASS';
+    return 'FAIL';
+  }
+  if (status !== 'ANSWERED') return 'FAIL';
+  if (dims.D02 >= 2 && dims.D03 >= 1) return 'PASS';
+  if (dims.D02 >= 1 || dims.D03 >= 1) return 'PARTIAL_PASS';
+  return 'PARTIAL_PASS';
+}
+
 /**
  * Score one case from frozen expectations + deterministic engine output.
  * Does not use engine output to build expected themes.
@@ -30,16 +93,27 @@ export function scoreEvalCase(caseRow, engineResult, context) {
   const status = engineResult?.status || 'UNKNOWN';
   const execution = engineResult?.execution || {};
   const mentionsPub = questionMentionsPublicationReference(caseRow.question || '');
+  const ideal = caseRow.expectedIdealResult || {};
+  const idealState = resolveIdealResponseState(caseRow);
+  const idealScoring = resolveIdealScoringClassification(caseRow);
+  const idealClass = idealState;
 
   // D01 routing
   const routedCatalogue = mentionsPub;
   const routedTenant = !mentionsPub;
-  const expectedTenant = Boolean(caseRow.tenantDataRequired) && !mentionsPub;
-  const expectedCatalogue = mentionsPub;
-  if (expectedCatalogue && routedCatalogue) dims.D01 = 3;
+  const needsSemanticDiscovery = Boolean(ideal.requiresSemanticPublicationDiscovery);
+  const expectedTenant = Boolean(caseRow.tenantDataRequired) && !mentionsPub && !needsSemanticDiscovery;
+  const idealCatalogue =
+    mentionsPub ||
+    needsSemanticDiscovery ||
+    (caseRow.expectedPublicationIds?.length > 0 && !caseRow.tenantDataRequired);
+  if (needsSemanticDiscovery && !context.simulateCatalogueAttach) {
+    dims.D01 = 0;
+  } else if (idealCatalogue && routedCatalogue) dims.D01 = 3;
+  else if (idealCatalogue && needsSemanticDiscovery && context.simulateCatalogueAttach) dims.D01 = 2;
   else if (expectedTenant && routedTenant) dims.D01 = 3;
-  else if (expectedCatalogue && !routedCatalogue) dims.D01 = 0;
-  else if (caseRow.questionCategory === 'H' && !routedCatalogue) dims.D01 = 2;
+  else if (idealCatalogue && !routedCatalogue) dims.D01 = 0;
+  else if (caseRow.questionCategory === 'H' && !routedCatalogue) dims.D01 = 1;
   else dims.D01 = 1;
 
   // D02 publication ids in citations
@@ -66,7 +140,7 @@ export function scoreEvalCase(caseRow, engineResult, context) {
   } else if (citations.length && status === 'ANSWERED') {
     dims.D03 = 2;
   } else if (status === 'INSUFFICIENT_EVIDENCE' || status === 'UNRESOLVED') {
-    dims.D03 = caseRow.expectedResultClassification?.includes('INSUFFICIENT') ? 2 : 0;
+    dims.D03 = idealState.includes('INSUFFICIENT') ? 0 : 0;
   } else {
     dims.D03 = 0;
   }
@@ -94,7 +168,7 @@ export function scoreEvalCase(caseRow, engineResult, context) {
   dims.D08 = prohibitedHit ? 0 : citations.length || status !== 'ANSWERED' ? 2 : 3;
 
   // D09 uncertainty / insufficient
-  const expectsInsufficient = String(caseRow.expectedResultClassification || '').includes('INSUFFICIENT');
+  const expectsInsufficient = idealState === 'INSUFFICIENT_EVIDENCE' || String(idealScoring).includes('INSUFFICIENT');
   if (expectsInsufficient) {
     dims.D09 =
       status === 'INSUFFICIENT_EVIDENCE' || status === 'UNRESOLVED' || engineResult?.insufficient
@@ -126,29 +200,26 @@ export function scoreEvalCase(caseRow, engineResult, context) {
     !citedPubIds.every((id) => expectedIds.includes(id));
   if (wrongPub) criticalFailures.push('CF-04');
 
-  // Classification match
+  // Classification match (harness grades vs ideal response states)
   let outcome = 'FAIL';
-  const exp = caseRow.expectedResultClassification || 'ANSWERED';
+  const legacyExp = caseRow.expectedIdealResult?.outcomeClassification || caseRow.expectedResultClassification;
   if (criticalFailures.length) outcome = 'FAIL';
-  else if (exp === 'CORRECT_INSUFFICIENT_EVIDENCE') {
+  else if (idealState === 'INSUFFICIENT_EVIDENCE' || legacyExp === 'CORRECT_INSUFFICIENT_EVIDENCE') {
     outcome =
       status === 'INSUFFICIENT_EVIDENCE' || status === 'UNRESOLVED' || status === 'ZERO_RESULTS'
         ? 'CORRECT_INSUFFICIENT_EVIDENCE'
         : 'FAIL';
-  } else if (exp === 'INSUFFICIENT_EVIDENCE_OR_UNRESOLVED') {
+  } else if (legacyExp === 'INSUFFICIENT_EVIDENCE_OR_UNRESOLVED' && !caseRow.expectedIdealResult?.responseState) {
     outcome =
       status === 'INSUFFICIENT_EVIDENCE' || status === 'UNRESOLVED' || !context.simulateCatalogueAttach
         ? 'PARTIAL_PASS'
         : 'FAIL';
-  } else if (exp === 'PASS_WITH_REFUTATION') {
-    outcome = prohibitedHit ? 'PASS' : status === 'ANSWERED' ? 'PARTIAL_PASS' : 'FAIL';
-  } else if (exp === 'ANSWERED') {
-    outcome = status === 'ANSWERED' && dims.D02 >= 2 ? 'PASS' : status === 'ANSWERED' ? 'PARTIAL_PASS' : 'FAIL';
-  } else if (exp === 'PARTIAL_PASS') {
-    outcome =
-      status === 'ANSWERED' || status === 'INSUFFICIENT_EVIDENCE' ? 'PARTIAL_PASS' : dims.D09 === 3 ? 'CORRECT_INSUFFICIENT_EVIDENCE' : 'FAIL';
-  } else if (exp === 'UNRESOLVED_OR_INSUFFICIENT') {
+  } else if (idealState === 'ANSWERED' || idealState === 'UNRESOLVED_QUERY_SEMANTICS') {
+    outcome = gradeAnsweredOutcome({ status, dims, idealScoring, answer, caseRow, prohibitedHit });
+  } else if (legacyExp === 'UNRESOLVED_OR_INSUFFICIENT') {
     outcome = status === 'UNRESOLVED' || status === 'INSUFFICIENT_EVIDENCE' ? 'PASS' : 'PARTIAL_PASS';
+  } else if (legacyExp === 'PARTIAL_PASS' && !caseRow.expectedIdealResult?.responseState) {
+    outcome = gradeAnsweredOutcome({ status, dims, idealScoring, answer, caseRow, prohibitedHit });
   } else {
     outcome = status === 'ANSWERED' ? 'PARTIAL_PASS' : 'NOT_MEASURED';
   }
@@ -161,6 +232,10 @@ export function scoreEvalCase(caseRow, engineResult, context) {
   return {
     testId: caseRow.testId,
     outcome,
+    idealResponseState: idealState,
+    idealScoringClassification: idealScoring,
+    idealOutcomeClassification: idealState,
+    v1ExpectedResultClassification: caseRow.v1ExpectedResultClassification || null,
     engineStatus: status,
     executionEvidenceSource: execution.evidenceSource || null,
     executionEvidenceSources: execution.evidenceSources || [],
