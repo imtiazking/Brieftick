@@ -17,15 +17,23 @@ import { loadEvidencePackIndex, hydrateStateFromPacks } from '../lib/ri/eval/loa
 import { scoreEvalCase } from '../lib/ri/eval/score-eval-case.mjs';
 import { createEvalTenantState } from '../lib/ri/eval/tenant-fixture-v1.mjs';
 import { validateEvalSuite, selectRunnableCases } from '../lib/ri/eval/validate-eval-suite.mjs';
+import {
+  assertBaselineWriteAllowed,
+  defaultTimestampedBaselinePath,
+  isProtectedBaselinePath,
+  PROTECTED_HISTORICAL_BASELINES,
+  verifyProtectedBaselineHashes,
+} from '../lib/ri/eval/baseline-protection.mjs';
 
 function parseArgs(argv) {
-  const out = { engine: 'deterministic', suite: null, out: null, includeHeldOut: false, quiet: false };
+  const out = { engine: 'deterministic', suite: null, out: null, includeHeldOut: false, quiet: false, force: false };
   for (const a of argv) {
     if (a.startsWith('--engine=')) out.engine = a.split('=')[1];
     else if (a.startsWith('--suite=')) out.suite = a.slice('--suite='.length);
     else if (a.startsWith('--out=')) out.out = a.slice('--out='.length);
     else if (a === '--include-operator-held-out') out.includeHeldOut = true;
     else if (a === '--quiet') out.quiet = true;
+    else if (a === '--force') out.force = true;
   }
   return out;
 }
@@ -47,15 +55,42 @@ function caseEvidenceAvailable(caseRow, packIndex) {
 function aggregateOutcomes(results) {
   const counts = {
     PASS: 0,
+    RETRIEVAL_PASS: 0,
     PARTIAL_PASS: 0,
     FAIL: 0,
     CORRECT_INSUFFICIENT_EVIDENCE: 0,
     NOT_RUN: 0,
     NOT_MEASURED: 0,
-    AWAITING_SME_REVIEW: 0,
   };
-  for (const r of results) counts[r.outcome] = (counts[r.outcome] || 0) + 1;
+  for (const r of results) {
+    const key = r.outcome || 'NOT_MEASURED';
+    counts[key] = (counts[key] || 0) + 1;
+  }
   return counts;
+}
+
+function aggregateReviewFlags(results) {
+  let answerQualityPendingReview = 0;
+  let retrievalSuccess = 0;
+  let themeCoverageAssessed = 0;
+  let fusionRequired = 0;
+  let fusionSatisfied = 0;
+  for (const r of results) {
+    if (r.answerQualityPendingReview) answerQualityPendingReview += 1;
+    if (r.technicalRetrievalOutcome === 'RETRIEVAL_SUCCESS') retrievalSuccess += 1;
+    if (r.themeCoverage?.requiredThemes?.length) themeCoverageAssessed += 1;
+    if (r.catalogueTenantFusion?.fusionRequired) {
+      fusionRequired += 1;
+      if (r.catalogueTenantFusion.fusionSatisfied) fusionSatisfied += 1;
+    }
+  }
+  return {
+    answerQualityPendingReview,
+    retrievalSuccess,
+    themeCoverageAssessed,
+    fusionRequired,
+    fusionSatisfied,
+  };
 }
 
 function aggregateByCategory(results) {
@@ -161,10 +196,12 @@ export function runEvalSuite(options) {
     results,
     summary: {
       outcomes: aggregateOutcomes(results),
+      reviewFlags: aggregateReviewFlags(results),
       byCategory: aggregateByCategory(results),
       byDimension: aggregateDimensions(results, suite),
       criticalFailureInstances: criticalFailures,
       missingEvidence,
+      protectedBaselines: PROTECTED_HISTORICAL_BASELINES,
       unmeasured: {
         regulatoryInterpretation: 'AWAITING_SME_REVIEW',
         tenantSecurityD11: 'NOT_MEASURED',
@@ -203,8 +240,12 @@ function main() {
     process.exit(2);
   }
 
-  const defaultOut = `${BASELINE_DIR}/deterministic-v1-2026-11-10.json`;
-  const outPath = cli.out ? resolve(cli.out) : defaultOut;
+  const outPath = cli.out ? resolve(cli.out) : defaultTimestampedBaselinePath();
+  const writeCheck = assertBaselineWriteAllowed({ outPath, force: cli.force });
+  if (!writeCheck.ok) {
+    console.error(JSON.stringify({ ok: false, error: writeCheck.error, message: writeCheck.message }, null, 2));
+    process.exit(2);
+  }
   const outDir = dirname(outPath);
   if (outDir) mkdirSync(outDir, { recursive: true });
   writeFileSync(outPath, JSON.stringify(report, null, 2));
@@ -216,6 +257,8 @@ function main() {
     outcomes: report.summary.outcomes,
     missingEvidence: report.summary.missingEvidence.length,
     criticalFailures: report.summary.criticalFailureInstances.length,
+    reviewFlags: report.summary.reviewFlags,
+    protectedBaselineOverwriteBlocked: isProtectedBaselinePath(outPath),
   };
   if (!cli.quiet) {
     console.log(JSON.stringify(payload, null, 2));

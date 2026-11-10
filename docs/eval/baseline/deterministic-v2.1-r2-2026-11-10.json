@@ -1,0 +1,3131 @@
+{
+  "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+  "engine": "deterministic_v1",
+  "engineCommitSha": "d5bad992beea44f1f54940f7e52d0421ce9da587",
+  "suiteSourcePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json",
+  "suiteIsRepoDefault": false,
+  "evidencePackHashes": {
+    "manifest": "d25ce7c5d43dd797f989a6ca6d9cbe482154fd3821582cdaf993c89174872659",
+    "cp26-38-html-article-v1.json": "95e06f0205b58e64a36879ade269111c29d5da8ff7f481176eab112972170dda",
+    "cp26-38-primary-pdf-v1.json": "b9c3d21b59c671ef675610e71c842a7fde6ff87441f694e14e12cf07bfa3b0e5",
+    "fair-value-consumer-finance-v1.json": "5d5caf5ad57592ce64261e17ef9e5cfa42dedfebfee6b35cf636b634a06c8848",
+    "fg22-5-primary-pdf-v1.json": "f5be8254ceee478858f8d8cad31fc68be1838a52fada59474aca4da1cc0567a2"
+  },
+  "evidenceManifest": {
+    "manifestVersion": 1,
+    "createdAt": "2026-11-10T13:11:32.832Z",
+    "exportSource": "staging_readonly",
+    "packs": [
+      {
+        "file": "fair-value-consumer-finance-v1.json",
+        "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+        "profile": "html_article_v2",
+        "exportSource": "staging_readonly"
+      },
+      {
+        "file": "fg22-5-primary-pdf-v1.json",
+        "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "profile": "pdf_primary_v1",
+        "exportSource": "staging_readonly"
+      },
+      {
+        "file": "cp26-38-primary-pdf-v1.json",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "profile": "pdf_primary_v1",
+        "exportSource": "staging_readonly"
+      },
+      {
+        "file": "cp26-38-html-article-v1.json",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "profile": "html_article_v2",
+        "exportSource": "staging_readonly"
+      }
+    ],
+    "errors": []
+  },
+  "executedAt": "2026-11-10T14:42:48.815Z",
+  "caseCount": 45,
+  "heldOutExcluded": 0,
+  "results": [
+    {
+      "testId": "EVAL-A-01",
+      "outcome": "FAIL",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "fair value under Consumer Duty",
+          "supervisory good and poor practice examples",
+          "PRIN 2A binding context distinguished from examples"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "fair value under Consumer Duty",
+          "supervisory good and poor practice examples",
+          "PRIN 2A binding context distinguished from examples"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "A",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-A-02",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "assess fair value before offer",
+          "monitor through product lifecycle",
+          "customer groups and vulnerability",
+          "distribution chain value"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "assess fair value before offer",
+          "monitor through product lifecycle",
+          "customer groups and vulnerability",
+          "distribution chain value"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "A",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-A-03",
+      "outcome": "FAIL",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "non-Handbook guidance",
+          "Consumer Duty fair value expectations",
+          "does not create new legal obligations"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "non-Handbook guidance",
+          "Consumer Duty fair value expectations",
+          "does not create new legal obligations"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "A",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-A-04",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "consumer finance firms",
+          "supervisory examples"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "consumer finance firms",
+          "supervisory examples"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "A",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-A-05",
+      "outcome": "RETRIEVAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "Financial Crime Guide updates",
+          "consultation proposals"
+        ],
+        "themesAddressed": [
+          "Financial Crime Guide updates",
+          "consultation proposals"
+        ],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "answer_quality_pending_review"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "A",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-B-01",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "PRIN 2A binding",
+          "FG22 is non-Handbook guidance"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "PRIN 2A binding",
+          "FG22 is non-Handbook guidance"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "B",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-B-02",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "documentation and monitoring evidence"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "documentation and monitoring evidence"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "B",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-B-03",
+      "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "INSUFFICIENT_EVIDENCE",
+      "idealScoringClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "idealOutcomeClassification": "INSUFFICIENT_EVIDENCE",
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "no COBS corpus in catalogue path"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "no COBS corpus in catalogue path"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 1,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "B",
+      "expectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-B-04",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "supervisory examples are not new obligations"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "supervisory examples are not new obligations"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "B",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-C-01",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "consultation proposals only",
+          "business function applicability",
+          "control impact narrative"
+        ],
+        "themesAddressed": [
+          "consultation proposals only",
+          "business function applicability"
+        ],
+        "themesMissing": [
+          "control impact narrative"
+        ],
+        "themeCoverageScore": 0.667,
+        "themeCoverageRatio": 0.6666666666666666,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1034
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "missing_control_impact_themes"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "C",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-C-02",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "consultation",
+          "not binding requirements"
+        ],
+        "themesAddressed": [
+          "consultation"
+        ],
+        "themesMissing": [
+          "not binding requirements"
+        ],
+        "themeCoverageScore": 0.5,
+        "themeCoverageRatio": 0.5,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1103
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "missing_required_answer_themes"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "C",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-C-03",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "finalised guidance"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "finalised guidance"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "C",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-C-04",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "consultation comments due by 24 December 2026",
+          "consultation response deadline distinct from implementation or compliance dates"
+        ],
+        "themesAddressed": [
+          "consultation comments due by 24 December 2026",
+          "consultation response deadline distinct from implementation or compliance dates"
+        ],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1103
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "weak_retrieval_dimensions"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "C",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-C-05",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "consultation vs finalised guidance"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "consultation vs finalised guidance"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "C",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-D-01",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "fraud prevention proposals"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "fraud prevention proposals"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "missing_required_answer_themes"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "D",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-D-02",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "AML or monitoring proposals if evidenced"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "AML or monitoring proposals if evidenced"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "missing_required_answer_themes"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "D",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-D-03",
+      "outcome": "RETRIEVAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "sanctions screening impact"
+        ],
+        "themesAddressed": [
+          "sanctions screening impact"
+        ],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1027
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "answer_quality_pending_review"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "D",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-D-04",
+      "outcome": "RETRIEVAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "proliferation financing if in document"
+        ],
+        "themesAddressed": [
+          "proliferation financing if in document"
+        ],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1081
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "answer_quality_pending_review"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "D",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-D-05",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "governance proposals"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "governance proposals"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "missing_required_answer_themes"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "D",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-E-01",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "business function labels from evidence"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "business function labels from evidence"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "missing_required_answer_themes"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "E",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-E-02",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "operational change as reasoned implication"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "operational change as reasoned implication"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "missing_required_answer_themes"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "E",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-E-03",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "ongoing monitoring"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "ongoing monitoring"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "E",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-E-04",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "fair value assessment process"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "fair value assessment process"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "E",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-F-01",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "open or in-scope changes listed"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "open or in-scope changes listed"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "F",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-F-02",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "Obligations (open / in-progress); also retrieving linked obligations",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "count of open obligations"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "count of open obligations"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 62
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 3,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "weak_retrieval_dimensions"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "F",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-F-03",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "control-obligation linkage"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "control-obligation linkage"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "F",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-F-04",
+      "outcome": "FAIL",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "draft impact assessment records"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "draft impact assessment records"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "F",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-F-05",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "missing evidence acknowledgement"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "missing evidence acknowledgement"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "F",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-G-01",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "HTML-only substantive answer",
+          "no PDF citations"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "HTML-only substantive answer",
+          "no PDF citations"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "G",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-G-02",
+      "outcome": "FAIL",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "ANSWERED",
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "mixed synthesis lead paragraph",
+          "HTML and PDF in key findings",
+          "Chapter 7 fair value themes where indexed"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "mixed synthesis lead paragraph",
+          "HTML and PDF in key findings",
+          "Chapter 7 fair value themes where indexed"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "G",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-G-03",
+      "outcome": "RETRIEVAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "mixed_catalogue_evidence",
+      "executionEvidenceSources": [
+        "html_article_v2",
+        "pdf_primary_v1"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations; primary PDF (pdf_primary_v1) with physical page citations where indexed. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 12,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "status distinction consultation vs finalised guidance"
+        ],
+        "themesAddressed": [
+          "status distinction consultation vs finalised guidance"
+        ],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 3048
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 2,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "answer_quality_pending_review"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "G",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-G-04",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "tenant obligation records",
+          "CP26 citations"
+        ],
+        "themesAddressed": [
+          "CP26 citations"
+        ],
+        "themesMissing": [
+          "tenant obligation records"
+        ],
+        "themeCoverageScore": 0.5,
+        "themeCoverageRatio": 0.5,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": true,
+        "catalogueEvidencePresent": true,
+        "tenantEvidencePresent": false,
+        "fusionSatisfied": false,
+        "fixtureReference": {
+          "obligationIds": [
+            "OBL-EVAL-OPEN-2",
+            "OBL-EVAL-DRAFT-1"
+          ],
+          "changeIds": [
+            "CHG-EVAL-002"
+          ]
+        },
+        "details": [
+          "citedPublicationIds:4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "executionEvidenceSource:html_article_v2"
+        ]
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "catalogue_tenant_fusion_incomplete"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "G",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-H-01",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "INSUFFICIENT_EVIDENCE_OR_UNRESOLVED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "discovery without explicit publication title in question"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "discovery without explicit publication title in question"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "H",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-H-02",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "INSUFFICIENT_EVIDENCE_OR_UNRESOLVED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [],
+        "themesAddressed": [],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "No requiredAnswerThemes declared; coverage treated as not applicable (not scored as addressed).",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "H",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-H-03",
+      "outcome": "FAIL",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "INSUFFICIENT_EVIDENCE_OR_UNRESOLVED",
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [],
+        "themesAddressed": [],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "No requiredAnswerThemes declared; coverage treated as not applicable (not scored as addressed).",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "H",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-H-04",
+      "outcome": "FAIL",
+      "productionResponseState": "INSUFFICIENT_EVIDENCE",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "Named entity or domain is not present in verified RI catalogue data.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "authorised push payment (APP) fraud",
+          "money mules and proceeds of fraud",
+          "fraud monitoring and red flags",
+          "onboarding and financial crime controls",
+          "consultation / proposed guidance — not newly binding rules"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "authorised push payment (APP) fraud",
+          "money mules and proceeds of fraud",
+          "fraud monitoring and red flags",
+          "onboarding and financial crime controls",
+          "consultation / proposed guidance — not newly binding rules"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "H",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-H-05",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "ANSWERED",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PARTIAL_PASS_OR_UNRESOLVED",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [],
+        "themesAddressed": [],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "No requiredAnswerThemes declared; coverage treated as not applicable (not scored as addressed).",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "H",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-I-01",
+      "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "INSUFFICIENT_EVIDENCE",
+      "idealScoringClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "idealOutcomeClassification": "INSUFFICIENT_EVIDENCE",
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "acknowledge missing evidence"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "acknowledge missing evidence"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 1,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "I",
+      "expectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-I-02",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "PASS_WITH_REFUTATION",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "CP26/38 is a consultation paper not in-force binding law",
+          "refute premise that CP26/38 alone imposes a legal compliance deadline",
+          "distinguish existing MLR/FSMA obligations from proposed guide updates"
+        ],
+        "themesAddressed": [
+          "CP26/38 is a consultation paper not in-force binding law",
+          "refute premise that CP26/38 alone imposes a legal compliance deadline"
+        ],
+        "themesMissing": [
+          "distinguish existing MLR/FSMA obligations from proposed guide updates"
+        ],
+        "themeCoverageScore": 0.667,
+        "themeCoverageRatio": 0.6666666666666666,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "incomplete_refutation"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "I",
+      "expectedResultClassification": "ANSWERED",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-I-03",
+      "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "INSUFFICIENT_EVIDENCE",
+      "idealScoringClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "idealOutcomeClassification": "INSUFFICIENT_EVIDENCE",
+      "v1ExpectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "unknown internal approval"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "unknown internal approval"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "I",
+      "expectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-I-04",
+      "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "INSUFFICIENT_EVIDENCE",
+      "idealScoringClassification": "INSUFFICIENT_EVIDENCE",
+      "idealOutcomeClassification": "INSUFFICIENT_EVIDENCE",
+      "v1ExpectedResultClassification": "INSUFFICIENT_EVIDENCE",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "no fabricated pages"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "no fabricated pages"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 3,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "I",
+      "expectedResultClassification": "INSUFFICIENT_EVIDENCE",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-J-01",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "PASS_WITH_REFUTATION",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PASS_WITH_REFUTATION",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "reject false premise"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "reject false premise"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "J",
+      "expectedResultClassification": "PASS_WITH_REFUTATION",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-J-02",
+      "outcome": "PARTIAL_PASS",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "PASS_WITH_REFUTATION",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PASS_WITH_REFUTATION",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "html_article_v2",
+      "executionEvidenceSources": [
+        "html_article_v2"
+      ],
+      "interpretedAs": "FCA webpage (html_article_v2) with section-level citations. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 8,
+      "citedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "consultation not binding"
+        ],
+        "themesAddressed": [
+          "consultation not binding"
+        ],
+        "themesMissing": [],
+        "themeCoverageScore": 1,
+        "themeCoverageRatio": 1,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1029
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": false,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 2,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "incomplete_refutation"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "J",
+      "expectedResultClassification": "PASS_WITH_REFUTATION",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-J-03",
+      "outcome": "FAIL",
+      "productionResponseState": "ANSWERED",
+      "technicalRetrievalOutcome": "RETRIEVAL_SUCCESS",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "UNRESOLVED_QUERY_SEMANTICS",
+      "idealScoringClassification": "UNRESOLVED_OR_INSUFFICIENT",
+      "idealOutcomeClassification": "UNRESOLVED_QUERY_SEMANTICS",
+      "v1ExpectedResultClassification": "UNRESOLVED_OR_INSUFFICIENT",
+      "engineStatus": "ANSWERED",
+      "executionEvidenceSource": "pdf_primary_v1",
+      "executionEvidenceSources": [
+        "pdf_primary_v1"
+      ],
+      "interpretedAs": "primary PDF (pdf_primary_v1) with physical page citations where indexed. Supervisory examples are not new obligations; FG22/5 PDF is cited only when indexed as a separate catalogue publication.",
+      "citationCount": 5,
+      "citedPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "themeCoverage": {
+        "requiredThemes": [
+          "do not attribute evidence to wrong UUID"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "do not attribute evidence to wrong UUID"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 1436
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 3,
+        "D02": 3,
+        "D03": 2,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "J",
+      "expectedResultClassification": "UNRESOLVED_OR_INSUFFICIENT",
+      "engine": "deterministic",
+      "providerUsed": false
+    },
+    {
+      "testId": "EVAL-J-04",
+      "outcome": "FAIL",
+      "productionResponseState": "UNRESOLVED",
+      "technicalRetrievalOutcome": "RETRIEVAL_INCOMPLETE",
+      "answerQualityPendingReview": true,
+      "idealResponseState": "ANSWERED",
+      "idealScoringClassification": "PASS_WITH_REFUTATION",
+      "idealOutcomeClassification": "ANSWERED",
+      "v1ExpectedResultClassification": "PASS_WITH_REFUTATION",
+      "engineStatus": "UNRESOLVED",
+      "executionEvidenceSource": "tenant_ri_records",
+      "executionEvidenceSources": [],
+      "interpretedAs": "This question could not be mapped safely to a supported Ask RI query plan.",
+      "citationCount": 0,
+      "citedPublicationIds": [],
+      "themeCoverage": {
+        "requiredThemes": [
+          "reject unsupported weekly sign-off claim"
+        ],
+        "themesAddressed": [],
+        "themesMissing": [
+          "reject unsupported weekly sign-off claim"
+        ],
+        "themeCoverageScore": 0,
+        "themeCoverageRatio": 0,
+        "limitations": "Keyword/phrase heuristic on answer text and structured findings only; does not verify regulatory correctness.",
+        "textAssessedChars": 59
+      },
+      "catalogueTenantFusion": {
+        "fusionRequired": false,
+        "catalogueEvidencePresent": null,
+        "tenantEvidencePresent": null,
+        "fusionSatisfied": null,
+        "details": []
+      },
+      "expectedResponseStateContradiction": true,
+      "dimensions": {
+        "D01": 0,
+        "D02": 0,
+        "D03": 0,
+        "D04": "AWAITING_SME_REVIEW",
+        "D05": "AWAITING_SME_REVIEW",
+        "D06": "AWAITING_SME_REVIEW",
+        "D07": "AWAITING_SME_REVIEW",
+        "D08": 2,
+        "D09": 1,
+        "D10": "NOT_MEASURED",
+        "D11": "NOT_MEASURED"
+      },
+      "criticalFailures": [],
+      "notes": [
+        "expected_response_state_contradiction"
+      ],
+      "prohibitedClaimAutomatable": true,
+      "hallucinationDetection": "NOT_AUTOMATABLE",
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "questionCategory": "J",
+      "expectedResultClassification": "PASS_WITH_REFUTATION",
+      "engine": "deterministic",
+      "providerUsed": false
+    }
+  ],
+  "summary": {
+    "outcomes": {
+      "PASS": 0,
+      "RETRIEVAL_PASS": 4,
+      "PARTIAL_PASS": 12,
+      "FAIL": 25,
+      "CORRECT_INSUFFICIENT_EVIDENCE": 4,
+      "NOT_RUN": 0,
+      "NOT_MEASURED": 0
+    },
+    "reviewFlags": {
+      "answerQualityPendingReview": 45,
+      "retrievalSuccess": 15,
+      "themeCoverageAssessed": 42,
+      "fusionRequired": 1,
+      "fusionSatisfied": 0
+    },
+    "byCategory": {
+      "A": {
+        "PASS": 0,
+        "PARTIAL_PASS": 0,
+        "FAIL": 4,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 0,
+        "NOT_RUN": 0,
+        "RETRIEVAL_PASS": 1
+      },
+      "B": {
+        "PASS": 0,
+        "PARTIAL_PASS": 0,
+        "FAIL": 3,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 1,
+        "NOT_RUN": 0
+      },
+      "C": {
+        "PASS": 0,
+        "PARTIAL_PASS": 3,
+        "FAIL": 2,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 0,
+        "NOT_RUN": 0
+      },
+      "D": {
+        "PASS": 0,
+        "PARTIAL_PASS": 3,
+        "FAIL": 0,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 0,
+        "NOT_RUN": 0,
+        "RETRIEVAL_PASS": 2
+      },
+      "E": {
+        "PASS": 0,
+        "PARTIAL_PASS": 2,
+        "FAIL": 2,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 0,
+        "NOT_RUN": 0
+      },
+      "F": {
+        "PASS": 0,
+        "PARTIAL_PASS": 1,
+        "FAIL": 4,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 0,
+        "NOT_RUN": 0
+      },
+      "G": {
+        "PASS": 0,
+        "PARTIAL_PASS": 1,
+        "FAIL": 2,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 0,
+        "NOT_RUN": 0,
+        "RETRIEVAL_PASS": 1
+      },
+      "H": {
+        "PASS": 0,
+        "PARTIAL_PASS": 0,
+        "FAIL": 5,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 0,
+        "NOT_RUN": 0
+      },
+      "I": {
+        "PASS": 0,
+        "PARTIAL_PASS": 1,
+        "FAIL": 0,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 3,
+        "NOT_RUN": 0
+      },
+      "J": {
+        "PASS": 0,
+        "PARTIAL_PASS": 1,
+        "FAIL": 3,
+        "CORRECT_INSUFFICIENT_EVIDENCE": 0,
+        "NOT_RUN": 0
+      }
+    },
+    "byDimension": {
+      "D01": {
+        "automatableMean": 1.511111111111111,
+        "automatableSamples": 45,
+        "awaitingSmeReview": 0,
+        "notMeasured": 0
+      },
+      "D02": {
+        "automatableMean": 1.5777777777777777,
+        "automatableSamples": 45,
+        "awaitingSmeReview": 0,
+        "notMeasured": 0
+      },
+      "D03": {
+        "automatableMean": 0.6666666666666666,
+        "automatableSamples": 45,
+        "awaitingSmeReview": 0,
+        "notMeasured": 0
+      },
+      "D04": {
+        "automatableMean": null,
+        "automatableSamples": 0,
+        "awaitingSmeReview": 45,
+        "notMeasured": 0
+      },
+      "D05": {
+        "automatableMean": null,
+        "automatableSamples": 0,
+        "awaitingSmeReview": 45,
+        "notMeasured": 0
+      },
+      "D06": {
+        "automatableMean": null,
+        "automatableSamples": 0,
+        "awaitingSmeReview": 45,
+        "notMeasured": 0
+      },
+      "D07": {
+        "automatableMean": null,
+        "automatableSamples": 0,
+        "awaitingSmeReview": 45,
+        "notMeasured": 0
+      },
+      "D08": {
+        "automatableMean": 2.022222222222222,
+        "automatableSamples": 45,
+        "awaitingSmeReview": 0,
+        "notMeasured": 0
+      },
+      "D09": {
+        "automatableMean": 1.5333333333333334,
+        "automatableSamples": 45,
+        "awaitingSmeReview": 0,
+        "notMeasured": 0
+      },
+      "D10": {
+        "automatableMean": null,
+        "automatableSamples": 0,
+        "awaitingSmeReview": 0,
+        "notMeasured": 45
+      },
+      "D11": {
+        "automatableMean": null,
+        "automatableSamples": 0,
+        "awaitingSmeReview": 0,
+        "notMeasured": 45
+      }
+    },
+    "criticalFailureInstances": [],
+    "missingEvidence": [],
+    "protectedBaselines": [
+      "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v1-2026-11-10.json",
+      "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2-2026-11-10.json",
+      "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-2026-11-10.json"
+    ],
+    "unmeasured": {
+      "regulatoryInterpretation": "AWAITING_SME_REVIEW",
+      "tenantSecurityD11": "NOT_MEASURED",
+      "crossDomainD10": "NOT_MEASURED",
+      "hallucinationDetection": "NOT_AUTOMATABLE"
+    }
+  },
+  "safetyChecks": {
+    "liveApiCalls": false,
+    "aiProviderCalls": false,
+    "databaseWrites": false,
+    "storageWrites": false,
+    "askRiProductionInvoked": false
+  }
+}

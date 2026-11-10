@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-11-10",
+  "note": "SHA-256 of frozen historical baselines after Phase 2A.6 protection. harness must not modify these files.",
+  "files": [
+    {
+      "path": "docs/eval/baseline/deterministic-v1-2026-11-10.json",
+      "sha256": "6998edf7a28872889a6e24e6f88198c52550c313c6462be4f39973354a3b05c3"
+    },
+    {
+      "path": "docs/eval/baseline/deterministic-v2-2026-11-10.json",
+      "sha256": "4d9f3a94584c6e99c1c1f785ca9e22136faa9774d2af57772ae48cf1a4eee81d"
+    },
+    {
+      "path": "docs/eval/baseline/deterministic-v2.1-2026-11-10.json",
+      "sha256": "88dc616ca020efd74d60b716233ddf161a2787b81843cf71c68eeb09c928b018"
+    }
+  ]
+}
