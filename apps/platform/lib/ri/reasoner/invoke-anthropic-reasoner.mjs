@@ -80,8 +80,16 @@ export async function invokeAnthropicReasoner(question, bundle, deps = {}) {
       requestId: res.requestId,
       requestReachedProvider: res.requestReachedProvider,
       responseReceived: res.responseReceived,
+      stopReason: res.stopReason,
+      contentBlockTypes: res.contentBlockTypes,
+      inputTokens: res.inputTokens,
+      outputTokens: res.outputTokens,
       model,
       latencyMs,
+      usage:
+        res.inputTokens != null || res.outputTokens != null
+          ? { inputTokens: res.inputTokens, outputTokens: res.outputTokens }
+          : undefined,
     };
     failure.diagnostics = buildSanitisedProviderDiagnostics(failure);
     return failure;

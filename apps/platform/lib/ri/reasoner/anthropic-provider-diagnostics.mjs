@@ -23,6 +23,10 @@ export function buildSanitisedProviderDiagnostics(reasonerResult, extra = {}) {
     responseReceived: reasonerResult.responseReceived ?? (reasonerResult.httpStatus != null ? true : false),
     model: reasonerResult.model ?? extra.model ?? null,
     latencyMs: reasonerResult.latencyMs ?? null,
+    stopReason: reasonerResult.stopReason ?? null,
+    contentBlockTypes: reasonerResult.contentBlockTypes ?? null,
+    inputTokens: reasonerResult.inputTokens ?? reasonerResult.usage?.inputTokens ?? null,
+    outputTokens: reasonerResult.outputTokens ?? reasonerResult.usage?.outputTokens ?? null,
     ...extra,
   };
 }

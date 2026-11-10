@@ -6,7 +6,36 @@ export const AI_ERROR_CODES = {
   AI_PROVIDER_RATE_LIMITED: 'AI_PROVIDER_RATE_LIMITED',
   AI_TIMEOUT: 'AI_TIMEOUT',
   AI_OUTPUT_SCHEMA_INVALID: 'AI_OUTPUT_SCHEMA_INVALID',
+  /** HTTP 200 but no user-visible text blocks in message content (e.g. thinking-only). */
+  AI_EMPTY_RESPONSE_CONTENT: 'AI_EMPTY_RESPONSE_CONTENT',
+  AI_RESPONSE_JSON_PARSE_FAILED: 'AI_RESPONSE_JSON_PARSE_FAILED',
 };
+
+/**
+ * Extract assistant-visible text from Messages API content blocks.
+ * Claude 5.x may prepend non-text blocks (e.g. thinking) before the text block.
+ */
+export function extractTextFromAnthropicMessageContent(content) {
+  if (!Array.isArray(content)) return '';
+  const parts = [];
+  for (const block of content) {
+    if (!block || typeof block !== 'object') continue;
+    const type = String(block.type || 'text').toLowerCase();
+    if (type === 'text' && typeof block.text === 'string' && block.text.trim()) {
+      parts.push(block.text);
+      continue;
+    }
+    if (typeof block.text === 'string' && block.text.trim() && type !== 'thinking') {
+      parts.push(block.text);
+    }
+  }
+  return parts.join('\n').trim();
+}
+
+export function summariseAnthropicContentBlocks(content) {
+  if (!Array.isArray(content)) return [];
+  return content.map((b) => (b && typeof b === 'object' ? String(b.type || 'text') : 'unknown'));
+}
 
 export function parseAnthropicJsonText(raw) {
   if (!raw?.trim()) return null;
@@ -102,21 +131,32 @@ export async function callAnthropicMessages(apiKey, req, deps = {}) {
     }
 
     const content = body.content;
-    const text =
-      Array.isArray(content) && content[0] && typeof content[0] === 'object' && content[0].text
-        ? String(content[0].text)
-        : '';
+    const text = extractTextFromAnthropicMessageContent(content);
+    const baseMeta = {
+      httpStatus: res.status,
+      requestReachedProvider: true,
+      responseReceived: true,
+      requestId: typeof body.id === 'string' ? body.id : typeof body.request_id === 'string' ? body.request_id : null,
+      stopReason: typeof body.stop_reason === 'string' ? body.stop_reason : null,
+      contentBlockTypes: summariseAnthropicContentBlocks(content),
+      inputTokens: body.usage?.input_tokens ?? null,
+      outputTokens: body.usage?.output_tokens ?? null,
+    };
 
     if (!text.trim()) {
-      return { ok: false, code: AI_ERROR_CODES.AI_PROVIDER_UNAVAILABLE, message: 'Empty Anthropic response.' };
+      return {
+        ok: false,
+        code: AI_ERROR_CODES.AI_EMPTY_RESPONSE_CONTENT,
+        message:
+          'Anthropic returned HTTP 200 but no extractable text blocks (check thinking-only or empty assistant content).',
+        ...baseMeta,
+      };
     }
 
     return {
       ok: true,
       text,
-      requestId: typeof body.id === 'string' ? body.id : null,
-      inputTokens: body.usage?.input_tokens ?? null,
-      outputTokens: body.usage?.output_tokens ?? null,
+      ...baseMeta,
     };
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Anthropic request failed';
