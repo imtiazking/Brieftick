@@ -1,4 +1,19 @@
-import { getState, personName } from './store.js';
+import {
+  getState,
+  personName,
+  getViewImpactAssessments,
+  getViewWorkflowEvents,
+  getConnectedGovernanceMetrics,
+} from './store.js';
+import { isConnectedBackendActive } from './platform/connected-mode.js';
+import { connectedCatalogueBanner } from './platform/connected-catalogue.js';
+import {
+  connectedReadOnlyGovernanceBanner,
+  renderConnectedWorkflowEventsTable,
+  renderConnectedGovernanceMetrics,
+  connectedGovernanceUnavailableNote,
+  connectedRegisterEmpty,
+} from './platform/connected-governance-ui.js';
 import { esc, badge, pageHeader, dataTable, formatDate, entityHero, notFoundState, linkRecord } from './components.js';
 import {
   getApprovalChain,
@@ -13,6 +28,38 @@ import {
 
 export function viewGovernanceRegister() {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const impacts = getViewImpactAssessments();
+    const pendingReview = impacts.filter((a) => /review|draft|pending/i.test(String(a.status)));
+    const impactRows = pendingReview.map(
+      (a) => `<tr>
+        <td><a href="#/assessment/${esc(a.id)}">${esc(a.externalKey || a.id.slice(0, 8))}</a></td>
+        <td>${esc(a.title)}</td>
+        <td>${badge(a.materiality)}</td>
+        <td>${badge(a.status)}</td>
+        <td>${esc(a.ownerLabel || '—')}</td>
+      </tr>`,
+    );
+    const events = getViewWorkflowEvents();
+    return `${pageHeader('Governance Register', 'Tenant workflow history and pending approvals · connected')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyGovernanceBanner(s)}
+      ${renderConnectedGovernanceMetrics(getConnectedGovernanceMetrics())}
+      <div data-connected-governance-pending-load class="ri-muted">Loading pending approvals…</div>
+      <section class="ri-panel"><h2>Impact assessments — review pipeline</h2>
+        ${impactRows.length ? dataTable(['ID', 'Title', 'Materiality', 'Status', 'Owner'], impactRows) : connectedRegisterEmpty('impact assessments awaiting review')}
+        <p class="ri-muted">Formal approval chains and attestations in the Design Lab are demonstration-only. Production impact approval state is reflected in persisted assessment status and workflow events below.</p>
+      </section>
+      <section class="ri-panel"><h2>Workflow &amp; decision history</h2>
+        ${renderConnectedWorkflowEventsTable(events)}
+      </section>
+      <section class="ri-panel"><h2>Enterprise approvals, attestations &amp; exceptions</h2>
+        ${connectedGovernanceUnavailableNote(
+          'Approval chains',
+          'No persisted approval-chain, attestation or governance-exception entities in production RI. These screens remain available in demo mode only.',
+        )}
+      </section>`;
+  }
   const m = governanceMetrics(s);
   const approvals = (s.approvalChains || [])
     .flatMap((c) =>
@@ -56,6 +103,11 @@ export function viewGovernanceRegister() {
 }
 
 export function viewApprovalStep(stepId) {
+  if (isConnectedBackendActive(getState())) {
+    return `${pageHeader('Approval', 'Unavailable in connected mode')}
+      ${connectedGovernanceUnavailableNote('Approvals', 'Approval-chain steps are Design Lab demonstration only. Use Impact Assessments and workflow events for production review state.')}
+      <p><a href="#/governance">← Governance register</a></p>`;
+  }
   const s = getState();
   const chain = (s.approvalChains || []).find((c) => c.steps?.some((st) => st.id === stepId));
   const step = chain?.steps?.find((st) => st.id === stepId);
@@ -74,6 +126,11 @@ export function viewApprovalStep(stepId) {
 }
 
 export function viewAttestation(id) {
+  if (isConnectedBackendActive(getState())) {
+    return `${pageHeader('Attestation', 'Unavailable in connected mode')}
+      ${connectedGovernanceUnavailableNote('Attestations', 'Management attestations are not persisted as tenant entities in production RI.')}
+      <p><a href="#/governance">← Governance register</a></p>`;
+  }
   const s = getState();
   const att = s.attestations?.find((a) => a.id === id);
   if (!att) return notFoundState('Attestation', id);
@@ -92,6 +149,11 @@ export function viewAttestation(id) {
 }
 
 export function viewException(id) {
+  if (isConnectedBackendActive(getState())) {
+    return `${pageHeader('Governance exception', 'Unavailable in connected mode')}
+      ${connectedGovernanceUnavailableNote('Exceptions', 'Governance exceptions/waivers are Design Lab demonstration only.')}
+      <p><a href="#/governance">← Governance register</a></p>`;
+  }
   const s = getState();
   const ex = s.governanceExceptions?.find((e) => e.id === id);
   if (!ex) return notFoundState('Exception', id);
@@ -111,6 +173,11 @@ export function viewException(id) {
 }
 
 export function viewControlTest(id) {
+  if (isConnectedBackendActive(getState())) {
+    return `${pageHeader('Control test', 'Unavailable in connected mode')}
+      ${connectedGovernanceUnavailableNote('Control tests', 'Separate control test records are Design Lab demonstration only. Production stores testing status on controls and results on assurance reviews when recorded.')}
+      <p><a href="#/governance">← Governance register</a></p>`;
+  }
   const s = getState();
   const t = s.controlTests?.find((x) => x.id === id);
   if (!t) return notFoundState('Control test', id);
@@ -169,6 +236,15 @@ export function renderChangeGovernancePanel(changeId) {
       <button type="button" class="ri-btn ri-btn--ghost" data-version-impact="material">Record material source update review</button>` : ''}
     </div>
   </section>`;
+}
+
+export function renderDashboardGovernanceSummaryConnected() {
+  const s = getState();
+  const m = getConnectedGovernanceMetrics();
+  return `<section class="ri-panel ri-panel--compact"><h2>Governance</h2>
+    ${renderConnectedGovernanceMetrics(m)}
+    <p class="ri-muted">Metrics derive from tenant regulatory changes, impact assessments, findings, controls and workflow events — not Design Lab mock approvals.</p>
+    <p><a href="#/governance">Open Governance Register</a></p></section>`;
 }
 
 export function renderDashboardGovernanceSummary() {
