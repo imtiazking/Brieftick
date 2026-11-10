@@ -91,10 +91,12 @@ try {
   failMsg(`sparse retrieval render threw ${e.message}`);
 }
 
-if (askUi.includes('totalMatchingRecords ?? analysis?.citations')) {
+if (askUi.includes('formatEvidenceCountLabel')) pass('ask-ri-ui uses citation-based evidence count label');
+else failMsg('missing formatEvidenceCountLabel');
+if (askUi.match(/renderAskResult[\s\S]*totalMatchingRecords \?\? analysis\?\.citations/)) {
   failMsg('ask-ri-ui renderAskResult references undefined analysis in evidence count line');
 } else {
-  pass('ask-ri-ui avoids undefined analysis reference in evidence count line');
+  pass('ask-ri-ui avoids undefined analysis reference in renderAskResult');
 }
 
 if (fail) process.exit(1);

@@ -12,6 +12,38 @@ function formatEvidenceConfidence(analysis) {
   return 'NOT ASSESSED';
 }
 
+function countLabCitationsByMedium(citations = []) {
+  let html = 0;
+  let pdf = 0;
+  for (const c of citations) {
+    const t = c.citationType || c.type;
+    if (t === 'html_article_v2') html += 1;
+    else if (t === 'primary_pdf' || c.physicalPageNumber != null) pdf += 1;
+  }
+  return { html, pdf };
+}
+
+function formatEvidenceCountLabel(askRetrieval, analysis) {
+  const fromRetrieval =
+    askRetrieval?.htmlCitationCount != null || askRetrieval?.pdfCitationCount != null
+      ? {
+          html: askRetrieval.htmlCitationCount ?? 0,
+          pdf: askRetrieval.pdfCitationCount ?? 0,
+        }
+      : null;
+  const { html, pdf } = fromRetrieval || countLabCitationsByMedium(analysis?.citations);
+  if (html && pdf) return `${html} webpage citation(s); ${pdf} PDF page citation(s)`;
+  if (html) return `${html} webpage citation(s)`;
+  if (pdf) return `${pdf} PDF page citation(s)`;
+  if (askRetrieval?.evidenceSource === 'html_article_v2') {
+    return `${askRetrieval?.totalMatchingRecords ?? analysis?.citations?.length ?? 0} webpage citation(s)`;
+  }
+  if (askRetrieval?.evidenceSource === 'pdf_primary_v1') {
+    return `${askRetrieval?.totalMatchingRecords ?? 0} PDF page citations`;
+  }
+  return `${askRetrieval?.totalMatchingRecords ?? askRetrieval?.resultCount ?? 0} matching records`;
+}
+
 const SUGGESTED = [
   'What regulatory changes currently affect the Banking sector?',
   'How many open obligations are there?',
@@ -284,12 +316,15 @@ function renderAskResult(state, last) {
         ? '<p class="ri-muted"><em>Deterministic source-grounded synthesis from verified FCA webpage evidence — not generative AI output.</em></p>'
         : '<p class="ri-muted"><em>Deterministic source-grounded synthesis from verified catalogue evidence — not generative AI output.</em></p>'
       : '<p class="ri-muted"><em>AI SYNTHESIS — not regulator wording</em></p>';
-  const evidenceCountLabel =
-    askRetrieval?.evidenceSource === 'pdf_primary_v1'
-      ? `${askRetrieval?.totalMatchingRecords ?? 0} PDF page citations`
-      : askRetrieval?.evidenceSource === 'html_article_v2'
-        ? `${askRetrieval?.totalMatchingRecords ?? a?.citations?.length ?? 0} webpage citation(s)`
-        : `${askRetrieval?.totalMatchingRecords ?? askRetrieval?.resultCount ?? 0} matching records`;
+  const evidenceCountLabel = formatEvidenceCountLabel(askRetrieval, a);
+  const keyFindings = (p.keyFindings || []).filter((f) => String(f || '').trim());
+  const uncertainties = (p.uncertainties || a.uncertainties || []).filter((u) => String(u || '').trim());
+  const keyFindingsSection = keyFindings.length
+    ? `<h4>Key findings</h4><ul>${keyFindings.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>`
+    : '';
+  const uncertaintiesSection = uncertainties.length
+    ? `<h4>Uncertainties</h4><ul>${uncertainties.map((u) => `<li>${esc(u)}</li>`).join('')}</ul>`
+    : '';
   return `<div data-ask-ri-result data-provider-calls="${providerCalls}"${supportedPredicate}>
     ${restoredBanner}
     ${modeBadge(a)}
@@ -303,10 +338,8 @@ function renderAskResult(state, last) {
     <h4>Answer</h4>
     <p>${esc(p.answer || a.summary || '')}</p>
     ${synthesisNote}
-    <h4>Key findings</h4>
-    <ul>${(p.keyFindings || []).map((f) => `<li>${esc(f)}</li>`).join('') || '<li class="ri-muted">—</li>'}</ul>
-    <h4>Uncertainties</h4>
-    <ul>${(p.uncertainties || a.uncertainties || []).map((u) => `<li>${esc(u)}</li>`).join('')}</ul>
+    ${keyFindingsSection}
+    ${uncertaintiesSection}
     <h4>Source evidence</h4>
     <ul>${(a.citations || []).map((c) => renderCitationRow(c)).join('') || '<li class="ri-muted">—</li>'}</ul>
   </div>`;

@@ -19,27 +19,94 @@ function stableHtmlEvidenceId(publicationId, revisionId, seq, text) {
 /**
  * @param {object} ctx
  */
+function stripHtmlTags(fragment) {
+  return String(fragment || '')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function pushHtmlBlock(blocks, ctx, seq, sectionReference, extractedText) {
+  const chunk = String(extractedText || '').replace(/\s+/g, ' ').trim();
+  if (chunk.length < 35) return seq;
+  const next = seq + 1;
+  blocks.push({
+    documentEvidenceId: stableHtmlEvidenceId(ctx.publicationId, ctx.extractionRevisionId, next, chunk),
+    publicationId: ctx.publicationId,
+    extractionRevisionId: ctx.extractionRevisionId,
+    extractionProfile: 'html_article_v2',
+    sectionReference,
+    extractedText: chunk,
+    evidenceKind: classifyHtmlPassageKind(chunk),
+    pageBoundaryConfirmed: true,
+  });
+  return next;
+}
+
+/**
+ * Section blocks from normalised HTML headings (FCA article pages) with text fallback.
+ */
 export function buildHtmlArticleEvidenceBlocks(ctx) {
   const text = String(ctx.normalisedArticleText || '').replace(/\r\n/g, '\n');
+  const html = String(ctx.normalisedArticleHtml || '');
   const blocks = [];
-  const chunks = text.split(/\n{2,}/).map((p) => p.replace(/\s+/g, ' ').trim()).filter((p) => p.length >= 35);
   let seq = 0;
-  let currentSection = 'Article body';
-  for (const chunk of chunks) {
-    const heading = chunk.match(/^(PRIN\s+[\dA-Z.]+|FG\s*\d+\s*\/\s*\d+|Chapter\s+\d+)/i);
-    if (heading) currentSection = heading[1].replace(/\s+/g, ' ').trim();
-    seq += 1;
-    blocks.push({
-      documentEvidenceId: stableHtmlEvidenceId(ctx.publicationId, ctx.extractionRevisionId, seq, chunk),
-      publicationId: ctx.publicationId,
-      extractionRevisionId: ctx.extractionRevisionId,
-      extractionProfile: 'html_article_v2',
-      sectionReference: currentSection,
-      extractedText: chunk,
-      evidenceKind: classifyHtmlPassageKind(chunk),
-      pageBoundaryConfirmed: true,
-    });
+
+  if (html.includes('<h')) {
+    const sections = html.split(/(?=<h[1-4]\b)/i);
+    for (const section of sections) {
+      const headingMatch = section.match(/^<h([1-4])[^>]*>([\s\S]*?)<\/h\1>/i);
+      if (!headingMatch) continue;
+      const heading = stripHtmlTags(headingMatch[2]) || 'Section';
+      const bodyHtml = section.slice(headingMatch[0].length);
+      const body = stripHtmlTags(bodyHtml);
+      if (body.length < 35) continue;
+      const parts = body.split(/(?<=[.!?])\s+(?=[A-Z])/).filter((p) => p.length >= 35);
+      if (parts.length <= 1) {
+        seq = pushHtmlBlock(blocks, ctx, seq, heading, body);
+      } else {
+        for (const part of parts.slice(0, 12)) {
+          seq = pushHtmlBlock(blocks, ctx, seq, heading, part);
+        }
+      }
+    }
   }
+
+  if (!blocks.length) {
+    const chunks = text
+      .split(/\n{2,}/)
+      .map((p) => p.replace(/\s+/g, ' ').trim())
+      .filter((p) => p.length >= 35);
+    let currentSection = 'Article body';
+    for (const chunk of chunks) {
+      const heading = chunk.match(
+        /^(PRIN\s+[\dA-Z.]+|FG\s*\d+\s*\/\s*\d+|Chapter\s+\d+|Fair value|Good practice|Poor practice|Consumer Duty|Examples? of)/i,
+      );
+      if (heading) currentSection = heading[1].replace(/\s+/g, ' ').trim();
+      seq = pushHtmlBlock(blocks, ctx, seq, currentSection, chunk);
+    }
+  }
+
+  if (!blocks.length && text.trim().length >= 80) {
+    const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+    let currentSection = 'Article body';
+    for (const line of lines) {
+      if (
+        line.length <= 120 &&
+        /^[A-Z]/.test(line) &&
+        !/[.!?]$/.test(line) &&
+        (/(practice|fair value|consumer duty|assessment|outcome|guidance)/i.test(line) || /^[A-Z][\w\s,'-]{4,90}$/.test(line))
+      ) {
+        currentSection = line;
+        continue;
+      }
+      if (line.length < 35) continue;
+      seq = pushHtmlBlock(blocks, ctx, seq, currentSection, line);
+    }
+  }
+
   return blocks;
 }
 
@@ -142,11 +209,18 @@ export function answerAskRiFromPublicationHtmlEvidence(publicationEvidence, ques
   };
 
   const citations = rankedBlocks.slice(0, 8).map((r) => formatHtmlArticleCitation(citationSource, r.block));
-  const answer = composeHtmlSubstantiveAnswer({ question, citationSource, rankedBlocks, citations, ctx });
+  const composed = composeHtmlSubstantiveAnswer({
+    question,
+    citationSource,
+    rankedBlocks,
+    citations,
+    ctx,
+    matchScore,
+  });
 
   return {
     status: 'ANSWERED',
-    answer,
+    answer: composed.answer,
     citations,
     audit: {
       evidenceSource: 'html_article_v2',
@@ -155,6 +229,11 @@ export function answerAskRiFromPublicationHtmlEvidence(publicationEvidence, ques
       humanReviewStatus: 'pending_review',
       mustNotPresentAsBindingObligation: false,
       distinguishesExamplesFromObligations: true,
+      keyFindings: composed.keyFindings,
+      uncertainties: composed.uncertainties,
+      evidenceConfidence: composed.evidenceConfidence,
+      sectionBlockCount: ctx.evidenceBlocks?.length ?? 0,
+      citedSectionCount: citations.length,
     },
   };
 }
@@ -201,7 +280,44 @@ function formatHtmlArticleCitation(ctx, block) {
   };
 }
 
-function composeHtmlSubstantiveAnswer({ question, citationSource, rankedBlocks, citations, ctx }) {
+function computeHtmlEvidenceConfidence({ matchScore, sectionBlockCount, citedSectionCount }) {
+  if (citedSectionCount >= 3 && (matchScore ?? 0) >= 12) return 'HIGH';
+  if (citedSectionCount >= 2 && sectionBlockCount >= 3) return 'MEDIUM';
+  if (citedSectionCount >= 1 && sectionBlockCount <= 1) return 'MEDIUM';
+  return citedSectionCount >= 1 ? 'MEDIUM' : 'LOW';
+}
+
+function buildHtmlKeyFindings({ rankedBlocks, citationSource }) {
+  const keyFindings = [];
+  const uncertainties = [
+    'Binding Handbook obligations must be confirmed against PRIN / COCON source rules — this FCA supervisory page is not the legal instrument.',
+    'Firm-specific fair-value assessments require human compliance judgement beyond webpage examples.',
+  ];
+
+  if (rankedBlocks.some((r) => /PRIN\s+2A\.4|consumer duty/i.test(r.block.extractedText))) {
+    keyFindings.push(
+      'The FCA webpage cross-references existing Consumer Duty fair-value expectations (e.g. PRIN 2A.4). This is signposted guidance on the page, not a new obligation introduced by the article.',
+    );
+  }
+  const examples = rankedBlocks.filter((r) => r.block.evidenceKind === 'supervisory_example').slice(0, 3);
+  for (const r of examples) {
+    keyFindings.push(
+      `Supervisory observation (${r.block.sectionReference}): "${String(r.block.extractedText).slice(0, 160)}${r.block.extractedText.length > 160 ? '…' : ''}" — illustrative good/poor practice; not a standalone legal requirement.`,
+    );
+  }
+  const narrative = rankedBlocks.filter((r) => r.block.evidenceKind !== 'supervisory_example').slice(0, 2);
+  for (const r of narrative) {
+    keyFindings.push(
+      `Source narrative (${r.block.sectionReference}): "${String(r.block.extractedText).slice(0, 180)}${r.block.extractedText.length > 180 ? '…' : ''}"`,
+    );
+  }
+  if (!keyFindings.length) {
+    uncertainties.push('No section-specific fair-value passages ranked highly for this question — review citations before relying on the summary.');
+  }
+  return { keyFindings: keyFindings.slice(0, 6), uncertainties: uncertainties.slice(0, 4) };
+}
+
+function composeHtmlSubstantiveAnswer({ question, citationSource, rankedBlocks, citations, ctx, matchScore }) {
   const refLabel = citationSource.publicationTitle || 'this FCA publication';
   const parts = [];
   parts.push(
@@ -240,5 +356,17 @@ function composeHtmlSubstantiveAnswer({ question, citationSource, rankedBlocks, 
     `${citations.length} FCA webpage citation(s) below. No regulatory deadlines were invented. Human review required before compliance decisions.`,
   );
 
-  return parts.join(' ');
+  const { keyFindings, uncertainties } = buildHtmlKeyFindings({ rankedBlocks, citationSource });
+  const evidenceConfidence = computeHtmlEvidenceConfidence({
+    matchScore,
+    sectionBlockCount: ctx.evidenceBlocks?.length ?? 0,
+    citedSectionCount: citations.length,
+  });
+
+  return {
+    answer: parts.join(' '),
+    keyFindings,
+    uncertainties,
+    evidenceConfidence,
+  };
 }

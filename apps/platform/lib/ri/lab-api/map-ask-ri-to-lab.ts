@@ -1,6 +1,12 @@
 import 'server-only';
 
 import type { AskRiResponse } from '@/lib/ri/services/ask-ri';
+import {
+  countCitationsByMedium,
+  resolveCatalogueEvidenceSource,
+} from './map-ask-ri-catalogue-pure.mjs';
+
+export { countCitationsByMedium, resolveCatalogueEvidenceSource };
 
 type PdfCitation = {
   citationLabel?: string;
@@ -15,6 +21,7 @@ type PdfCitation = {
   type?: string;
   regulatorShortName?: string;
   regulatoryAuthority?: string;
+  sectionReference?: string;
 };
 
 type PublicationPdfAnswer = {
@@ -50,31 +57,61 @@ function mapCitationForLab(c: PdfCitation | Record<string, unknown>) {
     extractionRevisionId: row.extractionRevisionId,
     regulatoryStatus: row.regulatoryStatus,
     citationType: row.type || 'primary_pdf',
-    sectionReference: (row as { sectionReference?: string }).sectionReference,
+    sectionReference: row.sectionReference,
     attributedPublicationId: (row as { attributedPublicationId?: string }).attributedPublicationId,
   };
 }
 
-function pdfRetrievalFromCitations(result: AskRiResponse, citations: PdfCitation[]) {
+function pickCatalogueAnswerBody(
+  result: AskRiResponse,
+  html?: PublicationPdfAnswer,
+  pdf?: PublicationPdfAnswer,
+) {
+  if (result.status === 'ANSWERED' && html?.status === 'ANSWERED') {
+    return html.answer || result.answer;
+  }
+  if (result.status === 'ANSWERED' && pdf?.status === 'ANSWERED') {
+    return pdf.answer || result.answer;
+  }
+  return result.answer;
+}
+
+function catalogueRetrievalFromCitations(
+  result: AskRiResponse,
+  citations: PdfCitation[],
+  evidenceSource: ReturnType<typeof resolveCatalogueEvidenceSource>,
+) {
   const recordTypes: Record<string, string> = {};
   const matchReasons: Record<string, string> = {};
+  const isHtml = evidenceSource === 'html_article_v2' || evidenceSource === 'mixed_catalogue_evidence';
   const matchedRecordIds = citations.map((c, index) => {
-    const id = `pdf-page-${c.physicalPageNumber ?? index + 1}`;
-    recordTypes[id] = 'Primary PDF evidence';
+    const isHtmlCite = c.type === 'html_article_v2';
+    const id = isHtmlCite
+      ? `html-cite-${index + 1}`
+      : `pdf-page-${c.physicalPageNumber ?? index + 1}`;
+    recordTypes[id] = isHtmlCite ? 'FCA webpage evidence' : 'Primary PDF evidence';
+    const sectionRef = c.sectionReference;
     matchReasons[id] =
       c.citationLabel ||
-      `${c.publicationReference || 'Publication'} physical page ${c.physicalPageNumber ?? '?'}`;
+      (isHtmlCite
+        ? `${c.publicationTitle || c.publicationReference || 'Publication'}${sectionRef ? ` — ${sectionRef}` : ''}`
+        : `${c.publicationReference || 'Publication'} physical page ${c.physicalPageNumber ?? '?'}`);
     return id;
   });
+  const { html, pdf } = countCitationsByMedium(citations);
   return {
     interpretedAs: result.interpretedAs,
-    evidenceSource: 'pdf_primary_v1',
+    evidenceSource: evidenceSource === 'mixed_catalogue_evidence' ? 'html_article_v2' : evidenceSource,
+    evidenceSources: evidenceSource === 'mixed_catalogue_evidence' ? ['html_article_v2', 'pdf_primary_v1'] : [evidenceSource],
+    htmlCitationCount: html,
+    pdfCitationCount: pdf,
     matchedRecordIds,
     matchedRecordIdsAll: matchedRecordIds,
     recordTypes,
     matchReasons,
     totalMatchingRecords: citations.length,
     resultCount: citations.length,
+    isHtml,
   };
 }
 
@@ -103,31 +140,49 @@ function answeredAnalysis(
   result: AskRiResponse,
   answer: string,
   citations: PdfCitation[],
-  pdf?: PublicationPdfAnswer,
+  opts?: { pdf?: PublicationPdfAnswer; html?: PublicationPdfAnswer },
 ) {
+  const pdf = opts?.pdf;
+  const html = opts?.html;
   const pdfAudit = pdf?.audit ?? (result.publicationPdf as PublicationPdfAnswer | undefined)?.audit;
+  const htmlAudit = html?.audit ?? (result as { publicationHtml?: PublicationPdfAnswer }).publicationHtml?.audit;
   const findings = (pdf?.findings || []) as { analysisExplanation?: string }[];
-  const keyFindings = findings
+  const pdfKeyFindings = findings
     .map((f) => f.analysisExplanation?.trim())
     .filter(Boolean)
     .slice(0, 6) as string[];
+  const htmlKeyFindings = (htmlAudit?.keyFindings as string[] | undefined)?.filter(Boolean) || [];
+  const keyFindings = htmlKeyFindings.length ? htmlKeyFindings : pdfKeyFindings;
+  const uncertainties = [
+    ...((htmlAudit?.uncertainties as string[] | undefined) || []),
+    ...(pdfAudit?.mustNotPresentAsBindingObligation
+      ? ['Consultation-stage proposals — not binding obligations until FCA finalises rules and human review completes.']
+      : []),
+  ].filter(Boolean);
+  const explicitConfidence = (htmlAudit?.evidenceConfidence || pdfAudit?.evidenceConfidence) as string | undefined;
+  const { html: htmlN, pdf: pdfN } = countCitationsByMedium(citations);
+  let evidenceConfidence = explicitConfidence;
+  if (!evidenceConfidence) {
+    if (htmlN >= 3 || pdfN >= 3) evidenceConfidence = 'HIGH';
+    else if (htmlN + pdfN >= 1) evidenceConfidence = 'MEDIUM';
+    else evidenceConfidence = 'LOW';
+  }
+
   return {
     reviewStatus: 'HUMAN REVIEW REQUIRED',
     providerMode: 'PRODUCTION',
-    evidenceConfidence: citations.length || result.recordCount > 0 ? 'HIGH' : 'MEDIUM',
+    evidenceConfidence,
     summary: answer,
     citations: citations.map(mapCitationForLab),
     workflowPayload: {
       answer,
       keyFindings,
-      uncertainties: pdfAudit?.mustNotPresentAsBindingObligation
-        ? ['Consultation-stage proposals — not binding obligations until FCA finalises rules and human review completes.']
-        : [],
+      uncertainties,
     },
     originalAiOutput: {
       answer,
       keyFindings,
-      uncertainties: [],
+      uncertainties,
     },
   };
 }
@@ -140,7 +195,10 @@ export function mapAskRiProductionToLabLastAsk(result: AskRiResponse) {
 
   const pdf = result.publicationPdf as PublicationPdfAnswer | undefined;
   const html = (result as { publicationHtml?: PublicationPdfAnswer }).publicationHtml;
-  const catalogueEvidence = pdf || html;
+  const hasAnsweredHtml = html?.status === 'ANSWERED';
+  const hasAnsweredPdf = pdf?.status === 'ANSWERED' && (pdf.citations?.length ?? 0) > 0;
+  const catalogueEvidence =
+    (hasAnsweredHtml ? html : undefined) || (hasAnsweredPdf ? pdf : undefined) || html || pdf;
   if (catalogueEvidence) {
     const active = catalogueEvidence;
     if (active.status === 'EVIDENCE_RETRIEVAL_ERROR' || result.status === 'EVIDENCE_RETRIEVAL_ERROR') {
@@ -153,7 +211,7 @@ export function mapAskRiProductionToLabLastAsk(result: AskRiResponse) {
         providerCallCount,
       };
     }
-    if (active.status === 'UNRESOLVED' || result.status === 'UNRESOLVED') {
+    if (result.status === 'UNRESOLVED' || (active.status === 'UNRESOLVED' && result.status !== 'ANSWERED')) {
       return {
         ok: true,
         connected,
@@ -163,7 +221,7 @@ export function mapAskRiProductionToLabLastAsk(result: AskRiResponse) {
         providerCallCount,
       };
     }
-    if (active.status === 'INSUFFICIENT_EVIDENCE' || result.status === 'INSUFFICIENT_EVIDENCE') {
+    if (result.status === 'INSUFFICIENT_EVIDENCE' || active.status === 'INSUFFICIENT_EVIDENCE') {
       return {
         ok: true,
         connected,
@@ -174,12 +232,14 @@ export function mapAskRiProductionToLabLastAsk(result: AskRiResponse) {
       };
     }
     const citations = (result.citations || active.citations || []) as PdfCitation[];
+    const evidenceSource = resolveCatalogueEvidenceSource(result, citations);
+    const answerBody = pickCatalogueAnswerBody(result, html, pdf);
     return {
       ok: true,
       connected,
       providerCallCount,
-      retrieval: pdfRetrievalFromCitations(result, citations),
-      analysis: answeredAnalysis(result, active.answer || result.answer, citations, pdf),
+      retrieval: catalogueRetrievalFromCitations(result, citations, evidenceSource),
+      analysis: answeredAnalysis(result, answerBody || result.answer, citations, { pdf, html }),
       productionStatus: result.status,
     };
   }

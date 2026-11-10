@@ -271,6 +271,7 @@ export async function loadPublicationHtmlEvidenceForAskRi(adminSupabase, options
         publicationId: row.publication_id,
         extractionRevisionId: row.id,
         normalisedArticleText: text,
+        normalisedArticleHtml: htmlBuf.toString('utf8'),
       });
 
       const regulator = Array.isArray(pub.regulator) ? pub.regulator[0] : pub.regulator;

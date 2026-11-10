@@ -55,8 +55,19 @@ function buildCatalogueEvidenceResult(question, payload) {
     pdfSupplement,
   } = payload;
   const modes = [];
-  if (htmlAnswer) modes.push('html_article_v2');
-  if (pdfAnswer || pdfSupplement) modes.push('pdf_primary_v1');
+  if (htmlAnswer?.status === 'ANSWERED' && (citations.some((c) => c.type === 'html_article_v2') || htmlAnswer.citations?.length)) {
+    modes.push('html_article_v2');
+  }
+  const pdfContributed =
+    (pdfAnswer?.status === 'ANSWERED' && pdfAnswer.citations?.length) ||
+    (pdfSupplement?.status === 'ANSWERED' && pdfSupplement.citations?.length);
+  if (pdfContributed) modes.push('pdf_primary_v1');
+  const publicationPdfOut =
+    pdfAnswer?.status === 'ANSWERED' && pdfAnswer.citations?.length
+      ? pdfAnswer
+      : pdfSupplement?.status === 'ANSWERED' && pdfSupplement.citations?.length
+        ? pdfSupplement
+        : undefined;
   return {
     question,
     interpretedAs: catalogueInterpretedAs(modes),
@@ -75,10 +86,13 @@ function buildCatalogueEvidenceResult(question, payload) {
       mustNotPresentAsBindingObligation: audit.mustNotPresentAsBindingObligation,
       matchScore: audit.matchScore,
       publicationReference: audit.publicationReference,
-      supplementaryPdfAttached: Boolean(pdfSupplement),
+      supplementaryPdfAttached: Boolean(
+        pdfSupplement?.status === 'ANSWERED' && pdfSupplement.citations?.length,
+      ),
+      evidenceSources: modes,
     },
-    publicationPdf: pdfAnswer || pdfSupplement || undefined,
-    publicationHtml: htmlAnswer || undefined,
+    publicationPdf: publicationPdfOut,
+    publicationHtml: htmlAnswer?.status === 'ANSWERED' ? htmlAnswer : undefined,
   };
 }
 
