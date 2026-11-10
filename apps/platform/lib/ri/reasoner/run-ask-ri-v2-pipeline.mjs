@@ -40,7 +40,7 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
 
   const retrieval = await scoreQuestionWithMethod(index, question, caseRow, options.provisionalThreshold ?? DEFAULT_THRESHOLD, 'hybrid');
 
-  if (retrieval.referenceValidation?.blockSemanticSelection) {
+  if (retrieval.authorityGate?.blockSemanticSelection) {
     return {
       question,
       testId: caseRow?.testId,
@@ -48,10 +48,39 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
       eligibility,
       retrieval,
       providerInvoked: false,
-      preReasonerBlock: 'invalid_or_unindexed_reference',
+      preReasonerBlock: 'authority_gate',
+      preReasonerDetail: {
+        outcome: retrieval.authorityGate.outcome,
+        abstainReason: retrieval.authorityGate.abstainReason,
+        blocking: retrieval.authorityGate.blocking,
+      },
+      status: 'BLOCKED',
+      answer: 'The question triggered an authority recognition gate and cannot proceed to retrieval in this mode.',
+      citations: [],
+      execution: { engine: 'ask_ri_v2', providerUsed: false, model: modelId },
+      timingMs: Date.now() - t0,
+    };
+  }
+
+  if (retrieval.referenceValidation?.blockSemanticSelection) {
+    const rv = retrieval.referenceValidation;
+    return {
+      question,
+      testId: caseRow?.testId,
+      v2ExecutionStatus: 'PUBLIC_ELIGIBLE_EXECUTED',
+      eligibility,
+      retrieval,
+      providerInvoked: false,
+      preReasonerBlock: 'reference_validation',
+      preReasonerDetail: {
+        outcome: rv.outcome,
+        abstainReason: rv.abstainReason,
+        blockingCondition: rv.blockingCondition,
+        parsedTokens: rv.parsedTokens,
+      },
       status: 'BLOCKED',
       answer:
-        retrieval.referenceValidation.userMessage ||
+        rv.userMessage ||
         'The question references a publication identifier that is not valid in the authorised offline corpus.',
       citations: [],
       execution: { engine: 'ask_ri_v2', providerUsed: false, model: modelId },

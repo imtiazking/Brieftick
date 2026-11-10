@@ -212,7 +212,7 @@ function emptyAbstainResult(caseRow, question, t0, authorityGate, refValidation)
     latencyMs: Number((performance.now() - t0).toFixed(2)),
     expectedPublicationIds: expected,
     authorityGate,
-    referenceValidation: refValidation || { outcome: authorityGate?.outcome, blockSemanticSelection: true },
+    referenceValidation: refValidation || null,
     noMatchDecision: {
       abstain: true,
       reasons: [authorityGate?.abstainReason || refValidation?.abstainReason || 'blocked'],

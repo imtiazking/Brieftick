@@ -3,6 +3,47 @@
  */
 import { getSectorById, frameworksForSector, regulatorsForSector } from '../landscape-helpers.js';
 
+/** Domain acronyms that are not regulator identifiers (financial crime, formats, evidence types). */
+const FCA_HANDBOOK_MODULES = new Set([
+  'COBS',
+  'SYSC',
+  'PRIN',
+  'MIFID',
+  'CASS',
+  'CONC',
+  'ICOBS',
+  'MCOB',
+  'BCOBS',
+  'MAR',
+  'SUP',
+]);
+
+const NON_REGULATOR_AUTHORITY_ACRONYMS = new Set([
+  'AML',
+  'CFT',
+  'CTF',
+  'KYC',
+  'CDD',
+  'EDD',
+  'SAR',
+  'STR',
+  'PEP',
+  'PDF',
+  'HTML',
+  'HTTP',
+  'HTTPS',
+  'API',
+  'URL',
+  'UUID',
+  'GDPR',
+  'MLRO',
+  'SME',
+  'FCA',
+  'PRA',
+  'UK',
+  'EU',
+]);
+
 const QUERY_STOPWORDS = new Set([
   'what',
   'which',
@@ -234,10 +275,13 @@ function looksLikeUnknownRegulatorShape(phrase) {
   return false;
 }
 
-/** True when token appears in a handbook-style reference such as "SYSC 8". */
+/** True when token appears in a handbook-style reference such as "SYSC 8" or "PRIN 2A.4". */
 function tokenInHandbookSectionRef(question, token) {
   const esc = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`\\b${esc}\\s+\\d`, 'i').test(question);
+  return (
+    new RegExp(`\\b${esc}\\s+\\d`, 'i').test(question) ||
+    new RegExp(`\\b${esc}\\s+\\d+[A-Z][\\dA-Z.]*`, 'i').test(question)
+  );
 }
 
 function tokenCoveredByResolvedEntities(token, resolved) {
@@ -308,6 +352,8 @@ export function evaluateEntityConstraints(state, question) {
   const blocking = [];
   unresolvedPhrases.forEach((p) => pushBlocking(blocking, { kind: 'constraint_phrase', phrase: p }));
 
+  const HANDBOOK_MODULE_ONLY = /^(COBS|SYSC|PRIN|MIFID|CASS|CONC|ICOBS|MCOB|BCOBS|MAR|SUP)$/i;
+
   const authorityRequire = /\bwhat does (?:the )?(.+?) require\b/i.exec(normalizedQuestion);
   if (authorityRequire) {
     const authPhrase = authorityRequire[1].trim();
@@ -319,7 +365,9 @@ export function evaluateEntityConstraints(state, question) {
       resolved.regulators.some(
         (r) => wordBoundaryIncludes(authPhrase, r.shortName) || wordBoundaryIncludes(authPhrase, r.label)
       );
-    if (!authKnown && /\d/.test(authPhrase)) {
+    if (HANDBOOK_MODULE_ONLY.test(authPhrase) || tokenInHandbookSectionRef(normalizedQuestion, authPhrase)) {
+      /* FCA Handbook module — not a regulator entity reference */
+    } else if (!authKnown && /\d/.test(authPhrase)) {
       /* handbook section reference — defer to grammar planner, not entity insufficient */
     } else if (!authKnown) {
       pushBlocking(blocking, { kind: 'regulator', phrase: authPhrase });
@@ -343,6 +391,8 @@ export function evaluateEntityConstraints(state, question) {
   const authorityQuestion = /\bwhat does\b/i.test(normalizedQuestion) || /\brequire/i.test(normalizedQuestion);
   const acronymTokens = normalizedQuestion.match(/\b[A-Z]{2,6}\b/g) || [];
   for (const token of acronymTokens) {
+    if (NON_REGULATOR_AUTHORITY_ACRONYMS.has(token)) continue;
+    if (FCA_HANDBOOK_MODULES.has(token)) continue;
     if (tokenCoveredByResolvedEntities(token, resolved)) continue;
     if (tokenInHandbookSectionRef(normalizedQuestion, token)) continue;
     if (phraseResolvesInCatalog(token, catalog)) continue;

@@ -3,6 +3,7 @@ import { getAnthropicApiKey, validateAnthropicApiKeyFormat } from '../ai/anthrop
 import { buildReasonerSystemPrompt, buildReasonerUserPrompt } from './build-reasoner-prompt.mjs';
 import { validateReasonerOutput } from './reasoner-output-schema.mjs';
 import { resolveV2EvalModel } from './anthropic-eval-budget.mjs';
+import { assertV2EvalModelSupported } from './v2-eval-models.mjs';
 
 export function isV2LiveReasoningEnabled() {
   return process.env.RI_AI_EXECUTION_ENABLED === 'true' && Boolean(getAnthropicApiKey());
@@ -26,6 +27,10 @@ export async function invokeAnthropicReasoner(question, bundle, deps = {}) {
   }
 
   const model = deps.model || resolveV2EvalModel();
+  const modelCheck = assertV2EvalModelSupported(model);
+  if (!modelCheck.ok) {
+    return { ok: false, code: AI_ERROR_CODES.AI_OUTPUT_SCHEMA_INVALID, message: modelCheck.message };
+  }
   const system = buildReasonerSystemPrompt();
   const user = buildReasonerUserPrompt(question, bundle);
   const t0 = Date.now();

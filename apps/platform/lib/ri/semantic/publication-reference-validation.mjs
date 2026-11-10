@@ -11,8 +11,22 @@ const PUBLICATION_UUID_RE =
 const STRUCTURED_REF_RE =
   /\b(CP|PS|FG|DP|TR)\s*(\d{1,3})\s*\/\s*(\d{1,2})\b/gi;
 
-const HANDBOOK_BLOCK_RE =
-  /\b(COBS|SYSC|PRIN|MIFID|CASS|CONC|ICOBS|MCOB|BCOBS|MAR|SUP)\b/i;
+const HANDBOOK_MODULE_RE =
+  /\b(COBS|SYSC|PRIN|MIFID|CASS|CONC|ICOBS|MCOB|BCOBS|MAR|SUP)\b(?:\s+[\dA-Z]+(?:\.[\dA-Z]+)*)?/gi;
+
+const PUBLICATION_BLOCKING_STATUSES = new Set([
+  'not_in_offline_catalogue',
+  'uuid_not_in_offline_catalogue',
+  'in_catalogue_not_indexed',
+]);
+
+export const REFERENCE_CLASSIFICATIONS = {
+  PUBLICATION_STRUCTURED: 'publication_structured',
+  PUBLICATION_UUID: 'publication_uuid',
+  PUBLICATION_TITLE: 'publication_title',
+  FCA_HANDBOOK: 'fca_handbook',
+  NO_EXPLICIT: 'no_explicit_reference',
+};
 
 function extractStructuredRefs(question) {
   const q = String(question || '');
@@ -22,13 +36,31 @@ function extractStructuredRefs(question) {
       raw: m[0],
       normalized: normalizeFcaRef(m[1], m[2], m[3]),
       kind: m[1].toUpperCase(),
+      classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_STRUCTURED,
+    });
+  }
+  return refs;
+}
+
+function extractHandbookRefs(question) {
+  const q = String(question || '');
+  const refs = [];
+  for (const m of q.matchAll(HANDBOOK_MODULE_RE)) {
+    refs.push({
+      raw: m[0],
+      module: m[1].toUpperCase(),
+      classification: REFERENCE_CLASSIFICATIONS.FCA_HANDBOOK,
     });
   }
   return refs;
 }
 
 function extractUuids(question) {
-  return [...String(question || '').matchAll(PUBLICATION_UUID_RE)].map((m) => m[0].toLowerCase());
+  return [...String(question || '').matchAll(PUBLICATION_UUID_RE)].map((m) => ({
+    uuid: m[0].toLowerCase(),
+    raw: m[0],
+    classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_UUID,
+  }));
 }
 
 function extractExplicitTitleRefs(question) {
@@ -38,7 +70,7 @@ function extractExplicitTitleRefs(question) {
     return out;
   }
   for (const phrase of extractPublicationTitlePhrases(q)) {
-    out.push({ phrase, matchMode: 'quoted_explicit' });
+    out.push({ phrase, matchMode: 'quoted_explicit', classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_TITLE });
   }
   const titled = q.match(
     /\b(?:Policy Statement|Consultation Paper|Finalised Guidance|Discussion Paper|Technical Resource)\s+(?:PS|CP|FG|DP|TR)?\s*(\d{1,3})\s*\/\s*(\d{1,2})\b/i,
@@ -49,6 +81,7 @@ function extractExplicitTitleRefs(question) {
     out.push({
       phrase: normalizeFcaRef(kind, titled[1], titled[2]),
       matchMode: 'typed_statement',
+      classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_TITLE,
     });
   }
   return out;
@@ -59,6 +92,7 @@ function resolveStructuredRef(ref, catalogue, indexedPublicationIds) {
   if (!hit) {
     return {
       ref,
+      classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_STRUCTURED,
       status: 'not_in_offline_catalogue',
       publicationId: null,
       indexed: false,
@@ -69,6 +103,7 @@ function resolveStructuredRef(ref, catalogue, indexedPublicationIds) {
   const indexed = indexedPublicationIds.has(hit.publicationId);
   return {
     ref,
+    classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_STRUCTURED,
     status: indexed ? 'resolved_indexed' : 'in_catalogue_not_indexed',
     publicationId: hit.publicationId,
     publicationTitle: hit.publicationTitle,
@@ -77,11 +112,13 @@ function resolveStructuredRef(ref, catalogue, indexedPublicationIds) {
   };
 }
 
-function resolveUuid(uuid, catalogue, indexedPublicationIds) {
+function resolveUuid(refRow, catalogue, indexedPublicationIds) {
+  const uuid = refRow.uuid;
   const hit = catalogue.byUuid.get(uuid);
   if (!hit) {
     return {
-      ref: { uuid },
+      ref: refRow,
+      classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_UUID,
       status: 'uuid_not_in_offline_catalogue',
       publicationId: null,
       indexed: false,
@@ -90,7 +127,8 @@ function resolveUuid(uuid, catalogue, indexedPublicationIds) {
     };
   }
   return {
-    ref: { uuid },
+    ref: refRow,
+    classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_UUID,
     status: indexedPublicationIds.has(hit.publicationId) ? 'resolved_indexed' : 'in_catalogue_not_indexed',
     publicationId: hit.publicationId,
     publicationTitle: hit.publicationTitle,
@@ -99,12 +137,14 @@ function resolveUuid(uuid, catalogue, indexedPublicationIds) {
   };
 }
 
-function resolveTitlePhrase(phrase, catalogue, indexedPublicationIds) {
+function resolveTitlePhrase(phraseRow, catalogue, indexedPublicationIds) {
+  const phrase = phraseRow.phrase;
   const key = String(phrase).trim().toLowerCase();
   const exact = catalogue.byTitle.get(key);
   if (exact) {
     return {
-      ref: { phrase },
+      ref: phraseRow,
+      classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_TITLE,
       status: indexedPublicationIds.has(exact.publicationId) ? 'resolved_indexed' : 'in_catalogue_not_indexed',
       publicationId: exact.publicationId,
       publicationTitle: exact.publicationTitle,
@@ -114,7 +154,8 @@ function resolveTitlePhrase(phrase, catalogue, indexedPublicationIds) {
   const fuzzy = catalogue.entries.find((e) => e.publicationTitle?.toLowerCase() === key);
   if (fuzzy) {
     return {
-      ref: { phrase },
+      ref: phraseRow,
+      classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_TITLE,
       status: indexedPublicationIds.has(fuzzy.publicationId) ? 'resolved_indexed' : 'in_catalogue_not_indexed',
       publicationId: fuzzy.publicationId,
       publicationTitle: fuzzy.publicationTitle,
@@ -122,12 +163,39 @@ function resolveTitlePhrase(phrase, catalogue, indexedPublicationIds) {
     };
   }
   return {
-    ref: { phrase },
+    ref: phraseRow,
+    classification: REFERENCE_CLASSIFICATIONS.PUBLICATION_TITLE,
     status: 'title_not_in_offline_catalogue',
     publicationId: null,
     indexed: false,
     message: 'Quoted publication title does not match an entry in the offline catalogue.',
   };
+}
+
+function handbookResolutions(handbooks) {
+  return handbooks.map((h) => ({
+    ref: h,
+    classification: REFERENCE_CLASSIFICATIONS.FCA_HANDBOOK,
+    status: 'handbook_reference_not_publication',
+    publicationId: null,
+    indexed: false,
+    message:
+      'FCA Handbook module reference is not a publication identifier; evidence sufficiency is assessed from indexed publications only.',
+  }));
+}
+
+function resolutionBlocksSelection(resolution, ctx) {
+  if (resolution.classification === REFERENCE_CLASSIFICATIONS.FCA_HANDBOOK) return false;
+  if (PUBLICATION_BLOCKING_STATUSES.has(resolution.status)) return true;
+  if (resolution.status === 'title_not_in_offline_catalogue') {
+    return (
+      ctx.structured.length === 0 &&
+      ctx.uuids.length === 0 &&
+      ctx.titles.length > 0 &&
+      !ctx.resolutions.some((r) => r.status === 'resolved_indexed')
+    );
+  }
+  return false;
 }
 
 /**
@@ -139,65 +207,63 @@ export function validateExplicitPublicationReferences(question, catalogue, index
   const structured = extractStructuredRefs(question);
   const uuids = extractUuids(question);
   const titles = extractExplicitTitleRefs(question);
-  const handbookHit = HANDBOOK_BLOCK_RE.test(String(question || ''));
+  const handbooks = extractHandbookRefs(question);
 
-  const resolutions = [
+  const publicationResolutions = [
     ...structured.map((r) => resolveStructuredRef(r, catalogue, indexedPublicationIds)),
     ...uuids.map((u) => resolveUuid(u, catalogue, indexedPublicationIds)),
-    ...titles.map((t) => resolveTitlePhrase(t.phrase, catalogue, indexedPublicationIds)),
+    ...titles.map((t) => resolveTitlePhrase(t, catalogue, indexedPublicationIds)),
   ];
+  const resolutions = [...publicationResolutions, ...handbookResolutions(handbooks)];
 
-  const hasExplicit = structured.length > 0 || uuids.length > 0 || titles.length > 0;
-  if (!hasExplicit && !handbookHit) {
+  const ctx = { structured, uuids, titles, handbooks, resolutions };
+  const hasPublicationExplicit = structured.length > 0 || uuids.length > 0 || titles.length > 0;
+  const hasHandbookOnly = handbooks.length > 0 && !hasPublicationExplicit;
+
+  const parsedTokens = {
+    publicationStructured: structured.map((r) => r.normalized),
+    publicationUuids: uuids.map((u) => u.uuid),
+    publicationTitles: titles.map((t) => t.phrase),
+    handbookModules: handbooks.map((h) => h.module),
+  };
+
+  if (!hasPublicationExplicit && handbooks.length === 0) {
     return {
       hasExplicitReference: false,
+      parsedTokens,
       resolutions: [],
       restrictToPublicationIds: null,
       blockSemanticSelection: false,
       abstainReason: null,
       outcome: 'no_explicit_reference',
+      blockingCondition: null,
     };
   }
 
-  if (handbookHit && !hasExplicit) {
+  if (hasHandbookOnly) {
     return {
       hasExplicitReference: true,
-      resolutions: [
-        {
-          ref: { handbook: String(question).match(HANDBOOK_BLOCK_RE)?.[0] },
-          status: 'handbook_not_in_offline_catalogue',
-          publicationId: null,
-          indexed: false,
-          message:
-            'Handbook module reference is outside the offline publication index for this experiment.',
-        },
-      ],
+      parsedTokens,
+      resolutions,
       restrictToPublicationIds: null,
-      blockSemanticSelection: true,
-      abstainReason: 'handbook_source_not_indexed',
-      outcome: 'abstain_handbook_reference',
+      blockSemanticSelection: false,
+      abstainReason: null,
+      outcome: 'handbook_open_retrieval',
+      blockingCondition: null,
     };
   }
 
-  const resolvedIndexed = resolutions.filter((r) => r.status === 'resolved_indexed');
-  const unresolved = resolutions.filter(
-    (r) =>
-      r.status === 'not_in_offline_catalogue' ||
-      r.status === 'uuid_not_in_offline_catalogue' ||
-      r.status === 'title_not_in_offline_catalogue' ||
-      r.status === 'in_catalogue_not_indexed',
-  );
+  const blockingRes = publicationResolutions.filter((r) => resolutionBlocksSelection(r, ctx));
+  const resolvedIndexed = publicationResolutions.filter((r) => r.status === 'resolved_indexed');
+  const restrictIds = [...new Set(resolvedIndexed.map((r) => r.publicationId).filter(Boolean))];
 
-  const restrictIds = resolvedIndexed.map((r) => r.publicationId).filter(Boolean);
-  const uniqueRestrict = [...new Set(restrictIds)];
-
-  let blockSemanticSelection = false;
+  let blockSemanticSelection = blockingRes.length > 0;
   let abstainReason = null;
   let outcome = 'mixed';
+  let blockingCondition = null;
 
-  if (unresolved.length > 0) {
-    blockSemanticSelection = true;
-    const first = unresolved[0];
+  if (blockSemanticSelection) {
+    const first = blockingRes[0];
     abstainReason =
       first.status === 'not_in_offline_catalogue' || first.status === 'uuid_not_in_offline_catalogue'
         ? 'unresolved_explicit_publication_reference'
@@ -205,32 +271,61 @@ export function validateExplicitPublicationReferences(question, catalogue, index
           ? 'publication_not_in_offline_index'
           : 'unresolved_explicit_title';
     outcome = 'abstain_unresolved_reference';
-  } else if (uniqueRestrict.length === 1) {
+    blockingCondition = `publication_reference:${first.status}`;
+  } else if (uniqueRestrictLength(restrictIds) === 1) {
     outcome = 'restrict_single_publication';
-  } else if (uniqueRestrict.length > 1) {
+  } else if (uniqueRestrictLength(restrictIds) > 1) {
     outcome = 'restrict_multiple_publications';
+  } else if (hasPublicationExplicit) {
+    outcome = 'open_retrieval_with_explicit_anchors';
   }
 
   if (uuids.length > 0 && structured.some((s) => /\bFG|CP|PS/i.test(s.normalized))) {
-    const uuidRes = resolutions.filter((r) => r.ref?.uuid);
-    const refRes = resolutions.filter((r) => r.ref?.normalized);
+    const uuidRes = publicationResolutions.filter((r) => r.classification === REFERENCE_CLASSIFICATIONS.PUBLICATION_UUID);
+    const refRes = publicationResolutions.filter(
+      (r) => r.classification === REFERENCE_CLASSIFICATIONS.PUBLICATION_STRUCTURED,
+    );
     if (
-      uuidRes.some((u) => u.status.includes('not_in')) &&
+      uuidRes.some((u) => PUBLICATION_BLOCKING_STATUSES.has(u.status) || u.status === 'uuid_not_in_offline_catalogue') &&
       refRes.some((s) => s.status === 'resolved_indexed' && s.publicationId)
     ) {
       blockSemanticSelection = true;
       abstainReason = 'conflicting_uuid_and_structured_reference';
       outcome = 'abstain_reference_conflict';
+      blockingCondition = 'reference_conflict';
     }
   }
 
   return {
     hasExplicitReference: true,
+    parsedTokens,
     resolutions,
-    restrictToPublicationIds: blockSemanticSelection ? null : uniqueRestrict.length ? uniqueRestrict : null,
+    restrictToPublicationIds: blockSemanticSelection ? null : restrictIds.length ? restrictIds : null,
     blockSemanticSelection,
     abstainReason,
     outcome,
+    blockingCondition,
+  };
+}
+
+function uniqueRestrictLength(ids) {
+  return new Set(ids).size;
+}
+
+/** Diagnostics helper for eval regression (no side effects). */
+export function diagnoseExplicitPublicationReferences(question, catalogue, indexedPublicationIds) {
+  const v = validateExplicitPublicationReferences(question, catalogue, indexedPublicationIds);
+  return {
+    parsedTokens: v.parsedTokens,
+    outcome: v.outcome,
+    blockSemanticSelection: v.blockSemanticSelection,
+    blockingCondition: v.blockingCondition,
+    resolutions: (v.resolutions || []).map((r) => ({
+      classification: r.classification,
+      status: r.status,
+      publicationId: r.publicationId,
+      ref: r.ref,
+    })),
   };
 }
 
@@ -238,7 +333,7 @@ export function validateExplicitPublicationReferences(question, catalogue, index
 export function validatePublicationReference(question, rankedPublications, catalogue, indexedIds) {
   if (!catalogue) {
     const ids = extractUuids(question);
-    const fakeOnly = ids.length === 1 && ids[0] === '00000000-0000-4000-8000-000000000001';
+    const fakeOnly = ids.length === 1 && ids[0].uuid === '00000000-0000-4000-8000-000000000001';
     return {
       blockSelection: fakeOnly,
       reason: fakeOnly ? 'fabricated_uuid_strict_validation' : null,

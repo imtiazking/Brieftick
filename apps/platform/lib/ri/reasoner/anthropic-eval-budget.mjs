@@ -5,23 +5,21 @@
 export const V2_EVAL_BUDGET_USD = 10;
 
 /** Conservative $/MTok estimates — actual usage recorded from provider. */
+import { resolveV2EvalModelId } from './v2-eval-models.mjs';
+
 export const MODEL_PRICING_ESTIMATE = {
+  'claude-haiku-5-5': { inputPerMtok: 0.1, outputPerMtok: 0.5 },
+  'claude-sonnet-5-5': { inputPerMtok: 2.0, outputPerMtok: 10.0 },
   'claude-haiku-4-5': { inputPerMtok: 1.0, outputPerMtok: 5.0 },
   'claude-sonnet-4-5': { inputPerMtok: 3.0, outputPerMtok: 15.0 },
-  'claude-3-5-haiku-20241022': { inputPerMtok: 0.8, outputPerMtok: 4.0 },
-  'claude-3-5-sonnet-20241022': { inputPerMtok: 3.0, outputPerMtok: 15.0 },
 };
 
-export function resolveV2EvalModel() {
-  return (
-    process.env.ASK_RI_V2_EVAL_MODEL?.trim() ||
-    process.env.RI_ANTHROPIC_MODEL?.trim() ||
-    'claude-haiku-4-5'
-  );
+export function resolveV2EvalModel(cliModel) {
+  return resolveV2EvalModelId(cliModel);
 }
 
 export function estimateRequestCostUsd(model, inputTokens, outputTokens) {
-  const rates = MODEL_PRICING_ESTIMATE[model] || MODEL_PRICING_ESTIMATE['claude-haiku-4-5'];
+  const rates = MODEL_PRICING_ESTIMATE[model] || MODEL_PRICING_ESTIMATE['claude-haiku-5-5'];
   const inCost = (inputTokens / 1_000_000) * rates.inputPerMtok;
   const outCost = (outputTokens / 1_000_000) * rates.outputPerMtok;
   return Number((inCost + outCost).toFixed(6));

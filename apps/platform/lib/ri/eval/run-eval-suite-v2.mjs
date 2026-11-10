@@ -38,7 +38,7 @@ export async function runEvalSuiteV2(options = {}) {
   const allowlist = buildPublicEvalAllowlist(cases);
   const baselineMap = loadBaselineMap(options.baselinePath || DETERMINISTIC_V21_R2_BASELINE);
 
-  const model = resolveV2EvalModel();
+  const model = resolveV2EvalModel(options.model);
   const spend = new EvalSpendTracker({ budgetUsd: options.budgetUsd ?? V2_EVAL_BUDGET_USD, model });
 
   const index = await buildSemanticIndex(AUTHENTIC_CORPUS_B2_DIR);
@@ -72,6 +72,7 @@ export async function runEvalSuiteV2(options = {}) {
       humanReviewRequired: engineResult.humanReviewRequired,
       retrievalPublicationSelected: engineResult.retrieval?.publicationSelected,
       evidenceChunkIds: engineResult.evidenceBundle?.chunkIds,
+      preReasonerBlock: engineResult.preReasonerBlock || null,
     };
 
     results.push({ ...scored, ...engineResult });
@@ -118,6 +119,12 @@ export async function runEvalSuiteV2(options = {}) {
         acc[r.outcome] = (acc[r.outcome] || 0) + 1;
         return acc;
       }, {}),
+      preReasonerBlocks: {
+        reference_validation: results.filter((r) => r.preReasonerBlock === 'reference_validation').length,
+        authority_gate: results.filter((r) => r.preReasonerBlock === 'authority_gate').length,
+      },
+      engineInsufficientEvidence: results.filter((r) => r.status === 'INSUFFICIENT_EVIDENCE').length,
+      pipelineDryRunNotRun: results.filter((r) => r.v2ExecutionStatus === 'NOT_RUN' && r.status === 'NOT_RUN').length,
     },
     results,
     safetyChecks: {

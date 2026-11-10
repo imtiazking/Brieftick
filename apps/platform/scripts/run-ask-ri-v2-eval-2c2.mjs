@@ -1,21 +1,24 @@
 #!/usr/bin/env node
 /**
- * Phase 2C.2 — live Anthropic V2 evaluation against frozen v2.1 suite (public evidence only).
+ * Phase 2C.2 — V2 evaluation against frozen v2.1 suite (public evidence only).
  *
- * Requires: RI_AI_EXECUTION_ENABLED=true, ANTHROPIC_API_KEY (never logged).
- * Budget: USD $10 hard ceiling (see anthropic-eval-budget.mjs).
+ * Default: timestamped output under docs/eval/runs/ (does not overwrite historical reports).
+ *
+ * Usage:
+ *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --dry-run
+ *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --model=claude-haiku-5-5 --out=...
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runEvalSuiteV2 } from '../lib/ri/eval/run-eval-suite-v2.mjs';
-import { REPO_ROOT } from '../lib/ri/eval/eval-paths.mjs';
+import { REPO_ROOT, EVAL_SUITE_V21_PATH, AUTHENTIC_CORPUS_B2_DIR } from '../lib/ri/eval/eval-paths.mjs';
 import { resolveV2EvalModel, V2_EVAL_BUDGET_USD } from '../lib/ri/reasoner/anthropic-eval-budget.mjs';
 import { isV2LiveReasoningEnabled } from '../lib/ri/reasoner/invoke-anthropic-reasoner.mjs';
+import { execSync } from 'node:child_process';
 
-const OUT_REPORT = join(REPO_ROOT, 'docs', 'eval', 'phase-2c2-ask-ri-v2-eval-report.json');
-const OUT_MD = join(REPO_ROOT, 'docs', 'eval', 'phase-2c2-ask-ri-v2-completion-report.md');
 const PLATFORM_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const RUNS_DIR = join(REPO_ROOT, 'docs', 'eval', 'runs');
 
 function loadLocalEnvFile() {
   const candidates = [join(PLATFORM_ROOT, '.env.local'), join(PLATFORM_ROOT, '.env')];
@@ -58,18 +61,45 @@ function sanitizeEvalReport(report) {
 }
 
 function parseArgs(argv) {
-  const out = { dryRun: false };
+  const out = { dryRun: false, model: null, out: null, force: false };
   for (const a of argv) {
-    if (a === '--dry-run') out.dryRun = true;
-    if (a === '--estimate-only') out.dryRun = true;
+    if (a === '--dry-run' || a === '--estimate-only') out.dryRun = true;
+    else if (a.startsWith('--model=')) out.model = a.slice('--model='.length);
+    else if (a.startsWith('--out=')) out.out = a.slice('--out='.length);
+    else if (a === '--force') out.force = true;
   }
   return out;
+}
+
+function defaultOutPath({ dryRun, model }) {
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const mode = dryRun ? 'dry-run' : 'live';
+  const safeModel = String(model).replace(/[^a-zA-Z0-9-]+/g, '-');
+  return join(RUNS_DIR, `phase-2c2-ask-ri-v2-eval-${mode}-${safeModel}-${stamp}.json`);
+}
+
+function loadCorpusVersion() {
+  try {
+    const manifestPath = join(AUTHENTIC_CORPUS_B2_DIR, 'manifest.json');
+    const m = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    return { corpus: m.corpus, createdAt: m.createdAt, publicationCount: m.publications?.length ?? null };
+  } catch {
+    return { corpus: 'authentic-corpus-b2-2b2', createdAt: null, publicationCount: null };
+  }
+}
+
+function gitSha() {
+  try {
+    return execSync('git rev-parse HEAD', { cwd: REPO_ROOT, encoding: 'utf8' }).trim();
+  } catch {
+    return 'unknown';
+  }
 }
 
 async function main() {
   loadLocalEnvFile();
   const cli = parseArgs(process.argv.slice(2));
-  const model = resolveV2EvalModel();
+  const model = resolveV2EvalModel(cli.model);
 
   if (!cli.dryRun && !isV2LiveReasoningEnabled()) {
     console.log(
@@ -82,35 +112,46 @@ async function main() {
     process.exit(2);
   }
 
-  const report = await runEvalSuiteV2({ dryRun: cli.dryRun });
+  const outPath = cli.out ? cli.out : defaultOutPath({ dryRun: cli.dryRun, model });
+  if (existsSync(outPath) && !cli.force) {
+    console.error(
+      JSON.stringify({
+        ok: false,
+        error: 'output_exists',
+        message: 'Use --out= with a new path or pass --force to overwrite.',
+        outPath,
+      }),
+    );
+    process.exit(2);
+  }
 
-  mkdirSync(dirname(OUT_REPORT), { recursive: true });
-  writeFileSync(OUT_REPORT, JSON.stringify(sanitizeEvalReport(report), null, 2));
+  const report = await runEvalSuiteV2({ dryRun: cli.dryRun, model });
+  const envelope = {
+    ...report,
+    runMetadata: {
+      executionTimestamp: new Date().toISOString(),
+      gitCommitSha: gitSha(),
+      modelIdentifier: model,
+      evaluationSuiteVersion: report.evaluationSuiteVersion,
+      corpusVersion: loadCorpusVersion(),
+      runMode: cli.dryRun ? 'dry_run' : 'live_provider',
+      providerCallStatus: cli.dryRun ? 'disabled' : isV2LiveReasoningEnabled() ? 'enabled' : 'disabled',
+      suiteSourcePath: EVAL_SUITE_V21_PATH,
+    },
+  };
 
-  const md = [
-    '# Phase 2C.2 — Ask RI V2 evaluation report',
-    '',
-    `- Model: **${model}**`,
-    `- Budget ceiling: USD $${V2_EVAL_BUDGET_USD}`,
-    `- Eligible for provider: ${report.eligibility.eligibleForProvider}`,
-    `- Blocked before transmission: ${report.eligibility.blockedBeforeTransmission}`,
-    `- Spend (calculated): USD $${report.spend.calculatedUsd}`,
-    `- Tokens in/out: ${report.spend.inputTokens} / ${report.spend.outputTokens}`,
-    '',
-    'See `phase-2c2-ask-ri-v2-eval-report.json` for per-case diagnostics (sanitised).',
-    '',
-    '**Operator held-out baseline:** confirm separately — no private held-out files accessed in this run.',
-  ].join('\n');
-  writeFileSync(OUT_MD, md);
+  mkdirSync(dirname(outPath), { recursive: true });
+  writeFileSync(outPath, JSON.stringify(sanitizeEvalReport(envelope), null, 2));
 
   console.log(
     JSON.stringify({
       ok: true,
-      reportJson: OUT_REPORT,
-      completionMd: OUT_MD,
+      outPath,
       dryRun: cli.dryRun,
+      model,
       caseCount: report.caseCount,
       spend: report.spend,
+      summary: report.summary,
       liveReasoning: !cli.dryRun,
     }),
   );
