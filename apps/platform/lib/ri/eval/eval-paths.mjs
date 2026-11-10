@@ -8,4 +8,23 @@ export const EVAL_SUITE_PATH = join(REPO_ROOT, 'docs', 'eval', 'ask-ri-v2-eval-s
 export const EVIDENCE_PACKS_DIR = join(REPO_ROOT, 'docs', 'eval', 'evidence-packs');
 export const SUPPLEMENTAL_CORPUS_2B2_DIR = join(REPO_ROOT, 'docs', 'eval', 'supplemental-corpus-2b2');
 export const AUTHENTIC_CORPUS_B1_DIR = join(REPO_ROOT, 'docs', 'eval', 'authentic-corpus-b1-2b2');
+export const AUTHENTIC_CORPUS_B2_DIR = join(REPO_ROOT, 'docs', 'eval', 'authentic-corpus-b2-2b2');
+export const DEVELOPMENT_RETRIEVAL_PROBES_STEP_B2_V3 = join(
+  REPO_ROOT,
+  'docs',
+  'eval',
+  'development-retrieval-probes-2b2-step-b2-v3.json',
+);
+export const DEVELOPMENT_RETRIEVAL_PROBES_STEP_F = join(
+  REPO_ROOT,
+  'docs',
+  'eval',
+  'development-retrieval-probes-2b2-step-f-v1.json',
+);
+export const DEVELOPMENT_RETRIEVAL_PROBES_STEP_F_V2 = join(
+  REPO_ROOT,
+  'docs',
+  'eval',
+  'development-retrieval-probes-2b2-step-f-v2.json',
+);
 export const BASELINE_DIR = join(REPO_ROOT, 'docs', 'eval', 'baseline');

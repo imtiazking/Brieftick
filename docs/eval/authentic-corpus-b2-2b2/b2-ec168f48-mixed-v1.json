@@ -1,0 +1,787 @@
+{
+  "packVersion": 1,
+  "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+  "publicationTitle": "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+  "publicationType": "finalised_guidance",
+  "regulator": "FCA",
+  "canonicalUrl": "https://www.fca.org.uk/publications/finalised-guidance/fg24-6-guidance-firms-enables-risk-based-approach-payments",
+  "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+  "extractionProfile": "html_article_v2+pdf_primary_v1",
+  "contentSha256": "55441e98c7d5b591db36f4edbeb60a3fba76dad20a55a7eb251e487c35dbc1d6",
+  "regulatoryStatus": "finalised_guidance",
+  "blockCount": 29,
+  "verifiedTextSamples": [
+    {
+      "documentEvidenceId": "cc53174890c457c7",
+      "sectionReference": "Why we’re issuing this guidance",
+      "extractedText": "On 30 October 2024, the Payment Services (Amendment) Regulations 2024 came into force."
+    },
+    {
+      "documentEvidenceId": "79969f3acc5ffb42",
+      "sectionReference": "Why we’re issuing this guidance",
+      "extractedText": "This made changes to the Payment Services Regulations 2017 to extend the amount of time that a Payment Service Provider (PSP) has to process an outbound payment when there are reasonable grounds to suspect fraud or dishonesty."
+    },
+    {
+      "documentEvidenceId": "cd3bbd3987cb5b4c",
+      "sectionReference": "Why we’re issuing this guidance",
+      "extractedText": "To support these regulations, the Treasury asked the FCA to issue guidance to explain how we expected PSPs to apply these legislative changes, taking into account feedback from stakeholders."
+    },
+    {
+      "documentEvidenceId": "85738c7e7502bb47",
+      "sectionReference": "Why we’re issuing this guidance",
+      "extractedText": "In GC24/5 , we consulted on adding this guidance to our Approach Document , together with guidance on delaying inbound payments where a PSP suspects fraud."
+    },
+    {
+      "documentEvidenceId": "a415715c69546f27",
+      "sectionReference": "Why we’re issuing this guidance",
+      "extractedText": "Following consultation feedback, we are publishing this final guidance setting out: the requirements for delaying outbound payments and determining whether the threshold for ‘reasonable grounds to suspect’ has been met how PSPs should use the payment delay window obligations on PSPs if they delay an outbound transaction the treatment of suspicious inbound payments&nbsp;"
+    },
+    {
+      "documentEvidenceId": "39292dcd5aa2f0df",
+      "sectionReference": "Who this guidance is for",
+      "extractedText": "PSPs trade bodies representing PSPs credit institutions providing payment services payment institutions (PIs) electronic money institutions (EMIs) Gibraltar PSPs providing payment services in the UK This guidance will also be of interest to consumers and micro-enterprises, including charities, consumer groups, retailers, credit unions and law enforcement agencies.&nbsp;"
+    },
+    {
+      "documentEvidenceId": "876a35a5a0e09091",
+      "sectionReference": "Next steps",
+      "extractedText": "We have updated our Approach Document from 22 November 2024 which sets out our final guidance."
+    },
+    {
+      "documentEvidenceId": "6606eace9ec64df2",
+      "sectionReference": "Background",
+      "extractedText": "The UK has seen a significant increase in APP fraud."
+    },
+    {
+      "documentEvidenceId": "d79f7aa9bb33fb21",
+      "sectionReference": "Background",
+      "extractedText": "This is where someone is deceived into authorising a payment either: to an account that they think belongs to a legitimate payee but is actually controlled by a fraudster, or for something they believed was legitimate but is actually fraudulent &nbsp; Fighting financial crime, including tackling money laundering and slowing growth in APP fraud, is a priority in our strategy and is a key outcome in our annual work programme 2025/26 ."
+    },
+    {
+      "documentEvidenceId": "19d442fc4a27fcbd",
+      "sectionReference": "Background",
+      "extractedText": "Page updates 09/04/2025 : Editorial amendment Updates to reflect publication of annual work programme 2025/26 and strategy for 2025 to 2230."
+    },
+    {
+      "documentEvidenceId": "a757bf4bfd757b88",
+      "sectionReference": "Background",
+      "extractedText": "Yes No What can we do to improve pages like this?"
+    },
+    {
+      "documentEvidenceId": "e75c3f4af7e722ff",
+      "sectionReference": "Background",
+      "extractedText": "Submit Feedback Leave this field blank"
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-b1d1c78470ab0f72",
+      "pageNumber": 1,
+      "sectionReference": null,
+      "extractedText": "Finalised Guidance Financial Conduct Authority Page 1 of 17 1 Summary 1.1 On 30 October 2024, the Payment Services (Amendment) Regulations 2024 came into force (Amendment Regulations). They enable Payment Service Providers (PSPs) to slow down the processing of outbound Authorised Push Payment (APP) transactions where they have reasonable grounds to suspect fraud or dishonesty on the part of someone other than the payer (‘reasonable grounds to suspect’). These changes extended the maximum time that payments could be delayed, giving PSPs more time to investigate suspicious payments. 1.2 The policy aims to support efforts to tackle APP fraud, where victims are tricked into sending money to fraudsters. The Amendment Regulations were introduced to support the Payment Systems Regulator’s APP fraud reimbursement requirement which came into force on 7 October 2024. 1.3 The Amendment Regulations enable PSPs to delay payments by up to 4 business days for the purpose of investigating transactions where the ‘reasonable grounds to suspect’ threshold is met. The aim of the revised regulations is to give PSPs the flexibility to prevent APP fraud more effectively while minimising the impact on legitimate payments. 1.4 To support these regulations, HM Treasury (HMT) asked us to issue guidance to explain how we expect PSPs to apply these legislative changes, taking into account industry feedback. Guidance for firms that enables a risk-based approach to payments FG24/6 22 November 2024"
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-5a1afbc0a5099e30",
+      "pageNumber": 2,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 2 of 17 1.5 In GC24/5, we consulted on adding this guidance to ‘Payment Services and Electronic Money – Our Approach’ (Approach Document) together with guidance on delaying inbound payments where a PSP suspects fraud. Our finalised guidance provides detail on: • requirements for delaying outbound payments and determining whether the threshold for ‘reasonable grounds to suspect’ has been met: the guidance explains PSPs require an objective factual foundation for this threshold to be met. It sets out what PSPs should consider when assessing whether the threshold has been met. • how PSPs should use the payment delay window: the purpose of the delay is to provide an opportunity for PSPs to contact the payer or other relevant third parties (for example, law enforcement) to establish whether to execute the payment order. The delay should last no longer than is necessary for this purpose and can last no longer than 4 business days. • obligations on PSPs if they delay an outbound transaction: the guidance explains the requirements for the PSP to notify certain parties if a transaction is delayed and highlights relevant obligations under the Consumer Duty for its interactions with the payer. It also explains the potential for the PSP to incur liability to compensate a payer for any costs resulting from the transaction delay. • delaying suspicious inbound payments: following industry requests, we have set out our views on when the force majeure provisions in the Payment Services Regulations 2017 (PSRs 2017) apply to financial crime legislation. HMT did not amend these provisions. The force majeure provisions provide that where a PSP must breach the execution timescales in the PSRs 2017 (for example, by delaying making incoming funds available to a payee) to comply with other laws (including financial crime laws), the PSP will not be liable for the breach of the PSRs 2017. 1.6 We asked industry and wider stakeholders for their feedback the scope and substance of our proposed guidance changes. This included any areas where further clarification may have been helpful for industry or for any additional issues we should cover. 1.7 This document summarises the feedback received in Chapter 2 and sets out the finalised guidance in Chapter 3"
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-caa82035c4beee41",
+      "pageNumber": 3,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 3 of 17 2 Feedback statement 2.1 Our consultation GC24/5 closed on 4 October 2024. We received 23 written responses from a broad range of stakeholders including banks, building societies, payment firms, trade bodies, industry groups and non-governmental organisations. We also received feedback from industry participants at a roundtable event we hosted on 30 September 2024. 2.2 Overall, respondents generally welcomed the draft guidance, noting that it would be a valuable resource for firms and help their understanding of how to comply with the Amendment Regulations. 2.3 The main areas of feedback involved deciding when to delay an outbound payment, the obligations of PSPs after delaying an outbound payment and the treatment of inbound payments. Many respondents also asked us to clarify our approach to evaluation and monitoring. 2.4 We have set out the broad themes of the feedback we received below, along with the questions in the consultation. We then give a summary of the feedback and our response. Deciding when to delay a payment Q1: Are there other factors that might increase the risk of a payment order having been made following dishonesty or fraud, which you consider we should refer to in our guidance? Are there further examples we can include in the guidance to clarify how and when payment delays may be used? Feedback 2.5 Most respondents who gave a view about the listed examples, proposed amending or removing the non-exhaustive list of risk factors from the draft guidance. Their concerns included that key types of fraud were missing and that it would not reflect the evolving nature of fraud typologies. They also felt the list could undermine the Amendment Regulations’ discretionary nature by incentivising firms to delay payments if there was any information indicating the presence of a specified type of fraud or risk factor in a payment transaction. More broadly, responses favoured giving firms more discretion as to when to use the provisions (rather than setting out a set of factors which might be applied in a prescriptive way). These responses cited the importance of enabling firms to use their expertise and judgement in the context of evolving fraud patterns. Many of these respondents asked us to replace the list of risk factors with a set of principles that firms should consider when deciding to delay a payment. 2.6 However, some respondents were concerned about the potential for the regulations to cause delays to legitimate payments and supported our list of risk factors for this reason. Some were particularly concerned about the potential impact on transactions initiated via open banking. This included requests that payments initiated via open banking be descoped from the Amendment Regulations, that the guidance should"
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-276b4cdd4a6d39a2",
+      "pageNumber": 4,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 4 of 17 note the additional regulations that open banking firms are subject to as a relevant factor in PSPs’ decision making when considering delaying a payment and that firms should be required to report on delays per banking channel. 2.7 Some respondents also requested that the guidance specify whether the regulations apply to card payments. 2.8 One respondent asked us to clarify our expectations where a PSP suspects that a payment order has been placed subsequent to fraud or dishonesty perpetrated by the payer, and the PSP would not be able to delay the payment under Regulation 86(2B) of the PSRs 2017, because the condition for delaying the payment under Regulation 86(2A)(a) of the PSRs 2017 would not have been met. Response 2.9 We recognise that including a specific set of fraud typologies would create a risk that the guidance might not reflect evolving fraud patterns, and that an overly prescriptive set of risk factors could affect firms’ ability to apply discretion in certain circumstances. We have removed the list of risk factors and fraud typologies. Instead, we set out how we consider firms should approach deciding whether to delay payments they suspect of being due to dishonesty or fraud. Our guidance also addresses the evolving nature of fraud by referring to industry intelligence-sharing initiatives which PSPs can use to get up-to-date information about emerging fraud threats and alerts about individual typologies. The revised guidance also makes clear that a transaction being unusual or different is not necessarily grounds for suspicion and that an unusual transaction is only a basis for initial inquiry which may then require judgement as to whether it is suspicious. 2.10 It is not within the scope of the guidance to exempt any particular types of payment transaction from the Amendment Regulations, including transactions originated by Payment Initiation Service Providers (PISPs). 2.11 Our final guidance clarifies that payments initiated through card schemes which are initiated by payees are out of the scope of the provisions of Regulations 86(2A) to (2D) of the PSRs 2017. 2.12 We have clarified in our guidance where anti-money laundering requirements apply if a fraudster receives the proceeds of a fraud and then submits a payment order to their PSP to transfer the funds to another account that they control or hold, or to a third party. Q2: Are there further aspects of the ‘reasonable grounds to suspect’ threshold that the guidance should cover? Is there anything else it would be necessary to include to ensure that industry adopts an approach that minimises the impact on legitimate payment transactions? Feedback 2.13 Some respondents were concerned about our references to the Joint Money Laundering Steering Group’s (JMLSG) definition of ‘reasonable grounds to suspect’. They felt this could create uncertainty about firms’ obligations under financial crime"
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-ad8197135e04ebb2",
+      "pageNumber": 5,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 5 of 17 legislation if they use the Amendment Regulations to delay outbound payments they suspect are due to fraud or dishonesty. Stakeholders highlighted these references could imply that firms would be required to submit Suspicious Activity Reports (SARs) and Defences Against Money Laundering (DAMLs) if the threshold to delay an outbound payment was met. Respondents therefore asked us to amend the guidance to clarify the relationship between firms’ obligations under the PSRs 2017, and the Proceeds of Crime Act 2002 and the Terrorism Act 2000 to confirm that these were distinct and non-overlapping. Response 2.14 We had included references to JMLSG guidance to illustrate the threshold for reasonable grounds to suspect. However, we recognise including the reference to the JMLSG’s guidance risked creating uncertainty about PSPs’ obligations and the threshold for suspicion in the context of the payment delay provisions. We have therefore clarified in the final guidance that references to JMLSG guidance do not relate to the Amendment Regulations. 2.15 The test for delaying payments in our finalised guidance needs to be considered independently of any obligations that a PSP may have under financial crime legislation. A PSP’s assessment of whether they can delay payments under Regulation 86(2B) of the PSRs 2017 is distinct from their assessment of whether they are required to submit reports under the Proceeds of Crime Act 2002 or the Terrorism Act 2000. Using the payment delay window Q3: Question 3: Are there further issues about how a PSP uses the 4 business days timeframe that need clarification in the guidance? Feedback 2.16 Respondents asked for the guidance to clarify that a PSP may use the payment delay window to engage with the payer to dissuade them from proceeding with the payment (as well as gathering information to determine if the payment is fraudulent). Feedback indicated that this may be necessary in circumstances where the payer has developed a trust in the fraudster. In these circumstances, the PSP’s decision to refuse the payment could otherwise result in the payer initiating the transaction via another PSP and so the consumer harm would still occur. 2.17 Some respondents also asked for additional clarity about the actions a PSP should take if, at the end of the 4-day delay window, it still has its original suspicion but has not succeeded in getting information to further substantiate it. Response 2.18 The final guidance has been revised to reflect that Regulation 86 of the PSRs 2017 does not prevent a PSP from seeking to deter the payer from making the payment by another means."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-5ae04272876a331b",
+      "pageNumber": 6,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 6 of 17 2.19 A decision to delay a payment does not change the terms under which the PSP can refuse it. Chapter 8 of the Approach Document outlines the conditions for refusing to process a payment order and the obligations of a PSP if it decides to do so. Q4: Aside from PSPs having to inform customers of any delays, the reasons behind their decision and the information or actions required to help decide whether to execute the payment order, is there anything else PSPs should provide? Feedback 2.20 Respondents broadly agreed with the expectation that notification of a delay must be provided or made available in an agreed manner as soon as possible. Respondents thought this was particularly important in managing customers’ expectations. 2.21 Some respondents supported the principle of PSPs exchanging information about payment transaction delays to enable effective investigations. However, they noted there was currently no legal framework or operational platform for information about delayed payments to be jointly shared at the point of submission. As a result, it would be difficult operationally to achieve this exchange of information. Respondents highlighted that once the threshold of suspicion is reached, industry best practice is for the sending PSP to exchange transaction and account information, along with a high-level summary of their assessment, to the receiving PSP as soon as reasonably possible. Response 2.22 PSPs can share data with each other, subject to UK data protection legislation as explained in Information Commissioner’s Office (ICO) guidance which we refer to in our guidance. We encourage the payer’s and payee’s PSPs to exchange information about delayed payment transactions to enable effective investigations and reduce the risks of additional delay and duplicative investigation by the payee’s PSP, subject to UK data protection law restrictions. We have changed the wording in the guidance from ‘should share’ to ‘encourage to share’ to give firms more flexibility. 2.23 We have not updated the guidance to prescribe which information to share or which communication method to use between the payer’s and payee’s PSPs. We expect the payer’s PSP will decide this on a case-by-case basis. Obligations when delaying a payment (communications and financial) Q5: Should PSPs be obliged to notify and update payment initiation service providers (PISPs) about any payment delay and would there be any challenges with doing this? Feedback 2.24 Some respondents said any requirement to notify PISPs about a payment delay while the payment was under investigation would add to the tight time pressure on the"
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-80bb219c43be8bda",
+      "pageNumber": 7,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 7 of 17 sending PSP during the 4-business day period, particularly a smaller PSP with more limited resources. They also felt this could lead to tipping off the customer. 2.25 Other respondents were concerned about the implications for open banking payments, due to increased uncertainty about the timing of the payment execution when the payer’s PSP delays the payment. They called for sending PSPs to be obliged to notify PISPs about a payment delay at the same time as the customer, so the PISP can manage customer expectations. This was seen as particularly important where the customer may think they have authorised a payment, but the merchant has not received any funds. The merchant may think the transaction has been cancelled and so does not release their goods or provide services, but the payment may still be made days later. However, one respondent highlighted that for this notification to be possible, it would be essential to have a clear and safe route for PSPs to share this information with PISPs without breaching data protection laws and confidentiality obligations. 2.26 Feedback also highlighted that if a payment was delayed, a PISP would not be able to cancel it, and would instead have to wait for up to 4 days under the new rules to find out whether the payment succeeded or failed. Respondents called for the guidance to consider what changes are required to enable PISPs to cancel payment orders once they have been initiated. Response 2.27 We are not making changes to the guidance as drafted to enable a PISP to cancel a payment order. The regulatory provisions which govern cancellation of payment orders are set out in the PSRs 2017. We do not currently have powers under the PSRs 2017 to change those provisions. 2.28 We are also not creating a requirement for PSPs to notify PISPs about a payment delay as part of our finalised guidance. However, we are considering the feedback about notifying PISPs of payment delays as part of our policy approach to open banking. Q6: Are there any further aspects of a PSP’s obligations to notify relevant parties that we should clarify in the guidance? Feedback 2.29 Some respondents were uncertain about whether we expected sending and receiving PSPs to share information about delayed transactions in all cases. They were also concerned about its feasibility. 2.30 Other respondents asked us not to require a PSP to notify a payer of a delay where the payer’s PSP suspected the payer might be complicit in a fraud. Others suggested the payee’s PSP should be notified only when the payer’s PSP requires additional information from them to support the investigation."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-b9be0ffb62b487e0",
+      "pageNumber": 8,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 8 of 17 Response 2.31 As in our response to feedback on Question 4, our final guidance adds flexibility for PSPs. It clarifies that we encourage, rather than expect, the payer’s and payee’s PSPs to exchange information about delayed payments to enable effective investigations and reduce delay and duplicative investigation by the payee’s PSP. This is subject to restrictions imposed by UK data protection law. 2.32 Our finalised guidance also clarifies that where a payer’s PSP initially suspects fraud/dishonesty from someone other than the payer, but subsequent enquiries cause it to suspect fraud/dishonesty by the payer, it is not then required to communicate its concerns with the payer. Q7: Are there any further issues about notifying or communicating issues about payment delays among relevant parties that we should capture in the guidance? Feedback 2.33 Some respondents said it would be useful to clarify why data sharing between PSPs is helpful, including what information needs to be shared, and which communication methods we expected PSPs and third parties to use. Response 2.34 Our guidance encourages the payer’s and payee’s PSPs to exchange information about delayed payment transactions to enable effective investigations and reduce additional delay and duplicative investigation by the payee’s PSP. This is subject to restrictions imposed by UK data protection law. We do not propose to update the guidance to prescribe which information to share or which communication method to use between the payer’s PSP and third parties. We expect the payer’s PSP will decide this on a case-by-case basis to determine whether the payment can be executed. Q8: Are there any issues relating to the scope of liabilities incurred by a PSP or the process of reimbursing the payer that the Approach Document should capture? Feedback 2.35 The Amendment Regulations require PSPs to reimburse the payer ‘for any interest or charges’ resulting from the payment delay. While HMT have clarified that the intention is for this liability to be narrowly drawn (covering only interest and charges directly incurred), feedback from industry indicates that the draft guidance does not fully reflect the narrowness of the liability."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-bb8b26811f48bbfb",
+      "pageNumber": 9,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 9 of 17 Response 2.36 We have amended the guidance. It now makes it clearer that the amended provisions in Regulation 94A of the PSRs 2017 are narrowly constructed to apply to interest and charges a customer directly incurs from a payment delay, and not to wider losses, for example, the loss of opportunity from an investment the customer could not make in a timely way. The scope of Regulation 94A therefore includes charges levied by a third party for late payment. This aligns with our current published guidance relating to Regulation 94 which explains that if, for example, a customer was making a payment to a credit card account from their current account, and their current account provider executed the payment transaction late, the customer would be entitled to a refund from the current account provider for any charges and interest applied to their credit card account. Delaying inbound payments Q9: Is guidance needed on the cumulative effect of delays to outbound and inbound payments? Specifically, how the force majeure guidance might interact with the amendments to the PSRs 2017 execution time provisions? Feedback 2.37 One respondent asked us to clarify the potential cumulative effects of delays on both outbound and inbound payments by providing a clearer framework. However, other respondents did not foresee likely circumstances where force majeure provisions would be used in combination with an outbound payment delay. Response 2.38 In view of feedback received, we have not changed our final guidance on the cumulative effect of delays to outbound and inbound payments. However, the final guidance aims to provide greater clarity about the effect of the force majeure provisions under Regulation 96(2) of the PSRs 2017. Q10: Does the guidance provide sufficient clarity on how and when the force majeure provisions can be used? Feedback 2.39 Some respondents asked us to clarify the scope of the guidance around the treatment of inbound payments and how it would interact with obligations under the Proceeds of Crime Act 2002 and the Terrorism Act 2000. This included clarifying whether firms’ obligations under existing money laundering and terrorist financing rules would still take precedence."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-beb921fb30a6db9e",
+      "pageNumber": 10,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 10 of 17 2.40 Others asked us for more detail on whether the force majeure provisions set a different threshold and test on firms, as the draft guidance set out that we did not expect PSPs to use a lower threshold for these provisions. Some respondents were uncertain about whether introducing another threshold would put PSPs into a position where they would have to choose which law or regulation to breach. Response 2.41 Consultation responses suggested that references in the guidance to a ‘high threshold’ for delaying inbound payments could be misunderstood. Given that we are not intending to change the threshold, we have removed that wording. 2.42 Our guidance explains our view of the effect of the force majeure provisions. We consider that a payee’s PSP would not be liable for contravening the requirement under Regulation 89(3) of the PSRs 2017 (to make funds available to a payee immediately after they have been credited to the payee’s PSP’s account) where: • making the funds available to the payee would breach any of the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000, or • for reasons outside the payee’s PSP’s control, it would be impossible for their nominated officer to determine if making the funds available to the payee would breach any of the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000. 2.43 We also expect PSPs to consider their obligations under the Consumer Duty when deciding to delay making funds available to a payee. This means PSPs should monitor and regularly review their customers’ outcomes to ensure the PSPs’ products and services are delivering good outcomes. We expect PSPs to monitor the proportion of payment transactions that are delayed and the proportion of these transactions that are later credited to payees, as well as the length of delays. We also expect PSPs to monitor the level of support they give customers when a payment is delayed. PSPs should seek to minimise the impact of delays on legitimate payments and the negative impacts of delays on customer outcomes. Approach to monitoring Feedback 2.44 Some respondents asked for more clarity on the approach to monitoring, to allow for resource planning and system design. Others called for a mandatory monitoring regime instead of the voluntary, ad-hoc approach proposed in the draft guidance. 2.45 A few respondents gave feedback on the types of data we should capture, including true and false positive transaction delays to help assess the impact on legitimate payments."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-9c4f049acb4cda0a",
+      "pageNumber": 11,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 11 of 17 Response 2.46 Our consultation explained that we planned to monitor and evaluate the impact of the changes to the PSRs 2017 to assess the effectiveness of our guidance and if we need to make further clarifications to improve PSPs’ compliance. While we did not consult on the accompanying monitoring regime, we plan to collect data from firms initially through existing supervisory engagement processes. We may also consider carrying out firm surveys. We believe this approach will help us to understand the types of information that PSPs hold and to identify the most helpful data in assessing the impact of these changes. 2.47 When we have assessed the types and utility of information available, we will consult on proposals for the scope and content of a permanent monitoring regime. 2.48 In addition, in our final guidance we give examples of the types of data we expect PSPs to record as part of their internal monitoring under the Consumer Duty, and to make available to us if requested. This includes information such as the rationale for each delayed payment, length of delay, whether the payment was completed or refused, and the value and overall volumes of delayed payments."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-239dc2631507f4a6",
+      "pageNumber": 12,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 12 of 17 3 Finalised guidance We will add the text set out below to Chapter 8 of the Approach Document. OUTBOUND PAYMENTS Applicability (Regulation 85) [The following provisions will be added after paragraph 8.273 of the Approach Document] 3.1 The execution time provisions set out in Regulation 86(2A) to (2D) of the PSRs 2017 apply to any payment transaction: • authorised in accordance with Regulation 67 of the PSRs 2017; • executed wholly within the UK in sterling; and • not initiated by or through a payee. 3.2 Payments initiated through card schemes which are initiated by payees are out of the scope of the provisions of Regulations 86(2A) to (2D) of the PSRs 2017. Payment transactions to a payment account – time limits for payment transactions (Regulation 86) [The following provisions will be added after paragraph 8.281 of the Approach Document] 3.3 Regulation 86(2A) to (2D) of the PSRs 2017 permit a PSP to delay crediting the amount of a payment transaction to the account of the payee’s PSP until the end of the fourth business day following the time the payment order was received if both the following conditions apply: • the PSP has established that there are reasonable grounds to suspect a payment order has been placed subsequent to fraud or dishonesty perpetrated by a person other than the payer (“reasonable grounds to suspect fraud or dishonesty”); and • such grounds are established no later than the end of the business day following the time of receipt of the payment order. 3.4 This means that if a PSP has not met the threshold of having reasonable grounds to suspect fraud or dishonesty by the end of the next business day following the receipt of the payment order, it will no longer be able to delay the payment transaction under Regulation 86(2B) of the PSRs 2017. 3.5 A payment order which appears unusual is not necessarily suspicious. Even customers with a stable and predictable transaction profile will have periodic transactions that are unusual for them. Many customers will, for good reasons, have an erratic pattern of transactions or account activity. A payment transaction"
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-5bcab41b230e42dc",
+      "pageNumber": 13,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 13 of 17 appearing to be unusual is, in the first instance, only a basis for further enquiry, which may in turn require judgement as to whether it is suspicious. 3.6 In assessing whether the threshold of ‘reasonable grounds to suspect fraud or dishonesty’ has been met in relation to payment transactions, PSPs should consider the following: • In our view, ‘reasonable grounds’ to suspect fraud or dishonesty is more than mere speculation. It is based on an objective factual foundation, but falls short of knowledge where a PSP in fact knows that a payment order has been placed following fraud or dishonesty. • PSPs should take into account the specific circumstances of the individual transaction, together with the PSP’s wider assessment of evolving fraud risk. • PSPs should take account of their own intelligence, and any assessments made using technology solutions which they have used to mitigate fraud risk. These should be calibrated to detect and prevent fraud while minimising the impact on legitimate payments. • A PSP’s assessment of whether the threshold has been met, should be designed to support delivery of good outcomes for its customer under the Consumer Duty. This includes under the Consumer Duty’s cross-cutting rules to avoid foreseeable consumer harm, without creating unreasonable barriers to consumers realising the benefits of products and services. 3.7 So that PSPs can monitor and assess whether the outcomes customers are experiencing are consistent with their obligations under the Consumer Duty, PSPs should record information about the overall volumes and values of delayed payments and information about each delayed transaction including for example: • the grounds for suspicion • the length of the delay • whether the transaction was ultimately completed or refused • the value of the transaction and • whether the PSP identified the payer as having characteristics of vulnerability. 3.8 PSPs should ensure that their anti-fraud systems and controls keep up with the increasing sophistication of criminal groups and should use advances in technologies to help prevent financial crime. In particular, PSPs should: • Have effective governance arrangements, controls and data to detect, manage and reduce fraud and losses. • Regularly review their fraud prevention systems and controls to ensure that they are effective, and • Maintain appropriate customer due diligence controls at onboarding stage and on an ongoing basis to identify and prevent accounts being used to receive proceeds of fraud or financial crime. 3.9 We also encourage PSPs to refer to industry intelligence-sharing initiatives to remain aware about emerging fraud threats, including alerts about individual fraud typologies. Examples include information published by the National Crime Agency on their website, and information made available by Cifas’ National Fraud Database and Intelligence Service."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-105dfb051020a5a1",
+      "pageNumber": 14,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 14 of 17 3.10 PSPs may only delay processing a payment transaction under Regulation 86(2A) to (2D) of the PSRs 2017 for the purpose of contacting the payer or other relevant third parties (law enforcement agencies or the payee’s PSP or a PISP) to establish whether they should execute the payment order. 3.11 The maximum period of 4 business days for delaying a payment order is intended to ensure that PSPs have time to gather the necessary information and to engage with relevant third parties to prevent fraud. 3.12 The delay must not be longer than necessary to achieve this purpose. In our view, this means that a PSP must execute a payment order as soon as it has contacted the payer or other relevant third parties and established that it should execute the payment order, rather than pursuing a policy of waiting until the end of the fourth business day to do so. 3.13 We also expect PSPs to treat payment orders initiated by PISPs in the same way as payments initiated by customers directly unless there are objective and duly evidenced reasons that justify treating a PISP-initiated payment order differently. 3.14 We consider that funds which are subject to delay should remain in the payer’s account for interest accrual purposes but be unavailable to the payer to spend during the period of delay. 3.15 A PSP that delays crediting the amount of a payment transaction under these provisions must notify the payer of the delay, the reason for the delay, and any information or action needed from the payer to enable the PSP to decide whether to execute the order. This notification must be provided or made available in an agreed manner as soon as possible, and in any event by no later than the end of the next business day following receipt of the payment order. We consider that the notification should give the payer sufficient information to enable the payer to understand the risks that the PSP has identified, including the grounds for the PSP’s suspicion (except where that would be unlawful, such as restrictions on tipping-off). The PSP should communicate this information to the payer regardless of whether it intends to seek further information from the payer as part of its investigation into establishing whether it should execute the transaction. However, the PSP should not notify the payer if the PSP’s enquiries cause it to suspect that the payer might be complicit in a fraud, or it would otherwise be unlawful to notify the payer (such as restrictions on tipping-off). 3.16 For the avoidance of doubt, where a PSP has delayed a payment under Regulation 86(2B) of the PSRs 2017, Regulation 86 does not prevent the PSP from seeking to deter the payer from making the payment by another means. Similarly, once a PSP has refused to process a payment order, Regulation 86 also does not prevent the PSP from seeking to deter the payer from making the payment by another means. 3.17 Where a PSP suspects that a transaction has been initiated pursuant to fraud by someone other than the payer, and is minded to refuse to execute the transaction, under Regulation 86(2D)(a)(iii) of the PSRs 2017 it may ask the payer for information, or to take certain action, in order to confirm whether the PSP should execute the transaction. 3.18 We encourage the payer’s and payee’s PSPs to exchange information about delayed payment transactions to facilitate effective investigations and mitigate risks of additional delay and duplicative investigation by the payee’s PSP, subject to"
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-9832edfaeda1da91",
+      "pageNumber": 15,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 15 of 17 restrictions imposed by UK data protection law. PSPs should consider guidance relating to data sharing published by the Information Commissioner’s Office (ICO): Data sharing | ICO; Lawful basis | ICO; What are the conditions for processing? | ICO; Legitimate interests | ICO. 3.19 We expect a PSP to consider its obligations under the Consumer Duty when deciding to delay processing a payment order. These include the Consumer Duty’s consumer support outcome rules. These rules require PSPs to ensure they include appropriate friction in customer journeys to mitigate the risk of harm and give customers sufficient opportunity to understand and assess their options, including any risks. The Consumer Duty’s rules also require PSPs to ensure that customers do not face unreasonable barriers during the lifecycle of a product or service. As noted in our Consumer Duty guidance (9.18 of FG22/5), it is likely that the PSP will need a real-time human interface, such as customer facing branch staff or a phone service, to respond to its customer’s questions, provide effective support and deliver good customer outcomes. As part of this, we consider that a PSP should notify its customer when it has established whether or not it should execute a delayed payment unless it is unlawful to do so (such as restrictions on tipping-off). 3.20 The corporate opt-out applies to Regulation 86(2A) to (2D) of the PSRs 2017 (see Glossary of Terms). Where the payer is not a consumer, a micro-enterprise or a charity, the payer and the PSP may agree that Regulation 86(2A) to (2D) of the PSRs 2017 does not apply to payment transactions under framework contracts and single payment transactions. 3.21 Where a PSP knows or suspects that the proceeds of an authorised push payment fraud, or unauthorised payment fraud, have been received into an account that is held or controlled by a criminal, the PSP must comply with anti-money laundering requirements, such as Part 7 of the Proceeds of Crime Act 2002, including where the account holder gives the PSP a payment order to transfer funds from the account. The Joint Money Laundering Steering Group (JMLSG) produces detailed guidance for firms in the UK financial sector on how to comply with their legal and regulatory obligations on money laundering. The JMLSG’s guidance in Prevention of money laundering/combating terrorist financing is a key resource for PSPs (see paragraphs 6.45 to 6.50). A PSP can request a Defence Against Money Laundering (DAML) from the National Crime Agency where the PSP suspects that funds they intend to deal with are in some way criminal, and that by dealing with them they risk committing one of the principal money laundering offences under the Proceeds of Crime Act 2002. More information is available in the National Crime Agency’s publication SARs Regime Good Practice. For the avoidance of doubt, where the PSP suspects that a payment order has been submitted by the payer subsequent to fraud or dishonesty perpetrated by the payer, the PSP would not be able to rely on Regulation 86(2B) of the PSRs 2017, because the condition for delaying the payment under Regulation 86 (2A)(a) of the PSRs 2017 would not have been met."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-84a3ba247998b0f0",
+      "pageNumber": 16,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 16 of 17 Liability of payment service provider for charges and interest (Regulation 94A) [The following provisions will be added after paragraph 8.332 of the Approach Document] 3.22 A PSP will also be liable to its customer for any charges or interest for which the customer is responsible, and any interest which the payment service user must pay, as a consequence of delay to the execution of a payment order in reliance on Regulation 86(2B) of the PSRs 2017 irrespective of whether the payment order is ultimately executed. The scope of Regulation 94A of the PSRs 2017 includes charges levied by a third party for late payment. The provisions in Regulation 94A of the PSRs 2017 are narrowly constructed to apply only to interest and charges directly incurred resulting from a payment delay, and not to wider losses that a customer may experience from a payment delay, for example the loss of opportunity from an investment that the customer was unable to make in a timely way due to a payment delay being applied. INBOUND PAYMENTS Value date and availability of funds (Regulation 89) [The following provisions will be added after paragraph 8.298 of the Approach Document] 3.23 In our view, the effect of the force majeure provisions in Regulation 96(2) of the PSRs 2017 is that a payee’s PSP would not be liable for contravening the requirement under Regulation 89(3) of the PSRs 2017 (to make funds available to a payee immediately after they have been credited to the payee’s PSP’s account) where: • making the funds available to the payee would breach any of the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000, or • for reasons outside the payee’s PSP’s control, it would be impossible for their nominated officer to determine if making the funds available to the payee would breach any of the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000. 3.24 This second circumstance might arise where the PSP’s nominated officer, or person acting on their behalf, would need additional time to access information or obtain information from the payee, the payer’s PSP, or a law enforcement agency, to assess whether they know, suspect, or have reasonable grounds for knowing or suspecting that a person is engaged in, or attempting, money laundering or terrorist financing. We expect a payee’s PSP to act as quickly as practicable to make its assessment. 3.25 A PSP should make funds available to a payee as soon as it has concluded that it is not prevented from doing so, for example because the transaction would not breach the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000."
+    },
+    {
+      "documentEvidenceId": "EVD-PDF-9cd287bd2e3e3315",
+      "pageNumber": 17,
+      "sectionReference": null,
+      "extractedText": "Financial Conduct Authority Page 17 of 17 3.26 We expect a PSP to consider its obligations under the Consumer Duty when deciding to delay making funds available to a payee. These include our consumer understanding and consumer support outcome rules. For example, we require PSPs to ensure that customers do not face unreasonable barriers during the lifecycle of a product or service. We would also expect a PSP that has delayed making funds available to a payee to communicate with the payee to help deliver good customer outcomes, unless it is unlawful to do so (such as restrictions on tipping-off). 3.27 As part of the Consumer Duty’s consumer support outcome rules, we expect PSPs to have exceptions processes in place to deal effectively with non-standard issues that arise in the context of their business, such as delaying an inbound payment. Our Consumer Duty guidance explains that it is likely that PSPs will need a real-time human interface, such as a phone service, to deal with some of these issues and provide effective support to customers (9.18 of FG22/5). 3.28 Our Consumer Duty rules also require PSPs to monitor and regularly review the outcomes their customers are experiencing to ensure that the products and services that PSPs provide are delivering good outcomes for customers. This means that PSPs should record and monitor for example: • the proportion of inbound payment transactions that are delayed • the proportion of delayed inbound payment transactions that are later made available to payees • the length of payment delays • the overall volumes and values of delayed inbound payments and • the level of support made available to customers when a payment is delayed. 3.29 We consider when funds have been made available to a payee subsequent to a delay, the receipt of funds in the payee’s account should be value dated from the time of receipt by the payee’s PSP. Refusal of payment orders (Regulation 82) [The following provisions will be added at the end of paragraph 8.249 of the Approach Document] 3.30 ...or, if a payment has been delayed under Regulation 86(2B) of the PSRs 2017, no later than the end of the fourth business day following the time when the payment order was received."
+    }
+  ],
+  "askRiEvidence": {
+    "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+    "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+    "extractionProfile": "html_article_v2",
+    "canonicalUrl": "https://www.fca.org.uk/publications/finalised-guidance/fg24-6-guidance-firms-enables-risk-based-approach-payments",
+    "publicationMetadata": {
+      "title": "Why we’re issuing this guidance",
+      "primaryPdf": {
+        "url": "https://www.fca.org.uk/publication/finalised-guidance/fg24-6.pdf",
+        "title": "Read FG24/6",
+        "captured": false,
+        "relationship": "final_rules_pdf"
+      },
+      "drupalAbout": "/publications/finalised-guidance/fg24-6-guidance-firms-enables-risk-based-approach-payments",
+      "drupalNodeId": "138221",
+      "consultationTimeline": {
+        "opens": null,
+        "closes": null,
+        "present": true,
+        "opensDate": "09/09/2024",
+        "closesDate": "22/11/2024"
+      },
+      "publicationTypeLabel": null,
+      "primaryDocumentClassification": "pdf_primary_webpage_summary"
+    },
+    "extractionQuality": {
+      "score": 100,
+      "status": "complete",
+      "metrics": {
+        "headingCount": 4,
+        "alphaWordCount": 243,
+        "paragraphCount": 9,
+        "plainTextLength": 2486,
+        "pdfAttachmentCount": 3
+      },
+      "signals": [
+        "primary_pdf_not_captured"
+      ],
+      "confidence": "high",
+      "primaryDocument": {
+        "completeness": "not_captured",
+        "primaryPdfUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg24-6.pdf",
+        "classification": "pdf_primary",
+        "primaryPdfCaptured": false
+      },
+      "webpageExtraction": {
+        "score": 100,
+        "status": "complete",
+        "confidence": "high"
+      },
+      "obligationGradeSuitable": false
+    },
+    "pdfAttachments": [
+      {
+        "url": "https://www.fca.org.uk/publication/finalised-guidance/fg24-6.pdf",
+        "title": "Read FG24/6",
+        "documentType": "pdf",
+        "relationship": "final_rules_pdf",
+        "likelyPrimaryRegulatoryDocument": true
+      },
+      {
+        "url": "https://www.fca.org.uk/publication/guidance-consultation/gc24-5.pdf",
+        "title": "GC24/5",
+        "documentType": "pdf",
+        "relationship": "consultation_paper_pdf",
+        "likelyPrimaryRegulatoryDocument": false
+      },
+      {
+        "url": "https://www.fca.org.uk/publication/finalised-guidance/payment-services-electronic-money-approach.pdf",
+        "title": "Approach Document",
+        "documentType": "pdf",
+        "relationship": "final_rules_pdf",
+        "likelyPrimaryRegulatoryDocument": false
+      }
+    ],
+    "normalisedArticleText": "Changes to our Payment Services and Electronic Money Approach Document to support new legislation tackling authorised push payment (APP) fraud. Read FG24/6 Why we’re issuing this guidance On 30 October 2024, the Payment Services (Amendment) Regulations 2024 came into force. This made changes to the Payment Services Regulations 2017 to extend the amount of time that a Payment Service Provider (PSP) has to process an outbound payment when there are reasonable grounds to suspect fraud or dishonesty. To support these regulations, the Treasury asked the FCA to issue guidance to explain how we expected PSPs to apply these legislative changes, taking into account feedback from stakeholders. In GC24/5 , we consulted on adding this guidance to our Approach Document , together with guidance on delaying inbound payments where a PSP suspects fraud. Following consultation feedback, we are publishing this final guidance setting out: the requirements for delaying outbound payments and determining whether the threshold for ‘reasonable grounds to suspect’ has been met how PSPs should use the payment delay window obligations on PSPs if they delay an outbound transaction the treatment of suspicious inbound payments Who this guidance is for PSPs trade bodies representing PSPs credit institutions providing payment services payment institutions (PIs) electronic money institutions (EMIs) Gibraltar PSPs providing payment services in the UK This guidance will also be of interest to consumers and micro-enterprises, including charities, consumer groups, retailers, credit unions and law enforcement agencies. Next steps We have updated our Approach Document from 22 November 2024 which sets out our final guidance. Background The UK has seen a significant increase in APP fraud. This is where someone is deceived into authorising a payment either: to an account that they think belongs to a legitimate payee but is actually controlled by a fraudster, or for something they believed was legitimate but is actually fraudulent Fighting financial crime, including tackling money laundering and slowing growth in APP fraud, is a priority in our strategy and is a key outcome in our annual work programme 2025/26 . Page updates 09/04/2025 : Editorial amendment Updates to reflect publication of annual work programme 2025/26 and strategy for 2025 to 2230. Was this page useful? Yes No What can we do to improve pages like this? What did you find helpful? Submit Feedback Leave this field blank",
+    "normalisedArticleHtml": "<article data-history-node-id=\"138221\" about=\"/publications/finalised-guidance/fg24-6-guidance-firms-enables-risk-based-approach-payments\" class=\"article-header col-xs-12 four-step-limit col-sm-9 has-sidebar clearfix\"> <div class=\"node-content__wrapper node-content__wrapper--border\"> <section class=\"copy-highlighted copy-block component fca-colour--6c1d45 default\"> <div class=\"container\"> <p>Changes to our Payment Services and Electronic Money Approach Document to support new legislation tackling authorised push payment (APP) fraud.</p> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p><a class=\"btn btn-primary\" href=\"/publication/finalised-guidance/fg24-6.pdf\" title=\"FG24/6\" data-entity-type=\"media\" data-entity-uuid=\"0b40de2d-cfff-4050-9819-4537f197003f\" data-entity-substitution=\"canonical\">Read FG24/6</a></p><h2>Why we’re issuing this guidance</h2><p>On 30 October 2024, the Payment Services (Amendment) Regulations 2024 came into force. This made changes to the Payment Services Regulations 2017 to extend the amount of time that a Payment Service Provider (PSP) has to process an outbound payment when there are reasonable grounds to suspect fraud or dishonesty. To support these regulations, the Treasury asked the FCA to issue guidance to explain how we expected PSPs to apply these legislative changes, taking into account feedback from stakeholders.</p><p>In<a href=\"/publication/guidance-consultation/gc24-5.pdf\" title=\"GC24/5\" data-entity-type=\"media\" data-entity-uuid=\"c411ac99-af60-4b08-a887-f2dc7cd51750\" data-entity-substitution=\"canonical\"> GC24/5</a>, we consulted on adding this guidance to our <a href=\"/publication/finalised-guidance/payment-services-electronic-money-approach.pdf\" title=\"Approach Document\" data-entity-type=\"media\" data-entity-uuid=\"5ed037d4-7910-443c-83fe-6fefc2bbdcf1\" data-entity-substitution=\"canonical\">Approach Document</a>, together with guidance on delaying inbound payments where a PSP suspects fraud.</p><p>Following consultation feedback, we are publishing this final guidance setting out:</p><ul><li>the requirements for delaying outbound payments and determining whether the threshold for ‘reasonable grounds to suspect’ has been met</li><li>how PSPs should use the payment delay window</li><li>obligations on PSPs if they delay an outbound transaction</li><li>the treatment of suspicious inbound payments&nbsp;</li></ul><h2>Who this guidance is for</h2><ul><li>PSPs</li><li>trade bodies representing PSPs</li><li>credit institutions providing payment services</li><li>payment institutions (PIs)</li><li>electronic money institutions (EMIs)</li><li>Gibraltar PSPs providing payment services in the UK</li></ul><p>This guidance will also be of interest to consumers and micro-enterprises, including charities, consumer groups, retailers, credit unions and law enforcement agencies.&nbsp;</p><h2>Next steps</h2><p>We have updated our <a href=\"/publication/finalised-guidance/payment-services-electronic-money-approach.pdf\" title=\"Approach Document\" data-entity-type=\"media\" data-entity-uuid=\"5ed037d4-7910-443c-83fe-6fefc2bbdcf1\" data-entity-substitution=\"canonical\">Approach Document</a> from 22 November 2024 which sets out our final guidance.</p><h2>Background</h2><p>The UK has seen a significant increase in APP fraud. This is where someone is deceived into authorising a payment either:</p><ul><li>to an account that they think belongs to a legitimate payee but is actually controlled by a fraudster, or</li><li>for something they believed was legitimate but is actually fraudulent &nbsp;</li></ul><p>Fighting financial crime, including tackling money laundering and slowing growth in APP fraud, is a priority in <a href=\"/about/how-we-work\" title=\"How we work\" data-entity-type=\"node\" data-entity-uuid=\"9ac99f48-f461-4a21-b95f-7e8c57073758\" data-entity-substitution=\"canonical\">our strategy</a> and is a key outcome in our <a href=\"/publications/annual-work-programmes/2025-26\" data-entity-type=\"node\" data-entity-uuid=\"bd33368a-1bfb-457f-833d-4ea351c9fe87\" data-entity-substitution=\"canonical\" title=\"FCA annual work programme 2025/26\">annual work programme 2025/26</a>.</p> </div> </section> </div> <div class=\"node_view\"></div> </div> <div id=\"revisions\" class=\"page-revisions container\" lang=\"en-GB\"> <button class=\"h3 page-revisions__title\" aria-expanded=\"false\" aria-controls=\"page-revisions-list\">Page updates</button> <div id=\"page-revisions-list\"> <div class=\"view view-page-update-revision-logs view-id-page_update_revision_logs view-display-id-revision_log js-view-dom-id-c189516cdad91b0aba93ac79a398c9c1ba67ce89d9653206bfc813735d2bbf55\"> <div class=\"view-content\"> <div class=\"views-row\"><span class=\"views-field views-field-changed\"><span class=\"field-content\"><time datetime=\"2025-04-09T11:55:13+01:00\">09/04/2025</time> : </span></span><span class=\"views-field views-field-fca-log\"><strong class=\"field-content\">Editorial amendment</strong></span><span class=\"views-field views-field-revision-log\"><span class=\"field-content\"> Updates to reflect publication of annual work programme 2025/26 and strategy for 2025 to 2230.</span></span></div> </div> </div> </div> </div> <div class=\"page-feedback container\" lang=\"en-GB\"> <form class=\"webform-submission-form webform-submission-add-form webform-submission-page-feedback-form-form webform-submission-page-feedback-form-add-form webform-submission-page-feedback-form-node-138221-form webform-submission-page-feedback-form-node-138221-add-form js-webform-details-toggle webform-details-toggle js-fca-lazy-captcha webform-client-form webform-client-form- feedback-form fca-custom-form webform-conditional-processed\" data-drupal-selector=\"webform-submission-page-feedback-form-node-138221-add-form\" novalidate=\"novalidate\" action=\"/publications/finalised-guidance/fg24-6-guidance-firms-enables-risk-based-approach-payments#webform-submission-page-feedback-form-node-138221-add-form\" method=\"post\" id=\"webform-submission-page-feedback-form-node-138221-add-form\" accept-charset=\"UTF-8\" > <fieldset data-drupal-selector=\"edit-radios\" class=\"radios--wrapper fieldgroup form-composite webform-composite-visible-title js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper\" id=\"edit-radios--wrapper\"> <legend id=\"edit-radios--wrapper-legend\"> <span class=\"fieldset-legend\">Was this page useful?</span> </legend> <div class=\"fieldset-wrapper\"> <div id=\"edit-radios\" class=\"js-webform-radios webform-options-display-side-by-side\"><div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-yes\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-yes\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-yes\" name=\"radios\" value=\"Yes\" /><span class=\"fca-custom-label\">Yes </span></label> </div> <div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-no\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-no\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-no\" name=\"radios\" value=\"No\" /><span class=\"fca-custom-label\">No </span></label> </div> </div> </div> </fieldset> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-can-we-do-to-improve-pages-like-this- js-form-item-what-can-we-do-to-improve-pages-like-this- form-group\"> <label for=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"control-label\">What can we do to improve pages like this? </label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-138221-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;No&quot;}}}\" id=\"edit-what-can-we-do-to-improve-pages-like-this-\" name=\"what_can_we_do_to_improve_pages_like_this_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-did-you-find-helpful- js-form-item-what-did-you-find-helpful- form-group\"> <label for=\"edit-what-did-you-find-helpful-\" class=\"control-label\">What did you find helpful?</label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-did-you-find-helpful-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-138221-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;Yes&quot;}}}\" id=\"edit-what-did-you-find-helpful-\" name=\"what_did_you_find_helpful_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <input data-drupal-selector=\"edit-page-title\" type=\"hidden\" name=\"page_title\" value=\"FG24/6: Guidance for firms that enables a risk-based approach to payments \" /><input data-drupal-selector=\"edit-page-url\" type=\"hidden\" name=\"page_url\" value=\"https://www.fca.org.uk/publications/finalised-guidance/fg24-6-guidance-firms-enables-risk-based-approach-payments \" /><div class=\"js-webform-states-hidden form-actions webform-actions clearfix fca-form-submit form-group js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-138221-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;checked&quot;:true}}}\" id=\"edit-actions\"><button class=\"webform-button--submit button button--primary js-form-submit form-submit btn-primary btn\" data-drupal-selector=\"edit-actions-submit\" type=\"submit\" id=\"edit-actions-submit\" name=\"op\" value=\"Submit Feedback\">Submit Feedback</button> </div> <input autocomplete=\"off\" data-drupal-selector=\"form-bqeiyoppqcqcn3-utk9up7-7sudfkfesipcnu341l-e\" type=\"hidden\" name=\"form_build_id\" value=\"form-bQEIYoPPqcQCn3-UTK9up7_7SUdfkfESipCNU341l-E\" /><input data-drupal-selector=\"edit-webform-submission-page-feedback-form-node-138221-add-form\" type=\"hidden\" name=\"form_id\" value=\"webform_submission_page_feedback_form_node_138221_add_form\" /> <input data-drupal-selector=\"edit-captcha-sid\" type=\"hidden\" name=\"captcha_sid\" value=\"1595569941\" /><input data-drupal-selector=\"edit-captcha-token\" type=\"hidden\" name=\"captcha_token\" value=\"2iRp8zulxDuaSXwUPHXMDozhtQnxV1zYxpAy7SGwow0\" /><input id=\"recaptcha-v3-token\" class=\"recaptcha-v3-token\" data-recaptcha-v3-action=\"fca_recaptcha\" data-recaptcha-v3-site-key=\"6LfnAxopAAAAAJL8t0TPEZql_Canimafd6XMM7WQ\" data-drupal-selector=\"edit-captcha-response\" type=\"hidden\" name=\"captcha_response\" value=\"\" /><input data-drupal-selector=\"edit-is-recaptcha-v3\" type=\"hidden\" name=\"is_recaptcha_v3\" value=\"1\" /> <div class=\"url_hp-textfield form-group js-form-wrapper form-wrapper\" style=\"display: none !important;\"><div class=\"form-item js-form-item form-type-textfield js-form-type-textfield form-item-url-hp js-form-item-url-hp form-group\"> <label for=\"edit-url-hp\" class=\"control-label\">Leave this field blank</label> <input autocomplete=\"off\" data-drupal-selector=\"edit-url-hp\" class=\"form-text form-control\" type=\"text\" id=\"edit-url-hp\" name=\"url_hp\" value=\"\" size=\"20\" maxlength=\"128\" /> </div> </div> </form> </div> </article>",
+    "evidenceBlocks": [
+      {
+        "documentEvidenceId": "cc53174890c457c7",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we’re issuing this guidance",
+        "extractedText": "On 30 October 2024, the Payment Services (Amendment) Regulations 2024 came into force.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "79969f3acc5ffb42",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we’re issuing this guidance",
+        "extractedText": "This made changes to the Payment Services Regulations 2017 to extend the amount of time that a Payment Service Provider (PSP) has to process an outbound payment when there are reasonable grounds to suspect fraud or dishonesty.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cd3bbd3987cb5b4c",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we’re issuing this guidance",
+        "extractedText": "To support these regulations, the Treasury asked the FCA to issue guidance to explain how we expected PSPs to apply these legislative changes, taking into account feedback from stakeholders.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "85738c7e7502bb47",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we’re issuing this guidance",
+        "extractedText": "In GC24/5 , we consulted on adding this guidance to our Approach Document , together with guidance on delaying inbound payments where a PSP suspects fraud.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a415715c69546f27",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we’re issuing this guidance",
+        "extractedText": "Following consultation feedback, we are publishing this final guidance setting out: the requirements for delaying outbound payments and determining whether the threshold for ‘reasonable grounds to suspect’ has been met how PSPs should use the payment delay window obligations on PSPs if they delay an outbound transaction the treatment of suspicious inbound payments&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "39292dcd5aa2f0df",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this guidance is for",
+        "extractedText": "PSPs trade bodies representing PSPs credit institutions providing payment services payment institutions (PIs) electronic money institutions (EMIs) Gibraltar PSPs providing payment services in the UK This guidance will also be of interest to consumers and micro-enterprises, including charities, consumer groups, retailers, credit unions and law enforcement agencies.&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "876a35a5a0e09091",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "We have updated our Approach Document from 22 November 2024 which sets out our final guidance.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6606eace9ec64df2",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "The UK has seen a significant increase in APP fraud.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d79f7aa9bb33fb21",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "This is where someone is deceived into authorising a payment either: to an account that they think belongs to a legitimate payee but is actually controlled by a fraudster, or for something they believed was legitimate but is actually fraudulent &nbsp; Fighting financial crime, including tackling money laundering and slowing growth in APP fraud, is a priority in our strategy and is a key outcome in our annual work programme 2025/26 .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "19d442fc4a27fcbd",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Page updates 09/04/2025 : Editorial amendment Updates to reflect publication of annual work programme 2025/26 and strategy for 2025 to 2230.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a757bf4bfd757b88",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Yes No What can we do to improve pages like this?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e75c3f4af7e722ff",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Submit Feedback Leave this field blank",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-b1d1c78470ab0f72",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 1,
+        "pageNumber": 1,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "1.1",
+        "extractedText": "Finalised Guidance Financial Conduct Authority Page 1 of 17 1 Summary 1.1 On 30 October 2024, the Payment Services (Amendment) Regulations 2024 came into force (Amendment Regulations). They enable Payment Service Providers (PSPs) to slow down the processing of outbound Authorised Push Payment (APP) transactions where they have reasonable grounds to suspect fraud or dishonesty on the part of someone other than the payer (‘reasonable grounds to suspect’). These changes extended the maximum time that payments could be delayed, giving PSPs more time to investigate suspicious payments. 1.2 The policy aims to support efforts to tackle APP fraud, where victims are tricked into sending money to fraudsters. The Amendment Regulations were introduced to support the Payment Systems Regulator’s APP fraud reimbursement requirement which came into force on 7 October 2024. 1.3 The Amendment Regulations enable PSPs to delay payments by up to 4 business days for the purpose of investigating transactions where the ‘reasonable grounds to suspect’ threshold is met. The aim of the revised regulations is to give PSPs the flexibility to prevent APP fraud more effectively while minimising the impact on legitimate payments. 1.4 To support these regulations, HM Treasury (HMT) asked us to issue guidance to explain how we expect PSPs to apply these legislative changes, taking into account industry feedback. Guidance for firms that enables a risk-based approach to payments FG24/6 22 November 2024",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 1,
+          "pageNumber": 1
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-5a1afbc0a5099e30",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 2,
+        "pageNumber": 2,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "2.1",
+        "extractedText": "Financial Conduct Authority Page 2 of 17 1.5 In GC24/5, we consulted on adding this guidance to ‘Payment Services and Electronic Money – Our Approach’ (Approach Document) together with guidance on delaying inbound payments where a PSP suspects fraud. Our finalised guidance provides detail on: • requirements for delaying outbound payments and determining whether the threshold for ‘reasonable grounds to suspect’ has been met: the guidance explains PSPs require an objective factual foundation for this threshold to be met. It sets out what PSPs should consider when assessing whether the threshold has been met. • how PSPs should use the payment delay window: the purpose of the delay is to provide an opportunity for PSPs to contact the payer or other relevant third parties (for example, law enforcement) to establish whether to execute the payment order. The delay should last no longer than is necessary for this purpose and can last no longer than 4 business days. • obligations on PSPs if they delay an outbound transaction: the guidance explains the requirements for the PSP to notify certain parties if a transaction is delayed and highlights relevant obligations under the Consumer Duty for its interactions with the payer. It also explains the potential for the PSP to incur liability to compensate a payer for any costs resulting from the transaction delay. • delaying suspicious inbound payments: following industry requests, we have set out our views on when the force majeure provisions in the Payment Services Regulations 2017 (PSRs 2017) apply to financial crime legislation. HMT did not amend these provisions. The force majeure provisions provide that where a PSP must breach the execution timescales in the PSRs 2017 (for example, by delaying making incoming funds available to a payee) to comply with other laws (including financial crime laws), the PSP will not be liable for the breach of the PSRs 2017. 1.6 We asked industry and wider stakeholders for their feedback the scope and substance of our proposed guidance changes. This included any areas where further clarification may have been helpful for industry or for any additional issues we should cover. 1.7 This document summarises the feedback received in Chapter 2 and sets out the finalised guidance in Chapter 3",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 2,
+          "pageNumber": 2
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-caa82035c4beee41",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 3,
+        "pageNumber": 3,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "3.1",
+        "extractedText": "Financial Conduct Authority Page 3 of 17 2 Feedback statement 2.1 Our consultation GC24/5 closed on 4 October 2024. We received 23 written responses from a broad range of stakeholders including banks, building societies, payment firms, trade bodies, industry groups and non-governmental organisations. We also received feedback from industry participants at a roundtable event we hosted on 30 September 2024. 2.2 Overall, respondents generally welcomed the draft guidance, noting that it would be a valuable resource for firms and help their understanding of how to comply with the Amendment Regulations. 2.3 The main areas of feedback involved deciding when to delay an outbound payment, the obligations of PSPs after delaying an outbound payment and the treatment of inbound payments. Many respondents also asked us to clarify our approach to evaluation and monitoring. 2.4 We have set out the broad themes of the feedback we received below, along with the questions in the consultation. We then give a summary of the feedback and our response. Deciding when to delay a payment Q1: Are there other factors that might increase the risk of a payment order having been made following dishonesty or fraud, which you consider we should refer to in our guidance? Are there further examples we can include in the guidance to clarify how and when payment delays may be used? Feedback 2.5 Most respondents who gave a view about the listed examples, proposed amending or removing the non-exhaustive list of risk factors from the draft guidance. Their concerns included that key types of fraud were missing and that it would not reflect the evolving nature of fraud typologies. They also felt the list could undermine the Amendment Regulations’ discretionary nature by incentivising firms to delay payments if there was any information indicating the presence of a specified type of fraud or risk factor in a payment transaction. More broadly, responses favoured giving firms more discretion as to when to use the provisions (rather than setting out a set of factors which might be applied in a prescriptive way). These responses cited the importance of enabling firms to use their expertise and judgement in the context of evolving fraud patterns. Many of these respondents asked us to replace the list of risk factors with a set of principles that firms should consider when deciding to delay a payment. 2.6 However, some respondents were concerned about the potential for the regulations to cause delays to legitimate payments and supported our list of risk factors for this reason. Some were particularly concerned about the potential impact on transactions initiated via open banking. This included requests that payments initiated via open banking be descoped from the Amendment Regulations, that the guidance should",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 3,
+          "pageNumber": 3
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-276b4cdd4a6d39a2",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 4,
+        "pageNumber": 4,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "4.1",
+        "extractedText": "Financial Conduct Authority Page 4 of 17 note the additional regulations that open banking firms are subject to as a relevant factor in PSPs’ decision making when considering delaying a payment and that firms should be required to report on delays per banking channel. 2.7 Some respondents also requested that the guidance specify whether the regulations apply to card payments. 2.8 One respondent asked us to clarify our expectations where a PSP suspects that a payment order has been placed subsequent to fraud or dishonesty perpetrated by the payer, and the PSP would not be able to delay the payment under Regulation 86(2B) of the PSRs 2017, because the condition for delaying the payment under Regulation 86(2A)(a) of the PSRs 2017 would not have been met. Response 2.9 We recognise that including a specific set of fraud typologies would create a risk that the guidance might not reflect evolving fraud patterns, and that an overly prescriptive set of risk factors could affect firms’ ability to apply discretion in certain circumstances. We have removed the list of risk factors and fraud typologies. Instead, we set out how we consider firms should approach deciding whether to delay payments they suspect of being due to dishonesty or fraud. Our guidance also addresses the evolving nature of fraud by referring to industry intelligence-sharing initiatives which PSPs can use to get up-to-date information about emerging fraud threats and alerts about individual typologies. The revised guidance also makes clear that a transaction being unusual or different is not necessarily grounds for suspicion and that an unusual transaction is only a basis for initial inquiry which may then require judgement as to whether it is suspicious. 2.10 It is not within the scope of the guidance to exempt any particular types of payment transaction from the Amendment Regulations, including transactions originated by Payment Initiation Service Providers (PISPs). 2.11 Our final guidance clarifies that payments initiated through card schemes which are initiated by payees are out of the scope of the provisions of Regulations 86(2A) to (2D) of the PSRs 2017. 2.12 We have clarified in our guidance where anti-money laundering requirements apply if a fraudster receives the proceeds of a fraud and then submits a payment order to their PSP to transfer the funds to another account that they control or hold, or to a third party. Q2: Are there further aspects of the ‘reasonable grounds to suspect’ threshold that the guidance should cover? Is there anything else it would be necessary to include to ensure that industry adopts an approach that minimises the impact on legitimate payment transactions? Feedback 2.13 Some respondents were concerned about our references to the Joint Money Laundering Steering Group’s (JMLSG) definition of ‘reasonable grounds to suspect’. They felt this could create uncertainty about firms’ obligations under financial crime",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 4,
+          "pageNumber": 4
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-ad8197135e04ebb2",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 5,
+        "pageNumber": 5,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "5.1",
+        "extractedText": "Financial Conduct Authority Page 5 of 17 legislation if they use the Amendment Regulations to delay outbound payments they suspect are due to fraud or dishonesty. Stakeholders highlighted these references could imply that firms would be required to submit Suspicious Activity Reports (SARs) and Defences Against Money Laundering (DAMLs) if the threshold to delay an outbound payment was met. Respondents therefore asked us to amend the guidance to clarify the relationship between firms’ obligations under the PSRs 2017, and the Proceeds of Crime Act 2002 and the Terrorism Act 2000 to confirm that these were distinct and non-overlapping. Response 2.14 We had included references to JMLSG guidance to illustrate the threshold for reasonable grounds to suspect. However, we recognise including the reference to the JMLSG’s guidance risked creating uncertainty about PSPs’ obligations and the threshold for suspicion in the context of the payment delay provisions. We have therefore clarified in the final guidance that references to JMLSG guidance do not relate to the Amendment Regulations. 2.15 The test for delaying payments in our finalised guidance needs to be considered independently of any obligations that a PSP may have under financial crime legislation. A PSP’s assessment of whether they can delay payments under Regulation 86(2B) of the PSRs 2017 is distinct from their assessment of whether they are required to submit reports under the Proceeds of Crime Act 2002 or the Terrorism Act 2000. Using the payment delay window Q3: Question 3: Are there further issues about how a PSP uses the 4 business days timeframe that need clarification in the guidance? Feedback 2.16 Respondents asked for the guidance to clarify that a PSP may use the payment delay window to engage with the payer to dissuade them from proceeding with the payment (as well as gathering information to determine if the payment is fraudulent). Feedback indicated that this may be necessary in circumstances where the payer has developed a trust in the fraudster. In these circumstances, the PSP’s decision to refuse the payment could otherwise result in the payer initiating the transaction via another PSP and so the consumer harm would still occur. 2.17 Some respondents also asked for additional clarity about the actions a PSP should take if, at the end of the 4-day delay window, it still has its original suspicion but has not succeeded in getting information to further substantiate it. Response 2.18 The final guidance has been revised to reflect that Regulation 86 of the PSRs 2017 does not prevent a PSP from seeking to deter the payer from making the payment by another means.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 5,
+          "pageNumber": 5
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-5ae04272876a331b",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 6,
+        "pageNumber": 6,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "6.1",
+        "extractedText": "Financial Conduct Authority Page 6 of 17 2.19 A decision to delay a payment does not change the terms under which the PSP can refuse it. Chapter 8 of the Approach Document outlines the conditions for refusing to process a payment order and the obligations of a PSP if it decides to do so. Q4: Aside from PSPs having to inform customers of any delays, the reasons behind their decision and the information or actions required to help decide whether to execute the payment order, is there anything else PSPs should provide? Feedback 2.20 Respondents broadly agreed with the expectation that notification of a delay must be provided or made available in an agreed manner as soon as possible. Respondents thought this was particularly important in managing customers’ expectations. 2.21 Some respondents supported the principle of PSPs exchanging information about payment transaction delays to enable effective investigations. However, they noted there was currently no legal framework or operational platform for information about delayed payments to be jointly shared at the point of submission. As a result, it would be difficult operationally to achieve this exchange of information. Respondents highlighted that once the threshold of suspicion is reached, industry best practice is for the sending PSP to exchange transaction and account information, along with a high-level summary of their assessment, to the receiving PSP as soon as reasonably possible. Response 2.22 PSPs can share data with each other, subject to UK data protection legislation as explained in Information Commissioner’s Office (ICO) guidance which we refer to in our guidance. We encourage the payer’s and payee’s PSPs to exchange information about delayed payment transactions to enable effective investigations and reduce the risks of additional delay and duplicative investigation by the payee’s PSP, subject to UK data protection law restrictions. We have changed the wording in the guidance from ‘should share’ to ‘encourage to share’ to give firms more flexibility. 2.23 We have not updated the guidance to prescribe which information to share or which communication method to use between the payer’s and payee’s PSPs. We expect the payer’s PSP will decide this on a case-by-case basis. Obligations when delaying a payment (communications and financial) Q5: Should PSPs be obliged to notify and update payment initiation service providers (PISPs) about any payment delay and would there be any challenges with doing this? Feedback 2.24 Some respondents said any requirement to notify PISPs about a payment delay while the payment was under investigation would add to the tight time pressure on the",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 6,
+          "pageNumber": 6
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-80bb219c43be8bda",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 7,
+        "pageNumber": 7,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "7.1",
+        "extractedText": "Financial Conduct Authority Page 7 of 17 sending PSP during the 4-business day period, particularly a smaller PSP with more limited resources. They also felt this could lead to tipping off the customer. 2.25 Other respondents were concerned about the implications for open banking payments, due to increased uncertainty about the timing of the payment execution when the payer’s PSP delays the payment. They called for sending PSPs to be obliged to notify PISPs about a payment delay at the same time as the customer, so the PISP can manage customer expectations. This was seen as particularly important where the customer may think they have authorised a payment, but the merchant has not received any funds. The merchant may think the transaction has been cancelled and so does not release their goods or provide services, but the payment may still be made days later. However, one respondent highlighted that for this notification to be possible, it would be essential to have a clear and safe route for PSPs to share this information with PISPs without breaching data protection laws and confidentiality obligations. 2.26 Feedback also highlighted that if a payment was delayed, a PISP would not be able to cancel it, and would instead have to wait for up to 4 days under the new rules to find out whether the payment succeeded or failed. Respondents called for the guidance to consider what changes are required to enable PISPs to cancel payment orders once they have been initiated. Response 2.27 We are not making changes to the guidance as drafted to enable a PISP to cancel a payment order. The regulatory provisions which govern cancellation of payment orders are set out in the PSRs 2017. We do not currently have powers under the PSRs 2017 to change those provisions. 2.28 We are also not creating a requirement for PSPs to notify PISPs about a payment delay as part of our finalised guidance. However, we are considering the feedback about notifying PISPs of payment delays as part of our policy approach to open banking. Q6: Are there any further aspects of a PSP’s obligations to notify relevant parties that we should clarify in the guidance? Feedback 2.29 Some respondents were uncertain about whether we expected sending and receiving PSPs to share information about delayed transactions in all cases. They were also concerned about its feasibility. 2.30 Other respondents asked us not to require a PSP to notify a payer of a delay where the payer’s PSP suspected the payer might be complicit in a fraud. Others suggested the payee’s PSP should be notified only when the payer’s PSP requires additional information from them to support the investigation.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 7,
+          "pageNumber": 7
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-b9be0ffb62b487e0",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 8,
+        "pageNumber": 8,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "8.1",
+        "extractedText": "Financial Conduct Authority Page 8 of 17 Response 2.31 As in our response to feedback on Question 4, our final guidance adds flexibility for PSPs. It clarifies that we encourage, rather than expect, the payer’s and payee’s PSPs to exchange information about delayed payments to enable effective investigations and reduce delay and duplicative investigation by the payee’s PSP. This is subject to restrictions imposed by UK data protection law. 2.32 Our finalised guidance also clarifies that where a payer’s PSP initially suspects fraud/dishonesty from someone other than the payer, but subsequent enquiries cause it to suspect fraud/dishonesty by the payer, it is not then required to communicate its concerns with the payer. Q7: Are there any further issues about notifying or communicating issues about payment delays among relevant parties that we should capture in the guidance? Feedback 2.33 Some respondents said it would be useful to clarify why data sharing between PSPs is helpful, including what information needs to be shared, and which communication methods we expected PSPs and third parties to use. Response 2.34 Our guidance encourages the payer’s and payee’s PSPs to exchange information about delayed payment transactions to enable effective investigations and reduce additional delay and duplicative investigation by the payee’s PSP. This is subject to restrictions imposed by UK data protection law. We do not propose to update the guidance to prescribe which information to share or which communication method to use between the payer’s PSP and third parties. We expect the payer’s PSP will decide this on a case-by-case basis to determine whether the payment can be executed. Q8: Are there any issues relating to the scope of liabilities incurred by a PSP or the process of reimbursing the payer that the Approach Document should capture? Feedback 2.35 The Amendment Regulations require PSPs to reimburse the payer ‘for any interest or charges’ resulting from the payment delay. While HMT have clarified that the intention is for this liability to be narrowly drawn (covering only interest and charges directly incurred), feedback from industry indicates that the draft guidance does not fully reflect the narrowness of the liability.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 8,
+          "pageNumber": 8
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-bb8b26811f48bbfb",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 9,
+        "pageNumber": 9,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "9.1",
+        "extractedText": "Financial Conduct Authority Page 9 of 17 Response 2.36 We have amended the guidance. It now makes it clearer that the amended provisions in Regulation 94A of the PSRs 2017 are narrowly constructed to apply to interest and charges a customer directly incurs from a payment delay, and not to wider losses, for example, the loss of opportunity from an investment the customer could not make in a timely way. The scope of Regulation 94A therefore includes charges levied by a third party for late payment. This aligns with our current published guidance relating to Regulation 94 which explains that if, for example, a customer was making a payment to a credit card account from their current account, and their current account provider executed the payment transaction late, the customer would be entitled to a refund from the current account provider for any charges and interest applied to their credit card account. Delaying inbound payments Q9: Is guidance needed on the cumulative effect of delays to outbound and inbound payments? Specifically, how the force majeure guidance might interact with the amendments to the PSRs 2017 execution time provisions? Feedback 2.37 One respondent asked us to clarify the potential cumulative effects of delays on both outbound and inbound payments by providing a clearer framework. However, other respondents did not foresee likely circumstances where force majeure provisions would be used in combination with an outbound payment delay. Response 2.38 In view of feedback received, we have not changed our final guidance on the cumulative effect of delays to outbound and inbound payments. However, the final guidance aims to provide greater clarity about the effect of the force majeure provisions under Regulation 96(2) of the PSRs 2017. Q10: Does the guidance provide sufficient clarity on how and when the force majeure provisions can be used? Feedback 2.39 Some respondents asked us to clarify the scope of the guidance around the treatment of inbound payments and how it would interact with obligations under the Proceeds of Crime Act 2002 and the Terrorism Act 2000. This included clarifying whether firms’ obligations under existing money laundering and terrorist financing rules would still take precedence.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 9,
+          "pageNumber": 9
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-beb921fb30a6db9e",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 10,
+        "pageNumber": 10,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "10.1",
+        "extractedText": "Financial Conduct Authority Page 10 of 17 2.40 Others asked us for more detail on whether the force majeure provisions set a different threshold and test on firms, as the draft guidance set out that we did not expect PSPs to use a lower threshold for these provisions. Some respondents were uncertain about whether introducing another threshold would put PSPs into a position where they would have to choose which law or regulation to breach. Response 2.41 Consultation responses suggested that references in the guidance to a ‘high threshold’ for delaying inbound payments could be misunderstood. Given that we are not intending to change the threshold, we have removed that wording. 2.42 Our guidance explains our view of the effect of the force majeure provisions. We consider that a payee’s PSP would not be liable for contravening the requirement under Regulation 89(3) of the PSRs 2017 (to make funds available to a payee immediately after they have been credited to the payee’s PSP’s account) where: • making the funds available to the payee would breach any of the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000, or • for reasons outside the payee’s PSP’s control, it would be impossible for their nominated officer to determine if making the funds available to the payee would breach any of the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000. 2.43 We also expect PSPs to consider their obligations under the Consumer Duty when deciding to delay making funds available to a payee. This means PSPs should monitor and regularly review their customers’ outcomes to ensure the PSPs’ products and services are delivering good outcomes. We expect PSPs to monitor the proportion of payment transactions that are delayed and the proportion of these transactions that are later credited to payees, as well as the length of delays. We also expect PSPs to monitor the level of support they give customers when a payment is delayed. PSPs should seek to minimise the impact of delays on legitimate payments and the negative impacts of delays on customer outcomes. Approach to monitoring Feedback 2.44 Some respondents asked for more clarity on the approach to monitoring, to allow for resource planning and system design. Others called for a mandatory monitoring regime instead of the voluntary, ad-hoc approach proposed in the draft guidance. 2.45 A few respondents gave feedback on the types of data we should capture, including true and false positive transaction delays to help assess the impact on legitimate payments.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 10,
+          "pageNumber": 10
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-9c4f049acb4cda0a",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 11,
+        "pageNumber": 11,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "11.1",
+        "extractedText": "Financial Conduct Authority Page 11 of 17 Response 2.46 Our consultation explained that we planned to monitor and evaluate the impact of the changes to the PSRs 2017 to assess the effectiveness of our guidance and if we need to make further clarifications to improve PSPs’ compliance. While we did not consult on the accompanying monitoring regime, we plan to collect data from firms initially through existing supervisory engagement processes. We may also consider carrying out firm surveys. We believe this approach will help us to understand the types of information that PSPs hold and to identify the most helpful data in assessing the impact of these changes. 2.47 When we have assessed the types and utility of information available, we will consult on proposals for the scope and content of a permanent monitoring regime. 2.48 In addition, in our final guidance we give examples of the types of data we expect PSPs to record as part of their internal monitoring under the Consumer Duty, and to make available to us if requested. This includes information such as the rationale for each delayed payment, length of delay, whether the payment was completed or refused, and the value and overall volumes of delayed payments.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 11,
+          "pageNumber": 11
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-239dc2631507f4a6",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 12,
+        "pageNumber": 12,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "12.1",
+        "extractedText": "Financial Conduct Authority Page 12 of 17 3 Finalised guidance We will add the text set out below to Chapter 8 of the Approach Document. OUTBOUND PAYMENTS Applicability (Regulation 85) [The following provisions will be added after paragraph 8.273 of the Approach Document] 3.1 The execution time provisions set out in Regulation 86(2A) to (2D) of the PSRs 2017 apply to any payment transaction: • authorised in accordance with Regulation 67 of the PSRs 2017; • executed wholly within the UK in sterling; and • not initiated by or through a payee. 3.2 Payments initiated through card schemes which are initiated by payees are out of the scope of the provisions of Regulations 86(2A) to (2D) of the PSRs 2017. Payment transactions to a payment account – time limits for payment transactions (Regulation 86) [The following provisions will be added after paragraph 8.281 of the Approach Document] 3.3 Regulation 86(2A) to (2D) of the PSRs 2017 permit a PSP to delay crediting the amount of a payment transaction to the account of the payee’s PSP until the end of the fourth business day following the time the payment order was received if both the following conditions apply: • the PSP has established that there are reasonable grounds to suspect a payment order has been placed subsequent to fraud or dishonesty perpetrated by a person other than the payer (“reasonable grounds to suspect fraud or dishonesty”); and • such grounds are established no later than the end of the business day following the time of receipt of the payment order. 3.4 This means that if a PSP has not met the threshold of having reasonable grounds to suspect fraud or dishonesty by the end of the next business day following the receipt of the payment order, it will no longer be able to delay the payment transaction under Regulation 86(2B) of the PSRs 2017. 3.5 A payment order which appears unusual is not necessarily suspicious. Even customers with a stable and predictable transaction profile will have periodic transactions that are unusual for them. Many customers will, for good reasons, have an erratic pattern of transactions or account activity. A payment transaction",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 12,
+          "pageNumber": 12
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-5bcab41b230e42dc",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 13,
+        "pageNumber": 13,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "13.1",
+        "extractedText": "Financial Conduct Authority Page 13 of 17 appearing to be unusual is, in the first instance, only a basis for further enquiry, which may in turn require judgement as to whether it is suspicious. 3.6 In assessing whether the threshold of ‘reasonable grounds to suspect fraud or dishonesty’ has been met in relation to payment transactions, PSPs should consider the following: • In our view, ‘reasonable grounds’ to suspect fraud or dishonesty is more than mere speculation. It is based on an objective factual foundation, but falls short of knowledge where a PSP in fact knows that a payment order has been placed following fraud or dishonesty. • PSPs should take into account the specific circumstances of the individual transaction, together with the PSP’s wider assessment of evolving fraud risk. • PSPs should take account of their own intelligence, and any assessments made using technology solutions which they have used to mitigate fraud risk. These should be calibrated to detect and prevent fraud while minimising the impact on legitimate payments. • A PSP’s assessment of whether the threshold has been met, should be designed to support delivery of good outcomes for its customer under the Consumer Duty. This includes under the Consumer Duty’s cross-cutting rules to avoid foreseeable consumer harm, without creating unreasonable barriers to consumers realising the benefits of products and services. 3.7 So that PSPs can monitor and assess whether the outcomes customers are experiencing are consistent with their obligations under the Consumer Duty, PSPs should record information about the overall volumes and values of delayed payments and information about each delayed transaction including for example: • the grounds for suspicion • the length of the delay • whether the transaction was ultimately completed or refused • the value of the transaction and • whether the PSP identified the payer as having characteristics of vulnerability. 3.8 PSPs should ensure that their anti-fraud systems and controls keep up with the increasing sophistication of criminal groups and should use advances in technologies to help prevent financial crime. In particular, PSPs should: • Have effective governance arrangements, controls and data to detect, manage and reduce fraud and losses. • Regularly review their fraud prevention systems and controls to ensure that they are effective, and • Maintain appropriate customer due diligence controls at onboarding stage and on an ongoing basis to identify and prevent accounts being used to receive proceeds of fraud or financial crime. 3.9 We also encourage PSPs to refer to industry intelligence-sharing initiatives to remain aware about emerging fraud threats, including alerts about individual fraud typologies. Examples include information published by the National Crime Agency on their website, and information made available by Cifas’ National Fraud Database and Intelligence Service.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 13,
+          "pageNumber": 13
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-105dfb051020a5a1",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 14,
+        "pageNumber": 14,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "14.1",
+        "extractedText": "Financial Conduct Authority Page 14 of 17 3.10 PSPs may only delay processing a payment transaction under Regulation 86(2A) to (2D) of the PSRs 2017 for the purpose of contacting the payer or other relevant third parties (law enforcement agencies or the payee’s PSP or a PISP) to establish whether they should execute the payment order. 3.11 The maximum period of 4 business days for delaying a payment order is intended to ensure that PSPs have time to gather the necessary information and to engage with relevant third parties to prevent fraud. 3.12 The delay must not be longer than necessary to achieve this purpose. In our view, this means that a PSP must execute a payment order as soon as it has contacted the payer or other relevant third parties and established that it should execute the payment order, rather than pursuing a policy of waiting until the end of the fourth business day to do so. 3.13 We also expect PSPs to treat payment orders initiated by PISPs in the same way as payments initiated by customers directly unless there are objective and duly evidenced reasons that justify treating a PISP-initiated payment order differently. 3.14 We consider that funds which are subject to delay should remain in the payer’s account for interest accrual purposes but be unavailable to the payer to spend during the period of delay. 3.15 A PSP that delays crediting the amount of a payment transaction under these provisions must notify the payer of the delay, the reason for the delay, and any information or action needed from the payer to enable the PSP to decide whether to execute the order. This notification must be provided or made available in an agreed manner as soon as possible, and in any event by no later than the end of the next business day following receipt of the payment order. We consider that the notification should give the payer sufficient information to enable the payer to understand the risks that the PSP has identified, including the grounds for the PSP’s suspicion (except where that would be unlawful, such as restrictions on tipping-off). The PSP should communicate this information to the payer regardless of whether it intends to seek further information from the payer as part of its investigation into establishing whether it should execute the transaction. However, the PSP should not notify the payer if the PSP’s enquiries cause it to suspect that the payer might be complicit in a fraud, or it would otherwise be unlawful to notify the payer (such as restrictions on tipping-off). 3.16 For the avoidance of doubt, where a PSP has delayed a payment under Regulation 86(2B) of the PSRs 2017, Regulation 86 does not prevent the PSP from seeking to deter the payer from making the payment by another means. Similarly, once a PSP has refused to process a payment order, Regulation 86 also does not prevent the PSP from seeking to deter the payer from making the payment by another means. 3.17 Where a PSP suspects that a transaction has been initiated pursuant to fraud by someone other than the payer, and is minded to refuse to execute the transaction, under Regulation 86(2D)(a)(iii) of the PSRs 2017 it may ask the payer for information, or to take certain action, in order to confirm whether the PSP should execute the transaction. 3.18 We encourage the payer’s and payee’s PSPs to exchange information about delayed payment transactions to facilitate effective investigations and mitigate risks of additional delay and duplicative investigation by the payee’s PSP, subject to",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 14,
+          "pageNumber": 14
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-9832edfaeda1da91",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 15,
+        "pageNumber": 15,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "15.1",
+        "extractedText": "Financial Conduct Authority Page 15 of 17 restrictions imposed by UK data protection law. PSPs should consider guidance relating to data sharing published by the Information Commissioner’s Office (ICO): Data sharing | ICO; Lawful basis | ICO; What are the conditions for processing? | ICO; Legitimate interests | ICO. 3.19 We expect a PSP to consider its obligations under the Consumer Duty when deciding to delay processing a payment order. These include the Consumer Duty’s consumer support outcome rules. These rules require PSPs to ensure they include appropriate friction in customer journeys to mitigate the risk of harm and give customers sufficient opportunity to understand and assess their options, including any risks. The Consumer Duty’s rules also require PSPs to ensure that customers do not face unreasonable barriers during the lifecycle of a product or service. As noted in our Consumer Duty guidance (9.18 of FG22/5), it is likely that the PSP will need a real-time human interface, such as customer facing branch staff or a phone service, to respond to its customer’s questions, provide effective support and deliver good customer outcomes. As part of this, we consider that a PSP should notify its customer when it has established whether or not it should execute a delayed payment unless it is unlawful to do so (such as restrictions on tipping-off). 3.20 The corporate opt-out applies to Regulation 86(2A) to (2D) of the PSRs 2017 (see Glossary of Terms). Where the payer is not a consumer, a micro-enterprise or a charity, the payer and the PSP may agree that Regulation 86(2A) to (2D) of the PSRs 2017 does not apply to payment transactions under framework contracts and single payment transactions. 3.21 Where a PSP knows or suspects that the proceeds of an authorised push payment fraud, or unauthorised payment fraud, have been received into an account that is held or controlled by a criminal, the PSP must comply with anti-money laundering requirements, such as Part 7 of the Proceeds of Crime Act 2002, including where the account holder gives the PSP a payment order to transfer funds from the account. The Joint Money Laundering Steering Group (JMLSG) produces detailed guidance for firms in the UK financial sector on how to comply with their legal and regulatory obligations on money laundering. The JMLSG’s guidance in Prevention of money laundering/combating terrorist financing is a key resource for PSPs (see paragraphs 6.45 to 6.50). A PSP can request a Defence Against Money Laundering (DAML) from the National Crime Agency where the PSP suspects that funds they intend to deal with are in some way criminal, and that by dealing with them they risk committing one of the principal money laundering offences under the Proceeds of Crime Act 2002. More information is available in the National Crime Agency’s publication SARs Regime Good Practice. For the avoidance of doubt, where the PSP suspects that a payment order has been submitted by the payer subsequent to fraud or dishonesty perpetrated by the payer, the PSP would not be able to rely on Regulation 86(2B) of the PSRs 2017, because the condition for delaying the payment under Regulation 86 (2A)(a) of the PSRs 2017 would not have been met.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 15,
+          "pageNumber": 15
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-84a3ba247998b0f0",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 16,
+        "pageNumber": 16,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "16.1",
+        "extractedText": "Financial Conduct Authority Page 16 of 17 Liability of payment service provider for charges and interest (Regulation 94A) [The following provisions will be added after paragraph 8.332 of the Approach Document] 3.22 A PSP will also be liable to its customer for any charges or interest for which the customer is responsible, and any interest which the payment service user must pay, as a consequence of delay to the execution of a payment order in reliance on Regulation 86(2B) of the PSRs 2017 irrespective of whether the payment order is ultimately executed. The scope of Regulation 94A of the PSRs 2017 includes charges levied by a third party for late payment. The provisions in Regulation 94A of the PSRs 2017 are narrowly constructed to apply only to interest and charges directly incurred resulting from a payment delay, and not to wider losses that a customer may experience from a payment delay, for example the loss of opportunity from an investment that the customer was unable to make in a timely way due to a payment delay being applied. INBOUND PAYMENTS Value date and availability of funds (Regulation 89) [The following provisions will be added after paragraph 8.298 of the Approach Document] 3.23 In our view, the effect of the force majeure provisions in Regulation 96(2) of the PSRs 2017 is that a payee’s PSP would not be liable for contravening the requirement under Regulation 89(3) of the PSRs 2017 (to make funds available to a payee immediately after they have been credited to the payee’s PSP’s account) where: • making the funds available to the payee would breach any of the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000, or • for reasons outside the payee’s PSP’s control, it would be impossible for their nominated officer to determine if making the funds available to the payee would breach any of the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000. 3.24 This second circumstance might arise where the PSP’s nominated officer, or person acting on their behalf, would need additional time to access information or obtain information from the payee, the payer’s PSP, or a law enforcement agency, to assess whether they know, suspect, or have reasonable grounds for knowing or suspecting that a person is engaged in, or attempting, money laundering or terrorist financing. We expect a payee’s PSP to act as quickly as practicable to make its assessment. 3.25 A PSP should make funds available to a payee as soon as it has concluded that it is not prevented from doing so, for example because the transaction would not breach the provisions of Part 7 of the Proceeds of Crime Act 2002 and/or Part 3 of the Terrorism Act 2000.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 16,
+          "pageNumber": 16
+        }
+      },
+      {
+        "documentEvidenceId": "EVD-PDF-9cd287bd2e3e3315",
+        "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+        "extractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "extractionProfile": "pdf_primary_v1",
+        "parserVersion": "pdf-physical-pages-v2.0",
+        "physicalPageIndex": 17,
+        "pageNumber": 17,
+        "printedPageLabel": null,
+        "sectionReference": null,
+        "paragraphReference": "17.1",
+        "extractedText": "Financial Conduct Authority Page 17 of 17 3.26 We expect a PSP to consider its obligations under the Consumer Duty when deciding to delay making funds available to a payee. These include our consumer understanding and consumer support outcome rules. For example, we require PSPs to ensure that customers do not face unreasonable barriers during the lifecycle of a product or service. We would also expect a PSP that has delayed making funds available to a payee to communicate with the payee to help deliver good customer outcomes, unless it is unlawful to do so (such as restrictions on tipping-off). 3.27 As part of the Consumer Duty’s consumer support outcome rules, we expect PSPs to have exceptions processes in place to deal effectively with non-standard issues that arise in the context of their business, such as delaying an inbound payment. Our Consumer Duty guidance explains that it is likely that PSPs will need a real-time human interface, such as a phone service, to deal with some of these issues and provide effective support to customers (9.18 of FG22/5). 3.28 Our Consumer Duty rules also require PSPs to monitor and regularly review the outcomes their customers are experiencing to ensure that the products and services that PSPs provide are delivering good outcomes for customers. This means that PSPs should record and monitor for example: • the proportion of inbound payment transactions that are delayed • the proportion of delayed inbound payment transactions that are later made available to payees • the length of payment delays • the overall volumes and values of delayed inbound payments and • the level of support made available to customers when a payment is delayed. 3.29 We consider when funds have been made available to a payee subsequent to a delay, the receipt of funds in the payee’s account should be value dated from the time of receipt by the payee’s PSP. Refusal of payment orders (Regulation 82) [The following provisions will be added at the end of paragraph 8.249 of the Approach Document] 3.30 ...or, if a payment has been delayed under Regulation 86(2B) of the PSRs 2017, no later than the end of the fourth business day following the time when the payment order was received.",
+        "evidenceCompletenessStatus": "complete",
+        "pageBoundaryConfirmed": true,
+        "pageExtractionStatus": "extracted",
+        "provenance": {
+          "document": "primary_pdf",
+          "sourcePdfSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+          "physicalPageIndex": 17,
+          "pageNumber": 17
+        }
+      }
+    ],
+    "evidenceMedium": "fca_webpage",
+    "integrityVerified": true,
+    "obligationGradeSuitable": false,
+    "publicationTitle": "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+    "publicationReference": null,
+    "regulatorShortName": "FCA",
+    "regulatorLabel": "Financial Conduct Authority",
+    "extractionProfiles": [
+      "html_article_v2",
+      "pdf_primary_v1"
+    ],
+    "htmlExtractionRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+    "pdfExtractionRevisionId": "5138fabf-983f-4694-81d4-0336df6f4e78"
+  },
+  "provenanceClassification": "AUTHORITATIVE_STAGING_EXTRACTION",
+  "retrievalProvenance": {
+    "exportSource": "b2_staging_readonly_export",
+    "exportedAt": "2026-11-10T18:46:15.962Z"
+  },
+  "exportSource": "b2_staging_readonly_export"
+}

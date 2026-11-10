@@ -1,0 +1,133 @@
+{
+  "phase": "2B.2-F-B2-PLANNING",
+  "status": "AWAITING_OPERATOR_URL_APPROVAL",
+  "generatedAt": "2026-11-10T18:00:00.000Z",
+  "constraints": {
+    "stagingOnly": true,
+    "maxPublications": 8,
+    "noIngestionInStepF": true,
+    "verifiedUrlsOnly": true
+  },
+  "candidates": [
+    {
+      "priority": 1,
+      "reference": "FG22/1",
+      "title": "FG22/1 — Final non-Handbook Guidance (cross-cutting Consumer Duty)",
+      "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-1.pdf",
+      "urlVerified": true,
+      "stagingPublicationId": null,
+      "extractionCoverage": "not_in_staging_snapshot",
+      "proposedProfile": "pdf_primary_v1",
+      "regulatoryStatus": "finalised_guidance",
+      "evalTopics": ["Consumer Duty", "cross-cutting outcomes", "fair value framing"],
+      "distractorRole": "Competes with FG22/5 on duty interpretation without replacing primary PDF",
+      "substantialEnough": true
+    },
+    {
+      "priority": 2,
+      "reference": "FG24/6",
+      "title": "FG24/6 — Finalised guidance on vulnerable customers",
+      "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg24-6.pdf",
+      "urlVerified": true,
+      "stagingPublicationId": null,
+      "extractionCoverage": "not_in_staging_snapshot",
+      "proposedProfile": "pdf_primary_v1",
+      "regulatoryStatus": "finalised_guidance",
+      "evalTopics": ["vulnerable customers", "Consumer Duty customer understanding"],
+      "distractorRole": "High lexical overlap with fair value / vulnerability passages in FG22/5",
+      "substantialEnough": true
+    },
+    {
+      "priority": 3,
+      "reference": "FG21/3",
+      "title": "FG21/3 — Financial Crime Guide (FCG)",
+      "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg21-3.pdf",
+      "urlVerified": true,
+      "stagingPublicationId": null,
+      "extractionCoverage": "not_in_staging_snapshot",
+      "proposedProfile": "pdf_primary_v1",
+      "regulatoryStatus": "finalised_guidance",
+      "evalTopics": ["AML", "financial crime systems", "fraud", "sanctions"],
+      "distractorRole": "Authoritative crime guidance vs CP26/38 consultation HTML",
+      "substantialEnough": true
+    },
+    {
+      "priority": 4,
+      "reference": null,
+      "title": "Defence SMEs: access to banking services",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/defence-smes-access-banking-services",
+      "urlVerified": true,
+      "stagingPublicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+      "extractionCoverage": "staging_row_no_revision",
+      "proposedProfile": "html_article_v2",
+      "regulatoryStatus": "multi_firm_review",
+      "evalTopics": ["vulnerable/SME access", "fair treatment"],
+      "distractorRole": "Fair access narrative competing with Consumer Duty outcome questions",
+      "substantialEnough": true
+    },
+    {
+      "priority": 5,
+      "reference": null,
+      "title": "Wholesale banks supervision - Insights 3 (Autumn 2026)",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026",
+      "urlVerified": true,
+      "stagingPublicationId": "caeb51af-829e-478d-b816-bee61252678a",
+      "extractionCoverage": "staging_row_no_revision",
+      "proposedProfile": "html_article_v2",
+      "regulatoryStatus": "multi_firm_review",
+      "evalTopics": ["financial crime governance", "AML culture", "fraud controls"],
+      "distractorRole": "Crime/governance lexicon overlap with CP26/38",
+      "substantialEnough": true
+    },
+    {
+      "priority": 6,
+      "reference": null,
+      "title": "Access to cash coverage in the UK 2024 H2",
+      "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2024-h2",
+      "urlVerified": true,
+      "stagingPublicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+      "extractionCoverage": "staging_row_no_revision",
+      "proposedProfile": "html_article_v2",
+      "regulatoryStatus": "data_publication",
+      "evalTopics": ["consumer access outcomes"],
+      "distractorRole": "Temporal distractor vs 2025 H1 already in B1 corpus",
+      "substantialEnough": true
+    },
+    {
+      "priority": 7,
+      "reference": null,
+      "title": "Consumer Duty — firms hub",
+      "canonicalUrl": "https://www.fca.org.uk/firms/consumer-duty",
+      "urlVerified": true,
+      "stagingPublicationId": null,
+      "extractionCoverage": "discover_via_rss_or_canonical_ingest",
+      "proposedProfile": "html_article_v2",
+      "regulatoryStatus": "supervisory_resource",
+      "evalTopics": ["Consumer Duty implementation", "outcomes monitoring"],
+      "distractorRole": "Non-PDF navigational HTML competing with FG22/5 binding guidance",
+      "substantialEnough": "moderate_html_only"
+    }
+  ],
+  "unavailableOrDeferred": [
+    {
+      "reference": "PS22/9",
+      "canonicalUrl": "https://www.fca.org.uk/publication/policy-statements/ps22-9.pdf",
+      "urlVerified": false,
+      "reason": "HTTP verification failed — do not ingest until official URL confirmed in staging RSS/catalogue"
+    },
+    {
+      "reference": "FCG landing",
+      "canonicalUrl": "https://www.fca.org.uk/firms/financial-crime/financial-crime-guide",
+      "urlVerified": false,
+      "reason": "Landing page not retrievable at HEAD/GET — prefer FG21/3 PDF primary"
+    }
+  ],
+  "ingestionSafeguardsForB2Execution": {
+    "sequentialOnly": true,
+    "appendOnlyRevisions": true,
+    "stopOnMandatoryFailure": true,
+    "noSyntheticSources": true,
+    "reusePipeline": "run-batch-b1-staging-ingest.mjs pattern",
+    "approvalRequiredBeforeStart": true
+  }
+}

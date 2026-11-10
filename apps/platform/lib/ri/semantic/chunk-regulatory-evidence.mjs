@@ -39,6 +39,46 @@ export async function splitPageTextToTokenBudget(tokenizer, text, pageNumber) {
   }));
 }
 
+/**
+ * Split a single HTML article section (never cross sectionReference).
+ */
+export async function splitHtmlSectionToTokenBudget(tokenizer, text, sectionReference) {
+  const pieces = await splitToMaxTokens(tokenizer, text);
+  return pieces.map((chunkText, chunkIndex) => ({
+    chunkText,
+    sectionReference,
+    chunkIndexInSection: chunkIndex,
+  }));
+}
+
+function normalizeWhitespace(text) {
+  return String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Reconcile whether chunked text fully represents an eligible source section (no silent drops).
+ */
+export function reconcileSectionTextCoverage(sourceText, chunkTexts) {
+  const normSource = normalizeWhitespace(sourceText);
+  const joined = normalizeWhitespace(chunkTexts.join(' '));
+  if (!normSource.length) {
+    return { sourceLength: 0, joinedLength: 0, coverageRatio: 1, fullCoverage: true, excludedText: null };
+  }
+  const coverageRatio = Number((joined.length / normSource.length).toFixed(4));
+  const fullCoverage =
+    joined === normSource ||
+    (joined.length >= normSource.length * 0.98 && normSource.split(' ').every((w) => joined.includes(w)));
+  return {
+    sourceLength: normSource.length,
+    joinedLength: joined.length,
+    coverageRatio,
+    fullCoverage,
+    excludedText: fullCoverage ? null : normSource.slice(joined.length, joined.length + 120),
+  };
+}
+
 async function splitToMaxTokens(tokenizer, text) {
   const fullLen = await tokenLength(tokenizer, text, { addSpecialTokens: true });
   if (fullLen <= CHUNK_INDEX_MAX_TOKENS) return [text];
@@ -286,68 +326,79 @@ export async function buildChunksFromEvidencePack(pack, tokenizer, stats) {
         });
       }
     } else {
-      const tokFull = await tokenLength(tokenizer, text, { addSpecialTokens: true });
-      if (tokFull <= CHUNK_HARD_MAX_TOKENS) {
-        recordShortChunk(stats, tokFull, text);
+      const split = await splitHtmlSectionToTokenBudget(tokenizer, text, sectionReference);
+      const sectionChunkTexts = [];
+      for (const part of split) {
+        const tok = await tokenLength(tokenizer, part.chunkText, { addSpecialTokens: true });
+        recordShortChunk(stats, tok, part.chunkText);
+        sectionChunkTexts.push(part.chunkText);
         chunks.push({
           ...meta,
-          chunkText: text,
+          chunkText: part.chunkText,
           htmlSectionId: sectionReference,
           sectionReference,
           documentEvidenceId: sample.documentEvidenceId,
-          modelTokenCount: tokFull,
+          modelTokenCount: tok,
+          chunkIndexInSection: part.chunkIndexInSection,
         });
-      } else {
-        const split = await splitSentences(text);
-        let buf = '';
-        for (const sentence of split) {
-          const candidate = buf ? `${buf} ${sentence}` : sentence;
-          const len = await tokenLength(tokenizer, candidate, { addSpecialTokens: true });
-          if (len <= CHUNK_TARGET_MAX_TOKENS) buf = candidate;
-          else {
-            if (buf) {
-              const tok = await tokenLength(tokenizer, buf, { addSpecialTokens: true });
-              chunks.push({
-                ...meta,
-                chunkText: buf,
-                htmlSectionId: sectionReference,
-                sectionReference,
-                documentEvidenceId: sample.documentEvidenceId,
-                modelTokenCount: tok,
-              });
-            }
-            buf = sentence;
-          }
+      }
+      if (Array.isArray(stats.sectionAudits)) {
+        const coverage = reconcileSectionTextCoverage(text, sectionChunkTexts);
+        const tokenSizes = [];
+        for (const ct of sectionChunkTexts) {
+          tokenSizes.push(await tokenLength(tokenizer, ct, { addSpecialTokens: true }));
         }
-        if (buf) {
-          const tok = await tokenLength(tokenizer, buf, { addSpecialTokens: true });
-          if (tok > CHUNK_HARD_MAX_TOKENS) stats.pageBoundaryViolations += 1;
-          chunks.push({
-            ...meta,
-            chunkText: buf,
-            htmlSectionId: sectionReference,
-            sectionReference,
-            documentEvidenceId: sample.documentEvidenceId,
-            modelTokenCount: tok,
-          });
-        }
+        stats.sectionAudits.push({
+          sectionReference,
+          documentEvidenceId: sample.documentEvidenceId,
+          sourceType: 'html_section',
+          originalSourceLength: coverage.sourceLength,
+          chunkCount: sectionChunkTexts.length,
+          ...coverage,
+          maxChunkTokens: tokenSizes.length ? Math.max(...tokenSizes) : 0,
+          excludedFromIndex: false,
+        });
       }
     }
   }
 
   const authoritative = [];
   if (!stats.oversizedChunksRejected) stats.oversizedChunksRejected = 0;
+  if (stats.eligibleSectionsExcluded == null) stats.eligibleSectionsExcluded = 0;
+
   for (const chunk of chunks) {
-    const tok = chunk.modelTokenCount ?? 0;
-    if (tok > CHUNK_ABSOLUTE_MAX_TOKENS) {
-      stats.pageBoundaryViolations += 1;
-      continue;
-    }
+    let pieces = [chunk.chunkText];
+    let tok = chunk.modelTokenCount ?? (await tokenLength(tokenizer, chunk.chunkText, { addSpecialTokens: true }));
     if (tok > CHUNK_INDEX_MAX_TOKENS) {
-      stats.oversizedChunksRejected += 1;
-      continue;
+      pieces = await splitToMaxTokens(tokenizer, chunk.chunkText);
     }
-    authoritative.push(chunk);
+    for (const chunkText of pieces) {
+      tok = await tokenLength(tokenizer, chunkText, { addSpecialTokens: true });
+      if (tok > CHUNK_ABSOLUTE_MAX_TOKENS) {
+        stats.pageBoundaryViolations += 1;
+        stats.eligibleSectionsExcluded += 1;
+        continue;
+      }
+      if (tok > CHUNK_INDEX_MAX_TOKENS) {
+        stats.oversizedChunksRejected += 1;
+        stats.eligibleSectionsExcluded += 1;
+        continue;
+      }
+      authoritative.push({
+        ...chunk,
+        chunkText,
+        modelTokenCount: tok,
+      });
+    }
   }
+
+  if (Array.isArray(stats.sectionAudits)) {
+    for (const row of stats.sectionAudits) {
+      if (!row.maxChunkTokens) {
+        row.maxChunkTokens = 0;
+      }
+    }
+  }
+
   return authoritative;
 }

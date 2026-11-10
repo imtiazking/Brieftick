@@ -1,0 +1,919 @@
+{
+  "packVersion": 1,
+  "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+  "publicationTitle": "Flood risk exposure of mortgages in England",
+  "publicationType": "data_publication",
+  "regulator": "FCA",
+  "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+  "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+  "extractionProfile": "html_article_v2",
+  "contentSha256": "3932dae594dc4c4467b8cfdf5a2232b166e53f6a04e870e866a5c7dc833a1283",
+  "regulatoryStatus": "data_publication",
+  "blockCount": 60,
+  "verifiedTextSamples": [
+    {
+      "documentEvidenceId": "0c92ca7c09c6622f",
+      "sectionReference": "1. Introduction",
+      "extractedText": "As part of our work on climate adaption and resilience , we analysed the geographical exposure of regulated mortgage lending to flood risk."
+    },
+    {
+      "documentEvidenceId": "0b7e37662c8079e8",
+      "sectionReference": "1. Introduction",
+      "extractedText": "This helps us identify where flooding from rivers, the sea, and surface water could pose the greatest risk, and where we should focus our resources.&nbsp; We completed analysis for England using flood risk data from the Environment Agency."
+    },
+    {
+      "documentEvidenceId": "157cbf74933a5fe1",
+      "sectionReference": "1. Introduction",
+      "extractedText": "We also completed analysis for the risks across Scotland and Wales; however, the differences in geography and population density meant that we could not apply the methodology consistently across all countries."
+    },
+    {
+      "documentEvidenceId": "f72aafcb8bf485b9",
+      "sectionReference": "1. Introduction",
+      "extractedText": "Northern Ireland does not have similar flood risk data available."
+    },
+    {
+      "documentEvidenceId": "1b027fbccd1b0e7b",
+      "sectionReference": "1. Introduction",
+      "extractedText": "Since 2005, firms have been required to report data on all new sales of regulated mortgage contracts."
+    },
+    {
+      "documentEvidenceId": "f7d26baa8e90ba6e",
+      "sectionReference": "1. Introduction",
+      "extractedText": "Since 1 April 2021, reporting has also included internal product transfers and further advances completed on or after that date."
+    },
+    {
+      "documentEvidenceId": "c0d0c050d41df11f",
+      "sectionReference": "1. Introduction",
+      "extractedText": "This data helps us understand the approximate location of mortgage lending."
+    },
+    {
+      "documentEvidenceId": "df84136942dd3d77",
+      "sectionReference": "1. Introduction",
+      "extractedText": "We mapped mortgage postcode locations against Environment Agency flood risk datasets covering rivers,&nbsp;the sea&nbsp;and surface water."
+    },
+    {
+      "documentEvidenceId": "5a3dfcc0934acc05",
+      "sectionReference": "1. Introduction",
+      "extractedText": "The analysis uses postcode-level flood risk classifications rather than individual property data."
+    },
+    {
+      "documentEvidenceId": "09f3f7267fb83765",
+      "sectionReference": "1. Introduction",
+      "extractedText": "It should therefore be viewed as an indicator of overall exposure, not property-specific risk.&nbsp; Flood risk is classified into bands that reflect the likelihood of flooding."
+    },
+    {
+      "documentEvidenceId": "b691535ca7f65ad6",
+      "sectionReference": "1. Introduction",
+      "extractedText": "For rivers and the sea, the bands are very low, low, medium and high (see note 1 )."
+    },
+    {
+      "documentEvidenceId": "e709601063878203",
+      "sectionReference": "1. Introduction",
+      "extractedText": "For surface water, the bands are low, medium and high.&nbsp; A postcode is assigned to a risk band when its centroid, the approximate centre of the postcode, falls within a flood risk area.&nbsp;&nbsp;"
+    },
+    {
+      "documentEvidenceId": "1aaa8ca81d680b3f",
+      "sectionReference": "Note 1",
+      "extractedText": "1. England: Environment Agency Risk of Flooding from Rivers and the Sea: High - greater than or equal to 3.3% chance in any given year (1 in 30)&nbsp; Medium - less than 3.3% (1 in 30) but greater than or equal to 1% (1 in 100) chance in any given year&nbsp; Low - less than 1% (1 in 100) but greater than or equal to 0.1% (1 in 1,000) chance in any given year&nbsp; Very Low - less than 0.1% chance in any given year (1 in 1,000) Risk of Flooding from Surface Water: High - greater than or equal to 3.3% (1 in 30) chance in any given year Medium - less than 3.3% (1 in 30) but greater than or equal to 1% (1 in 100) chance in any given year Low - less than 1% (1 in 100) but greater than or equal to 0.1% (1 in 1,000) chance in any given year."
+    },
+    {
+      "documentEvidenceId": "30ae7b31d8d4b5bc",
+      "sectionReference": "2. Overview",
+      "extractedText": "Our analysis suggests that 15.5% of mortgage contracts in England are linked to postcodes with some level of flood risk."
+    },
+    {
+      "documentEvidenceId": "1b71482cd925293f",
+      "sectionReference": "2. Overview",
+      "extractedText": "Exposure varies by region and type of flooding.&nbsp; These findings help identify where physical climate risks may be most relevant to mortgage lending and where consumers could be more exposed to the impacts of flooding over time."
+    },
+    {
+      "documentEvidenceId": "bd532991daf6ebaa",
+      "sectionReference": "2. Overview",
+      "extractedText": "Map 1: Postcode centroids by risk of flooding from surface water Map 2: Postcode centroids by risk of flooding from rivers and the sea"
+    },
+    {
+      "documentEvidenceId": "1039d8965da44f19",
+      "sectionReference": "Map 1: Postcode centroids by risk of flooding from surface water",
+      "extractedText": "Map of England showing surface water flood risk classifications for postcode centroids."
+    },
+    {
+      "documentEvidenceId": "88264ed0db139791",
+      "sectionReference": "Map 1: Postcode centroids by risk of flooding from surface water",
+      "extractedText": "Low, medium and high flood risk locations are distributed across the country, with the greatest concentrations occurring in more densely populated urban areas, particularly London, the Midlands, North West England and parts of Yorkshire."
+    },
+    {
+      "documentEvidenceId": "5b6cd3ac57a2aca6",
+      "sectionReference": "Map 1: Postcode centroids by risk of flooding from surface water",
+      "extractedText": "High-risk postcode centroids are present throughout England but represent a smaller proportion of mapped locations than low-risk centroids."
+    },
+    {
+      "documentEvidenceId": "2db63e52fc2b8ebe",
+      "sectionReference": "Map 2: Postcode centroids by risk of flooding from rivers and the sea",
+      "extractedText": "Map of England showing river and sea flood risk classifications for postcode centroids."
+    },
+    {
+      "documentEvidenceId": "ee7000237ead2e70",
+      "sectionReference": "Map 2: Postcode centroids by risk of flooding from rivers and the sea",
+      "extractedText": "Very low, low, medium and high flood risk locations are concentrated around major river systems and coastal areas, including the Thames corridor, the Humber estuary and parts of the east and south coasts."
+    },
+    {
+      "documentEvidenceId": "d058512b34bd400c",
+      "sectionReference": "Map 2: Postcode centroids by risk of flooding from rivers and the sea",
+      "extractedText": "High-risk postcode centroids are present across England but are less common than very low and low-risk centroids."
+    },
+    {
+      "documentEvidenceId": "326e35e612a10d5b",
+      "sectionReference": "3. Regional flood exposure",
+      "extractedText": "Surface water Rivers and the sea Regional flood risk exposure due to surface water flooding."
+    },
+    {
+      "documentEvidenceId": "c79c58edf49f4a8b",
+      "sectionReference": "3. Regional flood exposure",
+      "extractedText": "Sub Regions No Risk Low Medium High Percentage Affected Inner London - West 75.6 14.2 5.3 5 24 Inner London - East 78.7 12.2 4.4 4.8 21 Essex 82.5 8.6 2.4 6.5 18 Outer London - West and North West 80.9 10.5 3.6 5 19 Outer London - East and North East 82.4 10.1 3.5 3.9 18 Merseyside 85.7 7.5 2.5 4.4 14 Cambridgeshire and Peterborough 84.9 8.5 3.1 3.5 15 Outer London - South 84.9 8.7 3.4 3 15 West of England 86.2 7.5 2.8 3.4 14 Suffolk 87.6 7 2.1 3.3 12 Bedfordshire and Hertfordshire 87.6 7.1 2.1 3.2 12 Tees Valley 89.1 6.4 2.1 2.4 11 Surrey, East and West Sussex 90.6 5.4 1.8 2.2 9 Greater Manchester 89.3 6.7 2.1 1.8 11 Berkshire, Buckinghamshire and Oxfordshire 90.9 5.2 1.7 2.2 9 Gloucestershire and Wiltshire 91.1 5.1 1.7 2 9 West Midlands 90.3 5.9 1.9 1.8 10 East Yorkshire and Northern Lincolnshire 89.3 7.1 2 1.6 11 Shropshire and Staffordshire 91 5.5 1.8 1.7 9 Leicestershire, Rutland and Northamptonshire 91.4 5.1 1.6 1.9 9 Northumberland, Durham and Tyne &amp; Wear 91.3 5.3 1.6 1.9 9 Cheshire 90.4 6.2 2.1 1.3 10 Lancashire 91.8 4.8 1.6 1.8 8 Herefordshire, Worcestershire and Warwickshire 91.4 5.2 1.6 1.8 9 Kent 91.5 5.1 1.6 1.8 8 Lincolnshire 91.2 5.5 1.7 1.6 9 Cumbria 92.4 4.5 1.3 1.7 8 North Yorkshire 90.5 6.5 1.8 1.3 10 Derbyshire and Nottinghamshire 91.2 5.8 1.6 1.4 9 Norfolk 93.1 4.2 1.5 1.2 7 North Somerset, Somerset and Dorset 92.3 5 1.4 1.3 8 Hampshire and Isle of Wight 93.6 4 1.3 1.2 6 West Yorkshire 92.8 4.8 1.2 1.2 7 South Yorkshire 91.8 5.9 1.2 1.1 8 Devon 94.1 3.7 1.1 1.1 6 Cornwall and Isles of Scilly 94.4 4 0.7 0.8 6 Regional flood risk exposure due to flooding from rivers and the sea."
+    },
+    {
+      "documentEvidenceId": "6ce5ec36374e28d5",
+      "sectionReference": "3. Regional flood exposure",
+      "extractedText": "Sub Regions No Risk Very low Low Medium High Percentage Affected Lincolnshire 71.7 2.3 17.8 7.4 0.9 28 East Yorkshire and Northern Lincolnshire 62 22.5 7.8 3.6 4.1 38 Cambridgeshire and Peterborough 92.1 0.3 2.8 3.7 1 8 North Yorkshire 89.3 1.1 5.8 1.7 2.1 11 Cumbria 92.8 0.7 4.2 0.9 1.4 7 South Yorkshire 94.4 1.6 1.8 1.2 0.9 6 Surrey, East and West Sussex 92.6 1.8 3.5 1.1 1.1 7 Devon 95.4 0.4 2.2 0.9 1.2 5 Outer London - South 95.7 0.1 2.2 0.9 1.1 4 Lancashire 91.5 4 2.7 1.1 0.8 9 Norfolk 92.3 4.1 1.7 1.6 0.2 8 Berkshire, Buckinghamshire and Oxfordshire 94.7 0.6 2.9 0.8 1 5 Kent 93.5 2.7 2.2 0.6 1 6 Derbyshire and Nottinghamshire 93.2 1.1 4.2 0.9 0.7 7 Cornwall and Isles of Scilly 97.6 0.2 0.8 0.6 0.8 2 North Somerset, Somerset and Dorset 86.5 7.2 5.1 0.6 0.6 13 Hampshire and Isle of Wight 97.1 0.4 1.3 0.3 0.8 3 Gloucestershire and Wiltshire 97.2 0.3 1.4 0.5 0.6 3 Outer London - East and North East 91.7 4.2 3 0.7 0.4 8 Inner London - East 83.9 13.1 1.9 0.4 0.7 16 Inner London - West 89.3 8.1 1.5 0.6 0.4 11 Cheshire 96.3 0.1 2.6 0.5 0.5 4 Outer London - West and North West 95.4 1.5 2.1 0.5 0.5 5 West Yorkshire 97.3 0.2 1.5 0.5 0.4 3 Greater Manchester 96.1 0.4 2.6 0.5 0.5 4 West of England 95.9 1.2 2 0.5 0.4 4 Herefordshire, Worcestershire and Warwickshire 97.7 0.1 1.3 0.5 0.4 2 Essex 93.6 4.2 1.4 0.4 0.3 6 Bedfordshire and Hertfordshire 97.2 0.5 1.5 0.4 0.4 3 Suffolk 97.6 0.9 0.9 0.3 0.4 2 Leicestershire, Rutland and Northamptonshire 97.8 0.3 1.4 0.4 0.2 2 West Midlands 98.8 0.1 0.5 0.2 0.3 1 Shropshire and Staffordshire 97 1.5 1.1 0.2 0.2 3 Merseyside 96.7 2.1 0.8 0.1 0.2 3 Tees Valley 98.8 0.1 0.8 0.2 0.1 1 Northumberland, Durham and Tyne &amp; Wear 99 0.1 0.7 0.1 0.2 1 Flood risk exposure is not evenly distributed across England (see notes 2 and 3)."
+    },
+    {
+      "documentEvidenceId": "44d0b7a21dc9a014",
+      "sectionReference": "3. Regional flood exposure",
+      "extractedText": "High-risk exposure to surface water flooding is concentrated in and around London, with Essex showing the highest proportion of postcode centroids in the high-risk category (6.5%).&nbsp; Exposure to flooding from rivers and the sea is highest in Lincolnshire and East Yorkshire, where a large portion of postcodes fall within the medium and high-risk categories.&nbsp; Understanding these geographical patterns helps identify where climate-related risks may have the greatest effect on consumers and mortgage lending if flooding becomes more frequent or severe."
+    },
+    {
+      "documentEvidenceId": "8c837dbb425f2327",
+      "sectionReference": "Notes 2 and 3",
+      "extractedText": "Sub-regions from the International Territorial Level (ITL2) are used to provide consistently sized geographical areas across the country."
+    },
+    {
+      "documentEvidenceId": "7fc3879e016aca6a",
+      "sectionReference": "Notes 2 and 3",
+      "extractedText": "They are part of the official geographic boundary standards used to break down the country into regions for collecting, publishing and comparing official statistics."
+    },
+    {
+      "documentEvidenceId": "55db15bdcdec7530",
+      "sectionReference": "Notes 2 and 3",
+      "extractedText": "Tables have been ordered by the sum of the medium and high-risk categories."
+    },
+    {
+      "documentEvidenceId": "68b70dbbdd12e3e6",
+      "sectionReference": "4. High loan-to-value (LTV) ratios",
+      "extractedText": "We analysed mortgage contracts sold in the last reporting period to assess whether lending patterns differ across areas with different levels of flood risk.&nbsp; In the charts below, each group of bars should be viewed separately."
+    },
+    {
+      "documentEvidenceId": "404dd8f60a10aeec",
+      "sectionReference": "4. High loan-to-value (LTV) ratios",
+      "extractedText": "The percentages show the proportion of mortgages within each LTV band that are linked to postcodes in each flood risk category."
+    },
+    {
+      "documentEvidenceId": "b21a8dc5b56ca242",
+      "sectionReference": "4. High loan-to-value (LTV) ratios",
+      "extractedText": "For example, of mortgage contracts with an LTV ratio of 0-10%, around 6% are linked to postcodes classified as low risk for surface water flooding."
+    },
+    {
+      "documentEvidenceId": "6a366b189ed6b58b",
+      "sectionReference": "4. High loan-to-value (LTV) ratios",
+      "extractedText": "For the risk of flooding from surface water, the proportion of mortgages in high-risk areas falls slightly as the LTV ratios increase."
+    },
+    {
+      "documentEvidenceId": "2666d80fe5964b9a",
+      "sectionReference": "4. High loan-to-value (LTV) ratios",
+      "extractedText": "Overall, the proportions remain relatively stable, although there is a notable increase in mortgages with an LTV in excess of 100% in medium-risk areas."
+    },
+    {
+      "documentEvidenceId": "1f2f95fb81a8b3a6",
+      "sectionReference": "4. High loan-to-value (LTV) ratios",
+      "extractedText": "Overall, the results do not&nbsp;show&nbsp;a clear or consistent relationship between higher LTV lending and greater exposure to flood risk.&nbsp; Chart Data table Download Chart Data table Download"
+    },
+    {
+      "documentEvidenceId": "aa6409f9e01a05d2",
+      "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+      "extractedText": "We also analysed flood risk exposure across different levels of deprivation.&nbsp; The IMD is the official measure of deprivation in England."
+    },
+    {
+      "documentEvidenceId": "11048d65804be047",
+      "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+      "extractedText": "It combines information on income, employment, education and skills, health, crime, barriers to housing and services, and the living environment.&nbsp; The charts below show how flood risk exposure varies across these measures."
+    },
+    {
+      "documentEvidenceId": "4b08141f279f9791",
+      "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+      "extractedText": "Looking at the combined proportion of the red and orange bands helps identify where more deprived communities may be exposed to flood risk.&nbsp; Chart Data table Download Chart Data table Download Exposure to surface water flooding is broadly similar across deprivation levels."
+    },
+    {
+      "documentEvidenceId": "8e82263159dc4575",
+      "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+      "extractedText": "Within each flood risk band, a higher proportion of mortgages are linked to postcodes in the most deprived areas than to postcodes with no flood risk."
+    },
+    {
+      "documentEvidenceId": "4f7dfce74faae539",
+      "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+      "extractedText": "For flooding from rivers and the sea, exposure is spread across all deprivation levels."
+    },
+    {
+      "documentEvidenceId": "ef81f825d5673b39",
+      "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+      "extractedText": "As flood risk increases, a larger proportion of mortgages are linked to less deprived areas."
+    },
+    {
+      "documentEvidenceId": "e86e239785ff6af4",
+      "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+      "extractedText": "This may reflect the attractiveness of some properties located near rivers or along the coast.&nbsp; These findings suggest that physical climate risks can affect a wide range of consumers and communities."
+    },
+    {
+      "documentEvidenceId": "540324371c4da719",
+      "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+      "extractedText": "They also show that the relationship between flood risk and deprivation can vary depending on the type of flooding."
+    },
+    {
+      "documentEvidenceId": "4164ea17368c68bb",
+      "sectionReference": "6. Conclusions",
+      "extractedText": "This analysis provides an overview of the exposure of mortgage lending to flood risk in England."
+    },
+    {
+      "documentEvidenceId": "459d4bf0809d8734",
+      "sectionReference": "6. Conclusions",
+      "extractedText": "We found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, although exposure varies by region&nbsp;and type of flooding.&nbsp; The findings&nbsp;show&nbsp;that physical climate risks are relevant to mortgage markets because they affect consumers,&nbsp;firms,&nbsp;and market functioning."
+    },
+    {
+      "documentEvidenceId": "8e5e7fcf466db550",
+      "sectionReference": "6. Conclusions",
+      "extractedText": "However,&nbsp;the results should not be interpreted as an assessment of individual properties,&nbsp;firms&nbsp;or consumer outcomes.&nbsp; Instead, the analysis&nbsp;is a high-level view of exposure using publicly available flood risk data and mortgage postcode information."
+    },
+    {
+      "documentEvidenceId": "ce04241c8f3f955e",
+      "sectionReference": "6. Conclusions",
+      "extractedText": "It supports our wider work to improve understanding of how climate-related risks may affect financial services and the challenges of climate adaption and resilience."
+    },
+    {
+      "documentEvidenceId": "3003baaf26003886",
+      "sectionReference": "Caveats and limitations",
+      "extractedText": "This analysis estimates mortgage exposure using postcode centroids rather than individual property locations."
+    }
+  ],
+  "askRiEvidence": {
+    "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+    "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+    "extractionProfile": "html_article_v2",
+    "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+    "publicationMetadata": {
+      "title": "1. Introduction",
+      "primaryPdf": null,
+      "drupalAbout": "/data/flood-risk-exposure-mortgages-england",
+      "drupalNodeId": "176851",
+      "consultationTimeline": {
+        "opens": null,
+        "closes": null,
+        "present": false,
+        "opensDate": null,
+        "closesDate": null
+      },
+      "publicationTypeLabel": null,
+      "primaryDocumentClassification": "webpage_only"
+    },
+    "extractionQuality": {
+      "score": 100,
+      "status": "complete",
+      "metrics": {
+        "headingCount": 12,
+        "alphaWordCount": 1262,
+        "paragraphCount": 52,
+        "plainTextLength": 13664,
+        "pdfAttachmentCount": 0
+      },
+      "signals": [],
+      "confidence": "high",
+      "primaryDocument": {
+        "completeness": "not_applicable",
+        "primaryPdfUrl": null,
+        "classification": "webpage_only",
+        "primaryPdfCaptured": false
+      },
+      "webpageExtraction": {
+        "score": 100,
+        "status": "complete",
+        "confidence": "high"
+      },
+      "obligationGradeSuitable": true
+    },
+    "pdfAttachments": [],
+    "normalisedArticleText": "Climate-related risks are increasingly relevant to financial services, affecting consumer outcomes and the effective functioning of markets. We examine how flood risk relates to the mortgage market in England and how it may impact different communities. 1. Introduction As part of our work on climate adaption and resilience , we analysed the geographical exposure of regulated mortgage lending to flood risk. This helps us identify where flooding from rivers, the sea, and surface water could pose the greatest risk, and where we should focus our resources. We completed analysis for England using flood risk data from the Environment Agency. We also completed analysis for the risks across Scotland and Wales; however, the differences in geography and population density meant that we could not apply the methodology consistently across all countries. Northern Ireland does not have similar flood risk data available. Since 2005, firms have been required to report data on all new sales of regulated mortgage contracts. Since 1 April 2021, reporting has also included internal product transfers and further advances completed on or after that date. This data helps us understand the approximate location of mortgage lending. We mapped mortgage postcode locations against Environment Agency flood risk datasets covering rivers, the sea and surface water. The analysis uses postcode-level flood risk classifications rather than individual property data. It should therefore be viewed as an indicator of overall exposure, not property-specific risk. Flood risk is classified into bands that reflect the likelihood of flooding. For rivers and the sea, the bands are very low, low, medium and high (see note 1 ). For surface water, the bands are low, medium and high. A postcode is assigned to a risk band when its centroid, the approximate centre of the postcode, falls within a flood risk area. Note 1 1. England: Environment Agency Risk of Flooding from Rivers and the Sea: High - greater than or equal to 3.3% chance in any given year (1 in 30) Medium - less than 3.3% (1 in 30) but greater than or equal to 1% (1 in 100) chance in any given year Low - less than 1% (1 in 100) but greater than or equal to 0.1% (1 in 1,000) chance in any given year Very Low - less than 0.1% chance in any given year (1 in 1,000) Risk of Flooding from Surface Water: High - greater than or equal to 3.3% (1 in 30) chance in any given year Medium - less than 3.3% (1 in 30) but greater than or equal to 1% (1 in 100) chance in any given year Low - less than 1% (1 in 100) but greater than or equal to 0.1% (1 in 1,000) chance in any given year. 2. Overview Our analysis suggests that 15.5% of mortgage contracts in England are linked to postcodes with some level of flood risk. Exposure varies by region and type of flooding. These findings help identify where physical climate risks may be most relevant to mortgage lending and where consumers could be more exposed to the impacts of flooding over time. Map 1: Postcode centroids by risk of flooding from surface water Map 2: Postcode centroids by risk of flooding from rivers and the sea Map 1: Postcode centroids by risk of flooding from surface water Map of England showing surface water flood risk classifications for postcode centroids. Low, medium and high flood risk locations are distributed across the country, with the greatest concentrations occurring in more densely populated urban areas, particularly London, the Midlands, North West England and parts of Yorkshire. High-risk postcode centroids are present throughout England but represent a smaller proportion of mapped locations than low-risk centroids. Map 2: Postcode centroids by risk of flooding from rivers and the sea Map of England showing river and sea flood risk classifications for postcode centroids. Very low, low, medium and high flood risk locations are concentrated around major river systems and coastal areas, including the Thames corridor, the Humber estuary and parts of the east and south coasts. High-risk postcode centroids are present across England but are less common than very low and low-risk centroids. 3. Regional flood exposure Surface water Rivers and the sea Regional flood risk exposure due to surface water flooding. Sub Regions No Risk Low Medium High Percentage Affected Inner London - West 75.6 14.2 5.3 5 24 Inner London - East 78.7 12.2 4.4 4.8 21 Essex 82.5 8.6 2.4 6.5 18 Outer London - West and North West 80.9 10.5 3.6 5 19 Outer London - East and North East 82.4 10.1 3.5 3.9 18 Merseyside 85.7 7.5 2.5 4.4 14 Cambridgeshire and Peterborough 84.9 8.5 3.1 3.5 15 Outer London - South 84.9 8.7 3.4 3 15 West of England 86.2 7.5 2.8 3.4 14 Suffolk 87.6 7 2.1 3.3 12 Bedfordshire and Hertfordshire 87.6 7.1 2.1 3.2 12 Tees Valley 89.1 6.4 2.1 2.4 11 Surrey, East and West Sussex 90.6 5.4 1.8 2.2 9 Greater Manchester 89.3 6.7 2.1 1.8 11 Berkshire, Buckinghamshire and Oxfordshire 90.9 5.2 1.7 2.2 9 Gloucestershire and Wiltshire 91.1 5.1 1.7 2 9 West Midlands 90.3 5.9 1.9 1.8 10 East Yorkshire and Northern Lincolnshire 89.3 7.1 2 1.6 11 Shropshire and Staffordshire 91 5.5 1.8 1.7 9 Leicestershire, Rutland and Northamptonshire 91.4 5.1 1.6 1.9 9 Northumberland, Durham and Tyne & Wear 91.3 5.3 1.6 1.9 9 Cheshire 90.4 6.2 2.1 1.3 10 Lancashire 91.8 4.8 1.6 1.8 8 Herefordshire, Worcestershire and Warwickshire 91.4 5.2 1.6 1.8 9 Kent 91.5 5.1 1.6 1.8 8 Lincolnshire 91.2 5.5 1.7 1.6 9 Cumbria 92.4 4.5 1.3 1.7 8 North Yorkshire 90.5 6.5 1.8 1.3 10 Derbyshire and Nottinghamshire 91.2 5.8 1.6 1.4 9 Norfolk 93.1 4.2 1.5 1.2 7 North Somerset, Somerset and Dorset 92.3 5 1.4 1.3 8 Hampshire and Isle of Wight 93.6 4 1.3 1.2 6 West Yorkshire 92.8 4.8 1.2 1.2 7 South Yorkshire 91.8 5.9 1.2 1.1 8 Devon 94.1 3.7 1.1 1.1 6 Cornwall and Isles of Scilly 94.4 4 0.7 0.8 6 Regional flood risk exposure due to flooding from rivers and the sea. Sub Regions No Risk Very low Low Medium High Percentage Affected Lincolnshire 71.7 2.3 17.8 7.4 0.9 28 East Yorkshire and Northern Lincolnshire 62 22.5 7.8 3.6 4.1 38 Cambridgeshire and Peterborough 92.1 0.3 2.8 3.7 1 8 North Yorkshire 89.3 1.1 5.8 1.7 2.1 11 Cumbria 92.8 0.7 4.2 0.9 1.4 7 South Yorkshire 94.4 1.6 1.8 1.2 0.9 6 Surrey, East and West Sussex 92.6 1.8 3.5 1.1 1.1 7 Devon 95.4 0.4 2.2 0.9 1.2 5 Outer London - South 95.7 0.1 2.2 0.9 1.1 4 Lancashire 91.5 4 2.7 1.1 0.8 9 Norfolk 92.3 4.1 1.7 1.6 0.2 8 Berkshire, Buckinghamshire and Oxfordshire 94.7 0.6 2.9 0.8 1 5 Kent 93.5 2.7 2.2 0.6 1 6 Derbyshire and Nottinghamshire 93.2 1.1 4.2 0.9 0.7 7 Cornwall and Isles of Scilly 97.6 0.2 0.8 0.6 0.8 2 North Somerset, Somerset and Dorset 86.5 7.2 5.1 0.6 0.6 13 Hampshire and Isle of Wight 97.1 0.4 1.3 0.3 0.8 3 Gloucestershire and Wiltshire 97.2 0.3 1.4 0.5 0.6 3 Outer London - East and North East 91.7 4.2 3 0.7 0.4 8 Inner London - East 83.9 13.1 1.9 0.4 0.7 16 Inner London - West 89.3 8.1 1.5 0.6 0.4 11 Cheshire 96.3 0.1 2.6 0.5 0.5 4 Outer London - West and North West 95.4 1.5 2.1 0.5 0.5 5 West Yorkshire 97.3 0.2 1.5 0.5 0.4 3 Greater Manchester 96.1 0.4 2.6 0.5 0.5 4 West of England 95.9 1.2 2 0.5 0.4 4 Herefordshire, Worcestershire and Warwickshire 97.7 0.1 1.3 0.5 0.4 2 Essex 93.6 4.2 1.4 0.4 0.3 6 Bedfordshire and Hertfordshire 97.2 0.5 1.5 0.4 0.4 3 Suffolk 97.6 0.9 0.9 0.3 0.4 2 Leicestershire, Rutland and Northamptonshire 97.8 0.3 1.4 0.4 0.2 2 West Midlands 98.8 0.1 0.5 0.2 0.3 1 Shropshire and Staffordshire 97 1.5 1.1 0.2 0.2 3 Merseyside 96.7 2.1 0.8 0.1 0.2 3 Tees Valley 98.8 0.1 0.8 0.2 0.1 1 Northumberland, Durham and Tyne & Wear 99 0.1 0.7 0.1 0.2 1 Flood risk exposure is not evenly distributed across England (see notes 2 and 3). High-risk exposure to surface water flooding is concentrated in and around London, with Essex showing the highest proportion of postcode centroids in the high-risk category (6.5%). Exposure to flooding from rivers and the sea is highest in Lincolnshire and East Yorkshire, where a large portion of postcodes fall within the medium and high-risk categories. Understanding these geographical patterns helps identify where climate-related risks may have the greatest effect on consumers and mortgage lending if flooding becomes more frequent or severe. Notes 2 and 3 Sub-regions from the International Territorial Level (ITL2) are used to provide consistently sized geographical areas across the country. They are part of the official geographic boundary standards used to break down the country into regions for collecting, publishing and comparing official statistics. Tables have been ordered by the sum of the medium and high-risk categories. 4. High loan-to-value (LTV) ratios We analysed mortgage contracts sold in the last reporting period to assess whether lending patterns differ across areas with different levels of flood risk. In the charts below, each group of bars should be viewed separately. The percentages show the proportion of mortgages within each LTV band that are linked to postcodes in each flood risk category. For example, of mortgage contracts with an LTV ratio of 0-10%, around 6% are linked to postcodes classified as low risk for surface water flooding. For the risk of flooding from surface water, the proportion of mortgages in high-risk areas falls slightly as the LTV ratios increase. Overall, the proportions remain relatively stable, although there is a notable increase in mortgages with an LTV in excess of 100% in medium-risk areas. Overall, the results do not show a clear or consistent relationship between higher LTV lending and greater exposure to flood risk. Chart Data table Download Chart Data table Download 5. Index of Multiple Deprivation (IMD) We also analysed flood risk exposure across different levels of deprivation. The IMD is the official measure of deprivation in England. It combines information on income, employment, education and skills, health, crime, barriers to housing and services, and the living environment. The charts below show how flood risk exposure varies across these measures. Looking at the combined proportion of the red and orange bands helps identify where more deprived communities may be exposed to flood risk. Chart Data table Download Chart Data table Download Exposure to surface water flooding is broadly similar across deprivation levels. Within each flood risk band, a higher proportion of mortgages are linked to postcodes in the most deprived areas than to postcodes with no flood risk. For flooding from rivers and the sea, exposure is spread across all deprivation levels. As flood risk increases, a larger proportion of mortgages are linked to less deprived areas. This may reflect the attractiveness of some properties located near rivers or along the coast. These findings suggest that physical climate risks can affect a wide range of consumers and communities. They also show that the relationship between flood risk and deprivation can vary depending on the type of flooding. 6. Conclusions This analysis provides an overview of the exposure of mortgage lending to flood risk in England. We found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, although exposure varies by region and type of flooding. The findings show that physical climate risks are relevant to mortgage markets because they affect consumers, firms, and market functioning. However, the results should not be interpreted as an assessment of individual properties, firms or consumer outcomes. Instead, the analysis is a high-level view of exposure using publicly available flood risk data and mortgage postcode information. It supports our wider work to improve understanding of how climate-related risks may affect financial services and the challenges of climate adaption and resilience. Caveats and limitations This analysis estimates mortgage exposure using postcode centroids rather than individual property locations. This means some properties may be assigned to a different flood risk category than their actual location, particularly in larger rural postcodes or postcodes that cross flood risk boundaries. This approach also cannot capture variation within a postcode. For example, a property may have a lower flood risk than the postcode centroid if it is on higher ground away from a river or flood-prone area. Results are also sensitive to the location of flood risk boundaries. Small differences in location can lead to different risk categorisations, even where actual levels of risk are similar. Postcode centroids are likely to provide more accurate representation in smaller, densely populated postcodes than in larger postcodes with more spread-out properties. Flood risks that are concentrated in small areas are likely to also be underrepresented. Our methodology estimates the probability of flooding at postcode level rather than for individual properties. The results should therefore be viewed as indicators of exposure, not property-level risk assessments. The analysis is intended to support understanding of aggregated exposure and regional pattern identification, but nothing more granular. This analysis does not introduce new regulatory requirements or supervisory expectations. Attribute Statements Contains public sector information licensed under the Open Government Licence v3.0. © Environment Agency copyright and/or database right 2025. All rights reserved. Contains OS data © Crown copyright and database right 2026 Contains Ministry of Housing, Communities and Local Government data © Crown copyright and database right 2025 Was this page useful? Yes No What can we do to improve pages like this? What did you find helpful? Submit Feedback Leave this field blank",
+    "normalisedArticleHtml": "<article data-history-node-id=\"176851\" class=\"lf-bg-6c1d45 node node-publication-longform col-sm-12 clearfix four-step-limit col-xs-12 col-md-8 col-md-pull-4 js-has-sidebar--sticky\" about=\"/data/flood-risk-exposure-mortgages-england\"> <div class=\"node-content__wrapper node-content__wrapper--border\"> <div class=\"hidden-xs\"> <section class=\"copy-highlighted copy-block component fca-colour--6c1d45 default\"> <div class=\"container\"> <p>Climate-related risks are increasingly relevant to financial services, affecting consumer outcomes and the effective functioning of markets. We examine how flood risk relates to the mortgage market in England and how it may impact different communities.</p> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> </div> </section> </div> </div> <div class=\"chapters\"> <section class=\"component chapter\" id=\"lf-chapter-id-introduction\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">1. Introduction</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>As part of our work on <a href=\"https://www.fca.org.uk/firms/climate-change-and-sustainable-finance/climate-adaptation-and-resilience\">climate adaption and resilience</a>, we analysed the geographical exposure of regulated mortgage lending to flood risk. This helps us identify where flooding from rivers, the sea, and surface water could pose the greatest risk, and where we should focus our resources.&nbsp;</p><p>We completed analysis for England using flood risk data from the Environment Agency. We also completed analysis for the risks across Scotland and Wales; however, the differences in geography and population density meant that we could not apply the methodology consistently across all countries. Northern Ireland does not have similar flood risk data available.</p><p>Since 2005, firms have been required to report data on all new sales of regulated mortgage contracts. Since 1 April 2021, reporting has also included internal product transfers and further advances completed on or after that date. This data helps us understand the approximate location of mortgage lending.</p><p>We mapped mortgage postcode locations against Environment Agency flood risk datasets covering rivers,&nbsp;the sea&nbsp;and surface water. The analysis uses postcode-level flood risk classifications rather than individual property data. It should therefore be viewed as an indicator of overall exposure, not property-specific risk.&nbsp;</p><p>Flood risk is classified into bands that reflect the likelihood of flooding. For rivers and the sea, the bands are very low, low, medium and high (see <a href=\"#note-1\">note 1</a>). For surface water, the bands are low, medium and high.&nbsp; A postcode is assigned to a risk band when its centroid, the approximate centre of the postcode, falls within a flood risk area.&nbsp;&nbsp;<a class=\"ck-anchor\" id=\"note-1\"></a></p> </div> </section> </div> <section class=\"expandable-content component container default\"> <div class=\"nav nav-stacked component component--expandable\" id=\"expandable1965991\"> <div class=\"expandable panel component\" role=\"group\" aria-label=\"accordion\"> <h3> <a class=\"expandable-title collapsed\" data-toggle=\"collapse\" href=\"#expandable1965986\" aria-expanded=\"false\" aria-controls=\"expandable1965986\" role=\"button\"> Note 1 </a> </h3> <div id=\"expandable1965986\" class=\"collapse\"> <div class=\"expandable-body copy-block\"> <p>1. <strong>England: Environment Agency</strong></p><p>Risk of Flooding from Rivers and the Sea:</p><p>High - greater than or equal to 3.3% chance in any given year (1 in 30)&nbsp;<br>Medium - less than 3.3% (1 in 30) but greater than or equal to 1% (1 in 100) chance in any given year&nbsp;<br>Low - less than 1% (1 in 100) but greater than or equal to 0.1% (1 in 1,000) chance in any given year&nbsp;<br>Very Low - less than 0.1% chance in any given year (1 in 1,000)</p><p>Risk of Flooding from Surface Water:</p><p>High - greater than or equal to 3.3% (1 in 30) chance in any given year</p><p>Medium - less than 3.3% (1 in 30) but greater than or equal to 1% (1 in 100) chance in any given year</p><p>Low - less than 1% (1 in 100) but greater than or equal to 0.1% (1 in 1,000) chance in any given year.</p> </div> </div> </div> </div> </section> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-overview\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">2. Overview</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Our analysis suggests that 15.5% of mortgage contracts in England are linked to postcodes with some level of flood risk. Exposure varies by region and type of flooding.&nbsp;</p><p>These findings help identify where physical climate risks may be most relevant to mortgage lending and where consumers could be more exposed to the impacts of flooding over time.</p> </div> </section> </div> <div class=\"paragraph paragraph--type--tabs paragraph--view-mode--default container\"> <div class=\"tabs-component tabs-component--horizontal\"> <div class=\"tabs-component__links\" role=\"tablist\" > <a href=\"#tab-1966021\" role=\"tab\" class=\"h3 fca-colour--border-match fca-colour--pseudo-b-match tabs-component__tab-button tabs-component__link tabs-component__links__li\" aria-controls=\"tab-1966021\" > Map 1: Postcode centroids by risk of flooding from surface water </a> <a href=\"#tab-1966036\" role=\"tab\" class=\"h3 fca-colour--border-match fca-colour--pseudo-b-match tabs-component__tab-button tabs-component__link tabs-component__links__li\" aria-controls=\"tab-1966036\" > Map 2: Postcode centroids by risk of flooding from rivers and the sea </a> </div> <h3 class=\"tabs-component__accordion-heading\"> <a href=\"#tab-1966021\" role=\"button\" class=\"h3 fca-colour--border-match fca-colour--pseudo-b-match tabs-component__accordion-button tabs-component__link tabs-component__links__li\" aria-controls=\"tab-1966021\" > Map 1: Postcode centroids by risk of flooding from surface water </a> </h3> <div class=\"fca-colour--border-match tabs-component__content copy-block-image--image--centre\" id=\"tab-1966021\"> <div class=\"container\"> <img loading=\"lazy\" src=\"/sites/default/files/media/images/england-surface-water-map.png\" width=\"1200\" height=\"1400\" alt=\"Map of England showing surface water flood risk classifications for postcode centroids.\" typeof=\"foaf:Image\" class=\"img-responsive\" /> <p>Map of England showing surface water flood risk classifications for postcode centroids. Low, medium and high flood risk locations are distributed across the country, with the greatest concentrations occurring in more densely populated urban areas, particularly London, the Midlands, North West England and parts of Yorkshire. High-risk postcode centroids are present throughout England but represent a smaller proportion of mapped locations than low-risk centroids.</p> </div> </div> <h3 class=\"tabs-component__accordion-heading\"> <a href=\"#tab-1966036\" role=\"button\" class=\"h3 fca-colour--border-match fca-colour--pseudo-b-match tabs-component__accordion-button tabs-component__link tabs-component__links__li\" aria-controls=\"tab-1966036\" > Map 2: Postcode centroids by risk of flooding from rivers and the sea </a> </h3> <div class=\"fca-colour--border-match tabs-component__content copy-block-image--image--centre\" id=\"tab-1966036\"> <div class=\"container\"> <img loading=\"lazy\" src=\"/sites/default/files/media/images/england-rivers-seas-map.png\" width=\"1200\" height=\"1400\" alt=\"Map of England showing river and sea flood risk classifications for postcode centroids. \" typeof=\"foaf:Image\" class=\"img-responsive\" /> <p>Map of England showing river and sea flood risk classifications for postcode centroids. Very low, low, medium and high flood risk locations are concentrated around major river systems and coastal areas, including the Thames corridor, the Humber estuary and parts of the east and south coasts. High-risk postcode centroids are present across England but are less common than very low and low-risk centroids.</p> </div> </div> </div> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-regional-flood-exposure\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">3. Regional flood exposure</h2></div> </div> <section class=\"component data-visualisations data-visualisations--maroon\"> <div class=\"container\"> <div class=\"\"> <div role=\"tablist\" class=\"nav nav-tabs fca-tabs-list\"> <a class=\"fca-tab active\" role=\"tab\" href=\"#data-vis-tab-0-1966041\" role=\"tab\" data-toggle=\"tab\" aria-selected=\"true\">Surface water</a> <a class=\"fca-tab\" role=\"tab\" href=\"#data-vis-tab-1-1966041\" role=\"tab\" data-toggle=\"tab\" aria-selected=\"false\">Rivers and the sea</a> </div> <div class=\"tab-content\"> <div role=\"tabpanel\" class=\"tab-pane active\" id=\"data-vis-tab-0-1966041\"><div class=\"field-item\"><div class=\"container dataVisContainer tabular-table\"> <header data-history-node-id=\"176806\" about=\"/node/176806\"> </header> <article id=\"node-176806\" class=\"clearfix\" data-history-node-id=\"176806\" about=\"/node/176806\"> <p>Regional flood risk exposure due to surface water flooding.</p> <div id=\"tablefield-wrapper-node-176806-field_data_vis_data-0\" class=\"tablefield-wrapper\"> <div class=\"table-responsive\"> <table id=\"tablefield-node-176806-field_data_vis_data-0\" class=\"tablefield table table-hover table-striped\" data-striping=\"1\" > <thead> <tr> <th class=\"row_0 col_0\"> Sub Regions</th> <th class=\"row_0 col_1\">No Risk</th> <th class=\"row_0 col_2\">Low</th> <th class=\"row_0 col_3\">Medium</th> <th class=\"row_0 col_4\">High</th> <th class=\"row_0 col_5\">Percentage Affected</th> </tr> </thead> <tbody> <tr class=\"odd\"> <td class=\"row_1 col_0\" title=\"\">Inner London - West</td> <td class=\"row_1 col_1\" title=\"\">75.6</td> <td class=\"row_1 col_2\" title=\"\">14.2</td> <td class=\"row_1 col_3\" title=\"\">5.3</td> <td class=\"row_1 col_4\" title=\"\">5</td> <td class=\"row_1 col_5\" title=\"\">24</td> </tr> <tr class=\"even\"> <td class=\"row_2 col_0\" title=\"\">Inner London - East</td> <td class=\"row_2 col_1\" title=\"\">78.7</td> <td class=\"row_2 col_2\" title=\"\">12.2</td> <td class=\"row_2 col_3\" title=\"\">4.4</td> <td class=\"row_2 col_4\" title=\"\">4.8</td> <td class=\"row_2 col_5\" title=\"\">21</td> </tr> <tr class=\"odd\"> <td class=\"row_3 col_0\" title=\"\">Essex</td> <td class=\"row_3 col_1\" title=\"\">82.5</td> <td class=\"row_3 col_2\" title=\"\">8.6</td> <td class=\"row_3 col_3\" title=\"\">2.4</td> <td class=\"row_3 col_4\" title=\"\">6.5</td> <td class=\"row_3 col_5\" title=\"\">18</td> </tr> <tr class=\"even\"> <td class=\"row_4 col_0\" title=\"\">Outer London - West and North West</td> <td class=\"row_4 col_1\" title=\"\">80.9</td> <td class=\"row_4 col_2\" title=\"\">10.5</td> <td class=\"row_4 col_3\" title=\"\">3.6</td> <td class=\"row_4 col_4\" title=\"\">5</td> <td class=\"row_4 col_5\" title=\"\">19</td> </tr> <tr class=\"odd\"> <td class=\"row_5 col_0\" title=\"\">Outer London - East and North East</td> <td class=\"row_5 col_1\" title=\"\">82.4</td> <td class=\"row_5 col_2\" title=\"\">10.1</td> <td class=\"row_5 col_3\" title=\"\">3.5</td> <td class=\"row_5 col_4\" title=\"\">3.9</td> <td class=\"row_5 col_5\" title=\"\">18</td> </tr> <tr class=\"even\"> <td class=\"row_6 col_0\" title=\"\">Merseyside</td> <td class=\"row_6 col_1\" title=\"\">85.7</td> <td class=\"row_6 col_2\" title=\"\">7.5</td> <td class=\"row_6 col_3\" title=\"\">2.5</td> <td class=\"row_6 col_4\" title=\"\">4.4</td> <td class=\"row_6 col_5\" title=\"\">14</td> </tr> <tr class=\"odd\"> <td class=\"row_7 col_0\" title=\"\">Cambridgeshire and Peterborough</td> <td class=\"row_7 col_1\" title=\"\">84.9</td> <td class=\"row_7 col_2\" title=\"\">8.5</td> <td class=\"row_7 col_3\" title=\"\">3.1</td> <td class=\"row_7 col_4\" title=\"\">3.5</td> <td class=\"row_7 col_5\" title=\"\">15</td> </tr> <tr class=\"even\"> <td class=\"row_8 col_0\" title=\"\">Outer London - South</td> <td class=\"row_8 col_1\" title=\"\">84.9</td> <td class=\"row_8 col_2\" title=\"\">8.7</td> <td class=\"row_8 col_3\" title=\"\">3.4</td> <td class=\"row_8 col_4\" title=\"\">3</td> <td class=\"row_8 col_5\" title=\"\">15</td> </tr> <tr class=\"odd\"> <td class=\"row_9 col_0\" title=\"\">West of England</td> <td class=\"row_9 col_1\" title=\"\">86.2</td> <td class=\"row_9 col_2\" title=\"\">7.5</td> <td class=\"row_9 col_3\" title=\"\">2.8</td> <td class=\"row_9 col_4\" title=\"\">3.4</td> <td class=\"row_9 col_5\" title=\"\">14</td> </tr> <tr class=\"even\"> <td class=\"row_10 col_0\" title=\"\">Suffolk</td> <td class=\"row_10 col_1\" title=\"\">87.6</td> <td class=\"row_10 col_2\" title=\"\">7</td> <td class=\"row_10 col_3\" title=\"\">2.1</td> <td class=\"row_10 col_4\" title=\"\">3.3</td> <td class=\"row_10 col_5\" title=\"\">12</td> </tr> <tr class=\"odd\"> <td class=\"row_11 col_0\" title=\"\">Bedfordshire and Hertfordshire</td> <td class=\"row_11 col_1\" title=\"\">87.6</td> <td class=\"row_11 col_2\" title=\"\">7.1</td> <td class=\"row_11 col_3\" title=\"\">2.1</td> <td class=\"row_11 col_4\" title=\"\">3.2</td> <td class=\"row_11 col_5\" title=\"\">12</td> </tr> <tr class=\"even\"> <td class=\"row_12 col_0\" title=\"\">Tees Valley</td> <td class=\"row_12 col_1\" title=\"\">89.1</td> <td class=\"row_12 col_2\" title=\"\">6.4</td> <td class=\"row_12 col_3\" title=\"\">2.1</td> <td class=\"row_12 col_4\" title=\"\">2.4</td> <td class=\"row_12 col_5\" title=\"\">11</td> </tr> <tr class=\"odd\"> <td class=\"row_13 col_0\" title=\"\">Surrey, East and West Sussex</td> <td class=\"row_13 col_1\" title=\"\">90.6</td> <td class=\"row_13 col_2\" title=\"\">5.4</td> <td class=\"row_13 col_3\" title=\"\">1.8</td> <td class=\"row_13 col_4\" title=\"\">2.2</td> <td class=\"row_13 col_5\" title=\"\">9</td> </tr> <tr class=\"even\"> <td class=\"row_14 col_0\" title=\"\">Greater Manchester</td> <td class=\"row_14 col_1\" title=\"\">89.3</td> <td class=\"row_14 col_2\" title=\"\">6.7</td> <td class=\"row_14 col_3\" title=\"\">2.1</td> <td class=\"row_14 col_4\" title=\"\">1.8</td> <td class=\"row_14 col_5\" title=\"\">11</td> </tr> <tr class=\"odd\"> <td class=\"row_15 col_0\" title=\"\">Berkshire, Buckinghamshire and Oxfordshire</td> <td class=\"row_15 col_1\" title=\"\">90.9</td> <td class=\"row_15 col_2\" title=\"\">5.2</td> <td class=\"row_15 col_3\" title=\"\">1.7</td> <td class=\"row_15 col_4\" title=\"\">2.2</td> <td class=\"row_15 col_5\" title=\"\">9</td> </tr> <tr class=\"even\"> <td class=\"row_16 col_0\" title=\"\">Gloucestershire and Wiltshire</td> <td class=\"row_16 col_1\" title=\"\">91.1</td> <td class=\"row_16 col_2\" title=\"\">5.1</td> <td class=\"row_16 col_3\" title=\"\">1.7</td> <td class=\"row_16 col_4\" title=\"\">2</td> <td class=\"row_16 col_5\" title=\"\">9</td> </tr> <tr class=\"odd\"> <td class=\"row_17 col_0\" title=\"\">West Midlands</td> <td class=\"row_17 col_1\" title=\"\">90.3</td> <td class=\"row_17 col_2\" title=\"\">5.9</td> <td class=\"row_17 col_3\" title=\"\">1.9</td> <td class=\"row_17 col_4\" title=\"\">1.8</td> <td class=\"row_17 col_5\" title=\"\">10</td> </tr> <tr class=\"even\"> <td class=\"row_18 col_0\" title=\"\">East Yorkshire and Northern Lincolnshire</td> <td class=\"row_18 col_1\" title=\"\">89.3</td> <td class=\"row_18 col_2\" title=\"\">7.1</td> <td class=\"row_18 col_3\" title=\"\">2</td> <td class=\"row_18 col_4\" title=\"\">1.6</td> <td class=\"row_18 col_5\" title=\"\">11</td> </tr> <tr class=\"odd\"> <td class=\"row_19 col_0\" title=\"\">Shropshire and Staffordshire</td> <td class=\"row_19 col_1\" title=\"\">91</td> <td class=\"row_19 col_2\" title=\"\">5.5</td> <td class=\"row_19 col_3\" title=\"\">1.8</td> <td class=\"row_19 col_4\" title=\"\">1.7</td> <td class=\"row_19 col_5\" title=\"\">9</td> </tr> <tr class=\"even\"> <td class=\"row_20 col_0\" title=\"\">Leicestershire, Rutland and Northamptonshire</td> <td class=\"row_20 col_1\" title=\"\">91.4</td> <td class=\"row_20 col_2\" title=\"\">5.1</td> <td class=\"row_20 col_3\" title=\"\">1.6</td> <td class=\"row_20 col_4\" title=\"\">1.9</td> <td class=\"row_20 col_5\" title=\"\">9</td> </tr> <tr class=\"odd\"> <td class=\"row_21 col_0\" title=\"\">Northumberland, Durham and Tyne &amp; Wear</td> <td class=\"row_21 col_1\" title=\"\">91.3</td> <td class=\"row_21 col_2\" title=\"\">5.3</td> <td class=\"row_21 col_3\" title=\"\">1.6</td> <td class=\"row_21 col_4\" title=\"\">1.9</td> <td class=\"row_21 col_5\" title=\"\">9</td> </tr> <tr class=\"even\"> <td class=\"row_22 col_0\" title=\"\">Cheshire</td> <td class=\"row_22 col_1\" title=\"\">90.4</td> <td class=\"row_22 col_2\" title=\"\">6.2</td> <td class=\"row_22 col_3\" title=\"\">2.1</td> <td class=\"row_22 col_4\" title=\"\">1.3</td> <td class=\"row_22 col_5\" title=\"\">10</td> </tr> <tr class=\"odd\"> <td class=\"row_23 col_0\" title=\"\">Lancashire</td> <td class=\"row_23 col_1\" title=\"\">91.8</td> <td class=\"row_23 col_2\" title=\"\">4.8</td> <td class=\"row_23 col_3\" title=\"\">1.6</td> <td class=\"row_23 col_4\" title=\"\">1.8</td> <td class=\"row_23 col_5\" title=\"\">8</td> </tr> <tr class=\"even\"> <td class=\"row_24 col_0\" title=\"\">Herefordshire, Worcestershire and Warwickshire</td> <td class=\"row_24 col_1\" title=\"\">91.4</td> <td class=\"row_24 col_2\" title=\"\">5.2</td> <td class=\"row_24 col_3\" title=\"\">1.6</td> <td class=\"row_24 col_4\" title=\"\">1.8</td> <td class=\"row_24 col_5\" title=\"\">9</td> </tr> <tr class=\"odd\"> <td class=\"row_25 col_0\" title=\"\">Kent</td> <td class=\"row_25 col_1\" title=\"\">91.5</td> <td class=\"row_25 col_2\" title=\"\">5.1</td> <td class=\"row_25 col_3\" title=\"\">1.6</td> <td class=\"row_25 col_4\" title=\"\">1.8</td> <td class=\"row_25 col_5\" title=\"\">8</td> </tr> <tr class=\"even\"> <td class=\"row_26 col_0\" title=\"\">Lincolnshire</td> <td class=\"row_26 col_1\" title=\"\">91.2</td> <td class=\"row_26 col_2\" title=\"\">5.5</td> <td class=\"row_26 col_3\" title=\"\">1.7</td> <td class=\"row_26 col_4\" title=\"\">1.6</td> <td class=\"row_26 col_5\" title=\"\">9</td> </tr> <tr class=\"odd\"> <td class=\"row_27 col_0\" title=\"\">Cumbria</td> <td class=\"row_27 col_1\" title=\"\">92.4</td> <td class=\"row_27 col_2\" title=\"\">4.5</td> <td class=\"row_27 col_3\" title=\"\">1.3</td> <td class=\"row_27 col_4\" title=\"\">1.7</td> <td class=\"row_27 col_5\" title=\"\">8</td> </tr> <tr class=\"even\"> <td class=\"row_28 col_0\" title=\"\">North Yorkshire</td> <td class=\"row_28 col_1\" title=\"\">90.5</td> <td class=\"row_28 col_2\" title=\"\">6.5</td> <td class=\"row_28 col_3\" title=\"\">1.8</td> <td class=\"row_28 col_4\" title=\"\">1.3</td> <td class=\"row_28 col_5\" title=\"\">10</td> </tr> <tr class=\"odd\"> <td class=\"row_29 col_0\" title=\"\">Derbyshire and Nottinghamshire</td> <td class=\"row_29 col_1\" title=\"\">91.2</td> <td class=\"row_29 col_2\" title=\"\">5.8</td> <td class=\"row_29 col_3\" title=\"\">1.6</td> <td class=\"row_29 col_4\" title=\"\">1.4</td> <td class=\"row_29 col_5\" title=\"\">9</td> </tr> <tr class=\"even\"> <td class=\"row_30 col_0\" title=\"\">Norfolk</td> <td class=\"row_30 col_1\" title=\"\">93.1</td> <td class=\"row_30 col_2\" title=\"\">4.2</td> <td class=\"row_30 col_3\" title=\"\">1.5</td> <td class=\"row_30 col_4\" title=\"\">1.2</td> <td class=\"row_30 col_5\" title=\"\">7</td> </tr> <tr class=\"odd\"> <td class=\"row_31 col_0\" title=\"\">North Somerset, Somerset and Dorset</td> <td class=\"row_31 col_1\" title=\"\">92.3</td> <td class=\"row_31 col_2\" title=\"\">5</td> <td class=\"row_31 col_3\" title=\"\">1.4</td> <td class=\"row_31 col_4\" title=\"\">1.3</td> <td class=\"row_31 col_5\" title=\"\">8</td> </tr> <tr class=\"even\"> <td class=\"row_32 col_0\" title=\"\">Hampshire and Isle of Wight</td> <td class=\"row_32 col_1\" title=\"\">93.6</td> <td class=\"row_32 col_2\" title=\"\">4</td> <td class=\"row_32 col_3\" title=\"\">1.3</td> <td class=\"row_32 col_4\" title=\"\">1.2</td> <td class=\"row_32 col_5\" title=\"\">6</td> </tr> <tr class=\"odd\"> <td class=\"row_33 col_0\" title=\"\">West Yorkshire</td> <td class=\"row_33 col_1\" title=\"\">92.8</td> <td class=\"row_33 col_2\" title=\"\">4.8</td> <td class=\"row_33 col_3\" title=\"\">1.2</td> <td class=\"row_33 col_4\" title=\"\">1.2</td> <td class=\"row_33 col_5\" title=\"\">7</td> </tr> <tr class=\"even\"> <td class=\"row_34 col_0\" title=\"\">South Yorkshire</td> <td class=\"row_34 col_1\" title=\"\">91.8</td> <td class=\"row_34 col_2\" title=\"\">5.9</td> <td class=\"row_34 col_3\" title=\"\">1.2</td> <td class=\"row_34 col_4\" title=\"\">1.1</td> <td class=\"row_34 col_5\" title=\"\">8</td> </tr> <tr class=\"odd\"> <td class=\"row_35 col_0\" title=\"\">Devon</td> <td class=\"row_35 col_1\" title=\"\">94.1</td> <td class=\"row_35 col_2\" title=\"\">3.7</td> <td class=\"row_35 col_3\" title=\"\">1.1</td> <td class=\"row_35 col_4\" title=\"\">1.1</td> <td class=\"row_35 col_5\" title=\"\">6</td> </tr> <tr class=\"even\"> <td class=\"row_36 col_0\" title=\"\">Cornwall and Isles of Scilly</td> <td class=\"row_36 col_1\" title=\"\">94.4</td> <td class=\"row_36 col_2\" title=\"\">4</td> <td class=\"row_36 col_3\" title=\"\">0.7</td> <td class=\"row_36 col_4\" title=\"\">0.8</td> <td class=\"row_36 col_5\" title=\"\">6</td> </tr> </tbody> </table> </div> </div> <div class=\"node_view\"></div> </article> </div> </div></div> <div role=\"tabpanel\" class=\"tab-pane\" id=\"data-vis-tab-1-1966041\"><div class=\"field-item\"><div class=\"container dataVisContainer tabular-table\"> <header data-history-node-id=\"176811\" about=\"/node/176811\"> </header> <article id=\"node-176811\" class=\"clearfix\" data-history-node-id=\"176811\" about=\"/node/176811\"> <p>Regional flood risk exposure due to flooding from rivers and the sea.</p> <div id=\"tablefield-wrapper-node-176811-field_data_vis_data-0\" class=\"tablefield-wrapper\"> <div class=\"table-responsive\"> <table id=\"tablefield-node-176811-field_data_vis_data-0\" class=\"tablefield table table-hover table-striped\" data-striping=\"1\" > <thead> <tr> <th class=\"row_0 col_0\"> Sub Regions</th> <th class=\"row_0 col_1\">No Risk</th> <th class=\"row_0 col_2\">Very low</th> <th class=\"row_0 col_3\">Low</th> <th class=\"row_0 col_4\">Medium</th> <th class=\"row_0 col_5\">High</th> <th class=\"row_0 col_6\">Percentage Affected</th> </tr> </thead> <tbody> <tr class=\"odd\"> <td class=\"row_1 col_0\" title=\"\">Lincolnshire</td> <td class=\"row_1 col_1\" title=\"\">71.7</td> <td class=\"row_1 col_2\" title=\"\">2.3</td> <td class=\"row_1 col_3\" title=\"\">17.8</td> <td class=\"row_1 col_4\" title=\"\">7.4</td> <td class=\"row_1 col_5\" title=\"\">0.9</td> <td class=\"row_1 col_6\" title=\"\">28</td> </tr> <tr class=\"even\"> <td class=\"row_2 col_0\" title=\"\">East Yorkshire and Northern Lincolnshire</td> <td class=\"row_2 col_1\" title=\"\">62</td> <td class=\"row_2 col_2\" title=\"\">22.5</td> <td class=\"row_2 col_3\" title=\"\">7.8</td> <td class=\"row_2 col_4\" title=\"\">3.6</td> <td class=\"row_2 col_5\" title=\"\">4.1</td> <td class=\"row_2 col_6\" title=\"\">38</td> </tr> <tr class=\"odd\"> <td class=\"row_3 col_0\" title=\"\">Cambridgeshire and Peterborough</td> <td class=\"row_3 col_1\" title=\"\">92.1</td> <td class=\"row_3 col_2\" title=\"\">0.3</td> <td class=\"row_3 col_3\" title=\"\">2.8</td> <td class=\"row_3 col_4\" title=\"\">3.7</td> <td class=\"row_3 col_5\" title=\"\">1</td> <td class=\"row_3 col_6\" title=\"\">8</td> </tr> <tr class=\"even\"> <td class=\"row_4 col_0\" title=\"\">North Yorkshire</td> <td class=\"row_4 col_1\" title=\"\">89.3</td> <td class=\"row_4 col_2\" title=\"\">1.1</td> <td class=\"row_4 col_3\" title=\"\">5.8</td> <td class=\"row_4 col_4\" title=\"\">1.7</td> <td class=\"row_4 col_5\" title=\"\">2.1</td> <td class=\"row_4 col_6\" title=\"\">11</td> </tr> <tr class=\"odd\"> <td class=\"row_5 col_0\" title=\"\">Cumbria</td> <td class=\"row_5 col_1\" title=\"\">92.8</td> <td class=\"row_5 col_2\" title=\"\">0.7</td> <td class=\"row_5 col_3\" title=\"\">4.2</td> <td class=\"row_5 col_4\" title=\"\">0.9</td> <td class=\"row_5 col_5\" title=\"\">1.4</td> <td class=\"row_5 col_6\" title=\"\">7</td> </tr> <tr class=\"even\"> <td class=\"row_6 col_0\" title=\"\">South Yorkshire</td> <td class=\"row_6 col_1\" title=\"\">94.4</td> <td class=\"row_6 col_2\" title=\"\">1.6</td> <td class=\"row_6 col_3\" title=\"\">1.8</td> <td class=\"row_6 col_4\" title=\"\">1.2</td> <td class=\"row_6 col_5\" title=\"\">0.9</td> <td class=\"row_6 col_6\" title=\"\">6</td> </tr> <tr class=\"odd\"> <td class=\"row_7 col_0\" title=\"\">Surrey, East and West Sussex</td> <td class=\"row_7 col_1\" title=\"\">92.6</td> <td class=\"row_7 col_2\" title=\"\">1.8</td> <td class=\"row_7 col_3\" title=\"\">3.5</td> <td class=\"row_7 col_4\" title=\"\">1.1</td> <td class=\"row_7 col_5\" title=\"\">1.1</td> <td class=\"row_7 col_6\" title=\"\">7</td> </tr> <tr class=\"even\"> <td class=\"row_8 col_0\" title=\"\">Devon</td> <td class=\"row_8 col_1\" title=\"\">95.4</td> <td class=\"row_8 col_2\" title=\"\">0.4</td> <td class=\"row_8 col_3\" title=\"\">2.2</td> <td class=\"row_8 col_4\" title=\"\">0.9</td> <td class=\"row_8 col_5\" title=\"\">1.2</td> <td class=\"row_8 col_6\" title=\"\">5</td> </tr> <tr class=\"odd\"> <td class=\"row_9 col_0\" title=\"\">Outer London - South</td> <td class=\"row_9 col_1\" title=\"\">95.7</td> <td class=\"row_9 col_2\" title=\"\">0.1</td> <td class=\"row_9 col_3\" title=\"\">2.2</td> <td class=\"row_9 col_4\" title=\"\">0.9</td> <td class=\"row_9 col_5\" title=\"\">1.1</td> <td class=\"row_9 col_6\" title=\"\">4</td> </tr> <tr class=\"even\"> <td class=\"row_10 col_0\" title=\"\">Lancashire</td> <td class=\"row_10 col_1\" title=\"\">91.5</td> <td class=\"row_10 col_2\" title=\"\">4</td> <td class=\"row_10 col_3\" title=\"\">2.7</td> <td class=\"row_10 col_4\" title=\"\">1.1</td> <td class=\"row_10 col_5\" title=\"\">0.8</td> <td class=\"row_10 col_6\" title=\"\">9</td> </tr> <tr class=\"odd\"> <td class=\"row_11 col_0\" title=\"\">Norfolk</td> <td class=\"row_11 col_1\" title=\"\">92.3</td> <td class=\"row_11 col_2\" title=\"\">4.1</td> <td class=\"row_11 col_3\" title=\"\">1.7</td> <td class=\"row_11 col_4\" title=\"\">1.6</td> <td class=\"row_11 col_5\" title=\"\">0.2</td> <td class=\"row_11 col_6\" title=\"\">8</td> </tr> <tr class=\"even\"> <td class=\"row_12 col_0\" title=\"\">Berkshire, Buckinghamshire and Oxfordshire</td> <td class=\"row_12 col_1\" title=\"\">94.7</td> <td class=\"row_12 col_2\" title=\"\">0.6</td> <td class=\"row_12 col_3\" title=\"\">2.9</td> <td class=\"row_12 col_4\" title=\"\">0.8</td> <td class=\"row_12 col_5\" title=\"\">1</td> <td class=\"row_12 col_6\" title=\"\">5</td> </tr> <tr class=\"odd\"> <td class=\"row_13 col_0\" title=\"\">Kent</td> <td class=\"row_13 col_1\" title=\"\">93.5</td> <td class=\"row_13 col_2\" title=\"\">2.7</td> <td class=\"row_13 col_3\" title=\"\">2.2</td> <td class=\"row_13 col_4\" title=\"\">0.6</td> <td class=\"row_13 col_5\" title=\"\">1</td> <td class=\"row_13 col_6\" title=\"\">6</td> </tr> <tr class=\"even\"> <td class=\"row_14 col_0\" title=\"\">Derbyshire and Nottinghamshire</td> <td class=\"row_14 col_1\" title=\"\">93.2</td> <td class=\"row_14 col_2\" title=\"\">1.1</td> <td class=\"row_14 col_3\" title=\"\">4.2</td> <td class=\"row_14 col_4\" title=\"\">0.9</td> <td class=\"row_14 col_5\" title=\"\">0.7</td> <td class=\"row_14 col_6\" title=\"\">7</td> </tr> <tr class=\"odd\"> <td class=\"row_15 col_0\" title=\"\">Cornwall and Isles of Scilly</td> <td class=\"row_15 col_1\" title=\"\">97.6</td> <td class=\"row_15 col_2\" title=\"\">0.2</td> <td class=\"row_15 col_3\" title=\"\">0.8</td> <td class=\"row_15 col_4\" title=\"\">0.6</td> <td class=\"row_15 col_5\" title=\"\">0.8</td> <td class=\"row_15 col_6\" title=\"\">2</td> </tr> <tr class=\"even\"> <td class=\"row_16 col_0\" title=\"\">North Somerset, Somerset and Dorset</td> <td class=\"row_16 col_1\" title=\"\">86.5</td> <td class=\"row_16 col_2\" title=\"\">7.2</td> <td class=\"row_16 col_3\" title=\"\">5.1</td> <td class=\"row_16 col_4\" title=\"\">0.6</td> <td class=\"row_16 col_5\" title=\"\">0.6</td> <td class=\"row_16 col_6\" title=\"\">13</td> </tr> <tr class=\"odd\"> <td class=\"row_17 col_0\" title=\"\">Hampshire and Isle of Wight</td> <td class=\"row_17 col_1\" title=\"\">97.1</td> <td class=\"row_17 col_2\" title=\"\">0.4</td> <td class=\"row_17 col_3\" title=\"\">1.3</td> <td class=\"row_17 col_4\" title=\"\">0.3</td> <td class=\"row_17 col_5\" title=\"\">0.8</td> <td class=\"row_17 col_6\" title=\"\">3</td> </tr> <tr class=\"even\"> <td class=\"row_18 col_0\" title=\"\">Gloucestershire and Wiltshire</td> <td class=\"row_18 col_1\" title=\"\">97.2</td> <td class=\"row_18 col_2\" title=\"\">0.3</td> <td class=\"row_18 col_3\" title=\"\">1.4</td> <td class=\"row_18 col_4\" title=\"\">0.5</td> <td class=\"row_18 col_5\" title=\"\">0.6</td> <td class=\"row_18 col_6\" title=\"\">3</td> </tr> <tr class=\"odd\"> <td class=\"row_19 col_0\" title=\"\">Outer London - East and North East</td> <td class=\"row_19 col_1\" title=\"\">91.7</td> <td class=\"row_19 col_2\" title=\"\">4.2</td> <td class=\"row_19 col_3\" title=\"\">3</td> <td class=\"row_19 col_4\" title=\"\">0.7</td> <td class=\"row_19 col_5\" title=\"\">0.4</td> <td class=\"row_19 col_6\" title=\"\">8</td> </tr> <tr class=\"even\"> <td class=\"row_20 col_0\" title=\"\">Inner London - East</td> <td class=\"row_20 col_1\" title=\"\">83.9</td> <td class=\"row_20 col_2\" title=\"\">13.1</td> <td class=\"row_20 col_3\" title=\"\">1.9</td> <td class=\"row_20 col_4\" title=\"\">0.4</td> <td class=\"row_20 col_5\" title=\"\">0.7</td> <td class=\"row_20 col_6\" title=\"\">16</td> </tr> <tr class=\"odd\"> <td class=\"row_21 col_0\" title=\"\">Inner London - West</td> <td class=\"row_21 col_1\" title=\"\">89.3</td> <td class=\"row_21 col_2\" title=\"\">8.1</td> <td class=\"row_21 col_3\" title=\"\">1.5</td> <td class=\"row_21 col_4\" title=\"\">0.6</td> <td class=\"row_21 col_5\" title=\"\">0.4</td> <td class=\"row_21 col_6\" title=\"\">11</td> </tr> <tr class=\"even\"> <td class=\"row_22 col_0\" title=\"\">Cheshire</td> <td class=\"row_22 col_1\" title=\"\">96.3</td> <td class=\"row_22 col_2\" title=\"\">0.1</td> <td class=\"row_22 col_3\" title=\"\">2.6</td> <td class=\"row_22 col_4\" title=\"\">0.5</td> <td class=\"row_22 col_5\" title=\"\">0.5</td> <td class=\"row_22 col_6\" title=\"\">4</td> </tr> <tr class=\"odd\"> <td class=\"row_23 col_0\" title=\"\">Outer London - West and North West</td> <td class=\"row_23 col_1\" title=\"\">95.4</td> <td class=\"row_23 col_2\" title=\"\">1.5</td> <td class=\"row_23 col_3\" title=\"\">2.1</td> <td class=\"row_23 col_4\" title=\"\">0.5</td> <td class=\"row_23 col_5\" title=\"\">0.5</td> <td class=\"row_23 col_6\" title=\"\">5</td> </tr> <tr class=\"even\"> <td class=\"row_24 col_0\" title=\"\">West Yorkshire</td> <td class=\"row_24 col_1\" title=\"\">97.3</td> <td class=\"row_24 col_2\" title=\"\">0.2</td> <td class=\"row_24 col_3\" title=\"\">1.5</td> <td class=\"row_24 col_4\" title=\"\">0.5</td> <td class=\"row_24 col_5\" title=\"\">0.4</td> <td class=\"row_24 col_6\" title=\"\">3</td> </tr> <tr class=\"odd\"> <td class=\"row_25 col_0\" title=\"\">Greater Manchester</td> <td class=\"row_25 col_1\" title=\"\">96.1</td> <td class=\"row_25 col_2\" title=\"\">0.4</td> <td class=\"row_25 col_3\" title=\"\">2.6</td> <td class=\"row_25 col_4\" title=\"\">0.5</td> <td class=\"row_25 col_5\" title=\"\">0.5</td> <td class=\"row_25 col_6\" title=\"\">4</td> </tr> <tr class=\"even\"> <td class=\"row_26 col_0\" title=\"\">West of England</td> <td class=\"row_26 col_1\" title=\"\">95.9</td> <td class=\"row_26 col_2\" title=\"\">1.2</td> <td class=\"row_26 col_3\" title=\"\">2</td> <td class=\"row_26 col_4\" title=\"\">0.5</td> <td class=\"row_26 col_5\" title=\"\">0.4</td> <td class=\"row_26 col_6\" title=\"\">4</td> </tr> <tr class=\"odd\"> <td class=\"row_27 col_0\" title=\"\">Herefordshire, Worcestershire and Warwickshire</td> <td class=\"row_27 col_1\" title=\"\">97.7</td> <td class=\"row_27 col_2\" title=\"\">0.1</td> <td class=\"row_27 col_3\" title=\"\">1.3</td> <td class=\"row_27 col_4\" title=\"\">0.5</td> <td class=\"row_27 col_5\" title=\"\">0.4</td> <td class=\"row_27 col_6\" title=\"\">2</td> </tr> <tr class=\"even\"> <td class=\"row_28 col_0\" title=\"\">Essex</td> <td class=\"row_28 col_1\" title=\"\">93.6</td> <td class=\"row_28 col_2\" title=\"\">4.2</td> <td class=\"row_28 col_3\" title=\"\">1.4</td> <td class=\"row_28 col_4\" title=\"\">0.4</td> <td class=\"row_28 col_5\" title=\"\">0.3</td> <td class=\"row_28 col_6\" title=\"\">6</td> </tr> <tr class=\"odd\"> <td class=\"row_29 col_0\" title=\"\">Bedfordshire and Hertfordshire</td> <td class=\"row_29 col_1\" title=\"\">97.2</td> <td class=\"row_29 col_2\" title=\"\">0.5</td> <td class=\"row_29 col_3\" title=\"\">1.5</td> <td class=\"row_29 col_4\" title=\"\">0.4</td> <td class=\"row_29 col_5\" title=\"\">0.4</td> <td class=\"row_29 col_6\" title=\"\">3</td> </tr> <tr class=\"even\"> <td class=\"row_30 col_0\" title=\"\">Suffolk</td> <td class=\"row_30 col_1\" title=\"\">97.6</td> <td class=\"row_30 col_2\" title=\"\">0.9</td> <td class=\"row_30 col_3\" title=\"\">0.9</td> <td class=\"row_30 col_4\" title=\"\">0.3</td> <td class=\"row_30 col_5\" title=\"\">0.4</td> <td class=\"row_30 col_6\" title=\"\">2</td> </tr> <tr class=\"odd\"> <td class=\"row_31 col_0\" title=\"\">Leicestershire, Rutland and Northamptonshire</td> <td class=\"row_31 col_1\" title=\"\">97.8</td> <td class=\"row_31 col_2\" title=\"\">0.3</td> <td class=\"row_31 col_3\" title=\"\">1.4</td> <td class=\"row_31 col_4\" title=\"\">0.4</td> <td class=\"row_31 col_5\" title=\"\">0.2</td> <td class=\"row_31 col_6\" title=\"\">2</td> </tr> <tr class=\"even\"> <td class=\"row_32 col_0\" title=\"\">West Midlands</td> <td class=\"row_32 col_1\" title=\"\">98.8</td> <td class=\"row_32 col_2\" title=\"\">0.1</td> <td class=\"row_32 col_3\" title=\"\">0.5</td> <td class=\"row_32 col_4\" title=\"\">0.2</td> <td class=\"row_32 col_5\" title=\"\">0.3</td> <td class=\"row_32 col_6\" title=\"\">1</td> </tr> <tr class=\"odd\"> <td class=\"row_33 col_0\" title=\"\">Shropshire and Staffordshire</td> <td class=\"row_33 col_1\" title=\"\">97</td> <td class=\"row_33 col_2\" title=\"\">1.5</td> <td class=\"row_33 col_3\" title=\"\">1.1</td> <td class=\"row_33 col_4\" title=\"\">0.2</td> <td class=\"row_33 col_5\" title=\"\">0.2</td> <td class=\"row_33 col_6\" title=\"\">3</td> </tr> <tr class=\"even\"> <td class=\"row_34 col_0\" title=\"\">Merseyside</td> <td class=\"row_34 col_1\" title=\"\">96.7</td> <td class=\"row_34 col_2\" title=\"\">2.1</td> <td class=\"row_34 col_3\" title=\"\">0.8</td> <td class=\"row_34 col_4\" title=\"\">0.1</td> <td class=\"row_34 col_5\" title=\"\">0.2</td> <td class=\"row_34 col_6\" title=\"\">3</td> </tr> <tr class=\"odd\"> <td class=\"row_35 col_0\" title=\"\">Tees Valley</td> <td class=\"row_35 col_1\" title=\"\">98.8</td> <td class=\"row_35 col_2\" title=\"\">0.1</td> <td class=\"row_35 col_3\" title=\"\">0.8</td> <td class=\"row_35 col_4\" title=\"\">0.2</td> <td class=\"row_35 col_5\" title=\"\">0.1</td> <td class=\"row_35 col_6\" title=\"\">1</td> </tr> <tr class=\"even\"> <td class=\"row_36 col_0\" title=\"\">Northumberland, Durham and Tyne &amp; Wear</td> <td class=\"row_36 col_1\" title=\"\">99</td> <td class=\"row_36 col_2\" title=\"\">0.1</td> <td class=\"row_36 col_3\" title=\"\">0.7</td> <td class=\"row_36 col_4\" title=\"\">0.1</td> <td class=\"row_36 col_5\" title=\"\">0.2</td> <td class=\"row_36 col_6\" title=\"\">1</td> </tr> </tbody> </table> </div> </div> <div class=\"node_view\"></div> </article> </div> </div></div> </div> </div> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Flood risk exposure is not evenly distributed across England (see notes 2 and 3). High-risk exposure to surface water flooding is concentrated in and around London, with Essex showing the highest proportion of postcode centroids in the high-risk category (6.5%).&nbsp;</p><p>Exposure to flooding from rivers and the sea is highest in Lincolnshire and East Yorkshire, where a large portion of postcodes fall within the medium and high-risk categories.&nbsp;</p><p>Understanding these geographical patterns helps identify where climate-related risks may have the greatest effect on consumers and mortgage lending if flooding becomes more frequent or severe.<a class=\"ck-anchor\" id=\"notes-2-3\"></a></p> </div> </section> </div> <section class=\"expandable-content component container default\"> <div class=\"nav nav-stacked component component--expandable\" id=\"expandable1966086\"> <div class=\"expandable panel component\" role=\"group\" aria-label=\"accordion\"> <h3> <a class=\"expandable-title collapsed\" data-toggle=\"collapse\" href=\"#expandable1966081\" aria-expanded=\"false\" aria-controls=\"expandable1966081\" role=\"button\"> Notes 2 and 3 </a> </h3> <div id=\"expandable1966081\" class=\"collapse\"> <div class=\"expandable-body copy-block\"> <ol start=\"2\"><li data-list-item-id=\"ef39e3a38c195e43ae949746d21f66189\">Sub-regions from the International Territorial Level (ITL2) are used to provide consistently sized geographical areas across the country. They are part of the official geographic boundary standards used to break down the country into regions for collecting, publishing and comparing official statistics.</li><li data-list-item-id=\"e2a69cff36930f585002ea80971abc51c\">Tables have been ordered by the sum of the medium and high-risk categories.</li></ol> </div> </div> </div> </div> </section> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-high-loan-to-value-ltv-ratios\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">4. High loan-to-value (LTV) ratios</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>We analysed mortgage contracts sold in the last reporting period to assess whether lending patterns differ across areas with different levels of flood risk.&nbsp;</p><p>In the charts below, each group of bars should be viewed separately. The percentages show the proportion of mortgages within each LTV band that are linked to postcodes in each flood risk category. For example, of mortgage contracts with an LTV ratio of 0-10%, around 6% are linked to postcodes classified as low risk for surface water flooding.</p><p>For the risk of flooding from surface water, the proportion of mortgages in high-risk areas falls slightly as the LTV ratios increase. Overall, the proportions remain relatively stable, although there is a notable increase in mortgages with an LTV in excess of 100% in medium-risk areas.</p><p>Overall, the results do not&nbsp;show&nbsp;a clear or consistent relationship between higher LTV lending and greater exposure to flood risk.&nbsp;</p> </div> </section> </div> <section class=\"lf-pull-quote graph component\" data-count=\"\"> <div class=\"container\"> <div class=\"container graph-content-wrapper\"> <div class=\"fca-charts-wrapper\"> <p class=\"toggle-chart active-tab btn\" tabindex=\"0\"><span>Chart</span></p> <p class=\"toggle-table btn\" tabindex=\"0\"><span>Data table</span></p> <div class=\"fca-charts__download btn\" tabindex=\"0\"><span>Download</span> <div class=\"fca-chart-menu\"></div> </div> <div class=\"fca-charts\"> <div id=\"fca-data-graphs-176816\" class=\"charts-highchart highcharts-chart show-chart\" data-chart=\"{&quot;chart&quot;:{&quot;type&quot;:&quot;combination&quot;,&quot;width&quot;:null,&quot;height&quot;:null,&quot;backgroundColor&quot;:null,&quot;polar&quot;:null,&quot;options3d&quot;:null,&quot;renderTo&quot;:&quot;container&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontFamily&quot;:&quot;Verdana, Arial, Helvetica, sans-serif&quot;},&quot;zoomType&quot;:&quot;xy&quot;},&quot;title&quot;:{&quot;text&quot;:&quot;Chart 1: Surface water risk band share by LTV band&quot;,&quot;y&quot;:24,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;subtitle&quot;:{&quot;text&quot;:&quot;Source: Flood risk exposure of mortgages in England data&quot;,&quot;y&quot;:42,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;xAxis&quot;:{&quot;categories&quot;:[&quot;0-10&quot;,&quot;0-20&quot;,&quot;20-30&quot;,&quot;30-40&quot;,&quot;40-50&quot;,&quot;50-60&quot;,&quot;60-70&quot;,&quot;70-80&quot;,&quot;80-90&quot;,&quot;90-100&quot;,&quot;100+&quot;],&quot;title&quot;:{&quot;text&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;rotation&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;tickmarkPlacement&quot;:&quot;between&quot;,&quot;min&quot;:null,&quot;max&quot;:null,&quot;tickInterval&quot;:null,&quot;lineWidth&quot;:1,&quot;visible&quot;:true},&quot;yAxis&quot;:[{&quot;title&quot;:{&quot;text&quot;:&quot;% of mortgages in risk band&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;overflow&quot;:&quot;justify&quot;,&quot;suffix&quot;:&quot;&quot;,&quot;prefix&quot;:&quot;&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fill&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;plotBands&quot;:null,&quot;min&quot;:0,&quot;max&quot;:null,&quot;categories&quot;:null,&quot;tickInterval&quot;:null,&quot;tickmarkPlacement&quot;:null,&quot;showFirstLabel&quot;:null,&quot;startOnTick&quot;:null,&quot;showLastLabel&quot;:true,&quot;endOnTick&quot;:true,&quot;gridLineInterpolation&quot;:&quot;circle&quot;,&quot;lineWidth&quot;:0,&quot;visible&quot;:true}],&quot;tooltip&quot;:{&quot;valueSuffix&quot;:&quot;&quot;,&quot;enabled&quot;:{&quot;pointFormat&quot;:&quot;&lt;span style=\\&quot;color:{point.color}\\&quot;&gt;\\u25cf&lt;\\/span&gt; {series.name}: &lt;b&gt;{point.y}&lt;\\/b&gt;&quot;,&quot;valuePrefix&quot;:&quot;&quot;,&quot;valueSuffix&quot;:&quot;%&quot;,&quot;valueCommas&quot;:&quot;1&quot;}},&quot;plotOptions&quot;:{&quot;combination&quot;:{&quot;dataLabels&quot;:{&quot;enabled&quot;:false},&quot;depth&quot;:35,&quot;marker&quot;:&quot;&quot;,&quot;animation&quot;:false,&quot;groupPadding&quot;:0.02}},&quot;legend&quot;:{&quot;layout&quot;:&quot;horizontal&quot;,&quot;align&quot;:&quot;center&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:0,&quot;y&quot;:0,&quot;floating&quot;:false,&quot;borderWidth&quot;:1,&quot;backgroundColor&quot;:&quot;#ffffff&quot;,&quot;shadow&quot;:true,&quot;enabled&quot;:true,&quot;itemStyle&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;cursor&quot;:&quot;pointer&quot;,&quot;fontSize&quot;:&quot;11px&quot;,&quot;fontWeight&quot;:&quot;500&quot;,&quot;textOverflow&quot;:null},&quot;rtl&quot;:false},&quot;credits&quot;:{&quot;enabled&quot;:true,&quot;text&quot;:&quot;\\u00a9 Financial Conduct Authority 2026&quot;,&quot;position&quot;:{&quot;align&quot;:&quot;right&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:null,&quot;y&quot;:null},&quot;href&quot;:&quot;https:\\/\\/www.fca.org.uk\\/data&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;innerSize&quot;:&quot;%20&quot;,&quot;series&quot;:[{&quot;name&quot;:&quot;Low&quot;,&quot;color&quot;:&quot;#799900&quot;,&quot;data&quot;:[{&quot;y&quot;:5.9000000000000004,&quot;percentage&quot;:28.780487804878053},{&quot;y&quot;:5.4000000000000004,&quot;percentage&quot;:26.21359223300971},{&quot;y&quot;:6.0999999999999996,&quot;percentage&quot;:28.504672897196258},{&quot;y&quot;:5.9000000000000004,&quot;percentage&quot;:28.502415458937204},{&quot;y&quot;:6.0999999999999996,&quot;percentage&quot;:29.468599033816425},{&quot;y&quot;:6.2999999999999998,&quot;percentage&quot;:29.716981132075471},{&quot;y&quot;:6.4000000000000004,&quot;percentage&quot;:30.046948356807519},{&quot;y&quot;:6.4000000000000004,&quot;percentage&quot;:29.767441860465123},{&quot;y&quot;:6.5,&quot;percentage&quot;:29.680365296803657},{&quot;y&quot;:6.2999999999999998,&quot;percentage&quot;:29.302325581395351},{&quot;y&quot;:5.2000000000000002,&quot;percentage&quot;:24.644549763033179}],&quot;type&quot;:&quot;column&quot;},{&quot;name&quot;:&quot;Medium&quot;,&quot;color&quot;:&quot;#EFB700&quot;,&quot;data&quot;:[{&quot;y&quot;:1.6000000000000001,&quot;percentage&quot;:7.8048780487804876},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:10.194174757281553},{&quot;y&quot;:2,&quot;percentage&quot;:9.3457943925233664},{&quot;y&quot;:2,&quot;percentage&quot;:9.6618357487922708},{&quot;y&quot;:1.8,&quot;percentage&quot;:8.6956521739130448},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:9.9056603773584904},{&quot;y&quot;:2,&quot;percentage&quot;:9.3896713615023479},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:9.7674418604651194},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:9.589041095890412},{&quot;y&quot;:2,&quot;percentage&quot;:9.3023255813953494},{&quot;y&quot;:3.1000000000000001,&quot;percentage&quot;:14.691943127962087}],&quot;type&quot;:&quot;column&quot;},{&quot;name&quot;:&quot;High&quot;,&quot;color&quot;:&quot;#FF585D&quot;,&quot;data&quot;:[{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:12.682926829268293},{&quot;y&quot;:2.7000000000000002,&quot;percentage&quot;:13.106796116504855},{&quot;y&quot;:2.7999999999999998,&quot;percentage&quot;:13.084112149532709},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:11.594202898550725},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:11.111111111111111},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:10.849056603773583},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:10.7981220657277},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:10.697674418604652},{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:11.872146118721462},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:11.162790697674419},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:9.952606635071092}],&quot;type&quot;:&quot;column&quot;},{&quot;name&quot;:&quot;Low trend&quot;,&quot;color&quot;:&quot;#799900&quot;,&quot;data&quot;:[{&quot;y&quot;:6,&quot;percentage&quot;:29.268292682926827},{&quot;y&quot;:6,&quot;percentage&quot;:29.126213592233007},{&quot;y&quot;:6,&quot;percentage&quot;:28.037383177570096},{&quot;y&quot;:6,&quot;percentage&quot;:28.985507246376812},{&quot;y&quot;:6,&quot;percentage&quot;:28.985507246376812},{&quot;y&quot;:6,&quot;percentage&quot;:28.30188679245283},{&quot;y&quot;:6.0999999999999996,&quot;percentage&quot;:28.638497652582164},{&quot;y&quot;:6.0999999999999996,&quot;percentage&quot;:28.372093023255818},{&quot;y&quot;:6.0999999999999996,&quot;percentage&quot;:27.853881278538811},{&quot;y&quot;:6.0999999999999996,&quot;percentage&quot;:28.372093023255811},{&quot;y&quot;:6.0999999999999996,&quot;percentage&quot;:28.90995260663507}],&quot;dashStyle&quot;:&quot;Dash&quot;,&quot;type&quot;:&quot;line&quot;},{&quot;name&quot;:&quot;Medium trend&quot;,&quot;color&quot;:&quot;#EFB700&quot;,&quot;data&quot;:[{&quot;y&quot;:1.7,&quot;percentage&quot;:8.2926829268292686},{&quot;y&quot;:1.8,&quot;percentage&quot;:8.7378640776699026},{&quot;y&quot;:1.8999999999999999,&quot;percentage&quot;:8.8785046728971952},{&quot;y&quot;:1.8999999999999999,&quot;percentage&quot;:9.1787439613526569},{&quot;y&quot;:2,&quot;percentage&quot;:9.6618357487922708},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:9.9056603773584904},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:9.8591549295774676},{&quot;y&quot;:2.2000000000000002,&quot;percentage&quot;:10.232558139534886},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:10.50228310502283},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:11.162790697674419},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:11.374407582938389}],&quot;dashStyle&quot;:&quot;Dash&quot;,&quot;type&quot;:&quot;line&quot;},{&quot;name&quot;:&quot;High trend&quot;,&quot;color&quot;:&quot;#FF585D&quot;,&quot;data&quot;:[{&quot;y&quot;:2.7000000000000002,&quot;percentage&quot;:13.170731707317074},{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:12.621359223300971},{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:12.149532710280376},{&quot;y&quot;:2.5,&quot;percentage&quot;:12.077294685990339},{&quot;y&quot;:2.5,&quot;percentage&quot;:12.077294685990339},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:11.320754716981133},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:11.267605633802818},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:11.162790697674421},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:10.50228310502283},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:10.697674418604651},{&quot;y&quot;:2.2000000000000002,&quot;percentage&quot;:10.426540284360192}],&quot;dashStyle&quot;:&quot;Dash&quot;,&quot;type&quot;:&quot;line&quot;}],&quot;exporting&quot;:{&quot;enabled&quot;:true,&quot;chartOptions&quot;:{&quot;chart&quot;:{&quot;backgroundColor&quot;:&quot;#ffffff&quot;}},&quot;buttons&quot;:{&quot;exportButton&quot;:{&quot;symbol&quot;:&quot;url(https:\\/\\/www.fca.org.uk\\/modules\\/custom\\/fca_data_graphs\\/assets\\/icons\\/data-hub-download-01.png)&quot;,&quot;symbolX&quot;:25,&quot;symbolY&quot;:30,&quot;symbolSize&quot;:35,&quot;enabled&quot;:true,&quot;menuItems&quot;:[&quot;downloadPNG&quot;,&quot;downloadCSV&quot;,&quot;downloadJPEG&quot;,&quot;downloadPDF&quot;]},&quot;contextButton&quot;:{&quot;enabled&quot;:false}},&quot;showTable&quot;:true,&quot;allowHTML&quot;:true,&quot;fallbackToExportServer&quot;:false},&quot;pane&quot;:null,&quot;colors&quot;:[&quot;#799900&quot;,&quot;#EFB700&quot;,&quot;#FF585D&quot;,&quot;#799900&quot;,&quot;#EFB700&quot;,&quot;#FF585D&quot;]}\" data-chart-type=\"combination\"></div> </div> </div> </div> <div class=\"container graph-content-wrapper\"> <div class=\"fca-charts-wrapper\"> <p class=\"toggle-chart active-tab btn\" tabindex=\"0\"><span>Chart</span></p> <p class=\"toggle-table btn\" tabindex=\"0\"><span>Data table</span></p> <div class=\"fca-charts__download btn\" tabindex=\"0\"><span>Download</span> <div class=\"fca-chart-menu\"></div> </div> <div class=\"fca-charts\"> <div id=\"fca-data-graphs-176826\" class=\"charts-highchart highcharts-chart show-chart\" data-chart=\"{&quot;chart&quot;:{&quot;type&quot;:&quot;combination&quot;,&quot;width&quot;:null,&quot;height&quot;:null,&quot;backgroundColor&quot;:null,&quot;polar&quot;:null,&quot;options3d&quot;:null,&quot;renderTo&quot;:&quot;container&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontFamily&quot;:&quot;Verdana, Arial, Helvetica, sans-serif&quot;},&quot;zoomType&quot;:&quot;xy&quot;},&quot;title&quot;:{&quot;text&quot;:&quot;Chart 2: Rivers and the sea risk band share by LTV band&quot;,&quot;y&quot;:24,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;subtitle&quot;:{&quot;text&quot;:&quot;Source: Flood risk exposure of mortgages in England data&quot;,&quot;y&quot;:42,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;xAxis&quot;:{&quot;categories&quot;:[&quot;0-10&quot;,&quot;0-20&quot;,&quot;20-30&quot;,&quot;30-40&quot;,&quot;40-50&quot;,&quot;50-60&quot;,&quot;60-70&quot;,&quot;70-80&quot;,&quot;80-90&quot;,&quot;90-100&quot;,&quot;100+&quot;],&quot;title&quot;:{&quot;text&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;rotation&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;tickmarkPlacement&quot;:&quot;between&quot;,&quot;min&quot;:null,&quot;max&quot;:null,&quot;tickInterval&quot;:null,&quot;lineWidth&quot;:1,&quot;visible&quot;:true},&quot;yAxis&quot;:[{&quot;title&quot;:{&quot;text&quot;:&quot;% of mortgages in risk band&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;overflow&quot;:&quot;justify&quot;,&quot;suffix&quot;:&quot;&quot;,&quot;prefix&quot;:&quot;&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fill&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;plotBands&quot;:null,&quot;min&quot;:0,&quot;max&quot;:null,&quot;categories&quot;:null,&quot;tickInterval&quot;:null,&quot;tickmarkPlacement&quot;:null,&quot;showFirstLabel&quot;:null,&quot;startOnTick&quot;:null,&quot;showLastLabel&quot;:true,&quot;endOnTick&quot;:true,&quot;gridLineInterpolation&quot;:&quot;circle&quot;,&quot;lineWidth&quot;:0,&quot;visible&quot;:true}],&quot;tooltip&quot;:{&quot;valueSuffix&quot;:&quot;&quot;,&quot;enabled&quot;:{&quot;pointFormat&quot;:&quot;&lt;span style=\\&quot;color:{point.color}\\&quot;&gt;\\u25cf&lt;\\/span&gt; {series.name}: &lt;b&gt;{point.y}&lt;\\/b&gt;&quot;,&quot;valuePrefix&quot;:&quot;&quot;,&quot;valueSuffix&quot;:&quot;%&quot;,&quot;valueCommas&quot;:&quot;1&quot;}},&quot;plotOptions&quot;:{&quot;combination&quot;:{&quot;dataLabels&quot;:{&quot;enabled&quot;:false},&quot;depth&quot;:35,&quot;marker&quot;:&quot;&quot;,&quot;animation&quot;:false,&quot;groupPadding&quot;:0.02}},&quot;legend&quot;:{&quot;layout&quot;:&quot;horizontal&quot;,&quot;align&quot;:&quot;center&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:0,&quot;y&quot;:0,&quot;floating&quot;:false,&quot;borderWidth&quot;:1,&quot;backgroundColor&quot;:&quot;#ffffff&quot;,&quot;shadow&quot;:true,&quot;enabled&quot;:true,&quot;itemStyle&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;cursor&quot;:&quot;pointer&quot;,&quot;fontSize&quot;:&quot;11px&quot;,&quot;fontWeight&quot;:&quot;500&quot;,&quot;textOverflow&quot;:null},&quot;rtl&quot;:false},&quot;credits&quot;:{&quot;enabled&quot;:true,&quot;text&quot;:&quot;\\u00a9 Financial Conduct Authority 2026&quot;,&quot;position&quot;:{&quot;align&quot;:&quot;right&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:null,&quot;y&quot;:null},&quot;href&quot;:&quot;https:\\/\\/www.fca.org.uk\\/data&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;innerSize&quot;:&quot;%20&quot;,&quot;series&quot;:[{&quot;name&quot;:&quot;Very low&quot;,&quot;color&quot;:&quot;#799900&quot;,&quot;data&quot;:[{&quot;y&quot;:2,&quot;percentage&quot;:16.666666666666664},{&quot;y&quot;:2.2000000000000002,&quot;percentage&quot;:18.333333333333332},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:18.461538461538456},{&quot;y&quot;:1.7,&quot;percentage&quot;:14.529914529914532},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:16.935483870967744},{&quot;y&quot;:2,&quot;percentage&quot;:16.528925619834713},{&quot;y&quot;:2,&quot;percentage&quot;:15.873015873015872},{&quot;y&quot;:2.2000000000000002,&quot;percentage&quot;:17.322834645669293},{&quot;y&quot;:2.2000000000000002,&quot;percentage&quot;:16.923076923076927},{&quot;y&quot;:2.5,&quot;percentage&quot;:18.382352941176475},{&quot;y&quot;:3.2999999999999998,&quot;percentage&quot;:20.121951219512198}],&quot;type&quot;:&quot;column&quot;},{&quot;name&quot;:&quot;Low&quot;,&quot;color&quot;:&quot;#96AC64&quot;,&quot;data&quot;:[{&quot;y&quot;:2.7000000000000002,&quot;percentage&quot;:22.5},{&quot;y&quot;:2.2000000000000002,&quot;percentage&quot;:18.333333333333332},{&quot;y&quot;:2.8999999999999999,&quot;percentage&quot;:22.307692307692303},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:19.658119658119659},{&quot;y&quot;:2.5,&quot;percentage&quot;:20.161290322580644},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:19.008264462809915},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:19.047619047619047},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:18.110236220472441},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:18.461538461538463},{&quot;y&quot;:2.5,&quot;percentage&quot;:18.382352941176475},{&quot;y&quot;:3.2999999999999998,&quot;percentage&quot;:20.121951219512198}],&quot;type&quot;:&quot;column&quot;},{&quot;name&quot;:&quot;Medium&quot;,&quot;color&quot;:&quot;#EFB700&quot;,&quot;data&quot;:[{&quot;y&quot;:0.90000000000000002,&quot;percentage&quot;:7.5},{&quot;y&quot;:0.90000000000000002,&quot;percentage&quot;:7.5},{&quot;y&quot;:0.90000000000000002,&quot;percentage&quot;:6.9230769230769225},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.8376068376068382},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.4516129032258061},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.6115702479338845},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.3492063492063506},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.2992125984251981},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.1538461538461551},{&quot;y&quot;:1,&quot;percentage&quot;:7.3529411764705896},{&quot;y&quot;:1.8999999999999999,&quot;percentage&quot;:11.585365853658537}],&quot;type&quot;:&quot;column&quot;},{&quot;name&quot;:&quot;High&quot;,&quot;color&quot;:&quot;#FF585D&quot;,&quot;data&quot;:[{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.833333333333333},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.666666666666667},{&quot;y&quot;:0.90000000000000002,&quot;percentage&quot;:6.9230769230769225},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.982905982905983},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.6451612903225801},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.7851239669421481},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.3492063492063506},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.5118110236220472},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.1538461538461551},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.1470588235294121},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:4.2682926829268295}],&quot;type&quot;:&quot;column&quot;},{&quot;name&quot;:&quot;Very low trend&quot;,&quot;color&quot;:&quot;#799900&quot;,&quot;data&quot;:[{&quot;y&quot;:1.8999999999999999,&quot;percentage&quot;:15.833333333333332},{&quot;y&quot;:2,&quot;percentage&quot;:16.666666666666664},{&quot;y&quot;:2,&quot;percentage&quot;:15.384615384615383},{&quot;y&quot;:2.1000000000000001,&quot;percentage&quot;:17.948717948717952},{&quot;y&quot;:2.2000000000000002,&quot;percentage&quot;:17.741935483870968},{&quot;y&quot;:2.2000000000000002,&quot;percentage&quot;:18.181818181818183},{&quot;y&quot;:2.2999999999999998,&quot;percentage&quot;:18.253968253968253},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:18.897637795275589},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:18.461538461538463},{&quot;y&quot;:2.5,&quot;percentage&quot;:18.382352941176475},{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:15.853658536585369}],&quot;dashStyle&quot;:&quot;Dash&quot;,&quot;type&quot;:&quot;line&quot;},{&quot;name&quot;:&quot;Low trend&quot;,&quot;color&quot;:&quot;#96AC64&quot;,&quot;data&quot;:[{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:20},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:19.999999999999996},{&quot;y&quot;:2.3999999999999999,&quot;percentage&quot;:18.461538461538456},{&quot;y&quot;:2.5,&quot;percentage&quot;:21.36752136752137},{&quot;y&quot;:2.5,&quot;percentage&quot;:20.161290322580644},{&quot;y&quot;:2.5,&quot;percentage&quot;:20.66115702479339},{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:20.634920634920636},{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:20.472440944881892},{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:20.000000000000004},{&quot;y&quot;:2.6000000000000001,&quot;percentage&quot;:19.117647058823533},{&quot;y&quot;:2.7000000000000002,&quot;percentage&quot;:16.463414634146346}],&quot;dashStyle&quot;:&quot;Dash&quot;,&quot;type&quot;:&quot;line&quot;},{&quot;name&quot;:&quot;Medium trend&quot;,&quot;color&quot;:&quot;#EFB700&quot;,&quot;data&quot;:[{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.833333333333333},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.666666666666667},{&quot;y&quot;:0.80000000000000004,&quot;percentage&quot;:6.1538461538461533},{&quot;y&quot;:0.90000000000000002,&quot;percentage&quot;:7.6923076923076925},{&quot;y&quot;:0.90000000000000002,&quot;percentage&quot;:7.2580645161290329},{&quot;y&quot;:0.90000000000000002,&quot;percentage&quot;:7.4380165289256199},{&quot;y&quot;:1,&quot;percentage&quot;:7.9365079365079358},{&quot;y&quot;:1,&quot;percentage&quot;:7.8740157480314963},{&quot;y&quot;:1.1000000000000001,&quot;percentage&quot;:8.4615384615384635},{&quot;y&quot;:1.1000000000000001,&quot;percentage&quot;:8.0882352941176485},{&quot;y&quot;:1.2,&quot;percentage&quot;:7.3170731707317085}],&quot;dashStyle&quot;:&quot;Dash&quot;,&quot;type&quot;:&quot;line&quot;},{&quot;name&quot;:&quot;High trend&quot;,&quot;color&quot;:&quot;#FF585D&quot;,&quot;data&quot;:[{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.833333333333333},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.8333333333333321},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.3846153846153832},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.982905982905983},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.6451612903225801},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.7851239669421481},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.5555555555555554},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.5118110236220472},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.384615384615385},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:5.1470588235294121},{&quot;y&quot;:0.69999999999999996,&quot;percentage&quot;:4.2682926829268295}],&quot;dashStyle&quot;:&quot;Dash&quot;,&quot;type&quot;:&quot;line&quot;}],&quot;exporting&quot;:{&quot;enabled&quot;:true,&quot;chartOptions&quot;:{&quot;chart&quot;:{&quot;backgroundColor&quot;:&quot;#ffffff&quot;}},&quot;buttons&quot;:{&quot;exportButton&quot;:{&quot;symbol&quot;:&quot;url(https:\\/\\/www.fca.org.uk\\/modules\\/custom\\/fca_data_graphs\\/assets\\/icons\\/data-hub-download-01.png)&quot;,&quot;symbolX&quot;:25,&quot;symbolY&quot;:30,&quot;symbolSize&quot;:35,&quot;enabled&quot;:true,&quot;menuItems&quot;:[&quot;downloadPNG&quot;,&quot;downloadCSV&quot;,&quot;downloadJPEG&quot;,&quot;downloadPDF&quot;]},&quot;contextButton&quot;:{&quot;enabled&quot;:false}},&quot;showTable&quot;:true,&quot;allowHTML&quot;:true,&quot;fallbackToExportServer&quot;:false},&quot;pane&quot;:null,&quot;colors&quot;:[&quot;#799900&quot;,&quot;#96AC64&quot;,&quot;#EFB700&quot;,&quot;#FF585D&quot;,&quot;#799900&quot;,&quot;#96AC64&quot;,&quot;#EFB700&quot;,&quot;#FF585D&quot;]}\" data-chart-type=\"combination\"></div> </div> </div> </div> </div> </section> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-index-of-multiple-deprivation-imd-\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">5. Index of Multiple Deprivation (IMD)</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>We also analysed flood risk exposure across different levels of deprivation.&nbsp;</p><p>The IMD is the official measure of deprivation in England. It combines information on income, employment, education and skills, health, crime, barriers to housing and services, and the living environment.&nbsp;</p><p>The charts below show how flood risk exposure varies across these measures. Looking at the combined proportion of the red and orange bands helps identify where more deprived communities may be exposed to flood risk.&nbsp;</p> </div> </section> </div> <section class=\"lf-pull-quote graph component\" data-count=\"\"> <div class=\"container\"> <div class=\"container graph-content-wrapper\"> <div class=\"fca-charts-wrapper\"> <p class=\"toggle-chart active-tab btn\" tabindex=\"0\"><span>Chart</span></p> <p class=\"toggle-table btn\" tabindex=\"0\"><span>Data table</span></p> <div class=\"fca-charts__download btn\" tabindex=\"0\"><span>Download</span> <div class=\"fca-chart-menu\"></div> </div> <div class=\"fca-charts\"> <div id=\"fca-data-graphs-176836\" class=\"charts-highchart highcharts-chart show-chart\" data-chart=\"{&quot;chart&quot;:{&quot;type&quot;:&quot;column&quot;,&quot;width&quot;:null,&quot;height&quot;:null,&quot;backgroundColor&quot;:null,&quot;polar&quot;:null,&quot;options3d&quot;:null,&quot;renderTo&quot;:&quot;container&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontFamily&quot;:&quot;Verdana, Arial, Helvetica, sans-serif&quot;}},&quot;title&quot;:{&quot;text&quot;:&quot;Chart 3: Index of multiple deprivation (IMD) decile by surface water flood risk band&quot;,&quot;y&quot;:24,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;subtitle&quot;:{&quot;text&quot;:&quot;Source: Flood risk exposure of mortgages in England data&quot;,&quot;y&quot;:42,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;xAxis&quot;:{&quot;categories&quot;:[&quot;No Risk&quot;,&quot;Low&quot;,&quot;Medium&quot;,&quot;High&quot;],&quot;title&quot;:{&quot;text&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;rotation&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;tickmarkPlacement&quot;:&quot;between&quot;,&quot;min&quot;:null,&quot;max&quot;:null,&quot;tickInterval&quot;:null,&quot;lineWidth&quot;:1,&quot;visible&quot;:true},&quot;yAxis&quot;:[{&quot;title&quot;:{&quot;text&quot;:&quot;Proportion of mortgages (%)&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;overflow&quot;:&quot;justify&quot;,&quot;suffix&quot;:&quot;&quot;,&quot;prefix&quot;:&quot;&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fill&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;plotBands&quot;:null,&quot;min&quot;:0,&quot;max&quot;:100,&quot;categories&quot;:null,&quot;tickInterval&quot;:null,&quot;tickmarkPlacement&quot;:null,&quot;showFirstLabel&quot;:null,&quot;startOnTick&quot;:null,&quot;showLastLabel&quot;:true,&quot;endOnTick&quot;:true,&quot;gridLineInterpolation&quot;:&quot;circle&quot;,&quot;lineWidth&quot;:0,&quot;visible&quot;:true}],&quot;tooltip&quot;:{&quot;valueSuffix&quot;:&quot;&quot;,&quot;enabled&quot;:{&quot;pointFormat&quot;:&quot;&lt;span style=\\&quot;color:{point.color}\\&quot;&gt;\\u25cf&lt;\\/span&gt; {series.name}: &lt;b&gt;{point.y}&lt;\\/b&gt;&quot;,&quot;valuePrefix&quot;:&quot;&quot;,&quot;valueSuffix&quot;:&quot;%&quot;,&quot;valueCommas&quot;:&quot;1&quot;}},&quot;plotOptions&quot;:{&quot;column&quot;:{&quot;dataLabels&quot;:{&quot;enabled&quot;:false},&quot;depth&quot;:35,&quot;marker&quot;:&quot;&quot;,&quot;animation&quot;:false,&quot;groupPadding&quot;:0.02,&quot;stacking&quot;:&quot;normal&quot;}},&quot;legend&quot;:{&quot;layout&quot;:&quot;horizontal&quot;,&quot;align&quot;:&quot;center&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:0,&quot;y&quot;:0,&quot;floating&quot;:false,&quot;borderWidth&quot;:1,&quot;backgroundColor&quot;:&quot;#ffffff&quot;,&quot;shadow&quot;:true,&quot;enabled&quot;:true,&quot;itemStyle&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;cursor&quot;:&quot;pointer&quot;,&quot;fontSize&quot;:&quot;11px&quot;,&quot;fontWeight&quot;:&quot;500&quot;,&quot;textOverflow&quot;:null},&quot;rtl&quot;:false},&quot;credits&quot;:{&quot;enabled&quot;:true,&quot;text&quot;:&quot;\\u00a9 Financial Conduct Authority 2026&quot;,&quot;position&quot;:{&quot;align&quot;:&quot;right&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:null,&quot;y&quot;:null},&quot;href&quot;:&quot;https:\\/\\/www.fca.org.uk\\/data&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;innerSize&quot;:&quot;%20&quot;,&quot;series&quot;:[{&quot;name&quot;:&quot;Decile 10&quot;,&quot;color&quot;:&quot;#5D285F&quot;,&quot;data&quot;:[{&quot;y&quot;:11.699999999999999,&quot;percentage&quot;:11.688311688311687},{&quot;y&quot;:8.8000000000000007,&quot;percentage&quot;:8.8888888888888875},{&quot;y&quot;:9.1999999999999993,&quot;percentage&quot;:9.1999999999999993},{&quot;y&quot;:9.9000000000000004,&quot;percentage&quot;:9.9000000000000021}]},{&quot;name&quot;:&quot;Decile 9&quot;,&quot;color&quot;:&quot;#701B45&quot;,&quot;data&quot;:[{&quot;y&quot;:12.199999999999999,&quot;percentage&quot;:12.187812187812188},{&quot;y&quot;:10.800000000000001,&quot;percentage&quot;:10.909090909090908},{&quot;y&quot;:10.199999999999999,&quot;percentage&quot;:10.199999999999999},{&quot;y&quot;:10.1,&quot;percentage&quot;:10.100000000000001}]},{&quot;name&quot;:&quot;Decile 8&quot;,&quot;color&quot;:&quot;#BB16A3&quot;,&quot;data&quot;:[{&quot;y&quot;:12.1,&quot;percentage&quot;:12.087912087912088},{&quot;y&quot;:11,&quot;percentage&quot;:11.111111111111109},{&quot;y&quot;:11.300000000000001,&quot;percentage&quot;:11.300000000000001},{&quot;y&quot;:11.6,&quot;percentage&quot;:11.600000000000001}]},{&quot;name&quot;:&quot;Decile 7&quot;,&quot;color&quot;:&quot;#7A547D&quot;,&quot;data&quot;:[{&quot;y&quot;:11.800000000000001,&quot;percentage&quot;:11.78821178821179},{&quot;y&quot;:11.1,&quot;percentage&quot;:11.212121212121211},{&quot;y&quot;:11.199999999999999,&quot;percentage&quot;:11.199999999999999},{&quot;y&quot;:10.5,&quot;percentage&quot;:10.500000000000002}]},{&quot;name&quot;:&quot;Decile 6&quot;,&quot;color&quot;:&quot;#9B7F9D&quot;,&quot;data&quot;:[{&quot;y&quot;:11,&quot;percentage&quot;:10.989010989010991},{&quot;y&quot;:10.5,&quot;percentage&quot;:10.606060606060606},{&quot;y&quot;:10.800000000000001,&quot;percentage&quot;:10.800000000000001},{&quot;y&quot;:10.699999999999999,&quot;percentage&quot;:10.700000000000001}]},{&quot;name&quot;:&quot;Decile 5&quot;,&quot;color&quot;:&quot;#B56FAE&quot;,&quot;data&quot;:[{&quot;y&quot;:10.5,&quot;percentage&quot;:10.48951048951049},{&quot;y&quot;:10.9,&quot;percentage&quot;:11.010101010101009},{&quot;y&quot;:10.800000000000001,&quot;percentage&quot;:10.800000000000001},{&quot;y&quot;:11,&quot;percentage&quot;:11.000000000000002}]},{&quot;name&quot;:&quot;Decile 4&quot;,&quot;color&quot;:&quot;#C898C5&quot;,&quot;data&quot;:[{&quot;y&quot;:9.5,&quot;percentage&quot;:9.490509490509492},{&quot;y&quot;:10.6,&quot;percentage&quot;:10.707070707070706},{&quot;y&quot;:10.6,&quot;percentage&quot;:10.6},{&quot;y&quot;:11.300000000000001,&quot;percentage&quot;:11.300000000000002}]},{&quot;name&quot;:&quot;Decile 3&quot;,&quot;color&quot;:&quot;#F8AEA4&quot;,&quot;data&quot;:[{&quot;y&quot;:8.5,&quot;percentage&quot;:8.4915084915084922},{&quot;y&quot;:10.5,&quot;percentage&quot;:10.606060606060606},{&quot;y&quot;:10.9,&quot;percentage&quot;:10.9},{&quot;y&quot;:10.300000000000001,&quot;percentage&quot;:10.300000000000002}]},{&quot;name&quot;:&quot;Decile 2&quot;,&quot;color&quot;:&quot;#FF585D&quot;,&quot;data&quot;:[{&quot;y&quot;:7.2999999999999998,&quot;percentage&quot;:7.2927072927072931},{&quot;y&quot;:8.9000000000000004,&quot;percentage&quot;:8.9898989898989896},{&quot;y&quot;:9.0999999999999996,&quot;percentage&quot;:9.0999999999999996},{&quot;y&quot;:9.0999999999999996,&quot;percentage&quot;:9.1000000000000014}]},{&quot;name&quot;:&quot;Decile 1 (most deprived)&quot;,&quot;color&quot;:&quot;#EB0000&quot;,&quot;data&quot;:[{&quot;y&quot;:5.5,&quot;percentage&quot;:5.4945054945054954},{&quot;y&quot;:5.9000000000000004,&quot;percentage&quot;:5.9595959595959593},{&quot;y&quot;:5.9000000000000004,&quot;percentage&quot;:5.9000000000000004},{&quot;y&quot;:5.5,&quot;percentage&quot;:5.5000000000000009}]}],&quot;exporting&quot;:{&quot;enabled&quot;:true,&quot;chartOptions&quot;:{&quot;chart&quot;:{&quot;backgroundColor&quot;:&quot;#ffffff&quot;}},&quot;buttons&quot;:{&quot;exportButton&quot;:{&quot;symbol&quot;:&quot;url(https:\\/\\/www.fca.org.uk\\/modules\\/custom\\/fca_data_graphs\\/assets\\/icons\\/data-hub-download-01.png)&quot;,&quot;symbolX&quot;:25,&quot;symbolY&quot;:30,&quot;symbolSize&quot;:35,&quot;enabled&quot;:true,&quot;menuItems&quot;:[&quot;downloadPNG&quot;,&quot;downloadCSV&quot;,&quot;downloadJPEG&quot;,&quot;downloadPDF&quot;]},&quot;contextButton&quot;:{&quot;enabled&quot;:false}},&quot;showTable&quot;:true,&quot;allowHTML&quot;:true,&quot;fallbackToExportServer&quot;:false},&quot;pane&quot;:null,&quot;colors&quot;:[&quot;#5D285F&quot;,&quot;#701B45&quot;,&quot;#BB16A3&quot;,&quot;#7A547D&quot;,&quot;#9B7F9D&quot;,&quot;#B56FAE&quot;,&quot;#C898C5&quot;,&quot;#F8AEA4&quot;,&quot;#FF585D&quot;,&quot;#EB0000&quot;]}\" data-chart-type=\"column\"></div> </div> </div> </div> <div class=\"container graph-content-wrapper\"> <div class=\"fca-charts-wrapper\"> <p class=\"toggle-chart active-tab btn\" tabindex=\"0\"><span>Chart</span></p> <p class=\"toggle-table btn\" tabindex=\"0\"><span>Data table</span></p> <div class=\"fca-charts__download btn\" tabindex=\"0\"><span>Download</span> <div class=\"fca-chart-menu\"></div> </div> <div class=\"fca-charts\"> <div id=\"fca-data-graphs-176846\" class=\"charts-highchart highcharts-chart show-chart\" data-chart=\"{&quot;chart&quot;:{&quot;type&quot;:&quot;column&quot;,&quot;width&quot;:null,&quot;height&quot;:null,&quot;backgroundColor&quot;:null,&quot;polar&quot;:null,&quot;options3d&quot;:null,&quot;renderTo&quot;:&quot;container&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontFamily&quot;:&quot;Verdana, Arial, Helvetica, sans-serif&quot;}},&quot;title&quot;:{&quot;text&quot;:&quot;Chart 4: Index of multiple deprivation (IMD) decile by rivers and the sea flood risk band&quot;,&quot;y&quot;:24,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;subtitle&quot;:{&quot;text&quot;:&quot;Source: Flood risk exposure of mortgages in England data&quot;,&quot;y&quot;:42,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;xAxis&quot;:{&quot;categories&quot;:[&quot;No Risk&quot;,&quot;Very low&quot;,&quot;Low&quot;,&quot;Medium&quot;,&quot;High&quot;],&quot;title&quot;:{&quot;text&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;rotation&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;tickmarkPlacement&quot;:&quot;between&quot;,&quot;min&quot;:null,&quot;max&quot;:null,&quot;tickInterval&quot;:null,&quot;lineWidth&quot;:1,&quot;visible&quot;:true},&quot;yAxis&quot;:[{&quot;title&quot;:{&quot;text&quot;:&quot;Proportion of mortgages (%)&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;overflow&quot;:&quot;justify&quot;,&quot;suffix&quot;:&quot;&quot;,&quot;prefix&quot;:&quot;&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fill&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;plotBands&quot;:null,&quot;min&quot;:0,&quot;max&quot;:100,&quot;categories&quot;:null,&quot;tickInterval&quot;:null,&quot;tickmarkPlacement&quot;:null,&quot;showFirstLabel&quot;:null,&quot;startOnTick&quot;:null,&quot;showLastLabel&quot;:true,&quot;endOnTick&quot;:true,&quot;gridLineInterpolation&quot;:&quot;circle&quot;,&quot;lineWidth&quot;:0,&quot;visible&quot;:true}],&quot;tooltip&quot;:{&quot;valueSuffix&quot;:&quot;&quot;,&quot;enabled&quot;:{&quot;pointFormat&quot;:&quot;&lt;span style=\\&quot;color:{point.color}\\&quot;&gt;\\u25cf&lt;\\/span&gt; {series.name}: &lt;b&gt;{point.y}&lt;\\/b&gt;&quot;,&quot;valuePrefix&quot;:&quot;&quot;,&quot;valueSuffix&quot;:&quot;%&quot;,&quot;valueCommas&quot;:&quot;1&quot;}},&quot;plotOptions&quot;:{&quot;column&quot;:{&quot;dataLabels&quot;:{&quot;enabled&quot;:false},&quot;depth&quot;:35,&quot;marker&quot;:&quot;&quot;,&quot;animation&quot;:false,&quot;groupPadding&quot;:0.02,&quot;stacking&quot;:&quot;normal&quot;}},&quot;legend&quot;:{&quot;layout&quot;:&quot;horizontal&quot;,&quot;align&quot;:&quot;center&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:0,&quot;y&quot;:0,&quot;floating&quot;:false,&quot;borderWidth&quot;:1,&quot;backgroundColor&quot;:&quot;#ffffff&quot;,&quot;shadow&quot;:true,&quot;enabled&quot;:true,&quot;itemStyle&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;cursor&quot;:&quot;pointer&quot;,&quot;fontSize&quot;:&quot;11px&quot;,&quot;fontWeight&quot;:&quot;500&quot;,&quot;textOverflow&quot;:null},&quot;rtl&quot;:false},&quot;credits&quot;:{&quot;enabled&quot;:true,&quot;text&quot;:&quot;\\u00a9 Financial Conduct Authority 2026&quot;,&quot;position&quot;:{&quot;align&quot;:&quot;right&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:null,&quot;y&quot;:null},&quot;href&quot;:&quot;https:\\/\\/www.fca.org.uk\\/data&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;innerSize&quot;:&quot;%20&quot;,&quot;series&quot;:[{&quot;name&quot;:&quot;Decile 10&quot;,&quot;color&quot;:&quot;#5D285F&quot;,&quot;data&quot;:[{&quot;y&quot;:11.800000000000001,&quot;percentage&quot;:11.811811811811813},{&quot;y&quot;:3.2999999999999998,&quot;percentage&quot;:3.2999999999999994},{&quot;y&quot;:7.7999999999999998,&quot;percentage&quot;:7.8000000000000016},{&quot;y&quot;:5.7999999999999998,&quot;percentage&quot;:5.7942057942057934},{&quot;y&quot;:9,&quot;percentage&quot;:9.0090090090090076}]},{&quot;name&quot;:&quot;Decile 9&quot;,&quot;color&quot;:&quot;#701B45&quot;,&quot;data&quot;:[{&quot;y&quot;:12.199999999999999,&quot;percentage&quot;:12.212212212212213},{&quot;y&quot;:7.7999999999999998,&quot;percentage&quot;:7.7999999999999989},{&quot;y&quot;:9.5,&quot;percentage&quot;:9.5000000000000018},{&quot;y&quot;:10.199999999999999,&quot;percentage&quot;:10.189810189810187},{&quot;y&quot;:10.800000000000001,&quot;percentage&quot;:10.810810810810811}]},{&quot;name&quot;:&quot;Decile 8&quot;,&quot;color&quot;:&quot;#BB16A3&quot;,&quot;data&quot;:[{&quot;y&quot;:12.1,&quot;percentage&quot;:12.112112112112113},{&quot;y&quot;:7.9000000000000004,&quot;percentage&quot;:7.8999999999999986},{&quot;y&quot;:10.5,&quot;percentage&quot;:10.500000000000002},{&quot;y&quot;:12.300000000000001,&quot;percentage&quot;:12.287712287712289},{&quot;y&quot;:12.4,&quot;percentage&quot;:12.41241241241241}]},{&quot;name&quot;:&quot;Decile 7&quot;,&quot;color&quot;:&quot;#7A547D&quot;,&quot;data&quot;:[{&quot;y&quot;:11.699999999999999,&quot;percentage&quot;:11.711711711711711},{&quot;y&quot;:12.5,&quot;percentage&quot;:12.499999999999998},{&quot;y&quot;:11.199999999999999,&quot;percentage&quot;:11.200000000000001},{&quot;y&quot;:9.6999999999999993,&quot;percentage&quot;:9.6903096903096877},{&quot;y&quot;:12.199999999999999,&quot;percentage&quot;:12.21221221221221}]},{&quot;name&quot;:&quot;Decile 6&quot;,&quot;color&quot;:&quot;#9B7F9D&quot;,&quot;data&quot;:[{&quot;y&quot;:10.9,&quot;percentage&quot;:10.910910910910912},{&quot;y&quot;:10.699999999999999,&quot;percentage&quot;:10.699999999999999},{&quot;y&quot;:10.800000000000001,&quot;percentage&quot;:10.800000000000002},{&quot;y&quot;:13.5,&quot;percentage&quot;:13.486513486513484},{&quot;y&quot;:14.5,&quot;percentage&quot;:14.514514514514513}]},{&quot;name&quot;:&quot;Decile 5&quot;,&quot;color&quot;:&quot;#B56FAE&quot;,&quot;data&quot;:[{&quot;y&quot;:10.4,&quot;percentage&quot;:10.410410410410412},{&quot;y&quot;:13.6,&quot;percentage&quot;:13.599999999999998},{&quot;y&quot;:12.4,&quot;percentage&quot;:12.400000000000002},{&quot;y&quot;:11.199999999999999,&quot;percentage&quot;:11.188811188811187},{&quot;y&quot;:10.800000000000001,&quot;percentage&quot;:10.810810810810811}]},{&quot;name&quot;:&quot;Decile 4&quot;,&quot;color&quot;:&quot;#C898C5&quot;,&quot;data&quot;:[{&quot;y&quot;:9.5,&quot;percentage&quot;:9.5095095095095097},{&quot;y&quot;:14.1,&quot;percentage&quot;:14.099999999999998},{&quot;y&quot;:10.699999999999999,&quot;percentage&quot;:10.700000000000001},{&quot;y&quot;:11.199999999999999,&quot;percentage&quot;:11.188811188811187},{&quot;y&quot;:9.9000000000000004,&quot;percentage&quot;:9.9099099099099082}]},{&quot;name&quot;:&quot;Decile 3&quot;,&quot;color&quot;:&quot;#F8AEA4&quot;,&quot;data&quot;:[{&quot;y&quot;:8.5,&quot;percentage&quot;:8.508508508508509},{&quot;y&quot;:12.9,&quot;percentage&quot;:12.899999999999997},{&quot;y&quot;:11,&quot;percentage&quot;:11.000000000000002},{&quot;y&quot;:11.6,&quot;percentage&quot;:11.588411588411587},{&quot;y&quot;:9.6999999999999993,&quot;percentage&quot;:9.709709709709708}]},{&quot;name&quot;:&quot;Decile 2&quot;,&quot;color&quot;:&quot;#FF585D&quot;,&quot;data&quot;:[{&quot;y&quot;:7.2999999999999998,&quot;percentage&quot;:7.3073073073073074},{&quot;y&quot;:10.800000000000001,&quot;percentage&quot;:10.799999999999999},{&quot;y&quot;:9.0999999999999996,&quot;percentage&quot;:9.1000000000000014},{&quot;y&quot;:7.7000000000000002,&quot;percentage&quot;:7.6923076923076916},{&quot;y&quot;:6.4000000000000004,&quot;percentage&quot;:6.406406406406405}]},{&quot;name&quot;:&quot;Decile 1 (most deprived)&quot;,&quot;color&quot;:&quot;#EB0000&quot;,&quot;data&quot;:[{&quot;y&quot;:5.5,&quot;percentage&quot;:5.5055055055055053},{&quot;y&quot;:6.4000000000000004,&quot;percentage&quot;:6.4000000000000004},{&quot;y&quot;:7,&quot;percentage&quot;:7.0000000000000009},{&quot;y&quot;:6.9000000000000004,&quot;percentage&quot;:6.8931068931068928},{&quot;y&quot;:4.2000000000000002,&quot;percentage&quot;:4.2042042042042036}]}],&quot;exporting&quot;:{&quot;enabled&quot;:true,&quot;chartOptions&quot;:{&quot;chart&quot;:{&quot;backgroundColor&quot;:&quot;#ffffff&quot;}},&quot;buttons&quot;:{&quot;exportButton&quot;:{&quot;symbol&quot;:&quot;url(https:\\/\\/www.fca.org.uk\\/modules\\/custom\\/fca_data_graphs\\/assets\\/icons\\/data-hub-download-01.png)&quot;,&quot;symbolX&quot;:25,&quot;symbolY&quot;:30,&quot;symbolSize&quot;:35,&quot;enabled&quot;:true,&quot;menuItems&quot;:[&quot;downloadPNG&quot;,&quot;downloadCSV&quot;,&quot;downloadJPEG&quot;,&quot;downloadPDF&quot;]},&quot;contextButton&quot;:{&quot;enabled&quot;:false}},&quot;showTable&quot;:true,&quot;allowHTML&quot;:true,&quot;fallbackToExportServer&quot;:false},&quot;pane&quot;:null,&quot;colors&quot;:[&quot;#5D285F&quot;,&quot;#701B45&quot;,&quot;#BB16A3&quot;,&quot;#7A547D&quot;,&quot;#9B7F9D&quot;,&quot;#B56FAE&quot;,&quot;#C898C5&quot;,&quot;#F8AEA4&quot;,&quot;#FF585D&quot;,&quot;#EB0000&quot;]}\" data-chart-type=\"column\"></div> </div> </div> </div> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Exposure to surface water flooding is broadly similar across deprivation levels. Within each flood risk band, a higher proportion of mortgages are linked to postcodes in the most deprived areas than to postcodes with no flood risk.</p><p>For flooding from rivers and the sea, exposure is spread across all deprivation levels. As flood risk increases, a larger proportion of mortgages are linked to less deprived areas. This may reflect the attractiveness of some properties located near rivers or along the coast.&nbsp;</p><p>These findings suggest that physical climate risks can affect a wide range of consumers and communities. They also show that the relationship between flood risk and deprivation can vary depending on the type of flooding.</p> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-conclusions\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">6. Conclusions</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>This analysis provides an overview of the exposure of mortgage lending to flood risk in England. We found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, although exposure varies by region&nbsp;and type of flooding.&nbsp;</p><p>The findings&nbsp;show&nbsp;that physical climate risks are relevant to mortgage markets because they affect consumers,&nbsp;firms,&nbsp;and market functioning. However,&nbsp;the results should not be interpreted as an assessment of individual properties,&nbsp;firms&nbsp;or consumer outcomes.&nbsp;</p><p>Instead, the analysis&nbsp;is a high-level view of exposure using publicly available flood risk data and mortgage postcode information. It supports our wider work to improve understanding of how climate-related risks may affect financial services and the challenges of climate adaption and resilience.</p><h3>Caveats and limitations</h3><p>This analysis estimates mortgage exposure using postcode centroids rather than individual property locations. This means some properties may be assigned to a different flood risk category than their actual location, particularly in larger rural postcodes or postcodes that cross flood risk boundaries.&nbsp;</p><p>This approach also cannot capture variation within a postcode. For example, a property may have a lower flood risk than the postcode centroid if it is on higher ground away from a river or flood-prone area.&nbsp;</p><p>Results are also sensitive to the location of flood risk boundaries. Small differences in location can lead to different risk categorisations, even where actual levels of risk are similar. Postcode centroids are likely to provide more accurate representation in smaller, densely populated postcodes than in larger postcodes with more spread-out properties. Flood risks that are concentrated in small areas are likely to also be underrepresented.</p><p>Our methodology estimates the probability of flooding at postcode level rather than for individual properties. The results should therefore be viewed as indicators of exposure, not property-level risk assessments.&nbsp;</p><p>The analysis is intended to support understanding of aggregated exposure and regional pattern identification, but nothing more granular. This analysis does not introduce new regulatory requirements or supervisory expectations.</p><h3>Attribute Statements</h3><p>Contains public sector information licensed under the Open Government Licence v3.0.</p><p>&nbsp;© Environment Agency copyright and/or database right 2025. All rights reserved.</p><p>Contains OS data © Crown copyright and database right 2026</p><p>Contains Ministry of Housing, Communities and Local Government data © Crown copyright and database right 2025</p> </div> </section> </div> </div> </section> </div> <div id=\"revisions\" class=\"page-revisions container\" lang=\"en-GB\"> </div> <div class=\"page-feedback container\" lang=\"en-GB\"> <form class=\"webform-submission-form webform-submission-add-form webform-submission-page-feedback-form-form webform-submission-page-feedback-form-add-form webform-submission-page-feedback-form-node-176851-form webform-submission-page-feedback-form-node-176851-add-form js-webform-details-toggle webform-details-toggle js-fca-lazy-captcha webform-client-form webform-client-form- feedback-form fca-custom-form webform-conditional-processed\" data-drupal-selector=\"webform-submission-page-feedback-form-node-176851-add-form\" novalidate=\"novalidate\" action=\"/data/flood-risk-exposure-mortgages-england#webform-submission-page-feedback-form-node-176851-add-form\" method=\"post\" id=\"webform-submission-page-feedback-form-node-176851-add-form\" accept-charset=\"UTF-8\" > <fieldset data-drupal-selector=\"edit-radios\" class=\"radios--wrapper fieldgroup form-composite webform-composite-visible-title js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper\" id=\"edit-radios--wrapper\"> <legend id=\"edit-radios--wrapper-legend\"> <span class=\"fieldset-legend\">Was this page useful?</span> </legend> <div class=\"fieldset-wrapper\"> <div id=\"edit-radios\" class=\"js-webform-radios webform-options-display-side-by-side\"><div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-yes\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-yes\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-yes\" name=\"radios\" value=\"Yes\" /><span class=\"fca-custom-label\">Yes </span></label> </div> <div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-no\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-no\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-no\" name=\"radios\" value=\"No\" /><span class=\"fca-custom-label\">No </span></label> </div> </div> </div> </fieldset> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-can-we-do-to-improve-pages-like-this- js-form-item-what-can-we-do-to-improve-pages-like-this- form-group\"> <label for=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"control-label\">What can we do to improve pages like this? </label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176851-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;No&quot;}}}\" id=\"edit-what-can-we-do-to-improve-pages-like-this-\" name=\"what_can_we_do_to_improve_pages_like_this_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-did-you-find-helpful- js-form-item-what-did-you-find-helpful- form-group\"> <label for=\"edit-what-did-you-find-helpful-\" class=\"control-label\">What did you find helpful?</label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-did-you-find-helpful-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176851-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;Yes&quot;}}}\" id=\"edit-what-did-you-find-helpful-\" name=\"what_did_you_find_helpful_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <input data-drupal-selector=\"edit-page-title\" type=\"hidden\" name=\"page_title\" value=\"Flood risk exposure of mortgages in England\" /><input data-drupal-selector=\"edit-page-url\" type=\"hidden\" name=\"page_url\" value=\"https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england \" /><div class=\"js-webform-states-hidden form-actions webform-actions clearfix fca-form-submit form-group js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176851-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;checked&quot;:true}}}\" id=\"edit-actions\"><button class=\"webform-button--submit button button--primary js-form-submit form-submit btn-primary btn\" data-drupal-selector=\"edit-actions-submit\" type=\"submit\" id=\"edit-actions-submit\" name=\"op\" value=\"Submit Feedback\">Submit Feedback</button> </div> <input autocomplete=\"off\" data-drupal-selector=\"form-wmpaunzhxq8yyw8ar-wm9-d5endcodaguvaemcwlmeg\" type=\"hidden\" name=\"form_build_id\" value=\"form-WmpaUNZHxQ8Yyw8AR_WM9-D5eNDCodAgUvAemcwLMEg\" /><input data-drupal-selector=\"edit-webform-submission-page-feedback-form-node-176851-add-form\" type=\"hidden\" name=\"form_id\" value=\"webform_submission_page_feedback_form_node_176851_add_form\" /> <input data-drupal-selector=\"edit-captcha-sid\" type=\"hidden\" name=\"captcha_sid\" value=\"1595500296\" /><input data-drupal-selector=\"edit-captcha-token\" type=\"hidden\" name=\"captcha_token\" value=\"5b7bR7Zbp2RH74t-qMa7JUWlaICtpaxnfYGpRyq_A1c\" /><input id=\"recaptcha-v3-token\" class=\"recaptcha-v3-token\" data-recaptcha-v3-action=\"fca_recaptcha\" data-recaptcha-v3-site-key=\"6LfnAxopAAAAAJL8t0TPEZql_Canimafd6XMM7WQ\" data-drupal-selector=\"edit-captcha-response\" type=\"hidden\" name=\"captcha_response\" value=\"\" /><input data-drupal-selector=\"edit-is-recaptcha-v3\" type=\"hidden\" name=\"is_recaptcha_v3\" value=\"1\" /> <div class=\"url_hp-textfield form-group js-form-wrapper form-wrapper\" style=\"display: none !important;\"><div class=\"form-item js-form-item form-type-textfield js-form-type-textfield form-item-url-hp js-form-item-url-hp form-group\"> <label for=\"edit-url-hp\" class=\"control-label\">Leave this field blank</label> <input autocomplete=\"off\" data-drupal-selector=\"edit-url-hp\" class=\"form-text form-control\" type=\"text\" id=\"edit-url-hp\" name=\"url_hp\" value=\"\" size=\"20\" maxlength=\"128\" /> </div> </div> </form> </div> </div> </article>",
+    "evidenceBlocks": [
+      {
+        "documentEvidenceId": "0c92ca7c09c6622f",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "As part of our work on climate adaption and resilience , we analysed the geographical exposure of regulated mortgage lending to flood risk.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "0b7e37662c8079e8",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "This helps us identify where flooding from rivers, the sea, and surface water could pose the greatest risk, and where we should focus our resources.&nbsp; We completed analysis for England using flood risk data from the Environment Agency.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "157cbf74933a5fe1",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "We also completed analysis for the risks across Scotland and Wales; however, the differences in geography and population density meant that we could not apply the methodology consistently across all countries.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f72aafcb8bf485b9",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "Northern Ireland does not have similar flood risk data available.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1b027fbccd1b0e7b",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "Since 2005, firms have been required to report data on all new sales of regulated mortgage contracts.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f7d26baa8e90ba6e",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "Since 1 April 2021, reporting has also included internal product transfers and further advances completed on or after that date.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "c0d0c050d41df11f",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "This data helps us understand the approximate location of mortgage lending.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "df84136942dd3d77",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "We mapped mortgage postcode locations against Environment Agency flood risk datasets covering rivers,&nbsp;the sea&nbsp;and surface water.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5a3dfcc0934acc05",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "The analysis uses postcode-level flood risk classifications rather than individual property data.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "09f3f7267fb83765",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "It should therefore be viewed as an indicator of overall exposure, not property-specific risk.&nbsp; Flood risk is classified into bands that reflect the likelihood of flooding.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b691535ca7f65ad6",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "For rivers and the sea, the bands are very low, low, medium and high (see note 1 ).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e709601063878203",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "For surface water, the bands are low, medium and high.&nbsp; A postcode is assigned to a risk band when its centroid, the approximate centre of the postcode, falls within a flood risk area.&nbsp;&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1aaa8ca81d680b3f",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1",
+        "extractedText": "1. England: Environment Agency Risk of Flooding from Rivers and the Sea: High - greater than or equal to 3.3% chance in any given year (1 in 30)&nbsp; Medium - less than 3.3% (1 in 30) but greater than or equal to 1% (1 in 100) chance in any given year&nbsp; Low - less than 1% (1 in 100) but greater than or equal to 0.1% (1 in 1,000) chance in any given year&nbsp; Very Low - less than 0.1% chance in any given year (1 in 1,000) Risk of Flooding from Surface Water: High - greater than or equal to 3.3% (1 in 30) chance in any given year Medium - less than 3.3% (1 in 30) but greater than or equal to 1% (1 in 100) chance in any given year Low - less than 1% (1 in 100) but greater than or equal to 0.1% (1 in 1,000) chance in any given year.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "30ae7b31d8d4b5bc",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Overview",
+        "extractedText": "Our analysis suggests that 15.5% of mortgage contracts in England are linked to postcodes with some level of flood risk.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1b71482cd925293f",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Overview",
+        "extractedText": "Exposure varies by region and type of flooding.&nbsp; These findings help identify where physical climate risks may be most relevant to mortgage lending and where consumers could be more exposed to the impacts of flooding over time.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "bd532991daf6ebaa",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Overview",
+        "extractedText": "Map 1: Postcode centroids by risk of flooding from surface water Map 2: Postcode centroids by risk of flooding from rivers and the sea",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1039d8965da44f19",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Map 1: Postcode centroids by risk of flooding from surface water",
+        "extractedText": "Map of England showing surface water flood risk classifications for postcode centroids.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "88264ed0db139791",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Map 1: Postcode centroids by risk of flooding from surface water",
+        "extractedText": "Low, medium and high flood risk locations are distributed across the country, with the greatest concentrations occurring in more densely populated urban areas, particularly London, the Midlands, North West England and parts of Yorkshire.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5b6cd3ac57a2aca6",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Map 1: Postcode centroids by risk of flooding from surface water",
+        "extractedText": "High-risk postcode centroids are present throughout England but represent a smaller proportion of mapped locations than low-risk centroids.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2db63e52fc2b8ebe",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Map 2: Postcode centroids by risk of flooding from rivers and the sea",
+        "extractedText": "Map of England showing river and sea flood risk classifications for postcode centroids.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "ee7000237ead2e70",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Map 2: Postcode centroids by risk of flooding from rivers and the sea",
+        "extractedText": "Very low, low, medium and high flood risk locations are concentrated around major river systems and coastal areas, including the Thames corridor, the Humber estuary and parts of the east and south coasts.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d058512b34bd400c",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Map 2: Postcode centroids by risk of flooding from rivers and the sea",
+        "extractedText": "High-risk postcode centroids are present across England but are less common than very low and low-risk centroids.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "326e35e612a10d5b",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. Regional flood exposure",
+        "extractedText": "Surface water Rivers and the sea Regional flood risk exposure due to surface water flooding.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "c79c58edf49f4a8b",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. Regional flood exposure",
+        "extractedText": "Sub Regions No Risk Low Medium High Percentage Affected Inner London - West 75.6 14.2 5.3 5 24 Inner London - East 78.7 12.2 4.4 4.8 21 Essex 82.5 8.6 2.4 6.5 18 Outer London - West and North West 80.9 10.5 3.6 5 19 Outer London - East and North East 82.4 10.1 3.5 3.9 18 Merseyside 85.7 7.5 2.5 4.4 14 Cambridgeshire and Peterborough 84.9 8.5 3.1 3.5 15 Outer London - South 84.9 8.7 3.4 3 15 West of England 86.2 7.5 2.8 3.4 14 Suffolk 87.6 7 2.1 3.3 12 Bedfordshire and Hertfordshire 87.6 7.1 2.1 3.2 12 Tees Valley 89.1 6.4 2.1 2.4 11 Surrey, East and West Sussex 90.6 5.4 1.8 2.2 9 Greater Manchester 89.3 6.7 2.1 1.8 11 Berkshire, Buckinghamshire and Oxfordshire 90.9 5.2 1.7 2.2 9 Gloucestershire and Wiltshire 91.1 5.1 1.7 2 9 West Midlands 90.3 5.9 1.9 1.8 10 East Yorkshire and Northern Lincolnshire 89.3 7.1 2 1.6 11 Shropshire and Staffordshire 91 5.5 1.8 1.7 9 Leicestershire, Rutland and Northamptonshire 91.4 5.1 1.6 1.9 9 Northumberland, Durham and Tyne &amp; Wear 91.3 5.3 1.6 1.9 9 Cheshire 90.4 6.2 2.1 1.3 10 Lancashire 91.8 4.8 1.6 1.8 8 Herefordshire, Worcestershire and Warwickshire 91.4 5.2 1.6 1.8 9 Kent 91.5 5.1 1.6 1.8 8 Lincolnshire 91.2 5.5 1.7 1.6 9 Cumbria 92.4 4.5 1.3 1.7 8 North Yorkshire 90.5 6.5 1.8 1.3 10 Derbyshire and Nottinghamshire 91.2 5.8 1.6 1.4 9 Norfolk 93.1 4.2 1.5 1.2 7 North Somerset, Somerset and Dorset 92.3 5 1.4 1.3 8 Hampshire and Isle of Wight 93.6 4 1.3 1.2 6 West Yorkshire 92.8 4.8 1.2 1.2 7 South Yorkshire 91.8 5.9 1.2 1.1 8 Devon 94.1 3.7 1.1 1.1 6 Cornwall and Isles of Scilly 94.4 4 0.7 0.8 6 Regional flood risk exposure due to flooding from rivers and the sea.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6ce5ec36374e28d5",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. Regional flood exposure",
+        "extractedText": "Sub Regions No Risk Very low Low Medium High Percentage Affected Lincolnshire 71.7 2.3 17.8 7.4 0.9 28 East Yorkshire and Northern Lincolnshire 62 22.5 7.8 3.6 4.1 38 Cambridgeshire and Peterborough 92.1 0.3 2.8 3.7 1 8 North Yorkshire 89.3 1.1 5.8 1.7 2.1 11 Cumbria 92.8 0.7 4.2 0.9 1.4 7 South Yorkshire 94.4 1.6 1.8 1.2 0.9 6 Surrey, East and West Sussex 92.6 1.8 3.5 1.1 1.1 7 Devon 95.4 0.4 2.2 0.9 1.2 5 Outer London - South 95.7 0.1 2.2 0.9 1.1 4 Lancashire 91.5 4 2.7 1.1 0.8 9 Norfolk 92.3 4.1 1.7 1.6 0.2 8 Berkshire, Buckinghamshire and Oxfordshire 94.7 0.6 2.9 0.8 1 5 Kent 93.5 2.7 2.2 0.6 1 6 Derbyshire and Nottinghamshire 93.2 1.1 4.2 0.9 0.7 7 Cornwall and Isles of Scilly 97.6 0.2 0.8 0.6 0.8 2 North Somerset, Somerset and Dorset 86.5 7.2 5.1 0.6 0.6 13 Hampshire and Isle of Wight 97.1 0.4 1.3 0.3 0.8 3 Gloucestershire and Wiltshire 97.2 0.3 1.4 0.5 0.6 3 Outer London - East and North East 91.7 4.2 3 0.7 0.4 8 Inner London - East 83.9 13.1 1.9 0.4 0.7 16 Inner London - West 89.3 8.1 1.5 0.6 0.4 11 Cheshire 96.3 0.1 2.6 0.5 0.5 4 Outer London - West and North West 95.4 1.5 2.1 0.5 0.5 5 West Yorkshire 97.3 0.2 1.5 0.5 0.4 3 Greater Manchester 96.1 0.4 2.6 0.5 0.5 4 West of England 95.9 1.2 2 0.5 0.4 4 Herefordshire, Worcestershire and Warwickshire 97.7 0.1 1.3 0.5 0.4 2 Essex 93.6 4.2 1.4 0.4 0.3 6 Bedfordshire and Hertfordshire 97.2 0.5 1.5 0.4 0.4 3 Suffolk 97.6 0.9 0.9 0.3 0.4 2 Leicestershire, Rutland and Northamptonshire 97.8 0.3 1.4 0.4 0.2 2 West Midlands 98.8 0.1 0.5 0.2 0.3 1 Shropshire and Staffordshire 97 1.5 1.1 0.2 0.2 3 Merseyside 96.7 2.1 0.8 0.1 0.2 3 Tees Valley 98.8 0.1 0.8 0.2 0.1 1 Northumberland, Durham and Tyne &amp; Wear 99 0.1 0.7 0.1 0.2 1 Flood risk exposure is not evenly distributed across England (see notes 2 and 3).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "44d0b7a21dc9a014",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. Regional flood exposure",
+        "extractedText": "High-risk exposure to surface water flooding is concentrated in and around London, with Essex showing the highest proportion of postcode centroids in the high-risk category (6.5%).&nbsp; Exposure to flooding from rivers and the sea is highest in Lincolnshire and East Yorkshire, where a large portion of postcodes fall within the medium and high-risk categories.&nbsp; Understanding these geographical patterns helps identify where climate-related risks may have the greatest effect on consumers and mortgage lending if flooding becomes more frequent or severe.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "8c837dbb425f2327",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 2 and 3",
+        "extractedText": "Sub-regions from the International Territorial Level (ITL2) are used to provide consistently sized geographical areas across the country.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7fc3879e016aca6a",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 2 and 3",
+        "extractedText": "They are part of the official geographic boundary standards used to break down the country into regions for collecting, publishing and comparing official statistics.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "55db15bdcdec7530",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 2 and 3",
+        "extractedText": "Tables have been ordered by the sum of the medium and high-risk categories.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "68b70dbbdd12e3e6",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. High loan-to-value (LTV) ratios",
+        "extractedText": "We analysed mortgage contracts sold in the last reporting period to assess whether lending patterns differ across areas with different levels of flood risk.&nbsp; In the charts below, each group of bars should be viewed separately.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "404dd8f60a10aeec",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. High loan-to-value (LTV) ratios",
+        "extractedText": "The percentages show the proportion of mortgages within each LTV band that are linked to postcodes in each flood risk category.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b21a8dc5b56ca242",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. High loan-to-value (LTV) ratios",
+        "extractedText": "For example, of mortgage contracts with an LTV ratio of 0-10%, around 6% are linked to postcodes classified as low risk for surface water flooding.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6a366b189ed6b58b",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. High loan-to-value (LTV) ratios",
+        "extractedText": "For the risk of flooding from surface water, the proportion of mortgages in high-risk areas falls slightly as the LTV ratios increase.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2666d80fe5964b9a",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. High loan-to-value (LTV) ratios",
+        "extractedText": "Overall, the proportions remain relatively stable, although there is a notable increase in mortgages with an LTV in excess of 100% in medium-risk areas.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1f2f95fb81a8b3a6",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. High loan-to-value (LTV) ratios",
+        "extractedText": "Overall, the results do not&nbsp;show&nbsp;a clear or consistent relationship between higher LTV lending and greater exposure to flood risk.&nbsp; Chart Data table Download Chart Data table Download",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "aa6409f9e01a05d2",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+        "extractedText": "We also analysed flood risk exposure across different levels of deprivation.&nbsp; The IMD is the official measure of deprivation in England.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "11048d65804be047",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+        "extractedText": "It combines information on income, employment, education and skills, health, crime, barriers to housing and services, and the living environment.&nbsp; The charts below show how flood risk exposure varies across these measures.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4b08141f279f9791",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+        "extractedText": "Looking at the combined proportion of the red and orange bands helps identify where more deprived communities may be exposed to flood risk.&nbsp; Chart Data table Download Chart Data table Download Exposure to surface water flooding is broadly similar across deprivation levels.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "8e82263159dc4575",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+        "extractedText": "Within each flood risk band, a higher proportion of mortgages are linked to postcodes in the most deprived areas than to postcodes with no flood risk.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4f7dfce74faae539",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+        "extractedText": "For flooding from rivers and the sea, exposure is spread across all deprivation levels.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "ef81f825d5673b39",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+        "extractedText": "As flood risk increases, a larger proportion of mortgages are linked to less deprived areas.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e86e239785ff6af4",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+        "extractedText": "This may reflect the attractiveness of some properties located near rivers or along the coast.&nbsp; These findings suggest that physical climate risks can affect a wide range of consumers and communities.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "540324371c4da719",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5. Index of Multiple Deprivation (IMD)",
+        "extractedText": "They also show that the relationship between flood risk and deprivation can vary depending on the type of flooding.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4164ea17368c68bb",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "6. Conclusions",
+        "extractedText": "This analysis provides an overview of the exposure of mortgage lending to flood risk in England.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "459d4bf0809d8734",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "6. Conclusions",
+        "extractedText": "We found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, although exposure varies by region&nbsp;and type of flooding.&nbsp; The findings&nbsp;show&nbsp;that physical climate risks are relevant to mortgage markets because they affect consumers,&nbsp;firms,&nbsp;and market functioning.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "8e5e7fcf466db550",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "6. Conclusions",
+        "extractedText": "However,&nbsp;the results should not be interpreted as an assessment of individual properties,&nbsp;firms&nbsp;or consumer outcomes.&nbsp; Instead, the analysis&nbsp;is a high-level view of exposure using publicly available flood risk data and mortgage postcode information.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "ce04241c8f3f955e",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "6. Conclusions",
+        "extractedText": "It supports our wider work to improve understanding of how climate-related risks may affect financial services and the challenges of climate adaption and resilience.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3003baaf26003886",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "This analysis estimates mortgage exposure using postcode centroids rather than individual property locations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "678b83881858cb56",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "This means some properties may be assigned to a different flood risk category than their actual location, particularly in larger rural postcodes or postcodes that cross flood risk boundaries.&nbsp; This approach also cannot capture variation within a postcode.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "68fbd3fdebf00f16",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "For example, a property may have a lower flood risk than the postcode centroid if it is on higher ground away from a river or flood-prone area.&nbsp; Results are also sensitive to the location of flood risk boundaries.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1a485c32e1f011e6",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "Small differences in location can lead to different risk categorisations, even where actual levels of risk are similar.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2c906bf7518660b7",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "Postcode centroids are likely to provide more accurate representation in smaller, densely populated postcodes than in larger postcodes with more spread-out properties.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3bc0077a5ce10895",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "Flood risks that are concentrated in small areas are likely to also be underrepresented.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "730516532d9b1e42",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "Our methodology estimates the probability of flooding at postcode level rather than for individual properties.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b44060370da84bc9",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "The results should therefore be viewed as indicators of exposure, not property-level risk assessments.&nbsp; The analysis is intended to support understanding of aggregated exposure and regional pattern identification, but nothing more granular.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7a9386a62d308534",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Caveats and limitations",
+        "extractedText": "This analysis does not introduce new regulatory requirements or supervisory expectations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "9008fe84bdc97c4a",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Attribute Statements",
+        "extractedText": "Contains public sector information licensed under the Open Government Licence v3.0. &nbsp;© Environment Agency copyright and/or database right 2025.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "0732ee16931bd614",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Attribute Statements",
+        "extractedText": "Contains OS data © Crown copyright and database right 2026 Contains Ministry of Housing, Communities and Local Government data © Crown copyright and database right 2025 Was this page useful?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1b3720b2ee7ceffc",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Attribute Statements",
+        "extractedText": "Yes No What can we do to improve pages like this?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7636ff1bb0b92872",
+        "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Attribute Statements",
+        "extractedText": "Submit Feedback Leave this field blank",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      }
+    ],
+    "evidenceMedium": "fca_webpage",
+    "integrityVerified": true,
+    "obligationGradeSuitable": true,
+    "publicationTitle": "Flood risk exposure of mortgages in England",
+    "publicationReference": null,
+    "regulatorShortName": "FCA",
+    "regulatorLabel": "Financial Conduct Authority"
+  },
+  "provenanceClassification": "AUTHORITATIVE_STAGING_EXTRACTION",
+  "retrievalProvenance": {
+    "exportSource": "b1_staging_readonly_export",
+    "exportedAt": "2026-11-10T17:48:18.449Z"
+  },
+  "exportSource": "b1_staging_readonly_export"
+}

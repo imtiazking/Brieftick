@@ -1,0 +1,319 @@
+{
+  "packVersion": 1,
+  "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+  "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+  "publicationType": "discussion_paper",
+  "regulator": "FCA",
+  "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime",
+  "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+  "extractionProfile": "html_article_v2",
+  "contentSha256": "6a7573d04cde6f7b4b6c55f6b4f9ed5ba6687b597219e54d4df96a8b21c0bd3a",
+  "regulatoryStatus": "discussion_paper",
+  "blockCount": 16,
+  "verifiedTextSamples": [
+    {
+      "documentEvidenceId": "0e03c610fe71dde7",
+      "sectionReference": "On this page",
+      "extractedText": "Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/1"
+    },
+    {
+      "documentEvidenceId": "4b7168baf1db376a",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "The PRA and FCA are not proposing or committing to any specific policy changes at this point, but this paper explores whether: The current prudential framework remains appropriate across a sector that has become increasingly diverse."
+    },
+    {
+      "documentEvidenceId": "663c833673487588",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "There are opportunities to support competition, innovation and the long-term sustainability of the sector."
+    },
+    {
+      "documentEvidenceId": "6844736ea2e977b4",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "The current framework provides appropriate support and safeguards in certain areas."
+    },
+    {
+      "documentEvidenceId": "b765ec3a1dcf6117",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "Credit unions have adequate tools to exit the market in an orderly manner."
+    },
+    {
+      "documentEvidenceId": "accbb6bae4682848",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "We’re interested in hearing views on specific areas of the regulatory framework as well as how different approaches may operate together to support the sustainable development of the sector."
+    },
+    {
+      "documentEvidenceId": "e4b20336e4deed6d",
+      "sectionReference": "Who this is for",
+      "extractedText": "Credit unions based in Great Britain and Northern Ireland."
+    },
+    {
+      "documentEvidenceId": "035539c6dff13c51",
+      "sectionReference": "Who this is for",
+      "extractedText": "Credit union service organisations."
+    },
+    {
+      "documentEvidenceId": "96877a2e4f3edf80",
+      "sectionReference": "Next steps",
+      "extractedText": "The deadline for views is 5 March 2027 ."
+    },
+    {
+      "documentEvidenceId": "2ec814768ea8b499",
+      "sectionReference": "Next steps",
+      "extractedText": "Send your responses to [email&#160;protected] ."
+    },
+    {
+      "documentEvidenceId": "98fee122cfa9e5cf",
+      "sectionReference": "Background",
+      "extractedText": "Credit unions serve more than 2 million members, providing a range of financial services centred primarily on savings and lending."
+    },
+    {
+      "documentEvidenceId": "771733f322c5893f",
+      "sectionReference": "Background",
+      "extractedText": "The sector has become more diverse with some firms having grown significantly in size and complexity."
+    },
+    {
+      "documentEvidenceId": "d01c3a83e620b40f",
+      "sectionReference": "Background",
+      "extractedText": "In the Mutuals Landscape Report , the PRA and FCA committed to working with the credit union sector to review its current position and trajectory in more detail and consider the longer-term evolution of its regulatory framework."
+    },
+    {
+      "documentEvidenceId": "b23b7c09a377645b",
+      "sectionReference": "Background",
+      "extractedText": "This Discussion Paper forms part of that commitment."
+    },
+    {
+      "documentEvidenceId": "b80fd685a16c8e07",
+      "sectionReference": "Background",
+      "extractedText": "Yes No What can we do to improve pages like this?"
+    },
+    {
+      "documentEvidenceId": "d2fbd2eb46e4ac3e",
+      "sectionReference": "Background",
+      "extractedText": "Submit Feedback Leave this field blank"
+    }
+  ],
+  "askRiEvidence": {
+    "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+    "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+    "extractionProfile": "html_article_v2",
+    "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime",
+    "publicationMetadata": {
+      "title": "DP26/1: Credit unions: review of the regulatory regime",
+      "primaryPdf": null,
+      "drupalAbout": "/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime",
+      "drupalNodeId": "177191",
+      "consultationTimeline": {
+        "opens": null,
+        "closes": null,
+        "present": true,
+        "opensDate": "03/11/2026",
+        "closesDate": "05/03/2027"
+      },
+      "publicationTypeLabel": null,
+      "primaryDocumentClassification": "webpage_only"
+    },
+    "extractionQuality": {
+      "score": 100,
+      "status": "complete",
+      "metrics": {
+        "headingCount": 5,
+        "alphaWordCount": 201,
+        "paragraphCount": 8,
+        "plainTextLength": 1943,
+        "pdfAttachmentCount": 0
+      },
+      "signals": [],
+      "confidence": "high",
+      "primaryDocument": {
+        "completeness": "not_applicable",
+        "primaryPdfUrl": null,
+        "classification": "webpage_only",
+        "primaryPdfCaptured": false
+      },
+      "webpageExtraction": {
+        "score": 100,
+        "status": "complete",
+        "confidence": "high"
+      },
+      "obligationGradeSuitable": true
+    },
+    "pdfAttachments": [],
+    "normalisedArticleText": "This joint Discussion Paper with the Prudential Regulation Authority (PRA) seeks views that will help inform future consideration of the regulatory framework for credit unions. On this page Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/1 Why we are publishing this Discussion Paper The PRA and FCA are not proposing or committing to any specific policy changes at this point, but this paper explores whether: The current prudential framework remains appropriate across a sector that has become increasingly diverse. There are opportunities to support competition, innovation and the long-term sustainability of the sector. The current framework provides appropriate support and safeguards in certain areas. Credit unions have adequate tools to exit the market in an orderly manner. We’re interested in hearing views on specific areas of the regulatory framework as well as how different approaches may operate together to support the sustainable development of the sector. Who this is for Credit unions based in Great Britain and Northern Ireland. Credit union members. Credit union service organisations. Credit union trade associations. Next steps The deadline for views is 5 March 2027 . Send your responses to [email protected] . Background Credit unions serve more than 2 million members, providing a range of financial services centred primarily on savings and lending. The sector has become more diverse with some firms having grown significantly in size and complexity. In the Mutuals Landscape Report , the PRA and FCA committed to working with the credit union sector to review its current position and trajectory in more detail and consider the longer-term evolution of its regulatory framework. This Discussion Paper forms part of that commitment. Was this page useful? Yes No What can we do to improve pages like this? What did you find helpful? Submit Feedback Leave this field blank",
+    "normalisedArticleHtml": "<article data-history-node-id=\"177191\" about=\"/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime\" class=\"article-header col-xs-12 four-step-limit col-sm-9 has-sidebar clearfix\"> <div class=\"node-content__wrapper node-content__wrapper--border\"> <section class=\"copy-highlighted copy-block component fca-colour--6c1d45 default\"> <div class=\"container\"> <p>This joint Discussion Paper with the Prudential Regulation Authority (PRA) seeks views that will help inform future consideration of the regulatory framework for credit unions.</p> </div> </section> <div class=\"rhn__on-this-page visible-xs rhn__on-this-page--publication\"> <h2 class=\"h3\" lang=\"en-GB\"> <button class=\"rhn__button\" aria-label=\"On this page\" aria-expanded=\"true\"> On this page <img src=\"/themes/custom/fca/images/document.svg\" alt=\"\"> </button> </h2> <ul class=\"nav navbar-nav\"><li><a href=\"#section-why-we-are-publishing-this-discussion-paper\">Why we are publishing this Discussion Paper</a></li><li><a href=\"#section-who-this-is-for\">Who this is for</a></li><li><a href=\"#section-next-steps\">Next steps</a></li><li><a href=\"#section-background\">Background</a></li></ul> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p><a class=\"btn btn-primary\" href=\"http://www.bankofengland.co.uk/prudential-regulation/publication/2026/november/credit-unions-supporting-sustainable-growth-and-resilience-discussion-paper\">Read DP26/1</a></p> </div> </section> </div> <div class=\"default\"> <section id=\"section-why-we-are-publishing-this-discussion-paper\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Why we are publishing this Discussion Paper</h2><p>The PRA and FCA are not proposing or committing to any specific policy changes at this point, but this paper explores whether:</p><ul><li data-list-item-id=\"e19a659e8c46cb056016e23d7eae8ed71\">The current prudential framework remains appropriate across a sector that has become increasingly diverse.</li><li data-list-item-id=\"ef10ea0668622ba9c035754dcaf48915e\">There are opportunities to support competition, innovation and the long-term sustainability of the sector.</li><li data-list-item-id=\"efcf36080cbff54849a6421f0f6aa5b2d\">The current framework provides appropriate support and safeguards in certain areas.</li><li data-list-item-id=\"e4bf1e454696875b1f5b5d976e7b69ce1\">Credit unions have adequate tools to exit the market in an orderly manner.</li></ul><p>We’re interested in hearing views on specific areas of the regulatory framework as well as how different approaches may operate together to support the sustainable development of the sector.</p> </div> </section> </div> <div class=\"default\"> <section id=\"section-who-this-is-for\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Who this is for</h2><ul><li data-list-item-id=\"eb0e28abc50c4b95aee6f19316174be94\">Credit unions based in Great Britain and Northern Ireland.</li><li data-list-item-id=\"e815b8f713359bc5a39e30c7fe0110822\">Credit union members.</li><li data-list-item-id=\"ed95be071e64e8f7040cca6add0de595f\">Credit union service organisations.</li><li data-list-item-id=\"eb3a473a619c37aac55cc08abec28083f\">Credit union trade associations.</li></ul> </div> </section> </div> <div class=\"default\"> <section id=\"section-next-steps\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Next steps</h2><p>The deadline for views is <strong>5 March 2027</strong>. Send your responses to <a href=\"/cdn-cgi/l/email-protection#c1e18591f39ef3f781a3a0afaaaea7a4afa6ada0afa5efa2aeefb4aa\"><span class=\"__cf_email__\" data-cfemail=\"99ddc9abc6abafd9fbf8f7f2f6fffcf7fef5f8f7fdb7faf6b7ecf2\">[email&#160;protected]</span></a>.</p> </div> </section> </div> <div class=\"default\"> <section id=\"section-background\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Background</h2><p>Credit unions serve more than 2 million members, providing a range of financial services centred primarily on savings and lending. The sector has become more diverse with some firms having grown significantly in size and complexity.</p><p>In the <a href=\"https://www.bankofengland.co.uk/prudential-regulation/publication/2025/december/mutuals-landscape-report\" data-entity-type=\"external\">Mutuals Landscape Report</a>, the PRA and FCA committed to working with the credit union sector to review its current position and trajectory in more detail and consider the longer-term evolution of its regulatory framework.</p><p>This Discussion Paper forms part of that commitment.</p> </div> </section> </div> <div class=\"node_view\"></div> </div> <div class=\"page-feedback container\" lang=\"en-GB\"> <form class=\"webform-submission-form webform-submission-add-form webform-submission-page-feedback-form-form webform-submission-page-feedback-form-add-form webform-submission-page-feedback-form-node-177191-form webform-submission-page-feedback-form-node-177191-add-form js-webform-details-toggle webform-details-toggle js-fca-lazy-captcha webform-client-form webform-client-form- feedback-form fca-custom-form webform-conditional-processed\" data-drupal-selector=\"webform-submission-page-feedback-form-node-177191-add-form\" novalidate=\"novalidate\" action=\"/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime#webform-submission-page-feedback-form-node-177191-add-form\" method=\"post\" id=\"webform-submission-page-feedback-form-node-177191-add-form\" accept-charset=\"UTF-8\" > <fieldset data-drupal-selector=\"edit-radios\" class=\"radios--wrapper fieldgroup form-composite webform-composite-visible-title js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper\" id=\"edit-radios--wrapper\"> <legend id=\"edit-radios--wrapper-legend\"> <span class=\"fieldset-legend\">Was this page useful?</span> </legend> <div class=\"fieldset-wrapper\"> <div id=\"edit-radios\" class=\"js-webform-radios webform-options-display-side-by-side\"><div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-yes\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-yes\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-yes\" name=\"radios\" value=\"Yes\" /><span class=\"fca-custom-label\">Yes </span></label> </div> <div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-no\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-no\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-no\" name=\"radios\" value=\"No\" /><span class=\"fca-custom-label\">No </span></label> </div> </div> </div> </fieldset> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-can-we-do-to-improve-pages-like-this- js-form-item-what-can-we-do-to-improve-pages-like-this- form-group\"> <label for=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"control-label\">What can we do to improve pages like this? </label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-177191-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;No&quot;}}}\" id=\"edit-what-can-we-do-to-improve-pages-like-this-\" name=\"what_can_we_do_to_improve_pages_like_this_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-did-you-find-helpful- js-form-item-what-did-you-find-helpful- form-group\"> <label for=\"edit-what-did-you-find-helpful-\" class=\"control-label\">What did you find helpful?</label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-did-you-find-helpful-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-177191-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;Yes&quot;}}}\" id=\"edit-what-did-you-find-helpful-\" name=\"what_did_you_find_helpful_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <input data-drupal-selector=\"edit-page-title\" type=\"hidden\" name=\"page_title\" value=\"DP26/1: Credit unions: review of the regulatory regime\" /><input data-drupal-selector=\"edit-page-url\" type=\"hidden\" name=\"page_url\" value=\"https://www.fca.org.uk/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime \" /><div class=\"js-webform-states-hidden form-actions webform-actions clearfix fca-form-submit form-group js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-177191-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;checked&quot;:true}}}\" id=\"edit-actions\"><button class=\"webform-button--submit button button--primary js-form-submit form-submit btn-primary btn\" data-drupal-selector=\"edit-actions-submit\" type=\"submit\" id=\"edit-actions-submit\" name=\"op\" value=\"Submit Feedback\">Submit Feedback</button> </div> <input autocomplete=\"off\" data-drupal-selector=\"form-km8jutrty3soebu9hhswz6gwtnfm-6mng5jvsreakke\" type=\"hidden\" name=\"form_build_id\" value=\"form-km8jUTrty3SoEbU9hhSwz6GWTnFM-6mng5jvSReakKE\" /><input data-drupal-selector=\"edit-webform-submission-page-feedback-form-node-177191-add-form\" type=\"hidden\" name=\"form_id\" value=\"webform_submission_page_feedback_form_node_177191_add_form\" /> <input data-drupal-selector=\"edit-captcha-sid\" type=\"hidden\" name=\"captcha_sid\" value=\"1580371326\" /><input data-drupal-selector=\"edit-captcha-token\" type=\"hidden\" name=\"captcha_token\" value=\"Um7Yb-uCILeppQ1oQVrQabp14MYmAerTsVfkym9Xz88\" /><input id=\"recaptcha-v3-token\" class=\"recaptcha-v3-token\" data-recaptcha-v3-action=\"fca_recaptcha\" data-recaptcha-v3-site-key=\"6LfnAxopAAAAAJL8t0TPEZql_Canimafd6XMM7WQ\" data-drupal-selector=\"edit-captcha-response\" type=\"hidden\" name=\"captcha_response\" value=\"\" /><input data-drupal-selector=\"edit-is-recaptcha-v3\" type=\"hidden\" name=\"is_recaptcha_v3\" value=\"1\" /> <div class=\"url_hp-textfield form-group js-form-wrapper form-wrapper\" style=\"display: none !important;\"><div class=\"form-item js-form-item form-type-textfield js-form-type-textfield form-item-url-hp js-form-item-url-hp form-group\"> <label for=\"edit-url-hp\" class=\"control-label\">Leave this field blank</label> <input autocomplete=\"off\" data-drupal-selector=\"edit-url-hp\" class=\"form-text form-control\" type=\"text\" id=\"edit-url-hp\" name=\"url_hp\" value=\"\" size=\"20\" maxlength=\"128\" /> </div> </div> </form> </div> </article>",
+    "evidenceBlocks": [
+      {
+        "documentEvidenceId": "0e03c610fe71dde7",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "On this page",
+        "extractedText": "Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/1",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4b7168baf1db376a",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "The PRA and FCA are not proposing or committing to any specific policy changes at this point, but this paper explores whether: The current prudential framework remains appropriate across a sector that has become increasingly diverse.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "663c833673487588",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "There are opportunities to support competition, innovation and the long-term sustainability of the sector.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6844736ea2e977b4",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "The current framework provides appropriate support and safeguards in certain areas.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b765ec3a1dcf6117",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "Credit unions have adequate tools to exit the market in an orderly manner.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "accbb6bae4682848",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "We’re interested in hearing views on specific areas of the regulatory framework as well as how different approaches may operate together to support the sustainable development of the sector.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e4b20336e4deed6d",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this is for",
+        "extractedText": "Credit unions based in Great Britain and Northern Ireland.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "035539c6dff13c51",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this is for",
+        "extractedText": "Credit union service organisations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "96877a2e4f3edf80",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "The deadline for views is 5 March 2027 .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2ec814768ea8b499",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "Send your responses to [email&#160;protected] .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "98fee122cfa9e5cf",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Credit unions serve more than 2 million members, providing a range of financial services centred primarily on savings and lending.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "771733f322c5893f",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "The sector has become more diverse with some firms having grown significantly in size and complexity.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d01c3a83e620b40f",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "In the Mutuals Landscape Report , the PRA and FCA committed to working with the credit union sector to review its current position and trajectory in more detail and consider the longer-term evolution of its regulatory framework.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b23b7c09a377645b",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "This Discussion Paper forms part of that commitment.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b80fd685a16c8e07",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Yes No What can we do to improve pages like this?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d2fbd2eb46e4ac3e",
+        "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Submit Feedback Leave this field blank",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      }
+    ],
+    "evidenceMedium": "fca_webpage",
+    "integrityVerified": true,
+    "obligationGradeSuitable": true,
+    "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+    "publicationReference": null,
+    "regulatorShortName": "FCA",
+    "regulatorLabel": "Financial Conduct Authority"
+  },
+  "provenanceClassification": "AUTHORITATIVE_STAGING_EXTRACTION",
+  "retrievalProvenance": {
+    "exportSource": "b1_staging_readonly_export",
+    "exportedAt": "2026-11-10T17:48:18.886Z"
+  },
+  "exportSource": "b1_staging_readonly_export"
+}

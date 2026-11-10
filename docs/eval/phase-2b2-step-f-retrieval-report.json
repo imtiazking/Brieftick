@@ -1,0 +1,2355 @@
+{
+  "phase": "2B.2-F",
+  "generatedAt": "2026-11-10T18:00:22.489Z",
+  "chunkCorrection": {
+    "priorIndexedChunks": 432,
+    "correctedIndexedChunks": 438,
+    "priorPageBoundarySignals": 6,
+    "correctedPageBoundaryViolations": 0,
+    "overIndexLimit": 0,
+    "oversizedRejected": 0
+  },
+  "originalCorpus": {
+    "chunkTokenStats": {
+      "count": 350,
+      "min": 9,
+      "max": 450,
+      "mean": 281.31,
+      "p95": 446,
+      "belowMinTarget": 26,
+      "overHardLimit": 0,
+      "overIndexLimit": 0,
+      "oversizedChunksRejected": 0,
+      "shortChunkExceptions": 4,
+      "truncationAttempts": 0,
+      "pageBoundaryViolations": 0
+    },
+    "metrics": {
+      "publicationRecallTop1": 6,
+      "publicationRecallTop1Denom": 6,
+      "publicationRecallTop5": 6,
+      "passageRelevanceRate": 6,
+      "negativeCorrectRejectionRate": 1,
+      "falsePositiveRate": 0,
+      "falseNegativeCount": 0,
+      "falsePositives": [],
+      "meanLatencyMs": 6.88
+    }
+  },
+  "correctedB1Corpus": {
+    "chunkTokenStats": {
+      "count": 438,
+      "min": 8,
+      "max": 450,
+      "mean": 244.9,
+      "p95": 446,
+      "belowMinTarget": 44,
+      "overHardLimit": 0,
+      "overIndexLimit": 0,
+      "oversizedChunksRejected": 0,
+      "shortChunkExceptions": 4,
+      "truncationAttempts": 0,
+      "pageBoundaryViolations": 0
+    },
+    "metrics": {
+      "publicationRecallTop1": 6,
+      "publicationRecallTop1Denom": 6,
+      "publicationRecallTop5": 6,
+      "passageRelevanceRate": 6,
+      "negativeCorrectRejectionRate": 1,
+      "falsePositiveRate": 0,
+      "falseNegativeCount": 0,
+      "falsePositives": [],
+      "meanLatencyMs": 6.31
+    },
+    "distinctPublications": 8
+  },
+  "developmentProbes": {
+    "dataset": "development-retrieval-probes-2b2-step-f-v1",
+    "threshold": 0.8736,
+    "byCategory": {
+      "b1_positive": {
+        "count": 8,
+        "recallTop1": 8,
+        "recallTop1Rate": 1,
+        "passageRelevant": 8,
+        "falseNegatives": 0
+      },
+      "original_frozen_suite": {
+        "count": 1,
+        "recallTop1": 1,
+        "recallTop1Rate": 1,
+        "passageRelevant": 1,
+        "falseNegatives": 0
+      },
+      "near_miss_negative": {
+        "count": 3,
+        "abstainCorrect": 2,
+        "abstainRate": 0.6667,
+        "falsePositives": 1
+      },
+      "unrelated_negative": {
+        "count": 2,
+        "abstainCorrect": 0,
+        "abstainRate": 0,
+        "falsePositives": 2
+      },
+      "closely_related_distractor": {
+        "count": 1,
+        "abstainCorrect": 1,
+        "abstainRate": 1,
+        "falsePositives": 0
+      }
+    },
+    "results": [
+      {
+        "testId": "DEV-B1-01",
+        "question": "How did supervisors assess conflicts of interest frameworks in private equity and private credit managers?",
+        "latencyMs": 7.38,
+        "expectedPublicationIds": [
+          "edcebe7d-3a3f-4adb-bb54-14120f14315a"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.919074,
+            "margin": 0.046442,
+            "lexicalQueryPassage": 0.3546,
+            "lexicalQueryTitle": 0.5071,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.919074,
+            "topChunk": {
+              "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+              "extractionRevisionId": "d0d6ae91-0f23-421f-b911-a50d05401467",
+              "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+              "regulator": "FCA",
+              "publicationStatus": "multi_firm_review",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/conflicts-interest-fair-customer-treatment-private-markets",
+              "contentSha256": "b3cd029cb3a93cc44da32e5ddbc831a4a29b09924369352db105b2e5028b97d0",
+              "chunkText": "The scope of this review included firms managing funds or providing portfolio management and/or advisory services in the UK involving private equity, private credit and real estate assets.\n\nWe assessed whether firms' conflicts of interest frameworks and governance arrangements were sufficiently robust to identify, manage, mitigate and disclose conflicts of interest and whether they supported the fair treatment of investors.",
+              "htmlSectionId": "What we did",
+              "sectionReference": "What we did",
+              "documentEvidenceId": "993f9007c1933d01",
+              "modelTokenCount": 72,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-edcebe7d-html-v1.json",
+              "chunkId": "f03d6973df772090"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+              "extractionRevisionId": "d0d6ae91-0f23-421f-b911-a50d05401467",
+              "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+              "regulator": "FCA",
+              "publicationStatus": "multi_firm_review",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/conflicts-interest-fair-customer-treatment-private-markets",
+              "contentSha256": "b3cd029cb3a93cc44da32e5ddbc831a4a29b09924369352db105b2e5028b97d0",
+              "chunkText": "The scope of this review included firms managing funds or providing portfolio management and/or advisory services in the UK involving private equity, private credit and real estate assets.\n\nWe assessed whether firms' conflicts of interest frameworks and governance arrangements were sufficiently robust to identify, manage, mitigate and disclose conflicts of interest and whether they supported the fair treatment of investors.",
+              "htmlSectionId": "What we did",
+              "sectionReference": "What we did",
+              "documentEvidenceId": "993f9007c1933d01",
+              "modelTokenCount": 72,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-edcebe7d-html-v1.json",
+              "chunkId": "f03d6973df772090"
+            },
+            "similarity": 0.9190735882956732
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.919074
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.872632
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.851925
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.847925
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.827494
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.919074,
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "title": "Conflicts of interest and fair customer treatment in private markets",
+            "section": "What we did",
+            "modelTokenCount": 72,
+            "substantive": true,
+            "excerpt": "The scope of this review included firms managing funds or providing portfolio management and/or advisory services in the UK involving private equity, private credit and real estate assets.\n\nWe assesse"
+          },
+          {
+            "similarity": 0.909963,
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "title": "Conflicts of interest and fair customer treatment in private markets",
+            "section": "What we did",
+            "modelTokenCount": 77,
+            "substantive": true,
+            "excerpt": "We considered actual, potential and perceived conflicts of interest that can arise within private markets.\n\nWe considered personal conflicts, conflicts of interest that are driven by firms’ business m"
+          },
+          {
+            "similarity": 0.892402,
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "title": "Conflicts of interest and fair customer treatment in private markets",
+            "section": "What we did",
+            "modelTokenCount": 75,
+            "substantive": true,
+            "excerpt": "Phase 1 involved sending a questionnaire to a sample of private market firms, with broad coverage across business models, asset classes, ownership structures, delegation models and firm size.\n\nWe gath"
+          },
+          {
+            "similarity": 0.890827,
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "title": "Conflicts of interest and fair customer treatment in private markets",
+            "section": "What we found",
+            "modelTokenCount": 65,
+            "substantive": true,
+            "excerpt": "Conflicts are inherent to private markets asset management and advisory activities and are significantly influenced by firms’ business models, investment structures and ownership arrangements.\n\nFirms "
+          },
+          {
+            "similarity": 0.879987,
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "title": "Conflicts of interest and fair customer treatment in private markets",
+            "section": "Why we did this work",
+            "modelTokenCount": 82,
+            "substantive": true,
+            "excerpt": "The review was conducted against a backdrop of increasing regulatory and industry focus on governance, transparency and standards across the sector.\n\nEffective management of conflicts of interest is f"
+          }
+        ],
+        "publicationSelected": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "passageSectionHint": true,
+        "category": "b1_positive"
+      },
+      {
+        "testId": "DEV-B1-02",
+        "question": "What did the multi-firm review highlight about fair treatment of investors in private markets?",
+        "latencyMs": 6.33,
+        "expectedPublicationIds": [
+          "edcebe7d-3a3f-4adb-bb54-14120f14315a"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.911255,
+            "margin": 0.040201,
+            "lexicalQueryPassage": 0.3351,
+            "lexicalQueryTitle": 0.4899,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.911255,
+            "topChunk": {
+              "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+              "extractionRevisionId": "d0d6ae91-0f23-421f-b911-a50d05401467",
+              "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+              "regulator": "FCA",
+              "publicationStatus": "multi_firm_review",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/conflicts-interest-fair-customer-treatment-private-markets",
+              "contentSha256": "b3cd029cb3a93cc44da32e5ddbc831a4a29b09924369352db105b2e5028b97d0",
+              "chunkText": "This multi-firm review will be of interest to: &nbsp; asset managers &nbsp; alternative investment fund managers (AIFMs) and &nbsp; investment advisers operating in private markets While the review focused on private equity, private credit and real estate firms, many of the observations may also be relevant to firms operating in other areas of private markets.",
+              "htmlSectionId": "Who this applies to",
+              "sectionReference": "Who this applies to",
+              "documentEvidenceId": "afa7df2bcebdf3eb",
+              "modelTokenCount": 79,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-edcebe7d-html-v1.json",
+              "chunkId": "a8639731c07e0614"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+              "extractionRevisionId": "d0d6ae91-0f23-421f-b911-a50d05401467",
+              "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+              "regulator": "FCA",
+              "publicationStatus": "multi_firm_review",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/conflicts-interest-fair-customer-treatment-private-markets",
+              "contentSha256": "b3cd029cb3a93cc44da32e5ddbc831a4a29b09924369352db105b2e5028b97d0",
+              "chunkText": "This multi-firm review will be of interest to: &nbsp; asset managers &nbsp; alternative investment fund managers (AIFMs) and &nbsp; investment advisers operating in private markets While the review focused on private equity, private credit and real estate firms, many of the observations may also be relevant to firms operating in other areas of private markets.",
+              "htmlSectionId": "Who this applies to",
+              "sectionReference": "Who this applies to",
+              "documentEvidenceId": "afa7df2bcebdf3eb",
+              "modelTokenCount": 79,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-edcebe7d-html-v1.json",
+              "chunkId": "a8639731c07e0614"
+            },
+            "similarity": 0.9112548315750745
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.911255
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.871054
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.869392
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.84911
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.810183
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.911255,
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "title": "Conflicts of interest and fair customer treatment in private markets",
+            "section": "Who this applies to",
+            "modelTokenCount": 79,
+            "substantive": true,
+            "excerpt": "This multi-firm review will be of interest to: &nbsp; asset managers &nbsp; alternative investment fund managers (AIFMs) and &nbsp; investment advisers operating in private markets While the review fo"
+          },
+          {
+            "similarity": 0.872555,
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "title": "Conflicts of interest and fair customer treatment in private markets",
+            "section": "Why we did this work",
+            "modelTokenCount": 82,
+            "substantive": true,
+            "excerpt": "The review was conducted against a backdrop of increasing regulatory and industry focus on governance, transparency and standards across the sector.\n\nEffective management of conflicts of interest is f"
+          },
+          {
+            "similarity": 0.871054,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 63,
+            "modelTokenCount": 139,
+            "substantive": true,
+            "excerpt": "The firm must also ensure that its own fees and charges are fair value and that payment of these does not result in the product or service ceasing to be fair value overall.ExampleWhere different firms"
+          },
+          {
+            "similarity": 0.869392,
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "title": "Fair value in consumer finance",
+            "section": "3. What we looked at",
+            "modelTokenCount": 141,
+            "substantive": true,
+            "excerpt": "We also considered whether they used appropriate evidence to support their conclusions and identify potential fair value concerns.\n\nWe also carried out a focused review of fees and charges at firms of"
+          },
+          {
+            "similarity": 0.868904,
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "title": "Conflicts of interest and fair customer treatment in private markets",
+            "section": "What we did",
+            "modelTokenCount": 72,
+            "substantive": true,
+            "excerpt": "The scope of this review included firms managing funds or providing portfolio management and/or advisory services in the UK involving private equity, private credit and real estate assets.\n\nWe assesse"
+          }
+        ],
+        "publicationSelected": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "passageSectionHint": false,
+        "category": "b1_positive"
+      },
+      {
+        "testId": "DEV-B1-03",
+        "question": "What does published supervisory data show about UK mortgage portfolios exposed to flood risk?",
+        "latencyMs": 6.13,
+        "expectedPublicationIds": [
+          "49dee37a-9051-4c3f-8597-fa0dc232c91d"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.914532,
+            "margin": 0.082116,
+            "lexicalQueryPassage": 0.189,
+            "lexicalQueryTitle": 0.202,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.914532,
+            "topChunk": {
+              "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+              "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+              "publicationTitle": "Flood risk exposure of mortgages in England",
+              "regulator": "FCA",
+              "publicationStatus": "data_publication",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+              "contentSha256": "3932dae594dc4c4467b8cfdf5a2232b166e53f6a04e870e866a5c7dc833a1283",
+              "chunkText": "This analysis provides an overview of the exposure of mortgage lending to flood risk in England.\n\nWe found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, although exposure varies by region&nbsp;and type of flooding.&nbsp; The findings&nbsp;show&nbsp;that physical climate risks are relevant to mortgage markets because they affect consumers,&nbsp;firms,&nbsp;and market functioning.",
+              "htmlSectionId": "6. Conclusions",
+              "sectionReference": "6. Conclusions",
+              "documentEvidenceId": "4164ea17368c68bb",
+              "modelTokenCount": 103,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-49dee37a-html-v1.json",
+              "chunkId": "4e4d8bb9ad991cd4"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+              "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+              "publicationTitle": "Flood risk exposure of mortgages in England",
+              "regulator": "FCA",
+              "publicationStatus": "data_publication",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+              "contentSha256": "3932dae594dc4c4467b8cfdf5a2232b166e53f6a04e870e866a5c7dc833a1283",
+              "chunkText": "This analysis provides an overview of the exposure of mortgage lending to flood risk in England.\n\nWe found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, although exposure varies by region&nbsp;and type of flooding.&nbsp; The findings&nbsp;show&nbsp;that physical climate risks are relevant to mortgage markets because they affect consumers,&nbsp;firms,&nbsp;and market functioning.",
+              "htmlSectionId": "6. Conclusions",
+              "sectionReference": "6. Conclusions",
+              "documentEvidenceId": "4164ea17368c68bb",
+              "modelTokenCount": 103,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-49dee37a-html-v1.json",
+              "chunkId": "4e4d8bb9ad991cd4"
+            },
+            "similarity": 0.914531783175376
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.914532
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.832416
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.824697
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.822454
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.821648
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.914532,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "6. Conclusions",
+            "modelTokenCount": 103,
+            "substantive": true,
+            "excerpt": "This analysis provides an overview of the exposure of mortgage lending to flood risk in England.\n\nWe found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, "
+          },
+          {
+            "similarity": 0.910842,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "2. Overview",
+            "modelTokenCount": 71,
+            "substantive": true,
+            "excerpt": "Our analysis suggests that 15.5% of mortgage contracts in England are linked to postcodes with some level of flood risk.\n\nExposure varies by region and type of flooding.&nbsp; These findings help iden"
+          },
+          {
+            "similarity": 0.908371,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "4. High loan-to-value (LTV) ratios",
+            "modelTokenCount": 74,
+            "substantive": true,
+            "excerpt": "We analysed mortgage contracts sold in the last reporting period to assess whether lending patterns differ across areas with different levels of flood risk.&nbsp; In the charts below, each group of ba"
+          },
+          {
+            "similarity": 0.888713,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "5. Index of Multiple Deprivation (IMD)",
+            "modelTokenCount": 75,
+            "substantive": true,
+            "excerpt": "For flooding from rivers and the sea, exposure is spread across all deprivation levels.\n\nAs flood risk increases, a larger proportion of mortgages are linked to less deprived areas.\n\nThis may reflect "
+          },
+          {
+            "similarity": 0.887358,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "1. Introduction",
+            "modelTokenCount": 79,
+            "substantive": true,
+            "excerpt": "As part of our work on climate adaption and resilience , we analysed the geographical exposure of regulated mortgage lending to flood risk.\n\nThis helps us identify where flooding from rivers, the sea,"
+          }
+        ],
+        "publicationSelected": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "passageSectionHint": false,
+        "category": "b1_positive"
+      },
+      {
+        "testId": "DEV-B1-04",
+        "question": "Which mortgage lenders had the highest concentration of properties in high flood-risk areas?",
+        "latencyMs": 7.8,
+        "expectedPublicationIds": [
+          "49dee37a-9051-4c3f-8597-fa0dc232c91d"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.893085,
+            "margin": 0.077331,
+            "lexicalQueryPassage": 0.2268,
+            "lexicalQueryTitle": 0.4041,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.893085,
+            "topChunk": {
+              "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+              "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+              "publicationTitle": "Flood risk exposure of mortgages in England",
+              "regulator": "FCA",
+              "publicationStatus": "data_publication",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+              "contentSha256": "3932dae594dc4c4467b8cfdf5a2232b166e53f6a04e870e866a5c7dc833a1283",
+              "chunkText": "This analysis provides an overview of the exposure of mortgage lending to flood risk in England.\n\nWe found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, although exposure varies by region&nbsp;and type of flooding.&nbsp; The findings&nbsp;show&nbsp;that physical climate risks are relevant to mortgage markets because they affect consumers,&nbsp;firms,&nbsp;and market functioning.",
+              "htmlSectionId": "6. Conclusions",
+              "sectionReference": "6. Conclusions",
+              "documentEvidenceId": "4164ea17368c68bb",
+              "modelTokenCount": 103,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-49dee37a-html-v1.json",
+              "chunkId": "4e4d8bb9ad991cd4"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+              "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+              "publicationTitle": "Flood risk exposure of mortgages in England",
+              "regulator": "FCA",
+              "publicationStatus": "data_publication",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+              "contentSha256": "3932dae594dc4c4467b8cfdf5a2232b166e53f6a04e870e866a5c7dc833a1283",
+              "chunkText": "This analysis provides an overview of the exposure of mortgage lending to flood risk in England.\n\nWe found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, although exposure varies by region&nbsp;and type of flooding.&nbsp; The findings&nbsp;show&nbsp;that physical climate risks are relevant to mortgage markets because they affect consumers,&nbsp;firms,&nbsp;and market functioning.",
+              "htmlSectionId": "6. Conclusions",
+              "sectionReference": "6. Conclusions",
+              "documentEvidenceId": "4164ea17368c68bb",
+              "modelTokenCount": 103,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-49dee37a-html-v1.json",
+              "chunkId": "4e4d8bb9ad991cd4"
+            },
+            "similarity": 0.8930845607187105
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.893085
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.815754
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.805866
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.804509
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.789024
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.893085,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "6. Conclusions",
+            "modelTokenCount": 103,
+            "substantive": true,
+            "excerpt": "This analysis provides an overview of the exposure of mortgage lending to flood risk in England.\n\nWe found that around 1 in 7 mortgage contracts are linked to postcodes with some level of flood risk, "
+          },
+          {
+            "similarity": 0.891661,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "4. High loan-to-value (LTV) ratios",
+            "modelTokenCount": 74,
+            "substantive": true,
+            "excerpt": "We analysed mortgage contracts sold in the last reporting period to assess whether lending patterns differ across areas with different levels of flood risk.&nbsp; In the charts below, each group of ba"
+          },
+          {
+            "similarity": 0.887869,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "5. Index of Multiple Deprivation (IMD)",
+            "modelTokenCount": 75,
+            "substantive": true,
+            "excerpt": "For flooding from rivers and the sea, exposure is spread across all deprivation levels.\n\nAs flood risk increases, a larger proportion of mortgages are linked to less deprived areas.\n\nThis may reflect "
+          },
+          {
+            "similarity": 0.887855,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "2. Overview",
+            "modelTokenCount": 71,
+            "substantive": true,
+            "excerpt": "Our analysis suggests that 15.5% of mortgage contracts in England are linked to postcodes with some level of flood risk.\n\nExposure varies by region and type of flooding.&nbsp; These findings help iden"
+          },
+          {
+            "similarity": 0.88485,
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "title": "Flood risk exposure of mortgages in England",
+            "section": "3. Regional flood exposure",
+            "modelTokenCount": 113,
+            "substantive": true,
+            "excerpt": "High-risk exposure to surface water flooding is concentrated in and around London, with Essex showing the highest proportion of postcode centroids in the high-risk category (6.5%).&nbsp; Exposure to f"
+          }
+        ],
+        "publicationSelected": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "category": "b1_positive"
+      },
+      {
+        "testId": "DEV-B1-05",
+        "question": "What retirement income policy issues is the regulator consulting on under guided retirement proposals?",
+        "latencyMs": 7.92,
+        "expectedPublicationIds": [
+          "34b18772-3732-4e10-89a6-946bd15c5afe"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.888376,
+            "margin": 0.043577,
+            "lexicalQueryPassage": 0.2736,
+            "lexicalQueryTitle": 0.2774,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "borderline_substance",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "publicationTitle": "DP26/2: Guided Retirement",
+            "maxSimilarity": 0.888376,
+            "topChunk": {
+              "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+              "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+              "publicationTitle": "DP26/2: Guided Retirement",
+              "regulator": "FCA",
+              "publicationStatus": "discussion_paper",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-2-guided-retirement",
+              "contentSha256": "731ccc9e89ebcbf5271c4260e916f5cd41370793b894eb544833ab3dd572ea6b",
+              "chunkText": "Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/2\n\nThis Discussion Paper, which is published as a policy consultation for the DWP, sets out our initial joint proposals for how Guided Retirement will operate in practice.",
+              "htmlSectionId": "On this page",
+              "sectionReference": "On this page",
+              "documentEvidenceId": "775affd40f85f8ff",
+              "modelTokenCount": 54,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-34b18772-html-v1.json",
+              "chunkId": "1301826b03461235"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+              "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+              "publicationTitle": "DP26/2: Guided Retirement",
+              "regulator": "FCA",
+              "publicationStatus": "discussion_paper",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-2-guided-retirement",
+              "contentSha256": "731ccc9e89ebcbf5271c4260e916f5cd41370793b894eb544833ab3dd572ea6b",
+              "chunkText": "Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/2\n\nThis Discussion Paper, which is published as a policy consultation for the DWP, sets out our initial joint proposals for how Guided Retirement will operate in practice.",
+              "htmlSectionId": "On this page",
+              "sectionReference": "On this page",
+              "documentEvidenceId": "775affd40f85f8ff",
+              "modelTokenCount": 54,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-34b18772-html-v1.json",
+              "chunkId": "1301826b03461235"
+            },
+            "similarity": 0.8883757970069348
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "publicationTitle": "DP26/2: Guided Retirement",
+            "maxSimilarity": 0.888376
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.844799
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.841782
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.830158
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.827799
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.888376,
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "title": "DP26/2: Guided Retirement",
+            "section": "On this page",
+            "modelTokenCount": 54,
+            "substantive": true,
+            "excerpt": "Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/2\n\nThis Discussion Paper, which is published as a policy consultation for the DWP, sets out our initial join"
+          },
+          {
+            "similarity": 0.883125,
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "title": "DP26/2: Guided Retirement",
+            "section": "Why we are publishing this Discussion Paper",
+            "modelTokenCount": 69,
+            "substantive": true,
+            "excerpt": "Guided Retirement is intended to build on the success of automatic enrolment which has led to a significant increase in participation in defined contribution (DC) pensions.\n\nIt aims to remove the need"
+          },
+          {
+            "similarity": 0.87286,
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "title": "DP26/2: Guided Retirement",
+            "section": "Next steps",
+            "modelTokenCount": 68,
+            "substantive": true,
+            "excerpt": "In parallel, the DWP plans to consult on draft regulations for trust-based schemes.\n\nAutomatic enrolment in workplace pensions has been successful in supporting people to save, but the broader longer-"
+          },
+          {
+            "similarity": 0.872085,
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "title": "DP26/2: Guided Retirement",
+            "section": "Next steps",
+            "modelTokenCount": 88,
+            "substantive": true,
+            "excerpt": "Please submit your consultation responses by 22 December 2026 using the response form .\n\nAlternatively, you can send your response to the DWP Guided Retirement Policy Team by emailing [email&#160;prot"
+          },
+          {
+            "similarity": 0.858225,
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "title": "DP26/2: Guided Retirement",
+            "section": "Why we are publishing this Discussion Paper",
+            "modelTokenCount": 40,
+            "substantive": true,
+            "excerpt": "We will seek to build on the targeted support conduct framework in COBS 9B and adapt these rules where necessary for the purpose of setting conduct rules for Guided Retirement for contract-based provi"
+          }
+        ],
+        "publicationSelected": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "borderline_substance"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "passageSectionHint": false,
+        "category": "b1_positive"
+      },
+      {
+        "testId": "DEV-B1-06",
+        "question": "What aspects of the credit union regulatory regime are under discussion for reform?",
+        "latencyMs": 6.92,
+        "expectedPublicationIds": [
+          "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.892144,
+            "margin": 0.036023,
+            "lexicalQueryPassage": 0.1961,
+            "lexicalQueryTitle": 0.4623,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.892144,
+            "topChunk": {
+              "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+              "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+              "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+              "regulator": "FCA",
+              "publicationStatus": "discussion_paper",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime",
+              "contentSha256": "6a7573d04cde6f7b4b6c55f6b4f9ed5ba6687b597219e54d4df96a8b21c0bd3a",
+              "chunkText": "There are opportunities to support competition, innovation and the long-term sustainability of the sector.\n\nThe current framework provides appropriate support and safeguards in certain areas.\n\nCredit unions have adequate tools to exit the market in an orderly manner.\n\nWe’re interested in hearing views on specific areas of the regulatory framework as well as how different approaches may operate together to support the sustainable development of the sector.",
+              "htmlSectionId": "Why we are publishing this Discussion Paper",
+              "sectionReference": "Why we are publishing this Discussion Paper",
+              "documentEvidenceId": "663c833673487588",
+              "modelTokenCount": 79,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-ff1150cc-html-v1.json",
+              "chunkId": "cef3bc9a677a8381"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+              "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+              "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+              "regulator": "FCA",
+              "publicationStatus": "discussion_paper",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime",
+              "contentSha256": "6a7573d04cde6f7b4b6c55f6b4f9ed5ba6687b597219e54d4df96a8b21c0bd3a",
+              "chunkText": "There are opportunities to support competition, innovation and the long-term sustainability of the sector.\n\nThe current framework provides appropriate support and safeguards in certain areas.\n\nCredit unions have adequate tools to exit the market in an orderly manner.\n\nWe’re interested in hearing views on specific areas of the regulatory framework as well as how different approaches may operate together to support the sustainable development of the sector.",
+              "htmlSectionId": "Why we are publishing this Discussion Paper",
+              "sectionReference": "Why we are publishing this Discussion Paper",
+              "documentEvidenceId": "663c833673487588",
+              "modelTokenCount": 79,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-ff1150cc-html-v1.json",
+              "chunkId": "cef3bc9a677a8381"
+            },
+            "similarity": 0.8921437621599363
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.892144
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.856121
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.840937
+          },
+          {
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "publicationTitle": "DP26/2: Guided Retirement",
+            "maxSimilarity": 0.82546
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.821343
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.892144,
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "title": "DP26/1: Credit unions: review of the regulatory regime",
+            "section": "Why we are publishing this Discussion Paper",
+            "modelTokenCount": 79,
+            "substantive": true,
+            "excerpt": "There are opportunities to support competition, innovation and the long-term sustainability of the sector.\n\nThe current framework provides appropriate support and safeguards in certain areas.\n\nCredit "
+          },
+          {
+            "similarity": 0.870821,
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "title": "DP26/1: Credit unions: review of the regulatory regime",
+            "section": "Background",
+            "modelTokenCount": 62,
+            "substantive": true,
+            "excerpt": "The sector has become more diverse with some firms having grown significantly in size and complexity.\n\nIn the Mutuals Landscape Report , the PRA and FCA committed to working with the credit union sect"
+          },
+          {
+            "similarity": 0.861163,
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "title": "DP26/1: Credit unions: review of the regulatory regime",
+            "section": "Next steps",
+            "modelTokenCount": 37,
+            "substantive": true,
+            "excerpt": "Send your responses to [email&#160;protected] .\n\nCredit unions serve more than 2 million members, providing a range of financial services centred primarily on savings and lending."
+          },
+          {
+            "similarity": 0.856121,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 21,
+            "section": null,
+            "modelTokenCount": 158,
+            "substantive": true,
+            "excerpt": "21 26. We have also had regard to the supplementary principles of the Regulators’ Code that:• Regulators should carry out their activities in a way that supports those they regulate to comply and grow"
+          },
+          {
+            "similarity": 0.849852,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 20,
+            "section": null,
+            "modelTokenCount": 381,
+            "substantive": true,
+            "excerpt": "20Expected effect on mutual societies20. The FCA does not expect the proposals in this paper to have a significantly different impact on mutual societies.Compatibility with the duty to promote effecti"
+          }
+        ],
+        "publicationSelected": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "passageSectionHint": false,
+        "category": "b1_positive"
+      },
+      {
+        "testId": "DEV-B1-07",
+        "question": "How wide is geographic coverage of free cash access points across UK regions in the latest half-year statistics?",
+        "latencyMs": 8.62,
+        "expectedPublicationIds": [
+          "9e8d3736-506a-4909-8ad4-08229e0e6249"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.912629,
+            "margin": 0.048762,
+            "lexicalQueryPassage": 0.2124,
+            "lexicalQueryTitle": 0.4588,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+            "maxSimilarity": 0.912629,
+            "topChunk": {
+              "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+              "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+              "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+              "regulator": "FCA",
+              "publicationStatus": "data_publication",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+              "contentSha256": "5332c170939749bd2533d4333e655b8d182bfcab0a5bd2f7043323631e996833",
+              "chunkText": "The data comprises 58,971 reported UK cash access points and 554,441 cashback locations.\n\nTable 1 shows numbers by region for 8 types of access point ( see notes 4, 5, and 6 ): Brick-and-mortar branches of banks and building societies are subdivided into 2 groups.",
+              "htmlSectionId": "2. Coverage",
+              "sectionReference": "2. Coverage",
+              "documentEvidenceId": "04efac454ddc2ee9",
+              "modelTokenCount": 63,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-9e8d3736-html-v1.json",
+              "chunkId": "9e9240debb9fa11d"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+              "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+              "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+              "regulator": "FCA",
+              "publicationStatus": "data_publication",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+              "contentSha256": "5332c170939749bd2533d4333e655b8d182bfcab0a5bd2f7043323631e996833",
+              "chunkText": "The data comprises 58,971 reported UK cash access points and 554,441 cashback locations.\n\nTable 1 shows numbers by region for 8 types of access point ( see notes 4, 5, and 6 ): Brick-and-mortar branches of banks and building societies are subdivided into 2 groups.",
+              "htmlSectionId": "2. Coverage",
+              "sectionReference": "2. Coverage",
+              "documentEvidenceId": "04efac454ddc2ee9",
+              "modelTokenCount": 63,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-9e8d3736-html-v1.json",
+              "chunkId": "9e9240debb9fa11d"
+            },
+            "similarity": 0.9126294529256155
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+            "maxSimilarity": 0.912629
+          },
+          {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.863867
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.835333
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.823079
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.81233
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.912629,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "2. Coverage",
+            "modelTokenCount": 63,
+            "substantive": true,
+            "excerpt": "The data comprises 58,971 reported UK cash access points and 554,441 cashback locations.\n\nTable 1 shows numbers by region for 8 types of access point ( see notes 4, 5, and 6 ): Brick-and-mortar branch"
+          },
+          {
+            "similarity": 0.911101,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "Note 1, 2 and 3",
+            "modelTokenCount": 80,
+            "substantive": true,
+            "excerpt": "We estimate that for access to cash via any bank, building society, Post Office branch or any free ATM: 99.6% of the UK urban population are currently within 1 mile of a free-to-use cash access point "
+          },
+          {
+            "similarity": 0.907525,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "Table 2: Groupings of cash access points",
+            "modelTokenCount": 63,
+            "substantive": true,
+            "excerpt": "We present data for groups 3 and 6 as proxies for free cash withdrawal access and cash deposit access for consumers.\n\nWe provide these figures for Great Britain, Northern Ireland and the UK as a whole"
+          },
+          {
+            "similarity": 0.902672,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "Note 1, 2 and 3",
+            "modelTokenCount": 47,
+            "substantive": true,
+            "excerpt": "The headline coverage figures remain broadly comparable with previous data publications.\n\nThey continue to show more than 95% of the UK population being within the distances set out in the Treasury’s "
+          },
+          {
+            "similarity": 0.902019,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "Note 1, 2 and 3",
+            "modelTokenCount": 186,
+            "substantive": true,
+            "excerpt": "The effect is likely to be more important for longer, non-walkable distances.\n\nAll computations are performed in the British National Grid ( OSGB 1936 ) projection. &nbsp; Our current approach measure"
+          }
+        ],
+        "publicationSelected": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "passageSectionHint": true,
+        "category": "b1_positive"
+      },
+      {
+        "testId": "DEV-B1-08",
+        "question": "What share of the population remains more than a kilometre from nearest cash withdrawal facilities?",
+        "latencyMs": 6.88,
+        "expectedPublicationIds": [
+          "9e8d3736-506a-4909-8ad4-08229e0e6249"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.919331,
+            "margin": 0.087298,
+            "lexicalQueryPassage": 0.2041,
+            "lexicalQueryTitle": 0.1721,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+            "maxSimilarity": 0.919331,
+            "topChunk": {
+              "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+              "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+              "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+              "regulator": "FCA",
+              "publicationStatus": "data_publication",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+              "contentSha256": "5332c170939749bd2533d4333e655b8d182bfcab0a5bd2f7043323631e996833",
+              "chunkText": "We estimate that for access to cash via any bank, building society, Post Office branch or any free ATM: 99.6% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering withdrawals. 98.2% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering withdrawals.",
+              "htmlSectionId": "Note 1, 2 and 3",
+              "sectionReference": "Note 1, 2 and 3",
+              "documentEvidenceId": "f2bed01f328a711c",
+              "modelTokenCount": 80,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-9e8d3736-html-v1.json",
+              "chunkId": "acd453f55fc5994a"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+              "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+              "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+              "regulator": "FCA",
+              "publicationStatus": "data_publication",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+              "contentSha256": "5332c170939749bd2533d4333e655b8d182bfcab0a5bd2f7043323631e996833",
+              "chunkText": "We estimate that for access to cash via any bank, building society, Post Office branch or any free ATM: 99.6% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering withdrawals. 98.2% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering withdrawals.",
+              "htmlSectionId": "Note 1, 2 and 3",
+              "sectionReference": "Note 1, 2 and 3",
+              "documentEvidenceId": "f2bed01f328a711c",
+              "modelTokenCount": 80,
+              "chunkIndexInSection": 0,
+              "packFile": "b1-9e8d3736-html-v1.json",
+              "chunkId": "acd453f55fc5994a"
+            },
+            "similarity": 0.9193314759959947
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+            "maxSimilarity": 0.919331
+          },
+          {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.832033
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.807815
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.807065
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.79751
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.919331,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "Note 1, 2 and 3",
+            "modelTokenCount": 80,
+            "substantive": true,
+            "excerpt": "We estimate that for access to cash via any bank, building society, Post Office branch or any free ATM: 99.6% of the UK urban population are currently within 1 mile of a free-to-use cash access point "
+          },
+          {
+            "similarity": 0.889993,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "1. Introduction",
+            "modelTokenCount": 93,
+            "substantive": true,
+            "excerpt": "We supplement this information with annual data on both cashback locations and branches of large non-designated personal current account (PCA) providers ( see note 1 ).\n\nThis analysis shows the propor"
+          },
+          {
+            "similarity": 0.888723,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "Table 2: Groupings of cash access points",
+            "modelTokenCount": 63,
+            "substantive": true,
+            "excerpt": "We present data for groups 3 and 6 as proxies for free cash withdrawal access and cash deposit access for consumers.\n\nWe provide these figures for Great Britain, Northern Ireland and the UK as a whole"
+          },
+          {
+            "similarity": 0.870415,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "Note 1, 2 and 3",
+            "modelTokenCount": 186,
+            "substantive": true,
+            "excerpt": "The effect is likely to be more important for longer, non-walkable distances.\n\nAll computations are performed in the British National Grid ( OSGB 1936 ) projection. &nbsp; Our current approach measure"
+          },
+          {
+            "similarity": 0.869762,
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "title": "Access to cash coverage in the UK 2025 H1",
+            "section": "Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6)",
+            "modelTokenCount": 418,
+            "substantive": true,
+            "excerpt": "Group 3 - 2025 H1 Group 6 - 2025 H1 Group 3: Larger banks and building societies providing PCA and Post Office: all branches, including mobile and banking hubs Region Rural / Urban Population, 000's 2"
+          }
+        ],
+        "publicationSelected": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "category": "b1_positive"
+      },
+      {
+        "testId": "DEV-ORIG-01",
+        "question": "How does the FCA expect firms to monitor customer outcomes for fair value?",
+        "latencyMs": 6.38,
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.915116,
+            "margin": 0.00877,
+            "lexicalQueryPassage": 0.2168,
+            "lexicalQueryTitle": 0.2402,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.915116,
+            "topChunk": {
+              "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+              "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+              "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+              "regulator": "FCA",
+              "publicationStatus": "finalised_guidance",
+              "extractionProfile": "pdf_primary_v1",
+              "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+              "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+              "chunkText": "67 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyconsidered in their value assessments and should be able to provide evidence if we request it.7. 4 9 Firms must take appropriate action where their review identifies that a product or service does not provide fair value. This may include amending the benefits or price of a product or service so that it provides fair value, withdrawing the product, or where consumers have suffered harm, providing redress.The types of data/ monitoring firms could use7. 5 0 Firms could use the following types of data to monitor that they are meeting expectations under this outcome:• the expected price paid by customers, including associated fees and charges and those incurred further down the distribution chain• profitability data, including revenue and profit margins• customer complaints and root cause analyses• surveys, net promoter scores, social media rating analysis, focus groups, mystery shopping or other customer research• data about customer usage and behaviour, such as transactional data, retention rates or relevant A/B testing of variation in product or service design• operational data which might affect value such as on app or website outages or service call abandonment rates• feedback from other firms in the distribution chain including, manufacturers, intermediaries, appointed representatives or other third parties regarding the value of the product• the cost of providing the product or service, including credit risk• market conditions, such as the interest rate environment or rates for comparable productsKey questions for firms7. 51 In the table below, we set out examples of the type of questions firms can expect to be asked in their interactions with the FCA in relation to this outcome. We would also expect the Duty board champion and the Chair to use this type of question to guide discussions by the firm’s board or equivalent governing body.Key questions for firms• Is the firm satisfied that it is considering all the relevant factors and available data as part of its fair value assessments?",
+              "physicalPageNumber": 67,
+              "modelTokenCount": 408,
+              "packFile": "core-fg22-5-primary-pdf-v1.json",
+              "chunkId": "fd96efc987d13a16"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+              "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+              "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+              "regulator": "FCA",
+              "publicationStatus": "finalised_guidance",
+              "extractionProfile": "pdf_primary_v1",
+              "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+              "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+              "chunkText": "67 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyconsidered in their value assessments and should be able to provide evidence if we request it.7. 4 9 Firms must take appropriate action where their review identifies that a product or service does not provide fair value. This may include amending the benefits or price of a product or service so that it provides fair value, withdrawing the product, or where consumers have suffered harm, providing redress.The types of data/ monitoring firms could use7. 5 0 Firms could use the following types of data to monitor that they are meeting expectations under this outcome:• the expected price paid by customers, including associated fees and charges and those incurred further down the distribution chain• profitability data, including revenue and profit margins• customer complaints and root cause analyses• surveys, net promoter scores, social media rating analysis, focus groups, mystery shopping or other customer research• data about customer usage and behaviour, such as transactional data, retention rates or relevant A/B testing of variation in product or service design• operational data which might affect value such as on app or website outages or service call abandonment rates• feedback from other firms in the distribution chain including, manufacturers, intermediaries, appointed representatives or other third parties regarding the value of the product• the cost of providing the product or service, including credit risk• market conditions, such as the interest rate environment or rates for comparable productsKey questions for firms7. 51 In the table below, we set out examples of the type of questions firms can expect to be asked in their interactions with the FCA in relation to this outcome. We would also expect the Duty board champion and the Chair to use this type of question to guide discussions by the firm’s board or equivalent governing body.Key questions for firms• Is the firm satisfied that it is considering all the relevant factors and available data as part of its fair value assessments?",
+              "physicalPageNumber": 67,
+              "modelTokenCount": 408,
+              "packFile": "core-fg22-5-primary-pdf-v1.json",
+              "chunkId": "fd96efc987d13a16"
+            },
+            "similarity": 0.9151163620814677
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.915116
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.906347
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.879435
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.854812
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.821309
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.915116,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 67,
+            "modelTokenCount": 408,
+            "substantive": true,
+            "excerpt": "67 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyconsidered in their value assessments and should be able to provide evidence if we request"
+          },
+          {
+            "similarity": 0.906347,
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "title": "Fair value in consumer finance",
+            "section": "Taking a holistic and proportionate approach",
+            "modelTokenCount": 29,
+            "substantive": false,
+            "excerpt": "These covered: the firm’s understanding of the fair value requirements assessment of costs and benefits contextual factors differential customer outcomes data and governance"
+          },
+          {
+            "similarity": 0.898078,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 68,
+            "modelTokenCount": 414,
+            "substantive": true,
+            "excerpt": "68FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty• What action has the firm taken as a result of its fair value assessments, and how is it e"
+          },
+          {
+            "similarity": 0.892215,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 56,
+            "modelTokenCount": 426,
+            "substantive": true,
+            "excerpt": "56FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty7 The price and value outcomeOverview7. 1 Retail customers experience harm where they don’t"
+          },
+          {
+            "similarity": 0.891284,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 66,
+            "modelTokenCount": 432,
+            "substantive": true,
+            "excerpt": "66FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty7. 4 2 Firms should also consider how different groups of consumers are affected as some gr"
+          }
+        ],
+        "publicationSelected": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "publicationRecallTop1": true,
+        "publicationRecallTop5": true,
+        "category": "original_frozen_suite"
+      },
+      {
+        "testId": "DEV-NEG-NEAR-01",
+        "question": "What does Policy Statement PS26/21 require firms to report under the EMIR intragroup regime?",
+        "latencyMs": 8.72,
+        "expectedPublicationIds": [],
+        "referenceValidation": {
+          "hasExplicitReference": true,
+          "resolutions": [
+            {
+              "ref": {
+                "raw": "PS26/21",
+                "normalized": "PS26/21",
+                "kind": "PS"
+              },
+              "status": "not_in_offline_catalogue",
+              "publicationId": null,
+              "indexed": false,
+              "message": "Identifier is not present in the authorised offline catalogue for this experiment (does not imply absence from the global regulatory catalogue)."
+            },
+            {
+              "ref": {
+                "phrase": "PS26/21"
+              },
+              "status": "title_not_in_offline_catalogue",
+              "publicationId": null,
+              "indexed": false,
+              "message": "Quoted publication title does not match an entry in the offline catalogue."
+            }
+          ],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": true,
+          "abstainReason": "unresolved_explicit_publication_reference",
+          "outcome": "abstain_unresolved_reference"
+        },
+        "noMatchDecision": {
+          "abstain": true,
+          "reasons": [
+            "unresolved_explicit_publication_reference"
+          ],
+          "signals": {
+            "referenceBlocked": true
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.853744
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.845826
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.839399
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.819791
+          },
+          {
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "publicationTitle": "DP26/2: Guided Retirement",
+            "maxSimilarity": 0.808202
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.853744,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 70,
+            "section": null,
+            "modelTokenCount": 314,
+            "substantive": true,
+            "excerpt": "FCA 202X/YY Page 47 of 67 • There is appropriate escalation of actual target matches and breaches of UK sanctions. Notifications are timely. • No internal audit resource is allocated to monitoring san"
+          },
+          {
+            "similarity": 0.853252,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 37,
+            "section": null,
+            "modelTokenCount": 346,
+            "substantive": true,
+            "excerpt": "FCA 202X/YY Page 14 of 67 • A firm engaging in cryptoasset activities uses blockchain analytics to complement existing risk-based anti-money laundering policies and procedures to allow early and timel"
+          },
+          {
+            "similarity": 0.849443,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 19,
+            "section": null,
+            "modelTokenCount": 368,
+            "substantive": true,
+            "excerpt": "19 The general principle that consumers should take responsibility for their decisions13. The consultation is not aimed as guidance for the consumer and thus will have limited consumer impact. However"
+          },
+          {
+            "similarity": 0.849219,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 21,
+            "section": null,
+            "modelTokenCount": 158,
+            "substantive": true,
+            "excerpt": "21 26. We have also had regard to the supplementary principles of the Regulators’ Code that:• Regulators should carry out their activities in a way that supports those they regulate to comply and grow"
+          },
+          {
+            "similarity": 0.848344,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 68,
+            "modelTokenCount": 446,
+            "substantive": true,
+            "excerpt": "FCA 202X/YY Page 45 of 67 accordance with the relevant provisions. OFSI have has published guidance on complying with UK obligations and this is available on their website its website. See https://www"
+          }
+        ],
+        "publicationSelected": null,
+        "passageRelevant": false,
+        "passageSubstance": {
+          "substantive": false,
+          "reason": "heading_or_fragment"
+        },
+        "correctlyRejected": true,
+        "category": "near_miss_negative"
+      },
+      {
+        "testId": "DEV-NEG-NEAR-02",
+        "question": "Summarise wholesale banks supervision insights on governance and financial crime controls from Autumn 2026.",
+        "latencyMs": 8.02,
+        "expectedPublicationIds": [],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.889576,
+            "margin": 0.039746,
+            "lexicalQueryPassage": 0.1527,
+            "lexicalQueryTitle": 0.2182,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.889576,
+            "topChunk": {
+              "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+              "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+              "publicationTitle": "CP26/38 Financial Crime Guide updates",
+              "regulator": "FCA",
+              "publicationStatus": "consultation",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+              "contentSha256": "d2b26804290c2ee06f2d34f45d3fffcf7a96f59c1e2df017eb9c75fca721950e",
+              "chunkText": "We last updated the Financial Crime Guide to reflect supervisory findings and changing risks.\n\nSince then, the UK's sanctions regime has evolved, cryptoasset regulation has developed, and firms have increasingly adopted AI and third-party tools for financial crime controls.\n\nThese proposals support our objective of making sure markets function well, by reducing and preventing financial crime.",
+              "htmlSectionId": "Background",
+              "sectionReference": "Background",
+              "documentEvidenceId": "8d4e4b35547ab8f7",
+              "modelTokenCount": 72,
+              "chunkIndexInSection": 0,
+              "packFile": "core-cp26-38-html-article-v1.json",
+              "chunkId": "980c3f9f2089db34"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+              "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+              "publicationTitle": "CP26/38 Financial Crime Guide updates",
+              "regulator": "FCA",
+              "publicationStatus": "consultation",
+              "extractionProfile": "html_article_v2",
+              "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+              "contentSha256": "d2b26804290c2ee06f2d34f45d3fffcf7a96f59c1e2df017eb9c75fca721950e",
+              "chunkText": "We last updated the Financial Crime Guide to reflect supervisory findings and changing risks.\n\nSince then, the UK's sanctions regime has evolved, cryptoasset regulation has developed, and firms have increasingly adopted AI and third-party tools for financial crime controls.\n\nThese proposals support our objective of making sure markets function well, by reducing and preventing financial crime.",
+              "htmlSectionId": "Background",
+              "sectionReference": "Background",
+              "documentEvidenceId": "8d4e4b35547ab8f7",
+              "modelTokenCount": 72,
+              "chunkIndexInSection": 0,
+              "packFile": "core-cp26-38-html-article-v1.json",
+              "chunkId": "980c3f9f2089db34"
+            },
+            "similarity": 0.889576138498052
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.889576
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.84983
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.846513
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.843672
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.83069
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.889576,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "section": "Background",
+            "modelTokenCount": 72,
+            "substantive": true,
+            "excerpt": "We last updated the Financial Crime Guide to reflect supervisory findings and changing risks.\n\nSince then, the UK's sanctions regime has evolved, cryptoasset regulation has developed, and firms have i"
+          },
+          {
+            "similarity": 0.886424,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 12,
+            "modelTokenCount": 381,
+            "substantive": true,
+            "excerpt": "12Financial crime systems and controls2.26 We propose to set out how financial crime obligations apply in Banking as a Service (BaaS) and embedded finance arrangements, both where the BaaS user is ano"
+          },
+          {
+            "similarity": 0.881543,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 4,
+            "section": null,
+            "modelTokenCount": 431,
+            "substantive": true,
+            "excerpt": "4What we want to update1.10 We want the Guide to be clear, reflect our recent findings, and help firms identify and assess the right financial crime controls.1 .11 We propose changes to the following "
+          },
+          {
+            "similarity": 0.874127,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 10,
+            "modelTokenCount": 100,
+            "substantive": true,
+            "excerpt": "102 .17 We propose to update references to relevant authorities. The revised chapter will refer to OFSI for financial sanctions, OTSI for trade sanctions, HMRC where suspected breaches relate to expor"
+          },
+          {
+            "similarity": 0.872896,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "section": "Why we're consulting",
+            "modelTokenCount": 100,
+            "substantive": true,
+            "excerpt": "We want firms to keep detecting, preventing and disrupting financial crime, so we can protect consumers and maintain trust in the financial system.\n\nWe want our Financial Crime Guide to keep pace with"
+          }
+        ],
+        "publicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "correctlyRejected": false,
+        "category": "near_miss_negative"
+      },
+      {
+        "testId": "DEV-NEG-NEAR-03",
+        "question": "What are the consultation deadlines for consolidated tape operational incident reporting rules?",
+        "latencyMs": 6.72,
+        "expectedPublicationIds": [],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": true,
+          "reasons": [
+            "insubstantive_top_passage_below_threshold"
+          ],
+          "signals": {
+            "absoluteSimilarity": 0.845033,
+            "margin": 0.001037,
+            "lexicalQueryPassage": 0.1021,
+            "lexicalQueryTitle": 0,
+            "metadataRelevant": true,
+            "passageSubstantive": false,
+            "passageSubstanceReason": "short_heading_or_label",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": null,
+          "selectedChunk": null
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.845033
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.843996
+          },
+          {
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "publicationTitle": "DP26/2: Guided Retirement",
+            "maxSimilarity": 0.836334
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.828166
+          },
+          {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.811242
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.845033,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 1,
+            "section": null,
+            "modelTokenCount": 20,
+            "substantive": false,
+            "excerpt": "Consultation PaperCP26/38***Financial Crime Guide UpdatesOctober 2026"
+          },
+          {
+            "similarity": 0.843996,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 102,
+            "modelTokenCount": 378,
+            "substantive": true,
+            "excerpt": "102FG22/5Chapter 9Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty9.30 Some delay, inconvenience or cost during interactions between firms and customers mig"
+          },
+          {
+            "similarity": 0.843624,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 19,
+            "section": null,
+            "modelTokenCount": 368,
+            "substantive": true,
+            "excerpt": "19 The general principle that consumers should take responsibility for their decisions13. The consultation is not aimed as guidance for the consumer and thus will have limited consumer impact. However"
+          },
+          {
+            "similarity": 0.837528,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "section": "Who this is for",
+            "modelTokenCount": 84,
+            "substantive": true,
+            "excerpt": "This consultation is relevant to all firms we supervise for financial crime, including under the Money Laundering, Terrorist Financing and Transfer of Funds (Information on the Payer) Regulations 2017"
+          },
+          {
+            "similarity": 0.836334,
+            "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+            "title": "DP26/2: Guided Retirement",
+            "section": "Next steps",
+            "modelTokenCount": 88,
+            "substantive": true,
+            "excerpt": "Please submit your consultation responses by 22 December 2026 using the response form .\n\nAlternatively, you can send your response to the DWP Guided Retirement Policy Team by emailing [email&#160;prot"
+          }
+        ],
+        "publicationSelected": null,
+        "passageRelevant": false,
+        "passageSubstance": {
+          "substantive": false,
+          "reason": "heading_or_fragment"
+        },
+        "correctlyRejected": true,
+        "category": "near_miss_negative"
+      },
+      {
+        "testId": "DEV-NEG-UNREL-01",
+        "question": "Explain Basel III output floor requirements for UK banks.",
+        "latencyMs": 5.29,
+        "expectedPublicationIds": [],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.846769,
+            "margin": 0.008918,
+            "lexicalQueryPassage": 0.0522,
+            "lexicalQueryTitle": 0,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.846769,
+            "topChunk": {
+              "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+              "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+              "publicationTitle": "CP26/38 Financial Crime Guide updates",
+              "regulator": "FCA",
+              "publicationStatus": "consultation",
+              "extractionProfile": "pdf_primary_v1",
+              "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+              "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+              "chunkText": "17 Annex 3Compatibility statementCompliance with legal requirements1. This Annex records the FCA’s compliance with a number of legal requirements applicable to the proposals in this consultation, including an explanation of the FCA’s reasons for concluding that our proposals in this consultation are compatible with certain requirements under the Financial Services and Markets Act 2000 (FSMA). 2. Section 1B(1) of FSMA requires that the FCA, when discharging its general functions, as far as reasonably possible, act in a way which is compatible with its strategic objective and advances one or more of its operational objectives, and its general duty under section 1B(5)(a) of FSMA to have regard to the regulatory principles in section 3B of FSMA.3. This Annex also sets out the FCA’s view of how the proposed rules are compatible with the duty on the FCA to discharge its general functions (which include rule-making) in a way which promotes effective competition in the interests of consumers (section 1B(4)). This duty applies in so far as promoting competition is compatible with advancing the FCA’s consumer protection and/or integrity objectives. 4. In addition, we have considered the recommendations made by the Treasury under s 1JA FSMA about aspects of the economic policy of His Majesty’s Government to which we should have regard in connection with our general duties. 5. This Annex includes our assessment of the equality and diversity implications of these proposals. The FCA’s objectives and regulatory principles: Compatibility statement6. The proposals set out in this consultation are primarily intended to advance the FCA’s operational objective of ensuring that the relevant markets function well. Changes are also relevant to the FCA’s integrity and consumer protection objectives.7. We consider these proposals are compatible with the FCA’s strategic objective of ensuring that the relevant markets function well, through reducing and preventing financial crime. The consultation aligns with our objective to publish findings from our reviews and provide feedback to industry on what we see, so firms can improve their controls.8. We are confident that the new guidance is compatible with our secondary international competitiveness and growth objective.",
+              "physicalPageNumber": 17,
+              "modelTokenCount": 446,
+              "packFile": "core-cp26-38-primary-pdf-v1.json",
+              "chunkId": "a2a2f7a7a1846511"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+              "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+              "publicationTitle": "CP26/38 Financial Crime Guide updates",
+              "regulator": "FCA",
+              "publicationStatus": "consultation",
+              "extractionProfile": "pdf_primary_v1",
+              "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+              "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+              "chunkText": "17 Annex 3Compatibility statementCompliance with legal requirements1. This Annex records the FCA’s compliance with a number of legal requirements applicable to the proposals in this consultation, including an explanation of the FCA’s reasons for concluding that our proposals in this consultation are compatible with certain requirements under the Financial Services and Markets Act 2000 (FSMA). 2. Section 1B(1) of FSMA requires that the FCA, when discharging its general functions, as far as reasonably possible, act in a way which is compatible with its strategic objective and advances one or more of its operational objectives, and its general duty under section 1B(5)(a) of FSMA to have regard to the regulatory principles in section 3B of FSMA.3. This Annex also sets out the FCA’s view of how the proposed rules are compatible with the duty on the FCA to discharge its general functions (which include rule-making) in a way which promotes effective competition in the interests of consumers (section 1B(4)). This duty applies in so far as promoting competition is compatible with advancing the FCA’s consumer protection and/or integrity objectives. 4. In addition, we have considered the recommendations made by the Treasury under s 1JA FSMA about aspects of the economic policy of His Majesty’s Government to which we should have regard in connection with our general duties. 5. This Annex includes our assessment of the equality and diversity implications of these proposals. The FCA’s objectives and regulatory principles: Compatibility statement6. The proposals set out in this consultation are primarily intended to advance the FCA’s operational objective of ensuring that the relevant markets function well. Changes are also relevant to the FCA’s integrity and consumer protection objectives.7. We consider these proposals are compatible with the FCA’s strategic objective of ensuring that the relevant markets function well, through reducing and preventing financial crime. The consultation aligns with our objective to publish findings from our reviews and provide feedback to industry on what we see, so firms can improve their controls.8. We are confident that the new guidance is compatible with our secondary international competitiveness and growth objective.",
+              "physicalPageNumber": 17,
+              "modelTokenCount": 446,
+              "packFile": "core-cp26-38-primary-pdf-v1.json",
+              "chunkId": "a2a2f7a7a1846511"
+            },
+            "similarity": 0.8467692475212403
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.846769
+          },
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.837851
+          },
+          {
+            "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+            "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+            "maxSimilarity": 0.831919
+          },
+          {
+            "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+            "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+            "maxSimilarity": 0.828742
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.824724
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.846769,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 17,
+            "modelTokenCount": 446,
+            "substantive": true,
+            "excerpt": "17 Annex 3Compatibility statementCompliance with legal requirements1. This Annex records the FCA’s compliance with a number of legal requirements applicable to the proposals in this consultation, incl"
+          },
+          {
+            "similarity": 0.844658,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 25,
+            "section": null,
+            "modelTokenCount": 404,
+            "substantive": true,
+            "excerpt": "FCA 202X/YY Page 2 of 67 Annex Amendments to the Financial Crime Guide: A firm’s guide to countering financial crime risks (FCG) In this Annex, underlining indicates new text and striking through indi"
+          },
+          {
+            "similarity": 0.8406,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 31,
+            "modelTokenCount": 379,
+            "substantive": true,
+            "excerpt": "FCA 202X/YY Page 8 of 67 3.2.4 ... Firms are required to collect proof of company registration (or an excerpt from the register) before establishing a business relationship with certain legal entities"
+          },
+          {
+            "similarity": 0.837906,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 40,
+            "modelTokenCount": 177,
+            "substantive": true,
+            "excerpt": "wallet providers) and Annex 22-I of Part II (Cryptoassets Transfers (‘Travel Rule’)); and o Chapter 1 of Part III (Transparency in electronic payments (Wire transfers)), which will be banks’ chief sou"
+          },
+          {
+            "similarity": 0.837851,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 77,
+            "section": null,
+            "modelTokenCount": 427,
+            "substantive": true,
+            "excerpt": "77 FG22/5Chapter 8Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer DutyExample – poor practiceThere are other mandatory disclosures which require firms to produc"
+          }
+        ],
+        "publicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "correctlyRejected": false,
+        "category": "unrelated_negative"
+      },
+      {
+        "testId": "DEV-NEG-UNREL-02",
+        "question": "What are FDA adverse event reporting timelines for medical devices?",
+        "latencyMs": 5.43,
+        "expectedPublicationIds": [],
+        "referenceValidation": {
+          "hasExplicitReference": false,
+          "resolutions": [],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": false,
+          "abstainReason": null,
+          "outcome": "no_explicit_reference"
+        },
+        "noMatchDecision": {
+          "abstain": false,
+          "reasons": [],
+          "signals": {
+            "absoluteSimilarity": 0.821307,
+            "margin": 0.001835,
+            "lexicalQueryPassage": 0.0614,
+            "lexicalQueryTitle": 0.0913,
+            "metadataRelevant": true,
+            "passageSubstantive": true,
+            "passageSubstanceReason": "token_budget_met",
+            "provisionalThreshold": 0.8736,
+            "referenceExplicit": false
+          },
+          "selectedPublication": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.821307,
+            "topChunk": {
+              "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+              "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+              "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+              "regulator": "FCA",
+              "publicationStatus": "finalised_guidance",
+              "extractionProfile": "pdf_primary_v1",
+              "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+              "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+              "chunkText": "What harm is foreseeable?• If a manufacturer judges a product should generally be held for at least five years, and where the firm lacks oversight of the full distribution chain or end customers, it could ask what proportion of customers hold the product for less than one year, or more than one year but less than five?6 .75 Where manufacturers ask for information, distributors should consider what they can do to help. Distributor firms should consider if the information they provide is adequate to help the manufacturer in its reviews of a product or service.Monitoring distribution of products and services not designed by firms subject to this outcome6.76 Firms distributing products or services manufactured by firms to which the products and services outcome does not apply should take extra care when reviewing their distribution arrangements. They should consider whether the product or service remains appropriate for the needs, characteristics and objectives of the target market.The types of data/ monitoring firms could consider6.77 In order to monitor this outcome, firms could consider data such as:• sales information and information on business persistency• customer feedback",
+              "physicalPageNumber": 50,
+              "modelTokenCount": 215,
+              "packFile": "core-fg22-5-primary-pdf-v1.json",
+              "chunkId": "e08160c43f816a55"
+            }
+          },
+          "selectedChunk": {
+            "chunk": {
+              "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+              "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+              "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+              "regulator": "FCA",
+              "publicationStatus": "finalised_guidance",
+              "extractionProfile": "pdf_primary_v1",
+              "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+              "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+              "chunkText": "What harm is foreseeable?• If a manufacturer judges a product should generally be held for at least five years, and where the firm lacks oversight of the full distribution chain or end customers, it could ask what proportion of customers hold the product for less than one year, or more than one year but less than five?6 .75 Where manufacturers ask for information, distributors should consider what they can do to help. Distributor firms should consider if the information they provide is adequate to help the manufacturer in its reviews of a product or service.Monitoring distribution of products and services not designed by firms subject to this outcome6.76 Firms distributing products or services manufactured by firms to which the products and services outcome does not apply should take extra care when reviewing their distribution arrangements. They should consider whether the product or service remains appropriate for the needs, characteristics and objectives of the target market.The types of data/ monitoring firms could consider6.77 In order to monitor this outcome, firms could consider data such as:• sales information and information on business persistency• customer feedback",
+              "physicalPageNumber": 50,
+              "modelTokenCount": 215,
+              "packFile": "core-fg22-5-primary-pdf-v1.json",
+              "chunkId": "e08160c43f816a55"
+            },
+            "similarity": 0.8213074010184696
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.821307
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.819473
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.818642
+          },
+          {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.802239
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.79252
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.821307,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 50,
+            "modelTokenCount": 215,
+            "substantive": true,
+            "excerpt": "What harm is foreseeable?• If a manufacturer judges a product should generally be held for at least five years, and where the firm lacks oversight of the full distribution chain or end customers, it c"
+          },
+          {
+            "similarity": 0.819473,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 51,
+            "section": null,
+            "modelTokenCount": 315,
+            "substantive": true,
+            "excerpt": "FCA 202X/YY Page 28 of 67 Customer profile indicators • age; • gender; • location; • employment status; • salary/income sources; and • expected account turnover. Digital profile indicators • device id"
+          },
+          {
+            "similarity": 0.818642,
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "title": "Fair value in consumer finance",
+            "section": "4. What we found",
+            "modelTokenCount": 56,
+            "substantive": true,
+            "excerpt": "Controls to reduce the risk of foreseeable harm from fees and charges\n\nUnder PRIN 2A.4.2R(2) , manufacturers must carry out a value assessment of their products and review this regularly, at intervals"
+          },
+          {
+            "similarity": 0.818103,
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "title": "CP26/38 Financial Crime Guide updates",
+            "page": 50,
+            "section": null,
+            "modelTokenCount": 356,
+            "substantive": true,
+            "excerpt": "FCA 202X/YY Page 27 of 67 • salary/income sources; and • expected account turnover. Digital profile indicators • device identifiers; • IP addresses; • geolocation data; and • biometrics. • The firm ha"
+          },
+          {
+            "similarity": 0.817193,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 116,
+            "modelTokenCount": 188,
+            "substantive": true,
+            "excerpt": "2 3 In some areas, firms may monitor outcomes for all their customers, such as product usage, while other types of monitoring, such as distributional analysis or file reviews will be based on a risk-b"
+          }
+        ],
+        "publicationSelected": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "passageRelevant": true,
+        "passageSubstance": {
+          "substantive": true,
+          "reason": "token_budget_met"
+        },
+        "correctlyRejected": false,
+        "category": "unrelated_negative"
+      },
+      {
+        "testId": "DEV-DIST-B1-01",
+        "question": "What operational resilience self-assessment outcomes must insurers disclose under PS24/1?",
+        "latencyMs": 6.49,
+        "expectedPublicationIds": [],
+        "referenceValidation": {
+          "hasExplicitReference": true,
+          "resolutions": [
+            {
+              "ref": {
+                "raw": "PS24/1",
+                "normalized": "PS24/1",
+                "kind": "PS"
+              },
+              "status": "not_in_offline_catalogue",
+              "publicationId": null,
+              "indexed": false,
+              "message": "Identifier is not present in the authorised offline catalogue for this experiment (does not imply absence from the global regulatory catalogue)."
+            }
+          ],
+          "restrictToPublicationIds": null,
+          "blockSemanticSelection": true,
+          "abstainReason": "unresolved_explicit_publication_reference",
+          "outcome": "abstain_unresolved_reference"
+        },
+        "noMatchDecision": {
+          "abstain": true,
+          "reasons": [
+            "unresolved_explicit_publication_reference"
+          ],
+          "signals": {
+            "referenceBlocked": true
+          }
+        },
+        "rankedPublications": [
+          {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "maxSimilarity": 0.857716
+          },
+          {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "publicationTitle": "Fair value in consumer finance",
+            "maxSimilarity": 0.845089
+          },
+          {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "maxSimilarity": 0.844087
+          },
+          {
+            "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+            "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+            "maxSimilarity": 0.837292
+          },
+          {
+            "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+            "publicationTitle": "Flood risk exposure of mortgages in England",
+            "maxSimilarity": 0.828597
+          }
+        ],
+        "topChunks": [
+          {
+            "similarity": 0.857716,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 118,
+            "modelTokenCount": 173,
+            "substantive": true,
+            "excerpt": "34 When considering which information to collect, firms should also consider how that information will enable them to assess whether certain groups of consumers, such as those with characteristics of "
+          },
+          {
+            "similarity": 0.855344,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 7,
+            "modelTokenCount": 431,
+            "substantive": true,
+            "excerpt": "7 FG22/5Chapter 1Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty1.24 FG 21/1 therefore remains relevant for firms, and firms should refer to it for further"
+          },
+          {
+            "similarity": 0.853651,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 114,
+            "section": null,
+            "modelTokenCount": 442,
+            "substantive": true,
+            "excerpt": "114FG22/5Chapter 11Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty11 Monitoring outcomesOverview11 .1 A key part of the Duty is that firms assess, test, un"
+          },
+          {
+            "similarity": 0.851751,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 88,
+            "modelTokenCount": 412,
+            "substantive": true,
+            "excerpt": "88FG22/5Chapter 8Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyinvestigation. For example, communication response rates, take-up rates of products where c"
+          },
+          {
+            "similarity": 0.849849,
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "page": 111,
+            "modelTokenCount": 322,
+            "substantive": true,
+            "excerpt": "111 FG22/5Chapter 10Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer DutyGovernance and accountability10.7 The Duty requires firms to ensure that acting to deliv"
+          }
+        ],
+        "publicationSelected": null,
+        "passageRelevant": false,
+        "passageSubstance": {
+          "substantive": false,
+          "reason": "heading_or_fragment"
+        },
+        "correctlyRejected": true,
+        "category": "closely_related_distractor"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1144 @@
+{
+  "packVersion": 1,
+  "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+  "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+  "publicationType": "data_publication",
+  "regulator": "FCA",
+  "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+  "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+  "extractionProfile": "html_article_v2",
+  "contentSha256": "5332c170939749bd2533d4333e655b8d182bfcab0a5bd2f7043323631e996833",
+  "regulatoryStatus": "data_publication",
+  "blockCount": 81,
+  "verifiedTextSamples": [
+    {
+      "documentEvidenceId": "31e249fb8bedeb1b",
+      "sectionReference": "1. Introduction",
+      "extractedText": "As part of our work on access to cash, we regularly publish data on changes in the UK’s cash access coverage."
+    },
+    {
+      "documentEvidenceId": "54561856e726a288",
+      "sectionReference": "1. Introduction",
+      "extractedText": "This includes the locations of cash access points and other information such as temporary closures, opening hours and accessibility."
+    },
+    {
+      "documentEvidenceId": "e6342ae3f1e02c32",
+      "sectionReference": "1. Introduction",
+      "extractedText": "These publications are based on quarterly data from designated banks and building societies on their brick-and-mortar and mobile branch networks, and monthly data covering automated teller machines (ATMs) and the Post Office network."
+    },
+    {
+      "documentEvidenceId": "d590b7ba4e7e103e",
+      "sectionReference": "1. Introduction",
+      "extractedText": "We supplement this information with annual data on both cashback locations and branches of large non-designated personal current account (PCA) providers ( see note 1 )."
+    },
+    {
+      "documentEvidenceId": "7c7af17fc4874ce0",
+      "sectionReference": "1. Introduction",
+      "extractedText": "This analysis shows the proportion of the population that lives within a range of distances of various types of cash access point."
+    },
+    {
+      "documentEvidenceId": "0ef19542964f0241",
+      "sectionReference": "1. Introduction",
+      "extractedText": "We measure distances as the crow flies ( see note 2 ), consistent with the approaches adopted by LINK and the Post Office, relative to residential addresses ( see note 3 )."
+    },
+    {
+      "documentEvidenceId": "b55e20aecf170ca1",
+      "sectionReference": "Note 1, 2 and 3",
+      "extractedText": "When we started collecting data under our new&nbsp; access to cash regime , the firm population changed slightly."
+    },
+    {
+      "documentEvidenceId": "2f1a890deaedb04c",
+      "sectionReference": "Note 1, 2 and 3",
+      "extractedText": "This means we cannot directly compare coverage analysis for this or future publications with coverage analysis covering quarters before Q2 2024. &nbsp; Relative to analogous travel distance, the approach based on straight line distances is likely to overestimate coverage and underestimate the areas with no coverage."
+    },
+    {
+      "documentEvidenceId": "34ff2c2c66bda426",
+      "sectionReference": "Note 1, 2 and 3",
+      "extractedText": "The effect is likely to be more important for longer, non-walkable distances."
+    },
+    {
+      "documentEvidenceId": "23ef7b84692e3c27",
+      "sectionReference": "Note 1, 2 and 3",
+      "extractedText": "All computations are performed in the British National Grid ( OSGB 1936 ) projection. &nbsp; Our current approach measures straight line distances from residential addresses to their nearest access point by type."
+    },
+    {
+      "documentEvidenceId": "3b67c325cc98f14e",
+      "sectionReference": "Note 1, 2 and 3",
+      "extractedText": "To determine aggregate coverage percentages, we estimate the total number of residential properties within a set distance of an access point at a certain geographical level, eg Output Area, Local Authority District, Country.&nbsp; We estimate that for access to cash via designated banks and building societies providing PCA and Post Office: all branches, including mobile bank branches: 97.2% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering deposits. 97.5% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering deposits."
+    },
+    {
+      "documentEvidenceId": "f2bed01f328a711c",
+      "sectionReference": "Note 1, 2 and 3",
+      "extractedText": "We estimate that for access to cash via any bank, building society, Post Office branch or any free ATM: 99.6% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering withdrawals. 98.2% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering withdrawals."
+    },
+    {
+      "documentEvidenceId": "08f8d2a3832fda06",
+      "sectionReference": "Note 1, 2 and 3",
+      "extractedText": "The headline coverage figures remain broadly comparable with previous data publications."
+    },
+    {
+      "documentEvidenceId": "c1a53ed5c1e87c47",
+      "sectionReference": "Note 1, 2 and 3",
+      "extractedText": "They continue to show more than 95% of the UK population being within the distances set out in the Treasury’s &nbsp; Cash Access Policy Statement ."
+    },
+    {
+      "documentEvidenceId": "04efac454ddc2ee9",
+      "sectionReference": "2. Coverage",
+      "extractedText": "The data comprises 58,971 reported UK cash access points and 554,441 cashback locations."
+    },
+    {
+      "documentEvidenceId": "b341a0adf4ce052e",
+      "sectionReference": "2. Coverage",
+      "extractedText": "Table 1 shows numbers by region for 8 types of access point ( see notes 4, 5, and 6 ): Brick-and-mortar branches of banks and building societies are subdivided into 2 groups."
+    },
+    {
+      "documentEvidenceId": "7c80a6b4024357e2",
+      "sectionReference": "2. Coverage",
+      "extractedText": "The first group is the branches of the 14 banks and building societies designated under Part 8B of the Financial Services and Markets Act 2000 for the provision of cash access services (Type A) who we collect quarterly coverage data from."
+    },
+    {
+      "documentEvidenceId": "5f509afc73ceb0bb",
+      "sectionReference": "2. Coverage",
+      "extractedText": "The second group is the branches of some larger non-designated PCA providers (Type B) who we collect annual data from. &nbsp; Mobile bank branches (measured by stops) are a separate type (D). &nbsp; Post Office branches are subdivided into mobile / outreach branches (type E) and all other Post Office branches (type C)."
+    },
+    {
+      "documentEvidenceId": "b84d47899455eb6f",
+      "sectionReference": "2. Coverage",
+      "extractedText": "The outreach branches are brick-and-mortar but are more similar to mobile branches, being typically open for a small number of hours or on selected days of the week."
+    },
+    {
+      "documentEvidenceId": "b64e16ff01816633",
+      "sectionReference": "2. Coverage",
+      "extractedText": "For example, these include limited time to serve access points in community buildings in rural locations."
+    },
+    {
+      "documentEvidenceId": "191d644d3e953ade",
+      "sectionReference": "2. Coverage",
+      "extractedText": "For this reason, we group the mobile and outreach branches together. &nbsp; ATMs are subdivided into free-to-use (type F) and pay-to-use (type G). &nbsp; Cashback locations (type H) are all the unique locations where a cashback transaction took place in the most recent year of data for relevant cashback provider.&nbsp;"
+    },
+    {
+      "documentEvidenceId": "4c9a8359ff67217b",
+      "sectionReference": "Table 1: Number of cash access points by type and geographical area",
+      "extractedText": "Country/ geographical area England Northern Ireland Scotland Wales UK Total Type Description East Midlands East of England London North East North West South East South West West Midlands Yorkshire and The Humber A Larger banks and building societies providing PCA (brick-and-mortar branches) 206 296 371 127 315 455 280 288 224 116 350 202 3230 B All other banks and building societies (brick-and-mortar branches) 3 11 37 2 30 19 3 7 2 &nbsp; 5 2 121 C Post Office branches (including banking hubs, excluding mobile/ outreach) 699 916 674 385 917 1173 943 754 792 462 1002 653 9370 D Mobile bank branches 12 12 &nbsp; &nbsp; 21 42 53 5 5 13 371 82 616 E Mobile/ outreach Post Office branches 120 183 &nbsp; 86 137 120 253 89 135 22 224 211 1580 F Free-to-use ATMs 2505 2849 4530 1568 3972 4262 2591 3145 3063 1335 3510 1695 35025 G Pay-to-use ATMs 540 716 1274 466 1287 915 586 940 692 235 883 495 9029 H Cashback locations 38253 49104 81719 19564 60582 76204 51550 43309 44494 15837 47415 26410 554441 All sources excluding cashback 4085 4983 6886 2634 6679 6986 4709 5228 4913 2183 6345 3340 58971 All sources including cashback 42338 54087 88605 22198 67261 83190 56259 48537 49407 18020 53760 29750 613412"
+    },
+    {
+      "documentEvidenceId": "d261f8c91dc67a52",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "The counts in Table 1 are for all known access points."
+    },
+    {
+      "documentEvidenceId": "5c32da79f2e8f262",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "The number of unique locations offering access will be smaller."
+    },
+    {
+      "documentEvidenceId": "7c2fd1e0aa5c5fcd",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "This is because, for example, a typical branch will have 1 or more internal and/or 1 or more external ATMs, and these are counted separately."
+    },
+    {
+      "documentEvidenceId": "c2b95a290c858121",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "This does not apply to cashback vendor locations as only unique locations are counted (see also note 5)."
+    },
+    {
+      "documentEvidenceId": "b66e6f34a67eceab",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "There are no mobile bank branches or mobile/outreach Post Office branches in London. &nbsp; Cashback locations are the unique locations of vendors which have offered cashback at some point in the most recent years on record to customers using either a Mastercard or a Visa card."
+    },
+    {
+      "documentEvidenceId": "36224fa519bd28eb",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "There could be other merchants offering cashback who are not included in this dataset, either because there was no transaction involving cashback or because the transactions did not involve Visa or Mastercard. &nbsp; We have made every effort to ensure the dataset is complete and up to date, but there may still be some omissions or discrepancies."
+    },
+    {
+      "documentEvidenceId": "7e96a05e264af315",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "This dataset does not include ATMs that were temporarily closed at the time the data was collected."
+    },
+    {
+      "documentEvidenceId": "f3210bacce224dae",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "Data on some smaller banking companies may be missing, and not all recent branch closures, openings or other changes may have been reflected."
+    },
+    {
+      "documentEvidenceId": "830f079846d4ee8b",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "Data from type B firms (non-designated PCA providers with 10 or more branches) reflects their branch numbers at the end of H2 2025."
+    },
+    {
+      "documentEvidenceId": "0e24bbd767f6db8c",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "Of the Post Office branches, we included only those classified by the Post Office as active at the time the data was collected."
+    },
+    {
+      "documentEvidenceId": "d6d9000816906237",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "We have analysed coverage for 14 groups of cash access points which we define in Table 2."
+    },
+    {
+      "documentEvidenceId": "4694260676e82c73",
+      "sectionReference": "Notes 4, 5, and 6",
+      "extractedText": "The groups are constructed by combining the cash access point types and cashback locations: Group 1 includes type A (designated banks and building societies) access points only. &nbsp; Group 2 adds the non-mobile/outreach Post Office network, including banking hubs. &nbsp; Group 3 includes brick-and-mortar (except type B) and mobile/outreach designated bank, designated building society and all Post Office branches including banking hubs. &nbsp; Groups 4 and 5 include the same cash access point types as Group 3, as well as all free-to-use ATMs and all ATMs respectively. &nbsp; Group 6 includes type B branches and contains all free-to-use access points. &nbsp; Group 7 shows all cash access points excluding cashback. &nbsp; Groups 8 and 9 focus on access to ATMs, for free-to-use and all ATMs, respectively. &nbsp; Groups 10, 11, and 12 combine free-to-use access points, all access points and all ATMs respectively with cashback locations. &nbsp; Groups 13 and 14 focus on access to the Post Office network, distinguishing between non-mobile/outreach branches and all branches. &nbsp; Due to substitutability, as outlined above, type B branches are only included in groups 6, 7, 10, and 11."
+    },
+    {
+      "documentEvidenceId": "0980ee34160218c9",
+      "sectionReference": "Table 2: Groupings of cash access points",
+      "extractedText": "Group&nbsp; Description&nbsp; Cash access point types&nbsp;included&nbsp; Number of entries&nbsp; A&nbsp; B&nbsp; C&nbsp; D&nbsp; E&nbsp; F&nbsp; G&nbsp; H 1 Designated Banks and Building Societies: brick-and-mortar branches x &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3230 2 Designated Banks and Building Societies and Post Office: brick-and-mortar branches (including banking hubs) x &nbsp; x &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 12600 3 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs) x &nbsp; x x x &nbsp; &nbsp; &nbsp; 14796 4 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs), and free-to-use ATMs x &nbsp; x x x x &nbsp; &nbsp; 49821 5 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs), and all ATMs x &nbsp; x x x x x &nbsp; 58850 6 All free-to-use cash access points (excluding cashback) x x x x x x &nbsp; &nbsp; 49942 7 All&nbsp;cash access points (excluding cashback) x x x x x x x &nbsp; 58971 8 Free-to-use ATMs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x &nbsp; &nbsp; 35025 9 All ATMs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x x &nbsp; 44054 10 All free-to-use cash access points and cashback locations x x x x x x &nbsp; x 604383 11 All cash access points and cashback locations x x x x x x x x 613412 12 All ATMs and cashback locations &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x x x 598495 13 Post Office branches excluding outreach and mobile &nbsp; &nbsp; x &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 9370 14 All Post Office branches &nbsp; &nbsp; x &nbsp; x &nbsp; &nbsp; &nbsp; 10950 On this web page we provide highlights of coverage in Table 3."
+    },
+    {
+      "documentEvidenceId": "74d679f5445a9301",
+      "sectionReference": "Table 2: Groupings of cash access points",
+      "extractedText": "We present data for groups 3 and 6 as proxies for free cash withdrawal access and cash deposit access for consumers."
+    },
+    {
+      "documentEvidenceId": "b5211386fa3d3eae",
+      "sectionReference": "Table 2: Groupings of cash access points",
+      "extractedText": "We provide these figures for Great Britain, Northern Ireland and the UK as a whole split by overall, rural and urban at distances of 1 mile and 3 miles.&nbsp;"
+    },
+    {
+      "documentEvidenceId": "820ff842e52561d8",
+      "sectionReference": "Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6)",
+      "extractedText": "Group 3 - 2025 H1 Group 6 - 2025 H1 Group 3: Larger banks and building societies providing PCA and Post Office: all branches, including mobile and banking hubs Region Rural / Urban Population, 000's 2km 5km 1mi 3mi GB Overall 65174.6 94.6 99.6 92 99.6 GB Rural 12033 75.2 98 68.9 97.7 GB Urban 53141.7 99 100 97.2 100 NI Overall 1895.5 83.3 98.4 79.2 98.1 NI Rural 709.3 57.6 95.7 50.7 95 NI Urban 1186.2 98.7 100 96.3 100 UK Overall 67070.1 94.3 99.6 91.6 99.5 UK Rural 12742.2 74.2 97.9 67.9 97.5 UK Urban 54327.9 99 100 97.2 100 Group 6: All free-to-use cash access points (excluding cashback) Region Rural / Urban Population, 000's 2km 5km 1mi 3mi GB Overall 65174.6 96.2 99.7 95 99.7 GB Rural 12033 80.3 98.6 74.9 98.3 GB Urban 53141.7 99.8 100 99.6 100 NI Overall 1895.5 86.2 99.1 83.1 98.9 NI Rural 709.3 63.6 97.6 56.3 97.1 NI Urban 1186.2 99.7 100 99.2 100 UK Overall 67070.1 96 99.7 94.7 99.7 UK Rural 12742.2 79.4 98.5 73.8 98.2 UK Urban 54327.9 99.8 100 99.6 100 Estimated percentages of the UK population living within a given distance from a cash access point for all groups 1-14 can be downloaded via the link below ( see notes 7, 8, and 9 )."
+    },
+    {
+      "documentEvidenceId": "1931eaf3d682c34f",
+      "sectionReference": "Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6)",
+      "extractedText": "We give the estimates for the UK regions and devolved nations separately, as well as for England and the UK overall."
+    },
+    {
+      "documentEvidenceId": "6d28807d62980dd1",
+      "sectionReference": "Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6)",
+      "extractedText": "We also give estimates for rural and urban areas ( see note 10 ).&nbsp; The distances considered are 1, 2, 3, 5, and 10 miles (approximately 1.6, 3.2, 4.8, 8.0 and 16 km, respectively)."
+    },
+    {
+      "documentEvidenceId": "69923dfe05e6a3af",
+      "sectionReference": "Notes 7, 8, 9 and 10",
+      "extractedText": "All population estimates are based on 2011 census output area (OA) geographies (small areas in Northern Ireland), mid-2020 estimates of the usual resident population for OAs in England, Northern Ireland and Wales, and for Data Zones in Scotland."
+    },
+    {
+      "documentEvidenceId": "72a6d25976bae485",
+      "sectionReference": "Notes 7, 8, 9 and 10",
+      "extractedText": "We obtained population estimates for OAs in Scotland by proportionally adjusting the 2011 census estimates using the aggregate mid-2021 population estimates for Data Zones."
+    },
+    {
+      "documentEvidenceId": "689ce9e0c53fa8f7",
+      "sectionReference": "Notes 7, 8, 9 and 10",
+      "extractedText": "We compute the population estimates for arbitrary areas based on the assumption that population density is uniform over each OA."
+    },
+    {
+      "documentEvidenceId": "2f107c57828458a4",
+      "sectionReference": "Notes 7, 8, 9 and 10",
+      "extractedText": "For ease of reference, columns ‘Population, 000’s’ in Table 3 reproduce these population estimates (in thousands) for all included areas. &nbsp; While we have tried to get precise locations of all access points, some locations are precise to their respective postcode centroids only."
+    },
+    {
+      "documentEvidenceId": "1ba18d12431e6d6f",
+      "sectionReference": "Notes 7, 8, 9 and 10",
+      "extractedText": "In most cases the locations used in this analysis are those supplied by banks, building societies, the Post Office, the LINK Scheme Ltd, Visa and Mastercard. &nbsp; All estimates in Table 3 are reported to 1 decimal place precision."
+    },
+    {
+      "documentEvidenceId": "b5159a86adf95023",
+      "sectionReference": "Notes 7, 8, 9 and 10",
+      "extractedText": "For some groups the estimates are very similar or nearly identical, for example those for groups 7 (all cash access points) and 5 (all except type B)."
+    },
+    {
+      "documentEvidenceId": "94939c140acaedc2",
+      "sectionReference": "Notes 7, 8, 9 and 10",
+      "extractedText": "This is because many cash access points, particularly bank and building society branches, tend to cluster around population centres. &nbsp; The definitions used for rural-urban classification differ between England and Wales, Scotland and Northern Ireland."
+    },
+    {
+      "documentEvidenceId": "70f9fd073d0219a6",
+      "sectionReference": "Notes 7, 8, 9 and 10",
+      "extractedText": "In the case of Northern Ireland, for simplicity, we have reallocated the 165 out of 4,537 small areas originally assigned to a mixed rural/urban category to either rural or urban category based on their band."
+    }
+  ],
+  "askRiEvidence": {
+    "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+    "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+    "extractionProfile": "html_article_v2",
+    "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+    "publicationMetadata": {
+      "title": "1. Introduction",
+      "primaryPdf": {
+        "url": "https://www.fca.org.uk/publication/policy/ps24-8.pdf",
+        "title": "access to cash regime",
+        "captured": false,
+        "relationship": "policy_statement_pdf"
+      },
+      "drupalAbout": "/data/access-cash-coverage-uk-2025-h1",
+      "drupalNodeId": "176381",
+      "consultationTimeline": {
+        "opens": null,
+        "closes": null,
+        "present": false,
+        "opensDate": null,
+        "closesDate": null
+      },
+      "publicationTypeLabel": null,
+      "primaryDocumentClassification": "pdf_primary_webpage_summary"
+    },
+    "extractionQuality": {
+      "score": 100,
+      "status": "complete",
+      "metrics": {
+        "headingCount": 17,
+        "alphaWordCount": 1687,
+        "paragraphCount": 30,
+        "plainTextLength": 18270,
+        "pdfAttachmentCount": 1
+      },
+      "signals": [
+        "primary_pdf_not_captured"
+      ],
+      "confidence": "high",
+      "primaryDocument": {
+        "completeness": "not_captured",
+        "primaryPdfUrl": "https://www.fca.org.uk/publication/policy/ps24-8.pdf",
+        "classification": "pdf_primary",
+        "primaryPdfCaptured": false
+      },
+      "webpageExtraction": {
+        "score": 100,
+        "status": "complete",
+        "confidence": "high"
+      },
+      "obligationGradeSuitable": false
+    },
+    "pdfAttachments": [
+      {
+        "url": "https://www.fca.org.uk/publication/policy/ps24-8.pdf",
+        "title": "access to cash regime",
+        "documentType": "pdf",
+        "relationship": "policy_statement_pdf",
+        "likelyPrimaryRegulatoryDocument": true
+      }
+    ],
+    "normalisedArticleText": "This is an overview of geographical cash access coverage in the UK at the end of the first half-year (January to June) of 2025. This monitoring forms part of the FCA’s work on access to cash . The data is historic. See our latest access to cash data . 1. Introduction As part of our work on access to cash, we regularly publish data on changes in the UK’s cash access coverage. This includes the locations of cash access points and other information such as temporary closures, opening hours and accessibility. These publications are based on quarterly data from designated banks and building societies on their brick-and-mortar and mobile branch networks, and monthly data covering automated teller machines (ATMs) and the Post Office network. We supplement this information with annual data on both cashback locations and branches of large non-designated personal current account (PCA) providers ( see note 1 ). This analysis shows the proportion of the population that lives within a range of distances of various types of cash access point. We measure distances as the crow flies ( see note 2 ), consistent with the approaches adopted by LINK and the Post Office, relative to residential addresses ( see note 3 ). Show more + Show less - Note 1, 2 and 3 When we started collecting data under our new access to cash regime , the firm population changed slightly. This means we cannot directly compare coverage analysis for this or future publications with coverage analysis covering quarters before Q2 2024. Relative to analogous travel distance, the approach based on straight line distances is likely to overestimate coverage and underestimate the areas with no coverage. The effect is likely to be more important for longer, non-walkable distances. All computations are performed in the British National Grid ( OSGB 1936 ) projection. Our current approach measures straight line distances from residential addresses to their nearest access point by type. To determine aggregate coverage percentages, we estimate the total number of residential properties within a set distance of an access point at a certain geographical level, eg Output Area, Local Authority District, Country. We estimate that for access to cash via designated banks and building societies providing PCA and Post Office: all branches, including mobile bank branches: 97.2% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering deposits. 97.5% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering deposits. We estimate that for access to cash via any bank, building society, Post Office branch or any free ATM: 99.6% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering withdrawals. 98.2% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering withdrawals. The headline coverage figures remain broadly comparable with previous data publications. They continue to show more than 95% of the UK population being within the distances set out in the Treasury’s Cash Access Policy Statement . 2. Coverage The data comprises 58,971 reported UK cash access points and 554,441 cashback locations. Table 1 shows numbers by region for 8 types of access point ( see notes 4, 5, and 6 ): Brick-and-mortar branches of banks and building societies are subdivided into 2 groups. The first group is the branches of the 14 banks and building societies designated under Part 8B of the Financial Services and Markets Act 2000 for the provision of cash access services (Type A) who we collect quarterly coverage data from. The second group is the branches of some larger non-designated PCA providers (Type B) who we collect annual data from. Mobile bank branches (measured by stops) are a separate type (D). Post Office branches are subdivided into mobile / outreach branches (type E) and all other Post Office branches (type C). The outreach branches are brick-and-mortar but are more similar to mobile branches, being typically open for a small number of hours or on selected days of the week. For example, these include limited time to serve access points in community buildings in rural locations. For this reason, we group the mobile and outreach branches together. ATMs are subdivided into free-to-use (type F) and pay-to-use (type G). Cashback locations (type H) are all the unique locations where a cashback transaction took place in the most recent year of data for relevant cashback provider. Table 1: Number of cash access points by type and geographical area Country/ geographical area England Northern Ireland Scotland Wales UK Total Type Description East Midlands East of England London North East North West South East South West West Midlands Yorkshire and The Humber A Larger banks and building societies providing PCA (brick-and-mortar branches) 206 296 371 127 315 455 280 288 224 116 350 202 3230 B All other banks and building societies (brick-and-mortar branches) 3 11 37 2 30 19 3 7 2 5 2 121 C Post Office branches (including banking hubs, excluding mobile/ outreach) 699 916 674 385 917 1173 943 754 792 462 1002 653 9370 D Mobile bank branches 12 12 21 42 53 5 5 13 371 82 616 E Mobile/ outreach Post Office branches 120 183 86 137 120 253 89 135 22 224 211 1580 F Free-to-use ATMs 2505 2849 4530 1568 3972 4262 2591 3145 3063 1335 3510 1695 35025 G Pay-to-use ATMs 540 716 1274 466 1287 915 586 940 692 235 883 495 9029 H Cashback locations 38253 49104 81719 19564 60582 76204 51550 43309 44494 15837 47415 26410 554441 All sources excluding cashback 4085 4983 6886 2634 6679 6986 4709 5228 4913 2183 6345 3340 58971 All sources including cashback 42338 54087 88605 22198 67261 83190 56259 48537 49407 18020 53760 29750 613412 Notes 4, 5, and 6 The counts in Table 1 are for all known access points. The number of unique locations offering access will be smaller. This is because, for example, a typical branch will have 1 or more internal and/or 1 or more external ATMs, and these are counted separately. This does not apply to cashback vendor locations as only unique locations are counted (see also note 5). There are no mobile bank branches or mobile/outreach Post Office branches in London. Cashback locations are the unique locations of vendors which have offered cashback at some point in the most recent years on record to customers using either a Mastercard or a Visa card. There could be other merchants offering cashback who are not included in this dataset, either because there was no transaction involving cashback or because the transactions did not involve Visa or Mastercard. We have made every effort to ensure the dataset is complete and up to date, but there may still be some omissions or discrepancies. This dataset does not include ATMs that were temporarily closed at the time the data was collected. Data on some smaller banking companies may be missing, and not all recent branch closures, openings or other changes may have been reflected. Data from type B firms (non-designated PCA providers with 10 or more branches) reflects their branch numbers at the end of H2 2025. Of the Post Office branches, we included only those classified by the Post Office as active at the time the data was collected. We have analysed coverage for 14 groups of cash access points which we define in Table 2. The groups are constructed by combining the cash access point types and cashback locations: Group 1 includes type A (designated banks and building societies) access points only. Group 2 adds the non-mobile/outreach Post Office network, including banking hubs. Group 3 includes brick-and-mortar (except type B) and mobile/outreach designated bank, designated building society and all Post Office branches including banking hubs. Groups 4 and 5 include the same cash access point types as Group 3, as well as all free-to-use ATMs and all ATMs respectively. Group 6 includes type B branches and contains all free-to-use access points. Group 7 shows all cash access points excluding cashback. Groups 8 and 9 focus on access to ATMs, for free-to-use and all ATMs, respectively. Groups 10, 11, and 12 combine free-to-use access points, all access points and all ATMs respectively with cashback locations. Groups 13 and 14 focus on access to the Post Office network, distinguishing between non-mobile/outreach branches and all branches. Due to substitutability, as outlined above, type B branches are only included in groups 6, 7, 10, and 11. Table 2: Groupings of cash access points Group Description Cash access point types included Number of entries A B C D E F G H 1 Designated Banks and Building Societies: brick-and-mortar branches x 3230 2 Designated Banks and Building Societies and Post Office: brick-and-mortar branches (including banking hubs) x x 12600 3 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs) x x x x 14796 4 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs), and free-to-use ATMs x x x x x 49821 5 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs), and all ATMs x x x x x x 58850 6 All free-to-use cash access points (excluding cashback) x x x x x x 49942 7 All cash access points (excluding cashback) x x x x x x x 58971 8 Free-to-use ATMs x 35025 9 All ATMs x x 44054 10 All free-to-use cash access points and cashback locations x x x x x x x 604383 11 All cash access points and cashback locations x x x x x x x x 613412 12 All ATMs and cashback locations x x x 598495 13 Post Office branches excluding outreach and mobile x 9370 14 All Post Office branches x x 10950 On this web page we provide highlights of coverage in Table 3. We present data for groups 3 and 6 as proxies for free cash withdrawal access and cash deposit access for consumers. We provide these figures for Great Britain, Northern Ireland and the UK as a whole split by overall, rural and urban at distances of 1 mile and 3 miles. Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6) Group 3 - 2025 H1 Group 6 - 2025 H1 Group 3: Larger banks and building societies providing PCA and Post Office: all branches, including mobile and banking hubs Region Rural / Urban Population, 000's 2km 5km 1mi 3mi GB Overall 65174.6 94.6 99.6 92 99.6 GB Rural 12033 75.2 98 68.9 97.7 GB Urban 53141.7 99 100 97.2 100 NI Overall 1895.5 83.3 98.4 79.2 98.1 NI Rural 709.3 57.6 95.7 50.7 95 NI Urban 1186.2 98.7 100 96.3 100 UK Overall 67070.1 94.3 99.6 91.6 99.5 UK Rural 12742.2 74.2 97.9 67.9 97.5 UK Urban 54327.9 99 100 97.2 100 Group 6: All free-to-use cash access points (excluding cashback) Region Rural / Urban Population, 000's 2km 5km 1mi 3mi GB Overall 65174.6 96.2 99.7 95 99.7 GB Rural 12033 80.3 98.6 74.9 98.3 GB Urban 53141.7 99.8 100 99.6 100 NI Overall 1895.5 86.2 99.1 83.1 98.9 NI Rural 709.3 63.6 97.6 56.3 97.1 NI Urban 1186.2 99.7 100 99.2 100 UK Overall 67070.1 96 99.7 94.7 99.7 UK Rural 12742.2 79.4 98.5 73.8 98.2 UK Urban 54327.9 99.8 100 99.6 100 Estimated percentages of the UK population living within a given distance from a cash access point for all groups 1-14 can be downloaded via the link below ( see notes 7, 8, and 9 ). We give the estimates for the UK regions and devolved nations separately, as well as for England and the UK overall. We also give estimates for rural and urban areas ( see note 10 ). The distances considered are 1, 2, 3, 5, and 10 miles (approximately 1.6, 3.2, 4.8, 8.0 and 16 km, respectively). Download Table 3 data (xlsx) Notes 7, 8, 9 and 10 All population estimates are based on 2011 census output area (OA) geographies (small areas in Northern Ireland), mid-2020 estimates of the usual resident population for OAs in England, Northern Ireland and Wales, and for Data Zones in Scotland. We obtained population estimates for OAs in Scotland by proportionally adjusting the 2011 census estimates using the aggregate mid-2021 population estimates for Data Zones. We compute the population estimates for arbitrary areas based on the assumption that population density is uniform over each OA. For ease of reference, columns ‘Population, 000’s’ in Table 3 reproduce these population estimates (in thousands) for all included areas. While we have tried to get precise locations of all access points, some locations are precise to their respective postcode centroids only. In most cases the locations used in this analysis are those supplied by banks, building societies, the Post Office, the LINK Scheme Ltd, Visa and Mastercard. All estimates in Table 3 are reported to 1 decimal place precision. For some groups the estimates are very similar or nearly identical, for example those for groups 7 (all cash access points) and 5 (all except type B). This is because many cash access points, particularly bank and building society branches, tend to cluster around population centres. The definitions used for rural-urban classification differ between England and Wales, Scotland and Northern Ireland. In the case of Northern Ireland, for simplicity, we have reallocated the 165 out of 4,537 small areas originally assigned to a mixed rural/urban category to either rural or urban category based on their band. We have allocated bands A-E as urban and F-H as rural; see NISRA Urban-Rural Classification 2015 for more details. Figure 1 shows the coverage areas underlying the population estimates in Table 3. As in Table 3, the cash access points are those in groups 1-14. In each case the areas shown are those without access to a source of cash within 1, 2, 3, 5 and 10 miles. The interactive tooltips show percentages of the Local Authority District population with access to a source of cash within the above range of distances. Download underlying data for Figure 1 maps (XLSX) Figure 1: Access to cash coverage in the UK in 2025 H1 View the maps in Tableau Public 3. Other insights 3.1. Temporary closures We cannot give precise figures for temporary closures because a high proportion of branches did not provide this information. Of type A branches that provided this information (89%), 6% were temporarily closed for at least 1 day. We do not have equivalent information for Post Office branches. 3.2. Opening hours While external and stand-alone ATMs are always accessible, in-branch cash withdrawals and deposits and other banking services are only available during branch opening hours. Figure 2 shows the percentages of branches open at a given time between 7am and 7pm, Monday to Saturday ( see note 11 ), by branch types defined in Table 1. Figure 2 Percentages of branches open at a given time by branch type Download PDF version of infographic (PDF) 3.3. Accessibility For some consumers, being able to use branch services depends on accessibility. Table 4 shows percentages of branches that are wheelchair accessible, have step-free access and/or have a hearing/induction loop available for the 3 types of bank and building society branches ( see note 11 ). The step-free access characteristic does not apply to mobile branches ( see note 12 ). Of the brick-and-mortar bank and building society branches, 90.4% of type A (designated banks and building societies) and 78.5% of type B (large non-designated PCA provider) branches have all 3 features. Excluding the branches for which some values are unreported, these percentages become 97.3% and 78.5% respectively. In this publication, we do not have equivalent information for Post Offices. Table 4: Percentages of branches with common accessibility characteristics by branch type Wheelchair accessible Has step-free access Has hearing/ induction loop available Access point type Sample Yes No Unreported Yes No Unreported Yes No Unreported A: Larger banks and building societies providing PCA (brick-and-mortar branches) All data 91.2 1.7 7.1 91.3 1.6 7.1 92.4 0.5 7.1 Excluding unreported 98.2 1.8 x 98.3 1.7 x 99.4 0.6 x B: All other banks and building societies (brick-and-mortar branches) All data 86.8 13.2 - 86.0 14.0 - 100.0 - - Excluding unreported 86.8 13.2 x 86.0 14.0 x 100.0 x x D: Mobile bank branches All data 78.6 21.4 - - 100.0 - 100.0 - - Excluding unreported 78.6 21.4 x - 100.0 x 100.0 - x Notes 11 and 12 Mobile stops and outreach branches are typically open for a small number of hours on specific days, so the overall proportions of these branches open at a given time are generally low. Proportions given in the ‘excluding unreported’ rows in Table 4 are unbiased estimates of the respective true proportions where there is no connection between the non-reporting and the value of the specific characteristic. Proportions given in the ‘all data’ rows represent worst-case scenario bounds. For example, if all the 7.1% of larger bank and building society branches (type A) for which step-free access is unreported are, in fact, step-free accessible, the overall proportions will be 98.4% and 1.6%. If none of them is step-free accessible, the overall proportions will be 91.3% and 8.7% for yes and no respectively. Symbols ‘x’ and ‘–’ in Table 4 denote ‘not applicable’ and ‘none’ (i.e., exactly zero) respectively. In some cases, the percentages do not sum to exactly 100% because of rounding. 4. Attributions As well as the data from banks, building societies, and the Post Office, the analysis uses other open data and data licensed under the Public Sector Geospatial Agreement: Contains OS data © Crown copyright and database right 2025. Contains NRS data © Crown copyright and database right 2022. Contains NISRA data © Crown copyright and database right 2021. Contains National Statistics data © Crown copyright and database rights 2021/2022/2023/2024/2025. Contains Royal Mail data © Royal Mail copyright and database right 2025. Office for National Statistics licensed under the Open Government Licence v.3.0. Contains public sector information licensed under the Open Government Licence v3.0. This product contains data created and maintained by Scottish Local Government. Was this page useful? Yes No What can we do to improve pages like this? What did you find helpful? Submit Feedback Leave this field blank",
+    "normalisedArticleHtml": "<article data-history-node-id=\"176381\" class=\"lf-bg-dabddb node node-publication-longform col-sm-12 clearfix four-step-limit col-xs-12 col-md-8 col-md-pull-4 js-has-sidebar--sticky\" about=\"/data/access-cash-coverage-uk-2025-h1\"> <div class=\"node-content__wrapper node-content__wrapper--border\"> <div class=\"hidden-xs\"> <section class=\"copy-highlighted copy-block component fca-colour--6c1d45 default\"> <div class=\"container\"> <p>This is an overview of geographical cash access coverage in the UK at the end of the first half-year (January to June) of 2025. This monitoring forms part of the FCA’s work on <a href=\"/firms/access-to-cash\" data-entity-type=\"node\" data-entity-uuid=\"0abece33-9e38-473d-aff2-ff3c02bd3088\" data-entity-substitution=\"canonical\" title=\"Helping people access cash\">access to cash</a>.</p> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <body><div class=\"copy-block__call-out copy-block__call-out--outline\"> <p>The data is historic. See our <a href=\"/firms/access-to-cash/previous-access-cash-coverage-data\" title=\"Previous access to cash coverage data\" data-entity-type=\"node\" data-entity-uuid=\"5777f977-6ec4-4f6f-93ca-3e488d5d031b\" data-entity-substitution=\"canonical\">latest access to cash data</a>.</p> </div> </body> </div> </section> </div> </div> <div class=\"chapters\"> <section class=\"component chapter\" id=\"lf-chapter-id-introduction\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">1. Introduction</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>As part of our work on access to cash, we regularly publish data on changes in the UK’s cash access coverage. This includes the locations of cash access points and other information such as temporary closures, opening hours and accessibility. These publications are based on quarterly data from designated banks and building societies on their brick-and-mortar and mobile branch networks, and monthly data covering automated teller machines (ATMs) and the Post Office network. We supplement this information with annual data on both cashback locations and branches of large non-designated personal current account (PCA) providers (<a href=\"#note-1\">see note 1</a>).</p><p id=\"note-1\">This analysis shows the proportion of the population that lives within a range of distances of various types of cash access point. We measure distances as the crow flies (<a href=\"#note-1\">see note 2</a>), consistent with the approaches adopted by LINK and the Post Office, relative to residential addresses (<a href=\"#note-1\">see note 3</a>).</p> <div class=\"show-more\"> <a href=\"#\" class=\"show-more__link\">Show more <span aria-hidden=\"true\">+</span></a> </div> <div class=\"copy-block__additional hidden\"> <div class=\"paragraph paragraph--type--additional-copy paragraph--view-mode--default\"> </div> </div> <div class=\"show-more \"> <a href=\"#\" class=\"show-more__link show-more__link--less hidden\">Show less <span aria-hidden=\"true\">-</span></a> </div> </div> </section> </div> <section class=\"expandable-content component container default\"> <div class=\"nav nav-stacked component component--expandable\" id=\"expandable1958511\"> <div class=\"expandable panel component\" role=\"group\" aria-label=\"accordion\"> <h3> <a class=\"expandable-title collapsed\" data-toggle=\"collapse\" href=\"#expandable1958506\" aria-expanded=\"false\" aria-controls=\"expandable1958506\" role=\"button\"> Note 1, 2 and 3 </a> </h3> <div id=\"expandable1958506\" class=\"collapse\"> <div class=\"expandable-body copy-block\"> <ol><li data-list-item-id=\"eb62468da548d1e36513580de873c5f79\">When we started collecting data under our new&nbsp;<a href=\"https://www.fca.org.uk/publication/policy/ps24-8.pdf\">access to cash regime</a>, the firm population changed slightly. This means we cannot directly compare coverage analysis for this or future publications with coverage analysis covering quarters before Q2 2024.<br>&nbsp;</li><li data-list-item-id=\"e7ce1aab9dee1f69c3e2e1a679848f659\">Relative to analogous travel distance, the approach based on straight line distances is likely to overestimate coverage and underestimate the areas with no coverage. The effect is likely to be more important for longer, non-walkable distances. All computations are performed in the British National Grid (<a href=\"https://epsg.io/27700\">OSGB 1936</a>) projection.<br>&nbsp;</li><li data-list-item-id=\"e0812ff1ed85895583c72e4ea3cca34a1\">Our current approach measures straight line distances from residential addresses to their nearest access point by type. To determine aggregate coverage percentages, we estimate the total number of residential properties within a set distance of an access point at a certain geographical level, eg Output Area, Local Authority District, Country.&nbsp;</li></ol> </div> </div> </div> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>We estimate that for access to cash via designated banks and building societies providing PCA and Post Office: all branches, including mobile bank branches:</p><ul><li data-list-item-id=\"e52de655f68cfed95347545ff3b0ce738\">97.2% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering deposits.</li><li data-list-item-id=\"e78c61cc86310de4054a4e4df21858fed\">97.5% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering deposits.</li></ul><p>We estimate that for access to cash via any bank, building society, Post Office branch or any free ATM:</p><ul><li data-list-item-id=\"e57733d1f1ab6389504232b5a6a5fbe6f\">99.6% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering withdrawals.</li><li data-list-item-id=\"eb91feb0a37427368f257df9d2c52215b\">98.2% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering withdrawals.</li></ul><p>The headline coverage figures remain broadly comparable with previous data publications. They continue to show more than 95% of the UK population being within the distances set out in the Treasury’s &nbsp;<a href=\"https://www.gov.uk/government/publications/cash-access-policy-statement/cash-access-policy-statement\">Cash Access Policy Statement</a>.</p> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-coverage\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">2. Coverage</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>The data comprises 58,971 reported UK cash access points and 554,441 cashback locations. Table 1 shows numbers by region for 8 types of access point (<a href=\"#note-4\">see notes 4, 5, and 6</a>):</p><ul><li data-list-item-id=\"e84d6be375040e2fd6df56a472d5da5c0\">Brick-and-mortar branches of banks and building societies are subdivided into 2 groups. The first group is the branches of the 14 banks and building societies designated under Part 8B of the Financial Services and Markets Act 2000 for the provision of cash access services (Type A) who we collect quarterly coverage data from. The second group is the branches of some larger non-designated PCA providers (Type B) who we collect annual data from.<br>&nbsp;</li><li data-list-item-id=\"eb644b58d2c8cbd40e2728ca1e0af9630\">Mobile bank branches (measured by stops) are a separate type (D).<br>&nbsp;</li><li data-list-item-id=\"e0449eed2bf83d75713af76d317e556cb\">Post Office branches are subdivided into mobile / outreach branches (type E) and all other Post Office branches (type C). The outreach branches are brick-and-mortar but are more similar to mobile branches, being typically open for a small number of hours or on selected days of the week. For example, these include limited time to serve access points in community buildings in rural locations. For this reason, we group the mobile and outreach branches together.<br>&nbsp;</li><li data-list-item-id=\"e1c65add683ca8fb0bf4251d8c5e1fd81\">ATMs are subdivided into free-to-use (type F) and pay-to-use (type G).<br>&nbsp;</li><li data-list-item-id=\"e6a748ce7f97c512d0586c6f89ad5458d\">Cashback locations (type H) are all the unique locations where a cashback transaction took place in the most recent year of data for relevant cashback provider.&nbsp;</li></ul><h4>Table 1: Number of cash access points by type and geographical area</h4><table class=\"table\" style=\"border-style:solid;width:100%;\" border=\"1\" cellpadding=\"1\" cellspacing=\"1\" data-header-colour=\"maroon\" head-bg-color=\"#6C1D45\" head-color=\"#fff\"><thead><tr><th colspan=\"2\">Country/ geographical area</th><th colspan=\"9\">England</th><th rowspan=\"2\">Northern Ireland</th><th rowspan=\"2\">Scotland</th><th rowspan=\"2\">Wales</th><th rowspan=\"2\">UK Total</th></tr><tr><th>Type</th><th>Description</th><th>East Midlands</th><th>East of England</th><th>London</th><th>North East</th><th>North West</th><th>South East</th><th>South West</th><th>West Midlands</th><th>Yorkshire and The Humber</th></tr></thead><tbody><tr><td>A</td><td>Larger banks and building societies providing PCA (brick-and-mortar branches)</td><td>206</td><td>296</td><td>371</td><td>127</td><td>315</td><td>455</td><td>280</td><td>288</td><td>224</td><td>116</td><td>350</td><td>202</td><td>3230</td></tr><tr><td>B</td><td>All other banks and building societies (brick-and-mortar branches)</td><td>3</td><td>11</td><td>37</td><td>2</td><td>30</td><td>19</td><td>3</td><td>7</td><td>2</td><td>&nbsp;</td><td>5</td><td>2</td><td>121</td></tr><tr><td>C</td><td>Post Office branches (including banking hubs, excluding mobile/ outreach)</td><td>699</td><td>916</td><td>674</td><td>385</td><td>917</td><td>1173</td><td>943</td><td>754</td><td>792</td><td>462</td><td>1002</td><td>653</td><td>9370</td></tr><tr><td>D</td><td>Mobile bank branches</td><td>12</td><td>12</td><td>&nbsp;</td><td>&nbsp;</td><td>21</td><td>42</td><td>53</td><td>5</td><td>5</td><td>13</td><td>371</td><td>82</td><td>616</td></tr><tr><td>E</td><td>Mobile/ outreach Post Office branches</td><td>120</td><td>183</td><td>&nbsp;</td><td>86</td><td>137</td><td>120</td><td>253</td><td>89</td><td>135</td><td>22</td><td>224</td><td>211</td><td>1580</td></tr><tr><td>F</td><td>Free-to-use ATMs</td><td>2505</td><td>2849</td><td>4530</td><td>1568</td><td>3972</td><td>4262</td><td>2591</td><td>3145</td><td>3063</td><td>1335</td><td>3510</td><td>1695</td><td>35025</td></tr><tr><td>G</td><td>Pay-to-use ATMs</td><td>540</td><td>716</td><td>1274</td><td>466</td><td>1287</td><td>915</td><td>586</td><td>940</td><td>692</td><td>235</td><td>883</td><td>495</td><td>9029</td></tr><tr><td>H</td><td>Cashback locations</td><td>38253</td><td>49104</td><td>81719</td><td>19564</td><td>60582</td><td>76204</td><td>51550</td><td>43309</td><td>44494</td><td>15837</td><td>47415</td><td>26410</td><td>554441</td></tr><tr><td colspan=\"2\">All sources excluding cashback</td><td>4085</td><td>4983</td><td>6886</td><td>2634</td><td>6679</td><td>6986</td><td>4709</td><td>5228</td><td>4913</td><td>2183</td><td>6345</td><td>3340</td><td>58971</td></tr><tr><td colspan=\"2\">All sources including cashback</td><td>42338</td><td>54087</td><td>88605</td><td>22198</td><td>67261</td><td>83190</td><td>56259</td><td>48537</td><td>49407</td><td>18020</td><td>53760</td><td>29750</td><td>613412</td></tr></tbody></table> </div> </section> </div> <section class=\"expandable-content component container default\"> <div class=\"nav nav-stacked component component--expandable\" id=\"expandable1958536\"> <div class=\"expandable panel component\" role=\"group\" aria-label=\"accordion\"> <h3> <a class=\"expandable-title collapsed\" data-toggle=\"collapse\" href=\"#expandable1958531\" aria-expanded=\"false\" aria-controls=\"expandable1958531\" role=\"button\"> Notes 4, 5, and 6 </a> </h3> <div id=\"expandable1958531\" class=\"collapse\"> <div class=\"expandable-body copy-block\"> <ol start=\"4\"><li data-list-item-id=\"e2f5e24c05a7840e8ca50fadff92e5977\">The counts in Table 1 are for all known access points. The number of unique locations offering access will be smaller. This is because, for example, a typical branch will have 1 or more internal and/or 1 or more external ATMs, and these are counted separately. This does not apply to cashback vendor locations as only unique locations are counted (see also note 5). There are no mobile bank branches or mobile/outreach Post Office branches in London.<br>&nbsp;</li><li data-list-item-id=\"e269a8ca675e92e2f12c615a78d8a5963\">Cashback locations are the unique locations of vendors which have offered cashback at some point in the most recent years on record to customers using either a Mastercard or a Visa card. There could be other merchants offering cashback who are not included in this dataset, either because there was no transaction involving cashback or because the transactions did not involve Visa or Mastercard.<br>&nbsp;</li><li data-list-item-id=\"e9f26a9dcc9b2a5f6d8ffcaaf03c978fc\">We have made every effort to ensure the dataset is complete and up to date, but there may still be some omissions or discrepancies. This dataset does not include ATMs that were temporarily closed at the time the data was collected. Data on some smaller banking companies may be missing, and not all recent branch closures, openings or other changes may have been reflected. Data from type B firms (non-designated PCA providers with 10 or more branches) reflects their branch numbers at the end of H2 2025. Of the Post Office branches, we included only those classified by the Post Office as active at the time the data was collected.</li></ol> </div> </div> </div> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>We have analysed coverage for 14 groups of cash access points which we define in Table 2. The groups are constructed by combining the cash access point types and cashback locations:</p><ul><li data-list-item-id=\"e5ba2c8e1d39afcfb41a3511a6c490dd5\">Group 1 includes type A (designated banks and building societies) access points only.<br>&nbsp;</li><li data-list-item-id=\"e9a2080b1350454a01258032d48caeba1\">Group 2 adds the non-mobile/outreach Post Office network, including banking hubs.<br>&nbsp;</li><li data-list-item-id=\"e86fe86d64bea0900111ab74905a2a484\">Group 3 includes brick-and-mortar (except type B) and mobile/outreach designated bank, designated building society and all Post Office branches including banking hubs.<br>&nbsp;</li><li data-list-item-id=\"e01828ea429fdca42c33ababb9add763d\">Groups 4 and 5 include the same cash access point types as Group 3, as well as all free-to-use ATMs and all ATMs respectively.<br>&nbsp;</li><li data-list-item-id=\"e4723f408dfd080520884cfa3fa2658f0\">Group 6 includes type B branches and contains all free-to-use access points.<br>&nbsp;</li><li data-list-item-id=\"e367b4e506046a8832294b1fc6c892a90\">Group 7 shows all cash access points excluding cashback.<br>&nbsp;</li><li data-list-item-id=\"efc8cb5a92da19580a98cdb1c2cb1e327\">Groups 8 and 9 focus on access to ATMs, for free-to-use and all ATMs, respectively.<br>&nbsp;</li><li data-list-item-id=\"efadab2c9170eb231f8f7fbccf8954b1d\">Groups 10, 11, and 12 combine free-to-use access points, all access points and all ATMs respectively with cashback locations.<br>&nbsp;</li><li data-list-item-id=\"ece83c4bc00487d3255745372ce5e1aa3\">Groups 13 and 14 focus on access to the Post Office network, distinguishing between non-mobile/outreach branches and all branches.<br>&nbsp;</li></ul><p>Due to substitutability, as outlined above, type B branches are only included in groups 6, 7, 10, and 11.</p><h4>Table 2: Groupings of cash access points</h4><table class=\"table\" style=\"border-style:solid;width:100%;\" border=\"1\" cellspacing=\"0\" cellpadding=\"0\"><thead><tr><th rowspan=\"2\">Group&nbsp;</th><th rowspan=\"2\">Description&nbsp;</th><th colspan=\"8\">Cash access point types&nbsp;included&nbsp;</th><th rowspan=\"2\">Number of entries&nbsp;</th></tr><tr><th>A&nbsp;</th><th>B&nbsp;</th><th>C&nbsp;</th><th>D&nbsp;</th><th>E&nbsp;</th><th>F&nbsp;</th><th>G&nbsp;</th><th>H</th></tr></thead><tbody><tr><td>1</td><td>Designated Banks and Building Societies: brick-and-mortar branches</td><td>x</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>3230</td></tr><tr><td>2</td><td>Designated Banks and Building Societies and Post Office: brick-and-mortar branches (including banking hubs)</td><td>x</td><td>&nbsp;</td><td>x</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>12600</td></tr><tr><td>3</td><td>Designated banks and building societies and Post Office: all branches (including mobile and banking hubs)</td><td>x</td><td>&nbsp;</td><td>x</td><td>x</td><td>x</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>14796</td></tr><tr><td>4</td><td>Designated banks and building societies and Post Office: all branches (including mobile and banking hubs), and free-to-use ATMs</td><td>x</td><td>&nbsp;</td><td>x</td><td>x</td><td>x</td><td>x</td><td>&nbsp;</td><td>&nbsp;</td><td>49821</td></tr><tr><td>5</td><td>Designated banks and building societies and Post Office: all branches (including mobile and banking hubs), and all ATMs</td><td>x</td><td>&nbsp;</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>&nbsp;</td><td>58850</td></tr><tr><td>6</td><td>All free-to-use cash access points (excluding cashback)</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>&nbsp;</td><td>&nbsp;</td><td>49942</td></tr><tr><td>7</td><td>All&nbsp;cash access points (excluding cashback)</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>&nbsp;</td><td>58971</td></tr><tr><td>8</td><td>Free-to-use ATMs</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>x</td><td>&nbsp;</td><td>&nbsp;</td><td>35025</td></tr><tr><td>9</td><td>All ATMs</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>x</td><td>x</td><td>&nbsp;</td><td>44054</td></tr><tr><td>10</td><td>All free-to-use cash access points and cashback locations</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>&nbsp;</td><td>x</td><td>604383</td></tr><tr><td>11</td><td>All cash access points and cashback locations</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>x</td><td>613412</td></tr><tr><td>12</td><td>All ATMs and cashback locations</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>x</td><td>x</td><td>x</td><td>598495</td></tr><tr><td>13</td><td>Post Office branches excluding outreach and mobile</td><td>&nbsp;</td><td>&nbsp;</td><td>x</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>9370</td></tr><tr><td>14</td><td>All Post Office branches</td><td>&nbsp;</td><td>&nbsp;</td><td>x</td><td>&nbsp;</td><td>x</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>10950</td></tr></tbody></table><p>On this web page we provide highlights of coverage in Table 3. We present data for groups 3 and 6 as proxies for free cash withdrawal access and cash deposit access for consumers. We provide these figures for Great Britain, Northern Ireland and the UK as a whole split by overall, rural and urban at distances of 1 mile and 3 miles.&nbsp;</p><h4>Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6)</h4> </div> </section> </div> <section class=\"component data-visualisations data-visualisations--maroon\"> <div class=\"container\"> <div class=\"\"> <div role=\"tablist\" class=\"nav nav-tabs fca-tabs-list\"> <a class=\"fca-tab active\" role=\"tab\" href=\"#data-vis-tab-0-1958546\" role=\"tab\" data-toggle=\"tab\" aria-selected=\"true\">Group 3 - 2025 H1</a> <a class=\"fca-tab\" role=\"tab\" href=\"#data-vis-tab-1-1958546\" role=\"tab\" data-toggle=\"tab\" aria-selected=\"false\">Group 6 - 2025 H1</a> </div> <div class=\"tab-content\"> <div role=\"tabpanel\" class=\"tab-pane active\" id=\"data-vis-tab-0-1958546\"><div class=\"field-item\"><div class=\"container dataVisContainer tabular-table\"> <header data-history-node-id=\"176391\" about=\"/node/176391\"> </header> <article id=\"node-176391\" class=\"clearfix\" data-history-node-id=\"176391\" about=\"/node/176391\"> <p>Group 3: Larger banks and building societies providing PCA and Post Office: all branches, including mobile and banking hubs</p> <div id=\"tablefield-wrapper-node-176391-field_data_vis_data-0\" class=\"tablefield-wrapper\"> <div class=\"table-responsive\"> <table id=\"tablefield-node-176391-field_data_vis_data-0\" class=\"tablefield table table-hover table-striped\" data-striping=\"1\" > <thead> <tr> <th class=\"row_0 col_0\"> Region</th> <th class=\"row_0 col_1\">Rural / Urban</th> <th class=\"row_0 col_2\">Population, 000's</th> <th class=\"row_0 col_3\">2km</th> <th class=\"row_0 col_4\">5km</th> <th class=\"row_0 col_5\">1mi</th> <th class=\"row_0 col_6\">3mi</th> </tr> </thead> <tbody> <tr class=\"odd\"> <td class=\"row_1 col_0\" title=\"\">GB</td> <td class=\"row_1 col_1\" title=\"\">Overall</td> <td class=\"row_1 col_2\" title=\"\">65174.6</td> <td class=\"row_1 col_3\" title=\"\">94.6</td> <td class=\"row_1 col_4\" title=\"\">99.6</td> <td class=\"row_1 col_5\" title=\"\">92</td> <td class=\"row_1 col_6\" title=\"\">99.6</td> </tr> <tr class=\"even\"> <td class=\"row_2 col_0\" title=\"\">GB</td> <td class=\"row_2 col_1\" title=\"\">Rural</td> <td class=\"row_2 col_2\" title=\"\">12033</td> <td class=\"row_2 col_3\" title=\"\">75.2</td> <td class=\"row_2 col_4\" title=\"\">98</td> <td class=\"row_2 col_5\" title=\"\">68.9</td> <td class=\"row_2 col_6\" title=\"\">97.7</td> </tr> <tr class=\"odd\"> <td class=\"row_3 col_0\" title=\"\">GB</td> <td class=\"row_3 col_1\" title=\"\">Urban</td> <td class=\"row_3 col_2\" title=\"\">53141.7</td> <td class=\"row_3 col_3\" title=\"\">99</td> <td class=\"row_3 col_4\" title=\"\">100</td> <td class=\"row_3 col_5\" title=\"\">97.2</td> <td class=\"row_3 col_6\" title=\"\">100</td> </tr> <tr class=\"even\"> <td class=\"row_4 col_0\" title=\"\">NI</td> <td class=\"row_4 col_1\" title=\"\">Overall</td> <td class=\"row_4 col_2\" title=\"\">1895.5</td> <td class=\"row_4 col_3\" title=\"\">83.3</td> <td class=\"row_4 col_4\" title=\"\">98.4</td> <td class=\"row_4 col_5\" title=\"\">79.2</td> <td class=\"row_4 col_6\" title=\"\">98.1</td> </tr> <tr class=\"odd\"> <td class=\"row_5 col_0\" title=\"\">NI</td> <td class=\"row_5 col_1\" title=\"\">Rural</td> <td class=\"row_5 col_2\" title=\"\">709.3</td> <td class=\"row_5 col_3\" title=\"\">57.6</td> <td class=\"row_5 col_4\" title=\"\">95.7</td> <td class=\"row_5 col_5\" title=\"\">50.7</td> <td class=\"row_5 col_6\" title=\"\">95</td> </tr> <tr class=\"even\"> <td class=\"row_6 col_0\" title=\"\">NI</td> <td class=\"row_6 col_1\" title=\"\">Urban</td> <td class=\"row_6 col_2\" title=\"\">1186.2</td> <td class=\"row_6 col_3\" title=\"\">98.7</td> <td class=\"row_6 col_4\" title=\"\">100</td> <td class=\"row_6 col_5\" title=\"\">96.3</td> <td class=\"row_6 col_6\" title=\"\">100</td> </tr> <tr class=\"odd\"> <td class=\"row_7 col_0\" title=\"\">UK</td> <td class=\"row_7 col_1\" title=\"\">Overall</td> <td class=\"row_7 col_2\" title=\"\">67070.1</td> <td class=\"row_7 col_3\" title=\"\">94.3</td> <td class=\"row_7 col_4\" title=\"\">99.6</td> <td class=\"row_7 col_5\" title=\"\">91.6</td> <td class=\"row_7 col_6\" title=\"\">99.5</td> </tr> <tr class=\"even\"> <td class=\"row_8 col_0\" title=\"\">UK</td> <td class=\"row_8 col_1\" title=\"\">Rural</td> <td class=\"row_8 col_2\" title=\"\">12742.2</td> <td class=\"row_8 col_3\" title=\"\">74.2</td> <td class=\"row_8 col_4\" title=\"\">97.9</td> <td class=\"row_8 col_5\" title=\"\">67.9</td> <td class=\"row_8 col_6\" title=\"\">97.5</td> </tr> <tr class=\"odd\"> <td class=\"row_9 col_0\" title=\"\">UK</td> <td class=\"row_9 col_1\" title=\"\">Urban</td> <td class=\"row_9 col_2\" title=\"\">54327.9</td> <td class=\"row_9 col_3\" title=\"\">99</td> <td class=\"row_9 col_4\" title=\"\">100</td> <td class=\"row_9 col_5\" title=\"\">97.2</td> <td class=\"row_9 col_6\" title=\"\">100</td> </tr> </tbody> </table> </div> </div> <div class=\"node_view\"></div> </article> </div> </div></div> <div role=\"tabpanel\" class=\"tab-pane\" id=\"data-vis-tab-1-1958546\"><div class=\"field-item\"><div class=\"container dataVisContainer tabular-table\"> <header data-history-node-id=\"176396\" about=\"/node/176396\"> </header> <article id=\"node-176396\" class=\"clearfix\" data-history-node-id=\"176396\" about=\"/node/176396\"> <p>Group 6: All free-to-use cash access points (excluding cashback)</p> <div id=\"tablefield-wrapper-node-176396-field_data_vis_data-0\" class=\"tablefield-wrapper\"> <div class=\"table-responsive\"> <table id=\"tablefield-node-176396-field_data_vis_data-0\" class=\"tablefield table table-hover table-striped\" data-striping=\"1\" > <thead> <tr> <th class=\"row_0 col_0\"> Region</th> <th class=\"row_0 col_1\">Rural / Urban</th> <th class=\"row_0 col_2\">Population, 000's</th> <th class=\"row_0 col_3\">2km</th> <th class=\"row_0 col_4\">5km</th> <th class=\"row_0 col_5\">1mi</th> <th class=\"row_0 col_6\">3mi</th> </tr> </thead> <tbody> <tr class=\"odd\"> <td class=\"row_1 col_0\" title=\"\">GB</td> <td class=\"row_1 col_1\" title=\"\">Overall</td> <td class=\"row_1 col_2\" title=\"\">65174.6</td> <td class=\"row_1 col_3\" title=\"\">96.2</td> <td class=\"row_1 col_4\" title=\"\">99.7</td> <td class=\"row_1 col_5\" title=\"\">95</td> <td class=\"row_1 col_6\" title=\"\">99.7</td> </tr> <tr class=\"even\"> <td class=\"row_2 col_0\" title=\"\">GB</td> <td class=\"row_2 col_1\" title=\"\">Rural</td> <td class=\"row_2 col_2\" title=\"\">12033</td> <td class=\"row_2 col_3\" title=\"\">80.3</td> <td class=\"row_2 col_4\" title=\"\">98.6</td> <td class=\"row_2 col_5\" title=\"\">74.9</td> <td class=\"row_2 col_6\" title=\"\">98.3</td> </tr> <tr class=\"odd\"> <td class=\"row_3 col_0\" title=\"\">GB</td> <td class=\"row_3 col_1\" title=\"\">Urban</td> <td class=\"row_3 col_2\" title=\"\">53141.7</td> <td class=\"row_3 col_3\" title=\"\">99.8</td> <td class=\"row_3 col_4\" title=\"\">100</td> <td class=\"row_3 col_5\" title=\"\">99.6</td> <td class=\"row_3 col_6\" title=\"\">100</td> </tr> <tr class=\"even\"> <td class=\"row_4 col_0\" title=\"\">NI</td> <td class=\"row_4 col_1\" title=\"\">Overall</td> <td class=\"row_4 col_2\" title=\"\">1895.5</td> <td class=\"row_4 col_3\" title=\"\">86.2</td> <td class=\"row_4 col_4\" title=\"\">99.1</td> <td class=\"row_4 col_5\" title=\"\">83.1</td> <td class=\"row_4 col_6\" title=\"\">98.9</td> </tr> <tr class=\"odd\"> <td class=\"row_5 col_0\" title=\"\">NI</td> <td class=\"row_5 col_1\" title=\"\">Rural</td> <td class=\"row_5 col_2\" title=\"\">709.3</td> <td class=\"row_5 col_3\" title=\"\">63.6</td> <td class=\"row_5 col_4\" title=\"\">97.6</td> <td class=\"row_5 col_5\" title=\"\">56.3</td> <td class=\"row_5 col_6\" title=\"\">97.1</td> </tr> <tr class=\"even\"> <td class=\"row_6 col_0\" title=\"\">NI</td> <td class=\"row_6 col_1\" title=\"\">Urban</td> <td class=\"row_6 col_2\" title=\"\">1186.2</td> <td class=\"row_6 col_3\" title=\"\">99.7</td> <td class=\"row_6 col_4\" title=\"\">100</td> <td class=\"row_6 col_5\" title=\"\">99.2</td> <td class=\"row_6 col_6\" title=\"\">100</td> </tr> <tr class=\"odd\"> <td class=\"row_7 col_0\" title=\"\">UK</td> <td class=\"row_7 col_1\" title=\"\">Overall</td> <td class=\"row_7 col_2\" title=\"\">67070.1</td> <td class=\"row_7 col_3\" title=\"\">96</td> <td class=\"row_7 col_4\" title=\"\">99.7</td> <td class=\"row_7 col_5\" title=\"\">94.7</td> <td class=\"row_7 col_6\" title=\"\">99.7</td> </tr> <tr class=\"even\"> <td class=\"row_8 col_0\" title=\"\">UK</td> <td class=\"row_8 col_1\" title=\"\">Rural</td> <td class=\"row_8 col_2\" title=\"\">12742.2</td> <td class=\"row_8 col_3\" title=\"\">79.4</td> <td class=\"row_8 col_4\" title=\"\">98.5</td> <td class=\"row_8 col_5\" title=\"\">73.8</td> <td class=\"row_8 col_6\" title=\"\">98.2</td> </tr> <tr class=\"odd\"> <td class=\"row_9 col_0\" title=\"\">UK</td> <td class=\"row_9 col_1\" title=\"\">Urban</td> <td class=\"row_9 col_2\" title=\"\">54327.9</td> <td class=\"row_9 col_3\" title=\"\">99.8</td> <td class=\"row_9 col_4\" title=\"\">100</td> <td class=\"row_9 col_5\" title=\"\">99.6</td> <td class=\"row_9 col_6\" title=\"\">100</td> </tr> </tbody> </table> </div> </div> <div class=\"node_view\"></div> </article> </div> </div></div> </div> </div> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Estimated percentages of the UK population living within a given distance from a cash access point for all groups 1-14 can be downloaded via the link below (<a href=\"#note-7\">see notes 7, 8, and 9</a>).</p><p>We give the estimates for the UK regions and devolved nations separately, as well as for England and the UK overall. We also give estimates for rural and urban areas (<a href=\"#note-7\">see note 10</a>).&nbsp;</p><p>The distances considered are 1, 2, 3, 5, and 10 miles (approximately 1.6, 3.2, 4.8, 8.0 and 16 km, respectively).</p><p id=\"note-7\"><a href=\"/publication/data/percentages-uk-population-access-cash-h1-2025.xlsx\" data-entity-type=\"media\" data-entity-uuid=\"67bf520c-0676-4485-bf31-5891dcab38f9\" data-entity-substitution=\"canonical\" title=\"percentages-uk-population-access-cash-h1-2025.xlsx\">Download Table 3 data</a> (xlsx)</p> </div> </section> </div> <section class=\"expandable-content component container default\"> <div class=\"nav nav-stacked component component--expandable\" id=\"expandable1958561\"> <div class=\"expandable panel component\" role=\"group\" aria-label=\"accordion\"> <h3> <a class=\"expandable-title collapsed\" data-toggle=\"collapse\" href=\"#expandable1958556\" aria-expanded=\"false\" aria-controls=\"expandable1958556\" role=\"button\"> Notes 7, 8, 9 and 10 </a> </h3> <div id=\"expandable1958556\" class=\"collapse\"> <div class=\"expandable-body copy-block\"> <ol start=\"7\"><li data-list-item-id=\"eb66c3aad509d37182a442ba2408e164c\">All population estimates are based on 2011 census output area (OA) geographies (small areas in Northern Ireland), mid-2020 estimates of the usual resident population for OAs in England, Northern Ireland and Wales, and for Data Zones in Scotland. We obtained population estimates for OAs in Scotland by proportionally adjusting the 2011 census estimates using the aggregate mid-2021 population estimates for Data Zones. We compute the population estimates for arbitrary areas based on the assumption that population density is uniform over each OA. For ease of reference, columns ‘Population, 000’s’ in Table 3 reproduce these population estimates (in thousands) for all included areas.<br>&nbsp;</li><li data-list-item-id=\"e83bf3597f9a025f300aae250ce1258ea\">While we have tried to get precise locations of all access points, some locations are precise to their respective postcode centroids only. In most cases the locations used in this analysis are those supplied by banks, building societies, the Post Office, the LINK Scheme Ltd, Visa and Mastercard.<br>&nbsp;</li><li data-list-item-id=\"e802804853b1fb4396a4ff806b4311e89\">All estimates in Table 3 are reported to 1 decimal place precision. For some groups the estimates are very similar or nearly identical, for example those for groups 7 (all cash access points) and 5 (all except type B). This is because many cash access points, particularly bank and building society branches, tend to cluster around population centres.<br>&nbsp;</li><li data-list-item-id=\"e42b2839ec891416ba8c21d95863ae70e\">The definitions used for rural-urban classification differ between England and Wales, Scotland and Northern Ireland. In the case of Northern Ireland, for simplicity, we have reallocated the 165 out of 4,537 small areas originally assigned to a mixed rural/urban category to either rural or urban category based on their band. We have allocated bands A-E as urban and F-H as rural; see&nbsp;<a href=\"https://www.nisra.gov.uk/support/geography/urban-rural-classification\">NISRA Urban-Rural Classification 2015</a> for more details.</li></ol> </div> </div> </div> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Figure 1 shows the coverage areas underlying the population estimates in Table 3. As in Table 3, the cash access points are those in groups 1-14. In each case the areas shown are those without access to a source of cash within 1, 2, 3, 5 and 10 miles. The interactive tooltips show percentages of the Local Authority District population with access to a source of cash within the above range of distances.</p><p><a href=\"/publication/data/figure-1-access-to-cash-underlying-data-h1-2025.xlsx\" data-entity-type=\"media\" data-entity-uuid=\"624b238a-1b3d-4bca-add5-f77f4da94136\" data-entity-substitution=\"canonical\" title=\"figure-1-access-to-cash-underlying-data-h1-2025.xlsx\">Download underlying data for Figure 1 maps (XLSX)</a></p><h4>Figure 1: Access to cash coverage in the UK in 2025 H1</h4> </div> </section> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <div class='tableauPlaceholder' id='viz1792681914454' style='position: relative'><object class='tableauViz' style='display:none;' title=\"Figure 1: Access to cash coverage in the UK in 2025 H2 view in Tableau https://public.tableau.com/app/profile/fca.data.analysis/viz/2025H1AccesstoCashCoverage/Sheet1\"><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='2025H1AccesstoCashCoverage&#47;Sheet1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;20&#47;2025H1AccesstoCashCoverage&#47;Sheet1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-GB' /></object></div> <p>View the maps in <a href=\"https://public.tableau.com/app/profile/fca.data.analysis/viz/2025H1AccesstoCashCoverage/Sheet1\">Tableau Public</a> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-other-insights\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">3. Other insights</h2></div> </div> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-other-insights-temporary-closures\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">3.1. Temporary closures</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>We cannot give precise figures for temporary closures because a high proportion of branches did not provide this information. Of type A branches that provided this information (89%), 6% were temporarily closed for at least 1 day.</p><p>We do not have equivalent information for Post Office branches.</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-other-insights-opening-hours\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">3.2. Opening hours</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>While external and stand-alone ATMs are always accessible, in-branch cash withdrawals and deposits and other banking services are only available during branch opening hours.</p><p>Figure 2 shows the percentages of branches open at a given time between 7am and 7pm, Monday to Saturday (<a href=\"#note-11\">see note 11</a>), by branch types defined in Table 1.&nbsp;</p><h4>Figure 2 Percentages of branches open at a given time by branch type</h4> </div> </section> </div> <section id=\"lf-infographic-599146\" class=\"component infographic\"> <div class=\"container\"> <div class=\"infographic__full\"> <a href=\"/sites/default/files/media/charts/percentages-branches-open-given-time-2025-h2.png\" target=\"_blank\" title=\"percentages-branches-open-given-time-2025-h2.png\"> <img loading=\"lazy\" src=\"/sites/default/files/media/charts/percentages-branches-open-given-time-2025-h2.png\" width=\"1200\" height=\"900\" alt=\"Graph: Percentages of branches open at a given time by branch type - Access to cash data 2025 H2\" typeof=\"foaf:Image\" class=\"img-responsive\" /> </a> </div> </div> </section> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p><a href=\"/media/percentages-branches-open-given-time-2025-h2png\" data-entity-type=\"media\" data-entity-uuid=\"33f1e316-44d3-4b65-ae5b-1b96cfc45a8e\" data-entity-substitution=\"canonical\" title=\"percentages-branches-open-given-time-2025-h2.png\">Download PDF version of infographic (PDF)</a></p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-other-insights-accessibility\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">3.3. Accessibility</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>For some consumers, being able to use branch services depends on accessibility.</p><p>Table 4 shows percentages of branches that are wheelchair accessible, have step-free access and/or have a hearing/induction loop available for the 3 types of bank and building society branches (<a href=\"#note-11\">see note 11</a>). The step-free access characteristic does not apply to mobile branches (<a href=\"#note-11\">see note 12</a>).</p><p>Of the brick-and-mortar bank and building society branches, 90.4% of type A (designated banks and building societies) and 78.5% of type B (large non-designated PCA provider) branches have all 3 features. Excluding the branches for which some values are unreported, these percentages become 97.3% and 78.5% respectively.</p><p>In this publication, we do not have equivalent information for Post Offices.</p><h4>Table 4: Percentages of branches with common accessibility characteristics by branch type</h4><table class=\"table\" style=\"border-style:solid;width:100%;\" border=\"1\" cellpadding=\"1\" cellspacing=\"1\" data-header-colour=\"maroon\" head-bg-color=\"#6C1D45\" head-color=\"#fff\"><thead><tr><th>&nbsp;</th><th>&nbsp;</th><th colspan=\"3\">Wheelchair accessible</th><th colspan=\"3\">Has step-free access</th><th colspan=\"3\">Has hearing/ induction loop available</th></tr><tr><th>Access point type</th><th>Sample</th><th>Yes</th><th>No</th><th>Unreported</th><th>Yes</th><th>No</th><th>Unreported</th><th>Yes</th><th>No</th><th>Unreported</th></tr></thead><tbody><tr><td rowspan=\"2\">A: Larger banks and building societies providing PCA (brick-and-mortar branches)</td><td>All data</td><td>91.2</td><td>1.7</td><td>7.1</td><td>91.3</td><td>1.6</td><td>7.1</td><td>92.4</td><td>0.5</td><td>7.1</td></tr><tr><td>Excluding unreported</td><td>98.2</td><td>1.8</td><td>x</td><td>98.3</td><td>1.7</td><td>x</td><td>99.4</td><td>0.6</td><td>x</td></tr><tr><td rowspan=\"2\">B: All other banks and building societies (brick-and-mortar branches)&nbsp;</td><td>All data</td><td>86.8</td><td>13.2</td><td>-</td><td>86.0</td><td>14.0</td><td>-</td><td>100.0</td><td>-</td><td>-</td></tr><tr><td>Excluding unreported</td><td>86.8</td><td>13.2</td><td>x</td><td>86.0</td><td>14.0</td><td>x</td><td>100.0</td><td>x</td><td>x</td></tr><tr><td rowspan=\"2\">D: Mobile bank branches&nbsp;</td><td>All data</td><td>78.6</td><td>21.4</td><td>-</td><td>-</td><td>100.0</td><td>-</td><td>100.0</td><td>-</td><td>-</td></tr><tr><td>Excluding unreported</td><td>78.6</td><td>21.4</td><td>x</td><td>-</td><td>100.0</td><td>x</td><td>100.0</td><td>-</td><td>x</td></tr></tbody></table> </div> </section> </div> <section class=\"expandable-content component container default\"> <div class=\"nav nav-stacked component component--expandable\" id=\"expandable1958621\"> <div class=\"expandable panel component\" role=\"group\" aria-label=\"accordion\"> <h3> <a class=\"expandable-title collapsed\" data-toggle=\"collapse\" href=\"#expandable1958616\" aria-expanded=\"false\" aria-controls=\"expandable1958616\" role=\"button\"> Notes 11 and 12 </a> </h3> <div id=\"expandable1958616\" class=\"collapse\"> <div class=\"expandable-body copy-block\"> <ol start=\"11\"><li data-list-item-id=\"ee6aec7f76fa6538103eba42a514e77ab\">Mobile stops and outreach branches are typically open for a small number of hours on specific days, so the overall proportions of these branches open at a given time are generally low.<br>&nbsp;</li><li data-list-item-id=\"e2091d005b11110b7d2c151ea7b411f64\">Proportions given in the ‘excluding unreported’ rows in Table 4 are unbiased estimates of the respective true proportions where there is no connection between the non-reporting and the value of the specific characteristic. Proportions given in the ‘all data’ rows represent worst-case scenario bounds. For example, if all the 7.1% of larger bank and building society branches (type A) for which step-free access is unreported are, in fact, step-free accessible, the overall proportions will be 98.4% and 1.6%. If none of them is step-free accessible, the overall proportions will be 91.3% and 8.7% for yes and no respectively.<br><br>Symbols ‘x’ and ‘–’ in Table 4 denote ‘not applicable’ and ‘none’ (i.e., exactly zero) respectively. In some cases, the percentages do not sum to exactly 100% because of rounding.</li></ol> </div> </div> </div> </div> </section> </div> </section> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-attributions\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">4. Attributions</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>As well as the data from banks, building societies, and the Post Office, the analysis uses other open data and data licensed under the Public Sector Geospatial Agreement:</p><ul><li data-list-item-id=\"e85b006447bbe9023060fd12c06c981e6\">Contains OS data © Crown copyright and database right 2025.</li><li data-list-item-id=\"ef58c700fdefa4fb387cb1a594f9c1225\">Contains NRS data © Crown copyright and database right 2022.</li><li data-list-item-id=\"e6e7e4edfdb6b5283b7f36f71be15d80c\">Contains NISRA data © Crown copyright and database right 2021.</li><li data-list-item-id=\"e3c8b7bb62b38087d34b734be2003f93e\">Contains National Statistics data © Crown copyright and database rights 2021/2022/2023/2024/2025.</li><li data-list-item-id=\"e5934e5a261a97fcbd1ace2e835431a97\">Contains Royal Mail data © Royal Mail copyright and database right 2025.</li><li data-list-item-id=\"ec9f2f1eb249c1517a352415de63ae9b1\">Office for National Statistics licensed under the Open Government Licence v.3.0.</li><li data-list-item-id=\"e78a0fbe41a304d787e8dfd120c0bf74d\">Contains public sector information licensed under the Open Government Licence v3.0.</li><li data-list-item-id=\"eeef200753f162d694bf85c4a79ff7d79\">This product contains data created and maintained by Scottish Local Government.</li></ul> </div> </section> </div> </div> </section> </div> <div id=\"revisions\" class=\"page-revisions container\" lang=\"en-GB\"> </div> <div class=\"page-feedback container\" lang=\"en-GB\"> <form class=\"webform-submission-form webform-submission-add-form webform-submission-page-feedback-form-form webform-submission-page-feedback-form-add-form webform-submission-page-feedback-form-node-176381-form webform-submission-page-feedback-form-node-176381-add-form js-webform-details-toggle webform-details-toggle js-fca-lazy-captcha webform-client-form webform-client-form- feedback-form fca-custom-form webform-conditional-processed\" data-drupal-selector=\"webform-submission-page-feedback-form-node-176381-add-form\" novalidate=\"novalidate\" action=\"/data/access-cash-coverage-uk-2025-h1#webform-submission-page-feedback-form-node-176381-add-form\" method=\"post\" id=\"webform-submission-page-feedback-form-node-176381-add-form\" accept-charset=\"UTF-8\" > <fieldset data-drupal-selector=\"edit-radios\" class=\"radios--wrapper fieldgroup form-composite webform-composite-visible-title js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper\" id=\"edit-radios--wrapper\"> <legend id=\"edit-radios--wrapper-legend\"> <span class=\"fieldset-legend\">Was this page useful?</span> </legend> <div class=\"fieldset-wrapper\"> <div id=\"edit-radios\" class=\"js-webform-radios webform-options-display-side-by-side\"><div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-yes\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-yes\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-yes\" name=\"radios\" value=\"Yes\" /><span class=\"fca-custom-label\">Yes </span></label> </div> <div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-no\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-no\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-no\" name=\"radios\" value=\"No\" /><span class=\"fca-custom-label\">No </span></label> </div> </div> </div> </fieldset> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-can-we-do-to-improve-pages-like-this- js-form-item-what-can-we-do-to-improve-pages-like-this- form-group\"> <label for=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"control-label\">What can we do to improve pages like this? </label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176381-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;No&quot;}}}\" id=\"edit-what-can-we-do-to-improve-pages-like-this-\" name=\"what_can_we_do_to_improve_pages_like_this_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-did-you-find-helpful- js-form-item-what-did-you-find-helpful- form-group\"> <label for=\"edit-what-did-you-find-helpful-\" class=\"control-label\">What did you find helpful?</label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-did-you-find-helpful-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176381-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;Yes&quot;}}}\" id=\"edit-what-did-you-find-helpful-\" name=\"what_did_you_find_helpful_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <input data-drupal-selector=\"edit-page-title\" type=\"hidden\" name=\"page_title\" value=\"Access to cash coverage in the UK 2025 H1\" /><input data-drupal-selector=\"edit-page-url\" type=\"hidden\" name=\"page_url\" value=\"https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1 \" /><div class=\"js-webform-states-hidden form-actions webform-actions clearfix fca-form-submit form-group js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176381-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;checked&quot;:true}}}\" id=\"edit-actions\"><button class=\"webform-button--submit button button--primary js-form-submit form-submit btn-primary btn\" data-drupal-selector=\"edit-actions-submit\" type=\"submit\" id=\"edit-actions-submit\" name=\"op\" value=\"Submit Feedback\">Submit Feedback</button> </div> <input autocomplete=\"off\" data-drupal-selector=\"form-ixamlhgv7whei9cmvi3g5y5jwovobajsunne8bzkuck\" type=\"hidden\" name=\"form_build_id\" value=\"form-IXamLhgv7WHEi9CmVi3G5y5jWOVoBAjsunnE8bzKUCk\" /><input data-drupal-selector=\"edit-webform-submission-page-feedback-form-node-176381-add-form\" type=\"hidden\" name=\"form_id\" value=\"webform_submission_page_feedback_form_node_176381_add_form\" /> <input data-drupal-selector=\"edit-captcha-sid\" type=\"hidden\" name=\"captcha_sid\" value=\"1595504681\" /><input data-drupal-selector=\"edit-captcha-token\" type=\"hidden\" name=\"captcha_token\" value=\"r2M-KcRl0B7dN0ZhZunb8vThZisuM5Bt1rVftzKdeCc\" /><input id=\"recaptcha-v3-token\" class=\"recaptcha-v3-token\" data-recaptcha-v3-action=\"fca_recaptcha\" data-recaptcha-v3-site-key=\"6LfnAxopAAAAAJL8t0TPEZql_Canimafd6XMM7WQ\" data-drupal-selector=\"edit-captcha-response\" type=\"hidden\" name=\"captcha_response\" value=\"\" /><input data-drupal-selector=\"edit-is-recaptcha-v3\" type=\"hidden\" name=\"is_recaptcha_v3\" value=\"1\" /> <div class=\"url_hp-textfield form-group js-form-wrapper form-wrapper\" style=\"display: none !important;\"><div class=\"form-item js-form-item form-type-textfield js-form-type-textfield form-item-url-hp js-form-item-url-hp form-group\"> <label for=\"edit-url-hp\" class=\"control-label\">Leave this field blank</label> <input autocomplete=\"off\" data-drupal-selector=\"edit-url-hp\" class=\"form-text form-control\" type=\"text\" id=\"edit-url-hp\" name=\"url_hp\" value=\"\" size=\"20\" maxlength=\"128\" /> </div> </div> </form> </div> </div> </article>",
+    "evidenceBlocks": [
+      {
+        "documentEvidenceId": "31e249fb8bedeb1b",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "As part of our work on access to cash, we regularly publish data on changes in the UK’s cash access coverage.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "54561856e726a288",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "This includes the locations of cash access points and other information such as temporary closures, opening hours and accessibility.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e6342ae3f1e02c32",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "These publications are based on quarterly data from designated banks and building societies on their brick-and-mortar and mobile branch networks, and monthly data covering automated teller machines (ATMs) and the Post Office network.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d590b7ba4e7e103e",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "We supplement this information with annual data on both cashback locations and branches of large non-designated personal current account (PCA) providers ( see note 1 ).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7c7af17fc4874ce0",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "This analysis shows the proportion of the population that lives within a range of distances of various types of cash access point.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "0ef19542964f0241",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Introduction",
+        "extractedText": "We measure distances as the crow flies ( see note 2 ), consistent with the approaches adopted by LINK and the Post Office, relative to residential addresses ( see note 3 ).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b55e20aecf170ca1",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1, 2 and 3",
+        "extractedText": "When we started collecting data under our new&nbsp; access to cash regime , the firm population changed slightly.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2f1a890deaedb04c",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1, 2 and 3",
+        "extractedText": "This means we cannot directly compare coverage analysis for this or future publications with coverage analysis covering quarters before Q2 2024. &nbsp; Relative to analogous travel distance, the approach based on straight line distances is likely to overestimate coverage and underestimate the areas with no coverage.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "34ff2c2c66bda426",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1, 2 and 3",
+        "extractedText": "The effect is likely to be more important for longer, non-walkable distances.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "23ef7b84692e3c27",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1, 2 and 3",
+        "extractedText": "All computations are performed in the British National Grid ( OSGB 1936 ) projection. &nbsp; Our current approach measures straight line distances from residential addresses to their nearest access point by type.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3b67c325cc98f14e",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1, 2 and 3",
+        "extractedText": "To determine aggregate coverage percentages, we estimate the total number of residential properties within a set distance of an access point at a certain geographical level, eg Output Area, Local Authority District, Country.&nbsp; We estimate that for access to cash via designated banks and building societies providing PCA and Post Office: all branches, including mobile bank branches: 97.2% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering deposits. 97.5% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering deposits.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f2bed01f328a711c",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1, 2 and 3",
+        "extractedText": "We estimate that for access to cash via any bank, building society, Post Office branch or any free ATM: 99.6% of the UK urban population are currently within 1 mile of a free-to-use cash access point offering withdrawals. 98.2% of the UK rural population are currently within 3 miles of a free-to-use cash access point offering withdrawals.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "08f8d2a3832fda06",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1, 2 and 3",
+        "extractedText": "The headline coverage figures remain broadly comparable with previous data publications.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "c1a53ed5c1e87c47",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Note 1, 2 and 3",
+        "extractedText": "They continue to show more than 95% of the UK population being within the distances set out in the Treasury’s &nbsp; Cash Access Policy Statement .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "04efac454ddc2ee9",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Coverage",
+        "extractedText": "The data comprises 58,971 reported UK cash access points and 554,441 cashback locations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b341a0adf4ce052e",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Coverage",
+        "extractedText": "Table 1 shows numbers by region for 8 types of access point ( see notes 4, 5, and 6 ): Brick-and-mortar branches of banks and building societies are subdivided into 2 groups.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7c80a6b4024357e2",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Coverage",
+        "extractedText": "The first group is the branches of the 14 banks and building societies designated under Part 8B of the Financial Services and Markets Act 2000 for the provision of cash access services (Type A) who we collect quarterly coverage data from.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5f509afc73ceb0bb",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Coverage",
+        "extractedText": "The second group is the branches of some larger non-designated PCA providers (Type B) who we collect annual data from. &nbsp; Mobile bank branches (measured by stops) are a separate type (D). &nbsp; Post Office branches are subdivided into mobile / outreach branches (type E) and all other Post Office branches (type C).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b84d47899455eb6f",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Coverage",
+        "extractedText": "The outreach branches are brick-and-mortar but are more similar to mobile branches, being typically open for a small number of hours or on selected days of the week.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b64e16ff01816633",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Coverage",
+        "extractedText": "For example, these include limited time to serve access points in community buildings in rural locations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "191d644d3e953ade",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Coverage",
+        "extractedText": "For this reason, we group the mobile and outreach branches together. &nbsp; ATMs are subdivided into free-to-use (type F) and pay-to-use (type G). &nbsp; Cashback locations (type H) are all the unique locations where a cashback transaction took place in the most recent year of data for relevant cashback provider.&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4c9a8359ff67217b",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Table 1: Number of cash access points by type and geographical area",
+        "extractedText": "Country/ geographical area England Northern Ireland Scotland Wales UK Total Type Description East Midlands East of England London North East North West South East South West West Midlands Yorkshire and The Humber A Larger banks and building societies providing PCA (brick-and-mortar branches) 206 296 371 127 315 455 280 288 224 116 350 202 3230 B All other banks and building societies (brick-and-mortar branches) 3 11 37 2 30 19 3 7 2 &nbsp; 5 2 121 C Post Office branches (including banking hubs, excluding mobile/ outreach) 699 916 674 385 917 1173 943 754 792 462 1002 653 9370 D Mobile bank branches 12 12 &nbsp; &nbsp; 21 42 53 5 5 13 371 82 616 E Mobile/ outreach Post Office branches 120 183 &nbsp; 86 137 120 253 89 135 22 224 211 1580 F Free-to-use ATMs 2505 2849 4530 1568 3972 4262 2591 3145 3063 1335 3510 1695 35025 G Pay-to-use ATMs 540 716 1274 466 1287 915 586 940 692 235 883 495 9029 H Cashback locations 38253 49104 81719 19564 60582 76204 51550 43309 44494 15837 47415 26410 554441 All sources excluding cashback 4085 4983 6886 2634 6679 6986 4709 5228 4913 2183 6345 3340 58971 All sources including cashback 42338 54087 88605 22198 67261 83190 56259 48537 49407 18020 53760 29750 613412",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d261f8c91dc67a52",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "The counts in Table 1 are for all known access points.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5c32da79f2e8f262",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "The number of unique locations offering access will be smaller.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7c2fd1e0aa5c5fcd",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "This is because, for example, a typical branch will have 1 or more internal and/or 1 or more external ATMs, and these are counted separately.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "c2b95a290c858121",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "This does not apply to cashback vendor locations as only unique locations are counted (see also note 5).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b66e6f34a67eceab",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "There are no mobile bank branches or mobile/outreach Post Office branches in London. &nbsp; Cashback locations are the unique locations of vendors which have offered cashback at some point in the most recent years on record to customers using either a Mastercard or a Visa card.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "36224fa519bd28eb",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "There could be other merchants offering cashback who are not included in this dataset, either because there was no transaction involving cashback or because the transactions did not involve Visa or Mastercard. &nbsp; We have made every effort to ensure the dataset is complete and up to date, but there may still be some omissions or discrepancies.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7e96a05e264af315",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "This dataset does not include ATMs that were temporarily closed at the time the data was collected.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f3210bacce224dae",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "Data on some smaller banking companies may be missing, and not all recent branch closures, openings or other changes may have been reflected.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "830f079846d4ee8b",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "Data from type B firms (non-designated PCA providers with 10 or more branches) reflects their branch numbers at the end of H2 2025.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "0e24bbd767f6db8c",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "Of the Post Office branches, we included only those classified by the Post Office as active at the time the data was collected.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d6d9000816906237",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "We have analysed coverage for 14 groups of cash access points which we define in Table 2.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4694260676e82c73",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 4, 5, and 6",
+        "extractedText": "The groups are constructed by combining the cash access point types and cashback locations: Group 1 includes type A (designated banks and building societies) access points only. &nbsp; Group 2 adds the non-mobile/outreach Post Office network, including banking hubs. &nbsp; Group 3 includes brick-and-mortar (except type B) and mobile/outreach designated bank, designated building society and all Post Office branches including banking hubs. &nbsp; Groups 4 and 5 include the same cash access point types as Group 3, as well as all free-to-use ATMs and all ATMs respectively. &nbsp; Group 6 includes type B branches and contains all free-to-use access points. &nbsp; Group 7 shows all cash access points excluding cashback. &nbsp; Groups 8 and 9 focus on access to ATMs, for free-to-use and all ATMs, respectively. &nbsp; Groups 10, 11, and 12 combine free-to-use access points, all access points and all ATMs respectively with cashback locations. &nbsp; Groups 13 and 14 focus on access to the Post Office network, distinguishing between non-mobile/outreach branches and all branches. &nbsp; Due to substitutability, as outlined above, type B branches are only included in groups 6, 7, 10, and 11.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "0980ee34160218c9",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Table 2: Groupings of cash access points",
+        "extractedText": "Group&nbsp; Description&nbsp; Cash access point types&nbsp;included&nbsp; Number of entries&nbsp; A&nbsp; B&nbsp; C&nbsp; D&nbsp; E&nbsp; F&nbsp; G&nbsp; H 1 Designated Banks and Building Societies: brick-and-mortar branches x &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3230 2 Designated Banks and Building Societies and Post Office: brick-and-mortar branches (including banking hubs) x &nbsp; x &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 12600 3 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs) x &nbsp; x x x &nbsp; &nbsp; &nbsp; 14796 4 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs), and free-to-use ATMs x &nbsp; x x x x &nbsp; &nbsp; 49821 5 Designated banks and building societies and Post Office: all branches (including mobile and banking hubs), and all ATMs x &nbsp; x x x x x &nbsp; 58850 6 All free-to-use cash access points (excluding cashback) x x x x x x &nbsp; &nbsp; 49942 7 All&nbsp;cash access points (excluding cashback) x x x x x x x &nbsp; 58971 8 Free-to-use ATMs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x &nbsp; &nbsp; 35025 9 All ATMs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x x &nbsp; 44054 10 All free-to-use cash access points and cashback locations x x x x x x &nbsp; x 604383 11 All cash access points and cashback locations x x x x x x x x 613412 12 All ATMs and cashback locations &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x x x 598495 13 Post Office branches excluding outreach and mobile &nbsp; &nbsp; x &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 9370 14 All Post Office branches &nbsp; &nbsp; x &nbsp; x &nbsp; &nbsp; &nbsp; 10950 On this web page we provide highlights of coverage in Table 3.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "74d679f5445a9301",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Table 2: Groupings of cash access points",
+        "extractedText": "We present data for groups 3 and 6 as proxies for free cash withdrawal access and cash deposit access for consumers.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b5211386fa3d3eae",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Table 2: Groupings of cash access points",
+        "extractedText": "We provide these figures for Great Britain, Northern Ireland and the UK as a whole split by overall, rural and urban at distances of 1 mile and 3 miles.&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "820ff842e52561d8",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6)",
+        "extractedText": "Group 3 - 2025 H1 Group 6 - 2025 H1 Group 3: Larger banks and building societies providing PCA and Post Office: all branches, including mobile and banking hubs Region Rural / Urban Population, 000's 2km 5km 1mi 3mi GB Overall 65174.6 94.6 99.6 92 99.6 GB Rural 12033 75.2 98 68.9 97.7 GB Urban 53141.7 99 100 97.2 100 NI Overall 1895.5 83.3 98.4 79.2 98.1 NI Rural 709.3 57.6 95.7 50.7 95 NI Urban 1186.2 98.7 100 96.3 100 UK Overall 67070.1 94.3 99.6 91.6 99.5 UK Rural 12742.2 74.2 97.9 67.9 97.5 UK Urban 54327.9 99 100 97.2 100 Group 6: All free-to-use cash access points (excluding cashback) Region Rural / Urban Population, 000's 2km 5km 1mi 3mi GB Overall 65174.6 96.2 99.7 95 99.7 GB Rural 12033 80.3 98.6 74.9 98.3 GB Urban 53141.7 99.8 100 99.6 100 NI Overall 1895.5 86.2 99.1 83.1 98.9 NI Rural 709.3 63.6 97.6 56.3 97.1 NI Urban 1186.2 99.7 100 99.2 100 UK Overall 67070.1 96 99.7 94.7 99.7 UK Rural 12742.2 79.4 98.5 73.8 98.2 UK Urban 54327.9 99.8 100 99.6 100 Estimated percentages of the UK population living within a given distance from a cash access point for all groups 1-14 can be downloaded via the link below ( see notes 7, 8, and 9 ).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1931eaf3d682c34f",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6)",
+        "extractedText": "We give the estimates for the UK regions and devolved nations separately, as well as for England and the UK overall.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6d28807d62980dd1",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Table 3: Percentages of the UK population that have access to a source of cash within a given distance as of 2025 H1 (groups 3 and 6)",
+        "extractedText": "We also give estimates for rural and urban areas ( see note 10 ).&nbsp; The distances considered are 1, 2, 3, 5, and 10 miles (approximately 1.6, 3.2, 4.8, 8.0 and 16 km, respectively).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "69923dfe05e6a3af",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "All population estimates are based on 2011 census output area (OA) geographies (small areas in Northern Ireland), mid-2020 estimates of the usual resident population for OAs in England, Northern Ireland and Wales, and for Data Zones in Scotland.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "72a6d25976bae485",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "We obtained population estimates for OAs in Scotland by proportionally adjusting the 2011 census estimates using the aggregate mid-2021 population estimates for Data Zones.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "689ce9e0c53fa8f7",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "We compute the population estimates for arbitrary areas based on the assumption that population density is uniform over each OA.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2f107c57828458a4",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "For ease of reference, columns ‘Population, 000’s’ in Table 3 reproduce these population estimates (in thousands) for all included areas. &nbsp; While we have tried to get precise locations of all access points, some locations are precise to their respective postcode centroids only.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1ba18d12431e6d6f",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "In most cases the locations used in this analysis are those supplied by banks, building societies, the Post Office, the LINK Scheme Ltd, Visa and Mastercard. &nbsp; All estimates in Table 3 are reported to 1 decimal place precision.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b5159a86adf95023",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "For some groups the estimates are very similar or nearly identical, for example those for groups 7 (all cash access points) and 5 (all except type B).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "94939c140acaedc2",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "This is because many cash access points, particularly bank and building society branches, tend to cluster around population centres. &nbsp; The definitions used for rural-urban classification differ between England and Wales, Scotland and Northern Ireland.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "70f9fd073d0219a6",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "In the case of Northern Ireland, for simplicity, we have reallocated the 165 out of 4,537 small areas originally assigned to a mixed rural/urban category to either rural or urban category based on their band.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3b60ca23eedae152",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "We have allocated bands A-E as urban and F-H as rural; see&nbsp; NISRA Urban-Rural Classification 2015 for more details.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cf0186ff0097ff96",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "Figure 1 shows the coverage areas underlying the population estimates in Table 3.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "76071852ac591c62",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "As in Table 3, the cash access points are those in groups 1-14.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "96a812e7eea35761",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 7, 8, 9 and 10",
+        "extractedText": "In each case the areas shown are those without access to a source of cash within 1, 2, 3, 5 and 10 miles.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3f6ab1e57fd848b9",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.1. Temporary closures",
+        "extractedText": "We cannot give precise figures for temporary closures because a high proportion of branches did not provide this information.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6e1dc1aa02aa91d8",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.1. Temporary closures",
+        "extractedText": "Of type A branches that provided this information (89%), 6% were temporarily closed for at least 1 day.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e08467b2fc0301db",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.1. Temporary closures",
+        "extractedText": "We do not have equivalent information for Post Office branches.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d3a8cff5add9e2da",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.2. Opening hours",
+        "extractedText": "While external and stand-alone ATMs are always accessible, in-branch cash withdrawals and deposits and other banking services are only available during branch opening hours.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "ce8feeecead39966",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.2. Opening hours",
+        "extractedText": "Figure 2 shows the percentages of branches open at a given time between 7am and 7pm, Monday to Saturday ( see note 11 ), by branch types defined in Table 1.&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a4add9a830898b27",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Figure 2 Percentages of branches open at a given time by branch type",
+        "extractedText": "Download PDF version of infographic (PDF)",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "fa51d3d02ae7708c",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.3. Accessibility",
+        "extractedText": "For some consumers, being able to use branch services depends on accessibility.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "699e71c3ba986fc7",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.3. Accessibility",
+        "extractedText": "Table 4 shows percentages of branches that are wheelchair accessible, have step-free access and/or have a hearing/induction loop available for the 3 types of bank and building society branches ( see note 11 ).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "543e0b7e86913a2c",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.3. Accessibility",
+        "extractedText": "The step-free access characteristic does not apply to mobile branches ( see note 12 ).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "925b1a4d88e24ac5",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.3. Accessibility",
+        "extractedText": "Of the brick-and-mortar bank and building society branches, 90.4% of type A (designated banks and building societies) and 78.5% of type B (large non-designated PCA provider) branches have all 3 features.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "db2f118fa9278ffa",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.3. Accessibility",
+        "extractedText": "Excluding the branches for which some values are unreported, these percentages become 97.3% and 78.5% respectively.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6354787bed93b414",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3.3. Accessibility",
+        "extractedText": "In this publication, we do not have equivalent information for Post Offices.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5eb875f0a65079a7",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Table 4: Percentages of branches with common accessibility characteristics by branch type",
+        "extractedText": "&nbsp; &nbsp; Wheelchair accessible Has step-free access Has hearing/ induction loop available Access point type Sample Yes No Unreported Yes No Unreported Yes No Unreported A: Larger banks and building societies providing PCA (brick-and-mortar branches) All data 91.2 1.7 7.1 91.3 1.6 7.1 92.4 0.5 7.1 Excluding unreported 98.2 1.8 x 98.3 1.7 x 99.4 0.6 x B: All other banks and building societies (brick-and-mortar branches)&nbsp; All data 86.8 13.2 - 86.0 14.0 - 100.0 - - Excluding unreported 86.8 13.2 x 86.0 14.0 x 100.0 x x D: Mobile bank branches&nbsp; All data 78.6 21.4 - - 100.0 - 100.0 - - Excluding unreported 78.6 21.4 x - 100.0 x 100.0 - x",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "583f413b2cf43c82",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 11 and 12",
+        "extractedText": "Mobile stops and outreach branches are typically open for a small number of hours on specific days, so the overall proportions of these branches open at a given time are generally low. &nbsp; Proportions given in the ‘excluding unreported’ rows in Table 4 are unbiased estimates of the respective true proportions where there is no connection between the non-reporting and the value of the specific characteristic.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "11adf821955a58dd",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 11 and 12",
+        "extractedText": "Proportions given in the ‘all data’ rows represent worst-case scenario bounds.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "31110d694758d880",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 11 and 12",
+        "extractedText": "For example, if all the 7.1% of larger bank and building society branches (type A) for which step-free access is unreported are, in fact, step-free accessible, the overall proportions will be 98.4% and 1.6%.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "02112d84dd73e8e3",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 11 and 12",
+        "extractedText": "If none of them is step-free accessible, the overall proportions will be 91.3% and 8.7% for yes and no respectively.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a4f46c89c1d94509",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 11 and 12",
+        "extractedText": "Symbols ‘x’ and ‘–’ in Table 4 denote ‘not applicable’ and ‘none’ (i.e., exactly zero) respectively.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "c735f81a223239db",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Notes 11 and 12",
+        "extractedText": "In some cases, the percentages do not sum to exactly 100% because of rounding.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "012512c662e80904",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "As well as the data from banks, building societies, and the Post Office, the analysis uses other open data and data licensed under the Public Sector Geospatial Agreement: Contains OS data © Crown copyright and database right 2025.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f5b92f45d8843d11",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "Contains NRS data © Crown copyright and database right 2022.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "87dda54f02046bd5",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "Contains NISRA data © Crown copyright and database right 2021.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "0dce722d1b286083",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "Contains National Statistics data © Crown copyright and database rights 2021/2022/2023/2024/2025.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a95c0f1b13177a90",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "Contains Royal Mail data © Royal Mail copyright and database right 2025.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "749c3bd40796484c",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "Office for National Statistics licensed under the Open Government Licence v.3.0.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "16841c4015102a1f",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "Contains public sector information licensed under the Open Government Licence v3.0.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "854d557ec3aa9344",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "This product contains data created and maintained by Scottish Local Government.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "67758da66e6b2d84",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "Yes No What can we do to improve pages like this?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5f18b01eee6e14e2",
+        "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+        "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Attributions",
+        "extractedText": "Submit Feedback Leave this field blank",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      }
+    ],
+    "evidenceMedium": "fca_webpage",
+    "integrityVerified": true,
+    "obligationGradeSuitable": false,
+    "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+    "publicationReference": null,
+    "regulatorShortName": "FCA",
+    "regulatorLabel": "Financial Conduct Authority"
+  },
+  "provenanceClassification": "AUTHORITATIVE_STAGING_EXTRACTION",
+  "retrievalProvenance": {
+    "exportSource": "b1_staging_readonly_export",
+    "exportedAt": "2026-11-10T17:48:19.115Z"
+  },
+  "exportSource": "b1_staging_readonly_export"
+}

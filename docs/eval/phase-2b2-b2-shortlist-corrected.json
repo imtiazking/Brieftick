@@ -1,0 +1,143 @@
+{
+  "status": "AWAITING_OPERATOR_URL_APPROVAL",
+  "generatedAt": "2026-11-10T18:22:00.000Z",
+  "correctionsFromPriorDraft": [
+    "REMOVED FG22/1 (Part VII insurance business transfers — not Consumer Duty).",
+    "REMOVED FG21/3 PDF alias (pension transfer guidance — not Financial Crime Guide).",
+    "REMOVED FG24/6 vulnerable-customer mislabel (actual subject: risk-based approach to payments / fraud-adjacent).",
+    "ADDED FG21/1 vulnerable customers (correct reference).",
+    "ADDED PS22/9 Consumer Duty policy statement (canonical HTML URL verified).",
+    "PS22/9 PDF-only guess URL removed — use official publications HTML + discovered primary PDF at ingest."
+  ],
+  "verificationSource": "docs/eval/phase-2b2-b2-verified-publications.json",
+  "recommendedB2Candidates": [
+    {
+      "priority": 1,
+      "reference": "PS22/9",
+      "verifiedTitle": "PS22/9: A new Consumer Duty",
+      "canonicalUrl": "https://www.fca.org.uk/publications/policy-statements/ps22-9-new-consumer-duty",
+      "publicationType": "policy_statement",
+      "regulatoryStatus": "policy_statement",
+      "subjectMatter": "Binding Consumer Duty rules implementation (complements FG22/5 already in corpus)",
+      "stagingPublicationId": null,
+      "extractionCoverage": "not_in_staging_snapshot",
+      "proposedProfile": "html_article_v2_then_pdf_primary_if_linked",
+      "evalTopics": ["Consumer Duty", "fair value", "outcomes monitoring"],
+      "distractorRole": "Competes with FG22/5 on duty interpretation with binding PS status",
+      "substantialEnough": true
+    },
+    {
+      "priority": 2,
+      "reference": "FG21/1",
+      "verifiedTitle": "Guidance for firms on the fair treatment of vulnerable customers",
+      "canonicalUrl": "https://www.fca.org.uk/publications/finalised-guidance/guidance-firms-fair-treatment-vulnerable-customers",
+      "publicationType": "finalised_guidance",
+      "regulatoryStatus": "finalised_guidance",
+      "subjectMatter": "Vulnerable customers — fair treatment (correct FG21/1)",
+      "stagingPublicationId": null,
+      "extractionCoverage": "not_in_staging_snapshot",
+      "proposedProfile": "html_article_v2_then_pdf_primary_if_linked",
+      "evalTopics": ["vulnerable customers", "Consumer Duty customer understanding"],
+      "distractorRole": "Overlaps FG22/5 vulnerability passages",
+      "substantialEnough": true
+    },
+    {
+      "priority": 3,
+      "reference": "FG24/6",
+      "verifiedTitle": "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+      "canonicalUrl": "https://www.fca.org.uk/publications/finalised-guidance/fg24-6-guidance-firms-enables-risk-based-approach-payments",
+      "publicationType": "finalised_guidance",
+      "regulatoryStatus": "finalised_guidance",
+      "subjectMatter": "Payments fraud / APP scam risk-based approach (not vulnerable-customer guidance)",
+      "stagingPublicationId": null,
+      "extractionCoverage": "not_in_staging_snapshot",
+      "proposedProfile": "html_article_v2_then_pdf_primary_if_linked",
+      "evalTopics": ["fraud prevention", "payments", "financial crime adjacency"],
+      "distractorRole": "Lexical overlap with CP26/38 fraud sections",
+      "substantialEnough": true
+    },
+    {
+      "priority": 4,
+      "reference": null,
+      "verifiedTitle": "Wholesale banks supervision - Insights 3 (Autumn 2026)",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026",
+      "publicationType": "multi_firm_review",
+      "regulatoryStatus": "supervisory",
+      "subjectMatter": "Wholesale bank governance, data, financial crime culture",
+      "stagingPublicationId": "caeb51af-829e-478d-b816-bee61252678a",
+      "extractionCoverage": "staging_row_no_revision",
+      "proposedProfile": "html_article_v2",
+      "evalTopics": ["financial crime governance", "AML culture"],
+      "distractorRole": "Near-miss for crime-control questions (re-enable dedicated probe post-ingest)",
+      "substantialEnough": true
+    },
+    {
+      "priority": 5,
+      "reference": null,
+      "verifiedTitle": "Defence SMEs: access to banking services",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/defence-smes-access-banking-services",
+      "stagingPublicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+      "extractionCoverage": "staging_row_no_revision",
+      "proposedProfile": "html_article_v2",
+      "evalTopics": ["fair access", "vulnerable/SME treatment"],
+      "substantialEnough": true
+    },
+    {
+      "priority": 6,
+      "reference": null,
+      "verifiedTitle": "Access to cash coverage in the UK 2024 H2",
+      "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2024-h2",
+      "stagingPublicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+      "extractionCoverage": "staging_row_no_revision",
+      "proposedProfile": "html_article_v2",
+      "evalTopics": ["consumer access"],
+      "distractorRole": "Temporal competitor to 2025 H1 already indexed",
+      "substantialEnough": true
+    },
+    {
+      "priority": 7,
+      "reference": null,
+      "verifiedTitle": "Consumer Duty publications and resources",
+      "canonicalUrl": "https://www.fca.org.uk/firms/consumer-duty/publications-resources",
+      "publicationType": "supervisory_resource",
+      "subjectMatter": "Hub linking PS22/9, FG22/5, and good-practice material",
+      "stagingPublicationId": null,
+      "extractionCoverage": "discover_at_ingest",
+      "proposedProfile": "html_article_v2",
+      "evalTopics": ["Consumer Duty navigation vs binding guidance"],
+      "substantialEnough": "moderate_html_hub",
+      "optional": true
+    }
+  ],
+  "optionalFinancialCrimeStaging": {
+    "reference": "CP26/39",
+    "verifiedTitle": "CP26/39: Income sharing distribution and operational incident reporting for consolidated tape providers",
+    "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-39-income-sharing-distribution-operational-incident-reporting-consolidated-tape-providers",
+    "stagingPublicationId": "a6913993-f039-4b97-b6d8-6ed660bb914d",
+    "note": "Only if operator wants ops/financial-market distractor; weak Consumer Duty overlap."
+  },
+  "removedDoNotIngest": [
+    {
+      "reference": "FG22/1",
+      "wrongAssumption": "Consumer Duty",
+      "actualSubject": "Part VII insurance business transfers",
+      "pdfUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-1.pdf"
+    },
+    {
+      "reference": "FG21/3",
+      "wrongAssumption": "Financial Crime Guide",
+      "actualSubject": "Advising on pension transfers and safeguards",
+      "pdfUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg21-3.pdf"
+    }
+  ],
+  "proposedIngestionSequence": [
+    "PS22/9",
+    "FG21/1",
+    "FG24/6",
+    "caeb51af wholesale insights",
+    "5f4c6f09 defence SMEs",
+    "0d3468e6 access to cash 2024 H2",
+    "optional: consumer-duty publications-resources hub"
+  ],
+  "goNoGo": "NO-GO until operator approves corrected URL list; staging IDs must be resolved for PS22/9, FG21/1, FG24/6 at ingest."
+}

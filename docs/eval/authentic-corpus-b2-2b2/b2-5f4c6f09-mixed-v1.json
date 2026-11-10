@@ -1,0 +1,1352 @@
+{
+  "packVersion": 1,
+  "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+  "publicationTitle": "Defence SMEs: access to banking services",
+  "publicationType": "multi_firm_review",
+  "regulator": "FCA",
+  "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/defence-smes-access-banking-services",
+  "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+  "extractionProfile": "html_article_v2",
+  "contentSha256": "20b87136676dd3b610810f4cf47f6b25985ad72faff1c850239512ae5dc0e0be",
+  "regulatoryStatus": "multi_firm_review",
+  "blockCount": 84,
+  "verifiedTextSamples": [
+    {
+      "documentEvidenceId": "deca62dea1359030",
+      "sectionReference": "1. Summary",
+      "extractedText": "Defence and national security are an economic and financial priority for the UK."
+    },
+    {
+      "documentEvidenceId": "870a6b1475c3ca1f",
+      "sectionReference": "1. Summary",
+      "extractedText": "For Britain to remain secure and competitive, finance and financial services should not be seen as separate from our security."
+    },
+    {
+      "documentEvidenceId": "b603b803a0d0430e",
+      "sectionReference": "1. Summary",
+      "extractedText": "Rather, they must be at the centre of our defence: helping to build the resilience on which our security depends."
+    },
+    {
+      "documentEvidenceId": "1ee7c5396ac5f3fd",
+      "sectionReference": "1. Summary",
+      "extractedText": "Small and medium-sized enterprises (SMEs) play a specific and vital role in UK defence and wider resilience."
+    },
+    {
+      "documentEvidenceId": "462eee948012d201",
+      "sectionReference": "1. Summary",
+      "extractedText": "They contribute specialist expertise and innovation across the defence supply chain, strengthening national security and supporting growth."
+    },
+    {
+      "documentEvidenceId": "b9b84262cfcc4cee",
+      "sectionReference": "1. Summary",
+      "extractedText": "They need access to banking services so they can secure contracts, grow, invest in their capabilities, and run their businesses."
+    },
+    {
+      "documentEvidenceId": "45b854796d8d3868",
+      "sectionReference": "1. Summary",
+      "extractedText": "We’ve been exploring how SMEs in the defence sector currently experience banking services and whether firms could improve their understanding and decision-making."
+    },
+    {
+      "documentEvidenceId": "bae0e2ec113f38c8",
+      "sectionReference": "1. Summary",
+      "extractedText": "There’s no regulatory barrier preventing banks from supporting lawful defence businesses, but nonetheless some defence SMEs have found the process of opening a bank account to be unnecessarily long and complex."
+    },
+    {
+      "documentEvidenceId": "f953fec8c8d1f1aa",
+      "sectionReference": "2. Who this applies to",
+      "extractedText": "These findings will be of particular interest to: retail banks building societies some payment and electronic money institutions Our findings do not create new obligations or alter existing regulatory requirements."
+    },
+    {
+      "documentEvidenceId": "fb461b00b5dbe8b4",
+      "sectionReference": "2. Who this applies to",
+      "extractedText": "They reinforce the importance of firms applying existing requirements consistently and proportionately."
+    },
+    {
+      "documentEvidenceId": "5bd82079942fae3e",
+      "sectionReference": "3. What firms need to do",
+      "extractedText": "Many of the issues we identified are within firms' control."
+    },
+    {
+      "documentEvidenceId": "6d2f19f13af5a462",
+      "sectionReference": "3. What firms need to do",
+      "extractedText": "We expect firms to take prompt action in response to these findings."
+    },
+    {
+      "documentEvidenceId": "8bf956c4cc724e44",
+      "sectionReference": "3. What firms need to do",
+      "extractedText": "Firms should take steps to better understand the defence sector and to improve their processes and practices where they need to."
+    },
+    {
+      "documentEvidenceId": "3294d29f3cb322cb",
+      "sectionReference": "3. What firms need to do",
+      "extractedText": "More risk-based compliance checks, along with effective oversight and proportionate processes, could help reduce friction and improve decision-making."
+    },
+    {
+      "documentEvidenceId": "4fd9b1bc39dfb672",
+      "sectionReference": "3. What firms need to do",
+      "extractedText": "There may be similar challenges in other SME sectors, and we expect firms to apply similar improvements to other SME sectors outside of defence where required."
+    },
+    {
+      "documentEvidenceId": "2fa234c9a51903e8",
+      "sectionReference": "3. What firms need to do",
+      "extractedText": "Defence SMEs have a role to play too."
+    },
+    {
+      "documentEvidenceId": "060e4e1f78b6e49d",
+      "sectionReference": "3. What firms need to do",
+      "extractedText": "Firms told us that incomplete information or a lack of preparedness can contribute to delays during onboarding."
+    },
+    {
+      "documentEvidenceId": "70b3c497fe7cd5bd",
+      "sectionReference": "3. What firms need to do",
+      "extractedText": "SMEs can help by being prepared to explain how they manage the risks associated with their business, and providing clear and timely information to firms."
+    },
+    {
+      "documentEvidenceId": "1457499c477e4458",
+      "sectionReference": "4. Scope of this work",
+      "extractedText": "During our discovery work, we spoke to retail banks, defence SMEs, trade bodies and government stakeholders to understand their perspectives, experiences and ideas."
+    },
+    {
+      "documentEvidenceId": "99f2079893835117",
+      "sectionReference": "4. Scope of this work",
+      "extractedText": "There was a particular focus on: firms’ appetite to support defence SMEs how firms identify defence-related customers account opening and ongoing servicing compliance checks, internal reviews and escalation account restrictions and closures firms’ data, governance and oversight We focused on defence SMEs’ access to and use of banking services, including account opening, ongoing servicing and related banking products."
+    },
+    {
+      "documentEvidenceId": "cb763c5b34abeda1",
+      "sectionReference": "4. Scope of this work",
+      "extractedText": "Our work did not assess wider access to lending, investment or other sources of finance."
+    },
+    {
+      "documentEvidenceId": "42b1fb5e561db9a7",
+      "sectionReference": "4. Scope of this work",
+      "extractedText": "We use the term defence SMEs to mean businesses involved in research, development, design, production, delivery, maintenance, repair or overhaul of military systems, components and related equipment."
+    },
+    {
+      "documentEvidenceId": "66aff348dba4f687",
+      "sectionReference": "4. Scope of this work",
+      "extractedText": "SMEs refers to businesses with fewer than 250 employees and either annual turnover not exceeding £44 million or a balance sheet total not exceeding £38 million."
+    },
+    {
+      "documentEvidenceId": "4f79bdd40cacfe54",
+      "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+      "extractedText": "Firms decide which customers they serve, and set their own commercial strategy and risk appetite."
+    },
+    {
+      "documentEvidenceId": "7643d874a6d4e92a",
+      "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+      "extractedText": "Some defence-related activities may fall outside an individual firm’s risk appetite."
+    },
+    {
+      "documentEvidenceId": "fcd943aa77acca7c",
+      "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+      "extractedText": "Firms and stakeholders told us that reputational and sustainability-related considerations can sometimes influence decisions affecting defence SMEs, alongside wider commercial and risk-management considerations."
+    },
+    {
+      "documentEvidenceId": "4e68649df90bbd19",
+      "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+      "extractedText": "Where a firm decides to reject an application, restrict services or close a business current account, it can have significant negative consequences for the affected customer. &nbsp; If firms decide to do this, they must make sure that their decisions are made on reasonable, properly considered grounds and demonstrate that they’re proportionate, risk-based and consistently applied."
+    },
+    {
+      "documentEvidenceId": "fef56f6435100f31",
+      "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+      "extractedText": "The firms we spoke to generally described themselves as open to serving defence SMEs and we saw firms taking steps to understand and service the sector better."
+    },
+    {
+      "documentEvidenceId": "53b3d55d60f7e36d",
+      "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+      "extractedText": "This included investing in specialist relationship managers, dedicated teams, training and governance processes."
+    },
+    {
+      "documentEvidenceId": "f4233746d43badea",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "Firms tend to regard defence SMEs as higher-risk applicants due to financial crime risks and wider risk management considerations, such as reputational risk, environmental, social and governance (ESG), sustainability, supply chain, end-use, commercial strategy, and risk appetite considerations."
+    },
+    {
+      "documentEvidenceId": "d312ac9b5334d5bd",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "Banks can have more extensive due diligence, governance and onboarding processes for defence SMEs."
+    },
+    {
+      "documentEvidenceId": "80e517f3f6ca0221",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "In their risk assessments, banks should reflect the specific customer, relationship and other risk factors."
+    },
+    {
+      "documentEvidenceId": "022202c36de0cfe9",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "The effect of these additional processes is often not exclusion, but an increased risk of friction and delay."
+    },
+    {
+      "documentEvidenceId": "ce93049ecff584fe",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "Enhanced due diligence, specialist review and additional governance can extend onboarding and decision-making times, particularly where applications require multiple approval stages or further assessment."
+    },
+    {
+      "documentEvidenceId": "e899ce913dbbc4bb",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "These delays can have wider commercial consequences."
+    },
+    {
+      "documentEvidenceId": "de99e8b8e36e9a15",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "SMEs' timely access to banking services can be important for government procurement, making and receiving payments, onboarding suppliers, securing contracts and meeting contractual obligations."
+    },
+    {
+      "documentEvidenceId": "7cdeeceb2bf7d0e3",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "It can also help them manage working capital and, in turn, invest in technology, machinery and other capabilities."
+    },
+    {
+      "documentEvidenceId": "cd2581c92263fc7d",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "Defence SMEs and other stakeholders also told us that firms weren’t always explaining the rationale behind their decisions, even where there has been a long onboarding process where they have had to provide a lot of information."
+    },
+    {
+      "documentEvidenceId": "45dd59357a1ee88c",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "Firms should seek to reduce unnecessary friction by completing compliance checks efficiently, avoiding duplication and delay, while maintaining appropriate controls and meeting their legal and regulatory obligations."
+    },
+    {
+      "documentEvidenceId": "225f8f7b6028d2fb",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "This includes considering whether their information requests, review stages and escalation arrangements remain targeted and proportionate to the risks that the applicant presents."
+    },
+    {
+      "documentEvidenceId": "a83dc37fec7671b7",
+      "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+      "extractedText": "If additional checks are necessary, firms should keep applicants informed about progress and likely decision timescales, where legally permissible and appropriate."
+    },
+    {
+      "documentEvidenceId": "3f1f0676aec544af",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "The defence sector includes many different activities."
+    },
+    {
+      "documentEvidenceId": "15839635c9e5e48f",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "These range from software, logistics and maintenance to consulting, dual-use technology (equipment that has both military and civilian use, like drones) and weapons production."
+    },
+    {
+      "documentEvidenceId": "051d89ceca828397",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "Risks can vary depending on the business, its activities, the countries in which it operates, the products and services it provides, the nature of its supply chain, and the intended use of its products."
+    },
+    {
+      "documentEvidenceId": "053f688bfda03050",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "Our work suggests that firms do not always distinguish sufficiently between different types of defence businesses when designing and applying their onboarding and servicing arrangements."
+    },
+    {
+      "documentEvidenceId": "a27a11ef3455e729",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "Firms should adopt approaches to offering and servicing accounts that reflect the specific circumstances and risks associated with individual defence businesses."
+    },
+    {
+      "documentEvidenceId": "fc15897d60caeed9",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "They should periodically review whether their categorisations remain justified."
+    },
+    {
+      "documentEvidenceId": "b4479fa1221dc3c5",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "If they apply broad onboarding exclusions, they should be able to say why."
+    },
+    {
+      "documentEvidenceId": "7c1e2c240753b301",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "Financial crime and wider risk-management considerations can influence how firms assess defence SME customers."
+    },
+    {
+      "documentEvidenceId": "3446835b51b7924e",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "Although it’s important that they take steps to identify, assess and mitigate financial crime risks, firms’ checks and controls should reflect the nature, scale and complexity of those risks."
+    },
+    {
+      "documentEvidenceId": "08987d521c75f4dc",
+      "sectionReference": "5.3. Defence is not a single risk",
+      "extractedText": "Firms should not apply blanket restrictions if they’re able to take a more tailored approach, while complying with legal requirements."
+    },
+    {
+      "documentEvidenceId": "1f845fcc629610ce",
+      "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+      "extractedText": "Defence SMEs and stakeholders told us that perceptions of the sector have not always kept pace with changes in government policy and the geopolitical environment."
+    },
+    {
+      "documentEvidenceId": "e31ea56c4f423e90",
+      "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+      "extractedText": "They feel the sector is sometimes viewed negatively or associated with reputational, ethical, or illicit activity concerns."
+    },
+    {
+      "documentEvidenceId": "b47d2f9a862109a6",
+      "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+      "extractedText": "Some firms and stakeholders referred to ESG-related considerations in decisions affecting defence SMEs."
+    },
+    {
+      "documentEvidenceId": "78bee135b0fc5e44",
+      "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+      "extractedText": "We have no sustainability rules that prevent firms from serving defence customers."
+    },
+    {
+      "documentEvidenceId": "b71e3db15287a1d1",
+      "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+      "extractedText": "Firms are entitled to determine their own commercial strategy and risk appetite."
+    },
+    {
+      "documentEvidenceId": "f2aa3d59d86b011a",
+      "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+      "extractedText": "Where reputational risk or similar considerations influence onboarding, ongoing servicing, access to products or account closure, firms should be able to demonstrate that they have clearly defined these considerations, applied them consistently and supported them by appropriate governance."
+    },
+    {
+      "documentEvidenceId": "f6abefde4646f851",
+      "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+      "extractedText": "They should ensure decisions are based on an assessment of the relevant risks and circumstances."
+    },
+    {
+      "documentEvidenceId": "4b31cce3828d4cb1",
+      "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+      "extractedText": "Broad or unclear references to reputational risk can make it difficult for a firm to demonstrate that its decisions are reasonable, properly considered and aligned with its risk appetite."
+    },
+    {
+      "documentEvidenceId": "cfb3388cd23257d9",
+      "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+      "extractedText": "Defence businesses can sit within wider technology, engineering, manufacturing and service supply chains."
+    },
+    {
+      "documentEvidenceId": "f67aa3dbc7193010",
+      "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+      "extractedText": "Existing classifications, including Standard Industrial Classification (SIC) codes (numerical classifications used to identify a business's primary economic activity or business sector), do not always capture these activities accurately."
+    },
+    {
+      "documentEvidenceId": "7e2d6f9696c78ca3",
+      "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+      "extractedText": "This can make it harder for firms to identify defence SMEs in their customer base, understand how they are being treated, and whether their processes are working as intended."
+    },
+    {
+      "documentEvidenceId": "5d90b2cae82ea182",
+      "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+      "extractedText": "Firms should consider whether they can identify and monitor their defence SME customers with enough accuracy to support effective oversight."
+    },
+    {
+      "documentEvidenceId": "a82ac3bff37c554e",
+      "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+      "extractedText": "They should do more to understand direct defence businesses, wider supply chains and dual-use activity."
+    },
+    {
+      "documentEvidenceId": "33e58af671a79590",
+      "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+      "extractedText": "Without this visibility, firms may find it harder to assess whether their policies are operating as intended and whether they are treating their customers fairly."
+    },
+    {
+      "documentEvidenceId": "7174698b3650d893",
+      "sectionReference": "5.6. Better information can support stronger oversight",
+      "extractedText": "Some firms have little management information about the outcomes experienced by defence SMEs throughout the customer lifecycle, from account applications and opening, to ongoing servicing and account closures."
+    },
+    {
+      "documentEvidenceId": "8650e616c70329dd",
+      "sectionReference": "5.6. Better information can support stronger oversight",
+      "extractedText": "Firms should have enough information to understand how defence SME customers are being treated, and whether their decisions are being applied consistently and in line with the firm's risk appetite, governance processes and risk controls."
+    },
+    {
+      "documentEvidenceId": "3e67c2d63a01955e",
+      "sectionReference": "5.6. Better information can support stronger oversight",
+      "extractedText": "Firms should review this information regularly."
+    },
+    {
+      "documentEvidenceId": "51ac7e0d07f68e5a",
+      "sectionReference": "5.6. Better information can support stronger oversight",
+      "extractedText": "If there are differences in treatment, such as longer onboarding times or higher levels of escalation, firms should consider whether they reflect the specific risks presented by individual SMEs or whether they result from processes, governance arrangements, escalation requirements or customer-identification challenges within the firm's control."
+    },
+    {
+      "documentEvidenceId": "5c167dcc4b28c702",
+      "sectionReference": "6. What we expect from firms",
+      "extractedText": "By understanding more about the defence sector, firms can help viable businesses to access the financial services they need."
+    },
+    {
+      "documentEvidenceId": "2c44cebd81218cf0",
+      "sectionReference": "6. What we expect from firms",
+      "extractedText": "We therefore expect firms to review their processes and practices to ensure they are taking a risk-based and proportionate approach to SMEs in defence, and that their assessments reflect only the risk factors relating to each specific customer."
+    },
+    {
+      "documentEvidenceId": "24382789c8b72773",
+      "sectionReference": "6. What we expect from firms",
+      "extractedText": "Firms should review the management information provided to their senior management."
+    },
+    {
+      "documentEvidenceId": "d3a990a538498c55",
+      "sectionReference": "6. What we expect from firms",
+      "extractedText": "This is to make sure it allows them to properly oversee the outcomes that defence SMEs experience, ultimately enabling firms to better play their part in supporting this vital part of the UK economy."
+    },
+    {
+      "documentEvidenceId": "d40bb0b1c631028d",
+      "sectionReference": "7. Next steps",
+      "extractedText": "We have written to firms that provide banking services to SMEs to share these findings and set out our expectations."
+    },
+    {
+      "documentEvidenceId": "99ef11f9ab32d4f0",
+      "sectionReference": "7. Next steps",
+      "extractedText": "In addition, the government has called for a whole-of-society approach (PDF) to preparedness and resilience, recognising that the UK cannot rely on any single sector to protect itself against modern, complex threats."
+    },
+    {
+      "documentEvidenceId": "b0648646a733320f",
+      "sectionReference": "7. Next steps",
+      "extractedText": "Firms, defence businesses, trade bodies, regulators and government each have a role."
+    },
+    {
+      "documentEvidenceId": "502343a50dd24b4f",
+      "sectionReference": "7. Next steps",
+      "extractedText": "We will therefore use these findings to support practical engagement between all these bodies."
+    },
+    {
+      "documentEvidenceId": "91713ba43598f04a",
+      "sectionReference": "7. Next steps",
+      "extractedText": "We expect firms to take prompt action in response to these findings, and in line with government-led initiatives."
+    },
+    {
+      "documentEvidenceId": "073533ac03627c83",
+      "sectionReference": "7. Next steps",
+      "extractedText": "Therefore, while this report only reflects pre-existing regulatory requirements, firms should treat it as a ‘point in time’ publication and can consider it retired by December 2028 (if not removed sooner)."
+    },
+    {
+      "documentEvidenceId": "a2c9b20d19129d34",
+      "sectionReference": "7. Next steps",
+      "extractedText": "This is in line with our commitment to review the amount of live material we expect firms to continually keep under consideration."
+    },
+    {
+      "documentEvidenceId": "1bbaded134e99d7b",
+      "sectionReference": "7. Next steps",
+      "extractedText": "Through our supervision, we will monitor how firms are responding to the issues and expectations set out in this publication and we will intervene where necessary to ensure appropriate outcomes."
+    },
+    {
+      "documentEvidenceId": "bdf52d57725cdd02",
+      "sectionReference": "7. Next steps",
+      "extractedText": "We expect firms to consider whether similar issues may arise in other SME sectors and whether the improvements identified through this work could be applied more broadly."
+    },
+    {
+      "documentEvidenceId": "e47650361362c419",
+      "sectionReference": "7. Next steps",
+      "extractedText": "Yes No What can we do to improve pages like this?"
+    },
+    {
+      "documentEvidenceId": "d25205e13756bba5",
+      "sectionReference": "7. Next steps",
+      "extractedText": "Submit Feedback Leave this field blank"
+    }
+  ],
+  "askRiEvidence": {
+    "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+    "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+    "extractionProfile": "html_article_v2",
+    "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/defence-smes-access-banking-services",
+    "publicationMetadata": {
+      "title": "5.1. Most banks are open to supporting defence SMEs",
+      "primaryPdf": null,
+      "drupalAbout": "/publications/multi-firm-reviews/defence-smes-access-banking-services",
+      "drupalNodeId": "176831",
+      "consultationTimeline": {
+        "opens": null,
+        "closes": null,
+        "present": false,
+        "opensDate": null,
+        "closesDate": null
+      },
+      "publicationTypeLabel": null,
+      "primaryDocumentClassification": "webpage_only"
+    },
+    "extractionQuality": {
+      "score": 100,
+      "status": "complete",
+      "metrics": {
+        "headingCount": 13,
+        "alphaWordCount": 1383,
+        "paragraphCount": 47,
+        "plainTextLength": 13352,
+        "pdfAttachmentCount": 1
+      },
+      "signals": [],
+      "confidence": "high",
+      "primaryDocument": {
+        "completeness": "not_applicable",
+        "primaryPdfUrl": null,
+        "classification": "webpage_only",
+        "primaryPdfCaptured": false
+      },
+      "webpageExtraction": {
+        "score": 100,
+        "status": "complete",
+        "confidence": "high"
+      },
+      "obligationGradeSuitable": true
+    },
+    "pdfAttachments": [
+      {
+        "url": "https://assets.publishing.service.gov.uk/media/6a44e989167a99cf0018da38/The_Defence_Investment_Plan.pdf",
+        "title": "government has called for a whole-of-society approach (PDF)",
+        "documentType": "pdf",
+        "relationship": "supporting_pdf",
+        "likelyPrimaryRegulatoryDocument": false
+      }
+    ],
+    "normalisedArticleText": "How SMEs in the defence sector currently experience banking services and whether banks could improve their understanding and decision-making. 1. Summary Defence and national security are an economic and financial priority for the UK. For Britain to remain secure and competitive, finance and financial services should not be seen as separate from our security. Rather, they must be at the centre of our defence: helping to build the resilience on which our security depends. Small and medium-sized enterprises (SMEs) play a specific and vital role in UK defence and wider resilience. They contribute specialist expertise and innovation across the defence supply chain, strengthening national security and supporting growth. They need access to banking services so they can secure contracts, grow, invest in their capabilities, and run their businesses. We’ve been exploring how SMEs in the defence sector currently experience banking services and whether firms could improve their understanding and decision-making. There’s no regulatory barrier preventing banks from supporting lawful defence businesses, but nonetheless some defence SMEs have found the process of opening a bank account to be unnecessarily long and complex. 2. Who this applies to These findings will be of particular interest to: retail banks building societies some payment and electronic money institutions Our findings do not create new obligations or alter existing regulatory requirements. They reinforce the importance of firms applying existing requirements consistently and proportionately. 3. What firms need to do Many of the issues we identified are within firms' control. We expect firms to take prompt action in response to these findings. Firms should take steps to better understand the defence sector and to improve their processes and practices where they need to. More risk-based compliance checks, along with effective oversight and proportionate processes, could help reduce friction and improve decision-making. There may be similar challenges in other SME sectors, and we expect firms to apply similar improvements to other SME sectors outside of defence where required. Defence SMEs have a role to play too. Firms told us that incomplete information or a lack of preparedness can contribute to delays during onboarding. SMEs can help by being prepared to explain how they manage the risks associated with their business, and providing clear and timely information to firms. 4. Scope of this work During our discovery work, we spoke to retail banks, defence SMEs, trade bodies and government stakeholders to understand their perspectives, experiences and ideas. There was a particular focus on: firms’ appetite to support defence SMEs how firms identify defence-related customers account opening and ongoing servicing compliance checks, internal reviews and escalation account restrictions and closures firms’ data, governance and oversight We focused on defence SMEs’ access to and use of banking services, including account opening, ongoing servicing and related banking products. Our work did not assess wider access to lending, investment or other sources of finance. We use the term defence SMEs to mean businesses involved in research, development, design, production, delivery, maintenance, repair or overhaul of military systems, components and related equipment. SMEs refers to businesses with fewer than 250 employees and either annual turnover not exceeding £44 million or a balance sheet total not exceeding £38 million. 5. What we found 5.1. Most banks are open to supporting defence SMEs Firms decide which customers they serve, and set their own commercial strategy and risk appetite. Some defence-related activities may fall outside an individual firm’s risk appetite. Firms and stakeholders told us that reputational and sustainability-related considerations can sometimes influence decisions affecting defence SMEs, alongside wider commercial and risk-management considerations. Where a firm decides to reject an application, restrict services or close a business current account, it can have significant negative consequences for the affected customer. If firms decide to do this, they must make sure that their decisions are made on reasonable, properly considered grounds and demonstrate that they’re proportionate, risk-based and consistently applied. The firms we spoke to generally described themselves as open to serving defence SMEs and we saw firms taking steps to understand and service the sector better. This included investing in specialist relationship managers, dedicated teams, training and governance processes. 5.2. The evidence points to friction and delay, not widespread exclusion Firms tend to regard defence SMEs as higher-risk applicants due to financial crime risks and wider risk management considerations, such as reputational risk, environmental, social and governance (ESG), sustainability, supply chain, end-use, commercial strategy, and risk appetite considerations. Banks can have more extensive due diligence, governance and onboarding processes for defence SMEs. In their risk assessments, banks should reflect the specific customer, relationship and other risk factors. The effect of these additional processes is often not exclusion, but an increased risk of friction and delay. Enhanced due diligence, specialist review and additional governance can extend onboarding and decision-making times, particularly where applications require multiple approval stages or further assessment. These delays can have wider commercial consequences. SMEs' timely access to banking services can be important for government procurement, making and receiving payments, onboarding suppliers, securing contracts and meeting contractual obligations. It can also help them manage working capital and, in turn, invest in technology, machinery and other capabilities. Defence SMEs and other stakeholders also told us that firms weren’t always explaining the rationale behind their decisions, even where there has been a long onboarding process where they have had to provide a lot of information. Firms should seek to reduce unnecessary friction by completing compliance checks efficiently, avoiding duplication and delay, while maintaining appropriate controls and meeting their legal and regulatory obligations. This includes considering whether their information requests, review stages and escalation arrangements remain targeted and proportionate to the risks that the applicant presents. If additional checks are necessary, firms should keep applicants informed about progress and likely decision timescales, where legally permissible and appropriate. 5.3. Defence is not a single risk The defence sector includes many different activities. These range from software, logistics and maintenance to consulting, dual-use technology (equipment that has both military and civilian use, like drones) and weapons production. Risks can vary depending on the business, its activities, the countries in which it operates, the products and services it provides, the nature of its supply chain, and the intended use of its products. Our work suggests that firms do not always distinguish sufficiently between different types of defence businesses when designing and applying their onboarding and servicing arrangements. Firms should adopt approaches to offering and servicing accounts that reflect the specific circumstances and risks associated with individual defence businesses. They should periodically review whether their categorisations remain justified. If they apply broad onboarding exclusions, they should be able to say why. Financial crime and wider risk-management considerations can influence how firms assess defence SME customers. Although it’s important that they take steps to identify, assess and mitigate financial crime risks, firms’ checks and controls should reflect the nature, scale and complexity of those risks. Firms should not apply blanket restrictions if they’re able to take a more tailored approach, while complying with legal requirements. 5.4. Reputational and ESG-related considerations should be clear Defence SMEs and stakeholders told us that perceptions of the sector have not always kept pace with changes in government policy and the geopolitical environment. They feel the sector is sometimes viewed negatively or associated with reputational, ethical, or illicit activity concerns. Some firms and stakeholders referred to ESG-related considerations in decisions affecting defence SMEs. We have no sustainability rules that prevent firms from serving defence customers. Firms are entitled to determine their own commercial strategy and risk appetite. Where reputational risk or similar considerations influence onboarding, ongoing servicing, access to products or account closure, firms should be able to demonstrate that they have clearly defined these considerations, applied them consistently and supported them by appropriate governance. They should ensure decisions are based on an assessment of the relevant risks and circumstances. Broad or unclear references to reputational risk can make it difficult for a firm to demonstrate that its decisions are reasonable, properly considered and aligned with its risk appetite. 5.5. Firms do not always have a clear picture of their defence customers Defence businesses can sit within wider technology, engineering, manufacturing and service supply chains. Existing classifications, including Standard Industrial Classification (SIC) codes (numerical classifications used to identify a business's primary economic activity or business sector), do not always capture these activities accurately. This can make it harder for firms to identify defence SMEs in their customer base, understand how they are being treated, and whether their processes are working as intended. Firms should consider whether they can identify and monitor their defence SME customers with enough accuracy to support effective oversight. They should do more to understand direct defence businesses, wider supply chains and dual-use activity. Without this visibility, firms may find it harder to assess whether their policies are operating as intended and whether they are treating their customers fairly. 5.6. Better information can support stronger oversight Some firms have little management information about the outcomes experienced by defence SMEs throughout the customer lifecycle, from account applications and opening, to ongoing servicing and account closures. Firms should have enough information to understand how defence SME customers are being treated, and whether their decisions are being applied consistently and in line with the firm's risk appetite, governance processes and risk controls. Firms should review this information regularly. If there are differences in treatment, such as longer onboarding times or higher levels of escalation, firms should consider whether they reflect the specific risks presented by individual SMEs or whether they result from processes, governance arrangements, escalation requirements or customer-identification challenges within the firm's control. 6. What we expect from firms By understanding more about the defence sector, firms can help viable businesses to access the financial services they need. We therefore expect firms to review their processes and practices to ensure they are taking a risk-based and proportionate approach to SMEs in defence, and that their assessments reflect only the risk factors relating to each specific customer. Firms should review the management information provided to their senior management. This is to make sure it allows them to properly oversee the outcomes that defence SMEs experience, ultimately enabling firms to better play their part in supporting this vital part of the UK economy. 7. Next steps We have written to firms that provide banking services to SMEs to share these findings and set out our expectations. In addition, the government has called for a whole-of-society approach (PDF) to preparedness and resilience, recognising that the UK cannot rely on any single sector to protect itself against modern, complex threats. Firms, defence businesses, trade bodies, regulators and government each have a role. We will therefore use these findings to support practical engagement between all these bodies. We expect firms to take prompt action in response to these findings, and in line with government-led initiatives. Therefore, while this report only reflects pre-existing regulatory requirements, firms should treat it as a ‘point in time’ publication and can consider it retired by December 2028 (if not removed sooner). This is in line with our commitment to review the amount of live material we expect firms to continually keep under consideration. Through our supervision, we will monitor how firms are responding to the issues and expectations set out in this publication and we will intervene where necessary to ensure appropriate outcomes. We expect firms to consider whether similar issues may arise in other SME sectors and whether the improvements identified through this work could be applied more broadly. Was this page useful? Yes No What can we do to improve pages like this? What did you find helpful? Submit Feedback Leave this field blank",
+    "normalisedArticleHtml": "<article data-history-node-id=\"176831\" class=\"lf-bg-003c71 node node-publication-longform col-sm-12 clearfix four-step-limit col-xs-12 col-md-8 col-md-pull-4 js-has-sidebar--sticky\" about=\"/publications/multi-firm-reviews/defence-smes-access-banking-services\"> <div class=\"node-content__wrapper node-content__wrapper--border\"> <div class=\"hidden-xs\"> <section class=\"copy-highlighted copy-block component fca-colour--6c1d45 default\"> <div class=\"container\"> <p>How SMEs in the defence sector currently experience banking services and whether banks could improve their understanding and decision-making.</p> </div> </section> </div> <div class=\"chapters\"> <section class=\"component chapter\" id=\"lf-chapter-id-summary\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">1. Summary</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Defence and national security are an economic and financial priority for the UK. For Britain to remain secure and competitive, finance and financial services should not be seen as separate from our security. Rather, they must be at the centre of our defence: helping to build the resilience on which our security depends.</p><p>Small and medium-sized enterprises (SMEs) play a specific and vital role in UK defence and wider resilience. They contribute specialist expertise and innovation across the defence supply chain, strengthening national security and supporting growth. They need access to banking services so they can secure contracts, grow, invest in their capabilities, and run their businesses.</p><p>We’ve been exploring how SMEs in the defence sector currently experience banking services and whether firms could improve their understanding and decision-making.</p><p>There’s no regulatory barrier preventing banks from supporting lawful defence businesses, but nonetheless some defence SMEs have found the process of opening a bank account to be unnecessarily long and complex.</p> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-who-this-applies-to\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">2. Who this applies to</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>These findings will be of particular interest to:</p><ul><li data-list-item-id=\"e1e10f9a29788ae6badeb4c7a059a5520\">retail banks</li><li data-list-item-id=\"ea1ee31d0314e80af77fb1a522cbfc215\">building societies</li><li data-list-item-id=\"e696c9ffafab76e4891dd454a3cd3dd01\">some payment and electronic money institutions</li></ul><p>Our findings do not create new obligations or alter existing regulatory requirements. They reinforce the importance of firms applying existing requirements consistently and proportionately.</p> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-what-firms-need-to-do\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">3. What firms need to do</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Many of the issues we identified are within firms' control. We expect firms to take prompt action in response to these findings. Firms should take steps to better understand the defence sector and to improve their processes and practices where they need to. More risk-based compliance checks, along with effective oversight and proportionate processes, could help reduce friction and improve decision-making. There may be similar challenges in other SME sectors, and we expect firms to apply similar improvements to other SME sectors outside of defence where required.</p><p>Defence SMEs have a role to play too. Firms told us that incomplete information or a lack of preparedness can contribute to delays during onboarding. SMEs can help by being prepared to explain how they manage the risks associated with their business, and providing clear and timely information to firms.</p> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-scope-of-this-work\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">4. Scope of this work</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>During our discovery work, we spoke to retail banks, defence SMEs, trade bodies and government stakeholders to understand their perspectives, experiences and ideas. There was a particular focus on:</p><ul><li data-list-item-id=\"ec6dd0289249eb7bf7eb3985c4f613e87\">firms’ appetite to support defence SMEs</li><li data-list-item-id=\"eb5835ceeaa039bf0e4db91274fdef4b8\">how firms identify defence-related customers</li><li data-list-item-id=\"ee4a344db56863b6a67daec5062ac4df7\">account opening and ongoing servicing</li><li data-list-item-id=\"e755c3ac7a68a54d296ccaacf923e51c2\">compliance checks, internal reviews and escalation</li><li data-list-item-id=\"ec3a07e26e7efd80270f7c7f5e383cee8\">account restrictions and closures</li><li data-list-item-id=\"e88b52ab7d8bb9274d9107bcdcea6e01c\">firms’ data, governance and oversight</li></ul><p>We focused on defence SMEs’ access to and use of banking services, including account opening, ongoing servicing and related banking products. Our work did not assess wider access to lending, investment or other sources of finance.</p><body><div class=\"copy-block__call-out\"> <p>We use the term defence SMEs to mean businesses involved in research, development, design, production, delivery, maintenance, repair or overhaul of military systems, components and related equipment.</p><p>SMEs refers to businesses with fewer than 250 employees and either annual turnover not exceeding £44 million or a balance sheet total not exceeding £38 million.</p> </div> </body> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-what-we-found\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">5. What we found</h2></div> </div> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-most-banks-are-open-to-supporting-defence-smes\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">5.1. Most banks are open to supporting defence SMEs</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Firms decide which customers they serve, and set their own commercial strategy and risk appetite. Some defence-related activities may fall outside an individual firm’s risk appetite. Firms and stakeholders told us that reputational and sustainability-related considerations can sometimes influence decisions affecting defence SMEs, alongside wider commercial and risk-management considerations. Where a firm decides to reject an application, restrict services or close a business current account, it can have significant negative consequences for the affected customer. &nbsp;</p><p>If firms decide to do this, they must make sure that their decisions are made on reasonable, properly considered grounds and demonstrate that they’re proportionate, risk-based and consistently applied.</p><p>The firms we spoke to generally described themselves as open to serving defence SMEs and we saw firms taking steps to understand and service the sector better. This included investing in specialist relationship managers, dedicated teams, training and governance processes.</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-the-evidence-points-to-friction-and-delay-not-widespread-exclusion\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">5.2. The evidence points to friction and delay, not widespread exclusion</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Firms tend to regard defence SMEs as higher-risk applicants due to financial crime risks and wider risk management considerations, such as reputational risk, environmental, social and governance (ESG), sustainability, supply chain, end-use, commercial strategy, and risk appetite considerations.</p><p>Banks can have more extensive due diligence, governance and onboarding processes for defence SMEs. In their risk assessments, banks should reflect the specific customer, relationship and other risk factors.</p><p>The effect of these additional processes is often not exclusion, but an increased risk of friction and delay. Enhanced due diligence, specialist review and additional governance can extend onboarding and decision-making times, particularly where applications require multiple approval stages or further assessment. These delays can have wider commercial consequences. SMEs' timely access to banking services can be important for government procurement, making and receiving payments, onboarding suppliers, securing contracts and meeting contractual obligations. It can also help them manage working capital and, in turn, invest in technology, machinery and other capabilities.</p><p>Defence SMEs and other stakeholders also told us that firms weren’t always explaining the rationale behind their decisions, even where there has been a long onboarding process where they have had to provide a lot of information.</p><p>Firms should seek to reduce unnecessary friction by completing compliance checks efficiently, avoiding duplication and delay, while maintaining appropriate controls and meeting their legal and regulatory obligations.</p><p>This includes considering whether their information requests, review stages and escalation arrangements remain targeted and proportionate to the risks that the applicant presents. If additional checks are necessary, firms should keep applicants informed about progress and likely decision timescales, where legally permissible and appropriate.</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-defence-is-not-a-single-risk\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">5.3. Defence is not a single risk</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>The defence sector includes many different activities. These range from software, logistics and maintenance to consulting, dual-use technology (equipment that has both military and civilian use, like drones) and weapons production.</p><p>Risks can vary depending on the business, its activities, the countries in which it operates, the products and services it provides, the nature of its supply chain, and the intended use of its products.</p><p>Our work suggests that firms do not always distinguish sufficiently between different types of defence businesses when designing and applying their onboarding and servicing arrangements.</p><p>Firms should adopt approaches to offering and servicing accounts that reflect the specific circumstances and risks associated with individual defence businesses. They should periodically review whether their categorisations remain justified. If they apply broad onboarding exclusions, they should be able to say why.</p><p>Financial crime and wider risk-management considerations can influence how firms assess defence SME customers. Although it’s important that they take steps to identify, assess and mitigate financial crime risks, firms’ checks and controls should reflect the nature, scale and complexity of those risks. Firms should not apply blanket restrictions if they’re able to take a more tailored approach, while complying with legal requirements.</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-reputational-and-esg-related-considerations-should-be-clear\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">5.4. Reputational and ESG-related considerations should be clear</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Defence SMEs and stakeholders told us that perceptions of the sector have not always kept pace with changes in government policy and the geopolitical environment. They feel the sector is sometimes viewed negatively or associated with reputational, ethical, or illicit activity concerns.</p><p>Some firms and stakeholders referred to ESG-related considerations in decisions affecting defence SMEs.</p><p>We have no sustainability rules that prevent firms from serving defence customers. Firms are entitled to determine their own commercial strategy and risk appetite. Where reputational risk or similar considerations influence onboarding, ongoing servicing, access to products or account closure, firms should be able to demonstrate that they have clearly defined these considerations, applied them consistently and supported them by appropriate governance. They should ensure decisions are based on an assessment of the relevant risks and circumstances.</p><p>Broad or unclear references to reputational risk can make it difficult for a firm to demonstrate that its decisions are reasonable, properly considered and aligned with its risk appetite.</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-firms-do-not-always-have-a-clear-picture-of-their-defence-customers\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">5.5. Firms do not always have a clear picture of their defence customers</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Defence businesses can sit within wider technology, engineering, manufacturing and service supply chains. Existing classifications, including Standard Industrial Classification (SIC) codes (numerical classifications used to identify a business's primary economic activity or business sector), do not always capture these activities accurately.</p><p>This can make it harder for firms to identify defence SMEs in their customer base, understand how they are being treated, and whether their processes are working as intended.</p><p>Firms should consider whether they can identify and monitor their defence SME customers with enough accuracy to support effective oversight. They should do more to understand direct defence businesses, wider supply chains and dual-use activity.</p><p>Without this visibility, firms may find it harder to assess whether their policies are operating as intended and whether they are treating their customers fairly.</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-better-information-can-support-stronger-oversight\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">5.6. Better information can support stronger oversight</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Some firms have little management information about the outcomes experienced by defence SMEs throughout the customer lifecycle, from account applications and opening, to ongoing servicing and account closures.</p><p>Firms should have enough information to understand how defence SME customers are being treated, and whether their decisions are being applied consistently and in line with the firm's risk appetite, governance processes and risk controls. Firms should review this information regularly.</p><p>If there are differences in treatment, such as longer onboarding times or higher levels of escalation, firms should consider whether they reflect the specific risks presented by individual SMEs or whether they result from processes, governance arrangements, escalation requirements or customer-identification challenges within the firm's control.</p> </div> </section> </div> </div> </section> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-what-we-expect-from-firms\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">6. What we expect from firms</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>By understanding more about the defence sector, firms can help viable businesses to access the financial services they need.</p><p>We therefore expect firms to review their processes and practices to ensure they are taking a risk-based and proportionate approach to SMEs in defence, and that their assessments reflect only the risk factors relating to each specific customer.</p><p>Firms should review the management information provided to their senior management. This is to make sure it allows them to properly oversee the outcomes that defence SMEs experience, ultimately enabling firms to better play their part in supporting this vital part of the UK economy.</p> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-next-steps\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">7. Next steps</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>We have written to firms that provide banking services to SMEs to share these findings and set out our expectations.</p><p>In addition, the <a href=\"https://assets.publishing.service.gov.uk/media/6a44e989167a99cf0018da38/The_Defence_Investment_Plan.pdf\" title=\"Government has called for a whole-of-society approach\" data-entity-type=\"external\">government has called for a whole-of-society approach (PDF)</a> to preparedness and resilience, recognising that the UK cannot rely on any single sector to protect itself against modern, complex threats. Firms, defence businesses, trade bodies, regulators and government each have a role. We will therefore use these findings to support practical engagement between all these bodies.</p><p>We expect firms to take prompt action in response to these findings, and in line with government-led initiatives.</p><p>Therefore, while this report only reflects pre-existing regulatory requirements, firms should treat it as a ‘point in time’ publication and can consider it retired by December 2028 (if not removed sooner).</p><p>This is in line with our commitment to review the amount of live material we expect firms to continually keep under consideration.</p><p>Through our supervision, we will monitor how firms are responding to the issues and expectations set out in this publication and we will intervene where necessary to ensure appropriate outcomes. We expect firms to consider whether similar issues may arise in other SME sectors and whether the improvements identified through this work could be applied more broadly.</p> </div> </section> </div> </div> </section> </div> <div id=\"revisions\" class=\"page-revisions container\" lang=\"en-GB\"> </div> <div class=\"page-feedback container\" lang=\"en-GB\"> <form class=\"webform-submission-form webform-submission-add-form webform-submission-page-feedback-form-form webform-submission-page-feedback-form-add-form webform-submission-page-feedback-form-node-176831-form webform-submission-page-feedback-form-node-176831-add-form js-webform-details-toggle webform-details-toggle js-fca-lazy-captcha webform-client-form webform-client-form- feedback-form fca-custom-form webform-conditional-processed\" data-drupal-selector=\"webform-submission-page-feedback-form-node-176831-add-form\" novalidate=\"novalidate\" action=\"/publications/multi-firm-reviews/defence-smes-access-banking-services#webform-submission-page-feedback-form-node-176831-add-form\" method=\"post\" id=\"webform-submission-page-feedback-form-node-176831-add-form\" accept-charset=\"UTF-8\" > <fieldset data-drupal-selector=\"edit-radios\" class=\"radios--wrapper fieldgroup form-composite webform-composite-visible-title js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper\" id=\"edit-radios--wrapper\"> <legend id=\"edit-radios--wrapper-legend\"> <span class=\"fieldset-legend\">Was this page useful?</span> </legend> <div class=\"fieldset-wrapper\"> <div id=\"edit-radios\" class=\"js-webform-radios webform-options-display-side-by-side\"><div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-yes\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-yes\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-yes\" name=\"radios\" value=\"Yes\" /><span class=\"fca-custom-label\">Yes </span></label> </div> <div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-no\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-no\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-no\" name=\"radios\" value=\"No\" /><span class=\"fca-custom-label\">No </span></label> </div> </div> </div> </fieldset> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-can-we-do-to-improve-pages-like-this- js-form-item-what-can-we-do-to-improve-pages-like-this- form-group\"> <label for=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"control-label\">What can we do to improve pages like this? </label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176831-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;No&quot;}}}\" id=\"edit-what-can-we-do-to-improve-pages-like-this-\" name=\"what_can_we_do_to_improve_pages_like_this_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-did-you-find-helpful- js-form-item-what-did-you-find-helpful- form-group\"> <label for=\"edit-what-did-you-find-helpful-\" class=\"control-label\">What did you find helpful?</label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-did-you-find-helpful-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176831-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;Yes&quot;}}}\" id=\"edit-what-did-you-find-helpful-\" name=\"what_did_you_find_helpful_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <input data-drupal-selector=\"edit-page-title\" type=\"hidden\" name=\"page_title\" value=\"Defence SMEs: access to banking services\" /><input data-drupal-selector=\"edit-page-url\" type=\"hidden\" name=\"page_url\" value=\"https://www.fca.org.uk/publications/multi-firm-reviews/defence-smes-access-banking-services \" /><div class=\"js-webform-states-hidden form-actions webform-actions clearfix fca-form-submit form-group js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176831-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;checked&quot;:true}}}\" id=\"edit-actions\"><button class=\"webform-button--submit button button--primary js-form-submit form-submit btn-primary btn\" data-drupal-selector=\"edit-actions-submit\" type=\"submit\" id=\"edit-actions-submit\" name=\"op\" value=\"Submit Feedback\">Submit Feedback</button> </div> <input autocomplete=\"off\" data-drupal-selector=\"form-rntqtqn60p4ffpze9c-d89w01ydrj0igxhl0qvelnjs\" type=\"hidden\" name=\"form_build_id\" value=\"form-RNtQtQn60p4ffpZE9C-D89w01YDrj0IGXhl0qvELnjs\" /><input data-drupal-selector=\"edit-webform-submission-page-feedback-form-node-176831-add-form\" type=\"hidden\" name=\"form_id\" value=\"webform_submission_page_feedback_form_node_176831_add_form\" /> <input data-drupal-selector=\"edit-captcha-sid\" type=\"hidden\" name=\"captcha_sid\" value=\"1575366676\" /><input data-drupal-selector=\"edit-captcha-token\" type=\"hidden\" name=\"captcha_token\" value=\"y-b0DEXvwHhiPjaBhuVBNSX6D8P7ZtOIjovu0utn-n4\" /><input id=\"recaptcha-v3-token\" class=\"recaptcha-v3-token\" data-recaptcha-v3-action=\"fca_recaptcha\" data-recaptcha-v3-site-key=\"6LfnAxopAAAAAJL8t0TPEZql_Canimafd6XMM7WQ\" data-drupal-selector=\"edit-captcha-response\" type=\"hidden\" name=\"captcha_response\" value=\"\" /><input data-drupal-selector=\"edit-is-recaptcha-v3\" type=\"hidden\" name=\"is_recaptcha_v3\" value=\"1\" /> <div class=\"url_hp-textfield form-group js-form-wrapper form-wrapper\" style=\"display: none !important;\"><div class=\"form-item js-form-item form-type-textfield js-form-type-textfield form-item-url-hp js-form-item-url-hp form-group\"> <label for=\"edit-url-hp\" class=\"control-label\">Leave this field blank</label> <input autocomplete=\"off\" data-drupal-selector=\"edit-url-hp\" class=\"form-text form-control\" type=\"text\" id=\"edit-url-hp\" name=\"url_hp\" value=\"\" size=\"20\" maxlength=\"128\" /> </div> </div> </form> </div> </div> </article>",
+    "evidenceBlocks": [
+      {
+        "documentEvidenceId": "deca62dea1359030",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Summary",
+        "extractedText": "Defence and national security are an economic and financial priority for the UK.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "870a6b1475c3ca1f",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Summary",
+        "extractedText": "For Britain to remain secure and competitive, finance and financial services should not be seen as separate from our security.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b603b803a0d0430e",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Summary",
+        "extractedText": "Rather, they must be at the centre of our defence: helping to build the resilience on which our security depends.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1ee7c5396ac5f3fd",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Summary",
+        "extractedText": "Small and medium-sized enterprises (SMEs) play a specific and vital role in UK defence and wider resilience.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "462eee948012d201",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Summary",
+        "extractedText": "They contribute specialist expertise and innovation across the defence supply chain, strengthening national security and supporting growth.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b9b84262cfcc4cee",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Summary",
+        "extractedText": "They need access to banking services so they can secure contracts, grow, invest in their capabilities, and run their businesses.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "45b854796d8d3868",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Summary",
+        "extractedText": "We’ve been exploring how SMEs in the defence sector currently experience banking services and whether firms could improve their understanding and decision-making.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "bae0e2ec113f38c8",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "1. Summary",
+        "extractedText": "There’s no regulatory barrier preventing banks from supporting lawful defence businesses, but nonetheless some defence SMEs have found the process of opening a bank account to be unnecessarily long and complex.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f953fec8c8d1f1aa",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Who this applies to",
+        "extractedText": "These findings will be of particular interest to: retail banks building societies some payment and electronic money institutions Our findings do not create new obligations or alter existing regulatory requirements.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "fb461b00b5dbe8b4",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "2. Who this applies to",
+        "extractedText": "They reinforce the importance of firms applying existing requirements consistently and proportionately.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5bd82079942fae3e",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. What firms need to do",
+        "extractedText": "Many of the issues we identified are within firms' control.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6d2f19f13af5a462",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. What firms need to do",
+        "extractedText": "We expect firms to take prompt action in response to these findings.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "8bf956c4cc724e44",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. What firms need to do",
+        "extractedText": "Firms should take steps to better understand the defence sector and to improve their processes and practices where they need to.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3294d29f3cb322cb",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. What firms need to do",
+        "extractedText": "More risk-based compliance checks, along with effective oversight and proportionate processes, could help reduce friction and improve decision-making.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4fd9b1bc39dfb672",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. What firms need to do",
+        "extractedText": "There may be similar challenges in other SME sectors, and we expect firms to apply similar improvements to other SME sectors outside of defence where required.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2fa234c9a51903e8",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. What firms need to do",
+        "extractedText": "Defence SMEs have a role to play too.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "060e4e1f78b6e49d",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. What firms need to do",
+        "extractedText": "Firms told us that incomplete information or a lack of preparedness can contribute to delays during onboarding.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "70b3c497fe7cd5bd",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "3. What firms need to do",
+        "extractedText": "SMEs can help by being prepared to explain how they manage the risks associated with their business, and providing clear and timely information to firms.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1457499c477e4458",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Scope of this work",
+        "extractedText": "During our discovery work, we spoke to retail banks, defence SMEs, trade bodies and government stakeholders to understand their perspectives, experiences and ideas.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "99f2079893835117",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Scope of this work",
+        "extractedText": "There was a particular focus on: firms’ appetite to support defence SMEs how firms identify defence-related customers account opening and ongoing servicing compliance checks, internal reviews and escalation account restrictions and closures firms’ data, governance and oversight We focused on defence SMEs’ access to and use of banking services, including account opening, ongoing servicing and related banking products.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cb763c5b34abeda1",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Scope of this work",
+        "extractedText": "Our work did not assess wider access to lending, investment or other sources of finance.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "42b1fb5e561db9a7",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Scope of this work",
+        "extractedText": "We use the term defence SMEs to mean businesses involved in research, development, design, production, delivery, maintenance, repair or overhaul of military systems, components and related equipment.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "66aff348dba4f687",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "4. Scope of this work",
+        "extractedText": "SMEs refers to businesses with fewer than 250 employees and either annual turnover not exceeding £44 million or a balance sheet total not exceeding £38 million.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4f79bdd40cacfe54",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+        "extractedText": "Firms decide which customers they serve, and set their own commercial strategy and risk appetite.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7643d874a6d4e92a",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+        "extractedText": "Some defence-related activities may fall outside an individual firm’s risk appetite.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "fcd943aa77acca7c",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+        "extractedText": "Firms and stakeholders told us that reputational and sustainability-related considerations can sometimes influence decisions affecting defence SMEs, alongside wider commercial and risk-management considerations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4e68649df90bbd19",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+        "extractedText": "Where a firm decides to reject an application, restrict services or close a business current account, it can have significant negative consequences for the affected customer. &nbsp; If firms decide to do this, they must make sure that their decisions are made on reasonable, properly considered grounds and demonstrate that they’re proportionate, risk-based and consistently applied.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "fef56f6435100f31",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+        "extractedText": "The firms we spoke to generally described themselves as open to serving defence SMEs and we saw firms taking steps to understand and service the sector better.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "53b3d55d60f7e36d",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.1. Most banks are open to supporting defence SMEs",
+        "extractedText": "This included investing in specialist relationship managers, dedicated teams, training and governance processes.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f4233746d43badea",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "Firms tend to regard defence SMEs as higher-risk applicants due to financial crime risks and wider risk management considerations, such as reputational risk, environmental, social and governance (ESG), sustainability, supply chain, end-use, commercial strategy, and risk appetite considerations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d312ac9b5334d5bd",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "Banks can have more extensive due diligence, governance and onboarding processes for defence SMEs.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "80e517f3f6ca0221",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "In their risk assessments, banks should reflect the specific customer, relationship and other risk factors.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "022202c36de0cfe9",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "The effect of these additional processes is often not exclusion, but an increased risk of friction and delay.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "ce93049ecff584fe",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "Enhanced due diligence, specialist review and additional governance can extend onboarding and decision-making times, particularly where applications require multiple approval stages or further assessment.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e899ce913dbbc4bb",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "These delays can have wider commercial consequences.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "de99e8b8e36e9a15",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "SMEs' timely access to banking services can be important for government procurement, making and receiving payments, onboarding suppliers, securing contracts and meeting contractual obligations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7cdeeceb2bf7d0e3",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "It can also help them manage working capital and, in turn, invest in technology, machinery and other capabilities.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cd2581c92263fc7d",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "Defence SMEs and other stakeholders also told us that firms weren’t always explaining the rationale behind their decisions, even where there has been a long onboarding process where they have had to provide a lot of information.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "45dd59357a1ee88c",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "Firms should seek to reduce unnecessary friction by completing compliance checks efficiently, avoiding duplication and delay, while maintaining appropriate controls and meeting their legal and regulatory obligations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "225f8f7b6028d2fb",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "This includes considering whether their information requests, review stages and escalation arrangements remain targeted and proportionate to the risks that the applicant presents.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a83dc37fec7671b7",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.2. The evidence points to friction and delay, not widespread exclusion",
+        "extractedText": "If additional checks are necessary, firms should keep applicants informed about progress and likely decision timescales, where legally permissible and appropriate.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3f1f0676aec544af",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "The defence sector includes many different activities.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "15839635c9e5e48f",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "These range from software, logistics and maintenance to consulting, dual-use technology (equipment that has both military and civilian use, like drones) and weapons production.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "051d89ceca828397",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "Risks can vary depending on the business, its activities, the countries in which it operates, the products and services it provides, the nature of its supply chain, and the intended use of its products.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "053f688bfda03050",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "Our work suggests that firms do not always distinguish sufficiently between different types of defence businesses when designing and applying their onboarding and servicing arrangements.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a27a11ef3455e729",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "Firms should adopt approaches to offering and servicing accounts that reflect the specific circumstances and risks associated with individual defence businesses.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "fc15897d60caeed9",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "They should periodically review whether their categorisations remain justified.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b4479fa1221dc3c5",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "If they apply broad onboarding exclusions, they should be able to say why.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7c1e2c240753b301",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "Financial crime and wider risk-management considerations can influence how firms assess defence SME customers.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3446835b51b7924e",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "Although it’s important that they take steps to identify, assess and mitigate financial crime risks, firms’ checks and controls should reflect the nature, scale and complexity of those risks.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "08987d521c75f4dc",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.3. Defence is not a single risk",
+        "extractedText": "Firms should not apply blanket restrictions if they’re able to take a more tailored approach, while complying with legal requirements.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1f845fcc629610ce",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+        "extractedText": "Defence SMEs and stakeholders told us that perceptions of the sector have not always kept pace with changes in government policy and the geopolitical environment.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e31ea56c4f423e90",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+        "extractedText": "They feel the sector is sometimes viewed negatively or associated with reputational, ethical, or illicit activity concerns.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b47d2f9a862109a6",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+        "extractedText": "Some firms and stakeholders referred to ESG-related considerations in decisions affecting defence SMEs.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "78bee135b0fc5e44",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+        "extractedText": "We have no sustainability rules that prevent firms from serving defence customers.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b71e3db15287a1d1",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+        "extractedText": "Firms are entitled to determine their own commercial strategy and risk appetite.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f2aa3d59d86b011a",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+        "extractedText": "Where reputational risk or similar considerations influence onboarding, ongoing servicing, access to products or account closure, firms should be able to demonstrate that they have clearly defined these considerations, applied them consistently and supported them by appropriate governance.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f6abefde4646f851",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+        "extractedText": "They should ensure decisions are based on an assessment of the relevant risks and circumstances.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4b31cce3828d4cb1",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.4. Reputational and ESG-related considerations should be clear",
+        "extractedText": "Broad or unclear references to reputational risk can make it difficult for a firm to demonstrate that its decisions are reasonable, properly considered and aligned with its risk appetite.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cfb3388cd23257d9",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+        "extractedText": "Defence businesses can sit within wider technology, engineering, manufacturing and service supply chains.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f67aa3dbc7193010",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+        "extractedText": "Existing classifications, including Standard Industrial Classification (SIC) codes (numerical classifications used to identify a business's primary economic activity or business sector), do not always capture these activities accurately.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7e2d6f9696c78ca3",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+        "extractedText": "This can make it harder for firms to identify defence SMEs in their customer base, understand how they are being treated, and whether their processes are working as intended.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5d90b2cae82ea182",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+        "extractedText": "Firms should consider whether they can identify and monitor their defence SME customers with enough accuracy to support effective oversight.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a82ac3bff37c554e",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+        "extractedText": "They should do more to understand direct defence businesses, wider supply chains and dual-use activity.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "33e58af671a79590",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.5. Firms do not always have a clear picture of their defence customers",
+        "extractedText": "Without this visibility, firms may find it harder to assess whether their policies are operating as intended and whether they are treating their customers fairly.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7174698b3650d893",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.6. Better information can support stronger oversight",
+        "extractedText": "Some firms have little management information about the outcomes experienced by defence SMEs throughout the customer lifecycle, from account applications and opening, to ongoing servicing and account closures.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "8650e616c70329dd",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.6. Better information can support stronger oversight",
+        "extractedText": "Firms should have enough information to understand how defence SME customers are being treated, and whether their decisions are being applied consistently and in line with the firm's risk appetite, governance processes and risk controls.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3e67c2d63a01955e",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.6. Better information can support stronger oversight",
+        "extractedText": "Firms should review this information regularly.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "51ac7e0d07f68e5a",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "5.6. Better information can support stronger oversight",
+        "extractedText": "If there are differences in treatment, such as longer onboarding times or higher levels of escalation, firms should consider whether they reflect the specific risks presented by individual SMEs or whether they result from processes, governance arrangements, escalation requirements or customer-identification challenges within the firm's control.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5c167dcc4b28c702",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "6. What we expect from firms",
+        "extractedText": "By understanding more about the defence sector, firms can help viable businesses to access the financial services they need.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2c44cebd81218cf0",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "6. What we expect from firms",
+        "extractedText": "We therefore expect firms to review their processes and practices to ensure they are taking a risk-based and proportionate approach to SMEs in defence, and that their assessments reflect only the risk factors relating to each specific customer.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "24382789c8b72773",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "6. What we expect from firms",
+        "extractedText": "Firms should review the management information provided to their senior management.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d3a990a538498c55",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "6. What we expect from firms",
+        "extractedText": "This is to make sure it allows them to properly oversee the outcomes that defence SMEs experience, ultimately enabling firms to better play their part in supporting this vital part of the UK economy.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d40bb0b1c631028d",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "We have written to firms that provide banking services to SMEs to share these findings and set out our expectations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "99ef11f9ab32d4f0",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "In addition, the government has called for a whole-of-society approach (PDF) to preparedness and resilience, recognising that the UK cannot rely on any single sector to protect itself against modern, complex threats.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b0648646a733320f",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "Firms, defence businesses, trade bodies, regulators and government each have a role.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "502343a50dd24b4f",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "We will therefore use these findings to support practical engagement between all these bodies.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "91713ba43598f04a",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "We expect firms to take prompt action in response to these findings, and in line with government-led initiatives.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "073533ac03627c83",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "Therefore, while this report only reflects pre-existing regulatory requirements, firms should treat it as a ‘point in time’ publication and can consider it retired by December 2028 (if not removed sooner).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a2c9b20d19129d34",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "This is in line with our commitment to review the amount of live material we expect firms to continually keep under consideration.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1bbaded134e99d7b",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "Through our supervision, we will monitor how firms are responding to the issues and expectations set out in this publication and we will intervene where necessary to ensure appropriate outcomes.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "bdf52d57725cdd02",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "We expect firms to consider whether similar issues may arise in other SME sectors and whether the improvements identified through this work could be applied more broadly.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e47650361362c419",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "Yes No What can we do to improve pages like this?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d25205e13756bba5",
+        "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+        "extractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "7. Next steps",
+        "extractedText": "Submit Feedback Leave this field blank",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      }
+    ],
+    "evidenceMedium": "fca_webpage",
+    "integrityVerified": true,
+    "obligationGradeSuitable": true,
+    "publicationTitle": "Defence SMEs: access to banking services",
+    "publicationReference": null,
+    "regulatorShortName": "FCA",
+    "regulatorLabel": "Financial Conduct Authority",
+    "extractionProfiles": [
+      "html_article_v2"
+    ],
+    "htmlExtractionRevisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+    "pdfExtractionRevisionId": null
+  },
+  "provenanceClassification": "AUTHORITATIVE_STAGING_EXTRACTION",
+  "retrievalProvenance": {
+    "exportSource": "b2_staging_readonly_export",
+    "exportedAt": "2026-11-10T18:46:16.492Z"
+  },
+  "exportSource": "b2_staging_readonly_export"
+}

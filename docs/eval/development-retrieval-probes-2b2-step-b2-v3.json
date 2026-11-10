@@ -1,0 +1,230 @@
+{
+  "datasetVersion": "development-retrieval-probes-2b2-step-b2-v3",
+  "supersedes": "development-retrieval-probes-2b2-step-f-v2",
+  "createdAt": "2026-11-10",
+  "scope": "offline_semantic_retrieval_only",
+  "notFrozenBaseline": true,
+  "probes": [
+    {
+      "testId": "DEV-B1-01",
+      "category": "b1_positive",
+      "question": "How did supervisors assess conflicts of interest frameworks in private equity and private credit managers?",
+      "expectedPublicationIds": ["edcebe7d-3a3f-4adb-bb54-14120f14315a"]
+    },
+    {
+      "testId": "DEV-B1-02",
+      "category": "b1_positive",
+      "question": "What did the multi-firm review highlight about fair treatment of investors in private markets?",
+      "expectedPublicationIds": ["edcebe7d-3a3f-4adb-bb54-14120f14315a"]
+    },
+    {
+      "testId": "DEV-B1-03",
+      "category": "b1_positive",
+      "question": "What does published supervisory data show about UK mortgage portfolios exposed to flood risk?",
+      "expectedPublicationIds": ["49dee37a-9051-4c3f-8597-fa0dc232c91d"]
+    },
+    {
+      "testId": "DEV-B1-04",
+      "category": "b1_positive",
+      "question": "Which mortgage lenders had the highest concentration of properties in high flood-risk areas?",
+      "expectedPublicationIds": ["49dee37a-9051-4c3f-8597-fa0dc232c91d"]
+    },
+    {
+      "testId": "DEV-B1-05",
+      "category": "b1_positive",
+      "question": "What retirement income policy issues is the regulator consulting on under guided retirement proposals?",
+      "expectedPublicationIds": ["34b18772-3732-4e10-89a6-946bd15c5afe"]
+    },
+    {
+      "testId": "DEV-B1-06",
+      "category": "b1_positive",
+      "question": "What aspects of the credit union regulatory regime are under discussion for reform?",
+      "expectedPublicationIds": ["ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e"]
+    },
+    {
+      "testId": "DEV-B1-07",
+      "category": "b1_positive",
+      "question": "How wide is geographic coverage of free cash access points across UK regions in the latest half-year statistics?",
+      "expectedPublicationIds": ["9e8d3736-506a-4909-8ad4-08229e0e6249"]
+    },
+    {
+      "testId": "DEV-B1-08",
+      "category": "b1_positive",
+      "question": "What share of the population remains more than a kilometre from nearest cash withdrawal facilities?",
+      "expectedPublicationIds": ["9e8d3736-506a-4909-8ad4-08229e0e6249"]
+    },
+    {
+      "testId": "DEV-B2-PS22-01",
+      "category": "b2_positive",
+      "question": "What outcomes must firms deliver for retail customers under the new conduct rules package described in the 2022 policy statement?",
+      "expectedPublicationIds": ["7a73ac4c-d6b4-4411-9f6d-1276053f2831"]
+    },
+    {
+      "testId": "DEV-B2-PS22-02",
+      "category": "b2_positive",
+      "question": "When do the Consumer Duty rules start applying to closed product business according to the policy statement?",
+      "expectedPublicationIds": ["7a73ac4c-d6b4-4411-9f6d-1276053f2831"]
+    },
+    {
+      "testId": "DEV-B2-FG21-01",
+      "category": "b2_positive",
+      "question": "What drivers of vulnerability should firms consider when designing customer support processes?",
+      "expectedPublicationIds": ["a784dcfc-d443-4295-99f9-d0f23a5fadd6"]
+    },
+    {
+      "testId": "DEV-B2-FG21-02",
+      "category": "b2_positive",
+      "question": "How should staff training reflect fair treatment expectations for customers with characteristics of vulnerability?",
+      "expectedPublicationIds": ["a784dcfc-d443-4295-99f9-d0f23a5fadd6"]
+    },
+    {
+      "testId": "DEV-B2-FG24-01",
+      "category": "b2_positive",
+      "question": "How should payment service providers apply a risk-based approach to fraud prevention on outbound payments?",
+      "expectedPublicationIds": ["ec168f48-1717-4631-8e4a-a3e95df4d5ce"]
+    },
+    {
+      "testId": "DEV-B2-FG24-02",
+      "category": "b2_positive",
+      "question": "What factors should firms weigh when calibrating controls for higher-risk payment corridors?",
+      "expectedPublicationIds": ["ec168f48-1717-4631-8e4a-a3e95df4d5ce"]
+    },
+    {
+      "testId": "DEV-B2-WHL-01",
+      "category": "b2_positive",
+      "question": "What themes did supervisors highlight about data quality and financial crime culture in wholesale banks?",
+      "expectedPublicationIds": ["caeb51af-829e-478d-b816-bee61252678a"]
+    },
+    {
+      "testId": "DEV-B2-WHL-02",
+      "category": "b2_positive",
+      "question": "How are wholesale firms expected to strengthen governance of AML and sanctions risk?",
+      "expectedPublicationIds": ["caeb51af-829e-478d-b816-bee61252678a"]
+    },
+    {
+      "testId": "DEV-B2-DEF-01",
+      "category": "b2_positive",
+      "question": "What access barriers did defence-sector small firms report when opening or maintaining business bank accounts?",
+      "expectedPublicationIds": ["5f4c6f09-9a6d-4312-a154-eba76579d156"]
+    },
+    {
+      "testId": "DEV-B2-DEF-02",
+      "category": "b2_positive",
+      "question": "What supervisory expectations apply to banks when serving SMEs in sensitive industrial supply chains?",
+      "expectedPublicationIds": ["5f4c6f09-9a6d-4312-a154-eba76579d156"]
+    },
+    {
+      "testId": "DEV-B2-CASH24-01",
+      "category": "b2_positive",
+      "question": "How did geographic coverage of fee-free cash access points change in the second half of 2024?",
+      "expectedPublicationIds": ["0d3468e6-1060-45da-abfc-90c41fda2596"]
+    },
+    {
+      "testId": "DEV-B2-CASH24-02",
+      "category": "b2_positive",
+      "question": "What proportion of UK postcode sectors had access to cash services within one kilometre in the 2024 H2 dataset?",
+      "expectedPublicationIds": ["0d3468e6-1060-45da-abfc-90c41fda2596"]
+    },
+    {
+      "testId": "DEV-WHOLESALE-POS-01",
+      "category": "wholesale_banking_positive",
+      "question": "Which supervisory insights publication discusses wholesale bank financial crime governance and data issues?",
+      "expectedPublicationIds": ["caeb51af-829e-478d-b816-bee61252678a"]
+    },
+    {
+      "testId": "DEV-TEMP-CASH-01",
+      "category": "access_cash_temporal",
+      "question": "Which indexed UK access-to-cash coverage report is the latest half-year period available in the corpus?",
+      "expectedPublicationIds": ["9e8d3736-506a-4909-8ad4-08229e0e6249"],
+      "temporalIntent": "select_latest_indexed_h1_2025"
+    },
+    {
+      "testId": "DEV-TEMP-CASH-02",
+      "category": "access_cash_temporal",
+      "question": "What does the access-to-cash statistics show for the United Kingdom in the second half of 2024?",
+      "expectedPublicationIds": ["0d3468e6-1060-45da-abfc-90c41fda2596"],
+      "temporalIntent": "select_2024_h2"
+    },
+    {
+      "testId": "DEV-TEMP-CASH-03",
+      "category": "access_cash_temporal",
+      "question": "Compare population within one kilometre of cash access between the 2024 H2 and 2025 H1 coverage releases.",
+      "expectedPublicationIds": ["9e8d3736-506a-4909-8ad4-08229e0e6249", "0d3468e6-1060-45da-abfc-90c41fda2596"],
+      "temporalIntent": "multi_period_explicit",
+      "allowMultiplePublications": true
+    },
+    {
+      "testId": "DEV-TEMP-CASH-04",
+      "category": "access_cash_temporal",
+      "question": "What were cash access coverage metrics for the first half of 2025?",
+      "expectedPublicationIds": ["9e8d3736-506a-4909-8ad4-08229e0e6249"],
+      "temporalIntent": "select_2025_h1"
+    },
+    {
+      "testId": "DEV-TEMP-CASH-05",
+      "category": "access_cash_temporal",
+      "question": "Are access-to-cash metrics for the United States latest reporting period covered in this evaluation corpus?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain",
+      "temporalIntent": "no_foreign_latest_assumption"
+    },
+    {
+      "testId": "DEV-ORIG-01",
+      "category": "original_frozen_suite",
+      "question": "How does the FCA expect firms to monitor customer outcomes for fair value?",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ]
+    },
+    {
+      "testId": "DEV-NEG-NEAR-01",
+      "category": "near_miss_negative",
+      "question": "What does Policy Statement PS26/21 require firms to report under the EMIR intragroup regime?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-NEAR-02",
+      "category": "near_miss_negative",
+      "question": "What listing requirements does GC26/8 introduce for primary market bulletin issuers?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-NEAR-03",
+      "category": "near_miss_negative",
+      "question": "What are the consultation deadlines for consolidated tape operational incident reporting rules?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-UNREL-01",
+      "category": "unrelated_negative",
+      "question": "Explain Basel III output floor requirements for UK banks.",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-UNREL-02",
+      "category": "unrelated_negative",
+      "question": "What are FDA adverse event reporting timelines for medical devices?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-DIST-B1-01",
+      "category": "closely_related_distractor",
+      "question": "What operational resilience self-assessment outcomes must insurers disclose under PS24/1?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-REF-BLOCK-01",
+      "category": "explicit_invalid_reference",
+      "question": "Summarise FCA Policy Statement PS88/88 on mortgage conduct rules.",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    }
+  ]
+}

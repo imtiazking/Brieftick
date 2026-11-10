@@ -1,0 +1,350 @@
+{
+  "packVersion": 1,
+  "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+  "publicationTitle": "CP26/38 Financial Crime Guide updates",
+  "publicationType": "consultation",
+  "regulator": "FCA",
+  "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+  "publicationVersionId": null,
+  "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+  "extractionProfile": "html_article_v2",
+  "contentSha256": "d2b26804290c2ee06f2d34f45d3fffcf7a96f59c1e2df017eb9c75fca721950e",
+  "regulatoryStatus": "consultation",
+  "blockCount": 17,
+  "verifiedTextSamples": [
+    {
+      "documentEvidenceId": "fd9596886293b764",
+      "sectionReference": "On this page",
+      "extractedText": "Why we&#039;re consulting Who this is for Next steps Background Read CP26/38 (PDF)"
+    },
+    {
+      "documentEvidenceId": "28bff0e8728975a8",
+      "sectionReference": "Why we're consulting",
+      "extractedText": "Firms are essential partners in tackling financial crime."
+    },
+    {
+      "documentEvidenceId": "e72a3d63a6f5e304",
+      "sectionReference": "Why we're consulting",
+      "extractedText": "We want firms to keep detecting, preventing and disrupting financial crime, so we can protect consumers and maintain trust in the financial system."
+    },
+    {
+      "documentEvidenceId": "a2aa8bbb3c924f93",
+      "sectionReference": "Why we're consulting",
+      "extractedText": "We want our Financial Crime Guide to keep pace with emerging risks, such as those linked to AI, cryptoassets and evolving sanctions regimes."
+    },
+    {
+      "documentEvidenceId": "884d79ca42b624c3",
+      "sectionReference": "Why we're consulting",
+      "extractedText": "We’re proposing changes to the following areas: fraud cryptoassets – to reflect new regime from October 2027 financial and trade sanctions proliferation financing data security financial crime systems and controls money laundering and terrorist financing"
+    },
+    {
+      "documentEvidenceId": "c259a4fcea0d790f",
+      "sectionReference": "Who this is for",
+      "extractedText": "This consultation is relevant to all firms we supervise for financial crime, including under the Money Laundering, Terrorist Financing and Transfer of Funds (Information on the Payer) Regulations 2017 (MLRs), such as: Annex 1 financial institutions cryptoasset businesses It may also interest: organisations working with these firms financial services trade bodies professional bodies other parties interested in financial crime prevention, including non-governmental organisations and academics"
+    },
+    {
+      "documentEvidenceId": "cb048fb3536efb11",
+      "sectionReference": "Next steps",
+      "extractedText": "Please send us your feedback by 24 December 2026."
+    },
+    {
+      "documentEvidenceId": "e952d9493999972b",
+      "sectionReference": "Next steps",
+      "extractedText": "You can respond using the online form."
+    },
+    {
+      "documentEvidenceId": "ea12a2164632fff3",
+      "sectionReference": "Next steps",
+      "extractedText": "Online response form If you cannot use the form, email us at [email&#160;protected] ."
+    },
+    {
+      "documentEvidenceId": "0df990d77ca5b1aa",
+      "sectionReference": "Next steps",
+      "extractedText": "We'll consider all responses and publish feedback, along with the final Financial Crime Guide text, in a Policy Statement."
+    },
+    {
+      "documentEvidenceId": "6978be1b1f8a7c9f",
+      "sectionReference": "Future plans for the Financial Crime Guide",
+      "extractedText": "We are exploring ways to provide financial crime guidance that: meets the needs of our wide-ranging and varied population is focused on emerging risks and priority areas allows for a range of feedback opportunities This could include: holding a series of question-and-answer sessions, either in person or online publishing timely standalone guidance without prior consultation, where it is not required This guidance would then be consolidated within the Financial Crime Guide at a future date."
+    },
+    {
+      "documentEvidenceId": "8d4e4b35547ab8f7",
+      "sectionReference": "Background",
+      "extractedText": "We last updated the Financial Crime Guide to reflect supervisory findings and changing risks."
+    },
+    {
+      "documentEvidenceId": "92d6c328e9128357",
+      "sectionReference": "Background",
+      "extractedText": "Since then, the UK's sanctions regime has evolved, cryptoasset regulation has developed, and firms have increasingly adopted AI and third-party tools for financial crime controls."
+    },
+    {
+      "documentEvidenceId": "158fcc1935c9b21b",
+      "sectionReference": "Background",
+      "extractedText": "These proposals support our objective of making sure markets function well, by reducing and preventing financial crime."
+    },
+    {
+      "documentEvidenceId": "a824835ab1b7e495",
+      "sectionReference": "Background",
+      "extractedText": "They're also relevant to our consumer protection and integrity objectives and compatible with our secondary objective on international competitiveness and growth."
+    },
+    {
+      "documentEvidenceId": "6c95081fbf2cecfa",
+      "sectionReference": "Background",
+      "extractedText": "Yes No What can we do to improve pages like this?"
+    },
+    {
+      "documentEvidenceId": "bc69ba93840a8ef0",
+      "sectionReference": "Background",
+      "extractedText": "Submit Feedback Leave this field blank"
+    }
+  ],
+  "askRiEvidence": {
+    "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+    "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+    "extractionProfile": "html_article_v2",
+    "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+    "publicationMetadata": {
+      "title": "Future plans for the Financial Crime Guide",
+      "primaryPdf": {
+        "url": "https://www.fca.org.uk/publication/consultation/cp26-38.pdf",
+        "title": "Read CP26/38 (PDF)",
+        "captured": false,
+        "relationship": "consultation_paper_pdf"
+      },
+      "drupalAbout": "/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+      "drupalNodeId": "176901",
+      "consultationTimeline": {
+        "opens": true,
+        "closes": true,
+        "present": true,
+        "opensDate": "23/10/2026",
+        "closesDate": "24/12/2026"
+      },
+      "publicationTypeLabel": null,
+      "primaryDocumentClassification": "pdf_primary_webpage_summary"
+    },
+    "extractionQuality": {
+      "score": 100,
+      "status": "complete",
+      "metrics": {
+        "headingCount": 6,
+        "alphaWordCount": 293,
+        "paragraphCount": 20,
+        "plainTextLength": 2883,
+        "pdfAttachmentCount": 1
+      },
+      "signals": [
+        "primary_pdf_not_captured"
+      ],
+      "confidence": "high",
+      "primaryDocument": {
+        "completeness": "not_captured",
+        "primaryPdfUrl": "https://www.fca.org.uk/publication/consultation/cp26-38.pdf",
+        "classification": "pdf_primary",
+        "primaryPdfCaptured": false
+      },
+      "webpageExtraction": {
+        "score": 100,
+        "status": "complete",
+        "confidence": "high"
+      },
+      "obligationGradeSuitable": false
+    },
+    "pdfAttachments": [
+      {
+        "url": "https://www.fca.org.uk/publication/consultation/cp26-38.pdf",
+        "title": "Read CP26/38 (PDF)",
+        "documentType": "pdf",
+        "relationship": "consultation_paper_pdf",
+        "likelyPrimaryRegulatoryDocument": true
+      }
+    ],
+    "normalisedArticleText": "We're consulting on changes to our Financial Crime Guide to help firms strengthen their systems and controls. On this page Why we're consulting Who this is for Next steps Background Read CP26/38 (PDF) Why we're consulting Firms are essential partners in tackling financial crime. We want firms to keep detecting, preventing and disrupting financial crime, so we can protect consumers and maintain trust in the financial system. We want our Financial Crime Guide to keep pace with emerging risks, such as those linked to AI, cryptoassets and evolving sanctions regimes. We’re proposing changes to the following areas: fraud cryptoassets – to reflect new regime from October 2027 financial and trade sanctions proliferation financing data security financial crime systems and controls money laundering and terrorist financing Who this is for This consultation is relevant to all firms we supervise for financial crime, including under the Money Laundering, Terrorist Financing and Transfer of Funds (Information on the Payer) Regulations 2017 (MLRs), such as: Annex 1 financial institutions cryptoasset businesses It may also interest: organisations working with these firms financial services trade bodies professional bodies other parties interested in financial crime prevention, including non-governmental organisations and academics Next steps Please send us your feedback by 24 December 2026. You can respond using the online form. Online response form If you cannot use the form, email us at [email protected] . We'll consider all responses and publish feedback, along with the final Financial Crime Guide text, in a Policy Statement. Future plans for the Financial Crime Guide We are exploring ways to provide financial crime guidance that: meets the needs of our wide-ranging and varied population is focused on emerging risks and priority areas allows for a range of feedback opportunities This could include: holding a series of question-and-answer sessions, either in person or online publishing timely standalone guidance without prior consultation, where it is not required This guidance would then be consolidated within the Financial Crime Guide at a future date. Background We last updated the Financial Crime Guide to reflect supervisory findings and changing risks. Since then, the UK's sanctions regime has evolved, cryptoasset regulation has developed, and firms have increasingly adopted AI and third-party tools for financial crime controls. These proposals support our objective of making sure markets function well, by reducing and preventing financial crime. They're also relevant to our consumer protection and integrity objectives and compatible with our secondary objective on international competitiveness and growth. Was this page useful? Yes No What can we do to improve pages like this? What did you find helpful? Submit Feedback Leave this field blank",
+    "normalisedArticleHtml": "<article data-history-node-id=\"176901\" about=\"/publications/consultation-papers/cp26-38-financial-crime-guide-updates\" class=\"article-header col-xs-12 four-step-limit col-sm-9 has-sidebar clearfix\"> <div class=\"node-content__wrapper node-content__wrapper--border\"> <section class=\"copy-highlighted copy-block component fca-colour--6c1d45 default\"> <div class=\"container\"> <p>We're consulting on changes to our Financial Crime Guide to help firms strengthen their systems and controls.</p> </div> </section> <div class=\"rhn__on-this-page visible-xs rhn__on-this-page--publication\"> <h2 class=\"h3\" lang=\"en-GB\"> <button class=\"rhn__button\" aria-label=\"On this page\" aria-expanded=\"true\"> On this page <img src=\"/themes/custom/fca/images/document.svg\" alt=\"\"> </button> </h2> <ul class=\"nav navbar-nav\"><li><a href=\"#section-why-we-re-consulting\">Why we&#039;re consulting</a></li><li><a href=\"#section-who-this-is-for\">Who this is for</a></li><li><a href=\"#section-next-steps\">Next steps</a></li><li><a href=\"#section-background\">Background</a></li></ul> </div> <div class=\"default\"> <section id=\"section-why-we-re-consulting\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <p><a class=\"btn btn-primary\" href=\"/publication/consultation/cp26-38.pdf\" title=\"CP26/38: Financial Crime Guide updates (PDF)\" data-entity-type=\"media\" data-entity-uuid=\"a73b1dce-3d42-4f6c-b1bb-7e5a94da2dcd\" data-entity-substitution=\"canonical\">Read CP26/38 (PDF)</a></p><h2>Why we're consulting</h2><p>Firms are essential partners in tackling financial crime.</p><p>We want firms to keep detecting, preventing and disrupting financial crime, so we can protect consumers and maintain trust in the financial system.</p><p>We want our <a href=\"https://handbook.fca.org.uk/handbook/fcg1\" title=\"Financial Crime Guide | FCA Handbook\" data-entity-type=\"external\">Financial Crime Guide</a> to keep pace with emerging risks, such as those linked to AI, cryptoassets and evolving sanctions regimes.</p><p>We’re proposing changes to the following areas:</p><ul><li data-list-item-id=\"ea2c4640b7128cc9fe075ce76ad9136f4\">fraud</li><li data-list-item-id=\"e6675e302b0dd0ea6f3f2de6dfd35b65a\">cryptoassets – to reflect new regime from October 2027</li><li data-list-item-id=\"ee9171f5d2464d451c2e122a71a4a2961\">financial and trade sanctions</li><li data-list-item-id=\"e234aabca875532f6095f529254db7468\">proliferation financing</li><li data-list-item-id=\"ea580c7d3b97eef5460b9a41417eb0f38\">data security</li><li data-list-item-id=\"e4f4b2a91c02e61c949120b6bf420eea6\">financial crime systems and controls</li><li data-list-item-id=\"e492024102a08e86506830e3d6e41bb77\">money laundering and terrorist financing</li></ul> </div> </section> </div> <div class=\"default\"> <section id=\"section-who-this-is-for\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Who this is for</h2><p>This consultation is relevant to all firms we supervise for financial crime, including under the Money Laundering, Terrorist Financing and Transfer of Funds (Information on the Payer) Regulations 2017 (MLRs), such as:</p><ul><li data-list-item-id=\"ea25d8a4a8d266a0c840c89c6a7274287\"><a href=\"/firms/financial-crime/money-laundering-terrorist-financing/registration\" title=\"Money laundering registration\" data-entity-type=\"node\" data-entity-uuid=\"0a0dcf28-828f-4713-8f22-b58a824d4d36\" data-entity-substitution=\"canonical\">Annex 1 financial institutions</a></li><li data-list-item-id=\"e8e4eb58c5b3cb9eeeaffbb66be89b9d5\">cryptoasset businesses</li></ul><p>It may also interest:</p><ul><li data-list-item-id=\"e2ec910711194417816a5238c3b11b4fe\">organisations working with these firms</li><li data-list-item-id=\"e6ee6c66b6926f5f494a56a21904e6c81\">financial services trade bodies</li><li data-list-item-id=\"e31bc1fc47a098d0d13302e26609255e9\">professional bodies</li><li data-list-item-id=\"eeaa9898a1573d99be0f308d1086db547\">other parties interested in financial crime prevention, including non-governmental organisations and academics</li></ul> </div> </section> </div> <div class=\"default\"> <section id=\"section-next-steps\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Next steps</h2><p>Please send us your feedback by 24 December 2026.</p><p>You can respond using the online form.</p><p><a class=\"btn btn-primary\" href=\"/cp26-38-response-form\" title=\"CP26/38 response form\" data-entity-type=\"node\" data-entity-uuid=\"890cb89f-040d-4926-9293-1a5e1894bb7a\" data-entity-substitution=\"canonical\">Online response form</a></p><p>If you cannot use the form, email us at <a href=\"/cdn-cgi/l/email-protection#adcedd9f9b809e95edcbcecc83c2dfca83d8c6\"><span class=\"__cf_email__\" data-cfemail=\"d6b5a6e4e0fbe5ee96b0b5b7f8b9a4b1f8a3bd\">[email&#160;protected]</span></a>.</p><p>We'll consider all responses and publish feedback, along with the final Financial Crime Guide text, in a Policy Statement.</p><h3>Future plans for the Financial Crime Guide</h3><p>We are exploring ways to provide financial crime guidance that:</p><ul><li data-list-item-id=\"e872a37f3b458e2ca388599798d4cfaf3\">meets the needs of our wide-ranging and varied population</li><li data-list-item-id=\"e2fd0398b3a70f2c315485d1e6a0aa19f\">is focused on emerging risks and priority areas</li><li data-list-item-id=\"eb72ae080682405faf05882dafb08252d\">allows for a range of feedback opportunities</li></ul><p>This could include:</p><ul><li data-list-item-id=\"ef8fa03da21d9dca9434259ef8909b31c\">holding a series of question-and-answer sessions, either in person or online</li><li data-list-item-id=\"e945b83f7cd3b1a3c5eb7f8478e35fceb\">publishing timely standalone guidance without prior consultation, where it is not required</li></ul><p>This guidance would then be consolidated within the Financial Crime Guide at a future date.</p> </div> </section> </div> <div class=\"default\"> <section id=\"section-background\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Background</h2><p>We last updated the Financial Crime Guide to reflect supervisory findings and changing risks.</p><p>Since then, the UK's sanctions regime has evolved, cryptoasset regulation has developed, and firms have increasingly adopted AI and third-party tools for financial crime controls.</p><p>These proposals support our objective of making sure markets function well, by reducing and preventing financial crime.</p><p>They're also relevant to our consumer protection and integrity objectives and compatible with our secondary objective on international competitiveness and growth.</p> </div> </section> </div> <div class=\"node_view\"></div> </div> <div class=\"page-feedback container\" lang=\"en-GB\"> <form class=\"webform-submission-form webform-submission-add-form webform-submission-page-feedback-form-form webform-submission-page-feedback-form-add-form webform-submission-page-feedback-form-node-176901-form webform-submission-page-feedback-form-node-176901-add-form js-webform-details-toggle webform-details-toggle js-fca-lazy-captcha webform-client-form webform-client-form- feedback-form fca-custom-form webform-conditional-processed\" data-drupal-selector=\"webform-submission-page-feedback-form-node-176901-add-form\" novalidate=\"novalidate\" action=\"/publications/consultation-papers/cp26-38-financial-crime-guide-updates#webform-submission-page-feedback-form-node-176901-add-form\" method=\"post\" id=\"webform-submission-page-feedback-form-node-176901-add-form\" accept-charset=\"UTF-8\" > <fieldset data-drupal-selector=\"edit-radios\" class=\"radios--wrapper fieldgroup form-composite webform-composite-visible-title js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper\" id=\"edit-radios--wrapper\"> <legend id=\"edit-radios--wrapper-legend\"> <span class=\"fieldset-legend\">Was this page useful?</span> </legend> <div class=\"fieldset-wrapper\"> <div id=\"edit-radios\" class=\"js-webform-radios webform-options-display-side-by-side\"><div class=\"form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-yes\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-yes\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-yes\" name=\"radios\" value=\"Yes\" /><span class=\"fca-custom-label\">Yes </span></label> </div> <div class=\"form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-no\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-no\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-no\" name=\"radios\" value=\"No\" /><span class=\"fca-custom-label\">No </span></label> </div> </div> </div> </fieldset> <div class=\"js-webform-states-hidden form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-can-we-do-to-improve-pages-like-this- js-form-item-what-can-we-do-to-improve-pages-like-this- form-group\"> <label for=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"control-label\">What can we do to improve pages like this? </label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176901-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;No&quot;}}}\" id=\"edit-what-can-we-do-to-improve-pages-like-this-\" name=\"what_can_we_do_to_improve_pages_like_this_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <div class=\"js-webform-states-hidden form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-did-you-find-helpful- js-form-item-what-did-you-find-helpful- form-group\"> <label for=\"edit-what-did-you-find-helpful-\" class=\"control-label\">What did you find helpful?</label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-did-you-find-helpful-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176901-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;Yes&quot;}}}\" id=\"edit-what-did-you-find-helpful-\" name=\"what_did_you_find_helpful_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <input data-drupal-selector=\"edit-page-title\" type=\"hidden\" name=\"page_title\" value=\"CP26/38: Financial Crime Guide updates\" /><input data-drupal-selector=\"edit-page-url\" type=\"hidden\" name=\"page_url\" value=\"https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates \" /><div class=\"js-webform-states-hidden form-actions webform-actions clearfix fca-form-submit form-group js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176901-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;checked&quot;:true}}}\" id=\"edit-actions\"><button class=\"webform-button--submit button button--primary js-form-submit form-submit btn-primary btn\" data-drupal-selector=\"edit-actions-submit\" type=\"submit\" id=\"edit-actions-submit\" name=\"op\" value=\"Submit Feedback\">Submit Feedback</button> </div> <input autocomplete=\"off\" data-drupal-selector=\"form-qavzhresdtgdkaq2cftfvexsb0ojn3ty2yflafcq4-m\" type=\"hidden\" name=\"form_build_id\" value=\"form-QAVZHrEsdTgDkAq2CftfvExSb0OjN3ty2yflafCQ4_M\" /><input data-drupal-selector=\"edit-webform-submission-page-feedback-form-node-176901-add-form\" type=\"hidden\" name=\"form_id\" value=\"webform_submission_page_feedback_form_node_176901_add_form\" /> <input data-drupal-selector=\"edit-captcha-sid\" type=\"hidden\" name=\"captcha_sid\" value=\"1562943056\" /><input data-drupal-selector=\"edit-captcha-token\" type=\"hidden\" name=\"captcha_token\" value=\"358UNIxRj5IN40A8vBoS7C-sEPKFlK3u68nMAOT_tvg\" /><input id=\"recaptcha-v3-token\" class=\"recaptcha-v3-token\" data-recaptcha-v3-action=\"fca_recaptcha\" data-recaptcha-v3-site-key=\"6LfnAxopAAAAAJL8t0TPEZql_Canimafd6XMM7WQ\" data-drupal-selector=\"edit-captcha-response\" type=\"hidden\" name=\"captcha_response\" value=\"\" /><input data-drupal-selector=\"edit-is-recaptcha-v3\" type=\"hidden\" name=\"is_recaptcha_v3\" value=\"1\" /> <div class=\"url_hp-textfield form-group js-form-wrapper form-wrapper\" style=\"display: none !important;\"><div class=\"form-item js-form-item form-type-textfield js-form-type-textfield form-item-url-hp js-form-item-url-hp form-group\"> <label for=\"edit-url-hp\" class=\"control-label\">Leave this field blank</label> <input autocomplete=\"off\" data-drupal-selector=\"edit-url-hp\" class=\"form-text form-control\" type=\"text\" id=\"edit-url-hp\" name=\"url_hp\" value=\"\" size=\"20\" maxlength=\"128\" /> </div> </div> </form> </div> </article>",
+    "evidenceBlocks": [
+      {
+        "documentEvidenceId": "fd9596886293b764",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "On this page",
+        "extractedText": "Why we&#039;re consulting Who this is for Next steps Background Read CP26/38 (PDF)",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "28bff0e8728975a8",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we're consulting",
+        "extractedText": "Firms are essential partners in tackling financial crime.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e72a3d63a6f5e304",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we're consulting",
+        "extractedText": "We want firms to keep detecting, preventing and disrupting financial crime, so we can protect consumers and maintain trust in the financial system.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a2aa8bbb3c924f93",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we're consulting",
+        "extractedText": "We want our Financial Crime Guide to keep pace with emerging risks, such as those linked to AI, cryptoassets and evolving sanctions regimes.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "884d79ca42b624c3",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we're consulting",
+        "extractedText": "We’re proposing changes to the following areas: fraud cryptoassets – to reflect new regime from October 2027 financial and trade sanctions proliferation financing data security financial crime systems and controls money laundering and terrorist financing",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "c259a4fcea0d790f",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this is for",
+        "extractedText": "This consultation is relevant to all firms we supervise for financial crime, including under the Money Laundering, Terrorist Financing and Transfer of Funds (Information on the Payer) Regulations 2017 (MLRs), such as: Annex 1 financial institutions cryptoasset businesses It may also interest: organisations working with these firms financial services trade bodies professional bodies other parties interested in financial crime prevention, including non-governmental organisations and academics",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cb048fb3536efb11",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "Please send us your feedback by 24 December 2026.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e952d9493999972b",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "You can respond using the online form.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "ea12a2164632fff3",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "Online response form If you cannot use the form, email us at [email&#160;protected] .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "0df990d77ca5b1aa",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "We'll consider all responses and publish feedback, along with the final Financial Crime Guide text, in a Policy Statement.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6978be1b1f8a7c9f",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Future plans for the Financial Crime Guide",
+        "extractedText": "We are exploring ways to provide financial crime guidance that: meets the needs of our wide-ranging and varied population is focused on emerging risks and priority areas allows for a range of feedback opportunities This could include: holding a series of question-and-answer sessions, either in person or online publishing timely standalone guidance without prior consultation, where it is not required This guidance would then be consolidated within the Financial Crime Guide at a future date.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "8d4e4b35547ab8f7",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "We last updated the Financial Crime Guide to reflect supervisory findings and changing risks.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "92d6c328e9128357",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Since then, the UK's sanctions regime has evolved, cryptoasset regulation has developed, and firms have increasingly adopted AI and third-party tools for financial crime controls.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "158fcc1935c9b21b",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "These proposals support our objective of making sure markets function well, by reducing and preventing financial crime.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a824835ab1b7e495",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "They're also relevant to our consumer protection and integrity objectives and compatible with our secondary objective on international competitiveness and growth.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6c95081fbf2cecfa",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Yes No What can we do to improve pages like this?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "bc69ba93840a8ef0",
+        "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Submit Feedback Leave this field blank",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      }
+    ],
+    "evidenceMedium": "fca_webpage",
+    "integrityVerified": true,
+    "obligationGradeSuitable": false,
+    "publicationTitle": "CP26/38: Financial Crime Guide updates",
+    "publicationReference": null,
+    "regulatorShortName": "FCA",
+    "regulatorLabel": "Financial Conduct Authority"
+  },
+  "retrievalProvenance": {
+    "exportSource": "staging_readonly",
+    "exportedAt": "2026-11-10T13:11:32.806Z"
+  },
+  "profile": "html_article_v2",
+  "exportSource": "staging_readonly"
+}

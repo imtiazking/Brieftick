@@ -1,0 +1,1449 @@
+{
+  "packVersion": 1,
+  "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+  "publicationTitle": "Wholesale banks supervision - Insights 3 (Autumn 2026)",
+  "publicationType": "multi_firm_review",
+  "regulator": "FCA",
+  "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026",
+  "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+  "extractionProfile": "html_article_v2",
+  "contentSha256": "13718b06e97039eb8c71662ceba8c5ca210480b6f4772fc8c5001b4eec4c8531",
+  "regulatoryStatus": "multi_firm_review",
+  "blockCount": 91,
+  "verifiedTextSamples": [
+    {
+      "documentEvidenceId": "c62b14eee8d40bdf",
+      "sectionReference": "Who this applies to",
+      "extractedText": "This publication will be of interest to: wholesale banks&nbsp; other wholesale market participants"
+    },
+    {
+      "documentEvidenceId": "6ca56211a1724df8",
+      "sectionReference": "Data management",
+      "extractedText": "Firms with weak data management processes continue to experience problems."
+    },
+    {
+      "documentEvidenceId": "f7247ebb723c4106",
+      "sectionReference": "Data management",
+      "extractedText": "In one case, data was inadvertently not ingested into a financial crime control due to a coding defect."
+    },
+    {
+      "documentEvidenceId": "469bed08c3dce3dc",
+      "sectionReference": "Data management",
+      "extractedText": "The resulting control gap went undetected for an extended period and was only identified through unrelated activity rather than through data monitoring or completeness controls.&nbsp; The incident reinforces a message from our last publication: it’s important that firms assess the design and operating effectiveness of data ingestion at the control implementation stage and track clear data lineage from source to consumption."
+    },
+    {
+      "documentEvidenceId": "d8872f3ccfd74d39",
+      "sectionReference": "Data management",
+      "extractedText": "This includes verifying data completeness during ingestion and processing.&nbsp; Incomplete ingestion of communications data and errors in lexicon configuration have also adversely impacted banks’ communication surveillance."
+    },
+    {
+      "documentEvidenceId": "5a36676fbbfbd3be",
+      "sectionReference": "Data management",
+      "extractedText": "In some cases, these weaknesses arose during system changes or involved third-party surveillance providers."
+    },
+    {
+      "documentEvidenceId": "7c7b51441ac04b9d",
+      "sectionReference": "Data management",
+      "extractedText": "We remind banks that they remain responsible for meeting our requirements on recording, monitoring and ensuring communications related to in-scope activities are auditable even when they make use of third parties."
+    },
+    {
+      "documentEvidenceId": "bcb9031541183f45",
+      "sectionReference": "Asset inventory management",
+      "extractedText": "One firm’s ability to maintain a complete view of its assets was impaired due to a range of weaknesses:&nbsp;&nbsp; Inadequate controls governing the disposal and redeployment of assets resulting in inventory records not always being updated when devices were disposed of or transferred."
+    },
+    {
+      "documentEvidenceId": "8303b0fff55dada9",
+      "sectionReference": "Asset inventory management",
+      "extractedText": "Asset management processes not applied consistently across business areas and regions.&nbsp; Accountability for end-to-end asset lifecycle management was insufficiently defined."
+    },
+    {
+      "documentEvidenceId": "aaa1c374fe0e1064",
+      "sectionReference": "Asset inventory management",
+      "extractedText": "Regular stocktakes and reconciliations were not consistently performed.&nbsp; As a result, the firm was unable to reliably determine the location, status or disposition of a significant number of technology assets."
+    },
+    {
+      "documentEvidenceId": "b49f87b6689a8cda",
+      "sectionReference": "Asset inventory management",
+      "extractedText": "This included assets that lacked contemporary security controls such as device encryption.&nbsp;"
+    },
+    {
+      "documentEvidenceId": "726aa103294b9f13",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "We have seen weaknesses in firms’ algorithmic trading controls."
+    },
+    {
+      "documentEvidenceId": "cbaf02fa963d1184",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "In the most serious instance, a defect in how a firm’s algorithm interacted with its order management component for a stop-loss order led to the unintended accumulation of a very significant intraday position."
+    },
+    {
+      "documentEvidenceId": "f206e8ad1862781c",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "The defect meant that the algorithm operated with an incorrect view of its executed quantity.&nbsp; The defect arose following an enhancement to the algorithm."
+    },
+    {
+      "documentEvidenceId": "6c7e97d9cf278cf4",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "The pre-implementation testing focused on simulation testing of the change."
+    },
+    {
+      "documentEvidenceId": "70a0374207ccb4ff",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "It did not consider a scenario of near-simultaneous fills in different geographic locations, which would have identified an error in the order management component responsible for communicating fill notifications."
+    },
+    {
+      "documentEvidenceId": "3b26df669af0cfac",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "This resulted in the order being over-filled.&nbsp; The incident illustrates why firms enhancing their trading algorithms should assess the impact of those changes across the entire trading process, including whether the change creates unforeseen interactions with execution venues, data or fill notifications."
+    },
+    {
+      "documentEvidenceId": "bc49313122eeee37",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "More generally, we also remind firms of the regulatory technical standard (RTS) 6 requirements governing algorithmic trading controls."
+    },
+    {
+      "documentEvidenceId": "b1478afae39593c5",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "These cover areas including testing, governance and oversight, pre-trade controls, and mechanisms to cancel unexecuted orders where necessary."
+    },
+    {
+      "documentEvidenceId": "083ac5e651dd02ec",
+      "sectionReference": "Algorithmic trading controls",
+      "extractedText": "While developed for algorithmic trading, these types of controls may provide useful considerations for firms when managing the risks associated with AI and other forms of automation."
+    },
+    {
+      "documentEvidenceId": "f63e6037cab813a9",
+      "sectionReference": "Data loss prevention framework",
+      "extractedText": "An employee at a bank attempted to evade data loss prevention (DLP) controls designed to prevent sensitive information being sent outside the firm by email."
+    },
+    {
+      "documentEvidenceId": "dc94531f26ee89b6",
+      "sectionReference": "Data loss prevention framework",
+      "extractedText": "The individual adapted their behaviour over time, exploiting limitations in existing controls to reduce the likelihood of detection."
+    },
+    {
+      "documentEvidenceId": "79a3ca35647926d9",
+      "sectionReference": "Data loss prevention framework",
+      "extractedText": "This included splitting information across multiple emails to remain below size restrictions, altering document classifications and file formats, embedding information within images and using misleading email subjects.&nbsp;"
+    },
+    {
+      "documentEvidenceId": "662676cac3c8b112",
+      "sectionReference": "Evidencing resilience in practice&nbsp;",
+      "extractedText": "Through our supervisory work we’ve seen that wholesale banks have continued to enhance operational resilience arrangements including governance, important business service identification, impact tolerance setting, mapping and scenario testing."
+    },
+    {
+      "documentEvidenceId": "a3ca74a6113c8339",
+      "sectionReference": "Evidencing resilience in practice&nbsp;",
+      "extractedText": "There is still room for improvement in areas such as:&nbsp; Self-assessments: the evidence that firms used to support their operational resilience self-assessments varied in quality."
+    },
+    {
+      "documentEvidenceId": "cddb3d3e2bfb5ddf",
+      "sectionReference": "Evidencing resilience in practice&nbsp;",
+      "extractedText": "Stronger submissions used granular metrics and linked these clearly to impact tolerances, scenario testing, vulnerabilities, remediation and Board reporting.&nbsp; Impact tolerances and market harm: banks should be able to explain how they have calibrated their impact tolerances by reference to the potential impact of disruption on trading, settlement, client and counterparty activity and other time-critical wholesale market processes."
+    },
+    {
+      "documentEvidenceId": "d37e442d0e87b5fe",
+      "sectionReference": "Evidencing resilience in practice&nbsp;",
+      "extractedText": "They shouldn’t rely solely on generic recovery time objectives or service availability measures if they don’t fully capture the potential harm arising from disruption.&nbsp; Remediation: where banks rely on future remediation or transformation activity, they should clearly distinguish in their self-assessments between that and current resilience capability."
+    },
+    {
+      "documentEvidenceId": "574d256f9f81832f",
+      "sectionReference": "Evidencing resilience in practice&nbsp;",
+      "extractedText": "Firms should also show how incidents, near misses and testing outcomes have informed mapping, vulnerability assessment, remediation priorities and future scenario design including how completed remediation has been validated or re-tested.&nbsp; T+1 settlement: firms with settlement-related important business services should consider how the move to T+1 securities settlement may affect post-trade processing, dependencies, scenario testing, ability to recover within impact tolerance and remediation priorities."
+    },
+    {
+      "documentEvidenceId": "47ab71abbabadfd0",
+      "sectionReference": "Evidencing resilience in practice&nbsp;",
+      "extractedText": "They should consider if shorter settlement timelines create disruption that could affect clients, counterparties or market activity.&nbsp; Firms may wish to consider these observations alongside our operational resilience insights and observations which provide cross-sector examples of good practice, common weaknesses and areas for continued improvement."
+    },
+    {
+      "documentEvidenceId": "5dd4f2d04fc2242f",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "Our new cryptoasset application window opened on 30 September 2026 ahead of the new UK cryptoasset regime coming into force in 2027."
+    },
+    {
+      "documentEvidenceId": "c15711e4f755a6f8",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "The cryptoasset regime is a major step forward."
+    },
+    {
+      "documentEvidenceId": "aea3a2278a09cf42",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "It will bring more cryptoasset activities within our remit including custody, operating trading platforms, dealing, arranging deals, stablecoin issuance and staking."
+    },
+    {
+      "documentEvidenceId": "d8ca5380348cbfd6",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "Wholesale banks can now submit a variation of permission (VoP) application to carry out regulated cryptoasset activities."
+    },
+    {
+      "documentEvidenceId": "0e67093cf3f2a882",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "We encourage banks to submit an application by 28 February 2027."
+    },
+    {
+      "documentEvidenceId": "a47f86e0ab25e1ee",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "Firms that submit before this date will either be told about the outcome of their application before the regime comes into force on 25 October 2027 or, if we’re still working on the application by that point, can carry on their cryptoasset activities while we reach a decision.&nbsp; If a firm applies after 28 February 2027, but before the full regime starts on 25 October 2027, it will enter the&nbsp; transitional provision while the application is determined."
+    },
+    {
+      "documentEvidenceId": "c52f7b836302cd58",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "During this, firms will be limited in the cryptoasset activities they can conduct."
+    },
+    {
+      "documentEvidenceId": "a3b3e02cadde4e1c",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "A bank will only be able to conduct the new UK-regulated cryptoasset activities where necessary to fulfil a contract agreed before entering the transitional provision."
+    },
+    {
+      "documentEvidenceId": "34ded8497b07a2b8",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "They cannot enter into new contracts with existing or new UK customers."
+    },
+    {
+      "documentEvidenceId": "9216a0d8415b9008",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "Find out how the gateway will operate for firms that want to undertake the new cryptoasset regulated activities."
+    },
+    {
+      "documentEvidenceId": "edba9f3d6c2dce8f",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "We remind firms about the pre-application services we offer to firms for this VoP application."
+    },
+    {
+      "documentEvidenceId": "f205f993ef85b4b2",
+      "sectionReference": "Cryptoassets: the new regime&nbsp;",
+      "extractedText": "These services can also be used by firms when considering changes to their permissions, applying for rule waivers or making a change in control notification."
+    },
+    {
+      "documentEvidenceId": "d5e5857e1447e8c2",
+      "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+      "extractedText": "We continue to see demand from firms seeking regulatory support through the Regulatory Sandbox and Innovation Pathways."
+    },
+    {
+      "documentEvidenceId": "9a1f4b536fc707d2",
+      "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+      "extractedText": "In the first half of 2026, we saw several wholesale market propositions focused on digital infrastructure."
+    },
+    {
+      "documentEvidenceId": "cf6608b255f7cd04",
+      "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+      "extractedText": "This included solutions to improve liquidity, connectivity and portfolio management in private credit, digitise trade documents and workflows and support new approaches to fundraising, investment and ownership through digital platforms.&nbsp; These examples highlight the importance of considering the specific role and activities of the firm or platform including how assets are controlled, held and settled."
+    },
+    {
+      "documentEvidenceId": "cc9b3e805b541664",
+      "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+      "extractedText": "Firms developing innovative market infrastructure should consider these issues early and, where appropriate, seek regulatory support to understand how their model, controls and arrangements may operate before wider deployment."
+    },
+    {
+      "documentEvidenceId": "d33c9b442e78cb24",
+      "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+      "extractedText": "We are also using thematic Regulatory Sandbox cohorts to take a focused look at specific areas of innovation."
+    },
+    {
+      "documentEvidenceId": "fac7617224e5e4b3",
+      "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+      "extractedText": "Our next themed cohort will focus on climate scenario models, with the application window running from 1 October to 30 November 2026."
+    },
+    {
+      "documentEvidenceId": "7f03de44def1d8bb",
+      "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+      "extractedText": "The cohort will look at how firms develop and use&nbsp; climate scenario models and how these models may help firms better understand climate-related financial risks."
+    },
+    {
+      "documentEvidenceId": "ab829ff9c97e9556",
+      "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+      "extractedText": "To access these services and find out more about how the FCA supports innovation, please see our pages on the&nbsp; Regulatory Sandbox and&nbsp; Innovation Pathways .&nbsp; We will shortly publish, jointly with the Bank of England, a roadmap setting out next steps for tokenisation in UK wholesale markets."
+    },
+    {
+      "documentEvidenceId": "cb9fca8734c29d6c",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "In September, we published what we had learned from how firms are using, testing and preparing for frontier AI models ."
+    },
+    {
+      "documentEvidenceId": "7060edc3460b63c7",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "More broadly, we have recently published&nbsp; AI in financial services: good practice and areas for improvement , which shares examples from across financial services."
+    },
+    {
+      "documentEvidenceId": "f68b967fe17a682a",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "We also remind banks that there are ways we can support an idea or firm on AI ."
+    },
+    {
+      "documentEvidenceId": "3d30e1daff036a2a",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "We’ve also been engaging with banks to learn more about how they are using and governing AI elsewhere in their business."
+    },
+    {
+      "documentEvidenceId": "6cee5e650e9b49f4",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "A key focus was on effective human oversight as AI-generated outputs increase and become more autonomous."
+    },
+    {
+      "documentEvidenceId": "2d39fbeac3832af9",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "In one incident, inaccurate AI-generated code recommendations were not identified during the human review stage and resulted in a loss of service."
+    },
+    {
+      "documentEvidenceId": "ba6c22a5330f0804",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "This firm introduced additional controls, including test cases and strengthening feedback mechanisms to improve the accuracy of AI-generated recommendations.&nbsp; There have been incidents of staff using AI tools unapproved by the firm resulting in data leaks, including of sensitive information."
+    },
+    {
+      "documentEvidenceId": "cc237fac88a20a92",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "To address this, we saw firms implement mandatory training, attestations and amnesty periods to identify previously undisclosed AI usage."
+    },
+    {
+      "documentEvidenceId": "92ae4e5f75a82415",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "Firms will need to be vigilant to this risk, consider their control framework and reinforce expectations to their staff.&nbsp;&nbsp; As might be expected, AI is increasingly featuring in reviews by banks’ internal audit functions."
+    },
+    {
+      "documentEvidenceId": "f2630b050125f4d9",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "Here are some areas for improvement that they have identified:&nbsp;&nbsp; Committees not tracking conditional approvals and one instance where the formal approval process was not followed."
+    },
+    {
+      "documentEvidenceId": "5ca96cf6885eba89",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "Recording conditional approvals as full approvals."
+    },
+    {
+      "documentEvidenceId": "621326a4492a8b36",
+      "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+      "extractedText": "A use case that progressed to production under an undocumented exception."
+    },
+    {
+      "documentEvidenceId": "793b4e47abdcb5b6",
+      "sectionReference": "Unregistered annex 1 firms&nbsp;&nbsp;",
+      "extractedText": "Certain businesses, including some unregulated lenders, safe custody providers, money brokers and financial leasing companies, may need to register with the FCA under the Money Laundering Regulations 2017."
+    },
+    {
+      "documentEvidenceId": "54d8b01d0f3ea885",
+      "sectionReference": "Unregistered annex 1 firms&nbsp;&nbsp;",
+      "extractedText": "We see banks providing funding and other services to firms that are not legally permitted to carry on annex 1 activities."
+    },
+    {
+      "documentEvidenceId": "74336eaa767f8179",
+      "sectionReference": "Unregistered annex 1 firms&nbsp;&nbsp;",
+      "extractedText": "Banks should ensure that their financial crime systems and controls enable them to identify and manage the risks associated with the firms they fund or service."
+    },
+    {
+      "documentEvidenceId": "15972bd32cbfc9ef",
+      "sectionReference": "Unregistered annex 1 firms&nbsp;&nbsp;",
+      "extractedText": "If a bank’s checks raise concerns about potentially unlawful annex 1 activity, it should contact the FCA’s firm queries team at [email&#160;protected] or on 0300 500 0597.&nbsp;"
+    },
+    {
+      "documentEvidenceId": "21ffb90a2f56a7a5",
+      "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+      "extractedText": "The definition of securitisation in UK legislation is quite broad and encompasses a large number of financings where the credit risk is tranched."
+    },
+    {
+      "documentEvidenceId": "f353b175de9ae6e1",
+      "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+      "extractedText": "Often those financings are done privately and involve regulated entities taking risk on the structure by investing or lending on a senior basis."
+    },
+    {
+      "documentEvidenceId": "bc3658880c84ee2c",
+      "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+      "extractedText": "Whether private or public, financings that come under the securitisation definition are regulated under FCA and PRA rules."
+    },
+    {
+      "documentEvidenceId": "a183068ae7cda24c",
+      "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+      "extractedText": "In particular, this means that institutional lenders/investors in those transactions are subject to due diligence obligations to ensure that they properly understand and assess the risks of the securitisations they invest in, both before investing and throughout the life of the investments."
+    },
+    {
+      "documentEvidenceId": "08f895b7062ac1ea",
+      "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+      "extractedText": "The FCA will soon publish its revised rules for securitisations."
+    },
+    {
+      "documentEvidenceId": "e3c82a7476eb9baa",
+      "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+      "extractedText": "The rules reaffirm the critical importance of due diligence, focusing on the outcome rather than prescribing how it should be done.&nbsp;&nbsp; Examples of good practices that the FCA has observed when it comes to due diligence include enhanced due diligence on the credit-granting standards of originators which are neither capital requirements regulation (CRR) firms nor FCA-authorised investment firms, specific controls and risk appetite for securitisations backed by asset types which are more susceptible to fraud or at risk of double-pledging and investors taking an active role in the design and governance of agreed upon procedures (AUPs)."
+    },
+    {
+      "documentEvidenceId": "dfad44aa76540955",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "We reviewed how 6 wholesale banks' prime brokerage businesses incorporate conduct and reputational risk information into client risk assessments."
+    },
+    {
+      "documentEvidenceId": "f9fa4f15df85dd80",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "We did this by selecting a sample of clients to test how processes were applied in practice.&nbsp; Our main observation is that, at some firms, we found limited evidence of sharing client information generated through surveillance, investigations, know your customer processes and ongoing monitoring with those responsible for managing client risk appetite."
+    },
+    {
+      "documentEvidenceId": "dea93a398cee0f05",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "Some firms cited confidentiality concerns as a barrier to sharing information across divisions."
+    },
+    {
+      "documentEvidenceId": "e484da158747ba95",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "The strongest firms in our sample were able to share information across divisions and through escalation on a timely basis (for example through the use of forums and committees) while complying with legal and regulatory obligations and clients’ best interests."
+    },
+    {
+      "documentEvidenceId": "31db429af321822a",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "This enhanced the client risk assessment process.&nbsp; For example, one firm used information from across the business and control functions to identify emerging concerns about a client."
+    },
+    {
+      "documentEvidenceId": "d1c3a0b23546b64f",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "Trade surveillance alerts, regulatory issues in different jurisdictions, inadequate awareness by the client of risks associated with its underlying clients as well as poor communications all pointed to increased risk.&nbsp; In response, the prime broker took progressively stronger action,&nbsp;engaging with the client to address shortcomings, restricting activity and, because the risk remained outside of the banks’ risk appetite, ultimately offboarding the client."
+    },
+    {
+      "documentEvidenceId": "a9ee19b578778306",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "In another example, the firm incorporated trading activity and regulatory findings into ongoing client risk assessments."
+    },
+    {
+      "documentEvidenceId": "34fa19312603c9db",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "This led to the prime broker reducing the client’s leverage and capacity limits.&nbsp; In these examples, we did not observe unrestricted information sharing, but we did see arrangements that enabled relevant risk information, or an appropriate assessment of it, to be made available to those responsible for client risk decisions.&nbsp; In another business line we saw one firm recognise that it needed to improve how it considered financial crime risk indicators in aggregate."
+    },
+    {
+      "documentEvidenceId": "7f5e19c351adfdc4",
+      "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+      "extractedText": "On their own, indicators had not necessarily met the firm’s threshold for escalation but collectively, they pointed to a deteriorating client risk profile."
+    },
+    {
+      "documentEvidenceId": "d0571d8bcbfb5054",
+      "sectionReference": "Request for quote (RFQ) controls&nbsp;",
+      "extractedText": "At one firm, in submitting a request for a quote for a fixed income product, a trader did not understand the platform’s denomination convention and so manually entered a notional figure in the billions rather than the millions it should have been."
+    },
+    {
+      "documentEvidenceId": "9d9892b021206e3f",
+      "sectionReference": "Request for quote (RFQ) controls&nbsp;",
+      "extractedText": "The error was promptly identified and both parties agreed to cancel the trade, but not before it had been submitted for clearing.&nbsp; Weaknesses in ‘fat finger’ controls were identified in this and other high-touch platforms used for RFQ."
+    },
+    {
+      "documentEvidenceId": "364f817b71b7713a",
+      "sectionReference": "Request for quote (RFQ) controls&nbsp;",
+      "extractedText": "Specifically, the firm identified that:&nbsp; Onboarding requirements did not establish minimum levels of ‘fat finger’ controls (for example combinations of price, quantity, notional, volume, or other trade economics), soft block functionality and vendor control activation and controls inconsistently applied across all platforms."
+    },
+    {
+      "documentEvidenceId": "2df5b80da10791f3",
+      "sectionReference": "Request for quote (RFQ) controls&nbsp;",
+      "extractedText": "It wasn’t maintaining a platform inventory detailing the hard and soft block ‘fat finger’ controls in operation by product.&nbsp; Annual supervisory review by business units to confirm completeness and accuracy were not performed; periodic testing of ‘fat finger’ controls was not conducted comprehensively or consistently.&nbsp; Periodic reviews of limits and thresholds associated with hard and soft blocks were not performed and audit trails for changes did not exist.&nbsp; Firm’s governance and supervision should ensure that controls preventing the entry of erroneous orders, quotes and indications of interest are appropriately implemented, periodically tested and that thresholds and limits are calibrated to reflect current business activity. &nbsp;"
+    },
+    {
+      "documentEvidenceId": "75a2549397e6c2b7",
+      "sectionReference": "Internal audit metrics",
+      "extractedText": "We are sharing 2 key metrics gathered from the internal audit functions of 7 wholesale bank subsidiaries to provide a reference point banks may otherwise not have."
+    },
+    {
+      "documentEvidenceId": "248aff3aea261bcf",
+      "sectionReference": "Internal audit metrics",
+      "extractedText": "There will be important underlying context to this data and, as a result, we are not providing commentary."
+    },
+    {
+      "documentEvidenceId": "f670d560a2eb17ae",
+      "sectionReference": "Internal audit metrics",
+      "extractedText": "Chart Data table Download Chart Data table Download"
+    },
+    {
+      "documentEvidenceId": "a07c9856c9da0005",
+      "sectionReference": "What firms need to do",
+      "extractedText": "Firms should consider the observations in this publication and how they may apply to their own activities and practices."
+    },
+    {
+      "documentEvidenceId": "391e2997584427b1",
+      "sectionReference": "Why we did this work",
+      "extractedText": "Help firms benchmark and use practical examples to achieve regulatory outcomes more efficiently.&nbsp; Provide data and insights not typically available to firms such as aggregated information from regulatory returns submitted to the FCA and risks which have crystalised.&nbsp; Highlight where the market is performing well and where improvements are needed.&nbsp; Was this page useful?"
+    },
+    {
+      "documentEvidenceId": "f54f0a62ab7b17c3",
+      "sectionReference": "Why we did this work",
+      "extractedText": "Yes No What can we do to improve pages like this?"
+    },
+    {
+      "documentEvidenceId": "3b1ad199e189d1f3",
+      "sectionReference": "Why we did this work",
+      "extractedText": "Submit Feedback Leave this field blank"
+    }
+  ],
+  "askRiEvidence": {
+    "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+    "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+    "extractionProfile": "html_article_v2",
+    "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026",
+    "publicationMetadata": {
+      "title": "Who this applies to",
+      "primaryPdf": null,
+      "drupalAbout": "/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026",
+      "drupalNodeId": "176996",
+      "consultationTimeline": {
+        "opens": null,
+        "closes": null,
+        "present": false,
+        "opensDate": null,
+        "closesDate": null
+      },
+      "publicationTypeLabel": null,
+      "primaryDocumentClassification": "webpage_only"
+    },
+    "extractionQuality": {
+      "score": 100,
+      "status": "complete",
+      "metrics": {
+        "headingCount": 22,
+        "alphaWordCount": 1898,
+        "paragraphCount": 50,
+        "plainTextLength": 18893,
+        "pdfAttachmentCount": 0
+      },
+      "signals": [],
+      "confidence": "high",
+      "primaryDocument": {
+        "completeness": "not_applicable",
+        "primaryPdfUrl": null,
+        "classification": "webpage_only",
+        "primaryPdfCaptured": false
+      },
+      "webpageExtraction": {
+        "score": 100,
+        "status": "complete",
+        "confidence": "high"
+      },
+      "obligationGradeSuitable": true
+    },
+    "pdfAttachments": [],
+    "normalisedArticleText": "Our further learnings gained from supervisory work we’ve undertaken, risks we’ve seen crystallise and findings from internal audit functions. Who this applies to This publication will be of interest to: wholesale banks other wholesale market participants What we found Improving the resilience of firms and markets Data management Firms with weak data management processes continue to experience problems. In one case, data was inadvertently not ingested into a financial crime control due to a coding defect. The resulting control gap went undetected for an extended period and was only identified through unrelated activity rather than through data monitoring or completeness controls. The incident reinforces a message from our last publication: it’s important that firms assess the design and operating effectiveness of data ingestion at the control implementation stage and track clear data lineage from source to consumption. This includes verifying data completeness during ingestion and processing. Incomplete ingestion of communications data and errors in lexicon configuration have also adversely impacted banks’ communication surveillance. In some cases, these weaknesses arose during system changes or involved third-party surveillance providers. We remind banks that they remain responsible for meeting our requirements on recording, monitoring and ensuring communications related to in-scope activities are auditable even when they make use of third parties. Asset inventory management One firm’s ability to maintain a complete view of its assets was impaired due to a range of weaknesses: Inadequate controls governing the disposal and redeployment of assets resulting in inventory records not always being updated when devices were disposed of or transferred. Asset management processes not applied consistently across business areas and regions. Accountability for end-to-end asset lifecycle management was insufficiently defined. Regular stocktakes and reconciliations were not consistently performed. As a result, the firm was unable to reliably determine the location, status or disposition of a significant number of technology assets. This included assets that lacked contemporary security controls such as device encryption. Algorithmic trading controls We have seen weaknesses in firms’ algorithmic trading controls. In the most serious instance, a defect in how a firm’s algorithm interacted with its order management component for a stop-loss order led to the unintended accumulation of a very significant intraday position. The defect meant that the algorithm operated with an incorrect view of its executed quantity. The defect arose following an enhancement to the algorithm. The pre-implementation testing focused on simulation testing of the change. It did not consider a scenario of near-simultaneous fills in different geographic locations, which would have identified an error in the order management component responsible for communicating fill notifications. This resulted in the order being over-filled. The incident illustrates why firms enhancing their trading algorithms should assess the impact of those changes across the entire trading process, including whether the change creates unforeseen interactions with execution venues, data or fill notifications. More generally, we also remind firms of the regulatory technical standard (RTS) 6 requirements governing algorithmic trading controls. These cover areas including testing, governance and oversight, pre-trade controls, and mechanisms to cancel unexecuted orders where necessary. While developed for algorithmic trading, these types of controls may provide useful considerations for firms when managing the risks associated with AI and other forms of automation. Data loss prevention framework An employee at a bank attempted to evade data loss prevention (DLP) controls designed to prevent sensitive information being sent outside the firm by email. The individual adapted their behaviour over time, exploiting limitations in existing controls to reduce the likelihood of detection. This included splitting information across multiple emails to remain below size restrictions, altering document classifications and file formats, embedding information within images and using misleading email subjects. Evidencing resilience in practice Through our supervisory work we’ve seen that wholesale banks have continued to enhance operational resilience arrangements including governance, important business service identification, impact tolerance setting, mapping and scenario testing. There is still room for improvement in areas such as: Self-assessments: the evidence that firms used to support their operational resilience self-assessments varied in quality. Stronger submissions used granular metrics and linked these clearly to impact tolerances, scenario testing, vulnerabilities, remediation and Board reporting. Impact tolerances and market harm: banks should be able to explain how they have calibrated their impact tolerances by reference to the potential impact of disruption on trading, settlement, client and counterparty activity and other time-critical wholesale market processes. They shouldn’t rely solely on generic recovery time objectives or service availability measures if they don’t fully capture the potential harm arising from disruption. Remediation: where banks rely on future remediation or transformation activity, they should clearly distinguish in their self-assessments between that and current resilience capability. Firms should also show how incidents, near misses and testing outcomes have informed mapping, vulnerability assessment, remediation priorities and future scenario design including how completed remediation has been validated or re-tested. T+1 settlement: firms with settlement-related important business services should consider how the move to T+1 securities settlement may affect post-trade processing, dependencies, scenario testing, ability to recover within impact tolerance and remediation priorities. They should consider if shorter settlement timelines create disruption that could affect clients, counterparties or market activity. Firms may wish to consider these observations alongside our operational resilience insights and observations which provide cross-sector examples of good practice, common weaknesses and areas for continued improvement. Enhancing efficient, competitive and innovative markets Cryptoassets: the new regime Our new cryptoasset application window opened on 30 September 2026 ahead of the new UK cryptoasset regime coming into force in 2027. The cryptoasset regime is a major step forward. It will bring more cryptoasset activities within our remit including custody, operating trading platforms, dealing, arranging deals, stablecoin issuance and staking. Wholesale banks can now submit a variation of permission (VoP) application to carry out regulated cryptoasset activities. We encourage banks to submit an application by 28 February 2027. Firms that submit before this date will either be told about the outcome of their application before the regime comes into force on 25 October 2027 or, if we’re still working on the application by that point, can carry on their cryptoasset activities while we reach a decision. If a firm applies after 28 February 2027, but before the full regime starts on 25 October 2027, it will enter the transitional provision while the application is determined. During this, firms will be limited in the cryptoasset activities they can conduct. A bank will only be able to conduct the new UK-regulated cryptoasset activities where necessary to fulfil a contract agreed before entering the transitional provision. They cannot enter into new contracts with existing or new UK customers. Find out how the gateway will operate for firms that want to undertake the new cryptoasset regulated activities. We remind firms about the pre-application services we offer to firms for this VoP application. These services can also be used by firms when considering changes to their permissions, applying for rule waivers or making a change in control notification. Innovation in digital market infrastructure We continue to see demand from firms seeking regulatory support through the Regulatory Sandbox and Innovation Pathways. In the first half of 2026, we saw several wholesale market propositions focused on digital infrastructure. This included solutions to improve liquidity, connectivity and portfolio management in private credit, digitise trade documents and workflows and support new approaches to fundraising, investment and ownership through digital platforms. These examples highlight the importance of considering the specific role and activities of the firm or platform including how assets are controlled, held and settled. Firms developing innovative market infrastructure should consider these issues early and, where appropriate, seek regulatory support to understand how their model, controls and arrangements may operate before wider deployment. We are also using thematic Regulatory Sandbox cohorts to take a focused look at specific areas of innovation. Our next themed cohort will focus on climate scenario models, with the application window running from 1 October to 30 November 2026. The cohort will look at how firms develop and use climate scenario models and how these models may help firms better understand climate-related financial risks. To access these services and find out more about how the FCA supports innovation, please see our pages on the Regulatory Sandbox and Innovation Pathways . We will shortly publish, jointly with the Bank of England, a roadmap setting out next steps for tokenisation in UK wholesale markets. Artificial Intelligence (AI) In September, we published what we had learned from how firms are using, testing and preparing for frontier AI models . More broadly, we have recently published AI in financial services: good practice and areas for improvement , which shares examples from across financial services. We also remind banks that there are ways we can support an idea or firm on AI . We’ve also been engaging with banks to learn more about how they are using and governing AI elsewhere in their business. A key focus was on effective human oversight as AI-generated outputs increase and become more autonomous. In one incident, inaccurate AI-generated code recommendations were not identified during the human review stage and resulted in a loss of service. This firm introduced additional controls, including test cases and strengthening feedback mechanisms to improve the accuracy of AI-generated recommendations. There have been incidents of staff using AI tools unapproved by the firm resulting in data leaks, including of sensitive information. To address this, we saw firms implement mandatory training, attestations and amnesty periods to identify previously undisclosed AI usage. Firms will need to be vigilant to this risk, consider their control framework and reinforce expectations to their staff. As might be expected, AI is increasingly featuring in reviews by banks’ internal audit functions. Here are some areas for improvement that they have identified: Committees not tracking conditional approvals and one instance where the formal approval process was not followed. Recording conditional approvals as full approvals. A use case that progressed to production under an undocumented exception. Inconsistencies in risk-tiering/rating agents. Insufficient training, testing and maintenance of kill switches, as well as no documented list of authorised individuals to operate them. Incomplete AI inventories. The FCA and Bank of England 2026 AI Survey was published on 26 October 2026. Preventing financial crime and market abuse Unregistered annex 1 firms Certain businesses, including some unregulated lenders, safe custody providers, money brokers and financial leasing companies, may need to register with the FCA under the Money Laundering Regulations 2017. We see banks providing funding and other services to firms that are not legally permitted to carry on annex 1 activities. Banks should ensure that their financial crime systems and controls enable them to identify and manage the risks associated with the firms they fund or service. If a bank’s checks raise concerns about potentially unlawful annex 1 activity, it should contact the FCA’s firm queries team at [email protected] or on 0300 500 0597. Due diligence before investing in securitisation The definition of securitisation in UK legislation is quite broad and encompasses a large number of financings where the credit risk is tranched. Often those financings are done privately and involve regulated entities taking risk on the structure by investing or lending on a senior basis. Whether private or public, financings that come under the securitisation definition are regulated under FCA and PRA rules. In particular, this means that institutional lenders/investors in those transactions are subject to due diligence obligations to ensure that they properly understand and assess the risks of the securitisations they invest in, both before investing and throughout the life of the investments. The FCA will soon publish its revised rules for securitisations. The rules reaffirm the critical importance of due diligence, focusing on the outcome rather than prescribing how it should be done. Examples of good practices that the FCA has observed when it comes to due diligence include enhanced due diligence on the credit-granting standards of originators which are neither capital requirements regulation (CRR) firms nor FCA-authorised investment firms, specific controls and risk appetite for securitisations backed by asset types which are more susceptible to fraud or at risk of double-pledging and investors taking an active role in the design and governance of agreed upon procedures (AUPs). Ensuring firms effectively manage conflicts of interest and conduct oversight Prime brokerage: client risk assessment We reviewed how 6 wholesale banks' prime brokerage businesses incorporate conduct and reputational risk information into client risk assessments. We did this by selecting a sample of clients to test how processes were applied in practice. Our main observation is that, at some firms, we found limited evidence of sharing client information generated through surveillance, investigations, know your customer processes and ongoing monitoring with those responsible for managing client risk appetite. Some firms cited confidentiality concerns as a barrier to sharing information across divisions. The strongest firms in our sample were able to share information across divisions and through escalation on a timely basis (for example through the use of forums and committees) while complying with legal and regulatory obligations and clients’ best interests. This enhanced the client risk assessment process. For example, one firm used information from across the business and control functions to identify emerging concerns about a client. Trade surveillance alerts, regulatory issues in different jurisdictions, inadequate awareness by the client of risks associated with its underlying clients as well as poor communications all pointed to increased risk. In response, the prime broker took progressively stronger action, engaging with the client to address shortcomings, restricting activity and, because the risk remained outside of the banks’ risk appetite, ultimately offboarding the client. In another example, the firm incorporated trading activity and regulatory findings into ongoing client risk assessments. This led to the prime broker reducing the client’s leverage and capacity limits. In these examples, we did not observe unrestricted information sharing, but we did see arrangements that enabled relevant risk information, or an appropriate assessment of it, to be made available to those responsible for client risk decisions. In another business line we saw one firm recognise that it needed to improve how it considered financial crime risk indicators in aggregate. On their own, indicators had not necessarily met the firm’s threshold for escalation but collectively, they pointed to a deteriorating client risk profile. Request for quote (RFQ) controls At one firm, in submitting a request for a quote for a fixed income product, a trader did not understand the platform’s denomination convention and so manually entered a notional figure in the billions rather than the millions it should have been. The error was promptly identified and both parties agreed to cancel the trade, but not before it had been submitted for clearing. Weaknesses in ‘fat finger’ controls were identified in this and other high-touch platforms used for RFQ. Specifically, the firm identified that: Onboarding requirements did not establish minimum levels of ‘fat finger’ controls (for example combinations of price, quantity, notional, volume, or other trade economics), soft block functionality and vendor control activation and controls inconsistently applied across all platforms. It wasn’t maintaining a platform inventory detailing the hard and soft block ‘fat finger’ controls in operation by product. Annual supervisory review by business units to confirm completeness and accuracy were not performed; periodic testing of ‘fat finger’ controls was not conducted comprehensively or consistently. Periodic reviews of limits and thresholds associated with hard and soft blocks were not performed and audit trails for changes did not exist. Firm’s governance and supervision should ensure that controls preventing the entry of erroneous orders, quotes and indications of interest are appropriately implemented, periodically tested and that thresholds and limits are calibrated to reflect current business activity. Other learnings Internal audit metrics We are sharing 2 key metrics gathered from the internal audit functions of 7 wholesale bank subsidiaries to provide a reference point banks may otherwise not have. There will be important underlying context to this data and, as a result, we are not providing commentary. Chart Data table Download Chart Data table Download What firms need to do Firms should consider the observations in this publication and how they may apply to their own activities and practices. Why we did this work Help firms benchmark and use practical examples to achieve regulatory outcomes more efficiently. Provide data and insights not typically available to firms such as aggregated information from regulatory returns submitted to the FCA and risks which have crystalised. Highlight where the market is performing well and where improvements are needed. Was this page useful? Yes No What can we do to improve pages like this? What did you find helpful? Submit Feedback Leave this field blank",
+    "normalisedArticleHtml": "<article data-history-node-id=\"176996\" class=\"lf-bg-003c71 node node-publication-longform col-sm-12 clearfix four-step-limit col-xs-12 col-md-8 col-md-pull-4 js-has-sidebar--sticky\" about=\"/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026\"> <div class=\"node-content__wrapper node-content__wrapper--border\"> <div class=\"hidden-xs\"> <section class=\"copy-highlighted copy-block component fca-colour--6c1d45 default\"> <div class=\"container\"> <p>Our further learnings gained from supervisory work we’ve undertaken, risks we’ve seen crystallise and findings from internal audit functions.</p> </div> </section> </div> <div class=\"chapters\"> <section class=\"component chapter\" id=\"lf-chapter-id-who-this-applies-to\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">Who this applies to</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>This publication will be of interest to:</p><ul><li data-list-item-id=\"e094d6c1f0ad3ee8ca77bcfa43aeee5c2\">wholesale banks&nbsp;</li><li data-list-item-id=\"ec09f18722ac30fcb4eb16175b6fa3605\">other wholesale market participants</li></ul> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-what-we-found\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">What we found</h2></div> </div> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-improving-the-resilience-of-firms-and-markets\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">Improving the resilience of firms and markets</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <h4>Data management</h4><p>Firms with weak data management processes continue to experience problems. In one case, data was inadvertently not ingested into a financial crime control due to a coding defect. The resulting control gap went undetected for an extended period and was only identified through unrelated activity rather than through data monitoring or completeness controls.&nbsp;</p><p>The incident reinforces a message from our last publication: it’s important that firms assess the design and operating effectiveness of data ingestion at the control implementation stage and track clear data lineage from source to consumption. This includes verifying data completeness during ingestion and processing.&nbsp;</p><p>Incomplete ingestion of communications data and errors in lexicon configuration have also adversely impacted banks’ communication surveillance. In some cases, these weaknesses arose during system changes or involved third-party surveillance providers. We remind banks that they remain responsible for meeting our requirements on recording, monitoring and ensuring communications related to in-scope activities are auditable even when they make use of third parties.</p><h4>Asset inventory management</h4><p>One firm’s ability to maintain a complete view of its assets was impaired due to a range of weaknesses:&nbsp;&nbsp;</p><ul><li data-list-item-id=\"e2daac546cb631fe8ad02595b8b155543\">Inadequate controls governing the disposal and redeployment of assets resulting in inventory records not always being updated when devices were disposed of or transferred.</li><li data-list-item-id=\"e82a9ac65fa892cd092260b1023612f82\">Asset management processes not applied consistently across business areas and regions.&nbsp;</li><li data-list-item-id=\"ec333df58e4c0c68ed21d034e5975ddb3\">Accountability for end-to-end asset lifecycle management was insufficiently defined.</li><li data-list-item-id=\"e88ce17627189c9f7fc6db35322484f55\">Regular stocktakes and reconciliations were not consistently performed.&nbsp;</li></ul><p>As a result, the firm was unable to reliably determine the location, status or disposition of a significant number of technology assets. This included assets that lacked contemporary security controls such as device encryption.&nbsp;</p><h4>Algorithmic trading controls</h4><p>We have seen weaknesses in firms’ algorithmic trading controls. In the most serious instance, a defect in how a firm’s algorithm interacted with its order management component for a stop-loss order led to the unintended accumulation of a very significant intraday position. The defect meant that the algorithm operated with an incorrect view of its executed quantity.&nbsp;</p><p>The defect arose following an enhancement to the algorithm. The pre-implementation testing focused on simulation testing of the change. It did not consider a scenario of near-simultaneous fills in different geographic locations, which would have identified an error in the order management component responsible for communicating fill notifications. This resulted in the order being over-filled.&nbsp;</p><p>The incident illustrates why firms enhancing their trading algorithms should assess the impact of those changes across the entire trading process, including whether the change creates unforeseen interactions with execution venues, data or fill notifications.</p><p>More generally, we also remind firms of the regulatory technical standard (RTS) 6 requirements governing algorithmic trading controls. These cover areas including testing, governance and oversight, pre-trade controls, and mechanisms to cancel unexecuted orders where necessary. While developed for algorithmic trading, these types of controls may provide useful considerations for firms when managing the risks associated with AI and other forms of automation.<em><u5:p></u5:p></em></p><u5:p></u5:p><h4>Data loss prevention framework</h4><p>An employee at a bank attempted to evade data loss prevention (DLP) controls designed to prevent sensitive information being sent outside the firm by email. The individual adapted their behaviour over time, exploiting limitations in existing controls to reduce the likelihood of detection. This included splitting information across multiple emails to remain below size restrictions, altering document classifications and file formats, embedding information within images and using misleading email subjects.&nbsp;</p><h4>Evidencing resilience in practice&nbsp;</h4><p>Through our supervisory work we’ve seen that wholesale banks have continued to enhance operational resilience arrangements including governance, important business service identification, impact tolerance setting, mapping and scenario testing. There is still room for improvement in areas such as:&nbsp;</p><ul><li data-list-item-id=\"e23f675dfd0d24390f8b6fa2e22633c86\">Self-assessments: the evidence that firms used to support their operational resilience self-assessments varied in quality. Stronger submissions used granular metrics and linked these clearly to impact tolerances, scenario testing, vulnerabilities, remediation and Board reporting.&nbsp;</li><li data-list-item-id=\"e86a26a6d72a4d8dfc4ce9c03087a31c9\">Impact tolerances and market harm: banks should be able to explain how they have calibrated their impact tolerances by reference to the potential impact of disruption on trading, settlement, client and counterparty activity and other time-critical wholesale market processes. They shouldn’t rely solely on generic recovery time objectives or service availability measures if they don’t fully capture the potential harm arising from disruption.&nbsp;</li><li data-list-item-id=\"ed2aa0d82baedeb287b403ba3a4526d27\">Remediation: where banks rely on future remediation or transformation activity, they should clearly distinguish in their self-assessments between that and current resilience capability. Firms should also show how incidents, near misses and testing outcomes have informed mapping, vulnerability assessment, remediation priorities and future scenario design including how completed remediation has been validated or re-tested.&nbsp;</li><li data-list-item-id=\"e24c2c085e0272994936d3d0d5320c199\">T+1 settlement: firms with settlement-related important business services should consider how the move to T+1 securities settlement may affect post-trade processing, dependencies, scenario testing, ability to recover within impact tolerance and remediation priorities. They should consider if shorter settlement timelines create disruption that could affect clients, counterparties or market activity.&nbsp;</li></ul><p>Firms may wish to consider these observations alongside our <a href=\"https://www.fca.org.uk/publications/good-and-poor-practice/operational-resilience-insights-observations-one-year?_gl=1*13gscne*_gcl_aw*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_dc*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_au*NjEwNzU3Mzc0LjE3ODY2MjcxMTg.\" title=\"operational resilience insights and observations\" data-entity-type=\"external\">operational resilience insights and observations</a> which provide cross-sector examples of good practice, common weaknesses and areas for continued improvement.</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-enhancing-efficient-competitive-and-innovative-markets\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">Enhancing efficient, competitive and innovative markets</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <h4>Cryptoassets: the new regime&nbsp;</h4><p>Our new cryptoasset application window opened on 30 September 2026 ahead of the new UK cryptoasset regime coming into force in 2027.</p><p>The <a href=\"https://www.fca.org.uk/publications/policy-statements/cryptoasset-regime?_gl=1*wg6trx*_gcl_aw*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_dc*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_au*NjEwNzU3Mzc0LjE3ODY2MjcxMTg.\" title=\"cryptoasset regime\" data-entity-type=\"external\">cryptoasset regime</a> is a major step forward. It will bring more cryptoasset activities within our remit including custody, operating trading platforms, dealing, arranging deals, stablecoin issuance and staking.</p><p>Wholesale banks can now submit a variation of permission (VoP) application to carry out regulated cryptoasset activities. We encourage banks to submit an application by 28 February 2027. Firms that submit before this date will either be told about the outcome of their application before the regime comes into force on 25 October 2027 or, if we’re still working on the application by that point, can carry on their cryptoasset activities while we reach a decision.&nbsp;</p><p>If a firm applies after 28 February 2027, but before the full regime starts on 25 October 2027, it will enter the&nbsp;<a href=\"https://www.fca.org.uk/firms/new-regime-cryptoasset-regulation/transitional-provision\" target=\"_blank\" title=\"transitional provision\" data-entity-type=\"external\">transitional provision</a> while the application is determined. During this, firms will be limited in the cryptoasset activities they can conduct. A bank will only be able to conduct the new UK-regulated cryptoasset activities where necessary to fulfil a contract agreed before entering the transitional provision. They cannot enter into new contracts with existing or new UK customers. Find out <a href=\"https://www.fca.org.uk/firms/new-regime-cryptoasset-regulation/how-gateway-will-operate?_gl=1*1b4g6uq*_gcl_aw*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_dc*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_au*NjEwNzU3Mzc0LjE3ODY2MjcxMTg.\" title=\"how the gateway for firms that want to undertake the new cryptoasset regulated activities will operate\" data-entity-type=\"external\">how the gateway will operate</a> for firms that want to undertake the new cryptoasset regulated activities.</p><p>We remind firms about the <a href=\"https://www.fca.org.uk/firms/authorisation/pre-application-support-service?_gl=1*18feln5*_gcl_aw*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_dc*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_au*NjEwNzU3Mzc0LjE3ODY2MjcxMTg.\" title=\"pre-application services\" data-entity-type=\"external\">pre-application services</a> we offer to firms for this VoP application. These services can also be used by firms when considering changes to their permissions, applying for rule waivers or making a change in control notification.</p><h4>Innovation in digital market infrastructure&nbsp;</h4><p>We continue to see demand from firms seeking regulatory support through the Regulatory Sandbox and Innovation Pathways. In the first half of 2026, we saw several wholesale market propositions focused on digital infrastructure. This included solutions to improve liquidity, connectivity and portfolio management in private credit, digitise trade documents and workflows and support new approaches to fundraising, investment and ownership through digital platforms.&nbsp;</p><p>These examples highlight the importance of considering the specific role and activities of the firm or platform including how assets are controlled, held and settled. Firms developing innovative market infrastructure should consider these issues early and, where appropriate, seek regulatory support to understand how their model, controls and arrangements may operate before wider deployment.</p><p>We are also using thematic Regulatory Sandbox cohorts to take a focused look at specific areas of innovation. Our next themed cohort will focus on climate scenario models, with the application window running from 1 October to 30 November 2026. The cohort will look at how firms develop and use&nbsp;<a href=\"https://www.fca.org.uk/firms/regulatory-sandbox/climate-scenarios-cohort\" target=\"_blank\" title=\"climate scenario models\" data-entity-type=\"external\">climate scenario models</a> and how these models may help firms better understand climate-related financial risks.</p><p>To access these services and find out more about how the FCA supports innovation, please see our pages on the&nbsp;<a href=\"https://www.fca.org.uk/firms/innovation/regulatory-sandbox\" target=\"_blank\" title=\"Regulatory Sandbox\" data-entity-type=\"external\">Regulatory Sandbox</a> and&nbsp;<a href=\"https://www.fca.org.uk/firms/innovation/innovation-pathways\" target=\"_blank\" title=\"Innovation Pathways\" data-entity-type=\"external\">Innovation Pathways</a>.&nbsp;</p><p>We will shortly publish, jointly with the Bank of England, a roadmap setting out next steps for tokenisation in UK wholesale markets.</p><h4>Artificial Intelligence&nbsp;(AI)</h4><p>In September, we published what we had learned from <a href=\"https://www.fca.org.uk/publications/multi-firm-reviews/frontier-ai-cyber-resilience?_gl=1*1fokjjo*_gcl_aw*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_dc*R0NMLjE3OTAxNjM3NzAuRUFJYUlRb2JDaE1JdDhlUzI4LUVsd01WWkpKUUJoMU5uQjhHRUFBWUFTQUFFZ0l5bHZEX0J3RQ..*_gcl_au*NjEwNzU3Mzc0LjE3ODY2MjcxMTg.\" title=\"how firms are using, testing and preparing for frontier AI models\" data-entity-type=\"external\">how firms are using, testing and preparing for frontier AI models</a>.</p><p>More broadly, we have recently published&nbsp;<a href=\"https://www.fca.org.uk/publications/good-poor-practice/ai-financial-services\" target=\"_blank\" title=\"AI in financial services: good practice and areas for improvement\" data-entity-type=\"external\">AI in financial services: good practice and areas for improvement</a>, which shares examples from across financial services. We also remind banks that there are ways we can support an idea or firm on <a href=\"https://www.fca.org.uk/firms/ai-financial-services\" title=\"AI\" data-entity-type=\"external\">AI</a>.</p><p>We’ve also been engaging with banks to learn more about how they are using and governing AI elsewhere in their business. A key focus was on effective human oversight as AI-generated outputs increase and become more autonomous. In one incident, inaccurate AI-generated code recommendations were not identified during the human review stage and resulted in a loss of service. This firm introduced additional controls, including test cases and strengthening feedback mechanisms to improve the accuracy of AI-generated recommendations.&nbsp;</p><p>There have been incidents of staff using AI tools unapproved by the firm resulting in data leaks, including of sensitive information. To address this, we saw firms implement mandatory training, attestations and amnesty periods to identify previously undisclosed AI usage. Firms will need to be vigilant to this risk, consider their control framework and reinforce expectations to their staff.&nbsp;&nbsp;</p><p>As might be expected, AI is increasingly featuring in reviews by banks’ internal audit functions. Here are some areas for improvement that they have identified:&nbsp;&nbsp;</p><ul><li data-list-item-id=\"e5a537109f930e8d998f1ff613d2175f8\">Committees not tracking conditional approvals and one instance where the formal approval process was not followed.</li><li data-list-item-id=\"ebef02d940d9a6d3ade126f0f590b53f1\">Recording conditional approvals as full approvals.</li><li data-list-item-id=\"e319b83d4856cfceb848b8da70de6b876\">A use case that progressed to production under an undocumented exception.</li><li data-list-item-id=\"e8a95bb708f2e09b0a62d14e8407128c1\">Inconsistencies in risk-tiering/rating agents.&nbsp;&nbsp;</li><li data-list-item-id=\"e08f287214c2a962366a85c9b3aecc43a\">Insufficient training, testing and maintenance of kill switches, as well as no documented list of authorised individuals to operate them.</li><li data-list-item-id=\"e0b19f422e4fce345811e99abbdd554be\">Incomplete AI inventories.</li></ul><p>The <a href=\"https://www.bankofengland.co.uk/report/2026/artificial-intelligence-in-uk-financial-services-2026\" title=\"FCA and Bank of England 2026 AI Survey\" data-entity-type=\"external\">FCA and Bank of England 2026 AI Survey</a> was published on 26 October 2026.</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-preventing-financial-crime-and-market-abuse\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">Preventing financial crime and market abuse</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <h4>Unregistered annex 1 firms&nbsp;&nbsp;</h4><p>Certain businesses, including some unregulated lenders, safe custody providers, money brokers and financial leasing companies, may need to register with the FCA under the Money Laundering Regulations 2017. We see banks providing funding and other services to firms that are not legally permitted to carry on annex 1 activities. Banks should ensure that their financial crime systems and controls enable them to identify and manage the risks associated with the firms they fund or service. If a bank’s checks raise concerns about potentially unlawful annex 1 activity, it should contact the FCA’s firm queries team at <a href=\"/cdn-cgi/l/email-protection\" class=\"__cf_email__\" data-cfemail=\"e5838c9788cb949080978c8096a5838684cb8a9782cb908e\">[email&#160;protected]</a> or on 0300 500 0597.&nbsp;</p><h4>Due diligence before investing in securitisation&nbsp;&nbsp;</h4><p>The definition of securitisation in UK legislation is quite broad and encompasses a large number of financings where the credit risk is tranched. Often those financings are done privately and involve regulated entities taking risk on the structure by investing or lending on a senior basis.</p><p>Whether private or public, financings that come under the securitisation definition are regulated under FCA and PRA rules. In particular, this means that institutional lenders/investors in those transactions are subject to due diligence obligations to ensure that they properly understand and assess the risks of the securitisations they invest in, both before investing and throughout the life of the investments. The FCA will soon publish its revised rules for securitisations. The rules reaffirm the critical importance of due diligence, focusing on the outcome rather than prescribing how it should be done.&nbsp;&nbsp;</p><p>Examples of good practices that the FCA has observed when it comes to due diligence include enhanced due diligence on the credit-granting standards of originators which are neither capital requirements regulation (CRR) firms nor FCA-authorised investment firms, specific controls and risk appetite for securitisations backed by asset types which are more susceptible to fraud or at risk of double-pledging and investors taking an active role in the design and governance of agreed upon procedures (AUPs).</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-ensuring-firms-effectively-manage-conflicts-of-interest-and-conduct-oversight\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">Ensuring firms effectively manage conflicts of interest and conduct oversight</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <h4>Prime brokerage: client risk assessment<strong>&nbsp;&nbsp;</strong></h4><p>We reviewed how 6 wholesale banks' prime brokerage businesses incorporate conduct and reputational risk information into client risk assessments. We did this by selecting a sample of clients to test how processes were applied in practice.&nbsp;</p><p>Our main observation is that, at some firms, we found limited evidence of sharing client information generated through surveillance, investigations, know your customer processes and ongoing monitoring with those responsible for managing client risk appetite.</p><p>Some firms cited confidentiality concerns as a barrier to sharing information across divisions. The strongest firms in our sample were able to share information across divisions and through escalation on a timely basis (for example through the use of forums and committees) while complying with legal and regulatory obligations and clients’ best interests. This enhanced the client risk assessment process.&nbsp;</p><p>For example, one firm used information from across the business and control functions to identify emerging concerns about a client. Trade surveillance alerts, regulatory issues in different jurisdictions, inadequate awareness by the client of risks associated with its underlying clients as well as poor communications all pointed to increased risk.&nbsp;</p><p>In response, the prime broker took progressively stronger action,&nbsp;engaging with the client to address shortcomings, restricting activity and, because the risk remained outside of the banks’ risk appetite, ultimately offboarding the client. In another example, the firm incorporated trading activity and regulatory findings into ongoing client risk assessments. This led to the prime broker reducing the client’s leverage and capacity limits.&nbsp;</p><p>In these examples, we did not observe unrestricted information sharing, but we did see arrangements that enabled relevant risk information, or an appropriate assessment of it, to be made available to those responsible for client risk decisions.&nbsp;</p><p>In another business line we saw one firm recognise that it needed to improve how it considered financial crime risk indicators in aggregate. On their own, indicators had not necessarily met the firm’s threshold for escalation but collectively, they pointed to a deteriorating client risk profile.</p><h4>Request for quote (RFQ) controls&nbsp;</h4><p>At one firm, in submitting a request for a quote for a fixed income product, a trader did not understand the platform’s denomination convention and so manually entered a notional figure in the billions rather than the millions it should have been. The error was promptly identified and both parties agreed to cancel the trade, but not before it had been submitted for clearing.&nbsp;</p><p>Weaknesses in ‘fat finger’ controls were identified in this and other high-touch platforms used for RFQ. Specifically, the firm identified that:&nbsp;</p><ul><li data-list-item-id=\"e08c2dafc5af98afa6b31592722d64fe4\">Onboarding requirements did not establish minimum levels of ‘fat finger’ controls (for example combinations of price, quantity, notional, volume, or other trade economics), soft block functionality and vendor control activation and controls inconsistently applied across all platforms.</li><li data-list-item-id=\"ed336b52882ae000b8a54d1800b8c5628\">It wasn’t maintaining a platform inventory detailing the hard and soft block ‘fat finger’ controls in operation by product.&nbsp;</li><li data-list-item-id=\"e93695bed6b7d390eecc853b147759b6e\">Annual supervisory review by business units to confirm completeness and accuracy were not performed; periodic testing of ‘fat finger’ controls was not conducted comprehensively or consistently.&nbsp;</li><li data-list-item-id=\"e875b108496d7e0319e43e899c9122ebe\">Periodic reviews of limits and thresholds associated with hard and soft blocks were not performed and audit trails for changes did not exist.&nbsp;</li></ul><p>Firm’s governance and supervision should ensure that controls preventing the entry of erroneous orders, quotes and indications of interest are appropriately implemented, periodically tested and that thresholds and limits are calibrated to reflect current business activity. &nbsp;</p> </div> </section> </div> </div> </section> <section class=\"component chapter sub-chapter\" id=\"lf-chapter-id-what-we-found-other-learnings\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h3 data-ar-header=\"h3\">Other learnings</h3></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <h4>Internal audit metrics</h4><p>We are sharing 2 key metrics gathered from the internal audit functions of 7 wholesale bank subsidiaries to provide a reference point banks may otherwise not have. There will be important underlying context to this data and, as a result, we are not providing commentary.</p> </div> </section> </div> <section class=\"lf-pull-quote graph component\" data-count=\"\"> <div class=\"container\"> <div class=\"container graph-content-wrapper\"> <div class=\"fca-charts-wrapper\"> <p class=\"toggle-chart active-tab btn\" tabindex=\"0\"><span>Chart</span></p> <p class=\"toggle-table btn\" tabindex=\"0\"><span>Data table</span></p> <div class=\"fca-charts__download btn\" tabindex=\"0\"><span>Download</span> <div class=\"fca-chart-menu\"></div> </div> <div class=\"fca-charts\"> <div id=\"fca-data-graphs-177016\" class=\"charts-highchart highcharts-chart show-chart\" data-chart=\"{&quot;chart&quot;:{&quot;type&quot;:&quot;bar&quot;,&quot;width&quot;:null,&quot;height&quot;:null,&quot;backgroundColor&quot;:null,&quot;polar&quot;:null,&quot;options3d&quot;:null,&quot;renderTo&quot;:&quot;container&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontFamily&quot;:&quot;Verdana, Arial, Helvetica, sans-serif&quot;}},&quot;title&quot;:{&quot;text&quot;:&quot;Figure 1: Remedial actions not completed on time within 12 month period&quot;,&quot;y&quot;:24,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;subtitle&quot;:{&quot;text&quot;:&quot;Source: fca.org.uk&quot;,&quot;y&quot;:42,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;xAxis&quot;:{&quot;categories&quot;:[&quot;Firm 1&quot;,&quot;Firm 2&quot;,&quot;Firm 3&quot;,&quot;Firm 4&quot;,&quot;Firm 5&quot;,&quot;Firm 6&quot;,&quot;Firm 7&quot;],&quot;title&quot;:{&quot;text&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;rotation&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;tickmarkPlacement&quot;:&quot;between&quot;,&quot;min&quot;:null,&quot;max&quot;:null,&quot;tickInterval&quot;:null,&quot;lineWidth&quot;:1,&quot;visible&quot;:true},&quot;yAxis&quot;:[{&quot;title&quot;:{&quot;text&quot;:&quot;Proportion of remedial actions not completed on time (%)&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;overflow&quot;:&quot;justify&quot;,&quot;suffix&quot;:&quot;&quot;,&quot;prefix&quot;:&quot;&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fill&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;plotBands&quot;:null,&quot;min&quot;:0,&quot;max&quot;:100,&quot;categories&quot;:null,&quot;tickInterval&quot;:null,&quot;tickmarkPlacement&quot;:null,&quot;showFirstLabel&quot;:null,&quot;startOnTick&quot;:null,&quot;showLastLabel&quot;:true,&quot;endOnTick&quot;:true,&quot;gridLineInterpolation&quot;:&quot;circle&quot;,&quot;lineWidth&quot;:0,&quot;visible&quot;:true}],&quot;tooltip&quot;:{&quot;valueSuffix&quot;:&quot;&quot;,&quot;enabled&quot;:{&quot;pointFormat&quot;:&quot;&lt;span style=\\&quot;color:{point.color}\\&quot;&gt;\\u25cf&lt;\\/span&gt; {series.name}: &lt;b&gt;{point.y}&lt;\\/b&gt;&quot;,&quot;valuePrefix&quot;:&quot;&quot;,&quot;valueSuffix&quot;:&quot;%&quot;,&quot;valueCommas&quot;:&quot;1&quot;}},&quot;plotOptions&quot;:{&quot;bar&quot;:{&quot;dataLabels&quot;:{&quot;enabled&quot;:true},&quot;depth&quot;:35,&quot;marker&quot;:&quot;&quot;,&quot;animation&quot;:false,&quot;groupPadding&quot;:0.02}},&quot;legend&quot;:{&quot;layout&quot;:&quot;horizontal&quot;,&quot;align&quot;:&quot;right&quot;,&quot;verticalAlign&quot;:&quot;top&quot;,&quot;x&quot;:0,&quot;y&quot;:0,&quot;floating&quot;:true,&quot;borderWidth&quot;:1,&quot;backgroundColor&quot;:&quot;#ffffff&quot;,&quot;shadow&quot;:true,&quot;enabled&quot;:false,&quot;itemStyle&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;cursor&quot;:&quot;pointer&quot;,&quot;fontSize&quot;:&quot;11px&quot;,&quot;fontWeight&quot;:&quot;500&quot;,&quot;textOverflow&quot;:null},&quot;rtl&quot;:false},&quot;credits&quot;:{&quot;enabled&quot;:true,&quot;text&quot;:&quot;\\u00a9 Financial Conduct Authority 2026&quot;,&quot;position&quot;:{&quot;align&quot;:&quot;right&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:null,&quot;y&quot;:null},&quot;href&quot;:&quot;https:\\/\\/www.fca.org.uk\\/data&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;innerSize&quot;:&quot;%20&quot;,&quot;series&quot;:[{&quot;name&quot;:&quot;Remedial actions not completed on time&quot;,&quot;color&quot;:&quot;#701B45&quot;,&quot;data&quot;:[{&quot;y&quot;:2,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:16,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:5,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:26,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:49,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:10,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:13,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}}]}],&quot;exporting&quot;:{&quot;enabled&quot;:true,&quot;chartOptions&quot;:{&quot;chart&quot;:{&quot;backgroundColor&quot;:&quot;#ffffff&quot;}},&quot;buttons&quot;:{&quot;exportButton&quot;:{&quot;symbol&quot;:&quot;url(https:\\/\\/www.fca.org.uk\\/modules\\/custom\\/fca_data_graphs\\/assets\\/icons\\/data-hub-download-01.png)&quot;,&quot;symbolX&quot;:25,&quot;symbolY&quot;:30,&quot;symbolSize&quot;:35,&quot;enabled&quot;:true,&quot;menuItems&quot;:[&quot;downloadPNG&quot;,&quot;downloadCSV&quot;,&quot;downloadJPEG&quot;,&quot;downloadPDF&quot;]},&quot;contextButton&quot;:{&quot;enabled&quot;:false}},&quot;showTable&quot;:true,&quot;allowHTML&quot;:true,&quot;fallbackToExportServer&quot;:false},&quot;pane&quot;:null,&quot;colors&quot;:[&quot;#701B45&quot;]}\" data-chart-type=\"bar\"></div> </div> </div> </div> <div class=\"container graph-content-wrapper\"> <div class=\"fca-charts-wrapper\"> <p class=\"toggle-chart active-tab btn\" tabindex=\"0\"><span>Chart</span></p> <p class=\"toggle-table btn\" tabindex=\"0\"><span>Data table</span></p> <div class=\"fca-charts__download btn\" tabindex=\"0\"><span>Download</span> <div class=\"fca-chart-menu\"></div> </div> <div class=\"fca-charts\"> <div id=\"fca-data-graphs-177021\" class=\"charts-highchart highcharts-chart show-chart\" data-chart=\"{&quot;chart&quot;:{&quot;type&quot;:&quot;bar&quot;,&quot;width&quot;:null,&quot;height&quot;:null,&quot;backgroundColor&quot;:null,&quot;polar&quot;:null,&quot;options3d&quot;:null,&quot;renderTo&quot;:&quot;container&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontFamily&quot;:&quot;Verdana, Arial, Helvetica, sans-serif&quot;}},&quot;title&quot;:{&quot;text&quot;:&quot; Figure 2: Issues failing internal audit validation\\/signoff within 12 month period&quot;,&quot;y&quot;:24,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;subtitle&quot;:{&quot;text&quot;:&quot;Source: fca.org.uk&quot;,&quot;y&quot;:42,&quot;verticalAlign&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;xAxis&quot;:{&quot;categories&quot;:[&quot;Firm 1&quot;,&quot;Firm 2&quot;,&quot;Firm 3&quot;,&quot;Firm 4&quot;,&quot;Firm 5&quot;,&quot;Firm 6&quot;],&quot;title&quot;:{&quot;text&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;rotation&quot;:null,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;tickmarkPlacement&quot;:&quot;between&quot;,&quot;min&quot;:null,&quot;max&quot;:null,&quot;tickInterval&quot;:null,&quot;lineWidth&quot;:1,&quot;visible&quot;:true},&quot;yAxis&quot;:[{&quot;title&quot;:{&quot;text&quot;:&quot;Proportion of issues that failed validation (%)&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;labels&quot;:{&quot;overflow&quot;:&quot;justify&quot;,&quot;suffix&quot;:&quot;&quot;,&quot;prefix&quot;:&quot;&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;fill&quot;:&quot;#000000&quot;,&quot;fontSize&quot;:&quot;10px&quot;}},&quot;plotBands&quot;:null,&quot;min&quot;:0,&quot;max&quot;:100,&quot;categories&quot;:null,&quot;tickInterval&quot;:null,&quot;tickmarkPlacement&quot;:null,&quot;showFirstLabel&quot;:null,&quot;startOnTick&quot;:null,&quot;showLastLabel&quot;:true,&quot;endOnTick&quot;:true,&quot;gridLineInterpolation&quot;:&quot;circle&quot;,&quot;lineWidth&quot;:0,&quot;visible&quot;:true}],&quot;tooltip&quot;:{&quot;valueSuffix&quot;:&quot;&quot;,&quot;enabled&quot;:{&quot;pointFormat&quot;:&quot;&lt;span style=\\&quot;color:{point.color}\\&quot;&gt;\\u25cf&lt;\\/span&gt; {series.name}: &lt;b&gt;{point.y}&lt;\\/b&gt;&quot;,&quot;valuePrefix&quot;:&quot;&quot;,&quot;valueSuffix&quot;:&quot;%&quot;,&quot;valueCommas&quot;:&quot;1&quot;}},&quot;plotOptions&quot;:{&quot;bar&quot;:{&quot;dataLabels&quot;:{&quot;enabled&quot;:true},&quot;depth&quot;:35,&quot;marker&quot;:&quot;&quot;,&quot;animation&quot;:false,&quot;groupPadding&quot;:0.02}},&quot;legend&quot;:{&quot;layout&quot;:&quot;horizontal&quot;,&quot;align&quot;:&quot;right&quot;,&quot;verticalAlign&quot;:&quot;top&quot;,&quot;x&quot;:0,&quot;y&quot;:0,&quot;floating&quot;:true,&quot;borderWidth&quot;:1,&quot;backgroundColor&quot;:&quot;#ffffff&quot;,&quot;shadow&quot;:true,&quot;enabled&quot;:false,&quot;itemStyle&quot;:{&quot;color&quot;:&quot;#000000&quot;,&quot;cursor&quot;:&quot;pointer&quot;,&quot;fontSize&quot;:&quot;11px&quot;,&quot;fontWeight&quot;:&quot;500&quot;,&quot;textOverflow&quot;:null},&quot;rtl&quot;:false},&quot;credits&quot;:{&quot;enabled&quot;:true,&quot;text&quot;:&quot;\\u00a9 Financial Conduct Authority 2026&quot;,&quot;position&quot;:{&quot;align&quot;:&quot;right&quot;,&quot;verticalAlign&quot;:&quot;bottom&quot;,&quot;x&quot;:null,&quot;y&quot;:null},&quot;href&quot;:&quot;https:\\/\\/www.fca.org.uk\\/data&quot;,&quot;style&quot;:{&quot;color&quot;:&quot;#000000&quot;}},&quot;innerSize&quot;:&quot;%20&quot;,&quot;series&quot;:[{&quot;name&quot;:&quot;Proportion of issues that failed IA issue validation\\/signoff&quot;,&quot;color&quot;:&quot;#701B45&quot;,&quot;data&quot;:[{&quot;y&quot;:4.5,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:3,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:1.6000000000000001,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:2,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:6,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}},{&quot;y&quot;:9,&quot;percentage&quot;:100,&quot;dataLabels&quot;:{&quot;format&quot;:&quot;{point.y}% {point.second}&quot;,&quot;enabled&quot;:true}}]}],&quot;exporting&quot;:{&quot;enabled&quot;:true,&quot;chartOptions&quot;:{&quot;chart&quot;:{&quot;backgroundColor&quot;:&quot;#ffffff&quot;}},&quot;buttons&quot;:{&quot;exportButton&quot;:{&quot;symbol&quot;:&quot;url(https:\\/\\/www.fca.org.uk\\/modules\\/custom\\/fca_data_graphs\\/assets\\/icons\\/data-hub-download-01.png)&quot;,&quot;symbolX&quot;:25,&quot;symbolY&quot;:30,&quot;symbolSize&quot;:35,&quot;enabled&quot;:true,&quot;menuItems&quot;:[&quot;downloadPNG&quot;,&quot;downloadCSV&quot;,&quot;downloadJPEG&quot;,&quot;downloadPDF&quot;]},&quot;contextButton&quot;:{&quot;enabled&quot;:false}},&quot;showTable&quot;:true,&quot;allowHTML&quot;:true,&quot;fallbackToExportServer&quot;:false},&quot;pane&quot;:null,&quot;colors&quot;:[&quot;#701B45&quot;]}\" data-chart-type=\"bar\"></div> </div> </div> </div> </div> </section> </div> </section> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-what-firms-need-to-do\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">What firms need to do</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p>Firms should consider the observations in this publication and how they may apply to their own activities and practices.</p> </div> </section> </div> </div> </section> <section class=\"component chapter\" id=\"lf-chapter-id-why-we-did-this-work\"> <div class=\"container\"> <div class=\"\"> <div class=\"field-item\"><h2 data-ar-header=\"h2\">Why we did this work</h2></div> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <ul><li data-list-item-id=\"eb58b23e9fb2d515f433eb54c10032b08\">Help firms benchmark and use practical examples to achieve regulatory outcomes more efficiently.&nbsp;</li><li data-list-item-id=\"e3e9767ab950e5defb0a342f46ccf3f7c\">Provide data and insights not typically available to firms such as aggregated information from regulatory returns submitted to the FCA and risks which have crystalised.&nbsp;</li><li data-list-item-id=\"ee1efad04671a7934478ca4f61871112e\">Highlight where the market is performing well and where improvements are needed.&nbsp;</li></ul> </div> </section> </div> </div> </section> </div> <div id=\"revisions\" class=\"page-revisions container\" lang=\"en-GB\"> </div> <div class=\"page-feedback container\" lang=\"en-GB\"> <form class=\"webform-submission-form webform-submission-add-form webform-submission-page-feedback-form-form webform-submission-page-feedback-form-add-form webform-submission-page-feedback-form-node-176996-form webform-submission-page-feedback-form-node-176996-add-form js-webform-details-toggle webform-details-toggle js-fca-lazy-captcha webform-client-form webform-client-form- feedback-form fca-custom-form webform-conditional-processed\" data-drupal-selector=\"webform-submission-page-feedback-form-node-176996-add-form\" novalidate=\"novalidate\" action=\"/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026#webform-submission-page-feedback-form-node-176996-add-form\" method=\"post\" id=\"webform-submission-page-feedback-form-node-176996-add-form\" accept-charset=\"UTF-8\" > <fieldset data-drupal-selector=\"edit-radios\" class=\"radios--wrapper fieldgroup form-composite webform-composite-visible-title js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper\" id=\"edit-radios--wrapper\"> <legend id=\"edit-radios--wrapper-legend\"> <span class=\"fieldset-legend\">Was this page useful?</span> </legend> <div class=\"fieldset-wrapper\"> <div id=\"edit-radios\" class=\"js-webform-radios webform-options-display-side-by-side\"><div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-yes\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-yes\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-yes\" name=\"radios\" value=\"Yes\" /><span class=\"fca-custom-label\">Yes </span></label> </div> <div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-no\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-no\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-no\" name=\"radios\" value=\"No\" /><span class=\"fca-custom-label\">No </span></label> </div> </div> </div> </fieldset> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-can-we-do-to-improve-pages-like-this- js-form-item-what-can-we-do-to-improve-pages-like-this- form-group\"> <label for=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"control-label\">What can we do to improve pages like this? </label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176996-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;No&quot;}}}\" id=\"edit-what-can-we-do-to-improve-pages-like-this-\" name=\"what_can_we_do_to_improve_pages_like_this_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-did-you-find-helpful- js-form-item-what-did-you-find-helpful- form-group\"> <label for=\"edit-what-did-you-find-helpful-\" class=\"control-label\">What did you find helpful?</label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-did-you-find-helpful-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176996-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;Yes&quot;}}}\" id=\"edit-what-did-you-find-helpful-\" name=\"what_did_you_find_helpful_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <input data-drupal-selector=\"edit-page-title\" type=\"hidden\" name=\"page_title\" value=\"Wholesale banks supervision - Insights 3 (Autumn 2026)\" /><input data-drupal-selector=\"edit-page-url\" type=\"hidden\" name=\"page_url\" value=\"https://www.fca.org.uk/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026 \" /><div class=\"js-webform-states-hidden form-actions webform-actions clearfix fca-form-submit form-group js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-176996-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;checked&quot;:true}}}\" id=\"edit-actions\"><button class=\"webform-button--submit button button--primary js-form-submit form-submit btn-primary btn\" data-drupal-selector=\"edit-actions-submit\" type=\"submit\" id=\"edit-actions-submit\" name=\"op\" value=\"Submit Feedback\">Submit Feedback</button> </div> <input autocomplete=\"off\" data-drupal-selector=\"form-vdkkgco2kjyaoausjndzeo5ybe9wledumot-mtbjus0\" type=\"hidden\" name=\"form_build_id\" value=\"form-vdkkgCo2kjYaOaUSJNDZeo5yBe9wleduMoT_mtBjus0\" /><input data-drupal-selector=\"edit-webform-submission-page-feedback-form-node-176996-add-form\" type=\"hidden\" name=\"form_id\" value=\"webform_submission_page_feedback_form_node_176996_add_form\" /> <input data-drupal-selector=\"edit-captcha-sid\" type=\"hidden\" name=\"captcha_sid\" value=\"1578032076\" /><input data-drupal-selector=\"edit-captcha-token\" type=\"hidden\" name=\"captcha_token\" value=\"_sV22UOgz5yI9Oo-et8vujAkOs-mDXmbsp3qnYf9UhM\" /><input id=\"recaptcha-v3-token\" class=\"recaptcha-v3-token\" data-recaptcha-v3-action=\"fca_recaptcha\" data-recaptcha-v3-site-key=\"6LfnAxopAAAAAJL8t0TPEZql_Canimafd6XMM7WQ\" data-drupal-selector=\"edit-captcha-response\" type=\"hidden\" name=\"captcha_response\" value=\"\" /><input data-drupal-selector=\"edit-is-recaptcha-v3\" type=\"hidden\" name=\"is_recaptcha_v3\" value=\"1\" /> <div class=\"url_hp-textfield form-group js-form-wrapper form-wrapper\" style=\"display: none !important;\"><div class=\"form-item js-form-item form-type-textfield js-form-type-textfield form-item-url-hp js-form-item-url-hp form-group\"> <label for=\"edit-url-hp\" class=\"control-label\">Leave this field blank</label> <input autocomplete=\"off\" data-drupal-selector=\"edit-url-hp\" class=\"form-text form-control\" type=\"text\" id=\"edit-url-hp\" name=\"url_hp\" value=\"\" size=\"20\" maxlength=\"128\" /> </div> </div> </form> </div> </div> </article>",
+    "evidenceBlocks": [
+      {
+        "documentEvidenceId": "c62b14eee8d40bdf",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this applies to",
+        "extractedText": "This publication will be of interest to: wholesale banks&nbsp; other wholesale market participants",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6ca56211a1724df8",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data management",
+        "extractedText": "Firms with weak data management processes continue to experience problems.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f7247ebb723c4106",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data management",
+        "extractedText": "In one case, data was inadvertently not ingested into a financial crime control due to a coding defect.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "469bed08c3dce3dc",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data management",
+        "extractedText": "The resulting control gap went undetected for an extended period and was only identified through unrelated activity rather than through data monitoring or completeness controls.&nbsp; The incident reinforces a message from our last publication: it’s important that firms assess the design and operating effectiveness of data ingestion at the control implementation stage and track clear data lineage from source to consumption.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d8872f3ccfd74d39",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data management",
+        "extractedText": "This includes verifying data completeness during ingestion and processing.&nbsp; Incomplete ingestion of communications data and errors in lexicon configuration have also adversely impacted banks’ communication surveillance.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5a36676fbbfbd3be",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data management",
+        "extractedText": "In some cases, these weaknesses arose during system changes or involved third-party surveillance providers.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7c7b51441ac04b9d",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data management",
+        "extractedText": "We remind banks that they remain responsible for meeting our requirements on recording, monitoring and ensuring communications related to in-scope activities are auditable even when they make use of third parties.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "bcb9031541183f45",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Asset inventory management",
+        "extractedText": "One firm’s ability to maintain a complete view of its assets was impaired due to a range of weaknesses:&nbsp;&nbsp; Inadequate controls governing the disposal and redeployment of assets resulting in inventory records not always being updated when devices were disposed of or transferred.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "8303b0fff55dada9",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Asset inventory management",
+        "extractedText": "Asset management processes not applied consistently across business areas and regions.&nbsp; Accountability for end-to-end asset lifecycle management was insufficiently defined.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "aaa1c374fe0e1064",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Asset inventory management",
+        "extractedText": "Regular stocktakes and reconciliations were not consistently performed.&nbsp; As a result, the firm was unable to reliably determine the location, status or disposition of a significant number of technology assets.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b49f87b6689a8cda",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Asset inventory management",
+        "extractedText": "This included assets that lacked contemporary security controls such as device encryption.&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "726aa103294b9f13",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "We have seen weaknesses in firms’ algorithmic trading controls.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cbaf02fa963d1184",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "In the most serious instance, a defect in how a firm’s algorithm interacted with its order management component for a stop-loss order led to the unintended accumulation of a very significant intraday position.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f206e8ad1862781c",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "The defect meant that the algorithm operated with an incorrect view of its executed quantity.&nbsp; The defect arose following an enhancement to the algorithm.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6c7e97d9cf278cf4",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "The pre-implementation testing focused on simulation testing of the change.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "70a0374207ccb4ff",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "It did not consider a scenario of near-simultaneous fills in different geographic locations, which would have identified an error in the order management component responsible for communicating fill notifications.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3b26df669af0cfac",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "This resulted in the order being over-filled.&nbsp; The incident illustrates why firms enhancing their trading algorithms should assess the impact of those changes across the entire trading process, including whether the change creates unforeseen interactions with execution venues, data or fill notifications.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "bc49313122eeee37",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "More generally, we also remind firms of the regulatory technical standard (RTS) 6 requirements governing algorithmic trading controls.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b1478afae39593c5",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "These cover areas including testing, governance and oversight, pre-trade controls, and mechanisms to cancel unexecuted orders where necessary.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "083ac5e651dd02ec",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Algorithmic trading controls",
+        "extractedText": "While developed for algorithmic trading, these types of controls may provide useful considerations for firms when managing the risks associated with AI and other forms of automation.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f63e6037cab813a9",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data loss prevention framework",
+        "extractedText": "An employee at a bank attempted to evade data loss prevention (DLP) controls designed to prevent sensitive information being sent outside the firm by email.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "dc94531f26ee89b6",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data loss prevention framework",
+        "extractedText": "The individual adapted their behaviour over time, exploiting limitations in existing controls to reduce the likelihood of detection.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "79a3ca35647926d9",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Data loss prevention framework",
+        "extractedText": "This included splitting information across multiple emails to remain below size restrictions, altering document classifications and file formats, embedding information within images and using misleading email subjects.&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "662676cac3c8b112",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Evidencing resilience in practice&nbsp;",
+        "extractedText": "Through our supervisory work we’ve seen that wholesale banks have continued to enhance operational resilience arrangements including governance, important business service identification, impact tolerance setting, mapping and scenario testing.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a3ca74a6113c8339",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Evidencing resilience in practice&nbsp;",
+        "extractedText": "There is still room for improvement in areas such as:&nbsp; Self-assessments: the evidence that firms used to support their operational resilience self-assessments varied in quality.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cddb3d3e2bfb5ddf",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Evidencing resilience in practice&nbsp;",
+        "extractedText": "Stronger submissions used granular metrics and linked these clearly to impact tolerances, scenario testing, vulnerabilities, remediation and Board reporting.&nbsp; Impact tolerances and market harm: banks should be able to explain how they have calibrated their impact tolerances by reference to the potential impact of disruption on trading, settlement, client and counterparty activity and other time-critical wholesale market processes.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d37e442d0e87b5fe",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Evidencing resilience in practice&nbsp;",
+        "extractedText": "They shouldn’t rely solely on generic recovery time objectives or service availability measures if they don’t fully capture the potential harm arising from disruption.&nbsp; Remediation: where banks rely on future remediation or transformation activity, they should clearly distinguish in their self-assessments between that and current resilience capability.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "574d256f9f81832f",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Evidencing resilience in practice&nbsp;",
+        "extractedText": "Firms should also show how incidents, near misses and testing outcomes have informed mapping, vulnerability assessment, remediation priorities and future scenario design including how completed remediation has been validated or re-tested.&nbsp; T+1 settlement: firms with settlement-related important business services should consider how the move to T+1 securities settlement may affect post-trade processing, dependencies, scenario testing, ability to recover within impact tolerance and remediation priorities.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "47ab71abbabadfd0",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Evidencing resilience in practice&nbsp;",
+        "extractedText": "They should consider if shorter settlement timelines create disruption that could affect clients, counterparties or market activity.&nbsp; Firms may wish to consider these observations alongside our operational resilience insights and observations which provide cross-sector examples of good practice, common weaknesses and areas for continued improvement.",
+        "evidenceKind": "supervisory_example",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5dd4f2d04fc2242f",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "Our new cryptoasset application window opened on 30 September 2026 ahead of the new UK cryptoasset regime coming into force in 2027.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "c15711e4f755a6f8",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "The cryptoasset regime is a major step forward.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "aea3a2278a09cf42",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "It will bring more cryptoasset activities within our remit including custody, operating trading platforms, dealing, arranging deals, stablecoin issuance and staking.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d8ca5380348cbfd6",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "Wholesale banks can now submit a variation of permission (VoP) application to carry out regulated cryptoasset activities.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "0e67093cf3f2a882",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "We encourage banks to submit an application by 28 February 2027.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a47f86e0ab25e1ee",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "Firms that submit before this date will either be told about the outcome of their application before the regime comes into force on 25 October 2027 or, if we’re still working on the application by that point, can carry on their cryptoasset activities while we reach a decision.&nbsp; If a firm applies after 28 February 2027, but before the full regime starts on 25 October 2027, it will enter the&nbsp; transitional provision while the application is determined.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "c52f7b836302cd58",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "During this, firms will be limited in the cryptoasset activities they can conduct.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a3b3e02cadde4e1c",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "A bank will only be able to conduct the new UK-regulated cryptoasset activities where necessary to fulfil a contract agreed before entering the transitional provision.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "34ded8497b07a2b8",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "They cannot enter into new contracts with existing or new UK customers.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "9216a0d8415b9008",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "Find out how the gateway will operate for firms that want to undertake the new cryptoasset regulated activities.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "edba9f3d6c2dce8f",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "We remind firms about the pre-application services we offer to firms for this VoP application.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f205f993ef85b4b2",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Cryptoassets: the new regime&nbsp;",
+        "extractedText": "These services can also be used by firms when considering changes to their permissions, applying for rule waivers or making a change in control notification.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d5e5857e1447e8c2",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+        "extractedText": "We continue to see demand from firms seeking regulatory support through the Regulatory Sandbox and Innovation Pathways.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "9a1f4b536fc707d2",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+        "extractedText": "In the first half of 2026, we saw several wholesale market propositions focused on digital infrastructure.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cf6608b255f7cd04",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+        "extractedText": "This included solutions to improve liquidity, connectivity and portfolio management in private credit, digitise trade documents and workflows and support new approaches to fundraising, investment and ownership through digital platforms.&nbsp; These examples highlight the importance of considering the specific role and activities of the firm or platform including how assets are controlled, held and settled.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cc9b3e805b541664",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+        "extractedText": "Firms developing innovative market infrastructure should consider these issues early and, where appropriate, seek regulatory support to understand how their model, controls and arrangements may operate before wider deployment.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d33c9b442e78cb24",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+        "extractedText": "We are also using thematic Regulatory Sandbox cohorts to take a focused look at specific areas of innovation.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "fac7617224e5e4b3",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+        "extractedText": "Our next themed cohort will focus on climate scenario models, with the application window running from 1 October to 30 November 2026.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7f03de44def1d8bb",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+        "extractedText": "The cohort will look at how firms develop and use&nbsp; climate scenario models and how these models may help firms better understand climate-related financial risks.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "ab829ff9c97e9556",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Innovation in digital market infrastructure&nbsp;",
+        "extractedText": "To access these services and find out more about how the FCA supports innovation, please see our pages on the&nbsp; Regulatory Sandbox and&nbsp; Innovation Pathways .&nbsp; We will shortly publish, jointly with the Bank of England, a roadmap setting out next steps for tokenisation in UK wholesale markets.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cb9fca8734c29d6c",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "In September, we published what we had learned from how firms are using, testing and preparing for frontier AI models .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7060edc3460b63c7",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "More broadly, we have recently published&nbsp; AI in financial services: good practice and areas for improvement , which shares examples from across financial services.",
+        "evidenceKind": "supervisory_example",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f68b967fe17a682a",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "We also remind banks that there are ways we can support an idea or firm on AI .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3d30e1daff036a2a",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "We’ve also been engaging with banks to learn more about how they are using and governing AI elsewhere in their business.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "6cee5e650e9b49f4",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "A key focus was on effective human oversight as AI-generated outputs increase and become more autonomous.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2d39fbeac3832af9",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "In one incident, inaccurate AI-generated code recommendations were not identified during the human review stage and resulted in a loss of service.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "ba6c22a5330f0804",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "This firm introduced additional controls, including test cases and strengthening feedback mechanisms to improve the accuracy of AI-generated recommendations.&nbsp; There have been incidents of staff using AI tools unapproved by the firm resulting in data leaks, including of sensitive information.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cc237fac88a20a92",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "To address this, we saw firms implement mandatory training, attestations and amnesty periods to identify previously undisclosed AI usage.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "92ae4e5f75a82415",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "Firms will need to be vigilant to this risk, consider their control framework and reinforce expectations to their staff.&nbsp;&nbsp; As might be expected, AI is increasingly featuring in reviews by banks’ internal audit functions.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f2630b050125f4d9",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "Here are some areas for improvement that they have identified:&nbsp;&nbsp; Committees not tracking conditional approvals and one instance where the formal approval process was not followed.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "5ca96cf6885eba89",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "Recording conditional approvals as full approvals.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "621326a4492a8b36",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Artificial Intelligence&nbsp;(AI)",
+        "extractedText": "A use case that progressed to production under an undocumented exception.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "793b4e47abdcb5b6",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Unregistered annex 1 firms&nbsp;&nbsp;",
+        "extractedText": "Certain businesses, including some unregulated lenders, safe custody providers, money brokers and financial leasing companies, may need to register with the FCA under the Money Laundering Regulations 2017.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "54d8b01d0f3ea885",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Unregistered annex 1 firms&nbsp;&nbsp;",
+        "extractedText": "We see banks providing funding and other services to firms that are not legally permitted to carry on annex 1 activities.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "74336eaa767f8179",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Unregistered annex 1 firms&nbsp;&nbsp;",
+        "extractedText": "Banks should ensure that their financial crime systems and controls enable them to identify and manage the risks associated with the firms they fund or service.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "15972bd32cbfc9ef",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Unregistered annex 1 firms&nbsp;&nbsp;",
+        "extractedText": "If a bank’s checks raise concerns about potentially unlawful annex 1 activity, it should contact the FCA’s firm queries team at [email&#160;protected] or on 0300 500 0597.&nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "21ffb90a2f56a7a5",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+        "extractedText": "The definition of securitisation in UK legislation is quite broad and encompasses a large number of financings where the credit risk is tranched.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f353b175de9ae6e1",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+        "extractedText": "Often those financings are done privately and involve regulated entities taking risk on the structure by investing or lending on a senior basis.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "bc3658880c84ee2c",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+        "extractedText": "Whether private or public, financings that come under the securitisation definition are regulated under FCA and PRA rules.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a183068ae7cda24c",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+        "extractedText": "In particular, this means that institutional lenders/investors in those transactions are subject to due diligence obligations to ensure that they properly understand and assess the risks of the securitisations they invest in, both before investing and throughout the life of the investments.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "08f895b7062ac1ea",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+        "extractedText": "The FCA will soon publish its revised rules for securitisations.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e3c82a7476eb9baa",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Due diligence before investing in securitisation&nbsp;&nbsp;",
+        "extractedText": "The rules reaffirm the critical importance of due diligence, focusing on the outcome rather than prescribing how it should be done.&nbsp;&nbsp; Examples of good practices that the FCA has observed when it comes to due diligence include enhanced due diligence on the credit-granting standards of originators which are neither capital requirements regulation (CRR) firms nor FCA-authorised investment firms, specific controls and risk appetite for securitisations backed by asset types which are more susceptible to fraud or at risk of double-pledging and investors taking an active role in the design and governance of agreed upon procedures (AUPs).",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "dfad44aa76540955",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "We reviewed how 6 wholesale banks' prime brokerage businesses incorporate conduct and reputational risk information into client risk assessments.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f9fa4f15df85dd80",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "We did this by selecting a sample of clients to test how processes were applied in practice.&nbsp; Our main observation is that, at some firms, we found limited evidence of sharing client information generated through surveillance, investigations, know your customer processes and ongoing monitoring with those responsible for managing client risk appetite.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "dea93a398cee0f05",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "Some firms cited confidentiality concerns as a barrier to sharing information across divisions.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e484da158747ba95",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "The strongest firms in our sample were able to share information across divisions and through escalation on a timely basis (for example through the use of forums and committees) while complying with legal and regulatory obligations and clients’ best interests.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "31db429af321822a",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "This enhanced the client risk assessment process.&nbsp; For example, one firm used information from across the business and control functions to identify emerging concerns about a client.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d1c3a0b23546b64f",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "Trade surveillance alerts, regulatory issues in different jurisdictions, inadequate awareness by the client of risks associated with its underlying clients as well as poor communications all pointed to increased risk.&nbsp; In response, the prime broker took progressively stronger action,&nbsp;engaging with the client to address shortcomings, restricting activity and, because the risk remained outside of the banks’ risk appetite, ultimately offboarding the client.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a9ee19b578778306",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "In another example, the firm incorporated trading activity and regulatory findings into ongoing client risk assessments.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "34fa19312603c9db",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "This led to the prime broker reducing the client’s leverage and capacity limits.&nbsp; In these examples, we did not observe unrestricted information sharing, but we did see arrangements that enabled relevant risk information, or an appropriate assessment of it, to be made available to those responsible for client risk decisions.&nbsp; In another business line we saw one firm recognise that it needed to improve how it considered financial crime risk indicators in aggregate.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "7f5e19c351adfdc4",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Prime brokerage: client risk assessment &nbsp;&nbsp;",
+        "extractedText": "On their own, indicators had not necessarily met the firm’s threshold for escalation but collectively, they pointed to a deteriorating client risk profile.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d0571d8bcbfb5054",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Request for quote (RFQ) controls&nbsp;",
+        "extractedText": "At one firm, in submitting a request for a quote for a fixed income product, a trader did not understand the platform’s denomination convention and so manually entered a notional figure in the billions rather than the millions it should have been.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "9d9892b021206e3f",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Request for quote (RFQ) controls&nbsp;",
+        "extractedText": "The error was promptly identified and both parties agreed to cancel the trade, but not before it had been submitted for clearing.&nbsp; Weaknesses in ‘fat finger’ controls were identified in this and other high-touch platforms used for RFQ.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "364f817b71b7713a",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Request for quote (RFQ) controls&nbsp;",
+        "extractedText": "Specifically, the firm identified that:&nbsp; Onboarding requirements did not establish minimum levels of ‘fat finger’ controls (for example combinations of price, quantity, notional, volume, or other trade economics), soft block functionality and vendor control activation and controls inconsistently applied across all platforms.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "2df5b80da10791f3",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Request for quote (RFQ) controls&nbsp;",
+        "extractedText": "It wasn’t maintaining a platform inventory detailing the hard and soft block ‘fat finger’ controls in operation by product.&nbsp; Annual supervisory review by business units to confirm completeness and accuracy were not performed; periodic testing of ‘fat finger’ controls was not conducted comprehensively or consistently.&nbsp; Periodic reviews of limits and thresholds associated with hard and soft blocks were not performed and audit trails for changes did not exist.&nbsp; Firm’s governance and supervision should ensure that controls preventing the entry of erroneous orders, quotes and indications of interest are appropriately implemented, periodically tested and that thresholds and limits are calibrated to reflect current business activity. &nbsp;",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "75a2549397e6c2b7",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Internal audit metrics",
+        "extractedText": "We are sharing 2 key metrics gathered from the internal audit functions of 7 wholesale bank subsidiaries to provide a reference point banks may otherwise not have.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "248aff3aea261bcf",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Internal audit metrics",
+        "extractedText": "There will be important underlying context to this data and, as a result, we are not providing commentary.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f670d560a2eb17ae",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Internal audit metrics",
+        "extractedText": "Chart Data table Download Chart Data table Download",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a07c9856c9da0005",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "What firms need to do",
+        "extractedText": "Firms should consider the observations in this publication and how they may apply to their own activities and practices.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "391e2997584427b1",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we did this work",
+        "extractedText": "Help firms benchmark and use practical examples to achieve regulatory outcomes more efficiently.&nbsp; Provide data and insights not typically available to firms such as aggregated information from regulatory returns submitted to the FCA and risks which have crystalised.&nbsp; Highlight where the market is performing well and where improvements are needed.&nbsp; Was this page useful?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f54f0a62ab7b17c3",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we did this work",
+        "extractedText": "Yes No What can we do to improve pages like this?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3b1ad199e189d1f3",
+        "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+        "extractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we did this work",
+        "extractedText": "Submit Feedback Leave this field blank",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      }
+    ],
+    "evidenceMedium": "fca_webpage",
+    "integrityVerified": true,
+    "obligationGradeSuitable": true,
+    "publicationTitle": "Wholesale banks supervision - Insights 3 (Autumn 2026)",
+    "publicationReference": null,
+    "regulatorShortName": "FCA",
+    "regulatorLabel": "Financial Conduct Authority",
+    "extractionProfiles": [
+      "html_article_v2"
+    ],
+    "htmlExtractionRevisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+    "pdfExtractionRevisionId": null
+  },
+  "provenanceClassification": "AUTHORITATIVE_STAGING_EXTRACTION",
+  "retrievalProvenance": {
+    "exportSource": "b2_staging_readonly_export",
+    "exportedAt": "2026-11-10T18:46:16.230Z"
+  },
+  "exportSource": "b2_staging_readonly_export"
+}

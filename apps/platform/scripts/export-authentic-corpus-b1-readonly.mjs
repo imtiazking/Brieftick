@@ -32,10 +32,10 @@ function buildPack(target, ev) {
     contentSha256: ev.rawContentSha256 || sha256Json(ev.evidenceBlocks?.slice(0, 3)),
     regulatoryStatus: ev.publicationMetadata?.publicationType || target.sourceType,
     blockCount: ev.evidenceBlocks?.length ?? 0,
-    verifiedTextSamples: (ev.evidenceBlocks || []).slice(0, 48).map((b) => ({
+    verifiedTextSamples: (ev.evidenceBlocks || []).map((b) => ({
       documentEvidenceId: b.documentEvidenceId,
       sectionReference: b.sectionReference,
-      extractedText: String(b.extractedText || '').slice(0, 2000),
+      extractedText: String(b.extractedText || ''),
     })),
     askRiEvidence: ev,
     provenanceClassification: EVIDENCE_PROVENANCE_CLASS.AUTHORITATIVE_STAGING_EXTRACTION,

@@ -1,0 +1,119 @@
+{
+  "datasetVersion": "development-retrieval-probes-2b2-step-f-v2",
+  "supersedes": "development-retrieval-probes-2b2-step-f-v1",
+  "createdAt": "2026-11-10",
+  "changeLog": [
+    "DEV-NEG-NEAR-02 replaced: wholesale banks probe may become answerable if B2 ingests that MFR; new near-miss uses GC26/8 primary markets content absent from corpus."
+  ],
+  "scope": "offline_semantic_retrieval_only",
+  "notFrozenBaseline": true,
+  "probes": [
+    {
+      "testId": "DEV-B1-01",
+      "category": "b1_positive",
+      "question": "How did supervisors assess conflicts of interest frameworks in private equity and private credit managers?",
+      "expectedPublicationIds": ["edcebe7d-3a3f-4adb-bb54-14120f14315a"]
+    },
+    {
+      "testId": "DEV-B1-02",
+      "category": "b1_positive",
+      "question": "What did the multi-firm review highlight about fair treatment of investors in private markets?",
+      "expectedPublicationIds": ["edcebe7d-3a3f-4adb-bb54-14120f14315a"]
+    },
+    {
+      "testId": "DEV-B1-03",
+      "category": "b1_positive",
+      "question": "What does published supervisory data show about UK mortgage portfolios exposed to flood risk?",
+      "expectedPublicationIds": ["49dee37a-9051-4c3f-8597-fa0dc232c91d"]
+    },
+    {
+      "testId": "DEV-B1-04",
+      "category": "b1_positive",
+      "question": "Which mortgage lenders had the highest concentration of properties in high flood-risk areas?",
+      "expectedPublicationIds": ["49dee37a-9051-4c3f-8597-fa0dc232c91d"]
+    },
+    {
+      "testId": "DEV-B1-05",
+      "category": "b1_positive",
+      "question": "What retirement income policy issues is the regulator consulting on under guided retirement proposals?",
+      "expectedPublicationIds": ["34b18772-3732-4e10-89a6-946bd15c5afe"]
+    },
+    {
+      "testId": "DEV-B1-06",
+      "category": "b1_positive",
+      "question": "What aspects of the credit union regulatory regime are under discussion for reform?",
+      "expectedPublicationIds": ["ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e"]
+    },
+    {
+      "testId": "DEV-B1-07",
+      "category": "b1_positive",
+      "question": "How wide is geographic coverage of free cash access points across UK regions in the latest half-year statistics?",
+      "expectedPublicationIds": ["9e8d3736-506a-4909-8ad4-08229e0e6249"]
+    },
+    {
+      "testId": "DEV-B1-08",
+      "category": "b1_positive",
+      "question": "What share of the population remains more than a kilometre from nearest cash withdrawal facilities?",
+      "expectedPublicationIds": ["9e8d3736-506a-4909-8ad4-08229e0e6249"]
+    },
+    {
+      "testId": "DEV-ORIG-01",
+      "category": "original_frozen_suite",
+      "question": "How does the FCA expect firms to monitor customer outcomes for fair value?",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ]
+    },
+    {
+      "testId": "DEV-NEG-NEAR-01",
+      "category": "near_miss_negative",
+      "question": "What does Policy Statement PS26/21 require firms to report under the EMIR intragroup regime?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-NEAR-02",
+      "category": "near_miss_negative",
+      "question": "What listing requirements does GC26/8 introduce for primary market bulletin issuers?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain",
+      "notes": "Primary markets GC content — not in authoritative offline corpus (replaces wholesale banks near-miss)."
+    },
+    {
+      "testId": "DEV-NEG-NEAR-03",
+      "category": "near_miss_negative",
+      "question": "What are the consultation deadlines for consolidated tape operational incident reporting rules?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-UNREL-01",
+      "category": "unrelated_negative",
+      "question": "Explain Basel III output floor requirements for UK banks.",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-UNREL-02",
+      "category": "unrelated_negative",
+      "question": "What are FDA adverse event reporting timelines for medical devices?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-DIST-B1-01",
+      "category": "closely_related_distractor",
+      "question": "What operational resilience self-assessment outcomes must insurers disclose under PS24/1?",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    },
+    {
+      "testId": "DEV-NEG-REF-BLOCK-01",
+      "category": "explicit_invalid_reference",
+      "question": "Summarise FCA Policy Statement PS88/88 on mortgage conduct rules.",
+      "expectedPublicationIds": [],
+      "expectedBehavior": "abstain"
+    }
+  ]
+}

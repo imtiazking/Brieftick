@@ -1,0 +1,331 @@
+{
+  "phase": "2B.2-B2",
+  "generatedAt": "2026-11-10T18:45:38.888Z",
+  "preflight": {
+    "gitBranch": "feature/ask-ri-v2-evaluation-baseline",
+    "stagingProjectRef": "lhgzdicffkhaaykzthep",
+    "targetCount": 6,
+    "onlyUrlSupported": true,
+    "item7HubExcluded": true
+  },
+  "publications": [
+    {
+      "reference": "PS22/9",
+      "verifiedTitle": "PS22/9: A new Consumer Duty",
+      "publicationType": "policy_statement",
+      "canonicalUrl": "https://www.fca.org.uk/publications/policy-statements/ps22-9-new-consumer-duty",
+      "requiresPrimaryPdf": true,
+      "publicationId": null,
+      "status": "PASS",
+      "resolvedPublicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "snapshot": {
+        "snapshotId": "c109d38b-d909-4d3d-9e71-add25495d6b4",
+        "created": false,
+        "rawStoragePath": "by-hash/fa4e6d333058a5dc/fa4e6d333058a5dc10e7c7b423a2719f476abce9cacdb5068d27729d886e17e1.raw.html"
+      },
+      "htmlExtraction": {
+        "revisionId": "c76f5887-9e62-4b3b-a672-9fe9ceabe499",
+        "created": true,
+        "derivedFingerprint": "a64289e72ca0d396eb1c5a010b5178c8fadd42d43d93fa003d1a14e1064f5570",
+        "rawSha256": "fa4e6d333058a5dc10e7c7b423a2719f476abce9cacdb5068d27729d886e17e1",
+        "extractionQuality": {
+          "status": "complete",
+          "confidence": "high",
+          "score": 100,
+          "signals": [
+            "primary_pdf_not_captured"
+          ],
+          "metrics": {
+            "plainTextLength": 2619,
+            "headingCount": 3,
+            "paragraphCount": 12,
+            "alphaWordCount": 269,
+            "pdfAttachmentCount": 6
+          },
+          "webpageExtraction": {
+            "status": "complete",
+            "confidence": "high",
+            "score": 100
+          },
+          "primaryDocument": {
+            "classification": "pdf_primary",
+            "primaryPdfCaptured": false,
+            "primaryPdfUrl": "https://www.fca.org.uk/publication/policy/ps22-9.pdf",
+            "completeness": "not_captured"
+          },
+          "obligationGradeSuitable": false
+        },
+        "pdfAttachments": null
+      },
+      "pdfExtraction": {
+        "revisionId": "33d01f14-f633-4708-94b3-3aa26755417c",
+        "outcome": "created",
+        "primaryPdfUrl": "https://www.fca.org.uk/publication/policy/ps22-9.pdf",
+        "contentSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+        "pageCount": 161,
+        "htmlRevisionId": "c76f5887-9e62-4b3b-a672-9fe9ceabe499",
+        "physicalPages": 161
+      }
+    },
+    {
+      "reference": "FG21/1",
+      "verifiedTitle": "Guidance for firms on the fair treatment of vulnerable customers",
+      "publicationType": "finalised_guidance",
+      "canonicalUrl": "https://www.fca.org.uk/publications/finalised-guidance/guidance-firms-fair-treatment-vulnerable-customers",
+      "requiresPrimaryPdf": true,
+      "publicationId": null,
+      "status": "PASS",
+      "resolvedPublicationId": "a784dcfc-d443-4295-99f9-d0f23a5fadd6",
+      "snapshot": {
+        "snapshotId": "f9fb927b-1468-4787-9e1d-1a09fb9d1060",
+        "created": false,
+        "rawStoragePath": "by-hash/eda0eec15d13f9be/eda0eec15d13f9be27c684ef44828587b2b6ba6a9e0cae865b10cabb48ffe409.raw.html"
+      },
+      "htmlExtraction": {
+        "revisionId": "e2006b3a-3d84-46ab-a6f1-e6c5740a1cf1",
+        "created": true,
+        "derivedFingerprint": "c9530ce671766c74bf80fd4dc9243bd9f41175fd21d351290499075df6eabd7f",
+        "rawSha256": "eda0eec15d13f9be27c684ef44828587b2b6ba6a9e0cae865b10cabb48ffe409",
+        "extractionQuality": {
+          "status": "complete",
+          "confidence": "high",
+          "score": 100,
+          "signals": [
+            "primary_pdf_not_captured"
+          ],
+          "metrics": {
+            "plainTextLength": 8181,
+            "headingCount": 8,
+            "paragraphCount": 25,
+            "alphaWordCount": 816,
+            "pdfAttachmentCount": 3
+          },
+          "webpageExtraction": {
+            "status": "complete",
+            "confidence": "high",
+            "score": 100
+          },
+          "primaryDocument": {
+            "classification": "pdf_primary",
+            "primaryPdfCaptured": false,
+            "primaryPdfUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg21-1.pdf",
+            "completeness": "not_captured"
+          },
+          "obligationGradeSuitable": false
+        },
+        "pdfAttachments": null
+      },
+      "pdfExtraction": {
+        "revisionId": "2c2922b7-73fc-4454-9fc3-e2b7951808e9",
+        "outcome": "created",
+        "primaryPdfUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg21-1.pdf",
+        "contentSha256": "09c0ff049257eea47ced8ee8e447e917fa736f9e2c88b536b8b7e3ee1927deb8",
+        "pageCount": 57,
+        "htmlRevisionId": "e2006b3a-3d84-46ab-a6f1-e6c5740a1cf1",
+        "physicalPages": 57
+      }
+    },
+    {
+      "reference": "FG24/6",
+      "verifiedTitle": "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+      "publicationType": "finalised_guidance",
+      "canonicalUrl": "https://www.fca.org.uk/publications/finalised-guidance/fg24-6-guidance-firms-enables-risk-based-approach-payments",
+      "requiresPrimaryPdf": true,
+      "publicationId": null,
+      "status": "PASS",
+      "resolvedPublicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+      "snapshot": {
+        "snapshotId": "fe65b5e5-8b8b-4859-af52-89702bfb6444",
+        "created": false,
+        "rawStoragePath": "by-hash/1201fdc71599dc4f/1201fdc71599dc4f1259c97ea02103bb283b0ab9a5fa3251e1545666f5410bb1.raw.html"
+      },
+      "htmlExtraction": {
+        "revisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "created": true,
+        "derivedFingerprint": "4f735a867d7fab70e5fe668def377295e254fd325505d65d86dd2911099f5338",
+        "rawSha256": "1201fdc71599dc4f1259c97ea02103bb283b0ab9a5fa3251e1545666f5410bb1",
+        "extractionQuality": {
+          "status": "complete",
+          "confidence": "high",
+          "score": 100,
+          "signals": [
+            "primary_pdf_not_captured"
+          ],
+          "metrics": {
+            "plainTextLength": 2486,
+            "headingCount": 4,
+            "paragraphCount": 9,
+            "alphaWordCount": 243,
+            "pdfAttachmentCount": 3
+          },
+          "webpageExtraction": {
+            "status": "complete",
+            "confidence": "high",
+            "score": 100
+          },
+          "primaryDocument": {
+            "classification": "pdf_primary",
+            "primaryPdfCaptured": false,
+            "primaryPdfUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg24-6.pdf",
+            "completeness": "not_captured"
+          },
+          "obligationGradeSuitable": false
+        },
+        "pdfAttachments": null
+      },
+      "pdfExtraction": {
+        "revisionId": "5138fabf-983f-4694-81d4-0336df6f4e78",
+        "outcome": "created",
+        "primaryPdfUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg24-6.pdf",
+        "contentSha256": "bd8438aea1dcfe6adfd940849de42e19faa483b8a092601983ad0dfe05f17e14",
+        "pageCount": 17,
+        "htmlRevisionId": "85297be5-cd30-40ce-a812-f92ec8197ec0",
+        "physicalPages": 17
+      }
+    },
+    {
+      "reference": null,
+      "verifiedTitle": "Wholesale banks supervision - Insights 3 (Autumn 2026)",
+      "publicationType": "multi_firm_review",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026",
+      "requiresPrimaryPdf": false,
+      "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+      "status": "PASS",
+      "resolvedPublicationId": "caeb51af-829e-478d-b816-bee61252678a",
+      "snapshot": {
+        "snapshotId": "90ef6961-1b0e-4a41-82a2-9e5b19a35997",
+        "created": false,
+        "rawStoragePath": "by-hash/810465533c087d36/810465533c087d36d289fcc459e47b33096a8d3521115bd8e97499eebea8f276.raw.html"
+      },
+      "htmlExtraction": {
+        "revisionId": "e86652e9-bd87-41f5-9417-ca9ba23fd93f",
+        "created": true,
+        "derivedFingerprint": "f2974ae00e9949513786632998aea49caf5ed39466ba3ec13893e086f68eec47",
+        "rawSha256": "810465533c087d36d289fcc459e47b33096a8d3521115bd8e97499eebea8f276",
+        "extractionQuality": {
+          "status": "complete",
+          "confidence": "high",
+          "score": 100,
+          "signals": [],
+          "metrics": {
+            "plainTextLength": 18893,
+            "headingCount": 22,
+            "paragraphCount": 50,
+            "alphaWordCount": 1898,
+            "pdfAttachmentCount": 0
+          },
+          "webpageExtraction": {
+            "status": "complete",
+            "confidence": "high",
+            "score": 100
+          },
+          "primaryDocument": {
+            "classification": "webpage_only",
+            "primaryPdfCaptured": false,
+            "primaryPdfUrl": null,
+            "completeness": "not_applicable"
+          },
+          "obligationGradeSuitable": true
+        },
+        "pdfAttachments": null
+      }
+    },
+    {
+      "reference": null,
+      "verifiedTitle": "Defence SMEs: access to banking services",
+      "publicationType": "multi_firm_review",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/defence-smes-access-banking-services",
+      "requiresPrimaryPdf": false,
+      "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+      "status": "PASS",
+      "resolvedPublicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+      "snapshot": {
+        "snapshotId": "479bf8c2-ae58-4594-8d1a-e6610aaed245",
+        "created": false,
+        "rawStoragePath": "by-hash/4da4e5ef95c14875/4da4e5ef95c148756abaabcb2aaef8bd2f9480a786143b073e6ca37593cadfe4.raw.html"
+      },
+      "htmlExtraction": {
+        "revisionId": "93ea9d73-9ef4-4bb6-906b-dde1ac84d5f2",
+        "created": true,
+        "derivedFingerprint": "f7b86452dd75c7094b04a5b7b4335e9c807f090822d0320857a6cdb91bab209c",
+        "rawSha256": "4da4e5ef95c148756abaabcb2aaef8bd2f9480a786143b073e6ca37593cadfe4",
+        "extractionQuality": {
+          "status": "complete",
+          "confidence": "high",
+          "score": 100,
+          "signals": [],
+          "metrics": {
+            "plainTextLength": 13352,
+            "headingCount": 13,
+            "paragraphCount": 47,
+            "alphaWordCount": 1383,
+            "pdfAttachmentCount": 1
+          },
+          "webpageExtraction": {
+            "status": "complete",
+            "confidence": "high",
+            "score": 100
+          },
+          "primaryDocument": {
+            "classification": "webpage_only",
+            "primaryPdfCaptured": false,
+            "primaryPdfUrl": null,
+            "completeness": "not_applicable"
+          },
+          "obligationGradeSuitable": true
+        },
+        "pdfAttachments": null
+      }
+    },
+    {
+      "reference": null,
+      "verifiedTitle": "Access to cash coverage in the UK 2024 H2",
+      "publicationType": "data",
+      "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2024-h2",
+      "requiresPrimaryPdf": false,
+      "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+      "status": "PASS",
+      "resolvedPublicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+      "snapshot": {
+        "snapshotId": "e4886c17-d245-4d3a-b9c5-6e654a4c70d6",
+        "created": true,
+        "rawStoragePath": "by-hash/6592ca1c5aeffd0b/6592ca1c5aeffd0bed2a36ab301d63990333224278f01b78109ce3ec78df66f6.raw.html"
+      },
+      "htmlExtraction": {
+        "revisionId": "d7e2f6e1-1fd3-4f59-b674-28bc1ff729db",
+        "created": true,
+        "derivedFingerprint": "84bd9adde5f911dc524e47913258e746d440cda7c2571dec8634d3eba4ed564b",
+        "rawSha256": "6592ca1c5aeffd0bed2a36ab301d63990333224278f01b78109ce3ec78df66f6",
+        "extractionQuality": {
+          "status": "complete",
+          "confidence": "high",
+          "score": 100,
+          "signals": [
+            "primary_pdf_not_captured"
+          ],
+          "metrics": {
+            "plainTextLength": 18155,
+            "headingCount": 17,
+            "paragraphCount": 29,
+            "alphaWordCount": 1671,
+            "pdfAttachmentCount": 2
+          },
+          "webpageExtraction": {
+            "status": "complete",
+            "confidence": "high",
+            "score": 100
+          },
+          "primaryDocument": {
+            "classification": "pdf_primary",
+            "primaryPdfCaptured": false,
+            "primaryPdfUrl": "https://www.fca.org.uk/publication/policy/ps24-8.pdf",
+            "completeness": "not_captured"
+          },
+          "obligationGradeSuitable": false
+        },
+        "pdfAttachments": null
+      }
+    }
+  ],
+  "overall": "PASS"
+}

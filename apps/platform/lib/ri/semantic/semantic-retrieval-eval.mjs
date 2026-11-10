@@ -15,6 +15,8 @@ import { validateExplicitPublicationReferences } from './publication-reference-v
 import { decideRetrievalMatch, isSubstantivePassage } from './no-match-detection.mjs';
 import { filterAuthoritativeEvidencePacks } from './regulatory-evidence-provenance.mjs';
 import { CHUNK_INDEX_MAX_TOKENS } from './gte-small-config.mjs';
+import { normalizePackForFullSemanticIndex } from './evidence-pack-full-text.mjs';
+import { evaluateSemanticRetrievalAuthorityGate } from './semantic-retrieval-authority-gate.mjs';
 
 function cosineSimilarity(a, b) {
   let dot = 0;
@@ -63,7 +65,8 @@ export async function buildSemanticIndex(packsDir, { embedder, tokenizer } = {})
   const allChunks = [];
 
   for (const { file, pack } of packs) {
-    const chunks = await buildChunksFromEvidencePack(pack, tok, stats);
+    const fullPack = normalizePackForFullSemanticIndex(pack);
+    const chunks = await buildChunksFromEvidencePack(fullPack, tok, stats);
     for (const c of chunks) {
       c.packFile = file;
       c.chunkId = createHash('sha256')
@@ -115,8 +118,32 @@ export async function buildSemanticIndex(packsDir, { embedder, tokenizer } = {})
   };
 }
 
-async function scoreQuestion(index, question, caseRow, provisionalThreshold) {
+export async function scoreQuestion(index, question, caseRow, provisionalThreshold) {
   const t0 = performance.now();
+  const authorityGate = evaluateSemanticRetrievalAuthorityGate(question, {
+    indexedRegulatorIds: ['REG-FCA'],
+  });
+  if (authorityGate.blockSemanticSelection) {
+    return {
+      testId: caseRow?.testId,
+      question,
+      latencyMs: Number((performance.now() - t0).toFixed(2)),
+      expectedPublicationIds: caseRow?.expectedPublicationIds || [],
+      authorityGate,
+      referenceValidation: { outcome: authorityGate.outcome, blockSemanticSelection: true },
+      noMatchDecision: {
+        abstain: true,
+        reasons: [authorityGate.abstainReason],
+        signals: { authorityGate: true },
+      },
+      rankedPublications: [],
+      topChunks: [],
+      publicationSelected: null,
+      passageRelevant: false,
+      passageSubstance: { substantive: false, reason: 'authority_gate' },
+      correctlyRejected: !(caseRow?.expectedPublicationIds || []).length,
+    };
+  }
   const qVec = tensorToArray(
     await index.embedder(question, {
       pooling: EMBEDDING_OPTIONS.pooling,
@@ -230,7 +257,8 @@ async function buildIndexFromPackDirs(dirs, { embedder, tokenizer }) {
   const chunkVectors = [];
 
   for (const { file, pack } of packs) {
-    const chunks = await buildChunksFromEvidencePack(pack, tokenizer, stats);
+    const fullPack = normalizePackForFullSemanticIndex(pack);
+    const chunks = await buildChunksFromEvidencePack(fullPack, tokenizer, stats);
     for (const c of chunks) {
       c.packFile = file;
       c.chunkId = createHash('sha256')
