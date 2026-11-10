@@ -8,6 +8,7 @@ import { answerAskRiFromBestPublicationPdfEvidence } from './publication-pdf-evi
 import { answerAskRiFromBestPublicationHtmlEvidence } from './publication-html-evidence.mjs';
 import { questionMentionsPublicationReference } from './publication-pdf-question-match.mjs';
 import { questionRequestsPdfSupplement } from './publication-question-scope.mjs';
+import { composeMixedHtmlPdfAnswer } from './compose-mixed-catalogue-answer.mjs';
 
 export { ASK_RI_RESULT_STATES };
 
@@ -53,6 +54,7 @@ function buildCatalogueEvidenceResult(question, payload) {
     htmlAnswer,
     pdfAnswer,
     pdfSupplement,
+    mixedSynthesis,
   } = payload;
   const modes = [];
   if (htmlAnswer?.status === 'ANSWERED' && (citations.some((c) => c.type === 'html_article_v2') || htmlAnswer.citations?.length)) {
@@ -81,7 +83,8 @@ function buildCatalogueEvidenceResult(question, payload) {
     execution: {
       resultState: status,
       providerUsed: false,
-      evidenceSource: modes[0] || 'catalogue_publication_evidence_v1',
+      evidenceSource:
+        modes.length > 1 ? 'mixed_catalogue_evidence' : modes[0] || 'catalogue_publication_evidence_v1',
       humanReviewStatus: audit.humanReviewStatus,
       mustNotPresentAsBindingObligation: audit.mustNotPresentAsBindingObligation,
       matchScore: audit.matchScore,
@@ -90,39 +93,12 @@ function buildCatalogueEvidenceResult(question, payload) {
         pdfSupplement?.status === 'ANSWERED' && pdfSupplement.citations?.length,
       ),
       evidenceSources: modes,
+      mixedKeyFindings: mixedSynthesis?.keyFindings,
+      synthesisMode: audit.synthesisMode,
     },
     publicationPdf: publicationPdfOut,
     publicationHtml: htmlAnswer?.status === 'ANSWERED' ? htmlAnswer : undefined,
   };
-}
-
-function composeMixedHtmlPdfAnswer(htmlAnswer, pdfSupplement, question) {
-  const base = String(htmlAnswer?.answer || '').trim();
-  const pdfCites = pdfSupplement?.citations || [];
-  if (!pdfCites.length) return base;
-
-  const pdfTitle =
-    pdfCites[0]?.publicationReference || pdfCites[0]?.publicationTitle || 'indexed FCA guidance PDF';
-  const passages = pdfCites.slice(0, 3).map((c) => {
-    const page = c.physicalPageNumber;
-    const section = c.sectionReference ? ` (${c.sectionReference})` : '';
-    const ex = String(c.excerpt || '').replace(/\s+/g, ' ').trim();
-    return `${pdfTitle} physical page ${page}${section}: "${ex.slice(0, 200)}${ex.length > 200 ? '…' : ''}"`;
-  });
-
-  const fairValueQ = /fair[- ]?value|consumer duty|consumer finance/i.test(String(question || ''));
-  const pdfNarrative = fairValueQ
-    ? `${pdfTitle} is finalised FCA non-Handbook guidance. Chapter 7 (The price and value outcome) sets out fair-value principles and assessment expectations that sit alongside the FCA supervisory webpage and binding PRIN 2A Consumer Duty rules in the Handbook.`
-    : `${pdfTitle} provides separate catalogue PDF guidance cited below (distinct from the FCA webpage HTML).`;
-
-  return [
-    base,
-    pdfNarrative,
-    `Relevant pdf_primary_v1 passages: ${passages.join(' ')}`,
-    'Supervisory webpage examples illustrate good/poor practice; they do not create new legal obligations. PDF guidance explains expectations — confirm binding Handbook text separately.',
-  ]
-    .filter(Boolean)
-    .join('\n\n');
 }
 
 function mergeCatalogueCitations(htmlCitations = [], pdfCitations = [], primaryPublicationId) {
@@ -224,23 +200,37 @@ export function runAskRiDeterministic(state, question) {
         let pdfSupplement = null;
         let citations = [...(htmlAnswer.citations || [])];
         let answer = htmlAnswer.answer;
+        let mixedSynthesis = null;
         if (pdfEvidenceList.length && questionRequestsPdfSupplement(question)) {
           pdfSupplement = answerAskRiFromBestPublicationPdfEvidence(pdfEvidenceList, question);
           if (pdfSupplement.status === 'ANSWERED' && pdfSupplement.citations?.length) {
             citations = mergeCatalogueCitations(citations, pdfSupplement.citations, primaryId);
-            answer = composeMixedHtmlPdfAnswer(htmlAnswer, pdfSupplement, question);
+            mixedSynthesis = composeMixedHtmlPdfAnswer(htmlAnswer, pdfSupplement, question);
+            answer = mixedSynthesis.answer;
           } else if (pdfSupplement.status === 'INSUFFICIENT_EVIDENCE') {
             answer = `${answer}\n\nPDF supplement: ${pdfSupplement.answer || 'FG22/5 or other linked PDF is not indexed with pdf_primary_v1 in this environment.'}`;
           }
         }
+        const mergedAudit = {
+          ...(htmlAnswer.audit || {}),
+          ...(mixedSynthesis
+            ? {
+                keyFindings: mixedSynthesis.keyFindings,
+                uncertainties: mixedSynthesis.uncertainties,
+                evidenceConfidence: mixedSynthesis.evidenceConfidence,
+                synthesisMode: 'deterministic_mixed_catalogue',
+              }
+            : {}),
+        };
         return buildCatalogueEvidenceResult(question, {
           status: 'ANSWERED',
           answer,
           citations,
-          audit: htmlAnswer.audit,
+          audit: mergedAudit,
           mode: 'catalogue_publication_evidence_v1',
           htmlAnswer,
           pdfSupplement,
+          mixedSynthesis,
         });
       }
       if (htmlAnswer.status === 'INSUFFICIENT_EVIDENCE' || htmlAnswer.status === 'UNRESOLVED') {

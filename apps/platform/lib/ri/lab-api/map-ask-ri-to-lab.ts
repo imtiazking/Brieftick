@@ -67,13 +67,18 @@ function mapCitationForLab(c: PdfCitation | Record<string, unknown>) {
 
 function pickCatalogueAnswerBody(
   result: AskRiResponse,
+  citations: PdfCitation[],
   html?: PublicationPdfAnswer,
   pdf?: PublicationPdfAnswer,
 ) {
-  if (result.status === 'ANSWERED' && html?.status === 'ANSWERED') {
+  const evidenceSource = resolveCatalogueEvidenceSource(result, citations);
+  if (result.status === 'ANSWERED' && evidenceSource === 'mixed_catalogue_evidence' && result.answer?.trim()) {
+    return result.answer;
+  }
+  if (result.status === 'ANSWERED' && html?.status === 'ANSWERED' && evidenceSource === 'html_article_v2') {
     return html.answer || result.answer;
   }
-  if (result.status === 'ANSWERED' && pdf?.status === 'ANSWERED') {
+  if (result.status === 'ANSWERED' && pdf?.status === 'ANSWERED' && evidenceSource === 'pdf_primary_v1') {
     return pdf.answer || result.answer;
   }
   return result.answer;
@@ -155,7 +160,19 @@ function answeredAnalysis(
     .filter(Boolean)
     .slice(0, 6) as string[];
   const htmlKeyFindings = (htmlAudit?.keyFindings as string[] | undefined)?.filter(Boolean) || [];
-  const keyFindings = htmlKeyFindings.length ? htmlKeyFindings : pdfKeyFindings;
+  const evidenceSource = resolveCatalogueEvidenceSource(result, citations);
+  const executionMixed = (result.execution as { mixedKeyFindings?: string[] } | undefined)?.mixedKeyFindings?.filter(
+    Boolean,
+  ) as string[] | undefined;
+  let keyFindings: string[] = [];
+  if (evidenceSource === 'mixed_catalogue_evidence') {
+    keyFindings =
+      executionMixed?.length
+        ? executionMixed
+        : [...htmlKeyFindings, ...pdfKeyFindings].filter(Boolean);
+  } else {
+    keyFindings = htmlKeyFindings.length ? htmlKeyFindings : pdfKeyFindings;
+  }
   const uncertainties = [
     ...((htmlAudit?.uncertainties as string[] | undefined) || []),
     ...(pdfAudit?.consultationPreserved === true
@@ -236,7 +253,7 @@ export function mapAskRiProductionToLabLastAsk(result: AskRiResponse) {
     }
     const citations = (result.citations || active.citations || []) as PdfCitation[];
     const evidenceSource = resolveCatalogueEvidenceSource(result, citations);
-    const answerBody = pickCatalogueAnswerBody(result, html, pdf);
+    const answerBody = pickCatalogueAnswerBody(result, citations, html, pdf);
     return {
       ok: true,
       connected,

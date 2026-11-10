@@ -71,6 +71,7 @@
     "test:acceptance:bus-uat-018-fg22-append-only": "node ./scripts/acceptance-phase-8-fg22-append-only-recovery.mjs",
     "test:acceptance:bus-uat-018-fg22-html-exclusion": "node ./scripts/acceptance-phase-8-bus-uat-018-fg22-html-exclusion.mjs",
     "test:acceptance:bus-uat-018-pdf-ranking": "node ./scripts/acceptance-phase-8-bus-uat-018-pdf-ranking.mjs",
+    "test:acceptance:bus-uat-018-mixed-answer": "node ./scripts/acceptance-phase-8-bus-uat-018-mixed-answer.mjs",
     "test:acceptance:design-lab-views-imports": "node ./scripts/acceptance-phase-8-design-lab-views-imports.mjs",
     "test:acceptance:design-lab-adapter-contract": "node ./scripts/acceptance-phase-8-design-lab-adapter-contract.mjs",
     "staging:verify-step-80": "node ./scripts/staging/verify-step-80-cp26-primary-pdf.mjs",
