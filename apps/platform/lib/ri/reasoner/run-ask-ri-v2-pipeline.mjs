@@ -143,33 +143,39 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
     };
   }
 
-  const reasoner = await invokeAnthropicReasoner(question, bundle, { model: modelId, ...options.providerDeps });
-  if (spend) {
-    spend.recordAttempt({
-      success: Boolean(reasoner.ok),
-      inputTokens: reasoner.usage?.inputTokens ?? 0,
-      outputTokens: reasoner.usage?.outputTokens ?? 0,
-    });
-  }
+  const reasoner = await invokeAnthropicReasoner(question, bundle, {
+    model: modelId,
+    spendTracker: spend,
+    ...options.providerDeps,
+  });
   if (!reasoner.ok) {
+    const truncated = reasoner.code === 'AI_OUTPUT_TRUNCATED';
     return {
       question,
       testId: caseRow?.testId,
-      v2ExecutionStatus: 'PROVIDER_ERROR',
+      v2ExecutionStatus: truncated ? 'OUTPUT_TRUNCATED' : 'PROVIDER_ERROR',
       eligibility,
       retrieval,
       evidenceBundle: { chunkIds: bundle.evidenceChunks.map((c) => c.evidenceChunkId) },
       providerInvoked: true,
-      providerError: { code: reasoner.code, message: reasoner.message },
+      providerError: {
+        code: reasoner.code,
+        message: reasoner.message,
+        truncationKind: reasoner.truncationKind ?? null,
+      },
       providerDiagnostics: reasoner.diagnostics || null,
-      status: 'FAILED',
-      answer: 'The AI reasoner could not complete this request.',
+      status: truncated ? 'OUTPUT_TRUNCATED' : 'FAILED',
+      answer: truncated
+        ? 'The AI reasoner hit the output token limit before producing a complete structured answer.'
+        : 'The AI reasoner could not complete this request.',
       citations: [],
       execution: {
         engine: 'ask_ri_v2',
         providerUsed: true,
         model: reasoner.model || modelId,
         usage: reasoner.usage,
+        providerAttempts: reasoner.providerAttempts ?? 1,
+        evalOutputConfig: reasoner.evalOutputConfig ?? null,
       },
       timingMs: Date.now() - t0,
     };
@@ -222,6 +228,8 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
       requestId: reasoner.requestId,
       usage: reasoner.usage,
       latencyMs: reasoner.latencyMs,
+      providerAttempts: reasoner.providerAttempts ?? 1,
+      evalOutputConfig: reasoner.evalOutputConfig ?? null,
     },
     timingMs: Date.now() - t0,
   };

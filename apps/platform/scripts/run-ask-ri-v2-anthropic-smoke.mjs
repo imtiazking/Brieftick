@@ -103,8 +103,9 @@ async function main() {
   mkdirSync(RUNS_DIR, { recursive: true });
   writeFileSync(outPath, JSON.stringify(report, null, 2));
 
-  console.log(JSON.stringify({ ok: result.v2ExecutionStatus !== 'PROVIDER_ERROR', outPath, report }, null, 2));
-  process.exit(result.v2ExecutionStatus === 'PROVIDER_ERROR' ? 2 : 0);
+  const hardFail = result.v2ExecutionStatus === 'PROVIDER_ERROR' || result.v2ExecutionStatus === 'OUTPUT_TRUNCATED';
+  console.log(JSON.stringify({ ok: !hardFail, outPath, report }, null, 2));
+  process.exit(hardFail ? 2 : 0);
 }
 
 main().catch((e) => {

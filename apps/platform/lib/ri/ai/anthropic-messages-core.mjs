@@ -9,6 +9,14 @@ export const AI_ERROR_CODES = {
   /** HTTP 200 but no user-visible text blocks in message content (e.g. thinking-only). */
   AI_EMPTY_RESPONSE_CONTENT: 'AI_EMPTY_RESPONSE_CONTENT',
   AI_RESPONSE_JSON_PARSE_FAILED: 'AI_RESPONSE_JSON_PARSE_FAILED',
+  /** stop_reason max_tokens — thinking and/or answer cut off before completion. */
+  AI_OUTPUT_TRUNCATED: 'AI_OUTPUT_TRUNCATED',
+};
+
+export const TRUNCATION_KIND = {
+  THINKING_EXHAUSTED: 'thinking_exhausted',
+  JSON_INCOMPLETE: 'json_incomplete',
+  TEXT_INCOMPLETE: 'text_incomplete',
 };
 
 /**
@@ -49,6 +57,39 @@ export function parseAnthropicJsonText(raw) {
   } catch {
     return null;
   }
+}
+
+/**
+ * Classify max_tokens outcomes after HTTP 200 (thinking tokens count toward max_tokens).
+ */
+export function classifyMaxTokensTruncation({ stopReason, text, contentBlockTypes = [] }) {
+  if (stopReason !== 'max_tokens') return null;
+  const trimmed = String(text || '').trim();
+  if (!trimmed) {
+    return {
+      code: AI_ERROR_CODES.AI_OUTPUT_TRUNCATED,
+      truncationKind: TRUNCATION_KIND.THINKING_EXHAUSTED,
+      message:
+        'Anthropic stopped at max_tokens before any text block (output budget consumed by thinking).',
+    };
+  }
+  const parsed = parseAnthropicJsonText(trimmed);
+  const hasTextBlock = Array.isArray(contentBlockTypes) && contentBlockTypes.includes('text');
+  if (!parsed) {
+    return {
+      code: AI_ERROR_CODES.AI_OUTPUT_TRUNCATED,
+      truncationKind: hasTextBlock ? TRUNCATION_KIND.JSON_INCOMPLETE : TRUNCATION_KIND.TEXT_INCOMPLETE,
+      message: hasTextBlock
+        ? 'Anthropic stopped at max_tokens with partial text; reasoner JSON could not be parsed.'
+        : 'Anthropic stopped at max_tokens with partial assistant text.',
+    };
+  }
+  return {
+    code: AI_ERROR_CODES.AI_OUTPUT_TRUNCATED,
+    truncationKind: TRUNCATION_KIND.TEXT_INCOMPLETE,
+    message: 'Anthropic stopped at max_tokens before the reasoner output finished.',
+    partialText: trimmed,
+  };
 }
 
 export function mapAnthropicHttpFailure(httpStatus, body) {
@@ -112,6 +153,8 @@ export async function callAnthropicMessages(apiKey, req, deps = {}) {
         max_tokens: maxTokens,
         system: req.system,
         messages: [{ role: 'user', content: req.user }],
+        ...(req.thinking ? { thinking: req.thinking } : {}),
+        ...(req.outputConfig ? { output_config: req.outputConfig } : {}),
       }),
       signal: controller.signal,
     });
@@ -144,6 +187,18 @@ export async function callAnthropicMessages(apiKey, req, deps = {}) {
     };
 
     if (!text.trim()) {
+      const truncated = classifyMaxTokensTruncation({
+        stopReason: baseMeta.stopReason,
+        text,
+        contentBlockTypes: baseMeta.contentBlockTypes,
+      });
+      if (truncated) {
+        return {
+          ok: false,
+          ...truncated,
+          ...baseMeta,
+        };
+      }
       return {
         ok: false,
         code: AI_ERROR_CODES.AI_EMPTY_RESPONSE_CONTENT,

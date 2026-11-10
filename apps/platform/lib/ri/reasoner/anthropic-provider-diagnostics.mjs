@@ -27,6 +27,8 @@ export function buildSanitisedProviderDiagnostics(reasonerResult, extra = {}) {
     contentBlockTypes: reasonerResult.contentBlockTypes ?? null,
     inputTokens: reasonerResult.inputTokens ?? reasonerResult.usage?.inputTokens ?? null,
     outputTokens: reasonerResult.outputTokens ?? reasonerResult.usage?.outputTokens ?? null,
+    truncationKind: reasonerResult.truncationKind ?? null,
+    providerAttempts: reasonerResult.providerAttempts ?? null,
     ...extra,
   };
 }
@@ -37,6 +39,7 @@ export function classifyV2HarnessOutcome(engineResult) {
   if (st === 'BLOCKED_UNEXPECTED') return 'SECURITY_BLOCK_UNEXPECTED';
   if (engineResult?.preReasonerBlock === 'reference_validation') return 'REFERENCE_REJECTED';
   if (engineResult?.preReasonerBlock === 'authority_gate') return 'AUTHORITY_GATE_REJECTED';
+  if (st === 'OUTPUT_TRUNCATED') return 'OUTPUT_TRUNCATED';
   if (st === 'PROVIDER_ERROR') return 'PROVIDER_FAILURE';
   if (st === 'VERIFICATION_FAILED') return 'VERIFICATION_FAILURE';
   if (st === 'NOT_RUN' || engineResult?.status === 'NOT_RUN') return 'NOT_RUN_DRY_OR_SKIPPED';
