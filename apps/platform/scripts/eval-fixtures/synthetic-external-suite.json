@@ -1,0 +1,56 @@
+{
+  "evaluationVersion": "synthetic-external-suite-v1",
+  "schemaVersion": 1,
+  "datasetMetadata": {
+    "title": "Synthetic external suite for CLI validation only",
+    "note": "Not operator held-out content"
+  },
+  "scoringDimensions": [{ "id": "D01", "name": "question_understanding" }],
+  "criticalFailureConditions": [{ "id": "CF-01", "description": "test" }],
+  "cases": [
+    {
+      "testId": "EVAL-SYN-CLI-01",
+      "questionCategory": "H",
+      "question": "What changes is the FCA proposing in CP26/38?",
+      "expectedIntent": "synthetic_cli",
+      "expectedPublicationIds": ["4d05b49b-a4a4-4101-8c87-7d3983315f25"],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": "consultation",
+      "expectedResultClassification": "PARTIAL_PASS",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": false,
+      "evidenceAvailability": "STAGING_OR_FIXTURE_PACK",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED"
+    },
+    {
+      "testId": "EVAL-SYN-CLI-02",
+      "questionCategory": "F",
+      "question": "How many open obligations do we have?",
+      "expectedIntent": "synthetic_tenant",
+      "expectedPublicationIds": [],
+      "expectedSourceVersions": [],
+      "expectedCitationSections": [],
+      "requiredAnswerThemes": [],
+      "expectedRegulatoryStatus": null,
+      "expectedResultClassification": "ANSWERED",
+      "knownLimitations": [],
+      "prohibitedClaims": [],
+      "requiredHumanReviewStatus": "HUMAN_REVIEW_REQUIRED",
+      "reasonedImplicationsExpected": false,
+      "tenantDataRequired": true,
+      "evidenceAvailability": "TENANT_FIXTURE",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reviewer": null,
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "baselineMeasurementStatus": "NOT_MEASURED"
+    }
+  ]
+}

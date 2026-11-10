@@ -1,0 +1,5 @@
+# Platform Vercel root is apps/platform — docs/eval lives outside this tree and is not uploaded by default.
+# Below guards monorepo-root deploy mistakes and file-tracing inclusion:
+../../docs/
+../../docs/eval/
+eval-fixtures/private/

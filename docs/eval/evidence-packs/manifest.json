@@ -1,0 +1,32 @@
+{
+  "manifestVersion": 1,
+  "createdAt": "2026-11-10T13:11:32.832Z",
+  "exportSource": "staging_readonly",
+  "packs": [
+    {
+      "file": "fair-value-consumer-finance-v1.json",
+      "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+      "profile": "html_article_v2",
+      "exportSource": "staging_readonly"
+    },
+    {
+      "file": "fg22-5-primary-pdf-v1.json",
+      "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+      "profile": "pdf_primary_v1",
+      "exportSource": "staging_readonly"
+    },
+    {
+      "file": "cp26-38-primary-pdf-v1.json",
+      "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+      "profile": "pdf_primary_v1",
+      "exportSource": "staging_readonly"
+    },
+    {
+      "file": "cp26-38-html-article-v1.json",
+      "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+      "profile": "html_article_v2",
+      "exportSource": "staging_readonly"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,6 @@
+# Marketing / root static project — keep eval artefacts and platform source off public uploads
+docs/eval/
+docs/
+apps/platform/scripts/eval-fixtures/private/
+.env
+.env.*
