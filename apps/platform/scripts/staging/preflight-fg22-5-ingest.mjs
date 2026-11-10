@@ -23,6 +23,7 @@ import {
   validateStagingDatabaseUrl,
 } from '../../lib/ri/ingestion/snapshot/staging-database-config.mjs';
 import { assertApprovedStagingGitBranch } from '../../lib/ri/ingestion/snapshot/staging-git-preflight.mjs';
+import { FG22_5_STAGING } from '../../lib/ri/ingestion/snapshot/fg22-5-staging-identity.mjs';
 
 const FAIR_VALUE_PUB_ID = '56b0beca-d8c3-4267-a794-9079009af661';
 const FG22_LANDING_URL = 'https://www.fca.org.uk/publication/finalised-guidance/fg22-5';
@@ -154,7 +155,8 @@ function proposedMutationPlan(pdfSha, extraction) {
 
   report.pipeline = {
     establishedMechanism: 'Step 80 CP26/38 pattern (html_article_v2 + pdf_primary_v1 on same snapshot)',
-    htmlStep: 'createExtractionRevision (backfill-fair-value pattern) on FG22 landing HTML',
+    htmlStep: 'createExtractionRevision on FCA discovery HTML + fg22 discovery semantics stamp',
+    versionSourceHash: 'primary PDF SHA-256 (not hub HTML fingerprint)',
     pdfStep: 'createPrimaryPdfExtractionRevision (ingest-cp26-38-primary-pdf pattern)',
     fcaIngestionMode: 'Must remain DISABLED (controlled operator ingest only)',
     pageBoundaries: extraction?.structured?.pageBoundaryConfirmed === true ? 'confirmed_in_preflight' : 'pending_preflight',

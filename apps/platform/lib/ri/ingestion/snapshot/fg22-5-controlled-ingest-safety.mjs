@@ -16,24 +16,14 @@ export function assessFg22ControlledIngestSafety(dbRow) {
   const cp26ParityNote =
     'CP26 ingest-cp26-38-primary-pdf.mjs rejects ENABLED because it mutates an existing snapshot; FG22 ingest registers a new publication and does not use that guard.';
 
-  if (mode === 'DISABLED') {
-    return {
-      executeAllowed: false,
-      overall: 'BLOCKED',
-      reason: 'fca_ingestion_mode_disabled',
-      message:
-        'runSourceIngestion eligibility requires FCA catalogue ingestion_mode ≠ DISABLED. FG22 controlled ingest does not modify ingestion_mode — use staging with ENABLED/TEST_ONLY or a future manual-persist path.',
-      cp26ParityNote,
-      monitoring,
-    };
-  }
-
   return {
     executeAllowed: true,
     overall: 'SAFE_WITH_GUARDS',
     reason: null,
     message:
-      'Controlled FG22 ingest uses a single-item MANUAL ingestion run with idempotent publication keys. Scheduled FCA ENABLED does not weaken PDF SHA verification, allowlist, or Fair value isolation guards.',
+      mode === 'DISABLED'
+        ? 'FG22 uses fg22-5-persist-controlled (not runSourceIngestion); FCA DISABLED does not block this operator path. Scheduled RSS remains independent; version hash is PDF SHA-256 only.'
+        : 'Controlled FG22 ingest uses PDF-anchored persist + idempotent keys. Scheduled FCA ENABLED does not weaken PDF SHA verification, allowlist, or Fair value isolation guards.',
     scheduledInterference: 'low',
     mitigations: [
       'idempotent external_document_id FG22/5 and canonical_url',

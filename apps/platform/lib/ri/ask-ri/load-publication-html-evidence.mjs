@@ -66,7 +66,7 @@ export async function resolveSupplementaryPdfPublicationIds(
     const { data } = await adminSupabase
       .from('regulatory_publications')
       .select('id, title, external_document_id')
-      .or(`title.ilike.%${needle}%,external_document_id.ilike.%${needle}%`)
+      .or(`title.ilike.%${needle}%,external_document_id.ilike.%${needle}%,canonical_url.ilike.%fg22-5.pdf%`)
       .limit(6);
     for (const row of data || []) {
       if (row.id && !primary.has(row.id)) resolved.add(row.id);
@@ -226,6 +226,19 @@ export async function loadPublicationHtmlEvidenceForAskRi(adminSupabase, options
     const pub = pubById.get(row.publication_id);
     if (!pub) {
       errors.push({ publicationId: row.publication_id, code: 'catalogue_publication_not_visible' });
+      continue;
+    }
+
+    const htmlSnapshotRole =
+      row.publication_metadata?.htmlSnapshotRole || row.extraction_quality?.htmlSnapshotRole || null;
+    if (htmlSnapshotRole === 'fca_link_discovery_only') {
+      errors.push({
+        publicationId: row.publication_id,
+        revisionId: row.id,
+        code: 'html_discovery_index_not_substantive',
+        message:
+          'html_article_v2 on this publication is FCA link discovery only; Ask RI must use pdf_primary_v1 for FG22/5 guidance text.',
+      });
       continue;
     }
 

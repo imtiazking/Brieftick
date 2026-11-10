@@ -5,6 +5,8 @@ export const FG22_5_STAGING = {
   externalDocumentId: 'FG22/5',
   title: 'FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty',
   publicationType: 'finalised_guidance',
+  /** Catalogue canonical identity (primary regulatory artefact). */
+  canonicalPdfUrl: FG22_5_PRIMARY_PDF_URL,
   primaryPdfUrl: FG22_5_PRIMARY_PDF_URL,
   expectedPrimaryPdfSha256: FG22_5_EXPECTED_PRIMARY_PDF_SHA256,
   sourceId: 'SRC-FCA-PUBLICATIONS-RSS',

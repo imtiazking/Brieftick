@@ -19,8 +19,8 @@ const failMsg = (m) => {
 };
 
 const disabled = assessFg22ControlledIngestSafety({ ingestion_mode: 'DISABLED', monitoring_enabled: true });
-if (!disabled.executeAllowed && disabled.reason === 'fca_ingestion_mode_disabled') {
-  pass('DISABLED blocks execute (runSourceIngestion eligibility)');
+if (disabled.executeAllowed && disabled.overall === 'SAFE_WITH_GUARDS') {
+  pass('DISABLED does not block FG22 controlled persist path');
 } else failMsg('DISABLED safety');
 
 const enabled = assessFg22ControlledIngestSafety({ ingestion_mode: 'ENABLED', monitoring_enabled: true });
@@ -44,6 +44,14 @@ if (
 
 if (FG22_5_STAGING.externalDocumentId === 'FG22/5') pass('external_document_id FG22/5');
 else failMsg('external id');
+
+if (FG22_5_STAGING.canonicalPdfUrl?.endsWith('fg22-5.pdf')) {
+  pass('canonical publication identity is official FG22/5 PDF URL');
+} else failMsg('canonical PDF url');
+
+if (FG22_5_EXPECTED_PRIMARY_PDF_SHA256 === FG22_5_STAGING.expectedPrimaryPdfSha256) {
+  pass('version source_hash anchors to verified primary PDF SHA-256');
+} else failMsg('pdf sha anchor');
 
 process.exitCode = fail ? 1 : 0;
 console.log(fail ? `FAILED ${fail}` : 'ALL PASS');

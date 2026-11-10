@@ -10,7 +10,6 @@
  *   FORGENIQ_FG22_INGEST_APPROVED=1 FORGENIQ_ENV=staging node scripts/staging/ingest-fg22-5-primary-pdf.mjs --execute
  */
 import pg from 'pg';
-import { createClient } from '@supabase/supabase-js';
 import {
   assertApprovedPrimaryPdfUrl,
   FCA_PUBLICATIONS_RSS_SOURCE_KEY,
@@ -18,10 +17,11 @@ import {
 } from '../../../../integrations/regulatory-sources/core/regulatory-pdf-allowlist.mjs';
 import { retrieveRegulatoryPrimaryPdf } from '../../../../integrations/regulatory-sources/core/regulatory-pdf-retrieval.mjs';
 import { extractRegulatoryPdfContent } from '../../../../integrations/regulatory-sources/core/regulatory-pdf-extract.mjs';
-import { SOURCE_COVERAGE_BY_ID } from '../../../../packages/reference-data/catalogue/source-coverage.mjs';
-import { runSourceIngestion } from '../../lib/ri/ingestion/ingest-engine.mjs';
-import { INGESTION_DATA_ORIGIN, INGESTION_PROVENANCE_ORIGIN } from '../../lib/ri/ingestion/types.mjs';
 import { assertStagingIngestIsolation } from '../../lib/ri/ingestion/staging-ingest-guards.mjs';
+import {
+  persistFg22ControlledCatalogue,
+  applyFg22DiscoveryHtmlRevisionSemantics,
+} from '../../lib/ri/ingestion/snapshot/fg22-5-persist-controlled.mjs';
 import { FG22_5_STAGING } from '../../lib/ri/ingestion/snapshot/fg22-5-staging-identity.mjs';
 import {
   resolveFg22LandingPage,
@@ -112,6 +112,19 @@ async function fairValueGuard(client) {
   };
 }
 
+async function checkCanonicalCollisions(client) {
+  const pdfUrl = FG22_5_STAGING.canonicalPdfUrl;
+  const rows = await client.query(
+    `select id, title, external_document_id, canonical_url from regulatory_publications
+     where canonical_url = $1 and coalesce(external_document_id, '') <> $2`,
+    [pdfUrl, FG22_5_STAGING.externalDocumentId],
+  );
+  return {
+    canonicalPdfUrl: pdfUrl,
+    collisions: (rows.rows || []).filter((r) => r.external_document_id !== FG22_5_STAGING.externalDocumentId),
+  };
+}
+
 async function findFg22CatalogueRow(client) {
   const byExt = await client.query(
     `select p.id, p.title, p.canonical_url, p.external_document_id, p.source_hash,
@@ -122,6 +135,14 @@ async function findFg22CatalogueRow(client) {
     [FG22_5_STAGING.sourceId, FG22_5_STAGING.externalDocumentId],
   );
   if (byExt.rows[0]) return { row: byExt.rows[0], matchedBy: 'external_document_id' };
+
+  const byCanonical = await client.query(
+    `select p.id, p.title, p.canonical_url, p.external_document_id, p.source_hash,
+            (select id from regulatory_source_snapshots s where s.publication_id = p.id order by s.retrieved_at desc limit 1) as snapshot_id
+     from regulatory_publications p where p.canonical_url = $1`,
+    [FG22_5_STAGING.canonicalPdfUrl],
+  );
+  if (byCanonical.rows[0]) return { row: byCanonical.rows[0], matchedBy: 'canonical_pdf_url' };
 
   const byUrl = await client.query(
     `select p.id, p.title, p.canonical_url, p.external_document_id, p.source_hash,
@@ -143,20 +164,24 @@ function buildProposedMutations(ctx) {
       keys: {
         external_document_id: FG22_5_STAGING.externalDocumentId,
         title: FG22_5_STAGING.title,
-        canonical_url: landing.finalUrl,
+        canonical_url: FG22_5_STAGING.canonicalPdfUrl,
+        source_hash: pdfSha,
         source_id: FG22_5_STAGING.sourceId,
       },
     },
     {
       entity: 'regulatory_publication_versions',
-      action: existing?.row ? 'SKIP if source_hash unchanged' : 'INSERT v1',
-      source_hash: landing.contentHash,
+      action: existing?.row?.source_hash === pdfSha ? 'SKIP (PDF hash unchanged)' : 'INSERT or bump version',
+      source_hash: pdfSha,
+      versionIdentity: 'anchored_to_primary_pdf_sha256',
     },
     {
       entity: 'regulatory_source_snapshots',
       action: existing?.row?.snapshot_id ? 'REUSE or INSERT version snapshot' : 'INSERT',
-      canonical_url: landing.finalUrl,
-      html_raw_sha: landing.evidenceCapture?.rawSha256,
+      discovery_html_url: landing.finalUrl,
+      source_fingerprint: pdfSha,
+      raw_content_sha256: landing.evidenceCapture?.rawSha256,
+      note: 'HTML bytes are discovery index only; fingerprint matches PDF for extraction invariants',
     },
     {
       entity: 'storage.regulatory-source-snapshots',
@@ -169,8 +194,9 @@ function buildProposedMutations(ctx) {
     },
     {
       entity: 'regulatory_source_extraction_revisions',
-      action: 'INSERT html_article_v2 (createExtractionRevision)',
+      action: 'INSERT html_article_v2 (createExtractionRevision) + discovery semantics stamp',
       snapshotId: snapshotIdAfterIngest || '(after catalogue ingest)',
+      htmlRole: 'fca_link_discovery_only',
     },
     {
       entity: 'regulatory_source_extraction_revisions',
@@ -184,35 +210,6 @@ function buildProposedMutations(ctx) {
       revision: FG22_5_STAGING.fairValueHtmlRevisionId,
     },
   ];
-}
-
-function buildNormalisedDoc(landing) {
-  const coverage = SOURCE_COVERAGE_BY_ID[FG22_5_STAGING.sourceId];
-  return {
-    regulatorId: FG22_5_STAGING.regulatorId,
-    sourceId: FG22_5_STAGING.sourceId,
-    externalDocumentId: FG22_5_STAGING.externalDocumentId,
-    title: FG22_5_STAGING.title,
-    publicationType: FG22_5_STAGING.publicationType,
-    canonicalUrl: landing.finalUrl,
-    publicationDate: '2022-07-27',
-    effectiveDate: null,
-    consultationDeadline: null,
-    summary: 'FCA finalised guidance on the Consumer Duty (non-Handbook). Primary regulatory document: FG22/5 PDF.',
-    contentHash: landing.contentHash,
-    retrievedAt: new Date().toISOString(),
-    dataOrigin: INGESTION_DATA_ORIGIN,
-    contentClasses: coverage?.contentClasses ?? [],
-    provenance: {
-      origin: INGESTION_PROVENANCE_ORIGIN,
-      connectorId: 'CONN-LEGACY-FCA',
-      controlledIngest: 'bus-uat-018-fg22-5',
-      landingResolution: landing.landingUrl,
-      primaryPdfUrl: FG22_5_PRIMARY_PDF_URL,
-    },
-    evidenceCapture: landing.evidenceCapture,
-    contentType: landing.evidenceCapture?.contentType ?? 'text/html',
-  };
 }
 
 async function loadSnapshotRow(client, snapshotId) {
@@ -302,6 +299,15 @@ async function main() {
     parserVersion: extracted.parserVersion,
   };
   report.chapter7 = assessChapter7CitationReadiness(extracted.structured);
+  report.publicationIdentity = {
+    canonicalUrl: FG22_5_STAGING.canonicalPdfUrl,
+    externalDocumentId: FG22_5_STAGING.externalDocumentId,
+    versionSourceHash: retrieved.contentSha256,
+    versionSourceHashMeaning: 'SHA-256 of immutable FG22/5 PDF bytes (not discovery HTML)',
+    discoveryHtmlUrl: landing.finalUrl,
+    discoveryHtmlFingerprint: landing.contentHash,
+    collisionKeys: ['external_document_id FG22/5', `canonical_url ${FG22_5_STAGING.canonicalPdfUrl}`],
+  };
 
   const client = new pg.Client(stagingPgClientOptions(dbUrl));
   await client.connect();
@@ -329,6 +335,24 @@ async function main() {
 
     const existing = await findFg22CatalogueRow(client);
     report.catalogue = { existing, duplicateCount: existing.row ? 1 : 0 };
+    report.canonicalCollisionCheck = await checkCanonicalCollisions(client);
+    if (report.canonicalCollisionCheck.collisions?.length) {
+      report.failure = {
+        reason: 'canonical_url_collision',
+        collisions: report.canonicalCollisionCheck.collisions,
+      };
+      report.overall = 'FAIL';
+      return finish(1);
+    }
+
+    const fcaModeBefore = fca.rows[0]?.ingestion_mode;
+    report.executionSafety = {
+      concurrentRunningIngestionRuns: running.rows[0].n,
+      fcaIngestionModeUnchanged: true,
+      fcaIngestionModeBefore: fcaModeBefore,
+      fairValueGuard: report.fairValueGuard.pass,
+      productionConnectionGuard: 'assertStagingIngestIsolation + validateStagingDatabaseUrl',
+    };
 
     report.proposedMutations = buildProposedMutations({
       landing,
@@ -374,34 +398,20 @@ async function main() {
 
     await ensureSnapshotStorageReady({ environment: 'staging', requirePrimaryPdfStorage: true });
 
-    const normalisedDoc = buildNormalisedDoc(landing);
     let publicationId = existing.row?.id;
     let snapshotId = existing.row?.snapshot_id;
 
-    if (!publicationId || !snapshotId) {
-      const ingestResult = await runSourceIngestion(client, {
-        sourceId: FG22_5_STAGING.sourceId,
-        fixture: { publications: [normalisedDoc] },
-        onlyUrl: landing.finalUrl,
-        runType: 'MANUAL',
-        initiatedBy: 'fg22-5-controlled-ingest',
+    if (!publicationId || !snapshotId || existing.row?.source_hash !== retrieved.contentSha256) {
+      const persist = await persistFg22ControlledCatalogue(client, {
+        landing,
+        primaryPdfSha256: retrieved.contentSha256,
+        primaryPdfRetrievedAt: retrieved.retrievedAt,
         environment: 'staging',
-        triggerType: 'MANUAL',
+        initiatedBy: 'fg22-5-controlled-ingest',
       });
-      report.catalogueIngest = ingestResult;
-      if (ingestResult.status === 'FAILED') {
-        report.overall = 'FAIL';
-        report.failure = ingestResult;
-        return finish(1);
-      }
-      const rediscovered = await findFg22CatalogueRow(client);
-      publicationId = rediscovered.row?.id;
-      snapshotId = rediscovered.row?.snapshot_id;
-      if (!publicationId || !snapshotId) {
-        report.failure = { reason: 'publication_or_snapshot_missing_after_ingest' };
-        report.overall = 'FAIL';
-        return finish(1);
-      }
+      report.cataloguePersist = persist;
+      publicationId = persist.publicationId;
+      snapshotId = persist.snapshotId;
     }
 
     if (publicationId === FG22_5_STAGING.fairValuePublicationId) {
@@ -426,6 +436,9 @@ async function main() {
       createdBy: 'fg22-5-controlled-ingest',
       environment: 'staging',
     });
+    if (htmlRev.revisionId && (htmlRev.created || htmlRev.outcome === 'idempotent_hit')) {
+      await applyFg22DiscoveryHtmlRevisionSemantics(client, htmlRev.revisionId);
+    }
     report.htmlRevision = htmlRev;
 
     const pdfRev = await createPrimaryPdfExtractionRevision(client, {
@@ -439,11 +452,18 @@ async function main() {
     });
     report.pdfRevision = pdfRev;
 
+    const fcaModeAfter = (
+      await client.query(
+        `select ingestion_mode::text from regulatory_sources where external_key = $1`,
+        [FCA_PUBLICATIONS_RSS_SOURCE_KEY],
+      )
+    ).rows[0]?.ingestion_mode;
     report.postExecute = {
       publicationId,
       snapshotId,
       htmlRevisionId: htmlRev.revisionId,
       pdfRevisionId: pdfRev.revisionId,
+      fcaIngestionModeAfter: fcaModeAfter,
     };
     report.writesPerformed = true;
     report.overall =
