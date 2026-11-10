@@ -1,0 +1,43 @@
+{
+  "adjudicationVersion": "development-retrieval-adjudication-2b2-step-g-v1",
+  "createdAt": "2026-11-10T19:04:31.347Z",
+  "scope": "offline_development_only_not_frozen_eval",
+  "notes": [
+    "Does not modify frozen probe expectedPublicationIds.",
+    "VALID_ALTERNATIVE entries require independent evidence in retrieved passages."
+  ],
+  "frozenSuiteOnB2Corpus": {
+    "source": "frozen_eval_suite_v2.1_on_b2_corpus",
+    "recallTop1": 5,
+    "denom": 6,
+    "falseNegativeCount": 1
+  },
+  "alternativeSources": [],
+  "classifications": [
+    {
+      "testId": "DEV-B2-FG24-01",
+      "classification": "GENUINE_MISS",
+      "rootCause": "FG24/6 ranked in top-5 chunks but CP26/38 financial crime PDF volume wins max-pool publication score (chunk-count / semantic overlap on payments fraud)."
+    },
+    {
+      "testId": "DEV-B2-FG24-02",
+      "classification": "GENUINE_MISS",
+      "rootCause": "Lexical overlap on “calibrated controls” routed to Fair value consumer finance supervisory examples instead of FG24/6 payments guidance."
+    },
+    {
+      "testId": "DEV-B2-WHL-02",
+      "classification": "GENUINE_MISS",
+      "rootCause": "AML/sanctions vocabulary matches CP26/38 crime guide chunks more strongly than wholesale Insights 3 HTML (large competing corpus)."
+    },
+    {
+      "testId": "DEV-B2-CASH24-01",
+      "classification": "GENUINE_MISS",
+      "rootCause": "Reporting period not encoded in embeddings; 2025 H1 and 2024 H2 cash coverage pages are semantically near-duplicates — recency bias toward 2025 H1."
+    },
+    {
+      "testId": "DEV-TEMP-CASH-02",
+      "classification": "GENUINE_MISS",
+      "rootCause": "Expected publication not ranked first; see ranked publications and passages."
+    }
+  ]
+}

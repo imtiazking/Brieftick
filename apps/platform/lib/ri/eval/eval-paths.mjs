@@ -15,6 +15,12 @@ export const DEVELOPMENT_RETRIEVAL_PROBES_STEP_B2_V3 = join(
   'eval',
   'development-retrieval-probes-2b2-step-b2-v3.json',
 );
+export const DEVELOPMENT_RETRIEVAL_ADJUDICATION_STEP_G = join(
+  REPO_ROOT,
+  'docs',
+  'eval',
+  'development-retrieval-adjudication-2b2-step-g-v1.json',
+);
 export const DEVELOPMENT_RETRIEVAL_PROBES_STEP_F = join(
   REPO_ROOT,
   'docs',

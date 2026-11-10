@@ -1,0 +1,634 @@
+{
+  "generatedAt": "2026-11-10T19:04:31.349Z",
+  "analyses": [
+    {
+      "testId": "DEV-B2-FG24-01",
+      "question": "How should payment service providers apply a risk-based approach to fraud prevention on outbound payments?",
+      "category": "b2_positive",
+      "expectedPublicationIds": [
+        "ec168f48-1717-4631-8e4a-a3e95df4d5ce"
+      ],
+      "actualTop5Publications": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.893538
+        },
+        {
+          "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+          "publicationTitle": "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+          "maxSimilarity": 0.886836
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.875681
+        },
+        {
+          "publicationId": "a784dcfc-d443-4295-99f9-d0f23a5fadd6",
+          "publicationTitle": "Guidance for firms on the fair treatment of vulnerable customers",
+          "maxSimilarity": 0.868584
+        },
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.862531
+        }
+      ],
+      "topSimilarityScores": [
+        0.893538,
+        0.886836,
+        0.875681,
+        0.868584,
+        0.862531
+      ],
+      "retrievedPassages": [
+        {
+          "similarity": 0.893538,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 43,
+          "section": null,
+          "modelTokenCount": 373,
+          "substantive": true,
+          "excerpt": "FCA 202X/YY Page 20 of 67 (e.g. for a salesman to misreport a customer’s salary to secure a loan would be fraud). • Anti-fraud good practice is shared widely within the firm. • Sales incentives act to"
+        },
+        {
+          "similarity": 0.887299,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 49,
+          "section": null,
+          "modelTokenCount": 446,
+          "substantive": true,
+          "excerpt": "FCA 202X/YY Page 26 of 67 We expect firms to consider the risks of different APP fraud typologies, including investment fraud, as part of their anti-fraud systems and controls. Money mules Money mulin"
+        },
+        {
+          "similarity": 0.886836,
+          "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+          "title": "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+          "page": 13,
+          "section": null,
+          "modelTokenCount": 411,
+          "substantive": true,
+          "excerpt": "Financial Conduct Authority Page 13 of 17 appearing to be unusual is, in the first instance, only a basis for further enquiry, which may in turn require judgement as to whether it is suspicious. 3.6 I"
+        },
+        {
+          "similarity": 0.88285,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 7,
+          "modelTokenCount": 449,
+          "substantive": true,
+          "excerpt": "7 Onboarding • We expect firms to consider the onboarding checks that will help mitigate both the risks of fraud and of moving the proceeds of fraud.• We have shared examples of good and poor practice"
+        },
+        {
+          "similarity": 0.880657,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 48,
+          "modelTokenCount": 416,
+          "substantive": true,
+          "excerpt": "FCA 202X/YY Page 25 of 67 • The firm’s complaints handling process ensures that the customer has clear channels to raise complaints and that they receive regular communication throughout the process. "
+        }
+      ],
+      "publicationTypes": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates"
+        },
+        {
+          "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+          "title": "FG24/6: Guidance for firms that enables a risk-based approach to payments"
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty"
+        },
+        {
+          "publicationId": "a784dcfc-d443-4295-99f9-d0f23a5fadd6",
+          "title": "Guidance for firms on the fair treatment of vulnerable customers"
+        },
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance"
+        }
+      ],
+      "passageSubstanceCheck": {
+        "overlapTerms": [
+          "fraud"
+        ],
+        "substantivelyRelated": false
+      },
+      "passageSubstantivelyAddressesQuestion": true,
+      "classification": "GENUINE_MISS",
+      "rootCause": "FG24/6 ranked in top-5 chunks but CP26/38 financial crime PDF volume wins max-pool publication score (chunk-count / semantic overlap on payments fraud).",
+      "publicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+      "publicationRecallTop5": true
+    },
+    {
+      "testId": "DEV-B2-FG24-02",
+      "question": "What factors should firms weigh when calibrating controls for higher-risk payment corridors?",
+      "category": "b2_positive",
+      "expectedPublicationIds": [
+        "ec168f48-1717-4631-8e4a-a3e95df4d5ce"
+      ],
+      "actualTop5Publications": [
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.889159
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.864031
+        },
+        {
+          "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+          "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+          "maxSimilarity": 0.858064
+        },
+        {
+          "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+          "publicationTitle": "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+          "maxSimilarity": 0.856985
+        },
+        {
+          "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+          "publicationTitle": "Defence SMEs: access to banking services",
+          "maxSimilarity": 0.855516
+        }
+      ],
+      "topSimilarityScores": [
+        0.889159,
+        0.864031,
+        0.858064,
+        0.856985,
+        0.855516
+      ],
+      "retrievedPassages": [
+        {
+          "similarity": 0.889159,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "Limited assessment of cumulative fee impacts",
+          "modelTokenCount": 83,
+          "substantive": true,
+          "excerpt": "Some firms could not demonstrate that they had considered whether the level, frequency and cumulative impact of fees remained fair for customers in arrears, particularly those with lower balances or r"
+        },
+        {
+          "similarity": 0.878102,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "4.7. Controls to reduce the risk of causing foreseeable harm from fees and charges",
+          "modelTokenCount": 52,
+          "substantive": true,
+          "excerpt": "This obligation is particularly relevant where fees arise following missed payments or are incurred by customers who may already be experiencing financial difficulty.\n\nIn our review, we saw difference"
+        },
+        {
+          "similarity": 0.874666,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "Considerations for firms",
+          "modelTokenCount": 84,
+          "substantive": true,
+          "excerpt": "Firms should consider whether their controls: identify customers at risk of harm from repeat or cumulative charges enable appropriate support or other action before poor outcomes arise Monitoring shou"
+        },
+        {
+          "similarity": 0.864031,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 61,
+          "modelTokenCount": 439,
+          "substantive": true,
+          "excerpt": "61 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyfirms must still be able to demonstrate that the benefits were reasonable relative to the "
+        },
+        {
+          "similarity": 0.863674,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "Assessing vulnerable customer outcomes",
+          "modelTokenCount": 55,
+          "substantive": true,
+          "excerpt": "Some firms analysed fee-related indicators separately for customers with and without characteristics of vulnerability.&nbsp; This enabled them to compare outcomes and identify whether particular group"
+        }
+      ],
+      "publicationTypes": [
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance"
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty"
+        },
+        {
+          "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+          "title": "Conflicts of interest and fair customer treatment in private markets"
+        },
+        {
+          "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+          "title": "FG24/6: Guidance for firms that enables a risk-based approach to payments"
+        },
+        {
+          "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+          "title": "Defence SMEs: access to banking services"
+        }
+      ],
+      "passageSubstanceCheck": {
+        "overlapTerms": [
+          "firms"
+        ],
+        "substantivelyRelated": false
+      },
+      "passageSubstantivelyAddressesQuestion": true,
+      "classification": "GENUINE_MISS",
+      "rootCause": "Lexical overlap on “calibrated controls” routed to Fair value consumer finance supervisory examples instead of FG24/6 payments guidance.",
+      "publicationSelected": "56b0beca-d8c3-4267-a794-9079009af661",
+      "publicationRecallTop5": true
+    },
+    {
+      "testId": "DEV-B2-WHL-02",
+      "question": "How are wholesale firms expected to strengthen governance of AML and sanctions risk?",
+      "category": "b2_positive",
+      "expectedPublicationIds": [
+        "caeb51af-829e-478d-b816-bee61252678a"
+      ],
+      "actualTop5Publications": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.881105
+        },
+        {
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "maxSimilarity": 0.858305
+        },
+        {
+          "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+          "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+          "maxSimilarity": 0.852458
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.852047
+        },
+        {
+          "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+          "publicationTitle": "Defence SMEs: access to banking services",
+          "maxSimilarity": 0.850884
+        }
+      ],
+      "topSimilarityScores": [
+        0.881105,
+        0.858305,
+        0.852458,
+        0.852047,
+        0.850884
+      ],
+      "retrievedPassages": [
+        {
+          "similarity": 0.881105,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 72,
+          "section": null,
+          "modelTokenCount": 370,
+          "substantive": true,
+          "excerpt": "FCA 202X/YY Page 49 of 67 • Has senior management set a clear risk appetite in relation to its sanctions risks, including in its exposure to sanctioned persons, activities and jurisdictions? • How is "
+        },
+        {
+          "similarity": 0.877827,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 69,
+          "section": null,
+          "modelTokenCount": 354,
+          "substantive": true,
+          "excerpt": "FCA 202X/YY Page 46 of 67 Governance 7.2A.2 The guidance in FCG 2.2.1 on governance in relation to financial crime also applies to sanctions. We expect senior management to take clear responsibility f"
+        },
+        {
+          "similarity": 0.863082,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 10,
+          "modelTokenCount": 354,
+          "substantive": true,
+          "excerpt": "It will reorganise some existing material so that the chapter is easier to follow and refreshed with more recent FCA enforcement examples.2.19 The specific guidance includes:• Explaining how firms may"
+        },
+        {
+          "similarity": 0.860022,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 74,
+          "section": null,
+          "modelTokenCount": 306,
+          "substantive": true,
+          "excerpt": "FCA 202X/YY Page 51 of 67 • A firm has processes designed to identify activity that is not in line with the customer profile or otherwise causes suspicions of sanctions evasion. • A firm does not capt"
+        },
+        {
+          "similarity": 0.859508,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 70,
+          "section": null,
+          "modelTokenCount": 314,
+          "substantive": true,
+          "excerpt": "FCA 202X/YY Page 47 of 67 • There is appropriate escalation of actual target matches and breaches of UK sanctions. Notifications are timely. • No internal audit resource is allocated to monitoring san"
+        }
+      ],
+      "publicationTypes": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates"
+        },
+        {
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "title": "PS22/9: A new Consumer Duty"
+        },
+        {
+          "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+          "title": "Conflicts of interest and fair customer treatment in private markets"
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty"
+        },
+        {
+          "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+          "title": "Defence SMEs: access to banking services"
+        }
+      ],
+      "passageSubstanceCheck": {
+        "overlapTerms": [
+          "sanctions",
+          "risk"
+        ],
+        "substantivelyRelated": true
+      },
+      "passageSubstantivelyAddressesQuestion": true,
+      "classification": "GENUINE_MISS",
+      "rootCause": "AML/sanctions vocabulary matches CP26/38 crime guide chunks more strongly than wholesale Insights 3 HTML (large competing corpus).",
+      "publicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+      "publicationRecallTop5": false
+    },
+    {
+      "testId": "DEV-B2-CASH24-01",
+      "question": "How did geographic coverage of fee-free cash access points change in the second half of 2024?",
+      "category": "b2_positive",
+      "expectedPublicationIds": [
+        "0d3468e6-1060-45da-abfc-90c41fda2596"
+      ],
+      "actualTop5Publications": [
+        {
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+          "maxSimilarity": 0.896069
+        },
+        {
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "publicationTitle": "Access to cash coverage in the UK 2024 H2",
+          "maxSimilarity": 0.896069
+        },
+        {
+          "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+          "publicationTitle": "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+          "maxSimilarity": 0.85174
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.841541
+        },
+        {
+          "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+          "publicationTitle": "Flood risk exposure of mortgages in England",
+          "maxSimilarity": 0.837136
+        }
+      ],
+      "topSimilarityScores": [
+        0.896069,
+        0.896069,
+        0.85174,
+        0.841541,
+        0.837136
+      ],
+      "retrievedPassages": [
+        {
+          "similarity": 0.896069,
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "title": "Access to cash coverage in the UK 2025 H1",
+          "section": "Note 1, 2 and 3",
+          "modelTokenCount": 85,
+          "substantive": true,
+          "excerpt": "When we started collecting data under our new&nbsp; access to cash regime , the firm population changed slightly.\n\nThis means we cannot directly compare coverage analysis for this or future publicatio"
+        },
+        {
+          "similarity": 0.896069,
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "title": "Access to cash coverage in the UK 2024 H2",
+          "section": "Note 1, 2 and 3",
+          "modelTokenCount": 85,
+          "substantive": true,
+          "excerpt": "When we started collecting data under our new&nbsp; access to cash regime , the firm population changed slightly.\n\nThis means we cannot directly compare coverage analysis for this or future publicatio"
+        },
+        {
+          "similarity": 0.879232,
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "title": "Access to cash coverage in the UK 2025 H1",
+          "section": "1. Introduction",
+          "modelTokenCount": 91,
+          "substantive": true,
+          "excerpt": "As part of our work on access to cash, we regularly publish data on changes in the UK’s cash access coverage.\n\nThis includes the locations of cash access points and other information such as temporary"
+        },
+        {
+          "similarity": 0.879232,
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "title": "Access to cash coverage in the UK 2024 H2",
+          "section": "1. Introduction",
+          "modelTokenCount": 91,
+          "substantive": true,
+          "excerpt": "As part of our work on access to cash, we regularly publish data on changes in the UK’s cash access coverage.\n\nThis includes the locations of cash access points and other information such as temporary"
+        },
+        {
+          "similarity": 0.878812,
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "title": "Access to cash coverage in the UK 2024 H2",
+          "section": "Note 1, 2 and 3",
+          "modelTokenCount": 186,
+          "substantive": true,
+          "excerpt": "The effect is likely to be more important for longer, non-walkable distances.\n\nAll computations are performed in the British National Grid ( OSGB 1936 ) projection. &nbsp; Our current approach measure"
+        }
+      ],
+      "publicationTypes": [
+        {
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "title": "Access to cash coverage in the UK 2025 H1"
+        },
+        {
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "title": "Access to cash coverage in the UK 2024 H2"
+        },
+        {
+          "publicationId": "ec168f48-1717-4631-8e4a-a3e95df4d5ce",
+          "title": "FG24/6: Guidance for firms that enables a risk-based approach to payments"
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates"
+        },
+        {
+          "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+          "title": "Flood risk exposure of mortgages in England"
+        }
+      ],
+      "passageSubstanceCheck": {
+        "overlapTerms": [
+          "coverage",
+          "cash",
+          "access",
+          "change"
+        ],
+        "substantivelyRelated": true
+      },
+      "passageSubstantivelyAddressesQuestion": true,
+      "classification": "GENUINE_MISS",
+      "rootCause": "Reporting period not encoded in embeddings; 2025 H1 and 2024 H2 cash coverage pages are semantically near-duplicates — recency bias toward 2025 H1.",
+      "publicationSelected": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+      "publicationRecallTop5": true
+    },
+    {
+      "testId": "DEV-TEMP-CASH-02",
+      "question": "What does the access-to-cash statistics show for the United Kingdom in the second half of 2024?",
+      "category": "access_cash_temporal",
+      "expectedPublicationIds": [
+        "0d3468e6-1060-45da-abfc-90c41fda2596"
+      ],
+      "actualTop5Publications": [
+        {
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+          "maxSimilarity": 0.894485
+        },
+        {
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "publicationTitle": "Access to cash coverage in the UK 2024 H2",
+          "maxSimilarity": 0.892954
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.841874
+        },
+        {
+          "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+          "publicationTitle": "Wholesale banks supervision - Insights 3 (Autumn 2026)",
+          "maxSimilarity": 0.840436
+        },
+        {
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "maxSimilarity": 0.839479
+        }
+      ],
+      "topSimilarityScores": [
+        0.894485,
+        0.892954,
+        0.841874,
+        0.840436,
+        0.839479
+      ],
+      "retrievedPassages": [
+        {
+          "similarity": 0.894485,
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "title": "Access to cash coverage in the UK 2025 H1",
+          "section": "2. Coverage",
+          "modelTokenCount": 63,
+          "substantive": true,
+          "excerpt": "The data comprises 58,971 reported UK cash access points and 554,441 cashback locations.\n\nTable 1 shows numbers by region for 8 types of access point ( see notes 4, 5, and 6 ): Brick-and-mortar branch"
+        },
+        {
+          "similarity": 0.892954,
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "title": "Access to cash coverage in the UK 2024 H2",
+          "section": "2. Coverage",
+          "modelTokenCount": 64,
+          "substantive": true,
+          "excerpt": "The data comprises 59,830 reported UK cash access points and 556,609 cashback locations.\n\nTable 1 shows numbers by region for 8 types of access point ( see notes 4, 5, and 6 ): Brick-and-mortar branch"
+        },
+        {
+          "similarity": 0.884561,
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "title": "Access to cash coverage in the UK 2025 H1",
+          "section": "Note 1, 2 and 3",
+          "modelTokenCount": 47,
+          "substantive": true,
+          "excerpt": "The headline coverage figures remain broadly comparable with previous data publications.\n\nThey continue to show more than 95% of the UK population being within the distances set out in the Treasury’s "
+        },
+        {
+          "similarity": 0.884561,
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "title": "Access to cash coverage in the UK 2024 H2",
+          "section": "Note 1, 2 and 3",
+          "modelTokenCount": 47,
+          "substantive": true,
+          "excerpt": "The headline coverage figures remain broadly comparable with previous data publications.\n\nThey continue to show more than 95% of the UK population being within the distances set out in the Treasury’s&"
+        },
+        {
+          "similarity": 0.884511,
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "title": "Access to cash coverage in the UK 2025 H1",
+          "section": "1. Introduction",
+          "modelTokenCount": 91,
+          "substantive": true,
+          "excerpt": "As part of our work on access to cash, we regularly publish data on changes in the UK’s cash access coverage.\n\nThis includes the locations of cash access points and other information such as temporary"
+        }
+      ],
+      "publicationTypes": [
+        {
+          "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+          "title": "Access to cash coverage in the UK 2025 H1"
+        },
+        {
+          "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+          "title": "Access to cash coverage in the UK 2024 H2"
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates"
+        },
+        {
+          "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+          "title": "Wholesale banks supervision - Insights 3 (Autumn 2026)"
+        },
+        {
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "title": "PS22/9: A new Consumer Duty"
+        }
+      ],
+      "passageSubstanceCheck": {
+        "overlapTerms": [
+          "access",
+          "cash",
+          "show"
+        ],
+        "substantivelyRelated": true
+      },
+      "passageSubstantivelyAddressesQuestion": true,
+      "classification": "GENUINE_MISS",
+      "rootCause": "Expected publication not ranked first; see ranked publications and passages.",
+      "publicationSelected": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+      "publicationRecallTop5": true
+    }
+  ],
+  "frozenMissNote": {
+    "source": "frozen_eval_suite_v2.1_on_b2_corpus",
+    "recallTop1": 5,
+    "denom": 6,
+    "falseNegativeCount": 1
+  }
+}
