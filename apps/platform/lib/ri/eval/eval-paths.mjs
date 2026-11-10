@@ -34,3 +34,11 @@ export const DEVELOPMENT_RETRIEVAL_PROBES_STEP_F_V2 = join(
   'development-retrieval-probes-2b2-step-f-v2.json',
 );
 export const BASELINE_DIR = join(REPO_ROOT, 'docs', 'eval', 'baseline');
+export const EVAL_SUITE_V21_PATH = join(REPO_ROOT, 'docs', 'eval', 'ask-ri-v2-eval-suite-v2.1.json');
+export const DETERMINISTIC_V21_R2_BASELINE = join(
+  REPO_ROOT,
+  'docs',
+  'eval',
+  'baseline',
+  'deterministic-v2.1-r2-2026-11-10.json',
+);

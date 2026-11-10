@@ -148,6 +148,9 @@ function loadSuite(suitePath, { includeHeldOut }) {
 
 export function runEvalSuite(options) {
   const engine = options.engine || 'deterministic';
+  if (engine === 'v2') {
+    throw new Error('use_runEvalSuiteV2_for_engine_v2');
+  }
   if (engine !== 'deterministic') throw new Error('unsupported_engine');
 
   const { suite, suitePath, cases, isRepoDefault } = loadSuite(
@@ -221,10 +224,34 @@ export function runEvalSuite(options) {
   return report;
 }
 
-function main() {
+async function main() {
   const cli = parseArgs(process.argv.slice(2));
+  if (cli.engine === 'v2') {
+    const { runEvalSuiteV2 } = await import('../lib/ri/eval/run-eval-suite-v2.mjs');
+    let report;
+    try {
+      report = await runEvalSuiteV2({
+        suitePath: cli.suite,
+        dryRun: process.env.ASK_RI_V2_DRY_RUN === 'true',
+      });
+    } catch (e) {
+      console.error(JSON.stringify({ ok: false, error: e.message }, null, 2));
+      process.exit(2);
+    }
+    const outPath = cli.out ? resolve(cli.out) : defaultTimestampedBaselinePath().replace(/deterministic/, 'ask-ri-v2');
+    const writeCheck = assertBaselineWriteAllowed({ outPath, force: cli.force });
+    if (!writeCheck.ok) {
+      console.error(JSON.stringify({ ok: false, error: writeCheck.error, message: writeCheck.message }, null, 2));
+      process.exit(2);
+    }
+    const outDir = dirname(outPath);
+    if (outDir) mkdirSync(outDir, { recursive: true });
+    writeFileSync(outPath, JSON.stringify(report, null, 2));
+    console.log(JSON.stringify({ ok: true, outPath, caseCount: report.caseCount, spend: report.spend }, null, 2));
+    return;
+  }
   if (cli.engine !== 'deterministic') {
-    console.error('Only --engine=deterministic is supported');
+    console.error('Supported engines: deterministic, v2');
     process.exit(2);
   }
 
@@ -267,4 +294,7 @@ function main() {
   }
 }
 
-main();
+main().catch((e) => {
+  console.error(e);
+  process.exit(2);
+});

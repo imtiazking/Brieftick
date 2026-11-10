@@ -193,6 +193,13 @@ export async function scoreQuestionWithMethod(index, question, caseRow, provisio
     passageRelevant: match.abstain ? false : substance.substantive,
     passageSubstance: substance,
     reportingPeriodHint: periodAdjusted,
+    allRankedChunks: scoredChunks.slice(0, 48).map((s) => ({
+      chunk: s.chunk,
+      similarity: Number(s.similarity.toFixed(6)),
+      method: s.method,
+      semanticSimilarity: Number((semanticByChunkId.get(s.chunk.chunkId) ?? 0).toFixed(6)),
+      rrfScore: s.rrfScore ?? null,
+    })),
   };
 }
 
