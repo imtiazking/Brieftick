@@ -84,6 +84,16 @@ if (adapterSrc.includes('credentials: \'same-origin\'') && !adapterSrc.includes(
   pass('adapter uses same-origin fetch without service role');
 } else failMsg('adapter security');
 
+const adapterStubMarker = 'Future production API adapter contract (non-functional in Design Lab)';
+if (adapterSrc.includes('async bootstrap()') && !adapterSrc.includes(adapterStubMarker)) {
+  pass('design-lab api adapter implements connected bootstrap');
+} else failMsg('design-lab api adapter is stub or missing bootstrap');
+
+const adapter = createApiPlatformAdapter({ apiBaseUrl: '/api/ri-lab' });
+if (typeof adapter.bootstrap === 'function' && typeof adapter.probe === 'function') {
+  pass('createApiPlatformAdapter exposes bootstrap and probe');
+} else failMsg('createApiPlatformAdapter missing bootstrap/probe methods');
+
 if (!fail) console.log('\nacceptance-phase-8-step-81b-lab-connectivity: PASS\n');
 else {
   console.error(`\nacceptance-phase-8-step-81b-lab-connectivity: FAIL (${fail})\n`);

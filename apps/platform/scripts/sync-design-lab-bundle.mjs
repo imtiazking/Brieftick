@@ -39,4 +39,22 @@ if (!viewsText.includes('renderDashboardGovernanceSummaryConnected')) {
   console.error('sync-design-lab-bundle: views.js missing renderDashboardGovernanceSummaryConnected import');
   process.exit(1);
 }
+const adapterBundle = join(destLab, 'js', 'adapters', 'api-platform-adapter.js');
+if (!existsSync(adapterBundle)) {
+  console.error('sync-design-lab-bundle: missing api-platform-adapter.js');
+  process.exit(1);
+}
+const adapterText = readFileSync(adapterBundle, 'utf8');
+const adapterStubMarker = 'Future production API adapter contract (non-functional in Design Lab)';
+if (adapterText.includes(adapterStubMarker) || !adapterText.includes('async bootstrap()')) {
+  console.error(
+    'sync-design-lab-bundle: api-platform-adapter must implement connected bootstrap (stub or missing bootstrap)',
+  );
+  process.exit(1);
+}
+const labConnectivity = join(destLab, 'js', 'platform', 'lab-connectivity.js');
+if (!readFileSync(labConnectivity, 'utf8').includes('adapter.bootstrap()')) {
+  console.error('sync-design-lab-bundle: lab-connectivity missing adapter.bootstrap() call');
+  process.exit(1);
+}
 console.log('sync-design-lab-bundle: OK', destLab);

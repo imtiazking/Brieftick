@@ -37,6 +37,21 @@ const markers = [
     file: 'js/views.js',
     pat: 'renderDashboardGovernanceSummaryConnected',
   },
+  {
+    id: 'api_adapter_bootstrap',
+    file: 'js/adapters/api-platform-adapter.js',
+    pat: 'async bootstrap()',
+  },
+  {
+    id: 'api_adapter_probe',
+    file: 'js/adapters/api-platform-adapter.js',
+    pat: 'async probe()',
+  },
+  {
+    id: 'lab_connectivity_bootstrap',
+    file: 'js/platform/lab-connectivity.js',
+    pat: 'adapter.bootstrap()',
+  },
 ];
 
 for (const root of [{ label: 'design-lab', base: labSrc }]) {

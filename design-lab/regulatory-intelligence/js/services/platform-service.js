@@ -11,7 +11,19 @@ export function getPlatform() {
   const local = getLocalPlatformAdapter();
   const config = local.getConfig();
   if (config.adapterMode === 'api' && config.featureFlags?.apiAdapter) {
-    if (!apiAdapter) apiAdapter = createApiPlatformAdapter();
+    if (!apiAdapter) {
+      apiAdapter = createApiPlatformAdapter({ apiBaseUrl: config.apiBaseUrl || '/api/ri-lab' });
+      if (config.backendSession) {
+        apiAdapter.restoreBootstrap({
+          session: config.backendSession,
+          config: {
+            ...config,
+            adapterMode: 'api',
+            featureFlags: { ...(config.featureFlags || {}), apiAdapter: true },
+          },
+        });
+      }
+    }
     return apiAdapter;
   }
   return local;
@@ -28,7 +40,8 @@ export const platform = {
     return getPlatform().mode;
   },
   get isApiConfigured() {
-    return false;
+    const cfg = getLocalPlatformAdapter().getConfig();
+    return Boolean(cfg.apiBaseUrl);
   },
   publications: {
     getById: (id) => getPlatform().getPublication(id),
