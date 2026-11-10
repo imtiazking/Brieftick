@@ -10,6 +10,7 @@ import {
   buildPublicationHtmlEvidenceIndex,
 } from './publication-html-evidence.mjs';
 import { questionRequestsPdfSupplement } from './publication-question-scope.mjs';
+import { classifyFg22HtmlArticleV2Evidence } from '../ingestion/snapshot/fg22-discovery-html-evidence.mjs';
 
 const REVISION_COLUMNS = `id,
   publication_id,
@@ -219,6 +220,26 @@ export async function loadPublicationHtmlEvidenceForAskRi(adminSupabase, options
   }
 
   const pubById = new Map((pubs || []).map((p) => [p.id, p]));
+  const snapshotIds = [
+    ...new Set(
+      [...latestByPublication.values()].map((r) => r.source_snapshot_id).filter(Boolean),
+    ),
+  ];
+  const snapById = new Map();
+  if (snapshotIds.length) {
+    const { data: snaps, error: snapError } = await adminSupabase
+      .from('regulatory_source_snapshots')
+      .select('id, canonical_url, publication_id, source_fingerprint')
+      .in('id', snapshotIds);
+    if (snapError) {
+      return {
+        evidence: [],
+        errors: [{ code: 'html_snapshot_query_failed', message: snapError.message }],
+      };
+    }
+    for (const snap of snaps || []) snapById.set(snap.id, snap);
+  }
+
   const evidence = [];
   const errors = [...preLoadErrors];
 
@@ -229,13 +250,15 @@ export async function loadPublicationHtmlEvidenceForAskRi(adminSupabase, options
       continue;
     }
 
-    const htmlSnapshotRole =
-      row.publication_metadata?.htmlSnapshotRole || row.extraction_quality?.htmlSnapshotRole || null;
-    if (htmlSnapshotRole === 'fca_link_discovery_only') {
+    const snapshotRow = row.source_snapshot_id ? snapById.get(row.source_snapshot_id) : null;
+    const fg22HtmlClass = classifyFg22HtmlArticleV2Evidence(pub, snapshotRow, row);
+    if (fg22HtmlClass.discoveryOnly) {
       errors.push({
         publicationId: row.publication_id,
         revisionId: row.id,
-        code: 'html_discovery_index_not_substantive',
+        code: fg22HtmlClass.code || 'html_discovery_index_not_substantive',
+        reason: fg22HtmlClass.reason,
+        classificationSource: fg22HtmlClass.classificationSource,
         message:
           'html_article_v2 on this publication is FCA link discovery only; Ask RI must use pdf_primary_v1 for FG22/5 guidance text.',
       });

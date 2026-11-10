@@ -20,8 +20,11 @@ import { extractRegulatoryPdfContent } from '../../../../integrations/regulatory
 import { assertStagingIngestIsolation } from '../../lib/ri/ingestion/staging-ingest-guards.mjs';
 import {
   persistFg22ControlledCatalogue,
-  applyFg22DiscoveryHtmlRevisionSemantics,
+  assessFg22PartialIngestRecovery,
+  buildFg22DiscoveryInsertFields,
 } from '../../lib/ri/ingestion/snapshot/fg22-5-persist-controlled.mjs';
+import { EXTRACTION_PROFILE_HTML_ARTICLE_V2 } from '../../lib/ri/ingestion/snapshot/extraction-revision-types.mjs';
+import { loadExtractionRevisionByProfile } from '../../lib/ri/ingestion/snapshot/persist-extraction-revision.mjs';
 import { FG22_5_STAGING } from '../../lib/ri/ingestion/snapshot/fg22-5-staging-identity.mjs';
 import {
   resolveFg22LandingPage,
@@ -194,7 +197,7 @@ function buildProposedMutations(ctx) {
     },
     {
       entity: 'regulatory_source_extraction_revisions',
-      action: 'INSERT html_article_v2 (createExtractionRevision) + discovery semantics stamp',
+      action: 'INSERT html_article_v2 (createExtractionRevision + buildFg22DiscoveryInsertFields at INSERT)',
       snapshotId: snapshotIdAfterIngest || '(after catalogue ingest)',
       htmlRole: 'fca_link_discovery_only',
     },
@@ -377,9 +380,19 @@ async function main() {
       chapter7CitationReadiness: report.chapter7.meetsTwoPagePotential ? 'likely_sufficient' : 'review_after_index',
     };
 
+    report.partialRecovery = await assessFg22PartialIngestRecovery(client, {
+      expectedPublicationId: existing.row?.id,
+      expectedSnapshotId: existing.row?.snapshot_id,
+    });
     if (dryRun) {
       report.writesPerformed = false;
       report.overall = report.ingestionModeSafety.executeAllowed ? 'PASS_DRY_RUN' : 'PASS_DRY_RUN_EXECUTE_BLOCKED';
+      if (report.partialRecovery?.readyForPdfOnlyContinuation) {
+        report.recoveryDryRun = {
+          mode: 'pdf_primary_v1_continuation',
+          note: 'Existing publication, snapshot and html_article_v2 preserved; next execute inserts pdf_primary_v1 only (no UPDATE on revisions).',
+        };
+      }
       if (!report.ingestionModeSafety.executeAllowed) {
         report.executeBlockedReason = report.ingestionModeSafety;
       }
@@ -422,35 +435,65 @@ async function main() {
 
     const snapRow = await loadSnapshotRow(client, snapshotId);
     const config = validateSupabaseSnapshotConfig({ environment: 'staging', requireApprovedStagingProject: true });
-    const rawBody = await downloadPrivateStorageObject({
-      projectUrl: config.url,
-      serviceRoleKey: config.serviceKey,
-      bucket: BUCKET,
-      objectPath: snapRow.raw_storage_path,
-    });
-
-    const htmlRev = await createExtractionRevision(client, {
-      sourceSnapshotId: snapshotId,
-      rawBody,
-      canonicalUrl: snapRow.canonical_url || landing.finalUrl,
-      createdBy: 'fg22-5-controlled-ingest',
-      environment: 'staging',
-    });
-    if (htmlRev.revisionId && (htmlRev.created || htmlRev.outcome === 'idempotent_hit')) {
-      await applyFg22DiscoveryHtmlRevisionSemantics(client, htmlRev.revisionId);
+    const discoveryInsert = buildFg22DiscoveryInsertFields();
+    const existingHtml = await loadExtractionRevisionByProfile(
+      client,
+      snapshotId,
+      EXTRACTION_PROFILE_HTML_ARTICLE_V2,
+    );
+    let htmlRev;
+    if (existingHtml) {
+      htmlRev = {
+        revisionId: existingHtml.id,
+        created: false,
+        outcome: 'idempotent_hit',
+        appendOnlyPreserved: true,
+        note: 'Unstamped discovery HTML revision retained; consumers classify fail-closed by publication/snapshot identity.',
+      };
+    } else {
+      const rawBody = await downloadPrivateStorageObject({
+        projectUrl: config.url,
+        serviceRoleKey: config.serviceKey,
+        bucket: BUCKET,
+        objectPath: snapRow.raw_storage_path,
+      });
+      htmlRev = await createExtractionRevision(client, {
+        sourceSnapshotId: snapshotId,
+        rawBody,
+        canonicalUrl: snapRow.canonical_url || landing.finalUrl,
+        createdBy: 'fg22-5-controlled-ingest',
+        environment: 'staging',
+        extractionQualityPatch: discoveryInsert.extractionQuality,
+        publicationMetadataPatch: discoveryInsert.publicationMetadata,
+        provenancePatch: discoveryInsert.provenance,
+      });
     }
     report.htmlRevision = htmlRev;
 
-    const pdfRev = await createPrimaryPdfExtractionRevision(client, {
-      sourceSnapshotId: snapshotId,
-      pdfBytes: retrieved.body,
-      contentSha256: retrieved.contentSha256,
-      sourceUrl: FG22_5_PRIMARY_PDF_URL,
-      extraction: extracted,
-      environment: 'staging',
-      createdBy: 'fg22-5-controlled-ingest',
-    });
+    const existingPdf = await loadExtractionRevisionByProfile(client, snapshotId, 'pdf_primary_v1');
+    let pdfRev;
+    if (existingPdf) {
+      pdfRev = {
+        revisionId: existingPdf.id,
+        created: false,
+        outcome: 'idempotent_hit',
+      };
+    } else {
+      pdfRev = await createPrimaryPdfExtractionRevision(client, {
+        sourceSnapshotId: snapshotId,
+        pdfBytes: retrieved.body,
+        contentSha256: retrieved.contentSha256,
+        sourceUrl: FG22_5_PRIMARY_PDF_URL,
+        extraction: extracted,
+        environment: 'staging',
+        createdBy: 'fg22-5-controlled-ingest',
+      });
+    }
     report.pdfRevision = pdfRev;
+    report.partialRecovery = await assessFg22PartialIngestRecovery(client, {
+      expectedPublicationId: publicationId,
+      expectedSnapshotId: snapshotId,
+    });
 
     const fcaModeAfter = (
       await client.query(

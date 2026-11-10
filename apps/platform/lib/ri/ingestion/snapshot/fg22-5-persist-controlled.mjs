@@ -313,42 +313,9 @@ export async function persistFg22ControlledCatalogue(client, params) {
   }
 }
 
-/**
- * Stamp html_article_v2 revision after createExtractionRevision (FG22 discovery semantics).
- */
-export async function applyFg22DiscoveryHtmlRevisionSemantics(client, revisionId) {
-  await client.query(
-    `update regulatory_source_extraction_revisions
-     set extraction_quality = extraction_quality || $2::jsonb,
-         publication_metadata = coalesce(publication_metadata, '{}'::jsonb) || $3::jsonb,
-         provenance = coalesce(provenance, '{}'::jsonb) || $4::jsonb
-     where id = $1`,
-    [
-      revisionId,
-      JSON.stringify({
-        obligationGradeSuitable: false,
-        htmlSnapshotRole: 'fca_link_discovery_only',
-        primaryDocument: {
-          classification: 'pdf_primary',
-          completeness: 'captured',
-          primaryPdfUrl: FG22_5_PRIMARY_PDF_URL,
-        },
-        webpageExtraction: {
-          status: 'incomplete',
-          confidence: 'low',
-          role: 'fca_link_discovery_only',
-        },
-      }),
-      JSON.stringify({
-        htmlSnapshotRole: 'fca_link_discovery_only',
-        canonicalPublicationIdentity: FG22_5_PRIMARY_PDF_URL,
-        substantiveRegulatoryTextMedium: 'pdf_primary_v1',
-        discoveryHtmlPurpose: 'fca_official_link_index',
-      }),
-      JSON.stringify({
-        fg22DiscoveryHtmlStamp: true,
-        note: 'HTML revision is not substantive FG22/5 guidance; PDF extraction holds regulatory text.',
-      }),
-    ],
-  );
-}
+export {
+  applyFg22DiscoveryHtmlRevisionSemantics,
+  buildFg22DiscoveryInsertFields,
+  classifyFg22HtmlArticleV2Evidence,
+  assessFg22PartialIngestRecovery,
+} from './fg22-discovery-html-evidence.mjs';
