@@ -70,6 +70,7 @@
     "test:acceptance:bus-uat-018-fg22-ingest": "node ./scripts/acceptance-phase-8-bus-uat-018-fg22-ingest.mjs",
     "test:acceptance:bus-uat-018-fg22-append-only": "node ./scripts/acceptance-phase-8-fg22-append-only-recovery.mjs",
     "test:acceptance:bus-uat-018-fg22-html-exclusion": "node ./scripts/acceptance-phase-8-bus-uat-018-fg22-html-exclusion.mjs",
+    "test:acceptance:design-lab-views-imports": "node ./scripts/acceptance-phase-8-design-lab-views-imports.mjs",
     "staging:verify-step-80": "node ./scripts/staging/verify-step-80-cp26-primary-pdf.mjs",
     "staging:preflight-step-80": "node ./scripts/staging/preflight-step-80-staging.mjs",
     "test:acceptance:phase8c-step-80-primary-pdf": "node ./scripts/acceptance-phase-8c-step-80-primary-pdf.mjs",

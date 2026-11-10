@@ -27,6 +27,16 @@ const markers = [
   { id: 'panels_create', file: 'js/platform/connected-action-panels.js', pat: 'renderConnectedActionCreateBanner' },
   { id: 'risk_link', file: 'js/platform/connected-risk-control-panels.js', pat: 'renderConnectedRiskLinkPanel' },
   { id: 'control_save', file: 'js/platform/connected-work-writes.js', pat: 'patchConnectedControl' },
+  {
+    id: 'governance_dashboard_connected',
+    file: 'js/governance-views.js',
+    pat: 'export function renderDashboardGovernanceSummaryConnected',
+  },
+  {
+    id: 'views_imports_governance_connected',
+    file: 'js/views.js',
+    pat: 'renderDashboardGovernanceSummaryConnected',
+  },
 ];
 
 for (const root of [{ label: 'design-lab', base: labSrc }]) {
