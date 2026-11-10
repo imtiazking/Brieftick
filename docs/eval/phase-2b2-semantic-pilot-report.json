@@ -1,0 +1,1153 @@
+{
+  "phase": "2B.2-A-B-pilot",
+  "generatedAt": "2026-11-10T17:07:41.955Z",
+  "model": {
+    "modelRepository": "Xenova/gte-small",
+    "upstreamRepository": "thenlper/gte-small",
+    "supabaseProductName": "Supabase/gte-small",
+    "outputDimensions": 384,
+    "pooling": "mean",
+    "vectorNormalization": "l2",
+    "onnxQuantization": "quantized (Transformers.js default)",
+    "runtime": "node_transformers_js",
+    "edgeRuntimeEquivalence": "UNVERIFIED"
+  },
+  "corpus": {
+    "distinctPublications": 3,
+    "packFiles": 4,
+    "chunkCount": 338,
+    "positiveQuestions": 6,
+    "negativeQuestions": 3,
+    "smallCorpusLimitation": "Frozen evidence packs contain ~3 catalogue publications only; high recall must not be interpreted as production-scale regulatory intelligence."
+  },
+  "chunkTokenStats": {
+    "count": 338,
+    "min": 8,
+    "max": 511,
+    "mean": 291.22,
+    "p95": 489,
+    "overHardLimit": 0,
+    "truncationAttempts": 0,
+    "pageBoundaryViolations": 0
+  },
+  "equivalence": {
+    "status": "UNVERIFIED",
+    "sampleCount": 20,
+    "note": "Supabase Edge Runtime inference not executed in this offline pilot; only Transformers.js ONNX embeddings produced.",
+    "perSampleCosine": [],
+    "min": null,
+    "mean": null,
+    "maxDeviation": null
+  },
+  "proposedMinimumRelevanceThreshold": 0.8711,
+  "thresholdCalibrationNote": "Provisional: pilot corpus size (3 pubs). Calibrated from negative-control top similarities and lower quartile of positive top-1 hits — not question-specific rules.",
+  "positiveRetrieval": [
+    {
+      "testId": "EVAL-H-01",
+      "question": "How does the FCA expect firms to monitor customer outcomes for fair value?",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.930311,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "4. What we found"
+        },
+        {
+          "similarity": 0.915116,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 67
+        },
+        {
+          "similarity": 0.906347,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "Taking a holistic and proportionate approach"
+        },
+        {
+          "similarity": 0.898078,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 68
+        },
+        {
+          "similarity": 0.897777,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "4. What we found"
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.930311,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "Monitoring fair value and customer outcomes 5.",
+            "htmlSectionId": "4. What we found",
+            "sectionReference": "4. What we found",
+            "documentEvidenceId": "ba9b21c238488a4a",
+            "modelTokenCount": 10,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "0c3653649255b053"
+          }
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.915116,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "67 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyconsidered in their value assessments and should be able to provide evidence if we request it.7. 4 9 Firms must take appropriate action where their review identifies that a product or service does not provide fair value. This may include amending the benefits or price of a product or service so that it provides fair value, withdrawing the product, or where consumers have suffered harm, providing redress.The types of data/ monitoring firms could use7. 5 0 Firms could use the following types of data to monitor that they are meeting expectations under this outcome:• the expected price paid by customers, including associated fees and charges and those incurred further down the distribution chain• profitability data, including revenue and profit margins• customer complaints and root cause analyses• surveys, net promoter scores, social media rating analysis, focus groups, mystery shopping or other customer research• data about customer usage and behaviour, such as transactional data, retention rates or relevant A/B testing of variation in product or service design• operational data which might affect value such as on app or website outages or service call abandonment rates• feedback from other firms in the distribution chain including, manufacturers, intermediaries, appointed representatives or other third parties regarding the value of the product• the cost of providing the product or service, including credit risk• market conditions, such as the interest rate environment or rates for comparable productsKey questions for firms7. 51 In the table below, we set out examples of the type of questions firms can expect to be asked in their interactions with the FCA in relation to this outcome. We would also expect the Duty board champion and the Chair to use this type of question to guide discussions by the firm’s board or equivalent governing body.Key questions for firms• Is the firm satisfied that it is considering all the relevant factors and available data as part of its fair value assessments?",
+            "physicalPageNumber": 67,
+            "modelTokenCount": 408,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "fd96efc987d13a16"
+          }
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.879435,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "FCA 202X/YY Page 50 of 67 improve its readiness to respond to future events. • A firm engages with public-private partnerships and private-private partnerships to gather insights on the latest typologies and additional controls that might be relevant and share its own best practice examples. • Where a firm is involved in facilitating international trade, it has mapped its clients’ products and associated industries against sanctioned goods and industries. Customer due diligence checks 7.2A.5 As well as being relevant to other financial crime controls, effective customer due diligence (CDD) and know your customer (KYC) assessments are a cornerstone of effective compliance with sanctions requirements. Examples of good practice Examples of poor practice • Sanctions risk is proactively included into a firm’s CDD process. • A firm has low-quality CDD and KYC assessments and review backlogs, raising the risk of not identifying sanctioned individuals and entities. • The firm’s CDD identifies all parties relevant for its screening processes. • The firm’s CDD processes are unable to identify connected parties and corporate structures that may be subject to sanctions. • A firm’s customer onboarding and due diligence processes are designed to identify customers who make use of corporate vehicles to obscure ownership or source of funds. • A firm’s CDD does not articulate full ownership structures of entities and the firm is unable to show that it is screening all relevant parties.",
+            "physicalPageNumber": 73,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 298,
+            "pageBoundaryViolations": 0,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "5711e35c7cb0fadf"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": false,
+        "reason": null
+      },
+      "publicationRecallTop1": true,
+      "publicationRecallTop3": true
+    },
+    {
+      "testId": "EVAL-H-02",
+      "question": "What evidence should firms retain to demonstrate fair value?",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.928215,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "1. Overview: what we found"
+        },
+        {
+          "similarity": 0.911504,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "4. What we found"
+        },
+        {
+          "similarity": 0.910829,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "3. What we looked at"
+        },
+        {
+          "similarity": 0.906528,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "Taking a holistic and proportionate approach"
+        },
+        {
+          "similarity": 0.901855,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "4. What we found"
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.928215,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "We found examples of firms taking structured and proportionate approaches to assessing fair value.",
+            "htmlSectionId": "1. Overview: what we found",
+            "sectionReference": "1. Overview: what we found",
+            "documentEvidenceId": "6f3891ae9cd9933e",
+            "modelTokenCount": 18,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "cdae3566b06e2a0a"
+          }
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.898952,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "The firm misses the chance to mitigate the harm before it can materialise, and customers suffer harm.A firm proactively assesses fair value and identifies a potential issue during its regular review of a product or service and takes appropriate steps. Customers suffer no harm in practice.A firm has many different products with different charges/fees/prices but with similar levels of benefits to consumers. Some of the charges are high in relation to the benefits provided, and some products do not offer fair value.A firm considers the reasonableness of its product range and whether each product provides fair value to the customers in the target market.",
+            "physicalPageNumber": 69,
+            "modelTokenCount": 127,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "e01c2f51374e31de"
+          }
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.835065,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "FCA 202X/YY Page 50 of 67 improve its readiness to respond to future events. • A firm engages with public-private partnerships and private-private partnerships to gather insights on the latest typologies and additional controls that might be relevant and share its own best practice examples. • Where a firm is involved in facilitating international trade, it has mapped its clients’ products and associated industries against sanctioned goods and industries. Customer due diligence checks 7.2A.5 As well as being relevant to other financial crime controls, effective customer due diligence (CDD) and know your customer (KYC) assessments are a cornerstone of effective compliance with sanctions requirements. Examples of good practice Examples of poor practice • Sanctions risk is proactively included into a firm’s CDD process. • A firm has low-quality CDD and KYC assessments and review backlogs, raising the risk of not identifying sanctioned individuals and entities. • The firm’s CDD identifies all parties relevant for its screening processes. • The firm’s CDD processes are unable to identify connected parties and corporate structures that may be subject to sanctions. • A firm’s customer onboarding and due diligence processes are designed to identify customers who make use of corporate vehicles to obscure ownership or source of funds. • A firm’s CDD does not articulate full ownership structures of entities and the firm is unable to show that it is screening all relevant parties.",
+            "physicalPageNumber": 73,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 298,
+            "pageBoundaryViolations": 0,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "5711e35c7cb0fadf"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": false,
+        "reason": null
+      },
+      "publicationRecallTop1": true,
+      "publicationRecallTop3": true
+    },
+    {
+      "testId": "EVAL-H-03",
+      "question": "What is the FCA proposing to change in financial crime guidance this year?",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.927302,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 3
+        },
+        {
+          "similarity": 0.924012,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 24,
+          "section": null
+        },
+        {
+          "similarity": 0.917116,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 25,
+          "section": null
+        },
+        {
+          "similarity": 0.914593,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 5,
+          "section": null
+        },
+        {
+          "similarity": 0.907134,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 18,
+          "section": null
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.927302,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "3 Chapter 1Summary1.1 Financial crime is becoming more sophisticated and complex. We’re consulting on changes to our Financial Crime Guide (the Guide) to help firms assess and strengthen their financial crime systems and controls. 1.2 Financial crime causes wide-ranging harm: it damages lives and livelihoods, enables serious and organised crime, undermines trust in the financial system and weakens the wider economy. Tackling it is one of our priorities and requires a coordinated effort across industry, government, law enforcement and regulators. Firms are essential partners in that collective effort. Their work to detect, prevent and disrupt financial crime helps protect consumers and safeguard the integrity of the financial system. 1.3 The updates we propose are informed by insights from our supervision and wider developments. We want the Guide to continue to help firms understand our expectations, strengthen their financial crime systems and controls and support their efforts to detect, prevent and disrupt financial crime. 1.4 The Guide includes self-assessment questions and examples of good and poor practice drawn from our supervisory work and wider financial crime publications.1.5 The Guide does not contain rules nor impose any new requirements. We expect firms to have read and considered it, using it as well as their own their judgement to establish effective policies and controls.1.6 Firms should factor in the UK’s System Priorities to demonstrate how they counter financial crime risk. The System Priorities framework is developing with focus on delivering more through Public Private Partnership.1.7 For further information on how these changes aim to prevent harm and how the consultation aligns with FCA objectives, see paragraph 1.13 and Chapter 2.1.8 This CP should be read by:• all FCA financial crime supervised firms, including firms we supervise under The Money Laundering, Terrorist Financing and Transfer of Funds (Information on the Payer) Regulations 2017 (MLRs), such as Annex I Financial Institutions and cryptoasset businesses.1.9 The CP may also be of interest to:• individuals and organisations working with firms subject to our financial crime and MLRs supervision• financial services trade organisations and professional bodies• any other parties interested in our financial crime supervision, such as non-governmental organisations working on financial crime prevention, or academics",
+            "physicalPageNumber": 3,
+            "modelTokenCount": 454,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "4180fa6425ec7df8"
+          }
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.889628,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "© Financial Conduct Authority 202212 Endeavour Square London E20 1JN Telephone: +44 (0)20 7066 1000Website: www.fca.org.ukAll rights reservedPub ref: 007881",
+            "physicalPageNumber": 121,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 51,
+            "pageBoundaryViolations": 0,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "1e57ed72acc45500"
+          }
+        },
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.829448,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "Controls to reduce the risk of foreseeable harm from fees and charges",
+            "htmlSectionId": "4. What we found",
+            "sectionReference": "4. What we found",
+            "documentEvidenceId": "afa0e679070d9533",
+            "modelTokenCount": 16,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "a0dbd478c8527906"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": false,
+        "reason": null
+      },
+      "publicationRecallTop1": true,
+      "publicationRecallTop3": true
+    },
+    {
+      "testId": "EVAL-H-04",
+      "question": "How should firms strengthen fraud controls in retail banking?",
+      "expectedPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.890681,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 43,
+          "section": null
+        },
+        {
+          "similarity": 0.880597,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 47,
+          "section": null
+        },
+        {
+          "similarity": 0.880495,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 42,
+          "section": null
+        },
+        {
+          "similarity": 0.874785,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 63
+        },
+        {
+          "similarity": 0.870949,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 7
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.890681,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "FCA 202X/YY Page 20 of 67 (e.g. for a salesman to misreport a customer’s salary to secure a loan would be fraud). • Anti-fraud good practice is shared widely within the firm. • Sales incentives act to encourage staff or management to turn a blind eye to potential fraud. • To guard against insider fraud, staff in high risk positions (e.g. finance department, trading floor) are subject to enhanced vetting and closer scrutiny. ‘Four eyes’ procedures (see FCG Annex 1 for common terms) are in place. • Banks fail to implement the requirements of the Payment Services Regulations and Banking Conduct of Business rules, leaving customers out of pocket after fraudulent transactions are made. • Enhanced due diligence is performed on higher risk customers (e.g. commercial customers with limited financial history. See ‘long firm fraud’ in FCG Annex 1). • Remuneration structures may incentivise behaviour that increases the risk of mortgage fraud. • Cryptoasset businesses pre-screen outbound transactions for addresses linked to fraud. Governance 4.2.1A We expect senior management to take clear responsibility for managing fraud risks, which should be treated in the same manner as other risks faced by the business. There should be evidence that senior management is actively engaged in the firm’s approach to managing fraud risks that affect the firm and its customers, alongside its wider financial crime risks. Examples of good practice Examples of poor practice • The firm has a strategy for managing fraud risks, including a focus on protecting customers from the harms of fraud. • There is no meaningful record or evidence of senior management considering fraud-specific risks as part of a wider financial crime strategy. • The firm’s strategy for managing fraud risks considers wider requirements, including those in the Payment Services",
+            "physicalPageNumber": 43,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 373,
+            "pageBoundaryViolations": 0,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "3d6c45700cb26ec3"
+          }
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.855167,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "The extent to which the firm has complied with all relevant requirements (for example requirements around ensuring that products are sold to the right target market, requirements on responsible lending and creditworthiness) in relation to the sale of the product or service will also be a relevant factor to take into account.• Prevent an insistent customer from making decisions or acting in a way that the firm considers to be against their interests. Even where firms act reasonably to meet the Duty, consumers may sometimes make poor decisions. Firms should aim to help customers understand the consequences of their decisions but, if a customer insists on a course of action that the firm regards as harmful, they are not obliged to prevent it. However, the firm should take steps to ensure that customers understand the risks of their action.• Require a firm to ration the use of or withdraw individual products or interfere in the transactions of customers based on potential risk where a prudent firm would not otherwise do so. For example, if a customer is looking to buy something using their debit card instead of credit card, the rules do not require their bank to intervene/add friction to the customer journey at point of sale to make the customer aware that their credit card may have additional protections which could be useful.",
+            "physicalPageNumber": 34,
+            "modelTokenCount": 252,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "c529a0c101432ecf"
+          }
+        },
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.840658,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "Controls to reduce the risk of foreseeable harm from fees and charges",
+            "htmlSectionId": "4. What we found",
+            "sectionReference": "4. What we found",
+            "documentEvidenceId": "afa0e679070d9533",
+            "modelTokenCount": 16,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "a0dbd478c8527906"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": false,
+        "reason": null
+      },
+      "publicationRecallTop1": true,
+      "publicationRecallTop3": true
+    },
+    {
+      "testId": "EVAL-H-05",
+      "question": "Explain Consumer Duty fair value for insurers.",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.90812,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 65
+        },
+        {
+          "similarity": 0.900044,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 59
+        },
+        {
+          "similarity": 0.898062,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 69
+        },
+        {
+          "similarity": 0.897589,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 20
+        },
+        {
+          "similarity": 0.896931,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 68
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.90812,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "65 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyby the Duty. However, where firms charge different prices to separate groups of consumers, they must consider whether the price charged for the product/service provides fair value for customers in each pricing group, while having regard to whether any customers who have characteristics of vulnerability may be disadvantaged.7. 3 9 As we found in our market study of general insurance pricing practices, price walking some groups of consumers can lead to them making significant overpayments which do not provide fair value. This would not meet the requirements of the Duty.ExampleMost mortgages have an initial incentivised rate (either fixed or variable) that reverts to a variable rate after a period of time. The standard variable rate (SVR) is the most common reversion rate. When considering whether a mortgage offers fair value, firms should consider the overall price of a mortgage including any initial discounted rate, fees and charges and the reversion rate applicable at the end of a fixed rate period. This does not require firms to move away from designing products that revert to a variable rate (such as an SVR), and fair value can still be delivered by an approach in which introductory rates are lower than the rates that borrowers later pay.7. 4 0 Firms can also differentiate products or services; for example, insurance firms can still have bronze, silver and gold cover products with different levels of benefits offered to the consumers. But firms will need to consider whether it is reasonable to have different types of product or service, especially if the benefits offered to the consumers do not vary significantly between them. Similarly, the Duty does not prevent firms selling similar products, but under different brands and with different pricing structures, as long as each provides fair value.7. 41 When firms have different products serving similar target markets, they should consider if customers with one product are more likely to incur fees and charges, or appear to be receiving outcomes that are not as good, as customers in equivalent products.ExampleServicing fees can be charged as a percentage of the value of a product.",
+            "physicalPageNumber": 65,
+            "modelTokenCount": 450,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "4c4df2a172eb64f6"
+          }
+        },
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.885258,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "Assessing fair value for different customer groups 4.",
+            "htmlSectionId": "4. What we found",
+            "sectionReference": "4. What we found",
+            "documentEvidenceId": "78a2343fb89a5b26",
+            "modelTokenCount": 11,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "7bc324d5e160ee62"
+          }
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.823472,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "19 The general principle that consumers should take responsibility for their decisions13. The consultation is not aimed as guidance for the consumer and thus will have limited consumer impact. However, through better financial crime controls at firms that consumers use, we believe that The Guide and better guidance will result indirectly in better consumer outcomes and protection.The responsibilities of senior management in relation to compliance with requirements imposed under FSMA, especially where they relate to consumers14. The consultation does not propose changes to the responsibilities of senior management.The desirability of exercising our functions in a way that recognises the differences in the nature of - and objectives of - businesses carried on by different persons including mutual societies and other kinds of business organisation15. The consultation is proposing changes as guidance only. A business can have regard to the guidance as it sees fit.The desirability of publishing information relating to persons subject to requirements imposed under FSMA, or requiring them to publish information to advance our [operational and secondary] objectives 16. This consultation is aligned with these objectives. It is providing further information to firms subject to FSMA Financial Crime Rules.The responsibilities of senior management17. The consultation does not propose changes to the responsibilities of senior management.The principle that we should exercise of our functions as transparently as possible18. The consultation is aligned with this objective and provides transparent communication on our proposals to the firms we supervise.19. In formulating these proposals, the FCA has had regard to the importance of taking action intended to minimise the extent to which it is possible for a business carried on (i) by an authorised person or a recognised investment exchange; or (ii) in contravention of the general prohibition, to be used for a purpose connected with financial crime (as required by s 1B(5)(b) FSMA).",
+            "physicalPageNumber": 19,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 368,
+            "pageBoundaryViolations": 0,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "cbea568a0edac193"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": false,
+        "reason": null
+      },
+      "publicationRecallTop1": true,
+      "publicationRecallTop3": true
+    },
+    {
+      "testId": "EVAL-A-04",
+      "question": "Which firm types does the Fair Value supervisory webpage primarily address?",
+      "expectedPublicationIds": [
+        "56b0beca-d8c3-4267-a794-9079009af661"
+      ],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.887156,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "2. Who this applies to"
+        },
+        {
+          "similarity": 0.885668,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "1. Overview: what we found"
+        },
+        {
+          "similarity": 0.884906,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "4. What we found"
+        },
+        {
+          "similarity": 0.882251,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "4. What we found"
+        },
+        {
+          "similarity": 0.880174,
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "title": "Fair value in consumer finance",
+          "section": "3. What we looked at"
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.887156,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "Although drawn from our supervisory work in consumer finance, they may also be relevant to firms in other sectors when assessing, evidencing and monitoring fair value.",
+            "htmlSectionId": "2. Who this applies to",
+            "sectionReference": "2. Who this applies to",
+            "documentEvidenceId": "dcb278eac2e2f5ef",
+            "modelTokenCount": 34,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "95bb0544d7bc6a3f"
+          }
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.874987,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "The firm must also ensure that its own fees and charges are fair value and that payment of these does not result in the product or service ceasing to be fair value overall.ExampleWhere different firms are involved in the distribution chain for an investment product, they all have responsibility to consider fair value as part of avoiding foreseeable harm and helping support customers in pursuing their financial objectives.• The fund manager: The firm must assess whether their charges levied are justified in the context of the overall value of the product.• The platform provider: The firm must set fair value charges for using the platform. In some cases, the platform provider will be the final firm in the",
+            "physicalPageNumber": 63,
+            "modelTokenCount": 139,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "65bbf76fcb5e8ebf"
+          }
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.834173,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "FCA 202X/YY Page 53 of 67 • A firm screens customers’ directors and known beneficial owners on a risk-sensitive basis. • An insurance company only screens when claims are made on a policy. • A firm only relies on other firms’ screening (such as outsourcers or intermediaries) after taking steps to satisfy itself this is appropriate. • A firm is overly reliant on a third-party provider screening solution, with no oversight. A firm has no means of monitoring payment instructions. • Where blockchain analytics solutions are deployed, the firm ensures that compliance teams understand how these capabilities can be best used to identify transactions linked to higher risk wallet addresses, including those included on the UK Sanctions List. • A firm only screens at onboarding and not on an ongoing basis. • A firm engaging in cryptoasset activities utilises on and off-chain controls to screen customer activities and reacts to possible sanctions evasion, including where exposure or additional information is identified post-transaction, and uses post-transaction controls to inform future risk assessments. • A firm cannot articulate what is screened for and with what frequency based on its risk assessment. • A firm does not assess or document the risk of transactions and aspects of payments messages that are not screened for. List management and data feeds 7.2A.8 Self-assessment questions: • When are customers screened against lists, whether the Consolidated List, the UK Sanctions List, internal watchlists maintained by your firm, or lists from commercial providers? (Screening should take place at the time of customer take-on. Good reasons are needed to justify the risk posed by retrospective screening, such as the existence of general licences.)",
+            "physicalPageNumber": 76,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 348,
+            "pageBoundaryViolations": 0,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "1f0258b9a0d0beb5"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": false,
+        "reason": null
+      },
+      "publicationRecallTop1": true,
+      "publicationRecallTop3": true
+    }
+  ],
+  "negativeRetrieval": [
+    {
+      "testId": "EVAL-I-01",
+      "question": "Summarise FCA Policy Statement PS99/99 on cryptoassets.",
+      "expectedPublicationIds": [],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.896068,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 38,
+          "section": null
+        },
+        {
+          "similarity": 0.895922,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 37,
+          "section": null
+        },
+        {
+          "similarity": 0.884018,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 34,
+          "section": null
+        },
+        {
+          "similarity": 0.878609,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 41
+        },
+        {
+          "similarity": 0.875929,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 39,
+          "section": null
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.896068,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "FCA 202X/YY Page 15 of 67 • Is there a documented process for responding to Production Investigative Court Orders, with clear timetables? • Can your firm retrieve records promptly in response to an Investigative Court Order? • Are staff and relevant procedures clear about key differences between ‘Defence Against Money Laundering Suspicious Activity Reports’ under the Proceeds of Crime Act 2002, and ‘Defences Against Terrorist Financing’ under the Terrorism Act 2000, regarding thresholds and exemptions? Examples of good practice Examples of poor practice ... ... • A firm provides extraneous and irrelevant detail in response to a Production an Investigative Court Order. See regulation 21 of the Money Laundering Regulations and s.330 POCA and s.331 POCA and s.21A of the Terrorism Act 2000. Record keeping and reliance on others 3.2.11 ... Self-assessment questions: • Can your firm retrieve records promptly in response to a Production an Investigative Court Order? ... ... Customer payments 3.2.13 This section applies to banks payment service providers and cryptoasset businesses subject to SYSC 6.3. ... From 1 September 2023, similar obligations have applied for cryptoasset transfers undertaken by cryptoasset businesses registered with the FCA under the Money Laundering Regulations. This chapter may assist cryptoasset businesses, authorised cryptoasset firms and specified investment cryptoasset firms in implementing this requirement but they should also have regard to specific expectations set out by the FCA. For further information, see www.fca.org.uk/news/statements/fca-sets-out-expectations-uk-cryptoasset-businesses-complying-travel-rule Firms are reminded of their obligations",
+            "physicalPageNumber": 38,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 360,
+            "pageBoundaryViolations": 0,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "7963718b9215a038"
+          }
+        },
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.8523,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "© Financial Conduct Authority 202212 Endeavour Square London E20 1JN Telephone: +44 (0)20 7066 1000Website: www.fca.org.ukAll rights reservedPub ref: 007881",
+            "physicalPageNumber": 121,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 51,
+            "pageBoundaryViolations": 0,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "1e57ed72acc45500"
+          }
+        },
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.806791,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "We also considered whether they used appropriate evidence to support their conclusions and identify potential fair value concerns.",
+            "htmlSectionId": "3. What we looked at",
+            "sectionReference": "3. What we looked at",
+            "documentEvidenceId": "ae62d82d67116682",
+            "modelTokenCount": 21,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "d21c64224ebad48b"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": false,
+        "reason": null
+      }
+    },
+    {
+      "testId": "EVAL-B-03",
+      "question": "What does COBS require for suitability assessments?",
+      "expectedPublicationIds": [],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.851495,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 111
+        },
+        {
+          "similarity": 0.851387,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 68
+        },
+        {
+          "similarity": 0.837237,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 17
+        },
+        {
+          "similarity": 0.835578,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 46
+        },
+        {
+          "similarity": 0.834722,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 22
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.851495,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "This expectation applies reasonably, so we would not necessarily expect the same level of formality in smaller firms.Board report10 .11 A firm’s board, or equivalent governing body, should review and approve an assessment of whether the firm is delivering good outcomes for its customers which are consistent with the Duty, at least annually.10.12 This assessment should include:• the results of the monitoring that the firm has undertaken to assess whether products and services are delivering expected outcomes in line with the Duty, any evidence of poor outcomes, including whether any group of customers is receiving worse outcomes compared to another group, and an evaluation of the impact and the root cause• an overview of the actions taken to address any risks or issues• how the firm’s future business strategy is consistent with acting to deliver good outcomes under the Duty10.13 Before signing off the assessment, the board or equivalent governing body should agree the action required to address any identified risks, or any action required to address poor outcomes experienced by customers and agree whether any changes to the firm’s future business strategy are required.10.14 This assessment will be part of the evidence we use to assess a firm’s compliance with the Duty. We expect to be provided on request with the report and the management information (MI) that sits behind it.",
+            "physicalPageNumber": 111,
+            "modelTokenCount": 265,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "b94ceed7d019697e"
+          }
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.837237,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "17 Annex 3Compatibility statementCompliance with legal requirements1. This Annex records the FCA’s compliance with a number of legal requirements applicable to the proposals in this consultation, including an explanation of the FCA’s reasons for concluding that our proposals in this consultation are compatible with certain requirements under the Financial Services and Markets Act 2000 (FSMA). 2. Section 1B(1) of FSMA requires that the FCA, when discharging its general functions, as far as reasonably possible, act in a way which is compatible with its strategic objective and advances one or more of its operational objectives, and its general duty under section 1B(5)(a) of FSMA to have regard to the regulatory principles in section 3B of FSMA.3. This Annex also sets out the FCA’s view of how the proposed rules are compatible with the duty on the FCA to discharge its general functions (which include rule-making) in a way which promotes effective competition in the interests of consumers (section 1B(4)). This duty applies in so far as promoting competition is compatible with advancing the FCA’s consumer protection and/or integrity objectives. 4. In addition, we have considered the recommendations made by the Treasury under s 1JA FSMA about aspects of the economic policy of His Majesty’s Government to which we should have regard in connection with our general duties. 5. This Annex includes our assessment of the equality and diversity implications of these proposals. The FCA’s objectives and regulatory principles: Compatibility statement6. The proposals set out in this consultation are primarily intended to advance the FCA’s operational objective of ensuring that the relevant markets function well. Changes are also relevant to the FCA’s integrity and consumer protection objectives.7. We consider these proposals are compatible with the FCA’s strategic objective of ensuring that the relevant markets function well, through reducing and preventing financial crime. The consultation aligns with our objective to publish findings from our reviews and provide feedback to industry on what we see, so firms can improve their controls.8. We are confident that the new guidance is compatible with our secondary international competitiveness and growth objective. Financial crime harms consumer confidence in",
+            "physicalPageNumber": 17,
+            "modelTokenCount": 453,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "a2a2f7a7a1846511"
+          }
+        },
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.818264,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "Under PRIN 2A.4.2R(2) , manufacturers must carry out a value assessment of their products and review this regularly, at intervals appropriate to the nature and duration of the product.",
+            "htmlSectionId": "4.1. Structure and evidence supporting fair value assessments",
+            "sectionReference": "4.1. Structure and evidence supporting fair value assessments",
+            "documentEvidenceId": "050e8cec6585f2bf",
+            "modelTokenCount": 42,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "34086d8a38e9e51b"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": false,
+        "reason": null
+      }
+    },
+    {
+      "testId": "EVAL-J-03",
+      "question": "Use publication UUID 00000000-0000-4000-8000-000000000001 for FG22.",
+      "expectedPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "topChunkSimilarities": [
+        {
+          "similarity": 0.856487,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 1,
+          "section": null
+        },
+        {
+          "similarity": 0.842893,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 68
+        },
+        {
+          "similarity": 0.838975,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 87
+        },
+        {
+          "similarity": 0.838754,
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "page": 76
+        },
+        {
+          "similarity": 0.838219,
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "title": "CP26/38 Financial Crime Guide updates",
+          "page": 91,
+          "section": null
+        }
+      ],
+      "rankedPublications": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.856487,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "FG22/5 Final non-Handbook Guidance for firms on the Consumer DutyJuly 2022Finalised Guidance",
+            "physicalPageNumber": 1,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 26,
+            "pageBoundaryViolations": 0,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "f348ce1834984c8f"
+          }
+        },
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.842893,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "All the text is new and is not underlined. [Editor’s note: although certain provisions in the new section FCG 7.2A have been reproduced from the previous section FCG 7.2, other provisions have been rewritten in their entirety. Accordingly, the section should be read as a whole.] 7.2A Themes 7.2A.1 The guidance set out in FCG 2.2 (Themes) and FCG 2.3 (Further guidance) also applies to sanctions.",
+            "physicalPageNumber": 68,
+            "modelTokenCount": 103,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "98510e19a8b657ed"
+          }
+        },
+        {
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "maxSimilarity": 0.791516,
+          "topChunk": {
+            "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+            "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+            "publicationTitle": "Fair value in consumer finance",
+            "regulator": "FCA",
+            "publicationStatus": "supervisory_examples",
+            "extractionProfile": "html_article_v2",
+            "canonicalUrl": "https://www.fca.org.uk/publications/good-and-poor-practice/fair-value-consumer-finance",
+            "contentSha256": "719eb46af3e42d60a2ca6d4af0e64e72b41f5d436c6b518b531c522791324774",
+            "chunkText": "Under PRIN 2A.4.2R(2) , manufacturers must carry out a value assessment of their products and review this regularly, at intervals appropriate to the nature and duration of the product.",
+            "htmlSectionId": "4.1. Structure and evidence supporting fair value assessments",
+            "sectionReference": "4.1. Structure and evidence supporting fair value assessments",
+            "documentEvidenceId": "050e8cec6585f2bf",
+            "modelTokenCount": 42,
+            "packFile": "fair-value-consumer-finance-v1.json",
+            "chunkId": "34086d8a38e9e51b"
+          }
+        }
+      ],
+      "referenceValidation": {
+        "blockSelection": true,
+        "reason": "fabricated_uuid_strict_validation",
+        "cf04Risk": true,
+        "highestIrrelevant": {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "maxSimilarity": 0.8564869754864124,
+          "topChunk": {
+            "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+            "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+            "regulator": "FCA",
+            "publicationStatus": "finalised_guidance",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+            "contentSha256": "1cd0813c71d8d6d092a1056a3d7a4be246a814317a35fba062c6f9581058a251",
+            "chunkText": "FG22/5 Final non-Handbook Guidance for firms on the Consumer DutyJuly 2022Finalised Guidance",
+            "physicalPageNumber": 1,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 26,
+            "pageBoundaryViolations": 0,
+            "packFile": "fg22-5-primary-pdf-v1.json",
+            "chunkId": "f348ce1834984c8f"
+          }
+        }
+      }
+    }
+  ],
+  "negativeControls": {
+    "correctRejectionRate": 0.6666666666666666,
+    "falsePositiveRate": 0.3333333333333333,
+    "falsePositiveCases": [
+      {
+        "testId": "EVAL-I-01",
+        "topPublication": {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "maxSimilarity": 0.896068,
+          "topChunk": {
+            "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+            "publicationTitle": "CP26/38 Financial Crime Guide updates",
+            "regulator": "FCA",
+            "publicationStatus": "consultation",
+            "extractionProfile": "pdf_primary_v1",
+            "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updates",
+            "contentSha256": "2265be0f4ba0bd9f9a133f7ed1dbe65a2b3b3efcd05b844452765203be6bb387",
+            "chunkText": "FCA 202X/YY Page 15 of 67 • Is there a documented process for responding to Production Investigative Court Orders, with clear timetables? • Can your firm retrieve records promptly in response to an Investigative Court Order? • Are staff and relevant procedures clear about key differences between ‘Defence Against Money Laundering Suspicious Activity Reports’ under the Proceeds of Crime Act 2002, and ‘Defences Against Terrorist Financing’ under the Terrorism Act 2000, regarding thresholds and exemptions? Examples of good practice Examples of poor practice ... ... • A firm provides extraneous and irrelevant detail in response to a Production an Investigative Court Order. See regulation 21 of the Money Laundering Regulations and s.330 POCA and s.331 POCA and s.21A of the Terrorism Act 2000. Record keeping and reliance on others 3.2.11 ... Self-assessment questions: • Can your firm retrieve records promptly in response to a Production an Investigative Court Order? ... ... Customer payments 3.2.13 This section applies to banks payment service providers and cryptoasset businesses subject to SYSC 6.3. ... From 1 September 2023, similar obligations have applied for cryptoasset transfers undertaken by cryptoasset businesses registered with the FCA under the Money Laundering Regulations. This chapter may assist cryptoasset businesses, authorised cryptoasset firms and specified investment cryptoasset firms in implementing this requirement but they should also have regard to specific expectations set out by the FCA. For further information, see www.fca.org.uk/news/statements/fca-sets-out-expectations-uk-cryptoasset-businesses-complying-travel-rule Firms are reminded of their obligations",
+            "physicalPageNumber": 38,
+            "htmlSectionId": null,
+            "sectionReference": null,
+            "documentEvidenceId": null,
+            "modelTokenCount": 360,
+            "pageBoundaryViolations": 0,
+            "packFile": "cp26-38-primary-pdf-v1.json",
+            "chunkId": "7963718b9215a038"
+          }
+        },
+        "cf04Risk": false
+      }
+    ]
+  },
+  "completionGate": {
+    "tokenizerMeasured": true,
+    "pageBoundaryViolations": 0,
+    "truncationAttempts": 0,
+    "silentTruncation": true,
+    "realEmbeddingsGenerated": true,
+    "runtimeEquivalenceDemonstrated": false,
+    "runtimeEquivalenceStatus": "UNVERIFIED",
+    "positiveAndNegativeReported": true,
+    "thresholdsDisclosed": true,
+    "smallCorpusDocumented": true,
+    "phaseFullyValidated": false,
+    "blockers": [
+      "runtime_equivalence_UNVERIFIED",
+      "EVAL-I-01_semantic_false_positive_above_provisional_threshold",
+      "small_corpus_three_publications_only"
+    ]
+  },
+  "acceptance": {
+    "publicationRecallTop1": 6,
+    "publicationRecallTop1Denom": 6,
+    "wrongPassageRiskNote": "This pilot scores publication-level max chunk similarity only; passage-level relevance not SME-verified."
+  }
+}

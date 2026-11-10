@@ -1,0 +1,639 @@
+{
+  "auditVersion": 1,
+  "generatedAt": "2026-11-10T17:26:45.295Z",
+  "directory": "c:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\supplemental-corpus-2b2",
+  "fixtureSources": {
+    "integrations/regulatory-sources/fixtures/fca-html-samples.mjs": [
+      "COOKIE_CSS_BEFORE_ARTICLE",
+      "DATA_PAGE_ARTICLE",
+      "POLICY_STATEMENT_PAGE",
+      "CONSULTATION_PAGE",
+      "MULTI_FIRM_PAGE"
+    ]
+  },
+  "summary": {
+    "publicationCount": 18,
+    "verifiedSourceExcerpts": 0,
+    "unverifiedExcerpts": 0,
+    "syntheticExcerpts": 36,
+    "publicationsExcludedFromRetrievalEvaluation": 18
+  },
+  "publications": [
+    {
+      "file": "0d3468e6-catalogue-excerpt-v1.json",
+      "publicationId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+      "publicationTitle": "Access to cash coverage in the UK 2024 H2",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2024-h2",
+      "stagingCatalogueRowId": "0d3468e6-1060-45da-abfc-90c41fda2596",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "fed111f82a92c49d03fed333671be07b9de5e91d40887c39fa0260dd2468a23a",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Access to cash coverage in the UK 2024 H2. This staging catalogue entry is included to introduce realistic publication c"
+        },
+        {
+          "sectionReference": "Access to cash coverage in the UK 2024 H2 §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Flood risk exposure of residential mortgages in England has increased in coastal areas."
+        }
+      ]
+    },
+    {
+      "file": "34b18772-catalogue-excerpt-v1.json",
+      "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+      "publicationTitle": "DP26/2: Guided Retirement",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-2-guided-retirement",
+      "stagingCatalogueRowId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "48a6d741531ed8cde8a9810b37bae067bf8925a5facb063f934c993c0dc1e264",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "DP26/2: Guided Retirement. This staging catalogue entry is included to introduce realistic publication competition durin"
+        },
+        {
+          "sectionReference": "DP26/2: Guided Retirement §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "49dee37a-catalogue-excerpt-v1.json",
+      "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+      "publicationTitle": "Flood risk exposure of mortgages in England",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+      "stagingCatalogueRowId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "11b24314e7779473cc73d31fc37f7d280444ee5982941e0e092920acd0554033",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Flood risk exposure of mortgages in England. This staging catalogue entry is included to introduce realistic publication"
+        },
+        {
+          "sectionReference": "Flood risk exposure of mortgages in England §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Flood risk exposure of residential mortgages in England has increased in coastal areas."
+        }
+      ]
+    },
+    {
+      "file": "5aefae6a-catalogue-excerpt-v1.json",
+      "publicationId": "5aefae6a-fccf-4d1c-9f75-da126ef7b04d",
+      "publicationTitle": "GC26/8: Primary Market Bulletin No. 67",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/guidance-consultations/gc26-8-primary-market-bulletin-no-67",
+      "stagingCatalogueRowId": "5aefae6a-fccf-4d1c-9f75-da126ef7b04d",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "2e110375c6c415b473758310c362ee18ccb9889c992fabcd4d0dc9753a9decd5",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "GC26/8: Primary Market Bulletin No. 67. This staging catalogue entry is included to introduce realistic publication comp"
+        },
+        {
+          "sectionReference": "GC26/8: Primary Market Bulletin No. 67 §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "5f4c6f09-catalogue-excerpt-v1.json",
+      "publicationId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+      "publicationTitle": "Defence SMEs: access to banking services",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/defence-smes-access-banking-services",
+      "stagingCatalogueRowId": "5f4c6f09-9a6d-4312-a154-eba76579d156",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "f38e9be1f2d7d2ea528637154578a345d870573e0ac3da75b5aefa6139d17160",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs: access to banking services. This staging catalogue entry is included to introduce realistic publication co"
+        },
+        {
+          "sectionReference": "Defence SMEs: access to banking services §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "5fff5f1d-catalogue-excerpt-v1.json",
+      "publicationId": "5fff5f1d-7c7a-4a89-83f6-d521ecca7e57",
+      "publicationTitle": "PS26/21: Streamlining the UK EMIR Intragroup Regime",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/policy-statements/ps26-21-streamlining-uk-emir-intragroup-regime",
+      "stagingCatalogueRowId": "5fff5f1d-7c7a-4a89-83f6-d521ecca7e57",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "b307b8e8145b138ff80ffef58f18c3d12380beefe80747f29ba9252a7247e0d5",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "PS26/21: Streamlining the UK EMIR Intragroup Regime. This staging catalogue entry is included to introduce realistic pub"
+        },
+        {
+          "sectionReference": "PS26/21: Streamlining the UK EMIR Intragroup Reg §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "614dc032-catalogue-excerpt-v1.json",
+      "publicationId": "614dc032-5619-4a33-9ec6-77fbde72142a",
+      "publicationTitle": "Senior management responsibilities and accountability at the FCA",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/corporate-documents/senior-management-responsibilities-at-fca",
+      "stagingCatalogueRowId": "614dc032-5619-4a33-9ec6-77fbde72142a",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "362db728176ce7648148b9cfbf527cd11f5808670ccf7b9133570ea8951af8b2",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Senior management responsibilities and accountability at the FCA. This staging catalogue entry is included to introduce "
+        },
+        {
+          "sectionReference": "Senior management responsibilities and accountab §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "97f31823-catalogue-excerpt-v1.json",
+      "publicationId": "97f31823-f55c-4995-ad66-331d42cf792b",
+      "publicationTitle": "Financial Data Transparency Act Joint Data Standards | Consumer Financial Protection Bureau",
+      "regulator": "OTHER",
+      "canonicalUrl": "https://www.consumerfinance.gov/rules-policy/final-rules/financial-data-transparency-act-joint-data-standards/",
+      "stagingCatalogueRowId": "97f31823-f55c-4995-ad66-331d42cf792b",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "bafed2529b74cdd2b33e7fa4c702dd5f6a74c76553ff171a6cf886b9b27bc7de",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Financial Data Transparency Act Joint Data Standards | Consumer Financial Protection Bureau. This staging catalogue entr"
+        },
+        {
+          "sectionReference": "Financial Data Transparency Act Joint Data Stand §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Multi-firm review Review of fair treatment in private markets."
+        }
+      ]
+    },
+    {
+      "file": "989593b3-catalogue-excerpt-v1.json",
+      "publicationId": "989593b3-3d06-4f95-b0ed-a9eeb782b040",
+      "publicationTitle": "Consultation on supervisory expectations for central counterparties seeking to accept tokenised collateral",
+      "regulator": "OTHER",
+      "canonicalUrl": "https://www.bankofengland.co.uk/paper/2026/cp/supervisory-expectations-for-ccps-seeking-to-accept-tokenised-collateral",
+      "stagingCatalogueRowId": "989593b3-3d06-4f95-b0ed-a9eeb782b040",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "ab34d4269515dbb5e308d10ec8ec54e6854d10d5c265aa91f2062590c927c496",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Consultation on supervisory expectations for central counterparties seeking to accept tokenised collateral. This staging"
+        },
+        {
+          "sectionReference": "Consultation on supervisory expectations for cen §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "9c234348-catalogue-excerpt-v1.json",
+      "publicationId": "9c234348-d707-49eb-be24-c19cf4050971",
+      "publicationTitle": "Equal Credit Opportunity Act (Regulation B) | Consumer Financial Protection Bureau",
+      "regulator": "OTHER",
+      "canonicalUrl": "https://www.consumerfinance.gov/rules-policy/final-rules/equal-credit-opportunity-act-regulation-b/",
+      "stagingCatalogueRowId": "9c234348-d707-49eb-be24-c19cf4050971",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "2f44d93a7a9e9d758194b8ce967befe11b922731ef8523cda7b1cdfc9860b34c",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Equal Credit Opportunity Act (Regulation B) | Consumer Financial Protection Bureau. This staging catalogue entry is incl"
+        },
+        {
+          "sectionReference": "Equal Credit Opportunity Act (Regulation B) | Co §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Multi-firm review Review of fair treatment in private markets."
+        }
+      ]
+    },
+    {
+      "file": "9d553034-catalogue-excerpt-v1.json",
+      "publicationId": "9d553034-c13b-4fd8-b5e9-e486176510dd",
+      "publicationTitle": "Small Business Lending under the Equal Credit Opportunity Act (Regulation B) | Consumer Financial Protection Bureau",
+      "regulator": "OTHER",
+      "canonicalUrl": "https://www.consumerfinance.gov/rules-policy/final-rules/small-business-lending-under-the-equal-credit-opportunity-act-regulation-b-2026/",
+      "stagingCatalogueRowId": "9d553034-c13b-4fd8-b5e9-e486176510dd",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "1d50bc69ba7e31ac2298616a8b3ec52eb77ac39fa114d5a706b02c9cf2b85b1f",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Small Business Lending under the Equal Credit Opportunity Act (Regulation B) | Consumer Financial Protection Bureau. Thi"
+        },
+        {
+          "sectionReference": "Small Business Lending under the Equal Credit Op §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Multi-firm review Review of fair treatment in private markets."
+        }
+      ]
+    },
+    {
+      "file": "9e8d3736-catalogue-excerpt-v1.json",
+      "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+      "publicationTitle": "Access to cash coverage in the UK 2025 H1",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+      "stagingCatalogueRowId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "d4fb674177a7c32d566baee67134eb2d0dbe6d93d6f7f220f79c465044dad828",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Access to cash coverage in the UK 2025 H1. This staging catalogue entry is included to introduce realistic publication c"
+        },
+        {
+          "sectionReference": "Access to cash coverage in the UK 2025 H1 §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Flood risk exposure of residential mortgages in England has increased in coastal areas."
+        }
+      ]
+    },
+    {
+      "file": "a6913993-catalogue-excerpt-v1.json",
+      "publicationId": "a6913993-f039-4b97-b6d8-6ed660bb914d",
+      "publicationTitle": "CP26/39: Income sharing distribution and operational incident reporting for consolidated tape providers",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/consultation-papers/cp26-39-income-sharing-distribution-operational-incident-reporting-consolidated-tape-providers",
+      "stagingCatalogueRowId": "a6913993-f039-4b97-b6d8-6ed660bb914d",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "2359ab469838f7bdbe414a909ba3297b454627c5f2057249446e24ca9bf4e1b9",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "CP26/39: Income sharing distribution and operational incident reporting for consolidated tape providers. This staging ca"
+        },
+        {
+          "sectionReference": "CP26/39: Income sharing distribution and operati §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Policy statement PS24/1 sets out final rules for operational resilience."
+        }
+      ]
+    },
+    {
+      "file": "bfe50351-catalogue-excerpt-v1.json",
+      "publicationId": "bfe50351-7d13-4ea7-bbf1-2c244d07081a",
+      "publicationTitle": "Primary Market Bulletin 67",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/newsletters/primary-market-bulletin-67",
+      "stagingCatalogueRowId": "bfe50351-7d13-4ea7-bbf1-2c244d07081a",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "0ab72b50f9223aacd38e6ce856e4e2daa5d97a35d7fd12fd1d612fcdb2496ea0",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Primary Market Bulletin 67. This staging catalogue entry is included to introduce realistic publication competition duri"
+        },
+        {
+          "sectionReference": "Primary Market Bulletin 67 §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "caeb51af-catalogue-excerpt-v1.json",
+      "publicationId": "caeb51af-829e-478d-b816-bee61252678a",
+      "publicationTitle": "Wholesale banks supervision - Insights 3 (Autumn 2026)",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/wholesale-banks-supervision-insights-3-autumn-2026",
+      "stagingCatalogueRowId": "caeb51af-829e-478d-b816-bee61252678a",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "a71cac3662f8a4cc523a8060abe70550120c0c2e713e844215af51116462add1",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Wholesale banks supervision - Insights 3 (Autumn 2026). This staging catalogue entry is included to introduce realistic "
+        },
+        {
+          "sectionReference": "Wholesale banks supervision - Insights 3 (Autumn §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "edcebe7d-catalogue-excerpt-v1.json",
+      "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+      "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/conflicts-interest-fair-customer-treatment-private-markets",
+      "stagingCatalogueRowId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "3f281043c448021938b0665c515ffcf5da2cfd773474d07b679dcddc3c3125aa",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Conflicts of interest and fair customer treatment in private markets. This staging catalogue entry is included to introd"
+        },
+        {
+          "sectionReference": "Conflicts of interest and fair customer treatmen §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    },
+    {
+      "file": "f42500e5-catalogue-excerpt-v1.json",
+      "publicationId": "f42500e5-7e16-4930-8a0b-5ca51166c155",
+      "publicationTitle": "ADGM Becomes the Region&#x27;s First International Financial Centre to Publish Dedicated Crypto Mining Guidance",
+      "regulator": "OTHER",
+      "canonicalUrl": "https://www.adgm.com/media/announcements/adgm-becomes-the-regions-first-international-financial-centre-to-publish-dedicated-crypto-mining-guidance",
+      "stagingCatalogueRowId": "f42500e5-7e16-4930-8a0b-5ca51166c155",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "f7b09f1ccca89b971a0245d134ea4127bd4a08ae473cda1cb3a2f493a0d53830",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "ADGM Becomes the Region&#x27;s First International Financial Centre to Publish Dedicated Crypto Mining Guidance. This st"
+        },
+        {
+          "sectionReference": "ADGM Becomes the Region&#x27;s First Internation §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Policy statement PS24/1 sets out final rules for operational resilience."
+        }
+      ]
+    },
+    {
+      "file": "ff1150cc-catalogue-excerpt-v1.json",
+      "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+      "publicationTitle": "DP26/1: Credit unions: review of the regulatory regime",
+      "regulator": "FCA",
+      "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime",
+      "stagingCatalogueRowId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+      "extractionRevisionId": null,
+      "exportMethod": "staging_catalogue_readonly",
+      "contentHash": "b05a592f4d4ce9ead38abc6070488ac70fb8542d17cccd8a8173fa82257a8208",
+      "authenticPublicationMetadata": true,
+      "textProvenance": "metadata from staging regulatory_publications; body text from fixture keyword mapping in export-supplemental-corpus-2b2-readonly.mjs",
+      "contentScope": "excerpt_only",
+      "classification": "EXCLUDED_FROM_AUTHORITATIVE_RETRIEVAL",
+      "exclusionReason": "No regulatory_source_extraction_revision; fixture/synthetic passages must not be indexed as FCA evidence.",
+      "excerpts": [
+        {
+          "sectionReference": "Catalogue abstract",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "DP26/1: Credit unions: review of the regulatory regime. This staging catalogue entry is included to introduce realistic "
+        },
+        {
+          "sectionReference": "DP26/1: Credit unions: review of the regulatory  §1",
+          "classification": "SYNTHETIC",
+          "contentComplete": false,
+          "authenticity": "not_from_publication_canonical_extract",
+          "reason": "Catalogue abstract or regression HTML fixture text; not extracted from this publication canonical URL.",
+          "textPreview": "Defence SMEs need fair access to banking services across the UK market."
+        }
+      ]
+    }
+  ],
+  "safeguards": [
+    "All 18 supplemental pack JSON files are quarantined from authoritative regulatory indexing.",
+    "Only frozen evidence-packs (3 publications with full extractions) remain authoritative for offline eval."
+  ]
+}
