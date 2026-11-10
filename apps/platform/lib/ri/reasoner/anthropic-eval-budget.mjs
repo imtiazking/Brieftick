@@ -58,10 +58,16 @@ export class EvalSpendTracker {
     return true;
   }
 
-  recordUsage({ inputTokens = 0, outputTokens = 0 }) {
+  recordAttempt({ success = false, inputTokens = 0, outputTokens = 0 } = {}) {
     this.requestCount += 1;
-    this.inputTokens += inputTokens || 0;
-    this.outputTokens += outputTokens || 0;
+    if (success || inputTokens || outputTokens) {
+      this.inputTokens += inputTokens || 0;
+      this.outputTokens += outputTokens || 0;
+    }
+  }
+
+  recordUsage({ inputTokens = 0, outputTokens = 0 }) {
+    this.recordAttempt({ success: true, inputTokens, outputTokens });
   }
 
   finalizeCalculated() {

@@ -44,7 +44,7 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
     return {
       question,
       testId: caseRow?.testId,
-      v2ExecutionStatus: 'PUBLIC_ELIGIBLE_EXECUTED',
+      v2ExecutionStatus: 'BLOCKED_AUTHORITY_GATE',
       eligibility,
       retrieval,
       providerInvoked: false,
@@ -67,7 +67,7 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
     return {
       question,
       testId: caseRow?.testId,
-      v2ExecutionStatus: 'PUBLIC_ELIGIBLE_EXECUTED',
+      v2ExecutionStatus: 'BLOCKED_REFERENCE_VALIDATION',
       eligibility,
       retrieval,
       providerInvoked: false,
@@ -144,6 +144,13 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
   }
 
   const reasoner = await invokeAnthropicReasoner(question, bundle, { model: modelId, ...options.providerDeps });
+  if (spend) {
+    spend.recordAttempt({
+      success: Boolean(reasoner.ok),
+      inputTokens: reasoner.usage?.inputTokens ?? 0,
+      outputTokens: reasoner.usage?.outputTokens ?? 0,
+    });
+  }
   if (!reasoner.ok) {
     return {
       question,
@@ -154,6 +161,7 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
       evidenceBundle: { chunkIds: bundle.evidenceChunks.map((c) => c.evidenceChunkId) },
       providerInvoked: true,
       providerError: { code: reasoner.code, message: reasoner.message },
+      providerDiagnostics: reasoner.diagnostics || null,
       status: 'FAILED',
       answer: 'The AI reasoner could not complete this request.',
       citations: [],
@@ -165,10 +173,6 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
       },
       timingMs: Date.now() - t0,
     };
-  }
-
-  if (spend && reasoner.usage) {
-    spend.recordUsage(reasoner.usage);
   }
 
   let modelOutput = reasoner.modelOutput;

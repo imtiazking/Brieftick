@@ -14,6 +14,8 @@ import { runAskRiV2Pipeline } from '../reasoner/run-ask-ri-v2-pipeline.mjs';
 import { EvalSpendTracker, resolveV2EvalModel, V2_EVAL_BUDGET_USD } from '../reasoner/anthropic-eval-budget.mjs';
 import { scoreEvalCase } from './score-eval-case.mjs';
 import { isV2LiveReasoningEnabled } from '../reasoner/invoke-anthropic-reasoner.mjs';
+import { classifyV2HarnessOutcome } from '../reasoner/anthropic-provider-diagnostics.mjs';
+import { loadLocalEnvFile } from '../reasoner/load-local-env.mjs';
 
 function gitSha() {
   try {
@@ -29,6 +31,7 @@ function loadBaselineMap(path) {
 }
 
 export async function runEvalSuiteV2(options = {}) {
+  if (!options.dryRun && !options.skipEnvLoad) loadLocalEnvFile();
   const suitePath = resolve(options.suitePath || EVAL_SUITE_V21_PATH);
   const suite = JSON.parse(readFileSync(suitePath, 'utf8'));
   const validation = validateEvalSuite(suite, { allowOperatorHeldOut: true, requireQuestions: true });
@@ -58,6 +61,10 @@ export async function runEvalSuiteV2(options = {}) {
 
     const deterministicR2 = baselineMap.get(caseRow.testId);
     const scored = scoreEvalCase(caseRow, engineResult, { simulateCatalogueAttach: false, evidenceAvailable: true });
+    scored.harnessOutcome = classifyV2HarnessOutcome(engineResult);
+    if (scored.harnessOutcome !== 'REGULATORY_MEASURED') {
+      scored.regulatoryMeasurement = 'NOT_MEASURED';
+    }
     scored.engine = 'ask_ri_v2';
     scored.providerUsed = Boolean(engineResult.execution?.providerUsed);
     scored.v2ExecutionStatus = engineResult.v2ExecutionStatus;
@@ -73,6 +80,7 @@ export async function runEvalSuiteV2(options = {}) {
       retrievalPublicationSelected: engineResult.retrieval?.publicationSelected,
       evidenceChunkIds: engineResult.evidenceBundle?.chunkIds,
       preReasonerBlock: engineResult.preReasonerBlock || null,
+      providerDiagnostics: engineResult.providerDiagnostics || null,
     };
 
     results.push({ ...scored, ...engineResult });
@@ -125,6 +133,12 @@ export async function runEvalSuiteV2(options = {}) {
       },
       engineInsufficientEvidence: results.filter((r) => r.status === 'INSUFFICIENT_EVIDENCE').length,
       pipelineDryRunNotRun: results.filter((r) => r.v2ExecutionStatus === 'NOT_RUN' && r.status === 'NOT_RUN').length,
+      harnessOutcomes: results.reduce((acc, r) => {
+        const k = r.harnessOutcome || 'UNKNOWN';
+        acc[k] = (acc[k] || 0) + 1;
+        return acc;
+      }, {}),
+      providerAttempts: spend.requestCount,
     },
     results,
     safetyChecks: {

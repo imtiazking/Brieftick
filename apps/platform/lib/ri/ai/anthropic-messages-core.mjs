@@ -48,6 +48,14 @@ export function mapAnthropicHttpFailure(httpStatus, body) {
       httpStatus,
     };
   }
+  if (httpStatus === 404 || errType === 'not_found_error') {
+    return {
+      ok: false,
+      code: AI_ERROR_CODES.AI_PROVIDER_UNAVAILABLE,
+      message: errMsg.startsWith('model:') ? `Anthropic model not available (${errMsg}).` : errMsg,
+      httpStatus,
+    };
+  }
   if (httpStatus >= 500) {
     return { ok: false, code: AI_ERROR_CODES.AI_PROVIDER_UNAVAILABLE, message: errMsg, httpStatus };
   }
@@ -81,7 +89,16 @@ export async function callAnthropicMessages(apiKey, req, deps = {}) {
 
     const body = await res.json().catch(() => ({}));
     if (!res.ok) {
-      return mapAnthropicHttpFailure(res.status, body);
+      const mapped = mapAnthropicHttpFailure(res.status, body);
+      const errType =
+        body && typeof body === 'object' && body.error ? String(body.error.type ?? '') : '';
+      return {
+        ...mapped,
+        requestReachedProvider: true,
+        responseReceived: true,
+        providerErrorType: errType || null,
+        requestId: typeof body.request_id === 'string' ? body.request_id : null,
+      };
     }
 
     const content = body.content;
@@ -106,7 +123,13 @@ export async function callAnthropicMessages(apiKey, req, deps = {}) {
     if (msg.includes('abort') || msg.includes('Abort')) {
       return { ok: false, code: AI_ERROR_CODES.AI_TIMEOUT, message: 'Anthropic request timed out.' };
     }
-    return { ok: false, code: AI_ERROR_CODES.AI_PROVIDER_UNAVAILABLE, message: msg };
+    return {
+      ok: false,
+      code: AI_ERROR_CODES.AI_PROVIDER_UNAVAILABLE,
+      message: msg,
+      requestReachedProvider: false,
+      responseReceived: false,
+    };
   } finally {
     clearTimeout(timer);
   }

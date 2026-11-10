@@ -4,6 +4,7 @@ import { buildReasonerSystemPrompt, buildReasonerUserPrompt } from './build-reas
 import { validateReasonerOutput } from './reasoner-output-schema.mjs';
 import { resolveV2EvalModel } from './anthropic-eval-budget.mjs';
 import { assertV2EvalModelSupported } from './v2-eval-models.mjs';
+import { buildSanitisedProviderDiagnostics } from './anthropic-provider-diagnostics.mjs';
 
 export function isV2LiveReasoningEnabled() {
   return process.env.RI_AI_EXECUTION_ENABLED === 'true' && Boolean(getAnthropicApiKey());
@@ -11,11 +12,32 @@ export function isV2LiveReasoningEnabled() {
 
 export async function invokeAnthropicReasoner(question, bundle, deps = {}) {
   const apiKey = deps.apiKeyOverride ?? getAnthropicApiKey();
-  if (!apiKey || !validateAnthropicApiKeyFormat()) {
+  if (!apiKey) {
     return {
       ok: false,
       code: AI_ERROR_CODES.AI_PROVIDER_NOT_CONFIGURED,
-      message: 'Anthropic not configured for V2 eval.',
+      message: 'Anthropic API key not configured.',
+      requestReachedProvider: false,
+      diagnostics: buildSanitisedProviderDiagnostics({
+        ok: false,
+        code: AI_ERROR_CODES.AI_PROVIDER_NOT_CONFIGURED,
+        message: 'Anthropic API key not configured.',
+        requestReachedProvider: false,
+      }),
+    };
+  }
+  if (!validateAnthropicApiKeyFormat(apiKey)) {
+    return {
+      ok: false,
+      code: AI_ERROR_CODES.AI_PROVIDER_NOT_CONFIGURED,
+      message: 'Anthropic API key format is invalid.',
+      requestReachedProvider: false,
+      diagnostics: buildSanitisedProviderDiagnostics({
+        ok: false,
+        code: AI_ERROR_CODES.AI_PROVIDER_NOT_CONFIGURED,
+        message: 'Anthropic API key format is invalid.',
+        requestReachedProvider: false,
+      }),
     };
   }
   if (!deps.skipExecutionGuard && process.env.RI_AI_EXECUTION_ENABLED !== 'true') {
@@ -48,7 +70,21 @@ export async function invokeAnthropicReasoner(question, bundle, deps = {}) {
   );
 
   if (!res.ok) {
-    return { ok: false, code: res.code, message: res.message, httpStatus: res.httpStatus, model, latencyMs: Date.now() - t0 };
+    const latencyMs = Date.now() - t0;
+    const failure = {
+      ok: false,
+      code: res.code,
+      message: res.message,
+      httpStatus: res.httpStatus,
+      providerErrorType: res.providerErrorType,
+      requestId: res.requestId,
+      requestReachedProvider: res.requestReachedProvider,
+      responseReceived: res.responseReceived,
+      model,
+      latencyMs,
+    };
+    failure.diagnostics = buildSanitisedProviderDiagnostics(failure);
+    return failure;
   }
 
   const parsed = parseAnthropicJsonText(res.text);

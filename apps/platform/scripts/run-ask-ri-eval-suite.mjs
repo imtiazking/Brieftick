@@ -227,6 +227,8 @@ export function runEvalSuite(options) {
 async function main() {
   const cli = parseArgs(process.argv.slice(2));
   if (cli.engine === 'v2') {
+    const { loadLocalEnvFile } = await import('../lib/ri/reasoner/load-local-env.mjs');
+    if (process.env.ASK_RI_V2_DRY_RUN !== 'true') loadLocalEnvFile();
     const { runEvalSuiteV2 } = await import('../lib/ri/eval/run-eval-suite-v2.mjs');
     let report;
     try {

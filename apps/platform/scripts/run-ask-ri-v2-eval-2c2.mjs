@@ -8,9 +8,9 @@
  *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --dry-run
  *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --model=claude-haiku-5-5 --out=...
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { loadLocalEnvFile } from '../lib/ri/reasoner/load-local-env.mjs';
 import { runEvalSuiteV2 } from '../lib/ri/eval/run-eval-suite-v2.mjs';
 import { REPO_ROOT, EVAL_SUITE_V21_PATH, AUTHENTIC_CORPUS_B2_DIR } from '../lib/ri/eval/eval-paths.mjs';
 import { resolveV2EvalModel, V2_EVAL_BUDGET_USD } from '../lib/ri/reasoner/anthropic-eval-budget.mjs';
@@ -52,6 +52,9 @@ function sanitizeEvalReport(report) {
     humanReviewRequired: r.humanReviewRequired,
     providerInvoked: r.providerInvoked,
     preReasonerBlock: r.preReasonerBlock,
+    harnessOutcome: r.harnessOutcome,
+    regulatoryMeasurement: r.regulatoryMeasurement,
+    providerDiagnostics: r.providerDiagnostics || r.v2Diagnostics?.providerDiagnostics,
     execution: r.execution,
     timingMs: r.timingMs,
     answerPreview: String(r.answer || '').slice(0, 400),

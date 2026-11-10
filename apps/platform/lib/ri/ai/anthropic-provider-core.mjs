@@ -22,10 +22,10 @@ export function isAnthropicConfigured() {
   return Boolean(getAnthropicApiKey());
 }
 
-export function validateAnthropicApiKeyFormat() {
-  const key = getAnthropicApiKey();
+export function validateAnthropicApiKeyFormat(apiKey) {
+  const key = (apiKey ?? getAnthropicApiKey())?.trim();
   if (!key) return false;
-  return /^sk-ant-[a-zA-Z0-9_-]+$/.test(key) && key.length >= 24;
+  return /^sk-ant-[a-zA-Z0-9_-]+$/.test(key) && key.length >= 20;
 }
 
 export function resolveAnthropicModel() {
@@ -34,7 +34,8 @@ export function resolveAnthropicModel() {
     process.env.ANTHROPIC_MODEL?.trim() ||
     process.env.RI_AI_MODEL?.trim();
   if (explicit && !explicit.startsWith('gpt-')) return explicit;
-  return 'claude-sonnet-4-20250514';
+  // Dated snapshot IDs are not always enabled on Console-funded keys; alias is widely available.
+  return 'claude-sonnet-4-5';
 }
 
 export function isRiAiExecutionEnabled() {
