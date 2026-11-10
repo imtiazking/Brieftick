@@ -1,5 +1,7 @@
 import {
+  CHUNK_ABSOLUTE_MAX_TOKENS,
   CHUNK_HARD_MAX_TOKENS,
+  CHUNK_INDEX_MAX_TOKENS,
   CHUNK_MIN_TARGET_TOKENS,
   CHUNK_TARGET_MAX_TOKENS,
 } from './gte-small-config.mjs';
@@ -39,7 +41,7 @@ export async function splitPageTextToTokenBudget(tokenizer, text, pageNumber) {
 
 async function splitToMaxTokens(tokenizer, text) {
   const fullLen = await tokenLength(tokenizer, text, { addSpecialTokens: true });
-  if (fullLen <= CHUNK_HARD_MAX_TOKENS) return [text];
+  if (fullLen <= CHUNK_INDEX_MAX_TOKENS) return [text];
 
   const sentences = splitSentences(text);
   const out = [];
@@ -47,19 +49,19 @@ async function splitToMaxTokens(tokenizer, text) {
   for (const sentence of sentences) {
     const candidate = buf ? `${buf} ${sentence}` : sentence;
     const len = await tokenLength(tokenizer, candidate, { addSpecialTokens: true });
-    if (len <= CHUNK_TARGET_MAX_TOKENS) {
+    if (len <= CHUNK_INDEX_MAX_TOKENS) {
       buf = candidate;
       continue;
     }
     if (buf) out.push(buf);
     const sLen = await tokenLength(tokenizer, sentence, { addSpecialTokens: true });
-    if (sLen > CHUNK_HARD_MAX_TOKENS) {
+    if (sLen > CHUNK_INDEX_MAX_TOKENS) {
       const words = sentence.split(/\s+/);
       let wbuf = '';
       for (const w of words) {
         const wc = wbuf ? `${wbuf} ${w}` : w;
         const wlen = await tokenLength(tokenizer, wc, { addSpecialTokens: true });
-        if (wlen <= CHUNK_TARGET_MAX_TOKENS) wbuf = wc;
+        if (wlen <= CHUNK_INDEX_MAX_TOKENS) wbuf = wc;
         else {
           if (wbuf) out.push(wbuf);
           wbuf = w;
@@ -72,7 +74,13 @@ async function splitToMaxTokens(tokenizer, text) {
     }
   }
   if (buf) out.push(buf);
-  return out;
+  const finalized = [];
+  for (const piece of out) {
+    const tok = await tokenLength(tokenizer, piece, { addSpecialTokens: true });
+    if (tok <= CHUNK_INDEX_MAX_TOKENS) finalized.push(piece);
+    else finalized.push(...(await splitToMaxTokens(tokenizer, piece)));
+  }
+  return finalized;
 }
 
 function publicationStatusFromPack(pack) {
@@ -327,5 +335,19 @@ export async function buildChunksFromEvidencePack(pack, tokenizer, stats) {
     }
   }
 
-  return chunks;
+  const authoritative = [];
+  if (!stats.oversizedChunksRejected) stats.oversizedChunksRejected = 0;
+  for (const chunk of chunks) {
+    const tok = chunk.modelTokenCount ?? 0;
+    if (tok > CHUNK_ABSOLUTE_MAX_TOKENS) {
+      stats.pageBoundaryViolations += 1;
+      continue;
+    }
+    if (tok > CHUNK_INDEX_MAX_TOKENS) {
+      stats.oversizedChunksRejected += 1;
+      continue;
+    }
+    authoritative.push(chunk);
+  }
+  return authoritative;
 }

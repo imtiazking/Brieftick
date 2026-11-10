@@ -1,0 +1,394 @@
+{
+  "packVersion": 1,
+  "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+  "publicationTitle": "DP26/2: Guided Retirement",
+  "publicationType": "discussion_paper",
+  "regulator": "FCA",
+  "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-2-guided-retirement",
+  "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+  "extractionProfile": "html_article_v2",
+  "contentSha256": "731ccc9e89ebcbf5271c4260e916f5cd41370793b894eb544833ab3dd572ea6b",
+  "regulatoryStatus": "discussion_paper",
+  "blockCount": 21,
+  "verifiedTextSamples": [
+    {
+      "documentEvidenceId": "775affd40f85f8ff",
+      "sectionReference": "On this page",
+      "extractedText": "Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/2"
+    },
+    {
+      "documentEvidenceId": "f2a134d7092f43b6",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "This Discussion Paper, which is published as a policy consultation for the DWP, sets out our initial joint proposals for how Guided Retirement will operate in practice."
+    },
+    {
+      "documentEvidenceId": "cf0bd4028bd3550f",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "Guided Retirement is intended to build on the success of automatic enrolment which has led to a significant increase in participation in defined contribution (DC) pensions."
+    },
+    {
+      "documentEvidenceId": "3c9ad9f87ca3ddaf",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "It aims to remove the need for individuals to make complex decisions at the point of retirement through default pensions that provide a clear, high-quality route into retirement for the mass market."
+    },
+    {
+      "documentEvidenceId": "eca14e4bf59653f6",
+      "sectionReference": "Why we are publishing this Discussion Paper",
+      "extractedText": "We will seek to build on the targeted support conduct framework in COBS 9B and adapt these rules where necessary for the purpose of setting conduct rules for Guided Retirement for contract-based providers."
+    },
+    {
+      "documentEvidenceId": "becefe1c4fa8be70",
+      "sectionReference": "Who this is for",
+      "extractedText": "Firms operating contract-based workplace pensions."
+    },
+    {
+      "documentEvidenceId": "d4134638e26e3a01",
+      "sectionReference": "Who this is for",
+      "extractedText": "Trustees and sponsors of trust-based schemes."
+    },
+    {
+      "documentEvidenceId": "8edf31d764c4e6fa",
+      "sectionReference": "Who this is for",
+      "extractedText": "DC pension scheme savers and beneficiaries."
+    },
+    {
+      "documentEvidenceId": "d210c134ff26bdcc",
+      "sectionReference": "Who this is for",
+      "extractedText": "Pension scheme service providers, other industry bodies and professionals."
+    },
+    {
+      "documentEvidenceId": "e4b139fdf981e69e",
+      "sectionReference": "Who this is for",
+      "extractedText": "Groups representing consumers’ interests."
+    },
+    {
+      "documentEvidenceId": "4fbad0f77c9aacdf",
+      "sectionReference": "Next steps",
+      "extractedText": "Please submit your consultation responses by 22 December 2026 using the response form ."
+    },
+    {
+      "documentEvidenceId": "87f5aa2b33800076",
+      "sectionReference": "Next steps",
+      "extractedText": "Alternatively, you can send your response to the DWP Guided Retirement Policy Team by emailing [email&#160;protected] ."
+    },
+    {
+      "documentEvidenceId": "20e89be166118721",
+      "sectionReference": "Next steps",
+      "extractedText": "Responses will then be shared with the FCA and TPR."
+    },
+    {
+      "documentEvidenceId": "b186093d5ecbcc0d",
+      "sectionReference": "Next steps",
+      "extractedText": "We intend to consult on draft rules and guidance in H2 2027, in line with the Government’s updated roadmap for workplace pensions ."
+    },
+    {
+      "documentEvidenceId": "d50c7bf44c404b6c",
+      "sectionReference": "Next steps",
+      "extractedText": "In parallel, the DWP plans to consult on draft regulations for trust-based schemes."
+    },
+    {
+      "documentEvidenceId": "482191119a00a18b",
+      "sectionReference": "Background",
+      "extractedText": "Automatic enrolment in workplace pensions has been successful in supporting people to save, but the broader longer-term shift from defined benefit (DB) pensions to DC savings pots has placed much greater responsibility on individuals at the point of retirement."
+    },
+    {
+      "documentEvidenceId": "4c844cd95d5165c2",
+      "sectionReference": "Background",
+      "extractedText": "This shift exposes individuals to a range of complex risks and decisions."
+    },
+    {
+      "documentEvidenceId": "1366fc002e8c99e5",
+      "sectionReference": "Background",
+      "extractedText": "The Pension Schemes Act 2026 introduced duties on trustees to provide well-designed default pensions for these consumers."
+    },
+    {
+      "documentEvidenceId": "a7305a621e67b006",
+      "sectionReference": "Background",
+      "extractedText": "The FCA are required to introduce rules which, so far as possible, achieve the same outcomes."
+    },
+    {
+      "documentEvidenceId": "032fb33d5f5aef5d",
+      "sectionReference": "Background",
+      "extractedText": "Yes No What can we do to improve pages like this?"
+    },
+    {
+      "documentEvidenceId": "f9aa35abb333d062",
+      "sectionReference": "Background",
+      "extractedText": "Submit Feedback Leave this field blank"
+    }
+  ],
+  "askRiEvidence": {
+    "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+    "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+    "extractionProfile": "html_article_v2",
+    "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-2-guided-retirement",
+    "publicationMetadata": {
+      "title": "DP26/2: Guided Retirement",
+      "primaryPdf": null,
+      "drupalAbout": "/publications/discussion-papers/dp26-2-guided-retirement",
+      "drupalNodeId": "177196",
+      "consultationTimeline": {
+        "opens": null,
+        "closes": null,
+        "present": true,
+        "opensDate": "03/11/2026",
+        "closesDate": "22/12/2026"
+      },
+      "publicationTypeLabel": null,
+      "primaryDocumentClassification": "webpage_only"
+    },
+    "extractionQuality": {
+      "score": 100,
+      "status": "complete",
+      "metrics": {
+        "headingCount": 5,
+        "alphaWordCount": 265,
+        "paragraphCount": 9,
+        "plainTextLength": 2653,
+        "pdfAttachmentCount": 0
+      },
+      "signals": [],
+      "confidence": "high",
+      "primaryDocument": {
+        "completeness": "not_applicable",
+        "primaryPdfUrl": null,
+        "classification": "webpage_only",
+        "primaryPdfCaptured": false
+      },
+      "webpageExtraction": {
+        "score": 100,
+        "status": "complete",
+        "confidence": "high"
+      },
+      "obligationGradeSuitable": true
+    },
+    "pdfAttachments": [],
+    "normalisedArticleText": "This joint Discussion Paper with the Department for Work and Pensions (DWP) and The Pensions Regulator (TPR) seeks views on proposals for a Guided Retirement framework in both contract and trust-based workplace pension schemes. On this page Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/2 Why we are publishing this Discussion Paper This Discussion Paper, which is published as a policy consultation for the DWP, sets out our initial joint proposals for how Guided Retirement will operate in practice. Guided Retirement is intended to build on the success of automatic enrolment which has led to a significant increase in participation in defined contribution (DC) pensions. It aims to remove the need for individuals to make complex decisions at the point of retirement through default pensions that provide a clear, high-quality route into retirement for the mass market. We will seek to build on the targeted support conduct framework in COBS 9B and adapt these rules where necessary for the purpose of setting conduct rules for Guided Retirement for contract-based providers. Who this is for Firms operating contract-based workplace pensions. Trustees and sponsors of trust-based schemes. DC pension scheme savers and beneficiaries. Pension scheme service providers, other industry bodies and professionals. Employers. Groups representing consumers’ interests. Pensions administrators. Any other interested stakeholders. Next steps Please submit your consultation responses by 22 December 2026 using the response form . Alternatively, you can send your response to the DWP Guided Retirement Policy Team by emailing [email protected] . Responses will then be shared with the FCA and TPR. We intend to consult on draft rules and guidance in H2 2027, in line with the Government’s updated roadmap for workplace pensions . In parallel, the DWP plans to consult on draft regulations for trust-based schemes. Background Automatic enrolment in workplace pensions has been successful in supporting people to save, but the broader longer-term shift from defined benefit (DB) pensions to DC savings pots has placed much greater responsibility on individuals at the point of retirement. This shift exposes individuals to a range of complex risks and decisions. The Pension Schemes Act 2026 introduced duties on trustees to provide well-designed default pensions for these consumers. The FCA are required to introduce rules which, so far as possible, achieve the same outcomes. Was this page useful? Yes No What can we do to improve pages like this? What did you find helpful? Submit Feedback Leave this field blank",
+    "normalisedArticleHtml": "<article data-history-node-id=\"177196\" about=\"/publications/discussion-papers/dp26-2-guided-retirement\" class=\"article-header col-xs-12 four-step-limit col-sm-9 has-sidebar clearfix\"> <div class=\"node-content__wrapper node-content__wrapper--border\"> <section class=\"copy-highlighted copy-block component fca-colour--6c1d45 default\"> <div class=\"container\"> <p>This joint Discussion Paper with the Department for Work and Pensions (DWP) and The Pensions Regulator (TPR) seeks views on proposals for a Guided Retirement framework in both contract and trust-based workplace pension schemes.</p> </div> </section> <div class=\"rhn__on-this-page visible-xs rhn__on-this-page--publication\"> <h2 class=\"h3\" lang=\"en-GB\"> <button class=\"rhn__button\" aria-label=\"On this page\" aria-expanded=\"true\"> On this page <img src=\"/themes/custom/fca/images/document.svg\" alt=\"\"> </button> </h2> <ul class=\"nav navbar-nav\"><li><a href=\"#section-why-we-are-publishing-this-discussion-paper\">Why we are publishing this Discussion Paper</a></li><li><a href=\"#section-who-this-is-for\">Who this is for</a></li><li><a href=\"#section-next-steps\">Next steps</a></li><li><a href=\"#section-background\">Background</a></li></ul> </div> <div class=\"default\"> <section class=\"copy-block default\"> <div class=\"container\"> <p><a class=\"btn btn-primary\" href=\"https://www.gov.uk/government/consultations/guided-retirement-policy-consultation\" data-entity-type=\"external\">Read DP26/2</a></p> </div> </section> </div> <div class=\"default\"> <section id=\"section-why-we-are-publishing-this-discussion-paper\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Why we are publishing this Discussion Paper</h2><p>This Discussion Paper, which is published as a policy consultation for the DWP, sets out our initial joint proposals for how Guided Retirement will operate in practice.</p><p>Guided Retirement is intended to build on the success of automatic enrolment which has led to a significant increase in participation in defined contribution (DC) pensions. It aims to remove the need for individuals to make complex decisions at the point of retirement through default pensions that provide a clear, high-quality route into retirement for the mass market.</p><p>We will seek to build on the targeted support conduct framework in COBS 9B and adapt these rules where necessary for the purpose of setting conduct rules for Guided Retirement for contract-based providers.</p> </div> </section> </div> <div class=\"default\"> <section id=\"section-who-this-is-for\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Who this is for</h2><ul><li data-list-item-id=\"ecc1eecfa80ee652be083f5b8823016cf\">Firms operating contract-based workplace pensions.</li><li data-list-item-id=\"edbd92c15919ca6334822adc4c7a743e5\">Trustees and sponsors of trust-based schemes.</li><li data-list-item-id=\"e7ef455201ad48c26f83134ebef0deb5d\">DC pension scheme savers and beneficiaries.</li><li data-list-item-id=\"e0110d3b9324165c38518744139974292\">Pension scheme service providers, other industry bodies and professionals.</li><li data-list-item-id=\"eb18fc59737cf3179a016d21e2fdc866f\">Employers.</li><li data-list-item-id=\"ed517302ecc30d707cfacafb6df361a0f\">Groups representing consumers’ interests.</li><li data-list-item-id=\"eefbb6ad4f2037cd7a04b7967d10066da\">Pensions administrators.</li><li data-list-item-id=\"e05009d014225c087a1097dbdeac150f3\">Any other interested stakeholders.</li></ul> </div> </section> </div> <div class=\"default\"> <section id=\"section-next-steps\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Next steps</h2><p>Please submit your consultation responses by <strong>22 December 2026</strong> using the <a href=\"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=6fbxllcQF0GsKIDN_ob4wyKeWBdaRAJFjxMtY9tSYMVUMjVCQ1JJUlVBWkpQSzZaRzkyRjhHM0hNOC4u\" data-entity-type=\"external\">response form</a>. Alternatively, you can send your response to the DWP Guided Retirement Policy Team by emailing <a href=\"/cdn-cgi/l/email-protection#19397a76776a6c756d786d707677377e6c707d7c7d6b7c6d706b7c747c776d597d6e69377e766f376c72\"><span class=\"__cf_email__\" data-cfemail=\"25464a4b5650495144514c4a4b0b42504c4140415740514c574048404b51654152550b424a530b504e\">[email&#160;protected]</span></a>. Responses will then be shared with the FCA and TPR.</p><p>We intend to consult on draft rules and guidance in H2 2027, in line with the Government’s <a href=\"https://www.gov.uk/government/publications/workplace-pensions-an-updated-roadmap/workplace-pensions-an-updated-roadmap\" data-entity-type=\"external\">updated roadmap for workplace pensions</a>. In parallel, the DWP plans to consult on draft regulations for trust-based schemes.</p> </div> </section> </div> <div class=\"default\"> <section id=\"section-background\" tabindex=\"-1\" class=\"copy-block default\"> <div class=\"container\"> <h2>Background</h2><p>Automatic enrolment in workplace pensions has been successful in supporting people to save, but the broader longer-term shift from defined benefit (DB) pensions to DC savings pots has placed much greater responsibility on individuals at the point of retirement. This shift exposes individuals to a range of complex risks and decisions.</p><p>The Pension Schemes Act 2026 introduced duties on trustees to provide well-designed default pensions for these consumers. The FCA are required to introduce rules which, so far as possible, achieve the same outcomes.</p> </div> </section> </div> <div class=\"node_view\"></div> </div> <div class=\"page-feedback container\" lang=\"en-GB\"> <form class=\"webform-submission-form webform-submission-add-form webform-submission-page-feedback-form-form webform-submission-page-feedback-form-add-form webform-submission-page-feedback-form-node-177196-form webform-submission-page-feedback-form-node-177196-add-form js-webform-details-toggle webform-details-toggle js-fca-lazy-captcha webform-client-form webform-client-form- feedback-form fca-custom-form webform-conditional-processed\" data-drupal-selector=\"webform-submission-page-feedback-form-node-177196-add-form\" novalidate=\"novalidate\" action=\"/publications/discussion-papers/dp26-2-guided-retirement#webform-submission-page-feedback-form-node-177196-add-form\" method=\"post\" id=\"webform-submission-page-feedback-form-node-177196-add-form\" accept-charset=\"UTF-8\" > <fieldset data-drupal-selector=\"edit-radios\" class=\"radios--wrapper fieldgroup form-composite webform-composite-visible-title js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper\" id=\"edit-radios--wrapper\"> <legend id=\"edit-radios--wrapper-legend\"> <span class=\"fieldset-legend\">Was this page useful?</span> </legend> <div class=\"fieldset-wrapper\"> <div id=\"edit-radios\" class=\"js-webform-radios webform-options-display-side-by-side\"><div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-yes\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-yes\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-yes\" name=\"radios\" value=\"Yes\" /><span class=\"fca-custom-label\">Yes </span></label> </div> <div class=\"js-webform-type-radio webform-type-radio form-item js-form-item form-type-radio js-form-type-radio form-item-radios js-form-item-radios radio\"> <label for=\"edit-radios-no\" class=\"control-label option\"><input data-drupal-selector=\"edit-radios-no\" class=\"form-radio\" type=\"radio\" id=\"edit-radios-no\" name=\"radios\" value=\"No\" /><span class=\"fca-custom-label\">No </span></label> </div> </div> </div> </fieldset> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-can-we-do-to-improve-pages-like-this- js-form-item-what-can-we-do-to-improve-pages-like-this- form-group\"> <label for=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"control-label\">What can we do to improve pages like this? </label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-can-we-do-to-improve-pages-like-this-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-177196-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;No&quot;}}}\" id=\"edit-what-can-we-do-to-improve-pages-like-this-\" name=\"what_can_we_do_to_improve_pages_like_this_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <div class=\"js-webform-states-hidden js-webform-type-textarea webform-type-textarea form-item js-form-item form-type-textarea js-form-type-textarea form-item-what-did-you-find-helpful- js-form-item-what-did-you-find-helpful- form-group\"> <label for=\"edit-what-did-you-find-helpful-\" class=\"control-label\">What did you find helpful?</label> <div class=\"form-textarea-wrapper\"> <textarea data-drupal-selector=\"edit-what-did-you-find-helpful-\" class=\"form-textarea form-control resize-vertical\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-177196-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;value&quot;:&quot;Yes&quot;}}}\" id=\"edit-what-did-you-find-helpful-\" name=\"what_did_you_find_helpful_\" rows=\"5\" cols=\"60\"></textarea> </div> </div> <input data-drupal-selector=\"edit-page-title\" type=\"hidden\" name=\"page_title\" value=\"DP26/2: Guided Retirement\" /><input data-drupal-selector=\"edit-page-url\" type=\"hidden\" name=\"page_url\" value=\"https://www.fca.org.uk/publications/discussion-papers/dp26-2-guided-retirement \" /><div class=\"js-webform-states-hidden form-actions webform-actions clearfix fca-form-submit form-group js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" data-drupal-states=\"{&quot;visible&quot;:{&quot;.webform-submission-page-feedback-form-node-177196-add-form :input[name=\\u0022radios\\u0022]&quot;:{&quot;checked&quot;:true}}}\" id=\"edit-actions\"><button class=\"webform-button--submit button button--primary js-form-submit form-submit btn-primary btn\" data-drupal-selector=\"edit-actions-submit\" type=\"submit\" id=\"edit-actions-submit\" name=\"op\" value=\"Submit Feedback\">Submit Feedback</button> </div> <input autocomplete=\"off\" data-drupal-selector=\"form-f35akitsbzrxk3xjgzo10z0y7oie9h7eym-euxvbnhw\" type=\"hidden\" name=\"form_build_id\" value=\"form-F35AKItsBzrxk3xjgZo10z0y7OIE9H7EYm_EUXvbNHw\" /><input data-drupal-selector=\"edit-webform-submission-page-feedback-form-node-177196-add-form\" type=\"hidden\" name=\"form_id\" value=\"webform_submission_page_feedback_form_node_177196_add_form\" /> <input data-drupal-selector=\"edit-captcha-sid\" type=\"hidden\" name=\"captcha_sid\" value=\"1580375931\" /><input data-drupal-selector=\"edit-captcha-token\" type=\"hidden\" name=\"captcha_token\" value=\"H-KIDaqToDcXscVpqbOL3dRCxVbllw677F0GK8QtTrA\" /><input id=\"recaptcha-v3-token\" class=\"recaptcha-v3-token\" data-recaptcha-v3-action=\"fca_recaptcha\" data-recaptcha-v3-site-key=\"6LfnAxopAAAAAJL8t0TPEZql_Canimafd6XMM7WQ\" data-drupal-selector=\"edit-captcha-response\" type=\"hidden\" name=\"captcha_response\" value=\"\" /><input data-drupal-selector=\"edit-is-recaptcha-v3\" type=\"hidden\" name=\"is_recaptcha_v3\" value=\"1\" /> <div class=\"url_hp-textfield form-group js-form-wrapper form-wrapper\" style=\"display: none !important;\"><div class=\"form-item js-form-item form-type-textfield js-form-type-textfield form-item-url-hp js-form-item-url-hp form-group\"> <label for=\"edit-url-hp\" class=\"control-label\">Leave this field blank</label> <input autocomplete=\"off\" data-drupal-selector=\"edit-url-hp\" class=\"form-text form-control\" type=\"text\" id=\"edit-url-hp\" name=\"url_hp\" value=\"\" size=\"20\" maxlength=\"128\" /> </div> </div> </form> </div> </article>",
+    "evidenceBlocks": [
+      {
+        "documentEvidenceId": "775affd40f85f8ff",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "On this page",
+        "extractedText": "Why we are publishing this Discussion Paper Who this is for Next steps Background Read DP26/2",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f2a134d7092f43b6",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "This Discussion Paper, which is published as a policy consultation for the DWP, sets out our initial joint proposals for how Guided Retirement will operate in practice.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "cf0bd4028bd3550f",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "Guided Retirement is intended to build on the success of automatic enrolment which has led to a significant increase in participation in defined contribution (DC) pensions.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "3c9ad9f87ca3ddaf",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "It aims to remove the need for individuals to make complex decisions at the point of retirement through default pensions that provide a clear, high-quality route into retirement for the mass market.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "eca14e4bf59653f6",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Why we are publishing this Discussion Paper",
+        "extractedText": "We will seek to build on the targeted support conduct framework in COBS 9B and adapt these rules where necessary for the purpose of setting conduct rules for Guided Retirement for contract-based providers.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "becefe1c4fa8be70",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this is for",
+        "extractedText": "Firms operating contract-based workplace pensions.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d4134638e26e3a01",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this is for",
+        "extractedText": "Trustees and sponsors of trust-based schemes.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "8edf31d764c4e6fa",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this is for",
+        "extractedText": "DC pension scheme savers and beneficiaries.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d210c134ff26bdcc",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this is for",
+        "extractedText": "Pension scheme service providers, other industry bodies and professionals.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "e4b139fdf981e69e",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Who this is for",
+        "extractedText": "Groups representing consumers’ interests.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4fbad0f77c9aacdf",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "Please submit your consultation responses by 22 December 2026 using the response form .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "87f5aa2b33800076",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "Alternatively, you can send your response to the DWP Guided Retirement Policy Team by emailing [email&#160;protected] .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "20e89be166118721",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "Responses will then be shared with the FCA and TPR.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "b186093d5ecbcc0d",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "We intend to consult on draft rules and guidance in H2 2027, in line with the Government’s updated roadmap for workplace pensions .",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "d50c7bf44c404b6c",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Next steps",
+        "extractedText": "In parallel, the DWP plans to consult on draft regulations for trust-based schemes.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "482191119a00a18b",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Automatic enrolment in workplace pensions has been successful in supporting people to save, but the broader longer-term shift from defined benefit (DB) pensions to DC savings pots has placed much greater responsibility on individuals at the point of retirement.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "4c844cd95d5165c2",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "This shift exposes individuals to a range of complex risks and decisions.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "1366fc002e8c99e5",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "The Pension Schemes Act 2026 introduced duties on trustees to provide well-designed default pensions for these consumers.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "a7305a621e67b006",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "The FCA are required to introduce rules which, so far as possible, achieve the same outcomes.",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "032fb33d5f5aef5d",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Yes No What can we do to improve pages like this?",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      },
+      {
+        "documentEvidenceId": "f9aa35abb333d062",
+        "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "extractionProfile": "html_article_v2",
+        "sectionReference": "Background",
+        "extractedText": "Submit Feedback Leave this field blank",
+        "evidenceKind": "webpage_narrative",
+        "pageBoundaryConfirmed": true
+      }
+    ],
+    "evidenceMedium": "fca_webpage",
+    "integrityVerified": true,
+    "obligationGradeSuitable": true,
+    "publicationTitle": "DP26/2: Guided Retirement",
+    "publicationReference": null,
+    "regulatorShortName": "FCA",
+    "regulatorLabel": "Financial Conduct Authority"
+  },
+  "provenanceClassification": "AUTHORITATIVE_STAGING_EXTRACTION",
+  "retrievalProvenance": {
+    "exportSource": "b1_staging_readonly_export",
+    "exportedAt": "2026-11-10T17:48:18.686Z"
+  },
+  "exportSource": "b1_staging_readonly_export"
+}

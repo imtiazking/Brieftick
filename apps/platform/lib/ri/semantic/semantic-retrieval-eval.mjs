@@ -13,6 +13,8 @@ import { buildChunksFromEvidencePack, tokenLength } from './chunk-regulatory-evi
 import { buildRegulatoryCatalogueFromPacks } from './build-regulatory-catalogue.mjs';
 import { validateExplicitPublicationReferences } from './publication-reference-validation.mjs';
 import { decideRetrievalMatch, isSubstantivePassage } from './no-match-detection.mjs';
+import { filterAuthoritativeEvidencePacks } from './regulatory-evidence-provenance.mjs';
+import { CHUNK_INDEX_MAX_TOKENS } from './gte-small-config.mjs';
 
 function cosineSimilarity(a, b) {
   let dot = 0;
@@ -32,14 +34,19 @@ function tensorToArray(output) {
   return Float32Array.from(output);
 }
 
-export function loadEvidencePacksFromDir(packsDir) {
+export function loadEvidencePacksFromDir(packsDir, { requireAuthoritative = true } = {}) {
   const packs = [];
   for (const name of readdirSync(packsDir)) {
     if (!name.endsWith('.json') || name === 'manifest.json' || name === 'catalogue.json') continue;
     const pack = JSON.parse(readFileSync(join(packsDir, name), 'utf8'));
     packs.push({ file: name, pack });
   }
-  return packs;
+  if (!requireAuthoritative) return packs;
+  const { accepted, rejected } = filterAuthoritativeEvidencePacks(packs);
+  if (rejected.length) {
+    return accepted;
+  }
+  return accepted;
 }
 
 export async function buildSemanticIndex(packsDir, { embedder, tokenizer } = {}) {
@@ -99,6 +106,8 @@ export async function buildSemanticIndex(packsDir, { embedder, tokenizer } = {})
       p95: percentile(tokenCounts, 95),
       belowMinTarget: tokenCounts.filter((t) => t < CHUNK_MIN_TARGET_TOKENS).length,
       overHardLimit: tokenCounts.filter((t) => t > 512).length,
+      overIndexLimit: tokenCounts.filter((t) => t > CHUNK_INDEX_MAX_TOKENS).length,
+      oversizedChunksRejected: stats.oversizedChunksRejected || 0,
       shortChunkExceptions: stats.shortChunkExceptions,
       truncationAttempts: stats.truncationAttempts,
       pageBoundaryViolations: stats.pageBoundaryViolations,
@@ -256,6 +265,8 @@ async function buildIndexFromPackDirs(dirs, { embedder, tokenizer }) {
       p95: percentile(tokenCounts, 95),
       belowMinTarget: tokenCounts.filter((t) => t < CHUNK_MIN_TARGET_TOKENS).length,
       overHardLimit: tokenCounts.filter((t) => t > 512).length,
+      overIndexLimit: tokenCounts.filter((t) => t > CHUNK_INDEX_MAX_TOKENS).length,
+      oversizedChunksRejected: stats.oversizedChunksRejected || 0,
       shortChunkExceptions: stats.shortChunkExceptions,
       truncationAttempts: stats.truncationAttempts,
       pageBoundaryViolations: stats.pageBoundaryViolations,

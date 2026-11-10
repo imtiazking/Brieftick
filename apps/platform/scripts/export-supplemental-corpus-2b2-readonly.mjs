@@ -17,6 +17,10 @@ import {
   MULTI_FIRM_PAGE,
 } from '../../../integrations/regulatory-sources/fixtures/fca-html-samples.mjs';
 
+throw new Error(
+  'export-supplemental-corpus-2b2-readonly is disabled: supplemental synthetic excerpts were removed in Step E. Use export-authentic-corpus-b1-readonly.mjs.',
+);
+
 const platformRoot = resolvePlatformRoot(import.meta.url);
 loadPlatformEnv(platformRoot);
 

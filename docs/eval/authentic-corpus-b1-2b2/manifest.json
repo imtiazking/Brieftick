@@ -1,0 +1,68 @@
+{
+  "manifestVersion": 1,
+  "corpus": "authentic-b1-2b2",
+  "createdAt": "2026-11-10T17:48:17.269Z",
+  "coreReusedFrom": "c:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\evidence-packs",
+  "b1Publications": [
+    {
+      "file": "core-cp26-38-html-article-v1.json",
+      "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+      "extractionRevisionId": "50197cc3-c7e7-4835-b566-f6174105eba2",
+      "exportSource": "frozen_evidence_packs_copy"
+    },
+    {
+      "file": "core-cp26-38-primary-pdf-v1.json",
+      "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+      "extractionRevisionId": "c003a60a-eff8-4152-a2ce-47e20a206e29",
+      "exportSource": "frozen_evidence_packs_copy"
+    },
+    {
+      "file": "core-fair-value-consumer-finance-v1.json",
+      "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+      "extractionRevisionId": "613c078c-3639-4ce5-9666-73c5352f44fd",
+      "exportSource": "frozen_evidence_packs_copy"
+    },
+    {
+      "file": "core-fg22-5-primary-pdf-v1.json",
+      "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+      "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+      "exportSource": "frozen_evidence_packs_copy"
+    },
+    {
+      "file": "b1-edcebe7d-html-v1.json",
+      "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+      "extractionRevisionId": "d0d6ae91-0f23-421f-b911-a50d05401467",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/conflicts-interest-fair-customer-treatment-private-markets",
+      "exportSource": "b1_staging_readonly_export"
+    },
+    {
+      "file": "b1-49dee37a-html-v1.json",
+      "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+      "extractionRevisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+      "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+      "exportSource": "b1_staging_readonly_export"
+    },
+    {
+      "file": "b1-34b18772-html-v1.json",
+      "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+      "extractionRevisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+      "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-2-guided-retirement",
+      "exportSource": "b1_staging_readonly_export"
+    },
+    {
+      "file": "b1-ff1150cc-html-v1.json",
+      "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+      "extractionRevisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+      "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime",
+      "exportSource": "b1_staging_readonly_export"
+    },
+    {
+      "file": "b1-9e8d3736-html-v1.json",
+      "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+      "extractionRevisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+      "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+      "exportSource": "b1_staging_readonly_export"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,255 @@
+{
+  "phase": "2B.2-E-B1",
+  "generatedAt": "2026-11-10T17:47:58.374Z",
+  "preflight": {
+    "gitBranch": "feature/ask-ri-v2-evaluation-baseline",
+    "stagingProjectRef": "lhgzdicffkhaaykzthep",
+    "targetCount": 5,
+    "onlyUrlSupported": true
+  },
+  "publications": [
+    {
+      "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+      "reference": null,
+      "title": "Conflicts of interest and fair customer treatment in private markets",
+      "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/conflicts-interest-fair-customer-treatment-private-markets",
+      "sourceType": "multi_firm_review",
+      "domain": "fair_value_consumer_treatment",
+      "reason": "Fair customer treatment and conflicts — Consumer Duty adjacent supervisory material",
+      "status": "PASS",
+      "snapshot": {
+        "snapshotId": "c08e3305-4c85-47af-add1-2d4620b72159",
+        "created": false,
+        "rawStoragePath": "by-hash/304f72374568e563/304f72374568e5635c8bdf0c6fe0f817083907c1976a19e1080a1a4e86601869.raw.html"
+      },
+      "extraction": {
+        "revisionId": "d0d6ae91-0f23-421f-b911-a50d05401467",
+        "created": false,
+        "obligationGradeSuitable": true,
+        "derivedFingerprint": "0dab5301819435ae90ceede68a1c418056f5a243cc950eaaad2737a406dd2669",
+        "rawSha256": "304f72374568e5635c8bdf0c6fe0f817083907c1976a19e1080a1a4e86601869",
+        "webpageStatus": "complete",
+        "extractionQuality": {
+          "score": 100,
+          "status": "complete",
+          "metrics": {
+            "headingCount": 31,
+            "alphaWordCount": 5636,
+            "paragraphCount": 155,
+            "plainTextLength": 55049,
+            "pdfAttachmentCount": 2
+          },
+          "signals": [],
+          "confidence": "high",
+          "primaryDocument": {
+            "completeness": "not_applicable",
+            "primaryPdfUrl": null,
+            "classification": "webpage_only",
+            "primaryPdfCaptured": false
+          },
+          "webpageExtraction": {
+            "score": 100,
+            "status": "complete",
+            "confidence": "high"
+          },
+          "obligationGradeSuitable": true
+        }
+      }
+    },
+    {
+      "publicationId": "49dee37a-9051-4c3f-8597-fa0dc232c91d",
+      "reference": null,
+      "title": "Flood risk exposure of mortgages in England",
+      "canonicalUrl": "https://www.fca.org.uk/data/flood-risk-exposure-mortgages-england",
+      "sourceType": "data_publication",
+      "domain": "fair_value_mortgage_outcomes",
+      "reason": "Mortgage outcome monitoring data — fair value / customer outcome evidence competition",
+      "status": "PASS",
+      "snapshot": {
+        "snapshotId": "290d6f18-abf8-49d3-9554-9fd117e42625",
+        "created": true,
+        "rawStoragePath": "by-hash/3bc40fb25906238e/3bc40fb25906238eb2e90a09ab5f92096b289522b1e647ce890ce10b94f8deb9.raw.html"
+      },
+      "extraction": {
+        "revisionId": "ab4d91ff-f728-424b-8bcb-92e99f6b870a",
+        "created": true,
+        "obligationGradeSuitable": true,
+        "derivedFingerprint": "06f9ad3663ed36afdba28f620e7b698acb3c98a36ec013c99b2a333fc80a4747",
+        "rawSha256": "3bc40fb25906238eb2e90a09ab5f92096b289522b1e647ce890ce10b94f8deb9",
+        "webpageStatus": "complete",
+        "extractionQuality": {
+          "score": 100,
+          "status": "complete",
+          "metrics": {
+            "headingCount": 12,
+            "alphaWordCount": 1262,
+            "paragraphCount": 52,
+            "plainTextLength": 13664,
+            "pdfAttachmentCount": 0
+          },
+          "signals": [],
+          "confidence": "high",
+          "primaryDocument": {
+            "completeness": "not_applicable",
+            "primaryPdfUrl": null,
+            "classification": "webpage_only",
+            "primaryPdfCaptured": false
+          },
+          "webpageExtraction": {
+            "score": 100,
+            "status": "complete",
+            "confidence": "high"
+          },
+          "obligationGradeSuitable": true
+        }
+      }
+    },
+    {
+      "publicationId": "34b18772-3732-4e10-89a6-946bd15c5afe",
+      "reference": "DP26/2",
+      "title": "DP26/2: Guided Retirement",
+      "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-2-guided-retirement",
+      "sourceType": "discussion_paper",
+      "domain": "consumer_duty",
+      "reason": "Consumer retirement outcomes — consultation-stage ambiguity vs binding guidance",
+      "status": "PASS",
+      "snapshot": {
+        "snapshotId": "2193557f-f969-4511-98e1-4e390a5d46b2",
+        "created": false,
+        "rawStoragePath": "by-hash/986abecbe5869656/986abecbe5869656dd957bf52b0996310f22ead3ccc1ff2c01850b9c844bd4f4.raw.html"
+      },
+      "extraction": {
+        "revisionId": "654fd7eb-173e-48f6-9c3d-02c9d9af9d3b",
+        "created": true,
+        "obligationGradeSuitable": true,
+        "derivedFingerprint": "76e4431ed6e49bfad902c9f4c2c3903f904c4c3bb1c94397f0baa6571e432cf2",
+        "rawSha256": "986abecbe5869656dd957bf52b0996310f22ead3ccc1ff2c01850b9c844bd4f4",
+        "webpageStatus": "complete",
+        "extractionQuality": {
+          "score": 100,
+          "status": "complete",
+          "metrics": {
+            "headingCount": 5,
+            "alphaWordCount": 265,
+            "paragraphCount": 9,
+            "plainTextLength": 2653,
+            "pdfAttachmentCount": 0
+          },
+          "signals": [],
+          "confidence": "high",
+          "primaryDocument": {
+            "completeness": "not_applicable",
+            "primaryPdfUrl": null,
+            "classification": "webpage_only",
+            "primaryPdfCaptured": false
+          },
+          "webpageExtraction": {
+            "score": 100,
+            "status": "complete",
+            "confidence": "high"
+          },
+          "obligationGradeSuitable": true
+        }
+      }
+    },
+    {
+      "publicationId": "ff1150cc-3d7e-45c5-ac7a-3cd15ddaa37e",
+      "reference": "DP26/1",
+      "title": "DP26/1: Credit unions: review of the regulatory regime",
+      "canonicalUrl": "https://www.fca.org.uk/publications/discussion-papers/dp26-1-credit-unions-review-regulatory-regime",
+      "sourceType": "discussion_paper",
+      "domain": "consumer_finance",
+      "reason": "Consumer finance regime — fair value and proportionality context",
+      "status": "PASS",
+      "snapshot": {
+        "snapshotId": "e813b28f-5617-422e-8a5a-89912cda858e",
+        "created": false,
+        "rawStoragePath": "by-hash/bfc9c51320cdc465/bfc9c51320cdc465dcf9bd8c6302123826833b746553cee03b073ec06dd19ca9.raw.html"
+      },
+      "extraction": {
+        "revisionId": "c65206df-8aab-4caa-8418-1e4c46b2da09",
+        "created": true,
+        "obligationGradeSuitable": true,
+        "derivedFingerprint": "91eb6b22f0d307824897092b699d7e21a607ddd3865498ca6ae0d6e5dfb2e86b",
+        "rawSha256": "bfc9c51320cdc465dcf9bd8c6302123826833b746553cee03b073ec06dd19ca9",
+        "webpageStatus": "complete",
+        "extractionQuality": {
+          "score": 100,
+          "status": "complete",
+          "metrics": {
+            "headingCount": 5,
+            "alphaWordCount": 201,
+            "paragraphCount": 8,
+            "plainTextLength": 1943,
+            "pdfAttachmentCount": 0
+          },
+          "signals": [],
+          "confidence": "high",
+          "primaryDocument": {
+            "completeness": "not_applicable",
+            "primaryPdfUrl": null,
+            "classification": "webpage_only",
+            "primaryPdfCaptured": false
+          },
+          "webpageExtraction": {
+            "score": 100,
+            "status": "complete",
+            "confidence": "high"
+          },
+          "obligationGradeSuitable": true
+        }
+      }
+    },
+    {
+      "publicationId": "9e8d3736-506a-4909-8ad4-08229e0e6249",
+      "reference": null,
+      "title": "Access to cash coverage in the UK 2025 H1",
+      "canonicalUrl": "https://www.fca.org.uk/data/access-cash-coverage-uk-2025-h1",
+      "sourceType": "data_publication",
+      "domain": "consumer_access",
+      "reason": "Consumer access outcomes — distractor lexicon overlapping Consumer Duty questions",
+      "status": "PASS",
+      "snapshot": {
+        "snapshotId": "0023a971-9795-497d-8c4c-f371ea981a18",
+        "created": true,
+        "rawStoragePath": "by-hash/a8615ec9ed66cf76/a8615ec9ed66cf764fc641c413a8aaa0ec4d21d788010725032fa39b1629afc2.raw.html"
+      },
+      "extraction": {
+        "revisionId": "55ba4062-572a-4462-b1a7-a62a51d6c82c",
+        "created": true,
+        "obligationGradeSuitable": false,
+        "derivedFingerprint": "2c35a5039bec8cb6d155f57bf085089b06bb965e79b36ce22fee13c0f5f43ace",
+        "rawSha256": "a8615ec9ed66cf764fc641c413a8aaa0ec4d21d788010725032fa39b1629afc2",
+        "webpageStatus": "complete",
+        "extractionQuality": {
+          "score": 100,
+          "status": "complete",
+          "metrics": {
+            "headingCount": 17,
+            "alphaWordCount": 1687,
+            "paragraphCount": 30,
+            "plainTextLength": 18270,
+            "pdfAttachmentCount": 1
+          },
+          "signals": [
+            "primary_pdf_not_captured"
+          ],
+          "confidence": "high",
+          "primaryDocument": {
+            "completeness": "not_captured",
+            "primaryPdfUrl": "https://www.fca.org.uk/publication/policy/ps24-8.pdf",
+            "classification": "pdf_primary",
+            "primaryPdfCaptured": false
+          },
+          "webpageExtraction": {
+            "score": 100,
+            "status": "complete",
+            "confidence": "high"
+          },
+          "obligationGradeSuitable": false
+        }
+      }
+    }
+  ],
+  "overall": "PASS"
+}
