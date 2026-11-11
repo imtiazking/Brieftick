@@ -7,6 +7,8 @@
  * Usage:
  *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --dry-run
  *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --model=claude-haiku-5-5 --out=...
+ *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --dry-run --public-provider-only
+ *   node ./scripts/run-ask-ri-v2-eval-2c2.mjs --dry-run --test-ids=EVAL-D-02,EVAL-C-01
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -16,6 +18,7 @@ import { REPO_ROOT, EVAL_SUITE_V21_PATH, AUTHENTIC_CORPUS_B2_DIR } from '../lib/
 import { resolveV2EvalModel, V2_EVAL_BUDGET_USD } from '../lib/ri/reasoner/anthropic-eval-budget.mjs';
 import { isV2LiveReasoningEnabled } from '../lib/ri/reasoner/invoke-anthropic-reasoner.mjs';
 import { execSync } from 'node:child_process';
+import { parseTestIdsArg } from '../lib/ri/eval/eval-case-filter.mjs';
 
 const RUNS_DIR = join(REPO_ROOT, 'docs', 'eval', 'runs');
 
@@ -44,11 +47,13 @@ function sanitizeEvalReport(report) {
 }
 
 function parseArgs(argv) {
-  const out = { dryRun: false, model: null, out: null, force: false };
+  const out = { dryRun: false, model: null, out: null, force: false, publicProviderOnly: false, testIds: null };
   for (const a of argv) {
     if (a === '--dry-run' || a === '--estimate-only') out.dryRun = true;
+    else if (a === '--public-provider-only') out.publicProviderOnly = true;
     else if (a.startsWith('--model=')) out.model = a.slice('--model='.length);
     else if (a.startsWith('--out=')) out.out = a.slice('--out='.length);
+    else if (a.startsWith('--test-ids=')) out.testIds = parseTestIdsArg(a.slice('--test-ids='.length));
     else if (a === '--force') out.force = true;
   }
   return out;
@@ -115,6 +120,8 @@ async function main() {
     model,
     checkpointPath,
     partialResultsPath,
+    publicProviderOnly: cli.publicProviderOnly,
+    testIds: cli.testIds,
   });
   const envelope = {
     ...report,

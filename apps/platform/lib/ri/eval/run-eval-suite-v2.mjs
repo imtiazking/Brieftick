@@ -23,6 +23,7 @@ import { classifyV2HarnessOutcome } from '../reasoner/anthropic-provider-diagnos
 import { loadLocalEnvFile } from '../reasoner/load-local-env.mjs';
 import { writeCheckpointAtomic } from './eval-checkpoint.mjs';
 import { emitEvalProgress } from './eval-progress.mjs';
+import { filterEvalSuiteCases, validateEvalCaseFilter } from './eval-case-filter.mjs';
 
 function gitSha() {
   try {
@@ -44,8 +45,14 @@ export async function runEvalSuiteV2(options = {}) {
   const validation = validateEvalSuite(suite, { allowOperatorHeldOut: true, requireQuestions: true });
   if (!validation.ok) throw new Error(`invalid_eval_suite: ${validation.errors.join('; ')}`);
 
-  const cases = selectRunnableCases(suite, { includeOperatorHeldOut: false });
-  const allowlist = buildPublicEvalAllowlist(cases);
+  const runnableCases = selectRunnableCases(suite, { includeOperatorHeldOut: false });
+  const allowlist = buildPublicEvalAllowlist(runnableCases);
+  const filterCheck = validateEvalCaseFilter(runnableCases, allowlist, {
+    publicProviderOnly: Boolean(options.publicProviderOnly),
+    testIds: options.testIds,
+  });
+  if (!filterCheck.ok) throw new Error(`invalid_eval_case_filter: ${filterCheck.errors.join('; ')}`);
+  const cases = filterCheck.filtered;
   const baselineMap = loadBaselineMap(options.baselinePath || DETERMINISTIC_V21_R2_BASELINE);
 
   const model = resolveV2EvalModel(options.model);
@@ -173,7 +180,12 @@ export async function runEvalSuiteV2(options = {}) {
     model: { identifier: model, pricingNote: 'Prototype eval — see anthropic-eval-budget estimates' },
     executedAt: new Date().toISOString(),
     caseCount: results.length,
-    caseCountTotalRunnable: cases.length,
+    caseCountTotalRunnable: runnableCases.length,
+    caseCountSelected: cases.length,
+    caseFilter: {
+      publicProviderOnly: Boolean(options.publicProviderOnly),
+      testIds: options.testIds?.length ? options.testIds : null,
+    },
     eligibility: {
       allowedTestIds: allowlist.allowedTestIds,
       blocked: allowlist.blocked,
