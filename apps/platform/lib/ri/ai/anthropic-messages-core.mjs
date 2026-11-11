@@ -132,12 +132,26 @@ export function mapAnthropicHttpFailure(httpStatus, body) {
   return { ok: false, code: AI_ERROR_CODES.AI_PROVIDER_UNAVAILABLE, message: errMsg, httpStatus };
 }
 
+async function readResponseJson(res, signal) {
+  const text = await res.text();
+  if (signal?.aborted) {
+    throw new Error('AbortError: response body read aborted');
+  }
+  if (!text?.trim()) return {};
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {};
+  }
+}
+
 export async function callAnthropicMessages(apiKey, req, deps = {}) {
   const fetchFn = deps.fetchFn ?? fetch;
   const maxTokens = req.maxTokens ?? Number(process.env.RI_ANTHROPIC_MAX_TOKENS ?? 4096);
   const timeoutMs = req.timeoutMs ?? Number(process.env.RI_ANTHROPIC_TIMEOUT_MS ?? 60_000);
 
   const controller = new AbortController();
+  const deadline = Date.now() + timeoutMs;
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
@@ -159,7 +173,26 @@ export async function callAnthropicMessages(apiKey, req, deps = {}) {
       signal: controller.signal,
     });
 
-    const body = await res.json().catch(() => ({}));
+    if (controller.signal.aborted || Date.now() > deadline) {
+      return {
+        ok: false,
+        code: AI_ERROR_CODES.AI_TIMEOUT,
+        message: 'Anthropic request timed out.',
+        requestReachedProvider: true,
+        responseReceived: false,
+      };
+    }
+
+    const body = await readResponseJson(res, controller.signal);
+    if (controller.signal.aborted || Date.now() > deadline) {
+      return {
+        ok: false,
+        code: AI_ERROR_CODES.AI_TIMEOUT,
+        message: 'Anthropic request timed out while reading response body.',
+        requestReachedProvider: true,
+        responseReceived: false,
+      };
+    }
     if (!res.ok) {
       const mapped = mapAnthropicHttpFailure(res.status, body);
       const errType =

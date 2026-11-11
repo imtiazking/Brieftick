@@ -67,6 +67,7 @@ function buildFailureFromCall(res, model, latencyMs, attempts) {
 }
 
 function shouldRetryForTruncation(res, schemaOk, parsed) {
+  if (res.code === AI_ERROR_CODES.AI_TIMEOUT) return false;
   if (res.stopReason !== 'max_tokens') return false;
   if (!res.ok) {
     return res.code === AI_ERROR_CODES.AI_OUTPUT_TRUNCATED || res.code === AI_ERROR_CODES.AI_EMPTY_RESPONSE_CONTENT;

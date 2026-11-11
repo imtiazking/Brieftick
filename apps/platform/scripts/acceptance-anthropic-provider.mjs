@@ -27,6 +27,7 @@ function mockFetch(response) {
   return async () => ({
     ok: response.ok ?? true,
     status: response.status ?? 200,
+    text: async () => JSON.stringify(response.body ?? {}),
     json: async () => response.body,
   });
 }
@@ -69,7 +70,7 @@ let fetchCalled = false;
 const providerOff = providerMod.createAnthropicProvider({
   fetchFn: async () => {
     fetchCalled = true;
-    return { ok: true, status: 200, json: async () => ({}) };
+    return { ok: true, status: 200, text: async () => '{}', json: async () => ({}) };
   },
 });
 const offResult = await providerOff.execute({

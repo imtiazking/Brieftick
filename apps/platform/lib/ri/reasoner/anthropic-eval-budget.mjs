@@ -30,6 +30,19 @@ export function estimatePromptCostUsd(model, promptCharLength, expectedOutputTok
   return estimateRequestCostUsd(model, inputTokens, expectedOutputTokens);
 }
 
+/**
+ * Pre-flight reserve for one V2 eval reasoner case (initial + optional truncation retry).
+ */
+export function estimateEvalCaseReserveUsd(
+  model,
+  promptCharLength,
+  { maxOutputTokens = 8192, maxRetryOutputTokens = 16384 } = {},
+) {
+  const inputTokens = Math.ceil(promptCharLength / 3.5);
+  const outputCeiling = maxOutputTokens + maxRetryOutputTokens;
+  return estimateRequestCostUsd(model, inputTokens, outputCeiling);
+}
+
 export class EvalSpendTracker {
   constructor({ budgetUsd = V2_EVAL_BUDGET_USD, model } = {}) {
     this.budgetUsd = budgetUsd;
@@ -41,6 +54,9 @@ export class EvalSpendTracker {
     this.requestCount = 0;
     this.stopped = false;
     this.stopReason = null;
+    /** Per-case reservation ledger — settled when provider attempts complete. */
+    this.pendingReserveUsd = 0;
+    this.reservedUsd = 0;
   }
 
   canAfford(estimatedIncrementalUsd) {
@@ -55,7 +71,17 @@ export class EvalSpendTracker {
       return false;
     }
     this.estimatedUsd += estimatedUsd;
+    this.pendingReserveUsd += estimatedUsd;
+    this.reservedUsd += estimatedUsd;
     return true;
+  }
+
+  /** Move pending reservation into calculated spend after a case finishes (no provider or after attempts). */
+  settlePendingReservation() {
+    if (this.pendingReserveUsd > 0) {
+      this.estimatedUsd = Math.max(0, this.estimatedUsd - this.pendingReserveUsd);
+      this.pendingReserveUsd = 0;
+    }
   }
 
   recordAttempt({ success = false, inputTokens = 0, outputTokens = 0 } = {}) {
@@ -71,7 +97,9 @@ export class EvalSpendTracker {
   }
 
   finalizeCalculated() {
+    this.settlePendingReservation();
     this.calculatedUsd = estimateRequestCostUsd(this.model, this.inputTokens, this.outputTokens);
+    this.estimatedUsd = Number(this.calculatedUsd.toFixed(4));
     return this.calculatedUsd;
   }
 
@@ -84,6 +112,7 @@ export class EvalSpendTracker {
       inputTokens: this.inputTokens,
       outputTokens: this.outputTokens,
       requestCount: this.requestCount,
+      reservedUsd: Number(this.reservedUsd.toFixed(4)),
       stopped: this.stopped,
       stopReason: this.stopReason,
     };

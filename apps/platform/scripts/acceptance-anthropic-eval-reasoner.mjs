@@ -64,23 +64,25 @@ const fetchFn = async () => {
     return {
       ok: true,
       status: 200,
-      json: async () => ({
-        id: 'msg_t1',
-        stop_reason: 'max_tokens',
-        content: [{ type: 'thinking', thinking: 'long think' }],
-        usage: { input_tokens: 4000, output_tokens: 2048 },
-      }),
+      text: async () =>
+        JSON.stringify({
+          id: 'msg_t1',
+          stop_reason: 'max_tokens',
+          content: [{ type: 'thinking', thinking: 'long think' }],
+          usage: { input_tokens: 4000, output_tokens: 2048 },
+        }),
     };
   }
   return {
     ok: true,
     status: 200,
-    json: async () => ({
-      id: 'msg_t2',
-      stop_reason: 'end_turn',
-      content: [{ type: 'text', text: jsonPayload }],
-      usage: { input_tokens: 4000, output_tokens: 900 },
-    }),
+    text: async () =>
+      JSON.stringify({
+        id: 'msg_t2',
+        stop_reason: 'end_turn',
+        content: [{ type: 'text', text: jsonPayload }],
+        usage: { input_tokens: 4000, output_tokens: 900 },
+      }),
   };
 };
 

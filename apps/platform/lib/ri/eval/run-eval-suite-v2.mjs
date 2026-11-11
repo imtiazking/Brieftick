@@ -11,11 +11,18 @@ import { validateEvalSuite, selectRunnableCases } from './validate-eval-suite.mj
 import { buildPublicEvalAllowlist } from '../reasoner/public-question-eligibility.mjs';
 import { buildSemanticIndex } from '../semantic/semantic-retrieval-eval.mjs';
 import { runAskRiV2Pipeline } from '../reasoner/run-ask-ri-v2-pipeline.mjs';
-import { EvalSpendTracker, resolveV2EvalModel, V2_EVAL_BUDGET_USD } from '../reasoner/anthropic-eval-budget.mjs';
+import {
+  EvalSpendTracker,
+  resolveV2EvalModel,
+  V2_EVAL_BUDGET_USD,
+  estimateRequestCostUsd,
+} from '../reasoner/anthropic-eval-budget.mjs';
 import { scoreEvalCase } from './score-eval-case.mjs';
 import { isV2LiveReasoningEnabled } from '../reasoner/invoke-anthropic-reasoner.mjs';
 import { classifyV2HarnessOutcome } from '../reasoner/anthropic-provider-diagnostics.mjs';
 import { loadLocalEnvFile } from '../reasoner/load-local-env.mjs';
+import { writeCheckpointAtomic } from './eval-checkpoint.mjs';
+import { emitEvalProgress } from './eval-progress.mjs';
 
 function gitSha() {
   try {
@@ -46,12 +53,30 @@ export async function runEvalSuiteV2(options = {}) {
 
   const index = await buildSemanticIndex(AUTHENTIC_CORPUS_B2_DIR);
   const results = [];
+  const runStartedAt = Date.now();
   let providerErrors = 0;
   let blockedBeforeProvider = 0;
   let verificationFailed = 0;
   let publicExecuted = 0;
 
-  for (const caseRow of cases) {
+  const checkpointPath = options.checkpointPath || null;
+  const partialResultsPath = options.partialResultsPath || null;
+  const progressSink = options.progressSink;
+
+  const emitProgress = (payload) => {
+    const runningUsd = estimateRequestCostUsd(spend.model, spend.inputTokens, spend.outputTokens);
+    const line = {
+      ...payload,
+      calculatedUsd: Number(runningUsd.toFixed(4)),
+      spend: spend.toJSON(),
+    };
+    if (typeof progressSink === 'function') progressSink(line);
+    else if (options.emitProgress !== false) emitEvalProgress(line);
+  };
+
+  for (let caseIndex = 0; caseIndex < cases.length; caseIndex += 1) {
+    const caseRow = cases[caseIndex];
+    const caseT0 = Date.now();
     const engineResult = await runAskRiV2Pipeline(index, caseRow.question, caseRow, {
       spendTracker: spend,
       dryRun: options.dryRun,
@@ -91,6 +116,49 @@ export async function runEvalSuiteV2(options = {}) {
     if (engineResult.v2ExecutionStatus === 'PROVIDER_ERROR') providerErrors += 1;
     if (engineResult.v2ExecutionStatus === 'VERIFICATION_FAILED') verificationFailed += 1;
     if (engineResult.v2ExecutionStatus === 'PUBLIC_ELIGIBLE_EXECUTED') publicExecuted += 1;
+    emitProgress({
+      caseIndex: caseIndex + 1,
+      caseTotal: cases.length,
+      testId: caseRow.testId,
+      v2ExecutionStatus: engineResult.v2ExecutionStatus,
+      outcome: scored.outcome,
+      harnessOutcome: scored.harnessOutcome,
+      elapsedMs: Date.now() - caseT0,
+      runElapsedMs: Date.now() - runStartedAt,
+      providerAttempts: engineResult.execution?.providerAttempts ?? (engineResult.providerInvoked ? 1 : 0),
+      providerInvoked: Boolean(engineResult.providerInvoked),
+    });
+
+    const checkpointPayload = {
+      checkpoint: true,
+      updatedAt: new Date().toISOString(),
+      caseIndex: caseIndex + 1,
+      caseTotal: cases.length,
+      lastTestId: caseRow.testId,
+      model: { identifier: model },
+      spend: spend.toJSON(),
+      resultsCount: results.length,
+      partialSummary: {
+        completedCases: results.length,
+        providerErrors,
+        publicExecuted,
+      },
+    };
+    if (checkpointPath) writeCheckpointAtomic(checkpointPath, checkpointPayload);
+    if (partialResultsPath) {
+      writeCheckpointAtomic(partialResultsPath, {
+        ...checkpointPayload,
+        results: results.map((r) => ({
+          testId: r.testId,
+          outcome: r.outcome,
+          v2ExecutionStatus: r.v2ExecutionStatus,
+          harnessOutcome: r.harnessOutcome,
+          timingMs: r.timingMs,
+          execution: r.execution,
+        })),
+      });
+    }
+
     if (spend.stopped) break;
   }
 

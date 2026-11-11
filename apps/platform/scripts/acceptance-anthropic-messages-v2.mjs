@@ -31,7 +31,7 @@ async function mockCall(body, status = 200) {
       fetchFn: async () => ({
         ok: status >= 200 && status < 300,
         status,
-        json: async () => body,
+        text: async () => JSON.stringify(body),
       }),
     },
   );
@@ -104,10 +104,11 @@ await core.callAnthropicMessages(
       return {
         ok: true,
         status: 200,
-        json: async () => ({
-          content: [{ type: 'text', text: jsonPayload }],
-          usage: { input_tokens: 1, output_tokens: 1 },
-        }),
+        text: async () =>
+          JSON.stringify({
+            content: [{ type: 'text', text: jsonPayload }],
+            usage: { input_tokens: 1, output_tokens: 1 },
+          }),
       };
     },
   },

@@ -96,6 +96,8 @@ async function main() {
   }
 
   const outPath = cli.out ? cli.out : defaultOutPath({ dryRun: cli.dryRun, model });
+  const checkpointPath = `${outPath}.checkpoint.json`;
+  const partialResultsPath = `${outPath}.partial.json`;
   if (existsSync(outPath) && !cli.force) {
     console.error(
       JSON.stringify({
@@ -108,7 +110,12 @@ async function main() {
     process.exit(2);
   }
 
-  const report = await runEvalSuiteV2({ dryRun: cli.dryRun, model });
+  const report = await runEvalSuiteV2({
+    dryRun: cli.dryRun,
+    model,
+    checkpointPath,
+    partialResultsPath,
+  });
   const envelope = {
     ...report,
     runMetadata: {
