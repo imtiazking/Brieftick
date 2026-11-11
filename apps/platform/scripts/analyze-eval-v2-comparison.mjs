@@ -37,14 +37,39 @@ const comparison = [];
 let improved = 0;
 let regressed = 0;
 let unchanged = 0;
+let notComparable = 0;
 const outcomeRank = { FAIL: 0, PARTIAL_PASS: 1, RETRIEVAL_PASS: 2, CORRECT_INSUFFICIENT_EVIDENCE: 3, PASS: 4, NOT_RUN: -1 };
+
+function isNotComparablePreReasoner(engineRow, scoredRow) {
+  if (engineRow?.preReasonerBlock === 'reference_validation' && !engineRow?.providerInvoked) {
+    return {
+      notComparable: true,
+      reason:
+        'REFERENCE_REJECTED: publication identifier blocked before Anthropic invocation (reference validation).',
+    };
+  }
+  if (engineRow?.testId === 'EVAL-I-01' && engineRow?.v2ExecutionStatus === 'BLOCKED_REFERENCE_VALIDATION') {
+    return {
+      notComparable: true,
+      reason:
+        'EVAL-I-01: reference validation blocked the request before Anthropic invocation; not comparable to R2 insufficient-evidence outcome.',
+    };
+  }
+  return { notComparable: false, reason: null };
+}
 
 for (const r of results) {
   const det = baseMap.get(r.testId);
   const detOut = det?.outcome ?? null;
   const aiOut = r.outcome ?? null;
+  const nc = isNotComparablePreReasoner(r, r);
   let delta = 'unchanged';
-  if (detOut && aiOut && detOut !== aiOut) {
+  let compareNote = null;
+  if (nc.notComparable) {
+    delta = 'NOT_COMPARABLE_PRE_REASONER';
+    compareNote = nc.reason;
+    notComparable += 1;
+  } else if (detOut && aiOut && detOut !== aiOut) {
     const dr = outcomeRank[detOut] ?? -2;
     const ar = outcomeRank[aiOut] ?? -2;
     if (ar > dr) {
@@ -65,6 +90,7 @@ for (const r of results) {
     v2ExecutionStatus: r.v2ExecutionStatus,
     harnessOutcome: r.harnessOutcome,
     delta,
+    comparisonNote: compareNote,
     sufficiency: r.sufficiency ?? r.v2Diagnostics?.sufficiency,
     verificationOk: r.v2Diagnostics?.verificationOk,
     providerAttempts: r.execution?.providerAttempts,
@@ -75,11 +101,21 @@ for (const r of results) {
 }
 
 const byCategory = {};
-for (const c of comparison) {
+  for (const c of comparison) {
   const k = c.category;
-  if (!byCategory[k]) byCategory[k] = { total: 0, improved: 0, regressed: 0, unchanged: 0, outcomes: {} };
+  if (!byCategory[k]) {
+    byCategory[k] = {
+      total: 0,
+      improved: 0,
+      regressed: 0,
+      unchanged: 0,
+      notComparablePreReasoner: 0,
+      outcomes: {},
+    };
+  }
   byCategory[k].total += 1;
-  byCategory[k][c.delta] += 1;
+  if (c.delta === 'NOT_COMPARABLE_PRE_REASONER') byCategory[k].notComparablePreReasoner += 1;
+  else if (byCategory[k][c.delta] != null) byCategory[k][c.delta] += 1;
   byCategory[k].outcomes[c.aiOutcome] = (byCategory[k].outcomes[c.aiOutcome] || 0) + 1;
 }
 
@@ -196,7 +232,7 @@ const priorInsuff =
 
 const analysis = {
   meta: { liveReport: LIVE, baseline: BASE, priorLive: prior ? PRIOR : null },
-  comparisonSummary: { improved, regressed, unchanged, total: results.length },
+  comparisonSummary: { improved, regressed, unchanged, notComparablePreReasoner: notComparable, total: results.length },
   byCategory,
   failBreakdown,
   failCases,
