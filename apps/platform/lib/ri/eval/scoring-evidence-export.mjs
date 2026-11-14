@@ -116,6 +116,10 @@ export function buildScoringEvidenceMetadata(record) {
       dimensionKeys: Object.keys(record.actual.dimensions || {}),
       criticalFailureCount: (record.actual.criticalFailures || []).length,
       citationCount: record.actual.citationCount,
+      sufficiencyClassification:
+        record.engineSnapshot?.sufficiency?.classification ||
+        record.engineSnapshot?.sufficiency?.overall ||
+        null,
     },
     integrity: record.integrity,
     scoringRubricVersion: record.scoringRubricVersion,
@@ -150,6 +154,42 @@ export function reconstructScoringFromEvidence(record, caseRow) {
     evidenceAvailable: true,
   });
   return rescored;
+}
+
+export function verifyScoringEvidenceIntegrity(record) {
+  const issues = [];
+  const answer = record?.engineSnapshot?.answer ?? '';
+  if (sha256Text(answer) !== record?.integrity?.answerSha256) {
+    issues.push('answer_sha256_mismatch');
+  }
+  const citations = record?.engineSnapshot?.citations || [];
+  if (record.actual?.citationCount > 0 && citations.length === 0) {
+    issues.push('citation_count_without_payload');
+  }
+  for (const c of citations) {
+    if (!c.publicationId && !c.evidenceChunkId) {
+      issues.push('citation_missing_identifiers');
+      break;
+    }
+  }
+  return { ok: issues.length === 0, issues };
+}
+
+export function compareSufficiencyToExpectation(caseRow, record) {
+  const ideal = caseRow?.expectedIdealResult || {};
+  const expectedState = ideal.responseState || ideal.outcomeClassification || null;
+  const actualStatus = record?.engineSnapshot?.status || record?.actual?.engineStatus || null;
+  const sufficiency =
+    record?.engineSnapshot?.sufficiency?.classification ||
+    record?.engineSnapshot?.sufficiency?.overall ||
+    null;
+  return {
+    expectedResponseState: expectedState,
+    actualEngineStatus: actualStatus,
+    sufficiencyClassification: sufficiency,
+    matchesIdealState: expectedState ? String(actualStatus) === String(expectedState) : null,
+    smeReviewRequired: caseRow?.reviewStatus === 'AWAITING_SME_REVIEW' || ideal.requiresEvidenceGroundedAnswer === true,
+  };
 }
 
 export function compareScoringRecords(originalScored, rescored) {

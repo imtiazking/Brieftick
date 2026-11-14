@@ -1,0 +1,414 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-c-d-mocked-themes.v1",
+  "capturedAt": "2026-11-14T14:02:20.568Z",
+  "programmePass": false,
+  "regulatoryAccuracyPass": false,
+  "mockProviderOnly": true,
+  "results": [
+    {
+      "theme": "sufficient_evidence",
+      "testId": "EVAL-B-01",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedResultClassification": "ANSWERED",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "partial_evidence",
+      "testId": "EVAL-C-03",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedResultClassification": "ANSWERED",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "insufficient_evidence",
+      "testId": "EVAL-B-03",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      },
+      "expectedResultClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "conflicting_regulations",
+      "testId": "EVAL-C-02",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedResultClassification": "ANSWERED",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "binding_rules_vs_guidance",
+      "testId": "EVAL-D-02",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Named CP26; AML monitoring themes in indexed CP26 extract."
+      },
+      "expectedResultClassification": "PARTIAL_PASS",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "incorrect_unsupported_citations",
+      "testId": "EVAL-C-04",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Frozen CP26/38 PDF p14 and HTML metadata both record consultation close 24 December 2026."
+      },
+      "expectedResultClassification": "ANSWERED",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "multiple_regulatory_sources",
+      "testId": "EVAL-G-02",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedResultClassification": "ANSWERED",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "unsupported_regulatory_conclusions",
+      "testId": "EVAL-E-01",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresControlImpactReasoning": true,
+        "responseState": "ANSWERED",
+        "notes": "Applicability themes supported with consultation labelling."
+      },
+      "expectedResultClassification": "PARTIAL_PASS",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "correct_abstention",
+      "testId": "EVAL-H-01",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "requiresEvidenceGroundedAnswer": true,
+        "notes": "Semantic discovery should attach Fair Value HTML and/or FG22 PDF from indexed catalogue."
+      },
+      "expectedResultClassification": "ANSWERED",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    },
+    {
+      "theme": "accurate_regulatory_interpretation",
+      "testId": "EVAL-B-02",
+      "mockProvider": true,
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "notes": "Evidence-backed documentation themes from HTML/PDF, not generic templates. Fair value evidence types supported in FG22/Fair Value HTML — ideal substantive ANSWERED.",
+        "responseState": "ANSWERED"
+      },
+      "expectedResultClassification": "PARTIAL_PASS",
+      "actual": {
+        "status": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "regulatoryReview": {
+            "required": true,
+            "holdPresentation": true
+          },
+          "reason": "UNKNOWN_COVERAGE_UNVERIFIED"
+        },
+        "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+        "outcome": "FAIL",
+        "citationCount": 1,
+        "sufficiency": null,
+        "providerInvoked": true
+      },
+      "structuralMismatch": true,
+      "regulatoryAccuracyVerified": false,
+      "smeReviewRequired": true
+    }
+  ],
+  "smeReviewRequired": [
+    {
+      "testId": "EVAL-B-01",
+      "theme": "sufficient_evidence",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-C-03",
+      "theme": "partial_evidence",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-B-03",
+      "theme": "insufficient_evidence",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-C-02",
+      "theme": "conflicting_regulations",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-D-02",
+      "theme": "binding_rules_vs_guidance",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-C-04",
+      "theme": "incorrect_unsupported_citations",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-G-02",
+      "theme": "multiple_regulatory_sources",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-E-01",
+      "theme": "unsupported_regulatory_conclusions",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-H-01",
+      "theme": "correct_abstention",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    },
+    {
+      "testId": "EVAL-B-02",
+      "theme": "accurate_regulatory_interpretation",
+      "reviewStatus": "AWAITING_SME_REVIEW",
+      "referenceReviewStatus": "PROVISIONAL",
+      "reason": "expectedIdealResult and regulatory substance require SME — mock cannot satisfy"
+    }
+  ],
+  "structuralMismatches": [
+    {
+      "testId": "EVAL-B-01",
+      "theme": "sufficient_evidence"
+    },
+    {
+      "testId": "EVAL-C-03",
+      "theme": "partial_evidence"
+    },
+    {
+      "testId": "EVAL-B-03",
+      "theme": "insufficient_evidence"
+    },
+    {
+      "testId": "EVAL-C-02",
+      "theme": "conflicting_regulations"
+    },
+    {
+      "testId": "EVAL-D-02",
+      "theme": "binding_rules_vs_guidance"
+    },
+    {
+      "testId": "EVAL-C-04",
+      "theme": "incorrect_unsupported_citations"
+    },
+    {
+      "testId": "EVAL-G-02",
+      "theme": "multiple_regulatory_sources"
+    },
+    {
+      "testId": "EVAL-E-01",
+      "theme": "unsupported_regulatory_conclusions"
+    },
+    {
+      "testId": "EVAL-H-01",
+      "theme": "correct_abstention"
+    },
+    {
+      "testId": "EVAL-B-02",
+      "theme": "accurate_regulatory_interpretation"
+    }
+  ],
+  "failures": []
+}

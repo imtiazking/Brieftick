@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "forgeniq.ai.clean-verification.v1",
+  "pinCommit": "f2da230dcaabd7a352a63cb1440c8db09cb6b9ec",
+  "priorPin": "3e3dccb",
+  "capturedAt": "2026-11-14T15:10:00.000Z",
+  "candidateForPreview": true,
+  "deployApproved": false,
+  "dependencies": {
+    "scoring-evidence-export.mjs": "apps/platform/lib/ri/eval/scoring-evidence-export.mjs",
+    "run-eval-suite-v2.mjs": "scoringEvidenceLocalPath / scoringEvidenceManifestPath; options.budgetUsd",
+    "acceptance-stage-d-scoring-reconstruction.mjs": "10-theme mock scoring reconstruction",
+    "acceptance-stage-c-d-mocked-reasoning-themes.mjs": "expectedIdealResult comparison",
+    "verify-fca-ps26-1-instrument-offline.mjs": "official PDF SHA + page hints"
+  },
+  "acceptanceResults": {
+    "acceptance-stage-d-scoring-reconstruction.mjs": { "pass": true, "themes": 10, "reconstruction": 10, "programmePass": false },
+    "acceptance-stage-c-d-mocked-reasoning-themes.mjs": { "pass": true, "themes": 10, "smeCases": 10, "programmePass": false },
+    "acceptance-stage-e-budget-ceiling-offline.mjs": { "pass": true },
+    "verify-fca-ps26-1-instrument-offline.mjs": { "pass": true, "sourceSha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998" }
+  },
+  "buildResults": {
+    "typecheck": { "pass": true },
+    "nextBuild": { "pass": true }
+  },
+  "note": "Working tree may include uncommitted acceptance extensions beyond f2da230 — verify SHA after path-scoped commit."
+}

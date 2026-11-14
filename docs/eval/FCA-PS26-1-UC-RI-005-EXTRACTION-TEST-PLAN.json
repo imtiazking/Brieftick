@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "forgeniq.uc-ri-005.ps26-1.test-plan.v1",
+  "capturedAt": "2026-11-14T15:00:00.000Z",
+  "tenantScope": "b8f5e3a1-00ad-4000-8000-000000000001",
+  "ingestExecuted": false,
+  "obligationMaterialisationExecuted": false,
+  "pipelineStages": [
+    {
+      "id": "T1",
+      "step": "Catalogue row — PS26/1 narrative + separate FCA 2026/2 instrument pointer",
+      "approval": "Regulatory SME"
+    },
+    {
+      "id": "T2",
+      "step": "pdf_primary_v1 download with source_sha256 from official URL",
+      "tooling": "authentic download + verify-fca-ps26-1-instrument-offline.mjs"
+    },
+    {
+      "id": "T3",
+      "step": "create-primary-pdf-extraction-revision — confirm Appendix 1 and Annex F page boundaries",
+      "humanGate": "page_boundary confirmation"
+    },
+    {
+      "id": "T4",
+      "step": "buildPdfGroundedAnalysisContext for publication version",
+      "acceptance": "acceptance-pdf-grounded-uc-005.mjs pattern (FG22 offline gate)"
+    },
+    {
+      "id": "T5",
+      "step": "UC-RI-005 ai-analysis-runs — candidate obligations with citations",
+      "guards": "experimental-ai-tenant-guard + obligationGradeSuitable false until assessObligationGradePosture"
+    },
+    {
+      "id": "T6",
+      "step": "Human review queue — no auto materialise",
+      "architecture": "ai-materialisation.ts obligation-grade checks preserved"
+    }
+  ],
+  "bindingRuleSpotChecks": [
+    { "rule": "CONC 4.2A.3R", "expect": "Binding rule (R) with applicability conditions in Annex F" },
+    { "rule": "CONC 4.2A.6R", "expect": "Binding rule (R); verify commencement vs Regulation Day" },
+    { "rule": "CONC 7.20.1R", "expect": "Binding rule (R); CONC 7 chapter context" }
+  ],
+  "explicitProhibitions": [
+    "No ingest without operator approval",
+    "No obligationGradeSuitable=true override",
+    "No Partner UAT / Org A writes"
+  ],
+  "readiness": "TEST_PLAN_ONLY"
+}

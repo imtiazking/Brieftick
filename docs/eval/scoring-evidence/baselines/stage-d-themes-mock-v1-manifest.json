@@ -1,0 +1,449 @@
+{
+  "schemaVersion": "forgeniq.eval.scoring-evidence-manifest.v1",
+  "capturedAt": "2026-11-14T14:01:26.107Z",
+  "programmePass": false,
+  "localFullTextRequired": true,
+  "localPathNote": "Full answer text lives in gitignored local bundle only",
+  "records": [
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-B-01",
+      "questionCategory": "B",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 1,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "d79c8169e87405a3c52d8d7ee6a60168fb27801d875757e4f27ead159783f89f",
+        "engineSnapshotSha256": "f3d466f96d14a925dcd8f956dfaf68d33096ffae1fa1085d43688ddfd225c69e",
+        "actualScoringSha256": "e156862efb0150b96156466439fc965779235eacad157d1394cece817fbca7eb"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-B-03",
+      "questionCategory": "B",
+      "expected": {
+        "idealResponseState": "INSUFFICIENT_EVIDENCE",
+        "idealScoringClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "expectedPublicationIds": []
+      },
+      "actual": {
+        "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "c2be0a1a392ff0d70788f5ee07b0f37982986908f093a31e0897eb1ee6e6c96c",
+        "engineSnapshotSha256": "920e1ca5f067b787b2436d589421f41cbaf15b00869c4c1f250b189b4bfcede3",
+        "actualScoringSha256": "9ad435799c5ae6a3c19887a671c8c21b53754a771241ff67a006415bf9f8fe82"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-C-02",
+      "questionCategory": "C",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "8955b9442c280d1fa17188d80b00635012396da9a176e7e1e431fe4c1a6ee90f",
+        "engineSnapshotSha256": "594240d19f9feaa7010a0afb99583930145719eb5d41a1d4b30ec4f2919ab4db",
+        "actualScoringSha256": "b8321c63d15f42329104006fc4f11126a7c9162fb9adb16cc7934713b199da0d"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-C-03",
+      "questionCategory": "C",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "632f39c703114ca7d7711ecdfe382502fa93093edd5a4a63d1fce7fbf8a167c9",
+        "engineSnapshotSha256": "59ebbc226ed4fa7bef5cca542cc3257114b287cd9e845ffa03739aa23755383b",
+        "actualScoringSha256": "232acd983bc550ae6a5f609ecbeb2d8c8b9f4ce5131f3d14a9fe546d252c769e"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-D-02",
+      "questionCategory": "D",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "caa95fb5bb4fd9f8b825c653e0e9e0c2f965c8df86fd8e44805edaee9674b6e8",
+        "engineSnapshotSha256": "c3e2cfff23f651f169251af4873d66a3eb9d7ab45e4c7d7025fccbe517237399",
+        "actualScoringSha256": "b8321c63d15f42329104006fc4f11126a7c9162fb9adb16cc7934713b199da0d"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-C-04",
+      "questionCategory": "C",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "8249599b92079a5f936be0cdca357d6421ade50424fc59c0e39ef0afa54948e2",
+        "engineSnapshotSha256": "ce92827917d857cf7ceb761f9c44da691cf0eee38002fb2dce0cd898f2b60238",
+        "actualScoringSha256": "b8321c63d15f42329104006fc4f11126a7c9162fb9adb16cc7934713b199da0d"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-I-01",
+      "questionCategory": "I",
+      "expected": {
+        "idealResponseState": "INSUFFICIENT_EVIDENCE",
+        "idealScoringClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "expectedPublicationIds": []
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "BLOCKED",
+        "harnessOutcome": "REFERENCE_REJECTED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 0,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "fcc390562b2e4313bfd49b216bb8b686f0b7cd18ad5eb60f4cf341ae5cd547bc",
+        "engineSnapshotSha256": "f84c873c9864c97efbaacef3d5903cb6f791e1669465347c5d0d9e7278cccf55",
+        "actualScoringSha256": "94df5bf97af773168e8e32a5d89d7d3aef2870ac2711e911dfaad07e413561de"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": true,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-E-01",
+      "questionCategory": "E",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "c08df1d5338f9c7ceb30fe7a3dc6d7b05769798376f5fb0971c8492f567e2f52",
+        "engineSnapshotSha256": "ab1e35b4243fba0920d16f90c831b19051cffa41a5acb6136afeca656b4d1bce",
+        "actualScoringSha256": "b8321c63d15f42329104006fc4f11126a7c9162fb9adb16cc7934713b199da0d"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-G-02",
+      "questionCategory": "G",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "431dd033bd8b3fb9b5919546ef6970eb07fc04924a98998c157cd0e4d8ac3b4c",
+        "engineSnapshotSha256": "026295c1fa3ea02423365f0a5030eced4062169feca9e956aa7cb3fdf78c2bd3",
+        "actualScoringSha256": "125cd5b4de754cdfb42b2ed512228a29a031a4b43f0d654dc0212cb48efe251e"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-H-01",
+      "questionCategory": "H",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "INSUFFICIENT_EVIDENCE",
+        "harnessOutcome": "REGULATORY_MEASURED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 1,
+        "sufficiencyClassification": null
+      },
+      "integrity": {
+        "answerSha256": "42e130bca738bad9694cba7285722ee92342abf60f182b3ec55c0917ea599ad4",
+        "engineSnapshotSha256": "4aea26294b3788487d6d81f0145b914bb47fa6ee4b34c7f10aab7e5d24734358",
+        "actualScoringSha256": "14739b5563f25a8eac63c3f44e53ecc990bddb3a86f92ddb2e877cd28beed6ed"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": false,
+        "model": null,
+        "resumeFingerprintSha256": null
+      }
+    }
+  ],
+  "integrityManifestSha256": "532a1441074013526fe1c5691a22ea8f8f04bb0b92a37e9793eff3877f6a0974"
+}

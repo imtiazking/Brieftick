@@ -29,5 +29,18 @@
       "Materialisation requires human review queue — no auto-approve"
     ]
   },
-  "readiness": "PROCEDURE_DEFINED_NOT_EXECUTED"
+  "readiness": "PROCEDURE_DEFINED_NOT_EXECUTED",
+  "verifiedArtefact": "docs/eval/FCA-PS26-1-INSTRUMENT-VERIFICATION.json",
+  "officialPdfSha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
+  "approximatePageBoundaries": {
+    "appendix1MadeRules": 2,
+    "annexFConcAmendments": 74,
+    "instrumentTitleDeferredPaymentCredit2026": 44,
+    "fcaInstrumentRef2026_2": 72
+  },
+  "sampleBindingRulesLocated": [
+    { "rule": "CONC 4.2A.3R", "approxPdfPage": 88 },
+    { "rule": "CONC 4.2A.6R", "approxPdfPage": 92 },
+    { "rule": "CONC 7.20.1R", "approxPdfPage": 22 }
+  ]
 }

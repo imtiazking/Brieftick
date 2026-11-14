@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "forgeniq.regulatory.ps26-1.verification.v1",
+  "capturedAt": "2026-11-14T14:02:38.587Z",
+  "officialSourceUrl": "https://www.fca.org.uk/publication/policy/ps26-1.pdf",
+  "instrument": {
+    "name": "Deferred Payment Credit Instrument 2026",
+    "reference": "FCA 2026/2",
+    "appendix": "Appendix 1 — Made rules (legal instrument)",
+    "annexConcAmendments": "Annex F — Consumer Credit sourcebook (CONC)"
+  },
+  "authenticity": {
+    "sourceSha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
+    "cachePathNote": "docs/eval/regulatory-sources/cache/ (gitignored binary)",
+    "downloadedFromOfficialFcaHost": true
+  },
+  "bindingRulesSample": [
+    {
+      "rule": "CONC 4.2A.3R",
+      "pdfPages": [
+        88
+      ],
+      "foundInPdf": true
+    },
+    {
+      "rule": "CONC 4.2A.6R",
+      "pdfPages": [
+        92
+      ],
+      "foundInPdf": true
+    },
+    {
+      "rule": "CONC 7.20.1R",
+      "pdfPages": [
+        22
+      ],
+      "foundInPdf": true
+    }
+  ],
+  "sectionBoundaries": {
+    "appendix1Pages": [
+      2
+    ],
+    "annexFPages": [
+      74
+    ],
+    "instrumentTitlePages": [
+      44
+    ]
+  },
+  "regulatoryCharacterisation": {
+    "psNarrative": "Policy statement body — includes guidance and context",
+    "appendixMadeRules": "Binding legal instrument text",
+    "concAnnexF": "Handbook CONC amendments — binding rules (R) vs guidance (G) per marker",
+    "phasedCommencement": "Verify per-rule commencement in instrument — do not assume single date"
+  },
+  "ingestAllowed": false,
+  "obligationGradeApprovalBypass": false,
+  "notes": [
+    "Downloaded or reused official PDF from FCA URL"
+  ],
+  "textExcerptSha256": "6b5a9808534495f3c562d25529cdd95ad9b109ab4e4200a93443cdb3ef5cbbdd"
+}

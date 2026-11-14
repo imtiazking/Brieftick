@@ -2,6 +2,9 @@
 /**
  * Stage E — offline budget ceiling and override precedence (no live Anthropic).
  */
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { EvalSpendTracker, V2_EVAL_BUDGET_USD, estimateEvalCaseReserveUsd } from '../lib/ri/reasoner/anthropic-eval-budget.mjs';
 
 const failures = [];
@@ -10,6 +13,14 @@ const fail = (m) => {
   failures.push(m);
   console.error(`FAIL: ${m}`);
 };
+
+const harnessSrc = readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), '..', 'lib', 'ri', 'eval', 'run-eval-suite-v2.mjs'),
+  'utf8',
+);
+if (!harnessSrc.includes('options.budgetUsd ?? V2_EVAL_BUDGET_USD')) {
+  fail('run-eval-suite-v2 must default budget from V2_EVAL_BUDGET_USD with options.budgetUsd override');
+} else ok('run-eval-suite-v2 wires options.budgetUsd → EvalSpendTracker');
 
 const defaultTracker = new EvalSpendTracker({ budgetUsd: V2_EVAL_BUDGET_USD });
 if (defaultTracker.budgetUsd !== 10) fail(`default budget expected 10 got ${defaultTracker.budgetUsd}`);

@@ -1,6 +1,8 @@
 {
   "schemaVersion": "forgeniq.eval.stage-e.prep.v1",
-  "capturedAt": "2026-11-14T14:00:00.000Z",
+  "capturedAt": "2026-11-14T15:10:00.000Z",
+  "technicalPin": "f2da230",
+  "scoringEvidenceManifest": "docs/eval/scoring-evidence/baselines/stage-d-themes-mock-v1-manifest.json",
   "liveAnthropicEnabled": false,
   "defaultBudgetUsd": 10,
   "budgetOverride": "options.budgetUsd / EvalSpendTracker constructor",

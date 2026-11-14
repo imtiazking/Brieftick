@@ -31,6 +31,9 @@ apps/platform/supabase/seed/reference-catalogue.generated.sql
 
 # Eval scoring evidence — full answers (local operator artefact only)
 docs/eval/scoring-evidence/local/
+
+# Official regulatory PDF cache (verification only — not committed)
+docs/eval/regulatory-sources/cache/
 apps/platform/.local-pg-verify/
 apps/platform/.local-pg-test/
 apps/platform/.local-ingestion-raw/
