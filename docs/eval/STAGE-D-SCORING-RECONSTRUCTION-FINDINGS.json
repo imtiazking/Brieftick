@@ -11,11 +11,19 @@
   ],
   "designIntent": "Redaction and secret prevention for docs/eval/runs/ exports",
   "notFabricated": true,
+  "currentMechanism": {
+    "module": "apps/platform/lib/ri/eval/scoring-evidence-export.mjs",
+    "acceptance": "apps/platform/scripts/acceptance-stage-d-scoring-reconstruction.mjs",
+    "cliFlags": ["--scoring-evidence-local=", "--scoring-evidence-manifest="],
+    "committedManifestExample": "docs/eval/scoring-evidence/baselines/stage-d-dry-run-v1-manifest.json",
+    "gitignoredLocalPath": "docs/eval/scoring-evidence/local/",
+    "historicalLiveRunsWithoutLocalBundle": "NOT_RECONSTRUCTABLE"
+  },
   "remediationOptions": [
     {
       "id": "OFFLINE_SCORING_SIDECAR",
-      "description": "Optional local-only run with --scoring-evidence-out (not committed) — NOT IMPLEMENTED pending approval",
-      "status": "PROPOSED"
+      "description": "Local bundle + sanitised manifest via run-eval-suite-v2; full text in gitignored local/ only",
+      "status": "IMPLEMENTED"
     },
     {
       "id": "RESCORE_FROM_LIVE_REPORT",

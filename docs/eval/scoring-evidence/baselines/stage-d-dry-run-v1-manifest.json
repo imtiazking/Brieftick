@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "forgeniq.eval.scoring-evidence-manifest.v1",
+  "capturedAt": "2026-11-14T13:46:41.036Z",
+  "programmePass": false,
+  "localFullTextRequired": true,
+  "localPathNote": "Full answer text lives in gitignored local bundle only",
+  "records": [
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-B-01",
+      "questionCategory": "B",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "NOT_RUN",
+        "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 0
+      },
+      "integrity": {
+        "answerSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "engineSnapshotSha256": "80abd0a98d85ebce46295735b1ad39f61df67b667315dd142e94e31e732b8846",
+        "actualScoringSha256": "f267faa84833e8479593542229b4ae2a6dea48d3272f12112d0d25507f2cdacd"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": true,
+        "model": "claude-haiku-5-5",
+        "resumeFingerprintSha256": "a345c20ee9c970d3d026a663d6dde0a5352909ae2b02ff9955883bf0d872758b"
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-D-02",
+      "questionCategory": "D",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "NOT_RUN",
+        "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 0
+      },
+      "integrity": {
+        "answerSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "engineSnapshotSha256": "80abd0a98d85ebce46295735b1ad39f61df67b667315dd142e94e31e732b8846",
+        "actualScoringSha256": "59f5eb7a271586d98332a8c1a67524eb6b4c4fa5e30918fab727c01b2d1dad53"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": true,
+        "model": "claude-haiku-5-5",
+        "resumeFingerprintSha256": "a345c20ee9c970d3d026a663d6dde0a5352909ae2b02ff9955883bf0d872758b"
+      }
+    },
+    {
+      "schemaVersion": "forgeniq.eval.scoring-evidence.v1",
+      "testId": "EVAL-H-01",
+      "questionCategory": "H",
+      "expected": {
+        "idealResponseState": "ANSWERED",
+        "idealScoringClassification": "ANSWERED",
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ]
+      },
+      "actual": {
+        "outcome": "FAIL",
+        "engineStatus": "NOT_RUN",
+        "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+        "dimensionKeys": [
+          "D01",
+          "D02",
+          "D03",
+          "D04",
+          "D05",
+          "D06",
+          "D07",
+          "D08",
+          "D09",
+          "D10",
+          "D11"
+        ],
+        "criticalFailureCount": 0,
+        "citationCount": 0
+      },
+      "integrity": {
+        "answerSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "engineSnapshotSha256": "80abd0a98d85ebce46295735b1ad39f61df67b667315dd142e94e31e732b8846",
+        "actualScoringSha256": "f267faa84833e8479593542229b4ae2a6dea48d3272f12112d0d25507f2cdacd"
+      },
+      "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
+      "runConfig": {
+        "dryRun": true,
+        "model": "claude-haiku-5-5",
+        "resumeFingerprintSha256": "a345c20ee9c970d3d026a663d6dde0a5352909ae2b02ff9955883bf0d872758b"
+      }
+    }
+  ],
+  "integrityManifestSha256": "fe0b8fe54cff9e6bbd31c33fa3befd6582fcd0ddc826cc2321c447333314ae7f"
+}

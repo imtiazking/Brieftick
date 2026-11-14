@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "forgeniq.eval.scoring-evidence.v1",
+  "type": "object",
+  "required": ["schemaVersion", "testId", "engineSnapshot", "actual", "integrity"],
+  "properties": {
+    "schemaVersion": { "const": "forgeniq.eval.scoring-evidence.v1" },
+    "testId": { "type": "string" },
+    "engineSnapshot": {
+      "type": "object",
+      "properties": {
+        "answer": { "type": "string" },
+        "citations": { "type": "array" },
+        "status": { "type": ["string", "null"] },
+        "sufficiency": { "type": ["object", "null"] }
+      }
+    },
+    "actual": {
+      "type": "object",
+      "properties": {
+        "outcome": { "type": ["string", "null"] },
+        "dimensions": { "type": "object" },
+        "criticalFailures": { "type": "array" }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "properties": {
+        "answerSha256": { "type": "string" },
+        "engineSnapshotSha256": { "type": "string" },
+        "actualScoringSha256": { "type": "string" }
+      }
+    }
+  }
+}

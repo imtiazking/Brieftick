@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "forgeniq.ai.preview-readiness.v1",
+  "capturedAt": "2026-11-14T12:40:00.000Z",
+  "commitSha": "fddc07a14323b2fb33b19839003ba6b51297b309",
+  "sharedStagingDeploy": false,
+  "liveAnthropic": false,
+  "partnerUatOrgId": "4d871541-e0d4-4581-828d-72073f763f85",
+  "partnerUatDataModified": false,
+  "task0_stageAVerification": {
+    "committedFileListVerified": true,
+    "committedFileCount": 27,
+    "evalRunnerDiff_d39c2b4_to_fddc07a": "NO_CHANGES under lib/ri/eval/ or run-ask-ri-v2-eval-2c2.mjs; anthropic-eval-budget.mjs unchanged",
+    "evaluationCodeEquivalence": "PARTIALLY_EQUIVALENT — fddc07a adds evidence-sufficiency-policy PARTIAL_SUPPORT branch only; eval suite runner unchanged",
+    "scoringReconstructionAudit": "BASELINE_RECONSTRUCTABLE — acceptance-stage-d-scoring-reconstruction.mjs (dry-run); historical live runs without local bundle remain NOT_RECONSTRUCTABLE",
+    "budgetCeilingLowerOverride": {
+      "status": "TESTED_OFFLINE",
+      "control": "options.budgetUsd on runEvalSuiteV2 / EvalSpendTracker constructor",
+      "defaultConstant": "V2_EVAL_BUDGET_USD=10",
+      "envOverride": "NOT_IMPLEMENTED",
+      "script": "acceptance-stage-e-budget-ceiling-offline.mjs (uncommitted WIP path)"
+    },
+    "resumeIntegrityAndFingerprint": {
+      "status": "TESTED_PASS",
+      "scope": "main worktree only",
+      "script": "acceptance-stage-a-e2e-persistence.mjs",
+      "inCommitFddc07a": false,
+      "note": "Stage A technical PASS reproduced offline with mocked Anthropic; harness script not in fddc07a commit"
+    },
+    "stageATechnicalPassVsReleaseReview": {
+      "technicalPass": "PASS (offline mock, session run)",
+      "programmePass": false,
+      "releaseReviewGaps": [
+        "Stage A acceptance script not in pinned commit fddc07a",
+        "acceptance-provider-diagnostics-safety.mjs missing from fddc07a tree (Stage B harness fails in clean worktree)",
+        "Scoring reconstruction vs historical live reports not fully reconciled for all cases"
+      ]
+    },
+    "outstandingChecksExplicit": [
+      { "id": "A-SCRIPT-IN-COMMIT", "status": "PENDING", "detail": "acceptance-stage-a-e2e-persistence.mjs not included in fddc07a" },
+      { "id": "B-HARNESS-DEPS-IN-COMMIT", "status": "PENDING", "detail": "acceptance-provider-diagnostics-safety.mjs referenced by manifest but absent at fddc07a" },
+      { "id": "SCORING-EQUIVALENCE", "status": "PARTIALLY_COMPLETE", "detail": "Dry-run Stage D ≠ live outcome equivalence; D01–D11 not reconstructable from dry-run-only rows" }
+    ]
+  },
+  "task1_cleanWorktree": {
+    "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick-preview-fddc07a",
+    "gitStatusClean": true,
+    "ancestorCommitsInclude": ["d7e6df0 UC-RI-005", "e99d30d Design Lab", "fddc07a AI guards"],
+    "requiredFilesPresent": {
+      "buildPdfGroundedAnalysisContext": true,
+      "connectedPublicationAiPanels": true,
+      "runAskRiProduction": true
+    },
+    "typecheck": "PASS",
+    "nextBuild": "PASS (npm run build in fddc07a worktree, session 2026-11-14)",
+    "apiCompatibilityOffline": "PARTIALLY_VERIFIED (tenant guard + stage C matrix in worktree)",
+    "authenticationTests": "NOT_TESTED (no Clerk/OAuth offline fixture in isolated preview)",
+    "tenantIsolationStagingDb": "NOT_RUN_IN_PREVIEW (isolated policy: no staging DB for initial preview build)",
+    "experimentalAiFlagsDefaultOff": true,
+    "previewDeployApproved": false,
+    "previewReadiness": "PARTIALLY_COMPLETE"
+  },
+  "task2_bindingPdfInvestigation": {
+    "phase": "PHASE_1_VERIFY_ONLY",
+    "stagingCatalogueIndexed": false,
+    "candidates": {
+      "FCA_PS26_1": {
+        "authentic": true,
+        "primaryPdfUrl": "https://www.fca.org.uk/publication/policy/ps26-1.pdf",
+        "contentType": "final_rules_and_guidance",
+        "bindingLocation": "Policy statement narrative + separate rule instrument (Handbook CONC amendments)",
+        "effectiveDate": "2026-07-15 (Regulation Day for DPC/BNPL)",
+        "firmScope": "DPC lenders; CONC conduct standards",
+        "extractableTextExpected": true,
+        "pageSectionRefsExpected": true,
+        "obligationTestSuitability": "GOOD_CANDIDATE_POST_INGESTION",
+        "cataloguePresent": false,
+        "obligationGradeSuitableOnStaging": false
+      },
+      "FCA_PS26_6": {
+        "authentic": true,
+        "primaryPdfUrl": "https://www.fca.org.uk/publications/policy-statements/ps26-6-senior-managers-certification-regime-review",
+        "contentType": "final_rules_smcr",
+        "bindingLocation": "SM&CR Handbook changes; read alongside PRA PS for dual-reg",
+        "effectiveDates": ["2026-04-24", "2026-07-10", "2026-07-30", "2026-09-01"],
+        "extractableTextExpected": true,
+        "obligationTestSuitability": "MODERATE — dual-reg coordination",
+        "cataloguePresent": false
+      },
+      "FCA_PS26_13": {
+        "authentic": true,
+        "primaryPdfUrl": "https://www.fca.org.uk/publication/policy/ps26-13.pdf",
+        "contentType": "final_handbook_rules_crypto",
+        "effectiveDate": "2027-10-25",
+        "obligationTestSuitability": "MODERATE — large handbook cross-refs",
+        "cataloguePresent": false
+      },
+      "PRA_PS1_26_Basel_3_1": {
+        "authentic": true,
+        "primaryPdfUrl": "https://www.bankofengland.co.uk/prudential-regulation/publication/2026/january/implementation-of-the-basel-3-1-final-rules-policy-statement",
+        "bindingRulesPdf": "https://www.bankofengland.co.uk/-/media/boe/files/prudential-regulation/policy-statement/2026/january/ps126app1.pdf",
+        "contentType": "PS_narrative_plus_annex_rule_instrument",
+        "effectiveDate": "2027-01-01",
+        "firmScope": "PRA banks, building societies, large investment firms",
+        "obligationTestSuitability": "COMPLEX — binding rules primarily in annex instrument not PS body",
+        "cataloguePresent": false
+      }
+    },
+    "recommendedSimplestBinding": "FCA PS26/1 (after authentic pdf_primary ingestion + obligation-grade approval)",
+    "guidanceProbeContinue": "FCA FG22/5 a761cacc-8742-493d-b200-eb5d9a3ab884",
+    "phase2Extraction": "BLOCKED — await publication ingest approval",
+    "phase3Materialisation": "BLOCKED"
+  },
+  "task3_askRiStages": {
+    "stageB": { "status": "PARTIALLY_COMPLETE", "programmePass": false, "operatorApproval": null },
+    "stageC": { "status": "TESTED", "matrixPass": true, "programmePass": false, "liveV2": false },
+    "stageD": { "status": "TESTED_DRY_RUN", "programmePass": false, "baselineHashMatch": true, "liveAccuracy": "NOT_PROVEN" },
+    "stageE": { "status": "PREPARED", "budgetOfflineTested": true, "liveAuthorized": false },
+    "stageF": { "status": "NOT_STARTED" },
+    "stageG": { "status": "NOT_STARTED" }
+  },
+  "task4_partnerUatProtection": {
+    "serverRejectsPartnerUat": "TESTED_PASS (acceptance-experimental-ai-tenant-guard.mjs)",
+    "serverRejectsOrgA": "TESTED_PASS",
+    "stagingRowCountAudit": "NOT_RUN_THIS_SESSION (prior PASS artefact)",
+    "fg22Cleanup": "NOT_EXECUTED"
+  },
+  "deploymentReadinessVerdict": "NOT_READY",
+  "blockers": [
+    "Preview deploy not approved",
+    "Stage A/B harness files not fully pinned in fddc07a",
+    "No binding publication indexed on staging with obligationGradeSuitable=true",
+    "Hosted auth/integration tests not run offline",
+    "Programme stages B–G not accepted"
+  ],
+  "recommendedNextAction": "Path-scoped commit to add Stage A + provider-diagnostics scripts; ingest FCA PS26/1 PDF under AI Dev org; approve isolated Vercel preview with flags off"
+}

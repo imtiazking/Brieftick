@@ -19,42 +19,32 @@ import { resolveV2EvalModel, V2_EVAL_BUDGET_USD } from '../lib/ri/reasoner/anthr
 import { isV2LiveReasoningEnabled } from '../lib/ri/reasoner/invoke-anthropic-reasoner.mjs';
 import { execSync } from 'node:child_process';
 import { parseTestIdsArg } from '../lib/ri/eval/eval-case-filter.mjs';
+import { sanitizeEvalReport } from '../lib/ri/eval/eval-report-sanitize.mjs';
 
 const RUNS_DIR = join(REPO_ROOT, 'docs', 'eval', 'runs');
 
-function sanitizeEvalReport(report) {
-  const slimResults = (report.results || []).map((r) => ({
-    testId: r.testId,
-    outcome: r.outcome,
-    engineStatus: r.engineStatus,
-    v2ExecutionStatus: r.v2ExecutionStatus,
-    deterministicR2Outcome: r.deterministicR2Outcome,
-    deterministicR2Status: r.deterministicR2Status,
-    v2Diagnostics: r.v2Diagnostics,
-    sufficiency: r.sufficiency,
-    humanReviewRequired: r.humanReviewRequired,
-    providerInvoked: r.providerInvoked,
-    preReasonerBlock: r.preReasonerBlock,
-    harnessOutcome: r.harnessOutcome,
-    regulatoryMeasurement: r.regulatoryMeasurement,
-    providerDiagnostics: r.providerDiagnostics || r.v2Diagnostics?.providerDiagnostics,
-    execution: r.execution,
-    timingMs: r.timingMs,
-    answerPreview: String(r.answer || '').slice(0, 400),
-    citationCount: r.citations?.length ?? 0,
-  }));
-  return { ...report, results: slimResults, sanitised: true };
-}
-
 function parseArgs(argv) {
-  const out = { dryRun: false, model: null, out: null, force: false, publicProviderOnly: false, testIds: null };
+  const out = {
+    dryRun: false,
+    model: null,
+    out: null,
+    force: false,
+    publicProviderOnly: false,
+    testIds: null,
+    scoringEvidenceLocalPath: null,
+    scoringEvidenceManifestPath: null,
+  };
   for (const a of argv) {
     if (a === '--dry-run' || a === '--estimate-only') out.dryRun = true;
     else if (a === '--public-provider-only') out.publicProviderOnly = true;
     else if (a.startsWith('--model=')) out.model = a.slice('--model='.length);
     else if (a.startsWith('--out=')) out.out = a.slice('--out='.length);
     else if (a.startsWith('--test-ids=')) out.testIds = parseTestIdsArg(a.slice('--test-ids='.length));
-    else if (a === '--force') out.force = true;
+    else if (a.startsWith('--scoring-evidence-local=')) {
+      out.scoringEvidenceLocalPath = a.slice('--scoring-evidence-local='.length);
+    } else if (a.startsWith('--scoring-evidence-manifest=')) {
+      out.scoringEvidenceManifestPath = a.slice('--scoring-evidence-manifest='.length);
+    } else if (a === '--force') out.force = true;
   }
   return out;
 }
@@ -122,6 +112,8 @@ async function main() {
     partialResultsPath,
     publicProviderOnly: cli.publicProviderOnly,
     testIds: cli.testIds,
+    scoringEvidenceLocalPath: cli.scoringEvidenceLocalPath,
+    scoringEvidenceManifestPath: cli.scoringEvidenceManifestPath,
   });
   const envelope = {
     ...report,

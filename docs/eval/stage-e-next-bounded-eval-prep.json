@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-e.prep.v1",
+  "capturedAt": "2026-11-14T14:00:00.000Z",
+  "liveAnthropicEnabled": false,
+  "defaultBudgetUsd": 10,
+  "budgetOverride": "options.budgetUsd / EvalSpendTracker constructor",
+  "ceilingEnforcedBy": "acceptance-stage-e-budget-ceiling-offline.mjs",
+  "nextBoundedRunPrerequisites": [
+    "Operator Stage B attestation",
+    "Stage D scoring-evidence local bundle for run under test",
+    "RI_AI_EXECUTION_ENABLED=true with operator authorisation only",
+    "Public-provider-only case filter unless expanded"
+  ],
+  "scoringEvidenceFlags": {
+    "scoringEvidenceLocalPath": "run-eval-suite-v2 option / --scoring-evidence-local=",
+    "scoringEvidenceManifestPath": "run-eval-suite-v2 option / --scoring-evidence-manifest="
+  },
+  "executePaidCalls": false
+}

@@ -1,6 +1,7 @@
 {
   "schemaVersion": "forgeniq.preview.ai-dev.v1",
-  "capturedAt": "2026-11-14T12:00:00.000Z",
+  "capturedAt": "2026-11-14T14:00:00.000Z",
+  "authoritativeTechnicalCommit": "3e3dccb",
   "approvedForSharedStaging": false,
   "approvedForLiveAnthropic": false,
   "targetOrganisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
@@ -30,7 +31,8 @@
     "makerCheckerRegression": "isolated AI Dev or technical preview fixture only",
     "apiCompatibility": "POST ai-analysis-runs response shape unchanged",
     "databaseCompatibility": "no new migrations in this commit scope — backward compatible",
-    "rollbackProcedure": "Delete preview deployment; shared staging alias unchanged"
+    "rollbackProcedure": "Delete preview deployment; shared staging alias unchanged",
+    "authenticationTestPlan": "Sign in as AI Dev technical member; verify-ai-dev-tenant-isolation.mjs; rejection of Partner UAT org id on experimental AI routes"
   },
   "explicitProhibitions": [
     "No promotion to staging-app.forgeniq.com without approval",

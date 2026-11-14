@@ -35,6 +35,11 @@ import {
   serializeSpendForCheckpoint,
   buildEvalRunSummary,
 } from './eval-report-sanitize.mjs';
+import {
+  buildScoringEvidenceRecord,
+  writeScoringEvidenceLocalBundle,
+  writeScoringEvidenceMetadataManifest,
+} from './scoring-evidence-export.mjs';
 
 function gitSha() {
   try {
@@ -99,6 +104,7 @@ export async function runEvalSuiteV2(options = {}) {
 
   const index = await buildSemanticIndex(AUTHENTIC_CORPUS_B2_DIR);
   const results = [];
+  const scoringEvidenceRecords = [];
   const runStartedAt = Date.now();
 
   const progressSink = options.progressSink;
@@ -155,6 +161,16 @@ export async function runEvalSuiteV2(options = {}) {
     }
     results.push(mergedRow);
 
+    if (options.scoringEvidenceLocalPath || options.scoringEvidenceManifestPath) {
+      scoringEvidenceRecords.push(
+        buildScoringEvidenceRecord(caseRow, scored, engineResult, {
+          dryRun: options.dryRun,
+          model,
+          resumeFingerprint,
+        }),
+      );
+    }
+
     emitProgress({
       caseIndex: resumedPartialRows.length + caseIndex + 1,
       caseTotal: allSelectedCases.length,
@@ -209,6 +225,22 @@ export async function runEvalSuiteV2(options = {}) {
 
   spend.finalizeCalculated();
 
+  let scoringEvidence = null;
+  if (scoringEvidenceRecords.length > 0) {
+    if (options.scoringEvidenceLocalPath) {
+      writeScoringEvidenceLocalBundle(options.scoringEvidenceLocalPath, scoringEvidenceRecords);
+    }
+    if (options.scoringEvidenceManifestPath) {
+      writeScoringEvidenceMetadataManifest(options.scoringEvidenceManifestPath, scoringEvidenceRecords);
+    }
+    scoringEvidence = {
+      recordCount: scoringEvidenceRecords.length,
+      localPath: options.scoringEvidenceLocalPath || null,
+      manifestPath: options.scoringEvidenceManifestPath || null,
+      gitCommitLocalArtefact: false,
+    };
+  }
+
   const allResultRows = [...resumedPartialRows, ...results.map((r) => ({ ...r, ...slimCaseForPersistence(r) }))];
   const summary = {
     ...buildEvalRunSummary(allResultRows),
@@ -241,6 +273,7 @@ export async function runEvalSuiteV2(options = {}) {
     spend: serializeSpendForCheckpoint(spend),
     summary,
     resumeFingerprint,
+    scoringEvidence,
     results: allResultRows,
     safetyChecks: {
       liveAskRiProductionInvoked: false,

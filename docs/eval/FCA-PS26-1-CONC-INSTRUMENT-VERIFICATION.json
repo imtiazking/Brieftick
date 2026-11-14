@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "forgeniq.ingestion.ps26-1.conc-instrument.v1",
+  "capturedAt": "2026-11-14T14:00:00.000Z",
+  "policyStatement": {
+    "reference": "FCA PS26/1",
+    "role": "Announces final rules and summarises changes",
+    "obligationGradeFromNarrativeAlone": false
+  },
+  "bindingInstrument": {
+    "expectedHandbookModule": "CONC",
+    "instrumentType": "FCA final rules instrument (Handbook amendments)",
+    "verificationSeparateFromPsPdf": true,
+    "stepsBeforeIngest": [
+      "Locate official CONC amendment instrument URL on FCA Handbook / instruments list (not PS PDF body only)",
+      "Download instrument PDF; compute source_hash; store as distinct regulatory_publications row",
+      "Cross-check PS26/1 commencement table against instrument effective dates",
+      "Human reviewer confirms rule text is binding before assessObligationGradePosture"
+    ]
+  },
+  "controlledIngestionProcedure": {
+    "phase": "PRE_INGEST_READ_ONLY",
+    "tenantScope": "b8f5e3a1-00ad-4000-8000-000000000001",
+    "ingestExecuted": false,
+    "obligationGradeSuitableAutoSet": false,
+    "ucRi005ArchitecturePreserved": true,
+    "evidenceVerification": [
+      "Page-level citations must reference instrument pages for binding rules",
+      "PS narrative chunks tagged as guidance context only where applicable",
+      "Materialisation requires human review queue — no auto-approve"
+    ]
+  },
+  "readiness": "PROCEDURE_DEFINED_NOT_EXECUTED"
+}
