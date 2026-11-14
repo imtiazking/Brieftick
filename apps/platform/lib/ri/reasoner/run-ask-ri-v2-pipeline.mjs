@@ -206,6 +206,12 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
     question,
     testId: caseRow?.testId,
     v2ExecutionStatus: v2Status,
+    stageC: {
+      applied: true,
+      path: 'v2_render_verified_answer',
+      policyReason: rendered.policyReason,
+      regulatoryReview: rendered.regulatoryReview,
+    },
     eligibility,
     retrieval: {
       method: retrieval.retrievalMethod,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "forgeniq.eval.stage-b-manifest.v1",
-  "capturedAt": "2026-11-14T11:04:38.488Z",
+  "capturedAt": "2026-11-14T11:38:33.804Z",
   "organisationScope": "offline_eval_corpus_only",
   "protectedBaselines": [
     {
@@ -45,5 +45,5 @@
   "programmeStatus": "STAGE_B_OFFLINE_MANIFEST_COMPLETE",
   "programmePass": false,
   "programmePassCriteria": "Operator attestation + corpus audit sign-off; manifestSha256 recorded in change control",
-  "manifestSha256": "6466d6fcc907439ff10d8876cffffb068fe9197a690d836b8be74f7677bf50d8"
+  "manifestSha256": "204e2750d994614fb78cde29abe572822bab252dd9ac97b18e0afa4a4df8e3d4"
 }

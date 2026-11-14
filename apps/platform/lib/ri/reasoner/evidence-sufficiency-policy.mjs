@@ -61,6 +61,14 @@ export function resolveFinalRegulatoryStatus(input) {
     return { status: 'PARTIAL_ANSWER', regulatoryReview: { required: true, holdPresentation: false }, reason: 'PARTIAL' };
   }
 
+  if (hasSupported && sufficiencyOverall === 'PARTIAL_SUPPORT') {
+    return {
+      status: 'PARTIAL_ANSWER',
+      regulatoryReview: { required: true, holdPresentation: false },
+      reason: 'PARTIAL_SUPPORT',
+    };
+  }
+
   if (hasSupported && !hasUnresolved && sufficiencyOverall === 'DIRECT_SUPPORT') {
     return { status: 'ANSWERED', regulatoryReview: { required: false, holdPresentation: false }, reason: 'ANSWERED' };
   }

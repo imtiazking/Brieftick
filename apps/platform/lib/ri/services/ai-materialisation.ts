@@ -3,6 +3,7 @@ import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
 import { assertNotAutonomousAiAction } from '@/lib/ri/ai/autonomy';
+import { assertExperimentalAiTenant } from '@/lib/ri/ai/experimental-ai-tenant-guard';
 import { AI_REVIEW_STATUS } from '@/lib/ri/ai/enums';
 import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
 import { resolveAcceptedClaimIndexes as resolveAcceptedClaimIndexesCore } from '@/lib/ri/ai/materialisation-logic.mjs';
@@ -44,6 +45,20 @@ export async function materialiseReviewedClaims(
 ): Promise<{ materialised: { entityType: string; entityId: string; claimIndex: number }[] }> {
   assertNotAutonomousAiAction('approve_change');
   assertNotAutonomousAiAction('approve_obligation');
+
+  const { data: runRow } = await supabase
+    .from('ai_analysis_runs')
+    .select('use_case_id')
+    .eq('id', params.runId)
+    .eq('organisation_id', params.organisationId)
+    .maybeSingle();
+  if (runRow?.use_case_id) {
+    assertExperimentalAiTenant({
+      organisationId: params.organisationId,
+      useCaseId: runRow.use_case_id,
+      operation: 'materialise',
+    });
+  }
 
   if (
     params.decision !== AI_REVIEW_STATUS.ACCEPTED &&

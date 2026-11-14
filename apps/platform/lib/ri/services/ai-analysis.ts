@@ -18,6 +18,7 @@ import {
   resolveModelForProviderMode,
   FIXTURE_PROVIDER_ID,
 } from '@/lib/ri/ai/provider-registry';
+import { assertExperimentalAiTenant } from '@/lib/ri/ai/experimental-ai-tenant-guard';
 import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
 import { AI_PROVIDER_MODE } from '@/lib/ri/ai/enums';
 import { getUseCaseById } from '@/lib/ri/ai/use-case-catalog';
@@ -200,6 +201,11 @@ export async function requestPublicationAnalysis(
   },
 ) {
   assertCanRi(params.role, 'ai:request');
+  assertExperimentalAiTenant({
+    organisationId: params.organisationId,
+    useCaseId: params.useCaseId,
+    operation: 'request',
+  });
   const useCase = getUseCaseById(params.useCaseId);
   if (!useCase || useCase.status !== 'Active') throw new Error('invalid_use_case');
 
@@ -453,6 +459,11 @@ export async function submitAnalysisReview(
 ) {
   assertCanRi(params.role, 'ai:review');
   const { run } = await getAnalysisRun(supabase, params.organisationId, params.runId);
+  assertExperimentalAiTenant({
+    organisationId: params.organisationId,
+    useCaseId: run.use_case_id,
+    operation: 'review',
+  });
   if (
     run.review_status === AI_REVIEW_STATUS.ACCEPTED ||
     run.review_status === AI_REVIEW_STATUS.REJECTED ||

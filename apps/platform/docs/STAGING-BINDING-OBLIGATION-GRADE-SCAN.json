@@ -1,0 +1,31 @@
+{
+  "capturedAt": "2026-11-14T11:41:45.175Z",
+  "scannedWithPdfContext": 5,
+  "obligationGradeSuitableCount": 0,
+  "selectedBindingPublication": null,
+  "guidanceProbeFg22": {
+    "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+    "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+    "regulator": "FCA",
+    "publicationType": "finalised_guidance",
+    "externalReference": "FG22/5",
+    "pdfContextOk": true,
+    "obligationGradeSuitable": false,
+    "primaryClass": "guidance",
+    "regulatoryStatus": {
+      "phase": "published_or_informational",
+      "proposedChanges": false,
+      "publishedFinalRules": false,
+      "existingBindingObligationsMentioned": true,
+      "nonBindingGuidance": true,
+      "informationalContent": false,
+      "bindingObligationsDetected": true,
+      "mustNotTreatProposalsAsBinding": false,
+      "isFinalisedGuidance": true
+    },
+    "sectionCount": 18,
+    "pdfError": null
+  },
+  "prerequisiteIfNone": "No publication with obligationGradeSuitable=true and pdf_primary_v1 in catalogue. Requires indexed binding rules PDF + human obligation-grade approval — do not force obligationGradeSuitable.",
+  "topCandidates": []
+}

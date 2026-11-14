@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-b-signoff-pack.v1",
+  "capturedAt": "2026-11-14T11:48:43.217Z",
+  "programmePass": false,
+  "operatorApproval": null,
+  "operatorApprovalFields": {
+    "attestedBy": null,
+    "attestedAt": null,
+    "changeControlRef": null
+  },
+  "manifestVerification": {
+    "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\stage-b-secure-evidence-manifest.json",
+    "recordedSha256": "204e2750d994614fb78cde29abe572822bab252dd9ac97b18e0afa4a4df8e3d4",
+    "recomputedSha256": "204e2750d994614fb78cde29abe572822bab252dd9ac97b18e0afa4a4df8e3d4",
+    "integrityOk": true
+  },
+  "baselineIntegrity": {
+    "allOk": true,
+    "baselines": [
+      {
+        "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v1-2026-11-10.json",
+        "ok": true,
+        "sha256": "6998edf7a28872889a6e24e6f88198c52550c313c6462be4f39973354a3b05c3"
+      },
+      {
+        "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2-2026-11-10.json",
+        "ok": true,
+        "sha256": "4d9f3a94584c6e99c1c1f785ca9e22136faa9774d2af57772ae48cf1a4eee81d"
+      },
+      {
+        "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-2026-11-10.json",
+        "ok": true,
+        "sha256": "88dc616ca020efd74d60b716233ddf161a2787b81843cf71c68eeb09c928b018"
+      }
+    ]
+  },
+  "evidenceRetention": {
+    "manifestPath": "docs/eval/stage-b-secure-evidence-manifest.json",
+    "baselinePaths": [
+      "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v1-2026-11-10.json",
+      "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2-2026-11-10.json",
+      "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-2026-11-10.json"
+    ],
+    "runOutputs": "docs/eval/runs/ (timestamped, sanitised)",
+    "retentionPolicy": "Corpus offline only; no Partner UAT DB artefacts in eval manifests"
+  },
+  "redactionChecks": {
+    "evalReportSanitizePresent": true,
+    "providerDiagnosticsSafetyScript": true,
+    "manifestOrgScopeOfflineOnly": true
+  },
+  "reproducibility": {
+    "acceptanceStageBSecureEvalEvidence": true,
+    "exitCode": 0
+  },
+  "operatorChecklist": [
+    {
+      "id": "B-01",
+      "item": "Verify manifestSha256 matches change control record",
+      "status": "PENDING_OPERATOR",
+      "required": true
+    },
+    {
+      "id": "B-02",
+      "item": "Confirm protected baseline SHA-256 hashes unchanged",
+      "status": "TECH_PASS",
+      "required": true
+    },
+    {
+      "id": "B-03",
+      "item": "Review harness + provider diagnostics acceptance output",
+      "status": "TECH_PASS",
+      "required": true
+    },
+    {
+      "id": "B-04",
+      "item": "Confirm eval corpus contains no live tenant snapshots",
+      "status": "PENDING_OPERATOR",
+      "required": true
+    },
+    {
+      "id": "B-05",
+      "item": "Sign SME secure-evidence attestation (name, date)",
+      "status": "PENDING_OPERATOR",
+      "required": true
+    }
+  ],
+  "outstandingSecurityConcerns": [
+    {
+      "id": "SEC-B-01",
+      "severity": "medium",
+      "topic": "Live Anthropic key in developer environments",
+      "mitigation": "Stage E gated; RI_AI_EXECUTION_ENABLED default off on staging",
+      "operatorReviewRequired": true
+    },
+    {
+      "id": "SEC-B-02",
+      "severity": "low",
+      "topic": "Eval run JSON may contain publication excerpts",
+      "mitigation": "sanitizeEvalReport before commit; redaction harness acceptance",
+      "operatorReviewRequired": true
+    }
+  ],
+  "technicalReadinessForOperatorReview": true,
+  "notes": "Technical checks do not constitute programme PASS. Operator must complete checklist B-01, B-04, B-05."
+}

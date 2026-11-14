@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-d-regression.v1",
+  "capturedAt": "2026-11-14T11:51:07.915Z",
+  "programmePass": false,
+  "programmePassCriteria": "Full SME acceptance of expanded regression themes + live provider spot-checks (Stage E) — not dry-run alone",
+  "dryRunOnly": true,
+  "themes": [
+    {
+      "theme": "accurate_evidence_backed",
+      "testId": "EVAL-B-01"
+    },
+    {
+      "theme": "insufficient_evidence",
+      "testId": "EVAL-B-03"
+    },
+    {
+      "theme": "conflicting_evidence",
+      "testId": "EVAL-C-02"
+    },
+    {
+      "theme": "partial_evidence",
+      "testId": "EVAL-C-03"
+    },
+    {
+      "theme": "guidance_vs_binding_law",
+      "testId": "EVAL-D-02"
+    },
+    {
+      "theme": "incorrect_source_citations",
+      "testId": "EVAL-C-04"
+    },
+    {
+      "theme": "missing_source_material",
+      "testId": "EVAL-I-01"
+    },
+    {
+      "theme": "unsupported_obligations",
+      "testId": "EVAL-E-01"
+    },
+    {
+      "theme": "cross_document_reasoning",
+      "testId": "EVAL-G-02"
+    },
+    {
+      "theme": "abstention_regulatory_interpretation",
+      "testId": "EVAL-H-01"
+    }
+  ],
+  "sourceReportPath": "C:/Users/imtia/OneDrive/Desktop/Brieftick/docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json",
+  "caseCount": 10,
+  "summary": {
+    "v2Execution": {
+      "PUBLIC_ELIGIBLE_EXECUTED": 0,
+      "BLOCKED_EXPECTED": 0,
+      "BLOCKED_UNEXPECTED": 0,
+      "PROVIDER_ERROR": 0,
+      "VERIFICATION_FAILED": 0,
+      "NOT_RUN": 9,
+      "blockedBeforeProvider": 0
+    },
+    "outcomes": {
+      "FAIL": 10
+    },
+    "preReasonerBlocks": {
+      "reference_validation": 1,
+      "authority_gate": 0
+    },
+    "engineInsufficientEvidence": 0,
+    "pipelineDryRunNotRun": 9,
+    "harnessOutcomes": {
+      "NOT_RUN_DRY_OR_SKIPPED": 9,
+      "REFERENCE_REJECTED": 1
+    },
+    "providerAttempts": 0
+  },
+  "deviations": [],
+  "baselineCompare": {
+    "compared": true,
+    "baselineSha256": "88dc616ca020efd74d60b716233ddf161a2787b81843cf71c68eeb09c928b018",
+    "protectedRecordSha256": "88dc616ca020efd74d60b716233ddf161a2787b81843cf71c68eeb09c928b018",
+    "hashMatch": true
+  },
+  "protectedBaselines": [
+    {
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v1-2026-11-10.json",
+      "ok": true,
+      "sha256": "6998edf7a28872889a6e24e6f88198c52550c313c6462be4f39973354a3b05c3"
+    },
+    {
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2-2026-11-10.json",
+      "ok": true,
+      "sha256": "4d9f3a94584c6e99c1c1f785ca9e22136faa9774d2af57772ae48cf1a4eee81d"
+    },
+    {
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-2026-11-10.json",
+      "ok": true,
+      "sha256": "88dc616ca020efd74d60b716233ddf161a2787b81843cf71c68eeb09c928b018"
+    }
+  ],
+  "acceptanceCriteriaMet": true
+}

@@ -1,0 +1,638 @@
+{
+  "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+  "engine": "ask_ri_v2",
+  "engineCommitSha": "d39c2b42a123bc0cb64ec7756c5cbbbf9d66c392",
+  "suiteSourcePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json",
+  "baselineComparisonPath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-r2-2026-11-10.json",
+  "model": {
+    "identifier": "claude-haiku-5-5",
+    "pricingNote": "Prototype eval — see anthropic-eval-budget estimates"
+  },
+  "executedAt": "2026-11-14T11:51:07.772Z",
+  "caseCount": 10,
+  "resumedCaseCount": 0,
+  "caseCountTotalRunnable": 45,
+  "caseCountSelected": 10,
+  "caseCountNewThisRun": 10,
+  "caseFilter": {
+    "publicProviderOnly": false,
+    "testIds": [
+      "EVAL-B-01",
+      "EVAL-B-03",
+      "EVAL-C-02",
+      "EVAL-C-03",
+      "EVAL-D-02",
+      "EVAL-C-04",
+      "EVAL-I-01",
+      "EVAL-E-01",
+      "EVAL-G-02",
+      "EVAL-H-01"
+    ]
+  },
+  "eligibility": {
+    "allowedTestIds": [
+      "EVAL-A-01",
+      "EVAL-A-02",
+      "EVAL-A-03",
+      "EVAL-A-04",
+      "EVAL-A-05",
+      "EVAL-B-01",
+      "EVAL-B-02",
+      "EVAL-B-03",
+      "EVAL-B-04",
+      "EVAL-C-01",
+      "EVAL-C-02",
+      "EVAL-C-03",
+      "EVAL-C-04",
+      "EVAL-C-05",
+      "EVAL-D-01",
+      "EVAL-D-02",
+      "EVAL-D-03",
+      "EVAL-D-04",
+      "EVAL-D-05",
+      "EVAL-E-01",
+      "EVAL-E-02",
+      "EVAL-E-03",
+      "EVAL-E-04",
+      "EVAL-G-01",
+      "EVAL-G-02",
+      "EVAL-G-03",
+      "EVAL-H-01",
+      "EVAL-H-02",
+      "EVAL-H-03",
+      "EVAL-H-04",
+      "EVAL-H-05",
+      "EVAL-I-01",
+      "EVAL-I-02",
+      "EVAL-I-04",
+      "EVAL-J-01",
+      "EVAL-J-02",
+      "EVAL-J-03",
+      "EVAL-J-04"
+    ],
+    "blocked": [
+      {
+        "testId": "EVAL-F-01",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-02",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-03",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-04",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-05",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-G-04",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-I-03",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      }
+    ],
+    "eligibleForProvider": 38,
+    "blockedBeforeTransmission": 7
+  },
+  "spend": {
+    "budgetUsd": 10,
+    "model": "claude-haiku-5-5",
+    "estimatedUsd": 0,
+    "calculatedUsd": 0,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "requestCount": 0,
+    "reservedUsd": 0.1153,
+    "stopped": false,
+    "stopReason": null,
+    "pendingReserveUsd": 0
+  },
+  "summary": {
+    "v2Execution": {
+      "PUBLIC_ELIGIBLE_EXECUTED": 0,
+      "BLOCKED_EXPECTED": 0,
+      "BLOCKED_UNEXPECTED": 0,
+      "PROVIDER_ERROR": 0,
+      "VERIFICATION_FAILED": 0,
+      "NOT_RUN": 9,
+      "blockedBeforeProvider": 0
+    },
+    "outcomes": {
+      "FAIL": 10
+    },
+    "preReasonerBlocks": {
+      "reference_validation": 1,
+      "authority_gate": 0
+    },
+    "engineInsufficientEvidence": 0,
+    "pipelineDryRunNotRun": 9,
+    "harnessOutcomes": {
+      "NOT_RUN_DRY_OR_SKIPPED": 9,
+      "REFERENCE_REJECTED": 1
+    },
+    "providerAttempts": 0
+  },
+  "resumeFingerprint": {
+    "schemaVersion": "forgeniq.eval.resume-fingerprint.v2",
+    "modelIdentifier": "claude-haiku-5-5",
+    "budgetUsd": 10,
+    "outputEffort": "medium",
+    "thinkingType": "adaptive",
+    "maxTokens": 8192,
+    "maxTokensRetry": 16384,
+    "allowRetry": true,
+    "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+    "evaluationSuiteContentSha256": "f49180d0b846aa2ea0cecd37ab239537802cb8e0910a80d6b496e80bbb037784",
+    "evaluationSuitePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json",
+    "corpusId": "authentic-b2-2b2",
+    "corpusCreatedAt": "2026-11-10T18:46:13.492Z",
+    "corpusPublicationCount": 19,
+    "corpusManifestSha256": "b83131d764f2a54965fadb9cbd082d0bc282f527cba6b9d0342c4242acfb1efc",
+    "corpusContentSha256": "63b4d60609688eee448853e558de10bc48d36b7949b2d663ecaad19f563515cb",
+    "testIds": "EVAL-B-01,EVAL-B-03,EVAL-C-02,EVAL-C-03,EVAL-C-04,EVAL-D-02,EVAL-E-01,EVAL-G-02,EVAL-H-01,EVAL-I-01",
+    "dryRun": true,
+    "publicProviderOnly": false,
+    "materialEvalDependencySha256": "8959880572180fbe07360c3ada4917c5271814f6477112f573bdf868b33fd895",
+    "reasonerCodeFingerprintSha256": "8959880572180fbe07360c3ada4917c5271814f6477112f573bdf868b33fd895"
+  },
+  "results": [
+    {
+      "testId": "EVAL-B-01",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "FAIL",
+      "deterministicR2Status": "UNRESOLVED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 35,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-B-01"
+        },
+        "retrievalPublicationSelected": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "evidenceChunkIds": [
+          "5a8c6400de6cf686",
+          "0b4af1f989bceff0",
+          "29e80e5bc2ddffad",
+          "d1da907dabc08185",
+          "71671899601493c8",
+          "af4da679c0f8c163",
+          "79eb9c5cdf65c8d9",
+          "65bbf76fcb5e8ebf",
+          "c64431709056d5db",
+          "061c7de7b2af2726",
+          "45e51a3cfb41e23c",
+          "9019310b86ba8d02",
+          "4e85cbffcef2f786",
+          "10e408b9a16e7d11",
+          "75c0c1f2bbd29bcd",
+          "d21c64224ebad48b"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-B-03",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "deterministicR2Status": "INSUFFICIENT_EVIDENCE",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 18,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-B-03"
+        },
+        "retrievalPublicationSelected": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "evidenceChunkIds": [
+          "738c70aed19aecb4",
+          "c4a4eb7e0c5fa732",
+          "bdd5eee4669fd7bb",
+          "511463d774cfeb75",
+          "01d268e4282514f5",
+          "3ffca2f6d8bd85c2",
+          "4b8795ead3c7843e",
+          "4b2114618bb674ea",
+          "da989260b73f141d",
+          "769dec641e9bcaa3",
+          "e942d208e85bba80",
+          "a8caaad72914239f",
+          "7bfa0d2fb40eeb35",
+          "3d2c0ecd968edfcc",
+          "ddb8c9f7bafb6b96",
+          "7e10da1e478df081"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-C-02",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "PARTIAL_PASS",
+      "deterministicR2Status": "ANSWERED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 13,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-C-02"
+        },
+        "retrievalPublicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "evidenceChunkIds": [
+          "a2a2f7a7a1846511",
+          "6fa8441b78efd821",
+          "cbea568a0edac193",
+          "087950b39072c31d",
+          "c069403c2a9fad37",
+          "75c6455f4fb9b2f1"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-C-03",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "FAIL",
+      "deterministicR2Status": "UNRESOLVED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 13,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-C-03"
+        },
+        "retrievalPublicationSelected": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "evidenceChunkIds": [
+          "f348ce1834984c8f",
+          "f3d35ebb1b4f2e2f",
+          "3ed48be23c5b829c",
+          "66d1f7d4fb34e15d",
+          "c7c4dc3f47ec7c92",
+          "a7d88fc821b6882a"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-C-04",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "PARTIAL_PASS",
+      "deterministicR2Status": "ANSWERED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 11,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-C-04"
+        },
+        "retrievalPublicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "evidenceChunkIds": [
+          "169648b655e519f6",
+          "6fa8441b78efd821",
+          "cbea568a0edac193",
+          "a2a2f7a7a1846511",
+          "9384fc6ad472c571",
+          "75c6455f4fb9b2f1"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-D-02",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "PARTIAL_PASS",
+      "deterministicR2Status": "ANSWERED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 13,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-D-02"
+        },
+        "retrievalPublicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "evidenceChunkIds": [
+          "381ddd712c8586bd",
+          "6c9a79fd2d150f63",
+          "6b56b5854ffd3efb",
+          "49751a5367546d71",
+          "79a9565c9b8e3c83",
+          "169648b655e519f6"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-E-01",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "PARTIAL_PASS",
+      "deterministicR2Status": "ANSWERED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 13,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-E-01"
+        },
+        "retrievalPublicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "evidenceChunkIds": [
+          "768f4daccfa68494",
+          "169648b655e519f6",
+          "43145c22c750cccc",
+          "cbea568a0edac193",
+          "77d96185ff9abdeb",
+          "39bc0c251b2ed11c"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-G-02",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "FAIL",
+      "deterministicR2Status": "INSUFFICIENT_EVIDENCE",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 24,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-G-02"
+        },
+        "retrievalPublicationSelected": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "evidenceChunkIds": [
+          "fd96efc987d13a16",
+          "f348ce1834984c8f",
+          "9019310b86ba8d02",
+          "c64431709056d5db",
+          "45e51a3cfb41e23c",
+          "61ffd619a5fa7d4d"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-H-01",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "FAIL",
+      "deterministicR2Status": "UNRESOLVED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 19,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-H-01"
+        },
+        "retrievalPublicationSelected": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "evidenceChunkIds": [
+          "fd96efc987d13a16",
+          "7082c43690da038d",
+          "71671899601493c8",
+          "c64431709056d5db",
+          "61ffd619a5fa7d4d",
+          "8a03c9c437267c62",
+          "3e06a2db9df37518",
+          "44526e00bd770f8d",
+          "0b4af1f989bceff0",
+          "75c0c1f2bbd29bcd",
+          "486606b12a1fe78c",
+          "9019310b86ba8d02",
+          "7129e4c8be4faaab",
+          "d21c64224ebad48b",
+          "ce3ac68f0052a54f",
+          "45e51a3cfb41e23c"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-I-01",
+      "outcome": "FAIL",
+      "engineStatus": "BLOCKED",
+      "v2ExecutionStatus": "BLOCKED_REFERENCE_VALIDATION",
+      "deterministicR2Outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "deterministicR2Status": "UNRESOLVED",
+      "harnessOutcome": "REFERENCE_REJECTED",
+      "timingMs": 1,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": "reference_validation",
+      "status": "BLOCKED",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-I-01"
+        },
+        "retrievalPublicationSelected": null,
+        "preReasonerBlock": "reference_validation",
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "The question references a publication identifier that is not valid in the authorised offline corpus.",
+      "citationCount": 0
+    }
+  ],
+  "safetyChecks": {
+    "liveAskRiProductionInvoked": false,
+    "databaseWrites": false,
+    "stagingDatabaseWrites": false,
+    "askRiEngineV2ProductionFlag": false,
+    "liveReasoningEnabled": false,
+    "dryRun": true
+  },
+  "runMetadata": {
+    "executionTimestamp": "2026-11-14T11:51:07.773Z",
+    "gitCommitSha": "d39c2b42a123bc0cb64ec7756c5cbbbf9d66c392",
+    "modelIdentifier": "claude-haiku-5-5",
+    "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+    "corpusVersion": {
+      "corpus": "authentic-b2-2b2",
+      "createdAt": "2026-11-10T18:46:13.492Z",
+      "publicationCount": 19
+    },
+    "runMode": "dry_run",
+    "providerCallStatus": "disabled",
+    "suiteSourcePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json"
+  },
+  "sanitised": true
+}

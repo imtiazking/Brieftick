@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "forgeniq.preview.ai-dev.v1",
+  "capturedAt": "2026-11-14T12:00:00.000Z",
+  "approvedForSharedStaging": false,
+  "approvedForLiveAnthropic": false,
+  "targetOrganisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+  "targetOrganisationName": "FORGENIQ AI Development",
+  "environmentVariables": {
+    "STAGING_AI_TECH_ORG_ID": "b8f5e3a1-00ad-4000-8000-000000000001",
+    "RI_AI_EXECUTION_ENABLED": "false",
+    "RI_LAB_CONNECTED_WRITES_ENABLED": "false",
+    "ASK_RI_V2_PRODUCTION_ENABLED": "false"
+  },
+  "deploymentSteps": [
+    "Create isolated Vercel preview from feature/ask-ri-v2-evaluation-baseline (path-scoped commit)",
+    "Set STAGING_AI_TECH_ORG_ID on preview only — not on shared staging alias",
+    "Keep RI_AI_EXECUTION_ENABLED=false until Stage E authorized",
+    "Sign in as AI Dev technical member (not Partner persona)",
+    "Run verify-ai-dev-tenant-isolation.mjs against preview-linked Supabase",
+    "Run acceptance-experimental-ai-tenant-guard.mjs and acceptance-pdf-grounded-uc-005.mjs",
+    "Design Lab: FG22/5 guidance extraction smoke (human review required)",
+    "Maker–Checker: use AI Dev fixtures only — do not touch Partner seed b8f5e3a1-0001-4000-8000-000000000001 on Partner org"
+  ],
+  "validationMatrix": {
+    "serverSideTenantRestrictions": "experimental-ai-tenant-guard on request/review/materialise",
+    "authenticationPermissions": "requireRiContext ai:request / ai:review",
+    "designLabConnectedMode": "client gate + POST /api/ri-lab/ai-analysis-runs",
+    "regulatoryComplianceWorkflows": "unchanged for Org A and Partner — no writes",
+    "partnerUatIsolation": "verify-ai-dev-tenant-isolation.mjs",
+    "makerCheckerRegression": "isolated AI Dev or technical preview fixture only",
+    "apiCompatibility": "POST ai-analysis-runs response shape unchanged",
+    "databaseCompatibility": "no new migrations in this commit scope — backward compatible",
+    "rollbackProcedure": "Delete preview deployment; shared staging alias unchanged"
+  },
+  "explicitProhibitions": [
+    "No promotion to staging-app.forgeniq.com without approval",
+    "No live Anthropic without Stage E authorization",
+    "No Partner UAT org data changes",
+    "No forced obligationGradeSuitable"
+  ],
+  "readiness": "PREPARED_NOT_DEPLOYED"
+}

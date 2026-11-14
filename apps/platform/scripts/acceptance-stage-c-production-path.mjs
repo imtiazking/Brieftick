@@ -14,8 +14,13 @@ const fail = (m) => {
 };
 
 const serverActions = readFileSync(join(platformRoot, 'lib', 'ri', 'server-actions-ask-ri.ts'), 'utf8');
-if (!serverActions.includes('runAskRiDeterministic')) fail('server-actions must call runAskRiDeterministic');
-else ok('production server action uses deterministic Ask RI');
+if (!serverActions.includes('runAskRiProduction')) fail('server-actions must call runAskRiProduction');
+else ok('production server action uses runAskRiProduction unified entry');
+
+const prodEntry = readFileSync(join(platformRoot, 'lib', 'ri', 'ask-ri', 'run-ask-ri-production.mjs'), 'utf8');
+if (!prodEntry.includes('enforceStageCCatalogueAnswer') && !prodEntry.includes('runAskRiDeterministic')) {
+  fail('run-ask-ri-production must delegate to deterministic or V2 paths');
+} else ok('unified production entry present');
 
 const runAsk = readFileSync(join(platformRoot, 'lib', 'ri', 'ask-ri', 'run-ask-ri.mjs'), 'utf8');
 if (!runAsk.includes('finalizeAskRiProductionResult')) fail('run-ask-ri missing Stage C finalize');

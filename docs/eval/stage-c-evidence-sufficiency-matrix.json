@@ -1,0 +1,21 @@
+{
+  "capturedAt": "2026-11-14T11:52:00.000Z",
+  "programmePass": false,
+  "acceptanceScript": "apps/platform/scripts/acceptance-stage-c-evidence-matrix.mjs",
+  "policyModule": "apps/platform/lib/ri/reasoner/evidence-sufficiency-policy.mjs",
+  "threeStateMatrix": {
+    "sufficient": { "sufficiencyOverall": "DIRECT_SUPPORT", "status": "ANSWERED" },
+    "partial": { "sufficiencyOverall": "PARTIAL_SUPPORT", "status": "PARTIAL_ANSWER" },
+    "insufficient": { "sufficiencyOverall": "NO_SUPPORT", "status": "INSUFFICIENT_EVIDENCE" }
+  },
+  "v2ProductionPath": {
+    "entry": "runAskRiProduction → runAskRiV2Pipeline → renderVerifiedAskRiV2Answer",
+    "mockIntegration": "acceptance-stage-c-v2-integration.mjs PASS",
+    "liveAnthropicVerified": false
+  },
+  "deterministicCataloguePath": {
+    "entry": "runAskRiDeterministic → enforceStageCCatalogueAnswer",
+    "mustNotBindPartial": "PARTIAL_ANSWER when mustNotPresentAsBindingObligation"
+  },
+  "note": "Matrix validates policy parity offline; dry-run and mock provider are not live regulatory accuracy."
+}

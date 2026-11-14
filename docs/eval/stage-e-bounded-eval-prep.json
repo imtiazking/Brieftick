@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-11-14T11:04:38.572Z",
+  "capturedAt": "2026-11-14T11:45:00.000Z",
   "programmeStatus": "PREPARED_NOT_EXECUTED",
   "programmePass": false,
   "tenantScope": "offline_eval_only_no_partner_uat_db_writes",
@@ -16,5 +16,14 @@
     "Stage C programme sign-off",
     "Stage D regression artefact committed"
   ],
+  "controls": {
+    "budgetUsd": 10,
+    "tokenLimits": "resolveV2EvalReasonerAnthropicConfig + spendTracker reserve/settle",
+    "costControls": "estimateEvalCaseReserveUsd; stop on ceiling",
+    "resumeIntegrity": "checkpoint + partial JSON paths in run-ask-ri-v2-eval-2c2.mjs",
+    "outputPersistence": "docs/eval/runs/ via sanitizeEvalReport",
+    "failureHandling": "RESUME_INCOMPATIBLE, OUTPUT_TRUNCATED, budget_ceiling"
+  },
+  "liveExecutionAuthorized": false,
   "evidenceOutputs": "docs/eval/runs/stage-e-bounded-*.json (sanitised)"
 }

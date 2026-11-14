@@ -1,88 +1,93 @@
 {
-  "capturedAt": "2026-11-14T11:00:00.000Z",
-  "aiDevelopmentOrganisation": {
-    "uuid": "b8f5e3a1-00ad-4000-8000-000000000001",
-    "name": "FORGENIQ AI Development",
-    "slug": "forgeniq-ai-development",
-    "envVar": "STAGING_AI_TECH_ORG_ID=b8f5e3a1-00ad-4000-8000-000000000001",
-    "membership": [
-      {
-        "clerkUserId": "user_3LIQIZlXNWBFEvSKabAYIUhhNdi",
-        "role": "COMPLIANCE_MANAGER",
-        "partnerPersonasExcluded": true
-      }
+  "capturedAt": "2026-11-14T11:45:00.000Z",
+  "candidateCommit": "d39c2b42a123bc0cb64ec7756c5cbbbf9d66c392",
+  "deploymentReadiness": "NOT_READY",
+  "stagingDeployExecuted": false,
+  "liveAnthropicExecuted": false,
+  "workstreamAskRi": {
+    "stageA": { "status": "PASS", "evidence": "acceptance-stage-a-e2e-persistence.mjs (prior session)" },
+    "stageB": {
+      "technicalStatus": "READY_FOR_OPERATOR_REVIEW",
+      "programmePass": false,
+      "manifestSha256": "204e2750d994614fb78cde29abe572822bab252dd9ac97b18e0afa4a4df8e3d4",
+      "manifestPath": "docs/eval/stage-b-secure-evidence-manifest.json",
+      "operatorPack": "docs/eval/stage-b-operator-signoff-pack.json",
+      "operatorApproval": null,
+      "outstandingSecurityConcerns": 2
+    },
+    "stageC": {
+      "status": "INTEGRATED_OFFLINE",
+      "programmePass": false,
+      "deterministicProductionPath": "finalizeAskRiProductionResult → enforceStageCCatalogueAnswer",
+      "v2ProductionPath": "ASK_RI_V2_PRODUCTION_ENABLED + runAskRiProduction → runAskRiV2Pipeline → renderVerifiedAskRiV2Answer",
+      "sharedPolicy": "lib/ri/reasoner/evidence-sufficiency-policy.mjs",
+      "integrationTest": "acceptance-stage-c-v2-integration.mjs PASS (mock provider, no network)",
+      "serverAction": "lib/ri/server-actions-ask-ri.ts → runAskRiProduction"
+    },
+    "stageD": {
+      "status": "EXPANDED_DRY_RUN_COMPLETE",
+      "programmePass": false,
+      "report": "docs/eval/runs/stage-d-regression-summary-2026-11-14T11-40-22-766Z.json",
+      "themesCovered": 10,
+      "deviations": 0,
+      "dryRunOnly": true,
+      "acceptanceCriteriaMetForDryRun": true,
+      "fullAcceptanceOutstanding": "SME review + baseline comparison sign-off"
+    },
+    "stageE": {
+      "status": "PREPARED_NOT_AUTHORIZED",
+      "programmePass": false,
+      "budgetUsd": 10,
+      "prep": "docs/eval/stage-e-bounded-eval-prep.json",
+      "gates": ["Stage B operator sign-off", "Stage C programme sign-off", "Stage D full acceptance"]
+    },
+    "stageF": {
+      "status": "NOT_STARTED",
+      "prerequisites": ["Stage E bounded live eval", "Hosted preview smoke on candidate build"]
+    },
+    "stageG": {
+      "status": "NOT_STARTED",
+      "prerequisites": ["Production promotion approval", "Partner UAT regression on promoted build"]
+    }
+  },
+  "workstreamPdfUcRi005": {
+    "offlineAcceptance": "acceptance-pdf-grounded-uc-005.mjs PASS",
+    "designLabWiring": [
+      "design-lab-bundle/.../connected-publication-ai-panels.js",
+      "publication-views.js",
+      "connected-mode.js (client org gate)",
+      "app.js review handlers"
     ],
-    "tenantIsolationVerification": {
-      "artefact": "STAGING-AI-DEV-TENANT-ISOLATION.json",
-      "pass": true,
-      "aiDevRowCountsZero": true,
-      "partnerUsersOnAiDev": 0
-    }
-  },
-  "hostedStaging": {
-    "deploymentId": "dpl_tVa87yCeHTH2Ny1oubJN5G9NVTpR",
-    "alias": "https://staging-app.forgeniq.com",
-    "readyAt": "2026-11-11T23:13:56Z",
-    "localDevHead": "7fa0883",
-    "inProgressAiDeployed": false,
-    "deploymentReadiness": "NOT_READY — PDF POST route and pdf_primary UC-RI-005 path are local/untracked; gates before promote"
-  },
-  "askRiStages": {
-    "A": { "programmeStatus": "PASS", "evidence": "acceptance-stage-a-e2e-persistence.mjs exit 0 (mandatory matrix)" },
-    "B": {
-      "programmeStatus": "IN_PROGRESS",
-      "offlineGate": "acceptance-stage-b-secure-eval-evidence.mjs PASS",
-      "programmePass": false,
-      "note": "Requires signed secure-evidence artefact — scripts alone insufficient"
+    "serverGuards": {
+      "request": "ai-analysis.ts assertExperimentalAiTenant",
+      "review": "ai-analysis.ts submitAnalysisReview",
+      "materialise": "ai-materialisation.ts",
+      "acceptance": "acceptance-experimental-ai-tenant-guard.mjs PASS"
     },
-    "C": {
-      "programmeStatus": "IN_PROGRESS",
-      "design": "ACCEPTED",
-      "implementation": "evidence-sufficiency-policy.mjs + render-verified-answer integration",
-      "offlineGate": "acceptance-stage-c-evidence-sufficiency-policy.mjs PASS",
-      "programmePass": false,
-      "note": "Production Ask RI path + full matrix coverage not complete"
-    },
-    "D": {
-      "programmeStatus": "IN_PROGRESS",
-      "offlineScripts": "reasoner + eval harness PASS",
-      "programmePass": false,
-      "note": "Needs refreshed dry-run suite report committed as regression evidence"
-    },
-    "E": { "programmeStatus": "NOT_PROMOTED", "note": "Bounded diagnostic only until B–D programme gates close" },
-    "F": { "programmeStatus": "NOT_STARTED_IN_REPO" },
-    "G": { "programmeStatus": "NOT_READY", "note": "SME dimensions AWAITING" }
+    "allowedOrganisation": "b8f5e3a1-00ad-4000-8000-000000000001",
+    "hostedE2e": "NOT_RUN — shared staging not updated",
+    "guidanceProbe": "FG22/5 a761cacc-8742-493d-b200-eb5d9a3ab884 obligationGradeSuitable=false",
+    "bindingPublicationSelected": null,
+    "bindingScan": "docs/STAGING-BINDING-OBLIGATION-GRADE-SCAN.json",
+    "bindingPrerequisite": "No catalogue row with obligationGradeSuitable=true; need indexed binding rules PDF + human obligation-grade approval (no manual override)",
+    "materialisationReadiness": "BLOCKED_PENDING_BINDING_CANDIDATE"
   },
-  "pdfObligationExtraction": {
-    "implementationStatus": "COMPLETE_LOCAL_OFFLINE",
-    "liveTenantOrg": "b8f5e3a1-00ad-4000-8000-000000000001",
-    "fg22Role": "guidance probe — obligationGradeSuitable=false (do not bypass)",
-    "bindingMaterialisationTest": "PENDING — select obligationGradeSuitable=true publication after catalogue audit",
-    "acceptance": { "acceptance-pdf-grounded-uc-005.mjs": "PASS", "fg22-obligation-pdf-technical-e2e.mjs": "PASS_OFFLINE" },
-    "untrackedCoreFiles": [
-      "lib/ri/ai/build-pdf-grounded-analysis-context.mjs",
-      "lib/ri/ai/normalize-structured-ai-output.mjs",
-      "app/api/ri-lab/ai-analysis-runs/route.ts"
+  "deployment": {
+    "tenantIsolation": "STAGING-AI-DEV-TENANT-ISOLATION.json PASS",
+    "preLiveGate": "STAGING-AI-DEV-PRE-LIVE-GATE.json PASS",
+    "partnerUatRowCountsUnchanged": true,
+    "partnerExperimentalAiBlocked": true,
+    "rollbackPlan": {
+      "deployedStagingCommit": "2026-11-11 build (dpl_tVa87yCeHTH2Ny1oubJN5G9NVTpR)",
+      "candidateRollbackTarget": "d39c2b42a123bc0cb64ec7756c5cbbbf9d66c392",
+      "procedure": "Do not promote; if preview deployed, redeploy prior alias or revert feature branch merge"
+    },
+    "releaseBlockers": [
+      "Operator Stage B sign-off",
+      "Stage C/D programme PASS",
+      "Binding publication for obligation-grade acceptance",
+      "Hosted UC-RI-005 E2E on approved preview",
+      "Uncommitted working tree must be reviewed before deploy commit"
     ]
-  },
-  "developmentBranch": {
-    "name": "feature/ask-ri-v2-evaluation-baseline",
-    "commit": "7fa0883",
-    "separationPlan": "Commit 1: AI dev org + staging config; Commit 2: Stage C policy; Commit 3: PDF UC-RI-005 core (separate from unrelated working tree)"
-  },
-  "partnerUatProtection": {
-    "experimentalAiForbidden": true,
-    "makerCheckerSeedIntact": true,
-    "orphanFg22Records": {
-      "present": true,
-      "dependenciesZero": true,
-      "cleanupPlan": "STAGING-PARTNER-FG22-CLEANUP-PLAN.json",
-      "cleanupExecuted": false
-    }
-  },
-  "nextActions": {
-    "askRi": "Close Stage B evidence sign-off; extend Stage C into full pipeline + production path; refresh Stage D dry-run artefact",
-    "pdf": "Commit UC-RI-005 core; seed AI-dev FG22 change (approved fixture); live probe on AI dev org only after deploy",
-    "deploy": "Blocked until split commits + full regression + Partner UAT smoke on hosted build"
   }
 }

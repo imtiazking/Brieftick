@@ -1,32 +1,42 @@
 {
-  "capturedAt": "2026-11-14T11:05:00.000Z",
-  "candidateCommit": "e99d30d",
+  "capturedAt": "2026-11-14T11:45:00.000Z",
+  "candidateCommit": "d39c2b42a123bc0cb64ec7756c5cbbbf9d66c392",
+  "pendingWorkingTreeChanges": true,
   "hostedDeploymentId": "dpl_tVa87yCeHTH2Ny1oubJN5G9NVTpR",
   "hostedDeploymentDate": "2026-11-11",
   "verdict": "NOT_READY",
   "gates": {
-    "workingTreeReviewed": "PARTIAL — large unrelated WIP remains unstaged",
+    "workingTreeReviewed": "PARTIAL — Stage B/C/D artefacts + server guards in local WIP",
     "askRiPdfCommitsSeparated": true,
     "automatedRegression": {
-      "acceptance-stage-a-e2e-persistence": "PASS_PREVIOUS_SESSION",
-      "acceptance-stage-b-secure-eval-evidence": "PASS_OFFLINE",
-      "acceptance-stage-c-policy": "PASS_OFFLINE",
-      "acceptance-stage-c-production-path": "PASS_OFFLINE",
+      "acceptance-stage-b-secure-eval-evidence": "PASS",
+      "generate-stage-b-operator-signoff-pack": "PASS_TECH",
+      "acceptance-stage-c-evidence-sufficiency-policy": "PASS",
+      "acceptance-stage-c-production-path": "PASS",
+      "acceptance-stage-c-v2-integration": "PASS",
+      "acceptance-stage-d-expanded-regression": "PASS_DRY_RUN",
+      "acceptance-ask-ri-v2-reasoner": "PASS",
+      "acceptance-ask-ri-v2-reference-regression": "PASS",
       "acceptance-pdf-grounded-uc-005": "PASS",
-      "acceptance-ask-ri-v2-reasoner": "PASS_PREVIOUS_SESSION",
-      "stage-d-dry-run": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json"
+      "acceptance-experimental-ai-tenant-guard": "PASS"
     },
-    "apiCompatibility": "UNCHECKED_ON_HOSTED — POST /api/ri-lab/ai-analysis-runs not on staging build",
-    "tenantIsolation": "STAGING-AI-DEV-TENANT-ISOLATION.json PASS",
-    "preLiveGate": "STAGING-AI-DEV-PRE-LIVE-GATE.json requires STAGING_AI_TECH_ORG_ID in runtime",
+    "tenantIsolation": "PASS",
+    "preLiveGate": "PASS",
     "partnerUatUnaffected": true,
-    "featureFlagsDefaultOff": "RI_AI_EXECUTION_ENABLED and RI_LAB_CONNECTED_WRITES_ENABLED off in pre-live check"
+    "featureFlagsDefaultOff": true,
+    "hostedUcRi005E2e": false
   },
   "blockers": [
     "No approved staging deploy",
-    "Stage B–D programme sign-off incomplete",
-    "Stage E not executed",
-    "Hosted smoke for Partner maker-checker not re-run on candidate build"
+    "Stage B operator attestation pending",
+    "Stage C/D programme PASS not granted",
+    "No binding obligation-grade publication in catalogue",
+    "Stage E–G not accepted",
+    "Commit and tag deployment artefact after review"
   ],
+  "exactDeploymentCommitPlan": {
+    "targetAfterReview": "feature/ask-ri-v2-evaluation-baseline @ HEAD after path-scoped commit",
+    "rollback": "Remain on current staging deployment; revert preview if needed"
+  },
   "aiDevelopmentOrgId": "b8f5e3a1-00ad-4000-8000-000000000001"
 }
