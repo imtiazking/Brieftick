@@ -9,7 +9,10 @@ import { buildReasonerSystemPrompt, buildReasonerUserPrompt } from './build-reas
 import { validateReasonerOutput } from './reasoner-output-schema.mjs';
 import { resolveV2EvalModel, estimateRequestCostUsd } from './anthropic-eval-budget.mjs';
 import { assertV2EvalModelSupported } from './v2-eval-models.mjs';
-import { buildSanitisedProviderDiagnostics } from './anthropic-provider-diagnostics.mjs';
+import {
+  buildSanitisedProviderDiagnostics,
+  buildSanitisedProviderAttemptSummaries,
+} from './anthropic-provider-diagnostics.mjs';
 import { resolveV2EvalReasonerAnthropicConfig } from './anthropic-eval-reasoner-config.mjs';
 
 export function isV2LiveReasoningEnabled() {
@@ -61,6 +64,7 @@ function buildFailureFromCall(res, model, latencyMs, attempts) {
     latencyMs,
     usage: { inputTokens: usage.inputTokens, outputTokens: usage.outputTokens },
     providerAttempts: usage.providerAttempts,
+    providerAttemptSummaries: buildSanitisedProviderAttemptSummaries(attempts),
   };
   failure.diagnostics = buildSanitisedProviderDiagnostics(failure);
   return failure;

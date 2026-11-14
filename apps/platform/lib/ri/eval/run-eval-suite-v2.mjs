@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { execSync } from 'node:child_process';
 import {
@@ -24,6 +24,17 @@ import { loadLocalEnvFile } from '../reasoner/load-local-env.mjs';
 import { writeCheckpointAtomic } from './eval-checkpoint.mjs';
 import { emitEvalProgress } from './eval-progress.mjs';
 import { filterEvalSuiteCases, validateEvalCaseFilter } from './eval-case-filter.mjs';
+import {
+  slimCaseForPersistence,
+  buildProviderDiagnosticsByTestId,
+  providerDiagnosticsFromResult,
+  buildEvalResumeFingerprint,
+  assertResumeFingerprintCompatible,
+  restoreEvalSpendTracker,
+  assertResumeBudgetAllowsRemainingCases,
+  serializeSpendForCheckpoint,
+  buildEvalRunSummary,
+} from './eval-report-sanitize.mjs';
 
 function gitSha() {
   try {
@@ -52,22 +63,44 @@ export async function runEvalSuiteV2(options = {}) {
     testIds: options.testIds,
   });
   if (!filterCheck.ok) throw new Error(`invalid_eval_case_filter: ${filterCheck.errors.join('; ')}`);
-  const cases = filterCheck.filtered;
+  const allSelectedCases = filterCheck.filtered;
+  let cases = allSelectedCases;
   const baselineMap = loadBaselineMap(options.baselinePath || DETERMINISTIC_V21_R2_BASELINE);
 
   const model = resolveV2EvalModel(options.model);
-  const spend = new EvalSpendTracker({ budgetUsd: options.budgetUsd ?? V2_EVAL_BUDGET_USD, model });
+  const budgetUsd = options.budgetUsd ?? V2_EVAL_BUDGET_USD;
+
+  const checkpointPath = options.checkpointPath || null;
+  const partialResultsPath = options.partialResultsPath || null;
+
+  const resumeFingerprint = buildEvalResumeFingerprint({
+    suitePath,
+    model,
+    testIds: options.testIds,
+    dryRun: options.dryRun,
+    publicProviderOnly: options.publicProviderOnly,
+    providerDeps: options.providerDeps,
+    budgetUsd,
+  });
+
+  let resumedPartialRows = [];
+  let spend;
+  if (options.resumeFromPartial && partialResultsPath && existsSync(partialResultsPath)) {
+    const partialDoc = JSON.parse(readFileSync(partialResultsPath, 'utf8'));
+    assertResumeFingerprintCompatible(partialDoc.resumeFingerprint, resumeFingerprint);
+    resumedPartialRows = Array.isArray(partialDoc.results) ? partialDoc.results : [];
+    const completed = new Set(resumedPartialRows.map((r) => r.testId).filter(Boolean));
+    cases = cases.filter((c) => !completed.has(c.testId));
+    spend = restoreEvalSpendTracker(partialDoc.spend, { model, budgetUsd });
+    assertResumeBudgetAllowsRemainingCases(spend, cases.length);
+  } else {
+    spend = new EvalSpendTracker({ budgetUsd, model });
+  }
 
   const index = await buildSemanticIndex(AUTHENTIC_CORPUS_B2_DIR);
   const results = [];
   const runStartedAt = Date.now();
-  let providerErrors = 0;
-  let blockedBeforeProvider = 0;
-  let verificationFailed = 0;
-  let publicExecuted = 0;
 
-  const checkpointPath = options.checkpointPath || null;
-  const partialResultsPath = options.partialResultsPath || null;
   const progressSink = options.progressSink;
 
   const emitProgress = (payload) => {
@@ -75,7 +108,7 @@ export async function runEvalSuiteV2(options = {}) {
     const line = {
       ...payload,
       calculatedUsd: Number(runningUsd.toFixed(4)),
-      spend: spend.toJSON(),
+      spend: serializeSpendForCheckpoint(spend),
     };
     if (typeof progressSink === 'function') progressSink(line);
     else if (options.emitProgress !== false) emitEvalProgress(line);
@@ -89,6 +122,7 @@ export async function runEvalSuiteV2(options = {}) {
       dryRun: options.dryRun,
       model,
       bm25Attached: false,
+      providerDeps: options.providerDeps,
     });
 
     const deterministicR2 = baselineMap.get(caseRow.testId);
@@ -115,17 +149,15 @@ export async function runEvalSuiteV2(options = {}) {
       providerDiagnostics: engineResult.providerDiagnostics || null,
     };
 
-    results.push({ ...scored, ...engineResult });
-
-    if (engineResult.v2ExecutionStatus === 'BLOCKED_EXPECTED' || engineResult.v2ExecutionStatus === 'BLOCKED_UNEXPECTED') {
-      blockedBeforeProvider += 1;
+    const mergedRow = { ...scored, ...engineResult };
+    if (engineResult.providerDiagnostics) {
+      mergedRow.providerDiagnostics = engineResult.providerDiagnostics;
     }
-    if (engineResult.v2ExecutionStatus === 'PROVIDER_ERROR') providerErrors += 1;
-    if (engineResult.v2ExecutionStatus === 'VERIFICATION_FAILED') verificationFailed += 1;
-    if (engineResult.v2ExecutionStatus === 'PUBLIC_ELIGIBLE_EXECUTED') publicExecuted += 1;
+    results.push(mergedRow);
+
     emitProgress({
-      caseIndex: caseIndex + 1,
-      caseTotal: cases.length,
+      caseIndex: resumedPartialRows.length + caseIndex + 1,
+      caseTotal: allSelectedCases.length,
       testId: caseRow.testId,
       v2ExecutionStatus: engineResult.v2ExecutionStatus,
       outcome: scored.outcome,
@@ -136,40 +168,52 @@ export async function runEvalSuiteV2(options = {}) {
       providerInvoked: Boolean(engineResult.providerInvoked),
     });
 
+    const persistedRows = [...resumedPartialRows, ...results.map((r) => slimCaseForPersistence(r))];
+    const providerDiagnosticsByTestId = buildProviderDiagnosticsByTestId(persistedRows);
+    const lastProviderDiagnostics = providerDiagnosticsFromResult(mergedRow);
+    const runSummary = buildEvalRunSummary(persistedRows);
+
     const checkpointPayload = {
       checkpoint: true,
+      resumeFingerprint,
       updatedAt: new Date().toISOString(),
-      caseIndex: caseIndex + 1,
-      caseTotal: cases.length,
+      caseIndex: resumedPartialRows.length + caseIndex + 1,
+      caseTotal: allSelectedCases.length,
       lastTestId: caseRow.testId,
       model: { identifier: model },
-      spend: spend.toJSON(),
-      resultsCount: results.length,
+      spend: serializeSpendForCheckpoint(spend),
+      resultsCount: persistedRows.length,
+      resumeFromPartial: Boolean(options.resumeFromPartial),
+      lastProviderDiagnostics,
+      providerDiagnosticsByTestId,
       partialSummary: {
-        completedCases: results.length,
-        providerErrors,
-        publicExecuted,
+        completedCases: persistedRows.length,
+        providerErrors: runSummary.v2Execution.PROVIDER_ERROR,
+        publicExecuted: runSummary.v2Execution.PUBLIC_ELIGIBLE_EXECUTED,
       },
+      runSummary,
     };
     if (checkpointPath) writeCheckpointAtomic(checkpointPath, checkpointPayload);
     if (partialResultsPath) {
       writeCheckpointAtomic(partialResultsPath, {
         ...checkpointPayload,
-        results: results.map((r) => ({
-          testId: r.testId,
-          outcome: r.outcome,
-          v2ExecutionStatus: r.v2ExecutionStatus,
-          harnessOutcome: r.harnessOutcome,
-          timingMs: r.timingMs,
-          execution: r.execution,
-        })),
+        results: persistedRows,
       });
     }
 
+    if (options.stopAfterNewCases != null && results.length >= options.stopAfterNewCases) {
+      break;
+    }
     if (spend.stopped) break;
   }
 
   spend.finalizeCalculated();
+
+  const allResultRows = [...resumedPartialRows, ...results.map((r) => ({ ...r, ...slimCaseForPersistence(r) }))];
+  const summary = {
+    ...buildEvalRunSummary(allResultRows),
+    providerAttempts: spend.requestCount,
+  };
 
   return {
     evaluationSuiteVersion: suite.evaluationVersion,
@@ -179,9 +223,11 @@ export async function runEvalSuiteV2(options = {}) {
     baselineComparisonPath: options.baselinePath || DETERMINISTIC_V21_R2_BASELINE,
     model: { identifier: model, pricingNote: 'Prototype eval — see anthropic-eval-budget estimates' },
     executedAt: new Date().toISOString(),
-    caseCount: results.length,
+    caseCount: allResultRows.length,
+    resumedCaseCount: resumedPartialRows.length,
     caseCountTotalRunnable: runnableCases.length,
-    caseCountSelected: cases.length,
+    caseCountSelected: allSelectedCases.length,
+    caseCountNewThisRun: results.length,
     caseFilter: {
       publicProviderOnly: Boolean(options.publicProviderOnly),
       testIds: options.testIds?.length ? options.testIds : null,
@@ -192,35 +238,10 @@ export async function runEvalSuiteV2(options = {}) {
       eligibleForProvider: allowlist.allowedTestIds.length,
       blockedBeforeTransmission: allowlist.blocked.length,
     },
-    spend: spend.toJSON(),
-    summary: {
-      v2Execution: {
-        PUBLIC_ELIGIBLE_EXECUTED: publicExecuted,
-        BLOCKED_EXPECTED: results.filter((r) => r.v2ExecutionStatus === 'BLOCKED_EXPECTED').length,
-        BLOCKED_UNEXPECTED: results.filter((r) => r.v2ExecutionStatus === 'BLOCKED_UNEXPECTED').length,
-        PROVIDER_ERROR: providerErrors,
-        VERIFICATION_FAILED: verificationFailed,
-        NOT_RUN: results.filter((r) => r.v2ExecutionStatus === 'NOT_RUN').length,
-        blockedBeforeProvider,
-      },
-      outcomes: results.reduce((acc, r) => {
-        acc[r.outcome] = (acc[r.outcome] || 0) + 1;
-        return acc;
-      }, {}),
-      preReasonerBlocks: {
-        reference_validation: results.filter((r) => r.preReasonerBlock === 'reference_validation').length,
-        authority_gate: results.filter((r) => r.preReasonerBlock === 'authority_gate').length,
-      },
-      engineInsufficientEvidence: results.filter((r) => r.status === 'INSUFFICIENT_EVIDENCE').length,
-      pipelineDryRunNotRun: results.filter((r) => r.v2ExecutionStatus === 'NOT_RUN' && r.status === 'NOT_RUN').length,
-      harnessOutcomes: results.reduce((acc, r) => {
-        const k = r.harnessOutcome || 'UNKNOWN';
-        acc[k] = (acc[k] || 0) + 1;
-        return acc;
-      }, {}),
-      providerAttempts: spend.requestCount,
-    },
-    results,
+    spend: serializeSpendForCheckpoint(spend),
+    summary,
+    resumeFingerprint,
+    results: allResultRows,
     safetyChecks: {
       liveAskRiProductionInvoked: false,
       databaseWrites: false,

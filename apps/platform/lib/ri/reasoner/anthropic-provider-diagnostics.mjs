@@ -2,22 +2,78 @@
  * Sanitised Anthropic failure diagnostics (no secrets, no payloads).
  */
 
+const FORBIDDEN_DIAGNOSTIC_KEYS = new Set([
+  'apiKey',
+  'x-api-key',
+  'authorization',
+  'rawText',
+  'rawTextSanitized',
+  'text',
+  'system',
+  'user',
+  'messages',
+  'content',
+  'body',
+  'prompt',
+  'evidenceChunks',
+]);
+
+const API_KEY_PATTERN = /\bsk-ant-[A-Za-z0-9_-]{8,}\b/gi;
+
+export function sanitizeProviderSafeMessage(message) {
+  if (!message || typeof message !== 'string') return 'Provider request failed.';
+  let safe = message.slice(0, 500);
+  safe = safe.replace(API_KEY_PATTERN, '[REDACTED_API_KEY]');
+  if (/x-api-key|authorization:\s*\S+/i.test(safe)) {
+    return 'Provider request failed (details redacted).';
+  }
+  return safe;
+}
+
+export function buildSanitisedProviderAttemptSummaries(attempts) {
+  if (!Array.isArray(attempts)) return [];
+  return attempts.map((a) => ({
+    attempt: a.attempt ?? null,
+    maxTokens: a.maxTokens ?? null,
+    ok: a.ok ?? null,
+    code: a.code ?? null,
+    stopReason: a.stopReason ?? null,
+    inputTokens: a.inputTokens ?? null,
+    outputTokens: a.outputTokens ?? null,
+    contentBlockTypes: Array.isArray(a.contentBlockTypes) ? [...a.contentBlockTypes] : null,
+  }));
+}
+
+function stripForbiddenExtra(extra) {
+  if (!extra || typeof extra !== 'object') return {};
+  const out = {};
+  for (const [k, v] of Object.entries(extra)) {
+    if (!FORBIDDEN_DIAGNOSTIC_KEYS.has(k)) out[k] = v;
+  }
+  return out;
+}
+
 export function buildSanitisedProviderDiagnostics(reasonerResult, extra = {}) {
   if (!reasonerResult || reasonerResult.ok) {
     return {
       ok: true,
       errorClass: null,
-      ...extra,
+      ...stripForbiddenExtra(extra),
     };
   }
+
+  const requestId =
+    typeof reasonerResult.requestId === 'string' && reasonerResult.requestId.trim()
+      ? reasonerResult.requestId
+      : null;
 
   return {
     ok: false,
     errorClass: reasonerResult.code || 'UNKNOWN',
     httpStatus: reasonerResult.httpStatus ?? null,
     providerErrorType: reasonerResult.providerErrorType ?? null,
-    safeMessage: reasonerResult.message || 'Provider request failed.',
-    requestId: reasonerResult.requestId ?? null,
+    safeMessage: sanitizeProviderSafeMessage(reasonerResult.message),
+    requestId,
     requestReachedProvider:
       reasonerResult.requestReachedProvider ?? (reasonerResult.httpStatus != null ? true : false),
     responseReceived: reasonerResult.responseReceived ?? (reasonerResult.httpStatus != null ? true : false),
@@ -29,8 +85,26 @@ export function buildSanitisedProviderDiagnostics(reasonerResult, extra = {}) {
     outputTokens: reasonerResult.outputTokens ?? reasonerResult.usage?.outputTokens ?? null,
     truncationKind: reasonerResult.truncationKind ?? null,
     providerAttempts: reasonerResult.providerAttempts ?? null,
-    ...extra,
+    providerAttemptSummaries: buildSanitisedProviderAttemptSummaries(
+      reasonerResult.providerAttemptSummaries ?? reasonerResult.attempts,
+    ),
+    ...stripForbiddenExtra(extra),
   };
+}
+
+/**
+ * Assert persisted diagnostics contain no sensitive payloads (for tests and report scrubbing).
+ */
+export function assertSanitisedDiagnosticsPayload(obj, path = '') {
+  const violations = [];
+  if (!obj || typeof obj !== 'object') return violations;
+  for (const [k, v] of Object.entries(obj)) {
+    const p = path ? `${path}.${k}` : k;
+    if (FORBIDDEN_DIAGNOSTIC_KEYS.has(k)) violations.push(p);
+    if (k === 'safeMessage' && typeof v === 'string' && API_KEY_PATTERN.test(v)) violations.push(`${p}:api_key_pattern`);
+    if (v && typeof v === 'object') violations.push(...assertSanitisedDiagnosticsPayload(v, p));
+  }
+  return violations;
 }
 
 export function classifyV2HarnessOutcome(engineResult) {
