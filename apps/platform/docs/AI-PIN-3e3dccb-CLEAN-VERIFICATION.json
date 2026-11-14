@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "forgeniq.ai.pin-verification.v1",
+  "capturedAt": "2026-11-14T13:45:00.000Z",
+  "pinCommitSha": "3e3dccb2345579a13719408b8c9b7b304f3efbcd",
+  "priorCommits": {
+    "harnessScripts": "6fc81d67c5929b4670c2a46d3b63787becb893f8",
+    "aiGuardsAndStageBCD": "fddc07a14323b2fb33b19839003ba6b51297b309"
+  },
+  "worktreePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick-preview-3e3dccb",
+  "worktreeCleanAtStart": true,
+  "mockedOnly": true,
+  "liveAnthropic": false,
+  "stagingDb": false,
+  "results": {
+    "acceptance-provider-diagnostics-safety.mjs": { "pass": true, "exitCode": 0 },
+    "acceptance-stage-b-secure-eval-evidence.mjs": { "pass": true, "exitCode": 0 },
+    "acceptance-stage-c-evidence-matrix.mjs": { "pass": true, "exitCode": 0, "programmePass": false },
+    "acceptance-stage-c-v2-integration.mjs": { "pass": true, "exitCode": 0, "programmePass": false },
+    "acceptance-stage-e-budget-ceiling-offline.mjs": { "pass": true, "exitCode": 0 },
+    "acceptance-stage-d-expanded-regression.mjs": { "pass": true, "exitCode": 0, "programmePass": false, "deviations": 0 },
+    "acceptance-stage-a-e2e-persistence.mjs": {
+      "pass": true,
+      "exitCode": 0,
+      "durationMsApprox": 399000,
+      "label": "TECHNICAL_PASS_MOCKED_CLEAN_COMMIT"
+    },
+    "npm_run_typecheck": { "pass": true },
+    "npm_run_build": { "pass": true }
+  },
+  "scoringReconstruction": {
+    "status": "NOT_RECONSTRUCTABLE_ON_SANITISED_REPORTS",
+    "artefact": "docs/eval/STAGE-D-SCORING-RECONSTRUCTION-FINDINGS.json",
+    "tool": "apps/platform/scripts/assess-eval-scoring-reconstruction.mjs"
+  },
+  "fcaPs261": {
+    "status": "READ_ONLY_PLAN_ONLY",
+    "artefact": "docs/eval/FCA-PS26-1-READ-ONLY-INGESTION-PLAN.json",
+    "ingestExecuted": false
+  }
+}
