@@ -1,0 +1,39 @@
+{
+  "capturedAt": "2026-11-14T11:04:38.663Z",
+  "resolvedOrgId": "b8f5e3a1-00ad-4000-8000-000000000001",
+  "checks": [
+    {
+      "id": "ai_dev_allowed",
+      "pass": true,
+      "detail": "b8f5e3a1-00ad-4000-8000-000000000001"
+    },
+    {
+      "id": "partner_blocked",
+      "pass": true,
+      "detail": "rejected"
+    },
+    {
+      "id": "org_a_blocked",
+      "pass": true,
+      "detail": "rejected"
+    },
+    {
+      "id": "env_staging_ai_tech_org",
+      "pass": true,
+      "detail": "b8f5e3a1-00ad-4000-8000-000000000001"
+    },
+    {
+      "id": "env_cannot_target_partner",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "feature_flags_default_off_in_report",
+      "pass": true,
+      "detail": "RI_AI=false LAB_WRITES=false"
+    }
+  ],
+  "pass": true,
+  "liveAiAllowed": false,
+  "note": "pass=true and env set still require deployment approval before live execution"
+}

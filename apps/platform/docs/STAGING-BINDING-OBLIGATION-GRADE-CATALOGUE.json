@@ -1,0 +1,23 @@
+{
+  "capturedAt": "2026-11-14T11:04:48.013Z",
+  "rows": [
+    {
+      "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+      "label": "FG22/5 guidance",
+      "pdfContextOk": true,
+      "obligationGradeSuitable": false,
+      "primaryClass": "guidance",
+      "sectionCount": 18,
+      "recommendedUse": "guidance_probe_only"
+    },
+    {
+      "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+      "label": "Consumer Duty fair value (Org A live AI history)",
+      "pdfContextOk": false,
+      "obligationGradeSuitable": null,
+      "primaryClass": null,
+      "sectionCount": 0,
+      "recommendedUse": "verify_grade_before_materialisation"
+    }
+  ]
+}
