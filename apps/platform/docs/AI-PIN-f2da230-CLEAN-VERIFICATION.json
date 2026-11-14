@@ -1,6 +1,7 @@
 {
   "schemaVersion": "forgeniq.ai.clean-verification.v1",
   "pinCommit": "f2da230dcaabd7a352a63cb1440c8db09cb6b9ec",
+  "verifiedAfterExtensionsCommit": "00b4369146a65a7508a5befaa510c97dce0e00fe",
   "priorPin": "3e3dccb",
   "capturedAt": "2026-11-14T15:10:00.000Z",
   "candidateForPreview": true,
