@@ -1,3 +1,5 @@
+import { resolveFinalRegulatoryStatus } from './evidence-sufficiency-policy.mjs';
+
 /**
  * Local evaluation renderer — does not add regulatory claims.
  */
@@ -60,14 +62,33 @@ export function renderVerifiedAskRiV2Answer(verification, modelOutput, bundle) {
     }
   }
 
-  let status = 'ANSWERED';
-  if (state === 'INSUFFICIENT_EVIDENCE' || sufficiency === 'NO_SUPPORT') status = 'INSUFFICIENT_EVIDENCE';
-  else if (state === 'PARTIAL_ANSWER' || sufficiency === 'PARTIAL_SUPPORT' || sufficiency === 'RELATED_CONTEXT_ONLY') {
-    status = sufficiency === 'RELATED_CONTEXT_ONLY' ? 'INSUFFICIENT_EVIDENCE' : 'ANSWERED';
-  } else if (state === 'VERIFICATION_FAILED' || state === 'BLOCKED') status = state;
+  if (state === 'VERIFICATION_FAILED' || state === 'BLOCKED') {
+    return {
+      status: state,
+      answer: lines.filter(Boolean).join('\n\n') || 'Insufficient verified evidence to answer.',
+      citations,
+      humanReviewRequired: true,
+      evidenceLimitation: bundle?.contextLimitationNote || null,
+      unresolvedAspects: modelOutput.unresolvedAspects || [],
+      disclaimers: modelOutput.disclaimers || [],
+      sufficiency,
+    };
+  }
+
+  const policy = resolveFinalRegulatoryStatus({
+    responseState: state,
+    sufficiencyOverall: sufficiency,
+    verifiedClaimCount: (verification.verifiedClaims || []).length,
+    failedClaimCount: verification.failedClaims?.length ?? 0,
+    unresolvedAspects: modelOutput.unresolvedAspects || [],
+    questionCoverage: bundle?.questionCoverage || 'UNKNOWN',
+    regulatoryIndexAbsent: Boolean(bundle?.regulatoryIndexAbsent),
+  });
 
   return {
-    status,
+    status: policy.status,
+    regulatoryReview: policy.regulatoryReview,
+    policyReason: policy.reason,
     answer: lines.filter(Boolean).join('\n\n') || 'Insufficient verified evidence to answer.',
     citations,
     humanReviewRequired: Boolean(modelOutput.humanReviewRequired),
