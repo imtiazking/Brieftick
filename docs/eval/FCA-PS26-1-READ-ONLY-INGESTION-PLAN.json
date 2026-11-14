@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "forgeniq.ingestion.plan.readonly.v1",
+  "capturedAt": "2026-11-14T13:05:00.000Z",
+  "publication": {
+    "reference": "FCA PS26/1",
+    "title": "Regulation of Deferred Payment Credit (unregulated Buy Now Pay Later)",
+    "regulator": "FCA",
+    "officialPdfUrl": "https://www.fca.org.uk/publication/policy/ps26-1.pdf",
+    "landingPage": "https://www.fca.org.uk/publications/policy-statements/ps26-1-regulation-deferred-payment-credit"
+  },
+  "regulatoryCharacterisation": {
+    "authentic": true,
+    "policyStatementAnnouncesChange": true,
+    "bindingRulesLocation": "Final rules instrument amending CONC (Handbook) — not PS narrative alone",
+    "guidanceIncluded": true,
+    "commencementPrimary": "2026-07-15 (Regulation Day for DPC)",
+    "firmScope": "DPC lenders; broader CONC conduct standards where applied to DPC",
+    "activities": "Deferred payment credit / BNPL"
+  },
+  "technicalPrerequisites": [
+    "Catalogue row in regulatory_publications with external_document_id PS26/1",
+    "Authentic pdf_primary_v1 download + source_hash verification",
+    "create-primary-pdf-extraction-revision with page_boundary confirmation",
+    "assessObligationGradePosture — human approval before obligationGradeSuitable=true",
+    "Tenant scope: b8f5e3a1-00ad-4000-8000-000000000001 for experimental AI only"
+  ],
+  "extractionSuitability": {
+    "fullTextExtractExpected": true,
+    "pageCitationsExpected": true,
+    "sectionRefsExpected": true,
+    "complexityNote": "Separate rule instrument PDF may be required in addition to PS body for obligation-grade materialisation"
+  },
+  "explicitProhibitions": {
+    "ingestNow": false,
+    "createObligations": false,
+    "forceObligationGradeSuitable": false,
+    "partnerUatWrites": false,
+    "orgAWrites": false
+  },
+  "approvalRequiredBeforeIngest": ["Regulatory SME sign-off", "Ingestion operator", "AI programme gate"]
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "forgeniq.eval.scoring-reconstruction-findings.v1",
+  "capturedAt": "2026-11-14T13:05:00.000Z",
+  "rootCause": "sanitizeEvalReport + slimCaseForPersistence intentionally strip full answers and citations from committed artefacts",
+  "missingForD01D11Reconstruction": [
+    "full_engine_answer_text (only answerPreview ≤400 chars)",
+    "citations_array (only citationCount)",
+    "dimensions D01–D11",
+    "criticalFailures CF01–CF10",
+    "modelOutput / verified claims payload"
+  ],
+  "designIntent": "Redaction and secret prevention for docs/eval/runs/ exports",
+  "notFabricated": true,
+  "remediationOptions": [
+    {
+      "id": "OFFLINE_SCORING_SIDECAR",
+      "description": "Optional local-only run with --scoring-evidence-out (not committed) — NOT IMPLEMENTED pending approval",
+      "status": "PROPOSED"
+    },
+    {
+      "id": "RESCORE_FROM_LIVE_REPORT",
+      "description": "Use historical live JSON if stored outside repo with full rows — not regenerated here",
+      "status": "AVAILABLE_IF_ARTEFACT_EXISTS"
+    }
+  ],
+  "auditTool": "apps/platform/scripts/assess-eval-scoring-reconstruction.mjs",
+  "auditModule": "apps/platform/lib/ri/eval/eval-scoring-reconstruction.mjs"
+}
