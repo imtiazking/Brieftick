@@ -1,0 +1,20 @@
+{
+  "capturedAt": "2026-11-14T11:04:38.572Z",
+  "programmeStatus": "PREPARED_NOT_EXECUTED",
+  "programmePass": false,
+  "tenantScope": "offline_eval_only_no_partner_uat_db_writes",
+  "organisationGuard": "b8f5e3a1-00ad-4000-8000-000000000001",
+  "budgetUsd": 10,
+  "recommendedCommand": "node ./scripts/run-ask-ri-v2-eval-2c2.mjs --test-ids=EVAL-C-01,EVAL-D-02 --model=claude-haiku-5-5",
+  "stopConditions": [
+    "budget_ceiling",
+    "RESUME_INCOMPATIBLE",
+    "OUTPUT_TRUNCATED"
+  ],
+  "prerequisites": [
+    "Stage B programme sign-off",
+    "Stage C programme sign-off",
+    "Stage D regression artefact committed"
+  ],
+  "evidenceOutputs": "docs/eval/runs/stage-e-bounded-*.json (sanitised)"
+}

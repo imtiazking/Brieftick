@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-b-manifest.v1",
+  "capturedAt": "2026-11-14T11:04:38.488Z",
+  "organisationScope": "offline_eval_corpus_only",
+  "protectedBaselines": [
+    {
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v1-2026-11-10.json",
+      "ok": true,
+      "sha256": "6998edf7a28872889a6e24e6f88198c52550c313c6462be4f39973354a3b05c3"
+    },
+    {
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2-2026-11-10.json",
+      "ok": true,
+      "sha256": "4d9f3a94584c6e99c1c1f785ca9e22136faa9774d2af57772ae48cf1a4eee81d"
+    },
+    {
+      "path": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-2026-11-10.json",
+      "ok": true,
+      "sha256": "88dc616ca020efd74d60b716233ddf161a2787b81843cf71c68eeb09c928b018"
+    }
+  ],
+  "protectedBaselinePaths": [
+    "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v1-2026-11-10.json",
+    "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2-2026-11-10.json",
+    "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-2026-11-10.json"
+  ],
+  "integrityChecks": [
+    {
+      "path": "scripts/acceptance-ask-ri-eval-harness.mjs",
+      "sha256": "f360a68b5de7f333f1867d8afc079da07c296b4f2cbd07982f49dbf99b0c1845"
+    },
+    {
+      "path": "scripts/acceptance-provider-diagnostics-safety.mjs",
+      "sha256": "02cd7ba1e2916193fc1275d98e2cdd03b68ca45a42afbf841d7cf26fd3464aed"
+    },
+    {
+      "path": "lib/ri/eval/baseline-protection.mjs",
+      "sha256": "7369ce9041baceaa766aab13dbc4382940dda9275c36a718667b2a14e06e7111"
+    },
+    {
+      "path": "lib/ri/eval/validate-eval-suite.mjs",
+      "sha256": "af4b4400169d3e71f5db62fdb3b107a43c9b487debfe81d5c1e3e5acc3ea182f"
+    }
+  ],
+  "programmeStatus": "STAGE_B_OFFLINE_MANIFEST_COMPLETE",
+  "programmePass": false,
+  "programmePassCriteria": "Operator attestation + corpus audit sign-off; manifestSha256 recorded in change control",
+  "manifestSha256": "6466d6fcc907439ff10d8876cffffb068fe9197a690d836b8be74f7677bf50d8"
+}

@@ -9,8 +9,13 @@ import { answerAskRiFromBestPublicationHtmlEvidence } from './publication-html-e
 import { questionMentionsPublicationReference } from './publication-pdf-question-match.mjs';
 import { questionRequestsPdfSupplement } from './publication-question-scope.mjs';
 import { composeMixedHtmlPdfAnswer } from './compose-mixed-catalogue-answer.mjs';
+import { enforceStageCCatalogueAnswer } from '../reasoner/enforce-stage-c-catalogue-answer.mjs';
 
 export { ASK_RI_RESULT_STATES };
+
+function finalizeAskRiProductionResult(result) {
+  return enforceStageCCatalogueAnswer(result);
+}
 
 function mapStatus(resultState) {
   if (resultState === ASK_RI_RESULT_STATES.UNRESOLVED_QUERY_SEMANTICS) return 'UNRESOLVED';
@@ -222,16 +227,18 @@ export function runAskRiDeterministic(state, question) {
               }
             : {}),
         };
-        return buildCatalogueEvidenceResult(question, {
-          status: 'ANSWERED',
-          answer,
-          citations,
-          audit: mergedAudit,
-          mode: 'catalogue_publication_evidence_v1',
-          htmlAnswer,
-          pdfSupplement,
-          mixedSynthesis,
-        });
+        return finalizeAskRiProductionResult(
+          buildCatalogueEvidenceResult(question, {
+            status: 'ANSWERED',
+            answer,
+            citations,
+            audit: mergedAudit,
+            mode: 'catalogue_publication_evidence_v1',
+            htmlAnswer,
+            pdfSupplement,
+            mixedSynthesis,
+          }),
+        );
       }
       if (htmlAnswer.status === 'INSUFFICIENT_EVIDENCE' || htmlAnswer.status === 'UNRESOLVED') {
         if (pdfEvidenceList.length) {
@@ -241,24 +248,28 @@ export function runAskRiDeterministic(state, question) {
             pdfAnswer.status === 'INSUFFICIENT_EVIDENCE' ||
             pdfAnswer.status === 'UNRESOLVED'
           ) {
-            return buildCatalogueEvidenceResult(question, {
-              status: pdfAnswer.status,
-              answer: pdfAnswer.answer,
-              citations: pdfAnswer.citations || [],
-              audit: pdfAnswer.audit,
-              mode: 'publication_pdf_primary_v1',
-              pdfAnswer,
-            });
+            return finalizeAskRiProductionResult(
+              buildCatalogueEvidenceResult(question, {
+                status: pdfAnswer.status,
+                answer: pdfAnswer.answer,
+                citations: pdfAnswer.citations || [],
+                audit: pdfAnswer.audit,
+                mode: 'publication_pdf_primary_v1',
+                pdfAnswer,
+              }),
+            );
           }
         }
-        return buildCatalogueEvidenceResult(question, {
-          status: htmlAnswer.status,
-          answer: htmlAnswer.answer,
-          citations: [],
-          audit: htmlAnswer.audit,
-          mode: 'html_article_v2',
-          htmlAnswer,
-        });
+        return finalizeAskRiProductionResult(
+          buildCatalogueEvidenceResult(question, {
+            status: htmlAnswer.status,
+            answer: htmlAnswer.answer,
+            citations: [],
+            audit: htmlAnswer.audit,
+            mode: 'html_article_v2',
+            htmlAnswer,
+          }),
+        );
       }
     }
 
@@ -269,30 +280,34 @@ export function runAskRiDeterministic(state, question) {
         pdfAnswer.status === 'INSUFFICIENT_EVIDENCE' ||
         pdfAnswer.status === 'UNRESOLVED'
       ) {
-        return buildCatalogueEvidenceResult(question, {
-          status: pdfAnswer.status,
-          answer: pdfAnswer.answer,
-          citations: pdfAnswer.citations || [],
-          audit: pdfAnswer.audit,
-          mode: 'publication_pdf_primary_v1',
-          pdfAnswer,
-        });
+        return finalizeAskRiProductionResult(
+          buildCatalogueEvidenceResult(question, {
+            status: pdfAnswer.status,
+            answer: pdfAnswer.answer,
+            citations: pdfAnswer.citations || [],
+            audit: pdfAnswer.audit,
+            mode: 'publication_pdf_primary_v1',
+            pdfAnswer,
+          }),
+        );
       }
     }
 
     const answer = catalogueLoadFailureAnswer(htmlErrors, pdfErrors, state.publicationPdfEvidenceLoadMeta || {});
     const failureStatus =
       pdfLoadFailureIsTechnical([...htmlErrors, ...pdfErrors]) ? 'EVIDENCE_RETRIEVAL_ERROR' : 'INSUFFICIENT_EVIDENCE';
-    return buildCatalogueEvidenceResult(question, {
-      status: failureStatus,
-      answer,
-      citations: [],
-      audit: {
-        evidenceSource: 'catalogue_publication_evidence_v1',
-        loadErrorCodes: [...htmlErrors, ...pdfErrors].map((e) => e.code),
-      },
-      mode: 'catalogue_publication_evidence_v1',
-    });
+    return finalizeAskRiProductionResult(
+      buildCatalogueEvidenceResult(question, {
+        status: failureStatus,
+        answer,
+        citations: [],
+        audit: {
+          evidenceSource: 'catalogue_publication_evidence_v1',
+          loadErrorCodes: [...htmlErrors, ...pdfErrors].map((e) => e.code),
+        },
+        mode: 'catalogue_publication_evidence_v1',
+      }),
+    );
   }
 
   const parsed = parseAskQuery(question, state);
@@ -310,7 +325,7 @@ export function runAskRiDeterministic(state, question) {
     reason: retrieval.matchReasons?.[id] || null,
   }));
 
-  return {
+  return finalizeAskRiProductionResult({
     question,
     interpretedAs,
     status,
@@ -328,6 +343,6 @@ export function runAskRiDeterministic(state, question) {
       evidenceSource: 'tenant_ri_records',
     },
     retrieval,
-  };
+  });
 }
 

@@ -1,0 +1,279 @@
+{
+  "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+  "engine": "ask_ri_v2",
+  "engineCommitSha": "d7e6df072a09d0212fd3b914650e9a081b122f33",
+  "suiteSourcePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json",
+  "baselineComparisonPath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-r2-2026-11-10.json",
+  "model": {
+    "identifier": "claude-haiku-5-5",
+    "pricingNote": "Prototype eval — see anthropic-eval-budget estimates"
+  },
+  "executedAt": "2026-11-14T11:04:32.423Z",
+  "caseCount": 2,
+  "resumedCaseCount": 0,
+  "caseCountTotalRunnable": 45,
+  "caseCountSelected": 2,
+  "caseCountNewThisRun": 2,
+  "caseFilter": {
+    "publicProviderOnly": false,
+    "testIds": [
+      "EVAL-C-01",
+      "EVAL-D-02"
+    ]
+  },
+  "eligibility": {
+    "allowedTestIds": [
+      "EVAL-A-01",
+      "EVAL-A-02",
+      "EVAL-A-03",
+      "EVAL-A-04",
+      "EVAL-A-05",
+      "EVAL-B-01",
+      "EVAL-B-02",
+      "EVAL-B-03",
+      "EVAL-B-04",
+      "EVAL-C-01",
+      "EVAL-C-02",
+      "EVAL-C-03",
+      "EVAL-C-04",
+      "EVAL-C-05",
+      "EVAL-D-01",
+      "EVAL-D-02",
+      "EVAL-D-03",
+      "EVAL-D-04",
+      "EVAL-D-05",
+      "EVAL-E-01",
+      "EVAL-E-02",
+      "EVAL-E-03",
+      "EVAL-E-04",
+      "EVAL-G-01",
+      "EVAL-G-02",
+      "EVAL-G-03",
+      "EVAL-H-01",
+      "EVAL-H-02",
+      "EVAL-H-03",
+      "EVAL-H-04",
+      "EVAL-H-05",
+      "EVAL-I-01",
+      "EVAL-I-02",
+      "EVAL-I-04",
+      "EVAL-J-01",
+      "EVAL-J-02",
+      "EVAL-J-03",
+      "EVAL-J-04"
+    ],
+    "blocked": [
+      {
+        "testId": "EVAL-F-01",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-02",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-03",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-04",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-05",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-G-04",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-I-03",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      }
+    ],
+    "eligibleForProvider": 38,
+    "blockedBeforeTransmission": 7
+  },
+  "spend": {
+    "budgetUsd": 10,
+    "model": "claude-haiku-5-5",
+    "estimatedUsd": 0,
+    "calculatedUsd": 0,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "requestCount": 0,
+    "reservedUsd": 0.0252,
+    "stopped": false,
+    "stopReason": null,
+    "pendingReserveUsd": 0
+  },
+  "summary": {
+    "v2Execution": {
+      "PUBLIC_ELIGIBLE_EXECUTED": 0,
+      "BLOCKED_EXPECTED": 0,
+      "BLOCKED_UNEXPECTED": 0,
+      "PROVIDER_ERROR": 0,
+      "VERIFICATION_FAILED": 0,
+      "NOT_RUN": 2,
+      "blockedBeforeProvider": 0
+    },
+    "outcomes": {
+      "FAIL": 2
+    },
+    "preReasonerBlocks": {
+      "reference_validation": 0,
+      "authority_gate": 0
+    },
+    "engineInsufficientEvidence": 0,
+    "pipelineDryRunNotRun": 2,
+    "harnessOutcomes": {
+      "NOT_RUN_DRY_OR_SKIPPED": 2
+    },
+    "providerAttempts": 0
+  },
+  "resumeFingerprint": {
+    "schemaVersion": "forgeniq.eval.resume-fingerprint.v2",
+    "modelIdentifier": "claude-haiku-5-5",
+    "budgetUsd": 10,
+    "outputEffort": "medium",
+    "thinkingType": "adaptive",
+    "maxTokens": 8192,
+    "maxTokensRetry": 16384,
+    "allowRetry": true,
+    "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+    "evaluationSuiteContentSha256": "f49180d0b846aa2ea0cecd37ab239537802cb8e0910a80d6b496e80bbb037784",
+    "evaluationSuitePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json",
+    "corpusId": "authentic-b2-2b2",
+    "corpusCreatedAt": "2026-11-10T18:46:13.492Z",
+    "corpusPublicationCount": 19,
+    "corpusManifestSha256": "b83131d764f2a54965fadb9cbd082d0bc282f527cba6b9d0342c4242acfb1efc",
+    "corpusContentSha256": "63b4d60609688eee448853e558de10bc48d36b7949b2d663ecaad19f563515cb",
+    "testIds": "EVAL-C-01,EVAL-D-02",
+    "dryRun": true,
+    "publicProviderOnly": false,
+    "materialEvalDependencySha256": "591df4d03c235cc86ec285c591bfe5beea8cbc87d976edc3f5ee36e9c8adee70",
+    "reasonerCodeFingerprintSha256": "591df4d03c235cc86ec285c591bfe5beea8cbc87d976edc3f5ee36e9c8adee70"
+  },
+  "results": [
+    {
+      "testId": "EVAL-C-01",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "PARTIAL_PASS",
+      "deterministicR2Status": "ANSWERED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 30,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-C-01"
+        },
+        "retrievalPublicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "evidenceChunkIds": [
+          "75c6455f4fb9b2f1",
+          "6c3e17c66ce4757a",
+          "37be99c28cfc4cab",
+          "5b404634bbf2cb7e",
+          "cfe033029deea445",
+          "ffd36e0ac6595dcd"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    },
+    {
+      "testId": "EVAL-D-02",
+      "outcome": "FAIL",
+      "engineStatus": "NOT_RUN",
+      "v2ExecutionStatus": "NOT_RUN",
+      "deterministicR2Outcome": "PARTIAL_PASS",
+      "deterministicR2Status": "ANSWERED",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 19,
+      "providerInvoked": false,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      },
+      "preReasonerBlock": null,
+      "status": "NOT_RUN",
+      "providerDiagnostics": null,
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-D-02"
+        },
+        "retrievalPublicationSelected": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+        "evidenceChunkIds": [
+          "381ddd712c8586bd",
+          "6c9a79fd2d150f63",
+          "6b56b5854ffd3efb",
+          "49751a5367546d71",
+          "79a9565c9b8e3c83",
+          "169648b655e519f6"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "regulatoryMeasurement": "NOT_MEASURED",
+      "answerPreview": "",
+      "citationCount": 0
+    }
+  ],
+  "safetyChecks": {
+    "liveAskRiProductionInvoked": false,
+    "databaseWrites": false,
+    "stagingDatabaseWrites": false,
+    "askRiEngineV2ProductionFlag": false,
+    "liveReasoningEnabled": false,
+    "dryRun": true
+  },
+  "runMetadata": {
+    "executionTimestamp": "2026-11-14T11:04:32.423Z",
+    "gitCommitSha": "d7e6df072a09d0212fd3b914650e9a081b122f33",
+    "modelIdentifier": "claude-haiku-5-5",
+    "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+    "corpusVersion": {
+      "corpus": "authentic-b2-2b2",
+      "createdAt": "2026-11-10T18:46:13.492Z",
+      "publicationCount": 19
+    },
+    "runMode": "dry_run",
+    "providerCallStatus": "disabled",
+    "suiteSourcePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json"
+  },
+  "sanitised": true
+}

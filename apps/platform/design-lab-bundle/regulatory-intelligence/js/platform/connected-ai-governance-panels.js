@@ -42,9 +42,15 @@ export function renderConnectedAiReviewPanel(run) {
   if (['ACCEPTED', 'REJECTED', 'PARTIALLY_ACCEPTED', 'SUPERSEDED'].includes(review)) {
     return `<p class="ri-muted">Review decision recorded: <strong>${esc(review)}</strong></p>`;
   }
-  return `<section class="ri-panel" data-connected-ai-review="${esc(run.id)}">
+  const claimCount = Number(run.claimsCount ?? run.claims_count ?? 0) || 0;
+  const claimBoxes =
+    claimCount > 0
+      ? `<fieldset class="ri-fieldset"><legend>Accepted findings (required for materialisation)</legend>${Array.from({ length: claimCount }, (_, i) => `<label><input type="checkbox" data-connected-ai-claim-accept="${i}" /> Finding ${i + 1}</label>`).join(' ')}</fieldset>`
+      : `<p class="ri-alert">No claim indexes — accept/reject only (materialisation may be blocked).</p>`;
+  return `<section class="ri-panel" data-connected-ai-review="${esc(run.id)}" data-connected-ai-claim-count="${claimCount}">
     <h3>Human review (connected)</h3>
-    <p class="ri-muted">Review persisted AI output — provenance and citations shown below. New live executions remain disabled in connected staging. Do not accept findings with unresolved evidence without explicit reviewer judgement.</p>
+    <p class="ri-muted">Review persisted AI output — provenance and citations shown below. Select accepted findings before partial or full accept. Do not accept unsupported regulatory conclusions.</p>
+    ${claimBoxes}
     <label>Decision
       <select data-connected-ai-review-decision>
         <option value="ACCEPTED">Accept</option>

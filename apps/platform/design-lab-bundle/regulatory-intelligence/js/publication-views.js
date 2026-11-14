@@ -38,6 +38,7 @@ import { renderAiSummaryPanel } from './ai-summary-ui.js';
 import { renderChangeAnalysisPanel } from './ai-workflow-ui.js';
 import { canGenerateAiSummary, canMutateAiReviewState, isAuditorReadOnly } from './ai/persona-ai.js';
 import { isConnectedBackendActive } from './platform/connected-mode.js';
+import { renderConnectedPublicationAiTab } from './platform/connected-publication-ai-panels.js';
 import { connectedCatalogueBanner, getConnectedAssigneeLabel } from './platform/connected-catalogue.js';
 import { getViewAiAnalysisRunsForPublication } from './store.js';
 
@@ -295,9 +296,10 @@ function renderChangesTab(pubId) {
 
 function renderPublicationAiTabConnected(p) {
   const runs = getViewAiAnalysisRunsForPublication(p.id);
+  let runsSection = '';
   if (!runs.length) {
-    return `<p class="ri-muted">No persisted AI analysis runs are linked to this publication in the connected staging register. Completed analyses appear here when tenant APIs return operational or authorised UAT runs for this record.</p>`;
-  }
+    runsSection = `<p class="ri-muted">No persisted AI analysis runs for this publication yet. After extraction completes, runs appear here with review and materialisation links.</p>`;
+  } else {
   const rows = runs.map((r) => {
     const preview = r.findingsPreview ? esc(String(r.findingsPreview).slice(0, 120)) + (String(r.findingsPreview).length > 120 ? '…' : '') : '—';
     return `<tr>
@@ -309,7 +311,7 @@ function renderPublicationAiTabConnected(p) {
       <td>${r.claimsCount != null ? esc(String(r.claimsCount)) : '—'}</td>
     </tr>`;
   });
-  return `<section class="ri-panel">
+    runsSection = `<section class="ri-panel">
     <h3>Persisted AI analyses (connected staging)</h3>
     <p class="ri-muted">${runs.length} run(s) for this publication — open a row to inspect findings, citations and review status. Provider and model details remain in AI Governance.</p>
     ${dataTable(
@@ -317,6 +319,8 @@ function renderPublicationAiTabConnected(p) {
       rows,
     )}
   </section>`;
+  }
+  return renderConnectedPublicationAiTab(p, runsSection);
 }
 
 function renderAiTab(p, analysis) {
