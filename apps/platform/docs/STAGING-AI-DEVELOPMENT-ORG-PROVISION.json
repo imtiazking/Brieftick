@@ -1,0 +1,27 @@
+{
+  "capturedAt": "2026-11-14T10:57:06.641Z",
+  "organisation": {
+    "id": "b8f5e3a1-00ad-4000-8000-000000000001",
+    "name": "FORGENIQ AI Development",
+    "slug": "forgeniq-ai-development"
+  },
+  "apply": true,
+  "ok": true,
+  "membershipsPlanned": [
+    {
+      "clerkUserId": "user_3LIQIZlXNWBFEvSKabAYIUhhNdi",
+      "role": "COMPLIANCE_MANAGER",
+      "label": "forgeniq-gmail-technical"
+    }
+  ],
+  "organisationUpsert": "applied",
+  "memberships": "applied",
+  "partnerUsersInAiDev": [],
+  "regulatoryChanges": 0,
+  "envHint": "STAGING_AI_TECH_ORG_ID=b8f5e3a1-00ad-4000-8000-000000000001",
+  "isolationTargets": {
+    "orgA": "cd25bb17-d575-4109-8432-4b63c75f9617",
+    "partnerUat": "4d871541-e0d4-4581-828d-72073f763f85",
+    "aiDev": "b8f5e3a1-00ad-4000-8000-000000000001"
+  }
+}

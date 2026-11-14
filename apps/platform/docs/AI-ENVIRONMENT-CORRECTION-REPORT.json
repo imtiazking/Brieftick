@@ -1,0 +1,71 @@
+{
+  "capturedAt": "2026-11-14T10:50:00.000Z",
+  "mode": "verification_and_config_correction_no_deploy_no_db_writes",
+  "hostedStaging": {
+    "alias": "https://staging-app.forgeniq.com",
+    "vercelProject": "forgeniq-platform-staging",
+    "deploymentId": "dpl_tVa87yCeHTH2Ny1oubJN5G9NVTpR",
+    "deploymentUrl": "https://forgeniq-platform-staging-85yppmsit-imis-projects-8e15dca0.vercel.app",
+    "readyAt": "2026-11-11T23:13:56.000Z",
+    "gitCommitSha": "not exposed in vercel inspect JSON (dpl_tVa87yCeHTH2Ny1oubJN5G9NVTpR)",
+    "deployBranchInferredFromDocs": "production/ri-golden-master (per STAGING-DEPLOYMENT-SAFETY-CHECK.json)",
+    "goldenMasterHeadLocal": "293d387 fix(ask-ri): surface mixed html and PDF answer in Design Lab",
+    "localDevHead": "7fa0883 feature/ask-ri-v2-evaluation-baseline",
+    "inProgressAiOnHosted": false,
+    "rationale": "Deployed 2026-11-11; PDF UC-RI-005 lab POST + pdf_primary grounding are uncommitted/local on feature/ask-ri-v2-evaluation-baseline (2026-11-14 work)."
+  },
+  "organisations": {
+    "orgATechnicalTest": {
+      "id": "cd25bb17-d575-4109-8432-4b63c75f9617",
+      "name": "FORGENIQ",
+      "slug": "forgeniq",
+      "role": "Primary technical test org (controlled UAT prefixes, Phase 8D.3 live AI history)"
+    },
+    "partnerBusinessUat": {
+      "id": "4d871541-e0d4-4581-828d-72073f763f85",
+      "name": "FORGENIQ Partner UAT",
+      "slug": "forgeniq-partner-uat",
+      "role": "Independent business acceptance only — forbidden for experimental AI"
+    },
+    "dedicatedAiDevOrg": {
+      "exists": false,
+      "proposed": {
+        "name": "FORGENIQ AI Development",
+        "slug": "forgeniq-ai-development",
+        "organisationId": null,
+        "approvalRequired": true
+      },
+      "interimLiveTenant": "cd25bb17-d575-4109-8432-4b63c75f9617 via STAGING_AI_TECH_ORG_ID after explicit approval only"
+    }
+  },
+  "pdfEnvironmentCorrection": {
+    "removedPartnerLiveDependency": true,
+    "deprecatedScript": "scripts/staging/partner-uat-fg22-obligation-pdf-e2e.mjs (exits 2)",
+    "replacementScript": "scripts/staging/fg22-obligation-pdf-technical-e2e.mjs",
+    "liveEnvVar": "FORGENIQ_AI_TECH_FG22_LIVE=1",
+    "partnerAuditScript": "scripts/staging/read-only-verify-partner-fg22-preflight.mjs",
+    "configModule": "scripts/staging/staging-ai-technical-test-config.mjs"
+  },
+  "partnerPreflightReadOnlyAudit": {
+    "artefact": "docs/STAGING-PARTNER-FG22-PREFLIGHT-READONLY-AUDIT.json",
+    "fg22ChangeInserted": true,
+    "changeId": "b8f5e3a1-0020-4000-8000-000000000020",
+    "externalKey": "UAT-PARTNER-CHG-FG22-PDF",
+    "createdAt": "2026-11-14T09:52:51.215Z",
+    "organisationPublicationInserted": true,
+    "organisationPublicationCreatedAt": "2026-11-14T09:52:51.310Z",
+    "makerCheckerSeedUntouched": true,
+    "partnerAiRunsForFg22": 0,
+    "automaticDeletion": false,
+    "note": "Orphaned Partner FG22 row from pre-correction preflight; leave until operator approves cleanup"
+  },
+  "branchIsolationPlan": {
+    "currentBranch": "feature/ask-ri-v2-evaluation-baseline",
+    "recommended": [
+      "Keep single branch until review; split commits (not branches) by path: lib/ri/eval|reasoner|ask-ri vs lib/ri/services/ai-* + lab API + design-lab PDF panels",
+      "Shared merge-review files: anthropic-prompts-core.mjs, run-eval-suite-v2.mjs (if touched by both), package.json scripts",
+      "Do not git reset/clean; stage workstream-specific hunks only at commit time",
+      "Optional future: branch feature/pdf-uc-ri-005 from baseline after PDF commit lands"
+    ]
+  }
+}

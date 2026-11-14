@@ -1,0 +1,38 @@
+{
+  "capturedAt": "2026-11-14T10:57:15.524Z",
+  "aiDevOrg": {
+    "id": "b8f5e3a1-00ad-4000-8000-000000000001",
+    "name": "FORGENIQ AI Development",
+    "slug": "forgeniq-ai-development"
+  },
+  "slugOk": true,
+  "memberships": [
+    {
+      "clerk_user_id": "user_3LIQIZlXNWBFEvSKabAYIUhhNdi",
+      "role": "COMPLIANCE_MANAGER",
+      "status": "active"
+    }
+  ],
+  "partnerPersonasOnAiDev": [],
+  "rowCounts": {
+    "aiDev": {
+      "regulatory_changes": 0,
+      "regulatory_obligations": 0,
+      "ai_analysis_runs": 0,
+      "impact_assessments": 0
+    },
+    "orgA": {
+      "regulatory_changes": 70,
+      "regulatory_obligations": 18,
+      "ai_analysis_runs": 6,
+      "impact_assessments": 52
+    },
+    "partnerUat": {
+      "regulatory_changes": 4,
+      "regulatory_obligations": 4,
+      "ai_analysis_runs": 0,
+      "impact_assessments": 4
+    }
+  },
+  "pass": true
+}

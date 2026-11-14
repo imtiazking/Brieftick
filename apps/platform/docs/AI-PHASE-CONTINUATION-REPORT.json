@@ -1,0 +1,88 @@
+{
+  "capturedAt": "2026-11-14T11:00:00.000Z",
+  "aiDevelopmentOrganisation": {
+    "uuid": "b8f5e3a1-00ad-4000-8000-000000000001",
+    "name": "FORGENIQ AI Development",
+    "slug": "forgeniq-ai-development",
+    "envVar": "STAGING_AI_TECH_ORG_ID=b8f5e3a1-00ad-4000-8000-000000000001",
+    "membership": [
+      {
+        "clerkUserId": "user_3LIQIZlXNWBFEvSKabAYIUhhNdi",
+        "role": "COMPLIANCE_MANAGER",
+        "partnerPersonasExcluded": true
+      }
+    ],
+    "tenantIsolationVerification": {
+      "artefact": "STAGING-AI-DEV-TENANT-ISOLATION.json",
+      "pass": true,
+      "aiDevRowCountsZero": true,
+      "partnerUsersOnAiDev": 0
+    }
+  },
+  "hostedStaging": {
+    "deploymentId": "dpl_tVa87yCeHTH2Ny1oubJN5G9NVTpR",
+    "alias": "https://staging-app.forgeniq.com",
+    "readyAt": "2026-11-11T23:13:56Z",
+    "localDevHead": "7fa0883",
+    "inProgressAiDeployed": false,
+    "deploymentReadiness": "NOT_READY — PDF POST route and pdf_primary UC-RI-005 path are local/untracked; gates before promote"
+  },
+  "askRiStages": {
+    "A": { "programmeStatus": "PASS", "evidence": "acceptance-stage-a-e2e-persistence.mjs exit 0 (mandatory matrix)" },
+    "B": {
+      "programmeStatus": "IN_PROGRESS",
+      "offlineGate": "acceptance-stage-b-secure-eval-evidence.mjs PASS",
+      "programmePass": false,
+      "note": "Requires signed secure-evidence artefact — scripts alone insufficient"
+    },
+    "C": {
+      "programmeStatus": "IN_PROGRESS",
+      "design": "ACCEPTED",
+      "implementation": "evidence-sufficiency-policy.mjs + render-verified-answer integration",
+      "offlineGate": "acceptance-stage-c-evidence-sufficiency-policy.mjs PASS",
+      "programmePass": false,
+      "note": "Production Ask RI path + full matrix coverage not complete"
+    },
+    "D": {
+      "programmeStatus": "IN_PROGRESS",
+      "offlineScripts": "reasoner + eval harness PASS",
+      "programmePass": false,
+      "note": "Needs refreshed dry-run suite report committed as regression evidence"
+    },
+    "E": { "programmeStatus": "NOT_PROMOTED", "note": "Bounded diagnostic only until B–D programme gates close" },
+    "F": { "programmeStatus": "NOT_STARTED_IN_REPO" },
+    "G": { "programmeStatus": "NOT_READY", "note": "SME dimensions AWAITING" }
+  },
+  "pdfObligationExtraction": {
+    "implementationStatus": "COMPLETE_LOCAL_OFFLINE",
+    "liveTenantOrg": "b8f5e3a1-00ad-4000-8000-000000000001",
+    "fg22Role": "guidance probe — obligationGradeSuitable=false (do not bypass)",
+    "bindingMaterialisationTest": "PENDING — select obligationGradeSuitable=true publication after catalogue audit",
+    "acceptance": { "acceptance-pdf-grounded-uc-005.mjs": "PASS", "fg22-obligation-pdf-technical-e2e.mjs": "PASS_OFFLINE" },
+    "untrackedCoreFiles": [
+      "lib/ri/ai/build-pdf-grounded-analysis-context.mjs",
+      "lib/ri/ai/normalize-structured-ai-output.mjs",
+      "app/api/ri-lab/ai-analysis-runs/route.ts"
+    ]
+  },
+  "developmentBranch": {
+    "name": "feature/ask-ri-v2-evaluation-baseline",
+    "commit": "7fa0883",
+    "separationPlan": "Commit 1: AI dev org + staging config; Commit 2: Stage C policy; Commit 3: PDF UC-RI-005 core (separate from unrelated working tree)"
+  },
+  "partnerUatProtection": {
+    "experimentalAiForbidden": true,
+    "makerCheckerSeedIntact": true,
+    "orphanFg22Records": {
+      "present": true,
+      "dependenciesZero": true,
+      "cleanupPlan": "STAGING-PARTNER-FG22-CLEANUP-PLAN.json",
+      "cleanupExecuted": false
+    }
+  },
+  "nextActions": {
+    "askRi": "Close Stage B evidence sign-off; extend Stage C into full pipeline + production path; refresh Stage D dry-run artefact",
+    "pdf": "Commit UC-RI-005 core; seed AI-dev FG22 change (approved fixture); live probe on AI dev org only after deploy",
+    "deploy": "Blocked until split commits + full regression + Partner UAT smoke on hosted build"
+  }
+}
