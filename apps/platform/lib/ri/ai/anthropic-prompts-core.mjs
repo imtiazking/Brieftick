@@ -16,8 +16,13 @@ Include claims[] with sourceSectionIds for each candidate where possible.`;
       return `Required: confidence (0-100), dimensions[] (string areas).
 Include claims[] grounded to source sections.`;
     case 'ObligationExtractionResult':
-      return `Required: confidence (0-100), candidates[] with statement, citation, sourceSection.
-Include claims[] with sourceSectionIds.`;
+      return `Required: confidence (0-100), candidates[] where each item includes:
+statement, sourceSectionIds[] (must use exact sourceSectionId values from Source sections),
+bindingNature (binding_requirement | guidance | consultation_proposal | explanatory_commentary | unknown),
+citation (human-readable PDF location), sourceQuotation (short verbatim excerpt from provided text only),
+effectiveDate (ISO date or null), applicabilityConditions (string or null).
+Do not invent obligations without sourceSectionIds. If evidence is insufficient return {"confidence":0,"candidates":[],"insufficientEvidence":true,"insufficientEvidenceReason":"..."}.
+Also include claims[] mirroring supported candidates with text, confidence, sourceSectionIds.`;
     default:
       return `Required: recommendation (string), confidence (0-100), claims[] (min 1) each with text, confidence, sourceSectionIds[].`;
   }
@@ -40,10 +45,15 @@ export function buildAnthropicPrompts(ctx) {
       excerpt: (s.text ?? '').slice(0, 6000),
     })),
   );
+  const regCtx =
+    ctx.regulatoryAnalysis && typeof ctx.regulatoryAnalysis === 'object'
+      ? `\nDeterministic publication signals (advisory only — verify against excerpts):\n${JSON.stringify(ctx.regulatoryAnalysis)}\n`
+      : '';
   const user = `Use case: ${ctx.useCaseId ?? 'unknown'}
 Analysis type: ${ctx.analysisType}
+Evidence mode: ${ctx.contextKind || 'publication_summary'}
 Target JSON schema: ${schemaName}
-
+${regCtx}
 Source sections (only these IDs may appear in sourceSectionIds):
 ${sectionsJson}
 

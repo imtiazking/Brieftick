@@ -2,6 +2,7 @@ import 'server-only';
 
 import type { PlatformRole } from '@/lib/roles';
 import { canRi, type RiAction } from '@/lib/ri/permissions';
+import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
 
 /**
  * Master gate for Design Lab connected mutations (default off).
@@ -68,6 +69,10 @@ export function resolveLabAiReviewWritesEnabled(role: PlatformRole): boolean {
   return resolveLabWrite(role, 'ai:review');
 }
 
+export function resolveLabAiRequestWritesEnabled(role: PlatformRole): boolean {
+  return resolveLabWrite(role, 'ai:request') && isRiAiExecutionEnabled();
+}
+
 export function resolveLabApplicabilityWorkflowEnabled(role: PlatformRole): boolean {
   return resolveLabWrite(role, 'applicability:write') || resolveLabWrite(role, 'impact:approve');
 }
@@ -85,7 +90,8 @@ export function resolveLabAnyConnectedWritesEnabled(role: PlatformRole): boolean
     resolveLabTriageWritesEnabled(role) ||
     resolveLabPolicyWritesEnabled(role) ||
     resolveLabActionWritesEnabled(role) ||
-    resolveLabAiReviewWritesEnabled(role)
+    resolveLabAiReviewWritesEnabled(role) ||
+    resolveLabAiRequestWritesEnabled(role)
   );
 }
 
@@ -146,5 +152,6 @@ export function buildLabWriteCapabilities(role: PlatformRole) {
     policies: resolveLabPolicyWritesEnabled(role),
     actions: resolveLabActionWritesEnabled(role),
     aiReview: resolveLabAiReviewWritesEnabled(role),
+    aiRequest: resolveLabAiRequestWritesEnabled(role),
   };
 }

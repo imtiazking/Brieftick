@@ -47,10 +47,17 @@ export type AnalysisRunRow = {
   completed_at: string | null;
 };
 
-async function buildPublicationContext(
+type AnalysisSourceContext = {
+  sourceSections: Array<{ sourceSectionId: string; citation: string; text: string }>;
+  allowedSectionIds: string[];
+  contextKind: 'publication_summary' | 'pdf_primary_v1';
+  grounding?: Record<string, unknown>;
+};
+
+async function buildSummaryPublicationContext(
   supabase: SupabaseClient,
   publicationVersionId: string,
-) {
+): Promise<AnalysisSourceContext> {
   const { data: version, error: versionError } = await supabase
     .from('regulatory_publication_versions')
     .select('id, version_number, publication_id')
@@ -78,7 +85,40 @@ async function buildPublicationContext(
       },
     ],
     allowedSectionIds: [sectionId],
+    contextKind: 'publication_summary',
   };
+}
+
+async function buildPublicationContext(
+  supabase: SupabaseClient,
+  publicationVersionId: string,
+  publicationId: string,
+  useCaseId: string,
+): Promise<AnalysisSourceContext> {
+  const pdfGrounded = useCaseId === 'UC-RI-005' || useCaseId === 'UC-RI-002';
+  if (pdfGrounded) {
+    const { buildPdfGroundedAnalysisContext } = await import(
+      '@/lib/ri/ai/build-pdf-grounded-analysis-context.mjs'
+    );
+    const pdf = await buildPdfGroundedAnalysisContext({
+      publicationId,
+      publicationVersionId,
+    });
+    if (!pdf.ok || !pdf.sourceSections?.length || !pdf.allowedSectionIds?.length) {
+      throw new Error(pdf.code || 'pdf_grounding_unavailable');
+    }
+    return {
+      sourceSections: pdf.sourceSections.map((s) => ({
+        sourceSectionId: s.sourceSectionId,
+        citation: s.citation,
+        text: s.text,
+      })),
+      allowedSectionIds: [...pdf.allowedSectionIds],
+      contextKind: 'pdf_primary_v1',
+      grounding: pdf.grounding as Record<string, unknown>,
+    };
+  }
+  return buildSummaryPublicationContext(supabase, publicationVersionId);
 }
 
 export async function listAnalysisRunsForPublication(
@@ -156,6 +196,7 @@ export async function requestPublicationAnalysis(
     useCaseId: string;
     fixtureScenario?: string;
     targetEntityId?: string;
+    idempotencyKeySuffix?: string;
   },
 ) {
   assertCanRi(params.role, 'ai:request');
@@ -168,7 +209,12 @@ export async function requestPublicationAnalysis(
   }
 
   const analysisType = useCase.analysisTypes[0];
-  const ctx = await buildPublicationContext(supabase, params.publicationVersionId);
+  const ctx = await buildPublicationContext(
+    supabase,
+    params.publicationVersionId,
+    params.publicationId,
+    params.useCaseId,
+  );
   const fallbackCode = resolveLiveProviderFallbackError();
   if (fallbackCode) {
     throw new Error(fallbackCode);
@@ -177,7 +223,9 @@ export async function requestPublicationAnalysis(
   const provider = getAiProvider(providerMode);
   const promptVersion = useCase.promptVersion;
 
-  const idempotencyKey = `${params.useCaseId}:${params.publicationVersionId}:${params.organisationId}`;
+  const idempotencyKey = params.idempotencyKeySuffix
+    ? `${params.useCaseId}:${params.publicationVersionId}:${params.organisationId}:${params.idempotencyKeySuffix}`
+    : `${params.useCaseId}:${params.publicationVersionId}:${params.organisationId}`;
 
   let runRow: AnalysisRunRow | null = null;
 
@@ -261,7 +309,17 @@ export async function requestPublicationAnalysis(
     useCaseId: params.useCaseId,
     analysisType,
     fixtureScenario: params.fixtureScenario,
-    context: ctx,
+    context: {
+      sourceSections: ctx.sourceSections,
+      regulatoryAnalysis: ctx.grounding?.regulatoryAnalysis ?? null,
+      contextKind: ctx.contextKind,
+      allowedSectionIds: ctx.allowedSectionIds,
+    } as {
+      sourceSections: typeof ctx.sourceSections;
+      allowedSectionIds?: string[];
+      regulatoryAnalysis?: unknown;
+      contextKind?: string;
+    },
   });
   const latencyMs = Date.now() - started;
 
@@ -310,7 +368,21 @@ export async function requestPublicationAnalysis(
     return { ok: false, runId: runRow.id, code: schemaCheck.code };
   }
 
-  const claims = ((successResult.structured as { claims?: AiClaim[] }).claims || []).map((c, i) => ({
+  const schemaName = successResult.schemaName || mapSchemaForAnalysisType(analysisType);
+  const { normalizeAnalysisStructuredOutput } = await import(
+    '@/lib/ri/ai/normalize-structured-ai-output.mjs'
+  );
+  const normalized = normalizeAnalysisStructuredOutput(
+    successResult.structured,
+    schemaName,
+    ctx.allowedSectionIds,
+  );
+  const structuredOutput = { ...normalized.structured };
+  if (ctx.grounding) {
+    structuredOutput._forgeniqGrounding = ctx.grounding;
+  }
+
+  const claims = (normalized.claims as AiClaim[]).map((c, i) => ({
     ...c,
     id: `claim-${i}`,
   }));
@@ -325,7 +397,7 @@ export async function requestPublicationAnalysis(
     .update({
       execution_status: AI_EXECUTION_STATUS.COMPLETED,
       review_status: reviewStatus,
-      structured_output: successResult.structured,
+      structured_output: structuredOutput,
       latency_ms: latencyMs,
       completed_at: new Date().toISOString(),
       error_code: cite.ok ? null : AI_ERRORS.AI_CITATION_INVALID,

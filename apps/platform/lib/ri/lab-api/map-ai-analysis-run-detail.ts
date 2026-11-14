@@ -176,16 +176,35 @@ export function mapAiAnalysisCitationsForLab(
   });
 }
 
-export async function buildLabAiAnalysisRunDetailExtras(
+async function loadAnalysisSourceSectionsForRun(
   supabase: SupabaseClient,
   run: AnalysisRunRow,
-  citationRows: AiCitationRow[],
-): Promise<LabAiAnalysisRunDetailExtras> {
+): Promise<Awaited<ReturnType<typeof loadPublicationSourceContextForAiRun>>> {
   const ctx = await loadPublicationSourceContextForAiRun(
     supabase,
     run.publication_id,
     run.publication_version_id,
   );
+  const grounding = run.structured_output?._forgeniqGrounding as
+    | { sectionCatalog?: Array<{ sourceSectionId: string; citation?: string; excerpt?: string }> }
+    | undefined;
+  const catalog = grounding?.sectionCatalog ?? [];
+  for (const row of catalog) {
+    if (!row?.sourceSectionId) continue;
+    ctx.sectionsById.set(row.sourceSectionId, {
+      citation: row.citation || `PDF evidence ${row.sourceSectionId.slice(0, 12)}…`,
+      text: row.excerpt || '',
+    });
+  }
+  return ctx;
+}
+
+export async function buildLabAiAnalysisRunDetailExtras(
+  supabase: SupabaseClient,
+  run: AnalysisRunRow,
+  citationRows: AiCitationRow[],
+): Promise<LabAiAnalysisRunDetailExtras> {
+  const ctx = await loadAnalysisSourceSectionsForRun(supabase, run);
   return {
     publicationSource: {
       publicationId: run.publication_id,

@@ -18,6 +18,8 @@ type CandidateObligation = {
   sourceSection?: string;
   effectiveDate?: string;
   regulatoryChangeId?: string;
+  bindingNature?: string;
+  sourceQuotation?: string;
 };
 
 export function resolveAcceptedClaimIndexes(
@@ -173,6 +175,8 @@ export async function materialiseReviewedClaims(
       }
 
       const candidate = candidates[claimIndex] ?? candidates[0];
+      const claimsArr = (output.claims as Array<Record<string, unknown>>) || [];
+      const claimMeta = claimsArr[claimIndex];
       const changeId =
         candidate?.regulatoryChangeId || run.target_entity_id || null;
       if (!changeId || !candidate?.statement) continue;
@@ -202,6 +206,17 @@ export async function materialiseReviewedClaims(
           ai_analysis_run_id: params.runId,
           ai_analysis_review_id: params.reviewId,
           created_by_user_id: params.userId,
+          metadata: {
+            recordProvenance: 'uat_authorised',
+            bindingNature:
+              (typeof claimMeta?.bindingNature === 'string' && claimMeta.bindingNature) ||
+              (typeof candidate.bindingNature === 'string' && candidate.bindingNature) ||
+              'unknown',
+            sourceQuotation:
+              (typeof claimMeta?.sourceQuotation === 'string' && claimMeta.sourceQuotation) ||
+              null,
+            pdfGrounded: Boolean((output._forgeniqGrounding as { kind?: string })?.kind === 'pdf_primary_v1'),
+          },
         })
         .select('id')
         .single();

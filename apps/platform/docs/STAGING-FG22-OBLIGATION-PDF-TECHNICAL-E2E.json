@@ -1,0 +1,43 @@
+{
+  "capturedAt": "2026-11-14T10:57:16.268Z",
+  "technicalOrgId": "b8f5e3a1-00ad-4000-8000-000000000001",
+  "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+  "plannedChangeId": "b8f5e3a1-00ad-4000-8000-000000000010",
+  "plannedExternalKey": "UAT-AI-CHG-FG22-PDF",
+  "phases": {
+    "pdfContext": {
+      "pass": true,
+      "sectionCount": 18,
+      "obligationGradeSuitable": false,
+      "publicationClass": {
+        "primaryClass": "guidance",
+        "allowedClasses": [
+          "consultation_paper",
+          "policy_statement",
+          "supervisory_statement",
+          "guidance",
+          "regulatory_rules",
+          "other_regulatory_publication"
+        ],
+        "label": null
+      }
+    },
+    "liveAi": {
+      "pass": false,
+      "skipped": true,
+      "detail": "set FORGENIQ_AI_TECH_FG22_LIVE=1 after technical-test org approval (not Partner UAT)"
+    }
+  },
+  "pass": true,
+  "writePolicy": "no_tenant_writes_in_this_script",
+  "partnerUatIsolation": {
+    "partnerOrgId": "4d871541-e0d4-4581-828d-72073f763f85",
+    "note": "Partner rows are audited separately; this script does not INSERT into Partner UAT",
+    "forbiddenExperimentalAi": true
+  },
+  "baselineOrgAAssistObligations": 0,
+  "tenantIsolation": {
+    "orgAUnchanged": true,
+    "partnerNotTargeted": true
+  }
+}

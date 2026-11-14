@@ -1,0 +1,92 @@
+{
+  "capturedAt": "2026-11-14T10:10:00.000Z",
+  "revalidatedOfflineAt": "2026-11-14T10:08:00.000Z",
+  "verdict": "PARTIAL_PASS",
+  "summary": "PDF-grounded UC-RI-005 pipeline implemented and offline-verified on FG22/5 (18 evidence sections). Live tenant AI forbidden on Partner UAT; use fg22-obligation-pdf-technical-e2e.mjs after STAGING_AI_TECH_ORG_ID approval.",
+  "filesModified": [
+    "lib/ri/ai/build-pdf-grounded-analysis-context.mjs",
+    "lib/ri/ai/normalize-structured-ai-output.mjs",
+    "lib/ri/services/ai-analysis.ts",
+    "lib/ri/services/ai-materialisation.ts",
+    "lib/ri/ai/anthropic-prompts-core.mjs",
+    "lib/ri/lab-api/map-ai-analysis-run-detail.ts",
+    "lib/ri/lab-api/lab-connected-writes.ts",
+    "app/api/ri-lab/ai-analysis-runs/route.ts",
+    "design-lab-bundle/regulatory-intelligence/js/platform/connected-publication-ai-panels.js",
+    "design-lab-bundle/regulatory-intelligence/js/platform/connected-ai-governance-panels.js",
+    "design-lab-bundle/regulatory-intelligence/js/platform/connected-mode.js",
+    "design-lab-bundle/regulatory-intelligence/js/publication-views.js",
+    "design-lab-bundle/regulatory-intelligence/js/app.js",
+    "design-lab-bundle/regulatory-intelligence/js/ai-governance-views.js",
+    "scripts/acceptance-pdf-grounded-uc-005.mjs",
+    "scripts/staging/partner-uat-fg22-obligation-pdf-e2e.mjs"
+  ],
+  "reused": [
+    "load-publication-pdf-evidence.mjs",
+    "pdf-evidence-blocks.mjs",
+    "regulatory-pdf-analysis.mjs",
+    "regulatory-pdf-extract.mjs (catalogue)",
+    "ai-materialisation.ts",
+    "submitAnalysisReview / PATCH ai-analysis-runs/[id]",
+    "citation-validator.ts"
+  ],
+  "defectsCorrected": [
+    "UC-RI-005 used publication summary only — now pdf_primary_v1 chunking",
+    "Anthropic candidates[] not persisted as claims/citations — normalize + DB insert",
+    "Design Lab could not request obligation extraction — POST /api/ri-lab/ai-analysis-runs",
+    "Review submit sent empty acceptedClaimIndexes — checkbox materialisation gate",
+    "Citation detail unresolved for PDF IDs — sectionCatalog in _forgeniqGrounding"
+  ],
+  "pdfProcessing": {
+    "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+    "title": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+    "offlinePass": true,
+    "sectionCount": 18,
+    "obligationGradeSuitable": false,
+    "deterministicClass": "guidance"
+  },
+  "liveAiExecution": {
+    "pass": false,
+    "reason": "Live tenant AI blocked until technical-test org approved — FORGENIQ_AI_TECH_FG22_LIVE=1",
+    "technicalTestOrgDefault": "cd25bb17-d575-4109-8432-4b63c75f9617",
+    "partnerOrgForbiddenForExperimentalAi": "4d871541-e0d4-4581-828d-72073f763f85",
+    "targetChangeId": "b8f5e3a1-0020-4000-8000-000000000020",
+    "idempotencySuffix": "UAT-PARTNER-FG22-PDF-v1"
+  },
+  "materialisation": {
+    "pass": false,
+    "partnerAiAssistedObligations": 0,
+    "note": "Awaiting live review on new run"
+  },
+  "browserEvidence": {
+    "status": "NOT_RUN",
+    "routes": {
+      "publicationAi": "https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/index.html?dataScope=all#/publication/a761cacc-8742-493d-b200-eb5d9a3ab884/ai-analysis",
+      "fg22Change": "https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/index.html?dataScope=all#/change/b8f5e3a1-0020-4000-8000-000000000020"
+    }
+  },
+  "acceptanceCriteria": {
+    "pdfEvidenceRead": "PASS_OFFLINE",
+    "groundedCandidates": "PENDING_LIVE",
+    "pageSectionAccuracy": "PENDING_LIVE",
+    "unsupportedQuarantine": "PASS_OFFLINE_NORMALIZE",
+    "bindingVsGuidance": "PARTIAL_DETERMINISTIC_CLASS_PLUS_PROMPT",
+    "humanReview": "IMPLEMENTED_PENDING_UAT",
+    "materialiseAfterApproval": "IMPLEMENTED_UNTESTED",
+    "designLabVisibility": "IMPLEMENTED_PENDING_DEPLOY",
+    "tenantIsolation": "PASS",
+    "idempotentRetry": "IMPLEMENTED_SUFFIX_KEY"
+  },
+  "limitations": [
+    "Chunk cap 18 sections — not full 121-page prompt",
+    "No OCR for scanned PDFs",
+    "obligationGradeSuitable remains false until human obligation-grade approval path",
+    "Hosted staging must deploy this commit before partner live test",
+    "Operational dashboard still excludes uat_authorised AI-assisted obligations"
+  ],
+  "commands": {
+    "offlineAcceptance": "node scripts/acceptance-pdf-grounded-uc-005.mjs",
+    "partnerPreflight": "node scripts/staging/partner-uat-fg22-obligation-pdf-e2e.mjs",
+    "liveAfterDeploy": "FORGENIQ_PARTNER_FG22_AI_LIVE=1 node scripts/staging/partner-uat-fg22-obligation-pdf-e2e.mjs"
+  }
+}
