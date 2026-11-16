@@ -1,0 +1,304 @@
+{
+  "schemaVersion": "forgeniq.eval.git-audit.v1",
+  "commit": "cfedc76b3448a75ca87ca02c99ed73709d95a58b",
+  "capturedAt": "2026-11-16T11:40:36.770Z",
+  "fileCount": 32,
+  "credentialRotationRequired": false,
+  "rows": [
+    {
+      "path": "docs/eval/Claude outputs/private-held-out-suite-v1.1.json",
+      "sizeBytes": 25602,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": true,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/Claude outputs/private-held-out-suite.json",
+      "sizeBytes": 25363,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": true,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json",
+      "sizeBytes": 65125,
+      "sensitiveHits": [],
+      "fullAnswersLikely": true,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json",
+      "sizeBytes": 12391,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.checkpoint.json",
+      "sizeBytes": 568,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.partial.json",
+      "sizeBytes": 2411,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json",
+      "sizeBytes": 12389,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json.checkpoint.json",
+      "sizeBytes": 568,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json.partial.json",
+      "sizeBytes": 2410,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-10T20-34-11-382Z.json",
+      "sizeBytes": 55881,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": true,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-10T22-17-34-994Z.json",
+      "sizeBytes": 103522,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": true,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json",
+      "sizeBytes": 6652,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": true,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json.checkpoint.json",
+      "sizeBytes": 574,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": true,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json.partial.json",
+      "sizeBytes": 1322,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": true,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json",
+      "sizeBytes": 18990,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json.checkpoint.json",
+      "sizeBytes": 576,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json.partial.json",
+      "sizeBytes": 4912,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json",
+      "sizeBytes": 18196,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json.checkpoint.json",
+      "sizeBytes": 576,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json.partial.json",
+      "sizeBytes": 4645,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T20-52-08-795Z.json",
+      "sizeBytes": 1182,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-09-30-138Z.json",
+      "sizeBytes": 1181,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-30-33-960Z.json",
+      "sizeBytes": 1503,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-41-57-070Z.json",
+      "sizeBytes": 1562,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json.checkpoint.json",
+      "sizeBytes": 2412,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json.partial.json",
+      "sizeBytes": 4737,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json",
+      "sizeBytes": 19396,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    },
+    {
+      "path": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json.checkpoint.json",
+      "sizeBytes": 2528,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json.partial.json",
+      "sizeBytes": 14811,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json.checkpoint.json",
+      "sizeBytes": 2528,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json.partial.json",
+      "sizeBytes": 14811,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "STOP_TRACKING — move to gitignored local or sanitised manifest only"
+    },
+    {
+      "path": "docs/eval/runs/stage-d-regression-summary-2026-11-14T11-40-22-766Z.json",
+      "sizeBytes": 2925,
+      "sensitiveHits": [],
+      "fullAnswersLikely": false,
+      "privateEvalEvidence": false,
+      "retainInGit": false,
+      "recommendation": "Review — may keep if sanitised"
+    }
+  ],
+  "remediationPlan": [
+    "git rm --cached docs/eval/Claude outputs/",
+    "git rm --cached live eval runs with full answer payloads",
+    "Extend .gitignore for docs/eval/runs/*.partial.json, *.checkpoint.json, Claude outputs/",
+    "Keep sanitised baselines and committed manifests only",
+    "Rotate Anthropic keys only if audit finds literal secrets (check credentialRotationRequired)"
+  ]
+}

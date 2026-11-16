@@ -92,7 +92,13 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
 
   const ranked = retrieval.allRankedChunks || [];
   const bundle = assembleEvidenceBundle(index, ranked, options.evidenceBudget || {});
-  const coverageAssessment = assessEvidenceQuestionCoverage({ question, caseRow, bundle, retrieval });
+  const productionMode = !caseRow?.testId;
+  const coverageAssessment = assessEvidenceQuestionCoverage({
+    question,
+    bundle,
+    retrieval,
+    productionMode,
+  });
   bundle.coverageAssessment = coverageAssessment;
   bundle.questionCoverage = coverageAssessment.questionCoverage;
 

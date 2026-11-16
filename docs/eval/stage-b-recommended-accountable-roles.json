@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-b.roles.v1",
+  "capturedAt": "2026-11-16T12:00:00.000Z",
+  "namedOwner": null,
+  "note": "Roles only — assign named individuals in GRC tooling",
+  "items": [
+    {
+      "id": "B-01",
+      "recommendedRole": "Change control / release manager (GRC)",
+      "evidenceRequired": ["manifestSha256 recomputation", "stage-b-secure-evidence-manifest.json match"],
+      "decisionCriteria": "Manifest hash recorded in change control and matches repo",
+      "outstandingRisk": "Unpinned eval artefacts in Git until remediation complete",
+      "approvalStatus": "PENDING"
+    },
+    {
+      "id": "B-04",
+      "recommendedRole": "Data protection operator + platform operator",
+      "evidenceRequired": ["Corpus manifest listing", "Attestation no Partner UAT UUIDs in eval data"],
+      "decisionCriteria": "Signed statement that AUTHENTIC_CORPUS_B2 contains no tenant DB exports",
+      "outstandingRisk": "Accidental commit of live eval runs (cfedc76 audit)",
+      "approvalStatus": "PENDING"
+    },
+    {
+      "id": "B-05",
+      "recommendedRole": "Regulatory SME (secure evidence programme)",
+      "evidenceRequired": ["SME-REVIEW-PACK-10-THEMES.json review", "Scoring evidence procedure"],
+      "decisionCriteria": "SME attestation that eval scope is appropriate for programme gate",
+      "outstandingRisk": "Regulatory accuracy not validated",
+      "approvalStatus": "PENDING"
+    },
+    {
+      "id": "SEC-B-01",
+      "recommendedRole": "Information security officer",
+      "evidenceRequired": ["RI_AI_EXECUTION_ENABLED posture", "Key storage policy"],
+      "decisionCriteria": "Accept gated live execution model",
+      "outstandingRisk": "Developer local API keys",
+      "approvalStatus": "PENDING"
+    },
+    {
+      "id": "SEC-B-02",
+      "recommendedRole": "Information security officer + operator",
+      "evidenceRequired": ["eval-report-sanitize.mjs", "gitignore for scoring-evidence/local"],
+      "decisionCriteria": "Accept redaction + local-only full text policy",
+      "outstandingRisk": "Full answers in committed live run JSON (remediation in progress)",
+      "approvalStatus": "PENDING"
+    }
+  ]
+}

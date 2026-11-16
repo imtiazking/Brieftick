@@ -1,6 +1,11 @@
 /**
- * Deterministic evidence–question coverage (fail-closed). Does not set KNOWN from model output alone.
+ * Deterministic evidence–question coverage (fail-closed).
+ * Production path uses question + retrieval + bundle only — never eval expectedPublicationIds/themes.
  */
+import {
+  extractMaterialIssuesFromQuestion,
+  questionReferencesAbsentFromRetrieval,
+} from './extract-question-material-issues.mjs';
 
 function normaliseText(s) {
   return String(s || '')
@@ -8,154 +13,46 @@ function normaliseText(s) {
     .replace(/[^a-z0-9\s]/g, ' ');
 }
 
-function themeSupportedInChunks(theme, chunks) {
-  const tokens = normaliseText(theme)
+function chunkSupportsIssue(issue, chunk, question) {
+  const blob = normaliseText(
+    `${chunk.verbatimText || ''} ${chunk.sectionReference || ''} ${chunk.publicationTitle || ''} ${chunk.publicationReference || ''}`,
+  );
+  const qTokens = normaliseText(question)
     .split(/\s+/)
-    .filter((t) => t.length > 3);
-  if (!tokens.length) return false;
-  for (const ch of chunks) {
-    const blob = normaliseText(`${ch.verbatimText || ''} ${ch.sectionReference || ''} ${ch.publicationTitle || ''}`);
-    const hits = tokens.filter((t) => blob.includes(t)).length;
-    if (hits >= Math.min(2, tokens.length)) return true;
+    .filter((t) => t.length > 4)
+    .slice(0, 12);
+  const hits = qTokens.filter((t) => blob.includes(t)).length;
+  if (hits < 2 && issue.kind !== 'question_core') return false;
+
+  if (issue.kind === 'binding_vs_guidance') {
+    if (issue.id === 'binding_obligation') return /\bmust\b|\bshall\b|\brule\b/i.test(chunk.verbatimText || '');
+    if (issue.id === 'guidance_status') return /guidance|should/i.test(blob);
   }
-  return false;
+  if (issue.kind === 'temporal') {
+    const hasDate = /\b20\d{2}\b|effective|commence|force/i.test(chunk.verbatimText || '');
+    if (!hasDate) return false;
+  }
+  if (issue.kind === 'applicability') {
+    return /\bfirm\b|apply|scope/i.test(blob);
+  }
+  if (issue.kind === 'jurisdiction') {
+    const qRegs = (question.match(/\b(CONC|COBS|PRIN|FCA)\b/gi) || []).map((x) => x.toLowerCase());
+    if (qRegs.length && !qRegs.some((r) => blob.includes(r))) return false;
+  }
+  return hits >= 1 || issue.kind === 'question_core';
 }
 
-function extractMaterialIssues(caseRow, question) {
-  const issues = [];
-  for (const t of caseRow?.requiredAnswerThemes || []) {
-    issues.push({ id: `theme:${t}`, label: t, kind: 'required_theme' });
-  }
-  if (caseRow?.expectedIntent) {
-    issues.push({ id: `intent:${caseRow.expectedIntent}`, label: caseRow.expectedIntent, kind: 'expected_intent' });
-  }
-  if ((caseRow?.expectedPublicationIds || []).length) {
-    issues.push({
-      id: 'expected_publications',
-      label: `Publications: ${caseRow.expectedPublicationIds.join(', ')}`,
-      kind: 'publication_scope',
-    });
-  }
-  if (!issues.length) {
-    issues.push({ id: 'core_question', label: question.slice(0, 120), kind: 'question_text' });
-  }
-  return issues;
-}
-
-/**
- * @param {{
- *   question: string,
- *   caseRow?: object,
- *   bundle?: import('./evidence-assembler.mjs').EvidenceBundle,
- *   retrieval?: object,
- * }} input
- */
-export function assessEvidenceQuestionCoverage(input) {
-  const { question, caseRow = {}, bundle, retrieval } = input;
-  const reasons = [];
-  const chunks = bundle?.evidenceChunks || [];
-  const materialIssues = extractMaterialIssues(caseRow, question);
-  const mappings = [];
-
-  if (caseRow.evidenceAvailability === 'NOT_IN_SUITE') {
-    return {
-      questionCoverage: 'UNKNOWN',
-      completeness: 'NONE',
-      materialIssues,
-      mappings: materialIssues.map((m) => ({ ...m, status: 'source_not_in_corpus', evidenceChunkIds: [] })),
-      reasons: ['evidence_availability_not_in_suite — required regulatory sources absent from authorised corpus'],
-      contradictoryEvidence: [],
-      missingEvidence: materialIssues.map((m) => m.id),
-    };
-  }
-
-  if (!chunks.length) {
-    return {
-      questionCoverage: 'UNKNOWN',
-      completeness: 'NONE',
-      materialIssues,
-      mappings: [],
-      reasons: ['no_evidence_chunks_assembled'],
-      contradictoryEvidence: [],
-      missingEvidence: materialIssues.map((m) => m.id),
-    };
-  }
-
-  const expectedPubs = caseRow.expectedPublicationIds || [];
-  const represented = new Set(bundle.publicationsRepresented || []);
-  const missingPubs = expectedPubs.filter((id) => !represented.has(id));
-  if (missingPubs.length) {
-    reasons.push(`expected_publication_not_in_bundle:${missingPubs.join(',')}`);
-  }
-
-  let supportedCount = 0;
-  for (const issue of materialIssues) {
-    if (issue.kind === 'publication_scope') {
-      const ok = missingPubs.length === 0;
-      mappings.push({
-        issueId: issue.id,
-        label: issue.label,
-        status: ok ? 'mapped' : 'unmapped',
-        evidenceChunkIds: ok ? chunks.filter((c) => expectedPubs.includes(c.publicationId)).map((c) => c.evidenceChunkId) : [],
-      });
-      if (ok) supportedCount += 1;
-      continue;
-    }
-    if (issue.kind === 'required_theme') {
-      const supported = themeSupportedInChunks(issue.label, chunks);
-      mappings.push({
-        issueId: issue.id,
-        label: issue.label,
-        status: supported ? 'mapped' : 'unmapped',
-        evidenceChunkIds: supported ? chunks.slice(0, 3).map((c) => c.evidenceChunkId) : [],
-      });
-      if (supported) supportedCount += 1;
-      continue;
-    }
-    const supported = chunks.length > 0 && (retrieval?.publicationSelected || rankedAboveThreshold(retrieval));
-    mappings.push({
-      issueId: issue.id,
-      label: issue.label,
-      status: supported ? 'mapped' : 'unmapped',
-      evidenceChunkIds: supported ? [chunks[0].evidenceChunkId] : [],
-    });
-    if (supported) supportedCount += 1;
-  }
-
-  const total = materialIssues.length || 1;
-  const completeness =
-    supportedCount === 0 ? 'NONE' : supportedCount >= total && missingPubs.length === 0 ? 'FULL' : 'PARTIAL';
-
-  const contradictoryEvidence = detectContradictoryStatuses(chunks);
-
-  let questionCoverage = 'UNKNOWN';
-  if (supportedCount === total && missingPubs.length === 0 && contradictoryEvidence.length === 0) {
-    questionCoverage = 'KNOWN';
-    reasons.push('all_material_issues_mapped_with_expected_sources');
-  } else if (supportedCount > 0) {
-    reasons.push('partial_issue_mapping_or_missing_expected_publications');
-  } else {
-    reasons.push('no_material_issue_mapping');
-  }
-
-  const missingEvidence = mappings.filter((m) => m.status === 'unmapped').map((m) => m.issueId);
-
+function issueMappingForChunk(issue, chunks, question) {
+  const supporting = chunks.filter((c) => chunkSupportsIssue(issue, c, question));
   return {
-    questionCoverage,
-    completeness,
-    materialIssues,
-    mappings,
-    reasons,
-    contradictoryEvidence,
-    missingEvidence,
-    expectedPublicationsMissing: missingPubs,
+    issueId: issue.id,
+    label: issue.label,
+    kind: issue.kind,
+    status: supporting.length ? 'mapped' : 'unmapped',
+    evidenceChunkIds: supporting.slice(0, 5).map((c) => c.evidenceChunkId),
+    publicationIds: [...new Set(supporting.map((c) => c.publicationId))],
+    source: supporting.length ? 'retrieval_chunk_text_match' : 'no_supporting_chunk',
   };
-}
-
-function rankedAboveThreshold(retrieval) {
-  const ranked = retrieval?.allRankedChunks || [];
-  if (!ranked.length) return false;
-  return (ranked[0]?.similarity ?? 0) >= 0.2;
 }
 
 function detectContradictoryStatuses(chunks) {
@@ -166,9 +63,111 @@ function detectContradictoryStatuses(chunks) {
   return [];
 }
 
+function retrievalStrength(retrieval) {
+  const ranked = retrieval?.allRankedChunks || [];
+  if (!ranked.length) return { ok: false, topSimilarity: 0 };
+  const top = ranked[0]?.similarity ?? 0;
+  return { ok: top >= 0.24, topSimilarity: top };
+}
+
 /**
- * Post-verification: may downgrade KNOWN→UNKNOWN only; never upgrade from model output.
+ * @param {{
+ *   question: string,
+ *   bundle?: object,
+ *   retrieval?: object,
+ *   productionMode?: boolean,
+ * }} input — productionMode default true when testId absent
  */
+export function assessEvidenceQuestionCoverage(input) {
+  const { question, bundle, retrieval, productionMode = true } = input;
+  const materialIssues = extractMaterialIssuesFromQuestion(question);
+  const chunks = bundle?.evidenceChunks || [];
+  const reasons = [];
+
+  const sourceAbsent = questionReferencesAbsentFromRetrieval(question, retrieval);
+  if (sourceAbsent.absent) {
+    return {
+      mode: productionMode ? 'production' : 'eval',
+      questionCoverage: 'UNKNOWN',
+      completeness: 'NONE',
+      materialIssues,
+      mappings: materialIssues.map((m) => ({
+        issueId: m.id,
+        label: m.label,
+        status: 'unmapped',
+        source: 'source_absent_from_retrieval',
+        evidenceChunkIds: [],
+      })),
+      reasons: [`source_absent:${sourceAbsent.reason}`],
+      contradictoryEvidence: [],
+      missingEvidence: materialIssues.map((m) => m.id),
+      decisionTrace: materialIssues.map((m) => ({ issue: m.id, source: 'question_parser' })),
+    };
+  }
+
+  if (!chunks.length) {
+    return {
+      mode: productionMode ? 'production' : 'eval',
+      questionCoverage: 'UNKNOWN',
+      completeness: 'NONE',
+      materialIssues,
+      mappings: [],
+      reasons: ['no_evidence_chunks_assembled'],
+      contradictoryEvidence: [],
+      missingEvidence: materialIssues.map((m) => m.id),
+      decisionTrace: [{ issue: 'bundle', source: 'empty_bundle' }],
+    };
+  }
+
+  const strength = retrievalStrength(retrieval);
+  if (!strength.ok) {
+    reasons.push(`weak_retrieval_top_similarity:${strength.topSimilarity.toFixed(3)}`);
+  }
+
+  const mappings = materialIssues.map((issue) => issueMappingForChunk(issue, chunks, question));
+  const mappedCount = mappings.filter((m) => m.status === 'mapped').length;
+  const contradictoryEvidence = detectContradictoryStatuses(chunks);
+
+  const coreMapped = mappings.find((m) => m.issueId === 'primary_question')?.status === 'mapped';
+  if (!coreMapped) reasons.push('primary_question_not_grounded_in_chunks');
+
+  const total = materialIssues.length;
+  const completeness =
+    mappedCount === 0 ? 'NONE' : mappedCount >= total && coreMapped && strength.ok ? 'FULL' : 'PARTIAL';
+
+  let questionCoverage = 'UNKNOWN';
+  if (
+    mappedCount === total &&
+    coreMapped &&
+    strength.ok &&
+    contradictoryEvidence.length === 0 &&
+    completeness === 'FULL'
+  ) {
+    questionCoverage = 'KNOWN';
+    reasons.push('all_question_derived_issues_mapped_strong_retrieval');
+  } else if (mappedCount > 0) {
+    reasons.push('partial_issue_mapping_or_weak_retrieval');
+  } else {
+    reasons.push('no_issue_mapping_from_retrieved_evidence');
+  }
+
+  return {
+    mode: productionMode ? 'production' : 'eval',
+    questionCoverage,
+    completeness,
+    materialIssues,
+    mappings,
+    reasons,
+    contradictoryEvidence,
+    missingEvidence: mappings.filter((m) => m.status === 'unmapped').map((m) => m.issueId),
+    retrievalTopSimilarity: strength.topSimilarity,
+    decisionTrace: [
+      ...materialIssues.map((m) => ({ issue: m.id, source: 'extractMaterialIssuesFromQuestion' })),
+      ...mappings.map((m) => ({ issue: m.issueId, mappingSource: m.source, status: m.status })),
+    ],
+  };
+}
+
 export function refineCoverageAfterVerification(coverage, verification, bundle) {
   if (!coverage || coverage.questionCoverage !== 'KNOWN') return coverage;
   if (!verification?.ok) {
@@ -188,6 +187,15 @@ export function refineCoverageAfterVerification(coverage, verification, bundle) 
           reasons: [...(coverage.reasons || []), 'citation_outside_bundle_downgrade'],
         };
       }
+    }
+  }
+  for (const claim of verification.verifiedClaims || []) {
+    if (claim.classification === 'verified_fact' && !claim.citations?.length) {
+      return {
+        ...coverage,
+        questionCoverage: 'UNKNOWN',
+        reasons: [...(coverage.reasons || []), 'verified_claim_without_citation_downgrade'],
+      };
     }
   }
   return coverage;

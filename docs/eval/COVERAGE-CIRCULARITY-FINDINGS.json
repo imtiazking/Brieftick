@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "forgeniq.coverage.circularity.v1",
+  "capturedAt": "2026-11-16T12:00:00.000Z",
+  "commitBeforeFix": "cfedc76b3448a75ca87ca02c99ed73709d95a58b",
+  "circularDependenciesRemoved": [
+    "requiredAnswerThemes from eval caseRow",
+    "expectedPublicationIds establishing KNOWN",
+    "expectedIntent from eval caseRow",
+    "evidenceAvailability NOT_IN_SUITE flag in assessEvidenceQuestionCoverage",
+    "options.questionCoverage=KNOWN in eval harness"
+  ],
+  "productionInputsOnly": [
+    "question text → extractMaterialIssuesFromQuestion",
+    "retrieval ranked chunks + reference validation",
+    "assembled bundle chunks (authentic corpus)",
+    "verifyReasonerClaims (downgrade only)"
+  ],
+  "knownRequires": [
+    "all question-derived issues mapped to chunk text",
+    "top retrieval similarity ≥ 0.24",
+    "primary question grounded",
+    "no contradictory binding/consultation mix",
+    "verification passes with in-bundle citations"
+  ],
+  "explicitlyNotSufficientForKnown": [
+    "expectedIdealResult",
+    "suite expected publications",
+    "mock model DIRECT_SUPPORT alone",
+    "retrieval without issue mapping"
+  ]
+}

@@ -32,6 +32,14 @@ apps/platform/supabase/seed/reference-catalogue.generated.sql
 # Eval scoring evidence — full answers (local operator artefact only)
 docs/eval/scoring-evidence/local/
 
+# Eval — private / live run artefacts (retain locally; commit sanitised manifests only)
+docs/eval/Claude outputs/
+docs/eval/runs/*.partial.json
+docs/eval/runs/*.checkpoint.json
+docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-*.json
+docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-*/
+docs/eval/runs/phase-2c2-ask-ri-v2-smoke-*.json
+
 # Official regulatory PDF cache (verification only — not committed)
 docs/eval/regulatory-sources/cache/
 apps/platform/.local-pg-verify/

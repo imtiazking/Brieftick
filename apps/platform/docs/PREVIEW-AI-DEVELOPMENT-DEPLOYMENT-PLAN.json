@@ -2,6 +2,8 @@
   "schemaVersion": "forgeniq.preview.ai-dev.v1",
   "capturedAt": "2026-11-14T14:00:00.000Z",
   "authoritativeTechnicalCommit": "00b4369",
+  "coverageRefactorPendingReview": "post-cfedc76 — not approved for preview",
+  "unreviewedCommitBlocked": "cfedc76b3448a75ca87ca02c99ed73709d95a58b",
   "scoringEvidenceBaseline": "f2da230",
   "priorHarnessPin": "3e3dccb",
   "approvedForSharedStaging": false,

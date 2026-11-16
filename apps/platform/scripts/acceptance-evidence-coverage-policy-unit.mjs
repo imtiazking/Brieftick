@@ -29,13 +29,14 @@ const knownAnswered = resolveFinalRegulatoryStatus({
 if (knownAnswered.status !== 'ANSWERED') failures.push('KNOWN+DIRECT_SUPPORT should ANSWERED');
 else ok('KNOWN coverage allows ANSWERED');
 
-const notInSuite = assessEvidenceQuestionCoverage({
-  question: 'PS99/99',
-  caseRow: { evidenceAvailability: 'NOT_IN_SUITE', requiredAnswerThemes: ['missing'] },
-  bundle: { evidenceChunks: [{ evidenceChunkId: 'x', verbatimText: 'noise' }], publicationsRepresented: ['p'] },
+const absentSource = assessEvidenceQuestionCoverage({
+  question: 'Summarise FCA Policy Statement PS99/99 on cryptoassets.',
+  bundle: { evidenceChunks: [], publicationsRepresented: [] },
+  retrieval: { allRankedChunks: [], referenceValidation: { blockSemanticSelection: true } },
+  productionMode: true,
 });
-if (notInSuite.questionCoverage !== 'UNKNOWN') failures.push('NOT_IN_SUITE must stay UNKNOWN');
-else ok('NOT_IN_SUITE → UNKNOWN coverage');
+if (absentSource.questionCoverage !== 'UNKNOWN') failures.push('absent source must stay UNKNOWN');
+else ok('absent authoritative source → UNKNOWN (production, no eval metadata)');
 
 const downgrade = refineCoverageAfterVerification(
   { questionCoverage: 'KNOWN', reasons: ['test'] },
