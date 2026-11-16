@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "forgeniq.ai-dev.delivery.v1",
+  "capturedAt": "2026-11-16T12:25:00.000Z",
+  "baseCommitBeforeWork": "70d46cbbd8a0e898140d10a118112829d8271264",
+  "branch": "feature/ask-ri-v2-evaluation-baseline",
+  "deploymentsExecuted": false,
+  "paidAnthropicExecuted": false,
+  "phase1_defectsFixed": [
+    "Hybrid retrieval strength used RRF score (~0.03) instead of semanticSimilarity for KNOWN gating",
+    "Material issue mapping blocked kind-specific rules behind token-overlap guard",
+    "False multi-source issue from ‘honesty and integrity’ conjunction",
+    "Spurious KNOWN on absent COBS / foreign regime / CONC without handbook module evidence"
+  ],
+  "phase1_remainingDefects": [
+    "EVAL-B-03 still surfaces KNOWN in integration harness when COBS absent (eval case uses mock corpus overlap — not production unseen path)",
+    "Stage D ideal-response mismatches unchanged (documented deviations; SME not regulatory sign-off)"
+  ],
+  "phase2_unseenQuestions": {
+    "artifact": "docs/eval/PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json",
+    "count": 11,
+    "programmePass": true,
+    "smeValidated": false
+  },
+  "phase3_regression": {
+    "allScriptsExitZero": true,
+    "scripts": [
+      "acceptance-evidence-coverage-policy-unit.mjs",
+      "acceptance-evidence-coverage-integration.mjs",
+      "acceptance-production-coverage-unseen-questions.mjs",
+      "acceptance-stage-a-e2e-persistence.mjs",
+      "acceptance-stage-d-scoring-reconstruction.mjs",
+      "acceptance-stage-b-secure-eval-evidence.mjs",
+      "acceptance-stage-c-production-path.mjs",
+      "acceptance-stage-c-evidence-sufficiency-policy.mjs",
+      "acceptance-stage-c-v2-integration.mjs",
+      "acceptance-stage-e-budget-ceiling-offline.mjs"
+    ]
+  },
+  "phase4_gitSecurity": {
+    "localAudit": "docs/eval/COMMIT-cfedc76-GIT-AUDIT.json",
+    "remoteHistoryAudit": "docs/eval/COMMIT-cfedc76-REMOTE-HISTORY-AUDIT.json",
+    "cfedc76OnRemoteBranches": false,
+    "credentialsInRepo": false,
+    "historyRewriteRecommended": false,
+    "note": "cfedc76 object absent locally; origin does not contain commit — low remote exposure risk on current machine"
+  },
+  "phase5_ps26_1": {
+    "ingestExecuted": false,
+    "testPlan": "docs/eval/FCA-PS26-1-UC-RI-005-EXTRACTION-TEST-PLAN.json",
+    "humanGatesOpen": ["OG-02", "OG-04", "OG-05", "OG-06"],
+    "readiness": "TEST_PLAN_ONLY"
+  },
+  "phase6_stageB": {
+    "decisionsPending": "docs/eval/stage-b-operator-decisions-pending.json",
+    "roles": "docs/eval/stage-b-recommended-accountable-roles.json",
+    "stageEDeferred": "docs/eval/stage-e-diagnostic-DEFERRED.json",
+    "stageEProposal": "docs/eval/stage-e-diagnostic-three-case-proposal-v2.json"
+  },
+  "phase6_liveAiReadiness": {
+    "technicalPrerequisiteUnseenPass": true,
+    "smeReviewComplete": false,
+    "operatorAuthorization": false,
+    "readyForLiveDiagnostic": false
+  },
+  "previewPin": {
+    "authoritativeTechnicalCommit": "00b4369",
+    "promoteAfter": "Operator review of new baseline commit + Stage B minimum"
+  },
+  "nextExecutableTasks": [
+    "SME review of UNSEEN-SUFFICIENT-PRIN expected regulatory outcome",
+    "Human PS26/1 page boundaries and per-rule commencement (OG-02/04/05/06)",
+    "Stage B pending decisions B-01, B-04, B-05, SEC-B-01, SEC-B-02",
+    "Operator-approved clean RC commit pin (not deploy until approved)",
+    "Optional: tighten eval harness EVAL-B-03 coverage expectations after SME"
+  ]
+}

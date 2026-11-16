@@ -46,5 +46,44 @@ const downgrade = refineCoverageAfterVerification(
 if (downgrade.questionCoverage !== 'UNKNOWN') failures.push('verification failure must downgrade');
 else ok('refineCoverage never upgrades; downgrades on verify fail');
 
+const hybridStrongSemantic = assessEvidenceQuestionCoverage({
+  question: 'Under PRIN, what expectations apply to honesty?',
+  bundle: {
+    evidenceChunks: [
+      {
+        evidenceChunkId: 'c1',
+        verbatimText: 'A firm must act with honesty and integrity. High-level expectations under PRIN 2.1 apply to all firms.',
+        sectionReference: 'PRIN 2.1',
+        publicationTitle: 'Principles for Businesses',
+        publicationReference: 'PRIN',
+        publicationStatus: 'handbook',
+      },
+    ],
+  },
+  retrieval: {
+    retrievalMethod: 'hybrid',
+    allRankedChunks: [{ similarity: 0.03, semanticSimilarity: 0.85, method: 'hybrid_rrf' }],
+  },
+  productionMode: true,
+});
+if (hybridStrongSemantic.questionCoverage !== 'KNOWN') {
+  failures.push(`hybrid must use semanticSimilarity for strength got ${hybridStrongSemantic.questionCoverage}`);
+} else ok('hybrid retrieval strength uses semanticSimilarity not RRF');
+
+const weakSemantic = assessEvidenceQuestionCoverage({
+  question: 'Under PRIN, what expectations apply to honesty?',
+  bundle: {
+    evidenceChunks: [
+      { evidenceChunkId: 'c1', verbatimText: 'unrelated marketing text about holidays', publicationStatus: 'guidance' },
+    ],
+  },
+  retrieval: {
+    allRankedChunks: [{ similarity: 0.03, semanticSimilarity: 0.12, method: 'hybrid_rrf' }],
+  },
+  productionMode: true,
+});
+if (weakSemantic.questionCoverage !== 'UNKNOWN') failures.push('weak semantic must stay UNKNOWN');
+else ok('weak semantic similarity stays UNKNOWN');
+
 console.log(JSON.stringify({ ok: failures.length === 0, failures }, null, 2));
 process.exit(failures.length ? 1 : 0);

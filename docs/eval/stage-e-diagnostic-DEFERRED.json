@@ -6,7 +6,7 @@
   "deferralReason": "Prior B-01/D-02/C-02 set insufficient for regulatory accuracy; production coverage circularity fixed but SME + unseen-question validation required",
   "prerequisitesBeforeAnyLiveRun": [
     "COMMIT-cfedc76-GIT-AUDIT remediation merged",
-    "PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json pass",
+    "PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json pass (11/11 offline 2026-11-16)",
     "At least one SME-verified answerable case with KNOWN coverage + independent expected outcome",
     "One controlled insufficient-evidence case with documented abstention",
     "Stage B B-01/B-04/B-05 minimum",

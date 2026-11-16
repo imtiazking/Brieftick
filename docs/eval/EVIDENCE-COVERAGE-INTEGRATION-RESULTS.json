@@ -1,6 +1,6 @@
 {
   "schemaVersion": "forgeniq.eval.coverage-integration.v1",
-  "capturedAt": "2026-11-16T11:23:02.897Z",
+  "capturedAt": "2026-11-16T12:10:00.840Z",
   "programmePass": false,
   "regulatoryAccuracyPass": false,
   "note": "Uses assess-evidence-question-coverage; outcomes vary by corpus mapping — not pass/fail vs ideal.",
@@ -9,17 +9,17 @@
       "theme": "sufficient_evidence",
       "testId": "EVAL-B-01",
       "scenario": "SUFFICIENT",
-      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
+      "applicationPolicyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
-        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+        "applicationPolicyStatus": "ANSWERED",
+        "policyReason": "ANSWERED",
         "scorerOutcome": "FAIL",
         "harnessClassification": "ANSWERED",
         "suiteIdeal": null,
@@ -35,16 +35,16 @@
       "testId": "EVAL-B-01",
       "scenario": "PARTIAL",
       "applicationPolicyStatus": "PARTIAL_ANSWER",
-      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
+      "policyReason": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
         "applicationPolicyStatus": "PARTIAL_ANSWER",
-        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "policyReason": "PARTIAL",
         "scorerOutcome": "FAIL",
         "harnessClassification": "ANSWERED",
         "suiteIdeal": null,
@@ -61,10 +61,10 @@
       "scenario": "INSUFFICIENT",
       "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
       "policyReason": "NO_SUPPORT",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -84,18 +84,18 @@
       "theme": "insufficient_evidence",
       "testId": "EVAL-B-03",
       "scenario": "SUFFICIENT",
-      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "NONE",
+      "applicationPolicyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "evidence_availability_not_in_suite — required regulatory sources absent from authorised corpus"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
-      "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "scorerOutcome": "FAIL",
       "evalLayers": {
-        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
-        "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "applicationPolicyStatus": "ANSWERED",
+        "policyReason": "ANSWERED",
+        "scorerOutcome": "FAIL",
         "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
         "suiteIdeal": null,
         "regulatoryAccuracyVerified": false,
@@ -110,16 +110,16 @@
       "testId": "EVAL-B-03",
       "scenario": "PARTIAL",
       "applicationPolicyStatus": "PARTIAL_ANSWER",
-      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "NONE",
+      "policyReason": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "evidence_availability_not_in_suite — required regulatory sources absent from authorised corpus"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
         "applicationPolicyStatus": "PARTIAL_ANSWER",
-        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "policyReason": "PARTIAL",
         "scorerOutcome": "FAIL",
         "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
         "suiteIdeal": null,
@@ -136,10 +136,10 @@
       "scenario": "INSUFFICIENT",
       "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
       "policyReason": "NO_SUPPORT",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "NONE",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "evidence_availability_not_in_suite — required regulatory sources absent from authorised corpus"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
       "evalLayers": {
@@ -164,7 +164,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "PARTIAL_PASS",
       "evalLayers": {
@@ -189,7 +189,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -214,7 +214,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -239,7 +239,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "RETRIEVAL_PASS",
       "evalLayers": {
@@ -264,7 +264,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -289,7 +289,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -308,88 +308,13 @@
     {
       "theme": "guidance_vs_binding",
       "testId": "EVAL-D-02",
-      "scenario": "SUFFICIENT",
-      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
-      "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
-      ],
-      "scorerOutcome": "FAIL",
-      "evalLayers": {
-        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
-        "scorerOutcome": "FAIL",
-        "harnessClassification": "ANSWERED",
-        "suiteIdeal": null,
-        "regulatoryAccuracyVerified": false,
-        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
-      },
-      "citationCount": 1,
-      "blocked": false,
-      "blockReason": null
-    },
-    {
-      "theme": "guidance_vs_binding",
-      "testId": "EVAL-D-02",
-      "scenario": "PARTIAL",
-      "applicationPolicyStatus": "PARTIAL_ANSWER",
-      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
-      "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
-      ],
-      "scorerOutcome": "FAIL",
-      "evalLayers": {
-        "applicationPolicyStatus": "PARTIAL_ANSWER",
-        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
-        "scorerOutcome": "FAIL",
-        "harnessClassification": "ANSWERED",
-        "suiteIdeal": null,
-        "regulatoryAccuracyVerified": false,
-        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
-      },
-      "citationCount": 1,
-      "blocked": false,
-      "blockReason": null
-    },
-    {
-      "theme": "guidance_vs_binding",
-      "testId": "EVAL-D-02",
-      "scenario": "INSUFFICIENT",
-      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-      "policyReason": "NO_SUPPORT",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
-      "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
-      ],
-      "scorerOutcome": "FAIL",
-      "evalLayers": {
-        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-        "policyReason": "NO_SUPPORT",
-        "scorerOutcome": "FAIL",
-        "harnessClassification": "ANSWERED",
-        "suiteIdeal": null,
-        "regulatoryAccuracyVerified": false,
-        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
-      },
-      "citationCount": 0,
-      "blocked": false,
-      "blockReason": null
-    },
-    {
-      "theme": "incorrect_citations",
-      "testId": "EVAL-C-04",
       "scenario": "SUFFICIENT",
       "applicationPolicyStatus": "ANSWERED",
       "policyReason": "ANSWERED",
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "PARTIAL_PASS",
       "evalLayers": {
@@ -406,15 +331,15 @@
       "blockReason": null
     },
     {
-      "theme": "incorrect_citations",
-      "testId": "EVAL-C-04",
+      "theme": "guidance_vs_binding",
+      "testId": "EVAL-D-02",
       "scenario": "PARTIAL",
       "applicationPolicyStatus": "PARTIAL_ANSWER",
       "policyReason": "PARTIAL",
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -431,15 +356,93 @@
       "blockReason": null
     },
     {
-      "theme": "incorrect_citations",
-      "testId": "EVAL-C-04",
+      "theme": "guidance_vs_binding",
+      "testId": "EVAL-D-02",
       "scenario": "INSUFFICIENT",
       "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
       "policyReason": "NO_SUPPORT",
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "incorrect_citations",
+      "testId": "EVAL-C-04",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "primary_question_not_grounded_in_chunks",
+        "partial_issue_mapping_or_weak_retrieval"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "incorrect_citations",
+      "testId": "EVAL-C-04",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "primary_question_not_grounded_in_chunks",
+        "partial_issue_mapping_or_weak_retrieval"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "incorrect_citations",
+      "testId": "EVAL-C-04",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "primary_question_not_grounded_in_chunks",
+        "partial_issue_mapping_or_weak_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -524,7 +527,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "PARTIAL_PASS",
       "evalLayers": {
@@ -549,7 +552,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -574,7 +577,7 @@
       "questionCoverage": "KNOWN",
       "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "all_material_issues_mapped_with_expected_sources"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -599,8 +602,8 @@
       "questionCoverage": "UNKNOWN",
       "coverageCompleteness": "PARTIAL",
       "coverageReasons": [
-        "expected_publication_not_in_bundle:56b0beca-d8c3-4267-a794-9079009af661",
-        "partial_issue_mapping_or_missing_expected_publications"
+        "multi_document_issue_unmapped_insufficient_publications",
+        "partial_issue_mapping_or_weak_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -625,8 +628,8 @@
       "questionCoverage": "UNKNOWN",
       "coverageCompleteness": "PARTIAL",
       "coverageReasons": [
-        "expected_publication_not_in_bundle:56b0beca-d8c3-4267-a794-9079009af661",
-        "partial_issue_mapping_or_missing_expected_publications"
+        "multi_document_issue_unmapped_insufficient_publications",
+        "partial_issue_mapping_or_weak_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -651,8 +654,8 @@
       "questionCoverage": "UNKNOWN",
       "coverageCompleteness": "PARTIAL",
       "coverageReasons": [
-        "expected_publication_not_in_bundle:56b0beca-d8c3-4267-a794-9079009af661",
-        "partial_issue_mapping_or_missing_expected_publications"
+        "multi_document_issue_unmapped_insufficient_publications",
+        "partial_issue_mapping_or_weak_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
@@ -672,18 +675,18 @@
       "theme": "abstention",
       "testId": "EVAL-H-01",
       "scenario": "SUFFICIENT",
-      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
+      "applicationPolicyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
-      "scorerOutcome": "FAIL",
+      "scorerOutcome": "PARTIAL_PASS",
       "evalLayers": {
-        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
-        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
-        "scorerOutcome": "FAIL",
+        "applicationPolicyStatus": "ANSWERED",
+        "policyReason": "ANSWERED",
+        "scorerOutcome": "PARTIAL_PASS",
         "harnessClassification": "ANSWERED",
         "suiteIdeal": null,
         "regulatoryAccuracyVerified": false,
@@ -698,16 +701,16 @@
       "testId": "EVAL-H-01",
       "scenario": "PARTIAL",
       "applicationPolicyStatus": "PARTIAL_ANSWER",
-      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
+      "policyReason": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
         "applicationPolicyStatus": "PARTIAL_ANSWER",
-        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "policyReason": "PARTIAL",
         "scorerOutcome": "FAIL",
         "harnessClassification": "ANSWERED",
         "suiteIdeal": null,
@@ -724,10 +727,10 @@
       "scenario": "INSUFFICIENT",
       "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
       "policyReason": "NO_SUPPORT",
-      "questionCoverage": "UNKNOWN",
-      "coverageCompleteness": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
       "coverageReasons": [
-        "partial_issue_mapping_or_missing_expected_publications"
+        "all_question_derived_issues_mapped_strong_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {

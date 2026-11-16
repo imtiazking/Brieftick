@@ -1,312 +1,29 @@
 {
-  "schemaVersion": "forgeniq.coverage.unseen-questions.v1",
-  "capturedAt": "2026-11-16T11:41:58.305Z",
-  "programmePass": false,
+  "schemaVersion": "forgeniq.coverage.unseen-questions.v2",
+  "capturedAt": "2026-11-16T12:08:43.851Z",
+  "disclaimer": "Mocked provider; regulatory accuracy requires SME review — not claimed here.",
+  "scenarioCount": 11,
+  "programmePass": true,
   "results": [
     {
       "id": "UNSEEN-SUFFICIENT-PRIN",
+      "category": "fully_supported",
       "question": "Under PRIN, what high-level expectations apply to a firm’s honesty and integrity?",
       "scenario": "SUFFICIENT",
-      "preCoverage": {
-        "mode": "production",
-        "questionCoverage": "UNKNOWN",
-        "completeness": "PARTIAL",
-        "materialIssues": [
-          {
-            "id": "primary_question",
-            "kind": "question_core",
-            "label": "Under PRIN, what high-level expectations apply to a firm’s honesty and integrity?"
-          },
-          {
-            "id": "applicability_scope",
-            "kind": "applicability",
-            "label": "applicability scope"
-          },
-          {
-            "id": "jurisdiction",
-            "kind": "jurisdiction",
-            "label": "jurisdiction"
-          },
-          {
-            "id": "multi_source",
-            "kind": "multi_document",
-            "label": "multi source"
-          }
-        ],
-        "mappings": [
-          {
-            "issueId": "primary_question",
-            "label": "Under PRIN, what high-level expectations apply to a firm’s honesty and integrity?",
-            "kind": "question_core",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "39492e2ff3c36232",
-              "8718be9f77a6a362",
-              "dc2c3efaa87d18e9",
-              "913e6a93f4b37a5d",
-              "10762561ed8066b1"
-            ],
-            "publicationIds": [
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "applicability_scope",
-            "label": "applicability scope",
-            "kind": "applicability",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "39492e2ff3c36232",
-              "dc2c3efaa87d18e9",
-              "608e5d09cf729a3e",
-              "88712c5aecb94c5d",
-              "b94ceed7d019697e"
-            ],
-            "publicationIds": [
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a761cacc-8742-493d-b200-eb5d9a3ab884"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "jurisdiction",
-            "label": "jurisdiction",
-            "kind": "jurisdiction",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "39492e2ff3c36232",
-              "dc2c3efaa87d18e9",
-              "608e5d09cf729a3e",
-              "88712c5aecb94c5d",
-              "71a40f97482af0e3"
-            ],
-            "publicationIds": [
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a761cacc-8742-493d-b200-eb5d9a3ab884"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "multi_source",
-            "label": "multi source",
-            "kind": "multi_document",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "39492e2ff3c36232",
-              "dc2c3efaa87d18e9",
-              "608e5d09cf729a3e",
-              "88712c5aecb94c5d",
-              "b94ceed7d019697e"
-            ],
-            "publicationIds": [
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a761cacc-8742-493d-b200-eb5d9a3ab884"
-            ],
-            "source": "retrieval_chunk_text_match"
-          }
-        ],
-        "reasons": [
-          "weak_retrieval_top_similarity:0.031",
-          "partial_issue_mapping_or_weak_retrieval"
-        ],
-        "contradictoryEvidence": [],
-        "missingEvidence": [],
-        "retrievalTopSimilarity": 0.030622,
-        "decisionTrace": [
-          {
-            "issue": "primary_question",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "applicability_scope",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "jurisdiction",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "multi_source",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "primary_question",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "applicability_scope",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "jurisdiction",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "multi_source",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          }
-        ]
-      },
-      "pipelineCoverage": {
-        "mode": "production",
-        "questionCoverage": "UNKNOWN",
-        "completeness": "PARTIAL",
-        "materialIssues": [
-          {
-            "id": "primary_question",
-            "kind": "question_core",
-            "label": "Under PRIN, what high-level expectations apply to a firm’s honesty and integrity?"
-          },
-          {
-            "id": "applicability_scope",
-            "kind": "applicability",
-            "label": "applicability scope"
-          },
-          {
-            "id": "jurisdiction",
-            "kind": "jurisdiction",
-            "label": "jurisdiction"
-          },
-          {
-            "id": "multi_source",
-            "kind": "multi_document",
-            "label": "multi source"
-          }
-        ],
-        "mappings": [
-          {
-            "issueId": "primary_question",
-            "label": "Under PRIN, what high-level expectations apply to a firm’s honesty and integrity?",
-            "kind": "question_core",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "39492e2ff3c36232",
-              "8718be9f77a6a362",
-              "dc2c3efaa87d18e9",
-              "913e6a93f4b37a5d",
-              "10762561ed8066b1"
-            ],
-            "publicationIds": [
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "4d05b49b-a4a4-4101-8c87-7d3983315f25"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "applicability_scope",
-            "label": "applicability scope",
-            "kind": "applicability",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "39492e2ff3c36232",
-              "dc2c3efaa87d18e9",
-              "608e5d09cf729a3e",
-              "88712c5aecb94c5d",
-              "b94ceed7d019697e"
-            ],
-            "publicationIds": [
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a761cacc-8742-493d-b200-eb5d9a3ab884"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "jurisdiction",
-            "label": "jurisdiction",
-            "kind": "jurisdiction",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "39492e2ff3c36232",
-              "dc2c3efaa87d18e9",
-              "608e5d09cf729a3e",
-              "88712c5aecb94c5d",
-              "71a40f97482af0e3"
-            ],
-            "publicationIds": [
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a761cacc-8742-493d-b200-eb5d9a3ab884"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "multi_source",
-            "label": "multi source",
-            "kind": "multi_document",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "39492e2ff3c36232",
-              "dc2c3efaa87d18e9",
-              "608e5d09cf729a3e",
-              "88712c5aecb94c5d",
-              "b94ceed7d019697e"
-            ],
-            "publicationIds": [
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a761cacc-8742-493d-b200-eb5d9a3ab884"
-            ],
-            "source": "retrieval_chunk_text_match"
-          }
-        ],
-        "reasons": [
-          "weak_retrieval_top_similarity:0.031",
-          "partial_issue_mapping_or_weak_retrieval"
-        ],
-        "contradictoryEvidence": [],
-        "missingEvidence": [],
-        "retrievalTopSimilarity": 0.030622,
-        "decisionTrace": [
-          {
-            "issue": "primary_question",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "applicability_scope",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "jurisdiction",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "multi_source",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "primary_question",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "applicability_scope",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "jurisdiction",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "multi_source",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          }
-        ]
-      },
-      "policyStatus": "INSUFFICIENT_EVIDENCE",
-      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.853946,
+      "sourcePublications": [
+        "PS22/9: A new Consumer Duty",
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+        "Fair value in consumer finance",
+        "CP26/38 Financial Crime Guide updates"
+      ],
+      "questionCoverage": "KNOWN",
+      "completeness": "FULL",
+      "policyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
       "citationCount": 1,
-      "decisionTrace": [
+      "materialIssueSources": [
         {
           "issue": "primary_question",
           "source": "extractMaterialIssuesFromQuestion"
@@ -318,213 +35,82 @@
         {
           "issue": "jurisdiction",
           "source": "extractMaterialIssuesFromQuestion"
-        },
-        {
-          "issue": "multi_source",
-          "source": "extractMaterialIssuesFromQuestion"
-        },
-        {
-          "issue": "primary_question",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
-        },
-        {
-          "issue": "applicability_scope",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
-        },
-        {
-          "issue": "jurisdiction",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
-        },
-        {
-          "issue": "multi_source",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
         }
-      ]
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "applicability_scope",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "jurisdiction",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
+    },
+    {
+      "id": "UNSEEN-SUFFICIENT-SYSC",
+      "category": "fully_supported",
+      "question": "What are SYSC requirements for establishing and maintaining effective systems and controls?",
+      "scenario": "SUFFICIENT",
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.873486,
+      "sourcePublications": [
+        "CP26/38 Financial Crime Guide updates",
+        "Conflicts of interest and fair customer treatment in private markets",
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+        "FG24/6: Guidance for firms that enables a risk-based approach to payments",
+        "PS22/9: A new Consumer Duty"
+      ],
+      "questionCoverage": "KNOWN",
+      "completeness": "FULL",
+      "policyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "citationCount": 1,
+      "materialIssueSources": [
+        {
+          "issue": "primary_question",
+          "source": "extractMaterialIssuesFromQuestion"
+        }
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
     },
     {
       "id": "UNSEEN-INSUFFICIENT-COBS",
+      "category": "insufficient",
       "question": "What does COBS 4.2.1R require for retail client disclosure of charges?",
       "scenario": "INSUFFICIENT",
-      "preCoverage": {
-        "mode": "production",
-        "questionCoverage": "UNKNOWN",
-        "completeness": "PARTIAL",
-        "materialIssues": [
-          {
-            "id": "primary_question",
-            "kind": "question_core",
-            "label": "What does COBS 4.2.1R require for retail client disclosure of charges?"
-          },
-          {
-            "id": "jurisdiction",
-            "kind": "jurisdiction",
-            "label": "jurisdiction"
-          }
-        ],
-        "mappings": [
-          {
-            "issueId": "primary_question",
-            "label": "What does COBS 4.2.1R require for retail client disclosure of charges?",
-            "kind": "question_core",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "e942d208e85bba80",
-              "bdd5eee4669fd7bb",
-              "738c70aed19aecb4",
-              "01d268e4282514f5",
-              "0828c321a4a8be52"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "edcebe7d-3a3f-4adb-bb54-14120f14315a",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "jurisdiction",
-            "label": "jurisdiction",
-            "kind": "jurisdiction",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "e942d208e85bba80",
-              "bdd5eee4669fd7bb",
-              "738c70aed19aecb4",
-              "01d268e4282514f5",
-              "0828c321a4a8be52"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "edcebe7d-3a3f-4adb-bb54-14120f14315a",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
-            ],
-            "source": "retrieval_chunk_text_match"
-          }
-        ],
-        "reasons": [
-          "weak_retrieval_top_similarity:0.031",
-          "partial_issue_mapping_or_weak_retrieval"
-        ],
-        "contradictoryEvidence": [],
-        "missingEvidence": [],
-        "retrievalTopSimilarity": 0.031319,
-        "decisionTrace": [
-          {
-            "issue": "primary_question",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "jurisdiction",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "primary_question",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "jurisdiction",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          }
-        ]
-      },
-      "pipelineCoverage": {
-        "mode": "production",
-        "questionCoverage": "UNKNOWN",
-        "completeness": "PARTIAL",
-        "materialIssues": [
-          {
-            "id": "primary_question",
-            "kind": "question_core",
-            "label": "What does COBS 4.2.1R require for retail client disclosure of charges?"
-          },
-          {
-            "id": "jurisdiction",
-            "kind": "jurisdiction",
-            "label": "jurisdiction"
-          }
-        ],
-        "mappings": [
-          {
-            "issueId": "primary_question",
-            "label": "What does COBS 4.2.1R require for retail client disclosure of charges?",
-            "kind": "question_core",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "e942d208e85bba80",
-              "bdd5eee4669fd7bb",
-              "738c70aed19aecb4",
-              "01d268e4282514f5",
-              "0828c321a4a8be52"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "edcebe7d-3a3f-4adb-bb54-14120f14315a",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "jurisdiction",
-            "label": "jurisdiction",
-            "kind": "jurisdiction",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "e942d208e85bba80",
-              "bdd5eee4669fd7bb",
-              "738c70aed19aecb4",
-              "01d268e4282514f5",
-              "0828c321a4a8be52"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "edcebe7d-3a3f-4adb-bb54-14120f14315a",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-              "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
-            ],
-            "source": "retrieval_chunk_text_match"
-          }
-        ],
-        "reasons": [
-          "weak_retrieval_top_similarity:0.031",
-          "partial_issue_mapping_or_weak_retrieval"
-        ],
-        "contradictoryEvidence": [],
-        "missingEvidence": [],
-        "retrievalTopSimilarity": 0.031319,
-        "decisionTrace": [
-          {
-            "issue": "primary_question",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "jurisdiction",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "primary_question",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "jurisdiction",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          }
-        ]
-      },
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.863972,
+      "sourcePublications": [
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+        "Conflicts of interest and fair customer treatment in private markets",
+        "PS22/9: A new Consumer Duty",
+        "Guidance for firms on the fair treatment of vulnerable customers"
+      ],
+      "questionCoverage": "UNKNOWN",
+      "completeness": "PARTIAL",
       "policyStatus": "INSUFFICIENT_EVIDENCE",
       "policyReason": "NO_SUPPORT",
       "citationCount": 0,
-      "decisionTrace": [
+      "materialIssueSources": [
         {
           "issue": "primary_question",
           "source": "extractMaterialIssuesFromQuestion"
@@ -534,92 +120,84 @@
           "source": "extractMaterialIssuesFromQuestion"
         },
         {
-          "issue": "primary_question",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
-        },
-        {
-          "issue": "jurisdiction",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
+          "issue": "rule_cobs_4_2_1R",
+          "source": "extractMaterialIssuesFromQuestion"
         }
-      ]
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "jurisdiction",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "rule_cobs_4_2_1R",
+          "status": "unmapped",
+          "source": "no_supporting_chunk"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
+    },
+    {
+      "id": "UNSEEN-INSUFFICIENT-RANDOM",
+      "category": "insufficient",
+      "question": "What are the Basel IV market risk disclosure rules for commodity warehouse receipts in the UAE?",
+      "scenario": "INSUFFICIENT",
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.849225,
+      "sourcePublications": [
+        "PS22/9: A new Consumer Duty",
+        "CP26/38 Financial Crime Guide updates",
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty"
+      ],
+      "questionCoverage": "UNKNOWN",
+      "completeness": "PARTIAL",
+      "policyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "citationCount": 0,
+      "materialIssueSources": [
+        {
+          "issue": "primary_question",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "foreign_jurisdiction",
+          "source": "extractMaterialIssuesFromQuestion"
+        }
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "foreign_jurisdiction",
+          "status": "unmapped",
+          "source": "no_supporting_chunk"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
     },
     {
       "id": "UNSEEN-FAKE-PS",
-      "question": "Summarise FCA Policy Statement PS99/99 on cryptoassets.",
+      "category": "irrelevant_source",
+      "question": "Summarise FCA Policy Statement PS88/88 on tokenised deposits.",
       "scenario": "INSUFFICIENT",
-      "preCoverage": {
-        "mode": "production",
-        "questionCoverage": "UNKNOWN",
-        "completeness": "NONE",
-        "materialIssues": [
-          {
-            "id": "primary_question",
-            "kind": "question_core",
-            "label": "Summarise FCA Policy Statement PS99/99 on cryptoassets."
-          },
-          {
-            "id": "jurisdiction",
-            "kind": "jurisdiction",
-            "label": "jurisdiction"
-          },
-          {
-            "id": "named_publication",
-            "kind": "source_identification",
-            "label": "Named publication reference in question"
-          }
-        ],
-        "mappings": [
-          {
-            "issueId": "primary_question",
-            "label": "Summarise FCA Policy Statement PS99/99 on cryptoassets.",
-            "status": "unmapped",
-            "source": "source_absent_from_retrieval",
-            "evidenceChunkIds": []
-          },
-          {
-            "issueId": "jurisdiction",
-            "label": "jurisdiction",
-            "status": "unmapped",
-            "source": "source_absent_from_retrieval",
-            "evidenceChunkIds": []
-          },
-          {
-            "issueId": "named_publication",
-            "label": "Named publication reference in question",
-            "status": "unmapped",
-            "source": "source_absent_from_retrieval",
-            "evidenceChunkIds": []
-          }
-        ],
-        "reasons": [
-          "source_absent:reference_validation_blocked"
-        ],
-        "contradictoryEvidence": [],
-        "missingEvidence": [
-          "primary_question",
-          "jurisdiction",
-          "named_publication"
-        ],
-        "decisionTrace": [
-          {
-            "issue": "primary_question",
-            "source": "question_parser"
-          },
-          {
-            "issue": "jurisdiction",
-            "source": "question_parser"
-          },
-          {
-            "issue": "named_publication",
-            "source": "question_parser"
-          }
-        ]
-      },
+      "retrievalMethod": "blocked",
+      "sourcePublications": [],
+      "questionCoverage": "UNKNOWN",
+      "completeness": "NONE",
       "policyStatus": "BLOCKED",
       "citationCount": 0,
-      "decisionTrace": [
+      "materialIssueSources": [
         {
           "issue": "primary_question",
           "source": "question_parser"
@@ -632,316 +210,45 @@
           "issue": "named_publication",
           "source": "question_parser"
         }
-      ]
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "unmapped",
+          "source": "source_absent_from_retrieval"
+        },
+        {
+          "issueId": "jurisdiction",
+          "status": "unmapped",
+          "source": "source_absent_from_retrieval"
+        },
+        {
+          "issueId": "named_publication",
+          "status": "unmapped",
+          "source": "source_absent_from_retrieval"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
     },
     {
       "id": "UNSEEN-PARTIAL-FG",
+      "category": "partial",
       "question": "What should firms document when monitoring fair value outcomes under Consumer Duty guidance?",
       "scenario": "PARTIAL",
-      "preCoverage": {
-        "mode": "production",
-        "questionCoverage": "UNKNOWN",
-        "completeness": "PARTIAL",
-        "materialIssues": [
-          {
-            "id": "primary_question",
-            "kind": "question_core",
-            "label": "What should firms document when monitoring fair value outcomes under Consumer Duty guidance?"
-          },
-          {
-            "id": "guidance_status",
-            "kind": "binding_vs_guidance",
-            "label": "guidance status"
-          },
-          {
-            "id": "effective_date",
-            "kind": "temporal",
-            "label": "effective date"
-          },
-          {
-            "id": "evidence_sufficiency",
-            "kind": "evidence",
-            "label": "evidence sufficiency"
-          }
-        ],
-        "mappings": [
-          {
-            "issueId": "primary_question",
-            "label": "What should firms document when monitoring fair value outcomes under Consumer Duty guidance?",
-            "kind": "question_core",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "c64431709056d5db",
-              "30f23b1d47e73187",
-              "6902c0da8f9b7264",
-              "61ffd619a5fa7d4d",
-              "e59c241da13192e3"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "guidance_status",
-            "label": "guidance status",
-            "kind": "binding_vs_guidance",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "c64431709056d5db",
-              "30f23b1d47e73187",
-              "6902c0da8f9b7264",
-              "61ffd619a5fa7d4d",
-              "51e6108456b8a0ce"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "effective_date",
-            "label": "effective date",
-            "kind": "temporal",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "c64431709056d5db",
-              "30f23b1d47e73187",
-              "61ffd619a5fa7d4d",
-              "9540c121b901ef91",
-              "df882b494127fbe8"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "evidence_sufficiency",
-            "label": "evidence sufficiency",
-            "kind": "evidence",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "c64431709056d5db",
-              "30f23b1d47e73187",
-              "6902c0da8f9b7264",
-              "61ffd619a5fa7d4d",
-              "e59c241da13192e3"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
-            ],
-            "source": "retrieval_chunk_text_match"
-          }
-        ],
-        "reasons": [
-          "weak_retrieval_top_similarity:0.032",
-          "partial_issue_mapping_or_weak_retrieval"
-        ],
-        "contradictoryEvidence": [],
-        "missingEvidence": [],
-        "retrievalTopSimilarity": 0.032002,
-        "decisionTrace": [
-          {
-            "issue": "primary_question",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "guidance_status",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "effective_date",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "evidence_sufficiency",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "primary_question",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "guidance_status",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "effective_date",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "evidence_sufficiency",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          }
-        ]
-      },
-      "pipelineCoverage": {
-        "mode": "production",
-        "questionCoverage": "UNKNOWN",
-        "completeness": "PARTIAL",
-        "materialIssues": [
-          {
-            "id": "primary_question",
-            "kind": "question_core",
-            "label": "What should firms document when monitoring fair value outcomes under Consumer Duty guidance?"
-          },
-          {
-            "id": "guidance_status",
-            "kind": "binding_vs_guidance",
-            "label": "guidance status"
-          },
-          {
-            "id": "effective_date",
-            "kind": "temporal",
-            "label": "effective date"
-          },
-          {
-            "id": "evidence_sufficiency",
-            "kind": "evidence",
-            "label": "evidence sufficiency"
-          }
-        ],
-        "mappings": [
-          {
-            "issueId": "primary_question",
-            "label": "What should firms document when monitoring fair value outcomes under Consumer Duty guidance?",
-            "kind": "question_core",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "c64431709056d5db",
-              "30f23b1d47e73187",
-              "6902c0da8f9b7264",
-              "61ffd619a5fa7d4d",
-              "e59c241da13192e3"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "guidance_status",
-            "label": "guidance status",
-            "kind": "binding_vs_guidance",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "c64431709056d5db",
-              "30f23b1d47e73187",
-              "6902c0da8f9b7264",
-              "61ffd619a5fa7d4d",
-              "51e6108456b8a0ce"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "effective_date",
-            "label": "effective date",
-            "kind": "temporal",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "c64431709056d5db",
-              "30f23b1d47e73187",
-              "61ffd619a5fa7d4d",
-              "9540c121b901ef91",
-              "df882b494127fbe8"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
-            ],
-            "source": "retrieval_chunk_text_match"
-          },
-          {
-            "issueId": "evidence_sufficiency",
-            "label": "evidence sufficiency",
-            "kind": "evidence",
-            "status": "mapped",
-            "evidenceChunkIds": [
-              "c64431709056d5db",
-              "30f23b1d47e73187",
-              "6902c0da8f9b7264",
-              "61ffd619a5fa7d4d",
-              "e59c241da13192e3"
-            ],
-            "publicationIds": [
-              "a761cacc-8742-493d-b200-eb5d9a3ab884",
-              "56b0beca-d8c3-4267-a794-9079009af661",
-              "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
-            ],
-            "source": "retrieval_chunk_text_match"
-          }
-        ],
-        "reasons": [
-          "weak_retrieval_top_similarity:0.032",
-          "partial_issue_mapping_or_weak_retrieval"
-        ],
-        "contradictoryEvidence": [],
-        "missingEvidence": [],
-        "retrievalTopSimilarity": 0.032002,
-        "decisionTrace": [
-          {
-            "issue": "primary_question",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "guidance_status",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "effective_date",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "evidence_sufficiency",
-            "source": "extractMaterialIssuesFromQuestion"
-          },
-          {
-            "issue": "primary_question",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "guidance_status",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "effective_date",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          },
-          {
-            "issue": "evidence_sufficiency",
-            "mappingSource": "retrieval_chunk_text_match",
-            "status": "mapped"
-          }
-        ]
-      },
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.931772,
+      "sourcePublications": [
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+        "Fair value in consumer finance",
+        "PS22/9: A new Consumer Duty"
+      ],
+      "questionCoverage": "KNOWN",
+      "completeness": "FULL",
       "policyStatus": "PARTIAL_ANSWER",
-      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+      "policyReason": "PARTIAL",
       "citationCount": 1,
-      "decisionTrace": [
+      "materialIssueSources": [
         {
           "issue": "primary_question",
           "source": "extractMaterialIssuesFromQuestion"
@@ -951,38 +258,275 @@
           "source": "extractMaterialIssuesFromQuestion"
         },
         {
-          "issue": "effective_date",
-          "source": "extractMaterialIssuesFromQuestion"
-        },
-        {
           "issue": "evidence_sufficiency",
           "source": "extractMaterialIssuesFromQuestion"
-        },
-        {
-          "issue": "primary_question",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
-        },
-        {
-          "issue": "guidance_status",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
-        },
-        {
-          "issue": "effective_date",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
-        },
-        {
-          "issue": "evidence_sufficiency",
-          "mappingSource": "retrieval_chunk_text_match",
-          "status": "mapped"
         }
-      ]
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "guidance_status",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "evidence_sufficiency",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
+    },
+    {
+      "id": "UNSEEN-MULTI-PRIN-DUTY",
+      "category": "multi_regulation",
+      "question": "How do PRIN and the Consumer Duty interact when assessing fair value for retail customers?",
+      "scenario": "PARTIAL",
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.9163,
+      "sourcePublications": [
+        "PS22/9: A new Consumer Duty",
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+        "Fair value in consumer finance"
+      ],
+      "questionCoverage": "KNOWN",
+      "completeness": "FULL",
+      "policyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "citationCount": 1,
+      "materialIssueSources": [
+        {
+          "issue": "primary_question",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "jurisdiction",
+          "source": "extractMaterialIssuesFromQuestion"
+        }
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "jurisdiction",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
+    },
+    {
+      "id": "UNSEEN-CONFLICT-BIND-GUIDE",
+      "category": "binding_vs_guidance",
+      "question": "Is FG22/5 binding on firms or only guidance when setting monitoring metrics?",
+      "scenario": "PARTIAL",
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.897414,
+      "sourcePublications": [
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty"
+      ],
+      "questionCoverage": "KNOWN",
+      "completeness": "FULL",
+      "policyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "citationCount": 1,
+      "materialIssueSources": [
+        {
+          "issue": "primary_question",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "binding_obligation",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "guidance_status",
+          "source": "extractMaterialIssuesFromQuestion"
+        }
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "binding_obligation",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "guidance_status",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
+    },
+    {
+      "id": "UNSEEN-TEMPORAL-PS22",
+      "category": "commencement_date",
+      "question": "When did PS22/9 Consumer Duty rules commence for open-ended investment companies?",
+      "scenario": "SUFFICIENT",
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.894758,
+      "sourcePublications": [
+        "PS22/9: A new Consumer Duty"
+      ],
+      "questionCoverage": "KNOWN",
+      "completeness": "FULL",
+      "policyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "citationCount": 1,
+      "materialIssueSources": [
+        {
+          "issue": "primary_question",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "effective_date",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "named_publication",
+          "source": "extractMaterialIssuesFromQuestion"
+        }
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "effective_date",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "named_publication",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
+    },
+    {
+      "id": "UNSEEN-APPLICABILITY-CU",
+      "category": "applicability",
+      "question": "Does the Consumer Duty apply to credit unions providing retail banking services?",
+      "scenario": "PARTIAL",
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.895553,
+      "sourcePublications": [
+        "PS22/9: A new Consumer Duty",
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+        "DP26/1: Credit unions: review of the regulatory regime",
+        "FG24/6: Guidance for firms that enables a risk-based approach to payments"
+      ],
+      "questionCoverage": "KNOWN",
+      "completeness": "FULL",
+      "policyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "citationCount": 1,
+      "materialIssueSources": [
+        {
+          "issue": "primary_question",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "applicability_scope",
+          "source": "extractMaterialIssuesFromQuestion"
+        }
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "applicability_scope",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
+    },
+    {
+      "id": "UNSEEN-WRONG-CITATION-MOCK",
+      "category": "citation_integrity",
+      "question": "Under CONC, what forbearance expectations apply when a borrower is in persistent debt?",
+      "scenario": "INSUFFICIENT",
+      "retrievalMethod": "hybrid",
+      "retrievalTopSemantic": 0.825206,
+      "sourcePublications": [
+        "Guidance for firms on the fair treatment of vulnerable customers",
+        "Fair value in consumer finance",
+        "PS22/9: A new Consumer Duty",
+        "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+        "CP26/38 Financial Crime Guide updates"
+      ],
+      "questionCoverage": "UNKNOWN",
+      "completeness": "PARTIAL",
+      "policyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "citationCount": 0,
+      "materialIssueSources": [
+        {
+          "issue": "primary_question",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "applicability_scope",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "jurisdiction",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
+          "issue": "handbook_conc",
+          "source": "extractMaterialIssuesFromQuestion"
+        }
+      ],
+      "coverageMappings": [
+        {
+          "issueId": "primary_question",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "applicability_scope",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "jurisdiction",
+          "status": "mapped",
+          "source": "retrieval_chunk_text_match"
+        },
+        {
+          "issueId": "handbook_conc",
+          "status": "unmapped",
+          "source": "no_supporting_chunk"
+        }
+      ],
+      "pass": true,
+      "remainingDefects": []
     }
   ],
-  "failures": [
-    "UNSEEN-FAKE-PS duplicates suite question",
-    "UNSEEN-SUFFICIENT-PRIN policy INSUFFICIENT_EVIDENCE not in expected ANSWERED,PARTIAL_ANSWER"
-  ]
+  "failures": []
 }

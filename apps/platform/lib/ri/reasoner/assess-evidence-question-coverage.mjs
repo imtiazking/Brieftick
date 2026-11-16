@@ -17,29 +17,64 @@ function chunkSupportsIssue(issue, chunk, question) {
   const blob = normaliseText(
     `${chunk.verbatimText || ''} ${chunk.sectionReference || ''} ${chunk.publicationTitle || ''} ${chunk.publicationReference || ''}`,
   );
+  const verbatim = String(chunk.verbatimText || '');
+
+  if (issue.kind === 'binding_vs_guidance') {
+    if (issue.id === 'binding_obligation') return /\bmust\b|\bshall\b|\brule\b/i.test(verbatim);
+    if (issue.id === 'guidance_status') return /guidance|should/i.test(blob);
+    return false;
+  }
+  if (issue.kind === 'temporal') {
+    return /\b20\d{2}\b|effective|commence|force/i.test(verbatim);
+  }
+  if (issue.kind === 'applicability') {
+    return /\bfirm\b|\bapply|\bapplies\b|scope/i.test(blob);
+  }
+  if (issue.kind === 'jurisdiction') {
+    const qRegs = (question.match(/\b(CONC|COBS|PRIN|FCA|SYSC)\b/gi) || []).map((x) => x.toLowerCase());
+    if (!qRegs.length) return false;
+    return qRegs.some((r) => new RegExp(`\\b${r}\\b`, 'i').test(blob));
+  }
+  if (issue.kind === 'explicit_provision') {
+    const ref = normaliseText(issue.label || '').replace(/\s+/g, ' ');
+    const compactRef = ref.replace(/\s+/g, '');
+    const section = normaliseText(chunk.sectionReference || '').replace(/\s+/g, '');
+    const compactBlob = blob.replace(/\s+/g, '');
+    return compactBlob.includes(compactRef) || section.includes(compactRef) || blob.includes(ref);
+  }
+  if (issue.kind === 'foreign_regime') {
+    // Authorised offline corpus is FCA/UK — never treat incidental mentions as foreign-regime coverage.
+    return false;
+  }
+  if (issue.kind === 'handbook_module') {
+    const mod = (issue.label || '').split(/\s+/)[0];
+    if (!mod) return false;
+    const section = String(chunk.sectionReference || '');
+    if (!new RegExp(`^${mod}\\b`, 'i').test(section.trim())) return false;
+    const domainTokens = normaliseText(question)
+      .split(/\s+/)
+      .filter((t) => t.length > 5 && !/^(expectations|borrower|persistent|under|what|when|does|apply|requirements)$/.test(t));
+    return domainTokens.some((t) => blob.includes(t));
+  }
+  if (issue.kind === 'multi_document') {
+    return false;
+  }
+  if (issue.kind === 'source_identification') {
+    const ps = question.match(/\bPS\d+\/?\d*\b/i);
+    if (!ps) return false;
+    return blob.includes(normaliseText(ps[0]));
+  }
+
   const qTokens = normaliseText(question)
     .split(/\s+/)
     .filter((t) => t.length > 4)
     .slice(0, 12);
   const hits = qTokens.filter((t) => blob.includes(t)).length;
-  if (hits < 2 && issue.kind !== 'question_core') return false;
-
-  if (issue.kind === 'binding_vs_guidance') {
-    if (issue.id === 'binding_obligation') return /\bmust\b|\bshall\b|\brule\b/i.test(chunk.verbatimText || '');
-    if (issue.id === 'guidance_status') return /guidance|should/i.test(blob);
+  if (issue.kind === 'question_core') {
+    return hits >= 2;
   }
-  if (issue.kind === 'temporal') {
-    const hasDate = /\b20\d{2}\b|effective|commence|force/i.test(chunk.verbatimText || '');
-    if (!hasDate) return false;
-  }
-  if (issue.kind === 'applicability') {
-    return /\bfirm\b|apply|scope/i.test(blob);
-  }
-  if (issue.kind === 'jurisdiction') {
-    const qRegs = (question.match(/\b(CONC|COBS|PRIN|FCA)\b/gi) || []).map((x) => x.toLowerCase());
-    if (qRegs.length && !qRegs.some((r) => blob.includes(r))) return false;
-  }
-  return hits >= 1 || issue.kind === 'question_core';
+  if (hits < 2) return false;
+  return hits >= 2;
 }
 
 function issueMappingForChunk(issue, chunks, question) {
@@ -55,6 +90,11 @@ function issueMappingForChunk(issue, chunks, question) {
   };
 }
 
+function handbookAnchorInChunk(reg, chunk) {
+  const text = `${chunk.sectionReference || ''} ${chunk.verbatimText || ''} ${chunk.publicationReference || ''}`;
+  return new RegExp(`\\b${reg}\\s*[\\d.]+[A-Z]?R?`, 'i').test(text);
+}
+
 function detectContradictoryStatuses(chunks) {
   const statuses = new Set(chunks.map((c) => String(c.publicationStatus || 'unknown').toLowerCase()));
   const hasConsultation = [...statuses].some((s) => /consultation|proposal/.test(s));
@@ -65,9 +105,20 @@ function detectContradictoryStatuses(chunks) {
 
 function retrievalStrength(retrieval) {
   const ranked = retrieval?.allRankedChunks || [];
-  if (!ranked.length) return { ok: false, topSimilarity: 0 };
-  const top = ranked[0]?.similarity ?? 0;
-  return { ok: top >= 0.24, topSimilarity: top };
+  if (!ranked.length) return { ok: false, topSimilarity: 0, metric: 'none' };
+  const topRow = ranked[0];
+  const method = String(topRow?.method || retrieval?.retrievalMethod || '');
+  const fusionTop = Number(topRow?.similarity ?? 0);
+  const semanticTop = Number(topRow?.semanticSimilarity ?? fusionTop);
+  // Hybrid RRF scores are rank-fusion weights (~0.03), not cosine similarity — use semanticSimilarity for gating.
+  const useSemantic = method.includes('hybrid') || method === 'bm25' || semanticTop > fusionTop + 0.05;
+  const topSimilarity = useSemantic ? semanticTop : fusionTop;
+  return {
+    ok: topSimilarity >= 0.24,
+    topSimilarity,
+    metric: useSemantic ? 'semantic_similarity' : 'fusion_similarity',
+    fusionTopSimilarity: fusionTop,
+  };
 }
 
 /**
@@ -125,7 +176,34 @@ export function assessEvidenceQuestionCoverage(input) {
   }
 
   const mappings = materialIssues.map((issue) => issueMappingForChunk(issue, chunks, question));
-  const mappedCount = mappings.filter((m) => m.status === 'mapped').length;
+  const multiIssue = mappings.find((m) => m.issueId === 'multi_source');
+  if (multiIssue) {
+    const pubIds = [...new Set(chunks.map((c) => c.publicationId).filter(Boolean))];
+    if (pubIds.length >= 2) {
+      multiIssue.status = 'mapped';
+      multiIssue.source = 'multiple_publications_in_bundle';
+      multiIssue.publicationIds = pubIds.slice(0, 6);
+      multiIssue.evidenceChunkIds = chunks.filter((c) => c.publicationId).slice(0, 5).map((c) => c.evidenceChunkId);
+    } else {
+      multiIssue.status = 'unmapped';
+      multiIssue.source = 'multi_document_requires_two_publications';
+      multiIssue.evidenceChunkIds = [];
+      reasons.push('multi_document_issue_unmapped_insufficient_publications');
+    }
+  }
+  const regsInQuestion = (question.match(/\b(CONC|COBS|SYSC|PRIN|CASS)\b/gi) || []).map((r) => r.toUpperCase());
+  const jurisdictionMapping = mappings.find((m) => m.issueId === 'jurisdiction');
+  if (jurisdictionMapping && regsInQuestion.length) {
+    const anchored = regsInQuestion.every((reg) => chunks.some((c) => handbookAnchorInChunk(reg, c)));
+    if (!anchored) {
+      jurisdictionMapping.status = 'unmapped';
+      jurisdictionMapping.source = 'handbook_provision_anchor_missing';
+      jurisdictionMapping.evidenceChunkIds = [];
+      reasons.push('jurisdiction_handbook_anchor_missing');
+    }
+  }
+
+  let mappedCount = mappings.filter((m) => m.status === 'mapped').length;
   const contradictoryEvidence = detectContradictoryStatuses(chunks);
 
   const coreMapped = mappings.find((m) => m.issueId === 'primary_question')?.status === 'mapped';
@@ -161,6 +239,8 @@ export function assessEvidenceQuestionCoverage(input) {
     contradictoryEvidence,
     missingEvidence: mappings.filter((m) => m.status === 'unmapped').map((m) => m.issueId),
     retrievalTopSimilarity: strength.topSimilarity,
+    retrievalStrengthMetric: strength.metric,
+    fusionTopSimilarity: strength.fusionTopSimilarity,
     decisionTrace: [
       ...materialIssues.map((m) => ({ issue: m.id, source: 'extractMaterialIssuesFromQuestion' })),
       ...mappings.map((m) => ({ issue: m.issueId, mappingSource: m.source, status: m.status })),

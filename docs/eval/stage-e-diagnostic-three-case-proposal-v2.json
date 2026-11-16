@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-e.proposal.v2",
+  "capturedAt": "2026-11-16T12:25:00.000Z",
+  "liveAnthropicAuthorized": false,
+  "budgetUsdCeiling": 10,
+  "proposedDiagnosticCapUsd": null,
+  "approvalStatus": "PENDING_OPERATOR",
+  "designRationale": "Separate retrieval/coverage (offline), mocked reasoning, then live after SME validation",
+  "proposedCases": [
+    {
+      "id": "LIVE-DIAG-ANSWERABLE",
+      "source": "Production unseen",
+      "candidate": "UNSEEN-SUFFICIENT-PRIN",
+      "coverageRequirement": "KNOWN with question-derived issues only",
+      "smeReviewRequired": true,
+      "mockVerified": true
+    },
+    {
+      "id": "LIVE-DIAG-INSUFFICIENT",
+      "source": "Production unseen",
+      "candidate": "UNSEEN-INSUFFICIENT-COBS or UNSEEN-WRONG-CITATION-MOCK",
+      "coverageRequirement": "UNKNOWN → INSUFFICIENT_EVIDENCE",
+      "smeReviewRequired": true,
+      "mockVerified": true
+    },
+    {
+      "id": "LIVE-DIAG-PARTIAL",
+      "source": "Production unseen",
+      "candidate": "UNSEEN-PARTIAL-FG",
+      "coverageRequirement": "KNOWN with partial policy",
+      "smeReviewRequired": true,
+      "mockVerified": true
+    }
+  ],
+  "explicitExclusions": [
+    "EVAL-B-01 (coverage UNKNOWN in prior diagnostic)",
+    "EVAL-D-02 without independent evidence review",
+    "Paid calls until Stage B minimum + operator auth"
+  ],
+  "executePaidCalls": false
+}

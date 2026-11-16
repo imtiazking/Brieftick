@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "forgeniq.git.cfedc76.remote-history.v1",
+  "capturedAt": "2026-11-16T12:02:54.262Z",
+  "commit": "cfedc76b3448a75ca87ca02c99ed73709d95a58b",
+  "localCommitPresent": false,
+  "filesIntroducedInCommit": 32,
+  "samplePathChecks": [
+    {
+      "path": "docs/eval/Claude outputs/private-held-out-suite-v1.1.json",
+      "inCommitHistory": false,
+      "currentlyTracked": false
+    },
+    {
+      "path": "docs/eval/Claude outputs/private-held-out-suite.json",
+      "inCommitHistory": false,
+      "currentlyTracked": false
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json",
+      "inCommitHistory": false,
+      "currentlyTracked": false
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json",
+      "inCommitHistory": false,
+      "currentlyTracked": false
+    },
+    {
+      "path": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.checkpoint.json",
+      "inCommitHistory": false,
+      "currentlyTracked": false
+    }
+  ],
+  "remoteReachability": [
+    {
+      "remote": "origin",
+      "commitContainedInRemoteBranch": false,
+      "branches": []
+    },
+    {
+      "remote": "origin",
+      "commitContainedInRemoteBranch": false,
+      "branches": []
+    }
+  ],
+  "historyRewriteRequiredForFullRemoval": false,
+  "credentialRotationRequired": false,
+  "recommendedActions": [
+    "Keep paths gitignored (70d46cb); do not re-add live eval outputs.",
+    "If commit was pushed: coordinate BFG/filter-repo with operator approval before rewriting shared history.",
+    "Store legitimate evaluation evidence in access-controlled location outside public git."
+  ]
+}

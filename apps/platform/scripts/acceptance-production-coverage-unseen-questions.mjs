@@ -8,36 +8,94 @@ import { EVAL_SUITE_V21_PATH, REPO_ROOT, AUTHENTIC_CORPUS_B2_DIR } from '../lib/
 import { buildSemanticIndex } from '../lib/ri/semantic/semantic-retrieval-eval.mjs';
 import { attachBm25ToIndex, scoreQuestionWithMethod } from '../lib/ri/semantic/offline-retrieval-methods.mjs';
 import { assembleEvidenceBundle } from '../lib/ri/reasoner/evidence-assembler.mjs';
-import { assessEvidenceQuestionCoverage, refineCoverageAfterVerification } from '../lib/ri/reasoner/assess-evidence-question-coverage.mjs';
+import { assessEvidenceQuestionCoverage } from '../lib/ri/reasoner/assess-evidence-question-coverage.mjs';
 import { runAskRiV2Pipeline } from '../lib/ri/reasoner/run-ask-ri-v2-pipeline.mjs';
 import { createScenarioMockFetch } from '../lib/ri/eval/mock-reasoner-scenarios.mjs';
 import { MOCK_ANTHROPIC_API_KEY } from '../lib/ri/reasoner/mock-anthropic-reasoner-fetch.mjs';
-import { resolveFinalRegulatoryStatus } from '../lib/ri/reasoner/evidence-sufficiency-policy.mjs';
 
+/** @type {Array<{id:string,category:string,question:string,scenario:string,expectPolicy:string[],expectCoverage?:string[]}>} */
 const UNSEEN_SCENARIOS = [
   {
     id: 'UNSEEN-SUFFICIENT-PRIN',
+    category: 'fully_supported',
     question: 'Under PRIN, what high-level expectations apply to a firm’s honesty and integrity?',
+    scenario: 'SUFFICIENT',
+    expectPolicy: ['ANSWERED', 'PARTIAL_ANSWER'],
+    expectCoverage: ['KNOWN'],
+  },
+  {
+    id: 'UNSEEN-SUFFICIENT-SYSC',
+    category: 'fully_supported',
+    question: 'What are SYSC requirements for establishing and maintaining effective systems and controls?',
     scenario: 'SUFFICIENT',
     expectPolicy: ['ANSWERED', 'PARTIAL_ANSWER'],
   },
   {
     id: 'UNSEEN-INSUFFICIENT-COBS',
+    category: 'insufficient',
     question: 'What does COBS 4.2.1R require for retail client disclosure of charges?',
     scenario: 'INSUFFICIENT',
     expectPolicy: ['INSUFFICIENT_EVIDENCE'],
+    expectCoverage: ['UNKNOWN'],
+  },
+  {
+    id: 'UNSEEN-INSUFFICIENT-RANDOM',
+    category: 'insufficient',
+    question: 'What are the Basel IV market risk disclosure rules for commodity warehouse receipts in the UAE?',
+    scenario: 'INSUFFICIENT',
+    expectPolicy: ['INSUFFICIENT_EVIDENCE'],
+    expectCoverage: ['UNKNOWN'],
   },
   {
     id: 'UNSEEN-FAKE-PS',
+    category: 'irrelevant_source',
     question: 'Summarise FCA Policy Statement PS88/88 on tokenised deposits.',
     scenario: 'INSUFFICIENT',
     expectPolicy: ['INSUFFICIENT_EVIDENCE', 'BLOCKED'],
+    expectCoverage: ['UNKNOWN'],
   },
   {
     id: 'UNSEEN-PARTIAL-FG',
+    category: 'partial',
     question: 'What should firms document when monitoring fair value outcomes under Consumer Duty guidance?',
     scenario: 'PARTIAL',
     expectPolicy: ['PARTIAL_ANSWER', 'ANSWERED', 'INSUFFICIENT_EVIDENCE'],
+  },
+  {
+    id: 'UNSEEN-MULTI-PRIN-DUTY',
+    category: 'multi_regulation',
+    question: 'How do PRIN and the Consumer Duty interact when assessing fair value for retail customers?',
+    scenario: 'PARTIAL',
+    expectPolicy: ['PARTIAL_ANSWER', 'ANSWERED', 'INSUFFICIENT_EVIDENCE'],
+  },
+  {
+    id: 'UNSEEN-CONFLICT-BIND-GUIDE',
+    category: 'binding_vs_guidance',
+    question: 'Is FG22/5 binding on firms or only guidance when setting monitoring metrics?',
+    scenario: 'PARTIAL',
+    expectPolicy: ['PARTIAL_ANSWER', 'ANSWERED', 'INSUFFICIENT_EVIDENCE'],
+  },
+  {
+    id: 'UNSEEN-TEMPORAL-PS22',
+    category: 'commencement_date',
+    question: 'When did PS22/9 Consumer Duty rules commence for open-ended investment companies?',
+    scenario: 'SUFFICIENT',
+    expectPolicy: ['ANSWERED', 'PARTIAL_ANSWER', 'INSUFFICIENT_EVIDENCE'],
+  },
+  {
+    id: 'UNSEEN-APPLICABILITY-CU',
+    category: 'applicability',
+    question: 'Does the Consumer Duty apply to credit unions providing retail banking services?',
+    scenario: 'PARTIAL',
+    expectPolicy: ['PARTIAL_ANSWER', 'ANSWERED', 'INSUFFICIENT_EVIDENCE'],
+  },
+  {
+    id: 'UNSEEN-WRONG-CITATION-MOCK',
+    category: 'citation_integrity',
+    question: 'Under CONC, what forbearance expectations apply when a borrower is in persistent debt?',
+    scenario: 'INSUFFICIENT',
+    expectPolicy: ['INSUFFICIENT_EVIDENCE'],
+    expectCoverage: ['UNKNOWN'],
   },
 ];
 
@@ -76,23 +134,47 @@ for (const sc of UNSEEN_SCENARIOS) {
   });
 
   const policyStatus = typeof engine.status === 'string' ? engine.status : engine.status?.status;
+  const coverage = engine.coverageAssessment?.questionCoverage ?? preCoverage.questionCoverage;
+  const verificationOk = engine.claimVerification?.ok;
   const row = {
     id: sc.id,
+    category: sc.category,
     question: sc.question,
     scenario: sc.scenario,
-    preCoverage,
-    pipelineCoverage: engine.coverageAssessment,
+    retrievalMethod: retrieval.retrievalMethod,
+    retrievalTopSemantic: retrieval.allRankedChunks?.[0]?.semanticSimilarity,
+    sourcePublications: [...new Set((bundle.evidenceChunks || []).map((c) => c.publicationTitle).filter(Boolean))].slice(0, 5),
+    questionCoverage: coverage,
+    completeness: engine.coverageAssessment?.completeness ?? preCoverage.completeness,
     policyStatus,
     policyReason: engine.stageC?.policyReason,
     citationCount: engine.citations?.length ?? 0,
-    decisionTrace: engine.coverageAssessment?.decisionTrace || preCoverage.decisionTrace,
+    claimVerificationOk: verificationOk,
+    materialIssueSources: (preCoverage.decisionTrace || []).filter((d) => d.source === 'question_parser' || d.source?.includes?.('extract')),
+    coverageMappings: (engine.coverageAssessment?.mappings || preCoverage.mappings || []).map((m) => ({
+      issueId: m.issueId,
+      status: m.status,
+      source: m.source,
+    })),
+    pass: true,
+    remainingDefects: [],
   };
   results.push(row);
 
   const policyOk = sc.expectPolicy.includes(policyStatus);
-  row.policyMatchesExpectation = policyOk;
-  if (!policyOk) failures.push(`${sc.id} policy ${policyStatus} not in expected ${sc.expectPolicy.join(',')}`);
-  else ok(`${sc.id}: coverage=${engine.coverageAssessment?.questionCoverage} policy=${policyStatus}`);
+  if (!policyOk) {
+    row.pass = false;
+    row.remainingDefects.push(`policy ${policyStatus} not in ${sc.expectPolicy.join(',')}`);
+    failures.push(`${sc.id} policy ${policyStatus}`);
+  }
+
+  if (sc.expectCoverage && !sc.expectCoverage.includes(coverage)) {
+    row.pass = false;
+    row.remainingDefects.push(`coverage ${coverage} not in ${sc.expectCoverage.join(',')}`);
+    failures.push(`${sc.id} coverage ${coverage}`);
+  }
+
+  if (row.pass) ok(`${sc.id}: coverage=${coverage} policy=${policyStatus}`);
 }
 
 const out = join(REPO_ROOT, 'docs/eval/PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json');
@@ -101,9 +183,11 @@ writeFileSync(
   out,
   JSON.stringify(
     {
-      schemaVersion: 'forgeniq.coverage.unseen-questions.v1',
+      schemaVersion: 'forgeniq.coverage.unseen-questions.v2',
       capturedAt: new Date().toISOString(),
-      programmePass: false,
+      disclaimer: 'Mocked provider; regulatory accuracy requires SME review — not claimed here.',
+      scenarioCount: UNSEEN_SCENARIOS.length,
+      programmePass: failures.length === 0,
       results,
       failures,
     },

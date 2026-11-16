@@ -6,10 +6,18 @@ const ISSUE_PATTERNS = [
   { id: 'binding_obligation', kind: 'binding_vs_guidance', pattern: /\b(must|shall|required|obligation|binding)\b/i },
   { id: 'guidance_status', kind: 'binding_vs_guidance', pattern: /\b(guidance|should|expect|good practice)\b/i },
   { id: 'applicability_scope', kind: 'applicability', pattern: /\b(apply|applicable|scope|firm|credit union|in scope)\b/i },
-  { id: 'effective_date', kind: 'temporal', pattern: /\b(when|effective|commence|come into force|deadline|date)\b/i },
+  {
+    id: 'effective_date',
+    kind: 'temporal',
+    pattern: /\b(when did|when does|commence|come into force|effective date|deadline|from what date)\b/i,
+  },
   { id: 'jurisdiction', kind: 'jurisdiction', pattern: /\b(jurisdiction|UK|FCA|PRA|CBUAE|handbook|CONC|COBS|PRIN)\b/i },
   { id: 'evidence_sufficiency', kind: 'evidence', pattern: /\b(evidence|retain|document|demonstrate)\b/i },
-  { id: 'multi_source', kind: 'multi_document', pattern: /\b(and|between|compare|conflict|both)\b/i },
+  {
+    id: 'multi_source',
+    kind: 'multi_document',
+    pattern: /\b(between|compare|comparison|conflict|conflicting|versus|vs\.?)\b|\bboth\b.+\band\b/i,
+  },
 ];
 
 export function extractMaterialIssuesFromQuestion(question) {
@@ -23,6 +31,26 @@ export function extractMaterialIssuesFromQuestion(question) {
   }
   if (/\bPS\d+|policy statement\b/i.test(text)) {
     issues.push({ id: 'named_publication', kind: 'source_identification', label: 'Named publication reference in question' });
+  }
+  const regTokens = text.match(/\b(CONC|COBS|PRIN|SYSC|FG\d+)\b/gi) || [];
+  if (regTokens.length >= 2 && /\band\b/i.test(text)) {
+    issues.push({ id: 'multi_source', kind: 'multi_document', label: 'Multiple regulatory sources referenced' });
+  }
+  const underHandbook = text.match(/\bUnder\s+(CONC|COBS|SYSC|CASS)\b/i);
+  if (underHandbook) {
+    const mod = underHandbook[1].toUpperCase();
+    issues.push({ id: `handbook_${mod.toLowerCase()}`, kind: 'handbook_module', label: `${mod} handbook module` });
+  }
+  for (const m of text.matchAll(/\b(COBS|CONC|SYSC|PRIN|CASS)\s+([\d.]+[A-Z]?R?)\b/gi)) {
+    const label = `${m[1]} ${m[2]}`.toUpperCase();
+    issues.push({
+      id: `rule_${m[1].toLowerCase()}_${m[2].replace(/\./g, '_')}`,
+      kind: 'explicit_provision',
+      label,
+    });
+  }
+  if (/\b(UAE|CBUAE|Basel)\b/i.test(text) && !/\b(FCA|UK|Handbook)\b/i.test(text)) {
+    issues.push({ id: 'foreign_jurisdiction', kind: 'foreign_regime', label: 'Non-UK regulatory regime referenced' });
   }
   return issues;
 }
