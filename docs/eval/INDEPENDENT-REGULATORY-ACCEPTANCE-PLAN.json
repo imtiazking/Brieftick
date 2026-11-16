@@ -26,8 +26,10 @@
     "passThreshold": "Defined by operator after SME freeze — not set in code"
   },
   "protectedHeldOutRetirement": {
-    "claudeOutputsInHistory": "If cfedc76 ever pushed, retire exposed held-out IDs and issue new suite",
-    "currentExposure": "See PHASE-4-GIT-COMMIT-AUDIT.json"
+    "status": "RETIRED",
+    "record": "docs/eval/HELD-OUT-RETIREMENT-RECORD.json",
+    "claudeOutputsInHistory": "cfedc76 local only — held-out IDs retired from independent acceptance",
+    "currentExposure": "PHASE-4-GIT-COMMIT-AUDIT.json + GIT-SECURITY-PHASE5-ASSESSMENT.json"
   },
   "executePaidAnthropic": false,
   "operatorAuthorizationRequired": true

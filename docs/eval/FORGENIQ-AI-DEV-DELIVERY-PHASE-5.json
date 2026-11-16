@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "forgeniq.ai-dev.delivery.phase5.v1",
+  "capturedAt": "2026-11-16T14:20:00.000Z",
+  "developmentHead": "d806a26b8fc5c8318c021cada56f2831d0e17064",
+  "proposedReleaseCandidateSha": "c4805c3e13120a21ed1112a5f5c8c583fd17f095",
+  "previewPin": "00b4369 unchanged",
+  "pushed": false,
+  "task1_regression": {
+    "artefact": "docs/eval/FORGENIQ-PHASE5-ENGINEERING-REGRESSION.json",
+    "testedSha": "d806a26b8fc5c8318c021cada56f2831d0e17064",
+    "pass": 18,
+    "fail": 0,
+    "blocked": 1,
+    "blockedItems": ["production-build (FORGENIQ_RUN_PRODUCTION_BUILD=1 not set)"],
+    "programmeAcceptanceClaimed": false
+  },
+  "task2_releaseCandidate": {
+    "lineage": "docs/eval/FORGENIQ-CLEAN-ENGINEERING-RC-LINEAGE.json",
+    "ancestryExcludesCfedc76Object": true,
+    "rcBranch": "forgeniq/engineering-rc-clean-2026-11-16",
+    "worktree": ".worktrees/forgeniq-rc-clean"
+  },
+  "task3_gitSecurity": "docs/eval/GIT-SECURITY-PHASE5-ASSESSMENT.json",
+  "task3_heldOutRetirement": "docs/eval/HELD-OUT-RETIREMENT-RECORD.json",
+  "task4_independentEval": {
+    "ready": false,
+    "regulatoryAccuracyApproved": false,
+    "plan": "INDEPENDENT-REGULATORY-ACCEPTANCE-PLAN.json"
+  },
+  "task5_fixtureMetrics": {
+    "artefact": "EVIDENCE-QUALITY-METRICS.json",
+    "metricClass": "CONTROLLED_ENGINEERING_FIXTURE",
+    "falseAbstentionRate": null
+  },
+  "task6_sme": {
+    "status": "PENDING",
+    "humanSignoffTemplate": "SME-REVIEW-PACK-PHASE5-HUMAN-SIGNOFF.json"
+  },
+  "task7_ps26": {
+    "checklist": "FCA-PS26-1-OBLIGATION-GRADE-HUMAN-CHECKLIST.json",
+    "humanGatesPending": ["OG-02", "OG-04", "OG-05", "OG-06"],
+    "ingestAllowed": false
+  },
+  "task8_stageB": {
+    "allPending": true,
+    "artefact": "stage-b-operator-decisions-pending.json"
+  },
+  "remainingBlockers": [
+    "SME human sign-off",
+    "Independent protected eval store + first scored run",
+    "Stage B operator decisions",
+    "PS26/1 OG human gates",
+    "RC npm install + full re-run on c4805c3 before push",
+    "Optional production build gate"
+  ],
+  "nextExecutableTasks": [
+    "Operator: assign Stage B owners",
+    "Operator: mount FORGENIQ_INDEPENDENT_EVAL_PATH",
+    "Engineering: npm install in RC worktree and re-run phase5 regression at c4805c3",
+    "SME: complete SME-REVIEW-PACK-PHASE5-HUMAN-SIGNOFF.json rows",
+    "PS26: human sign OG-02/04/05/06"
+  ]
+}

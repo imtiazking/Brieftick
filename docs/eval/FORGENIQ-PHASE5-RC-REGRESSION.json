@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "forgeniq.phase5.rc.regression.v1",
+  "capturedAt": "2026-11-16T14:20:00.000Z",
+  "releaseCandidateSha": "c4805c3e13120a21ed1112a5f5c8c583fd17f095",
+  "engineeringRegressionReferenceSha": "d806a26b8fc5c8318c021cada56f2831d0e17064",
+  "fullSuiteExecutedOnRcWorktree": false,
+  "reason": "RC worktree lacks node_modules — install required before corpus-backed suites",
+  "spotChecksOnRc": [
+    {
+      "script": "acceptance-stage-c-evidence-sufficiency-policy.mjs",
+      "status": "PASS"
+    },
+    {
+      "script": "acceptance-genuine-partial-evidence.mjs",
+      "status": "NOT_RUN",
+      "defect": "ERR_MODULE_NOT_FOUND @xenova/transformers in worktree"
+    }
+  ],
+  "equivalenceAssertion": "c4805c3 tree snapshot excludes sensitive paths; code paths match d806a26 file list (72 files from 00b4369..d806a26 diff)",
+  "authoritativeRegressionArtifact": "FORGENIQ-PHASE5-ENGINEERING-REGRESSION.json",
+  "operatorNote": "After npm install in worktree, re-run run-forgeniq-phase5-engineering-regression.mjs at c4805c3 before RC push"
+}

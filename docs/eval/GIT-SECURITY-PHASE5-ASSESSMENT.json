@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "forgeniq.git.security.phase5.v1",
+  "capturedAt": "2026-11-16T14:15:00.000Z",
+  "inspected": {
+    "localGitHistory": {
+      "tool": "audit-phase-4-git-commits.mjs",
+      "artefact": "PHASE-4-GIT-COMMIT-AUDIT.json",
+      "finding": "cfedc76 local only; sensitive adds; 70d46cb deletes from tree"
+    },
+    "remoteReferences": {
+      "command": "git branch -r --contains cfedc76",
+      "finding": "none"
+    },
+    "originPushCfedc76": false,
+    "e73196dScoped": true,
+    "rcCommitSensitivePaths": "git show c4805c3 — no runs/ or Claude outputs",
+    "developmentHeadAtTest": "d806a26"
+  },
+  "unverified": [
+    "Other developer clones",
+    "GitHub/GitLab hosting visibility (no remote contains cfedc76 — host UI not audited)",
+    "CI artefact caches",
+    "Off-machine backups"
+  ],
+  "heldOutRetirement": "docs/eval/HELD-OUT-RETIREMENT-RECORD.json",
+  "historyRewriteRecommended": false,
+  "operatorApprovalRequiredForRewrite": true,
+  "credentialRotationRequired": false
+}

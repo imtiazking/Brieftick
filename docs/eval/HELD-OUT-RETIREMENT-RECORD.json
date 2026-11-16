@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "forgeniq.held-out.retirement.v1",
+  "capturedAt": "2026-11-16T13:45:00.000Z",
+  "exposureCommit": "cfedc76",
+  "exposureScope": {
+    "artifacts": [
+      "docs/eval/Claude outputs/private-held-out-suite.json",
+      "docs/eval/Claude outputs/private-held-out-suite-v1.1.json",
+      "docs/eval/runs/* (live Claude eval outputs, checkpoints, partials)"
+    ],
+    "onOrigin": false,
+    "onRemoteBranches": false,
+    "localFeatureBranchContains": true
+  },
+  "retirementDecision": {
+    "status": "RETIRED_FROM_INDEPENDENT_ACCEPTANCE",
+    "effectiveAt": "2026-11-16T13:45:00.000Z",
+    "authorizedBy": "ENGINEERING_OPERATOR_INSTRUCTION_PHASE_5",
+    "rationale": "Held-out question IDs and reference material appeared in local commit cfedc76; must not be reused as independent acceptance evidence"
+  },
+  "replacementIndependentSuite": {
+    "stored": "OUTSIDE_REPO_PROTECTED_STORE",
+    "inOrdinaryCommits": false,
+    "plan": "docs/eval/INDEPENDENT-REGULATORY-ACCEPTANCE-PLAN.json"
+  },
+  "inspectionsCompleted": {
+    "localGitHistory": "audit-phase-4-git-commits.mjs + PHASE-4-GIT-COMMIT-AUDIT.json",
+    "remoteReferences": "git branch -r --contains cfedc76 (none)",
+    "originPush": "not verified via hosting UI — git reports no remote contains",
+    "developerWorkspaces": "this workspace only; other clones unverified",
+    "ciCaches": "not accessible",
+    "backups": "unverified"
+  },
+  "remediationAlreadyApplied": {
+    "commit": "70d46cb",
+    "action": "Removed tracked sensitive eval runs and private held-out JSON from tree; extended gitignore"
+  },
+  "historyRewriteRequired": false,
+  "operatorApprovalRequiredForRewrite": true,
+  "engineeringRegressionRetention": {
+    "elevenUnseenQuestions": "docs/eval/PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json",
+    "label": "engineering_regression_only",
+    "manifest": "docs/eval/ENGINEERING-REGRESSION-MANIFEST.json"
+  }
+}

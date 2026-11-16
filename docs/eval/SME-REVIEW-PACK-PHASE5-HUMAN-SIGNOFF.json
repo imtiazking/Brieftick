@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "forgeniq.sme.review.pack.phase5.v1",
+  "capturedAt": "2026-11-16T14:15:00.000Z",
+  "approvalStatus": "PENDING",
+  "automaticInterpretationApproval": false,
+  "instruction": "Named SME completes each row; engineering supplies mock/offline outcomes only",
+  "themes": [
+    "EVAL-B-01",
+    "EVAL-B-03",
+    "EVAL-C-02",
+    "EVAL-C-03",
+    "EVAL-D-02",
+    "EVAL-C-04",
+    "EVAL-I-01",
+    "EVAL-E-01",
+    "EVAL-G-02",
+    "EVAL-H-01"
+  ],
+  "perQuestionFieldsRequired": [
+    "regulatoryQuestion",
+    "expectedRegulatoryOutcome",
+    "supportingSourcePassages",
+    "exactCitations",
+    "applicability",
+    "effectiveDates",
+    "expectedAnswerOrAbstention",
+    "smeDecision",
+    "reviewerIdentity",
+    "approvalDate"
+  ],
+  "artefacts": {
+    "engineeringPack": "SME-REVIEW-PACK-FINAL.json",
+    "coverageMap": "SME-REVIEW-COVERAGE-PHASE-4.json",
+    "offlineSheet": "SME-REVIEW-SHEET.json"
+  },
+  "rows": [
+    {
+      "id": "TEMPLATE-ROW",
+      "regulatoryQuestion": null,
+      "expectedRegulatoryOutcome": null,
+      "supportingSourcePassages": null,
+      "exactCitations": null,
+      "applicability": null,
+      "effectiveDates": null,
+      "expectedAnswerOrAbstention": null,
+      "smeDecision": "PENDING",
+      "reviewerIdentity": null,
+      "approvalDate": null,
+      "note": "Populate from SME-REVIEW-PACK-FINAL cases — not auto-filled in Phase 5"
+    }
+  ]
+}

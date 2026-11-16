@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "forgeniq.clean.rc.lineage.v1",
+  "capturedAt": "2026-11-16T14:15:00.000Z",
+  "previewPin": "00b4369146a65a7508a5befaa510c97dce0e00fe",
+  "developmentHead": "d806a26b8fc5c8318c021cada56f2831d0e17064",
+  "proposedReleaseCandidateSha": "c4805c3e13120a21ed1112a5f5c8c583fd17f095",
+  "rcBranch": "forgeniq/engineering-rc-clean-2026-11-16",
+  "worktreePath": ".worktrees/forgeniq-rc-clean",
+  "method": "squashed_tree_snapshot",
+  "description": "Branch from preview pin 00b4369; single commit reapplies d806a26 file tree excluding docs/eval/runs and docs/eval/Claude",
+  "ancestryContainsOriginalCfedc76Object": false,
+  "sensitiveBlobsInRcCommit": false,
+  "developmentBranchUnmodified": "feature/ask-ri-v2-evaluation-baseline",
+  "pushedToRemote": false,
+  "operatorPushApprovalRequired": true
+}
