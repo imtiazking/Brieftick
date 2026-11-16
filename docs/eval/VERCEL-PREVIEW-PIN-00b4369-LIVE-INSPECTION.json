@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "forgeniq.vercel.preview.pin.live.inspection.v1",
+  "capturedAt": "2026-11-16T18:00:00.000Z",
+  "previewPin": "00b4369146a65a7508a5befaa510c97dce0e00fe",
+  "verdict": "UNVERIFIED",
+  "deploymentIdentifier": null,
+  "verifiedDeployedSha": null,
+  "vercelProjectId": null,
+  "inspectionMethod": [
+    "Vercel MCP list_projects (team_hhqI2hoyYXhIJachceL10BqK) — zero linked projects",
+    "Vercel MCP list_deployments — project not found / no access",
+    "Static next.config.ts and app route grep (supplementary only)"
+  ],
+  "checks": {
+    "docsEvalInStaticAssets": "NOT_INSPECTED_LIVE",
+    "docsEvalInServerBundles": "NOT_INSPECTED_LIVE",
+    "publicRouteServingEvalJson": "NOT_INSPECTED_LIVE",
+    "apiEndpointRetrievalOfEvalData": "NOT_INSPECTED_LIVE"
+  },
+  "evidenceReferences": [
+    "PREVIEW-PIN-00b4369-ARTIFACT-EXPOSURE-VERIFICATION.json"
+  ],
+  "operatorActionsRequired": [
+    "Link Vercel project to workspace or provide deployment ID / preview URL for commit 00b4369",
+    "Read-only: vercel inspect <deployment> + download deployment files manifest",
+    "Search deployed output for docs/eval or eval/runs paths"
+  ],
+  "deployChangesMade": false,
+  "note": "Cannot claim VERIFIED — NO EXPOSURE without live artefact inspection"
+}

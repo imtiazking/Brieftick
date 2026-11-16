@@ -32,6 +32,9 @@ apps/platform/supabase/seed/reference-catalogue.generated.sql
 # Eval scoring evidence — full answers (local operator artefact only)
 docs/eval/scoring-evidence/local/
 
+# Held-out overlap detail (hashes) — operator protected storage only
+docs/eval/local/
+
 # Eval — private / live run artefacts (retain locally; commit sanitised manifests only)
 docs/eval/Claude outputs/
 docs/eval/runs/*.partial.json

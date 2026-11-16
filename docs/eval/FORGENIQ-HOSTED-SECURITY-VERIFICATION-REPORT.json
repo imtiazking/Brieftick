@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "forgeniq.hosted.security.verification.v1",
+  "capturedAt": "2026-11-16T18:00:00.000Z",
+  "releaseCandidateSha": "9381c254590464baad20d338a13b287624d4b448",
+  "previewPin": "00b4369",
+  "engineeringRegressionRepeated": false,
+  "verifiedHostedSecurityAchieved": false,
+  "1_hashReportSecurityStatus": {
+    "committedQuestionHashes": false,
+    "artefact": "HELDOUT-OVERLAP-COMMITTED-REPORT-SECURITY.json",
+    "semanticLeakageProof": false,
+    "historyRewriteRequired": false
+  },
+  "2_vercelLiveInspection": {
+    "verdict": "UNVERIFIED",
+    "artefact": "VERCEL-PREVIEW-PIN-00b4369-LIVE-INSPECTION.json"
+  },
+  "3_hostedTenantIsolationMatrix": {
+    "artefact": "HOSTED-TENANT-ISOLATION-TEST-MATRIX.json",
+    "pass": 0,
+    "fail": 0,
+    "blocked": 10
+  },
+  "4_failedSecurityControls": [],
+  "criticalCrossTenantDisclosure": false,
+  "5_stageBPending": ["B-01", "B-04", "B-05", "SEC-B-01", "SEC-B-02"],
+  "6_regulatoryAcceptancePending": {
+    "independentEval": true,
+    "ps26": ["OG-02", "OG-04", "OG-05", "OG-06"]
+  },
+  "7_rcPushReadiness": "BLOCKED — hosted security UNVERIFIED; Stage B pending",
+  "8_previewPromotionReadiness": "BLOCKED — pin 00b4369; live Vercel exposure UNVERIFIED",
+  "9_approvedRcSha": {
+    "engineeringOffline": "9381c25",
+    "pushApproved": false,
+    "promoteApproved": false
+  },
+  "gitPushSeparateFromDeploy": true
+}

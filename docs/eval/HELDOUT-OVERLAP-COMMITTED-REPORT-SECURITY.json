@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "forgeniq.heldout.overlap.report.security.v1",
+  "capturedAt": "2026-11-16T18:00:00.000Z",
+  "committedReport": "GOLDEN-HELDOUT-OVERLAP-REPORT.json",
+  "questionHashesInCommittedReport": false,
+  "protectedEvaluationIdentifiersInCommittedReport": false,
+  "detailedOverlapEvidenceLocation": "operator-protected-local-only — run audit-golden-heldout-overlap.mjs with FORGENIQ_OVERLAP_DETAIL_PATH set outside repo",
+  "committedConclusionsOnly": {
+    "matchCountsAllZero": true,
+    "recommendedAction": "NO_ACTION",
+    "rcSha": "9381c25"
+  },
+  "semanticNonLeakageDisclaimer": "Overlap tooling checks testId equality and normalized text equality/near-duplicate similarity only. It does not independently establish semantic non-leakage or paraphrase independence.",
+  "gitHistoryRemediationRequiredBeforePush": false,
+  "rationale": "Prior commit 3efb0c8 overlap report contained counts and empty match arrays only — no question hashes",
+  "preventFutureTracking": [
+    "audit-golden-heldout-overlap.mjs omits questionSha256 from written JSON",
+    "Add docs/eval/local/ to gitignore for optional detail output"
+  ]
+}

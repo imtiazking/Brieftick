@@ -233,10 +233,11 @@ const out = {
     protectedExpectedAnswerFields: expectedAnswerOverlap.length,
     fullRegulatoryAnswerContent: golden.filter((g) => g.hasFullAnswerFields).length,
   },
-  idMatches,
-  exactQuestionMatches: exactQMatches,
-  normalisedQuestionMatches: normQMatches,
-  nearDuplicates: nearDup.slice(0, 50),
+  idMatchTestIds: idMatches.map((m) => ({ goldenFile: m.goldenFile, testId: m.testId })),
+  overlapLimitation:
+    'Detects identical and near-identical normalized text and testId equality only — does not prove semantic non-leakage or paraphrase independence',
+  nearDuplicatesCount: nearDup.length,
+  nearDuplicateEvidenceStorage: 'operator-protected-local — re-run script; committed report excludes question hashes',
   confidentialEvidenceIndicators: {
     partnerUatUuidInGolden: false,
     apiKeyPatternInGolden: false,

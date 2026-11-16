@@ -27,5 +27,7 @@
   },
   "recommendedAction": "NO_ACTION",
   "protectedContentInReport": false,
+  "questionHashesInThisFile": false,
+  "overlapLimitation": "testId and normalized-text checks only — not semantic non-leakage",
   "rcModified": false
 }

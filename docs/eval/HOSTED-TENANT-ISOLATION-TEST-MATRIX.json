@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "forgeniq.hosted.tenant.isolation.matrix.v1",
+  "capturedAt": "2026-11-16T18:00:00.000Z",
+  "executed": false,
+  "operatorAuthorizationPresent": false,
+  "stagingDatabaseUrlAvailable": false,
+  "clerkTechnicalAccountsReady": "documented in staging-ai-technical-test-config.mjs — session tokens not loaded",
+  "syntheticOrgsRequired": 2,
+  "cleanupProcedureDocumented": "HOSTED-TENANT-ISOLATION-TEST-PLAN.json — synthetic records only",
+  "forbiddenOrgsNotUsed": true,
+  "serviceRoleUsedAsPassProof": false,
+  "unauthorisedReadOrMutationObserved": false,
+  "tests": [
+    {
+      "testId": "HOSTED-TI-01",
+      "description": "Tenant A reads own records",
+      "expected": "ALLOWED",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "FORGENIQ_HOSTED_ISOLATION_AUTHORIZED unset; STAGING_DATABASE_URL unset"
+    },
+    {
+      "testId": "HOSTED-TI-02",
+      "description": "Tenant A read Tenant B",
+      "expected": "DENIED",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "credentials and operator authorization required"
+    },
+    {
+      "testId": "HOSTED-TI-03",
+      "description": "Tenant A update Tenant B",
+      "expected": "DENIED",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "credentials and operator authorization required"
+    },
+    {
+      "testId": "HOSTED-TI-04",
+      "description": "Tenant B read Tenant A",
+      "expected": "DENIED",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "credentials and operator authorization required"
+    },
+    {
+      "testId": "HOSTED-TI-05",
+      "description": "Unauthorised org switching",
+      "expected": "DENIED",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "Clerk session not provisioned"
+    },
+    {
+      "testId": "HOSTED-TI-06",
+      "description": "API with wrong tenant identifier",
+      "expected": "DENIED",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "hosted URL + auth not configured in agent environment"
+    },
+    {
+      "testId": "HOSTED-TI-07",
+      "description": "PostgreSQL RLS with tenant JWT",
+      "expected": "Cross-tenant inaccessible",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "acceptance-staging-postgrest-rls.mjs not run — no DB URL"
+    },
+    {
+      "testId": "HOSTED-TI-08",
+      "description": "Maker–Checker synthetic fixtures",
+      "expected": "Self-approval rejected",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "not executed — avoid Nyousaf live evidence"
+    },
+    {
+      "testId": "HOSTED-TI-09",
+      "description": "Missing/expired/invalid auth",
+      "expected": "DENIED",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "not executed"
+    },
+    {
+      "testId": "HOSTED-TI-10",
+      "description": "Privileged vs ordinary user",
+      "expected": "Privileged restricted",
+      "actual": null,
+      "status": "BLOCKED",
+      "blockedReason": "acceptance-phase-8-step-83f7-two-user-staging-security.mjs not run"
+    }
+  ],
+  "summary": { "pass": 0, "fail": 0, "blocked": 10 },
+  "plannedScriptsWhenAuthorized": [
+    "scripts/staging/verify-ai-dev-tenant-isolation.mjs",
+    "scripts/acceptance-staging-postgrest-rls.mjs",
+    "scripts/acceptance-phase-8-step-83f7-two-user-staging-security.mjs",
+    "scripts/acceptance-experimental-ai-tenant-guard.mjs"
+  ]
+}
