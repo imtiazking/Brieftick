@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "forgeniq.final.security.verification.v1",
+  "capturedAt": "2026-11-16T17:55:00.000Z",
+  "exactRcSha": "9381c254590464baad20d338a13b287624d4b448",
+  "previewPin": "00b4369",
+  "engineeringRegressionRepeated": false,
+  "rcModified": false,
+  "gitPush": false,
+  "previewPromoted": false,
+  "paidAnthropic": false,
+  "1_goldenHeldoutOverlap": {
+    "artefact": "GOLDEN-HELDOUT-OVERLAP-REPORT.json",
+    "heldOutSourceCommit": "cfedc76",
+    "heldOutCasesInspected": 10,
+    "dryRunCasesInGolden": 45,
+    "matchCounts": {
+      "exactCaseId": 0,
+      "exactQuestionText": 0,
+      "normalisedQuestionText": 0,
+      "nearDuplicateQuestions": 0,
+      "protectedExpectedAnswerFields": 0,
+      "fullRegulatoryAnswerContent": 0
+    },
+    "recommendedFileActions": "NO_ACTION — retain six golden files; no sanitisation required before push on overlap grounds",
+    "protectedContentWrittenToRepo": false
+  },
+  "2_previewArtifactExposure": {
+    "verdict": "UNVERIFIED",
+    "artefacts": [
+      "PREVIEW-PIN-00b4369-ARTIFACT-EXPOSURE-VERIFICATION.json",
+      "PREVIEW-ARTIFACT-EXPOSURE-ASSESSMENT.json"
+    ],
+    "staticConfigConclusion": "docs/eval/runs not in Next trace includes or app routes",
+    "liveVercelBundle": "NOT_INSPECTED — no linked Vercel project in tool context"
+  },
+  "3_hostedTenantIsolation": {
+    "status": "PREPARED_NOT_EXECUTED",
+    "artefact": "HOSTED-TENANT-ISOLATION-TEST-PLAN.json",
+    "credentialsRequired": ["STAGING_DATABASE_URL", "Clerk AI Dev test session"],
+    "safeBoundaries": "AI Dev org b8f5e3a1-00ad-4000-8000-000000000001 only; no Partner UAT / Org A mutation",
+    "operatorAuthorizationRequired": true
+  },
+  "4_humanGovernance": {
+    "stageB": "STAGE-B-SIGNOFF-SHEETS.json — B-01, B-04, B-05, SEC-B-01, SEC-B-02 all PENDING",
+    "secB02Focus": "Golden audit + held-out overlap NO_ACTION",
+    "ps26": "PS26-1-OG-HUMAN-APPROVAL-SHEETS.json — OG-02/04/05/06 PENDING",
+    "ingestAllowed": false
+  },
+  "5_releaseReadinessSeparate": {
+    "rcPushReadiness": "CONDITIONAL — overlap clear; awaits SEC-B-02 + operator push approval",
+    "hostedSecurityReadiness": "NOT_READY — probes not executed",
+    "independentAiEvalReadiness": "NOT_READY — protected store not mounted",
+    "pdfObligationExtractionReadiness": "PREPARED — human OG gates pending",
+    "productionDeploymentReadiness": "BLOCKED — preview pin unchanged; Stage B and hosted isolation outstanding"
+  },
+  "6_remainingBlockers": [
+    "Live Vercel 00b4369 deployment artefact verification (operator)",
+    "Hosted tenant isolation execution",
+    "Stage B sign-offs",
+    "Independent regulatory acceptance",
+    "PS26 OG human approvals"
+  ]
+}

@@ -81,10 +81,16 @@
         "eval-report-sanitize.mjs",
         "HELD-OUT-RETIREMENT-RECORD.json",
         "GOLDEN-EVAL-RUNS-SECURITY-AUDIT.json",
-        "PREVIEW-ARTIFACT-EXPOSURE-ASSESSMENT.json"
+        "GOLDEN-HELDOUT-OVERLAP-REPORT.json",
+        "PREVIEW-ARTIFACT-EXPOSURE-ASSESSMENT.json",
+        "PREVIEW-PIN-00b4369-ARTIFACT-EXPOSURE-VERIFICATION.json"
       ],
-      "acceptanceCriteria": "Six golden runs retained with documented audit; private held-out retired; no full eval in preview bundle",
-      "outstandingRisks": ["Git copy of dry-run contains engineering diagnostics"],
+      "acceptanceCriteria": "Six golden runs retained; held-out overlap audit shows zero ID/question matches vs cfedc76; preview exposure UNVERIFIED on live Vercel until operator inspects",
+      "outstandingRisks": [
+        "Dry-run 45-case engineering metadata retained",
+        "Live preview deployment artefact list not fetched"
+      ],
+      "secB02ReviewFocus": "Explicit review of GOLDEN-HELDOUT-OVERLAP-REPORT.json recommendedAction=NO_ACTION",
       "decisionOptions": ["ACCEPT_RETENTION_POLICY", "REQUIRE_SANITISE", "REJECT"],
       "namedApprover": null,
       "approvalDate": null,

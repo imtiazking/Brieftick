@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "forgeniq.golden.heldout.overlap.v1",
+  "capturedAt": "2026-11-16T17:53:37.199Z",
+  "rcSha": "9381c254590464baad20d338a13b287624d4b448",
+  "heldOutCommitInspected": "cfedc76",
+  "heldOutCaseCount": 20,
+  "goldenFileCount": 6,
+  "goldenCaseRows": 67,
+  "dryRunFile": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-10T20-02-13-509Z.json",
+  "dryRunCaseCount": 45,
+  "matchCounts": {
+    "exactCaseId": 0,
+    "exactQuestionText": 0,
+    "normalisedQuestionText": 0,
+    "nearDuplicateQuestions": 0,
+    "protectedExpectedAnswerFields": 0,
+    "fullRegulatoryAnswerContent": 0
+  },
+  "idMatches": [],
+  "exactQuestionMatches": [],
+  "normalisedQuestionMatches": [],
+  "nearDuplicates": [],
+  "confidentialEvidenceIndicators": {
+    "partnerUatUuidInGolden": false,
+    "apiKeyPatternInGolden": false,
+    "note": "See GOLDEN-EVAL-RUNS-SECURITY-AUDIT.json"
+  },
+  "recommendedAction": "NO_ACTION",
+  "protectedContentInReport": false,
+  "rcModified": false
+}

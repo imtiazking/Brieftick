@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "forgeniq.preview.pin.exposure.verification.v1",
+  "capturedAt": "2026-11-16T17:55:00.000Z",
+  "previewPin": "00b4369146a65a7508a5befaa510c97dce0e00fe",
+  "verdict": "UNVERIFIED",
+  "verdictNote": "Vercel team has no linked repository projects in MCP context; live deployment file list not retrieved",
+  "readOnlyChecksCompleted": {
+    "localNextConfig": {
+      "file": "apps/platform/next.config.ts",
+      "docsEvalInOutputFileTracingIncludes": false,
+      "result": "EXCLUDED_FROM_TRACE_INCLUDES"
+    },
+    "appRoutesFileServing": {
+      "grepAppsPlatformAppForDocsEval": false,
+      "result": "NO_FILE_SERVING_ROUTES_OBSERVED"
+    },
+    "localBuildAt9381c25Worktree": {
+      "method": "Prior RC session npm run build — no .next paths containing docs/eval/runs",
+      "pinExactBuildNotRebuiltThisSession": true
+    },
+    "pinCommitTrackedEvalRuns": {
+      "count": 7,
+      "note": "Present in Git at pin only — not proof of bundle inclusion"
+    }
+  },
+  "vercelLiveDeployment": {
+    "status": "NOT_INSPECTED",
+    "reason": "No Vercel project linked to workspace; operator must verify deployment file manifest in dashboard or CLI against commit 00b4369",
+    "suggestedReadOnlyCommand": "vercel inspect <preview-url> --logs (operator) + compare deployment source tree to apps/platform only"
+  },
+  "classificationIfLocalModelHolds": "VERIFIED_SAFE_FOR_RUNTIME_BUNDLE",
+  "overallVerdictForTask": "UNVERIFIED",
+  "remediationIfExposureFound": [
+    "Remove docs/eval from any static copy step",
+    "Confirm standalone output root is apps/platform without monorepo docs mount"
+  ],
+  "deployChangesAuthorized": false
+}
