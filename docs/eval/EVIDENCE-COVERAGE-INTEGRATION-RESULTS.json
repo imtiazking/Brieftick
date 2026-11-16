@@ -1,6 +1,6 @@
 {
   "schemaVersion": "forgeniq.eval.coverage-integration.v1",
-  "capturedAt": "2026-11-16T12:10:00.840Z",
+  "capturedAt": "2026-11-16T12:55:59.002Z",
   "programmePass": false,
   "regulatoryAccuracyPass": false,
   "note": "Uses assess-evidence-question-coverage; outcomes vary by corpus mapping — not pass/fail vs ideal.",
@@ -84,18 +84,19 @@
       "theme": "insufficient_evidence",
       "testId": "EVAL-B-03",
       "scenario": "SUFFICIENT",
-      "applicationPolicyStatus": "ANSWERED",
-      "policyReason": "ANSWERED",
-      "questionCoverage": "KNOWN",
-      "coverageCompleteness": "FULL",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
       "coverageReasons": [
-        "all_question_derived_issues_mapped_strong_retrieval"
+        "jurisdiction_handbook_anchor_missing",
+        "partial_issue_mapping_or_weak_retrieval"
       ],
-      "scorerOutcome": "FAIL",
+      "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
       "evalLayers": {
-        "applicationPolicyStatus": "ANSWERED",
-        "policyReason": "ANSWERED",
-        "scorerOutcome": "FAIL",
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+        "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
         "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
         "suiteIdeal": null,
         "regulatoryAccuracyVerified": false,
@@ -110,16 +111,17 @@
       "testId": "EVAL-B-03",
       "scenario": "PARTIAL",
       "applicationPolicyStatus": "PARTIAL_ANSWER",
-      "policyReason": "PARTIAL",
-      "questionCoverage": "KNOWN",
-      "coverageCompleteness": "FULL",
+      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
       "coverageReasons": [
-        "all_question_derived_issues_mapped_strong_retrieval"
+        "jurisdiction_handbook_anchor_missing",
+        "partial_issue_mapping_or_weak_retrieval"
       ],
       "scorerOutcome": "FAIL",
       "evalLayers": {
         "applicationPolicyStatus": "PARTIAL_ANSWER",
-        "policyReason": "PARTIAL",
+        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
         "scorerOutcome": "FAIL",
         "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
         "suiteIdeal": null,
@@ -136,10 +138,11 @@
       "scenario": "INSUFFICIENT",
       "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
       "policyReason": "NO_SUPPORT",
-      "questionCoverage": "KNOWN",
-      "coverageCompleteness": "FULL",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
       "coverageReasons": [
-        "all_question_derived_issues_mapped_strong_retrieval"
+        "jurisdiction_handbook_anchor_missing",
+        "partial_issue_mapping_or_weak_retrieval"
       ],
       "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
       "evalLayers": {

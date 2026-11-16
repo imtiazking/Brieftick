@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "forgeniq.sme.review-pack.final.v1",
+  "capturedAt": "2026-11-16T13:00:00.000Z",
+  "regulatoryAccuracyApproved": false,
+  "engineeringTechnicalBaseline": "eaaabf0+",
+  "disclaimer": "Engineering artefacts only — SME must approve expected outcomes before Stage E or production promotion.",
+  "focusAreas": [
+    {
+      "topic": "PRIN sufficient evidence",
+      "references": ["UNSEEN-SUFFICIENT-PRIN", "docs/eval/PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json"],
+      "question": "Under PRIN, what high-level expectations apply to a firm’s honesty and integrity?",
+      "engineeringCoverage": "KNOWN",
+      "engineeringPolicyMock": "ANSWERED",
+      "smeMustConfirm": ["Retrieved PS22/9 / PRIN cross-references substantively answer the question", "Citations match authoritative handbook or accepted policy statement grounding"]
+    },
+    {
+      "topic": "FG partial evidence",
+      "references": ["UNSEEN-PARTIAL-FG", "EVAL-C-03"],
+      "question": "What should firms document when monitoring fair value outcomes under Consumer Duty guidance?",
+      "engineeringCoverage": "KNOWN",
+      "engineeringPolicyMock": "PARTIAL_ANSWER",
+      "smeMustConfirm": ["Partial framing is correct vs full FG22/5 requirements", "No invented monitoring metrics"]
+    },
+    {
+      "topic": "Binding rules versus guidance",
+      "references": ["UNSEEN-CONFLICT-BIND-GUIDE", "EVAL-D-02"],
+      "question": "Is FG22/5 binding on firms or only guidance when setting monitoring metrics?",
+      "engineeringCoverage": "KNOWN",
+      "smeMustConfirm": ["Binding vs non-Handbook guidance characterisation", "No overstatement of FG22/5 legal status"]
+    },
+    {
+      "topic": "Multi-regulation reasoning",
+      "references": ["UNSEEN-MULTI-PRIN-DUTY", "EVAL-G-02"],
+      "question": "How do PRIN and the Consumer Duty interact when assessing fair value for retail customers?",
+      "engineeringCoverage": "KNOWN (multi-publication bundle)",
+      "smeMustConfirm": ["Interaction analysis is substantiated by retrieved passages", "No synthetic merger of unrelated sources"]
+    },
+    {
+      "topic": "Missing source",
+      "references": ["EVAL-B-03", "EVAL-I-01", "docs/eval/EVIDENCE-COVERAGE-MISSING-PROVISION-RESULTS.json"],
+      "questions": [
+        "What does COBS require for suitability assessments?",
+        "Summarise FCA Policy Statement PS99/99 on cryptoassets."
+      ],
+      "engineeringCoverage": "UNKNOWN (COBS) / BLOCKED (PS99/99)",
+      "smeMustConfirm": ["Abstention is correct for absent COBS corpus", "BLOCKED vs INSUFFICIENT distinction for invalid PS reference is acceptable policy"]
+    },
+    {
+      "topic": "Incorrect citation integrity",
+      "references": ["UNSEEN-WRONG-CITATION-MOCK", "EVAL-C-04"],
+      "engineeringCoverage": "UNKNOWN",
+      "engineeringPolicyMock": "INSUFFICIENT_EVIDENCE",
+      "smeMustConfirm": ["CONC forbearance cannot be answered from unrelated vulnerable-customer guidance alone"]
+    }
+  ],
+  "supportingArtefacts": [
+    "docs/eval/PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json",
+    "docs/eval/EVIDENCE-COVERAGE-INTEGRATION-RESULTS.json",
+    "docs/eval/EVAL-CLASSIFICATION-AUDIT-B03-I01.json",
+    "docs/eval/SME-REVIEW-PACK-10-THEMES.json"
+  ],
+  "smeSignOffRequired": true,
+  "approvalStatus": "PENDING"
+}

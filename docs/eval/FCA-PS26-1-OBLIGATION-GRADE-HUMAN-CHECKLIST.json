@@ -4,9 +4,26 @@
   "ingestAllowed": false,
   "items": [
     { "id": "OG-01", "check": "source_sha256 matches official download", "automated": "verify-fca-ps26-1-instrument-offline.mjs" },
-    { "id": "OG-02", "check": "Appendix 1 / Annex F page boundaries confirmed by human", "status": "pending" },
+    {
+      "id": "OG-02",
+      "check": "Appendix 1 / Annex F page boundaries confirmed by human",
+      "status": "pending",
+      "engineeringEvidence": {
+        "hintPagesAppendix1": [2],
+        "hintPagesAnnexF": [74],
+        "source": "docs/eval/FCA-PS26-1-INSTRUMENT-VERIFICATION.json#sectionBoundaries"
+      }
+    },
     { "id": "OG-03", "check": "CONC 4.2A.3R, 4.2A.6R, 7.20.1R located with PDF page refs", "status": "automated_hint_pending_sme" },
-    { "id": "OG-04", "check": "Commencement dates verified per rule (not single assumed date)", "status": "pending" },
+    {
+      "id": "OG-04",
+      "check": "Commencement dates verified per rule (not single assumed date)",
+      "status": "pending",
+      "engineeringEvidence": {
+        "hintsOnly": ["commencement_15_July_2026", "commencement_Regulation_Day", "commencement_comes_into_force"],
+        "source": "verify-fca-ps26-1-instrument-offline.mjs pageHints"
+      }
+    },
     { "id": "OG-05", "check": "Binding (R) vs guidance (G) marked per provision", "status": "pending_sme" },
     { "id": "OG-06", "check": "assessObligationGradePosture before obligationGradeSuitable", "status": "not_run" },
     { "id": "OG-07", "check": "UC-RI-005 citations include physicalPageNumber + sectionReference", "status": "pipeline_ready_not_executed" },

@@ -85,5 +85,25 @@ const weakSemantic = assessEvidenceQuestionCoverage({
 if (weakSemantic.questionCoverage !== 'UNKNOWN') failures.push('weak semantic must stay UNKNOWN');
 else ok('weak semantic similarity stays UNKNOWN');
 
+const cobsAbsent = assessEvidenceQuestionCoverage({
+  question: 'What does COBS require for suitability assessments?',
+  bundle: {
+    evidenceChunks: [
+      {
+        evidenceChunkId: 'x1',
+        verbatimText: 'PS22/9 discusses COBS 9.2.1R cross references for retail.',
+        publicationStatus: 'policy_statement',
+        publicationTitle: 'PS22/9',
+      },
+    ],
+  },
+  retrieval: {
+    allRankedChunks: [{ similarity: 0.03, semanticSimilarity: 0.85, method: 'hybrid_rrf' }],
+  },
+  productionMode: true,
+});
+if (cobsAbsent.questionCoverage !== 'UNKNOWN') failures.push('COBS cross-ref in PS must not yield KNOWN');
+else ok('COBS absent handbook — cross-refs do not establish KNOWN');
+
 console.log(JSON.stringify({ ok: failures.length === 0, failures }, null, 2));
 process.exit(failures.length ? 1 : 0);

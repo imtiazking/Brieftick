@@ -1,6 +1,6 @@
 {
   "schemaVersion": "forgeniq.coverage.unseen-questions.v2",
-  "capturedAt": "2026-11-16T12:08:43.851Z",
+  "capturedAt": "2026-11-16T12:55:10.663Z",
   "disclaimer": "Mocked provider; regulatory accuracy requires SME review — not claimed here.",
   "scenarioCount": 11,
   "programmePass": true,
@@ -120,6 +120,10 @@
           "source": "extractMaterialIssuesFromQuestion"
         },
         {
+          "issue": "handbook_cobs",
+          "source": "extractMaterialIssuesFromQuestion"
+        },
+        {
           "issue": "rule_cobs_4_2_1R",
           "source": "extractMaterialIssuesFromQuestion"
         }
@@ -132,8 +136,13 @@
         },
         {
           "issueId": "jurisdiction",
-          "status": "mapped",
-          "source": "retrieval_chunk_text_match"
+          "status": "unmapped",
+          "source": "handbook_provision_anchor_missing"
+        },
+        {
+          "issueId": "handbook_cobs",
+          "status": "unmapped",
+          "source": "no_supporting_chunk"
         },
         {
           "issueId": "rule_cobs_4_2_1R",
@@ -515,8 +524,8 @@
         },
         {
           "issueId": "jurisdiction",
-          "status": "mapped",
-          "source": "retrieval_chunk_text_match"
+          "status": "unmapped",
+          "source": "handbook_provision_anchor_missing"
         },
         {
           "issueId": "handbook_conc",

@@ -1,52 +1,67 @@
 {
   "schemaVersion": "forgeniq.eval.stage-b.pending-decisions.v1",
-  "capturedAt": "2026-11-16T11:00:00.000Z",
+  "capturedAt": "2026-11-16T13:00:00.000Z",
   "programmePass": false,
   "operatorApproval": null,
   "items": [
     {
       "id": "B-01",
       "namedOwner": null,
+      "recommendedAccountableRole": "Change control / release manager (GRC)",
       "decision": "Record manifestSha256 in change control",
       "humanJudgement": "GRC change control owner",
-      "engineeringEvidence": "generate-stage-b-evidence-manifest.mjs + signoff pack integrityOk",
+      "engineeringEvidence": ["generate-stage-b-evidence-manifest.mjs", "stage-b-secure-evidence-manifest.json integrityOk"],
+      "acceptanceCriteria": "Manifest hash recorded in GRC matches repository signoff pack at approved commit",
       "outstandingConcern": "Manifest hash not recorded in external GRC",
+      "outstandingRisk": "Release candidate not pinned in change control",
       "approvalStatus": "PENDING"
     },
     {
       "id": "B-04",
       "decision": "Confirm eval corpus has no Partner UAT / Org A DB snapshots",
+      "recommendedAccountableRole": "Data protection operator + platform operator",
       "humanJudgement": "Operator + data owner",
-      "engineeringEvidence": "Offline AUTHENTIC_CORPUS_B2 only in manifests",
+      "engineeringEvidence": ["AUTHENTIC_CORPUS_B2 manifest", "No 4d871541 partner UUID in eval paths"],
+      "acceptanceCriteria": "Signed attestation: eval corpus excludes Partner UAT, Org A, Maker–Checker exports",
       "namedOwner": null,
       "outstandingConcern": "No signed attestation that Partner UAT snapshots are excluded",
+      "outstandingRisk": "Accidental tenant data in eval artefacts",
       "approvalStatus": "PENDING"
     },
     {
       "id": "B-05",
       "decision": "SME secure-evidence attestation",
+      "recommendedAccountableRole": "Regulatory SME (secure evidence programme)",
       "humanJudgement": "Regulatory SME signatory",
-      "engineeringEvidence": "acceptance-stage-b-secure-eval-evidence.mjs PASS",
+      "engineeringEvidence": ["acceptance-stage-b-secure-eval-evidence.mjs PASS", "SME-REVIEW-PACK-FINAL.json"],
+      "acceptanceCriteria": "SME attests eval scope, corpus, and focus-case expected outcomes",
       "namedOwner": null,
       "outstandingConcern": "Regulatory SME signature required",
+      "outstandingRisk": "Regulatory accuracy not validated",
       "approvalStatus": "PENDING"
     },
     {
       "id": "SEC-B-01",
       "decision": "Accept RI_AI_EXECUTION_ENABLED gating for live keys",
+      "recommendedAccountableRole": "Information security officer",
       "humanJudgement": "Security operator",
-      "engineeringEvidence": "Stage E disabled; preview flags off",
+      "engineeringEvidence": ["Stage E deferred", "RI_AI_EXECUTION_ENABLED off in preview plan", "acceptance-stage-e-budget-ceiling-offline.mjs"],
+      "acceptanceCriteria": "Live Anthropic only when env gate + operator auth; no staging keys in CI",
       "namedOwner": null,
       "outstandingConcern": "Developer machines may still hold API keys locally",
+      "outstandingRisk": "Unauthorised paid provider execution",
       "approvalStatus": "PENDING"
     },
     {
       "id": "SEC-B-02",
       "decision": "Accept sanitised eval commits + gitignored scoring local",
+      "recommendedAccountableRole": "Information security officer + operator",
       "humanJudgement": "Security operator",
-      "engineeringEvidence": "eval-report-sanitize.mjs; docs/eval/scoring-evidence/local gitignored",
+      "engineeringEvidence": ["eval-report-sanitize.mjs", "gitignore scoring-evidence/local", "COMMIT-cfedc76-REMOTE-HISTORY-AUDIT.json"],
+      "acceptanceCriteria": "No full eval answers in Git; local bundles redacted; history exposure acceptable or remediated",
       "namedOwner": null,
       "outstandingConcern": "Operator must confirm redaction policy for scoring local bundles",
+      "outstandingRisk": "Historical live eval JSON in unpushed commits",
       "approvalStatus": "PENDING"
     }
   ]

@@ -1,6 +1,12 @@
 {
   "schemaVersion": "forgeniq.eval.stage-e.proposal.v2",
-  "capturedAt": "2026-11-16T12:25:00.000Z",
+  "capturedAt": "2026-11-16T13:00:00.000Z",
+  "prerequisitesMet": {
+    "unseenQuestionSuitePass": true,
+    "evalB03CoverageFailClosed": true,
+    "smePackPublished": "docs/eval/SME-REVIEW-PACK-FINAL.json",
+    "paidAnthropicAuthorized": false
+  },
   "liveAnthropicAuthorized": false,
   "budgetUsdCeiling": 10,
   "proposedDiagnosticCapUsd": null,

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "forgeniq.coverage.missing-provision.v1",
+  "capturedAt": "2026-11-16T12:54:16.176Z",
+  "directAssessment": {
+    "mode": "production",
+    "questionCoverage": "UNKNOWN",
+    "completeness": "PARTIAL",
+    "materialIssues": [
+      {
+        "id": "primary_question",
+        "kind": "question_core",
+        "label": "What does COBS require for suitability assessments?"
+      },
+      {
+        "id": "jurisdiction",
+        "kind": "jurisdiction",
+        "label": "jurisdiction"
+      },
+      {
+        "id": "handbook_cobs",
+        "kind": "handbook_module",
+        "label": "COBS handbook module"
+      }
+    ],
+    "mappings": [
+      {
+        "issueId": "primary_question",
+        "label": "What does COBS require for suitability assessments?",
+        "kind": "question_core",
+        "status": "mapped",
+        "evidenceChunkIds": [
+          "738c70aed19aecb4",
+          "c4a4eb7e0c5fa732",
+          "4b2114618bb674ea",
+          "e942d208e85bba80",
+          "7bfa0d2fb40eeb35"
+        ],
+        "publicationIds": [
+          "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
+        ],
+        "source": "retrieval_chunk_text_match"
+      },
+      {
+        "issueId": "jurisdiction",
+        "label": "jurisdiction",
+        "kind": "jurisdiction",
+        "status": "unmapped",
+        "evidenceChunkIds": [],
+        "publicationIds": [
+          "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+          "34b18772-3732-4e10-89a6-946bd15c5afe",
+          "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
+        ],
+        "source": "handbook_provision_anchor_missing"
+      },
+      {
+        "issueId": "handbook_cobs",
+        "label": "COBS handbook module",
+        "kind": "handbook_module",
+        "status": "unmapped",
+        "evidenceChunkIds": [],
+        "publicationIds": [],
+        "source": "no_supporting_chunk"
+      }
+    ],
+    "reasons": [
+      "jurisdiction_handbook_anchor_missing",
+      "partial_issue_mapping_or_weak_retrieval"
+    ],
+    "contradictoryEvidence": [],
+    "missingEvidence": [
+      "jurisdiction",
+      "handbook_cobs"
+    ],
+    "retrievalTopSimilarity": 0.849994,
+    "retrievalStrengthMetric": "semantic_similarity",
+    "fusionTopSimilarity": 0.029857,
+    "decisionTrace": [
+      {
+        "issue": "primary_question",
+        "source": "extractMaterialIssuesFromQuestion"
+      },
+      {
+        "issue": "jurisdiction",
+        "source": "extractMaterialIssuesFromQuestion"
+      },
+      {
+        "issue": "handbook_cobs",
+        "source": "extractMaterialIssuesFromQuestion"
+      },
+      {
+        "issue": "primary_question",
+        "mappingSource": "retrieval_chunk_text_match",
+        "status": "mapped"
+      },
+      {
+        "issue": "jurisdiction",
+        "mappingSource": "handbook_provision_anchor_missing",
+        "status": "unmapped"
+      },
+      {
+        "issue": "handbook_cobs",
+        "mappingSource": "no_supporting_chunk",
+        "status": "unmapped"
+      }
+    ]
+  },
+  "programmePass": true,
+  "failures": []
+}

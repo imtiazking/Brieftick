@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "forgeniq.ai-dev.delivery.phase2.v1",
+  "capturedAt": "2026-11-16T13:10:00.000Z",
+  "parentCommit": "eaaabf055795f0ba92523819a3bc486f7113e34c",
+  "workstream1_askRi": {
+    "evalB03Fix": "Strict COBS/CONC/SYSC/CASS handbook anchoring; handbook_module for ‘What does COBS require’",
+    "evalB03Coverage": "UNKNOWN on production + harness (all scenarios)",
+    "evalB03Policy": "SUFFICIENT/PARTIAL scenarios still exercise mock provider; INSUFFICIENT scorer CORRECT",
+    "regressionAdded": "acceptance-evidence-coverage-missing-provision.mjs",
+    "integrationGate": "EVAL-B-03 KNOWN now fails integration suite",
+    "unseenSuite": "11/11 PASS unchanged",
+    "smePack": "docs/eval/SME-REVIEW-PACK-FINAL.json",
+    "regulatoryAccuracyApproved": false
+  },
+  "workstream2_ps26": {
+    "verification": "docs/eval/FCA-PS26-1-INSTRUMENT-VERIFICATION.json",
+    "extractionReadiness": "docs/eval/FCA-PS26-1-EXTRACTION-ACCEPTANCE-READINESS.json",
+    "acceptanceScript": "apps/platform/scripts/acceptance-ps26-1-extraction-controlled.mjs",
+    "ingestAllowed": false,
+    "humanGates": ["OG-02", "OG-04", "OG-05", "OG-06"],
+    "exactPagesVerified": false
+  },
+  "stageB": "docs/eval/stage-b-operator-decisions-pending.json (all PENDING)",
+  "stageE": {
+    "paidAnthropic": false,
+    "proposal": "docs/eval/stage-e-diagnostic-three-case-proposal-v2.json",
+    "executeLive": false
+  },
+  "previewPin": "00b4369 unchanged — no RC promotion",
+  "gitSecurity": "COMMIT-cfedc76-REMOTE-HISTORY-AUDIT.json — not on origin",
+  "blockers": [
+    "SME sign-off on SME-REVIEW-PACK-FINAL.json",
+    "Stage B five decisions",
+    "PS26/1 human page boundaries and per-rule commencement",
+    "Operator-authorised clean RC commit"
+  ]
+}

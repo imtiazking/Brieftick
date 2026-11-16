@@ -41,6 +41,14 @@ export function extractMaterialIssuesFromQuestion(question) {
     const mod = underHandbook[1].toUpperCase();
     issues.push({ id: `handbook_${mod.toLowerCase()}`, kind: 'handbook_module', label: `${mod} handbook module` });
   }
+  const handbookSubject = text.match(/\b(?:what|how)\s+does\s+(COBS|CONC|SYSC|CASS)\b/i);
+  if (handbookSubject) {
+    const mod = handbookSubject[1].toUpperCase();
+    const id = `handbook_${mod.toLowerCase()}`;
+    if (!issues.some((i) => i.id === id)) {
+      issues.push({ id, kind: 'handbook_module', label: `${mod} handbook module` });
+    }
+  }
   for (const m of text.matchAll(/\b(COBS|CONC|SYSC|PRIN|CASS)\s+([\d.]+[A-Z]?R?)\b/gi)) {
     const label = `${m[1]} ${m[2]}`.toUpperCase();
     issues.push({

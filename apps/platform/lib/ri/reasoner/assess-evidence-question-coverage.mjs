@@ -49,11 +49,19 @@ function chunkSupportsIssue(issue, chunk, question) {
   if (issue.kind === 'handbook_module') {
     const mod = (issue.label || '').split(/\s+/)[0];
     if (!mod) return false;
-    const section = String(chunk.sectionReference || '');
-    if (!new RegExp(`^${mod}\\b`, 'i').test(section.trim())) return false;
+    if (!handbookAnchorInChunk(mod, chunk)) return false;
+    const section = String(chunk.sectionReference || '').trim();
+    const sectionOk = new RegExp(`^${mod}\\b`, 'i').test(section);
     const domainTokens = normaliseText(question)
       .split(/\s+/)
-      .filter((t) => t.length > 5 && !/^(expectations|borrower|persistent|under|what|when|does|apply|requirements)$/.test(t));
+      .filter(
+        (t) =>
+          t.length > 5 &&
+          !/^(expectations|borrower|persistent|under|what|when|does|apply|requirements|require|assessments)$/.test(t),
+      );
+    if (!sectionOk) {
+      return domainTokens.filter((t) => t !== mod.toLowerCase()).some((t) => blob.includes(t));
+    }
     return domainTokens.some((t) => blob.includes(t));
   }
   if (issue.kind === 'multi_document') {
@@ -90,9 +98,25 @@ function issueMappingForChunk(issue, chunks, question) {
   };
 }
 
+const STRICT_HANDBOOK_MODULES = new Set(['COBS', 'CONC', 'SYSC', 'CASS']);
+
 function handbookAnchorInChunk(reg, chunk) {
+  const module = String(reg || '').toUpperCase();
+  const section = String(chunk.sectionReference || '').trim();
+  if (new RegExp(`^${module}\\s*[\\d.]+`, 'i').test(section)) return true;
+
   const text = `${chunk.sectionReference || ''} ${chunk.verbatimText || ''} ${chunk.publicationReference || ''}`;
-  return new RegExp(`\\b${reg}\\s*[\\d.]+[A-Z]?R?`, 'i').test(text);
+  const provisionMention = new RegExp(`\\b${module}\\s*[\\d.]+[A-Z]?R?`, 'i').test(text);
+  if (!provisionMention) return false;
+
+  if (STRICT_HANDBOOK_MODULES.has(module)) {
+    const status = String(chunk.publicationStatus || '').toLowerCase();
+    const pub = String(chunk.publicationReference || chunk.publicationTitle || '');
+    const isHandbookCorpus =
+      status === 'handbook' || status === 'fca_handbook' || new RegExp(`^${module}\\b`, 'i').test(pub.trim());
+    return isHandbookCorpus;
+  }
+  return true;
 }
 
 function detectContradictoryStatuses(chunks) {

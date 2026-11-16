@@ -38,7 +38,11 @@ for (const { theme, testId } of THEMES) {
     results.push({ theme, ...row });
 
     if (testId === 'EVAL-B-03') {
-      ok(`EVAL-B-03 ${scenario}: coverage=${row.questionCoverage} (COBS absent from corpus — expect UNKNOWN/partial, no eval metadata)`);
+      if (row.questionCoverage === 'KNOWN') {
+        failures.push(`EVAL-B-03 ${scenario} must not return KNOWN — COBS handbook absent from corpus`);
+      } else {
+        ok(`EVAL-B-03 ${scenario}: coverage=${row.questionCoverage} (COBS absent — fail-closed)`);
+      }
     }
 
     if (testId === 'EVAL-I-01') {

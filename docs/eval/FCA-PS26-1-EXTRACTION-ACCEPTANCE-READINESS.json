@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "forgeniq.uc-ri-005.ps26-1.extraction-readiness.v1",
+  "capturedAt": "2026-11-16T12:56:34.263Z",
+  "ingestExecuted": false,
+  "obligationMaterialisationExecuted": false,
+  "verificationArtifact": "docs/eval/FCA-PS26-1-INSTRUMENT-VERIFICATION.json",
+  "humanChecklist": "docs/eval/FCA-PS26-1-OBLIGATION-GRADE-HUMAN-CHECKLIST.json",
+  "obligationExtractionPipelineReady": true,
+  "exactPhysicalPagesVerified": false,
+  "humanGatesOutstanding": [
+    "OG-02",
+    "OG-04",
+    "OG-05",
+    "OG-06"
+  ],
+  "expectedObligationsDefined": false,
+  "note": "Page refs are search hints until OG-02 human sign-off.",
+  "programmePass": true,
+  "failures": []
+}
