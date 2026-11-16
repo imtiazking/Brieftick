@@ -1,7 +1,9 @@
 {
   "schemaVersion": "forgeniq.ai-dev.delivery.phase5.v1",
   "capturedAt": "2026-11-16T14:20:00.000Z",
-  "developmentHead": "d806a26b8fc5c8318c021cada56f2831d0e17064",
+  "developmentHead": "0e2142f99523ad2f52fd2aee49f3991d7f44f567",
+  "phase5RecordCommit": "0e2142f",
+  "regressionTestedSha": "d806a26b8fc5c8318c021cada56f2831d0e17064",
   "proposedReleaseCandidateSha": "c4805c3e13120a21ed1112a5f5c8c583fd17f095",
   "previewPin": "00b4369 unchanged",
   "pushed": false,
