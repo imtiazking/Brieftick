@@ -1,7 +1,7 @@
 {
   "schemaVersion": "forgeniq.release.candidate.proposal.v1",
   "capturedAt": "2026-11-16T13:30:00.000Z",
-  "proposedCommit": "b54d436",
+  "proposedCommit": "1ad6dca8eae3659e738c72734b0797976ef5b448",
   "priorPreviewPin": "00b4369",
   "previewPinChangeAuthorized": false,
   "technicalGatesPassed": [

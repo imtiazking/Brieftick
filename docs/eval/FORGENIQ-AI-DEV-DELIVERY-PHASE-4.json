@@ -2,7 +2,7 @@
   "schemaVersion": "forgeniq.ai-dev.delivery.phase4.v1",
   "capturedAt": "2026-11-16T13:30:00.000Z",
   "parentCommit": "e73196d9d3fc23402b762f7e90f2815f1b7f1ac0",
-  "developmentCommit": "b54d436",
+  "developmentCommit": "1ad6dca8eae3659e738c72734b0797976ef5b448",
   "previewPin": "00b4369 unchanged",
   "task1_evalB03Classification": {
     "evidenceCondition": "MISSING_PRIMARY_HANDBOOK_NOT_GENUINE_PARTIAL",
