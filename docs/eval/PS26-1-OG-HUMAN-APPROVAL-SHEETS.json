@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "forgeniq.ps26.og.human.approval.v1",
+  "capturedAt": "2026-11-16T15:00:00.000Z",
+  "checklistSource": "FCA-PS26-1-OBLIGATION-GRADE-HUMAN-CHECKLIST.json",
+  "regulatorySource": {
+    "publication": "FCA PS26/1 — Regulating Buy Now Pay Later",
+    "instrument": "FCA 2026/2 + FOS 2026/1 (Annex F)",
+    "sha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
+    "engineeringEvidence": "FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json"
+  },
+  "ingestAllowed": false,
+  "obligationGradeSuitableApproved": false,
+  "items": [
+    {
+      "id": "OG-02",
+      "checklistDefinition": "Appendix 1 / Annex F page boundaries confirmed by human",
+      "regulatorySource": "FCA PS26/1 PDF + FCA 2026/2 legal instrument",
+      "exactPhysicalPdfPages": {
+        "appendix1BindingStart": 61,
+        "annexFStart": 86,
+        "totalPhysicalPages": 108,
+        "parser": "pdf-physical-pages-v2.0"
+      },
+      "bindingProvisionsLocated": ["CONC 4.2A.3R", "CONC 4.2A.6R", "CONC 7.20.1R"],
+      "commencementEvidence": null,
+      "applicabilityExceptions": "PS Ch.1 narrative — SME to confirm firm scope",
+      "sourceCitations": ["FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json#sectionBoundaries"],
+      "outstandingInterpretationQuestions": [
+        "Confirm printed page labels vs physical index for Annex F start",
+        "Confirm Appendix 1 vs narrative pagination"
+      ],
+      "humanApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "OG-04",
+      "checklistDefinition": "Commencement dates verified per rule (not single assumed date)",
+      "regulatorySource": "PS narrative p.4 + per-rule Annex F commencement text",
+      "exactPhysicalPdfPages": {
+        "regulationDayMention": 4,
+        "textSample": "15 July 2026 (Regulation Day)"
+      },
+      "bindingProvisionsLocated": [],
+      "commencementEvidence": {
+        "psNarrativeOnly": true,
+        "perRuleAnnexF": "SME must verify each CONC amendment commencement line"
+      },
+      "applicabilityExceptions": "Transitional provisions — not automated",
+      "sourceCitations": ["FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json#commencementEvidence"],
+      "outstandingInterpretationQuestions": [
+        "Map Regulation Day to each CONC rule in Annex F",
+        "Identify any delayed or transitional commencement in instrument"
+      ],
+      "humanApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "OG-05",
+      "checklistDefinition": "Binding (R) vs guidance (G) marked per provision",
+      "regulatorySource": "Annex F instrument text (not PS narrative alone)",
+      "exactPhysicalPdfPages": {
+        "CONC-4.2A.3R": 86,
+        "CONC-4.2A.6R": 90,
+        "CONC-7.20.1R": "94-95 (Annex F); p.20 PS narrative cross-ref only"
+      },
+      "bindingProvisionsLocated": [
+        {
+          "rule": "CONC 7.20.1R",
+          "note": "PS p.20 is narrative; binding text must cite Annex F pp.94-95"
+        }
+      ],
+      "commencementEvidence": null,
+      "applicabilityExceptions": "DPC scope per PS Ch.1 — SME",
+      "sourceCitations": ["FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json#bindingProvisions"],
+      "outstandingInterpretationQuestions": [
+        "SME confirm 4.2A.3R/6R binding extracts match handbook typography",
+        "Reject narrative-only citations for obligation grade"
+      ],
+      "humanApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "OG-06",
+      "checklistDefinition": "assessObligationGradePosture before obligationGradeSuitable",
+      "regulatorySource": "UC-RI-005 controlled extraction pipeline",
+      "exactPhysicalPdfPages": null,
+      "bindingProvisionsLocated": [],
+      "commencementEvidence": null,
+      "applicabilityExceptions": null,
+      "sourceCitations": ["UC-RI-005-PS26-1-CONTROLLED-EXTRACTION-TEST.json"],
+      "outstandingInterpretationQuestions": [
+        "Human run of obligation-grade assessment on approved extracts only",
+        "OG-02/04/05 must pass before OG-06 execution"
+      ],
+      "humanApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "forgeniq.hosted.tenant-isolation.plan.v1",
+  "capturedAt": "2026-11-16T15:00:00.000Z",
+  "executed": false,
+  "operatorAuthorizationRequired": true,
+  "targetOrg": "b8f5e3a1-00ad-4000-8000-000000000001",
+  "forbiddenTargets": {
+    "partnerUatOrgId": "4d871541-e0d4-4581-828d-72073f763f85",
+    "orgAOperationalId": "b8f5e3a1-0001-4000-8000-000000000001",
+    "liveMakerCheckerEvidence": "Nyousaf seed — no modifications"
+  },
+  "requiredCredentials": [
+    "STAGING_DATABASE_URL (scoped read-only or RLS probe role — not service-role as pass proof)",
+    "Clerk session for AI Development technical test user",
+    "Optional: second Clerk user in different org for cross-tenant negative tests"
+  ],
+  "requiredPermissions": [
+    "Operator approval to run staging scripts",
+    "No Partner UAT / Org A record mutation"
+  ],
+  "coverageMatrix": {
+    "crossTenantReads": {
+      "scripts": [
+        "scripts/staging/verify-ai-dev-tenant-isolation.mjs",
+        "scripts/acceptance-staging-postgrest-rls.mjs",
+        "scripts/acceptance-phase-8c-step-81c-publication-versions-rls-gate.mjs"
+      ],
+      "method": "PostgREST/RLS as authenticated tenant user",
+      "syntheticRecordsOnly": true
+    },
+    "crossTenantWrites": {
+      "scripts": [
+        "scripts/acceptance-phase-8-step-83f7-two-user-staging-security.mjs",
+        "scripts/acceptance-experimental-ai-tenant-guard.mjs"
+      ],
+      "method": "Attempt write with wrong organisation_id — expect rejection"
+    },
+    "databaseRls": {
+      "scripts": [
+        "scripts/acceptance-phase-8-security-rls.mjs",
+        "scripts/acceptance-staging-extraction-revision-rls-probes.mjs"
+      ],
+      "note": "Service-role admin queries for schema only; pass/fail from tenant JWT paths"
+    },
+    "apiAuthorisation": {
+      "scripts": [
+        "scripts/acceptance-experimental-ai-tenant-guard.mjs",
+        "middleware + requireRiContext (code review evidence)"
+      ],
+      "routes": ["/api/ri-lab/ai-analysis-runs", "experimental AI materialisation"]
+    },
+    "authTenantSwitching": {
+      "scripts": ["scripts/acceptance-staging-clerk-session-auth.mjs"],
+      "method": "Two Clerk users; verify session org context"
+    },
+    "makerCheckerSeparation": {
+      "scripts": ["scripts/acceptance-governance-workflow-events.mjs"],
+      "scope": "AI Dev fixtures only — not Partner live change b8f5e3a1-0001-4000-8000-000000000001"
+    },
+    "privilegedVsOrdinaryUser": {
+      "scripts": [
+        "scripts/acceptance-phase-8-step-83f7-two-user-staging-security.mjs"
+      ],
+      "rule": "Ordinary user JWT must not pass using service-role bypass"
+    }
+  },
+  "executionCommand": "STAGING_DATABASE_URL=... node scripts/staging/verify-ai-dev-tenant-isolation.mjs",
+  "status": "PREPARED_NOT_RUN"
+}

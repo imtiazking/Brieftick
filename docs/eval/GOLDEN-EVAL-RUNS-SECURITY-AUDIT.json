@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "forgeniq.golden.eval-runs.audit.v1",
+  "capturedAt": "2026-11-16T14:57:02.765Z",
+  "rcSha": "9381c254590464baad20d338a13b287624d4b448",
+  "fileCount": 6,
+  "pushBlockedUntilReviewComplete": false,
+  "reviewCompletedAt": "2026-11-16T15:00:00.000Z",
+  "reviewer": "ENGINEERING_AUTOMATED_AUDIT_PLUS_MANUAL_SPOT_CHECK",
+  "notes": {
+    "dryRun45Cases": "Contains case-level diagnostics and citationCount; no sk-ant, held-out, or Partner UAT UUID; not full renderedAnswer strings",
+    "smokeFile": "Minimal abort smoke — answerPreview placeholder only"
+  },
+  "files": [
+    {
+      "filename": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-10T20-02-13-509Z.json",
+      "bytes": 54004,
+      "sha256": "50ff409973f59a7ada1b7d12cfe33ac5ea6c868d6da6be7bdfc619695d04cf02",
+      "parseableJson": true,
+      "approximateCaseCount": 45,
+      "fullAiAnswersPresent": false,
+      "protectedEvaluationQuestionsPresent": false,
+      "tenantSpecificEvidenceOrCitations": false,
+      "personalOrConfidential": false,
+      "secretsOrCredentials": false,
+      "likelyMockOrEngineeringRun": true,
+      "sanitisationSignalsInFile": true,
+      "necessaryForRegression": true,
+      "recommendation": "RETAIN",
+      "patternHits": {
+        "apiKey": false,
+        "partnerUat": false,
+        "orgA": false,
+        "privateHeldOut": false,
+        "fullAnswer": false,
+        "email": false
+      }
+    },
+    {
+      "filename": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T20-45-21-301Z.json",
+      "bytes": 1180,
+      "sha256": "95ae858234af7266f2976f3775e60bdbf8d55574555b1e32d7f435131f1043c6",
+      "parseableJson": true,
+      "approximateCaseCount": null,
+      "fullAiAnswersPresent": false,
+      "protectedEvaluationQuestionsPresent": false,
+      "tenantSpecificEvidenceOrCitations": false,
+      "personalOrConfidential": false,
+      "secretsOrCredentials": false,
+      "likelyMockOrEngineeringRun": true,
+      "sanitisationSignalsInFile": false,
+      "necessaryForRegression": true,
+      "recommendation": "RETAIN",
+      "patternHits": {
+        "apiKey": false,
+        "partnerUat": false,
+        "orgA": false,
+        "privateHeldOut": false,
+        "fullAnswer": false,
+        "email": false
+      }
+    },
+    {
+      "filename": "docs/eval/runs/stage-c-d-mocked-reasoning-themes-latest.json",
+      "bytes": 13177,
+      "sha256": "5a46e9cec0204c372c0e2cb5a777ea12289f55a81a00729a224b706a0c6843c4",
+      "parseableJson": true,
+      "approximateCaseCount": 10,
+      "fullAiAnswersPresent": false,
+      "protectedEvaluationQuestionsPresent": false,
+      "tenantSpecificEvidenceOrCitations": false,
+      "personalOrConfidential": false,
+      "secretsOrCredentials": false,
+      "likelyMockOrEngineeringRun": true,
+      "sanitisationSignalsInFile": false,
+      "necessaryForRegression": true,
+      "recommendation": "RETAIN",
+      "patternHits": {
+        "apiKey": false,
+        "partnerUat": false,
+        "orgA": false,
+        "privateHeldOut": false,
+        "fullAnswer": false,
+        "email": false
+      }
+    },
+    {
+      "filename": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json",
+      "bytes": 8271,
+      "sha256": "95646eacf5fa3d5b9278b08f1cfbc095374ec9960c8d55f0035cc34acc6e77f8",
+      "parseableJson": true,
+      "approximateCaseCount": 2,
+      "fullAiAnswersPresent": false,
+      "protectedEvaluationQuestionsPresent": false,
+      "tenantSpecificEvidenceOrCitations": false,
+      "personalOrConfidential": false,
+      "secretsOrCredentials": false,
+      "likelyMockOrEngineeringRun": false,
+      "sanitisationSignalsInFile": true,
+      "necessaryForRegression": true,
+      "recommendation": "RETAIN",
+      "patternHits": {
+        "apiKey": false,
+        "partnerUat": false,
+        "orgA": false,
+        "privateHeldOut": false,
+        "fullAnswer": false,
+        "email": false
+      }
+    },
+    {
+      "filename": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json",
+      "bytes": 19396,
+      "sha256": "7097c3214e0a0488340c54ba7d7736b49e1bcd2c2e7b703d0ab012879c2aba1a",
+      "parseableJson": true,
+      "approximateCaseCount": 10,
+      "fullAiAnswersPresent": false,
+      "protectedEvaluationQuestionsPresent": false,
+      "tenantSpecificEvidenceOrCitations": false,
+      "personalOrConfidential": false,
+      "secretsOrCredentials": false,
+      "likelyMockOrEngineeringRun": false,
+      "sanitisationSignalsInFile": true,
+      "necessaryForRegression": true,
+      "recommendation": "RETAIN",
+      "patternHits": {
+        "apiKey": false,
+        "partnerUat": false,
+        "orgA": false,
+        "privateHeldOut": false,
+        "fullAnswer": false,
+        "email": false
+      }
+    },
+    {
+      "filename": "docs/eval/runs/stage-d-regression-summary-2026-11-14T11-50-20-169Z.json",
+      "bytes": 2925,
+      "sha256": "b358f7e390662c46dd0de0343e8630a5afa3a6cc365b449c715b2300bed7911e",
+      "parseableJson": true,
+      "approximateCaseCount": null,
+      "fullAiAnswersPresent": false,
+      "protectedEvaluationQuestionsPresent": false,
+      "tenantSpecificEvidenceOrCitations": false,
+      "personalOrConfidential": false,
+      "secretsOrCredentials": false,
+      "likelyMockOrEngineeringRun": false,
+      "sanitisationSignalsInFile": false,
+      "necessaryForRegression": true,
+      "recommendation": "RETAIN",
+      "patternHits": {
+        "apiKey": false,
+        "partnerUat": false,
+        "orgA": false,
+        "privateHeldOut": false,
+        "fullAnswer": false,
+        "email": false
+      }
+    }
+  ],
+  "summary": {
+    "retain": 6,
+    "sanitise": 0,
+    "remove": 0
+  }
+}

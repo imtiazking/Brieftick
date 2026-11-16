@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "forgeniq.security.governance.report.v1",
+  "capturedAt": "2026-11-16T15:00:00.000Z",
+  "engineeringResultsAccepted": true,
+  "verifiedRcSha": "9381c254590464baad20d338a13b287624d4b448",
+  "priorRcSha": "c4805c3e13120a21ed1112a5f5c8c583fd17f095",
+  "rcDelta": {
+    "removed": ["docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json"],
+    "added": ["apps/platform/scripts/run-forgeniq-phase5-engineering-regression.mjs"],
+    "cfedc76InAncestry": false,
+    "retiredHeldOutInRcTree": false,
+    "privateHeldOutInRcTree": false
+  },
+  "previewPin": "00b4369",
+  "previewPinChanged": false,
+  "1_goldenEvalAudit": "GOLDEN-EVAL-RUNS-SECURITY-AUDIT.json",
+  "2_previewExposure": "PREVIEW-ARTIFACT-EXPOSURE-ASSESSMENT.json",
+  "3_hostedIsolation": "HOSTED-TENANT-ISOLATION-TEST-PLAN.json — PREPARED, NOT RUN",
+  "4_stageBSignoff": "STAGE-B-SIGNOFF-SHEETS.json — all PENDING",
+  "5_ps26Human": "PS26-1-OG-HUMAN-APPROVAL-SHEETS.json — all PENDING",
+  "6_rcPushReadiness": {
+    "goldenFileReviewComplete": true,
+    "recommendation": "CONDITIONAL — operator may push 9381c25 after SEC-B-02 acceptance of six golden RETAIN findings",
+    "gitPushAuthorized": false,
+    "pushed": false
+  },
+  "7_previewDeploymentBlockers": [
+    "Preview pin remains 00b4369",
+    "Stage B incomplete",
+    "Hosted tenant isolation UNVERIFIED",
+    "Independent regulatory eval not executed",
+    "PS26 OG human gates open"
+  ],
+  "8_remainingSecurityRisks": [
+    "Local git history still contains cfedc76 on feature branch (not in RC ancestry)",
+    "Golden dry-run stores 45-case engineering metadata",
+    "Staging probes not executed",
+    "Other developer clones unverified"
+  ],
+  "overallVerdict": {
+    "securityPreparation": "COMPLETE",
+    "humanApprovals": "OUTSTANDING",
+    "engineeringRcPromotion": "BLOCKED"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "forgeniq.stage-b.signoff.sheets.v1",
+  "capturedAt": "2026-11-16T15:00:00.000Z",
+  "releaseCandidateSha": "9381c254590464baad20d338a13b287624d4b448",
+  "decisionsInvented": false,
+  "sheets": [
+    {
+      "id": "B-01",
+      "title": "Change control approval",
+      "responsibleRole": "Change control / release manager (GRC)",
+      "evidenceReferences": [
+        "FORGENIQ-RC-READINESS-REPORT.json",
+        "FORGENIQ-PHASE5-ENGINEERING-REGRESSION-RC.json",
+        "FORGENIQ-CLEAN-ENGINEERING-RC-LINEAGE.json",
+        "GOLDEN-EVAL-RUNS-SECURITY-AUDIT.json"
+      ],
+      "acceptanceCriteria": "RC SHA recorded in GRC; preview pin change explicitly authorized; push approval documented",
+      "outstandingRisks": ["Hosted tenant isolation UNVERIFIED"],
+      "decisionOptions": ["APPROVE_PUSH", "APPROVE_HOLD", "REJECT"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "comments": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "B-04",
+      "title": "Tenant-data attestation",
+      "responsibleRole": "Data protection operator + platform operator",
+      "evidenceReferences": [
+        "AUTHENTIC_CORPUS_B2",
+        "GOLDEN-EVAL-RUNS-SECURITY-AUDIT.json",
+        "acceptance-phase-2-tenant-isolation.mjs PASS on RC"
+      ],
+      "acceptanceCriteria": "Signed attestation that eval corpus and golden runs exclude Partner UAT, Org A exports, and PII",
+      "outstandingRisks": ["Dry-run JSON contains engineering case metadata (45 cases)"],
+      "decisionOptions": ["ATTEST", "REJECT"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "comments": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "B-05",
+      "title": "Regulatory SME evidence acceptance",
+      "responsibleRole": "Regulatory SME",
+      "evidenceReferences": [
+        "SME-REVIEW-PACK-FINAL.json",
+        "SME-REVIEW-PACK-PHASE5-HUMAN-SIGNOFF.json",
+        "acceptance-stage-b-secure-eval-evidence.mjs"
+      ],
+      "acceptanceCriteria": "All ten themes reviewed; expected outcomes signed",
+      "outstandingRisks": ["regulatoryAccuracyApproved=false"],
+      "decisionOptions": ["APPROVE_EVIDENCE_PACK", "REJECT", "DEFER"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "comments": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "SEC-B-01",
+      "title": "AI execution and key security",
+      "responsibleRole": "Information security officer",
+      "evidenceReferences": [
+        "PREVIEW-AI-DEVELOPMENT-DEPLOYMENT-PLAN.json (RI_AI_EXECUTION_ENABLED=false)",
+        "acceptance-stage-e-budget-ceiling-offline.mjs",
+        "acceptance-experimental-ai-tenant-guard.mjs"
+      ],
+      "acceptanceCriteria": "Live Anthropic gated; RC verification used offline/mocks only",
+      "outstandingRisks": ["Developer machines may hold API keys"],
+      "decisionOptions": ["ACCEPT_OFFLINE_RC", "REJECT"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "comments": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "SEC-B-02",
+      "title": "Evidence redaction and retention",
+      "responsibleRole": "Information security officer",
+      "evidenceReferences": [
+        "eval-report-sanitize.mjs",
+        "HELD-OUT-RETIREMENT-RECORD.json",
+        "GOLDEN-EVAL-RUNS-SECURITY-AUDIT.json",
+        "PREVIEW-ARTIFACT-EXPOSURE-ASSESSMENT.json"
+      ],
+      "acceptanceCriteria": "Six golden runs retained with documented audit; private held-out retired; no full eval in preview bundle",
+      "outstandingRisks": ["Git copy of dry-run contains engineering diagnostics"],
+      "decisionOptions": ["ACCEPT_RETENTION_POLICY", "REQUIRE_SANITISE", "REJECT"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "comments": null,
+      "status": "PENDING"
+    }
+  ]
+}

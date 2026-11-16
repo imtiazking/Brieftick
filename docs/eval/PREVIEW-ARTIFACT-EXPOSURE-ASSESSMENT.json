@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "forgeniq.preview.artifact.exposure.v1",
+  "capturedAt": "2026-11-16T15:00:00.000Z",
+  "previewPin": "00b4369146a65a7508a5befaa510c97dce0e00fe",
+  "previewPlan": "apps/platform/docs/PREVIEW-AI-DEVELOPMENT-DEPLOYMENT-PLAN.json",
+  "assessmentMethod": "Static configuration and build tracing — no deployment",
+  "layers": {
+    "1_inGit": {
+      "docsEvalRunsAtPreviewPin": 7,
+      "note": "Pin 00b4369 tracks seven docs/eval/runs JSON files (historical engineering artefacts)",
+      "rc9381c25TrackedRuns": 6,
+      "privateHeldOutOnRc": false
+    },
+    "2_inBuildBundle": {
+      "nextConfig": "apps/platform/next.config.ts",
+      "outputFileTracingIncludes": [
+        "design-lab-bundle",
+        "design-lab/regulatory-intelligence",
+        "certs only on specific API routes"
+      ],
+      "docsEvalIncludedInTracing": false,
+      "observation": "No outputFileTracingIncludes entry for docs/eval or docs/eval/runs",
+      "buildOutputScan": "npm run build — no .next paths matching docs/eval (spot check 2026-11-16)"
+    },
+    "3_deployedRoutes": {
+      "appRoutesImportingEvalRuns": false,
+      "grepAppsPlatformApp": "no docs/eval/runs references",
+      "publicStaticServing": "Next.js does not expose repo-root docs/eval as static files by default"
+    },
+    "4_excludedFromDeployment": {
+      "mechanisms": [
+        "Repository path outside apps/platform/public",
+        "No API route serving raw eval JSON from disk",
+        "Vercel deployment root apps/platform — docs/eval is two levels above app root (../../docs/eval) not in standalone page routes"
+      ],
+      "gitignoreLocalScoring": "docs/eval/scoring-evidence/local/"
+    }
+  },
+  "potentialDisclosure": {
+    "severity": "LOW_FOR_PREVIEW_RUNTIME",
+    "vectors": [
+      {
+        "vector": "Accidental commit + public Git remote",
+        "status": "MITIGATED — RC not pushed; private held-out retired",
+        "remediation": "Keep eval runs out of RC pushes; use GOLDEN-EVAL-RUNS-SECURITY-AUDIT before push"
+      },
+      {
+        "vector": "Misconfigured static file route in future",
+        "status": "NOT_OBSERVED",
+        "remediation": "Add CI grep gate: no fs.readFile of docs/eval/runs from app/"
+      }
+    ]
+  },
+  "remediationPlan": [
+    "Pre-push: run audit-golden-eval-run-files.mjs",
+    "Optional: move golden runs to docs/eval/scoring-evidence/baselines/ with manifest only in git",
+    "Do not add docs/eval to outputFileTracingIncludes",
+    "Preview pin remains 00b4369 until operator promotes RC"
+  ],
+  "deployChangesAuthorized": false
+}
