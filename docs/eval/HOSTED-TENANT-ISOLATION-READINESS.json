@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "forgeniq.hosted.tenant.isolation.readiness.v2",
+  "capturedAt": "2026-11-16T20:15:00.000Z",
+  "executed": false,
+  "tenTestPlan": "HOSTED-TENANT-ISOLATION-TEST-MATRIX.json",
+  "prerequisites": {
+    "operatorAuthorization": {
+      "requiredFlag": "FORGENIQ_HOSTED_ISOLATION_AUTHORIZED=1",
+      "present": false
+    },
+    "stagingDatabaseUrl": {
+      "required": true,
+      "availableInAgentEnvironment": false,
+      "source": "Approved secret store / vercel env pull on operator machine — not inspected here"
+    },
+    "syntheticOrganisations": {
+      "required": 2,
+      "provisioned": "unknown — operator must confirm AI Dev synthetic org pair"
+    },
+    "clerkTechnicalAccounts": {
+      "documented": "apps/platform/scripts/staging/staging-ai-technical-test-config.mjs",
+      "sessionTokensLoaded": false
+    },
+    "ordinaryUserJwtRls": {
+      "plannedScripts": [
+        "acceptance-staging-postgrest-rls.mjs",
+        "acceptance-phase-8-step-83f7-two-user-staging-security.mjs"
+      ],
+      "serviceRoleAsProofForbidden": true
+    },
+    "makerCheckerSyntheticOnly": true,
+    "forbiddenOrgs": ["Partner UAT", "Org A operational", "Nyousaf Maker–Checker live evidence"]
+  },
+  "recommendedNextStep": "Operator sets authorization flag + supplies STAGING_DATABASE_URL via secure channel, then run HOSTED-TENANT-ISOLATION-TEST-MATRIX scripts"
+}

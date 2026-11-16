@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "forgeniq.staging.deployment.security.inspection.v1",
+  "capturedAt": "2026-11-16T20:15:00.000Z",
+  "engineeringRcReference": "9381c254590464baad20d338a13b287624d4b448",
+  "previewPinReference": "00b4369",
+  "note": "Staging serves a different deployed SHA than RC/preview pin — inspection targets live staging only",
+  "task1_deploymentIdentity": {
+    "vercelTeam": "imis-projects-8e15dca0",
+    "vercelTeamId": "team_hhqI2hoyYXhIJachceL10BqK",
+    "projectName": "forgeniq-platform-staging",
+    "projectId": "prj_y9O1A1zGFXe3GvJITnL9mJUqve7",
+    "rootDirectory": "apps/platform",
+    "deploymentId": "dpl_tVa87yCeHTH2Ny1oubJN5G9NVTpR",
+    "deploymentUrl": "https://forgeniq-platform-staging-85yppmsit-imis-projects-8e15dca0.vercel.app",
+    "customAlias": "https://staging-app.forgeniq.com",
+    "gitSha": "7fa088347f27e60d4b83302e506758595e74a2d9",
+    "gitBranch": "feature/ask-ri-v2-evaluation-baseline",
+    "environment": "production",
+    "status": "READY",
+    "codeServingStagingDomain": "7fa088347f27e60d4b83302e506758595e74a2d9 @ apps/platform"
+  },
+  "task2_artifactInspection": {
+    "methods": [
+      "vercel inspect dpl_tVa87yCeHTH2Ny1oubJN5G9NVTpR",
+      "vercel api GET /v13/deployments/{id}?withGitRepoInfo=true",
+      "vercel api GET /v11/deployments/{id}/files?limit=100 (full deployment file tree JSON)",
+      "HTTP HEAD runtime probes against staging-app.forgeniq.com"
+    ],
+    "gitSourceAtDeployedSha": {
+      "docsEvalRunsTrackedInGit": [
+        "docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json",
+        "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-10T20-02-13-509Z.json",
+        "docs/eval/runs/phase-2c2-ask-ri-v2-eval-smoke-claude-haiku-5-5-2026-11-10T20-45-21-301Z.json"
+      ],
+      "note": "These exist in Git at deployed SHA but are outside apps/platform root"
+    },
+    "deploymentFileTreeSearch": {
+      "docsEvalPathPresent": false,
+      "evalRunsPathPresent": false,
+      "privateHeldOutPresent": false,
+      "claudeOutputsPresent": false,
+      "designLabEvalArtifactsPresentInTrace": true,
+      "designLabEvalArtifactsExamples": [
+        "ask-ri-eval-set.json",
+        "acceptance-ask-ri-eval-harness.mjs",
+        "run-ask-ri-eval-suite.mjs"
+      ],
+      "designLabEvalNote": "Traced build inputs under design-lab-bundle — not docs/eval/runs"
+    },
+    "runtimeAccessibilityChecks": [
+      { "url": "https://staging-app.forgeniq.com/health", "status": 200 },
+      { "url": "https://staging-app.forgeniq.com/docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json", "status": 404 },
+      { "url": "https://staging-app.forgeniq.com/docs/eval/ask-ri-v2-eval-suite-v2.1.json", "status": 404 },
+      { "url": "https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/js/ask-ri-eval-set.json", "status": 404 }
+    ],
+    "exposedEvaluationMaterialFound": false
+  },
+  "inspectionLimitations": [
+    "Did not download every serverless function bundle body byte-by-byte",
+    "Did not authenticate and exhaust all /api/ri-lab routes for accidental file download handlers",
+    "MCP get_deployment 404 — CLI used instead"
+  ],
+  "task3_securityVerdict": "VERIFIED — NO EXPOSURE FOUND IN INSPECTED SURFACES",
+  "verdictScope": "Deployment file tree + direct HTTP probes on staging-app.forgeniq.com only"
+}
