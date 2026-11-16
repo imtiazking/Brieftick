@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "forgeniq.ai-dev.delivery.phase3.v1",
+  "capturedAt": "2026-11-16T14:05:00.000Z",
+  "parentCommit": "c62583224f22fd25f52b731e7a96d0ebc29d5ed5",
+  "askRiTechnicalAcceptance": {
+    "evalB03Coverage": "UNKNOWN all scenarios",
+    "evalB03PartialPolicy": "INSUFFICIENT_EVIDENCE (REQUIRED_HANDBOOK_SOURCE_ABSENT)",
+    "evalB03ScorerPartial": "CORRECT_INSUFFICIENT_EVIDENCE",
+    "unseenSuite": "11/11 (prior commit)",
+    "integrationSuite": "PASS with B-03 gates"
+  },
+  "smeReadiness": {
+    "pack": "docs/eval/SME-REVIEW-PACK-FINAL.json",
+    "sheet": "docs/eval/SME-REVIEW-SHEET.json",
+    "approved": false
+  },
+  "ps26_1": {
+    "sha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
+    "physicalPages": 108,
+    "physicalEvidence": "docs/eval/FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json",
+    "ingestAllowed": false
+  },
+  "extractionTest": "docs/eval/UC-RI-005-PS26-1-CONTROLLED-EXTRACTION-TEST.json",
+  "previewPin": "00b4369 unchanged",
+  "blockers": ["SME sheet sign-off", "Stage B", "PS26/1 human OG items", "Operator RC approval"]
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "forgeniq.uc-ri-005.controlled-extraction.v1",
+  "capturedAt": "2026-11-16T14:00:00.000Z",
+  "tenantScope": "b8f5e3a1-00ad-4000-8000-000000000001",
+  "ingestExecuted": false,
+  "obligationMaterialisationExecuted": false,
+  "acceptanceScript": "apps/platform/scripts/acceptance-ps26-1-extraction-controlled.mjs",
+  "physicalEvidence": "docs/eval/FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json",
+  "pipelineDemonstration": [
+    {
+      "step": 1,
+      "name": "Official PDF source",
+      "artifact": "docs/eval/regulatory-sources/cache/fca-ps26-1-official.pdf",
+      "verification": "SHA-256 in FCA-PS26-1-INSTRUMENT-VERIFICATION.json"
+    },
+    {
+      "step": 2,
+      "name": "Physical page extraction",
+      "tool": "verify-fca-ps26-1-physical-evidence.mjs",
+      "output": "FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json"
+    },
+    {
+      "step": 3,
+      "name": "Candidate obligation (not executed)",
+      "guard": "obligationGradeSuitable=false; experimental-ai-tenant-guard",
+      "expected": "UC-RI-005 ai-analysis-runs produces candidates with sectionReference + physicalPageNumber"
+    },
+    {
+      "step": 4,
+      "name": "Exact citation preservation",
+      "criteria": "Each candidate cites physical page + rule marker from physical evidence artefact"
+    },
+    {
+      "step": 5,
+      "name": "Human review queue",
+      "criteria": "Reviewer APPROVE or REJECT — no auto materialise"
+    }
+  ],
+  "expectedObligationsFromVerifiedText": [
+    {
+      "candidateId": "PS26-1-CANDIDATE-4.2A.3R",
+      "rule": "CONC 4.2A.3R",
+      "sourcePageRef": "See FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json",
+      "humanApproved": false,
+      "note": "Populate obligation text only after OG-05 SME confirms binding (R) wording"
+    }
+  ],
+  "executeObligationGradeIngest": false,
+  "operatorAuthorizationRequired": true
+}

@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "forgeniq.sme.review-sheet.v1",
+  "capturedAt": "2026-11-16T13:04:51.131Z",
+  "derivedFrom": "docs/eval/SME-REVIEW-PACK-FINAL.json",
+  "disclaimer": "Mocked offline provider — not regulatory approval",
+  "rows": [
+    {
+      "sheetId": "SME-PRIN",
+      "regulatoryQuestion": "Under PRIN, what high-level expectations apply to a firm’s honesty and integrity?",
+      "expectedAnswer": "SME to confirm against authoritative regulatory sources",
+      "actualPolicyStatus": "ANSWERED",
+      "actualAnswerPreview": "Scenario mock grounded on authentic corpus chunk.\n\n[Source states] FCA 2022/31 Page 16 of 68 2A.2.2 R Acting in good faith is a standard of conduct\n\nEvidence limitation: Context budget excluded 32 retrieved chunk(s); answer may be incomplete.",
+      "engineeringCoverage": "KNOWN",
+      "supportingRegulatoryEvidence": [
+        {
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 108,
+          "excerpt": "FCA 2022/31 Page 16 of 68 2A.2.2 R Acting in good faith is a standard of conduct characterised by honesty, fair and open"
+        }
+      ],
+      "exactSourceCitations": [
+        {
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 108,
+          "excerpt": "FCA 2022/31 Page 16 of 68 2A.2.2 R Acting in good faith is a standard of conduct characterised by honesty, fair and open"
+        }
+      ],
+      "applicability": "SME to confirm firm scope / client category",
+      "effectiveDates": "Not asserted — confirm from cited sources",
+      "interpretationQuestions": [
+        "Retrieved PS22/9 / PRIN cross-references substantively answer the question",
+        "Citations match authoritative handbook or accepted policy statement grounding"
+      ],
+      "smeRegulatoryAccuracyApproved": false,
+      "smeApproverName": null,
+      "smeApprovalDate": null
+    },
+    {
+      "sheetId": "SME-FG-PARTIAL",
+      "regulatoryQuestion": "What should firms document when monitoring fair value outcomes under Consumer Duty guidance?",
+      "expectedAnswer": "SME to confirm against authoritative regulatory sources",
+      "actualPolicyStatus": "PARTIAL_ANSWER",
+      "actualAnswerPreview": "Partial answer from first retrieved chunk; further aspects unresolved.\n\n[Source states] 68FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance f\n\nUnresolved: Additional question aspects not covered by retrieved passages.\n\nEvidence limitation: Context budget excluded 32 retrieved chunk(s); answer may be incomplete.",
+      "engineeringCoverage": "KNOWN",
+      "supportingRegulatoryEvidence": [
+        {
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 68,
+          "excerpt": "68FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty• What acti"
+        }
+      ],
+      "exactSourceCitations": [
+        {
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 68,
+          "excerpt": "68FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty• What acti"
+        }
+      ],
+      "applicability": "SME to confirm firm scope / client category",
+      "effectiveDates": "Not asserted — confirm from cited sources",
+      "interpretationQuestions": [
+        "Partial framing is correct vs full FG22/5 requirements",
+        "No invented monitoring metrics"
+      ],
+      "smeRegulatoryAccuracyApproved": false,
+      "smeApproverName": null,
+      "smeApprovalDate": null
+    },
+    {
+      "sheetId": "SME-BIND-GUIDE",
+      "regulatoryQuestion": "Is FG22/5 binding on firms or only guidance when setting monitoring metrics?",
+      "expectedAnswer": "SME to confirm against authoritative regulatory sources",
+      "actualPolicyStatus": "PARTIAL_ANSWER",
+      "actualAnswerPreview": "Partial answer from first retrieved chunk; further aspects unresolved.\n\n[Source states] FG22/5 Final non-Handbook Guidance for firms on the Consumer DutyJuly 2022Finali\n\nUnresolved: Additional question aspects not covered by retrieved passages.\n\nEvidence limitation: Context budget excluded 42 retrieved chunk(s); answer may be incomplete.",
+      "engineeringCoverage": "KNOWN",
+      "supportingRegulatoryEvidence": [
+        {
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 1,
+          "excerpt": "FG22/5 Final non-Handbook Guidance for firms on the Consumer DutyJuly 2022Finalised Guidance"
+        }
+      ],
+      "exactSourceCitations": [
+        {
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 1,
+          "excerpt": "FG22/5 Final non-Handbook Guidance for firms on the Consumer DutyJuly 2022Finalised Guidance"
+        }
+      ],
+      "applicability": "SME to confirm firm scope / client category",
+      "effectiveDates": "Not asserted — confirm from cited sources",
+      "interpretationQuestions": [
+        "Binding vs non-Handbook guidance characterisation",
+        "No overstatement of FG22/5 legal status"
+      ],
+      "smeRegulatoryAccuracyApproved": false,
+      "smeApproverName": null,
+      "smeApprovalDate": null
+    },
+    {
+      "sheetId": "SME-MULTI-REG",
+      "regulatoryQuestion": "How do PRIN and the Consumer Duty interact when assessing fair value for retail customers?",
+      "expectedAnswer": "SME to confirm against authoritative regulatory sources",
+      "actualPolicyStatus": "PARTIAL_ANSWER",
+      "actualAnswerPreview": "Partial answer from first retrieved chunk; further aspects unresolved.\n\n[Source states] FCA 2022/31 Page 32 of 68 2A.4.21 R (1) The obligation on manufacturers in PRIN \n\nUnresolved: Additional question aspects not covered by retrieved passages.\n\nEvidence limitation: Context budget excluded 32 retrieved chunk(s); answer may be incomplete.",
+      "engineeringCoverage": "KNOWN",
+      "supportingRegulatoryEvidence": [
+        {
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 124,
+          "excerpt": "FCA 2022/31 Page 32 of 68 2A.4.21 R (1) The obligation on manufacturers in PRIN 2A.4.2R to ensure that a product provide"
+        }
+      ],
+      "exactSourceCitations": [
+        {
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 124,
+          "excerpt": "FCA 2022/31 Page 32 of 68 2A.4.21 R (1) The obligation on manufacturers in PRIN 2A.4.2R to ensure that a product provide"
+        }
+      ],
+      "applicability": "SME to confirm firm scope / client category",
+      "effectiveDates": "Not asserted — confirm from cited sources",
+      "interpretationQuestions": [
+        "Interaction analysis is substantiated by retrieved passages",
+        "No synthetic merger of unrelated sources"
+      ],
+      "smeRegulatoryAccuracyApproved": false,
+      "smeApproverName": null,
+      "smeApprovalDate": null
+    },
+    {
+      "sheetId": "SME-COBS-ABSENT",
+      "regulatoryQuestion": "What does COBS require for suitability assessments?",
+      "expectedAnswer": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "actualPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "actualAnswerPreview": "Evidence limitation: Context budget excluded 32 retrieved chunk(s); answer may be incomplete.",
+      "engineeringCoverage": "UNKNOWN",
+      "supportingRegulatoryEvidence": [],
+      "exactSourceCitations": [],
+      "applicability": "SME to confirm firm scope / client category",
+      "effectiveDates": "Not asserted — confirm from cited sources",
+      "interpretationQuestions": [
+        "Abstention is correct for absent COBS corpus",
+        "BLOCKED vs INSUFFICIENT distinction for invalid PS reference is acceptable policy"
+      ],
+      "smeRegulatoryAccuracyApproved": false,
+      "smeApproverName": null,
+      "smeApprovalDate": null
+    },
+    {
+      "sheetId": "SME-MISSING-PS",
+      "regulatoryQuestion": "Summarise FCA Policy Statement PS99/99 on cryptoassets.",
+      "expectedAnswer": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "actualPolicyStatus": "BLOCKED",
+      "actualAnswerPreview": "The question references a publication identifier that is not valid in the authorised offline corpus.",
+      "supportingRegulatoryEvidence": [],
+      "exactSourceCitations": [],
+      "applicability": "SME to confirm firm scope / client category",
+      "effectiveDates": "Not asserted — confirm from cited sources",
+      "interpretationQuestions": [
+        "Abstention is correct for absent COBS corpus",
+        "BLOCKED vs INSUFFICIENT distinction for invalid PS reference is acceptable policy"
+      ],
+      "smeRegulatoryAccuracyApproved": false,
+      "smeApproverName": null,
+      "smeApprovalDate": null
+    }
+  ]
+}

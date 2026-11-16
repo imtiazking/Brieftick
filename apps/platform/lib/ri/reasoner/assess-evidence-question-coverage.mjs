@@ -272,6 +272,12 @@ export function assessEvidenceQuestionCoverage(input) {
   };
 }
 
+export function requiredHandbookModulesUnmapped(coverage) {
+  return (coverage?.mappings || []).some(
+    (m) => String(m.issueId || '').startsWith('handbook_') && m.status === 'unmapped',
+  );
+}
+
 export function refineCoverageAfterVerification(coverage, verification, bundle) {
   if (!coverage || coverage.questionCoverage !== 'KNOWN') return coverage;
   if (!verification?.ok) {

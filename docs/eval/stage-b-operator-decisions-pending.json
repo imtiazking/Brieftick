@@ -3,6 +3,7 @@
   "capturedAt": "2026-11-16T13:00:00.000Z",
   "programmePass": false,
   "operatorApproval": null,
+  "namedHumanOwnerInstruction": "Assign named individuals in GRC — do not auto-fill; engineering provides evidence only",
   "items": [
     {
       "id": "B-01",

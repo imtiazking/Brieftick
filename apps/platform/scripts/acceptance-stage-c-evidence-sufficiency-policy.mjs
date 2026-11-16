@@ -37,8 +37,20 @@ const relatedOnly = resolveFinalRegulatoryStatus({
 if (relatedOnly.status !== 'INSUFFICIENT_EVIDENCE') fail('related only');
 else ok('related only insufficient');
 
+const handbookAbsent = resolveFinalRegulatoryStatus({
+  responseState: 'PARTIAL_ANSWER',
+  sufficiencyOverall: 'PARTIAL_SUPPORT',
+  verifiedClaimCount: 1,
+  unresolvedAspects: ['COBS suitability rules'],
+  questionCoverage: 'UNKNOWN',
+  requiredHandbookModuleAbsent: true,
+});
+if (handbookAbsent.status !== 'INSUFFICIENT_EVIDENCE' || handbookAbsent.reason !== 'REQUIRED_HANDBOOK_SOURCE_ABSENT') {
+  fail('handbook absent must not PARTIAL_ANSWER');
+} else ok('required handbook absent fail-closed');
+
 if (failures.length) {
   console.error(JSON.stringify({ ok: false, failures }));
   process.exit(1);
 }
-console.log(JSON.stringify({ ok: true, stage: 'C-policy-offline', passed: 4 }));
+console.log(JSON.stringify({ ok: true, stage: 'C-policy-offline', passed: 5 }));

@@ -43,6 +43,12 @@ for (const { theme, testId } of THEMES) {
       } else {
         ok(`EVAL-B-03 ${scenario}: coverage=${row.questionCoverage} (COBS absent — fail-closed)`);
       }
+      if (row.applicationPolicyStatus === 'ANSWERED') {
+        failures.push(`EVAL-B-03 ${scenario} policy ANSWERED without COBS corpus`);
+      }
+      if (scenario === 'PARTIAL' && row.applicationPolicyStatus !== 'INSUFFICIENT_EVIDENCE') {
+        failures.push(`EVAL-B-03 PARTIAL policy ${row.applicationPolicyStatus} — expect INSUFFICIENT_EVIDENCE`);
+      }
     }
 
     if (testId === 'EVAL-I-01') {

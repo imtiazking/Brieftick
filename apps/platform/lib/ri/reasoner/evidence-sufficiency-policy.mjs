@@ -12,6 +12,7 @@
  *   unresolvedAspects?: string[],
  *   questionCoverage?: 'KNOWN' | 'UNKNOWN',
  *   regulatoryIndexAbsent?: boolean,
+ *   requiredHandbookModuleAbsent?: boolean,
  * }} input
  */
 export function resolveFinalRegulatoryStatus(input) {
@@ -22,6 +23,7 @@ export function resolveFinalRegulatoryStatus(input) {
     unresolvedAspects = [],
     questionCoverage = 'UNKNOWN',
     regulatoryIndexAbsent = false,
+    requiredHandbookModuleAbsent = false,
   } = input;
 
   const reviewHold = { regulatoryReview: { required: true, holdPresentation: true } };
@@ -31,6 +33,14 @@ export function resolveFinalRegulatoryStatus(input) {
       status: 'INSUFFICIENT_EVIDENCE',
       ...reviewHold,
       reason: 'REGULATORY_INDEX_ABSENT',
+    };
+  }
+
+  if (requiredHandbookModuleAbsent) {
+    return {
+      status: 'INSUFFICIENT_EVIDENCE',
+      ...reviewHold,
+      reason: 'REQUIRED_HANDBOOK_SOURCE_ABSENT',
     };
   }
 

@@ -46,6 +46,14 @@ for (const scenario of ['SUFFICIENT', 'PARTIAL', 'INSUFFICIENT']) {
   } else {
     ok(`EVAL-B-03 ${scenario} harness coverage=${row.questionCoverage}`);
   }
+  if (row.applicationPolicyStatus === 'ANSWERED') {
+    failures.push(`EVAL-B-03 ${scenario} policy must not ANSWERED without COBS handbook`);
+  }
+  if (scenario === 'PARTIAL' && row.applicationPolicyStatus === 'PARTIAL_ANSWER') {
+    failures.push(`EVAL-B-03 PARTIAL must not PARTIAL_ANSWER — no supported material COBS aspect`);
+  } else if (scenario === 'PARTIAL' && row.applicationPolicyStatus === 'INSUFFICIENT_EVIDENCE') {
+    ok(`EVAL-B-03 PARTIAL policy=${row.applicationPolicyStatus} reason=${row.policyReason}`);
+  }
 }
 
 const out = join(REPO_ROOT, 'docs/eval/EVIDENCE-COVERAGE-MISSING-PROVISION-RESULTS.json');

@@ -1,4 +1,5 @@
 import { resolveFinalRegulatoryStatus } from './evidence-sufficiency-policy.mjs';
+import { requiredHandbookModulesUnmapped } from './assess-evidence-question-coverage.mjs';
 
 /**
  * Local evaluation renderer — does not add regulatory claims.
@@ -83,6 +84,7 @@ export function renderVerifiedAskRiV2Answer(verification, modelOutput, bundle) {
     unresolvedAspects: modelOutput.unresolvedAspects || [],
     questionCoverage: bundle?.questionCoverage || 'UNKNOWN',
     regulatoryIndexAbsent: Boolean(bundle?.regulatoryIndexAbsent),
+    requiredHandbookModuleAbsent: requiredHandbookModulesUnmapped(bundle?.coverageAssessment),
   });
 
   return {

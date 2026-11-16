@@ -24,8 +24,21 @@
         "source": "verify-fca-ps26-1-instrument-offline.mjs pageHints"
       }
     },
-    { "id": "OG-05", "check": "Binding (R) vs guidance (G) marked per provision", "status": "pending_sme" },
-    { "id": "OG-06", "check": "assessObligationGradePosture before obligationGradeSuitable", "status": "not_run" },
+    {
+      "id": "OG-05",
+      "check": "Binding (R) vs guidance (G) marked per provision",
+      "status": "pending_sme",
+      "engineeringEvidence": {
+        "physicalProvisions": "docs/eval/FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json#bindingProvisions",
+        "note": "CONC 7.20.1R p.20 is PS narrative; Annex F rule text on p.94–95 requires SME confirmation"
+      }
+    },
+    {
+      "id": "OG-06",
+      "check": "assessObligationGradePosture before obligationGradeSuitable",
+      "status": "not_run",
+      "engineeringEvidence": "UC-RI-005-PS26-1-CONTROLLED-EXTRACTION-TEST.json"
+    },
     { "id": "OG-07", "check": "UC-RI-005 citations include physicalPageNumber + sectionReference", "status": "pipeline_ready_not_executed" },
     { "id": "OG-08", "check": "AI Dev org b8f5e3a1-00ad-4000-8000-000000000001 only", "status": "guard_in_code" }
   ],
@@ -34,9 +47,10 @@
     "sourceIntegrityVerified": true,
     "sourceSha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
     "approximatePageHintsOnly": true,
-    "exactPhysicalPagesForExtraction": "NOT_VERIFIED — requires human page-boundary confirmation (OG-02)",
+    "exactPhysicalPagesForExtraction": "Physical parser v2 — Appendix 1 p.61; Annex F p.86; human boundary sign-off still required (OG-02)",
+    "physicalEvidenceArtifact": "docs/eval/FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json",
     "concRulesLocatedAsHints": ["CONC 4.2A.3R", "CONC 4.2A.6R", "CONC 7.20.1R"],
-    "commencementPerProvision": "NOT_VERIFIED — automated hints only; SME required (OG-04)",
+    "commencementPerProvision": "PS narrative p.4 cites 15 July 2026 (Regulation Day) — per-rule commencement still SME (OG-04)",
     "humanObligationGradeApprovalsOutstanding": ["OG-02", "OG-04", "OG-05", "OG-06"]
   }
 }
