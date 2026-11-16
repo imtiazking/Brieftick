@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "forgeniq.rc.source-tree-verification.v1",
+  "capturedAt": "2026-11-16T14:51:51.066Z",
+  "rcSha": "9381c254590464baad20d338a13b287624d4b448",
+  "referenceSha": "d806a26b8fc5c8318c021cada56f2831d0e17064",
+  "previewPin": "00b4369146a65a7508a5befaa510c97dce0e00fe",
+  "cfedc76InAncestry": false,
+  "diffFromReference": [
+    {
+      "line": "A\tapps/platform/scripts/run-forgeniq-phase5-engineering-regression.mjs"
+    }
+  ],
+  "unintendedSourceCodeDelta": [],
+  "sensitivePathsInDiff": [],
+  "evalRunsOrClaudeInRcTree": [
+    "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-10T20-02-13-509Z.json",
+    "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T20-45-21-301Z.json",
+    "docs/eval/runs/stage-c-d-mocked-reasoning-themes-latest.json",
+    "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json",
+    "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json",
+    "docs/eval/runs/stage-d-regression-summary-2026-11-14T11-50-20-169Z.json"
+  ],
+  "privateHeldOutInRcTree": [],
+  "applicationTreeMatchesReference": true,
+  "credentialOrPartnerHitsInRcTree": [],
+  "pin00b4369SensitiveFiles": [
+    "docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json",
+    "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-10T20-02-13-509Z.json",
+    "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T20-45-21-301Z.json",
+    "docs/eval/runs/stage-c-d-mocked-reasoning-themes-latest.json",
+    "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json",
+    "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json",
+    "docs/eval/runs/stage-d-regression-summary-2026-11-14T11-50-20-169Z.json"
+  ],
+  "missingRequiredScripts": [],
+  "treeEquivalentToReference": false
+}

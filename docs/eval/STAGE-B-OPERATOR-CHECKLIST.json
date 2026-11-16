@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "forgeniq.stage-b.operator-checklist.v1",
+  "capturedAt": "2026-11-16T14:55:00.000Z",
+  "releaseCandidateSha": "9381c254590464baad20d338a13b287624d4b448",
+  "noAutomaticApproval": true,
+  "items": [
+    {
+      "id": "B-01",
+      "title": "Change-control approval",
+      "recommendedAccountableRole": "Change control / release manager (GRC)",
+      "evidenceReference": ["FORGENIQ-RC-READINESS-REPORT.json", "FORGENIQ-CLEAN-ENGINEERING-RC-LINEAGE.json", "FORGENIQ-PHASE5-ENGINEERING-REGRESSION-RC.json"],
+      "requiredHumanDecision": "Record RC SHA in change control and authorize promotion path",
+      "acceptanceCriteria": "Manifest hash and RC SHA recorded in GRC; preview pin change explicitly authorized",
+      "outstandingRisks": ["RC not pushed; hosted isolation unverified"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "B-04",
+      "title": "Tenant-data attestation",
+      "recommendedAccountableRole": "Data protection operator + platform operator",
+      "evidenceReference": ["AUTHENTIC_CORPUS_B2", "GIT-SECURITY-PHASE5-ASSESSMENT.json", "acceptance-phase-2-tenant-isolation.mjs PASS on RC"],
+      "requiredHumanDecision": "Attest eval corpus excludes Partner UAT, Org A, Maker–Checker exports",
+      "acceptanceCriteria": "Signed attestation on file",
+      "outstandingRisks": ["Staging DB cross-tenant probe not executed"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "B-05",
+      "title": "Regulatory SME evidence approval",
+      "recommendedAccountableRole": "Regulatory SME",
+      "evidenceReference": ["SME-REVIEW-PACK-FINAL.json", "SME-REVIEW-PACK-PHASE5-HUMAN-SIGNOFF.json", "acceptance-stage-b-secure-eval-evidence.mjs PASS on RC"],
+      "requiredHumanDecision": "SME signs interpretations and expected outcomes",
+      "acceptanceCriteria": "All theme rows completed with reviewer identity and date",
+      "outstandingRisks": ["regulatoryAccuracyApproved=false"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "SEC-B-01",
+      "title": "AI execution and credential security",
+      "recommendedAccountableRole": "Information security officer",
+      "evidenceReference": ["RI_AI_EXECUTION_ENABLED gating", "acceptance-stage-e-budget-ceiling-offline.mjs PASS on RC"],
+      "requiredHumanDecision": "Accept offline-only RC verification; live keys gated",
+      "acceptanceCriteria": "No paid Anthropic in CI/RC path; operator controls live execution",
+      "outstandingRisks": ["Developer machines may hold API keys"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "SEC-B-02",
+      "title": "Evaluation evidence redaction and retention",
+      "recommendedAccountableRole": "Information security officer",
+      "evidenceReference": ["eval-report-sanitize.mjs", "HELD-OUT-RETIREMENT-RECORD.json", "FORGENIQ-RC-SOURCE-TREE-VERIFICATION.json"],
+      "requiredHumanDecision": "Accept retained golden run JSON vs private held-out retirement",
+      "acceptanceCriteria": "No private held-out in RC tree; retention policy documented",
+      "outstandingRisks": ["Six golden docs/eval/runs remain tracked (same as d806a26)"],
+      "namedApprover": null,
+      "approvalDate": null,
+      "status": "PENDING"
+    }
+  ]
+}

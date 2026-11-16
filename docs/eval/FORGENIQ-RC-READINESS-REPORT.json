@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "forgeniq.rc.readiness.v1",
+  "capturedAt": "2026-11-16T14:55:00.000Z",
+  "requestedRcSha": "c4805c3e13120a21ed1112a5f5c8c583fd17f095",
+  "verifiedRcSha": "9381c254590464baad20d338a13b287624d4b448",
+  "rcHygieneNote": "Removed unintended docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json; added regression orchestrator",
+  "developmentHeadReference": "9d3338a99523ad2f52fd2aee49f3991d7f44f567",
+  "previewPin": "00b4369",
+  "pushed": false,
+  "deployed": false,
+  "paidAnthropic": false,
+  "1_sourceTreeComparison": {
+    "artefact": "FORGENIQ-RC-SOURCE-TREE-VERIFICATION.json",
+    "applicationDiffFromD806a26": "apps/platform/scripts/run-forgeniq-phase5-engineering-regression.mjs only",
+    "privateHeldOutInRcTree": [],
+    "trackedEvalRunsCount": 6,
+    "trackedEvalRunsNote": "Golden engineering artefacts — identical set to d806a26; no Claude outputs private suite",
+    "cfedc76InAncestry": false,
+    "pin00b4369ContainsSensitiveRuns": true,
+    "pinNote": "Preview pin predates eval-run hygiene; RC branch not descended from cfedc76 object"
+  },
+  "2_dependencyInstall": {
+    "command": "npm ci",
+    "cwd": ".worktrees/forgeniq-rc-clean/apps/platform",
+    "lockfile": "apps/platform/package-lock.json",
+    "exitCode": 0,
+    "packagesAudited": 424
+  },
+  "3_fullRegression": {
+    "command": "FORGENIQ_RUN_PRODUCTION_BUILD=1 node scripts/run-forgeniq-phase5-engineering-regression.mjs",
+    "testedSha": "9381c254590464baad20d338a13b287624d4b448",
+    "artefact": "FORGENIQ-PHASE5-ENGINEERING-REGRESSION-RC.json",
+    "pass": 19,
+    "fail": 0,
+    "blocked": 0,
+    "stageABudgetIncludedIn": "acceptance-stage-a-e2e-persistence.mjs",
+    "programmeAcceptanceClaimed": false
+  },
+  "4_productionBuild": {
+    "command": "npm run build",
+    "status": "PASS",
+    "durationMs": 76558,
+    "deployed": false
+  },
+  "5_offlineTenantIsolation": {
+    "script": "acceptance-phase-2-tenant-isolation.mjs",
+    "status": "PASS"
+  },
+  "6_hostedTenantIsolation": {
+    "status": "UNVERIFIED",
+    "script": "scripts/staging/verify-ai-dev-tenant-isolation.mjs",
+    "blockedReason": "Requires STAGING_DATABASE_URL / operator authorization — not executed",
+    "explicitOperatorRiskAcceptanceRequired": true,
+    "notEquivalentToTechnicalPass": true
+  },
+  "7_gitSecurity": {
+    "cfedc76OnOrigin": false,
+    "heldOutRetirement": "HELD-OUT-RETIREMENT-RECORD.json"
+  },
+  "8_stageBHumanApprovals": "STAGE-B-OPERATOR-CHECKLIST.json — all PENDING",
+  "9_independentRegulatoryEval": {
+    "regulatoryAccuracyApproved": false,
+    "executed": false,
+    "plan": "INDEPENDENT-REGULATORY-ACCEPTANCE-PLAN.json"
+  },
+  "10_ps26ObligationGrade": {
+    "checklist": "FCA-PS26-1-OBLIGATION-GRADE-HUMAN-CHECKLIST.json",
+    "humanPending": ["OG-02", "OG-04", "OG-05", "OG-06"],
+    "ingestAllowed": false
+  },
+  "11_remainingBlockers": [
+    "Stage B operator sign-offs (5)",
+    "Hosted staging tenant-isolation probe",
+    "Independent protected eval first run",
+    "PS26/1 human OG gates",
+    "Operator approval before RC push",
+    "Preview pin promotion governance"
+  ],
+  "recommendation": {
+    "engineeringRegressionOnRc": "PASS",
+    "overallEngineeringRcVerdict": "BLOCKED",
+    "rationale": "All offline regression and production build pass at 9381c25; promotion blocked by UNVERIFIED hosted isolation and pending human Stage B / regulatory gates",
+    "promotePreview": false
+  }
+}

@@ -21,6 +21,7 @@ const SUITES = [
     command: ['node', 'scripts/acceptance-stage-a-e2e-persistence.mjs'],
     cwd: platformRoot,
     artefact: 'docs/eval/stage-a-e2e-persistence-latest.json',
+    note: 'Includes Stage A budget ceiling, interrupt, and resume accounting',
   },
   {
     id: 'stage-b-secure-evidence',

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "forgeniq.release.candidate.proposal.v1",
   "capturedAt": "2026-11-16T13:30:00.000Z",
-  "proposedCommit": "c4805c3e13120a21ed1112a5f5c8c583fd17f095",
+  "proposedCommit": "9381c254590464baad20d338a13b287624d4b448",
   "developmentHeadReference": "d806a26b8fc5c8318c021cada56f2831d0e17064",
   "rcLineage": "docs/eval/FORGENIQ-CLEAN-ENGINEERING-RC-LINEAGE.json",
   "priorPreviewPin": "00b4369",
