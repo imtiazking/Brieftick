@@ -1,0 +1,28 @@
+{
+  "checkpoint": true,
+  "updatedAt": "2026-11-11T11:36:14.083Z",
+  "caseIndex": 6,
+  "caseTotal": 6,
+  "lastTestId": "EVAL-J-02",
+  "model": {
+    "identifier": "claude-haiku-5-5"
+  },
+  "spend": {
+    "budgetUsd": 10,
+    "model": "claude-haiku-5-5",
+    "estimatedUsd": 0,
+    "calculatedUsd": 0,
+    "inputTokens": 48840,
+    "outputTokens": 36618,
+    "requestCount": 7,
+    "reservedUsd": 0.0767,
+    "stopped": false,
+    "stopReason": null
+  },
+  "resultsCount": 6,
+  "partialSummary": {
+    "completedCases": 6,
+    "providerErrors": 0,
+    "publicExecuted": 6
+  }
+}

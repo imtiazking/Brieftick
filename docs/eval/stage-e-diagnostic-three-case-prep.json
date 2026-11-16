@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-e.diagnostic.v1",
+  "capturedAt": "2026-11-16T11:30:00.000Z",
+  "liveAnthropicAuthorized": false,
+  "operatorApprovalRequired": true,
+  "cases": ["EVAL-B-01", "EVAL-D-02", "EVAL-C-02"],
+  "budgetUsdCeiling": 10,
+  "budgetUsdConservativeDiagnosticCap": 2,
+  "budgetNote": "Three-case pilot may use options.budgetUsd=2 for extra guard; default harness 10 remains max safety ceiling",
+  "estimatedSpendPerCaseUsd": 0.35,
+  "estimatedTotalUsdConservative": 1.05,
+  "estimationBasis": "estimateEvalCaseReserveUsd(claude-haiku-5-5, ~8k prompt)",
+  "coverageMechanism": "assess-evidence-question-coverage.mjs in pipeline",
+  "scoringEvidenceExport": true,
+  "executePaidCalls": false
+}

@@ -1,0 +1,1384 @@
+{
+  "schemaVersion": "forgeniq.eval.sme-review-pack.v1",
+  "capturedAt": "2026-11-16T11:24:14.670Z",
+  "programmePass": false,
+  "smeSignOff": null,
+  "cases": [
+    {
+      "testId": "EVAL-B-01",
+      "question": "Does PRIN 2A.4 create a binding fair value obligation for firms?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "INSUFFICIENT_EVIDENCE",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "5a8c6400de6cf686",
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 124,
+          "excerptSha256": "bdc00920dfa5dde21ce42a52715b9d29044a9dfe68d0fdac82e11763544067b5",
+          "excerptPreview": "FCA 2022/31 Page 32 of 68 2A.4.21 R (1) The obligation on manufacturers in PRIN 2A.4.2R to ensure that a product provides fair value applies to closed products as well as new and existing products. (2) In the case of a closed product, the reference to a target market in PRIN 2A.4"
+        },
+        {
+          "evidenceChunkId": "0b4af1f989bceff0",
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 122,
+          "excerptSha256": "26e90a755889fcb43742e21d80bbb1803878e1d7f6cff89c94a01df88152c629",
+          "excerptPreview": "FCA 2022/31 Page 30 of 68 different prices being charged to different groups of retail customers. Guidance on the value assessment: interaction with the Duty and the retail customer outcomes 2A.4.12 G In ensuring that a product provides fair value, a manufacturer should have rega"
+        },
+        {
+          "evidenceChunkId": "29e80e5bc2ddffad",
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 119,
+          "excerptSha256": "8dbf4efe6ab3ae624fb0288db567f0cd508af34edaef6e21d604c851f24434db",
+          "excerptPreview": "FCA 2022/31 Page 27 of 68 2A.3.30 E (1) This provision applies to: (a) any firm to which PROD 1.3.2R applies; (b) a manufacturer of an existing product manufactured before 3 January 2018, which is a financial instrument or a structured deposit; and (c) a manufacturer of an existi"
+        },
+        {
+          "evidenceChunkId": "d1da907dabc08185",
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 123,
+          "excerptSha256": "81ea340fe3809664adb08158f3412a09b39529461a640fac6c08c2c693282b44",
+          "excerptPreview": "FCA 2022/31 Page 31 of 68 would result in the product ceasing to provide fair value to retail customers. Distributors: unregulated manufacturer 2A.4.17 R Where a distributor distributes a product manufactured by a person to whom the rules in PRIN 2A.4 do not apply, it must take a"
+        },
+        {
+          "evidenceChunkId": "71671899601493c8",
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "publicationReference": null,
+          "sectionReference": "4.3. Assessing fair value for different customer groups",
+          "physicalPageNumber": null,
+          "excerptSha256": "5ed8d248c25e7043848ee0cb4a9b1043001987738c38ed517fc8360897c7fec2",
+          "excerptPreview": "Under PRIN 2A.4.8R , a manufacturer’s fair value assessment must consider any characteristics of vulnerability that retail customers in the target market display, and whether those characteristics will affect them receiving fair value. &nbsp; Firms must monitor whether different "
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "physicalPageNumber": 124,
+          "sectionReference": null
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "UNKNOWN",
+        "completeness": "PARTIAL",
+        "materialIssues": [
+          {
+            "id": "theme:PRIN 2A binding",
+            "label": "PRIN 2A binding",
+            "kind": "required_theme"
+          },
+          {
+            "id": "theme:FG22 is non-Handbook guidance",
+            "label": "FG22 is non-Handbook guidance",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:regulatory_status_handbook",
+            "label": "regulatory_status_handbook",
+            "kind": "expected_intent"
+          },
+          {
+            "id": "expected_publications",
+            "label": "Publications: 56b0beca-d8c3-4267-a794-9079009af661, a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "kind": "publication_scope"
+          }
+        ],
+        "mappings": [
+          {
+            "issueId": "theme:PRIN 2A binding",
+            "label": "PRIN 2A binding",
+            "status": "unmapped",
+            "evidenceChunkIds": []
+          },
+          {
+            "issueId": "theme:FG22 is non-Handbook guidance",
+            "label": "FG22 is non-Handbook guidance",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "5a8c6400de6cf686",
+              "0b4af1f989bceff0",
+              "29e80e5bc2ddffad"
+            ]
+          },
+          {
+            "issueId": "intent:regulatory_status_handbook",
+            "label": "regulatory_status_handbook",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "5a8c6400de6cf686"
+            ]
+          },
+          {
+            "issueId": "expected_publications",
+            "label": "Publications: 56b0beca-d8c3-4267-a794-9079009af661, a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "71671899601493c8",
+              "af4da679c0f8c163",
+              "65bbf76fcb5e8ebf",
+              "c64431709056d5db",
+              "45e51a3cfb41e23c",
+              "9019310b86ba8d02",
+              "4e85cbffcef2f786",
+              "10e408b9a16e7d11",
+              "75c0c1f2bbd29bcd",
+              "d21c64224ebad48b"
+            ]
+          }
+        ],
+        "reasons": [
+          "partial_issue_mapping_or_missing_expected_publications"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [
+          "theme:PRIN 2A binding"
+        ],
+        "expectedPublicationsMissing": []
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "PRIN 2A binding",
+        "FG22 is non-Handbook guidance"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-B-03",
+      "question": "What does COBS require for suitability assessments?",
+      "expectedIdealResult": {
+        "outcomeClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "INSUFFICIENT_EVIDENCE",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+        "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "a784dcfc-d443-4295-99f9-d0f23a5fadd6",
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "738c70aed19aecb4",
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 48,
+          "excerptSha256": "5d681d01094cbdf1355d55feb3e3b7a84a830d247a41803d7a6c31c325bc0f67",
+          "excerptPreview": "The Duty, however, also requires such firms to ensure that existing products and services provide fair value for their customers.We agree that it would be unhelpful if firms took a different approach to assessing value under the Duty as IGCs and GAAs do under the COBS 19 rules. S"
+        },
+        {
+          "evidenceChunkId": "c4a4eb7e0c5fa732",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 68,
+          "excerptSha256": "18ea0dfcf1af64ddbdb2dfd4d643936654ab86dee4c3c8287204add0d75ceea2",
+          "excerptPreview": "However, the Duty as a whole is broader than these requirements, so firms still need to consider if they meet all other aspects of the Duty.• Firms that meet the value rules in PROD 4 for non-investment insurance or COLL 6.6, COLL 8.5 or COLL 15.7 for asset management will meet t"
+        },
+        {
+          "evidenceChunkId": "bdd5eee4669fd7bb",
+          "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+          "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+          "publicationReference": null,
+          "sectionReference": "What we did",
+          "physicalPageNumber": null,
+          "excerptSha256": "b53f26f287967aa9d3700e5368b344690ad8a2a7ed56418ae22159aac3f34e3d",
+          "excerptPreview": "We considered relevant requirements under the FCA Handbook relating to conflicts of interest, governance, systems and controls, and disclosure obligations (SYSC 10; COLL 8.5.7, COBS 2.3A.8R, COBS 11.7 and COBS 11.7A)."
+        },
+        {
+          "evidenceChunkId": "511463d774cfeb75",
+          "publicationId": "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+          "publicationTitle": "Conflicts of interest and fair customer treatment in private markets",
+          "publicationReference": null,
+          "sectionReference": "Personal account dealing and other personal investments",
+          "physicalPageNumber": null,
+          "excerptSha256": "d9b24afcd335b16fde3a5f599814b28f89ed4207e0e2b950b485eecda195de06",
+          "excerptPreview": "COBS 11.7A (for MiFID business) and COBS 11.7 (for non-MiFID business) state that firms must establish, implement and maintain adequate arrangements that prevent staff (including directors, partners and appointed representatives) from entering into personal transactions when cert"
+        },
+        {
+          "evidenceChunkId": "01d268e4282514f5",
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "publicationTitle": "PS22/9: A new Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 110,
+          "excerptSha256": "d77a062879f35d3a4e22cf5877f77f45e577882a6b8752b31083919e4b15dd47",
+          "excerptPreview": "2A.2.18 G Information a firm must obtain under a provision of law (including, but not limited to, information required by COBS 9.2.1R, COBS 9A.2.1R, COBS 10.2.1R, COBS 10A.2.1R, ICOBS 5.2.2R, MCOB 4.7A.6 R, MCOB 11.6.2R and CONC 5.2A.5R) is relevant to whether a firm knew or coul"
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "physicalPageNumber": 48,
+          "sectionReference": null
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "UNKNOWN",
+        "completeness": "NONE",
+        "materialIssues": [
+          {
+            "id": "theme:no COBS corpus in catalogue path",
+            "label": "no COBS corpus in catalogue path",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:handbook_out_of_catalogue",
+            "label": "handbook_out_of_catalogue",
+            "kind": "expected_intent"
+          }
+        ],
+        "mappings": [
+          {
+            "id": "theme:no COBS corpus in catalogue path",
+            "label": "no COBS corpus in catalogue path",
+            "kind": "required_theme",
+            "status": "source_not_in_corpus",
+            "evidenceChunkIds": []
+          },
+          {
+            "id": "intent:handbook_out_of_catalogue",
+            "label": "handbook_out_of_catalogue",
+            "kind": "expected_intent",
+            "status": "source_not_in_corpus",
+            "evidenceChunkIds": []
+          }
+        ],
+        "reasons": [
+          "evidence_availability_not_in_suite — required regulatory sources absent from authorised corpus"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [
+          "theme:no COBS corpus in catalogue path",
+          "intent:handbook_out_of_catalogue"
+        ]
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "no COBS corpus in catalogue path"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-C-02",
+      "question": "Is CP26/38 finalised FCA guidance or a consultation?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "ANSWERED",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "a2a2f7a7a1846511",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 17,
+          "excerptSha256": "c2d9f811d08e51b0e6c3b5357201bda373a0f48254736eedccc4cb905c53089c",
+          "excerptPreview": "17 Annex 3Compatibility statementCompliance with legal requirements1. This Annex records the FCA’s compliance with a number of legal requirements applicable to the proposals in this consultation, including an explanation of the FCA’s reasons for concluding that our proposals in t"
+        },
+        {
+          "evidenceChunkId": "6fa8441b78efd821",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 14,
+          "excerptSha256": "0fe7072bbb86d2bebd163c67b0c7e014dbbd914cbcea30589ebb35844ba19b0c",
+          "excerptPreview": "14Chapter 3How to respondWe are asking for comments on this Consultation Paper (CP) by 24 December 2026 .You can send them to us using the form on our website at: www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updatesOr in writing to:Financial Crime"
+        },
+        {
+          "evidenceChunkId": "cbea568a0edac193",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 19,
+          "excerptSha256": "1b5d8625d17ac7dc34804cf0812d9a043550dbfe8b50ad4bb4e850db575773e7",
+          "excerptPreview": "19 The general principle that consumers should take responsibility for their decisions13. The consultation is not aimed as guidance for the consumer and thus will have limited consumer impact. However, through better financial crime controls at firms that consumers use, we believ"
+        },
+        {
+          "evidenceChunkId": "087950b39072c31d",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 18,
+          "excerptSha256": "35058479fe2b5f2f8fb0893b0d91006b741e257024047075f02739f1e1ec212c",
+          "excerptPreview": "18the UK’s financial sector and its reputation internationally. The guidance set out in this CP helps to ensure that firms can be confident they are fulfilling their obligations with regards to AML, Counter Terrorist Financing (CTF), sanctions and PF, while also allowing firms to"
+        },
+        {
+          "evidenceChunkId": "c069403c2a9fad37",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 16,
+          "excerptSha256": "ee05a8054406061127b4cfa839f56eb645ea4c627cf9680a0fc3f96cb1bbfd50",
+          "excerptPreview": "16Annex 2Cost benefit analysisIntroduction1. The Financial Services and Markets Act (2000) require us to publish a cost benefit analysis (CBA) of our proposed rules. Specifically, section 138I requires us to publish a CBA of proposed rules, defined as ‘an analysis of the costs, t"
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "physicalPageNumber": 17,
+          "sectionReference": null
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "KNOWN",
+        "completeness": "FULL",
+        "materialIssues": [
+          {
+            "id": "theme:consultation",
+            "label": "consultation",
+            "kind": "required_theme"
+          },
+          {
+            "id": "theme:not binding requirements",
+            "label": "not binding requirements",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:consultation_status",
+            "label": "consultation_status",
+            "kind": "expected_intent"
+          },
+          {
+            "id": "expected_publications",
+            "label": "Publications: 4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "kind": "publication_scope"
+          }
+        ],
+        "mappings": [
+          {
+            "issueId": "theme:consultation",
+            "label": "consultation",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "a2a2f7a7a1846511",
+              "6fa8441b78efd821",
+              "cbea568a0edac193"
+            ]
+          },
+          {
+            "issueId": "theme:not binding requirements",
+            "label": "not binding requirements",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "a2a2f7a7a1846511",
+              "6fa8441b78efd821",
+              "cbea568a0edac193"
+            ]
+          },
+          {
+            "issueId": "intent:consultation_status",
+            "label": "consultation_status",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "a2a2f7a7a1846511"
+            ]
+          },
+          {
+            "issueId": "expected_publications",
+            "label": "Publications: 4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "a2a2f7a7a1846511",
+              "6fa8441b78efd821",
+              "cbea568a0edac193",
+              "087950b39072c31d",
+              "c069403c2a9fad37",
+              "75c6455f4fb9b2f1"
+            ]
+          }
+        ],
+        "reasons": [
+          "all_material_issues_mapped_with_expected_sources"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [],
+        "expectedPublicationsMissing": []
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "consultation",
+        "not binding requirements"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-C-03",
+      "question": "Is FG22/5 still a consultation or finalised guidance?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "ANSWERED",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "f348ce1834984c8f",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 1,
+          "excerptSha256": "9df5a90b3fa3d785f23840a289910968313505a73cc6ad72e7e55eb3cf098690",
+          "excerptPreview": "FG22/5 Final non-Handbook Guidance for firms on the Consumer DutyJuly 2022Finalised Guidance"
+        },
+        {
+          "evidenceChunkId": "f3d35ebb1b4f2e2f",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 36,
+          "excerptSha256": "0b87fbf36e6eca3b7a820d030c26062931619777e66891964de42c3e3796a079",
+          "excerptPreview": "36FG22/5Chapter 5Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty• By contrast, a firm providing advisory or discretionary services would understand more about the customer’s specific objectives and would need to act on that knowledge. "
+        },
+        {
+          "evidenceChunkId": "3ed48be23c5b829c",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 5,
+          "excerptSha256": "1b1f99bd1a95256ea8fc233b5e852d707de0405f3425708636a144b5ea0b37b9",
+          "excerptPreview": "5 FG22/5Chapter 1Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty1 .11 This Guidance does not replace or substitute other applicable rules, guidance or law and does not require firms to act in a way that is incompatible with any legal o"
+        },
+        {
+          "evidenceChunkId": "66d1f7d4fb34e15d",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 19,
+          "excerptSha256": "7ddbfd083513606a35b31daf52d3240c6afd394272f3e01195d4e17537d61b50",
+          "excerptPreview": "19 FG22/5Chapter 3Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty3.7 We still expect firms to review closed products and services under the Duty. This includes:• Reviewing the product or service during the implementation period, and on"
+        },
+        {
+          "evidenceChunkId": "c7c4dc3f47ec7c92",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 6,
+          "excerptSha256": "04888ce661938237d154e0704f1e72d47ef574a6da16be10149630f72153b609",
+          "excerptPreview": "6FG22/5Chapter 1Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty1 .17 Firms must also consider rules in relevant sectoral conduct of business sourcebooks.1.18 In certain instances, meeting existing obligations will be enough to demonstr"
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "physicalPageNumber": 1,
+          "sectionReference": null
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "KNOWN",
+        "completeness": "FULL",
+        "materialIssues": [
+          {
+            "id": "theme:finalised guidance",
+            "label": "finalised guidance",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:publication_status_fg22",
+            "label": "publication_status_fg22",
+            "kind": "expected_intent"
+          },
+          {
+            "id": "expected_publications",
+            "label": "Publications: a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "kind": "publication_scope"
+          }
+        ],
+        "mappings": [
+          {
+            "issueId": "theme:finalised guidance",
+            "label": "finalised guidance",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "f348ce1834984c8f",
+              "f3d35ebb1b4f2e2f",
+              "3ed48be23c5b829c"
+            ]
+          },
+          {
+            "issueId": "intent:publication_status_fg22",
+            "label": "publication_status_fg22",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "f348ce1834984c8f"
+            ]
+          },
+          {
+            "issueId": "expected_publications",
+            "label": "Publications: a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "f348ce1834984c8f",
+              "f3d35ebb1b4f2e2f",
+              "3ed48be23c5b829c",
+              "66d1f7d4fb34e15d",
+              "c7c4dc3f47ec7c92",
+              "a7d88fc821b6882a"
+            ]
+          }
+        ],
+        "reasons": [
+          "all_material_issues_mapped_with_expected_sources"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [],
+        "expectedPublicationsMissing": []
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "finalised guidance"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-D-02",
+      "question": "What does CP26/38 say about AML transaction monitoring?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Named CP26; AML monitoring themes in indexed CP26 extract."
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "INSUFFICIENT_EVIDENCE",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "381ddd712c8586bd",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 35,
+          "excerptSha256": "5e04785c1252079c88659b97aa0964377f2e0ef745f3815858322e5c178aec19",
+          "excerptPreview": "In this scenario, there are specified EDD measures which must include, as far as reasonably possible, examining the background and purpose of the transaction and increasing the degree and nature of monitoring of the business relationship in which the transaction is made to determ"
+        },
+        {
+          "evidenceChunkId": "6c9a79fd2d150f63",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 31,
+          "excerptSha256": "71f451b19a03889b13be52f683bc48d5b42021fb4c12866dc47baf2e7684a91c",
+          "excerptPreview": "A UK-authorised stablecoin issuer, or a third party carrying out the AML checks on its behalf, should conduct CDD checks within a reasonable timeframe during onboarding and redemption, while ensuring compliance with its obligations under regulations 27 (Customer due diligence) an"
+        },
+        {
+          "evidenceChunkId": "6b56b5854ffd3efb",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 55,
+          "excerptSha256": "e6bec774b94c353fcb41ba186fd3c35e5aa401647ec34aecf5edb27e36ffeb36",
+          "excerptPreview": "FCA 202X/YY Page 32 of 67 • Firms consider whether enhanced monitoring of, or engagement with, known victims is required to detect unusual activity, or whether certain account restrictions can help reduce the risk of re-victimisation. • The ongoing monitoring of individual or com"
+        },
+        {
+          "evidenceChunkId": "49751a5367546d71",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 54,
+          "excerptSha256": "93864fe2ac185137e4605c04699c438bf9cef79cb85c09a06d41adf587212e70",
+          "excerptPreview": "FCA 202X/YY Page 31 of 67 where transaction monitoring alerts breach the firm’s fraud thresholds. transaction monitoring alerts or recognise red flags. • Fraud alerts (including from transaction monitoring, customer contact, intel from other organisations) are investigated by sui"
+        },
+        {
+          "evidenceChunkId": "79a9565c9b8e3c83",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 33,
+          "excerptSha256": "596ba37e6a6fc542812b0eedd69442c34f5b42dc571b76f244038cdc7f6e517e",
+          "excerptPreview": "FCA 202X/YY Page 10 of 67 See regulations 5, 6, 27, 28, 30A, 31, 33, 34 and 35 of the Money Laundering Regulations. Ongoing monitoring 3.2.5 ... Examples of good practice Examples of poor practice ... ... • The firm’s measures fail to conduct a full assessment of the risk. For in"
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "physicalPageNumber": 35,
+          "sectionReference": null
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "UNKNOWN",
+        "completeness": "PARTIAL",
+        "materialIssues": [
+          {
+            "id": "theme:AML or monitoring proposals if evidenced",
+            "label": "AML or monitoring proposals if evidenced",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:cp26_aml_theme",
+            "label": "cp26_aml_theme",
+            "kind": "expected_intent"
+          },
+          {
+            "id": "expected_publications",
+            "label": "Publications: 4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "kind": "publication_scope"
+          }
+        ],
+        "mappings": [
+          {
+            "issueId": "theme:AML or monitoring proposals if evidenced",
+            "label": "AML or monitoring proposals if evidenced",
+            "status": "unmapped",
+            "evidenceChunkIds": []
+          },
+          {
+            "issueId": "intent:cp26_aml_theme",
+            "label": "cp26_aml_theme",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "381ddd712c8586bd"
+            ]
+          },
+          {
+            "issueId": "expected_publications",
+            "label": "Publications: 4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "381ddd712c8586bd",
+              "6c9a79fd2d150f63",
+              "6b56b5854ffd3efb",
+              "49751a5367546d71",
+              "79a9565c9b8e3c83",
+              "169648b655e519f6"
+            ]
+          }
+        ],
+        "reasons": [
+          "partial_issue_mapping_or_missing_expected_publications"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [
+          "theme:AML or monitoring proposals if evidenced"
+        ],
+        "expectedPublicationsMissing": []
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "AML or monitoring proposals if evidenced"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-C-04",
+      "question": "What is the consultation deadline for CP26/38?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Frozen CP26/38 PDF p14 and HTML metadata both record consultation close 24 December 2026."
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "ANSWERED",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "169648b655e519f6",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": "On this page",
+          "physicalPageNumber": null,
+          "excerptSha256": "c25cb45395ab3927cee5e288e8dc23838b84213f100b01468ddba4f274de708d",
+          "excerptPreview": "Why we&#039;re consulting Who this is for Next steps Background Read CP26/38 (PDF)\n\nFirms are essential partners in tackling financial crime."
+        },
+        {
+          "evidenceChunkId": "6fa8441b78efd821",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 14,
+          "excerptSha256": "0fe7072bbb86d2bebd163c67b0c7e014dbbd914cbcea30589ebb35844ba19b0c",
+          "excerptPreview": "14Chapter 3How to respondWe are asking for comments on this Consultation Paper (CP) by 24 December 2026 .You can send them to us using the form on our website at: www.fca.org.uk/publications/consultation-papers/cp26-38-financial-crime-guide-updatesOr in writing to:Financial Crime"
+        },
+        {
+          "evidenceChunkId": "cbea568a0edac193",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 19,
+          "excerptSha256": "1b5d8625d17ac7dc34804cf0812d9a043550dbfe8b50ad4bb4e850db575773e7",
+          "excerptPreview": "19 The general principle that consumers should take responsibility for their decisions13. The consultation is not aimed as guidance for the consumer and thus will have limited consumer impact. However, through better financial crime controls at firms that consumers use, we believ"
+        },
+        {
+          "evidenceChunkId": "a2a2f7a7a1846511",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 17,
+          "excerptSha256": "c2d9f811d08e51b0e6c3b5357201bda373a0f48254736eedccc4cb905c53089c",
+          "excerptPreview": "17 Annex 3Compatibility statementCompliance with legal requirements1. This Annex records the FCA’s compliance with a number of legal requirements applicable to the proposals in this consultation, including an explanation of the FCA’s reasons for concluding that our proposals in t"
+        },
+        {
+          "evidenceChunkId": "9384fc6ad472c571",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 1,
+          "excerptSha256": "2cd6f79b6ea395a6f9251a0c7506ae2a2d29c519fcc7a514cf6438aa1c904ee5",
+          "excerptPreview": "Consultation PaperCP26/38***Financial Crime Guide UpdatesOctober 2026"
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "physicalPageNumber": null,
+          "sectionReference": "On this page"
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "KNOWN",
+        "completeness": "FULL",
+        "materialIssues": [
+          {
+            "id": "theme:consultation comments due by 24 December 2026",
+            "label": "consultation comments due by 24 December 2026",
+            "kind": "required_theme"
+          },
+          {
+            "id": "theme:consultation response deadline distinct from implementation or compliance dates",
+            "label": "consultation response deadline distinct from implementation or compliance dates",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:deadline_factual",
+            "label": "deadline_factual",
+            "kind": "expected_intent"
+          },
+          {
+            "id": "expected_publications",
+            "label": "Publications: 4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "kind": "publication_scope"
+          }
+        ],
+        "mappings": [
+          {
+            "issueId": "theme:consultation comments due by 24 December 2026",
+            "label": "consultation comments due by 24 December 2026",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "169648b655e519f6",
+              "6fa8441b78efd821",
+              "cbea568a0edac193"
+            ]
+          },
+          {
+            "issueId": "theme:consultation response deadline distinct from implementation or compliance dates",
+            "label": "consultation response deadline distinct from implementation or compliance dates",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "169648b655e519f6",
+              "6fa8441b78efd821",
+              "cbea568a0edac193"
+            ]
+          },
+          {
+            "issueId": "intent:deadline_factual",
+            "label": "deadline_factual",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "169648b655e519f6"
+            ]
+          },
+          {
+            "issueId": "expected_publications",
+            "label": "Publications: 4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "169648b655e519f6",
+              "6fa8441b78efd821",
+              "cbea568a0edac193",
+              "a2a2f7a7a1846511",
+              "9384fc6ad472c571",
+              "75c6455f4fb9b2f1"
+            ]
+          }
+        ],
+        "reasons": [
+          "all_material_issues_mapped_with_expected_sources"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [],
+        "expectedPublicationsMissing": []
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "consultation comments due by 24 December 2026",
+        "consultation response deadline distinct from implementation or compliance dates"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-I-01",
+      "question": "Summarise FCA Policy Statement PS99/99 on cryptoassets.",
+      "expectedIdealResult": {
+        "outcomeClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "BLOCKED",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [],
+      "evidencePassages": [],
+      "citations": [],
+      "coverageAssessment": null,
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "acknowledge missing evidence"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-E-01",
+      "question": "Which business functions might CP26/38 affect according to the publication?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresControlImpactReasoning": true,
+        "responseState": "ANSWERED",
+        "notes": "Applicability themes supported with consultation labelling."
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "ANSWERED",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "768f4daccfa68494",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 29,
+          "excerptSha256": "076fd70e7b670bcf3bdacb2725e75b8eac6471f7273f8f4371403168941fc022",
+          "excerptPreview": "Has it assessed the extent to which these risks are likely to be an issue for the firm?) ... • For cryptoasset businesses, how do you assess and address the risks of different types of cryptoasset (e.g. anonymity-enhanced or privacy coins)? • In addition to the considerations abo"
+        },
+        {
+          "evidenceChunkId": "169648b655e519f6",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": "On this page",
+          "physicalPageNumber": null,
+          "excerptSha256": "c25cb45395ab3927cee5e288e8dc23838b84213f100b01468ddba4f274de708d",
+          "excerptPreview": "Why we&#039;re consulting Who this is for Next steps Background Read CP26/38 (PDF)\n\nFirms are essential partners in tackling financial crime."
+        },
+        {
+          "evidenceChunkId": "43145c22c750cccc",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 29,
+          "excerptSha256": "953de55449eccd85b9d644f2fbc2f553936713979827ca6a2cbdf8eefae8958e",
+          "excerptPreview": "FCA 202X/YY Page 6 of 67 should not share it for commercial reasons or to provide sectors with additional powers means to exclude customers inappropriately. Firms must also consider their obligations under the General data protection regulation. Firms assessing customers at onboa"
+        },
+        {
+          "evidenceChunkId": "cbea568a0edac193",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 19,
+          "excerptSha256": "1b5d8625d17ac7dc34804cf0812d9a043550dbfe8b50ad4bb4e850db575773e7",
+          "excerptPreview": "19 The general principle that consumers should take responsibility for their decisions13. The consultation is not aimed as guidance for the consumer and thus will have limited consumer impact. However, through better financial crime controls at firms that consumers use, we believ"
+        },
+        {
+          "evidenceChunkId": "77d96185ff9abdeb",
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "publicationTitle": "CP26/38 Financial Crime Guide updates",
+          "publicationReference": "CP26/38",
+          "sectionReference": null,
+          "physicalPageNumber": 84,
+          "excerptSha256": "317d8f7a17104e6958cf104b6422f82248016ff85a77cb7cebacfdae5d8147d5",
+          "excerptPreview": "FCA 202X/YY Page 61 of 67 • Does your firm have customers from high-risk countries, or with a history of dealing with individuals and entities from such places? If so, has the firm reviewed how the sanctions situation could affect such counterparties, and discussed with them how "
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "4d05b49b-a4a4-4101-8c87-7d3983315f25",
+          "physicalPageNumber": 29,
+          "sectionReference": null
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "KNOWN",
+        "completeness": "FULL",
+        "materialIssues": [
+          {
+            "id": "theme:business function labels from evidence",
+            "label": "business function labels from evidence",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:applicability_functions",
+            "label": "applicability_functions",
+            "kind": "expected_intent"
+          },
+          {
+            "id": "expected_publications",
+            "label": "Publications: 4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "kind": "publication_scope"
+          }
+        ],
+        "mappings": [
+          {
+            "issueId": "theme:business function labels from evidence",
+            "label": "business function labels from evidence",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "768f4daccfa68494",
+              "169648b655e519f6",
+              "43145c22c750cccc"
+            ]
+          },
+          {
+            "issueId": "intent:applicability_functions",
+            "label": "applicability_functions",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "768f4daccfa68494"
+            ]
+          },
+          {
+            "issueId": "expected_publications",
+            "label": "Publications: 4d05b49b-a4a4-4101-8c87-7d3983315f25",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "768f4daccfa68494",
+              "169648b655e519f6",
+              "43145c22c750cccc",
+              "cbea568a0edac193",
+              "77d96185ff9abdeb",
+              "39bc0c251b2ed11c"
+            ]
+          }
+        ],
+        "reasons": [
+          "all_material_issues_mapped_with_expected_sources"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [],
+        "expectedPublicationsMissing": []
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "business function labels from evidence"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-G-02",
+      "question": "In FG22/5 Consumer Duty guidance, what does the FCA expect on fair value assessments and product lifecycle monitoring? Also consider the FCA webpage Fair value in consumer finance and provide FG22/5 PDF page citations.",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "INSUFFICIENT_EVIDENCE",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "fd96efc987d13a16",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 67,
+          "excerptSha256": "1dacfcf419a25668745e72edfed58da3a35fdfd3051b488e50d74d2614427978",
+          "excerptPreview": "67 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyconsidered in their value assessments and should be able to provide evidence if we request it.7. 4 9 Firms must take appropriate action where their review identifies that"
+        },
+        {
+          "evidenceChunkId": "f348ce1834984c8f",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 1,
+          "excerptSha256": "9df5a90b3fa3d785f23840a289910968313505a73cc6ad72e7e55eb3cf098690",
+          "excerptPreview": "FG22/5 Final non-Handbook Guidance for firms on the Consumer DutyJuly 2022Finalised Guidance"
+        },
+        {
+          "evidenceChunkId": "9019310b86ba8d02",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 58,
+          "excerptSha256": "51cb40de4f48538720e99fc37e757f57ff458f932341ba6a55fca2bdc00d40a5",
+          "excerptPreview": "58FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty7. 1 4 If a product or service does not provide or ceases to provide fair value to customers, firms must take appropriate action to mitigate and prevent harm, for example,"
+        },
+        {
+          "evidenceChunkId": "c64431709056d5db",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 68,
+          "excerptSha256": "d24ec892e33143d25c47b284df218bb5406eb479f9cd2b6f865c0f1471bfbad8",
+          "excerptPreview": "68FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty• What action has the firm taken as a result of its fair value assessments, and how is it ensuring this action is effective in improving consumer outcomes?• What data, MI "
+        },
+        {
+          "evidenceChunkId": "45e51a3cfb41e23c",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 69,
+          "excerptSha256": "64c11f58dee91f2a30f1b7cf6ceab938837cb5be4c86e18d05ccfdf7af94676a",
+          "excerptPreview": "69 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty(GAAs) to inform their assessment of whether their products provide fair value. If a firm disagrees with the assessment carried out by an IGC/GAA, they are required to ex"
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "physicalPageNumber": 67,
+          "sectionReference": null
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "UNKNOWN",
+        "completeness": "PARTIAL",
+        "materialIssues": [
+          {
+            "id": "theme:mixed synthesis lead paragraph",
+            "label": "mixed synthesis lead paragraph",
+            "kind": "required_theme"
+          },
+          {
+            "id": "theme:HTML and PDF in key findings",
+            "label": "HTML and PDF in key findings",
+            "kind": "required_theme"
+          },
+          {
+            "id": "theme:Chapter 7 fair value themes where indexed",
+            "label": "Chapter 7 fair value themes where indexed",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:mixed_html_pdf",
+            "label": "mixed_html_pdf",
+            "kind": "expected_intent"
+          },
+          {
+            "id": "expected_publications",
+            "label": "Publications: 56b0beca-d8c3-4267-a794-9079009af661, a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "kind": "publication_scope"
+          }
+        ],
+        "mappings": [
+          {
+            "issueId": "theme:mixed synthesis lead paragraph",
+            "label": "mixed synthesis lead paragraph",
+            "status": "unmapped",
+            "evidenceChunkIds": []
+          },
+          {
+            "issueId": "theme:HTML and PDF in key findings",
+            "label": "HTML and PDF in key findings",
+            "status": "unmapped",
+            "evidenceChunkIds": []
+          },
+          {
+            "issueId": "theme:Chapter 7 fair value themes where indexed",
+            "label": "Chapter 7 fair value themes where indexed",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "fd96efc987d13a16",
+              "f348ce1834984c8f",
+              "9019310b86ba8d02"
+            ]
+          },
+          {
+            "issueId": "intent:mixed_html_pdf",
+            "label": "mixed_html_pdf",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "fd96efc987d13a16"
+            ]
+          },
+          {
+            "issueId": "expected_publications",
+            "label": "Publications: 56b0beca-d8c3-4267-a794-9079009af661, a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "status": "unmapped",
+            "evidenceChunkIds": []
+          }
+        ],
+        "reasons": [
+          "expected_publication_not_in_bundle:56b0beca-d8c3-4267-a794-9079009af661",
+          "partial_issue_mapping_or_missing_expected_publications"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [
+          "theme:mixed synthesis lead paragraph",
+          "theme:HTML and PDF in key findings",
+          "expected_publications"
+        ],
+        "expectedPublicationsMissing": [
+          "56b0beca-d8c3-4267-a794-9079009af661"
+        ]
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "mixed synthesis lead paragraph",
+        "HTML and PDF in key findings",
+        "Chapter 7 fair value themes where indexed"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    },
+    {
+      "testId": "EVAL-H-01",
+      "question": "How does the FCA expect firms to monitor customer outcomes for fair value?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "requiresEvidenceGroundedAnswer": true,
+        "notes": "Semantic discovery should attach Fair Value HTML and/or FG22 PDF from indexed catalogue."
+      },
+      "expectedIdealApproved": false,
+      "engineeringMockStatus": "INSUFFICIENT_EVIDENCE",
+      "engineeringMockSufficiency": "ENGINEERING_ASSERTION_NOT_SME_APPROVED",
+      "sourceDocuments": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
+      ],
+      "evidencePassages": [
+        {
+          "evidenceChunkId": "fd96efc987d13a16",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 67,
+          "excerptSha256": "1dacfcf419a25668745e72edfed58da3a35fdfd3051b488e50d74d2614427978",
+          "excerptPreview": "67 FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Dutyconsidered in their value assessments and should be able to provide evidence if we request it.7. 4 9 Firms must take appropriate action where their review identifies that"
+        },
+        {
+          "evidenceChunkId": "7082c43690da038d",
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "publicationReference": null,
+          "sectionReference": "Considerations for firms",
+          "physicalPageNumber": null,
+          "excerptSha256": "f81eae8b26cbcad617827705106e5e2be875dec28d3ee609854c5c81dad19d60",
+          "excerptPreview": "Firms should use relevant data and MI to: understand customer outcomes test their fair value conclusions identify necessary action Data collection alone does not demonstrate good outcomes: firms should explain what the evidence shows, how it supports their conclusions and how the"
+        },
+        {
+          "evidenceChunkId": "71671899601493c8",
+          "publicationId": "56b0beca-d8c3-4267-a794-9079009af661",
+          "publicationTitle": "Fair value in consumer finance",
+          "publicationReference": null,
+          "sectionReference": "4.3. Assessing fair value for different customer groups",
+          "physicalPageNumber": null,
+          "excerptSha256": "5ed8d248c25e7043848ee0cb4a9b1043001987738c38ed517fc8360897c7fec2",
+          "excerptPreview": "Under PRIN 2A.4.8R , a manufacturer’s fair value assessment must consider any characteristics of vulnerability that retail customers in the target market display, and whether those characteristics will affect them receiving fair value. &nbsp; Firms must monitor whether different "
+        },
+        {
+          "evidenceChunkId": "c64431709056d5db",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 68,
+          "excerptSha256": "d24ec892e33143d25c47b284df218bb5406eb479f9cd2b6f865c0f1471bfbad8",
+          "excerptPreview": "68FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty• What action has the firm taken as a result of its fair value assessments, and how is it ensuring this action is effective in improving consumer outcomes?• What data, MI "
+        },
+        {
+          "evidenceChunkId": "61ffd619a5fa7d4d",
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+          "publicationReference": null,
+          "sectionReference": null,
+          "physicalPageNumber": 66,
+          "excerptSha256": "2a221eea35c6488b05be38544d7ab56e3bbdd353c5c8ce80a57487175d3a0697",
+          "excerptPreview": "66FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty7. 4 2 Firms should also consider how different groups of consumers are affected as some groups may be more at risk of harm. Consumers with characteristics of vulnerabilit"
+        }
+      ],
+      "citations": [
+        {
+          "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "physicalPageNumber": 67,
+          "sectionReference": null
+        }
+      ],
+      "coverageAssessment": {
+        "questionCoverage": "UNKNOWN",
+        "completeness": "PARTIAL",
+        "materialIssues": [
+          {
+            "id": "theme:discovery without explicit publication title in question",
+            "label": "discovery without explicit publication title in question",
+            "kind": "required_theme"
+          },
+          {
+            "id": "intent:semantic_discovery_consumer_duty",
+            "label": "semantic_discovery_consumer_duty",
+            "kind": "expected_intent"
+          },
+          {
+            "id": "expected_publications",
+            "label": "Publications: 56b0beca-d8c3-4267-a794-9079009af661, a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "kind": "publication_scope"
+          }
+        ],
+        "mappings": [
+          {
+            "issueId": "theme:discovery without explicit publication title in question",
+            "label": "discovery without explicit publication title in question",
+            "status": "unmapped",
+            "evidenceChunkIds": []
+          },
+          {
+            "issueId": "intent:semantic_discovery_consumer_duty",
+            "label": "semantic_discovery_consumer_duty",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "fd96efc987d13a16"
+            ]
+          },
+          {
+            "issueId": "expected_publications",
+            "label": "Publications: 56b0beca-d8c3-4267-a794-9079009af661, a761cacc-8742-493d-b200-eb5d9a3ab884",
+            "status": "mapped",
+            "evidenceChunkIds": [
+              "fd96efc987d13a16",
+              "7082c43690da038d",
+              "71671899601493c8",
+              "c64431709056d5db",
+              "61ffd619a5fa7d4d",
+              "8a03c9c437267c62",
+              "3e06a2db9df37518",
+              "44526e00bd770f8d",
+              "75c0c1f2bbd29bcd",
+              "9019310b86ba8d02",
+              "d21c64224ebad48b",
+              "45e51a3cfb41e23c"
+            ]
+          }
+        ],
+        "reasons": [
+          "partial_issue_mapping_or_missing_expected_publications"
+        ],
+        "contradictoryEvidence": [],
+        "missingEvidence": [
+          "theme:discovery without explicit publication title in question"
+        ],
+        "expectedPublicationsMissing": []
+      },
+      "applicableDates": null,
+      "expectedRegulatoryInterpretation": [
+        "discovery without explicit publication title in question"
+      ],
+      "unresolvedForSme": [
+        "Confirm expectedIdealResult against authoritative sources",
+        "Confirm mock sufficiency is not regulatory truth",
+        "Suite reviewStatus AWAITING_SME_REVIEW"
+      ]
+    }
+  ]
+}

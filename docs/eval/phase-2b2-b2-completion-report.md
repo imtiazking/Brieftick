@@ -78,7 +78,7 @@ Frozen suite on corpora: Original 6/6, B1 6/6, B2 6/6 Recall@1 (eval suite v2.1)
 
 ## 17. Local Git commit
 
-See commit SHA printed after `git commit` (Step 9).
+**SHA:** `12d9adb` on `feature/ask-ri-v2-evaluation-baseline` (no push).
 
 ## 18. Recommendation
 

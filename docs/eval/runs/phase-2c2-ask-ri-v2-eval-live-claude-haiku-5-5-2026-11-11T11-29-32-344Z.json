@@ -1,0 +1,228 @@
+{
+  "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+  "engine": "ask_ri_v2",
+  "engineCommitSha": "7fa088347f27e60d4b83302e506758595e74a2d9",
+  "suiteSourcePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json",
+  "baselineComparisonPath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\baseline\\deterministic-v2.1-r2-2026-11-10.json",
+  "model": {
+    "identifier": "claude-haiku-5-5",
+    "pricingNote": "Prototype eval — see anthropic-eval-budget estimates"
+  },
+  "executedAt": "2026-11-11T11:30:20.604Z",
+  "caseCount": 1,
+  "caseCountTotalRunnable": 45,
+  "caseCountSelected": 1,
+  "caseFilter": {
+    "publicProviderOnly": false,
+    "testIds": [
+      "EVAL-I-04"
+    ]
+  },
+  "eligibility": {
+    "allowedTestIds": [
+      "EVAL-A-01",
+      "EVAL-A-02",
+      "EVAL-A-03",
+      "EVAL-A-04",
+      "EVAL-A-05",
+      "EVAL-B-01",
+      "EVAL-B-02",
+      "EVAL-B-03",
+      "EVAL-B-04",
+      "EVAL-C-01",
+      "EVAL-C-02",
+      "EVAL-C-03",
+      "EVAL-C-04",
+      "EVAL-C-05",
+      "EVAL-D-01",
+      "EVAL-D-02",
+      "EVAL-D-03",
+      "EVAL-D-04",
+      "EVAL-D-05",
+      "EVAL-E-01",
+      "EVAL-E-02",
+      "EVAL-E-03",
+      "EVAL-E-04",
+      "EVAL-G-01",
+      "EVAL-G-02",
+      "EVAL-G-03",
+      "EVAL-H-01",
+      "EVAL-H-02",
+      "EVAL-H-03",
+      "EVAL-H-04",
+      "EVAL-H-05",
+      "EVAL-I-01",
+      "EVAL-I-02",
+      "EVAL-I-04",
+      "EVAL-J-01",
+      "EVAL-J-02",
+      "EVAL-J-03",
+      "EVAL-J-04"
+    ],
+    "blocked": [
+      {
+        "testId": "EVAL-F-01",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-02",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-03",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-04",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-F-05",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-G-04",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      },
+      {
+        "testId": "EVAL-I-03",
+        "eligible": false,
+        "classification": "TENANT_CONTEXT_REQUIRED",
+        "reason": "tenant_data_required_flag"
+      }
+    ],
+    "eligibleForProvider": 38,
+    "blockedBeforeTransmission": 7
+  },
+  "spend": {
+    "budgetUsd": 10,
+    "model": "claude-haiku-5-5",
+    "estimatedUsd": 0.0011,
+    "calculatedUsd": 0.0011,
+    "inputTokens": 5453,
+    "outputTokens": 1089,
+    "requestCount": 1,
+    "reservedUsd": 0.0127,
+    "stopped": false,
+    "stopReason": null
+  },
+  "summary": {
+    "v2Execution": {
+      "PUBLIC_ELIGIBLE_EXECUTED": 1,
+      "BLOCKED_EXPECTED": 0,
+      "BLOCKED_UNEXPECTED": 0,
+      "PROVIDER_ERROR": 0,
+      "VERIFICATION_FAILED": 0,
+      "NOT_RUN": 0,
+      "blockedBeforeProvider": 0
+    },
+    "outcomes": {
+      "CORRECT_INSUFFICIENT_EVIDENCE": 1
+    },
+    "preReasonerBlocks": {
+      "reference_validation": 0,
+      "authority_gate": 0
+    },
+    "engineInsufficientEvidence": 1,
+    "pipelineDryRunNotRun": 0,
+    "harnessOutcomes": {
+      "REGULATORY_MEASURED": 1
+    },
+    "providerAttempts": 1
+  },
+  "results": [
+    {
+      "testId": "EVAL-I-04",
+      "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "engineStatus": "INSUFFICIENT_EVIDENCE",
+      "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+      "deterministicR2Outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "deterministicR2Status": "UNRESOLVED",
+      "v2Diagnostics": {
+        "eligibility": {
+          "eligible": true,
+          "classification": "PUBLIC_REGULATORY_QUESTION",
+          "reason": "public_regulatory",
+          "testId": "EVAL-I-04"
+        },
+        "sufficiency": "NO_SUPPORT",
+        "claimClassifications": [],
+        "verificationOk": true,
+        "verifierFailures": [],
+        "humanReviewRequired": true,
+        "retrievalPublicationSelected": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "evidenceChunkIds": [
+          "f348ce1834984c8f",
+          "543d04d5f127b4a1",
+          "e85eb24de17552c9",
+          "f3d35ebb1b4f2e2f",
+          "660545838da26c5d",
+          "f06de7a48e73333f"
+        ],
+        "preReasonerBlock": null,
+        "providerDiagnostics": null
+      },
+      "sufficiency": "NO_SUPPORT",
+      "humanReviewRequired": true,
+      "providerInvoked": true,
+      "harnessOutcome": "REGULATORY_MEASURED",
+      "providerDiagnostics": null,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": true,
+        "model": "claude-haiku-5-5",
+        "requestId": "msg_011Cgw4gQ25eeAHNP3P6uTow",
+        "usage": {
+          "inputTokens": 5453,
+          "outputTokens": 1089
+        },
+        "latencyMs": 5519,
+        "providerAttempts": 1,
+        "evalOutputConfig": {
+          "maxTokensInitial": 8192,
+          "maxTokensRetry": 16384,
+          "outputEffort": "low",
+          "thinkingType": "adaptive"
+        }
+      },
+      "timingMs": 5539,
+      "answerPreview": "Unresolved: No evidence chunk with physicalPageNumber 999 was supplied for FG22/5.; The context budget excluded 42 retrieved chunk(s), so a page 999 chunk may exist but was not provided.\n\nEvidence limitation: Context budget excluded 42 retrieved chunk(s); answer may be incomplete.",
+      "citationCount": 0
+    }
+  ],
+  "safetyChecks": {
+    "liveAskRiProductionInvoked": false,
+    "databaseWrites": false,
+    "stagingDatabaseWrites": false,
+    "askRiEngineV2ProductionFlag": false,
+    "liveReasoningEnabled": true,
+    "dryRun": false
+  },
+  "runMetadata": {
+    "executionTimestamp": "2026-11-11T11:30:20.605Z",
+    "gitCommitSha": "7fa088347f27e60d4b83302e506758595e74a2d9",
+    "modelIdentifier": "claude-haiku-5-5",
+    "evaluationSuiteVersion": "ask-ri-v2-eval-suite-v2.1",
+    "corpusVersion": {
+      "corpus": "authentic-b2-2b2",
+      "createdAt": "2026-11-10T18:46:13.492Z",
+      "publicationCount": 19
+    },
+    "runMode": "live_provider",
+    "providerCallStatus": "enabled",
+    "suiteSourcePath": "C:\\Users\\imtia\\OneDrive\\Desktop\\Brieftick\\docs\\eval\\ask-ri-v2-eval-suite-v2.1.json"
+  },
+  "sanitised": true
+}

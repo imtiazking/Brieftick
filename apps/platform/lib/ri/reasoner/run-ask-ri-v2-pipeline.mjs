@@ -11,6 +11,7 @@ import { buildEmptyReasonerOutput } from './reasoner-output-schema.mjs';
 import { estimateEvalCaseReserveUsd, resolveV2EvalModel } from './anthropic-eval-budget.mjs';
 import { resolveV2EvalReasonerAnthropicConfig } from './anthropic-eval-reasoner-config.mjs';
 import { buildReasonerUserPrompt } from './build-reasoner-prompt.mjs';
+import { assessEvidenceQuestionCoverage, refineCoverageAfterVerification } from './assess-evidence-question-coverage.mjs';
 
 const DEFAULT_THRESHOLD = 0.28;
 
@@ -91,6 +92,9 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
 
   const ranked = retrieval.allRankedChunks || [];
   const bundle = assembleEvidenceBundle(index, ranked, options.evidenceBudget || {});
+  const coverageAssessment = assessEvidenceQuestionCoverage({ question, caseRow, bundle, retrieval });
+  bundle.coverageAssessment = coverageAssessment;
+  bundle.questionCoverage = coverageAssessment.questionCoverage;
 
   if (!bundle.evidenceChunks.length) {
     return {
@@ -199,6 +203,10 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
     };
   }
 
+  const refinedCoverage = refineCoverageAfterVerification(bundle.coverageAssessment, verification, bundle);
+  bundle.coverageAssessment = refinedCoverage;
+  bundle.questionCoverage = refinedCoverage.questionCoverage;
+
   const rendered = renderVerifiedAskRiV2Answer(verification, modelOutput, bundle);
   const v2Status = verification.ok ? 'PUBLIC_ELIGIBLE_EXECUTED' : 'VERIFICATION_FAILED';
 
@@ -224,7 +232,10 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
       publicationsRepresented: bundle.publicationsRepresented,
       excludedCount: bundle.excludedChunks.length,
       charsUsed: bundle.charsUsed,
+      questionCoverage: bundle.questionCoverage,
+      coverageCompleteness: bundle.coverageAssessment?.completeness,
     },
+    coverageAssessment: bundle.coverageAssessment,
     providerInvoked: true,
     modelOutput: verification.ok ? modelOutput : { responseState: modelOutput.responseState, claims: [] },
     verification,

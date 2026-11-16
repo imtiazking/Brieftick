@@ -1,0 +1,748 @@
+{
+  "schemaVersion": "forgeniq.eval.coverage-integration.v1",
+  "capturedAt": "2026-11-16T11:23:02.897Z",
+  "programmePass": false,
+  "regulatoryAccuracyPass": false,
+  "note": "Uses assess-evidence-question-coverage; outcomes vary by corpus mapping — not pass/fail vs ideal.",
+  "results": [
+    {
+      "theme": "sufficient_evidence",
+      "testId": "EVAL-B-01",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "sufficient_evidence",
+      "testId": "EVAL-B-01",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "sufficient_evidence",
+      "testId": "EVAL-B-01",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "insufficient_evidence",
+      "testId": "EVAL-B-03",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "NONE",
+      "coverageReasons": [
+        "evidence_availability_not_in_suite — required regulatory sources absent from authorised corpus"
+      ],
+      "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+        "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "insufficient_evidence",
+      "testId": "EVAL-B-03",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "NONE",
+      "coverageReasons": [
+        "evidence_availability_not_in_suite — required regulatory sources absent from authorised corpus"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "insufficient_evidence",
+      "testId": "EVAL-B-03",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "NONE",
+      "coverageReasons": [
+        "evidence_availability_not_in_suite — required regulatory sources absent from authorised corpus"
+      ],
+      "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "conflicting_evidence",
+      "testId": "EVAL-C-02",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "PARTIAL_PASS",
+      "evalLayers": {
+        "applicationPolicyStatus": "ANSWERED",
+        "policyReason": "ANSWERED",
+        "scorerOutcome": "PARTIAL_PASS",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "conflicting_evidence",
+      "testId": "EVAL-C-02",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "conflicting_evidence",
+      "testId": "EVAL-C-02",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "partial_evidence",
+      "testId": "EVAL-C-03",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "RETRIEVAL_PASS",
+      "evalLayers": {
+        "applicationPolicyStatus": "ANSWERED",
+        "policyReason": "ANSWERED",
+        "scorerOutcome": "RETRIEVAL_PASS",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "partial_evidence",
+      "testId": "EVAL-C-03",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "partial_evidence",
+      "testId": "EVAL-C-03",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "guidance_vs_binding",
+      "testId": "EVAL-D-02",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "guidance_vs_binding",
+      "testId": "EVAL-D-02",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "guidance_vs_binding",
+      "testId": "EVAL-D-02",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "incorrect_citations",
+      "testId": "EVAL-C-04",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "PARTIAL_PASS",
+      "evalLayers": {
+        "applicationPolicyStatus": "ANSWERED",
+        "policyReason": "ANSWERED",
+        "scorerOutcome": "PARTIAL_PASS",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "incorrect_citations",
+      "testId": "EVAL-C-04",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "incorrect_citations",
+      "testId": "EVAL-C-04",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "missing_source",
+      "testId": "EVAL-I-01",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "BLOCKED",
+      "coverageReasons": [],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "BLOCKED",
+        "policyReason": null,
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": true,
+      "blockReason": "reference_validation"
+    },
+    {
+      "theme": "missing_source",
+      "testId": "EVAL-I-01",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "BLOCKED",
+      "coverageReasons": [],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "BLOCKED",
+        "policyReason": null,
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": true,
+      "blockReason": "reference_validation"
+    },
+    {
+      "theme": "missing_source",
+      "testId": "EVAL-I-01",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "BLOCKED",
+      "coverageReasons": [],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "BLOCKED",
+        "policyReason": null,
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": true,
+      "blockReason": "reference_validation"
+    },
+    {
+      "theme": "unsupported_conclusions",
+      "testId": "EVAL-E-01",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "PARTIAL_PASS",
+      "evalLayers": {
+        "applicationPolicyStatus": "ANSWERED",
+        "policyReason": "ANSWERED",
+        "scorerOutcome": "PARTIAL_PASS",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "unsupported_conclusions",
+      "testId": "EVAL-E-01",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "unsupported_conclusions",
+      "testId": "EVAL-E-01",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "KNOWN",
+      "coverageCompleteness": "FULL",
+      "coverageReasons": [
+        "all_material_issues_mapped_with_expected_sources"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "multi_source",
+      "testId": "EVAL-G-02",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "expected_publication_not_in_bundle:56b0beca-d8c3-4267-a794-9079009af661",
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "multi_source",
+      "testId": "EVAL-G-02",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "expected_publication_not_in_bundle:56b0beca-d8c3-4267-a794-9079009af661",
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "multi_source",
+      "testId": "EVAL-G-02",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "expected_publication_not_in_bundle:56b0beca-d8c3-4267-a794-9079009af661",
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "abstention",
+      "testId": "EVAL-H-01",
+      "scenario": "SUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "abstention",
+      "testId": "EVAL-H-01",
+      "scenario": "PARTIAL",
+      "applicationPolicyStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "PARTIAL_ANSWER",
+        "policyReason": "PARTIAL_UNKNOWN_COVERAGE",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 1,
+      "blocked": false,
+      "blockReason": null
+    },
+    {
+      "theme": "abstention",
+      "testId": "EVAL-H-01",
+      "scenario": "INSUFFICIENT",
+      "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN",
+      "coverageCompleteness": "PARTIAL",
+      "coverageReasons": [
+        "partial_issue_mapping_or_missing_expected_publications"
+      ],
+      "scorerOutcome": "FAIL",
+      "evalLayers": {
+        "applicationPolicyStatus": "INSUFFICIENT_EVIDENCE",
+        "policyReason": "NO_SUPPORT",
+        "scorerOutcome": "FAIL",
+        "harnessClassification": "ANSWERED",
+        "suiteIdeal": null,
+        "regulatoryAccuracyVerified": false,
+        "note": "Compare policy status and scorer outcome separately; suite ideal requires SME approval."
+      },
+      "citationCount": 0,
+      "blocked": false,
+      "blockReason": null
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,56 @@
+{
+  "smokeTest": true,
+  "testId": "EVAL-D-02",
+  "questionCategory": "D",
+  "gitCommitSha": "526e8e33b93b2b122c272159077da05804f14f79",
+  "model": "claude-haiku-5-5",
+  "auth": {
+    "apiKeyPresent": true,
+    "keyFormatOk": true,
+    "executionEnabled": true
+  },
+  "provider": {
+    "invoked": true,
+    "diagnostics": {
+      "ok": false,
+      "errorClass": "AI_EMPTY_RESPONSE_CONTENT",
+      "httpStatus": 200,
+      "providerErrorType": null,
+      "safeMessage": "Anthropic returned HTTP 200 but no extractable text blocks (check thinking-only or empty assistant content).",
+      "requestId": "msg_011CguxeFVcdeGWJ1jmCgZFx",
+      "requestReachedProvider": true,
+      "responseReceived": true,
+      "model": "claude-haiku-5-5",
+      "latencyMs": 7728,
+      "stopReason": "max_tokens",
+      "contentBlockTypes": [
+        "thinking"
+      ],
+      "inputTokens": 4770,
+      "outputTokens": 2048
+    },
+    "usage": {
+      "inputTokens": 4770,
+      "outputTokens": 2048
+    }
+  },
+  "structuredOutputValidation": null,
+  "citationVerification": null,
+  "spend": {
+    "budgetUsd": 0.25,
+    "model": "claude-haiku-5-5",
+    "estimatedUsd": 0.0009,
+    "calculatedUsd": 0.0015,
+    "inputTokens": 4770,
+    "outputTokens": 2048,
+    "requestCount": 1,
+    "stopped": false,
+    "stopReason": null
+  },
+  "pipeline": {
+    "v2ExecutionStatus": "PROVIDER_ERROR",
+    "status": "FAILED",
+    "evidenceChunkCount": 6
+  },
+  "answerPreview": "The AI reasoner could not complete this request."
+}

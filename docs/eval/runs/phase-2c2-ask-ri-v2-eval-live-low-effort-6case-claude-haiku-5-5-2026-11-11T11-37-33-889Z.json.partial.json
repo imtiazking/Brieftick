@@ -1,0 +1,173 @@
+{
+  "checkpoint": true,
+  "updatedAt": "2026-11-11T11:41:23.021Z",
+  "caseIndex": 6,
+  "caseTotal": 6,
+  "lastTestId": "EVAL-J-02",
+  "model": {
+    "identifier": "claude-haiku-5-5"
+  },
+  "spend": {
+    "budgetUsd": 10,
+    "model": "claude-haiku-5-5",
+    "estimatedUsd": 0,
+    "calculatedUsd": 0,
+    "inputTokens": 57089,
+    "outputTokens": 40400,
+    "requestCount": 7,
+    "reservedUsd": 0.0767,
+    "stopped": false,
+    "stopReason": null
+  },
+  "resultsCount": 6,
+  "partialSummary": {
+    "completedCases": 6,
+    "providerErrors": 1,
+    "publicExecuted": 5
+  },
+  "results": [
+    {
+      "testId": "EVAL-B-03",
+      "outcome": "FAIL",
+      "v2ExecutionStatus": "PROVIDER_ERROR",
+      "harnessOutcome": "PROVIDER_FAILURE",
+      "timingMs": 29022,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": true,
+        "model": "claude-haiku-5-5",
+        "usage": {
+          "inputTokens": 10637,
+          "outputTokens": 7318
+        },
+        "providerAttempts": 1,
+        "evalOutputConfig": null
+      }
+    },
+    {
+      "testId": "EVAL-C-01",
+      "outcome": "RETRIEVAL_PASS",
+      "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+      "harnessOutcome": "REGULATORY_MEASURED",
+      "timingMs": 31414,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": true,
+        "model": "claude-haiku-5-5",
+        "requestId": "msg_011Cgw5MoEBJ9MtdVn1RamVo",
+        "usage": {
+          "inputTokens": 5015,
+          "outputTokens": 7864
+        },
+        "latencyMs": 31371,
+        "providerAttempts": 1,
+        "evalOutputConfig": {
+          "maxTokensInitial": 8192,
+          "maxTokensRetry": 16384,
+          "outputEffort": "low",
+          "thinkingType": "adaptive"
+        }
+      }
+    },
+    {
+      "testId": "EVAL-D-02",
+      "outcome": "RETRIEVAL_PASS",
+      "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+      "harnessOutcome": "REGULATORY_MEASURED",
+      "timingMs": 23996,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": true,
+        "model": "claude-haiku-5-5",
+        "requestId": "msg_011Cgw5Q8163gW82EqJ8dznQ",
+        "usage": {
+          "inputTokens": 4770,
+          "outputTokens": 6390
+        },
+        "latencyMs": 23964,
+        "providerAttempts": 1,
+        "evalOutputConfig": {
+          "maxTokensInitial": 8192,
+          "maxTokensRetry": 16384,
+          "outputEffort": "low",
+          "thinkingType": "adaptive"
+        }
+      }
+    },
+    {
+      "testId": "EVAL-H-04",
+      "outcome": "FAIL",
+      "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+      "harnessOutcome": "REGULATORY_MEASURED",
+      "timingMs": 56182,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": true,
+        "model": "claude-haiku-5-5",
+        "requestId": "msg_011Cgw5UGBKfHrzFAiqcbg4b",
+        "usage": {
+          "inputTokens": 26528,
+          "outputTokens": 13928
+        },
+        "latencyMs": 56150,
+        "providerAttempts": 2,
+        "evalOutputConfig": {
+          "maxTokensInitial": 8192,
+          "maxTokensRetry": 16384,
+          "outputEffort": "low",
+          "thinkingType": "adaptive"
+        }
+      }
+    },
+    {
+      "testId": "EVAL-I-04",
+      "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+      "harnessOutcome": "REGULATORY_MEASURED",
+      "timingMs": 5378,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": true,
+        "model": "claude-haiku-5-5",
+        "requestId": "msg_011Cgw5W3rUfAJvgQsUXP23F",
+        "usage": {
+          "inputTokens": 5453,
+          "outputTokens": 1139
+        },
+        "latencyMs": 5360,
+        "providerAttempts": 1,
+        "evalOutputConfig": {
+          "maxTokensInitial": 8192,
+          "maxTokensRetry": 16384,
+          "outputEffort": "low",
+          "thinkingType": "adaptive"
+        }
+      }
+    },
+    {
+      "testId": "EVAL-J-02",
+      "outcome": "RETRIEVAL_PASS",
+      "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+      "harnessOutcome": "REGULATORY_MEASURED",
+      "timingMs": 16039,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": true,
+        "model": "claude-haiku-5-5",
+        "requestId": "msg_011Cgw5WSyXBQAiDG1DaXQet",
+        "usage": {
+          "inputTokens": 4686,
+          "outputTokens": 3761
+        },
+        "latencyMs": 16016,
+        "providerAttempts": 1,
+        "evalOutputConfig": {
+          "maxTokensInitial": 8192,
+          "maxTokensRetry": 16384,
+          "outputEffort": "low",
+          "thinkingType": "adaptive"
+        }
+      }
+    }
+  ]
+}

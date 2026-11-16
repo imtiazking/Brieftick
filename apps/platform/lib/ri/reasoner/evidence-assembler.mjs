@@ -104,6 +104,7 @@ export function assembleEvidenceBundle(index, rankedChunks, options = {}) {
     statusPreambles,
     contextLimitationNote: limitation,
     chunkById: new Map(selected.map((c) => [c.evidenceChunkId, c])),
-    questionCoverage: options.questionCoverage === 'KNOWN' ? 'KNOWN' : 'UNKNOWN',
+    questionCoverage: 'UNKNOWN',
+    coverageAssessment: null,
   };
 }

@@ -1,0 +1,55 @@
+{
+  "checkpoint": true,
+  "updatedAt": "2026-11-11T11:30:20.508Z",
+  "caseIndex": 1,
+  "caseTotal": 1,
+  "lastTestId": "EVAL-I-04",
+  "model": {
+    "identifier": "claude-haiku-5-5"
+  },
+  "spend": {
+    "budgetUsd": 10,
+    "model": "claude-haiku-5-5",
+    "estimatedUsd": 0,
+    "calculatedUsd": 0,
+    "inputTokens": 5453,
+    "outputTokens": 1089,
+    "requestCount": 1,
+    "reservedUsd": 0.0127,
+    "stopped": false,
+    "stopReason": null
+  },
+  "resultsCount": 1,
+  "partialSummary": {
+    "completedCases": 1,
+    "providerErrors": 0,
+    "publicExecuted": 1
+  },
+  "results": [
+    {
+      "testId": "EVAL-I-04",
+      "outcome": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "v2ExecutionStatus": "PUBLIC_ELIGIBLE_EXECUTED",
+      "harnessOutcome": "REGULATORY_MEASURED",
+      "timingMs": 5539,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": true,
+        "model": "claude-haiku-5-5",
+        "requestId": "msg_011Cgw4gQ25eeAHNP3P6uTow",
+        "usage": {
+          "inputTokens": 5453,
+          "outputTokens": 1089
+        },
+        "latencyMs": 5519,
+        "providerAttempts": 1,
+        "evalOutputConfig": {
+          "maxTokensInitial": 8192,
+          "maxTokensRetry": 16384,
+          "outputEffort": "low",
+          "thinkingType": "adaptive"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "checkpoint": true,
+  "updatedAt": "2026-11-11T11:11:30.025Z",
+  "caseIndex": 6,
+  "caseTotal": 6,
+  "lastTestId": "EVAL-J-02",
+  "model": {
+    "identifier": "claude-haiku-5-5"
+  },
+  "spend": {
+    "budgetUsd": 10,
+    "model": "claude-haiku-5-5",
+    "estimatedUsd": 0,
+    "calculatedUsd": 0,
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "requestCount": 0,
+    "reservedUsd": 0.0767,
+    "stopped": false,
+    "stopReason": null
+  },
+  "resultsCount": 6,
+  "partialSummary": {
+    "completedCases": 6,
+    "providerErrors": 0,
+    "publicExecuted": 0
+  },
+  "results": [
+    {
+      "testId": "EVAL-B-03",
+      "outcome": "FAIL",
+      "v2ExecutionStatus": "NOT_RUN",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 24,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      }
+    },
+    {
+      "testId": "EVAL-C-01",
+      "outcome": "FAIL",
+      "v2ExecutionStatus": "NOT_RUN",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 13,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      }
+    },
+    {
+      "testId": "EVAL-D-02",
+      "outcome": "FAIL",
+      "v2ExecutionStatus": "NOT_RUN",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 10,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      }
+    },
+    {
+      "testId": "EVAL-H-04",
+      "outcome": "FAIL",
+      "v2ExecutionStatus": "NOT_RUN",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 20,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      }
+    },
+    {
+      "testId": "EVAL-I-04",
+      "outcome": "FAIL",
+      "v2ExecutionStatus": "NOT_RUN",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 10,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      }
+    },
+    {
+      "testId": "EVAL-J-02",
+      "outcome": "FAIL",
+      "v2ExecutionStatus": "NOT_RUN",
+      "harnessOutcome": "NOT_RUN_DRY_OR_SKIPPED",
+      "timingMs": 10,
+      "execution": {
+        "engine": "ask_ri_v2",
+        "providerUsed": false,
+        "model": "claude-haiku-5-5"
+      }
+    }
+  ]
+}

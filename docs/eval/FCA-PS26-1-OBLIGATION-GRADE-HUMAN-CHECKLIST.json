@@ -12,5 +12,14 @@
     { "id": "OG-07", "check": "UC-RI-005 citations include physicalPageNumber + sectionReference", "status": "pipeline_ready_not_executed" },
     { "id": "OG-08", "check": "AI Dev org b8f5e3a1-00ad-4000-8000-000000000001 only", "status": "guard_in_code" }
   ],
-  "obligationGradeSuitableOverride": false
+  "obligationGradeSuitableOverride": false,
+  "findings": {
+    "sourceIntegrityVerified": true,
+    "sourceSha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
+    "approximatePageHintsOnly": true,
+    "exactPhysicalPagesForExtraction": "NOT_VERIFIED — requires human page-boundary confirmation (OG-02)",
+    "concRulesLocatedAsHints": ["CONC 4.2A.3R", "CONC 4.2A.6R", "CONC 7.20.1R"],
+    "commencementPerProvision": "NOT_VERIFIED — automated hints only; SME required (OG-04)",
+    "humanObligationGradeApprovalsOutstanding": ["OG-02", "OG-04", "OG-05", "OG-06"]
+  }
 }
