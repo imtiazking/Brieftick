@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "forgeniq.independent.regulatory.acceptance.v1",
+  "capturedAt": "2026-11-16T15:00:00.000Z",
+  "status": "NOT_EXECUTED",
+  "regulatoryAccuracyPass": false,
+  "separation": {
+    "engineeringRegression": {
+      "artefacts": [
+        "docs/eval/PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json",
+        "docs/eval/EVIDENCE-COVERAGE-INTEGRATION-RESULTS.json",
+        "docs/eval/GENUINE-PARTIAL-EVIDENCE-RESULTS.json"
+      ],
+      "note": "Used for defect correction during development — not independent held-out proof"
+    },
+    "independentAcceptance": {
+      "protectedQuestionStore": "OUTSIDE_REPO — operator access-controlled (not in ordinary git commits)",
+      "referenceAnswersStore": "SME-controlled; encrypted or offline",
+      "scoringCriteriaFrozenBeforeRun": true,
+      "executionScript": "apps/platform/scripts/acceptance-independent-regulatory-gated.mjs"
+    }
+  },
+  "scoringCriteriaPreDeclared": {
+    "coverageMustBeQuestionDerivedOnly": true,
+    "noSuitePublicationInjection": true,
+    "smeMustApproveExpectedOutcomesBeforeScore": true,
+    "passThreshold": "Defined by operator after SME freeze — not set in code"
+  },
+  "protectedHeldOutRetirement": {
+    "claudeOutputsInHistory": "If cfedc76 ever pushed, retire exposed held-out IDs and issue new suite",
+    "currentExposure": "See PHASE-4-GIT-COMMIT-AUDIT.json"
+  },
+  "executePaidAnthropic": false,
+  "operatorAuthorizationRequired": true
+}

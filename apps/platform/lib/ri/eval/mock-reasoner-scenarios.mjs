@@ -90,8 +90,58 @@ export function buildReasonerOutputForScenario(bundle, scenario) {
   };
 }
 
-export function createScenarioMockFetch(bundle, scenario) {
-  const modelOutput = buildReasonerOutputForScenario(bundle, scenario);
+/**
+ * Two material aspects: one verified claim from chunk A; second aspect listed unresolved (no invented COBS/CONC).
+ */
+export function buildGenuinePartialReasonerOutput(bundle) {
+  const chunks = bundle?.evidenceChunks || [];
+  const chunkA = chunks[0];
+  const chunkB = chunks.find((c, i) => i > 0 && c.publicationId !== chunkA?.publicationId) || chunks[1];
+  if (!chunkA) {
+    return buildReasonerOutputForScenario(bundle, 'INSUFFICIENT');
+  }
+  const claimA = claimFromChunk(chunkA);
+  claimA.claimId = 'supported-aspect';
+  claimA.claimText = String(chunkA.verbatimText || '').slice(0, 100) || claimA.claimText;
+
+  const claims = [claimA];
+  if (chunkB && chunkB.evidenceChunkId !== chunkA.evidenceChunkId) {
+    const claimB = claimFromChunk(chunkB);
+    claimB.claimId = 'context-only';
+    claimB.classification = 'guidance_expectation';
+    claimB.claimText = String(chunkB.verbatimText || '').slice(0, 80);
+    claims.push(claimB);
+  }
+
+  return {
+    schemaVersion: 'forgeniq.ask-ri.reasoner-output.v1',
+    responseState: 'PARTIAL_ANSWER',
+    sufficiencyAssessment: {
+      overall: 'PARTIAL_SUPPORT',
+      explanation: 'Genuine partial — one aspect verified in bundle; second aspect unresolved.',
+      publicationsConsidered: bundle.publicationsRepresented || [],
+      publicationsAnswering: [chunkA.publicationId],
+    },
+    narrativeSummary: 'Documented monitoring expectations are supported; harm assessment scope remains unresolved.',
+    claims,
+    citations: [],
+    unresolvedAspects: [
+      'Specific consumer harm metrics and assessment methodology not established in retrieved passages.',
+    ],
+    humanReviewRequired: true,
+    uncertaintyNotes: ['Genuine partial regression mock — SME review required.'],
+    verificationStatus: 'PASSED',
+  };
+}
+
+export function createGenuinePartialMockFetch(bundle) {
+  return createScenarioMockFetch(bundle, 'PARTIAL', { genuinePartial: true });
+}
+
+export function createScenarioMockFetch(bundle, scenario, options = {}) {
+  const modelOutput = options.genuinePartial
+    ? buildGenuinePartialReasonerOutput(bundle)
+    : buildReasonerOutputForScenario(bundle, scenario);
   return async (url, init) => {
     if (!String(url).includes('/v1/messages')) {
       return new Response(JSON.stringify({ error: 'unexpected_url' }), { status: 400 });

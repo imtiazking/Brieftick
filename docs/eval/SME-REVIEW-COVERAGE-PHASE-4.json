@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "forgeniq.sme.review.coverage.v1",
+  "capturedAt": "2026-11-16T15:00:00.000Z",
+  "tenOriginalThemes": [
+    "EVAL-B-01",
+    "EVAL-B-03",
+    "EVAL-C-02",
+    "EVAL-C-03",
+    "EVAL-D-02",
+    "EVAL-C-04",
+    "EVAL-I-01",
+    "EVAL-E-01",
+    "EVAL-G-02",
+    "EVAL-H-01"
+  ],
+  "additionalEngineeringScenarios": {
+    "includedInSmeSheet": [
+      "UNSEEN-SUFFICIENT-PRIN",
+      "UNSEEN-PARTIAL-FG",
+      "UNSEEN-CONFLICT-BIND-GUIDE",
+      "UNSEEN-MULTI-PRIN-DUTY",
+      "UNSEEN-WRONG-CITATION-MOCK"
+    ],
+    "excludedFromSmePack": [
+      {
+        "id": "UNSEEN-INSUFFICIENT-RANDOM",
+        "reason": "Foreign-regime negative control — engineering only until SME scope expanded"
+      },
+      {
+        "id": "UNSEEN-FAKE-PS",
+        "reason": "Reference validation BLOCKED path — covered by EVAL-I-01"
+      }
+    ]
+  },
+  "artefacts": ["SME-REVIEW-PACK-FINAL.json", "SME-REVIEW-SHEET.json"],
+  "approvalStatus": "PENDING"
+}

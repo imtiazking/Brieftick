@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "forgeniq.genuine-partial-evidence.v1",
+  "capturedAt": "2026-11-16T13:22:29.857Z",
+  "testClass": "GENUINE_PARTIAL_NOT_MISSING_SOURCE",
+  "question": "What should firms document when monitoring fair value outcomes under Consumer Duty guidance, and what consumer harms must they assess before changing product pricing?",
+  "materialAspects": [
+    "monitoring documentation (FG/Consumer Duty)",
+    "consumer harm assessment before pricing"
+  ],
+  "supportedAspect": "monitoring documentation",
+  "unresolvedAspect": "consumer harm metrics / pricing change methodology",
+  "result": {
+    "policyStatus": "PARTIAL_ANSWER",
+    "coverage": "KNOWN",
+    "evidenceLimitationCode": "PARTIAL_EVIDENCE_CONFIRMED",
+    "citationCount": 2,
+    "citations": [
+      {
+        "evidenceChunkId": "61ffd619a5fa7d4d",
+        "publicationId": "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "publicationTitle": "FG22/5 — Final non-Handbook Guidance for firms on the Consumer Duty",
+        "publicationReference": null,
+        "physicalPageNumber": 66,
+        "sectionReference": null,
+        "canonicalUrl": "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf",
+        "extractionRevisionId": "56fd1525-7f30-401e-82fd-16abf90100aa",
+        "excerpt": "66FG22/5Chapter 7Financial Conduct AuthorityFG22/5 Final non-Handbook Guidance for firms on the Consumer Duty7. 4 2 Firm"
+      },
+      {
+        "evidenceChunkId": "b6da7fcb0b879208",
+        "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "publicationTitle": "PS22/9: A new Consumer Duty",
+        "publicationReference": null,
+        "physicalPageNumber": 46,
+        "sectionReference": null,
+        "canonicalUrl": "https://www.fca.org.uk/publications/policy-statements/ps22-9-new-consumer-duty",
+        "extractionRevisionId": "c76f5887-9e62-4b3b-a672-9fe9ceabe499",
+        "excerpt": "46PS22/9Chapter 7Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesOthers asked how our "
+      }
+    ],
+    "policyReason": "PARTIAL"
+  },
+  "programmePass": true,
+  "failures": [],
+  "note": "Mocked provider — not SME regulatory approval"
+}

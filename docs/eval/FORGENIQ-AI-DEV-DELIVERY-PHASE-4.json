@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "forgeniq.ai-dev.delivery.phase4.v1",
+  "capturedAt": "2026-11-16T13:30:00.000Z",
+  "parentCommit": "e73196d9d3fc23402b762f7e90f2815f1b7f1ac0",
+  "developmentCommit": "b54d436",
+  "previewPin": "00b4369 unchanged",
+  "task1_evalB03Classification": {
+    "evidenceCondition": "MISSING_PRIMARY_HANDBOOK_NOT_GENUINE_PARTIAL",
+    "coverage": "UNKNOWN",
+    "policy": "INSUFFICIENT_EVIDENCE",
+    "diagnostic": "REQUIRED_SOURCE_NOT_INDEXED",
+    "policyReasonAlias": "REQUIRED_HANDBOOK_SOURCE_ABSENT",
+    "scorerPartial": "CORRECT_INSUFFICIENT_EVIDENCE",
+    "artefact": "docs/eval/EVAL-B-03-EVIDENCE-CONDITION.json"
+  },
+  "task1_genuinePartial": {
+    "script": "acceptance-genuine-partial-evidence.mjs",
+    "policy": "PARTIAL_ANSWER",
+    "coverage": "KNOWN",
+    "diagnostic": "PARTIAL_EVIDENCE_CONFIRMED",
+    "citationsVerified": true,
+    "unresolvedDisclosed": true,
+    "artefact": "docs/eval/GENUINE-PARTIAL-EVIDENCE-RESULTS.json",
+    "pass": true
+  },
+  "task2_sourceAbsenceVsRetrieval": {
+    "module": "apps/platform/lib/ri/reasoner/evidence-limitation-diagnostic.mjs",
+    "codes": [
+      "REQUIRED_SOURCE_NOT_INDEXED",
+      "REQUIRED_SOURCE_NOT_RETRIEVED",
+      "EVIDENCE_CONTEXT_TRUNCATED",
+      "PARTIAL_EVIDENCE_CONFIRMED",
+      "COVERAGE_UNCONFIRMED"
+    ],
+    "metrics": "docs/eval/EVIDENCE-QUALITY-METRICS.json",
+    "answerRate": 0.4667,
+    "abstentionRate": 0.4333,
+    "falseAbstentionRate": null,
+    "note": "False abstention requires SME gold on independent set only"
+  },
+  "task3_independentAcceptance": {
+    "engineeringRegression": "docs/eval/ENGINEERING-REGRESSION-MANIFEST.json",
+    "independentPlan": "docs/eval/INDEPENDENT-REGULATORY-ACCEPTANCE-PLAN.json",
+    "gatedScript": "acceptance-independent-regulatory-gated.mjs",
+    "executed": false,
+    "regulatoryAccuracyPass": false,
+    "result": "docs/eval/INDEPENDENT-REGULATORY-ACCEPTANCE-RESULT.json"
+  },
+  "task4_gitSecurity": {
+    "audit": "docs/eval/PHASE-4-GIT-COMMIT-AUDIT.json",
+    "cfedc76OnOrigin": false,
+    "e73196dFileCount": 18,
+    "e73196dScopedOnly": true,
+    "heldOutRetirementRecommended": true,
+    "historyRewriteRequired": false,
+    "operatorApprovalRequiredForRewrite": true,
+    "credentialRotationRequired": false,
+    "note": "cfedc76 introduced private held-out + eval runs locally only; 70d46cb deleted them from tracking"
+  },
+  "task5_ps26_1": {
+    "sha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
+    "physicalEvidence": "docs/eval/FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json",
+    "humanGatesPending": ["OG-02", "OG-04", "OG-05", "OG-06"],
+    "ingestAllowed": false
+  },
+  "task6_smeStageB": {
+    "themeCoverage": "docs/eval/SME-REVIEW-COVERAGE-PHASE-4.json",
+    "stageBDecisions": "docs/eval/stage-b-operator-decisions-pending.json",
+    "allPending": true
+  },
+  "task7_regression": {
+    "pass": [
+      "acceptance-evidence-coverage-integration.mjs",
+      "acceptance-evidence-coverage-missing-provision.mjs",
+      "acceptance-stage-c-evidence-sufficiency-policy.mjs",
+      "acceptance-evidence-quality-metrics.mjs",
+      "acceptance-genuine-partial-evidence.mjs"
+    ],
+    "notRerunThisSession": [
+      "Stage A persistence/resume",
+      "Stage D reconstruction",
+      "acceptance-production-coverage-unseen-questions.mjs (11-case engineering regression)",
+      "tenant isolation",
+      "budget enforcement"
+    ],
+    "integrationProgrammePass": false,
+    "integrationNote": "Mock sufficiency scorer FAIL labels remain engineering fixtures; B-03 gates PASS"
+  },
+  "remainingDefects": [
+    "Independent regulatory acceptance not executed (protected path + SME)",
+    "falseAbstentionRate unmeasured without SME gold",
+    "Stage B decisions PENDING",
+    "PS26/1 human OG gates PENDING",
+    "Held-out suite in cfedc76 local history — operator should retire or accept re-exposure risk",
+    "RC promotion PENDING_OPERATOR_REVIEW"
+  ],
+  "protectionsObserved": {
+    "paidAnthropic": false,
+    "previewDeploy": false,
+    "previewPinChanged": false
+  }
+}

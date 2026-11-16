@@ -1,0 +1,500 @@
+{
+  "schemaVersion": "forgeniq.git.phase4.audit.v1",
+  "capturedAt": "2026-11-16T13:25:37.419Z",
+  "currentHead": "e73196d9d3fc23402b762f7e90f2815f1b7f1ac0",
+  "commits": [
+    {
+      "commit": "cfedc76",
+      "existsLocally": true,
+      "fileCount": 50,
+      "sensitiveHits": [
+        {
+          "file": "docs/eval/Claude outputs/private-held-out-suite-v1.1.json",
+          "pattern": "claude_outputs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/Claude outputs/private-held-out-suite.json",
+          "pattern": "claude_outputs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json",
+          "pattern": "eval_runs",
+          "op": "M"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-10T20-34-11-382Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-10T22-17-34-994Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T20-52-08-795Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-09-30-138Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-30-33-960Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-41-57-070Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-summary-2026-11-14T11-40-22-766Z.json",
+          "pattern": "eval_runs",
+          "op": "A"
+        }
+      ],
+      "sensitiveAdds": [
+        {
+          "file": "docs/eval/Claude outputs/private-held-out-suite-v1.1.json",
+          "pattern": "claude_outputs"
+        },
+        {
+          "file": "docs/eval/Claude outputs/private-held-out-suite.json",
+          "pattern": "claude_outputs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.checkpoint.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.partial.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json.checkpoint.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json.partial.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-10T20-34-11-382Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-10T22-17-34-994Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json.checkpoint.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json.partial.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json.checkpoint.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json.partial.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json.checkpoint.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json.partial.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T20-52-08-795Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-09-30-138Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-30-33-960Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-41-57-070Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json.checkpoint.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json.partial.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json.checkpoint.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json.partial.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json.checkpoint.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json.partial.json",
+          "pattern": "eval_runs"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-summary-2026-11-14T11-40-22-766Z.json",
+          "pattern": "eval_runs"
+        }
+      ],
+      "remediationDeletes": 0,
+      "onOrigin": false
+    },
+    {
+      "commit": "70d46cb",
+      "existsLocally": true,
+      "fileCount": 47,
+      "sensitiveHits": [
+        {
+          "file": "docs/eval/Claude outputs/private-held-out-suite-v1.1.json",
+          "pattern": "claude_outputs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/Claude outputs/private-held-out-suite.json",
+          "pattern": "claude_outputs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-analysis-public-2026-11-10.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-10-43-401Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-dry-run-claude-haiku-5-5-2026-11-11T11-20-49-295Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-10T20-34-11-382Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-10T22-17-34-994Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-claude-haiku-5-5-2026-11-11T11-29-32-344Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-32-57-361Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-eval-live-low-effort-6case-claude-haiku-5-5-2026-11-11T11-37-33-889Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T20-52-08-795Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-09-30-138Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-30-33-960Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/phase-2c2-ask-ri-v2-smoke-claude-haiku-5-5-2026-11-10T21-41-57-070Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-03-27.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-40-22-766Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json.checkpoint.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-2026-11-14T11-50-20-169Z.json.partial.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        },
+        {
+          "file": "docs/eval/runs/stage-d-regression-summary-2026-11-14T11-40-22-766Z.json",
+          "pattern": "eval_runs",
+          "op": "D"
+        }
+      ],
+      "sensitiveAdds": [],
+      "remediationDeletes": 32,
+      "onOrigin": false
+    },
+    {
+      "commit": "c625832",
+      "existsLocally": true,
+      "fileCount": 16,
+      "sensitiveHits": [],
+      "sensitiveAdds": [],
+      "remediationDeletes": 0,
+      "onOrigin": false
+    },
+    {
+      "commit": "e73196d",
+      "existsLocally": true,
+      "fileCount": 18,
+      "sensitiveHits": [],
+      "sensitiveAdds": [],
+      "remediationDeletes": 0,
+      "onOrigin": false
+    }
+  ],
+  "cfedc76OnRemote": false,
+  "heldOutQuestionsRetirementRecommended": true,
+  "historyRewriteRequired": false,
+  "operatorApprovalRequiredForRewrite": true,
+  "e73196dScopedOnly": true,
+  "credentialRotationRequired": false
+}

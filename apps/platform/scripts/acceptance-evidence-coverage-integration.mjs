@@ -47,7 +47,12 @@ for (const { theme, testId } of THEMES) {
         failures.push(`EVAL-B-03 ${scenario} policy ANSWERED without COBS corpus`);
       }
       if (scenario === 'PARTIAL' && row.applicationPolicyStatus !== 'INSUFFICIENT_EVIDENCE') {
-        failures.push(`EVAL-B-03 PARTIAL policy ${row.applicationPolicyStatus} — expect INSUFFICIENT_EVIDENCE`);
+        failures.push(
+          `EVAL-B-03 mock PARTIAL (${row.evidenceCondition}) policy ${row.applicationPolicyStatus} — missing COBS handbook, expect INSUFFICIENT_EVIDENCE`,
+        );
+      }
+      if (scenario === 'PARTIAL' && row.evidenceLimitationCode !== 'REQUIRED_SOURCE_NOT_INDEXED') {
+        failures.push(`EVAL-B-03 PARTIAL diagnostic expected REQUIRED_SOURCE_NOT_INDEXED got ${row.evidenceLimitationCode}`);
       }
     }
 

@@ -49,10 +49,14 @@ for (const scenario of ['SUFFICIENT', 'PARTIAL', 'INSUFFICIENT']) {
   if (row.applicationPolicyStatus === 'ANSWERED') {
     failures.push(`EVAL-B-03 ${scenario} policy must not ANSWERED without COBS handbook`);
   }
-  if (scenario === 'PARTIAL' && row.applicationPolicyStatus === 'PARTIAL_ANSWER') {
-    failures.push(`EVAL-B-03 PARTIAL must not PARTIAL_ANSWER — no supported material COBS aspect`);
-  } else if (scenario === 'PARTIAL' && row.applicationPolicyStatus === 'INSUFFICIENT_EVIDENCE') {
-    ok(`EVAL-B-03 PARTIAL policy=${row.applicationPolicyStatus} reason=${row.policyReason}`);
+  if (scenario === 'PARTIAL') {
+    if (row.applicationPolicyStatus === 'PARTIAL_ANSWER') {
+      failures.push(`EVAL-B-03 mock PARTIAL is MISSING_PRIMARY_HANDBOOK — must not PARTIAL_ANSWER`);
+    } else if (row.applicationPolicyStatus === 'INSUFFICIENT_EVIDENCE') {
+      ok(
+        `EVAL-B-03 evidenceCondition=MISSING_PRIMARY_HANDBOOK policy=${row.applicationPolicyStatus} code=${row.evidenceLimitationCode || 'REQUIRED_SOURCE_NOT_INDEXED'}`,
+      );
+    }
   }
 }
 

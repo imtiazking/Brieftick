@@ -225,6 +225,8 @@ export async function runAskRiV2Pipeline(indexRaw, question, caseRow, options = 
       path: 'v2_render_verified_answer',
       policyReason: rendered.policyReason,
       regulatoryReview: rendered.regulatoryReview,
+      evidenceLimitationCode: rendered.evidenceLimitationCode,
+      evidenceLimitationDetail: rendered.evidenceLimitationDetail,
     },
     eligibility,
     retrieval: {

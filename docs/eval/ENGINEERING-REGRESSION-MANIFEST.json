@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "forgeniq.engineering.regression.manifest.v1",
+  "capturedAt": "2026-11-16T15:00:00.000Z",
+  "purpose": "Defect regression during development — not independent regulatory acceptance",
+  "suites": [
+    {
+      "id": "unseen-11",
+      "script": "acceptance-production-coverage-unseen-questions.mjs",
+      "artefact": "PRODUCTION-COVERAGE-UNSEEN-QUESTIONS.json",
+      "formerLabel": "independent held-out",
+      "correctLabel": "engineering_regression"
+    },
+    {
+      "id": "coverage-integration",
+      "script": "acceptance-evidence-coverage-integration.mjs"
+    },
+    {
+      "id": "genuine-partial",
+      "script": "acceptance-genuine-partial-evidence.mjs"
+    },
+    {
+      "id": "missing-provision",
+      "script": "acceptance-evidence-coverage-missing-provision.mjs"
+    }
+  ],
+  "independentAcceptance": "INDEPENDENT-REGULATORY-ACCEPTANCE-PLAN.json"
+}

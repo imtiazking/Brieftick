@@ -1,5 +1,6 @@
 import { resolveFinalRegulatoryStatus } from './evidence-sufficiency-policy.mjs';
 import { requiredHandbookModulesUnmapped } from './assess-evidence-question-coverage.mjs';
+import { deriveEvidenceLimitationDiagnostic } from './evidence-limitation-diagnostic.mjs';
 
 /**
  * Local evaluation renderer — does not add regulatory claims.
@@ -87,10 +88,34 @@ export function renderVerifiedAskRiV2Answer(verification, modelOutput, bundle) {
     requiredHandbookModuleAbsent: requiredHandbookModulesUnmapped(bundle?.coverageAssessment),
   });
 
+  const diagnostic = deriveEvidenceLimitationDiagnostic({
+    coverageAssessment: bundle?.coverageAssessment,
+    bundle,
+    policyReason: policy.reason,
+    verifiedClaimCount: (verification.verifiedClaims || []).length,
+    unresolvedAspects: modelOutput.unresolvedAspects || [],
+    questionCoverage: bundle?.questionCoverage || 'UNKNOWN',
+  });
+  if (policy.evidenceLimitationCode) diagnostic.code = policy.evidenceLimitationCode;
+
+  if (
+    policy.status === 'PARTIAL_ANSWER' &&
+    bundle?.questionCoverage === 'KNOWN' &&
+    (verification.verifiedClaims || []).length > 0 &&
+    !requiredHandbookModulesUnmapped(bundle?.coverageAssessment)
+  ) {
+    diagnostic.code = 'PARTIAL_EVIDENCE_CONFIRMED';
+    if (!diagnostic.detail || diagnostic.detail === 'default_unconfirmed') {
+      diagnostic.detail = 'verified_claims_with_disclosed_gaps';
+    }
+  }
+
   return {
     status: policy.status,
     regulatoryReview: policy.regulatoryReview,
     policyReason: policy.reason,
+    evidenceLimitationCode: diagnostic.code,
+    evidenceLimitationDetail: diagnostic.detail,
     answer: lines.filter(Boolean).join('\n\n') || 'Insufficient verified evidence to answer.',
     citations,
     humanReviewRequired: Boolean(modelOutput.humanReviewRequired),

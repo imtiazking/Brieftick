@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "forgeniq.eval.b03.classification.v1",
+  "testId": "EVAL-B-03",
+  "question": "What does COBS require for suitability assessments?",
+  "mockScenarios": {
+    "SUFFICIENT": {
+      "evidenceCondition": "MISSING_PRIMARY_HANDBOOK",
+      "description": "Mock would answer if coverage allowed — corpus has no COBS handbook"
+    },
+    "PARTIAL": {
+      "evidenceCondition": "MISSING_PRIMARY_HANDBOOK_NOT_GENUINE_PARTIAL",
+      "description": "Historically mislabeled as partial-evidence test; primary COBS source not indexed",
+      "expectedPolicy": "INSUFFICIENT_EVIDENCE",
+      "expectedDiagnostic": "REQUIRED_SOURCE_NOT_INDEXED",
+      "expectedScorerForMockPARTIAL": "CORRECT_INSUFFICIENT_EVIDENCE when policy abstains"
+    },
+    "INSUFFICIENT": {
+      "evidenceCondition": "MISSING_PRIMARY_HANDBOOK",
+      "expectedPolicy": "INSUFFICIENT_EVIDENCE"
+    }
+  },
+  "genuinePartialTest": "acceptance-genuine-partial-evidence.mjs",
+  "expectedIdealResultUnchanged": true
+}

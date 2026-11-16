@@ -41,6 +41,7 @@ export function resolveFinalRegulatoryStatus(input) {
       status: 'INSUFFICIENT_EVIDENCE',
       ...reviewHold,
       reason: 'REQUIRED_HANDBOOK_SOURCE_ABSENT',
+      evidenceLimitationCode: 'REQUIRED_SOURCE_NOT_INDEXED',
     };
   }
 

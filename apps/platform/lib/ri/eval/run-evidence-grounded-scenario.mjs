@@ -45,9 +45,18 @@ export async function runEvidenceGroundedScenario(index, caseRow, scenario) {
   const scored = scoreEvalCase(caseRow, engineResult, { simulateCatalogueAttach: false, evidenceAvailable: true });
   const layers = classifyEvalLayers(engineResult, scored);
 
+  const evidenceCondition =
+    caseRow?.testId === 'EVAL-B-03'
+      ? 'MISSING_PRIMARY_HANDBOOK_NOT_GENUINE_PARTIAL'
+      : scenario === 'PARTIAL'
+        ? 'CONTROLLED_MOCK_PARTIAL'
+        : scenario;
+
   return {
     testId: caseRow.testId,
     scenario,
+    evidenceCondition,
+    evidenceLimitationCode: engineResult.stageC?.evidenceLimitationCode,
     applicationPolicyStatus: engineResult.status,
     policyReason: engineResult.stageC?.policyReason,
     questionCoverage: engineResult.coverageAssessment?.questionCoverage || engineResult.evidenceBundle?.questionCoverage,

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "forgeniq.evidence-quality-metrics.v1",
+  "capturedAt": "2026-11-16T13:24:26.929Z",
+  "suite": "engineering_regression_not_independent_acceptance",
+  "buckets": {
+    "correct_abstention_missing_source": 13,
+    "correct_partial": 6,
+    "partial_other": 2,
+    "abstention_other": 0,
+    "full_answer": 6,
+    "other": 3
+  },
+  "metrics": {
+    "answerRate": 0.4667,
+    "abstentionRate": 0.4333,
+    "falseAbstentionRate": null,
+    "correctAbstentionMissingSource": 13,
+    "correctPartialConfirmed": 6,
+    "note": "falseAbstentionRate requires SME-labelled gold set — independent acceptance only"
+  },
+  "b03Classification": "MISSING_PRIMARY_HANDBOOK_NOT_GENUINE_PARTIAL",
+  "rowCount": 30,
+  "failures": []
+}

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "forgeniq.independent.regulatory.acceptance.result.v1",
+  "capturedAt": "2026-11-16T13:20:03.408Z",
+  "executed": false,
+  "reason": "FORGENIQ_INDEPENDENT_EVAL_PATH unset or missing",
+  "plan": "docs/eval/INDEPENDENT-REGULATORY-ACCEPTANCE-PLAN.json",
+  "regulatoryAccuracyPass": false
+}

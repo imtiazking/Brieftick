@@ -1,14 +1,16 @@
 {
   "schemaVersion": "forgeniq.release.candidate.proposal.v1",
-  "capturedAt": "2026-11-16T14:05:00.000Z",
-  "proposedCommit": "PENDING_POST_PHASE_3_COMMIT",
+  "capturedAt": "2026-11-16T13:30:00.000Z",
+  "proposedCommit": "b54d436",
   "priorPreviewPin": "00b4369",
   "previewPinChangeAuthorized": false,
   "technicalGatesPassed": [
     "acceptance-evidence-coverage-missing-provision.mjs",
     "acceptance-evidence-coverage-integration.mjs",
     "acceptance-production-coverage-unseen-questions.mjs",
-    "acceptance-stage-c-evidence-sufficiency-policy.mjs"
+    "acceptance-stage-c-evidence-sufficiency-policy.mjs",
+    "acceptance-genuine-partial-evidence.mjs",
+    "acceptance-evidence-quality-metrics.mjs"
   ],
   "humanGatesOutstanding": ["Stage B x5", "SME-REVIEW-SHEET.json", "PS26/1 OG-02/04/05/06"],
   "regulatoryAccuracyApproved": false
