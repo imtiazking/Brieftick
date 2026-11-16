@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-e.bounded-grounded.v1",
+  "capturedAt": "2026-11-16T11:00:00.000Z",
+  "liveAnthropicAuthorized": false,
+  "budgetUsdDefault": 10,
+  "budgetOverride": "runEvalSuiteV2 options.budgetUsd",
+  "proposedRun": {
+    "caseFilter": "public-provider-only",
+    "testIdsPilot": ["EVAL-B-01", "EVAL-D-02", "EVAL-C-02"],
+    "stopAfterNewCases": 3,
+    "scoringEvidenceLocalPath": "docs/eval/scoring-evidence/local/stage-e-bounded-local.json",
+    "scoringEvidenceManifestPath": "docs/eval/scoring-evidence/baselines/stage-e-bounded-manifest.json",
+    "evidenceBudget": { "questionCoverage": "KNOWN" },
+    "distinguishes": [
+      "ANSWERED vs FAIL scorer outcome",
+      "INSUFFICIENT_EVIDENCE vs BLOCKED",
+      "PARTIAL_ANSWER vs ANSWERED",
+      "policyReason in stageC metadata"
+    ]
+  },
+  "prerequisites": [
+    "Operator Stage B attestation (B-01, B-04, B-05)",
+    "Explicit Stage E Anthropic authorisation",
+    "Scoring-evidence export enabled on run"
+  ],
+  "executePaidCalls": false
+}

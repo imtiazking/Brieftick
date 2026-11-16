@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "forgeniq.eval.stage-b.pending-decisions.v1",
+  "capturedAt": "2026-11-16T11:00:00.000Z",
+  "programmePass": false,
+  "operatorApproval": null,
+  "items": [
+    {
+      "id": "B-01",
+      "decision": "Record manifestSha256 in change control",
+      "humanJudgement": "GRC change control owner",
+      "engineeringEvidence": "generate-stage-b-evidence-manifest.mjs + signoff pack integrityOk"
+    },
+    {
+      "id": "B-04",
+      "decision": "Confirm eval corpus has no Partner UAT / Org A DB snapshots",
+      "humanJudgement": "Operator + data owner",
+      "engineeringEvidence": "Offline AUTHENTIC_CORPUS_B2 only in manifests"
+    },
+    {
+      "id": "B-05",
+      "decision": "SME secure-evidence attestation",
+      "humanJudgement": "Regulatory SME signatory",
+      "engineeringEvidence": "acceptance-stage-b-secure-eval-evidence.mjs PASS"
+    },
+    {
+      "id": "SEC-B-01",
+      "decision": "Accept RI_AI_EXECUTION_ENABLED gating for live keys",
+      "humanJudgement": "Security operator",
+      "engineeringEvidence": "Stage E disabled; preview flags off"
+    },
+    {
+      "id": "SEC-B-02",
+      "decision": "Accept sanitised eval commits + gitignored scoring local",
+      "humanJudgement": "Security operator",
+      "engineeringEvidence": "eval-report-sanitize.mjs; docs/eval/scoring-evidence/local gitignored"
+    }
+  ]
+}

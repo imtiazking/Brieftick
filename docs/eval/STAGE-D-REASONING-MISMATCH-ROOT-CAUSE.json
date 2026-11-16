@@ -1,0 +1,412 @@
+{
+  "schemaVersion": "forgeniq.eval.reasoning-mismatch-investigation.v1",
+  "capturedAt": "2026-11-16T10:49:09.574Z",
+  "baselineCommit": "a6e8e18eb48449f718b716f4c5f0236df4a4b9d7",
+  "programmePass": false,
+  "regulatoryAccuracyPass": false,
+  "primaryRootCause": "Stage C fail-closed policy with bundle.questionCoverage UNKNOWN suppresses ANSWERED despite mock DIRECT_SUPPORT and verified claims (UNKNOWN_COVERAGE_NO_INVENTED_GAPS).",
+  "secondaryRootCause": "Prior acceptance compared ideal outcomeClassification to policy status without KNOWN coverage or outcome-taxonomy mapping.",
+  "investigations": [
+    {
+      "theme": "accurate_evidence_backed",
+      "testId": "EVAL-B-01",
+      "question": "Does PRIN 2A.4 create a binding fair value obligation for firms?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedIdeal": "ANSWERED",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 16,
+        "publicationsRepresented": [
+          "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ],
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ],
+        "corpusSourceAvailable": true
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    },
+    {
+      "theme": "insufficient_evidence",
+      "testId": "EVAL-B-03",
+      "question": "What does COBS require for suitability assessments?",
+      "expectedIdealResult": {
+        "outcomeClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      },
+      "expectedIdeal": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 16,
+        "publicationsRepresented": [
+          "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+          "34b18772-3732-4e10-89a6-946bd15c5afe",
+          "a784dcfc-d443-4295-99f9-d0f23a5fadd6",
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "expectedPublicationIds": [],
+        "corpusSourceAvailable": false
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    },
+    {
+      "theme": "conflicting_evidence",
+      "testId": "EVAL-C-02",
+      "question": "Is CP26/38 finalised FCA guidance or a consultation?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedIdeal": "ANSWERED",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 6,
+        "publicationsRepresented": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "corpusSourceAvailable": true
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    },
+    {
+      "theme": "partial_evidence",
+      "testId": "EVAL-C-03",
+      "question": "Is FG22/5 still a consultation or finalised guidance?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedIdeal": "ANSWERED",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 6,
+        "publicationsRepresented": [
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ],
+        "expectedPublicationIds": [
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ],
+        "corpusSourceAvailable": true
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    },
+    {
+      "theme": "guidance_vs_binding_law",
+      "testId": "EVAL-D-02",
+      "question": "What does CP26/38 say about AML transaction monitoring?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Named CP26; AML monitoring themes in indexed CP26 extract."
+      },
+      "expectedIdeal": "ANSWERED",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 6,
+        "publicationsRepresented": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "corpusSourceAvailable": true
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    },
+    {
+      "theme": "incorrect_source_citations",
+      "testId": "EVAL-C-04",
+      "question": "What is the consultation deadline for CP26/38?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true,
+        "responseState": "ANSWERED",
+        "notes": "Frozen CP26/38 PDF p14 and HTML metadata both record consultation close 24 December 2026."
+      },
+      "expectedIdeal": "ANSWERED",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 6,
+        "publicationsRepresented": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "corpusSourceAvailable": true
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    },
+    {
+      "theme": "missing_source_material",
+      "testId": "EVAL-I-01",
+      "question": "Summarise FCA Policy Statement PS99/99 on cryptoassets.",
+      "expectedIdealResult": {
+        "outcomeClassification": "CORRECT_INSUFFICIENT_EVIDENCE",
+        "requiresEvidenceGroundedAnswer": false
+      },
+      "expectedIdeal": "CORRECT_INSUFFICIENT_EVIDENCE",
+      "actualMockedStatus": "BLOCKED",
+      "scoredOutcome": null,
+      "policyReason": null,
+      "evidenceSupplied": {
+        "rankedChunks": 0,
+        "bundleChunks": 0,
+        "publicationsRepresented": [],
+        "expectedPublicationIds": [],
+        "corpusSourceAvailable": false
+      },
+      "sufficiencyMock": null,
+      "sufficiencyPolicyApplied": false,
+      "questionCoverageInBundle": "UNKNOWN",
+      "verifiedClaimCount": 0,
+      "citationCount": 0,
+      "preReasonerBlock": "reference_validation",
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": null,
+      "mismatchClass": "A",
+      "rootCauseCategory": "Correct abstention / block — missing or invalid source fixture",
+      "recommendedCorrectiveAction": "Keep expectation; validate pre-reasoner gate"
+    },
+    {
+      "theme": "unsupported_obligations",
+      "testId": "EVAL-E-01",
+      "question": "Which business functions might CP26/38 affect according to the publication?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresControlImpactReasoning": true,
+        "responseState": "ANSWERED",
+        "notes": "Applicability themes supported with consultation labelling."
+      },
+      "expectedIdeal": "ANSWERED",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 6,
+        "publicationsRepresented": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "expectedPublicationIds": [
+          "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+        ],
+        "corpusSourceAvailable": true
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    },
+    {
+      "theme": "cross_document_reasoning",
+      "testId": "EVAL-G-02",
+      "question": "In FG22/5 Consumer Duty guidance, what does the FCA expect on fair value assessments and product lifecycle monitoring? Also consider the FCA webpage Fair value in consumer finance and provide FG22/5 PDF page citations.",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresEvidenceGroundedAnswer": true
+      },
+      "expectedIdeal": "ANSWERED",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 6,
+        "publicationsRepresented": [
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ],
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ],
+        "corpusSourceAvailable": true
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    },
+    {
+      "theme": "abstention_regulatory_interpretation",
+      "testId": "EVAL-H-01",
+      "question": "How does the FCA expect firms to monitor customer outcomes for fair value?",
+      "expectedIdealResult": {
+        "outcomeClassification": "ANSWERED",
+        "requiresSemanticPublicationDiscovery": true,
+        "requiresEvidenceGroundedAnswer": true,
+        "notes": "Semantic discovery should attach Fair Value HTML and/or FG22 PDF from indexed catalogue."
+      },
+      "expectedIdeal": "ANSWERED",
+      "actualMockedStatus": "INSUFFICIENT_EVIDENCE",
+      "scoredOutcome": null,
+      "policyReason": "UNKNOWN_COVERAGE_NO_INVENTED_GAPS",
+      "evidenceSupplied": {
+        "rankedChunks": 48,
+        "bundleChunks": 16,
+        "publicationsRepresented": [
+          "a761cacc-8742-493d-b200-eb5d9a3ab884",
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+          "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
+        ],
+        "expectedPublicationIds": [
+          "56b0beca-d8c3-4267-a794-9079009af661",
+          "a761cacc-8742-493d-b200-eb5d9a3ab884"
+        ],
+        "corpusSourceAvailable": true
+      },
+      "sufficiencyMock": "DIRECT_SUPPORT",
+      "sufficiencyPolicyApplied": true,
+      "questionCoverageInBundle": "UNKNOWN",
+      "questionCoverageKnownWouldApply": "KNOWN",
+      "verifiedClaimCount": 1,
+      "citationCount": 1,
+      "preReasonerBlock": null,
+      "mismatchVsIdeal": true,
+      "counterfactualWithKnownCoverage": {
+        "status": "ANSWERED",
+        "reason": "ANSWERED"
+      },
+      "mismatchClass": "B",
+      "rootCauseCategory": "Incorrect abstention despite verified mock claims — fail-closed questionCoverage UNKNOWN",
+      "recommendedCorrectiveAction": "Eval harness: set bundle.questionCoverage KNOWN when retrieval hits; or SME live eval"
+    }
+  ]
+}

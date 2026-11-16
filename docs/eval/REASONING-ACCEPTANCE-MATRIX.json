@@ -1,0 +1,509 @@
+{
+  "schemaVersion": "forgeniq.eval.reasoning-acceptance-matrix.v1",
+  "capturedAt": "2026-11-16T10:51:40.197Z",
+  "programmePass": false,
+  "regulatoryAccuracyPass": false,
+  "note": "Matrix validates Stage C policy enforcement under controlled evidence — not SME regulatory substance.",
+  "scenarios": [
+    "SUFFICIENT→ANSWERED",
+    "PARTIAL→PARTIAL_ANSWER",
+    "INSUFFICIENT→INSUFFICIENT_EVIDENCE"
+  ],
+  "results": [
+    {
+      "testId": "EVAL-B-01",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-B-01",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-B-01",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-D-02",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-D-02",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-D-02",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-C-02",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-C-02",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-C-02",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-B-03",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+        "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "a784dcfc-d443-4295-99f9-d0f23a5fadd6",
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-B-03",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "edcebe7d-3a3f-4adb-bb54-14120f14315a",
+        "34b18772-3732-4e10-89a6-946bd15c5afe",
+        "a784dcfc-d443-4295-99f9-d0f23a5fadd6",
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-B-03",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-C-03",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-C-03",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-C-03",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-C-04",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-C-04",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-C-04",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-I-01",
+      "scenario": "SUFFICIENT",
+      "blocked": true,
+      "blockReason": "no_ranked_chunks",
+      "expectedStatus": "ANSWERED"
+    },
+    {
+      "testId": "EVAL-I-01",
+      "scenario": "PARTIAL",
+      "blocked": true,
+      "blockReason": "no_ranked_chunks",
+      "expectedStatus": "PARTIAL_ANSWER"
+    },
+    {
+      "testId": "EVAL-I-01",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "BLOCKED",
+      "policyReason": "NO_CHUNKS",
+      "policyAppliedCorrectly": false,
+      "evidenceChunks": 0,
+      "citationCount": 0,
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-E-01",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-E-01",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-E-01",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "4d05b49b-a4a4-4101-8c87-7d3983315f25"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-G-02",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-G-02",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-G-02",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 6,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    },
+    {
+      "testId": "EVAL-H-01",
+      "scenario": "SUFFICIENT",
+      "expectedStatus": "ANSWERED",
+      "actualStatus": "ANSWERED",
+      "policyReason": "ANSWERED",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "DIRECT_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-H-01",
+      "scenario": "PARTIAL",
+      "expectedStatus": "PARTIAL_ANSWER",
+      "actualStatus": "PARTIAL_ANSWER",
+      "policyReason": "PARTIAL",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 1,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884",
+        "56b0beca-d8c3-4267-a794-9079009af661",
+        "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+        "a784dcfc-d443-4295-99f9-d0f23a5fadd6"
+      ],
+      "verifiedClaims": 1,
+      "sufficiencyOverall": "PARTIAL_SUPPORT",
+      "questionCoverage": "KNOWN"
+    },
+    {
+      "testId": "EVAL-H-01",
+      "scenario": "INSUFFICIENT",
+      "expectedStatus": "INSUFFICIENT_EVIDENCE",
+      "actualStatus": "INSUFFICIENT_EVIDENCE",
+      "policyReason": "NO_SUPPORT",
+      "policyAppliedCorrectly": true,
+      "evidenceChunks": 16,
+      "citationCount": 0,
+      "chunkPublicationIds": [
+        "a761cacc-8742-493d-b200-eb5d9a3ab884"
+      ],
+      "verifiedClaims": 0,
+      "sufficiencyOverall": "NO_SUPPORT",
+      "questionCoverage": "UNKNOWN"
+    }
+  ],
+  "qualityChecks": [
+    {
+      "testId": "EVAL-B-01",
+      "citationTraceability": true,
+      "claimToSource": true
+    },
+    {
+      "testId": "EVAL-D-02",
+      "citationTraceability": true,
+      "claimToSource": true
+    },
+    {
+      "testId": "EVAL-C-02",
+      "citationTraceability": true,
+      "claimToSource": true
+    }
+  ],
+  "failures": []
+}

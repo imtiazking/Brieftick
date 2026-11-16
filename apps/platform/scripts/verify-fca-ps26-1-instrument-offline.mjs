@@ -81,6 +81,13 @@ async function main() {
       const annexFIdx = full.search(/Annex\s*F/i);
       if (appendixIdx >= 0) pageHints.appendix1ApproxPage = Math.floor(appendixIdx / pageSize) + 1;
       if (annexFIdx >= 0) pageHints.annexFApproxPage = Math.floor(annexFIdx / pageSize) + 1;
+
+      for (const label of ['15 July 2026', 'Regulation Day', 'in force', 'comes into force']) {
+        const idx = full.indexOf(label);
+        if (idx >= 0) {
+          pageHints[`commencement_${label.replace(/\s+/g, '_')}`] = [Math.floor(idx / pageSize) + 1];
+        }
+      }
     } catch (e) {
       notes.push(`pdf-parse text extraction failed: ${e.message}`);
     }

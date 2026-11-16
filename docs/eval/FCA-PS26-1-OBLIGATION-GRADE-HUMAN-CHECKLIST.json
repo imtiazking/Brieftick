@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "forgeniq.ingestion.obligation-grade.checklist.v1",
+  "publication": "FCA PS26/1 + FCA 2026/2 instrument",
+  "ingestAllowed": false,
+  "items": [
+    { "id": "OG-01", "check": "source_sha256 matches official download", "automated": "verify-fca-ps26-1-instrument-offline.mjs" },
+    { "id": "OG-02", "check": "Appendix 1 / Annex F page boundaries confirmed by human", "status": "pending" },
+    { "id": "OG-03", "check": "CONC 4.2A.3R, 4.2A.6R, 7.20.1R located with PDF page refs", "status": "automated_hint_pending_sme" },
+    { "id": "OG-04", "check": "Commencement dates verified per rule (not single assumed date)", "status": "pending" },
+    { "id": "OG-05", "check": "Binding (R) vs guidance (G) marked per provision", "status": "pending_sme" },
+    { "id": "OG-06", "check": "assessObligationGradePosture before obligationGradeSuitable", "status": "not_run" },
+    { "id": "OG-07", "check": "UC-RI-005 citations include physicalPageNumber + sectionReference", "status": "pipeline_ready_not_executed" },
+    { "id": "OG-08", "check": "AI Dev org b8f5e3a1-00ad-4000-8000-000000000001 only", "status": "guard_in_code" }
+  ],
+  "obligationGradeSuitableOverride": false
+}

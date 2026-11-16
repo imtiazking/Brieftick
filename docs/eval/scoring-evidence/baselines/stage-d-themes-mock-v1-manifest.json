@@ -1,6 +1,6 @@
 {
   "schemaVersion": "forgeniq.eval.scoring-evidence-manifest.v1",
-  "capturedAt": "2026-11-14T14:01:26.107Z",
+  "capturedAt": "2026-11-16T10:52:44.794Z",
   "programmePass": false,
   "localFullTextRequired": true,
   "localPathNote": "Full answer text lives in gitignored local bundle only",
@@ -40,7 +40,7 @@
       },
       "integrity": {
         "answerSha256": "d79c8169e87405a3c52d8d7ee6a60168fb27801d875757e4f27ead159783f89f",
-        "engineSnapshotSha256": "f3d466f96d14a925dcd8f956dfaf68d33096ffae1fa1085d43688ddfd225c69e",
+        "engineSnapshotSha256": "7065ebc5f1cd422ea701228f147a81f32ab9f0862a43ea44fc80e8b605785f35",
         "actualScoringSha256": "e156862efb0150b96156466439fc965779235eacad157d1394cece817fbca7eb"
       },
       "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
@@ -82,7 +82,7 @@
       },
       "integrity": {
         "answerSha256": "c2be0a1a392ff0d70788f5ee07b0f37982986908f093a31e0897eb1ee6e6c96c",
-        "engineSnapshotSha256": "920e1ca5f067b787b2436d589421f41cbaf15b00869c4c1f250b189b4bfcede3",
+        "engineSnapshotSha256": "2fde72142cd645f316533c680b0860e91427cf1f707b9264d4daa3dfd518e8f5",
         "actualScoringSha256": "9ad435799c5ae6a3c19887a671c8c21b53754a771241ff67a006415bf9f8fe82"
       },
       "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
@@ -258,7 +258,7 @@
       },
       "integrity": {
         "answerSha256": "8249599b92079a5f936be0cdca357d6421ade50424fc59c0e39ef0afa54948e2",
-        "engineSnapshotSha256": "ce92827917d857cf7ceb761f9c44da691cf0eee38002fb2dce0cd898f2b60238",
+        "engineSnapshotSha256": "d6a25e2fe0d410ee5602e3c9ff4d798a2e955baa7eaf047bf32a579517a8d910",
         "actualScoringSha256": "b8321c63d15f42329104006fc4f11126a7c9162fb9adb16cc7934713b199da0d"
       },
       "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
@@ -344,7 +344,7 @@
       },
       "integrity": {
         "answerSha256": "c08df1d5338f9c7ceb30fe7a3dc6d7b05769798376f5fb0971c8492f567e2f52",
-        "engineSnapshotSha256": "ab1e35b4243fba0920d16f90c831b19051cffa41a5acb6136afeca656b4d1bce",
+        "engineSnapshotSha256": "88d8ae1cc3052bdfb584668fb38971ffb8d17850d3b35eef8df4a974534bbc36",
         "actualScoringSha256": "b8321c63d15f42329104006fc4f11126a7c9162fb9adb16cc7934713b199da0d"
       },
       "scoringRubricVersion": "ask-ri-v2-rubric-v2.2",
@@ -445,5 +445,5 @@
       }
     }
   ],
-  "integrityManifestSha256": "532a1441074013526fe1c5691a22ea8f8f04bb0b92a37e9793eff3877f6a0974"
+  "integrityManifestSha256": "a7dcef8b96d53d527deba0140931fbfdfccd57fdd8761454187555402778dc73"
 }
