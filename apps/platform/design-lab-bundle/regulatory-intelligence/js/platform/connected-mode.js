@@ -232,16 +232,18 @@ export function isConnectedAiReviewEnabled(state = getState()) {
   );
 }
 
+/** UC-RI-005 live request — AI Development tenant only; Partner UAT and other orgs stay read-only. */
 const AI_DEV_ORG_ID = 'b8f5e3a1-00ad-4000-8000-000000000001';
 const PARTNER_UAT_ORG_ID = '4d871541-e0d4-4581-828d-72073f763f85';
+const ORG_A_ID = 'cd25bb17-d575-4109-8432-4b63c75f9617';
 
 export function isConnectedAiRequestEnabled(state = getState()) {
   const orgId = state.platformConfig?.backendSession?.organisationId;
+  if (orgId === PARTNER_UAT_ORG_ID || orgId === ORG_A_ID) return false;
   return Boolean(
     isConnectedBackendActive(state) &&
       state.platformConfig?.backendSession?.writeCapabilities?.aiRequest === true &&
-      orgId === AI_DEV_ORG_ID &&
-      orgId !== PARTNER_UAT_ORG_ID,
+      orgId === AI_DEV_ORG_ID,
   );
 }
 

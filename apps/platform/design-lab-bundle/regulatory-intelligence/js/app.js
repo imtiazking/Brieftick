@@ -1827,6 +1827,24 @@ function bindViewHandlers() {
     }
   });
 
+  document.querySelector('[data-connected-ai-review-submit]')?.addEventListener('click', async () => {
+    const panel = document.querySelector('[data-connected-ai-review]');
+    const runId = panel?.getAttribute('data-connected-ai-review');
+    const decision = panel?.querySelector('[data-connected-ai-review-decision]')?.value;
+    const notes = panel?.querySelector('[data-connected-ai-review-notes]')?.value?.trim();
+    if (!runId || !decision) return;
+    const btn = panel.querySelector('[data-connected-ai-review-submit]');
+    if (btn) btn.disabled = true;
+    try {
+      await submitConnectedAiReview(getState(), runId, { decision, notes, acceptedClaimIndexes: [], rejectedClaimIndexes: [] });
+      showToast('AI review recorded');
+      renderShell();
+    } catch (e) {
+      showToast(e?.message || 'AI review failed');
+      if (btn) btn.disabled = false;
+    }
+  });
+
   document.querySelector('[data-connected-pub-ai-submit]')?.addEventListener('click', async () => {
     const wrap = document.querySelector('[data-connected-pub-ai-request]');
     const publicationId = wrap?.getAttribute('data-connected-pub-ai-request');
@@ -1842,39 +1860,15 @@ function bindViewHandlers() {
         targetChangeId: changeId,
         idempotencySuffix: suffix,
       });
-      if (statusEl) statusEl.textContent = body.reused ? `Reused run ${body.runId}` : `Run ${body.runId} requested`;
+      if (statusEl) {
+        statusEl.textContent = body.reused ? `Reused run ${body.runId}` : `Run ${body.runId} requested`;
+      }
       showToast(body.runId ? `AI analysis run: ${body.runId}` : 'Analysis requested');
       if (body.runId) location.hash = `#/ai-analysis/${body.runId}`;
       else renderShell();
     } catch (e) {
       if (statusEl) statusEl.textContent = e?.message || 'failed';
-      showToast(e?.message || 'Extraction failed');
-      if (btn) btn.disabled = false;
-    }
-  });
-
-  document.querySelector('[data-connected-ai-review-submit]')?.addEventListener('click', async () => {
-    const panel = document.querySelector('[data-connected-ai-review]');
-    const runId = panel?.getAttribute('data-connected-ai-review');
-    const decision = panel?.querySelector('[data-connected-ai-review-decision]')?.value;
-    const notes = panel?.querySelector('[data-connected-ai-review-notes]')?.value?.trim();
-    if (!runId || !decision) return;
-    const btn = panel.querySelector('[data-connected-ai-review-submit]');
-    if (btn) btn.disabled = true;
-    try {
-      const panelClaimCount = Number(panel.getAttribute('data-connected-ai-claim-count') || '0');
-      const acceptedClaimIndexes = [];
-      const rejectedClaimIndexes = [];
-      for (let i = 0; i < panelClaimCount; i += 1) {
-        const box = panel.querySelector(`[data-connected-ai-claim-accept="${i}"]`);
-        if (box?.checked) acceptedClaimIndexes.push(i);
-        else rejectedClaimIndexes.push(i);
-      }
-      await submitConnectedAiReview(getState(), runId, { decision, notes, acceptedClaimIndexes, rejectedClaimIndexes });
-      showToast('AI review recorded');
-      renderShell();
-    } catch (e) {
-      showToast(e?.message || 'AI review failed');
+      showToast(e?.message || 'Extraction request failed');
       if (btn) btn.disabled = false;
     }
   });

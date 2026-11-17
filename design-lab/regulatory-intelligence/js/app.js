@@ -80,7 +80,11 @@ import {
   syncEnvironmentFooterBanner,
   exitPresentationMode,
 } from './platform/connected-mode.js';
-import { formatConnectedSessionChromeLabel } from './platform/connectivity-gate.js';
+import {
+  bindAccountChromeHandlers,
+  closeAccountChromeMenu,
+  renderAccountChromeSlot,
+} from './platform/account-chrome.js';
 import { libraryPublicationSearchText } from './platform/connected-display.js';
 import {
   markConnectedNotificationRead,
@@ -105,6 +109,7 @@ import {
   submitConnectedAiReview,
   renderConnectedAiRunDetail,
 } from './platform/connected-ai-governance-panels.js';
+import { requestConnectedObligationExtraction } from './platform/connected-publication-ai-panels.js';
 import {
   fetchConnectedWorkflowEvents,
   renderConnectedWorkflowEventsApiTable,
@@ -398,6 +403,7 @@ function closeTopNavMenus() {
     m.hidden = true;
   });
   document.querySelectorAll('.ri-topnav__trigger').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+  closeAccountChromeMenu();
 }
 
 function getRoute() {
@@ -488,25 +494,7 @@ function renderChromeScenarioControls() {
 }
 
 function renderChromeUserSlot() {
-  const st = getState();
-  if (isConnectedBackendActive(st)) {
-    const label = formatConnectedSessionChromeLabel(st);
-    const text = label?.text || 'Connected session';
-    const title = label?.title || 'Authenticated FORGENIQ session';
-    return `<span class="ri-chrome__session" id="chrome-demo-user" title="${title.replace(/"/g, '&quot;')}">${text}</span>`;
-  }
-  if (isPresentationModeRequested()) {
-    const demo = getDemoUser();
-    return `<span class="ri-demo-user" id="chrome-demo-user" title="Presentation persona (not Clerk)">Demo user: ${demo?.name || '—'}</span>`;
-  }
-  if (st.connectivity?.mode === 'auth_required') {
-    return `<a class="ri-chrome__link" id="chrome-demo-user" href="/sign-in">Sign in</a>`;
-  }
-  const label = formatConnectedSessionChromeLabel(st);
-  if (label) {
-    return `<span class="ri-chrome__session" id="chrome-demo-user" title="${label.title.replace(/"/g, '&quot;')}">${label.text}</span>`;
-  }
-  return `<span class="ri-demo-user" id="chrome-demo-user" title="Connecting to FORGENIQ">Connecting…</span>`;
+  return renderAccountChromeSlot();
 }
 
 function renderChrome() {
@@ -531,7 +519,7 @@ function renderChrome() {
           ${renderChromeScenarioControls()}
           ${renderChromeUserSlot()}
           <a class="ri-chrome__link" href="#/notifications" id="chrome-notifications">Alerts</a>
-          <a class="ri-chrome__link" href="/design-lab/">Lab home</a>
+          <a class="ri-chrome__link" href="/">Platform home</a>
         </div>
       </div>
       <nav class="ri-topnav" aria-label="Regulatory Intelligence">
@@ -596,6 +584,7 @@ function bindChromeHandlers() {
       const menu = document.getElementById('product-menu');
       if (menu) menu.hidden = true;
       document.getElementById('product-menu-btn')?.setAttribute('aria-expanded', 'false');
+      closeAccountChromeMenu();
     }
   });
   document.getElementById('scenario-select')?.addEventListener('change', (e) => {
@@ -610,6 +599,7 @@ function bindChromeHandlers() {
       renderShell();
     }
   });
+  bindAccountChromeHandlers();
 }
 
 function askRiSubmitToast(res) {
@@ -1851,6 +1841,34 @@ function bindViewHandlers() {
       renderShell();
     } catch (e) {
       showToast(e?.message || 'AI review failed');
+      if (btn) btn.disabled = false;
+    }
+  });
+
+  document.querySelector('[data-connected-pub-ai-submit]')?.addEventListener('click', async () => {
+    const wrap = document.querySelector('[data-connected-pub-ai-request]');
+    const publicationId = wrap?.getAttribute('data-connected-pub-ai-request');
+    if (!publicationId) return;
+    const btn = wrap?.querySelector('[data-connected-pub-ai-submit]');
+    const statusEl = wrap?.querySelector('[data-connected-pub-ai-status]');
+    const changeId = wrap?.querySelector('[data-connected-pub-ai-change-id]')?.value?.trim() || undefined;
+    const suffix = wrap?.querySelector('[data-connected-pub-ai-idempotency]')?.value?.trim() || undefined;
+    if (btn) btn.disabled = true;
+    try {
+      const body = await requestConnectedObligationExtraction(getState(), {
+        publicationId,
+        targetChangeId: changeId,
+        idempotencySuffix: suffix,
+      });
+      if (statusEl) {
+        statusEl.textContent = body.reused ? `Reused run ${body.runId}` : `Run ${body.runId} requested`;
+      }
+      showToast(body.runId ? `AI analysis run: ${body.runId}` : 'Analysis requested');
+      if (body.runId) location.hash = `#/ai-analysis/${body.runId}`;
+      else renderShell();
+    } catch (e) {
+      if (statusEl) statusEl.textContent = e?.message || 'failed';
+      showToast(e?.message || 'Extraction request failed');
       if (btn) btn.disabled = false;
     }
   });

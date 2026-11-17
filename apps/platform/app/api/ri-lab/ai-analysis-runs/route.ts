@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import { requireRiContext } from '@/lib/ri/context';
 import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { assertLabConnectedWrite } from '@/lib/ri/lab-api/lab-connected-writes';
+import { RiNotFoundError } from '@/lib/ri/errors';
 import { getLatestPublicationVersion } from '@/lib/ri/services/publication-versions';
+import { getPublicationDetail } from '@/lib/ri/services/publications';
 import { requestPublicationAnalysis } from '@/lib/ri/services/ai-analysis';
 
 export async function POST(request: Request) {
@@ -19,6 +21,8 @@ export async function POST(request: Request) {
     const publicationId = body.publicationId?.trim();
     const useCaseId = body.useCaseId?.trim() || 'UC-RI-005';
     if (!publicationId) throw new Error('publication_id_required');
+
+    await getPublicationDetail(ctx.supabase, ctx.organisationId, publicationId);
 
     let publicationVersionId = body.publicationVersionId?.trim();
     if (!publicationVersionId) {
@@ -46,6 +50,9 @@ export async function POST(request: Request) {
       code: 'code' in result ? result.code : null,
     });
   } catch (err) {
+    if (err instanceof RiNotFoundError) {
+      return NextResponse.json({ error: 'not_found' }, { status: 404 });
+    }
     return labApiErrorResponse(err);
   }
 }

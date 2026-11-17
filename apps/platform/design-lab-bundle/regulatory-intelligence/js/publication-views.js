@@ -37,7 +37,7 @@ import { getCurrentAnalysis } from './ai-governance-helpers.js';
 import { renderAiSummaryPanel } from './ai-summary-ui.js';
 import { renderChangeAnalysisPanel } from './ai-workflow-ui.js';
 import { canGenerateAiSummary, canMutateAiReviewState, isAuditorReadOnly } from './ai/persona-ai.js';
-import { isConnectedBackendActive } from './platform/connected-mode.js';
+import { isConnectedBackendActive, isConnectedAiRequestEnabled } from './platform/connected-mode.js';
 import { renderConnectedPublicationAiTab } from './platform/connected-publication-ai-panels.js';
 import { connectedCatalogueBanner, getConnectedAssigneeLabel } from './platform/connected-catalogue.js';
 import { getViewAiAnalysisRunsForPublication } from './store.js';
@@ -296,13 +296,18 @@ function renderChangesTab(pubId) {
 
 function renderPublicationAiTabConnected(p) {
   const runs = getViewAiAnalysisRunsForPublication(p.id);
+  const aiExtractionUi = isConnectedAiRequestEnabled(getState());
   let runsSection = '';
   if (!runs.length) {
-    runsSection = `<p class="ri-muted">No persisted AI analysis runs for this publication yet. After extraction completes, runs appear here with review and materialisation links.</p>`;
+    runsSection = aiExtractionUi
+      ? `<p class="ri-muted">No persisted AI analysis runs for this publication yet. After extraction completes, runs appear here with citations and human review. Approved obligations surface in the Obligations register via existing workflows only.</p>`
+      : `<p class="ri-muted">No persisted AI analysis runs are linked to this publication in the connected staging register. Completed analyses appear here when tenant APIs return operational or authorised UAT runs for this record.</p>`;
   } else {
-  const rows = runs.map((r) => {
-    const preview = r.findingsPreview ? esc(String(r.findingsPreview).slice(0, 120)) + (String(r.findingsPreview).length > 120 ? '…' : '') : '—';
-    return `<tr>
+    const rows = runs.map((r) => {
+      const preview = r.findingsPreview
+        ? esc(String(r.findingsPreview).slice(0, 120)) + (String(r.findingsPreview).length > 120 ? '…' : '')
+        : '—';
+      return `<tr>
       <td><a href="#/ai-analysis/${esc(r.id)}">${esc(r.useCaseId || '—')}</a></td>
       <td>${badge(r.executionStatus || '—')}</td>
       <td>${formatDateTime(r.completedAt || r.createdAt)}</td>
@@ -310,7 +315,7 @@ function renderPublicationAiTabConnected(p) {
       <td>${preview}</td>
       <td>${r.claimsCount != null ? esc(String(r.claimsCount)) : '—'}</td>
     </tr>`;
-  });
+    });
     runsSection = `<section class="ri-panel">
     <h3>Persisted AI analyses (connected staging)</h3>
     <p class="ri-muted">${runs.length} run(s) for this publication — open a row to inspect findings, citations and review status. Provider and model details remain in AI Governance.</p>
@@ -319,6 +324,9 @@ function renderPublicationAiTabConnected(p) {
       rows,
     )}
   </section>`;
+  }
+  if (!aiExtractionUi) {
+    return runsSection;
   }
   return renderConnectedPublicationAiTab(p, runsSection);
 }
