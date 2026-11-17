@@ -5,4 +5,5 @@ export {
   PARTNER_UAT_ORG_ID,
   ORG_A_OPERATIONAL_ID,
   assertExperimentalAiTenant,
+  isPublicationToObligationIntegrationEnabled,
 } from './experimental-ai-tenant-guard.mjs';

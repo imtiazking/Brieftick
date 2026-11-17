@@ -6,9 +6,25 @@ export const ORG_A_OPERATIONAL_ID = 'cd25bb17-d575-4109-8432-4b63c75f9617';
 
 const PDF_EXPERIMENTAL_USE_CASES = new Set(['UC-RI-005', 'UC-RI-002']);
 
-export function assertExperimentalAiTenant(params) {
-  const resolvedOrg = process.env.STAGING_AI_TECH_ORG_ID?.trim() || AI_DEVELOPMENT_ORG_ID;
+/**
+ * Server feature flag: publication→obligation automation (UC-RI-005 / PDF experimental AI).
+ * Org allowlist only — not enabled globally via RI_AI_EXECUTION_ENABLED alone.
+ */
+export function isPublicationToObligationIntegrationEnabled(organisationId) {
+  const id = organisationId?.trim();
+  if (!id) return false;
+  if (id === PARTNER_UAT_ORG_ID || id === ORG_A_OPERATIONAL_ID) return false;
 
+  const override = process.env.STAGING_AI_TECH_ORG_ID?.trim();
+  if (override === PARTNER_UAT_ORG_ID || override === ORG_A_OPERATIONAL_ID) {
+    return false;
+  }
+
+  const resolvedOrg = override || AI_DEVELOPMENT_ORG_ID;
+  return id === resolvedOrg;
+}
+
+export function assertExperimentalAiTenant(params) {
   if (params.organisationId === PARTNER_UAT_ORG_ID) {
     throw new Error('partner_uat_forbidden_for_experimental_ai');
   }
@@ -21,7 +37,7 @@ export function assertExperimentalAiTenant(params) {
     throw new Error('org_a_forbidden_for_experimental_pdf_ai');
   }
 
-  if (params.organisationId !== resolvedOrg) {
+  if (!isPublicationToObligationIntegrationEnabled(params.organisationId)) {
     throw new Error(`experimental_ai_wrong_organisation:${params.organisationId}`);
   }
 }

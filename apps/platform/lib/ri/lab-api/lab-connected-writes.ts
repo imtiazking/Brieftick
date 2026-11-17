@@ -3,6 +3,7 @@ import 'server-only';
 import type { PlatformRole } from '@/lib/roles';
 import { canRi, type RiAction } from '@/lib/ri/permissions';
 import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
+import { isPublicationToObligationIntegrationEnabled } from '@/lib/ri/ai/experimental-ai-tenant-guard';
 
 /**
  * Master gate for Design Lab connected mutations (default off).
@@ -69,8 +70,17 @@ export function resolveLabAiReviewWritesEnabled(role: PlatformRole): boolean {
   return resolveLabWrite(role, 'ai:review');
 }
 
-export function resolveLabAiRequestWritesEnabled(role: PlatformRole): boolean {
-  return resolveLabWrite(role, 'ai:request') && isRiAiExecutionEnabled();
+export function resolveLabAiRequestWritesEnabled(
+  role: PlatformRole,
+  organisationId?: string | null,
+): boolean {
+  const roleAndEnv =
+    resolveLabWrite(role, 'ai:request') && isRiAiExecutionEnabled();
+  if (!roleAndEnv) return false;
+  if (organisationId == null || organisationId === '') {
+    return roleAndEnv;
+  }
+  return isPublicationToObligationIntegrationEnabled(organisationId);
 }
 
 export function resolveLabApplicabilityWorkflowEnabled(role: PlatformRole): boolean {
@@ -137,7 +147,7 @@ export function assertLabAssuranceWritesEnabled(role: PlatformRole): void {
   assertLabConnectedWrite(role, 'assurance:write');
 }
 
-export function buildLabWriteCapabilities(role: PlatformRole) {
+export function buildLabWriteCapabilities(role: PlatformRole, organisationId?: string | null) {
   return {
     changeManagement: resolveLabChangeWritesEnabled(role),
     impactAssessments: resolveLabImpactWritesEnabled(role),
@@ -152,6 +162,6 @@ export function buildLabWriteCapabilities(role: PlatformRole) {
     policies: resolveLabPolicyWritesEnabled(role),
     actions: resolveLabActionWritesEnabled(role),
     aiReview: resolveLabAiReviewWritesEnabled(role),
-    aiRequest: resolveLabAiRequestWritesEnabled(role),
+    aiRequest: resolveLabAiRequestWritesEnabled(role, organisationId),
   };
 }

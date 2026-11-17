@@ -7,6 +7,7 @@ import {
   PARTNER_UAT_ORG_ID,
   ORG_A_OPERATIONAL_ID,
   assertExperimentalAiTenant,
+  isPublicationToObligationIntegrationEnabled,
 } from '../lib/ri/ai/experimental-ai-tenant-guard.mjs';
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -39,6 +40,10 @@ expectThrow(
   () => assertExperimentalAiTenant({ organisationId: '00000000-0000-4000-8000-000000009999', useCaseId: 'UC-RI-005', operation: 'request' }),
   'experimental_ai_wrong_organisation',
 );
+
+if (!isPublicationToObligationIntegrationEnabled(AI_DEVELOPMENT_ORG_ID)) {
+  fail('server feature flag off for AI Development');
+} else ok('publication-to-obligation integration flag on for AI Development only');
 
 try {
   assertExperimentalAiTenant({ organisationId: AI_DEVELOPMENT_ORG_ID, useCaseId: 'UC-RI-005', operation: 'request' });

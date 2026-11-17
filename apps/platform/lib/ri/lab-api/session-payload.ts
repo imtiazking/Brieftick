@@ -32,12 +32,13 @@ const READ_ACTIONS: RiAction[] = [
 
 export function buildLabSessionPayload(params: {
   userId: string;
+  userEmail?: string | null;
   organisationId: string;
   organisationName: string | null;
   role: PlatformRole;
 }) {
   const permissions = READ_ACTIONS.filter((action) => canRi(params.role, action));
-  const writeCapabilities = buildLabWriteCapabilities(params.role);
+  const writeCapabilities = buildLabWriteCapabilities(params.role, params.organisationId);
   const changeWritesEnabled = writeCapabilities.changeManagement;
   const authorisedUatChangeCreationEnabled =
     changeWritesEnabled &&
@@ -46,6 +47,7 @@ export function buildLabSessionPayload(params: {
   return {
     ok: true,
     userId: params.userId,
+    userEmail: params.userEmail ?? null,
     organisationId: params.organisationId,
     organisationName: params.organisationName,
     role: params.role,

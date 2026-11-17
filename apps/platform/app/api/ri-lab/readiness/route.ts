@@ -34,8 +34,8 @@ export async function GET() {
       environment: process.env.VERCEL_ENV || process.env.NODE_ENV || 'development',
       stagingProjectMatch: projectRef === FORGENIQ_RI_STAGING_PROJECT_REF,
       writesEnabled: resolveLabAnyConnectedWritesEnabled(ctx.role),
-      changeWritesEnabled: buildLabWriteCapabilities(ctx.role).changeManagement,
-      writeCapabilities: buildLabWriteCapabilities(ctx.role),
+      changeWritesEnabled: buildLabWriteCapabilities(ctx.role, ctx.organisationId).changeManagement,
+      writeCapabilities: buildLabWriteCapabilities(ctx.role, ctx.organisationId),
       operationalReadiness,
     });
   } catch (err) {
