@@ -139,6 +139,32 @@ export async function bootstrapLabConnectivity(state, options = {}) {
     notify();
   }
 
+  /** Tenant cookie must exist before /session — multi-membership users get organisation_required otherwise. */
+  await refreshLabOrganisationContext(state);
+  try {
+    await ensureSupabaseOrganisationActive();
+    await refreshLabOrganisationContext(state);
+  } catch (e) {
+    const reason = e?.reason || e?.message || '';
+    if (reason === 'organisation_selection_required' || (e?.memberships?.length ?? 0) > 1) {
+      state.connectivity = {
+        ...(state.connectivity || {}),
+        mode: 'connected_error',
+        orgSelectionRequired: true,
+        orgMemberships: e.memberships || state.connectivity?.orgMemberships,
+        error: 'organisation_selection_required',
+        lastCheckedAt: new Date().toISOString(),
+      };
+      notify();
+      return { mode: 'connected_error', error: 'organisation_selection_required' };
+    }
+    if (reason === 'no_memberships' || reason === 'no_supabase_membership') {
+      markConnectedBackendUnavailable(state, formatOrganisationError(e));
+      notify();
+      return { mode: 'connected_error', error: reason };
+    }
+  }
+
   let probe;
   try {
     probe = await withTimeout(
