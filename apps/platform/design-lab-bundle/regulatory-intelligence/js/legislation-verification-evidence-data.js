@@ -9,7 +9,7 @@ export const LEGISLATION_VERIFICATION_EVIDENCE = {
   "feedType": "application/atom+xml",
   "discoveryFeedUrl": "https://www.legislation.gov.uk/new/data.feed",
   "userAgent": "FORGENIQ-Regulatory-Intelligence-Design-Lab/1.0",
-  "lastVerifiedAt": "2026-10-14T11:48:18.994Z",
+  "lastVerifiedAt": "2026-10-14T11:37:45.720Z",
   "verifiedFrameworkIds": [
     "FWK-BANK-ACT",
     "FWK-CCA",
@@ -118,7 +118,7 @@ export const LEGISLATION_VERIFICATION_EVIDENCE = {
   },
   "history": [
     {
-      "at": "2026-10-14T11:48:18.994Z",
+      "at": "2026-10-14T11:37:45.720Z",
       "event": "VERIFICATION PASSED",
       "checks": [
         {

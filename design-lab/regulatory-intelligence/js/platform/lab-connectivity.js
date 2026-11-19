@@ -58,14 +58,27 @@ export async function activateConnectedBackend(state) {
     notify();
     return { ok: true, session, readiness };
   } catch (e) {
-    if (e?.memberships?.length) {
+    const reason = e?.reason || e?.message || '';
+    if (reason === 'organisation_selection_required' || (e?.memberships?.length ?? 0) > 1) {
       state.connectivity = {
         ...(state.connectivity || {}),
+        mode: 'org_selection_required',
         orgMemberships: e.memberships,
         orgSelectionRequired: true,
+        error: 'organisation_selection_required',
+        lastCheckedAt: new Date().toISOString(),
       };
+    } else if (reason === 'no_memberships' || reason === 'no_supabase_membership') {
+      state.connectivity = {
+        ...(state.connectivity || {}),
+        mode: 'org_access_denied',
+        error: reason,
+        errorDetail: formatOrganisationError(e),
+        lastCheckedAt: new Date().toISOString(),
+      };
+    } else {
+      markConnectedBackendUnavailable(state, formatOrganisationError(e));
     }
-    markConnectedBackendUnavailable(state, formatOrganisationError(e));
     notify();
     return { ok: false, error: e };
   }
@@ -149,19 +162,26 @@ export async function bootstrapLabConnectivity(state, options = {}) {
     if (reason === 'organisation_selection_required' || (e?.memberships?.length ?? 0) > 1) {
       state.connectivity = {
         ...(state.connectivity || {}),
-        mode: 'connected_error',
+        mode: 'org_selection_required',
         orgSelectionRequired: true,
         orgMemberships: e.memberships || state.connectivity?.orgMemberships,
         error: 'organisation_selection_required',
         lastCheckedAt: new Date().toISOString(),
       };
       notify();
-      return { mode: 'connected_error', error: 'organisation_selection_required' };
+      return { mode: 'org_selection_required', error: 'organisation_selection_required' };
     }
     if (reason === 'no_memberships' || reason === 'no_supabase_membership') {
-      markConnectedBackendUnavailable(state, formatOrganisationError(e));
+      state.connectivity = {
+        ...(state.connectivity || {}),
+        mode: 'org_access_denied',
+        orgSelectionRequired: false,
+        error: reason,
+        errorDetail: formatOrganisationError(e),
+        lastCheckedAt: new Date().toISOString(),
+      };
       notify();
-      return { mode: 'connected_error', error: reason };
+      return { mode: 'org_access_denied', error: reason };
     }
   }
 

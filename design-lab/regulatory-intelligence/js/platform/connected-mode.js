@@ -36,9 +36,23 @@ export function syncEnvironmentFooterBanner(state = getState()) {
     el.classList.add('ri-environment-banner--demo');
     return;
   }
+  if (state?.connectivity?.mode === 'org_selection_required') {
+    el.textContent =
+      'ORGANISATION SELECTION REQUIRED — choose your FORGENIQ tenant below to load staging operational data. Demo fixtures remain hidden.';
+    el.classList.remove('ri-environment-banner--demo');
+    el.classList.add('ri-environment-banner--staging', 'ri-environment-banner--error');
+    return;
+  }
+  if (state?.connectivity?.mode === 'org_access_denied') {
+    el.textContent =
+      'ORGANISATION ACCESS DENIED — this account has no usable Supabase tenant membership for Regulatory Intelligence.';
+    el.classList.remove('ri-environment-banner--demo');
+    el.classList.add('ri-environment-banner--staging', 'ri-environment-banner--error');
+    return;
+  }
   if (state?.connectivity?.mode === 'connected_error') {
     const err = state.connectivity?.error ? ` (${state.connectivity.error})` : '';
-    el.textContent = `CONNECTED STAGING ERROR${err} — demo data hidden. Use Admin → Platform to retry or select your organisation. Mock data must not be used as operational evidence.`;
+    el.textContent = `CONNECTED STAGING ERROR${err} — demo data hidden. Use Retry connection or Admin → Platform. Mock data must not be used as operational evidence.`;
     el.classList.remove('ri-environment-banner--demo');
     el.classList.add('ri-environment-banner--staging', 'ri-environment-banner--error');
     return;
@@ -102,6 +116,8 @@ export function isConnectedModeIntent(state = getState()) {
     mode === 'connected' ||
     mode === 'connecting' ||
     mode === 'connected_error' ||
+    mode === 'org_selection_required' ||
+    mode === 'org_access_denied' ||
     mode === 'auth_required'
   );
 }
@@ -115,7 +131,15 @@ export function shouldHideDemoRegulatoryData(state = getState()) {
   if (isConnectedBackendActive(state)) return true;
   if (isPresentationModeRequested() || state?.connectivity?.mode === 'presentation') return false;
   const mode = state?.connectivity?.mode;
-  if (mode === 'connecting' || mode === 'connected_error' || mode === 'auth_required') return true;
+  if (
+    mode === 'connecting' ||
+    mode === 'connected_error' ||
+    mode === 'org_selection_required' ||
+    mode === 'org_access_denied' ||
+    mode === 'auth_required'
+  ) {
+    return true;
+  }
   if (shouldAutoConnectToBackend()) return true;
   return false;
 }

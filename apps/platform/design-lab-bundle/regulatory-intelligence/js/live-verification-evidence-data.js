@@ -2,11 +2,11 @@
 export const LIVE_VERIFICATION_EVIDENCE = {
   "schemaVersion": 1,
   "verificationType": "LIVE SOURCE VERIFICATION",
-  "completedAt": "2026-10-14T11:47:52.368Z",
-  "startedAt": "2026-10-14T11:47:26.914Z",
+  "completedAt": "2026-10-14T11:38:54.443Z",
+  "startedAt": "2026-10-14T11:38:28.685Z",
   "fca": {
     "http": {
-      "timestamp": "2026-10-14T11:47:26.937Z",
+      "timestamp": "2026-10-14T11:38:28.708Z",
       "requestedUrl": "https://www.fca.org.uk/publications/rss.xml",
       "finalUrl": "https://www.fca.org.uk/publications/rss.xml",
       "httpStatus": 200,
@@ -36,7 +36,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "rawId": "RAW-LIVE-0005"
       }
     ],
-    "lastVerifiedAt": "2026-10-14T11:47:36.088Z",
+    "lastVerifiedAt": "2026-10-14T11:38:37.837Z",
     "discoveryFeedUrl": "https://www.fca.org.uk/publications/rss.xml",
     "items": [
       {
@@ -46,7 +46,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "publicationDate": null,
         "publicationType": "Publication",
         "canonicalUrl": "https://www.fca.org.uk/publications/multi-firm-reviews/governance-benchmarks-sector",
-        "retrievedAt": "2026-10-14T11:47:36.088Z",
+        "retrievedAt": "2026-10-14T11:38:37.836Z",
         "discoveryFeedUrl": "https://www.fca.org.uk/publications/rss.xml",
         "discoveryMethod": "fca-publications-rss",
         "dataOrigin": "live-verification",
@@ -55,7 +55,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "parserVersion": "RI-PARSER-2.0",
         "httpContentType": "text/html",
         "fingerprintAlgorithm": "SHA-256",
-        "contentHash": "325b344920c452f9213db813996106715663d109015ef621ad89548d5be8cc28",
+        "contentHash": "ddeaee781509cc876777b29c28ffe8c9c53b09d8e8d8d9964b3b8f72bfafbb84",
         "externalId": "175446",
         "provenanceStatus": "Ready for Import",
         "contentExtractStored": false,
@@ -68,7 +68,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "publicationDate": null,
         "publicationType": "Finalised Guidance",
         "canonicalUrl": "https://www.fca.org.uk/publications/finalised-guidance/fg26-11-high-loan-income-lending",
-        "retrievedAt": "2026-10-14T11:47:34.041Z",
+        "retrievedAt": "2026-10-14T11:38:36.644Z",
         "discoveryFeedUrl": "https://www.fca.org.uk/publications/rss.xml",
         "discoveryMethod": "fca-publications-rss",
         "dataOrigin": "live-verification",
@@ -77,7 +77,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "parserVersion": "RI-PARSER-2.0",
         "httpContentType": "text/html",
         "fingerprintAlgorithm": "SHA-256",
-        "contentHash": "ea9f40b6eb15d2f2ff59d5a8d65bb909c3d6e3b83f598640bdaf1cd75f287b28",
+        "contentHash": "1c905ede3ab1bd2148754777b461106cb147f25483b1767e4da9110bb9f87a1f",
         "externalId": "165756",
         "provenanceStatus": "Ready for Import",
         "contentExtractStored": false,
@@ -90,7 +90,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "publicationDate": null,
         "publicationType": "Publication",
         "canonicalUrl": "https://www.fca.org.uk/publications/newsletters/market-watch-86",
-        "retrievedAt": "2026-10-14T11:47:32.006Z",
+        "retrievedAt": "2026-10-14T11:38:33.835Z",
         "discoveryFeedUrl": "https://www.fca.org.uk/publications/rss.xml",
         "discoveryMethod": "fca-publications-rss",
         "dataOrigin": "live-verification",
@@ -99,7 +99,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "parserVersion": "RI-PARSER-2.0",
         "httpContentType": "text/html",
         "fingerprintAlgorithm": "SHA-256",
-        "contentHash": "feb4ff6eb081afd094be96764e8fa1451ae6e34167b7a12d9bfb4f9d07c0c1a7",
+        "contentHash": "f978cd4849ac48193ccceb0f2efa35d417b573504b4a0df88062810793337b93",
         "externalId": "176466",
         "provenanceStatus": "Ready for Import",
         "contentExtractStored": false,
@@ -116,8 +116,8 @@ export const LIVE_VERIFICATION_EVIDENCE = {
       "sourceTrust": "Official Regulator",
       "untrustedContentTag": "UNTRUSTED_SOURCE_CONTENT",
       "fingerprintAlgorithm": "SHA-256",
-      "contentHash": "325b344920c452f9213db813996106715663d109015ef621ad89548d5be8cc28",
-      "retrievedAt": "2026-10-14T11:47:36.088Z"
+      "contentHash": "ddeaee781509cc876777b29c28ffe8c9c53b09d8e8d8d9964b3b8f72bfafbb84",
+      "retrievedAt": "2026-10-14T11:38:37.836Z"
     },
     "urlOnAllowlist": true,
     "connection": "PASS",
@@ -125,7 +125,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
   },
   "pra": {
     "http": {
-      "timestamp": "2026-10-14T11:47:36.089Z",
+      "timestamp": "2026-10-14T11:38:37.837Z",
       "requestedUrl": "https://www.bankofengland.co.uk/rss/publications",
       "finalUrl": "https://www.bankofengland.co.uk/rss/publications",
       "httpStatus": 200,
@@ -164,7 +164,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "rawId": "RAW-LIVE-0011"
       }
     ],
-    "lastVerifiedAt": "2026-10-14T11:47:52.365Z",
+    "lastVerifiedAt": "2026-10-14T11:38:54.440Z",
     "items": [
       {
         "rawId": "RAW-LIVE-0011",
@@ -173,7 +173,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "publicationDate": "2026-07-14",
         "publicationType": "Publication",
         "canonicalUrl": "https://www.bankofengland.co.uk/news/2026/july/pra-and-fca-propose-new-captive-insurance-regime-to-drive-uk-growth-and-competitiveness",
-        "retrievedAt": "2026-10-14T11:47:52.365Z",
+        "retrievedAt": "2026-10-14T11:38:54.439Z",
         "discoveryFeedUrl": "https://www.bankofengland.co.uk/rss/news",
         "discoveryMethod": "boe-news-rss-pra-filter",
         "dataOrigin": "live-verification",
@@ -182,7 +182,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "parserVersion": "RI-PARSER-2.0",
         "httpContentType": "text/html",
         "fingerprintAlgorithm": "SHA-256",
-        "contentHash": "90cb95f79d644886fc646f3e5ccc788b5257d4b5d3324da1cb43b7df2bea1055",
+        "contentHash": "3cdf2edb4e603a4fbb7bacdaf32aa9e5ceae40d1ac7fa5bd344d38a9ac213094",
         "externalId": "{879F9D84-E662-4AFB-BAEF-44BFF9C11A98}",
         "provenanceStatus": "Ready for Import",
         "contentExtractStored": false,
@@ -195,7 +195,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "publicationDate": "2026-07-20",
         "publicationType": "Publication",
         "canonicalUrl": "https://www.bankofengland.co.uk/news/2026/july/pra-fines-hdi-global-se-4165000-for-inaccurate-reporting",
-        "retrievedAt": "2026-10-14T11:47:50.351Z",
+        "retrievedAt": "2026-10-14T11:38:52.131Z",
         "discoveryFeedUrl": "https://www.bankofengland.co.uk/rss/news",
         "discoveryMethod": "boe-news-rss-pra-filter",
         "dataOrigin": "live-verification",
@@ -204,7 +204,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "parserVersion": "RI-PARSER-2.0",
         "httpContentType": "text/html",
         "fingerprintAlgorithm": "SHA-256",
-        "contentHash": "96886caa9c65c0bf2f6a3dd5123f8e65a1afb92cb8e89538de1ca78d12cd724f",
+        "contentHash": "c99092fc7ba1ca1e79f79fd44ac88efa6f12f682cfb19129c52a9f060034d057",
         "externalId": "{E026F16A-A501-4794-A09B-7E54F2EE30CE}",
         "provenanceStatus": "Ready for Import",
         "contentExtractStored": false,
@@ -217,7 +217,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "publicationDate": "2026-07-22",
         "publicationType": "Publication",
         "canonicalUrl": "https://www.bankofengland.co.uk/news/2026/july/pra-consults-on-updated-guidance-for-friendly-society-amalgamations-and-transfers",
-        "retrievedAt": "2026-10-14T11:47:48.472Z",
+        "retrievedAt": "2026-10-14T11:38:50.259Z",
         "discoveryFeedUrl": "https://www.bankofengland.co.uk/rss/news",
         "discoveryMethod": "boe-news-rss-pra-filter",
         "dataOrigin": "live-verification",
@@ -226,7 +226,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "parserVersion": "RI-PARSER-2.0",
         "httpContentType": "text/html",
         "fingerprintAlgorithm": "SHA-256",
-        "contentHash": "1c3eed475464d0f3a24d6d5567d6be6ad6d101548f0444015eb0870f8e171f84",
+        "contentHash": "27242ccb85b9da9835a32e5a2fd25ec53440520cc466c69d248993d97668636a",
         "externalId": "{6F3D5C0D-D4C0-4A28-93CE-7F21622F66A5}",
         "provenanceStatus": "Ready for Import",
         "contentExtractStored": false,
@@ -244,8 +244,8 @@ export const LIVE_VERIFICATION_EVIDENCE = {
       "dataOrigin": "live-verification",
       "sourceTrust": "Official Regulator",
       "fingerprintAlgorithm": "SHA-256",
-      "contentHash": "90cb95f79d644886fc646f3e5ccc788b5257d4b5d3324da1cb43b7df2bea1055",
-      "retrievedAt": "2026-10-14T11:47:52.365Z"
+      "contentHash": "3cdf2edb4e603a4fbb7bacdaf32aa9e5ceae40d1ac7fa5bd344d38a9ac213094",
+      "retrievedAt": "2026-10-14T11:38:54.439Z"
     },
     "connection": "PASS",
     "duplicateProtection": "SIMULATED:new"
@@ -258,10 +258,10 @@ export const LIVE_VERIFICATION_EVIDENCE = {
     "hmtLine": "HMT LIVE CONNECTION: PASS"
   },
   "postMasterEnhancement": "HM TREASURY LIVE HORIZON-SCANNING INTEGRATION",
-  "hmtCompletedAt": "2026-10-14T11:47:58.809Z",
+  "hmtCompletedAt": "2026-10-14T11:39:00.820Z",
   "hmt": {
     "http": {
-      "timestamp": "2026-10-14T11:47:52.669Z",
+      "timestamp": "2026-10-14T11:38:54.692Z",
       "requestedUrl": "https://www.gov.uk/government/organisations/hm-treasury.atom",
       "finalUrl": "https://www.gov.uk/government/organisations/hm-treasury.atom",
       "httpStatus": 200,
@@ -277,7 +277,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
     "connectorHealth": "Healthy",
     "connectorVersion": "HMT-GOVUK-ATOM-1.0",
     "parserVersion": "RI-PARSER-2.0",
-    "lastVerifiedAt": "2026-10-14T11:47:58.809Z",
+    "lastVerifiedAt": "2026-10-14T11:39:00.819Z",
     "discoveryFeedUrl": "https://www.gov.uk/government/organisations/hm-treasury.atom",
     "authorityType": "Government / Policy",
     "sourceRole": "Horizon Scanning",
@@ -293,7 +293,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "publicationDate": "2026-10-01",
         "publicationType": "Guidance",
         "canonicalUrl": "https://www.gov.uk/government/publications/ofsi-general-licence-int20255635700",
-        "retrievedAt": "2026-10-14T11:47:58.809Z",
+        "retrievedAt": "2026-10-14T11:39:00.819Z",
         "discoveryFeedUrl": "https://www.gov.uk/government/organisations/hm-treasury.atom",
         "discoveryMethod": "hmt-govuk-atom",
         "dataOrigin": "live-verification",
@@ -307,7 +307,7 @@ export const LIVE_VERIFICATION_EVIDENCE = {
         "parserVersion": "RI-PARSER-2.0",
         "httpContentType": "text/html",
         "fingerprintAlgorithm": "SHA-256",
-        "contentHash": "e48d2993b0b249059be8e5690bccf81bcd56dba4cb65dbd2fcf97372a690c304",
+        "contentHash": "272f178dddca5447892bfe29acd13e6890b2c859262a6c54718de3e0846d8c1e",
         "externalId": "https://www.gov.uk/government/publications/ofsi-general-licence-int20255635700#2026-10-01T09:28:10Z",
         "provenanceStatus": "Ready for Import",
         "contentExtractStored": false,

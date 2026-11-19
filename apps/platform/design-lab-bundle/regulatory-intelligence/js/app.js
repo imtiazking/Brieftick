@@ -843,7 +843,14 @@ function bindViewHandlers() {
     try {
       await setActiveOrganisation(organisationId);
       await refreshLabOrganisationContext(getState());
-      showToast('Active organisation set');
+      showToast('Active organisation set — connecting…');
+      const res = await runBootstrapSingleton(() => bootstrapLabConnectivity(getState(), { hardReset: true }));
+      if (res.mode === 'connected') showToast('Connected to FORGENIQ backend');
+      else if (res.mode === 'org_selection_required') showToast('Organisation still required');
+      else showToast(getState().connectivity?.error || getState().connectivity?.errorDetail || 'Connection incomplete');
+      renderChrome();
+      bindChromeHandlers();
+      syncModeChrome();
       renderShell();
     } catch (e) {
       showToast(e?.message || 'Could not set organisation');

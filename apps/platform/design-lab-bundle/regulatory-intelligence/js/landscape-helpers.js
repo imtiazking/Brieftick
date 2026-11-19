@@ -1,15 +1,5 @@
 /** Sector regulatory landscape — query & display helpers (deterministic, no AI). */
 import { filterActiveObligations, filterOpenWorkObligations } from './ai/obligation-portfolio.js';
-import { isConnectedBackendActive } from './platform/connected-mode.js';
-import { isConnectedCatalogueReady } from './platform/connected-catalogue.js';
-import {
-  isConnectedLandscapeReady,
-  sectorStatsForConnected,
-} from './platform/connected-landscape.js';
-
-function connectedCatalogueActive(state) {
-  return isConnectedBackendActive(state) && isConnectedCatalogueReady(state);
-}
 
 export const COVERAGE_STATUSES = {
   LIVE_SOURCE: 'LIVE_SOURCE',
@@ -91,11 +81,6 @@ export function coverageSummaryForSector(state, sectorId) {
 }
 
 export function publicationsForSector(state, sectorId) {
-  if (connectedCatalogueActive(state)) {
-    return (state.connectedCatalogue?.publications || []).filter((p) =>
-      (p.landscapeSectorIds || []).includes(sectorId),
-    );
-  }
   const pubIds = new Set();
   (state.publicationSectorMappings || []).forEach((m) => {
     if (m.sectorId === sectorId || (m.relatedSectorIds || []).includes(sectorId)) pubIds.add(m.publicationId);
@@ -104,12 +89,6 @@ export function publicationsForSector(state, sectorId) {
 }
 
 export function changesForSector(state, sectorId) {
-  if (connectedCatalogueActive(state)) {
-    const pubIds = new Set(publicationsForSector(state, sectorId).map((p) => p.id));
-    return (state.connectedCatalogue?.changes || []).filter(
-      (c) => c.publicationId && pubIds.has(c.publicationId),
-    );
-  }
   const changeIds = new Set();
   (state.changes || []).forEach((c) => {
     if ((c.sectorIds || []).includes(sectorId)) changeIds.add(c.id);
@@ -124,30 +103,15 @@ export function changesForSector(state, sectorId) {
 }
 
 export function obligationsForSector(state, sectorId) {
-  if (connectedCatalogueActive(state)) {
-    return (state.connectedCatalogue?.obligations || []).filter((o) =>
-      (o.landscapeSectorIds || o.sectorIds || []).includes(sectorId),
-    );
-  }
   return (state.obligations || []).filter((o) => (o.sectorIds || []).includes(sectorId));
 }
 
 export function risksForSector(state, sectorId) {
-  if (connectedCatalogueActive(state)) {
-    return (state.connectedCatalogue?.risks || []).filter((r) =>
-      (r.landscapeSectorIds || r.sectorIds || []).includes(sectorId),
-    );
-  }
   const oblIds = new Set(obligationsForSector(state, sectorId).map((o) => o.id));
   return (state.risks || []).filter((r) => (r.obligationIds || []).some((id) => oblIds.has(id)));
 }
 
 export function controlsForSector(state, sectorId) {
-  if (connectedCatalogueActive(state)) {
-    return (state.connectedCatalogue?.controls || []).filter((c) =>
-      (c.landscapeSectorIds || c.sectorIds || []).includes(sectorId),
-    );
-  }
   const riskIds = new Set(risksForSector(state, sectorId).map((r) => r.id));
   return (state.controls || []).filter((c) => (c.riskIds || []).some((id) => riskIds.has(id)));
 }
@@ -158,9 +122,6 @@ export function sectorSummaryStats(state, sector) {
   const chgs = changesForSector(state, sector.id);
   const obls = obligationsForSector(state, sector.id);
   const live = (state.sectorCoverage || []).find((c) => c.sectorId === sector.id);
-  const connected = isConnectedBackendActive(state);
-  const landReady = isConnectedLandscapeReady(state);
-  const connStats = landReady ? sectorStatsForConnected(state, sector.id) : null;
   return {
     regulators: regulatorsForSector(state, sector.id),
     frameworks: cov.total,
@@ -169,15 +130,10 @@ export function sectorSummaryStats(state, sector) {
     partialCoverageCount: cov.counts.PARTIAL_COVERAGE,
     plannedCount: cov.counts.SOURCE_PLANNED,
     referenceCount: cov.counts.REFERENCE_ONLY,
-    recentChanges: connected && landReady ? (connStats?.changeCount ?? 0) : chgs.filter((c) => c.status !== 'Complete').length,
-    openObligationCount: connected ? 0 : filterActiveObligations(obls).length,
-    activeInReviewObligationCount: connected ? 0 : filterOpenWorkObligations(obls).length,
+    recentChanges: chgs.filter((c) => c.status !== 'Complete').length,
+    openObligationCount: filterActiveObligations(obls).length,
+    activeInReviewObligationCount: filterOpenWorkObligations(obls).length,
     lastLandscapeReview: live?.lastLandscapeReview || sector.lastLandscapeReview || '—',
-    connectedMode: connected,
-    connectedLandscapeReady: landReady,
-    connectedPublicationCount: connected && landReady ? (connStats?.publicationCount ?? pubs.length) : null,
-    connectedChangeCount: connected && landReady ? (connStats?.changeCount ?? chgs.length) : null,
-    connectedSourceCount: connected && landReady ? connStats?.sourceCount ?? null : null,
   };
 }
 

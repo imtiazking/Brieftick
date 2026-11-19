@@ -28,7 +28,10 @@ export function resolveActiveOrganisation(memberships, clerkUserId, requestedOrg
   if (active.length === 0) return { organisationId: null };
   if (requestedOrganisationId) {
     const match = active.find((m) => m.organisationId === requestedOrganisationId);
-    if (!match) return { organisationId: null };
+    if (!match) {
+      if (active.length > 1) return { organisationId: null, reason: 'organisation_selection_required' };
+      return { organisationId: null, reason: 'organisation_not_member' };
+    }
     return { organisationId: match.organisationId };
   }
   if (active.length === 1) return { organisationId: active[0].organisationId };

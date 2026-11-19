@@ -1,0 +1,50 @@
+[
+  {
+    "id": "Q01",
+    "question": "Which Third Party Risk obligations are linked to regulatory changes, and what policies address them?"
+  },
+  {
+    "id": "Q02",
+    "question": "Which Financial Crime regulatory changes are linked to risks, and what are those risks?"
+  },
+  {
+    "id": "Q03",
+    "question": "Show me TPR-related regulatory changes and the obligations created from them."
+  },
+  {
+    "id": "Q04",
+    "question": "Which regulatory changes have policies but no linked controls?"
+  },
+  {
+    "id": "Q05",
+    "question": "Which obligations have actions that are not yet complete?"
+  },
+  {
+    "id": "Q06",
+    "question": "Which controls are linked to overdue actions?"
+  },
+  {
+    "id": "Q07",
+    "question": "Which policies are linked to Operational Resilience risks?"
+  },
+  {
+    "id": "Q08",
+    "question": "Which regulatory changes have evidence but no linked policy?"
+  },
+  {
+    "id": "Q09",
+    "question": "Which obligations are connected to more than one control?"
+  },
+  {
+    "id": "Q10",
+    "question": "What actions are due soon, and which regulatory changes ultimately caused them?"
+  },
+  {
+    "id": "Q11",
+    "question": "Which policies support more than one regulatory obligation?"
+  },
+  {
+    "id": "Q12",
+    "question": "Which regulatory changes are linked to both a risk and a control?"
+  }
+]

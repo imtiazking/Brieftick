@@ -2,6 +2,7 @@ import { getState } from './store.js';
 import { esc, pageHeader, badge } from './components.js';
 import { getPlatform, platform, APPLICATION_ROLES } from './services/platform-service.js';
 import { isConnectedBackendActive, isConnectedModeIntent, isPresentationModeRequested } from './platform/connected-mode.js';
+import { renderOrganisationMembershipPicker } from './platform/lab-org-selector.js';
 
 export function viewAdminPlatform() {
   const s = getState();
@@ -36,26 +37,9 @@ export function viewAdminPlatform() {
     ? `<p class="ri-alert">${esc(s.connectivity.error)}</p>`
     : '';
 
-  const orgMemberships = s.connectivity?.orgMemberships || [];
-  const orgSelect =
-    orgMemberships.length > 1
-      ? `<div class="ri-form-group">
-      <label for="ri-active-org-select">Active FORGENIQ organisation (Supabase tenant)</label>
-      <select id="ri-active-org-select" data-ri-select-org>
-        <option value="">— Select —</option>
-        ${orgMemberships
-          .map(
-            (m) =>
-              `<option value="${esc(m.organisationId)}"${m.organisationId === s.connectivity?.activeOrganisationId ? ' selected' : ''}>${esc(m.organisationName || m.organisationId)} · ${esc(m.role)}</option>`,
-          )
-          .join('')}
-      </select>
-      <button type="button" class="ri-btn ri-btn--ghost" data-ri-apply-org>Use selected organisation</button>
-      <p class="ri-muted">Clerk organisation membership is separate from this Supabase tenant id.</p>
-    </div>`
-      : orgMemberships.length === 1
-        ? `<p class="ri-muted">Supabase tenant: <strong>${esc(orgMemberships[0].organisationName || orgMemberships[0].organisationId)}</strong> · ${esc(orgMemberships[0].role)}</p>`
-        : '';
+  const orgSelect = renderOrganisationMembershipPicker(s, {
+    heading: 'Active FORGENIQ organisation (Supabase tenant)',
+  });
 
   const activeOrgLine = s.connectivity?.activeOrganisationId
     ? `<p class="ri-muted">Active tenant cookie: <span class="ri-mono">${esc(s.connectivity.activeOrganisationId)}</span></p>`

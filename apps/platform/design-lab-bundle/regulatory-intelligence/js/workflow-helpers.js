@@ -84,9 +84,6 @@ export function publicationInWorkflow(pub) {
 }
 
 export function isIntakeCandidate(pub) {
-  if (pub?._connected) {
-    return pub.intakeEligible !== false;
-  }
   if (pub.triageStatus === 'Not Relevant') return false;
   if (publicationInWorkflow(pub) && pub.triageStatus === 'Accepted') return true;
   const intakeStates = ['New', 'AI Analysed', 'Review Required', 'Assigned', 'In Review', 'Escalated'];

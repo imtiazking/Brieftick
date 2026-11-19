@@ -25,35 +25,10 @@ import { renderChangeAiSummary } from './ai-governance-views.js';
 import { renderChangeAssurancePanel } from './assurance-views.js';
 import { orgFactorBullets } from './seed-operational.js';
 import { renderChangeIaPanel } from './ai-workflow-ui.js';
-import { isConnectedBackendActive, isConnectedChangeWritesEnabled } from './platform/connected-mode.js';
-import {
-  connectedCatalogueBanner,
-  getConnectedAssigneeLabel,
-  getConnectedCatalogue,
-} from './platform/connected-catalogue.js';
-import { connectedWorkModeBanner } from './platform/connected-display.js';
-import { connectedChangeStatusOptions } from './platform/connected-change-workflow.js';
-import { renderConnectedWorkflowEventsTable } from './platform/connected-governance-ui.js';
-import {
-  renderConnectedCreateImpactPanel,
-} from './platform/connected-impact-panels.js';
-import { renderConnectedCreateObligationPanel } from './platform/connected-obligation-panels.js';
-import {
-  getConnectedEntityWorkflowEvents,
-} from './platform/connected-entity-audit.js';
 
 export function viewChange(id) {
-  const connected = isConnectedBackendActive(getState());
   const ch = getChange(id);
-  if (connected && !ch) {
-    return `${connectedCatalogueBanner(getState())}
-      ${connectedWorkModeBanner(getState())}
-      <p class="ri-muted" data-connected-change-loading="true">Loading tenant regulatory change from staging…</p>`;
-  }
   if (!ch) return notFoundState('Regulatory Change', id);
-  if (connected) {
-    return viewChangeConnected(id, ch._connected ? ch : { ...ch, _connected: true });
-  }
   const pub = getPublication(ch.publicationId);
   const related = collectRelatedForChange(id);
   const s = getState();
@@ -245,118 +220,4 @@ function renderChangeAudit(changeId, pubId) {
     (e) => `<tr><td>${new Date(e.timestamp).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', ' ·')}</td><td>${esc(e.user)}</td><td>${esc(e.action)}</td><td>${esc(e.newValue || '—')}</td></tr>`
   );
   return dataTable(['When', 'User', 'Action', 'Detail'], rows, 'No audit events for this change');
-}
-
-function renderConnectedChangeOwnerPanel(id, ch) {
-  if (!isConnectedChangeWritesEnabled(getState())) return '';
-  const s = getState();
-  const cat = getConnectedCatalogue(s);
-  const members = cat.orgMembers || [];
-  const currentOwner = ch.ownerId || '';
-  const options = members
-    .filter((m) => m.clerkUserId !== currentOwner)
-    .map(
-      (m) =>
-        `<option value="${esc(m.clerkUserId)}">${esc(m.label || m.clerkUserId)}</option>`,
-    )
-    .join('');
-  return `<section class="ri-panel" data-connected-change-owner-panel="${esc(id)}">
-    <h2>Assign owner</h2>
-    <p class="ri-muted">Current owner: ${esc(getConnectedAssigneeLabel(s, currentOwner))}</p>
-    <div class="ri-form__actions">
-      <select data-connected-change-owner-select aria-label="Assign owner">
-        <option value="">Select authorised member…</option>
-        ${options}
-      </select>
-      <button type="button" class="ri-btn ri-btn--sm ri-btn--primary" data-connected-change-assign data-change-id="${esc(id)}" data-expected-updated-at="${esc(ch.updatedAt || '')}">Assign</button>
-    </div>
-  </section>`;
-}
-
-function renderConnectedChangeStatusPanel(id, ch) {
-  if (!isConnectedChangeWritesEnabled(getState())) return '';
-  const current = ch.statusCode || 'OPEN';
-  const allowed = connectedChangeStatusOptions(current);
-  const buttons = allowed
-    .map(
-      (s) =>
-        `<button type="button" class="ri-btn ri-btn--sm ri-btn--ghost" data-connected-change-status="${esc(s.code)}" data-change-id="${esc(id)}" data-expected-updated-at="${esc(ch.updatedAt || '')}">Set ${esc(s.label)}</button>`,
-    )
-    .join(' ');
-  return `<section class="ri-panel" data-connected-change-status-panel="${esc(id)}">
-    <h2>Change status</h2>
-    <p class="ri-muted">Current status: ${badge(ch.status)} · Only valid workflow transitions are shown.</p>
-    <div class="ri-form__actions">${buttons || '<span class="ri-muted">No further transitions available.</span>'}</div>
-  </section>`;
-}
-
-function renderConnectedChangeAuditPanel(id) {
-  const events = getConnectedEntityWorkflowEvents(getState(), 'regulatory_change', id);
-  return `<section class="ri-panel"><h2>Audit history</h2>
-    ${renderConnectedWorkflowEventsTable(events, 'No workflow audit events for this change yet')}  </section>`;
-}
-
-function renderConnectedChangeMetadataPanel(id, ch) {
-  if (!isConnectedChangeWritesEnabled(getState())) return '';
-  return `<section class="ri-panel" data-connected-change-metadata-panel="${esc(id)}">
-    <h2>Change categorisation</h2>
-    <div class="ri-form">
-      <label>Materiality <input data-connected-change-materiality value="${esc(ch.materiality || '')}" /></label>
-      <label>Implementation due <input type="date" data-connected-change-deadline value="${esc(ch.dueDateRaw || ch.implementationDeadline || '')}" /></label>
-      <label>Change type <input data-connected-change-type value="${esc(ch.changeType || '')}" /></label>
-    </div>
-    <button type="button" class="ri-btn ri-btn--sm ri-btn--primary" data-connected-change-metadata-save data-change-id="${esc(id)}" data-expected-updated-at="${esc(ch.updatedAt || '')}">Save metadata</button>
-  </section>`;
-}
-
-function viewChangeConnected(id, ch) {
-  const s = getState();
-  const pub = getPublication(ch.publicationId);
-  const crumbs = [
-    { label: 'Regulatory Intelligence', href: '#/dashboard' },
-    { label: 'Regulatory Changes', href: '#/changes' },
-    pub ? { label: pub.title || pub.id, href: `#/publication/${pub.id}` } : null,
-    { label: ch.externalKey || id.slice(0, 8) },
-  ].filter(Boolean);
-  const hero = entityHero(ch.externalKey || id.slice(0, 8), ch.title, [
-    { label: 'Materiality', value: ch.materiality, badge: true },
-    { label: 'Type', value: ch.changeType || '—' },
-    { label: 'Owner', value: getConnectedAssigneeLabel(s, ch.ownerId) || ch.ownerLabel || '—' },
-    { label: 'Status', value: ch.status, badge: true },
-    { label: 'Applicability (persisted)', value: ch.applicabilityRecommendation || 'Pending', badge: true },
-    { label: 'Effective', value: formatDate(ch.effectiveDate) },
-    { label: 'Implementation due', value: formatDate(ch.dueDate) },
-  ], crumbs, {
-    eyebrow: 'TENANT REGULATORY CHANGE',
-    refs: `${ch.regulator || '—'} · ${ch.regulatoryReference || '—'}`,
-    narrative: ch.description || '—',
-    actions: pub
-      ? `<a class="ri-btn ri-btn--ghost" href="#/publication/${esc(pub.id)}">Open publication</a>`
-      : '',
-  });
-  const impactLinks = (ch.impactIds || [])
-    .map((iid) => `<li><a href="#/assessment/${esc(iid)}">${esc(iid.slice(0, 8))}…</a></li>`)
-    .join('');
-  const oblLinks = (ch.obligationIds || [])
-    .map((oid) => `<li><a href="#/obligation/${esc(oid)}">${esc(oid.slice(0, 8))}…</a></li>`)
-    .join('');
-  return `${connectedCatalogueBanner(s)}
-    ${connectedWorkModeBanner(s)}
-    ${hero}
-    ${renderConnectedChangeOwnerPanel(id, ch)}
-    ${renderConnectedChangeMetadataPanel(id, ch)}
-    ${renderConnectedChangeStatusPanel(id, ch)}
-    ${renderConnectedCreateImpactPanel(id)}
-    ${renderConnectedCreateObligationPanel(id)}
-    ${renderConnectedChangeAuditPanel(id)}
-    <section class="ri-panel"><h2>Source publication</h2>
-      ${pub ? `<p>${linkRecord('Publication', pub.id, pub.title)} · ${esc(pub.regulator)}</p>` : '<p class="ri-muted">Publication not in loaded catalogue.</p>'}
-    </section>
-    <section class="ri-panel"><h2>Linked impact assessments</h2>
-      ${impactLinks ? `<ul>${impactLinks}</ul>` : '<p class="ri-muted">No impact assessments linked to this regulatory change.</p>'}
-    </section>
-    <section class="ri-panel"><h2>Linked obligations</h2>
-      ${oblLinks ? `<ul>${oblLinks}</ul>` : '<p class="ri-muted">No obligations linked to this regulatory change.</p>'}
-    </section>
-    <p class="ri-muted">Demo governance, AI interpretation, and assurance panels remain hidden in connected mode.</p>`;
 }

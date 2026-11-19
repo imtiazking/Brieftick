@@ -2,14 +2,8 @@ import { getState } from './store.js';
 import { esc, pageHeader } from './components.js';
 import { LOCAL_AI_BRIDGE_ORIGIN } from './ai/ri-bridge-config.js';
 import { RI_SUMMARY_PROMPT_V1 } from './ai/prompt-metadata.js';
-import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
 
 export function viewAdminAi() {
-  const blocked = guardConnectedDemoSubroute('Admin · AI', {
-    subtitle: 'Local AI bridge status · demonstration only',
-    links: '<p><a href="#/admin">Administration</a> · <a href="#/ai-governance">AI Governance register</a></p>',
-  });
-  if (blocked) return blocked;
   const s = getState();
   const last = (s.riAiAnalysisResults || [])[0];
   const lastErr = (s.aiDomainAuditEvents || []).find(

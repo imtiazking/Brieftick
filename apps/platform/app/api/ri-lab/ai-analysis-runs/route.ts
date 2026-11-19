@@ -7,6 +7,10 @@ import { getLatestPublicationVersion } from '@/lib/ri/services/publication-versi
 import { getPublicationDetail } from '@/lib/ri/services/publications';
 import { requestPublicationAnalysis } from '@/lib/ri/services/ai-analysis';
 
+/** Staging UC-RI-005 live extraction — must exceed RI_ANTHROPIC_TIMEOUT_MS (180s) + overhead. */
+export const maxDuration = 300;
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
     const ctx = await requireRiContext('ai:request');

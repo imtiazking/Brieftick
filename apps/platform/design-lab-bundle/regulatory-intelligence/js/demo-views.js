@@ -1,13 +1,6 @@
 import { DEMO_JOURNEYS } from './demo-journey.js';
 import { esc, pageHeader, intelligenceLabel } from './components.js';
-import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
-
 export function viewDemo(queryJourney) {
-  const blocked = guardConnectedDemoSubroute('Demo journeys', {
-    subtitle: 'Switch to Demo mode to run guided demonstrations',
-    body: `<p class="ri-alert ri-alert--readonly">Demo journeys use seeded scenario data and are disabled while Connected mode is active.</p>`,
-  });
-  if (blocked) return blocked;
   const journeys = Object.values(DEMO_JOURNEYS);
   const cards = journeys
     .map(

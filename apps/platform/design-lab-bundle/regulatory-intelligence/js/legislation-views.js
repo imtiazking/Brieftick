@@ -1,13 +1,8 @@
 import { getState } from './store.js';
 import { esc, pageHeader, breadcrumbs, dataTable, badge, formatDate, formatDateTime, emptyState } from './components.js';
 import { coverageBadge } from './landscape-helpers.js';
-import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
 
 export function viewLegislationDetail(recordId) {
-  const blocked = guardConnectedDemoSubroute('Legislation detail', {
-    links: '<p><a href="#/landscape">Regulatory Landscape</a></p>',
-  });
-  if (blocked) return blocked;
   const s = getState();
   const rec = (s.legislationRecords || []).find((r) => r.id === recordId);
   if (!rec) return emptyState('Legislation record not found');
@@ -41,10 +36,6 @@ export function viewLegislationDetail(recordId) {
 }
 
 export function viewLegislationStaging() {
-  const blocked = guardConnectedDemoSubroute('Legislation staging', {
-    links: '<p><a href="#/landscape">Regulatory Landscape</a></p>',
-  });
-  if (blocked) return blocked;
   const s = getState();
   const rows = (s.legislationStaging || []).map(
     (st) =>

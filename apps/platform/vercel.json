@@ -4,6 +4,9 @@
   "installCommand": "npm install",
   "regions": ["lhr1"],
   "functions": {
+    "app/api/ri-lab/ai-analysis-runs/route.ts": {
+      "maxDuration": 300
+    },
     "app/design-lab/regulatory-intelligence/**": {
       "includeFiles": "design-lab-bundle/regulatory-intelligence/**"
     }

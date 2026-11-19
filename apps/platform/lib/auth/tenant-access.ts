@@ -29,6 +29,9 @@ export function resolveActiveOrganisation(
   if (requestedOrganisationId) {
     const match = active.find((m) => m.organisationId === requestedOrganisationId);
     if (!match) {
+      if (active.length > 1) {
+        return { organisationId: null, reason: 'organisation_selection_required' };
+      }
       return { organisationId: null, reason: 'organisation_not_member' };
     }
     return { organisationId: match.organisationId };

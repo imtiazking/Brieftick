@@ -1,21 +1,7 @@
 /**
  * Canonical relationship lookups — single source for traceability and related records.
  */
-import {
-  getState,
-  getViewChanges,
-  getViewChangesForPublication,
-  getPublication,
-  getChange,
-  getAssessment,
-  getObligation,
-  getRisk,
-  getControl,
-  getPolicy,
-  getAction,
-  getEvidence,
-} from './store.js';
-import { isConnectedBackendActive } from './platform/connected-mode.js';
+import { getState, getPublication, getChange, getAssessment, getObligation, getRisk, getControl, getPolicy, getAction, getEvidence } from './store.js';
 import { SCENARIOS } from './seed-data.js';
 
 /** Primary demo anchor change per scenario theme */
@@ -53,9 +39,6 @@ export function filterByScenario(items, scenarioId) {
 
 export function getChangesForPublication(pubId) {
   const s = getState();
-  if (isConnectedBackendActive(s)) {
-    return getViewChangesForPublication(pubId);
-  }
   return s.changes.filter((c) => c.publicationId === pubId);
 }
 
