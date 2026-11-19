@@ -7,10 +7,11 @@ import { canRi } from '@/lib/ri/permissions';
 import { AskRiPanel } from '@/components/ri/ask-ri-panel';
 
 const EXAMPLES = [
+  'What changes is the FCA proposing in CP26/38?',
+  'What does CP26/38 say about financial crime systems and controls?',
+  'What changes are proposed regarding fraud prevention?',
   'Which obligations are overdue?',
   'How many open obligations are there?',
-  'Which obligations have actions that are not yet complete?',
-  'What does COBS require for suitability?',
 ];
 
 export default async function AskRiPage() {

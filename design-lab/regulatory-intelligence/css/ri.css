@@ -223,6 +223,113 @@ html[data-theme="split"] body.ri-body {
 
 .ri-chrome__link:hover { color: var(--ri-gold); }
 
+.ri-account {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ri-account__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--ri-line);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--ri-text);
+  border-radius: 999px;
+  padding: 4px 10px 4px 4px;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: var(--ri-mono);
+}
+
+.ri-account__trigger:hover,
+.ri-account__trigger:focus-visible {
+  border-color: var(--ri-gold);
+  color: var(--ri-gold);
+}
+
+.ri-account__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.18);
+  color: var(--ri-gold);
+  font-weight: 700;
+  font-size: 9px;
+}
+
+.ri-account__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 120;
+  min-width: 240px;
+  max-width: min(320px, 85vw);
+  background: #12151c;
+  border: 1px solid var(--ri-line);
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  padding: 10px 0;
+}
+
+.ri-account__meta {
+  padding: 0 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ri-account__email {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--ri-text);
+  word-break: break-word;
+}
+
+.ri-account__row {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: var(--ri-muted);
+}
+
+.ri-account__k {
+  opacity: 0.85;
+  margin-right: 4px;
+}
+
+.ri-account__mono {
+  margin: 0 0 4px;
+  font-family: var(--ri-mono);
+  font-size: 9px;
+  color: var(--ri-muted);
+  word-break: break-all;
+}
+
+.ri-account__actions {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0 0;
+}
+
+.ri-account__action {
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--ri-text);
+  text-decoration: none;
+  font-family: var(--ri-mono);
+}
+
+.ri-account__action:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ri-gold);
+}
+
+.ri-account__action--signout {
+  color: #f3b1b1;
+}
+
 .ri-topnav {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }

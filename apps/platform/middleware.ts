@@ -12,6 +12,8 @@ const isPublicRoute = createRouteMatcher([
 /** RI Lab JSON APIs — return 401 instead of Clerk page protect rewrite (404 HTML). */
 const isRiLabJsonApiRoute = createRouteMatcher(['/api/ri-lab(.*)', '/api/organisation(.*)']);
 
+const isSignOutAppSessionRoute = createRouteMatcher(['/api/sign-out/app-session']);
+
 /** Hosted ingestion cron — CRON_SECRET auth inside route; must bypass Clerk. */
 const isHostedSchedulerRoute = createRouteMatcher(['/api/internal/ri-ingestion/scheduler-tick']);
 
@@ -24,6 +26,9 @@ const clerkHandler = clerkMiddleware(async (auth, request) => {
     return;
   }
   if (isHostedSchedulerRoute(request)) {
+    return;
+  }
+  if (isSignOutAppSessionRoute(request)) {
     return;
   }
   if (isRiLabJsonApiRoute(request)) {

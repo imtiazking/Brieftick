@@ -4,6 +4,9 @@ import { RiCatalogueStatusBanner } from '@/components/ri/ri-catalogue-status-ban
 import { RiDataGate } from '@/components/ri/ri-data-gate';
 import { requireIngestionAdminContext } from '@/lib/ri/ingestion-admin-context';
 import { listSourcesForIngestionAdmin } from '@/lib/ri/services/ingestion-admin';
+import { classifySourceMonitoringReadiness } from '@/lib/ri/ingestion/source-monitoring/readiness-classification.mjs';
+import { getProductionConnectorForSource } from '@/lib/ri/ingestion/source-monitoring/connector-index.mjs';
+import { deriveMonitoringStatus } from '@/lib/ri/ingestion/source-monitoring/monitoring-status.mjs';
 
 export default async function IngestionSourcesAdminPage() {
   const ctx = await requireIngestionAdminContext();
@@ -30,11 +33,20 @@ export default async function IngestionSourcesAdminPage() {
                 <th>Health</th>
                 <th>Last success</th>
                 <th>Next run</th>
-                <th>Eligible</th>
+                <th>Readiness</th>
+                <th>Connector</th>
+                <th>Monitoring status</th>
               </tr>
             </thead>
             <tbody>
-              {sources.map((s) => (
+              {sources.map((s) => {
+                const readiness = classifySourceMonitoringReadiness(s.external_key);
+                const connector = getProductionConnectorForSource(s.external_key);
+                const monitoring = deriveMonitoringStatus({
+                  sourceExternalKey: s.external_key,
+                  operations: s.operations ?? null,
+                });
+                return (
                 <tr key={s.id}>
                   <td>{s.external_key}</td>
                   <td>{(s.verification_status ?? 'NOT_TESTED').replaceAll('_', ' ')}</td>
@@ -45,9 +57,11 @@ export default async function IngestionSourcesAdminPage() {
                   <td>{s.operations?.health_status ?? '—'}</td>
                   <td>{s.operations?.last_success_at?.slice(0, 10) ?? '—'}</td>
                   <td>{s.operations?.next_run_at?.slice(0, 16) ?? '—'}</td>
-                  <td>{s.ingestionEligible ? 'yes' : `no (${s.eligibilityReason})`}</td>
+                  <td>{readiness.bucket.replaceAll('_', ' ')}</td>
+                  <td>{connector?.connectorId ?? '—'}</td>
+                  <td>{monitoring.status.replaceAll('_', ' ')}</td>
                 </tr>
-              ))}
+              );})}
             </tbody>
           </table>
         </div>

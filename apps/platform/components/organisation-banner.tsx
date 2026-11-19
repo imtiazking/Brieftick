@@ -3,9 +3,11 @@ import type { ActiveOrganisationContext } from '@/lib/auth/active-organisation';
 export function OrganisationBanner({
   active,
   selectionRequired,
+  email,
 }: {
   active: ActiveOrganisationContext | null;
   selectionRequired: boolean;
+  email?: string | null;
 }) {
   if (selectionRequired) {
     return (
@@ -25,7 +27,17 @@ export function OrganisationBanner({
 
   return (
     <p className="fg-org-banner">
+      {email ? (
+        <>
+          Signed in as <span className="fg-org-email">{email}</span>
+          {' · '}
+        </>
+      ) : null}
       Current organisation: <strong>{active.organisationName ?? active.organisationId}</strong>
+      <span className="fg-org-id" title="Organisation UUID">
+        {' '}
+        (<span className="fg-mono">{active.organisationId}</span>)
+      </span>
       {active.role ? (
         <>
           {' '}

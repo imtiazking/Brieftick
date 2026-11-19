@@ -5,6 +5,18 @@ import { submitAskRiQuestionAction } from '@/lib/ri/server-actions-ask-ri';
 import { RiStatusChip } from '@/components/ri/ri-status-chip';
 import Link from 'next/link';
 
+type AskRiCitation = {
+  citationLabel?: string;
+  publicationTitle?: string;
+  sourceUrl?: string;
+  physicalPageNumber?: number;
+  sectionReference?: string;
+  type?: string;
+  excerpt?: string;
+  extractionRevisionId?: string;
+  regulatoryStatus?: string;
+};
+
 type AskResult = {
   question: string;
   interpretedAs: string;
@@ -12,6 +24,7 @@ type AskResult = {
   answer: string;
   records: { id: string; type: string; reason: string | null }[];
   recordCount: number;
+  citations?: AskRiCitation[];
 };
 
 export function AskRiPanel({ examples }: { examples: string[] }) {
@@ -90,6 +103,39 @@ export function AskRiPanel({ examples }: { examples: string[] }) {
           <p><strong>Interpreted as:</strong> {result.interpretedAs}</p>
           <p><RiStatusChip label={result.status} /></p>
           <p>{result.answer}</p>
+          {result.citations && result.citations.length > 0 ? (
+            <div className="fg-stack fg-text-sm">
+              <p>
+                <strong>
+                  {result.citations.some((c) => c.type === 'html_article_v2')
+                    ? 'Source citations (FCA webpage)'
+                    : 'Source citations (catalogue evidence)'}
+                </strong>
+              </p>
+              <ul>
+                {result.citations.map((c, i) => (
+                  <li key={`${c.extractionRevisionId || 'c'}-${c.physicalPageNumber ?? c.sectionReference}-${i}`}>
+                    <span className="ri-mono">
+                      {c.citationLabel ||
+                        (c.type === 'html_article_v2'
+                          ? c.sectionReference || c.publicationTitle
+                          : c.physicalPageNumber != null
+                            ? `Page ${c.physicalPageNumber}`
+                            : 'Citation')}
+                    </span>
+                    {c.publicationTitle ? <span> — {c.publicationTitle}</span> : null}
+                    {c.sourceUrl ? (
+                      <span>
+                        {' '}
+                        (<a href={c.sourceUrl} target="_blank" rel="noreferrer">source</a>)
+                      </span>
+                    ) : null}
+                    {c.excerpt ? <p className="fg-muted">{c.excerpt}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           {result.records.length > 0 ? (
             <table className="fg-table">
               <thead>

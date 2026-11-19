@@ -1,16 +1,15 @@
+import { SignOutClient } from '@/app/sign-out/sign-out-client';
 import { isClerkConfigured } from '@/lib/env';
-import Link from 'next/link';
-import { SignOutClient } from './sign-out-client';
+import { redirect } from 'next/navigation';
 
 export default function SignOutPage() {
   if (!isClerkConfigured()) {
-    return (
-      <main className="fg-main">
-        <p>Clerk is not configured.</p>
-        <p><Link href="/">Home</Link></p>
-      </main>
-    );
+    redirect('/');
   }
 
-  return <SignOutClient />;
+  return (
+    <main className="fg-main fg-main--centered">
+      <SignOutClient />
+    </main>
+  );
 }

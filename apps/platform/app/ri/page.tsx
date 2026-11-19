@@ -12,7 +12,7 @@ import { isSupabaseBrowserConfigured } from '@/lib/env';
 export default async function RegulatoryIntelligenceDashboardPage() {
   const ctx = await tryRiContext();
   const dataReady = isSupabaseBrowserConfigured();
-  const summary = ctx ? await getDashboardSummary(ctx.supabase, ctx.organisationId) : null;
+  const summary = ctx ? await getDashboardSummary(ctx.supabase, ctx.organisationId, ctx.userId) : null;
 
   return (
     <ShellLayout

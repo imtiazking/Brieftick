@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import { AccountMenu } from '@/components/account-menu';
 import { isClerkConfigured } from '@/lib/env';
+import type { ShellAccountContext } from '@/lib/auth/shell-account-context';
+import { REGULATORY_INTELLIGENCE_DESIGN_LAB_PATH } from '@/lib/platform-routing';
 
 const PRODUCTS = [
-  { id: 'ri', label: 'Regulatory Intelligence', href: '/ri', active: true },
+  { id: 'ri', label: 'Regulatory Intelligence', href: REGULATORY_INTELLIGENCE_DESIGN_LAB_PATH, active: true },
   { id: 'mi', label: 'Market Intelligence', href: '#', active: false },
   { id: 'fc', label: 'Financial Crime', href: '#', active: false },
   { id: 'or', label: 'Operational Resilience', href: '#', active: false },
@@ -13,10 +15,12 @@ export function AppShell({
   children,
   title,
   subtitle,
+  account,
 }: {
   children: React.ReactNode;
   title?: string;
   subtitle?: string;
+  account?: ShellAccountContext | null;
 }) {
   const clerkOn = isClerkConfigured();
 
@@ -44,7 +48,7 @@ export function AppShell({
         </nav>
         <div className="fg-header__account">
           {clerkOn ? (
-            <AccountMenu />
+            <AccountMenu account={account ?? null} />
           ) : (
             <span className="fg-pill fg-pill--muted">Auth not configured (local)</span>
           )}

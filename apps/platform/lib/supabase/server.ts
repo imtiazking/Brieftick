@@ -1,9 +1,9 @@
 import 'server-only';
 
-import { auth } from '@clerk/nextjs/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { getSupabaseAnonKey, getSupabaseUrl, isClerkConfigured, isSupabaseBrowserConfigured } from '@/lib/env';
+import { getClerkSupabaseAccessToken } from '@/lib/auth/clerk-supabase-token';
+import { getSupabaseAnonKey, getSupabaseUrl, isSupabaseBrowserConfigured } from '@/lib/env';
 
 /**
  * Server Supabase client (anon key + user session from Clerk third-party JWT when configured).
@@ -18,11 +18,7 @@ export async function createSupabaseServerClient() {
   const url = getSupabaseUrl()!;
   const anonKey = getSupabaseAnonKey()!;
 
-  let accessToken: string | null = null;
-  if (isClerkConfigured()) {
-    const { getToken } = await auth();
-    accessToken = (await getToken()) ?? null;
-  }
+  const accessToken = await getClerkSupabaseAccessToken();
 
   return createServerClient(url, anonKey, {
     global: {

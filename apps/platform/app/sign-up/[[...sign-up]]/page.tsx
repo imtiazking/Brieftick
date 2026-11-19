@@ -1,5 +1,6 @@
 import { SignUp } from '@clerk/nextjs';
 import { isClerkConfigured } from '@/lib/env';
+import { resolveClerkAfterSignUpUrl } from '@/lib/platform-routing';
 import Link from 'next/link';
 
 export default function SignUpPage() {
@@ -14,7 +15,7 @@ export default function SignUpPage() {
 
   return (
     <main className="fg-main" style={{ display: 'flex', justifyContent: 'center' }}>
-      <SignUp signInUrl="/sign-in" fallbackRedirectUrl="/ri" />
+      <SignUp fallbackRedirectUrl={resolveClerkAfterSignUpUrl()} />
     </main>
   );
 }

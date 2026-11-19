@@ -499,6 +499,194 @@ a:hover {
   color: var(--fg-text);
 }
 
+.fg-org-id,
+.fg-mono {
+  font-family: ui-monospace, monospace;
+  font-size: 0.82em;
+}
+
+.fg-org-email {
+  color: var(--fg-text);
+}
+
+.fg-main--centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.fg-account-menu {
+  position: relative;
+}
+
+.fg-account-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--fg-border);
+  background: var(--fg-surface);
+  color: var(--fg-text);
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem 0.25rem 0.25rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.fg-account-menu__trigger:hover,
+.fg-account-menu__trigger:focus-visible {
+  border-color: var(--fg-gold);
+}
+
+.fg-account-menu__avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--fg-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.fg-account-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 50;
+  min-width: 17rem;
+  max-width: 20rem;
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  background: var(--fg-surface);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  padding: 0.75rem 0;
+}
+
+.fg-account-menu__meta {
+  padding: 0 0.85rem 0.65rem;
+  border-bottom: 1px solid var(--fg-border);
+}
+
+.fg-account-menu__email {
+  margin: 0 0 0.45rem;
+  color: var(--fg-text);
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.fg-account-menu__org,
+.fg-account-menu__role {
+  margin: 0.15rem 0;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+}
+
+.fg-account-menu__mono {
+  margin: 0.15rem 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  word-break: break-all;
+}
+
+.fg-account-menu__k {
+  margin-right: 0.25rem;
+}
+
+.fg-account-menu__warn {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #e8d4a8;
+}
+
+.fg-account-menu__actions {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.35rem;
+}
+
+.fg-account-menu__action {
+  padding: 0.55rem 0.85rem;
+  color: var(--fg-text);
+  text-decoration: none;
+  font-size: 0.88rem;
+}
+
+.fg-account-menu__action:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--fg-gold);
+}
+
+.fg-account-menu__action--signout {
+  color: #f3b1b1;
+}
+
+.fg-account-menu__sign-in {
+  font-size: 0.9rem;
+  color: var(--fg-gold);
+}
+
+.fg-module-grid {
+  margin-top: 1.25rem;
+}
+
+.fg-module-grid h2 {
+  margin: 0 0 0.35rem;
+}
+
+.fg-module-grid__intro {
+  color: var(--fg-muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.fg-module-grid__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.fg-module-card {
+  border: 1px solid var(--fg-border);
+  border-radius: var(--fg-radius);
+  background: var(--fg-surface);
+  padding: 1rem 1.1rem;
+}
+
+.fg-module-card--unavailable {
+  opacity: 0.72;
+}
+
+.fg-module-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--fg-gold);
+  font-size: 1rem;
+}
+
+.fg-module-card p {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  color: var(--fg-muted);
+}
+
+.fg-module-card__cta {
+  color: var(--fg-gold);
+  font-size: 0.9rem;
+}
+
+.fg-module-card__status {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
 .fg-banner {
   margin-top: 1rem;
   padding: 0.75rem 1rem;
