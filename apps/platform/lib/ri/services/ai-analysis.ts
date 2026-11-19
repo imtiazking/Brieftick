@@ -19,6 +19,10 @@ import {
   FIXTURE_PROVIDER_ID,
 } from '@/lib/ri/ai/provider-registry';
 import { assertExperimentalAiTenant } from '@/lib/ri/ai/experimental-ai-tenant-guard';
+import {
+  assessApplicabilityGate,
+  assessObligationExtractionTarget,
+} from '@/lib/ri/ai/obligation-chain-gates.mjs';
 import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
 import { AI_PROVIDER_MODE } from '@/lib/ri/ai/enums';
 import { getUseCaseById } from '@/lib/ri/ai/use-case-catalog';
@@ -26,6 +30,7 @@ import { assertCanRi } from '@/lib/ri/permissions';
 import { assertAiReviewerSoD } from '@/lib/ri/separation-of-duties';
 import { materialiseReviewedClaims } from '@/lib/ri/services/ai-materialisation';
 import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
+import { getApplicabilityForPublication } from '@/lib/ri/services/applicability';
 import { getLatestPublicationVersion } from '@/lib/ri/services/publication-versions';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 
@@ -187,6 +192,35 @@ export async function getAnalysisRun(
   return { run, citations: citations ?? [], reviews: reviews ?? [] };
 }
 
+/** UC-RI-005 output can only materialise against an applicable publication's change in this organisation. */
+export async function assertObligationExtractionPrerequisites(
+  supabase: SupabaseClient,
+  params: { organisationId: string; publicationId: string; targetChangeId: string | null },
+) {
+  const { data: change } = params.targetChangeId
+    ? await supabase
+        .from('regulatory_changes')
+        .select('id, publication_id')
+        .eq('id', params.targetChangeId)
+        .eq('organisation_id', params.organisationId)
+        .maybeSingle()
+    : { data: null };
+  const target = assessObligationExtractionTarget({
+    targetChangeId: params.targetChangeId,
+    change,
+    publicationId: params.publicationId,
+  });
+  if (!target.ok) throw new Error(target.code);
+
+  const assessment = await getApplicabilityForPublication(
+    supabase,
+    params.organisationId,
+    params.publicationId,
+  );
+  const applicability = assessApplicabilityGate(assessment);
+  if (!applicability.ok) throw new Error(applicability.code);
+}
+
 export async function requestPublicationAnalysis(
   supabase: SupabaseClient,
   params: {
@@ -209,6 +243,14 @@ export async function requestPublicationAnalysis(
   });
   const useCase = getUseCaseById(params.useCaseId);
   if (!useCase || useCase.status !== 'Active') throw new Error('invalid_use_case');
+
+  if (params.useCaseId === 'UC-RI-005') {
+    await assertObligationExtractionPrerequisites(supabase, {
+      organisationId: params.organisationId,
+      publicationId: params.publicationId,
+      targetChangeId: params.targetEntityId ?? null,
+    });
+  }
 
   const latest = await getLatestPublicationVersion(supabase, params.publicationId);
   if (!latest || latest.id !== params.publicationVersionId) {
@@ -540,6 +582,13 @@ export async function submitAnalysisReview(
 
   if (decision !== AI_REVIEW_STATUS.REJECTED) {
     assertAiReviewerSoD({ requestedByUserId: run.requested_by, reviewerUserId: params.userId });
+    if (run.use_case_id === 'UC-RI-005') {
+      await assertObligationExtractionPrerequisites(supabase, {
+        organisationId: params.organisationId,
+        publicationId: run.publication_id,
+        targetChangeId: (run as { target_entity_id?: string | null }).target_entity_id ?? null,
+      });
+    }
   }
 
   const { data: reviewRow, error: reviewErr } = await supabase
@@ -596,7 +645,7 @@ export async function submitAnalysisReview(
     },
   });
 
-  const { materialised } = await materialiseReviewedClaims(supabase, {
+  const { materialised, skipped } = await materialiseReviewedClaims(supabase, {
     organisationId: params.organisationId,
     userId: params.userId,
     role: params.role,
@@ -606,7 +655,7 @@ export async function submitAnalysisReview(
     acceptedClaimIndexes: params.acceptedClaimIndexes,
   });
 
-  return { ok: true, reviewId: reviewRow.id, materialised };
+  return { ok: true, reviewId: reviewRow.id, materialised, skipped };
 }
 
 export function getProviderStatusForUi() {

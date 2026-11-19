@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-11-19T16:35:24.098Z",
+  "capturedAt": "2026-11-19T19:12:45.929Z",
   "programmePass": true,
   "budgetNote": "RI_LAB_ANTHROPIC_MAX_USD is an estimate guard — not a guaranteed Anthropic invoice ceiling",
   "operatorControlWhenMultiInstance": "Single concurrent UC-RI-005 trial per deployment — scale to one instance or operator-enforced pause",

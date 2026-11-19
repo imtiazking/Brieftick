@@ -88,7 +88,11 @@ export function resolveRecordProvenance(input: ResolveProvenanceInput): RecordPr
 
   if (isSyntheticPublicationOrigin(input.dataOrigin ?? null)) return 'synthetic_fixture';
 
-  if (input.dataOrigin === 'regulated-ingestion' || input.origin === 'FORGENIQ_RI_INGESTION') {
+  if (
+    input.dataOrigin === 'regulated-ingestion' ||
+    input.dataOrigin === 'fca_catalogue_controlled_ingest' ||
+    input.origin === 'FORGENIQ_RI_INGESTION'
+  ) {
     return 'regulatory_catalogue';
   }
 

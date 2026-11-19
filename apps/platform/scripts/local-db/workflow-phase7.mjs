@@ -49,8 +49,10 @@ export async function runPhase7OperationsVerification() {
     await ensureAppRole(admin);
     await applyReferenceSeed(admin);
 
+    // The scheduler only selects sources whose regulatory_sources mode is ENABLED; the run stays
+    // offline because executeIngestionForSource defaults to liveAllowed=false (fixtures only).
     await admin.query(
-      `update regulatory_sources set ingestion_mode = 'TEST_ONLY'::source_ingestion_mode
+      `update regulatory_sources set ingestion_mode = 'ENABLED'::source_ingestion_mode
        where external_key in ('SRC-PSR-UK-RULES', 'SRC-FINRA-RULEBOOK', 'SRC-CMA-UK-ENFORCEMENT')`,
     );
 

@@ -38,7 +38,7 @@ export function renderConnectedPublicationObligationExtractionPanel(publication)
   return `<section class="ri-panel" data-connected-pub-ai-request="${esc(publication.id)}">
     <h3>Extract candidate obligations (UC-RI-005)</h3>
     <p class="ri-muted">Runs PDF-grounded candidate extraction via existing staging APIs. Proposed obligations remain in the analysis run until accepted through the existing maker-checker review workflow — nothing is auto-materialised.</p>
-    <label>Optional parent change ID <input type="text" data-connected-pub-ai-change-id placeholder="regulatory change UUID" class="ri-input" /></label>
+    <label>Parent regulatory change ID (required — the publication's applicability assessment must be approved) <input type="text" data-connected-pub-ai-change-id placeholder="regulatory change UUID" class="ri-input" required /></label>
     <label>Idempotency suffix <input type="text" data-connected-pub-ai-idempotency placeholder="optional run suffix" class="ri-input" /></label>
     <button type="button" class="ri-btn ri-btn--primary" data-connected-pub-ai-submit>Extract obligations</button>
     <span class="ri-muted" data-connected-pub-ai-status></span>

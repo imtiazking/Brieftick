@@ -46,6 +46,9 @@ export async function resetAndStartEmbedded({ port = 54328 } = {}) {
     user: 'postgres',
     password,
     persistent: false,
+    // Supabase databases are UTF8; the Windows default (WIN1252) rejects non-ASCII text in migrations.
+    initdbFlags: ['--encoding=UTF8', '--locale=C'],
+    onLog: () => {},
   });
   await embedded.initialise();
   await embedded.start();

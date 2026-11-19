@@ -42,7 +42,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       notes?: string;
     };
     const decision = body.decision ?? 'ACCEPTED';
-    await submitAnalysisReview(ctx.supabase, {
+    const result = await submitAnalysisReview(ctx.supabase, {
       organisationId: ctx.organisationId,
       userId: ctx.userId,
       role: ctx.role,
@@ -52,7 +52,13 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       rejectedClaimIndexes: body.rejectedClaimIndexes ?? [],
       notes: body.notes,
     });
-    return NextResponse.json({ ok: true, runId: id, decision });
+    return NextResponse.json({
+      ok: true,
+      runId: id,
+      decision,
+      materialised: result.materialised,
+      skipped: result.skipped,
+    });
   } catch (err) {
     return labApiErrorResponse(err);
   }

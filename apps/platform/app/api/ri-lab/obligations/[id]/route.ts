@@ -58,6 +58,7 @@ export async function PATCH(
       organisationId: ctx.organisationId,
       obligationId: id,
       userId: ctx.userId,
+      role: ctx.role,
       fields: patch.fields,
       expectedUpdatedAt: patch.expectedUpdatedAt,
     });

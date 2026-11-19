@@ -7,6 +7,7 @@ import { assertExperimentalAiTenant } from '@/lib/ri/ai/experimental-ai-tenant-g
 import { AI_REVIEW_STATUS } from '@/lib/ri/ai/enums';
 import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
 import { resolveAcceptedClaimIndexes as resolveAcceptedClaimIndexesCore } from '@/lib/ri/ai/materialisation-logic.mjs';
+import { obligationCandidateSkipReason } from '@/lib/ri/ai/obligation-chain-gates.mjs';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 
 const CHANGE_USE_CASE = 'UC-RI-002';
@@ -18,7 +19,6 @@ type CandidateObligation = {
   citation?: string;
   sourceSection?: string;
   effectiveDate?: string;
-  regulatoryChangeId?: string;
   bindingNature?: string;
   sourceQuotation?: string;
 };
@@ -42,7 +42,10 @@ export async function materialiseReviewedClaims(
     decision: string;
     acceptedClaimIndexes: number[];
   },
-): Promise<{ materialised: { entityType: string; entityId: string; claimIndex: number }[] }> {
+): Promise<{
+  materialised: { entityType: string; entityId: string; claimIndex: number }[];
+  skipped: { claimIndex: number; reason: string }[];
+}> {
   assertNotAutonomousAiAction('approve_change');
   assertNotAutonomousAiAction('approve_obligation');
 
@@ -64,7 +67,7 @@ export async function materialiseReviewedClaims(
     params.decision !== AI_REVIEW_STATUS.ACCEPTED &&
     params.decision !== AI_REVIEW_STATUS.PARTIALLY_ACCEPTED
   ) {
-    return { materialised: [] };
+    return { materialised: [], skipped: [] };
   }
 
   const { data: run, error: runErr } = await supabase
@@ -90,6 +93,7 @@ export async function materialiseReviewedClaims(
   );
 
   const materialised: { entityType: string; entityId: string; claimIndex: number }[] = [];
+  const skipped: { claimIndex: number; reason: string }[] = [];
 
   if (run.use_case_id === CHANGE_USE_CASE) {
     const candidates = (output.candidates as CandidateChange[]) || [];
@@ -111,7 +115,10 @@ export async function materialiseReviewedClaims(
       }
 
       const candidate = candidates[claimIndex];
-      if (!candidate?.title) continue;
+      if (!candidate?.title) {
+        skipped.push({ claimIndex, reason: 'candidate_missing_title' });
+        continue;
+      }
 
       const { data: change, error: chgErr } = await supabase
         .from('regulatory_changes')
@@ -164,12 +171,27 @@ export async function materialiseReviewedClaims(
 
   if (run.use_case_id === OBLIGATION_USE_CASE) {
     const candidates = (output.candidates as CandidateObligation[]) || [];
+    const changeId: string | null = run.target_entity_id || null;
+    const { data: change } = changeId
+      ? await supabase
+          .from('regulatory_changes')
+          .select('id, publication_id')
+          .eq('id', changeId)
+          .eq('organisation_id', params.organisationId)
+          .maybeSingle()
+      : { data: null };
+
     for (const claimIndex of indexes) {
       const citeRow = (citations ?? []).find((c) => c.claim_index === claimIndex);
-      if (!citeRow || citeRow.citation_status === 'INVALID') {
-        continue;
-      }
-      if (!citeRow || (citeRow.citation_status !== 'VERIFIED' && citeRow.citation_status !== 'PARTIAL')) {
+      const candidate = candidates[claimIndex];
+      const skipReason = obligationCandidateSkipReason({
+        citation: citeRow ?? null,
+        statement: candidate?.statement ?? null,
+        changeId,
+        changeInOrg: Boolean(change),
+      });
+      if (skipReason) {
+        skipped.push({ claimIndex, reason: skipReason });
         continue;
       }
 
@@ -189,26 +211,15 @@ export async function materialiseReviewedClaims(
         continue;
       }
 
-      const candidate = candidates[claimIndex];
       const claimsArr = (output.claims as Array<Record<string, unknown>>) || [];
       const claimMeta = claimsArr[claimIndex];
-      const changeId =
-        candidate?.regulatoryChangeId || run.target_entity_id || null;
-      if (!changeId || !candidate?.statement) continue;
-
-      const { data: change } = await supabase
-        .from('regulatory_changes')
-        .select('id, publication_id')
-        .eq('id', changeId)
-        .eq('organisation_id', params.organisationId)
-        .maybeSingle();
-      if (!change) continue;
+      if (!change || !candidate?.statement) continue;
 
       const { data: obl, error: oblErr } = await supabase
         .from('regulatory_obligations')
         .insert({
           organisation_id: params.organisationId,
-          regulatory_change_id: changeId,
+          regulatory_change_id: change.id,
           publication_id: change.publication_id,
           publication_version_id: run.publication_version_id,
           obligation_statement: String(candidate.statement).slice(0, 12000),
@@ -265,6 +276,17 @@ export async function materialiseReviewedClaims(
     }
   }
 
+  if (skipped.length > 0) {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'ai_analysis_run',
+      entityId: params.runId,
+      eventType: 'AI_MATERIALISATION_SKIPPED',
+      actorUserId: params.userId,
+      metadata: { review_id: params.reviewId, skipped, origin: 'AI_ASSISTED' },
+    });
+  }
+
   if (materialised.length > 0) {
     await recordAiNotificationEvent(supabase, {
       eventType: 'AI_MATERIALISATION_COMPLETED',
@@ -278,5 +300,5 @@ export async function materialiseReviewedClaims(
     });
   }
 
-  return { materialised };
+  return { materialised, skipped };
 }

@@ -2,6 +2,57 @@ import { executeIngestionForSource } from './executor.mjs';
 import { markStaleSources } from './health.mjs';
 import { recordOperationalAudit } from './audit.mjs';
 
+/** Longer than the hosted route maxDuration (300s): a RUNNING row this old was killed mid-run. */
+export const STALE_RUNNING_RUN_MINUTES = 30;
+
+/**
+ * Runs left RUNNING by a killed invocation would block their source forever (ALREADY_RUNNING).
+ * @param {import('pg').Client} client
+ */
+export async function recoverStaleRunningRuns(client, options = {}) {
+  const minutes = options.olderThanMinutes ?? STALE_RUNNING_RUN_MINUTES;
+  const { rows } = await client.query(
+    `update ingestion_runs
+     set status = 'FAILED'::ingestion_run_status,
+         completed_at = now(),
+         error_summary = 'stale_running_recovered',
+         failure_class = 'TRANSIENT'
+     where status = 'RUNNING'::ingestion_run_status
+       and started_at < now() - ($1 || ' minutes')::interval
+     returning id, source_id`,
+    [String(minutes)],
+  );
+  if (rows.length > 0) {
+    await recordOperationalAudit(client, {
+      eventType: 'SCHEDULER_STALE_RUNS_RECOVERED',
+      actorUserId: 'system:scheduler',
+      metadata: { olderThanMinutes: minutes, runIds: rows.map((r) => r.id) },
+    });
+  }
+  return rows.length;
+}
+
+/**
+ * Sources due for a scheduled run (read-only).
+ * @param {import('pg').Client} client
+ */
+export async function selectDueSources(client, options = {}) {
+  const now = options.now ?? new Date();
+  const { rows } = await client.query(
+    `select o.*, s.external_key
+     from regulatory_source_operations o
+     join regulatory_sources s on s.id = o.source_id
+     where o.enabled = true
+       and s.ingestion_mode = 'ENABLED'::source_ingestion_mode
+       and o.ingestion_mode in ('TEST_ONLY'::source_ingestion_mode, 'ENABLED'::source_ingestion_mode)
+       and (o.next_run_at is null or o.next_run_at <= $1::timestamptz)
+     order by o.last_success_at nulls first, o.next_run_at nulls first, s.external_key asc
+     limit $2`,
+    [now.toISOString(), options.maxSourcesPerTick ?? 500],
+  );
+  return rows;
+}
+
 /**
  * Provider-neutral scheduler tick (one invocation = one tick, no infinite loop).
  * @param {import('pg').Client} client
@@ -16,21 +67,11 @@ export async function runSchedulerTick(client, options = {}) {
     metadata: { at: now.toISOString() },
   });
 
-  const due = await client.query(
-    `select o.*, s.external_key
-     from regulatory_source_operations o
-     join regulatory_sources s on s.id = o.source_id
-     where o.enabled = true
-       and s.ingestion_mode = 'ENABLED'::source_ingestion_mode
-       and o.ingestion_mode in ('TEST_ONLY'::source_ingestion_mode, 'ENABLED'::source_ingestion_mode)
-       and (o.next_run_at is null or o.next_run_at <= $1::timestamptz)
-     order by o.last_success_at nulls first, o.next_run_at nulls first, s.external_key asc
-     limit $2`,
-    [now.toISOString(), options.maxSourcesPerTick ?? 500],
-  );
+  const staleRunsRecovered = await recoverStaleRunningRuns(client);
+  const dueRows = await selectDueSources(client, { now, maxSourcesPerTick: options.maxSourcesPerTick });
 
   const outcomes = [];
-  for (const row of due.rows) {
+  for (const row of dueRows) {
     if (typeof options.allowSource === 'function' && !options.allowSource(row.external_key)) {
       outcomes.push({
         source: row.external_key,
@@ -53,7 +94,7 @@ export async function runSchedulerTick(client, options = {}) {
   }
 
   const stale = await markStaleSources(client, now);
-  return { dueCount: due.rows.length, outcomes, staleMarked: stale };
+  return { dueCount: dueRows.length, outcomes, staleMarked: stale, staleRunsRecovered };
 }
 
 export async function processDueRetries(client, options = {}) {

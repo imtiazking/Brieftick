@@ -1,6 +1,6 @@
 import pg from 'pg';
 import { randomUUID } from 'node:crypto';
-import { runSchedulerTick } from './scheduler.mjs';
+import { runSchedulerTick, selectDueSources, STALE_RUNNING_RUN_MINUTES } from './scheduler.mjs';
 import { recordOperationalAudit } from './audit.mjs';
 import {
   stagingPgClientOptions,
@@ -29,8 +29,15 @@ export function resolveHostedSchedulerDatabaseUrl() {
 /**
  * Hard gates before any hosted tick (no Phase 84 manual bypass env).
  */
-export function assertHostedSchedulerEnvironment() {
-  if (process.env.FORGENIQ_RI_SCHEDULER_CRON_ENABLED !== 'true') {
+export function isHostedSchedulerEnabled() {
+  return process.env.FORGENIQ_RI_SCHEDULER_CRON_ENABLED === 'true';
+}
+
+/**
+ * @param {{ requireEnabled?: boolean }} [options] — requireEnabled=false only for the read-only plan.
+ */
+export function assertHostedSchedulerEnvironment(options = {}) {
+  if (options.requireEnabled !== false && !isHostedSchedulerEnabled()) {
     throw new Error('hosted_scheduler_disabled');
   }
   const ingestEnv = process.env.FORGENIQ_INGEST_ENV?.trim() || process.env.FORGENIQ_ENV?.trim();
@@ -91,8 +98,7 @@ export async function runHostedSchedulerInvocation(params) {
   delete process.env.FORGENIQ_STAGING_UAT_INTAKE_NOTIFY;
 
   const invocationId = randomUUID();
-  const maxSourcesPerTick =
-    Number(process.env.FORGENIQ_RI_SCHEDULER_BATCH_SIZE || '') || DEFAULT_BATCH;
+  const maxSourcesPerTick = resolveHostedSchedulerBatchSize();
 
   const client = new pg.Client(stagingPgClientOptions(databaseUrl));
   await client.connect();
@@ -156,6 +162,73 @@ export async function runHostedSchedulerInvocation(params) {
       excludedSourceCount: HOSTED_SCHEDULER_EXCLUDED_SOURCE_IDS.size,
       maxSourcesPerTick,
       ...tick,
+    };
+  } catch (err) {
+    await recordOperationalAudit(client, {
+      eventType: 'HOSTED_SCHEDULER_FAILED',
+      actorUserId: 'system:hosted-scheduler',
+      metadata: {
+        invocationId,
+        invocationKind,
+        error: err instanceof Error ? err.message : String(err),
+      },
+    }).catch(() => {});
+    throw err;
+  } finally {
+    await client.end();
+  }
+}
+
+function resolveHostedSchedulerBatchSize() {
+  return Number(process.env.FORGENIQ_RI_SCHEDULER_BATCH_SIZE || '') || DEFAULT_BATCH;
+}
+
+/**
+ * Read-only preview of the next tick: what would run, and why each source would or would not.
+ * Works while the scheduler is disabled so readiness can be verified before activation.
+ * Runs inside a READ ONLY transaction; writes nothing (not even audit rows).
+ *
+ * @param {object} params
+ * @param {string} [params.cronSecretFromRequest]
+ */
+export async function planHostedSchedulerInvocation(params) {
+  assertHostedSchedulerRequestAuth(params);
+  const { databaseUrl } = assertHostedSchedulerEnvironment({ requireEnabled: false });
+  const maxSourcesPerTick = resolveHostedSchedulerBatchSize();
+
+  const client = new pg.Client(stagingPgClientOptions(databaseUrl));
+  await client.connect();
+  try {
+    await client.query('begin transaction read only');
+    const due = await selectDueSources(client, { maxSourcesPerTick });
+    const staleRunning = await client.query(
+      `select count(*)::int as n from ingestion_runs
+       where status = 'RUNNING'::ingestion_run_status
+         and started_at < now() - ($1 || ' minutes')::interval`,
+      [String(STALE_RUNNING_RUN_MINUTES)],
+    );
+    await client.query('rollback');
+
+    return {
+      ok: true,
+      dryRun: true,
+      schedulerEnabled: isHostedSchedulerEnabled(),
+      stagingProjectRef: FORGENIQ_RI_STAGING_PROJECT_REF,
+      maxSourcesPerTick,
+      staleRunningRuns: staleRunning.rows[0]?.n ?? 0,
+      due: due.map((row) => {
+        const allowlisted = isSourceAllowedForHostedScheduler(row.external_key);
+        const hasConnector = Boolean(getProductionConnectorForSource(row.external_key));
+        return {
+          source: row.external_key,
+          wouldRun: allowlisted && hasConnector,
+          allowlisted,
+          hasConnector,
+          nextRunAt: row.next_run_at,
+          lastSuccessAt: row.last_success_at,
+          consecutiveFailures: row.consecutive_failures,
+        };
+      }),
     };
   } finally {
     await client.end();

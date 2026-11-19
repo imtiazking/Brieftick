@@ -101,7 +101,11 @@ function deriveRegulatoryReference(
 
 function classifyCatalogueKind(dataOrigin: string, provenance: ProvenancePeek): LabPublicationDisplay['catalogueKind'] {
   if (dataOrigin === 'e2e_fixture') return 'synthetic_fixture';
-  if (provenance.origin === 'FORGENIQ_RI_INGESTION' || dataOrigin === 'regulated-ingestion') {
+  if (
+    provenance.origin === 'FORGENIQ_RI_INGESTION' ||
+    dataOrigin === 'regulated-ingestion' ||
+    dataOrigin === 'fca_catalogue_controlled_ingest'
+  ) {
     return 'regulatory';
   }
   return 'catalogue';

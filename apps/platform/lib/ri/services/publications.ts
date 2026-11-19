@@ -29,54 +29,86 @@ export type PublicationListRow = {
   applicability: { recommendation: string; status: string } | null;
 };
 
+/** Below PostgREST max-rows (1000) so every page is complete. */
+const PUBLICATION_PAGE_SIZE = 500;
+/** Keeps `in.(…)` filters well inside request URL limits. */
+const ID_CHUNK_SIZE = 100;
+
+function chunk<T>(items: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
+  return out;
+}
+
 export async function listPublicationsForOrganisation(
   supabase: SupabaseClient,
   organisationId: string,
 ): Promise<PublicationListRow[]> {
-  const { data: publications, error } = await supabase
-    .from('regulatory_publications')
-    .select(
-      `
-      id, title, publication_type, publication_date, effective_date, consultation_deadline,
-      canonical_url, data_origin, source_hash, source_version, external_document_id, summary, retrieved_at, provenance,
-      regulator:regulators(name, acronym, external_key),
-      source:regulatory_sources(name, external_key)
-    `,
-    )
-    .order('publication_date', { ascending: false, nullsFirst: false })
-    .limit(200);
+  const publications: Record<string, unknown>[] = [];
+  for (let from = 0; ; from += PUBLICATION_PAGE_SIZE) {
+    const { data: page, error } = await supabase
+      .from('regulatory_publications')
+      .select(
+        `
+        id, title, publication_type, publication_date, effective_date, consultation_deadline,
+        canonical_url, data_origin, source_hash, source_version, external_document_id, summary, retrieved_at, provenance,
+        regulator:regulators(name, acronym, external_key),
+        source:regulatory_sources(name, external_key)
+      `,
+      )
+      .order('publication_date', { ascending: false, nullsFirst: false })
+      .order('id', { ascending: true })
+      .range(from, from + PUBLICATION_PAGE_SIZE - 1);
+    if (error) throw new Error(error.message);
+    publications.push(...(page ?? []));
+    if (!page || page.length < PUBLICATION_PAGE_SIZE) break;
+  }
 
-  if (error) throw new Error(error.message);
-  if (!publications?.length) return [];
+  if (!publications.length) return [];
 
-  const ids = publications.map((p) => p.id);
-  const { data: orgRows } = await supabase
-    .from('organisation_publications')
-    .select('publication_id, triage_status, relevance_status, materiality, assigned_to, triage_sla_due')
-    .eq('organisation_id', organisationId)
-    .in('publication_id', ids);
-
-  const { data: appRows } = await supabase
-    .from('applicability_assessments')
-    .select('publication_id, recommendation, status')
-    .eq('organisation_id', organisationId)
-    .in('publication_id', ids)
-    .order('updated_at', { ascending: false });
-
-  const { data: versionRows } = await supabase
-    .from('regulatory_publication_versions')
-    .select('publication_id')
-    .in('publication_id', ids);
+  const idChunks = chunk(
+    publications.map((p) => p.id as string),
+    ID_CHUNK_SIZE,
+  );
+  const orgRows: {
+    publication_id: string;
+    triage_status: string;
+    relevance_status: string | null;
+    materiality: string | null;
+    assigned_to: string | null;
+    triage_sla_due: string | null;
+  }[] = [];
+  const appRows: { publication_id: string; recommendation: string; status: string; updated_at: string }[] = [];
+  const versionRows: { publication_id: string }[] = [];
+  for (const ids of idChunks) {
+    const [org, app, ver] = await Promise.all([
+      supabase
+        .from('organisation_publications')
+        .select('publication_id, triage_status, relevance_status, materiality, assigned_to, triage_sla_due')
+        .eq('organisation_id', organisationId)
+        .in('publication_id', ids),
+      supabase
+        .from('applicability_assessments')
+        .select('publication_id, recommendation, status, updated_at')
+        .eq('organisation_id', organisationId)
+        .in('publication_id', ids),
+      supabase.from('regulatory_publication_versions').select('publication_id').in('publication_id', ids),
+    ]);
+    orgRows.push(...(org.data ?? []));
+    appRows.push(...(app.data ?? []));
+    versionRows.push(...(ver.data ?? []));
+  }
+  appRows.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
 
   const versionCountByPub = new Map<string, number>();
-  for (const row of versionRows ?? []) {
+  for (const row of versionRows) {
     const pid = row.publication_id as string;
     versionCountByPub.set(pid, (versionCountByPub.get(pid) ?? 0) + 1);
   }
 
-  const orgByPub = new Map(orgRows?.map((r) => [r.publication_id, r]));
+  const orgByPub = new Map(orgRows.map((r) => [r.publication_id, r]));
   const appByPub = new Map<string, { recommendation: string; status: string }>();
-  for (const row of appRows ?? []) {
+  for (const row of appRows) {
     if (!appByPub.has(row.publication_id)) {
       appByPub.set(row.publication_id, {
         recommendation: row.recommendation,
@@ -85,15 +117,18 @@ export async function listPublicationsForOrganisation(
     }
   }
 
-  return publications.map((p) => ({
-    ...p,
-    regulator: Array.isArray(p.regulator) ? p.regulator[0] : p.regulator,
-    source: Array.isArray(p.source) ? p.source[0] : p.source,
-    orgState: orgByPub.get(p.id) ?? null,
-    applicability: appByPub.get(p.id) ?? null,
-    versionCount: versionCountByPub.get(p.id) ?? 0,
-    provenance: (p.provenance as Record<string, unknown>) ?? null,
-  })) as PublicationListRow[];
+  return publications.map((p) => {
+    const id = p.id as string;
+    return {
+      ...p,
+      regulator: Array.isArray(p.regulator) ? p.regulator[0] : p.regulator,
+      source: Array.isArray(p.source) ? p.source[0] : p.source,
+      orgState: orgByPub.get(id) ?? null,
+      applicability: appByPub.get(id) ?? null,
+      versionCount: versionCountByPub.get(id) ?? 0,
+      provenance: (p.provenance as Record<string, unknown>) ?? null,
+    };
+  }) as PublicationListRow[];
 }
 
 export async function getPublicationDetail(

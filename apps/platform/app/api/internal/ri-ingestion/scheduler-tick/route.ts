@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
-import { runHostedSchedulerInvocation } from '@/lib/ri/ingestion/ops/hosted-scheduler-run.mjs';
+import {
+  planHostedSchedulerInvocation,
+  runHostedSchedulerInvocation,
+} from '@/lib/ri/ingestion/ops/hosted-scheduler-run.mjs';
 import { resolveHostedSchedulerInvocationKind } from '@/lib/ri/ingestion/ops/resolve-scheduler-invocation-kind.mjs';
 
 export const runtime = 'nodejs';
@@ -23,8 +26,15 @@ export async function POST(request: Request) {
 
 async function handleSchedulerRequest(request: Request) {
   const { invocationKind, platformSignals } = resolveHostedSchedulerInvocationKind(request);
+  const dryRun = new URL(request.url).searchParams.get('dryRun') === '1';
 
   try {
+    if (dryRun) {
+      const plan = await planHostedSchedulerInvocation({
+        cronSecretFromRequest: extractBearer(request) ?? undefined,
+      });
+      return NextResponse.json({ ...plan, invocationKind }, { status: 200 });
+    }
     const result = await runHostedSchedulerInvocation({
       invocationKind,
       cronSecretFromRequest: extractBearer(request) ?? undefined,
@@ -38,6 +48,7 @@ async function handleSchedulerRequest(request: Request) {
         dueCount: result.dueCount,
         processed: result.outcomes?.length ?? 0,
         staleMarked: result.staleMarked,
+        staleRunsRecovered: result.staleRunsRecovered,
       },
       { status: 200 },
     );
@@ -50,7 +61,8 @@ async function handleSchedulerRequest(request: Request) {
             message === 'hosted_scheduler_cron_secret_missing_or_weak' ||
             message === 'hosted_scheduler_requires_staging_env' ||
             message === 'hosted_scheduler_phase84_bypass_forbidden' ||
-            message === 'hosted_scheduler_wrong_supabase_project'
+            message === 'hosted_scheduler_wrong_supabase_project' ||
+            message === 'hosted_scheduler_database_url_missing'
           ? 503
           : 500;
     return NextResponse.json({ ok: false, error: message, invocationKind }, { status });

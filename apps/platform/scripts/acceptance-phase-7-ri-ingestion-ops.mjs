@@ -57,10 +57,12 @@ if (existsSync(vercel)) {
   else pass('no RI cron in vercel.json');
 } else pass('no vercel.json cron');
 
+// Phase 8D: the hosted scheduler (CRON_SECRET-gated, default-off) lives in ops/ by design.
 function scanNoCron(dir) {
   if (!existsSync(dir)) return;
   for (const f of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, f.name);
+    if (f.isDirectory() && f.name === 'ops') continue;
     if (f.isDirectory()) scanNoCron(p);
     else if (f.name.endsWith('.mjs') || f.name.endsWith('.ts')) {
       const t = readFileSync(p, 'utf8');
@@ -69,7 +71,7 @@ function scanNoCron(dir) {
   }
 }
 scanNoCron(join(platformRoot, 'lib', 'ri', 'ingestion'));
-pass('no automated production scheduler code');
+pass('no scheduler code outside ops/');
 
 const wf = await runPhase7OperationsVerification();
 for (const m of wf.pass) pass(`local DB: ${m}`);

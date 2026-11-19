@@ -158,6 +158,20 @@ export function labApiErrorResponse(err: unknown): NextResponse {
       { status: 403 },
     );
   }
+  if (
+    err instanceof Error &&
+    (err.message === 'partner_uat_forbidden_for_experimental_ai' ||
+      err.message === 'org_a_forbidden_for_experimental_pdf_ai' ||
+      err.message.startsWith('experimental_ai_wrong_organisation'))
+  ) {
+    return NextResponse.json(
+      { ok: false, error: 'forbidden', reason: 'experimental_ai_organisation_not_authorised' },
+      { status: 403 },
+    );
+  }
+  if (err instanceof Error && err.message.startsWith('obligation_extraction_')) {
+    return NextResponse.json({ ok: false, error: err.message }, { status: 422 });
+  }
   if (process.env.NODE_ENV !== 'test') {
     const msg = err instanceof Error ? err.message : 'unknown';
     console.error('[ri-lab] internal_error', msg.slice(0, 240));

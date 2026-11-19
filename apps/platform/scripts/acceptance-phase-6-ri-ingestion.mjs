@@ -79,9 +79,12 @@ function scanDir(dir, acc = [], skipDirNames = new Set()) {
 }
 for (const file of scanDir(join(platformRoot, 'lib', 'ri', 'ingestion'), [], new Set(['ops']))) {
   const text = readFileSync(file, 'utf8');
-  if (/cron|schedule|vercel\.json/i.test(text)) failMsg(`scheduler reference in ${file}`);
+  // Phase 84/8D: SCHEDULED trigger types and monitoring schedules are data; only ops/ may drive a tick.
+  if (/setInterval\(|node-cron|from ['"`]cron['"`]|runSchedulerTick|runHostedSchedulerInvocation|vercel\.json/.test(text)) {
+    failMsg(`scheduler invocation outside ops/ in ${file}`);
+  }
 }
-pass('no scheduler in ingestion layer');
+pass('no scheduler invocation in ingestion layer outside ops/');
 
 const wf = await runPhase6IngestionVerification();
 for (const m of wf.pass) pass(`local DB: ${m}`);

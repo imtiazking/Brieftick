@@ -1,5 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { PlatformRole } from '@/lib/roles';
+import { assessAiObligationTransition } from '@/lib/ri/ai/ai-obligation-workflow.mjs';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { RiConflictError } from '@/lib/ri/errors';
+import { canRi } from '@/lib/ri/permissions';
 import {
   buildLockedChildMetadataFromParentChange,
   workflowMetadataForChildRecordCreate,
@@ -158,12 +162,64 @@ export async function getObligationDetail(
   return { obligation: { ...data, change }, impacts: impacts ?? [], risks, controls };
 }
 
+async function assertAiObligationTransition(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    obligationId: string;
+    existing: { status: string; created_by_user_id?: string | null; ai_analysis_run_id?: string | null };
+    next: string;
+    userId: string;
+    role: PlatformRole | null;
+  },
+) {
+  let requestedBy: string | null = null;
+  let submittedBy: string | null = null;
+  if (params.next === 'OPEN') {
+    if (params.existing.ai_analysis_run_id) {
+      const { data: run } = await supabase
+        .from('ai_analysis_runs')
+        .select('requested_by')
+        .eq('id', params.existing.ai_analysis_run_id)
+        .eq('organisation_id', params.organisationId)
+        .maybeSingle();
+      requestedBy = run?.requested_by ?? null;
+    }
+    const { data: submission } = await supabase
+      .from('workflow_events')
+      .select('actor_user_id')
+      .eq('organisation_id', params.organisationId)
+      .eq('entity_type', 'regulatory_obligation')
+      .eq('entity_id', params.obligationId)
+      .eq('event_type', 'OBLIGATION_STATUS_CHANGED')
+      .eq('to_status', 'IN_REVIEW')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    submittedBy = submission?.actor_user_id ?? null;
+  }
+  const verdict = assessAiObligationTransition({
+    from: params.existing.status,
+    to: params.next,
+    actorUserId: params.userId,
+    actorCanReview: canRi(params.role, 'obligation:review'),
+    requestedByUserId: requestedBy,
+    acceptedByUserId: params.existing.created_by_user_id ?? null,
+    submittedByUserId: submittedBy,
+  });
+  if (!verdict.ok) {
+    if (verdict.code === 'segregation_of_duties') throw new Error('segregation_of_duties');
+    throw new RiConflictError(verdict.code);
+  }
+}
+
 export async function updateObligation(
   supabase: SupabaseClient,
   params: {
     organisationId: string;
     obligationId: string;
     userId: string;
+    role?: PlatformRole | null;
     fields: Record<string, unknown>;
     expectedUpdatedAt?: string | null;
   },
@@ -176,7 +232,7 @@ export async function updateObligation(
   );
   const { data: existing } = await supabase
     .from('regulatory_obligations')
-    .select('status, updated_at, owner_user_id')
+    .select('status, updated_at, owner_user_id, origin, created_by_user_id, ai_analysis_run_id')
     .eq('id', params.obligationId)
     .single();
   if (!existing) throw new Error('not_found');
@@ -214,6 +270,16 @@ export async function updateObligation(
   }
   if ('status' in params.fields) {
     const next = parseObligationStatus(params.fields.status);
+    if (existing.origin === 'AI_ASSISTED' && next !== existing.status) {
+      await assertAiObligationTransition(supabase, {
+        organisationId: params.organisationId,
+        obligationId: params.obligationId,
+        existing,
+        next,
+        userId: params.userId,
+        role: params.role ?? null,
+      });
+    }
     update.status = next;
     await recordWorkflowEvent(supabase, {
       organisationId: params.organisationId,

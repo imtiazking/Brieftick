@@ -180,6 +180,7 @@ export async function updateObligationAction(formData: FormData) {
     organisationId: ctx.organisationId,
     obligationId: String(formData.get('obligation_id') ?? ''),
     userId: ctx.userId,
+    role: ctx.role,
     fields,
     expectedUpdatedAt: (formData.get('updated_at') as string) || null,
   });
