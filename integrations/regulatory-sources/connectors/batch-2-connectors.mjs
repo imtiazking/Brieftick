@@ -2,6 +2,15 @@ import { createRssFeedConnector } from '../core/rss-connector.mjs';
 import { createHtmlListingConnector } from '../core/html-listing-connector.mjs';
 import { createPatternHtmlConnector } from '../core/pattern-html-connector.mjs';
 import { createDocumentLibraryConnector } from '../core/document-library-connector.mjs';
+import { createListingPdfConnector } from '../core/listing-pdf-connector.mjs';
+import {
+  extractSdaiaKnowledgeCenterDownloads,
+  extractMociRegulationDetailPages,
+  extractUaecmaRegulationDownloads,
+  PHASE84G_MOCI_LISTING_URL,
+  PHASE84G_SDAIA_LISTING_URL,
+  PHASE84G_UAECMA_LISTING_URL,
+} from './phase84g-extractors.mjs';
 
 /** Batch 2 — Saudi Arabia, UAE, United States (catalogue-aligned; official domains only). */
 const iaSa = createPatternHtmlConnector({
@@ -17,60 +26,67 @@ const iaSa = createPatternHtmlConnector({
 });
 iaSa.productionStrategy = 'DIRECT_OFFICIAL_HTML';
 
-const tadawul = createPatternHtmlConnector({
+const tadawul = createDocumentLibraryConnector({
   connectorId: 'CONN-B2-TADAWUL',
   regulatorId: 'REG-TADAWUL',
   sourceId: 'SRC-TADAWUL-RULEBOOK',
-  allowedHosts: ['www.saudiexchange.sa', 'saudiexchange.sa'],
-  listingUrl:
-    'https://www.saudiexchange.sa/wps/portal/saudiexchange/rules-and-regulations/listing-rules',
-  linkPattern: /href="(\/wps\/portal\/saudiexchange\/rules-and-regulations\/[^"]+)"/gi,
-  linkIsPath: true,
-  retrievalMethod: 'official_html_pattern',
+  allowedHosts: ['cma.gov.sa', 'cma.org.sa', 'www.cma.org.sa', 'www.cma.gov.sa'],
+  indexUrl: 'https://cma.gov.sa/RulesRegulations/Regulations/Pages/default.aspx',
+  retrievalMethod: 'official_cma_regulator_rules_index',
   publicationType: 'exchange_rule',
 });
-tadawul.productionStrategy = 'DIRECT_OFFICIAL_HTML';
+tadawul.productionStrategy = 'DIRECT_OFFICIAL_DOCUMENT_LIBRARY';
 
-const sdaia = createHtmlListingConnector({
+const sdaia = createListingPdfConnector({
   connectorId: 'CONN-B2-SDAIA',
   regulatorId: 'REG-SDAIA',
   sourceId: 'SRC-SDAIA-PDPL',
-  allowedHosts: ['sdaia.gov.sa', 'www.sdaia.gov.sa'],
-  listingUrl: 'https://sdaia.gov.sa/en',
-  retrievalMethod: 'official_html_listing',
-  publicationType: 'guidance',
+  allowedHosts: ['dgp.sdaia.gov.sa'],
+  listingUrl: PHASE84G_SDAIA_LISTING_URL,
+  extractDocuments: extractSdaiaKnowledgeCenterDownloads,
+  retrievalMethod: 'official_dgp_knowledge_center_pdf',
+  publicationType: 'legislation',
+  maxRequests: 8,
 });
-sdaia.productionStrategy = 'DIRECT_OFFICIAL_HTML';
+sdaia.productionStrategy = 'DIRECT_OFFICIAL_DOCUMENT_LIBRARY';
 
-const zatca = createDocumentLibraryConnector({
+const zatca = createPatternHtmlConnector({
   connectorId: 'CONN-B2-ZATCA',
   regulatorId: 'REG-ZATCA',
   sourceId: 'SRC-ZATCA-EINVOICING',
   allowedHosts: ['zatca.gov.sa', 'www.zatca.gov.sa'],
-  indexUrl: 'https://zatca.gov.sa/en/Rules/Lists/RulesList/AllItems.aspx',
-  retrievalMethod: 'official_document_library',
-  publicationType: 'regulation',
+  listingUrl: 'https://zatca.gov.sa/en/HelpCenter/guidelines/Pages/default.aspx',
+  linkPattern: /href="(\/en\/HelpCenter\/guidelines\/Pages\/[^"]+\.aspx)"/gi,
+  linkIsPath: true,
+  retrievalMethod: 'official_guidelines_pages',
+  publicationType: 'guidance',
 });
-zatca.productionStrategy = 'DIRECT_OFFICIAL_DOCUMENT_LIBRARY';
+zatca.productionStrategy = 'DIRECT_OFFICIAL_HTML';
 
-const moci = createHtmlListingConnector({
+const moci = createListingPdfConnector({
   connectorId: 'CONN-B2-MOCI-SA',
   regulatorId: 'REG-MOCI-SA',
   sourceId: 'SRC-MOCI-SA-COMPANIES-LAW',
   allowedHosts: ['mc.gov.sa', 'www.mc.gov.sa'],
-  listingUrl: 'https://mc.gov.sa/en/Pages/default.aspx',
-  retrievalMethod: 'official_html_listing',
+  listingUrl: PHASE84G_MOCI_LISTING_URL,
+  caBundlePath: 'certs/mc-gov-sa-trust-chain.pem',
+  extractDocuments: extractMociRegulationDetailPages,
+  followHtmlToPdf: true,
+  acceptOfficialHtmlInstrument: true,
+  minHtmlInstrumentBytes: 100_000,
+  retrievalMethod: 'official_mc_regulations_detail_html',
   publicationType: 'legislation',
+  maxRequests: 8,
 });
-moci.productionStrategy = 'DIRECT_OFFICIAL_HTML';
+moci.productionStrategy = 'DIRECT_OFFICIAL_DOCUMENT_LIBRARY';
 
 const nca = createDocumentLibraryConnector({
   connectorId: 'CONN-B2-NCA-SA',
   regulatorId: 'REG-NCA-SA',
   sourceId: 'SRC-NCA-SA-FRAMEWORKS',
-  allowedHosts: ['nca.gov.sa', 'www.nca.gov.sa'],
-  indexUrl: 'https://nca.gov.sa/en/regulatory-documents/',
-  retrievalMethod: 'official_document_library',
+  allowedHosts: ['nca.gov.sa', 'www.nca.gov.sa', 'cdn.nca.gov.sa'],
+  indexUrl: 'https://nca.gov.sa/en/laws-and-regulations/',
+  retrievalMethod: 'official_laws_and_regulations_index',
   publicationType: 'framework',
 });
 nca.productionStrategy = 'DIRECT_OFFICIAL_DOCUMENT_LIBRARY';
@@ -79,12 +95,12 @@ const saLeg = createPatternHtmlConnector({
   connectorId: 'CONN-B2-SA-LEG',
   regulatorId: 'REG-SA-LEG',
   sourceId: 'SRC-SA-LEGISLATION-GAZETTE',
-  allowedHosts: ['laws.boe.gov.sa'],
-  listingUrl: 'https://laws.boe.gov.sa/BoeLaws/Laws',
-  linkPattern: /href="(\/BoeLaws\/Laws\/[^"]+)"/gi,
-  linkIsPath: true,
-  retrievalMethod: 'official_legislation_html',
-  publicationType: 'legislation',
+  allowedHosts: ['uqn.gov.sa', 'www.uqn.gov.sa'],
+  listingUrl: 'https://www.uqn.gov.sa/',
+  linkPattern: /href="(https:\/\/www\.uqn\.gov\.sa\/news\/[^"]+\/\d+)"/gi,
+  linkIsPath: false,
+  retrievalMethod: 'official_uqn_news_publications',
+  publicationType: 'official_gazette',
 });
 saLeg.productionStrategy = 'DIRECT_OFFICIAL_HTML';
 
@@ -99,29 +115,29 @@ const vara = createHtmlListingConnector({
 });
 vara.productionStrategy = 'DIRECT_OFFICIAL_HTML';
 
-const scaUae = createHtmlListingConnector({
+const scaUae = createListingPdfConnector({
   connectorId: 'CONN-B2-SCA-UAE',
   regulatorId: 'REG-SCA-UAE',
   sourceId: 'SRC-SCA-UAE-REGULATIONS',
-  allowedHosts: ['www.sca.gov.ae', 'sca.gov.ae', 'www.uaecma.gov.ae', 'uaecma.gov.ae'],
-  listingUrl: 'https://www.sca.gov.ae/en/regulations.aspx',
-  retrievalMethod: 'official_html_listing',
-  publicationType: 'regulation',
+  allowedHosts: ['www.uaecma.gov.ae', 'uaecma.gov.ae'],
+  listingUrl: PHASE84G_UAECMA_LISTING_URL,
+  extractDocuments: extractUaecmaRegulationDownloads,
+  retrievalMethod: 'official_uaecma_latest_regulations_pdf',
+  publicationType: 'regulatory_decision',
+  maxRequests: 6,
 });
-scaUae.productionStrategy = 'DIRECT_OFFICIAL_HTML';
+scaUae.productionStrategy = 'DIRECT_OFFICIAL_DOCUMENT_LIBRARY';
 
-const fsra = createPatternHtmlConnector({
+const fsra = createHtmlListingConnector({
   connectorId: 'CONN-B2-FSRA',
   regulatorId: 'REG-FSRA',
   sourceId: 'SRC-FSRA-RULEBOOK',
-  allowedHosts: ['en.adgm.thomsonreuters.com', 'www.adgm.com', 'adgm.com'],
-  listingUrl: 'https://en.adgm.thomsonreuters.com/rulebook/rulemaking-instruments',
-  linkPattern: /href="(\/rulebook\/rmi-[^"]+)"/gi,
-  linkIsPath: true,
-  retrievalMethod: 'official_rulebook_platform_html',
-  publicationType: 'rulemaking_instrument',
+  allowedHosts: ['www.adgm.com', 'adgm.com'],
+  listingUrl: 'https://www.adgm.com/publications',
+  retrievalMethod: 'official_adgm_publications',
+  publicationType: 'regulatory_publication',
 });
-fsra.productionStrategy = 'OFFICIAL_STRUCTURED_ENDPOINT';
+fsra.productionStrategy = 'DIRECT_OFFICIAL_HTML';
 
 const uaeFiu = createHtmlListingConnector({
   connectorId: 'CONN-B2-UAE-FIU',
@@ -209,14 +225,16 @@ const ofacRi = createPatternHtmlConnector({
 });
 ofacRi.productionStrategy = 'DIRECT_OFFICIAL_HTML';
 
-const nfa = createRssFeedConnector({
+const nfa = createPatternHtmlConnector({
   connectorId: 'CONN-B2-NFA',
   regulatorId: 'REG-NFA',
   sourceId: 'SRC-NFA-RULEBOOK',
   allowedHosts: ['www.nfa.futures.org', 'nfa.futures.org'],
-  feedUrl: 'https://www.nfa.futures.org/news/rss.asp',
-  retrievalMethod: 'official_rss',
-  publicationType: 'regulatory_notice',
+  listingUrl: 'https://www.nfa.futures.org/rulebook/index.aspx',
+  linkPattern: /href="(rules\.aspx(?:\?Section=\d+)?)"/gi,
+  linkIsPath: true,
+  retrievalMethod: 'official_nfa_rulebook_sections',
+  publicationType: 'rulebook_section',
 });
 nfa.productionStrategy = 'DIRECT_OFFICIAL_FEED';
 

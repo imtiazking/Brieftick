@@ -371,7 +371,7 @@ export const REGULATORY_SOURCES = [
     sourceType: 'Federal Register (SEC-related)',
     integrationMethod: 'Federal Register API / bulk (server-side)',
     apiAvailability: 'yes',
-    authenticationRequirement: 'api_key',
+    authenticationRequirement: 'none',
     updateFrequencyExpectation: 'Daily',
     productRelevance: { ri: 'secondary', fc: 'none', mi: 'none', or: 'none' },
     status: 'PLANNED',

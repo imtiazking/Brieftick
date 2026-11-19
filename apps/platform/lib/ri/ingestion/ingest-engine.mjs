@@ -26,6 +26,7 @@ export async function runSourceIngestion(client, params) {
     fixture,
     liveAllowed = false,
     maxItems = 3,
+    onlyUrl = null,
     existingRunId = null,
     triggerType = 'MANUAL',
     attemptNumber = 1,
@@ -43,10 +44,19 @@ export async function runSourceIngestion(client, params) {
   }
   const ids = await resolveCatalogueIds(client, catalogue.regulatorId, sourceId);
 
-  const eligibility = assessSourceIngestionEligibility(sourceId, {
-    ingestionMode: ids.ingestionMode,
-    productionStatus: ids.productionStatus,
-  });
+  const eligibility = assessSourceIngestionEligibility(
+    sourceId,
+    {
+      ingestionMode: ids.ingestionMode,
+      productionStatus: ids.productionStatus,
+      monitoringEnabled: ids.monitoringEnabled,
+      lastSuccessAt: ids.lastSuccessAt,
+    },
+    {
+      triggerType,
+      allowPhase84ManualCoverageBypass: true,
+    },
+  );
 
   let runId = existingRunId;
   if (!runId) {
@@ -83,6 +93,7 @@ export async function runSourceIngestion(client, params) {
         fixture,
         liveAllowed,
         maxItems,
+        onlyUrl: onlyUrl || undefined,
       });
     } catch (e) {
       throw new Error(`retrieval_failed:${e.message}`);

@@ -58,6 +58,14 @@ export function can(user, permission, _resource = null) {
 }
 
 export function assertPermission(state, permission, resource = null) {
+  if (state?.platformConfig?.adapterMode === 'api' && state?.platformConfig?.featureFlags?.apiAdapter === true) {
+    return {
+      ok: false,
+      code: 'FORBIDDEN',
+      message:
+        'Connected mode: server-side RBAC applies. Mock permissions cannot authorise mutations in this release.',
+    };
+  }
   const user = state.people?.find((p) => p.id === state.currentDemoUserId);
   if (!can(user, permission, resource)) {
     return {

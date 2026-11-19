@@ -33,7 +33,8 @@ export function extractDocumentLinks(html, pageUrl, allowedHosts, max = 3) {
       isDocFolder ||
       /\.(docx?|xlsx?)$/i.test(path) ||
       /\/rules?\//i.test(path) ||
-      /\/regulations?\//i.test(path);
+      /\/regulations?\//i.test(path) ||
+      /\/api\/(?:files\/public|public\/cms\/files)\//i.test(path);
     if (!isRegulatoryDoc) continue;
     const score =
       (isPdf ? 8 : isDetails ? 6 : 4) + (/\/20\d{2}/.test(path) ? 2 : 0);

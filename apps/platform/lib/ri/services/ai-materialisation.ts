@@ -110,7 +110,7 @@ export async function materialiseReviewedClaims(
         continue;
       }
 
-      const candidate = candidates[claimIndex] ?? candidates[0];
+      const candidate = candidates[claimIndex];
       if (!candidate?.title) continue;
 
       const { data: change, error: chgErr } = await supabase
@@ -189,7 +189,7 @@ export async function materialiseReviewedClaims(
         continue;
       }
 
-      const candidate = candidates[claimIndex] ?? candidates[0];
+      const candidate = candidates[claimIndex];
       const claimsArr = (output.claims as Array<Record<string, unknown>>) || [];
       const claimMeta = claimsArr[claimIndex];
       const changeId =

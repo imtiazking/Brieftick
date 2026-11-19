@@ -7,6 +7,7 @@ import { HTTP_LIMITS } from '../core/contract.mjs';
 import { createHtmlListingConnector } from '../core/html-listing-connector.mjs';
 import { createSitemapConnector } from '../core/sitemap-connector.mjs';
 import { createPatternHtmlConnector } from '../core/pattern-html-connector.mjs';
+import { createCuratedOfficialDocumentConnector } from '../core/curated-url-connector.mjs';
 import { inferFcaPublicationType } from './fca-publication-type.mjs';
 
 export const CORE_LEGACY_CONNECTORS = [
@@ -21,13 +22,13 @@ export const CORE_LEGACY_CONNECTORS = [
     pilotMaxItems: HTTP_LIMITS.maxItemsPilotCap,
     inferPublicationType: inferFcaPublicationType,
   }),
-  createHtmlListingConnector({
+  createRssFeedConnector({
     connectorId: 'CONN-LEGACY-PRA',
     regulatorId: 'REG-PRA',
     sourceId: 'SRC-PRA-PUBLICATIONS',
     allowedHosts: ['www.bankofengland.co.uk', 'bankofengland.co.uk'],
-    listingUrl: 'https://www.bankofengland.co.uk/news/publications',
-    retrievalMethod: 'official_html_listing',
+    feedUrl: 'https://www.bankofengland.co.uk/rss/publications',
+    retrievalMethod: 'official_rss',
     publicationType: 'publication',
     maxItems: 5,
   }),
@@ -55,25 +56,31 @@ export const CORE_LEGACY_CONNECTORS = [
     connectorId: 'CONN-LEGACY-TPR',
     regulatorId: 'REG-TPR',
     sourceId: 'SRC-TPR-DOCUMENT-LIBRARY',
-    allowedHosts: ['www.tpr.gov.uk', 'tpr.gov.uk'],
-    sitemapUrl: 'https://www.tpr.gov.uk/sitemap.xml',
+    allowedHosts: [
+      'www.tpr.gov.uk',
+      'tpr.gov.uk',
+      'www.thepensionsregulator.gov.uk',
+      'thepensionsregulator.gov.uk',
+    ],
+    sitemapUrl: 'https://www.thepensionsregulator.gov.uk/sitemap.xml',
     maxSitemapBytes: 4 * 1024 * 1024,
-    urlPattern: /tpr\.gov\.uk\/en\/document-library\//i,
+    urlPattern: /thepensionsregulator\.gov\.uk\/.*document-library/i,
     retrievalMethod: 'official_sitemap',
     publicationType: 'publication',
     maxItems: 5,
   }),
-  createPatternHtmlConnector({
+  createCuratedOfficialDocumentConnector({
     connectorId: 'CONN-LEGACY-BASEL',
     regulatorId: 'REG-BIS',
     sourceId: 'SRC-BASEL-FRAMEWORK',
     allowedHosts: ['www.bis.org', 'bis.org'],
-    listingUrl: 'https://www.bis.org/basel_framework.htm',
-    linkPattern: /href="(\/basel_framework\/[^"]+\.htm)"/gi,
-    linkIsPath: true,
-    retrievalMethod: 'official_html_pattern',
+    retrievalMethod: 'official_curated_bcbs_publications',
     publicationType: 'standard',
-    maxItems: 5,
+    documentUrls: [
+      'https://www.bis.org/bcbs/publ/d457.htm',
+      'https://www.bis.org/bcbs/publ/d464.htm',
+      'https://www.bis.org/bcbs/publ/d463.htm',
+    ],
   }),
 ];
 

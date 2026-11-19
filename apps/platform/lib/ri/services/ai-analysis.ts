@@ -23,6 +23,7 @@ import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
 import { AI_PROVIDER_MODE } from '@/lib/ri/ai/enums';
 import { getUseCaseById } from '@/lib/ri/ai/use-case-catalog';
 import { assertCanRi } from '@/lib/ri/permissions';
+import { assertAiReviewerSoD } from '@/lib/ri/separation-of-duties';
 import { materialiseReviewedClaims } from '@/lib/ri/services/ai-materialisation';
 import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
 import { getLatestPublicationVersion } from '@/lib/ri/services/publication-versions';
@@ -536,6 +537,10 @@ export async function submitAnalysisReview(
       : params.decision === 'PARTIALLY_ACCEPTED'
         ? AI_REVIEW_STATUS.PARTIALLY_ACCEPTED
         : AI_REVIEW_STATUS.REJECTED;
+
+  if (decision !== AI_REVIEW_STATUS.REJECTED) {
+    assertAiReviewerSoD({ requestedByUserId: run.requested_by, reviewerUserId: params.userId });
+  }
 
   const { data: reviewRow, error: reviewErr } = await supabase
     .from('ai_analysis_reviews')

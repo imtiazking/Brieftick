@@ -4,7 +4,7 @@ import { parseFeedItems } from './rss.mjs';
 import { fingerprintContent } from './fingerprint.mjs';
 import { buildEvidenceCapture } from './evidence-capture.mjs';
 import { extractPublicationSummaryFromHtml } from './html-publication-text.mjs';
-import { assertUrlAllowed } from './url-safety.mjs';
+import { assertUrlAllowed, coerceHttpsForAllowlistedHost } from './url-safety.mjs';
 import {
   VERIFICATION_STATUS,
   buildVerificationResult,
@@ -13,6 +13,7 @@ import {
   HTTP_LIMITS,
   resolveConnectorItemLimit,
 } from './contract.mjs';
+import { selectFeedEntriesByOnlyUrl, ONLY_URL_ERROR } from './only-canonical-url.mjs';
 
 /**
  * @param {object} config
@@ -123,7 +124,12 @@ export function createRssFeedConnector(config) {
       }
 
       const xml = feedRes.body.toString('utf8');
-      const feedItems = parseFeedItems(xml, itemLimit);
+      const onlyCanonicalUrl =
+        typeof options.onlyCanonicalUrl === 'string' ? options.onlyCanonicalUrl.trim() : '';
+      const feedParseLimit = onlyCanonicalUrl
+        ? HTTP_LIMITS.maxFeedItemsForOnlyUrlScan
+        : itemLimit;
+      const feedItems = parseFeedItems(xml, feedParseLimit);
       if (feedItems.length === 0) {
         return {
           summary: buildVerificationResult({
@@ -138,18 +144,49 @@ export function createRssFeedConnector(config) {
         };
       }
 
+      let entriesToProcess = feedItems;
+      if (onlyCanonicalUrl) {
+        const picked = selectFeedEntriesByOnlyUrl(feedItems, onlyCanonicalUrl);
+        if (!picked.ok) {
+          const error =
+            picked.code === ONLY_URL_ERROR.INVALID
+              ? 'only_url_invalid'
+              : picked.code === ONLY_URL_ERROR.AMBIGUOUS
+                ? 'only_url_ambiguous'
+                : 'only_url_not_found';
+          return {
+            summary: buildVerificationResult({
+              ...base,
+              verificationStatus: VERIFICATION_STATUS.LIVE_RETRIEVAL_FAILED,
+              httpStatus: feedRes.httpStatus,
+              contentType: feedRes.contentType,
+              error,
+            }),
+            items: [],
+            publications: [],
+          };
+        }
+        entriesToProcess = picked.entries;
+      } else {
+        entriesToProcess = feedItems.slice(0, itemLimit);
+      }
+
       const items = [];
       const publications = [];
       let requestCount = 1;
+      const documentLimit = onlyCanonicalUrl ? 1 : itemLimit;
 
-      for (const entry of feedItems) {
-        if (publications.length >= itemLimit) break;
+      for (const entry of entriesToProcess) {
+        if (publications.length >= documentLimit) break;
         if (requestCount >= this.maxRequests) break;
-        const linkGate = assertUrlAllowed(entry.link, config.allowedHosts);
+        const linkGate = assertUrlAllowed(
+          coerceHttpsForAllowlistedHost(entry.link, config.allowedHosts),
+          config.allowedHosts,
+        );
         if (!linkGate.ok) continue;
 
         requestCount += 1;
-        const docRes = await httpGet(entry.link, { allowedHosts: config.allowedHosts });
+        const docRes = await httpGet(linkGate.url.toString(), { allowedHosts: config.allowedHosts });
         if (!docRes.ok) continue;
 
         const fp = await fingerprintContent(docRes.body, { contentType: docRes.contentType });

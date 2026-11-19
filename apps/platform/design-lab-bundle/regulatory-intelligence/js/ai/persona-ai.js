@@ -1,4 +1,5 @@
 import { permissionsForRoles } from '../platform/platform-permissions.js';
+import { isConnectedBackendActive } from '../platform/connected-mode.js';
 
 export function canGenerateAiSummary(state) {
   const user = state.people?.find((p) => p.id === state.currentDemoUserId);
@@ -25,6 +26,10 @@ export function canCreateAiWorkflowDrafts(state, userId = state.currentDemoUserI
 
 /** Analyst, Compliance Manager, and Auditor (read) may use Ask RI / comparisons / summaries. */
 export function canAskRi(state, userId = state.currentDemoUserId) {
+  if (isConnectedBackendActive(state)) {
+    const serverPerms = state.platformConfig?.backendSession?.permissions || [];
+    return serverPerms.includes('ask-ri:read');
+  }
   const user = state.people?.find((p) => p.id === userId);
   const perms = permissionsForRoles(user?.applicationRoleIds || []);
   if (perms.includes('ai.execution.create') || perms.includes('ai.review')) return true;

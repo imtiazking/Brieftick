@@ -143,8 +143,10 @@ export const SOURCE_COVERAGE_BY_ID = {
     contentClasses: [],
     riUseCases: ['REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
-    coverageNotes: 'Technical access restricted; semantic coverage of digital rulebook not established.',
-    missingEndpointHint: 'Licensed or whitelisted access to rulebook.centralbank.ae content.',
+    coverageNotes:
+      'Phase 84J: Open-data policy and landing pages exist on centralbank.ae but programme/staging egress receives HTTP 403 on all tested HTML, sitemap, RSS, legislation, regulatory-development, and rulebook hosts. UAE FCSC catalog API (opendata.fcsc.gov.ae) blocked by Cloudflare from automation. Federal statistical datasets (e.g. Balance of Payments) are not regulatory rulebook publications. Connector disabled; no homepage PASS.',
+    missingEndpointHint:
+      'Authorised CBUAE publication feed, API credentials, partner/licensed Thomson Reuters rulebook access, or IP allowlisting for centralbank.ae automated retrieval.',
   },
   'SRC-IA-SA-REGULATIONS': {
     coverageVerificationStatus: 'CONNECTIVITY_ONLY',
@@ -156,45 +158,54 @@ export const SOURCE_COVERAGE_BY_ID = {
     missingEndpointHint: 'IA circulars/regulations library or document index with substantive instruments.',
   },
   'SRC-TADAWUL-RULEBOOK': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'PARTIALLY_VERIFIED',
+    contentClasses: ['RULEBOOK', 'REGULATORY_NOTICE'],
+    riUseCases: ['REGULATORY_CHANGE', 'RULE_OBLIGATION_SOURCE', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
-    coverageNotes: 'HTTP 403 — exchange rulebook semantic coverage not assessed.',
-    missingEndpointHint: 'Official listing/trading rulebook pages on saudiexchange.sa.',
+    coverageNotes:
+      'PARTIAL: CMA capital-market rules index only (Phase 84D). Saudi Exchange listing/trading rules remain HTTP 403 — not represented as full Tadawul exchange coverage.',
+    missingEndpointHint: 'Authorised Saudi Exchange rule publication route when publicly accessible.',
   },
   'SRC-SDAIA-PDPL': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'PARTIALLY_VERIFIED',
+    contentClasses: ['PRIMARY_LEGISLATION', 'SECONDARY_LEGISLATION', 'SUPERVISORY_GUIDANCE'],
+    riUseCases: ['REGULATORY_CHANGE', 'RULE_OBLIGATION_SOURCE', 'GUIDANCE_MONITORING', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
-    coverageNotes: 'Connector not semantically validated — PDPL route unresolved.',
-    missingEndpointHint: 'Official PDPL law, implementing regulations, and guidance index.',
+    coverageNotes:
+      'Phase 84G: DGP Knowledge Centre English portal — official WCM PDF downloads (PDPL, Implementing Regulation, policies). PARTIAL: static catalogue cards; no unattended change-discovery feed.',
+    missingEndpointHint: 'Machine-readable NDMO update feed beyond portal cards.',
   },
   'SRC-ZATCA-EINVOICING': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'PARTIALLY_VERIFIED',
+    contentClasses: ['SUPERVISORY_GUIDANCE', 'REGULATORY_NOTICE'],
+    riUseCases: ['GUIDANCE_MONITORING', 'REGULATORY_CHANGE', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
-    coverageNotes: 'Rules index reachable but no extractable regulatory documents in lab pass.',
+    coverageNotes:
+      'PARTIAL: Help Center guideline pages (Phase 84D). SharePoint Rules library and full tax/zakat legislation corpus not extracted in bounded pass.',
   },
   'SRC-MOCI-SA-COMPANIES-LAW': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'PARTIALLY_VERIFIED',
+    contentClasses: ['PRIMARY_LEGISLATION', 'SECONDARY_LEGISLATION'],
+    riUseCases: ['REGULATORY_CHANGE', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
+    coverageNotes:
+      'Phase 84G: TLS fixed via official DigiCert intermediate PEM (incomplete server chain). Regulations retrieved from SharePoint detail pages (HTML instruments; no public PDF). PARTIAL vs full PDF corpus.',
+    missingEndpointHint: 'Official downloadable PDF endpoints for mc.gov.sa regulations when published.',
   },
   'SRC-NCA-SA-FRAMEWORKS': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['FRAMEWORK', 'PRIMARY_LEGISLATION', 'REGULATORY_NOTICE'],
+    riUseCases: ['REGULATORY_CHANGE', 'RULE_OBLIGATION_SOURCE', 'GUIDANCE_MONITORING', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
+    coverageNotes: 'Official laws-and-regulations index with CDN-hosted PDF instruments (Phase 84D).',
   },
   'SRC-SA-LEGISLATION-GAZETTE': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'PARTIALLY_VERIFIED',
+    contentClasses: ['PRIMARY_LEGISLATION', 'SECONDARY_LEGISLATION', 'REGULATORY_NOTICE'],
+    riUseCases: ['REGULATORY_CHANGE', 'REFERENCE_ONLY', 'HORIZON_SCANNING'],
     catalogueRecommendation: 'KEEP',
+    coverageNotes:
+      'PARTIAL (Phase 84F): Umm Al-Qura digital site `/news/{category}/{id}` publications — not legacy IssueArchive.aspx PDF issues; Arabic metadata from page content where present.',
   },
   'SRC-VARA-RULEBOOK': {
     coverageVerificationStatus: 'PARTIALLY_VERIFIED',
@@ -213,18 +224,20 @@ export const SOURCE_COVERAGE_BY_ID = {
     coverageNotes: 'Official /en/news — market notices and regulatory announcements (not rulebook obligations).',
   },
   'SRC-SCA-UAE-REGULATIONS': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['REGULATORY_DECISION', 'SECONDARY_LEGISLATION'],
+    riUseCases: ['REGULATORY_CHANGE', 'RULE_OBLIGATION_SOURCE', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
-    coverageNotes: 'No representative regulatory documents retrieved from uaecma.gov.ae listing.',
+    coverageNotes:
+      'Phase 84G: Official UAECMA Latest Regulations — PDF via /assets/download/*.aspx with Content-Type application/pdf (Decision 11/2026 verified).',
   },
   'SRC-FSRA-RULEBOOK': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'PARTIALLY_VERIFIED',
+    contentClasses: ['REGULATORY_NOTICE', 'POLICY_STATEMENT', 'SUPERVISORY_GUIDANCE', 'CONSULTATION'],
+    riUseCases: ['REGULATORY_CHANGE', 'GUIDANCE_MONITORING', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
-    coverageNotes: 'HTTP 403 on ADGM Thomson Reuters rulebook — semantic rulebook coverage not demonstrated.',
+    coverageNotes:
+      'PARTIAL: ADGM official publications (consultations, notices, guidance). Binding FSRA rulebook text on Thomson Reuters remains entitlement-blocked.',
   },
   'SRC-UAE-FIU-GUIDANCE': {
     coverageVerificationStatus: 'COVERAGE_VERIFIED',
@@ -301,6 +314,13 @@ export const SOURCE_COVERAGE_BY_ID = {
     catalogueRecommendation: 'KEEP',
     coverageNotes: 'rules-regulations index surfaces SRO and exchange rulemaking sections; deepen for final rules corpus.',
   },
+  'SRC-SEC-FEDERAL-REGISTER': {
+    coverageVerificationStatus: 'COVERAGE_VERIFIED',
+    contentClasses: ['REGULATORY_NOTICE', 'RULEBOOK'],
+    riUseCases: ['REGULATORY_CHANGE', 'GUIDANCE_MONITORING', 'REFERENCE_ONLY'],
+    catalogueRecommendation: 'KEEP',
+    coverageNotes: 'Federal Register API SEC agency filter; bounded document retrieval for final rules and notices.',
+  },
   'SRC-CFTC-RULEMAKING': {
     coverageVerificationStatus: 'NOT_TESTED',
     contentClasses: [],
@@ -310,11 +330,12 @@ export const SOURCE_COVERAGE_BY_ID = {
     missingEndpointHint: 'Resolvable federalregister.gov document URLs from CFTC rulemaking index.',
   },
   'SRC-NFA-RULEBOOK': {
-    coverageVerificationStatus: 'NOT_TESTED',
-    contentClasses: [],
-    riUseCases: ['REFERENCE_ONLY'],
+    coverageVerificationStatus: 'PARTIALLY_VERIFIED',
+    contentClasses: ['RULEBOOK', 'REGULATORY_NOTICE'],
+    riUseCases: ['REGULATORY_CHANGE', 'RULE_OBLIGATION_SOURCE', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
-    coverageNotes: 'Technical route unresolved; semantic rulebook/notices coverage not assessed.',
+    coverageNotes:
+      'PARTIAL: NFA rulebook section HTML (rules.aspx). Notices to Members and news remain JS-rendered — outside connector coverage.',
   },
   'SRC-FCA-PUBLICATIONS-RSS': {
     coverageVerificationStatus: 'COVERAGE_VERIFIED',

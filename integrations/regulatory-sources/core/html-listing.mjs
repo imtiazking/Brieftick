@@ -34,7 +34,7 @@ export function extractListingLinks(html, pageUrl, allowedHosts, max = 3) {
     const segments = path.split('/').filter(Boolean);
     const looksPublication =
       /\/(20\d{2})\//.test(path) ||
-      /(publication|notice|notices|news|guidance|rule|circular|consultation|enforcement|decision|press-release|media-center)/i.test(
+      /(publication|notice|notices|news|guidance|rule|circular|consultation|enforcement|decision|press-release|media-center|legislation|legislations|regulation|decree|announcements)/i.test(
         path,
       );
     if (!looksPublication) continue;

@@ -2,7 +2,7 @@
 export const DEFAULT_PLATFORM_CONFIG = {
   environment: 'design-lab',
   adapterMode: 'local',
-  apiBaseUrl: null,
+  apiBaseUrl: '/api/ri-lab',
   tenantMode: 'single-demo',
   auditMode: 'append-only-mock',
   schemaVersion: 14,

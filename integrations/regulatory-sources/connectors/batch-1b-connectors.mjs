@@ -11,6 +11,8 @@ import {
 } from '../core/contract.mjs';
 import { fingerprintContent } from '../core/fingerprint.mjs';
 import { assertUrlAllowed } from '../core/url-safety.mjs';
+import { extractDocumentLinks } from '../core/document-library.mjs';
+import { isPortalRejectionBody, isRegulatoryPdfBody } from '../core/regulatory-document-body.mjs';
 
 /** SAMA — official rulebook subdomain (www.sama.gov.sa fails TLS chain verification in Node). */
 export const samaRulebookConnector = createPatternHtmlConnector({
@@ -61,6 +63,17 @@ export function createCbUAEConnector() {
     sourceId: 'SRC-CBUAE-DIGITAL-RULEBOOK',
     allowedHosts: ['rulebook.centralbank.ae', 'centralbank.ae', 'www.centralbank.ae'],
     candidates: [
+      'https://centralbank.ae/en/open-data-landing/',
+      'https://centralbank.ae/en/open-data-landing/open-data-documents/',
+      'https://centralbank.ae/en/our-operations/supervision/bank-guidelines/',
+      'https://www.centralbank.ae/en/our-operations/supervision/bank-guidelines/',
+      'https://www.centralbank.ae/en/our-operations/regulatory-development/',
+      'https://centralbank.ae/en/legislation/',
+      'https://centralbank.ae/en/our-operations/payments-and-settlements/regulations-and-standards/',
+      'https://www.centralbank.ae/en/rulebook/updates',
+      'https://www.centralbank.ae/en/laws-and-regulations',
+      'https://www.centralbank.ae/en/news-and-publications',
+      'https://rulebook.centralbank.ae/en/rulebook/updates',
       'https://rulebook.centralbank.ae/en/rulebook',
       'https://rulebook.centralbank.ae/en',
       'https://www.centralbank.ae/en/our-operations/regulations',
@@ -113,47 +126,69 @@ export function createCbUAEConnector() {
           continue;
         }
 
-        const fp = await fingerprintContent(res.body);
-        const title = pickTitle(res.body.toString('utf8', 0, 15000)) || 'CBUAE Rulebook';
-        return {
-          summary: buildVerificationResult({
-            ...base,
-            verificationStatus: VERIFICATION_STATUS.LIVE_VERIFIED,
-            httpStatus: res.httpStatus,
-            contentType: res.contentType,
-            title,
-            sourceDocumentUrl: res.finalUrl,
-            contentHash: fp.hash,
-            provenance: {
-              origin: PROVENANCE_ORIGIN,
-              canonicalUrl: res.finalUrl,
-              productionStrategy: 'DIRECT_OFFICIAL_HTML',
-              retrievedAt,
-            },
-          }),
-          items: [
-            buildVerificationResult({
+        if (isPortalRejectionBody(res.body, res.contentType)) {
+          lastError = 'portal_rejection_page';
+          continue;
+        }
+
+        const html = res.body.toString('utf8');
+        const docs = extractDocumentLinks(html, res.finalUrl, config.allowedHosts, 3);
+        for (const doc of docs) {
+          const docRes = await httpGet(doc.link, {
+            allowedHosts: config.allowedHosts,
+            maxBytes: 15 * 1024 * 1024,
+            accept: 'application/pdf,application/octet-stream,*/*',
+          });
+          if (!docRes.ok) continue;
+          if (!isRegulatoryPdfBody(docRes.body, docRes.contentType)) continue;
+          const fp = await fingerprintContent(docRes.body);
+          const title = doc.title || pickTitle(html) || 'CBUAE regulatory publication';
+          return {
+            summary: buildVerificationResult({
               ...base,
               verificationStatus: VERIFICATION_STATUS.LIVE_VERIFIED,
-              httpStatus: res.httpStatus,
-              contentType: res.contentType,
+              httpStatus: docRes.httpStatus,
+              contentType: docRes.contentType,
               title,
-              sourceDocumentUrl: res.finalUrl,
+              sourceDocumentUrl: docRes.finalUrl,
               contentHash: fp.hash,
-              provenance: { origin: PROVENANCE_ORIGIN, canonicalUrl: res.finalUrl, retrievedAt },
+              provenance: {
+                origin: PROVENANCE_ORIGIN,
+                canonicalUrl: docRes.finalUrl,
+                listingUrl: url,
+                productionStrategy: 'DIRECT_OFFICIAL_DOCUMENT_LIBRARY',
+                retrievedAt,
+                note: 'Partial CBUAE public publication — not full digital rulebook corpus',
+              },
             }),
-          ],
-          publications: [
-            buildNormalisedPublication({
-              regulatorId: config.regulatorId,
-              sourceId: config.sourceId,
-              title,
-              canonicalUrl: res.finalUrl,
-              contentHash: fp.hash,
-              retrievedAt,
-            }),
-          ],
-        };
+            items: [
+              buildVerificationResult({
+                ...base,
+                verificationStatus: VERIFICATION_STATUS.LIVE_VERIFIED,
+                httpStatus: docRes.httpStatus,
+                contentType: docRes.contentType,
+                title,
+                sourceDocumentUrl: docRes.finalUrl,
+                contentHash: fp.hash,
+                provenance: { origin: PROVENANCE_ORIGIN, canonicalUrl: docRes.finalUrl, retrievedAt },
+              }),
+            ],
+            publications: [
+              buildNormalisedPublication({
+                regulatorId: config.regulatorId,
+                sourceId: config.sourceId,
+                title,
+                publicationType: 'regulation',
+                canonicalUrl: docRes.finalUrl,
+                contentHash: fp.hash,
+                retrievedAt,
+              }),
+            ],
+          };
+        }
+
+        lastError = 'No validated PDF on public CBUAE listing (HTML-only or blocked)';
+        lastStatus = VERIFICATION_STATUS.LIVE_RETRIEVAL_FAILED;
       }
 
       return {
@@ -163,7 +198,8 @@ export function createCbUAEConnector() {
           error: lastError || 'All candidate URLs failed',
           provenance: {
             productionStrategy: config.productionStrategy,
-            note: 'rulebook.centralbank.ae CNAMEs to Thomson Reuters; cbuae.thomsonreuters.com not resolvable in this DNS environment',
+            note:
+              'Phase 84J: centralbank.ae open-data/regulatory URLs return HTTP 403 from programme egress; rulebook.centralbank.ae → Thomson Reuters; cbuae.thomsonreuters.com not resolvable. Requires authorised feed or allowlisting.',
           },
         }),
         items: [],

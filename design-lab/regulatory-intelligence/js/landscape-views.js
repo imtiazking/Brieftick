@@ -1,4 +1,4 @@
-import { getState, scenarioFilter, routeForRecord } from './store.js';
+import { getState, scenarioFilter, routeForRecord, getViewPublications } from './store.js';
 import {
   esc,
   pageHeader,
@@ -36,6 +36,25 @@ import {
 } from './ai/obligation-portfolio.js';
 import { renderPensionProvidersProvenance } from './tpr-views.js';
 import { renderBankingProvenance } from './basel-views.js';
+import { isConnectedBackendActive } from './platform/connected-mode.js';
+import {
+  connectedLandscapeBanner,
+  connectedRegulatorOverlay,
+  connectedSourcesForRegulator,
+  isConnectedLandscapeLoading,
+  isConnectedLandscapeReady,
+} from './platform/connected-landscape.js';
+import { assertConnectedCatalogueReady } from './platform/connected-route-guard.js';
+
+const LANDSCAPE_CONNECTED_LEGEND = `<aside class="ri-panel ri-panel--compact" data-landscape-data-legend>
+  <h2>How to read connected landscape data</h2>
+  <ul class="ri-list">
+    <li><strong>Catalogue publications / changes (counts on sector cards)</strong> — global regulatory catalogue plus tenant changes, mapped to sectors only via the frozen sector↔regulator taxonomy (regulator external_key REG-*).</li>
+    <li><strong>Regulator-based relevance</strong> — a publication appears under a sector when its regulator is explicitly mapped to that sector; this is not confirmed firm applicability.</li>
+    <li><strong>Framework / coverage badges (LIVE, PARTIAL, REFERENCE)</strong> — Design Lab reference taxonomy for navigation; not verified production coverage or gap analysis.</li>
+    <li><strong>Organisation-specific coverage</strong> — applicability assessments, impact assessments, and obligations are tenant-scoped work items (see Changes / Assessments / Obligations in connected mode).</li>
+  </ul>
+</aside>`;
 
 const LANDSCAPE_DISCLAIMER =
   'Regulatory landscape mappings support regulatory intelligence and navigation. Applicability depends on the organisation, permissions, activities and circumstances and should be reviewed by qualified compliance/legal personnel.';
@@ -73,6 +92,16 @@ export function viewLandscapeHome() {
     const stats = sectorSummaryStats(s, sec);
     const regs = stats.regulators.map((r) => r.shortName).join(', ');
     const pin = my.includes(sec.id) ? '<span class="ri-landscape-pin">My sector</span>' : '';
+    const pubLine =
+      stats.connectedMode && stats.connectedLandscapeReady
+        ? `<dt>Catalogue publications (mapped)</dt><dd>${stats.connectedPublicationCount ?? 0}</dd>
+          <dt>Regulatory changes (mapped)</dt><dd>${stats.connectedChangeCount ?? 0}</dd>
+          <dt>Regulatory sources (taxonomy regulators)</dt><dd>${stats.connectedSourceCount ?? 0}</dd>`
+        : stats.connectedMode
+          ? `<dt>Production catalogue</dt><dd class="ri-muted">Loading or unavailable</dd>`
+          : `<dt>Recent changes (open)</dt><dd>${stats.recentChanges}</dd>
+          <dt>Active + in-review obligations</dt><dd>${stats.activeInReviewObligationCount}</dd>
+          <dt>Open obligations</dt><dd>${stats.openObligationCount}</dd>`;
     return `
       <article class="ri-landscape-card">
         <header>
@@ -85,9 +114,7 @@ export function viewLandscapeHome() {
           <dt>Frameworks</dt><dd>${stats.frameworks}</dd>
           <dt>Live / partial / planned / reference</dt>
           <dd>${stats.liveCoverageCount} LIVE · ${stats.partialCoverageCount} PARTIAL · ${stats.plannedCount} PLANNED · ${stats.referenceCount} REFERENCE</dd>
-          <dt>Recent changes (open)</dt><dd>${stats.recentChanges}</dd>
-          <dt>Active + in-review obligations</dt><dd>${stats.activeInReviewObligationCount}</dd>
-          <dt>Open obligations</dt><dd>${stats.openObligationCount}</dd>
+          ${pubLine}
           <dt>Last landscape review</dt><dd>${esc(stats.lastLandscapeReview)}</dd>
         </dl>
         <a class="ri-btn ri-btn--ghost" href="#/landscape/${esc(sec.slug)}">Open sector</a>
@@ -101,6 +128,9 @@ export function viewLandscapeHome() {
       title: 'Sector regulatory landscape',
       subtitle: 'Understand the regulatory frameworks, compliance themes and regulatory changes relevant to your sector.',
     })}
+    ${isConnectedBackendActive(s) ? connectedLandscapeBanner(s) : ''}
+    ${isConnectedBackendActive(s) && isConnectedLandscapeReady(s) ? LANDSCAPE_CONNECTED_LEGEND : ''}
+    ${isConnectedBackendActive(s) && isConnectedLandscapeLoading(s) ? '<p class="ri-muted">Loading production regulator and source catalogue…</p>' : ''}
     <p class="ri-landscape-disclaimer">${esc(LANDSCAPE_DISCLAIMER)}</p>
     <div class="ri-toolbar">
       <label class="ri-search"><span class="sr-only">Search landscape</span>
@@ -202,6 +232,7 @@ export function viewLandscapeSearch(query) {
 
 export function viewSectorDetail(slug, tabKey = 'overview') {
   const s = getState();
+  const connected = isConnectedBackendActive(s);
   const sector = getSectorBySlug(s, slug);
   if (!sector) return emptyState('Sector not found', 'Return to regulatory landscape home.');
   const activeTab = SECTOR_TABS.find((t) => tabSlug(t) === tabKey) || 'Overview';
@@ -217,6 +248,7 @@ export function viewSectorDetail(slug, tabKey = 'overview') {
       title: sector.name,
       subtitle: `Regulatory frameworks, regulators and current regulatory intelligence relevant to ${sector.name.toLowerCase()} organisations.`,
     })}
+    ${connected ? connectedLandscapeBanner(s) : ''}
     ${sectorTabs(sector, activeTab)}
     ${body}
     <p class="ri-landscape-disclaimer ri-landscape-disclaimer--inline">${esc(LANDSCAPE_DISCLAIMER)}</p>`;
@@ -246,10 +278,11 @@ function renderSectorTab(s, sector, tab, cov) {
 }
 
 function renderSectorOverview(s, sector, cov) {
+  const connected = isConnectedBackendActive(s);
   const stats = sectorSummaryStats(s, sector);
   const pubs = scenarioFilter(publicationsForSector(s, sector.id)).slice(0, 5);
   const chgs = scenarioFilter(changesForSector(s, sector.id))
-    .filter((c) => c.materiality === 'High')
+    .filter((c) => (connected ? true : c.materiality === 'High'))
     .slice(0, 5);
   const obls = scenarioFilter(obligationsForSector(s, sector.id))
     .filter((o) => obligationStatusIsOpenForLinkedWork(o.status))
@@ -272,7 +305,13 @@ function renderSectorOverview(s, sector, cov) {
     </div>
     <section class="ri-panel"><h2>Latest publications</h2>${pubs.length ? `<ul>${pubs.map((p) => `<li>${linkRecord('Publication', p.id, p.title)}</li>`).join('')}</ul>` : emptyState('No mapped publications')}</section>
     <section class="ri-panel"><h2>High-impact changes</h2>${chgs.length ? `<ul>${chgs.map((c) => `<li>${linkRecord('Regulatory Change', c.id, c.title)}</li>`).join('')}</ul>` : emptyState('No mapped changes')}</section>
-    <section class="ri-panel"><h2>${esc(UI_LABEL_ACTIVE_IN_REVIEW_OBLIGATIONS)}</h2>${obls.length ? `<ul>${obls.map((o) => `<li>${linkRecord('Obligation', o.id, o.title)} — ${badge(o.status)}</li>`).join('')}</ul>` : emptyState('No active or in-review obligations mapped to this sector')}</section>`;
+    <section class="ri-panel"><h2>${esc(UI_LABEL_ACTIVE_IN_REVIEW_OBLIGATIONS)}</h2>${
+      connected
+        ? '<p class="ri-muted">Tenant obligation portfolio is not loaded in connected read-only mode (Step 81E). Use Publications and Changes tabs for catalogue intelligence.</p>'
+        : obls.length
+          ? `<ul>${obls.map((o) => `<li>${linkRecord('Obligation', o.id, o.title)} — ${badge(o.status)}</li>`).join('')}</ul>`
+          : emptyState('No active or in-review obligations mapped to this sector')
+    }</section>`;
 }
 
 function renderSectorFrameworks(s, sector) {
@@ -284,11 +323,32 @@ function renderSectorFrameworks(s, sector) {
 }
 
 function renderSectorRegulators(s, sector) {
+  const connected = isConnectedBackendActive(s);
   const rows = regulatorsForSector(s, sector.id).map((r) => {
-    const live = r.liveConnectorId ? 'Connected source in RI' : 'No live connector';
+    const overlay = connected ? connectedRegulatorOverlay(s, r.id) : null;
+    const sources = connected ? connectedSourcesForRegulator(s, r.id) : [];
+    const live = connected
+      ? overlay
+        ? `${overlay.sourceCount} catalogue source(s) · ${overlay.lifecycleStatus}`
+        : 'Not in global catalogue'
+      : r.liveConnectorId
+        ? 'Connected source in RI'
+        : 'No live connector';
     return `<tr><td><a href="#/landscape/regulator/${esc(r.id)}">${esc(r.name)}</a></td><td>${esc(r.shortName)}</td><td>${esc(live)}</td></tr>`;
   });
-  return dataTable(['Regulator', 'Short name', 'RI source'], rows);
+  const sourceTable =
+    connected && allSources.length
+      ? `<h3>Global regulatory sources (production catalogue)</h3>${dataTable(
+          ['Source', 'Regulator', 'Production'],
+          allSources.map(
+            (src) =>
+              `<tr><td class="ri-mono">${esc(src.externalKey)}</td><td>${esc(src.regulatorName)}</td><td>${esc(src.productionStatus)}</td></tr>`,
+          ),
+        )}`
+      : connected
+        ? '<p class="ri-muted">No regulatory sources in the global catalogue for this sector’s mapped regulators.</p>'
+        : '';
+  return `${dataTable(['Regulator', 'Short name', 'RI source / catalogue'], rows)}${sourceTable}`;
 }
 
 function renderSectorThemes(s, sector) {
@@ -297,11 +357,23 @@ function renderSectorThemes(s, sector) {
 }
 
 function renderSectorPublications(s, sector) {
-  const rows = scenarioFilter(publicationsForSector(s, sector.id)).map(
-    (p) =>
-      `<tr><td>${linkRecord('Publication', p.id, p.id)}</td><td>${esc(p.title)}</td><td>${badge(p.regulator)}</td><td>${p.primarySectorId === sector.id ? 'Primary' : 'Related'}</td></tr>`
-  );
-  return dataTable(['ID', 'Title', 'Regulator', 'Sector role'], rows);
+  const connected = isConnectedBackendActive(s);
+  const rows = scenarioFilter(publicationsForSector(s, sector.id)).map((p) => {
+    const role =
+      connected && p.landscapeSectorIds?.length
+        ? p.landscapeSectorIds[0] === sector.id
+          ? 'Primary (regulator mapping)'
+          : 'Related (regulator mapping)'
+        : p.primarySectorId === sector.id
+          ? 'Primary'
+          : 'Related';
+    return `<tr><td>${linkRecord('Publication', p.id, p.title || p.id)}</td><td>${esc(p.title)}</td><td>${badge(p.regulator)}</td><td>${esc(role)}</td></tr>`;
+  });
+  return rows.length
+    ? dataTable(['Publication', 'Title', 'Regulator', 'Sector role'], rows)
+    : connected
+      ? emptyState('No catalogue publications mapped to this sector via regulator taxonomy')
+      : dataTable(['ID', 'Title', 'Regulator', 'Sector role'], rows);
 }
 
 function renderSectorChanges(s, sector) {
@@ -342,15 +414,30 @@ export function viewFrameworkDetail(frameworkId) {
   const s = getState();
   const f = getFrameworkById(s, frameworkId);
   if (!f) return emptyState('Framework not found');
+  const connected = isConnectedBackendActive(s);
+  if (connected) {
+    const ready = assertConnectedCatalogueReady(s);
+    if (!ready.ok) return ready.html;
+  }
   const sectors = (f.sectorIds || [])
     .map((id) => s.sectors.find((x) => x.id === id))
     .filter(Boolean);
   const themes = (f.themeIds || []).map((id) => s.complianceThemes.find((t) => t.id === id)).filter(Boolean);
-  const pubs = scenarioFilter(s.publications).filter((p) => (p.frameworkIds || []).includes(f.id));
-  const chgs = scenarioFilter(s.changes).filter((c) => (c.frameworkIds || []).includes(f.id));
-  const obls = scenarioFilter(s.obligations).filter((o) => (o.frameworkIds || []).includes(f.id));
-  const leg = (s.legislationRecords || []).find((r) => r.frameworkId === f.id);
-  const tprRecs = (s.tprPublicationRecords || []).filter((r) => (r.frameworkIds || []).includes(f.id));
+  const sectorIdsForFw = (s.sectorFrameworkMappings || [])
+    .filter((m) => m.frameworkId === f.id)
+    .map((m) => m.sectorId);
+  const dedupeById = (rows) => [...new Map(rows.map((r) => [r.id, r])).values()];
+  const pubs = connected
+    ? dedupeById(sectorIdsForFw.flatMap((sid) => publicationsForSector(s, sid)))
+    : scenarioFilter(s.publications).filter((p) => (p.frameworkIds || []).includes(f.id));
+  const chgs = connected
+    ? dedupeById(sectorIdsForFw.flatMap((sid) => changesForSector(s, sid)))
+    : scenarioFilter(s.changes).filter((c) => (c.frameworkIds || []).includes(f.id));
+  const obls = connected
+    ? dedupeById(sectorIdsForFw.flatMap((sid) => obligationsForSector(s, sid)))
+    : scenarioFilter(s.obligations).filter((o) => (o.frameworkIds || []).includes(f.id));
+  const leg = connected ? null : (s.legislationRecords || []).find((r) => r.frameworkId === f.id);
+  const tprRecs = connected ? [] : (s.tprPublicationRecords || []).filter((r) => (r.frameworkIds || []).includes(f.id));
   const tprBlock = tprRecs.length
     ? `<section class="ri-panel"><h2>TPR official source</h2><ul>${tprRecs
         .map(
@@ -359,7 +446,7 @@ export function viewFrameworkDetail(frameworkId) {
         )
         .join('')}</ul></section>`
     : '';
-  const baselRecs = (s.baselPublicationRecords || []).filter((r) => (r.frameworkIds || []).includes(f.id));
+  const baselRecs = connected ? [] : (s.baselPublicationRecords || []).filter((r) => (r.frameworkIds || []).includes(f.id));
   const baselMappings = (s.internationalImplementationMappings || []).filter((m) =>
     baselRecs.some((r) => r.baselRecordId === m.baselRecordId)
   );
@@ -398,6 +485,8 @@ export function viewFrameworkDetail(frameworkId) {
       { label: f.name },
     ])}
     ${pageHeader(f.name, f.shortName ? `Short name: ${f.shortName}` : '')}
+    ${connected ? connectedLandscapeBanner(s) : ''}
+    ${connected ? '<p class="ri-muted">Reference taxonomy below. Catalogue publications and tenant changes are regulator-associated potential relevance — not confirmed applicability.</p>' : ''}
     <dl class="ri-dl">
       <dt>Type</dt><dd>${esc(f.type)}</dd>
       <dt>Jurisdiction</dt><dd>${esc(f.jurisdiction)}</dd>
@@ -410,9 +499,10 @@ export function viewFrameworkDetail(frameworkId) {
       <dt>Live monitoring</dt><dd>${f.liveMonitoring ? 'YES' : 'NO'}</dd>
       <dt>Last checked</dt><dd>${f.lastChecked ? formatDate(f.lastChecked.slice(0, 10)) : '—'}</dd>
     </dl>
-    <section class="ri-panel"><h2>Recent publications</h2>${pubs.length ? `<ul>${pubs.map((p) => `<li>${linkRecord('Publication', p.id, p.title)}</li>`).join('')}</ul>` : emptyState('No linked publications')}</section>
-    <section class="ri-panel"><h2>Regulatory changes</h2>${chgs.length ? `<ul>${chgs.map((c) => `<li>${linkRecord('Regulatory Change', c.id, c.title)}</li>`).join('')}</ul>` : emptyState('No linked changes')}</section>
-    <section class="ri-panel"><h2>Obligations</h2>${obls.length ? `<ul>${obls.map((o) => `<li>${linkRecord('Obligation', o.id, o.title)}</li>`).join('')}</ul>` : emptyState('No linked obligations')}</section>
+    <section class="ri-panel"><h2>Recent publications</h2>${pubs.length ? `<ul>${pubs.map((p) => `<li>${linkRecord('Publication', p.id, p.title)}</li>`).join('')}</ul>` : emptyState(connected ? 'No catalogue publications mapped to this framework’s sectors' : 'No linked publications')}</section>
+    <section class="ri-panel"><h2>Regulatory changes</h2>${chgs.length ? `<ul>${chgs.map((c) => `<li>${linkRecord('Regulatory Change', c.id, c.title)}</li>`).join('')}</ul>` : emptyState(connected ? 'No tenant changes linked via sector publications' : 'No linked changes')}</section>
+    <section class="ri-panel"><h2>Obligations</h2>${obls.length ? `<ul>${obls.map((o) => `<li>${linkRecord('Obligation', o.id, o.title)}</li>`).join('')}</ul>` : emptyState(connected ? 'No tenant obligations for this framework’s sectors' : 'No linked obligations')}</section>
+    ${connected ? '<p class="ri-muted">Legislation, TPR and Basel staging modules are unavailable in Connected mode.</p>' : ''}
     ${legBlock}
     ${tprBlock}
     ${baselBlock}`;
@@ -422,16 +512,45 @@ export function viewRegulatorDetail(regulatorId) {
   const s = getState();
   const r = getRegulatorById(s, regulatorId);
   if (!r) return emptyState('Regulator not found');
+  const connected = isConnectedBackendActive(s);
+  const overlay = connected ? connectedRegulatorOverlay(s, r.id) : null;
   const sectorIds = (s.sectorRegulatorMappings || []).filter((m) => m.regulatorId === r.id).map((m) => m.sectorId);
   const sectors = sectorIds.map((id) => s.sectors.find((x) => x.id === id)).filter(Boolean);
   const fwIds = new Set();
   sectors.forEach((sec) => frameworksForSector(s, sec.id).forEach((f) => fwIds.add(f.id)));
   const frameworks = (s.regulatoryFrameworks || []).filter((f) => fwIds.has(f.id));
-  const pubs = scenarioFilter(s.publications).filter((p) => p.regulator === r.shortName || p.regulator === r.name);
+  const pubs = connected
+    ? getViewPublications().filter((p) => p.designLabRegulatorId === r.id)
+    : scenarioFilter(s.publications).filter((p) => p.regulator === r.shortName || p.regulator === r.name);
+  const sources = connected ? connectedSourcesForRegulator(s, r.id) : [];
+  const catalogueBlock =
+    connected && overlay
+      ? `<section class="ri-panel"><h2>Global catalogue</h2>
+      <dl class="ri-dl ri-dl--compact">
+        <dt>Jurisdiction</dt><dd>${esc(overlay.jurisdiction)}</dd>
+        <dt>Lifecycle</dt><dd>${esc(overlay.lifecycleStatus)}</dd>
+        <dt>Sources</dt><dd>${overlay.sourceCount}</dd>
+        <dt>Official site</dt><dd><a href="${esc(overlay.officialBaseUrl)}" rel="noopener noreferrer">${esc(overlay.officialBaseUrl)}</a></dd>
+      </dl></section>`
+      : connected
+        ? '<p class="ri-muted">This Design Lab regulator id is not present in the global Supabase catalogue.</p>'
+        : '';
+  const sourceBlock =
+    connected && sources.length
+      ? `<section class="ri-panel"><h2>Regulatory sources</h2><ul>${sources
+          .map(
+            (src) =>
+              `<li><strong>${esc(src.externalKey)}</strong> — ${esc(src.name)} · ${esc(src.productionStatus)}</li>`,
+          )
+          .join('')}</ul></section>`
+      : '';
   return `
     ${breadcrumbs([{ label: 'Regulatory Landscape', href: '#/landscape' }, { label: r.name }])}
     ${pageHeader(r.name, r.coverageNote || '')}
+    ${connected ? connectedLandscapeBanner(s) : ''}
+    ${catalogueBlock}
+    ${sourceBlock}
     <section class="ri-panel"><h2>Relevant sectors</h2><ul>${sectors.map((sec) => `<li><a href="#/landscape/${sec.slug}">${esc(sec.name)}</a></li>`).join('')}</ul></section>
     <section class="ri-panel"><h2>Frameworks</h2><ul>${frameworks.slice(0, 20).map((f) => `<li><a href="#/landscape/framework/${f.id}">${esc(f.name)}</a></li>`).join('')}</ul></section>
-    <section class="ri-panel"><h2>Publications (fixture)</h2><ul>${pubs.slice(0, 12).map((p) => `<li>${linkRecord('Publication', p.id, p.title)}</li>`).join('')}</ul></section>`;
+    <section class="ri-panel"><h2>Publications</h2>${pubs.length ? `<ul>${pubs.slice(0, 12).map((p) => `<li>${linkRecord('Publication', p.id, p.title)}</li>`).join('')}</ul>` : emptyState('No catalogue publications for this regulator')}</section>`;
 }

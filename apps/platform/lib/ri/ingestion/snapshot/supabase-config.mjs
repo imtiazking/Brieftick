@@ -2,6 +2,12 @@ import {
   DEFAULT_SNAPSHOT_BUCKET,
   FORGENIQ_RI_STAGING_PROJECT_REF,
 } from './staging-constants.mjs';
+import {
+  evaluateSnapshotBucketIngestReadiness,
+  loadSnapshotBucketConfig,
+  requiredSnapshotBucketMimeTypes,
+  STORAGE_BUCKET_NOT_READY,
+} from './snapshot-storage-bucket-contract.mjs';
 
 /**
  * @param {string} url
@@ -72,3 +78,32 @@ export async function assertSnapshotBucketReady(supabase, bucketName) {
     throw new Error(`snapshot_storage_bucket_not_private: ${bucketName}`);
   }
 }
+
+/**
+ * Mandatory ingest preflight: bucket privacy, MIME allowlist, size limit (no uploads).
+ * @param {import('@supabase/supabase-js').SupabaseClient} supabase
+ * @param {string} bucketName
+ * @param {{ requirePrimaryPdf?: boolean, minObjectBytes?: number }} [options]
+ * @returns {Promise<import('./snapshot-storage-bucket-contract.mjs').evaluateSnapshotBucketIngestReadiness>}
+ */
+export async function assertSnapshotBucketIngestReady(supabase, bucketName, options = {}) {
+  await assertSnapshotBucketReady(supabase, bucketName);
+  const row = await loadSnapshotBucketConfig(supabase, bucketName);
+  const requirePrimaryPdf = options.requirePrimaryPdf === true;
+  const evaluation = evaluateSnapshotBucketIngestReadiness(row, {
+    expectedBucketName: bucketName,
+    requiredMimeTypes: requiredSnapshotBucketMimeTypes({ includePdf: requirePrimaryPdf }),
+    minObjectBytes: options.minObjectBytes,
+  });
+  if (!evaluation.ok) {
+    const err = new Error(
+      `${STORAGE_BUCKET_NOT_READY}: ${evaluation.reason} (bucket=${bucketName})`,
+    );
+    err.code = STORAGE_BUCKET_NOT_READY;
+    err.bucketEvaluation = evaluation;
+    throw err;
+  }
+  return evaluation;
+}
+
+export { STORAGE_BUCKET_NOT_READY };

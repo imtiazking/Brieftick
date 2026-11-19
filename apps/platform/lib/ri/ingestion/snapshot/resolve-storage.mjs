@@ -1,6 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import { createSupabaseSnapshotStorage } from './supabase-storage.mjs';
-import { assertSnapshotBucketReady, validateSupabaseSnapshotConfig } from './supabase-config.mjs';
+import {
+  assertSnapshotBucketIngestReady,
+  assertSnapshotBucketReady,
+  validateSupabaseSnapshotConfig,
+} from './supabase-config.mjs';
 import { createMemorySnapshotStorage } from './memory-storage.mjs';
 
 let storage = null;
@@ -52,7 +56,14 @@ export async function ensureSnapshotStorageReady(params = {}) {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
-  await assertSnapshotBucketReady(supabase, config.bucket);
+  if (params.requirePrimaryPdfStorage === true) {
+    await assertSnapshotBucketIngestReady(supabase, config.bucket, {
+      requirePrimaryPdf: true,
+      minObjectBytes: params.minPrimaryPdfBytes,
+    });
+  } else {
+    await assertSnapshotBucketReady(supabase, config.bucket);
+  }
 
   storage = createSupabaseSnapshotStorage(supabase, { bucket: config.bucket });
   explicitOverride = false;

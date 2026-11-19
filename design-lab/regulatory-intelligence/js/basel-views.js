@@ -2,7 +2,13 @@ import { getState } from './store.js';
 import { esc, pageHeader, breadcrumbs, dataTable, badge, emptyState } from './components.js';
 import { coverageBadge } from './landscape-helpers.js';
 
+import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
+
 export function viewBaselPublication(recordId) {
+  const blocked = guardConnectedDemoSubroute('Basel publication', {
+    links: '<p><a href="#/landscape">Regulatory Landscape</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const rec = (s.baselPublicationRecords || []).find((r) => r.baselRecordId === recordId);
   if (!rec) return emptyState('Basel / BCBS record not found');
@@ -32,6 +38,10 @@ export function viewBaselPublication(recordId) {
 }
 
 export function viewBaselStaging() {
+  const blocked = guardConnectedDemoSubroute('Basel staging', {
+    links: '<p><a href="#/ingestion">Ingestion Monitor</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const rows = (s.baselStaging || []).map(
     (st) =>
@@ -44,6 +54,10 @@ export function viewBaselStaging() {
 }
 
 export function viewBaselUkImplementation() {
+  const blocked = guardConnectedDemoSubroute('Basel UK implementation mappings', {
+    links: '<p><a href="#/landscape">Regulatory Landscape</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const rows = (s.internationalImplementationMappings || []).map(
     (m) => {

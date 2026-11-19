@@ -8,7 +8,7 @@ export const BASEL_VERIFICATION_EVIDENCE = {
   "officialHost": "www.bis.org",
   "frameworkRootUrl": "https://www.bis.org/committees/bcbs/basel-framework",
   "userAgent": "FORGENIQ-Regulatory-Intelligence-Design-Lab/1.0",
-  "lastVerifiedAt": "2026-10-14T11:38:21.475Z",
+  "lastVerifiedAt": "2026-10-14T11:48:55.851Z",
   "verifiedFrameworkIds": [
     "FWK-BASEL"
   ],
@@ -49,7 +49,7 @@ export const BASEL_VERIFICATION_EVIDENCE = {
       "baselRecordId": "BAS-TGT-CRE",
       "path": "/committees/bcbs/basel-framework/standard/cre",
       "title": "Basel Committee on Banking Supervision",
-      "sourceHash": "b723808900e0d6cadc9fc71aacfe4e739cc775f22ce5a51126ad6fc4ffaa0e11",
+      "sourceHash": "5ac015fb1cef5b70e72fd415e61baecdc3ff20519308d0214f31c7e1c3372962",
       "canonicalUrl": "https://www.bis.org/committees/bcbs/basel-framework/standard/cre",
       "documentType": "INTERNATIONAL_STANDARD",
       "frameworkModule": "CRE",
@@ -71,7 +71,7 @@ export const BASEL_VERIFICATION_EVIDENCE = {
       "baselRecordId": "BAS-TGT-SRP",
       "path": "/committees/bcbs/basel-framework/standard/srp",
       "title": "Basel Committee on Banking Supervision",
-      "sourceHash": "e2f36a65f1c02ec45844e6ab40f76fbba8874395c9fdb7e1d173334b034dbd1b",
+      "sourceHash": "236f87554e86e3bc48352eac445b0d82c937bc1a29287410af94b41ff18f22e5",
       "canonicalUrl": "https://www.bis.org/committees/bcbs/basel-framework/standard/srp",
       "documentType": "INTERNATIONAL_STANDARD",
       "frameworkModule": "SRP",

@@ -2,7 +2,13 @@ import { getState } from './store.js';
 import { esc, pageHeader, breadcrumbs, dataTable, badge, formatDateTime, emptyState } from './components.js';
 import { coverageBadge } from './landscape-helpers.js';
 
+import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
+
 export function viewTprPublication(recordId) {
+  const blocked = guardConnectedDemoSubroute('TPR publication', {
+    links: '<p><a href="#/landscape">Regulatory Landscape</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const rec = (s.tprPublicationRecords || []).find((r) => r.tprRecordId === recordId);
   if (!rec) return emptyState('TPR record not found');
@@ -28,6 +34,10 @@ export function viewTprPublication(recordId) {
 }
 
 export function viewTprStaging() {
+  const blocked = guardConnectedDemoSubroute('TPR staging', {
+    links: '<p><a href="#/ingestion">Ingestion Monitor</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const rows = (s.tprStaging || []).map(
     (st) =>

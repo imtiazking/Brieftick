@@ -1,0 +1,14 @@
+{
+  "capturedAt": "2026-11-19T16:43:59.356Z",
+  "programmePass": true,
+  "pipelineSummary": {
+    "sha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
+    "globalCatalogue": true,
+    "hostedSteps": [
+      "persistPs26ControlledCatalogue",
+      "createExtractionRevision html_article_v2",
+      "createPrimaryPdfExtractionRevision pdf_primary_v1"
+    ]
+  },
+  "failures": []
+}

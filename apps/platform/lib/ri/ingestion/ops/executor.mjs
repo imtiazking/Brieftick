@@ -3,8 +3,10 @@ import { runSourceIngestion } from '../ingest-engine.mjs';
 import { resolveCatalogueIds } from '../resolve-ids.mjs';
 import { classifyFailure, computeNextRetryAt } from './retry-policy.mjs';
 import { upsertOperationalAlert, resolveAlertsForSource } from './alerts.mjs';
+import { recordOperationalAudit } from './audit.mjs';
 import { recordNotificationEvent } from './notifications.mjs';
 import { updateOperationsAfterRun } from './health.mjs';
+import { fanOutStagingIntakeNotifications } from './tenant-ingest-notifications.mjs';
 
 export async function tryStartRun(client, params) {
   const { sourceUuid, triggerType, runType, attemptNumber, initiatedBy, environment } = params;
@@ -48,7 +50,13 @@ export async function executeIngestionForSource(client, params) {
     fixture,
     liveAllowed = false,
     simulateError = null,
+    suppressNotificationEvents = null,
   } = params;
+
+  const suppressNotifications =
+    suppressNotificationEvents === true ||
+    (suppressNotificationEvents !== false &&
+      process.env.RI_INGEST_SUPPRESS_NOTIFICATION_EVENTS === 'true');
 
   const catalogue = getSourceById(sourceId);
   if (!catalogue) {
@@ -131,12 +139,14 @@ export async function executeIngestionForSource(client, params) {
         title: `Ingestion failure: ${sourceId}`,
         message: result.errorSummary || 'unknown',
       });
-      await recordNotificationEvent(client, {
-        eventType: failures >= 2 ? 'INGESTION_REPEATED_FAILURE' : 'SOURCE_FAILURE',
-        sourceId: ids.sourceUuid,
-        ingestionRunId: runId,
-        payload: { sourceId, error: result.errorSummary, attemptNumber },
-      });
+      if (!suppressNotifications) {
+        await recordNotificationEvent(client, {
+          eventType: failures >= 2 ? 'INGESTION_REPEATED_FAILURE' : 'SOURCE_FAILURE',
+          sourceId: ids.sourceUuid,
+          ingestionRunId: runId,
+          payload: { sourceId, error: result.errorSummary, attemptNumber },
+        });
+      }
 
       if (failure.retryable && attemptNumber < (op.max_retries || 3)) {
         const nextRetry = computeNextRetryAt(attemptNumber, op.retry_backoff_seconds || 60);
@@ -147,19 +157,33 @@ export async function executeIngestionForSource(client, params) {
       }
     } else {
       await resolveAlertsForSource(client, ids.sourceUuid, 'INGESTION_FAILURE');
-      await recordNotificationEvent(client, {
-        eventType: 'SOURCE_RECOVERY',
-        sourceId: ids.sourceUuid,
-        ingestionRunId: runId,
-        payload: { sourceId },
-      });
-      if (result.metrics?.new > 0) {
+      if (!suppressNotifications) {
         await recordNotificationEvent(client, {
-          eventType: 'NEW_REGULATORY_PUBLICATION',
+          eventType: 'SOURCE_RECOVERY',
           sourceId: ids.sourceUuid,
           ingestionRunId: runId,
-          payload: { sourceId, newCount: result.metrics.new },
+          payload: { sourceId },
         });
+        if (result.metrics?.new > 0) {
+          await recordNotificationEvent(client, {
+            eventType: 'NEW_REGULATORY_PUBLICATION',
+            sourceId: ids.sourceUuid,
+            ingestionRunId: runId,
+            payload: { sourceId, newCount: result.metrics.new },
+          });
+          const fanOut = await fanOutStagingIntakeNotifications(client, {
+            runId,
+            sourceExternalKey: sourceId,
+            environment,
+          });
+          if (!fanOut.skipped && fanOut.tenantNotifications > 0) {
+            await recordOperationalAudit(client, {
+              eventType: 'STAGING_INTAKE_NOTIFY',
+              actorUserId: initiatedBy,
+              metadata: fanOut,
+            });
+          }
+        }
       }
     }
   }

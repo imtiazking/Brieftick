@@ -24,6 +24,25 @@ import {
 import { LEGISLATION_VERIFICATION_EVIDENCE } from './legislation-verification-evidence-data.js';
 import { TPR_VERIFICATION_EVIDENCE } from './tpr-verification-evidence-data.js';
 import { BASEL_VERIFICATION_EVIDENCE } from './basel-verification-evidence-data.js';
+import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
+import { isConnectedBackendActive } from './platform/connected-mode.js';
+import { connectedCatalogueBanner } from './platform/connected-catalogue.js';
+import {
+  getViewRegulatorySources,
+  getViewIngestionRuns,
+  getViewOperationalAlerts,
+  getConnectedOperationsMetrics,
+  getConnectedSourceMonitoringSummary,
+  getConnectedSourceMonitoringNote,
+} from './store.js';
+import {
+  connectedReadOnlyOperationsBanner,
+  renderConnectedOperationsMetrics,
+  renderConnectedSourceMonitoringSummary,
+  renderConnectedRegulatorySourcesTable,
+  renderConnectedIngestionRunsTable,
+  renderConnectedOperationalAlertsTable,
+} from './platform/connected-operations-ui.js';
 
 function tprVerifiedSummary() {
   const ev = TPR_VERIFICATION_EVIDENCE;
@@ -146,6 +165,33 @@ function renderLiveVerificationMonitorSection() {
 
 export function viewIngestionMonitor() {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const metrics = getConnectedOperationsMetrics();
+    const sources = getViewRegulatorySources();
+    const runs = getViewIngestionRuns();
+    const alerts = getViewOperationalAlerts();
+    return `${pageHeader(
+      'Regulatory Ingestion Monitor',
+      'Production regulatory catalogue and ingestion runs · connected read-only',
+    )}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyOperationsBanner()}
+      ${renderConnectedSourceMonitoringSummary(getConnectedSourceMonitoringSummary(), getConnectedSourceMonitoringNote())}
+      <section class="ri-panel"><h2>Operations summary</h2>
+        ${renderConnectedOperationsMetrics(metrics)}
+      </section>
+      <section class="ri-panel"><h2>Regulatory source catalogue</h2>
+        ${renderConnectedRegulatorySourcesTable(sources)}
+      </section>
+      <section class="ri-panel"><h2>Ingestion runs</h2>
+        ${renderConnectedIngestionRunsTable(runs)}
+      </section>
+      <section class="ri-panel"><h2>Operational alerts</h2>
+        ${renderConnectedOperationalAlertsTable(alerts)}
+      </section>
+      <p class="ri-muted">Mock connector runs, live verification fixtures and demo ingestion exceptions are hidden in connected mode.</p>
+      <p><a href="#/admin/sources">Regulatory sources &amp; connectors</a></p>`;
+  }
   const metrics = ingestionMetrics(s);
   const sources = (s.regulatorySources || []).map((src) => {
     const conn = s.sourceConnectors?.find((c) => c.sourceId === src.id && c.enabled) || s.sourceConnectors?.find((c) => c.sourceId === src.id);
@@ -290,6 +336,45 @@ export function viewIngestionMonitor() {
 }
 
 export function viewIngestionRun(runId) {
+  const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const run = getConnectedIngestionRunDetail(runId) || getViewIngestionRuns().find((r) => r.id === runId);
+    if (!run) {
+      return `${pageHeader('Ingestion Run', runId)}
+        ${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyOperationsBanner()}
+        <p class="ri-muted">Run not found or not visible (requires ingestion:read and platform-operator RLS where applicable).</p>
+        <p><a href="#/ingestion">← Ingestion Monitor</a></p>`;
+    }
+    const items = run.items || [];
+    const itemRows = items.map(
+      (item) => `<tr>
+        <td class="ri-mono">${esc(item.id.slice(0, 8))}…</td>
+        <td>${esc(item.title || '—')}</td>
+        <td>${badge(item.normalisationStatus || item.retrievalStatus || '—')}</td>
+        <td>${item.publicationId ? linkRecord('Publication', item.publicationId) : '—'}</td>
+        <td>${esc(item.errorDetail || '—')}</td>
+      </tr>`,
+    );
+    return `${pageHeader('Ingestion Run', runId)}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyOperationsBanner()}
+      ${entityHero(runId, run.sourceName || run.sourceKey || 'Ingestion run', [
+        { label: 'Source', value: run.sourceKey || '—', mono: true },
+        { label: 'Status', value: run.status, badge: true },
+        { label: 'Type', value: run.runType },
+        { label: 'Started', value: run.startedAt ? formatDateTime(run.startedAt) : '—' },
+        { label: 'Completed', value: run.completedAt ? formatDateTime(run.completedAt) : '—' },
+      ])}
+      <section class="ri-panel"><h2>Counts</h2>
+        <p>Discovered: <strong>${run.recordsDiscovered ?? '—'}</strong> · New: <strong>${run.recordsNew ?? '—'}</strong> · Failed: <strong>${run.recordsFailed ?? '—'}</strong></p>
+        ${run.errorSummary ? `<p class="ri-alert">${esc(run.errorSummary)}</p>` : ''}
+      </section>
+      <section class="ri-panel"><h2>Run items</h2>
+        ${itemRows.length ? dataTable(['Item', 'Title', 'Status', 'Publication', 'Error'], itemRows) : '<p class="ri-muted">No item detail returned (RLS or empty run).</p>'}
+      </section>
+      <p><a href="#/ingestion">← Ingestion Monitor</a></p>`;
+  }
   const run = getIngestionRun(runId);
   if (!run) return notFoundState('Ingestion Run', runId);
   const conn = getConnector(run.connectorId);
@@ -323,6 +408,10 @@ export function viewIngestionRun(runId) {
 }
 
 export function viewIngestionItem(itemId) {
+  const blocked = guardConnectedDemoSubroute('Ingestion item detail', {
+    links: '<p><a href="#/ingestion">Ingestion Monitor</a></p>',
+  });
+  if (blocked) return blocked;
   const raw = getRawSourceItem(itemId);
   if (!raw) return notFoundState('Raw Source Item', itemId);
   const s = getState();
@@ -405,6 +494,10 @@ function mapRawToPipeline(status) {
 }
 
 export function viewSourceDocument(docId) {
+  const blocked = guardConnectedDemoSubroute('Source document', {
+    links: '<p><a href="#/ingestion">Ingestion Monitor</a> · <a href="#/library">Library</a></p>',
+  });
+  if (blocked) return blocked;
   const doc = getSourceDocument(docId);
   if (!doc) return notFoundState('Source Document', docId);
   const sections = getSectionsForDocument(docId);
@@ -432,6 +525,10 @@ export function viewSourceDocument(docId) {
 }
 
 export function viewChangeCandidate(id) {
+  const blocked = guardConnectedDemoSubroute('Change candidate review', {
+    links: '<p><a href="#/ingestion">Ingestion Monitor</a></p>',
+  });
+  if (blocked) return blocked;
   const cand = getChangeCandidate(id);
   if (!cand) return notFoundState('Change Candidate', id);
   const sec = cand.sourceSectionIds?.[0] ? getSourceSection(cand.sourceSectionIds[0]) : null;
@@ -459,6 +556,11 @@ export function viewChangeCandidate(id) {
 }
 
 export function viewLiveVerificationEvidence(anchor = '') {
+  const blocked = guardConnectedDemoSubroute('Live verification evidence', {
+    subtitle: 'Design Lab fixture verification only',
+    links: '<p><a href="#/ingestion">Ingestion Monitor</a> · <a href="#/admin/sources">Regulatory sources</a></p>',
+  });
+  if (blocked) return blocked;
   const ev = getLiveVerificationEvidence();
   const fcaItems = ev?.fca?.items || [];
   const praItems = ev?.pra?.items || [];
@@ -508,6 +610,16 @@ export function viewLiveVerificationEvidence(anchor = '') {
 
 export function viewAdminSources() {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const sources = getViewRegulatorySources();
+    return `${pageHeader('Regulatory sources & connectors', 'Global catalogue · monitoring readiness from reference data and connector registry')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyOperationsBanner()}
+      ${renderConnectedSourceMonitoringSummary(getConnectedSourceMonitoringSummary(), getConnectedSourceMonitoringNote())}
+      ${renderConnectedRegulatorySourcesTable(sources)}
+      <p class="ri-muted">Connector enable/disable and schedule edits are unavailable in connected read-only mode.</p>
+      <p><a href="#/ingestion">Ingestion Monitor</a></p>`;
+  }
   const cfg = s.platformConfig || {};
   const connectorRows = (s.sourceConnectors || []).map((c) => {
     const src = getRegulatorySource(c.sourceId);

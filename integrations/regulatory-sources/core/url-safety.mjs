@@ -31,3 +31,16 @@ export function hostMatchesAllowlist(hostname, allowedHosts) {
   const host = hostname.toLowerCase();
   return allowedHosts.some((h) => host === h.toLowerCase() || host.endsWith(`.${h.toLowerCase()}`));
 }
+
+/** Upgrade http→https when the HTTPS URL passes allowlist (e.g. legislation.gov.uk Atom links). */
+export function coerceHttpsForAllowlistedHost(urlString, allowedHosts = []) {
+  try {
+    const parsed = new URL(urlString);
+    if (parsed.protocol !== 'http:') return urlString;
+    parsed.protocol = 'https:';
+    const gate = assertUrlAllowed(parsed.toString(), allowedHosts);
+    return gate.ok ? parsed.toString() : urlString;
+  } catch {
+    return urlString;
+  }
+}

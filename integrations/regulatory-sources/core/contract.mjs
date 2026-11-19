@@ -24,6 +24,8 @@ export const HTTP_LIMITS = {
   /** Upper bound for manual pilot runs (e.g. FCA Phase 8B). */
   maxItemsPilotCap: 5,
   maxRequestsPerConnector: 6,
+  /** RSS feed scan depth when selecting a single item by canonical URL (no HTML fetch for non-matches). */
+  maxFeedItemsForOnlyUrlScan: 40,
   minIntervalMs: 1500,
 };
 

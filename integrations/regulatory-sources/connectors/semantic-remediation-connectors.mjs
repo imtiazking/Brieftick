@@ -55,7 +55,6 @@ export const SEMANTIC_REMEDIATION_CONNECTORS = [
   varaRulebookProbe,
   cfpbRules,
   secRulemaking,
-  cftcRulemaking,
 ];
 
 export const SEMANTIC_REMEDIATION_SOURCE_IDS = SEMANTIC_REMEDIATION_CONNECTORS.map((c) => c.sourceId);

@@ -1,8 +1,14 @@
-import { getState } from './store.js';
+import { getState, personName } from './store.js';
 import { esc, badge, pageHeader, dataTable, formatDateTime, entityHero, notFoundState } from './components.js';
 import { getAnalysis } from './ai-governance-helpers.js';
+import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
 
 export function viewAiOperations() {
+  const blocked = guardConnectedDemoSubroute('AI Operations', {
+    subtitle: 'Technical execution monitoring · demonstration only',
+    links: '<p><a href="#/ai-governance">AI Governance register</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const cfg = s.platformConfig || {};
   const rows = (s.aiExecutions || []).slice(0, 20).map((e) => {
@@ -35,6 +41,10 @@ export function viewAiOperations() {
 }
 
 export function viewAiExecutionDetail(id) {
+  const blocked = guardConnectedDemoSubroute('AI Execution detail', {
+    links: '<p><a href="#/ai-governance">AI Governance register</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const e = (s.aiExecutions || []).find((x) => x.id === id);
   const tid = s.tenantContext?.tenantId || 'TEN-DEMO-001';

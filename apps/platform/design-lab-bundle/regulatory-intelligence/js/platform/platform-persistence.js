@@ -41,4 +41,5 @@ export function clearPlatformStorageKeys() {
   removePersistedKey(STORAGE_KEY_V2);
   removePersistedKey('ri-demo-guide-dismissed');
   removePersistedKey('ri-demo-walkthrough');
+  removePersistedKey('forgeniq-ri-connected-mode');
 }

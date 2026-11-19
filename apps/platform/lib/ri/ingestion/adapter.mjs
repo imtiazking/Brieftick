@@ -2,15 +2,17 @@ import { getConnectorForSource } from './connector-registry.mjs';
 import { INGESTION_DATA_ORIGIN, INGESTION_PROVENANCE_ORIGIN } from './types.mjs';
 import { SOURCE_COVERAGE_BY_ID } from '../../../../../packages/reference-data/catalogue/source-coverage.mjs';
 import { resolveConnectorItemLimit } from '../../../../../integrations/regulatory-sources/core/contract.mjs';
+import { finalizeOnlyUrlDocuments } from './only-url.mjs';
 
 /**
  * Map integration connector output → production normalised documents.
  * @param {string} sourceId
- * @param {{ fixture?: { publications: object[] }, liveAllowed?: boolean, maxItems?: number }} options
+ * @param {{ fixture?: { publications: object[] }, liveAllowed?: boolean, maxItems?: number, onlyUrl?: string }} options
  */
 export async function retrieveNormalisedDocuments(sourceId, options = {}) {
   if (options.fixture?.publications?.length) {
-    return options.fixture.publications.map((p) => mapFixtureDoc(sourceId, p));
+    const mapped = options.fixture.publications.map((p) => mapFixtureDoc(sourceId, p));
+    return finalizeOnlyUrlDocuments(options.onlyUrl, mapped);
   }
 
   const connector = getConnectorForSource(sourceId);
@@ -26,12 +28,21 @@ export async function retrieveNormalisedDocuments(sourceId, options = {}) {
   const result = await connector.verify({
     liveAllowed: options.liveAllowed === true,
     maxItems: itemLimit,
+    onlyCanonicalUrl: options.onlyUrl || undefined,
   });
 
   const coverage = SOURCE_COVERAGE_BY_ID[sourceId];
   const contentClasses = coverage?.contentClasses ?? [];
 
-  return (result.publications || []).slice(0, itemLimit).map((pub) => ({
+  if (options.onlyUrl) {
+    const err = result.summary?.error;
+    if (err && (result.publications || []).length === 0) {
+      throw new Error(err);
+    }
+  }
+
+  const sliceLimit = options.onlyUrl ? 1 : itemLimit;
+  const mapped = (result.publications || []).slice(0, sliceLimit).map((pub) => ({
     regulatorId: pub.regulatorId,
     sourceId: pub.sourceId,
     externalDocumentId: pub.externalId ?? null,
@@ -57,6 +68,8 @@ export async function retrieveNormalisedDocuments(sourceId, options = {}) {
     evidenceCapture: pub.evidenceCapture ?? null,
     contentType: pub.evidenceCapture?.contentType ?? pub.contentType ?? null,
   }));
+
+  return finalizeOnlyUrlDocuments(options.onlyUrl, mapped);
 }
 
 function mapFixtureDoc(sourceId, partial) {

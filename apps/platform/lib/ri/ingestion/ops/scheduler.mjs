@@ -21,19 +21,31 @@ export async function runSchedulerTick(client, options = {}) {
      from regulatory_source_operations o
      join regulatory_sources s on s.id = o.source_id
      where o.enabled = true
-       and o.ingestion_mode = 'TEST_ONLY'
+       and s.ingestion_mode = 'ENABLED'::source_ingestion_mode
+       and o.ingestion_mode in ('TEST_ONLY'::source_ingestion_mode, 'ENABLED'::source_ingestion_mode)
        and (o.next_run_at is null or o.next_run_at <= $1::timestamptz)
-     order by o.next_run_at nulls first`,
-    [now.toISOString()],
+     order by o.last_success_at nulls first, o.next_run_at nulls first, s.external_key asc
+     limit $2`,
+    [now.toISOString(), options.maxSourcesPerTick ?? 500],
   );
 
   const outcomes = [];
   for (const row of due.rows) {
+    if (typeof options.allowSource === 'function' && !options.allowSource(row.external_key)) {
+      outcomes.push({
+        source: row.external_key,
+        status: 'SKIPPED',
+        errorSummary: 'hosted_scheduler_source_not_allowlisted',
+      });
+      continue;
+    }
     const outcome = await executeIngestionForSource(client, {
       sourceId: row.external_key,
       triggerType: 'SCHEDULED',
       runType: 'SCHEDULED',
       initiatedBy: 'system:scheduler',
+      environment: options.environment ?? 'local',
+      liveAllowed: options.liveAllowed === true,
       fixture: fixtureBySource[row.external_key],
       simulateError: options.simulateErrorBySource?.[row.external_key] ?? null,
     });

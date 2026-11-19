@@ -9,6 +9,7 @@ import {
   linkRecord,
   notFoundState,
   renderCitation,
+  emptyState,
 } from './components.js';
 import {
   getCurrentAnalysis,
@@ -28,9 +29,46 @@ import {
   getConfidenceBand,
   sectionCitationLink,
 } from './ai-governance-helpers.js';
+import { isConnectedBackendActive } from './platform/connected-mode.js';
+import { connectedCatalogueBanner } from './platform/connected-catalogue.js';
+import { getViewAiAnalysisRuns, getViewAuthorisedUatAiAnalysisRuns, findViewAiAnalysisRun } from './store.js';
+import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js';
+import {
+  connectedReadOnlyGovernanceBanner,
+  connectedRegisterEmpty,
+} from './platform/connected-governance-ui.js';
+import {
+  renderConnectedAiReviewPanel,
+} from './platform/connected-ai-governance-panels.js';
+
+function renderConnectedAiRunTableRow(r) {
+  return `<tr><td class="ri-mono"><a href="#/ai-analysis/${esc(r.id)}">${esc(r.id.slice(0, 8))}…</a></td>
+        <td>${esc(r.useCaseId)}</td><td class="ri-mono"><a href="#/publication/${esc(r.publicationId)}">${esc(r.publicationId.slice(0, 8))}…</a></td>
+        <td>${badge(r.executionStatus)}</td><td>${badge(r.reviewStatus)}</td>
+        <td>${esc(r.provider)}</td><td>${badge(r.labClassificationLabel || r.labClassification || '—')}</td>
+        <td>${r.humanReviewRequired ? badge('Review required') : badge('No review pending')}</td></tr>`;
+}
 
 export function viewAiGovernanceRegister() {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const operationalRuns = getViewAiAnalysisRuns();
+    const uatRuns = getViewAuthorisedUatAiAnalysisRuns();
+    const operationalRows = operationalRuns.map((r) => renderConnectedAiRunTableRow(r));
+    const uatRows = uatRuns.map((r) => renderConnectedAiRunTableRow(r));
+    return `${pageHeader('AI Governance', 'Persisted analysis runs · connected staging')}
+      ${connectedCatalogueBanner(s)}
+      ${connectedReadOnlyGovernanceBanner()}
+      <p class="ri-muted">Operational register uses <code>dataScope=operational</code>. Authorised UAT / acceptance executions are persisted Anthropic runs from staged acceptance — not synthetic fixtures.</p>
+      <section class="ri-panel"><h2>Operational register</h2>
+      ${operationalRows.length ? dataTable(['Run', 'Use case', 'Publication', 'Execution', 'Review', 'Provider', 'Classification', 'Human review'], operationalRows) : connectedRegisterEmpty('operational AI analysis runs')}
+      </section>
+      <section class="ri-panel"><h2>Authorised UAT / audit register</h2>
+      <p class="ri-muted">Completed acceptance executions (e.g. Phase 8D.3) — visible for audit; excluded from operational dashboard counters.</p>
+      ${uatRows.length ? dataTable(['Run', 'Use case', 'Publication', 'Execution', 'Review', 'Provider', 'Classification', 'Human review'], uatRows) : emptyState('No authorised UAT AI analysis runs on this tenant.')}
+      </section>
+      <p class="ri-muted">Synthetic fixture runs remain excluded from both registers. Demo use-case catalogue and mock confidence scores are hidden in connected mode.</p>`;
+  }
   const m = getAIOversightMetrics(s);
   const useCases = (s.aiUseCases || []).map(
     (u) => `<tr>
@@ -70,6 +108,31 @@ export function viewAiGovernanceRegister() {
 
 export function viewAiAnalysis(id) {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    const run = findViewAiAnalysisRun(id);
+    if (run) {
+      return `${pageHeader('AI analysis run', id.slice(0, 8))}
+        ${connectedCatalogueBanner(s)}
+        ${connectedReadOnlyGovernanceBanner(s)}
+        <dl class="ri-dl">
+          <dt>Use case</dt><dd>${esc(run.useCaseId || '—')}</dd>
+          <dt>Classification</dt><dd>${badge(run.labClassificationLabel || run.labClassification || '—')}</dd>
+          <dt>Execution</dt><dd>${badge(run.executionStatus || '—')}</dd>
+          <dt>Review</dt><dd>${badge(run.reviewStatus || '—')}</dd>
+          <dt>Provider</dt><dd>${esc(run.provider || '—')}</dd>
+          <dt>Model</dt><dd>${esc(run.model || '—')}</dd>
+          <dt>Completed</dt><dd>${formatDateTime(run.completedAt || run.createdAt)}</dd>
+          <dt>Publication</dt><dd><a href="#/publication/${esc(run.publicationId)}/ai-analysis">${esc(run.publicationId.slice(0, 8))}…</a></dd>
+        </dl>
+        ${run.findingsPreview ? `<section class="ri-panel"><h3>Findings preview</h3><p>${esc(run.findingsPreview)}</p></section>` : ''}
+        <div data-connected-ai-run-detail="${esc(id)}" class="ri-muted">Loading persisted findings and citations…</div>
+        ${renderConnectedAiReviewPanel(run)}
+        <p class="ri-muted">New live AI executions are disabled in connected staging. Human review applies to persisted runs only.</p>
+        <p><a href="#/ai-governance">← AI Governance register</a></p>`;
+    }
+    const blocked = guardConnectedDemoSubroute('AI Analysis', { links: '<p><a href="#/ai-governance">AI Governance</a></p>' });
+    if (blocked) return blocked;
+  }
   const a = getAnalysis(s, id);
   if (!a) return notFoundState('AI Analysis', id);
   const claims = getClaimsForAnalysis(s, id);
@@ -164,6 +227,10 @@ export function viewAiAnalysis(id) {
 }
 
 export function viewAiModel(id) {
+  const blocked = guardConnectedDemoSubroute('AI model configuration', {
+    links: '<p><a href="#/ai-governance">AI Governance</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const m = getModel(s, id);
   if (!m) return notFoundState('AI Model', id);
@@ -184,6 +251,10 @@ export function viewAiModel(id) {
 }
 
 export function viewAiUseCase(id) {
+  const blocked = guardConnectedDemoSubroute('AI use case', {
+    links: '<p><a href="#/ai-governance">AI Governance</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const u = getUseCase(s, id);
   if (!u) return notFoundState('AI Use Case', id);
@@ -202,6 +273,10 @@ export function viewAiUseCase(id) {
 }
 
 export function viewAiConfig(id) {
+  const blocked = guardConnectedDemoSubroute('AI configuration', {
+    links: '<p><a href="#/ai-governance">AI Governance</a></p>',
+  });
+  if (blocked) return blocked;
   const s = getState();
   const c = getPromptConfig(s, id);
   if (!c) return notFoundState('AI configuration', id);
@@ -223,6 +298,12 @@ export function viewAiConfig(id) {
 
 export function viewAiOversightReport() {
   const s = getState();
+  if (isConnectedBackendActive(s)) {
+    return `${pageHeader('AI Oversight', 'Connected read-only')}
+      ${connectedCatalogueBanner(s)}
+      <p class="ri-muted">${getViewAiAnalysisRuns().length} operational · ${getViewAuthorisedUatAiAnalysisRuns().length} authorised UAT run(s) on the connected staging register. Demo oversight metrics and synthetic fixture outcomes are excluded.</p>
+      <p><a href="#/ai-governance">AI Governance register</a></p>`;
+  }
   const m = getAIOversightMetrics(s);
   const confRows = ['High', 'Medium', 'Low'].map((band) => {
     const analyses = (s.aiAnalyses || []).filter((a) => getConfidenceBand(a.confidence) === band);

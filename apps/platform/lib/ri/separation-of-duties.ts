@@ -43,3 +43,18 @@ export function assertImpactApproverSoD(params: {
     throw new Error('segregation_of_duties');
   }
 }
+
+/** Accepting AI output materialises records, so the requester of the run cannot be its approver. */
+export function assertAiReviewerSoD(params: {
+  requestedByUserId: string | null | undefined;
+  reviewerUserId: string;
+}): void {
+  const check = checkMakerChecker({
+    submitterId: params.requestedByUserId,
+    approverId: params.reviewerUserId,
+    makerCheckerRequired: true,
+  });
+  if (check.result === SOD.BLOCKED) {
+    throw new Error('segregation_of_duties');
+  }
+}
