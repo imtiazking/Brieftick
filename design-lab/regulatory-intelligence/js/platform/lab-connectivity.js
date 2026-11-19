@@ -24,6 +24,17 @@ import {
   canRestorePersistedConnectedSession,
 } from './lab-bootstrap-coordinator.js';
 
+/** Restored or prior sessions must not keep tenant views unlocked while no organisation is resolved. */
+function revokeBackendSession(state) {
+  if (!state.platformConfig) return;
+  state.platformConfig = {
+    ...state.platformConfig,
+    backendReady: false,
+    backendSession: null,
+    writesEnabled: false,
+  };
+}
+
 export async function probeBackendAvailability(apiBaseUrl) {
   const adapter = createApiPlatformAdapter({ apiBaseUrl });
   return adapter.probe();
@@ -60,6 +71,7 @@ export async function activateConnectedBackend(state) {
   } catch (e) {
     const reason = e?.reason || e?.message || '';
     if (reason === 'organisation_selection_required' || (e?.memberships?.length ?? 0) > 1) {
+      revokeBackendSession(state);
       state.connectivity = {
         ...(state.connectivity || {}),
         mode: 'org_selection_required',
@@ -69,6 +81,7 @@ export async function activateConnectedBackend(state) {
         lastCheckedAt: new Date().toISOString(),
       };
     } else if (reason === 'no_memberships' || reason === 'no_supabase_membership') {
+      revokeBackendSession(state);
       state.connectivity = {
         ...(state.connectivity || {}),
         mode: 'org_access_denied',
@@ -160,6 +173,7 @@ export async function bootstrapLabConnectivity(state, options = {}) {
   } catch (e) {
     const reason = e?.reason || e?.message || '';
     if (reason === 'organisation_selection_required' || (e?.memberships?.length ?? 0) > 1) {
+      revokeBackendSession(state);
       state.connectivity = {
         ...(state.connectivity || {}),
         mode: 'org_selection_required',
@@ -172,6 +186,7 @@ export async function bootstrapLabConnectivity(state, options = {}) {
       return { mode: 'org_selection_required', error: 'organisation_selection_required' };
     }
     if (reason === 'no_memberships' || reason === 'no_supabase_membership') {
+      revokeBackendSession(state);
       state.connectivity = {
         ...(state.connectivity || {}),
         mode: 'org_access_denied',

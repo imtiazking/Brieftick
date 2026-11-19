@@ -3,6 +3,11 @@
  */
 import { callAnthropicMessages, parseAnthropicJsonText } from './anthropic-messages-core.mjs';
 import { buildAnthropicPrompts } from './anthropic-prompts-core.mjs';
+import {
+  guardLabAnthropicSpendBeforeCall,
+  finalizeLabSpendAfterCall,
+  LAB_BUDGET_ERROR_CODES,
+} from './lab-anthropic-spend-guard.mjs';
 
 export const ANTHROPIC_PROVIDER_ID = 'AIPROV-ANTHROPIC-001';
 
@@ -11,6 +16,11 @@ export const AI_ERRORS = {
   AI_EXTERNAL_PROCESSING_DISABLED: 'AI_EXTERNAL_PROCESSING_DISABLED',
   AI_OUTPUT_SCHEMA_INVALID: 'AI_OUTPUT_SCHEMA_INVALID',
   AI_QUALITY_GATE_FAILED: 'AI_QUALITY_GATE_FAILED',
+  LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED,
+  LAB_ANTHROPIC_BUDGET_EXCEEDED: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_EXCEEDED,
+  LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+  LAB_TRIAL_OVERLAP: LAB_BUDGET_ERROR_CODES.LAB_TRIAL_OVERLAP,
+  LAB_PROMPT_TOO_LARGE: LAB_BUDGET_ERROR_CODES.LAB_PROMPT_TOO_LARGE,
 };
 
 export function getAnthropicApiKey() {
@@ -89,12 +99,59 @@ export function createAnthropicProvider(deps = {}) {
         analysisType,
         sourceSections: sections,
       });
+
+      const budgetCtx = request.budgetContext || {};
+      const spendGuard = guardLabAnthropicSpendBeforeCall({
+        useCaseId: request.useCaseId,
+        system,
+        user,
+        idempotencyKey: budgetCtx.idempotencyKey,
+        organisationId: budgetCtx.organisationId,
+      });
+      if (!spendGuard.ok) {
+        return {
+          ok: false,
+          code: spendGuard.code || AI_ERRORS.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+          message: spendGuard.message || 'Lab Anthropic budget guard rejected execution.',
+          spendAudit: spendGuard.spendAudit || null,
+          failClosed: spendGuard.failClosed === true,
+        };
+      }
+
+      const maxTokens = spendGuard.maxOutputTokens ?? Number(process.env.RI_ANTHROPIC_MAX_TOKENS ?? 4096);
+      const reservedAmount = spendGuard.reserveUsd ?? 0;
+
       const started = Date.now();
-      const apiResult = await callAnthropicMessages(apiKey, { model, system, user }, { fetchFn: deps.fetchFn });
+      const apiResult = await callAnthropicMessages(
+        apiKey,
+        { model, system, user, maxTokens },
+        { fetchFn: deps.fetchFn },
+      );
       const latencyMs = Date.now() - started;
 
+      let spendAudit = spendGuard.spendAudit || null;
+      if (spendGuard.tracker && spendGuard.slotKey) {
+        const finalized = finalizeLabSpendAfterCall(
+          spendGuard.tracker,
+          spendGuard.slotKey,
+          apiResult,
+          reservedAmount,
+        );
+        spendAudit = finalized.spendAudit;
+        if (!finalized.ok) {
+          return {
+            ok: false,
+            code: finalized.code,
+            message: finalized.message,
+            latencyMs,
+            spendAudit,
+            failClosed: true,
+          };
+        }
+      }
+
       if (!apiResult.ok) {
-        return { ok: false, code: apiResult.code, message: apiResult.message, latencyMs };
+        return { ok: false, code: apiResult.code, message: apiResult.message, latencyMs, spendAudit };
       }
 
       const structured = parseAnthropicJsonText(apiResult.text);
@@ -104,6 +161,7 @@ export function createAnthropicProvider(deps = {}) {
           code: AI_ERRORS.AI_OUTPUT_SCHEMA_INVALID,
           message: 'Anthropic response was not valid JSON.',
           latencyMs,
+          spendAudit,
         };
       }
 
@@ -115,6 +173,7 @@ export function createAnthropicProvider(deps = {}) {
         providerRequestId: apiResult.requestId,
         inputTokenEstimate: apiResult.inputTokens,
         outputTokenEstimate: apiResult.outputTokens,
+        spendAudit,
       };
     },
   };

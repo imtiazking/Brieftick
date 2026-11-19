@@ -310,11 +310,54 @@ export async function requestPublicationAnalysis(
     toStatus: AI_EXECUTION_STATUS.RUNNING,
   });
 
+  if (params.useCaseId === 'UC-RI-005' && isRiAiExecutionEnabled()) {
+    const { assertUcRi005LiveTrialIdempotency } = await import(
+      '@/lib/ri/ai/lab-anthropic-spend-guard.mjs'
+    );
+    const idemCheck = assertUcRi005LiveTrialIdempotency(idempotencyKey, { executionEnabled: true });
+    if (!idemCheck.ok) {
+      await supabase
+        .from('ai_analysis_runs')
+        .update({
+          execution_status: AI_EXECUTION_STATUS.FAILED,
+          error_code: idemCheck.code || AI_ERRORS.LAB_TRIAL_OVERLAP,
+          error_message: idemCheck.message,
+          completed_at: new Date().toISOString(),
+        })
+        .eq('id', runRow.id);
+      return { ok: false, runId: runRow.id, code: idemCheck.code };
+    }
+    const { data: overlapping } = await supabase
+      .from('ai_analysis_runs')
+      .select('id, idempotency_key')
+      .eq('organisation_id', params.organisationId)
+      .eq('use_case_id', 'UC-RI-005')
+      .eq('execution_status', AI_EXECUTION_STATUS.RUNNING)
+      .neq('id', runRow.id)
+      .limit(1);
+    if (overlapping?.length) {
+      await supabase
+        .from('ai_analysis_runs')
+        .update({
+          execution_status: AI_EXECUTION_STATUS.FAILED,
+          error_code: AI_ERRORS.LAB_TRIAL_OVERLAP,
+          error_message: 'Another UC-RI-005 analysis is already RUNNING for this organisation.',
+          completed_at: new Date().toISOString(),
+        })
+        .eq('id', runRow.id);
+      return { ok: false, runId: runRow.id, code: AI_ERRORS.LAB_TRIAL_OVERLAP };
+    }
+  }
+
   const started = Date.now();
   const providerResult = await provider.execute({
     useCaseId: params.useCaseId,
     analysisType,
     fixtureScenario: params.fixtureScenario,
+    budgetContext: {
+      organisationId: params.organisationId,
+      idempotencyKey,
+    },
     context: {
       sourceSections: ctx.sourceSections,
       regulatoryAnalysis: ctx.grounding?.regulatoryAnalysis ?? null,
@@ -330,16 +373,21 @@ export async function requestPublicationAnalysis(
   const latencyMs = Date.now() - started;
 
   if (!providerResult.ok || !('structured' in providerResult)) {
-    await supabase
-      .from('ai_analysis_runs')
-      .update({
+    const failedSpend =
+      providerResult && typeof providerResult === 'object' && 'spendAudit' in providerResult
+        ? (providerResult as { spendAudit?: Record<string, unknown> }).spendAudit
+        : null;
+    const failedPatch: Record<string, unknown> = {
         execution_status: AI_EXECUTION_STATUS.FAILED,
         error_code: 'code' in providerResult ? providerResult.code : AI_ERRORS.AI_PROVIDER_UNAVAILABLE,
         error_message: 'message' in providerResult ? providerResult.message : 'provider_failed',
         latency_ms: latencyMs,
         completed_at: new Date().toISOString(),
-      })
-      .eq('id', runRow.id);
+      };
+    if (failedSpend) {
+      failedPatch.structured_output = { _forgeniqLabSpendAudit: failedSpend };
+    }
+    await supabase.from('ai_analysis_runs').update(failedPatch).eq('id', runRow.id);
     await recordWorkflowEvent(supabase, {
       organisationId: params.organisationId,
       entityType: 'ai_analysis_run',
@@ -386,6 +434,13 @@ export async function requestPublicationAnalysis(
   const structuredOutput = { ...normalized.structured };
   if (ctx.grounding) {
     structuredOutput._forgeniqGrounding = ctx.grounding;
+  }
+  const spendAudit =
+    providerResult && typeof providerResult === 'object' && 'spendAudit' in providerResult
+      ? (providerResult as { spendAudit?: Record<string, unknown> }).spendAudit
+      : null;
+  if (spendAudit) {
+    structuredOutput._forgeniqLabSpendAudit = spendAudit;
   }
 
   const claims = (normalized.claims as AiClaim[]).map((c, i) => ({

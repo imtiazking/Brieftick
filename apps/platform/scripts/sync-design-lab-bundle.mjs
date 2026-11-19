@@ -4,7 +4,7 @@
  */
 import { cpSync, mkdirSync, rmSync, existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const monorepoRoot = join(platformRoot, '..', '..');
@@ -57,4 +57,22 @@ if (!readFileSync(labConnectivity, 'utf8').includes('adapter.bootstrap()')) {
   console.error('sync-design-lab-bundle: lab-connectivity missing adapter.bootstrap() call');
   process.exit(1);
 }
-console.log('sync-design-lab-bundle: OK', destLab);
+const { validateDesignLabJsModuleGraph } = await import(
+  pathToFileURL(join(dirname(fileURLToPath(import.meta.url)), 'validate-design-lab-js-deps.mjs')).href
+);
+const srcGraph = validateDesignLabJsModuleGraph(join(srcLab, 'js'));
+if (!srcGraph.ok) {
+  console.error('sync-design-lab-bundle: source Design Lab module graph has missing files');
+  for (const m of srcGraph.missing) console.error(`  MISSING: ${m.spec} (${m.from})`);
+  process.exit(1);
+}
+const bundleGraph = validateDesignLabJsModuleGraph(join(destLab, 'js'));
+if (!bundleGraph.ok) {
+  console.error('sync-design-lab-bundle: bundle module graph has missing files');
+  for (const m of bundleGraph.missing) console.error(`  MISSING: ${m.spec} (${m.from})`);
+  process.exit(1);
+}
+console.log(
+  `sync-design-lab-bundle: module graph OK (${bundleGraph.scanned} modules)`,
+  destLab,
+);

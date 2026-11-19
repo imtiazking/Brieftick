@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "forgeniq.regulatory.fixture.ps26-1.v1",
+  "publicationId": "FCA-PS26-1",
+  "officialUrl": "https://www.fca.org.uk/publication/policy/ps26-1.pdf",
+  "fixtureFile": "fca-ps26-1-official.pdf",
+  "sha256": "2efd6b9051b6f654f55363bcbe8110c1e5825f1266afdda5e1adeb98732e7998",
+  "note": "Public FCA policy PDF; runtime may also fetch officialUrl after SHA verify when fixture absent."
+}

@@ -15,13 +15,12 @@ export function isPublicationToObligationIntegrationEnabled(organisationId) {
   if (!id) return false;
   if (id === PARTNER_UAT_ORG_ID || id === ORG_A_OPERATIONAL_ID) return false;
 
+  // Pilot: fixed AI Development org only — STAGING_AI_TECH_ORG_ID cannot widen the allowlist.
   const override = process.env.STAGING_AI_TECH_ORG_ID?.trim();
-  if (override === PARTNER_UAT_ORG_ID || override === ORG_A_OPERATIONAL_ID) {
+  if (override && override !== AI_DEVELOPMENT_ORG_ID) {
     return false;
   }
-
-  const resolvedOrg = override || AI_DEVELOPMENT_ORG_ID;
-  return id === resolvedOrg;
+  return id === AI_DEVELOPMENT_ORG_ID;
 }
 
 export function assertExperimentalAiTenant(params) {

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
-    "prebuild": "node ./scripts/sync-design-lab-bundle.mjs",
+    "prebuild": "node ./scripts/sync-design-lab-bundle.mjs && node ./scripts/emit-forgeniq-build-id.mjs",
     "build": "next build",
     "start": "next start --port 3001",
     "lint": "next lint",

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "forgeniq.lab.anthropic.budget.limitations.v1",
+  "hardInvoiceCapGuaranteed": false,
+  "enforcementModel": "pre_reserve_estimated_usd + post_settle_actual_tokens_from_provider_response",
+  "resolved": {
+    "invalidOrMissingBudgetEnv": "FAIL_CLOSED — LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED / LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED",
+    "maxInputOutputTokens": "RI_LAB_ANTHROPIC_MAX_INPUT_TOKENS / RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS or budget-derived defaults",
+    "duplicateTrialIdempotency": "assertUcRi005LiveTrialIdempotency when FORGENIQ_PS26_LIVE_TRIAL=1",
+    "inProcessOverlap": "acquireLabTrialSlot",
+    "sameOrgDbOverlap": "ai_analysis_runs RUNNING check",
+    "actualUsageAudit": "_forgeniqLabSpendAudit on success and provider failure paths",
+    "providerErrorTokens": "finalizeLabSpendAfterCall records tokens even when apiResult.ok=false"
+  },
+  "remaining": {
+    "multiInstanceServerlessRace": "Two Vercel instances can both pass RUNNING check before either updates — not solved without distributed lock",
+    "anthropicBillingLag": "Billed amount known only from provider token fields at response time",
+    "thinkingTokens": "May consume max_tokens without useful JSON",
+    "retryReserveFactor": "Reserves headroom only — no automatic retry loop in provider today",
+    "differentIdempotencyKeys": "Distinct keys can each spend unless FORGENIQ_PS26_LIVE_TRIAL enforces single suffix",
+    "accountLevelSpendLimit": "Not integrated — operator must set Anthropic workspace limits separately"
+  }
+}

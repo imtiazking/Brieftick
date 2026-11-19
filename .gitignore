@@ -45,6 +45,8 @@ docs/eval/runs/phase-2c2-ask-ri-v2-smoke-*.json
 
 # Official regulatory PDF cache (verification only — not committed)
 docs/eval/regulatory-sources/cache/
+# Tracked authoritative FCA PS26/1 fixture for reproducible acceptance (public regulator PDF)
+!integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf
 apps/platform/.local-pg-verify/
 apps/platform/.local-pg-test/
 apps/platform/.local-ingestion-raw/

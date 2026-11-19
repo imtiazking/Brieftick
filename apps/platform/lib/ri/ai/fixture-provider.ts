@@ -9,6 +9,11 @@ export type FixtureProviderRequest = {
   useCaseId?: string;
   analysisType?: string;
   fixtureScenario?: string;
+  /** Passed through to live Anthropic provider; ignored by fixture provider. */
+  budgetContext?: {
+    organisationId?: string;
+    idempotencyKey?: string;
+  };
   context?: {
     sourceSections?: { sourceSectionId: string; citation?: string; text?: string }[];
   };

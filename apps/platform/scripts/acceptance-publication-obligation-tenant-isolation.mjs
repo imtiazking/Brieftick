@@ -37,11 +37,20 @@ if (isPublicationToObligationIntegrationEnabled('00000000-0000-4000-8000-0000000
   fail('unknown staging org must not be allowlisted');
 } else ok('other staging orgs excluded');
 
+const ISOLATION_B_ORG_ID = '22e46d56-1f6f-42c2-9424-b2e0a40df45a';
 const prevOverride = process.env.STAGING_AI_TECH_ORG_ID;
 process.env.STAGING_AI_TECH_ORG_ID = PARTNER_UAT_ORG_ID;
 if (isPublicationToObligationIntegrationEnabled(AI_DEVELOPMENT_ORG_ID)) {
   fail('misconfigured STAGING_AI_TECH_ORG_ID=Partner UAT must fail closed');
 } else ok('fail closed when STAGING_AI_TECH_ORG_ID points at Partner UAT');
+process.env.STAGING_AI_TECH_ORG_ID = ISOLATION_B_ORG_ID;
+if (isPublicationToObligationIntegrationEnabled(ISOLATION_B_ORG_ID)) {
+  fail('STAGING_AI_TECH_ORG_ID must not enable unapproved org');
+} else ok('STAGING_AI_TECH_ORG_ID cannot widen pilot allowlist');
+process.env.STAGING_AI_TECH_ORG_ID = AI_DEVELOPMENT_ORG_ID;
+if (!isPublicationToObligationIntegrationEnabled(AI_DEVELOPMENT_ORG_ID)) {
+  fail('AI Dev must remain enabled when override matches allowlist');
+} else ok('override allowed only when equal to AI Development org id');
 process.env.STAGING_AI_TECH_ORG_ID = prevOverride;
 
 const sessionPayload = readFileSync(join(platformRoot, 'lib/ri/lab-api/session-payload.ts'), 'utf8');
