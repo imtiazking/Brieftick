@@ -1,6 +1,29 @@
 # FORGENIQ — Role-aware RLS and live AI obligation UAT: approval pack (2026-11-20)
 
-Status: **prepared, nothing applied to staging.** Branch `fix/ri-role-aware-rls`, commit `e36b0df` (on `5bea5af`, the deployed staging build).
+Status: **migration applied to staging 2026-11-20 ~15:07 UTC (approved); UAT not started.** Branch `fix/ri-role-aware-rls`, commit `e36b0df` (on `5bea5af`, the deployed staging build). Remaining database security work: `docs/security/SECURITY-BACKLOG.md` (database security is not complete).
+
+## 0. Staging application record (2026-11-20)
+
+| Check | Result |
+|---|---|
+| Migration file / rollback file hashes | match `e36b0df` (values below) |
+| Existing backup `staging-db-2026-11-19T222804Z` | 20/20 checksums OK, restore rehearsal PASS; predates the three migrations applied 10:12 UTC today |
+| Fresh recovery point | private schema `forgeniq_recovery_20261120` (58 tables + `_policies` 192, `_table_grants` 1210, `_manifest`); 58/58 table checksums equal live; no API access. Local fingerprint `C:\Users\imtia\FORGENIQ-backups\recovery-point-2026-11-20T1505Z\pre-migration-fingerprint.json`. A full physical dump still requires `Backup-ForgeniqStaging.ps1` (database password). |
+| Pre-apply policy fingerprint | `6e1dddddfae40b631311ce4debdb58ff` = tested baseline |
+| Applied | Supabase migration `ri_role_aware_rls` (history 29 → 30 rows) |
+| Post-apply policy fingerprint | `021c749e8161441f4ee5200f349e2c41` = tested result; 181 public policies, 121 write |
+| Membership-only write policies left | none |
+| `workflow_events` policies | `insert_actor` (INSERT), `select_member` (SELECT) only |
+| TRUNCATE for anon/authenticated | 0 of 58 tables |
+| Storage evidence policies | `insert/update/delete_analyst`, `select_member` |
+| New functions `search_path` | pinned empty; trigger active on `regulatory_obligations`, `ai_analysis_runs` |
+| Existing data | 58/58 public tables and 232 storage objects byte-identical to the recovery point |
+| Behaviour (28 rolled-back probes under real identities + transient REVIEWER/VIEWER) | 28/28 as expected; nothing persisted (verified) |
+| Compliance module reads as Compliance Manager | all 23 modules return full counts (tenant notifications recipient-scoped, policy unchanged) |
+| Application | `/health` 200 on build `5bea5af`; sign-in 200; API 401 when signed out; 0 runtime errors in the last 30 min; no deployment made |
+| Scheduler | 0 crons on the production deployment; last ingestion run 2026-11-18 20:06 UTC |
+
+Rollback (available, not executed): run `apps/platform/supabase/rollbacks/20261120140000_ri_role_aware_rls.down.sql` (hash below), then `delete from supabase_migrations.schema_migrations where name = 'ri_role_aware_rls'`. Expected public fingerprint afterwards `6e1dddddfae40b631311ce4debdb58ff`. Data restore, if ever needed, from `forgeniq_recovery_20261120` (schema can be dropped once UAT is accepted).
 
 ## 1. Role-aware RLS migration
 
