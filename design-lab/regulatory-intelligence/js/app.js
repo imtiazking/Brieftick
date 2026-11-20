@@ -61,6 +61,7 @@ import {
   getConnectedAssurance,
 } from './store.js';
 import { LOCAL_AI_BRIDGE_ORIGIN } from './ai/ri-bridge-config.js';
+import { capturePreservedInputs, restorePreservedInputs } from './platform/preserve-inputs.js';
 import { LANDSCAPE_SECTOR_NAV } from './landscape-seed.js';
 import { mySectorIds } from './landscape-helpers.js';
 import { SCENARIOS, MARKET_INTEL_URL, PRODUCT_RI_LABEL, PRODUCT_MI_LABEL, DOCUMENT_TITLE_RI } from './seed-data.js';
@@ -455,7 +456,10 @@ function renderShell() {
   } else {
     scenarioRibbon = '';
   }
-  document.getElementById('ri-main').innerHTML = `${scenarioRibbon}${walk}${body}`;
+  const main = document.getElementById('ri-main');
+  const preserved = capturePreservedInputs(main, routeKey);
+  main.innerHTML = `${scenarioRibbon}${walk}${body}`;
+  restorePreservedInputs(main, routeKey, preserved);
   syncNavActive(routeKey);
   closeTopNavMenus();
   const routeSeg = routeKey.split('/')[0] || 'dashboard';
@@ -841,6 +845,7 @@ const APPLICABILITY_ERROR_MESSAGES = {
   applicability_locked: 'This assessment is submitted or approved and can no longer be edited as a draft.',
   applicability_invalid_transition: 'This assessment has already moved on in the workflow. The page has been refreshed.',
   stale_record: 'Someone else updated this assessment. The page has been refreshed — review it and try again.',
+  applicability_rationale_required: 'Enter a rationale before saving the applicability decision.',
 };
 
 function applicabilityErrorMessage(code) {
@@ -1673,13 +1678,16 @@ function bindViewHandlers() {
 
   bindApplicabilityAction(
     '[data-connected-applicability-save]',
-    (btn) =>
-      patchConnectedPublicationApplicability(getState(), btn.dataset.publicationId, {
+    (btn) => {
+      const rationale = document.querySelector('[data-connected-applicability-rationale]')?.value?.trim();
+      if (!rationale) throw new Error('applicability_rationale_required');
+      return patchConnectedPublicationApplicability(getState(), btn.dataset.publicationId, {
         assessmentId: btn.dataset.assessmentId || null,
         recommendation: document.querySelector('[data-connected-applicability-recommendation]')?.value,
-        rationale: document.querySelector('[data-connected-applicability-rationale]')?.value?.trim(),
+        rationale,
         expectedUpdatedAt: btn.dataset.expectedUpdatedAt || null,
-      }),
+      });
+    },
     'Applicability draft saved',
     'Save failed',
   );

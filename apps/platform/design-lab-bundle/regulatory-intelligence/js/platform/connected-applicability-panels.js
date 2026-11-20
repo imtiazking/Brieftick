@@ -40,6 +40,7 @@ export function renderConnectedApplicabilityView(publicationId, publication, ass
   const canWrite = isConnectedApplicabilityWritesEnabled(state) && editable;
   const canApprove = isConnectedImpactApproveEnabled(state) && Boolean(id) && status === 'IN_REVIEW';
   const isSubmitter = Boolean(submittedBy && options.currentUserId && submittedBy === options.currentUserId);
+  const savedRationale = String(assessment?.rationale || '').trim();
   const selected = assessment?.recommendation || 'APPLICABLE';
   const optionHtml = RECOMMENDATION_OPTIONS.map(
     ([value, label]) => `<option value="${value}"${value === selected ? ' selected' : ''}>${label}</option>`,
@@ -52,18 +53,21 @@ export function renderConnectedApplicabilityView(publicationId, publication, ass
       <dt>Assessment id</dt><dd class="ri-mono">${esc(id || '—')}</dd>
       <dt>Submitted by</dt><dd class="ri-mono">${esc(submittedBy || '—')}</dd>
       <dt>Reviewed by</dt><dd class="ri-mono">${esc(reviewedBy || '—')}</dd>
+      <dt>Saved rationale</dt><dd data-connected-applicability-saved-rationale>${esc(savedRationale || '—')}</dd>
     </dl>
     ${
       canWrite
         ? `<section class="ri-panel" data-connected-applicability-panel="${esc(publicationId)}">
       <h2>Record decision (draft)</h2>
       <label>Recommendation
-        <select data-connected-applicability-recommendation>${optionHtml}</select>
+        <select data-connected-applicability-recommendation data-preserve-input="applicability-recommendation">${optionHtml}</select>
       </label>
-      <label>Rationale <textarea data-connected-applicability-rationale rows="3">${esc(assessment?.rationale || '')}</textarea></label>
+      <label>Rationale (required) <textarea data-connected-applicability-rationale data-preserve-input="applicability-rationale" rows="3" required>${esc(assessment?.rationale || '')}</textarea></label>
       <button type="button" class="ri-btn ri-btn--primary" data-connected-applicability-save data-publication-id="${esc(publicationId)}" data-assessment-id="${esc(id)}" data-expected-updated-at="${esc(updatedAt)}">Save draft</button>
       ${
-        id
+        id && !savedRationale
+          ? '<p class="ri-muted" data-connected-applicability-submit-blocked>Save a draft with a rationale; Submit for approval becomes available once the rationale is saved.</p>'
+          : id
           ? `<button type="button" class="ri-btn ri-btn--ghost" data-connected-applicability-submit data-publication-id="${esc(publicationId)}" data-assessment-id="${esc(id)}" data-expected-updated-at="${esc(updatedAt)}">Submit for approval</button>`
           : '<p class="ri-muted">Save a draft first; Submit for approval becomes available once the draft exists.</p>'
       }
@@ -77,7 +81,7 @@ export function renderConnectedApplicabilityView(publicationId, publication, ass
       ${
         isSubmitter
           ? '<p class="ri-muted">You submitted this assessment. Approval requires a different authorised reviewer (segregation of duties).</p>'
-          : `<label>Comments <textarea data-connected-applicability-decision-comments rows="2"></textarea></label>
+          : `<label>Comments <textarea data-connected-applicability-decision-comments data-preserve-input="applicability-decision-comments" rows="2"></textarea></label>
       <button type="button" class="ri-btn ri-btn--primary" data-connected-applicability-approve data-publication-id="${esc(publicationId)}" data-assessment-id="${esc(id)}" data-expected-updated-at="${esc(updatedAt)}">Approve</button>
       <button type="button" class="ri-btn ri-btn--ghost" data-connected-applicability-reject data-publication-id="${esc(publicationId)}" data-assessment-id="${esc(id)}" data-expected-updated-at="${esc(updatedAt)}">Reject</button>`
       }

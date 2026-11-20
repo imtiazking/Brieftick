@@ -235,6 +235,33 @@ async function main() {
   check(/NOT_STARTED/.test(t), 'no assessment yet → status NOT_STARTED');
   check(!(await page.$('button[data-connected-applicability-submit]')), 'Submit hidden until a draft exists');
 
+  let writesBefore = writes.length;
+  await page.click('button[data-connected-applicability-save]');
+  await page.waitForTimeout(900);
+  check(
+    writes.length === writesBefore && assessments.length === 0 && /Enter a rationale/.test(await page.evaluate(() => document.body.innerText)),
+    'Save with an empty rationale is blocked client-side (no request, message shown)',
+  );
+
+  await page.selectOption('[data-connected-applicability-recommendation]', 'POSSIBLY_APPLICABLE');
+  await page.click('[data-connected-applicability-rationale]');
+  await page.keyboard.type('UAT — partial');
+  await page.evaluate(() => window.dispatchEvent(new HashChangeEvent('hashchange')));
+  await page.waitForTimeout(900);
+  const survived = await page.evaluate(() => {
+    const ta = document.querySelector('[data-connected-applicability-rationale]');
+    return {
+      value: ta?.value,
+      focused: document.activeElement === ta,
+      rec: document.querySelector('[data-connected-applicability-recommendation]')?.value,
+    };
+  });
+  check(
+    survived.value === 'UAT — partial' && survived.focused && survived.rec === 'POSSIBLY_APPLICABLE',
+    'unsaved rationale, focus and recommendation survive a background re-render',
+    JSON.stringify(survived),
+  );
+
   await page.selectOption('[data-connected-applicability-recommendation]', 'APPLICABLE');
   await page.fill('[data-connected-applicability-rationale]', RATIONALE);
   await page.click('button[data-connected-applicability-save]');
@@ -283,7 +310,8 @@ async function main() {
   check(await openFresh(page, `#/applicability/${PUB}`), 'connected as checker B (fresh browser state, deep link)');
   t = await text(page);
   check(/IN_REVIEW/.test(t) && !!(await page.$('button[data-connected-applicability-approve]')), 'checker B sees IN_REVIEW and Approve');
-  const writesBefore = writes.length;
+  check(t.includes(RATIONALE), 'checker B sees the submitted rationale on the assessment page');
+  writesBefore = writes.length;
   await page.click('[data-connected-applicability-decision-comments]');
   await page.fill('[data-connected-applicability-decision-comments]', 'UAT — FG24/6 applicability approved for controlled test.');
   await page.waitForTimeout(300);
@@ -302,6 +330,58 @@ async function main() {
   await page.waitForTimeout(900);
   t = await text(page);
   check(/APPROVED/.test(t) && !/FORGENIQ AI · DEMO/.test(t), 'publication Applicability tab reflects APPROVED');
+
+  // Live staging state: one IN_REVIEW assessment submitted by A with no rationale. Recover via reject → edit → resubmit.
+  assessments.length = 0;
+  const liveRow = {
+    id: 'cfa8cb5b-4bd6-4b8e-bae0-6580f17d6238',
+    organisation_id: AI_DEV,
+    publication_id: PUB,
+    recommendation: 'APPLICABLE',
+    rationale: null,
+    status: 'IN_REVIEW',
+    submitted_by: USER_A,
+    submitted_at: '2026-11-20T21:21:23.862Z',
+    reviewed_by: null,
+    reviewed_at: null,
+  };
+  touch(liveRow);
+  assessments.push(liveRow);
+
+  check(await openFresh(page, `#/applicability/${PUB}`), 'recovery: checker B opens the rationale-less IN_REVIEW assessment');
+  t = await text(page);
+  check(/Saved rationale\s*—/.test(t), 'recovery: B can see the rationale is missing');
+  await page.fill('[data-connected-applicability-decision-comments]', 'Rationale missing — please add and resubmit.');
+  await page.click('button[data-connected-applicability-reject]');
+  await page.waitForTimeout(900);
+  check(liveRow.status === 'REJECTED' && liveRow.reviewed_by === USER_B, 'recovery: B rejects → REJECTED, reviewed_by B');
+
+  currentUser = USER_A;
+  check(await openFresh(page, `#/applicability/${PUB}`), 'recovery: maker A reopens the same assessment');
+  t = await text(page);
+  check(
+    /REJECTED/.test(t) && !!(await page.$('button[data-connected-applicability-save]')) && !(await page.$('button[data-connected-applicability-submit]')),
+    'recovery: REJECTED is editable; Submit withheld until a rationale is saved',
+  );
+  await page.fill('[data-connected-applicability-rationale]', RATIONALE);
+  await page.click('button[data-connected-applicability-save]');
+  await page.waitForTimeout(900);
+  check(liveRow.status === 'DRAFT' && liveRow.rationale === RATIONALE, 'recovery: A saves the rationale on the same record');
+  await page.click('button[data-connected-applicability-submit]');
+  await page.waitForTimeout(900);
+  check(liveRow.status === 'IN_REVIEW' && liveRow.submitted_by === USER_A, 'recovery: A resubmits → IN_REVIEW');
+
+  currentUser = USER_B;
+  check(await openFresh(page, `#/applicability/${PUB}`), 'recovery: B reopens for approval');
+  t = await text(page);
+  check(t.includes(RATIONALE), 'recovery: B sees the rationale before approving');
+  await page.fill('[data-connected-applicability-decision-comments]', 'UAT — FG24/6 applicability approved for controlled test.');
+  await page.click('button[data-connected-applicability-approve]');
+  await page.waitForTimeout(900);
+  check(
+    liveRow.status === 'APPROVED' && liveRow.reviewed_by === USER_B && liveRow.submitted_by === USER_A && liveRow.rationale === RATIONALE,
+    'recovery: B approves the same record with rationale intact',
+  );
 
   check(assessments.length === 1, `exactly one assessment overall (${assessments.length})`);
   check(pageErrors.length === 0, 'no uncaught page errors', pageErrors.slice(0, 3).join(' | '));

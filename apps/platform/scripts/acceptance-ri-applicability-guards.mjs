@@ -120,15 +120,17 @@ async function expectError(fn, code, label) {
 const live = () => tables.applicability_assessments.filter((r) => r.organisation_id === ORG && r.publication_id === PUB);
 const save = (userId, extra) =>
   saveApplicabilityAssessment(supabase, { organisationId: ORG, publicationId: PUB, userId, recommendation: 'APPLICABLE', rationale: 'UAT', ...extra });
-const workflow = (userId, assessmentId, action, expectedUpdatedAt) =>
+// Same field shape as app/api/ri-lab/applicability/[id]/route.ts: rationale is always present, null unless sent.
+const workflow = (userId, assessmentId, action, expectedUpdatedAt, decisionComments = 'UAT') =>
   patchApplicabilityAssessment(supabase, {
     organisationId: ORG,
     assessmentId,
     userId,
     role: 'COMPLIANCE_MANAGER',
-    fields: { action, decisionComments: 'UAT' },
+    fields: { action, rationale: null, decisionComments },
     expectedUpdatedAt,
   });
+const eventFor = (id, type) => [...tables.workflow_events].reverse().find((e) => e.entity_id === id && e.event_type === type);
 
 const draft = await save(A);
 if (draft.status === 'DRAFT' && live().length === 1) pass('first save inserts one DRAFT assessment');
@@ -153,6 +155,20 @@ await expectError(() => save(A, { assessmentId: draft.id, expectedUpdatedAt: dra
 const submitted = await workflow(A, draft.id, 'submit', updated.updated_at);
 if (submitted.status === 'IN_REVIEW' && submitted.submitted_by === A) pass('A submits → IN_REVIEW, submitted_by A');
 else fail(`submit: ${JSON.stringify(submitted)}`);
+if (live()[0].rationale === 'UAT updated') pass('submit keeps the saved rationale (route sends rationale: null)');
+else fail(`rationale after submit: ${JSON.stringify(live()[0].rationale)}`);
+await expectError(
+  () =>
+    patchApplicabilityAssessment(supabase, {
+      organisationId: ORG,
+      assessmentId: draft.id,
+      userId: A,
+      role: 'COMPLIANCE_MANAGER',
+      fields: { action: null, rationale: 'edited in review' },
+    }),
+  'applicability_locked',
+  'rationale edit through the workflow route while in review',
+);
 
 await expectError(() => save(A, { assessmentId: draft.id, recommendation: 'NOT_APPLICABLE' }), 'applicability_locked', 'editing a submitted assessment');
 if (live()[0].status === 'IN_REVIEW' && live()[0].recommendation === 'APPLICABLE') pass('submitted assessment unchanged after refused edit');
@@ -160,9 +176,12 @@ else fail(`after refused edit: ${JSON.stringify(live()[0])}`);
 await expectError(() => save(A), 'applicability_assessment_exists', 'new insert while one is in review');
 await expectError(() => workflow(A, draft.id, 'approve'), 'segregation_of_duties', 'submitter A approving own submission');
 
-const approved = await workflow(B, draft.id, 'approve');
+const approved = await workflow(B, draft.id, 'approve', undefined, 'Approved for UAT');
 if (approved.status === 'APPROVED' && approved.reviewed_by === B && approved.submitted_by === A) pass('B approves → APPROVED, reviewed_by B');
 else fail(`approve: ${JSON.stringify(approved)}`);
+if (live()[0].rationale === 'UAT updated' && eventFor(draft.id, 'APPLICABILITY_APPROVED')?.metadata?.decisionComments === 'Approved for UAT') {
+  pass('approve keeps the maker rationale; checker comment recorded on the audit event');
+} else fail(`after approve: ${JSON.stringify({ rationale: live()[0].rationale, event: eventFor(draft.id, 'APPLICABILITY_APPROVED') })}`);
 await expectError(() => workflow(B, draft.id, 'approve'), 'applicability_invalid_transition', 'second approval');
 await expectError(() => save(B, { assessmentId: draft.id }), 'applicability_locked', 'editing an approved assessment');
 if (live()[0].status === 'APPROVED' && live()[0].reviewed_by === B) pass('approval preserved after refused edit');
@@ -172,6 +191,31 @@ const events = tables.workflow_events.filter((e) => e.entity_id === draft.id).ma
 const expected = ['APPLICABILITY_DECIDED:user_a', 'APPLICABILITY_SUBMITTED:user_a', 'APPLICABILITY_APPROVED:user_b'];
 if (JSON.stringify(events) === JSON.stringify(expected)) pass(`workflow history ${events.join(' → ')}`);
 else fail(`workflow history ${JSON.stringify(events)}`);
+
+// Live recovery path: an IN_REVIEW assessment with no rationale is rejected, corrected on the same row, resubmitted, approved.
+const PUB2 = '11111111-2222-4333-8444-555555555555';
+const recovery = await saveApplicabilityAssessment(supabase, { organisationId: ORG, publicationId: PUB2, userId: A, recommendation: 'APPLICABLE' });
+await workflow(A, recovery.id, 'submit');
+const rejected = await workflow(B, recovery.id, 'reject', undefined, 'Rationale missing — please add and resubmit.');
+const recRow = () => tables.applicability_assessments.find((r) => r.id === recovery.id);
+if (rejected.status === 'REJECTED' && recRow().rationale == null && eventFor(recovery.id, 'APPLICABILITY_REJECTED')?.metadata?.decisionComments === 'Rationale missing — please add and resubmit.') {
+  pass('reject keeps the maker rationale untouched; reviewer comment recorded on the audit event');
+} else fail(`reject: ${JSON.stringify({ row: recRow(), event: eventFor(recovery.id, 'APPLICABILITY_REJECTED') })}`);
+await saveApplicabilityAssessment(supabase, {
+  organisationId: ORG,
+  publicationId: PUB2,
+  userId: A,
+  assessmentId: recovery.id,
+  recommendation: 'APPLICABLE',
+  rationale: 'Corrected rationale',
+  expectedUpdatedAt: recRow().updated_at,
+});
+await workflow(A, recovery.id, 'submit', recRow().updated_at);
+const reapproved = await workflow(B, recovery.id, 'approve');
+const recCount = tables.applicability_assessments.filter((r) => r.organisation_id === ORG && r.publication_id === PUB2).length;
+if (reapproved.status === 'APPROVED' && recRow().rationale === 'Corrected rationale' && reapproved.submitted_by === A && reapproved.reviewed_by === B && recCount === 1) {
+  pass('rejected assessment corrected, resubmitted and approved on the same row with rationale intact');
+} else fail(`recovery: ${JSON.stringify({ row: recRow(), recCount })}`);
 
 console.log(`acceptance-ri-applicability-guards: ${failures.length ? 'FAIL' : 'PASS'} (${failures.length} failures)`);
 if (failures.length) process.exit(1);

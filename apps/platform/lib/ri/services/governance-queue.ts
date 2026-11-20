@@ -107,11 +107,15 @@ export async function patchApplicabilityAssessment(
   }
 
   const update: Record<string, unknown> = {};
-  if ('rationale' in params.fields) {
-    update.rationale = parseOptionalText(params.fields.rationale, 12000);
-  }
-  if ('override_reason' in params.fields) {
-    update.override_reason = parseOptionalText(params.fields.override_reason, 4000);
+  const action = params.fields.action ? String(params.fields.action) : null;
+  if (!action) {
+    const editsRationale = params.fields.rationale !== undefined && params.fields.rationale !== null;
+    const editsOverride = params.fields.override_reason !== undefined && params.fields.override_reason !== null;
+    if ((editsRationale || editsOverride) && !['DRAFT', 'REJECTED'].includes(existing.status)) {
+      throw new RiConflictError('applicability_locked');
+    }
+    if (editsRationale) update.rationale = parseOptionalText(params.fields.rationale, 12000);
+    if (editsOverride) update.override_reason = parseOptionalText(params.fields.override_reason, 4000);
   }
 
   type PendingEvent = {
@@ -122,7 +126,10 @@ export async function patchApplicabilityAssessment(
   let pending: PendingEvent | null = null;
   let requiredStatus: string | null = null;
 
-  const action = params.fields.action ? String(params.fields.action) : null;
+  const decisionComments =
+    action === 'approve' || action === 'reject'
+      ? parseOptionalText(params.fields.decisionComments ?? params.fields.rationale, 12000)
+      : null;
   if (action === 'submit') {
     if (!canRi(params.role, 'applicability:write')) throw new Error('insufficient_role');
     if (!['DRAFT', 'REJECTED'].includes(existing.status)) {
@@ -152,8 +159,6 @@ export async function patchApplicabilityAssessment(
     update.status = 'REJECTED';
     update.reviewed_by = params.userId;
     update.reviewed_at = new Date().toISOString();
-    const comments = parseOptionalText(params.fields.decisionComments ?? params.fields.rationale, 12000);
-    if (comments) update.rationale = comments;
     pending = { eventType: 'APPLICABILITY_REJECTED', fromStatus: 'IN_REVIEW', toStatus: 'REJECTED' };
   } else if (action) {
     throw new Error('invalid_action');
@@ -179,7 +184,7 @@ export async function patchApplicabilityAssessment(
       actorUserId: params.userId,
       fromStatus: pending.fromStatus,
       toStatus: pending.toStatus,
-      metadata: action === 'reject' ? { decisionComments: update.rationale } : undefined,
+      metadata: decisionComments ? { decisionComments } : undefined,
     });
   }
 
