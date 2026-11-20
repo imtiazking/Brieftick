@@ -15,6 +15,8 @@ import {
   platformRoot,
   resetAndStartEmbedded,
   stopEmbedded,
+  withRlsSession,
+  withRlsSessionCommit,
 } from './local-db/harness.mjs';
 import {
   recoverStaleRunningRuns,
@@ -95,8 +97,15 @@ try {
   await applyReferenceSeed(db);
 
   let g = await guardObjects(db);
-  if (g.triggers === 5 && g.functions === 5) pass('guard migration installs 5 triggers / 5 functions');
+  if (g.triggers === 9 && g.functions === 8) pass('guard migration installs 9 triggers / 8 functions');
   else fail(`guard objects after up: ${JSON.stringify(g)}`);
+  const unpinned = await db.query(
+    `select proname from pg_proc
+      where (proname like 'ri_guard_ai%' or proname = 'ri_ai_pilot_org_id')
+        and not coalesce(proconfig, '{}') @> array['search_path=""']`,
+  );
+  if (unpinned.rows.length === 0) pass('every guard function pins search_path to empty');
+  else fail(`guard functions without pinned search_path: ${unpinned.rows.map((r) => r.proname).join(', ')}`);
 
   // ---- compatibility: rows that exist in staging before the guard is applied ----
   await applySqlFile(db, GUARD_DOWN);
@@ -247,6 +256,134 @@ try {
   ).rows[0].id;
   await expectOk('MANUAL obligation DRAFT → OPEN unaffected (Partner UAT unchanged)', db, 'user_uat', setStatus, [manualObl, 'OPEN']);
 
+  // ---- direct Supabase API access: non-superuser role under RLS with the caller's Clerk identity ----
+  const CHK2 = 'user_second_checker';
+  const VIEWER = 'user_pilot_viewer';
+  for (const [user, role] of [[CHK2, 'REVIEWER'], [VIEWER, 'VIEWER']]) {
+    await db.query(
+      `insert into organisation_memberships (organisation_id, clerk_user_id, role, status) values ($1, $2, $3::platform_role, 'active')`,
+      [PILOT, user, role],
+    );
+  }
+  const rejected = (
+    await db.query(
+      `insert into ai_analysis_reviews (organisation_id, analysis_run_id, decision, reviewer_user_id) values ($1, $2, 'REJECTED', $3) returning id`,
+      [PILOT, run005, ACC],
+    )
+  ).rows[0].id;
+  const otherRun = await newRun(PILOT, 'UC-RI-005');
+  const newAiObligation = async () =>
+    (
+      await db.query(
+        `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id)
+         values ($1, $2, $3, 'Firms must test.', 'DRAFT', 'AI_ASSISTED', $4, $5, $6) returning id`,
+        [PILOT, change, pubId, run005, review, ACC],
+      )
+    ).rows[0].id;
+
+  async function rls(label, sub, fn, expected) {
+    try {
+      const out = await withRlsSession(adminUrl, sub, fn);
+      if (expected) fail(`${label} — expected ${expected}, got success`);
+      else pass(label);
+      return out;
+    } catch (e) {
+      if (expected && e.message.startsWith(expected)) pass(label);
+      else fail(`${label} — ${expected ? `expected ${expected}, got` : 'unexpected error'} ${e.message}`);
+      return null;
+    }
+  }
+  const upd = (c, sql, params) => c.query(sql, params);
+
+  const oblApi = await newAiObligation();
+  await rls('API: submitter cannot then approve (submitter recorded on row)', CHK, async (c) => {
+    await upd(c, setStatus, [oblApi, 'IN_REVIEW']);
+    await upd(c, setStatus, [oblApi, 'OPEN']);
+  }, 'segregation_of_duties');
+  await rls('API: submitter cannot overwrite the recorded submitter before approving', CHK, async (c) => {
+    await upd(c, setStatus, [oblApi, 'IN_REVIEW']);
+    await upd(c, `update regulatory_obligations set ai_submitted_by_user_id = 'user_someone_else' where id = $1`, [oblApi]);
+    await upd(c, setStatus, [oblApi, 'OPEN']);
+  }, 'segregation_of_duties');
+  await rls('API: deleting the submission workflow event does not hide the submitter', CHK, async (c) => {
+    await upd(c, setStatus, [oblApi, 'IN_REVIEW']);
+    await upd(c, `delete from workflow_events where entity_id = $1`, [oblApi]);
+    await upd(c, setStatus, [oblApi, 'OPEN']);
+  }, 'segregation_of_duties');
+  const preset = await rls('API: client-supplied submitter is replaced by the caller', CHK, async (c) => {
+    await upd(c, `update regulatory_obligations set status = 'IN_REVIEW', ai_submitted_by_user_id = 'user_forged' where id = $1`, [oblApi]);
+    return (await c.query(`select ai_submitted_by_user_id from regulatory_obligations where id = $1`, [oblApi])).rows[0];
+  });
+  if (preset?.ai_submitted_by_user_id === CHK) pass('API: recorded submitter is the authenticated caller');
+  else fail(`API: recorded submitter ${JSON.stringify(preset)}`);
+  await rls('API: relabelling an AI obligation MANUAL is blocked', CHK, (c) =>
+    upd(c, `update regulatory_obligations set origin = 'MANUAL' where id = $1`, [oblApi]), 'ai_assisted_provenance_immutable');
+  await rls('API: rewriting created_by_user_id (acceptor) is blocked', ACC, (c) =>
+    upd(c, `update regulatory_obligations set created_by_user_id = 'user_other' where id = $1`, [oblApi]), 'ai_assisted_provenance_immutable');
+  await rls('API: swapping the AI run reference is blocked', ACC, (c) =>
+    upd(c, `update regulatory_obligations set ai_analysis_run_id = $2 where id = $1`, [oblApi, otherRun]), 'ai_assisted_provenance_immutable');
+  await rls('API: moving an AI obligation to another organisation is blocked', ACC, (c) =>
+    upd(c, `update regulatory_obligations set organisation_id = $2 where id = $1`, [oblApi, UAT]), 'ai_assisted_provenance_immutable');
+  await rls('API: relabelling a MANUAL obligation AI_ASSISTED is blocked', 'user_uat', (c) =>
+    upd(c, `update regulatory_obligations set origin = 'AI_ASSISTED' where id = $1`, [manualObl]), 'ai_assisted_provenance_immutable');
+
+  const apiObl = `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id)
+                  values ($1, $2, $3, 'Firms must test.', $4::obligation_status, 'AI_ASSISTED', $5, $6, $7)`;
+  await rls('API: AI obligation cannot be inserted already OPEN', ACC, (c) =>
+    upd(c, apiObl, [PILOT, change, pubId, 'OPEN', run005, review, ACC]), 'ai_obligation_must_start_draft');
+  await rls('API: AI obligation creator must be the caller', REQ, (c) =>
+    upd(c, apiObl, [PILOT, change, pubId, 'DRAFT', run005, review, ACC]), 'ai_assisted_record_creator_mismatch');
+  await rls('API: AI obligation backed by a REJECTED review is blocked', ACC, (c) =>
+    upd(c, apiObl, [PILOT, change, pubId, 'DRAFT', run005, rejected, ACC]), 'ai_assisted_record_review_not_accepted');
+  await rls('API: AI obligation whose run differs from the review run is blocked', ACC, (c) =>
+    upd(c, apiObl, [PILOT, change, pubId, 'DRAFT', otherRun, review, ACC]), 'ai_assisted_record_run_mismatch');
+  await rls('API: AI obligation with the caller as creator materialises as DRAFT', ACC, (c) =>
+    upd(c, apiObl, [PILOT, change, pubId, 'DRAFT', run005, review, ACC]));
+
+  await rls('API: requester cannot accept own run by naming another reviewer', REQ, (c) =>
+    upd(c, `insert into ai_analysis_reviews (organisation_id, analysis_run_id, decision, reviewer_user_id) values ($1, $2, 'ACCEPTED', $3)`, [PILOT, otherRun, ACC]),
+    'ai_review_reviewer_mismatch');
+  await rls('API: UC-RI-005 run cannot be requested in another user\'s name', ACC, (c) =>
+    upd(c, runInsert, [PILOT, 'UC-RI-005', pubId, verId, REQ]), 'ai_run_requester_mismatch');
+  await rls('API: run requester cannot be rewritten after the fact', REQ, (c) =>
+    upd(c, `update ai_analysis_runs set requested_by = 'user_other' where id = $1`, [otherRun]), 'ai_run_provenance_immutable');
+  await rls('API: run status updates (app path) still allowed', REQ, (c) =>
+    upd(c, `update ai_analysis_runs set execution_status = 'FAILED' where id = $1`, [otherRun]));
+  await rls('API: review decision cannot be changed after the fact', ACC, (c) =>
+    upd(c, `update ai_analysis_reviews set decision = 'ACCEPTED' where id = $1`, [rejected]), 'ai_review_immutable');
+
+  const oblSubmitted = await newAiObligation();
+  await withRlsSessionCommit(adminUrl, ACC, (c) => c.query(setStatus, [oblSubmitted, 'IN_REVIEW']));
+  pass('API: acceptor submits AI obligation (DRAFT → IN_REVIEW, committed)');
+  await rls('API: VIEWER cannot approve', VIEWER, (c) => upd(c, setStatus, [oblSubmitted, 'OPEN']), 'ai_obligation_review_role_required');
+  await rls('API: acceptor/submitter cannot approve', ACC, (c) => upd(c, setStatus, [oblSubmitted, 'OPEN']), 'segregation_of_duties');
+  const crossTenant = await rls('API: Org A user cannot see or approve an AI Development obligation', 'user_org_a', (c) =>
+    upd(c, setStatus, [oblSubmitted, 'OPEN']));
+  if (crossTenant?.rowCount === 0) pass('API: cross-tenant approval matched no rows (RLS)');
+  else fail(`API: cross-tenant update rowCount ${crossTenant?.rowCount}`);
+  const approved = await rls('API: independent REVIEWER approves', CHK2, async (c) => {
+    await upd(c, setStatus, [oblSubmitted, 'OPEN']);
+    return (await c.query(`select status, ai_submitted_by_user_id from regulatory_obligations where id = $1`, [oblSubmitted])).rows[0];
+  });
+  if (approved?.status === 'OPEN' && approved.ai_submitted_by_user_id === ACC) pass('API: approved row is OPEN and keeps the submitter');
+  else fail(`API: approved row ${JSON.stringify(approved)}`);
+
+  await rls('API: manual obligation edit + status change unaffected', 'user_uat', async (c) => {
+    await upd(c, `update regulatory_obligations set obligation_statement = 'Manual (edited)', status = 'CLOSED' where id = $1`, [manualObl]);
+  });
+  await rls('API: manual obligation may be created OPEN (manual workflow unchanged)', 'user_uat', (c) =>
+    upd(c, `insert into regulatory_obligations (organisation_id, publication_id, obligation_statement, status, created_by_user_id) values ($1, $2, 'Manual open', 'OPEN', 'user_uat')`, [UAT, pubId]));
+  const manualChange = (
+    await db.query(
+      `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status, origin) values ($1, $2, 'Manual change', 'TEST', 'DRAFT', 'MANUAL') returning id`,
+      [UAT, pubId],
+    )
+  ).rows[0].id;
+  const manualEdit = await rls('API: manual change edit unaffected', 'user_uat', (c) =>
+    upd(c, `update regulatory_changes set title = 'Manual change (edited)' where id = $1`, [manualChange]));
+  if (manualEdit?.rowCount === 1) pass('API: manual change edit applied to one row');
+  else fail(`API: manual change edit rowCount ${manualEdit?.rowCount}`);
+
   const regs = await db.query(`select count(*)::int n from information_schema.tables where table_schema = 'public' and table_name like '%obligation%register%'`);
   if (regs.rows[0].n === 0) pass('no second obligations register table exists');
   else fail('unexpected obligations register table');
@@ -333,11 +470,16 @@ try {
   else fail(`unexpected outcomes ${JSON.stringify(tick.outcomes)}`);
 
   // ---- final rollback check ----
+  const aiRowsBefore = (await db.query(`select count(*)::int n from regulatory_obligations where origin = 'AI_ASSISTED'`)).rows[0].n;
   await applySqlFile(db, GUARD_DOWN);
   g = await guardObjects(db);
   const rows = await db.query(`select count(*)::int n from regulatory_obligations where origin = 'AI_ASSISTED'`);
-  if (g.triggers === 0 && g.functions === 0 && rows.rows[0].n === 1) pass('rollback after use: guard objects removed, data untouched');
-  else fail(`final rollback: ${JSON.stringify(g)} rows=${rows.rows[0].n}`);
+  const col = await db.query(
+    `select count(*)::int n from information_schema.columns where table_name = 'regulatory_obligations' and column_name = 'ai_submitted_by_user_id'`,
+  );
+  if (g.triggers === 0 && g.functions === 0 && col.rows[0].n === 0 && aiRowsBefore === 3 && rows.rows[0].n === aiRowsBefore) {
+    pass('rollback after use: guard objects and submitter column removed, obligation rows untouched');
+  } else fail(`final rollback: ${JSON.stringify(g)} column=${col.rows[0].n} rows ${aiRowsBefore} → ${rows.rows[0].n}`);
 } catch (e) {
   fail(`unhandled: ${e.stack || e.message}`);
 } finally {
