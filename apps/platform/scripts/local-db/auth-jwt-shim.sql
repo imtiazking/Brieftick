@@ -8,11 +8,5 @@ returns jsonb
 language sql
 stable
 as $$
-  select case
-    when coalesce(current_setting('app.test_jwt', true), '') <> ''
-      then current_setting('app.test_jwt', true)::jsonb
-    when coalesce(current_setting('app.test_jwt', false), '') <> ''
-      then current_setting('app.test_jwt', false)::jsonb
-    else '{}'::jsonb
-  end;
+  select coalesce(nullif(current_setting('app.test_jwt', true), ''), '{}')::jsonb;
 $$;
