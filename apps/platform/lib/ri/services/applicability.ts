@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { RiConflictError } from '@/lib/ri/errors';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 import {
   parseApplicabilityRecommendation,
@@ -9,6 +10,8 @@ import {
 } from '@/lib/ri/validation';
 
 const APP_STATUSES = ['DRAFT', 'IN_REVIEW', 'APPROVED', 'SUPERSEDED'] as const;
+/** Submitted or approved assessments change only through the maker-checker workflow. */
+const EDITABLE_STATUSES = ['DRAFT', 'REJECTED'];
 
 export async function saveApplicabilityAssessment(
   supabase: SupabaseClient,
@@ -63,9 +66,12 @@ export async function saveApplicabilityAssessment(
     );
     const { data: existing } = await supabase
       .from('applicability_assessments')
-      .select('updated_at, recommendation')
+      .select('updated_at, recommendation, status')
       .eq('id', params.assessmentId)
       .single();
+    if (existing && !EDITABLE_STATUSES.includes(existing.status)) {
+      throw new RiConflictError('applicability_locked');
+    }
     if (
       params.expectedUpdatedAt &&
       existing &&
@@ -94,6 +100,15 @@ export async function saveApplicabilityAssessment(
       });
     }
   } else {
+    const { data: current, error: currentError } = await supabase
+      .from('applicability_assessments')
+      .select('id')
+      .eq('organisation_id', params.organisationId)
+      .eq('publication_id', params.publicationId)
+      .neq('status', 'SUPERSEDED')
+      .limit(1);
+    if (currentError) throw new Error(currentError.message);
+    if (current?.length) throw new RiConflictError('applicability_assessment_exists');
     const { data, error } = await supabase.from('applicability_assessments').insert(body).select().single();
     if (error) throw new Error(error.message);
     row = data;

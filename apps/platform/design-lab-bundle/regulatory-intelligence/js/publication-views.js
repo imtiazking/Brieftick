@@ -39,6 +39,7 @@ import { renderChangeAnalysisPanel } from './ai-workflow-ui.js';
 import { canGenerateAiSummary, canMutateAiReviewState, isAuditorReadOnly } from './ai/persona-ai.js';
 import { isConnectedBackendActive, isConnectedAiRequestEnabled } from './platform/connected-mode.js';
 import { renderConnectedPublicationAiTab } from './platform/connected-publication-ai-panels.js';
+import { renderConnectedPublicationApplicabilityTab } from './platform/connected-applicability-panels.js';
 import { connectedCatalogueBanner, getConnectedAssigneeLabel } from './platform/connected-catalogue.js';
 import { getViewAiAnalysisRunsForPublication } from './store.js';
 
@@ -77,7 +78,7 @@ export function viewPublication(routeParts) {
       panel = connected ? renderPublicationAiTabConnected(p) : renderAiTab(p, analysis);
       break;
     case 'Applicability':
-      panel = renderApplicabilityTab(p, decisionMeta);
+      panel = connected ? renderConnectedPublicationApplicabilityTab(p) : renderApplicabilityTab(p, decisionMeta);
       break;
     case 'Related Records':
       panel = renderRelatedGroups(related);

@@ -59,7 +59,6 @@ export function initClerkSession() {
     return window.Clerk;
   })().catch((e) => {
     console.warn('[ri-lab] clerk_session_unavailable', e?.message || e);
-    clerkReady = null;
     return null;
   });
   return clerkReady;

@@ -1066,8 +1066,10 @@ function viewApplicability(id) {
   if (isConnectedBackendActive(s)) {
     const p = getPublication(id);
     if (!p) return notFound('Publication', id);
-    const assessment = p._detail?.applicability || p.applicability || null;
-    return renderConnectedApplicabilityView(id, p, assessment);
+    return renderConnectedApplicabilityView(id, p, p._detail?.applicability || null, {
+      detailLoaded: Boolean(p._detail),
+      currentUserId: s.platformConfig?.backendSession?.userId || null,
+    });
   }
   const blocked = guardConnectedDemoSubroute('Applicability assessment', {
     links: `<p><a href="#/publication/${esc(id || '')}">Publication</a> · <a href="#/intake/${esc(id || '')}">Intake</a></p>`,

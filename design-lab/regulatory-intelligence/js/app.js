@@ -708,6 +708,18 @@ function initCreateChangePublicationComboboxHandlers() {
 function scheduleConnectedDetailLoadsForRoute(route) {
   if (!isConnectedBackendActive()) return;
 
+  const applicabilityMatch = route.match(/^\/applicability\/([^/]+)/);
+  if (applicabilityMatch) {
+    runScheduledTask(fetchConnectedPublicationDetail(getState(), applicabilityMatch[1]), undefined, (err) => {
+      telemetry.app('error', 'Connected applicability detail load failed', {
+        publicationId: applicabilityMatch[1],
+        message: err?.message,
+      });
+      showToast(err?.message ? `Could not load applicability: ${err.message}` : 'Could not load applicability');
+    });
+    return;
+  }
+
   const pubDetailMatch = route.match(/^\/(?:publication|intake)\/([^/]+)/);
   if (pubDetailMatch) {
     runScheduledTask(scheduleConnectedPublicationDetailFetch(getState(), pubDetailMatch[1]));
@@ -823,9 +835,23 @@ function scheduleConnectedDetailLoadsForRoute(route) {
   }
 }
 
+const APPLICABILITY_ERROR_MESSAGES = {
+  applicability_assessment_exists:
+    'An applicability assessment already exists for this publication. The page has been refreshed — edit or submit the existing assessment.',
+  applicability_locked: 'This assessment is submitted or approved and can no longer be edited as a draft.',
+  applicability_invalid_transition: 'This assessment has already moved on in the workflow. The page has been refreshed.',
+  stale_record: 'Someone else updated this assessment. The page has been refreshed — review it and try again.',
+};
+
+function applicabilityErrorMessage(code) {
+  return APPLICABILITY_ERROR_MESSAGES[code] || null;
+}
+
 function bindViewHandlers() {
   const route = getRoute();
-  runConnectedDetailLoadsIfNeeded(route, () => scheduleConnectedDetailLoadsForRoute(route));
+  if (isConnectedBackendActive()) {
+    runConnectedDetailLoadsIfNeeded(route, () => scheduleConnectedDetailLoadsForRoute(route));
+  }
 
   const connectPanel = document.querySelector('[data-ri-connect-backend]');
   if (connectPanel && !getState().connectivity?._orgContextLoaded) {
@@ -1623,86 +1649,63 @@ function bindViewHandlers() {
     bindEvidenceVersionFileAction(btn, 'download');
   });
 
-  document.querySelector('[data-connected-applicability-save]')?.addEventListener('click', async (btnEv) => {
-    const btn = btnEv.currentTarget;
-    const publicationId = btn.dataset.publicationId;
-    const recommendation = document.querySelector('[data-connected-applicability-recommendation]')?.value;
-    const rationale = document.querySelector('[data-connected-applicability-rationale]')?.value?.trim();
-    btn.disabled = true;
-    try {
-      await patchConnectedPublicationApplicability(getState(), publicationId, {
-        assessmentId: btn.dataset.assessmentId || null,
-        recommendation,
-        rationale,
-        expectedUpdatedAt: btn.dataset.expectedUpdatedAt || null,
-      });
-      await fetchConnectedPublicationDetail(getState(), publicationId);
-      showToast('Applicability draft saved');
+  const bindApplicabilityAction = (selector, run, successMessage, failureMessage) => {
+    document.querySelector(`button${selector}`)?.addEventListener('click', async (btnEv) => {
+      const btn = btnEv.currentTarget;
+      const publicationId = btn.dataset.publicationId;
+      if (btn.disabled) return;
+      btn.disabled = true;
+      let message = successMessage;
+      try {
+        await run(btn);
+      } catch (e) {
+        message = applicabilityErrorMessage(e?.message) || e?.message || failureMessage;
+      }
+      try {
+        if (publicationId) await fetchConnectedPublicationDetail(getState(), publicationId);
+      } catch {
+        /* the page shows the last loaded state; the toast reports the outcome */
+      }
+      showToast(message);
       renderShell();
-    } catch (e) {
-      showToast(e?.message || 'Save failed');
-      btn.disabled = false;
-    }
-  });
+    });
+  };
 
-  document.querySelector('[data-connected-applicability-submit]')?.addEventListener('click', async (btnEv) => {
-    const btn = btnEv.currentTarget;
-    const assessmentId = btn.dataset.assessmentId;
-    if (!assessmentId) {
-      showToast('Save a draft assessment first');
-      return;
-    }
-    btn.disabled = true;
-    try {
-      await patchConnectedApplicabilityWorkflow(getState(), assessmentId, {
+  bindApplicabilityAction(
+    '[data-connected-applicability-save]',
+    (btn) =>
+      patchConnectedPublicationApplicability(getState(), btn.dataset.publicationId, {
+        assessmentId: btn.dataset.assessmentId || null,
+        recommendation: document.querySelector('[data-connected-applicability-recommendation]')?.value,
+        rationale: document.querySelector('[data-connected-applicability-rationale]')?.value?.trim(),
+        expectedUpdatedAt: btn.dataset.expectedUpdatedAt || null,
+      }),
+    'Applicability draft saved',
+    'Save failed',
+  );
+  bindApplicabilityAction(
+    '[data-connected-applicability-submit]',
+    (btn) =>
+      patchConnectedApplicabilityWorkflow(getState(), btn.dataset.assessmentId, {
         action: 'submit',
         expectedUpdatedAt: btn.dataset.expectedUpdatedAt || null,
-      });
-      showToast('Submitted for approval');
-      renderShell();
-    } catch (e) {
-      showToast(e?.message || 'Submit failed');
-      btn.disabled = false;
-    }
-  });
-
-  document.querySelector('[data-connected-applicability-approve]')?.addEventListener('click', async (btnEv) => {
-    const btn = btnEv.currentTarget;
-    const assessmentId = btn.dataset.assessmentId;
-    const decisionComments = document.querySelector('[data-connected-applicability-decision-comments]')?.value?.trim();
-    btn.disabled = true;
-    try {
-      await patchConnectedApplicabilityWorkflow(getState(), assessmentId, {
-        action: 'approve',
-        decisionComments,
-        expectedUpdatedAt: btn.dataset.expectedUpdatedAt || null,
-      });
-      showToast('Applicability approved');
-      renderShell();
-    } catch (e) {
-      showToast(e?.message || 'Approve failed');
-      btn.disabled = false;
-    }
-  });
-
-  document.querySelector('[data-connected-applicability-reject]')?.addEventListener('click', async (btnEv) => {
-    const btn = btnEv.currentTarget;
-    const assessmentId = btn.dataset.assessmentId;
-    const decisionComments = document.querySelector('[data-connected-applicability-decision-comments]')?.value?.trim();
-    btn.disabled = true;
-    try {
-      await patchConnectedApplicabilityWorkflow(getState(), assessmentId, {
-        action: 'reject',
-        decisionComments,
-        expectedUpdatedAt: btn.dataset.expectedUpdatedAt || null,
-      });
-      showToast('Applicability rejected');
-      renderShell();
-    } catch (e) {
-      showToast(e?.message || 'Reject failed');
-      btn.disabled = false;
-    }
-  });
+      }),
+    'Submitted for approval',
+    'Submit failed',
+  );
+  for (const action of ['approve', 'reject']) {
+    bindApplicabilityAction(
+      `[data-connected-applicability-${action}]`,
+      (btn) =>
+        patchConnectedApplicabilityWorkflow(getState(), btn.dataset.assessmentId, {
+          action,
+          decisionComments: document.querySelector('[data-connected-applicability-decision-comments]')?.value?.trim(),
+          expectedUpdatedAt: btn.dataset.expectedUpdatedAt || null,
+        }),
+      action === 'approve' ? 'Applicability approved' : 'Applicability rejected',
+      action === 'approve' ? 'Approve failed' : 'Reject failed',
+    );
+  }
 
   document.querySelector('[data-connected-create-change-submit]')?.addEventListener('click', async () => {
     const panel = document.querySelector('[data-connected-create-change]');
