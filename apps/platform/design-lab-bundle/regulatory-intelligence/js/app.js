@@ -1147,6 +1147,23 @@ function bindViewHandlers() {
     });
   });
 
+  document.querySelectorAll('[data-connected-obligation-decision]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.obligationId;
+      const status = btn.dataset.connectedObligationDecision;
+      if (!id || !status) return;
+      btn.disabled = true;
+      try {
+        await patchConnectedObligation(getState(), id, { status }, btn.dataset.expectedUpdatedAt || null);
+        showToast(status === 'OPEN' ? 'Obligation approved into register' : 'Obligation returned to draft');
+        renderShell();
+      } catch (e) {
+        showToast(e?.message || 'Review decision failed');
+        btn.disabled = false;
+      }
+    });
+  });
+
   document.querySelectorAll('[data-connected-obligation-assign]').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.obligationId;

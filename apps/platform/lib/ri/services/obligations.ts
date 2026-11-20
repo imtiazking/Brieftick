@@ -1,6 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
-import { assessAiObligationTransition } from '@/lib/ri/ai/ai-obligation-workflow.mjs';
+import {
+  assessAiObligationTransition,
+  isAiObligationReviewDecision,
+} from '@/lib/ri/ai/ai-obligation-workflow.mjs';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
 import { RiConflictError } from '@/lib/ri/errors';
 import { canRi } from '@/lib/ri/permissions';
@@ -29,7 +32,7 @@ export async function listObligations(supabase: SupabaseClient, organisationId: 
     .select(
       `
       id, external_key, obligation_statement, status, priority, due_date, effective_date, owner_user_id,
-      regulatory_change_id, publication_id, citation, metadata,
+      regulatory_change_id, publication_id, citation, metadata, origin, updated_at,
       change:regulatory_changes(id, title, external_key, origin, description, publication_id, metadata),
       publication:regulatory_publications(id, title)
     `,
@@ -222,6 +225,8 @@ export async function updateObligation(
     role?: PlatformRole | null;
     fields: Record<string, unknown>;
     expectedUpdatedAt?: string | null;
+    /** Caller holds obligation:review but not obligation:write: only an AI review decision is allowed. */
+    reviewDecisionOnly?: boolean;
   },
 ) {
   await assertRowInOrganisation(
@@ -234,8 +239,20 @@ export async function updateObligation(
     .from('regulatory_obligations')
     .select('status, updated_at, owner_user_id, origin, created_by_user_id, ai_analysis_run_id')
     .eq('id', params.obligationId)
+    .eq('organisation_id', params.organisationId)
     .single();
   if (!existing) throw new Error('not_found');
+  if (
+    params.reviewDecisionOnly &&
+    !isAiObligationReviewDecision({
+      fieldKeys: Object.keys(params.fields),
+      origin: existing.origin,
+      from: existing.status,
+      to: params.fields.status,
+    })
+  ) {
+    throw new Error('insufficient_role');
+  }
   if (
     params.expectedUpdatedAt &&
     new Date(existing.updated_at).getTime() !== new Date(params.expectedUpdatedAt).getTime()
@@ -281,6 +298,20 @@ export async function updateObligation(
       });
     }
     update.status = next;
+  }
+
+  let updateQuery = supabase
+    .from('regulatory_obligations')
+    .update(update)
+    .eq('id', params.obligationId)
+    .eq('organisation_id', params.organisationId);
+  if (params.reviewDecisionOnly) updateQuery = updateQuery.eq('status', existing.status);
+  const { data, error } = await updateQuery.select().single();
+  if (error) {
+    if (params.reviewDecisionOnly && error.code === 'PGRST116') throw new Error('stale_record');
+    throw new Error(error.message);
+  }
+  if ('status' in update) {
     await recordWorkflowEvent(supabase, {
       organisationId: params.organisationId,
       entityType: 'regulatory_obligation',
@@ -288,18 +319,9 @@ export async function updateObligation(
       eventType: 'OBLIGATION_STATUS_CHANGED',
       actorUserId: params.userId,
       fromStatus: existing.status,
-      toStatus: next,
+      toStatus: update.status as string,
     });
   }
-
-  const { data, error } = await supabase
-    .from('regulatory_obligations')
-    .update(update)
-    .eq('id', params.obligationId)
-    .eq('organisation_id', params.organisationId)
-    .select()
-    .single();
-  if (error) throw new Error(error.message);
   if (
     'owner_user_id' in update &&
     data.owner_user_id &&

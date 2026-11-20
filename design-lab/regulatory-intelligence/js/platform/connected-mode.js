@@ -242,6 +242,13 @@ export function isConnectedObligationWritesEnabled(state = getState()) {
   );
 }
 
+export function isConnectedObligationReviewEnabled(state = getState()) {
+  return Boolean(
+    isConnectedBackendActive(state) &&
+      state.platformConfig?.backendSession?.writeCapabilities?.obligationReview === true,
+  );
+}
+
 export function isConnectedPolicyWritesEnabled(state = getState()) {
   return Boolean(
     isConnectedBackendActive(state) &&

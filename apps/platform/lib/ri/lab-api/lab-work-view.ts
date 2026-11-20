@@ -125,6 +125,9 @@ export type LabObligationView = {
   title: string;
   citation: string | null;
   status: string;
+  statusCode: string;
+  origin: string | null;
+  updatedAt: string | null;
   priority: string | null;
   effectiveDate: string | null;
   dueDate: string | null;
@@ -285,6 +288,8 @@ export function mapObligationRowToLabView(row: {
   regulatory_change_id?: string | null;
   publication_id?: string | null;
   citation?: string | null;
+  origin?: string | null;
+  updated_at?: string | null;
   metadata?: Record<string, unknown> | null;
   change?:
     | {
@@ -321,6 +326,9 @@ export function mapObligationRowToLabView(row: {
     title: row.obligation_statement,
     citation: row.citation ?? null,
     status: OBLIGATION_STATUS_MAP[row.status] || row.status,
+    statusCode: row.status,
+    origin: row.origin ?? null,
+    updatedAt: row.updated_at ?? null,
     priority: row.priority ?? null,
     effectiveDate: row.effective_date ?? null,
     dueDate: row.due_date ?? null,

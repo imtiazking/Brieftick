@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import { requireRiContext } from '@/lib/ri/context';
 import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { parseLabObligationPatchBody } from '@/lib/ri/lab-api/lab-work-write';
-import { assertLabObligationWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
+import {
+  assertLabObligationReviewEnabled,
+  assertLabObligationWritesEnabled,
+} from '@/lib/ri/lab-api/lab-connected-writes';
+import { canRi } from '@/lib/ri/permissions';
 import { getObligationDetail, updateObligation } from '@/lib/ri/services/obligations';
 import { mapObligationRowToLabView } from '@/lib/ri/lab-api/lab-work-view';
 
@@ -51,8 +55,10 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const ctx = await requireRiContext('obligation:write');
-    assertLabObligationWritesEnabled(ctx.role);
+    const ctx = await requireRiContext('obligation:review');
+    const reviewDecisionOnly = !canRi(ctx.role, 'obligation:write');
+    if (reviewDecisionOnly) assertLabObligationReviewEnabled(ctx.role);
+    else assertLabObligationWritesEnabled(ctx.role);
     const patch = parseLabObligationPatchBody(await request.json());
     await updateObligation(ctx.supabase, {
       organisationId: ctx.organisationId,
@@ -61,6 +67,7 @@ export async function PATCH(
       role: ctx.role,
       fields: patch.fields,
       expectedUpdatedAt: patch.expectedUpdatedAt,
+      reviewDecisionOnly,
     });
     const detail = await getObligationDetail(ctx.supabase, ctx.organisationId, id);
     const row = detail.obligation as Record<string, unknown> & {

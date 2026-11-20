@@ -41,3 +41,23 @@ export function assessAiObligationTransition(p) {
   if (makers.includes(p.actorUserId)) return { ok: false, code: 'segregation_of_duties' };
   return { ok: true };
 }
+
+const REVIEW_DECISION_STATUSES = new Set(['OPEN', 'DRAFT']);
+
+/**
+ * A review decision is a status-only change on a submitted AI-assisted obligation: approve (IN_REVIEW → OPEN)
+ * or return for rework (IN_REVIEW → DRAFT). It is the only obligation change open to obligation:review
+ * without obligation:write; the independence rules above still apply to the approval.
+ *
+ * @param {{ fieldKeys: string[], origin?: string | null, from: string, to: unknown }} p
+ */
+export function isAiObligationReviewDecision(p) {
+  return (
+    p.fieldKeys.length === 1 &&
+    p.fieldKeys[0] === 'status' &&
+    p.origin === 'AI_ASSISTED' &&
+    p.from === 'IN_REVIEW' &&
+    typeof p.to === 'string' &&
+    REVIEW_DECISION_STATUSES.has(p.to)
+  );
+}

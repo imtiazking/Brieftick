@@ -34,6 +34,10 @@ export function resolveLabObligationWritesEnabled(role: PlatformRole): boolean {
   return resolveLabWrite(role, 'obligation:write');
 }
 
+export function resolveLabObligationReviewEnabled(role: PlatformRole): boolean {
+  return resolveLabWrite(role, 'obligation:review');
+}
+
 export function resolveLabRiskWritesEnabled(role: PlatformRole): boolean {
   return resolveLabWrite(role, 'risk:write');
 }
@@ -92,6 +96,7 @@ export function resolveLabAnyConnectedWritesEnabled(role: PlatformRole): boolean
     resolveLabChangeWritesEnabled(role) ||
     resolveLabImpactWritesEnabled(role) ||
     resolveLabObligationWritesEnabled(role) ||
+    resolveLabObligationReviewEnabled(role) ||
     resolveLabRiskWritesEnabled(role) ||
     resolveLabControlWritesEnabled(role) ||
     resolveLabEvidenceWritesEnabled(role) ||
@@ -123,6 +128,10 @@ export function assertLabObligationWritesEnabled(role: PlatformRole): void {
   assertLabConnectedWrite(role, 'obligation:write');
 }
 
+export function assertLabObligationReviewEnabled(role: PlatformRole): void {
+  assertLabConnectedWrite(role, 'obligation:review');
+}
+
 export function assertLabRiskWritesEnabled(role: PlatformRole): void {
   assertLabConnectedWrite(role, 'risk:write');
 }
@@ -152,6 +161,7 @@ export function buildLabWriteCapabilities(role: PlatformRole, organisationId?: s
     changeManagement: resolveLabChangeWritesEnabled(role),
     impactAssessments: resolveLabImpactWritesEnabled(role),
     obligations: resolveLabObligationWritesEnabled(role),
+    obligationReview: resolveLabObligationReviewEnabled(role),
     risks: resolveLabRiskWritesEnabled(role),
     controls: resolveLabControlWritesEnabled(role),
     evidence: resolveLabEvidenceWritesEnabled(role),

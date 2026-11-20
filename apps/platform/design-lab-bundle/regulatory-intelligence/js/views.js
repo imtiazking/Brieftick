@@ -66,6 +66,7 @@ import {
 import {
   renderConnectedObligationEditPanel,
   renderConnectedObligationLinkPanel,
+  renderConnectedObligationReviewPanel,
   renderConnectedObligationWorkflowPanel,
 } from './platform/connected-obligation-panels.js';
 import {
@@ -1322,6 +1323,7 @@ function viewObligation(id) {
       </dl>
       ${riskSection}
       ${controlSection}
+      ${renderConnectedObligationReviewPanel(id, o)}
       ${renderConnectedObligationEditPanel(id, o)}
       ${renderConnectedObligationLinkPanel(id, o)}
       ${renderConnectedObligationWorkflowPanel(id)}`;

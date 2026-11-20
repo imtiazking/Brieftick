@@ -1,7 +1,7 @@
 import { esc, badge, formatDate } from '../components.js';
 import { getState } from '../store.js';
 import { getConnectedAssigneeLabel, getConnectedCatalogue } from './connected-catalogue.js';
-import { isConnectedObligationWritesEnabled } from './connected-mode.js';
+import { isConnectedObligationReviewEnabled, isConnectedObligationWritesEnabled } from './connected-mode.js';
 import { renderConnectedWorkflowEventsTable } from './connected-governance-ui.js';
 import { getConnectedEntityWorkflowEvents } from './connected-entity-audit.js';
 
@@ -39,6 +39,19 @@ export function renderConnectedObligationEditPanel(id, o) {
       <button type="button" class="ri-btn ri-btn--ghost" data-connected-obligation-assign data-obligation-id="${esc(id)}" data-expected-updated-at="${esc(o.updatedAt || '')}">Assign owner</button>
     </div>
     <p class="ri-muted">Owner: ${esc(getConnectedAssigneeLabel(s, o.ownerId) || o.ownerLabel || '—')} · Updated ${formatDate(o.updatedAt)}</p>
+  </section>`;
+}
+
+export function renderConnectedObligationReviewPanel(id, o) {
+  if (!isConnectedObligationReviewEnabled(getState())) return '';
+  if (o.origin !== 'AI_ASSISTED' || o.statusCode !== 'IN_REVIEW') return '';
+  return `<section class="ri-panel" data-connected-obligation-review="${esc(id)}">
+    <h2>Independent review</h2>
+    <p class="ri-muted">AI-assisted obligation submitted for approval. The approver must not be the AI run requester, the person who accepted the AI output, or the person who submitted it.</p>
+    <div class="ri-form__actions">
+      <button type="button" class="ri-btn ri-btn--primary" data-connected-obligation-decision="OPEN" data-obligation-id="${esc(id)}" data-expected-updated-at="${esc(o.updatedAt || '')}">Approve into register</button>
+      <button type="button" class="ri-btn ri-btn--ghost" data-connected-obligation-decision="DRAFT" data-obligation-id="${esc(id)}" data-expected-updated-at="${esc(o.updatedAt || '')}">Return to draft</button>
+    </div>
   </section>`;
 }
 
