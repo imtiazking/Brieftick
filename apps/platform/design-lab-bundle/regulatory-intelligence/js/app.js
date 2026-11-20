@@ -1,3 +1,4 @@
+import './platform/clerk-session.js';
 import {
   initStore,
   subscribe,
