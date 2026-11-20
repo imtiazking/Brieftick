@@ -202,14 +202,17 @@ if (runLocalDb) {
     );
 
     await withRlsSession(adminUrl, USER_VIEWER, async (client) => {
+      await client.query('savepoint viewer_ai_notification');
       try {
         await client.query(
           `insert into public.notification_events (event_type, payload)
            values ('AI_REVIEW_REQUIRED', '{"organisation_id":"${ORG_A}","analysis_run_id":"x"}'::jsonb)`,
         );
-        pass('VIEWER: tenant-scoped AI notification insert allowed');
+        failMsg('VIEWER inserted a tenant AI notification (role-aware RLS requires REVIEWER)');
       } catch (e) {
-        failMsg(`VIEWER AI notification insert: ${e.message}`);
+        if (/row-level security/.test(e.message)) pass('VIEWER: cannot emit tenant AI notifications (REVIEWER or above required)');
+        else failMsg(`VIEWER AI notification insert: ${e.message}`);
+        await client.query('rollback to savepoint viewer_ai_notification');
       }
       try {
         await client.query(

@@ -259,7 +259,8 @@ try {
   // ---- direct Supabase API access: non-superuser role under RLS with the caller's Clerk identity ----
   const CHK2 = 'user_second_checker';
   const VIEWER = 'user_pilot_viewer';
-  for (const [user, role] of [[CHK2, 'REVIEWER'], [VIEWER, 'VIEWER']]) {
+  const SUB = 'user_pilot_submitter';
+  for (const [user, role] of [[CHK2, 'REVIEWER'], [VIEWER, 'VIEWER'], [SUB, 'ANALYST']]) {
     await db.query(
       `insert into organisation_memberships (organisation_id, clerk_user_id, role, status) values ($1, $2, $3::platform_role, 'active')`,
       [PILOT, user, role],
@@ -296,25 +297,28 @@ try {
   const upd = (c, sql, params) => c.query(sql, params);
 
   const oblApi = await newAiObligation();
-  await rls('API: submitter cannot then approve (submitter recorded on row)', CHK, async (c) => {
+  await rls('API: REVIEWER cannot submit an AI obligation (role-aware RLS)', CHK, (c) =>
+    upd(c, setStatus, [oblApi, 'IN_REVIEW']), 'insufficient_role');
+  await rls('API: submitter cannot then approve (submitter recorded on row)', SUB, async (c) => {
     await upd(c, setStatus, [oblApi, 'IN_REVIEW']);
     await upd(c, setStatus, [oblApi, 'OPEN']);
   }, 'segregation_of_duties');
-  await rls('API: submitter cannot overwrite the recorded submitter before approving', CHK, async (c) => {
+  await rls('API: submitter cannot overwrite the recorded submitter before approving', SUB, async (c) => {
     await upd(c, setStatus, [oblApi, 'IN_REVIEW']);
     await upd(c, `update regulatory_obligations set ai_submitted_by_user_id = 'user_someone_else' where id = $1`, [oblApi]);
     await upd(c, setStatus, [oblApi, 'OPEN']);
   }, 'segregation_of_duties');
-  await rls('API: deleting the submission workflow event does not hide the submitter', CHK, async (c) => {
+  await rls('API: deleting the submission workflow event does not hide the submitter', SUB, async (c) => {
     await upd(c, setStatus, [oblApi, 'IN_REVIEW']);
-    await upd(c, `delete from workflow_events where entity_id = $1`, [oblApi]);
+    const del = await upd(c, `delete from workflow_events where entity_id = $1`, [oblApi]);
+    if (del.rowCount !== 0) throw new Error(`workflow event delete rowCount ${del.rowCount}`);
     await upd(c, setStatus, [oblApi, 'OPEN']);
   }, 'segregation_of_duties');
-  const preset = await rls('API: client-supplied submitter is replaced by the caller', CHK, async (c) => {
+  const preset = await rls('API: client-supplied submitter is replaced by the caller', SUB, async (c) => {
     await upd(c, `update regulatory_obligations set status = 'IN_REVIEW', ai_submitted_by_user_id = 'user_forged' where id = $1`, [oblApi]);
     return (await c.query(`select ai_submitted_by_user_id from regulatory_obligations where id = $1`, [oblApi])).rows[0];
   });
-  if (preset?.ai_submitted_by_user_id === CHK) pass('API: recorded submitter is the authenticated caller');
+  if (preset?.ai_submitted_by_user_id === SUB) pass('API: recorded submitter is the authenticated caller');
   else fail(`API: recorded submitter ${JSON.stringify(preset)}`);
   await rls('API: relabelling an AI obligation MANUAL is blocked', CHK, (c) =>
     upd(c, `update regulatory_obligations set origin = 'MANUAL' where id = $1`, [oblApi]), 'ai_assisted_provenance_immutable');
@@ -349,13 +353,24 @@ try {
     upd(c, `update ai_analysis_runs set requested_by = 'user_other' where id = $1`, [otherRun]), 'ai_run_provenance_immutable');
   await rls('API: run status updates (app path) still allowed', REQ, (c) =>
     upd(c, `update ai_analysis_runs set execution_status = 'FAILED' where id = $1`, [otherRun]));
-  await rls('API: review decision cannot be changed after the fact', ACC, (c) =>
-    upd(c, `update ai_analysis_reviews set decision = 'ACCEPTED' where id = $1`, [rejected]), 'ai_review_immutable');
+  const reviewEdit = await rls('API: review decision update attempted', ACC, (c) =>
+    upd(c, `update ai_analysis_reviews set decision = 'ACCEPTED' where id = $1`, [rejected]));
+  if (reviewEdit?.rowCount === 0) pass('API: review decision cannot be changed after the fact (no update policy)');
+  else fail(`API: review decision update rowCount ${reviewEdit?.rowCount}`);
+  try {
+    await db.query(`update ai_analysis_reviews set decision = 'ACCEPTED' where id = $1`, [rejected]);
+    fail('review decision trigger did not block a privileged update');
+  } catch (e) {
+    if (e.message.startsWith('ai_review_immutable')) pass('review decision immutable even for privileged connections (trigger)');
+    else fail(`review decision privileged update: ${e.message}`);
+  }
 
   const oblSubmitted = await newAiObligation();
   await withRlsSessionCommit(adminUrl, ACC, (c) => c.query(setStatus, [oblSubmitted, 'IN_REVIEW']));
   pass('API: acceptor submits AI obligation (DRAFT → IN_REVIEW, committed)');
-  await rls('API: VIEWER cannot approve', VIEWER, (c) => upd(c, setStatus, [oblSubmitted, 'OPEN']), 'ai_obligation_review_role_required');
+  const viewerApprove = await rls('API: VIEWER approval attempted', VIEWER, (c) => upd(c, setStatus, [oblSubmitted, 'OPEN']));
+  if (viewerApprove?.rowCount === 0) pass('API: VIEWER cannot approve (matched no rows under role-aware RLS)');
+  else fail(`API: VIEWER approval rowCount ${viewerApprove?.rowCount}`);
   await rls('API: acceptor/submitter cannot approve', ACC, (c) => upd(c, setStatus, [oblSubmitted, 'OPEN']), 'segregation_of_duties');
   const crossTenant = await rls('API: Org A user cannot see or approve an AI Development obligation', 'user_org_a', (c) =>
     upd(c, setStatus, [oblSubmitted, 'OPEN']));
