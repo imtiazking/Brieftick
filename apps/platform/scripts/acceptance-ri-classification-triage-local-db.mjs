@@ -38,6 +38,7 @@ import {
 } from './local-db/finding-review-fixtures.mjs';
 
 const MIGRATION = '20261121180000_ri_regulatory_classification_policy.sql';
+const GRANTS_MIGRATION = '20261121220000_ri_classification_trigger_function_grants.sql';
 const migrationsDir = join(platformRoot, 'supabase', 'migrations');
 const OP1 = 'user_platform_operator_1';
 const OP2 = 'user_platform_operator_2';
@@ -146,6 +147,14 @@ try {
   await applySqlFile(db, join(migrationsDir, MIGRATION));
   const after = await fingerprint();
   check(JSON.stringify(before) === JSON.stringify(after), 'migration applies over existing reviews, decisions and obligations without modifying them', { before, after });
+  await applySqlFile(db, join(migrationsDir, GRANTS_MIGRATION));
+  const triggerFnGrants = (
+    await db.query(`select p.proname, has_function_privilege('anon', p.oid, 'execute') anon, has_function_privilege('authenticated', p.oid, 'execute') auth
+                      from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+                     where n.nspname = 'public' and p.prorettype = 'trigger'::regtype
+                       and p.proname in ('ri_guard_obligation_classification', 'ri_guard_classification_policy_change', 'ri_guard_classification_policy_entry_change', 'ri_audit_classification_policy_insert', 'ri_refuse_classification_policy_event_change')`)
+  ).rows;
+  check(triggerFnGrants.length === 5 && triggerFnGrants.every((g) => !g.anon && !g.auth), 'classification trigger functions are not executable by anon or authenticated (all later writes run under these grants)', triggerFnGrants);
 
   // A binding obligation created manually against the verified authoritative provision (not the guidance text).
   const PROVISION = {
