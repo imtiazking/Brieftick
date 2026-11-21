@@ -19,8 +19,13 @@ import {
 import { loadPublicationPdfEvidenceForAskRi } from '@/lib/ri/ask-ri/load-publication-pdf-evidence.mjs';
 import { RiConflictError, RiNotFoundError, RiValidationError } from '@/lib/ri/errors';
 import { assertCanRi } from '@/lib/ri/permissions';
+import { TRIAGE_QUEUES } from '@/lib/ri/classification/regulatory-classification-policy.mjs';
 import { getAnalysisRun } from '@/lib/ri/services/ai-analysis';
 import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
+import {
+  loadActiveClassificationPolicy,
+  loadPublicationClassificationContext,
+} from '@/lib/ri/services/classification-policy';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
 
 const FINDING_REVIEW_USE_CASE = 'UC-RI-005';
@@ -33,21 +38,43 @@ export type FindingDecisionInput = {
   findingId: string;
   claimTextSha256: string;
   decision: 'ACCEPTED' | 'REJECTED';
-  classification?: string | null;
+  regulatoryClassificationCode?: string | null;
+  disposition?: string | null;
   legalBasis?: string | null;
   quotation?: string | null;
   quotationPage?: number | null;
+  linkedObligationId?: string | null;
+  supportingObligationId?: string | null;
+  supportingFindingId?: string | null;
+  reclassificationEvidence?: string | null;
   comment: string;
 };
+
+async function loadClassificationForRun(supabase: SupabaseClient, publicationId: string | null) {
+  const context = await loadPublicationClassificationContext(supabase, publicationId);
+  const policy = await loadActiveClassificationPolicy(supabase, context.regulatorKey);
+  return { ...context, policy };
+}
+
+function summariseQueues(findings: Array<{ triage: { queue: string } }>) {
+  const counts: Record<string, number> = {
+    [TRIAGE_QUEUES.OBLIGATION]: 0,
+    [TRIAGE_QUEUES.NON_OBLIGATION]: 0,
+    [TRIAGE_QUEUES.EXCEPTION]: 0,
+  };
+  for (const f of findings) counts[f.triage.queue] = (counts[f.triage.queue] ?? 0) + 1;
+  return counts;
+}
 
 export async function getFindingReview(supabase: SupabaseClient, organisationId: string, runId: string) {
   const { run, citations } = await getAnalysisRun(supabase, organisationId, runId);
   if (run.use_case_id !== FINDING_REVIEW_USE_CASE) throw new RiConflictError('finding_review_use_case_unsupported');
-  const view = buildFindingsView(run, citations ?? []);
+  const classification = await loadClassificationForRun(supabase, run.publication_id);
+  const view = buildFindingsView(run, citations ?? [], classification);
   const { data: decisions, error } = await supabase
     .from('ai_analysis_finding_decisions')
     .select(
-      'finding_id, claim_index, decision, classification, legal_basis, verified_quotation, quotation_page, reviewer_comment, evidence_pathway, obligation_id, skip_reason, reviewer_user_id, created_at',
+      'finding_id, claim_index, decision, classification, regulatory_classification_code, legal_status, triage_queue, exception_reasons, disposition, linked_obligation_id, legal_basis, verified_quotation, quotation_page, reviewer_comment, evidence_pathway, obligation_id, skip_reason, reviewer_user_id, created_at',
     )
     .eq('analysis_run_id', runId)
     .eq('organisation_id', organisationId)
@@ -60,6 +87,9 @@ export async function getFindingReview(supabase: SupabaseClient, organisationId:
     executionStatus: run.execution_status,
     requestedBy: run.requested_by,
     classifications: FINDING_CLASSIFICATIONS,
+    classificationPolicy: classification.policy,
+    publicationType: classification.publicationType,
+    queueCounts: summariseQueues(view.findings),
     ...view,
     decisions: decisions ?? [],
   };
@@ -71,6 +101,7 @@ const RPC_CONFLICTS = new Set([
   'analysis_outdated',
   'finding_review_use_case_unsupported',
   'obligation_extraction_parent_change_missing',
+  'classification_policy_unavailable',
 ]);
 
 function mapRpcError(message: string): Error {
@@ -79,7 +110,15 @@ function mapRpcError(message: string): Error {
   if (code === 'not_found') return new RiNotFoundError('not_found');
   if (RPC_CONFLICTS.has(code)) return new RiConflictError(code);
   if (code.startsWith('experimental_ai_wrong_organisation')) return new Error(code);
-  if (code.startsWith('finding_') || code === 'obligation_grade_evidence_required' || code === 'ai_finding_review_requires_user') {
+  if (
+    code.startsWith('finding_') ||
+    code.startsWith('obligation_conversion_not_permitted') ||
+    code.startsWith('obligation_classification_') ||
+    code.startsWith('obligation_binding_link_') ||
+    code === 'obligation_source_not_binding' ||
+    code === 'obligation_grade_evidence_required' ||
+    code === 'ai_finding_review_requires_user'
+  ) {
     return new RiValidationError(code);
   }
   return new Error(`ai_finding_review_failed:${code.slice(0, 160)}`);
@@ -135,9 +174,17 @@ export async function submitFindingReview(
   }
   if (run.freshness === AI_FRESHNESS.OUTDATED) throw new RiConflictError('analysis_outdated');
 
-  const view = buildFindingsView(run, citations ?? []);
-  const validated = validateFindingDecisions(view.findings, params.decisions, { pathway: view.evidence.pathway });
-  if (!validated.ok) throw new RiValidationError(validated.error);
+  const classification = await loadClassificationForRun(supabase, run.publication_id);
+  const view = buildFindingsView(run, citations ?? [], classification);
+  const validated = validateFindingDecisions(view.findings, params.decisions, {
+    pathway: view.evidence.pathway,
+    policy: classification.policy,
+    publicationType: classification.publicationType,
+  });
+  if (!validated.ok) {
+    if (validated.error === 'classification_policy_unavailable') throw new RiConflictError(validated.error);
+    throw new RiValidationError(validated.error);
+  }
 
   const toMaterialise = validated.decisions.filter((d: { createsObligation?: boolean }) => d.createsObligation);
   if (toMaterialise.length > 0) {
@@ -179,10 +226,15 @@ export async function submitFindingReview(
       findingId: d.findingId,
       claimTextSha256: d.claimTextSha256,
       decision: d.decision,
-      classification: d.classification ?? null,
+      regulatoryClassificationCode: d.regulatoryClassificationCode ?? null,
+      disposition: d.disposition ?? null,
       legalBasis: d.legalBasis ?? null,
       quotation: d.quotation ?? null,
       quotationPage: d.quotationPage ?? null,
+      linkedObligationId: d.linkedObligationId ?? null,
+      supportingObligationId: d.supportingObligationId ?? null,
+      supportingFindingId: d.supportingFindingId ?? null,
+      reclassificationEvidence: d.reclassificationEvidence ?? null,
       comment: d.comment,
     })),
     p_notes: params.notes ?? null,
@@ -193,8 +245,9 @@ export async function submitFindingReview(
     reviewId: string;
     decision: string;
     evidencePathway: string;
-    materialised: Array<{ findingId: string; claimIndex: number; obligationId: string }>;
-    skipped: Array<{ findingId: string; claimIndex: number; reason: string }>;
+    classificationPolicyVersion: number | null;
+    materialised: Array<{ findingId: string; claimIndex: number; obligationId: string; classificationCode: string; legalStatus: string }>;
+    skipped: Array<{ findingId: string; claimIndex: number; decision: string; reason: string; triageQueue: string }>;
   };
 
   try {

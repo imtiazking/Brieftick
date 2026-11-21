@@ -144,15 +144,16 @@ try {
         0: { decision: 'REJECTED', comment: 'Permission, not an obligation.' },
         1: {
           decision: 'ACCEPTED',
-          classification: 'binding_requirement',
+          regulatoryClassificationCode: 'UK',
           legalBasis: 'PSRs 2017 reg. 86(2C)',
           // As copied from a PDF viewer, with a line break mid-sentence.
           quotation: fx.QUOTES.notify.replace('the reason for the delay,', 'the reason for\nthe delay,'),
           quotationPage: 14,
+          reclassificationEvidence: 'Restates PSRs 2017 reg. 86(2C) verbatim; the statutory duty binds independently of FG24/6.',
         },
-        2: { decision: 'ACCEPTED', classification: 'guidance_on_requirement', legalBasis: 'PSRs 2017 reg. 86(2B); FG24/6 para 3.12', quotation: fx.QUOTES.endDelay, quotationPage: 14 },
-        3: { decision: 'ACCEPTED', classification: 'binding_requirement', legalBasis: 'PSRs 2017 reg. 86(2D)', quotation: fx.QUOTES.liability, quotationPage: 16 },
-        4: { decision: 'ACCEPTED', classification: 'scope_exclusion' },
+        2: { decision: 'ACCEPTED', regulatoryClassificationCode: 'GBR', disposition: 'SUPPORTING_INFORMATION' },
+        3: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', legalBasis: 'PSRs 2017 reg. 86(2D)', quotation: fx.QUOTES.liability, quotationPage: 16 },
+        4: { decision: 'ACCEPTED', regulatoryClassificationCode: 'EXEMPT', disposition: 'ARCHIVE' },
       };
       return { ...base, ...byIndex[i], ...(overrides[i] ?? {}) };
     });
@@ -182,29 +183,34 @@ try {
 
   const result = await submitFindingReview(yahoo, { ...params(fx.YAHOO, run1.runId, decisions(run1)), notes: 'UAT per-finding review' });
   check(result.ok && result.decision === 'PARTIALLY_ACCEPTED' && result.evidencePathway === 'human_verified_uat', 'Yahoo per-finding review succeeds (PARTIALLY_ACCEPTED, human_verified_uat)', result);
-  check(JSON.stringify(result.materialised.map((m) => m.findingId)) === JSON.stringify([run1.ids[1], run1.ids[2], run1.ids[3]]), 'DRAFT obligations created for findings 2, 3 and 4 only');
+  check(JSON.stringify(result.materialised.map((m) => m.findingId)) === JSON.stringify([run1.ids[1], run1.ids[3]]), 'DRAFT obligations created for the binding findings 2 and 4 only (guidance finding 3 not converted)');
   const obls = (await db.query(`select obligation_statement s, citation, status, metadata from regulatory_obligations where ai_analysis_run_id = $1 order by (metadata->>'claimIndex')::int`, [run1.runId])).rows;
   check(
-    obls.length === 3 &&
+    obls.length === 2 &&
       obls[0].metadata.sourceQuotation === fx.QUOTES.notify &&
       obls[0].s === fx.FINDINGS[1].text &&
-      obls[2].citation === 'PDF p.16' &&
+      obls[0].metadata.regulatoryClassificationCode === 'UK' &&
+      obls[1].metadata.regulatoryClassificationCode === 'R' &&
+      obls[1].citation === 'PDF p.16' &&
       obls.every((o) => o.status === 'DRAFT'),
     'obligation text, normalised quotation and citations follow the selected findings',
     obls.map((o) => ({ s: o.s.slice(0, 40), c: o.citation, q: o.metadata.sourceQuotation.slice(0, 40) })),
   );
   const c1 = await counts(run1.runId);
-  check(c1.verifications === 3, 'one server-side quotation verification per materialised finding', c1);
+  check(c1.verifications === 2, 'one server-side quotation verification per materialised finding', c1);
 
   const again = await errorOf(() => submitFindingReview(yahoo, params(fx.YAHOO, run1.runId, decisions(run1))));
   check(again?.message === 'already_reviewed', 'duplicate submission refused', again);
-  check((await counts(run1.runId)).obligations === 3, 'no duplicate obligations after resubmission');
+  check((await counts(run1.runId)).obligations === 2, 'no duplicate obligations after resubmission');
 
   const after = await getFindingReview(yahoo, fx.PILOT, run1.runId);
   check(
     after.decisions.length === 5 &&
-      after.decisions.filter((d) => d.obligation_id).length === 3 &&
-      after.decisions.find((d) => d.claim_index === 4)?.skip_reason === 'classification_not_obligation:scope_exclusion',
+      after.decisions.filter((d) => d.obligation_id).length === 2 &&
+      after.decisions.find((d) => d.claim_index === 2)?.skip_reason === 'not_converted:SUPPORTING_INFORMATION' &&
+      after.decisions.find((d) => d.claim_index === 4)?.skip_reason === 'not_converted:ARCHIVE' &&
+      after.classificationPolicy?.policyVersion === 1 &&
+      Object.values(after.queueCounts ?? {}).reduce((a, b) => a + b, 0) === 5,
     'review view returns the recorded per-finding decisions',
     after.decisions.map((d) => [d.claim_index, d.decision, d.skip_reason]),
   );
@@ -224,7 +230,7 @@ try {
   check(/ai_finding_review_failed:test_injected_failure/.test(injected?.message ?? ''), 'database failure surfaces as an internal error', injected);
   check(c2.reviews === 0 && c2.obligations === 0 && c2.status === 'HUMAN_REVIEW_REQUIRED', 'rollback: run 2 remains unreviewed with no obligations', c2);
   const retry = await submitFindingReview(yahoo, params(fx.YAHOO, run2.runId, decisions(run2)));
-  check(retry.ok && retry.materialised.length === 3, 'review can be resubmitted after a rolled-back failure', retry.materialised.length);
+  check(retry.ok && retry.materialised.length === 2, 'review can be resubmitted after a rolled-back failure', retry.materialised.length);
 
   // Autonomy guard: the draft action is narrowly scoped; approvals remain blocked.
   for (const action of ['approve_obligation', 'approve_change']) {

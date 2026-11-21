@@ -3,10 +3,20 @@
  * Mirrors the checks in public.ri_submit_ai_finding_review, which remains authoritative.
  */
 import { createHash } from 'node:crypto';
+import {
+  CANONICAL_CLASSIFICATION_CODES,
+  DISPOSITIONS,
+  QUEUE_ACTIONS,
+  conversionRefusal,
+  evaluateFindingTriage,
+  modelLabelsForFinding,
+  policyEntry,
+} from '../classification/regulatory-classification-policy.mjs';
 
+/** Legacy broad finding types, now derived from the regulatory classification code. */
 export const FINDING_CLASSIFICATIONS = [
   { id: 'binding_requirement', label: 'Binding requirement', createsObligation: true },
-  { id: 'guidance_on_requirement', label: 'Guidance on a binding requirement', createsObligation: true },
+  { id: 'guidance_on_requirement', label: 'Guidance on a binding requirement', createsObligation: false },
   { id: 'non_binding_guidance', label: 'Non-binding guidance / expectation', createsObligation: false },
   { id: 'permission', label: 'Permission', createsObligation: false },
   { id: 'scope_exclusion', label: 'Scope exclusion', createsObligation: false },
@@ -15,7 +25,6 @@ export const FINDING_CLASSIFICATIONS = [
   { id: 'explanatory_statement', label: 'Explanatory statement', createsObligation: false },
 ];
 
-const CLASSIFICATION_IDS = new Set(FINDING_CLASSIFICATIONS.map((c) => c.id));
 export const OBLIGATION_CLASSIFICATIONS = new Set(
   FINDING_CLASSIFICATIONS.filter((c) => c.createsObligation).map((c) => c.id),
 );
@@ -88,8 +97,11 @@ export function suggestCandidateForFinding(finding, candidates) {
 /**
  * @param {{ structured_output?: any }} run
  * @param {Array<{ id: string, claim_index: number, claim_text: string, citation_status: string, source_section_ids: string[] }>} citations
+ * @param {{ policy?: any, publicationType?: string | null }} [classification]
  */
-export function buildFindingsView(run, citations) {
+export function buildFindingsView(run, citations, classification) {
+  const policy = classification?.policy ?? null;
+  const publicationType = classification?.publicationType ?? null;
   const output = run.structured_output || {};
   const grounding = output._forgeniqGrounding || {};
   const catalog = Array.isArray(grounding.sectionCatalog) ? grounding.sectionCatalog : [];
@@ -119,7 +131,12 @@ export function buildFindingsView(run, citations) {
           .filter(Boolean)
           .map((s) => ({ sourceSectionId: s.sourceSectionId, pageNumber: s.pageNumber, citation: s.citation, excerpt: s.excerpt })),
       };
-      return { ...finding, suggestion: suggestCandidateForFinding(finding, candidates) };
+      finding.modelLabels = modelLabelsForFinding(finding, candidates);
+      return {
+        ...finding,
+        suggestion: suggestCandidateForFinding(finding, candidates),
+        triage: evaluateFindingTriage({ policy, publicationType, finding }),
+      };
     });
 
   return {
@@ -136,7 +153,25 @@ export function buildFindingsView(run, citations) {
 /**
  * @returns {{ ok: true, decisions: any[] } | { ok: false, error: string }}
  */
-export function validateFindingDecisions(findings, decisions, { pathway }) {
+const DISPOSITION_VALUES = new Set(Object.values(DISPOSITIONS));
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const optionalText = (v) => {
+  const t = String(v ?? '').trim();
+  return t || null;
+};
+
+/**
+ * Every finding needs an explicit decision. Accepted findings carry a regulatory classification code from the
+ * regulator policy and a disposition allowed in their triage queue; only CONVERT_TO_DRAFT_OBLIGATION in the
+ * Obligation Triage queue creates a DRAFT obligation.
+ *
+ * @param {{ pathway: string, policy?: any, publicationType?: string | null }} context
+ * @returns {{ ok: true, decisions: any[] } | { ok: false, error: string }}
+ */
+export function validateFindingDecisions(findings, decisions, context) {
+  const { pathway } = context;
+  const policy = context.policy ?? null;
+  const publicationType = context.publicationType ?? null;
   if (!Array.isArray(decisions)) return { ok: false, error: 'finding_decisions_invalid' };
   const byId = new Map(findings.map((f) => [f.findingId, f]));
   const seen = new Set();
@@ -150,29 +185,81 @@ export function validateFindingDecisions(findings, decisions, { pathway }) {
     if (d.claimTextSha256 !== finding.claimTextSha256) return { ok: false, error: `finding_text_mismatch:${n}` };
     const comment = String(d.comment ?? '').trim();
     if (!comment) return { ok: false, error: `finding_comment_required:${n}` };
-    const classification = d.classification ? String(d.classification) : null;
-    const entry = { findingId: d.findingId, claimTextSha256: d.claimTextSha256, decision: d.decision, comment, classification };
+
+    const code = optionalText(d.regulatoryClassificationCode);
+    if (code && !CANONICAL_CLASSIFICATION_CODES[code]) return { ok: false, error: `finding_classification_unknown:${n}` };
+    if (d.decision === 'ACCEPTED' && !code) return { ok: false, error: `finding_classification_code_required:${n}` };
+    if (code && !policyEntry(policy, code)) return { ok: false, error: policy ? `finding_classification_unknown:${n}` : 'classification_policy_unavailable' };
+
+    const quotation = normaliseQuotation(d.quotation);
+    const page = d.quotationPage == null || d.quotationPage === '' ? null : Number(d.quotationPage);
+    const proposal = {
+      code,
+      legalBasis: optionalText(d.legalBasis),
+      quotation,
+      quotationPage: Number.isInteger(page) ? page : null,
+      supportingObligationId: optionalText(d.supportingObligationId),
+      supportingFindingId: optionalText(d.supportingFindingId),
+      reclassificationEvidence: optionalText(d.reclassificationEvidence),
+    };
+    const triage = evaluateFindingTriage({ policy, publicationType, finding, proposal: code ? proposal : null });
+    const entry = {
+      findingId: d.findingId,
+      claimTextSha256: d.claimTextSha256,
+      decision: d.decision,
+      comment,
+      regulatoryClassificationCode: code,
+      classification: code ? CANONICAL_CLASSIFICATION_CODES[code].findingClassification : null,
+      triageQueue: triage.queue,
+      exceptionReasons: triage.exceptionReasons,
+      disposition: null,
+    };
+
     if (d.decision === 'ACCEPTED') {
-      if (!classification || !CLASSIFICATION_IDS.has(classification)) {
-        return { ok: false, error: `finding_classification_required:${n}` };
-      }
-      if (OBLIGATION_CLASSIFICATIONS.has(classification)) {
-        if (finding.citationStatus !== 'VERIFIED') return { ok: false, error: `finding_citation_unverified:${n}` };
-        const legalBasis = String(d.legalBasis ?? '').trim();
-        if (legalBasis.length < 3) return { ok: false, error: `finding_legal_basis_required:${n}` };
-        const quotation = normaliseQuotation(d.quotation);
-        if (quotation.length < MIN_QUOTATION_LENGTH) return { ok: false, error: `finding_quotation_required:${n}` };
-        const page = Number(d.quotationPage);
-        if (!Number.isInteger(page)) return { ok: false, error: `finding_quotation_page_required:${n}` };
-        if (!finding.pages.includes(page)) return { ok: false, error: `finding_quotation_page_not_cited:${n}` };
+      const disposition = optionalText(d.disposition) ?? (policyEntry(policy, code)?.conversionEnabled ? DISPOSITIONS.CONVERT : DISPOSITIONS.SUPPORTING);
+      if (!DISPOSITION_VALUES.has(disposition)) return { ok: false, error: `finding_disposition_invalid:${n}` };
+      entry.disposition = disposition;
+
+      if (disposition === DISPOSITIONS.CONVERT) {
+        const refusal = conversionRefusal(triage, n);
+        if (refusal) return { ok: false, error: refusal };
+        if (!finding.pages.includes(proposal.quotationPage)) return { ok: false, error: `finding_quotation_page_not_cited:${n}` };
         if (pathway === 'human_verified_uat' && comment.length < MIN_UAT_JUSTIFICATION_LENGTH) {
           return { ok: false, error: `finding_justification_required:${n}` };
         }
-        Object.assign(entry, { legalBasis, quotation, quotationPage: page, createsObligation: true });
+        if (proposal.supportingObligationId && !UUID_RE.test(proposal.supportingObligationId)) {
+          return { ok: false, error: `finding_binding_link_invalid:${n}` };
+        }
+        Object.assign(entry, {
+          legalBasis: proposal.legalBasis,
+          quotation: proposal.quotation,
+          quotationPage: proposal.quotationPage,
+          legalStatus: triage.legalStatus,
+          supportingObligationId: proposal.supportingObligationId,
+          supportingFindingId: proposal.supportingFindingId,
+          reclassificationEvidence: proposal.reclassificationEvidence,
+          createsObligation: true,
+        });
+      } else {
+        if (!QUEUE_ACTIONS[triage.queue].includes(disposition)) return { ok: false, error: `finding_disposition_not_allowed:${n}` };
+        if (disposition === DISPOSITIONS.LINK) {
+          const linked = optionalText(d.linkedObligationId);
+          if (!linked || !UUID_RE.test(linked)) return { ok: false, error: `finding_linked_obligation_required:${n}` };
+          entry.linkedObligationId = linked;
+        }
       }
     }
     out.push(entry);
   }
   if (seen.size !== findings.length) return { ok: false, error: 'finding_decisions_incomplete' };
+
+  const converted = new Map(out.filter((e) => e.createsObligation).map((e) => [e.findingId, e]));
+  for (const e of converted.values()) {
+    if (!e.supportingFindingId) continue;
+    const target = converted.get(e.supportingFindingId);
+    if (!target || target.legalStatus !== 'binding') {
+      return { ok: false, error: `finding_binding_link_invalid:${byId.get(e.findingId).number}` };
+    }
+  }
   return { ok: true, decisions: out };
 }

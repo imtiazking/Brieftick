@@ -213,28 +213,97 @@ const FINDING_REVIEW_ERRORS = {
   finding_justification_required: `a reviewer justification of at least ${FINDING_MIN_UAT_JUSTIFICATION} characters is required`,
   finding_legal_basis_required: 'a legal basis is required',
   finding_citation_unverified: 'the citation is not verified, so it cannot become an obligation',
+  finding_classification_code_required: 'select a regulatory classification code',
+  finding_classification_unknown: 'the classification is unknown or not in the active policy, so it is routed to Exception Triage',
+  finding_conversion_not_permitted: 'this classification is not conversion-eligible under the active policy',
+  finding_source_not_binding: 'the publication is non-binding (e.g. finalised guidance), so a binding code cannot be converted',
+  finding_classification_conflict: `the code contradicts the model’s classification — record evidence-based reclassification of at least 20 characters`,
+  finding_binding_link_required: 'an evidential provision must be linked to the binding provision it supports',
+  finding_binding_link_invalid: 'the linked binding provision is not a binding obligation in this organisation or review',
+  finding_disposition_invalid: 'select a valid disposition',
+  finding_disposition_not_allowed: 'this disposition is not available in the finding’s triage queue',
+  finding_linked_obligation_required: 'enter the existing obligation to link to',
+  finding_quotation_required: 'an exact quotation is required',
+};
+
+const FINDING_REVIEW_MESSAGES = {
+  segregation_of_duties: 'You requested this AI run, so a different reviewer must review it.',
+  already_reviewed: 'This run has already been reviewed.',
+  uc_ri_005_finding_review_disabled: 'Per-finding review is not enabled on this environment.',
+  classification_policy_unavailable: 'No active regulatory classification policy applies to this publication, so findings cannot be converted.',
+  obligation_classification_required: 'The database refused an obligation without a regulatory classification.',
+  obligation_source_not_binding: 'The database refused an obligation from a non-binding publication.',
+  obligation_binding_link_required: 'The database refused an evidential provision without a binding link.',
 };
 
 function formatFindingReviewError(code) {
   const text = String(code || 'finding_review_failed');
   const [key, finding] = text.split(':');
   if (FINDING_REVIEW_ERRORS[key]) return `Finding ${finding}: ${FINDING_REVIEW_ERRORS[key]}.`;
-  if (text === 'segregation_of_duties') return 'You requested this AI run, so a different reviewer must review it.';
-  if (text === 'already_reviewed') return 'This run has already been reviewed.';
-  if (text === 'uc_ri_005_finding_review_disabled') return 'Per-finding review is not enabled on this environment.';
+  if (FINDING_REVIEW_MESSAGES[key]) return FINDING_REVIEW_MESSAGES[key];
+  if (key === 'obligation_conversion_not_permitted') return `The database refused conversion of classification ${finding || ''} under the active policy.`;
   return text;
 }
 
-function classificationOptions(classifications, selected) {
-  return [`<option value="">Select classification…</option>`]
+const TRIAGE_QUEUE_LABELS = {
+  OBLIGATION_TRIAGE: 'Obligation Triage',
+  NON_OBLIGATION_TRIAGE: 'Non-Obligation Triage',
+  EXCEPTION_TRIAGE: 'Exception Triage',
+};
+
+const DISPOSITION_LABELS = {
+  CONVERT_TO_DRAFT_OBLIGATION: 'Convert to DRAFT obligation',
+  LINK_TO_EXISTING_OBLIGATION: 'Link to existing obligation',
+  SUPPORTING_INFORMATION: 'Record as supporting information',
+  HORIZON_SCANNING: 'Refer to horizon scanning',
+  ARCHIVE: 'Archive',
+  RECLASSIFICATION_REQUESTED: 'Request evidence-based reclassification',
+};
+
+/** Mirrors QUEUE_ACTIONS in regulatory-classification-policy.mjs; the server re-validates every disposition. */
+const QUEUE_DISPOSITIONS = {
+  OBLIGATION_TRIAGE: ['CONVERT_TO_DRAFT_OBLIGATION', 'LINK_TO_EXISTING_OBLIGATION'],
+  NON_OBLIGATION_TRIAGE: ['LINK_TO_EXISTING_OBLIGATION', 'SUPPORTING_INFORMATION', 'HORIZON_SCANNING', 'ARCHIVE', 'RECLASSIFICATION_REQUESTED'],
+  EXCEPTION_TRIAGE: ['RECLASSIFICATION_REQUESTED', 'LINK_TO_EXISTING_OBLIGATION', 'SUPPORTING_INFORMATION', 'ARCHIVE'],
+};
+
+const EXCEPTION_REASON_LABELS = {
+  unknown_classification: 'unknown classification',
+  policy_unavailable: 'no active classification policy',
+  unverified_citation: 'citation not verified',
+  missing_legal_basis: 'missing legal basis',
+  insufficient_evidence: 'insufficient evidence',
+  binding_code_from_non_binding_source: 'binding code on a non-binding publication',
+  conflicting_classifications: 'conflicts with the model classification',
+  missing_binding_link: 'evidential provision without a binding link',
+};
+
+const queueLabel = (q) => TRIAGE_QUEUE_LABELS[q] || q || '—';
+const reasonsText = (reasons) => (reasons || []).map((r) => EXCEPTION_REASON_LABELS[r] || r).join(', ');
+
+function policyEntries(policy) {
+  return Array.isArray(policy?.entries) ? policy.entries : [];
+}
+
+function codeOptions(policy, selected) {
+  return [`<option value="">Select classification code…</option>`]
     .concat(
-      classifications.map(
-        (c) =>
-          `<option value="${esc(c.id)}" data-creates-obligation="${c.createsObligation ? '1' : '0'}"${c.id === selected ? ' selected' : ''}>${esc(c.label)}${
-            c.createsObligation ? ' — creates DRAFT obligation' : ''
+      policyEntries(policy).map(
+        (e) =>
+          `<option value="${esc(e.code)}" data-queue="${esc(e.destinationQueue)}" data-convertible="${e.conversionEnabled ? '1' : '0'}" data-link-required="${
+            e.supportingObligationLinkRequired ? '1' : '0'
+          }"${e.code === selected ? ' selected' : ''}>${esc(e.code)} — ${esc(e.description)} (${esc(e.legalStatus)})${
+            e.conversionEnabled ? ' — conversion-eligible' : ''
           }</option>`,
       ),
     )
+    .join('');
+}
+
+function dispositionOptions(queue, selected) {
+  const allowed = QUEUE_DISPOSITIONS[queue] || [];
+  return [`<option value="">${allowed.length ? 'Select disposition…' : 'Select a code first…'}</option>`]
+    .concat(allowed.map((d) => `<option value="${esc(d)}"${d === selected ? ' selected' : ''}>${esc(DISPOSITION_LABELS[d])}</option>`))
     .join('');
 }
 
@@ -242,30 +311,40 @@ function renderRecordedFindingDecisions(body) {
   const byIndex = new Map(body.findings.map((f) => [f.claimIndex, f]));
   const rows = body.decisions.map((d) => {
     const f = byIndex.get(d.claim_index);
+    const notConverted = String(d.skip_reason || '').startsWith('not_converted:') ? d.skip_reason.slice('not_converted:'.length) : null;
     const outcome = d.obligation_id
       ? `DRAFT obligation <a href="#/obligation/${esc(d.obligation_id)}">${esc(d.obligation_id.slice(0, 8))}…</a>`
-      : d.skip_reason
-        ? `Not an obligation (${esc(d.skip_reason.replace('classification_not_obligation:', ''))})`
-        : '—';
+      : d.linked_obligation_id
+        ? `Linked to obligation <a href="#/obligation/${esc(d.linked_obligation_id)}">${esc(d.linked_obligation_id.slice(0, 8))}…</a>`
+        : notConverted
+          ? `Not converted (${esc(DISPOSITION_LABELS[notConverted] || notConverted)})`
+          : d.skip_reason
+            ? `Not an obligation (${esc(d.skip_reason.replace('classification_not_obligation:', ''))})`
+            : '—';
+    const reasons = reasonsText(d.exception_reasons);
     return `<tr data-finding-decision-row="${esc(d.finding_id)}">
       <td>${esc(String(d.claim_index + 1))}</td>
       <td>${esc(f?.statement || '')}</td>
       <td>${badge(d.decision)}</td>
-      <td>${esc(d.classification || '—')}</td>
+      <td>${esc(d.regulatory_classification_code || d.classification || '—')}${d.legal_status ? ` <span class="ri-muted">(${esc(d.legal_status)})</span>` : ''}</td>
+      <td data-finding-decision-queue>${esc(queueLabel(d.triage_queue))}${reasons ? `<br><span class="ri-muted">${esc(reasons)}</span>` : ''}</td>
       <td>${d.quotation_page ? `p.${esc(String(d.quotation_page))}` : '—'}</td>
       <td>${outcome}</td>
       <td>${esc(d.reviewer_comment || '')}</td>
     </tr>`;
   });
+  const policy = body.classificationPolicy;
   return `<section class="ri-panel" data-connected-ai-finding-review-recorded>
     <h3>Per-finding review decisions</h3>
-    <p class="ri-muted">Evidence pathway: <strong>${esc(body.decisions[0]?.evidence_pathway || '—')}</strong>. DRAFT obligations require submission and independent approval by a reviewer who is neither the AI requester nor the acceptor.</p>
-    <table class="ri-table"><thead><tr><th>#</th><th>Finding</th><th>Decision</th><th>Classification</th><th>Page</th><th>Outcome</th><th>Reviewer comment</th></tr></thead>
+    <p class="ri-muted">Evidence pathway: <strong>${esc(body.decisions[0]?.evidence_pathway || '—')}</strong>.${
+      policy ? ` Classification policy: ${esc(policy.regulatorKey)} v${esc(String(policy.policyVersion))}.` : ''
+    } DRAFT obligations require submission and independent approval by a reviewer who is neither the AI requester nor the acceptor.</p>
+    <table class="ri-table"><thead><tr><th>#</th><th>Finding</th><th>Decision</th><th>Classification</th><th>Triage queue</th><th>Page</th><th>Outcome</th><th>Reviewer comment</th></tr></thead>
     <tbody>${rows.join('')}</tbody></table>
   </section>`;
 }
 
-function renderFindingCard(f, classifications, canReview, draft = {}) {
+function renderFindingCard(f, policy, canReview, draft = {}, convertibleFindings = []) {
   const suggestion = f.suggestion;
   const name = `finding-decision-${f.findingId}`;
   const disabled = canReview ? '' : ' disabled';
@@ -279,7 +358,10 @@ function renderFindingCard(f, classifications, canReview, draft = {}) {
       <dt>Cited PDF pages</dt><dd data-finding-pages>${f.pages.map((p) => `p.${esc(String(p))}`).join(', ') || '—'}</dd>
       <dt>Model suggestion</dt><dd>${esc(suggestion?.modelBindingNature || 'none')}${
         f.modelConfidence != null ? ` · confidence ${esc(String(f.modelConfidence))}%` : ''
-      } <span class="ri-muted">— verify against the PDF</span></dd>
+      } <span class="ri-muted">— verify against the PDF; confidence never overrides the classification policy</span></dd>
+      <dt>Triage queue</dt><dd data-finding-queue>${esc(queueLabel(f.triage?.queue))}${
+        f.triage?.provisional ? ' <span class="ri-muted">(provisional until a code is selected)</span>' : ''
+      }${f.triage?.exceptionReasons?.length ? `<br><span class="ri-muted" data-finding-exception-reasons>${esc(reasonsText(f.triage.exceptionReasons))}</span>` : ''}</dd>
     </dl>
     ${
       suggestion?.sourceQuotation
@@ -293,8 +375,28 @@ function renderFindingCard(f, classifications, canReview, draft = {}) {
       <label><input type="radio" name="${esc(name)}" value="ACCEPTED" data-finding-decision${checked('ACCEPTED')}${disabled}> Accept</label>
       <label><input type="radio" name="${esc(name)}" value="REJECTED" data-finding-decision${checked('REJECTED')}${disabled}> Reject</label>
     </fieldset>
-    <label>Regulatory classification
-      <select data-finding-classification${disabled}>${classificationOptions(classifications, draft.classification)}</select>
+    <label>Regulatory classification code
+      <select data-finding-code${disabled}>${codeOptions(policy, draft.code)}</select>
+    </label>
+    <label>Disposition
+      <select data-finding-disposition${disabled}>${dispositionOptions(draft.queue, draft.disposition)}</select>
+    </label>
+    <label data-finding-link-field>Existing obligation ID (for linking)
+      <input type="text" data-finding-linked-obligation placeholder="Obligation UUID" value="${esc(draft.linkedObligationId || '')}"${disabled}>
+    </label>
+    <fieldset data-finding-binding-link-field><legend>Binding provision this evidential provision supports</legend>
+      <label>Finding converted in this review
+        <select data-finding-supporting-finding${disabled}><option value="">—</option>${convertibleFindings
+          .filter((o) => o.findingId !== f.findingId)
+          .map((o) => `<option value="${esc(o.findingId)}"${o.findingId === draft.supportingFindingId ? ' selected' : ''}>Finding ${esc(String(o.number))}</option>`)
+          .join('')}</select>
+      </label>
+      <label>or existing binding obligation ID
+        <input type="text" data-finding-supporting-obligation placeholder="Obligation UUID" value="${esc(draft.supportingObligationId || '')}"${disabled}>
+      </label>
+    </fieldset>
+    <label>Evidence-based reclassification (required when the code contradicts the model classification)
+      <textarea data-finding-reclassification rows="2"${disabled}>${esc(draft.reclassificationEvidence || '')}</textarea>
     </label>
     <label>Legal basis <input type="text" data-finding-legal-basis placeholder="e.g. PSRs 2017 regulation 86(2C)" value="${esc(draft.legalBasis || '')}"${disabled}></label>
     <label>Supporting quotation (exact text from the PDF)
@@ -321,7 +423,14 @@ export function renderConnectedAiFindingReviewPanel(body, state = getState()) {
   const drafts = canReview ? findingReviewDrafts.get(body.runId) : null;
   return `<section class="ri-panel" data-connected-ai-finding-review="${esc(body.runId)}" data-evidence-pathway="${esc(body.evidence?.pathway || '')}">
     <h3>Per-finding review</h3>
-    <p class="ri-muted">Decide every finding against the original FCA PDF. Only accepted findings classified as a binding requirement or guidance on a binding requirement create obligations, and only as DRAFT. Permissions, scope exclusions, definitions, safe harbours and explanatory statements are recorded but never become obligations.</p>
+    <p class="ri-muted">Decide every finding against the original PDF and classify it with the regulator’s classification policy. Only accepted findings with a conversion-eligible code (R, E, D, P, UK, EU, TS) on a binding source can become obligations, and only as DRAFT. Guidance, conduct, recommendations, consultation proposals, permissions, definitions, exemptions, safe harbours, good practice, explanatory and repealed material are triaged — linked, recorded as supporting information, referred to horizon scanning or archived — and never become standalone obligations. Unknown classifications go to Exception Triage.</p>
+    ${
+      body.classificationPolicy
+        ? `<p class="ri-muted" data-finding-review-policy>Classification policy: <strong>${esc(body.classificationPolicy.regulatorKey)} v${esc(
+            String(body.classificationPolicy.policyVersion),
+          )}</strong> (effective ${esc(body.classificationPolicy.effectiveFrom)})${body.publicationType ? ` · publication type <strong>${esc(body.publicationType)}</strong>` : ''}.</p>`
+        : '<p class="ri-callout" data-finding-review-policy-unavailable>No active classification policy applies to this publication. Findings cannot be converted until a policy is approved.</p>'
+    }
     ${
       uat
         ? `<p class="ri-callout" data-finding-review-uat-pathway>Human-verified UAT pathway: this PDF extraction is not rated obligation-grade. An obligation needs an exact quotation that the server matches against the selected PDF page, a legal basis and a reviewer justification of at least ${FINDING_MIN_UAT_JUSTIFICATION} characters.</p>`
@@ -333,7 +442,7 @@ export function renderConnectedAiFindingReviewPanel(body, state = getState()) {
         : '<p class="ri-callout" data-finding-review-disabled>Per-finding review is not enabled on this environment yet. The findings are shown read-only.</p>'
     }
     ${body.findings
-      .map((f) => renderFindingCard(f, body.classifications || [], canReview, drafts?.cards?.[f.findingId]))
+      .map((f) => renderFindingCard(f, body.classificationPolicy, canReview, drafts?.cards?.[f.findingId], body.findings))
       .join('')}
     ${
       canReview
@@ -347,21 +456,32 @@ export function renderConnectedAiFindingReviewPanel(body, state = getState()) {
 
 function readFindingCard(card, uat) {
   const decision = card.querySelector('[data-finding-decision]:checked')?.value || '';
-  const classificationSelect = card.querySelector('[data-finding-classification]');
-  const option = classificationSelect?.selectedOptions?.[0];
-  const classification = classificationSelect?.value || '';
-  const createsObligation = decision === 'ACCEPTED' && option?.dataset?.createsObligation === '1';
+  const codeSelect = card.querySelector('[data-finding-code]');
+  const option = codeSelect?.selectedOptions?.[0];
+  const code = codeSelect?.value || '';
+  const queue = code ? option?.dataset?.queue || 'EXCEPTION_TRIAGE' : '';
+  const linkRequired = option?.dataset?.linkRequired === '1';
+  const disposition = decision === 'ACCEPTED' ? card.querySelector('[data-finding-disposition]')?.value || '' : '';
+  const createsObligation = decision === 'ACCEPTED' && disposition === 'CONVERT_TO_DRAFT_OBLIGATION';
+  const linking = decision === 'ACCEPTED' && disposition === 'LINK_TO_EXISTING_OBLIGATION';
+  const linkedObligationId = card.querySelector('[data-finding-linked-obligation]')?.value.trim() || '';
+  const supportingFindingId = card.querySelector('[data-finding-supporting-finding]')?.value || '';
+  const supportingObligationId = card.querySelector('[data-finding-supporting-obligation]')?.value.trim() || '';
+  const reclassificationEvidence = card.querySelector('[data-finding-reclassification]')?.value.trim() || '';
   const legalBasis = card.querySelector('[data-finding-legal-basis]')?.value.trim() || '';
   const quotation = card.querySelector('[data-finding-quotation]')?.value.trim() || '';
   const page = card.querySelector('[data-finding-page]')?.value || '';
   const comment = card.querySelector('[data-finding-comment]')?.value.trim() || '';
   const missing = [];
   if (!decision) missing.push('decision');
-  if (decision === 'ACCEPTED' && !classification) missing.push('classification');
+  if (decision === 'ACCEPTED' && !code) missing.push('classification code');
+  if (decision === 'ACCEPTED' && code && !disposition) missing.push('disposition');
+  if (linking && !linkedObligationId) missing.push('existing obligation ID');
   if (createsObligation) {
     if (legalBasis.length < 3) missing.push('legal basis');
     if (quotation.length < FINDING_MIN_QUOTATION) missing.push('exact quotation');
     if (!page) missing.push('PDF page');
+    if (linkRequired && !supportingFindingId && !supportingObligationId) missing.push('binding provision link');
   }
   if (!comment) missing.push('comment');
   else if (createsObligation && uat && comment.length < FINDING_MIN_UAT_JUSTIFICATION) {
@@ -370,11 +490,19 @@ function readFindingCard(card, uat) {
   return {
     missing,
     createsObligation,
+    linking,
+    linkRequired,
+    queue,
     payload: {
       findingId: card.getAttribute('data-finding-review-item'),
       claimTextSha256: card.getAttribute('data-claim-sha'),
       decision,
-      classification: classification || null,
+      regulatoryClassificationCode: code || null,
+      disposition: disposition || null,
+      linkedObligationId: linking ? linkedObligationId : null,
+      supportingFindingId: createsObligation && linkRequired && supportingFindingId ? supportingFindingId : null,
+      supportingObligationId: createsObligation && linkRequired && supportingObligationId ? supportingObligationId : null,
+      reclassificationEvidence: decision === 'ACCEPTED' && reclassificationEvidence ? reclassificationEvidence : null,
       legalBasis: createsObligation ? legalBasis : null,
       quotation: createsObligation ? quotation : null,
       quotationPage: createsObligation ? Number(page) : null,
@@ -390,31 +518,53 @@ function syncFindingReviewPanel(panel) {
   let complete = 0;
   let drafts = 0;
   for (const card of cards) {
+    const accepted = card.querySelector('[data-finding-decision]:checked')?.value === 'ACCEPTED';
+    const dispositionSelect = card.querySelector('[data-finding-disposition]');
+    const queue = readFindingCard(card, uat).queue;
+    if (dispositionSelect && dispositionSelect.getAttribute('data-queue') !== queue) {
+      const current = dispositionSelect.value;
+      const allowed = QUEUE_DISPOSITIONS[queue] || [];
+      const fallback = allowed.includes(current) ? current : allowed.length === 1 ? allowed[0] : '';
+      dispositionSelect.innerHTML = dispositionOptions(queue, fallback);
+      dispositionSelect.setAttribute('data-queue', queue);
+    }
     const r = readFindingCard(card, uat);
     saved.cards[r.payload.findingId] = {
       decision: r.payload.decision,
-      classification: r.payload.classification || '',
+      code: r.payload.regulatoryClassificationCode || '',
+      queue: r.queue,
+      disposition: dispositionSelect?.value || '',
+      linkedObligationId: card.querySelector('[data-finding-linked-obligation]')?.value || '',
+      supportingFindingId: card.querySelector('[data-finding-supporting-finding]')?.value || '',
+      supportingObligationId: card.querySelector('[data-finding-supporting-obligation]')?.value || '',
+      reclassificationEvidence: card.querySelector('[data-finding-reclassification]')?.value || '',
       legalBasis: card.querySelector('[data-finding-legal-basis]')?.value || '',
       quotation: card.querySelector('[data-finding-quotation]')?.value || '',
       page: card.querySelector('[data-finding-page]')?.value || '',
       comment: card.querySelector('[data-finding-comment]')?.value || '',
     };
-    const evidenceFields = card.querySelectorAll('[data-finding-legal-basis], [data-finding-quotation], [data-finding-page]');
-    evidenceFields.forEach((el) => {
-      el.disabled = !r.createsObligation;
-    });
-    const classification = card.querySelector('[data-finding-classification]');
-    if (classification) classification.disabled = r.payload.decision !== 'ACCEPTED';
+    const canEdit = !!panel.querySelector('[data-finding-review-submit]');
+    const setDisabled = (selector, off) =>
+      card.querySelectorAll(selector).forEach((el) => {
+        el.disabled = !canEdit || off;
+      });
+    setDisabled('[data-finding-legal-basis], [data-finding-quotation], [data-finding-page]', !r.createsObligation);
+    setDisabled('[data-finding-code], [data-finding-reclassification]', !accepted);
+    setDisabled('[data-finding-disposition]', !accepted || !r.queue);
+    setDisabled('[data-finding-linked-obligation]', !r.linking);
+    setDisabled('[data-finding-supporting-finding], [data-finding-supporting-obligation]', !(r.createsObligation && r.linkRequired));
     const outcome = card.querySelector('[data-finding-outcome]');
     const status = !r.payload.decision
       ? 'Decision required.'
       : r.payload.decision === 'REJECTED'
-        ? 'Rejected — no obligation.'
-        : r.createsObligation
-          ? 'Accepted — will create a DRAFT obligation (requires independent approval).'
-          : r.payload.classification
-            ? 'Accepted — recorded as a finding, not an obligation.'
-            : 'Accepted — select a classification.';
+        ? 'Rejected — no obligation (decision retained for audit).'
+        : !r.payload.regulatoryClassificationCode
+          ? 'Accepted — select a classification code.'
+          : r.createsObligation
+            ? `${queueLabel(r.queue)} — will create a DRAFT obligation (requires independent approval).`
+            : r.payload.disposition
+              ? `${queueLabel(r.queue)} — ${DISPOSITION_LABELS[r.payload.disposition]}; no standalone obligation.`
+              : `${queueLabel(r.queue)} — select a disposition.`;
     if (outcome) outcome.textContent = r.missing.length ? `${status} Missing: ${r.missing.join(', ')}.` : status;
     if (!r.missing.length) complete += 1;
     if (!r.missing.length && r.createsObligation) drafts += 1;

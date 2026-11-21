@@ -37,6 +37,31 @@ const classifications = [
   { id: 'permission', label: 'Permission', createsObligation: false },
   { id: 'scope_exclusion', label: 'Scope exclusion', createsObligation: false },
 ];
+const entry = (code, description, legalStatus, conversionEnabled, destinationQueue, supportingObligationLinkRequired = false) => ({
+  code,
+  description,
+  legalStatus,
+  conversionEnabled,
+  destinationQueue,
+  humanReviewRequired: true,
+  supportingObligationLinkRequired,
+});
+const classificationPolicy = {
+  id: 'p1',
+  regulatorKey: 'REG-FCA',
+  policyVersion: 1,
+  effectiveFrom: '2026-11-21',
+  approvedAt: '2026-11-21T00:00:00Z',
+  nonBindingPublicationTypes: ['finalised_guidance'],
+  entries: [
+    entry('R', 'Rule', 'binding', true, 'OBLIGATION_TRIAGE'),
+    entry('E', 'Evidential provision', 'evidential', true, 'OBLIGATION_TRIAGE', true),
+    entry('G', 'Guidance', 'non_binding', false, 'NON_OBLIGATION_TRIAGE'),
+    entry('GBR', 'Guidance on binding requirements', 'interpretive', false, 'NON_OBLIGATION_TRIAGE'),
+    entry('PERM', 'Permission', 'non_binding', false, 'NON_OBLIGATION_TRIAGE'),
+    entry('UNKNOWN', 'Unknown classification', 'unknown', false, 'EXCEPTION_TRIAGE'),
+  ],
+};
 const finding = (i, statement, pages, suggestion = null) => ({
   findingId: IDS[i],
   number: i + 1,
@@ -49,6 +74,7 @@ const finding = (i, statement, pages, suggestion = null) => ({
   pages,
   sections: [],
   suggestion,
+  triage: { queue: 'EXCEPTION_TRIAGE', provisional: true, exceptionReasons: ['unknown_classification'] },
 });
 const baseView = () => ({
   ok: true,
@@ -57,6 +83,8 @@ const baseView = () => ({
   reviewStatus: 'HUMAN_REVIEW_REQUIRED',
   executionStatus: 'COMPLETED',
   classifications,
+  classificationPolicy,
+  publicationType: 'policy_statement',
   evidence: { kind: 'pdf_primary_v1', extractionRevisionId: 'rev', obligationGradeSuitable: false, pathway: 'human_verified_uat' },
   findings: [
     finding(0, 'PSPs may delay processing payment transactions for up to 4 business days.', [1, 14]),
@@ -215,9 +243,11 @@ async function main() {
   check(!!(await page.$('[data-finding-review-uat-pathway]')), 'human-verified UAT pathway notice shown (obligationGradeSuitable=false)');
   check(await submitDisabled(page), 'submit disabled before any decision');
   check(
-    (await page.$eval(`${card(1)} [data-finding-classification]`, (s) => s.value)) === '',
-    'classification is not pre-selected from the model suggestion',
+    (await page.$eval(`${card(1)} [data-finding-code]`, (s) => s.value)) === '',
+    'classification code is not pre-selected from the model suggestion',
   );
+  check(!!(await page.$('[data-finding-review-policy]')) && /REG-FCA v1/.test(await page.$eval('[data-finding-review-policy]', (el) => el.textContent)), 'active classification policy and version shown');
+  check(/Exception Triage/.test(await page.$eval(`${card(1)} [data-finding-queue]`, (el) => el.textContent)), 'unclassified finding shown in provisional Exception Triage');
 
   // Finding 1: reject.
   await page.check(`${card(0)} [data-finding-decision][value="REJECTED"]`);
@@ -226,7 +256,9 @@ async function main() {
 
   // Finding 2: binding requirement with the copied quotation.
   await page.check(`${card(1)} [data-finding-decision][value="ACCEPTED"]`);
-  await page.selectOption(`${card(1)} [data-finding-classification]`, 'binding_requirement');
+  await page.selectOption(`${card(1)} [data-finding-code]`, 'R');
+  check(/select a disposition/.test(await outcome(page, 1)), 'binding code needs an explicit disposition (no auto-conversion)', await outcome(page, 1));
+  await page.selectOption(`${card(1)} [data-finding-disposition]`, 'CONVERT_TO_DRAFT_OBLIGATION');
   check(/Missing: legal basis, exact quotation, PDF page, comment/.test(await outcome(page, 1)), 'obligation-class acceptance lists missing evidence', await outcome(page, 1));
   await page.click(`${card(1)} details summary`);
   await page.click(`${card(1)} [data-finding-use-suggestion]`);
@@ -237,11 +269,19 @@ async function main() {
   await page.fill(`${card(1)} [data-finding-comment]`, 'Verified against FG24/6 p.14 para 3.13 in the FCA PDF.');
   check(/will create a DRAFT obligation/.test(await outcome(page, 1)), 'complete binding acceptance will create a DRAFT obligation');
 
-  // Finding 3: permission — evidence fields disabled, recorded only.
+  // Finding 3: guidance on binding requirements cannot be converted; permission recorded as supporting information.
   await page.check(`${card(2)} [data-finding-decision][value="ACCEPTED"]`);
-  await page.selectOption(`${card(2)} [data-finding-classification]`, 'permission');
+  await page.selectOption(`${card(2)} [data-finding-code]`, 'GBR');
+  const gbrOptions = await page.$$eval(`${card(2)} [data-finding-disposition] option`, (os) => os.map((o) => o.value).filter(Boolean));
+  check(
+    !gbrOptions.includes('CONVERT_TO_DRAFT_OBLIGATION') && gbrOptions.includes('LINK_TO_EXISTING_OBLIGATION') && gbrOptions.includes('HORIZON_SCANNING'),
+    'guidance on binding requirements offers Non-Obligation Triage actions only (no standalone conversion)',
+    gbrOptions.join(),
+  );
+  await page.selectOption(`${card(2)} [data-finding-code]`, 'PERM');
+  await page.selectOption(`${card(2)} [data-finding-disposition]`, 'SUPPORTING_INFORMATION');
   await page.fill(`${card(2)} [data-finding-comment]`, 'Accurate, but a permission.');
-  check(/recorded as a finding, not an obligation/.test(await outcome(page, 2)), 'accepted permission recorded, not an obligation');
+  check(/Non-Obligation Triage — Record as supporting information; no standalone obligation/.test(await outcome(page, 2)), 'accepted permission recorded as supporting information, not an obligation', await outcome(page, 2));
   check(await page.$eval(`${card(2)} [data-finding-quotation]`, (el) => el.disabled), 'quotation field disabled for a non-obligation classification');
   check(await submitDisabled(page), 'submit stays disabled while finding 4 is undecided');
 
@@ -280,19 +320,28 @@ async function main() {
   const d2 = posted?.decisions?.[1];
   const d3 = posted?.decisions?.[2];
   check(
-    d2?.decision === 'ACCEPTED' && d2.classification === 'binding_requirement' && d2.quotation === QUOTE_2 && d2.quotationPage === 14 && d2.legalBasis === 'PSRs 2017 regulation 86(2C)',
-    'binding acceptance carries classification, legal basis, quotation and page',
+    d2?.decision === 'ACCEPTED' &&
+      d2.regulatoryClassificationCode === 'R' &&
+      d2.disposition === 'CONVERT_TO_DRAFT_OBLIGATION' &&
+      d2.quotation === QUOTE_2 &&
+      d2.quotationPage === 14 &&
+      d2.legalBasis === 'PSRs 2017 regulation 86(2C)',
+    'binding acceptance carries code, disposition, legal basis, quotation and page',
     JSON.stringify(d2),
   );
-  check(d3?.decision === 'ACCEPTED' && d3.classification === 'permission' && d3.quotation === null && d3.legalBasis === null, 'permission acceptance carries no obligation evidence', JSON.stringify(d3));
+  check(
+    d3?.decision === 'ACCEPTED' && d3.regulatoryClassificationCode === 'PERM' && d3.disposition === 'SUPPORTING_INFORMATION' && d3.quotation === null && d3.legalBasis === null,
+    'permission acceptance carries its disposition and no obligation evidence',
+    JSON.stringify(d3),
+  );
 
   findingView = {
     ...baseView(),
     reviewStatus: 'PARTIALLY_ACCEPTED',
     decisions: [
       { finding_id: IDS[0], claim_index: 0, decision: 'REJECTED', classification: null, quotation_page: null, reviewer_comment: 'Permission to delay, not an obligation.', evidence_pathway: 'human_verified_uat', obligation_id: null, skip_reason: null },
-      { finding_id: IDS[1], claim_index: 1, decision: 'ACCEPTED', classification: 'binding_requirement', quotation_page: 14, reviewer_comment: 'Verified.', evidence_pathway: 'human_verified_uat', obligation_id: 'o1000000-0000-4000-8000-000000000001', skip_reason: null },
-      { finding_id: IDS[2], claim_index: 2, decision: 'ACCEPTED', classification: 'permission', quotation_page: null, reviewer_comment: 'Permission.', evidence_pathway: 'human_verified_uat', obligation_id: null, skip_reason: 'classification_not_obligation:permission' },
+      { finding_id: IDS[1], claim_index: 1, decision: 'ACCEPTED', classification: 'binding_requirement', regulatory_classification_code: 'R', legal_status: 'binding', triage_queue: 'OBLIGATION_TRIAGE', exception_reasons: [], disposition: 'CONVERT_TO_DRAFT_OBLIGATION', quotation_page: 14, reviewer_comment: 'Verified.', evidence_pathway: 'human_verified_uat', obligation_id: 'o1000000-0000-4000-8000-000000000001', skip_reason: null },
+      { finding_id: IDS[2], claim_index: 2, decision: 'ACCEPTED', classification: 'permission', regulatory_classification_code: 'PERM', legal_status: 'non_binding', triage_queue: 'NON_OBLIGATION_TRIAGE', exception_reasons: [], disposition: 'SUPPORTING_INFORMATION', quotation_page: null, reviewer_comment: 'Permission.', evidence_pathway: 'human_verified_uat', obligation_id: null, skip_reason: 'not_converted:SUPPORTING_INFORMATION' },
       { finding_id: IDS[3], claim_index: 3, decision: 'REJECTED', classification: null, quotation_page: null, reviewer_comment: 'Duplicate.', evidence_pathway: 'human_verified_uat', obligation_id: null, skip_reason: null },
     ],
   };
@@ -302,7 +351,12 @@ async function main() {
   check(/1 DRAFT obligation\(s\) created/.test(await toast(page)), 'success toast reports the DRAFT obligations created', await toast(page));
   const recorded = await page.$eval('[data-connected-ai-finding-review-recorded]', (el) => el.innerText).catch(() => '');
   check(
-    /DRAFT obligation/.test(recorded) && /Not an obligation \(permission\)/.test(recorded) && /independent approval/.test(recorded),
+    /DRAFT obligation/.test(recorded) &&
+      /Not converted \(Record as supporting information\)/.test(recorded) &&
+      /Non-Obligation Triage/.test(recorded) &&
+      /Obligation Triage/.test(recorded) &&
+      /REG-FCA v1/.test(recorded) &&
+      /independent approval/.test(recorded),
     'recorded decisions shown with obligation link, skip reason and approval reminder',
     recorded.slice(0, 300),
   );

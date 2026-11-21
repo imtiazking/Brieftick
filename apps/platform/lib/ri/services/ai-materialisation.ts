@@ -8,6 +8,7 @@ import { AI_REVIEW_STATUS } from '@/lib/ri/ai/enums';
 import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
 import { resolveAcceptedClaimIndexes as resolveAcceptedClaimIndexesCore } from '@/lib/ri/ai/materialisation-logic.mjs';
 import { obligationCandidateSkipReason } from '@/lib/ri/ai/obligation-chain-gates.mjs';
+import { RiConflictError } from '@/lib/ri/errors';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 
 const CHANGE_USE_CASE = 'UC-RI-002';
@@ -167,6 +168,12 @@ export async function materialiseReviewedClaims(
 
       materialised.push({ entityType: 'regulatory_change', entityId: change.id, claimIndex });
     }
+  }
+
+  if (run.use_case_id === OBLIGATION_USE_CASE) {
+    // Claim-index materialisation carries no regulatory classification; ri_guard_obligation_classification
+    // refuses it. Obligations come only from the per-finding review under the classification policy.
+    throw new RiConflictError('obligation_conversion_requires_finding_review');
   }
 
   if (run.use_case_id === OBLIGATION_USE_CASE) {

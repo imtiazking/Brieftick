@@ -219,15 +219,15 @@ try {
     )
   ).rows[0].id;
 
-  const oblInsert = `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id)
-                     values ($1, $2, $3, 'Firms must test.', 'DRAFT', $4, $5, $6, $7)`;
+  const oblInsert = `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id, metadata)
+                     values ($1, $2, $3, 'Firms must test.', 'DRAFT', $4, $5, $6, $7, '{"regulatoryClassificationCode":"R"}')`;
   await expectError('AI_ASSISTED obligation in Org A blocked', db, 'user_org_a', oblInsert, [ORG_A, legacyChange, pubId, 'AI_ASSISTED', legacyRun, legacyReview, 'user_org_a'], 'experimental_ai_wrong_organisation');
   await expectError('AI_ASSISTED obligation without review blocked', db, ACC, oblInsert, [PILOT, change, pubId, 'AI_ASSISTED', run005, null, ACC], 'ai_assisted_record_requires_review');
 
   const obl = (
     await db.query(
-      `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id)
-       values ($1, $2, $3, 'Firms must test.', 'DRAFT', 'AI_ASSISTED', $4, $5, $6) returning id`,
+      `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id, metadata)
+       values ($1, $2, $3, 'Firms must test.', 'DRAFT', 'AI_ASSISTED', $4, $5, $6, '{"regulatoryClassificationCode":"R"}') returning id`,
       [PILOT, change, pubId, run005, review, ACC],
     )
   ).rows[0].id;
@@ -276,8 +276,8 @@ try {
   const newAiObligation = async () =>
     (
       await db.query(
-        `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id)
-         values ($1, $2, $3, 'Firms must test.', 'DRAFT', 'AI_ASSISTED', $4, $5, $6) returning id`,
+        `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id, metadata)
+         values ($1, $2, $3, 'Firms must test.', 'DRAFT', 'AI_ASSISTED', $4, $5, $6, '{"regulatoryClassificationCode":"R"}') returning id`,
         [PILOT, change, pubId, run005, review, ACC],
       )
     ).rows[0].id;
@@ -331,8 +331,8 @@ try {
   await rls('API: relabelling a MANUAL obligation AI_ASSISTED is blocked', 'user_uat', (c) =>
     upd(c, `update regulatory_obligations set origin = 'AI_ASSISTED' where id = $1`, [manualObl]), 'ai_assisted_provenance_immutable');
 
-  const apiObl = `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id)
-                  values ($1, $2, $3, 'Firms must test.', $4::obligation_status, 'AI_ASSISTED', $5, $6, $7)`;
+  const apiObl = `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, ai_analysis_run_id, ai_analysis_review_id, created_by_user_id, metadata)
+                  values ($1, $2, $3, 'Firms must test.', $4::obligation_status, 'AI_ASSISTED', $5, $6, $7, '{"regulatoryClassificationCode":"R"}')`;
   await rls('API: AI obligation cannot be inserted already OPEN', ACC, (c) =>
     upd(c, apiObl, [PILOT, change, pubId, 'OPEN', run005, review, ACC]), 'ai_obligation_must_start_draft');
   await rls('API: AI obligation creator must be the caller', REQ, (c) =>
