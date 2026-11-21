@@ -30,6 +30,7 @@ const fail = (m) => {
 const check = (cond, m, detail) => (cond ? pass(m) : fail(detail ? `${m} — ${detail}` : m));
 
 let currentUser = USER_A;
+let failNextWorkflow = false;
 const assessments = [];
 const writes = [];
 let seq = 0;
@@ -174,6 +175,11 @@ async function handleApi(route) {
   const wf = path.match(/^\/api\/ri-lab\/applicability\/([^/]+)$/);
   if (wf && method === 'PATCH') {
     const body = JSON.parse(request.postData() || '{}');
+    if (failNextWorkflow) {
+      failNextWorkflow = false;
+      writes.push({ user: currentUser, kind: body.action, id: wf[1], status: 500 });
+      return json(route, 500, { ok: false, error: 'internal_error' });
+    }
     const [status, out] = workflowPatch(decodeURIComponent(wf[1]), body);
     writes.push({ user: currentUser, kind: body.action, id: wf[1], status });
     return json(route, status, out);
@@ -352,6 +358,20 @@ async function main() {
   t = await text(page);
   check(/Saved rationale\s*—/.test(t), 'recovery: B can see the rationale is missing');
   await page.fill('[data-connected-applicability-decision-comments]', 'Rationale missing — please add and resubmit.');
+  failNextWorkflow = true;
+  await page.click('button[data-connected-applicability-reject]');
+  await page.waitForTimeout(600);
+  const failureToast = await page.evaluate(() => document.getElementById('ri-toast')?.textContent || '');
+  check(
+    /applicability action could not be completed/i.test(failureToast) && !/Issues & Actions/.test(failureToast) && liveRow.status === 'IN_REVIEW',
+    'server failure on Reject shows an applicability message (not Issues & Actions); status unchanged',
+    failureToast,
+  );
+  check(
+    (await page.inputValue('[data-connected-applicability-decision-comments]')) === 'Rationale missing — please add and resubmit.',
+    'reviewer comment is kept after the failed attempt',
+  );
+  await page.waitForTimeout(400);
   await page.click('button[data-connected-applicability-reject]');
   await page.waitForTimeout(900);
   check(liveRow.status === 'REJECTED' && liveRow.reviewed_by === USER_B, 'recovery: B rejects → REJECTED, reviewed_by B');

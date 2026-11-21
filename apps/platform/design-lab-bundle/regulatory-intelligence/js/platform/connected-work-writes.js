@@ -60,7 +60,7 @@ export function formatConnectedPatchError(body, fallback) {
   if (body.error === 'connected_writes_disabled') return 'Connected writes are disabled on staging';
   if (body.error === 'forbidden') return 'Insufficient permission to update this record';
   if (body.error === 'internal_error') {
-    return 'The server could not complete this request. Refresh Issues & Actions — if the record appears, do not submit again.';
+    return 'The server could not complete this request. Refresh this page — if the change appears, do not submit again.';
   }
   if (body.error === 'invalid_entity_type') return 'Workflow audit is not available for this entity type yet';
   return body.detail || body.error || fallback;
@@ -445,7 +445,15 @@ export async function patchConnectedPublicationApplicability(state, publicationI
 }
 
 export async function patchConnectedApplicabilityWorkflow(state, assessmentId, payload) {
-  const body = await patchEntity(state, `/applicability/${encodeURIComponent(assessmentId)}`, payload);
+  const base = apiBase(state);
+  const res = await fetch(`${base}/applicability/${encodeURIComponent(assessmentId)}`, {
+    method: 'PATCH',
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(body.reason || body.error || 'applicability_workflow_failed');
   await refreshConnectedWorkflowEvents(state);
   notify();
   return body.assessment;

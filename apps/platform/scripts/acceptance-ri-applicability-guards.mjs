@@ -8,6 +8,7 @@
 import { register } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
+import { readdirSync, readFileSync } from 'node:fs';
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const hook = `
@@ -27,6 +28,27 @@ const PUB = 'ec168f48-1717-4631-8e4a-a3e95df4d5ce';
 const A = 'user_a';
 const B = 'user_b';
 
+// Status values come from the migrations, so the stand-in rejects what Postgres would reject.
+function enumFromMigrations(typeName) {
+  const dir = join(platformRoot, 'supabase', 'migrations');
+  const values = [];
+  for (const file of readdirSync(dir).filter((f) => f.endsWith('.sql')).sort()) {
+    const sql = readFileSync(join(dir, file), 'utf8');
+    const created = sql.match(new RegExp(`create type public\\.${typeName} as enum \\(([^)]*)\\)`, 'i'));
+    if (created) values.push(...[...created[1].matchAll(/'([^']+)'/g)].map((m) => m[1]));
+    for (const added of sql.matchAll(new RegExp(`alter type public\\.${typeName} add value (?:if not exists )?'([^']+)'`, 'gi'))) {
+      values.push(added[1]);
+    }
+  }
+  return new Set(values);
+}
+const APPLICABILITY_STATUSES = enumFromMigrations('applicability_assessment_status');
+function assertStatus(table, row) {
+  if (table === 'applicability_assessments' && row.status !== undefined && !APPLICABILITY_STATUSES.has(row.status)) {
+    throw new Error(`invalid input value for enum applicability_assessment_status: "${row.status}"`);
+  }
+}
+
 const tables = { applicability_assessments: [], workflow_events: [] };
 let clock = 0;
 const now = () => new Date(Date.UTC(2026, 10, 20, 19, 0, ++clock)).toISOString();
@@ -39,6 +61,7 @@ function query(table) {
   let limitN = null;
   const rows = () => tables[table].filter((r) => filters.every((f) => f(r)));
   const run = () => {
+    if (op === 'insert' || op === 'update') assertStatus(table, payload);
     if (op === 'insert') {
       const row = { id: `00000000-0000-4000-8000-${String(++idSeq).padStart(12, '0')}`, created_at: now(), ...payload };
       row.updated_at = row.created_at;

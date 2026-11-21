@@ -9,7 +9,7 @@ import {
   parseEnum,
 } from '@/lib/ri/validation';
 
-const APP_STATUSES = ['DRAFT', 'IN_REVIEW', 'APPROVED', 'SUPERSEDED'] as const;
+const APP_STATUSES = ['DRAFT', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'SUPERSEDED'] as const;
 /** Submitted or approved assessments change only through the maker-checker workflow. */
 const EDITABLE_STATUSES = ['DRAFT', 'REJECTED'];
 

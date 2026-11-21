@@ -846,6 +846,11 @@ const APPLICABILITY_ERROR_MESSAGES = {
   applicability_invalid_transition: 'This assessment has already moved on in the workflow. The page has been refreshed.',
   stale_record: 'Someone else updated this assessment. The page has been refreshed — review it and try again.',
   applicability_rationale_required: 'Enter a rationale before saving the applicability decision.',
+  segregation_of_duties: 'You submitted this assessment. A different authorised reviewer must approve it.',
+  forbidden: 'Your role in this organisation cannot perform this applicability action.',
+  unauthorized: 'Your session expired. Sign in again, then reopen this applicability assessment.',
+  internal_error:
+    'The applicability action could not be completed. This page has been refreshed — check the workflow status before trying again.',
 };
 
 function applicabilityErrorMessage(code) {
