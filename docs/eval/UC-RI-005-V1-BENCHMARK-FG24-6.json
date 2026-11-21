@@ -92,7 +92,8 @@
     }
   },
   "knownV1Defects": [
-    "Materialisation reads candidates[claimIndex] while review and citations use claims[claimIndex]; for this run 11 of 12 indexes point to a different candidate statement.",
+    "materialiseReviewedClaims always throws AI_AUTONOMOUS_ACTION_BLOCKED (approve_change / approve_obligation are permanently blocked), after the review row, review_status, event and notification are already written. No AI materialisation has ever succeeded on staging. UC-RI-005 acceptance is suspended server-side until fixed.",
+    "Latent once materialisation is unblocked: materialisation reads candidates[claimIndex] while review and citations use claims[claimIndex]; for this run 11 of 12 indexes point to a different candidate statement.",
     "The connected review form sends empty acceptedClaimIndexes: ACCEPTED materialises every finding; PARTIALLY_ACCEPTED materialises none. No per-finding selection in the UI (API supports it).",
     "bindingNature is not carried on normalised claims; obligation metadata falls back to the misaligned candidate.",
     "grounding.obligationGradeSuitable=false is not enforced before materialisation.",

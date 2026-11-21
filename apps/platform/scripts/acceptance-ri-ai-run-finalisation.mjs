@@ -303,6 +303,28 @@ async function scenarioReuse(request) {
   }
   check(thrown === 'analysis_not_completed', 'review of a RUNNING run refused (analysis_not_completed)', thrown);
   check(!(tables.ai_analysis_reviews || []).length, 'no review row written');
+
+  // Accepting a completed UC-RI-005 run is suspended until per-finding materialisation is fixed.
+  tables.ai_analysis_runs[0].execution_status = 'COMPLETED';
+  tables.ai_analysis_runs[0].review_status = 'HUMAN_REVIEW_REQUIRED';
+  for (const decision of ['ACCEPTED', 'PARTIALLY_ACCEPTED']) {
+    let err = null;
+    try {
+      await submitAnalysisReview(user, { organisationId: ORG, userId: YAHOO, role: 'REVIEWER', runId: 'run-stuck', decision, acceptedClaimIndexes: [1], rejectedClaimIndexes: [] });
+    } catch (e) {
+      err = e.message;
+    }
+    check(err === 'uc_ri_005_acceptance_suspended', `${decision} of a completed UC-RI-005 run refused`, err);
+  }
+  check(!(tables.ai_analysis_reviews || []).length && !(tables.regulatory_obligations || []).length, 'no review or obligation written for refused acceptance');
+  const { materialiseReviewedClaims } = await import('../lib/ri/services/ai-materialisation.ts');
+  let matErr = null;
+  try {
+    await materialiseReviewedClaims(user, { organisationId: ORG, userId: YAHOO, role: 'REVIEWER', runId: 'run-stuck', reviewId: 'rev-x', decision: 'ACCEPTED', acceptedClaimIndexes: [] });
+  } catch (e) {
+    matErr = e.message;
+  }
+  check(matErr === 'AI_AUTONOMOUS_ACTION_BLOCKED' && !(tables.regulatory_obligations || []).length, 'direct materialisation refused by the autonomous-action guard; no obligation written', matErr);
 }
 
 // 7. History: attempted live UC-RI runs are listed; fixtures and unkeyed runs are not.

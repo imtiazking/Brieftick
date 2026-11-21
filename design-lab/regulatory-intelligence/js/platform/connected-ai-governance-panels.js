@@ -46,13 +46,18 @@ export function renderConnectedAiReviewPanel(run) {
   if (execution && execution !== 'COMPLETED') {
     return `<p class="ri-muted">This run did not complete (${esc(execution)}), so there is no AI output to review. The run is retained for audit.</p>`;
   }
+  const acceptanceSuspended = run.useCaseId === 'UC-RI-005';
   return `<section class="ri-panel" data-connected-ai-review="${esc(run.id)}">
     <h3>Human review (connected)</h3>
     <p class="ri-muted">Review persisted AI output — provenance and citations shown below. New live executions remain disabled in connected staging. Do not accept findings with unresolved evidence without explicit reviewer judgement.</p>
+    ${
+      acceptanceSuspended
+        ? '<p class="ri-callout" data-connected-ai-review-suspended>Accepting obligation-extraction findings is temporarily suspended while per-finding review is fixed. No obligations will be created from this run. Leave the run unreviewed unless it should be rejected outright.</p>'
+        : ''
+    }
     <label>Decision
       <select data-connected-ai-review-decision>
-        <option value="ACCEPTED">Accept</option>
-        <option value="PARTIALLY_ACCEPTED">Partially accept</option>
+        ${acceptanceSuspended ? '' : '<option value="ACCEPTED">Accept</option><option value="PARTIALLY_ACCEPTED">Partially accept</option>'}
         <option value="REJECTED">Reject</option>
       </select>
     </label>

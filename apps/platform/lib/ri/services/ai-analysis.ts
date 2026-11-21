@@ -618,6 +618,12 @@ export async function submitAnalysisReview(
         ? AI_REVIEW_STATUS.PARTIALLY_ACCEPTED
         : AI_REVIEW_STATUS.REJECTED;
 
+  // Obligation materialisation reads candidates by finding index and the review form cannot select
+  // individual findings, so accepting a UC-RI-005 run would create obligations with the wrong text.
+  if (run.use_case_id === 'UC-RI-005' && decision !== AI_REVIEW_STATUS.REJECTED) {
+    throw new RiConflictError('uc_ri_005_acceptance_suspended');
+  }
+
   if (decision !== AI_REVIEW_STATUS.REJECTED) {
     assertAiReviewerSoD({ requestedByUserId: run.requested_by, reviewerUserId: params.userId });
     if (run.use_case_id === 'UC-RI-005') {

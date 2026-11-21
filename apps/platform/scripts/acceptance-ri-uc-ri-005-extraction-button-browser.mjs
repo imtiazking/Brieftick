@@ -252,6 +252,12 @@ async function main() {
   }
   await goToRun(page, DONE);
   check(!!(await page.$('[data-connected-ai-review-submit]')), 'COMPLETED run detail still offers the review form');
+  const decisions = await page.$$eval('[data-connected-ai-review-decision] option', (os) => os.map((o) => o.value));
+  check(
+    JSON.stringify(decisions) === '["REJECTED"]' && !!(await page.$('[data-connected-ai-review-suspended]')),
+    'UC-RI-005 review offers Reject only, with the suspension notice',
+    JSON.stringify(decisions),
+  );
 
   check(pageErrors.length === 0, 'no uncaught page errors', pageErrors.slice(0, 3).join(' | '));
 
