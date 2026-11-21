@@ -14,7 +14,7 @@ const MAX_SECTIONS = 18;
 const MAX_CHARS_PER_SECTION = 3200;
 const MIN_BLOCK_SCORE = 1;
 
-function scoreBlockForObligationExtraction(block) {
+export function scoreBlockForObligationExtraction(block) {
   const text = String(block.extractedText || '').toLowerCase();
   if (!text.trim()) return 0;
   let score = 0;
@@ -36,7 +36,7 @@ function scoreBlockForObligationExtraction(block) {
   return score;
 }
 
-function selectEvidenceBlocksForAnalysis(blocks) {
+export function selectEvidenceBlocksForAnalysis(blocks) {
   const ranked = (blocks || [])
     .map((b) => ({ block: b, score: scoreBlockForObligationExtraction(b) }))
     .filter((r) => r.score >= MIN_BLOCK_SCORE)
