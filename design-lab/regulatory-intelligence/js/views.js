@@ -158,7 +158,7 @@ import {
   renderDashboardAiSummary,
 } from './ai-governance-views.js';
 import { viewAiOperations, viewAiExecutionDetail } from './ai-operations-views.js';
-import { viewAdminHealth, viewAdminReadiness } from './admin-health-views.js';
+import { viewAdminClassificationPolicy, viewAdminHealth, viewAdminReadiness } from './admin-health-views.js';
 import { viewAdminAi } from './admin-ai-views.js';
 import { renderIaObligationPanel } from './ai-workflow-ui.js';
 import { renderAskRiPage } from './ask-ri-ui.js';
@@ -380,6 +380,7 @@ export function renderView(route) {
       if (id === 'health') return viewAdminHealth();
       if (id === 'readiness') return viewAdminReadiness();
       if (id === 'ai') return viewAdminAi();
+      if (id === 'classification-policy') return viewAdminClassificationPolicy();
       return viewAdmin();
     case 'legislation':
       if (id === 'staging') return viewLegislationStaging();
@@ -1980,6 +1981,7 @@ function viewAdmin() {
           <li><a href="#/admin/sources">Regulatory sources &amp; connectors</a></li>
           <li><a href="#/ingestion">Ingestion Monitor</a></li>
           <li><a href="#/notifications">Attention Centre</a></li>
+          <li><a href="#/admin/classification-policy">Regulatory classification policy</a></li>
           <li><a href="#/admin/health">Platform health</a></li>
           <li><a href="#/admin/readiness">Readiness dashboard</a></li>
           <li><a href="#/audit">Audit trail (workflow events)</a></li>

@@ -115,6 +115,11 @@ import {
   renderConnectedAiRunDetail,
 } from './platform/connected-ai-governance-panels.js';
 import {
+  bindClassificationPolicyAdmin,
+  fetchClassificationPolicyAdmin,
+  renderClassificationPolicyAdminPanel,
+} from './platform/connected-classification-policy-admin.js';
+import {
   connectedExtractionErrorMessage,
   markConnectedExtractionSent,
   markConnectedExtractionSettled,
@@ -317,6 +322,7 @@ const TOP_NAV = [
       { path: 'admin/organisation', label: 'Organisation' },
       { path: 'admin/sources', label: 'Sources' },
       { path: 'admin/platform', label: 'Platform' },
+      { path: 'admin/classification-policy', label: 'Classification Policy' },
       { path: 'admin/health', label: 'Health' },
       { path: 'admin/readiness', label: 'Readiness' },
       { path: 'demo', label: 'Demo Journeys' },
@@ -1460,6 +1466,31 @@ function bindViewHandlers() {
       })
       .catch((e) => {
         findingReviewLoad.textContent = e?.message || 'Per-finding review unavailable';
+      });
+  }
+
+  const policyAdminLoad = document.querySelector('[data-connected-classification-policy-admin-load]');
+  if (policyAdminLoad && !policyAdminLoad.dataset.loading) {
+    policyAdminLoad.dataset.loading = '1';
+    const mount = (body) => {
+      const current =
+        document.querySelector('[data-connected-classification-policy-admin]') ||
+        document.querySelector('[data-connected-classification-policy-admin-load]');
+      if (!current) return;
+      current.outerHTML = renderClassificationPolicyAdminPanel(body);
+      bindClassificationPolicyAdmin(document.querySelector('[data-connected-classification-policy-admin]'), body, getState(), {
+        rerender: mount,
+        onChanged: (message) => {
+          showToast(message);
+          fetchClassificationPolicyAdmin(getState()).then(mount).catch((e) => showToast(e?.message || 'Reload failed'));
+        },
+        onError: (e) => showToast(e?.message || 'Classification policy change refused'),
+      });
+    };
+    fetchClassificationPolicyAdmin(getState())
+      .then(mount)
+      .catch((e) => {
+        policyAdminLoad.textContent = e?.message || 'Classification policies unavailable';
       });
   }
 

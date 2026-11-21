@@ -8,6 +8,18 @@ import {
   renderConnectedOperationsMetrics,
   renderConnectedSourceMonitoringSummary,
 } from './platform/connected-operations-ui.js';
+import { renderClassificationPolicyAdminPlaceholder } from './platform/connected-classification-policy-admin.js';
+
+export function viewAdminClassificationPolicy() {
+  const header = pageHeader(
+    'Regulatory classification policy',
+    'Per-regulator codes, legal status, conversion eligibility and triage queues · operator maker-checker',
+  );
+  if (!isConnectedBackendActive(getState())) {
+    return `${header}<p class="ri-callout">Classification policies are administered against the connected backend. Connect to staging to view or change them.</p>`;
+  }
+  return `${header}${renderClassificationPolicyAdminPlaceholder()}<p><a href="#/admin">← Administration</a></p>`;
+}
 
 export function viewAdminHealth() {
   const s = getState();
