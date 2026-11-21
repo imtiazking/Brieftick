@@ -7,7 +7,9 @@ import {
   USER_B,
   applyAllMigrations,
   applyReferenceSeed,
+  approveTestObligations,
   ensureAppRole,
+  insertSubmittedTestObligation,
   insertTestPublication,
   resetAndStartEmbedded,
   stopEmbedded,
@@ -45,21 +47,20 @@ export async function runPhase7c7WorkflowVerification() {
        values ($1,$2,'CHG-A1','Org A change','POLICY','OPEN') returning id`,
       [ORG_A, publicationId],
     );
-    await admin.query(
-      `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, external_key, obligation_statement, status)
-       values ($1,$2,$3,'OBL-A1','Org A obligation','OPEN')`,
-      [ORG_A, chgA.rows[0].id, publicationId],
-    );
     const chgB = await admin.query(
       `insert into regulatory_changes (organisation_id, publication_id, external_key, title, change_type, status)
        values ($1,$2,'CHG-B1','Org B change','POLICY','OPEN') returning id`,
       [ORG_B, publicationId],
     );
-    await admin.query(
-      `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, external_key, obligation_statement, status)
-       values ($1,$2,$3,'OBL-B1','Org B obligation','OPEN')`,
-      [ORG_B, chgB.rows[0].id, publicationId],
-    );
+    for (const [org, user, changeId, externalKey, statement] of [
+      [ORG_A, USER_A, chgA.rows[0].id, 'OBL-A1', 'Org A obligation'],
+      [ORG_B, USER_B, chgB.rows[0].id, 'OBL-B1', 'Org B obligation'],
+    ]) {
+      const id = await withRlsSessionCommit(adminUrl, user, (c) =>
+        insertSubmittedTestObligation(c, { organisationId: org, changeId, publicationId, statement, externalKey }),
+      );
+      await approveTestObligations(adminUrl, org, [id]);
+    }
 
     const stateA = await buildAskRiStateFromClient(admin, ORG_A);
     const ansA = runAskRiDeterministic(stateA, 'How many open obligations are there?');

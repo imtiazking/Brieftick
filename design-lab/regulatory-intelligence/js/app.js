@@ -1157,11 +1157,20 @@ function bindViewHandlers() {
       }
       btn.disabled = true;
       try {
+        const field = (sel) => panel?.querySelector(sel)?.value?.trim() || null;
         const obl = await createConnectedObligation(getState(), {
           regulatoryChangeId: changeId,
           obligationStatement: statement,
-          citation: panel?.querySelector('[data-connected-obligation-create-citation]')?.value?.trim() || null,
-          dueDate: panel?.querySelector('[data-connected-obligation-create-due]')?.value || null,
+          citation: field('[data-connected-obligation-create-citation]'),
+          dueDate: field('[data-connected-obligation-create-due]'),
+          regulatoryClassificationCode: field('[data-connected-obligation-create-code]'),
+          legalBasis: field('[data-connected-obligation-create-legal-basis]'),
+          authoritativeProvision: {
+            reference: field('[data-connected-obligation-create-authority-reference]'),
+            sourceUrl: field('[data-connected-obligation-create-authority-url]'),
+            quotation: field('[data-connected-obligation-create-authority-quotation]'),
+          },
+          supportsObligationId: field('[data-connected-obligation-create-supports]'),
         });
         showToast('Obligation created');
         if (obl?.id) location.hash = `#/obligation/${obl.id}`;

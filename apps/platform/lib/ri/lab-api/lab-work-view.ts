@@ -137,6 +137,12 @@ export type LabObligationView = {
   dataProvenance: RecordProvenanceKind;
   labClassification: ChangeLabClass;
   labClassificationLabel: string;
+  /** Regulatory classification code; null on legacy obligations, which are flagged for classification review. */
+  classificationCode: string | null;
+  legalStatus: string | null;
+  classificationReviewRequired: boolean;
+  supportsObligationId: string | null;
+  authoritativeReference: string | null;
   _connected: true;
 };
 
@@ -338,8 +344,21 @@ export function mapObligationRowToLabView(row: {
     dataProvenance: recordKindForObligationLabClass(labClass),
     labClassification: labClass,
     labClassificationLabel: labChangeClassificationLabel(labClass),
+    classificationCode: metaText(row.metadata, 'regulatoryClassificationCode'),
+    legalStatus: metaText(row.metadata, 'legalStatus'),
+    classificationReviewRequired: !['binding', 'evidential'].includes(metaText(row.metadata, 'legalStatus') ?? ''),
+    supportsObligationId: metaText(row.metadata, 'supportsObligationId'),
+    authoritativeReference:
+      typeof (row.metadata?.authoritativeProvision as Record<string, unknown> | undefined)?.reference === 'string'
+        ? ((row.metadata?.authoritativeProvision as Record<string, unknown>).reference as string)
+        : null,
     _connected: true,
   };
+}
+
+function metaText(metadata: Record<string, unknown> | null | undefined, key: string): string | null {
+  const v = metadata?.[key];
+  return typeof v === 'string' && v ? v : null;
 }
 
 export function mapChangeDetailToLabView(detail: {

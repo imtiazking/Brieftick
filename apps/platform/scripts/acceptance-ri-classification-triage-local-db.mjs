@@ -147,6 +147,36 @@ try {
   const after = await fingerprint();
   check(JSON.stringify(before) === JSON.stringify(after), 'migration applies over existing reviews, decisions and obligations without modifying them', { before, after });
 
+  // A binding obligation created manually against the verified authoritative provision (not the guidance text).
+  const PROVISION = {
+    reference: 'Payment Services Regulations 2017, regulation 86',
+    sourceUrl: 'https://www.legislation.gov.uk/uksi/2017/752/regulation/86',
+    quotation: 'TEST DATA — provision text as verified by the creator on legislation.gov.uk.',
+  };
+  const manualMeta = (code, extra = {}) => ({ regulatoryClassificationCode: code, legalBasis: 'PSRs 2017 reg. 86', authoritativeProvision: PROVISION, ...extra });
+  const insertManual = (sub, meta, { status = 'DRAFT', change = changeId, pub = pubId, createdBy = null, commit = false } = {}) =>
+    attempt(
+      adminUrl,
+      sub,
+      `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status, origin, metadata, created_by_user_id)
+       values ($1, $2, $3, 'Manual obligation', $4::obligation_status, 'MANUAL', $5::jsonb, $6) returning id, metadata, created_by_user_id, status`,
+      [PILOT, change, pub, status, JSON.stringify(meta), createdBy],
+      commit,
+    );
+  const verifiedRes = await insertManual(THIRD, manualMeta('UK'), { commit: true });
+  const verifiedObligation = verifiedRes.rows?.[0]?.id;
+  const verifiedMeta = verifiedRes.rows?.[0]?.metadata;
+  check(
+    verifiedRes.ok &&
+      verifiedRes.rows[0].created_by_user_id === THIRD &&
+      verifiedRes.rows[0].status === 'DRAFT' &&
+      verifiedMeta.legalStatus === 'binding' &&
+      verifiedMeta.authoritativeProvision.verifiedBy === THIRD &&
+      verifiedMeta.authoritativeProvision.sourceUrl === PROVISION.sourceUrl,
+    'manual UK obligation created as DRAFT against the authoritative provision; creator and verifier recorded by the server',
+    verifiedRes.ok ? verifiedRes.rows[0] : verifiedRes.message,
+  );
+
   // 1. Seeded FCA policy.
   const pol = (await db.query(`select p.*, (select count(*)::int from regulatory_classification_policy_entries e where e.policy_id = p.id) n from regulatory_classification_policies p`)).rows;
   check(pol.length === 1 && pol[0].regulator_key === 'REG-FCA' && pol[0].status === 'ACTIVE' && pol[0].policy_version === 1 && pol[0].n === 21, 'FCA v1 active with 21 entries', pol);
@@ -207,7 +237,7 @@ try {
   const good = (ids) => [
     decision(ids, 0, 'REJECTED'),
     decision(ids, 1, 'ACCEPTED', { regulatoryClassificationCode: 'UK', ...evidence2, reclassificationEvidence: reclass }),
-    decision(ids, 2, 'ACCEPTED', { regulatoryClassificationCode: 'GBR', disposition: 'LINK_TO_EXISTING_OBLIGATION', linkedObligationId: manualObligation }),
+    decision(ids, 2, 'ACCEPTED', { regulatoryClassificationCode: 'GBR', disposition: 'LINK_TO_EXISTING_OBLIGATION', linkedObligationId: verifiedObligation }),
     decision(ids, 3, 'ACCEPTED', { regulatoryClassificationCode: 'E', ...evidence4, supportingFindingId: ids[1] }),
     decision(ids, 4, 'ACCEPTED', { regulatoryClassificationCode: 'EXEMPT', disposition: 'ARCHIVE' }),
   ];
@@ -228,9 +258,11 @@ try {
   await refused(variant(3, { supportingFindingId: null, supportingObligationId: manualObligation }), 'finding_binding_link_invalid:4', 'evidential provision linked to an unclassified obligation refused');
   await refused(variant(4, { regulatoryClassificationCode: 'UNKNOWN', disposition: 'CONVERT_TO_DRAFT_OBLIGATION' }), 'finding_classification_unknown:5', 'UNKNOWN classification blocked from conversion');
   await refused(variant(4, { regulatoryClassificationCode: 'EXEMPT', disposition: 'CONVERT_TO_DRAFT_OBLIGATION' }), 'finding_conversion_not_permitted:5', 'exemption cannot be converted');
+  await refused(variant(4, { regulatoryClassificationCode: 'C', disposition: 'CONVERT_TO_DRAFT_OBLIGATION', ...evidence2 }), 'finding_conversion_not_permitted:5', 'C (market abuse conclusive provision) cannot be converted');
   await refused(variant(4, { regulatoryClassificationCode: 'XYZ' }), 'finding_classification_unknown:5', 'code outside the canonical vocabulary refused');
   await refused(variant(1, { disposition: 'ARCHIVE' }), 'finding_disposition_not_allowed:2', 'an Obligation Triage finding cannot be archived');
   await refused(variant(2, { linkedObligationId: '00000000-0000-4000-8000-000000000000' }), 'finding_linked_obligation_required:3', 'link to a non-existent obligation refused');
+  await refused(variant(2, { linkedObligationId: manualObligation }), 'finding_linked_obligation_unclassified:3', 'guidance cannot be linked to an unclassified legacy obligation');
   await refused(variant(1, { legalBasis: '' }), 'finding_legal_basis_required:2', 'missing legal basis blocks conversion');
   const counts = async (runId) =>
     (
@@ -282,9 +314,18 @@ try {
     decisions.map((d) => [d.triage_queue, d.disposition, d.exception_reasons]),
   );
   check(decisions[0].exception_reasons.includes('conflicting_classifications'), 'rejected finding 1 recorded in Exception Triage with its reason (model labels conflict)', decisions[0].exception_reasons);
-  check(decisions[2].linked_obligation_id === manualObligation && decisions[2].obligation_id === null, 'guidance finding linked to the existing obligation, no new obligation', decisions[2]);
-  const report = (await db.query(`select reporting_category, count(*)::int n from ri_obligation_legal_classification where organisation_id = $1 group by 1 order by 1`, [PILOT])).rows;
-  check(JSON.stringify(report) === JSON.stringify([{ reporting_category: 'BINDING_OBLIGATION', n: 1 }, { reporting_category: 'EVIDENTIAL_REQUIREMENT', n: 1 }, { reporting_category: 'UNCLASSIFIED', n: 2 }]), 'reporting separates binding obligations, evidential requirements and unclassified records', report);
+  check(decisions[2].linked_obligation_id === verifiedObligation && decisions[2].obligation_id === null, 'guidance finding linked to the verified binding obligation and retained as supporting triage; no new obligation', decisions[2]);
+  const report = (await db.query(`select reporting_category, classification_review_required, count(*)::int n from ri_obligation_legal_classification where organisation_id = $1 group by 1, 2 order by 1`, [PILOT])).rows;
+  check(
+    JSON.stringify(report) ===
+      JSON.stringify([
+        { reporting_category: 'BINDING_OBLIGATION', classification_review_required: false, n: 2 },
+        { reporting_category: 'EVIDENTIAL_REQUIREMENT', classification_review_required: false, n: 1 },
+        { reporting_category: 'UNCLASSIFIED', classification_review_required: true, n: 2 },
+      ]),
+    'reporting separates binding obligations and evidential requirements; legacy unclassified obligations flagged for review',
+    report,
+  );
   const resubmit = await submit(YAHOO, run1, good(run1.ids), true);
   const c2 = await counts(run1.runId);
   check(!resubmit.ok && resubmit.message === 'already_reviewed' && c2.obligations === 2 && c2.decisions === 5, 'duplicate submission refused; no duplicate obligations', { msg: resubmit.message, c2 });
@@ -324,7 +365,7 @@ try {
     decision(fgIds, 0, 'ACCEPTED', { regulatoryClassificationCode: 'PERM', disposition: 'SUPPORTING_INFORMATION' }),
     decision(fgIds, 1, 'ACCEPTED', { regulatoryClassificationCode: 'GBR', disposition: 'HORIZON_SCANNING' }),
     decision(fgIds, 2, 'ACCEPTED', { regulatoryClassificationCode: 'GBR', disposition: 'RECLASSIFICATION_REQUESTED' }),
-    decision(fgIds, 3, 'ACCEPTED', { regulatoryClassificationCode: 'GBR', disposition: 'LINK_TO_EXISTING_OBLIGATION', linkedObligationId: manualObligation }),
+    decision(fgIds, 3, 'ACCEPTED', { regulatoryClassificationCode: 'GBR', disposition: 'LINK_TO_EXISTING_OBLIGATION', linkedObligationId: verifiedObligation }),
     decision(fgIds, 4, 'ACCEPTED', { regulatoryClassificationCode: 'UNKNOWN' }),
   ], true);
   const fgDecisions = (await db.query(`select triage_queue, disposition from ai_analysis_finding_decisions where analysis_run_id = $1 order by claim_index`, [fgRunId])).rows;
@@ -353,22 +394,38 @@ try {
     );
   let r = await direct({ findingId: run1.ids[2] });
   check(!r.ok && r.message === 'finding_conversion_requires_review', 'manual obligation carrying a finding ID refused (must go through review)', r.message);
-  r = await direct({ regulatoryClassificationCode: 'G' });
-  check(!r.ok && r.message === 'obligation_conversion_not_permitted:G', 'direct insert classified as Guidance refused', r.message);
-  r = await direct({ regulatoryClassificationCode: 'GBR' });
-  check(!r.ok && r.message === 'obligation_conversion_not_permitted:GBR', 'direct insert classified as guidance on binding requirements refused', r.message);
-  r = await direct({ regulatoryClassificationCode: 'UNKNOWN' });
-  check(!r.ok && r.message === 'obligation_conversion_not_permitted:UNKNOWN', 'direct insert with UNKNOWN classification refused', r.message);
+  for (const code of ['G', 'GBR', 'C', 'UNKNOWN']) {
+    r = await direct(manualMeta(code));
+    check(!r.ok && r.message === `obligation_conversion_not_permitted:${code}`, `manual obligation classified as ${code} refused even with a legal basis and provision`, r.message);
+  }
+  r = await direct({});
+  check(!r.ok && r.message === 'obligation_classification_required', 'manual obligation without a classification refused', r.message);
   r = await direct({ legalStatus: 'binding' });
   check(!r.ok && r.message === 'obligation_classification_required', 'self-asserted legal status without a code refused', r.message);
-  r = await direct({ regulatoryClassificationCode: 'R' }, 'MANUAL', fgPub, fgChange);
-  check(!r.ok && r.message === 'obligation_source_not_binding', 'binding-coded obligation from finalised guidance refused', r.message);
-  r = await direct({ regulatoryClassificationCode: 'E', supportsObligationId: manualObligation });
+  r = await direct({ regulatoryClassificationCode: 'R' });
+  check(!r.ok && r.message === 'obligation_legal_basis_required', 'manual obligation without a legal basis refused', r.message);
+  r = await direct(manualMeta('R', { authoritativeProvision: undefined }));
+  check(!r.ok && r.message === 'obligation_authoritative_provision_required', 'manual obligation without a verified authoritative provision refused', r.message);
+  r = await direct(manualMeta('R', { authoritativeProvision: { ...PROVISION, quotation: 'too short' } }));
+  check(!r.ok && r.message === 'obligation_authoritative_provision_required', 'authoritative provision without a substantive quotation refused', r.message);
+  r = await direct(manualMeta('R', { authoritativeProvision: { ...PROVISION, sourceUrl: 'https://www.fca.org.uk/publication/finalised-guidance/fg24-6.pdf' } }));
+  check(!r.ok && r.message === 'obligation_authoritative_source_invalid', 'guidance document cited as the authoritative source refused', r.message);
+  r = await insertManual(YAHOO, manualMeta('R'), { status: 'OPEN' });
+  check(!r.ok && r.message === 'classified_obligation_must_start_draft', 'manual obligation cannot be created already approved', r.message);
+  r = await insertManual(YAHOO, manualMeta('R'), { createdBy: THIRD });
+  check(!r.ok && r.message === 'obligation_creator_mismatch', 'creator cannot be attributed to another user', r.message);
+  r = await direct(manualMeta('R'), 'MANUAL', fgPub, fgChange);
+  check(r.ok && r.rows[0].metadata.legalStatus === 'binding' && r.rows[0].metadata.sourcePublicationType === 'finalised_guidance', 'binding requirement referenced by finalised guidance can be recorded against the verified authoritative provision (rolled back)', r.ok ? r.rows[0].metadata : r.message);
+  r = await direct(manualMeta('E'));
+  check(!r.ok && r.message === 'obligation_binding_link_required', 'manual evidential provision without a binding obligation refused', r.message);
+  r = await direct(manualMeta('E', { supportsObligationId: manualObligation }));
   check(!r.ok && r.message === 'obligation_binding_link_required', 'evidential obligation linked to an unclassified obligation refused', r.message);
-  r = await direct({ regulatoryClassificationCode: 'R', legalStatus: 'evidential' });
+  r = await direct(manualMeta('E', { supportsObligationId: verifiedObligation }));
+  check(r.ok && r.rows[0].metadata.legalStatus === 'evidential' && r.rows[0].metadata.supportsObligationId === verifiedObligation, 'manual evidential provision linked to a verified binding obligation allowed and kept distinct (rolled back)', r.ok ? r.rows[0].metadata : r.message);
+  r = await direct(manualMeta('R', { legalStatus: 'evidential' }));
   check(r.ok && r.rows[0].metadata.legalStatus === 'binding' && r.rows[0].metadata.classificationPolicyVersion === 1, 'manual R obligation allowed; legal status stamped by the server, not the client (rolled back)', r.ok ? r.rows[0].metadata : r.message);
-  r = await direct({});
-  check(r.ok, 'existing unclassified manual creation path still works (reported as UNCLASSIFIED)', r.message);
+  const cEntry = (await db.query(`select conversion_enabled, destination_queue, legal_status, description from regulatory_classification_policy_entries where policy_id = $1 and code = 'C'`, [fcaId])).rows[0];
+  check(cEntry.conversion_enabled === false && cEntry.destination_queue === 'NON_OBLIGATION_TRIAGE' && /market abuse/i.test(cEntry.description), 'C (market abuse conclusive provisions) routes to Non-Obligation Triage without conversion', cEntry);
   const review1 = result.reviewId;
   const aiNoCode = await attempt(
     adminUrl,
@@ -393,7 +450,39 @@ try {
   const thirdApprove = await attempt(adminUrl, THIRD, `update regulatory_obligations set status = 'OPEN' where id = $1`, [bind.id]);
   check(!yahooApprove.ok && yahooApprove.message === 'segregation_of_duties' && !gmailApprove.ok && gmailApprove.message === 'segregation_of_duties' && thirdApprove.ok, 'maker-checker unchanged: Yahoo and Gmail refused, independent third reviewer can approve (rolled back)', { y: yahooApprove.message, g: gmailApprove.message, t: thirdApprove.ok });
 
+  // 6b. Manual classified obligations follow the same maker-checker as AI-generated ones.
+  const REVIEWER_USER = 'user_reviewer_role';
+  await db.query(`insert into organisation_memberships (organisation_id, clerk_user_id, role, status) values ($1, $2, 'REVIEWER'::platform_role, 'active')`, [PILOT, REVIEWER_USER]);
+  const setStatus = (sub, status, commit = false) => attempt(adminUrl, sub, `update regulatory_obligations set status = $2::obligation_status where id = $1`, [verifiedObligation, status], commit);
+  const skip = await setStatus(YAHOO, 'OPEN');
+  check(!skip.ok && skip.message === 'classified_obligation_invalid_transition', 'manual classified DRAFT cannot skip review straight to OPEN', skip.message);
+  const manualSubmit = await setStatus(THIRD, 'IN_REVIEW', true);
+  const submitter = (await db.query(`select status, ai_submitted_by_user_id from regulatory_obligations where id = $1`, [verifiedObligation])).rows[0];
+  check(manualSubmit.ok && submitter.status === 'IN_REVIEW' && submitter.ai_submitted_by_user_id === THIRD, 'creator submits the manual obligation; submitter recorded by the server', submitter);
+  const selfApprove = await setStatus(THIRD, 'OPEN');
+  check(!selfApprove.ok && selfApprove.message === 'segregation_of_duties', 'creator cannot approve their own manual obligation', selfApprove.message);
+  const viewerApprove = await setStatus(VIEWER, 'OPEN');
+  check(
+    viewerApprove.ok ? viewerApprove.rowCount === 0 : ['classified_obligation_review_role_required', 'insufficient_role'].includes(viewerApprove.message),
+    'viewer cannot approve',
+    viewerApprove,
+  );
+  const reviewerApprove = await setStatus(REVIEWER_USER, 'OPEN');
+  check(reviewerApprove.ok && reviewerApprove.rowCount === 1, 'independent REVIEWER can approve the manual obligation (rolled back)', reviewerApprove.message);
+  const managerApprove = await setStatus(YAHOO, 'OPEN');
+  check(managerApprove.ok && managerApprove.rowCount === 1, 'independent compliance manager can approve the manual obligation (rolled back)', managerApprove.message);
+  const reviewerEdit = await attempt(adminUrl, REVIEWER_USER, `update regulatory_obligations set obligation_statement = 'edited' where id = $1`, [verifiedObligation]);
+  check(!reviewerEdit.ok && reviewerEdit.message === 'insufficient_role', 'REVIEWER may approve or return, not edit', reviewerEdit.message);
+  const reattribute = await attempt(adminUrl, YAHOO, `update regulatory_obligations set created_by_user_id = $2 where id = $1`, [verifiedObligation, YAHOO]);
+  check(!reattribute.ok && reattribute.message === 'classified_obligation_provenance_immutable', 'creator of a classified obligation cannot be rewritten', reattribute.message);
+  const legacyEdit = await attempt(adminUrl, YAHOO, `update regulatory_obligations set obligation_statement = 'Existing manual obligation (unclassified, edited).' where id = $1`, [manualObligation]);
+  check(legacyEdit.ok && legacyEdit.rowCount === 1, 'legacy unclassified obligations are not deleted or locked; they remain editable pending review (rolled back)', legacyEdit.message);
+
   // 7. Tenant isolation.
+  const outsiderUpdate = await attempt(adminUrl, OUTSIDER, `update regulatory_obligations set status = 'OPEN' where id = $1`, [verifiedObligation]);
+  check(outsiderUpdate.ok && outsiderUpdate.rowCount === 0, 'other organisation cannot approve or change this organisation’s obligations', outsiderUpdate);
+  const outsiderInsert = await insertManual(OUTSIDER, manualMeta('R'));
+  check(!outsiderInsert.ok, 'other organisation cannot create obligations in this organisation', outsiderInsert.message);
   const outsiderDecisions = await attempt(adminUrl, OUTSIDER, `select count(*)::int n from ai_analysis_finding_decisions`);
   const outsiderReport = await attempt(adminUrl, OUTSIDER, `select count(*)::int n from ri_obligation_legal_classification`);
   const memberReport = await attempt(adminUrl, VIEWER, `select count(*)::int n from ri_obligation_legal_classification where organisation_id = $1`, [PILOT]);

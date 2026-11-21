@@ -2,7 +2,8 @@
 -- Refuses once any finding has been triaged under a classification policy, any classified obligation exists or
 -- any policy version beyond the seeded FCA v1 has been proposed: that history must not be discarded.
 -- After this script, re-apply the ri_submit_ai_finding_review definition from
--- 20261121120000_ai_finding_review_draft_materialisation.sql (which re-enables guidance-on-requirement conversion).
+-- 20261121120000_ai_finding_review_draft_materialisation.sql (which re-enables guidance-on-requirement conversion)
+-- and the ri_guard_role_scoped_update definition from 20261120140000_ri_role_aware_rls.sql.
 
 do $$
 begin
@@ -13,8 +14,11 @@ begin
   end if;
 end $$;
 
+drop trigger if exists ri_guard_classified_obligation_status on public.regulatory_obligations;
+drop function if exists public.ri_guard_classified_obligation_status();
 drop trigger if exists ri_guard_obligation_classification on public.regulatory_obligations;
 drop function if exists public.ri_guard_obligation_classification();
+drop function if exists public.ri_authoritative_source_url_ok(text);
 drop view if exists public.ri_obligation_legal_classification;
 
 alter table public.ai_analysis_finding_decisions

@@ -46,9 +46,17 @@ export function parseLabObligationCreateBody(body: unknown): {
   priority: string | null;
   dueDate: string | null;
   status: string | undefined;
+  regulatoryClassificationCode: string | null;
+  legalBasis: string | null;
+  authoritativeProvision: { reference: string | null; sourceUrl: string | null; quotation: string | null } | null;
+  supportsObligationId: string | null;
 } {
   if (!body || typeof body !== 'object') throw new RiValidationError('invalid_body');
   const raw = body as Record<string, unknown>;
+  const provision =
+    raw.authoritativeProvision && typeof raw.authoritativeProvision === 'object'
+      ? (raw.authoritativeProvision as Record<string, unknown>)
+      : null;
   return {
     regulatoryChangeId: parseUuid(raw.regulatoryChangeId, 'regulatory_change_id'),
     obligationStatement: parseRequiredText(raw.obligationStatement, 'obligation_statement', 12000),
@@ -56,6 +64,16 @@ export function parseLabObligationCreateBody(body: unknown): {
     priority: parseOptionalText(raw.priority, 100),
     dueDate: parseOptionalDate(raw.dueDate),
     status: typeof raw.status === 'string' ? raw.status : undefined,
+    regulatoryClassificationCode: parseOptionalText(raw.regulatoryClassificationCode, 16),
+    legalBasis: parseOptionalText(raw.legalBasis, 2000),
+    authoritativeProvision: provision
+      ? {
+          reference: parseOptionalText(provision.reference, 500),
+          sourceUrl: parseOptionalText(provision.sourceUrl, 2000),
+          quotation: parseOptionalText(provision.quotation, 4000),
+        }
+      : null,
+    supportsObligationId: parseOptionalText(raw.supportsObligationId, 64),
   };
 }
 

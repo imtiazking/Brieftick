@@ -10,7 +10,9 @@ import {
   USER_B,
   applyAllMigrations,
   applyReferenceSeed,
+  approveTestObligations,
   ensureAppRole,
+  insertSubmittedTestObligation,
   insertTestPublication,
   resetAndStartEmbedded,
   stopEmbedded,
@@ -56,16 +58,11 @@ export async function runPhase5WorkflowVerification() {
          values ($1, $2, 'APPROVED', $3) returning id`,
         [ORG_A, chg.rows[0].id, USER_A],
       );
-      const oblA = await c.query(
-        `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status)
-         values ($1, $2, $3, 'OBL-A TEST', 'OPEN') returning id`,
-        [ORG_A, chg.rows[0].id, publicationId],
-      );
-      const oblB = await c.query(
-        `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status)
-         values ($1, $2, $3, 'OBL-B TEST', 'OPEN') returning id`,
-        [ORG_A, chg.rows[0].id, publicationId],
-      );
+      const submitObligation = async (statement) => ({
+        rows: [{ id: await insertSubmittedTestObligation(c, { organisationId: ORG_A, changeId: chg.rows[0].id, publicationId, statement }) }],
+      });
+      const oblA = await submitObligation('OBL-A TEST');
+      const oblB = await submitObligation('OBL-B TEST');
       const pol = await c.query(
         `insert into policies (organisation_id, name, owner_user_id, status) values ($1, 'Policy A', $2, 'ACTIVE') returning id`,
         [ORG_A, USER_A],
@@ -164,6 +161,7 @@ export async function runPhase5WorkflowVerification() {
         arFail: arFail.rows[0].id,
       };
     });
+    await approveTestObligations(adminUrl, ORG_A, [ids.oblA, ids.oblB]);
 
     pass('ORG-A full downstream fixture chain');
 

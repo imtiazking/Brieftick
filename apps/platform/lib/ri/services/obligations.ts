@@ -4,8 +4,15 @@ import {
   assessAiObligationTransition,
   isAiObligationReviewDecision,
 } from '@/lib/ri/ai/ai-obligation-workflow.mjs';
+import { assessApplicabilityGate } from '@/lib/ri/ai/obligation-chain-gates.mjs';
+import { validateManualObligationClassification } from '@/lib/ri/classification/regulatory-classification-policy.mjs';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
-import { RiConflictError } from '@/lib/ri/errors';
+import { RiConflictError, RiValidationError } from '@/lib/ri/errors';
+import { getApplicabilityForPublication } from '@/lib/ri/services/applicability';
+import {
+  loadActiveClassificationPolicy,
+  loadPublicationClassificationContext,
+} from '@/lib/ri/services/classification-policy';
 import { canRi } from '@/lib/ri/permissions';
 import {
   buildLockedChildMetadataFromParentChange,
@@ -56,6 +63,10 @@ export async function createObligation(
     effectiveDate?: string | null;
     dueDate?: string | null;
     status?: string;
+    regulatoryClassificationCode?: string | null;
+    legalBasis?: string | null;
+    authoritativeProvision?: { reference?: string | null; sourceUrl?: string | null; quotation?: string | null } | null;
+    supportsObligationId?: string | null;
   },
 ) {
   const changeId = parseUuid(params.regulatoryChangeId, 'regulatory_change_id');
@@ -68,10 +79,52 @@ export async function createObligation(
   if (!change) throw new Error('not_found');
 
   const status = params.status ? parseObligationStatus(params.status) : 'DRAFT';
-  const { metadata: rowMetadata, recordProvenance, labClass } = buildLockedChildMetadataFromParentChange({
+  if (status !== 'DRAFT') throw new RiValidationError('classified_obligation_must_start_draft');
+
+  const classificationContext = await loadPublicationClassificationContext(supabase, change.publication_id ?? null);
+  const policy = await loadActiveClassificationPolicy(supabase, classificationContext.regulatorKey);
+  const provision = params.authoritativeProvision
+    ? {
+        reference: parseOptionalText(params.authoritativeProvision.reference, 500),
+        sourceUrl: parseOptionalText(params.authoritativeProvision.sourceUrl, 2000),
+        quotation: parseOptionalText(params.authoritativeProvision.quotation, 4000),
+      }
+    : null;
+  const classification = validateManualObligationClassification({
+    policy,
+    input: {
+      code: params.regulatoryClassificationCode ?? null,
+      legalBasis: params.legalBasis ?? null,
+      authoritativeProvision: provision,
+      supportsObligationId: params.supportsObligationId ?? null,
+    },
+  });
+  if (!classification.ok) {
+    if (classification.error === 'classification_policy_unavailable' || classification.error.startsWith('obligation_conversion_not_permitted')) {
+      throw new RiConflictError(classification.error);
+    }
+    throw new RiValidationError(classification.error);
+  }
+
+  if (change.publication_id) {
+    const applicability = assessApplicabilityGate(
+      await getApplicabilityForPublication(supabase, params.organisationId, change.publication_id),
+    );
+    if (!applicability.ok) throw new RiConflictError(applicability.code);
+  }
+
+  const { metadata: lockedMetadata, recordProvenance, labClass } = buildLockedChildMetadataFromParentChange({
     parentChange: change,
     actorUserId: params.userId,
   });
+  const code = String(params.regulatoryClassificationCode).trim();
+  const rowMetadata = {
+    ...lockedMetadata,
+    regulatoryClassificationCode: code,
+    legalBasis: parseOptionalText(params.legalBasis, 2000),
+    authoritativeProvision: provision,
+    ...(params.supportsObligationId ? { supportsObligationId: parseUuid(params.supportsObligationId, 'supports_obligation_id') } : {}),
+  };
 
   const { data, error } = await supabase
     .from('regulatory_obligations')
@@ -86,12 +139,17 @@ export async function createObligation(
       effective_date: parseOptionalDate(params.effectiveDate),
       due_date: parseOptionalDate(params.dueDate),
       owner_user_id: params.userId,
+      created_by_user_id: params.userId,
       status,
       metadata: rowMetadata,
     })
     .select()
     .single();
-  if (error) throw new Error(error.message);
+  if (error) {
+    const dbCode = error.message.split(' ')[0];
+    if (/^(obligation_|classification_policy_unavailable|classified_obligation_)/.test(dbCode)) throw new RiConflictError(dbCode);
+    throw new Error(error.message);
+  }
 
   await recordWorkflowEvent(supabase, {
     organisationId: params.organisationId,
@@ -100,12 +158,18 @@ export async function createObligation(
     eventType: 'OBLIGATION_CREATED',
     actorUserId: params.userId,
     toStatus: status,
-    metadata: workflowMetadataForChildRecordCreate({
-      recordProvenance,
-      parentChangeId: changeId,
-      actorUserId: params.userId,
-      labClass,
-    }),
+    metadata: {
+      ...workflowMetadataForChildRecordCreate({
+        recordProvenance,
+        parentChangeId: changeId,
+        actorUserId: params.userId,
+        labClass,
+      }),
+      regulatoryClassificationCode: code,
+      legalStatus: classification.entry.legalStatus,
+      classificationPolicyVersion: policy?.policyVersion ?? null,
+      authoritativeReference: provision?.reference ?? null,
+    },
   });
 
   return data;
@@ -237,16 +301,20 @@ export async function updateObligation(
   );
   const { data: existing } = await supabase
     .from('regulatory_obligations')
-    .select('status, updated_at, owner_user_id, origin, created_by_user_id, ai_analysis_run_id')
+    .select('status, updated_at, owner_user_id, origin, created_by_user_id, ai_analysis_run_id, metadata')
     .eq('id', params.obligationId)
     .eq('organisation_id', params.organisationId)
     .single();
   if (!existing) throw new Error('not_found');
+  const governed =
+    existing.origin === 'AI_ASSISTED' ||
+    Boolean((existing.metadata as Record<string, unknown> | null)?.classificationPolicyId);
   if (
     params.reviewDecisionOnly &&
     !isAiObligationReviewDecision({
       fieldKeys: Object.keys(params.fields),
       origin: existing.origin,
+      governed,
       from: existing.status,
       to: params.fields.status,
     })
@@ -287,7 +355,7 @@ export async function updateObligation(
   }
   if ('status' in params.fields) {
     const next = parseObligationStatus(params.fields.status);
-    if (existing.origin === 'AI_ASSISTED' && next !== existing.status) {
+    if (governed && next !== existing.status) {
       await assertAiObligationTransition(supabase, {
         organisationId: params.organisationId,
         obligationId: params.obligationId,
@@ -309,6 +377,8 @@ export async function updateObligation(
   const { data, error } = await updateQuery.select().single();
   if (error) {
     if (params.reviewDecisionOnly && error.code === 'PGRST116') throw new Error('stale_record');
+    const dbCode = error.message.split(' ')[0];
+    if (/^(classified_obligation_|obligation_classification_immutable)/.test(dbCode)) throw new RiConflictError(dbCode);
     throw new Error(error.message);
   }
   if ('status' in update) {

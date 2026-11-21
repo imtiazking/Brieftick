@@ -261,7 +261,12 @@ check('PATCH without obligation:write is review-decision only', /reviewDecisionO
 check('PATCH passes reviewDecisionOnly to the service', /reviewDecisionOnly,\s*\n\s*\}\);/.test(patchBody), true);
 for (const root of ['design-lab', 'apps/platform/design-lab-bundle']) {
   const panels = readFileSync(join(REPO, root, 'regulatory-intelligence/js/platform/connected-obligation-panels.js'), 'utf8');
-  check(`${root}: review panel only for submitted AI obligations`, panels.includes("o.origin !== 'AI_ASSISTED' || o.statusCode !== 'IN_REVIEW'"), true);
+  check(
+    `${root}: review panel only for submitted governed (AI or classified manual) obligations`,
+    panels.includes("const governed = o.origin === 'AI_ASSISTED' || (o.classificationCode && !o.classificationReviewRequired);") &&
+      panels.includes("if (!governed || o.statusCode !== 'IN_REVIEW') return '';"),
+    true,
+  );
 }
 
 if (failures) {

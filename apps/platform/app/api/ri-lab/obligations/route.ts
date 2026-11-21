@@ -82,6 +82,10 @@ export async function POST(request: Request) {
       priority: input.priority,
       dueDate: input.dueDate,
       status: input.status,
+      regulatoryClassificationCode: input.regulatoryClassificationCode,
+      legalBasis: input.legalBasis,
+      authoritativeProvision: input.authoritativeProvision,
+      supportsObligationId: input.supportsObligationId,
     });
     const { data: withJoin } = await ctx.supabase
       .from('regulatory_obligations')

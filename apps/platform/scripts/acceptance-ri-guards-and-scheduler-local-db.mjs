@@ -15,6 +15,7 @@ import {
   platformRoot,
   resetAndStartEmbedded,
   stopEmbedded,
+  TEST_MANUAL_OBLIGATION_METADATA,
   withRlsSession,
   withRlsSessionCommit,
 } from './local-db/harness.mjs';
@@ -248,13 +249,16 @@ try {
   await expectOk('IN_REVIEW → OPEN by independent checker allowed', db, CHK, setStatus, [obl, 'OPEN']);
   await expectOk('IN_REVIEW → DRAFT (return) allowed', db, ACC, setStatus, [obl, 'DRAFT']);
 
+  // A pre-existing (legacy, unclassified) Partner UAT obligation, as created before 20261121180000.
+  await db.query('alter table regulatory_obligations disable trigger ri_guard_obligation_classification');
   const manualObl = (
     await db.query(
       `insert into regulatory_obligations (organisation_id, publication_id, obligation_statement, status) values ($1, $2, 'Manual', 'DRAFT') returning id`,
       [UAT, pubId],
     )
   ).rows[0].id;
-  await expectOk('MANUAL obligation DRAFT → OPEN unaffected (Partner UAT unchanged)', db, 'user_uat', setStatus, [manualObl, 'OPEN']);
+  await db.query('alter table regulatory_obligations enable trigger ri_guard_obligation_classification');
+  await expectOk('legacy MANUAL obligation DRAFT → OPEN unaffected (Partner UAT unchanged)', db, 'user_uat', setStatus, [manualObl, 'OPEN']);
 
   // ---- direct Supabase API access: non-superuser role under RLS with the caller's Clerk identity ----
   const CHK2 = 'user_second_checker';
@@ -386,8 +390,10 @@ try {
   await rls('API: manual obligation edit + status change unaffected', 'user_uat', async (c) => {
     await upd(c, `update regulatory_obligations set obligation_statement = 'Manual (edited)', status = 'CLOSED' where id = $1`, [manualObl]);
   });
-  await rls('API: manual obligation may be created OPEN (manual workflow unchanged)', 'user_uat', (c) =>
-    upd(c, `insert into regulatory_obligations (organisation_id, publication_id, obligation_statement, status, created_by_user_id) values ($1, $2, 'Manual open', 'OPEN', 'user_uat')`, [UAT, pubId]));
+  await rls('API: new manual obligation without a classification refused', 'user_uat', (c) =>
+    upd(c, `insert into regulatory_obligations (organisation_id, publication_id, obligation_statement, status, created_by_user_id) values ($1, $2, 'Manual open', 'DRAFT', 'user_uat')`, [UAT, pubId]), 'obligation_classification_required');
+  await rls('API: new classified manual obligation cannot be created OPEN', 'user_uat', (c) =>
+    upd(c, `insert into regulatory_obligations (organisation_id, publication_id, obligation_statement, status, metadata) values ($1, $2, 'Manual open', 'OPEN', $3::jsonb)`, [UAT, pubId, JSON.stringify(TEST_MANUAL_OBLIGATION_METADATA)]), 'classified_obligation_must_start_draft');
   const manualChange = (
     await db.query(
       `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status, origin) values ($1, $2, 'Manual change', 'TEST', 'DRAFT', 'MANUAL') returning id`,

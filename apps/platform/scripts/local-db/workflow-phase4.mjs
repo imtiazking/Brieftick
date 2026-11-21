@@ -10,7 +10,9 @@ import {
   USER_B,
   applyAllMigrations,
   applyReferenceSeed,
+  approveTestObligations,
   ensureAppRole,
+  insertSubmittedTestObligation,
   insertTestPublication,
   resetAndStartEmbedded,
   stopEmbedded,
@@ -45,7 +47,7 @@ export async function runPhase4WorkflowVerification() {
       );
     }
 
-    await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
+    const ids = await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
       await c.query(
         `insert into organisation_publications (organisation_id, publication_id, triage_status, relevance_status)
          values ($1, $2, 'IN_REVIEW', 'RELEVANT')`,
@@ -72,18 +74,20 @@ export async function runPhase4WorkflowVerification() {
          values ($1, $2, 'DRAFT', $3) returning id`,
         [ORG_A, chg.rows[0].id, USER_A],
       );
-      const obl = await c.query(
-        `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status)
-         values ($1, $2, $3, 'Obligation A', 'OPEN') returning id`,
-        [ORG_A, chg.rows[0].id, publicationId],
-      );
+      const oblId = await insertSubmittedTestObligation(c, {
+        organisationId: ORG_A,
+        changeId: chg.rows[0].id,
+        publicationId,
+        statement: 'Obligation A',
+      });
       await c.query(
         `insert into workflow_events (organisation_id, entity_type, entity_id, event_type, actor_user_id)
          values ($1, 'regulatory_change', $2, 'CHANGE_CREATED', $3)`,
         [ORG_A, chg.rows[0].id, USER_A],
       );
-      return { chgId: chg.rows[0].id, impId: imp.rows[0].id, oblId: obl.rows[0].id, chg2Id: chg2.rows[0].id };
+      return { chgId: chg.rows[0].id, impId: imp.rows[0].id, oblId, chg2Id: chg2.rows[0].id };
     });
+    await approveTestObligations(adminUrl, ORG_A, [ids.oblId]);
 
     await withRlsSessionCommit(adminUrl, USER_B, async (c) => {
       await c.query(

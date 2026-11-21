@@ -1,5 +1,6 @@
 /**
- * Status workflow for AI-assisted obligations (origin = AI_ASSISTED). Manual obligations are not affected.
+ * Status workflow for AI-assisted obligations (origin = AI_ASSISTED) and classified manual obligations
+ * (created under a regulatory classification policy). Unclassified legacy manual obligations are not affected.
  *
  * DRAFT → IN_REVIEW      submitted by the accepting Compliance Manager (or another member)
  * IN_REVIEW → DRAFT      returned for rework
@@ -49,13 +50,15 @@ const REVIEW_DECISION_STATUSES = new Set(['OPEN', 'DRAFT']);
  * or return for rework (IN_REVIEW → DRAFT). It is the only obligation change open to obligation:review
  * without obligation:write; the independence rules above still apply to the approval.
  *
- * @param {{ fieldKeys: string[], origin?: string | null, from: string, to: unknown }} p
+ * Classified manual obligations (`governed`) follow the same approval workflow.
+ *
+ * @param {{ fieldKeys: string[], origin?: string | null, governed?: boolean, from: string, to: unknown }} p
  */
 export function isAiObligationReviewDecision(p) {
   return (
     p.fieldKeys.length === 1 &&
     p.fieldKeys[0] === 'status' &&
-    p.origin === 'AI_ASSISTED' &&
+    (p.origin === 'AI_ASSISTED' || p.governed === true) &&
     p.from === 'IN_REVIEW' &&
     typeof p.to === 'string' &&
     REVIEW_DECISION_STATUSES.has(p.to)

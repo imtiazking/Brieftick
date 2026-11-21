@@ -20,6 +20,7 @@ import {
   resetAndStartEmbedded,
   seedTenantFixtures,
   stopEmbedded,
+  TEST_MANUAL_OBLIGATION_METADATA,
   withRlsSession,
   withRlsSessionCommit,
 } from './local-db/harness.mjs';
@@ -243,11 +244,11 @@ async function verifyRelationshipAuthority(adminUrl, publicationId, fixtureA) {
   const oblB = await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
     const { rows } = await c.query(
       `insert into public.regulatory_obligations (
-        organisation_id, regulatory_change_id, publication_id, obligation_statement, status, external_key
+        organisation_id, regulatory_change_id, publication_id, obligation_statement, status, external_key, metadata
       ) values ($1, (select id from public.regulatory_changes where organisation_id = $1 limit 1),
-        $2, 'TEST Obligation B shared control', 'OPEN', 'TEST-OBL-A-SHARED')
+        $2, 'TEST Obligation B shared control', 'DRAFT', 'TEST-OBL-A-SHARED', $3::jsonb)
       returning id`,
-      [ORG_A, publicationId],
+      [ORG_A, publicationId, JSON.stringify(TEST_MANUAL_OBLIGATION_METADATA)],
     );
     await c.query(
       `insert into public.obligation_control_links (organisation_id, obligation_id, control_id)
@@ -327,36 +328,39 @@ async function verifyObligationTaxonomy(adminUrl, publicationId) {
     'HISTORIC',
     'CLOSED',
   ];
-  await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
-    for (const st of statuses) {
-      await c.query(
-        `insert into public.regulatory_obligations (
-          organisation_id, publication_id, obligation_statement, status, external_key
-        ) values ($1, $2, $3, $4::public.obligation_status, $5)`,
-        [ORG_A, publicationId, `TEST taxonomy ${st}`, st, `TEST-TAX-${st}`],
-      );
-    }
-  });
-
-  const { rows } = await withRlsSession(adminUrl, USER_A, async (c) =>
-    c.query(
-      `select status::text as status, count(*)::int as n
-       from public.regulatory_obligations
-       where organisation_id = $1 and external_key like 'TEST-TAX-%'
-       group by status`,
-      [ORG_A],
-    ),
+  const { rows: labels } = await withRlsSession(adminUrl, USER_A, async (c) =>
+    c.query(`select unnest(enum_range(null::public.obligation_status))::text as status`),
   );
-  const byStatus = Object.fromEntries(rows.map((r) => [r.status, r.n]));
+  const enumStatuses = labels.map((r) => r.status);
   for (const st of statuses) {
-    assert(byStatus[st] === 1, `obligation status ${st} insert accepted`);
+    assert(enumStatuses.includes(st), `obligation status ${st} defined`);
   }
+  const grouped = Object.values(OBLIGATION_STATUS_GROUPS).flat();
+  assert(
+    grouped.length === enumStatuses.length && enumStatuses.every((s) => grouped.includes(s)),
+    'status groups (pre-active, active, terminal) cover the status taxonomy exactly',
+  );
+  assert(OBLIGATION_STATUS_GROUPS.active.includes('OVERDUE'), 'OVERDUE is explicit status (not ambiguous open)');
 
-  const activeCount = statuses
-    .filter((s) => OBLIGATION_STATUS_GROUPS.active.includes(s))
-    .reduce((sum, s) => sum + (byStatus[s] || 0), 0);
-  assert(activeCount === 3, 'ACTIVE group (OPEN, IN_PROGRESS, OVERDUE) count = 3');
-  assert(byStatus.OVERDUE === 1, 'OVERDUE is explicit status (not ambiguous open)');
+  const insertManual = (st) =>
+    withRlsSessionCommit(adminUrl, USER_A, (c) =>
+      c.query(
+        `insert into public.regulatory_obligations (
+          organisation_id, publication_id, obligation_statement, status, external_key, metadata
+        ) values ($1, $2, $3, $4::public.obligation_status, $5, $6::jsonb)`,
+        [ORG_A, publicationId, `TEST taxonomy ${st}`, st, `TEST-TAX-${st}`, JSON.stringify(TEST_MANUAL_OBLIGATION_METADATA)],
+      ),
+    ).then(
+      () => 'inserted',
+      (e) => e.message,
+    );
+  assert((await insertManual('DRAFT')) === 'inserted', 'classified manual obligation insert accepted as DRAFT');
+  for (const st of statuses.filter((s) => s !== 'DRAFT')) {
+    assert(
+      (await insertManual(st)) === 'classified_obligation_must_start_draft',
+      `manual obligation cannot be created directly as ${st} (must start DRAFT and pass review)`,
+    );
+  }
 }
 
 async function verifyDeleteProvenance(adminClient, publicationId) {

@@ -13,10 +13,13 @@
 --   Triage, and only an accepted finding in Obligation Triage with disposition CONVERT_TO_DRAFT_OBLIGATION
 --   becomes a DRAFT obligation. Guidance on binding requirements is no longer convertible. AI confidence is
 --   never read.
--- * ri_guard_obligation_classification refuses any AI_ASSISTED obligation, and any obligation carrying a
---   classification code or finding ID, whose code is not convertible under the active policy for the
---   publication's regulator (including direct API inserts), and stamps the legal status for reporting.
---   Classification metadata cannot be edited afterwards.
+-- * ri_guard_obligation_classification refuses every new obligation (AI-assisted or manual, including direct
+--   API inserts) without a code that is convertible under the active policy for the publication's regulator,
+--   and stamps the legal status for reporting. Manual obligations must also start DRAFT, record their creator,
+--   carry a legal basis and an authoritative provision (reference, quotation and an official source URL —
+--   never guidance text), and then pass the same maker-checker approval as AI obligations
+--   (ri_guard_classified_obligation_status). Classification metadata cannot be edited afterwards. Existing
+--   unclassified obligations are untouched and reported as classification_review_required.
 -- Additive only: no existing rows are modified; new constraints on existing tables are NOT VALID.
 
 create or replace function public.ri_classification_code_legal_status(p_code text)
@@ -395,7 +398,7 @@ begin
       ('EU', 'Applicable EU legislation', true, 'OBLIGATION_TRIAGE'),
       ('TS', 'Binding technical standards', true, 'OBLIGATION_TRIAGE'),
       ('G', 'Guidance', false, 'NON_OBLIGATION_TRIAGE'),
-      ('C', 'Conduct', false, 'NON_OBLIGATION_TRIAGE'),
+      ('C', 'Conduct — market abuse conclusive provisions (FCA Handbook MAR); binding conduct rules are R', false, 'NON_OBLIGATION_TRIAGE'),
       ('GBR', 'Guidance on binding requirements', false, 'NON_OBLIGATION_TRIAGE'),
       ('REC', 'Recommendations', false, 'NON_OBLIGATION_TRIAGE'),
       ('NBE', 'Non-binding expectations', false, 'NON_OBLIGATION_TRIAGE'),
@@ -449,6 +452,15 @@ alter table public.ai_analysis_finding_decisions
   ) not valid;
 
 -- Obligation register guard: classification-driven conversion eligibility for every insert path.
+create or replace function public.ri_authoritative_source_url_ok(p_url text)
+returns boolean
+language sql
+immutable
+set search_path = ''
+as $$
+  select coalesce(btrim(p_url) ~* '^https://(www\.)?(legislation\.gov\.uk|handbook\.fca\.org\.uk|eur-lex\.europa\.eu)/', false)
+$$;
+
 create or replace function public.ri_guard_obligation_classification()
 returns trigger
 language plpgsql
@@ -458,8 +470,12 @@ as $$
 declare
   v_keys constant text[] := array[
     'regulatoryClassificationCode', 'legalStatus', 'classificationPolicyId', 'classificationPolicyVersion',
-    'regulatorKey', 'supportsObligationId', 'findingId'
+    'regulatorKey', 'supportsObligationId', 'findingId', 'authoritativeProvision', 'legalBasis',
+    'sourcePublicationType'
   ];
+  v_actor text := public.current_clerk_user_id();
+  v_manual boolean;
+  v_provision jsonb;
   v_meta jsonb := coalesce(new.metadata, '{}'::jsonb);
   v_code text := nullif(btrim(coalesce(v_meta ->> 'regulatoryClassificationCode', '')), '');
   v_publication uuid;
@@ -478,17 +494,12 @@ begin
     return new;
   end if;
 
-  if v_meta ? 'findingId' and new.origin is distinct from 'AI_ASSISTED' then
+  v_manual := new.origin is distinct from 'AI_ASSISTED';
+  if v_meta ? 'findingId' and v_manual then
     raise exception 'finding_conversion_requires_review' using errcode = '42501';
   end if;
   if v_code is null then
-    if new.origin = 'AI_ASSISTED' then
-      raise exception 'obligation_classification_required' using errcode = '42501';
-    end if;
-    if v_meta ?| array['legalStatus', 'classificationPolicyId', 'classificationPolicyVersion', 'supportsObligationId'] then
-      raise exception 'obligation_classification_required' using errcode = '42501';
-    end if;
-    return new;
+    raise exception 'obligation_classification_required' using errcode = '42501';
   end if;
 
   v_publication := coalesce(
@@ -514,7 +525,37 @@ begin
   if not v_entry.conversion_enabled then
     raise exception 'obligation_conversion_not_permitted:%', v_code using errcode = '42501';
   end if;
-  if v_type = any (v_policy.non_binding_publication_types) then
+
+  if v_manual then
+    if new.status::text <> 'DRAFT' then
+      raise exception 'classified_obligation_must_start_draft' using errcode = '23514';
+    end if;
+    if v_actor <> '' then
+      if new.created_by_user_id is not null and new.created_by_user_id::text <> v_actor then
+        raise exception 'obligation_creator_mismatch' using errcode = '42501';
+      end if;
+      new.created_by_user_id := v_actor;
+    elsif new.created_by_user_id is null then
+      raise exception 'obligation_creator_required' using errcode = '42501';
+    end if;
+    if length(btrim(coalesce(v_meta ->> 'legalBasis', ''))) < 3 then
+      raise exception 'obligation_legal_basis_required' using errcode = '42501';
+    end if;
+    v_provision := v_meta -> 'authoritativeProvision';
+    if jsonb_typeof(v_provision) is distinct from 'object'
+       or length(btrim(coalesce(v_provision ->> 'reference', ''))) < 3
+       or length(btrim(coalesce(v_provision ->> 'quotation', ''))) < 20 then
+      raise exception 'obligation_authoritative_provision_required' using errcode = '42501';
+    end if;
+    if not public.ri_authoritative_source_url_ok(v_provision ->> 'sourceUrl') then
+      raise exception 'obligation_authoritative_source_invalid' using errcode = '42501';
+    end if;
+  end if;
+
+  -- Guidance text cannot ground a binding classification: an AI finding from a non-binding publication is
+  -- refused; a manual obligation may sit on that publication's change only because it was verified against
+  -- the authoritative provision itself and still needs independent approval.
+  if not v_manual and v_type = any (v_policy.non_binding_publication_types) then
     raise exception 'obligation_source_not_binding' using errcode = '42501';
   end if;
   if v_entry.supporting_obligation_link_required then
@@ -538,8 +579,16 @@ begin
     'legalStatus', v_entry.legal_status,
     'classificationPolicyId', v_policy.id,
     'classificationPolicyVersion', v_policy.policy_version,
-    'regulatorKey', v_regulator
+    'regulatorKey', v_regulator,
+    'sourcePublicationType', v_type
   );
+  if v_manual then
+    new.metadata := new.metadata || jsonb_build_object(
+      'authoritativeProvision', v_provision || jsonb_build_object(
+        'verifiedBy', new.created_by_user_id, 'verifiedAt', to_jsonb(now())
+      )
+    );
+  end if;
   return new;
 end;
 $$;
@@ -547,6 +596,114 @@ $$;
 create trigger ri_guard_obligation_classification
   before insert or update of metadata on public.regulatory_obligations
   for each row execute function public.ri_guard_obligation_classification();
+
+-- Classified manual obligations follow the AI obligation approval workflow: DRAFT → IN_REVIEW (submitter
+-- recorded in ai_submitted_by_user_id) → OPEN only by an active non-viewer member who is neither the creator
+-- nor the submitter. Unclassified legacy manual obligations keep their existing lifecycle.
+create or replace function public.ri_guard_classified_obligation_status()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+declare
+  v_actor text := public.current_clerk_user_id();
+begin
+  if old.origin::text = 'AI_ASSISTED' or not (coalesce(old.metadata, '{}'::jsonb) ? 'classificationPolicyId') then
+    return new;
+  end if;
+  if new.origin is distinct from old.origin or new.created_by_user_id is distinct from old.created_by_user_id
+     or new.organisation_id is distinct from old.organisation_id then
+    raise exception 'classified_obligation_provenance_immutable' using errcode = '42501';
+  end if;
+  new.ai_submitted_by_user_id := old.ai_submitted_by_user_id;
+  if new.status = old.status then
+    return new;
+  end if;
+
+  if old.status::text = 'DRAFT' then
+    if new.status::text <> 'IN_REVIEW' then
+      raise exception 'classified_obligation_invalid_transition' using errcode = '23514';
+    end if;
+    if v_actor = '' then
+      raise exception 'classified_obligation_submission_requires_user' using errcode = '42501';
+    end if;
+    new.ai_submitted_by_user_id := v_actor;
+    return new;
+  end if;
+
+  if old.status::text = 'IN_REVIEW' then
+    if new.status::text not in ('DRAFT', 'OPEN') then
+      raise exception 'classified_obligation_invalid_transition' using errcode = '23514';
+    end if;
+    if new.status::text = 'OPEN' then
+      if v_actor = '' then
+        raise exception 'classified_obligation_approval_requires_user' using errcode = '42501';
+      end if;
+      if old.ai_submitted_by_user_id is null then
+        raise exception 'classified_obligation_submitter_unknown' using errcode = '23514';
+      end if;
+      if v_actor = any (array[old.created_by_user_id::text, old.ai_submitted_by_user_id]) then
+        raise exception 'segregation_of_duties' using errcode = '42501';
+      end if;
+      if not exists (
+        select 1
+          from public.organisation_memberships m
+         where m.organisation_id = new.organisation_id
+           and m.clerk_user_id = v_actor
+           and m.status::text = 'active'
+           and m.role::text <> 'VIEWER'
+      ) then
+        raise exception 'classified_obligation_review_role_required' using errcode = '42501';
+      end if;
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+create trigger ri_guard_classified_obligation_status
+  before update on public.regulatory_obligations
+  for each row execute function public.ri_guard_classified_obligation_status();
+
+-- Below ANALYST, the only obligation change remains the approve / return decision; it now also covers
+-- classified manual obligations (from 20261120140000, AI_ASSISTED only).
+create or replace function public.ri_guard_role_scoped_update()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+declare
+  v_actor text := public.current_clerk_user_id();
+begin
+  if v_actor = '' or public.ri_has_min_role(old.organisation_id, 'ANALYST'::public.platform_role) then
+    return new;
+  end if;
+
+  if tg_table_name = 'regulatory_obligations' then
+    if (old.origin::text = 'AI_ASSISTED' or coalesce(old.metadata, '{}'::jsonb) ? 'classificationPolicyId')
+       and old.status::text = 'IN_REVIEW'
+       and new.status::text in ('OPEN', 'DRAFT')
+       and (to_jsonb(new) - array['status', 'updated_at', 'ai_submitted_by_user_id'])
+         = (to_jsonb(old) - array['status', 'updated_at', 'ai_submitted_by_user_id']) then
+      return new;
+    end if;
+  elsif tg_table_name = 'ai_analysis_runs' then
+    if (to_jsonb(new) - array['review_status', 'updated_at']) = (to_jsonb(old) - array['review_status', 'updated_at'])
+       and exists (
+         select 1
+           from public.ai_analysis_reviews v
+          where v.analysis_run_id = new.id
+            and v.organisation_id = new.organisation_id
+            and v.reviewer_user_id = v_actor
+            and v.decision::text = new.review_status::text
+       ) then
+      return new;
+    end if;
+  end if;
+
+  raise exception 'insufficient_role' using errcode = '42501';
+end;
+$$;
 
 -- Reporting: independently binding obligations vs evidential compliance requirements.
 create or replace view public.ri_obligation_legal_classification
@@ -564,7 +721,8 @@ select o.id as obligation_id,
        end as reporting_category,
        nullif(o.metadata ->> 'supportsObligationId', '')::uuid as supports_obligation_id,
        (o.metadata ->> 'classificationPolicyVersion')::integer as classification_policy_version,
-       o.metadata ->> 'regulatorKey' as regulator_key
+       o.metadata ->> 'regulatorKey' as regulator_key,
+       coalesce(o.metadata ->> 'legalStatus', '') not in ('binding', 'evidential') as classification_review_required
   from public.regulatory_obligations o;
 
 grant select on public.ri_obligation_legal_classification to authenticated;
@@ -971,6 +1129,13 @@ begin
                 where o.id = v_item.linked_obligation::uuid and o.organisation_id = p_organisation_id
              ) then
             raise exception 'finding_linked_obligation_required:%', v_n using errcode = '22023';
+          end if;
+          if not exists (
+            select 1 from public.regulatory_obligations o
+             where o.id = v_item.linked_obligation::uuid
+               and o.metadata ->> 'legalStatus' in ('binding', 'evidential')
+          ) then
+            raise exception 'finding_linked_obligation_unclassified:%', v_n using errcode = '22023';
           end if;
         end if;
         v_skip := 'not_converted:' || v_disposition;

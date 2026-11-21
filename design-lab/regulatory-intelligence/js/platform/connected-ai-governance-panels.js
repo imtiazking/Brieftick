@@ -223,6 +223,7 @@ const FINDING_REVIEW_ERRORS = {
   finding_disposition_invalid: 'select a valid disposition',
   finding_disposition_not_allowed: 'this disposition is not available in the finding’s triage queue',
   finding_linked_obligation_required: 'enter the existing obligation to link to',
+  finding_linked_obligation_unclassified: 'link only to a classified binding or evidential obligation verified against the authoritative provision',
   finding_quotation_required: 'an exact quotation is required',
 };
 

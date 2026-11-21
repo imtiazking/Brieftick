@@ -154,7 +154,15 @@ export async function createObligationAction(formData: FormData) {
     priority: (formData.get('priority') as string) || null,
     effectiveDate: (formData.get('effective_date') as string) || null,
     dueDate: (formData.get('due_date') as string) || null,
-    status: (formData.get('status') as string) || 'DRAFT',
+    status: 'DRAFT',
+    regulatoryClassificationCode: (formData.get('regulatory_classification_code') as string) || null,
+    legalBasis: (formData.get('legal_basis') as string) || null,
+    authoritativeProvision: {
+      reference: (formData.get('authoritative_reference') as string) || null,
+      sourceUrl: (formData.get('authoritative_source_url') as string) || null,
+      quotation: (formData.get('authoritative_quotation') as string) || null,
+    },
+    supportsObligationId: (formData.get('supports_obligation_id') as string) || null,
   });
   revalidateRi();
   redirect(`/ri/obligations/${row.id}`);

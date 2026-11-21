@@ -112,6 +112,9 @@ const A = TRIAGE_QUEUES.OBLIGATION;
 const B = TRIAGE_QUEUES.NON_OBLIGATION;
 const X = TRIAGE_QUEUES.EXCEPTION;
 
+/** FCA Handbook "C": market abuse conclusive provisions (MAR). Binding FCA conduct rules are classified R. */
+export const C_DESCRIPTION = 'Conduct — market abuse conclusive provisions (FCA Handbook MAR); binding conduct rules are R';
+
 /** Mirrors the seed in migration 20261121180000. */
 export const FCA_POLICY_V1 = Object.freeze({
   regulatorKey: 'REG-FCA',
@@ -127,7 +130,7 @@ export const FCA_POLICY_V1 = Object.freeze({
     entry('EU', 'Applicable EU legislation', true, A),
     entry('TS', 'Binding technical standards', true, A),
     entry('G', 'Guidance', false, B),
-    entry('C', 'Conduct', false, B),
+    entry('C', C_DESCRIPTION, false, B),
     entry('GBR', 'Guidance on binding requirements', false, B),
     entry('REC', 'Recommendations', false, B),
     entry('NBE', 'Non-binding expectations', false, B),
@@ -310,4 +313,57 @@ export function obligationLegalCategory(obligation) {
   if (status === 'binding') return 'binding';
   if (status === 'evidential') return 'evidential';
   return 'unclassified';
+}
+
+/**
+ * Official sources a binding provision must be verified against (mirrors ri_authoritative_source_url_ok).
+ * Guidance text is never an authoritative source for a binding classification.
+ */
+export const AUTHORITATIVE_SOURCE_PATTERN = /^https:\/\/(www\.)?(legislation\.gov\.uk|handbook\.fca\.org\.uk|eur-lex\.europa\.eu)\//i;
+export const MIN_AUTHORITATIVE_QUOTATION_LENGTH = 20;
+
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Manual obligations follow the same classification policy as AI conversions, verified against the
+ * authoritative provision itself. Mirrors ri_guard_obligation_classification for MANUAL inserts.
+ *
+ * @param {{
+ *   policy: any,
+ *   input: {
+ *     code?: string | null,
+ *     legalBasis?: string | null,
+ *     authoritativeProvision?: { reference?: string | null, sourceUrl?: string | null, quotation?: string | null } | null,
+ *     supportsObligationId?: string | null,
+ *   },
+ * }} p
+ * @returns {{ ok: true, entry: any } | { ok: false, error: string }}
+ */
+export function validateManualObligationClassification({ policy, input }) {
+  const code = String(input?.code ?? '').trim();
+  if (!code) return { ok: false, error: 'obligation_classification_required' };
+  if (!policy) return { ok: false, error: 'classification_policy_unavailable' };
+  const e = policyEntry(policy, code);
+  if (!e || !CANONICAL_CLASSIFICATION_CODES[code]) return { ok: false, error: 'obligation_classification_unknown' };
+  if (!e.conversionEnabled || !CONVERTIBLE_LEGAL_STATUSES.has(e.legalStatus)) {
+    return { ok: false, error: `obligation_conversion_not_permitted:${code}` };
+  }
+  if (String(input.legalBasis ?? '').trim().length < 3) return { ok: false, error: 'obligation_legal_basis_required' };
+  const ap = input.authoritativeProvision;
+  if (
+    !ap ||
+    String(ap.reference ?? '').trim().length < 3 ||
+    String(ap.quotation ?? '').trim().length < MIN_AUTHORITATIVE_QUOTATION_LENGTH
+  ) {
+    return { ok: false, error: 'obligation_authoritative_provision_required' };
+  }
+  if (!AUTHORITATIVE_SOURCE_PATTERN.test(String(ap.sourceUrl ?? '').trim())) {
+    return { ok: false, error: 'obligation_authoritative_source_invalid' };
+  }
+  const link = String(input.supportsObligationId ?? '').trim();
+  if (e.supportingObligationLinkRequired && !UUID_PATTERN.test(link)) {
+    return { ok: false, error: 'obligation_binding_link_required' };
+  }
+  if (!e.supportingObligationLinkRequired && link) return { ok: false, error: 'obligation_binding_link_not_applicable' };
+  return { ok: true, entry: e };
 }

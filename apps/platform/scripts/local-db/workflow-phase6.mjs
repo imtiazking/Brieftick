@@ -5,7 +5,10 @@ import {
   USER_A,
   applyAllMigrations,
   applyReferenceSeed,
+  approveTestObligations,
   ensureAppRole,
+  insertSubmittedTestObligation,
+  insertTestPublication,
   resetAndStartEmbedded,
   stopEmbedded,
   withRlsSessionCommit,
@@ -190,23 +193,35 @@ export async function runPhase6IngestionVerification() {
     else fail('ingestion runs');
 
     const pubId = globalPub.rows[0].id;
-    await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
-      await c.query(
-        `insert into organisation_publications (organisation_id, publication_id, triage_status, relevance_status)
-         values ($1, $2, 'NEW', 'RELEVANT')`,
-        [ORG_A, pubId],
-      );
-      const chg = await c.query(
-        `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status)
-         values ($1, $2, 'Manual change from ingested pub', 'TEST', 'OPEN') returning id`,
-        [ORG_A, pubId],
-      );
-      await c.query(
-        `insert into regulatory_obligations (organisation_id, regulatory_change_id, publication_id, obligation_statement, status)
-         values ($1, $2, $3, 'Human obligation after ingestion', 'OPEN')`,
-        [ORG_A, chg.rows[0].id, pubId],
-      );
-    });
+    const fcaPubId = await insertTestPublication(admin);
+    const manualChain = (publicationId) =>
+      withRlsSessionCommit(adminUrl, USER_A, async (c) => {
+        await c.query(
+          `insert into organisation_publications (organisation_id, publication_id, triage_status, relevance_status)
+           values ($1, $2, 'NEW', 'RELEVANT')`,
+          [ORG_A, publicationId],
+        );
+        const chg = await c.query(
+          `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status)
+           values ($1, $2, 'Manual change from ingested pub', 'TEST', 'OPEN') returning id`,
+          [ORG_A, publicationId],
+        );
+        return insertSubmittedTestObligation(c, {
+          organisationId: ORG_A,
+          changeId: chg.rows[0].id,
+          publicationId,
+          statement: 'Human obligation after ingestion',
+        });
+      });
+    const noPolicy = await manualChain(pubId).then(
+      () => 'created',
+      (e) => e.message,
+    );
+    if (noPolicy === 'classification_policy_unavailable') {
+      pass('manual obligation for a regulator without an active classification policy (PSR) refused (fail closed)');
+    } else fail(`PSR manual obligation without a classification policy: ${noPolicy}`);
+    const humanObligation = await manualChain(fcaPubId);
+    await approveTestObligations(adminUrl, ORG_A, [humanObligation]);
     pass('downstream workflow regression: manual Publication → Change → Obligation');
   } catch (e) {
     fail(e.message);

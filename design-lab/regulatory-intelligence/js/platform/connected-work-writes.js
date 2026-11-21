@@ -144,7 +144,7 @@ export async function createConnectedObligation(state, payload) {
     body: JSON.stringify(payload),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'obligation_create_failed');
+  if (!res.ok || !body.ok) throw new Error(body.detail || body.error || 'obligation_create_failed');
   const cat = initConnectedCatalogueState(state);
   if (body.obligation) {
     mergeObligation(cat, body.obligation);

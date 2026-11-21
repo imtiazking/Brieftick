@@ -177,6 +177,50 @@ export async function insertTestPublication(adminClient) {
   return pubRes.rows[0].id;
 }
 
+/** Minimum metadata a manually created obligation needs (20261121180000): code, legal basis, verified provision. */
+export const TEST_MANUAL_OBLIGATION_METADATA = Object.freeze({
+  regulatoryClassificationCode: 'R',
+  legalBasis: 'TEST DATA — FCA Handbook rule',
+  authoritativeProvision: {
+    reference: 'TEST DATA — FCA Handbook PRIN 2A.1.1R',
+    sourceUrl: 'https://www.handbook.fca.org.uk/handbook/PRIN/2A/1.html',
+    quotation: 'TEST DATA — rule text as verified on the FCA Handbook.',
+  },
+});
+
+export const TEST_OBLIGATION_CHECKER = 'user_test_obligation_checker';
+
+/** Independent approval (IN_REVIEW → OPEN) of submitted manual obligations by a separate checker member. */
+export async function approveTestObligations(adminUrl, organisationId, obligationIds) {
+  const admin = new pg.Client({ connectionString: adminUrl });
+  await admin.connect();
+  try {
+    await admin.query(
+      `insert into public.organisation_memberships (organisation_id, clerk_user_id, role, status)
+       values ($1, $2, 'COMPLIANCE_MANAGER'::public.platform_role, 'active')
+       on conflict (organisation_id, clerk_user_id) do nothing`,
+      [organisationId, TEST_OBLIGATION_CHECKER],
+    );
+  } finally {
+    await admin.end();
+  }
+  await withRlsSessionCommit(adminUrl, TEST_OBLIGATION_CHECKER, (c) =>
+    c.query(`update public.regulatory_obligations set status = 'OPEN' where id = any($1::uuid[])`, [obligationIds]),
+  );
+}
+
+/** Maker creates and submits a classified manual obligation in the caller's transaction; returns its id. */
+export async function insertSubmittedTestObligation(client, { organisationId, changeId = null, publicationId, statement, externalKey = null }) {
+  const { rows } = await client.query(
+    `insert into public.regulatory_obligations (
+      organisation_id, regulatory_change_id, publication_id, obligation_statement, status, external_key, metadata
+    ) values ($1, $2, $3, $4, 'DRAFT', $5, $6::jsonb) returning id`,
+    [organisationId, changeId, publicationId, statement, externalKey, JSON.stringify(TEST_MANUAL_OBLIGATION_METADATA)],
+  );
+  await client.query(`update public.regulatory_obligations set status = 'IN_REVIEW' where id = $1`, [rows[0].id]);
+  return rows[0].id;
+}
+
 export async function seedTenantFixtures(adminUrl, publicationId) {
   const admin = new pg.Client({ connectionString: adminUrl });
   await admin.connect();
@@ -217,14 +261,15 @@ export async function seedTenantFixtures(adminUrl, publicationId) {
       const controlId = ctrl.rows[0].id;
       const obl = await client.query(
         `insert into public.regulatory_obligations (
-          organisation_id, regulatory_change_id, publication_id, obligation_statement, status, external_key
-        ) values ($1, $2, $3, $4, 'OPEN', $5) returning id`,
+          organisation_id, regulatory_change_id, publication_id, obligation_statement, status, external_key, metadata
+        ) values ($1, $2, $3, $4, 'DRAFT', $5, $6::jsonb) returning id`,
         [
           orgId,
           changeId,
           publicationId,
           `TEST DATA — Obligation ${suffix}`,
           `TEST-OBL-${suffix}`,
+          JSON.stringify(TEST_MANUAL_OBLIGATION_METADATA),
         ],
       );
       const obligationId = obl.rows[0].id;

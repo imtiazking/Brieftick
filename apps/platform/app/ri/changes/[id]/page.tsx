@@ -93,6 +93,28 @@ export default async function ChangeDetailPage({ params }: { params: Promise<{ i
               <label>Source section<input name="source_section" /></label>
               <label>Priority<input name="priority" /></label>
               <label>Due date<input name="due_date" type="date" /></label>
+              <label>
+                Regulatory classification code
+                <select name="regulatory_classification_code" required defaultValue="">
+                  <option value="" disabled>Select…</option>
+                  <option value="R">R — Rule</option>
+                  <option value="E">E — Evidential provision (link the binding obligation)</option>
+                  <option value="D">D — Direction</option>
+                  <option value="P">P — Principle</option>
+                  <option value="UK">UK — UK legislation</option>
+                  <option value="EU">EU — Applicable EU legislation</option>
+                  <option value="TS">TS — Binding technical standards</option>
+                </select>
+              </label>
+              <label>Legal basis<input name="legal_basis" required placeholder="e.g. PSRs 2017 regulation 86(2C)" /></label>
+              <label>Authoritative provision reference<input name="authoritative_reference" required /></label>
+              <label>
+                Authoritative source URL
+                <input name="authoritative_source_url" type="url" required placeholder="https://www.legislation.gov.uk/… or https://www.handbook.fca.org.uk/…" />
+              </label>
+              <label>Exact text of the authoritative provision<textarea name="authoritative_quotation" required rows={3} /></label>
+              <label>Binding obligation this evidential provision supports (E only)<input name="supports_obligation_id" /></label>
+              <p className="fg-muted">Guidance text cannot ground a binding classification. The obligation is created as DRAFT and needs independent approval.</p>
               <button type="submit" className="fg-btn">Create obligation</button>
             </form>
           )}

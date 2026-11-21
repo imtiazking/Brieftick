@@ -15,6 +15,7 @@ import {
   modelLabelsForFinding,
   obligationLegalCategory,
   validateClassificationPolicy,
+  validateManualObligationClassification,
 } from '../lib/ri/classification/regulatory-classification-policy.mjs';
 import { buildFindingsView, sha256Hex, validateFindingDecisions } from '../lib/ri/ai/finding-review-core.mjs';
 
@@ -186,6 +187,47 @@ check(!v.ok && v.error === 'finding_source_not_binding:1', 'binding conversion f
 const rejectedAll = view.findings.map((f) => d(f, { decision: 'REJECTED' }));
 v = validateFindingDecisions(view.findings, rejectedAll, ctx);
 check(v.ok && v.decisions.every((x) => x.triageQueue && !x.createsObligation), 'rejected findings keep a triage queue and create nothing', v.ok && v.decisions.map((x) => x.triageQueue));
+
+// C = FCA Handbook market abuse conclusive provisions: never converted, Non-Obligation Triage, distinct from R.
+const cEntry = FCA_POLICY_V1.entries.find((e) => e.code === 'C');
+check(
+  cEntry && !cEntry.conversionEnabled && cEntry.destinationQueue === TRIAGE_QUEUES.NON_OBLIGATION && /market abuse conclusive provisions/i.test(cEntry.description) && /conduct rules are R/.test(cEntry.description),
+  'C: market abuse conclusive provisions, not convertible, Non-Obligation Triage, binding conduct rules are R',
+  cEntry,
+);
+const cTriage = evaluateFindingTriage({ policy: FCA_POLICY_V1, publicationType: 'policy_statement', finding: { citationStatus: 'VERIFIED', modelLabels: [] }, proposal: { code: 'C' } });
+check(cTriage.queue === TRIAGE_QUEUES.NON_OBLIGATION && !cTriage.conversionEligible, 'C finding routes to Non-Obligation Triage and cannot convert', cTriage);
+
+// Manual obligations: same policy, verified against the authoritative provision.
+const psrs = {
+  code: 'UK',
+  legalBasis: 'PSRs 2017 regulation 86(2C)',
+  authoritativeProvision: {
+    reference: 'Payment Services Regulations 2017, regulation 86(2C)',
+    sourceUrl: 'https://www.legislation.gov.uk/uksi/2017/752/regulation/86',
+    quotation: 'the payer’s payment service provider must notify the payer of the delay',
+  },
+};
+const manual = (input) => validateManualObligationClassification({ policy: FCA_POLICY_V1, input });
+check(manual(psrs).ok, 'manual UK obligation with legal basis and legislation.gov.uk provision accepted');
+check(manual({ ...psrs, code: null }).error === 'obligation_classification_required', 'manual obligation without a code refused');
+for (const code of ['G', 'C', 'GBR', 'REC', 'NBE', 'CONS', 'PERM', 'DEF', 'EXEMPT', 'SH', 'GP', 'EXPL', 'REPEALED', 'UNKNOWN']) {
+  check(manual({ ...psrs, code }).error === `obligation_conversion_not_permitted:${code}`, `manual obligation with NO code ${code} refused`);
+}
+check(manual({ ...psrs, code: 'XYZ' }).error === 'obligation_classification_unknown', 'manual obligation with a non-canonical code refused');
+check(validateManualObligationClassification({ policy: null, input: psrs }).error === 'classification_policy_unavailable', 'manual obligation with no active policy refused');
+check(manual({ ...psrs, legalBasis: '' }).error === 'obligation_legal_basis_required', 'manual obligation without a legal basis refused');
+check(manual({ ...psrs, authoritativeProvision: null }).error === 'obligation_authoritative_provision_required', 'manual obligation without an authoritative provision refused');
+check(manual({ ...psrs, authoritativeProvision: { ...psrs.authoritativeProvision, quotation: 'short' } }).error === 'obligation_authoritative_provision_required', 'authoritative provision needs its exact text');
+check(
+  manual({ ...psrs, authoritativeProvision: { ...psrs.authoritativeProvision, sourceUrl: 'https://www.fca.org.uk/publication/finalised-guidance/fg24-6.pdf' } }).error === 'obligation_authoritative_source_invalid',
+  'guidance document refused as the authoritative source of a binding classification',
+);
+check(manual({ ...psrs, authoritativeProvision: { ...psrs.authoritativeProvision, sourceUrl: 'http://www.legislation.gov.uk/uksi/2017/752' } }).error === 'obligation_authoritative_source_invalid', 'non-https authoritative source refused');
+check(manual({ ...psrs, code: 'R', authoritativeProvision: { ...psrs.authoritativeProvision, sourceUrl: 'https://www.handbook.fca.org.uk/handbook/SYSC/6/1.html' } }).ok, 'FCA Handbook rule accepted with a handbook.fca.org.uk source');
+check(manual({ ...psrs, code: 'E' }).error === 'obligation_binding_link_required', 'manual evidential provision without a binding link refused');
+check(manual({ ...psrs, code: 'E', supportsObligationId: 'a1b2c3d4-0000-4000-8000-000000000001' }).ok, 'manual evidential provision with a binding link accepted');
+check(manual({ ...psrs, supportsObligationId: 'a1b2c3d4-0000-4000-8000-000000000001' }).error === 'obligation_binding_link_not_applicable', 'binding link refused on a non-evidential code');
 
 console.log(`\n${passes} passed, ${failures} failed`);
 process.exit(failures ? 1 : 0);
