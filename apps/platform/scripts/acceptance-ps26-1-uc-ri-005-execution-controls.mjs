@@ -75,8 +75,9 @@ releaseLabTrialSlot('UC-RI-005:org-a');
 
 const limitsPath = join(REPO_ROOT, 'docs/eval/LAB-ANTHROPIC-BUDGET-GUARD-LIMITATIONS.json');
 const limits = JSON.parse(readFileSync(limitsPath, 'utf8'));
-if (!limits.remaining?.multiInstanceServerlessRace) fail('limitations must document multi-instance race');
-else ok('multi-instance concurrency risk documented');
+if (!limits.resolved?.multiInstanceServerlessRace && !limits.remaining?.multiInstanceServerlessRace) {
+  fail('limitations must document multi-instance race');
+} else ok('multi-instance concurrency handling documented');
 
 const out = join(REPO_ROOT, 'docs/eval/PS26-1-UC-RI-005-EXECUTION-CONTROLS.json');
 writeFileSync(

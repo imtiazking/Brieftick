@@ -104,7 +104,7 @@ try {
     create table if not exists storage.objects (id uuid primary key default gen_random_uuid(), bucket_id text, name text);
     alter table storage.objects enable row level security;
   `);
-  const files = readdirSync(migrationsDir).filter((f) => f.endsWith('.sql') && f !== RLS_FILE).sort();
+  const files = readdirSync(migrationsDir).filter((f) => f.endsWith('.sql') && f < RLS_FILE).sort();
   for (const f of files) await applySqlFile(db, join(migrationsDir, f));
   await ensureAppRole(db);
   await db.query(`

@@ -50,6 +50,7 @@ export async function POST(request: Request) {
       ok: Boolean(result.ok),
       runId: result.runId,
       reused: 'reused' in result ? result.reused : false,
+      executionStatus: 'executionStatus' in result ? result.executionStatus : null,
       citationValid: 'citationValid' in result ? result.citationValid : null,
       code: 'code' in result ? result.code : null,
     });

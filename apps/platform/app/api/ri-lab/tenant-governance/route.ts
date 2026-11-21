@@ -44,6 +44,7 @@ import {
   buildLabGovernanceMetrics,
   mapActionRowToLabView,
   mapAiRunToLabView,
+  idempotencySuffixFromKey,
   mapAssuranceRowToLabView,
   mapControlRowToLabView,
   mapEvidenceRowToLabView,
@@ -255,6 +256,14 @@ export async function GET(request: Request) {
       workflowEvents: workflowEvents.map(mapWorkflowEventToLabView),
       aiAnalysisRuns: aiRuns.map((r) => mapAiRunToLabView(r)),
       authorisedUatAiAnalysisRuns: aiPartition.authorisedUat.map((r) => mapAiRunToLabView(r)),
+      aiRunReferences: aiRunsRaw
+        .filter((r) => r.use_case_id === 'UC-RI-005')
+        .map((r) => ({
+          runId: r.id,
+          publicationId: r.publication_id,
+          idempotencySuffix: idempotencySuffixFromKey(r.idempotency_key),
+          executionStatus: r.execution_status,
+        })),
       riskProvenance: {
         operational: riskPartition.operational.length,
         uatAuthorised: riskPartition.authorisedUat.length,

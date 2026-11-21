@@ -5,18 +5,20 @@
   "resolved": {
     "invalidOrMissingBudgetEnv": "FAIL_CLOSED — LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED / LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED",
     "maxInputOutputTokens": "RI_LAB_ANTHROPIC_MAX_INPUT_TOKENS / RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS or budget-derived defaults",
-    "duplicateTrialIdempotency": "assertUcRi005LiveTrialIdempotency when FORGENIQ_PS26_LIVE_TRIAL=1",
+    "duplicateTrialIdempotency": "An existing run with the same idempotency key is always returned (any status, including FAILED); no second provider call",
+    "differentIdempotencyKeys": "Live UC-RI-005 requires the operator-authorised run reference RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX (fail-closed when unset); a new paid attempt needs a new reference",
+    "failedRunRetention": "ai_analysis_runs has no delete policy and a delete-refusing trigger; failed runs are retained",
     "inProcessOverlap": "acquireLabTrialSlot",
     "sameOrgDbOverlap": "ai_analysis_runs RUNNING check",
+    "multiInstanceServerlessRace": "Partial unique index ai_analysis_runs_uc_ri_005_one_running: at most one RUNNING UC-RI-005 run per organisation, enforced by the database",
     "actualUsageAudit": "_forgeniqLabSpendAudit on success and provider failure paths",
     "providerErrorTokens": "finalizeLabSpendAfterCall records tokens even when apiResult.ok=false"
   },
   "remaining": {
-    "multiInstanceServerlessRace": "Two Vercel instances can both pass RUNNING check before either updates — not solved without distributed lock",
+    "staleRunningRun": "A run left RUNNING by a killed function blocks further UC-RI-005 runs for the organisation until an operator resolves it",
     "anthropicBillingLag": "Billed amount known only from provider token fields at response time",
     "thinkingTokens": "May consume max_tokens without useful JSON",
     "retryReserveFactor": "Reserves headroom only — no automatic retry loop in provider today",
-    "differentIdempotencyKeys": "Distinct keys can each spend unless FORGENIQ_PS26_LIVE_TRIAL enforces single suffix",
     "accountLevelSpendLimit": "Not integrated — operator must set Anthropic workspace limits separately"
   }
 }

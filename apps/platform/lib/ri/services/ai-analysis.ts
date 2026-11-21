@@ -27,6 +27,7 @@ import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
 import { AI_PROVIDER_MODE } from '@/lib/ri/ai/enums';
 import { getUseCaseById } from '@/lib/ri/ai/use-case-catalog';
 import { assertCanRi } from '@/lib/ri/permissions';
+import { RiConflictError } from '@/lib/ri/errors';
 import { assertAiReviewerSoD } from '@/lib/ri/separation-of-duties';
 import { materialiseReviewedClaims } from '@/lib/ri/services/ai-materialisation';
 import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
@@ -257,6 +258,29 @@ export async function requestPublicationAnalysis(
     throw new Error('publication_version_not_current');
   }
 
+  const idempotencySuffix = params.idempotencyKeySuffix?.trim() || '';
+  const idempotencyKey = idempotencySuffix
+    ? `${params.useCaseId}:${params.publicationVersionId}:${params.organisationId}:${idempotencySuffix}`
+    : `${params.useCaseId}:${params.publicationVersionId}:${params.organisationId}`;
+
+  const { data: priorRun } = await supabase
+    .from('ai_analysis_runs')
+    .select('id, execution_status')
+    .eq('organisation_id', params.organisationId)
+    .eq('idempotency_key', idempotencyKey)
+    .maybeSingle();
+  if (priorRun) {
+    return { ok: true, reused: true, runId: priorRun.id, executionStatus: priorRun.execution_status };
+  }
+
+  if (params.useCaseId === 'UC-RI-005' && isRiAiExecutionEnabled()) {
+    const { assertUcRi005LiveTrialIdempotency } = await import(
+      '@/lib/ri/ai/lab-anthropic-spend-guard.mjs'
+    );
+    const idemCheck = assertUcRi005LiveTrialIdempotency(idempotencyKey, { executionEnabled: true });
+    if (!idemCheck.ok) throw new RiConflictError(idemCheck.code || 'uc_ri_005_run_reference_not_authorised');
+  }
+
   const analysisType = useCase.analysisTypes[0];
   const ctx = await buildPublicationContext(
     supabase,
@@ -271,12 +295,6 @@ export async function requestPublicationAnalysis(
   const providerMode = resolveAiProviderMode();
   const provider = getAiProvider(providerMode);
   const promptVersion = useCase.promptVersion;
-
-  const idempotencyKey = params.idempotencyKeySuffix
-    ? `${params.useCaseId}:${params.publicationVersionId}:${params.organisationId}:${params.idempotencyKeySuffix}`
-    : `${params.useCaseId}:${params.publicationVersionId}:${params.organisationId}`;
-
-  let runRow: AnalysisRunRow | null = null;
 
   const { data: insertedRun, error: insertErr } = await supabase
     .from('ai_analysis_runs')
@@ -300,48 +318,21 @@ export async function requestPublicationAnalysis(
     .single();
 
   if (insertErr) {
-    if (insertErr.code === '23505') {
-      const { data: existing } = await supabase
-        .from('ai_analysis_runs')
-        .select('id, execution_status')
-        .eq('organisation_id', params.organisationId)
-        .eq('idempotency_key', idempotencyKey)
-        .single();
-      if (existing && existing.execution_status !== AI_EXECUTION_STATUS.FAILED) {
-        return { ok: true, reused: true, runId: existing.id };
-      }
-      if (existing?.id) {
-        await supabase.from('ai_analysis_runs').delete().eq('id', existing.id);
-      }
-    } else {
-      throw new Error(insertErr.message);
-    }
-    const retry = await supabase
+    if (insertErr.code !== '23505') throw new Error(insertErr.message);
+    const { data: existing } = await supabase
       .from('ai_analysis_runs')
-      .insert({
-        organisation_id: params.organisationId,
-        use_case_id: params.useCaseId,
-        publication_id: params.publicationId,
-        publication_version_id: params.publicationVersionId,
-        target_entity_id: params.targetEntityId ?? null,
-        execution_status: AI_EXECUTION_STATUS.RUNNING,
-        review_status: AI_REVIEW_STATUS.AI_DRAFT,
-        freshness: AI_FRESHNESS.CURRENT,
-        provider: provider.id,
-        model: resolveModelForProviderMode(providerMode),
-        prompt_version: promptVersion,
-        processing_eligibility: PROCESSING_ELIGIBILITY.REVIEW_REQUIRED,
-        requested_by: params.userId,
-        idempotency_key: idempotencyKey,
-      })
-      .select()
-      .single();
-    if (retry.error) throw new Error(retry.error.message);
-    runRow = retry.data as AnalysisRunRow;
-  } else {
-    runRow = insertedRun as AnalysisRunRow;
+      .select('id, execution_status')
+      .eq('organisation_id', params.organisationId)
+      .eq('idempotency_key', idempotencyKey)
+      .maybeSingle();
+    if (existing) {
+      return { ok: true, reused: true, runId: existing.id, executionStatus: existing.execution_status };
+    }
+    // Unique violation without a matching key is the one-RUNNING-UC-RI-005-per-organisation index.
+    throw new RiConflictError('uc_ri_005_run_in_progress');
   }
 
+  const runRow = insertedRun as AnalysisRunRow | null;
   if (!runRow) throw new Error('ai_analysis_run_insert_failed');
 
   await recordWorkflowEvent(supabase, {
@@ -354,22 +345,6 @@ export async function requestPublicationAnalysis(
   });
 
   if (params.useCaseId === 'UC-RI-005' && isRiAiExecutionEnabled()) {
-    const { assertUcRi005LiveTrialIdempotency } = await import(
-      '@/lib/ri/ai/lab-anthropic-spend-guard.mjs'
-    );
-    const idemCheck = assertUcRi005LiveTrialIdempotency(idempotencyKey, { executionEnabled: true });
-    if (!idemCheck.ok) {
-      await supabase
-        .from('ai_analysis_runs')
-        .update({
-          execution_status: AI_EXECUTION_STATUS.FAILED,
-          error_code: idemCheck.code || AI_ERRORS.LAB_TRIAL_OVERLAP,
-          error_message: idemCheck.message,
-          completed_at: new Date().toISOString(),
-        })
-        .eq('id', runRow.id);
-      return { ok: false, runId: runRow.id, code: idemCheck.code };
-    }
     const { data: overlapping } = await supabase
       .from('ai_analysis_runs')
       .select('id, idempotency_key')

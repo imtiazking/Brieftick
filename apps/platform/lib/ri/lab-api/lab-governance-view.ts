@@ -226,6 +226,12 @@ export type LabAiAnalysisRunView = {
   _connected: true;
 };
 
+/** Keys are `useCase:publicationVersion:organisation[:suffix]`. */
+export function idempotencySuffixFromKey(key: string | null | undefined): string | null {
+  const parts = String(key || '').split(':');
+  return parts.length > 3 ? parts.slice(3).join(':') : null;
+}
+
 export type LabGovernanceMetricsView = {
   changesOpen: number;
   impactsInProgress: number;

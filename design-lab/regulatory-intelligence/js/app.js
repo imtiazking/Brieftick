@@ -111,7 +111,14 @@ import {
   submitConnectedAiReview,
   renderConnectedAiRunDetail,
 } from './platform/connected-ai-governance-panels.js';
-import { requestConnectedObligationExtraction } from './platform/connected-publication-ai-panels.js';
+import {
+  connectedExtractionErrorMessage,
+  markConnectedExtractionSent,
+  markConnectedExtractionSettled,
+  requestConnectedObligationExtraction,
+  setConnectedExtractionStatus,
+  syncConnectedExtractionButton,
+} from './platform/connected-publication-ai-panels.js';
 import {
   fetchConnectedWorkflowEvents,
   renderConnectedWorkflowEventsApiTable,
@@ -1886,31 +1893,47 @@ function bindViewHandlers() {
     }
   });
 
+  const extractionWrap = document.querySelector('[data-connected-pub-ai-request]');
+  if (extractionWrap) {
+    syncConnectedExtractionButton(extractionWrap);
+    extractionWrap
+      .querySelectorAll('[data-connected-pub-ai-change-id], [data-connected-pub-ai-idempotency]')
+      .forEach((input) => input.addEventListener('input', () => syncConnectedExtractionButton(extractionWrap)));
+  }
+
   document.querySelector('[data-connected-pub-ai-submit]')?.addEventListener('click', async () => {
     const wrap = document.querySelector('[data-connected-pub-ai-request]');
     const publicationId = wrap?.getAttribute('data-connected-pub-ai-request');
     if (!publicationId) return;
     const btn = wrap?.querySelector('[data-connected-pub-ai-submit]');
-    const statusEl = wrap?.querySelector('[data-connected-pub-ai-status]');
-    const changeId = wrap?.querySelector('[data-connected-pub-ai-change-id]')?.value?.trim() || undefined;
-    const suffix = wrap?.querySelector('[data-connected-pub-ai-idempotency]')?.value?.trim() || undefined;
-    if (btn) btn.disabled = true;
+    syncConnectedExtractionButton(wrap);
+    if (!btn || btn.disabled) return;
+    const changeId = wrap.querySelector('[data-connected-pub-ai-change-id]')?.value?.trim() || undefined;
+    const suffix = wrap.querySelector('[data-connected-pub-ai-idempotency]')?.value?.trim() || undefined;
+    const setStatus = (message) => setConnectedExtractionStatus(publicationId, message);
+    markConnectedExtractionSent(publicationId, suffix);
+    btn.disabled = true;
+    setStatus('Extraction requested — wait for the result; do not reload or click again.');
     try {
       const body = await requestConnectedObligationExtraction(getState(), {
         publicationId,
         targetChangeId: changeId,
         idempotencySuffix: suffix,
       });
-      if (statusEl) {
-        statusEl.textContent = body.reused ? `Reused run ${body.runId}` : `Run ${body.runId} requested`;
-      }
-      showToast(body.runId ? `AI analysis run: ${body.runId}` : 'Analysis requested');
+      const message = body.reused
+        ? `This run reference was already attempted (status ${body.executionStatus || 'unknown'}). No new analysis was started.`
+        : `Run ${body.runId} requested`;
+      setStatus(message);
+      showToast(body.reused ? message : body.runId ? `AI analysis run: ${body.runId}` : 'Analysis requested');
       if (body.runId) location.hash = `#/ai-analysis/${body.runId}`;
       else renderShell();
     } catch (e) {
-      if (statusEl) statusEl.textContent = e?.message || 'failed';
-      showToast(e?.message || 'Extraction request failed');
-      if (btn) btn.disabled = false;
+      const message = connectedExtractionErrorMessage(e?.message);
+      setStatus(message);
+      showToast(message);
+    } finally {
+      markConnectedExtractionSettled();
+      loadConnectedCatalogue(getState()).catch(() => {});
     }
   });
 

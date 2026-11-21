@@ -24,6 +24,7 @@ const EMPTY = {
   workflowEvents: [],
   aiAnalysisRuns: [],
   authorisedUatAiAnalysisRuns: [],
+  aiRunReferences: [],
   aiAnalysisProvenance: null,
   authorisedUatChanges: [],
   authorisedUatObligations: [],
@@ -477,6 +478,7 @@ async function loadConnectedCatalogueInner(state, cat) {
     cat.authorisedUatAiAnalysisRuns = Array.isArray(govBody.authorisedUatAiAnalysisRuns)
       ? govBody.authorisedUatAiAnalysisRuns
       : [];
+    cat.aiRunReferences = Array.isArray(govBody.aiRunReferences) ? govBody.aiRunReferences : [];
     cat.aiAnalysisProvenance = govBody.aiAnalysisProvenance ?? null;
     cat.governanceMetrics = govBody.governanceMetrics ?? null;
     cat.operationsMetrics = opsBody.operationsMetrics ?? null;
@@ -571,6 +573,7 @@ async function loadConnectedCatalogueInner(state, cat) {
     cat.workflowEvents = [];
     cat.aiAnalysisRuns = [];
     cat.authorisedUatAiAnalysisRuns = [];
+    cat.aiRunReferences = [];
     cat.aiAnalysisProvenance = null;
     cat.governanceMetrics = null;
     cat.regulators = [];

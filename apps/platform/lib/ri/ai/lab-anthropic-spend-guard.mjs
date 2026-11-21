@@ -278,8 +278,8 @@ export function labBudgetEnforcementLimitations() {
   return [
     'HARD_INVOICE_CAP_NOT_GUARANTEED: enforcement is pre-flight reserve + post-hoc token accounting — not Anthropic billing API.',
     'Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ.',
-    'Per-process overlap lock does not synchronise across Vercel serverless instances; ai-analysis.ts adds DB RUNNING check (race remains between instances).',
-    'Duplicate idempotency keys reuse runs; different keys can each trigger provider spend unless RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX is enforced.',
+    'Per-process overlap lock does not synchronise across Vercel serverless instances; the database allows one RUNNING UC-RI-005 run per organisation.',
+    'Duplicate idempotency keys always reuse the existing run; a new paid attempt requires a new operator-authorised RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX.',
     'A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.',
     'No org-wide Anthropic workspace spend cap — only per-request guard when env is set.',
     'Retries inside callAnthropicMessages are not implemented; retryReserveFactor reserves headroom only.',
@@ -287,23 +287,31 @@ export function labBudgetEnforcementLimitations() {
   ];
 }
 
+export const UC_RI_005_RUN_REFERENCE_ERRORS = Object.freeze({
+  NOT_CONFIGURED: 'uc_ri_005_run_reference_not_configured',
+  NOT_AUTHORISED: 'uc_ri_005_run_reference_not_authorised',
+});
+
 /**
- * When live UC-RI-005 is enabled, optional fail-closed idempotency suffix prevents parallel trial keys.
+ * Live UC-RI-005 runs only with the operator-authorised run reference (RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX).
+ * Fail-closed when unset: each new paid attempt needs a new reference set explicitly by an operator.
  */
 export function assertUcRi005LiveTrialIdempotency(idempotencyKey, { executionEnabled } = {}) {
   if (executionEnabled !== true) return { ok: true, skipped: true };
-  const enforce =
-    process.env.RI_LAB_ENFORCE_TRIAL_IDEMPOTENCY_SUFFIX?.trim() === 'true' ||
-    process.env.FORGENIQ_PS26_LIVE_TRIAL?.trim() === '1';
-  if (!enforce) return { ok: true, skipped: true, reason: 'suffix_not_enforced' };
-  const requiredSuffix =
-    process.env.RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX?.trim() || 'PS26-1-LIVE-TRIAL-v1';
+  const requiredSuffix = process.env.RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX?.trim() || '';
+  if (!requiredSuffix) {
+    return {
+      ok: false,
+      code: UC_RI_005_RUN_REFERENCE_ERRORS.NOT_CONFIGURED,
+      message: 'UC-RI-005 live execution requires an authorised run reference (RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX).',
+    };
+  }
   const key = String(idempotencyKey || '');
   if (!key.endsWith(`:${requiredSuffix}`)) {
     return {
       ok: false,
-      code: LAB_BUDGET_ERROR_CODES.LAB_TRIAL_OVERLAP,
-      message: `UC-RI-005 live trial requires idempotency key suffix ${requiredSuffix}.`,
+      code: UC_RI_005_RUN_REFERENCE_ERRORS.NOT_AUTHORISED,
+      message: 'This run reference is not the authorised UC-RI-005 run reference.',
       requiredSuffix,
     };
   }
