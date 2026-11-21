@@ -60,6 +60,20 @@ export function mapSchemaForAnalysisType(analysisType) {
   return 'ApplicabilityResult';
 }
 
+/** Response metadata only — never prompt or completion text. */
+export function anthropicCallMeta(apiResult) {
+  return {
+    requestReachedProvider: apiResult?.requestReachedProvider ?? null,
+    responseReceived: apiResult?.responseReceived ?? null,
+    httpStatus: apiResult?.httpStatus ?? null,
+    requestId: apiResult?.requestId ?? null,
+    stopReason: apiResult?.stopReason ?? null,
+    inputTokens: apiResult?.inputTokens ?? null,
+    outputTokens: apiResult?.outputTokens ?? null,
+    textLength: typeof apiResult?.text === 'string' ? apiResult.text.length : null,
+  };
+}
+
 export function createAnthropicProvider(deps = {}) {
   const model = resolveAnthropicModel();
   return {
@@ -128,6 +142,7 @@ export function createAnthropicProvider(deps = {}) {
         { fetchFn: deps.fetchFn },
       );
       const latencyMs = Date.now() - started;
+      const providerMeta = anthropicCallMeta(apiResult);
 
       let spendAudit = spendGuard.spendAudit || null;
       if (spendGuard.tracker && spendGuard.slotKey) {
@@ -145,13 +160,14 @@ export function createAnthropicProvider(deps = {}) {
             message: finalized.message,
             latencyMs,
             spendAudit,
+            providerMeta,
             failClosed: true,
           };
         }
       }
 
       if (!apiResult.ok) {
-        return { ok: false, code: apiResult.code, message: apiResult.message, latencyMs, spendAudit };
+        return { ok: false, code: apiResult.code, message: apiResult.message, latencyMs, spendAudit, providerMeta };
       }
 
       const structured = parseAnthropicJsonText(apiResult.text);
@@ -162,6 +178,7 @@ export function createAnthropicProvider(deps = {}) {
           message: 'Anthropic response was not valid JSON.',
           latencyMs,
           spendAudit,
+          providerMeta,
         };
       }
 
@@ -174,6 +191,7 @@ export function createAnthropicProvider(deps = {}) {
         inputTokenEstimate: apiResult.inputTokens,
         outputTokenEstimate: apiResult.outputTokens,
         spendAudit,
+        providerMeta,
       };
     },
   };

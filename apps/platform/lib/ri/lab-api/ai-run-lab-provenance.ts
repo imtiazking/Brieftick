@@ -84,10 +84,23 @@ export function isAuthorisedUatAnthropicExecution(input: AiRunLabProvenanceInput
   return true;
 }
 
+const ATTEMPTED_RUN_STATUSES = new Set(['RUNNING', 'FAILED', 'VALIDATION_FAILED']);
+
+/** Live Anthropic UC-RI attempt that did not complete — retained and listed for audit with its status. */
+export function isAuthorisedUatAnthropicAttempt(input: AiRunLabProvenanceInput): boolean {
+  if (isSyntheticAiAnalysisFixture(input)) return false;
+  if (isExplicitOperationalAiRun(input)) return false;
+  if (!(input.provider || '').toUpperCase().includes('ANTHROPIC')) return false;
+  if (!ATTEMPTED_RUN_STATUSES.has(String(input.execution_status || '').toUpperCase())) return false;
+  return /^UC-RI-\d{3}:/i.test((input.idempotency_key || '').trim());
+}
+
 export function classifyAiAnalysisRunForLab(input: AiRunLabProvenanceInput): AiAnalysisRunLabClass {
   if (isSyntheticAiAnalysisFixture(input)) return 'synthetic_fixture';
   if (isExplicitOperationalAiRun(input)) return 'operational';
-  if (isAuthorisedUatAnthropicExecution(input)) return 'uat_authorised';
+  if (isAuthorisedUatAnthropicExecution(input) || isAuthorisedUatAnthropicAttempt(input)) {
+    return 'uat_authorised';
+  }
   return 'unclassified';
 }
 

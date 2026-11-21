@@ -212,6 +212,7 @@ export type LabAiAnalysisRunView = {
   useCaseId: string;
   publicationId: string;
   executionStatus: string;
+  errorCode: string | null;
   reviewStatus: string;
   provider: string;
   model: string | null;
@@ -429,6 +430,7 @@ export function mapAiRunToLabView(row: AnalysisRunRow): LabAiAnalysisRunView {
     useCaseId: row.use_case_id,
     publicationId: row.publication_id,
     executionStatus: mapStatus(row.execution_status, '—'),
+    errorCode: row.error_code ?? null,
     reviewStatus: mapStatus(row.review_status, 'Pending'),
     provider: row.provider,
     model: row.model,

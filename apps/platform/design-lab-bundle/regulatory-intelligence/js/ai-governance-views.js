@@ -64,7 +64,7 @@ export function viewAiGovernanceRegister() {
       ${operationalRows.length ? dataTable(['Run', 'Use case', 'Publication', 'Execution', 'Review', 'Provider', 'Classification', 'Human review'], operationalRows) : connectedRegisterEmpty('operational AI analysis runs')}
       </section>
       <section class="ri-panel"><h2>Authorised UAT / audit register</h2>
-      <p class="ri-muted">Completed acceptance executions (e.g. Phase 8D.3) — visible for audit; excluded from operational dashboard counters.</p>
+      <p class="ri-muted">Live acceptance executions (e.g. Phase 8D.3), including attempts that did not complete — visible for audit; excluded from operational dashboard counters.</p>
       ${uatRows.length ? dataTable(['Run', 'Use case', 'Publication', 'Execution', 'Review', 'Provider', 'Classification', 'Human review'], uatRows) : emptyState('No authorised UAT AI analysis runs on this tenant.')}
       </section>
       <p class="ri-muted">Synthetic fixture runs remain excluded from both registers. Demo use-case catalogue and mock confidence scores are hidden in connected mode.</p>`;
@@ -118,6 +118,7 @@ export function viewAiAnalysis(id) {
           <dt>Use case</dt><dd>${esc(run.useCaseId || '—')}</dd>
           <dt>Classification</dt><dd>${badge(run.labClassificationLabel || run.labClassification || '—')}</dd>
           <dt>Execution</dt><dd>${badge(run.executionStatus || '—')}</dd>
+          ${run.errorCode ? `<dt>Error</dt><dd><code>${esc(run.errorCode)}</code></dd>` : ''}
           <dt>Review</dt><dd>${badge(run.reviewStatus || '—')}</dd>
           <dt>Provider</dt><dd>${esc(run.provider || '—')}</dd>
           <dt>Model</dt><dd>${esc(run.model || '—')}</dd>

@@ -31,6 +31,7 @@ import { RiConflictError } from '@/lib/ri/errors';
 import { assertAiReviewerSoD } from '@/lib/ri/separation-of-duties';
 import { materialiseReviewedClaims } from '@/lib/ri/services/ai-materialisation';
 import { recordAiNotificationEvent } from '@/lib/ri/services/ai-notifications';
+import { AiRunFinalisationError, createAiRunFinaliser } from '@/lib/ri/services/ai-run-finaliser';
 import { getApplicabilityForPublication } from '@/lib/ri/services/applicability';
 import { getLatestPublicationVersion } from '@/lib/ri/services/publication-versions';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
@@ -344,8 +345,14 @@ export async function requestPublicationAnalysis(
     toStatus: AI_EXECUTION_STATUS.RUNNING,
   });
 
+  const finaliser = createAiRunFinaliser(supabase, {
+    organisationId: params.organisationId,
+    runId: runRow.id,
+    actorUserId: params.userId,
+  });
+
   if (params.useCaseId === 'UC-RI-005' && isRiAiExecutionEnabled()) {
-    const { data: overlapping } = await supabase
+    const { data: overlapping, error: overlapErr } = await supabase
       .from('ai_analysis_runs')
       .select('id, idempotency_key')
       .eq('organisation_id', params.organisationId)
@@ -353,168 +360,221 @@ export async function requestPublicationAnalysis(
       .eq('execution_status', AI_EXECUTION_STATUS.RUNNING)
       .neq('id', runRow.id)
       .limit(1);
-    if (overlapping?.length) {
-      await supabase
-        .from('ai_analysis_runs')
-        .update({
-          execution_status: AI_EXECUTION_STATUS.FAILED,
-          error_code: AI_ERRORS.LAB_TRIAL_OVERLAP,
-          error_message: 'Another UC-RI-005 analysis is already RUNNING for this organisation.',
-          completed_at: new Date().toISOString(),
-        })
-        .eq('id', runRow.id);
-      return { ok: false, runId: runRow.id, code: AI_ERRORS.LAB_TRIAL_OVERLAP };
+    if (overlapErr || overlapping?.length) {
+      const code = overlapErr ? AI_ERRORS.AI_RUN_PRECHECK_FAILED : AI_ERRORS.LAB_TRIAL_OVERLAP;
+      await finaliser.finishRun({
+        execution_status: AI_EXECUTION_STATUS.FAILED,
+        error_code: code,
+        error_message: overlapErr
+          ? `Overlap check failed before the provider call: ${overlapErr.message}`
+          : 'Another UC-RI-005 analysis is already RUNNING for this organisation.',
+        completed_at: new Date().toISOString(),
+      });
+      await finaliser.recordEvent({
+        eventType: 'AI_ANALYSIS_FAILED',
+        toStatus: AI_EXECUTION_STATUS.FAILED,
+        metadata: { code, providerCalled: false },
+      });
+      return { ok: false, runId: runRow.id, code };
     }
   }
 
   const started = Date.now();
-  const providerResult = await provider.execute({
-    useCaseId: params.useCaseId,
-    analysisType,
-    fixtureScenario: params.fixtureScenario,
-    budgetContext: {
-      organisationId: params.organisationId,
-      idempotencyKey,
-    },
-    context: {
-      sourceSections: ctx.sourceSections,
-      regulatoryAnalysis: ctx.grounding?.regulatoryAnalysis ?? null,
-      contextKind: ctx.contextKind,
-      allowedSectionIds: ctx.allowedSectionIds,
-    } as {
-      sourceSections: typeof ctx.sourceSections;
-      allowedSectionIds?: string[];
-      regulatoryAnalysis?: unknown;
-      contextKind?: string;
-    },
-  });
+  let providerResult: Awaited<ReturnType<typeof provider.execute>>;
+  try {
+    providerResult = await provider.execute({
+      useCaseId: params.useCaseId,
+      analysisType,
+      fixtureScenario: params.fixtureScenario,
+      budgetContext: {
+        organisationId: params.organisationId,
+        idempotencyKey,
+      },
+      context: {
+        sourceSections: ctx.sourceSections,
+        regulatoryAnalysis: ctx.grounding?.regulatoryAnalysis ?? null,
+        contextKind: ctx.contextKind,
+        allowedSectionIds: ctx.allowedSectionIds,
+      } as {
+        sourceSections: typeof ctx.sourceSections;
+        allowedSectionIds?: string[];
+        regulatoryAnalysis?: unknown;
+        contextKind?: string;
+      },
+    });
+  } catch (err) {
+    providerResult = {
+      ok: false,
+      code: AI_ERRORS.AI_PROVIDER_UNAVAILABLE,
+      message: err instanceof Error ? err.message : 'provider_threw',
+    } as Awaited<ReturnType<typeof provider.execute>>;
+  }
   const latencyMs = Date.now() - started;
 
-  if (!providerResult.ok || !('structured' in providerResult)) {
-    const failedSpend =
-      providerResult && typeof providerResult === 'object' && 'spendAudit' in providerResult
-        ? (providerResult as { spendAudit?: Record<string, unknown> }).spendAudit
-        : null;
-    const failedPatch: Record<string, unknown> = {
+  const providerExtras = providerResult as {
+    spendAudit?: Record<string, unknown> | null;
+    providerMeta?: Record<string, unknown> | null;
+  };
+  const spendAudit = providerExtras.spendAudit ?? null;
+  const providerMeta = providerExtras.providerMeta ?? null;
+  const providerOutcome = {
+    runId: runRow.id,
+    organisationId: params.organisationId,
+    useCaseId: params.useCaseId,
+    ok: providerResult.ok === true,
+    code: 'code' in providerResult ? providerResult.code : null,
+    latencyMs,
+    providerMeta,
+    spend: summariseSpendAudit(spendAudit),
+  };
+  console.info('[ri-ai] provider_returned', JSON.stringify(providerOutcome));
+
+  const auditOutput: Record<string, unknown> = {};
+  if (spendAudit) auditOutput._forgeniqLabSpendAudit = spendAudit;
+  if (providerMeta) auditOutput._forgeniqProviderMeta = providerMeta;
+
+  try {
+    if (!providerResult.ok || !('structured' in providerResult)) {
+      const code = 'code' in providerResult ? providerResult.code : AI_ERRORS.AI_PROVIDER_UNAVAILABLE;
+      await finaliser.finishRun({
         execution_status: AI_EXECUTION_STATUS.FAILED,
-        error_code: 'code' in providerResult ? providerResult.code : AI_ERRORS.AI_PROVIDER_UNAVAILABLE,
+        error_code: code,
         error_message: 'message' in providerResult ? providerResult.message : 'provider_failed',
         latency_ms: latencyMs,
         completed_at: new Date().toISOString(),
-      };
-    if (failedSpend) {
-      failedPatch.structured_output = { _forgeniqLabSpendAudit: failedSpend };
+        ...(Object.keys(auditOutput).length ? { structured_output: auditOutput } : {}),
+      });
+      await finaliser.recordEvent({
+        eventType: 'AI_ANALYSIS_FAILED',
+        toStatus: AI_EXECUTION_STATUS.FAILED,
+        metadata: { code },
+      });
+      return { ok: false, runId: runRow.id, code };
     }
-    await supabase.from('ai_analysis_runs').update(failedPatch).eq('id', runRow.id);
-    await recordWorkflowEvent(supabase, {
-      organisationId: params.organisationId,
-      entityType: 'ai_analysis_run',
-      entityId: runRow.id,
-      eventType: 'AI_ANALYSIS_FAILED',
-      actorUserId: params.userId,
-      toStatus: AI_EXECUTION_STATUS.FAILED,
-      metadata: { code: providerResult.code },
-    });
-    return { ok: false, runId: runRow.id, code: providerResult.code };
-  }
 
-  const successResult = providerResult as {
-    structured: Record<string, unknown>;
-    schemaName?: string;
-  };
-  const schemaCheck = validateStructuredOutput(
-    successResult.schemaName || mapSchemaForAnalysisType(analysisType),
-    successResult.structured,
-  );
-  if (!schemaCheck.ok) {
-    await supabase
-      .from('ai_analysis_runs')
-      .update({
+    const successResult = providerResult as {
+      structured: Record<string, unknown>;
+      schemaName?: string;
+    };
+    const schemaCheck = validateStructuredOutput(
+      successResult.schemaName || mapSchemaForAnalysisType(analysisType),
+      successResult.structured,
+    );
+    if (!schemaCheck.ok) {
+      await finaliser.finishRun({
         execution_status: AI_EXECUTION_STATUS.VALIDATION_FAILED,
         error_code: schemaCheck.code,
         error_message: schemaCheck.message,
         latency_ms: latencyMs,
         completed_at: new Date().toISOString(),
-      })
-      .eq('id', runRow.id);
-    return { ok: false, runId: runRow.id, code: schemaCheck.code };
-  }
+        structured_output: { ...auditOutput, _forgeniqRejectedOutput: successResult.structured },
+      });
+      await finaliser.recordEvent({
+        eventType: 'AI_ANALYSIS_FAILED',
+        toStatus: AI_EXECUTION_STATUS.VALIDATION_FAILED,
+        metadata: { code: schemaCheck.code },
+      });
+      return { ok: false, runId: runRow.id, code: schemaCheck.code };
+    }
 
-  const schemaName = successResult.schemaName || mapSchemaForAnalysisType(analysisType);
-  const { normalizeAnalysisStructuredOutput } = await import(
-    '@/lib/ri/ai/normalize-structured-ai-output.mjs'
-  );
-  const normalized = normalizeAnalysisStructuredOutput(
-    successResult.structured,
-    schemaName,
-    ctx.allowedSectionIds,
-  );
-  const structuredOutput = { ...normalized.structured };
-  if (ctx.grounding) {
-    structuredOutput._forgeniqGrounding = ctx.grounding;
-  }
-  const spendAudit =
-    providerResult && typeof providerResult === 'object' && 'spendAudit' in providerResult
-      ? (providerResult as { spendAudit?: Record<string, unknown> }).spendAudit
-      : null;
-  if (spendAudit) {
-    structuredOutput._forgeniqLabSpendAudit = spendAudit;
-  }
+    const schemaName = successResult.schemaName || mapSchemaForAnalysisType(analysisType);
+    const { normalizeAnalysisStructuredOutput } = await import(
+      '@/lib/ri/ai/normalize-structured-ai-output.mjs'
+    );
+    const normalized = normalizeAnalysisStructuredOutput(
+      successResult.structured,
+      schemaName,
+      ctx.allowedSectionIds,
+    );
+    const structuredOutput: Record<string, unknown> = { ...normalized.structured, ...auditOutput };
+    if (ctx.grounding) {
+      structuredOutput._forgeniqGrounding = ctx.grounding;
+    }
 
-  const claims = (normalized.claims as AiClaim[]).map((c, i) => ({
-    ...c,
-    id: `claim-${i}`,
-  }));
-  const cite = validateCitations(claims, ctx.allowedSectionIds);
-  const reviewStatus =
-    cite.ok && useCase.humanOversightRequired
-      ? AI_REVIEW_STATUS.HUMAN_REVIEW_REQUIRED
-      : AI_REVIEW_STATUS.AI_DRAFT;
+    const claims = (normalized.claims as AiClaim[]).map((c, i) => ({
+      ...c,
+      id: `claim-${i}`,
+    }));
+    const cite = validateCitations(claims, ctx.allowedSectionIds);
+    const reviewStatus =
+      cite.ok && useCase.humanOversightRequired
+        ? AI_REVIEW_STATUS.HUMAN_REVIEW_REQUIRED
+        : AI_REVIEW_STATUS.AI_DRAFT;
 
-  await supabase
-    .from('ai_analysis_runs')
-    .update({
+    await finaliser.finishRun({
       execution_status: AI_EXECUTION_STATUS.COMPLETED,
       review_status: reviewStatus,
       structured_output: structuredOutput,
       latency_ms: latencyMs,
       completed_at: new Date().toISOString(),
       error_code: cite.ok ? null : AI_ERRORS.AI_CITATION_INVALID,
-    })
-    .eq('id', runRow.id);
-
-  for (let i = 0; i < claims.length; i++) {
-    const c = claims[i];
-    await supabase.from('ai_analysis_citations').insert({
-      organisation_id: params.organisationId,
-      analysis_run_id: runRow.id,
-      claim_index: i,
-      claim_text: c.text || '',
-      source_section_ids: c.sourceSectionIds || [],
-      citation_status: mapCitationStatusToDb(c),
-      grounding_status: c.groundingStatus || null,
     });
-  }
 
-  await recordWorkflowEvent(supabase, {
-    organisationId: params.organisationId,
-    entityType: 'ai_analysis_run',
-    entityId: runRow.id,
-    eventType: 'AI_ANALYSIS_COMPLETED',
-    actorUserId: params.userId,
-    toStatus: AI_EXECUTION_STATUS.COMPLETED,
-  });
+    await finaliser.insertCitations(
+      claims.map((c, i) => ({
+        claim_index: i,
+        claim_text: c.text || '',
+        source_section_ids: c.sourceSectionIds || [],
+        citation_status: mapCitationStatusToDb(c),
+        grounding_status: c.groundingStatus || null,
+      })),
+    );
 
-  if (reviewStatus === AI_REVIEW_STATUS.HUMAN_REVIEW_REQUIRED) {
-    await recordAiNotificationEvent(supabase, {
-      eventType: 'AI_REVIEW_REQUIRED',
-      publicationId: params.publicationId,
-      organisationId: params.organisationId,
-      payload: { analysis_run_id: runRow.id, use_case_id: params.useCaseId },
+    await finaliser.recordEvent({
+      eventType: 'AI_ANALYSIS_COMPLETED',
+      toStatus: AI_EXECUTION_STATUS.COMPLETED,
     });
-  }
 
-  return { ok: true, runId: runRow.id, citationValid: cite.ok };
+    if (reviewStatus === AI_REVIEW_STATUS.HUMAN_REVIEW_REQUIRED) {
+      await recordAiNotificationEvent(finaliser.client, {
+        eventType: 'AI_REVIEW_REQUIRED',
+        publicationId: params.publicationId,
+        organisationId: params.organisationId,
+        payload: { analysis_run_id: runRow.id, use_case_id: params.useCaseId },
+      });
+    }
+
+    return { ok: true, runId: runRow.id, citationValid: cite.ok };
+  } catch (err) {
+    const message = (err instanceof Error ? err.message : String(err)).slice(0, 240);
+    console.error(
+      '[ri-ai] run_finalisation_failed',
+      JSON.stringify({ ...providerOutcome, usesServiceRole: finaliser.usesServiceRole, error: message }),
+    );
+    if (!(err instanceof AiRunFinalisationError)) {
+      try {
+        await finaliser.finishRun({
+          execution_status: AI_EXECUTION_STATUS.FAILED,
+          error_code: AI_ERRORS.AI_RUN_FINALISATION_FAILED,
+          error_message: message,
+          latency_ms: latencyMs,
+          completed_at: new Date().toISOString(),
+          ...(Object.keys(auditOutput).length ? { structured_output: auditOutput } : {}),
+        });
+        await finaliser.recordEvent({
+          eventType: 'AI_ANALYSIS_FAILED',
+          toStatus: AI_EXECUTION_STATUS.FAILED,
+          metadata: { code: AI_ERRORS.AI_RUN_FINALISATION_FAILED },
+        });
+      } catch {
+        // Already logged above with the provider outcome and spend.
+      }
+    }
+    throw err;
+  }
+}
+
+function summariseSpendAudit(audit: Record<string, unknown> | null) {
+  if (!audit) return null;
+  return {
+    model: audit.model ?? null,
+    inputTokens: audit.inputTokens ?? null,
+    outputTokens: audit.outputTokens ?? null,
+    calculatedUsd: audit.calculatedUsd ?? null,
+    reservedUsd: audit.reservedUsd ?? null,
+    budgetUsd: audit.budgetUsd ?? null,
+    attemptCount: audit.attemptCount ?? null,
+  };
 }
 
 export async function submitAnalysisReview(
@@ -543,6 +603,9 @@ export async function submitAnalysisReview(
     run.review_status === AI_REVIEW_STATUS.SUPERSEDED
   ) {
     throw new Error('already_reviewed');
+  }
+  if (run.execution_status !== AI_EXECUTION_STATUS.COMPLETED) {
+    throw new RiConflictError('analysis_not_completed');
   }
   if (run.freshness === AI_FRESHNESS.OUTDATED) {
     throw new Error('analysis_outdated');

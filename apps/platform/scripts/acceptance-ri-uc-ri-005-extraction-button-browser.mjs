@@ -29,6 +29,26 @@ const fail = (m) => {
 const check = (cond, m, detail) => (cond ? pass(m) : fail(detail ? `${m} — ${detail}` : m));
 
 let aiRunReferences = [];
+let uatRuns = [];
+const uatRunView = (id, executionStatus, errorCode = null) => ({
+  id,
+  useCaseId: 'UC-RI-005',
+  publicationId: PUB,
+  executionStatus,
+  errorCode,
+  reviewStatus: 'Ai Draft',
+  provider: 'AIPROV-ANTHROPIC-001',
+  model: 'claude-sonnet-4-5',
+  createdAt: '2026-11-21T01:41:45Z',
+  completedAt: null,
+  humanReviewRequired: false,
+  labClassification: 'uat_authorised',
+  labClassificationLabel: 'Authorised UAT / acceptance execution',
+  findingsPreview: null,
+  claimsCount: 0,
+  tenantScope: true,
+  _connected: true,
+});
 let nextExtraction = { status: 500, body: { ok: false, error: 'internal_error' }, delayMs: 1500, recordsRunAs: 'FAILED' };
 const extractionPosts = [];
 
@@ -75,7 +95,7 @@ async function handleApi(route) {
       organisationName: 'AI Development',
       role: 'COMPLIANCE_MANAGER',
       writesEnabled: true,
-      writeCapabilities: { aiRequest: true },
+      writeCapabilities: { aiRequest: true, aiReview: true },
     });
   }
   if (path === '/api/ri-lab/readiness') return json(route, 200, { ok: true, environment: 'staging', stagingProjectMatch: true, writesEnabled: true });
@@ -84,7 +104,7 @@ async function handleApi(route) {
     return json(route, 200, { ok: true, labPublication, display: labPublication.display, detail });
   }
   if (path === '/api/ri-lab/tenant-governance') {
-    return json(route, 200, { ok: true, organisationId: AI_DEV, aiAnalysisRuns: [], authorisedUatAiAnalysisRuns: [], aiRunReferences });
+    return json(route, 200, { ok: true, organisationId: AI_DEV, aiAnalysisRuns: [], authorisedUatAiAnalysisRuns: uatRuns, aiRunReferences });
   }
   if (path === '/api/ri-lab/ai-analysis-runs' && method === 'POST') {
     const posted = JSON.parse(request.postData() || '{}');
@@ -116,6 +136,14 @@ async function openFresh(page, hash) {
   const ok = await waitConnected(page);
   await page.waitForTimeout(900);
   return ok;
+}
+/** Follow the history link from the loaded publication page, as an operator would. */
+async function goToRun(page, runId) {
+  await page.evaluate((id) => {
+    location.hash = `#/ai-analysis/${id}`;
+  }, runId);
+  await page.waitForSelector(`[data-connected-ai-run-detail="${runId}"]`, { timeout: 10_000 }).catch(() => {});
+  await page.waitForTimeout(300);
 }
 const disabled = (page) => page.$eval('button[data-connected-pub-ai-submit]', (b) => b.disabled);
 const statusText = (page) => page.$eval('[data-connected-pub-ai-status]', (s) => s.textContent || '');
@@ -200,6 +228,31 @@ async function main() {
   const toast = await page.evaluate(() => document.getElementById('ri-toast')?.textContent || '');
   check(/already attempted \(status FAILED\)\. No new analysis was started/.test(toast), 'reused FAILED run reported as no new analysis', toast);
   check(extractionPosts.length === 3, `total extraction requests ${extractionPosts.length} (one per distinct attempt)`);
+
+  // Attempted runs appear in the history; only a COMPLETED run offers the review form.
+  const STUCK = RUN_ID;
+  const FAILED_RUN = 'bbbb0000-0000-4000-8000-000000000002';
+  const DONE = 'cccc0000-0000-4000-8000-000000000003';
+  uatRuns = [uatRunView(STUCK, 'Running'), uatRunView(FAILED_RUN, 'Failed', 'AI_RUN_FINALISATION_FAILED'), uatRunView(DONE, 'Completed')];
+  page = await newConnectedPage(browser);
+  check(await openFresh(page, hash), 'fresh browser with attempted runs in the authorised UAT history');
+  const historyRows = await page.$$eval('table tr', (trs) =>
+    trs.filter((tr) => tr.querySelector('a[href^="#/ai-analysis/"]')).map((tr) => ({ href: tr.querySelector('a').getAttribute('href'), text: tr.innerText })),
+  );
+  const rowFor = (id) => historyRows.find((r) => r.href === `#/ai-analysis/${id}`);
+  check(/Running/i.test(rowFor(STUCK)?.text || '') && /Failed/i.test(rowFor(FAILED_RUN)?.text || ''), 'RUNNING and FAILED runs listed with their status in the publication analysis history', JSON.stringify(historyRows));
+  for (const [id, label, expectCode] of [
+    [STUCK, 'RUNNING', null],
+    [FAILED_RUN, 'FAILED', 'AI_RUN_FINALISATION_FAILED'],
+  ]) {
+    await goToRun(page, id);
+    const text = await page.evaluate(() => document.body.innerText);
+    check(/did not complete/.test(text) && !(await page.$('[data-connected-ai-review-submit]')), `${label} run detail: no review form, explains it did not complete`, text.slice(0, 300));
+    if (expectCode) check(text.includes(expectCode), `${label} run detail shows the error code`);
+  }
+  await goToRun(page, DONE);
+  check(!!(await page.$('[data-connected-ai-review-submit]')), 'COMPLETED run detail still offers the review form');
+
   check(pageErrors.length === 0, 'no uncaught page errors', pageErrors.slice(0, 3).join(' | '));
 
   await browser.close();

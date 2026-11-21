@@ -42,6 +42,10 @@ export function renderConnectedAiReviewPanel(run) {
   if (['ACCEPTED', 'REJECTED', 'PARTIALLY_ACCEPTED', 'SUPERSEDED'].includes(review)) {
     return `<p class="ri-muted">Review decision recorded: <strong>${esc(review)}</strong></p>`;
   }
+  const execution = String(run.executionStatus || run.execution_status || '').toUpperCase();
+  if (execution && execution !== 'COMPLETED') {
+    return `<p class="ri-muted">This run did not complete (${esc(execution)}), so there is no AI output to review. The run is retained for audit.</p>`;
+  }
   return `<section class="ri-panel" data-connected-ai-review="${esc(run.id)}">
     <h3>Human review (connected)</h3>
     <p class="ri-muted">Review persisted AI output — provenance and citations shown below. New live executions remain disabled in connected staging. Do not accept findings with unresolved evidence without explicit reviewer judgement.</p>
