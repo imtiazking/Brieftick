@@ -38,6 +38,7 @@ import {
   connectedRegisterEmpty,
 } from './platform/connected-governance-ui.js';
 import {
+  renderConnectedAiFindingReviewPlaceholder,
   renderConnectedAiReviewPanel,
 } from './platform/connected-ai-governance-panels.js';
 
@@ -128,6 +129,7 @@ export function viewAiAnalysis(id) {
         ${run.findingsPreview ? `<section class="ri-panel"><h3>Findings preview</h3><p>${esc(run.findingsPreview)}</p></section>` : ''}
         <div data-connected-ai-run-detail="${esc(id)}" class="ri-muted">Loading persisted findings and citations…</div>
         ${renderConnectedAiReviewPanel(run)}
+        ${renderConnectedAiFindingReviewPlaceholder(run)}
         <p class="ri-muted">New live AI executions are disabled in connected staging. Human review applies to persisted runs only.</p>
         <p><a href="#/ai-governance">← AI Governance register</a></p>`;
     }

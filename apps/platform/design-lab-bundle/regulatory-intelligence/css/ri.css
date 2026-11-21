@@ -2054,3 +2054,26 @@ html[data-theme="split"] body.ri-body {
   gap: 0.5rem;
   margin-top: 1rem;
 }
+.ri-finding-review label {
+  display: block;
+  margin-top: 0.5rem;
+}
+.ri-finding-review input[type='text'],
+.ri-finding-review textarea,
+.ri-finding-review select {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+.ri-finding-review__decision {
+  display: flex;
+  gap: 1.5rem;
+  border: 0;
+  padding: 0;
+  margin: 0.75rem 0 0;
+}
+.ri-finding-review__decision label {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin: 0;
+}

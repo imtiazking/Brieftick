@@ -107,7 +107,10 @@ import {
 } from './platform/connected-policy-panels.js';
 import { patchConnectedFinding } from './platform/connected-finding-writes.js';
 import {
+  bindConnectedAiFindingReview,
   fetchConnectedAiAnalysisRun,
+  fetchConnectedAiFindingReview,
+  renderConnectedAiFindingReviewPanel,
   submitConnectedAiReview,
   renderConnectedAiRunDetail,
 } from './platform/connected-ai-governance-panels.js';
@@ -1428,6 +1431,26 @@ function bindViewHandlers() {
       })
       .catch((e) => {
         aiRunDetail.textContent = e?.message || 'Could not load AI run detail';
+      });
+  }
+
+  const findingReviewLoad = document.querySelector('[data-connected-ai-finding-review-load]');
+  if (findingReviewLoad && !findingReviewLoad.dataset.loading) {
+    const runId = findingReviewLoad.getAttribute('data-connected-ai-finding-review-load');
+    findingReviewLoad.dataset.loading = '1';
+    fetchConnectedAiFindingReview(getState(), runId)
+      .then((body) => {
+        findingReviewLoad.outerHTML = renderConnectedAiFindingReviewPanel(body);
+        bindConnectedAiFindingReview(document.querySelector('[data-connected-ai-finding-review]'), {
+          onSubmitted: (result) => {
+            showToast(`Per-finding review recorded — ${result.materialised?.length ?? 0} DRAFT obligation(s) created`);
+            renderShell();
+          },
+          onError: (e) => showToast(e?.message || 'Per-finding review failed'),
+        });
+      })
+      .catch((e) => {
+        findingReviewLoad.textContent = e?.message || 'Per-finding review unavailable';
       });
   }
 
