@@ -41,7 +41,7 @@ export function renderConnectedWorkflowEventsTable(events, emptyLabel = 'No work
         ? `${esc(String(e.metadata.from_owner_user_id || '—').slice(0, 8))}… → ${esc(String(e.metadata.to_owner_user_id || '—').slice(0, 8))}…`
         : `${esc(e.fromStatus || '—')} → ${esc(e.toStatus || '—')}`;
     const eventLabel = workflowEventTypeDisplay(e);
-    return `<tr>
+    return `<tr data-workflow-event-type="${esc(eventLabel)}">
       <td>${formatDateTime(e.occurredAt)}</td>
       <td class="ri-mono" title="${esc(eventLabel)}">${esc(eventLabel)}</td>
       <td>${esc(e.entityType)}</td>

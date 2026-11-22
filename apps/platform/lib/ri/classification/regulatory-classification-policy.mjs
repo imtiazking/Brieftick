@@ -281,12 +281,15 @@ export function evaluateFindingTriage({ policy, publicationType = null, finding,
     if (e.supportingObligationLinkRequired && !proposal.supportingObligationId && !proposal.supportingFindingId) {
       reasons.push('missing_binding_link');
     }
+    const cited = finding?.sections || [];
     const core = parseProvisionReference(proposal.provisionReference)?.core ?? null;
-    const onPage = (finding?.sections || []).filter((s) => s.pageNumber === proposal.quotationPage);
+    const provisionSection = core ? cited.find((s) => (s.provisionsSetOut || []).includes(core)) : null;
+    const onPage = cited.filter((s) => s.pageNumber === proposal.quotationPage);
     const section =
-      onPage.find((s) => core && (s.provisionsSetOut || []).includes(core)) ||
+      provisionSection ||
       onPage.find((s) => s.inLegalInstrument === true) ||
       onPage[0] ||
+      cited.find((s) => s.inLegalInstrument === true) ||
       null;
     reasons.push(
       ...evaluateProvisionEligibility({
@@ -296,6 +299,7 @@ export function evaluateFindingTriage({ policy, publicationType = null, finding,
         provisionFunction: proposal.provisionFunction,
         quotation: proposal.quotation,
         section,
+        citedSections: cited,
       }).reasons,
     );
   }

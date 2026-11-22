@@ -167,9 +167,28 @@ check(view.findings[0].triage.queue === A && view.findings[1].triage.queue === B
 const d = (f, extra) => ({ findingId: f.findingId, claimTextSha256: sha256Hex(f.statement), comment: 'Checked against the source PDF.', ...extra });
 const [f1, f2, f3] = view.findings;
 const good = [
-  d(f1, { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', legalBasis: 'PRIN 2.1.1R', quotation: 'A firm must conduct its business with integrity.', quotationPage: 3, provisionReference: 'PRIN 2.1.1R', provisionFunction: 'OPERATIVE_REQUIREMENT' }),
+  d(f1, {
+    decision: 'ACCEPTED',
+    regulatoryClassificationCode: 'R',
+    legalBasis: 'PRIN 2.1.1R',
+    quotation: 'A firm must conduct its business with integrity.',
+    quotationPage: 3,
+    obligationStatement: 'A firm must conduct its business with integrity.',
+    provisionReference: 'PRIN 2.1.1R',
+    provisionFunction: 'OPERATIVE_REQUIREMENT',
+  }),
   d(f2, { decision: 'ACCEPTED', regulatoryClassificationCode: 'GP', disposition: DISPOSITIONS.HORIZON }),
-  d(f3, { decision: 'ACCEPTED', regulatoryClassificationCode: 'E', legalBasis: 'SYSC 9.1.1R', quotation: 'A firm must arrange for orderly records to be kept.', quotationPage: 3, supportingFindingId: 'f-1', provisionReference: 'SYSC 9.1.2E', provisionFunction: 'EVIDENTIAL_PROVISION' }),
+  d(f3, {
+    decision: 'ACCEPTED',
+    regulatoryClassificationCode: 'E',
+    legalBasis: 'SYSC 9.1.1R',
+    quotation: 'A firm must arrange for orderly records to be kept.',
+    quotationPage: 3,
+    obligationStatement: 'A firm must arrange for orderly records to be kept.',
+    supportingFindingId: 'f-1',
+    provisionReference: 'SYSC 9.1.2E',
+    provisionFunction: 'EVIDENTIAL_PROVISION',
+  }),
 ];
 let v = validateFindingDecisions(view.findings, good, ctx);
 check(v.ok && v.decisions[0].createsObligation && !v.decisions[1].createsObligation && v.decisions[2].createsObligation && v.decisions[2].legalStatus === 'evidential', 'R and linked E convert; good practice referred to horizon scanning', v);
@@ -179,7 +198,15 @@ legacy[0].classification = 'binding_requirement';
 v = validateFindingDecisions(view.findings, legacy, ctx);
 check(!v.ok && v.error === 'finding_classification_code_required:1', 'legacy payload without a classification code refused', v);
 const guidanceConvert = clone(good);
-guidanceConvert[1] = d(f2, { decision: 'ACCEPTED', regulatoryClassificationCode: 'GBR', disposition: DISPOSITIONS.CONVERT, legalBasis: 'x reg', quotation: 'This is guidance on the requirement above.', quotationPage: 5 });
+guidanceConvert[1] = d(f2, {
+  decision: 'ACCEPTED',
+  regulatoryClassificationCode: 'GBR',
+  disposition: DISPOSITIONS.CONVERT,
+  legalBasis: 'x reg',
+  quotation: 'This is guidance on the requirement above.',
+  obligationStatement: 'This is guidance on the requirement above.',
+  quotationPage: 5,
+});
 v = validateFindingDecisions(view.findings, guidanceConvert, ctx);
 check(!v.ok && v.error === 'finding_conversion_not_permitted:2', 'guidance on binding requirements cannot be converted (explicit convert refused)', v);
 const archiveInA = clone(good);

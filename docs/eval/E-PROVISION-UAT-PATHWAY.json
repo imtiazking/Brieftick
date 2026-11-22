@@ -1,0 +1,27 @@
+{
+  "title": "Positive E (evidential) conversion — UAT pathway (no paid AI)",
+  "sourcedAt": "2026-11-22",
+  "status": "preflight_only_not_tested",
+  "recommendedPublication": {
+    "id": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+    "title": "PS22/9: A new Consumer Duty",
+    "rationale": "Authoritative preflight cites PRIN 2A.4.35E (p.126) and PRIN 2A.3.30E (p.119); instrument contains binding PRIN 2A rules for linked E disposition."
+  },
+  "partialExtractionLimitation": {
+    "runId": "728338c4-3ab9-438a-b0af-75f011955971",
+    "note": "Paid extraction already consumed; cited pages in this run did not surface provisions ending in E. Positive E conversion not claimed."
+  },
+  "alternateCorpus": {
+    "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+    "title": "PS26/1",
+    "note": "Local fixtures only; no E provision in PS26/1 corpus — not suitable for positive E."
+  },
+  "uatStepsWhenAuthorised": [
+    "Full-instrument or targeted batch including pp.119 and 126",
+    "User B: ACCEPTED code E, disposition LINK_TO_EXISTING_OBLIGATION with supporting R obligation",
+    "Negative probes before final review (existing ps22-9-comprehensive-uat pattern)",
+    "Independent obligation approval A→C after materialisation"
+  ],
+  "localRegression": "acceptance-ri-provision-eligibility-local-db.mjs finding 5 E linked to binding R",
+  "positiveEConversionTested": false
+}

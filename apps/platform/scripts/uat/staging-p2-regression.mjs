@@ -162,7 +162,8 @@ async function failClosedRegulatorProbe() {
       return out;
     });
     check('fail-closed: REG-FCA policy remains ACTIVE', probe['REG-FCA']?.ok === true && probe['REG-FCA']?.http === 200, probe['REG-FCA']);
-    for (const key of ['REG-FRC', 'REG-ICO', 'REG-PSR', 'REG-PRA']) {
+    check('REG-FRC policy ACTIVE after RI-CLS-003 staging UAT', probe['REG-FRC']?.ok === true && probe['REG-FRC']?.http === 200, probe['REG-FRC']);
+    for (const key of ['REG-ICO', 'REG-PSR', 'REG-PRA']) {
       check(`fail-closed: ${key} has no active policy (API unavailable)`, probe[key]?.ok === false, probe[key]);
     }
     return probe;

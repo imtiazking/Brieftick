@@ -1,0 +1,69 @@
+{
+  "verifiedAt": "2026-11-22T13:45:00.000Z",
+  "hostedStagingClerk": {
+    "frontendApi": "clerk.forgeniq.com",
+    "signInHost": "accounts.forgeniq.com",
+    "publishableKeyKind": "pk_live (observed on staging-app.forgeniq.com sign-in)"
+  },
+  "stagingClerkUsersVerifiedViaLiveSession": [
+    {
+      "persona": "A",
+      "clerkUserId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "primaryEmail": "forgeniq@gmail.com",
+      "existsOnHostedStagingClerk": true,
+      "platformOperatorRow": {
+        "status": "revoked",
+        "displayName": "FORGENIQ RI staging platform operator"
+      },
+      "classificationPolicyAdminOperatorFlag": false
+    },
+    {
+      "persona": "B",
+      "clerkUserId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "primaryEmail": "imtiazahmed_@hotmail.com",
+      "existsOnHostedStagingClerk": true,
+      "platformOperatorRow": null,
+      "classificationPolicyAdminOperatorFlag": false
+    },
+    {
+      "persona": "C",
+      "clerkUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "primaryEmail": "forgeniq@yahoo.com",
+      "existsOnHostedStagingClerk": true,
+      "platformOperatorRow": null,
+      "classificationPolicyAdminOperatorFlag": false
+    }
+  ],
+  "platformOperatorsTableStagingSupabase": {
+    "project": "forgeniq-ri-staging",
+    "rows": [
+      {
+        "clerkUserId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+        "status": "revoked",
+        "displayName": "FORGENIQ RI staging platform operator"
+      },
+      {
+        "clerkUserId": "user_3LIQIZlXNWBFEvSKabAYIUhhNdi",
+        "status": "active",
+        "displayName": "FORGENIQ RI staging platform operator (OWNER)"
+      }
+    ]
+  },
+  "misconfiguredActiveOperator": {
+    "clerkUserId": "user_3LIQIZlXNWBFEvSKabAYIUhhNdi",
+    "provisioningLabel": "forgeniq-gmail-technical",
+    "existsOnHostedStagingClerk": false,
+    "evidence": "FG24-6-UAT-EVIDENCE.json reviewerProvisioning — dev Clerk only; org membership on staging set to removed; OP1 headed login never established a session on clerk.forgeniq.com",
+    "doNotUseForStagingSignIn": true
+  },
+  "intendedStagingOperatorSignIn": {
+    "email": "forgeniq@gmail.com",
+    "clerkUserId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+    "prerequisite": "Applied 2026-11-22 — see PLATFORM-OPERATOR-STAGING-CORRECTION-2026-11-22.json",
+    "uatPersona": "OP1 in staging-user-sessions.mjs (aligned to this user id; separate Chrome profile from User A)"
+  },
+  "clerkPlatformApiMcp": {
+    "status": "unavailable",
+    "reason": "Clerk MCP token/resource mismatch — user lookup API not used"
+  }
+}

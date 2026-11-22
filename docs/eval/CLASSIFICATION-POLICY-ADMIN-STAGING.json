@@ -1,0 +1,107 @@
+{
+  "log": [
+    {
+      "step": "operator-op1-api",
+      "at": "2026-11-22T14:08:39.464Z",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "http": 200,
+      "operator": true,
+      "writesEnabled": true
+    },
+    {
+      "step": "operator-op2-api",
+      "at": "2026-11-22T14:08:43.529Z",
+      "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "http": 200,
+      "operator": true
+    },
+    {
+      "step": "tenant-b-non-operator",
+      "at": "2026-11-22T14:08:47.518Z",
+      "actor": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "operatorFlag": "false",
+      "readOnlyBanner": true,
+      "proposeStatus": 403,
+      "activateStatus": 403
+    },
+    {
+      "step": "policy-editor-ui",
+      "at": "2026-11-22T14:08:52.447Z",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "operatorUi": "true",
+      "editorOpen": true
+    },
+    {
+      "step": "propose-fca",
+      "at": "2026-11-22T14:08:54.326Z",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "proposeHttp": 200,
+      "proposeOk": true,
+      "draftPolicyId": "5715fa4d-0b65-4717-aebc-6ec59675205a",
+      "draftVersion": 4,
+      "createdBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "selfActivateStatus": 403,
+      "selfActivateError": "segregation_of_duties",
+      "editorOpen": true
+    },
+    {
+      "step": "activate-fca-ui",
+      "at": "2026-11-22T14:08:59.321Z",
+      "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "activateControlVisible": true
+    },
+    {
+      "step": "activate-fca",
+      "at": "2026-11-22T14:09:00.553Z",
+      "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "policyId": "5715fa4d-0b65-4717-aebc-6ec59675205a",
+      "http": 200,
+      "ok": true,
+      "activeVersion": 4,
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "auditEventCount": 0,
+      "activateControlVisible": true
+    },
+    {
+      "step": "propose-frc",
+      "at": "2026-11-22T14:09:04.553Z",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "skipped": true,
+      "reason": "REG-FRC already active from prior UAT",
+      "activeVersion": 1,
+      "approvedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+    },
+    {
+      "step": "audit-history",
+      "at": "2026-11-22T14:09:08.330Z",
+      "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "fcaVersions": 4,
+      "activeVersion": 4,
+      "globalAuditEvents": 118,
+      "eventTypesSample": [
+        "POLICY_SUPERSEDED",
+        "POLICY_ACTIVE",
+        "ENTRY_INSERT",
+        "POLICY_PROPOSED"
+      ]
+    },
+    {
+      "step": "withdraw-skipped",
+      "at": "2026-11-22T14:09:12.333Z",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "reason": "no FCA draft to withdraw"
+    },
+    {
+      "step": "fail-closed-ico",
+      "at": "2026-11-22T14:09:15.627Z",
+      "actor": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "status": 404
+    },
+    {
+      "step": "complete",
+      "at": "2026-11-22T14:09:16.024Z",
+      "ok": true,
+      "secondOperator": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+    }
+  ]
+}

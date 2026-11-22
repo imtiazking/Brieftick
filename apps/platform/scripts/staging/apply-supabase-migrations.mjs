@@ -176,6 +176,9 @@ async function main() {
     }
 
     const query = readFileSync(step.path, 'utf8');
+    if (query.includes('migration_apply_incomplete')) {
+      throw new Error(`${step.name}: placeholder migration_apply_incomplete body — refusing to apply`);
+    }
     if (dryRun || checkOnly) {
       console.log(`WOULD APPLY ${step.name} (${query.length} bytes)`);
       continue;

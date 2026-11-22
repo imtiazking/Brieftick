@@ -1,0 +1,180 @@
+{
+  "log": [
+    {
+      "step": "inspect-conc",
+      "at": "2026-11-22T15:47:35.108Z",
+      "convertFindingNumber": 7,
+      "crossPages": [
+        94,
+        95
+      ],
+      "sections": [
+        {
+          "sourceSectionId": "EVD-PDF-90eac526516055e9",
+          "pageNumber": 94,
+          "citation": "PDF p.94 · legal instrument",
+          "excerpt": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.15.5G, or CONC 7.17 to CONC 7.19, CONC 7.20.1R or CONC 7.20.2G. ... ... 7.6 Exercise of continuous payment authority Recovery and continuous payment authorities etc. ... 7.6.2B G ... Regulated deferred payment credit agreements: adequate explanations relating to continuous payment",
+          "inLegalInstrument": true,
+          "transitionalProvisions": false,
+          "provisionsSetOut": [
+            "7.1.4R",
+            "7.6.2BG",
+            "7.6.2CR",
+            "7.20.1R"
+          ],
+          "provisionTextStatus": {
+            "7.1.4R": "AMENDMENT_MARKUP_UNCERTAIN",
+            "7.20.1R": "NEW_TEXT",
+            "7.6.2BG": "AMENDMENT_MARKUP_UNCERTAIN",
+            "7.6.2CR": "AMENDMENT_MARKUP_UNCERTAIN"
+          }
+        },
+        {
+          "sourceSectionId": "EVD-PDF-6f160bf6c84e2d9d",
+          "pageNumber": 95,
+          "citation": "PDF p.95 · legal instrument",
+          "excerpt": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and (b) provide the borrower with sufficient information for the borrower to understand: (i) which regulated deferred payment credit agreement the missed payment relates to; (ii) any adverse consequences for the borrower arising out o",
+          "inLegalInstrument": true,
+          "transitionalProvisions": false,
+          "provisionsSetOut": [
+            "7.20.2G",
+            "7.20.3R"
+          ],
+          "provisionTextStatus": {
+            "7.20.2G": "NEW_TEXT",
+            "7.20.3R": "NEW_TEXT"
+          }
+        }
+      ],
+      "findingCount": 10
+    },
+    {
+      "step": "review-conc",
+      "at": "2026-11-22T15:47:40.565Z",
+      "actor": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "runId": "a06eb008-5b65-4afb-84d7-0a21d37f8754",
+      "result": {
+        "httpStatus": 200,
+        "ok": true,
+        "skipped": [
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "79204c5f-d710-497a-a9ee-00f31db1bc47",
+            "claimIndex": 0,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "2754a9ad-fbcd-430d-b1e5-45607e7b1a17",
+            "claimIndex": 1,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "094f758e-e495-4e5e-a805-909dcad4d598",
+            "claimIndex": 2,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "51ef40c6-b80e-4f1c-b75f-8b21ad972a40",
+            "claimIndex": 3,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "57eed860-6dcf-4164-8cb1-49b7c765d7a4",
+            "claimIndex": 4,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "6baecccc-9dc5-46dc-a29d-a9d634d1638a",
+            "claimIndex": 5,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "198d0ad3-6a53-4589-b803-0d10c2ef0522",
+            "claimIndex": 7,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "29dd8a84-d1a2-42ba-9a06-1b576ec1627a",
+            "claimIndex": 8,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "01288ce1-1a64-4767-8ac2-90f3b9353d74",
+            "claimIndex": 9,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          }
+        ],
+        "decision": "PARTIALLY_ACCEPTED",
+        "reviewId": "14399d5a-ec4c-42db-a543-f26c50d3e92e",
+        "materialised": [
+          {
+            "findingId": "bec8c6ad-7e55-4047-8ae2-e8c3edd2bbf0",
+            "claimIndex": 6,
+            "legalStatus": "binding",
+            "obligationId": "96dd98d9-ad1e-4549-8a74-a82591b94db1",
+            "classificationCode": "R"
+          }
+        ],
+        "evidencePathway": "human_verified_uat",
+        "classificationPolicyVersion": 4
+      }
+    },
+    {
+      "step": "approve-conc",
+      "at": "2026-11-22T15:47:52.995Z",
+      "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "obligationId": "96dd98d9-ad1e-4549-8a74-a82591b94db1"
+    },
+    {
+      "step": "complete-conc",
+      "at": "2026-11-22T15:47:53.545Z",
+      "runId": "a06eb008-5b65-4afb-84d7-0a21d37f8754",
+      "obligationId": "96dd98d9-ad1e-4549-8a74-a82591b94db1"
+    }
+  ],
+  "budgetUsdCeiling": 2
+}

@@ -1,0 +1,27 @@
+{
+  "milestone": "2026-11-22 — RI-CLS-007 operational workflow (simulated gate)",
+  "capabilities": {
+    "automaticBatchExecution": "runOrchestrationBatchesAutomatic (simulate only; paid via advance action + authorised suffix)",
+    "provisionInventory": "buildPublicationExtractionBatchPlan.instrumentProvisionCount + per-batch outstanding",
+    "crossPageContext": "extraction-batch-plan + acceptance e2e PS26-shaped fixture",
+    "coverageReconciliation": "reconcileOrchestrationCoverage / coverageReconciliation",
+    "crossBatchDedupe": "crossBatchFindingDedupeKey + mergeFindingsIntoOrchestration",
+    "failedBatchRecovery": "nextPendingBatchIndex includes FAILED; advanceOrchestrationBatch",
+    "resumableProcessing": "GET orchestration + POST resume",
+    "consolidatedHumanReview": "buildConsolidatedHumanReview",
+    "costControls": "assertOrchestrationSpendCap + estimateBatchCostUsd",
+    "completionStatus": "publicationCoverageComplete only when all batches SUCCEEDED and outstanding=0"
+  },
+  "api": {
+    "route": "POST /api/ri-lab/publications/:id/extraction-orchestration",
+    "actions": ["init (default)", "advance", "advance_all_simulated (requires RI_EXTRACTION_ORCHESTRATION_SIMULATE=true)"]
+  },
+  "acceptance": {
+    "orchestrator": "6/6",
+    "engine": "13/13",
+    "e2e": "8/8",
+    "batchPlan": "5/5"
+  },
+  "stagingLiveMultiBatch": "not executed (no paid AI)",
+  "gateForPaidAi": "PASS — request approval using PAID-EXTRACTION-COSTED-TEST-PLAN-2026-11-22.json"
+}

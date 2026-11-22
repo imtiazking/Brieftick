@@ -1,0 +1,39 @@
+{
+  "approvedAt": "2026-11-22T14:00:00.000Z",
+  "scope": "staging Supabase forgeniq-ri-staging only",
+  "revocationHistoryReview": {
+    "conclusion": "No unresolved security block on reinstatement",
+    "findings": [
+      "user_3LA76vR4 was revoked 2026-10-28 together with swapping active status to dev Clerk user_3LIQIZl — operational misconfiguration during phase-8 bootstrap, not a disciplinary/security revocation",
+      "platform_operators has no separate audit table; history preserved by retaining rows with status revoked (no deletes)",
+      "FG24-6 documented dev Clerk user cannot authenticate to clerk.forgeniq.com; org membership for dev user already removed on staging"
+    ]
+  },
+  "correctionApplied": {
+    "activated": {
+      "clerkUserId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "email": "forgeniq@gmail.com",
+      "displayName": "FORGENIQ RI staging platform operator (forgeniq@gmail.com)"
+    },
+    "revokedPreservingRow": {
+      "clerkUserId": "user_3LIQIZlXNWBFEvSKabAYIUhhNdi",
+      "displayName": "FORGENIQ RI staging platform operator (dev Clerk — retired)"
+    },
+    "secondOperatorAdded": {
+      "clerkUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "email": "forgeniq@yahoo.com",
+      "displayName": "FORGENIQ RI staging platform operator 2 (forgeniq@yahoo.com)",
+      "rationale": "Independent Clerk identity and mailbox from OP1; existing VALID UAT session (User C)"
+    }
+  },
+  "vercelStagingOnly": {
+    "RI_CLASSIFICATION_POLICY_ADMIN_WRITES_ENABLED": "true",
+    "redeploy": "staging-app.forgeniq.com redeploy after env override"
+  },
+  "verification": {
+    "op1OperatorApi": true,
+    "op2OperatorApi": true,
+    "tenantBPropose403": true,
+    "riCls003Evidence": "docs/eval/CLASSIFICATION-POLICY-ADMIN-STAGING.json"
+  }
+}

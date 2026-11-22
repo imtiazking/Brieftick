@@ -1,0 +1,16 @@
+{
+  "provision": "CONC 7.20.1R(2)",
+  "status": "open_pending_ai_conversion",
+  "preservedEvidence": [
+    "docs/eval/PS26-1-CROSS-PAGE-PROGRAMME.json",
+    "acceptance-ri-provision-eligibility-local-db.mjs (cross-page convert p.95)",
+    "STAGING-P2-REGRESSION finding 1 on run c8cb095e cites pp.94–96 with 7.20.1R"
+  ],
+  "authorisedPaidAttempt": {
+    "runId": "7191c8b5-e738-4c87-9d2d-193cfefb36af",
+    "suffix": "uat-ps26-1-cross-page-002",
+    "limitation": "Partial extraction cited p.95 only; conversion refused at review"
+  },
+  "noManualSubstitute": true,
+  "noFurtherPaidWithoutAuthorisation": true
+}

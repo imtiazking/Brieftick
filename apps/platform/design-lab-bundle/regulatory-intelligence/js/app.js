@@ -121,6 +121,7 @@ import {
 } from './platform/connected-classification-policy-admin.js';
 import {
   connectedExtractionErrorMessage,
+  fetchConnectedExtractionOrchestration,
   markConnectedExtractionSent,
   markConnectedExtractionSettled,
   requestConnectedObligationExtraction,
@@ -1968,6 +1969,46 @@ function bindViewHandlers() {
       .querySelectorAll('[data-connected-pub-ai-change-id], [data-connected-pub-ai-idempotency]')
       .forEach((input) => input.addEventListener('input', () => syncConnectedExtractionButton(extractionWrap)));
   }
+
+  const orchWrap = document.querySelector('[data-connected-pub-extraction-orchestration]');
+  const orchStatus = document.querySelector('[data-connected-orchestration-status]');
+  const refreshOrchestration = async ({ create = false } = {}) => {
+    if (!orchWrap) return;
+    const publicationId = orchWrap.getAttribute('data-connected-pub-extraction-orchestration');
+  const changeId = orchWrap.querySelector('[data-connected-orchestration-change-id]')?.value?.trim();
+    const spendRaw = orchWrap.querySelector('[data-connected-orchestration-spend-cap]')?.value?.trim();
+    const spendCapUsd = spendRaw ? Number(spendRaw) : undefined;
+    try {
+      const body = create
+        ? await fetchConnectedExtractionOrchestration(getState(), publicationId, { changeId, spendCapUsd })
+        : await fetchConnectedExtractionOrchestration(getState(), publicationId, { resume: true });
+      if (orchStatus) orchStatus.textContent = JSON.stringify(body.orchestration ?? body, null, 2);
+    } catch (e) {
+      if (orchStatus) orchStatus.textContent = e?.message || 'orchestration_failed';
+    }
+  };
+  document.querySelector('[data-connected-orchestration-init]')?.addEventListener('click', () => refreshOrchestration({ create: true }));
+  document.querySelector('[data-connected-orchestration-refresh]')?.addEventListener('click', () => refreshOrchestration({ create: false }));
+  document.querySelector('[data-connected-orchestration-advance]')?.addEventListener('click', async () => {
+    if (!orchWrap || !orchStatus) return;
+    const publicationId = orchWrap.getAttribute('data-connected-pub-extraction-orchestration');
+    const suffix =
+      document.querySelector('[data-connected-pub-ai-idempotency]')?.value?.trim() ||
+      orchWrap.querySelector('[data-connected-orchestration-change-id]')?.value?.trim();
+    if (!suffix) {
+      orchStatus.textContent = 'Set an authorised run reference on the extraction panel first.';
+      return;
+    }
+    try {
+      const body = await fetchConnectedExtractionOrchestration(getState(), publicationId, {
+        action: 'advance',
+        baseIdempotencySuffix: suffix,
+      });
+      orchStatus.textContent = JSON.stringify(body, null, 2);
+    } catch (e) {
+      orchStatus.textContent = e?.message || 'orchestration_advance_failed';
+    }
+  });
 
   document.querySelector('[data-connected-pub-ai-submit]')?.addEventListener('click', async () => {
     const wrap = document.querySelector('[data-connected-pub-ai-request]');

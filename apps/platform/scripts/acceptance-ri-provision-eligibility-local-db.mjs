@@ -62,6 +62,8 @@ const QUOTE = {
   application: 'This section applies to a firm with respect to entering into a regulated deferred payment credit agreement.',
   noDuty: 'The additional product information set out in this section relates to deferred payment credit agreements.',
   crossRef: 'A firm must provide the information required by CONC 4.2A.3R before the agreement is entered into.',
+  crossPage7201:
+    '(2) A firm must contact the customer about the missed payment before taking any further action in relation to the arrears.',
   transitional: 'A firm must apply the requirements in the table from the date the firm obtains permission.',
   evidential: 'A firm should keep a record of the explanation it provides to the customer before the agreement is made.',
   mayOnly: 'A firm may only take steps to recover the debt after it has contacted the customer about the missed payment.',
@@ -86,7 +88,7 @@ const FINDINGS = [
   { text: 'The additional product information section applies to deferred payment credit lenders.', sections: ['I87'] },
   { text: 'Firms with temporary permission must apply the requirements from the date permission is obtained.', sections: ['I83'] },
   { text: 'Firms should keep a record of the explanation given to customers (evidential).', sections: ['I95'] },
-  { text: 'Firms may only take recovery steps after contacting the customer about a missed payment.', sections: ['I94'] },
+  { text: 'A firm must contact the customer about a missed payment before further arrears action.', sections: ['I94', 'I95'] },
   { text: 'Firms with only deferred payment credit temporary permission must comply with SYSC 4.1.1R.', sections: ['I66'] },
   { text: 'Firms must give the explanation required by CONC 4.6.3R before the agreement.', sections: ['I92'] },
 ];
@@ -154,6 +156,7 @@ try {
     [0, 93, QUOTE.unfair], [0, 93, QUOTE.application], [0, 93, QUOTE.noDuty],
     [1, 19, QUOTE.unfair], [2, 93, QUOTE.crossRef], [3, 87, QUOTE.application],
     [4, 83, QUOTE.transitional], [5, 95, QUOTE.evidential],
+    [6, 95, QUOTE.crossPage7201],
     [6, 94, QUOTE.mayOnly], [6, 94, QUOTE.noDuty], [6, 94, QUOTE.application], [7, 66, QUOTE.tpDuty], [8, 92, QUOTE.deleted],
   ]) await verify(run, i, page, q);
 
@@ -195,7 +198,7 @@ try {
 
   // Refusals (each rolled back).
   await refused({ 1: convert('R', 19, QUOTE.unfair, 'CONC 4.8.2R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_outside_instrument:2', 'R from a narrative (non-instrument) page of a binding publication is refused');
-  await refused({ 2: convert('R', 93, QUOTE.crossRef, 'CONC 4.2A.3R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_not_in_cited_section:3', 'a cross-reference on p.93 cannot convert a provision set out on p.87');
+  await refused({ 0: convert('R', 93, QUOTE.crossRef, 'CONC 4.2A.3R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_not_in_cited_section:1', 'a cross-reference on p.93 cannot convert a provision set out on p.87 when only that page is cited');
   await refused({ 3: convert('R', 87, QUOTE.application, 'CONC 4.2A.1R', 'APPLICATION') }, 'finding_provision_not_operative:4', 'an application provision marked R cannot be converted');
   await refused({ 4: convert('R', 83, QUOTE.transitional, 'CONC 16.1.5R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_not_in_cited_section:5', 'a transitional-table row that cannot be verified as set out fails closed (not excluded as transitional)');
   await refused({ 0: convert('R', 93, QUOTE.unfair, 'CONC 4.8.2R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_amendment_uncertain:1', 'amended text (underlining/strike-through not verifiable) cannot convert');
@@ -238,7 +241,7 @@ try {
       0: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', provisionFunction: 'OPERATIVE_REQUIREMENT', provisionReference: 'CONC 4.8.2R', quotation: QUOTE.unfair, quotationPage: 93, legalBasis: 'CONC 4.8.2R', disposition: 'RECLASSIFICATION_REQUESTED' },
       4: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', provisionFunction: 'TRANSITIONAL', quotation: QUOTE.transitional, quotationPage: 83, disposition: 'ARCHIVE' },
       5: convert('E', 95, QUOTE.evidential, 'COBS 7.20.4E', 'EVIDENTIAL_PROVISION', { supportingFindingId: run.ids[6] }),
-      6: convert('R', 94, QUOTE.mayOnly, 'CONC 7.20.1R', 'OPERATIVE_REQUIREMENT', { legalBasis: 'CONC 7.20.1R (FCA 2026/2)' }),
+      6: convert('R', 95, QUOTE.crossPage7201, 'CONC 7.20.1R', 'OPERATIVE_REQUIREMENT', { legalBasis: 'CONC 7.20.1R (FCA 2026/2)' }),
       7: convert('R', 66, QUOTE.tpDuty, 'SYSC TP 13.3R', 'OPERATIVE_REQUIREMENT', { legalBasis: 'SYSC TP 13.3R (FCA 2026/2)' }),
     },
     true,

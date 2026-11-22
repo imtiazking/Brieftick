@@ -46,18 +46,37 @@ export const PERSONAS = {
   A: {
     label: 'User A — Maker',
     userId: 'user_3LA76vR4CueutWtEpcAxvqYKkEv',
+    expectedEmail: 'forgeniq@gmail.com',
     requiredCapabilities: ['obligations', 'applicabilityWorkflow', 'aiRequest'],
   },
   B: {
     label: 'User B — Reviewer',
     userId: 'user_3Fa9TcFi8izkxHdDP58Qb3UY4mr',
+    expectedEmail: 'imtiazahmed_@hotmail.com',
     expectedRole: 'REVIEWER',
     requiredCapabilities: ['aiReview'],
   },
   C: {
     label: 'User C — Approver',
     userId: 'user_3LBBtwYR4mmFisfpzMj3n7DVtVh',
+    expectedEmail: 'forgeniq@yahoo.com',
     requiredCapabilities: ['obligationReview', 'applicabilityWorkflow'],
+  },
+  OP1: {
+    label: 'Platform operator 1 (staging clerk.forgeniq.com)',
+    userId: 'user_3LA76vR4CueutWtEpcAxvqYKkEv',
+    expectedEmail: 'forgeniq@gmail.com',
+    sessionProfile: 'A',
+    operator: true,
+    requiredCapabilities: [],
+  },
+  OP2: {
+    label: 'Platform operator 2 (independent maker-checker)',
+    userId: 'user_3LBBtwYR4mmFisfpzMj3n7DVtVh',
+    expectedEmail: 'forgeniq@yahoo.com',
+    sessionProfile: 'C',
+    operator: true,
+    requiredCapabilities: [],
   },
 };
 
@@ -66,12 +85,14 @@ export class IdentityMismatchError extends Error {}
 
 function persona(key) {
   const p = PERSONAS[String(key).toUpperCase()];
-  if (!p) throw new Error(`unknown persona ${key} (expected A, B or C)`);
+  if (!p) throw new Error(`unknown persona ${key} (expected A, B, C, OP1 or OP2)`);
   return { key: String(key).toUpperCase(), ...p };
 }
 
 function profileDir(key) {
-  return join(SESSION_ROOT, `persona-${key}`);
+  const p = persona(key);
+  const dirKey = p.sessionProfile || p.key;
+  return join(SESSION_ROOT, `persona-${dirKey}`);
 }
 
 /** Restrict the session folder to the current Windows user (no inherited ACEs). */
@@ -168,6 +189,14 @@ export async function verifyIdentity(page, key) {
   if (!ALLOWED_ROLES.has(id.role)) problems.push(`role ${id.role} cannot act`);
   if (p.expectedRole && id.role !== p.expectedRole) problems.push(`role ${id.role}, expected ${p.expectedRole}`);
   for (const cap of p.requiredCapabilities) if (id.writeCapabilities[cap] !== true) problems.push(`capability ${cap} not granted`);
+  if (p.operator === true) {
+    const isOp = await page.evaluate(async () => {
+      const res = await fetch('/api/ri-lab/classification-policy/admin', { credentials: 'same-origin', cache: 'no-store' });
+      const body = await res.json().catch(() => ({}));
+      return body.ok === true && body.operator === true;
+    });
+    if (!isOp) problems.push('not a platform operator (classification-policy/admin)');
+  }
   if (problems.length) throw new IdentityMismatchError(`${p.label}: ${problems.join('; ')}`);
   return {
     persona: p.key,
@@ -284,7 +313,7 @@ if (isCli) {
     } else if (command === 'logout') {
       await logout(arg);
     } else {
-      console.log('usage: staging-user-sessions.mjs login <A|B|C|all> | status | logout <A|B|C>');
+      console.log('usage: staging-user-sessions.mjs login <A|B|C|OP1|all> | status | logout <A|B|C|OP1>');
       process.exitCode = 2;
     }
   } catch (err) {

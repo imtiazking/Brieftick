@@ -1,0 +1,29 @@
+{
+  "title": "RI-CLS-005 — consolidated negative conversion evidence (no staging paid AI)",
+  "sourcedAt": "2026-11-22",
+  "localAcceptance": {
+    "script": "apps/platform/scripts/acceptance-ri-provision-eligibility-local-db.mjs",
+    "result": "47/47 pass",
+    "coverage": [
+      "Non-operative provision functions route to non-obligation triage",
+      "Deleted / unverifiable amended text → exception triage",
+      "Narrative (policy statement) text refused for R conversion",
+      "Cross-page CONC 7.20.1R(2) on p.95 with set-out on p.94 — convertible when grounded",
+      "Evidential code requires binding link"
+    ]
+  },
+  "stagingPaidRunsConsolidated": [
+    {
+      "suffix": "uat-ps26-1-cross-page-002",
+      "runId": "7191c8b5-e738-4c87-9d2d-193cfefb36af",
+      "negativeOutcome": "finding_provision_not_in_cited_section — AI citations omitted p.94 / 7.20.1R anchor"
+    },
+    {
+      "suffix": "uat-ps22-9-001",
+      "runId": "728338c4-3ab9-438a-b0af-75f011955971",
+      "negativeOutcome": "Partial corpus — no positive E in supplied sections; PRIN 2A.4.13R R obligation materialised only"
+    }
+  ],
+  "stagingBrowserGap": "Full CLS-005 refusal matrix not re-run in browser after paid budget exhausted; local + API probes remain authoritative until next authorised extraction",
+  "nextStep": "Targeted extraction only (see PAID-EXTRACTION-COSTED-TEST-PLAN-2026-11-22.json)"
+}

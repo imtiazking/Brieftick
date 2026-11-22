@@ -2,6 +2,17 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-22 — Implementation tranche closure
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | Commit remaining bundle + migration + eval | P3+ tranche closure | `feature/ri-classification-triage` — see milestone report |
+| — | Migration reconcile | Avoid blind reapply | `STAGING-MIGRATION-RECONCILE-2026-11-22.json`; staging preflight ok; local **13/13** |
+| — | Revert `vercel` devDependency | Lock churn | `package.json` / lock restored to HEAD |
+| — | Live pilot readiness | Priority 2 no paid AI | `LIVE-FULL-PUBLICATION-EXTRACTION-PILOT-READINESS-2026-11-22.json` ~**$0.80** combined |
+| — | Regulator rollout drafts | PRA/ICO/PSR/FRC | `REGULATOR-CLASSIFICATION-ROLLOUT-PLAN-2026-11-22.md` |
+| — | Staging deploy + P2 | Match committed impl | See deploy JSON + `STAGING-P2-REGRESSION-2026-11-22.json` |
+
 ## 2026-11-22 — P3+ full extraction, accuracy, FCA validation
 
 | Time (UTC) | Decision | Reason | Outcome |

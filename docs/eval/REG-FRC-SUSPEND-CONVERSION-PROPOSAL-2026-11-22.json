@@ -1,0 +1,24 @@
+{
+  "proposal": "Suspend REG-FRC conversion eligibility pending authoritative policy",
+  "status": "DOCUMENTED_FOR_OPERATOR_REVIEW — not activated via SQL in this tranche",
+  "currentStagingState": {
+    "regulator": "REG-FRC",
+    "policyVersion": 1,
+    "status": "ACTIVE",
+    "allCodesConversionEnabled": false,
+    "changeReason": "First FRC classification policy — staging RI-CLS-003 UAT."
+  },
+  "recommendedOperatorActions": [
+    "Propose REG-FRC v2 with all conversionEnabled=false and changeReason citing REG-FRC-POLICY-AUDIT-2026-11-22.json",
+    "Second operator activates v2 (maker-checker)",
+    "Replace descriptions from FRC authoritative taxonomy before any conversionEnabled=true"
+  ],
+  "failClosedUntilVerified": true,
+  "operatorApprovalChecklist": [
+    "Confirm admin writes re-enabled on staging only for this change",
+    "User A proposes REG-FRC v2 (all codes conversionEnabled=false)",
+    "User C activates v2",
+    "Verify audit events in classification policy admin evidence"
+  ],
+  "p3Note": "2026-11-22 — FRC remains non-authoritative per REG-FRC-POLICY-AUDIT; proposal unchanged pending operator session"
+}

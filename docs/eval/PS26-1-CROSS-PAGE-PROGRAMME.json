@@ -1,0 +1,17 @@
+{
+  "runReference": "uat-ps26-1-cross-page-002",
+  "log": [
+    {
+      "step": "review",
+      "at": "2026-11-22T13:00:01.829Z",
+      "actor": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "runId": "7191c8b5-e738-4c87-9d2d-193cfefb36af",
+      "result": {
+        "httpStatus": 400,
+        "ok": false,
+        "error": "validation_error",
+        "detail": "finding_provision_not_in_cited_section:1"
+      }
+    }
+  ]
+}

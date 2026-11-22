@@ -1,0 +1,36 @@
+{
+  "recordType": "platform_operator_permission_change",
+  "environment": "staging",
+  "approvedByUser": "explicit approval in chat 2026-11-22",
+  "changes": [
+    {
+      "clerkUserId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "email": "forgeniq@gmail.com",
+      "action": "reactivated",
+      "table": "public.platform_operators",
+      "priorStatus": "revoked",
+      "newStatus": "active"
+    },
+    {
+      "clerkUserId": "user_3LIQIZlXNWBFEvSKabAYIUhhNdi",
+      "action": "revoked",
+      "priorStatus": "active",
+      "newStatus": "revoked",
+      "rowRetained": true,
+      "reason": "Dev Clerk instance only; not valid on clerk.forgeniq.com"
+    },
+    {
+      "clerkUserId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "email": "forgeniq@yahoo.com",
+      "action": "inserted_active",
+      "purpose": "Independent platform operator 2 for classification policy maker-checker UAT"
+    }
+  ],
+  "productionImpact": "none",
+  "segregationOfDuties": "Unchanged — platform_operators is global allowlist; tenant roles unchanged",
+  "followUpBacklog": "SEC-GOV-001 platform_operators permission-change audit history",
+  "evidence": [
+    "docs/eval/PLATFORM-OPERATOR-STAGING-CORRECTION-2026-11-22.json",
+    "docs/eval/CLASSIFICATION-POLICY-ADMIN-STAGING.json"
+  ]
+}

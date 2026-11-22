@@ -3,12 +3,24 @@ import { getState } from '../store.js';
 import { getConnectedAssigneeLabel, getConnectedCatalogue } from './connected-catalogue.js';
 import { isConnectedObligationReviewEnabled, isConnectedObligationWritesEnabled } from './connected-mode.js';
 import { renderConnectedWorkflowEventsTable } from './connected-governance-ui.js';
-import { getConnectedEntityWorkflowEvents } from './connected-entity-audit.js';
+import {
+  getConnectedEntityWorkflowEvents,
+  getEntityWorkflowEventsLoadError,
+  isEntityWorkflowEventsLoading,
+} from './connected-entity-audit.js';
 
 export function renderConnectedObligationWorkflowPanel(obligationId) {
-  const events = getConnectedEntityWorkflowEvents(getState(), 'regulatory_obligation', obligationId);
-  return `<section class="ri-panel"><h2>Audit history</h2>
-    ${renderConnectedWorkflowEventsTable(events, 'No workflow events for this obligation yet')}</section>`;
+  const state = getState();
+  const events = getConnectedEntityWorkflowEvents(state, 'regulatory_obligation', obligationId);
+  const loading = isEntityWorkflowEventsLoading(state, 'regulatory_obligation', obligationId);
+  const err = getEntityWorkflowEventsLoadError(state, 'regulatory_obligation', obligationId);
+  const body = loading
+    ? '<p class="ri-muted" data-connected-entity-audit-loading>Loading audit history…</p>'
+  : err
+      ? `<p class="ri-alert">${esc(err)}</p>`
+      : renderConnectedWorkflowEventsTable(events, 'No workflow events for this obligation yet');
+  return `<section class="ri-panel" data-connected-entity-audit="${esc(obligationId)}"><h2>Audit history</h2>
+    ${body}</section>`;
 }
 
 export function renderConnectedObligationEditPanel(id, o) {

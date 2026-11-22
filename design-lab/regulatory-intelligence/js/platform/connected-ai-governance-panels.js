@@ -136,6 +136,33 @@ export function renderConnectedAiRunCitations(citations = [], publicationSource 
   </section>`;
 }
 
+export function renderConnectedExtractionCoveragePanel(detail) {
+  const grounding = detail?.structured_output?._forgeniqGrounding || detail?.structuredOutput?._forgeniqGrounding;
+  const sel = grounding?.selection;
+  const batch = grounding?.extractionBatch;
+  if (!sel && !batch) return '';
+  const complete =
+    batch?.publicationCoverageComplete === true
+      ? 'Complete instrument provision coverage (this run)'
+      : batch?.stalled
+        ? 'Partial — batch made no new provision progress (review plan)'
+        : 'Partial document / partial instrument provision coverage';
+  const omitted = Array.isArray(sel?.instrumentProvisionsNotSupplied) ? sel.instrumentProvisionsNotSupplied.length : null;
+  const supplied = sel?.instrumentProvisionsSupplied;
+  const total = sel?.instrumentProvisionsSetOut;
+  const batchIdx = batch?.batchIndex;
+  return `<section class="ri-panel" data-connected-extraction-coverage>
+    <h3>Extraction coverage</h3>
+    <p class="ri-muted"><strong>${esc(complete)}</strong>${batchIdx != null ? ` · Batch ${batchIdx + 1}` : ''}</p>
+    <ul class="ri-list-compact">
+      <li>Scope: ${esc(sel?.scope || '—')} · Character coverage ${esc(String(sel?.characterCoveragePercent ?? '—'))}%</li>
+      <li>Instrument provisions supplied: ${esc(String(supplied ?? '—'))} / ${esc(String(total ?? '—'))}${omitted != null ? ` (${omitted} outstanding this run)` : ''}</li>
+      ${batch?.estimate?.estimatedTokens != null ? `<li>Estimated tokens (this batch): ~${esc(String(batch.estimate.estimatedTokens))}</li>` : ''}
+    </ul>
+    <p class="ri-muted">Additional batches require an explicit idempotency suffix and human approval; full publication analysis is never implied when provisions remain unanalysed.</p>
+  </section>`;
+}
+
 export function renderConnectedAiRunDetail(body) {
   const detail = body?.detail || body?.aiAnalysisRun;
   const so = detail?.structured_output || detail?.structuredOutput;
@@ -166,7 +193,7 @@ export function renderConnectedAiRunDetail(body) {
       ? `<section class="ri-panel"><h3>Analysis findings</h3><p>${esc(String(so.classification))}</p></section>`
       : '<p class="ri-muted">No structured claims on this run.</p>';
 
-  return `${claimsHtml}${renderConnectedAiRunCitations(citations, publicationSource)}`;
+  return `${renderConnectedExtractionCoveragePanel(detail)}${claimsHtml}${renderConnectedAiRunCitations(citations, publicationSource)}`;
 }
 
 // UC-RI-005 per-finding review. Server rules (ri_submit_ai_finding_review) are authoritative; these mirror

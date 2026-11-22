@@ -1,0 +1,19 @@
+{
+  "regulator": "REG-FRC",
+  "activeOnStaging": true,
+  "policyVersion": 1,
+  "auditVerdict": "NOT_AUTHORITATIVE — UAT placeholder only",
+  "findings": [
+    "change_reason references RI-CLS-003 staging UAT, not FRC Handbook or Accounting Standards",
+    "All codes have conversion_enabled=false (conservative fail-closed pattern) — appropriate for unverified draft but not production FRC operations",
+    "Descriptions are synthetic ('FRC staging UAT R') not sourced from FRC taxonomy",
+    "E code has supporting_obligation_link_required=true (canonical rule) but no FRC-specific evidential definitions"
+  ],
+  "authoritativeSourcesToUseBeforeActivation": [
+    "FRC Standards and Codes (accounting, audit, corporate governance)",
+    "UK Corporate Governance Code publications",
+    "FRC guidance vs standards distinction"
+  ],
+  "requiredAction": "Prepare verified draft v2 in docs only; propose/activate only after SME sign-off (maker-checker)",
+  "doNotActivateFurtherVersionsUntilVerified": true
+}

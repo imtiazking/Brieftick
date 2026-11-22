@@ -21,6 +21,10 @@ export async function POST(request: Request) {
       useCaseId?: string;
       targetEntityId?: string;
       idempotencyKeySuffix?: string;
+      extractionBatchIndex?: number;
+      maxSectionsPerBatch?: number;
+      cumulativeSuppliedProvisionCores?: string[];
+      targetProvisionCores?: string[];
     };
     const publicationId = body.publicationId?.trim();
     const useCaseId = body.useCaseId?.trim() || 'UC-RI-005';
@@ -44,6 +48,10 @@ export async function POST(request: Request) {
       useCaseId,
       targetEntityId: body.targetEntityId,
       idempotencyKeySuffix: body.idempotencyKeySuffix,
+      extractionBatchIndex: body.extractionBatchIndex,
+      maxSectionsPerBatch: body.maxSectionsPerBatch,
+      cumulativeSuppliedProvisionCores: body.cumulativeSuppliedProvisionCores,
+      targetProvisionCores: body.targetProvisionCores,
     });
 
     return NextResponse.json({

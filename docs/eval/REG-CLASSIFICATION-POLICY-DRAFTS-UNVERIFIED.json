@@ -1,0 +1,52 @@
+{
+  "status": "DRAFT_DOCUMENTATION_ONLY — not inserted or activated on staging",
+  "preparedAt": "2026-11-22",
+  "regulators": {
+    "REG-PRA": {
+      "sourceIntent": "PRA Rulebook / SS classifications",
+      "defaultApproach": {
+        "R": { "conversionEnabled": true, "destinationQueue": "OBLIGATION_TRIAGE", "humanReviewRequired": true },
+        "E": { "conversionEnabled": true, "destinationQueue": "OBLIGATION_TRIAGE", "supportingObligationLinkRequired": true },
+        "G": { "conversionEnabled": false, "destinationQueue": "NON_OBLIGATION_TRIAGE" },
+        "UNKNOWN": { "conversionEnabled": false, "destinationQueue": "EXCEPTION_TRIAGE" }
+      },
+      "nonBindingPublicationTypes": ["supervisory_statement", "consultation", "policy_statement"],
+      "activationBlockedUntil": "SME review against PRA Rulebook instrument text"
+    },
+    "REG-ICO": {
+      "sourceIntent": "UK GDPR / DPA legal vs guidance",
+      "defaultApproach": {
+        "R": { "conversionEnabled": true, "destinationQueue": "OBLIGATION_TRIAGE" },
+        "E": { "conversionEnabled": true, "destinationQueue": "OBLIGATION_TRIAGE", "supportingObligationLinkRequired": true },
+        "G": { "conversionEnabled": false, "destinationQueue": "NON_OBLIGATION_TRIAGE" },
+        "UNKNOWN": { "conversionEnabled": false, "destinationQueue": "EXCEPTION_TRIAGE" }
+      },
+      "nonBindingPublicationTypes": ["guidance", "consultation", "news"],
+      "activationBlockedUntil": "SME review against ICO statutory guidance structure"
+    },
+    "REG-FRC": {
+      "sourceIntent": "FRC Standards, AGN, Corporate Governance Code",
+      "defaultApproach": {
+        "R": { "conversionEnabled": false, "destinationQueue": "EXCEPTION_TRIAGE", "humanReviewRequired": true },
+        "E": { "conversionEnabled": false, "destinationQueue": "EXCEPTION_TRIAGE", "supportingObligationLinkRequired": true },
+        "G": { "conversionEnabled": false, "destinationQueue": "NON_OBLIGATION_TRIAGE" },
+        "UNKNOWN": { "conversionEnabled": false, "destinationQueue": "EXCEPTION_TRIAGE" }
+      },
+      "nonBindingPublicationTypes": ["exposure_draft", "consultation", "guidance", "bulletin"],
+      "activationBlockedUntil": "Operator approval of REG-FRC-SUSPEND-CONVERSION-PROPOSAL; taxonomy sourced from FRC not FCA",
+      "suspendProposal": "docs/eval/REG-FRC-SUSPEND-CONVERSION-PROPOSAL-2026-11-22.json"
+    },
+    "REG-PSR": {
+      "sourceIntent": "PSRs 2017 / FCA payment services handbook",
+      "defaultApproach": {
+        "R": { "conversionEnabled": true, "destinationQueue": "OBLIGATION_TRIAGE" },
+        "E": { "conversionEnabled": true, "destinationQueue": "OBLIGATION_TRIAGE", "supportingObligationLinkRequired": true },
+        "G": { "conversionEnabled": false, "destinationQueue": "NON_OBLIGATION_TRIAGE" },
+        "UNKNOWN": { "conversionEnabled": false, "destinationQueue": "EXCEPTION_TRIAGE" }
+      },
+      "nonBindingPublicationTypes": ["guidance", "consultation_paper", "feedback_statement"],
+      "activationBlockedUntil": "SME review against PSR instrument markers"
+    }
+  },
+  "note": "Mirrors REG-FCA conservative pattern: only binding/evidential codes may convert; unverified regulators remain fail-closed on staging until activated."
+}

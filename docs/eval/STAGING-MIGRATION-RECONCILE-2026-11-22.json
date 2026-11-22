@@ -1,0 +1,25 @@
+{
+  "capturedAt": "2026-11-22T23:00:00.000Z",
+  "projectRef": "lhgzdicffkhaaykzthep",
+  "canonicalMigrationFile": "apps/platform/supabase/migrations/20261122163000_ri_cross_page_provision_citation.sql",
+  "stagingHistory": {
+    "appliedNamesObserved": [
+      "ri_obligation_statement_cross_page",
+      "ri_cross_page_provision_citation",
+      "20261122163000_ri_cross_page_provision_citation",
+      "restore_20261122163000_ri_cross_page_provision_citation"
+    ],
+    "action": "SKIP_REAPPLY — canonical version already recorded; restore migration used only to correct placeholder RPC body"
+  },
+  "stagingPreflight": {
+    "ri_submit_ai_finding_review_has_v_provision_section": true,
+    "migration_apply_incomplete_placeholder": false
+  },
+  "localReproducibility": {
+    "script": "apps/platform/scripts/acceptance-ri-rpc-migration-canonical.mjs",
+    "mechanism": "resetAndStartEmbedded + applyAllMigrations (sorted supabase/migrations/*.sql)",
+    "result": "13/13 pass on clean embedded Postgres"
+  },
+  "artifactsRemovedFromRepo": [".staging-cross-page-migration.sql — ephemeral copy; do not commit"],
+  "manifestNote": "apply-supabase-migrations.mjs STAGING_MIGRATION_STEPS covers foundation through 20261106120000; RI classification RPC migrations applied via authorised staging one-offs — tracked here, not re-run blindly"
+}

@@ -1,0 +1,129 @@
+{
+  "runReference": "uat-ps22-9-001",
+  "log": [
+    {
+      "step": "final-review",
+      "at": "2026-11-22T13:13:25.583Z",
+      "actor": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "result": {
+        "httpStatus": 200,
+        "ok": true,
+        "skipped": [
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "76b34625-5d8b-46da-8474-a8c1d3d65760",
+            "claimIndex": 0,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "c230464b-a1b0-45fd-b011-7f6c16f1159b",
+            "claimIndex": 1,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "9ce24164-2d50-41a8-aab9-23f7dc50356a",
+            "claimIndex": 2,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "8a77961e-ec80-461a-a4de-a7259e8e83ff",
+            "claimIndex": 3,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "88a0a4e0-206f-4fe7-a615-0d2f177a9aaa",
+            "claimIndex": 4,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "6c239d1e-e204-4fc6-a4ed-730f0f425a09",
+            "claimIndex": 6,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "944e8963-0a83-4c89-a78b-7ee869fe6e84",
+            "claimIndex": 7,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "5b98c56d-48dd-4254-b01e-2569170960d2",
+            "claimIndex": 8,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "a5fa59c7-2446-4124-ae08-22256188887e",
+            "claimIndex": 9,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          },
+          {
+            "reason": "rejected",
+            "decision": "REJECTED",
+            "findingId": "d3c33413-6132-4237-8c92-485e2e727814",
+            "claimIndex": 10,
+            "triageQueue": "OBLIGATION_TRIAGE",
+            "exceptionReasons": [],
+            "provisionFunction": null,
+            "classificationCode": null
+          }
+        ],
+        "decision": "PARTIALLY_ACCEPTED",
+        "reviewId": "4a8a39ae-42ab-46d0-92ad-46139ebcd297",
+        "materialised": [
+          {
+            "findingId": "d38f0c60-2420-4d78-ad76-f803681cd9ee",
+            "claimIndex": 5,
+            "legalStatus": "binding",
+            "obligationId": "68051a63-ea05-45b5-bbef-4fdc94b1ae45",
+            "classificationCode": "R"
+          }
+        ],
+        "evidencePathway": "human_verified_uat",
+        "classificationPolicyVersion": 1
+      }
+    }
+  ]
+}

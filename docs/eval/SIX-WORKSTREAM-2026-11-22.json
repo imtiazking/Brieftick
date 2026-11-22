@@ -1,0 +1,47 @@
+{
+  "recordedAt": "2026-11-22T13:35:00.000Z",
+  "environment": "staging + local deterministic",
+  "programmeComplete": false,
+  "paidExtractionsConsumed": 2,
+  "noFurtherPaidWithoutAuthorisation": true,
+  "productionDeploy": false,
+  "workstreams": {
+    "WS1_PS26_cross_page": {
+      "status": "infrastructure_proven_ai_conversion_open",
+      "evidence": ["docs/eval/CONC-7.20.1R-CROSS-PAGE-OPEN.json", "STAGING-P2-REGRESSION (legacy run p.94–96)", "acceptance-ri-provision-eligibility-local-db.mjs"],
+      "blockingNote": "Authorised run 7191c8b5 did not cite p.94/7.20.1R; no manual substitute"
+    },
+    "WS2_PS22_9_UAT": {
+      "status": "substantially_complete",
+      "evidence": [
+        "docs/eval/PS22-9-COMPREHENSIVE-UAT.json",
+        "docs/eval/PS22-9-OBLIGATION-APPROVAL.json",
+        "obligation 68051a63 OPEN, 4 workflow events, run 728338c4 preserved"
+      ],
+      "gaps": ["Positive E conversion not tested (no E provisions in partial run)"]
+    },
+    "WS3_RI_CLS_003_admin": {
+      "status": "partial_staging_blocked_second_operator",
+      "evidence": ["acceptance-ri-classification-policy-admin-local-db.mjs", "scripts/uat/classification-policy-admin-staging.mjs"],
+      "stagingNote": "OP1 persona added; headed login required (user_3LIQIZlXNWBFEvSKabAYIUhhNdi). Only one active platform_operator on staging — full two-operator activate needs second operator without elevation."
+    },
+    "WS4_RI_CLS_007_engine": {
+      "status": "deterministic_engine_verified",
+      "evidence": [
+        "acceptance-ri-publication-extraction-engine.mjs 11/11",
+        "acceptance-ri-publication-extraction-orchestrator.mjs 6/6",
+        "acceptance-ri-extraction-batch-plan.mjs 5/5",
+        "extraction-orchestration API + Design Lab panel"
+      ],
+      "stagingNote": "No live multi-batch paid execution (budget exhausted)"
+    },
+    "WS5_DB_integrity": {
+      "status": "verified",
+      "evidence": ["acceptance-ri-rpc-migration-canonical.mjs", "apply-supabase-migrations placeholder guard"]
+    },
+    "WS6_reconciliation": {
+      "status": "complete_no_cost_tranche",
+      "evidence": ["STAGING-UAT-RECONCILIATION-2026-11-22.json", "STAGING-P2-REGRESSION 19/19", "E-PROVISION-UAT-PATHWAY.json"]
+    }
+  }
+}

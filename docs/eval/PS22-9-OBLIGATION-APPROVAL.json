@@ -1,0 +1,24 @@
+{
+  "approvalChainStatus": "COMPLETE",
+  "verifiedOnStagingAt": "2026-11-22T14:20:00.000Z",
+  "obligationId": "68051a63-ea05-45b5-bbef-4fdc94b1ae45",
+  "runId": "728338c4-3ab9-438a-b0af-75f011955971",
+  "log": [
+    {
+      "step": "inspect",
+      "at": "2026-11-22T13:27:36.091Z",
+      "actor": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "status": "OPEN",
+      "workflowEventCount": 4,
+      "metadata": {
+        "regulatoryClassificationCode": "R",
+        "provisionReference": "PRIN 2A.4.13R",
+        "sourceQuotation": "Where firms collaborate to manufacture a product, they must set out in a writte",
+        "legalBasis": "FCA Handbook PRIN 2A.4.13R, PS22/9",
+        "pdfGrounded": true,
+        "aiAnalysisRunId": "728338c4-3ab9-438a-b0af-75f011955971",
+        "aiAnalysisReviewId": "4a8a39ae-42ab-46d0-92ad-46139ebcd297"
+      }
+    }
+  ]
+}

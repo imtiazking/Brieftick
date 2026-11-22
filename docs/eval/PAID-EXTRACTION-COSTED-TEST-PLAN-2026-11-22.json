@@ -1,0 +1,38 @@
+{
+  "title": "Costed paid-extraction test plan (post simulated E2E gate)",
+  "budgetRule": "No additional paid AI without explicit approval; no broad partial runs",
+  "prerequisite": [
+    "RI-CLS-007 simulated E2E pass (acceptance-ri-publication-extraction-e2e.mjs)",
+    "Staging orchestration advance returns awaiting_authorised_extraction per batch",
+    "Applicability approved for parent change"
+  ],
+  "scenarios": [
+    {
+      "id": "CONC-7.20.1R-2",
+      "publication": "PS26/1 instrument",
+      "targetProvision": "CONC 7.20.1R(2)",
+      "pages": [94, 95],
+      "strategy": "Orchestrated batch with instrument_priority_v1; maxSections sized to include 7.20.1R + 7.20.3R block only",
+      "idempotencySuffixProposal": "uat-ps26-1-conc-7201r2-001",
+      "successCriteria": "Finding cites p.95; convert passes provision_eligibility cross-page check",
+      "estimatedBatches": 1,
+      "estimatedUsdCeiling": 0.35,
+      "doNotUse": "Full 18-section single call or multi-batch without provision targeting"
+    },
+    {
+      "id": "PS22-9-POSITIVE-E",
+      "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "targetProvision": "PRIN 2A.4.35E",
+      "bindingLink": "PRIN 2A.4.34R (OPEN obligation 2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a — not 68051a63)",
+      "alternate": "PRIN 2A.3.30E",
+      "strategy": "Batch plan must include instrument pages 126 (35E) and linked R context; confirm PDF revision on staging",
+      "idempotencySuffixProposal": "uat-ps22-9-e-35e-001",
+      "successCriteria": "E finding with supporting_obligation_link_required satisfied; convert to DRAFT with verified link",
+      "estimatedBatches": 1,
+      "estimatedUsdCeiling": 0.35,
+      "doNotUse": "Prior uat-ps22-9-001 partial corpus pattern"
+    }
+  ],
+  "totalCeilingIfBothApproved": 2,
+  "approvalRequiredBeforeExecution": true
+}

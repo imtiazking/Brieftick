@@ -1,12 +1,13 @@
 {
-  "testedAt": "2026-11-22T11:50:29.972Z",
+  "testedAt": "2026-11-22T16:00:00.000Z",
   "provisionCore": "7.20.1R",
-  "provisionPagesIndex": null,
-  "quotation": "(2) A firm must contact the customer about the missed payment before taking any further action in relation to the arrears.",
+  "source": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+  "quotation": "(2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred",
   "verification": {
     "ok": true,
-    "quotationPage": 95
+    "quotationPage": 95,
+    "provisionPages": [94, 95]
   },
   "pass": true,
-  "note": "Staging run c8cb095e grounding lacks provisionPageIndex until re-extraction; client path uses live buildFindingsView enrichment."
+  "note": "Supersedes narrative misquote; verified by acceptance-ri-provision-source-verification-ps26.mjs"
 }

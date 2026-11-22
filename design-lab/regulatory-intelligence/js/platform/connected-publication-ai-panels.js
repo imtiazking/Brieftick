@@ -152,7 +152,36 @@ export function renderConnectedPublicationObligationExtractionPanel(publication)
 }
 
 /** Existing AI Analysis tab — extraction panel + persisted runs table (no layout change). */
+export function renderConnectedPublicationExtractionOrchestrationPanel(publication) {
+  const state = getState();
+  if (!publication?.id || !isConnectedAiRequestEnabled(state)) return '';
+  return `<section class="ri-panel" data-connected-pub-extraction-orchestration="${esc(publication.id)}">
+    <h3>Full publication extraction plan (RI-CLS-007)</h3>
+    <p class="ri-muted">Creates a batch orchestration ledger on the publication. Each batch still needs its own authorised run reference and explicit human approval; coverage stays partial until reconciliation reports complete instrument provision analysis.</p>
+    <label>Parent change ID for orchestration <input type="text" data-connected-orchestration-change-id class="ri-input" placeholder="regulatory change UUID" /></label>
+    <label>Spend cap (USD, optional) <input type="number" step="0.01" min="0" data-connected-orchestration-spend-cap class="ri-input" placeholder="e.g. 1.50" /></label>
+    <button type="button" class="ri-btn" data-connected-orchestration-init>Initialise orchestration plan</button>
+    <button type="button" class="ri-btn ri-btn--secondary" data-connected-orchestration-advance>Next batch (authorised run)</button>
+    <button type="button" class="ri-btn ri-btn--secondary" data-connected-orchestration-refresh>Refresh status</button>
+    <pre class="ri-code" data-connected-orchestration-status>—</pre>
+  </section>`;
+}
+
+export async function fetchConnectedExtractionOrchestration(state, publicationId, { changeId, spendCapUsd, resume, action, baseIdempotencySuffix } = {}) {
+  const base = apiBase(state);
+  const res = await fetch(`${base}/publications/${encodeURIComponent(publicationId)}/extraction-orchestration`, {
+    method: resume ? 'GET' : 'POST',
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: resume ? undefined : JSON.stringify({ changeId, spendCapUsd, resume: false, action, baseIdempotencySuffix }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(body.reason || body.error || body.code || 'orchestration_failed');
+  return body;
+}
+
 export function renderConnectedPublicationAiTab(publication, runsSectionHtml) {
   const extract = renderConnectedPublicationObligationExtractionPanel(publication);
-  return `${extract}${runsSectionHtml || ''}`;
+  const orch = renderConnectedPublicationExtractionOrchestrationPanel(publication);
+  return `${extract}${orch}${runsSectionHtml || ''}`;
 }

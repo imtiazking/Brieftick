@@ -1,0 +1,59 @@
+{
+  "reconciledAt": "2026-11-22T15:15:00.000Z",
+  "stagingProject": "forgeniq-ri-staging",
+  "sixWorkstreams": {
+    "ws1_crossPageConc": {
+      "status": "open",
+      "runId": "a06eb008-5b65-4afb-84d7-0a21d37f8754",
+      "suffix": "uat-ps26-1-conc-7201r2-001",
+      "note": "Paid batch included pp.94–95; conversion refused — quotation not in cited excerpts"
+    },
+    "ws2_ps22_e": {
+      "status": "open",
+      "runId": "3ed8c3e2-162c-4be9-868e-b123e6a46288",
+      "suffix": "uat-ps22-9-e-35e-001",
+      "bindingOpen": "68051a63-ea05-45b5-bbef-4fdc94b1ae45",
+      "note": "Positive E conversion not achieved; unrelated 35E block findings rejected by policy"
+    },
+    "ws3_orchestration": {
+      "status": "partial",
+      "evidence": "docs/eval/RI-CLS-007-EXTRACTION-WORKFLOW-MILESTONE.json",
+      "liveMultiBatchComplete": false
+    },
+    "ws4_classificationPolicy": {
+      "status": "controlled",
+      "frcSuspendProposal": "docs/eval/REG-FRC-SUSPEND-CONVERSION-PROPOSAL-2026-11-22.json",
+      "unverifiedDrafts": "docs/eval/REG-CLASSIFICATION-POLICY-DRAFTS-UNVERIFIED.json",
+      "adminWritesStaging": false
+    },
+    "ws5_governance": {
+      "status": "complete",
+      "operators": 2,
+      "evidence": "docs/governance/PLATFORM-OPERATOR-CHANGE-APPROVAL-RECORD-2026-11-22.json"
+    },
+    "ws6_registerAudit": {
+      "status": "verified_partial",
+      "openBindingR": "68051a63-ea05-45b5-bbef-4fdc94b1ae45",
+      "newDraftsFromTranche": 0
+    }
+  },
+  "paidExtraction": {
+    "budgetUsdCeiling": 2,
+    "trancheSuffixes": ["uat-ps26-1-conc-7201r2-001", "uat-ps22-9-e-35e-001"],
+    "estimatedSpendUsd": 0.08,
+    "noFurtherPaidRunsWithoutAuthorisation": true,
+    "evidence": "docs/eval/TARGETED-PAID-EXTRACTION-TRANCHE-2026-11-22.json"
+  },
+  "regression": {
+    "p2Core": "39/39 (orchestrator+engine+e2e+batch+provision-db)",
+    "classificationPolicyCore": "112/116"
+  },
+  "productionDeploy": false,
+  "productionReadinessGaps": [
+    "CONC 7.20.1R(2) register entry — staging PDF excerpt / grounding gap",
+    "RI-CLS-004 positive evidential E on staging",
+    "FRC conversion policy suspend proposal — operator approval only (admin writes off)",
+    "Authoritative PRA/ICO/PSR classification policies — research only",
+    "Full publication orchestration coverage — not claimed"
+  ]
+}

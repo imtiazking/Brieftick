@@ -1,0 +1,220 @@
+{
+  "capturedAt": "2026-11-22T23:00:07.273Z",
+  "budgetRule": "No paid AI execution from this script",
+  "usdPerThousandTokensAssumption": 0.015,
+  "combinedEstimatedUsd": 0.8,
+  "publications": [
+    {
+      "publication": "PS26/1",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "instrumentStartPage": 61,
+      "provisionInventoryCount": 47,
+      "plannedBatchCount": 2,
+      "planBatchLimit": 55,
+      "publicationCoverageCompletePlanned": true,
+      "estimatedTokensTotal": 15905,
+      "estimatedUsdTotal": 0.24,
+      "perBatch": [
+        {
+          "batchIndex": 0,
+          "newlySupplied": 40,
+          "outstandingAfter": 7,
+          "estimatedTokens": 8499,
+          "estimatedUsd": 0.1275
+        },
+        {
+          "batchIndex": 1,
+          "newlySupplied": 7,
+          "outstandingAfter": 0,
+          "estimatedTokens": 7406,
+          "estimatedUsd": 0.1111
+        }
+      ],
+      "orchestrationReadiness": {
+        "spendCapUsd": 50,
+        "dedupeLedger": "findingDedupeKeys on orchestration state",
+        "failedBatchRecovery": "FAILED batches re-eligible via nextPendingBatchIndex",
+        "consolidatedHumanReview": {
+          "orchestrationStatus": "READY",
+          "publicationCoverageComplete": false,
+          "analysisScope": "PARTIAL_INSTRUMENT_PROVISIONS",
+          "consolidatedFindingCount": 0,
+          "dedupeKeysRecorded": 0,
+          "coverage": {
+            "instrumentProvisionCount": 47,
+            "supplied": 0,
+            "outstanding": 47,
+            "batchesSucceeded": 0,
+            "batchesFailed": 0,
+            "complete": false,
+            "provisionInventory": null,
+            "unresolvedProvisionCores": []
+          },
+          "spend": {
+            "capUsd": 50,
+            "estimatedTokens": 15905,
+            "batchesAttempted": 0,
+            "batchesSucceeded": 0
+          },
+          "batches": [
+            {
+              "batchIndex": 0,
+              "status": "PENDING",
+              "runId": null,
+              "idempotencySuffix": null,
+              "errorCode": null,
+              "provisionsNewlySupplied": 40,
+              "provisionsOutstanding": 7
+            },
+            {
+              "batchIndex": 1,
+              "status": "PENDING",
+              "runId": null,
+              "idempotencySuffix": null,
+              "errorCode": null,
+              "provisionsNewlySupplied": 7,
+              "provisionsOutstanding": 0
+            }
+          ],
+          "failedBatchIndexes": []
+        }
+      },
+      "provisionScopedGroundingSample": null,
+      "accuracyMeasurementPlan": {
+        "metrics": [
+          "missed_provision_cores vs inventory",
+          "incorrect_regulatory_classification_code",
+          "quotation_not_on_page / provision_not_set_out",
+          "reviewer_statement_edits vs claimText",
+          "human_assisted_quote_correction_rate"
+        ],
+        "noPaidExecutionWithoutApproval": true
+      }
+    },
+    {
+      "publication": "PS22/9",
+      "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "instrumentStartPage": 92,
+      "provisionInventoryCount": 242,
+      "plannedBatchCount": 4,
+      "planBatchLimit": 250,
+      "publicationCoverageCompletePlanned": true,
+      "estimatedTokensTotal": 37659,
+      "estimatedUsdTotal": 0.56,
+      "perBatch": [
+        {
+          "batchIndex": 0,
+          "newlySupplied": 92,
+          "outstandingAfter": 150,
+          "estimatedTokens": 10067,
+          "estimatedUsd": 0.151
+        },
+        {
+          "batchIndex": 1,
+          "newlySupplied": 83,
+          "outstandingAfter": 67,
+          "estimatedTokens": 9062,
+          "estimatedUsd": 0.1359
+        },
+        {
+          "batchIndex": 2,
+          "newlySupplied": 56,
+          "outstandingAfter": 11,
+          "estimatedTokens": 8618,
+          "estimatedUsd": 0.1293
+        },
+        {
+          "batchIndex": 3,
+          "newlySupplied": 11,
+          "outstandingAfter": 0,
+          "estimatedTokens": 9912,
+          "estimatedUsd": 0.1487
+        }
+      ],
+      "orchestrationReadiness": {
+        "spendCapUsd": 50,
+        "dedupeLedger": "findingDedupeKeys on orchestration state",
+        "failedBatchRecovery": "FAILED batches re-eligible via nextPendingBatchIndex",
+        "consolidatedHumanReview": {
+          "orchestrationStatus": "READY",
+          "publicationCoverageComplete": false,
+          "analysisScope": "PARTIAL_INSTRUMENT_PROVISIONS",
+          "consolidatedFindingCount": 0,
+          "dedupeKeysRecorded": 0,
+          "coverage": {
+            "instrumentProvisionCount": 242,
+            "supplied": 0,
+            "outstanding": 242,
+            "batchesSucceeded": 0,
+            "batchesFailed": 0,
+            "complete": false,
+            "provisionInventory": null,
+            "unresolvedProvisionCores": []
+          },
+          "spend": {
+            "capUsd": 50,
+            "estimatedTokens": 37659,
+            "batchesAttempted": 0,
+            "batchesSucceeded": 0
+          },
+          "batches": [
+            {
+              "batchIndex": 0,
+              "status": "PENDING",
+              "runId": null,
+              "idempotencySuffix": null,
+              "errorCode": null,
+              "provisionsNewlySupplied": 92,
+              "provisionsOutstanding": 150
+            },
+            {
+              "batchIndex": 1,
+              "status": "PENDING",
+              "runId": null,
+              "idempotencySuffix": null,
+              "errorCode": null,
+              "provisionsNewlySupplied": 83,
+              "provisionsOutstanding": 67
+            },
+            {
+              "batchIndex": 2,
+              "status": "PENDING",
+              "runId": null,
+              "idempotencySuffix": null,
+              "errorCode": null,
+              "provisionsNewlySupplied": 56,
+              "provisionsOutstanding": 11
+            },
+            {
+              "batchIndex": 3,
+              "status": "PENDING",
+              "runId": null,
+              "idempotencySuffix": null,
+              "errorCode": null,
+              "provisionsNewlySupplied": 11,
+              "provisionsOutstanding": 0
+            }
+          ],
+          "failedBatchIndexes": []
+        }
+      },
+      "provisionScopedGroundingSample": null,
+      "accuracyMeasurementPlan": {
+        "metrics": [
+          "missed_provision_cores vs inventory",
+          "incorrect_regulatory_classification_code",
+          "quotation_not_on_page / provision_not_set_out",
+          "reviewer_statement_edits vs claimText",
+          "human_assisted_quote_correction_rate"
+        ],
+        "noPaidExecutionWithoutApproval": true
+      }
+    }
+  ],
+  "pilotGates": [
+    "explicit_operator_approval",
+    "RI_LAB_ANTHROPIC_MAX_USD within ceiling",
+    "applicability_approved_for_parent_change",
+    "per-batch idempotency suffix registered in spend guard"
+  ]
+}
