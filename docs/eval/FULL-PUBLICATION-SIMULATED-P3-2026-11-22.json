@@ -1,25 +1,35 @@
 {
-  "capturedAt": "2026-11-22T15:58:54.736Z",
+  "capturedAt": "2026-11-22T16:03:36.421Z",
   "reports": [
     {
       "publication": "PS26/1",
       "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
-      "instrumentStartPage": 61,
-      "inventoryCount": 47,
+      "instrumentProvisionCount": 47,
       "batches": 2,
-      "unresolvedCount": 0,
+      "sessions": 1,
+      "totalSteps": 2,
+      "complete": true,
+      "outcomeCount": 47,
+      "unresolved": [],
       "consolidatedFindingCount": 47,
-      "complete": true
+      "summary": {
+        "finding_generated": 47
+      }
     },
     {
       "publication": "PS22/9",
       "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
-      "instrumentStartPage": 92,
-      "inventoryCount": 242,
+      "instrumentProvisionCount": 242,
       "batches": 5,
-      "unresolvedCount": 0,
-      "consolidatedFindingCount": 184,
-      "complete": false
+      "sessions": 1,
+      "totalSteps": 5,
+      "complete": true,
+      "outcomeCount": 242,
+      "unresolved": [],
+      "consolidatedFindingCount": 242,
+      "summary": {
+        "finding_generated": 242
+      }
     }
   ]
 }

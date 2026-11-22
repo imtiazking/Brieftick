@@ -1,0 +1,36 @@
+{
+  "capturedAt": "2026-11-22T00:00:00.000Z",
+  "provision": "PRIN 2A.4.35E",
+  "publication": "PS22/9",
+  "page": 126,
+  "symptom": "UC-RI-005 finding 18 quoted IGC pension value-for-money wording instead of funeral-plan/PROD 7 evidential text for 2A.4.35E.",
+  "rootCause": {
+    "summary": "Whole-page grounding on p.126 bundled PRIN 2A.4 value-assessment and adjacent IGC content; the model attributed the obligation statement to the wrong neighbouring provision.",
+    "mechanisms": [
+      "Multi-provision PDF page without provision-bounded excerpts in the provider prompt.",
+      "Finding merged AI obligationStatement with instrument block containing multiple rule markers.",
+      "quotationPage aligned to page 126 but sourceQuotation not independently matched to 2A.4.35E marker text."
+    ]
+  },
+  "remediation": {
+    "automated": [
+      "provisionScopedExtraction in build-pdf-grounded-analysis-context.mjs",
+      "deterministic extractProvisionScopedExcerpt for target provision cores",
+      "anthropic-prompts-core.mjs mandatory scoped quotation instruction",
+      "Independent quotation / marker validation on review (finding_quotation_not_found_on_page)"
+    ],
+    "humanAssistedConversion": {
+      "runId": "3ed8c3e2",
+      "reviewId": "e918c4bb",
+      "method": "Authoritative quotes transcribed from official PDF for findings 17 (34R binding) and 18 (35E evidential); not accepted as proof of unattended automated extraction accuracy.",
+      "bindingObligationId": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a",
+      "evidentialObligationId": "7143f1ff-c064-4123-bc2e-38e0102972df",
+      "supportsObligationId": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a",
+      "rejectedLinkObligationId": "68051a63-ea05-45b5-bbef-4fdc94b1ae45"
+    }
+  },
+  "distinction": {
+    "accurateAutomatedExtraction": "Provider output passes quotation-on-page and provision-marker checks without human-edited sourceQuotation.",
+    "successfulHumanAssistedConversion": "Review accepts human-corrected quotes that match deterministic PDF verification — proves workflow and register rules, not model grounding quality."
+  }
+}

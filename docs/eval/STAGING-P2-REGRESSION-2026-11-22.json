@@ -1,5 +1,5 @@
 {
-  "auditedAt": "2026-11-22T11:50:56.441Z",
+  "auditedAt": "2026-11-22T16:31:09.602Z",
   "staging": "https://staging-app.forgeniq.com",
   "passed": 19,
   "failed": 0,
@@ -8,14 +8,14 @@
       "name": "deployed bundle exposes editable obligation statement control",
       "pass": true,
       "detail": {
-        "shaPrefix": "be382338f0ecb772"
+        "shaPrefix": "e7d31df78319dd2f"
       }
     },
     {
       "name": "deployed bundle exposes supplementary quotation controls",
       "pass": true,
       "detail": {
-        "shaPrefix": "be382338f0ecb772"
+        "shaPrefix": "e7d31df78319dd2f"
       }
     },
     {
@@ -33,7 +33,8 @@
       "pass": true,
       "detail": [
         94,
-        95
+        95,
+        96
       ]
     },
     {
@@ -43,7 +44,8 @@
         "status": 200,
         "pages": [
           94,
-          95
+          95,
+          96
         ],
         "sections": [
           {
@@ -63,7 +65,62 @@
             ]
           }
         ],
-        "provisionPageIndex": {}
+        "provisionPageIndex": {
+          "TP 13.1R": [
+            66
+          ],
+          "TP 13.2G": [
+            66
+          ],
+          "2.3.1R": [
+            68
+          ],
+          "4.2.2G": [
+            68
+          ],
+          "2.3.2R": [
+            86
+          ],
+          "4.2.1R": [
+            87
+          ],
+          "4.2A.1R": [
+            87,
+            88
+          ],
+          "4.2A.4R": [
+            88
+          ],
+          "4.2A.6R": [
+            90
+          ],
+          "4.2A.11R": [
+            92
+          ],
+          "4.2A.12G": [
+            92
+          ],
+          "4.8.2R": [
+            93
+          ],
+          "7.1.4R": [
+            94
+          ],
+          "7.6.2BG": [
+            94,
+            95,
+            96
+          ],
+          "16.1.1R": [
+            97
+          ],
+          "16.1.2G": [
+            97
+          ],
+          "16.1.3G": [
+            97
+          ]
+        }
       }
     },
     {
@@ -136,7 +193,7 @@
       "name": "RI-UI-001: audit panel shows events when detail view loads",
       "pass": true,
       "detail": {
-        "uiRows": 0
+        "uiRows": 8
       }
     },
     {
@@ -149,11 +206,11 @@
       }
     },
     {
-      "name": "fail-closed: REG-FRC has no active policy (API unavailable)",
+      "name": "REG-FRC policy ACTIVE after RI-CLS-003 staging UAT",
       "pass": true,
       "detail": {
-        "http": 404,
-        "ok": false,
+        "http": 200,
+        "ok": true,
         "policyStatus": null
       }
     },

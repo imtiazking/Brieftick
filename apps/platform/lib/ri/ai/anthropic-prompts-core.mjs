@@ -49,11 +49,15 @@ export function buildAnthropicPrompts(ctx) {
     ctx.regulatoryAnalysis && typeof ctx.regulatoryAnalysis === 'object'
       ? `\nDeterministic publication signals (advisory only — verify against excerpts):\n${JSON.stringify(ctx.regulatoryAnalysis)}\n`
       : '';
+  const scoped =
+    ctx.provisionScopedExtraction && typeof ctx.provisionScopedExtraction === 'object'
+      ? `\nProvision-scoped extraction (mandatory when target cores are listed): each candidate must use sourceQuotation drawn only from the matching authoritativeExcerpt for its provisionCore. Do not attribute text from a neighbouring provision on the same PDF page (e.g. do not use IGC pension text for PRIN 2A.4.35E).\n${JSON.stringify(ctx.provisionScopedExtraction)}\n`
+      : '';
   const user = `Use case: ${ctx.useCaseId ?? 'unknown'}
 Analysis type: ${ctx.analysisType}
 Evidence mode: ${ctx.contextKind || 'publication_summary'}
 Target JSON schema: ${schemaName}
-${regCtx}
+${regCtx}${scoped}
 Source sections (only these IDs may appear in sourceSectionIds):
 ${sectionsJson}
 

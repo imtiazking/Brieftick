@@ -112,6 +112,11 @@ export function createAnthropicProvider(deps = {}) {
         useCaseId: request.useCaseId,
         analysisType,
         sourceSections: sections,
+        regulatoryAnalysis: request.context?.regulatoryAnalysis ?? null,
+        provisionScopedExtraction:
+          request.context?.provisionScopedExtraction ??
+          request.context?.grounding?.provisionOutcomesSummary?.provisionScopedExtraction ??
+          null,
       });
 
       const budgetCtx = request.budgetContext || {};

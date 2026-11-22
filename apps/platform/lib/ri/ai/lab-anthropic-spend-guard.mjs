@@ -296,26 +296,37 @@ export const UC_RI_005_RUN_REFERENCE_ERRORS = Object.freeze({
  * Live UC-RI-005 runs only with the operator-authorised run reference (RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX).
  * Fail-closed when unset: each new paid attempt needs a new reference set explicitly by an operator.
  */
+function authorisedTrialSuffixes() {
+  const plural = process.env.RI_LAB_TRIAL_IDEMPOTENCY_SUFFIXES?.trim();
+  if (plural) {
+    return [...new Set(plural.split(/[,;\s]+/).map((s) => s.trim()).filter(Boolean))];
+  }
+  const single = process.env.RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX?.trim() || '';
+  return single ? [single] : [];
+}
+
 export function assertUcRi005LiveTrialIdempotency(idempotencyKey, { executionEnabled } = {}) {
   if (executionEnabled !== true) return { ok: true, skipped: true };
-  const requiredSuffix = process.env.RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX?.trim() || '';
-  if (!requiredSuffix) {
+  const allowed = authorisedTrialSuffixes();
+  if (!allowed.length) {
     return {
       ok: false,
       code: UC_RI_005_RUN_REFERENCE_ERRORS.NOT_CONFIGURED,
-      message: 'UC-RI-005 live execution requires an authorised run reference (RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX).',
+      message:
+        'UC-RI-005 live execution requires an authorised run reference (RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX or RI_LAB_TRIAL_IDEMPOTENCY_SUFFIXES).',
     };
   }
   const key = String(idempotencyKey || '');
-  if (!key.endsWith(`:${requiredSuffix}`)) {
+  const match = allowed.find((suffix) => key.endsWith(`:${suffix}`));
+  if (!match) {
     return {
       ok: false,
       code: UC_RI_005_RUN_REFERENCE_ERRORS.NOT_AUTHORISED,
-      message: 'This run reference is not the authorised UC-RI-005 run reference.',
-      requiredSuffix,
+      message: 'This run reference is not an authorised UC-RI-005 run reference.',
+      requiredSuffix: allowed.join(','),
     };
   }
-  return { ok: true, requiredSuffix };
+  return { ok: true, requiredSuffix: match, allowedSuffixes: allowed };
 }
 
 export function guardLabAnthropicSpendBeforeCall({ useCaseId, system, user, idempotencyKey, organisationId }) {

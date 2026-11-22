@@ -1,0 +1,85 @@
+{
+  "capturedAt": "2026-11-22T16:04:29.487Z",
+  "checks": [
+    {
+      "name": "binding obligation HTTP 200",
+      "ok": true
+    },
+    {
+      "name": "evidential obligation HTTP 200",
+      "ok": true
+    },
+    {
+      "name": "binding register status OPEN",
+      "ok": true,
+      "detail": {
+        "status": "OPEN"
+      }
+    },
+    {
+      "name": "evidential register status OPEN",
+      "ok": true,
+      "detail": {
+        "status": "OPEN"
+      }
+    },
+    {
+      "name": "prior 2A.4.13R obligation OPEN",
+      "ok": true,
+      "detail": {
+        "status": "OPEN"
+      }
+    },
+    {
+      "name": "evidential classified evidential",
+      "ok": true,
+      "detail": {
+        "legalStatus": "evidential"
+      }
+    },
+    {
+      "name": "evidential supports binding 2046ef71",
+      "ok": true,
+      "detail": {
+        "supports": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a"
+      }
+    },
+    {
+      "name": "evidential does not support 68051a63",
+      "ok": true,
+      "detail": {
+        "supports": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a"
+      }
+    },
+    {
+      "name": "binding audit history present",
+      "ok": true,
+      "detail": {
+        "count": 3
+      }
+    },
+    {
+      "name": "evidential audit history present",
+      "ok": true,
+      "detail": {
+        "count": 3
+      }
+    }
+  ],
+  "obligations": {
+    "binding": {
+      "id": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a",
+      "status": "OPEN"
+    },
+    "evidential": {
+      "id": "7143f1ff-c064-4123-bc2e-38e0102972df",
+      "status": "OPEN",
+      "legalStatus": "evidential",
+      "supportsObligationId": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a"
+    },
+    "unrelatedOpen": {
+      "id": "68051a63-ea05-45b5-bbef-4fdc94b1ae45",
+      "status": "OPEN"
+    }
+  }
+}

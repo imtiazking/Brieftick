@@ -12,7 +12,45 @@ import {
   modelLabelsForFinding,
   policyEntry,
 } from '../classification/regulatory-classification-policy.mjs';
-import { PROVISION_FUNCTIONS, parseProvisionReference } from '../classification/provision-eligibility.mjs';
+import {
+  PROVISION_FUNCTIONS,
+  parseProvisionReference,
+  buildProvisionPagesIndex,
+} from '../classification/provision-eligibility.mjs';
+
+/** Rebuild provisionPageIndex from stored section catalog when older runs omitted it (RI-CLS-009). */
+export function provisionPageIndexFromCatalog(catalog, existing = {}) {
+  if (existing && typeof existing === 'object' && Object.keys(existing).length) return existing;
+  const sections = Array.isArray(catalog) ? catalog : [];
+  const instrumentStart = sections.reduce((min, s) => {
+    if (s?.inLegalInstrument !== true || !Number.isInteger(s.pageNumber)) return min;
+    return min == null ? s.pageNumber : Math.min(min, s.pageNumber);
+  }, null);
+  if (!Number.isInteger(instrumentStart)) return {};
+  const blocks = sections
+    .filter((s) => Number.isInteger(s.pageNumber))
+    .map((s) => ({
+      pageNumber: s.pageNumber,
+      documentEvidenceId: s.sourceSectionId,
+      extractedText: String(s.text || s.excerpt || ''),
+    }));
+  const idx = buildProvisionPagesIndex(blocks, instrumentStart);
+  return Object.fromEntries([...idx.entries()].map(([k, v]) => [k, [...v.pages].sort((a, b) => a - b)]));
+}
+
+function pagesForFinding(sourceSectionIds, sectionById, pageIndex) {
+  const pages = new Set(
+    sourceSectionIds.map((id) => sectionById.get(id)?.pageNumber).filter((p) => Number.isInteger(p)),
+  );
+  for (const id of sourceSectionIds) {
+    const s = sectionById.get(id);
+    const setOut = Array.isArray(s?.provisionsSetOut) ? s.provisionsSetOut : [];
+    for (const core of setOut) {
+      for (const p of pageIndex[core] || []) pages.add(p);
+    }
+  }
+  return [...pages].sort((a, b) => a - b);
+}
 
 /** Legacy broad finding types, now derived from the regulatory classification code. */
 export const FINDING_CLASSIFICATIONS = [
@@ -161,16 +199,13 @@ export function buildFindingsView(run, citations, classification) {
   const claims = Array.isArray(output.claims) ? output.claims : [];
   const candidates = Array.isArray(output.candidates) ? output.candidates : [];
   const sectionById = new Map(catalog.map((s) => [s.sourceSectionId, s]));
-  const provisionPageIndex =
-    grounding.provisionPageIndex && typeof grounding.provisionPageIndex === 'object' ? grounding.provisionPageIndex : {};
+  const provisionPageIndex = provisionPageIndexFromCatalog(catalog, grounding.provisionPageIndex);
 
   const findings = [...citations]
     .sort((a, b) => a.claim_index - b.claim_index)
     .map((c) => {
       const sourceSectionIds = c.source_section_ids || [];
-      const pages = [
-        ...new Set(sourceSectionIds.map((id) => sectionById.get(id)?.pageNumber).filter((p) => Number.isInteger(p))),
-      ].sort((a, b) => a - b);
+      const pages = pagesForFinding(sourceSectionIds, sectionById, provisionPageIndex);
       const finding = {
         findingId: c.id,
         number: c.claim_index + 1,

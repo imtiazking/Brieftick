@@ -10,8 +10,28 @@ import {
   scoreInstrumentBlockForObligationExtraction,
 } from './build-pdf-grounded-analysis-context.mjs';
 
-export const EXTRACTION_BATCH_PLAN_VERSION = 'instrument_coverage_v1';
+export const EXTRACTION_BATCH_PLAN_VERSION = 'instrument_coverage_v2';
+/** Soft default when callers omit maxBatches (not a hard publication ceiling). */
 export const DEFAULT_MAX_BATCHES = 12;
+/** Safety ceiling for unattended plan generation (configurable via maxBatchesSafetyCap). */
+export const DEFAULT_MAX_BATCHES_SAFETY_CAP = 512;
+
+/**
+ * @param {{ maxBatches?: number | null, maxBatchesSafetyCap?: number, fullPublicationCoverage?: boolean }} options
+ * @param {number} provisionCount
+ */
+export function resolvePlanBatchLimit(options, provisionCount) {
+  const cap = Number.isInteger(options.maxBatchesSafetyCap)
+    ? options.maxBatchesSafetyCap
+    : DEFAULT_MAX_BATCHES_SAFETY_CAP;
+  if (options.fullPublicationCoverage === true || options.maxBatches === 0) {
+    return Math.min(Math.max(provisionCount + 8, DEFAULT_MAX_BATCHES), cap);
+  }
+  if (Number.isInteger(options.maxBatches) && options.maxBatches > 0) {
+    return Math.min(options.maxBatches, cap);
+  }
+  return Math.min(DEFAULT_MAX_BATCHES, cap);
+}
 
 /** Rough token estimate: chars / 4 for English legal text. */
 export function estimateExtractionBatchTokens(selectedCharacters) {
@@ -63,7 +83,7 @@ export function selectBlocksForProvisionCores(blocks, instrumentStartPage, targe
 
 /**
  * @param {any[]} allBlocks full pdf_primary_v1 blocks
- * @param {{ instrumentStartPage: number, maxSectionsPerBatch?: number, maxBatches?: number, startSuppliedCores?: string[], targetProvisionCores?: string[] }} options
+ * @param {{ instrumentStartPage: number, maxSectionsPerBatch?: number, maxBatches?: number | null, maxBatchesSafetyCap?: number, fullPublicationCoverage?: boolean, startSuppliedCores?: string[], targetProvisionCores?: string[] }} options
  */
 export function buildPublicationExtractionBatchPlan(allBlocks, options) {
   const instrumentStartPage = options.instrumentStartPage;
@@ -76,9 +96,9 @@ export function buildPublicationExtractionBatchPlan(allBlocks, options) {
     };
   }
   const maxSections = options.maxSectionsPerBatch ?? MAX_SECTIONS;
-  const maxBatches = Math.min(options.maxBatches ?? DEFAULT_MAX_BATCHES, DEFAULT_MAX_BATCHES);
   const provisionPages = buildProvisionPagesIndex(allBlocks || [], instrumentStartPage);
   const allCores = [...provisionPages.keys()];
+  const maxBatches = resolvePlanBatchLimit(options, allCores.length);
   const supplied = new Set(options.startSuppliedCores || []);
   const batches = [];
 
@@ -99,9 +119,8 @@ export function buildPublicationExtractionBatchPlan(allBlocks, options) {
             });
 
     const described = describeSelectedSections(allBlocks, selected, instrumentStartPage);
-    const newlySupplied = described.selection.instrumentProvisionsSupplied
-      ? allCores.filter((c) => !supplied.has(c) && !described.selection.instrumentProvisionsNotSupplied.includes(c))
-      : [];
+    const notSuppliedList = described.selection.instrumentProvisionsNotSupplied || [];
+    const newlySupplied = allCores.filter((c) => !supplied.has(c) && !notSuppliedList.includes(c));
     for (const c of described.sourceSections.flatMap((s) => s.provisionsSetOut || [])) {
       if (allCores.includes(c)) supplied.add(c);
     }
@@ -136,6 +155,8 @@ export function buildPublicationExtractionBatchPlan(allBlocks, options) {
     instrumentStartPage,
     instrumentProvisionCount: allCores.length,
     maxSectionsPerBatch: maxSections,
+    planBatchLimit: maxBatches,
+    batchLimitReached: batches.length >= maxBatches && !publicationCoverageComplete,
     batches,
     publicationCoverageComplete,
     analysisScope: publicationCoverageComplete ? 'FULL_INSTRUMENT_PROVISIONS' : 'PARTIAL_INSTRUMENT_PROVISIONS',

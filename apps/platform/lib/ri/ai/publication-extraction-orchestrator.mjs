@@ -7,7 +7,9 @@ import {
   crossBatchFindingDedupeKey,
   estimateExtractionBatchTokens,
   mergeCumulativeProvisionCoverage,
+  resolvePlanBatchLimit,
 } from './extraction-batch-plan.mjs';
+import { PROVISION_TRACKING_STATUS } from '../classification/provision-inventory.mjs';
 import {
   buildInstrumentProvisionInventory,
   markProvisionsSuppliedForAnalysis,
@@ -22,7 +24,7 @@ export function sha256Hex(text) {
 
 /**
  * @param {ReturnType<typeof buildPublicationExtractionBatchPlan>} plan
- * @param {{ publicationId: string, changeId?: string, spendCapUsd?: number, maxBatches?: number }} options
+ * @param {{ publicationId: string, changeId?: string, spendCapUsd?: number, maxBatches?: number, evidenceBlocks?: unknown[] }} options
  */
 export function initPublicationExtractionOrchestration(plan, options) {
   const cap = Number(options.spendCapUsd);
@@ -118,12 +120,10 @@ export function markBatchOutcome(state, batchIndex, outcome) {
       for (const c of outcome.newlySuppliedCores) {
         if (!state.cumulativeSuppliedProvisionCores.includes(c)) state.cumulativeSuppliedProvisionCores.push(c);
       }
-    } else if (batch.selection?.instrumentProvisionsSupplied) {
-      const fromPlan = mergeCumulativeProvisionCoverage([
-        { instrumentProvisionsSuppliedCores: state.cumulativeSuppliedProvisionCores },
-        { instrumentProvisionsSuppliedCores: [] },
-      ]);
-      state.cumulativeSuppliedProvisionCores = fromPlan;
+    } else if (Array.isArray(batch.instrumentProvisionsNewlySupplied) && batch.instrumentProvisionsNewlySupplied.length) {
+      for (const c of batch.instrumentProvisionsNewlySupplied) {
+        if (!state.cumulativeSuppliedProvisionCores.includes(c)) state.cumulativeSuppliedProvisionCores.push(c);
+      }
     }
     void supplied;
   } else {
@@ -283,6 +283,91 @@ export function advanceOrchestrationBatch(state, options = {}) {
   };
 }
 
+/**
+ * Append batch plan steps to resume coverage after a partial plan (preserves succeeded batches).
+ * @param {ReturnType<typeof initPublicationExtractionOrchestration>} state
+ * @param {any[]} allBlocks
+ * @param {{ instrumentStartPage: number, maxSectionsPerBatch?: number, maxBatches?: number, fullPublicationCoverage?: boolean }} planOptions
+ */
+export function extendOrchestrationPlan(state, allBlocks, planOptions) {
+  const instrumentStartPage = planOptions.instrumentStartPage;
+  if (!Number.isInteger(instrumentStartPage)) return { ok: false, code: 'instrument_start_unknown' };
+  const startSupplied = [...(state.cumulativeSuppliedProvisionCores || [])];
+  const continuation = buildPublicationExtractionBatchPlan(allBlocks, {
+    ...planOptions,
+    instrumentStartPage,
+    startSuppliedCores: startSupplied,
+    fullPublicationCoverage: planOptions.fullPublicationCoverage !== false,
+  });
+  const nextIndex = state.batches.length;
+  let appended = 0;
+  for (const b of continuation.batches) {
+    const newly = b.instrumentProvisionsNewlySupplied || [];
+    const duplicate = state.batches.some(
+      (x) =>
+        x.status === 'SUCCEEDED' &&
+        x.instrumentProvisionsNewlySupplied?.join('|') === newly.join('|') &&
+        newly.length > 0,
+    );
+    if (duplicate) continue;
+    if (!newly.length && b.stalled) break;
+    if (!newly.length && continuation.publicationCoverageComplete) break;
+    state.batches.push({
+      batchIndex: state.batches.length,
+      status: 'PENDING',
+      runId: null,
+      idempotencySuffix: null,
+      errorCode: null,
+      selection: b.selection,
+      estimate: b.estimate,
+      instrumentProvisionsOutstanding: b.instrumentProvisionsOutstanding,
+      instrumentProvisionsNewlySupplied: newly,
+      stalled: b.stalled === true,
+    });
+    appended += 1;
+    if (!b.instrumentProvisionsOutstanding?.length) break;
+    if (b.stalled) break;
+  }
+  state.instrumentProvisionCount = continuation.instrumentProvisionCount;
+  state.planVersion = continuation.planVersion;
+  state.updatedAt = new Date().toISOString();
+  return { ok: true, appended, plan: continuation };
+}
+
+/** Explicit per-provision outcomes after all batches (inventory authoritative). */
+export function finalizeProvisionInventoryOutcomes(state) {
+  const inv = state._provisionInventory;
+  if (!inv) return null;
+  const suppliedSet = new Set(state.cumulativeSuppliedProvisionCores || []);
+  for (const row of inv.provisions) {
+    if (suppliedSet.has(row.core) && row.trackingStatus === PROVISION_TRACKING_STATUS.IDENTIFIED) {
+      row.trackingStatus = PROVISION_TRACKING_STATUS.SUPPLIED;
+    }
+  }
+  const reconciliation = reconcileFindingsWithProvisionInventory(inv, []);
+  for (const row of inv.provisions) {
+    if (!row.extractionOutcome) {
+      row.extractionOutcome =
+        row.trackingStatus === PROVISION_TRACKING_STATUS.FINDING
+          ? 'finding_recorded'
+          : row.trackingStatus === PROVISION_TRACKING_STATUS.NO_OBLIGATION
+            ? 'supplied_no_obligation'
+            : row.trackingStatus === PROVISION_TRACKING_STATUS.UNRESOLVED
+              ? 'unresolved'
+              : row.trackingStatus;
+    }
+  }
+  const outcomes = inv.provisions.map((p) => ({
+    core: p.core,
+    trackingStatus: p.trackingStatus,
+    extractionOutcome: p.extractionOutcome,
+    pages: p.pages,
+  }));
+  state.provisionOutcomes = outcomes;
+  state.provisionInventoryReconciliation = reconciliation;
+  return { outcomes, reconciliation };
+}
+
 /** Run pending/failed batches in simulate mode until complete, spend cap, or step limit. */
 export function runOrchestrationBatchesAutomatic(state, options = {}) {
   const maxSteps = options.maxSteps ?? state.batches.length + 2;
@@ -300,7 +385,52 @@ export function runOrchestrationBatchesAutomatic(state, options = {}) {
     if (step.code === 'no_pending_batch') break;
   }
   reconcileOrchestrationCoverage(state);
+  finalizeProvisionInventoryOutcomes(state);
   return { steps, review: buildConsolidatedHumanReview(state), state: snapshotOrchestration(state) };
+}
+
+/**
+ * Resumable multi-session simulation: runs at most maxBatchesThisSession batches, preserves ledger state.
+ */
+export function runOrchestrationSession(state, allBlocks, options = {}) {
+  const {
+    instrumentStartPage,
+    maxSectionsPerBatch = 18,
+    maxBatchesThisSession = 12,
+    fullPublicationCoverage = true,
+    maxBatchesSafetyCap,
+    ...advanceOpts
+  } = options;
+  if (
+    fullPublicationCoverage &&
+    !state.publicationCoverageComplete &&
+    state.batches.every((b) => b.status === 'SUCCEEDED') &&
+    instrumentStartPage != null
+  ) {
+    extendOrchestrationPlan(state, allBlocks, {
+      instrumentStartPage,
+      maxSectionsPerBatch,
+      maxBatches: resolvePlanBatchLimit({ fullPublicationCoverage: true, maxBatchesSafetyCap }, state.instrumentProvisionCount),
+      fullPublicationCoverage: true,
+    });
+  }
+  const session = runOrchestrationBatchesAutomatic(state, {
+    ...advanceOpts,
+    maxSteps: maxBatchesThisSession,
+  });
+  const sessionsComplete =
+    state.publicationCoverageComplete &&
+    (state.provisionInventoryReconciliation?.inventoryComplete !== false);
+  return {
+    ...session,
+    session: {
+      batchesThisSession: session.steps.length,
+      maxBatchesThisSession,
+      resumable: !sessionsComplete,
+      publicationCoverageComplete: state.publicationCoverageComplete,
+      inventoryComplete: state.provisionInventoryReconciliation?.inventoryComplete === true,
+    },
+  };
 }
 
 /** Deterministic simulated batch (no provider call) for acceptance. */

@@ -5,6 +5,26 @@ import { parseProvisionReference } from '../classification/provision-eligibility
 import { PROVISION_TRACKING_STATUS } from '../classification/provision-inventory.mjs';
 
 const MARKER_TO_CODE = { R: 'R', E: 'E', G: 'G', D: 'D', P: 'P', C: 'C', UK: 'UK', EU: 'EU' };
+const NEXT_PROVISION_RE =
+  /(?:(?<![A-Za-z0-9.])(?<!App\s{1,3})(?:([A-Z]{2,6})\s+)?|(?<![A-Za-z0-9])(?=App\s))((?:App\s+)?\d{1,2}[A-Z]?\.\d{1,2}[A-Z]?\.\d{1,3}[A-Z]?|TP\s+\d{1,3}[A-Z]?\.\d{1,3}[A-Z]?)\s*(R|E|G|D|P|C|UK|EU)(?![A-Za-z])/g;
+
+/** Slice instrument text for one provision core (deterministic; not model output). */
+export function extractProvisionScopedExcerpt(pageTextByNumber, pages, core) {
+  const merged = (pages || [])
+    .map((p) => pageTextByNumber.get(p) || '')
+    .join('\n')
+    .replace(/\s+/g, ' ');
+  const escaped = core.replace(/\./g, '\\.');
+  const startRe = new RegExp(`${escaped}\\s*(R|E|G|D|P|C|UK|EU)\\b`, 'i');
+  const start = merged.search(startRe);
+  if (start < 0) return null;
+  const tail = merged.slice(start);
+  NEXT_PROVISION_RE.lastIndex = 0;
+  NEXT_PROVISION_RE.exec(tail); // skip self
+  const next = NEXT_PROVISION_RE.exec(tail);
+  const end = next?.index ?? Math.min(tail.length, 520);
+  return tail.slice(0, end).trim();
+}
 
 /**
  * @param {import('../classification/provision-inventory.mjs').buildInstrumentProvisionInventory extends Function ? ReturnType<typeof buildInstrumentProvisionInventory> : any} inventory
@@ -27,10 +47,14 @@ export function buildDeterministicProvisionCandidates(inventory, suppliedCores, 
     if (!code || !['R', 'E'].includes(code)) continue;
     const pages = row.pages || [];
     const primaryPage = pages[0];
-    const text = pages.map((p) => pageTextByNumber.get(p) || '').join('\n');
-    const refMatch = text.match(new RegExp(`${core.replace(/\./g, '\\.')}\\s*(R|E|G)`, 'i'));
-    const snippetStart = refMatch?.index ?? 0;
-    const snippet = text.slice(snippetStart, snippetStart + 480).replace(/\s+/g, ' ').trim();
+    const snippet =
+      extractProvisionScopedExcerpt(pageTextByNumber, pages, core) ||
+      (() => {
+        const text = pages.map((p) => pageTextByNumber.get(p) || '').join('\n');
+        const refMatch = text.match(new RegExp(`${core.replace(/\./g, '\\.')}\\s*(R|E|G)`, 'i'));
+        const snippetStart = refMatch?.index ?? 0;
+        return text.slice(snippetStart, snippetStart + 480).replace(/\s+/g, ' ').trim();
+      })();
     if (snippet.length < 40) continue;
     out.push({
       origin: 'deterministic_provision_inventory',

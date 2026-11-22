@@ -103,6 +103,12 @@ async function buildPublicationContext(
   publicationVersionId: string,
   publicationId: string,
   useCaseId: string,
+  groundingOptions?: {
+    extractionBatchIndex?: number;
+    maxSectionsPerBatch?: number;
+    cumulativeSuppliedProvisionCores?: string[];
+    targetProvisionCores?: string[];
+  },
 ): Promise<AnalysisSourceContext> {
   const pdfGrounded = useCaseId === 'UC-RI-005' || useCaseId === 'UC-RI-002';
   if (pdfGrounded) {
@@ -113,6 +119,7 @@ async function buildPublicationContext(
       publicationId,
       publicationVersionId,
       useCaseId,
+      ...groundingOptions,
     });
     if (!pdf.ok || !pdf.sourceSections?.length || !pdf.allowedSectionIds?.length) {
       throw new Error(pdf.code || 'pdf_grounding_unavailable');
@@ -236,6 +243,10 @@ export async function requestPublicationAnalysis(
     fixtureScenario?: string;
     targetEntityId?: string;
     idempotencyKeySuffix?: string;
+    extractionBatchIndex?: number;
+    maxSectionsPerBatch?: number;
+    cumulativeSuppliedProvisionCores?: string[];
+    targetProvisionCores?: string[];
   },
 ) {
   assertCanRi(params.role, 'ai:request');
@@ -289,6 +300,12 @@ export async function requestPublicationAnalysis(
     params.publicationVersionId,
     params.publicationId,
     params.useCaseId,
+    {
+      extractionBatchIndex: params.extractionBatchIndex,
+      maxSectionsPerBatch: params.maxSectionsPerBatch,
+      cumulativeSuppliedProvisionCores: params.cumulativeSuppliedProvisionCores,
+      targetProvisionCores: params.targetProvisionCores,
+    },
   );
   const fallbackCode = resolveLiveProviderFallbackError();
   if (fallbackCode) {
@@ -394,13 +411,19 @@ export async function requestPublicationAnalysis(
       context: {
         sourceSections: ctx.sourceSections,
         regulatoryAnalysis: ctx.grounding?.regulatoryAnalysis ?? null,
+        provisionScopedExtraction:
+          (ctx.grounding as { provisionOutcomesSummary?: { provisionScopedExtraction?: unknown } } | undefined)
+            ?.provisionOutcomesSummary?.provisionScopedExtraction ?? null,
         contextKind: ctx.contextKind,
         allowedSectionIds: ctx.allowedSectionIds,
+        grounding: ctx.grounding,
       } as {
         sourceSections: typeof ctx.sourceSections;
         allowedSectionIds?: string[];
         regulatoryAnalysis?: unknown;
+        provisionScopedExtraction?: unknown;
         contextKind?: string;
+        grounding?: Record<string, unknown>;
       },
     });
   } catch (err) {

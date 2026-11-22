@@ -78,6 +78,7 @@ export function markProvisionsSuppliedForAnalysis(inventory, suppliedCores, batc
   for (const core of suppliedCores || []) {
     const row = inventory.byCore.get(core);
     if (!row) continue;
+    if (row.trackingStatus === PROVISION_TRACKING_STATUS.FINDING) continue;
     row.trackingStatus = PROVISION_TRACKING_STATUS.SUPPLIED;
     row.suppliedInBatch = batchIndex;
   }

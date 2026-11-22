@@ -2,6 +2,17 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-22 — P3+ full extraction, accuracy, FCA validation
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 16:30 | Staging deploy (orchestration v2 APIs) | Authorised staging only | `dpl_DLjK7NH1QtT1BeJ7bA9jN3HHoDXT`; build fix on orchestration route types |
+| — | Full simulated PS26 + PS22 | Remove 12-batch ceiling | **47/47** + **242/242** explicit outcomes; `FULL-PUBLICATION-SIMULATED-P3-2026-11-22.json` |
+| — | Resumable orchestration acceptance | Multi-session gate | PS22 **1→6** batches across **6** sessions — `acceptance-ri-publication-extraction-resumable.mjs` |
+| — | 35E IGC root cause + prompt scope | Priority 2 | `PS22-35E-IGC-EXTRACTION-ROOT-CAUSE.json`; scoped prompts wired |
+| — | FCA final validation (read-only) | Priority 3 | **10/10** — `PS22-9-FCA-FINAL-VALIDATION-2026-11-22.json` |
+| — | `staging-p2-regression.mjs` post-deploy | Priority 3 regression | **19/19** — `STAGING-P2-REGRESSION-2026-11-22.json` |
+
 ## 2026-11-22 — Standing autonomous rule + PS22 E closure
 
 | Time (UTC) | Decision | Reason | Outcome |

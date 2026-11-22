@@ -18,7 +18,11 @@ import {
   markProvisionsSuppliedForAnalysis,
   PROVISION_TRACKING_STATUS,
 } from '../classification/provision-inventory.mjs';
-import { buildDeterministicProvisionCandidates, mergePageTextsFromBlocks } from './deterministic-provision-candidates.mjs';
+import {
+  buildDeterministicProvisionCandidates,
+  extractProvisionScopedExcerpt,
+  mergePageTextsFromBlocks,
+} from './deterministic-provision-candidates.mjs';
 
 export const PDF_GROUNDED_USE_CASES = new Set(['UC-RI-005', 'UC-RI-002']);
 
@@ -334,6 +338,18 @@ export async function buildPdfGroundedAnalysisContext(params) {
       provisionCount: inventory.provisions.length,
       outcomes: provisionOutcomesSummary,
     };
+    if (Array.isArray(params.targetProvisionCores) && params.targetProvisionCores.length) {
+      const scoped = params.targetProvisionCores.map((core) => {
+        const row = inventory.byCore?.get(core);
+        const excerpt = row ? extractProvisionScopedExcerpt(pageText, row.pages, core) : null;
+        return excerpt ? { provisionCore: core, pages: row.pages, authoritativeExcerpt: excerpt.slice(0, 480) } : { provisionCore: core, missing: true };
+      });
+      provisionOutcomesSummary.provisionScopedExtraction = {
+        targetCores: params.targetProvisionCores,
+        policy: 'Claims must cite only authoritativeExcerpt text for the listed provisionCore.',
+        excerpts: scoped,
+      };
+    }
   }
 
   return {

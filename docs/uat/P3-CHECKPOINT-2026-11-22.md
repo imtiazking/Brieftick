@@ -1,32 +1,54 @@
-# P3 checkpoint — staging deploy + remaining paid gates
+# P3+ checkpoint — full publication extraction & PS22 validation
 
-**Date:** 2026-11-22 (UTC)
+**Date:** 2026-11-22 (UTC)  
+**Staging:** `https://staging-app.forgeniq.com`  
+**Latest deploy:** `dpl_DLjK7NH1QtT1BeJ7bA9jN3HHoDXT`  
+**Constraints:** No production; no additional paid AI beyond prior authorisation.
 
-## Completed without additional paid AI
+## Priority 1 — Full publication extraction (simulated)
 
-| Item | Evidence |
-|------|----------|
-| Local regression (provision engine) | classification 116/116; eligibility 47/47; inventory 5/5; PS26 source 7/7; extraction engine 13/8/6 |
-| Staging deploy (provision engine) | `dpl_HBUQgkWr4Eofg2ws1PtWjHRaevrY` → `staging-app.forgeniq.com`; `STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json` |
-| Post-deploy verify | CONC `7.20.1R` pages **94, 95**; `2A.4.35E` page **126** — `STAGING-P3-PROVISION-ENGINE-VERIFY-2026-11-22.json` |
-| P2 regression (19/19) | `STAGING-P2-REGRESSION-2026-11-22.json` |
-| CONC 7.20.1R(2) on run `a06eb008` | Obligation `96dd98d9-ad1e-4549-8a74-a82591b94db1` — `TARGETED-PAID-EXTRACTION-TRANCHE-2026-11-22.json` |
-| PS22 refusal (no link to `68051a63`) | API refuses review (quotation/binding validation) — `PS22-9-EVIDENTIAL-BINDING-CORRECTION-2026-11-22.json` |
-| Simulated full publication (PS26/1) | `FULL-PUBLICATION-SIMULATED-P3-2026-11-22.json` |
-| FRC suspension package | `REG-FRC-SUSPEND-CONVERSION-PROPOSAL-2026-11-22.json` — operator approval pending |
+| Check | Evidence |
+|-------|----------|
+| `instrument_coverage_v2` plan — no 12-batch publication ceiling | `extraction-batch-plan.mjs` — `resolvePlanBatchLimit` + `fullPublicationCoverage` |
+| Configurable batch size / session limits | API: `maxBatches`, `maxBatchesThisSession`, `maxBatchesSafetyCap`, `fullPublicationCoverage` |
+| Resumable multi-session orchestration | `runOrchestrationSession` + `extendOrchestrationPlan`; `advance_session` API action |
+| PS26/1 simulated full coverage | **47/47** provisions, **2** batches, inventory **0** unresolved — `FULL-PUBLICATION-SIMULATED-P3-2026-11-22.json` |
+| PS22/9 simulated full coverage | **242/242** provisions, **5** batches, inventory **0** unresolved — same file |
+| Resumable acceptance (PS22 cap → resume) | `acceptance-ri-publication-extraction-resumable.mjs` — **6** sessions, ledger **1→6** |
 
-## Closed on staging (2026-11-22 PM)
+## Priority 2 — Extraction accuracy (35E / IGC)
 
-- **Positive E:** run `3ed8c3e2` reviewed with authoritative **2A.4.34R** + **2A.4.35E** instrument quotes (p.126). DRAFT → OPEN: binding `2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a`, evidential `7143f1ff-c064-4123-bc2e-38e0102972df`; `supportsObligationId` = **2046ef71**, **not** `68051a63`.
-- **Local commit** recommended for: autonomous rule, provision-engine hotfix, UAT scripts, PS22 fixture PDF, acceptance `acceptance-ri-provision-source-verification-ps22.mjs`.
+| Check | Evidence |
+|-------|----------|
+| Root cause documented | `PS22-35E-IGC-EXTRACTION-ROOT-CAUSE.json` |
+| Provision-scoped excerpts in grounding | `build-pdf-grounded-analysis-context.mjs`, `deterministic-provision-candidates.mjs` |
+| Provider prompt scoped-quotation rule | `anthropic-prompts-core.mjs` + context wiring in `ai-analysis.ts` |
+| Human-assisted vs automated distinction | Documented in root-cause JSON; staging positive path remains human-corrected quotes on run `3ed8c3e2` |
 
-## Remaining
+## Priority 3 — FCA validation
 
-- **Git commit/push** (local commit authorised; push only if requested).
-- **PS22 simulated publication** may need higher `maxSteps` for 242 provisions (tuned in acceptance script).
+| Check | Evidence |
+|-------|----------|
+| Binding `2046ef71` OPEN | `PS22-9-FCA-FINAL-VALIDATION-2026-11-22.json` |
+| Evidential `7143f1ff` OPEN, `legalStatus` evidential | same |
+| `supportsObligationId` → `2046ef71`, not `68051a63` | same |
+| Prior 2A.4.13R `68051a63` OPEN (independent) | same |
+| Staging P2 regression | `staging-p2-regression.mjs` (post-deploy) |
 
-## Explicitly not done
+## Priority 4 — Governance
 
-- Production deploy
-- Additional paid extractions beyond the authorised tranche already consumed
-- Multi-regulator ACTIVE policies (PRA/ICO/PSR) — research/docs only
+| Item | Status |
+|------|--------|
+| FRC suspension package for operator | `REG-FRC-SUSPEND-CONVERSION-PROPOSAL-2026-11-22.json` |
+| PRA / ICO / PSR classification research | Continue in existing eval docs (no policy change this tranche) |
+| Implementation commit | Post-test git commit on `feature/ri-classification-triage` |
+
+## Local acceptance summary
+
+- `acceptance-ri-classification-policy-core.mjs` — **116/116**
+- `acceptance-ri-publication-extraction-engine.mjs` — **13/13**
+- `acceptance-ri-extraction-batch-plan.mjs` — **5/5**
+- `acceptance-ri-publication-extraction-orchestrator.mjs` — **6/6**
+- `acceptance-ri-provision-inventory.mjs` — pass
+- `acceptance-ri-full-publication-simulated-p3.mjs` — PS26 + PS22 pass
+- `acceptance-ri-publication-extraction-resumable.mjs` — pass
