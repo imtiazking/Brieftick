@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "forgeniq.e-provision.conversion-test-plan.v1",
+  "capturedAt": "2026-11-22T16:00:00.000Z",
+  "noPaidAiUntilReady": true,
+  "primaryCandidate": {
+    "publication": "PS22/9 Consumer Duty",
+    "evidentialProvision": "PRIN 2A.4.35E",
+    "page": 126,
+    "bindingRuleInSameBlock": "PRIN 2A.4.34R (or 2A.4.2R operative block on p.126)",
+    "doNotLinkOpenBindingObligationId": "68051a63-ea05-45b5-bbef-4fdc94b1ae45",
+    "relationship": "35E evidential for the PRIN 2A.4 value-assessment block on p.126 — bind via same-review **34R** finding, never to unrelated OPEN 2A.4.13R obligation 68051a63",
+    "preflightEvidence": "docs/eval/PS22-9-PUBLICATION-PREFLIGHT.json"
+  },
+  "alternate": {
+    "provision": "PRIN 2A.3.30E",
+    "page": 119,
+    "note": "Use only if batch grounding includes 30E and a verified binding PRIN 2A.3 R in the same instrument context"
+  },
+  "stagingFailureRootCause": "Paid run 3ed8c3e2 produced findings for 2A.4.36R/34R on p.126; 35E was listed in block index but no model finding targeted evidential text — requires narrower targetProvisionCores + post-engine inventory check before next paid call",
+  "successCriteria": [
+    "Preflight inventory shows 2A.4.35E IDENTIFIED then SUPPLIED in batch",
+    "Finding cites 35E with quotation verifiable on p.126",
+    "E disposition with supportingObligationId = OPEN 2A.4.13R only",
+    "Independent approval; register reports evidential legal status"
+  ]
+}

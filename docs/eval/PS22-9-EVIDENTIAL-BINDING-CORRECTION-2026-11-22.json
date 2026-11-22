@@ -1,0 +1,29 @@
+{
+  "log": [
+    {
+      "step": "approve",
+      "at": "2026-11-22T15:58:24.848Z",
+      "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "obligationId": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a"
+    },
+    {
+      "step": "approve",
+      "at": "2026-11-22T15:58:28.804Z",
+      "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "obligationId": "7143f1ff-c064-4123-bc2e-38e0102972df"
+    },
+    {
+      "step": "verify-link",
+      "at": "2026-11-22T15:58:32.704Z",
+      "supportsObligationId": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a",
+      "ok": true,
+      "wrongLink": "68051a63-ea05-45b5-bbef-4fdc94b1ae45"
+    },
+    {
+      "step": "complete-approve",
+      "at": "2026-11-22T15:58:33.092Z",
+      "binding": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a",
+      "evidential": "7143f1ff-c064-4123-bc2e-38e0102972df"
+    }
+  ]
+}

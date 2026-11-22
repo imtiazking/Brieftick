@@ -12,14 +12,21 @@ import {
   provisionMarkersInText,
   provisionsSetOutIn,
 } from '../classification/provision-eligibility.mjs';
+import { buildPublicationExtractionBatchPlan, mergeCumulativeProvisionCoverage } from './extraction-batch-plan.mjs';
+import {
+  buildInstrumentProvisionInventory,
+  markProvisionsSuppliedForAnalysis,
+  PROVISION_TRACKING_STATUS,
+} from '../classification/provision-inventory.mjs';
+import { buildDeterministicProvisionCandidates, mergePageTextsFromBlocks } from './deterministic-provision-candidates.mjs';
 
 export const PDF_GROUNDED_USE_CASES = new Set(['UC-RI-005', 'UC-RI-002']);
 
 const OBLIGATION_EXTRACTION_QUERY =
   'regulatory obligations requirements firms must shall should guidance consumer duty binding rules provisions consultation';
 
-const MAX_SECTIONS = 18;
-const MAX_CHARS_PER_SECTION = 3200;
+export const MAX_SECTIONS = 18;
+export const MAX_CHARS_PER_SECTION = 3200;
 const MIN_BLOCK_SCORE = 1;
 
 export function scoreBlockForObligationExtraction(block) {
@@ -68,8 +75,9 @@ export function scoreInstrumentBlockForObligationExtraction(block) {
  *   the instrument pages setting out the most operative provisions; the rest are the best-scoring narrative.
  */
 export function selectEvidenceBlocksForAnalysis(blocks, options = {}) {
+  const maxSections = options.maxSections ?? MAX_SECTIONS;
   const start = options.instrumentStartPage;
-  if (!Number.isInteger(start)) return selectByKeywords(blocks);
+  if (!Number.isInteger(start)) return selectByKeywords(blocks, maxSections);
   const inInstrument = (b) => Number.isInteger(b.pageNumber) && b.pageNumber >= start;
   const instrument = (blocks || [])
     .filter(inInstrument)
@@ -79,14 +87,14 @@ export function selectEvidenceBlocksForAnalysis(blocks, options = {}) {
     .slice(0, INSTRUMENT_SECTION_SLOTS)
     .map((r) => r.block);
   const picked = [...instrument];
-  for (const block of selectByKeywords((blocks || []).filter((b) => !inInstrument(b)))) {
-    if (picked.length >= MAX_SECTIONS) break;
+  for (const block of selectByKeywords((blocks || []).filter((b) => !inInstrument(b)), maxSections)) {
+    if (picked.length >= maxSections) break;
     picked.push(block);
   }
   return picked.sort((a, b) => (a.pageNumber ?? 0) - (b.pageNumber ?? 0));
 }
 
-function selectByKeywords(blocks) {
+function selectByKeywords(blocks, maxSections = MAX_SECTIONS) {
   const ranked = (blocks || [])
     .map((b) => ({ block: b, score: scoreBlockForObligationExtraction(b) }))
     .filter((r) => r.score >= MIN_BLOCK_SCORE)
@@ -95,7 +103,7 @@ function selectByKeywords(blocks) {
   const picked = [];
   const pagesUsed = new Set();
   for (const { block } of ranked) {
-    if (picked.length >= MAX_SECTIONS) break;
+    if (picked.length >= maxSections) break;
     const page = block.pageNumber;
     if (pagesUsed.has(page) && picked.length >= 8) continue;
     picked.push(block);
@@ -104,13 +112,13 @@ function selectByKeywords(blocks) {
 
   if (picked.length < 6) {
     for (const block of blocks || []) {
-      if (picked.length >= MAX_SECTIONS) break;
+      if (picked.length >= maxSections) break;
       if (picked.some((p) => p.documentEvidenceId === block.documentEvidenceId)) continue;
       if (String(block.extractedText || '').trim().length < 30) continue;
       picked.push(block);
     }
   }
-  return picked.slice(0, MAX_SECTIONS);
+  return picked.slice(0, maxSections);
 }
 
 function formatCitationLabel(block, inLegalInstrument) {
@@ -209,6 +217,11 @@ export function describeSelectedSections(allBlocks, selected, instrumentStartPag
  *   publicationVersionId?: string;
  *   adminSupabase?: import('@supabase/supabase-js').SupabaseClient;
  *   useCaseId?: string;
+ *   extractionBatchIndex?: number;
+ *   maxSectionsPerBatch?: number;
+ *   cumulativeSuppliedProvisionCores?: string[];
+ *   priorCoverageLedgers?: Array<{ instrumentProvisionsSuppliedCores?: string[] }>;
+ *   targetProvisionCores?: string[];
  * }} params
  */
 export async function buildPdfGroundedAnalysisContext(params) {
@@ -243,7 +256,35 @@ export async function buildPdfGroundedAnalysisContext(params) {
 
   const instrumentStartPage =
     params.useCaseId === 'UC-RI-005' ? detectLegalInstrumentStartPage(entry.evidenceBlocks) : null;
-  const blocks = selectEvidenceBlocksForAnalysis(entry.evidenceBlocks, { instrumentStartPage });
+
+  const startSupplied = [
+    ...(params.cumulativeSuppliedProvisionCores || []),
+    ...mergeCumulativeProvisionCoverage(params.priorCoverageLedgers),
+  ];
+  const batchIndex = Number.isInteger(params.extractionBatchIndex) ? params.extractionBatchIndex : null;
+  const maxSectionsPerBatch = params.maxSectionsPerBatch ?? MAX_SECTIONS;
+  let blocks;
+  let extractionBatchPlan = null;
+  let activeBatch = null;
+
+  if (params.useCaseId === 'UC-RI-005' && Number.isInteger(instrumentStartPage)) {
+    extractionBatchPlan = buildPublicationExtractionBatchPlan(entry.evidenceBlocks, {
+      instrumentStartPage,
+      maxSectionsPerBatch,
+      startSuppliedCores: startSupplied.length ? startSupplied : undefined,
+      maxBatches: batchIndex != null ? batchIndex + 1 : 1,
+      targetProvisionCores: params.targetProvisionCores,
+    });
+    const idx = batchIndex ?? 0;
+    activeBatch = extractionBatchPlan.batches[idx];
+    if (!activeBatch) {
+      return { ok: false, code: 'extraction_batch_out_of_range' };
+    }
+    const idSet = new Set(activeBatch.selectedBlockIds);
+    blocks = (entry.evidenceBlocks || []).filter((b) => idSet.has(b.documentEvidenceId));
+  } else {
+    blocks = selectEvidenceBlocksForAnalysis(entry.evidenceBlocks, { instrumentStartPage, maxSections: maxSectionsPerBatch });
+  }
   if (!blocks.length) {
     return { ok: false, code: 'pdf_no_ranked_evidence_blocks' };
   }
@@ -266,6 +307,34 @@ export async function buildPdfGroundedAnalysisContext(params) {
   }));
 
   const allowedSectionIds = sourceSections.map((s) => s.sourceSectionId);
+
+  let provisionInventorySnapshot = null;
+  let deterministicProvisionCandidates = [];
+  let provisionOutcomesSummary = null;
+  if (Number.isInteger(instrumentStartPage)) {
+    const inventory = buildInstrumentProvisionInventory(entry.evidenceBlocks, instrumentStartPage);
+    const notSupplied = new Set(described.selection?.instrumentProvisionsNotSupplied || []);
+    const suppliedCores = (described.sourceSections || []).flatMap((s) => s.provisionsSetOut || []);
+    const uniqueSupplied = [...new Set(suppliedCores)].filter((c) => !notSupplied.has(c));
+    markProvisionsSuppliedForAnalysis(inventory, uniqueSupplied, batchIndex ?? 0);
+    const pageText = mergePageTextsFromBlocks(entry.evidenceBlocks);
+    deterministicProvisionCandidates = buildDeterministicProvisionCandidates(inventory, uniqueSupplied, pageText);
+    const unresolved = inventory.provisions.filter(
+      (p) => p.trackingStatus === PROVISION_TRACKING_STATUS.UNRESOLVED || p.trackingStatus === PROVISION_TRACKING_STATUS.IDENTIFIED,
+    );
+    provisionOutcomesSummary = {
+      identifiedCount: inventory.provisions.length,
+      suppliedCount: uniqueSupplied.length,
+      deterministicCandidateCount: deterministicProvisionCandidates.length,
+      unresolvedCores: unresolved.map((p) => p.core),
+      publicationCoverageComplete: extractionBatchPlan?.publicationCoverageComplete === true,
+    };
+    provisionInventorySnapshot = {
+      instrumentStartPage: inventory.instrumentStartPage,
+      provisionCount: inventory.provisions.length,
+      outcomes: provisionOutcomesSummary,
+    };
+  }
 
   return {
     ok: true,
@@ -298,6 +367,27 @@ export async function buildPdfGroundedAnalysisContext(params) {
         provisionTextStatus: s.provisionTextStatus,
       })),
       provisionPageIndex: described.provisionPageIndex ?? {},
+      extractionBatch: activeBatch
+        ? {
+            batchIndex: activeBatch.batchIndex,
+            planVersion: extractionBatchPlan?.planVersion,
+            publicationCoverageComplete: extractionBatchPlan?.publicationCoverageComplete === true,
+            analysisScope: extractionBatchPlan?.analysisScope,
+            instrumentProvisionsOutstanding: activeBatch.instrumentProvisionsOutstanding,
+            estimate: activeBatch.estimate,
+            stalled: activeBatch.stalled === true,
+          }
+        : null,
+      extractionBatchPlanSummary: extractionBatchPlan
+        ? {
+            batchCount: extractionBatchPlan.batches.length,
+            publicationCoverageComplete: extractionBatchPlan.publicationCoverageComplete,
+            instrumentProvisionCount: extractionBatchPlan.instrumentProvisionCount,
+          }
+        : null,
+      provisionInventory: provisionInventorySnapshot,
+      provisionOutcomesSummary,
+      deterministicProvisionCandidates,
     },
   };
 }

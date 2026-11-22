@@ -127,10 +127,33 @@ export function provisionsSetOutIn(text) {
   return [...new Set(provisionMarkersInText(text).filter((p) => p.setOut).map((p) => p.core))];
 }
 
+/** @param {string} text */
+function isProvisionContinuationText(text) {
+  const t = String(text ?? '').trim();
+  if (!t.length) return false;
+  return hasDutyLanguage(t) || /^\(\d+\)/.test(t) || /^[a-z]\(\d+\)/i.test(t);
+}
+
+/**
+ * Merge all evidence blocks on each page (instrument pages only) for provision indexing.
+ * @param {Array<{ pageNumber?: number, extractedText?: string }>} blocks
+ * @param {number} instrumentStartPage
+ */
+export function mergeInstrumentBlocksByPage(blocks, instrumentStartPage) {
+  const byPage = new Map();
+  for (const b of blocks || []) {
+    if (!Number.isInteger(b?.pageNumber) || b.pageNumber < instrumentStartPage) continue;
+    const prev = byPage.get(b.pageNumber) || '';
+    byPage.set(b.pageNumber, prev ? `${prev}\n${b.extractedText || ''}` : String(b.extractedText ?? ''));
+  }
+  return byPage;
+}
+
 /**
  * Maps each provision core to every instrument page that sets it out, including numbered sub-paragraphs that
- * continue on the following page without repeating the provision reference (RI-CLS-009).
- * @param {Array<{ pageNumber: number, extractedText?: string }>} blocks
+ * continue on the following page without repeating the provision reference (RI-CLS-009), and leading text on a
+ * page before the first new marker when that page also introduces later provisions (e.g. CONC 7.20.1R(2)–(4) then 7.20.2G on p.95).
+ * @param {Array<{ pageNumber: number, extractedText?: string, documentEvidenceId?: string }>} blocks
  * @param {number | null} instrumentStartPage
  * @returns {Map<string, { pages: Set<number>, status: Record<number, string> }>}
  */
@@ -144,20 +167,36 @@ export function buildProvisionPagesIndex(blocks, instrumentStartPage) {
   };
   if (!Number.isInteger(instrumentStartPage)) return provisionPages;
   const textStatus = analyseInstrumentProvisionText(blocks, instrumentStartPage);
-  const pages = (blocks || [])
-    .filter((b) => Number.isInteger(b?.pageNumber) && b.pageNumber >= instrumentStartPage)
-    .sort((a, b) => a.pageNumber - b.pageNumber);
+  const statusFor = (pageNum, core) => {
+    for (const b of blocks || []) {
+      if (b.pageNumber !== pageNum) continue;
+      const s = textStatus.get(b.documentEvidenceId)?.[core];
+      if (s) return s;
+    }
+    return null;
+  };
+  const byPage = mergeInstrumentBlocksByPage(blocks, instrumentStartPage);
   let carryCore = null;
-  for (const b of pages) {
-    const text = String(b.extractedText ?? '');
-    const setOut = provisionMarkersInText(text).filter((p) => p.setOut);
+  for (const pageNum of [...byPage.keys()].sort((a, b) => a - b)) {
+    const text = byPage.get(pageNum) || '';
+    const setOut = provisionMarkersInText(text)
+      .filter((p) => p.setOut)
+      .sort((a, b) => a.index - b.index);
+    if (carryCore && setOut.length) {
+      const lead = text.slice(0, setOut[0].index);
+      if (isProvisionContinuationText(lead)) note(carryCore, pageNum, statusFor(pageNum, carryCore));
+    } else if (carryCore && !setOut.length && isProvisionContinuationText(text)) {
+      note(carryCore, pageNum, statusFor(pageNum, carryCore));
+    }
+    for (let i = 0; i < setOut.length; i += 1) {
+      const p = setOut[i];
+      note(p.core, pageNum, statusFor(pageNum, p.core));
+      const segStart = p.end;
+      const segEnd = i + 1 < setOut.length ? setOut[i + 1].index : text.length;
+      const segment = text.slice(segStart, segEnd);
+      if (isProvisionContinuationText(segment)) note(p.core, pageNum, statusFor(pageNum, p.core));
+    }
     if (setOut.length) carryCore = setOut[setOut.length - 1].core;
-    for (const p of setOut) note(p.core, b.pageNumber, textStatus.get(b.documentEvidenceId)?.[p.core]);
-    const continued =
-      carryCore &&
-      !setOut.length &&
-      (hasDutyLanguage(text) || /^\(\d+\)/.test(text.trim()) || /^[A-Z]?\(\d+\)/.test(text.trim()));
-    if (continued) note(carryCore, b.pageNumber, textStatus.get(b.documentEvidenceId)?.[carryCore]);
   }
   return provisionPages;
 }
@@ -253,7 +292,7 @@ export function analyseInstrumentProvisionText(blocks, instrumentStartPage) {
  * }} input
  * @returns {{ route: 'NON_OBLIGATION' | 'OBLIGATION' | 'EXCEPTION', reasons: string[] }}
  */
-export function evaluateProvisionEligibility({ code, legalStatus, provisionReference, provisionFunction, quotation, section }) {
+export function evaluateProvisionEligibility({ code, legalStatus, provisionReference, provisionFunction, quotation, section, citedSections }) {
   if (NON_OPERATIVE_PROVISION_FUNCTIONS.includes(provisionFunction)) {
     if (provisionFunction === PROVISION_FUNCTIONS.TRANSITIONAL && hasDutyLanguage(quotation)) {
       return { route: 'EXCEPTION', reasons: ['transitional_mandatory_language'] };
@@ -267,12 +306,14 @@ export function evaluateProvisionEligibility({ code, legalStatus, provisionRefer
   }
   const ref = parseProvisionReference(provisionReference);
   if (!ref || ref.marker !== code) reasons.push('provision_reference_required');
-  if (!section || section.inLegalInstrument !== true) {
+  const sections = Array.isArray(citedSections) && citedSections.length ? citedSections : section ? [section] : [];
+  const provisionSection = ref ? sections.find((s) => (s.provisionsSetOut || []).includes(ref.core)) : null;
+  if (!sections.some((s) => s.inLegalInstrument === true)) {
     reasons.push('provision_not_in_instrument');
-  } else if (ref && !(section.provisionsSetOut || []).includes(ref.core)) {
+  } else if (ref && !provisionSection) {
     reasons.push('provision_not_set_out_in_section');
-  } else if (ref) {
-    const status = section.provisionTextStatus?.[ref.core];
+  } else if (ref && provisionSection) {
+    const status = provisionSection.provisionTextStatus?.[ref.core];
     if (status === PROVISION_TEXT_STATUS.DELETED) reasons.push('provision_deleted');
     else if (!CONVERTIBLE_PROVISION_TEXT_STATUSES.includes(status)) reasons.push('provision_amendment_uncertain');
   }

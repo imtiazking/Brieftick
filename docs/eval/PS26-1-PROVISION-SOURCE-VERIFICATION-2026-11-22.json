@@ -1,0 +1,21 @@
+{
+  "capturedAt": "2026-11-22T15:34:46.090Z",
+  "sourcePdf": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\integrations\\regulatory-sources\\fixtures\\fca-ps26-1-official.pdf",
+  "parserVersion": "pdf-physical-pages-v2.0",
+  "instrumentStartPage": 61,
+  "physicalPages": {
+    "94": 1407,
+    "95": 1765
+  },
+  "conc7201Pages": [
+    94,
+    95
+  ],
+  "quotationVerification": {
+    "ok": true,
+    "quotationPage": 95
+  },
+  "legacyMisquote": "contact the customer about the missed payment — not in FCA PS26/1 instrument PDF",
+  "authoritative7201_2": "Notify borrower after missed payment (CONC 7.20.1R(2) on printed p.34 / PDF p.95)",
+  "inventoryProvisionCount": 47
+}

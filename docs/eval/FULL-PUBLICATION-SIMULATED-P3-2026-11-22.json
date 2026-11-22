@@ -1,0 +1,25 @@
+{
+  "capturedAt": "2026-11-22T15:58:54.736Z",
+  "reports": [
+    {
+      "publication": "PS26/1",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "instrumentStartPage": 61,
+      "inventoryCount": 47,
+      "batches": 2,
+      "unresolvedCount": 0,
+      "consolidatedFindingCount": 47,
+      "complete": true
+    },
+    {
+      "publication": "PS22/9",
+      "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "instrumentStartPage": 92,
+      "inventoryCount": 242,
+      "batches": 5,
+      "unresolvedCount": 0,
+      "consolidatedFindingCount": 184,
+      "complete": false
+    }
+  ]
+}
