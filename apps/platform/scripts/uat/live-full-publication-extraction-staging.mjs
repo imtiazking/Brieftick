@@ -100,7 +100,7 @@ async function runPublication(page, identity, pub, spendRemaining) {
     if (step.code === 'no_pending_batch') break;
     if (step.code !== 'awaiting_authorised_extraction') {
       record(`${pub.code}-advance-stop`, step);
-      break;
+      throw new Error(`${pub.code} advance stopped: ${step.code || step.error || JSON.stringify(step)}`);
     }
     const batchIndex = step.batchIndex;
     const payload = step.runPayload || {};
@@ -200,7 +200,9 @@ async function main() {
     reports.push(report);
     spendUsed += 0.4;
   }
-  record('complete', { reports, spendUsedEstimate: spendUsed, withinBudget: spendUsed <= BUDGET_USD });
+  const totalBatches = reports.reduce((n, r) => n + (r.executedBatches || 0), 0);
+  if (totalBatches === 0) throw new Error('live pilot executed zero paid batches — not a successful run');
+  record('complete', { reports, spendUsedEstimate: spendUsed, withinBudget: spendUsed <= BUDGET_USD, totalBatches });
   console.log(JSON.stringify({ ok: true, reports }, null, 2));
 }
 

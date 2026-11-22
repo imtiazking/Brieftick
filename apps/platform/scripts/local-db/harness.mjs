@@ -13,7 +13,9 @@ import { randomBytes } from 'node:crypto';
 const __dir = dirname(fileURLToPath(import.meta.url));
 export const platformRoot = join(__dir, '..', '..');
 const migrationsDir = join(platformRoot, 'supabase', 'migrations');
-const localDbDir = join(platformRoot, '.local-pg-verify');
+function localDbDirForPort(port) {
+  return join(platformRoot, '.local-pg-verify', `p${port}`);
+}
 
 export const ORG_A = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
 export const ORG_B = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
@@ -36,6 +38,7 @@ export function pgVersionLabel() {
 }
 
 export async function resetAndStartEmbedded({ port = 54328 } = {}) {
+  const localDbDir = localDbDirForPort(port);
   if (existsSync(localDbDir)) {
     rmSync(localDbDir, { recursive: true, force: true });
   }
@@ -52,15 +55,27 @@ export async function resetAndStartEmbedded({ port = 54328 } = {}) {
   });
   await embedded.initialise();
   await embedded.start();
+  embedded.forgeniqPort = port;
   const adminUrl = `postgresql://postgres:${encodeURIComponent(password)}@127.0.0.1:${port}/postgres`;
   return { embedded, adminUrl, port, password };
 }
 
-export async function stopEmbedded(embedded) {
+export async function stopEmbedded(embedded, { port } = {}) {
   if (embedded) await embedded.stop();
-  if (existsSync(localDbDir)) {
-    rmSync(localDbDir, { recursive: true, force: true });
+  const resolvedPort = port ?? embedded?.forgeniqPort;
+  const localDbDir =
+    resolvedPort != null ? localDbDirForPort(resolvedPort) : join(platformRoot, '.local-pg-verify');
+  if (!existsSync(localDbDir)) return;
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    try {
+      rmSync(localDbDir, { recursive: true, force: true });
+      return;
+    } catch (e) {
+      if (e?.code !== 'EBUSY' && e?.code !== 'EPERM') throw e;
+      await new Promise((r) => setTimeout(r, 250 * (attempt + 1)));
+    }
   }
+  rmSync(localDbDir, { recursive: true, force: true });
 }
 
 export async function applySqlFile(client, path) {

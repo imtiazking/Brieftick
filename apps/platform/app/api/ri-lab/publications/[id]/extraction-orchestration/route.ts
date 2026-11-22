@@ -6,20 +6,53 @@ export const dynamic = 'force-dynamic';
 
 type RouteParams = { params: Promise<{ id: string }> };
 
+async function loadOrganisationPublicationLink(
+  ctx: Awaited<ReturnType<typeof requireRiContext>>,
+  publicationId: string,
+  options: { createIfMissing?: boolean } = {},
+) {
+  const { data: globalPub, error: globalErr } = await ctx.supabase
+    .from('regulatory_publications')
+    .select('id')
+    .eq('id', publicationId)
+    .maybeSingle();
+  if (globalErr) throw new Error(globalErr.message);
+  if (!globalPub) return { link: null, globalPub: null };
+
+  const { data: initialLink, error: linkErr } = await ctx.supabase
+    .from('organisation_publications')
+    .select('id, metadata')
+    .eq('organisation_id', ctx.organisationId)
+    .eq('publication_id', publicationId)
+    .maybeSingle();
+  if (linkErr) throw new Error(linkErr.message);
+
+  let link = initialLink;
+  if (!link && options.createIfMissing) {
+    const { data: created, error: insErr } = await ctx.supabase
+      .from('organisation_publications')
+      .insert({
+        organisation_id: ctx.organisationId,
+        publication_id: publicationId,
+        metadata: {},
+      })
+      .select('id, metadata')
+      .single();
+    if (insErr) throw new Error(insErr.message);
+    link = created;
+  }
+
+  return { link, globalPub };
+}
+
 /** Create or read publication extraction orchestration ledger (RI-CLS-007). */
 export async function GET(_request: Request, { params }: RouteParams) {
   try {
     const { id: publicationId } = await params;
     const ctx = await requireRiContext('ri:read');
-    const { data, error } = await ctx.supabase
-      .from('regulatory_publications')
-      .select('id, metadata')
-      .eq('id', publicationId)
-      .eq('organisation_id', ctx.organisationId)
-      .maybeSingle();
-    if (error) throw new Error(error.message);
-    if (!data) return NextResponse.json({ ok: false, code: 'not_found' }, { status: 404 });
-    const orchestration = (data.metadata as Record<string, unknown>)?._extractionOrchestration ?? null;
+    const { link } = await loadOrganisationPublicationLink(ctx, publicationId);
+    if (!link) return NextResponse.json({ ok: false, code: 'not_found' }, { status: 404 });
+    const orchestration = (link.metadata as Record<string, unknown>)?._extractionOrchestration ?? null;
     return NextResponse.json({ ok: true, publicationId, orchestration, tenantScope: true });
   } catch (err) {
     return labApiErrorResponse(err);
@@ -65,31 +98,35 @@ export async function POST(request: Request, { params }: RouteParams) {
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
     if (!projectUrl || !serviceRoleKey) throw new Error('storage_credentials_unavailable');
 
-    const { data: pub, error: pubErr } = await ctx.supabase
-      .from('regulatory_publications')
-      .select('id, metadata')
-      .eq('id', publicationId)
-      .eq('organisation_id', ctx.organisationId)
-      .maybeSingle();
-    if (pubErr) throw new Error(pubErr.message);
-    if (!pub) return NextResponse.json({ ok: false, code: 'not_found' }, { status: 404 });
+    const isInit = body.action == null && body.resume !== true;
+    const loadedLink = await loadOrganisationPublicationLink(ctx, publicationId, { createIfMissing: isInit });
+    if (!loadedLink.globalPub) {
+      return NextResponse.json({ ok: false, code: 'not_found' }, { status: 404 });
+    }
+    if (!loadedLink.link) {
+      return NextResponse.json({ ok: false, code: 'organisation_publication_not_found' }, { status: 404 });
+    }
 
-    const existing = (pub.metadata as Record<string, unknown>)?._extractionOrchestration as Record<
+    const orgPub = loadedLink.link;
+    const existing = (orgPub.metadata as Record<string, unknown>)?._extractionOrchestration as Record<
       string,
       unknown
     > | null;
 
     const persistOrchestration = async (orchestration: Record<string, unknown>) => {
       const metadata = {
-        ...(typeof pub.metadata === 'object' && pub.metadata !== null ? pub.metadata : {}),
+        ...(typeof orgPub.metadata === 'object' && orgPub.metadata !== null ? orgPub.metadata : {}),
         _extractionOrchestration: orchestration,
       };
-      const { error: updErr } = await ctx.supabase
-        .from('regulatory_publications')
+      const { data: updated, error: updErr } = await ctx.supabase
+        .from('organisation_publications')
         .update({ metadata })
-        .eq('id', publicationId)
-        .eq('organisation_id', ctx.organisationId);
+        .eq('id', orgPub.id)
+        .eq('organisation_id', ctx.organisationId)
+        .select('metadata')
+        .single();
       if (updErr) throw new Error(updErr.message);
+      orgPub.metadata = updated.metadata;
       return orchestration;
     };
 

@@ -92,7 +92,14 @@ function isAiOrAskRiProductionPath(file) {
   const rel = file.replaceAll('\\', '/');
   return (
     rel.includes('/lib/ri/ai/') ||
+    rel.includes('/lib/ri/reasoner/') ||
+    rel.includes('/lib/ri/eval/') ||
+    rel.includes('/lib/ri/lab-api/') ||
+    rel.includes('/lib/ri/diagnostics/') ||
+    rel.includes('/lib/ri/semantic/') ||
+    rel.includes('/lib/ri/ingestion/') ||
     rel.includes('/services/ai-analysis') ||
+    rel.includes('/services/ai-finding-review.') ||
     rel.includes('server-actions-ai') ||
     rel.includes('/app/ri/ai') ||
     rel.includes('/lib/ri/ask-ri') ||
