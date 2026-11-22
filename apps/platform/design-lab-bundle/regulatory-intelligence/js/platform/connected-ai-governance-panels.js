@@ -225,6 +225,12 @@ const FINDING_REVIEW_ERRORS = {
   finding_linked_obligation_required: 'enter the existing obligation to link to',
   finding_linked_obligation_unclassified: 'link only to a classified binding or evidential obligation verified against the authoritative provision',
   finding_quotation_required: 'an exact quotation is required',
+  finding_provision_function_required: 'state the provision function (operative requirement, evidential provision, application, permission, exemption, transitional or definition)',
+  finding_provision_function_invalid: 'the provision function is not recognised',
+  finding_provision_reference_required: 'enter the provision reference (e.g. CONC 4.8.2R); its marker must match the classification code',
+  finding_provision_outside_instrument: 'the quotation page is not a legal-instrument section of this publication (or is a transitional-provisions table), so it cannot ground an obligation',
+  finding_provision_not_in_cited_section: 'the provision is not set out on the selected page — a cross-reference to a provision set out elsewhere cannot be converted',
+  finding_provision_not_operative: 'application, permission, exemption, transitional and definition provisions — and quotations without duty language — cannot become standalone obligations',
 };
 
 const FINDING_REVIEW_MESSAGES = {
@@ -235,6 +241,7 @@ const FINDING_REVIEW_MESSAGES = {
   obligation_classification_required: 'The database refused an obligation without a regulatory classification.',
   obligation_source_not_binding: 'The database refused an obligation from a non-binding publication.',
   obligation_binding_link_required: 'The database refused an evidential provision without a binding link.',
+  obligation_provision_unverified: 'The database refused an obligation without a verified operative instrument provision.',
 };
 
 function formatFindingReviewError(code) {
@@ -277,7 +284,34 @@ const EXCEPTION_REASON_LABELS = {
   binding_code_from_non_binding_source: 'binding code on a non-binding publication',
   conflicting_classifications: 'conflicts with the model classification',
   missing_binding_link: 'evidential provision without a binding link',
+  provision_function_required: 'provision function not stated',
+  provision_reference_required: 'provision reference missing or marker does not match the code',
+  provision_not_in_instrument: 'quotation not from a legal-instrument section',
+  provision_not_set_out_in_section: 'provision not set out on the quotation page',
+  provision_not_operative: 'provision is not operative',
 };
+
+/** Mirrors PROVISION_FUNCTIONS in provision-eligibility.mjs. */
+const PROVISION_FUNCTION_LABELS = {
+  OPERATIVE_REQUIREMENT: 'Operative requirement (duty on the firm)',
+  EVIDENTIAL_PROVISION: 'Evidential provision',
+  APPLICATION: 'Application / scope',
+  PERMISSION: 'Permission',
+  EXEMPTION: 'Exemption',
+  TRANSITIONAL: 'Transitional provision',
+  DEFINITION: 'Definition',
+};
+const NON_OPERATIVE_FUNCTIONS = new Set(['APPLICATION', 'PERMISSION', 'EXEMPTION', 'TRANSITIONAL', 'DEFINITION']);
+
+function provisionFunctionOptions(selected) {
+  return ['<option value="">Select provision function…</option>']
+    .concat(
+      Object.entries(PROVISION_FUNCTION_LABELS).map(
+        ([v, label]) => `<option value="${esc(v)}"${v === selected ? ' selected' : ''}>${esc(label)}</option>`,
+      ),
+    )
+    .join('');
+}
 
 const queueLabel = (q) => TRIAGE_QUEUE_LABELS[q] || q || '—';
 const reasonsText = (reasons) => (reasons || []).map((r) => EXCEPTION_REASON_LABELS[r] || r).join(', ');
@@ -327,7 +361,11 @@ function renderRecordedFindingDecisions(body) {
       <td>${esc(String(d.claim_index + 1))}</td>
       <td>${esc(f?.statement || '')}</td>
       <td>${badge(d.decision)}</td>
-      <td>${esc(d.regulatory_classification_code || d.classification || '—')}${d.legal_status ? ` <span class="ri-muted">(${esc(d.legal_status)})</span>` : ''}</td>
+      <td>${esc(d.regulatory_classification_code || d.classification || '—')}${d.legal_status ? ` <span class="ri-muted">(${esc(d.legal_status)})</span>` : ''}${
+        d.provision_reference || d.provision_function
+          ? `<br><span class="ri-muted" data-finding-decision-provision>${esc(d.provision_reference || '—')} · ${esc(PROVISION_FUNCTION_LABELS[d.provision_function] || d.provision_function || '—')}</span>`
+          : ''
+      }</td>
       <td data-finding-decision-queue>${esc(queueLabel(d.triage_queue))}${reasons ? `<br><span class="ri-muted">${esc(reasons)}</span>` : ''}</td>
       <td>${d.quotation_page ? `p.${esc(String(d.quotation_page))}` : '—'}</td>
       <td>${outcome}</td>
@@ -357,6 +395,12 @@ function renderFindingCard(f, policy, canReview, draft = {}, convertibleFindings
     <dl class="ri-dl">
       <dt>Citation verification</dt><dd>${badge(f.citationStatus)} <span class="ri-muted">(cited section is one of the analysed PDF sections; the wording still needs checking)</span></dd>
       <dt>Cited PDF pages</dt><dd data-finding-pages>${f.pages.map((p) => `p.${esc(String(p))}`).join(', ') || '—'}</dd>
+      <dt>Provisions set out on cited instrument pages</dt><dd data-finding-instrument-provisions>${
+        (f.sections || [])
+          .filter((s) => s.inLegalInstrument)
+          .map((s) => `p.${esc(String(s.pageNumber))}${s.transitionalProvisions ? ' (transitional table)' : ''}: ${esc((s.provisionsSetOut || []).join(', ') || 'none')}`)
+          .join('; ') || '<span class="ri-muted">none — cited pages are outside the legal instrument, so no conversion is possible</span>'
+      }</dd>
       <dt>Model suggestion</dt><dd>${esc(suggestion?.modelBindingNature || 'none')}${
         f.modelConfidence != null ? ` · confidence ${esc(String(f.modelConfidence))}%` : ''
       } <span class="ri-muted">— verify against the PDF; confidence never overrides the classification policy</span></dd>
@@ -378,6 +422,12 @@ function renderFindingCard(f, policy, canReview, draft = {}, convertibleFindings
     </fieldset>
     <label>Regulatory classification code
       <select data-finding-code${disabled}>${codeOptions(policy, draft.code)}</select>
+    </label>
+    <label>Provision function (required for conversion-eligible codes)
+      <select data-finding-provision-function${disabled}>${provisionFunctionOptions(draft.provisionFunction)}</select>
+    </label>
+    <label>Provision reference (as set out in the instrument, e.g. CONC 4.8.2R)
+      <input type="text" data-finding-provision-reference placeholder="e.g. CONC 4.8.2R" value="${esc(draft.provisionReference || '')}"${disabled}>
     </label>
     <label>Disposition
       <select data-finding-disposition${disabled}>${dispositionOptions(draft.queue, draft.disposition)}</select>
@@ -460,7 +510,11 @@ function readFindingCard(card, uat) {
   const codeSelect = card.querySelector('[data-finding-code]');
   const option = codeSelect?.selectedOptions?.[0];
   const code = codeSelect?.value || '';
-  const queue = code ? option?.dataset?.queue || 'EXCEPTION_TRIAGE' : '';
+  const convertible = option?.dataset?.convertible === '1';
+  const provisionFunction = card.querySelector('[data-finding-provision-function]')?.value || '';
+  const provisionReference = (card.querySelector('[data-finding-provision-reference]')?.value || '').replace(/\s+/g, ' ').trim();
+  const nonOperative = convertible && NON_OPERATIVE_FUNCTIONS.has(provisionFunction);
+  const queue = code ? (nonOperative ? 'NON_OBLIGATION_TRIAGE' : option?.dataset?.queue || 'EXCEPTION_TRIAGE') : '';
   const linkRequired = option?.dataset?.linkRequired === '1';
   const disposition = decision === 'ACCEPTED' ? card.querySelector('[data-finding-disposition]')?.value || '' : '';
   const createsObligation = decision === 'ACCEPTED' && disposition === 'CONVERT_TO_DRAFT_OBLIGATION';
@@ -476,10 +530,12 @@ function readFindingCard(card, uat) {
   const missing = [];
   if (!decision) missing.push('decision');
   if (decision === 'ACCEPTED' && !code) missing.push('classification code');
+  if (decision === 'ACCEPTED' && convertible && !provisionFunction) missing.push('provision function');
   if (decision === 'ACCEPTED' && code && !disposition) missing.push('disposition');
   if (linking && !linkedObligationId) missing.push('existing obligation ID');
   if (createsObligation) {
     if (legalBasis.length < 3) missing.push('legal basis');
+    if (!provisionReference) missing.push('provision reference');
     if (quotation.length < FINDING_MIN_QUOTATION) missing.push('exact quotation');
     if (!page) missing.push('PDF page');
     if (linkRequired && !supportingFindingId && !supportingObligationId) missing.push('binding provision link');
@@ -507,6 +563,8 @@ function readFindingCard(card, uat) {
       legalBasis: createsObligation ? legalBasis : null,
       quotation: createsObligation ? quotation : null,
       quotationPage: createsObligation ? Number(page) : null,
+      provisionFunction: decision === 'ACCEPTED' && convertible && provisionFunction ? provisionFunction : null,
+      provisionReference: decision === 'ACCEPTED' && convertible && provisionReference ? provisionReference : null,
       comment,
     },
   };
@@ -539,6 +597,8 @@ function syncFindingReviewPanel(panel) {
       supportingFindingId: card.querySelector('[data-finding-supporting-finding]')?.value || '',
       supportingObligationId: card.querySelector('[data-finding-supporting-obligation]')?.value || '',
       reclassificationEvidence: card.querySelector('[data-finding-reclassification]')?.value || '',
+      provisionFunction: card.querySelector('[data-finding-provision-function]')?.value || '',
+      provisionReference: card.querySelector('[data-finding-provision-reference]')?.value || '',
       legalBasis: card.querySelector('[data-finding-legal-basis]')?.value || '',
       quotation: card.querySelector('[data-finding-quotation]')?.value || '',
       page: card.querySelector('[data-finding-page]')?.value || '',
@@ -551,6 +611,8 @@ function syncFindingReviewPanel(panel) {
       });
     setDisabled('[data-finding-legal-basis], [data-finding-quotation], [data-finding-page]', !r.createsObligation);
     setDisabled('[data-finding-code], [data-finding-reclassification]', !accepted);
+    const convertibleCode = card.querySelector('[data-finding-code]')?.selectedOptions?.[0]?.dataset?.convertible === '1';
+    setDisabled('[data-finding-provision-function], [data-finding-provision-reference]', !(accepted && convertibleCode));
     setDisabled('[data-finding-disposition]', !accepted || !r.queue);
     setDisabled('[data-finding-linked-obligation]', !r.linking);
     setDisabled('[data-finding-supporting-finding], [data-finding-supporting-obligation]', !(r.createsObligation && r.linkRequired));

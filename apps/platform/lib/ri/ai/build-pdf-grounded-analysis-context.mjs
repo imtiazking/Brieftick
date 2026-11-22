@@ -4,6 +4,12 @@
 import { createClient } from '@supabase/supabase-js';
 import { analyzeRegulatoryPdfDocument } from '../../../../../integrations/regulatory-sources/core/regulatory-pdf-analysis.mjs';
 import { loadPublicationPdfEvidenceForAskRi } from '../ask-ri/load-publication-pdf-evidence.mjs';
+import {
+  detectLegalInstrumentStartPage,
+  isTransitionalTable,
+  provisionMarkersInText,
+  provisionsSetOutIn,
+} from '../classification/provision-eligibility.mjs';
 
 export const PDF_GROUNDED_USE_CASES = new Set(['UC-RI-005', 'UC-RI-002']);
 
@@ -36,7 +42,47 @@ export function scoreBlockForObligationExtraction(block) {
   return score;
 }
 
-export function selectEvidenceBlocksForAnalysis(blocks) {
+const OPERATIVE_MARKERS = new Set(['R', 'E', 'D', 'P', 'UK', 'EU']);
+const INSTRUMENT_SECTION_SLOTS = 14;
+
+/** Instrument pages ranked by the operative provisions they set out; cross-references and TP tables do not count. */
+export function scoreInstrumentBlockForObligationExtraction(block) {
+  const text = String(block.extractedText || '');
+  const setOut = provisionMarkersInText(text).filter((p) => p.setOut);
+  const operative = new Set(setOut.filter((p) => OPERATIVE_MARKERS.has(p.marker)).map((p) => p.core)).size;
+  const guidance = new Set(setOut.filter((p) => p.marker === 'G').map((p) => p.core)).size;
+  const duties = (text.match(/\b(must|shall|is required to|are required to|is to|are to)\b/gi) || []).length;
+  let score = operative * 10 + Math.min(duties, 6) * 4 + guidance;
+  if (!operative) score -= 10;
+  if (isTransitionalTable(text)) score -= 25;
+  return score;
+}
+
+/**
+ * @param {any[]} blocks
+ * @param {{ instrumentStartPage?: number | null }} [options] With an instrument, up to 14 of the 18 sections are
+ *   the instrument pages setting out the most operative provisions; the rest are the best-scoring narrative.
+ */
+export function selectEvidenceBlocksForAnalysis(blocks, options = {}) {
+  const start = options.instrumentStartPage;
+  if (!Number.isInteger(start)) return selectByKeywords(blocks);
+  const inInstrument = (b) => Number.isInteger(b.pageNumber) && b.pageNumber >= start;
+  const instrument = (blocks || [])
+    .filter(inInstrument)
+    .map((block) => ({ block, score: scoreInstrumentBlockForObligationExtraction(block) }))
+    .filter((r) => r.score > 0)
+    .sort((a, b) => b.score - a.score || a.block.pageNumber - b.block.pageNumber)
+    .slice(0, INSTRUMENT_SECTION_SLOTS)
+    .map((r) => r.block);
+  const picked = [...instrument];
+  for (const block of selectByKeywords((blocks || []).filter((b) => !inInstrument(b)))) {
+    if (picked.length >= MAX_SECTIONS) break;
+    picked.push(block);
+  }
+  return picked.sort((a, b) => (a.pageNumber ?? 0) - (b.pageNumber ?? 0));
+}
+
+function selectByKeywords(blocks) {
   const ranked = (blocks || [])
     .map((b) => ({ block: b, score: scoreBlockForObligationExtraction(b) }))
     .filter((r) => r.score >= MIN_BLOCK_SCORE)
@@ -63,11 +109,69 @@ export function selectEvidenceBlocksForAnalysis(blocks) {
   return picked.slice(0, MAX_SECTIONS);
 }
 
-function formatCitationLabel(block) {
+function formatCitationLabel(block, inLegalInstrument) {
   const page = block.pageNumber ?? block.physicalPageIndex;
   const printed = block.printedPageLabel ? ` (${block.printedPageLabel})` : '';
   const section = block.sectionReference ? ` §${block.sectionReference}` : '';
-  return `PDF p.${page}${printed}${section}`;
+  return `PDF p.${page}${printed}${section}${inLegalInstrument ? ' · legal instrument' : ''}`;
+}
+
+/**
+ * Source sections and grounding facts for a selection. Instrument status, the provisions each section sets out
+ * and the coverage figures are server-derived and stored with the run; the review function relies on them.
+ */
+export function describeSelectedSections(allBlocks, selected, instrumentStartPage) {
+  const instrumentAware = Number.isInteger(instrumentStartPage);
+  const sourceSections = selected.map((block) => {
+    const text = String(block.extractedText || '').slice(0, MAX_CHARS_PER_SECTION);
+    const inLegalInstrument = instrumentAware && Number.isInteger(block.pageNumber) && block.pageNumber >= instrumentStartPage;
+    return {
+      sourceSectionId: block.documentEvidenceId,
+      citation: formatCitationLabel(block, inLegalInstrument),
+      text,
+      pageNumber: block.pageNumber,
+      sectionReference: block.sectionReference,
+      inLegalInstrument,
+      transitionalProvisions: isTransitionalTable(text),
+      provisionsSetOut: inLegalInstrument ? provisionsSetOutIn(text) : [],
+      truncated: String(block.extractedText || '').length > MAX_CHARS_PER_SECTION,
+    };
+  });
+  const chars = (list) => list.reduce((n, b) => n + String(b.extractedText || '').length, 0);
+  const documentCharacters = chars(allBlocks || []);
+  const selectedCharacters = sourceSections.reduce((n, s) => n + s.text.length, 0);
+  const pages = (list) => new Set(list.map((b) => b.pageNumber).filter((p) => Number.isInteger(p)));
+  const instrumentPages = instrumentAware ? [...pages(allBlocks || [])].filter((p) => p >= instrumentStartPage) : [];
+  const instrumentProvisions = instrumentAware
+    ? [
+        ...new Set(
+          (allBlocks || [])
+            .filter((b) => b.pageNumber >= instrumentStartPage)
+            .flatMap((b) => provisionMarkersInText(b.extractedText).filter((p) => p.setOut).map((p) => p.core)),
+        ),
+      ]
+    : [];
+  const suppliedProvisions = new Set(sourceSections.flatMap((s) => s.provisionsSetOut));
+  const selection = {
+    strategy: instrumentAware ? 'instrument_priority_v1' : 'keyword_v1',
+    maxSections: MAX_SECTIONS,
+    maxCharactersPerSection: MAX_CHARS_PER_SECTION,
+    instrumentStartPage: instrumentAware ? instrumentStartPage : null,
+    documentPages: pages(allBlocks || []).size,
+    documentCharacters,
+    selectedSections: sourceSections.length,
+    selectedPages: [...pages(selected)].sort((a, b) => a - b),
+    selectedCharacters,
+    characterCoveragePercent: documentCharacters ? Number(((selectedCharacters / documentCharacters) * 100).toFixed(2)) : 0,
+    instrumentPages: instrumentPages.length,
+    instrumentPagesSelected: sourceSections.filter((s) => s.inLegalInstrument).length,
+    instrumentProvisionsSetOut: instrumentProvisions.length,
+    instrumentProvisionsSupplied: instrumentProvisions.filter((p) => suppliedProvisions.has(p)).length,
+    instrumentProvisionsNotSupplied: instrumentProvisions.filter((p) => !suppliedProvisions.has(p)),
+    truncatedSections: sourceSections.filter((s) => s.truncated).length,
+    scope: selectedCharacters < documentCharacters ? 'PARTIAL_DOCUMENT' : 'WHOLE_DOCUMENT',
+  };
+  return { sourceSections, selection };
 }
 
 /**
@@ -108,7 +212,9 @@ export async function buildPdfGroundedAnalysisContext(params) {
     return { ok: false, code: 'pdf_page_boundaries_not_confirmed' };
   }
 
-  const blocks = selectEvidenceBlocksForAnalysis(entry.evidenceBlocks);
+  const instrumentStartPage =
+    params.useCaseId === 'UC-RI-005' ? detectLegalInstrumentStartPage(entry.evidenceBlocks) : null;
+  const blocks = selectEvidenceBlocksForAnalysis(entry.evidenceBlocks, { instrumentStartPage });
   if (!blocks.length) {
     return { ok: false, code: 'pdf_no_ranked_evidence_blocks' };
   }
@@ -121,12 +227,13 @@ export async function buildPdfGroundedAnalysisContext(params) {
       canonicalUrl: entry.canonicalUrl,
     });
 
-  const sourceSections = blocks.map((block) => ({
-    sourceSectionId: block.documentEvidenceId,
-    citation: formatCitationLabel(block),
-    text: String(block.extractedText || '').slice(0, MAX_CHARS_PER_SECTION),
-    pageNumber: block.pageNumber,
-    sectionReference: block.sectionReference,
+  const described = describeSelectedSections(entry.evidenceBlocks, blocks, instrumentStartPage);
+  const sourceSections = described.sourceSections.map((s) => ({
+    sourceSectionId: s.sourceSectionId,
+    citation: s.citation,
+    text: s.text,
+    pageNumber: s.pageNumber,
+    sectionReference: s.sectionReference,
   }));
 
   const allowedSectionIds = sourceSections.map((s) => s.sourceSectionId);
@@ -149,12 +256,16 @@ export async function buildPdfGroundedAnalysisContext(params) {
         consultationPreserved: analysis.consultationPreserved,
         isFinalisedGuidance: analysis.isFinalisedGuidance,
       },
-      sectionCatalog: sourceSections.map((s) => ({
+      selection: described.selection,
+      sectionCatalog: described.sourceSections.map((s) => ({
         sourceSectionId: s.sourceSectionId,
         citation: s.citation,
         excerpt: s.text.slice(0, 600),
         pageNumber: s.pageNumber,
         sectionReference: s.sectionReference,
+        inLegalInstrument: s.inLegalInstrument,
+        transitionalProvisions: s.transitionalProvisions,
+        provisionsSetOut: s.provisionsSetOut,
       })),
     },
   };

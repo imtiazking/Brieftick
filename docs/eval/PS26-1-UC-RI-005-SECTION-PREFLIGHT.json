@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "forgeniq.ps26-1.uc-ri-005-section-preflight.v1",
-  "capturedAt": "2026-11-21T23:17:17.641Z",
+  "schemaVersion": "forgeniq.ps26-1.uc-ri-005-section-preflight.v2",
+  "capturedAt": "2026-11-21T23:42:46.192Z",
   "aiCall": false,
   "source": {
     "url": "https://www.fca.org.uk/publication/policy/ps26-1.pdf",
@@ -13,7 +13,6 @@
   "reproducesStagingRevision": true,
   "document": {
     "pages": 108,
-    "characters": 187976,
     "evidenceBlocks": 111,
     "instrumentStartPage": 61,
     "provisionMarkersByType": {
@@ -23,10 +22,92 @@
     "eProvisions": []
   },
   "selection": {
-    "sections": 18,
-    "characters": 45534,
-    "characterCoveragePercent": 24.22,
-    "pagesCovered": [
+    "strategy": "instrument_priority_v1",
+    "maxSections": 18,
+    "maxCharactersPerSection": 3200,
+    "instrumentStartPage": 61,
+    "documentPages": 108,
+    "documentCharacters": 195291,
+    "selectedSections": 18,
+    "selectedPages": [
+      19,
+      21,
+      29,
+      40,
+      68,
+      81,
+      86,
+      87,
+      88,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      99
+    ],
+    "selectedCharacters": 34272,
+    "characterCoveragePercent": 17.55,
+    "instrumentPages": 48,
+    "instrumentPagesSelected": 14,
+    "instrumentProvisionsSetOut": 42,
+    "instrumentProvisionsSupplied": 36,
+    "instrumentProvisionsNotSupplied": [
+      "16.1.6R",
+      "2.7.7FG",
+      "2.7.19GG",
+      "2.7.19HG",
+      "2.8.6CG",
+      "8.12.11AG"
+    ],
+    "truncatedSections": 0,
+    "scope": "PARTIAL_DOCUMENT",
+    "coreProvisionPages": {
+      "4.2A.3R": [
+        87
+      ],
+      "4.2A.4R": [
+        88
+      ],
+      "4.2A.5R": [
+        88
+      ],
+      "4.2A.6R": [
+        90
+      ],
+      "4.2A.8R": [
+        91
+      ],
+      "4.8.2R": [
+        93
+      ],
+      "7.20.1R": [
+        94
+      ],
+      "7.20.3R": [
+        95
+      ],
+      "11.1.2R": [
+        96
+      ],
+      "16.1.4R": [
+        97
+      ]
+    },
+    "eProvisionsSupplied": []
+  },
+  "previousKeywordSelection": {
+    "strategy": "instrument_priority_v1",
+    "maxSections": 18,
+    "maxCharactersPerSection": 3200,
+    "instrumentStartPage": 61,
+    "documentPages": 108,
+    "documentCharacters": 195291,
+    "selectedSections": 18,
+    "selectedPages": [
       14,
       16,
       19,
@@ -46,446 +127,478 @@
       99,
       102
     ],
-    "sectionsInInstrument": 5,
-    "provisionMarkersByType": {
-      "G": 10,
-      "R": 15
-    },
-    "eProvisionsSelected": [],
-    "scope": "PARTIAL_DOCUMENT — the extraction sees only these sections; findings do not represent analysis of the whole publication."
+    "selectedCharacters": 45534,
+    "characterCoveragePercent": 23.32,
+    "instrumentPages": 48,
+    "instrumentPagesSelected": 5,
+    "instrumentProvisionsSetOut": 42,
+    "instrumentProvisionsSupplied": 6,
+    "instrumentProvisionsNotSupplied": [
+      "2.3.1R",
+      "4.2.2G",
+      "2.5.1R",
+      "2.3.2R",
+      "2.7.1R",
+      "4.2.1R",
+      "4.2A.1R",
+      "4.2A.2G",
+      "4.2A.3R",
+      "4.2A.4R",
+      "4.2A.5R",
+      "4.2A.6R",
+      "4.2A.7R",
+      "4.2A.11R",
+      "4.2A.12G",
+      "4.6.2R",
+      "4.6.2AR",
+      "7.1.4R",
+      "7.6.2BG",
+      "7.6.2CR",
+      "7.20.1R",
+      "7.20.2G",
+      "7.20.3R",
+      "11.1.2R",
+      "11.1.2AG",
+      "16.1.1R",
+      "16.1.2G",
+      "16.1.3G",
+      "16.1.4R",
+      "16.1.5R",
+      "16.1.6R",
+      "2.7.7FG",
+      "2.7.19GG",
+      "2.7.19HG",
+      "2.8.6CG",
+      "8.12.11AG"
+    ],
+    "truncatedSections": 0,
+    "scope": "PARTIAL_DOCUMENT",
+    "coreProvisionPages": {
+      "4.2A.3R": [],
+      "4.2A.4R": [],
+      "4.2A.5R": [],
+      "4.2A.6R": [],
+      "4.2A.8R": [
+        91
+      ],
+      "4.8.2R": [
+        93
+      ],
+      "7.20.1R": [],
+      "7.20.3R": [],
+      "11.1.2R": [],
+      "16.1.4R": []
+    }
   },
   "sections": [
     {
       "order": 1,
-      "sourceSectionId": "EVD-PDF-c972b7acef43cd7f",
-      "page": 66,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 78,
-      "inInstrument": true,
-      "characters": 2107,
+      "sourceSectionId": "EVD-PDF-19a69798b79d823b",
+      "page": 19,
+      "citation": "PDF p.19",
+      "inLegalInstrument": false,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [],
+      "crossReferences": [],
+      "characters": 3090,
       "truncated": false,
-      "provisionMarkers": [
-        {
-          "reference": "SYSC 23.3.3",
-          "marker": "G"
-        }
-      ],
       "heuristicFlags": {
         "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "applicabilityOrExemptionLanguage": false
       },
-      "excerpt": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is not underlined. TP 13 SMCR: application to firms with deferred payment credit temp"
+      "excerpt": "19 Question 6: Do you agree that our proposed new rules requiring firms to give notice before taking certain actions are appropriate? Question 7: Do you think that reliance on the Duty could deliver our policy objectives for our proposed new rules on firms’ communications to DPC customers who have m"
     },
     {
       "order": 2,
-      "sourceSectionId": "EVD-PDF-3ef3ff17013a027c",
-      "page": 99,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 74,
-      "inInstrument": true,
-      "characters": 2385,
+      "sourceSectionId": "EVD-PDF-272432babf4b38a9",
+      "page": 21,
+      "citation": "PDF p.21",
+      "inLegalInstrument": false,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [],
+      "crossReferences": [
+        "CONC 7.3.7AG",
+        "CONC 7.20.3R"
+      ],
+      "characters": 2710,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
-        "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "dutyLanguage": false,
+        "applicabilityOrExemptionLanguage": false
       },
-      "excerpt": "FCA 2026/2 FOS 2026/1 Page 38 of 46 Statements of Principle and Code of Practice for Approved Persons (APER) For the purposes of determining the application of APER where a firm’s permission includes permission to carry on regulated activities granted by the FCA under Part 4A of the Act (as well as permission arising by virtue of a deferred payment credit temporary permission): (1) where the appli"
+      "excerpt": "21 • Any adverse consequences for the customer arising out of the missed payment. • Any other adverse consequences for the borrower that the firm considers are likely to arise out of the missed payment.We have also made a further change. This requires firms to signpost to free and impartial money gu"
     },
     {
       "order": 3,
-      "sourceSectionId": "EVD-PDF-272432babf4b38a9",
-      "page": 21,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 71,
-      "inInstrument": false,
-      "characters": 2710,
+      "sourceSectionId": "EVD-PDF-6ba253e9281105b2",
+      "page": 29,
+      "citation": "PDF p.29",
+      "inLegalInstrument": false,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [],
+      "crossReferences": [],
+      "characters": 2918,
       "truncated": false,
-      "provisionMarkers": [
-        {
-          "reference": "CONC 7.3.7A",
-          "marker": "G"
-        },
-        {
-          "reference": "CONC 7.20.3",
-          "marker": "R"
-        }
-      ],
       "heuristicFlags": {
         "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": false
+        "applicabilityOrExemptionLanguage": false
       },
-      "excerpt": "21 • Any adverse consequences for the customer arising out of the missed payment. • Any other adverse consequences for the borrower that the firm considers are likely to arise out of the missed payment.We have also made a further change. This requires firms to signpost to free and impartial money guidance and debt advice, and effectively communicate the potential benefits of accessing it, when giv"
+      "excerpt": "29 3.14 There was broad support amongst respondents to our proposals for DPC to be subject to our existing reporting requirements, including PSD returns. 3.15 A DPC lender and a trade association queried the proportionality of our proposed approach. The lender noted that the burden of reporting PSD,"
     },
     {
       "order": 4,
-      "sourceSectionId": "EVD-PDF-19a69798b79d823b",
-      "page": 19,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 69,
-      "inInstrument": false,
-      "characters": 3090,
+      "sourceSectionId": "EVD-PDF-f3c25613f51b66d2",
+      "page": 40,
+      "citation": "PDF p.40",
+      "inLegalInstrument": false,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [],
+      "crossReferences": [],
+      "characters": 2851,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
-        "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "dutyLanguage": true,
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "19 Question 6: Do you agree that our proposed new rules requiring firms to give notice before taking certain actions are appropriate? Question 7: Do you think that reliance on the Duty could deliver our policy objectives for our proposed new rules on firms’ communications to DPC customers who have missed a repayment or where a firm intends to take certain actions instead?2.27 Stakeholders generall"
+      "excerpt": "40The date of Regulation Day is set in legislation. In line with the proposals in the CP, notification for registration for temporary permission will open 2 months before Regulation Day and close 2 weeks before Regulation Day. We will, in due course, and in good time before notification for registra"
     },
     {
       "order": 5,
-      "sourceSectionId": "EVD-PDF-f3c25613f51b66d2",
-      "page": 40,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 65,
-      "inInstrument": false,
-      "characters": 2851,
+      "sourceSectionId": "EVD-PDF-f38ea22635f39d76",
+      "page": 68,
+      "citation": "PDF p.68 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "2.3.1R",
+        "4.2.2G"
+      ],
+      "crossReferences": [],
+      "characters": 1087,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
         "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "applicabilityOrExemptionLanguage": false
       },
-      "excerpt": "40The date of Regulation Day is set in legislation. In line with the proposals in the CP, notification for registration for temporary permission will open 2 months before Regulation Day and close 2 weeks before Regulation Day. We will, in due course, and in good time before notification for registration for the TPR opens on 15 May 2026, publish Directions on the process for notification. In line w"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 7 of 46 Annex C Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text and striking through indicates deleted text. 2 Interpreting the Handbook ... 2.3 General saving of the Handbook for Gibraltar Continued application of the Handbook with"
     },
     {
       "order": 6,
-      "sourceSectionId": "EVD-PDF-33d46e2b1a9fa4c4",
-      "page": 93,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 65,
-      "inInstrument": true,
-      "characters": 1439,
-      "truncated": false,
-      "provisionMarkers": [
-        {
-          "reference": "4.8.2",
-          "marker": "R"
-        },
-        {
-          "reference": "CONC 4.2.5",
-          "marker": "R"
-        },
-        {
-          "reference": "CONC 4.2A.3",
-          "marker": "R"
-        },
-        {
-          "reference": "6.7.42",
-          "marker": "G"
-        },
-        {
-          "reference": "6.7.43",
-          "marker": "G"
-        },
-        {
-          "reference": "PRIN 2A.5.3",
-          "marker": "R"
-        },
-        {
-          "reference": "PRIN 2A.5.6",
-          "marker": "R"
-        },
-        {
-          "reference": "PRIN 2A.5.10",
-          "marker": "R"
-        },
-        {
-          "reference": "PRIN 2A.6.2",
-          "marker": "R"
-        }
+      "sourceSectionId": "EVD-PDF-89a7bb24ba4ab06a",
+      "page": 81,
+      "citation": "PDF p.81 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "2.5.1R"
       ],
+      "crossReferences": [
+        "DISP 1.10.1IR"
+      ],
+      "characters": 1035,
+      "truncated": false,
       "heuristicFlags": {
-        "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": false
+        "dutyLanguage": false,
+        "applicabilityOrExemptionLanguage": false
       },
-      "excerpt": "FCA 2026/2 FOS 2026/1 Page 32 of 46 ... Unfair business practices 4.8.2 R A firm must not unfairly encourage, incentivise or induce a customer to enter into a regulated credit agreement quickly without allowing the customer time to consider: (1) in relation to a regulated credit agreement other than a regulated deferred payment credit agreement, the pre-contract information under section 55 of the"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 20 of 46 ... Part 2: Comes into force on 31 December 2026 [Editor’s note: This Part takes into account the changes introduced by the Complaints Reporting Instrument 2025 (FCA 2025/53). That instrument deletes and replaces DISP 1 Annex 1 in its entirety from its entry into "
     },
     {
       "order": 7,
-      "sourceSectionId": "EVD-PDF-6ba253e9281105b2",
-      "page": 29,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 62,
-      "inInstrument": false,
-      "characters": 2918,
+      "sourceSectionId": "EVD-PDF-8bf3984f6a750455",
+      "page": 86,
+      "citation": "PDF p.86 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "2.3.2R",
+        "2.7.1R"
+      ],
+      "crossReferences": [
+        "CONC 4.2.5R",
+        "CONC 4.2A.3R"
+      ],
+      "characters": 1224,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
-        "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "dutyLanguage": true,
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "29 3.14 There was broad support amongst respondents to our proposals for DPC to be subject to our existing reporting requirements, including PSD returns. 3.15 A DPC lender and a trade association queried the proportionality of our proposed approach. The lender noted that the burden of reporting PSD, in combination with the wider costs of regulation, could have a material impact on the viability of"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restri"
     },
     {
       "order": 8,
-      "sourceSectionId": "EVD-PDF-b16ac8fd10a49bee",
-      "page": 39,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 61,
-      "inInstrument": false,
-      "characters": 2738,
+      "sourceSectionId": "EVD-PDF-e219e1c202a0c2e0",
+      "page": 87,
+      "citation": "PDF p.87 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "4.2.1R",
+        "4.2A.1R",
+        "4.2A.2G",
+        "4.2A.3R"
+      ],
+      "crossReferences": [
+        "CONC 4.2A.5R"
+      ],
+      "characters": 1330,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
         "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "39 that they should show clear progress to meeting the requirements to become fully authorised. 5.9 One DPC lender thought that firms in the TPR should be subject to the same conduct regulation as DPC lenders that are currently authorised. This stakeholder also thought it was important that we make clear to consumers which firms will be operating in the TPR, and that we should act swiftly if those"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit "
     },
     {
       "order": 9,
-      "sourceSectionId": "EVD-PDF-aa167484e28ef275",
-      "page": 16,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 60,
-      "inInstrument": false,
-      "characters": 2831,
-      "truncated": false,
-      "provisionMarkers": [
-        {
-          "reference": "CONC 4.2A.10",
-          "marker": "G"
-        }
+      "sourceSectionId": "EVD-PDF-749f250a95a5a2c9",
+      "page": 88,
+      "citation": "PDF p.88 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "4.2A.4R",
+        "4.2A.5R"
       ],
+      "crossReferences": [
+        "CONC 4.2A.3R"
+      ],
+      "characters": 2023,
+      "truncated": false,
       "heuristicFlags": {
         "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "16We are also making a small amendment to the piece of key product information which would require a lender to indicate whether it will obtain information from a credit reference agency (CRA) before deciding whether to proceed with the agreement. We are amending this so that a firm must indicate whether it will (where this is known), or otherwise may, obtain information from a CRA. We recognise th"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 27 of 46 (2) The additional product information must all be given, or made available, to the customer together, except for the contractual terms and conditions which may be given, or made available, separately. (3) Where there is more than one customer acting together as ‘"
     },
     {
       "order": 10,
-      "sourceSectionId": "EVD-PDF-51bdaff362b58237",
-      "page": 24,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 58,
-      "inInstrument": false,
-      "characters": 2885,
-      "truncated": false,
-      "provisionMarkers": [
-        {
-          "reference": "CONC 5.2A.15",
-          "marker": "R"
-        },
-        {
-          "reference": "CONC 5.2A.33",
-          "marker": "R"
-        },
-        {
-          "reference": "CONC 5.2A.23",
-          "marker": "G"
-        }
+      "sourceSectionId": "EVD-PDF-379e52d5c4d6e27e",
+      "page": 90,
+      "citation": "PDF p.90 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "4.2A.6R",
+        "4.2A.7R"
       ],
+      "crossReferences": [
+        "CONC 4.6.2AR",
+        "CONC 4.6.2R",
+        "CONC 4.2A.5R",
+        "CONC 4.2A.4R"
+      ],
+      "characters": 1707,
+      "truncated": false,
       "heuristicFlags": {
         "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "24firms should take in their creditworthiness assessments. For example, in setting out relevant factors that firms must/may have regard to, whether certain factors might point to a more rigorous assessment being required and setting out the nature and type of information firms should consider. When applying CONC 5.2A, firms should use their judgement, making sure they can show the depth of individ"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 29 of 46 in the manner set out in CONC 4.6.2AR) an adequate explanation of the matters set out in CONC 4.6.2R(2)(a) to (i) and (k); and (i) the contractual terms and conditions. Product information: once the agreement is made 4.2A.6 R (1) Immediately after an agreement has"
     },
     {
       "order": 11,
-      "sourceSectionId": "EVD-PDF-16d23d50ee498d57",
-      "page": 102,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 58,
-      "inInstrument": true,
-      "characters": 2043,
+      "sourceSectionId": "EVD-PDF-2ae2e75f0d5a4301",
+      "page": 91,
+      "citation": "PDF p.91 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "4.2A.8R",
+        "4.2A.9G",
+        "4.2A.10G"
+      ],
+      "crossReferences": [
+        "CONC 4.2A.5R",
+        "CONC 4.6.5R",
+        "CONC 4.2A.8R"
+      ],
+      "characters": 2048,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
-        "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "dutyLanguage": false,
+        "applicabilityOrExemptionLanguage": false
       },
-      "excerpt": "FCA 2026/2 FOS 2026/1 Page 41 of 46 (1) to a firm with only a deferred payment credit temporary permission; or (2) to any other firm, with respect to: (a) the firm’s deferred payment credit temporary permission; and (b) the carrying on of deferred payment credit activity for which it has deferred payment credit temporary permission. Disputes Resolution: Complaints sourcebook (DISP) (1) DISP 1.10 ("
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 30 of 46 (ii) the implications for the guarantor of the guarantee or the indemnity (or both) being called on; and (b) such of the information mentioned in CONC 4.2A.5R as the firm considers necessary for the guarantor to understand the adequate explanations required by (3)"
     },
     {
       "order": 12,
-      "sourceSectionId": "EVD-PDF-2ae2e75f0d5a4301",
-      "page": 91,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 57,
-      "inInstrument": true,
-      "characters": 2048,
-      "truncated": false,
-      "provisionMarkers": [
-        {
-          "reference": "CONC 4.2A.5",
-          "marker": "R"
-        },
-        {
-          "reference": "CONC 4.6.5",
-          "marker": "R"
-        },
-        {
-          "reference": "4.2A.8",
-          "marker": "R"
-        },
-        {
-          "reference": "4.2A.9",
-          "marker": "G"
-        },
-        {
-          "reference": "CONC 4.2A.8",
-          "marker": "R"
-        },
-        {
-          "reference": "4.2A.10",
-          "marker": "G"
-        }
+      "sourceSectionId": "EVD-PDF-4eb5a11a8d2107eb",
+      "page": 92,
+      "citation": "PDF p.92 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "4.2A.11R",
+        "4.2A.12G",
+        "4.6.2R",
+        "4.6.2AR"
       ],
+      "crossReferences": [
+        "GEN 2.3.1R",
+        "CONC 4.6.2R",
+        "CONC 4.2A.3R"
+      ],
+      "characters": 1637,
+      "truncated": false,
       "heuristicFlags": {
-        "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": false
+        "dutyLanguage": true,
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "FCA 2026/2 FOS 2026/1 Page 30 of 46 (ii) the implications for the guarantor of the guarantee or the indemnity (or both) being called on; and (b) such of the information mentioned in CONC 4.2A.5R as the firm considers necessary for the guarantor to understand the adequate explanations required by (3)(a) and make an informed decision as to whether to act as guarantor. (4) The information provided un"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also appl"
     },
     {
       "order": 13,
-      "sourceSectionId": "EVD-PDF-1b8ef4efd4f5b633",
-      "page": 28,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 55,
-      "inInstrument": false,
-      "characters": 2271,
+      "sourceSectionId": "EVD-PDF-33d46e2b1a9fa4c4",
+      "page": 93,
+      "citation": "PDF p.93 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "4.8.2R",
+        "6.7.42G",
+        "6.7.43G"
+      ],
+      "crossReferences": [
+        "CONC 4.2.5R",
+        "CONC 4.2A.3R",
+        "PRIN 2A.5.3R",
+        "PRIN 2A.5.6R",
+        "PRIN 2A.5.10R",
+        "PRIN 2A.6.2R"
+      ],
+      "characters": 1439,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
-        "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "dutyLanguage": true,
+        "applicabilityOrExemptionLanguage": false
       },
-      "excerpt": "28information asymmetries and behavioural biases. We noted examples where we have seen consumer harm arise where communications encourage customers to make decisions without full possession of relevant information, and provided examples of good and poor practice. We have previously provided guidance about firms’ obligations under the Duty, as well as examples of good and poor practice. So we do no"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 32 of 46 ... Unfair business practices 4.8.2 R A firm must not unfairly encourage, incentivise or induce a customer to enter into a regulated credit agreement quickly without allowing the customer time to consider: (1) in relation to a regulated credit agreement other than"
     },
     {
       "order": 14,
-      "sourceSectionId": "EVD-PDF-aefd0701d34f2e18",
-      "page": 23,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 54,
-      "inInstrument": false,
-      "characters": 3130,
-      "truncated": false,
-      "provisionMarkers": [
-        {
-          "reference": "CONC 5.2A.20",
-          "marker": "R"
-        }
+      "sourceSectionId": "EVD-PDF-90eac526516055e9",
+      "page": 94,
+      "citation": "PDF p.94 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "7.1.4R",
+        "7.6.2BG",
+        "7.6.2CR",
+        "7.20.1R"
       ],
+      "crossReferences": [
+        "CONC 7.3.1G",
+        "CONC 7.4.1R",
+        "CONC 7.4.2R",
+        "CONC 7.5.1G",
+        "CONC 7.6.2AR",
+        "CONC 7.6.2BG",
+        "CONC 7.15.3G",
+        "CONC 7.15.4R",
+        "CONC 7.15.5G",
+        "CONC 7.20.1R",
+        "CONC 7.20.2G",
+        "CONC 7.6.2G",
+        "CONC 4.6.2R",
+        "CONC 4.6.2AR"
+      ],
+      "characters": 1380,
+      "truncated": false,
       "heuristicFlags": {
         "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "23 value agreements, lending multiple times to the same customer and lending to those with ‘thin’ credit files such as younger consumers or recent migrants. 2.42 DPC lenders were primarily concerned that, without further clarity, they might be required to undertake assessments that are disproportionate to, in their view, DPC’s relatively low affordability risk. Some suggested that additional guida"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CO"
     },
     {
       "order": 15,
-      "sourceSectionId": "EVD-PDF-f877e0f0603946c2",
-      "page": 26,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 54,
-      "inInstrument": false,
-      "characters": 2172,
+      "sourceSectionId": "EVD-PDF-6f160bf6c84e2d9d",
+      "page": 95,
+      "citation": "PDF p.95 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "7.20.2G",
+        "7.20.3R"
+      ],
+      "crossReferences": [
+        "CONC 7.20.1R"
+      ],
+      "characters": 1705,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
         "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "applicabilityOrExemptionLanguage": false
       },
-      "excerpt": "26Chapter 3Application of the wider Handbook3.1 This chapter summarises the feedback to our proposals on how the wider Handbook will apply to DPC lenders. 3.2 We consulted on applying:• Principles for Businesses (PRIN), Threshold Conditions (COND), General Provisions (GEN), Systems and controls (SYSC), the Senior Managers and Certification Regime (SM&CR) and all other relevant Handbook provisions "
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid "
     },
     {
       "order": 16,
-      "sourceSectionId": "EVD-PDF-acae2fc726584987",
-      "page": 36,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 53,
-      "inInstrument": false,
-      "characters": 2574,
+      "sourceSectionId": "EVD-PDF-c48feeafda06be2d",
+      "page": 96,
+      "citation": "PDF p.96 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "11.1.2R",
+        "11.1.2AG"
+      ],
+      "crossReferences": [
+        "CONC 11.1.1R"
+      ],
+      "characters": 1664,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
-        "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": false
+        "dutyLanguage": true,
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "36Authorised firms (not in the TPR) will need to start reporting DPC complaints using the currently applicable consumer credit return (CCR) complaints reporting form for complaints received about regulated DPC agreements from Regulation Day up to and including 31 December 2026. The timing of the first complaints reporting submission in this case will depend on the firm’s Accounting Reference Date "
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 35 of 46 (ii) treating any right conferred on the borrower by the agreement as terminated, restricted or deferred; or (iii) enforcing any security; (b) terminating a regulated deferred payment credit agreement. (3) If any of the actions mentioned in (2) are conditional on "
     },
     {
       "order": 17,
-      "sourceSectionId": "EVD-PDF-f135a27a85cb1afb",
-      "page": 14,
-      "printedPageLabel": null,
-      "sectionReference": "142.7",
-      "kind": "numbered_clause",
-      "score": 53,
-      "inInstrument": false,
-      "characters": 2480,
+      "sourceSectionId": "EVD-PDF-4b1523afa54ef310",
+      "page": 97,
+      "citation": "PDF p.97 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "16.1.1R",
+        "16.1.2G",
+        "16.1.3G",
+        "16.1.4R",
+        "16.1.5R"
+      ],
+      "crossReferences": [
+        "CONC 16.1.4R",
+        "CONC 16.1.5R"
+      ],
+      "characters": 2039,
       "truncated": false,
-      "provisionMarkers": [],
       "heuristicFlags": {
-        "dutyLanguage": false,
-        "applicabilityPermissionOrExemptionLanguage": false
+        "dutyLanguage": true,
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "We asked:Question 2: Do you agree that our proposed rules for provision of information before entering a DPC agreement are appropriate?Question 3: Do you think that reliance on the Duty could deliver our policy objectives for information provided before an agreement instead? If so, how?2.8 Stakeholders generally supported the need for consumers to be provided with appropriate and timely informatio"
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 36 of 46 16 Requirements for firms with deferred payment credit temporary permission 16.1 Application and purpose 16.1.1 R Subject to CONC 16.1.4R(2), this chapter applies to a firm with a deferred payment credit temporary permission. 16.1.2 G The purpose of these rules is"
     },
     {
       "order": 18,
-      "sourceSectionId": "EVD-PDF-db2f9fd2680781be",
-      "page": 27,
-      "printedPageLabel": null,
-      "sectionReference": null,
-      "kind": "paragraph",
-      "score": 50,
-      "inInstrument": false,
-      "characters": 2862,
+      "sourceSectionId": "EVD-PDF-3ef3ff17013a027c",
+      "page": 99,
+      "citation": "PDF p.99 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [],
+      "crossReferences": [],
+      "characters": 2385,
       "truncated": false,
-      "provisionMarkers": [
-        {
-          "reference": "PRIN 2A.2.3",
-          "marker": "G"
-        },
-        {
-          "reference": "PRIN 2A.2.10",
-          "marker": "G"
-        }
-      ],
       "heuristicFlags": {
         "dutyLanguage": true,
-        "applicabilityPermissionOrExemptionLanguage": true
+        "applicabilityOrExemptionLanguage": true
       },
-      "excerpt": "27 3.7 There was wide support for our proposals across stakeholders. 3.8 A DPC lender and a trade association called for us to provide as much clarity as possible on any changes to SM&CR, so that affected firms could prioritise resources on relevant parts of SM&CR. Another DPC lender recommended making sure that firms in the TPR should not benefit from prolonged exemptions. Also, that appropriate "
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 38 of 46 Statements of Principle and Code of Practice for Approved Persons (APER) For the purposes of determining the application of APER where a firm’s permission includes permission to carry on regulated activities granted by the FCA under Part 4A of the Act (as well as "
     }
   ]
 }

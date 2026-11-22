@@ -12,6 +12,7 @@ import {
   modelLabelsForFinding,
   policyEntry,
 } from '../classification/regulatory-classification-policy.mjs';
+import { PROVISION_FUNCTIONS } from '../classification/provision-eligibility.mjs';
 
 /** Legacy broad finding types, now derived from the regulatory classification code. */
 export const FINDING_CLASSIFICATIONS = [
@@ -129,7 +130,15 @@ export function buildFindingsView(run, citations, classification) {
         sections: sourceSectionIds
           .map((id) => sectionById.get(id))
           .filter(Boolean)
-          .map((s) => ({ sourceSectionId: s.sourceSectionId, pageNumber: s.pageNumber, citation: s.citation, excerpt: s.excerpt })),
+          .map((s) => ({
+            sourceSectionId: s.sourceSectionId,
+            pageNumber: s.pageNumber,
+            citation: s.citation,
+            excerpt: s.excerpt,
+            inLegalInstrument: s.inLegalInstrument === true,
+            transitionalProvisions: s.transitionalProvisions === true,
+            provisionsSetOut: Array.isArray(s.provisionsSetOut) ? s.provisionsSetOut : [],
+          })),
       };
       finding.modelLabels = modelLabelsForFinding(finding, candidates);
       return {
@@ -144,6 +153,7 @@ export function buildFindingsView(run, citations, classification) {
     evidence: {
       kind: grounding.kind || null,
       extractionRevisionId: grounding.extractionRevisionId || null,
+      selection: grounding.selection || null,
       obligationGradeSuitable: grounding.obligationGradeSuitable === true,
       pathway: grounding.obligationGradeSuitable === true ? 'production_grounded' : 'human_verified_uat',
     },
@@ -154,6 +164,7 @@ export function buildFindingsView(run, citations, classification) {
  * @returns {{ ok: true, decisions: any[] } | { ok: false, error: string }}
  */
 const DISPOSITION_VALUES = new Set(Object.values(DISPOSITIONS));
+const PROVISION_FUNCTION_VALUES = new Set(Object.values(PROVISION_FUNCTIONS));
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const optionalText = (v) => {
   const t = String(v ?? '').trim();
@@ -190,6 +201,11 @@ export function validateFindingDecisions(findings, decisions, context) {
     if (code && !CANONICAL_CLASSIFICATION_CODES[code]) return { ok: false, error: `finding_classification_unknown:${n}` };
     if (d.decision === 'ACCEPTED' && !code) return { ok: false, error: `finding_classification_code_required:${n}` };
     if (code && !policyEntry(policy, code)) return { ok: false, error: policy ? `finding_classification_unknown:${n}` : 'classification_policy_unavailable' };
+    const provisionFunction = optionalText(d.provisionFunction);
+    if (provisionFunction && !PROVISION_FUNCTION_VALUES.has(provisionFunction)) {
+      return { ok: false, error: `finding_provision_function_invalid:${n}` };
+    }
+    const provisionReference = optionalText(d.provisionReference)?.replace(/\s+/g, ' ') ?? null;
 
     const quotation = normaliseQuotation(d.quotation);
     const page = d.quotationPage == null || d.quotationPage === '' ? null : Number(d.quotationPage);
@@ -201,6 +217,8 @@ export function validateFindingDecisions(findings, decisions, context) {
       supportingObligationId: optionalText(d.supportingObligationId),
       supportingFindingId: optionalText(d.supportingFindingId),
       reclassificationEvidence: optionalText(d.reclassificationEvidence),
+      provisionReference,
+      provisionFunction,
     };
     const triage = evaluateFindingTriage({ policy, publicationType, finding, proposal: code ? proposal : null });
     const entry = {
@@ -213,10 +231,14 @@ export function validateFindingDecisions(findings, decisions, context) {
       triageQueue: triage.queue,
       exceptionReasons: triage.exceptionReasons,
       disposition: null,
+      provisionReference,
+      provisionFunction,
     };
 
     if (d.decision === 'ACCEPTED') {
-      const disposition = optionalText(d.disposition) ?? (policyEntry(policy, code)?.conversionEnabled ? DISPOSITIONS.CONVERT : DISPOSITIONS.SUPPORTING);
+      const disposition =
+        optionalText(d.disposition) ??
+        (policyEntry(policy, code)?.conversionEnabled && !triage.nonOperativeProvision ? DISPOSITIONS.CONVERT : DISPOSITIONS.SUPPORTING);
       if (!DISPOSITION_VALUES.has(disposition)) return { ok: false, error: `finding_disposition_invalid:${n}` };
       entry.disposition = disposition;
 

@@ -7,6 +7,11 @@
  * public.ri_submit_ai_finding_review and public.ri_guard_obligation_classification remain authoritative; this
  * module mirrors them for the API view, payload validation and tests.
  */
+import {
+  NON_OPERATIVE_PROVISION_FUNCTIONS,
+  evaluateProvisionEligibility,
+  parseProvisionReference,
+} from './provision-eligibility.mjs';
 
 export const TRIAGE_QUEUES = Object.freeze({
   OBLIGATION: 'OBLIGATION_TRIAGE',
@@ -257,7 +262,8 @@ export function evaluateFindingTriage({ policy, publicationType = null, finding,
   if (!e || e.code === 'UNKNOWN') return result(TRIAGE_QUEUES.EXCEPTION, ['unknown_classification'], e, false);
   if (!citationVerified) reasons.push('unverified_citation');
 
-  if (e.conversionEnabled) {
+  const nonOperative = e.conversionEnabled && NON_OPERATIVE_PROVISION_FUNCTIONS.includes(proposal.provisionFunction);
+  if (e.conversionEnabled && !nonOperative) {
     if (String(proposal.legalBasis ?? '').trim().length < 3) reasons.push('missing_legal_basis');
     if (String(proposal.quotation ?? '').trim().length < 20 || !Number.isInteger(proposal.quotationPage)) {
       reasons.push('insufficient_evidence');
@@ -269,9 +275,27 @@ export function evaluateFindingTriage({ policy, publicationType = null, finding,
     if (e.supportingObligationLinkRequired && !proposal.supportingObligationId && !proposal.supportingFindingId) {
       reasons.push('missing_binding_link');
     }
+    const core = parseProvisionReference(proposal.provisionReference)?.core ?? null;
+    const onPage = (finding?.sections || []).filter((s) => s.pageNumber === proposal.quotationPage);
+    const section =
+      onPage.find((s) => core && (s.provisionsSetOut || []).includes(core)) ||
+      onPage.find((s) => s.inLegalInstrument === true) ||
+      onPage[0] ||
+      null;
+    reasons.push(
+      ...evaluateProvisionEligibility({
+        code: e.code,
+        legalStatus: e.legalStatus,
+        provisionReference: proposal.provisionReference,
+        provisionFunction: proposal.provisionFunction,
+        quotation: proposal.quotation,
+        section,
+      }).reasons,
+    );
   }
 
   if (reasons.length) return result(TRIAGE_QUEUES.EXCEPTION, reasons, e, false);
+  if (nonOperative) return { ...result(TRIAGE_QUEUES.NON_OBLIGATION, [], e, false), nonOperativeProvision: true };
   if (e.conversionEnabled) return result(TRIAGE_QUEUES.OBLIGATION, [], e, false);
   return result(e.destinationQueue, [], e, false);
 }
@@ -297,12 +321,17 @@ const REASON_ERRORS = {
   binding_code_from_non_binding_source: 'finding_source_not_binding',
   missing_binding_link: 'finding_binding_link_required',
   policy_unavailable: 'classification_policy_unavailable',
+  provision_function_required: 'finding_provision_function_required',
+  provision_reference_required: 'finding_provision_reference_required',
+  provision_not_in_instrument: 'finding_provision_outside_instrument',
+  provision_not_set_out_in_section: 'finding_provision_not_in_cited_section',
+  provision_not_operative: 'finding_provision_not_operative',
 };
 
 /** Error code for a refused conversion, `<code>:<findingNumber>`. */
 export function conversionRefusal(evaluation, findingNumber) {
   if (evaluation.conversionEligible) return null;
-  const reason = evaluation.exceptionReasons[0];
+  const reason = evaluation.exceptionReasons[0] ?? (evaluation.nonOperativeProvision ? 'provision_not_operative' : null);
   const code = reason ? REASON_ERRORS[reason] : 'finding_conversion_not_permitted';
   return code === 'classification_policy_unavailable' ? code : `${code}:${findingNumber}`;
 }

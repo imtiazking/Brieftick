@@ -112,12 +112,13 @@ async function buildPublicationContext(
     const pdf = await buildPdfGroundedAnalysisContext({
       publicationId,
       publicationVersionId,
+      useCaseId,
     });
     if (!pdf.ok || !pdf.sourceSections?.length || !pdf.allowedSectionIds?.length) {
       throw new Error(pdf.code || 'pdf_grounding_unavailable');
     }
     return {
-      sourceSections: pdf.sourceSections.map((s) => ({
+      sourceSections: pdf.sourceSections.map((s: { sourceSectionId: string; citation: string; text: string }) => ({
         sourceSectionId: s.sourceSectionId,
         citation: s.citation,
         text: s.text,

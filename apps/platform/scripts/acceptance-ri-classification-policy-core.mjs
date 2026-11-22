@@ -70,8 +70,16 @@ check(tamper((p) => Object.assign(p.entries.find((e) => e.code === 'R'), { conve
 check(Object.values(CANONICAL_CLASSIFICATION_CODES).filter((c) => ['binding', 'evidential'].includes(c.legalStatus)).length === 7, 'only the 7 binding/evidential codes can ever convert');
 
 // 3. Triage routing.
-const verified = { citationStatus: 'VERIFIED', modelLabels: ['binding_requirement'] };
-const evidence = { legalBasis: 'COBS 2.1.1R', quotation: 'A firm must act honestly, fairly and professionally.', quotationPage: 3 };
+const instrumentPage3 = { pageNumber: 3, inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['2.1.1R', '2.1.2E'] };
+const verified = { citationStatus: 'VERIFIED', modelLabels: ['binding_requirement'], sections: [instrumentPage3] };
+const evidence = {
+  legalBasis: 'COBS 2.1.1R',
+  quotation: 'A firm must act honestly, fairly and professionally.',
+  quotationPage: 3,
+  provisionReference: 'COBS 2.1.1R',
+  provisionFunction: 'OPERATIVE_REQUIREMENT',
+};
+const eEvidence = { ...evidence, provisionReference: 'COBS 2.1.2E', provisionFunction: 'EVIDENTIAL_PROVISION' };
 const route = (finding, proposal, publicationType = 'policy_statement') => evaluateFindingTriage({ policy, publicationType, finding, proposal });
 
 let t = route(verified, { code: 'R', ...evidence });
@@ -93,9 +101,9 @@ t = route({ ...verified, modelLabels: ['binding_requirement', 'guidance'] }, { c
 check(t.queue === X && t.exceptionReasons.includes('conflicting_classifications'), 'model labels guidance while reviewer says R → Exception Triage (conflict)');
 t = route({ ...verified, modelLabels: ['guidance'] }, { code: 'R', ...evidence, reclassificationEvidence: 'COBS 2.1.1R is a rule in the Handbook, p.3' });
 check(t.queue === A && t.conversionEligible, 'documented evidence-based reclassification resolves the conflict');
-t = route(verified, { code: 'E', ...evidence });
+t = route(verified, { code: 'E', ...eEvidence });
 check(t.queue === X && t.exceptionReasons.includes('missing_binding_link'), 'E without a binding rule link → Exception Triage');
-t = route(verified, { code: 'E', ...evidence, supportingObligationId: '11111111-1111-4111-8111-111111111111' });
+t = route(verified, { code: 'E', ...eEvidence, supportingObligationId: '11111111-1111-4111-8111-111111111111' });
 check(t.queue === A && t.legalStatus === 'evidential', 'E linked to a binding obligation → Obligation Triage, still evidential');
 t = route(verified, { code: 'UK', ...evidence }, 'finalised_guidance');
 check(t.queue === X && t.exceptionReasons.includes('binding_code_from_non_binding_source'), 'binding code on a finding from finalised guidance → Exception Triage');
@@ -115,7 +123,11 @@ check(route({ citationStatus: 'VERIFIED', modelLabels: ['binding_requirement'] }
 t = route({ ...verified, modelConfidence: 100 }, { code: 'G', ...evidence, confidence: 100 });
 check(t.queue === B && !t.conversionEligible, 'confidence 100 does not make guidance convertible');
 check(conversionRefusal(route(verified, { code: 'G', ...evidence }), 4) === 'finding_conversion_not_permitted:4', 'refusal code for a NO classification');
-check(conversionRefusal(route(verified, { code: 'E', ...evidence }), 2) === 'finding_binding_link_required:2', 'refusal code for E without a link');
+check(conversionRefusal(route(verified, { code: 'E', ...eEvidence }), 2) === 'finding_binding_link_required:2', 'refusal code for E without a link');
+t = route(verified, { code: 'R', ...evidence, provisionFunction: 'APPLICATION' });
+check(t.queue === B && !t.conversionEligible && conversionRefusal(t, 1) === 'finding_provision_not_operative:1', 'R application provision → Non-Obligation Triage, conversion refused');
+t = route({ ...verified, sections: [{ pageNumber: 3, inLegalInstrument: false, provisionsSetOut: [] }] }, { code: 'R', ...evidence });
+check(t.queue === X && conversionRefusal(t, 1) === 'finding_provision_outside_instrument:1', 'R quoted from narrative text of a binding publication → Exception Triage');
 
 // 5. Model labels by shared source section (deterministic).
 const labels = modelLabelsForFinding({ sourceSectionIds: ['S14'] }, [
@@ -137,7 +149,9 @@ const run = {
       { bindingNature: 'guidance', sourceSectionIds: ['S2'], statement: 'b', sourceQuotation: 'q' },
     ],
     _forgeniqGrounding: { obligationGradeSuitable: true, extractionRevisionId: 'r', sectionCatalog: [
-      { sourceSectionId: 'S1', pageNumber: 3 }, { sourceSectionId: 'S2', pageNumber: 5 }, { sourceSectionId: 'S3', pageNumber: 7 },
+      { sourceSectionId: 'S1', pageNumber: 3, inLegalInstrument: true, provisionsSetOut: ['2.1.1R', '9.1.2E'] },
+      { sourceSectionId: 'S2', pageNumber: 5 },
+      { sourceSectionId: 'S3', pageNumber: 7 },
     ] },
   },
 };
@@ -153,9 +167,9 @@ check(view.findings[0].triage.queue === A && view.findings[1].triage.queue === B
 const d = (f, extra) => ({ findingId: f.findingId, claimTextSha256: sha256Hex(f.statement), comment: 'Checked against the source PDF.', ...extra });
 const [f1, f2, f3] = view.findings;
 const good = [
-  d(f1, { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', legalBasis: 'PRIN 2.1.1R', quotation: 'A firm must conduct its business with integrity.', quotationPage: 3 }),
+  d(f1, { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', legalBasis: 'PRIN 2.1.1R', quotation: 'A firm must conduct its business with integrity.', quotationPage: 3, provisionReference: 'PRIN 2.1.1R', provisionFunction: 'OPERATIVE_REQUIREMENT' }),
   d(f2, { decision: 'ACCEPTED', regulatoryClassificationCode: 'GP', disposition: DISPOSITIONS.HORIZON }),
-  d(f3, { decision: 'ACCEPTED', regulatoryClassificationCode: 'E', legalBasis: 'SYSC 9.1.1R', quotation: 'A firm must arrange for orderly records to be kept.', quotationPage: 3, supportingFindingId: 'f-1' }),
+  d(f3, { decision: 'ACCEPTED', regulatoryClassificationCode: 'E', legalBasis: 'SYSC 9.1.1R', quotation: 'A firm must arrange for orderly records to be kept.', quotationPage: 3, supportingFindingId: 'f-1', provisionReference: 'SYSC 9.1.2E', provisionFunction: 'EVIDENTIAL_PROVISION' }),
 ];
 let v = validateFindingDecisions(view.findings, good, ctx);
 check(v.ok && v.decisions[0].createsObligation && !v.decisions[1].createsObligation && v.decisions[2].createsObligation && v.decisions[2].legalStatus === 'evidential', 'R and linked E convert; good practice referred to horizon scanning', v);
@@ -169,7 +183,7 @@ guidanceConvert[1] = d(f2, { decision: 'ACCEPTED', regulatoryClassificationCode:
 v = validateFindingDecisions(view.findings, guidanceConvert, ctx);
 check(!v.ok && v.error === 'finding_conversion_not_permitted:2', 'guidance on binding requirements cannot be converted (explicit convert refused)', v);
 const archiveInA = clone(good);
-archiveInA[0] = d(f1, { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', disposition: DISPOSITIONS.ARCHIVE, legalBasis: 'PRIN 2.1.1R', quotation: 'A firm must conduct its business with integrity.', quotationPage: 3 });
+archiveInA[0] = d(f1, { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', disposition: DISPOSITIONS.ARCHIVE, legalBasis: 'PRIN 2.1.1R', quotation: 'A firm must conduct its business with integrity.', quotationPage: 3, provisionReference: 'PRIN 2.1.1R', provisionFunction: 'OPERATIVE_REQUIREMENT' });
 v = validateFindingDecisions(view.findings, archiveInA, ctx);
 check(!v.ok && v.error === 'finding_disposition_not_allowed:1', 'Queue A finding cannot be silently archived', v);
 const linkNoId = clone(good);

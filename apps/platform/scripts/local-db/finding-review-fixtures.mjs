@@ -41,6 +41,18 @@ export const CATALOG = [
   { sourceSectionId: 'S16', pageNumber: 16, citation: 'PDF p.16', excerpt: 'Charges and interest' },
 ];
 
+/** TEST DATA: the same sections recorded as legal-instrument pages that set out synthetic provisions. */
+export const INSTRUMENT_CATALOG = CATALOG.map((s) => ({
+  ...s,
+  inLegalInstrument: s.pageNumber >= 9,
+  transitionalProvisions: false,
+  provisionsSetOut: { 9: ['15.2.3R'], 14: ['15.2.1UK'], 16: ['15.2.3R'] }[s.pageNumber] ?? [],
+}));
+export const INSTRUMENT_PROVISIONS = {
+  1: { provisionReference: 'PERG 15.2.1 UK', provisionFunction: 'OPERATIVE_REQUIREMENT' },
+  3: { provisionReference: 'PERG 15.2.3R', provisionFunction: 'OPERATIVE_REQUIREMENT' },
+};
+
 /** Page text as the PDF extraction stores it (line breaks and typographic apostrophes). */
 export const PAGE_TEXT = {
   14: `Financial Conduct Authority Page 14 of 17 3.12 The delay must not be longer than necessary to achieve this purpose. In our view, this means that a PSP must execute a payment order as soon as it has contacted the payer or other relevant third parties and established that it should execute the payment order, rather than pursuing a policy of waiting until the end of the fourth business day to do so.\n3.13 A PSP that delays crediting the amount of a payment transaction under these provisions must notify the payer of the delay, the reason for the delay, and any information or action needed from the payer to enable the PSP to decide whether to execute the order. This notification must be provided or made available in an agreed manner as soon as possible.`,
@@ -89,11 +101,11 @@ export async function seedFindingReviewFixtures(db) {
     )
   ).rows[0].id;
 
-  const insertRun = async (key, gradeSuitable) => {
+  const insertRun = async (key, gradeSuitable, catalog = CATALOG) => {
     const output = {
       claims: FINDINGS.map((f) => ({ text: f.text, confidence: 90, sourceSectionIds: f.sections })),
       candidates: CANDIDATES,
-      _forgeniqGrounding: { kind: 'pdf_primary_v1', extractionRevisionId: REVISION, obligationGradeSuitable: gradeSuitable, sectionCatalog: CATALOG },
+      _forgeniqGrounding: { kind: 'pdf_primary_v1', extractionRevisionId: REVISION, obligationGradeSuitable: gradeSuitable, sectionCatalog: catalog },
     };
     const runId = (
       await db.query(

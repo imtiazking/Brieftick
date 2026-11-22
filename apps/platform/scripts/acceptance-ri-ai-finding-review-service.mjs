@@ -85,8 +85,9 @@ try {
   await db.query(`grant all on all tables in schema public to anon, authenticated; grant authenticated to forgeniq_app;`);
   await harness.applyReferenceSeed(db);
   const { insertRun } = await fx.seedFindingReviewFixtures(db);
-  const run1 = await insertRun('svc-1', false);
-  const run2 = await insertRun('svc-2', false);
+  const run1 = await insertRun('svc-1', false, fx.INSTRUMENT_CATALOG);
+  const run2 = await insertRun('svc-2', false, fx.INSTRUMENT_CATALOG);
+  const narrativeRun = await insertRun('svc-narrative', false);
 
   globalThis.__adminClient = createPgSupabaseClient(adminUrl);
   globalThis.__pdfEvidence = {
@@ -155,7 +156,7 @@ try {
         3: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', legalBasis: 'PSRs 2017 reg. 86(2D)', quotation: fx.QUOTES.liability, quotationPage: 16 },
         4: { decision: 'ACCEPTED', regulatoryClassificationCode: 'EXEMPT', disposition: 'ARCHIVE' },
       };
-      return { ...base, ...byIndex[i], ...(overrides[i] ?? {}) };
+      return { ...base, ...byIndex[i], ...(fx.INSTRUMENT_PROVISIONS[i] ?? {}), ...(overrides[i] ?? {}) };
     });
   const params = (userId, runId, list) => ({ organisationId: fx.PILOT, userId, role: 'COMPLIANCE_MANAGER', runId, decisions: list });
 
@@ -178,6 +179,8 @@ try {
   check(fabricated?.message === 'finding_quotation_not_found_on_page:2', 'quotation not on the cited PDF page refused', fabricated);
   const wrongPage = await errorOf(() => submitFindingReview(yahoo, params(fx.YAHOO, run1.runId, decisions(run1, { 3: { quotationPage: 9 } }))));
   check(wrongPage?.message === 'finding_quotation_not_found_on_page:4', 'genuine quotation attributed to the wrong cited page refused', wrongPage);
+  const narrative = await errorOf(() => submitFindingReview(yahoo, params(fx.YAHOO, narrativeRun.runId, decisions(narrativeRun))));
+  check(narrative?.message === 'finding_provision_outside_instrument:2', 'same decisions on narrative (non-instrument) pages of a binding publication refused', narrative);
   const c0 = await counts(run1.runId);
   check(c0.reviews === 0 && c0.obligations === 0 && c0.verifications === 0 && c0.status === 'HUMAN_REVIEW_REQUIRED', 'refused submissions persisted nothing', c0);
 

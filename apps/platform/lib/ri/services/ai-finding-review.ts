@@ -47,6 +47,8 @@ export type FindingDecisionInput = {
   supportingObligationId?: string | null;
   supportingFindingId?: string | null;
   reclassificationEvidence?: string | null;
+  provisionReference?: string | null;
+  provisionFunction?: string | null;
   comment: string;
 };
 
@@ -74,7 +76,7 @@ export async function getFindingReview(supabase: SupabaseClient, organisationId:
   const { data: decisions, error } = await supabase
     .from('ai_analysis_finding_decisions')
     .select(
-      'finding_id, claim_index, decision, classification, regulatory_classification_code, legal_status, triage_queue, exception_reasons, disposition, linked_obligation_id, legal_basis, verified_quotation, quotation_page, reviewer_comment, evidence_pathway, obligation_id, skip_reason, reviewer_user_id, created_at',
+      'finding_id, claim_index, decision, classification, regulatory_classification_code, legal_status, triage_queue, exception_reasons, disposition, linked_obligation_id, provision_reference, provision_function, legal_basis, verified_quotation, quotation_page, reviewer_comment, evidence_pathway, obligation_id, skip_reason, reviewer_user_id, created_at',
     )
     .eq('analysis_run_id', runId)
     .eq('organisation_id', organisationId)
@@ -235,6 +237,8 @@ export async function submitFindingReview(
       supportingObligationId: d.supportingObligationId ?? null,
       supportingFindingId: d.supportingFindingId ?? null,
       reclassificationEvidence: d.reclassificationEvidence ?? null,
+      provisionReference: d.provisionReference ?? null,
+      provisionFunction: d.provisionFunction ?? null,
       comment: d.comment,
     })),
     p_notes: params.notes ?? null,
