@@ -150,10 +150,18 @@ try {
           // As copied from a PDF viewer, with a line break mid-sentence.
           quotation: fx.QUOTES.notify.replace('the reason for the delay,', 'the reason for\nthe delay,'),
           quotationPage: 14,
+          obligationStatement: fx.QUOTES.notify.replace('the reason for the delay,', 'the reason for the delay,'),
           reclassificationEvidence: 'Restates PSRs 2017 reg. 86(2C) verbatim; the statutory duty binds independently of FG24/6.',
         },
         2: { decision: 'ACCEPTED', regulatoryClassificationCode: 'GBR', disposition: 'SUPPORTING_INFORMATION' },
-        3: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', legalBasis: 'PSRs 2017 reg. 86(2D)', quotation: fx.QUOTES.liability, quotationPage: 16 },
+        3: {
+          decision: 'ACCEPTED',
+          regulatoryClassificationCode: 'R',
+          legalBasis: 'PSRs 2017 reg. 86(2D)',
+          quotation: fx.QUOTES.liability,
+          quotationPage: 16,
+          obligationStatement: fx.QUOTES.liability,
+        },
         4: { decision: 'ACCEPTED', regulatoryClassificationCode: 'EXEMPT', disposition: 'ARCHIVE' },
       };
       return { ...base, ...byIndex[i], ...(fx.INSTRUMENT_PROVISIONS[i] ?? {}), ...(overrides[i] ?? {}) };
@@ -174,7 +182,15 @@ try {
   const incomplete = await errorOf(() => submitFindingReview(yahoo, params(fx.YAHOO, run1.runId, decisions(run1).slice(1))));
   check(incomplete?.name === 'RiValidationError' && incomplete.message === 'finding_decisions_incomplete', 'every finding needs a decision', incomplete);
   const fabricated = await errorOf(() =>
-    submitFindingReview(yahoo, params(fx.YAHOO, run1.runId, decisions(run1, { 1: { quotation: 'A PSP must notify the payer of the delay within one hour of receipt.' } }))),
+    submitFindingReview(
+      yahoo,
+      params(fx.YAHOO, run1.runId, decisions(run1, {
+        1: {
+          quotation: 'A PSP must notify the payer of the delay within one hour of receipt.',
+          obligationStatement: 'A PSP must notify the payer of the delay within one hour of receipt.',
+        },
+      })),
+    ),
   );
   check(fabricated?.message === 'finding_quotation_not_found_on_page:2', 'quotation not on the cited PDF page refused', fabricated);
   const wrongPage = await errorOf(() => submitFindingReview(yahoo, params(fx.YAHOO, run1.runId, decisions(run1, { 3: { quotationPage: 9 } }))));
@@ -191,7 +207,7 @@ try {
   check(
     obls.length === 2 &&
       obls[0].metadata.sourceQuotation === fx.QUOTES.notify &&
-      obls[0].s === fx.FINDINGS[1].text &&
+      obls[0].s === fx.QUOTES.notify.replace('the reason for the delay,', 'the reason for the delay,') &&
       obls[0].metadata.regulatoryClassificationCode === 'UK' &&
       obls[1].metadata.regulatoryClassificationCode === 'R' &&
       obls[1].citation === 'PDF p.16' &&

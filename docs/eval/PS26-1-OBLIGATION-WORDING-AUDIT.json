@@ -1,0 +1,41 @@
+{
+  "title": "PS26/1 OPEN obligation wording accuracy audit",
+  "runId": "c8cb095e-2d07-4236-970c-02db88592341",
+  "auditedAt": "2026-11-22",
+  "remediatedAt": "2026-11-22T11:48:49Z",
+  "method": "obligationStatementGroundedInQuotations; staging SQL reconciliation post controlled amendment",
+  "functionalUat": "PASSED",
+  "regulatoryAccuracySignOff": "PARTIAL — four OPEN obligations grounded; CONC 7.20.1R(2) still not in register",
+  "obligations": [
+    {
+      "id": "63b84f23-9b4f-424a-96c9-f33eb3192779",
+      "provision": "CONC 7.20.3R",
+      "grounded": true,
+      "workflowEventsAfterRemediation": 7,
+      "remediation": "C→DRAFT; A corrected statement to verified quote; A→IN_REVIEW; C→OPEN"
+    },
+    {
+      "id": "a0a7e64d-0cb4-406f-9ca4-484c91db348e",
+      "provision": "CONC 4.2A.3R",
+      "grounded": true,
+      "workflowEventsAfterRemediation": 8
+    },
+    {
+      "id": "fdcf8241-608e-467d-a8f8-12a52c75b852",
+      "provision": "CONC 4.2A.6R",
+      "grounded": true,
+      "workflowEventsAfterRemediation": 8
+    },
+    {
+      "id": "db123fac-c36c-4c0d-bb9e-54174ac15aa3",
+      "provision": "CONC 4.2A.7R",
+      "grounded": true,
+      "workflowEventsAfterRemediation": 8
+    }
+  ],
+  "notInRegister": {
+    "provision": "CONC 7.20.1R(2)",
+    "reason": "PS26/1 run c8cb095e stored without provisionPageIndex; finding 1 held in Exception Triage. Deterministic cross-page quote verification passes; conversion requires re-review or new extraction."
+  },
+  "evidence": ["docs/eval/PS26-1-REMEDIATION-EVIDENCE.json", "docs/eval/STAGING-P2-REGRESSION-2026-11-22.json"]
+}

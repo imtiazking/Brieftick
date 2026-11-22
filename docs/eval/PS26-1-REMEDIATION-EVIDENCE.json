@@ -1,0 +1,117 @@
+{
+  "remediatedAt": "2026-11-22T11:48:49.114Z",
+  "obligations": [
+    {
+      "id": "63b84f23-9b4f-424a-96c9-f33eb3192779",
+      "steps": [
+        {
+          "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "action": "status_draft",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "action": "correct_statement",
+          "note": "Narrowed to verified 7.20.3R(1) quotation on p.95; debt-advice element from 7.20.3R(4) not asserted without p.96 evidence.",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "action": "submit_in_review",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "action": "approve_open",
+          "toast": "Obligation approved into register"
+        }
+      ],
+      "finalStatement": "(1) Before a firm takes any of the actions specified in (2), it must give the bo",
+      "finalStatus": "OPEN"
+    },
+    {
+      "id": "a0a7e64d-0cb4-406f-9ca4-484c91db348e",
+      "steps": [
+        {
+          "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "action": "status_draft",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "action": "correct_statement",
+          "note": "Statement matches verified 4.2A.3R(1) quotation only.",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "action": "submit_in_review",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "action": "approve_open",
+          "toast": "Obligation approved into register"
+        }
+      ],
+      "finalStatement": "(1) Before making an agreement, the firm must: (a) give to the customer the info",
+      "finalStatus": "OPEN"
+    },
+    {
+      "id": "fdcf8241-608e-467d-a8f8-12a52c75b852",
+      "steps": [
+        {
+          "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "action": "status_draft",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "action": "correct_statement",
+          "note": "Matches verified 4.2A.6R(1) quotation.",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "action": "submit_in_review",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "action": "approve_open",
+          "toast": "Obligation approved into register"
+        }
+      ],
+      "finalStatement": "(1) Immediately after an agreement has been made, the firm must give, or make av",
+      "finalStatus": "OPEN"
+    },
+    {
+      "id": "db123fac-c36c-4c0d-bb9e-54174ac15aa3",
+      "steps": [
+        {
+          "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "action": "status_draft",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "action": "correct_statement",
+          "note": "Matches verified 4.2A.7R(2) quotation.",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "action": "submit_in_review",
+          "toast": "Obligation saved"
+        },
+        {
+          "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "action": "approve_open",
+          "toast": "Obligation approved into register"
+        }
+      ],
+      "finalStatement": "(2) The firm must, before making the agreement, provide the guarantor with the i",
+      "finalStatus": "OPEN"
+    }
+  ]
+}

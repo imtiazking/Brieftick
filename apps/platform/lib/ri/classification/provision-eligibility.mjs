@@ -127,6 +127,41 @@ export function provisionsSetOutIn(text) {
   return [...new Set(provisionMarkersInText(text).filter((p) => p.setOut).map((p) => p.core))];
 }
 
+/**
+ * Maps each provision core to every instrument page that sets it out, including numbered sub-paragraphs that
+ * continue on the following page without repeating the provision reference (RI-CLS-009).
+ * @param {Array<{ pageNumber: number, extractedText?: string }>} blocks
+ * @param {number | null} instrumentStartPage
+ * @returns {Map<string, { pages: Set<number>, status: Record<number, string> }>}
+ */
+export function buildProvisionPagesIndex(blocks, instrumentStartPage) {
+  const provisionPages = new Map();
+  const note = (core, page, status) => {
+    if (!core) return;
+    if (!provisionPages.has(core)) provisionPages.set(core, { pages: new Set(), status: {} });
+    provisionPages.get(core).pages.add(page);
+    if (status) provisionPages.get(core).status[page] = status;
+  };
+  if (!Number.isInteger(instrumentStartPage)) return provisionPages;
+  const textStatus = analyseInstrumentProvisionText(blocks, instrumentStartPage);
+  const pages = (blocks || [])
+    .filter((b) => Number.isInteger(b?.pageNumber) && b.pageNumber >= instrumentStartPage)
+    .sort((a, b) => a.pageNumber - b.pageNumber);
+  let carryCore = null;
+  for (const b of pages) {
+    const text = String(b.extractedText ?? '');
+    const setOut = provisionMarkersInText(text).filter((p) => p.setOut);
+    if (setOut.length) carryCore = setOut[setOut.length - 1].core;
+    for (const p of setOut) note(p.core, b.pageNumber, textStatus.get(b.documentEvidenceId)?.[p.core]);
+    const continued =
+      carryCore &&
+      !setOut.length &&
+      (hasDutyLanguage(text) || /^\(\d+\)/.test(text.trim()) || /^[A-Z]?\(\d+\)/.test(text.trim()));
+    if (continued) note(carryCore, b.pageNumber, textStatus.get(b.documentEvidenceId)?.[carryCore]);
+  }
+  return provisionPages;
+}
+
 export function hasDutyLanguage(text) {
   return DUTY_RE.test(String(text ?? ''));
 }

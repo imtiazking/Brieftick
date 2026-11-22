@@ -651,10 +651,27 @@ function findingDetailHasLineage(cached) {
   );
 }
 
+function listRowUpdatedAt(cat, detailsKey, id) {
+  if (detailsKey === 'obligationDetailsById') {
+    return (
+      cat.obligations?.find((o) => o.id === id)?.updatedAt ||
+      cat.authorisedUatObligations?.find((o) => o.id === id)?.updatedAt ||
+      null
+    );
+  }
+  return null;
+}
+
 function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
   const cat = initConnectedCatalogueState(state);
   const cached = cat[detailsKey]?.[id];
+  const alwaysRevalidate = detailsKey === 'obligationDetailsById';
   if (cached) {
+    const listUpdated = listRowUpdatedAt(cat, detailsKey, id);
+    if (alwaysRevalidate || (listUpdated && cached.updatedAt && listUpdated > cached.updatedAt)) {
+      fetcher(state, id).catch(() => null);
+      return Promise.resolve(cached);
+    }
     const needsHydration =
       detailsKey === 'evidenceDetailsById' ||
       detailsKey === 'findingDetailsById' ||
@@ -663,7 +680,10 @@ function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
     if (needsHydration && detailsKey === 'findingDetailsById' && cached._detailHydrated === true) {
       if (!findingDetailHasLineage(cached)) hydrated = false;
     }
-    if (hydrated) return Promise.resolve(cached);
+    if (hydrated) {
+      if (alwaysRevalidate) fetcher(state, id).catch(() => null);
+      return Promise.resolve(cached);
+    }
   }
   cat._detailInflight = cat._detailInflight || {};
   const token = `${detailsKey}:${id}`;

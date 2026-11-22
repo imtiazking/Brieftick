@@ -1,0 +1,20 @@
+{
+  "title": "PS22/9 — R / E / G preflight (read-only, no extraction)",
+  "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+  "publicationTitle": "PS22/9: A new Consumer Duty",
+  "publicationType": "policy_statement",
+  "sourcedAt": "2026-11-22",
+  "method": "Backlog RI-CLS-004 instrument scan (no paid AI); staging publication catalogue query",
+  "suitabilityForUat": {
+    "bindingRules": true,
+    "evidentialProvisions": true,
+    "guidanceProvisions": true,
+    "recommendedForPositiveE": "PRIN 2A.4.35E (p.126) with binding PRIN 2A rules in same instrument",
+    "alternateE": "PRIN 2A.3.30E (p.119)"
+  },
+  "outstandingBeforeExtraction": [
+    "Confirm PDF ingestion / extraction revision exists on staging for PS22/9",
+    "Authorised paid extraction (≤2 remaining budget) only after CLS-005 negative paths on staging"
+  ],
+  "failClosedRegulatorsVerified": ["REG-FRC", "REG-ICO", "REG-PSR", "REG-PRA"]
+}

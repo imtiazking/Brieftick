@@ -168,6 +168,19 @@ export async function createConnectedObligation(state, payload) {
   return body.obligation;
 }
 
+const OBLIGATION_ERROR_MESSAGES = {
+  forbidden: 'This action is not permitted.',
+  segregation_of_duties:
+    'Segregation of duties: the approver must not be the person who created the obligation, submitted it for review, accepted the AI output, or requested the AI run. Ask an independent reviewer.',
+  insufficient_role: 'Your role cannot perform this obligation action.',
+};
+
+function formatObligationError(body) {
+  if (body?.message) return body.message;
+  const reason = body?.reason || body?.error;
+  return OBLIGATION_ERROR_MESSAGES[reason] || reason || 'obligation_update_failed';
+}
+
 export async function patchConnectedObligation(state, obligationId, fields, expectedUpdatedAt = null) {
   const base = apiBase(state);
   const res = await fetch(`${base}/obligations/${encodeURIComponent(obligationId)}`, {
@@ -177,9 +190,10 @@ export async function patchConnectedObligation(state, obligationId, fields, expe
     body: JSON.stringify({ ...fields, expectedUpdatedAt }),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.ok) throw new Error(body.error || 'obligation_update_failed');
+  if (!res.ok || !body.ok) throw new Error(formatObligationError(body));
   const cat = initConnectedCatalogueState(state);
   if (body.obligation) mergeObligation(cat, body.obligation);
+  await refreshConnectedEntityWorkflowEvents(state, 'regulatory_obligation', obligationId);
   await refreshConnectedWorkflowEvents(state);
   savePersistedJson(STORAGE_KEY_V2, persistableLabState(state));
   notify();

@@ -12,7 +12,7 @@ import {
   modelLabelsForFinding,
   policyEntry,
 } from '../classification/regulatory-classification-policy.mjs';
-import { PROVISION_FUNCTIONS } from '../classification/provision-eligibility.mjs';
+import { PROVISION_FUNCTIONS, parseProvisionReference } from '../classification/provision-eligibility.mjs';
 
 /** Legacy broad finding types, now derived from the regulatory classification code. */
 export const FINDING_CLASSIFICATIONS = [
@@ -32,6 +32,14 @@ export const OBLIGATION_CLASSIFICATIONS = new Set(
 
 export const MIN_QUOTATION_LENGTH = 20;
 export const MIN_UAT_JUSTIFICATION_LENGTH = 20;
+export const MIN_OBLIGATION_STATEMENT_LENGTH = 10;
+
+const STOPWORDS = new Set([
+  'about', 'after', 'also', 'and', 'any', 'are', 'been', 'before', 'being', 'both', 'but', 'can', 'could',
+  'each', 'for', 'from', 'has', 'have', 'into', 'its', 'may', 'not', 'only', 'other', 'shall', 'should',
+  'such', 'than', 'that', 'the', 'their', 'them', 'then', 'there', 'these', 'they', 'this', 'those', 'through',
+  'under', 'upon', 'were', 'when', 'where', 'which', 'while', 'will', 'with', 'within', 'would',
+]);
 
 export function sha256Hex(text) {
   return createHash('sha256').update(String(text), 'utf8').digest('hex');
@@ -53,6 +61,50 @@ export function quotationOccursOnPage(quotation, pageText) {
   const q = normaliseQuotation(quotation);
   if (q.length < MIN_QUOTATION_LENGTH) return false;
   return normaliseQuotation(pageText).includes(q);
+}
+
+function substantiveTokens(text) {
+  return [...tokens(text)].filter((t) => !STOPWORDS.has(t));
+}
+
+/**
+ * @param {string} statement
+ * @param {string[]} quotations normalized raw quotation strings
+ */
+export function obligationStatementGroundedInQuotations(statement, quotations) {
+  const stmt = normaliseQuotation(statement);
+  if (stmt.length < MIN_OBLIGATION_STATEMENT_LENGTH) return { ok: false, error: 'obligation_statement_required' };
+  const union = normaliseQuotation(quotations.filter(Boolean).join(' '));
+  if (union.length < MIN_QUOTATION_LENGTH) return { ok: false, error: 'finding_quotation_required' };
+  const stmtTokens = substantiveTokens(stmt);
+  if (!stmtTokens.length) return { ok: false, error: 'obligation_statement_unsupported' };
+  const unionTokens = tokens(union);
+  const unsupported = stmtTokens.filter((t) => !unionTokens.has(t));
+  const ratio = unsupported.length / stmtTokens.length;
+  if (ratio > 0.15) return { ok: false, error: 'obligation_statement_exceeds_evidence' };
+  const dutyRe = /\b(must|shall|required|prohibited|ensure|take reasonable steps)\b/i;
+  if (dutyRe.test(stmt) && !dutyRe.test(union)) return { ok: false, error: 'obligation_statement_duty_not_in_quotation' };
+  return { ok: true };
+}
+
+/**
+ * Verifies a quotation on one cited page or across two consecutive cited pages (RI-CLS-009).
+ * @param {number[]} citedPages sorted
+ */
+export function quotationVerifiableOnPages(quotation, pageTextByNumber, citedPages) {
+  const pages = [...new Set(citedPages.filter((p) => Number.isInteger(p)))].sort((a, b) => a - b);
+  for (const p of pages) {
+    if (quotationOccursOnPage(quotation, pageTextByNumber.get(p) || '')) return { ok: true, quotationPage: p };
+  }
+  for (let i = 0; i < pages.length - 1; i++) {
+    const a = pages[i];
+    const b = pages[i + 1];
+    if (b !== a + 1) continue;
+    const combined = normaliseQuotation(`${pageTextByNumber.get(a) || ''} ${pageTextByNumber.get(b) || ''}`);
+    const q = normaliseQuotation(quotation);
+    if (q.length >= MIN_QUOTATION_LENGTH && combined.includes(q)) return { ok: true, quotationPage: a, spansPages: [a, b] };
+  }
+  return { ok: false };
 }
 
 function tokens(text) {
@@ -109,6 +161,8 @@ export function buildFindingsView(run, citations, classification) {
   const claims = Array.isArray(output.claims) ? output.claims : [];
   const candidates = Array.isArray(output.candidates) ? output.candidates : [];
   const sectionById = new Map(catalog.map((s) => [s.sourceSectionId, s]));
+  const provisionPageIndex =
+    grounding.provisionPageIndex && typeof grounding.provisionPageIndex === 'object' ? grounding.provisionPageIndex : {};
 
   const findings = [...citations]
     .sort((a, b) => a.claim_index - b.claim_index)
@@ -145,10 +199,15 @@ export function buildFindingsView(run, citations, classification) {
           })),
       };
       finding.modelLabels = modelLabelsForFinding(finding, candidates);
+      finding.regulatorySourceExcerpt = sourceSectionIds
+        .map((id) => sectionById.get(id))
+        .filter(Boolean)
+        .map((s) => ({ pageNumber: s.pageNumber, excerpt: String(s.text || s.excerpt || '').slice(0, 1200) }));
       return {
         ...finding,
         suggestion: suggestCandidateForFinding(finding, candidates),
         triage: evaluateFindingTriage({ policy, publicationType, finding }),
+        provisionPageIndex,
       };
     });
 
@@ -212,7 +271,16 @@ export function validateFindingDecisions(findings, decisions, context) {
     const provisionReference = optionalText(d.provisionReference)?.replace(/\s+/g, ' ') ?? null;
 
     const quotation = normaliseQuotation(d.quotation);
+    const supplementary = Array.isArray(d.supplementaryQuotations)
+      ? d.supplementaryQuotations
+          .map((q) => ({
+            quotation: normaliseQuotation(q?.quotation),
+            quotationPage: q?.quotationPage == null ? null : Number(q.quotationPage),
+          }))
+          .filter((q) => q.quotation.length >= MIN_QUOTATION_LENGTH && Number.isInteger(q.quotationPage))
+      : [];
     const page = d.quotationPage == null || d.quotationPage === '' ? null : Number(d.quotationPage);
+    const obligationStatement = optionalText(d.obligationStatement);
     const proposal = {
       code,
       legalBasis: optionalText(d.legalBasis),
@@ -249,7 +317,22 @@ export function validateFindingDecisions(findings, decisions, context) {
       if (disposition === DISPOSITIONS.CONVERT) {
         const refusal = conversionRefusal(triage, n);
         if (refusal) return { ok: false, error: refusal };
-        if (!finding.pages.includes(proposal.quotationPage)) return { ok: false, error: `finding_quotation_page_not_cited:${n}` };
+        const allowedPages = new Set(finding.pages);
+        const core = parseProvisionReference(provisionReference || '')?.core;
+        if (core && finding.provisionPageIndex?.[core]) {
+          for (const p of finding.provisionPageIndex[core]) allowedPages.add(p);
+        }
+        for (const sq of supplementary) allowedPages.add(sq.quotationPage);
+        if (!allowedPages.has(proposal.quotationPage)) return { ok: false, error: `finding_quotation_page_not_cited:${n}` };
+        for (const sq of supplementary) {
+          if (!allowedPages.has(sq.quotationPage)) return { ok: false, error: `finding_quotation_page_not_cited:${n}` };
+        }
+        const statement = obligationStatement || finding.statement;
+        const grounded = obligationStatementGroundedInQuotations(statement, [
+          proposal.quotation,
+          ...supplementary.map((q) => q.quotation),
+        ]);
+        if (!grounded.ok) return { ok: false, error: `${grounded.error}:${n}` };
         if (pathway === 'human_verified_uat' && comment.length < MIN_UAT_JUSTIFICATION_LENGTH) {
           return { ok: false, error: `finding_justification_required:${n}` };
         }
@@ -260,6 +343,8 @@ export function validateFindingDecisions(findings, decisions, context) {
           legalBasis: proposal.legalBasis,
           quotation: proposal.quotation,
           quotationPage: proposal.quotationPage,
+          supplementaryQuotations: supplementary,
+          obligationStatement: statement,
           legalStatus: triage.legalStatus,
           supportingObligationId: proposal.supportingObligationId,
           supportingFindingId: proposal.supportingFindingId,

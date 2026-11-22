@@ -13,6 +13,7 @@ import {
   buildFindingsView,
   normaliseQuotation,
   quotationOccursOnPage,
+  quotationVerifiableOnPages,
   sha256Hex,
   validateFindingDecisions,
 } from '@/lib/ri/ai/finding-review-core.mjs';
@@ -49,6 +50,8 @@ export type FindingDecisionInput = {
   reclassificationEvidence?: string | null;
   provisionReference?: string | null;
   provisionFunction?: string | null;
+  obligationStatement?: string | null;
+  supplementaryQuotations?: Array<{ quotation: string; quotationPage: number }> | null;
   comment: string;
 };
 
@@ -189,6 +192,7 @@ export async function submitFindingReview(
   }
 
   const toMaterialise = validated.decisions.filter((d: { createsObligation?: boolean }) => d.createsObligation);
+  const insertedVerificationIds: string[] = [];
   if (toMaterialise.length > 0) {
     assertHumanReviewedDraftMaterialisation({
       action: HUMAN_REVIEWED_DRAFT_MATERIALISATION,
@@ -200,10 +204,18 @@ export async function submitFindingReview(
     const numberById = new Map<string, number>(
       view.findings.map((f: { findingId: string; number: number }) => [f.findingId, f.number]),
     );
-    const rows = [];
+    const findingById = new Map(view.findings.map((f: { findingId: string; pages: number[] }) => [f.findingId, f.pages]));
+    const rows: Array<Record<string, unknown>> = [];
     for (const d of toMaterialise) {
-      const pageText = pages.get(d.quotationPage);
-      if (!pageText || !quotationOccursOnPage(d.quotation, pageText)) {
+      const citedPages = findingById.get(d.findingId) ?? [];
+      const verified = quotationVerifiableOnPages(d.quotation, pages, citedPages);
+      if (!verified.ok) {
+        throw new RiValidationError(`finding_quotation_not_found_on_page:${numberById.get(d.findingId)}`);
+      }
+      const quotationPage = d.quotationPage ?? verified.quotationPage;
+      const pageText = pages.get(quotationPage);
+      if (!pageText) throw new RiValidationError(`finding_quotation_not_found_on_page:${numberById.get(d.findingId)}`);
+      if (!quotationOccursOnPage(d.quotation, pageText) && !verified.spansPages) {
         throw new RiValidationError(`finding_quotation_not_found_on_page:${numberById.get(d.findingId)}`);
       }
       rows.push({
@@ -211,14 +223,31 @@ export async function submitFindingReview(
         analysis_run_id: params.runId,
         finding_id: d.findingId,
         extraction_revision_id: view.evidence.extractionRevisionId,
-        page_number: d.quotationPage,
+        page_number: quotationPage,
         quotation_sha256: sha256Hex(normaliseQuotation(d.quotation)),
         page_text_sha256: sha256Hex(pageText),
         verified_for_user_id: params.userId,
       });
+      for (const sq of (d as { supplementaryQuotations?: Array<{ quotation: string; quotationPage: number }> }).supplementaryQuotations ?? []) {
+        const sqText = pages.get(sq.quotationPage);
+        if (!sqText || !quotationOccursOnPage(sq.quotation, sqText)) {
+          throw new RiValidationError(`finding_quotation_not_found_on_page:${numberById.get(d.findingId)}`);
+        }
+        rows.push({
+          organisation_id: params.organisationId,
+          analysis_run_id: params.runId,
+          finding_id: d.findingId,
+          extraction_revision_id: view.evidence.extractionRevisionId,
+          page_number: sq.quotationPage,
+          quotation_sha256: sha256Hex(normaliseQuotation(sq.quotation)),
+          page_text_sha256: sha256Hex(sqText),
+          verified_for_user_id: params.userId,
+        });
+      }
     }
-    const { error: verifyErr } = await admin.from('ai_finding_quotation_verifications').insert(rows);
+    const { data: inserted, error: verifyErr } = await admin.from('ai_finding_quotation_verifications').insert(rows).select('id');
     if (verifyErr) throw new Error(`finding_quotation_verification_failed:${verifyErr.message}`);
+    insertedVerificationIds.push(...(inserted ?? []).map((r: { id: string }) => r.id));
   }
 
   const { data, error } = await supabase.rpc('ri_submit_ai_finding_review', {
@@ -239,11 +268,19 @@ export async function submitFindingReview(
       reclassificationEvidence: d.reclassificationEvidence ?? null,
       provisionReference: d.provisionReference ?? null,
       provisionFunction: d.provisionFunction ?? null,
+      obligationStatement: (d as { obligationStatement?: string }).obligationStatement ?? null,
       comment: d.comment,
     })),
     p_notes: params.notes ?? null,
   });
-  if (error) throw mapRpcError(error.message || 'unknown');
+  if (error) {
+    if (insertedVerificationIds.length > 0) {
+      const admin = createSupabaseAdminClient();
+      const table = admin?.from?.('ai_finding_quotation_verifications');
+      if (table?.delete) await table.delete().in('id', insertedVerificationIds);
+    }
+    throw mapRpcError(error.message || 'unknown');
+  }
 
   const result = data as {
     reviewId: string;

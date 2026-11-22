@@ -1,0 +1,12 @@
+{
+  "testedAt": "2026-11-22T11:50:29.972Z",
+  "provisionCore": "7.20.1R",
+  "provisionPagesIndex": null,
+  "quotation": "(2) A firm must contact the customer about the missed payment before taking any further action in relation to the arrears.",
+  "verification": {
+    "ok": true,
+    "quotationPage": 95
+  },
+  "pass": true,
+  "note": "Staging run c8cb095e grounding lacks provisionPageIndex until re-extraction; client path uses live buildFindingsView enrichment."
+}

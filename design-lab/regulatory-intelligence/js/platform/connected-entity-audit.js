@@ -55,6 +55,9 @@ export function scheduleConnectedEntityWorkflowEventsFetch(state, entityType, en
   cat.entityWorkflowEventsLoadStateByKey = cat.entityWorkflowEventsLoadStateByKey || {};
   const loadState = cat.entityWorkflowEventsLoadStateByKey[key];
   if (loadState === 'loaded') {
+    if (entityType === 'regulatory_obligation') {
+      fetchConnectedEntityWorkflowEvents(state, entityType, entityId).catch(() => null);
+    }
     return Promise.resolve(cat.entityWorkflowEventsByKey[key] || []);
   }
   cat._entityAuditInflight = cat._entityAuditInflight || {};

@@ -1,0 +1,36 @@
+---
+description: FORGENIQ autonomous execution boundaries — what the agent may do without asking, and the only checkpoints that require the user's approval
+alwaysApply: true
+---
+
+# FORGENIQ autonomous execution
+
+## Decide, don't ask
+- Do not ask the user to choose between routine implementation or testing options; take the recommended option when it fits the approved architecture, security requirements and project objectives.
+- Do not request approval again for activities already authorised.
+- Record each decision, its reason and its outcome in `docs/uat/EXECUTION-LOG.md`.
+- Continue through successive implementation and test stages; report progress in consolidated summaries, not a question after every step.
+
+## Authorised without asking
+- Local development, code fixes and routine bug fixes.
+- Unit, integration and regression tests; root cause investigation; security and regulatory validation.
+- Read-only staging database queries.
+- Previously approved staging activities and continuing approved test sequences.
+- Automated UAT as Users A, B and C through the saved sessions (`apps/platform/scripts/uat/staging-user-sessions.mjs`).
+- Documentation, backlog, screenshot and evidence updates.
+
+## Stop and ask only when
+- Deploying to production.
+- Applying a staging migration or deployment not already authorised.
+- Performing a destructive database operation.
+- Changing user permissions or organisation memberships.
+- Incurring AI or infrastructure cost not already approved (e.g. a second paid extraction or any retry).
+- Changing security architecture or a regulatory classification policy.
+- A regulatory interpretation cannot be resolved from authoritative sources.
+- Authentication needs the user (e.g. a saved session has expired).
+- A critical test fails and continuing could compromise data integrity.
+
+## Never
+- Bypass security controls, segregation of duties or approval requirements.
+- Expose credentials, tokens or session state, or commit authentication state.
+- Fabricate obligations or regulatory requirements.

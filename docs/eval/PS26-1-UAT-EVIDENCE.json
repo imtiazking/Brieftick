@@ -1,0 +1,79 @@
+{
+  "title": "PS26/1 authenticated UAT — UC-RI-005 binding-publication conversion (staging)",
+  "date": "2026-11-22",
+  "environment": {
+    "app": "https://staging-app.forgeniq.com",
+    "deployment": "dpl_D7hf7vR4A3EEGSSMe3BpzMdTFmyc",
+    "supabaseProject": "lhgzdicffkhaaykzthep",
+    "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+    "production": "not touched"
+  },
+  "analysisScope": "PARTIAL_DOCUMENT — 18 sections over pages 19, 21, 29, 40, 66, 68, 81, 86–88, 90–97; 14 instrument sections; 40 of 47 instrument provisions; 17.41% of document characters. This is not a whole-publication analysis.",
+  "actors": {
+    "A": { "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv", "role": "COMPLIANCE_MANAGER", "duties": "change, applicability, AI run requester, obligation submitter" },
+    "B": { "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr", "role": "REVIEWER", "duties": "per-finding review (accepts AI output)" },
+    "C": { "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh", "role": "COMPLIANCE_MANAGER", "duties": "applicability approver, independent obligation approver" }
+  },
+  "baseline": { "obligations": 23, "aiDevObligations": 1, "workflowEvents": 415, "findingDecisions": 12, "aiRuns": 10 },
+  "steps": [
+    { "n": 1, "actor": "A", "action": "Register authorised UAT change", "result": "change ba4552e2-2745-43ff-8ea5-a505b186667d OPEN", "evidence": ["ps26-1-uat/1-create-change-before.png", "ps26-1-uat/1-create-change-after.png"] },
+    { "n": 2, "actor": "A", "action": "Applicability draft and submission", "result": "assessment ab01614b IN_REVIEW", "evidence": ["ps26-1-uat/2-applicability-draft-saved.png", "ps26-1-uat/2-applicability-submitted.png"] },
+    { "n": 3, "actor": "C", "action": "Approve applicability", "result": "APPROVED, APPLICABLE", "evidence": ["ps26-1-uat/3-applicability-approved.png"] },
+    {
+      "n": 4, "actor": "A", "action": "Single authorised paid extraction (idempotency suffix uat-ps26-1-001, no retries)",
+      "result": {
+        "runId": "c8cb095e-2d07-4236-970c-02db88592341", "status": "COMPLETED", "reviewStatus": "HUMAN_REVIEW_REQUIRED", "attempt": 1,
+        "latencyMs": 113699, "costUsd": 0.137916, "reservedUsd": 0.154662, "findings": 13, "obligationGradeSuitable": false, "evidencePathway": "human_verified_uat"
+      },
+      "evidence": ["ps26-1-uat/4-extract-before.png", "ps26-1-uat/4-extract-after.png"]
+    },
+    {
+      "n": 5, "actor": "B", "action": "Per-finding review submitted once (Option A)",
+      "result": {
+        "reviewId": "0df275ef-75a1-4d71-a4f9-3d3cf377fcf7", "runReviewStatus": "ACCEPTED", "decisions": 13,
+        "queues": { "OBLIGATION_TRIAGE": 4, "NON_OBLIGATION_TRIAGE": 7, "EXCEPTION_TRIAGE": 2 },
+        "duplicateRequest": "Second concurrent POST from the same click refused with 409 already_reviewed; left 4 unreferenced quotation-verification rows (RI-UI-006)."
+      },
+      "decisions": [
+        { "finding": 1, "code": "UNKNOWN", "queue": "EXCEPTION_TRIAGE", "disposition": "RECLASSIFICATION_REQUESTED", "reason": "CONC 7.20.1R(2) duty is on p.95 but the provision is attributed to p.94 only (RI-CLS-009); needs manual registration" },
+        { "finding": 2, "code": "R", "function": "OPERATIVE_REQUIREMENT", "provision": "CONC 7.20.3R", "page": 95, "disposition": "CONVERT_TO_DRAFT_OBLIGATION", "obligationId": "63b84f23-9b4f-424a-96c9-f33eb3192779" },
+        { "finding": 3, "code": "R", "function": "OPERATIVE_REQUIREMENT", "provision": "CONC 4.2A.3R", "page": 87, "disposition": "CONVERT_TO_DRAFT_OBLIGATION", "obligationId": "a0a7e64d-0cb4-406f-9ca4-484c91db348e" },
+        { "finding": 4, "code": "R", "function": "OPERATIVE_REQUIREMENT", "provision": "CONC 4.2A.6R", "page": 90, "disposition": "CONVERT_TO_DRAFT_OBLIGATION", "obligationId": "fdcf8241-608e-467d-a8f8-12a52c75b852" },
+        { "finding": 5, "code": "R", "function": "OPERATIVE_REQUIREMENT", "provision": "CONC 4.2A.7R", "page": 90, "disposition": "CONVERT_TO_DRAFT_OBLIGATION", "obligationId": "db123fac-c36c-4c0d-bb9e-54174ac15aa3" },
+        { "finding": 6, "code": "UNKNOWN", "queue": "EXCEPTION_TRIAGE", "disposition": "RECLASSIFICATION_REQUESTED", "reason": "CONC 4.8.2R amended text; underlining/strike-through not verifiable" },
+        { "finding": 7, "code": "R", "function": "APPLICATION", "provision": "CONC 2.7.1R", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "ARCHIVE" },
+        { "finding": 8, "code": "EXPL", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "HORIZON_SCANNING" },
+        { "finding": 9, "code": "EXPL", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "HORIZON_SCANNING" },
+        { "finding": 10, "code": "R", "function": "APPLICATION", "provision": "SYSC TP 13.3R", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "SUPPORTING_INFORMATION" },
+        { "finding": 11, "code": "R", "function": "APPLICATION", "provision": "GEN 2.3.1R", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "ARCHIVE" },
+        { "finding": 12, "code": "DEF", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "SUPPORTING_INFORMATION" },
+        { "finding": 13, "code": "EXPL", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "SUPPORTING_INFORMATION" }
+      ],
+      "evidence": ["ps26-1-uat/5-review-before-submit.png", "ps26-1-uat/5-review-recorded-decisions.png"]
+    },
+    { "n": 6, "actor": "A", "action": "Submit the four DRAFT obligations for review (Status IN_REVIEW, Save)", "result": "all four IN_REVIEW, ai_submitted_by_user_id = A. A first script pass saved three as DRAFT→DRAFT (stale form after SPA navigation; three no-op OBLIGATION_STATUS_CHANGED events) and was corrected by waiting for the obligation-specific panel.", "evidence": ["ps26-1-uat/6-obligation-submitted.png"] },
+    { "n": "6b", "actor": "B", "action": "Negative control: acceptor of the AI output attempts to approve 63b84f23", "result": "HTTP 403 forbidden / segregation_of_duties; no state change, no event. Toast shows only 'forbidden' (RI-UI-002).", "evidence": ["ps26-1-uat/6b-refuse-approve-user-b.png"] },
+    { "n": 7, "actor": "C", "action": "Approve each obligation into the register", "result": "all four OPEN (IN_REVIEW → OPEN events by C)", "evidence": ["ps26-1-uat/7-obligation-approved.png"] }
+  ],
+  "registerEntries": [
+    { "id": "63b84f23-9b4f-424a-96c9-f33eb3192779", "provision": "CONC 7.20.3R", "citation": "PDF p.95", "status": "OPEN" },
+    { "id": "a0a7e64d-0cb4-406f-9ca4-484c91db348e", "provision": "CONC 4.2A.3R", "citation": "PDF p.87", "status": "OPEN" },
+    { "id": "fdcf8241-608e-467d-a8f8-12a52c75b852", "provision": "CONC 4.2A.6R", "citation": "PDF p.90", "status": "OPEN" },
+    { "id": "db123fac-c36c-4c0d-bb9e-54174ac15aa3", "provision": "CONC 4.2A.7R", "citation": "PDF p.90", "status": "OPEN" }
+  ],
+  "registerEntryCommon": {
+    "origin": "AI_ASSISTED", "aiAnalysisRunId": "c8cb095e-2d07-4236-970c-02db88592341", "aiAnalysisReviewId": "0df275ef-75a1-4d71-a4f9-3d3cf377fcf7",
+    "regulatoryChangeId": "ba4552e2-2745-43ff-8ea5-a505b186667d", "regulatoryClassificationCode": "R", "legalStatus": "binding",
+    "evidencePathway": "human_verified_uat", "classificationPolicyVersion": "1", "createdBy": "B", "submittedBy": "A", "approvedBy": "C"
+  },
+  "segregationOfDuties": "Requester A, acceptor B and approver C are three different users; the server refused B's approval (403 segregation_of_duties).",
+  "after": { "obligations": 27, "aiDevObligations": 5, "workflowEvents": 433, "findingDecisions": 25, "aiRuns": 10, "manualObligation36da0a55Md5": "7f12c5652ac5dcd5d47931e1d9f638a6 (unchanged)", "otherOrganisations": "unchanged" },
+  "paidAiCalls": "1 (the authorised extraction); no retries, no further calls",
+  "defectsRaised": ["RI-UI-006", "RI-UI-007", "RI-UI-008", "RI-CLS-009", "RI-UI-002 (recurrence)", "RI-UI-008 evidence: ps26-1-uat/8-defect-stale-status-user-b.png"],
+  "outstanding": [
+    "CONC 7.20.1R(2) duty not in the register — manual registration from the Handbook required (RI-CLS-009)",
+    "RI-CLS-005 refusal path not exercised in the browser on staging (needs another approved paid extraction)",
+    "E conversion test (RI-CLS-004) — needs an approved paid extraction on e.g. PS22/9"
+  ],
+  "result": "PS26/1 authenticated UAT PASSED (partial-document analysis): R conversion end to end with maker-checker on staging"
+}

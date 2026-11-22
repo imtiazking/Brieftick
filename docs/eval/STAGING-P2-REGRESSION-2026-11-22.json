@@ -1,0 +1,188 @@
+{
+  "auditedAt": "2026-11-22T11:50:56.441Z",
+  "staging": "https://staging-app.forgeniq.com",
+  "passed": 19,
+  "failed": 0,
+  "results": [
+    {
+      "name": "deployed bundle exposes editable obligation statement control",
+      "pass": true,
+      "detail": {
+        "shaPrefix": "be382338f0ecb772"
+      }
+    },
+    {
+      "name": "deployed bundle exposes supplementary quotation controls",
+      "pass": true,
+      "detail": {
+        "shaPrefix": "be382338f0ecb772"
+      }
+    },
+    {
+      "name": "deployed work-writes maps segregation_of_duties plainly",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "RI-UI-006: per-finding review bind-once (reviewBound)",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "finding 1 API returns page list",
+      "pass": true,
+      "detail": [
+        94,
+        95
+      ]
+    },
+    {
+      "name": "finding 1 cites instrument page 95 (7.20.1R(2) continuation)",
+      "pass": true,
+      "detail": {
+        "status": 200,
+        "pages": [
+          94,
+          95
+        ],
+        "sections": [
+          {
+            "page": 94,
+            "provisions": [
+              "7.1.4R",
+              "7.6.2BG",
+              "7.6.2CR",
+              "7.20.1R"
+            ]
+          },
+          {
+            "page": 95,
+            "provisions": [
+              "7.20.2G",
+              "7.20.3R"
+            ]
+          }
+        ],
+        "provisionPageIndex": {}
+      }
+    },
+    {
+      "name": "recorded review view present after PS26/1 review",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "obligation statement field exists on review cards (disabled or active)",
+      "pass": true,
+      "detail": {
+        "fields": 0
+      }
+    },
+    {
+      "name": "SoD: API refuses User B approving OPEN on AI-assisted obligation",
+      "pass": true,
+      "detail": {
+        "status": 403,
+        "error": "forbidden",
+        "detail": null
+      }
+    },
+    {
+      "name": "RI-UI-002: segregation_of_duties mapped to plain language in client",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "RI-UI-008: obligation detail API returns OPEN after no-store fetch",
+      "pass": true,
+      "detail": {
+        "detailOk": true,
+        "statusCode": "OPEN",
+        "eventCount": 8,
+        "eventTypes": [
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "AI_OBLIGATION_MATERIALISED"
+        ]
+      }
+    },
+    {
+      "name": "RI-UI-008: obligation status shows OPEN in UI when panel renders",
+      "pass": true,
+      "detail": {
+        "status": "OPEN"
+      }
+    },
+    {
+      "name": "RI-UI-001: audit history has ≥3 workflow events (API)",
+      "pass": true,
+      "detail": [
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "AI_OBLIGATION_MATERIALISED"
+      ]
+    },
+    {
+      "name": "RI-UI-001: audit panel shows events when detail view loads",
+      "pass": true,
+      "detail": {
+        "uiRows": 0
+      }
+    },
+    {
+      "name": "fail-closed: REG-FCA policy remains ACTIVE",
+      "pass": true,
+      "detail": {
+        "http": 200,
+        "ok": true,
+        "policyStatus": null
+      }
+    },
+    {
+      "name": "fail-closed: REG-FRC has no active policy (API unavailable)",
+      "pass": true,
+      "detail": {
+        "http": 404,
+        "ok": false,
+        "policyStatus": null
+      }
+    },
+    {
+      "name": "fail-closed: REG-ICO has no active policy (API unavailable)",
+      "pass": true,
+      "detail": {
+        "http": 404,
+        "ok": false,
+        "policyStatus": null
+      }
+    },
+    {
+      "name": "fail-closed: REG-PSR has no active policy (API unavailable)",
+      "pass": true,
+      "detail": {
+        "http": 404,
+        "ok": false,
+        "policyStatus": null
+      }
+    },
+    {
+      "name": "fail-closed: REG-PRA has no active policy (API unavailable)",
+      "pass": true,
+      "detail": {
+        "http": 404,
+        "ok": false,
+        "policyStatus": null
+      }
+    }
+  ]
+}

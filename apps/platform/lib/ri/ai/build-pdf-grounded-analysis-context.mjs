@@ -8,6 +8,7 @@ import {
   analyseInstrumentProvisionText,
   detectLegalInstrumentStartPage,
   isTransitionalTable,
+  buildProvisionPagesIndex,
   provisionMarkersInText,
   provisionsSetOutIn,
 } from '../classification/provision-eligibility.mjs';
@@ -149,14 +150,20 @@ export function describeSelectedSections(allBlocks, selected, instrumentStartPag
   const selectedCharacters = sourceSections.reduce((n, s) => n + s.text.length, 0);
   const pages = (list) => new Set(list.map((b) => b.pageNumber).filter((p) => Number.isInteger(p)));
   const instrumentPages = instrumentAware ? [...pages(allBlocks || [])].filter((p) => p >= instrumentStartPage) : [];
-  const provisionPages = new Map();
+  const provisionPages = instrumentAware
+    ? buildProvisionPagesIndex(allBlocks || [], instrumentStartPage)
+    : new Map();
   if (instrumentAware) {
-    for (const b of allBlocks || []) {
-      if (!(b.pageNumber >= instrumentStartPage)) continue;
-      for (const p of provisionMarkersInText(b.extractedText).filter((m) => m.setOut)) {
-        if (!provisionPages.has(p.core)) provisionPages.set(p.core, { pages: new Set(), status: {} });
-        provisionPages.get(p.core).pages.add(b.pageNumber);
-        Object.assign(provisionPages.get(p.core).status, { [b.pageNumber]: textStatus.get(b.documentEvidenceId)?.[p.core] });
+    for (const section of sourceSections) {
+      if (!section.inLegalInstrument) continue;
+      const merged = new Set(section.provisionsSetOut);
+      for (const [core, info] of provisionPages) {
+        if (info.pages.has(section.pageNumber)) merged.add(core);
+      }
+      section.provisionsSetOut = [...merged];
+      for (const core of merged) {
+        const st = provisionPages.get(core)?.status?.[section.pageNumber];
+        if (st) section.provisionTextStatus[core] = st;
       }
     }
   }
@@ -190,7 +197,10 @@ export function describeSelectedSections(allBlocks, selected, instrumentStartPag
     truncatedSections: sourceSections.filter((s) => s.truncated).length,
     scope: selectedCharacters < documentCharacters ? 'PARTIAL_DOCUMENT' : 'WHOLE_DOCUMENT',
   };
-  return { sourceSections, selection };
+  const provisionPageIndex = Object.fromEntries(
+    [...provisionPages.entries()].map(([core, info]) => [core, [...info.pages].sort((a, b) => a - b)]),
+  );
+  return { sourceSections, selection, provisionPageIndex };
 }
 
 /**
@@ -287,6 +297,7 @@ export async function buildPdfGroundedAnalysisContext(params) {
         provisionsSetOut: s.provisionsSetOut,
         provisionTextStatus: s.provisionTextStatus,
       })),
+      provisionPageIndex: described.provisionPageIndex ?? {},
     },
   };
 }

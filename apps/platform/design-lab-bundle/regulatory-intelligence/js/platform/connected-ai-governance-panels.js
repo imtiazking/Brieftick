@@ -209,6 +209,10 @@ export async function submitConnectedAiFindingReview(state, runId, payload) {
 const FINDING_REVIEW_ERRORS = {
   finding_quotation_not_found_on_page: 'the quotation was not found word for word on the selected PDF page',
   finding_quotation_page_not_cited: 'the selected page is not one of the finding’s cited pages',
+  obligation_statement_exceeds_evidence: 'the proposed obligation wording includes substantive content not present in the verified quotation(s)',
+  obligation_statement_duty_not_in_quotation: 'the proposed obligation states a duty that is not present in the verified quotation(s)',
+  obligation_statement_unsupported: 'the proposed obligation wording could not be grounded in the verified quotation(s)',
+  obligation_statement_required: 'enter the obligation wording to be registered',
   finding_text_mismatch: 'the finding text changed — reload the page',
   finding_justification_required: `a reviewer justification of at least ${FINDING_MIN_UAT_JUSTIFICATION} characters is required`,
   finding_legal_basis_required: 'a legal basis is required',
@@ -409,7 +413,18 @@ function renderFindingCard(f, policy, canReview, draft = {}, convertibleFindings
   return `<article class="ri-panel ri-panel--compact ri-finding-review" data-finding-review-item="${esc(f.findingId)}"
       data-claim-sha="${esc(f.claimTextSha256)}" data-finding-number="${esc(String(f.number))}">
     <h4>Finding ${esc(String(f.number))}</h4>
-    <p data-finding-statement><strong>Statement:</strong> ${esc(f.statement)}</p>
+    <p data-finding-statement><strong>AI-proposed statement:</strong> ${esc(f.statement)}</p>
+    ${
+      (f.regulatorySourceExcerpt || []).length
+        ? `<details open><summary>Authoritative regulatory text (cited sections) — verify wording against this</summary>
+            ${(f.regulatorySourceExcerpt || [])
+              .map(
+                (s) => `<p class="ri-muted">PDF p.${esc(String(s.pageNumber))}</p>
+                  <blockquote class="ri-read ri-read--compact" data-finding-regulatory-excerpt>${esc(s.excerpt || '')}</blockquote>`,
+              )
+              .join('')}</details>`
+        : ''
+    }
     <dl class="ri-dl">
       <dt>Citation verification</dt><dd>${badge(f.citationStatus)} <span class="ri-muted">(cited section is one of the analysed PDF sections; the wording still needs checking)</span></dd>
       <dt>Cited PDF pages</dt><dd data-finding-pages>${f.pages.map((p) => `p.${esc(String(p))}`).join(', ') || '—'}</dd>
@@ -472,8 +487,22 @@ function renderFindingCard(f, policy, canReview, draft = {}, convertibleFindings
       <textarea data-finding-reclassification rows="2"${disabled}>${esc(draft.reclassificationEvidence || '')}</textarea>
     </label>
     <label>Legal basis <input type="text" data-finding-legal-basis placeholder="e.g. PSRs 2017 regulation 86(2C)" value="${esc(draft.legalBasis || '')}"${disabled}></label>
-    <label>Supporting quotation (exact text from the PDF)
+    <label>Proposed obligation wording (editable — must be supported by the verified quotation below)
+      <textarea data-finding-obligation-statement rows="3"${disabled}>${esc(draft.obligationStatement || f.statement || '')}</textarea>
+    </label>
+    <label>Primary supporting quotation (exact text from the PDF)
       <textarea data-finding-quotation rows="3"${disabled}>${esc(draft.quotation || '')}</textarea>
+    </label>
+    <label>Additional supporting quotation (optional, second page)
+      <textarea data-finding-supplementary-quotation rows="2"${disabled}>${esc(draft.supplementaryQuotation || '')}</textarea>
+    </label>
+    <label>Additional quotation page
+      <select data-finding-supplementary-page${disabled}><option value="">—</option>${f.pages
+        .map(
+          (p) =>
+            `<option value="${esc(String(p))}"${String(p) === draft.supplementaryPage ? ' selected' : ''}>p.${esc(String(p))}</option>`,
+        )
+        .join('')}</select>
     </label>
     <label>PDF page
       <select data-finding-page${disabled}><option value="">Select page…</option>${f.pages
@@ -546,7 +575,10 @@ function readFindingCard(card, uat) {
   const supportingObligationId = card.querySelector('[data-finding-supporting-obligation]')?.value.trim() || '';
   const reclassificationEvidence = card.querySelector('[data-finding-reclassification]')?.value.trim() || '';
   const legalBasis = card.querySelector('[data-finding-legal-basis]')?.value.trim() || '';
+  const obligationStatement = card.querySelector('[data-finding-obligation-statement]')?.value.trim() || '';
   const quotation = card.querySelector('[data-finding-quotation]')?.value.trim() || '';
+  const supplementaryQuotation = card.querySelector('[data-finding-supplementary-quotation]')?.value.trim() || '';
+  const supplementaryPage = card.querySelector('[data-finding-supplementary-page]')?.value || '';
   const page = card.querySelector('[data-finding-page]')?.value || '';
   const comment = card.querySelector('[data-finding-comment]')?.value.trim() || '';
   const missing = [];
@@ -556,10 +588,15 @@ function readFindingCard(card, uat) {
   if (decision === 'ACCEPTED' && code && !disposition) missing.push('disposition');
   if (linking && !linkedObligationId) missing.push('existing obligation ID');
   if (createsObligation) {
+    if (obligationStatement.length < 10) missing.push('obligation wording');
     if (legalBasis.length < 3) missing.push('legal basis');
     if (!provisionReference) missing.push('provision reference');
     if (quotation.length < FINDING_MIN_QUOTATION) missing.push('exact quotation');
     if (!page) missing.push('PDF page');
+    if (supplementaryQuotation && supplementaryQuotation.length < FINDING_MIN_QUOTATION && !supplementaryPage) {
+      missing.push('additional quotation page');
+    }
+    if (supplementaryPage && supplementaryQuotation.length < FINDING_MIN_QUOTATION) missing.push('additional quotation text');
     if (linkRequired && !supportingFindingId && !supportingObligationId) missing.push('binding provision link');
   }
   if (!comment) missing.push('comment');
@@ -583,8 +620,13 @@ function readFindingCard(card, uat) {
       supportingObligationId: createsObligation && linkRequired && supportingObligationId ? supportingObligationId : null,
       reclassificationEvidence: decision === 'ACCEPTED' && reclassificationEvidence ? reclassificationEvidence : null,
       legalBasis: createsObligation ? legalBasis : null,
+      obligationStatement: createsObligation ? obligationStatement : null,
       quotation: createsObligation ? quotation : null,
       quotationPage: createsObligation ? Number(page) : null,
+      supplementaryQuotations:
+        createsObligation && supplementaryQuotation.length >= FINDING_MIN_QUOTATION && supplementaryPage
+          ? [{ quotation: supplementaryQuotation, quotationPage: Number(supplementaryPage) }]
+          : null,
       provisionFunction: decision === 'ACCEPTED' && convertible && provisionFunction ? provisionFunction : null,
       provisionReference: decision === 'ACCEPTED' && convertible && provisionReference ? provisionReference : null,
       comment,
@@ -621,8 +663,11 @@ function syncFindingReviewPanel(panel) {
       reclassificationEvidence: card.querySelector('[data-finding-reclassification]')?.value || '',
       provisionFunction: card.querySelector('[data-finding-provision-function]')?.value || '',
       provisionReference: card.querySelector('[data-finding-provision-reference]')?.value || '',
+      obligationStatement: card.querySelector('[data-finding-obligation-statement]')?.value || '',
       legalBasis: card.querySelector('[data-finding-legal-basis]')?.value || '',
       quotation: card.querySelector('[data-finding-quotation]')?.value || '',
+      supplementaryQuotation: card.querySelector('[data-finding-supplementary-quotation]')?.value || '',
+      supplementaryPage: card.querySelector('[data-finding-supplementary-page]')?.value || '',
       page: card.querySelector('[data-finding-page]')?.value || '',
       comment: card.querySelector('[data-finding-comment]')?.value || '',
     };
@@ -631,7 +676,10 @@ function syncFindingReviewPanel(panel) {
       card.querySelectorAll(selector).forEach((el) => {
         el.disabled = !canEdit || off;
       });
-    setDisabled('[data-finding-legal-basis], [data-finding-quotation], [data-finding-page]', !r.createsObligation);
+    setDisabled(
+      '[data-finding-obligation-statement], [data-finding-legal-basis], [data-finding-quotation], [data-finding-page], [data-finding-supplementary-quotation], [data-finding-supplementary-page]',
+      !r.createsObligation,
+    );
     setDisabled('[data-finding-code], [data-finding-reclassification]', !accepted);
     const convertibleCode = card.querySelector('[data-finding-code]')?.selectedOptions?.[0]?.dataset?.convertible === '1';
     setDisabled('[data-finding-provision-function], [data-finding-provision-reference]', !(accepted && convertibleCode));
@@ -674,8 +722,12 @@ export function collectFindingReviewPayload(panel) {
 }
 
 /** Wires inputs and the submit button; `onSubmitted` receives the API result. */
+const findingReviewSubmitInflight = new Map();
+
 export function bindConnectedAiFindingReview(panel, { onSubmitted, onError } = {}) {
   if (!panel) return;
+  if (panel.dataset.reviewBound === '1') return;
+  panel.dataset.reviewBound = '1';
   panel.querySelectorAll('[data-finding-use-suggestion]').forEach((btn) =>
     btn.addEventListener('click', () => {
       const card = btn.closest('[data-finding-review-item]');
@@ -692,15 +744,24 @@ export function bindConnectedAiFindingReview(panel, { onSubmitted, onError } = {
   submit?.addEventListener('click', async () => {
     const payload = collectFindingReviewPayload(panel);
     if (!payload) return;
+    const runId = panel.getAttribute('data-connected-ai-finding-review');
+    if (findingReviewSubmitInflight.get(runId)) return;
     submit.disabled = true;
+    findingReviewSubmitInflight.set(runId, true);
     try {
-      const runId = panel.getAttribute('data-connected-ai-finding-review');
       const result = await submitConnectedAiFindingReview(getState(), runId, payload);
       findingReviewDrafts.delete(runId);
       onSubmitted?.(result);
     } catch (e) {
+      if (String(e?.message || '').includes('already_reviewed')) {
+        findingReviewDrafts.delete(runId);
+        onSubmitted?.({ materialised: [], alreadyReviewed: true });
+        return;
+      }
       onError?.(e);
       syncFindingReviewPanel(panel);
+    } finally {
+      findingReviewSubmitInflight.delete(runId);
     }
   });
 }

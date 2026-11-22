@@ -1,0 +1,210 @@
+{
+  "uat": "FG24/6 authenticated UAT",
+  "environment": {
+    "app": "https://staging-app.forgeniq.com",
+    "deployment": "dpl_D7hf7vR4A3EEGSSMe3BpzMdTFmyc",
+    "commit": "3beb93c",
+    "supabaseProject": "lhgzdicffkhaaykzthep",
+    "organisation": "b8f5e3a1-00ad-4000-8000-000000000001 (FORGENIQ AI Development)",
+    "migrationsAfter20261121220000": [
+      "20261121222551 ri_classification_trigger_function_grants",
+      "20261122004540 ri_classification_policy_admin",
+      "20261122004730 ri_provision_level_conversion_eligibility"
+    ],
+    "policyAdminWrites": "disabled (RI_CLASSIFICATION_POLICY_ADMIN_WRITES_ENABLED not set)"
+  },
+  "baseline": {
+    "at": "2026-11-22T01:34:16Z",
+    "aiDevObligations": 0,
+    "allObligations": 22,
+    "workflowEvents": 403,
+    "findingDecisions": 0,
+    "reviews": 1
+  },
+  "stage1": {
+    "actor": "User A user_3LA76vR4CueutWtEpcAxvqYKkEv (COMPLIANCE_MANAGER), Cursor browser, Design Lab UI",
+    "regulatoryChange": "0ffaad3f-9b83-4728-b991-9bfb5d50e632 (UAT — FG24/6 Risk-based approach to payments)",
+    "applicability": {
+      "assessmentId": "cfa8cb5b-4bd6-4b8e-bae0-6580f17d6238",
+      "status": "APPROVED",
+      "recommendation": "APPLICABLE",
+      "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "reviewedBy": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh"
+    },
+    "authoritativeSource": {
+      "instrument": "The Payment Services Regulations 2017 (SI 2017/752) regulation 86(2D)",
+      "insertedBy": "SI 2024/1013 reg. 2(4)(b), in force 30 October 2024",
+      "url": "https://www.legislation.gov.uk/uksi/2017/752/regulation/86",
+      "retrieved": "2026-11-22, legislation.gov.uk, up to date with changes in force on or before 20 November 2026"
+    },
+    "steps": [
+      {
+        "step": "1.1 create obligation",
+        "result": "PASS",
+        "uiMessage": "Obligation created",
+        "obligationId": "36da0a55-a9b2-42f1-b1eb-5d4a5d13ec2b",
+        "record": {
+          "origin": "MANUAL",
+          "status": "DRAFT",
+          "aiAnalysisRunId": null,
+          "createdBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "regulatoryClassificationCode": "UK",
+          "legalStatus": "binding",
+          "classificationPolicyId": "f2b3497c-df3a-4ed6-be47-1ae78e8ef6a8",
+          "classificationPolicyVersion": 1,
+          "regulatorKey": "REG-FCA",
+          "authoritativeProvision": "PSRs 2017 reg. 86(2D), quotation 698 chars, verifiedBy user_3LA76vR4CueutWtEpcAxvqYKkEv at 2026-11-22T02:02:09.882313Z"
+        },
+        "event": "808a61c1-0ff7-4dbd-8422-b2dbdaac90b2 OBLIGATION_CREATED — → DRAFT by user_3LA76vR4CueutWtEpcAxvqYKkEv",
+        "screenshot": "fg24-6-uat/1-1-obligation-created.png"
+      },
+      {
+        "step": "1.2 submit for review",
+        "result": "PASS",
+        "uiMessage": "Obligation saved",
+        "record": { "status": "IN_REVIEW", "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv", "updatedAt": "2026-11-22T02:02:40.143031Z" },
+        "event": "94c354ed-35f3-4968-99d7-41d7cbf557ed OBLIGATION_STATUS_CHANGED DRAFT → IN_REVIEW by user_3LA76vR4CueutWtEpcAxvqYKkEv"
+      },
+      {
+        "step": "1.3a self-approval via 'Approve into register'",
+        "result": "PASS (refused)",
+        "uiMessage": "forbidden",
+        "recordAfter": { "status": "IN_REVIEW", "updatedAt": "2026-11-22T02:02:40.143031Z", "metadataMd5": "dbf42eafeb5d556310972a396c72f3d9", "events": 2 },
+        "screenshot": "fg24-6-uat/1-3a-self-approval-refused.png"
+      },
+      {
+        "step": "1.3b self-approval via Status field OPEN + Save",
+        "result": "PASS (refused)",
+        "uiMessage": "forbidden",
+        "recordAfter": { "status": "IN_REVIEW", "updatedAt": "2026-11-22T02:02:40.143031Z", "metadataMd5": "dbf42eafeb5d556310972a396c72f3d9", "events": 2 },
+        "screenshot": "fg24-6-uat/1-3b-status-field-self-approval-refused.png"
+      }
+    ],
+    "after": {
+      "at": "2026-11-22T02:03:58Z",
+      "aiDevObligations": 1,
+      "aiDevAiAssistedObligations": 0,
+      "allObligations": 23,
+      "workflowEvents": 405,
+      "findingDecisions": 0,
+      "reviews": 1
+    },
+    "observations": [
+      "Design Lab obligation 'Audit history' panel lists only OBLIGATION_CREATED after reload; the DRAFT → IN_REVIEW event exists in workflow_events (94c354ed). Display defect, not a control failure.",
+      "Refusal message is the raw code 'forbidden'; a plain-language explanation (approver must not be the creator or submitter) would be clearer."
+    ]
+  },
+  "stage2": {
+    "actor": "User C user_3LBBtwYR4mmFisfpzMj3n7DVtVh (COMPLIANCE_MANAGER, sign-in email forgeniq@yahoo.com), Cursor browser, Design Lab UI",
+    "steps": [
+      {
+        "step": "2.1 independent approval via 'Approve into register'",
+        "result": "PASS",
+        "uiMessage": "Obligation approved into register",
+        "authoritativeProvisionCheck": "stored quotation matches legislation.gov.uk PSRs 2017 reg. 86(2D) text retrieved 2026-11-22",
+        "record": {
+          "status": "OPEN",
+          "createdBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "submittedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+          "approver": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+          "updatedAt": "2026-11-22T02:09:12.629141Z",
+          "metadataMd5": "dbf42eafeb5d556310972a396c72f3d9 (unchanged — classification metadata immutable)",
+          "legalStatus": "binding"
+        },
+        "event": "08a3d6a9-f5de-4e57-86e2-f5ec3cdf1b4b OBLIGATION_STATUS_CHANGED IN_REVIEW → OPEN by user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+        "screenshot": "fg24-6-uat/2-1-user-c-approved-open.png"
+      }
+    ],
+    "after": { "allObligations": 23, "workflowEvents": 406 },
+    "backlogRaised": ["RI-UI-001 incomplete audit history in UI", "RI-UI-002 unclear self-approval refusal message"]
+  },
+  "reviewerProvisioning": {
+    "approvedBy": "user, 2026-11-22 02:34Z (staging only)",
+    "reason": "The configured User B (user_3LIQIZlXNWBFEvSKabAYIUhhNdi) exists only in the Clerk development instance and cannot sign in to staging (clerk.forgeniq.com).",
+    "changes": [
+      "INSERT organisation_memberships 3222400b-3ea7-40b0-b084-d08672259744: user_3Fa9TcFi8izkxHdDP58Qb3UY4mr (imtiazahmed_@hotmail.com) REVIEWER active in b8f5e3a1-00ad-4000-8000-000000000001 at 2026-11-22T02:36:19Z",
+      "UPDATE organisation_memberships 35475593-b9b7-4ebe-aec7-90af7c16f2bd: user_3LIQIZlXNWBFEvSKabAYIUhhNdi status active → removed (row retained, not deleted)"
+    ],
+    "minimumRole": "REVIEWER — the lowest role granting ai:review (lib/ri/permissions.ts) and passing ri_has_min_role(org, 'REVIEWER') in ri_submit_ai_finding_review; it does not grant obligation:write or obligation:review.",
+    "unchanged": "Memberships in FORGENIQ (cd25bb17…) for both users, all other organisations, production and all obligation records."
+  },
+  "sessions": {
+    "tool": "apps/platform/scripts/uat/staging-user-sessions.mjs (persistent per-user Chrome profiles under %LOCALAPPDATA%\\forgeniq-uat-sessions, outside the repository; no passwords, cookies or tokens read or stored)",
+    "verifiedAt": "2026-11-22T02:41Z",
+    "users": {
+      "A": "user_3LA76vR4CueutWtEpcAxvqYKkEv · FORGENIQ AI Development · COMPLIANCE_MANAGER · obligations, applicabilityWorkflow, aiRequest",
+      "B": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr · FORGENIQ AI Development · REVIEWER · aiReview",
+      "C": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh · FORGENIQ AI Development · COMPLIANCE_MANAGER · obligationReview, applicabilityWorkflow"
+    },
+    "wrongAccountRefusals": "Two User B sign-ins with other accounts (user_3LBBtwYR… and user_3Fa9T… before provisioning) were signed out and not kept.",
+    "attribution": "Every action re-verifies Clerk user ID, organisation, role and capabilities via /api/ri-lab/session and appends an entry to attribution.log in the session folder."
+  },
+  "stage3": {
+    "actor": "User B user_3Fa9TcFi8izkxHdDP58Qb3UY4mr (REVIEWER), Playwright persistent session, Design Lab UI (#/ai-analysis/cb124305-4a9e-4968-b1a2-1b36d819c2c7)",
+    "run": { "id": "cb124305-4a9e-4968-b1a2-1b36d819c2c7", "requestedBy": "user_3LA76vR4CueutWtEpcAxvqYKkEv", "publicationType": "finalised_guidance", "policy": "REG-FCA v1", "pathway": "human_verified_uat" },
+    "baseline": { "at": "2026-11-22T02:42:20Z", "allObligations": 23, "aiDevObligations": 1, "obligationsFromRun": 0, "workflowEvents": 406, "findingDecisions": 0, "runReviews": 0, "obligationRowMd5": "7f12c5652ac5dcd5d47931e1d9f638a6" },
+    "steps": [
+      {
+        "step": "3.1 refusal test 1 — Finding 2 coded R, Convert to DRAFT obligation",
+        "result": "PASS (refused) — not counted as an Obligation Triage pass",
+        "server": "HTTP 400 validation_error finding_source_not_binding:2",
+        "uiMessage": "Finding 2: the publication is non-binding (e.g. finalised guidance), so a binding code cannot be converted.",
+        "after": "unchanged: 23 obligations, 406 events, 0 decisions, 0 reviews, run HUMAN_REVIEW_REQUIRED",
+        "observation": "Before submission the card showed 'will create a DRAFT obligation' (RI-UI-003).",
+        "screenshots": ["fg24-6-uat/3-refuse-convert-before-submit.png", "fg24-6-uat/3-refuse-convert-after-submit.png"]
+      },
+      {
+        "step": "3.2 refusal test 2 — Finding 2 linked to non-existent obligation 00000000-0000-4000-8000-000000000000",
+        "result": "PASS (refused)",
+        "server": "HTTP 400 validation_error finding_linked_obligation_required:2 (raised by the organisation-scoped existence check in ri_submit_ai_finding_review; the ID is well-formed)",
+        "uiMessage": "Finding 2: enter the existing obligation to link to.",
+        "after": "unchanged: 23 obligations, 406 events, 0 decisions, 0 reviews",
+        "observation": "Message is misleading for an ID that was entered but does not exist (RI-UI-004).",
+        "screenshots": ["fg24-6-uat/3-refuse-link-before-submit.png", "fg24-6-uat/3-refuse-link-after-submit.png"]
+      },
+      {
+        "step": "3.3 final per-finding review",
+        "result": "PASS",
+        "server": "HTTP 200, reviewId 34c3900e-8453-45bf-9577-203953d2e276, materialised 0",
+        "uiMessage": "Per-finding review recorded — 0 DRAFT obligation(s) created",
+        "decisions": [
+          { "n": 1, "decision": "ACCEPTED", "code": "PERM", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "SUPPORTING_INFORMATION" },
+          { "n": 2, "decision": "ACCEPTED", "code": "GBR", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "LINK_TO_EXISTING_OBLIGATION", "linkedObligationId": "36da0a55-a9b2-42f1-b1eb-5d4a5d13ec2b" },
+          { "n": 3, "decision": "ACCEPTED", "code": "GBR", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "SUPPORTING_INFORMATION" },
+          { "n": 4, "decision": "ACCEPTED", "code": "GBR", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "SUPPORTING_INFORMATION" },
+          { "n": 5, "decision": "ACCEPTED", "code": "DEF", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "ARCHIVE" },
+          { "n": 6, "decision": "ACCEPTED", "code": "GBR", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "RECLASSIFICATION_REQUESTED" },
+          { "n": 7, "decision": "ACCEPTED", "code": "GP", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "SUPPORTING_INFORMATION" },
+          { "n": 8, "decision": "REJECTED", "code": null, "queue": "EXCEPTION_TRIAGE", "exceptionReasons": ["conflicting_classifications"], "note": "provisional routing retained on a rejected finding (RI-UI-005)" },
+          { "n": 9, "decision": "ACCEPTED", "code": "UNKNOWN", "queue": "EXCEPTION_TRIAGE", "exceptionReasons": ["unknown_classification"], "disposition": "RECLASSIFICATION_REQUESTED" },
+          { "n": 10, "decision": "ACCEPTED", "code": "EXEMPT", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "ARCHIVE" },
+          { "n": 11, "decision": "ACCEPTED", "code": "G", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "HORIZON_SCANNING" },
+          { "n": 12, "decision": "ACCEPTED", "code": "PERM", "queue": "NON_OBLIGATION_TRIAGE", "disposition": "SUPPORTING_INFORMATION", "note": "coded PERM rather than the planned G: the PDF (pp.5, 14) states a permission" }
+        ],
+        "queueTotals": { "OBLIGATION_TRIAGE": 0, "NON_OBLIGATION_TRIAGE": 10, "EXCEPTION_TRIAGE": 2 },
+        "review": { "decision": "PARTIALLY_ACCEPTED", "reviewer": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr", "acceptedClaimIndexes": [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11], "rejectedClaimIndexes": [7] },
+        "events": [
+          "AI_REVIEW_PARTIALLY_ACCEPTED → PARTIALLY_ACCEPTED by user_3Fa9TcFi8izkxHdDP58Qb3UY4mr at 2026-11-22T02:45:18Z",
+          "AI_MATERIALISATION_SKIPPED by user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+          "AI_MATERIALISATION_COMPLETED by user_3Fa9TcFi8izkxHdDP58Qb3UY4mr"
+        ],
+        "screenshots": ["fg24-6-uat/3-submit-before-submit.png", "fg24-6-uat/3-submit-after-submit.png", "fg24-6-uat/3-recorded-decisions-queues.png"]
+      }
+    ],
+    "after": {
+      "allObligations": 23,
+      "aiDevObligations": 1,
+      "aiDevNonManualObligations": 0,
+      "obligationsFromRunOrReview": 0,
+      "materialisations": 0,
+      "workflowEvents": 409,
+      "findingDecisions": 12,
+      "decisionsInOtherOrganisations": 0,
+      "obligation36da0a55RowMd5": "7f12c5652ac5dcd5d47931e1d9f638a6 (unchanged)"
+    },
+    "segregationOfDuties": "Run requested by User A; obligation created and submitted by User A, approved by User C; findings reviewed by User B. No user acted on their own submission.",
+    "notTested": "A positive Obligation Triage conversion and the E conversion: FG24/6 is finalised guidance and cannot produce one by design (RI-CLS-004).",
+    "backlogRaised": ["RI-UI-003 form promises a conversion the server refuses", "RI-UI-004 misleading message for a non-existent link target", "RI-UI-005 rejected findings in Exception Triage; reclassification evidence not stored for non-convert dispositions"]
+  },
+  "result": "FG24/6 authenticated UAT PASSED (Stages 1–3). Zero AI-generated obligations; guidance linked to the independently approved PSRs 2017 reg. 86(2D) obligation."
+}

@@ -1453,10 +1453,15 @@ function bindViewHandlers() {
   if (findingReviewLoad && !findingReviewLoad.dataset.loading) {
     const runId = findingReviewLoad.getAttribute('data-connected-ai-finding-review-load');
     findingReviewLoad.dataset.loading = '1';
+    const reviewPanelMounted = () => document.querySelector(`[data-connected-ai-finding-review="${runId}"]`);
     fetchConnectedAiFindingReview(getState(), runId)
       .then((body) => {
+        if (reviewPanelMounted()) {
+          findingReviewLoad.remove();
+          return;
+        }
         findingReviewLoad.outerHTML = renderConnectedAiFindingReviewPanel(body);
-        bindConnectedAiFindingReview(document.querySelector('[data-connected-ai-finding-review]'), {
+        bindConnectedAiFindingReview(reviewPanelMounted(), {
           onSubmitted: (result) => {
             showToast(`Per-finding review recorded — ${result.materialised?.length ?? 0} DRAFT obligation(s) created`);
             renderShell();
