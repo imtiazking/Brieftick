@@ -31,7 +31,11 @@ export async function POST(request: Request, { params }: RouteParams) {
     const { id: publicationId } = await params;
     const ctx = await requireRiContext('ai:request');
     const body = (await request.json()) as {
-      action?: 'init' | 'advance' | 'advance_all_simulated' | 'advance_session';
+      action?: 'init' | 'advance' | 'advance_all_simulated' | 'advance_session' | 'complete_live_batch';
+      batchIndex?: number;
+      runId?: string;
+      executionOk?: boolean;
+      errorCode?: string;
       changeId?: string;
       spendCapUsd?: number;
       maxBatches?: number | null;
@@ -49,6 +53,10 @@ export async function POST(request: Request, { params }: RouteParams) {
       runOrchestrationBatchesAutomatic,
       runOrchestrationSession,
       snapshotOrchestration,
+      completeLiveOrchestrationBatch,
+      buildConsolidatedHumanReview,
+      extendOrchestrationPlan,
+      finalizeProvisionInventoryOutcomes,
     } = await import('@/lib/ri/ai/publication-extraction-orchestrator.mjs');
     const { detectLegalInstrumentStartPage } = await import('@/lib/ri/classification/provision-eligibility.mjs');
     const { loadPublicationPdfEvidenceForAskRi } = await import('@/lib/ri/ask-ri/load-publication-pdf-evidence.mjs');
@@ -84,6 +92,76 @@ export async function POST(request: Request, { params }: RouteParams) {
       if (updErr) throw new Error(updErr.message);
       return orchestration;
     };
+
+    /* eslint-disable @typescript-eslint/no-explicit-any -- orchestration ledger is persisted JSON metadata */
+    if (body.action === 'complete_live_batch') {
+      if (!existing) {
+        return NextResponse.json({ ok: false, code: 'orchestration_not_initialised' }, { status: 409 });
+      }
+      const batchIndex = Number(body.batchIndex);
+      const runId = body.runId?.trim();
+      if (!Number.isInteger(batchIndex) || batchIndex < 0 || !runId) {
+        return NextResponse.json({ ok: false, code: 'batch_index_and_run_required' }, { status: 400 });
+      }
+      const { data: runRow, error: runErr } = await ctx.supabase
+        .from('ai_analysis_runs')
+        .select('id, execution_status, structured_output, organisation_id')
+        .eq('id', runId)
+        .eq('organisation_id', ctx.organisationId)
+        .maybeSingle();
+      if (runErr) throw new Error(runErr.message);
+      if (!runRow) return NextResponse.json({ ok: false, code: 'run_not_found' }, { status: 404 });
+      const state = structuredClone(existing);
+      const executionOk =
+        body.executionOk !== false &&
+        runRow.execution_status === 'COMPLETED' &&
+        runRow.structured_output != null;
+      const batchOutcome = {
+        runId,
+        structuredOutput: runRow.structured_output as Record<string, unknown> | null,
+        ok: executionOk,
+        ...(executionOk ? {} : { code: body.errorCode ?? 'live_batch_incomplete' }),
+      };
+      const result = completeLiveOrchestrationBatch(state as any, batchIndex, batchOutcome as any);
+      const ledger = state as Record<string, unknown>;
+      if (ledger.cumulativeSuppliedProvisionCores && Array.isArray(ledger.cumulativeSuppliedProvisionCores)) {
+        const loaded = await loadPublicationPdfEvidenceForAskRi(ctx.supabase, {
+          projectUrl: projectUrl!,
+          serviceRoleKey: serviceRoleKey!,
+          publicationIds: [publicationId],
+        });
+        if (loaded.evidence?.[0]) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const blocks = loaded.evidence[0].evidenceBlocks as any[];
+          const instrumentStartPage = detectLegalInstrumentStartPage(blocks);
+          if (!ledger._provisionInventory && Number.isInteger(instrumentStartPage)) {
+            const { buildInstrumentProvisionInventory } = await import('@/lib/ri/classification/provision-inventory.mjs');
+            ledger._provisionInventory = buildInstrumentProvisionInventory(blocks, instrumentStartPage);
+          }
+          if (
+            !ledger.publicationCoverageComplete &&
+            (ledger.batches as Array<{ status: string }> | undefined)?.every((b) => b.status === 'SUCCEEDED') &&
+            Number.isInteger(instrumentStartPage)
+          ) {
+            extendOrchestrationPlan(ledger as any, blocks, {
+              instrumentStartPage,
+              maxSectionsPerBatch: body.maxSectionsPerBatch ?? 18,
+              fullPublicationCoverage: true,
+            });
+          }
+          finalizeProvisionInventoryOutcomes(ledger as any);
+        }
+      }
+      const snapshot = snapshotOrchestration(ledger as any) as Record<string, unknown>;
+      await persistOrchestration(snapshot);
+      return NextResponse.json({
+        publicationId,
+        ...result,
+        review: buildConsolidatedHumanReview(ledger as any),
+        orchestration: snapshot,
+      });
+    }
+    /* eslint-enable @typescript-eslint/no-explicit-any */
 
     if (body.action === 'advance_session') {
       if (!existing) {

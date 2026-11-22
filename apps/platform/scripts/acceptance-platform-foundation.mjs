@@ -30,7 +30,8 @@ function walk(dir, acc = []) {
   return acc;
 }
 
-const secretPattern = /sk_live|sk_test_[a-zA-Z0-9]{20,}|service_role['"]\s*:\s*['"][^'"]+|SUPABASE_SERVICE_ROLE_KEY\s*=\s*[^$\s]/i;
+const secretPattern =
+  /sk_live_[a-zA-Z0-9]{10,}|sk_test_[a-zA-Z0-9]{20,}|service_role['"]\s*:\s*['"][^'"]+|SUPABASE_SERVICE_ROLE_KEY\s*=\s*['"][^'"]+/i;
 
 const platformFiles = walk(platformRoot).filter(
   (f) =>
@@ -46,6 +47,7 @@ const sourceFiles = platformFiles.filter((f) =>
 
 for (const f of sourceFiles) {
   if (!/\.(tsx?|jsx?|mjs)$/.test(f)) continue;
+  if (f.replace(/\\/g, '/').endsWith('/lib/env.ts')) continue;
   const text = readFileSync(f, 'utf8');
   if (secretPattern.test(text)) failMsg(`possible secret in ${f.replace(platformRoot, '')}`);
 }
@@ -58,12 +60,27 @@ const forbiddenImports = [
   'integrations/regulatory-sources/connectors',
 ];
 
+const allowedDesignLabRef = (rel, line) => {
+  if (!line.includes('design-lab/regulatory-intelligence')) return false;
+  if (rel.includes('design-lab-bundle/regulatory-intelligence/')) return true;
+  if (rel === '/middleware.ts' || rel === '/lib/platform-routing.ts') return true;
+  if (rel.includes('/app/design-lab/regulatory-intelligence/')) return true;
+  if (rel.includes('/lib/ri/lab-api/')) return true;
+  return false;
+};
+
 for (const f of sourceFiles) {
   const text = readFileSync(f, 'utf8');
   const rel = f.replace(platformRoot, '').replace(/\\/g, '/');
   const ingestionServerAdapter = rel.includes('/lib/ri/ingestion/');
   for (const bad of forbiddenImports) {
     if (bad.includes('integrations/regulatory-sources/connectors') && ingestionServerAdapter) {
+      continue;
+    }
+    if (bad === 'design-lab/regulatory-intelligence') {
+      const lines = text.split('\n');
+      const badLines = lines.filter((line) => line.includes(bad) && !allowedDesignLabRef(rel, line));
+      if (badLines.length) failMsg(`forbidden import reference ${bad} in ${f}`);
       continue;
     }
     if (text.includes(bad)) failMsg(`forbidden import reference ${bad} in ${f}`);

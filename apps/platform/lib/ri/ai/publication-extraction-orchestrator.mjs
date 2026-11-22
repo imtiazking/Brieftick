@@ -433,6 +433,48 @@ export function runOrchestrationSession(state, allBlocks, options = {}) {
   };
 }
 
+/** Map completed UC-RI-005 structured output into orchestration finding merge shape. */
+export function orchestrationFindingsFromStructuredOutput(structuredOutput) {
+  const output = structuredOutput && typeof structuredOutput === 'object' ? structuredOutput : {};
+  const candidates = Array.isArray(output.candidates) ? output.candidates : [];
+  return candidates
+    .map((c, i) => {
+      const provisionReference = c.provisionReference || c.reference || c.provision_ref;
+      const obligationStatement = c.obligationStatement || c.claimText || c.statement;
+      if (!provisionReference || !obligationStatement) return null;
+      return {
+        findingId: `candidate-${i}`,
+        provisionReference,
+        obligationStatement,
+        provisionCore: c.provisionCore || null,
+        regulatoryClassificationCode: c.regulatoryClassificationCode || c.classificationCode || null,
+      };
+    })
+    .filter(Boolean);
+}
+
+/**
+ * After a live provider run, merge findings and close the batch ledger.
+ * @param {ReturnType<typeof initPublicationExtractionOrchestration>} state
+ */
+/** @param {{ runId?: string, structuredOutput?: Record<string, unknown> | null, ok?: boolean, code?: string }} outcome */
+export function completeLiveOrchestrationBatch(state, batchIndex, { runId, structuredOutput, ok = true, code }) {
+  const batch = state.batches.find((b) => b.batchIndex === batchIndex);
+  if (!batch) return { ok: false, code: 'batch_not_found' };
+  if (batch.status === 'SUCCEEDED') return { ok: false, code: 'batch_already_succeeded' };
+  const suffix = batch.idempotencySuffix || `batch-${batchIndex}`;
+  markBatchRunning(state, batchIndex, { runId: runId || batch.runId, idempotencySuffix: suffix });
+  if (!ok) {
+    return markBatchOutcome(state, batchIndex, { ok: false, code: code || 'live_batch_failed' });
+  }
+  const findings = orchestrationFindingsFromStructuredOutput(structuredOutput);
+  if (findings.length) mergeFindingsIntoOrchestration(state, findings);
+  return markBatchOutcome(state, batchIndex, {
+    ok: true,
+    newlySuppliedCores: batch.instrumentProvisionsNewlySupplied || [],
+  });
+}
+
 /** Deterministic simulated batch (no provider call) for acceptance. */
 export function simulateBatchExecution(state, batchIndex, { findings = [] } = {}) {
   const batch = state.batches[batchIndex];
