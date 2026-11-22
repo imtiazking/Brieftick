@@ -228,9 +228,14 @@ const FINDING_REVIEW_ERRORS = {
   finding_provision_function_required: 'state the provision function (operative requirement, evidential provision, application, permission, exemption, transitional or definition)',
   finding_provision_function_invalid: 'the provision function is not recognised',
   finding_provision_reference_required: 'enter the provision reference (e.g. CONC 4.8.2R); its marker must match the classification code',
-  finding_provision_outside_instrument: 'the quotation page is not a legal-instrument section of this publication (or is a transitional-provisions table), so it cannot ground an obligation',
+  finding_provision_outside_instrument: 'the quotation page is not a legal-instrument section of this publication, so it cannot ground an obligation',
   finding_provision_not_in_cited_section: 'the provision is not set out on the selected page — a cross-reference to a provision set out elsewhere cannot be converted',
-  finding_provision_not_operative: 'application, permission, exemption, transitional and definition provisions — and quotations without duty language — cannot become standalone obligations',
+  finding_provision_not_operative: 'application, permission, exemption, definition and transitional-arrangement provisions cannot become standalone obligations',
+  finding_provision_deleted: 'the provision is deleted by this instrument and cannot become an obligation',
+  finding_provision_amendment_uncertain: 'the provision sits in amended text shown with underlining and strike-through, which cannot be read from the extracted text — it is held in Exception Triage for human review',
+  finding_provision_duty_unconfirmed: 'no recognised mandatory language was found in the quotation, so the operative classification needs human review in Exception Triage',
+  finding_provision_application_language: 'the quotation also contains application or exemption language — quote only the operative requirement, or review it in Exception Triage',
+  finding_transitional_requires_classification: 'this transitional provision is quoted with mandatory language — classify it as an operative requirement if it imposes a duty, otherwise review it in Exception Triage',
 };
 
 const FINDING_REVIEW_MESSAGES = {
@@ -241,7 +246,7 @@ const FINDING_REVIEW_MESSAGES = {
   obligation_classification_required: 'The database refused an obligation without a regulatory classification.',
   obligation_source_not_binding: 'The database refused an obligation from a non-binding publication.',
   obligation_binding_link_required: 'The database refused an evidential provision without a binding link.',
-  obligation_provision_unverified: 'The database refused an obligation without a verified operative instrument provision.',
+  obligation_provision_unverified: 'The database refused an obligation without a verified operative instrument provision set out as live text.',
 };
 
 function formatFindingReviewError(code) {
@@ -289,16 +294,29 @@ const EXCEPTION_REASON_LABELS = {
   provision_not_in_instrument: 'quotation not from a legal-instrument section',
   provision_not_set_out_in_section: 'provision not set out on the quotation page',
   provision_not_operative: 'provision is not operative',
+  provision_deleted: 'provision deleted by the instrument',
+  provision_amendment_uncertain: 'amended text: underlining and strike-through cannot be verified',
+  provision_duty_language_unconfirmed: 'no recognised mandatory language in the quotation',
+  provision_application_language_present: 'quotation mixes application or exemption language',
+  transitional_mandatory_language: 'transitional provision quoted with mandatory language',
+};
+
+/** Mirrors PROVISION_TEXT_STATUS in provision-eligibility.mjs. */
+const PROVISION_TEXT_STATUS_LABELS = {
+  INSTRUMENT_TEXT: '',
+  NEW_TEXT: ' (new text)',
+  AMENDMENT_MARKUP_UNCERTAIN: ' (amended text — not convertible)',
+  DELETED: ' (deleted)',
 };
 
 /** Mirrors PROVISION_FUNCTIONS in provision-eligibility.mjs. */
 const PROVISION_FUNCTION_LABELS = {
-  OPERATIVE_REQUIREMENT: 'Operative requirement (duty on the firm)',
+  OPERATIVE_REQUIREMENT: 'Operative requirement (duty on the firm, including transitional duties)',
   EVIDENTIAL_PROVISION: 'Evidential provision',
   APPLICATION: 'Application / scope',
   PERMISSION: 'Permission',
   EXEMPTION: 'Exemption',
-  TRANSITIONAL: 'Transitional provision',
+  TRANSITIONAL: 'Transitional arrangement (no standalone duty)',
   DEFINITION: 'Definition',
 };
 const NON_OPERATIVE_FUNCTIONS = new Set(['APPLICATION', 'PERMISSION', 'EXEMPTION', 'TRANSITIONAL', 'DEFINITION']);
@@ -398,7 +416,11 @@ function renderFindingCard(f, policy, canReview, draft = {}, convertibleFindings
       <dt>Provisions set out on cited instrument pages</dt><dd data-finding-instrument-provisions>${
         (f.sections || [])
           .filter((s) => s.inLegalInstrument)
-          .map((s) => `p.${esc(String(s.pageNumber))}${s.transitionalProvisions ? ' (transitional table)' : ''}: ${esc((s.provisionsSetOut || []).join(', ') || 'none')}`)
+          .map((s) => `p.${esc(String(s.pageNumber))}${s.transitionalProvisions ? ' (transitional table)' : ''}: ${esc(
+            (s.provisionsSetOut || [])
+              .map((p) => `${p}${PROVISION_TEXT_STATUS_LABELS[s.provisionTextStatus?.[p]] ?? PROVISION_TEXT_STATUS_LABELS.AMENDMENT_MARKUP_UNCERTAIN}`)
+              .join(', ') || 'none',
+          )}`)
           .join('; ') || '<span class="ri-muted">none — cited pages are outside the legal instrument, so no conversion is possible</span>'
       }</dd>
       <dt>Model suggestion</dt><dd>${esc(suggestion?.modelBindingNature || 'none')}${

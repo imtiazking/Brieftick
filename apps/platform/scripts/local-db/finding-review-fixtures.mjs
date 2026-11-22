@@ -47,6 +47,7 @@ export const INSTRUMENT_CATALOG = CATALOG.map((s) => ({
   inLegalInstrument: s.pageNumber >= 9,
   transitionalProvisions: false,
   provisionsSetOut: { 9: ['15.2.3R'], 14: ['15.2.1UK'], 16: ['15.2.3R'] }[s.pageNumber] ?? [],
+  provisionTextStatus: { 9: { '15.2.3R': 'NEW_TEXT' }, 14: { '15.2.1UK': 'NEW_TEXT' }, 16: { '15.2.3R': 'NEW_TEXT' } }[s.pageNumber] ?? {},
 }));
 export const INSTRUMENT_PROVISIONS = {
   1: { provisionReference: 'PERG 15.2.1 UK', provisionFunction: 'OPERATIVE_REQUIREMENT' },

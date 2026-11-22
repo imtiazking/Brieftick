@@ -263,6 +263,12 @@ export function evaluateFindingTriage({ policy, publicationType = null, finding,
   if (!citationVerified) reasons.push('unverified_citation');
 
   const nonOperative = e.conversionEnabled && NON_OPERATIVE_PROVISION_FUNCTIONS.includes(proposal.provisionFunction);
+  if (nonOperative) {
+    reasons.push(
+      ...evaluateProvisionEligibility({ code: e.code, legalStatus: e.legalStatus, provisionFunction: proposal.provisionFunction, quotation: proposal.quotation })
+        .reasons,
+    );
+  }
   if (e.conversionEnabled && !nonOperative) {
     if (String(proposal.legalBasis ?? '').trim().length < 3) reasons.push('missing_legal_basis');
     if (String(proposal.quotation ?? '').trim().length < 20 || !Number.isInteger(proposal.quotationPage)) {
@@ -326,6 +332,11 @@ const REASON_ERRORS = {
   provision_not_in_instrument: 'finding_provision_outside_instrument',
   provision_not_set_out_in_section: 'finding_provision_not_in_cited_section',
   provision_not_operative: 'finding_provision_not_operative',
+  provision_deleted: 'finding_provision_deleted',
+  provision_amendment_uncertain: 'finding_provision_amendment_uncertain',
+  provision_duty_language_unconfirmed: 'finding_provision_duty_unconfirmed',
+  provision_application_language_present: 'finding_provision_application_language',
+  transitional_mandatory_language: 'finding_transitional_requires_classification',
 };
 
 /** Error code for a refused conversion, `<code>:<findingNumber>`. */

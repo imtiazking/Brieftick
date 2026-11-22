@@ -63,6 +63,10 @@ const previous = describeSelectedSections(blocks, selectEvidenceBlocksForAnalysi
 const documentMarkers = blocks.flatMap((b) => provisionMarkersInText(b.extractedText).map((p) => ({ ...p, page: b.pageNumber })));
 const coreCoverage = (described) =>
   Object.fromEntries(CORE_PROVISIONS.map((p) => [p, described.sourceSections.filter((s) => s.provisionsSetOut.includes(p)).map((s) => s.pageNumber)]));
+const coreTextStatus = (described) =>
+  Object.fromEntries(
+    CORE_PROVISIONS.map((p) => [p, [...new Set(described.sourceSections.map((s) => s.provisionTextStatus?.[p]).filter(Boolean))]]),
+  );
 
 const sections = current.sourceSections.map((s, i) => ({
   order: i + 1,
@@ -72,6 +76,7 @@ const sections = current.sourceSections.map((s, i) => ({
   inLegalInstrument: s.inLegalInstrument,
   transitionalProvisions: s.transitionalProvisions,
   provisionsSetOut: s.provisionsSetOut,
+  provisionTextStatus: s.provisionTextStatus,
   crossReferences: [...new Set(provisionMarkersInText(s.text).filter((p) => !p.setOut).map((p) => `${p.sourcebook} ${p.core}`))],
   characters: s.text.length,
   truncated: s.truncated,
@@ -95,6 +100,7 @@ const report = {
   selection: {
     ...current.selection,
     coreProvisionPages: coreCoverage(current),
+    coreProvisionTextStatus: coreTextStatus(current),
     eProvisionsSupplied: sections.flatMap((s) => s.provisionsSetOut.filter((p) => p.endsWith('E'))),
   },
   previousKeywordSelection: {
@@ -114,7 +120,8 @@ console.log(
       reproducesStagingRevision: identical,
       instrumentStartPage,
       documentE: report.document.eProvisions.length,
-      current: { ...report.selection, instrumentProvisionsNotSupplied: report.selection.instrumentProvisionsNotSupplied.length },
+      current: report.selection,
+      supplied: sections.filter((s) => s.provisionsSetOut.length).map((s) => `p${s.page} ${JSON.stringify(s.provisionTextStatus)}`),
       previous: {
         selectedPages: report.previousKeywordSelection.selectedPages,
         instrumentPagesSelected: report.previousKeywordSelection.instrumentPagesSelected,

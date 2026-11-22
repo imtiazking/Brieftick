@@ -2,16 +2,21 @@
 --
 -- A binding publication is no longer sufficient for an AI finding to become a DRAFT obligation. A finding with a
 -- conversion-enabled code converts only when:
---   * the reviewer states the provision reference (FCA Handbook form, e.g. "CONC 4.8.2R") and its marker equals
---     the classification code;
+--   * the reviewer states the provision reference (FCA Handbook form, e.g. "CONC 4.8.2R", an appendix provision,
+--     e.g. "DISP App 5.3.2E", or a chapter-form transitional provision, e.g. "SYSC TP 13.1R") and its marker equals the classification code;
 --   * the quotation page is a cited section that the server recorded, at extraction time, as part of the legal
---     instrument (not a transitional-provisions table) and as setting out that provision — a cross-reference to
---     a provision set out elsewhere does not count;
---   * the reviewer states the provision function: OPERATIVE_REQUIREMENT for binding codes, EVIDENTIAL_PROVISION
---     for evidential codes; a binding quotation must contain duty language and no application, exemption or
---     transitional language.
--- Application, permission, exemption, transitional and definition provisions route to Non-Obligation Triage
--- whatever their marker. Runs whose grounding predates instrument detection fail closed. The patterns mirror
+--     instrument and as setting out that provision — a cross-reference to a provision set out elsewhere does not
+--     count;
+--   * the server recorded that provision's text as live: unamended instrument text, or text inserted as wholly new
+--     ("All the text is new and is not underlined"). Text in amending annexes shown with underlining and
+--     strike-through cannot be read from the text layer and, like deleted provisions, routes to Exception Triage;
+--   * the reviewer states the provision function: OPERATIVE_REQUIREMENT for binding codes (including transitional
+--     provisions that impose a mandatory requirement), EVIDENTIAL_PROVISION for evidential codes. Recognised
+--     mandatory language in the quotation corroborates that classification; its absence, or application language
+--     alongside it, routes the finding to Exception Triage for human review rather than deciding it.
+-- Application, permission, exemption, definition and transitional-arrangement provisions route to Non-Obligation
+-- Triage whatever their marker, except that a transitional arrangement quoted with mandatory language routes to
+-- Exception Triage. Runs whose grounding predates instrument detection fail closed. The patterns mirror
 -- lib/ri/classification/provision-eligibility.mjs. Additive: new nullable columns, no existing row changes.
 
 alter table public.ai_analysis_finding_decisions
@@ -38,7 +43,7 @@ as $$
     from (
       select regexp_match(
         btrim(regexp_replace(coalesce(p_reference, ''), '\s+', ' ', 'g')),
-        '^(?:([A-Z]{2,6}) )?([0-9]{1,2}[A-Z]?\.[0-9]{1,2}[A-Z]?\.[0-9]{1,3}[A-Z]?) ?(R|E|G|D|P|C|UK|EU)$'
+        '^(?:([A-Z]{2,6}) )?((?:App )?[0-9]{1,2}[A-Z]?\.[0-9]{1,2}[A-Z]?\.[0-9]{1,3}[A-Z]?|TP [0-9]{1,3}[A-Z]?\.[0-9]{1,3}[A-Z]?) ?(R|E|G|D|P|C|UK|EU)$'
       ) as m
     ) x
 $$;
@@ -95,11 +100,13 @@ declare
   v_provision_functions constant text[] := array[
     'OPERATIVE_REQUIREMENT', 'EVIDENTIAL_PROVISION', 'APPLICATION', 'PERMISSION', 'EXEMPTION', 'TRANSITIONAL', 'DEFINITION'
   ];
-  v_duty_pattern constant text := '\m(must|shall|is required to|are required to|is to|are to)\M';
+  v_duty_pattern constant text :=
+    '\m(must|shall|is required to|are required to|is required|are required|is to|are to|must not|may not|may only|is prohibited|are prohibited|prohibited from|is obliged to|are obliged to|has to|have to|ensure|ensures|take reasonable steps|takes reasonable steps|is a condition|no [a-z]+ may)\M';
   v_non_operative_pattern constant text :=
-    '\m(applies to|apply to|applies only|does not apply|do not apply|is exempt|are exempt|exemption|transitional|need not|is not required to|are not required to|disapplied|disapplies)\M';
+    '\m(applies to|apply to|applies only|does not apply|do not apply|is exempt|are exempt|exemption|need not|is not required to|are not required to|disapplied|disapplies)\M';
   v_non_operative boolean;
   v_provision_core text;
+  v_text_status text;
   v_section_entry jsonb;
   v_created jsonb := '{}'::jsonb;
   v_materialised jsonb := '[]'::jsonb;
@@ -249,6 +256,7 @@ begin
     v_non_operative := false;
     v_provision_core := null;
     v_section_entry := null;
+    v_text_status := null;
 
     if v_item.claim_sha is distinct from encode(sha256(convert_to(v_item.claim_text, 'UTF8')), 'hex') then
       raise exception 'finding_text_mismatch:%', v_n using errcode = '22023';
@@ -307,6 +315,10 @@ begin
     else
       if v_item.citation_status <> 'VERIFIED' then v_reasons := array_append(v_reasons, 'unverified_citation'); end if;
       v_non_operative := coalesce(v_entry.conversion_enabled and v_item.provision_function = any (v_non_operative_functions), false);
+      if v_non_operative and v_item.provision_function = 'TRANSITIONAL'
+         and coalesce(v_item.quotation, '') ~* v_duty_pattern then
+        v_reasons := array_append(v_reasons, 'transitional_mandatory_language');
+      end if;
       if v_entry.conversion_enabled and not v_non_operative then
         if v_item.legal_basis is null or length(v_item.legal_basis) < 3 then
           v_reasons := array_append(v_reasons, 'missing_legal_basis');
@@ -344,18 +356,27 @@ begin
           v_reasons := array_append(v_reasons, 'provision_reference_required');
         end if;
         if v_section_entry is null
-           or v_section_entry ->> 'inLegalInstrument' is distinct from 'true'
-           or v_section_entry ->> 'transitionalProvisions' = 'true' then
+           or v_section_entry ->> 'inLegalInstrument' is distinct from 'true' then
           v_reasons := array_append(v_reasons, 'provision_not_in_instrument');
         elsif v_provision_core is not null
               and not coalesce(jsonb_typeof(v_section_entry -> 'provisionsSetOut') = 'array'
                                and (v_section_entry -> 'provisionsSetOut') ? v_provision_core, false) then
           v_reasons := array_append(v_reasons, 'provision_not_set_out_in_section');
+        elsif v_provision_core is not null then
+          v_text_status := case when jsonb_typeof(v_section_entry -> 'provisionTextStatus') = 'object'
+                                then v_section_entry -> 'provisionTextStatus' ->> v_provision_core end;
+          if v_text_status = 'DELETED' then
+            v_reasons := array_append(v_reasons, 'provision_deleted');
+          elsif v_text_status is null or v_text_status not in ('INSTRUMENT_TEXT', 'NEW_TEXT') then
+            v_reasons := array_append(v_reasons, 'provision_amendment_uncertain');
+          end if;
         end if;
-        if v_entry.legal_status = 'binding' and v_item.provision_function = 'OPERATIVE_REQUIREMENT'
-           and (coalesce(v_item.quotation, '') !~* v_duty_pattern or coalesce(v_item.quotation, '') ~* v_non_operative_pattern)
-           and not ('provision_not_operative' = any (v_reasons)) then
-          v_reasons := array_append(v_reasons, 'provision_not_operative');
+        if v_entry.legal_status = 'binding' and v_item.provision_function = 'OPERATIVE_REQUIREMENT' then
+          if coalesce(v_item.quotation, '') !~* v_duty_pattern then
+            v_reasons := array_append(v_reasons, 'provision_duty_language_unconfirmed');
+          elsif v_item.quotation ~* v_non_operative_pattern then
+            v_reasons := array_append(v_reasons, 'provision_application_language_present');
+          end if;
         end if;
       end if;
       v_queue := case
@@ -384,6 +405,11 @@ begin
               when 'provision_not_in_instrument' then 'finding_provision_outside_instrument'
               when 'provision_not_set_out_in_section' then 'finding_provision_not_in_cited_section'
               when 'provision_not_operative' then 'finding_provision_not_operative'
+              when 'provision_deleted' then 'finding_provision_deleted'
+              when 'provision_amendment_uncertain' then 'finding_provision_amendment_uncertain'
+              when 'provision_duty_language_unconfirmed' then 'finding_provision_duty_unconfirmed'
+              when 'provision_application_language_present' then 'finding_provision_application_language'
+              when 'transitional_mandatory_language' then 'finding_transitional_requires_classification'
               when 'unknown_classification' then 'finding_classification_unknown'
               when 'unverified_citation' then 'finding_citation_unverified'
               when 'missing_legal_basis' then 'finding_legal_basis_required'
@@ -469,6 +495,7 @@ begin
             'provisionCore', v_provision_core,
             'provisionFunction', v_item.provision_function,
             'provisionInLegalInstrument', true,
+            'provisionTextStatus', v_text_status,
             'sourceQuotation', v_item.quotation,
             'quotationPage', v_item.quotation_page,
             'sourceSectionId', v_section,
@@ -550,7 +577,7 @@ begin
           'classification_code', v_item.code, 'legal_status', v_entry.legal_status,
           'classification_policy_version', v_policy.policy_version, 'triage_queue', v_queue,
           'evidence_pathway', v_pathway, 'provision_reference', v_item.provision_reference,
-          'provision_function', v_item.provision_function
+          'provision_function', v_item.provision_function, 'provision_text_status', v_text_status
         )
       );
       v_materialised := v_materialised || jsonb_build_object(
@@ -612,10 +639,10 @@ end;
 $$;
 
 comment on function public.ri_submit_ai_finding_review(uuid, uuid, jsonb, text) is
-  'Atomic per-finding review of a UC-RI-005 run by a human reviewer (not the requester). Routes every finding to a triage queue under the active regulator classification policy; creates DRAFT obligations only for Obligation Triage findings with disposition CONVERT_TO_DRAFT_OBLIGATION, a server-verified quotation and an operative provision set out in a legal-instrument section of the source.';
+  'Atomic per-finding review of a UC-RI-005 run by a human reviewer (not the requester). Routes every finding to a triage queue under the active regulator classification policy; creates DRAFT obligations only for Obligation Triage findings with disposition CONVERT_TO_DRAFT_OBLIGATION, a server-verified quotation and an operative provision set out as live (unamended or wholly new) text in a legal-instrument section of the source.';
 
--- Obligation register: every AI-assisted obligation carries a verified, operative instrument provision whose
--- marker matches its code, and those facts cannot be edited afterwards.
+-- Obligation register: every AI-assisted obligation carries a verified, operative instrument provision set out as
+-- live text whose marker matches its code, and those facts cannot be edited afterwards.
 create or replace function public.ri_guard_obligation_provision()
 returns trigger
 language plpgsql
@@ -623,7 +650,9 @@ security definer
 set search_path = ''
 as $$
 declare
-  v_keys constant text[] := array['provisionReference', 'provisionCore', 'provisionFunction', 'provisionInLegalInstrument'];
+  v_keys constant text[] := array[
+    'provisionReference', 'provisionCore', 'provisionFunction', 'provisionInLegalInstrument', 'provisionTextStatus'
+  ];
   v_meta jsonb := coalesce(new.metadata, '{}'::jsonb);
   v_core text;
 begin
@@ -642,7 +671,8 @@ begin
   if v_core is null
      or v_meta ->> 'provisionCore' is distinct from v_core
      or coalesce(v_meta ->> 'provisionFunction', '') not in ('OPERATIVE_REQUIREMENT', 'EVIDENTIAL_PROVISION')
-     or v_meta ->> 'provisionInLegalInstrument' is distinct from 'true' then
+     or v_meta ->> 'provisionInLegalInstrument' is distinct from 'true'
+     or coalesce(v_meta ->> 'provisionTextStatus', '') not in ('INSTRUMENT_TEXT', 'NEW_TEXT') then
     raise exception 'obligation_provision_unverified' using errcode = '42501';
   end if;
   return new;

@@ -3,8 +3,10 @@
  * Isolated embedded Postgres (never staging): migration 20261122090000 — provision-level conversion eligibility
  * (RI-CLS-005) — plus the instrument-aware selection and shared JS mirror (RI-CLS-006).
  *
- * Fixtures are PS26/1-shaped: a narrative page, instrument pages that set out CONC provisions, a transitional
- * provisions table and a synthetic evidential provision (TEST DATA — PS26/1 contains no E provision).
+ * Fixtures are PS26/1-shaped: a narrative page, instrument pages that set out CONC provisions as amended text
+ * (underlining/strike-through, not verifiable) or wholly new text, a transitional provisions table, a chapter-form
+ * transitional provision, a deleted provision and a synthetic evidential provision (TEST DATA — PS26/1 contains no
+ * E provision; quotations for 7.20.1R, TP 13.3R and 4.6.3R are TEST DATA).
  */
 import pg from 'pg';
 import { join } from 'node:path';
@@ -21,7 +23,9 @@ import {
 } from './local-db/harness.mjs';
 import { GMAIL, PILOT, REVISION, YAHOO, seedFindingReviewFixtures, sha, CATALOG } from './local-db/finding-review-fixtures.mjs';
 import {
+  analyseInstrumentProvisionText,
   detectLegalInstrumentStartPage,
+  hasDutyLanguage,
   evaluateProvisionEligibility,
   parseProvisionReference,
   provisionMarkersInText,
@@ -60,14 +64,20 @@ const QUOTE = {
   crossRef: 'A firm must provide the information required by CONC 4.2A.3R before the agreement is entered into.',
   transitional: 'A firm must apply the requirements in the table from the date the firm obtains permission.',
   evidential: 'A firm should keep a record of the explanation it provides to the customer before the agreement is made.',
+  mayOnly: 'A firm may only take steps to recover the debt after it has contacted the customer about the missed payment.',
+  tpDuty: 'Where the only regulated activities in its permission are deferred payment credit activities, the firm must comply with SYSC 4.1.1R.',
+  deleted: 'A firm must give the customer the explanation required by this rule before the agreement is made.',
 };
 
 const CAT = [
   { sourceSectionId: 'N19', pageNumber: 19, citation: 'PDF p.19', excerpt: 'Our policy approach', inLegalInstrument: false, transitionalProvisions: false, provisionsSetOut: [] },
   { sourceSectionId: 'I83', pageNumber: 83, citation: 'PDF p.83 · legal instrument', excerpt: 'TP 1 Transitional provisions', inLegalInstrument: true, transitionalProvisions: true, provisionsSetOut: [] },
-  { sourceSectionId: 'I87', pageNumber: 87, citation: 'PDF p.87 · legal instrument', excerpt: '4.2A Additional product information', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['4.2.1R', '4.2A.1R', '4.2A.2G', '4.2A.3R'] },
-  { sourceSectionId: 'I93', pageNumber: 93, citation: 'PDF p.93 · legal instrument', excerpt: '4.8.2 R A firm must not unfairly encourage', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['4.8.2R', '6.7.42G', '6.7.43G'] },
-  { sourceSectionId: 'I95', pageNumber: 95, citation: 'PDF p.95 · legal instrument', excerpt: 'TEST DATA evidential provision 7.20.4E', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['7.20.4E'] },
+  { sourceSectionId: 'I87', pageNumber: 87, citation: 'PDF p.87 · legal instrument', excerpt: '4.2A Additional product information', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['4.2.1R', '4.2A.1R', '4.2A.2G', '4.2A.3R'], provisionTextStatus: { '4.2.1R': 'AMENDMENT_MARKUP_UNCERTAIN', '4.2A.1R': 'NEW_TEXT', '4.2A.2G': 'NEW_TEXT', '4.2A.3R': 'NEW_TEXT' } },
+  { sourceSectionId: 'I93', pageNumber: 93, citation: 'PDF p.93 · legal instrument', excerpt: '4.8.2 R A firm must not unfairly encourage', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['4.8.2R', '6.7.42G', '6.7.43G'], provisionTextStatus: { '4.8.2R': 'AMENDMENT_MARKUP_UNCERTAIN', '6.7.42G': 'AMENDMENT_MARKUP_UNCERTAIN', '6.7.43G': 'AMENDMENT_MARKUP_UNCERTAIN' } },
+  { sourceSectionId: 'I95', pageNumber: 95, citation: 'PDF p.95 · legal instrument', excerpt: 'TEST DATA evidential provision 7.20.4E', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['7.20.4E'], provisionTextStatus: { '7.20.4E': 'NEW_TEXT' } },
+  { sourceSectionId: 'I94', pageNumber: 94, citation: 'PDF p.94 · legal instrument', excerpt: '7.20 Regulated deferred payment credit agreements', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['7.1.4R', '7.20.1R'], provisionTextStatus: { '7.1.4R': 'AMENDMENT_MARKUP_UNCERTAIN', '7.20.1R': 'NEW_TEXT' } },
+  { sourceSectionId: 'I66', pageNumber: 66, citation: 'PDF p.66 · legal instrument', excerpt: 'TP 13 SMCR: application to firms with deferred payment credit temporary permission', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['TP 13.1R', 'TP 13.3R'], provisionTextStatus: { 'TP 13.1R': 'NEW_TEXT', 'TP 13.3R': 'NEW_TEXT' } },
+  { sourceSectionId: 'I92', pageNumber: 92, citation: 'PDF p.92 · legal instrument', excerpt: 'TEST DATA 4.6.3 R [deleted]', inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['4.6.3R'], provisionTextStatus: { '4.6.3R': 'DELETED' } },
 ];
 const FINDINGS = [
   { text: 'Firms must not unfairly encourage customers to enter into deferred payment credit agreements.', sections: ['I93'] },
@@ -76,6 +86,9 @@ const FINDINGS = [
   { text: 'The additional product information section applies to deferred payment credit lenders.', sections: ['I87'] },
   { text: 'Firms with temporary permission must apply the requirements from the date permission is obtained.', sections: ['I83'] },
   { text: 'Firms should keep a record of the explanation given to customers (evidential).', sections: ['I95'] },
+  { text: 'Firms may only take recovery steps after contacting the customer about a missed payment.', sections: ['I94'] },
+  { text: 'Firms with only deferred payment credit temporary permission must comply with SYSC 4.1.1R.', sections: ['I66'] },
+  { text: 'Firms must give the explanation required by CONC 4.6.3R before the agreement.', sections: ['I92'] },
 ];
 
 const SUBMIT = `select public.ri_submit_ai_finding_review($1, $2, $3::jsonb, $4) as r`;
@@ -141,6 +154,7 @@ try {
     [0, 93, QUOTE.unfair], [0, 93, QUOTE.application], [0, 93, QUOTE.noDuty],
     [1, 19, QUOTE.unfair], [2, 93, QUOTE.crossRef], [3, 87, QUOTE.application],
     [4, 83, QUOTE.transitional], [5, 95, QUOTE.evidential],
+    [6, 94, QUOTE.mayOnly], [6, 94, QUOTE.noDuty], [6, 94, QUOTE.application], [7, 66, QUOTE.tpDuty], [8, 92, QUOTE.deleted],
   ]) await verify(run, i, page, q);
 
   const base = (i, extra = {}) => ({
@@ -172,20 +186,27 @@ try {
   check(!['finalised_guidance', 'guidance'].includes(pubType), 'fixture publication is a binding publication type', pubType);
   const fn = (await db.query(`select public.ri_provision_reference_core('CONC 4.8.2 R', 'R') a, public.ri_provision_reference_core('CONC  4.8.2R', 'R') b,
                                      public.ri_provision_reference_core('4.2A.3R', 'R') c, public.ri_provision_reference_core('CONC 4.8.2G', 'R') d,
-                                     public.ri_provision_reference_core('CONC 4.8.2', 'R') e, public.ri_provision_reference_core('Article 3 RTS', 'TS') f`)).rows[0];
+                                     public.ri_provision_reference_core('CONC 4.8.2', 'R') e, public.ri_provision_reference_core('Article 3 RTS', 'TS') f,
+                                     public.ri_provision_reference_core('SYSC TP 13.3R', 'R') g, public.ri_provision_reference_core('SUP TP 1.9A 4R', 'R') h,
+                                     public.ri_provision_reference_core('DISP App 5.3.2E', 'E') i`)).rows[0];
+  check(fn.i === 'App 5.3.2E', 'appendix provisions keep their App prefix (never collide with main-text numbering)', fn.i);
   check(fn.a === '4.8.2R' && fn.b === '4.8.2R' && fn.c === '4.2A.3R' && fn.d === null && fn.e === null && fn.f === null, 'reference parser: well-formed references, marker must equal code; TS has no marker and fails closed', fn);
+  check(fn.g === 'TP 13.3R' && fn.h === null, 'chapter-form transitional provisions parse; transitional table rows fail closed', { g: fn.g, h: fn.h });
 
   // Refusals (each rolled back).
   await refused({ 1: convert('R', 19, QUOTE.unfair, 'CONC 4.8.2R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_outside_instrument:2', 'R from a narrative (non-instrument) page of a binding publication is refused');
   await refused({ 2: convert('R', 93, QUOTE.crossRef, 'CONC 4.2A.3R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_not_in_cited_section:3', 'a cross-reference on p.93 cannot convert a provision set out on p.87');
   await refused({ 3: convert('R', 87, QUOTE.application, 'CONC 4.2A.1R', 'APPLICATION') }, 'finding_provision_not_operative:4', 'an application provision marked R cannot be converted');
-  await refused({ 4: convert('R', 83, QUOTE.transitional, 'CONC 16.1.5R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_outside_instrument:5', 'a transitional-provisions table cannot ground an obligation');
+  await refused({ 4: convert('R', 83, QUOTE.transitional, 'CONC 16.1.5R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_not_in_cited_section:5', 'a transitional-table row that cannot be verified as set out fails closed (not excluded as transitional)');
+  await refused({ 0: convert('R', 93, QUOTE.unfair, 'CONC 4.8.2R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_amendment_uncertain:1', 'amended text (underlining/strike-through not verifiable) cannot convert');
+  await refused({ 8: convert('R', 92, QUOTE.deleted, 'CONC 4.6.3R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_deleted:9', 'a deleted provision cannot create an obligation');
+  await refused({ 7: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', provisionFunction: 'TRANSITIONAL', provisionReference: 'SYSC TP 13.3R', quotation: QUOTE.tpDuty, quotationPage: 66, disposition: 'HORIZON_SCANNING' } }, 'finding_disposition_not_allowed:8', 'a transitional provision quoted with mandatory language is not routed to Non-Obligation Triage');
   await refused({ 0: convert('R', 93, QUOTE.unfair, 'CONC 4.8.2G', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_reference_required:1', 'marker G on an R classification is refused');
   await refused({ 0: convert('R', 93, QUOTE.unfair, null, 'OPERATIVE_REQUIREMENT') }, 'finding_provision_reference_required:1', 'conversion without a provision reference is refused');
   await refused({ 0: convert('R', 93, QUOTE.unfair, 'CONC 4.8.2R', null) }, 'finding_provision_function_required:1', 'conversion without a provision function is refused');
   await refused({ 0: convert('R', 93, QUOTE.unfair, 'CONC 4.8.2R', 'EVIDENTIAL_PROVISION') }, 'finding_provision_not_operative:1', 'binding code with an evidential function is refused');
-  await refused({ 0: convert('R', 93, QUOTE.application, 'CONC 4.8.2R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_not_operative:1', 'quotation with application language cannot convert as an operative requirement');
-  await refused({ 0: convert('R', 93, QUOTE.noDuty, 'CONC 4.8.2R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_not_operative:1', 'quotation without duty language cannot convert');
+  await refused({ 6: convert('R', 94, QUOTE.application, 'CONC 7.20.1R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_duty_unconfirmed:7', 'application-only quotation of a live operative provision goes to Exception Triage');
+  await refused({ 6: convert('R', 94, QUOTE.noDuty, 'CONC 7.20.1R', 'OPERATIVE_REQUIREMENT') }, 'finding_provision_duty_unconfirmed:7', 'quotation without recognised mandatory language goes to Exception Triage');
   await refused({ 0: convert('R', 93, QUOTE.unfair, 'CONC 4.8.2R', 'FOO') }, 'finding_provision_function_invalid:1', 'unknown provision function refused');
   await refused({ 3: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', provisionFunction: 'APPLICATION', disposition: 'LINK_TO_EXISTING_OBLIGATION' } }, 'finding_linked_obligation_required:4', 'non-operative R routes to Non-Obligation Triage dispositions (link requires a target)');
   await refused({ 5: convert('E', 95, QUOTE.evidential, 'COBS 7.20.4E', 'EVIDENTIAL_PROVISION') }, 'finding_binding_link_required:6', 'evidential provision still needs its binding link');
@@ -199,42 +220,66 @@ try {
   ]);
   check(!legacyRes.ok && legacyRes.message === 'finding_provision_outside_instrument:1', 'runs whose grounding predates instrument detection fail closed', legacyRes.message);
 
+  const noStatusCat = CAT.map(({ provisionTextStatus, ...c }) => c);
+  const noStatus = await insertRun('prov-no-status', noStatusCat, [FINDINGS[6]]);
+  await verify(noStatus, 0, 94, QUOTE.mayOnly);
+  const noStatusRes = await attempt(adminUrl, YAHOO, SUBMIT, [
+    PILOT, noStatus.runId,
+    JSON.stringify([{ findingId: noStatus.ids[0], claimTextSha256: sha(FINDINGS[6].text), comment: 'Text status check by the reviewer.', ...convert('R', 94, QUOTE.mayOnly, 'CONC 7.20.1R', 'OPERATIVE_REQUIREMENT') }]),
+    'No status',
+  ]);
+  check(!noStatusRes.ok && noStatusRes.message === 'finding_provision_amendment_uncertain:1', 'instrument sections without a recorded text status fail closed', noStatusRes.message);
+
   // Successful review (committed).
   const ok = await submit(
     {
-      0: convert('R', 93, QUOTE.unfair, 'CONC 4.8.2 R', 'OPERATIVE_REQUIREMENT', { legalBasis: 'CONC 4.8.2R (FCA 2026/2)' }),
       1: { decision: 'ACCEPTED', regulatoryClassificationCode: 'G', disposition: 'SUPPORTING_INFORMATION' },
       3: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', provisionFunction: 'APPLICATION', provisionReference: 'CONC 4.2A.1R', disposition: 'SUPPORTING_INFORMATION' },
-      4: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', provisionFunction: 'TRANSITIONAL', disposition: 'ARCHIVE' },
-      5: convert('E', 95, QUOTE.evidential, 'COBS 7.20.4E', 'EVIDENTIAL_PROVISION', { supportingFindingId: run.ids[0] }),
+      0: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', provisionFunction: 'OPERATIVE_REQUIREMENT', provisionReference: 'CONC 4.8.2R', quotation: QUOTE.unfair, quotationPage: 93, legalBasis: 'CONC 4.8.2R', disposition: 'RECLASSIFICATION_REQUESTED' },
+      4: { decision: 'ACCEPTED', regulatoryClassificationCode: 'R', provisionFunction: 'TRANSITIONAL', quotation: QUOTE.transitional, quotationPage: 83, disposition: 'ARCHIVE' },
+      5: convert('E', 95, QUOTE.evidential, 'COBS 7.20.4E', 'EVIDENTIAL_PROVISION', { supportingFindingId: run.ids[6] }),
+      6: convert('R', 94, QUOTE.mayOnly, 'CONC 7.20.1R', 'OPERATIVE_REQUIREMENT', { legalBasis: 'CONC 7.20.1R (FCA 2026/2)' }),
+      7: convert('R', 66, QUOTE.tpDuty, 'SYSC TP 13.3R', 'OPERATIVE_REQUIREMENT', { legalBasis: 'SYSC TP 13.3R (FCA 2026/2)' }),
     },
     true,
   );
-  check(ok.ok, 'review with one operative R, one synthetic E, and application/transitional R routed away succeeds', ok.message);
+  check(ok.ok, 'review with a new-text R (no "must"), a transitional duty, one synthetic E, and amended/application/transitional findings routed away succeeds', ok.message);
   const obls = (await db.query(`select id, status, metadata from regulatory_obligations where ai_analysis_run_id = $1 order by (metadata->>'claimIndex')::int`, [run.runId])).rows;
-  const rule = obls.find((o) => o.metadata.claimIndex === 0);
+  const rule = obls.find((o) => o.metadata.claimIndex === 6);
+  const tp = obls.find((o) => o.metadata.claimIndex === 7);
   const evid = obls.find((o) => o.metadata.claimIndex === 5);
-  check(obls.length === 2, 'exactly two DRAFT obligations created (operative R and evidential E)', obls.map((o) => o.metadata.provisionReference));
+  check(obls.length === 3, 'exactly three DRAFT obligations created (new-text R, transitional R, evidential E)', obls.map((o) => o.metadata.provisionReference));
   check(
-    rule?.status === 'DRAFT' && rule.metadata.provisionReference === 'CONC 4.8.2 R' && rule.metadata.provisionCore === '4.8.2R' &&
-      rule.metadata.provisionFunction === 'OPERATIVE_REQUIREMENT' && rule.metadata.provisionInLegalInstrument === true && rule.metadata.legalStatus === 'binding',
-    'R obligation records provision reference, core, operative function and instrument status',
+    rule?.status === 'DRAFT' && rule.metadata.provisionReference === 'CONC 7.20.1R' && rule.metadata.provisionCore === '7.20.1R' &&
+      rule.metadata.provisionFunction === 'OPERATIVE_REQUIREMENT' && rule.metadata.provisionInLegalInstrument === true &&
+      rule.metadata.provisionTextStatus === 'NEW_TEXT' && rule.metadata.legalStatus === 'binding',
+    'R obligation (quoted with "may only", not "must") records provision reference, core, function, instrument and text status',
     rule?.metadata,
   );
+  check(tp?.metadata.provisionCore === 'TP 13.3R' && tp.metadata.legalStatus === 'binding', 'a transitional provision imposing a mandatory requirement converts when classified as operative', tp?.metadata);
   check(
     evid?.metadata.legalStatus === 'evidential' && evid.metadata.supportsObligationId === rule?.id && evid.metadata.provisionFunction === 'EVIDENTIAL_PROVISION',
     'E obligation keeps evidential status and links to the binding R obligation',
     evid?.metadata,
   );
-  const decs = (await db.query(`select claim_index, triage_queue, disposition, provision_reference, provision_function, obligation_id is not null converted from ai_analysis_finding_decisions where analysis_run_id = $1 order by claim_index`, [run.runId])).rows;
+  const decs = (await db.query(`select claim_index, triage_queue, exception_reasons, disposition, provision_reference, provision_function, obligation_id is not null converted from ai_analysis_finding_decisions where analysis_run_id = $1 order by claim_index`, [run.runId])).rows;
   check(
-    decs[3].triage_queue === 'NON_OBLIGATION_TRIAGE' && decs[3].provision_function === 'APPLICATION' && !decs[3].converted &&
-      decs[4].triage_queue === 'NON_OBLIGATION_TRIAGE' && decs[4].provision_function === 'TRANSITIONAL' && !decs[4].converted,
-    'application and transitional R provisions recorded in Non-Obligation Triage without obligations',
-    decs,
+    decs[3].triage_queue === 'NON_OBLIGATION_TRIAGE' && decs[3].provision_function === 'APPLICATION' && !decs[3].converted,
+    'application R provision recorded in Non-Obligation Triage without an obligation',
+    decs[3],
+  );
+  check(
+    decs[0].triage_queue === 'EXCEPTION_TRIAGE' && decs[0].exception_reasons.includes('provision_amendment_uncertain') && !decs[0].converted,
+    'amended-text R provision held in Exception Triage without an obligation',
+    decs[0],
+  );
+  check(
+    decs[4].triage_queue === 'EXCEPTION_TRIAGE' && decs[4].exception_reasons.includes('transitional_mandatory_language') && !decs[4].converted,
+    'transitional arrangement quoted with mandatory language routed to Exception Triage, not excluded',
+    decs[4],
   );
   const event = (await db.query(`select metadata from workflow_events where entity_id = $1 and event_type = 'AI_OBLIGATION_MATERIALISED'`, [rule?.id])).rows[0]?.metadata;
-  check(event?.provision_reference === 'CONC 4.8.2 R' && event?.provision_function === 'OPERATIVE_REQUIREMENT', 'materialisation audit event records the provision', event);
+  check(event?.provision_reference === 'CONC 7.20.1R' && event?.provision_function === 'OPERATIVE_REQUIREMENT' && event?.provision_text_status === 'NEW_TEXT', 'materialisation audit event records the provision and its text status', event);
 
   // Register guard (privileged connection: triggers still apply).
   const reviewId = (await db.query(`select id from ai_analysis_reviews where analysis_run_id = $1`, [run.runId])).rows[0].id;
@@ -249,17 +294,23 @@ try {
       .then(() => 'inserted', (e) => e.message);
   const noProvision = await directInsert({ regulatoryClassificationCode: 'R' });
   const narrativeProvision = await directInsert({
-    regulatoryClassificationCode: 'R', provisionReference: 'CONC 4.8.2R', provisionCore: '4.8.2R', provisionFunction: 'APPLICATION', provisionInLegalInstrument: true,
+    regulatoryClassificationCode: 'R', provisionReference: 'CONC 4.8.2R', provisionCore: '4.8.2R', provisionFunction: 'APPLICATION', provisionInLegalInstrument: true, provisionTextStatus: 'NEW_TEXT',
+  });
+  const amendedProvision = await directInsert({
+    regulatoryClassificationCode: 'R', provisionReference: 'CONC 4.8.2R', provisionCore: '4.8.2R', provisionFunction: 'OPERATIVE_REQUIREMENT', provisionInLegalInstrument: true, provisionTextStatus: 'AMENDMENT_MARKUP_UNCERTAIN',
   });
   check(
-    noProvision === 'obligation_provision_unverified' && narrativeProvision === 'obligation_provision_unverified',
-    'AI-assisted obligation without a verified operative instrument provision refused at the register',
-    { noProvision, narrativeProvision },
+    noProvision === 'obligation_provision_unverified' && narrativeProvision === 'obligation_provision_unverified' && amendedProvision === 'obligation_provision_unverified',
+    'AI-assisted obligation without a verified operative live-text instrument provision refused at the register',
+    { noProvision, narrativeProvision, amendedProvision },
   );
   const edit = await db
     .query(`update regulatory_obligations set metadata = jsonb_set(metadata, '{provisionReference}', '"CONC 4.2A.3R"') where id = $1`, [rule?.id])
     .then(() => 'updated', (e) => e.message);
-  check(edit === 'obligation_provision_immutable', 'provision facts on an obligation cannot be edited', edit);
+  const editStatus = await db
+    .query(`update regulatory_obligations set metadata = jsonb_set(metadata, '{provisionTextStatus}', '"DELETED"') where id = $1`, [rule?.id])
+    .then(() => 'updated', (e) => e.message);
+  check(edit === 'obligation_provision_immutable' && editStatus === 'obligation_provision_immutable', 'provision facts and text status on an obligation cannot be edited', { edit, editStatus });
   const grants = (await db.query(`select has_function_privilege('authenticated', 'public.ri_guard_obligation_provision()', 'execute') a`)).rows[0].a;
   check(grants === false, 'provision trigger function is not directly executable by signed-in users', grants);
 
@@ -285,11 +336,46 @@ try {
     'unprefixed markers are provisions set out; prefixed markers are cross-references',
     markers,
   );
-  const section = { inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['4.8.2R'] };
+  const appMarkers = provisionMarkersInText('ending with 10 January 2025.App 5.3.2 E The following will be relevant records for the purposes of DISP App 5.3.1R.');
+  check(
+    appMarkers.length === 2 && appMarkers[0].core === 'App 5.3.2E' && appMarkers[0].setOut && appMarkers[1].core === 'App 5.3.1R' && !appMarkers[1].setOut &&
+      parseProvisionReference('DISP App 5.3.2E')?.core === 'App 5.3.2E',
+    'appendix provisions: set out as "App 5.3.2E"; "DISP App 5.3.1R" is a cross-reference, not main-text 5.3.1R',
+    appMarkers,
+  );
+  const section = { inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['4.8.2R'], provisionTextStatus: { '4.8.2R': 'NEW_TEXT' } };
   const jsOk = evaluateProvisionEligibility({ code: 'R', legalStatus: 'binding', provisionReference: 'CONC 4.8.2R', provisionFunction: 'OPERATIVE_REQUIREMENT', quotation: QUOTE.unfair, section });
   const jsApp = evaluateProvisionEligibility({ code: 'R', legalStatus: 'binding', provisionReference: 'CONC 4.2A.1R', provisionFunction: 'APPLICATION', quotation: QUOTE.application, section });
   const jsNarr = evaluateProvisionEligibility({ code: 'R', legalStatus: 'binding', provisionReference: 'CONC 4.8.2R', provisionFunction: 'OPERATIVE_REQUIREMENT', quotation: QUOTE.unfair, section: { inLegalInstrument: false } });
   check(jsOk.route === 'OBLIGATION' && jsApp.route === 'NON_OBLIGATION' && jsNarr.reasons.includes('provision_not_in_instrument'), 'JS eligibility: operative converts; application routes away; narrative refused', { jsOk, jsApp, jsNarr });
+  const jsAmended = evaluateProvisionEligibility({ code: 'R', legalStatus: 'binding', provisionReference: 'CONC 4.8.2R', provisionFunction: 'OPERATIVE_REQUIREMENT', quotation: QUOTE.unfair, section: { ...section, provisionTextStatus: { '4.8.2R': 'AMENDMENT_MARKUP_UNCERTAIN' } } });
+  const jsDeleted = evaluateProvisionEligibility({ code: 'R', legalStatus: 'binding', provisionReference: 'CONC 4.8.2R', provisionFunction: 'OPERATIVE_REQUIREMENT', quotation: QUOTE.unfair, section: { ...section, provisionTextStatus: { '4.8.2R': 'DELETED' } } });
+  const jsTpDuty = evaluateProvisionEligibility({ code: 'R', legalStatus: 'binding', provisionFunction: 'TRANSITIONAL', quotation: QUOTE.tpDuty, section });
+  const jsTpNoDuty = evaluateProvisionEligibility({ code: 'R', legalStatus: 'binding', provisionFunction: 'TRANSITIONAL', quotation: 'SYSC TP 13 applies to a firm with a deferred payment credit temporary permission.', section });
+  check(
+    jsAmended.route === 'EXCEPTION' && jsAmended.reasons[0] === 'provision_amendment_uncertain' && jsDeleted.reasons[0] === 'provision_deleted' &&
+      jsTpDuty.route === 'EXCEPTION' && jsTpNoDuty.route === 'NON_OBLIGATION',
+    'JS eligibility: amended and deleted text to Exception; transitional with mandatory language to Exception; transitional arrangement to Non-Obligation',
+    { jsAmended, jsDeleted, jsTpDuty, jsTpNoDuty },
+  );
+  check(
+    ['A firm may not charge a fee.', 'A firm may only lend after checks.', 'No firm may enter into the agreement.', 'The firm is prohibited from charging.', 'A firm must take reasonable steps.', 'The firm must ensure that'].every(hasDutyLanguage) &&
+      !hasDutyLanguage('This section relates to deferred payment credit.'),
+    'mandatory language is recognised beyond "must" (may not, may only, no firm may, prohibited, ensure)',
+  );
+  const amendBlocks = [
+    { documentEvidenceId: 'A1', pageNumber: 10, extractedText: 'Annex F Amendments to CONC In this Annex, underlining indicates new text and striking through indicates deleted text. 4.2.1 R This section applies to a firm. Insert the following new section, CONC 4.2A. All the text is new and is not underlined. 4.2A.3 R A firm must provide.' },
+    { documentEvidenceId: 'A2', pageNumber: 11, extractedText: '4.2A.4 R A firm must explain. Amend the following as shown. 4.8.2 R A firm must not unfairly encourage. 4.6.3 R [deleted]' },
+    { documentEvidenceId: 'A3', pageNumber: 12, extractedText: 'Delete the following. 4.9.1 R A firm must notify. Annex G Amendments to the Perimeter Guidance manual (PERG) 2.7.7F G Guidance text.' },
+  ];
+  const status = analyseInstrumentProvisionText(amendBlocks, 10);
+  check(
+    status.get('A1')['4.2.1R'] === 'AMENDMENT_MARKUP_UNCERTAIN' && status.get('A1')['4.2A.3R'] === 'NEW_TEXT' && status.get('A2')['4.2A.4R'] === 'NEW_TEXT' &&
+      status.get('A2')['4.8.2R'] === 'AMENDMENT_MARKUP_UNCERTAIN' && status.get('A2')['4.6.3R'] === 'DELETED' && status.get('A3')['4.9.1R'] === 'DELETED' &&
+      status.get('A3')['2.7.7FG'] === 'AMENDMENT_MARKUP_UNCERTAIN',
+    'amendment analysis: markup text uncertain, inserted new text live across pages, "[deleted]" and "Delete the following" deleted',
+    Object.fromEntries(status),
+  );
 
   const finding = { citationStatus: 'VERIFIED', modelLabels: [], sections: [{ pageNumber: 93, ...section }] };
   const proposal = { code: 'R', legalBasis: 'CONC 4.8.2R', quotation: QUOTE.unfair, quotationPage: 93, provisionReference: 'CONC 4.8.2R', provisionFunction: 'OPERATIVE_REQUIREMENT' };
@@ -315,13 +401,13 @@ try {
   const pickedPages = picked.map((b) => b.pageNumber);
   check(start === 31, 'instrument detected at the "Made rules (legal instrument)" divider', start);
   check(
-    pickedPages.includes(34) && pickedPages.includes(35) && !pickedPages.includes(33) && !pickedPages.includes(36) && picked.length === 18,
-    'instrument pages setting out operative rules are selected; TP tables and cross-reference-only pages are not; 18 sections',
+    pickedPages.includes(34) && pickedPages.includes(35) && pickedPages.includes(33) && !pickedPages.includes(36) && picked.length === 18,
+    'instrument pages setting out operative rules are selected, including transitional provisions; cross-reference-only pages are not; 18 sections',
     pickedPages,
   );
   check(
-    described.selection.strategy === 'instrument_priority_v1' && described.selection.scope === 'PARTIAL_DOCUMENT' && described.selection.instrumentProvisionsSupplied === 4 &&
-      described.selection.instrumentProvisionsNotSupplied.join() === '16.1.5R',
+    described.selection.strategy === 'instrument_priority_v1' && described.selection.scope === 'PARTIAL_DOCUMENT' && described.selection.instrumentProvisionsSupplied === 5 &&
+      described.selection.instrumentProvisionsNotSupplied.length === 0 && described.sourceSections.find((x) => x.pageNumber === 34)?.provisionTextStatus['4.8.2R'] === 'INSTRUMENT_TEXT',
     'selection summary records strategy, partial scope and instrument provisions supplied',
     described.selection,
   );

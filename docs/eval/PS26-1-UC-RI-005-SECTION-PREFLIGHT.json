@@ -1,6 +1,6 @@
 {
   "schemaVersion": "forgeniq.ps26-1.uc-ri-005-section-preflight.v2",
-  "capturedAt": "2026-11-21T23:42:46.192Z",
+  "capturedAt": "2026-11-22T00:38:06.916Z",
   "aiCall": false,
   "source": {
     "url": "https://www.fca.org.uk/publication/policy/ps26-1.pdf",
@@ -16,8 +16,8 @@
     "evidenceBlocks": 111,
     "instrumentStartPage": 61,
     "provisionMarkersByType": {
-      "G": 46,
-      "R": 98
+      "G": 48,
+      "R": 103
     },
     "eProvisions": []
   },
@@ -34,6 +34,7 @@
       21,
       29,
       40,
+      66,
       68,
       81,
       86,
@@ -46,16 +47,16 @@
       94,
       95,
       96,
-      97,
-      99
+      97
     ],
-    "selectedCharacters": 34272,
-    "characterCoveragePercent": 17.55,
+    "selectedCharacters": 33994,
+    "characterCoveragePercent": 17.41,
     "instrumentPages": 48,
     "instrumentPagesSelected": 14,
-    "instrumentProvisionsSetOut": 42,
-    "instrumentProvisionsSupplied": 36,
+    "instrumentProvisionsSetOut": 47,
+    "instrumentProvisionsSupplied": 40,
     "instrumentProvisionsNotSupplied": [
+      "TP 13.5G",
       "16.1.6R",
       "2.7.7FG",
       "2.7.19GG",
@@ -63,6 +64,75 @@
       "2.8.6CG",
       "8.12.11AG"
     ],
+    "instrumentProvisionsOmitted": [
+      {
+        "provision": "TP 13.5G",
+        "pages": [
+          67
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "16.1.6R",
+        "pages": [
+          103
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "2.7.7FG",
+        "pages": [
+          104
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.7.19GG",
+        "pages": [
+          104
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.7.19HG",
+        "pages": [
+          104
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.8.6CG",
+        "pages": [
+          106
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "8.12.11AG",
+        "pages": [
+          107
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      }
+    ],
+    "suppliedProvisionTextStatus": {
+      "NEW_TEXT": 24,
+      "AMENDMENT_MARKUP_UNCERTAIN": 16
+    },
     "truncatedSections": 0,
     "scope": "PARTIAL_DOCUMENT",
     "coreProvisionPages": {
@@ -95,6 +165,38 @@
       ],
       "16.1.4R": [
         97
+      ]
+    },
+    "coreProvisionTextStatus": {
+      "4.2A.3R": [
+        "NEW_TEXT"
+      ],
+      "4.2A.4R": [
+        "NEW_TEXT"
+      ],
+      "4.2A.5R": [
+        "NEW_TEXT"
+      ],
+      "4.2A.6R": [
+        "NEW_TEXT"
+      ],
+      "4.2A.8R": [
+        "NEW_TEXT"
+      ],
+      "4.8.2R": [
+        "AMENDMENT_MARKUP_UNCERTAIN"
+      ],
+      "7.20.1R": [
+        "NEW_TEXT"
+      ],
+      "7.20.3R": [
+        "NEW_TEXT"
+      ],
+      "11.1.2R": [
+        "AMENDMENT_MARKUP_UNCERTAIN"
+      ],
+      "16.1.4R": [
+        "NEW_TEXT"
       ]
     },
     "eProvisionsSupplied": []
@@ -131,9 +233,10 @@
     "characterCoveragePercent": 23.32,
     "instrumentPages": 48,
     "instrumentPagesSelected": 5,
-    "instrumentProvisionsSetOut": 42,
-    "instrumentProvisionsSupplied": 6,
+    "instrumentProvisionsSetOut": 47,
+    "instrumentProvisionsSupplied": 10,
     "instrumentProvisionsNotSupplied": [
+      "TP 13.5G",
       "2.3.1R",
       "4.2.2G",
       "2.5.1R",
@@ -171,6 +274,345 @@
       "2.8.6CG",
       "8.12.11AG"
     ],
+    "instrumentProvisionsOmitted": [
+      {
+        "provision": "TP 13.5G",
+        "pages": [
+          67
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "2.3.1R",
+        "pages": [
+          68
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "4.2.2G",
+        "pages": [
+          68
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.5.1R",
+        "pages": [
+          81
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.3.2R",
+        "pages": [
+          86
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.7.1R",
+        "pages": [
+          86
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "4.2.1R",
+        "pages": [
+          87
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "4.2A.1R",
+        "pages": [
+          87
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.2A.2G",
+        "pages": [
+          87
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.2A.3R",
+        "pages": [
+          87
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.2A.4R",
+        "pages": [
+          88
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.2A.5R",
+        "pages": [
+          88
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.2A.6R",
+        "pages": [
+          90
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.2A.7R",
+        "pages": [
+          90
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.2A.11R",
+        "pages": [
+          92
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.2A.12G",
+        "pages": [
+          92
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "4.6.2R",
+        "pages": [
+          92
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "4.6.2AR",
+        "pages": [
+          92
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "7.1.4R",
+        "pages": [
+          94
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "7.6.2BG",
+        "pages": [
+          94
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "7.6.2CR",
+        "pages": [
+          94
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "7.20.1R",
+        "pages": [
+          94
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "7.20.2G",
+        "pages": [
+          95
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "7.20.3R",
+        "pages": [
+          95
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "11.1.2R",
+        "pages": [
+          96
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "11.1.2AG",
+        "pages": [
+          96
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "16.1.1R",
+        "pages": [
+          97
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "16.1.2G",
+        "pages": [
+          97
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "16.1.3G",
+        "pages": [
+          97
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "16.1.4R",
+        "pages": [
+          97
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "16.1.5R",
+        "pages": [
+          97
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "16.1.6R",
+        "pages": [
+          103
+        ],
+        "textStatus": [
+          "NEW_TEXT"
+        ]
+      },
+      {
+        "provision": "2.7.7FG",
+        "pages": [
+          104
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.7.19GG",
+        "pages": [
+          104
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.7.19HG",
+        "pages": [
+          104
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "2.8.6CG",
+        "pages": [
+          106
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      },
+      {
+        "provision": "8.12.11AG",
+        "pages": [
+          107
+        ],
+        "textStatus": [
+          "AMENDMENT_MARKUP_UNCERTAIN"
+        ]
+      }
+    ],
+    "suppliedProvisionTextStatus": {
+      "NEW_TEXT": 7,
+      "AMENDMENT_MARKUP_UNCERTAIN": 3
+    },
     "truncatedSections": 0,
     "scope": "PARTIAL_DOCUMENT",
     "coreProvisionPages": {
@@ -199,11 +641,12 @@
       "inLegalInstrument": false,
       "transitionalProvisions": false,
       "provisionsSetOut": [],
+      "provisionTextStatus": {},
       "crossReferences": [],
       "characters": 3090,
       "truncated": false,
       "heuristicFlags": {
-        "dutyLanguage": false,
+        "dutyLanguage": true,
         "applicabilityOrExemptionLanguage": false
       },
       "excerpt": "19 Question 6: Do you agree that our proposed new rules requiring firms to give notice before taking certain actions are appropriate? Question 7: Do you think that reliance on the Duty could deliver our policy objectives for our proposed new rules on firms’ communications to DPC customers who have m"
@@ -216,6 +659,7 @@
       "inLegalInstrument": false,
       "transitionalProvisions": false,
       "provisionsSetOut": [],
+      "provisionTextStatus": {},
       "crossReferences": [
         "CONC 7.3.7AG",
         "CONC 7.20.3R"
@@ -236,6 +680,7 @@
       "inLegalInstrument": false,
       "transitionalProvisions": false,
       "provisionsSetOut": [],
+      "provisionTextStatus": {},
       "crossReferences": [],
       "characters": 2918,
       "truncated": false,
@@ -253,6 +698,7 @@
       "inLegalInstrument": false,
       "transitionalProvisions": false,
       "provisionsSetOut": [],
+      "provisionTextStatus": {},
       "crossReferences": [],
       "characters": 2851,
       "truncated": false,
@@ -264,6 +710,36 @@
     },
     {
       "order": 5,
+      "sourceSectionId": "EVD-PDF-c972b7acef43cd7f",
+      "page": 66,
+      "citation": "PDF p.66 · legal instrument",
+      "inLegalInstrument": true,
+      "transitionalProvisions": false,
+      "provisionsSetOut": [
+        "TP 13.1R",
+        "TP 13.2G",
+        "TP 13.3R",
+        "TP 13.4R"
+      ],
+      "provisionTextStatus": {
+        "TP 13.1R": "NEW_TEXT",
+        "TP 13.2G": "NEW_TEXT",
+        "TP 13.3R": "NEW_TEXT",
+        "TP 13.4R": "NEW_TEXT"
+      },
+      "crossReferences": [
+        "SYSC 23.3.3G"
+      ],
+      "characters": 2107,
+      "truncated": false,
+      "heuristicFlags": {
+        "dutyLanguage": true,
+        "applicabilityOrExemptionLanguage": true
+      },
+      "excerpt": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the t"
+    },
+    {
+      "order": 6,
       "sourceSectionId": "EVD-PDF-f38ea22635f39d76",
       "page": 68,
       "citation": "PDF p.68 · legal instrument",
@@ -273,6 +749,10 @@
         "2.3.1R",
         "4.2.2G"
       ],
+      "provisionTextStatus": {
+        "2.3.1R": "AMENDMENT_MARKUP_UNCERTAIN",
+        "4.2.2G": "AMENDMENT_MARKUP_UNCERTAIN"
+      },
       "crossReferences": [],
       "characters": 1087,
       "truncated": false,
@@ -283,7 +763,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 7 of 46 Annex C Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text and striking through indicates deleted text. 2 Interpreting the Handbook ... 2.3 General saving of the Handbook for Gibraltar Continued application of the Handbook with"
     },
     {
-      "order": 6,
+      "order": 7,
       "sourceSectionId": "EVD-PDF-89a7bb24ba4ab06a",
       "page": 81,
       "citation": "PDF p.81 · legal instrument",
@@ -292,6 +772,9 @@
       "provisionsSetOut": [
         "2.5.1R"
       ],
+      "provisionTextStatus": {
+        "2.5.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+      },
       "crossReferences": [
         "DISP 1.10.1IR"
       ],
@@ -304,7 +787,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 20 of 46 ... Part 2: Comes into force on 31 December 2026 [Editor’s note: This Part takes into account the changes introduced by the Complaints Reporting Instrument 2025 (FCA 2025/53). That instrument deletes and replaces DISP 1 Annex 1 in its entirety from its entry into "
     },
     {
-      "order": 7,
+      "order": 8,
       "sourceSectionId": "EVD-PDF-8bf3984f6a750455",
       "page": 86,
       "citation": "PDF p.86 · legal instrument",
@@ -314,6 +797,10 @@
         "2.3.2R",
         "2.7.1R"
       ],
+      "provisionTextStatus": {
+        "2.3.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+        "2.7.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+      },
       "crossReferences": [
         "CONC 4.2.5R",
         "CONC 4.2A.3R"
@@ -327,7 +814,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restri"
     },
     {
-      "order": 8,
+      "order": 9,
       "sourceSectionId": "EVD-PDF-e219e1c202a0c2e0",
       "page": 87,
       "citation": "PDF p.87 · legal instrument",
@@ -339,6 +826,12 @@
         "4.2A.2G",
         "4.2A.3R"
       ],
+      "provisionTextStatus": {
+        "4.2.1R": "AMENDMENT_MARKUP_UNCERTAIN",
+        "4.2A.1R": "NEW_TEXT",
+        "4.2A.2G": "NEW_TEXT",
+        "4.2A.3R": "NEW_TEXT"
+      },
       "crossReferences": [
         "CONC 4.2A.5R"
       ],
@@ -351,7 +844,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit "
     },
     {
-      "order": 9,
+      "order": 10,
       "sourceSectionId": "EVD-PDF-749f250a95a5a2c9",
       "page": 88,
       "citation": "PDF p.88 · legal instrument",
@@ -361,6 +854,10 @@
         "4.2A.4R",
         "4.2A.5R"
       ],
+      "provisionTextStatus": {
+        "4.2A.4R": "NEW_TEXT",
+        "4.2A.5R": "NEW_TEXT"
+      },
       "crossReferences": [
         "CONC 4.2A.3R"
       ],
@@ -373,7 +870,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 27 of 46 (2) The additional product information must all be given, or made available, to the customer together, except for the contractual terms and conditions which may be given, or made available, separately. (3) Where there is more than one customer acting together as ‘"
     },
     {
-      "order": 10,
+      "order": 11,
       "sourceSectionId": "EVD-PDF-379e52d5c4d6e27e",
       "page": 90,
       "citation": "PDF p.90 · legal instrument",
@@ -383,6 +880,10 @@
         "4.2A.6R",
         "4.2A.7R"
       ],
+      "provisionTextStatus": {
+        "4.2A.6R": "NEW_TEXT",
+        "4.2A.7R": "NEW_TEXT"
+      },
       "crossReferences": [
         "CONC 4.6.2AR",
         "CONC 4.6.2R",
@@ -398,7 +899,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 29 of 46 in the manner set out in CONC 4.6.2AR) an adequate explanation of the matters set out in CONC 4.6.2R(2)(a) to (i) and (k); and (i) the contractual terms and conditions. Product information: once the agreement is made 4.2A.6 R (1) Immediately after an agreement has"
     },
     {
-      "order": 11,
+      "order": 12,
       "sourceSectionId": "EVD-PDF-2ae2e75f0d5a4301",
       "page": 91,
       "citation": "PDF p.91 · legal instrument",
@@ -409,6 +910,11 @@
         "4.2A.9G",
         "4.2A.10G"
       ],
+      "provisionTextStatus": {
+        "4.2A.8R": "NEW_TEXT",
+        "4.2A.9G": "NEW_TEXT",
+        "4.2A.10G": "NEW_TEXT"
+      },
       "crossReferences": [
         "CONC 4.2A.5R",
         "CONC 4.6.5R",
@@ -417,13 +923,13 @@
       "characters": 2048,
       "truncated": false,
       "heuristicFlags": {
-        "dutyLanguage": false,
+        "dutyLanguage": true,
         "applicabilityOrExemptionLanguage": false
       },
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 30 of 46 (ii) the implications for the guarantor of the guarantee or the indemnity (or both) being called on; and (b) such of the information mentioned in CONC 4.2A.5R as the firm considers necessary for the guarantor to understand the adequate explanations required by (3)"
     },
     {
-      "order": 12,
+      "order": 13,
       "sourceSectionId": "EVD-PDF-4eb5a11a8d2107eb",
       "page": 92,
       "citation": "PDF p.92 · legal instrument",
@@ -435,6 +941,12 @@
         "4.6.2R",
         "4.6.2AR"
       ],
+      "provisionTextStatus": {
+        "4.2A.11R": "NEW_TEXT",
+        "4.2A.12G": "NEW_TEXT",
+        "4.6.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+        "4.6.2AR": "AMENDMENT_MARKUP_UNCERTAIN"
+      },
       "crossReferences": [
         "GEN 2.3.1R",
         "CONC 4.6.2R",
@@ -449,7 +961,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also appl"
     },
     {
-      "order": 13,
+      "order": 14,
       "sourceSectionId": "EVD-PDF-33d46e2b1a9fa4c4",
       "page": 93,
       "citation": "PDF p.93 · legal instrument",
@@ -460,6 +972,11 @@
         "6.7.42G",
         "6.7.43G"
       ],
+      "provisionTextStatus": {
+        "4.8.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+        "6.7.42G": "AMENDMENT_MARKUP_UNCERTAIN",
+        "6.7.43G": "AMENDMENT_MARKUP_UNCERTAIN"
+      },
       "crossReferences": [
         "CONC 4.2.5R",
         "CONC 4.2A.3R",
@@ -477,7 +994,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 32 of 46 ... Unfair business practices 4.8.2 R A firm must not unfairly encourage, incentivise or induce a customer to enter into a regulated credit agreement quickly without allowing the customer time to consider: (1) in relation to a regulated credit agreement other than"
     },
     {
-      "order": 14,
+      "order": 15,
       "sourceSectionId": "EVD-PDF-90eac526516055e9",
       "page": 94,
       "citation": "PDF p.94 · legal instrument",
@@ -489,6 +1006,12 @@
         "7.6.2CR",
         "7.20.1R"
       ],
+      "provisionTextStatus": {
+        "7.1.4R": "AMENDMENT_MARKUP_UNCERTAIN",
+        "7.6.2BG": "AMENDMENT_MARKUP_UNCERTAIN",
+        "7.6.2CR": "AMENDMENT_MARKUP_UNCERTAIN",
+        "7.20.1R": "NEW_TEXT"
+      },
       "crossReferences": [
         "CONC 7.3.1G",
         "CONC 7.4.1R",
@@ -514,7 +1037,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CO"
     },
     {
-      "order": 15,
+      "order": 16,
       "sourceSectionId": "EVD-PDF-6f160bf6c84e2d9d",
       "page": 95,
       "citation": "PDF p.95 · legal instrument",
@@ -524,6 +1047,10 @@
         "7.20.2G",
         "7.20.3R"
       ],
+      "provisionTextStatus": {
+        "7.20.2G": "NEW_TEXT",
+        "7.20.3R": "NEW_TEXT"
+      },
       "crossReferences": [
         "CONC 7.20.1R"
       ],
@@ -536,7 +1063,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid "
     },
     {
-      "order": 16,
+      "order": 17,
       "sourceSectionId": "EVD-PDF-c48feeafda06be2d",
       "page": 96,
       "citation": "PDF p.96 · legal instrument",
@@ -546,6 +1073,10 @@
         "11.1.2R",
         "11.1.2AG"
       ],
+      "provisionTextStatus": {
+        "11.1.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+        "11.1.2AG": "AMENDMENT_MARKUP_UNCERTAIN"
+      },
       "crossReferences": [
         "CONC 11.1.1R"
       ],
@@ -558,7 +1089,7 @@
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 35 of 46 (ii) treating any right conferred on the borrower by the agreement as terminated, restricted or deferred; or (iii) enforcing any security; (b) terminating a regulated deferred payment credit agreement. (3) If any of the actions mentioned in (2) are conditional on "
     },
     {
-      "order": 17,
+      "order": 18,
       "sourceSectionId": "EVD-PDF-4b1523afa54ef310",
       "page": 97,
       "citation": "PDF p.97 · legal instrument",
@@ -571,6 +1102,13 @@
         "16.1.4R",
         "16.1.5R"
       ],
+      "provisionTextStatus": {
+        "16.1.1R": "NEW_TEXT",
+        "16.1.2G": "NEW_TEXT",
+        "16.1.3G": "NEW_TEXT",
+        "16.1.4R": "NEW_TEXT",
+        "16.1.5R": "NEW_TEXT"
+      },
       "crossReferences": [
         "CONC 16.1.4R",
         "CONC 16.1.5R"
@@ -582,23 +1120,6 @@
         "applicabilityOrExemptionLanguage": true
       },
       "excerpt": "FCA 2026/2 FOS 2026/1 Page 36 of 46 16 Requirements for firms with deferred payment credit temporary permission 16.1 Application and purpose 16.1.1 R Subject to CONC 16.1.4R(2), this chapter applies to a firm with a deferred payment credit temporary permission. 16.1.2 G The purpose of these rules is"
-    },
-    {
-      "order": 18,
-      "sourceSectionId": "EVD-PDF-3ef3ff17013a027c",
-      "page": 99,
-      "citation": "PDF p.99 · legal instrument",
-      "inLegalInstrument": true,
-      "transitionalProvisions": false,
-      "provisionsSetOut": [],
-      "crossReferences": [],
-      "characters": 2385,
-      "truncated": false,
-      "heuristicFlags": {
-        "dutyLanguage": true,
-        "applicabilityOrExemptionLanguage": true
-      },
-      "excerpt": "FCA 2026/2 FOS 2026/1 Page 38 of 46 Statements of Principle and Code of Practice for Approved Persons (APER) For the purposes of determining the application of APER where a firm’s permission includes permission to carry on regulated activities granted by the FCA under Part 4A of the Act (as well as "
     }
   ]
 }

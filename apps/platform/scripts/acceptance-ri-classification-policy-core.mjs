@@ -70,7 +70,7 @@ check(tamper((p) => Object.assign(p.entries.find((e) => e.code === 'R'), { conve
 check(Object.values(CANONICAL_CLASSIFICATION_CODES).filter((c) => ['binding', 'evidential'].includes(c.legalStatus)).length === 7, 'only the 7 binding/evidential codes can ever convert');
 
 // 3. Triage routing.
-const instrumentPage3 = { pageNumber: 3, inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['2.1.1R', '2.1.2E'] };
+const instrumentPage3 = { pageNumber: 3, inLegalInstrument: true, transitionalProvisions: false, provisionsSetOut: ['2.1.1R', '2.1.2E'], provisionTextStatus: { '2.1.1R': 'NEW_TEXT', '2.1.2E': 'NEW_TEXT' } };
 const verified = { citationStatus: 'VERIFIED', modelLabels: ['binding_requirement'], sections: [instrumentPage3] };
 const evidence = {
   legalBasis: 'COBS 2.1.1R',
@@ -149,7 +149,7 @@ const run = {
       { bindingNature: 'guidance', sourceSectionIds: ['S2'], statement: 'b', sourceQuotation: 'q' },
     ],
     _forgeniqGrounding: { obligationGradeSuitable: true, extractionRevisionId: 'r', sectionCatalog: [
-      { sourceSectionId: 'S1', pageNumber: 3, inLegalInstrument: true, provisionsSetOut: ['2.1.1R', '9.1.2E'] },
+      { sourceSectionId: 'S1', pageNumber: 3, inLegalInstrument: true, provisionsSetOut: ['2.1.1R', '9.1.2E'], provisionTextStatus: { '2.1.1R': 'NEW_TEXT', '9.1.2E': 'NEW_TEXT' } },
       { sourceSectionId: 'S2', pageNumber: 5 },
       { sourceSectionId: 'S3', pageNumber: 7 },
     ] },

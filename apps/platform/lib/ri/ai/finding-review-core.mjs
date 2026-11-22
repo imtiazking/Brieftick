@@ -138,6 +138,10 @@ export function buildFindingsView(run, citations, classification) {
             inLegalInstrument: s.inLegalInstrument === true,
             transitionalProvisions: s.transitionalProvisions === true,
             provisionsSetOut: Array.isArray(s.provisionsSetOut) ? s.provisionsSetOut : [],
+            provisionTextStatus:
+              s.provisionTextStatus && typeof s.provisionTextStatus === 'object' && !Array.isArray(s.provisionTextStatus)
+                ? s.provisionTextStatus
+                : {},
           })),
       };
       finding.modelLabels = modelLabelsForFinding(finding, candidates);
