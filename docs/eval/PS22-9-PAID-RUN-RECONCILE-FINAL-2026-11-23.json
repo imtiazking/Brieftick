@@ -1,0 +1,1288 @@
+{
+  "generatedAt": "2026-11-23T21:57:23.181Z",
+  "gitBase": "b677d11",
+  "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+  "sourceRevisionBinding": {
+    "sourcePdfSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+    "extractionProfile": "pdf_primary_v1"
+  },
+  "inventory": {
+    "preservedCores": [
+      "2A.1.1R",
+      "2A.1.2R",
+      "2A.1.3G",
+      "2A.1.4G",
+      "2A.1.5G",
+      "2A.1.6G",
+      "2A.7.5G",
+      "2A.1.7R",
+      "2A.1.8G",
+      "2A.1.9G",
+      "2A.3.6R",
+      "2A.3.7R",
+      "2A.3.8R",
+      "2A.3.9R",
+      "2A.3.10R",
+      "2A.3.11R",
+      "2A.3.12R",
+      "2A.3.13R",
+      "2A.3.18R",
+      "2A.3.19R",
+      "2A.3.20R",
+      "2A.3.21R",
+      "2A.3.22G",
+      "2A.3.23G",
+      "2A.3.14R",
+      "2A.3.15G",
+      "2A.3.16R",
+      "2A.3.17R",
+      "2A.3.24R",
+      "2A.3.25G",
+      "2A.3.26R",
+      "2A.3.27G",
+      "2A.3.28R",
+      "2A.3.29G",
+      "2A.3.30E",
+      "2A.4.1R",
+      "2A.4.2R",
+      "2A.4.3R",
+      "2A.4.4G",
+      "2A.4.5R",
+      "2A.4.6G",
+      "2A.4.7R",
+      "2A.4.8R",
+      "2A.4.12G",
+      "2A.4.13R",
+      "2A.4.14R",
+      "2A.4.15R",
+      "2A.4.16R",
+      "2A.4.17R",
+      "2A.2.2R",
+      "2A.2.3G",
+      "2A.2.4G",
+      "2A.2.5R",
+      "2A.2.6R",
+      "2A.2.7G",
+      "2A.4.18R",
+      "2A.4.19R",
+      "2A.4.20R",
+      "2A.4.21R",
+      "2A.4.22G",
+      "2A.4.23G",
+      "2A.4.24R",
+      "2A.4.25R",
+      "2A.4.26R",
+      "2A.4.27R"
+    ],
+    "outstandingCores": [
+      "1.2.1G",
+      "2.1.1R",
+      "2A.1.10G",
+      "2A.1.11G",
+      "2A.1.12G",
+      "2A.1.13G",
+      "2A.1.14G",
+      "2A.1.15G",
+      "2A.1.16G",
+      "2A.1.17G",
+      "2A.1.18G",
+      "2A.2.1R",
+      "2A.2.8R",
+      "2A.2.9R",
+      "2A.2.10G",
+      "2A.2.11G",
+      "2A.2.12G",
+      "2A.2.13G",
+      "2A.2.14R",
+      "2A.2.15G",
+      "2A.2.16G",
+      "2A.2.17G",
+      "2A.2.18G",
+      "2A.2.19G",
+      "2A.2.20G",
+      "2A.2.21G",
+      "2A.2.22G",
+      "2A.2.23G",
+      "2A.2.24G",
+      "2A.2.25G",
+      "2A.2.26R",
+      "2A.2.27G",
+      "2A.2.28G",
+      "2A.3.1G",
+      "2A.3.2R",
+      "2A.3.3G",
+      "2A.3.4R",
+      "2A.3.5R",
+      "2A.4.28G",
+      "2A.4.29R",
+      "2A.4.30G",
+      "2A.4.31G",
+      "2A.4.32R",
+      "6.6.26G",
+      "8.5.22R",
+      "15.7.24R",
+      "2A.4.33R",
+      "2A.4.34R",
+      "2A.4.35E",
+      "2A.4.36R",
+      "2A.5.1R",
+      "2A.5.2G",
+      "2A.5.3R",
+      "2A.5.4R",
+      "2A.5.5R",
+      "2A.5.6R",
+      "2A.5.7G",
+      "2A.5.8R",
+      "2A.5.9R",
+      "2A.5.10R",
+      "2A.5.14R",
+      "2A.5.15R",
+      "2A.6.1R",
+      "2A.6.2R",
+      "2A.6.3G",
+      "2A.6.4G",
+      "2A.6.5R",
+      "2A.6.6R",
+      "2A.7.1R",
+      "2A.7.2G",
+      "2A.8.1R",
+      "2A.8.2G",
+      "2A.8.3R",
+      "2A.8.4R",
+      "2A.8.5R",
+      "2A.9.1R",
+      "2A.4.9G",
+      "2A.4.10G",
+      "2A.4.11G",
+      "2A.5.11G",
+      "2A.5.12G",
+      "2A.5.13G",
+      "2A.9.2G",
+      "2A.9.3G",
+      "2A.9.4G",
+      "2A.9.5G",
+      "2A.9.6G",
+      "2A.9.7G",
+      "2A.9.8R",
+      "2A.9.9R",
+      "2A.9.10R",
+      "2A.9.11R",
+      "2A.9.12R",
+      "2A.9.13G",
+      "2A.9.14G",
+      "2A.9.15G",
+      "2A.9.17R",
+      "2A.10.1G",
+      "2A.10.2R",
+      "2A.10.3R",
+      "2A.10.4G",
+      "2A.10.5R",
+      "2A.11.1R",
+      "2A.11.2R",
+      "2A.7.3G",
+      "2A.7.4G",
+      "2A.11.3G",
+      "2A.11.4R",
+      "2A.11.5R",
+      "3.1.6R",
+      "3.1.7G",
+      "3.1.8R",
+      "3.1.10R",
+      "3.1.12R",
+      "3.1.13R",
+      "3.2.1AR",
+      "3.2.6R",
+      "3.2.7R",
+      "3.2.8R",
+      "3.2.9G",
+      "3.2.10R",
+      "3.2.11G",
+      "3.2.12G",
+      "3.3.1R",
+      "3.4.3AR",
+      "1.1.3R",
+      "1.1.5G",
+      "1.1.5AR",
+      "1.1.5BR",
+      "1.1.5CG",
+      "1.1.7R",
+      "1.1.7AR",
+      "1.1.7BR",
+      "4.1.4G",
+      "1.1.7CR",
+      "1.1.7DG",
+      "1.1.7ER",
+      "1.1.8G",
+      "1.1.8BR",
+      "1.1.11BG",
+      "1.1.11CR",
+      "1.1.11DG",
+      "2.1.5R",
+      "2.1.6R",
+      "2.4.1R",
+      "2.4.2R",
+      "2.4.3R",
+      "4.1.1G",
+      "4.1.2G",
+      "2.4.4G",
+      "2.4.5R",
+      "2.4.6R",
+      "2.4.7R",
+      "2.4.8R",
+      "2.4.9R",
+      "2.4.10R",
+      "4.1.18G",
+      "4.1.20G",
+      "4.1.21G",
+      "4.1.22G",
+      "4.1.23G",
+      "4.1.24G",
+      "4.1.25G",
+      "4.1.26G",
+      "4.1.27G",
+      "4.1.28G",
+      "4.1.29G",
+      "4.1.30G",
+      "4.1.31G",
+      "4.1.32G",
+      "4.1.33G",
+      "4.1.34G",
+      "4.1.35G",
+      "4.2.30G",
+      "4.2.31G",
+      "1.3.2R",
+      "2.2.35AG"
+    ],
+    "preservedCount": 65,
+    "outstandingCount": 177,
+    "unionCount": 242,
+    "overlap": [],
+    "missing": [],
+    "extras": []
+  },
+  "paidRunReconciliation": {
+    "correctedPathSuffixBase": "live-ps22-corrected-batch0-2026-11-23",
+    "runs": [
+      {
+        "batchIndex": 0,
+        "runId": "063a2e9f-8279-4310-9341-354110d5e675",
+        "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23",
+        "gate": {
+          "passesQualityGate": true,
+          "omissionCount": 0,
+          "provisionsSupplied": 14
+        },
+        "spendUsd": 0.091182,
+        "status": "COMPLETED",
+        "authoritativeSource": "PILOT-EXECUTION-REPORT-2026-11-23.json"
+      },
+      {
+        "batchIndex": 1,
+        "runId": "3f3f57e1-5afc-40ac-a8d6-2f792b60c5f1",
+        "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23-batch-2",
+        "gate": {
+          "passesQualityGate": true,
+          "omissionCount": 0
+        },
+        "spendUsd": 0.08265,
+        "status": "COMPLETED",
+        "authoritativeSource": "PILOT-EXECUTION-REPORT-2026-11-23.json"
+      },
+      {
+        "batchIndex": 2,
+        "runId": "9c0824b3-977d-4052-841c-f1176bf0ffcf",
+        "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23-batch-3",
+        "gate": {
+          "schemaOk": true,
+          "spendOk": true,
+          "batchCompletenessOk": true,
+          "regulatoryAccuracySuccess": true,
+          "omissionCount": 0,
+          "provisionsSupplied": 14,
+          "candidates": 14,
+          "passesQualityGate": true
+        },
+        "spendUsd": 0.108783,
+        "status": "COMPLETED",
+        "authoritativeSource": "PILOT-EXECUTION-REPORT-2026-11-23.json"
+      },
+      {
+        "batchIndex": 3,
+        "runId": "be03ff0f-841a-45ce-a7b5-1dfbd4dc5ae0",
+        "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23-batch-4",
+        "gate": {
+          "schemaOk": true,
+          "spendOk": true,
+          "batchCompletenessOk": true,
+          "regulatoryAccuracySuccess": true,
+          "omissionCount": 0,
+          "provisionsSupplied": 11,
+          "candidates": 11,
+          "passesQualityGate": true
+        },
+        "spendUsd": 0.078903,
+        "status": "COMPLETED",
+        "authoritativeSource": "PILOT-EXECUTION-REPORT-2026-11-23.json"
+      },
+      {
+        "batchIndex": 4,
+        "runId": "b73ea1d1-e01d-409c-bbeb-e11484b947e9",
+        "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23-batch-5",
+        "gate": {
+          "schemaOk": true,
+          "spendOk": true,
+          "batchCompletenessOk": true,
+          "regulatoryAccuracySuccess": true,
+          "omissionCount": 0,
+          "provisionsSupplied": 16,
+          "candidates": 16,
+          "passesQualityGate": true
+        },
+        "spendUsd": 0.112665,
+        "status": "COMPLETED",
+        "authoritativeSource": "PILOT-EXECUTION-REPORT-2026-11-23.json"
+      },
+      {
+        "batchIndex": 5,
+        "runId": "9fd62178-ef68-451d-b16e-9cd17526d3f3",
+        "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23-batch-6",
+        "gate": {
+          "schemaOk": false,
+          "spendOk": true,
+          "batchCompletenessOk": false,
+          "regulatoryAccuracySuccess": false,
+          "omissionCount": 22,
+          "provisionsSupplied": 22,
+          "candidates": 0,
+          "passesQualityGate": false
+        },
+        "status": "FAILED",
+        "authoritativeSource": "PILOT-EXECUTION-REPORT-2026-11-23.json"
+      }
+    ],
+    "ps22SpendUsdSubset": 0.612195,
+    "paidAttemptDiscrepancyResolution": {
+      "summary": "Five successful extraction batches (indices 0–4, 65 provisions) vs six billable paid API calls (indices 0–5 including failed run 9fd62178).",
+      "successfulExtractionBatches": 5,
+      "totalPaidApiAttemptsCorrectedPath": 6,
+      "failedBillableAttempts": 1,
+      "priorMislabel": "batchesAlreadyPaid: 5 meant successful batches only; orchestration spend.batchesAttempted counted in-flight semantics",
+      "authoritativeCounts": {
+        "paidAttempts": 6,
+        "paidSucceeded": 5,
+        "paidFailed": 1,
+        "provisionsLedgerPreserved": 65
+      }
+    },
+    "failedRunPreserved": {
+      "runId": "9fd62178-ef68-451d-b16e-9cd17526d3f3",
+      "batchIndex": 5,
+      "executionStatus": "FAILED",
+      "errorCode": "AI_OUTPUT_TRUNCATED",
+      "providerMeta": {
+        "stopReason": "max_tokens",
+        "outputTokens": 8192
+      },
+      "instrumentProvisionsNewlySupplied": [
+        "15.7.24R",
+        "2A.2.24G",
+        "2A.2.25G",
+        "2A.2.26R",
+        "2A.2.27G",
+        "2A.2.28G",
+        "2A.3.1G",
+        "2A.3.2R",
+        "2A.3.3G",
+        "2A.4.29R",
+        "2A.4.31G",
+        "2A.4.33R",
+        "2A.4.34R",
+        "2A.4.35E",
+        "2A.4.36R",
+        "2A.5.1R",
+        "2A.5.2G",
+        "2A.5.3R",
+        "2A.5.4R",
+        "2A.5.5R",
+        "6.6.26G",
+        "8.5.22R"
+      ],
+      "structuredOutput": {
+        "candidates": [],
+        "claims": []
+      },
+      "diagnosis": "22 provisions supplied; provider exhausted max_output_tokens before valid JSON — completeness marks all cores omitted with requiresExceptionReview."
+    },
+    "historicalRunsPreserved": [
+      {
+        "runId": "147574c3-229a-42e3-9adb-fd480b905d3b",
+        "status": "FAILED",
+        "spendUsd": 0.155436,
+        "preserved": true,
+        "note": "retained on ledger — not retried without new suffix"
+      },
+      {
+        "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
+        "status": "FAILED",
+        "spendUsd": 0.135888,
+        "preserved": true,
+        "note": "retained on ledger — not retried without new suffix"
+      },
+      {
+        "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+        "status": "COMPLETED",
+        "spendUsd": 0.120165,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+        "status": "COMPLETED",
+        "spendUsd": 0.107994,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "038f5ae0-56ed-4961-9d1c-f2953a15e741",
+        "status": "FAILED",
+        "spendUsd": 0.043203,
+        "preserved": true,
+        "note": "retained on ledger — not retried without new suffix"
+      },
+      {
+        "runId": "d76b60f2-276b-48f2-ab78-fd449bca55b6",
+        "status": "FAILED",
+        "spendUsd": 0.046638,
+        "preserved": true,
+        "note": "retained on ledger — not retried without new suffix"
+      },
+      {
+        "runId": "9b3bf495-9c55-428f-81bd-d786f8d9a3ee",
+        "status": "COMPLETED",
+        "spendUsd": 0.060498,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "063a2e9f-8279-4310-9341-354110d5e675",
+        "status": "COMPLETED",
+        "spendUsd": 0.091182,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "3f3f57e1-5afc-40ac-a8d6-2f792b60c5f1",
+        "status": "COMPLETED",
+        "spendUsd": 0.08265,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "9c0824b3-977d-4052-841c-f1176bf0ffcf",
+        "status": "COMPLETED",
+        "spendUsd": 0.108783,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "be03ff0f-841a-45ce-a7b5-1dfbd4dc5ae0",
+        "status": "COMPLETED",
+        "spendUsd": 0.078903,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "b73ea1d1-e01d-409c-bbeb-e11484b947e9",
+        "status": "COMPLETED",
+        "spendUsd": 0.112665,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "9fd62178-ef68-451d-b16e-9cd17526d3f3",
+        "status": "FAILED",
+        "spendUsd": 0.138012,
+        "preserved": true,
+        "note": "retained on ledger — not retried without new suffix"
+      }
+    ]
+  },
+  "continuationPlan14Batch": {
+    "batchCount": 14,
+    "batches": [
+      {
+        "batchIndex": 0,
+        "instrumentProvisionsNewlySupplied": [
+          "1.2.1G",
+          "2.1.1R",
+          "2A.1.10G",
+          "2A.1.11G",
+          "2A.1.12G",
+          "2A.1.13G",
+          "2A.1.14G",
+          "2A.1.15G",
+          "2A.1.16G",
+          "2A.1.17G",
+          "2A.1.18G",
+          "2A.2.1R",
+          "2A.2.8R",
+          "2A.2.9R",
+          "2A.2.10G",
+          "2A.2.11G"
+        ],
+        "provisionCount": 16,
+        "estimate": {
+          "selectedCharacters": 8389,
+          "estimatedTokens": 2098,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 2820,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            104,
+            106,
+            107,
+            109
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 8389
+        }
+      },
+      {
+        "batchIndex": 1,
+        "instrumentProvisionsNewlySupplied": [
+          "2A.2.12G",
+          "2A.2.13G",
+          "2A.2.14R",
+          "2A.2.15G",
+          "2A.2.16G",
+          "2A.2.17G",
+          "2A.2.18G",
+          "2A.2.19G",
+          "2A.2.20G",
+          "2A.2.21G",
+          "2A.2.22G",
+          "2A.2.23G",
+          "2A.2.24G",
+          "2A.2.25G",
+          "2A.2.26R",
+          "2A.2.27G"
+        ],
+        "provisionCount": 16,
+        "estimate": {
+          "selectedCharacters": 9277,
+          "estimatedTokens": 2320,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 2820,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            109,
+            110,
+            111,
+            112
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 9277
+        }
+      },
+      {
+        "batchIndex": 2,
+        "instrumentProvisionsNewlySupplied": [
+          "2A.2.28G",
+          "2A.3.1G",
+          "2A.3.2R",
+          "2A.3.3G",
+          "2A.3.4R",
+          "2A.3.5R",
+          "2A.4.28G",
+          "2A.4.29R",
+          "2A.4.30G",
+          "2A.4.31G",
+          "2A.4.32R",
+          "6.6.26G",
+          "8.5.22R"
+        ],
+        "provisionCount": 13,
+        "estimate": {
+          "selectedCharacters": 8330,
+          "estimatedTokens": 2083,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 1792,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            112,
+            113,
+            125,
+            126
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 8330
+        }
+      },
+      {
+        "batchIndex": 3,
+        "instrumentProvisionsNewlySupplied": [
+          "15.7.24R",
+          "2A.4.33R",
+          "2A.4.34R",
+          "2A.4.35E",
+          "2A.4.36R",
+          "2A.5.1R",
+          "2A.5.2G",
+          "2A.5.3R",
+          "2A.5.4R",
+          "2A.5.5R",
+          "2A.5.6R",
+          "2A.5.7G",
+          "2A.5.8R"
+        ],
+        "provisionCount": 13,
+        "estimate": {
+          "selectedCharacters": 7829,
+          "estimatedTokens": 1958,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 1792,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            126,
+            127,
+            128,
+            129
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 7829
+        }
+      },
+      {
+        "batchIndex": 4,
+        "instrumentProvisionsNewlySupplied": [
+          "2A.5.9R",
+          "2A.5.10R",
+          "2A.5.14R",
+          "2A.5.15R",
+          "2A.6.1R",
+          "2A.6.2R",
+          "2A.6.3G",
+          "2A.6.4G",
+          "2A.6.5R",
+          "2A.6.6R"
+        ],
+        "provisionCount": 10,
+        "estimate": {
+          "selectedCharacters": 7207,
+          "estimatedTokens": 1802,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 1468,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            129,
+            131,
+            132,
+            133
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 7207
+        }
+      },
+      {
+        "batchIndex": 5,
+        "instrumentProvisionsNewlySupplied": [
+          "2A.7.1R",
+          "2A.7.2G",
+          "2A.8.1R",
+          "2A.8.2G",
+          "2A.8.3R",
+          "2A.8.4R",
+          "2A.8.5R",
+          "2A.9.1R"
+        ],
+        "provisionCount": 8,
+        "estimate": {
+          "selectedCharacters": 6997,
+          "estimatedTokens": 1750,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 1252,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            134,
+            136,
+            137,
+            150
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 6997
+        }
+      },
+      {
+        "batchIndex": 6,
+        "instrumentProvisionsNewlySupplied": [
+          "2A.4.9G",
+          "2A.4.10G",
+          "2A.4.11G",
+          "2A.5.11G",
+          "2A.5.12G",
+          "2A.5.13G",
+          "2A.9.2G",
+          "2A.9.3G",
+          "2A.9.4G",
+          "2A.9.5G",
+          "2A.9.6G",
+          "2A.9.7G",
+          "2A.9.8R",
+          "2A.9.9R"
+        ],
+        "provisionCount": 14,
+        "estimate": {
+          "selectedCharacters": 8341,
+          "estimatedTokens": 2086,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 2516,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            121,
+            130,
+            137,
+            138
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 8341
+        }
+      },
+      {
+        "batchIndex": 7,
+        "instrumentProvisionsNewlySupplied": [
+          "2A.9.10R",
+          "2A.9.11R",
+          "2A.9.12R",
+          "2A.9.13G",
+          "2A.9.14G",
+          "2A.9.15G",
+          "2A.9.17R",
+          "2A.10.1G",
+          "2A.10.2R",
+          "2A.10.3R",
+          "2A.10.4G",
+          "2A.10.5R",
+          "2A.11.1R",
+          "2A.11.2R"
+        ],
+        "provisionCount": 14,
+        "estimate": {
+          "selectedCharacters": 7559,
+          "estimatedTokens": 1890,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 2516,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            138,
+            139,
+            140,
+            142
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 7559
+        }
+      },
+      {
+        "batchIndex": 8,
+        "instrumentProvisionsNewlySupplied": [
+          "2A.7.3G",
+          "2A.7.4G",
+          "2A.11.3G",
+          "2A.11.4R",
+          "2A.11.5R",
+          "3.1.6R",
+          "3.1.7G",
+          "3.1.8R",
+          "3.1.10R",
+          "3.1.12R",
+          "3.1.13R",
+          "3.2.1AR",
+          "3.2.6R",
+          "3.2.7R",
+          "3.2.8R",
+          "3.2.9G"
+        ],
+        "provisionCount": 16,
+        "estimate": {
+          "selectedCharacters": 8393,
+          "estimatedTokens": 2099,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 2820,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            135,
+            143,
+            144,
+            145
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 8393
+        }
+      },
+      {
+        "batchIndex": 9,
+        "instrumentProvisionsNewlySupplied": [
+          "3.2.10R",
+          "3.2.11G",
+          "3.2.12G",
+          "3.3.1R",
+          "3.4.3AR",
+          "1.1.3R",
+          "1.1.5G",
+          "1.1.5AR",
+          "1.1.5BR",
+          "1.1.5CG",
+          "1.1.7R",
+          "1.1.7AR",
+          "1.1.7BR"
+        ],
+        "provisionCount": 13,
+        "estimate": {
+          "selectedCharacters": 7218,
+          "estimatedTokens": 1805,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 1792,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            145,
+            146,
+            151,
+            152
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 7218
+        }
+      },
+      {
+        "batchIndex": 10,
+        "instrumentProvisionsNewlySupplied": [
+          "4.1.4G",
+          "1.1.7CR",
+          "1.1.7DG",
+          "1.1.7ER",
+          "1.1.8G",
+          "1.1.8BR",
+          "1.1.11BG",
+          "1.1.11CR",
+          "1.1.11DG",
+          "2.1.5R",
+          "2.1.6R",
+          "2.4.1R",
+          "2.4.2R",
+          "2.4.3R"
+        ],
+        "provisionCount": 14,
+        "estimate": {
+          "selectedCharacters": 6527,
+          "estimatedTokens": 1632,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 2516,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            149,
+            152,
+            153,
+            154
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 6527
+        }
+      },
+      {
+        "batchIndex": 11,
+        "instrumentProvisionsNewlySupplied": [
+          "4.1.1G",
+          "4.1.2G",
+          "2.4.4G",
+          "2.4.5R",
+          "2.4.6R",
+          "2.4.7R",
+          "2.4.8R",
+          "2.4.9R",
+          "2.4.10R",
+          "4.1.18G",
+          "4.1.20G",
+          "4.1.21G",
+          "4.1.22G",
+          "4.1.23G",
+          "4.1.24G",
+          "4.1.25G"
+        ],
+        "provisionCount": 16,
+        "estimate": {
+          "selectedCharacters": 8377,
+          "estimatedTokens": 2095,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 2820,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 16
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            147,
+            154,
+            155,
+            156
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 8377
+        }
+      },
+      {
+        "batchIndex": 12,
+        "instrumentProvisionsNewlySupplied": [
+          "4.1.26G",
+          "4.1.27G",
+          "4.1.28G",
+          "4.1.29G",
+          "4.1.30G",
+          "4.1.31G",
+          "4.1.32G",
+          "4.1.33G",
+          "4.1.34G",
+          "4.1.35G",
+          "4.2.30G",
+          "4.2.31G",
+          "1.3.2R"
+        ],
+        "provisionCount": 13,
+        "estimate": {
+          "selectedCharacters": 7755,
+          "estimatedTokens": 1939,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 1792,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 14
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            156,
+            157,
+            158,
+            160
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 7755
+        }
+      },
+      {
+        "batchIndex": 13,
+        "instrumentProvisionsNewlySupplied": [
+          "2.2.35AG"
+        ],
+        "provisionCount": 1,
+        "estimate": {
+          "selectedCharacters": 6868,
+          "estimatedTokens": 1717,
+          "maxCharactersPerSection": 3200,
+          "outputPreflight": {
+            "estimateTokens": 496,
+            "ok": true,
+            "maxOutputTokens": 8192,
+            "provisionCap": 16,
+            "targetProvisionCount": 1
+          }
+        },
+        "selectionSummary": {
+          "selectedPages": [
+            114,
+            115,
+            117,
+            159
+          ],
+          "selectedSections": 4,
+          "selectedCharacters": 6868
+        }
+      }
+    ],
+    "batchShapeChecks": [
+      {
+        "continuationBatchIndex": 0,
+        "provisionCount": 16,
+        "outputEstimateTokens": 2820,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 2820,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 1,
+        "provisionCount": 16,
+        "outputEstimateTokens": 2820,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 2820,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 2,
+        "provisionCount": 13,
+        "outputEstimateTokens": 1792,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 1792,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 3,
+        "provisionCount": 13,
+        "outputEstimateTokens": 1792,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 1792,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 4,
+        "provisionCount": 10,
+        "outputEstimateTokens": 1468,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 1468,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 5,
+        "provisionCount": 8,
+        "outputEstimateTokens": 1252,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 1252,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 6,
+        "provisionCount": 14,
+        "outputEstimateTokens": 2516,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 2516,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 7,
+        "provisionCount": 14,
+        "outputEstimateTokens": 2516,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 2516,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 8,
+        "provisionCount": 16,
+        "outputEstimateTokens": 2820,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 2820,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 9,
+        "provisionCount": 13,
+        "outputEstimateTokens": 1792,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 1792,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 10,
+        "provisionCount": 14,
+        "outputEstimateTokens": 2516,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 2516,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 11,
+        "provisionCount": 16,
+        "outputEstimateTokens": 2820,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 2820,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 12,
+        "provisionCount": 13,
+        "outputEstimateTokens": 1792,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 1792,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      },
+      {
+        "continuationBatchIndex": 13,
+        "provisionCount": 1,
+        "outputEstimateTokens": 496,
+        "provisionCap": 512,
+        "batchPre": {
+          "ok": true,
+          "estimateTokens": 496,
+          "maxOutputTokens": 8192
+        },
+        "comparesToFailedBatch5": "within_cap_vs_truncated_22",
+        "wouldHaveFailedLike9fd62178": false
+      }
+    ]
+  },
+  "costForecast": {
+    "cumulativeSpendUsd": 1.282017,
+    "authorizedCeilingUsd": 2.35,
+    "proposedCeilingUsd": 3.25,
+    "empiricalRemainingUsd": 1.33,
+    "projectedCumulativeUsd": 2.612
+  },
+  "acceptanceChecks": {
+    "preserved65": true,
+    "outstanding177": true,
+    "total242": true,
+    "noOverlap": true,
+    "noMissing": true,
+    "noExtras": true,
+    "sourceRevisionSha256": true,
+    "historicalRunsPreserved": true,
+    "paidAttemptDiscrepancyDocumented": true,
+    "allContinuationPreflightPass": true,
+    "noneMatch22ProvisionFailureShape": true
+  }
+}

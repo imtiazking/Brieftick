@@ -321,6 +321,16 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
 | — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
 
+## 2026-11-23 — Final PS22 reconcile + continuation proposal (local)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 21:57 | Final PS22 inventory | User: 65+177=242, paid 5 vs 6 | `ps22-final-reconcile.mjs` **PASS** — **6** paid POSTs, **5** succeeded, **1** failed preserved |
+| 21:57 | Continuation | 14 batches, preflight 14/14 | `PS22-9-CONTINUATION-PLAN-14-BATCH`, batch-0 accuracy prep |
+| 21:57 | Spend proposal | $3.25 suggested — **not authorised** | `PS22-9-CONTINUATION-PROPOSAL`; full run **$2.612** projected vs **$2.35** current |
+| 21:57 | FCA taxonomy | 29 outstanding | **17** operative binding, **12** guidance; **0** live structured recall |
+| — | Paid AI | Awaiting approval | No execution |
+
 ## 2026-11-23 — PS22 plan reconcile + FCA outstanding + Vercel usage (local)
 
 | Time (UTC) | Decision | Reason | Outcome |

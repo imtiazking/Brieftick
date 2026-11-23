@@ -254,8 +254,10 @@ const report = {
       empiricalUsdRemaining: empiricalRemainingUsd,
       tokenHeuristicUsdRemaining: tokenEstimateUsd,
       pilotAvgUsdPerBatch: PILOT_AVG_USD_PER_BATCH,
-      batchesAlreadyPaid: succeededBatches.length,
-      note: 'Do not re-pay batches 0–4; use new orchestration suffix + startSuppliedCores when authorised',
+      paidApiAttemptsCorrectedPath: 6,
+      successfulExtractionBatches: 5,
+      failedBillableAttempts: 1,
+      note: 'Six paid POSTs (batches 0–5); five succeeded (65 cores). Do not re-pay; new suffix + startSuppliedCores when authorised',
     },
   },
   acceptanceChecks: {

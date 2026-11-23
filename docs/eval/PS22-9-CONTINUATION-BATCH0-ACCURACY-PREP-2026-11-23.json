@@ -1,0 +1,114 @@
+{
+  "generatedAt": "2026-11-23T21:57:23.180Z",
+  "disclaimer": "Provision reconciliation ≠ regulatory extraction accuracy; this validates shape and evidence only",
+  "continuationBatchIndex": 0,
+  "provisionCores": [
+    "1.2.1G",
+    "2.1.1R",
+    "2A.1.10G",
+    "2A.1.11G",
+    "2A.1.12G",
+    "2A.1.13G",
+    "2A.1.14G",
+    "2A.1.15G",
+    "2A.1.16G",
+    "2A.1.17G",
+    "2A.1.18G",
+    "2A.2.1R",
+    "2A.2.8R",
+    "2A.2.9R",
+    "2A.2.10G",
+    "2A.2.11G"
+  ],
+  "provisionCount": 16,
+  "failedRunComparison": {
+    "failedRunId": "9fd62178-ef68-451d-b16e-9cd17526d3f3",
+    "failedProvisionCount": 22,
+    "failedOutputTokens": 8192,
+    "thisBatchWouldSaturateMaxTokens": false,
+    "preflight": {
+      "ok": true,
+      "estimateTokens": 2820,
+      "maxOutputTokens": 8192
+    }
+  },
+  "sourceEvidence": {
+    "sourcePdfSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+    "extractionProfile": "pdf_primary_v1",
+    "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+    "instrumentStartPage": 92,
+    "selectedPages": [
+      104,
+      106,
+      107,
+      109
+    ],
+    "selectedSections": 4,
+    "pagesPerCore": {
+      "1.2.1G": [
+        104
+      ],
+      "2.1.1R": [
+        104
+      ],
+      "2A.1.10G": [
+        106
+      ],
+      "2A.1.11G": [
+        106
+      ],
+      "2A.1.12G": [
+        106
+      ],
+      "2A.1.13G": [
+        106
+      ],
+      "2A.1.14G": [
+        106
+      ],
+      "2A.1.15G": [
+        107
+      ],
+      "2A.1.16G": [
+        107
+      ],
+      "2A.1.17G": [
+        107
+      ],
+      "2A.1.18G": [
+        107
+      ],
+      "2A.2.1R": [
+        107
+      ],
+      "2A.2.8R": [
+        109
+      ],
+      "2A.2.9R": [
+        109
+      ],
+      "2A.2.10G": [
+        109
+      ],
+      "2A.2.11G": [
+        109
+      ]
+    }
+  },
+  "structuredAssessmentContract": {
+    "requiredPerSuppliedCore": [
+      "candidate or claim with provisionReference",
+      "sourceQuotation grounded in authoritativeExcerpt",
+      "explicit assessment row in _forgeniqProvisionAssessments when batch completes"
+    ],
+    "invalidBatchConditions": [
+      "AI_OUTPUT_TRUNCATED",
+      "omitted provision without requiresExceptionReview",
+      "provisionCount > RI_LAB_MAX_PROVISIONS_PER_BATCH (16)"
+    ],
+    "qualityGate": {
+      "batchCompletenessOk": "omissionCount === 0 for supplied cores",
+      "regulatoryAccuracySuccess": "independent of inventory reconciliation"
+    }
+  }
+}

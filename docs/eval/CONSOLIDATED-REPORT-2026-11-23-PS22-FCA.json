@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-11-23T22:00:00.000Z",
+  "gitCommits": ["b677d11", "pending-final-reconcile"],
+  "noProductionDeployment": true,
+  "noPaidExtractionExecutedThisSession": true,
+  "ps22": {
+    "inventoryVerified": {
+      "preservedCompleted": 65,
+      "outstanding": 177,
+      "instrumentTotal": 242,
+      "overlap": 0,
+      "missing": 0,
+      "extras": 0,
+      "sourceRevisionSha256": true,
+      "evidence": "docs/eval/PS22-9-PAID-RUN-RECONCILE-FINAL-2026-11-23.json"
+    },
+    "paidRunReconciliation": {
+      "successfulExtractionBatches": 5,
+      "totalPaidApiAttempts": 6,
+      "failedBillableAttempts": 1,
+      "failedRunPreserved": "9fd62178-ef68-451d-b16e-9cd17526d3f3",
+      "discrepancyResolved": "Five counts successful batches (0–4); six counts all billable POSTs including failed index 5",
+      "ps22CorrectedSpendUsd": 0.612195,
+      "allPilotRunsPreserved": 13
+    },
+    "continuationPlan14Batch": {
+      "batchCount": 14,
+      "provisions": 177,
+      "preflightPass": "14/14",
+      "maxProvisionsPerBatch": 16,
+      "noneMatch22ProvisionTruncationShape": true,
+      "evidence": "docs/eval/PS22-9-CONTINUATION-PLAN-14-BATCH-2026-11-23.json",
+      "firstBatchAccuracyPrep": "docs/eval/PS22-9-CONTINUATION-BATCH0-ACCURACY-PREP-2026-11-23.json",
+      "disclaimer": "Plan reconciliation does not prove regulatory extraction accuracy"
+    },
+    "costForecast": {
+      "cumulativeSpendUsd": 1.282017,
+      "authorizedCeilingUsd": 2.35,
+      "proposedCeilingUsd": 3.25,
+      "proposedCeilingAuthorized": false,
+      "empiricalRemainingUsd": 1.33,
+      "projectedCumulativeIfFullRunUsd": 2.612,
+      "fitsCurrentCeiling": false,
+      "fitsProposedCeiling": true,
+      "proposal": "docs/eval/PS22-9-CONTINUATION-PROPOSAL-2026-11-23.json"
+    }
+  },
+  "fcaPs26": {
+    "outstandingCount": 29,
+    "taxonomy": {
+      "operative_binding_requirement": 17,
+      "guidance": 12,
+      "liveStructuredRecallAmongOutstanding": 0,
+      "aiOmissionCandidatesAmongOperative": 17
+    },
+    "reportingRule": "Structured extraction recall separate from deterministic completeness",
+    "evidence": [
+      "docs/eval/FCA-PS26-OUTSTANDING-TAXONOMY-2026-11-23.json",
+      "docs/eval/FCA-PS26-OUTSTANDING-RECONCILE-2026-11-23.json"
+    ]
+  },
+  "secDb003": {
+    "status": "BLOCKED_HOSTED_ROLE_PROOF",
+    "localHarness": "5/5",
+    "stagingApiHarness": "6/6 (003 skip)",
+    "required": "STAGING_DATABASE_URL + restricted-role harness — no privileged substitution",
+    "evidence": "docs/eval/SEC-DB-003-STAGING-ACCESS-2026-11-23.json"
+  },
+  "vercel": {
+    "consolidatedDeployPolicy": "preserved — no deploy this session",
+    "currentCpuRemaining": "unknown — last snapshot stale; do not assume ~53m",
+    "evidence": "docs/eval/VERCEL-USAGE-RESET-2026-11-23.json"
+  },
+  "productionBlockers": [
+    "PS22 full continuation not authorised ($3.25 ceiling proposal pending; $2.35 headroom insufficient for full $1.33 empirical)",
+    "SEC-DB-003 hosted restricted-role proof",
+    "FCA live structured recall on 17 operative outstanding provisions",
+    "Production deploy approval"
+  ]
+}
