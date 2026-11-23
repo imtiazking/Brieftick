@@ -308,6 +308,19 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | SEC-DB-003 hosted | `STAGING_DATABASE_URL` unset locally | Requirements unchanged; local 5/5 + staging API 6/6 only |
 | — | Production | Accurate FCA + hosted DB not proven | **NO-GO** preserved; RI master **3/3** (442346) unchanged |
 
+## 2026-11-23 — Regulatory guards, d545cad revert, Vercel CLI, staging deploy attempt
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 18:12 | Revert d545cad defect | Finalised guidance / cross-ref R must not auto-bind | `obligation-extraction-regulatory-guard.mjs`; removed consultation→binding remap; `evaluateProvisionEligibility` + unique set-out inference only |
+| 18:12 | Prompt correction | Distinct instrument set-out vs guidance cross-reference | `anthropic-prompts-core.mjs` UC-RI-005 |
+| 18:12 | Regression tests | Positive + negative | `acceptance-ri-normalize-obligation-output.mjs` **PASS** (4 cases) |
+| 18:18 | FCA operative trace | P2: 4 cores + 7.20.1R(2) | `FCA-PS26-OPERATIVE-TRACE-2026-11-23.json` — legal operative **5/5**; legacy run ID **1/5**; extract **1/5** |
+| 18:20 | Vercel CLI | P3 supported version | Upgraded to **66.6.0** |
+| 18:24 | Staging deploy | `phase85h-deploy-staging-platform.mjs` | First attempt **build fail** (TS null); fixed `2009aec`; second attempt **Not authorized** — operator re-auth may be required |
+| — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
+| — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
+
 ## 2026-11-22 — Cursor autonomous environment + UAT resume
 
 | Time (UTC) | Decision | Reason | Outcome |
