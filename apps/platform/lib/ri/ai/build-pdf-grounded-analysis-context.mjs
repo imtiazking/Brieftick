@@ -351,15 +351,24 @@ export async function buildPdfGroundedAnalysisContext(params) {
       provisionCount: inventory.provisions.length,
       outcomes: provisionOutcomesSummary,
     };
-    if (Array.isArray(params.targetProvisionCores) && params.targetProvisionCores.length) {
-      const scoped = params.targetProvisionCores.map((core) => {
+    const scopeCores =
+      Array.isArray(params.targetProvisionCores) && params.targetProvisionCores.length
+        ? params.targetProvisionCores
+        : Array.isArray(activeBatch?.instrumentProvisionsNewlySupplied) && activeBatch.instrumentProvisionsNewlySupplied.length
+          ? activeBatch.instrumentProvisionsNewlySupplied
+          : uniqueSupplied;
+    if (scopeCores.length) {
+      const scoped = scopeCores.map((core) => {
         const row = inventory.byCore?.get(core);
         const excerpt = row ? extractProvisionScopedExcerpt(pageText, row.pages, core) : null;
-        return excerpt ? { provisionCore: core, pages: row.pages, authoritativeExcerpt: excerpt.slice(0, 480) } : { provisionCore: core, missing: true };
+        return excerpt
+          ? { provisionCore: core, pages: row.pages, authoritativeExcerpt: excerpt.slice(0, 480) }
+          : { provisionCore: core, missing: true };
       });
       provisionOutcomesSummary.provisionScopedExtraction = {
-        targetCores: params.targetProvisionCores,
-        policy: 'Claims must cite only authoritativeExcerpt text for the listed provisionCore.',
+        targetCores: scopeCores,
+        policy:
+          'Each provisionCore in targetCores must receive an explicit assessment in candidates[] (provisionReference + sourceQuotation from authoritativeExcerpt only). A completed batch without an assessment for every supplied core is invalid.',
         excerpts: scoped,
       };
     }

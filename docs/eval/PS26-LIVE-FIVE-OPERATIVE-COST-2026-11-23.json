@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-11-23T19:00:00Z",
+  "authorised": false,
+  "publication": "PS26/1",
+  "purpose": "Validate provision-scoped extraction + completeness safeguards on five verified operative requirements only",
+  "targetCores": ["4.2A.3R", "4.2A.6R", "4.2A.7R", "7.20.3R", "7.20.1R"],
+  "subParagraphEvidence": {
+    "7.20.1R": "7.20.1R(2) cross-page p.95 — include pages 94–95 in batch scope"
+  },
+  "useCaseId": "UC-RI-005",
+  "batchScope": {
+    "maxSectionsPerBatch": 6,
+    "targetProvisionCoresOnly": true,
+    "policy": "Single narrowly scoped batch; stop if _forgeniqProvisionCompleteness.omissionCount > 0"
+  },
+  "costEstimateUsd": {
+    "inputTokens": 2800,
+    "outputTokens": 2200,
+    "model": "anthropic claude sonnet (staging default)",
+    "estimatedUsd": 0.042,
+    "hardCapPerRunUsd": 0.2,
+    "note": "Well under $0.20; cumulative $2.35 ceiling not approved"
+  },
+  "successCriteria": {
+    "regulatoryAccuracySuccess": true,
+    "batchCompletenessOk": true,
+    "fiveOperativesAssessedStructured": true,
+    "noAutoObligationConversion": true
+  },
+  "gateForPs229": "Proceed with PS22/9 live batches only if five-operative live test passes successCriteria without manual benchmark inflation"
+}

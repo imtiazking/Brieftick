@@ -1,0 +1,250 @@
+{
+  "generatedAt": "2026-11-23T18:41:55.498Z",
+  "publication": "PS26/1",
+  "snapshot": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\docs\\eval\\fixtures\\PS26-HISTORICAL-RUNS-SNAPSHOT-2026-11-23.json",
+  "verifiedOperatives": [
+    "4.2A.3R",
+    "4.2A.6R",
+    "4.2A.7R",
+    "7.20.3R",
+    "7.20.1R"
+  ],
+  "pipeline": [
+    {
+      "core": "4.2A.3R",
+      "subParagraphNote": null,
+      "deterministicBatchPlan": {
+        "batchIndex": 0,
+        "inNewlySupplied": true,
+        "instrumentProvisionsSuppliedCount": 41
+      },
+      "runTraces": [
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "suppliedInBatch": true,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": {
+            "provisionCore": "4.2A.3R",
+            "outcome": "assessed_text_only",
+            "identified": true,
+            "structuredReferenceCount": 0,
+            "textHitCount": 4,
+            "authoritativeExcerptHead": null,
+            "causes": [
+              "present_without_structured_provision_reference"
+            ],
+            "requiresExceptionReview": true
+          },
+          "rootCause": "present_without_structured_provision_reference"
+        },
+        {
+          "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+          "suppliedInBatch": true,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": {
+            "provisionCore": "4.2A.3R",
+            "outcome": "assessed_text_only",
+            "identified": true,
+            "structuredReferenceCount": 0,
+            "textHitCount": 2,
+            "authoritativeExcerptHead": null,
+            "causes": [
+              "present_without_structured_provision_reference"
+            ],
+            "requiresExceptionReview": true
+          },
+          "rootCause": "present_without_structured_provision_reference"
+        }
+      ]
+    },
+    {
+      "core": "4.2A.6R",
+      "subParagraphNote": null,
+      "deterministicBatchPlan": {
+        "batchIndex": 0,
+        "inNewlySupplied": true,
+        "instrumentProvisionsSuppliedCount": 41
+      },
+      "runTraces": [
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "suppliedInBatch": true,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": {
+            "provisionCore": "4.2A.6R",
+            "outcome": "omitted",
+            "identified": false,
+            "structuredReferenceCount": 0,
+            "textHitCount": 0,
+            "authoritativeExcerptHead": null,
+            "causes": [
+              "supplied_to_model_but_no_candidate_or_claim"
+            ],
+            "requiresExceptionReview": true
+          },
+          "rootCause": "supplied_ignored_by_model"
+        },
+        {
+          "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+          "suppliedInBatch": true,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": {
+            "provisionCore": "4.2A.6R",
+            "outcome": "omitted",
+            "identified": false,
+            "structuredReferenceCount": 0,
+            "textHitCount": 0,
+            "authoritativeExcerptHead": null,
+            "causes": [
+              "supplied_to_model_but_no_candidate_or_claim"
+            ],
+            "requiresExceptionReview": true
+          },
+          "rootCause": "supplied_ignored_by_model"
+        }
+      ]
+    },
+    {
+      "core": "4.2A.7R",
+      "subParagraphNote": null,
+      "deterministicBatchPlan": {
+        "batchIndex": 0,
+        "inNewlySupplied": true,
+        "instrumentProvisionsSuppliedCount": 41
+      },
+      "runTraces": [
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "suppliedInBatch": true,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": {
+            "provisionCore": "4.2A.7R",
+            "outcome": "omitted",
+            "identified": false,
+            "structuredReferenceCount": 0,
+            "textHitCount": 0,
+            "authoritativeExcerptHead": null,
+            "causes": [
+              "supplied_to_model_but_no_candidate_or_claim"
+            ],
+            "requiresExceptionReview": true
+          },
+          "rootCause": "supplied_ignored_by_model"
+        },
+        {
+          "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+          "suppliedInBatch": true,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": {
+            "provisionCore": "4.2A.7R",
+            "outcome": "omitted",
+            "identified": false,
+            "structuredReferenceCount": 0,
+            "textHitCount": 0,
+            "authoritativeExcerptHead": null,
+            "causes": [
+              "supplied_to_model_but_no_candidate_or_claim"
+            ],
+            "requiresExceptionReview": true
+          },
+          "rootCause": "supplied_ignored_by_model"
+        }
+      ]
+    },
+    {
+      "core": "7.20.3R",
+      "subParagraphNote": null,
+      "deterministicBatchPlan": {
+        "batchIndex": 0,
+        "inNewlySupplied": true,
+        "instrumentProvisionsSuppliedCount": 41
+      },
+      "runTraces": [
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "suppliedInBatch": true,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": {
+            "provisionCore": "7.20.3R",
+            "outcome": "omitted",
+            "identified": false,
+            "structuredReferenceCount": 0,
+            "textHitCount": 0,
+            "authoritativeExcerptHead": null,
+            "causes": [
+              "supplied_to_model_but_no_candidate_or_claim"
+            ],
+            "requiresExceptionReview": true
+          },
+          "rootCause": "supplied_ignored_by_model"
+        },
+        {
+          "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+          "suppliedInBatch": false,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": null,
+          "rootCause": "not_in_batch_instrumentProvisionsNewlySupplied"
+        }
+      ]
+    },
+    {
+      "core": "7.20.1R",
+      "subParagraphNote": "Operative duty verified at 7.20.1R(2) p.95 (cross-page RI-CLS-009)",
+      "deterministicBatchPlan": {
+        "batchIndex": 0,
+        "inNewlySupplied": true,
+        "instrumentProvisionsSuppliedCount": 41
+      },
+      "runTraces": [
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "suppliedInBatch": true,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": {
+            "provisionCore": "7.20.1R",
+            "outcome": "omitted",
+            "identified": false,
+            "structuredReferenceCount": 0,
+            "textHitCount": 0,
+            "authoritativeExcerptHead": null,
+            "causes": [
+              "supplied_to_model_but_no_candidate_or_claim"
+            ],
+            "requiresExceptionReview": true
+          },
+          "rootCause": "supplied_ignored_by_model"
+        },
+        {
+          "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+          "suppliedInBatch": false,
+          "orchestrationWouldMergeFinding": false,
+          "requiresStructuredRefForMerge": true,
+          "assessment": null,
+          "rootCause": "not_in_batch_instrumentProvisionsNewlySupplied"
+        }
+      ]
+    }
+  ],
+  "aggregateRootCauses": {
+    "4.2A.3R": "assessed_text_only / partial — text hits; orchestration merge blocked without provisionReference",
+    "4.2A.6R": "supplied_ignored_by_model when in batch",
+    "4.2A.7R": "supplied_ignored_by_model when in batch",
+    "7.20.3R": "supplied_ignored_by_model when in batch",
+    "7.20.1R(2)": "parser scoped excerpt weak; cross-page duty; model omission when supplied"
+  },
+  "safeguardsImplemented": [
+    "provision-assessment-completeness.mjs",
+    "provisionScopedExtraction for every batch",
+    "ai_assessment_omission_requires_review inventory outcome",
+    "regulatoryExtractionAccuracyComplete on orchestration"
+  ]
+}

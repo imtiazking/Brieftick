@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-11-23T18:42:03.026Z",
+  "inventory": {
+    "rProvisions": 28,
+    "gProvisions": 19,
+    "total": 47
+  },
+  "metrics": {
+    "provisionIdentificationRecall28R": null,
+    "operativeBindingRecallFiveVerified": 1,
+    "operativeBindingRecallDenominator": 5,
+    "obligationExtractionRecallFive": 0,
+    "unsupportedBindingClassifications": 0,
+    "humanCorrectionRate": null,
+    "unresolvedProvisions": [
+      "16.1.6R",
+      "2.3.1R",
+      "2.3.2R",
+      "2.5.1R",
+      "2.7.19GG",
+      "2.7.19HG",
+      "2.7.1R",
+      "2.7.7FG",
+      "2.8.6CG",
+      "4.2.1R",
+      "4.2.2G",
+      "4.2A.10G",
+      "4.2A.11R",
+      "4.2A.12G",
+      "4.2A.1R",
+      "4.2A.2G",
+      "4.2A.4R",
+      "4.2A.6R",
+      "4.2A.7R",
+      "4.2A.8R",
+      "4.2A.9G",
+      "4.6.2AR",
+      "4.6.2R",
+      "8.12.11AG",
+      "TP 13.1R",
+      "TP 13.2G",
+      "TP 13.3R",
+      "TP 13.4R",
+      "TP 13.5G"
+    ],
+    "quotationAccuracy": "requires_provisionReference_plus_set_out_quotation — 4.2A.3R text_hit_without_structured_provisionReference on historical runs"
+  },
+  "fiveOperativeVerification": [
+    {
+      "core": "4.2A.3R",
+      "legalEvidence": "instrument_text_verified",
+      "operativeBindingVerified": true,
+      "aiOutcome": "assessed_text_only",
+      "strictTp4_2A_3R": false
+    },
+    {
+      "core": "4.2A.6R",
+      "legalEvidence": "instrument_text_verified",
+      "operativeBindingVerified": true,
+      "aiOutcome": "omitted",
+      "strictTp4_2A_3R": null
+    },
+    {
+      "core": "4.2A.7R",
+      "legalEvidence": "instrument_text_verified",
+      "operativeBindingVerified": true,
+      "aiOutcome": "omitted",
+      "strictTp4_2A_3R": null
+    },
+    {
+      "core": "7.20.3R",
+      "legalEvidence": "instrument_text_verified",
+      "operativeBindingVerified": true,
+      "aiOutcome": "not_in_supplied_scope",
+      "strictTp4_2A_3R": null
+    },
+    {
+      "core": "7.20.1R",
+      "legalEvidence": "page_located_minimal_excerpt",
+      "operativeBindingVerified": true,
+      "aiOutcome": "not_in_supplied_scope",
+      "strictTp4_2A_3R": null
+    }
+  ],
+  "strictTruePositive4_2A_3R": {
+    "identifiedInAiOutput": true,
+    "structuredProvisionReference": false,
+    "verdict": "PARTIAL — text/quotation cites 4.2A.3R duties; structured provisionReference historically absent"
+  },
+  "policyNote": "R marker alone does not create obligation; benchmark uses independent verification JSON"
+}

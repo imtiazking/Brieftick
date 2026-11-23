@@ -1,0 +1,2896 @@
+{
+  "capturedAt": "2026-11-23T18:41:07.238Z",
+  "runs": [
+    {
+      "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+      "structured_output": {
+        "claims": [
+          {
+            "text": "Firms seeking deferred payment credit temporary permission must notify the FCA during a specified registration window (15 May 2026 to approximately 1 July 2026) and provide financial projections.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ]
+          },
+          {
+            "text": "Firms with deferred payment credit temporary permission must achieve full Consumer Duty compliance by Regulation Day (15 July 2026) and apply for full authorisation within 6 months or lose temporary permission.",
+            "confidence": 95,
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ]
+          },
+          {
+            "text": "Before making a regulated deferred payment credit agreement, firms must provide customers with comprehensive key product information (rate, amount, payment schedule, cash price, consequences of non-payment) and additional product information (right to withdraw, credit assessment, adequate explanations, terms).",
+            "confidence": 95,
+            "sourceSectionIds": [
+              "EVD-PDF-e219e1c202a0c2e0",
+              "EVD-PDF-749f250a95a5a2c9",
+              "EVD-PDF-379e52d5c4d6e27e"
+            ]
+          },
+          {
+            "text": "Immediately after making a regulated deferred payment credit agreement, firms must provide customers with a copy of the agreement and all required product information in a durable medium (unless already provided).",
+            "confidence": 95,
+            "sourceSectionIds": [
+              "EVD-PDF-379e52d5c4d6e27e"
+            ]
+          },
+          {
+            "text": "Where guarantors are involved in regulated deferred payment credit agreements, firms must provide adequate explanations and relevant information to enable informed decisions before the agreement is made.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-379e52d5c4d6e27e",
+              "EVD-PDF-2ae2e75f0d5a4301"
+            ]
+          },
+          {
+            "text": "Firms must not unfairly pressure customers to enter regulated deferred payment credit agreements without adequate time to consider the required product information.",
+            "confidence": 95,
+            "sourceSectionIds": [
+              "EVD-PDF-33d46e2b1a9fa4c4"
+            ]
+          },
+          {
+            "text": "As soon as possible after a missed payment on a regulated deferred payment credit agreement, firms must notify the borrower and provide information about adverse consequences and mitigation steps.",
+            "confidence": 95,
+            "sourceSectionIds": [
+              "EVD-PDF-90eac526516055e9",
+              "EVD-PDF-6f160bf6c84e2d9d"
+            ]
+          },
+          {
+            "text": "Before taking enforcement action (demanding earlier payment, restricting rights, enforcing security) or terminating a regulated deferred payment credit agreement, firms must give reasonable notice; where borrowers are in arrears, firms must also signpost to free debt advice and communicate its benefits.",
+            "confidence": 95,
+            "sourceSectionIds": [
+              "EVD-PDF-6f160bf6c84e2d9d",
+              "EVD-PDF-c48feeafda06be2d"
+            ]
+          },
+          {
+            "text": "DPC firms must comply with existing PSD reporting requirements once they exceed de minimis thresholds of £2m in new advances or £2m in outstanding balances.",
+            "confidence": 85,
+            "sourceSectionIds": [
+              "EVD-PDF-6ba253e9281105b2"
+            ]
+          },
+          {
+            "text": "Firms with only deferred payment credit temporary permission are not SMCR firms; where firms hold both Part 4A permission and DPC temporary permission, the temporary permission is disregarded for SMCR categorisation purposes.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-c972b7acef43cd7f",
+              "EVD-PDF-f38ea22635f39d76"
+            ]
+          },
+          {
+            "text": "Gibraltar-based firms carrying on deferred payment credit activity must comply with relevant Handbook provisions relating to that activity.",
+            "confidence": 95,
+            "sourceSectionIds": [
+              "EVD-PDF-f38ea22635f39d76"
+            ]
+          },
+          {
+            "text": "Standard pre-contract disclosure rules (CONC 4.2) and distance marketing rules (CONC 2.7) do not apply to regulated deferred payment credit agreements; instead, specific product information requirements in CONC 4.2A apply.",
+            "confidence": 95,
+            "sourceSectionIds": [
+              "EVD-PDF-8bf3984f6a750455",
+              "EVD-PDF-e219e1c202a0c2e0"
+            ]
+          }
+        ],
+        "metadata": {
+          "note": "This analysis extracts proposed binding obligations from consultation materials relating to deferred payment credit regulation. All obligations identified are draft proposals requiring human verification and legal review. The publication signals indicate this is a consultation paper with proposed changes that must not be treated as binding until finalised. Effective dates are based on stated implementation timelines in the consultation. Many rules reference legal instrument pages indicating draft statutory instrument provisions.",
+          "analysisType": "obligation_extraction",
+          "evidenceMode": "publication_summary",
+          "regulatoryPhase": "consultation"
+        },
+        "candidates": [
+          {
+            "citation": "PDF p.40",
+            "statement": "Firms with deferred payment credit temporary permission must notify the FCA of their desire to be registered for the Temporary Permission Regime (TPR) during the notification window opening 15 May 2026 and closing 2 weeks before Regulation Day (15 July 2026).",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": "2026-05-15",
+            "sourceQuotation": "In line with the proposals in the CP, notification for registration for temporary permission will open 2 months before Regulation Day and close 2 weeks before Regulation Day... notification for registration for the TPR opens on 15 May 2026",
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ],
+            "applicabilityConditions": "Applies to firms seeking to enter the Temporary Permission Regime for deferred payment credit activities"
+          },
+          {
+            "citation": "PDF p.40",
+            "statement": "Firms notifying for temporary permission must provide projections of annual income for future DPC activities and projections of the value of their DPC lending when registering.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": "2026-05-15",
+            "sourceQuotation": "In CP25/33, in addition to the information referred to in paragraph 5.3, we proposed that firms provide the following information when notifying a desire for registration... A projection of annual income for future DPC activities. • Projections of the value of their DPC lending.",
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ],
+            "applicabilityConditions": "Applies to firms registering for deferred payment credit temporary permission"
+          },
+          {
+            "citation": "PDF p.40",
+            "statement": "Firms with deferred payment credit temporary permission must be fully compliant with the Consumer Duty from Regulation Day (15 July 2026).",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": "2026-07-15",
+            "sourceQuotation": "Firms preparing to enter the TPR should begin planning early to ensure operational readiness for Regulation Day. In particular, firms should: • Make sure they are fully compliant with the Consumer Duty from Regulation Day.",
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ],
+            "applicabilityConditions": "Applies to firms with deferred payment credit temporary permission"
+          },
+          {
+            "citation": "PDF p.40",
+            "statement": "Firms with deferred payment credit temporary permission must apply for full authorisation within 6 months directly following Regulation Day or lose their temporary permission.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": "2026-07-15",
+            "sourceQuotation": "Note that temporary permission is not indefinite. Firms will be able to apply for full authorisation before the end of the 6-month window directly following Regulation Day. Firms that do not apply within this window will lose their temporary permission.",
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ],
+            "applicabilityConditions": "Applies to firms with deferred payment credit temporary permission who wish to continue deferred payment credit activities beyond the temporary permission period"
+          },
+          {
+            "citation": "PDF p.87-88 · legal instrument",
+            "statement": "Before making a regulated deferred payment credit agreement, firms must give to the customer the key product information specified in CONC 4.2A.5R(1) including rate of interest, amount of credit, payment details, cash price, consequences of non-payment, and credit reference agency usage.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "Before making an agreement, the firm must: (a) give to the customer the information set out in CONC 4.2A.5R(1) (referred to in this section as the 'key product information')... The key product information referred to in CONC 4.2A.3R(1)(a) is as follows: (a) the rate of interest that applies to the agreement; (b) the amount of the credit to be provided under the agreement...",
+            "sourceSectionIds": [
+              "EVD-PDF-e219e1c202a0c2e0",
+              "EVD-PDF-749f250a95a5a2c9"
+            ],
+            "applicabilityConditions": "Applies to firms with respect to deferred payment credit lending, before making a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.87, 90 · legal instrument",
+            "statement": "Before making a regulated deferred payment credit agreement, firms must give or make available to the customer the additional product information specified in CONC 4.2A.5R(2) including right to withdraw, credit assessment details, adequate explanations, and contractual terms and conditions.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "Before making an agreement, the firm must... (b) give, or make available, to the customer the information set out in CONC 4.2A.5R(2) (referred to in this section as the 'additional product information')... The additional product information referred to in CONC 4.2A.3R(1)(b) is as follows...",
+            "sourceSectionIds": [
+              "EVD-PDF-e219e1c202a0c2e0",
+              "EVD-PDF-379e52d5c4d6e27e"
+            ],
+            "applicabilityConditions": "Applies to firms with respect to deferred payment credit lending, before making a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.88 · legal instrument",
+            "statement": "Where there is more than one customer acting together as 'joint borrowers', the product information required under CONC 4.2A must be given, or made available, to each customer.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "Where there is more than one customer acting together as 'joint borrowers', the information required under this rule must be given, or made available (as applicable), to each customer.",
+            "sourceSectionIds": [
+              "EVD-PDF-749f250a95a5a2c9"
+            ],
+            "applicabilityConditions": "Applies where a regulated deferred payment credit agreement has joint borrowers"
+          },
+          {
+            "citation": "PDF p.90 · legal instrument",
+            "statement": "Immediately after a regulated deferred payment credit agreement has been made, the firm must give, or make available, to the customer in a durable medium a copy of the agreement and the key product information and additional product information (unless already provided).",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "Immediately after an agreement has been made, the firm must give, or make available, to the customer in a durable medium: (a) a copy of the agreement; and (b) the key product information and the additional product information described in CONC 4.2A.5R.",
+            "sourceSectionIds": [
+              "EVD-PDF-379e52d5c4d6e27e"
+            ],
+            "applicabilityConditions": "Applies to firms with respect to deferred payment credit lending, immediately after making a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.90-91 · legal instrument",
+            "statement": "Where an individual other than the borrower is to provide a guarantee or an indemnity in relation to a regulated deferred payment credit agreement, the firm must, before making the agreement, provide the guarantor with adequate explanations and relevant information to enable an informed decision.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "The firm must, before making the agreement, provide the guarantor with the information in (3) in order to place the guarantor in a position to make an informed decision as to whether to act as the guarantor in relation to the agreement.",
+            "sourceSectionIds": [
+              "EVD-PDF-379e52d5c4d6e27e",
+              "EVD-PDF-2ae2e75f0d5a4301"
+            ],
+            "applicabilityConditions": "Applies where there is a guarantor providing a guarantee or indemnity in relation to a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.93 · legal instrument",
+            "statement": "Firms must not unfairly encourage, incentivise or induce a customer to enter into a regulated deferred payment credit agreement quickly without allowing the customer time to consider the information given under CONC 4.2A.3R(1).",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "A firm must not unfairly encourage, incentivise or induce a customer to enter into a regulated credit agreement quickly without allowing the customer time to consider... (2) in relation to a regulated deferred payment credit agreement, the information given, or made available, to the customer under CONC 4.2A.3R(1).",
+            "sourceSectionIds": [
+              "EVD-PDF-33d46e2b1a9fa4c4"
+            ],
+            "applicabilityConditions": "Applies to firms with respect to deferred payment credit lending"
+          },
+          {
+            "citation": "PDF p.94-95 · legal instrument",
+            "statement": "As soon as possible after a borrower has failed to make a payment by the time it has fallen due under a regulated deferred payment credit agreement, the firm must notify the borrower that the missed payment has occurred and provide sufficient information about adverse consequences and steps to mitigate them.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred... and (b) provide the borrower with sufficient information for the borrower to understand... (ii) any adverse consequences for the borrower arising out of the missed payment...",
+            "sourceSectionIds": [
+              "EVD-PDF-90eac526516055e9",
+              "EVD-PDF-6f160bf6c84e2d9d"
+            ],
+            "applicabilityConditions": "Applies where a borrower has failed to make a payment by the time it has fallen due under a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.95-96 · legal instrument",
+            "statement": "Before a firm takes steps to enforce a term of a regulated deferred payment credit agreement (by demanding earlier payment, restricting rights, or enforcing security) or terminates the agreement, it must give the borrower reasonable notice of its intention to do so.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "Before a firm takes any of the actions specified in (2), it must give the borrower reasonable notice of its intention to do so. (2) The actions mentioned in (1) are: (a) taking steps to enforce a term of a regulated deferred payment credit agreement by: (i) demanding the earlier payment of any sum...",
+            "sourceSectionIds": [
+              "EVD-PDF-6f160bf6c84e2d9d",
+              "EVD-PDF-c48feeafda06be2d"
+            ],
+            "applicabilityConditions": "Applies before taking enforcement action or terminating a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.96 · legal instrument",
+            "statement": "Where a firm intends to take enforcement action or terminate a regulated deferred payment credit agreement and the borrower is in arrears, the firm must inform the borrower that free and impartial money guidance and debt advice is available and effectively communicate the potential benefits of accessing it.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "Where a firm intends to take any of the actions specified in (2) and the borrower is in arrears, the firm must when giving notice in accordance with (1): (a) inform the borrower that free and impartial money guidance and debt advice is available from not-for-profit debt advice bodies... and (b) effectively communicate to the borrower the potential benefits of accessing money guidance or free and impartial debt advice...",
+            "sourceSectionIds": [
+              "EVD-PDF-c48feeafda06be2d"
+            ],
+            "applicabilityConditions": "Applies where the borrower is in arrears and the firm intends to take enforcement action or terminate a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.29",
+            "statement": "DPC firms must comply with existing regulatory reporting requirements including PSD returns once they breach the de minimis thresholds of either £2m in new advances or £2m in outstanding balances in a given year.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "PSD reporting requirements only apply once a firm breaches one of the de minimis thresholds in a given year. Specifically, either £2m in new advances or £2m in outstanding balances.",
+            "sourceSectionIds": [
+              "EVD-PDF-6ba253e9281105b2"
+            ],
+            "applicabilityConditions": "Applies to DPC firms that breach either £2m in new advances or £2m in outstanding balances in a given year"
+          },
+          {
+            "citation": "PDF p.66 · legal instrument",
+            "statement": "In circumstances where the only regulated activities in a firm's permission are deferred payment credit activities permitted by a deferred payment credit temporary permission, the firm is not an SMCR firm.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "In circumstances where the only regulated activities in a firm's permission are deferred payment credit activities permitted by a deferred payment credit temporary permission, a firm is not an SMCR firm (and is included in Part Three of SYSC 23 Annex 1 (Definition of exempt firm)).",
+            "sourceSectionIds": [
+              "EVD-PDF-c972b7acef43cd7f"
+            ],
+            "applicabilityConditions": "Applies where the only regulated activities in a firm's permission are deferred payment credit activities permitted by deferred payment credit temporary permission"
+          },
+          {
+            "citation": "PDF p.66, 68 · legal instrument",
+            "statement": "Where a firm's permission comprises permission granted by the FCA under Part 4A and a deferred payment credit temporary permission, the firm's deferred payment credit temporary permission is to be disregarded for the purposes of categorising what type of SMCR firm the firm is.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "The firm's deferred payment credit temporary permission is to be disregarded for the purposes of categorising what type of SMCR firm the firm is in accordance with SYSC 23 Annex 1 (Definition of SMCR firm and different types of SMCR firms).",
+            "sourceSectionIds": [
+              "EVD-PDF-c972b7acef43cd7f",
+              "EVD-PDF-f38ea22635f39d76"
+            ],
+            "applicabilityConditions": "Applies where a firm's permission comprises both Part 4A permission and deferred payment credit temporary permission"
+          },
+          {
+            "citation": "PDF p.68 · legal instrument",
+            "statement": "A Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "A Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity.",
+            "sourceSectionIds": [
+              "EVD-PDF-f38ea22635f39d76"
+            ],
+            "applicabilityConditions": "Applies to Gibraltar-based firms carrying on deferred payment credit activity"
+          },
+          {
+            "citation": "PDF p.86 · legal instrument",
+            "statement": "Firms must explain the key features of a regulated credit agreement to enable the customer to make an informed choice as required by CONC 4.2.5R (adequate explanations), but in relation to regulated deferred payment credit agreements, firms must instead provide the information required by CONC 4.2A.3R.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "A In relation to a regulated credit agreement other than a regulated deferred payment credit agreement, a firm must explain the key features of a regulated credit agreement to enable the customer to make an informed choice as required by CONC 4.2.5R (adequate explanations)... (2) In relation to a regulated deferred payment credit agreement, a firm must provide the information required by CONC 4.2A.3R.",
+            "sourceSectionIds": [
+              "EVD-PDF-8bf3984f6a750455"
+            ],
+            "applicabilityConditions": "Applies to firms conducting business relating to regulated credit agreements and regulated deferred payment credit agreements"
+          },
+          {
+            "citation": "PDF p.86 · legal instrument",
+            "statement": "CONC 2.7 (Distance marketing) does not apply to any distance marketing activity carried on in relation to a regulated deferred payment credit agreement.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "(4) This section does not apply to any distance marketing activity carried on in relation to a regulated deferred payment credit agreement.",
+            "sourceSectionIds": [
+              "EVD-PDF-8bf3984f6a750455"
+            ],
+            "applicabilityConditions": "Applies to distance marketing activities relating to regulated deferred payment credit agreements"
+          },
+          {
+            "citation": "PDF p.87 · legal instrument",
+            "statement": "CONC 4.2 (Pre-contract disclosure and adequate explanations) does not apply to a regulated deferred payment credit agreement.",
+            "bindingNature": "binding_requirement",
+            "effectiveDate": null,
+            "sourceQuotation": "This section, unless otherwise stated in or in relation to a rule... (4A) does not apply to a regulated deferred payment credit agreement",
+            "sourceSectionIds": [
+              "EVD-PDF-e219e1c202a0c2e0"
+            ],
+            "applicabilityConditions": "Applies to regulated deferred payment credit agreements"
+          }
+        ],
+        "confidence": 85,
+        "_normalizedAt": "2026-11-23T00:14:56.552Z",
+        "_normalizedSchema": "ObligationExtractionResult",
+        "_forgeniqGrounding": {
+          "kind": "pdf_primary_v1",
+          "pageCount": 108,
+          "selection": {
+            "scope": "PARTIAL_DOCUMENT",
+            "strategy": "instrument_priority_v1",
+            "maxSections": 18,
+            "documentPages": 108,
+            "selectedPages": [
+              19,
+              21,
+              29,
+              40,
+              66,
+              68,
+              81,
+              86,
+              87,
+              88,
+              90,
+              91,
+              92,
+              93,
+              94,
+              95,
+              96,
+              97
+            ],
+            "instrumentPages": 48,
+            "selectedSections": 18,
+            "truncatedSections": 0,
+            "documentCharacters": 195291,
+            "selectedCharacters": 33994,
+            "instrumentStartPage": 61,
+            "instrumentPagesSelected": 14,
+            "maxCharactersPerSection": 3200,
+            "characterCoveragePercent": 17.41,
+            "instrumentProvisionsSetOut": 47,
+            "instrumentProvisionsOmitted": [
+              {
+                "pages": [
+                  67
+                ],
+                "provision": "TP 13.5G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  103
+                ],
+                "provision": "16.1.6R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  104
+                ],
+                "provision": "2.7.7FG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  104
+                ],
+                "provision": "2.7.19GG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  104
+                ],
+                "provision": "2.7.19HG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  106
+                ],
+                "provision": "2.8.6CG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  107
+                ],
+                "provision": "8.12.11AG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              }
+            ],
+            "suppliedProvisionTextStatus": {
+              "NEW_TEXT": 24,
+              "AMENDMENT_MARKUP_UNCERTAIN": 16
+            },
+            "instrumentProvisionsSupplied": 40,
+            "instrumentProvisionsNotSupplied": [
+              "TP 13.5G",
+              "16.1.6R",
+              "2.7.7FG",
+              "2.7.19GG",
+              "2.7.19HG",
+              "2.8.6CG",
+              "8.12.11AG"
+            ]
+          },
+          "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+          "sectionCatalog": [
+            {
+              "excerpt": "19 Question 6: Do you agree that our proposed new rules requiring firms to give notice before taking certain actions are appropriate? Question 7: Do you think that reliance on the Duty could deliver our policy objectives for our proposed new rules on firms’ communications to DPC customers who have missed a repayment or where a firm intends to take certain actions instead?2.27 Stakeholders generally supported our proposals. Some, including a DPC lender and some trade associations, requested greater clarity about our expectations on the timings of when notices should be given. Others, particular",
+              "citation": "PDF p.19",
+              "pageNumber": 19,
+              "sourceSectionId": "EVD-PDF-19a69798b79d823b",
+              "provisionsSetOut": [],
+              "sectionReference": null,
+              "inLegalInstrument": false,
+              "provisionTextStatus": {},
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "21 • Any adverse consequences for the customer arising out of the missed payment. • Any other adverse consequences for the borrower that the firm considers are likely to arise out of the missed payment.We have also made a further change. This requires firms to signpost to free and impartial money guidance and debt advice, and effectively communicate the potential benefits of accessing it, when giving a customer who is in arrears notice required under our rules before: • Terminating a DPC agreement; or• Taking steps to enforce a term of the agreement by demanding earlier payment of any sum, tre",
+              "citation": "PDF p.21",
+              "pageNumber": 21,
+              "sourceSectionId": "EVD-PDF-272432babf4b38a9",
+              "provisionsSetOut": [],
+              "sectionReference": null,
+              "inLegalInstrument": false,
+              "provisionTextStatus": {},
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "29 3.14 There was broad support amongst respondents to our proposals for DPC to be subject to our existing reporting requirements, including PSD returns. 3.15 A DPC lender and a trade association queried the proportionality of our proposed approach. The lender noted that the burden of reporting PSD, in combination with the wider costs of regulation, could have a material impact on the viability of that firm’s product. 3.16 There were also some suggestions that current PSD returns may be particularly burdensome for smaller firms. Some stakeholders suggested that these firms should instead be re",
+              "citation": "PDF p.29",
+              "pageNumber": 29,
+              "sourceSectionId": "EVD-PDF-6ba253e9281105b2",
+              "provisionsSetOut": [],
+              "sectionReference": null,
+              "inLegalInstrument": false,
+              "provisionTextStatus": {},
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "40The date of Regulation Day is set in legislation. In line with the proposals in the CP, notification for registration for temporary permission will open 2 months before Regulation Day and close 2 weeks before Regulation Day. We will, in due course, and in good time before notification for registration for the TPR opens on 15 May 2026, publish Directions on the process for notification. In line with the Government’s legislation, the Directions will:• Specify the way in which a firm will need to notify us of its desire to be registered for the TPR.• Confirm the opening and closing dates for no",
+              "citation": "PDF p.40",
+              "pageNumber": 40,
+              "sourceSectionId": "EVD-PDF-f3c25613f51b66d2",
+              "provisionsSetOut": [],
+              "sectionReference": null,
+              "inLegalInstrument": false,
+              "provisionTextStatus": {},
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is not underlined. TP 13 SMCR: application to firms with deferred payment credit temporary permission Application TP 13.1 R SYSC TP 13 applies to a firm with a deferred payment credit temporary permission. [Note: articles 10 and 11 of the Deferred Payment Credit Order.] TP 13.2 G Once",
+              "citation": "PDF p.66 · legal instrument",
+              "pageNumber": 66,
+              "sourceSectionId": "EVD-PDF-c972b7acef43cd7f",
+              "provisionsSetOut": [
+                "TP 13.1R",
+                "TP 13.2G",
+                "TP 13.3R",
+                "TP 13.4R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "TP 13.1R": "NEW_TEXT",
+                "TP 13.2G": "NEW_TEXT",
+                "TP 13.3R": "NEW_TEXT",
+                "TP 13.4R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 7 of 46 Annex C Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text and striking through indicates deleted text. 2 Interpreting the Handbook ... 2.3 General saving of the Handbook for Gibraltar Continued application of the Handbook with respect to Gibraltar 2.3.1 R ... (4) ... (5) A Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity. ... 4 Statutory status disclosure ... 4.2 Purpose ... 4.2.2 G There are other pre-contract",
+              "citation": "PDF p.68 · legal instrument",
+              "pageNumber": 68,
+              "sourceSectionId": "EVD-PDF-f38ea22635f39d76",
+              "provisionsSetOut": [
+                "2.3.1R",
+                "4.2.2G"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.3.1R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.2.2G": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 20 of 46 ... Part 2: Comes into force on 31 December 2026 [Editor’s note: This Part takes into account the changes introduced by the Complaints Reporting Instrument 2025 (FCA 2025/53). That instrument deletes and replaces DISP 1 Annex 1 in its entirety from its entry into force on 31 December 2026.] 1 Annex 1 Complaints return form ... CCR return information as referred to at DISP 1.10.1IR ... 1 Annex 1.9 R ‘Service provided’ includes any of the following: ... (4) rent-to-own agreements; (4A) regulated deferred payment credit agreements; ... ... ... Part 3: Comes int",
+              "citation": "PDF p.81 · legal instrument",
+              "pageNumber": 81,
+              "sourceSectionId": "EVD-PDF-89a7bb24ba4ab06a",
+              "provisionsSetOut": [
+                "2.5.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.5.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restrictions on provision of credit card cheques ... General conduct 2.3.2 R (1) A In relation to a regulated credit agreement other than a regulated deferred payment credit agreement, a firm must explain the key features of a regulated credit agreement to enable the customer to make an informed choice as",
+              "citation": "PDF p.86 · legal instrument",
+              "pageNumber": 86,
+              "sourceSectionId": "EVD-PDF-8bf3984f6a750455",
+              "provisionsSetOut": [
+                "2.3.2R",
+                "2.7.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.3.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "2.7.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... ... Insert the following new section, CONC 4.2A, after CONC 4.2 (Pre-contract disclosure and adequate explanations). All the text is new and is not underlined. 4.2A Product information requirements: regulated deferred payment credit agreements Application 4.2A.1 R This section app",
+              "citation": "PDF p.87 · legal instrument",
+              "pageNumber": 87,
+              "sourceSectionId": "EVD-PDF-e219e1c202a0c2e0",
+              "provisionsSetOut": [
+                "4.2.1R",
+                "4.2A.1R",
+                "4.2A.2G",
+                "4.2A.3R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.2.1R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.2A.1R": "NEW_TEXT",
+                "4.2A.2G": "NEW_TEXT",
+                "4.2A.3R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 27 of 46 (2) The additional product information must all be given, or made available, to the customer together, except for the contractual terms and conditions which may be given, or made available, separately. (3) Where there is more than one customer acting together as ‘joint borrowers’, the information required under this rule must be given, or made available (as applicable), to each customer. Exception for distance contracts entered into orally 4.2A.4 R In the case of an agreement that is a distance contract entered into orally, the requirement in CONC 4.2A.3R(1)",
+              "citation": "PDF p.88 · legal instrument",
+              "pageNumber": 88,
+              "sourceSectionId": "EVD-PDF-749f250a95a5a2c9",
+              "provisionsSetOut": [
+                "4.2A.4R",
+                "4.2A.5R",
+                "4.2A.3R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.2A.4R": "NEW_TEXT",
+                "4.2A.5R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 29 of 46 in the manner set out in CONC 4.6.2AR) an adequate explanation of the matters set out in CONC 4.6.2R(2)(a) to (i) and (k); and (i) the contractual terms and conditions. Product information: once the agreement is made 4.2A.6 R (1) Immediately after an agreement has been made, the firm must give, or make available, to the customer in a durable medium: (a) a copy of the agreement; and (b) the key product information and the additional product information described in CONC 4.2A.5R. (2) The requirement in (1)(b) does not apply to the extent that: (a) the informat",
+              "citation": "PDF p.90 · legal instrument",
+              "pageNumber": 90,
+              "sourceSectionId": "EVD-PDF-379e52d5c4d6e27e",
+              "provisionsSetOut": [
+                "4.2A.6R",
+                "4.2A.7R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.2A.6R": "NEW_TEXT",
+                "4.2A.7R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 30 of 46 (ii) the implications for the guarantor of the guarantee or the indemnity (or both) being called on; and (b) such of the information mentioned in CONC 4.2A.5R as the firm considers necessary for the guarantor to understand the adequate explanations required by (3)(a) and make an informed decision as to whether to act as guarantor. (4) The information provided under (3)(b) does not need to include information about the use of a continuous payment authority where that information is provided to the guarantor in compliance with CONC 4.6.5R. [Note: See also Part",
+              "citation": "PDF p.91 · legal instrument",
+              "pageNumber": 91,
+              "sourceSectionId": "EVD-PDF-2ae2e75f0d5a4301",
+              "provisionsSetOut": [
+                "4.2A.8R",
+                "4.2A.9G",
+                "4.2A.10G"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.2A.8R": "NEW_TEXT",
+                "4.2A.9G": "NEW_TEXT",
+                "4.2A.10G": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also applies to a Gibraltar-based firm with respect to deferred payment credit lending. 4.2A.12 G Gibraltar-based firms are reminded that GEN 2.3.1R(5) provides that a Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred paym",
+              "citation": "PDF p.92 · legal instrument",
+              "pageNumber": 92,
+              "sourceSectionId": "EVD-PDF-4eb5a11a8d2107eb",
+              "provisionsSetOut": [
+                "4.2A.11R",
+                "4.2A.12G",
+                "4.6.2R",
+                "4.6.2AR"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.6.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.6.2AR": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.2A.11R": "NEW_TEXT",
+                "4.2A.12G": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 32 of 46 ... Unfair business practices 4.8.2 R A firm must not unfairly encourage, incentivise or induce a customer to enter into a regulated credit agreement quickly without allowing the customer time to consider: (1) in relation to a regulated credit agreement other than a regulated deferred payment credit agreement, the pre-contract information under section 55 of the CCA and the explanations provided under CONC 4.2.5R; or (2) in relation to a regulated deferred payment credit agreement, the information given, or made available, to the customer under CONC 4.2A.3R(",
+              "citation": "PDF p.93 · legal instrument",
+              "pageNumber": 93,
+              "sourceSectionId": "EVD-PDF-33d46e2b1a9fa4c4",
+              "provisionsSetOut": [
+                "4.8.2R",
+                "6.7.42G",
+                "6.7.43G"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.8.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "6.7.42G": "AMENDMENT_MARKUP_UNCERTAIN",
+                "6.7.43G": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.15.5G, or CONC 7.17 to CONC 7.19, CONC 7.20.1R or CONC 7.20.2G. ... ... 7.6 Exercise of continuous payment authority Recovery and continuous payment authorities etc. ... 7.6.2B G ... Regulated deferred payment credit agreements: adequate explanations relating to continuous payment",
+              "citation": "PDF p.94 · legal instrument",
+              "pageNumber": 94,
+              "sourceSectionId": "EVD-PDF-90eac526516055e9",
+              "provisionsSetOut": [
+                "7.1.4R",
+                "7.6.2BG",
+                "7.6.2CR",
+                "7.20.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "7.1.4R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "7.20.1R": "NEW_TEXT",
+                "7.6.2BG": "AMENDMENT_MARKUP_UNCERTAIN",
+                "7.6.2CR": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and (b) provide the borrower with sufficient information for the borrower to understand: (i) which regulated deferred payment credit agreement the missed payment relates to; (ii) any adverse consequences for the borrower arising out o",
+              "citation": "PDF p.95 · legal instrument",
+              "pageNumber": 95,
+              "sourceSectionId": "EVD-PDF-6f160bf6c84e2d9d",
+              "provisionsSetOut": [
+                "7.20.2G",
+                "7.20.3R",
+                "7.20.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "7.20.2G": "NEW_TEXT",
+                "7.20.3R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 35 of 46 (ii) treating any right conferred on the borrower by the agreement as terminated, restricted or deferred; or (iii) enforcing any security; (b) terminating a regulated deferred payment credit agreement. (3) If any of the actions mentioned in (2) are conditional on whether the borrower takes steps in response to notice given by the firm, the firm must explain that to the borrower when giving notice by setting out: (a) the steps that the borrower is required to take; and (b) the date by which such steps must be taken. (4) Where a firm intends to take any of the",
+              "citation": "PDF p.96 · legal instrument",
+              "pageNumber": 96,
+              "sourceSectionId": "EVD-PDF-c48feeafda06be2d",
+              "provisionsSetOut": [
+                "11.1.2R",
+                "11.1.2AG",
+                "7.20.3R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "11.1.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "11.1.2AG": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 36 of 46 16 Requirements for firms with deferred payment credit temporary permission 16.1 Application and purpose 16.1.1 R Subject to CONC 16.1.4R(2), this chapter applies to a firm with a deferred payment credit temporary permission. 16.1.2 G The purpose of these rules is to provide that certain provisions of the Handbook: (1) that would otherwise apply to persons with a deferred payment credit temporary permission are not to apply to those persons; or (2) are to apply to those persons with the modifications specified in the table in CONC 16.1.5R. 16.1.3 G In additi",
+              "citation": "PDF p.97 · legal instrument",
+              "pageNumber": 97,
+              "sourceSectionId": "EVD-PDF-4b1523afa54ef310",
+              "provisionsSetOut": [
+                "16.1.1R",
+                "16.1.2G",
+                "16.1.3G",
+                "16.1.4R",
+                "16.1.5R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "16.1.1R": "NEW_TEXT",
+                "16.1.2G": "NEW_TEXT",
+                "16.1.3G": "NEW_TEXT",
+                "16.1.4R": "NEW_TEXT",
+                "16.1.5R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            }
+          ],
+          "extractionBatch": {
+            "stalled": false,
+            "estimate": {
+              "estimatedTokens": 8499,
+              "selectedCharacters": 33994,
+              "maxCharactersPerSection": 3200
+            },
+            "batchIndex": 0,
+            "planVersion": "instrument_coverage_v2",
+            "analysisScope": "PARTIAL_INSTRUMENT_PROVISIONS",
+            "publicationCoverageComplete": false,
+            "instrumentProvisionsOutstanding": [
+              "TP 13.5G",
+              "16.1.6R",
+              "2.7.7FG",
+              "2.7.19GG",
+              "2.7.19HG",
+              "2.8.6CG",
+              "8.12.11AG"
+            ]
+          },
+          "provisionInventory": {
+            "outcomes": {
+              "suppliedCount": 40,
+              "identifiedCount": 47,
+              "unresolvedCores": [
+                "16.1.6R",
+                "2.7.19GG",
+                "2.7.19HG",
+                "2.7.7FG",
+                "2.8.6CG",
+                "8.12.11AG",
+                "TP 13.5G"
+              ],
+              "deterministicCandidateCount": 27,
+              "publicationCoverageComplete": false
+            },
+            "provisionCount": 47,
+            "instrumentStartPage": 61
+          },
+          "provisionPageIndex": {
+            "2.3.1R": [
+              68
+            ],
+            "2.3.2R": [
+              86
+            ],
+            "2.5.1R": [
+              81,
+              84
+            ],
+            "2.7.1R": [
+              86
+            ],
+            "4.2.1R": [
+              87
+            ],
+            "4.2.2G": [
+              68,
+              70,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80
+            ],
+            "4.6.2R": [
+              92
+            ],
+            "4.8.2R": [
+              93
+            ],
+            "7.1.4R": [
+              94
+            ],
+            "11.1.2R": [
+              96
+            ],
+            "16.1.1R": [
+              97
+            ],
+            "16.1.2G": [
+              97
+            ],
+            "16.1.3G": [
+              97
+            ],
+            "16.1.4R": [
+              97
+            ],
+            "16.1.5R": [
+              97,
+              98,
+              99,
+              100,
+              101,
+              102
+            ],
+            "16.1.6R": [
+              103
+            ],
+            "2.7.7FG": [
+              104
+            ],
+            "2.8.6CG": [
+              106
+            ],
+            "4.2A.1R": [
+              87
+            ],
+            "4.2A.2G": [
+              87
+            ],
+            "4.2A.3R": [
+              87,
+              88
+            ],
+            "4.2A.4R": [
+              88
+            ],
+            "4.2A.5R": [
+              88,
+              89
+            ],
+            "4.2A.6R": [
+              90
+            ],
+            "4.2A.7R": [
+              90
+            ],
+            "4.2A.8R": [
+              91
+            ],
+            "4.2A.9G": [
+              91
+            ],
+            "4.6.2AR": [
+              92
+            ],
+            "6.7.42G": [
+              93
+            ],
+            "6.7.43G": [
+              93
+            ],
+            "7.20.1R": [
+              94,
+              95
+            ],
+            "7.20.2G": [
+              95
+            ],
+            "7.20.3R": [
+              95,
+              96
+            ],
+            "7.6.2BG": [
+              94
+            ],
+            "7.6.2CR": [
+              94
+            ],
+            "11.1.2AG": [
+              96
+            ],
+            "2.7.19GG": [
+              104
+            ],
+            "2.7.19HG": [
+              104
+            ],
+            "4.2A.10G": [
+              91
+            ],
+            "4.2A.11R": [
+              92
+            ],
+            "4.2A.12G": [
+              92
+            ],
+            "TP 13.1R": [
+              66
+            ],
+            "TP 13.2G": [
+              66
+            ],
+            "TP 13.3R": [
+              66
+            ],
+            "TP 13.4R": [
+              66,
+              67
+            ],
+            "TP 13.5G": [
+              67
+            ],
+            "8.12.11AG": [
+              107
+            ]
+          },
+          "regulatoryAnalysis": {
+            "regulatoryStatus": {
+              "phase": "consultation",
+              "proposedChanges": true,
+              "nonBindingGuidance": false,
+              "isFinalisedGuidance": false,
+              "publishedFinalRules": false,
+              "informationalContent": false,
+              "bindingObligationsDetected": false,
+              "mustNotTreatProposalsAsBinding": true,
+              "existingBindingObligationsMentioned": false
+            },
+            "isFinalisedGuidance": false,
+            "consultationPreserved": true,
+            "publicationClassification": {
+              "label": null,
+              "primaryClass": "consultation_paper",
+              "allowedClasses": [
+                "consultation_paper",
+                "policy_statement",
+                "supervisory_statement",
+                "guidance",
+                "regulatory_rules",
+                "other_regulatory_publication"
+              ]
+            }
+          },
+          "extractionRevisionId": "e3f3991b-6b6e-41d6-9fa8-331784f2bc3b",
+          "publicationVersionId": "a12a0769-31a5-4b2a-a6e0-962a5cb70dcd",
+          "obligationGradeSuitable": false,
+          "provisionOutcomesSummary": {
+            "suppliedCount": 40,
+            "identifiedCount": 47,
+            "unresolvedCores": [
+              "16.1.6R",
+              "2.7.19GG",
+              "2.7.19HG",
+              "2.7.7FG",
+              "2.8.6CG",
+              "8.12.11AG",
+              "TP 13.5G"
+            ],
+            "deterministicCandidateCount": 27,
+            "publicationCoverageComplete": false
+          },
+          "obligationExtractionQuery": "regulatory obligations requirements firms must shall should guidance consumer duty binding rules provisions consultation",
+          "extractionBatchPlanSummary": {
+            "batchCount": 1,
+            "instrumentProvisionCount": 47,
+            "publicationCoverageComplete": false
+          },
+          "deterministicProvisionCandidates": [
+            {
+              "pages": [
+                96
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "11.1.2R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "96": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "11.1.2R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 35 of 46 (ii) treating any right conferred on the borrower by the agreement as terminated, restricted or deferred; or (iii) enforcing any security; (b) terminating a regulated deferred payment credit agreement. (3) If any of the actions mentioned in (2) are conditional on whether the borrower",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                97
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "16.1.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "97": "NEW_TEXT"
+              },
+              "provisionReference": "16.1.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 36 of 46 16 Requirements for firms with deferred payment credit temporary permission 16.1 Application and purpose 16.1.1 R Subject to CONC 16.1.4R(2), this chapter applies to a firm with a deferred payment credit temporary permission. 16.1.2 G The purpose of these rules is to provide that cer",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                97
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "16.1.4R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "97": "NEW_TEXT"
+              },
+              "provisionReference": "16.1.4R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 36 of 46 16 Requirements for firms with deferred payment credit temporary permission 16.1 Application and purpose 16.1.1 R Subject to CONC 16.1.4R(2), this chapter applies to a firm with a deferred payment credit temporary permission. 16.1.2 G The purpose of these rules is to provide that cer",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                97,
+                98,
+                99,
+                100,
+                101,
+                102
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "16.1.5R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "97": "NEW_TEXT"
+              },
+              "provisionReference": "16.1.5R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 36 of 46 16 Requirements for firms with deferred payment credit temporary permission 16.1 Application and purpose 16.1.1 R Subject to CONC 16.1.4R(2), this chapter applies to a firm with a deferred payment credit temporary permission. 16.1.2 G The purpose of these rules is to provide that cer",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                68
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.3.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "68": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.3.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 7 of 46 Annex C Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text and striking through indicates deleted text. 2 Interpreting the Handbook ... 2.3 General saving of the Handbook for Gibraltar Continued application of the Handbook with respect to Gibralta",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                86
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.3.2R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "86": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.3.2R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restrictions on provision ",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                81,
+                84
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.5.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "81": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.5.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 20 of 46 ... Part 2: Comes into force on 31 December 2026 [Editor’s note: This Part takes into account the changes introduced by the Complaints Reporting Instrument 2025 (FCA 2025/53). That instrument deletes and replaces DISP 1 Annex 1 in its entirety from its entry into force on 31 December",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                86
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.7.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "86": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.7.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restrictions on provision ",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                87
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "87": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "4.2.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... .",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                92
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.11R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "92": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.11R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also applies to a Gibraltar-b",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                87
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "87": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... .",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                87,
+                88
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.3R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "87": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.3R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... .",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                88
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.4R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "88": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.4R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 27 of 46 (2) The additional product information must all be given, or made available, to the customer together, except for the contractual terms and conditions which may be given, or made available, separately. (3) Where there is more than one customer acting together as ‘joint borrowers’, th",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                88,
+                89
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.5R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "88": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.5R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 27 of 46 (2) The additional product information must all be given, or made available, to the customer together, except for the contractual terms and conditions which may be given, or made available, separately. (3) Where there is more than one customer acting together as ‘joint borrowers’, th",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                90
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.6R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "90": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.6R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 29 of 46 in the manner set out in CONC 4.6.2AR) an adequate explanation of the matters set out in CONC 4.6.2R(2)(a) to (i) and (k); and (i) the contractual terms and conditions. Product information: once the agreement is made 4.2A.6 R (1) Immediately after an agreement has been made, the firm",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                90
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.7R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "90": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.7R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 29 of 46 in the manner set out in CONC 4.6.2AR) an adequate explanation of the matters set out in CONC 4.6.2R(2)(a) to (i) and (k); and (i) the contractual terms and conditions. Product information: once the agreement is made 4.2A.6 R (1) Immediately after an agreement has been made, the firm",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                91
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.8R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "91": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.8R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 30 of 46 (ii) the implications for the guarantor of the guarantee or the indemnity (or both) being called on; and (b) such of the information mentioned in CONC 4.2A.5R as the firm considers necessary for the guarantor to understand the adequate explanations required by (3)(a) and make an info",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                92
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.6.2AR",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "92": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "4.6.2AR",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also applies to a Gibraltar-b",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                92
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.6.2R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "92": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "4.6.2R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also applies to a Gibraltar-b",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                93
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.8.2R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "93": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "4.8.2R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 32 of 46 ... Unfair business practices 4.8.2 R A firm must not unfairly encourage, incentivise or induce a customer to enter into a regulated credit agreement quickly without allowing the customer time to consider: (1) in relation to a regulated credit agreement other than a regulated deferre",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                94
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "7.1.4R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "94": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "7.1.4R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.1",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                94,
+                95
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "7.20.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "94": "NEW_TEXT"
+              },
+              "provisionReference": "7.20.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.1",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                95,
+                96
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "7.20.3R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "95": "NEW_TEXT"
+              },
+              "provisionReference": "7.20.3R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid ch",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                94
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "7.6.2CR",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "94": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "7.6.2CR",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 33 of 46 ... 7 Arrears, default and recovery (including repossessions) 7.1 Application ... Agreements where there is a guarantor etc 7.1.4 R ... (3) This rule does not apply to CONC 7.3.1G, CONC 7.4.1R, CONC 7.4.2R, CONC 7.5.1G, CONC 7.6.2AR, CONC 7.6.2BG, CONC 7.15.3G, CONC 7.15.4R, CONC 7.1",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is no",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.3R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.3R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is no",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66,
+                67
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.4R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.4R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is no",
+              "regulatoryClassificationCode": "R"
+            }
+          ]
+        },
+        "insufficientEvidence": false,
+        "_forgeniqProviderMeta": {
+          "requestId": "msg_011ChJtnRftSbLh4w9NodfHo",
+          "httpStatus": 200,
+          "stopReason": "end_turn",
+          "textLength": 23258,
+          "inputTokens": 9395,
+          "outputTokens": 6132,
+          "responseReceived": true,
+          "requestReachedProvider": true
+        },
+        "_forgeniqLabSpendAudit": {
+          "model": "claude-sonnet-4-5",
+          "records": [
+            {
+              "at": "2026-11-23T00:13:30.691Z",
+              "kind": "reserve",
+              "reserveUsd": 0.155226,
+              "maxOutputTokens": 8192,
+              "inputTokensEstimate": 10782
+            },
+            {
+              "at": "2026-11-23T00:14:56.550Z",
+              "kind": "settle",
+              "actualUsd": 0.120165,
+              "inputTokens": 9395,
+              "outputTokens": 6132
+            }
+          ],
+          "budgetUsd": 1,
+          "inputTokens": 9395,
+          "limitations": [
+            "HARD_INVOICE_CAP_NOT_GUARANTEED: enforcement is pre-flight reserve + post-hoc token accounting — not Anthropic billing API.",
+            "Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ.",
+            "Per-process overlap lock does not synchronise across Vercel serverless instances; the database allows one RUNNING UC-RI-005 run per organisation.",
+            "Duplicate idempotency keys always reuse the existing run; a new paid attempt requires a new operator-authorised RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX.",
+            "A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.",
+            "No org-wide Anthropic workspace spend cap — only per-request guard when env is set.",
+            "Retries inside callAnthropicMessages are not implemented; retryReserveFactor reserves headroom only.",
+            "Provider errors after HTTP 200 may still bill input/output tokens reported by Anthropic."
+          ],
+          "reservedUsd": 0,
+          "attemptCount": 1,
+          "outputTokens": 6132,
+          "calculatedUsd": 0.120165,
+          "maxInputTokens": 200000,
+          "maxOutputTokens": 8192,
+          "retryReserveFactor": 1
+        }
+      },
+      "execution_status": "COMPLETED"
+    },
+    {
+      "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+      "structured_output": {
+        "claims": [
+          {
+            "text": "Before making a regulated deferred payment credit agreement, firms must give key product information to customers including interest rate, credit amount, payment details, cash price, consequences of non-payment, credit reference checks, and withdrawal rights.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-e219e1c202a0c2e0",
+              "EVD-PDF-749f250a95a5a2c9"
+            ]
+          },
+          {
+            "text": "Before making a regulated deferred payment credit agreement, firms must give or make available additional product information including adequate explanations, rights and obligations, withdrawal details, continuous payment authority information, and contractual terms.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-e219e1c202a0c2e0",
+              "EVD-PDF-379e52d5c4d6e27e"
+            ]
+          },
+          {
+            "text": "Immediately after making a regulated deferred payment credit agreement, firms must provide customers with a copy of the agreement and product information in a durable medium (unless already provided).",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-379e52d5c4d6e27e"
+            ]
+          },
+          {
+            "text": "Product information must be provided to each customer where there are joint borrowers under a regulated deferred payment credit agreement.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-749f250a95a5a2c9"
+            ]
+          },
+          {
+            "text": "Where a guarantor is involved, firms must provide adequate explanations to the guarantor before making the agreement, covering circumstances when the guarantee might be called and implications for the guarantor.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-2ae2e75f0d5a4301"
+            ]
+          },
+          {
+            "text": "Firms must communicate with borrowers as soon as possible after a missed payment, including information about adverse consequences.",
+            "confidence": 85,
+            "sourceSectionIds": [
+              "EVD-PDF-272432babf4b38a9"
+            ]
+          },
+          {
+            "text": "Before terminating an agreement or taking enforcement action where a customer is in arrears, firms must provide reasonable notice and signpost to free debt advice, communicating the benefits of accessing it.",
+            "confidence": 85,
+            "sourceSectionIds": [
+              "EVD-PDF-272432babf4b38a9"
+            ]
+          },
+          {
+            "text": "Information made available to customers must be accessible, clearly signposted, not obscured, and provided in good time for effective decision-making.",
+            "confidence": 85,
+            "sourceSectionIds": [
+              "EVD-PDF-2ae2e75f0d5a4301",
+              "EVD-PDF-4eb5a11a8d2107eb"
+            ]
+          },
+          {
+            "text": "Firms with deferred payment credit activities will be subject to Product Sales Data (PSD) reporting requirements once they breach de minimis thresholds of £2m in new advances or £2m in outstanding balances.",
+            "confidence": 85,
+            "sourceSectionIds": [
+              "EVD-PDF-6ba253e9281105b2"
+            ]
+          },
+          {
+            "text": "Firms must notify the FCA between 15 May 2026 and two weeks before Regulation Day (15 July 2026) to register for temporary permission, paying a Category 1 fee and providing income and lending projections.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ]
+          },
+          {
+            "text": "Firms with temporary permission must comply with the Consumer Duty from Regulation Day (15 July 2026), including fair value and good customer outcomes.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ]
+          },
+          {
+            "text": "Firms with temporary permission must apply for full authorisation within 6 months of Regulation Day or lose their temporary permission.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ]
+          },
+          {
+            "text": "Where a firm holds both Part 4A permission and deferred payment credit temporary permission, the temporary permission is disregarded for SMCR categorisation purposes.",
+            "confidence": 85,
+            "sourceSectionIds": [
+              "EVD-PDF-c972b7acef43cd7f",
+              "EVD-PDF-82bcbf82b38d88d3"
+            ]
+          },
+          {
+            "text": "Firms with only deferred payment credit temporary permission are not SMCR firms.",
+            "confidence": 90,
+            "sourceSectionIds": [
+              "EVD-PDF-c972b7acef43cd7f"
+            ]
+          },
+          {
+            "text": "Gibraltar-based firms carrying on deferred payment credit activity must comply with relevant Handbook provisions including product information requirements.",
+            "confidence": 85,
+            "sourceSectionIds": [
+              "EVD-PDF-f38ea22635f39d76",
+              "EVD-PDF-4eb5a11a8d2107eb"
+            ]
+          }
+        ],
+        "candidates": [
+          {
+            "citation": "PDF p.87-88",
+            "statement": "Before making a regulated deferred payment credit agreement, firms must give to the customer the key product information specified in CONC 4.2A.5R(1), which includes: the interest rate, credit amount, payment frequency and number, payment amounts, cash price of goods/services, consequences of non-payment (including late payment charges and credit rating impacts), whether credit reference agency checks will be performed, and the customer's right to withdraw.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "Before making an agreement, the firm must: (a) give to the customer the information set out in CONC 4.2A.5R(1) (referred to in this section as the 'key product information')... The key product information referred to in CONC 4.2A.3R(1)(a) is as follows: (a) the rate of interest that applies to the agreement; (b) the amount of the credit to be provided under the agreement...",
+            "sourceSectionIds": [
+              "EVD-PDF-e219e1c202a0c2e0",
+              "EVD-PDF-749f250a95a5a2c9"
+            ],
+            "applicabilityConditions": "Applies to firms with respect to deferred payment credit lending, in relation to regulated deferred payment credit agreements"
+          },
+          {
+            "citation": "PDF p.87, p.90",
+            "statement": "Before making a regulated deferred payment credit agreement, firms must give or make available to the customer the additional product information specified in CONC 4.2A.5R(2), which includes: an adequate explanation of the key features, the customer's rights and obligations, the right to withdraw and how to exercise it, details of continuous payment authorities (where applicable), and the contractual terms and conditions.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "Before making an agreement, the firm must: ... (b) give, or make available, to the customer the information set out in CONC 4.2A.5R(2) (referred to in this section as the 'additional product information')... The additional product information referred to in CONC 4.2A.3R(1)(b) is as follows: (a) an adequate explanation of the key features of the agreement... (i) the contractual terms and conditions.",
+            "sourceSectionIds": [
+              "EVD-PDF-e219e1c202a0c2e0",
+              "EVD-PDF-379e52d5c4d6e27e"
+            ],
+            "applicabilityConditions": "Applies to firms with respect to deferred payment credit lending, in relation to regulated deferred payment credit agreements"
+          },
+          {
+            "citation": "PDF p.90",
+            "statement": "Immediately after a regulated deferred payment credit agreement has been made, firms must give or make available to the customer in a durable medium: a copy of the agreement, and the key product information and additional product information (unless already provided in a durable medium or included in the copy of the agreement).",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "Immediately after an agreement has been made, the firm must give, or make available, to the customer in a durable medium: (a) a copy of the agreement; and (b) the key product information and the additional product information described in CONC 4.2A.5R.",
+            "sourceSectionIds": [
+              "EVD-PDF-379e52d5c4d6e27e"
+            ],
+            "applicabilityConditions": "Applies to firms with respect to deferred payment credit lending, in relation to regulated deferred payment credit agreements"
+          },
+          {
+            "citation": "PDF p.88",
+            "statement": "Where there is more than one customer acting together as joint borrowers, the product information must be given or made available to each customer.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "Where there is more than one customer acting together as 'joint borrowers', the information required under this rule must be given, or made available (as applicable), to each customer.",
+            "sourceSectionIds": [
+              "EVD-PDF-749f250a95a5a2c9"
+            ],
+            "applicabilityConditions": "Applies where there is more than one customer acting together as joint borrowers under a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.90-91",
+            "statement": "Before entering into a regulated deferred payment credit agreement where an individual other than the borrower is to provide a guarantee or indemnity, firms must provide the guarantor with an adequate explanation of: the circumstances in which the guarantee/indemnity might be called on, the implications for the guarantor, and such other information as necessary for the guarantor to make an informed decision.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "The firm must, before making the agreement, provide the guarantor with the information in (3) in order to place the guarantor in a position to make an informed decision as to whether to act as the guarantor... The information referred to in (2) is: (a) an adequate explanation of: (i) the circumstances in which the guarantee or the indemnity (or both) might be called on; and (ii) the implications for the guarantor...",
+            "sourceSectionIds": [
+              "EVD-PDF-2ae2e75f0d5a4301"
+            ],
+            "applicabilityConditions": "Applies to firms where an individual other than the borrower is to provide a guarantee or indemnity in relation to a regulated deferred payment credit agreement"
+          },
+          {
+            "citation": "PDF p.21",
+            "statement": "In relation to regulated deferred payment credit agreements, firms must communicate as soon as possible after a customer has failed to make a payment by the time it has fallen due, providing information including any adverse consequences for the customer arising out of the missed payment.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "Firms will be required to communicate with a borrower as soon as possible after they have failed to make a payment by the time it has fallen due... Any adverse consequences for the customer arising out of the missed payment. • Any other adverse consequences for the borrower that the firm considers are likely to arise out of the missed payment.",
+            "sourceSectionIds": [
+              "EVD-PDF-272432babf4b38a9"
+            ],
+            "applicabilityConditions": "Applies to firms when a customer has failed to make a payment under a regulated deferred payment credit agreement by the time it has fallen due"
+          },
+          {
+            "citation": "PDF p.21",
+            "statement": "Before terminating a regulated deferred payment credit agreement or taking steps to enforce a term of the agreement (by demanding earlier payment, restricting/terminating borrower rights, or enforcing security) where a customer is in arrears, firms must provide reasonable notice to the borrower and signpost to free and impartial money guidance and debt advice, effectively communicating the potential benefits of accessing it.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "This requires firms to signpost to free and impartial money guidance and debt advice, and effectively communicate the potential benefits of accessing it, when giving a customer who is in arrears notice required under our rules before: • Terminating a DPC agreement; or • Taking steps to enforce a term of the agreement by demanding earlier payment of any sum, treating any right conferred on the debtor by the agreement as terminated, restricted or deferred, or enforcing any security.",
+            "sourceSectionIds": [
+              "EVD-PDF-272432babf4b38a9"
+            ],
+            "applicabilityConditions": "Applies when a customer is in arrears under a regulated deferred payment credit agreement and the firm intends to terminate the agreement or take enforcement steps"
+          },
+          {
+            "citation": "PDF p.91-92",
+            "statement": "Information made available to customers must be provided in such a way that the customer can reasonably be expected to know how to access it and be able to access it. Information must be communicated so that the customer's attention is drawn to it and it is not disguised, diminished or obscured by other information, and in good time for the customer to consider it and make effective decisions before entering into the agreement.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "For the purposes of this section, information is made available to a customer only if the customer can reasonably be expected to: (1) know how to access it; and (2) be able to access it... firms should ensure that the information required under this section is communicated: (a) in such a way that: (i) the customer's attention is drawn to it; and (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement.",
+            "sourceSectionIds": [
+              "EVD-PDF-2ae2e75f0d5a4301",
+              "EVD-PDF-4eb5a11a8d2107eb"
+            ],
+            "applicabilityConditions": "Applies to firms providing information under CONC 4.2A in relation to regulated deferred payment credit agreements"
+          },
+          {
+            "citation": "PDF p.29",
+            "statement": "Firms with deferred payment credit activities will be subject to existing FCA regulatory reporting requirements, including Product Sales Data (PSD) returns, once they breach de minimis thresholds of either £2m in new advances or £2m in outstanding balances in a given year.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "Overall, we received broad support for our proposals to apply our existing regulatory reporting requirements, including the PSD returns... However, PSD reporting requirements only apply once a firm breaches one of the de minimis thresholds in a given year. Specifically, either £2m in new advances or £2m in outstanding balances.",
+            "sourceSectionIds": [
+              "EVD-PDF-6ba253e9281105b2"
+            ],
+            "applicabilityConditions": "Applies to firms with deferred payment credit activities once they breach de minimis thresholds of either £2m in new advances or £2m in outstanding balances in a given year"
+          },
+          {
+            "citation": "PDF p.40",
+            "statement": "Firms currently offering deferred payment credit intending to operate under temporary permission must notify the FCA of their desire to be registered for the Temporary Permissions Regime (TPR) during the notification window opening on 15 May 2026 and closing 2 weeks before Regulation Day (15 July 2026). Firms must pay a Category 1 fee and provide projections of annual income for future DPC activities and projections of the value of their DPC lending.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": "2026-05-15",
+            "sourceQuotation": "In line with the proposals in the CP, notification for registration for temporary permission will open 2 months before Regulation Day and close 2 weeks before Regulation Day... In CP25/33, we proposed that firms would need to pay a Category 1 fee to register for temporary permission... we proposed that firms provide the following information when notifying a desire for registration... A projection of annual income for future DPC activities. • Projections of the value of their DPC lending.",
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ],
+            "applicabilityConditions": "Applies to firms currently offering deferred payment credit that intend to enter the Temporary Permissions Regime"
+          },
+          {
+            "citation": "PDF p.40",
+            "statement": "Firms with deferred payment credit temporary permission must be fully compliant with the Consumer Duty from Regulation Day (15 July 2026), including demonstrating fair value, delivering customer support and overall delivering good outcomes for retail customers.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": "2026-07-15",
+            "sourceQuotation": "Firms preparing to enter the TPR should begin planning early to ensure operational readiness for Regulation Day. In particular, firms should: • Make sure they are fully compliant with the Consumer Duty from Regulation Day. This includes demonstrating fair value, delivering customer support and overall delivering good outcomes for retail customers, as well as the other rules they will need to comply with.",
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ],
+            "applicabilityConditions": "Applies to firms with deferred payment credit temporary permission from Regulation Day"
+          },
+          {
+            "citation": "PDF p.40",
+            "statement": "Firms with temporary permission must apply for full authorisation within the 6-month window directly following Regulation Day. Firms that do not apply within this window will lose their temporary permission.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "Note that temporary permission is not indefinite. Firms will be able to apply for full authorisation before the end of the 6-month window directly following Regulation Day. Firms that do not apply within this window will lose their temporary permission.",
+            "sourceSectionIds": [
+              "EVD-PDF-f3c25613f51b66d2"
+            ],
+            "applicabilityConditions": "Applies to firms with deferred payment credit temporary permission who wish to continue operating beyond the temporary permission period"
+          },
+          {
+            "citation": "PDF p.66-67",
+            "statement": "Where a firm's permission comprises both Part 4A permission granted by the FCA and deferred payment credit temporary permission, the firm's deferred payment credit temporary permission is to be disregarded for the purposes of categorising what type of SMCR firm the firm is and for determining the application of SMCR provisions.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "This rule applies where a firm's permission comprises permission to carry on regulated activities granted by the FCA under Part 4A of the Act and a deferred payment credit temporary permission. (2) The firm's deferred payment credit temporary permission is to be disregarded for the purposes of categorising what type of SMCR firm the firm is in accordance with SYSC 23 Annex 1...",
+            "sourceSectionIds": [
+              "EVD-PDF-c972b7acef43cd7f",
+              "EVD-PDF-82bcbf82b38d88d3"
+            ],
+            "applicabilityConditions": "Applies where a firm's permission comprises both Part 4A permission granted by the FCA and deferred payment credit temporary permission"
+          },
+          {
+            "citation": "PDF p.66",
+            "statement": "In circumstances where the only regulated activities in a firm's permission are deferred payment credit activities permitted by a deferred payment credit temporary permission, the firm is not an SMCR firm.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "In circumstances where the only regulated activities in a firm's permission are deferred payment credit activities permitted by a deferred payment credit temporary permission, a firm is not an SMCR firm (and is included in Part Three of SYSC 23 Annex 1 (Definition of exempt firm)).",
+            "sourceSectionIds": [
+              "EVD-PDF-c972b7acef43cd7f"
+            ],
+            "applicabilityConditions": "Applies where the only regulated activities in a firm's permission are deferred payment credit activities permitted by a deferred payment credit temporary permission"
+          },
+          {
+            "citation": "PDF p.68, p.92",
+            "statement": "Gibraltar-based firms carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity, including the product information requirements in CONC 4.2A.",
+            "bindingNature": "consultation_proposal",
+            "effectiveDate": null,
+            "sourceQuotation": "A Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity... This section also applies to a Gibraltar-based firm with respect to deferred payment credit lending.",
+            "sourceSectionIds": [
+              "EVD-PDF-f38ea22635f39d76",
+              "EVD-PDF-4eb5a11a8d2107eb"
+            ],
+            "applicabilityConditions": "Applies to Gibraltar-based firms carrying on deferred payment credit activity"
+          }
+        ],
+        "confidence": 85,
+        "_normalizedAt": "2026-11-23T10:40:44.344Z",
+        "_normalizedSchema": "ObligationExtractionResult",
+        "_forgeniqGrounding": {
+          "kind": "pdf_primary_v1",
+          "pageCount": 108,
+          "selection": {
+            "scope": "PARTIAL_DOCUMENT",
+            "strategy": "instrument_priority_v1",
+            "maxSections": 18,
+            "documentPages": 108,
+            "selectedPages": [
+              19,
+              21,
+              29,
+              40,
+              66,
+              67,
+              68,
+              81,
+              86,
+              87,
+              88,
+              90,
+              91,
+              92,
+              103,
+              104,
+              106,
+              107
+            ],
+            "instrumentPages": 48,
+            "selectedSections": 18,
+            "truncatedSections": 0,
+            "documentCharacters": 195291,
+            "selectedCharacters": 29624,
+            "instrumentStartPage": 61,
+            "instrumentPagesSelected": 14,
+            "maxCharactersPerSection": 3200,
+            "characterCoveragePercent": 15.17,
+            "instrumentProvisionsSetOut": 47,
+            "instrumentProvisionsOmitted": [
+              {
+                "pages": [
+                  93
+                ],
+                "provision": "4.8.2R",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  93
+                ],
+                "provision": "6.7.42G",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  93
+                ],
+                "provision": "6.7.43G",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  94
+                ],
+                "provision": "7.1.4R",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  94
+                ],
+                "provision": "7.6.2BG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  94
+                ],
+                "provision": "7.6.2CR",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  94,
+                  95
+                ],
+                "provision": "7.20.1R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  95
+                ],
+                "provision": "7.20.2G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  95,
+                  96
+                ],
+                "provision": "7.20.3R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  96
+                ],
+                "provision": "11.1.2R",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  96
+                ],
+                "provision": "11.1.2AG",
+                "textStatus": [
+                  "AMENDMENT_MARKUP_UNCERTAIN"
+                ]
+              },
+              {
+                "pages": [
+                  97
+                ],
+                "provision": "16.1.1R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  97
+                ],
+                "provision": "16.1.2G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  97
+                ],
+                "provision": "16.1.3G",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  97
+                ],
+                "provision": "16.1.4R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              },
+              {
+                "pages": [
+                  97,
+                  98,
+                  99,
+                  100,
+                  101,
+                  102
+                ],
+                "provision": "16.1.5R",
+                "textStatus": [
+                  "NEW_TEXT"
+                ]
+              }
+            ],
+            "suppliedProvisionTextStatus": {
+              "NEW_TEXT": 18,
+              "AMENDMENT_MARKUP_UNCERTAIN": 13
+            },
+            "instrumentProvisionsSupplied": 31,
+            "instrumentProvisionsNotSupplied": [
+              "4.8.2R",
+              "6.7.42G",
+              "6.7.43G",
+              "7.1.4R",
+              "7.6.2BG",
+              "7.6.2CR",
+              "7.20.1R",
+              "7.20.2G",
+              "7.20.3R",
+              "11.1.2R",
+              "11.1.2AG",
+              "16.1.1R",
+              "16.1.2G",
+              "16.1.3G",
+              "16.1.4R",
+              "16.1.5R"
+            ]
+          },
+          "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+          "sectionCatalog": [
+            {
+              "excerpt": "19 Question 6: Do you agree that our proposed new rules requiring firms to give notice before taking certain actions are appropriate? Question 7: Do you think that reliance on the Duty could deliver our policy objectives for our proposed new rules on firms’ communications to DPC customers who have missed a repayment or where a firm intends to take certain actions instead?2.27 Stakeholders generally supported our proposals. Some, including a DPC lender and some trade associations, requested greater clarity about our expectations on the timings of when notices should be given. Others, particular",
+              "citation": "PDF p.19",
+              "pageNumber": 19,
+              "sourceSectionId": "EVD-PDF-19a69798b79d823b",
+              "provisionsSetOut": [],
+              "sectionReference": null,
+              "inLegalInstrument": false,
+              "provisionTextStatus": {},
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "21 • Any adverse consequences for the customer arising out of the missed payment. • Any other adverse consequences for the borrower that the firm considers are likely to arise out of the missed payment.We have also made a further change. This requires firms to signpost to free and impartial money guidance and debt advice, and effectively communicate the potential benefits of accessing it, when giving a customer who is in arrears notice required under our rules before: • Terminating a DPC agreement; or• Taking steps to enforce a term of the agreement by demanding earlier payment of any sum, tre",
+              "citation": "PDF p.21",
+              "pageNumber": 21,
+              "sourceSectionId": "EVD-PDF-272432babf4b38a9",
+              "provisionsSetOut": [],
+              "sectionReference": null,
+              "inLegalInstrument": false,
+              "provisionTextStatus": {},
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "29 3.14 There was broad support amongst respondents to our proposals for DPC to be subject to our existing reporting requirements, including PSD returns. 3.15 A DPC lender and a trade association queried the proportionality of our proposed approach. The lender noted that the burden of reporting PSD, in combination with the wider costs of regulation, could have a material impact on the viability of that firm’s product. 3.16 There were also some suggestions that current PSD returns may be particularly burdensome for smaller firms. Some stakeholders suggested that these firms should instead be re",
+              "citation": "PDF p.29",
+              "pageNumber": 29,
+              "sourceSectionId": "EVD-PDF-6ba253e9281105b2",
+              "provisionsSetOut": [],
+              "sectionReference": null,
+              "inLegalInstrument": false,
+              "provisionTextStatus": {},
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "40The date of Regulation Day is set in legislation. In line with the proposals in the CP, notification for registration for temporary permission will open 2 months before Regulation Day and close 2 weeks before Regulation Day. We will, in due course, and in good time before notification for registration for the TPR opens on 15 May 2026, publish Directions on the process for notification. In line with the Government’s legislation, the Directions will:• Specify the way in which a firm will need to notify us of its desire to be registered for the TPR.• Confirm the opening and closing dates for no",
+              "citation": "PDF p.40",
+              "pageNumber": 40,
+              "sourceSectionId": "EVD-PDF-f3c25613f51b66d2",
+              "provisionsSetOut": [],
+              "sectionReference": null,
+              "inLegalInstrument": false,
+              "provisionTextStatus": {},
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is not underlined. TP 13 SMCR: application to firms with deferred payment credit temporary permission Application TP 13.1 R SYSC TP 13 applies to a firm with a deferred payment credit temporary permission. [Note: articles 10 and 11 of the Deferred Payment Credit Order.] TP 13.2 G Once",
+              "citation": "PDF p.66 · legal instrument",
+              "pageNumber": 66,
+              "sourceSectionId": "EVD-PDF-c972b7acef43cd7f",
+              "provisionsSetOut": [
+                "TP 13.1R",
+                "TP 13.2G",
+                "TP 13.3R",
+                "TP 13.4R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "TP 13.1R": "NEW_TEXT",
+                "TP 13.2G": "NEW_TEXT",
+                "TP 13.3R": "NEW_TEXT",
+                "TP 13.4R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 6 of 46 disregarded for the purpose of determining the application of the provision; and (b) where the application of a provision is determined in whole or in part by reference to regulated activities carried on by the firm, any deferred payment credit activity which that firm’s deferred payment credit temporary permission permits it to carry on is to be treated as if it were not a regulated activity for the purposes of determining the application of the provision. TP 13.5 G An overview of the senior managers and certification regime and where to find the main FCA Ha",
+              "citation": "PDF p.67 · legal instrument",
+              "pageNumber": 67,
+              "sourceSectionId": "EVD-PDF-82bcbf82b38d88d3",
+              "provisionsSetOut": [
+                "TP 13.5G",
+                "TP 13.4R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "TP 13.5G": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 7 of 46 Annex C Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text and striking through indicates deleted text. 2 Interpreting the Handbook ... 2.3 General saving of the Handbook for Gibraltar Continued application of the Handbook with respect to Gibraltar 2.3.1 R ... (4) ... (5) A Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity. ... 4 Statutory status disclosure ... 4.2 Purpose ... 4.2.2 G There are other pre-contract",
+              "citation": "PDF p.68 · legal instrument",
+              "pageNumber": 68,
+              "sourceSectionId": "EVD-PDF-f38ea22635f39d76",
+              "provisionsSetOut": [
+                "2.3.1R",
+                "4.2.2G"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.3.1R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.2.2G": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 20 of 46 ... Part 2: Comes into force on 31 December 2026 [Editor’s note: This Part takes into account the changes introduced by the Complaints Reporting Instrument 2025 (FCA 2025/53). That instrument deletes and replaces DISP 1 Annex 1 in its entirety from its entry into force on 31 December 2026.] 1 Annex 1 Complaints return form ... CCR return information as referred to at DISP 1.10.1IR ... 1 Annex 1.9 R ‘Service provided’ includes any of the following: ... (4) rent-to-own agreements; (4A) regulated deferred payment credit agreements; ... ... ... Part 3: Comes int",
+              "citation": "PDF p.81 · legal instrument",
+              "pageNumber": 81,
+              "sourceSectionId": "EVD-PDF-89a7bb24ba4ab06a",
+              "provisionsSetOut": [
+                "2.5.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.5.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restrictions on provision of credit card cheques ... General conduct 2.3.2 R (1) A In relation to a regulated credit agreement other than a regulated deferred payment credit agreement, a firm must explain the key features of a regulated credit agreement to enable the customer to make an informed choice as",
+              "citation": "PDF p.86 · legal instrument",
+              "pageNumber": 86,
+              "sourceSectionId": "EVD-PDF-8bf3984f6a750455",
+              "provisionsSetOut": [
+                "2.3.2R",
+                "2.7.1R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.3.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "2.7.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... ... Insert the following new section, CONC 4.2A, after CONC 4.2 (Pre-contract disclosure and adequate explanations). All the text is new and is not underlined. 4.2A Product information requirements: regulated deferred payment credit agreements Application 4.2A.1 R This section app",
+              "citation": "PDF p.87 · legal instrument",
+              "pageNumber": 87,
+              "sourceSectionId": "EVD-PDF-e219e1c202a0c2e0",
+              "provisionsSetOut": [
+                "4.2.1R",
+                "4.2A.1R",
+                "4.2A.2G",
+                "4.2A.3R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.2.1R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.2A.1R": "NEW_TEXT",
+                "4.2A.2G": "NEW_TEXT",
+                "4.2A.3R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 27 of 46 (2) The additional product information must all be given, or made available, to the customer together, except for the contractual terms and conditions which may be given, or made available, separately. (3) Where there is more than one customer acting together as ‘joint borrowers’, the information required under this rule must be given, or made available (as applicable), to each customer. Exception for distance contracts entered into orally 4.2A.4 R In the case of an agreement that is a distance contract entered into orally, the requirement in CONC 4.2A.3R(1)",
+              "citation": "PDF p.88 · legal instrument",
+              "pageNumber": 88,
+              "sourceSectionId": "EVD-PDF-749f250a95a5a2c9",
+              "provisionsSetOut": [
+                "4.2A.4R",
+                "4.2A.5R",
+                "4.2A.3R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.2A.4R": "NEW_TEXT",
+                "4.2A.5R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 29 of 46 in the manner set out in CONC 4.6.2AR) an adequate explanation of the matters set out in CONC 4.6.2R(2)(a) to (i) and (k); and (i) the contractual terms and conditions. Product information: once the agreement is made 4.2A.6 R (1) Immediately after an agreement has been made, the firm must give, or make available, to the customer in a durable medium: (a) a copy of the agreement; and (b) the key product information and the additional product information described in CONC 4.2A.5R. (2) The requirement in (1)(b) does not apply to the extent that: (a) the informat",
+              "citation": "PDF p.90 · legal instrument",
+              "pageNumber": 90,
+              "sourceSectionId": "EVD-PDF-379e52d5c4d6e27e",
+              "provisionsSetOut": [
+                "4.2A.6R",
+                "4.2A.7R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.2A.6R": "NEW_TEXT",
+                "4.2A.7R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 30 of 46 (ii) the implications for the guarantor of the guarantee or the indemnity (or both) being called on; and (b) such of the information mentioned in CONC 4.2A.5R as the firm considers necessary for the guarantor to understand the adequate explanations required by (3)(a) and make an informed decision as to whether to act as guarantor. (4) The information provided under (3)(b) does not need to include information about the use of a continuous payment authority where that information is provided to the guarantor in compliance with CONC 4.6.5R. [Note: See also Part",
+              "citation": "PDF p.91 · legal instrument",
+              "pageNumber": 91,
+              "sourceSectionId": "EVD-PDF-2ae2e75f0d5a4301",
+              "provisionsSetOut": [
+                "4.2A.8R",
+                "4.2A.9G",
+                "4.2A.10G"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.2A.8R": "NEW_TEXT",
+                "4.2A.9G": "NEW_TEXT",
+                "4.2A.10G": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also applies to a Gibraltar-based firm with respect to deferred payment credit lending. 4.2A.12 G Gibraltar-based firms are reminded that GEN 2.3.1R(5) provides that a Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred paym",
+              "citation": "PDF p.92 · legal instrument",
+              "pageNumber": 92,
+              "sourceSectionId": "EVD-PDF-4eb5a11a8d2107eb",
+              "provisionsSetOut": [
+                "4.2A.11R",
+                "4.2A.12G",
+                "4.6.2R",
+                "4.6.2AR"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "4.6.2R": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.6.2AR": "AMENDMENT_MARKUP_UNCERTAIN",
+                "4.2A.11R": "NEW_TEXT",
+                "4.2A.12G": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 42 of 46 16.1.6 R In the table in CONC 16.1.5R, ‘a firm in supervised run-off’ means a firm that continues to have deferred payment credit temporary permission to enable it to wind down (run off) its deferred payment credit lending business by virtue of article 10(3)(c)(ii) or (d)(ii) of the Deferred Payment Credit Order.",
+              "citation": "PDF p.103 · legal instrument",
+              "pageNumber": 103,
+              "sourceSectionId": "EVD-PDF-cd18be4009a77367",
+              "provisionsSetOut": [
+                "16.1.6R"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "16.1.6R": "NEW_TEXT"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 43 of 46 Annex G Amendments to the Perimeter Guidance manual (PERG) In this Annex, underlining indicates new text and striking through indicates deleted text. 2 Authorisation and regulated activities ... 2.7 Activities: a broad outline ... Credit broking ... 2.7.7F G An activity is not credit broking within PERG 2.7.7EG(1), PERG 2.7.7EG(4), PERG 2.7.7EG(5) or PERG 2.7.7EG(6) if the exemption relating to the number of repayments to be made would apply to the credit agreement, see PERG 2.7.19GG. 2.7.7FA G An activity is also not credit broking within PERG 2.7.7EG(1) to",
+              "citation": "PDF p.104 · legal instrument",
+              "pageNumber": 104,
+              "sourceSectionId": "EVD-PDF-6c8182921c37696e",
+              "provisionsSetOut": [
+                "2.7.7FG",
+                "2.7.19GG",
+                "2.7.19HG"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.7.7FG": "AMENDMENT_MARKUP_UNCERTAIN",
+                "2.7.19GG": "AMENDMENT_MARKUP_UNCERTAIN",
+                "2.7.19HG": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 45 of 46 (B) an undertaking which is a member of the same group as the borrowers’ employer; and (c) agreements to finance the provision of goods or services offered by a registered social landlord (as defined by article 36FA(4) of the Regulated Activities Order) to: (i) its tenants; (ii) its leaseholders; or (iii) persons with whom the registered social landlord has entered a shared ownership agreement within the meaning of section 83(3) of the Housing (Scotland) Act 2001. ... 2.8 Exclusions applicable to particular regulated activities ... Credit broking 2.8.6C G Th",
+              "citation": "PDF p.106 · legal instrument",
+              "pageNumber": 106,
+              "sourceSectionId": "EVD-PDF-6557deb70571d508",
+              "provisionsSetOut": [
+                "2.8.6CG"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "2.8.6CG": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            },
+            {
+              "excerpt": "FCA 2026/2 FOS 2026/1 Page 46 of 46 8.12.11A G This exemption does not apply to any financial promotion that is made with a view to, or for the purpose of, an introduction to a person who carries on the controlled activities of: (1) credit broking; (2) operating an electronic system in relation to lending; or (2A) providing relevant consumer credit in relation to a regulated deferred payment credit agreement; or (3) agreeing to carry on the above activities. ...",
+              "citation": "PDF p.107 · legal instrument",
+              "pageNumber": 107,
+              "sourceSectionId": "EVD-PDF-c68df6ef83197122",
+              "provisionsSetOut": [
+                "8.12.11AG"
+              ],
+              "sectionReference": null,
+              "inLegalInstrument": true,
+              "provisionTextStatus": {
+                "8.12.11AG": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "transitionalProvisions": false
+            }
+          ],
+          "extractionBatch": {
+            "stalled": false,
+            "estimate": {
+              "estimatedTokens": 7406,
+              "selectedCharacters": 29624,
+              "maxCharactersPerSection": 3200
+            },
+            "batchIndex": 0,
+            "planVersion": "instrument_coverage_v2",
+            "analysisScope": "FULL_INSTRUMENT_PROVISIONS",
+            "publicationCoverageComplete": true,
+            "instrumentProvisionsOutstanding": []
+          },
+          "provisionInventory": {
+            "outcomes": {
+              "suppliedCount": 31,
+              "identifiedCount": 47,
+              "unresolvedCores": [
+                "11.1.2AG",
+                "11.1.2R",
+                "16.1.1R",
+                "16.1.2G",
+                "16.1.3G",
+                "16.1.4R",
+                "16.1.5R",
+                "4.8.2R",
+                "6.7.42G",
+                "6.7.43G",
+                "7.1.4R",
+                "7.20.1R",
+                "7.20.2G",
+                "7.20.3R",
+                "7.6.2BG",
+                "7.6.2CR"
+              ],
+              "deterministicCandidateCount": 19,
+              "publicationCoverageComplete": true
+            },
+            "provisionCount": 47,
+            "instrumentStartPage": 61
+          },
+          "provisionPageIndex": {
+            "2.3.1R": [
+              68
+            ],
+            "2.3.2R": [
+              86
+            ],
+            "2.5.1R": [
+              81,
+              84
+            ],
+            "2.7.1R": [
+              86
+            ],
+            "4.2.1R": [
+              87
+            ],
+            "4.2.2G": [
+              68,
+              70,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80
+            ],
+            "4.6.2R": [
+              92
+            ],
+            "4.8.2R": [
+              93
+            ],
+            "7.1.4R": [
+              94
+            ],
+            "11.1.2R": [
+              96
+            ],
+            "16.1.1R": [
+              97
+            ],
+            "16.1.2G": [
+              97
+            ],
+            "16.1.3G": [
+              97
+            ],
+            "16.1.4R": [
+              97
+            ],
+            "16.1.5R": [
+              97,
+              98,
+              99,
+              100,
+              101,
+              102
+            ],
+            "16.1.6R": [
+              103
+            ],
+            "2.7.7FG": [
+              104
+            ],
+            "2.8.6CG": [
+              106
+            ],
+            "4.2A.1R": [
+              87
+            ],
+            "4.2A.2G": [
+              87
+            ],
+            "4.2A.3R": [
+              87,
+              88
+            ],
+            "4.2A.4R": [
+              88
+            ],
+            "4.2A.5R": [
+              88,
+              89
+            ],
+            "4.2A.6R": [
+              90
+            ],
+            "4.2A.7R": [
+              90
+            ],
+            "4.2A.8R": [
+              91
+            ],
+            "4.2A.9G": [
+              91
+            ],
+            "4.6.2AR": [
+              92
+            ],
+            "6.7.42G": [
+              93
+            ],
+            "6.7.43G": [
+              93
+            ],
+            "7.20.1R": [
+              94,
+              95
+            ],
+            "7.20.2G": [
+              95
+            ],
+            "7.20.3R": [
+              95,
+              96
+            ],
+            "7.6.2BG": [
+              94
+            ],
+            "7.6.2CR": [
+              94
+            ],
+            "11.1.2AG": [
+              96
+            ],
+            "2.7.19GG": [
+              104
+            ],
+            "2.7.19HG": [
+              104
+            ],
+            "4.2A.10G": [
+              91
+            ],
+            "4.2A.11R": [
+              92
+            ],
+            "4.2A.12G": [
+              92
+            ],
+            "TP 13.1R": [
+              66
+            ],
+            "TP 13.2G": [
+              66
+            ],
+            "TP 13.3R": [
+              66
+            ],
+            "TP 13.4R": [
+              66,
+              67
+            ],
+            "TP 13.5G": [
+              67
+            ],
+            "8.12.11AG": [
+              107
+            ]
+          },
+          "regulatoryAnalysis": {
+            "regulatoryStatus": {
+              "phase": "consultation",
+              "proposedChanges": true,
+              "nonBindingGuidance": false,
+              "isFinalisedGuidance": false,
+              "publishedFinalRules": false,
+              "informationalContent": false,
+              "bindingObligationsDetected": false,
+              "mustNotTreatProposalsAsBinding": true,
+              "existingBindingObligationsMentioned": false
+            },
+            "isFinalisedGuidance": false,
+            "consultationPreserved": true,
+            "publicationClassification": {
+              "label": null,
+              "primaryClass": "consultation_paper",
+              "allowedClasses": [
+                "consultation_paper",
+                "policy_statement",
+                "supervisory_statement",
+                "guidance",
+                "regulatory_rules",
+                "other_regulatory_publication"
+              ]
+            }
+          },
+          "extractionRevisionId": "e3f3991b-6b6e-41d6-9fa8-331784f2bc3b",
+          "publicationVersionId": "a12a0769-31a5-4b2a-a6e0-962a5cb70dcd",
+          "obligationGradeSuitable": false,
+          "provisionOutcomesSummary": {
+            "suppliedCount": 31,
+            "identifiedCount": 47,
+            "unresolvedCores": [
+              "11.1.2AG",
+              "11.1.2R",
+              "16.1.1R",
+              "16.1.2G",
+              "16.1.3G",
+              "16.1.4R",
+              "16.1.5R",
+              "4.8.2R",
+              "6.7.42G",
+              "6.7.43G",
+              "7.1.4R",
+              "7.20.1R",
+              "7.20.2G",
+              "7.20.3R",
+              "7.6.2BG",
+              "7.6.2CR"
+            ],
+            "deterministicCandidateCount": 19,
+            "publicationCoverageComplete": true
+          },
+          "obligationExtractionQuery": "regulatory obligations requirements firms must shall should guidance consumer duty binding rules provisions consultation",
+          "extractionBatchPlanSummary": {
+            "batchCount": 1,
+            "instrumentProvisionCount": 47,
+            "publicationCoverageComplete": true
+          },
+          "deterministicProvisionCandidates": [
+            {
+              "pages": [
+                103
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "16.1.6R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "103": "NEW_TEXT"
+              },
+              "provisionReference": "16.1.6R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 42 of 46 16.1.6 R In the table in CONC 16.1.5R, ‘a firm in supervised run-off’ means a firm that continues to have deferred payment credit temporary permission to enable it to wind down (run off) its deferred payment credit lending business by virtue of article 10(3)(c)(ii) or (d)(ii) of the ",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                68
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.3.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "68": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.3.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 7 of 46 Annex C Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text and striking through indicates deleted text. 2 Interpreting the Handbook ... 2.3 General saving of the Handbook for Gibraltar Continued application of the Handbook with respect to Gibralta",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                86
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.3.2R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "86": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.3.2R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restrictions on provision ",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                81,
+                84
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.5.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "81": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.5.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 20 of 46 ... Part 2: Comes into force on 31 December 2026 [Editor’s note: This Part takes into account the changes introduced by the Complaints Reporting Instrument 2025 (FCA 2025/53). That instrument deletes and replaces DISP 1 Annex 1 in its entirety from its entry into force on 31 December",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                86
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "2.7.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "86": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "2.7.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 25 of 46 Annex F Amendments to the Consumer Credit sourcebook (CONC) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 2 Conduct of business standards: general ... 2.3 Conduct of business: lenders and restrictions on provision ",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                87
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "87": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "4.2.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... .",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                92
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.11R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "92": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.11R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also applies to a Gibraltar-b",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                87
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "87": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... .",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                87,
+                88
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.3R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "87": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.3R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 26 of 46 ... 4.2 Pre-contract disclosure and adequate explanations Application 4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... .",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                88
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.4R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "88": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.4R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 27 of 46 (2) The additional product information must all be given, or made available, to the customer together, except for the contractual terms and conditions which may be given, or made available, separately. (3) Where there is more than one customer acting together as ‘joint borrowers’, th",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                88,
+                89
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.5R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "88": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.5R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 27 of 46 (2) The additional product information must all be given, or made available, to the customer together, except for the contractual terms and conditions which may be given, or made available, separately. (3) Where there is more than one customer acting together as ‘joint borrowers’, th",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                90
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.6R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "90": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.6R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 29 of 46 in the manner set out in CONC 4.6.2AR) an adequate explanation of the matters set out in CONC 4.6.2R(2)(a) to (i) and (k); and (i) the contractual terms and conditions. Product information: once the agreement is made 4.2A.6 R (1) Immediately after an agreement has been made, the firm",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                90
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.7R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "90": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.7R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 29 of 46 in the manner set out in CONC 4.6.2AR) an adequate explanation of the matters set out in CONC 4.6.2R(2)(a) to (i) and (k); and (i) the contractual terms and conditions. Product information: once the agreement is made 4.2A.6 R (1) Immediately after an agreement has been made, the firm",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                91
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.2A.8R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "91": "NEW_TEXT"
+              },
+              "provisionReference": "4.2A.8R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 30 of 46 (ii) the implications for the guarantor of the guarantee or the indemnity (or both) being called on; and (b) such of the information mentioned in CONC 4.2A.5R as the firm considers necessary for the guarantor to understand the adequate explanations required by (3)(a) and make an info",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                92
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.6.2AR",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "92": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "4.6.2AR",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also applies to a Gibraltar-b",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                92
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "4.6.2R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "92": "AMENDMENT_MARKUP_UNCERTAIN"
+              },
+              "provisionReference": "4.6.2R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 31 of 46 (ii) it is not disguised, diminished or obscured by any other information given to the customer at the same time; and (b) in good time for the customer to consider it and make effective decisions before entering into the agreement. 4.2A.11 R This section also applies to a Gibraltar-b",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.1R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.1R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is no",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.3R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.3R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is no",
+              "regulatoryClassificationCode": "R"
+            },
+            {
+              "pages": [
+                66,
+                67
+              ],
+              "origin": "deterministic_provision_inventory",
+              "aiOmission": false,
+              "provisionCore": "TP 13.4R",
+              "trackingStatus": "supplied_for_analysis",
+              "textStatusByPage": {
+                "66": "NEW_TEXT"
+              },
+              "provisionReference": "TP 13.4R",
+              "suggestedQuotation": "FCA 2026/2 FOS 2026/1 Page 5 of 46 Annex B Amendments to the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) Insert the following new transitional provisions, SYSC TP 13, after SYSC TP 12 (Updates to the dual-regulated firms Remuneration Code transitional provision). All the text is new and is no",
+              "regulatoryClassificationCode": "R"
+            }
+          ]
+        },
+        "insufficientEvidence": false,
+        "_forgeniqProviderMeta": {
+          "requestId": "msg_011ChKiWj8GFxuYCicLPSEre",
+          "httpStatus": 200,
+          "stopReason": "end_turn",
+          "textLength": 21591,
+          "inputTokens": 8238,
+          "outputTokens": 5552,
+          "responseReceived": true,
+          "requestReachedProvider": true
+        },
+        "_forgeniqLabSpendAudit": {
+          "model": "claude-sonnet-4-5",
+          "records": [
+            {
+              "at": "2026-11-23T10:39:24.984Z",
+              "kind": "reserve",
+              "reserveUsd": 0.151482,
+              "maxOutputTokens": 8192,
+              "inputTokensEstimate": 9534
+            },
+            {
+              "at": "2026-11-23T10:40:44.343Z",
+              "kind": "settle",
+              "actualUsd": 0.107994,
+              "inputTokens": 8238,
+              "outputTokens": 5552
+            }
+          ],
+          "budgetUsd": 1,
+          "inputTokens": 8238,
+          "limitations": [
+            "HARD_INVOICE_CAP_NOT_GUARANTEED: enforcement is pre-flight reserve + post-hoc token accounting — not Anthropic billing API.",
+            "Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ.",
+            "Per-process overlap lock does not synchronise across Vercel serverless instances; the database allows one RUNNING UC-RI-005 run per organisation.",
+            "Duplicate idempotency keys always reuse the existing run; a new paid attempt requires a new operator-authorised RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX.",
+            "A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.",
+            "No org-wide Anthropic workspace spend cap — only per-request guard when env is set.",
+            "Retries inside callAnthropicMessages are not implemented; retryReserveFactor reserves headroom only.",
+            "Provider errors after HTTP 200 may still bill input/output tokens reported by Anthropic."
+          ],
+          "reservedUsd": 0,
+          "attemptCount": 1,
+          "outputTokens": 5552,
+          "calculatedUsd": 0.107994,
+          "maxInputTokens": 200000,
+          "maxOutputTokens": 8192,
+          "retryReserveFactor": 1
+        },
+        "insufficientEvidenceReason": null
+      },
+      "execution_status": "COMPLETED"
+    }
+  ]
+}

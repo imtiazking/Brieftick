@@ -1,6 +1,8 @@
 {
   "updatedAt": "2026-11-23T17:23:00Z",
   "status": "BLOCKED_HOSTED_ROLE_PROOF",
+  "harnessReady": true,
+  "runAfterCredentialInjection": "node apps/platform/scripts/uat/acceptance-ri-security-db-staging.mjs",
   "passingLocally": {
     "acceptance-ri-security-db-local-db.mjs": "5/5 including SEC-DB-003 DELETE guard",
     "acceptance-ri-security-db-staging-api.mjs": "6/6 API route behaviour"

@@ -6,6 +6,7 @@ import {
   analyseInstrumentProvisionText,
   buildProvisionPagesIndex,
   detectLegalInstrumentStartPage,
+  hasDutyLanguage,
   mergeInstrumentBlocksByPage,
   parseProvisionReference,
   PROVISION_TEXT_STATUS,
@@ -90,6 +91,7 @@ export function buildInstrumentProvisionInventory(blocks, instrumentStartPage = 
       suppliedInBatch: null,
       findingIds: [],
       extractionOutcome: null,
+      scopedExcerpt: scopedExcerpt.slice(0, 520),
     });
   }
   const byCore = new Map(provisions.map((p) => [p.core, p]));
@@ -135,6 +137,16 @@ function suppliedWithoutFindingOutcome(row) {
     return {
       trackingStatus: PROVISION_TRACKING_STATUS.EXCEPTION,
       extractionOutcome: 'supplied_requires_exception_triage',
+    };
+  }
+  const operativeCandidate =
+    row.marker === 'R' &&
+    textStatus === PROVISION_TEXT_STATUS.NEW_TEXT &&
+    hasDutyLanguage(row.scopedExcerpt || '');
+  if (operativeCandidate) {
+    return {
+      trackingStatus: PROVISION_TRACKING_STATUS.EXCEPTION,
+      extractionOutcome: 'ai_assessment_omission_requires_review',
     };
   }
   return {
@@ -186,8 +198,15 @@ export function reconcileFindingsWithProvisionInventory(inventory, findings) {
   }
   const unresolved = inventory.provisions.filter((p) => p.trackingStatus === PROVISION_TRACKING_STATUS.UNRESOLVED);
   const exceptions = inventory.provisions.filter((p) => p.trackingStatus === PROVISION_TRACKING_STATUS.EXCEPTION);
+  const assessmentOmissions = inventory.provisions.filter(
+    (p) => p.extractionOutcome === 'ai_assessment_omission_requires_review',
+  );
+  const regulatoryAccuracySuccess = assessmentOmissions.length === 0 && unresolved.length === 0;
   return {
     inventoryComplete: unresolved.length === 0,
+    regulatoryAccuracySuccess,
+    assessmentOmissionCount: assessmentOmissions.length,
+    assessmentOmissionCores: assessmentOmissions.map((p) => p.core),
     unresolvedCount: unresolved.length,
     unresolvedCores: unresolved.map((p) => p.core),
     exceptionCount: exceptions.length,

@@ -25,7 +25,8 @@ effectiveDate (ISO date or null), applicabilityConditions (string or null).
 Distinguish document types: consultation proposals are not binding; finalised non-Handbook guidance must not be presented as independent binding obligations; binding_requirement applies only when sourceQuotation contains operative rule text set out for that provision in a legal instrument (must/shall duties on firms).
 Cross-references to R rules in narrative or guidance sections → guidance or explanatory_commentary, not binding_requirement.
 Do not invent obligations without sourceSectionIds. If evidence is insufficient return {"confidence":0,"candidates":[],"insufficientEvidence":true,"insufficientEvidenceReason":"..."}.
-Also include claims[] mirroring supported candidates with text, confidence, sourceSectionIds, provisionReference.`;
+Also include claims[] mirroring supported candidates with text, confidence, sourceSectionIds, provisionReference.
+When provision-scoped extraction lists targetCores, you must address every listed provisionCore explicitly — do not skip a supplied provision.`;
     default:
       return `Required: recommendation (string), confidence (0-100), claims[] (min 1) each with text, confidence, sourceSectionIds[].`;
   }

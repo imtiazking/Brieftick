@@ -321,6 +321,18 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
 | — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
 
+## 2026-11-23 — Provision assessment completeness (PS26 five-operative)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 18:41 | Pipeline trace | User P1: five verified operatives | `PS26-PROVISION-PIPELINE-TRACE-2026-11-23.json` + `PS26-HISTORICAL-RUNS-SNAPSHOT` |
+| 18:42 | Completeness module | Batch complete ≠ regulatory accuracy | `provision-assessment-completeness.mjs`; `_forgeniqProvisionAssessments` on UC-RI-005 |
+| 18:42 | Inventory | AI omission on supplied R+NEW_TEXT+duty | `ai_assessment_omission_requires_review`; `regulatoryAccuracySuccess` on reconcile |
+| 18:42 | Grounding | Authoritative excerpts per batch | `provisionScopedExtraction` for all batch cores |
+| 18:43 | Historical acceptance | No paid AI | `acceptance-ri-ps26-five-operative-historical` **PASS**; completeness **PASS** |
+| 18:45 | Live test prep | Not authorised | `PS26-LIVE-FIVE-OPERATIVE-COST-2026-11-23.json` ~**$0.042** cap **$0.20** |
+| 18:45 | FCA benchmark revised | Separate metrics | `FCA-PS26-ACCURACY-BENCHMARK-REVISED-2026-11-23.json` |
+
 ## 2026-11-22 — Cursor autonomous environment + UAT resume
 
 | Time (UTC) | Decision | Reason | Outcome |

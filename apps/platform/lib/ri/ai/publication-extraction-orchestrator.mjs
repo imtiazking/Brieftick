@@ -148,11 +148,13 @@ export function mergeFindingsIntoOrchestration(state, findings) {
     if (!f) continue;
     state._orchestrationFindings.push(f);
   }
-  if (state._provisionInventory && findings?.length) {
+  if (state._provisionInventory) {
     state.provisionInventoryReconciliation = reconcileFindingsWithProvisionInventory(
       state._provisionInventory,
       state._orchestrationFindings,
     );
+    state.regulatoryExtractionAccuracyComplete =
+      state.provisionInventoryReconciliation?.regulatoryAccuracySuccess === true;
   }
   for (const f of findings || []) {
     const key = crossBatchFindingDedupeKey(f, sha256Hex);
@@ -213,6 +215,7 @@ export function buildConsolidatedHumanReview(state) {
   return {
     orchestrationStatus: state.status,
     publicationCoverageComplete: state.publicationCoverageComplete,
+    regulatoryExtractionAccuracyComplete: state.regulatoryExtractionAccuracyComplete === true,
     analysisScope: state.analysisScope,
     consolidatedFindingCount: state.consolidatedFindingCount,
     dedupeKeysRecorded: state.findingDedupeKeys.length,
@@ -424,7 +427,8 @@ export function runOrchestrationSession(state, allBlocks, options = {}) {
   });
   const sessionsComplete =
     state.publicationCoverageComplete &&
-    (state.provisionInventoryReconciliation?.inventoryComplete !== false);
+    state.provisionInventoryReconciliation?.inventoryComplete !== false &&
+    state.regulatoryExtractionAccuracyComplete !== false;
   return {
     ...session,
     session: {
@@ -441,20 +445,34 @@ export function runOrchestrationSession(state, allBlocks, options = {}) {
 export function orchestrationFindingsFromStructuredOutput(structuredOutput) {
   const output = structuredOutput && typeof structuredOutput === 'object' ? structuredOutput : {};
   const candidates = Array.isArray(output.candidates) ? output.candidates : [];
-  return candidates
+  const fromCandidates = candidates
     .map((c, i) => {
       const provisionReference = c.provisionReference || c.reference || c.provision_ref;
       const obligationStatement = c.obligationStatement || c.claimText || c.statement;
-      if (!provisionReference || !obligationStatement) return null;
+      const provisionCore = c.provisionCore || null;
+      if (!obligationStatement) return null;
+      if (!provisionReference && !provisionCore) return null;
       return {
         findingId: `candidate-${i}`,
-        provisionReference,
+        provisionReference: provisionReference || null,
         obligationStatement,
-        provisionCore: c.provisionCore || null,
+        provisionCore,
         regulatoryClassificationCode: c.regulatoryClassificationCode || c.classificationCode || null,
+        assessmentSignal: !provisionReference,
       };
     })
     .filter(Boolean);
+  const fromAssessments = (output._forgeniqProvisionAssessments || [])
+    .filter((a) => a.identified && a.provisionCore)
+    .map((a, i) => ({
+      findingId: `assessment-${i}-${a.provisionCore}`,
+      provisionReference: null,
+      obligationStatement: `Provision assessment signal: ${a.outcome}`,
+      provisionCore: a.provisionCore,
+      assessmentSignal: true,
+      assessmentOutcome: a.outcome,
+    }));
+  return [...fromCandidates, ...fromAssessments];
 }
 
 /**

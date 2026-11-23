@@ -623,6 +623,29 @@ export async function runPublicationAnalysisProvider(
       structuredOutput._forgeniqGrounding = ctx.grounding;
     }
 
+    if (params.useCaseId === 'UC-RI-005') {
+      const batchCores =
+        (ctx.grounding?.extractionBatch as { instrumentProvisionsNewlySupplied?: string[] } | undefined)
+          ?.instrumentProvisionsNewlySupplied || [];
+      const scoped = (
+        ctx.grounding as { provisionOutcomesSummary?: { provisionScopedExtraction?: unknown } } | undefined
+      )?.provisionOutcomesSummary?.provisionScopedExtraction;
+      const deterministic = (ctx.grounding as { deterministicProvisionCandidates?: unknown[] } | undefined)
+        ?.deterministicProvisionCandidates;
+      if (batchCores.length) {
+        const { attachProvisionCompletenessToStructuredOutput } = await import(
+          '@/lib/ri/ai/provision-assessment-completeness.mjs'
+        );
+        attachProvisionCompletenessToStructuredOutput(structuredOutput, {
+          suppliedCores: batchCores,
+          candidates: (structuredOutput.candidates as object[]) || [],
+          claims: (structuredOutput.claims as object[]) || [],
+          provisionScopedExtraction: scoped as { excerpts?: { provisionCore: string; authoritativeExcerpt?: string }[] },
+          deterministicCandidates: (deterministic as object[]) || [],
+        });
+      }
+    }
+
     const claims = (normalized.claims as AiClaim[]).map((c, i) => ({
       ...c,
       id: `claim-${i}`,
