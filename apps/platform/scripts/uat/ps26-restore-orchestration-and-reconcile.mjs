@@ -57,9 +57,9 @@ await runAs('A', async ({ page }) => {
   const invRec = orch.provisionInventoryReconciliation || {};
   const outcomes = orch.provisionOutcomes || [];
   const exceptions = outcomes.filter((o) => o.trackingStatus === 'exception');
-  const unresolvedCores = invRec.unresolvedCores?.length
-    ? invRec.unresolvedCores
-    : rec.unresolvedProvisionCores || [];
+  const unresolvedCores = outcomes
+    .filter((o) => o.trackingStatus === 'unresolved')
+    .map((o) => o.core);
   const payload = {
     generatedAt: new Date().toISOString(),
     pilotSteps: pilot.log?.length,

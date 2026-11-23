@@ -1,24 +1,40 @@
 {
-  "generatedAt": "2026-11-23T11:40:00.000Z",
-  "scope": "FCA PS26/1 live pilot + deterministic provision audit",
-  "benchmarkSource": "PS26-1-PROVISION-SOURCE-VERIFICATION-2026-11-22.json",
+  "generatedAt": "2026-11-23T12:18:27.526Z",
+  "scope": "FCA PS26/1 live pilot batches 0–1 vs FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE binding provisions",
+  "benchmarkSource": "FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json",
   "provisionAudit": "PS26-1-UNRESOLVED-PROVISION-AUDIT-2026-11-23.json",
-  "metrics": {
-    "bindingRequirementPrecision": null,
-    "bindingRequirementRecall": null,
-    "incorrectClassifications": null,
-    "missedObligations": null,
-    "unsupportedQuotations": null,
-    "evidentialProvisionAccuracy": null,
-    "reviewerCorrectionRate": null,
-    "unresolvedProvisionRate": null,
-    "provisionProcessingCoverageRatio": 1.0
-  },
-  "notes": [
-    "provisionProcessingCoverageRatio is orchestration supply only — not extraction recall.",
-    "Claim-level precision/recall pending reconciliation of AI analysis runs against verified provision quotes.",
-    "Seven batch-1 provisions are supplied; deterministic audit assigns exception triage (amendment/TP) — not non-obligatory clearance."
+  "goldBindingProvisionCores": [
+    "4.2A.3R",
+    "4.2A.6R",
+    "7.20.1R"
   ],
-  "actualSpendUsdFromProviderAudit": 0.383595,
-  "estimatedSpendUsd": 0.383595
+  "emittedCandidateCount": 62,
+  "emittedBindingCandidateCount": 4,
+  "metrics": {
+    "bindingRequirementPrecision": 0.0851063829787234,
+    "bindingRequirementRecall": 0.3333333333333333,
+    "incorrectClassifications": 43,
+    "missedObligations": 2,
+    "unsupportedQuotations": null,
+    "evidentialProvisionAccuracy": 0.3333333333333333,
+    "reviewerCorrectionRate": null,
+    "unresolvedProvisionRate": 0,
+    "provisionProcessingCoverageRatio": 1
+  },
+  "exceptionTriageCores": [
+    "16.1.6R",
+    "2.7.19GG",
+    "2.7.19HG",
+    "2.7.7FG",
+    "2.8.6CG",
+    "8.12.11AG",
+    "TP 13.5G"
+  ],
+  "notes": [
+    "Precision/recall are claim-level against three human-verified instrument binding rules (4.2A.3R, 4.2A.6R, 7.20.1R).",
+    "provisionProcessingCoverageRatio is orchestration supply only — not extraction recall.",
+    "Quotation-level unsupportedQuotations requires SME review — not automated in this harness."
+  ],
+  "actualSpendUsdFromProviderAudit": 0.228159,
+  "estimatedSpendUsd": 0.228159
 }

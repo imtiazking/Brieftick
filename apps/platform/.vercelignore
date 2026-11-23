@@ -3,3 +3,4 @@
 ../../docs/
 ../../docs/eval/
 eval-fixtures/private/
+.local-pg-verify/
