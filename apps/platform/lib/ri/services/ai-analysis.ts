@@ -608,10 +608,18 @@ export async function runPublicationAnalysisProvider(
     const { normalizeAnalysisStructuredOutput } = await import(
       '@/lib/ri/ai/normalize-structured-ai-output.mjs'
     );
+    const regAnalysis = ctx.grounding?.regulatoryAnalysis as
+      | { isFinalisedGuidance?: boolean; regulatoryStatus?: string }
+      | null
+      | undefined;
+    const isFinalisedGuidance =
+      regAnalysis?.isFinalisedGuidance === true ||
+      String(regAnalysis?.regulatoryStatus || '').toLowerCase() === 'finalised';
     const normalized = normalizeAnalysisStructuredOutput(
       successResult.structured,
       schemaName,
       ctx.allowedSectionIds,
+      { isFinalisedGuidance },
     );
     const structuredOutput: Record<string, unknown> = { ...normalized.structured, ...auditOutput };
     if (ctx.grounding) {

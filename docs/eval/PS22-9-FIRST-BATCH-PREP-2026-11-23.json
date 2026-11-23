@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-11-23T18:04:22.644Z",
+  "log": [
+    {
+      "step": "staging-batch-plan",
+      "at": "2026-11-23T18:04:22.191Z",
+      "inventory": 242,
+      "batches": 17,
+      "batch0": 14,
+      "batch0Preflight": {
+        "estimateTokens": 1900,
+        "ok": true,
+        "maxOutputTokens": 8192,
+        "provisionCap": 58,
+        "targetProvisionCount": 58
+      }
+    },
+    {
+      "step": "client-preflight",
+      "at": "2026-11-23T18:04:22.191Z",
+      "ok": true,
+      "estimateTokens": 1900,
+      "maxOutputTokens": 8192
+    },
+    {
+      "step": "policy",
+      "at": "2026-11-23T18:04:22.191Z",
+      "maxUsdPerBatch": 0.2,
+      "cumulativeCeilingUsd": 2.35,
+      "existingAuthorisedCeilingUsd": 2,
+      "additionalAuthorisationRequiredUsd": 0.35,
+      "paidExtract": false,
+      "idempotencySuffixPattern": "live-ps22-replace-batch0-2026-11-23",
+      "historicalRunsPreserved": [
+        "147574c3-229a-42e3-9adb-fd480b905d3b",
+        "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e"
+      ]
+    }
+  ]
+}

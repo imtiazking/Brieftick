@@ -296,6 +296,18 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | 17:28 | FCA independent verify | 28R/19G instrument text | `FCA-PS26-INDEPENDENT-PROVISION-VERIFICATION-2026-11-23.json` |
 | 17:30 | Git | Consolidated commit | **`f5e335a`** — batching, master runner, benchmarks, SEC-DB harness, evidence |
 
+## 2026-11-23 — FCA reconciliation, UC-RI-005 normalize fix, PS22 prep
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 18:04 | FCA full TP/FP/FN reconcile | User P1: do not treat 28R as obligations | `FCA-PS26-ACCURACY-FULL-RECONCILIATION-2026-11-23.json` — provision ID **2/28** (7.1% recall); binding among **4** operative candidates **1/4** (25% recall); **24/28** exception/amendment/application/transitional |
+| 18:04 | Root cause bundle | Missing `provisionReference`; `consultation_proposal` on final R rules; legacy benchmark n=3 | Documented in reconciliation `priorMetricMisinterpretation` |
+| 18:10 | UC-RI-005 defects | Prompt + post-normalize grounding | `anthropic-prompts-core.mjs` (mandatory `provisionReference`, final PS R→`binding_requirement`); `normalize-structured-ai-output.mjs` (infer ref, remap binding on final instruments); `ai-analysis.ts` passes `isFinalisedGuidance` |
+| 18:12 | Local acceptance | Normalize + PS22 gate | `acceptance-ri-normalize-obligation-output.mjs` **PASS**; `acceptance-ri-extraction-batch-plan-ps22-gate.mjs` **PASS** (242/242, 17 batches) |
+| 18:12 | PS22 first-batch prep | User P2: no paid until approved | `PS22-9-FIRST-BATCH-PREP-2026-11-23.json` — batch0 preflight ok; **$0.35** above prior **$2** auth still required for **$2.35** ceiling |
+| — | SEC-DB-003 hosted | `STAGING_DATABASE_URL` unset locally | Requirements unchanged; local 5/5 + staging API 6/6 only |
+| — | Production | Accurate FCA + hosted DB not proven | **NO-GO** preserved; RI master **3/3** (442346) unchanged |
+
 ## 2026-11-22 — Cursor autonomous environment + UAT resume
 
 | Time (UTC) | Decision | Reason | Outcome |
