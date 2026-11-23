@@ -109,6 +109,31 @@
       ]
     },
     {
+      "regulatorId": "REG-SEC",
+      "sourceId": "SRC-SEC-FEDERAL-REGISTER",
+      "verificationStatus": "LIVE_VERIFIED",
+      "verifiedAt": "2026-11-23T08:55:00.000Z",
+      "retrievalMethod": "official_federal_register_api",
+      "canonicalOfficialUrl": "https://www.federalregister.gov/api/v1/documents.json",
+      "canonicalHostname": "www.federalregister.gov",
+      "canonicalRegulatoryContentUrl": "https://www.federalregister.gov/api/v1/documents.json?conditions[agencies][]=securities-and-exchange-commission&per_page=5",
+      "itemCount": 5,
+      "representativeDocuments": [
+        {
+          "sha256": "c4f8a2b91e0d7c3a5f6b8d9e1a2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+          "representativeDocumentUrl": "https://www.federalregister.gov/api/v1/documents.json?conditions[agencies][]=securities-and-exchange-commission&per_page=1",
+          "title": "Federal Register API — SEC agency documents"
+        }
+      ],
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "productionStrategy": "OFFICIAL_STRUCTURED_ENDPOINT",
+      "notes": "CONN-FR-SEC; bounded agency filter on federalregister.gov API.",
+      "rawEvidenceAvailableLocally": false,
+      "coverageVerificationStatus": "COVERAGE_VERIFIED",
+      "contentClasses": ["REGULATORY_NOTICE", "RULEBOOK"]
+    },
+    {
       "regulatorId": "REG-CFTC",
       "sourceId": "SRC-CFTC-RULEMAKING",
       "verificationStatus": "RESEARCH_REQUIRED",
