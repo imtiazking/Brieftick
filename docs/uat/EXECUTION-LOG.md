@@ -321,6 +321,15 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
 | — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
 
+## 2026-11-23 — Consolidated remediation RC
+
+| Time (UTC) | Decision | Outcome |
+|---|---|---|
+| 23:05–23:15 | Local RC | 22/22 consolidated gates; build + typecheck PASS |
+| 23:23 | One staging deploy | `dpl_CMyZg31KhbgDgasEVB6j3YTjaukY` @ `441a982` |
+| — | Paid AI | **None** in remediation tranche |
+| — | Report | `FORGENIQ-CONSOLIDATED-REMEDIATION-REPORT-2026-11-23.md` |
+
 ## 2026-11-23 — PS22 continuation v2 batch 1 (authorised)
 
 | Time (UTC) | Decision | Reason | Outcome |
