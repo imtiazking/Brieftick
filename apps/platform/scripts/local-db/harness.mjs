@@ -57,7 +57,6 @@ function readEmbeddedOwner(dataDir) {
 }
 
 function writeEmbeddedOwner(dataDir, meta) {
-  mkdirSync(dataDir, { recursive: true });
   writeFileSync(
     join(dataDir, OWNER_FILE),
     JSON.stringify({
@@ -184,11 +183,6 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
       }
     }
     const password = randomBytes(12).toString('hex');
-    writeEmbeddedOwner(localDbDir, {
-      port,
-      sessionId,
-      label: process.env.FORGENIQ_RI_MASTER_STEP || process.env.FORGENIQ_EMBEDDED_PG_LABEL || 'embedded-pg',
-    });
     const embedded = new EmbeddedPostgres({
       databaseDir: localDbDir,
       port,
@@ -201,6 +195,11 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
     try {
       await embedded.initialise();
       await embedded.start();
+      writeEmbeddedOwner(localDbDir, {
+        port,
+        sessionId,
+        label: process.env.FORGENIQ_RI_MASTER_STEP || process.env.FORGENIQ_EMBEDDED_PG_LABEL || 'embedded-pg',
+      });
       embedded.forgeniqPort = port;
       embedded.forgeniqDataDir = localDbDir;
       embedded.forgeniqSessionId = sessionId;
