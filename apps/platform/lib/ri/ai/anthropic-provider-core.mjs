@@ -1,7 +1,11 @@
 /**
  * Anthropic provider implementation (importable from acceptance without server-only).
  */
-import { callAnthropicMessages, parseAnthropicJsonText } from './anthropic-messages-core.mjs';
+import {
+  callAnthropicMessages,
+  classifyMaxTokensTruncation,
+  parseAnthropicJsonText,
+} from './anthropic-messages-core.mjs';
 import { buildAnthropicPrompts } from './anthropic-prompts-core.mjs';
 import {
   guardLabAnthropicSpendBeforeCall,
@@ -15,6 +19,7 @@ export const AI_ERRORS = {
   AI_PROVIDER_NOT_CONFIGURED: 'AI_PROVIDER_NOT_CONFIGURED',
   AI_EXTERNAL_PROCESSING_DISABLED: 'AI_EXTERNAL_PROCESSING_DISABLED',
   AI_OUTPUT_SCHEMA_INVALID: 'AI_OUTPUT_SCHEMA_INVALID',
+  AI_OUTPUT_TRUNCATED: 'AI_OUTPUT_TRUNCATED',
   AI_QUALITY_GATE_FAILED: 'AI_QUALITY_GATE_FAILED',
   LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED,
   LAB_ANTHROPIC_BUDGET_EXCEEDED: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_EXCEEDED,
@@ -178,6 +183,22 @@ export function createAnthropicProvider(deps = {}) {
 
       const structured = parseAnthropicJsonText(apiResult.text);
       if (!structured) {
+        const truncation = classifyMaxTokensTruncation({
+          stopReason: apiResult.stopReason,
+          text: apiResult.text,
+          contentBlockTypes: apiResult.contentBlockTypes,
+        });
+        if (truncation) {
+          return {
+            ok: false,
+            code: truncation.code || AI_ERRORS.AI_OUTPUT_TRUNCATED,
+            message: truncation.message,
+            latencyMs,
+            spendAudit,
+            providerMeta,
+            truncationKind: truncation.truncationKind,
+          };
+        }
         return {
           ok: false,
           code: AI_ERRORS.AI_OUTPUT_SCHEMA_INVALID,

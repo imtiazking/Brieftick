@@ -61,7 +61,7 @@ const mergedValue = merged.join(',');
 const update = spawnSync(
   'npx',
   ['vercel', 'env', 'update', VAR, 'production', '--sensitive', '--scope', SCOPE, '--project', ALLOWED_PROJECT, '--yes'],
-  { cwd: platformRoot, encoding: 'utf8', input: mergedValue, shell: false },
+  { cwd: platformRoot, encoding: 'utf8', input: mergedValue, shell: process.platform === 'win32' },
 );
 
 if (update.status !== 0) {

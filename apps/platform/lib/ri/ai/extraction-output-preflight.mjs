@@ -9,7 +9,8 @@ export function estimateStructuredOutputTokens({ provisionCount = 0, sectionCoun
   const sections = Math.max(0, Number(sectionCount) || 0);
   const floor = Math.max(0, Number(candidateFloor) || 0);
   const estimatedClaims = Math.max(provisions, floor);
-  return Math.ceil(180 + sections * 35 + estimatedClaims * 92);
+  // Lab UC-RI-005 runs observe higher per-claim verbosity than the offline floor; bias upward for fail-closed preflight.
+  return Math.ceil(220 + sections * 42 + estimatedClaims * 108);
 }
 
 /**

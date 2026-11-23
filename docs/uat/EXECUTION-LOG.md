@@ -2,6 +2,15 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — PS22 reconcile + preflight retune (14:25 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 14:25 | PS22 batch 0 reconcile | Run `3872aebf…` | **FAILED** invalid/truncated JSON @ **7380** out tokens; **$0.136**; no auto-retry |
+| — | Output preflight | Underestimate vs live verbosity | Retuned `estimateStructuredOutputTokens`; truncation classification in lab provider |
+| — | RI master ×3 | Run 1/3 in progress | Phase 7+ after hang fixes + PG cleanup at master start |
+| — | SEC-DB-003 hosted | No local DB URL / token | Still blocked; `SEC-DB-003-STAGING-ACCESS-2026-11-23.json` |
+
 ## 2026-11-23 — PS22 suffix, preflight, master hang (14:08 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |

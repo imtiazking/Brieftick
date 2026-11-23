@@ -5,7 +5,7 @@
  */
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runBoundedStep } from './acceptance-ri-master-runner.mjs';
+import { cleanupLocalPgVerifyDirs, runBoundedStep } from './acceptance-ri-master-runner.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 const platformRoot = join(__dir, '..');
@@ -57,6 +57,7 @@ const steps = [
 ];
 
 console.log('FORGENIQ RI master acceptance (Phases 1–7 + catalogue)\n');
+cleanupLocalPgVerifyDirs();
 const start = Date.now();
 
 for (const [label, cmd, args, cwd] of steps) {

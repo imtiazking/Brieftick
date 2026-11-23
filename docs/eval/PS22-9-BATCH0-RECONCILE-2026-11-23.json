@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-11-23T14:25:00Z",
+  "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+  "suffix": "live-ps22-replace-batch0-2026-11-23",
+  "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
+  "executionStatus": "Failed",
+  "errorCode": "AI_OUTPUT_SCHEMA_INVALID",
+  "rootCause": "Anthropic returned ~7380 output tokens of non-parseable / truncated JSON (likely max_tokens-bound extraction batch). Preflight underestimated live verbosity.",
+  "spendUsd": 0.135888,
+  "suffixAuthorisation": "active (orchestration advance OK; no uc_ri_005_not_authorised)",
+  "suffixConsumption": "one paid attempt recorded; historical runs preserved (147574c3-229a-42e3-9adb-fd480b905d3b)",
+  "nextBatchPlanWithoutFurtherPaidCalls": {
+    "instrumentProvisionCount": 242,
+    "plannedBatches": 12,
+    "batch0ProvisionsAfterStricterPreflight": "~52 (estimate retuned)",
+    "remainingPilotBudgetUsdApprox": 1.86,
+    "maxPerBatchUsd": 0.25
+  },
+  "regulatoryReconciliation": "No new binding obligations from failed run; FCA PS22/9 publication unchanged on register."
+}
