@@ -1,0 +1,31 @@
+{
+  "verifiedAt": "2026-11-23T13:20:00.000Z",
+  "strayProject": {
+    "name": "platform",
+    "projectId": "prj_ZqJgzCO1p2SpfNJPgqacKvPbEDHj",
+    "team": "imis-projects-8e15dca0"
+  },
+  "operatorAction": "Git integration disconnected by operator (user-confirmed)",
+  "verification": {
+    "method": "vercel list platform — no deployments newer than last Git-triggered Preview (platform-32vjjdr72, Error, ~0fccf47 push); no automatic follow-up builds after disconnect",
+    "lastGitDeployments": [
+      {
+        "id": "dpl_AianDZBwrSnM7CBKBwi74bD43XCs",
+        "url": "https://platform-m4u8q39g0-imis-projects-8e15dca0.vercel.app",
+        "environment": "Production",
+        "commit": "0983c8a",
+        "status": "Error"
+      },
+      {
+        "url": "https://platform-32vjjdr72-imis-projects-8e15dca0.vercel.app",
+        "environment": "Preview",
+        "commit": "0fccf47",
+        "status": "Error"
+      }
+    ],
+    "authorisedStagingUnaffected": true,
+    "stagingProject": "forgeniq-platform-staging",
+    "stagingProjectId": "prj_y9O1A1zGFXe3GvJITnL9mJUqve7",
+    "stagingDeployHead": "0fccf47"
+  }
+}

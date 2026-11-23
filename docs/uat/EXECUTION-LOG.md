@@ -2,6 +2,15 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — Staging tests resumed (13:20 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 13:20 | Git on `platform` | Operator disconnect | Evidence `PLATFORM-STRAY-PROJECT-GIT-DISCONNECT-2026-11-23.json`; no new stray deploys |
+| 13:20 | PS26/1 hosted reconcile | Staging `0fccf47` | **PASS** — 47/47, 0 unresolved, **7/7 exceptions** incl. `16.1.6R` |
+| — | PS22/9 replacement | Authorised suffix | In progress (after PS26) |
+| — | RI master ×3 | Run 2/3 Phase 3 | Background `442335` — do not interrupt |
+
 ## 2026-11-23 — Stray Vercel project `platform` (12:50 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |

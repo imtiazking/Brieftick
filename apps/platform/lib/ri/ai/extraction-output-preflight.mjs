@@ -41,3 +41,19 @@ export function scaleMaxOutputTokensForBatch(baseMaxOutput, { provisionCount = 0
 export function charsBudgetFromOutputTokens(tokens) {
   return Math.floor(Math.max(0, tokens) * CHARS_PER_OUTPUT_TOKEN);
 }
+
+/** Largest provision count that passes assertExtractionOutputBudget for a batch shape. */
+export function maxProvisionsWithinOutputPreflight({
+  sectionCount = 0,
+  maxOutputTokens = 8192,
+  safetyRatio = 0.82,
+} = {}) {
+  let hi = 512;
+  let best = 0;
+  for (let n = 1; n <= hi; n += 1) {
+    const est = estimateStructuredOutputTokens({ provisionCount: n, sectionCount });
+    if (assertExtractionOutputBudget({ estimateTokens: est, maxOutputTokens, safetyRatio }).ok) best = n;
+    else break;
+  }
+  return best;
+}

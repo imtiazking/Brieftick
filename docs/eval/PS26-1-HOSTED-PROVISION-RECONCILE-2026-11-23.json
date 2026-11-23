@@ -1,11 +1,13 @@
 {
-  "generatedAt": "2026-11-23T12:16:19.614Z",
+  "generatedAt": "2026-11-23T13:20:44.858Z",
   "pilotSteps": 9,
   "cumulativeSupplied": 47,
   "unresolvedCores": [],
   "exceptionCores": [
     "11.1.2AG",
     "11.1.2R",
+    "16.1.2G",
+    "16.1.6R",
     "2.3.1R",
     "2.3.2R",
     "2.5.1R",
@@ -31,10 +33,10 @@
     "TP 13.4R",
     "TP 13.5G"
   ],
-  "exceptionPreserved": false,
+  "exceptionPreserved": true,
   "provisionInventorySummary": {
-    "exception": 26,
-    "no_obligation_identified": 21
+    "exception": 28,
+    "no_obligation_identified": 19
   },
   "actualSpendFromPilot": [
     {

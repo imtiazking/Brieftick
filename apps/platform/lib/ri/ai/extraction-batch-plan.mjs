@@ -9,6 +9,7 @@ import {
   selectEvidenceBlocksForAnalysis,
   scoreInstrumentBlockForObligationExtraction,
 } from './build-pdf-grounded-analysis-context.mjs';
+import { maxProvisionsWithinOutputPreflight } from './extraction-output-preflight.mjs';
 
 export const EXTRACTION_BATCH_PLAN_VERSION = 'instrument_coverage_v2';
 /** Soft default when callers omit maxBatches (not a hard publication ceiling). */
@@ -119,11 +120,19 @@ export function buildPublicationExtractionBatchPlan(allBlocks, options) {
             });
 
     const described = describeSelectedSections(allBlocks, selected, instrumentStartPage);
-    const notSuppliedList = described.selection.instrumentProvisionsNotSupplied || [];
-    const newlySupplied = allCores.filter((c) => !supplied.has(c) && !notSuppliedList.includes(c));
-    for (const c of described.sourceSections.flatMap((s) => s.provisionsSetOut || [])) {
-      if (allCores.includes(c)) supplied.add(c);
-    }
+    const pageProvisions = [
+      ...new Set(
+        (described.sourceSections || [])
+          .flatMap((s) => s.provisionsSetOut || [])
+          .filter((c) => allCores.includes(c) && !supplied.has(c)),
+      ),
+    ];
+    const provisionCap = maxProvisionsWithinOutputPreflight({
+      sectionCount: maxSections,
+      maxOutputTokens: Number(options.maxStructuredOutputTokens) || 8192,
+    });
+    const newlySupplied = pageProvisions.slice(0, Math.max(0, provisionCap));
+    for (const c of newlySupplied) supplied.add(c);
 
     const batch = {
       batchIndex,
@@ -139,7 +148,7 @@ export function buildPublicationExtractionBatchPlan(allBlocks, options) {
     };
     batches.push(batch);
 
-    if (!described.selection.instrumentProvisionsNotSupplied.length) break;
+    if (batch.instrumentProvisionsOutstanding.length === 0) break;
     if (batchIndex > 0 && !newlySupplied.length) {
       batch.stalled = true;
       break;
