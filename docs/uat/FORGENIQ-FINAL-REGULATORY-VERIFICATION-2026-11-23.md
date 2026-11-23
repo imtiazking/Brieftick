@@ -143,7 +143,7 @@ Authoritative: `docs/eval/FORGENIQ-CONSOLIDATED-DEFECT-REGISTER-2026-11-23.json`
 | DEF-0015 | RI_LAB_MAX_PROVISIONS_PER_BATCH env bypass | FIXED AND TESTED |
 | DEF-0016 | Staging P2 browser regression | TESTED AND PASSED |
 | DEF-0017 | Local design-lab browser suites (×3) | NOT EXECUTED — REQUIRES LOCAL DESIGN-LAB SERVER |
-| DEF-0018 | PS22/9 classifier on staging runtime | IMPLEMENTED — AWAITING STAGING DEPLOY |
+| DEF-0018 | PS22/9 classifier on staging runtime | FIXED AND TESTED (`dpl_6YDkQJaukiGguT5kcSkYSMzQfnmB` @ `ff83dfe`) |
 
 Status totals: **18** (previously reported rollup omitted **NOT EXECUTED** and **IMPLEMENTED — AWAITING DEPLOY** classes).
 
@@ -154,7 +154,7 @@ Status totals: **18** (previously reported rollup omitted **NOT EXECUTED** and *
 | Prerequisite | Status |
 |--------------|--------|
 | Source identity correct | **Yes** |
-| Classifier fix in staging runtime | **After consolidated deploy of this commit** |
+| Classifier fix in staging runtime | **Deployed** (`ff83dfe` on staging-app.forgeniq.com) |
 | Legal re-assessment of 97 under corrected context | **Not started** (required before treating extractions as binding) |
 | Spend authorisation for batches 2+ | **Blocked** without ceiling approval (~$2.73 projected full completion) |
 | Paid extraction in this instruction | **Prohibited** |

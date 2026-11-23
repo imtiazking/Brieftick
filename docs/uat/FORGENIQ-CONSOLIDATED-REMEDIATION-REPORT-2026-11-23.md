@@ -21,12 +21,16 @@ Authoritative machine-readable register: `docs/eval/FORGENIQ-CONSOLIDATED-DEFECT
 
 | Metric | Count |
 |--------|------:|
-| Total registered items | 18 |
-| FIXED AND TESTED | 8 |
+| Total registered items | **18** (see `FORGENIQ-CONSOLIDATED-DEFECT-REGISTER-2026-11-23.json`) |
+| FIXED AND TESTED | 11 |
 | TESTED AND PASSED | 2 |
-| READY FOR HOSTED VALIDATION | 4 |
+| FAILED (re-assessment required) | 1 |
+| READY FOR HOSTED VALIDATION | 1 |
+| NOT EXECUTED — REQUIRES LOCAL DESIGN-LAB SERVER | 1 |
 | BLOCKED — EXTERNAL DEPENDENCY | 1 |
 | BLOCKED — SPENDING AUTHORISATION | 1 |
+
+Closure report: `docs/uat/FORGENIQ-FINAL-REGULATORY-VERIFICATION-2026-11-23.md`.
 
 Category breakdown: code fixes (5), regulatory accuracy (4), security (1), integration (3), UAT prep (3), test/evidence (2), external (2).
 
