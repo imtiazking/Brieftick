@@ -11,7 +11,12 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | FRC suspension | P3 maker-checker | REG-FRC v**2** active, all conversion disabled — evidence JSON |
 | — | Admin writes | Policy hygiene | Re-enabled for suspend; env restored **false** |
 | — | Regulator matrix | P4/P5 | `REGULATOR-READINESS-MATRIX-2026-11-23.json` (36/41) |
-| — | Live pilot | Async + recovery | Re-run in flight; acceptance criteria doc added |
+| ~01:01 | Live pilot batch 1 POST | Staging `500 internal_error` on second paid batch (batch index 1) | Batch 0 **COMPLETED** after poll fix (40/47 supplied); batch 2 suffix authorised |
+| ~01:40 | RI master / Phase 5 | Fixed port `54328` stuck shared memory after long master run | Harness: retry random port when preferred port fails |
+| ~01:01 | PDF batch-2 grounding | Suspected empty block filter after batch plan | Page-based block fallback + 422 mapping for `pdf_*` / `extraction_batch_*` (deploy pending) |
+| ~00:58 | Live pilot false TIMEOUT | Poll read `body.run.execution_status`; API exposes `aiAnalysisRun.executionStatus` (`Completed`) | Run `2c840c0b…` already **COMPLETED**; pilot failed closed (no paid retry) |
+| — | Fix `pollRun` in live pilot script | Align with lab GET shape + normalize status tokens | Re-run resumed via idempotency marker |
+| — | Live pilot | Async + recovery | Acceptance criteria doc added; pilot re-run after poll fix |
 | — | Production decision | Blockers remain | `PRODUCTION-READINESS-REPORT-2026-11-23.md` — **NO-GO** |
 
 ## 2026-11-23 — Autonomous tranche (P1–P5 continuation)

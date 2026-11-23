@@ -40,7 +40,10 @@ export function pgVersionLabel() {
 export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
   let lastError;
   for (let attempt = 0; attempt < 8; attempt += 1) {
-    const port = preferredPort ?? 54000 + Math.floor(Math.random() * 900);
+    const port =
+      preferredPort != null && attempt === 0
+        ? preferredPort
+        : 54000 + Math.floor(Math.random() * 9000);
     const localDbDir = localDbDirForPort(port);
     if (existsSync(localDbDir)) {
       try {

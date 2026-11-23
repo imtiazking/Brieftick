@@ -13,6 +13,8 @@ import {
   type PublicationAnalysisProviderJob,
 } from '@/lib/ri/services/ai-analysis';
 import { createSupabaseAdminClient } from '@/lib/supabase/admin';
+import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
+import { recoverStaleAiAnalysisRuns } from '@/lib/ri/ai/recover-stale-ai-analysis-runs.mjs';
 
 /** Staging UC-RI-005 live extraction — provider work may continue via after() while client polls. */
 export const maxDuration = 300;
@@ -98,6 +100,20 @@ export async function POST(request: Request) {
       const latest = await getLatestPublicationVersion(ctx.supabase, publicationId);
       if (!latest?.id) throw new Error('publication_version_not_found');
       publicationVersionId = latest.id;
+    }
+
+    if (useCaseId === 'UC-RI-005' && isRiAiExecutionEnabled()) {
+      const admin = createSupabaseAdminClient();
+      if (admin) {
+        try {
+          await recoverStaleAiAnalysisRuns(admin);
+        } catch (err) {
+          console.error(
+            '[ri-ai] stale_run_recovery_failed',
+            err instanceof Error ? err.message : String(err),
+          );
+        }
+      }
     }
 
     const result = await requestPublicationAnalysis(ctx.supabase, {

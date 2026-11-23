@@ -82,20 +82,34 @@ async function startExtractionRun(page, payload, publicationId) {
   }
 }
 
+function normalizeExecutionStatus(body) {
+  const raw =
+    body?.run?.execution_status ??
+    body?.detail?.execution_status ??
+    body?.executionStatus ??
+    body?.aiAnalysisRun?.executionStatus;
+  if (!raw) return null;
+  return String(raw).trim().toUpperCase().replace(/\s+/g, '_');
+}
+
+const TERMINAL_EXECUTION = new Set(['COMPLETED', 'FAILED', 'VALIDATION_FAILED']);
+
 async function pollRun(page, runId, timeoutMs = 300_000) {
   const started = Date.now();
+  let lastBody = null;
   while (Date.now() - started < timeoutMs) {
     const res = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/ai-analysis-runs/${runId}`, {
       headers: { Accept: 'application/json' },
     });
     const body = await res.json().catch(() => ({}));
-    const status = body.run?.execution_status || body.executionStatus;
-    if (status === 'COMPLETED' || status === 'FAILED' || status === 'VALIDATION_FAILED') {
+    lastBody = body;
+    const status = normalizeExecutionStatus(body);
+    if (status && TERMINAL_EXECUTION.has(status)) {
       return { status, body, latencyMs: Date.now() - started };
     }
     await page.waitForTimeout(4000);
   }
-  return { status: 'TIMEOUT', body: null, latencyMs: Date.now() - started };
+  return { status: 'TIMEOUT', body: lastBody, latencyMs: Date.now() - started };
 }
 
 async function createChange(page, pub) {

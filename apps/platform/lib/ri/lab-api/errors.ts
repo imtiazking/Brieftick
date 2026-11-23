@@ -172,6 +172,14 @@ export function labApiErrorResponse(err: unknown): NextResponse {
   if (err instanceof Error && err.message.startsWith('obligation_extraction_')) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 422 });
   }
+  if (
+    err instanceof Error &&
+    (err.message.startsWith('pdf_') ||
+      err.message.startsWith('extraction_batch_') ||
+      err.message === 'pdf_grounding_unavailable')
+  ) {
+    return NextResponse.json({ ok: false, error: err.message }, { status: 422 });
+  }
   if (process.env.NODE_ENV !== 'test') {
     const msg = err instanceof Error ? err.message : 'unknown';
     console.error('[ri-lab] internal_error', msg.slice(0, 240));

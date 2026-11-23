@@ -284,8 +284,12 @@ export async function buildPdfGroundedAnalysisContext(params) {
     if (!activeBatch) {
       return { ok: false, code: 'extraction_batch_out_of_range' };
     }
-    const idSet = new Set(activeBatch.selectedBlockIds);
+    const idSet = new Set(activeBatch.selectedBlockIds || []);
     blocks = (entry.evidenceBlocks || []).filter((b) => idSet.has(b.documentEvidenceId));
+    if (!blocks.length && activeBatch.selection?.selectedPages?.length) {
+      const pageSet = new Set(activeBatch.selection.selectedPages);
+      blocks = (entry.evidenceBlocks || []).filter((b) => pageSet.has(b.pageNumber));
+    }
   } else {
     blocks = selectEvidenceBlocksForAnalysis(entry.evidenceBlocks, { instrumentStartPage, maxSections: maxSectionsPerBatch });
   }

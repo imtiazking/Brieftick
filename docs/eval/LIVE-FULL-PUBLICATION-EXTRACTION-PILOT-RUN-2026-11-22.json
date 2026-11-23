@@ -3,7 +3,7 @@
   "log": [
     {
       "step": "PS26/1-reconcile",
-      "at": "2026-11-23T00:13:04.765Z",
+      "at": "2026-11-23T01:00:58.126Z",
       "inventory": 47,
       "plannedBatches": 2,
       "publicationCoverageCompletePlanned": true,
@@ -11,14 +11,45 @@
     },
     {
       "step": "PS26/1-change",
-      "at": "2026-11-23T00:13:20.564Z",
-      "changeId": "6abee135-3ada-4a3e-ac35-c627e895dd36",
+      "at": "2026-11-23T01:01:04.175Z",
+      "changeId": "5002f1ba-c0d7-45bb-8e01-c1aabb1b6ac8",
       "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv"
     },
     {
+      "step": "PS26/1-resume-marker",
+      "at": "2026-11-23T01:01:10.554Z",
+      "idem": "live-ps26-full-2026-11-22",
+      "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+      "status": "COMPLETED"
+    },
+    {
+      "step": "PS26/1-batch-0",
+      "at": "2026-11-23T01:01:14.184Z",
+      "batchIndex": 0,
+      "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+      "idempotencySuffix": "live-ps26-full-2026-11-22",
+      "executionStatus": "COMPLETED",
+      "latencyMs": 1657,
+      "extractHttp": 200,
+      "cumulativeSupplied": 40,
+      "consolidatedFindings": 0,
+      "publicationCoverageComplete": false,
+      "unresolved": 0
+    },
+    {
+      "step": "PS26/1-extract-fail",
+      "at": "2026-11-23T01:01:19.565Z",
+      "batchIndex": 1,
+      "idem": "live-ps26-full-2026-11-22-batch-2",
+      "exBody": {
+        "ok": false,
+        "error": "internal_error"
+      }
+    },
+    {
       "step": "failed",
-      "at": "2026-11-23T00:14:04.628Z",
-      "message": "apiRequestContext.post: read ECONNRESET\nCall log:\n  - → POST https://staging-app.forgeniq.com/api/ri-lab/ai-analysis-runs\n    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36\n    - accept: */*\n    - accept-encoding: gzip,deflate,br\n    - content-type: application/json\n    - content-length: 275\n    - cookie: __client_uat=1795313876; __client_uat_Czu5sIAW=1795313876; forgeniq_active_org=b8f5e3a1-00ad-4000-8000-000000000001; clerk_active_context=sess_3MRWUYfvwUL80IVMOL0nE3YmiCi:; __session=eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRlpwQVlzZjhyU0JGb1ZpUFBnVHBwa3hKWVkiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwczovL3N0YWdpbmctYXBwLmZvcmdlbmlxLmNvbSIsImV4cCI6MTc5NTM5Mjg0MCwiZnZhIjpbMTMxNSwxMzE1XSwiaWF0IjoxNzk1MzkyNzgwLCJpc3MiOiJodHRwczovL2NsZXJrLmZvcmdlbmlxLmNvbSIsIm5iZiI6MTc5NTM5Mjc3MCwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzaWQiOiJzZXNzXzNNUldVWWZ2d1VMODBJVk1PTDBuRTNZbWlDaSIsInN0cyI6ImFjdGl2ZSIsInN1YiI6InVzZXJfM0xBNzZ2UjRDdWV1dFd0RXBjQXh2cVlLa0V2IiwidiI6Mn0.Wv5-slE-xR79DWZpNii7nnlH2V37skbF2m4vIdH_nIKe6pCwQpQhLC8-XEunn4uvvFqTmo9Dfp08BHMZwTLCstsnGNRwrPbvVD-3LzY_1AY2TlQMg_Z0NY7aZgX6WuD6fwXzOE2XBB5MeY4tq5ZPiJRQxs4Ju_g1g7PPJjYY46b2DGA-u0lGVdbjibwzwFHvbKbvxtRE25xNKtyZeDGdGB0jF__kCO7mSbouXVJIoK9UJwdsuYkCR3Q_8kZ_c6QeKy9tP8m1jAe3ZYBKdrlouEqxvpLVNn4Dl7pPilMcv43PHHeWXA_uR4fyAs1pbOEmdDaqPRHzwirumoz2J_s0Sg; __session_Czu5sIAW=eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRlpwQVlzZjhyU0JGb1ZpUFBnVHBwa3hKWVkiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwczovL3N0YWdpbmctYXBwLmZvcmdlbmlxLmNvbSIsImV4cCI6MTc5NTM5Mjg0MCwiZnZhIjpbMTMxNSwxMzE1XSwiaWF0IjoxNzk1MzkyNzgwLCJpc3MiOiJodHRwczovL2NsZXJrLmZvcmdlbmlxLmNvbSIsIm5iZiI6MTc5NTM5Mjc3MCwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzaWQiOiJzZXNzXzNNUldVWWZ2d1VMODBJVk1PTDBuRTNZbWlDaSIsInN0cyI6ImFjdGl2ZSIsInN1YiI6InVzZXJfM0xBNzZ2UjRDdWV1dFd0RXBjQXh2cVlLa0V2IiwidiI6Mn0.Wv5-slE-xR79DWZpNii7nnlH2V37skbF2m4vIdH_nIKe6pCwQpQhLC8-XEunn4uvvFqTmo9Dfp08BHMZwTLCstsnGNRwrPbvVD-3LzY_1AY2TlQMg_Z0NY7aZgX6WuD6fwXzOE2XBB5MeY4tq5ZPiJRQxs4Ju_g1g7PPJjYY46b2DGA-u0lGVdbjibwzwFHvbKbvxtRE25xNKtyZeDGdGB0jF__kCO7mSbouXVJIoK9UJwdsuYkCR3Q_8kZ_c6QeKy9tP8m1jAe3ZYBKdrlouEqxvpLVNn4Dl7pPilMcv43PHHeWXA_uR4fyAs1pbOEmdDaqPRHzwirumoz2J_s0Sg\n"
+      "at": "2026-11-23T01:01:20.620Z",
+      "message": "PS26/1 batch 1 extract failed — no retry"
     }
   ]
 }
