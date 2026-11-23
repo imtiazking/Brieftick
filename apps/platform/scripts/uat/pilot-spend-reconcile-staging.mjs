@@ -2,7 +2,7 @@
 /**
  * Live pilot spend vs $2.35 ceiling (before each paid call).
  */
-import { writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { REPO_ROOT } from '../../lib/ri/eval/eval-paths.mjs';
 import { runAs, STAGING_ORIGIN } from './staging-user-sessions.mjs';
@@ -33,6 +33,15 @@ function spendFromOutput(out) {
 
 const PS22_PUB = '7a73ac4c-d6b4-4411-9f6d-1276053f2831';
 
+/** Continuation v2 runs bypass the orchestration ledger, so their run ids come from the evidence files. */
+function continuationEvidenceRunIds() {
+  const dir = join(REPO_ROOT, 'docs/eval');
+  return readdirSync(dir)
+    .filter((f) => /^PS22-9-CONTINUATION-V2-BATCH\d+-\d{4}-\d{2}-\d{2}\.json$/.test(f))
+    .map((f) => JSON.parse(readFileSync(join(dir, f), 'utf8')).runId)
+    .filter((id) => typeof id === 'string' && id.length > 8);
+}
+
 const lines = [];
 
 await runAs('A', async ({ page }) => {
@@ -42,7 +51,7 @@ await runAs('A', async ({ page }) => {
   const orchRuns = (orch.orchestration?.batches || [])
     .map((b) => b.runId)
     .filter((id) => typeof id === 'string' && id.length > 8);
-  const runIds = [...new Set([...KNOWN, ...orchRuns])];
+  const runIds = [...new Set([...KNOWN, ...orchRuns, ...continuationEvidenceRunIds()])];
   const chunkSize = 4;
   for (let i = 0; i < runIds.length; i += chunkSize) {
     const chunk = runIds.slice(i, i + chunkSize);
