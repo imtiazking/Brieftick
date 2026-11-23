@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T21:57:23.181Z",
+  "generatedAt": "2026-11-23T22:36:33.102Z",
   "gitBase": "b677d11",
   "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
   "sourceRevisionBinding": {
@@ -504,6 +504,13 @@
         "spendUsd": 0.138012,
         "preserved": true,
         "note": "retained on ledger — not retried without new suffix"
+      },
+      {
+        "runId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+        "status": "COMPLETED",
+        "spendUsd": 0.10542,
+        "preserved": true,
+        "note": null
       }
     ]
   },
@@ -1266,11 +1273,11 @@
     ]
   },
   "costForecast": {
-    "cumulativeSpendUsd": 1.282017,
+    "cumulativeSpendUsd": 1.387437,
     "authorizedCeilingUsd": 2.35,
     "proposedCeilingUsd": 3.25,
     "empiricalRemainingUsd": 1.33,
-    "projectedCumulativeUsd": 2.612
+    "projectedCumulativeUsd": 2.717
   },
   "acceptanceChecks": {
     "preserved65": true,

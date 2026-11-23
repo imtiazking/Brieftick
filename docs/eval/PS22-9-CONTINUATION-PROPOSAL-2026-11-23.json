@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-23T21:57:23.179Z",
+  "generatedAt": "2026-11-23T22:36:33.100Z",
   "status": "AWAITING_USER_AUTHORISATION",
   "notAuthorized": true,
-  "cumulativeSpendUsd": 1.282017,
+  "cumulativeSpendUsd": 1.387437,
   "authorizedCeilingUsd": 2.35,
   "proposedCeilingUsd": 3.25,
   "proposedCeilingNote": "$3.25 cumulative suggested — NOT authorised; no paid execution until continuation + spend approved",
   "remainingExtractionBatches": 14,
   "estimatedIncrementalUsd": 1.33,
-  "projectedCumulativeIfFullRunUsd": 2.612,
+  "projectedCumulativeIfFullRunUsd": 2.717,
   "fitsProposedCeiling": true,
   "fitsCurrentCeiling": false,
   "executionPolicy": {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T21:46:48.997Z",
+  "generatedAt": "2026-11-23T21:57:50.523Z",
   "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
   "sourceRevisionBinding": {
     "sourcePdfSha256": "fixture:fca-ps22-9-official.pdf",
@@ -748,8 +748,10 @@
       "empiricalUsdRemaining": 1.33,
       "tokenHeuristicUsdRemaining": 0.409,
       "pilotAvgUsdPerBatch": 0.095,
-      "batchesAlreadyPaid": 5,
-      "note": "Do not re-pay batches 0–4; use new orchestration suffix + startSuppliedCores when authorised"
+      "paidApiAttemptsCorrectedPath": 6,
+      "successfulExtractionBatches": 5,
+      "failedBillableAttempts": 1,
+      "note": "Six paid POSTs (batches 0–5); five succeeded (65 cores). Do not re-pay; new suffix + startSuppliedCores when authorised"
     }
   },
   "acceptanceChecks": {
