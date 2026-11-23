@@ -1,7 +1,10 @@
 /**
  * Align provider JSON (candidates[]) with persisted claims[] + citation validation.
  */
-import { parseProvisionReference } from '../classification/provision-eligibility.mjs';
+import {
+  applyObligationCandidateRegulatoryGuard,
+  resolvePublicationRegulatoryContext,
+} from './obligation-extraction-regulatory-guard.mjs';
 
 const BINDING_VALUES = new Set([
   'binding_requirement',
@@ -36,7 +39,7 @@ function resolveCandidateSourceSectionIds(raw, allowedSectionIds) {
  * @param {string[]} allowedSectionIds
  */
 /**
- * @param {{ isFinalisedGuidance?: boolean }} [opts]
+ * @param {{ regulatoryAnalysis?: object, sectionCatalog?: object[] }} [opts]
  */
 export function normalizeAnalysisStructuredOutput(structured, schemaName, allowedSectionIds, opts = {}) {
   if (!structured || typeof structured !== 'object') {
@@ -45,37 +48,17 @@ export function normalizeAnalysisStructuredOutput(structured, schemaName, allowe
 
   const allowed = new Set(allowedSectionIds || []);
   const out = { ...structured };
-  if (opts.isFinalisedGuidance === true) {
-    out._forgeniqFinalInstrument = true;
-  }
+  const pubCtx = resolvePublicationRegulatoryContext(opts.regulatoryAnalysis);
+  out._forgeniqPublicationRegulatoryContext = pubCtx;
 
   if (schemaName === 'ObligationExtractionResult' || schemaName === 'ChangeExtractionResult') {
     const candidates = Array.isArray(out.candidates) ? out.candidates : [];
     let claims = Array.isArray(out.claims) ? out.claims : [];
 
     for (const c of candidates) {
-      if (c && typeof c === 'object' && !c.provisionReference) {
-        const blob = `${c.statement || ''}\n${c.sourceQuotation || ''}\n${c.citation || ''}`;
-        const m = blob.match(
-          /\b(?:CONC\s+)?((?:App\s+)?\d{1,2}[A-Z]?\.\d{1,2}[A-Z]?\.\d{1,3}[A-Z]?|TP\s+\d{1,3}[A-Z]?\.\d{1,3}[A-Z]?)\s*(R|E|G)\b/i,
-        );
-        if (m) {
-          const ref = parseProvisionReference(`CONC ${m[1].replace(/\s+/g, '')}${m[2].toUpperCase()}`);
-          if (ref) c.provisionReference = ref.sourcebook ? `${ref.sourcebook} ${ref.core}` : ref.core;
-        }
-      }
-      const provRef = typeof c?.provisionReference === 'string' ? c.provisionReference : '';
-      const parsedProv = provRef ? parseProvisionReference(provRef) : null;
-      if (
-        c &&
-        typeof c === 'object' &&
-        parsedProv?.marker === 'R' &&
-        c.bindingNature === 'consultation_proposal' &&
-        out._forgeniqFinalInstrument === true
-      ) {
-        c.bindingNature = 'binding_requirement';
-        c._bindingNatureRemappedFromConsultation = true;
-      }
+      if (!c || typeof c !== 'object') continue;
+      const sourceSectionIds = resolveCandidateSourceSectionIds(c, allowed);
+      applyObligationCandidateRegulatoryGuard(c, sourceSectionIds, opts.sectionCatalog || [], pubCtx);
     }
 
     if (!claims.length && candidates.length) {

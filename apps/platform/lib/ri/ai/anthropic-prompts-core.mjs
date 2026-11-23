@@ -18,11 +18,12 @@ Include claims[] grounded to source sections.`;
     case 'ObligationExtractionResult':
       return `Required: confidence (0-100), candidates[] where each item includes:
 statement, sourceSectionIds[] (must use exact sourceSectionId values from Source sections),
-provisionReference (exact handbook rule cited, e.g. "CONC 4.2A.3R" — required when the finding cites a numbered rule),
+provisionReference (exact handbook rule cited, e.g. "CONC 4.2A.3R" — required when the finding cites a numbered rule; use only when sourceQuotation contains that rule set out in the legal instrument, not a cross-reference elsewhere),
 bindingNature (binding_requirement | guidance | consultation_proposal | explanatory_commentary | unknown),
 citation (human-readable PDF location), sourceQuotation (short verbatim excerpt from provided text only),
 effectiveDate (ISO date or null), applicabilityConditions (string or null).
-For final Policy Statements and legal instruments (not consultations), classify FCA "R" rules as binding_requirement — do not use consultation_proposal when the instrument text is final.
+Distinguish document types: consultation proposals are not binding; finalised non-Handbook guidance must not be presented as independent binding obligations; binding_requirement applies only when sourceQuotation contains operative rule text set out for that provision in a legal instrument (must/shall duties on firms).
+Cross-references to R rules in narrative or guidance sections → guidance or explanatory_commentary, not binding_requirement.
 Do not invent obligations without sourceSectionIds. If evidence is insufficient return {"confidence":0,"candidates":[],"insufficientEvidence":true,"insufficientEvidenceReason":"..."}.
 Also include claims[] mirroring supported candidates with text, confidence, sourceSectionIds, provisionReference.`;
     default:

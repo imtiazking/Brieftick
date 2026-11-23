@@ -1,0 +1,153 @@
+{
+  "generatedAt": "2026-11-23T18:17:57.838Z",
+  "metrics": {
+    "provisionIdentification": {
+      "tp": 1,
+      "fn": 4
+    },
+    "legalClassification": {
+      "note": "Uses authoritative duty language on instrument text, not R marker alone",
+      "legallySupportedOperative": 5
+    },
+    "obligationExtraction": {
+      "tp": 1,
+      "fn": 4
+    }
+  },
+  "humanVerified": [
+    {
+      "core": "7.20.1R",
+      "subParagraph": "(2)",
+      "evidence": "docs/eval/PS26-1-PROVISION-SOURCE-VERIFICATION-2026-11-22.json",
+      "uatApprovedConversion": true,
+      "exclusionFromHeuristicListReason": "Full core heuristic used hasDutyLanguage on truncated parser excerpt \"7.20.1R or\"; (2) duty on p.95 verified separately — RI-CLS-009 cross-page"
+    }
+  ],
+  "trace": [
+    {
+      "core": "4.2A.3R",
+      "pages": [
+        87,
+        88
+      ],
+      "authoritativeExcerptHead": "4.2A.3 R (1) Before making an agreement, the firm must: (a) give to the customer the information set out in",
+      "hasDutyLanguageInScopedExcerpt": true,
+      "crossPageNote": null,
+      "legalEvidenceSupportsOperativeBinding": true,
+      "heuristicOperativeCandidate": true,
+      "aiHits": [
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "bindingNature": "binding_requirement",
+          "provisionReference": null,
+          "sourceQuotationHead": "Before making an agreement, the firm must: (a) give to the customer the information set out in CONC 4.2A.5R(1) (referred to in this section as the 'key product information')... The key product informa",
+          "regulatoryGuard": null
+        },
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "bindingNature": "binding_requirement",
+          "provisionReference": null,
+          "sourceQuotationHead": "Before making an agreement, the firm must... (b) give, or make available, to the customer the information set out in CONC 4.2A.5R(2) (referred to in this section as the 'additional product information",
+          "regulatoryGuard": null
+        },
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "bindingNature": "binding_requirement",
+          "provisionReference": null,
+          "sourceQuotationHead": "A firm must not unfairly encourage, incentivise or induce a customer to enter into a regulated credit agreement quickly without allowing the customer time to consider... (2) in relation to a regulated",
+          "regulatoryGuard": null
+        },
+        {
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+          "bindingNature": "binding_requirement",
+          "provisionReference": null,
+          "sourceQuotationHead": "A In relation to a regulated credit agreement other than a regulated deferred payment credit agreement, a firm must explain the key features of a regulated credit agreement to enable the customer to m",
+          "regulatoryGuard": null
+        },
+        {
+          "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+          "bindingNature": "consultation_proposal",
+          "provisionReference": null,
+          "sourceQuotationHead": "Before making an agreement, the firm must: (a) give to the customer the information set out in CONC 4.2A.5R(1) (referred to in this section as the 'key product information')... The key product informa",
+          "regulatoryGuard": null
+        },
+        {
+          "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+          "bindingNature": "consultation_proposal",
+          "provisionReference": null,
+          "sourceQuotationHead": "Before making an agreement, the firm must: ... (b) give, or make available, to the customer the information set out in CONC 4.2A.5R(2) (referred to in this section as the 'additional product informati",
+          "regulatoryGuard": null
+        }
+      ],
+      "identification": true,
+      "bindingExtracted": true,
+      "likelyMissReason": null
+    },
+    {
+      "core": "4.2A.6R",
+      "pages": [
+        90
+      ],
+      "authoritativeExcerptHead": "4.2A.6 R (1) Immediately after an agreement has been made, the firm must give, or make available, to the customer in a durable medium: (a) a copy of the agreement; and (b) the key product information and the additional product information described in",
+      "hasDutyLanguageInScopedExcerpt": true,
+      "crossPageNote": null,
+      "legalEvidenceSupportsOperativeBinding": true,
+      "heuristicOperativeCandidate": true,
+      "aiHits": [],
+      "identification": false,
+      "bindingExtracted": false,
+      "likelyMissReason": "not_in_ai_output_for_supplied_pages"
+    },
+    {
+      "core": "4.2A.7R",
+      "pages": [
+        90
+      ],
+      "authoritativeExcerptHead": "4.2A.7 R (1) This rule applies if: (a) a firm is to enter into an agreement; and (b) an individual other than the borrower (in this rule referred to as ‘the guarantor’) is to provide a guarantee or an indemnity (or both) in relation to the agreement. (2) The firm must, before making the agreement, provide the guarantor with the information in (3) in order to place the guarantor in a position to make an informed decision as to whether to act as the guarantor in relation to the agreement. (3) The ",
+      "hasDutyLanguageInScopedExcerpt": true,
+      "crossPageNote": null,
+      "legalEvidenceSupportsOperativeBinding": true,
+      "heuristicOperativeCandidate": true,
+      "aiHits": [],
+      "identification": false,
+      "bindingExtracted": false,
+      "likelyMissReason": "not_in_ai_output_for_supplied_pages"
+    },
+    {
+      "core": "7.20.3R",
+      "pages": [
+        95,
+        96
+      ],
+      "authoritativeExcerptHead": "7.20.3 R (1) Before a firm takes any of the actions specified in (2), it must give the borrower reasonable notice of its intention to do so. (2) The actions mentioned in (1) are: (a) taking steps to enforce a term of a regulated deferred payment credit agreement by: (i) demanding the earlier payment of any sum; FCA 2026/2 FOS 2026/1 Page 35 of 46 (ii) treating any right conferred on the borrower by the agreement as terminated, restricted or deferred; or (iii) enforcing any security; (b) terminat",
+      "hasDutyLanguageInScopedExcerpt": true,
+      "crossPageNote": null,
+      "legalEvidenceSupportsOperativeBinding": true,
+      "heuristicOperativeCandidate": true,
+      "aiHits": [],
+      "identification": false,
+      "bindingExtracted": false,
+      "likelyMissReason": "not_in_ai_output_for_supplied_pages"
+    },
+    {
+      "core": "7.20.1R",
+      "pages": [
+        94,
+        95
+      ],
+      "authoritativeExcerptHead": "7.20.1R or",
+      "hasDutyLanguageInScopedExcerpt": false,
+      "crossPageNote": {
+        "page95Snippet": "FCA 2026/2 FOS 2026/1 Page 34 of 46 (2) As soon as possible after a missed payment has occurred the firm must: (a) notify the borrower: (i) that the missed payment has occurred; and (ii) about any sums which have become payable under the regulated deferred payment credit agreement but remain unpaid (including unpaid charges for non-compliance with the agreement); and (b) provide the borrower with ",
+        "dutyIn7_20_1R2": true
+      },
+      "legalEvidenceSupportsOperativeBinding": true,
+      "heuristicOperativeCandidate": true,
+      "aiHits": [],
+      "identification": false,
+      "bindingExtracted": false,
+      "likelyMissReason": "not_in_ai_output_for_supplied_pages"
+    }
+  ],
+  "whyOnlyOneOfFourPreviously": "Heuristic ground-truth listed 4 cores with hasDutyLanguage on scoped excerpt; 7.20.1R excluded by truncated excerpt; live runs only produced binding-labelled output strongly on 4.2A.3R/4.2A.5R with consultation_proposal/binding mismatch; 4.2A.6R/4.2A.7R/7.20.3R absent from candidates"
+}
