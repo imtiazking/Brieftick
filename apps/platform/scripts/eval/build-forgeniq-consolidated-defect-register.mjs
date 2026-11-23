@@ -191,12 +191,18 @@ add({
   ],
 });
 
+const deployEvidence = readJson(join(EVAL, 'STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json'));
+const classifierOnStaging =
+  deployEvidence?.gitHead?.startsWith('ff83dfe') || deployEvidence?.buildId?.startsWith('ff83dfe');
 add({
   title: 'PS22/9 publication classifier on staging runtime',
   category: 1,
-  status: 'IMPLEMENTED — AWAITING STAGING DEPLOY',
-  rootCause: 'Staging deploy 441a982 predates regulatory-pdf-analysis.mjs PS22/9 fix',
-  resolution: 'Single consolidated staging deploy after commit; no paid extraction',
+  status: classifierOnStaging ? 'FIXED AND TESTED' : 'IMPLEMENTED — AWAITING STAGING DEPLOY',
+  rootCause: 'Staging deploy 441a982 predated regulatory-pdf-analysis.mjs PS22/9 fix',
+  resolution: classifierOnStaging
+    ? `Staging deploy ${deployEvidence.deploymentId || ''} @ ${deployEvidence.gitHead || ''}`
+    : 'Single consolidated staging deploy after commit; no paid extraction',
+  evidence: classifierOnStaging ? 'STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json' : null,
 });
 
 const suite = spawnSync('node', ['scripts/eval/run-consolidated-remediation-gates.mjs'], {

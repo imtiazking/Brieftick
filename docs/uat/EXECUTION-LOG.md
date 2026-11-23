@@ -450,3 +450,17 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | 11:00 | Use C's screenshot as register evidence; keep B's as defect evidence | B's view showed a stale IN REVIEW status even after a reload (cached detail never revalidated) | Logged as RI-UI-008 |
 | 11:05 | Close RI-CLS-006; keep RI-CLS-005 open | 006's outcome (instrument-first selection, coverage reported) was reproduced on staging; 005's refusal path was not exercised in the browser on staging | Backlog updated |
 | — | No further paid AI calls | Only one extraction was authorised; the E test and a second binding run need new approval | Stopped at a mandatory approval checkpoint |
+
+## 2026-11-23 — Final regulatory verification and UAT closure
+
+| Time (UTC) | Activity | Outcome |
+|---|---|---|
+| 23:35–23:40 | PS22/9 source verification | SHA256 match; identity **PS22/9** (not CP22/9); `PS22-9-SOURCE-PUBLICATION-VERIFICATION-2026-11-23.json` |
+| 23:39–23:40 | Consolidated remediation gates | **23/23 PASS** incl. `acceptance-ri-regulatory-pdf-analysis-ps22` |
+| 23:43–23:48 | RI master acceptance | **PASS** 254.2s |
+| 23:44 | Staging P2 regression | **19/19 PASS** — `STAGING-P2-REGRESSION-2026-11-23.json` |
+| 23:35 | 97-provision revalidation | **97** preserved; **legallyVerified: 0** |
+| 23:55 | Staging deploy (tranche) | **`ff83dfe`** → **`dpl_6YDkQJaukiGguT5kcSkYSMzQfnmB`** @ staging-app.forgeniq.com |
+| — | Paid PS22 continuation | **Not executed** ($1.488 / $2.35 ceiling) |
+| — | SEC-DB-003 hosted | **BLOCKED** (no `STAGING_DATABASE_URL`) |
+| — | Deliverable | `docs/uat/FORGENIQ-FINAL-REGULATORY-VERIFICATION-2026-11-23.md` |

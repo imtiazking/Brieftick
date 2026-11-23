@@ -173,5 +173,9 @@ Reasons: PS22 legal re-assessment incomplete; historical consultation guards on 
 
 ## Commits and deployment
 
-- Prior accepted RC: **`441a982`** (staging validated for remediation tranche).
-- This closure tranche: PS22/9 identity + classifier fix + evidence — commit and **one** consolidated staging deploy per policy (post-local gates + build PASS).
+| Artifact | Value |
+|----------|--------|
+| Prior accepted RC | **`441a982`** |
+| Closure commit | **`ff83dfe`** |
+| Staging deployment | **`dpl_6YDkQJaukiGguT5kcSkYSMzQfnmB`** @ **`ff83dfe`** |
+| Alias | https://staging-app.forgeniq.com |
