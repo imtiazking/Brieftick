@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-11-23T14:35:00Z",
+  "scope": "PS26/1 live batches 0–1 vs gold binding provisions",
+  "goldBindingCores": ["4.2A.3R", "4.2A.6R", "7.20.1R"],
+  "metricsFromBenchmark": {
+    "bindingRequirementRecall": 0.3333333333333333,
+    "bindingRequirementPrecision": 0.0851063829787234,
+    "missedObligations": 2,
+    "incorrectClassifications": 43,
+    "provisionProcessingCoverageRatio": 1
+  },
+  "diagnosis": {
+    "missedBindingRules": [
+      {
+        "core": "4.2A.3R",
+        "hypothesis": "Not emitted as binding candidate in consolidated extraction output (recall denominator)."
+      },
+      {
+        "core": "4.2A.6R",
+        "hypothesis": "Same — absent or non-binding classification in emitted claims."
+      }
+    ],
+    "recalledBindingRule": "7.20.1R",
+    "falsePositiveDrivers": [
+      "Guidance (G) and evidential (E) provisions classified or phrased as binding",
+      "Exception-triaged markup blocks not excluded from obligation claims",
+      "Cross-batch dedupe not applied in precision denominator (raw candidate count)"
+    ],
+    "benchmarkLimitations": [
+      "Only three gold binding rules — recall unstable at n=3",
+      "Harness measures PS26 pilot runs, not PS22 replacement",
+      "provisionProcessingCoverageRatio is orchestration supply — not extraction accuracy"
+    ],
+    "classificationErrors": "43 incorrectClassifications — predominantly non-R cores surfaced as obligation-shaped claims"
+  },
+  "productionReady": false,
+  "nextDeterministicSteps": [
+    "Expand gold set with independently verified FCA handbook citations",
+    "Per-provision confusion matrix (binding / guidance / evidential / exception)",
+    "Separate metrics for quotation-supported vs unsupported claims"
+  ]
+}

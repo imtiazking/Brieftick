@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-11-23T14:35:00Z",
+  "pilotCapUsd": 2,
+  "spentUsdApprox": 0.52,
+  "remainingUsdApprox": 1.48,
+  "publication": "PS22/9",
+  "instrumentProvisionCount": 242,
+  "plannedBatchesAfterRetunedPreflight": 15,
+  "maxSectionsPerBatchPilot": 4,
+  "provisionsPerBatchCapEstimate": 52,
+  "perBatchSpendCapUsd": 0.25,
+  "fullPublicationCostEstimateUsd": {
+    "optimistic": 1.2,
+    "expected": 1.65,
+    "pessimistic": 2.1
+  },
+  "fitsWithinRemainingBudgetWithoutNewAuth": false,
+  "consolidatedPaidApprovalRecommendedWhen": [
+    "acceptance-ri-uc-ri-005-preflight-regression passes locally",
+    "hosted staging build includes retuned preflight (02116db+)",
+    "one dry-run batch plan on staging shows batch0 ≤ cap with 4 sections",
+    "RI master ×3 complete"
+  ],
+  "notes": [
+    "Replacement run 3872aebf failed with invalid JSON at 7380 output tokens — treated as truncation/pre-flight gap, not a retry trigger.",
+    "No additional paid AI authorised in this tranche."
+  ]
+}

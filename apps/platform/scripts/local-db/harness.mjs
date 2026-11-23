@@ -5,16 +5,134 @@
  */
 import EmbeddedPostgres from 'embedded-postgres';
 import pg from 'pg';
-import { readFileSync, readdirSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, rmSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomBytes } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 export const platformRoot = join(__dir, '..', '..');
 const migrationsDir = join(platformRoot, 'supabase', 'migrations');
+const OWNER_FILE = '.forgeniq-embedded-owner.json';
+const MASTER_SUITE_LOCK = 'master-triple.lock.json';
+
+export function localPgVerifyBase() {
+  return join(platformRoot, '.local-pg-verify');
+}
+
+/** Legacy port-only dirs (pre-session isolation). */
 function localDbDirForPort(port) {
-  return join(platformRoot, '.local-pg-verify', `p${port}`);
+  return join(localPgVerifyBase(), `p${port}`);
+}
+
+/** Session-isolated data directory (unique per embedded instance). */
+function localDbDirForSession(sessionId, port) {
+  return join(localPgVerifyBase(), `s${sessionId}-p${port}`);
+}
+
+export function isEmbeddedOwnerProcessAlive(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+  if (pid === process.pid) return true;
+  if (process.platform === 'win32') {
+    const r = spawnSync('tasklist', ['/FI', `PID eq ${pid}`, '/NH'], { encoding: 'utf8' });
+    return (r.stdout || '').includes(String(pid));
+  }
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function readEmbeddedOwner(dataDir) {
+  const path = join(dataDir, OWNER_FILE);
+  if (!existsSync(path)) return null;
+  try {
+    return JSON.parse(readFileSync(path, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function writeEmbeddedOwner(dataDir, meta) {
+  mkdirSync(dataDir, { recursive: true });
+  writeFileSync(
+    join(dataDir, OWNER_FILE),
+    JSON.stringify({
+      ...meta,
+      pid: process.pid,
+      startedAt: new Date().toISOString(),
+    }),
+    'utf8',
+  );
+}
+
+function canRemoveEmbeddedDataDir(dataDir) {
+  if (!existsSync(dataDir)) return false;
+  const owner = readEmbeddedOwner(dataDir);
+  if (!owner?.pid) return true;
+  if (owner.pid === process.pid) return true;
+  return !isEmbeddedOwnerProcessAlive(owner.pid);
+}
+
+/**
+ * Remove only data dirs whose owner process is not alive (never touch another live test's DB).
+ */
+export function cleanupOrphanEmbeddedPgDirs() {
+  const base = localPgVerifyBase();
+  if (!existsSync(base)) return { removed: 0, skippedLive: 0 };
+  let removed = 0;
+  let skippedLive = 0;
+  for (const ent of readdirSync(base, { withFileTypes: true })) {
+    if (!ent.isDirectory()) continue;
+    const dir = join(base, ent.name);
+    if (!canRemoveEmbeddedDataDir(dir)) {
+      skippedLive += 1;
+      continue;
+    }
+    try {
+      rmSync(dir, { recursive: true, force: true });
+      removed += 1;
+    } catch {
+      skippedLive += 1;
+    }
+  }
+  return { removed, skippedLive };
+}
+
+export function acquireMasterTripleLock() {
+  const base = localPgVerifyBase();
+  mkdirSync(base, { recursive: true });
+  const lockPath = join(base, MASTER_SUITE_LOCK);
+  if (existsSync(lockPath)) {
+    try {
+      const lock = JSON.parse(readFileSync(lockPath, 'utf8'));
+      if (lock?.pid && isEmbeddedOwnerProcessAlive(lock.pid)) {
+        return { ok: false, code: 'master_suite_locked', existingPid: lock.pid, startedAt: lock.startedAt };
+      }
+    } catch {
+      /* stale */
+    }
+  }
+  writeFileSync(
+    lockPath,
+    JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString(), kind: 'ri-master-triple' }),
+    'utf8',
+  );
+  return { ok: true, lockPath };
+}
+
+export function releaseMasterTripleLock() {
+  const lockPath = join(localPgVerifyBase(), MASTER_SUITE_LOCK);
+  if (!existsSync(lockPath)) return;
+  try {
+    const lock = JSON.parse(readFileSync(lockPath, 'utf8'));
+    if (lock?.pid === process.pid) rmSync(lockPath, { force: true });
+  } catch {
+    /* */
+  }
 }
 
 export const ORG_A = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
@@ -44,16 +162,33 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
       preferredPort != null && attempt === 0
         ? preferredPort
         : 54000 + Math.floor(Math.random() * 9000);
-    const localDbDir = localDbDirForPort(port);
+    const legacyDir = localDbDirForPort(port);
+    if (existsSync(legacyDir) && !canRemoveEmbeddedDataDir(legacyDir)) {
+      lastError = new Error(`embedded_port_owned_by_live_process_${port}`);
+      continue;
+    }
+    const sessionId = randomBytes(8).toString('hex');
+    const localDbDir =
+      existsSync(legacyDir) && canRemoveEmbeddedDataDir(legacyDir)
+        ? legacyDir
+        : localDbDirForSession(sessionId, port);
     if (existsSync(localDbDir)) {
+      if (!canRemoveEmbeddedDataDir(localDbDir)) {
+        lastError = new Error(`embedded_data_dir_in_use`);
+        continue;
+      }
       try {
         rmSync(localDbDir, { recursive: true, force: true });
       } catch {
-        /* EBUSY — try another port */
         continue;
       }
     }
     const password = randomBytes(12).toString('hex');
+    writeEmbeddedOwner(localDbDir, {
+      port,
+      sessionId,
+      label: process.env.FORGENIQ_RI_MASTER_STEP || process.env.FORGENIQ_EMBEDDED_PG_LABEL || 'embedded-pg',
+    });
     const embedded = new EmbeddedPostgres({
       databaseDir: localDbDir,
       port,
@@ -67,6 +202,8 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
       await embedded.initialise();
       await embedded.start();
       embedded.forgeniqPort = port;
+      embedded.forgeniqDataDir = localDbDir;
+      embedded.forgeniqSessionId = sessionId;
       const adminUrl = `postgresql://postgres:${encodeURIComponent(password)}@127.0.0.1:${port}/postgres`;
       return { embedded, adminUrl, port, password };
     } catch (e) {
@@ -95,10 +232,9 @@ export async function stopEmbedded(embedded, { port } = {}) {
     }
     await new Promise((r) => setTimeout(r, 200));
   }
-  const resolvedPort = port ?? embedded?.forgeniqPort;
-  const localDbDir =
-    resolvedPort != null ? localDbDirForPort(resolvedPort) : join(platformRoot, '.local-pg-verify');
-  if (!existsSync(localDbDir)) return;
+  const localDbDir = embedded?.forgeniqDataDir ?? (port != null ? localDbDirForPort(port) : null);
+  if (!localDbDir || !existsSync(localDbDir)) return;
+  if (!canRemoveEmbeddedDataDir(localDbDir)) return;
   for (let attempt = 0; attempt < 8; attempt += 1) {
     try {
       rmSync(localDbDir, { recursive: true, force: true });

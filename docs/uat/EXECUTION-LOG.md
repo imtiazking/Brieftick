@@ -2,6 +2,15 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — Embedded PG isolation + preflight regression (14:36 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 14:36 | Embedded PG harness | Cross-process delete races | Session dirs + owner file; orphan-only cleanup; master-triple lock |
+| 14:36 | PS22 preflight regression | 7380-token invalid JSON | `acceptance-ri-uc-ri-005-preflight-regression.mjs` **PASS** (69-prov batch now fail-closed) |
+| — | RI master ×3 | Run in flight `442341` | Allow to complete before next triple with lock |
+| — | Paid PS22 | Policy | No additional paid runs; forecast `PS22-FULL-PUBLICATION-COST-FORECAST-2026-11-23.json` |
+
 ## 2026-11-23 — PS22 reconcile + preflight retune (14:25 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |

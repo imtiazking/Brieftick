@@ -4,14 +4,28 @@ import { spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
+import { killProcessTree, masterTimeouts } from './acceptance-ri-master-runner.mjs';
 import {
-  cleanupLocalPgVerifyDirs,
-  killProcessTree,
-  masterTimeouts,
-} from './acceptance-ri-master-runner.mjs';
+  acquireMasterTripleLock,
+  releaseMasterTripleLock,
+} from './local-db/harness.mjs';
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SUITE_TIMEOUT_MS = Number(process.env.RI_MASTER_SUITE_TIMEOUT_MS || masterTimeouts.DEFAULT_SUITE_TIMEOUT_MS);
+
+const lock = acquireMasterTripleLock();
+if (!lock.ok) {
+  console.error(
+    JSON.stringify({
+      ok: false,
+      code: lock.code,
+      existingPid: lock.existingPid,
+      message: 'Another RI master suite is already running; refusing concurrent triple.',
+    }),
+  );
+  process.exit(2);
+}
+process.on('exit', () => releaseMasterTripleLock());
 
 function runMasterOnce(runIndex) {
   return new Promise((resolve) => {
@@ -33,7 +47,6 @@ function runMasterOnce(runIndex) {
     const onSuiteTimeout = () => {
       console.error(`\n[diag] SUITE TIMEOUT run ${runIndex}/3 after ${SUITE_TIMEOUT_MS}ms (pid=${child.pid})\n`);
       killProcessTree(child.pid);
-      cleanupLocalPgVerifyDirs();
       finish({ ok: false, code: 'suite_timeout', elapsedMs: performance.now() - started });
     };
     const timer = setTimeout(onSuiteTimeout, SUITE_TIMEOUT_MS);

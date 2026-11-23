@@ -4,9 +4,9 @@
  */
 import { spawn, spawnSync } from 'node:child_process';
 import { performance } from 'node:perf_hooks';
-import { existsSync, readdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { cleanupOrphanEmbeddedPgDirs } from './local-db/harness.mjs';
 
 const DEFAULT_STEP_TIMEOUT_MS = Number(process.env.RI_MASTER_STEP_TIMEOUT_MS || 20 * 60 * 1000);
 const DEFAULT_SUITE_TIMEOUT_MS = Number(process.env.RI_MASTER_SUITE_TIMEOUT_MS || 75 * 60 * 1000);
@@ -43,22 +43,9 @@ function killTree(child) {
   killProcessTree(child?.pid);
 }
 
-/** Best-effort embedded Postgres dir cleanup after a forced step kill. */
+/** Remove only orphan embedded PG dirs (never a live owner from another process). */
 export function cleanupLocalPgVerifyDirs() {
-  const base = join(platformRoot, '.local-pg-verify');
-  if (!existsSync(base)) return;
-  try {
-    for (const ent of readdirSync(base, { withFileTypes: true })) {
-      if (!ent.isDirectory()) continue;
-      try {
-        rmSync(join(base, ent.name), { recursive: true, force: true });
-      } catch {
-        /* EBUSY */
-      }
-    }
-  } catch {
-    /* */
-  }
+  cleanupOrphanEmbeddedPgDirs();
 }
 
 /**
