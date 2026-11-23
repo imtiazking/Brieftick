@@ -1,0 +1,46 @@
+{
+  "sessionId": "442345",
+  "parentPid": 43500,
+  "finishedAt": "2026-11-23T15:06:38.372Z",
+  "completeSuccessRuns": 1,
+  "requiredSuccessRuns": 3,
+  "gatePass": false,
+  "runs": [
+    {
+      "sessionId": "442345",
+      "runIndex": 1,
+      "parentPid": 43500,
+      "childPid": 10732,
+      "startedAt": "2026-11-23T15:02:00.695Z",
+      "finishedAt": "2026-11-23T15:04:59.591Z",
+      "elapsedMs": 178895.1981,
+      "ok": true,
+      "code": 0,
+      "signal": null,
+      "terminationInitiator": "child",
+      "pgCleanup": {
+        "removed": 1,
+        "skippedLive": 0,
+        "registryRemoved": 0
+      }
+    },
+    {
+      "sessionId": "442345",
+      "runIndex": 2,
+      "parentPid": 43500,
+      "childPid": 49744,
+      "startedAt": "2026-11-23T15:04:59.891Z",
+      "finishedAt": "2026-11-23T15:06:38.371Z",
+      "elapsedMs": 98479.34029999998,
+      "ok": false,
+      "code": 1,
+      "signal": null,
+      "terminationInitiator": "child",
+      "pgCleanup": {
+        "removed": 0,
+        "skippedLive": 0,
+        "registryRemoved": 0
+      }
+    }
+  ]
+}

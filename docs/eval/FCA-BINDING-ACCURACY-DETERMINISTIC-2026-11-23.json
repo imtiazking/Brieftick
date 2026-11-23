@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-11-23T17:29:14.129Z",
+  "methodology": "Recall on 28 parser-verified R provisions with PDF page location (independent instrument text). Separate human-verified subset (n=3). Precision uses gold-touching claims only.",
+  "counts": {
+    "truePositives": 1,
+    "falseNegatives": 27,
+    "goldBindingInstrumentVerified": 28,
+    "goldBindingHumanVerified": 3,
+    "falsePositivesUnverifiedBindingClaims": 43,
+    "benchmarkInventoryEntries": 47,
+    "parserBindingRCount": 28
+  },
+  "metrics": {
+    "bindingRequirementRecallInstrumentR28": 0.03571428571428571,
+    "bindingRequirementRecallHumanVerifiedN3": 0.3333333333333333,
+    "bindingRequirementPrecisionOnGoldTouchingClaims": 0.25,
+    "legacyHarnessPrecision": 0.0851063829787234,
+    "legacyHarnessRecall": 0.3333333333333333
+  },
+  "interpretation": [
+    "Legacy 8.5% precision used all binding-shaped claims vs 3 gold rules — statistically misleading.",
+    "Expand independentBindingVerified set before production thresholds apply."
+  ],
+  "productionReady": false
+}

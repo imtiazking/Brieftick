@@ -28,7 +28,7 @@ const fail = (m) => {
   console.error(`FAIL: ${m}`);
 };
 
-const { embedded, adminUrl } = await resetAndStartEmbedded({ port: 54330 });
+const { embedded, adminUrl } = await resetAndStartEmbedded();
 const admin = new pg.Client({ connectionString: adminUrl });
 await admin.connect();
 setSnapshotStorage(createMemorySnapshotStorage(), { override: true });

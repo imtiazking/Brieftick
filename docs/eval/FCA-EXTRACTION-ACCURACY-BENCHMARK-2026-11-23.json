@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T12:18:27.526Z",
+  "generatedAt": "2026-11-23T17:23:23.703Z",
   "scope": "FCA PS26/1 live pilot batches 0–1 vs FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE binding provisions",
   "benchmarkSource": "FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json",
   "provisionAudit": "PS26-1-UNRESOLVED-PROVISION-AUDIT-2026-11-23.json",
@@ -8,8 +8,27 @@
     "4.2A.6R",
     "7.20.1R"
   ],
+  "goldBindingProvisionCount": 3,
+  "perProvision": [
+    {
+      "core": "4.2A.3R",
+      "recalled": true,
+      "bindingClaimHits": 4
+    },
+    {
+      "core": "4.2A.6R",
+      "recalled": false,
+      "bindingClaimHits": 0
+    },
+    {
+      "core": "7.20.1R",
+      "recalled": false,
+      "bindingClaimHits": 0
+    }
+  ],
   "emittedCandidateCount": 62,
-  "emittedBindingCandidateCount": 4,
+  "emittedBindingCandidateCount": 47,
+  "emittedBindingCandidateCountOnGold": 4,
   "metrics": {
     "bindingRequirementPrecision": 0.0851063829787234,
     "bindingRequirementRecall": 0.3333333333333333,
@@ -31,7 +50,7 @@
     "TP 13.5G"
   ],
   "notes": [
-    "Precision/recall are claim-level against three human-verified instrument binding rules (4.2A.3R, 4.2A.6R, 7.20.1R).",
+    "Precision/recall are claim-level against 3 human-verified instrument binding rules from FCA physical source evidence.",
     "provisionProcessingCoverageRatio is orchestration supply only — not extraction recall.",
     "Quotation-level unsupportedQuotations requires SME review — not automated in this harness."
   ],

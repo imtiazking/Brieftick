@@ -5,9 +5,10 @@
   "remainingUsdApprox": 1.48,
   "publication": "PS22/9",
   "instrumentProvisionCount": 242,
-  "plannedBatchesAfterRetunedPreflight": 15,
+  "plannedBatchesAfterProvisionFirstPlan": 17,
   "maxSectionsPerBatchPilot": 4,
-  "provisionsPerBatchCapEstimate": 52,
+  "provisionsPerBatchCapEstimate": 58,
+  "batch0ProvisionsEstimate": 14,
   "perBatchSpendCapUsd": 0.25,
   "fullPublicationCostEstimateUsd": {
     "optimistic": 1.2,

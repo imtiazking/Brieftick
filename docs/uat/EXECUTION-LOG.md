@@ -280,6 +280,21 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | 10:46 | SEC-DB staging API harness | User mandate: API-first RLS role-play | `acceptance-ri-security-db-staging-api.mjs` **6/6** (003 skip — no public DELETE); evidence `SEC-DB-STAGING-API-VALIDATION-2026-11-23.json` |
 | 10:46 | Accuracy reconcile | Distinguish processing coverage vs extraction accuracy | `LIVE-EXTRACTION-ACCURACY-METRICS-2026-11-23.json`; spend ~$0.38 / $2 |
 | — | RI master ×3 | Run 1/3 in flight since 08:56 | Log stalled at **FCA RSS Phase 8B** — follow-up: diagnose hang / restart |
+| 14:44–15:00 | RI master triple **442343** | User mandate: allow to finish; count only full successes | **0/3** toward gate — master child vanished (~phase8b-fca); no `exit` event; diag `RI-MASTER-TRIPLE-442343-DIAG.json` |
+| 15:02 | Runner remediation | Root cause: Windows child exit loss + fixed PG **54330** on 8B ingestion / 7C.7 | `acceptance-ri-master-proc-liveness.mjs`; journal `RI-MASTER-TRIPLE-JOURNAL.jsonl`; ephemeral PG on 8B |
+| 15:02 | Accepted standalone pass | User accepted 442342 run 1 (169s) | Does **not** satisfy ×3 gate |
+| 15:05 | RI master triple **442345** | Remediated gate retry | Run **1/3 PASS** (178.9s); run 2 false `child_vanished` on Phase 6 after PASS — grace fix; diag `RI-MASTER-TRIPLE-442345-DIAG.json` |
+| 15:10 | RI master triple **442346** | Liveness grace (4s Windows) | **3/3 PASS** (146s / 160s / 171s); evidence `RI-MASTER-TRIPLE-442346-SUMMARY.json`; gate **CLOSED** |
+| 15:19 | Staging deploy | Post ×3 gate | `dpl_Dx8d3LQjDNNgmBkjHgHTiuHFzKbb` @ `c246cfa` → `staging-app.forgeniq.com` |
+| 17:18 | PS22 forensic | Staging read-only | `PS22-9-FAILED-RUNS-FORENSIC-2026-11-23.json` — both runs `stopReason: max_tokens`, spend **$0.291** |
+| 17:18 | Provision-first batch plan | `extraction-batch-plan.mjs` + fail-closed grounding | `acceptance-ri-extraction-batch-plan-ps22.mjs` **PASS** (17×4-section batches) |
+| 17:22 | PS22 paid request | No paid AI | `PS22-9-PAID-EXECUTION-REQUEST-2026-11-23.json` awaiting authorisation |
+| 17:22 | FCA benchmark | PS26 inventory 47 (28R/19G) | `FCA-REGULATORY-BENCHMARK-2026-11-23.json`; deterministic `FCA-BINDING-ACCURACY-DETERMINISTIC-2026-11-23.json` |
+| 17:22 | Staging deploy | Batch-plan + preflight | `dpl_G6K89SA1udm8BWu71jaVdQysSAyP` |
+| — | SEC-DB-003 hosted | `STAGING_DATABASE_URL` still absent | Updated `SEC-DB-003-STAGING-ACCESS-2026-11-23.json` (Supabase ref `lhgzdicffkhaaykzthep`) |
+| 17:28 | PS22 gate + spend | 242/242 × 17 batches | `acceptance-ri-extraction-batch-plan-ps22-gate.mjs` **PASS**; `PILOT-SPEND-RECONCILE` **$0.519483**; ceiling **$2.35** |
+| 17:28 | FCA independent verify | 28R/19G instrument text | `FCA-PS26-INDEPENDENT-PROVISION-VERIFICATION-2026-11-23.json` |
+| 17:30 | Git | Consolidated commit | **`f5e335a`** — batching, master runner, benchmarks, SEC-DB harness, evidence |
 
 ## 2026-11-22 — Cursor autonomous environment + UAT resume
 

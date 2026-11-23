@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-11-23T15:08:00Z",
+  "sessionId": "442345",
+  "outcome": "gate_fail",
+  "completeSuccessRuns": 1,
+  "runs": [
+    { "runIndex": 1, "ok": true, "elapsedMs": 178895, "terminationInitiator": "child" },
+    {
+      "runIndex": 2,
+      "ok": false,
+      "code": 1,
+      "failedStep": "RI ingestion (Phase 6)",
+      "failureCode": "child_vanished",
+      "note": "Phase 6 printed PASS then npm shell child lost PID before exit event — liveness false positive (fixed via 4s grace)"
+    }
+  ],
+  "remediation": "acceptance-ri-master-proc-liveness.mjs grace window + isSettled guard"
+}

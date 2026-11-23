@@ -383,12 +383,27 @@ export async function buildPdfGroundedAnalysisContext(params) {
     const rawNewCount = Array.isArray(activeBatch.instrumentProvisionsNewlySupplied)
       ? activeBatch.instrumentProvisionsNewlySupplied.length
       : described.selection?.instrumentProvisionsSupplied?.length || 0;
-    const newCount = Math.min(rawNewCount, provisionCap);
+    const maxOut = Number(process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS?.trim() || 8192);
+    if (rawNewCount > provisionCap) {
+      return {
+        ok: false,
+        code: 'extraction_batch_oversized',
+        outputPreflight: {
+          ok: false,
+          code: 'extraction_batch_oversized',
+          provisionCount: rawNewCount,
+          provisionCap,
+          maxOutputTokens: maxOut,
+        },
+        grounding: {
+          extractionBatch: { batchIndex: activeBatch.batchIndex, provisionCount: rawNewCount },
+        },
+      };
+    }
     const est = estimateStructuredOutputTokens({
-      provisionCount: newCount,
+      provisionCount: rawNewCount,
       sectionCount: sectionCountForPreflight,
     });
-    const maxOut = Number(process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS?.trim() || 8192);
     const pre = assertExtractionOutputBudget({ estimateTokens: est, maxOutputTokens: maxOut });
     if (!pre.ok) {
       return {
@@ -396,7 +411,7 @@ export async function buildPdfGroundedAnalysisContext(params) {
         code: pre.code,
         outputPreflight: pre,
         grounding: {
-          extractionBatch: { batchIndex: activeBatch.batchIndex, provisionCount: newCount },
+          extractionBatch: { batchIndex: activeBatch.batchIndex, provisionCount: rawNewCount },
         },
       };
     }

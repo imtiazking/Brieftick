@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-11-23T17:28:00Z",
+  "status": "awaiting_explicit_spending_authorisation",
+  "publication": "PS22/9",
+  "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+  "instrumentProvisionCount": 242,
+  "absolutePilotCeilingUsd": 2.35,
+  "pilotSpendReconciledUsd": 0.519483,
+  "remainingBeforeCeilingUsd": 1.830517,
+  "spendReconcileArtifact": "PILOT-SPEND-RECONCILE-2026-11-23.json",
+  "failedRunsPreserved": [
+    "147574c3-229a-42e3-9adb-fd480b905d3b",
+    "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e"
+  ],
+  "deterministicGatesPassed": [
+    "acceptance-ri-extraction-batch-plan-ps22-gate.mjs (242/242, 17 batches, no duplicates, margin)",
+    "acceptance-ri-extraction-batch-plan-ps22.mjs",
+    "acceptance-ri-uc-ri-005-preflight-regression.mjs",
+    "RI master triple 3/3 (442346)"
+  ],
+  "revisedBatchPlan": {
+    "maxSectionsPerBatch": 4,
+    "plannedBatches": 17,
+    "batch0NewlySuppliedProvisions": 14,
+    "everyBatchOutputPreflightOk": true,
+    "fullPublicationCoverageCompleteInPlan": true
+  },
+  "executionPolicy": {
+    "firstLiveBatchOnlyUntilValidated": true,
+    "stopOnSchemaFailure": true,
+    "stopOnBillingAmbiguity": true,
+    "stopOnProjectedCeilingBreach": true,
+    "noAutomaticRetryOnPaidFailure": true,
+    "idempotencySuffixPerAuthorisedBatch": true
+  },
+  "costForecastUsd": {
+    "perBatchCap": 0.25,
+    "batches": 17,
+    "expectedTotalWithinCeiling": true,
+    "expectedIncrementalApprox": 1.65
+  },
+  "requestedAuthorisation": {
+    "absoluteCumulativeCeilingUsd": 2.35,
+    "maxBatchesAfterGateBatch0": 16,
+    "suffixPattern": "live-ps22-replace-batch{n}-2026-11-23"
+  }
+}

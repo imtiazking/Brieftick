@@ -9,7 +9,11 @@ import {
   selectEvidenceBlocksForAnalysis,
   scoreInstrumentBlockForObligationExtraction,
 } from './build-pdf-grounded-analysis-context.mjs';
-import { maxProvisionsWithinOutputPreflight } from './extraction-output-preflight.mjs';
+import {
+  assertExtractionOutputBudget,
+  estimateStructuredOutputTokens,
+  maxProvisionsWithinOutputPreflight,
+} from './extraction-output-preflight.mjs';
 
 export const EXTRACTION_BATCH_PLAN_VERSION = 'instrument_coverage_v2';
 /** Soft default when callers omit maxBatches (not a hard publication ceiling). */
@@ -103,36 +107,51 @@ export function buildPublicationExtractionBatchPlan(allBlocks, options) {
   const supplied = new Set(options.startSuppliedCores || []);
   const batches = [];
 
+  const maxStructuredOutputTokens = Number(options.maxStructuredOutputTokens) || 8192;
+
   for (let batchIndex = 0; batchIndex < maxBatches; batchIndex += 1) {
     const outstanding = allCores.filter((c) => !supplied.has(c));
     if (!outstanding.length && batchIndex > 0) break;
 
-    const selected =
+    const provisionCap = maxProvisionsWithinOutputPreflight({
+      sectionCount: maxSections,
+      maxOutputTokens: maxStructuredOutputTokens,
+    });
+    let targetCores = outstanding.slice(0, Math.max(1, provisionCap));
+    if (
       batchIndex === 0 &&
       !options.startSuppliedCores?.length &&
       Array.isArray(options.targetProvisionCores) &&
       options.targetProvisionCores.length
-        ? selectBlocksForProvisionCores(allBlocks, instrumentStartPage, options.targetProvisionCores, { maxSections })
-        : batchIndex === 0 && !options.startSuppliedCores?.length
-          ? selectEvidenceBlocksForAnalysis(allBlocks, { instrumentStartPage, maxSections })
-          : selectBlocksForProvisionCores(allBlocks, instrumentStartPage, outstanding.length ? outstanding : allCores, {
-              maxSections,
-            });
+    ) {
+      targetCores = options.targetProvisionCores.filter((c) => !supplied.has(c)).slice(0, provisionCap);
+    }
+
+    const selected = targetCores.length
+      ? selectBlocksForProvisionCores(allBlocks, instrumentStartPage, targetCores, { maxSections })
+      : selectEvidenceBlocksForAnalysis(allBlocks, { instrumentStartPage, maxSections });
 
     const described = describeSelectedSections(allBlocks, selected, instrumentStartPage);
-    const pageProvisions = [
-      ...new Set(
-        (described.sourceSections || [])
-          .flatMap((s) => s.provisionsSetOut || [])
-          .filter((c) => allCores.includes(c) && !supplied.has(c)),
-      ),
-    ];
-    const provisionCap = maxProvisionsWithinOutputPreflight({
-      sectionCount: maxSections,
-      maxOutputTokens: Number(options.maxStructuredOutputTokens) || 8192,
-    });
-    const newlySupplied = pageProvisions.slice(0, Math.max(0, provisionCap));
+    const pagesSetOut = new Set(
+      (described.sourceSections || []).flatMap((s) => s.provisionsSetOut || []).filter((c) => allCores.includes(c)),
+    );
+    const newlySupplied = targetCores.filter((c) => pagesSetOut.has(c) && !supplied.has(c));
     for (const c of newlySupplied) supplied.add(c);
+
+    const sectionCount = Math.min(maxSections, described.selection?.selectedSections ?? maxSections);
+    const est = estimateStructuredOutputTokens({
+      provisionCount: newlySupplied.length,
+      sectionCount,
+    });
+    const outputPreflightEstimate = {
+      estimateTokens: est,
+      ...assertExtractionOutputBudget({
+        estimateTokens: est,
+        maxOutputTokens: maxStructuredOutputTokens,
+      }),
+      provisionCap,
+      targetProvisionCount: targetCores.length,
+    };
 
     const batch = {
       batchIndex,
@@ -142,6 +161,7 @@ export function buildPublicationExtractionBatchPlan(allBlocks, options) {
         selectedCharacters: described.selection.selectedCharacters,
         estimatedTokens: estimateExtractionBatchTokens(described.selection.selectedCharacters),
         maxCharactersPerSection: MAX_CHARS_PER_SECTION,
+        outputPreflight: outputPreflightEstimate,
       },
       instrumentProvisionsOutstanding: allCores.filter((c) => !supplied.has(c)),
       instrumentProvisionsNewlySupplied: newlySupplied,

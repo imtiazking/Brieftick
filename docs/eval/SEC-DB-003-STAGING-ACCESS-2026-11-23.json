@@ -1,24 +1,31 @@
 {
-  "recordedAt": "2026-11-23T14:08:00Z",
-  "requirement": "SEC-DB-003 hosted UPDATE/DELETE negative tests under restricted DB roles",
-  "completed": {
-    "stagingApiHarness": "acceptance-ri-security-db-staging-api.mjs 6/6",
-    "localRoleHarness": "acceptance-ri-security-db-local-db.mjs 5/5 including DELETE"
+  "updatedAt": "2026-11-23T17:23:00Z",
+  "status": "BLOCKED_HOSTED_ROLE_PROOF",
+  "passingLocally": {
+    "acceptance-ri-security-db-local-db.mjs": "5/5 including SEC-DB-003 DELETE guard",
+    "acceptance-ri-security-db-staging-api.mjs": "6/6 API route behaviour"
   },
-  "blocked": {
-    "acceptance-ri-security-db-staging.mjs": "Requires STAGING_DATABASE_URL; present as Vercel production secret on forgeniq-platform-staging but not decryptable via vercel env run locally (sensitive env pull restricted). .env.local has no STAGING_DATABASE_URL."
+  "blockedScript": "acceptance-ri-security-db-staging.mjs",
+  "supabaseStagingProject": {
+    "name": "forgeniq-ri-staging",
+    "ref": "lhgzdicffkhaaykzthep",
+    "region": "eu-west-2"
   },
-  "authorisedAlternativesInvestigated": [
-    "Vercel CLI env ls + v1 env id lookup",
-    "vercel env run --environment production (non-sensitive only)",
-    "loadPlatformEnv .env.local",
-    "Supabase MCP list_projects (forgeniq-ri-staging lhgzdicffkhaaykzthep) — MCP execute_sql uses service role, not application JWT roles"
-  ],
-  "recommendation": "Run acceptance-ri-security-db-staging.mjs via operator CI secret injection or add scoped read-only CI env pull; do not use SQL Editor alone as role proof.",
   "minimumAccessRequired": {
-    "preferred": "STAGING_DATABASE_URL pooler connection for database lhgzdicffkhaaykzthep (direct or transaction mode) scoped to forgeniq_app JWT simulation via harness — same pattern as local acceptance",
-    "alternative": "SUPABASE_ACCESS_TOKEN with Management API only satisfies schema verification scripts; it cannot prove application-role RLS for SEC-DB-003",
-    "mustNotUse": "Supabase SQL Editor as postgres/service role for negative tests",
-    "operatorArtifacts": "Vercel production env on forgeniq-platform-staging already defines STAGING_DATABASE_URL (not decryptable to local CLI); inject into CI or ephemeral vercel env run wrapper without logging value"
-  }
+    "envVar": "STAGING_DATABASE_URL",
+    "connectionType": "PostgreSQL direct or pooler URI",
+    "role": "postgres or equivalent ability to SET ROLE + JWT GUCs via harness (not Supabase SQL Editor superuser)",
+    "proofRequirement": "Run withRlsSession as User B (REVIEWER) and User C (COMPLIANCE_MANAGER) against live staging — same as local harness",
+    "mustNotUse": [
+      "Service role SQL via dashboard as sole evidence",
+      "Committing connection strings",
+      "Elevated grants without approval"
+    ]
+  },
+  "investigatedChannels": [
+    "apps/platform/.env.local — STAGING_DATABASE_URL absent",
+    "Vercel production secret on forgeniq-platform-staging — not decryptable locally without approved env pull",
+    "Supabase MCP — service-role scope; does not satisfy restricted-role proof for SEC-DB-003"
+  ],
+  "recommendation": "Inject STAGING_DATABASE_URL into operator shell or Cursor protected env (scoped to staging), then run acceptance-ri-security-db-staging.mjs — expect 5/5 symmetric to local."
 }

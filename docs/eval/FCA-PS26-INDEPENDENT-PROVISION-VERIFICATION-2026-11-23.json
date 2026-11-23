@@ -1,0 +1,975 @@
+{
+  "generatedAt": "2026-11-23T17:29:00.473Z",
+  "publication": "PS26/1",
+  "instrumentStartPage": 61,
+  "verificationUnit": "provision_core",
+  "counts": {
+    "total": 47,
+    "bindingR": 28,
+    "guidanceG": 19,
+    "bindingWithAuthoritativeCitation": 28,
+    "guidanceNegativeTestsReady": 19
+  },
+  "bindingCoverageVerified": true,
+  "guidanceNegativeCoverageVerified": true,
+  "provisions": [
+    {
+      "core": "11.1.2AG",
+      "fcaPages": [
+        96
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "11.1.2A G As the distance marketing provisions in CONC 2.7 do not apply in relation to a regulated deferred payment credit agreement, there is no right to cancel under",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "11.1.2R",
+      "fcaPages": [
+        96
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "11.1.2 R ...",
+      "independentReviewerDecision": "page_located_minimal_excerpt",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "16.1.1R",
+      "fcaPages": [
+        97
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "16.1.1 R Subject to",
+      "independentReviewerDecision": "page_located_minimal_excerpt",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "16.1.2G",
+      "fcaPages": [
+        97
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "16.1.2 G The purpose of these rules is to provide that certain provisions of the Handbook: (1) that would otherwise apply to persons with a deferred payment credit temporary permission are not to apply to those persons; or (2) are to apply to those persons with the modifications specified in the table in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "16.1.3G",
+      "fcaPages": [
+        97
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "16.1.3 G In addition to the disapplication and modifications set out in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "16.1.4R",
+      "fcaPages": [
+        97
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "16.1.4R(2), this chapter applies to a firm with a deferred payment credit temporary permission.",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "16.1.5R",
+      "fcaPages": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "16.1.5R.",
+      "independentReviewerDecision": "page_located_minimal_excerpt",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "16.1.6R",
+      "fcaPages": [
+        103
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "16.1.6 R In the table in",
+      "independentReviewerDecision": "page_located_minimal_excerpt",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "2.3.1R",
+      "fcaPages": [
+        68
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "2.3.1 R ... (4) ... (5) A Gibraltar-based firm carrying on deferred payment credit activity must comply with the relevant Handbook provisions relating to deferred payment credit activity. ... 4 Statutory status disclosure ... 4.2 Purpose ...",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "2.3.2R",
+      "fcaPages": [
+        86
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "2.3.2 R (1) A In relation to a regulated credit agreement other than a regulated deferred payment credit agreement, a firm must explain the key features of a regulated credit agreement to enable the customer to make an informed choice as required by",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "2.5.1R",
+      "fcaPages": [
+        81,
+        84
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "2.5.1 R The Ombudsman can consider a complaint under the Voluntary Jurisdiction if: ... FCA 2026/2 FOS 2026/1 Page 23 of 46 activities received while the firm operated with a deferred payment credit temporary permission. To clarify: (a) the reporting frequencies, submission deadlines and time limits for publication for the returns and complaints data summaries in DISP 1.10 and DISP 1.10A are to be calculated: (i) for reporting periods before 31 December 2026: by reference to the firm’s next accounting reference date that follows the date on which the deferred payment credit temporary permission ceases to have effect following the granting, giving or variation of a Part 4A permission; or (ii) for reporting periods after 31 December 2026: within 30 business days of the end of the relevant reporting period as set out in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "2.7.19GG",
+      "fcaPages": [
+        104
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "2.7.19GG. 2.7.7FA G An activity is also not credit broking within",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "2.7.19HG",
+      "fcaPages": [
+        104
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "2.7.19HG and PERG 2.7.19HAG): ... ... ...",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "2.7.1R",
+      "fcaPages": [
+        86
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "2.7.1 R (1) Subject to (2) and, (3) and (4), this section applies to a firm that carries on any distance marketing activity from an establishment in the UK, with or for a consumer in the UK. ... (3) ... (4) This section does not apply to any distance marketing activity carried on in relation to a regulated deferred payment credit agreement. ... 4 Pre-contractual requirements",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "2.7.7FG",
+      "fcaPages": [
+        104
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "2.7.7F G An activity is not credit broking within",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "2.8.6CG",
+      "fcaPages": [
+        106
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "2.8.6C G The following activities are excluded from the regulated activity of credit broking: ... (6A) ... Activities carried on in relation to regulated deferred payment credit agreements (6B) Activities carried on in relation to a regulated deferred payment credit agreement are excluded from credit broking. ... ... 8 Financial promotion and related activities ... 8.12 Exemptions applying to all controlled activities ... Introductions (article 15) ...",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2.1R",
+      "fcaPages": [
+        87
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2.1 R This section, unless otherwise stated in or in relation to a rule: ... (4) does not apply to an agreement secured on land; and (4A) does not apply to a regulated deferred payment credit agreement; and ... ... Insert the following new section, CONC 4.2A, after CONC 4.2 (Pre-contract disclosure and adequate explanations). All the text is new and is not underlined. 4.2A Product information requirements: regulated deferred payment credit agreements Application",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2.2G",
+      "fcaPages": [
+        68,
+        70,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2.2 G There are other pre-contract information requirements outside this chapter, including: ... (8) for regulated credit agreements, apart from regulated deferred payment credit agreements, the pre-contract information requirements in the Consumer Credit (Disclosure of Information) Regulations 2010 (SI 2010/1013) and in the Consumer Credit (Disclosure of Information) Regulations 2004 (SI 2004/1481); and (8A) for regulated deferred payment credit agreements, the product information requirements in CONC 4.2A; and ... FCA 2026/2 FOS 2026/1 Page 9 of 46 BNPL agreement and must be recorded as N = No. ... 51A Does the agreement meet the criteria of one of these agreement types as defined in the FCA Handbook? A = High-cost short-term credit B = Home credit loan agreement C = RTO agreement D = BNPL agreement X = None of these FCA Handbook definitions Z = Unknown Enter the relevant code: ... D: BNPL agreement A regulated credit agreement which meets the criteria of a BNPL agreement. If the regulated credit agreement is a regulated deferred payment credit agreement, it does not meet the criteria of a BNPL agreement. ... 52A End date of promotional period for BNPL credit DD/MM/YYYY The end date of the promotional period for the BNPL credit. Credit provided under a FCA 2026/2 FOS 2026/1 Page 14 of 46 previously held a deferred payment credit temporary permission and has provided an attestation in accordance with SUP TP 1.9A 3R that it has an annual total value of £2,000,000 or more outstanding for regulated deferred payment credit agreements or an annual total value of £2,000,000 or more of new advances for regulated deferred payment credit agreements; and (2) references to a firm becoming ‘fully authorised’ are references to a firm that previously held a deferred payment credit temporary permission which has ceased to have effect under article 10(3)(a) or (b) of the Deferred Payment Credit Order (the firm’s application for permission or for a variation of permission to carry on deferred payment credit activity has been granted etc by the FCA). 2",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.10G",
+      "fcaPages": [
+        91
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.10 G (1) Firms are reminded of their obligations under CONC 3.3 (The clear, fair and not misleading rule and general requirements), Principle 12 and PRIN 2A (the Consumer Duty). In the FCA’s view, to comply with the requirements of CONC 3.3, Principle 12 and PRIN 2A and the rules in this section, a firm should, among other things, consider how it communicates with its customers and provides information in a way that supports customer understanding (see in particular PRIN",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.11R",
+      "fcaPages": [
+        92
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.11 R This section also applies to a Gibraltar-based firm with respect to deferred payment credit lending.",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.12G",
+      "fcaPages": [
+        92
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.12 G Gibraltar-based firms are reminded that",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.1R",
+      "fcaPages": [
+        87
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.1 R This section applies to a firm with respect to deferred payment credit lending. Purpose",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.2G",
+      "fcaPages": [
+        87
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.2 G The purpose of the rules in this section is to ensure that customers have appropriate information before entering into a regulated deferred payment credit agreement. References in this section to an ‘agreement’ are to a regulated deferred payment credit agreement. Product information: pre-contract",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.3R",
+      "fcaPages": [
+        87,
+        88
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.3 R (1) Before making an agreement, the firm must: (a) give to the customer the information set out in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.4R",
+      "fcaPages": [
+        88
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.4 R In the case of an agreement that is a distance contract entered into orally, the requirement in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.5R",
+      "fcaPages": [
+        88,
+        89
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.5 R (1) The key product information referred to in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.6R",
+      "fcaPages": [
+        90
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.6 R (1) Immediately after an agreement has been made, the firm must give, or make available, to the customer in a durable medium: (a) a copy of the agreement; and (b) the key product information and the additional product information described in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.7R",
+      "fcaPages": [
+        90
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.7 R (1) This rule applies if: (a) a firm is to enter into an agreement; and (b) an individual other than the borrower (in this rule referred to as ‘the guarantor’) is to provide a guarantee or an indemnity (or both) in relation to the agreement. (2) The firm must, before making the agreement, provide the guarantor with the information in (3) in order to place the guarantor in a position to make an informed decision as to whether to act as the guarantor in relation to the",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.8R",
+      "fcaPages": [
+        91
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.8 R For the purposes of this section, information is made available to a customer only if the customer can reasonably be expected to: (1) know how to access it; and (2) be able to access it.",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.2A.9G",
+      "fcaPages": [
+        91
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.2A.9 G The rules in this section do not specify how information can be made available, as it will depend on the context and channel of communication. However,",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.6.2AR",
+      "fcaPages": [
+        92
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.6.2A R Where the regulated credit agreement is a regulated deferred payment credit agreement, the requirement in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.6.2R",
+      "fcaPages": [
+        92
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.6.2 R ... (2) The matters referred to in (1) are: ... (k) whether default fees and other charges may be added and, if so, the circumstances in which these may be incurred and the amount of such fees and charges or the basis on which they will be calculated. [Note: paragraph 3.9miii of DCG] Adequate explanations in relation to regulated deferred payment credit agreements",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "4.8.2R",
+      "fcaPages": [
+        93
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "4.8.2 R A firm must not unfairly encourage, incentivise or induce a customer to enter into a regulated credit agreement quickly without allowing the customer time to consider: (1) in relation to a regulated credit agreement other than a regulated deferred payment credit agreement, the pre-contract information under section 55 of the CCA and the explanations provided under",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "6.7.42G",
+      "fcaPages": [
+        93
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "6.7.42 G ... Regulated deferred payment credit agreements: information provided to customers during the course of a regulated deferred payment credit agreement",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "6.7.43G",
+      "fcaPages": [
+        93
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "6.7.43 G (1) When dealing with customers during the course of a regulated deferred payment credit agreement, a firm should pay due regard to its obligations under Principle 12 and PRIN 2A (the Consumer Duty). (2) Firms are reminded of their obligations under: (a) the consumer understanding outcome rules in PRIN 2A.5, including in particular",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "7.1.4R",
+      "fcaPages": [
+        94
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "7.1.4 R ... (3) This rule does not apply to",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "7.20.1R",
+      "fcaPages": [
+        94,
+        95
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "7.20.1R or",
+      "independentReviewerDecision": "page_located_minimal_excerpt",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "7.20.2G",
+      "fcaPages": [
+        95
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "7.20.2 G For the purposes of",
+      "independentReviewerDecision": "page_located_minimal_excerpt",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "7.20.3R",
+      "fcaPages": [
+        95,
+        96
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "7.20.3 R (1) Before a firm takes any of the actions specified in (2), it must give the borrower reasonable notice of its intention to do so. (2) The actions mentioned in (1) are: (a) taking steps to enforce a term of a regulated deferred payment credit agreement by: (i) demanding the earlier payment of any sum; FCA 2026/2 FOS 2026/1 Page 35 of 46 (ii) treating any right conferred on the borrower by the agreement as terminated, restricted or deferred; or (iii) enforcing any security; (b) terminating a regulated deferred payment credit agreement. (3) If any of the actions mentioned in (2) are conditional on whether the borrower takes steps in response to notice given by the firm, the firm must explain that to the borrower when giving notice by setting out: (a) the steps that the borrower is required to take; and (b) the date by which such steps must be taken. (4) Where a firm intends to take any of the actions specified in (2) and the borrower is in arrears, the firm must when giving notice in accordance with (1): (a) inform the borrower that free and impartial money guidance and debt advice is available from not-for-profit debt advice bodies and can be accessed through a range of delivery channels, including digital tools; and (b) effectively communicate to the borrower the potential benefits of accessing money guidance or free and impartial debt advice from not-for-profit debt advice bodies. [Note: see section 129(1) of the CCA.] Amend the following as shown. 11 Cancellation 11.1 The right to cancel ...",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "7.6.2BG",
+      "fcaPages": [
+        94
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "7.6.2BG,",
+      "independentReviewerDecision": "page_located_minimal_excerpt",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "7.6.2CR",
+      "fcaPages": [
+        94
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "7.6.2C R References in",
+      "independentReviewerDecision": "page_located_minimal_excerpt",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "8.12.11AG",
+      "fcaPages": [
+        107
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "AMENDMENT_MARKUP_UNCERTAIN",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "8.12.11A G This exemption does not apply to any financial promotion that is made with a view to, or for the purpose of, an introduction to a person who carries on the controlled activities of: (1) credit broking; (2) operating an electronic system in relation to lending; or (2A) providing relevant consumer credit in relation to a regulated deferred payment credit agreement; or (3) agreeing to carry on the above activities. ...",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "TP 13.1R",
+      "fcaPages": [
+        66
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "TP 13.1 R SYSC TP 13 applies to a firm with a deferred payment credit temporary permission. [Note: articles 10 and 11 of the Deferred Payment Credit Order.]",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "TP 13.2G",
+      "fcaPages": [
+        66
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "TP 13.2 G Once a firm no longer has a deferred payment credit temporary permission because it has ceased to have effect in accordance with article 10(3) of the Deferred Payment Credit Order, SYSC TP 13 will cease to apply to that firm. Firms with only a deferred payment credit temporary permission",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "TP 13.3R",
+      "fcaPages": [
+        66
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "TP 13.3 R In circumstances where the only regulated activities in a firm’s permission are deferred payment credit activities permitted by a deferred payment credit temporary permission, a firm is not an SMCR firm (and is included in Part Three of SYSC 23 Annex 1 (Definition of exempt firm)). Firms whose Part 4A permission comprises permission granted by the FCA and deferred payment credit temporary permission",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "TP 13.4R",
+      "fcaPages": [
+        66,
+        67
+      ],
+      "markerInInstrument": "R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "classificationBasis": "R_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "TP 13.4 R (1) This rule applies where a firm’s permission comprises permission to carry on regulated activities granted by the FCA under Part 4A of the Act and a deferred payment credit temporary permission. (2) The firm’s deferred payment credit temporary permission is to be disregarded for the purposes of categorising what type of SMCR firm the firm is in accordance with SYSC 23 Annex 1 (Definition of SMCR firm and different types of SMCR firms). (3) For the purposes of those elements of the senior managers and certification regime that are implemented through the provisions of the FCA Handbook described in",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": false,
+      "mustNotClassifyAsBinding": false,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    },
+    {
+      "core": "TP 13.5G",
+      "fcaPages": [
+        67
+      ],
+      "markerInInstrument": "G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "classificationBasis": "G_marker_in_official_instrument",
+      "applicability": "PS26/1 BNPL consumer credit rules",
+      "commencementDate": "2026-07-15",
+      "amendmentOrTransitional": "NEW_TEXT",
+      "authoritativeCitationFound": true,
+      "citationExcerpt": "TP 13.5 G An overview of the senior managers and certification regime and where to find the main FCA Handbook provisions can be found in SYSC 23.3.",
+      "independentReviewerDecision": "instrument_text_verified",
+      "negativeClassificationTest": true,
+      "mustNotClassifyAsBinding": true,
+      "sourceArtifact": "integrations/regulatory-sources/fixtures/fca-ps26-1-official.pdf",
+      "groundTruthSource": "instrument_parser_not_ai"
+    }
+  ]
+}

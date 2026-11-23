@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-11-23T17:18:36.078Z",
+  "stagingOrigin": "https://staging-app.forgeniq.com",
+  "runs": [
+    {
+      "runId": "147574c3-229a-42e3-9adb-fd480b905d3b",
+      "httpStatus": 200,
+      "executionStatus": "FAILED",
+      "errorCode": "AI_OUTPUT_SCHEMA_INVALID",
+      "useCaseId": "UC-RI-005",
+      "tokens": {
+        "inputTokens": 10852,
+        "outputTokens": 8192,
+        "stopReason": "max_tokens"
+      },
+      "spendUsd": 0.155436,
+      "selection": null,
+      "outputPreflight": null,
+      "parseFailure": "Anthropic response was not valid JSON.",
+      "idempotencySuffix": null,
+      "batchIndex": null
+    },
+    {
+      "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
+      "httpStatus": 200,
+      "executionStatus": "FAILED",
+      "errorCode": "AI_OUTPUT_SCHEMA_INVALID",
+      "useCaseId": "UC-RI-005",
+      "tokens": {
+        "inputTokens": 8396,
+        "outputTokens": 7380,
+        "stopReason": "max_tokens"
+      },
+      "spendUsd": 0.135888,
+      "selection": null,
+      "outputPreflight": null,
+      "parseFailure": "Anthropic response was not valid JSON.",
+      "idempotencySuffix": null,
+      "batchIndex": null
+    }
+  ],
+  "diagnosisSummary": {
+    "147574c3-229a-42e3-9adb-fd480b905d3b": "Historical PS22 batch 0 (live-ps22-full-2026-11-22): max_tokens / invalid JSON",
+    "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e": "Replacement batch 0: ~7380 output tokens, AI_OUTPUT_SCHEMA_INVALID — batch oversized vs output budget"
+  },
+  "unifiedRootCause": {
+    "stopReason": "max_tokens",
+    "schemaFailure": "AI_OUTPUT_SCHEMA_INVALID",
+    "parseFailure": "Anthropic response was not valid JSON (truncated structured output)",
+    "preflightGap": "Client/host approved batch with more provisions in PDF context than fail-closed output budget; live verbosity hit output ceiling",
+    "remediation": "Provision-first batch plan + server-side extraction_batch_oversized gate; maxSectionsPerBatch=4; 17-batch PS22 plan"
+  },
+  "spendUsdTotalFailedRuns": 0.291324
+}

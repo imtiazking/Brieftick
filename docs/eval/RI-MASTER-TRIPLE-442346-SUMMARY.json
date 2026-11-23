@@ -1,0 +1,64 @@
+{
+  "sessionId": "442346",
+  "parentPid": 38312,
+  "finishedAt": "2026-11-23T15:14:59.495Z",
+  "completeSuccessRuns": 3,
+  "requiredSuccessRuns": 3,
+  "gatePass": true,
+  "runs": [
+    {
+      "sessionId": "442346",
+      "runIndex": 1,
+      "parentPid": 38312,
+      "childPid": 49452,
+      "startedAt": "2026-11-23T15:07:02.353Z",
+      "finishedAt": "2026-11-23T15:09:28.426Z",
+      "elapsedMs": 146073.3087,
+      "ok": true,
+      "code": 0,
+      "signal": null,
+      "terminationInitiator": "child",
+      "pgCleanup": {
+        "removed": 1,
+        "skippedLive": 0,
+        "registryRemoved": 0
+      }
+    },
+    {
+      "sessionId": "442346",
+      "runIndex": 2,
+      "parentPid": 38312,
+      "childPid": 1332,
+      "startedAt": "2026-11-23T15:09:28.645Z",
+      "finishedAt": "2026-11-23T15:12:08.244Z",
+      "elapsedMs": 159598.857,
+      "ok": true,
+      "code": 0,
+      "signal": null,
+      "terminationInitiator": "child",
+      "pgCleanup": {
+        "removed": 1,
+        "skippedLive": 0,
+        "registryRemoved": 0
+      }
+    },
+    {
+      "sessionId": "442346",
+      "runIndex": 3,
+      "parentPid": 38312,
+      "childPid": 36748,
+      "startedAt": "2026-11-23T15:12:08.574Z",
+      "finishedAt": "2026-11-23T15:14:59.191Z",
+      "elapsedMs": 170618.10139999999,
+      "ok": true,
+      "code": 0,
+      "signal": null,
+      "terminationInitiator": "child",
+      "pgCleanup": {
+        "removed": 1,
+        "skippedLive": 0,
+        "registryRemoved": 0
+      }
+    }
+  ]
+}

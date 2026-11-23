@@ -20,6 +20,27 @@ if (!url) {
   process.exit(2);
 }
 
+async function assertConnectionNotPrivileged(connectionString) {
+  const probe = new pg.Client({ connectionString });
+  await probe.connect();
+  try {
+    const r = await probe.query(
+      `select current_user, session_user, rolsuper, rolbypassrls from pg_roles where rolname = current_user`,
+    );
+    const row = r.rows[0] || {};
+    return {
+      currentUser: row.current_user,
+      rolsuper: row.rolsuper === true,
+      rolbypassrls: row.rolbypassrls === true,
+      privileged: row.rolsuper === true || row.rolbypassrls === true,
+    };
+  } finally {
+    await probe.end();
+  }
+}
+
+const roleProbe = await assertConnectionNotPrivileged(url);
+
 let pass = 0;
 let fail = 0;
 const check = (name, cond, detail) => {
@@ -31,6 +52,12 @@ const check = (name, cond, detail) => {
     console.log(`FAIL: ${name}`, detail ? JSON.stringify(detail) : '');
   }
 };
+
+check('connection is not superuser / bypassrls', !roleProbe.privileged, {
+  currentUser: roleProbe.currentUser,
+  rolsuper: roleProbe.rolsuper,
+  rolbypassrls: roleProbe.rolbypassrls,
+});
 
 const title = `SEC-DB-UAT-${Date.now()}`;
 const openFinding = await withRlsSessionCommit(url, ANA, async (c) => {
@@ -81,32 +108,58 @@ const spoof = await withRlsSession(url, ANA, async (c) => {
 });
 check('SEC-DB-002 manual record creator must match actor', !spoof.ok && /manual_record_creator_mismatch/.test(spoof.message || ''));
 
-const admin = new pg.Client({ connectionString: url });
-await admin.connect();
-let auditBlocked = false;
 const auditEntity = openFinding;
-try {
-  await admin.query(
-    `insert into workflow_events (organisation_id, entity_type, entity_id, event_type, metadata)
-     values ($1, 'finding', $2, 'SEC_DB_STAGING_TEST', '{}'::jsonb)`,
-    [PILOT, auditEntity],
+const auditEventType = `SEC_DB_STAGING_TEST_${Date.now()}`;
+await withRlsSessionCommit(url, CMG, async (c) => {
+  await c.query(
+    `insert into workflow_events (organisation_id, entity_type, entity_id, event_type, metadata, created_by_user_id)
+     values ($1, 'finding', $2, $3, '{}'::jsonb, $4)`,
+    [PILOT, auditEntity, auditEventType, CMG],
   );
-  const del = await admin.query(`delete from workflow_events where entity_id = $1 and event_type = $2`, [
-    auditEntity,
-    'SEC_DB_STAGING_TEST',
-  ]);
-  auditBlocked = del.rowCount === 0;
-} catch (e) {
-  auditBlocked = /workflow_events_immutable/.test(e.message || '');
-} finally {
-  await admin.end();
-}
-check('SEC-DB-003 workflow_events delete blocked', auditBlocked);
+});
+const auditUpdate = await withRlsSession(url, CMG, async (c) => {
+  try {
+    await c.query(`update workflow_events set metadata = '{"tainted":true}'::jsonb where entity_id = $1 and event_type = $2`, [
+      auditEntity,
+      auditEventType,
+    ]);
+    return { blocked: false };
+  } catch (e) {
+    return { blocked: /workflow_events_immutable|permission denied/i.test(e.message || '') };
+  }
+});
+check('SEC-DB-003 workflow_events update blocked', auditUpdate.blocked === true, auditUpdate);
+
+const auditDelete = await withRlsSession(url, CMG, async (c) => {
+  try {
+    const del = await c.query(`delete from workflow_events where entity_id = $1 and event_type = $2`, [
+      auditEntity,
+      auditEventType,
+    ]);
+    return { blocked: del.rowCount === 0 };
+  } catch (e) {
+    return { blocked: /workflow_events_immutable/.test(e.message || '') };
+  }
+});
+check('SEC-DB-003 workflow_events delete blocked', auditDelete.blocked === true, auditDelete);
 
 const OUT = resolve(process.cwd(), '..', '..', 'docs', 'eval', 'SEC-DB-STAGING-VALIDATION-2026-11-23.json');
 writeFileSync(
   OUT,
-  JSON.stringify({ generatedAt: new Date().toISOString(), pass, fail, findingId: openFinding }, null, 2),
+  JSON.stringify(
+    {
+      generatedAt: new Date().toISOString(),
+      pass,
+      fail,
+      findingId: openFinding,
+      connectionRoleProbe: {
+        currentUser: roleProbe.currentUser,
+        privileged: roleProbe.privileged,
+      },
+    },
+    null,
+    2,
+  ),
 );
 
 console.log(`\nacceptance-ri-security-db-staging: ${pass} passed, ${fail} failed`);

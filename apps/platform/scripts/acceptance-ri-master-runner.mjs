@@ -7,6 +7,7 @@ import { performance } from 'node:perf_hooks';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cleanupOrphanEmbeddedPgDirs } from './local-db/harness.mjs';
+import { watchChildLiveness } from './acceptance-ri-master-proc-liveness.mjs';
 
 const DEFAULT_STEP_TIMEOUT_MS = Number(process.env.RI_MASTER_STEP_TIMEOUT_MS || 20 * 60 * 1000);
 const DEFAULT_SUITE_TIMEOUT_MS = Number(process.env.RI_MASTER_SUITE_TIMEOUT_MS || 75 * 60 * 1000);
@@ -89,6 +90,27 @@ export function runBoundedStep({ label, command, args, cwd, timeoutMs = DEFAULT_
     };
     const timer = setTimeout(onTimeout, timeoutMs);
     clearFns.push(() => clearTimeout(timer));
+    const unwatch = watchChildLiveness({
+      child,
+      isSettled: () => settledRef.v,
+      onVanished: () => {
+        if (settledRef.v) return;
+        console.error(
+          `\n[diag] child vanished before exit event — terminating step: ${label} (pid=${child.pid ?? 'n/a'} initiator=os)\n`,
+        );
+        killTree(child);
+        cleanupLocalPgVerifyDirs();
+        settleStep({
+          settledRef,
+          clearFns,
+          resolve,
+          started,
+          label,
+          payload: { ok: false, code: 'child_vanished', signal: null, terminationInitiator: 'os' },
+        });
+      },
+    });
+    clearFns.push(unwatch);
     const watchdog = setInterval(() => {
       const elapsed = performance.now() - started;
       if (elapsed > timeoutMs + 5000 && !settledRef.v) {
@@ -100,7 +122,7 @@ export function runBoundedStep({ label, command, args, cwd, timeoutMs = DEFAULT_
     child.on('exit', (code, signal) => {
       if (settledRef.v) return;
       console.log(
-        `\n[diag] step done ${label} exit=${code ?? 'null'} signal=${signal ?? 'null'} ${((performance.now() - started) / 1000).toFixed(1)}s\n`,
+        `\n[diag] step done ${label} exit=${code ?? 'null'} signal=${signal ?? 'null'} initiator=child ${((performance.now() - started) / 1000).toFixed(1)}s\n`,
       );
       settleStep({
         settledRef,
@@ -108,7 +130,12 @@ export function runBoundedStep({ label, command, args, cwd, timeoutMs = DEFAULT_
         resolve,
         started,
         label,
-        payload: { ok: code === 0, code, signal },
+        payload: {
+          ok: code === 0,
+          code,
+          signal,
+          terminationInitiator: signal ? 'signal' : 'child',
+        },
       });
     });
     child.on('error', (err) => {

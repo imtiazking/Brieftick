@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-11-23T17:28:02.211Z",
+  "cumulativePilotSpendUsd": 0.519483,
+  "priorEstimateUsd": 0.52,
+  "reconciledAgainst": "provider audit fields on staging ai-analysis-runs + benchmark harness",
+  "absolutePilotCeilingUsd": 2.35,
+  "remainingBeforeCeilingUsd": 1.830517,
+  "lineItems": [
+    {
+      "runId": "147574c3-229a-42e3-9adb-fd480b905d3b",
+      "spendUsd": 0.155436,
+      "status": "FAILED",
+      "source": "PS22-9-FAILED-RUNS-FORENSIC"
+    },
+    {
+      "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
+      "spendUsd": 0.135888,
+      "status": "FAILED",
+      "source": "PS22-9-FAILED-RUNS-FORENSIC"
+    },
+    {
+      "label": "PS26/1 batches 0-1 (provider audit in benchmark harness)",
+      "spendUsd": 0.228159,
+      "status": "COMPLETED",
+      "source": "FCA-EXTRACTION-ACCURACY-BENCHMARK"
+    }
+  ]
+}

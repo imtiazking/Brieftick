@@ -19,7 +19,7 @@ import { buildAskRiStateFromClient } from '../../lib/ri/ask-ri/production-state.
 import { runAskRiDeterministic } from '../../lib/ri/ask-ri/run-ask-ri.mjs';
 
 export async function runPhase7c7WorkflowVerification() {
-  const { embedded, adminUrl } = await resetAndStartEmbedded({ port: 54330 });
+  const { embedded, adminUrl } = await resetAndStartEmbedded();
   const admin = new pg.Client({ connectionString: adminUrl });
   await admin.connect();
   const results = { pass: [], fail: [] };

@@ -1,0 +1,462 @@
+{
+  "generatedAt": "2026-11-23T17:19:12.291Z",
+  "publication": "PS26/1",
+  "instrumentStartPage": 61,
+  "entryCount": 47,
+  "verifiedBindingCount": 3,
+  "breakdown": {
+    "bindingR": 28,
+    "evidentialE": 0,
+    "guidanceG": 19,
+    "unknown": 0
+  },
+  "acceptanceThresholdsProposed": {
+    "bindingRequirementRecall": 0.85,
+    "bindingRequirementPrecisionOnVerifiedSubset": 0.9,
+    "quotationVerificationOnBinding": 0.95,
+    "note": "Independent regulatory sign-off required; human review retained for exceptions."
+  },
+  "entries": [
+    {
+      "core": "11.1.2AG",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        96
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "11.1.2R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        96
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "16.1.1R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        97
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "16.1.2G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        97
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "16.1.3G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        97
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "16.1.4R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        97
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "16.1.5R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "16.1.6R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        103
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "2.3.1R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        68
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "2.3.2R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        86
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "2.5.1R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        81,
+        84
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "2.7.19GG",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        104
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "2.7.19HG",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        104
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "2.7.1R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        86
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "2.7.7FG",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        104
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "2.8.6CG",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        106
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2.1R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        87
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2.2G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        68,
+        70,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.10G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        91
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.11R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        92
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.12G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        92
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.1R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        87
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.2G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        87
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.3R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        87,
+        88
+      ],
+      "independentBindingVerified": true,
+      "source": "FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json"
+    },
+    {
+      "core": "4.2A.4R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        88
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.5R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        88,
+        89
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.6R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        90
+      ],
+      "independentBindingVerified": true,
+      "source": "FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json"
+    },
+    {
+      "core": "4.2A.7R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        90
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.8R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        91
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.2A.9G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        91
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.6.2AR",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        92
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.6.2R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        92
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "4.8.2R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        93
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "6.7.42G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        93
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "6.7.43G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        93
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "7.1.4R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        94
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "7.20.1R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        94,
+        95
+      ],
+      "independentBindingVerified": true,
+      "source": "FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json"
+    },
+    {
+      "core": "7.20.2G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        95
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "7.20.3R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        95,
+        96
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "7.6.2BG",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        94
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "7.6.2CR",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        94
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "8.12.11AG",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        107
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "TP 13.1R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        66
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "TP 13.2G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        66
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "TP 13.3R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        66
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "TP 13.4R",
+      "expectedLegalStatus": "binding_requirement",
+      "pages": [
+        66,
+        67
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    },
+    {
+      "core": "TP 13.5G",
+      "expectedLegalStatus": "guidance",
+      "pages": [
+        67
+      ],
+      "independentBindingVerified": false,
+      "source": "instrument_parser_v1"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-11-23T15:16:00Z",
+  "gitHead": "f5e335a",
+  "stagingBuildOnHealth": "f5e335abdf8b44ff18f54e426c89918853c8ff62",
+  "stagingDeploymentId": "dpl_9tCyBfNCxaL7ThfUnmo7sf3FWW3c",
+  "stagingReconciledAt": "2026-11-23T17:33:40Z",
+  "riMasterTripleGate": {
+    "status": "pass",
+    "evidence": "RI-MASTER-TRIPLE-442346-SUMMARY.json",
+    "sessionId": "442346",
+    "completeSuccessRuns": 3,
+    "runElapsedSeconds": [146.1, 159.6, 170.6],
+    "terminationInitiator": "child",
+    "priorAttempts": ["442343", "442345"],
+    "acceptedStandalonePass": {
+      "session": "442342",
+      "run1": "PASS 169s",
+      "countsTowardTripleGate": false
+    }
+  },
+  "deterministicRegressionPass": [
+    "acceptance-ri-uc-ri-005-preflight-regression.mjs",
+    "acceptance-embedded-pg-registry.mjs",
+    "acceptance-phase-6-ri-ingestion.mjs",
+    "acceptance-fca-rss-phase8b.mjs (integrations)"
+  ],
+  "preservedUatEvidence": [
+    "PS26-1-HOSTED-PROVISION-RECONCILE-2026-11-23.json",
+    "PLATFORM-STRAY-PROJECT-GIT-DISCONNECT-2026-11-23.json"
+  ],
+  "remainingBlockers": [
+    {
+      "id": "SEC-DB-003-HOSTED",
+      "note": "Inject STAGING_DATABASE_URL or scoped CI secret — SEC-DB-003-STAGING-ACCESS-2026-11-23.json"
+    },
+    {
+      "id": "PS22-PAID",
+      "note": "Consolidated paid approval only after preflight regression + staging deploy of retuned cap; ~$1.48 pilot headroom"
+    },
+    {
+      "id": "FCA-ACCURACY",
+      "note": "Binding recall 33% on n=3 gold rules — FCA-ACCURACY-INVESTIGATION-2026-11-23.json"
+    }
+  ],
+  "paidAiThisTranche": false
+}

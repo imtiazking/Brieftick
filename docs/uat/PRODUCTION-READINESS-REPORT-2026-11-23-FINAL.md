@@ -1,71 +1,43 @@
-# FORGENIQ — consolidated readiness report (2026-11-23, remediation tranche)
+# FORGENIQ production readiness — 2026-11-23 (final tranche)
 
-**Decision: NO-GO for production** (unchanged). Staging build **`02116db`** on **`dpl_74xgsTcvQzCp1xW8PCcd7sdHbJ1h`** (`staging-app.forgeniq.com/health` verified).
+## Executive
 
-## Evidence index
+| Gate | Status |
+|------|--------|
+| RI master acceptance ×3 | **PASS** (`RI-MASTER-TRIPLE-442346-SUMMARY.json`) |
+| PS22/9 full extraction | **INCOMPLETE** — deterministic gate PASS; paid execution **not authorised** |
+| FCA claim-level accuracy | **INCOMPLETE** — 28R/19G independently verified in instrument; AI recall on verified subset still low |
+| SEC-DB-003 hosted | **BLOCKED** — `STAGING_DATABASE_URL` not available locally |
+| Staging deploy | Latest after consolidated commit (see `STAGING-P3-PROVISION-ENGINE-DEPLOY`) |
+| Production | **NO-GO** |
 
-| Workstream | Evidence |
-|---|---|
-| PS26/1 provision audit | `docs/eval/PS26-1-UNRESOLVED-PROVISION-AUDIT-2026-11-23.json` |
-| Live pilot ledger | `docs/eval/LIVE-FULL-PUBLICATION-EXTRACTION-PILOT-RUN-2026-11-22.json` |
-| Spend / coverage (not recall) | `docs/eval/LIVE-EXTRACTION-ACCURACY-METRICS-2026-11-23.json` |
-| FCA accuracy benchmark (partial) | `docs/eval/FCA-EXTRACTION-ACCURACY-BENCHMARK-2026-11-23.json` |
-| SEC-DB API staging | `docs/eval/SEC-DB-STAGING-API-VALIDATION-2026-11-23.json` |
-| SEC-DB-003 local | `acceptance-ri-security-db-local-db.mjs` 5/5 |
-| Git | `feature/ri-classification-triage` @ `41d7e52` |
+## Priority 1 — PS22/9
 
-## Priority 1 — PS26/1 (seven provisions)
+- **Failed runs preserved:** `147574c3…` ($0.155, 8192 out, `max_tokens`), `3872aebf…` ($0.136, 7380 out, `max_tokens`).
+- **Fix:** Provision-first batching + fail-closed output preflight (`extraction_batch_oversized`).
+- **Gate:** `acceptance-ri-extraction-batch-plan-ps22-gate.mjs` — **242/242**, **17 batches**, no duplicates, all within 82% output margin.
+- **Spend reconciled:** $0.519483 cumulative (`PILOT-SPEND-RECONCILE-2026-11-23.json`); ceiling prepared **$2.35**.
+- **Paid:** Awaiting explicit authorisation — `PS22-9-PAID-EXECUTION-REQUEST-2026-11-23.json` (execute batch 0 only first after approval).
 
-**Root cause (defect, fixed in `d46e650`):** orchestration replay of batch 0 did not sync cumulative supply into the provision inventory before `finalizeProvisionInventoryOutcomes`; seven batch-1 cores stayed `IDENTIFIED` → reported as `UNRESOLVED` despite 47/47 orchestration supply.
+## Priority 2 — FCA accuracy
 
-**Deterministic audit (no paid AI):** all seven were **supplied in batch 1** with authoritative PDF text on pages 67–107. Classifications:
-
-| Core | Text status | Outcome after fix |
-|---|---|---|
-| 16.1.6R | NEW_TEXT | Exception / human review (table context) |
-| 2.7.19GG/HG, 2.7.7FG, 2.8.6CG, 8.12.11AG | AMENDMENT_MARKUP_UNCERTAIN | Explicit **exception triage** (not auto non-obligatory) |
-| TP 13.5G | NEW_TEXT + duty language | **Transitional exception triage** |
-
-**Hosted reconcile:** `POST …/extraction-orchestration` `action: reconcile_provision_inventory` (deployed) — **blocked** until User A staging session is refreshed.
-
-## Priority 2 — PS22/9 truncation
-
-- **Historical run** `147574c3-229a-42e3-9adb-fd480b905d3b` preserved (`max_tokens` → invalid JSON).
-- **Mitigations shipped:** smaller batches (pilot `maxSectionsPerBatch` 4 for replacement), `extraction-output-preflight.mjs`, scaled output caps, preflight fail-closed before paid call.
-- **Replacement batch 0** (`live-ps22-replace-batch0-2026-11-23`): **executed once** — run `3872aebf…` **FAILED** (invalid/truncated JSON, **7380** output tokens, **$0.136**). Suffix allowlist **9** entries active. **No automatic paid retry.** Evidence: `PS22-9-BATCH0-REPLACEMENT-2026-11-23.json`, `PS22-9-BATCH0-RECONCILE-2026-11-23.json`.
-- **Preflight retune** (`02116db`): higher token estimate + truncation classification in lab Anthropic path.
-
-**Spend forecast:** ~**$0.52** pilot spend incl. replacement; ~**$1.48** headroom within $2; next batch smaller (~52 provisions est. after retune) before further authorisation.
+- **Independent verification:** `FCA-PS26-INDEPENDENT-PROVISION-VERIFICATION-2026-11-23.json` — 28 R + 19 G from official PDF (not AI ground truth).
+- **Benchmark inventory:** 47 provisions (`FCA-REGULATORY-BENCHMARK-2026-11-23.json`).
+- **AI vs verified binding (n=3 human-confirmed + 28 parser R):** `FCA-BINDING-ACCURACY-DETERMINISTIC-2026-11-23.json` — production thresholds **not met**; human review mandatory.
 
 ## Priority 3 — SEC-DB-003
 
-| Control | Staging API | Staging DB | Local DB |
-|---|---|---|---|
-| 001 / 002 | **PASS** | — | 5/5 |
-| 003 immutability | N/A (no DELETE route) | **BLOCKED** — no local `STAGING_DATABASE_URL` / `SUPABASE_ACCESS_TOKEN` | **PASS** |
+- Local **5/5**; staging API **6/6**.
+- Hosted harness **ready** (`acceptance-ri-security-db-staging.mjs`): connection privilege probe, RLS sessions, audit UPDATE/DELETE block via app role.
+- **Blocked** until scoped `STAGING_DATABASE_URL` — `SEC-DB-003-STAGING-ACCESS-2026-11-23.json`.
 
-## Priority 4 — RI master ×3
+## Remaining blockers
 
-- **Stall fix:** watchdog timeouts, suite cap, PG cleanup at master start, Phase 7 **ephemeral port** (avoids fixed `54330` races).
-- **Status:** run 1/3 **failed** Phase 7 during concurrent deploy cleanup — **re-run in progress** after fix.
-
-## Priority 5 — Deployment consistency
-
-| Item | Value |
-|---|---|
-| Commits | `d46e650`, `41d7e52` |
-| Staging deployment | `dpl_9emxLFVY7Rj9TQgwcaJWjr35DALA` |
-| Build | `npm run build` **PASS** locally |
-
-## Priority 6 — Regulatory accuracy
-
-Claim-level precision/recall **not yet measured**. Benchmark file created; processing coverage **1.0** for PS26/1 supply only. Provider-audited spend **~$0.384**.
-
-## Priority 7 — Production
-
-**NO-GO** — complete PS22 replacement + claim-level accuracy + RI master ×3 + hosted SEC-DB-003.
+1. User approval for PS22 paid tranche ($2.35 cumulative ceiling).
+2. `STAGING_DATABASE_URL` injection for SEC-DB-003 hosted proof.
+3. FCA extraction quality uplift + expanded human-verified binding set before sign-off.
 
 ## Mandatory intervention
 
-1. **Refresh staging UAT sessions** (`staging-user-sessions.mjs login A/B/C`) for PS26 reconcile + PS22 replacement.
-2. **Provide `STAGING_DATABASE_URL`** (secure channel) for hosted SEC-DB-003 demonstration.
+- Approve `PS22-9-PAID-EXECUTION-REQUEST-2026-11-23.json` to start corrected live batch 0.
+- Provide staging DB URL via approved channel (never commit).

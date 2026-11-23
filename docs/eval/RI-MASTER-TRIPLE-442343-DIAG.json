@@ -1,0 +1,59 @@
+{
+  "recordedAt": "2026-11-23T15:02:00Z",
+  "terminalId": "442343",
+  "parentShellPid": 46936,
+  "outcome": "incomplete",
+  "timestamps": {
+    "tripleStartedAt": "2026-11-23T14:44:18.190Z",
+    "lastTerminalHeartbeatMs": 991163,
+    "observedEndApprox": "2026-11-23T14:59:59Z"
+  },
+  "runAccounting": {
+    "acceptedPriorCompletePass": {
+      "session": "442342",
+      "runIndex": 1,
+      "status": "PASS",
+      "elapsedSeconds": 169,
+      "countsTowardTripleGate": false,
+      "note": "User accepted first complete pass; triple gate still requires three consecutive completes in one session."
+    },
+    "session442343CompleteSuccessRuns": 0
+  },
+  "telemetry": {
+    "terminalLastCompletedStep": "Verification manifests",
+    "terminalStallLine": "FCA RSS Phase 8B spawn (stdio capture lag; process advanced beyond this line)",
+    "processPolls": [
+      {
+        "at": "2026-11-23T14:54:42Z",
+        "masterChildPid": 42916,
+        "activeStep": "npm run test:acceptance:phase8b-fca"
+      },
+      {
+        "at": "2026-11-23T14:55:27Z",
+        "masterChildPid": null,
+        "note": "no master child while triple parent metadata still showed running"
+      }
+    ],
+    "finalProcessScan": "no acceptance-ri-master node processes; master-triple lock absent; PG registry empty"
+  },
+  "rootCause": {
+    "classification": "child_process_exit_event_lost",
+    "pattern": "Matches 442342 run 2: master child disappeared mid-late suite without FAILED assertion or child exit log",
+    "suspectedContributors": [
+      "Windows Node child termination without delivering exit to triple parent (hang or zombie parent)",
+      "Fixed embedded PG port 54330 in Phase 8B FCA ingestion (54330) conflicting with prior embedded sessions",
+      "stdio inherit + large catalogue output caused terminal file to lag actual phase (diagnostic only)"
+    ],
+    "terminationInitiator": "os_or_uncaptured_crash",
+    "remediation": [
+      "acceptance-ri-master-proc-liveness.mjs — poll PID; fail closed with child_vanished / initiator=os",
+      "Remove fixed port 54330 from acceptance-phase-8b-fca-ingestion.mjs and workflow-phase-7c7.mjs",
+      "RI-MASTER-TRIPLE-JOURNAL.jsonl per-run timestamps, PIDs, PG cleanup counts"
+    ]
+  },
+  "parallelValidation": {
+    "acceptance-ri-uc-ri-005-preflight-regression": "PASS",
+    "acceptance-embedded-pg-registry": "PASS",
+    "fca-extraction-accuracy-benchmark-staging": "regenerated with full gold-binding perProvision breakdown"
+  }
+}

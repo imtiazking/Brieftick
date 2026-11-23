@@ -23,11 +23,17 @@ function normCore(ref) {
   return p?.core || String(ref || '').replace(/^CONC\s+/i, '').replace(/\s+/g, '');
 }
 
-const GOLD_PATTERNS = [
-  { core: '4.2A.3R', re: /4\.2A\.3\s*R\b/i },
-  { core: '4.2A.6R', re: /4\.2A\.6\s*R\b/i },
-  { core: '7.20.1R', re: /7\.20\.1\s*R\b/i },
-];
+function coreToPattern(core) {
+  const normalized = String(core || '').replace(/\s+/g, '');
+  const m = normalized.match(/^([\dA-Z.]+?)(\d)([RGDE])$/i);
+  if (!m) {
+    const escaped = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return { core: normalized, re: new RegExp(escaped, 'i') };
+  }
+  const [, prefix, lastDigit, suffix] = m;
+  const re = new RegExp(`${prefix.replace(/\./g, '\\.')}${lastDigit}\\s*${suffix}\\b`, 'i');
+  return { core: normalized, re };
+}
 
 function textBundlesFromRun(structuredOutput) {
   const output = structuredOutput && typeof structuredOutput === 'object' ? structuredOutput : {};
@@ -44,9 +50,9 @@ function textBundlesFromRun(structuredOutput) {
   return bundles;
 }
 
-function goldHitsInText(text) {
+function goldHitsInText(text, goldPatterns) {
   const hits = [];
-  for (const { core, re } of GOLD_PATTERNS) {
+  for (const { core, re } of goldPatterns) {
     if (re.test(text || '')) hits.push(core);
   }
   return hits;
@@ -56,6 +62,7 @@ const physical = JSON.parse(readFileSync(PHYSICAL, 'utf8'));
 const goldBinding = (physical.bindingProvisions || [])
   .filter((p) => p.binding === true)
   .map((p) => normCore(p.rule.replace(/-/g, ' ')));
+const goldPatterns = [...new Set(goldBinding)].map(coreToPattern);
 
 const audit = JSON.parse(readFileSync(AUDIT, 'utf8'));
 const exceptionCores = (audit.provisions || []).map((p) => p.core);
@@ -88,11 +95,17 @@ await runAs('A', async ({ page }) => {
 
   const hitSet = new Set();
   for (const b of textBundles) {
-    for (const h of goldHitsInText(b.text)) hitSet.add(h);
+    for (const h of goldHitsInText(b.text, goldPatterns)) hitSet.add(h);
   }
   const hits = goldBinding.filter((g) => hitSet.has(g));
   const bindingBundles = textBundles.filter((b) => b.binding && b.text?.trim());
-  const onGoldBundles = bindingBundles.filter((b) => goldHitsInText(b.text).length > 0);
+  const onGoldBundles = bindingBundles.filter((b) => goldHitsInText(b.text, goldPatterns).length > 0);
+  const perProvision = [...new Set(goldBinding)].map((core) => ({
+    core,
+    recalled: hitSet.has(core),
+    bindingClaimHits: bindingBundles.filter((b) => goldHitsInText(b.text, [coreToPattern(core)]).length)
+      .length,
+  }));
 
   const bindingRequirementRecall = goldBinding.length ? hits.length / goldBinding.length : null;
   const bindingRequirementPrecision = bindingBundles.length
@@ -105,8 +118,11 @@ await runAs('A', async ({ page }) => {
     benchmarkSource: 'FCA-PS26-1-PHYSICAL-SOURCE-EVIDENCE.json',
     provisionAudit: 'PS26-1-UNRESOLVED-PROVISION-AUDIT-2026-11-23.json',
     goldBindingProvisionCores: goldBinding,
+    goldBindingProvisionCount: [...new Set(goldBinding)].length,
+    perProvision,
     emittedCandidateCount: textBundles.length,
-    emittedBindingCandidateCount: onGoldBundles.length,
+    emittedBindingCandidateCount: bindingBundles.length,
+    emittedBindingCandidateCountOnGold: onGoldBundles.length,
     metrics: {
       bindingRequirementPrecision,
       bindingRequirementRecall,
@@ -120,7 +136,7 @@ await runAs('A', async ({ page }) => {
     },
     exceptionTriageCores: exceptionCores,
     notes: [
-      'Precision/recall are claim-level against three human-verified instrument binding rules (4.2A.3R, 4.2A.6R, 7.20.1R).',
+      `Precision/recall are claim-level against ${[...new Set(goldBinding)].length} human-verified instrument binding rules from FCA physical source evidence.`,
       'provisionProcessingCoverageRatio is orchestration supply only — not extraction recall.',
       'Quotation-level unsupportedQuotations requires SME review — not automated in this harness.',
     ],
