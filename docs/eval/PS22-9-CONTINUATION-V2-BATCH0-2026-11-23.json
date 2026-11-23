@@ -1,0 +1,5136 @@
+{
+  "continuationVersion": "v2",
+  "suffix": "live-ps22-continuation-v2-2026-11-23",
+  "preservedCores": 65,
+  "expectedBatch0": [
+    "1.2.1G",
+    "2.1.1R",
+    "2A.1.10G",
+    "2A.1.11G",
+    "2A.1.12G",
+    "2A.1.13G",
+    "2A.1.14G",
+    "2A.1.15G",
+    "2A.1.16G",
+    "2A.1.17G",
+    "2A.1.18G",
+    "2A.2.1R",
+    "2A.2.8R",
+    "2A.2.9R",
+    "2A.2.10G",
+    "2A.2.11G"
+  ],
+  "runId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+  "executionStatus": "COMPLETED",
+  "spendUsd": 0.10542,
+  "spendBefore": {
+    "generatedAt": "2026-11-23T22:10:13.420Z",
+    "cumulativePilotSpendUsd": 1.282017,
+    "absolutePilotCeilingUsd": 2.35,
+    "userApprovedCeilingUsd": 2.35,
+    "remainingBeforeCeilingUsd": 1.067983,
+    "lineItems": [
+      {
+        "runId": "147574c3-229a-42e3-9adb-fd480b905d3b",
+        "spendUsd": 0.155436,
+        "status": "FAILED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
+        "spendUsd": 0.135888,
+        "status": "FAILED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+        "spendUsd": 0.120165,
+        "status": "COMPLETED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+        "spendUsd": 0.107994,
+        "status": "COMPLETED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "038f5ae0-56ed-4961-9d1c-f2953a15e741",
+        "spendUsd": 0.043203,
+        "status": "FAILED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "d76b60f2-276b-48f2-ab78-fd449bca55b6",
+        "spendUsd": 0.046638,
+        "status": "FAILED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "9b3bf495-9c55-428f-81bd-d786f8d9a3ee",
+        "spendUsd": 0.060498,
+        "status": "COMPLETED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "063a2e9f-8279-4310-9341-354110d5e675",
+        "spendUsd": 0.091182,
+        "status": "COMPLETED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "3f3f57e1-5afc-40ac-a8d6-2f792b60c5f1",
+        "spendUsd": 0.08265,
+        "status": "COMPLETED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "9c0824b3-977d-4052-841c-f1176bf0ffcf",
+        "spendUsd": 0.108783,
+        "status": "COMPLETED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "be03ff0f-841a-45ce-a7b5-1dfbd4dc5ae0",
+        "spendUsd": 0.078903,
+        "status": "COMPLETED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "b73ea1d1-e01d-409c-bbeb-e11484b947e9",
+        "spendUsd": 0.112665,
+        "status": "COMPLETED",
+        "source": "staging_fetch"
+      },
+      {
+        "runId": "9fd62178-ef68-451d-b16e-9cd17526d3f3",
+        "spendUsd": 0.138012,
+        "status": "FAILED",
+        "source": "staging_fetch"
+      }
+    ],
+    "mayProceedPaid": true
+  },
+  "spendAfter": {
+    "reconcileError": "spend reconcile failed: file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:183\r\n    throw new SessionExpiredError(`${p.label}: no valid staging session (HTTP ${id.status}) — run: node scripts/uat/staging-user-sessions.mjs login ${p.key}`);\r\n          ^\r\n\r\nSessionExpiredError: User A — Maker: no valid staging session (HTTP 401) — run: node scripts/uat/staging-user-sessions.mjs login A\r\n    at verifyIdentity (file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:183:11)\r\n    at runNextTicks (node:internal/process/task_queues:65:5)\r\n    at process.processImmediate (node:internal/timers:472:9)\r\n    at async runAs (file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:228:22)\r\n    at async file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/pilot-spend-reconcile-staging.mjs:38:1\r\n\r\nNode.js v24.16.0\r\n"
+  },
+  "completeness": {
+    "policy": "Batch SUCCEEDED does not imply regulatory accuracy; omissions are explicit.",
+    "omissionCores": [],
+    "omissionCount": 0,
+    "suppliedCount": 16,
+    "batchCompletenessOk": true,
+    "regulatoryAccuracySuccess": true,
+    "partialIdentificationCores": []
+  },
+  "structured_output": {
+    "claims": [
+      {
+        "text": "Principles 6 (Customers' interests), 7 (Communications with clients), 8 (Conflicts of interest), 9 (Customers: relationships of trust), 10 (Clients' assets) and 12 (Consumer Duty) impose requirements on firms expressly in relation to their clients or customers, with the requirements depending in part on the characteristics of the client or customer concerned.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-1001db65022f8f2c"
+        ],
+        "provisionReference": "PRIN 1.2.1G"
+      },
+      {
+        "text": "A firm must act to deliver good outcomes for retail customers (Principle 12 - Consumer Duty).",
+        "confidence": 100,
+        "sourceSectionIds": [
+          "EVD-PDF-1001db65022f8f2c"
+        ],
+        "provisionReference": "PRIN 2.1.1R (Principle 12)"
+      },
+      {
+        "text": "The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.10G"
+      },
+      {
+        "text": "Principle 12 does not change the nature of a firm's relationship with any given retail customer; it does not create a fiduciary relationship where one would not otherwise exist nor require a firm to provide advice or carry out any other regulated activity where it would not otherwise have done so.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.11G"
+      },
+      {
+        "text": "The FCA has issued guidance on the Consumer Duty in FG22/5, which firms should read alongside Principle 12 and PRIN 2A as a guide to the FCA's view as to how Principle 12 and PRIN 2A might be complied with.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.12G"
+      },
+      {
+        "text": "Principle 12 imposes obligations on firms towards retail customers of products irrespective of whether the customer is a client of the firm.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.13G"
+      },
+      {
+        "text": "Obligations on firms in the distribution chain of a product must be interpreted reasonably, in a manner that reflects the firm's role in that distribution chain.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.14G"
+      },
+      {
+        "text": "The extent of a firm's responsibilities under Principle 12 in any one case will turn on the substance of the firm's role in the arrangements relating to the product.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.1.15G"
+      },
+      {
+        "text": "Given the high-level nature and breadth of application of the Principles, guidance about a Principle cannot exhaustively cover its implications.",
+        "confidence": 90,
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.1.16G"
+      },
+      {
+        "text": "Principle 12 imposes a higher and more exacting standard of conduct in relation to a firm's retail market business relative to what Principles 6 or 7 would have otherwise required.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.1.17G"
+      },
+      {
+        "text": "The application of Principles 6 and 7 is unchanged with respect to a firm's activities insofar as they are not subject to Principle 12.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.1.18G"
+      },
+      {
+        "text": "A firm must act in good faith towards retail customers.",
+        "confidence": 100,
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.2.1R"
+      },
+      {
+        "text": "A firm must avoid causing foreseeable harm to retail customers.",
+        "confidence": 100,
+        "sourceSectionIds": [
+          "EVD-PDF-e695201ee6b9f0c6"
+        ],
+        "provisionReference": "PRIN 2A.2.8R"
+      },
+      {
+        "text": "Foreseeable harm may be caused by both act and omission, in a firm's direct relationship with a retail customer or through its role in the distribution chain even where another firm in that chain also contributes to the harm.",
+        "confidence": 100,
+        "sourceSectionIds": [
+          "EVD-PDF-e695201ee6b9f0c6"
+        ],
+        "provisionReference": "PRIN 2A.2.9R"
+      },
+      {
+        "text": "Avoiding causing foreseeable harm includes ensuring all aspects of design, terms, marketing, sale and support for products avoid causing foreseeable harm, and ensuring no aspect of business involves unfairly exploiting behavioural biases or vulnerability characteristics.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-e695201ee6b9f0c6"
+        ],
+        "provisionReference": "PRIN 2A.2.10G"
+      },
+      {
+        "text": "A firm with an ongoing relationship with a retail customer in relation to a product would need to act to avoid causing foreseeable harm to that customer throughout the lifecycle of that product.",
+        "confidence": 95,
+        "sourceSectionIds": [
+          "EVD-PDF-e695201ee6b9f0c6"
+        ],
+        "provisionReference": "PRIN 2A.2.11G"
+      }
+    ],
+    "candidates": [
+      {
+        "citation": "PDF p.104 · legal instrument",
+        "statement": "Principles 6 (Customers' interests), 7 (Communications with clients), 8 (Conflicts of interest), 9 (Customers: relationships of trust), 10 (Clients' assets) and 12 (Consumer Duty) impose requirements on firms expressly in relation to their clients or customers, with the requirements depending in part on the characteristics of the client or customer concerned.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "1.2.1 G Principles 6 (Customers' interests), 7 (Communications with clients), 8 (Conflicts of interest), 9 (Customers: relationships of trust) and, 10 (Clients' assets) and 12 (Consumer Duty) impose requirements on firms expressly in relation to their clients or customers. These requirements depend, in part, on the characteristics of the client or customer concerned.",
+        "sourceSectionIds": [
+          "EVD-PDF-1001db65022f8f2c"
+        ],
+        "provisionReference": "PRIN 1.2.1G",
+        "applicabilityConditions": "Applies to firms subject to the relevant Principles in relation to their clients or customers",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "EXCEPTION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [
+            "provision_amendment_uncertain"
+          ],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.104 · legal instrument",
+        "statement": "A firm must act to deliver good outcomes for retail customers (Principle 12 - Consumer Duty).",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2.1.1 R The Principles ... 12 Consumer Duty A firm must act to deliver good outcomes for retail customers.",
+        "sourceSectionIds": [
+          "EVD-PDF-1001db65022f8f2c"
+        ],
+        "provisionReference": "PRIN 2.1.1R (Principle 12)",
+        "_bindingNatureGuarded": "binding_without_provision_reference",
+        "applicabilityConditions": "Applies to firms in relation to retail customers",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.106 · legal instrument",
+        "statement": "The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.10 G (1) The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers.",
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.10G",
+        "applicabilityConditions": "Applies to firms subject to Principle 12 in relation to retail customers",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.106 · legal instrument",
+        "statement": "The main elements of firms' conduct obligations under Principle 12 and PRIN 2A are set out in PRIN 2A.3 to PRIN 2A.11, with retail customer outcome rules and guidance at PRIN 2A.3 to PRIN 2A.6 setting out key obligations in relation to product governance, price and value, consumer understanding and supporting consumers.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "(2) The main elements of firms' conduct obligations under Principle 12 and PRIN 2A are set out in PRIN 2A.3 to PRIN 2A.11. (3) The retail customer outcome rules and guidance at PRIN 2A.3 to PRIN 2A.6 set out firms' key obligations in relation to product governance, price and value, consumer understanding and supporting consumers.",
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.10G",
+        "applicabilityConditions": "Applies to firms subject to Principle 12 in relation to retail customers",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.106 · legal instrument",
+        "statement": "Principle 12 does not change the nature of a firm's relationship with any given retail customer; it does not create a fiduciary relationship where one would not otherwise exist nor require a firm to provide advice or carry out any other regulated activity where it would not otherwise have done so.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.11 G Principle 12 does not change the nature of a firm's relationship with any given retail customer. In particular, it does not create a fiduciary relationship where one would not otherwise exist nor require a firm to provide advice or carry out any other regulated activity where it would not otherwise have done so.",
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.11G",
+        "applicabilityConditions": "Applies to firms subject to Principle 12 in relation to retail customers",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.106 · legal instrument",
+        "statement": "The FCA has issued guidance on the Consumer Duty in FG22/5, which firms should read alongside Principle 12 and PRIN 2A as a guide to the FCA's view as to how Principle 12 and PRIN 2A might be complied with.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.12 G The FCA has issued guidance on the Consumer Duty in FG22/5, which firms should read alongside Principle 12 and PRIN 2A as a guide to the FCA's view as to how Principle 12 and PRIN 2A might be complied with.",
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.12G",
+        "applicabilityConditions": "Applies to firms subject to Principle 12",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.106 · legal instrument",
+        "statement": "Principle 12 imposes obligations on firms towards retail customers of products irrespective of whether the customer is a client of the firm, with extended application aiming to ensure the effectiveness of obligations which may properly relate to activities determining or materially influencing retail customer outcomes carried out by a firm with whom the retail customer is not in a client relationship.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.13 G (1) Principle 12 imposes obligations on firms towards retail customers of products irrespective of whether the customer is a client of the firm. (2) This extended application aims to ensure the effectiveness of obligations under Principle 12 which may properly relate to activities which determine or materially influence retail customer outcomes carried out by a firm with whom the retail customer is not in a client relationship.",
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.13G",
+        "applicabilityConditions": "Applies to firms in the distribution chain of products to retail customers",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.106 · legal instrument",
+        "statement": "A firm's role in the distribution chain may mean it is unable to determine or materially influence retail customer outcomes in connection with the product; if so, the firm may not be subject to any obligation under Principle 12.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "(3) A firm's role in the distribution chain may mean it is unable to determine or materially influence retail customer outcomes in connection with the product. If so, the firm may not be subject to any obligation under Principle 12.",
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.13G",
+        "applicabilityConditions": "Applies to firms in the distribution chain where they cannot determine or materially influence retail customer outcomes",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.106 · legal instrument",
+        "statement": "Obligations on firms in the distribution chain of a product must be interpreted reasonably, in a manner that reflects the firm's role in that distribution chain.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.14 G Obligations on firms in the distribution chain of a product must be interpreted reasonably, in a manner that reflects the firm's role in that",
+        "sourceSectionIds": [
+          "EVD-PDF-de58f8dec402b80d"
+        ],
+        "provisionReference": "PRIN 2A.1.14G",
+        "applicabilityConditions": "Applies to firms in the distribution chain of products to retail customers",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.107 · legal instrument",
+        "statement": "The extent of a firm's responsibilities under Principle 12 in any one case will turn on the substance of the firm's role in the arrangements relating to the product; a firm which determines or has a material influence over retail customer outcomes is accountable notwithstanding that the retail customer may not be its client due to the indirect nature of their relationship.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.15 G The extent of a firm's responsibilities under Principle 12 in any one case will turn on the substance of the firm's role in the arrangements relating to the product. A firm which determines or has a material influence over retail customer outcomes is accountable notwithstanding that the retail customer may not be its client due to the indirect nature of their relationship.",
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.1.15G",
+        "applicabilityConditions": "Applies to firms that determine or materially influence retail customer outcomes",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.107 · legal instrument",
+        "statement": "Given the high-level nature and breadth of application of the Principles, guidance about a Principle cannot exhaustively cover its implications.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.16 G Given the high-level nature and breadth of application of the Principles, guidance about a Principle cannot exhaustively cover its implications (see also",
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.1.16G",
+        "applicabilityConditions": "General guidance on interpretation of Principles",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.107 · legal instrument",
+        "statement": "In general terms, Principle 12 imposes a higher and more exacting standard of conduct in relation to a firm's retail market business relative to what Principles 6 or 7 would have otherwise required, with broader application and greater focus on consumer protection outcomes for retail customers including where those retail customers do not stand in a client relationship with that firm in the distribution chain.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.17 G (1) In general terms, Principle 12 imposes a higher and more exacting standard of conduct in relation to a firm's retail market business relative to what Principles 6 or 7 would have otherwise required. Principle 12 also has a broader application in relation to a firm's retail market business relative to Principles 6 and 7, with a greater focus on consumer protection outcomes for retail customers, including where those retail customers do not stand in a client relationship with that firm in the distribution chain.",
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.1.17G",
+        "applicabilityConditions": "Applies to firms subject to Principle 12 in relation to retail market business",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.107 · legal instrument",
+        "statement": "The effect of PRIN 3.2.10R is that the application of Principles 6 and 7 is unchanged with respect to a firm's activities insofar as they are not subject to Principle 12.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.1.18 G The effect of PRIN 3.2.10R is that the application of Principles 6 and 7 is unchanged with respect to a firm's activities insofar as they are not subject to Principle 12.",
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.1.18G",
+        "applicabilityConditions": "Applies to firm activities not subject to Principle 12",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.107 · legal instrument",
+        "statement": "A firm must act in good faith towards retail customers.",
+        "bindingNature": "consultation_proposal",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.2.1 R A firm must act in good faith towards retail customers.",
+        "sourceSectionIds": [
+          "EVD-PDF-eeb57e002ae9a20b"
+        ],
+        "provisionReference": "PRIN 2A.2.1R",
+        "_bindingNatureGuarded": "must_not_present_as_independent_binding",
+        "applicabilityConditions": "Applies to firms in relation to retail customers under Principle 12",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": true,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.109 · legal instrument",
+        "statement": "A firm must avoid causing foreseeable harm to retail customers.",
+        "bindingNature": "consultation_proposal",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.2.8 R A firm must avoid causing foreseeable harm to retail customers.",
+        "sourceSectionIds": [
+          "EVD-PDF-e695201ee6b9f0c6"
+        ],
+        "provisionReference": "PRIN 2A.2.8R",
+        "_bindingNatureGuarded": "must_not_present_as_independent_binding",
+        "applicabilityConditions": "Applies to firms in relation to retail customers under Principle 12",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": true,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.109 · legal instrument",
+        "statement": "Foreseeable harm may be caused by both act and omission, in a firm's direct relationship with a retail customer or through its role in the distribution chain even where another firm in that chain also contributes to the harm.",
+        "bindingNature": "consultation_proposal",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.2.9 R Foreseeable harm may be caused by both act and omission, in a firm's direct relationship with a retail customer or through its role in the distribution chain even where another firm in that chain also contributes to the harm.",
+        "sourceSectionIds": [
+          "EVD-PDF-e695201ee6b9f0c6"
+        ],
+        "provisionReference": "PRIN 2A.2.9R",
+        "_bindingNatureGuarded": "must_not_present_as_independent_binding",
+        "applicabilityConditions": "Applies to firms in relation to retail customers under Principle 12, including through distribution chain roles",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "EXCEPTION",
+          "provisionSetOutInQuotation": true,
+          "conversionEligibilityReasons": [
+            "provision_duty_language_unconfirmed"
+          ],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.109 · legal instrument",
+        "statement": "Avoiding causing foreseeable harm to retail customers includes: ensuring all aspects of the design, terms, marketing, sale of and support for products avoid causing foreseeable harm; ensuring that no aspect of business involves unfairly exploiting behavioural biases or characteristics of vulnerability; identifying potential harm from product withdrawal or changes; responding to emerging trends and FCA communications; and taking appropriate mitigating action.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.2.10 G Avoiding causing foreseeable harm to retail customers includes: (1) ensuring all aspects of the design, terms, marketing, sale of and support for its products avoid causing foreseeable harm; (2) ensuring that no aspect of its business involves unfairly exploiting behavioural biases displayed or characteristics of vulnerability held by retail customers; (3) identifying the potential for harm that might arise if it withdraws a product, its products change or its understanding about the impact on retail customers changes; (4) responding to emerging trends that identify new sources of harm, including FCA supervisory action and/or communications; and (5) taking appropriate action to mitigate the risk of actual or foreseeable harm",
+        "sourceSectionIds": [
+          "EVD-PDF-e695201ee6b9f0c6"
+        ],
+        "provisionReference": "PRIN 2A.2.10G",
+        "applicabilityConditions": "Applies to firms subject to the obligation to avoid causing foreseeable harm under PRIN 2A.2.8R",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      },
+      {
+        "citation": "PDF p.109 · legal instrument",
+        "statement": "A firm with an ongoing relationship with a retail customer in relation to a product would need to act to avoid causing foreseeable harm to that customer throughout the lifecycle of that product.",
+        "bindingNature": "guidance",
+        "effectiveDate": null,
+        "sourceQuotation": "2A.2.11 G A firm with an ongoing relationship with a retail customer in relation to a product would need to act to avoid causing foreseeable harm to that customer throughout the lifecycle of that product.",
+        "sourceSectionIds": [
+          "EVD-PDF-e695201ee6b9f0c6"
+        ],
+        "provisionReference": "PRIN 2A.2.11G",
+        "applicabilityConditions": "Applies to firms with ongoing relationships with retail customers in relation to products",
+        "_forgeniqRegulatoryGuard": {
+          "documentType": "consultation",
+          "inLegalInstrumentSection": true,
+          "provisionSetOutInSection": true,
+          "conversionEligibilityRoute": "OBLIGATION",
+          "provisionSetOutInQuotation": false,
+          "conversionEligibilityReasons": [],
+          "mustNotPresentAsIndependentBinding": true
+        }
+      }
+    ],
+    "confidence": 92,
+    "_normalizedAt": "2026-11-23T22:11:31.020Z",
+    "_normalizedSchema": "ObligationExtractionResult",
+    "_forgeniqGrounding": {
+      "kind": "pdf_primary_v1",
+      "pageCount": 161,
+      "selection": {
+        "scope": "PARTIAL_DOCUMENT",
+        "strategy": "instrument_priority_v1",
+        "maxSections": 18,
+        "documentPages": 161,
+        "selectedPages": [
+          104,
+          106,
+          107,
+          109
+        ],
+        "instrumentPages": 70,
+        "selectedSections": 4,
+        "truncatedSections": 0,
+        "documentCharacters": 349049,
+        "selectedCharacters": 8389,
+        "instrumentStartPage": 92,
+        "instrumentPagesSelected": 4,
+        "maxCharactersPerSection": 3200,
+        "characterCoveragePercent": 2.4,
+        "instrumentProvisionsSetOut": 242,
+        "instrumentProvisionsOmitted": [
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.2R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.3G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.4G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.5G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.6G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105,
+              136
+            ],
+            "provision": "2A.7.5G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.7R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.8G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              105
+            ],
+            "provision": "2A.1.9G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              108
+            ],
+            "provision": "2A.2.2R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              108
+            ],
+            "provision": "2A.2.3G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              108
+            ],
+            "provision": "2A.2.4G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              108
+            ],
+            "provision": "2A.2.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              108
+            ],
+            "provision": "2A.2.6R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              108
+            ],
+            "provision": "2A.2.7G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              110
+            ],
+            "provision": "2A.2.14R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              110
+            ],
+            "provision": "2A.2.15G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              110
+            ],
+            "provision": "2A.2.16G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              110
+            ],
+            "provision": "2A.2.17G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              110
+            ],
+            "provision": "2A.2.18G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              110
+            ],
+            "provision": "2A.2.19G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              110
+            ],
+            "provision": "2A.2.20G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              111
+            ],
+            "provision": "2A.2.21G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              111
+            ],
+            "provision": "2A.2.22G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              111
+            ],
+            "provision": "2A.2.23G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              112
+            ],
+            "provision": "2A.2.24G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              112
+            ],
+            "provision": "2A.2.25G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              112
+            ],
+            "provision": "2A.2.26R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              112
+            ],
+            "provision": "2A.2.27G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              112
+            ],
+            "provision": "2A.2.28G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              112
+            ],
+            "provision": "2A.3.1G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              112
+            ],
+            "provision": "2A.3.2R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              112
+            ],
+            "provision": "2A.3.3G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              113
+            ],
+            "provision": "2A.3.4R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              113
+            ],
+            "provision": "2A.3.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              114,
+              118
+            ],
+            "provision": "2A.3.6R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              114
+            ],
+            "provision": "2A.3.7R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              114
+            ],
+            "provision": "2A.3.8R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              114
+            ],
+            "provision": "2A.3.9R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              114,
+              115
+            ],
+            "provision": "2A.3.10R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              115
+            ],
+            "provision": "2A.3.11R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              115
+            ],
+            "provision": "2A.3.12R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              115
+            ],
+            "provision": "2A.3.13R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              116
+            ],
+            "provision": "2A.3.14R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              116
+            ],
+            "provision": "2A.3.15G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              116
+            ],
+            "provision": "2A.3.16R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              116
+            ],
+            "provision": "2A.3.17R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              117
+            ],
+            "provision": "2A.3.18R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              117
+            ],
+            "provision": "2A.3.19R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              117
+            ],
+            "provision": "2A.3.20R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              117
+            ],
+            "provision": "2A.3.21R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              117
+            ],
+            "provision": "2A.3.22G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              117,
+              118
+            ],
+            "provision": "2A.3.23G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              118
+            ],
+            "provision": "2A.3.24R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              118
+            ],
+            "provision": "2A.3.25G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              118
+            ],
+            "provision": "2A.3.26R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              118
+            ],
+            "provision": "2A.3.27G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              118
+            ],
+            "provision": "2A.3.28R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              118
+            ],
+            "provision": "2A.3.29G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              119
+            ],
+            "provision": "2A.3.30E",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              119
+            ],
+            "provision": "2A.4.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              119,
+              126
+            ],
+            "provision": "2A.4.2R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              119
+            ],
+            "provision": "2A.4.3R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              120,
+              126
+            ],
+            "provision": "2A.4.4G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              120
+            ],
+            "provision": "2A.4.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              120,
+              126
+            ],
+            "provision": "2A.4.6G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              120
+            ],
+            "provision": "2A.4.7R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              120,
+              121,
+              126
+            ],
+            "provision": "2A.4.8R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              121
+            ],
+            "provision": "2A.4.9G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              121
+            ],
+            "provision": "2A.4.10G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              121
+            ],
+            "provision": "2A.4.11G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              122,
+              126
+            ],
+            "provision": "2A.4.12G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              122
+            ],
+            "provision": "2A.4.13R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              122
+            ],
+            "provision": "2A.4.14R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              122
+            ],
+            "provision": "2A.4.15R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              122
+            ],
+            "provision": "2A.4.16R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              123
+            ],
+            "provision": "2A.4.17R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              123
+            ],
+            "provision": "2A.4.18R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              123
+            ],
+            "provision": "2A.4.19R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              123,
+              126
+            ],
+            "provision": "2A.4.20R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              124
+            ],
+            "provision": "2A.4.21R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              124
+            ],
+            "provision": "2A.4.22G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              124
+            ],
+            "provision": "2A.4.23G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              124
+            ],
+            "provision": "2A.4.24R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              124,
+              126
+            ],
+            "provision": "2A.4.25R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              124
+            ],
+            "provision": "2A.4.26R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              124
+            ],
+            "provision": "2A.4.27R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              125
+            ],
+            "provision": "2A.4.28G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              125,
+              126
+            ],
+            "provision": "2A.4.29R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              125
+            ],
+            "provision": "2A.4.30G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              125,
+              126
+            ],
+            "provision": "2A.4.31G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              125
+            ],
+            "provision": "2A.4.32R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              126
+            ],
+            "provision": "6.6.26G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              126
+            ],
+            "provision": "8.5.22R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              126
+            ],
+            "provision": "15.7.24R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              126
+            ],
+            "provision": "2A.4.33R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              126
+            ],
+            "provision": "2A.4.34R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              126
+            ],
+            "provision": "2A.4.35E",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              126,
+              127
+            ],
+            "provision": "2A.4.36R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              127
+            ],
+            "provision": "2A.5.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              127
+            ],
+            "provision": "2A.5.2G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              127,
+              128
+            ],
+            "provision": "2A.5.3R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              128
+            ],
+            "provision": "2A.5.4R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              128
+            ],
+            "provision": "2A.5.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              128
+            ],
+            "provision": "2A.5.6R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              128
+            ],
+            "provision": "2A.5.7G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              129
+            ],
+            "provision": "2A.5.8R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              129
+            ],
+            "provision": "2A.5.9R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              129
+            ],
+            "provision": "2A.5.10R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              130
+            ],
+            "provision": "2A.5.11G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              130
+            ],
+            "provision": "2A.5.12G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              130
+            ],
+            "provision": "2A.5.13G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              131
+            ],
+            "provision": "2A.5.14R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              131
+            ],
+            "provision": "2A.5.15R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              131
+            ],
+            "provision": "2A.6.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              132
+            ],
+            "provision": "2A.6.2R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              132
+            ],
+            "provision": "2A.6.3G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              133
+            ],
+            "provision": "2A.6.4G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              133
+            ],
+            "provision": "2A.6.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              133
+            ],
+            "provision": "2A.6.6R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              134
+            ],
+            "provision": "2A.7.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              134
+            ],
+            "provision": "2A.7.2G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              135
+            ],
+            "provision": "2A.7.3G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              135
+            ],
+            "provision": "2A.7.4G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              136
+            ],
+            "provision": "2A.8.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              136
+            ],
+            "provision": "2A.8.2G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              136
+            ],
+            "provision": "2A.8.3R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              136
+            ],
+            "provision": "2A.8.4R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              137,
+              150
+            ],
+            "provision": "2A.8.5R",
+            "textStatus": [
+              "NEW_TEXT",
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              137
+            ],
+            "provision": "2A.9.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              137
+            ],
+            "provision": "2A.9.2G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              137
+            ],
+            "provision": "2A.9.3G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              137
+            ],
+            "provision": "2A.9.4G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              138
+            ],
+            "provision": "2A.9.5G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              138
+            ],
+            "provision": "2A.9.6G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              138
+            ],
+            "provision": "2A.9.7G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              138
+            ],
+            "provision": "2A.9.8R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              138
+            ],
+            "provision": "2A.9.9R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              138
+            ],
+            "provision": "2A.9.10R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              139
+            ],
+            "provision": "2A.9.11R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              139
+            ],
+            "provision": "2A.9.12R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              139
+            ],
+            "provision": "2A.9.13G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              139
+            ],
+            "provision": "2A.9.14G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              139
+            ],
+            "provision": "2A.9.15G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              139
+            ],
+            "provision": "2A.9.17R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              140
+            ],
+            "provision": "2A.10.1G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              140,
+              141
+            ],
+            "provision": "2A.10.2R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              142
+            ],
+            "provision": "2A.10.3R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              142
+            ],
+            "provision": "2A.10.4G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              142
+            ],
+            "provision": "2A.10.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              142
+            ],
+            "provision": "2A.11.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              142
+            ],
+            "provision": "2A.11.2R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              143
+            ],
+            "provision": "2A.11.3G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              143
+            ],
+            "provision": "2A.11.4R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              143
+            ],
+            "provision": "2A.11.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              144
+            ],
+            "provision": "3.1.6R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              144
+            ],
+            "provision": "3.1.7G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              144
+            ],
+            "provision": "3.1.8R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              144
+            ],
+            "provision": "3.1.10R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              144
+            ],
+            "provision": "3.1.12R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              144
+            ],
+            "provision": "3.1.13R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              144
+            ],
+            "provision": "3.2.1AR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              145
+            ],
+            "provision": "3.2.6R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              145
+            ],
+            "provision": "3.2.7R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              145
+            ],
+            "provision": "3.2.8R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              145
+            ],
+            "provision": "3.2.9G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              145
+            ],
+            "provision": "3.2.10R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              145
+            ],
+            "provision": "3.2.11G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              145
+            ],
+            "provision": "3.2.12G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              145
+            ],
+            "provision": "3.3.1R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              146
+            ],
+            "provision": "3.4.3AR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              147
+            ],
+            "provision": "4.1.1G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              147
+            ],
+            "provision": "4.1.2G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              147,
+              149
+            ],
+            "provision": "4.1.4G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              151
+            ],
+            "provision": "1.1.3R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              151
+            ],
+            "provision": "1.1.5G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              151
+            ],
+            "provision": "1.1.5AR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              151
+            ],
+            "provision": "1.1.5BR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              151,
+              152
+            ],
+            "provision": "1.1.5CG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              152
+            ],
+            "provision": "1.1.7R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              152
+            ],
+            "provision": "1.1.7AR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              152
+            ],
+            "provision": "1.1.7BR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              152
+            ],
+            "provision": "1.1.7CR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              152
+            ],
+            "provision": "1.1.7DG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              152,
+              153
+            ],
+            "provision": "1.1.7ER",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              153
+            ],
+            "provision": "1.1.8G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              153
+            ],
+            "provision": "1.1.8BR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              153
+            ],
+            "provision": "1.1.11BG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              153
+            ],
+            "provision": "1.1.11CR",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              153
+            ],
+            "provision": "1.1.11DG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              153
+            ],
+            "provision": "2.1.5R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              153
+            ],
+            "provision": "2.1.6R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.1R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.2R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.3R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.4G",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.5R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.6R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.7R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.8R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              154
+            ],
+            "provision": "2.4.9R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              155
+            ],
+            "provision": "2.4.10R",
+            "textStatus": [
+              "NEW_TEXT"
+            ]
+          },
+          {
+            "pages": [
+              155
+            ],
+            "provision": "4.1.18G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              155
+            ],
+            "provision": "4.1.20G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              155
+            ],
+            "provision": "4.1.21G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              156
+            ],
+            "provision": "4.1.22G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              156
+            ],
+            "provision": "4.1.23G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              156
+            ],
+            "provision": "4.1.24G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              156
+            ],
+            "provision": "4.1.25G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              156
+            ],
+            "provision": "4.1.26G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              156
+            ],
+            "provision": "4.1.27G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              156
+            ],
+            "provision": "4.1.28G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              156,
+              157
+            ],
+            "provision": "4.1.29G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              157
+            ],
+            "provision": "4.1.30G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              157
+            ],
+            "provision": "4.1.31G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              157
+            ],
+            "provision": "4.1.32G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              158
+            ],
+            "provision": "4.1.33G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              158
+            ],
+            "provision": "4.1.34G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              158
+            ],
+            "provision": "4.1.35G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              158
+            ],
+            "provision": "4.2.30G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              158
+            ],
+            "provision": "4.2.31G",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              159
+            ],
+            "provision": "2.2.35AG",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          },
+          {
+            "pages": [
+              160
+            ],
+            "provision": "1.3.2R",
+            "textStatus": [
+              "AMENDMENT_MARKUP_UNCERTAIN"
+            ]
+          }
+        ],
+        "suppliedProvisionTextStatus": {
+          "NEW_TEXT": 16,
+          "AMENDMENT_MARKUP_UNCERTAIN": 2
+        },
+        "instrumentProvisionsSupplied": 18,
+        "instrumentProvisionsNotSupplied": [
+          "2A.1.1R",
+          "2A.1.2R",
+          "2A.1.3G",
+          "2A.1.4G",
+          "2A.1.5G",
+          "2A.1.6G",
+          "2A.7.5G",
+          "2A.1.7R",
+          "2A.1.8G",
+          "2A.1.9G",
+          "2A.2.2R",
+          "2A.2.3G",
+          "2A.2.4G",
+          "2A.2.5R",
+          "2A.2.6R",
+          "2A.2.7G",
+          "2A.2.14R",
+          "2A.2.15G",
+          "2A.2.16G",
+          "2A.2.17G",
+          "2A.2.18G",
+          "2A.2.19G",
+          "2A.2.20G",
+          "2A.2.21G",
+          "2A.2.22G",
+          "2A.2.23G",
+          "2A.2.24G",
+          "2A.2.25G",
+          "2A.2.26R",
+          "2A.2.27G",
+          "2A.2.28G",
+          "2A.3.1G",
+          "2A.3.2R",
+          "2A.3.3G",
+          "2A.3.4R",
+          "2A.3.5R",
+          "2A.3.6R",
+          "2A.3.7R",
+          "2A.3.8R",
+          "2A.3.9R",
+          "2A.3.10R",
+          "2A.3.11R",
+          "2A.3.12R",
+          "2A.3.13R",
+          "2A.3.14R",
+          "2A.3.15G",
+          "2A.3.16R",
+          "2A.3.17R",
+          "2A.3.18R",
+          "2A.3.19R",
+          "2A.3.20R",
+          "2A.3.21R",
+          "2A.3.22G",
+          "2A.3.23G",
+          "2A.3.24R",
+          "2A.3.25G",
+          "2A.3.26R",
+          "2A.3.27G",
+          "2A.3.28R",
+          "2A.3.29G",
+          "2A.3.30E",
+          "2A.4.1R",
+          "2A.4.2R",
+          "2A.4.3R",
+          "2A.4.4G",
+          "2A.4.5R",
+          "2A.4.6G",
+          "2A.4.7R",
+          "2A.4.8R",
+          "2A.4.9G",
+          "2A.4.10G",
+          "2A.4.11G",
+          "2A.4.12G",
+          "2A.4.13R",
+          "2A.4.14R",
+          "2A.4.15R",
+          "2A.4.16R",
+          "2A.4.17R",
+          "2A.4.18R",
+          "2A.4.19R",
+          "2A.4.20R",
+          "2A.4.21R",
+          "2A.4.22G",
+          "2A.4.23G",
+          "2A.4.24R",
+          "2A.4.25R",
+          "2A.4.26R",
+          "2A.4.27R",
+          "2A.4.28G",
+          "2A.4.29R",
+          "2A.4.30G",
+          "2A.4.31G",
+          "2A.4.32R",
+          "6.6.26G",
+          "8.5.22R",
+          "15.7.24R",
+          "2A.4.33R",
+          "2A.4.34R",
+          "2A.4.35E",
+          "2A.4.36R",
+          "2A.5.1R",
+          "2A.5.2G",
+          "2A.5.3R",
+          "2A.5.4R",
+          "2A.5.5R",
+          "2A.5.6R",
+          "2A.5.7G",
+          "2A.5.8R",
+          "2A.5.9R",
+          "2A.5.10R",
+          "2A.5.11G",
+          "2A.5.12G",
+          "2A.5.13G",
+          "2A.5.14R",
+          "2A.5.15R",
+          "2A.6.1R",
+          "2A.6.2R",
+          "2A.6.3G",
+          "2A.6.4G",
+          "2A.6.5R",
+          "2A.6.6R",
+          "2A.7.1R",
+          "2A.7.2G",
+          "2A.7.3G",
+          "2A.7.4G",
+          "2A.8.1R",
+          "2A.8.2G",
+          "2A.8.3R",
+          "2A.8.4R",
+          "2A.8.5R",
+          "2A.9.1R",
+          "2A.9.2G",
+          "2A.9.3G",
+          "2A.9.4G",
+          "2A.9.5G",
+          "2A.9.6G",
+          "2A.9.7G",
+          "2A.9.8R",
+          "2A.9.9R",
+          "2A.9.10R",
+          "2A.9.11R",
+          "2A.9.12R",
+          "2A.9.13G",
+          "2A.9.14G",
+          "2A.9.15G",
+          "2A.9.17R",
+          "2A.10.1G",
+          "2A.10.2R",
+          "2A.10.3R",
+          "2A.10.4G",
+          "2A.10.5R",
+          "2A.11.1R",
+          "2A.11.2R",
+          "2A.11.3G",
+          "2A.11.4R",
+          "2A.11.5R",
+          "3.1.6R",
+          "3.1.7G",
+          "3.1.8R",
+          "3.1.10R",
+          "3.1.12R",
+          "3.1.13R",
+          "3.2.1AR",
+          "3.2.6R",
+          "3.2.7R",
+          "3.2.8R",
+          "3.2.9G",
+          "3.2.10R",
+          "3.2.11G",
+          "3.2.12G",
+          "3.3.1R",
+          "3.4.3AR",
+          "4.1.1G",
+          "4.1.2G",
+          "4.1.4G",
+          "1.1.3R",
+          "1.1.5G",
+          "1.1.5AR",
+          "1.1.5BR",
+          "1.1.5CG",
+          "1.1.7R",
+          "1.1.7AR",
+          "1.1.7BR",
+          "1.1.7CR",
+          "1.1.7DG",
+          "1.1.7ER",
+          "1.1.8G",
+          "1.1.8BR",
+          "1.1.11BG",
+          "1.1.11CR",
+          "1.1.11DG",
+          "2.1.5R",
+          "2.1.6R",
+          "2.4.1R",
+          "2.4.2R",
+          "2.4.3R",
+          "2.4.4G",
+          "2.4.5R",
+          "2.4.6R",
+          "2.4.7R",
+          "2.4.8R",
+          "2.4.9R",
+          "2.4.10R",
+          "4.1.18G",
+          "4.1.20G",
+          "4.1.21G",
+          "4.1.22G",
+          "4.1.23G",
+          "4.1.24G",
+          "4.1.25G",
+          "4.1.26G",
+          "4.1.27G",
+          "4.1.28G",
+          "4.1.29G",
+          "4.1.30G",
+          "4.1.31G",
+          "4.1.32G",
+          "4.1.33G",
+          "4.1.34G",
+          "4.1.35G",
+          "4.2.30G",
+          "4.2.31G",
+          "2.2.35AG",
+          "1.3.2R"
+        ]
+      },
+      "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "sectionCatalog": [
+        {
+          "excerpt": "FCA 2022/31 Page 12 of 68 Annex B Amendments to the Principles for Businesses (PRIN) In this Annex, underlining indicates new text and striking through indicates deleted text, unless otherwise stated. 1 Introduction ... 1.2 Clients and the Principles Characteristics of the client 1.2.1 G Principles 6 (Customers’ interests), 7 (Communications with clients), 8 (Conflicts of interest), 9 (Customers: relationships of trust) and, 10 (Clients’ assets) and 12 (Consumer Duty) impose requirements on firms expressly in relation to their clients or customers. These requirements depend, in part, on the ch",
+          "citation": "PDF p.104 · legal instrument",
+          "pageNumber": 104,
+          "sourceSectionId": "EVD-PDF-1001db65022f8f2c",
+          "provisionsSetOut": [
+            "1.2.1G",
+            "2.1.1R"
+          ],
+          "sectionReference": null,
+          "inLegalInstrument": true,
+          "provisionTextStatus": {
+            "1.2.1G": "AMENDMENT_MARKUP_UNCERTAIN",
+            "2.1.1R": "AMENDMENT_MARKUP_UNCERTAIN"
+          },
+          "transitionalProvisions": false
+        },
+        {
+          "excerpt": "FCA 2022/31 Page 14 of 68 (3) that they may lack experience or expertise in relation to products offered through retail market business; and (4) that there are frequently information asymmetries involved in retail market business. 2A.1.10 G (1) The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers. (2) The main elements of firms’ conduct obligations under Principle 12 and PRIN 2A are set out in PRIN 2A.3 to PRIN 2A.11. (3) The retail customer outcome rules and guidance at PRIN 2A.3 to ",
+          "citation": "PDF p.106 · legal instrument",
+          "pageNumber": 106,
+          "sourceSectionId": "EVD-PDF-de58f8dec402b80d",
+          "provisionsSetOut": [
+            "2A.1.10G",
+            "2A.1.11G",
+            "2A.1.12G",
+            "2A.1.13G",
+            "2A.1.14G"
+          ],
+          "sectionReference": null,
+          "inLegalInstrument": true,
+          "provisionTextStatus": {
+            "2A.1.10G": "NEW_TEXT",
+            "2A.1.11G": "NEW_TEXT",
+            "2A.1.12G": "NEW_TEXT",
+            "2A.1.13G": "NEW_TEXT",
+            "2A.1.14G": "NEW_TEXT"
+          },
+          "transitionalProvisions": false
+        },
+        {
+          "excerpt": "FCA 2022/31 Page 15 of 68 distribution chain and the degree to which it can determine or materially influence retail customer outcomes. 2A.1.15 G The extent of a firm’s responsibilities under Principle 12 in any one case will turn on the substance of the firm’s role in the arrangements relating to the product. A firm which determines or has a material influence over retail customer outcomes is accountable notwithstanding that the retail customer may not be its client due to the indirect nature of their relationship. Relevance of guidance about Principles 6 and 7 2A.1.16 G Given the high-level ",
+          "citation": "PDF p.107 · legal instrument",
+          "pageNumber": 107,
+          "sourceSectionId": "EVD-PDF-eeb57e002ae9a20b",
+          "provisionsSetOut": [
+            "2A.1.15G",
+            "2A.1.16G",
+            "2A.1.17G",
+            "2A.1.18G",
+            "2A.2.1R"
+          ],
+          "sectionReference": null,
+          "inLegalInstrument": true,
+          "provisionTextStatus": {
+            "2A.2.1R": "NEW_TEXT",
+            "2A.1.15G": "NEW_TEXT",
+            "2A.1.16G": "NEW_TEXT",
+            "2A.1.17G": "NEW_TEXT",
+            "2A.1.18G": "NEW_TEXT"
+          },
+          "transitionalProvisions": false
+        },
+        {
+          "excerpt": "FCA 2022/31 Page 17 of 68 2A.2.8 R A firm must avoid causing foreseeable harm to retail customers. 2A.2.9 R Foreseeable harm may be caused by both act and omission, in a firm’s direct relationship with a retail customer or through its role in the distribution chain even where another firm in that chain also contributes to the harm. 2A.2.10 G Avoiding causing foreseeable harm to retail customers includes: (1) ensuring all aspects of the design, terms, marketing, sale of and support for its products avoid causing foreseeable harm; (2) ensuring that no aspect of its business involves unfairly exp",
+          "citation": "PDF p.109 · legal instrument",
+          "pageNumber": 109,
+          "sourceSectionId": "EVD-PDF-e695201ee6b9f0c6",
+          "provisionsSetOut": [
+            "2A.2.8R",
+            "2A.2.9R",
+            "2A.2.10G",
+            "2A.2.11G",
+            "2A.2.12G",
+            "2A.2.13G"
+          ],
+          "sectionReference": null,
+          "inLegalInstrument": true,
+          "provisionTextStatus": {
+            "2A.2.8R": "NEW_TEXT",
+            "2A.2.9R": "NEW_TEXT",
+            "2A.2.10G": "NEW_TEXT",
+            "2A.2.11G": "NEW_TEXT",
+            "2A.2.12G": "NEW_TEXT",
+            "2A.2.13G": "NEW_TEXT"
+          },
+          "transitionalProvisions": false
+        }
+      ],
+      "extractionBatch": {
+        "stalled": false,
+        "estimate": {
+          "estimatedTokens": 2098,
+          "outputPreflight": {
+            "ok": true,
+            "provisionCap": 16,
+            "estimateTokens": 2820,
+            "maxOutputTokens": 8192,
+            "targetProvisionCount": 16
+          },
+          "selectedCharacters": 8389,
+          "maxCharactersPerSection": 3200
+        },
+        "batchIndex": 0,
+        "planVersion": "instrument_coverage_v2",
+        "analysisScope": "FULL_INSTRUMENT_PROVISIONS",
+        "publicationCoverageComplete": true,
+        "instrumentProvisionsOutstanding": [
+          "2A.2.12G",
+          "2A.2.13G",
+          "2A.2.14R",
+          "2A.2.15G",
+          "2A.2.16G",
+          "2A.2.17G",
+          "2A.2.18G",
+          "2A.2.19G",
+          "2A.2.20G",
+          "2A.2.21G",
+          "2A.2.22G",
+          "2A.2.23G",
+          "2A.2.24G",
+          "2A.2.25G",
+          "2A.2.26R",
+          "2A.2.27G",
+          "2A.2.28G",
+          "2A.3.1G",
+          "2A.3.2R",
+          "2A.3.3G",
+          "2A.3.4R",
+          "2A.3.5R",
+          "2A.4.9G",
+          "2A.4.10G",
+          "2A.4.11G",
+          "2A.4.28G",
+          "2A.4.29R",
+          "2A.4.30G",
+          "2A.4.31G",
+          "2A.4.32R",
+          "6.6.26G",
+          "8.5.22R",
+          "15.7.24R",
+          "2A.4.33R",
+          "2A.4.34R",
+          "2A.4.35E",
+          "2A.4.36R",
+          "2A.5.1R",
+          "2A.5.2G",
+          "2A.5.3R",
+          "2A.5.4R",
+          "2A.5.5R",
+          "2A.5.6R",
+          "2A.5.7G",
+          "2A.5.8R",
+          "2A.5.9R",
+          "2A.5.10R",
+          "2A.5.11G",
+          "2A.5.12G",
+          "2A.5.13G",
+          "2A.5.14R",
+          "2A.5.15R",
+          "2A.6.1R",
+          "2A.6.2R",
+          "2A.6.3G",
+          "2A.6.4G",
+          "2A.6.5R",
+          "2A.6.6R",
+          "2A.7.1R",
+          "2A.7.2G",
+          "2A.7.3G",
+          "2A.7.4G",
+          "2A.8.1R",
+          "2A.8.2G",
+          "2A.8.3R",
+          "2A.8.4R",
+          "2A.8.5R",
+          "2A.9.1R",
+          "2A.9.2G",
+          "2A.9.3G",
+          "2A.9.4G",
+          "2A.9.5G",
+          "2A.9.6G",
+          "2A.9.7G",
+          "2A.9.8R",
+          "2A.9.9R",
+          "2A.9.10R",
+          "2A.9.11R",
+          "2A.9.12R",
+          "2A.9.13G",
+          "2A.9.14G",
+          "2A.9.15G",
+          "2A.9.17R",
+          "2A.10.1G",
+          "2A.10.2R",
+          "2A.10.3R",
+          "2A.10.4G",
+          "2A.10.5R",
+          "2A.11.1R",
+          "2A.11.2R",
+          "2A.11.3G",
+          "2A.11.4R",
+          "2A.11.5R",
+          "3.1.6R",
+          "3.1.7G",
+          "3.1.8R",
+          "3.1.10R",
+          "3.1.12R",
+          "3.1.13R",
+          "3.2.1AR",
+          "3.2.6R",
+          "3.2.7R",
+          "3.2.8R",
+          "3.2.9G",
+          "3.2.10R",
+          "3.2.11G",
+          "3.2.12G",
+          "3.3.1R",
+          "3.4.3AR",
+          "4.1.1G",
+          "4.1.2G",
+          "4.1.4G",
+          "1.1.3R",
+          "1.1.5G",
+          "1.1.5AR",
+          "1.1.5BR",
+          "1.1.5CG",
+          "1.1.7R",
+          "1.1.7AR",
+          "1.1.7BR",
+          "1.1.7CR",
+          "1.1.7DG",
+          "1.1.7ER",
+          "1.1.8G",
+          "1.1.8BR",
+          "1.1.11BG",
+          "1.1.11CR",
+          "1.1.11DG",
+          "2.1.5R",
+          "2.1.6R",
+          "2.4.1R",
+          "2.4.2R",
+          "2.4.3R",
+          "2.4.4G",
+          "2.4.5R",
+          "2.4.6R",
+          "2.4.7R",
+          "2.4.8R",
+          "2.4.9R",
+          "2.4.10R",
+          "4.1.18G",
+          "4.1.20G",
+          "4.1.21G",
+          "4.1.22G",
+          "4.1.23G",
+          "4.1.24G",
+          "4.1.25G",
+          "4.1.26G",
+          "4.1.27G",
+          "4.1.28G",
+          "4.1.29G",
+          "4.1.30G",
+          "4.1.31G",
+          "4.1.32G",
+          "4.1.33G",
+          "4.1.34G",
+          "4.1.35G",
+          "4.2.30G",
+          "4.2.31G",
+          "2.2.35AG",
+          "1.3.2R"
+        ],
+        "instrumentProvisionsNewlySupplied": [
+          "1.2.1G",
+          "2.1.1R",
+          "2A.1.10G",
+          "2A.1.11G",
+          "2A.1.12G",
+          "2A.1.13G",
+          "2A.1.14G",
+          "2A.1.15G",
+          "2A.1.16G",
+          "2A.1.17G",
+          "2A.1.18G",
+          "2A.2.1R",
+          "2A.2.8R",
+          "2A.2.9R",
+          "2A.2.10G",
+          "2A.2.11G"
+        ]
+      },
+      "provisionInventory": {
+        "outcomes": {
+          "suppliedCount": 18,
+          "identifiedCount": 242,
+          "outputPreflight": {
+            "ok": true,
+            "estimateTokens": 2820,
+            "maxOutputTokens": 8192
+          },
+          "unresolvedCores": [
+            "1.1.11BG",
+            "1.1.11CR",
+            "1.1.11DG",
+            "1.1.3R",
+            "1.1.5AR",
+            "1.1.5BR",
+            "1.1.5CG",
+            "1.1.5G",
+            "1.1.7AR",
+            "1.1.7BR",
+            "1.1.7CR",
+            "1.1.7DG",
+            "1.1.7ER",
+            "1.1.7R",
+            "1.1.8BR",
+            "1.1.8G",
+            "1.3.2R",
+            "15.7.24R",
+            "2.1.5R",
+            "2.1.6R",
+            "2.2.35AG",
+            "2.4.10R",
+            "2.4.1R",
+            "2.4.2R",
+            "2.4.3R",
+            "2.4.4G",
+            "2.4.5R",
+            "2.4.6R",
+            "2.4.7R",
+            "2.4.8R",
+            "2.4.9R",
+            "2A.1.1R",
+            "2A.1.2R",
+            "2A.1.3G",
+            "2A.1.4G",
+            "2A.1.5G",
+            "2A.1.6G",
+            "2A.1.7R",
+            "2A.1.8G",
+            "2A.1.9G",
+            "2A.10.1G",
+            "2A.10.2R",
+            "2A.10.3R",
+            "2A.10.4G",
+            "2A.10.5R",
+            "2A.11.1R",
+            "2A.11.2R",
+            "2A.11.3G",
+            "2A.11.4R",
+            "2A.11.5R",
+            "2A.2.14R",
+            "2A.2.15G",
+            "2A.2.16G",
+            "2A.2.17G",
+            "2A.2.18G",
+            "2A.2.19G",
+            "2A.2.20G",
+            "2A.2.21G",
+            "2A.2.22G",
+            "2A.2.23G",
+            "2A.2.24G",
+            "2A.2.25G",
+            "2A.2.26R",
+            "2A.2.27G",
+            "2A.2.28G",
+            "2A.2.2R",
+            "2A.2.3G",
+            "2A.2.4G",
+            "2A.2.5R",
+            "2A.2.6R",
+            "2A.2.7G",
+            "2A.3.10R",
+            "2A.3.11R",
+            "2A.3.12R",
+            "2A.3.13R",
+            "2A.3.14R",
+            "2A.3.15G",
+            "2A.3.16R",
+            "2A.3.17R",
+            "2A.3.18R",
+            "2A.3.19R",
+            "2A.3.1G",
+            "2A.3.20R",
+            "2A.3.21R",
+            "2A.3.22G",
+            "2A.3.23G",
+            "2A.3.24R",
+            "2A.3.25G",
+            "2A.3.26R",
+            "2A.3.27G",
+            "2A.3.28R",
+            "2A.3.29G",
+            "2A.3.2R",
+            "2A.3.30E",
+            "2A.3.3G",
+            "2A.3.4R",
+            "2A.3.5R",
+            "2A.3.6R",
+            "2A.3.7R",
+            "2A.3.8R",
+            "2A.3.9R",
+            "2A.4.10G",
+            "2A.4.11G",
+            "2A.4.12G",
+            "2A.4.13R",
+            "2A.4.14R",
+            "2A.4.15R",
+            "2A.4.16R",
+            "2A.4.17R",
+            "2A.4.18R",
+            "2A.4.19R",
+            "2A.4.1R",
+            "2A.4.20R",
+            "2A.4.21R",
+            "2A.4.22G",
+            "2A.4.23G",
+            "2A.4.24R",
+            "2A.4.25R",
+            "2A.4.26R",
+            "2A.4.27R",
+            "2A.4.28G",
+            "2A.4.29R",
+            "2A.4.2R",
+            "2A.4.30G",
+            "2A.4.31G",
+            "2A.4.32R",
+            "2A.4.33R",
+            "2A.4.34R",
+            "2A.4.35E",
+            "2A.4.36R",
+            "2A.4.3R",
+            "2A.4.4G",
+            "2A.4.5R",
+            "2A.4.6G",
+            "2A.4.7R",
+            "2A.4.8R",
+            "2A.4.9G",
+            "2A.5.10R",
+            "2A.5.11G",
+            "2A.5.12G",
+            "2A.5.13G",
+            "2A.5.14R",
+            "2A.5.15R",
+            "2A.5.1R",
+            "2A.5.2G",
+            "2A.5.3R",
+            "2A.5.4R",
+            "2A.5.5R",
+            "2A.5.6R",
+            "2A.5.7G",
+            "2A.5.8R",
+            "2A.5.9R",
+            "2A.6.1R",
+            "2A.6.2R",
+            "2A.6.3G",
+            "2A.6.4G",
+            "2A.6.5R",
+            "2A.6.6R",
+            "2A.7.1R",
+            "2A.7.2G",
+            "2A.7.3G",
+            "2A.7.4G",
+            "2A.7.5G",
+            "2A.8.1R",
+            "2A.8.2G",
+            "2A.8.3R",
+            "2A.8.4R",
+            "2A.8.5R",
+            "2A.9.10R",
+            "2A.9.11R",
+            "2A.9.12R",
+            "2A.9.13G",
+            "2A.9.14G",
+            "2A.9.15G",
+            "2A.9.17R",
+            "2A.9.1R",
+            "2A.9.2G",
+            "2A.9.3G",
+            "2A.9.4G",
+            "2A.9.5G",
+            "2A.9.6G",
+            "2A.9.7G",
+            "2A.9.8R",
+            "2A.9.9R",
+            "3.1.10R",
+            "3.1.12R",
+            "3.1.13R",
+            "3.1.6R",
+            "3.1.7G",
+            "3.1.8R",
+            "3.2.10R",
+            "3.2.11G",
+            "3.2.12G",
+            "3.2.1AR",
+            "3.2.6R",
+            "3.2.7R",
+            "3.2.8R",
+            "3.2.9G",
+            "3.3.1R",
+            "3.4.3AR",
+            "4.1.18G",
+            "4.1.1G",
+            "4.1.20G",
+            "4.1.21G",
+            "4.1.22G",
+            "4.1.23G",
+            "4.1.24G",
+            "4.1.25G",
+            "4.1.26G",
+            "4.1.27G",
+            "4.1.28G",
+            "4.1.29G",
+            "4.1.2G",
+            "4.1.30G",
+            "4.1.31G",
+            "4.1.32G",
+            "4.1.33G",
+            "4.1.34G",
+            "4.1.35G",
+            "4.1.4G",
+            "4.2.30G",
+            "4.2.31G",
+            "6.6.26G",
+            "8.5.22R"
+          ],
+          "provisionScopedExtraction": {
+            "policy": "Each provisionCore in targetCores must receive an explicit assessment in candidates[] (provisionReference + sourceQuotation from authoritativeExcerpt only). A completed batch without an assessment for every supplied core is invalid.",
+            "excerpts": [
+              {
+                "pages": [
+                  104
+                ],
+                "provisionCore": "1.2.1G",
+                "authoritativeExcerpt": "1.2.1 G Principles 6 (Customers’ interests), 7 (Communications with clients), 8 (Conflicts of interest), 9 (Customers: relationships of trust) and, 10 (Clients’ assets) and 12 (Consumer Duty) impose requirements on firms expressly in relation to their clients or customers. These requirements depend, in part, on the characteristics of the client or customer concerned. This is because what is “due regard” (in Principles 6 and 7), “fairly” (in Principles 6 and 8), “clear, fair a"
+              },
+              {
+                "pages": [
+                  104
+                ],
+                "provisionCore": "2.1.1R",
+                "authoritativeExcerpt": "2.1.1 R The Principles ... 12 Consumer Duty A firm must act to deliver good outcomes for retail customers. Insert the following new chapter PRIN 2A, after PRIN 2 (The Principles). All of the text is new and is not underlined. 2A The Consumer Duty 2A.1 Application and purpose Application"
+              },
+              {
+                "pages": [
+                  106
+                ],
+                "provisionCore": "2A.1.10G",
+                "authoritativeExcerpt": "2A.1.10 G (1) The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers. (2) The main elements of firms’ conduct obligations under Principle 12 and PRIN 2A are set out in PRIN 2A.3 to PRIN 2A.11. (3) The retail customer outcome rules and guidance at PRIN 2A.3 to PRIN 2A.6 set out firms’ key obligations in relation to product governance, price and value, consumer understan"
+              },
+              {
+                "pages": [
+                  106
+                ],
+                "provisionCore": "2A.1.11G",
+                "authoritativeExcerpt": "2A.1.11 G Principle 12 does not change the nature of a firm’s relationship with any given retail customer. In particular, it does not create a fiduciary relationship where one would not otherwise exist nor require a firm to provide advice or carry out any other regulated activity where it would not otherwise have done so."
+              },
+              {
+                "pages": [
+                  106
+                ],
+                "provisionCore": "2A.1.12G",
+                "authoritativeExcerpt": "2A.1.12 G The FCA has issued guidance on the Consumer Duty in FG22/5, which firms should read alongside Principle 12 and PRIN 2A as a guide to the FCA’s view as to how Principle 12 and PRIN 2A might be complied with. Guidance on responsibilities of firms in a product’s distribution chain"
+              },
+              {
+                "pages": [
+                  106
+                ],
+                "provisionCore": "2A.1.13G",
+                "authoritativeExcerpt": "2A.1.13 G (1) Principle 12 imposes obligations on firms towards retail customers of products irrespective of whether the customer is a client of the firm. (2) This extended application aims to ensure the effectiveness of obligations under Principle 12 which may properly relate to activities which determine or materially influence retail customer outcomes carried out by a firm with whom the retail customer is not in a client relationship. (3) A firm’s role in the distribution "
+              },
+              {
+                "pages": [
+                  106
+                ],
+                "provisionCore": "2A.1.14G",
+                "authoritativeExcerpt": "2A.1.14 G Obligations on firms in the distribution chain of a product must be interpreted reasonably, in a manner that reflects the firm’s role in that"
+              },
+              {
+                "pages": [
+                  107
+                ],
+                "provisionCore": "2A.1.15G",
+                "authoritativeExcerpt": "2A.1.15 G The extent of a firm’s responsibilities under Principle 12 in any one case will turn on the substance of the firm’s role in the arrangements relating to the product. A firm which determines or has a material influence over retail customer outcomes is accountable notwithstanding that the retail customer may not be its client due to the indirect nature of their relationship. Relevance of guidance about Principles 6 and 7"
+              },
+              {
+                "pages": [
+                  107
+                ],
+                "provisionCore": "2A.1.16G",
+                "authoritativeExcerpt": "2A.1.16 G Given the high-level nature and breadth of application of the Principles, guidance about a Principle cannot exhaustively cover its implications (see also"
+              },
+              {
+                "pages": [
+                  107
+                ],
+                "provisionCore": "2A.1.17G",
+                "authoritativeExcerpt": "2A.1.17 G (1) In general terms, Principle 12 imposes a higher and more exacting standard of conduct in relation to a firm’s retail market business relative to what Principles 6 or 7 would have otherwise required. Principle 12 also has a broader application in relation to a firm’s retail market business relative to Principles 6 and 7, with a greater focus on consumer protection outcomes for retail customers, including where those retail customers do not stand in a client relat"
+              },
+              {
+                "pages": [
+                  107
+                ],
+                "provisionCore": "2A.1.18G",
+                "authoritativeExcerpt": "2A.1.18 G The effect of"
+              },
+              {
+                "pages": [
+                  107
+                ],
+                "provisionCore": "2A.2.1R",
+                "authoritativeExcerpt": "2A.2.1 R A firm must act in good faith towards retail customers."
+              },
+              {
+                "pages": [
+                  109
+                ],
+                "provisionCore": "2A.2.8R",
+                "authoritativeExcerpt": "2A.2.8 R A firm must avoid causing foreseeable harm to retail customers."
+              },
+              {
+                "pages": [
+                  109
+                ],
+                "provisionCore": "2A.2.9R",
+                "authoritativeExcerpt": "2A.2.9 R Foreseeable harm may be caused by both act and omission, in a firm’s direct relationship with a retail customer or through its role in the distribution chain even where another firm in that chain also contributes to the harm."
+              },
+              {
+                "pages": [
+                  109
+                ],
+                "provisionCore": "2A.2.10G",
+                "authoritativeExcerpt": "2A.2.10 G Avoiding causing foreseeable harm to retail customers includes: (1) ensuring all aspects of the design, terms, marketing, sale of and support for its products avoid causing foreseeable harm; (2) ensuring that no aspect of its business involves unfairly exploiting behavioural biases displayed or characteristics of vulnerability held by retail customers; (3) identifying the potential for harm that might arise if it withdraws a product, its products change or its under"
+              },
+              {
+                "pages": [
+                  109
+                ],
+                "provisionCore": "2A.2.11G",
+                "authoritativeExcerpt": "2A.2.11 G A firm with an ongoing relationship with a retail customer in relation to a product would need to act to avoid causing foreseeable harm to that customer throughout the lifecycle of that product."
+              }
+            ],
+            "targetCores": [
+              "1.2.1G",
+              "2.1.1R",
+              "2A.1.10G",
+              "2A.1.11G",
+              "2A.1.12G",
+              "2A.1.13G",
+              "2A.1.14G",
+              "2A.1.15G",
+              "2A.1.16G",
+              "2A.1.17G",
+              "2A.1.18G",
+              "2A.2.1R",
+              "2A.2.8R",
+              "2A.2.9R",
+              "2A.2.10G",
+              "2A.2.11G"
+            ]
+          },
+          "deterministicCandidateCount": 4,
+          "publicationCoverageComplete": true
+        },
+        "provisionCount": 242,
+        "instrumentStartPage": 92
+      },
+      "provisionPageIndex": {
+        "1.1.3R": [
+          151
+        ],
+        "1.1.5G": [
+          151
+        ],
+        "1.1.7R": [
+          152
+        ],
+        "1.1.8G": [
+          153
+        ],
+        "1.2.1G": [
+          104
+        ],
+        "1.3.2R": [
+          160
+        ],
+        "2.1.1R": [
+          104
+        ],
+        "2.1.5R": [
+          153
+        ],
+        "2.1.6R": [
+          153
+        ],
+        "2.4.1R": [
+          154
+        ],
+        "2.4.2R": [
+          154
+        ],
+        "2.4.3R": [
+          154
+        ],
+        "2.4.4G": [
+          154
+        ],
+        "2.4.5R": [
+          154
+        ],
+        "2.4.6R": [
+          154
+        ],
+        "2.4.7R": [
+          154
+        ],
+        "2.4.8R": [
+          154
+        ],
+        "2.4.9R": [
+          154
+        ],
+        "3.1.6R": [
+          144
+        ],
+        "3.1.7G": [
+          144
+        ],
+        "3.1.8R": [
+          144
+        ],
+        "3.2.6R": [
+          145
+        ],
+        "3.2.7R": [
+          145
+        ],
+        "3.2.8R": [
+          145
+        ],
+        "3.2.9G": [
+          145
+        ],
+        "3.3.1R": [
+          145
+        ],
+        "4.1.1G": [
+          147
+        ],
+        "4.1.2G": [
+          147
+        ],
+        "4.1.4G": [
+          147,
+          149
+        ],
+        "1.1.5AR": [
+          151
+        ],
+        "1.1.5BR": [
+          151
+        ],
+        "1.1.5CG": [
+          151,
+          152
+        ],
+        "1.1.7AR": [
+          152
+        ],
+        "1.1.7BR": [
+          152
+        ],
+        "1.1.7CR": [
+          152
+        ],
+        "1.1.7DG": [
+          152
+        ],
+        "1.1.7ER": [
+          152,
+          153
+        ],
+        "1.1.8BR": [
+          153
+        ],
+        "2.4.10R": [
+          155
+        ],
+        "2A.1.1R": [
+          105
+        ],
+        "2A.1.2R": [
+          105
+        ],
+        "2A.1.3G": [
+          105
+        ],
+        "2A.1.4G": [
+          105
+        ],
+        "2A.1.5G": [
+          105
+        ],
+        "2A.1.6G": [
+          105
+        ],
+        "2A.1.7R": [
+          105
+        ],
+        "2A.1.8G": [
+          105
+        ],
+        "2A.1.9G": [
+          105
+        ],
+        "2A.2.1R": [
+          107
+        ],
+        "2A.2.2R": [
+          108
+        ],
+        "2A.2.3G": [
+          108
+        ],
+        "2A.2.4G": [
+          108
+        ],
+        "2A.2.5R": [
+          108
+        ],
+        "2A.2.6R": [
+          108
+        ],
+        "2A.2.7G": [
+          108
+        ],
+        "2A.2.8R": [
+          109
+        ],
+        "2A.2.9R": [
+          109
+        ],
+        "2A.3.1G": [
+          112
+        ],
+        "2A.3.2R": [
+          112
+        ],
+        "2A.3.3G": [
+          112
+        ],
+        "2A.3.4R": [
+          113
+        ],
+        "2A.3.5R": [
+          113
+        ],
+        "2A.3.6R": [
+          114,
+          118
+        ],
+        "2A.3.7R": [
+          114
+        ],
+        "2A.3.8R": [
+          114
+        ],
+        "2A.3.9R": [
+          114
+        ],
+        "2A.4.1R": [
+          119
+        ],
+        "2A.4.2R": [
+          119,
+          126
+        ],
+        "2A.4.3R": [
+          119
+        ],
+        "2A.4.4G": [
+          120,
+          126
+        ],
+        "2A.4.5R": [
+          120
+        ],
+        "2A.4.6G": [
+          120,
+          126
+        ],
+        "2A.4.7R": [
+          120
+        ],
+        "2A.4.8R": [
+          120,
+          121,
+          126
+        ],
+        "2A.4.9G": [
+          121
+        ],
+        "2A.5.1R": [
+          127
+        ],
+        "2A.5.2G": [
+          127
+        ],
+        "2A.5.3R": [
+          127,
+          128
+        ],
+        "2A.5.4R": [
+          128
+        ],
+        "2A.5.5R": [
+          128
+        ],
+        "2A.5.6R": [
+          128
+        ],
+        "2A.5.7G": [
+          128
+        ],
+        "2A.5.8R": [
+          129
+        ],
+        "2A.5.9R": [
+          129
+        ],
+        "2A.6.1R": [
+          131
+        ],
+        "2A.6.2R": [
+          132
+        ],
+        "2A.6.3G": [
+          132
+        ],
+        "2A.6.4G": [
+          133
+        ],
+        "2A.6.5R": [
+          133
+        ],
+        "2A.6.6R": [
+          133
+        ],
+        "2A.7.1R": [
+          134
+        ],
+        "2A.7.2G": [
+          134
+        ],
+        "2A.7.3G": [
+          135
+        ],
+        "2A.7.4G": [
+          135
+        ],
+        "2A.7.5G": [
+          105,
+          136
+        ],
+        "2A.8.1R": [
+          136
+        ],
+        "2A.8.2G": [
+          136
+        ],
+        "2A.8.3R": [
+          136
+        ],
+        "2A.8.4R": [
+          136
+        ],
+        "2A.8.5R": [
+          137,
+          150
+        ],
+        "2A.9.1R": [
+          137
+        ],
+        "2A.9.2G": [
+          137
+        ],
+        "2A.9.3G": [
+          137
+        ],
+        "2A.9.4G": [
+          137
+        ],
+        "2A.9.5G": [
+          138
+        ],
+        "2A.9.6G": [
+          138
+        ],
+        "2A.9.7G": [
+          138
+        ],
+        "2A.9.8R": [
+          138
+        ],
+        "2A.9.9R": [
+          138
+        ],
+        "3.1.10R": [
+          144
+        ],
+        "3.1.12R": [
+          144
+        ],
+        "3.1.13R": [
+          144
+        ],
+        "3.2.10R": [
+          145
+        ],
+        "3.2.11G": [
+          145
+        ],
+        "3.2.12G": [
+          145
+        ],
+        "3.2.1AR": [
+          144
+        ],
+        "3.4.3AR": [
+          146
+        ],
+        "4.1.18G": [
+          155
+        ],
+        "4.1.20G": [
+          155
+        ],
+        "4.1.21G": [
+          155
+        ],
+        "4.1.22G": [
+          156
+        ],
+        "4.1.23G": [
+          156
+        ],
+        "4.1.24G": [
+          156
+        ],
+        "4.1.25G": [
+          156
+        ],
+        "4.1.26G": [
+          156
+        ],
+        "4.1.27G": [
+          156
+        ],
+        "4.1.28G": [
+          156
+        ],
+        "4.1.29G": [
+          156,
+          157
+        ],
+        "4.1.30G": [
+          157
+        ],
+        "4.1.31G": [
+          157
+        ],
+        "4.1.32G": [
+          157
+        ],
+        "4.1.33G": [
+          158
+        ],
+        "4.1.34G": [
+          158
+        ],
+        "4.1.35G": [
+          158
+        ],
+        "4.2.30G": [
+          158
+        ],
+        "4.2.31G": [
+          158
+        ],
+        "6.6.26G": [
+          126
+        ],
+        "8.5.22R": [
+          126
+        ],
+        "1.1.11BG": [
+          153
+        ],
+        "1.1.11CR": [
+          153
+        ],
+        "1.1.11DG": [
+          153
+        ],
+        "15.7.24R": [
+          126
+        ],
+        "2.2.35AG": [
+          159
+        ],
+        "2A.1.10G": [
+          106
+        ],
+        "2A.1.11G": [
+          106
+        ],
+        "2A.1.12G": [
+          106
+        ],
+        "2A.1.13G": [
+          106
+        ],
+        "2A.1.14G": [
+          106
+        ],
+        "2A.1.15G": [
+          107
+        ],
+        "2A.1.16G": [
+          107
+        ],
+        "2A.1.17G": [
+          107
+        ],
+        "2A.1.18G": [
+          107
+        ],
+        "2A.10.1G": [
+          140
+        ],
+        "2A.10.2R": [
+          140,
+          141
+        ],
+        "2A.10.3R": [
+          142
+        ],
+        "2A.10.4G": [
+          142
+        ],
+        "2A.10.5R": [
+          142
+        ],
+        "2A.11.1R": [
+          142
+        ],
+        "2A.11.2R": [
+          142
+        ],
+        "2A.11.3G": [
+          143
+        ],
+        "2A.11.4R": [
+          143
+        ],
+        "2A.11.5R": [
+          143
+        ],
+        "2A.2.10G": [
+          109
+        ],
+        "2A.2.11G": [
+          109
+        ],
+        "2A.2.12G": [
+          109
+        ],
+        "2A.2.13G": [
+          109
+        ],
+        "2A.2.14R": [
+          110
+        ],
+        "2A.2.15G": [
+          110
+        ],
+        "2A.2.16G": [
+          110
+        ],
+        "2A.2.17G": [
+          110
+        ],
+        "2A.2.18G": [
+          110
+        ],
+        "2A.2.19G": [
+          110
+        ],
+        "2A.2.20G": [
+          110
+        ],
+        "2A.2.21G": [
+          111
+        ],
+        "2A.2.22G": [
+          111
+        ],
+        "2A.2.23G": [
+          111
+        ],
+        "2A.2.24G": [
+          112
+        ],
+        "2A.2.25G": [
+          112
+        ],
+        "2A.2.26R": [
+          112
+        ],
+        "2A.2.27G": [
+          112
+        ],
+        "2A.2.28G": [
+          112
+        ],
+        "2A.3.10R": [
+          114,
+          115
+        ],
+        "2A.3.11R": [
+          115
+        ],
+        "2A.3.12R": [
+          115
+        ],
+        "2A.3.13R": [
+          115
+        ],
+        "2A.3.14R": [
+          116
+        ],
+        "2A.3.15G": [
+          116
+        ],
+        "2A.3.16R": [
+          116
+        ],
+        "2A.3.17R": [
+          116
+        ],
+        "2A.3.18R": [
+          117
+        ],
+        "2A.3.19R": [
+          117
+        ],
+        "2A.3.20R": [
+          117
+        ],
+        "2A.3.21R": [
+          117
+        ],
+        "2A.3.22G": [
+          117
+        ],
+        "2A.3.23G": [
+          117,
+          118
+        ],
+        "2A.3.24R": [
+          118
+        ],
+        "2A.3.25G": [
+          118
+        ],
+        "2A.3.26R": [
+          118
+        ],
+        "2A.3.27G": [
+          118
+        ],
+        "2A.3.28R": [
+          118
+        ],
+        "2A.3.29G": [
+          118
+        ],
+        "2A.3.30E": [
+          119
+        ],
+        "2A.4.10G": [
+          121
+        ],
+        "2A.4.11G": [
+          121
+        ],
+        "2A.4.12G": [
+          122,
+          126
+        ],
+        "2A.4.13R": [
+          122
+        ],
+        "2A.4.14R": [
+          122
+        ],
+        "2A.4.15R": [
+          122
+        ],
+        "2A.4.16R": [
+          122
+        ],
+        "2A.4.17R": [
+          123
+        ],
+        "2A.4.18R": [
+          123
+        ],
+        "2A.4.19R": [
+          123
+        ],
+        "2A.4.20R": [
+          123,
+          126
+        ],
+        "2A.4.21R": [
+          124
+        ],
+        "2A.4.22G": [
+          124
+        ],
+        "2A.4.23G": [
+          124
+        ],
+        "2A.4.24R": [
+          124
+        ],
+        "2A.4.25R": [
+          124,
+          126
+        ],
+        "2A.4.26R": [
+          124
+        ],
+        "2A.4.27R": [
+          124
+        ],
+        "2A.4.28G": [
+          125
+        ],
+        "2A.4.29R": [
+          125,
+          126
+        ],
+        "2A.4.30G": [
+          125
+        ],
+        "2A.4.31G": [
+          125,
+          126
+        ],
+        "2A.4.32R": [
+          125
+        ],
+        "2A.4.33R": [
+          126
+        ],
+        "2A.4.34R": [
+          126
+        ],
+        "2A.4.35E": [
+          126
+        ],
+        "2A.4.36R": [
+          126,
+          127
+        ],
+        "2A.5.10R": [
+          129
+        ],
+        "2A.5.11G": [
+          130
+        ],
+        "2A.5.12G": [
+          130
+        ],
+        "2A.5.13G": [
+          130
+        ],
+        "2A.5.14R": [
+          131
+        ],
+        "2A.5.15R": [
+          131
+        ],
+        "2A.9.10R": [
+          138
+        ],
+        "2A.9.11R": [
+          139
+        ],
+        "2A.9.12R": [
+          139
+        ],
+        "2A.9.13G": [
+          139
+        ],
+        "2A.9.14G": [
+          139
+        ],
+        "2A.9.15G": [
+          139
+        ],
+        "2A.9.17R": [
+          139
+        ]
+      },
+      "regulatoryAnalysis": {
+        "regulatoryStatus": {
+          "phase": "consultation",
+          "proposedChanges": true,
+          "nonBindingGuidance": false,
+          "isFinalisedGuidance": false,
+          "publishedFinalRules": false,
+          "informationalContent": false,
+          "bindingObligationsDetected": false,
+          "mustNotTreatProposalsAsBinding": true,
+          "existingBindingObligationsMentioned": false
+        },
+        "isFinalisedGuidance": false,
+        "consultationPreserved": true,
+        "publicationClassification": {
+          "label": null,
+          "primaryClass": "consultation_paper",
+          "allowedClasses": [
+            "consultation_paper",
+            "policy_statement",
+            "supervisory_statement",
+            "guidance",
+            "regulatory_rules",
+            "other_regulatory_publication"
+          ]
+        }
+      },
+      "extractionRevisionId": "33d01f14-f633-4708-94b3-3aa26755417c",
+      "publicationVersionId": "38fd7832-bb34-4708-bda5-50927131450f",
+      "obligationGradeSuitable": false,
+      "provisionOutcomesSummary": {
+        "suppliedCount": 18,
+        "identifiedCount": 242,
+        "outputPreflight": {
+          "ok": true,
+          "estimateTokens": 2820,
+          "maxOutputTokens": 8192
+        },
+        "unresolvedCores": [
+          "1.1.11BG",
+          "1.1.11CR",
+          "1.1.11DG",
+          "1.1.3R",
+          "1.1.5AR",
+          "1.1.5BR",
+          "1.1.5CG",
+          "1.1.5G",
+          "1.1.7AR",
+          "1.1.7BR",
+          "1.1.7CR",
+          "1.1.7DG",
+          "1.1.7ER",
+          "1.1.7R",
+          "1.1.8BR",
+          "1.1.8G",
+          "1.3.2R",
+          "15.7.24R",
+          "2.1.5R",
+          "2.1.6R",
+          "2.2.35AG",
+          "2.4.10R",
+          "2.4.1R",
+          "2.4.2R",
+          "2.4.3R",
+          "2.4.4G",
+          "2.4.5R",
+          "2.4.6R",
+          "2.4.7R",
+          "2.4.8R",
+          "2.4.9R",
+          "2A.1.1R",
+          "2A.1.2R",
+          "2A.1.3G",
+          "2A.1.4G",
+          "2A.1.5G",
+          "2A.1.6G",
+          "2A.1.7R",
+          "2A.1.8G",
+          "2A.1.9G",
+          "2A.10.1G",
+          "2A.10.2R",
+          "2A.10.3R",
+          "2A.10.4G",
+          "2A.10.5R",
+          "2A.11.1R",
+          "2A.11.2R",
+          "2A.11.3G",
+          "2A.11.4R",
+          "2A.11.5R",
+          "2A.2.14R",
+          "2A.2.15G",
+          "2A.2.16G",
+          "2A.2.17G",
+          "2A.2.18G",
+          "2A.2.19G",
+          "2A.2.20G",
+          "2A.2.21G",
+          "2A.2.22G",
+          "2A.2.23G",
+          "2A.2.24G",
+          "2A.2.25G",
+          "2A.2.26R",
+          "2A.2.27G",
+          "2A.2.28G",
+          "2A.2.2R",
+          "2A.2.3G",
+          "2A.2.4G",
+          "2A.2.5R",
+          "2A.2.6R",
+          "2A.2.7G",
+          "2A.3.10R",
+          "2A.3.11R",
+          "2A.3.12R",
+          "2A.3.13R",
+          "2A.3.14R",
+          "2A.3.15G",
+          "2A.3.16R",
+          "2A.3.17R",
+          "2A.3.18R",
+          "2A.3.19R",
+          "2A.3.1G",
+          "2A.3.20R",
+          "2A.3.21R",
+          "2A.3.22G",
+          "2A.3.23G",
+          "2A.3.24R",
+          "2A.3.25G",
+          "2A.3.26R",
+          "2A.3.27G",
+          "2A.3.28R",
+          "2A.3.29G",
+          "2A.3.2R",
+          "2A.3.30E",
+          "2A.3.3G",
+          "2A.3.4R",
+          "2A.3.5R",
+          "2A.3.6R",
+          "2A.3.7R",
+          "2A.3.8R",
+          "2A.3.9R",
+          "2A.4.10G",
+          "2A.4.11G",
+          "2A.4.12G",
+          "2A.4.13R",
+          "2A.4.14R",
+          "2A.4.15R",
+          "2A.4.16R",
+          "2A.4.17R",
+          "2A.4.18R",
+          "2A.4.19R",
+          "2A.4.1R",
+          "2A.4.20R",
+          "2A.4.21R",
+          "2A.4.22G",
+          "2A.4.23G",
+          "2A.4.24R",
+          "2A.4.25R",
+          "2A.4.26R",
+          "2A.4.27R",
+          "2A.4.28G",
+          "2A.4.29R",
+          "2A.4.2R",
+          "2A.4.30G",
+          "2A.4.31G",
+          "2A.4.32R",
+          "2A.4.33R",
+          "2A.4.34R",
+          "2A.4.35E",
+          "2A.4.36R",
+          "2A.4.3R",
+          "2A.4.4G",
+          "2A.4.5R",
+          "2A.4.6G",
+          "2A.4.7R",
+          "2A.4.8R",
+          "2A.4.9G",
+          "2A.5.10R",
+          "2A.5.11G",
+          "2A.5.12G",
+          "2A.5.13G",
+          "2A.5.14R",
+          "2A.5.15R",
+          "2A.5.1R",
+          "2A.5.2G",
+          "2A.5.3R",
+          "2A.5.4R",
+          "2A.5.5R",
+          "2A.5.6R",
+          "2A.5.7G",
+          "2A.5.8R",
+          "2A.5.9R",
+          "2A.6.1R",
+          "2A.6.2R",
+          "2A.6.3G",
+          "2A.6.4G",
+          "2A.6.5R",
+          "2A.6.6R",
+          "2A.7.1R",
+          "2A.7.2G",
+          "2A.7.3G",
+          "2A.7.4G",
+          "2A.7.5G",
+          "2A.8.1R",
+          "2A.8.2G",
+          "2A.8.3R",
+          "2A.8.4R",
+          "2A.8.5R",
+          "2A.9.10R",
+          "2A.9.11R",
+          "2A.9.12R",
+          "2A.9.13G",
+          "2A.9.14G",
+          "2A.9.15G",
+          "2A.9.17R",
+          "2A.9.1R",
+          "2A.9.2G",
+          "2A.9.3G",
+          "2A.9.4G",
+          "2A.9.5G",
+          "2A.9.6G",
+          "2A.9.7G",
+          "2A.9.8R",
+          "2A.9.9R",
+          "3.1.10R",
+          "3.1.12R",
+          "3.1.13R",
+          "3.1.6R",
+          "3.1.7G",
+          "3.1.8R",
+          "3.2.10R",
+          "3.2.11G",
+          "3.2.12G",
+          "3.2.1AR",
+          "3.2.6R",
+          "3.2.7R",
+          "3.2.8R",
+          "3.2.9G",
+          "3.3.1R",
+          "3.4.3AR",
+          "4.1.18G",
+          "4.1.1G",
+          "4.1.20G",
+          "4.1.21G",
+          "4.1.22G",
+          "4.1.23G",
+          "4.1.24G",
+          "4.1.25G",
+          "4.1.26G",
+          "4.1.27G",
+          "4.1.28G",
+          "4.1.29G",
+          "4.1.2G",
+          "4.1.30G",
+          "4.1.31G",
+          "4.1.32G",
+          "4.1.33G",
+          "4.1.34G",
+          "4.1.35G",
+          "4.1.4G",
+          "4.2.30G",
+          "4.2.31G",
+          "6.6.26G",
+          "8.5.22R"
+        ],
+        "provisionScopedExtraction": {
+          "policy": "Each provisionCore in targetCores must receive an explicit assessment in candidates[] (provisionReference + sourceQuotation from authoritativeExcerpt only). A completed batch without an assessment for every supplied core is invalid.",
+          "excerpts": [
+            {
+              "pages": [
+                104
+              ],
+              "provisionCore": "1.2.1G",
+              "authoritativeExcerpt": "1.2.1 G Principles 6 (Customers’ interests), 7 (Communications with clients), 8 (Conflicts of interest), 9 (Customers: relationships of trust) and, 10 (Clients’ assets) and 12 (Consumer Duty) impose requirements on firms expressly in relation to their clients or customers. These requirements depend, in part, on the characteristics of the client or customer concerned. This is because what is “due regard” (in Principles 6 and 7), “fairly” (in Principles 6 and 8), “clear, fair a"
+            },
+            {
+              "pages": [
+                104
+              ],
+              "provisionCore": "2.1.1R",
+              "authoritativeExcerpt": "2.1.1 R The Principles ... 12 Consumer Duty A firm must act to deliver good outcomes for retail customers. Insert the following new chapter PRIN 2A, after PRIN 2 (The Principles). All of the text is new and is not underlined. 2A The Consumer Duty 2A.1 Application and purpose Application"
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provisionCore": "2A.1.10G",
+              "authoritativeExcerpt": "2A.1.10 G (1) The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers. (2) The main elements of firms’ conduct obligations under Principle 12 and PRIN 2A are set out in PRIN 2A.3 to PRIN 2A.11. (3) The retail customer outcome rules and guidance at PRIN 2A.3 to PRIN 2A.6 set out firms’ key obligations in relation to product governance, price and value, consumer understan"
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provisionCore": "2A.1.11G",
+              "authoritativeExcerpt": "2A.1.11 G Principle 12 does not change the nature of a firm’s relationship with any given retail customer. In particular, it does not create a fiduciary relationship where one would not otherwise exist nor require a firm to provide advice or carry out any other regulated activity where it would not otherwise have done so."
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provisionCore": "2A.1.12G",
+              "authoritativeExcerpt": "2A.1.12 G The FCA has issued guidance on the Consumer Duty in FG22/5, which firms should read alongside Principle 12 and PRIN 2A as a guide to the FCA’s view as to how Principle 12 and PRIN 2A might be complied with. Guidance on responsibilities of firms in a product’s distribution chain"
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provisionCore": "2A.1.13G",
+              "authoritativeExcerpt": "2A.1.13 G (1) Principle 12 imposes obligations on firms towards retail customers of products irrespective of whether the customer is a client of the firm. (2) This extended application aims to ensure the effectiveness of obligations under Principle 12 which may properly relate to activities which determine or materially influence retail customer outcomes carried out by a firm with whom the retail customer is not in a client relationship. (3) A firm’s role in the distribution "
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provisionCore": "2A.1.14G",
+              "authoritativeExcerpt": "2A.1.14 G Obligations on firms in the distribution chain of a product must be interpreted reasonably, in a manner that reflects the firm’s role in that"
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provisionCore": "2A.1.15G",
+              "authoritativeExcerpt": "2A.1.15 G The extent of a firm’s responsibilities under Principle 12 in any one case will turn on the substance of the firm’s role in the arrangements relating to the product. A firm which determines or has a material influence over retail customer outcomes is accountable notwithstanding that the retail customer may not be its client due to the indirect nature of their relationship. Relevance of guidance about Principles 6 and 7"
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provisionCore": "2A.1.16G",
+              "authoritativeExcerpt": "2A.1.16 G Given the high-level nature and breadth of application of the Principles, guidance about a Principle cannot exhaustively cover its implications (see also"
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provisionCore": "2A.1.17G",
+              "authoritativeExcerpt": "2A.1.17 G (1) In general terms, Principle 12 imposes a higher and more exacting standard of conduct in relation to a firm’s retail market business relative to what Principles 6 or 7 would have otherwise required. Principle 12 also has a broader application in relation to a firm’s retail market business relative to Principles 6 and 7, with a greater focus on consumer protection outcomes for retail customers, including where those retail customers do not stand in a client relat"
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provisionCore": "2A.1.18G",
+              "authoritativeExcerpt": "2A.1.18 G The effect of"
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provisionCore": "2A.2.1R",
+              "authoritativeExcerpt": "2A.2.1 R A firm must act in good faith towards retail customers."
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provisionCore": "2A.2.8R",
+              "authoritativeExcerpt": "2A.2.8 R A firm must avoid causing foreseeable harm to retail customers."
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provisionCore": "2A.2.9R",
+              "authoritativeExcerpt": "2A.2.9 R Foreseeable harm may be caused by both act and omission, in a firm’s direct relationship with a retail customer or through its role in the distribution chain even where another firm in that chain also contributes to the harm."
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provisionCore": "2A.2.10G",
+              "authoritativeExcerpt": "2A.2.10 G Avoiding causing foreseeable harm to retail customers includes: (1) ensuring all aspects of the design, terms, marketing, sale of and support for its products avoid causing foreseeable harm; (2) ensuring that no aspect of its business involves unfairly exploiting behavioural biases displayed or characteristics of vulnerability held by retail customers; (3) identifying the potential for harm that might arise if it withdraws a product, its products change or its under"
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provisionCore": "2A.2.11G",
+              "authoritativeExcerpt": "2A.2.11 G A firm with an ongoing relationship with a retail customer in relation to a product would need to act to avoid causing foreseeable harm to that customer throughout the lifecycle of that product."
+            }
+          ],
+          "targetCores": [
+            "1.2.1G",
+            "2.1.1R",
+            "2A.1.10G",
+            "2A.1.11G",
+            "2A.1.12G",
+            "2A.1.13G",
+            "2A.1.14G",
+            "2A.1.15G",
+            "2A.1.16G",
+            "2A.1.17G",
+            "2A.1.18G",
+            "2A.2.1R",
+            "2A.2.8R",
+            "2A.2.9R",
+            "2A.2.10G",
+            "2A.2.11G"
+          ]
+        },
+        "deterministicCandidateCount": 4,
+        "publicationCoverageComplete": true
+      },
+      "obligationExtractionQuery": "regulatory obligations requirements firms must shall should guidance consumer duty binding rules provisions consultation",
+      "extractionBatchPlanSummary": {
+        "batchCount": 14,
+        "instrumentProvisionCount": 242,
+        "publicationCoverageComplete": true
+      },
+      "deterministicProvisionCandidates": [
+        {
+          "pages": [
+            104
+          ],
+          "origin": "deterministic_provision_inventory",
+          "aiOmission": false,
+          "provisionCore": "2.1.1R",
+          "trackingStatus": "supplied_for_analysis",
+          "textStatusByPage": {
+            "104": "AMENDMENT_MARKUP_UNCERTAIN"
+          },
+          "provisionReference": "2.1.1R",
+          "suggestedQuotation": "2.1.1 R The Principles ... 12 Consumer Duty A firm must act to deliver good outcomes for retail customers. Insert the following new chapter PRIN 2A, after PRIN 2 (The Principles). All of the text is new and is not underlined. 2A The Consumer Duty 2A.1 Application and purpose Application",
+          "regulatoryClassificationCode": "R"
+        },
+        {
+          "pages": [
+            107
+          ],
+          "origin": "deterministic_provision_inventory",
+          "aiOmission": false,
+          "provisionCore": "2A.2.1R",
+          "trackingStatus": "supplied_for_analysis",
+          "textStatusByPage": {
+            "107": "NEW_TEXT"
+          },
+          "provisionReference": "2A.2.1R",
+          "suggestedQuotation": "2A.2.1 R A firm must act in good faith towards retail customers.",
+          "regulatoryClassificationCode": "R"
+        },
+        {
+          "pages": [
+            109
+          ],
+          "origin": "deterministic_provision_inventory",
+          "aiOmission": false,
+          "provisionCore": "2A.2.8R",
+          "trackingStatus": "supplied_for_analysis",
+          "textStatusByPage": {
+            "109": "NEW_TEXT"
+          },
+          "provisionReference": "2A.2.8R",
+          "suggestedQuotation": "2A.2.8 R A firm must avoid causing foreseeable harm to retail customers.",
+          "regulatoryClassificationCode": "R"
+        },
+        {
+          "pages": [
+            109
+          ],
+          "origin": "deterministic_provision_inventory",
+          "aiOmission": false,
+          "provisionCore": "2A.2.9R",
+          "trackingStatus": "supplied_for_analysis",
+          "textStatusByPage": {
+            "109": "NEW_TEXT"
+          },
+          "provisionReference": "2A.2.9R",
+          "suggestedQuotation": "2A.2.9 R Foreseeable harm may be caused by both act and omission, in a firm’s direct relationship with a retail customer or through its role in the distribution chain even where another firm in that chain also contributes to the harm.",
+          "regulatoryClassificationCode": "R"
+        }
+      ]
+    },
+    "insufficientEvidence": false,
+    "_forgeniqProviderMeta": {
+      "requestId": "msg_011ChLdDpVfbEHzXeasC3NDz",
+      "httpStatus": 200,
+      "stopReason": "end_turn",
+      "textLength": 21844,
+      "inputTokens": 4725,
+      "outputTokens": 6083,
+      "responseReceived": true,
+      "requestReachedProvider": true
+    },
+    "_forgeniqLabSpendAudit": {
+      "model": "claude-sonnet-4-5",
+      "records": [
+        {
+          "at": "2026-11-23T22:10:37.237Z",
+          "kind": "reserve",
+          "reserveUsd": 0.13842,
+          "maxOutputTokens": 8192,
+          "inputTokensEstimate": 5180
+        },
+        {
+          "at": "2026-11-23T22:11:31.015Z",
+          "kind": "settle",
+          "actualUsd": 0.10542,
+          "inputTokens": 4725,
+          "outputTokens": 6083
+        }
+      ],
+      "budgetUsd": 1,
+      "inputTokens": 4725,
+      "limitations": [
+        "HARD_INVOICE_CAP_NOT_GUARANTEED: enforcement is pre-flight reserve + post-hoc token accounting — not Anthropic billing API.",
+        "Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ.",
+        "Per-process overlap lock does not synchronise across Vercel serverless instances; the database allows one RUNNING UC-RI-005 run per organisation.",
+        "Duplicate idempotency keys always reuse the existing run; a new paid attempt requires a new operator-authorised RI_LAB_TRIAL_IDEMPOTENCY_SUFFIX.",
+        "A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.",
+        "No org-wide Anthropic workspace spend cap — only per-request guard when env is set.",
+        "Retries inside callAnthropicMessages are not implemented; retryReserveFactor reserves headroom only.",
+        "Provider errors after HTTP 200 may still bill input/output tokens reported by Anthropic."
+      ],
+      "reservedUsd": 0,
+      "attemptCount": 1,
+      "outputTokens": 6083,
+      "calculatedUsd": 0.10542,
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 8192,
+      "retryReserveFactor": 1
+    },
+    "insufficientEvidenceReason": null,
+    "_forgeniqProvisionAssessments": [
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "1.2.1G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "1.2.1 G Principles 6 (Customers’ interests), 7 (Communications with clients), 8 (Conflicts of interest), 9 (Customers: relationships of trust) and, 10 (Clients’ assets) and 12 (Consumer Duty) impose requirements on firms expressly in relati",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 1,
+        "provisionCore": "2.1.1R",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2.1.1 R The Principles ... 12 Consumer Duty A firm must act to deliver good outcomes for retail customers. Insert the following new chapter PRIN 2A, after PRIN 2 (The Principles). All of the text is new and is not underlined. 2A The Consume",
+        "structuredReferenceCount": 1
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 3,
+        "provisionCore": "2A.1.10G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.10 G (1) The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers. (2) The main elements of firms’ conduct obligations under Pri",
+        "structuredReferenceCount": 3
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.1.11G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.11 G Principle 12 does not change the nature of a firm’s relationship with any given retail customer. In particular, it does not create a fiduciary relationship where one would not otherwise exist nor require a firm to provide advice o",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.1.12G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.12 G The FCA has issued guidance on the Consumer Duty in FG22/5, which firms should read alongside Principle 12 and PRIN 2A as a guide to the FCA’s view as to how Principle 12 and PRIN 2A might be complied with. Guidance on responsibil",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 3,
+        "provisionCore": "2A.1.13G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.13 G (1) Principle 12 imposes obligations on firms towards retail customers of products irrespective of whether the customer is a client of the firm. (2) This extended application aims to ensure the effectiveness of obligations under P",
+        "structuredReferenceCount": 3
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.1.14G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.14 G Obligations on firms in the distribution chain of a product must be interpreted reasonably, in a manner that reflects the firm’s role in that",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.1.15G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.15 G The extent of a firm’s responsibilities under Principle 12 in any one case will turn on the substance of the firm’s role in the arrangements relating to the product. A firm which determines or has a material influence over retail ",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.1.16G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.16 G Given the high-level nature and breadth of application of the Principles, guidance about a Principle cannot exhaustively cover its implications (see also",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.1.17G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.17 G (1) In general terms, Principle 12 imposes a higher and more exacting standard of conduct in relation to a firm’s retail market business relative to what Principles 6 or 7 would have otherwise required. Principle 12 also has a bro",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.1.18G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.1.18 G The effect of",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.2.10G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.2.10 G Avoiding causing foreseeable harm to retail customers includes: (1) ensuring all aspects of the design, terms, marketing, sale of and support for its products avoid causing foreseeable harm; (2) ensuring that no aspect of its busi",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.2.11G",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.2.11 G A firm with an ongoing relationship with a retail customer in relation to a product would need to act to avoid causing foreseeable harm to that customer throughout the lifecycle of that product.",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.2.1R",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.2.1 R A firm must act in good faith towards retail customers.",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.2.8R",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.2.8 R A firm must avoid causing foreseeable harm to retail customers.",
+        "structuredReferenceCount": 2
+      },
+      {
+        "causes": [],
+        "outcome": "assessed_structured",
+        "identified": true,
+        "textHitCount": 2,
+        "provisionCore": "2A.2.9R",
+        "requiresExceptionReview": false,
+        "authoritativeExcerptHead": "2A.2.9 R Foreseeable harm may be caused by both act and omission, in a firm’s direct relationship with a retail customer or through its role in the distribution chain even where another firm in that chain also contributes to the harm.",
+        "structuredReferenceCount": 2
+      }
+    ],
+    "_forgeniqProvisionCompleteness": {
+      "policy": "Batch SUCCEEDED does not imply regulatory accuracy; omissions are explicit.",
+      "omissionCores": [],
+      "omissionCount": 0,
+      "suppliedCount": 16,
+      "batchCompletenessOk": true,
+      "regulatoryAccuracySuccess": true,
+      "partialIdentificationCores": []
+    },
+    "_forgeniqPublicationRegulatoryContext": {
+      "documentType": "consultation",
+      "isFinalisedGuidance": false,
+      "legalInstrumentText": false,
+      "consultationPreserved": true,
+      "mustNotPresentAsIndependentBinding": true
+    }
+  },
+  "gate": {
+    "schemaOk": true,
+    "spendOk": true,
+    "batchCompletenessOk": true,
+    "omissionCount": 0
+  },
+  "log": [
+    {
+      "step": "vercel-resource-check",
+      "at": "2026-11-23T22:09:53.987Z",
+      "note": "no live Fluid CPU reading; Hobby usage API unavailable via CLI"
+    },
+    {
+      "step": "staging-deploy-check",
+      "at": "2026-11-23T22:09:54.579Z",
+      "stagingBuildId": "d04ed2539ab4ee2166850ec62481906ca65c215a",
+      "stagingEngineOk": true,
+      "requiredPrefix": "d04ed25"
+    },
+    {
+      "step": "spend-before",
+      "at": "2026-11-23T22:10:13.447Z",
+      "cumulative": 1.282017,
+      "remaining": 1.067983
+    },
+    {
+      "step": "batch-plan-http",
+      "at": "2026-11-23T22:10:19.871Z",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "step": "prior-orchestration",
+      "at": "2026-11-23T22:10:21.219Z",
+      "changeId": "e22981b0-4a70-4f2c-b30e-6f2a340b0fb4",
+      "cumulativeSupplied": 65,
+      "priorRunRefs": "PILOT-EXECUTION-REPORT + PS22-9-PAID-RUN-RECONCILE-FINAL"
+    },
+    {
+      "step": "output-preflight",
+      "at": "2026-11-23T22:10:21.219Z",
+      "provCount": 16,
+      "batchPreflight": {
+        "ok": true,
+        "estimateTokens": 2820,
+        "maxOutputTokens": 8192
+      },
+      "preflight": {
+        "ok": true,
+        "estimateTokens": 2820,
+        "maxOutputTokens": 8192
+      }
+    },
+    {
+      "step": "suffix-merged",
+      "at": "2026-11-23T22:10:29.465Z",
+      "SUFFIX": "live-ps22-continuation-v2-2026-11-23"
+    },
+    {
+      "step": "extract",
+      "at": "2026-11-23T22:10:35.359Z",
+      "http": 202,
+      "exBody": {
+        "ok": true,
+        "runId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+        "reused": false,
+        "dispatched": true,
+        "executionStatus": "RUNNING"
+      }
+    },
+    {
+      "step": "poll-stats",
+      "at": "2026-11-23T22:11:42.623Z",
+      "polls": 5,
+      "latencyMs": 67262,
+      "lastDelayMs": 20000
+    }
+  ],
+  "noFurtherBatches": true
+}

@@ -98,7 +98,8 @@ const collapse = (s) => String(s ?? '').replace(/\s+/g, ' ').trim();
 
 /** @returns {{ sourcebook: string | null, core: string, marker: string } | null} */
 export function parseProvisionReference(reference) {
-  const m = REFERENCE_RE.exec(collapse(reference));
+  const cleaned = collapse(reference).replace(/\s+\([^)]*\)\s*$/u, '');
+  const m = REFERENCE_RE.exec(cleaned);
   if (!m) return null;
   return { sourcebook: m[1] || null, core: `${m[2]}${m[3]}`, marker: m[3] };
 }

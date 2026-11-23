@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-11-23T22:15:00.000Z",
+  "authorisedByUser": true,
+  "ceilingUsd": 2.35,
+  "proposedCeilingNotAuthorised": 3.25,
+  "continuationVersion": "v2",
+  "suffix": "live-ps22-continuation-v2-2026-11-23",
+  "runId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+  "executionStatus": "COMPLETED",
+  "preservedPriorCores": 65,
+  "batchProvisions": 16,
+  "stagingBuildId": "d04ed2539ab4ee2166850ec62481906ca65c215a",
+  "stagingDeploymentsForSuffix": ["dpl_3TXnVH16QMuRyN5jbFUx6Dp5NUvG", "dpl_J1kojkLK8HdDFFDL9SwRFGDG57PC"],
+  "vercelResourceCheck": "no live Fluid CPU meter; Hobby usage API unavailable",
+  "actualSpendUsd": 0.10542,
+  "batchSpendCapUsd": 0.2,
+  "cumulativeSpendUsdAfterBatch": 1.387437,
+  "remainingBeforeCeilingUsd": 0.962563,
+  "remainingBatches": 13,
+  "remainingBatchCostEmpiricalUsd": 1.235,
+  "noFurtherBatchesAutonomous": true,
+  "structuredAssessmentCompleteness": {
+    "batchCompletenessOk": true,
+    "omissionCount": 0,
+    "assessedStructured": 16,
+    "denominator": 16
+  },
+  "regulatoryOutputFlags": {
+    "regulatoryAccuracySuccess": true,
+    "isFinalisedGuidance": false,
+    "consultationPreserved": true
+  },
+  "evidenceFiles": [
+    "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+    "PS22-9-CONTINUATION-V2-BATCH0-ACCURACY-2026-11-23.json"
+  ]
+}

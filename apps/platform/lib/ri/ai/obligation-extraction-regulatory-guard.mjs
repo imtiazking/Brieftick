@@ -123,6 +123,7 @@ export function applyObligationCandidateRegulatoryGuard(candidate, sourceSection
 
   const ref = candidate.provisionReference ? parseProvisionReference(candidate.provisionReference) : null;
   if (ref) {
+    candidate.regulatoryClassificationCode = ref.marker;
     const setOutInQuote = uniqueSetOutProvisionCoresInQuotation(quotation).includes(ref.core);
     const sectionWithSetOut = sections.find((s) => (s.provisionsSetOut || []).includes(ref.core));
     guard.provisionSetOutInQuotation = setOutInQuote;

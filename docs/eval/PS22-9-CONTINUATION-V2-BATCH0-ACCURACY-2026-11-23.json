@@ -1,0 +1,475 @@
+{
+  "generatedAt": "2026-11-23T22:29:45.134Z",
+  "evidenceRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+  "summary": {
+    "structuredAssessmentCompleteness": {
+      "batchCompletenessOk": true,
+      "omissionCount": 0,
+      "assessedStructured": 16,
+      "denominator": 16
+    },
+    "regulatoryClassificationPlausible": 16,
+    "bindingRequirementsVerified": 4,
+    "bindingRequirementsExpected": 4,
+    "missedRequirements": [],
+    "quotationHits": 16,
+    "falsePositiveBindings": [],
+    "falseNegativeBindings": [],
+    "actualSpendUsd": 0.10542,
+    "spendAfter": {
+      "reconcileError": "spend reconcile failed: file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:183\r\n    throw new SessionExpiredError(`${p.label}: no valid staging session (HTTP ${id.status}) — run: node scripts/uat/staging-user-sessions.mjs login ${p.key}`);\r\n          ^\r\n\r\nSessionExpiredError: User A — Maker: no valid staging session (HTTP 401) — run: node scripts/uat/staging-user-sessions.mjs login A\r\n    at verifyIdentity (file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:183:11)\r\n    at runNextTicks (node:internal/process/task_queues:65:5)\r\n    at process.processImmediate (node:internal/timers:472:9)\r\n    at async runAs (file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:228:22)\r\n    at async file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/pilot-spend-reconcile-staging.mjs:38:1\r\n\r\nNode.js v24.16.0\r\n"
+    },
+    "remainingBatchCostEmpiricalUsd": 1.235,
+    "note": "Provision inventory reconciliation ≠ verified regulatory extraction accuracy"
+  },
+  "perProvision": [
+    {
+      "core": "1.2.1G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        104
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2.1.1R",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        104
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "R",
+        "regulatoryClassificationCode": "R",
+        "expectedLegalStatus": "binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.10G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 2,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.11G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.12G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.13G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 2,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.14G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.15G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.16G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.17G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.1.18G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.2.1R",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "R",
+        "regulatoryClassificationCode": "R",
+        "expectedLegalStatus": "binding",
+        "bindingNaturePresented": "consultation_proposal",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.2.8R",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "R",
+        "regulatoryClassificationCode": "R",
+        "expectedLegalStatus": "binding",
+        "bindingNaturePresented": "consultation_proposal",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.2.9R",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "R",
+        "regulatoryClassificationCode": "R",
+        "expectedLegalStatus": "binding",
+        "bindingNaturePresented": "consultation_proposal",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.2.10G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    },
+    {
+      "core": "2A.2.11G",
+      "inOfficialPdfIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "structuredAssessment": "assessed_structured",
+      "candidateCount": 1,
+      "hasProvisionReference": true,
+      "quotationAccuracy": {
+        "hasQuotation": true,
+        "coreCitedInQuotation": false
+      },
+      "regulatoryClassification": {
+        "markerExpected": "G",
+        "regulatoryClassificationCode": "G",
+        "expectedLegalStatus": "non_binding",
+        "bindingNaturePresented": "guidance",
+        "consultationPreserved": true,
+        "operativeCodeMatchesMarker": true,
+        "consultationPresentationAppropriate": true,
+        "mustNotPresentIndependentBinding": true,
+        "classificationPlausible": true
+      },
+      "falsePositiveBinding": false,
+      "falseNegativeBinding": false,
+      "missedRequirement": false
+    }
+  ]
+}

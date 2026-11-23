@@ -8,6 +8,7 @@ import {
   applyObligationCandidateRegulatoryGuard,
   resolvePublicationRegulatoryContext,
 } from '../lib/ri/ai/obligation-extraction-regulatory-guard.mjs';
+import { parseProvisionReference } from '../lib/ri/classification/provision-eligibility.mjs';
 
 const sectionCatalog = [
   {
@@ -91,6 +92,24 @@ const instrumentCtx = resolvePublicationRegulatoryContext({
   applyObligationCandidateRegulatoryGuard(c, ['sec-guidance'], sectionCatalog, instrumentCtx);
   assert.equal(c.provisionReference, undefined);
   assert.equal(c._provisionReferenceInference, 'cross_reference_only_not_inferred');
+}
+
+// PS22 batch-0: parenthetical provision labels must parse; consultation guards must not upgrade binding.
+{
+  const consultationCtx = resolvePublicationRegulatoryContext({ consultationPreserved: true });
+  const c = {
+    statement: 'A firm must act to deliver good outcomes for retail customers.',
+    sourceSectionIds: ['sec-instrument'],
+    bindingNature: 'binding_requirement',
+    sourceQuotation:
+      '2.1.1 R The Principles ... 12 Consumer Duty A firm must act to deliver good outcomes for retail customers.',
+    provisionReference: 'PRIN 2.1.1R (Principle 12)',
+  };
+  applyObligationCandidateRegulatoryGuard(c, ['sec-instrument'], sectionCatalog, consultationCtx);
+  assert.equal(parseProvisionReference(c.provisionReference)?.core, '2.1.1R');
+  assert.equal(c.regulatoryClassificationCode, 'R');
+  assert.notEqual(c.bindingNature, 'binding_requirement');
+  assert.equal(c._bindingNatureGuarded, 'must_not_present_as_independent_binding');
 }
 
 console.log(JSON.stringify({ ok: true, test: 'acceptance-ri-normalize-obligation-output' }));

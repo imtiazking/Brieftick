@@ -321,6 +321,23 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
 | — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
 
+## 2026-11-23 — PS22 batch-0 classification + engine fix (local)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 22:30 | Batch-0 discrepancy investigation | 4 heuristic “bindingNature” mismatches | **1** engine fix (`parseProvisionReference` parenthetical labels); **3** correct consultation guards; **16/16** classification plausible after metric fix |
+| 22:32 | PS26 operative trace | 17 outstanding operative (taxonomy) | PDF independent verify **28R**; deterministic trace separates omission detection vs live recall; historical acceptance **PASS** |
+| 22:33 | SEC-DB-003 | Hosted blocked | Local **5/5**; staging setup instructions documented; `STAGING_DATABASE_URL` still required |
+| — | PS22 batch **1** | User A session **401** | Paid batch **not** started; ceiling approval request written (`PS22-9-CEILING-APPROVAL-REQUEST`) |
+
+## 2026-11-23 — PS22 continuation v2 batch 0 (authorised)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 22:06–22:09 | Staging deploy | Suffix env requires runtime pickup | `dpl_3TXnVH16…`, `dpl_J1kojkLK…` @ `d04ed25` |
+| 22:10 | Paid batch 0 v2 | User: 1 batch ≤$0.20 under $2.35 | Run `9b8fbd1f` **COMPLETED** $0.105, **16/16** completeness, suffix `live-ps22-continuation-v2-2026-11-23` |
+| — | Stop | No auto batch 2 | `noFurtherBatches` per mandate |
+
 ## 2026-11-23 — Final PS22 reconcile + continuation proposal (local)
 
 | Time (UTC) | Decision | Reason | Outcome |

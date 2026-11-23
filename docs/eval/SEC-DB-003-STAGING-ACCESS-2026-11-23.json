@@ -30,5 +30,13 @@
     "Vercel production secret on forgeniq-platform-staging — not decryptable locally without approved env pull",
     "Supabase MCP — service-role scope; does not satisfy restricted-role proof for SEC-DB-003"
   ],
-  "recommendation": "Inject STAGING_DATABASE_URL into operator shell or Cursor protected env (scoped to staging), then run acceptance-ri-security-db-staging.mjs — expect 5/5 symmetric to local."
+  "recommendation": "Inject STAGING_DATABASE_URL into operator shell or Cursor protected env (scoped to staging), then run acceptance-ri-security-db-staging.mjs — expect 5/5 symmetric to local.",
+  "secureSetupInstructions": {
+    "step1": "Supabase Dashboard → Project forgeniq-ri-staging (ref lhgzdicffkhaaykzthep) → Settings → Database → Connection string → URI (pooler recommended).",
+    "step2": "Use a role that can run the harness SET ROLE tests (postgres connection string for staging only — never commit).",
+    "step3": "Set session-scoped env in operator shell: $env:STAGING_DATABASE_URL = 'postgresql://...' (Windows PowerShell) or export on Unix.",
+    "step4": "From apps/platform: node scripts/acceptance-ri-security-db-staging.mjs",
+    "step5": "Confirm output includes SEC-DB-003 workflow_events delete blocked for User B/C — same assertions as local 5/5.",
+    "verificationScope": "Restricted-role proof only; service-role MCP or dashboard SQL is not acceptable evidence for SEC-DB-003."
+  }
 }

@@ -1,0 +1,144 @@
+{
+  "generatedAt": "2026-11-23T22:30:53.421Z",
+  "evidenceRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+  "summary": {
+    "investigated": 4,
+    "expectedConsultationPresentation": 3,
+    "engineDefectsRemediated": 1,
+    "genuineExtractionDefects": 0,
+    "resolved": true
+  },
+  "findings": [
+    {
+      "core": "2.1.1R",
+      "markerInOfficialPdf": true,
+      "pdfPages": [
+        104
+      ],
+      "expectedLegalStatus": "binding",
+      "liveCandidate": {
+        "provisionReference": "PRIN 2.1.1R (Principle 12)",
+        "bindingNature": "guidance"
+      },
+      "guardReplay": {
+        "regulatoryClassificationCode": "R",
+        "bindingNature": "guidance",
+        "guard": {
+          "documentType": "consultation",
+          "mustNotPresentAsIndependentBinding": true,
+          "provisionSetOutInQuotation": true,
+          "provisionSetOutInSection": false,
+          "inLegalInstrumentSection": false,
+          "conversionEligibilityRoute": "EXCEPTION",
+          "conversionEligibilityReasons": [
+            "provision_not_in_instrument"
+          ]
+        },
+        "bindingNatureGuarded": "binding_without_provision_reference"
+      },
+      "verdict": "ENGINE_DEFECT_FIXED",
+      "defectType": "provision_reference_parenthetical_parse",
+      "metricNote": null
+    },
+    {
+      "core": "2A.2.1R",
+      "markerInOfficialPdf": true,
+      "pdfPages": [
+        107
+      ],
+      "expectedLegalStatus": "binding",
+      "liveCandidate": {
+        "provisionReference": "PRIN 2A.2.1R",
+        "bindingNature": "consultation_proposal",
+        "setOutInQuotation": true,
+        "conversionRoute": "OBLIGATION"
+      },
+      "guardReplay": {
+        "regulatoryClassificationCode": "R",
+        "bindingNature": "consultation_proposal",
+        "guard": {
+          "documentType": "consultation",
+          "mustNotPresentAsIndependentBinding": true,
+          "provisionSetOutInQuotation": true,
+          "provisionSetOutInSection": false,
+          "inLegalInstrumentSection": false,
+          "conversionEligibilityRoute": "EXCEPTION",
+          "conversionEligibilityReasons": [
+            "provision_not_in_instrument"
+          ]
+        },
+        "bindingNatureGuarded": "must_not_present_as_independent_binding"
+      },
+      "verdict": "EXPECTED_CONSULTATION_PRESENTATION",
+      "defectType": null,
+      "metricNote": "Accuracy dashboards must separate operative R marker from bindingNature under consultation preservation."
+    },
+    {
+      "core": "2A.2.8R",
+      "markerInOfficialPdf": true,
+      "pdfPages": [
+        109
+      ],
+      "expectedLegalStatus": "binding",
+      "liveCandidate": {
+        "provisionReference": "PRIN 2A.2.8R",
+        "bindingNature": "consultation_proposal",
+        "setOutInQuotation": true,
+        "conversionRoute": "OBLIGATION"
+      },
+      "guardReplay": {
+        "regulatoryClassificationCode": "R",
+        "bindingNature": "consultation_proposal",
+        "guard": {
+          "documentType": "consultation",
+          "mustNotPresentAsIndependentBinding": true,
+          "provisionSetOutInQuotation": true,
+          "provisionSetOutInSection": false,
+          "inLegalInstrumentSection": false,
+          "conversionEligibilityRoute": "EXCEPTION",
+          "conversionEligibilityReasons": [
+            "provision_not_in_instrument"
+          ]
+        },
+        "bindingNatureGuarded": "must_not_present_as_independent_binding"
+      },
+      "verdict": "EXPECTED_CONSULTATION_PRESENTATION",
+      "defectType": null,
+      "metricNote": "Accuracy dashboards must separate operative R marker from bindingNature under consultation preservation."
+    },
+    {
+      "core": "2A.2.9R",
+      "markerInOfficialPdf": true,
+      "pdfPages": [
+        109
+      ],
+      "expectedLegalStatus": "binding",
+      "liveCandidate": {
+        "provisionReference": "PRIN 2A.2.9R",
+        "bindingNature": "consultation_proposal",
+        "setOutInQuotation": true,
+        "conversionRoute": "EXCEPTION"
+      },
+      "guardReplay": {
+        "regulatoryClassificationCode": "R",
+        "bindingNature": "consultation_proposal",
+        "guard": {
+          "documentType": "consultation",
+          "mustNotPresentAsIndependentBinding": true,
+          "provisionSetOutInQuotation": true,
+          "provisionSetOutInSection": false,
+          "inLegalInstrumentSection": false,
+          "conversionEligibilityRoute": "EXCEPTION",
+          "conversionEligibilityReasons": [
+            "provision_not_in_instrument",
+            "provision_duty_language_unconfirmed"
+          ]
+        },
+        "bindingNatureGuarded": "must_not_present_as_independent_binding"
+      },
+      "verdict": "EXPECTED_CONSULTATION_PRESENTATION",
+      "defectType": null,
+      "metricNote": "Accuracy dashboards must separate operative R marker from bindingNature under consultation preservation."
+    }
+  ]
+}

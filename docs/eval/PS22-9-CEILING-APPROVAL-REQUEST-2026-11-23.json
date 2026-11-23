@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-11-23T22:45:00.000Z",
+  "requestType": "cumulative_pilot_ceiling_increase",
+  "currentAuthorisedCeilingUsd": 2.35,
+  "proposedCeilingUsd": 3.25,
+  "proposedCeilingAuthorised": false,
+  "assessedProvisionsPreserved": 81,
+  "remainingExtractionBatches": 12,
+  "empiricalCostPerBatchUsd": 0.105,
+  "projectedRemainingBatchCostUsd": 1.235,
+  "cumulativeSpendAfterBatch0Usd": 1.387,
+  "remainingUnderCurrentCeilingUsd": 0.963,
+  "shortfallToCompleteWithinCurrentCeilingUsd": 0.272,
+  "decisionRequired": "Either approve ceiling increase to $3.25, reduce batch scope/cost, or authorise partial continuation only.",
+  "constraints": [
+    "No automatic multi-batch execution",
+    "Single-batch cap $0.20 unless revised",
+    "No production deployment",
+    "Consultation publication binding presentation rules remain enforced"
+  ],
+  "evidence": [
+    "PS22-9-PAID-RUN-RECONCILE-FINAL-2026-11-23.json",
+    "PS22-9-CONTINUATION-PLAN-14-BATCH-2026-11-23.json",
+    "PS22-9-CONTINUATION-V2-BATCH0-EXECUTION-REPORT-2026-11-23.json",
+    "PS22-9-BATCH0-CLASSIFICATION-DISCREPANCY-2026-11-23.json"
+  ]
+}
