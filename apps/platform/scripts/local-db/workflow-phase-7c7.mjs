@@ -42,19 +42,25 @@ export async function runPhase7c7WorkflowVerification() {
       );
     }
 
-    const chgA = await admin.query(
-      `insert into regulatory_changes (organisation_id, publication_id, external_key, title, change_type, status)
-       values ($1,$2,'CHG-A1','Org A change','POLICY','OPEN') returning id`,
-      [ORG_A, publicationId],
-    );
-    const chgB = await admin.query(
-      `insert into regulatory_changes (organisation_id, publication_id, external_key, title, change_type, status)
-       values ($1,$2,'CHG-B1','Org B change','POLICY','OPEN') returning id`,
-      [ORG_B, publicationId],
-    );
+    const chgAId = await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
+      const r = await c.query(
+        `insert into regulatory_changes (organisation_id, publication_id, external_key, title, change_type, status)
+         values ($1,$2,'CHG-A1','Org A change','POLICY','OPEN') returning id`,
+        [ORG_A, publicationId],
+      );
+      return r.rows[0].id;
+    });
+    const chgBId = await withRlsSessionCommit(adminUrl, USER_B, async (c) => {
+      const r = await c.query(
+        `insert into regulatory_changes (organisation_id, publication_id, external_key, title, change_type, status)
+         values ($1,$2,'CHG-B1','Org B change','POLICY','OPEN') returning id`,
+        [ORG_B, publicationId],
+      );
+      return r.rows[0].id;
+    });
     for (const [org, user, changeId, externalKey, statement] of [
-      [ORG_A, USER_A, chgA.rows[0].id, 'OBL-A1', 'Org A obligation'],
-      [ORG_B, USER_B, chgB.rows[0].id, 'OBL-B1', 'Org B obligation'],
+      [ORG_A, USER_A, chgAId, 'OBL-A1', 'Org A obligation'],
+      [ORG_B, USER_B, chgBId, 'OBL-B1', 'Org B obligation'],
     ]) {
       const id = await withRlsSessionCommit(adminUrl, user, (c) =>
         insertSubmittedTestObligation(c, { organisationId: org, changeId, publicationId, statement, externalKey }),
