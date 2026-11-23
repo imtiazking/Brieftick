@@ -31,7 +31,10 @@ await runAs('A', async ({ page }) => {
   record('plan', { inventory: plan?.instrumentProvisionCount, batches: plan?.batches?.length });
   const provisionCount = plan?.batches?.[0]?.instrumentProvisionsNewlySupplied?.length ?? 0;
   const preflight = assertExtractionOutputBudget({
-    estimateTokens: estimateStructuredOutputTokens({ provisionCount, sectionCount: MAX_SECTIONS }),
+    estimateTokens: estimateStructuredOutputTokens({
+      provisionCount,
+      sectionCount: Math.min(MAX_SECTIONS, plan?.batches?.[0]?.selection?.selectedSections ?? MAX_SECTIONS),
+    }),
     maxOutputTokens: 8192,
   });
   record('output-preflight', preflight);

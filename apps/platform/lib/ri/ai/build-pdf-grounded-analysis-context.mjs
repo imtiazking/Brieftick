@@ -366,13 +366,27 @@ export async function buildPdfGroundedAnalysisContext(params) {
   }
 
   if (params.useCaseId === 'UC-RI-005' && activeBatch) {
-    const { estimateStructuredOutputTokens, assertExtractionOutputBudget } = await import('./extraction-output-preflight.mjs');
-    const newCount =
-      activeBatch.instrumentProvisionsNewlySupplied?.length ??
-      (described.selection?.instrumentProvisionsSupplied?.length || 0);
+    const {
+      estimateStructuredOutputTokens,
+      assertExtractionOutputBudget,
+      maxProvisionsWithinOutputPreflight,
+    } = await import('./extraction-output-preflight.mjs');
+    const sectionCountForPreflight = Math.min(
+      sourceSections.length,
+      maxSectionsPerBatch,
+      activeBatch.selection?.selectedSections ?? sourceSections.length,
+    );
+    const provisionCap = maxProvisionsWithinOutputPreflight({
+      sectionCount: sectionCountForPreflight,
+      maxOutputTokens: Number(process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS?.trim() || 8192),
+    });
+    const rawNewCount = Array.isArray(activeBatch.instrumentProvisionsNewlySupplied)
+      ? activeBatch.instrumentProvisionsNewlySupplied.length
+      : described.selection?.instrumentProvisionsSupplied?.length || 0;
+    const newCount = Math.min(rawNewCount, provisionCap);
     const est = estimateStructuredOutputTokens({
       provisionCount: newCount,
-      sectionCount: sourceSections.length,
+      sectionCount: sectionCountForPreflight,
     });
     const maxOut = Number(process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS?.trim() || 8192);
     const pre = assertExtractionOutputBudget({ estimateTokens: est, maxOutputTokens: maxOut });

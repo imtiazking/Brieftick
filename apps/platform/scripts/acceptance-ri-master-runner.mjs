@@ -2,56 +2,138 @@
 /**
  * Spawn a child with bounded wall-clock timeout, diagnostics, and forced termination (Windows-safe).
  */
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { performance } from 'node:perf_hooks';
+import { existsSync, readdirSync, rmSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const DEFAULT_STEP_TIMEOUT_MS = Number(process.env.RI_MASTER_STEP_TIMEOUT_MS || 20 * 60 * 1000);
 const DEFAULT_SUITE_TIMEOUT_MS = Number(process.env.RI_MASTER_SUITE_TIMEOUT_MS || 75 * 60 * 1000);
 
-function killTree(child) {
-  if (!child?.pid) return;
+const __dir = dirname(fileURLToPath(import.meta.url));
+const platformRoot = join(__dir, '..');
+
+function resolveSpawnCommand(command, args) {
+  if (process.platform !== 'win32') return { command, args, shell: false };
+  if (command === 'npm' || command === 'npx') {
+    return {
+      command,
+      args,
+      shell: true,
+    };
+  }
+  return { command, args, shell: false };
+}
+
+export function killProcessTree(pid) {
+  if (!pid) return;
   if (process.platform === 'win32') {
-    spawn('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore' });
+    spawnSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio: 'ignore' });
   } else {
-    child.kill('SIGKILL');
+    try {
+      process.kill(pid, 'SIGKILL');
+    } catch {
+      /* */
+    }
+  }
+}
+
+function killTree(child) {
+  killProcessTree(child?.pid);
+}
+
+/** Best-effort embedded Postgres dir cleanup after a forced step kill. */
+export function cleanupLocalPgVerifyDirs() {
+  const base = join(platformRoot, '.local-pg-verify');
+  if (!existsSync(base)) return;
+  try {
+    for (const ent of readdirSync(base, { withFileTypes: true })) {
+      if (!ent.isDirectory()) continue;
+      try {
+        rmSync(join(base, ent.name), { recursive: true, force: true });
+      } catch {
+        /* EBUSY */
+      }
+    }
+  } catch {
+    /* */
   }
 }
 
 /**
  * @param {{ label: string, command: string, args: string[], cwd: string, timeoutMs?: number }} opts
  */
+function settleStep({ settledRef, clearFns, resolve, started, label, payload }) {
+  if (settledRef.v) return;
+  settledRef.v = true;
+  for (const fn of clearFns) fn();
+  resolve({ ...payload, elapsedMs: performance.now() - started });
+}
+
 export function runBoundedStep({ label, command, args, cwd, timeoutMs = DEFAULT_STEP_TIMEOUT_MS }) {
   const started = performance.now();
-  console.log(`\n=== ${label} ===\n[diag] spawn ${command} ${args.join(' ')} (timeout ${Math.round(timeoutMs / 1000)}s)\n`);
+  const { command: resolvedCommand, args: resolvedArgs, shell } = resolveSpawnCommand(command, args);
+  console.log(
+    `\n=== ${label} ===\n[diag] spawn ${resolvedCommand} ${resolvedArgs.join(' ')} (timeout ${Math.round(timeoutMs / 1000)}s)\n`,
+  );
   return new Promise((resolve) => {
-    const child = spawn(command, args, {
+    const settledRef = { v: false };
+    const clearFns = [];
+    const child = spawn(resolvedCommand, resolvedArgs, {
       cwd,
       stdio: 'inherit',
-      shell: process.platform === 'win32',
+      shell,
+      windowsHide: true,
       env: { ...process.env, FORGENIQ_RI_MASTER_STEP: label },
     });
-    let settled = false;
-    const timer = setTimeout(() => {
-      if (settled) return;
-      console.error(`\n[diag] TIMEOUT after ${timeoutMs}ms — terminating: ${label}\n`);
+    const onTimeout = () => {
+      console.error(`\n[diag] TIMEOUT after ${timeoutMs}ms — terminating: ${label} (pid=${child.pid ?? 'n/a'})\n`);
       killTree(child);
-      settled = true;
-      resolve({ ok: false, code: 'step_timeout', signal: null, elapsedMs: performance.now() - started });
-    }, timeoutMs);
+      cleanupLocalPgVerifyDirs();
+      settleStep({
+        settledRef,
+        clearFns,
+        resolve,
+        started,
+        label,
+        payload: { ok: false, code: 'step_timeout', signal: null },
+      });
+    };
+    const timer = setTimeout(onTimeout, timeoutMs);
+    clearFns.push(() => clearTimeout(timer));
+    const watchdog = setInterval(() => {
+      const elapsed = performance.now() - started;
+      if (elapsed > timeoutMs + 5000 && !settledRef.v) {
+        console.error(`[diag] watchdog force-timeout ${label} ${Math.round(elapsed / 1000)}s`);
+        onTimeout();
+      }
+    }, 30_000);
+    clearFns.push(() => clearInterval(watchdog));
     child.on('exit', (code, signal) => {
-      if (settled) return;
-      clearTimeout(timer);
-      settled = true;
-      const elapsedMs = performance.now() - started;
-      console.log(`\n[diag] step done ${label} exit=${code ?? 'null'} signal=${signal ?? 'null'} ${(elapsedMs / 1000).toFixed(1)}s\n`);
-      resolve({ ok: code === 0, code, signal, elapsedMs });
+      if (settledRef.v) return;
+      console.log(
+        `\n[diag] step done ${label} exit=${code ?? 'null'} signal=${signal ?? 'null'} ${((performance.now() - started) / 1000).toFixed(1)}s\n`,
+      );
+      settleStep({
+        settledRef,
+        clearFns,
+        resolve,
+        started,
+        label,
+        payload: { ok: code === 0, code, signal },
+      });
     });
     child.on('error', (err) => {
-      if (settled) return;
-      clearTimeout(timer);
-      settled = true;
       console.error(`\n[diag] spawn error ${label}:`, err.message);
-      resolve({ ok: false, code: 'spawn_error', signal: null, elapsedMs: performance.now() - started });
+      settleStep({
+        settledRef,
+        clearFns,
+        resolve,
+        started,
+        label,
+        payload: { ok: false, code: 'spawn_error', signal: null, error: err.message },
+      });
     });
   });
 }

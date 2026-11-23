@@ -5,25 +5,25 @@
   "log": [
     {
       "step": "plan",
-      "at": "2026-11-23T13:28:16.495Z",
+      "at": "2026-11-23T14:05:50.638Z",
       "inventory": 242,
       "batches": 12
     },
     {
       "step": "output-preflight",
-      "at": "2026-11-23T13:28:16.496Z",
+      "at": "2026-11-23T14:05:50.639Z",
       "ok": true,
       "estimateTokens": 6668,
       "maxOutputTokens": 8192
     },
     {
       "step": "change",
-      "at": "2026-11-23T13:28:22.006Z",
-      "changeId": "3a8f95fc-0e9c-4bae-a5f6-2e335714abe6"
+      "at": "2026-11-23T14:05:58.093Z",
+      "changeId": "e22de532-5bb9-4f29-b289-05ea1e139d91"
     },
     {
       "step": "advance",
-      "at": "2026-11-23T13:28:26.165Z",
+      "at": "2026-11-23T14:06:02.006Z",
       "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
       "ok": true,
       "code": "awaiting_authorised_extraction",
@@ -1789,12 +1789,23 @@
     },
     {
       "step": "extract",
-      "at": "2026-11-23T13:28:31.020Z",
-      "http": 409,
+      "at": "2026-11-23T14:06:09.384Z",
+      "http": 202,
       "exBody": {
-        "ok": false,
-        "error": "uc_ri_005_run_reference_not_authorised"
+        "ok": true,
+        "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
+        "reused": false,
+        "dispatched": true,
+        "executionStatus": "RUNNING"
       }
+    },
+    {
+      "step": "terminal",
+      "at": "2026-11-23T14:07:47.155Z",
+      "status": "FAILED",
+      "spend": 0.135888,
+      "errorCode": "AI_OUTPUT_SCHEMA_INVALID",
+      "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e"
     }
   ]
 }

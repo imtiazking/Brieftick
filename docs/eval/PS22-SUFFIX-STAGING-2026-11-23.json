@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-11-23T14:08:00Z",
+  "projectId": "prj_y9O1A1zGFXe3GvJITnLL9mJUqve7",
+  "projectName": "forgeniq-platform-staging",
+  "environment": "production",
+  "variable": "RI_LAB_TRIAL_IDEMPOTENCY_SUFFIXES",
+  "suffixAdded": "live-ps22-replace-batch0-2026-11-23",
+  "suffixCountRestored": 9,
+  "incident": "Initial CLI decrypt returned empty; one-suffix overwrite reverted via baseline merge from authorised execution log inventory.",
+  "redeployAfterEnv": ["dpl_36UHGc2eaAANsgSibBLuQ38TvkJ2", "dpl_3m1Sxt98UYLk2VnAWN9FoRQyNFek", "dpl_Eh3n2x6shDpM3XhU3EUM7CTNjZe2"],
+  "verification": "PS22 orchestration advance returned awaiting_authorised_extraction with idempotencySuffix live-ps22-replace-batch0-2026-11-23 (no 409)"
+}

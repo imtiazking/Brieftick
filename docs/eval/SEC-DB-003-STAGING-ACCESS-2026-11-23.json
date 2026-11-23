@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-11-23T14:08:00Z",
+  "requirement": "SEC-DB-003 hosted UPDATE/DELETE negative tests under restricted DB roles",
+  "completed": {
+    "stagingApiHarness": "acceptance-ri-security-db-staging-api.mjs 6/6",
+    "localRoleHarness": "acceptance-ri-security-db-local-db.mjs 5/5 including DELETE"
+  },
+  "blocked": {
+    "acceptance-ri-security-db-staging.mjs": "Requires STAGING_DATABASE_URL; present as Vercel production secret on forgeniq-platform-staging but not decryptable via vercel env run locally (sensitive env pull restricted). .env.local has no STAGING_DATABASE_URL."
+  },
+  "authorisedAlternativesInvestigated": [
+    "Vercel CLI env ls + v1 env id lookup",
+    "vercel env run --environment production (non-sensitive only)",
+    "loadPlatformEnv .env.local",
+    "Supabase MCP list_projects (forgeniq-ri-staging lhgzdicffkhaaykzthep) — MCP execute_sql uses service role, not application JWT roles"
+  ],
+  "recommendation": "Run acceptance-ri-security-db-staging.mjs via operator CI secret injection or add scoped read-only CI env pull; do not use SQL Editor alone as role proof."
+}

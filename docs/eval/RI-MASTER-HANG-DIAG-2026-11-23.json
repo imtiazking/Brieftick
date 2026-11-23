@@ -1,0 +1,12 @@
+{
+  "capturedAt": "2026-11-23T13:50:00Z",
+  "symptom": "acceptance-ri-master-triple run 2/3 exceeded step limit without TIMEOUT log",
+  "rootPid": 47692,
+  "masterPid": 47792,
+  "stuckStep": "test:acceptance:phase7",
+  "phase7ScriptPid": 48992,
+  "phase7StartedApprox": "2026-11-23T11:00:29",
+  "configuredStepTimeoutMs": 1200000,
+  "note": "Terminal log buffer showed Phase 3 spawn; live process tree was at Phase 7 ingestion ops (embedded Postgres). Master runner timer did not emit TIMEOUT within 2h+.",
+  "action": "safe_terminate_tree_before_code_fix"
+}

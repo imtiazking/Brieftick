@@ -2,14 +2,25 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — PS22 suffix, preflight, master hang (14:08 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 13:50 | RI master triple run 2 | Stuck on Phase 7 ops (embedded PG) | Terminated; diag `RI-MASTER-HANG-DIAG-2026-11-23.json`; runner watchdog + suite timeout |
+| 13:52 | `RI_LAB_TRIAL_IDEMPOTENCY_SUFFIXES` | Authorised `live-ps22-replace-batch0-2026-11-23` | 9 suffixes on `prj_y9O1A1zGFXe3GvJITnLL9mJUqve7`; evidence `PS22-SUFFIX-STAGING-2026-11-23.json` |
+| 14:05 | Staging deploy | Preflight fixes | `dpl_Eh3n2x6shDpM3XhU3EUM7CTNjZe2` @ `staging-app.forgeniq.com` |
+| 14:07 | PS22/9 replacement paid extract | One authorised attempt | Run `3872aebf…` **FAILED** `AI_OUTPUT_SCHEMA_INVALID`; **$0.136** (no auto-retry) |
+| — | SEC-DB-003 hosted DB harness | No local `STAGING_DATABASE_URL` | `SEC-DB-003-STAGING-ACCESS-2026-11-23.json` |
+| — | RI master ×3 | Phase 3A reproducibility flake | Run 1/3 fail embedded PG `base/5/16977`; re-run pending |
+
 ## 2026-11-23 — Staging tests resumed (13:20 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |
 |---|---|---|---|
 | 13:20 | Git on `platform` | Operator disconnect | Evidence `PLATFORM-STRAY-PROJECT-GIT-DISCONNECT-2026-11-23.json`; no new stray deploys |
 | 13:20 | PS26/1 hosted reconcile | Staging `0fccf47` | **PASS** — 47/47, 0 unresolved, **7/7 exceptions** incl. `16.1.6R` |
-| — | PS22/9 replacement | Authorised suffix | In progress (after PS26) |
-| — | RI master ×3 | Run 2/3 Phase 3 | Background `442335` — do not interrupt |
+| — | PS22/9 replacement | Authorised suffix | Completed tranche above |
+| — | RI master ×3 run 2 | Phase 7 hang | Terminated; see 14:08 entry |
 
 ## 2026-11-23 — Stray Vercel project `platform` (12:50 UTC)
 
