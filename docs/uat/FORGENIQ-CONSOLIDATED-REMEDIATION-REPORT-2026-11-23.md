@@ -45,22 +45,23 @@ Category breakdown: code fixes (5), regulatory accuracy (4), security (1), integ
 
 ## 3. PS22/9 regulatory accuracy
 
-### Publication legal character
+### Publication legal character (corrected 2026-11-23)
 
-`PS22-9-PUBLICATION-LEGAL-STATUS-ASSESSMENT-2026-11-23.json`:
+`PS22-9-SOURCE-PUBLICATION-VERIFICATION-2026-11-23.json` + `PS22-9-PUBLICATION-LEGAL-STATUS-ASSESSMENT-2026-11-23.json`:
 
-- **CP22/9** is a **consultation paper** with a **proposed Handbook instrument** — **not** independently binding as published.
-- Historical AI runs and audit JSON are **unchanged**.
-- **Subsequent assessments** recorded for interpretive traceability.
+- Source PDF is **PS22/9** (final Consumer Duty policy statement, July 2022), SHA256 `ee1230a9…72f637b`.
+- **CP22/09** is a different FCA publication (Dormant Assets); prior **CP22/9** label was **incorrect**.
+- PDF contains **made rules** in the legal instrument appendix — not a standalone consultation paper.
+- Historical AI runs and audit JSON are **unchanged**; **97** extractions have **`legallyVerifiedCount: 0`** until re-assessment under corrected publication context.
 
 ### PRIN 2A.2.14R and 2A.2.26R (batch 1)
 
-| Provision | PDF | Operative marker | Presentation under consultation | Policy alignment |
-|-----------|-----|------------------|--------------------------------|------------------|
-| 2A.2.14R | NEW_TEXT, set out | R | `consultation_proposal` + `regulatoryClassificationCode: R` | **ALIGNED** |
-| 2A.2.26R | NEW_TEXT, set out | R | same | **ALIGNED** |
+| Provision | PDF | Operative marker | As published (corrected) | Historical run presentation |
+|-----------|-----|------------------|------------------------|---------------------------|
+| 2A.2.14R | NEW_TEXT, set out | R | Final rule in PS22/9 instrument | `consultationPreserved: true` — **misclassification** |
+| 2A.2.26R | NEW_TEXT, set out | R | Final rule in PS22/9 instrument | same |
 
-Suffix **R** identifies **proposed rule text** in the consultation instrument; it does **not** alone establish a currently binding Handbook obligation.
+**R** marks rule text in the made instrument. Handbook binding status still requires enactment, applicability, and effective dates — the platform must **not** auto-convert extractions to approved obligations.
 
 ### Batch 0 discrepancies (reassessed)
 

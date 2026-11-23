@@ -1,0 +1,726 @@
+{
+  "generatedAt": "2026-11-23T23:37:27.575Z",
+  "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+  "fixturePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\integrations\\regulatory-sources\\fixtures\\fca-ps22-9-official.pdf",
+  "sha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+  "expectedSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+  "sha256Match": true,
+  "byteLength": 1380128,
+  "coverExcerpts": [
+    {
+      "pageNumber": 1,
+      "head": "A new Consumer Duty Feedback to CP21/36 and final rulesPolicy StatementPS22/9July 2022"
+    },
+    {
+      "pageNumber": 2,
+      "head": "2PS22/9 Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesMoving around this documentUse your browser’s bookmarks and tools to navigate. To search on a PC use Ctrl+F or Command+F on MACs.This relates toConsultation Paper 21/36 which is available on our website at www.fca.org.uk/publicationsTelephone: 020 7066 1000Email: consumerduty@fca.org.ukSign up for our news and publications alertsSee all our latest press releases, consultations and speeches. Contents1 Summary 32 The scope of the Duty 123 Application to existing products and services 254 The Consumer Principle and disapplication of Principles 6 and 7 315 The cross‑cutting rules 376 The products and services outcome 417 The price and value outcome 458 The consumer understanding outcome 509 The consumer support outcome 5610 Consumers in vulnerable circumstances 6011 A private right of action 6512 Implementation timetable 6713 Monitoring and governance 7214 Our approach to the Consumer Duty 7915 Cost benefit analysis 83Annex 1 List of non‑confidential respondents to CP21/36 86Annex 2 Abbreviations used in this paper 90Appendix 1 Made rules (legal instrument)"
+    },
+    {
+      "pageNumber": 3,
+      "head": "3 PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules1 Summary1.1 In this policy statement, we set out the final rules and guidance for a new Consumer Duty (‘the Duty’) that will set higher expectations for the standard of care firms give consumers.1.2 In our recent Strategy document, we set out our expectations for financial services over the next three years and how we will measure our performance to improve, adapt and deliver in the interests of consumers, markets and the economy. We want to drive a healthy and successful financial services system in which firms can thrive and consumers can make informed choices about financial products and services.1.3 Setting higher standards and putting consumers’ needs first is central to our strategy – and the cornerstone of this is the Duty. We want to see a higher level of consumer protection in retail financial markets, where firms compete vigorously in consumers’ interests. Firms need to understand their customers’ needs and to have the flexibility to support them with certainty of our expectations, so they get good outcomes.1.4 This is particularly important as consumers face increasing pre"
+    },
+    {
+      "pageNumber": 4,
+      "head": "4PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules1.9 We are grateful to those who engaged with us, and we have considered the feedback and issues raised. We want to continue this collaborative engagement with all stakeholders in the next and crucial phase of implementation.Who this affects• regulated firms, including those in the e‑money and payments sector• consumer organisations and individual consumers• industry groups/trade bodies• policy makers and regulatory bodies• industry experts and commentators• academics and think tanksThe wider context of this policy statementOur consultation1.10 We first discussed stakeholders’ concerns that our regulatory framework may not be adequate to tackle the level of consumer harm in retail markets in our discussion paper ‘A duty of care and potential alternative approaches’ (DP18/5). In our subsequent feedback statement (FS19/2), we set out our intention to take forward specific options for change.1 .11 We published a first consultation paper (CP21/13) in May 2021. In December 2021, we consulted on our detailed and final proposals for the Duty, including draft rules and guidance (CP21/36). This"
+    },
+    {
+      "pageNumber": 5,
+      "head": "5 PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesHow it links to our objectives1.14 The Duty will advance our consumer protection and competition objectives.• Consumer protection: The Duty sets a higher, clearer standard by requiring firms to ensure their products and services are fit for purpose and offer fair value, and to help consumers make effective choices or act in their interests. By focusing on outcomes, the Duty will help to ensure that the level of consumer protection is both appropriate for the environment in which consumers currently transact and for those in which they will transact in the future. The Duty also supports more agile and assertive supervision which should mean that firms focus on preventing harm before it arises and that, where harm does appear to occur, it is addressed more quickly and so ultimately reduced.• Effective competition in the interests of consumers: The Duty will create a fairer and more consumer‑focused playing field on which firms can compete and innovate in pursuit of good consumer outcomes. Competition can more effectively act in the interests of consumers where firms design products and "
+    },
+    {
+      "pageNumber": 6,
+      "head": "6PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesOutcomes we are seeking1 .17 Our recent three‑year Strategy set out that the overarching outcomes we expect to see from retail financial services, which cut across all the markets and sectors we regulate. This is how we will measure progress against our strategic objective: making markets work well.1.18 We are focusing on these cross‑sector outcomes, joining up all of our tools so we address concerns and opportunities efficiently, effectively and consistently to create the regulatory conditions firms need to deliver these outcomes.1.19 The Duty supports each of these outcomes:• fair value: consumers receive fair prices and quality• suitability and treatment: consumers receive suitable products and services and receive good treatment• confidence: consumers have strong confidence and levels of participation in markets• access: diverse consumer needs are met1.20 The Duty also aligns with our own transformation and our focus on being more innovative, assertive and adaptive in our regulatory approach. Under the Duty, firms need to assess and evidence the extent to which and how they are act"
+    }
+  ],
+  "textSignals": {
+    "ps22_9": true,
+    "cp22_9": false,
+    "cp21_36": true,
+    "policyStatement": true,
+    "consultationPaper": true,
+    "consumerDuty": true,
+    "madeRules": true,
+    "july2022": true,
+    "prin2a": true,
+    "prin2_2_14": true,
+    "prin2_2_26": true
+  },
+  "publicationIdentity": {
+    "fcaReference": "PS22/9",
+    "officialTitle": "A new Consumer Duty",
+    "canonicalUrl": "https://www.fca.org.uk/publication/policy/ps22-9.pdf",
+    "publicationDate": "2022-07-29 (text signal)",
+    "publicationType": "policy_statement",
+    "documentContains": "final_policy_statement_with_made_rules",
+    "rulesCharacter": "Final rules as made in PS22/9 instrument (not a standalone consultation paper PDF)",
+    "cp21_36Mentioned": true,
+    "enactmentNote": "PRIN 2A Consumer Duty rules were made via PS22/9; Handbook status is binding for in-scope firms subject to applicability and commencement provisions in the instrument.",
+    "effectiveDates": "Derived from instrument / Handbook commencement — not inferred from R suffix alone"
+  },
+  "regulatoryAnalysis": {
+    "withPolicyStatementMetadata": {
+      "analyzerVersion": "regulatory-pdf-analysis-v1",
+      "publicationClassification": {
+        "primaryClass": "policy_statement",
+        "allowedClasses": [
+          "consultation_paper",
+          "policy_statement",
+          "supervisory_statement",
+          "guidance",
+          "regulatory_rules",
+          "other_regulatory_publication"
+        ],
+        "label": "Policy Statement"
+      },
+      "regulatoryStatus": {
+        "phase": "final_policy_statement",
+        "proposedChanges": false,
+        "publishedFinalRules": true,
+        "existingBindingObligationsMentioned": true,
+        "nonBindingGuidance": false,
+        "informationalContent": false,
+        "bindingObligationsDetected": true,
+        "mustNotTreatProposalsAsBinding": false,
+        "isFinalisedGuidance": false
+      },
+      "developments": [
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "4PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules1.9 We are grateful to those who engaged with us, and we have considered the feedback and issues raised. We want to continue this collaborative engagement with all stakeholders in the next and crucial phase of implementation.Who this affects• regulated firms, including those in the e‑money and payments sector• consumer organisations and individual consumers• industry groups/trade bodies• policy make",
+          "supportedBySource": true
+        },
+        {
+          "kind": "implementation_deadline",
+          "regulatoryStatus": "published_or_informational",
+          "summary": "8PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules1.30 We have made a number of changes to update the rules and Guidance in light of the feedback we received. Below we set out some of the key themes in the responses to our consultation, our analysis and response.Implementation timetable1. 31 The key issue raised by almost all firms and their trade bodies was the proposed implementation period of nine months (ending on 30 April 2023). Industry respo",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "9 PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules1.39 We have engaged with the ombudsman service throughout the development of the Duty and in finalising the rules and guidance. We expect to work closely with the ombudsman service throughout implementation, including by ensuring it has the opportunity to participate in our wider work with firms and other stakeholders. Both we and the ombudsman service work on the basis that firms should be held a",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "10PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesUnintended consequences1.47 In CP21/36, we flagged stakeholders’ concerns about the risk of the Duty leading to unintended consequences, such as the withdrawal of products or services for certain customer segments, such as higher risk consumers. We do not want to see firms reducing access to appropriate products and services that offer fair value to their target markets. This would not support our ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "16PS22/9Chapter 2Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesmaterial influence over product design and other matters, but the ultimate decisions may be taken by the board. The firm should, where reasonably practicable, comply with the Duty within the context of its role. For example, it could discuss any concerns it has with the board.For occupational pensions, as we explained in CP21/36, the Duty would not apply to pension schemes regulated by TPR. Respond",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "26PS22/9Chapter 3Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules3.9 They said anything suggesting firms need to amend existing terms and conditions, agreed before the Duty comes into force, is retrospective. These respondents said that many existing products and services were designed under the rules and market conditions that applied at the time. They said that requiring a firm to change this now would be unfair and unreasonable.3.10 Respondents said, for exam",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "27 PS22/9Chapter 3Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesWe are clear in our Guidance on the price and value outcome that firms should consider value in the round and that, where a product or service meets all of the other elements of the Duty (for example, it is designed to meet the needs of its target market, is transparently sold, customers are able to exercise choices to switch or exit, and in respect of which customers are properly supported) it is",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "28PS22/9Chapter 3Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules3.18 Respondents sought guidance on how they should act in a range of scenarios when reviewing an existing product or service. For example, some asked what a firm should do if it if it identifies changes that would benefit some customers but worsen outcomes for others. We were also asked if firms need to review product terms for individual borrowers, as pricing will depend on their credit risk.Our ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "35 PS22/9Chapter 4Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules4.15 Some industry respondents raised other points in relation to existing regulation, including:• There are current Handbook provisions in direct conflict with the Duty requirements.• Several respondents asked for the status of the treating customers fairly (TCF) outcomes to be confirmed.• A few respondents asked how our approach fitted in with the Government’s Future Regulatory Framework (FRF) r",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "38PS22/9Chapter 5Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesFirms should determine whether they are acting consistently with customers’ reasonable expectations according to the ordinary meaning. In addition, as we set out in our Guidance, what a customer reasonably expects would depend on, for example, the nature and quality of the product or service and the firm’s previous conduct or interaction with consumers.Both in the Guidance and in our final rules, w",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "40PS22/9Chapter 5Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesThe requirement for firms to enable and support customers to pursue their financial objectives does not remove customers’ responsibility for decision making or, in itself, prevent customers from making decisions that are not in their interests. Customers best understand their own circumstances and financial needs and objectives. But we expect firms to take responsibility for establishing an environ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "44PS22/9Chapter 6Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules• The Duty applies in a proportionate way based on the standard that could reasonably be expected of a prudent firm. Firms must consider what is reasonable in the relevant circumstances in relation to the nature of the product, the characteristics of the customers in the target market and the firm’s role in relation to the product. The Duty is outcomes focused and does not impose a one‑size‑fits‑al",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "50PS22/9Chapter 8Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules8 The consumer understanding outcome8.1 We want firms’ communications to support and enable consumers to make informed decisions about financial products and services. We want consumers to be given the information they need, at the right time, and presented in a way they can understand.8.2 This chapter summarises the responses we received to our proposals under this outcome, our analysis of them an",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "51 PS22/9Chapter 8Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesBut firms will need to think more widely about the purpose of their communications, and the outcomes they are focused on, to meet our expectations under the Duty.Where firms must communicate complex information to comply with other disclosure requirements, they should consider what additional steps they can take to support consumer understanding. For example, a layered approach can be helpful in p",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "53 PS22/9Chapter 8Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules8.10 Similarly, some industry respondents requested more detail on what we mean by the average customer, asking, for example, if communications should be aimed at those with the lowest or typical cognitive skills. Related to this, some respondents asked about our expectations on tailoring communications and to what extent they need to take into account the needs of particular groups of customers o",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "54PS22/9Chapter 8Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesOur rules under this outcome also require firms to tailor communications when dealing with customers on a one‑to‑one basis where it is appropriate to do so. For example, it may become apparent to a firm in conversation with an individual customer that they require particular information or have a specific characteristic of vulnerability that the firm needs to respond to.Approach to testing8 .11 Som",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "56PS22/9Chapter 9Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules9 The consumer support outcome9.1 We want firms to provide a level of support that meets consumers’ needs throughout their relationship with the firm. This means firms’ customer service should enable consumers to realise the benefits of the products and services they buy and ensure they are supported when they want to pursue their financial objectives.9.2 This chapter summarises the responses we re",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "57 PS22/9Chapter 9Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesFirms should monitor the support they provide, take relevant feedback into account, and look for signs that may indicate their channel offering is not sufficient to meet the needs of their customers. Where this is the case, firms should take reasonable steps to address any shortfall in the support they provide.Meeting the needs of customers with characteristics of vulnerabilityOur guidance on the ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "58PS22/9Chapter 9Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesEnsuring support works effectively. Firms must ensure the limited channel(s) of support they offer are effective and enable customers to realise the benefits of their product and act in their interests without unreasonable barriers. Unclear or confusing digital (or other) customer journeys will not meet this standard.Dealing with non‑standard issues. Firms should also have exceptions processes in p",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "59 PS22/9Chapter 9Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesOur responseAs is the case with the Duty more broadly, firms are responsible for their own activities and they must meet expectations under the consumer support outcome as far as they are relevant to their role and remit.Where firms are outsourcing or using a third‑party provider, the usual regulatory principle applies in that firms are responsible and accountable for all the regulatory responsibi",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "60PS22/9Chapter 10Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules10 Consumers in vulnerable circumstances10.1 In CP21/36, we explained how the Duty would build on our work to improve outcomes for consumers in vulnerable circumstances and align with our work on diversity and inclusion.10.2 This chapter summarises the responses we received, our analysis of them and sets out the approach we are taking forward.Responses to CP21/3610.3 In CP21/36, we asked the follo",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "62PS22/9Chapter 10Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesWe will work with firms during our implementation period to monitor and mitigate the risk that appropriate products are withdrawn from the market as a result of the Duty. We will also consider any risk of or actual unintended consequences as part of a post‑implementation review of the Duty.We have also clarified our expectations about product and service withdrawal. If firms are considering withdr",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "68PS22/9Chapter 12Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules12.6 Most industry respondents therefore argued that a much longer implementation period was required, with two years the most common proposal. Some argued that it would be better to phase implementation (rather than require industry to deliver all the change to a single deadline). Respondents highlighted the longer implementation periods for other reforms (such as Treating Customers Fairly (TCF),",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "69 PS22/9Chapter 12Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulespace of implementation is justified by the significant benefits for consumers (and for firms). We know many firms have already started planning their implementation and we are concerned that setting a longer initial deadline could cause some firms to think they can delay starting work.Maintaining momentum is important, as the embedding of regulatory change of this scale is inevitably iterative. W",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "70PS22/9Chapter 12Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules12.10 Our expectations for boards (or equivalent management bodies) to oversee implementation and ensure compliance with Consumer Duty align with requirements under the SM&CR senior manager conduct rules in our Code of Conduct sourcebook (COCON), and the requirements within the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) on senior management arrangements.12 .11 The work ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "71 PS22/9Chapter 12Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules7. Firms must alert us (as required by SUP 15.3.11R) if they believe that they will not be able to complete all work necessary to be compliant with the Duty before the implementation deadlines. We expect firms to be compliant, but firms should also take a risk‑based approach and prioritise the implementation work that is likely to have the biggest impact on consumer outcomes (for instance, by rev",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "72PS22/9Chapter 13Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules13 Monitoring and governance13.1 The higher standard of the Duty and the shift to focusing on customer outcomes will require a significant change in many firms’ culture. In CP21/36, we set out proposals for firms to monitor and regularly review the outcomes for their customers to ensure that they are consistent with the Duty, including whether any specific groups were getting worse outcomes.13.2 W",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "73 PS22/9Chapter 13Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules13.9 Some respondents argued that monitoring outcomes is complex, and it will take time to develop the necessary capability and get the systems in place, so they will need sufficient time and clarity.Our responseOur rules and Guidance provide an overview of what firms should monitor and the types of data that they could use. In response to feedback, we have amended the Guidance to give more infor",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "75 PS22/9Chapter 13Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesGovernance13.12 Most respondents welcomed our proposals to require board (or equivalent management bodies) oversight of the Duty through an annual report. But most consumer organisations argued strongly that they needed to be strengthened to ensure that it is meaningful and not just a tick‑box exercise. Those respondents made several suggestions for how we should do this. These included requiring",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "76PS22/9Chapter 13Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesFirms can expect at every stage of the regulatory lifecycle to be asked to demonstrate how their business model, the actions they have taken, and their culture are focused on delivering good customer outcomes. Firms can expect us to request their annual report, and other MI, and to publish an overview of our findings. As set out in our supervisory strategy, we may also use other tools, such as req",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "79 PS22/9Ch a pte r 14Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules14 Our approach to the Consumer Duty14.1 The Duty will set a higher standard of care that firms must provide to customers. Firms will need to focus on delivering good outcomes for customers, this will enable them to identify problems earlier, and prevent problems escalating or becoming widespread.14.2 By embedding the Duty in our approach to authorisation, supervision and enforcement, we will ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "implementation_deadline",
+          "regulatoryStatus": "published_or_informational",
+          "summary": "FCA 2022/31 CONSUMER DUTY INSTRUMENT 2022 Powers exercised A.The Financial Conduct Authority (“the FCA”) makes this instrument in the exerciseof the following powers and related provisions in or under:(1)the following sections of the Financial Services and Markets Act 2000 (“theAct”) including as applied by paragraph 3 of Schedule 6 to the PaymentServices Regulations 2017 (SI 2017/752) (“the PSRs”) and paragraph 2A ofSchedule 3 to the Electronic Money Regulations 2011 (SI 2011/99) (“theEMRs”):(a",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 13 of 68 2A.1.1 R References in PRIN to the obligations on firms under Principle 12 include the obligations imposed by rules in PRIN 2A. 2A.1.2 R References in PRIN to obligations imposed on firms under PRIN 2A include the obligation imposed by Principle 12. 2A.1.3 G The application of Principle 12 is set out in PRIN 3, including PRIN 3.2.6R to PRIN 3.2.12G. Principle 12 only applies in relation to a firm’s retail market business. To the extent that Principle 12 applies, Princip",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 14 of 68 (3) that they may lack experience or expertise in relation to products offered through retail market business; and (4) that there are frequently information asymmetries involved in retail market business. 2A.1.10 G (1) The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers. (2) The main elements of firms’ conduct obligations under Principle 12 and PRIN 2A are set",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 15 of 68 distribution chain and the degree to which it can determine or materially influence retail customer outcomes. 2A.1.15 G The extent of a firm’s responsibilities under Principle 12 in any one case will turn on the substance of the firm’s role in the arrangements relating to the product. A firm which determines or has a material influence over retail customer outcomes is accountable notwithstanding that the retail customer may not be its client due to the indirect nature o",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 19 of 68 (1) ensuring all aspects of the design, terms, marketing, sale of and support for its products meet and not frustrate the objectives and interests of retail customers; (2) making sure retail customers have the information and support they need, when they need it, to make and act on informed decisions; (3) enabling retail customers to enjoy the use of their product and to switch or exit the product where they want to without unreasonable barriers or delay; and (4) taking",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 20 of 68 2A.2.24 G The obligations in PRIN 2A.2 apply both at a target market and (where context requires) at an individual customer level, for example: (1) Where a firm interacts with an individual retail customer or is providing a bespoke service the obligations in PRIN 2A.2 apply to those interactions and that service; (2) Where a firm is not interacting with an individual retail customer, for example in the design of a product, when making pricing decisions or designing comm",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 36 of 68 (c) equip retail customers to make decisions that are effective, timely and properly informed. (2) A firm must communicate information to retail customers in a way which is clear, fair and not misleading. 2A.5.4 R With regard to PRIN 2A.5.3R(1): (1) for product-specific communications, a firm should consider the target market for that product; or (2) for non product-specific communications, a firm should consider its retail customers. 2A.5.5 R With regard to PRIN 2A.5.3",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 38 of 68 reasonably be aware that adapting its communications would not be sufficient in isolation to support good outcomes for retail customers; and (c) (where appropriate) follow the requirements in relation to remedies and other action in PRIN 2A.2.5R and PRIN 2A.10. 2A.5.11 G With regard to the firm’s role, it would be more appropriate for the firm to: (1) test communications if the firm is or ought to reasonably be responsible for: (a) the production of those communications",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 42 of 68 2A.7.1 R Principle 12 and the obligations in PRIN 2A must be interpreted in accordance with the standard that could reasonably be expected of a prudent firm: (1) carrying on the same activity in relation to the same product; and (2) taking appropriate account of the needs and characteristics of retail customers based on the needs and characteristics of retail customers in the relevant target market or of individual retail customers as the context requires. 2A.7.2 G What",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 43 of 68 (b) whether the firm has provided or will provide advice to the retail customer. What is reasonable may be different where advice is being provided; (c) the firm’s role in the product’s distribution chain, in particular its role in determining or materially influencing outcomes for retail customers in relation to the product; (d) the stage in the firm’s relationship with the retail customer. There will be times when retail customers are particularly exposed to harm, for",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 44 of 68 2A.7.5 G (1) Firms should be aware that groups of retail customers with specific protected characteristics may have, or be more likely to have, characteristics of vulnerability, for example older customers. In addition, where health is a driver of vulnerability it will likely have substantial overlap with the protected characteristic of ‘disability’ under the Equality Act 2010. Firms should be mindful of this when considering whether they are compliant with Principle 12",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 47 of 68 (3) whether any retail customers have suffered harm as a result of the firm’s acts or omissions. Action required of firms 2A.9.11 R A firm must have in place processes to identify the root causes of any failure to deliver the outcomes listed in PRIN 2A.9.9R for retail customers. 2A.9.12 R Where a firm identifies that: (1) retail customers are not receiving the outcomes listed in PRIN 2A.9.9R, or there is a risk that retail customers will not receive these outcomes; (2) ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "implementation_deadline",
+          "regulatoryStatus": "published_or_informational",
+          "summary": "FCA 2022/31 Page 57 of 68 Material to which the transitional provision applies Transitional Provision Transitional Provision: dates in force Handbook provision: coming into force 4 Principle 12, PRIN 2A R Except to the extent specified in PRIN TP5 and TP6, the provisions listed in column 2 only apply to a closed product from 31 July 2024. From 31 July 2023 indefinitely 31 July 2023 5 PRIN 2A.3 and PRIN 2A.4 R A manufacturer of a closed product must review the closed product by 31 July 2024 and e",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 65 of 68 conduct rules staff. Factors relevant to this standard (in addition to the factors referred to in the material referred to in COCON 4.1.22G) include: (1) their seniority; (2) the scope of their job and in particular the degree to which the responsibilities of the job are able to affect the outcomes experienced by retail customers; (3) their level of expertise and experience; (4) the expertise and experience that their firm reasonably expects them to have; (5) the expert",
+          "supportedBySource": true
+        },
+        {
+          "kind": "regulatory_expectation",
+          "regulatoryStatus": "guidance_or_expectation",
+          "summary": "FCA 2022/31 Page 67 of 68 Annex D Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text. 2 Interpreting the Handbook ... 2.2 Interpreting the Handbook ... Guidance applying while a firm has temporary permission ... 2.2.35A G A TP firm should refer to the provisions listed below, which identify the rules and guidance in their sourcebooks that came into force after IP completion day and in respect of which special provision has been made to apply them to TP firms",
+          "supportedBySource": true
+        }
+      ],
+      "applicability": {
+        "potentiallyAffectedOrganisations": [
+          "authorised_financial_services_firms"
+        ],
+        "businessFunctions": [
+          "financial_crime_compliance",
+          "governance",
+          "compliance_controls"
+        ],
+        "productsAndServices": [],
+        "complianceFrameworks": [],
+        "operationalProcesses": [
+          "financial_crime_compliance",
+          "governance",
+          "compliance_controls"
+        ],
+        "universalApplicability": false,
+        "requiresFirmSpecificAssessment": true
+      },
+      "consultationPreserved": false,
+      "isFinalisedGuidance": false
+    },
+    "withoutMetadata": {
+      "analyzerVersion": "regulatory-pdf-analysis-v1",
+      "publicationClassification": {
+        "primaryClass": "consultation_paper",
+        "allowedClasses": [
+          "consultation_paper",
+          "policy_statement",
+          "supervisory_statement",
+          "guidance",
+          "regulatory_rules",
+          "other_regulatory_publication"
+        ],
+        "label": null
+      },
+      "regulatoryStatus": {
+        "phase": "consultation",
+        "proposedChanges": true,
+        "publishedFinalRules": false,
+        "existingBindingObligationsMentioned": false,
+        "nonBindingGuidance": false,
+        "informationalContent": false,
+        "bindingObligationsDetected": false,
+        "mustNotTreatProposalsAsBinding": true,
+        "isFinalisedGuidance": false
+      },
+      "developments": [
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "4PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules1.9 We are grateful to those who engaged with us, and we have considered the feedback and issues raised. We want to continue this collaborative engagement with all stakeholders in the next and crucial phase of implementation.Who this affects• regulated firms, including those in the e‑money and payments sector• consumer organisations and individual consumers• industry groups/trade bodies• policy make",
+          "supportedBySource": true
+        },
+        {
+          "kind": "implementation_deadline",
+          "regulatoryStatus": "proposed",
+          "summary": "8PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules1.30 We have made a number of changes to update the rules and Guidance in light of the feedback we received. Below we set out some of the key themes in the responses to our consultation, our analysis and response.Implementation timetable1. 31 The key issue raised by almost all firms and their trade bodies was the proposed implementation period of nine months (ending on 30 April 2023). Industry respo",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "9 PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules1.39 We have engaged with the ombudsman service throughout the development of the Duty and in finalising the rules and guidance. We expect to work closely with the ombudsman service throughout implementation, including by ensuring it has the opportunity to participate in our wider work with firms and other stakeholders. Both we and the ombudsman service work on the basis that firms should be held a",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "10PS22/9Chapter 1Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesUnintended consequences1.47 In CP21/36, we flagged stakeholders’ concerns about the risk of the Duty leading to unintended consequences, such as the withdrawal of products or services for certain customer segments, such as higher risk consumers. We do not want to see firms reducing access to appropriate products and services that offer fair value to their target markets. This would not support our ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "16PS22/9Chapter 2Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesmaterial influence over product design and other matters, but the ultimate decisions may be taken by the board. The firm should, where reasonably practicable, comply with the Duty within the context of its role. For example, it could discuss any concerns it has with the board.For occupational pensions, as we explained in CP21/36, the Duty would not apply to pension schemes regulated by TPR. Respond",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "26PS22/9Chapter 3Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules3.9 They said anything suggesting firms need to amend existing terms and conditions, agreed before the Duty comes into force, is retrospective. These respondents said that many existing products and services were designed under the rules and market conditions that applied at the time. They said that requiring a firm to change this now would be unfair and unreasonable.3.10 Respondents said, for exam",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "27 PS22/9Chapter 3Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesWe are clear in our Guidance on the price and value outcome that firms should consider value in the round and that, where a product or service meets all of the other elements of the Duty (for example, it is designed to meet the needs of its target market, is transparently sold, customers are able to exercise choices to switch or exit, and in respect of which customers are properly supported) it is",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "28PS22/9Chapter 3Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules3.18 Respondents sought guidance on how they should act in a range of scenarios when reviewing an existing product or service. For example, some asked what a firm should do if it if it identifies changes that would benefit some customers but worsen outcomes for others. We were also asked if firms need to review product terms for individual borrowers, as pricing will depend on their credit risk.Our ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "35 PS22/9Chapter 4Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules4.15 Some industry respondents raised other points in relation to existing regulation, including:• There are current Handbook provisions in direct conflict with the Duty requirements.• Several respondents asked for the status of the treating customers fairly (TCF) outcomes to be confirmed.• A few respondents asked how our approach fitted in with the Government’s Future Regulatory Framework (FRF) r",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "38PS22/9Chapter 5Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesFirms should determine whether they are acting consistently with customers’ reasonable expectations according to the ordinary meaning. In addition, as we set out in our Guidance, what a customer reasonably expects would depend on, for example, the nature and quality of the product or service and the firm’s previous conduct or interaction with consumers.Both in the Guidance and in our final rules, w",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "40PS22/9Chapter 5Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesThe requirement for firms to enable and support customers to pursue their financial objectives does not remove customers’ responsibility for decision making or, in itself, prevent customers from making decisions that are not in their interests. Customers best understand their own circumstances and financial needs and objectives. But we expect firms to take responsibility for establishing an environ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "44PS22/9Chapter 6Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules• The Duty applies in a proportionate way based on the standard that could reasonably be expected of a prudent firm. Firms must consider what is reasonable in the relevant circumstances in relation to the nature of the product, the characteristics of the customers in the target market and the firm’s role in relation to the product. The Duty is outcomes focused and does not impose a one‑size‑fits‑al",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "50PS22/9Chapter 8Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules8 The consumer understanding outcome8.1 We want firms’ communications to support and enable consumers to make informed decisions about financial products and services. We want consumers to be given the information they need, at the right time, and presented in a way they can understand.8.2 This chapter summarises the responses we received to our proposals under this outcome, our analysis of them an",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "51 PS22/9Chapter 8Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesBut firms will need to think more widely about the purpose of their communications, and the outcomes they are focused on, to meet our expectations under the Duty.Where firms must communicate complex information to comply with other disclosure requirements, they should consider what additional steps they can take to support consumer understanding. For example, a layered approach can be helpful in p",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "53 PS22/9Chapter 8Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules8.10 Similarly, some industry respondents requested more detail on what we mean by the average customer, asking, for example, if communications should be aimed at those with the lowest or typical cognitive skills. Related to this, some respondents asked about our expectations on tailoring communications and to what extent they need to take into account the needs of particular groups of customers o",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "54PS22/9Chapter 8Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesOur rules under this outcome also require firms to tailor communications when dealing with customers on a one‑to‑one basis where it is appropriate to do so. For example, it may become apparent to a firm in conversation with an individual customer that they require particular information or have a specific characteristic of vulnerability that the firm needs to respond to.Approach to testing8 .11 Som",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "56PS22/9Chapter 9Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules9 The consumer support outcome9.1 We want firms to provide a level of support that meets consumers’ needs throughout their relationship with the firm. This means firms’ customer service should enable consumers to realise the benefits of the products and services they buy and ensure they are supported when they want to pursue their financial objectives.9.2 This chapter summarises the responses we re",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "57 PS22/9Chapter 9Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesFirms should monitor the support they provide, take relevant feedback into account, and look for signs that may indicate their channel offering is not sufficient to meet the needs of their customers. Where this is the case, firms should take reasonable steps to address any shortfall in the support they provide.Meeting the needs of customers with characteristics of vulnerabilityOur guidance on the ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "58PS22/9Chapter 9Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesEnsuring support works effectively. Firms must ensure the limited channel(s) of support they offer are effective and enable customers to realise the benefits of their product and act in their interests without unreasonable barriers. Unclear or confusing digital (or other) customer journeys will not meet this standard.Dealing with non‑standard issues. Firms should also have exceptions processes in p",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "59 PS22/9Chapter 9Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesOur responseAs is the case with the Duty more broadly, firms are responsible for their own activities and they must meet expectations under the consumer support outcome as far as they are relevant to their role and remit.Where firms are outsourcing or using a third‑party provider, the usual regulatory principle applies in that firms are responsible and accountable for all the regulatory responsibi",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "60PS22/9Chapter 10Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules10 Consumers in vulnerable circumstances10.1 In CP21/36, we explained how the Duty would build on our work to improve outcomes for consumers in vulnerable circumstances and align with our work on diversity and inclusion.10.2 This chapter summarises the responses we received, our analysis of them and sets out the approach we are taking forward.Responses to CP21/3610.3 In CP21/36, we asked the follo",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "62PS22/9Chapter 10Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesWe will work with firms during our implementation period to monitor and mitigate the risk that appropriate products are withdrawn from the market as a result of the Duty. We will also consider any risk of or actual unintended consequences as part of a post‑implementation review of the Duty.We have also clarified our expectations about product and service withdrawal. If firms are considering withdr",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "68PS22/9Chapter 12Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules12.6 Most industry respondents therefore argued that a much longer implementation period was required, with two years the most common proposal. Some argued that it would be better to phase implementation (rather than require industry to deliver all the change to a single deadline). Respondents highlighted the longer implementation periods for other reforms (such as Treating Customers Fairly (TCF),",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "69 PS22/9Chapter 12Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulespace of implementation is justified by the significant benefits for consumers (and for firms). We know many firms have already started planning their implementation and we are concerned that setting a longer initial deadline could cause some firms to think they can delay starting work.Maintaining momentum is important, as the embedding of regulatory change of this scale is inevitably iterative. W",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "70PS22/9Chapter 12Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules12.10 Our expectations for boards (or equivalent management bodies) to oversee implementation and ensure compliance with Consumer Duty align with requirements under the SM&CR senior manager conduct rules in our Code of Conduct sourcebook (COCON), and the requirements within the Senior Management Arrangements, Systems and Controls sourcebook (SYSC) on senior management arrangements.12 .11 The work ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "71 PS22/9Chapter 12Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules7. Firms must alert us (as required by SUP 15.3.11R) if they believe that they will not be able to complete all work necessary to be compliant with the Duty before the implementation deadlines. We expect firms to be compliant, but firms should also take a risk‑based approach and prioritise the implementation work that is likely to have the biggest impact on consumer outcomes (for instance, by rev",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "72PS22/9Chapter 13Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules13 Monitoring and governance13.1 The higher standard of the Duty and the shift to focusing on customer outcomes will require a significant change in many firms’ culture. In CP21/36, we set out proposals for firms to monitor and regularly review the outcomes for their customers to ensure that they are consistent with the Duty, including whether any specific groups were getting worse outcomes.13.2 W",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "73 PS22/9Chapter 13Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules13.9 Some respondents argued that monitoring outcomes is complex, and it will take time to develop the necessary capability and get the systems in place, so they will need sufficient time and clarity.Our responseOur rules and Guidance provide an overview of what firms should monitor and the types of data that they could use. In response to feedback, we have amended the Guidance to give more infor",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "75 PS22/9Chapter 13Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesGovernance13.12 Most respondents welcomed our proposals to require board (or equivalent management bodies) oversight of the Duty through an annual report. But most consumer organisations argued strongly that they needed to be strengthened to ensure that it is meaningful and not just a tick‑box exercise. Those respondents made several suggestions for how we should do this. These included requiring",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "76PS22/9Chapter 13Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rulesFirms can expect at every stage of the regulatory lifecycle to be asked to demonstrate how their business model, the actions they have taken, and their culture are focused on delivering good customer outcomes. Firms can expect us to request their annual report, and other MI, and to publish an overview of our findings. As set out in our supervisory strategy, we may also use other tools, such as req",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "79 PS22/9Ch a pte r 14Financial Conduct AuthorityA new Consumer Duty Feedback to CP21/36 and final rules14 Our approach to the Consumer Duty14.1 The Duty will set a higher standard of care that firms must provide to customers. Firms will need to focus on delivering good outcomes for customers, this will enable them to identify problems earlier, and prevent problems escalating or becoming widespread.14.2 By embedding the Duty in our approach to authorisation, supervision and enforcement, we will ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "implementation_deadline",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 CONSUMER DUTY INSTRUMENT 2022 Powers exercised A.The Financial Conduct Authority (“the FCA”) makes this instrument in the exerciseof the following powers and related provisions in or under:(1)the following sections of the Financial Services and Markets Act 2000 (“theAct”) including as applied by paragraph 3 of Schedule 6 to the PaymentServices Regulations 2017 (SI 2017/752) (“the PSRs”) and paragraph 2A ofSchedule 3 to the Electronic Money Regulations 2011 (SI 2011/99) (“theEMRs”):(a",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 13 of 68 2A.1.1 R References in PRIN to the obligations on firms under Principle 12 include the obligations imposed by rules in PRIN 2A. 2A.1.2 R References in PRIN to obligations imposed on firms under PRIN 2A include the obligation imposed by Principle 12. 2A.1.3 G The application of Principle 12 is set out in PRIN 3, including PRIN 3.2.6R to PRIN 3.2.12G. Principle 12 only applies in relation to a firm’s retail market business. To the extent that Principle 12 applies, Princip",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 14 of 68 (3) that they may lack experience or expertise in relation to products offered through retail market business; and (4) that there are frequently information asymmetries involved in retail market business. 2A.1.10 G (1) The cross-cutting obligations at PRIN 2A.2 set out the overarching conduct which firms must demonstrate when they act to deliver good outcomes for retail customers. (2) The main elements of firms’ conduct obligations under Principle 12 and PRIN 2A are set",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 15 of 68 distribution chain and the degree to which it can determine or materially influence retail customer outcomes. 2A.1.15 G The extent of a firm’s responsibilities under Principle 12 in any one case will turn on the substance of the firm’s role in the arrangements relating to the product. A firm which determines or has a material influence over retail customer outcomes is accountable notwithstanding that the retail customer may not be its client due to the indirect nature o",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 19 of 68 (1) ensuring all aspects of the design, terms, marketing, sale of and support for its products meet and not frustrate the objectives and interests of retail customers; (2) making sure retail customers have the information and support they need, when they need it, to make and act on informed decisions; (3) enabling retail customers to enjoy the use of their product and to switch or exit the product where they want to without unreasonable barriers or delay; and (4) taking",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 20 of 68 2A.2.24 G The obligations in PRIN 2A.2 apply both at a target market and (where context requires) at an individual customer level, for example: (1) Where a firm interacts with an individual retail customer or is providing a bespoke service the obligations in PRIN 2A.2 apply to those interactions and that service; (2) Where a firm is not interacting with an individual retail customer, for example in the design of a product, when making pricing decisions or designing comm",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 36 of 68 (c) equip retail customers to make decisions that are effective, timely and properly informed. (2) A firm must communicate information to retail customers in a way which is clear, fair and not misleading. 2A.5.4 R With regard to PRIN 2A.5.3R(1): (1) for product-specific communications, a firm should consider the target market for that product; or (2) for non product-specific communications, a firm should consider its retail customers. 2A.5.5 R With regard to PRIN 2A.5.3",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 38 of 68 reasonably be aware that adapting its communications would not be sufficient in isolation to support good outcomes for retail customers; and (c) (where appropriate) follow the requirements in relation to remedies and other action in PRIN 2A.2.5R and PRIN 2A.10. 2A.5.11 G With regard to the firm’s role, it would be more appropriate for the firm to: (1) test communications if the firm is or ought to reasonably be responsible for: (a) the production of those communications",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 42 of 68 2A.7.1 R Principle 12 and the obligations in PRIN 2A must be interpreted in accordance with the standard that could reasonably be expected of a prudent firm: (1) carrying on the same activity in relation to the same product; and (2) taking appropriate account of the needs and characteristics of retail customers based on the needs and characteristics of retail customers in the relevant target market or of individual retail customers as the context requires. 2A.7.2 G What",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 43 of 68 (b) whether the firm has provided or will provide advice to the retail customer. What is reasonable may be different where advice is being provided; (c) the firm’s role in the product’s distribution chain, in particular its role in determining or materially influencing outcomes for retail customers in relation to the product; (d) the stage in the firm’s relationship with the retail customer. There will be times when retail customers are particularly exposed to harm, for",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 44 of 68 2A.7.5 G (1) Firms should be aware that groups of retail customers with specific protected characteristics may have, or be more likely to have, characteristics of vulnerability, for example older customers. In addition, where health is a driver of vulnerability it will likely have substantial overlap with the protected characteristic of ‘disability’ under the Equality Act 2010. Firms should be mindful of this when considering whether they are compliant with Principle 12",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 47 of 68 (3) whether any retail customers have suffered harm as a result of the firm’s acts or omissions. Action required of firms 2A.9.11 R A firm must have in place processes to identify the root causes of any failure to deliver the outcomes listed in PRIN 2A.9.9R for retail customers. 2A.9.12 R Where a firm identifies that: (1) retail customers are not receiving the outcomes listed in PRIN 2A.9.9R, or there is a risk that retail customers will not receive these outcomes; (2) ",
+          "supportedBySource": true
+        },
+        {
+          "kind": "implementation_deadline",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 57 of 68 Material to which the transitional provision applies Transitional Provision Transitional Provision: dates in force Handbook provision: coming into force 4 Principle 12, PRIN 2A R Except to the extent specified in PRIN TP5 and TP6, the provisions listed in column 2 only apply to a closed product from 31 July 2024. From 31 July 2023 indefinitely 31 July 2023 5 PRIN 2A.3 and PRIN 2A.4 R A manufacturer of a closed product must review the closed product by 31 July 2024 and e",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 65 of 68 conduct rules staff. Factors relevant to this standard (in addition to the factors referred to in the material referred to in COCON 4.1.22G) include: (1) their seniority; (2) the scope of their job and in particular the degree to which the responsibilities of the job are able to affect the outcomes experienced by retail customers; (3) their level of expertise and experience; (4) the expertise and experience that their firm reasonably expects them to have; (5) the expert",
+          "supportedBySource": true
+        },
+        {
+          "kind": "proposed_requirement",
+          "regulatoryStatus": "proposed",
+          "summary": "FCA 2022/31 Page 67 of 68 Annex D Amendments to the General Provisions (GEN) In this Annex, underlining indicates new text. 2 Interpreting the Handbook ... 2.2 Interpreting the Handbook ... Guidance applying while a firm has temporary permission ... 2.2.35A G A TP firm should refer to the provisions listed below, which identify the rules and guidance in their sourcebooks that came into force after IP completion day and in respect of which special provision has been made to apply them to TP firms",
+          "supportedBySource": true
+        }
+      ],
+      "applicability": {
+        "potentiallyAffectedOrganisations": [
+          "authorised_financial_services_firms"
+        ],
+        "businessFunctions": [
+          "financial_crime_compliance",
+          "governance",
+          "compliance_controls"
+        ],
+        "productsAndServices": [],
+        "complianceFrameworks": [],
+        "operationalProcesses": [
+          "financial_crime_compliance",
+          "governance",
+          "compliance_controls"
+        ],
+        "universalApplicability": false,
+        "requiresFirmSpecificAssessment": true
+      },
+      "consultationPreserved": true,
+      "isFinalisedGuidance": false
+    }
+  },
+  "identifiedDefect": null,
+  "priorIncorrectAssessment": "PS22-9-PUBLICATION-LEGAL-STATUS-ASSESSMENT incorrectly labelled CP22/9 consultation; corrected in this verification.",
+  "handbookProvisionsFocus": {
+    "PRIN 2A.2.14R": {
+      "currentHandbookStatus": "binding_rule_if_enacted_via_PS22_9",
+      "originalPublicationStatus": "final_rule_in_PS22_9_instrument",
+      "mustNotInferFromSuffixAlone": true
+    },
+    "PRIN 2A.2.26R": {
+      "currentHandbookStatus": "binding_rule_if_enacted_via_PS22_9",
+      "originalPublicationStatus": "final_rule_in_PS22_9_instrument",
+      "mustNotInferFromSuffixAlone": true
+    }
+  }
+}

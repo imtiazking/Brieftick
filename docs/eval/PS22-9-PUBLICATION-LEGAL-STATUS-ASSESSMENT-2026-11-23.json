@@ -1,19 +1,55 @@
 {
-  "generatedAt": "2026-11-23T23:02:16.408Z",
+  "generatedAt": "2026-11-23T23:37:31.945Z",
   "publicationAssessment": {
-    "fcaReference": "CP22/9",
-    "title": "A new Consumer Duty",
+    "fcaReference": "PS22/9",
+    "officialTitle": "A new Consumer Duty — Feedback to CP21/36 and final rules",
+    "canonicalUrl": "https://www.fca.org.uk/publication/policy/ps22-9.pdf",
+    "publicationDate": "2022-07-29",
     "documentTypes": [
-      "consultation_paper",
-      "proposed_handbook_instrument"
+      "policy_statement",
+      "made_rules_instrument"
     ],
-    "legallyBindingAsPublished": false,
-    "consultationPreserved": true,
+    "legallyBindingAsPublished": true,
+    "consultationPreserved": false,
     "instrumentInDocument": true,
-    "note": "Made rules text in CP22/9 are proposals subject to consultation, not independently operative Handbook obligations until implemented via Policy Statement / instrument made by the FCA.",
+    "relatedConsultations": [
+      "CP21/36",
+      "CP21/13"
+    ],
+    "cp22_09Note": "CP22/09 is the Dormant Assets scheme consultation — not this PDF. Prior labelling as CP22/9 was incorrect.",
+    "legalInstrument": "Appendix 1 Made rules (legal instrument) within PS22/9",
+    "handbookCommencement": "PRIN 2A Consumer Duty rules are made via PS22/9; operative status for a firm depends on applicability and commencement in the instrument — not inferred from R suffix alone.",
+    "sourcePdfSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+    "sourcePdfSha256Match": true,
+    "regulatoryAnalysis": {
+      "publicationClassification": {
+        "primaryClass": "policy_statement",
+        "allowedClasses": [
+          "consultation_paper",
+          "policy_statement",
+          "supervisory_statement",
+          "guidance",
+          "regulatory_rules",
+          "other_regulatory_publication"
+        ],
+        "label": "Policy Statement"
+      },
+      "regulatoryStatus": {
+        "phase": "final_policy_statement",
+        "proposedChanges": false,
+        "publishedFinalRules": true,
+        "existingBindingObligationsMentioned": true,
+        "nonBindingGuidance": false,
+        "informationalContent": false,
+        "bindingObligationsDetected": true,
+        "mustNotTreatProposalsAsBinding": false,
+        "isFinalisedGuidance": false
+      }
+    },
     "authoritativeSources": [
-      "integrations/regulatory-sources/fixtures/fca-ps22-9-official.pdf",
-      "FCA CP22/9 (Consumer Duty consultation)"
+      "C:\\Users\\imtia\\AppData\\Local\\forgeniq-ri-classification\\integrations\\regulatory-sources\\fixtures\\fca-ps22-9-official.pdf",
+      "https://www.fca.org.uk/publication/policy/ps22-9.pdf",
+      "FCA Handbook PRIN 2A (as enacted from PS22/9)"
     ]
   },
   "focusProvisions": [
@@ -23,17 +59,19 @@
         110
       ],
       "operativeMarkerInSource": true,
+      "inMadeRulesInstrument": true,
       "canonicalCode": "R",
       "canonicalLegalStatus": "binding",
-      "handbookStyleBindingIfFinalised": "binding_requirement",
-      "asPublishedLegalCharacter": "consultation_proposal",
-      "mustNotPresentAsIndependentBinding": true,
+      "handbookStyleBindingIfEnacted": "binding_requirement",
+      "asPublishedLegalCharacter": "final_rule_in_PS22_9_instrument",
+      "mustNotPresentAsConsultationProposal": true,
+      "mustNotAutoApproveObligationWithoutHumanReview": true,
       "historicalAiRunPreserved": true,
       "subsequentAssessment": {
-        "assessedAt": "2026-11-23T23:02:16.405Z",
+        "assessedAt": "2026-11-23T23:37:31.941Z",
         "regulatoryClassificationCode": "R",
-        "bindingNatureForPresentation": "consultation_proposal",
-        "conversionEligibilityUnderConsultation": "human_review_required_before_obligation_conversion",
+        "bindingNatureForPresentation": "published_final_rule",
+        "conversionEligibility": "human_review_required; verify quotation within made rules; confirm firm applicability and commencement",
         "liveExtractionSnapshot": {
           "runId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
           "bindingNature": "consultation_proposal",
@@ -49,7 +87,7 @@
           },
           "bindingNatureGuarded": "must_not_present_as_independent_binding"
         },
-        "alignmentWithPolicy": "ALIGNED"
+        "alignmentWithCorrectedPublication": "STRUCTURAL_ALIGN_REVIEW_LEGAL"
       },
       "quotationSetOut": true
     },
@@ -59,17 +97,19 @@
         112
       ],
       "operativeMarkerInSource": true,
+      "inMadeRulesInstrument": true,
       "canonicalCode": "R",
       "canonicalLegalStatus": "binding",
-      "handbookStyleBindingIfFinalised": "binding_requirement",
-      "asPublishedLegalCharacter": "consultation_proposal",
-      "mustNotPresentAsIndependentBinding": true,
+      "handbookStyleBindingIfEnacted": "binding_requirement",
+      "asPublishedLegalCharacter": "final_rule_in_PS22_9_instrument",
+      "mustNotPresentAsConsultationProposal": true,
+      "mustNotAutoApproveObligationWithoutHumanReview": true,
       "historicalAiRunPreserved": true,
       "subsequentAssessment": {
-        "assessedAt": "2026-11-23T23:02:16.406Z",
+        "assessedAt": "2026-11-23T23:37:31.943Z",
         "regulatoryClassificationCode": "R",
-        "bindingNatureForPresentation": "consultation_proposal",
-        "conversionEligibilityUnderConsultation": "human_review_required_before_obligation_conversion",
+        "bindingNatureForPresentation": "published_final_rule",
+        "conversionEligibility": "human_review_required; verify quotation within made rules; confirm firm applicability and commencement",
         "liveExtractionSnapshot": {
           "runId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
           "bindingNature": "consultation_proposal",
@@ -85,7 +125,7 @@
           },
           "bindingNatureGuarded": "must_not_present_as_independent_binding"
         },
-        "alignmentWithPolicy": "ALIGNED"
+        "alignmentWithCorrectedPublication": "STRUCTURAL_ALIGN_REVIEW_LEGAL"
       },
       "quotationSetOut": true
     }
@@ -93,11 +133,12 @@
   "batch0DiscrepancyReassessment": {
     "priorFindings": 4,
     "resolved": true,
-    "note": "Historical batch-0 JSON unchanged; this block is subsequent legal interpretation only."
+    "note": "Batch-0 discrepancy resolution addressed consultation presentation; publication identity is PS22/9 final rules, not CP22/9."
   },
   "batch1Reassessment": {
-    "allAligned": true,
-    "count": 2
+    "focusCount": 2,
+    "historicalMisclassificationOnStagingRuns": false
   },
-  "policyStatement": "Provision suffix R identifies proposed rule text in the consultation instrument; it does not alone establish a currently binding Handbook obligation. The engine must preserve consultation guards."
+  "policyStatement": "PS22/9 contains final made rules. An R marker in the instrument identifies rule text as made in this publication; binding Handbook status still requires enactment, applicability and effective dates — the platform must not auto-convert extractions to approved obligations.",
+  "supersedesIncorrectNarrative": "Prior assessment incorrectly labelled source as CP22/9 consultation."
 }

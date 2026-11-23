@@ -46,6 +46,7 @@ export function analyzeRegulatoryPdfDocument(input) {
     applicability,
     consultationPreserved:
       publicationClassification.primaryClass === 'consultation_paper' &&
+      regulatoryStatus.publishedFinalRules !== true &&
       regulatoryStatus.bindingObligationsDetected === false &&
       regulatoryStatus.isFinalisedGuidance !== true,
     isFinalisedGuidance: regulatoryStatus.isFinalisedGuidance === true,
@@ -62,12 +63,30 @@ function resolveFinalisedGuidance(meta, url, text) {
   return false;
 }
 
+function isFinalPolicyStatementText(text, meta, url) {
+  const head = String(text || '').slice(0, 20000);
+  const label = String(meta.publicationTypeLabel || meta.publicationType || '').toLowerCase();
+  const psRef = /\bPS\s*\d{1,2}\s*\/\s*\d{1,2}\b/i.test(head);
+  const policyStatement = /policy statement/i.test(head) || label.includes('policy statement');
+  const finalRules = /\bfinal rules\b/i.test(head);
+  const madeInstrument = /made rules\s*\(legal instrument\)|appendix\s+1\s+made rules/i.test(head);
+  const policyUrl = /\/publication\/policy\//i.test(String(url || ''));
+  return (psRef && policyStatement && finalRules) || (policyStatement && madeInstrument && psRef) || (policyUrl && psRef);
+}
+
 function classifyPublication(meta, url, text) {
   const label = String(meta.publicationTypeLabel || '').toLowerCase();
+  const pubType = String(meta.publicationType || meta.publication_type || '').toLowerCase();
   const finalised = resolveFinalisedGuidance(meta, url, text);
   let primaryClass = 'other_regulatory_publication';
   if (finalised) {
     primaryClass = 'guidance';
+  } else if (
+    isFinalPolicyStatementText(text, meta, url) ||
+    pubType === 'policy_statement' ||
+    (/\bpolicy statement\b/i.test(text.slice(0, 15000)) && /\bPS\s*\d{1,2}\s*\/\s*\d{1,2}\b/i.test(text.slice(0, 8000)))
+  ) {
+    primaryClass = 'policy_statement';
   } else if (label.includes('consultation') || url.includes('consultation-papers') || /consultation paper/i.test(text)) {
     primaryClass = 'consultation_paper';
   } else if (/policy statement/i.test(text) || label.includes('policy statement')) {
@@ -88,18 +107,25 @@ function classifyPublication(meta, url, text) {
 
 function deriveRegulatoryStatus(publicationClassification, text, meta = {}) {
   const isFinalisedGuidance = resolveFinalisedGuidance(meta, '', text);
+  const isPolicyStatement = publicationClassification.primaryClass === 'policy_statement';
+  const madeInstrument = /made rules\s*\(legal instrument\)|appendix\s+1\s+made rules/i.test(text);
   const isConsultation =
-    publicationClassification.primaryClass === 'consultation_paper' && !isFinalisedGuidance;
+    publicationClassification.primaryClass === 'consultation_paper' && !isFinalisedGuidance && !isPolicyStatement;
   const proposes =
-    !isFinalisedGuidance && /\b(propose|proposing|we propose|consultation)\b/i.test(text);
+    !isFinalisedGuidance &&
+    !isPolicyStatement &&
+    /\b(propose|proposing|we propose|consultation)\b/i.test(text);
   const bindingLanguage = /\b(must|shall|required to|is required)\b/i.test(text) && !isConsultation;
+  const publishedFinalRules =
+    (isPolicyStatement && (madeInstrument || /\bfinal rules\b/i.test(text.slice(0, 15000)))) ||
+    (!isConsultation && publicationClassification.primaryClass === 'regulatory_rules');
   return {
-    phase: isConsultation ? 'consultation' : proposes ? 'proposed' : 'published_or_informational',
-    proposedChanges: isConsultation || proposes,
-    publishedFinalRules: !isConsultation && publicationClassification.primaryClass === 'regulatory_rules',
+    phase: isConsultation ? 'consultation' : isPolicyStatement ? 'final_policy_statement' : proposes ? 'proposed' : 'published_or_informational',
+    proposedChanges: isConsultation || (proposes && !isPolicyStatement),
+    publishedFinalRules,
     existingBindingObligationsMentioned: bindingLanguage,
     nonBindingGuidance: publicationClassification.primaryClass === 'guidance',
-    informationalContent: !isConsultation && !bindingLanguage,
+    informationalContent: !isConsultation && !bindingLanguage && !isPolicyStatement,
     bindingObligationsDetected: bindingLanguage && !isConsultation,
     mustNotTreatProposalsAsBinding: isConsultation,
     isFinalisedGuidance,

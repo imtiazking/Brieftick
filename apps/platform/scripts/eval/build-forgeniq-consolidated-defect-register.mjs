@@ -83,6 +83,15 @@ add({
 });
 
 add({
+  title: 'RI_LAB_MAX_PROVISIONS_PER_BATCH env could bypass 16-cap preflight',
+  category: 1,
+  status: 'FIXED AND TESTED',
+  rootCause: 'Shell env e.g. 512 propagated into gate children and live orchestration',
+  resolution: 'resolveMaxProvisionsPerBatch clamp; consolidated gates delete env in child processes',
+  commit: '441a982',
+});
+
+add({
   title: 'SEC-DB-003 hosted restricted-role proof',
   category: 7,
   status: 'BLOCKED — EXTERNAL DEPENDENCY',
@@ -134,28 +143,61 @@ if (batch0disc?.summary?.resolved) {
 }
 
 add({
-  title: 'PS22/9 publication legal instrument status',
+  title: 'PS22/9 PDF misidentified as CP22/9 consultation in legal assessment docs',
   category: 2,
-  status: 'TESTED AND PASSED',
-  rootCause: 'N/A — policy applied',
-  resolution: 'Consultation CP22/9: R markers are proposed rules; bindingNature must not be binding_requirement until final PS',
-  evidence: 'PS22-9-PUBLICATION-LEGAL-STATUS-ASSESSMENT-2026-11-23.json',
+  status: 'FIXED AND TESTED',
+  rootCause: 'Incorrect human/script label; actual fixture is PS22/9 final policy statement (SHA256 verified)',
+  resolution: 'PS22-9-SOURCE-PUBLICATION-VERIFICATION-2026-11-23.json',
+  evidence: 'PS22-9-SOURCE-PUBLICATION-VERIFICATION-2026-11-23.json',
 });
 
-const hostedUat = [
-  'acceptance-ri-uc-ri-005-finding-review-browser',
-  'acceptance-ri-applicability-workflow-browser',
-  'acceptance-ri-uc-ri-005-extraction-button-browser',
-];
-for (const mod of hostedUat) {
-  add({
-    title: `Hosted browser UAT: ${mod}`,
-    category: 5,
-    status: 'READY FOR HOSTED VALIDATION',
-    rootCause: 'Requires staging session + consolidated deploy',
-    resolution: 'Execute post-deploy on staging-app.forgeniq.com',
-  });
-}
+add({
+  title: 'analyzeRegulatoryPdfDocument treats PS22/9 as consultation_paper',
+  category: 1,
+  status: 'FIXED AND TESTED',
+  rootCause: 'Consultation keyword matched before policy statement; CP21/36 feedback text in PS body',
+  resolution: 'regulatory-pdf-analysis.mjs final policy statement detection + acceptance-ri-regulatory-pdf-analysis-ps22',
+});
+
+add({
+  title: '97 provision extractions used consultationPreserved presentation guards',
+  category: 2,
+  status: 'FAILED',
+  rootCause: 'Downstream consultationPreserved=true from misclassification',
+  resolution: 'Historical JSON preserved; PS22-9-97-PROVISION-REVALIDATION marks legallyVerified:0; re-assessment required (no auto-conversion to approved obligations)',
+  evidence: 'PS22-9-97-PROVISION-REVALIDATION-2026-11-23.json',
+});
+
+add({
+  title: 'Staging P2 browser regression (maker-checker, audit, SoD, policy fail-closed)',
+  category: 5,
+  status: 'TESTED AND PASSED',
+  rootCause: 'N/A',
+  resolution: 'staging-p2-regression.mjs 19/19 on staging-app.forgeniq.com',
+  evidence: 'STAGING-P2-REGRESSION-2026-11-23.json',
+});
+
+add({
+  title: 'Local design-lab browser suites (UC-RI-005 review, applicability, extraction button)',
+  category: 5,
+  status: 'NOT EXECUTED — REQUIRES LOCAL DESIGN-LAB SERVER',
+  rootCause: 'Scripts refuse non-localhost; no server on :3001 in this tranche',
+  resolution:
+    'Three acceptance-ri-*-browser.mjs modules; run after local serve — distinct from staging-p2-regression hosted evidence',
+  modules: [
+    'acceptance-ri-uc-ri-005-finding-review-browser',
+    'acceptance-ri-applicability-workflow-browser',
+    'acceptance-ri-uc-ri-005-extraction-button-browser',
+  ],
+});
+
+add({
+  title: 'PS22/9 publication classifier on staging runtime',
+  category: 1,
+  status: 'IMPLEMENTED — AWAITING STAGING DEPLOY',
+  rootCause: 'Staging deploy 441a982 predates regulatory-pdf-analysis.mjs PS22/9 fix',
+  resolution: 'Single consolidated staging deploy after commit; no paid extraction',
+});
 
 const suite = spawnSync('node', ['scripts/eval/run-consolidated-remediation-gates.mjs'], {
   cwd: join(REPO_ROOT, 'apps/platform'),

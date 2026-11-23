@@ -1,0 +1,1355 @@
+{
+  "generatedAt": "2026-11-23T23:43:49.582Z",
+  "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+  "sourceIdentity": {
+    "fcaReference": "PS22/9",
+    "officialTitle": "A new Consumer Duty",
+    "canonicalUrl": "https://www.fca.org.uk/publication/policy/ps22-9.pdf",
+    "publicationDate": "2022-07-29 (text signal)",
+    "publicationType": "policy_statement",
+    "documentContains": "final_policy_statement_with_made_rules",
+    "rulesCharacter": "Final rules as made in PS22/9 instrument (not a standalone consultation paper PDF)",
+    "cp21_36Mentioned": true,
+    "enactmentNote": "PRIN 2A Consumer Duty rules were made via PS22/9; Handbook status is binding for in-scope firms subject to applicability and commencement provisions in the instrument.",
+    "effectiveDates": "Derived from instrument / Handbook commencement — not inferred from R suffix alone"
+  },
+  "classificationDefect": {
+    "id": "DEF-REG-PS22-SOURCE",
+    "title": "PS22/9 PDF misclassified as consultation due to CP21/36 feedback references in text",
+    "status": "FIXED AND TESTED",
+    "commitPending": "regulatory-pdf-analysis.mjs"
+  },
+  "provisionCount": 97,
+  "structuredCompleteness": {
+    "batch0": true,
+    "batch1": true,
+    "note": "Structured extraction completeness for paid batches is separate from legal verification"
+  },
+  "legallyVerifiedCount": 0,
+  "assertion": "The 97 completed assessments MUST NOT be reported as legally verified until subsequent assessment under corrected publication classification.",
+  "provisions": [
+    {
+      "core": "2A.1.1R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.2R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.3G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.4G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.5G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.6G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.7.5G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.7R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.8G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.9G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.6R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.7R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.8R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.9R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.10R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.11R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.12R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.13R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.18R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.19R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.20R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.21R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.22G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.23G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.14R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.15G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.16R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.17R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.24R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.25G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.26R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.27G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.28R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.29G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.3.30E",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "E",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.1R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.2R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.3R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.4G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.5R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.6G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.7R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.8R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.12G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.13R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.14R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.15R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.16R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.17R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.2R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.3G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.4G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.5R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.6R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.7G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.18R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.19R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.20R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.21R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.22G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.23G",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.24R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.25R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.26R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.4.27R",
+      "structuredExtractionPresent": false,
+      "historicalPresentationBindingNature": null,
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "1.2.1G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2.1.1R",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.10G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.11G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.12G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.13G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.14G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.15G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.16G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.17G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.1.18G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.1R",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "consultation_proposal",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.8R",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "consultation_proposal",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.9R",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "consultation_proposal",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.10G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.11G",
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.12G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.13G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.14R",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "consultation_proposal",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.15G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.16G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.17G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.18G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.19G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.20G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.21G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.22G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.23G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.24G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.25G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.26R",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "consultation_proposal",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.27G",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "guidance",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "G",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    }
+  ],
+  "focusProvisions": [
+    {
+      "core": "2A.2.14R",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "consultation_proposal",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    },
+    {
+      "core": "2A.2.26R",
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "structuredExtractionPresent": true,
+      "historicalPresentationBindingNature": "consultation_proposal",
+      "subsequentLegalAssessment": {
+        "publication": "PS22/9",
+        "publicationType": "policy_statement_final_rules",
+        "operativeMarker": "R",
+        "legallyVerified": false,
+        "reason": "Historical run used consultationPreserved=true; legal presentation requires subsequent assessment under final PS22/9 policy statement rules",
+        "historicalEvidencePreserved": true
+      }
+    }
+  ]
+}

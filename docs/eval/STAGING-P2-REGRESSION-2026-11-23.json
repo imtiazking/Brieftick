@@ -1,0 +1,245 @@
+{
+  "auditedAt": "2026-11-23T23:43:39.594Z",
+  "staging": "https://staging-app.forgeniq.com",
+  "passed": 19,
+  "failed": 0,
+  "results": [
+    {
+      "name": "deployed bundle exposes editable obligation statement control",
+      "pass": true,
+      "detail": {
+        "shaPrefix": "e7d31df78319dd2f"
+      }
+    },
+    {
+      "name": "deployed bundle exposes supplementary quotation controls",
+      "pass": true,
+      "detail": {
+        "shaPrefix": "e7d31df78319dd2f"
+      }
+    },
+    {
+      "name": "deployed work-writes maps segregation_of_duties plainly",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "RI-UI-006: per-finding review bind-once (reviewBound)",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "finding 1 API returns page list",
+      "pass": true,
+      "detail": [
+        94,
+        95,
+        96
+      ]
+    },
+    {
+      "name": "finding 1 cites instrument page 95 (7.20.1R(2) continuation)",
+      "pass": true,
+      "detail": {
+        "status": 200,
+        "pages": [
+          94,
+          95,
+          96
+        ],
+        "sections": [
+          {
+            "page": 94,
+            "provisions": [
+              "7.1.4R",
+              "7.6.2BG",
+              "7.6.2CR",
+              "7.20.1R"
+            ]
+          },
+          {
+            "page": 95,
+            "provisions": [
+              "7.20.2G",
+              "7.20.3R"
+            ]
+          }
+        ],
+        "provisionPageIndex": {
+          "TP 13.1R": [
+            66
+          ],
+          "TP 13.2G": [
+            66
+          ],
+          "2.3.1R": [
+            68
+          ],
+          "4.2.2G": [
+            68
+          ],
+          "2.3.2R": [
+            86
+          ],
+          "4.2.1R": [
+            87
+          ],
+          "4.2A.1R": [
+            87,
+            88
+          ],
+          "4.2A.4R": [
+            88
+          ],
+          "4.2A.6R": [
+            90
+          ],
+          "4.2A.11R": [
+            92
+          ],
+          "4.2A.12G": [
+            92
+          ],
+          "4.8.2R": [
+            93
+          ],
+          "7.1.4R": [
+            94
+          ],
+          "7.6.2BG": [
+            94,
+            95,
+            96
+          ],
+          "16.1.1R": [
+            97
+          ],
+          "16.1.2G": [
+            97
+          ],
+          "16.1.3G": [
+            97
+          ]
+        }
+      }
+    },
+    {
+      "name": "recorded review view present after PS26/1 review",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "obligation statement field exists on review cards (disabled or active)",
+      "pass": true,
+      "detail": {
+        "fields": 0
+      }
+    },
+    {
+      "name": "SoD: API refuses User B approving OPEN on AI-assisted obligation",
+      "pass": true,
+      "detail": {
+        "status": 403,
+        "error": "forbidden",
+        "detail": null
+      }
+    },
+    {
+      "name": "RI-UI-002: segregation_of_duties mapped to plain language in client",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "RI-UI-008: obligation detail API returns OPEN after no-store fetch",
+      "pass": true,
+      "detail": {
+        "detailOk": true,
+        "statusCode": "OPEN",
+        "eventCount": 8,
+        "eventTypes": [
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "AI_OBLIGATION_MATERIALISED"
+        ]
+      }
+    },
+    {
+      "name": "RI-UI-008: obligation status shows OPEN in UI when panel renders",
+      "pass": true,
+      "detail": {
+        "status": "OPEN"
+      }
+    },
+    {
+      "name": "RI-UI-001: audit history has ≥3 workflow events (API)",
+      "pass": true,
+      "detail": [
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "OBLIGATION_STATUS_CHANGED",
+        "AI_OBLIGATION_MATERIALISED"
+      ]
+    },
+    {
+      "name": "RI-UI-001: audit panel shows events when detail view loads",
+      "pass": true,
+      "detail": {
+        "uiRows": 8
+      }
+    },
+    {
+      "name": "fail-closed: REG-FCA policy remains ACTIVE",
+      "pass": true,
+      "detail": {
+        "http": 200,
+        "ok": true,
+        "policyStatus": null
+      }
+    },
+    {
+      "name": "REG-FRC policy ACTIVE after RI-CLS-003 staging UAT",
+      "pass": true,
+      "detail": {
+        "http": 200,
+        "ok": true,
+        "policyStatus": null
+      }
+    },
+    {
+      "name": "fail-closed: REG-ICO has no active policy (API unavailable)",
+      "pass": true,
+      "detail": {
+        "http": 404,
+        "ok": false,
+        "policyStatus": null
+      }
+    },
+    {
+      "name": "fail-closed: REG-PSR has no active policy (API unavailable)",
+      "pass": true,
+      "detail": {
+        "http": 404,
+        "ok": false,
+        "policyStatus": null
+      }
+    },
+    {
+      "name": "fail-closed: REG-PRA has no active policy (API unavailable)",
+      "pass": true,
+      "detail": {
+        "http": 404,
+        "ok": false,
+        "policyStatus": null
+      }
+    }
+  ]
+}

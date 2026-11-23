@@ -30,6 +30,7 @@ const suites = [
   'acceptance-ri-uc-ri-005-run-idempotency',
   'acceptance-ri-extraction-continuation-batch-index',
   'acceptance-ri-resource-optimisations',
+  'acceptance-ri-regulatory-pdf-analysis-ps22',
 ];
 
 const results = [];

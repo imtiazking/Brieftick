@@ -1,28 +1,31 @@
 {
-  "generatedAt": "2026-11-23T23:18:15.821Z",
+  "generatedAt": "2026-11-23T23:48:03.237Z",
   "programme": "FORGENIQ consolidated remediation",
   "spendCumulativeUsd": 1.488222,
   "provisionsAssessedPs22": 97,
   "summary": {
-    "total": 15,
+    "total": 18,
     "byStatus": {
-      "FIXED AND TESTED": 7,
+      "FIXED AND TESTED": 10,
       "BLOCKED — EXTERNAL DEPENDENCY": 1,
       "BLOCKED — SPENDING AUTHORISATION": 1,
-      "READY FOR HOSTED VALIDATION": 4,
-      "TESTED AND PASSED": 2
+      "READY FOR HOSTED VALIDATION": 1,
+      "TESTED AND PASSED": 2,
+      "FAILED": 1,
+      "NOT EXECUTED — REQUIRES LOCAL DESIGN-LAB SERVER": 1,
+      "IMPLEMENTED — AWAITING STAGING DEPLOY": 1
     },
     "byCategory": {
-      "1": 3,
-      "2": 5,
+      "1": 6,
+      "2": 6,
       "3": 1,
-      "5": 3,
+      "5": 2,
       "6": 1,
       "7": 2
     },
     "gateReport": {
-      "generatedAt": "2026-11-23T23:18:15.809Z",
-      "passed": 22,
+      "generatedAt": "2026-11-23T23:48:03.211Z",
+      "passed": 23,
       "failed": 0,
       "suites": [
         {
@@ -156,6 +159,12 @@
           "ok": true,
           "exit": 0,
           "tail": "  \"pass\": true | }"
+        },
+        {
+          "suite": "acceptance-ri-regulatory-pdf-analysis-ps22",
+          "ok": true,
+          "exit": 0,
+          "tail": "PASS mustNotTreatProposalsAsBinding false | PASS acceptance-ri-regulatory-pdf-analysis-ps22"
         }
       ]
     }
@@ -217,6 +226,15 @@
     },
     {
       "id": "DEF-0007",
+      "title": "RI_LAB_MAX_PROVISIONS_PER_BATCH env could bypass 16-cap preflight",
+      "category": 1,
+      "status": "FIXED AND TESTED",
+      "rootCause": "Shell env e.g. 512 propagated into gate children and live orchestration",
+      "resolution": "resolveMaxProvisionsPerBatch clamp; consolidated gates delete env in child processes",
+      "commit": "441a982"
+    },
+    {
+      "id": "DEF-0008",
       "title": "SEC-DB-003 hosted restricted-role proof",
       "category": 7,
       "status": "BLOCKED — EXTERNAL DEPENDENCY",
@@ -225,7 +243,7 @@
       "evidence": "SEC-DB-003-STAGING-ACCESS-2026-11-23.json"
     },
     {
-      "id": "DEF-0008",
+      "id": "DEF-0009",
       "title": "PS22 continuation exceeds $2.35 if all 12 batches executed",
       "category": 7,
       "status": "BLOCKED — SPENDING AUTHORISATION",
@@ -239,7 +257,7 @@
       ]
     },
     {
-      "id": "DEF-0009",
+      "id": "DEF-0010",
       "title": "PS26 operative requirements without live structured AI recall",
       "category": 2,
       "status": "READY FOR HOSTED VALIDATION",
@@ -257,7 +275,7 @@
       }
     },
     {
-      "id": "DEF-0010",
+      "id": "DEF-0011",
       "title": "Historical paid extraction failures (schema/truncation)",
       "category": 1,
       "status": "FIXED AND TESTED",
@@ -273,7 +291,7 @@
       "note": "Failed runs retained in spend line items for audit"
     },
     {
-      "id": "DEF-0011",
+      "id": "DEF-0012",
       "title": "PS22 batch-0 four classification discrepancies",
       "category": 2,
       "status": "TESTED AND PASSED",
@@ -288,37 +306,60 @@
       "evidence": "PS22-9-BATCH0-CLASSIFICATION-DISCREPANCY-2026-11-23.json"
     },
     {
-      "id": "DEF-0012",
-      "title": "PS22/9 publication legal instrument status",
-      "category": 2,
-      "status": "TESTED AND PASSED",
-      "rootCause": "N/A — policy applied",
-      "resolution": "Consultation CP22/9: R markers are proposed rules; bindingNature must not be binding_requirement until final PS",
-      "evidence": "PS22-9-PUBLICATION-LEGAL-STATUS-ASSESSMENT-2026-11-23.json"
-    },
-    {
       "id": "DEF-0013",
-      "title": "Hosted browser UAT: acceptance-ri-uc-ri-005-finding-review-browser",
-      "category": 5,
-      "status": "READY FOR HOSTED VALIDATION",
-      "rootCause": "Requires staging session + consolidated deploy",
-      "resolution": "Execute post-deploy on staging-app.forgeniq.com"
+      "title": "PS22/9 PDF misidentified as CP22/9 consultation in legal assessment docs",
+      "category": 2,
+      "status": "FIXED AND TESTED",
+      "rootCause": "Incorrect human/script label; actual fixture is PS22/9 final policy statement (SHA256 verified)",
+      "resolution": "PS22-9-SOURCE-PUBLICATION-VERIFICATION-2026-11-23.json",
+      "evidence": "PS22-9-SOURCE-PUBLICATION-VERIFICATION-2026-11-23.json"
     },
     {
       "id": "DEF-0014",
-      "title": "Hosted browser UAT: acceptance-ri-applicability-workflow-browser",
-      "category": 5,
-      "status": "READY FOR HOSTED VALIDATION",
-      "rootCause": "Requires staging session + consolidated deploy",
-      "resolution": "Execute post-deploy on staging-app.forgeniq.com"
+      "title": "analyzeRegulatoryPdfDocument treats PS22/9 as consultation_paper",
+      "category": 1,
+      "status": "FIXED AND TESTED",
+      "rootCause": "Consultation keyword matched before policy statement; CP21/36 feedback text in PS body",
+      "resolution": "regulatory-pdf-analysis.mjs final policy statement detection + acceptance-ri-regulatory-pdf-analysis-ps22"
     },
     {
       "id": "DEF-0015",
-      "title": "Hosted browser UAT: acceptance-ri-uc-ri-005-extraction-button-browser",
+      "title": "97 provision extractions used consultationPreserved presentation guards",
+      "category": 2,
+      "status": "FAILED",
+      "rootCause": "Downstream consultationPreserved=true from misclassification",
+      "resolution": "Historical JSON preserved; PS22-9-97-PROVISION-REVALIDATION marks legallyVerified:0; re-assessment required (no auto-conversion to approved obligations)",
+      "evidence": "PS22-9-97-PROVISION-REVALIDATION-2026-11-23.json"
+    },
+    {
+      "id": "DEF-0016",
+      "title": "Staging P2 browser regression (maker-checker, audit, SoD, policy fail-closed)",
       "category": 5,
-      "status": "READY FOR HOSTED VALIDATION",
-      "rootCause": "Requires staging session + consolidated deploy",
-      "resolution": "Execute post-deploy on staging-app.forgeniq.com"
+      "status": "TESTED AND PASSED",
+      "rootCause": "N/A",
+      "resolution": "staging-p2-regression.mjs 19/19 on staging-app.forgeniq.com",
+      "evidence": "STAGING-P2-REGRESSION-2026-11-23.json"
+    },
+    {
+      "id": "DEF-0017",
+      "title": "Local design-lab browser suites (UC-RI-005 review, applicability, extraction button)",
+      "category": 5,
+      "status": "NOT EXECUTED — REQUIRES LOCAL DESIGN-LAB SERVER",
+      "rootCause": "Scripts refuse non-localhost; no server on :3001 in this tranche",
+      "resolution": "Three acceptance-ri-*-browser.mjs modules; run after local serve — distinct from staging-p2-regression hosted evidence",
+      "modules": [
+        "acceptance-ri-uc-ri-005-finding-review-browser",
+        "acceptance-ri-applicability-workflow-browser",
+        "acceptance-ri-uc-ri-005-extraction-button-browser"
+      ]
+    },
+    {
+      "id": "DEF-0018",
+      "title": "PS22/9 publication classifier on staging runtime",
+      "category": 1,
+      "status": "IMPLEMENTED — AWAITING STAGING DEPLOY",
+      "rootCause": "Staging deploy 441a982 predates regulatory-pdf-analysis.mjs PS22/9 fix",
+      "resolution": "Single consolidated staging deploy after commit; no paid extraction"
     }
   ]
 }
