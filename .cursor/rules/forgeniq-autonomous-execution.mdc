@@ -17,7 +17,7 @@ Do not ask permission to fix an issue. If a test fails, investigate the root cau
 - Defect remediation.
 - Database migration development.
 - Non-destructive staging database migrations, following backup and safety checks.
-- Staging deployments.
+- Staging deployments **only under milestone-based policy** (see below) — not after every fix.
 - Automated browser UAT.
 - Regression and acceptance testing.
 - Staging evidence re-ingestion where required, preserving historical revisions.
@@ -34,6 +34,50 @@ Operational defaults (unchanged):
 - Record decisions, reasons and outcomes in `docs/uat/EXECUTION-LOG.md`.
 - Automated UAT as Users A, B and C via `apps/platform/scripts/uat/staging-user-sessions.mjs`.
 - Read-only staging database queries.
+
+## Milestone-based development and staging deployment
+
+**Effective immediately:** do **not** deploy to Vercel after each individual fix. Batch work into coherent tranches; **one consolidated staging deploy per tranche** when hosted validation is required.
+
+Authoritative detail: `docs/uat/CONSOLIDATED-DEVELOPMENT-DEPLOYMENT-POLICY.md`.
+
+### Per-tranche workflow
+
+1. Group related defects/improvements.
+2. Root-cause and implement locally.
+3. Run unit, integration, deterministic AI extraction (fixtures), migration validation, regression/acceptance.
+4. Resolve all local failures.
+5. Commit tested changes.
+6. Deploy to **`forgeniq-platform-staging` once** with a defined UAT objective.
+
+Never deploy simply because implementation finished.
+
+### Deployment frequency
+
+- Target **1–3 staging deploys per day** in normal development (not a quota to waste).
+- Deploy only when: milestone complete, local gates pass, hosted validation needed, UAT objective defined.
+- Exceptions: urgent security, outage, release-blocking defect.
+- **Never** deploy to `platform`, `brieftick`, or customer `www.forgeniq.com` without explicit approval.
+
+### Pre-deploy gates (local first)
+
+Build, TypeScript, relevant regressions, migrations, deterministic provision tests, classification safeguards, no secrets, no unrelated files. Do not deploy to discover failures detectable locally.
+
+### Post-deploy
+
+Run planned hosted UAT once; capture evidence. Fix failures **locally**; bundle into **next tranche**. Redeploy immediately only for critical validation blockers or data-integrity risk.
+
+### Vercel resource controls
+
+Consolidated deploys; fewer repeated hosted tests; local PDF work; recorded AI fixtures; PDF evidence caching; polling backoff; reuse completed extraction results. Monitor CPU/storage. **Do not delete deployments** without approval.
+
+### Active workstreams (batch before next deploy)
+
+PS22 batch 5 remediation; FCA accuracy; SEC-DB-003; Vercel CPU optimisation; orchestration reliability. **No paid hosted extraction** until batch 5 passes deterministic acceptance and projected usage is acceptable.
+
+### Reporting
+
+One **consolidated milestone report** per tranche: issues resolved, tests passed, commit SHA, staging deployment (if any), UAT results, outstanding items, Vercel impact. Do not report every minor change.
 
 ## Mandatory approval
 

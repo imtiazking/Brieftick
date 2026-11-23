@@ -7,6 +7,10 @@ import { buildLabAiAnalysisRunDetailExtras } from '@/lib/ri/lab-api/map-ai-analy
 import { getAnalysisRun, submitAnalysisReview } from '@/lib/ri/services/ai-analysis';
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { startLabResourceTimer, emitLabResourceMetric } = await import(
+    '@/lib/ri/observability/lab-resource-metrics.mjs'
+  );
+  const timer = startLabResourceTimer();
   try {
     const { id } = await params;
     const ctx = await requireRiContext('ai:read');
@@ -17,7 +21,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       detail.run,
       detail.citations ?? [],
     );
-    return NextResponse.json({
+    const executionStatus = String(detail.run?.execution_status || '').toUpperCase();
+    const terminal = ['COMPLETED', 'FAILED', 'VALIDATION_FAILED'].includes(executionStatus);
+    const res = NextResponse.json({
       ok: true,
       aiAnalysisRun: run,
       detail: detail.run,
@@ -25,7 +31,16 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       publicationSource: labDetail.publicationSource,
       reviews: detail.reviews ?? [],
     });
+    res.headers.set('Cache-Control', 'private, no-store');
+    emitLabResourceMetric('ai_analysis_run_get', {
+      runId: id,
+      executionStatus,
+      terminal,
+    });
+    timer.end({ route: 'ai-analysis-runs-get', terminal, executionStatus });
+    return res;
   } catch (err) {
+    timer.end({ route: 'ai-analysis-runs-get', error: 'failed' });
     return labApiErrorResponse(err);
   }
 }

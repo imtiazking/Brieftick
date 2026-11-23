@@ -7,6 +7,8 @@ type RouteParams = { params: Promise<{ id: string }> };
 
 /** Deterministic multi-batch extraction plan (RI-CLS-007) — no paid AI call. */
 export async function GET(request: Request, { params }: RouteParams) {
+  const { startLabResourceTimer } = await import('@/lib/ri/observability/lab-resource-metrics.mjs');
+  const timer = startLabResourceTimer();
   try {
     const { id: publicationId } = await params;
     if (!publicationId?.trim()) throw new Error('publication_id_required');
@@ -29,6 +31,7 @@ export async function GET(request: Request, { params }: RouteParams) {
       ?.split(',')
       .map((s) => s.trim())
       .filter(Boolean);
+    const includeGroundingSample = url.searchParams.get('includeGroundingSample') === 'true';
 
     const { buildPdfGroundedAnalysisContext } = await import(
       '@/lib/ri/ai/build-pdf-grounded-analysis-context.mjs'
@@ -45,6 +48,7 @@ export async function GET(request: Request, { params }: RouteParams) {
       projectUrl,
       serviceRoleKey,
       publicationIds: [publicationId],
+      organisationId: ctx.organisationId,
     });
     if (!loaded.evidence?.length) {
       return NextResponse.json({ ok: false, code: 'pdf_primary_not_found' }, { status: 404 });
@@ -71,24 +75,36 @@ export async function GET(request: Request, { params }: RouteParams) {
       targetProvisionCores: targetProvisionCores?.length ? targetProvisionCores : undefined,
     });
 
-    const sampleCtx = await buildPdfGroundedAnalysisContext({
-      publicationId,
-      adminSupabase: ctx.supabase,
-      useCaseId: 'UC-RI-005',
-      extractionBatchIndex: 0,
-      maxSectionsPerBatch,
-      targetProvisionCores: targetProvisionCores?.length ? targetProvisionCores : undefined,
-    });
+    let firstBatchGrounding = null;
+    if (includeGroundingSample) {
+      const sampleCtx = await buildPdfGroundedAnalysisContext({
+        publicationId,
+        adminSupabase: ctx.supabase,
+        useCaseId: 'UC-RI-005',
+        extractionBatchIndex: 0,
+        maxSectionsPerBatch,
+        targetProvisionCores: targetProvisionCores?.length ? targetProvisionCores : undefined,
+      });
+      firstBatchGrounding = sampleCtx.ok ? sampleCtx.grounding?.extractionBatchPlanSummary : null;
+    }
 
-    return NextResponse.json({
+    const res = NextResponse.json({
       ok: true,
       publicationId,
       plan,
-      firstBatchGrounding: sampleCtx.ok ? sampleCtx.grounding?.extractionBatchPlanSummary : null,
+      firstBatchGrounding,
       tenantScope: true,
+      includeGroundingSample,
     });
+    timer.end({
+      route: 'extraction-batch-plan',
+      includeGroundingSample,
+      batchCount: plan?.batches?.length ?? 0,
+    });
+    return res;
   } catch (err) {
     const message = err instanceof Error ? err.message : 'extraction_batch_plan_failed';
+    timer.end({ route: 'extraction-batch-plan', error: message });
     return NextResponse.json({ ok: false, error: message }, { status: 400 });
   }
 }

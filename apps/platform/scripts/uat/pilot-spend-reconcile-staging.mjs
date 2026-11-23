@@ -18,6 +18,7 @@ const KNOWN = [
   'd76b60f2-276b-48f2-ab78-fd449bca55b6',
   '9b3bf495-9c55-428f-81bd-d786f8d9a3ee',
   '063a2e9f-8279-4310-9341-354110d5e675',
+  '3f3f57e1-5afc-40ac-a8d6-2f792b60c5f1',
 ];
 
 function spendFromOutput(out) {
@@ -30,14 +31,32 @@ function spendFromOutput(out) {
   );
 }
 
+const PS22_PUB = '7a73ac4c-d6b4-4411-9f6d-1276053f2831';
+
 const lines = [];
 
 await runAs('A', async ({ page }) => {
-  for (const runId of KNOWN) {
-    const run = await (await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/ai-analysis-runs/${runId}`)).json().catch(() => ({}));
-    const out = run.detail?.structured_output;
-    const status = run.detail?.execution_status || run.aiAnalysisRun?.executionStatus;
-    lines.push({ runId, spendUsd: spendFromOutput(out), status, source: 'staging_fetch' });
+  const orch = await (
+    await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/publications/${PS22_PUB}/extraction-orchestration`)
+  ).json().catch(() => ({}));
+  const orchRuns = (orch.orchestration?.batches || [])
+    .map((b) => b.runId)
+    .filter((id) => typeof id === 'string' && id.length > 8);
+  const runIds = [...new Set([...KNOWN, ...orchRuns])];
+  const chunkSize = 4;
+  for (let i = 0; i < runIds.length; i += chunkSize) {
+    const chunk = runIds.slice(i, i + chunkSize);
+    const rows = await Promise.all(
+      chunk.map(async (runId) => {
+        const run = await (
+          await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/ai-analysis-runs/${runId}`)
+        ).json().catch(() => ({}));
+        const out = run.detail?.structured_output;
+        const status = run.detail?.execution_status || run.aiAnalysisRun?.executionStatus;
+        return { runId, spendUsd: spendFromOutput(out), status, source: 'staging_fetch' };
+      }),
+    );
+    lines.push(...rows);
   }
 });
 

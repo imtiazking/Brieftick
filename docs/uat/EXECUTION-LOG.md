@@ -333,6 +333,20 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | 18:45 | Live test prep | Not authorised | `PS26-LIVE-FIVE-OPERATIVE-COST-2026-11-23.json` ~**$0.042** cap **$0.20** |
 | 18:45 | FCA benchmark revised | Separate metrics | `FCA-PS26-ACCURACY-BENCHMARK-REVISED-2026-11-23.json` |
 
+## 2026-11-23 — Consolidated deployment policy adopted
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 20:48 | Milestone-based staging deploys | Vercel CPU/storage + user mandate | `CONSOLIDATED-DEVELOPMENT-DEPLOYMENT-POLICY.md`; `.cursor/rules` updated (FORGENIQ worktree + Brieftick workspace) |
+| 20:48 | Vercel resource tranche | Local gates pass | Commit pending; **no staging deploy** until next tranche UAT objective |
+
+## 2026-11-23 — Vercel Hobby resource optimisation
+
+| Time (UTC) | Action | Reason | Outcome |
+|---|---|---|---|
+| 20:35 | Resource audit | CPU 3h07/4h; 333k invocations; 8.32GB deploy storage | `VERCEL-RESOURCE-AUDIT-2026-11-23.md`; code: PDF cache, poll backoff, plan route, deploy throttle |
+| 20:35 | No staging redeploy | Preserve ~53m CPU | Optimisations local until explicit deploy |
+
 ## 2026-11-23 — Approved $2.35 pilot execution
 
 | Time (UTC) | Decision | Reason | Outcome |
@@ -343,6 +357,8 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | 19:17 | PS26 five-operative **v3** | Authoritative accuracy test | **COMPLETED** `9b3bf495` **$0.060** — **5/5** `assessed_structured`, completeness **PASS** |
 | 19:23 | PS22 batch 0 corrected | FCA gate passed | **COMPLETED** `063a2e9f` **$0.091**, **14/14** provisions, **0** omissions; suffix `live-ps22-corrected-batch0-2026-11-23` |
 | 19:24 | PS22 batches 1–16 | Budget / per-batch gate | **Paused** — **$1.589** remaining; evidence `PILOT-EXECUTION-REPORT-2026-11-23.json` |
+| 20:00 | PS22 corrected continuation | User $2.35 approval | Batches **1–4** **PASS** (0 omissions); **$1.144** cumulative; orchestration spend cap patch deployed |
+| 20:10 | PS22 batch 5 | Provision omissions (e.g. **15.7.24R**) | **FAILED** `9fd62178` **$0.138** — **stopped** (no retry); 65/242 provisions supplied |
 
 ## 2026-11-22 — Cursor autonomous environment + UAT resume
 

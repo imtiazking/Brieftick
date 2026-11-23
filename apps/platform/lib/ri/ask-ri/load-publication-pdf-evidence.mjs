@@ -28,6 +28,38 @@ function escapePostgrestIlike(value) {
 }
 
 const MAX_PDF_PUBLICATIONS = 32;
+/** Process-local cache — avoids repeated Storage downloads within warm serverless instances. */
+const PDF_EVIDENCE_CACHE = new Map();
+const PDF_EVIDENCE_TTL_MS = 5 * 60 * 1000;
+const PDF_EVIDENCE_MAX_ENTRIES = 8;
+
+/** Cache key binds project, optional org scope, and revision content hashes (integrity). */
+export function pdfEvidenceCacheKeyFromRevisions(projectUrl, organisationScope, rows) {
+  const scope = String(organisationScope || 'catalogue').trim() || 'catalogue';
+  const rev = (rows || [])
+    .map((r) => `${r.publication_id}:${r.normalised_html_sha256 || r.raw_content_sha256 || r.id}`)
+    .sort()
+    .join(';');
+  return `${projectUrl || ''}|${scope}|${rev}`;
+}
+
+function readPdfEvidenceCache(key) {
+  const row = PDF_EVIDENCE_CACHE.get(key);
+  if (!row) return null;
+  if (Date.now() - row.at > PDF_EVIDENCE_TTL_MS) {
+    PDF_EVIDENCE_CACHE.delete(key);
+    return null;
+  }
+  return row.value;
+}
+
+function writePdfEvidenceCache(key, value) {
+  if (PDF_EVIDENCE_CACHE.size >= PDF_EVIDENCE_MAX_ENTRIES) {
+    const oldest = [...PDF_EVIDENCE_CACHE.entries()].sort((a, b) => a[1].at - b[1].at)[0];
+    if (oldest) PDF_EVIDENCE_CACHE.delete(oldest[0]);
+  }
+  PDF_EVIDENCE_CACHE.set(key, { at: Date.now(), value });
+}
 const REVISION_COLUMNS = `id,
   publication_id,
   source_snapshot_id,
@@ -201,6 +233,8 @@ export async function loadPublicationPdfEvidenceForAskRi(adminSupabase, options)
     return { evidence: [], errors: [{ code: 'storage_credentials_unavailable' }] };
   }
 
+  const orgScope = options.organisationId || options.cacheScope || 'catalogue';
+
   let query = adminSupabase
     .from('regulatory_source_extraction_revisions')
     .select(REVISION_COLUMNS)
@@ -228,6 +262,19 @@ export async function loadPublicationPdfEvidenceForAskRi(adminSupabase, options)
       ],
     };
   }
+
+  const cacheKey = pdfEvidenceCacheKeyFromRevisions(projectUrl, orgScope, rows);
+  if (!options.bypassCache) {
+    const hit = readPdfEvidenceCache(cacheKey);
+    if (hit) {
+      const { emitLabResourceMetric } = await import('../observability/lab-resource-metrics.mjs');
+      emitLabResourceMetric('pdf_evidence_cache', { outcome: 'hit', publicationCount: rows.length, cacheKeyFingerprint: cacheKey.slice(-24) });
+      return structuredClone(hit);
+    }
+  }
+
+  const { emitLabResourceMetric } = await import('../observability/lab-resource-metrics.mjs');
+  emitLabResourceMetric('pdf_evidence_cache', { outcome: 'miss', publicationCount: rows.length });
 
   const publicationIds = [...new Set(rows.map((r) => r.publication_id))];
   const { byId: pubById, error: pubError } = await loadCataloguePublicationRows(
@@ -341,7 +388,12 @@ export async function loadPublicationPdfEvidenceForAskRi(adminSupabase, options)
     }
   }
 
-  return { evidence, errors };
+  const result = { evidence, errors };
+  if (evidence.length > 0 && !options.bypassCache) {
+    writePdfEvidenceCache(cacheKey, result);
+    emitLabResourceMetric('pdf_evidence_cache', { outcome: 'store', publicationCount: evidence.length });
+  }
+  return result;
 }
 
 function inferPublicationReference(pub) {

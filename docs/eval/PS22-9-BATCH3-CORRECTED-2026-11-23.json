@@ -1,0 +1,2708 @@
+{
+  "batchIndex": 3,
+  "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23-batch-4",
+  "runId": "be03ff0f-841a-45ce-a7b5-1dfbd4dc5ae0",
+  "spendUsd": 0.078903,
+  "spendAfter": {
+    "reconcileError": "spend reconcile failed: file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:183\r\n    throw new SessionExpiredError(`${p.label}: no valid staging session (HTTP ${id.status}) — run: node scripts/uat/staging-user-sessions.mjs login ${p.key}`);\r\n          ^\r\n\r\nSessionExpiredError: User A — Maker: no valid staging session (HTTP 401) — run: node scripts/uat/staging-user-sessions.mjs login A\r\n    at verifyIdentity (file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:183:11)\r\n    at async runAs (file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:228:22)\r\n    at async file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/pilot-spend-reconcile-staging.mjs:38:1\r\n\r\nNode.js v24.16.0\r\n"
+  },
+  "gate": {
+    "schemaOk": true,
+    "spendOk": true,
+    "batchCompletenessOk": true,
+    "regulatoryAccuracySuccess": true,
+    "omissionCount": 0,
+    "provisionsSupplied": 11,
+    "candidates": 11,
+    "passesQualityGate": true
+  },
+  "log": [
+    {
+      "step": "orchestration",
+      "at": "2026-11-23T19:42:32.123Z",
+      "changeId": "e22981b0-4a70-4f2c-b30e-6f2a340b0fb4",
+      "nextBatch": 3,
+      "succeededBatches": 3,
+      "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23-batch-4"
+    },
+    {
+      "step": "output-preflight",
+      "at": "2026-11-23T19:42:34.744Z",
+      "provisionCount": 11,
+      "preflight": {
+        "ok": true,
+        "estimateTokens": 1576,
+        "maxOutputTokens": 8192
+      }
+    },
+    {
+      "step": "suffix-merged",
+      "at": "2026-11-23T19:42:44.615Z",
+      "idem": "live-ps22-corrected-batch0-2026-11-23-batch-4"
+    },
+    {
+      "step": "advance",
+      "at": "2026-11-23T19:42:45.824Z",
+      "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "ok": true,
+      "code": "awaiting_authorised_extraction",
+      "batchIndex": 3,
+      "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23-batch-4",
+      "runPayload": {
+        "extractionBatchIndex": 3,
+        "selection": {
+          "scope": "PARTIAL_DOCUMENT",
+          "strategy": "instrument_priority_v1",
+          "maxSections": 18,
+          "documentPages": 161,
+          "selectedPages": [
+            120,
+            122,
+            123,
+            126
+          ],
+          "instrumentPages": 70,
+          "selectedSections": 4,
+          "truncatedSections": 0,
+          "documentCharacters": 349049,
+          "selectedCharacters": 8408,
+          "instrumentStartPage": 92,
+          "instrumentPagesSelected": 4,
+          "maxCharactersPerSection": 3200,
+          "characterCoveragePercent": 2.41,
+          "instrumentProvisionsSetOut": 242,
+          "instrumentProvisionsOmitted": [
+            {
+              "pages": [
+                104
+              ],
+              "provision": "1.2.1G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                104
+              ],
+              "provision": "2.1.1R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.3G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.5G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.6G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105,
+                136
+              ],
+              "provision": "2A.7.5G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.7R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.8G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                105
+              ],
+              "provision": "2A.1.9G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provision": "2A.1.10G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provision": "2A.1.11G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provision": "2A.1.12G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provision": "2A.1.13G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                106
+              ],
+              "provision": "2A.1.14G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provision": "2A.1.15G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provision": "2A.1.16G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provision": "2A.1.17G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provision": "2A.1.18G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                107
+              ],
+              "provision": "2A.2.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                108
+              ],
+              "provision": "2A.2.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                108
+              ],
+              "provision": "2A.2.3G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                108
+              ],
+              "provision": "2A.2.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                108
+              ],
+              "provision": "2A.2.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                108
+              ],
+              "provision": "2A.2.6R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                108
+              ],
+              "provision": "2A.2.7G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provision": "2A.2.8R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provision": "2A.2.9R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provision": "2A.2.10G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provision": "2A.2.11G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provision": "2A.2.12G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                109
+              ],
+              "provision": "2A.2.13G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                110
+              ],
+              "provision": "2A.2.14R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                110
+              ],
+              "provision": "2A.2.15G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                110
+              ],
+              "provision": "2A.2.16G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                110
+              ],
+              "provision": "2A.2.17G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                110
+              ],
+              "provision": "2A.2.18G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                110
+              ],
+              "provision": "2A.2.19G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                110
+              ],
+              "provision": "2A.2.20G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                111
+              ],
+              "provision": "2A.2.21G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                111
+              ],
+              "provision": "2A.2.22G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                111
+              ],
+              "provision": "2A.2.23G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                112
+              ],
+              "provision": "2A.2.24G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                112
+              ],
+              "provision": "2A.2.25G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                112
+              ],
+              "provision": "2A.2.26R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                112
+              ],
+              "provision": "2A.2.27G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                112
+              ],
+              "provision": "2A.2.28G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                112
+              ],
+              "provision": "2A.3.1G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                112
+              ],
+              "provision": "2A.3.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                112
+              ],
+              "provision": "2A.3.3G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                113
+              ],
+              "provision": "2A.3.4R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                113
+              ],
+              "provision": "2A.3.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                114,
+                118
+              ],
+              "provision": "2A.3.6R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                114
+              ],
+              "provision": "2A.3.7R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                114
+              ],
+              "provision": "2A.3.8R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                114
+              ],
+              "provision": "2A.3.9R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                114,
+                115
+              ],
+              "provision": "2A.3.10R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                115
+              ],
+              "provision": "2A.3.11R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                115
+              ],
+              "provision": "2A.3.12R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                115
+              ],
+              "provision": "2A.3.13R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                116
+              ],
+              "provision": "2A.3.14R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                116
+              ],
+              "provision": "2A.3.15G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                116
+              ],
+              "provision": "2A.3.16R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                116
+              ],
+              "provision": "2A.3.17R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.18R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.19R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.20R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.21R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.22G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117,
+                118
+              ],
+              "provision": "2A.3.23G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                118
+              ],
+              "provision": "2A.3.24R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                118
+              ],
+              "provision": "2A.3.25G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                118
+              ],
+              "provision": "2A.3.26R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                118
+              ],
+              "provision": "2A.3.27G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                118
+              ],
+              "provision": "2A.3.28R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                118
+              ],
+              "provision": "2A.3.29G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                119
+              ],
+              "provision": "2A.3.30E",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                119
+              ],
+              "provision": "2A.4.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                119
+              ],
+              "provision": "2A.4.3R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                121
+              ],
+              "provision": "2A.4.9G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                121
+              ],
+              "provision": "2A.4.10G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                121
+              ],
+              "provision": "2A.4.11G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.21R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.22G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.23G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.24R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.26R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.27R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                125
+              ],
+              "provision": "2A.4.28G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                125
+              ],
+              "provision": "2A.4.30G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                125
+              ],
+              "provision": "2A.4.32R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                127
+              ],
+              "provision": "2A.5.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                127
+              ],
+              "provision": "2A.5.2G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                127,
+                128
+              ],
+              "provision": "2A.5.3R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                128
+              ],
+              "provision": "2A.5.4R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                128
+              ],
+              "provision": "2A.5.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                128
+              ],
+              "provision": "2A.5.6R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                128
+              ],
+              "provision": "2A.5.7G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                129
+              ],
+              "provision": "2A.5.8R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                129
+              ],
+              "provision": "2A.5.9R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                129
+              ],
+              "provision": "2A.5.10R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                130
+              ],
+              "provision": "2A.5.11G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                130
+              ],
+              "provision": "2A.5.12G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                130
+              ],
+              "provision": "2A.5.13G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                131
+              ],
+              "provision": "2A.5.14R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                131
+              ],
+              "provision": "2A.5.15R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                131
+              ],
+              "provision": "2A.6.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                132
+              ],
+              "provision": "2A.6.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                132
+              ],
+              "provision": "2A.6.3G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                133
+              ],
+              "provision": "2A.6.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                133
+              ],
+              "provision": "2A.6.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                133
+              ],
+              "provision": "2A.6.6R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                134
+              ],
+              "provision": "2A.7.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                134
+              ],
+              "provision": "2A.7.2G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                135
+              ],
+              "provision": "2A.7.3G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                135
+              ],
+              "provision": "2A.7.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                136
+              ],
+              "provision": "2A.8.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                136
+              ],
+              "provision": "2A.8.2G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                136
+              ],
+              "provision": "2A.8.3R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                136
+              ],
+              "provision": "2A.8.4R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                137,
+                150
+              ],
+              "provision": "2A.8.5R",
+              "textStatus": [
+                "NEW_TEXT",
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                137
+              ],
+              "provision": "2A.9.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                137
+              ],
+              "provision": "2A.9.2G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                137
+              ],
+              "provision": "2A.9.3G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                137
+              ],
+              "provision": "2A.9.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                138
+              ],
+              "provision": "2A.9.5G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                138
+              ],
+              "provision": "2A.9.6G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                138
+              ],
+              "provision": "2A.9.7G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                138
+              ],
+              "provision": "2A.9.8R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                138
+              ],
+              "provision": "2A.9.9R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                138
+              ],
+              "provision": "2A.9.10R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                139
+              ],
+              "provision": "2A.9.11R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                139
+              ],
+              "provision": "2A.9.12R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                139
+              ],
+              "provision": "2A.9.13G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                139
+              ],
+              "provision": "2A.9.14G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                139
+              ],
+              "provision": "2A.9.15G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                139
+              ],
+              "provision": "2A.9.17R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                140
+              ],
+              "provision": "2A.10.1G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                140,
+                141
+              ],
+              "provision": "2A.10.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.10.3R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.10.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.10.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.11.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.11.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                143
+              ],
+              "provision": "2A.11.3G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                143
+              ],
+              "provision": "2A.11.4R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                143
+              ],
+              "provision": "2A.11.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.6R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.7G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.8R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.10R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.12R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.13R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.2.1AR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.6R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.7R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.8R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.9G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.10R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.11G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.12G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.3.1R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                146
+              ],
+              "provision": "3.4.3AR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                147
+              ],
+              "provision": "4.1.1G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                147
+              ],
+              "provision": "4.1.2G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                147,
+                149
+              ],
+              "provision": "4.1.4G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                151
+              ],
+              "provision": "1.1.3R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                151
+              ],
+              "provision": "1.1.5G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                151
+              ],
+              "provision": "1.1.5AR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                151
+              ],
+              "provision": "1.1.5BR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                151,
+                152
+              ],
+              "provision": "1.1.5CG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7AR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7BR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7CR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7DG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152,
+                153
+              ],
+              "provision": "1.1.7ER",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.8G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.8BR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.11BG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.11CR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.11DG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "2.1.5R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "2.1.6R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.3R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.6R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.7R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.8R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.9R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                155
+              ],
+              "provision": "2.4.10R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                155
+              ],
+              "provision": "4.1.18G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                155
+              ],
+              "provision": "4.1.20G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                155
+              ],
+              "provision": "4.1.21G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                156
+              ],
+              "provision": "4.1.22G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                156
+              ],
+              "provision": "4.1.23G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                156
+              ],
+              "provision": "4.1.24G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                156
+              ],
+              "provision": "4.1.25G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                156
+              ],
+              "provision": "4.1.26G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                156
+              ],
+              "provision": "4.1.27G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                156
+              ],
+              "provision": "4.1.28G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                156,
+                157
+              ],
+              "provision": "4.1.29G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                157
+              ],
+              "provision": "4.1.30G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                157
+              ],
+              "provision": "4.1.31G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                157
+              ],
+              "provision": "4.1.32G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                158
+              ],
+              "provision": "4.1.33G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                158
+              ],
+              "provision": "4.1.34G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                158
+              ],
+              "provision": "4.1.35G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                158
+              ],
+              "provision": "4.2.30G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                158
+              ],
+              "provision": "4.2.31G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                159
+              ],
+              "provision": "2.2.35AG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                160
+              ],
+              "provision": "1.3.2R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            }
+          ],
+          "suppliedProvisionTextStatus": {
+            "NEW_TEXT": 30
+          },
+          "instrumentProvisionsSupplied": 25,
+          "instrumentProvisionsNotSupplied": [
+            "1.2.1G",
+            "2.1.1R",
+            "2A.1.1R",
+            "2A.1.2R",
+            "2A.1.3G",
+            "2A.1.4G",
+            "2A.1.5G",
+            "2A.1.6G",
+            "2A.7.5G",
+            "2A.1.7R",
+            "2A.1.8G",
+            "2A.1.9G",
+            "2A.1.10G",
+            "2A.1.11G",
+            "2A.1.12G",
+            "2A.1.13G",
+            "2A.1.14G",
+            "2A.1.15G",
+            "2A.1.16G",
+            "2A.1.17G",
+            "2A.1.18G",
+            "2A.2.1R",
+            "2A.2.2R",
+            "2A.2.3G",
+            "2A.2.4G",
+            "2A.2.5R",
+            "2A.2.6R",
+            "2A.2.7G",
+            "2A.2.8R",
+            "2A.2.9R",
+            "2A.2.10G",
+            "2A.2.11G",
+            "2A.2.12G",
+            "2A.2.13G",
+            "2A.2.14R",
+            "2A.2.15G",
+            "2A.2.16G",
+            "2A.2.17G",
+            "2A.2.18G",
+            "2A.2.19G",
+            "2A.2.20G",
+            "2A.2.21G",
+            "2A.2.22G",
+            "2A.2.23G",
+            "2A.2.24G",
+            "2A.2.25G",
+            "2A.2.26R",
+            "2A.2.27G",
+            "2A.2.28G",
+            "2A.3.1G",
+            "2A.3.2R",
+            "2A.3.3G",
+            "2A.3.4R",
+            "2A.3.5R",
+            "2A.3.6R",
+            "2A.3.7R",
+            "2A.3.8R",
+            "2A.3.9R",
+            "2A.3.10R",
+            "2A.3.11R",
+            "2A.3.12R",
+            "2A.3.13R",
+            "2A.3.14R",
+            "2A.3.15G",
+            "2A.3.16R",
+            "2A.3.17R",
+            "2A.3.18R",
+            "2A.3.19R",
+            "2A.3.20R",
+            "2A.3.21R",
+            "2A.3.22G",
+            "2A.3.23G",
+            "2A.3.24R",
+            "2A.3.25G",
+            "2A.3.26R",
+            "2A.3.27G",
+            "2A.3.28R",
+            "2A.3.29G",
+            "2A.3.30E",
+            "2A.4.1R",
+            "2A.4.3R",
+            "2A.4.9G",
+            "2A.4.10G",
+            "2A.4.11G",
+            "2A.4.21R",
+            "2A.4.22G",
+            "2A.4.23G",
+            "2A.4.24R",
+            "2A.4.26R",
+            "2A.4.27R",
+            "2A.4.28G",
+            "2A.4.30G",
+            "2A.4.32R",
+            "2A.5.1R",
+            "2A.5.2G",
+            "2A.5.3R",
+            "2A.5.4R",
+            "2A.5.5R",
+            "2A.5.6R",
+            "2A.5.7G",
+            "2A.5.8R",
+            "2A.5.9R",
+            "2A.5.10R",
+            "2A.5.11G",
+            "2A.5.12G",
+            "2A.5.13G",
+            "2A.5.14R",
+            "2A.5.15R",
+            "2A.6.1R",
+            "2A.6.2R",
+            "2A.6.3G",
+            "2A.6.4G",
+            "2A.6.5R",
+            "2A.6.6R",
+            "2A.7.1R",
+            "2A.7.2G",
+            "2A.7.3G",
+            "2A.7.4G",
+            "2A.8.1R",
+            "2A.8.2G",
+            "2A.8.3R",
+            "2A.8.4R",
+            "2A.8.5R",
+            "2A.9.1R",
+            "2A.9.2G",
+            "2A.9.3G",
+            "2A.9.4G",
+            "2A.9.5G",
+            "2A.9.6G",
+            "2A.9.7G",
+            "2A.9.8R",
+            "2A.9.9R",
+            "2A.9.10R",
+            "2A.9.11R",
+            "2A.9.12R",
+            "2A.9.13G",
+            "2A.9.14G",
+            "2A.9.15G",
+            "2A.9.17R",
+            "2A.10.1G",
+            "2A.10.2R",
+            "2A.10.3R",
+            "2A.10.4G",
+            "2A.10.5R",
+            "2A.11.1R",
+            "2A.11.2R",
+            "2A.11.3G",
+            "2A.11.4R",
+            "2A.11.5R",
+            "3.1.6R",
+            "3.1.7G",
+            "3.1.8R",
+            "3.1.10R",
+            "3.1.12R",
+            "3.1.13R",
+            "3.2.1AR",
+            "3.2.6R",
+            "3.2.7R",
+            "3.2.8R",
+            "3.2.9G",
+            "3.2.10R",
+            "3.2.11G",
+            "3.2.12G",
+            "3.3.1R",
+            "3.4.3AR",
+            "4.1.1G",
+            "4.1.2G",
+            "4.1.4G",
+            "1.1.3R",
+            "1.1.5G",
+            "1.1.5AR",
+            "1.1.5BR",
+            "1.1.5CG",
+            "1.1.7R",
+            "1.1.7AR",
+            "1.1.7BR",
+            "1.1.7CR",
+            "1.1.7DG",
+            "1.1.7ER",
+            "1.1.8G",
+            "1.1.8BR",
+            "1.1.11BG",
+            "1.1.11CR",
+            "1.1.11DG",
+            "2.1.5R",
+            "2.1.6R",
+            "2.4.1R",
+            "2.4.2R",
+            "2.4.3R",
+            "2.4.4G",
+            "2.4.5R",
+            "2.4.6R",
+            "2.4.7R",
+            "2.4.8R",
+            "2.4.9R",
+            "2.4.10R",
+            "4.1.18G",
+            "4.1.20G",
+            "4.1.21G",
+            "4.1.22G",
+            "4.1.23G",
+            "4.1.24G",
+            "4.1.25G",
+            "4.1.26G",
+            "4.1.27G",
+            "4.1.28G",
+            "4.1.29G",
+            "4.1.30G",
+            "4.1.31G",
+            "4.1.32G",
+            "4.1.33G",
+            "4.1.34G",
+            "4.1.35G",
+            "4.2.30G",
+            "4.2.31G",
+            "2.2.35AG",
+            "1.3.2R"
+          ]
+        },
+        "instrumentProvisionsNewlySupplied": [
+          "2A.4.4G",
+          "2A.4.5R",
+          "2A.4.6G",
+          "2A.4.7R",
+          "2A.4.8R",
+          "2A.4.12G",
+          "2A.4.13R",
+          "2A.4.14R",
+          "2A.4.15R",
+          "2A.4.16R",
+          "2A.4.17R"
+        ]
+      },
+      "review": {
+        "orchestrationStatus": "RUNNING",
+        "publicationCoverageComplete": false,
+        "regulatoryExtractionAccuracyComplete": false,
+        "analysisScope": "PARTIAL_INSTRUMENT_PROVISIONS",
+        "consolidatedFindingCount": 78,
+        "dedupeKeysRecorded": 78,
+        "coverage": {
+          "instrumentProvisionCount": 242,
+          "supplied": 38,
+          "outstanding": 204,
+          "batchesSucceeded": 3,
+          "batchesFailed": 0,
+          "complete": false,
+          "provisionInventory": {
+            "unresolved": 204,
+            "finding_generated": 38
+          },
+          "unresolvedProvisionCores": [
+            "1.1.11BG",
+            "1.1.11CR",
+            "1.1.11DG",
+            "1.1.3R",
+            "1.1.5AR",
+            "1.1.5BR",
+            "1.1.5CG",
+            "1.1.5G",
+            "1.1.7AR",
+            "1.1.7BR",
+            "1.1.7CR",
+            "1.1.7DG",
+            "1.1.7ER",
+            "1.1.7R",
+            "1.1.8BR",
+            "1.1.8G",
+            "1.2.1G",
+            "1.3.2R",
+            "15.7.24R",
+            "2.1.1R",
+            "2.1.5R",
+            "2.1.6R",
+            "2.2.35AG",
+            "2.4.10R",
+            "2.4.1R",
+            "2.4.2R",
+            "2.4.3R",
+            "2.4.4G",
+            "2.4.5R",
+            "2.4.6R",
+            "2.4.7R",
+            "2.4.8R",
+            "2.4.9R",
+            "2A.1.10G",
+            "2A.1.11G",
+            "2A.1.12G",
+            "2A.1.13G",
+            "2A.1.14G",
+            "2A.1.15G",
+            "2A.1.16G",
+            "2A.1.17G",
+            "2A.1.18G",
+            "2A.10.1G",
+            "2A.10.2R",
+            "2A.10.3R",
+            "2A.10.4G",
+            "2A.10.5R",
+            "2A.11.1R",
+            "2A.11.2R",
+            "2A.11.3G",
+            "2A.11.4R",
+            "2A.11.5R",
+            "2A.2.10G",
+            "2A.2.11G",
+            "2A.2.12G",
+            "2A.2.13G",
+            "2A.2.14R",
+            "2A.2.15G",
+            "2A.2.16G",
+            "2A.2.17G",
+            "2A.2.18G",
+            "2A.2.19G",
+            "2A.2.1R",
+            "2A.2.20G",
+            "2A.2.21G",
+            "2A.2.22G",
+            "2A.2.23G",
+            "2A.2.24G",
+            "2A.2.25G",
+            "2A.2.26R",
+            "2A.2.27G",
+            "2A.2.28G",
+            "2A.2.2R",
+            "2A.2.3G",
+            "2A.2.4G",
+            "2A.2.5R",
+            "2A.2.6R",
+            "2A.2.7G",
+            "2A.2.8R",
+            "2A.2.9R",
+            "2A.3.1G",
+            "2A.3.2R",
+            "2A.3.3G",
+            "2A.3.4R",
+            "2A.3.5R",
+            "2A.4.10G",
+            "2A.4.11G",
+            "2A.4.12G",
+            "2A.4.13R",
+            "2A.4.14R",
+            "2A.4.15R",
+            "2A.4.16R",
+            "2A.4.17R",
+            "2A.4.18R",
+            "2A.4.19R",
+            "2A.4.20R",
+            "2A.4.21R",
+            "2A.4.22G",
+            "2A.4.23G",
+            "2A.4.24R",
+            "2A.4.25R",
+            "2A.4.26R",
+            "2A.4.27R",
+            "2A.4.28G",
+            "2A.4.29R",
+            "2A.4.30G",
+            "2A.4.31G",
+            "2A.4.32R",
+            "2A.4.33R",
+            "2A.4.34R",
+            "2A.4.35E",
+            "2A.4.36R",
+            "2A.4.4G",
+            "2A.4.5R",
+            "2A.4.6G",
+            "2A.4.7R",
+            "2A.4.8R",
+            "2A.4.9G",
+            "2A.5.10R",
+            "2A.5.11G",
+            "2A.5.12G",
+            "2A.5.13G",
+            "2A.5.14R",
+            "2A.5.15R",
+            "2A.5.1R",
+            "2A.5.2G",
+            "2A.5.3R",
+            "2A.5.4R",
+            "2A.5.5R",
+            "2A.5.6R",
+            "2A.5.7G",
+            "2A.5.8R",
+            "2A.5.9R",
+            "2A.6.1R",
+            "2A.6.2R",
+            "2A.6.3G",
+            "2A.6.4G",
+            "2A.6.5R",
+            "2A.6.6R",
+            "2A.7.1R",
+            "2A.7.2G",
+            "2A.7.3G",
+            "2A.7.4G",
+            "2A.8.1R",
+            "2A.8.2G",
+            "2A.8.3R",
+            "2A.8.4R",
+            "2A.8.5R",
+            "2A.9.10R",
+            "2A.9.11R",
+            "2A.9.12R",
+            "2A.9.13G",
+            "2A.9.14G",
+            "2A.9.15G",
+            "2A.9.17R",
+            "2A.9.1R",
+            "2A.9.2G",
+            "2A.9.3G",
+            "2A.9.4G",
+            "2A.9.5G",
+            "2A.9.6G",
+            "2A.9.7G",
+            "2A.9.8R",
+            "2A.9.9R",
+            "3.1.10R",
+            "3.1.12R",
+            "3.1.13R",
+            "3.1.6R",
+            "3.1.7G",
+            "3.1.8R",
+            "3.2.10R",
+            "3.2.11G",
+            "3.2.12G",
+            "3.2.1AR",
+            "3.2.6R",
+            "3.2.7R",
+            "3.2.8R",
+            "3.2.9G",
+            "3.3.1R",
+            "3.4.3AR",
+            "4.1.18G",
+            "4.1.1G",
+            "4.1.20G",
+            "4.1.21G",
+            "4.1.22G",
+            "4.1.23G",
+            "4.1.24G",
+            "4.1.25G",
+            "4.1.26G",
+            "4.1.27G",
+            "4.1.28G",
+            "4.1.29G",
+            "4.1.2G",
+            "4.1.30G",
+            "4.1.31G",
+            "4.1.32G",
+            "4.1.33G",
+            "4.1.34G",
+            "4.1.35G",
+            "4.1.4G",
+            "4.2.30G",
+            "4.2.31G",
+            "6.6.26G",
+            "8.5.22R"
+          ]
+        },
+        "spend": {
+          "capUsd": 0.2,
+          "estimatedTokens": 34084,
+          "batchesAttempted": 3,
+          "batchesSucceeded": 3
+        },
+        "batches": [
+          {
+            "batchIndex": 0,
+            "status": "SUCCEEDED",
+            "runId": "063a2e9f-8279-4310-9341-354110d5e675",
+            "idempotencySuffix": "batch-0",
+            "errorCode": null,
+            "provisionsNewlySupplied": 14,
+            "provisionsOutstanding": 228
+          },
+          {
+            "batchIndex": 1,
+            "status": "SUCCEEDED",
+            "runId": "3f3f57e1-5afc-40ac-a8d6-2f792b60c5f1",
+            "idempotencySuffix": "batch-1",
+            "errorCode": null,
+            "provisionsNewlySupplied": 10,
+            "provisionsOutstanding": 218
+          },
+          {
+            "batchIndex": 2,
+            "status": "SUCCEEDED",
+            "runId": "9c0824b3-977d-4052-841c-f1176bf0ffcf",
+            "idempotencySuffix": "batch-2",
+            "errorCode": null,
+            "provisionsNewlySupplied": 14,
+            "provisionsOutstanding": 204
+          },
+          {
+            "batchIndex": 3,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 11,
+            "provisionsOutstanding": 193
+          },
+          {
+            "batchIndex": 4,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 16,
+            "provisionsOutstanding": 177
+          },
+          {
+            "batchIndex": 5,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 22,
+            "provisionsOutstanding": 155
+          },
+          {
+            "batchIndex": 6,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 10,
+            "provisionsOutstanding": 145
+          },
+          {
+            "batchIndex": 7,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 13,
+            "provisionsOutstanding": 132
+          },
+          {
+            "batchIndex": 8,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 17,
+            "provisionsOutstanding": 115
+          },
+          {
+            "batchIndex": 9,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 17,
+            "provisionsOutstanding": 98
+          },
+          {
+            "batchIndex": 10,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 20,
+            "provisionsOutstanding": 78
+          },
+          {
+            "batchIndex": 11,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 20,
+            "provisionsOutstanding": 58
+          },
+          {
+            "batchIndex": 12,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 14,
+            "provisionsOutstanding": 44
+          },
+          {
+            "batchIndex": 13,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 12,
+            "provisionsOutstanding": 32
+          },
+          {
+            "batchIndex": 14,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 14,
+            "provisionsOutstanding": 18
+          },
+          {
+            "batchIndex": 15,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 10,
+            "provisionsOutstanding": 8
+          },
+          {
+            "batchIndex": 16,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 8,
+            "provisionsOutstanding": 0
+          }
+        ],
+        "failedBatchIndexes": []
+      },
+      "persisted": false
+    },
+    {
+      "step": "extract",
+      "at": "2026-11-23T19:42:51.485Z",
+      "http": 202,
+      "exBody": {
+        "ok": true,
+        "runId": "be03ff0f-841a-45ce-a7b5-1dfbd4dc5ae0",
+        "reused": false,
+        "dispatched": true,
+        "executionStatus": "RUNNING"
+      }
+    },
+    {
+      "step": "terminal",
+      "at": "2026-11-23T19:43:31.445Z",
+      "status": "COMPLETED",
+      "spend": 0.078903,
+      "runId": "be03ff0f-841a-45ce-a7b5-1dfbd4dc5ae0",
+      "completeness": {
+        "policy": "Batch SUCCEEDED does not imply regulatory accuracy; omissions are explicit.",
+        "omissionCores": [],
+        "omissionCount": 0,
+        "suppliedCount": 11,
+        "batchCompletenessOk": true,
+        "regulatoryAccuracySuccess": true,
+        "partialIdentificationCores": []
+      },
+      "gate": {
+        "schemaOk": true,
+        "spendOk": true,
+        "batchCompletenessOk": true,
+        "regulatoryAccuracySuccess": true,
+        "omissionCount": 0,
+        "provisionsSupplied": 11,
+        "candidates": 11,
+        "passesQualityGate": true
+      }
+    }
+  ]
+}

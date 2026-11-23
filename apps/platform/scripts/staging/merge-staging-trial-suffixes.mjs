@@ -25,6 +25,9 @@ const BASELINE_SUFFIXES = [
   'live-ps22-full-2026-11-22-batch-2',
   'live-ps22-full-2026-11-22-batch-3',
   'live-ps22-full-2026-11-22-batch-4',
+  'live-ps22-corrected-batch0-2026-11-23',
+  'live-ps26-five-operative-v3-2026-11-23',
+  ...Array.from({ length: 16 }, (_, i) => `live-ps22-corrected-batch0-2026-11-23-batch-${i + 2}`),
 ];
 
 const extra = process.argv.slice(2).map((s) => s.trim()).filter(Boolean);

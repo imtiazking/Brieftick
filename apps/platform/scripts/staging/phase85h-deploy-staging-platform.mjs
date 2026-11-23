@@ -10,6 +10,7 @@ import { join, resolve } from 'node:path';
 const repoRoot = resolve(process.cwd(), '..', '..');
 const platformRoot = join(repoRoot, 'apps', 'platform');
 const evidencePath = join(repoRoot, 'docs', 'eval', 'STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json');
+const MIN_DEPLOY_INTERVAL_MS = Number(process.env.FORGENIQ_STAGING_DEPLOY_MIN_MS || 15 * 60 * 1000);
 
 const SCOPE = 'imis-projects-8e15dca0';
 const PROJECT_NAME = 'forgeniq-platform-staging';
@@ -24,6 +25,27 @@ function run(label, cmd, args, cwd, env = {}) {
 }
 
 console.log('P3 provision engine — staging platform deploy\n');
+
+if (process.env.FORCE_STAGING_DEPLOY !== '1' && existsSync(evidencePath) && MIN_DEPLOY_INTERVAL_MS > 0) {
+  try {
+    const prior = JSON.parse(readFileSync(evidencePath, 'utf8'));
+    const captured = Date.parse(prior.capturedAt || '');
+    if (Number.isFinite(captured) && Date.now() - captured < MIN_DEPLOY_INTERVAL_MS) {
+      const waitMin = Math.ceil((MIN_DEPLOY_INTERVAL_MS - (Date.now() - captured)) / 60_000);
+      console.log(
+        JSON.stringify({
+          ok: false,
+          code: 'staging_deploy_throttled',
+          waitMinutes: waitMin,
+          hint: 'Set FORCE_STAGING_DEPLOY=1 to override (saves Hobby CPU + deployment storage).',
+        }),
+      );
+      process.exit(0);
+    }
+  } catch {
+    /* continue */
+  }
+}
 
 run('sync design-lab bundle', 'node', ['./scripts/sync-design-lab-bundle.mjs'], platformRoot);
 run('emit build id', 'node', ['./scripts/emit-forgeniq-build-id.mjs'], platformRoot);

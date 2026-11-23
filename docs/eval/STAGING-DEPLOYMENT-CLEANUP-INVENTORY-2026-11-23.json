@@ -1,0 +1,124 @@
+{
+  "generatedAt": "2026-11-23T20:46:23.056Z",
+  "project": "forgeniq-platform-staging",
+  "scope": "imis-projects-8e15dca0",
+  "deploymentCountListed": 20,
+  "deployments": [
+    {
+      "ageToken": "https://forgeniq-platform-staging-hw7tiddx9-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-hw7tiddx9-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-idkqbwuh8-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-idkqbwuh8-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-ldcxtespj-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-ldcxtespj-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-jkunhopxr-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-jkunhopxr-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-kaiv8t2ef-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-kaiv8t2ef-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-dkkmjz5pv-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-dkkmjz5pv-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-dhyhqigxz-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-dhyhqigxz-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-hei6t1klx-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-hei6t1klx-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-8py720imz-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-8py720imz-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-618pd2tsu-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-618pd2tsu-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-e4oslkq8w-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-e4oslkq8w-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-mxp7ooifs-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-mxp7ooifs-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-9wpffx7t5-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-9wpffx7t5-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-n55yn62vg-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-n55yn62vg-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-c1sfvg22x-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-c1sfvg22x-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-k36qd03n0-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-k36qd03n0-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-lbz4pn01n-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-lbz4pn01n-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-5p31smpmp-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-5p31smpmp-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-8bu6tjd9d-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-8bu6tjd9d-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    },
+    {
+      "ageToken": "https://forgeniq-platform-staging-qywzt8rfa-imis-projects-8e15dca0.vercel.app",
+      "url": "https://forgeniq-platform-staging-qywzt8rfa-imis-projects-8e15dca0.vercel.app",
+      "status": "UNKNOWN"
+    }
+  ],
+  "classification": {
+    "keepActiveProductionAlias": "https://staging-app.forgeniq.com (current alias target — verify in dashboard)",
+    "keepRollbackCandidates": [
+      "Most recent ● Ready before resource-optimisation deploy"
+    ],
+    "keepEvidenceDeployIds": [
+      "dpl_AvAyBqSSYsn2FbRcV5CbyJYsPoQU",
+      "dpl_7T28te7MyhHBpcKL6jYv4yRD4aTj",
+      "dpl_HDxFzhR5P6ZnD72DJ87w4YzMTVrR"
+    ],
+    "failedCandidatesForDeletion": [],
+    "redundantReadyCandidates": []
+  },
+  "storageNote": "Hobby retains build artifacts per deployment. Deleting ERROR + old READY deploys typically frees hundreds of MB–few GB; exact savings shown only in dashboard after selection. Rollback impact: keep at least one Ready deploy per known-good git SHA.",
+  "deletionPerformed": false,
+  "requiresOperatorApproval": true
+}

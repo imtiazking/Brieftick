@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-11-23T20:46:41.030Z",
+  "checks": [
+    {
+      "name": "terminal_polling_stops",
+      "ok": true,
+      "detail": {
+        "fetches": 3,
+        "status": "FAILED"
+      }
+    },
+    {
+      "name": "completed_on_first_poll",
+      "ok": true,
+      "detail": {
+        "fetches": 1
+      }
+    },
+    {
+      "name": "pdf_cache_key_isolation",
+      "ok": true,
+      "detail": {
+        "k1Len": 34
+      }
+    },
+    {
+      "name": "batch_plan_grounding_opt_in",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "name": "ai_run_get_private_cache_headers",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "name": "metrics_env_gate",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "name": "deploy_throttle_present",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "name": "parallel_spend_reconcile",
+      "ok": true,
+      "detail": {}
+    }
+  ],
+  "pass": true
+}

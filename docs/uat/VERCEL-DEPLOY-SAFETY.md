@@ -35,6 +35,7 @@
 ## Agent / CLI rules
 
 - **Never** run bare `vercel deploy` from `apps/platform` without `--project=forgeniq-platform-staging`.
-- **Prefer** `node apps/platform/scripts/staging/phase85h-deploy-staging-platform.mjs` from authorised commits.
+- **Prefer** `node apps/platform/scripts/staging/phase85h-deploy-staging-platform.mjs` from authorised commits — **once per development tranche**, not after every fix (see `CONSOLIDATED-DEVELOPMENT-DEPLOYMENT-POLICY.md`).
+- Target **1–3 staging deploys per day** in normal development.
 - Run `node apps/platform/scripts/staging/assert-vercel-staging-target.mjs` before any custom deploy.
 - **No production** deploy to www / customer tenants without explicit user approval.

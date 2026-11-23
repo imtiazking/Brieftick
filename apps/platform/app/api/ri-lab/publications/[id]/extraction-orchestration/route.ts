@@ -70,7 +70,8 @@ export async function POST(request: Request, { params }: RouteParams) {
         | 'advance_all_simulated'
         | 'advance_session'
         | 'complete_live_batch'
-        | 'reconcile_provision_inventory';
+        | 'reconcile_provision_inventory'
+        | 'patch_spend_cap';
       batchIndex?: number;
       runId?: string;
       executionOk?: boolean;
@@ -147,6 +148,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         projectUrl: projectUrl!,
         serviceRoleKey: serviceRoleKey!,
         publicationIds: [publicationId],
+        organisationId: ctx.organisationId,
       });
       if (!loaded.evidence?.[0]) {
         return NextResponse.json({ ok: false, code: 'pdf_evidence_unavailable' }, { status: 422 });
@@ -206,6 +208,7 @@ export async function POST(request: Request, { params }: RouteParams) {
           projectUrl: projectUrl!,
           serviceRoleKey: serviceRoleKey!,
           publicationIds: [publicationId],
+          organisationId: ctx.organisationId,
         });
         if (loaded.evidence?.[0]) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -259,6 +262,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         projectUrl: projectUrl!,
         serviceRoleKey: serviceRoleKey!,
         publicationIds: [publicationId],
+        organisationId: ctx.organisationId,
       });
       if (!loaded.evidence?.length) {
         return NextResponse.json({ ok: false, code: 'pdf_primary_not_found' }, { status: 404 });
@@ -286,6 +290,21 @@ export async function POST(request: Request, { params }: RouteParams) {
       });
       await persistOrchestration(snapshotOrchestration(result.state) as Record<string, unknown>);
       return NextResponse.json({ ok: true, publicationId, ...result, simulated: true });
+    }
+
+    if (body.action === 'patch_spend_cap') {
+      if (!existing) {
+        return NextResponse.json({ ok: false, code: 'orchestration_not_initialised' }, { status: 409 });
+      }
+      const { patchOrchestrationSpendCap } = await import('@/lib/ri/ai/publication-extraction-orchestrator.mjs');
+      const state = structuredClone(existing);
+      const patched = patchOrchestrationSpendCap(state, body.spendCapUsd);
+      if (!patched.ok) {
+        return NextResponse.json(patched, { status: 400 });
+      }
+      const snapshot = snapshotOrchestration(state as Record<string, unknown>) as Record<string, unknown>;
+      await persistOrchestration(snapshot);
+      return NextResponse.json({ ok: true, publicationId, orchestration: snapshot, capUsd: patched.capUsd });
     }
 
     if (body.action === 'advance' || body.action === 'advance_all_simulated') {
@@ -325,6 +344,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       projectUrl,
       serviceRoleKey,
       publicationIds: [publicationId],
+      organisationId: ctx.organisationId,
     });
     if (!loaded.evidence?.length) {
       return NextResponse.json({ ok: false, code: 'pdf_primary_not_found' }, { status: 404 });

@@ -5,6 +5,7 @@
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { runAs, STAGING_ORIGIN } from './staging-user-sessions.mjs';
+import { pollAiAnalysisRunViaPage } from './uat-poll-ai-run.mjs';
 
 const BUDGET_USD = 2;
 const EVIDENCE = resolve(process.cwd(), '..', '..', 'docs', 'eval', 'LIVE-FULL-PUBLICATION-EXTRACTION-PILOT-RUN-2026-11-22.json');
@@ -83,34 +84,14 @@ async function startExtractionRun(page, payload, publicationId) {
   }
 }
 
-function normalizeExecutionStatus(body) {
-  const raw =
-    body?.run?.execution_status ??
-    body?.detail?.execution_status ??
-    body?.executionStatus ??
-    body?.aiAnalysisRun?.executionStatus;
-  if (!raw) return null;
-  return String(raw).trim().toUpperCase().replace(/\s+/g, '_');
-}
-
-const TERMINAL_EXECUTION = new Set(['COMPLETED', 'FAILED', 'VALIDATION_FAILED']);
-
 async function pollRun(page, runId, timeoutMs = 300_000) {
-  const started = Date.now();
-  let lastBody = null;
-  while (Date.now() - started < timeoutMs) {
-    const res = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/ai-analysis-runs/${runId}`, {
-      headers: { Accept: 'application/json' },
-    });
-    const body = await res.json().catch(() => ({}));
-    lastBody = body;
-    const status = normalizeExecutionStatus(body);
-    if (status && TERMINAL_EXECUTION.has(status)) {
-      return { status, body, latencyMs: Date.now() - started };
-    }
-    await page.waitForTimeout(4000);
-  }
-  return { status: 'TIMEOUT', body: lastBody, latencyMs: Date.now() - started };
+  const polled = await pollAiAnalysisRunViaPage(page, STAGING_ORIGIN, runId, { timeoutMs });
+  return {
+    status: polled.status,
+    body: polled.body,
+    latencyMs: polled.latencyMs,
+    polls: polled.polls,
+  };
 }
 
 async function createChange(page, pub) {

@@ -80,6 +80,16 @@ export function orchestrationBatchIdempotencySuffix(baseSuffix, batchIndex) {
   return batchIndex === 0 ? base : `${base}-batch-${batchIndex + 1}`;
 }
 
+/** Raise ledger spend cap (pilot continuation); does not reset batch history. */
+export function patchOrchestrationSpendCap(state, spendCapUsd) {
+  const cap = Number(spendCapUsd);
+  if (!Number.isFinite(cap) || cap <= 0) return { ok: false, code: 'invalid_spend_cap' };
+  if (!state.spend) state.spend = { batchesAttempted: 0, batchesSucceeded: 0 };
+  state.spend.capUsd = cap;
+  state.updatedAt = new Date().toISOString();
+  return { ok: true, capUsd: cap };
+}
+
 export function assertOrchestrationSpendCap(state, batchEstimateUsd = 0) {
   const cap = state.spend?.capUsd;
   if (cap == null) return { ok: true };
