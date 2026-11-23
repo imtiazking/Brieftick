@@ -487,6 +487,18 @@ export const SOURCE_INTEGRATION_BY_ID = {
     officialSupportingHostnames: ['www.sec.gov', 'sec.gov'],
     primaryRegulatorSiteUrl: 'https://www.sec.gov/',
   },
+  'SRC-SEC-FEDERAL-REGISTER': {
+    verificationStatus: 'LIVE_VERIFIED',
+    productionStatus: 'NOT_ENABLED',
+    verifiedAt: '2026-11-23T08:50:00.000Z',
+    verificationEvidenceRef: `${MANIFEST_SEMANTIC}#SRC-SEC-FEDERAL-REGISTER`,
+    verifiedRetrievalMethod: 'official_federal_register_api',
+    productionStrategy: 'OFFICIAL_STRUCTURED_ENDPOINT',
+    canonicalRegulatoryContentUrl: 'https://www.federalregister.gov/api/v1/documents.json',
+    canonicalContentHostname: 'www.federalregister.gov',
+    officialSupportingHostnames: ['www.federalregister.gov', 'federalregister.gov'],
+    primaryRegulatorSiteUrl: 'https://www.sec.gov/',
+  },
   'SRC-CFTC-RULEMAKING': {
     verificationStatus: 'RESEARCH_REQUIRED',
     productionStatus: 'NOT_ENABLED',

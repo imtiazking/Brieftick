@@ -225,7 +225,7 @@ export const SOURCE_COVERAGE_BY_ID = {
   },
   'SRC-SCA-UAE-REGULATIONS': {
     coverageVerificationStatus: 'COVERAGE_VERIFIED',
-    contentClasses: ['REGULATORY_DECISION', 'SECONDARY_LEGISLATION'],
+    contentClasses: ['REGULATORY_NOTICE', 'SECONDARY_LEGISLATION'],
     riUseCases: ['REGULATORY_CHANGE', 'RULE_OBLIGATION_SOURCE', 'REFERENCE_ONLY'],
     catalogueRecommendation: 'KEEP',
     coverageNotes:
