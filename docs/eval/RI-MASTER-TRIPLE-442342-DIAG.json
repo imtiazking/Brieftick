@@ -1,0 +1,9 @@
+{
+  "recordedAt": "2026-11-23T14:45:00Z",
+  "terminalId": "442342",
+  "outcome": "incomplete",
+  "run1": { "status": "PASS", "elapsedSeconds": 169 },
+  "run2": { "status": "incomplete", "lastStep": "FCA RSS Phase 8B spawn", "processGone": true },
+  "isolatedRetest": { "acceptance-fca-rss-phase8b.mjs": "PASS", "durationSeconds": 6.5 },
+  "conclusion": "Run 2 not failed on assertions; runner exited before step output. Full triple restart required; run1 not counted toward final ×3 gate."
+}
