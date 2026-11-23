@@ -52,6 +52,7 @@ const { computeDashboardParityFromLabState } = await import(
 );
 
 const state = createFreshState();
+state.connectivity = { ...(state.connectivity || {}), mode: 'presentation' };
 hydrateStore(state);
 const lab = computeDashboardStats();
 const prod = computeDashboardParityFromLabState(state);

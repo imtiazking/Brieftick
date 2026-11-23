@@ -17,12 +17,40 @@ function isIntakeCandidate(p) {
   return p && (p.triageStatus || p.workflowStatus);
 }
 
+/** Mirrors Design Lab `getViewPublications(state)` for golden-master parity (no browser store singleton). */
+function publicationsForDashboard(state) {
+  const cfg = state?.platformConfig || {};
+  const connectedBackend =
+    cfg.adapterMode === 'api' && cfg.featureFlags?.apiAdapter === true && cfg.backendReady === true;
+  if (connectedBackend && state?.connectedCatalogue?.ready) {
+    return state.connectedCatalogue.publications || [];
+  }
+  const mode = state?.connectivity?.mode;
+  const presentation = mode === 'presentation';
+  if (
+    connectedBackend ||
+    mode === 'connecting' ||
+    mode === 'connected_error' ||
+    mode === 'org_selection_required' ||
+    mode === 'org_access_denied' ||
+    mode === 'auth_required'
+  ) {
+    return [];
+  }
+  if (!presentation && typeof window === 'undefined') {
+    return [];
+  }
+  const items = state.publications || [];
+  if (items.length && items[0]?._connected) return items;
+  return filterByScenario(items, state.scenarioId);
+}
+
 /**
  * @param {object} state Design Lab seed state (createFreshState)
  */
 export function computeDashboardParityFromLabState(state) {
   const scenarioId = state.scenarioId;
-  const pubs = filterByScenario(state.publications, scenarioId);
+  const pubs = publicationsForDashboard(state);
   const newToday = pubs.filter((p) => p.publishedDate === DEMO_TODAY).length;
   const newWeek = pubs.filter((p) => p.publishedDate >= WEEK_START).length;
   const awaitingReview = pubs.filter(

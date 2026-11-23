@@ -1,0 +1,34 @@
+{
+  "budgetUsdCeiling": 2,
+  "log": [
+    {
+      "step": "PS26/1-reconcile",
+      "at": "2026-11-22T23:55:51.525Z",
+      "inventory": 47,
+      "plannedBatches": 2,
+      "publicationCoverageCompletePlanned": true,
+      "batchLimitReached": false
+    },
+    {
+      "step": "PS26/1-change",
+      "at": "2026-11-22T23:55:53.312Z",
+      "changeId": "802db6fd-d35a-4978-9d9a-113b3ca0ad96",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv"
+    },
+    {
+      "step": "PS26/1-extract-fail",
+      "at": "2026-11-22T23:55:55.183Z",
+      "batchIndex": 0,
+      "idem": "live-ps26-full-2026-11-22",
+      "exBody": {
+        "ok": false,
+        "error": "uc_ri_005_run_reference_not_authorised"
+      }
+    },
+    {
+      "step": "failed",
+      "at": "2026-11-22T23:55:57.667Z",
+      "message": "PS26/1 batch 0 extract failed — no retry"
+    }
+  ]
+}
