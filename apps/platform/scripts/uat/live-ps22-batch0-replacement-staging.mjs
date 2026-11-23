@@ -45,7 +45,8 @@ await runAs('A', async ({ page }) => {
   await panel.locator('[data-create-change-publication-search]').fill('PS22/9');
   await panel.locator(`[data-create-change-pub-option][data-pub-id="${PUB_ID}"]`).click();
   await panel.locator('[data-create-change-title]').fill(`PS22/9 replacement batch 0 — ${SUFFIX}`);
-  await panel.locator('[data-create-change-submit]').click();
+  await panel.locator('[data-create-change-type]').fill('Policy update');
+  await panel.locator('[data-connected-create-change-submit]').click();
   await page.waitForURL(/#\/change\/[0-9a-f-]{36}/, { timeout: 90_000 });
   const changeId = page.url().match(/#\/change\/([0-9a-f-]{36})/)?.[1];
   record('change', { changeId });
