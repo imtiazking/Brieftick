@@ -126,6 +126,7 @@ export function createAnthropicProvider(deps = {}) {
         user,
         idempotencyKey: budgetCtx.idempotencyKey,
         organisationId: budgetCtx.organisationId,
+        maxOutputTokensOverride: budgetCtx.maxOutputTokens,
       });
       if (!spendGuard.ok) {
         return {

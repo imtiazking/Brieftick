@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-23T08:27:18.155Z",
+  "generatedAt": "2026-11-23T10:49:55.276Z",
   "pilotLog": [
     {
       "step": "PS26/1-reconcile",
-      "at": "2026-11-23T08:24:56.034Z",
+      "at": "2026-11-23T10:39:02.955Z",
       "inventory": 47,
       "plannedBatches": 2,
       "publicationCoverageCompletePlanned": true,
@@ -11,25 +11,25 @@
     },
     {
       "step": "PS26/1-change",
-      "at": "2026-11-23T08:25:09.100Z",
-      "changeId": "9ea204cb-caf4-44d0-bc95-c173a7241556",
+      "at": "2026-11-23T10:39:09.592Z",
+      "changeId": "2bd27e90-0f27-40e3-bf6c-6837a62fa64f",
       "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv"
     },
     {
       "step": "PS26/1-resume-marker",
-      "at": "2026-11-23T08:25:14.252Z",
+      "at": "2026-11-23T10:39:14.668Z",
       "idem": "live-ps26-full-2026-11-22",
       "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
       "status": "COMPLETED"
     },
     {
       "step": "PS26/1-batch-0",
-      "at": "2026-11-23T08:25:17.224Z",
+      "at": "2026-11-23T10:39:17.626Z",
       "batchIndex": 0,
       "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
       "idempotencySuffix": "live-ps26-full-2026-11-22",
       "executionStatus": "COMPLETED",
-      "latencyMs": 1129,
+      "latencyMs": 1427,
       "extractHttp": 200,
       "cumulativeSupplied": 40,
       "consolidatedFindings": 0,
@@ -37,19 +37,51 @@
       "unresolved": 0
     },
     {
-      "step": "PS26/1-extract-fail",
-      "at": "2026-11-23T08:25:22.412Z",
+      "step": "PS26/1-batch-1",
+      "at": "2026-11-23T10:40:49.076Z",
       "batchIndex": 1,
-      "idem": "live-ps26-full-2026-11-22-batch-2",
-      "exBody": {
-        "ok": false,
-        "error": "internal_error"
-      }
+      "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+      "idempotencySuffix": "live-ps26-full-2026-11-22-batch-2",
+      "executionStatus": "COMPLETED",
+      "latencyMs": 82791,
+      "extractHttp": 202,
+      "cumulativeSupplied": 47,
+      "consolidatedFindings": 0,
+      "publicationCoverageComplete": true,
+      "unresolved": 7
+    },
+    {
+      "step": "PS22/9-reconcile",
+      "at": "2026-11-23T10:40:58.916Z",
+      "inventory": 242,
+      "plannedBatches": 4,
+      "publicationCoverageCompletePlanned": true,
+      "batchLimitReached": false
+    },
+    {
+      "step": "PS22/9-change",
+      "at": "2026-11-23T10:41:03.493Z",
+      "changeId": "4a9526b3-aba4-4d9e-b398-3e57b10467f0",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv"
+    },
+    {
+      "step": "PS22/9-batch-0",
+      "at": "2026-11-23T10:43:22.337Z",
+      "batchIndex": 0,
+      "runId": "147574c3-229a-42e3-9adb-fd480b905d3b",
+      "idempotencySuffix": "live-ps22-full-2026-11-22",
+      "executionStatus": "FAILED",
+      "latencyMs": 128418,
+      "extractHttp": 202,
+      "cumulativeSupplied": 0,
+      "consolidatedFindings": 0,
+      "publicationCoverageComplete": false,
+      "unresolved": 0
     },
     {
       "step": "failed",
-      "at": "2026-11-23T08:25:23.143Z",
-      "message": "PS26/1 batch 1 extract failed — no retry"
+      "at": "2026-11-23T10:43:23.838Z",
+      "message": "PS22/9 batch 0 FAILED — no retry"
     }
   ],
   "publications": [
@@ -57,10 +89,18 @@
       "code": "PS26/1",
       "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
       "benchmarkProvisionCount": 47,
-      "orchestrationSuppliedCount": 40,
-      "unresolvedProvisionCores": [],
-      "outstandingProvisionEstimate": 7,
-      "publicationCoverageComplete": false,
+      "orchestrationSuppliedCount": 47,
+      "unresolvedProvisionCores": [
+        "16.1.6R",
+        "2.7.19GG",
+        "2.7.19HG",
+        "2.7.7FG",
+        "2.8.6CG",
+        "8.12.11AG",
+        "TP 13.5G"
+      ],
+      "outstandingProvisionEstimate": 0,
+      "publicationCoverageComplete": true,
       "batches": [
         {
           "batchIndex": 0,
@@ -69,12 +109,13 @@
         },
         {
           "batchIndex": 1,
-          "status": "PENDING",
-          "runId": null
+          "status": "SUCCEEDED",
+          "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892"
         }
       ],
-      "recallProxy": 0.851063829787234,
-      "precisionRecallNote": "Full precision/recall requires claim-level reconciliation against benchmark cores; proxy uses supplied/total instrument provisions."
+      "provisionProcessingCoverageRatio": 1,
+      "extractionAccuracyNote": "provisionProcessingCoverageRatio is orchestration supply coverage only — not extraction recall, precision, or quotation accuracy.",
+      "verifiedExtractionMetrics": "Pending claim-level reconciliation against provision-source verification benchmarks."
     },
     {
       "code": "PS22/9",
@@ -84,11 +125,34 @@
       "unresolvedProvisionCores": [],
       "outstandingProvisionEstimate": 0,
       "publicationCoverageComplete": false,
-      "recallProxy": null,
-      "precisionRecallNote": "Full precision/recall requires claim-level reconciliation against benchmark cores; proxy uses supplied/total instrument provisions."
+      "batches": [
+        {
+          "batchIndex": 0,
+          "status": "FAILED",
+          "runId": "147574c3-229a-42e3-9adb-fd480b905d3b"
+        },
+        {
+          "batchIndex": 1,
+          "status": "PENDING",
+          "runId": null
+        },
+        {
+          "batchIndex": 2,
+          "status": "PENDING",
+          "runId": null
+        },
+        {
+          "batchIndex": 3,
+          "status": "PENDING",
+          "runId": null
+        }
+      ],
+      "provisionProcessingCoverageRatio": null,
+      "extractionAccuracyNote": "provisionProcessingCoverageRatio is orchestration supply coverage only — not extraction recall, precision, or quotation accuracy.",
+      "verifiedExtractionMetrics": "Pending claim-level reconciliation against provision-source verification benchmarks."
     }
   ],
-  "spendUsdEstimate": 0,
+  "spendUsdEstimate": 0.383595,
   "acceptance": {
     "processingCoverageComplete": false,
     "accuracyMeasured": false,

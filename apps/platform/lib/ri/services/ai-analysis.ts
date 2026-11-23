@@ -484,6 +484,21 @@ export async function runPublicationAnalysisProvider(
     actorUserId: params.userId,
   });
 
+  const extractionBatch = ctx.grounding?.extractionBatch as
+    | { instrumentProvisionsNewlySupplied?: string[] }
+    | null
+    | undefined;
+  const provisionCount = extractionBatch?.instrumentProvisionsNewlySupplied?.length ?? 0;
+  let maxOutputTokens: number | undefined;
+  if (params.useCaseId === 'UC-RI-005') {
+    const { scaleMaxOutputTokensForBatch } = await import('@/lib/ri/ai/extraction-output-preflight.mjs');
+    const baseCap = Number(process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS?.trim() || 8192);
+    maxOutputTokens = scaleMaxOutputTokensForBatch(baseCap, {
+      provisionCount,
+      sectionCount: ctx.sourceSections.length,
+    });
+  }
+
   const started = Date.now();
   let providerResult: Awaited<ReturnType<typeof provider.execute>>;
   try {
@@ -494,6 +509,7 @@ export async function runPublicationAnalysisProvider(
       budgetContext: {
         organisationId: params.organisationId,
         idempotencyKey,
+        maxOutputTokens,
       },
       context: {
         sourceSections: ctx.sourceSections,

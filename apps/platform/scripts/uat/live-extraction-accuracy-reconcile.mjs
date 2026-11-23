@@ -46,7 +46,7 @@ await runAs('A', async ({ page }) => {
     const supplied = o.cumulativeSuppliedProvisionCores?.length ?? 0;
     const unresolved = o.coverageReconciliation?.unresolvedProvisionCores ?? [];
     const outstanding = Math.max(0, (instrumentCount ?? 0) - supplied);
-    const recallProxy = instrumentCount ? supplied / instrumentCount : null;
+    const provisionProcessingCoverageRatio = instrumentCount ? supplied / instrumentCount : null;
     metrics.publications.push({
       code: pub.code,
       publicationId: pub.id,
@@ -60,9 +60,11 @@ await runAs('A', async ({ page }) => {
         status: b.status,
         runId: b.runId,
       })),
-      recallProxy,
-      precisionRecallNote:
-        'Full precision/recall requires claim-level reconciliation against benchmark cores; proxy uses supplied/total instrument provisions.',
+      provisionProcessingCoverageRatio,
+      extractionAccuracyNote:
+        'provisionProcessingCoverageRatio is orchestration supply coverage only — not extraction recall, precision, or quotation accuracy.',
+      verifiedExtractionMetrics:
+        'Pending claim-level reconciliation against provision-source verification benchmarks.',
     });
     for (const b of o.batches || []) {
       if (!b.runId) continue;
@@ -71,8 +73,12 @@ await runAs('A', async ({ page }) => {
       )
         .json()
         .catch(() => ({}));
-      const spend = run.detail?.structured_output?._forgeniqSpend;
-      if (spend?.costUsdEstimate) metrics.spendUsdEstimate += Number(spend.costUsdEstimate) || 0;
+      const out = run.detail?.structured_output;
+      const spend =
+        out?._forgeniqSpend?.costUsdEstimate ??
+        out?._forgeniqLabSpendAudit?.calculatedUsd ??
+        out?._forgeniqLabSpendAudit?.actualUsd;
+      if (spend != null) metrics.spendUsdEstimate += Number(spend) || 0;
     }
   }
 });

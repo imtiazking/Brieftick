@@ -14,6 +14,7 @@ import {
   buildInstrumentProvisionInventory,
   markProvisionsSuppliedForAnalysis,
   reconcileFindingsWithProvisionInventory,
+  syncProvisionInventorySuppliedFromLedger,
 } from '../classification/provision-inventory.mjs';
 
 export const ORCHESTRATION_VERSION = 'publication_extraction_v1';
@@ -142,8 +143,16 @@ export function markBatchOutcome(state, batchIndex, outcome) {
 export function mergeFindingsIntoOrchestration(state, findings) {
   let added = 0;
   let skipped = 0;
+  if (!state._orchestrationFindings) state._orchestrationFindings = [];
+  for (const f of findings || []) {
+    if (!f) continue;
+    state._orchestrationFindings.push(f);
+  }
   if (state._provisionInventory && findings?.length) {
-    state.provisionInventoryReconciliation = reconcileFindingsWithProvisionInventory(state._provisionInventory, findings);
+    state.provisionInventoryReconciliation = reconcileFindingsWithProvisionInventory(
+      state._provisionInventory,
+      state._orchestrationFindings,
+    );
   }
   for (const f of findings || []) {
     const key = crossBatchFindingDedupeKey(f, sha256Hex);
@@ -338,13 +347,8 @@ export function extendOrchestrationPlan(state, allBlocks, planOptions) {
 export function finalizeProvisionInventoryOutcomes(state) {
   const inv = state._provisionInventory;
   if (!inv) return null;
-  const suppliedSet = new Set(state.cumulativeSuppliedProvisionCores || []);
-  for (const row of inv.provisions) {
-    if (suppliedSet.has(row.core) && row.trackingStatus === PROVISION_TRACKING_STATUS.IDENTIFIED) {
-      row.trackingStatus = PROVISION_TRACKING_STATUS.SUPPLIED;
-    }
-  }
-  const reconciliation = reconcileFindingsWithProvisionInventory(inv, []);
+  syncProvisionInventorySuppliedFromLedger(inv, state.cumulativeSuppliedProvisionCores, state.batches);
+  const reconciliation = reconcileFindingsWithProvisionInventory(inv, state._orchestrationFindings || []);
   for (const row of inv.provisions) {
     if (!row.extractionOutcome) {
       row.extractionOutcome =
@@ -461,7 +465,17 @@ export function orchestrationFindingsFromStructuredOutput(structuredOutput) {
 export function completeLiveOrchestrationBatch(state, batchIndex, { runId, structuredOutput, ok = true, code }) {
   const batch = state.batches.find((b) => b.batchIndex === batchIndex);
   if (!batch) return { ok: false, code: 'batch_not_found' };
-  if (batch.status === 'SUCCEEDED') return { ok: false, code: 'batch_already_succeeded' };
+  if (batch.status === 'SUCCEEDED') {
+    if (state._provisionInventory) {
+      syncProvisionInventorySuppliedFromLedger(
+        state._provisionInventory,
+        state.cumulativeSuppliedProvisionCores,
+        state.batches,
+      );
+      finalizeProvisionInventoryOutcomes(state);
+    }
+    return { ok: true, code: 'batch_already_succeeded', batch, state: snapshotOrchestration(state) };
+  }
   const suffix = batch.idempotencySuffix || `batch-${batchIndex}`;
   markBatchRunning(state, batchIndex, { runId: runId || batch.runId, idempotencySuffix: suffix });
   if (!ok) {

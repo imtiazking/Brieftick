@@ -8,8 +8,10 @@ import {
   detectLegalInstrumentStartPage,
   mergeInstrumentBlocksByPage,
   parseProvisionReference,
+  PROVISION_TEXT_STATUS,
   provisionMarkersInText,
 } from './provision-eligibility.mjs';
+import { expandProvisionCoreSet, provisionCoreAliases, resolveInventoryRowByCore } from './provision-core-keys.mjs';
 
 export const PROVISION_TRACKING_STATUS = Object.freeze({
   IDENTIFIED: 'identified',
@@ -88,35 +90,79 @@ export function markProvisionsSuppliedForAnalysis(inventory, suppliedCores, batc
  * @param {ReturnType<typeof buildInstrumentProvisionInventory>} inventory
  * @param {{ provisionCore?: string, provisionReference?: string, findingId?: string }[]} findings
  */
+function primaryTextStatus(row) {
+  const statuses = Object.values(row?.textStatusByPage || {});
+  if (!statuses.length) return null;
+  if (statuses.includes(PROVISION_TEXT_STATUS.AMENDMENT_MARKUP_UNCERTAIN)) {
+    return PROVISION_TEXT_STATUS.AMENDMENT_MARKUP_UNCERTAIN;
+  }
+  if (statuses.includes(PROVISION_TEXT_STATUS.NEW_TEXT)) return PROVISION_TEXT_STATUS.NEW_TEXT;
+  return statuses[0];
+}
+
+function suppliedWithoutFindingOutcome(row) {
+  const textStatus = primaryTextStatus(row);
+  if (row.core.startsWith('TP ') || textStatus === PROVISION_TEXT_STATUS.AMENDMENT_MARKUP_UNCERTAIN) {
+    return {
+      trackingStatus: PROVISION_TRACKING_STATUS.EXCEPTION,
+      extractionOutcome: 'supplied_requires_exception_triage',
+    };
+  }
+  return {
+    trackingStatus: PROVISION_TRACKING_STATUS.NO_OBLIGATION,
+    extractionOutcome: 'no_finding_for_supplied_provision',
+  };
+}
+
+/** Apply persisted orchestration cumulative supply onto a rebuilt inventory. */
+export function syncProvisionInventorySuppliedFromLedger(inventory, cumulativeSuppliedCores, batches = []) {
+  const suppliedSet = expandProvisionCoreSet(cumulativeSuppliedCores || []);
+  for (const core of suppliedSet) {
+    const row = resolveInventoryRowByCore(inventory.byCore, core);
+    if (!row || row.trackingStatus === PROVISION_TRACKING_STATUS.FINDING) continue;
+    if (row.trackingStatus === PROVISION_TRACKING_STATUS.IDENTIFIED) {
+      row.trackingStatus = PROVISION_TRACKING_STATUS.SUPPLIED;
+    }
+    if (row.suppliedInBatch == null) {
+      const batchHit = batches.find((b) => (b.instrumentProvisionsNewlySupplied || []).includes(row.core));
+      if (batchHit) row.suppliedInBatch = batchHit.batchIndex;
+    }
+  }
+}
+
 export function reconcileFindingsWithProvisionInventory(inventory, findings) {
   const cited = new Set();
   for (const f of findings || []) {
     const ref = f.provisionReference ? parseProvisionReference(f.provisionReference) : null;
     const core = f.provisionCore || ref?.core;
     if (!core) continue;
-    cited.add(core);
-    const row = inventory.byCore.get(core);
+    for (const alias of [core, ...(ref?.core ? [ref.core] : [])]) cited.add(alias);
+    const row = resolveInventoryRowByCore(inventory.byCore, core);
     if (!row) continue;
     row.trackingStatus = PROVISION_TRACKING_STATUS.FINDING;
     if (f.findingId) row.findingIds.push(f.findingId);
   }
+  const citedExpanded = expandProvisionCoreSet(cited);
   for (const row of inventory.provisions) {
-    if (row.trackingStatus === PROVISION_TRACKING_STATUS.SUPPLIED && !cited.has(row.core)) {
-      row.trackingStatus = PROVISION_TRACKING_STATUS.NO_OBLIGATION;
-      row.extractionOutcome = 'no_finding_for_supplied_provision';
+    const citedForRow = provisionCoreAliases(row.core).some((alias) => citedExpanded.has(alias));
+    if (row.trackingStatus === PROVISION_TRACKING_STATUS.SUPPLIED && !citedForRow) {
+      const next = suppliedWithoutFindingOutcome(row);
+      row.trackingStatus = next.trackingStatus;
+      row.extractionOutcome = next.extractionOutcome;
     }
     if (row.trackingStatus === PROVISION_TRACKING_STATUS.IDENTIFIED) {
       row.trackingStatus = PROVISION_TRACKING_STATUS.UNRESOLVED;
       row.extractionOutcome = 'never_supplied_to_analysis';
     }
   }
-  const unresolved = inventory.provisions.filter((p) =>
-    [PROVISION_TRACKING_STATUS.UNRESOLVED, PROVISION_TRACKING_STATUS.EXCEPTION].includes(p.trackingStatus),
-  );
+  const unresolved = inventory.provisions.filter((p) => p.trackingStatus === PROVISION_TRACKING_STATUS.UNRESOLVED);
+  const exceptions = inventory.provisions.filter((p) => p.trackingStatus === PROVISION_TRACKING_STATUS.EXCEPTION);
   return {
     inventoryComplete: unresolved.length === 0,
     unresolvedCount: unresolved.length,
     unresolvedCores: unresolved.map((p) => p.core),
+    exceptionCount: exceptions.length,
+    exceptionCores: exceptions.map((p) => p.core),
     summary: inventory.provisions.reduce((acc, p) => {
       acc[p.trackingStatus] = (acc[p.trackingStatus] || 0) + 1;
       return acc;

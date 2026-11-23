@@ -5,7 +5,9 @@
 import pg from 'pg';
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import '../staging/load-platform-env.mjs';
+import { loadPlatformEnv, resolvePlatformRoot } from '../staging/load-platform-env.mjs';
+
+loadPlatformEnv(resolvePlatformRoot(import.meta.url));
 import { withRlsSession, withRlsSessionCommit } from '../local-db/harness.mjs';
 
 const PILOT = 'b8f5e3a1-00ad-4000-8000-000000000001';

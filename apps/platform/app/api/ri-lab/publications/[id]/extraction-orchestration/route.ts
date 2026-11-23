@@ -64,7 +64,13 @@ export async function POST(request: Request, { params }: RouteParams) {
     const { id: publicationId } = await params;
     const ctx = await requireRiContext('ai:request');
     const body = (await request.json()) as {
-      action?: 'init' | 'advance' | 'advance_all_simulated' | 'advance_session' | 'complete_live_batch';
+      action?:
+        | 'init'
+        | 'advance'
+        | 'advance_all_simulated'
+        | 'advance_session'
+        | 'complete_live_batch'
+        | 'reconcile_provision_inventory';
       batchIndex?: number;
       runId?: string;
       executionOk?: boolean;
@@ -131,6 +137,40 @@ export async function POST(request: Request, { params }: RouteParams) {
     };
 
     /* eslint-disable @typescript-eslint/no-explicit-any -- orchestration ledger is persisted JSON metadata */
+    if (body.action === 'reconcile_provision_inventory') {
+      if (!existing) {
+        return NextResponse.json({ ok: false, code: 'orchestration_not_initialised' }, { status: 409 });
+      }
+      const ledger = structuredClone(existing) as Record<string, unknown>;
+      const loaded = await loadPublicationPdfEvidenceForAskRi(ctx.supabase, {
+        projectUrl: projectUrl!,
+        serviceRoleKey: serviceRoleKey!,
+        publicationIds: [publicationId],
+      });
+      if (!loaded.evidence?.[0]) {
+        return NextResponse.json({ ok: false, code: 'pdf_evidence_unavailable' }, { status: 422 });
+      }
+      const blocks = loaded.evidence[0].evidenceBlocks as Array<{
+        pageNumber?: number;
+        extractedText?: string;
+        documentEvidenceId?: string;
+      }>;
+      const instrumentStartPage = detectLegalInstrumentStartPage(blocks);
+      if (!ledger._provisionInventory && Number.isInteger(instrumentStartPage)) {
+        const { buildInstrumentProvisionInventory } = await import('@/lib/ri/classification/provision-inventory.mjs');
+        ledger._provisionInventory = buildInstrumentProvisionInventory(blocks, instrumentStartPage);
+      }
+      finalizeProvisionInventoryOutcomes(ledger as any);
+      const snapshot = snapshotOrchestration(ledger as any) as Record<string, unknown>;
+      await persistOrchestration(snapshot);
+      return NextResponse.json({
+        ok: true,
+        publicationId,
+        orchestration: snapshot,
+        review: buildConsolidatedHumanReview(ledger as any),
+      });
+    }
+
     if (body.action === 'complete_live_batch') {
       if (!existing) {
         return NextResponse.json({ ok: false, code: 'orchestration_not_initialised' }, { status: 409 });

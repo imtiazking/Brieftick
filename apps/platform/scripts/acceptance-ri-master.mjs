@@ -3,9 +3,9 @@
  * Phase 7A — master local/offline RI acceptance (orchestrates existing suites).
  * Does not duplicate test logic. Requires Node; embedded Postgres for 3A+ workflow suites.
  */
-import { spawnSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { runBoundedStep } from './acceptance-ri-master-runner.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 const platformRoot = join(__dir, '..');
@@ -15,12 +15,11 @@ const integrationsRoot = join(repoRoot, 'integrations', 'regulatory-sources');
 
 let failed = 0;
 
-function runStep(label, command, args, cwd) {
-  console.log(`\n=== ${label} ===\n`);
-  const r = spawnSync(command, args, { cwd, stdio: 'inherit', shell: process.platform === 'win32' });
-  if (r.status !== 0) {
+async function runStep(label, command, args, cwd) {
+  const r = await runBoundedStep({ label, command, args, cwd });
+  if (!r.ok) {
     failed += 1;
-    console.error(`\nFAILED: ${label} (exit ${r.status ?? 'signal'})\n`);
+    console.error(`\nFAILED: ${label} (${r.code ?? 'signal'})\n`);
     return false;
   }
   console.log(`\nOK: ${label}\n`);
@@ -61,7 +60,8 @@ console.log('FORGENIQ RI master acceptance (Phases 1–7 + catalogue)\n');
 const start = Date.now();
 
 for (const [label, cmd, args, cwd] of steps) {
-  const ok = runStep(label, cmd, args, cwd);
+  // eslint-disable-next-line no-await-in-loop
+  const ok = await runStep(label, cmd, args, cwd);
   if (!ok) break;
 }
 

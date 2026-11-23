@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-11-23T10:51:00.474Z",
+  "stagingOrigin": "https://staging-app.forgeniq.com",
+  "findingId": "d8c5b509-8589-41a1-98ff-be72d49172e9",
+  "pass": 6,
+  "fail": 0,
+  "results": [
+    {
+      "step": "SEC-DB-002 create finding as User A",
+      "pass": true
+    },
+    {
+      "step": "finding id returned",
+      "pass": true
+    },
+    {
+      "step": "SEC-DB-001 User B (reviewer) cannot close finding",
+      "pass": true
+    },
+    {
+      "step": "SEC-DB-001 User C (compliance manager) may close",
+      "pass": true
+    },
+    {
+      "step": "pilot org RLS: User B sees org-scoped findings (Users A/B/C share staging UAT org)",
+      "pass": true
+    },
+    {
+      "step": "SEC-DB-002 creator bound via API create",
+      "pass": true
+    },
+    {
+      "step": "SEC-DB-003 audit immutability (API)",
+      "pass": null,
+      "skipped": true,
+      "detail": "workflow_events DELETE not exposed on ri-lab API; validate via STAGING_DATABASE_URL harness or trigger inventory when DB URL available."
+    }
+  ]
+}

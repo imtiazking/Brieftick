@@ -2,6 +2,13 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — RI master Phase 7C.6A fix
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | `workflow-phase-7c6a.mjs` | `ri_guard_ai_pilot_run_insert` + review SoD | Pilot org `b8f5e3a1…`, USER_B reviewer, USER_C cross-tenant — **PASS** |
+| — | RI master ×3 | Run 1 failed on 7C.6A | Triple re-run started after fix |
+
 ## 2026-11-23 — Autonomous tranche (08:24 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |
@@ -193,6 +200,20 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | Implement RI-UI-007, RI-CLS-009, RI-UI-006/008/001/002 in dev worktree | User autonomous execution instruction Priority 1–2 | Code + migration `20261122121500`; design-lab bundle synced |
 | — | Audit four PS26/1 OPEN obligations | Regulatory accuracy sign-off outstanding | At least 2/4 fail `obligation_statement_exceeds_evidence` — see `docs/eval/PS26-1-OBLIGATION-WORDING-AUDIT.json` |
 | — | Pause before staging migration + paid extractions | Spending gate: deploy + validate before ≤2 paid runs | DB migration complete; app deploy outstanding |
+
+## 2026-11-23 — Staging deploy, continuation batch fix, live pilot, SEC-DB API
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 10:30 | Vercel deploy `dpl_5qEo4k5BbDynN5Le6Long7q1orXt` | Ship `e0d1994`/`e61581a`/manifest stack to staging | `staging-app.forgeniq.com` **Ready**; batch POST without change → `obligation_extraction_requires_parent_change` (not `internal_error`) |
+| 10:33 | Pilot batch 1 | Pre-fix continuation indexing | **FAIL** `extraction_batch_out_of_range` (orchestration batch 1 vs continuation plan index 0) |
+| 10:35 | Fix `buildPdfGroundedAnalysisContext` | Map continuation batches + fullPublicationCoverage when cumulative supply present | Local `acceptance-ri-extraction-continuation-batch-index.mjs` **PASS** |
+| 10:38 | Deploy `dpl_7b2D9aKeN2EdGJhC4ZGp6SiCg2eS` | Staging runtime for continuation fix | Production alias unchanged |
+| 10:39–10:40 | PS26/1 pilot resume | Reuse batch 0 marker; paid batch 1 only | Batch 1 **COMPLETED** `6f05a9eb-8984-4a2b-8b78-2e7effbf8892`; 47/47 supplied; 7 unresolved cores in reconciliation |
+| 10:41–10:43 | PS22/9 batch 0 | First paid PS22 batch within cap | **FAILED** `AI_OUTPUT_SCHEMA_INVALID` (`max_tokens`); ~$0.155 billed — **no auto-retry** |
+| 10:46 | SEC-DB staging API harness | User mandate: API-first RLS role-play | `acceptance-ri-security-db-staging-api.mjs` **6/6** (003 skip — no public DELETE); evidence `SEC-DB-STAGING-API-VALIDATION-2026-11-23.json` |
+| 10:46 | Accuracy reconcile | Distinguish processing coverage vs extraction accuracy | `LIVE-EXTRACTION-ACCURACY-METRICS-2026-11-23.json`; spend ~$0.38 / $2 |
+| — | RI master ×3 | Run 1/3 in flight since 08:56 | Log stalled at **FCA RSS Phase 8B** — follow-up: diagnose hang / restart |
 
 ## 2026-11-22 — Cursor autonomous environment + UAT resume
 

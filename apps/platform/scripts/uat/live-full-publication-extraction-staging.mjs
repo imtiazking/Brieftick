@@ -19,7 +19,8 @@ const PUBLICATIONS = [
     code: 'PS22/9',
     publicationId: '7a73ac4c-d6b4-4411-9f6d-1276053f2831',
     suffix: 'live-ps22-full-2026-11-22',
-    maxSectionsPerBatch: 18,
+    // Smaller batches reduce UC-RI-005 JSON payload size (avoids max_tokens truncation on large instruments).
+    maxSectionsPerBatch: 12,
   },
 ];
 

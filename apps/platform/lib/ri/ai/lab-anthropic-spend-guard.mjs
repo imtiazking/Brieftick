@@ -329,7 +329,14 @@ export function assertUcRi005LiveTrialIdempotency(idempotencyKey, { executionEna
   return { ok: true, requiredSuffix: match, allowedSuffixes: allowed };
 }
 
-export function guardLabAnthropicSpendBeforeCall({ useCaseId, system, user, idempotencyKey, organisationId }) {
+export function guardLabAnthropicSpendBeforeCall({
+  useCaseId,
+  system,
+  user,
+  idempotencyKey,
+  organisationId,
+  maxOutputTokensOverride,
+}) {
   const exec = process.env.RI_AI_EXECUTION_ENABLED === 'true';
   const config = resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled: exec });
   if (!config.enforced) {
@@ -340,7 +347,11 @@ export function guardLabAnthropicSpendBeforeCall({ useCaseId, system, user, idem
   }
 
   const slotKey = buildLabTrialSlotKey({ organisationId, idempotencyKey, useCaseId });
-  const tracker = new LabAnthropicSpendTracker(config);
+  const trackerConfig =
+    Number.isFinite(maxOutputTokensOverride) && maxOutputTokensOverride > 0
+      ? { ...config, maxOutputTokens: Math.min(config.maxOutputTokens, Math.floor(maxOutputTokensOverride)) }
+      : config;
+  const tracker = new LabAnthropicSpendTracker(trackerConfig);
   const reserve = tracker.reserveForAttempt(system, user);
   if (!reserve.ok) {
     return { ok: false, ...reserve, failClosed: true, spendAudit: tracker.toAuditRecord() };

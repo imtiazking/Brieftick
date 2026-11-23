@@ -14,8 +14,10 @@ export function extractProvisionScopedExcerpt(pageTextByNumber, pages, core) {
     .map((p) => pageTextByNumber.get(p) || '')
     .join('\n')
     .replace(/\s+/g, ' ');
-  const escaped = core.replace(/\./g, '\\.');
-  const startRe = new RegExp(`${escaped}\\s*(R|E|G|D|P|C|UK|EU)\\b`, 'i');
+  const bodyMarker = String(core).match(/^(.*?)(R|E|G|D|P|C|UK|EU)$/i);
+  const startRe = bodyMarker
+    ? new RegExp(`${bodyMarker[1].replace(/\./g, '\\.')}\\s*${bodyMarker[2]}\\b`, 'i')
+    : new RegExp(core.replace(/\./g, '\\.'), 'i');
   const start = merged.search(startRe);
   if (start < 0) return null;
   const tail = merged.slice(start);

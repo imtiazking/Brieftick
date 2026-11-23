@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-11-23T11:21:17.875Z",
+  "instrumentStartPage": 61,
+  "inventoryProvisionCount": 47,
+  "plannedCumulativeCount": 47,
+  "missingFromCumulative": [],
+  "extraInCumulative": [],
+  "provisions": [
+    {
+      "core": "16.1.6R",
+      "inInventory": true,
+      "inventoryTracking": "identified",
+      "inCumulativePlan": true,
+      "suppliedInBatch": 1,
+      "pages": [
+        103
+      ],
+      "textStatus": "NEW_TEXT",
+      "transitionalTableContext": false,
+      "hasDutyLanguageInExcerpt": false,
+      "authoritativeQuotationExcerpt": null,
+      "parseCheck": "16.1.6R",
+      "classificationHint": "NEW_TEXT — review for operative duty"
+    },
+    {
+      "core": "2.7.19GG",
+      "inInventory": true,
+      "inventoryTracking": "identified",
+      "inCumulativePlan": true,
+      "suppliedInBatch": 1,
+      "pages": [
+        104
+      ],
+      "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
+      "transitionalTableContext": false,
+      "hasDutyLanguageInExcerpt": false,
+      "authoritativeQuotationExcerpt": null,
+      "parseCheck": "2.7.19GG",
+      "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
+    },
+    {
+      "core": "2.7.19HG",
+      "inInventory": true,
+      "inventoryTracking": "identified",
+      "inCumulativePlan": true,
+      "suppliedInBatch": 1,
+      "pages": [
+        104
+      ],
+      "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
+      "transitionalTableContext": false,
+      "hasDutyLanguageInExcerpt": false,
+      "authoritativeQuotationExcerpt": null,
+      "parseCheck": "2.7.19HG",
+      "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
+    },
+    {
+      "core": "2.7.7FG",
+      "inInventory": true,
+      "inventoryTracking": "identified",
+      "inCumulativePlan": true,
+      "suppliedInBatch": 1,
+      "pages": [
+        104
+      ],
+      "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
+      "transitionalTableContext": false,
+      "hasDutyLanguageInExcerpt": false,
+      "authoritativeQuotationExcerpt": null,
+      "parseCheck": "2.7.7FG",
+      "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
+    },
+    {
+      "core": "2.8.6CG",
+      "inInventory": true,
+      "inventoryTracking": "identified",
+      "inCumulativePlan": true,
+      "suppliedInBatch": 1,
+      "pages": [
+        106
+      ],
+      "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
+      "transitionalTableContext": false,
+      "hasDutyLanguageInExcerpt": false,
+      "authoritativeQuotationExcerpt": null,
+      "parseCheck": "2.8.6CG",
+      "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
+    },
+    {
+      "core": "8.12.11AG",
+      "inInventory": true,
+      "inventoryTracking": "identified",
+      "inCumulativePlan": true,
+      "suppliedInBatch": 1,
+      "pages": [
+        107
+      ],
+      "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
+      "transitionalTableContext": false,
+      "hasDutyLanguageInExcerpt": false,
+      "authoritativeQuotationExcerpt": null,
+      "parseCheck": "8.12.11AG",
+      "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
+    },
+    {
+      "core": "TP 13.5G",
+      "inInventory": true,
+      "inventoryTracking": "identified",
+      "inCumulativePlan": true,
+      "suppliedInBatch": 1,
+      "pages": [
+        67
+      ],
+      "textStatus": "NEW_TEXT",
+      "transitionalTableContext": false,
+      "hasDutyLanguageInExcerpt": true,
+      "authoritativeQuotationExcerpt": null,
+      "parseCheck": "TP 13.5G",
+      "classificationHint": "TRANSITIONAL_ARRANGEMENT — exception triage; not auto non-obligatory"
+    }
+  ]
+}

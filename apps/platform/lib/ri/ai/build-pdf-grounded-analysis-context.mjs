@@ -267,20 +267,29 @@ export async function buildPdfGroundedAnalysisContext(params) {
   ];
   const batchIndex = Number.isInteger(params.extractionBatchIndex) ? params.extractionBatchIndex : null;
   const maxSectionsPerBatch = params.maxSectionsPerBatch ?? MAX_SECTIONS;
+  const hasContinuationSupply = startSupplied.length > 0;
+  const fullPublicationCoverage = params.fullPublicationCoverage !== false;
   let blocks;
   let extractionBatchPlan = null;
   let activeBatch = null;
 
   if (params.useCaseId === 'UC-RI-005' && Number.isInteger(instrumentStartPage)) {
+    const maxBatches = hasContinuationSupply
+      ? undefined
+      : batchIndex != null
+        ? batchIndex + 1
+        : 1;
     extractionBatchPlan = buildPublicationExtractionBatchPlan(entry.evidenceBlocks, {
       instrumentStartPage,
       maxSectionsPerBatch,
-      startSuppliedCores: startSupplied.length ? startSupplied : undefined,
-      maxBatches: batchIndex != null ? batchIndex + 1 : 1,
+      startSuppliedCores: hasContinuationSupply ? startSupplied : undefined,
+      maxBatches,
+      fullPublicationCoverage,
       targetProvisionCores: params.targetProvisionCores,
     });
-    const idx = batchIndex ?? 0;
-    activeBatch = extractionBatchPlan.batches[idx];
+    const planBatchIndex =
+      hasContinuationSupply && batchIndex != null && batchIndex > 0 ? 0 : batchIndex ?? 0;
+    activeBatch = extractionBatchPlan.batches[planBatchIndex];
     if (!activeBatch) {
       return { ok: false, code: 'extraction_batch_out_of_range' };
     }
@@ -356,6 +365,32 @@ export async function buildPdfGroundedAnalysisContext(params) {
     }
   }
 
+  if (params.useCaseId === 'UC-RI-005' && activeBatch) {
+    const { estimateStructuredOutputTokens, assertExtractionOutputBudget } = await import('./extraction-output-preflight.mjs');
+    const newCount =
+      activeBatch.instrumentProvisionsNewlySupplied?.length ??
+      (described.selection?.instrumentProvisionsSupplied?.length || 0);
+    const est = estimateStructuredOutputTokens({
+      provisionCount: newCount,
+      sectionCount: sourceSections.length,
+    });
+    const maxOut = Number(process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS?.trim() || 8192);
+    const pre = assertExtractionOutputBudget({ estimateTokens: est, maxOutputTokens: maxOut });
+    if (!pre.ok) {
+      return {
+        ok: false,
+        code: pre.code,
+        outputPreflight: pre,
+        grounding: {
+          extractionBatch: { batchIndex: activeBatch.batchIndex, provisionCount: newCount },
+        },
+      };
+    }
+    if (provisionOutcomesSummary) {
+      provisionOutcomesSummary.outputPreflight = pre;
+    }
+  }
+
   return {
     ok: true,
     sourceSections,
@@ -394,6 +429,7 @@ export async function buildPdfGroundedAnalysisContext(params) {
             publicationCoverageComplete: extractionBatchPlan?.publicationCoverageComplete === true,
             analysisScope: extractionBatchPlan?.analysisScope,
             instrumentProvisionsOutstanding: activeBatch.instrumentProvisionsOutstanding,
+            instrumentProvisionsNewlySupplied: activeBatch.instrumentProvisionsNewlySupplied || [],
             estimate: activeBatch.estimate,
             stalled: activeBatch.stalled === true,
           }
