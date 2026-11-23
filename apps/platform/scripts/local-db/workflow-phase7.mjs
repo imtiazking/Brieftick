@@ -37,7 +37,7 @@ async function ensureOps(client, externalKey, { enabled, nextRunAt, interval = 6
 }
 
 export async function runPhase7OperationsVerification() {
-  const { embedded, adminUrl } = await resetAndStartEmbedded({ port: 54330 });
+  const { embedded, adminUrl } = await resetAndStartEmbedded();
   const admin = new pg.Client({
     connectionString: adminUrl,
     connectionTimeoutMillis: 15_000,

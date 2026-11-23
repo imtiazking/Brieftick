@@ -1,6 +1,6 @@
 # FORGENIQ — consolidated readiness report (2026-11-23, remediation tranche)
 
-**Decision: NO-GO for production** (unchanged). Staging now tracks commits **`d46e650`** / **`41d7e52`**; deployment **`dpl_9emxLFVY7Rj9TQgwcaJWjr35DALA`**.
+**Decision: NO-GO for production** (unchanged). Staging build **`02116db`** on **`dpl_74xgsTcvQzCp1xW8PCcd7sdHbJ1h`** (`staging-app.forgeniq.com/health` verified).
 
 ## Evidence index
 
@@ -32,21 +32,22 @@
 
 - **Historical run** `147574c3-229a-42e3-9adb-fd480b905d3b` preserved (`max_tokens` → invalid JSON).
 - **Mitigations shipped:** smaller batches (pilot `maxSectionsPerBatch` 4 for replacement), `extraction-output-preflight.mjs`, scaled output caps, preflight fail-closed before paid call.
-- **Replacement batch 0** (`live-ps22-replace-batch0-2026-11-23`, ≤$0.25): script ready; first attempt aborted on local preflight (92 provisions @ 8 sections). **Revised to 4 sections + token preflight** — **awaiting valid User A session** to execute on staging.
+- **Replacement batch 0** (`live-ps22-replace-batch0-2026-11-23`): **executed once** — run `3872aebf…` **FAILED** (invalid/truncated JSON, **7380** output tokens, **$0.136**). Suffix allowlist **9** entries active. **No automatic paid retry.** Evidence: `PS22-9-BATCH0-REPLACEMENT-2026-11-23.json`, `PS22-9-BATCH0-RECONCILE-2026-11-23.json`.
+- **Preflight retune** (`02116db`): higher token estimate + truncation classification in lab Anthropic path.
 
-**Spend forecast:** ~$0.38 spent; ~$1.62 headroom within $2; replacement capped at $0.25; remaining PS22 batches unlikely to fit full $1.62 without further batch splitting.
+**Spend forecast:** ~**$0.52** pilot spend incl. replacement; ~**$1.48** headroom within $2; next batch smaller (~52 provisions est. after retune) before further authorisation.
 
 ## Priority 3 — SEC-DB-003
 
 | Control | Staging API | Staging DB | Local DB |
 |---|---|---|---|
 | 001 / 002 | **PASS** | — | 5/5 |
-| 003 immutability | N/A (no DELETE route) | **BLOCKED** — `STAGING_DATABASE_URL` not in operator env | **PASS** |
+| 003 immutability | N/A (no DELETE route) | **BLOCKED** — no local `STAGING_DATABASE_URL` / `SUPABASE_ACCESS_TOKEN` | **PASS** |
 
 ## Priority 4 — RI master ×3
 
-- **Stall fix:** `acceptance-ri-master-runner.mjs` — per-step 20m timeout, kill tree, diagnostics.
-- **Status:** run 1/3 **in progress** (`442329`, restarted 11:23 UTC).
+- **Stall fix:** watchdog timeouts, suite cap, PG cleanup at master start, Phase 7 **ephemeral port** (avoids fixed `54330` races).
+- **Status:** run 1/3 **failed** Phase 7 during concurrent deploy cleanup — **re-run in progress** after fix.
 
 ## Priority 5 — Deployment consistency
 
