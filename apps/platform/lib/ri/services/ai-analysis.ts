@@ -616,7 +616,7 @@ export async function runPublicationAnalysisProvider(
       successResult.structured,
       schemaName,
       ctx.allowedSectionIds,
-      { regulatoryAnalysis: regAnalysis, sectionCatalog },
+      { regulatoryAnalysis: regAnalysis ?? undefined, sectionCatalog },
     );
     const structuredOutput: Record<string, unknown> = { ...normalized.structured, ...auditOutput };
     if (ctx.grounding) {
