@@ -1,16 +1,11 @@
 {
-  "capturedAt": "2026-11-23T18:25:00Z",
-  "gitHead": "2009aec5f1d78e5792644033498c30be75526493",
-  "buildId": "2009aec5f1d78e5792644033498c30be75526493",
-  "vercelScope": "imis-projects-8e15dca0",
-  "vercelProjectName": "forgeniq-platform-staging",
-  "deploymentUrl": "https://forgeniq-platform-staging-9wpffx7t5-imis-projects-8e15dca0.vercel.app",
+  "capturedAt": "2026-11-23T18:47:24Z",
+  "gitHead": "eb7d89affdbdd50e1e7b1d35431f9c6120c9c5c7",
+  "deploymentId": "dpl_HK37dkVgy8MoL4ntkhtRhjs45g6h",
   "alias": "https://staging-app.forgeniq.com",
-  "healthVerified": true,
-  "healthBuildOnAlias": "2009aec5f1d78e5792644033498c30be75526493",
-  "regressionsRun": [
-    "acceptance-ri-normalize-obligation-output.mjs PASS",
-    "acceptance-ri-extraction-batch-plan-ps22-gate.mjs PASS"
-  ],
-  "note": "Regulatory guard tranche; not production. Deploy via phase85h after Vercel CLI 66.6.0 upgrade."
+  "regressions": [
+    "acceptance-ri-provision-assessment-completeness PASS",
+    "acceptance-ri-ps26-five-operative-historical PASS",
+    "acceptance-ri-normalize-obligation-output PASS"
+  ]
 }
