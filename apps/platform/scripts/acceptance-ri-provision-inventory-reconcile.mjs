@@ -40,7 +40,20 @@ check('no UNRESOLVED cores after full simulated supply', (rec.unresolvedCores ||
   exceptions: rec.exceptionCores,
   summary: rec.summary,
 });
-check('seven exception triage cores (amendment/TP)', (rec.exceptionCores || []).length >= 6, { n: rec.exceptionCores?.length });
+const PS26_JUSTIFIED_EXCEPTIONS = [
+  '16.1.6R',
+  '2.7.19GG',
+  '2.7.19HG',
+  '2.7.7FG',
+  '2.8.6CG',
+  '8.12.11AG',
+  'TP 13.5G',
+];
+check(
+  'PS26/1 seven justified exception cores preserved',
+  PS26_JUSTIFIED_EXCEPTIONS.every((c) => (rec.exceptionCores || []).includes(c)),
+  { missing: PS26_JUSTIFIED_EXCEPTIONS.filter((c) => !(rec.exceptionCores || []).includes(c)) },
+);
 
 console.log(failed ? 'FAIL acceptance-ri-provision-inventory-reconcile' : 'PASS acceptance-ri-provision-inventory-reconcile');
 process.exit(failed ? 1 : 0);

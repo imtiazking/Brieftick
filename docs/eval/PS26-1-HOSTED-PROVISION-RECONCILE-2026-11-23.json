@@ -1,0 +1,132 @@
+{
+  "generatedAt": "2026-11-23T12:11:58.849Z",
+  "pilotSteps": 9,
+  "cumulativeSupplied": 47,
+  "unresolvedCores": [
+    "16.1.6R",
+    "2.7.19GG",
+    "2.7.19HG",
+    "2.7.7FG",
+    "2.8.6CG",
+    "8.12.11AG",
+    "TP 13.5G"
+  ],
+  "exceptionCores": [
+    "11.1.2AG",
+    "11.1.2R",
+    "2.3.1R",
+    "2.3.2R",
+    "2.5.1R",
+    "2.7.19GG",
+    "2.7.19HG",
+    "2.7.1R",
+    "2.7.7FG",
+    "2.8.6CG",
+    "4.2.1R",
+    "4.2.2G",
+    "4.6.2AR",
+    "4.6.2R",
+    "4.8.2R",
+    "6.7.42G",
+    "6.7.43G",
+    "7.1.4R",
+    "7.6.2BG",
+    "7.6.2CR",
+    "8.12.11AG",
+    "TP 13.1R",
+    "TP 13.2G",
+    "TP 13.3R",
+    "TP 13.4R",
+    "TP 13.5G"
+  ],
+  "exceptionPreserved": false,
+  "provisionInventorySummary": {
+    "exception": 20,
+    "unresolved": 7,
+    "no_obligation_identified": 20
+  },
+  "actualSpendFromPilot": [
+    {
+      "step": "PS26/1-reconcile",
+      "at": "2026-11-23T10:39:02.955Z",
+      "inventory": 47,
+      "plannedBatches": 2,
+      "publicationCoverageCompletePlanned": true,
+      "batchLimitReached": false
+    },
+    {
+      "step": "PS26/1-change",
+      "at": "2026-11-23T10:39:09.592Z",
+      "changeId": "2bd27e90-0f27-40e3-bf6c-6837a62fa64f",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv"
+    },
+    {
+      "step": "PS26/1-resume-marker",
+      "at": "2026-11-23T10:39:14.668Z",
+      "idem": "live-ps26-full-2026-11-22",
+      "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+      "status": "COMPLETED"
+    },
+    {
+      "step": "PS26/1-batch-0",
+      "at": "2026-11-23T10:39:17.626Z",
+      "batchIndex": 0,
+      "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+      "idempotencySuffix": "live-ps26-full-2026-11-22",
+      "executionStatus": "COMPLETED",
+      "latencyMs": 1427,
+      "extractHttp": 200,
+      "cumulativeSupplied": 40,
+      "consolidatedFindings": 0,
+      "publicationCoverageComplete": false,
+      "unresolved": 0
+    },
+    {
+      "step": "PS26/1-batch-1",
+      "at": "2026-11-23T10:40:49.076Z",
+      "batchIndex": 1,
+      "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+      "idempotencySuffix": "live-ps26-full-2026-11-22-batch-2",
+      "executionStatus": "COMPLETED",
+      "latencyMs": 82791,
+      "extractHttp": 202,
+      "cumulativeSupplied": 47,
+      "consolidatedFindings": 0,
+      "publicationCoverageComplete": true,
+      "unresolved": 7
+    },
+    {
+      "step": "PS22/9-reconcile",
+      "at": "2026-11-23T10:40:58.916Z",
+      "inventory": 242,
+      "plannedBatches": 4,
+      "publicationCoverageCompletePlanned": true,
+      "batchLimitReached": false
+    },
+    {
+      "step": "PS22/9-change",
+      "at": "2026-11-23T10:41:03.493Z",
+      "changeId": "4a9526b3-aba4-4d9e-b398-3e57b10467f0",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv"
+    },
+    {
+      "step": "PS22/9-batch-0",
+      "at": "2026-11-23T10:43:22.337Z",
+      "batchIndex": 0,
+      "runId": "147574c3-229a-42e3-9adb-fd480b905d3b",
+      "idempotencySuffix": "live-ps22-full-2026-11-22",
+      "executionStatus": "FAILED",
+      "latencyMs": 128418,
+      "extractHttp": 202,
+      "cumulativeSupplied": 0,
+      "consolidatedFindings": 0,
+      "publicationCoverageComplete": false,
+      "unresolved": 0
+    },
+    {
+      "step": "failed",
+      "at": "2026-11-23T10:43:23.838Z",
+      "message": "PS22/9 batch 0 FAILED — no retry"
+    }
+  ]
+}

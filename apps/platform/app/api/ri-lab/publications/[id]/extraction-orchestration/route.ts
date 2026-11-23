@@ -96,6 +96,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       buildConsolidatedHumanReview,
       extendOrchestrationPlan,
       finalizeProvisionInventoryOutcomes,
+      reconcileOrchestrationCoverage,
     } = await import('@/lib/ri/ai/publication-extraction-orchestrator.mjs');
     const { detectLegalInstrumentStartPage } = await import('@/lib/ri/classification/provision-eligibility.mjs');
     const { loadPublicationPdfEvidenceForAskRi } = await import('@/lib/ri/ask-ri/load-publication-pdf-evidence.mjs');
@@ -154,11 +155,12 @@ export async function POST(request: Request, { params }: RouteParams) {
       const instrumentStartPage = detectLegalInstrumentStartPage(
         blocks as Parameters<typeof detectLegalInstrumentStartPage>[0],
       );
-      if (!ledger._provisionInventory && Number.isInteger(instrumentStartPage)) {
+      if (Number.isInteger(instrumentStartPage)) {
         const { buildInstrumentProvisionInventory } = await import('@/lib/ri/classification/provision-inventory.mjs');
         ledger._provisionInventory = buildInstrumentProvisionInventory(blocks, instrumentStartPage);
       }
       finalizeProvisionInventoryOutcomes(ledger as any);
+      reconcileOrchestrationCoverage(ledger as any);
       const snapshot = snapshotOrchestration(ledger as any) as Record<string, unknown>;
       await persistOrchestration(snapshot);
       return NextResponse.json({
@@ -225,6 +227,7 @@ export async function POST(request: Request, { params }: RouteParams) {
             });
           }
           finalizeProvisionInventoryOutcomes(ledger as any);
+          reconcileOrchestrationCoverage(ledger as any);
         }
       }
       const snapshot = snapshotOrchestration(ledger as any) as Record<string, unknown>;
