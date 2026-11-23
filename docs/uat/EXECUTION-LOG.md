@@ -2,6 +2,19 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — Autonomous tranche (P1–P5 continuation)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | Fix orchestration persistence | `regulatory_publications` has no `metadata`/`organisation_id` | Tenant ledger on `organisation_publications.metadata`; migration `20261122234500` applied staging |
+| — | SEC-DB local acceptance | `withRlsSession` rolled back seeded rows | **5/5** `acceptance-ri-security-db-local-db.mjs` |
+| — | Staging deploys | Live batch API + ledger fix | `dpl_BUpCHLg…`, `dpl_FUKYRL9…` @ `08a5833` |
+| — | Register live pilot suffixes | `uc_ri_005_run_reference_not_authorised` | `RI_LAB_TRIAL_IDEMPOTENCY_SUFFIXES` extended on staging (8 suffixes) |
+| — | Phase 7C.1 golden master | Auto-connect hid demo pubs in Node | Presentation mode in acceptance; `dashboard-parity.mjs` aligned — **PASS** |
+| — | Live pilot attempt 1 | Advance `internal_error` (pre-fix) | 0 batches; evidence JSON fail-closed |
+| — | Live pilot attempt 2 | Post suffix + deploy | Re-run `live-full-publication-extraction-staging.mjs` (in flight) |
+| — | FRC suspension | OP1 session 401 | **Blocked** — `staging-user-sessions.mjs login OP1` |
+
 ## 2026-11-22 — Implementation tranche closure
 
 | Time (UTC) | Decision | Reason | Outcome |
