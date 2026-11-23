@@ -402,12 +402,22 @@ async function verifyDeleteProvenance(adminClient, publicationId) {
   assert(oblDeleteBlocked, 'DELETE obligation RESTRICT when evidence link exists');
 }
 
-async function runCleanCycle(label) {
-  console.log(`\n--- ${label} ---`);
-  const { embedded, adminUrl } = await resetAndStartEmbedded({ port: 54328 });
+console.log('Phase 3A local DB verification');
+console.log('Environment:', JSON.stringify(environmentReport(), null, 2));
+
+try {
+  execSync('npm run sync:reference-catalogue', { cwd: platformRoot, stdio: 'pipe' });
+  pass('reference catalogue SQL generated');
+} catch (e) {
+  failMsg(`sync:reference-catalogue failed: ${e.message}`);
+}
+
+async function runCleanCycleOnPort(label) {
+  const { embedded, adminUrl, port } = await resetAndStartEmbedded();
   const admin = new pg.Client({ connectionString: adminUrl });
   await admin.connect();
   try {
+    console.log(`\n--- ${label} ---`);
     await applyAllMigrations(admin);
     await ensureAppRole(admin);
     await applyReferenceSeed(admin);
@@ -430,22 +440,13 @@ async function runCleanCycle(label) {
     return false;
   } finally {
     await admin.end();
-    await stopEmbedded(embedded);
+    await stopEmbedded(embedded, { port });
+    await new Promise((r) => setTimeout(r, 400));
   }
 }
 
-console.log('Phase 3A local DB verification');
-console.log('Environment:', JSON.stringify(environmentReport(), null, 2));
-
-try {
-  execSync('npm run sync:reference-catalogue', { cwd: platformRoot, stdio: 'pipe' });
-  pass('reference catalogue SQL generated');
-} catch (e) {
-  failMsg(`sync:reference-catalogue failed: ${e.message}`);
-}
-
-const run1Ok = await runCleanCycle('Clean migration run #1');
-const run2Ok = await runCleanCycle('Clean migration run #2');
+const run1Ok = await runCleanCycleOnPort('Clean migration run #1');
+const run2Ok = await runCleanCycleOnPort('Clean migration run #2');
 
 assert(run1Ok, 'Clean migration run #1');
 assert(run2Ok, 'Clean migration run #2');

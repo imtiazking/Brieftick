@@ -37,31 +37,61 @@ export function pgVersionLabel() {
   return 'PostgreSQL 18.x (embedded-postgres Windows bundle)';
 }
 
-export async function resetAndStartEmbedded({ port = 54328 } = {}) {
-  const localDbDir = localDbDirForPort(port);
-  if (existsSync(localDbDir)) {
-    rmSync(localDbDir, { recursive: true, force: true });
+export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
+  let lastError;
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const port = preferredPort ?? 54000 + Math.floor(Math.random() * 900);
+    const localDbDir = localDbDirForPort(port);
+    if (existsSync(localDbDir)) {
+      try {
+        rmSync(localDbDir, { recursive: true, force: true });
+      } catch {
+        /* EBUSY — try another port */
+        continue;
+      }
+    }
+    const password = randomBytes(12).toString('hex');
+    const embedded = new EmbeddedPostgres({
+      databaseDir: localDbDir,
+      port,
+      user: 'postgres',
+      password,
+      persistent: false,
+      initdbFlags: ['--encoding=UTF8', '--locale=C'],
+      onLog: () => {},
+    });
+    try {
+      await embedded.initialise();
+      await embedded.start();
+      embedded.forgeniqPort = port;
+      const adminUrl = `postgresql://postgres:${encodeURIComponent(password)}@127.0.0.1:${port}/postgres`;
+      return { embedded, adminUrl, port, password };
+    } catch (e) {
+      lastError = e;
+      try {
+        await embedded.stop();
+      } catch {
+        /* ignore */
+      }
+      const msg = e instanceof Error ? e.message : String(e);
+      if (!/shared memory block is still in use|EBUSY|address already in use/i.test(msg)) {
+        throw e;
+      }
+      await new Promise((r) => setTimeout(r, 350 * (attempt + 1)));
+    }
   }
-  const password = randomBytes(12).toString('hex');
-  const embedded = new EmbeddedPostgres({
-    databaseDir: localDbDir,
-    port,
-    user: 'postgres',
-    password,
-    persistent: false,
-    // Supabase databases are UTF8; the Windows default (WIN1252) rejects non-ASCII text in migrations.
-    initdbFlags: ['--encoding=UTF8', '--locale=C'],
-    onLog: () => {},
-  });
-  await embedded.initialise();
-  await embedded.start();
-  embedded.forgeniqPort = port;
-  const adminUrl = `postgresql://postgres:${encodeURIComponent(password)}@127.0.0.1:${port}/postgres`;
-  return { embedded, adminUrl, port, password };
+  throw lastError ?? new Error('embedded_postgres_start_failed');
 }
 
 export async function stopEmbedded(embedded, { port } = {}) {
-  if (embedded) await embedded.stop();
+  if (embedded) {
+    try {
+      await embedded.stop();
+    } catch {
+      /* Windows may leave postmaster briefly alive */
+    }
+    await new Promise((r) => setTimeout(r, 200));
+  }
   const resolvedPort = port ?? embedded?.forgeniqPort;
   const localDbDir =
     resolvedPort != null ? localDbDirForPort(resolvedPort) : join(platformRoot, '.local-pg-verify');

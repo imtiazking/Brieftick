@@ -30,6 +30,58 @@ const record = (step, payload) => {
   return payload;
 };
 
+function isTransportError(err) {
+  const msg = String(err?.message || err || '');
+  return /ECONNRESET|ETIMEDOUT|socket hang up|APIRequestContext\.post: read/i.test(msg);
+}
+
+async function resolveRunByIdempotency(page, publicationId, suffix, useCaseId = 'UC-RI-005') {
+  const url = new URL(`${STAGING_ORIGIN}/api/ri-lab/ai-analysis-runs`);
+  url.searchParams.set('publicationId', publicationId);
+  url.searchParams.set('idempotencyKeySuffix', suffix);
+  url.searchParams.set('useCaseId', useCaseId);
+  const res = await page.request.get(url.toString(), { headers: { Accept: 'application/json' } });
+  const body = await res.json().catch(() => ({}));
+  if (body.ok && body.runId) return body;
+  return null;
+}
+
+async function startExtractionRun(page, payload, publicationId) {
+  try {
+    const extract = await page.request.post(`${STAGING_ORIGIN}/api/ri-lab/ai-analysis-runs`, {
+      timeout: 90_000,
+      data: payload,
+    });
+    const exBody = await extract.json().catch(() => ({}));
+    return { extract, exBody, transportError: false };
+  } catch (err) {
+    if (!isTransportError(err)) throw err;
+    const recovered = await resolveRunByIdempotency(
+      page,
+      publicationId,
+      payload.idempotencyKeySuffix,
+      payload.useCaseId || 'UC-RI-005',
+    );
+    record('transport-recovery', {
+      suffix: payload.idempotencyKeySuffix,
+      recovered: Boolean(recovered?.runId),
+      executionStatus: recovered?.executionStatus,
+    });
+    if (!recovered?.runId) throw err;
+    return {
+      extract: { status: () => 202 },
+      exBody: {
+        ok: true,
+        runId: recovered.runId,
+        reused: recovered.executionStatus !== 'RUNNING',
+        dispatched: true,
+        executionStatus: recovered.executionStatus,
+      },
+      transportError: true,
+    };
+  }
+}
+
 async function pollRun(page, runId, timeoutMs = 300_000) {
   const started = Date.now();
   while (Date.now() - started < timeoutMs) {
@@ -110,23 +162,32 @@ async function runPublication(page, identity, pub, spendRemaining) {
     const cumulative = (await orchSnap.json().catch(() => ({}))).orchestration?.cumulativeSuppliedProvisionCores || [];
     const idem = step.idempotencySuffix || `${pub.suffix}-batch-${batchIndex + 1}`;
     const marker = join(process.env.LOCALAPPDATA || '.', 'forgeniq-uat-sessions', `${idem}.started`);
-    if (existsSync(marker)) throw new Error(`no retry: ${idem} already started`);
-    const extractStarted = Date.now();
-    const extract = await page.request.post(`${STAGING_ORIGIN}/api/ri-lab/ai-analysis-runs`, {
-      timeout: 330_000,
-      data: {
-        publicationId: pub.publicationId,
-        useCaseId: 'UC-RI-005',
-        targetEntityId: changeId,
-        idempotencyKeySuffix: idem,
-        extractionBatchIndex: payload.extractionBatchIndex ?? batchIndex,
-        maxSectionsPerBatch: pub.maxSectionsPerBatch,
-        cumulativeSuppliedProvisionCores: cumulative,
-      },
-    });
-    const exBody = await extract.json().catch(() => ({}));
-    if (exBody.ok && exBody.runId && !exBody.reused) {
-      writeFileSync(marker, `${new Date().toISOString()} ${exBody.runId}\n`, { flag: 'wx' });
+    const requestPayload = {
+      publicationId: pub.publicationId,
+      useCaseId: 'UC-RI-005',
+      targetEntityId: changeId,
+      idempotencyKeySuffix: idem,
+      extractionBatchIndex: payload.extractionBatchIndex ?? batchIndex,
+      maxSectionsPerBatch: pub.maxSectionsPerBatch,
+      cumulativeSuppliedProvisionCores: cumulative,
+    };
+    let exBody;
+    let extract;
+    if (existsSync(marker)) {
+      const prior = await resolveRunByIdempotency(page, pub.publicationId, idem);
+      if (!prior?.runId) throw new Error(`no retry: ${idem} marker present but run not found`);
+      exBody = { ok: true, runId: prior.runId, reused: true, executionStatus: prior.executionStatus };
+      extract = { status: () => 200 };
+      record(`${pub.code}-resume-marker`, { idem, runId: prior.runId, status: prior.executionStatus });
+    } else {
+      ({ extract, exBody } = await startExtractionRun(page, requestPayload, pub.publicationId));
+      if (exBody.runId) {
+        try {
+          writeFileSync(marker, `${new Date().toISOString()} ${exBody.runId}\n`, { flag: 'wx' });
+        } catch {
+          /* concurrent write — reconcile via idempotency */
+        }
+      }
     }
     if (!exBody.runId) {
       record(`${pub.code}-extract-fail`, { batchIndex, idem, exBody });

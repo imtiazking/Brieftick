@@ -23,13 +23,13 @@ async function adminJson(page) {
 }
 
 async function loadFrcActive(page) {
-  const { body } = await adminJson(page);
+  const body = await adminJson(page);
   return (body.policies || []).find((p) => p.regulatorKey === 'REG-FRC' && p.status === 'ACTIVE');
 }
 
 async function proposeSuspension() {
   return runAs('OP1', async ({ page, identity }) => {
-    const { body } = await adminJson(page);
+    const body = await adminJson(page);
     if (body.writesEnabled !== true) {
       return record('propose-frc-suspend', {
         actor: identity.userId,

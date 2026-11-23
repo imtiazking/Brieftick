@@ -23,7 +23,7 @@ import {
   assessApplicabilityGate,
   assessObligationExtractionTarget,
 } from '@/lib/ri/ai/obligation-chain-gates.mjs';
-import { isRiAiExecutionEnabled } from '@/lib/ri/ai/ri-ai-execution';
+import { isRiAiExecutionEnabled, shouldDispatchPublicationAnalysisAsync } from '@/lib/ri/ai/ri-ai-execution';
 import { AI_PROVIDER_MODE } from '@/lib/ri/ai/enums';
 import { getUseCaseById } from '@/lib/ri/ai/use-case-catalog';
 import { assertCanRi } from '@/lib/ri/permissions';
@@ -396,6 +396,93 @@ export async function requestPublicationAnalysis(
       return { ok: false, runId: runRow.id, code };
     }
   }
+
+  const providerJob = {
+    params,
+    runId: runRow.id,
+    analysisType,
+    idempotencyKey,
+    runRow: runRow as AnalysisRunRow,
+  };
+
+  if (shouldDispatchPublicationAnalysisAsync(params.useCaseId)) {
+    return {
+      ok: true,
+      runId: runRow.id,
+      executionStatus: AI_EXECUTION_STATUS.RUNNING,
+      dispatched: true,
+      providerJob,
+    };
+  }
+
+  return runPublicationAnalysisProvider(supabase, providerJob);
+}
+
+export type PublicationAnalysisProviderJob = {
+  params: {
+    organisationId: string;
+    userId: string;
+    role: PlatformRole;
+    publicationId: string;
+    publicationVersionId: string;
+    useCaseId: string;
+    fixtureScenario?: string;
+    targetEntityId?: string;
+    idempotencyKeySuffix?: string;
+    extractionBatchIndex?: number;
+    maxSectionsPerBatch?: number;
+    cumulativeSuppliedProvisionCores?: string[];
+    targetProvisionCores?: string[];
+  };
+  runId: string;
+  analysisType: string;
+  idempotencyKey: string;
+  runRow: AnalysisRunRow;
+};
+
+export async function lookupAnalysisRunByIdempotency(
+  supabase: SupabaseClient,
+  organisationId: string,
+  idempotencyKey: string,
+) {
+  const { data, error } = await supabase
+    .from('ai_analysis_runs')
+    .select('id, execution_status, error_code, completed_at')
+    .eq('organisation_id', organisationId)
+    .eq('idempotency_key', idempotencyKey)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+export async function runPublicationAnalysisProvider(
+  supabase: SupabaseClient,
+  job: PublicationAnalysisProviderJob,
+) {
+  const { params, runId, analysisType, idempotencyKey, runRow } = job;
+  const useCase = getUseCaseById(params.useCaseId);
+  if (!useCase) throw new Error('invalid_use_case');
+  const providerMode = resolveAiProviderMode();
+  const provider = getAiProvider(providerMode);
+
+  const ctx = await buildPublicationContext(
+    supabase,
+    params.publicationVersionId,
+    params.publicationId,
+    params.useCaseId,
+    {
+      extractionBatchIndex: params.extractionBatchIndex,
+      maxSectionsPerBatch: params.maxSectionsPerBatch,
+      cumulativeSuppliedProvisionCores: params.cumulativeSuppliedProvisionCores,
+      targetProvisionCores: params.targetProvisionCores,
+    },
+  );
+
+  const finaliser = createAiRunFinaliser(supabase, {
+    organisationId: params.organisationId,
+    runId,
+    actorUserId: params.userId,
+  });
 
   const started = Date.now();
   let providerResult: Awaited<ReturnType<typeof provider.execute>>;
