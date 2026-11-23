@@ -8,7 +8,6 @@ import { pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  ORG_A,
   ORG_B,
   USER_A,
   USER_B,
@@ -18,12 +17,16 @@ import {
   insertTestPublication,
   resetAndStartEmbedded,
   stopEmbedded,
+  withRlsSession,
   withRlsSessionCommit,
   platformRoot,
 } from './harness.mjs';
 import { markAnalysesOutdatedForPublicationVersionSql } from '../../lib/ri/ai/freshness-sql.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
+/** Matches ri_ai_pilot_org_id() — required for UC-RI-002/005 ai_analysis_runs inserts. */
+const PILOT = 'b8f5e3a1-00ad-4000-8000-000000000001';
+const USER_C = 'clerk_user_c_cross_tenant';
 
 async function insertVersion(admin, publicationId, versionNumber) {
   const res = await admin.query(
@@ -92,14 +95,19 @@ export async function runPhase7c6aWorkflowVerification() {
     await markAnalysesOutdatedForPublicationVersionSql(admin, publicationId, v2);
 
     await admin.query(
-      `insert into organisations (id, name, slug) values ($1, 'ORG-A', 'org-a'), ($2, 'ORG-B', 'org-b') on conflict do nothing`,
-      [ORG_A, ORG_B],
+      `insert into organisations (id, name, slug) values ($1, 'AI Pilot', 'ai-pilot'), ($2, 'ORG-B', 'org-b') on conflict do nothing`,
+      [PILOT, ORG_B],
     );
-    for (const [org, user] of [[ORG_A, USER_A], [ORG_B, USER_B]]) {
+    for (const [org, user, role] of [
+      [PILOT, USER_A, 'COMPLIANCE_MANAGER'],
+      [PILOT, USER_B, 'REVIEWER'],
+      [ORG_B, USER_B, 'OWNER'],
+      [ORG_B, USER_C, 'OWNER'],
+    ]) {
       await admin.query(
         `insert into organisation_memberships (organisation_id, clerk_user_id, role, status)
-         values ($1, $2, 'OWNER', 'active') on conflict do nothing`,
-        [org, user],
+         values ($1, $2, $3::public.platform_role, 'active') on conflict do nothing`,
+        [org, user, role],
       );
     }
 
@@ -119,12 +127,12 @@ export async function runPhase7c6aWorkflowVerification() {
 
     let runId;
     await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
-      runId = await insertCompletedChangeExtractionRun(c, ORG_A, USER_A, publicationId, v1, structuredFive);
+      runId = await insertCompletedChangeExtractionRun(c, PILOT, USER_A, publicationId, v1, structuredFive);
     });
 
     const preChange = await admin.query(
       `select count(*)::int as n from regulatory_changes where organisation_id = $1`,
-      [ORG_A],
+      [PILOT],
     );
     if (preChange.rows[0].n === 0) pass('A: no changes before human review');
     else fail('A: changes created before review');
@@ -138,7 +146,7 @@ export async function runPhase7c6aWorkflowVerification() {
     else fail('F: freshness not OUTDATED');
 
     const runV2 = await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
-      return insertCompletedChangeExtractionRun(c, ORG_A, USER_A, publicationId, v2, {
+      return insertCompletedChangeExtractionRun(c, PILOT, USER_A, publicationId, v2, {
         confidence: 88,
         claims: [{ text: 'V2 claim', confidence: 88, sourceSectionIds: ['SRCSEC-1'] }],
         candidates: [{ title: 'V2 change', changeType: 'POLICY' }],
@@ -149,11 +157,11 @@ export async function runPhase7c6aWorkflowVerification() {
     else fail('V2 analysis not CURRENT');
 
     const reviewId = (
-      await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
+      await withRlsSessionCommit(adminUrl, USER_B, async (c) => {
         const rev = await c.query(
           `insert into ai_analysis_reviews (organisation_id, analysis_run_id, decision, reviewer_user_id, accepted_claim_indexes)
            values ($1, $2, 'PARTIALLY_ACCEPTED', $3, '{1}'::int[]) returning id`,
-          [ORG_A, runId, USER_A],
+          [PILOT, runId, USER_B],
         );
         await c.query(
           `update ai_analysis_runs set review_status = 'PARTIALLY_ACCEPTED' where id = $1`,
@@ -161,8 +169,8 @@ export async function runPhase7c6aWorkflowVerification() {
         );
         const changeId = await materialiseChangeClaim(
           c,
-          ORG_A,
-          USER_A,
+          PILOT,
+          USER_B,
           runId,
           rev.rows[0].id,
           1,
@@ -184,16 +192,16 @@ export async function runPhase7c6aWorkflowVerification() {
       l.origin === 'AI_ASSISTED' &&
       l.ai_analysis_run_id === runId &&
       l.ai_analysis_review_id === reviewId.reviewId &&
-      l.created_by_user_id === USER_A
+      l.created_by_user_id === USER_B
     ) {
       pass('B: Change materialised with lineage + human actor');
     } else fail('B: lineage missing');
 
-    await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
+    await withRlsSessionCommit(adminUrl, USER_B, async (c) => {
       await materialiseChangeClaim(
         c,
-        ORG_A,
-        USER_A,
+        PILOT,
+        USER_B,
         runId,
         reviewId.reviewId,
         1,
@@ -204,7 +212,7 @@ export async function runPhase7c6aWorkflowVerification() {
     });
     const dupCount = await admin.query(
       `select count(*)::int as n from regulatory_changes where organisation_id = $1 and ai_analysis_review_id = $2`,
-      [ORG_A, reviewId.reviewId],
+      [PILOT, reviewId.reviewId],
     );
     if (dupCount.rows[0].n === 1) pass('C: duplicate materialisation blocked');
     else fail('C: duplicate changes');
@@ -213,7 +221,7 @@ export async function runPhase7c6aWorkflowVerification() {
       const chg = await c.query(
         `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status)
          values ($1, $2, 'Parent change', 'POLICY', 'DRAFT') returning id`,
-        [ORG_A, publicationId],
+        [PILOT, publicationId],
       );
       const oblRun = await c.query(
         `insert into ai_analysis_runs (
@@ -226,7 +234,7 @@ export async function runPhase7c6aWorkflowVerification() {
           $5::jsonb, $6, now()
         ) returning id`,
         [
-          ORG_A,
+          PILOT,
           publicationId,
           v1,
           chg.rows[0].id,
@@ -241,14 +249,16 @@ export async function runPhase7c6aWorkflowVerification() {
       await c.query(
         `insert into ai_analysis_citations (organisation_id, analysis_run_id, claim_index, claim_text, citation_status)
          values ($1, $2, 0, 'bad', 'INVALID')`,
-        [ORG_A, oblRun.rows[0].id],
+        [PILOT, oblRun.rows[0].id],
       );
-      const rev = await c.query(
+      return { runId: oblRun.rows[0].id, changeId: chg.rows[0].id };
+    });
+    await withRlsSessionCommit(adminUrl, USER_B, async (c) => {
+      await c.query(
         `insert into ai_analysis_reviews (organisation_id, analysis_run_id, decision, reviewer_user_id, accepted_claim_indexes)
          values ($1, $2, 'ACCEPTED', $3, '{0}'::int[]) returning id`,
-        [ORG_A, oblRun.rows[0].id, USER_A],
+        [PILOT, invalidObl.runId, USER_B],
       );
-      return { runId: oblRun.rows[0].id, reviewId: rev.rows[0].id, changeId: chg.rows[0].id };
     });
 
     const oblMat = await admin.query(
@@ -259,7 +269,7 @@ export async function runPhase7c6aWorkflowVerification() {
     else fail('E: obligation materialised with invalid citation');
 
     const queueRun = await withRlsSessionCommit(adminUrl, USER_A, async (c) => {
-      return insertCompletedChangeExtractionRun(c, ORG_A, USER_A, publicationId, v2, {
+      return insertCompletedChangeExtractionRun(c, PILOT, USER_A, publicationId, v2, {
         confidence: 85,
         claims: [{ text: 'queue', confidence: 85, sourceSectionIds: ['SRCSEC-1'] }],
         candidates: [{ title: 'Queue change', changeType: 'POLICY' }],
@@ -268,7 +278,7 @@ export async function runPhase7c6aWorkflowVerification() {
     const queuePending = await admin.query(
       `select count(*)::int as n from ai_analysis_runs
        where organisation_id = $1 and review_status = 'HUMAN_REVIEW_REQUIRED' and freshness = 'CURRENT'`,
-      [ORG_A],
+      [PILOT],
     );
     if (queuePending.rows[0].n >= 1) pass('G: AI review pending in DB for work queue');
     else fail('G: no pending AI review');
@@ -287,11 +297,11 @@ export async function runPhase7c6aWorkflowVerification() {
     if (queueAfter.rows[0].n === 0) pass('H: completed review removed from pending queue state');
     else fail('H: still pending');
 
-    const cross = await withRlsSessionCommit(adminUrl, USER_B, async (c) => {
+    const cross = await withRlsSession(adminUrl, USER_C, async (c) => {
       const res = await c.query(`select id from ai_analysis_runs where id = $1`, [runId]);
       return res.rows.length;
     });
-    if (cross === 0) pass('I: ORG-B cannot read ORG-A AI run');
+    if (cross === 0) pass('I: ORG-B-only user cannot read pilot AI run');
     else fail('I: cross-tenant AI access');
 
     const { resolveAcceptedClaimIndexes } = await import(
