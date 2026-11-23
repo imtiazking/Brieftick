@@ -5,11 +5,15 @@
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { runAs, STAGING_ORIGIN } from './staging-user-sessions.mjs';
+import {
+  assertExtractionOutputBudget,
+  estimateStructuredOutputTokens,
+} from '../../lib/ri/ai/extraction-output-preflight.mjs';
 
 const PUB_ID = '7a73ac4c-d6b4-4411-9f6d-1276053f2831';
 const SUFFIX = 'live-ps22-replace-batch0-2026-11-23';
 const MAX_USD = 0.25;
-const MAX_SECTIONS = 8;
+const MAX_SECTIONS = 4;
 const EVIDENCE = resolve(process.cwd(), '..', '..', 'docs', 'eval', 'PS22-9-BATCH0-REPLACEMENT-2026-11-23.json');
 const FAILED_HISTORICAL = '147574c3-229a-42e3-9adb-fd480b905d3b';
 
@@ -25,8 +29,13 @@ await runAs('A', async ({ page }) => {
   );
   const plan = (await planRes.json().catch(() => ({}))).plan;
   record('plan', { inventory: plan?.instrumentProvisionCount, batches: plan?.batches?.length });
-  const preflight = plan?.batches?.[0]?.instrumentProvisionsNewlySupplied?.length ?? 0;
-  if (preflight > 55) throw new Error(`batch too large for output preflight (${preflight} provisions)`);
+  const provisionCount = plan?.batches?.[0]?.instrumentProvisionsNewlySupplied?.length ?? 0;
+  const preflight = assertExtractionOutputBudget({
+    estimateTokens: estimateStructuredOutputTokens({ provisionCount, sectionCount: MAX_SECTIONS }),
+    maxOutputTokens: 8192,
+  });
+  record('output-preflight', preflight);
+  if (!preflight.ok) throw new Error(`output preflight blocked: ${preflight.code}`);
 
   await page.goto(`${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html#/changes`, { waitUntil: 'domcontentloaded' });
   const panel = page.locator('[data-connected-create-change]');

@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-11-23T11:40:00.000Z",
+  "scope": "FCA PS26/1 live pilot + deterministic provision audit",
+  "benchmarkSource": "PS26-1-PROVISION-SOURCE-VERIFICATION-2026-11-22.json",
+  "provisionAudit": "PS26-1-UNRESOLVED-PROVISION-AUDIT-2026-11-23.json",
+  "metrics": {
+    "bindingRequirementPrecision": null,
+    "bindingRequirementRecall": null,
+    "incorrectClassifications": null,
+    "missedObligations": null,
+    "unsupportedQuotations": null,
+    "evidentialProvisionAccuracy": null,
+    "reviewerCorrectionRate": null,
+    "unresolvedProvisionRate": null,
+    "provisionProcessingCoverageRatio": 1.0
+  },
+  "notes": [
+    "provisionProcessingCoverageRatio is orchestration supply only — not extraction recall.",
+    "Claim-level precision/recall pending reconciliation of AI analysis runs against verified provision quotes.",
+    "Seven batch-1 provisions are supplied; deterministic audit assigns exception triage (amendment/TP) — not non-obligatory clearance."
+  ],
+  "actualSpendUsdFromProviderAudit": 0.383595,
+  "estimatedSpendUsd": 0.383595
+}

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T11:21:17.875Z",
+  "generatedAt": "2026-11-23T11:32:48.828Z",
   "instrumentStartPage": 61,
   "inventoryProvisionCount": 47,
   "plannedCumulativeCount": 47,
@@ -18,7 +18,7 @@
       "textStatus": "NEW_TEXT",
       "transitionalTableContext": false,
       "hasDutyLanguageInExcerpt": false,
-      "authoritativeQuotationExcerpt": null,
+      "authoritativeQuotationExcerpt": "16.1.6 R In the table in",
       "parseCheck": "16.1.6R",
       "classificationHint": "NEW_TEXT — review for operative duty"
     },
@@ -34,7 +34,7 @@
       "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
       "transitionalTableContext": false,
       "hasDutyLanguageInExcerpt": false,
-      "authoritativeQuotationExcerpt": null,
+      "authoritativeQuotationExcerpt": "2.7.19GG. 2.7.7FA G An activity is also not credit broking within",
       "parseCheck": "2.7.19GG",
       "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
     },
@@ -50,7 +50,7 @@
       "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
       "transitionalTableContext": false,
       "hasDutyLanguageInExcerpt": false,
-      "authoritativeQuotationExcerpt": null,
+      "authoritativeQuotationExcerpt": "2.7.19HG and PERG 2.7.19HAG): ... ... ...",
       "parseCheck": "2.7.19HG",
       "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
     },
@@ -66,7 +66,7 @@
       "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
       "transitionalTableContext": false,
       "hasDutyLanguageInExcerpt": false,
-      "authoritativeQuotationExcerpt": null,
+      "authoritativeQuotationExcerpt": "2.7.7F G An activity is not credit broking within",
       "parseCheck": "2.7.7FG",
       "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
     },
@@ -82,7 +82,7 @@
       "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
       "transitionalTableContext": false,
       "hasDutyLanguageInExcerpt": false,
-      "authoritativeQuotationExcerpt": null,
+      "authoritativeQuotationExcerpt": "2.8.6C G The following activities are excluded from the regulated activity of credit broking: ... (6A) ... Activities carried on in relation to regulated deferred payment credit agreements (6B) Activities carried on in relation to a regulated deferred payment credit agreement are excluded from credit broking. ... ... 8 Financial promotion and related activities ... 8.12 Exemptions applying to all controlled activities ... Introductions (article 15) ...",
       "parseCheck": "2.8.6CG",
       "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
     },
@@ -98,7 +98,7 @@
       "textStatus": "AMENDMENT_MARKUP_UNCERTAIN",
       "transitionalTableContext": false,
       "hasDutyLanguageInExcerpt": false,
-      "authoritativeQuotationExcerpt": null,
+      "authoritativeQuotationExcerpt": "8.12.11A G This exemption does not apply to any financial promotion that is made with a view to, or for the purpose of, an introduction to a person who carries on the controlled activities of: (1) credit broking; (2) operating an electronic system in relation to lending; or (2A) providing relevant consumer credit in relation to a regulated deferred payment credit agreement; or (3) agreeing to carry on the above activities. ...",
       "parseCheck": "8.12.11AG",
       "classificationHint": "AMENDMENT_MARKUP_UNCERTAIN — exception triage"
     },
@@ -113,8 +113,8 @@
       ],
       "textStatus": "NEW_TEXT",
       "transitionalTableContext": false,
-      "hasDutyLanguageInExcerpt": true,
-      "authoritativeQuotationExcerpt": null,
+      "hasDutyLanguageInExcerpt": false,
+      "authoritativeQuotationExcerpt": "TP 13.5 G An overview of the senior managers and certification regime and where to find the main FCA Handbook provisions can be found in SYSC 23.3.",
       "parseCheck": "TP 13.5G",
       "classificationHint": "TRANSITIONAL_ARRANGEMENT — exception triage; not auto non-obligatory"
     }
