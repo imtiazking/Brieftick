@@ -39,6 +39,8 @@ try {
 
 console.log(`Deploying HEAD ${head} buildId ${buildId} → ${PROJECT_NAME} (prod target)\n`);
 
+run('assert vercel staging target', 'node', ['./scripts/staging/assert-vercel-staging-target.mjs'], platformRoot);
+
 const out = run(
   'vercel deploy',
   'vercel',

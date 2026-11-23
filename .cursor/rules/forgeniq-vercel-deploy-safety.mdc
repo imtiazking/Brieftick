@@ -1,0 +1,22 @@
+---
+description: FORGENIQ Vercel deploy safety — staging only; never stray production projects
+alwaysApply: true
+---
+
+# FORGENIQ Vercel deploy safety
+
+## Never
+
+- Run bare `vercel deploy` from `apps/platform` without `--project=forgeniq-platform-staging`.
+- Create or link a Vercel project named `platform` (or any name other than `forgeniq-platform-staging` for RI).
+- Deploy feature branches to customer www (`www.forgeniq.com` / root `brieftick` project) without explicit user approval.
+
+## Authorised RI staging
+
+- Project: `forgeniq-platform-staging` (`prj_y9O1A1zGFXe3GvJITnLL9mJUqve7`), team `imis-projects-8e15dca0`.
+- Preferred path: `node apps/platform/scripts/staging/phase85h-deploy-staging-platform.mjs` from `apps/platform`.
+- Run `assert-vercel-staging-target.mjs` before any custom Vercel CLI deploy.
+
+## Reference
+
+`docs/uat/VERCEL-DEPLOY-SAFETY.md`

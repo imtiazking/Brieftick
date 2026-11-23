@@ -2,6 +2,22 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — Stray Vercel project `platform` (12:50 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 12:19 | Git Production deploy | CLI created `platform` + GitHub link; push `0983c8a` | **Error** — root `npm run build` missing; **no** www/staging alias impact |
+| 12:50 | Deploy safety | Prevent recurrence | `VERCEL-DEPLOY-SAFETY.md`, `assert-vercel-staging-target.mjs`, Cursor rule; operator must disconnect Git on stray `platform` |
+
+## 2026-11-23 — PS26 reconcile + FCA benchmark (12:18 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 12:11 | PS26 restore reconcile | Stale `coverageReconciliation` vs outcomes | 47/47 supplied; **0 unresolved** in `provisionOutcomes`; six of seven justified exceptions on staging (16.1.6R still `no_obligation` until deploy `80cb34b`) |
+| 12:18 | FCA accuracy harness | Verified evidence | `FCA-EXTRACTION-ACCURACY-BENCHMARK-2026-11-23.json`: recall **0.33** (1/3 gold binding rules cited), precision **~0.085**, processing coverage **1.0** |
+| — | Staging deploy | `80cb34b` | **Blocked** — Vercel upload ENOENT from `.local-pg-verify` during RI master ×3 (`.vercelignore` fix committed) |
+| — | PS22/9 replacement | User A session | **Blocked** — HTTP 401 mid-triple; no auto-retry |
+
 ## 2026-11-23 — RI master Phase 7C.6A fix
 
 | Time (UTC) | Decision | Reason | Outcome |
@@ -200,6 +216,18 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | Implement RI-UI-007, RI-CLS-009, RI-UI-006/008/001/002 in dev worktree | User autonomous execution instruction Priority 1–2 | Code + migration `20261122121500`; design-lab bundle synced |
 | — | Audit four PS26/1 OPEN obligations | Regulatory accuracy sign-off outstanding | At least 2/4 fail `obligation_statement_exceeds_evidence` — see `docs/eval/PS26-1-OBLIGATION-WORDING-AUDIT.json` |
 | — | Pause before staging migration + paid extractions | Spending gate: deploy + validate before ≤2 paid runs | DB migration complete; app deploy outstanding |
+
+## 2026-11-23 — Remediation tranche (inventory, preflight, master timeouts, deploy)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 11:21 | PS26/1 seven-provision audit | User P1 deterministic validation | `PS26-1-UNRESOLVED-PROVISION-AUDIT-2026-11-23.json` — all seven batch-1 supplied; amendment/TP → exception triage |
+| 11:23 | Fix provision inventory sync | False UNRESOLVED despite cumulative 47/47 | `syncProvisionInventorySuppliedFromLedger`, accumulated findings, EXCEPTION for amendment/TP; `acceptance-ri-provision-inventory-reconcile` **PASS** |
+| 11:23 | UC-RI-005 output preflight | PS22 `max_tokens` JSON truncation | `extraction-output-preflight.mjs` + scaled output caps; acceptance **PASS** |
+| 11:23 | Master runner timeouts | Hung Phase 8B banner | `acceptance-ri-master-runner.mjs` (20m/step kill-tree); triple **restarted** |
+| 11:36 | Commits + staging deploy | P5 deployment consistency | `d46e650`, `41d7e52`, `dpl_9emxLFVY7Rj9TQgwcaJWjr35DALA` **READY** |
+| 11:36 | PS22 replacement batch 0 | Authorised ≤$0.25 | Blocked: session expired + preflight refined (`maxSections=4`); pending login A |
+| — | SEC-DB-003 hosted | Staging DB URL absent | Local **5/5**; staging harness needs `STAGING_DATABASE_URL` |
 
 ## 2026-11-23 — Staging deploy, continuation batch fix, live pilot, SEC-DB API
 
