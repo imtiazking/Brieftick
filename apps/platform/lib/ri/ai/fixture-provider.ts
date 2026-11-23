@@ -13,6 +13,7 @@ export type FixtureProviderRequest = {
   budgetContext?: {
     organisationId?: string;
     idempotencyKey?: string;
+    maxOutputTokens?: number;
   };
   context?: {
     sourceSections?: { sourceSectionId: string; citation?: string; text?: string }[];

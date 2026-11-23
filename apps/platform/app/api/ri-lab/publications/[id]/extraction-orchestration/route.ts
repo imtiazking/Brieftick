@@ -150,12 +150,10 @@ export async function POST(request: Request, { params }: RouteParams) {
       if (!loaded.evidence?.[0]) {
         return NextResponse.json({ ok: false, code: 'pdf_evidence_unavailable' }, { status: 422 });
       }
-      const blocks = loaded.evidence[0].evidenceBlocks as Array<{
-        pageNumber?: number;
-        extractedText?: string;
-        documentEvidenceId?: string;
-      }>;
-      const instrumentStartPage = detectLegalInstrumentStartPage(blocks);
+      const blocks = loaded.evidence[0].evidenceBlocks;
+      const instrumentStartPage = detectLegalInstrumentStartPage(
+        blocks as Parameters<typeof detectLegalInstrumentStartPage>[0],
+      );
       if (!ledger._provisionInventory && Number.isInteger(instrumentStartPage)) {
         const { buildInstrumentProvisionInventory } = await import('@/lib/ri/classification/provision-inventory.mjs');
         ledger._provisionInventory = buildInstrumentProvisionInventory(blocks, instrumentStartPage);
