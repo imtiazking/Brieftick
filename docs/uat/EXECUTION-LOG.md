@@ -317,7 +317,7 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | 18:12 | Regression tests | Positive + negative | `acceptance-ri-normalize-obligation-output.mjs` **PASS** (4 cases) |
 | 18:18 | FCA operative trace | P2: 4 cores + 7.20.1R(2) | `FCA-PS26-OPERATIVE-TRACE-2026-11-23.json` — legal operative **5/5**; legacy run ID **1/5**; extract **1/5** |
 | 18:20 | Vercel CLI | P3 supported version | Upgraded to **66.6.0** |
-| 18:24 | Staging deploy | `phase85h-deploy-staging-platform.mjs` | First attempt **build fail** (TS null); fixed `2009aec`; second attempt **Not authorized** — operator re-auth may be required |
+| 18:24 | Staging deploy | `phase85h-deploy-staging-platform.mjs` | **Ready** on `staging-app.forgeniq.com`; build **`2009aec`**; evidence `STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-23.json` |
 | — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
 | — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
 
