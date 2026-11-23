@@ -101,8 +101,9 @@ await runAs('A', async ({ page }) => {
       candidates: out.candidates || [],
       claims: out.claims || [],
     });
+  const assessmentRows = out._forgeniqProvisionAssessments || completeness.assessments || [];
   const structuredFive = TARGET_CORES.filter((core) => {
-    const a = (completeness.assessments || []).find((x) => x.provisionCore === core);
+    const a = assessmentRows.find((x) => x.provisionCore === core);
     return a?.outcome === 'assessed_structured';
   });
   const gate = {

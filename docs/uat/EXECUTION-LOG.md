@@ -333,6 +333,17 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | 18:45 | Live test prep | Not authorised | `PS26-LIVE-FIVE-OPERATIVE-COST-2026-11-23.json` ~**$0.042** cap **$0.20** |
 | 18:45 | FCA benchmark revised | Separate metrics | `FCA-PS26-ACCURACY-BENCHMARK-REVISED-2026-11-23.json` |
 
+## 2026-11-23 — Approved $2.35 pilot execution
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 19:01 | Spend reconcile | User approved $2.35 ceiling | Pre-flight **$0.519** → post-pilot **$0.761** (`PILOT-SPEND-RECONCILE-2026-11-23.json`) |
+| 19:01–19:02 | PS26 five-operative v1/v2 | `max_tokens` 2048/2277 | **FAILED** `038f5ae0`, `d76b60f2` (~$0.09) preserved — no retry same suffix |
+| 19:02 | Output token scaling | Provision-scoped batches | `scaleMaxOutputTokensForBatch` headroom fix |
+| 19:17 | PS26 five-operative **v3** | Authoritative accuracy test | **COMPLETED** `9b3bf495` **$0.060** — **5/5** `assessed_structured`, completeness **PASS** |
+| 19:23 | PS22 batch 0 corrected | FCA gate passed | **COMPLETED** `063a2e9f` **$0.091**, **14/14** provisions, **0** omissions; suffix `live-ps22-corrected-batch0-2026-11-23` |
+| 19:24 | PS22 batches 1–16 | Budget / per-batch gate | **Paused** — **$1.589** remaining; evidence `PILOT-EXECUTION-REPORT-2026-11-23.json` |
+
 ## 2026-11-22 — Cursor autonomous environment + UAT resume
 
 | Time (UTC) | Decision | Reason | Outcome |
