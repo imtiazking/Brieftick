@@ -1,11 +1,11 @@
 {
-  "capturedAt": "2026-11-23T00:46:11.935Z",
-  "gitHead": "cf44bbbc4af2d53b295f8ae65f5f4decae32f3e0",
-  "buildId": "cf44bbbc4af2d53b295f8ae65f5f4decae32f3e0",
+  "capturedAt": "2026-11-23T00:51:14.629Z",
+  "gitHead": "2707ac6e6df29b07db3ddde265e24167ab0f1914",
+  "buildId": "2707ac6e6df29b07db3ddde265e24167ab0f1914",
   "vercelScope": "imis-projects-8e15dca0",
   "vercelProjectName": "forgeniq-platform-staging",
-  "deploymentId": "dpl_55ZrkD7WdZ8b9Pbo9FVMxmSBpXAG",
-  "deploymentUrl": "https://forgeniq-platform-staging-mwd8xhzxa-imis-projects-8e15dca0.vercel.app",
+  "deploymentId": "dpl_Hrtx7ABaxJBZBBxt9mBYnEZtVYuc",
+  "deploymentUrl": "https://forgeniq-platform-staging-lwmgb3lfr-imis-projects-8e15dca0.vercel.app",
   "alias": "https://staging-app.forgeniq.com",
   "note": "Authorised P3 provision-engine staging release; not production tenant."
 }

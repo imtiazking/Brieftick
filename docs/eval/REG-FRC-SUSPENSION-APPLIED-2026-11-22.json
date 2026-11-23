@@ -1,0 +1,32 @@
+{
+  "log": [
+    {
+      "step": "propose-frc-suspend",
+      "at": "2026-11-23T00:46:56.169Z",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "http": 200,
+      "ok": true,
+      "policyId": "fed40928-5b67-4592-aa9a-a0e7f416d32e",
+      "priorVersion": 1
+    },
+    {
+      "step": "activate-frc-suspend",
+      "at": "2026-11-23T00:47:06.639Z",
+      "actor": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "http": 200,
+      "ok": true,
+      "activeVersion": 2,
+      "allConversionDisabled": true
+    },
+    {
+      "step": "readiness-after-suspend",
+      "at": "2026-11-23T00:47:15.758Z",
+      "classificationAdminWrites": true
+    },
+    {
+      "step": "complete",
+      "at": "2026-11-23T00:47:16.605Z",
+      "ok": true
+    }
+  ]
+}

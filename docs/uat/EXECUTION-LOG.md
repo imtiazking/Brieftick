@@ -2,6 +2,18 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — Production readiness programme (continued)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | Async UC-RI-005 dispatch | ECONNRESET on long POST | `202` + `after()` + idempotency GET; commit `2707ac6`; staging `dpl_Hrtx7ABax…` |
+| — | Phase 3A harness | Windows shared memory | Random ports + retry — **PASS** ×2 |
+| — | FRC suspension | P3 maker-checker | REG-FRC v**2** active, all conversion disabled — evidence JSON |
+| — | Admin writes | Policy hygiene | Re-enabled for suspend; env restored **false** |
+| — | Regulator matrix | P4/P5 | `REGULATOR-READINESS-MATRIX-2026-11-23.json` (36/41) |
+| — | Live pilot | Async + recovery | Re-run in flight; acceptance criteria doc added |
+| — | Production decision | Blockers remain | `PRODUCTION-READINESS-REPORT-2026-11-23.md` — **NO-GO** |
+
 ## 2026-11-23 — Autonomous tranche (P1–P5 continuation)
 
 | Time (UTC) | Decision | Reason | Outcome |

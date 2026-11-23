@@ -1,0 +1,514 @@
+{
+  "capturedAt": "2026-11-23T00:46:33.696Z",
+  "totals": {
+    "regulators": 36,
+    "sources": 41
+  },
+  "priorityRegulators": [
+    {
+      "regulatorId": "REG-FCA",
+      "policyDraft": false,
+      "verified": true,
+      "approved": true,
+      "activated": true,
+      "testedConversion": true
+    },
+    {
+      "regulatorId": "REG-PRA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false,
+      "testedConversion": false,
+      "notes": "Authoritative research draft only; fail-closed on staging"
+    },
+    {
+      "regulatorId": "REG-ICO",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false,
+      "testedConversion": false,
+      "notes": "Authoritative research draft only; fail-closed on staging"
+    },
+    {
+      "regulatorId": "REG-FRC",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false,
+      "testedConversion": false,
+      "notes": "Unverified conversion policy — suspension pending OP1/OP2"
+    },
+    {
+      "regulatorId": "REG-PSR-UK",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false,
+      "testedConversion": false,
+      "notes": "Authoritative research draft only; fail-closed on staging"
+    }
+  ],
+  "regulators": [
+    {
+      "regulatorId": "REG-FCA",
+      "policyDraft": false,
+      "verified": true,
+      "approved": true,
+      "activated": true
+    },
+    {
+      "regulatorId": "REG-PRA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-BOE",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-HMT",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-TPR",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-UK-LEG",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-BIS",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-OFSI",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-ICO",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-FRC",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-PSR-UK",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-CMA-UK",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-SAMA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-CMA-SA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-IA-SA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-TADAWUL",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-SDAIA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-ZATCA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-MOCI-SA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-NCA-SA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-SA-LEG",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-DFSA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-CBUAE",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-VARA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-SCA-UAE",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-FSRA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-UAE-FIU",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-SEC",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-CFTC",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-FINRA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-FRB",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-FDIC",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-OCC",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-CFPB",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-OFAC",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    },
+    {
+      "regulatorId": "REG-NFA",
+      "policyDraft": false,
+      "verified": false,
+      "approved": false,
+      "activated": false
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "REG-FCA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-PRA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-HMT",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-UK-LEG",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-TPR",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-BIS",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-OFSI",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-ICO",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-FRC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-PSR-UK",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-CMA-UK",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-SAMA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-CMA-SA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-IA-SA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-TADAWUL",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-SDAIA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-ZATCA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-MOCI-SA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-NCA-SA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-SA-LEG",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-DFSA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-CBUAE",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-VARA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-VARA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-SCA-UAE",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-FSRA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-UAE-FIU",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-SEC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-SEC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-SEC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-CFTC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-CFTC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-FINRA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-FRB",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-FDIC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-OCC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-CFPB",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-CFPB",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-OFAC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-OFAC",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    },
+    {
+      "sourceId": "REG-NFA",
+      "catalogueSeeded": true,
+      "connectorEnabled": false
+    }
+  ]
+}
