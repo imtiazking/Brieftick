@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-23T17:23:00Z",
+  "updatedAt": "2026-11-23T21:50:00Z",
   "status": "BLOCKED_HOSTED_ROLE_PROOF",
   "harnessReady": true,
   "runAfterCredentialInjection": "node apps/platform/scripts/uat/acceptance-ri-security-db-staging.mjs",
@@ -21,7 +21,8 @@
     "mustNotUse": [
       "Service role SQL via dashboard as sole evidence",
       "Committing connection strings",
-      "Elevated grants without approval"
+      "Elevated grants without approval",
+      "Substituting privileged-role or service-role tests for restricted-role validation (SEC-DB-003 requires SET ROLE as REVIEWER/COMPLIANCE_MANAGER via harness)"
     ]
   },
   "investigatedChannels": [

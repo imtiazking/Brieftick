@@ -116,6 +116,7 @@ export function buildPublicationExtractionBatchPlan(allBlocks, options) {
     const provisionCap = maxProvisionsWithinOutputPreflight({
       sectionCount: maxSections,
       maxOutputTokens: maxStructuredOutputTokens,
+      maxProvisionsPerBatch: options.maxProvisionsPerBatchOverride,
     });
     let targetCores = outstanding.slice(0, Math.max(1, provisionCap));
     if (

@@ -5,7 +5,9 @@
 const CHARS_PER_OUTPUT_TOKEN = 4;
 
 /** Empirical cap from live PS22 pilot — 22-provision batch truncated at 8192 output (run 9fd62178). */
-export function resolveMaxProvisionsPerBatch() {
+/** @param {number} [override] deterministic plan replay (e.g. legacy 17-batch vs capped 18-batch). */
+export function resolveMaxProvisionsPerBatch(override) {
+  if (Number.isFinite(override) && override > 0) return Math.floor(override);
   const n = Number(process.env.RI_LAB_MAX_PROVISIONS_PER_BATCH);
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : 16;
 }
@@ -57,8 +59,9 @@ export function maxProvisionsWithinOutputPreflight({
   sectionCount = 0,
   maxOutputTokens = 8192,
   safetyRatio = 0.82,
+  maxProvisionsPerBatch,
 } = {}) {
-  const hardCap = resolveMaxProvisionsPerBatch();
+  const hardCap = resolveMaxProvisionsPerBatch(maxProvisionsPerBatch);
   let hi = 512;
   let best = 0;
   for (let n = 1; n <= hi; n += 1) {

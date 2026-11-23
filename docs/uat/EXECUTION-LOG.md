@@ -321,6 +321,15 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
 | — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
 
+## 2026-11-23 — PS22 plan reconcile + FCA outstanding + Vercel usage (local)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 21:46 | PS22 17→18 reconcile | User P1: preserve 65, reallocate batch 5 | `PS22-9-PLAN-RECONCILE-2026-11-23.json` **PASS** — 177 remaining, **14** continuation batches, preflight **14/14**, no duplicate spend overlap |
+| 21:46 | FCA 29 outstanding | Separate AI vs completeness vs human | `FCA-PS26-OUTSTANDING-RECONCILE-2026-11-23.json` — **0/29** live structured AI recall among outstanding |
+| 21:50 | Vercel allowance | Usage API unavailable on Hobby CLI/MCP | `VERCEL-USAGE-RESET-2026-11-23.json` — **rolling 30d**; **no exact recovery date**; last CPU snapshot ~53m remain (prior audit) |
+| — | SEC-DB-003 | No `STAGING_DATABASE_URL` | Restricted-role hosted proof still blocked; no privileged substitution |
+
 ## 2026-11-23 — Consolidated tranche (PS22 batch-5 cap, deploy 2ee3372)
 
 | Time (UTC) | Decision | Reason | Outcome |

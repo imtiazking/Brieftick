@@ -1,0 +1,1077 @@
+{
+  "generatedAt": "2026-11-23T21:46:44.787Z",
+  "policy": "Do not report deterministic assessment coverage as unattended AI recall",
+  "inventory": {
+    "total": 47,
+    "bindingR": 28,
+    "guidanceG": 19,
+    "bindingWithAuthoritativeCitation": 28,
+    "guidanceNegativeTestsReady": 19
+  },
+  "historicalRunCount": 2,
+  "latestCompletedRun": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+  "outstandingCount": 29,
+  "bucketSummary": {
+    "outstanding_unresolved": [
+      {
+        "core": "16.1.6R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "2.3.1R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "2.3.2R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "2.5.1R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "2.7.19GG",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "2.7.19HG",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "2.7.1R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "2.7.7FG",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "2.8.6CG",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2.1R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2.2G",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.10G",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.11R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.12G",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.1R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.2G",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.4R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.6R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.7R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.8R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.2A.9G",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.6.2AR",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "4.6.2R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "8.12.11AG",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "TP 13.1R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "TP 13.2G",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "TP 13.3R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "TP 13.4R",
+        "legalClassificationIndependent": "binding_requirement",
+        "operativeBindingRequirement": true,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      },
+      {
+        "core": "TP 13.5G",
+        "legalClassificationIndependent": "guidance",
+        "operativeBindingRequirement": false,
+        "humanInstrumentVerified": true,
+        "inBenchmarkOutstandingList": true,
+        "bucket": "outstanding_unresolved",
+        "liveAiStructuredRunIds": [],
+        "mustNotReportAsAiRecall": true
+      }
+    ]
+  },
+  "provisions": [
+    {
+      "core": "11.1.2AG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "not_attempted_in_live_ai_scope",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "11.1.2R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "16.1.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "16.1.2G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "not_attempted_in_live_ai_scope",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "16.1.3G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "not_attempted_in_live_ai_scope",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "16.1.4R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "16.1.5R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "16.1.6R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.3.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.3.2R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.5.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.7.19GG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.7.19HG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.7.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.7.7FG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.8.6CG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2.2G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.10G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.11R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.12G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.2G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.3R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.4R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.5R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.6R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.7R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.8R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.9G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.6.2AR",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.6.2R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.8.2R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "6.7.42G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "not_attempted_in_live_ai_scope",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "6.7.43G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "not_attempted_in_live_ai_scope",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "7.1.4R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "7.20.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "7.20.2G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "not_attempted_in_live_ai_scope",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "7.20.3R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "7.6.2BG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "not_attempted_in_live_ai_scope",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "7.6.2CR",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": false,
+      "bucket": "human_instrument_verified_operative",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "8.12.11AG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.2G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.3R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.4R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.5G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    }
+  ],
+  "outstandingDetail": [
+    {
+      "core": "16.1.6R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.3.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.3.2R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.5.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.7.19GG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.7.19HG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.7.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.7.7FG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "2.8.6CG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2.2G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.10G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.11R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.12G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.2G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.4R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.6R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.7R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.8R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.2A.9G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.6.2AR",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "4.6.2R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "8.12.11AG",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.1R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.2G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.3R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.4R",
+      "legalClassificationIndependent": "binding_requirement",
+      "operativeBindingRequirement": true,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    },
+    {
+      "core": "TP 13.5G",
+      "legalClassificationIndependent": "guidance",
+      "operativeBindingRequirement": false,
+      "humanInstrumentVerified": true,
+      "inBenchmarkOutstandingList": true,
+      "bucket": "outstanding_unresolved",
+      "liveAiStructuredRunIds": [],
+      "mustNotReportAsAiRecall": true
+    }
+  ],
+  "metricsHonest": {
+    "liveAiStructuredRecallAmongOutstanding": 0,
+    "notCountableAsLiveAiRecallAmongOutstanding": 29,
+    "denominatorOutstanding": 29
+  }
+}

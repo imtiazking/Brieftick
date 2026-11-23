@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-11-23T21:50:00.000Z",
+  "team": "imis-projects-8e15dca0",
+  "plan": "hobby",
+  "authenticatedCliUser": "imtiazahmed-8513",
+  "fluidActiveCpu": {
+    "allowancePerRollingWindow": "4 CPU-hours",
+    "windowType": "rolling_30_day",
+    "windowSource": "Vercel Hobby docs + staff confirmation (community); not calendar month",
+    "currentUsageMeasured": null,
+    "remainingAllowanceMeasured": null,
+    "recoveryDateExact": null,
+    "recoveryModel": "Usage older than 30 days drops out of the rolling window continuously; no single calendar reset date without Usage API/dashboard series",
+    "lastDashboardSnapshot": {
+      "capturedIn": "docs/eval/VERCEL-RESOURCE-AUDIT-2026-11-23.md",
+      "fluidActiveCpuUsed": "~3h07m",
+      "remainingApprox": "~53m",
+      "invocationsApprox": "~333k",
+      "note": "Point-in-time dashboard read earlier 2026-11-23; not refreshed this session"
+    },
+    "apiAttemptsThisSession": [
+      {
+        "tool": "vercel billing usage --scope imis-projects-8e15dca0",
+        "result": "Billing cost data unavailable for date range (Hobby / no subscription billing record)"
+      },
+      {
+        "tool": "vercel api /v9/usage/...",
+        "result": "404"
+      },
+      {
+        "tool": "Vercel MCP get_team",
+        "result": "403 forbidden"
+      }
+    ]
+  },
+  "deploymentStorage": {
+    "hobbyLimitGb": 10,
+    "lastDashboardSnapshotGb": "~8.32",
+    "deploymentListSampleToday": "Multiple Ready/Error production-target deploys within last 2h on forgeniq-platform-staging",
+    "inventoryEvidence": "docs/eval/STAGING-DEPLOYMENT-CLEANUP-INVENTORY-2026-11-23.json",
+    "deletionsPerformed": false
+  },
+  "hostedUatCapacity": {
+    "verdict": "tight",
+    "basis": "Prior snapshot ~53m CPU headroom; same-day deploy wave + long AI routes; no fresh Usage tab read",
+    "recommendation": "Prefer local/deterministic gates; at most one hosted UAT cycle per consolidated deploy; no paid PS22 until plan reconcile accepted and allowance comfortable"
+  },
+  "historicalCpuExitWindow": {
+    "exactDatesPerInvocation": null,
+    "qualitativeRule": "Each heavy deploy/extraction timestamp T drops out of the 30-day sum after T+30d"
+  }
+}
