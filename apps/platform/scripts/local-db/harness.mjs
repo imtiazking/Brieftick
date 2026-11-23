@@ -14,11 +14,65 @@ import { spawnSync } from 'node:child_process';
 const __dir = dirname(fileURLToPath(import.meta.url));
 export const platformRoot = join(__dir, '..', '..');
 const migrationsDir = join(platformRoot, 'supabase', 'migrations');
-const OWNER_FILE = '.forgeniq-embedded-owner.json';
+const LEGACY_OWNER_FILE = '.forgeniq-embedded-owner.json';
+const REGISTRY_DIRNAME = '_registry';
 const MASTER_SUITE_LOCK = 'master-triple.lock.json';
 
 export function localPgVerifyBase() {
   return join(platformRoot, '.local-pg-verify');
+}
+
+function embeddedRegistryDir() {
+  return join(localPgVerifyBase(), REGISTRY_DIRNAME);
+}
+
+function registryEntryPath(sessionId) {
+  return join(embeddedRegistryDir(), `${sessionId}.json`);
+}
+
+export function writeEmbeddedRegistry(meta) {
+  mkdirSync(embeddedRegistryDir(), { recursive: true });
+  const record = {
+    ...meta,
+    pid: process.pid,
+    startedAt: new Date().toISOString(),
+  };
+  writeFileSync(registryEntryPath(meta.sessionId), JSON.stringify(record), 'utf8');
+  return record;
+}
+
+function readRegistryEntry(sessionId) {
+  const path = registryEntryPath(sessionId);
+  if (!existsSync(path)) return null;
+  try {
+    return JSON.parse(readFileSync(path, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function findRegistryByDataDir(dataDir) {
+  const regDir = embeddedRegistryDir();
+  if (!existsSync(regDir)) return null;
+  for (const name of readdirSync(regDir)) {
+    if (!name.endsWith('.json')) continue;
+    try {
+      const entry = JSON.parse(readFileSync(join(regDir, name), 'utf8'));
+      if (entry?.dataDir === dataDir) return entry;
+    } catch {
+      /* */
+    }
+  }
+  return null;
+}
+
+function removeEmbeddedRegistry(sessionId) {
+  if (!sessionId) return;
+  try {
+    rmSync(registryEntryPath(sessionId), { force: true });
+  } catch {
+    /* */
+  }
 }
 
 /** Legacy port-only dirs (pre-session isolation). */
@@ -46,8 +100,8 @@ export function isEmbeddedOwnerProcessAlive(pid) {
   }
 }
 
-function readEmbeddedOwner(dataDir) {
-  const path = join(dataDir, OWNER_FILE);
+function readLegacyEmbeddedOwner(dataDir) {
+  const path = join(dataDir, LEGACY_OWNER_FILE);
   if (!existsSync(path)) return null;
   try {
     return JSON.parse(readFileSync(path, 'utf8'));
@@ -56,21 +110,13 @@ function readEmbeddedOwner(dataDir) {
   }
 }
 
-function writeEmbeddedOwner(dataDir, meta) {
-  writeFileSync(
-    join(dataDir, OWNER_FILE),
-    JSON.stringify({
-      ...meta,
-      pid: process.pid,
-      startedAt: new Date().toISOString(),
-    }),
-    'utf8',
-  );
+export function resolveEmbeddedDataDirOwner(dataDir) {
+  return findRegistryByDataDir(dataDir) || readLegacyEmbeddedOwner(dataDir);
 }
 
 function canRemoveEmbeddedDataDir(dataDir) {
   if (!existsSync(dataDir)) return false;
-  const owner = readEmbeddedOwner(dataDir);
+  const owner = resolveEmbeddedDataDirOwner(dataDir);
   if (!owner?.pid) return true;
   if (owner.pid === process.pid) return true;
   return !isEmbeddedOwnerProcessAlive(owner.pid);
@@ -81,11 +127,43 @@ function canRemoveEmbeddedDataDir(dataDir) {
  */
 export function cleanupOrphanEmbeddedPgDirs() {
   const base = localPgVerifyBase();
-  if (!existsSync(base)) return { removed: 0, skippedLive: 0 };
+  if (!existsSync(base)) return { removed: 0, skippedLive: 0, registryRemoved: 0 };
   let removed = 0;
   let skippedLive = 0;
+  let registryRemoved = 0;
+  const regDir = embeddedRegistryDir();
+  if (existsSync(regDir)) {
+    for (const name of readdirSync(regDir)) {
+      if (!name.endsWith('.json')) continue;
+      let entry;
+      try {
+        entry = JSON.parse(readFileSync(join(regDir, name), 'utf8'));
+      } catch {
+        continue;
+      }
+      const live = entry?.pid && isEmbeddedOwnerProcessAlive(entry.pid) && entry.pid !== process.pid;
+      if (live) {
+        skippedLive += 1;
+        continue;
+      }
+      if (entry?.dataDir && existsSync(entry.dataDir)) {
+        try {
+          rmSync(entry.dataDir, { recursive: true, force: true });
+          removed += 1;
+        } catch {
+          skippedLive += 1;
+        }
+      }
+      try {
+        rmSync(join(regDir, name), { force: true });
+        registryRemoved += 1;
+      } catch {
+        /* */
+      }
+    }
+  }
   for (const ent of readdirSync(base, { withFileTypes: true })) {
-    if (!ent.isDirectory()) continue;
+    if (!ent.isDirectory() || ent.name === REGISTRY_DIRNAME) continue;
     const dir = join(base, ent.name);
     if (!canRemoveEmbeddedDataDir(dir)) {
       skippedLive += 1;
@@ -98,7 +176,7 @@ export function cleanupOrphanEmbeddedPgDirs() {
       skippedLive += 1;
     }
   }
-  return { removed, skippedLive };
+  return { removed, skippedLive, registryRemoved };
 }
 
 export function acquireMasterTripleLock() {
@@ -167,6 +245,7 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
       continue;
     }
     const sessionId = randomBytes(8).toString('hex');
+    const runId = `${sessionId}-${process.pid}-${Date.now()}`;
     const localDbDir =
       existsSync(legacyDir) && canRemoveEmbeddedDataDir(legacyDir)
         ? legacyDir
@@ -195,16 +274,19 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
     try {
       await embedded.initialise();
       await embedded.start();
-      writeEmbeddedOwner(localDbDir, {
-        port,
+      writeEmbeddedRegistry({
+        runId,
         sessionId,
+        port,
+        dataDir: localDbDir,
         label: process.env.FORGENIQ_RI_MASTER_STEP || process.env.FORGENIQ_EMBEDDED_PG_LABEL || 'embedded-pg',
       });
       embedded.forgeniqPort = port;
       embedded.forgeniqDataDir = localDbDir;
       embedded.forgeniqSessionId = sessionId;
+      embedded.forgeniqRunId = runId;
       const adminUrl = `postgresql://postgres:${encodeURIComponent(password)}@127.0.0.1:${port}/postgres`;
-      return { embedded, adminUrl, port, password };
+      return { embedded, adminUrl, port, password, sessionId, runId };
     } catch (e) {
       lastError = e;
       try {
@@ -232,11 +314,16 @@ export async function stopEmbedded(embedded, { port } = {}) {
     await new Promise((r) => setTimeout(r, 200));
   }
   const localDbDir = embedded?.forgeniqDataDir ?? (port != null ? localDbDirForPort(port) : null);
-  if (!localDbDir || !existsSync(localDbDir)) return;
+  const sessionId = embedded?.forgeniqSessionId;
+  if (!localDbDir || !existsSync(localDbDir)) {
+    removeEmbeddedRegistry(sessionId);
+    return;
+  }
   if (!canRemoveEmbeddedDataDir(localDbDir)) return;
   for (let attempt = 0; attempt < 8; attempt += 1) {
     try {
       rmSync(localDbDir, { recursive: true, force: true });
+      removeEmbeddedRegistry(sessionId);
       return;
     } catch (e) {
       if (e?.code !== 'EBUSY' && e?.code !== 'EPERM') throw e;

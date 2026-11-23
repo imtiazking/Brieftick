@@ -14,5 +14,11 @@
     "loadPlatformEnv .env.local",
     "Supabase MCP list_projects (forgeniq-ri-staging lhgzdicffkhaaykzthep) — MCP execute_sql uses service role, not application JWT roles"
   ],
-  "recommendation": "Run acceptance-ri-security-db-staging.mjs via operator CI secret injection or add scoped read-only CI env pull; do not use SQL Editor alone as role proof."
+  "recommendation": "Run acceptance-ri-security-db-staging.mjs via operator CI secret injection or add scoped read-only CI env pull; do not use SQL Editor alone as role proof.",
+  "minimumAccessRequired": {
+    "preferred": "STAGING_DATABASE_URL pooler connection for database lhgzdicffkhaaykzthep (direct or transaction mode) scoped to forgeniq_app JWT simulation via harness — same pattern as local acceptance",
+    "alternative": "SUPABASE_ACCESS_TOKEN with Management API only satisfies schema verification scripts; it cannot prove application-role RLS for SEC-DB-003",
+    "mustNotUse": "Supabase SQL Editor as postgres/service role for negative tests",
+    "operatorArtifacts": "Vercel production env on forgeniq-platform-staging already defines STAGING_DATABASE_URL (not decryptable to local CLI); inject into CI or ephemeral vercel env run wrapper without logging value"
+  }
 }
