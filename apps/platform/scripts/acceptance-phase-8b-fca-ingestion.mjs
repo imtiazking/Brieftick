@@ -14,6 +14,9 @@ import {
 import { runSourceIngestion } from '../lib/ri/ingestion/ingest-engine.mjs';
 import { retrieveNormalisedDocuments } from '../lib/ri/ingestion/adapter.mjs';
 import { INGESTION_DATA_ORIGIN } from '../lib/ri/ingestion/types.mjs';
+import { buildEvidenceCapture } from '../../../integrations/regulatory-sources/core/evidence-capture.mjs';
+import { createMemorySnapshotStorage } from '../lib/ri/ingestion/snapshot/memory-storage.mjs';
+import { resetSnapshotStorage, setSnapshotStorage } from '../lib/ri/ingestion/snapshot/runtime.mjs';
 
 const SOURCE = 'SRC-FCA-PUBLICATIONS-RSS';
 const live = process.env.FORGENIQ_LIVE_FCA === '1';
@@ -28,6 +31,7 @@ const fail = (m) => {
 const { embedded, adminUrl } = await resetAndStartEmbedded({ port: 54330 });
 const admin = new pg.Client({ connectionString: adminUrl });
 await admin.connect();
+setSnapshotStorage(createMemorySnapshotStorage(), { override: true });
 
 try {
   await applyAllMigrations(admin);
@@ -108,6 +112,15 @@ try {
     if (sample.rows[0]?.data_origin === INGESTION_DATA_ORIGIN) pass('data_origin regulated-ingestion');
     else fail(`data_origin ${sample.rows[0]?.data_origin}`);
   } else {
+    const fixtureUrl = 'https://www.fca.org.uk/publications/phase8b-fixture-doc';
+    const fixtureHtml =
+      '<!doctype html><html><body><article><p>Phase8B FCA fixture document for embedded ingestion.</p></article></body></html>';
+    const evidenceCapture = await buildEvidenceCapture({
+      body: Buffer.from(fixtureHtml, 'utf8'),
+      contentType: 'text/html; charset=UTF-8',
+      finalUrl: fixtureUrl,
+      connectorId: 'CONN-LEGACY-FCA',
+    });
     const fixture = {
       publications: [
         {
@@ -115,10 +128,12 @@ try {
           sourceId: SOURCE,
           title: 'Phase8B FCA fixture doc',
           publicationType: 'publication',
-          canonicalUrl: 'https://www.fca.org.uk/publications/phase8b-fixture-doc',
+          canonicalUrl: fixtureUrl,
           publicationDate: '2026-10-26',
-          contentHash: 'phase8b-fixture-hash-v1',
-          provenance: { sourcePublishedAt: 'Monday, October 26, 2026 - 10:58' },
+          contentHash: evidenceCapture.fingerprint.hash,
+          contentType: 'text/html; charset=UTF-8',
+          evidenceCapture,
+          provenance: { sourcePublishedAt: 'Monday, October 26, 2026 - 10:58', connectorId: 'CONN-LEGACY-FCA' },
         },
       ],
     };
@@ -171,6 +186,7 @@ try {
 } finally {
   await admin.end();
   await stopEmbedded(embedded);
+  resetSnapshotStorage();
 }
 
 if (failed) {
