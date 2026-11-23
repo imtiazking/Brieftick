@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-11-23T23:05:00.000Z",
+  "authorisedByUser": true,
+  "ceilingUsd": 2.35,
+  "proposedCeilingNotAuthorised": 3.25,
+  "continuationVersion": "v2",
+  "batchIndex": 1,
+  "suffix": "live-ps22-continuation-v2-batch1-2026-11-23",
+  "suffixRegisteredBeforeDeploy": true,
+  "suffixInventoryCount": 28,
+  "runId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+  "executionStatus": "COMPLETED",
+  "attempts": 1,
+  "stopReason": "end_turn",
+  "outputTokens": 5801,
+  "stagingDeployment": {
+    "deploymentId": "dpl_MAucFXiAVrXm81QtrmKFw9Gs9pgW",
+    "gitHead": "e4664ea0cb3f012a8da81b2e4573de1ef79fc341",
+    "includes": ["4e5b688 parenthetical provision reference parse", "ae4bd1e spend reconcile v2 runs", "a616b5b SEC-DB-002 fixture attribution"],
+    "healthBuildVerified": true
+  },
+  "preservedProvisions": 81,
+  "provisionsAfterBatch": 97,
+  "batchProvisions": 16,
+  "actualSpendUsd": 0.100785,
+  "batchSpendCapUsd": 0.2,
+  "cumulativeSpendUsdAfterBatch": 1.488222,
+  "remainingBeforeCeilingUsd": 0.861778,
+  "spendReconciledFromStaging": true,
+  "accuracy": {
+    "structuredCompleteness": "16/16, omissions 0",
+    "classificationPlausible": "16/16",
+    "bindingRequirementsVerified": "2/2 (2A.2.14R, 2A.2.26R)",
+    "quotationsVerbatimInPdf": "16/16",
+    "falsePositiveBindings": [],
+    "falseNegativeBindings": [],
+    "missedRequirements": [],
+    "consultationPresentation": "R provisions carry regulatoryClassificationCode R and bindingNature consultation_proposal (must_not_present_as_independent_binding)",
+    "verbatimCheckNegativeControl": "fabricated quotation for 2A.2.13G correctly flagged not verbatim"
+  },
+  "remainingBatches": 12,
+  "noFurtherBatchesAutonomous": true,
+  "evidenceFiles": [
+    "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+    "PS22-9-CONTINUATION-V2-BATCH1-ACCURACY-2026-11-23.json",
+    "PILOT-SPEND-RECONCILE-2026-11-23.json"
+  ]
+}

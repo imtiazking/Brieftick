@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-23T22:35:44.237Z",
-  "cumulativePilotSpendUsd": 1.387437,
+  "generatedAt": "2026-11-23T22:48:01.512Z",
+  "cumulativePilotSpendUsd": 1.488222,
   "absolutePilotCeilingUsd": 2.35,
   "userApprovedCeilingUsd": 2.35,
-  "remainingBeforeCeilingUsd": 0.962563,
+  "remainingBeforeCeilingUsd": 0.861778,
   "lineItems": [
     {
       "runId": "147574c3-229a-42e3-9adb-fd480b905d3b",
@@ -86,6 +86,12 @@
     {
       "runId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
       "spendUsd": 0.10542,
+      "status": "COMPLETED",
+      "source": "staging_fetch"
+    },
+    {
+      "runId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "spendUsd": 0.100785,
       "status": "COMPLETED",
       "source": "staging_fetch"
     }

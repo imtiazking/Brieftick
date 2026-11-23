@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T22:29:45.134Z",
+  "generatedAt": "2026-11-23T22:49:23.364Z",
   "evidenceRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
   "summary": {
     "structuredAssessmentCompleteness": {
@@ -13,13 +13,16 @@
     "bindingRequirementsExpected": 4,
     "missedRequirements": [],
     "quotationHits": 16,
+    "quotationsVerbatimInPdf": 16,
+    "quotationsNotVerbatim": [],
     "falsePositiveBindings": [],
     "falseNegativeBindings": [],
     "actualSpendUsd": 0.10542,
     "spendAfter": {
       "reconcileError": "spend reconcile failed: file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:183\r\n    throw new SessionExpiredError(`${p.label}: no valid staging session (HTTP ${id.status}) — run: node scripts/uat/staging-user-sessions.mjs login ${p.key}`);\r\n          ^\r\n\r\nSessionExpiredError: User A — Maker: no valid staging session (HTTP 401) — run: node scripts/uat/staging-user-sessions.mjs login A\r\n    at verifyIdentity (file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:183:11)\r\n    at runNextTicks (node:internal/process/task_queues:65:5)\r\n    at process.processImmediate (node:internal/timers:472:9)\r\n    at async runAs (file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/staging-user-sessions.mjs:228:22)\r\n    at async file:///C:/Users/imtia/AppData/Local/forgeniq-ri-classification/apps/platform/scripts/uat/pilot-spend-reconcile-staging.mjs:38:1\r\n\r\nNode.js v24.16.0\r\n"
     },
-    "remainingBatchCostEmpiricalUsd": 1.235,
+    "remainingBatches": 13,
+    "remainingBatchCostEmpiricalUsd": 1.37,
     "note": "Provision inventory reconciliation ≠ verified regulatory extraction accuracy"
   },
   "perProvision": [
@@ -34,7 +37,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -62,7 +68,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "R",
@@ -90,7 +99,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 2,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -118,7 +130,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -146,7 +161,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -174,7 +192,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 2,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -202,7 +223,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -230,7 +254,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -258,7 +285,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -286,7 +316,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -314,7 +347,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -342,7 +378,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "R",
@@ -370,7 +409,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "R",
@@ -398,7 +440,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "R",
@@ -426,7 +471,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",
@@ -454,7 +502,10 @@
       "hasProvisionReference": true,
       "quotationAccuracy": {
         "hasQuotation": true,
-        "coreCitedInQuotation": false
+        "provisionMarkerInPdfPages": true,
+        "verbatimInPdf": true,
+        "candidatesVerbatim": 1,
+        "missingSegments": []
       },
       "regulatoryClassification": {
         "markerExpected": "G",

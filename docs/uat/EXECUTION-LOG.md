@@ -321,6 +321,18 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
 | — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
 
+## 2026-11-23 — PS22 continuation v2 batch 1 (authorised)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 22:35 | Spend reconcile fix | v2 runs bypass orchestration ledger, `9b8fbd1f` missing | Reconcile reads continuation evidence run ids; cumulative **$1.387437** |
+| 22:38 | Fixture fix | `manual_record_creator_required` (SEC-DB-002 guard correct, fixture stale) | Eligibility 47/47, review service 32/32, triage 99/99, review 52/52, security 5/5 |
+| 22:40 | Suffix before deploy | Avoid second deploy (batch-0 lesson) | `live-ps22-continuation-v2-batch1-2026-11-23` merged, 28 suffixes |
+| 22:44 | One staging deploy | Ship `4e5b688` parse fix | `dpl_MAucFXiAVrXm81QtrmKFw9Gs9pgW` @ `e4664ea`, health verified |
+| 22:47 | Paid batch 1 | User authorised | `ffb5ae47` **COMPLETED** $0.100785; 16/16 complete, 16/16 classification, 16/16 verbatim quotations, 2/2 R |
+| 22:52 | Reconcile | Nested User A session 401 | Moved reconcile after session close; cumulative **$1.488222**, remaining **$0.861778** |
+| — | Stop | No authorisation beyond batch 1 | Ceiling request updated: 7 batches fit $2.35, all 12 need ~$2.73 |
+
 ## 2026-11-23 — PS22 batch-0 classification + engine fix (local)
 
 | Time (UTC) | Decision | Reason | Outcome |

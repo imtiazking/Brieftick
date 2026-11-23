@@ -1,27 +1,37 @@
 {
-  "generatedAt": "2026-11-23T22:45:00.000Z",
+  "generatedAt": "2026-11-23T23:05:00.000Z",
   "requestType": "cumulative_pilot_ceiling_increase",
   "currentAuthorisedCeilingUsd": 2.35,
   "proposedCeilingUsd": 3.25,
   "proposedCeilingAuthorised": false,
-  "assessedProvisionsPreserved": 81,
+  "assessedProvisionsPreserved": 97,
   "remainingExtractionBatches": 12,
-  "empiricalCostPerBatchUsd": 0.105,
-  "projectedRemainingBatchCostUsd": 1.235,
-  "cumulativeSpendAfterBatch0Usd": 1.387,
-  "remainingUnderCurrentCeilingUsd": 0.963,
-  "shortfallToCompleteWithinCurrentCeilingUsd": 0.272,
-  "decisionRequired": "Either approve ceiling increase to $3.25, reduce batch scope/cost, or authorise partial continuation only.",
+  "remainingBatchIndices": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  "empiricalCostPerBatchUsd": { "batch0": 0.10542, "batch1": 0.100785, "mean": 0.103103 },
+  "projectedRemainingBatchCostUsd": 1.237,
+  "cumulativeSpendAfterBatch1Usd": 1.488222,
+  "remainingUnderCurrentCeilingUsd": 0.861778,
+  "projectedFinalCumulativeUsd": 2.725,
+  "shortfallToCompleteWithinCurrentCeilingUsd": 0.375,
+  "batchesStartableUnderCurrentCeiling": {
+    "rule": "a batch starts only if cumulative + 0.20 per-batch cap <= 2.35",
+    "count": 7,
+    "indices": [2, 3, 4, 5, 6, 7, 8],
+    "projectedCumulativeAfterUsd": 2.21
+  },
+  "headroomUnderProposedCeilingUsd": 0.525,
+  "decisionRequired": "Approve $3.25 to complete all 12 remaining batches, or authorise batches 2–8 only under the existing $2.35 ceiling.",
   "constraints": [
     "No automatic multi-batch execution",
-    "Single-batch cap $0.20 unless revised",
+    "Single-batch cap $0.20",
+    "No automatic retry of paid failures",
     "No production deployment",
     "Consultation publication binding presentation rules remain enforced"
   ],
   "evidence": [
-    "PS22-9-PAID-RUN-RECONCILE-FINAL-2026-11-23.json",
+    "PILOT-SPEND-RECONCILE-2026-11-23.json",
     "PS22-9-CONTINUATION-PLAN-14-BATCH-2026-11-23.json",
     "PS22-9-CONTINUATION-V2-BATCH0-EXECUTION-REPORT-2026-11-23.json",
-    "PS22-9-BATCH0-CLASSIFICATION-DISCREPANCY-2026-11-23.json"
+    "PS22-9-CONTINUATION-V2-BATCH1-EXECUTION-REPORT-2026-11-23.json"
   ]
 }

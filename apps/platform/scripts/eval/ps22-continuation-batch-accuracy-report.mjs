@@ -10,12 +10,37 @@ import { assessBatchProvisionCompleteness } from '../../lib/ri/ai/provision-asse
 import { parseProvisionReference } from '../../lib/ri/classification/provision-eligibility.mjs';
 import { CANONICAL_CLASSIFICATION_CODES } from '../../lib/ri/classification/regulatory-classification-policy.mjs';
 
-const EVIDENCE = process.argv[2] || join(REPO_ROOT, 'docs/eval/PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json');
-const OUT = join(REPO_ROOT, 'docs/eval/PS22-9-CONTINUATION-V2-BATCH0-ACCURACY-2026-11-23.json');
+const BATCH = Number(process.argv[2] ?? '0');
+const EVIDENCE = join(REPO_ROOT, `docs/eval/PS22-9-CONTINUATION-V2-BATCH${BATCH}-2026-11-23.json`);
+const OUT = join(REPO_ROOT, `docs/eval/PS22-9-CONTINUATION-V2-BATCH${BATCH}-ACCURACY-2026-11-23.json`);
+const TOTAL_CONTINUATION_BATCHES = 14;
 
 const evidence = JSON.parse(readFileSync(EVIDENCE, 'utf8'));
 const out = evidence.structured_output || {};
-const expected = evidence.expectedBatch0 || [];
+const expected = evidence.expectedBatch || evidence.expectedBatch0 || [];
+
+/** Quote-insensitive, whitespace-collapsed form so PDF typography does not mask a verbatim match. */
+function canon(s) {
+  return String(s || '')
+    .replace(/[\u2018\u2019\u201B\u2032]/g, "'")
+    .replace(/[\u201C\u201D\u2033]/g, '"')
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+/** Every elided segment of at least 20 characters must appear verbatim in the cited pages. */
+function quotationVerbatim(quotation, pageText) {
+  const hay = canon(pageText);
+  const segments = String(quotation || '')
+    .split(/\.\.\.|…/)
+    .map(canon)
+    .filter((s) => s.length >= 20);
+  if (!segments.length) return { verbatim: false, segments: 0, missing: [] };
+  const missing = segments.filter((s) => !hay.includes(s));
+  return { verbatim: missing.length === 0, segments: segments.length, missing: missing.map((s) => s.slice(0, 80)) };
+}
 
 const pdf = readFileSync(join(REPO_ROOT, 'integrations/regulatory-sources/fixtures/fca-ps22-9-official.pdf'));
 const extracted = await extractRegulatoryPdfContent(pdf);
@@ -51,18 +76,19 @@ const completeness =
 const perProvision = expected.map((core) => {
   const inPdf = index.has(core);
   const marker = markerForCore(core);
-  const candidates = (out.candidates || []).filter((c) => {
-    const ref = String(c.provisionReference || c.provisionCore || '');
-    return ref.includes(core.replace(/^2A\./, '2A.')) || norm(c.provisionCore) === core;
-  });
-  const assessment = (completeness.assessments || []).find((a) => a.provisionCore === core);
-  const quotation = candidates[0]?.sourceQuotation || candidates[0]?.statement || '';
+  const candidates = (out.candidates || []).filter(
+    (c) => parseProvisionReference(c.provisionReference || c.provisionCore || '')?.core === core,
+  );
+  const quotation = candidates[0]?.sourceQuotation || '';
   const pdfPages = [...(index.get(core)?.pages || [])];
+  const window = new Set(pdfPages.flatMap((p) => [p - 1, p, p + 1]));
   const pdfText = blocks
-    .filter((b) => pdfPages.includes(b.pageNumber))
-    .map((b) => b.textContent || '')
+    .filter((b) => window.has(b.pageNumber))
+    .sort((a, b) => a.pageNumber - b.pageNumber)
+    .map((b) => b.extractedText || b.textContent || '')
     .join(' ');
-  const coreInPdfText = pdfText.includes(core.split(/[RG]$/i)[0]) || pdfText.includes(core);
+  const verbatim = candidates.map((c) => quotationVerbatim(c.sourceQuotation, pdfText));
+  const coreInPdfText = canon(pdfText).includes(canon(core.replace(/([RG])$/i, ' $1')));
   const primary = candidates[0];
   const deterministic = (out.deterministicProvisionCandidates || []).find((d) => d.provisionCore === core);
   const parsedRef = primary?.provisionReference ? parseProvisionReference(primary.provisionReference) : null;
@@ -102,7 +128,10 @@ const perProvision = expected.map((core) => {
     hasProvisionReference: candidates.some((c) => c.provisionReference),
     quotationAccuracy: {
       hasQuotation: Boolean(norm(quotation)),
-      coreCitedInQuotation: norm(quotation).includes(core) || coreInPdfText,
+      provisionMarkerInPdfPages: coreInPdfText,
+      verbatimInPdf: verbatim.length > 0 && verbatim.every((v) => v.verbatim),
+      candidatesVerbatim: verbatim.filter((v) => v.verbatim).length,
+      missingSegments: verbatim.flatMap((v) => v.missing),
     },
     regulatoryClassification: {
       markerExpected: marker,
@@ -139,11 +168,15 @@ const summary = {
   bindingRequirementsExpected: perProvision.filter((p) => p.regulatoryClassification.markerExpected === 'R').length,
   missedRequirements: perProvision.filter((p) => p.missedRequirement).map((p) => p.core),
   quotationHits: perProvision.filter((p) => p.quotationAccuracy.hasQuotation).length,
+  quotationsVerbatimInPdf: perProvision.filter((p) => p.quotationAccuracy.verbatimInPdf).length,
+  quotationsNotVerbatim: perProvision.filter((p) => !p.quotationAccuracy.verbatimInPdf).map((p) => p.core),
   falsePositiveBindings: perProvision.filter((p) => p.falsePositiveBinding).map((p) => p.core),
   falseNegativeBindings: perProvision.filter((p) => p.falseNegativeBinding).map((p) => p.core),
   actualSpendUsd: evidence.spendUsd,
   spendAfter: evidence.spendAfter,
-  remainingBatchCostEmpiricalUsd: Math.round(13 * 0.095 * 1000) / 1000,
+  remainingBatches: TOTAL_CONTINUATION_BATCHES - 1 - BATCH,
+  remainingBatchCostEmpiricalUsd:
+    Math.round((TOTAL_CONTINUATION_BATCHES - 1 - BATCH) * Number(evidence.spendUsd || 0.105) * 1000) / 1000,
   note: 'Provision inventory reconciliation ≠ verified regulatory extraction accuracy',
 };
 

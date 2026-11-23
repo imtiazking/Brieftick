@@ -143,12 +143,7 @@ await runAs('A', async ({ page }) => {
       claims: out.claims || [],
     });
 
-  let spendAfter;
-  try {
-    spendAfter = reconcileSpend();
-  } catch (e) {
-    spendAfter = { reconcileError: String(e.message || e) };
-  }
+  const spendAfter = { pending: 'reconciled after the User A session closes' };
 
   writeFileSync(
     evidencePath,
@@ -184,5 +179,14 @@ await runAs('A', async ({ page }) => {
   if (!completeness.batchCompletenessOk) throw new Error(`completeness failed omissions=${completeness.omissionCount}`);
   if (Number(spend) > MAX_USD + 0.02) throw new Error(`spend ${spend} over cap`);
 });
+
+// A nested runAs('A') while the session above is open fails with 401, so reconcile only after it closes.
+const evidence = JSON.parse(readFileSync(evidencePath, 'utf8'));
+try {
+  evidence.spendAfter = reconcileSpend();
+} catch (e) {
+  evidence.spendAfter = { reconcileError: String(e.message || e) };
+}
+writeFileSync(evidencePath, JSON.stringify(evidence, null, 2));
 
 console.log(JSON.stringify({ ok: true, evidencePath, batchIndex: BATCH_INDEX, suffix: SUFFIX }));
