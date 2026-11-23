@@ -1,0 +1,24 @@
+{
+  "authoritativeRunId": "9b3bf495-9c55-428f-81bd-d786f8d9a3ee",
+  "suffix": "live-ps26-five-operative-v3-2026-11-23",
+  "spendUsd": 0.060498,
+  "gateCorrectedPostAnalysis": {
+    "schemaOk": true,
+    "fiveStructuredAssessed": 5,
+    "batchCompletenessOk": true,
+    "regulatoryAccuracySuccess": true,
+    "passesQualityGate": true,
+    "ps22ProceedAuthorised": true
+  },
+  "failedInfrastructureRunsPreserved": [
+    { "runId": "038f5ae0-56ed-4961-9d1c-f2953a15e741", "error": "AI_OUTPUT_TRUNCATED", "spendUsd": 0.043203, "suffix": "live-ps26-five-operative-2026-11-23" },
+    { "runId": "d76b60f2-276b-48f2-ab78-fd449bca55b6", "error": "AI_OUTPUT_TRUNCATED", "spendUsd": 0.046638, "suffix": "live-ps26-five-operative-v2-2026-11-23" }
+  ],
+  "outcomes": [
+    { "core": "4.2A.3R", "outcome": "assessed_structured" },
+    { "core": "4.2A.6R", "outcome": "assessed_structured" },
+    { "core": "4.2A.7R", "outcome": "assessed_structured" },
+    { "core": "7.20.1R", "outcome": "assessed_structured" },
+    { "core": "7.20.3R", "outcome": "assessed_structured" }
+  ]
+}

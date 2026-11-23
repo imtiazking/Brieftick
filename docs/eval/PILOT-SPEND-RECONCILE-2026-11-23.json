@@ -1,28 +1,52 @@
 {
-  "generatedAt": "2026-11-23T17:28:02.211Z",
-  "cumulativePilotSpendUsd": 0.519483,
-  "priorEstimateUsd": 0.52,
-  "reconciledAgainst": "provider audit fields on staging ai-analysis-runs + benchmark harness",
+  "generatedAt": "2026-11-23T19:18:03.848Z",
+  "cumulativePilotSpendUsd": 0.669822,
   "absolutePilotCeilingUsd": 2.35,
-  "remainingBeforeCeilingUsd": 1.830517,
+  "userApprovedCeilingUsd": 2.35,
+  "remainingBeforeCeilingUsd": 1.680178,
   "lineItems": [
     {
       "runId": "147574c3-229a-42e3-9adb-fd480b905d3b",
       "spendUsd": 0.155436,
       "status": "FAILED",
-      "source": "PS22-9-FAILED-RUNS-FORENSIC"
+      "source": "staging_fetch"
     },
     {
       "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
       "spendUsd": 0.135888,
       "status": "FAILED",
-      "source": "PS22-9-FAILED-RUNS-FORENSIC"
+      "source": "staging_fetch"
     },
     {
-      "label": "PS26/1 batches 0-1 (provider audit in benchmark harness)",
-      "spendUsd": 0.228159,
+      "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+      "spendUsd": 0.120165,
       "status": "COMPLETED",
-      "source": "FCA-EXTRACTION-ACCURACY-BENCHMARK"
+      "source": "staging_fetch"
+    },
+    {
+      "runId": "6f05a9eb-8984-4a2b-8b78-2e7effbf8892",
+      "spendUsd": 0.107994,
+      "status": "COMPLETED",
+      "source": "staging_fetch"
+    },
+    {
+      "runId": "038f5ae0-56ed-4961-9d1c-f2953a15e741",
+      "spendUsd": 0.043203,
+      "status": "FAILED",
+      "source": "staging_fetch"
+    },
+    {
+      "runId": "d76b60f2-276b-48f2-ab78-fd449bca55b6",
+      "spendUsd": 0.046638,
+      "status": "FAILED",
+      "source": "staging_fetch"
+    },
+    {
+      "runId": "9b3bf495-9c55-428f-81bd-d786f8d9a3ee",
+      "spendUsd": 0.060498,
+      "status": "COMPLETED",
+      "source": "staging_fetch"
     }
-  ]
+  ],
+  "mayProceedPaid": true
 }

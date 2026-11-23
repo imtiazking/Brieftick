@@ -1,34 +1,34 @@
 {
   "historicalFailedRunId": "147574c3-229a-42e3-9adb-fd480b905d3b",
-  "suffix": "live-ps22-replace-batch0-2026-11-23",
-  "maxUsd": 0.25,
+  "suffix": "live-ps22-corrected-batch0-2026-11-23",
+  "maxUsd": 0.2,
   "log": [
     {
       "step": "plan",
-      "at": "2026-11-23T14:05:50.638Z",
+      "at": "2026-11-23T19:22:39.356Z",
       "inventory": 242,
-      "batches": 12
+      "batches": 17
     },
     {
       "step": "output-preflight",
-      "at": "2026-11-23T14:05:50.639Z",
+      "at": "2026-11-23T19:22:39.358Z",
       "ok": true,
-      "estimateTokens": 6668,
+      "estimateTokens": 1900,
       "maxOutputTokens": 8192
     },
     {
       "step": "change",
-      "at": "2026-11-23T14:05:58.093Z",
-      "changeId": "e22de532-5bb9-4f29-b289-05ea1e139d91"
+      "at": "2026-11-23T19:22:45.714Z",
+      "changeId": "e22981b0-4a70-4f2c-b30e-6f2a340b0fb4"
     },
     {
       "step": "advance",
-      "at": "2026-11-23T14:06:02.006Z",
+      "at": "2026-11-23T19:22:50.938Z",
       "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
       "ok": true,
       "code": "awaiting_authorised_extraction",
       "batchIndex": 0,
-      "idempotencySuffix": "live-ps22-replace-batch0-2026-11-23",
+      "idempotencySuffix": "live-ps22-corrected-batch0-2026-11-23",
       "runPayload": {
         "extractionBatchIndex": 0,
         "selection": {
@@ -37,30 +37,20 @@
           "maxSections": 18,
           "documentPages": 161,
           "selectedPages": [
+            105,
             114,
-            115,
-            117,
             118,
-            122,
-            123,
-            124,
-            126,
-            142,
-            144,
-            145,
-            152,
-            153,
-            154
+            136
           ],
           "instrumentPages": 70,
-          "selectedSections": 14,
+          "selectedSections": 4,
           "truncatedSections": 0,
           "documentCharacters": 349049,
-          "selectedCharacters": 28656,
+          "selectedCharacters": 9068,
           "instrumentStartPage": 92,
-          "instrumentPagesSelected": 14,
+          "instrumentPagesSelected": 4,
           "maxCharactersPerSection": 3200,
-          "characterCoveragePercent": 8.21,
+          "characterCoveragePercent": 2.6,
           "instrumentProvisionsSetOut": 242,
           "instrumentProvisionsOmitted": [
             {
@@ -79,97 +69,6 @@
               "provision": "2.1.1R",
               "textStatus": [
                 "AMENDMENT_MARKUP_UNCERTAIN"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.1R",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.2R",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.3G",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.4G",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.5G",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.6G",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105,
-                136
-              ],
-              "provision": "2A.7.5G",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.7R",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.8G",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                105
-              ],
-              "provision": "2A.1.9G",
-              "textStatus": [
-                "NEW_TEXT"
               ]
             },
             {
@@ -552,6 +451,33 @@
             },
             {
               "pages": [
+                115
+              ],
+              "provision": "2A.3.11R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                115
+              ],
+              "provision": "2A.3.12R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                115
+              ],
+              "provision": "2A.3.13R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
                 116
               ],
               "provision": "2A.3.14R",
@@ -588,6 +514,51 @@
             },
             {
               "pages": [
+                117
+              ],
+              "provision": "2A.3.18R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.19R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.20R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.21R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                117
+              ],
+              "provision": "2A.3.22G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
                 119
               ],
               "provision": "2A.3.30E",
@@ -606,9 +577,29 @@
             },
             {
               "pages": [
+                119,
+                126
+              ],
+              "provision": "2A.4.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
                 119
               ],
               "provision": "2A.4.3R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                120,
+                126
+              ],
+              "provision": "2A.4.4G",
               "textStatus": [
                 "NEW_TEXT"
               ]
@@ -624,9 +615,30 @@
             },
             {
               "pages": [
+                120,
+                126
+              ],
+              "provision": "2A.4.6G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
                 120
               ],
               "provision": "2A.4.7R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                120,
+                121,
+                126
+              ],
+              "provision": "2A.4.8R",
               "textStatus": [
                 "NEW_TEXT"
               ]
@@ -660,9 +672,166 @@
             },
             {
               "pages": [
+                122,
+                126
+              ],
+              "provision": "2A.4.12G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                122
+              ],
+              "provision": "2A.4.13R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                122
+              ],
+              "provision": "2A.4.14R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                122
+              ],
+              "provision": "2A.4.15R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                122
+              ],
+              "provision": "2A.4.16R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                123
+              ],
+              "provision": "2A.4.17R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                123
+              ],
+              "provision": "2A.4.18R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                123
+              ],
+              "provision": "2A.4.19R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                123,
+                126
+              ],
+              "provision": "2A.4.20R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.21R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.22G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.23G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.24R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124,
+                126
+              ],
+              "provision": "2A.4.25R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.26R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                124
+              ],
+              "provision": "2A.4.27R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
                 125
               ],
               "provision": "2A.4.28G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                125,
+                126
+              ],
+              "provision": "2A.4.29R",
               "textStatus": [
                 "NEW_TEXT"
               ]
@@ -678,9 +847,83 @@
             },
             {
               "pages": [
+                125,
+                126
+              ],
+              "provision": "2A.4.31G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
                 125
               ],
               "provision": "2A.4.32R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                126
+              ],
+              "provision": "6.6.26G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                126
+              ],
+              "provision": "8.5.22R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                126
+              ],
+              "provision": "15.7.24R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                126
+              ],
+              "provision": "2A.4.33R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                126
+              ],
+              "provision": "2A.4.34R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                126
+              ],
+              "provision": "2A.4.35E",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                126,
+                127
+              ],
+              "provision": "2A.4.36R",
               "textStatus": [
                 "NEW_TEXT"
               ]
@@ -913,42 +1156,6 @@
             },
             {
               "pages": [
-                136
-              ],
-              "provision": "2A.8.1R",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                136
-              ],
-              "provision": "2A.8.2G",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                136
-              ],
-              "provision": "2A.8.3R",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
-                136
-              ],
-              "provision": "2A.8.4R",
-              "textStatus": [
-                "NEW_TEXT"
-              ]
-            },
-            {
-              "pages": [
                 137,
                 150
               ],
@@ -1123,6 +1330,51 @@
             },
             {
               "pages": [
+                142
+              ],
+              "provision": "2A.10.3R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.10.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.10.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.11.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                142
+              ],
+              "provision": "2A.11.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
                 143
               ],
               "provision": "2A.11.3G",
@@ -1146,6 +1398,141 @@
               "provision": "2A.11.5R",
               "textStatus": [
                 "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.6R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.7G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.8R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.10R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.12R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.1.13R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                144
+              ],
+              "provision": "3.2.1AR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.6R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.7R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.8R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.9G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.10R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.11G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.2.12G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                145
+              ],
+              "provision": "3.3.1R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
               ]
             },
             {
@@ -1219,6 +1606,215 @@
               "provision": "1.1.5BR",
               "textStatus": [
                 "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                151,
+                152
+              ],
+              "provision": "1.1.5CG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7AR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7BR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7CR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152
+              ],
+              "provision": "1.1.7DG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                152,
+                153
+              ],
+              "provision": "1.1.7ER",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.8G",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.8BR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.11BG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.11CR",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "1.1.11DG",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "2.1.5R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                153
+              ],
+              "provision": "2.1.6R",
+              "textStatus": [
+                "AMENDMENT_MARKUP_UNCERTAIN"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.1R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.2R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.3R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.4G",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.5R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.6R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.7R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.8R",
+              "textStatus": [
+                "NEW_TEXT"
+              ]
+            },
+            {
+              "pages": [
+                154
+              ],
+              "provision": "2.4.9R",
+              "textStatus": [
+                "NEW_TEXT"
               ]
             },
             {
@@ -1422,23 +2018,12 @@
             }
           ],
           "suppliedProvisionTextStatus": {
-            "NEW_TEXT": 68,
-            "AMENDMENT_MARKUP_UNCERTAIN": 28
+            "NEW_TEXT": 28
           },
-          "instrumentProvisionsSupplied": 92,
+          "instrumentProvisionsSupplied": 26,
           "instrumentProvisionsNotSupplied": [
             "1.2.1G",
             "2.1.1R",
-            "2A.1.1R",
-            "2A.1.2R",
-            "2A.1.3G",
-            "2A.1.4G",
-            "2A.1.5G",
-            "2A.1.6G",
-            "2A.7.5G",
-            "2A.1.7R",
-            "2A.1.8G",
-            "2A.1.9G",
             "2A.1.10G",
             "2A.1.11G",
             "2A.1.12G",
@@ -1481,21 +2066,58 @@
             "2A.3.3G",
             "2A.3.4R",
             "2A.3.5R",
+            "2A.3.11R",
+            "2A.3.12R",
+            "2A.3.13R",
             "2A.3.14R",
             "2A.3.15G",
             "2A.3.16R",
             "2A.3.17R",
+            "2A.3.18R",
+            "2A.3.19R",
+            "2A.3.20R",
+            "2A.3.21R",
+            "2A.3.22G",
             "2A.3.30E",
             "2A.4.1R",
+            "2A.4.2R",
             "2A.4.3R",
+            "2A.4.4G",
             "2A.4.5R",
+            "2A.4.6G",
             "2A.4.7R",
+            "2A.4.8R",
             "2A.4.9G",
             "2A.4.10G",
             "2A.4.11G",
+            "2A.4.12G",
+            "2A.4.13R",
+            "2A.4.14R",
+            "2A.4.15R",
+            "2A.4.16R",
+            "2A.4.17R",
+            "2A.4.18R",
+            "2A.4.19R",
+            "2A.4.20R",
+            "2A.4.21R",
+            "2A.4.22G",
+            "2A.4.23G",
+            "2A.4.24R",
+            "2A.4.25R",
+            "2A.4.26R",
+            "2A.4.27R",
             "2A.4.28G",
+            "2A.4.29R",
             "2A.4.30G",
+            "2A.4.31G",
             "2A.4.32R",
+            "6.6.26G",
+            "8.5.22R",
+            "15.7.24R",
+            "2A.4.33R",
+            "2A.4.34R",
+            "2A.4.35E",
+            "2A.4.36R",
             "2A.5.1R",
             "2A.5.2G",
             "2A.5.3R",
@@ -1521,10 +2143,6 @@
             "2A.7.2G",
             "2A.7.3G",
             "2A.7.4G",
-            "2A.8.1R",
-            "2A.8.2G",
-            "2A.8.3R",
-            "2A.8.4R",
             "2A.8.5R",
             "2A.9.1R",
             "2A.9.2G",
@@ -1544,9 +2162,29 @@
             "2A.9.17R",
             "2A.10.1G",
             "2A.10.2R",
+            "2A.10.3R",
+            "2A.10.4G",
+            "2A.10.5R",
+            "2A.11.1R",
+            "2A.11.2R",
             "2A.11.3G",
             "2A.11.4R",
             "2A.11.5R",
+            "3.1.6R",
+            "3.1.7G",
+            "3.1.8R",
+            "3.1.10R",
+            "3.1.12R",
+            "3.1.13R",
+            "3.2.1AR",
+            "3.2.6R",
+            "3.2.7R",
+            "3.2.8R",
+            "3.2.9G",
+            "3.2.10R",
+            "3.2.11G",
+            "3.2.12G",
+            "3.3.1R",
             "3.4.3AR",
             "4.1.1G",
             "4.1.2G",
@@ -1555,6 +2193,29 @@
             "1.1.5G",
             "1.1.5AR",
             "1.1.5BR",
+            "1.1.5CG",
+            "1.1.7R",
+            "1.1.7AR",
+            "1.1.7BR",
+            "1.1.7CR",
+            "1.1.7DG",
+            "1.1.7ER",
+            "1.1.8G",
+            "1.1.8BR",
+            "1.1.11BG",
+            "1.1.11CR",
+            "1.1.11DG",
+            "2.1.5R",
+            "2.1.6R",
+            "2.4.1R",
+            "2.4.2R",
+            "2.4.3R",
+            "2.4.4G",
+            "2.4.5R",
+            "2.4.6R",
+            "2.4.7R",
+            "2.4.8R",
+            "2.4.9R",
             "2.4.10R",
             "4.1.18G",
             "4.1.20G",
@@ -1580,80 +2241,26 @@
           ]
         },
         "instrumentProvisionsNewlySupplied": [
+          "2A.1.1R",
+          "2A.1.2R",
+          "2A.1.3G",
+          "2A.1.4G",
+          "2A.1.5G",
+          "2A.1.6G",
+          "2A.7.5G",
+          "2A.1.7R",
+          "2A.1.8G",
+          "2A.1.9G",
           "2A.3.6R",
           "2A.3.7R",
           "2A.3.8R",
-          "2A.3.9R",
-          "2A.3.10R",
-          "2A.3.11R",
-          "2A.3.12R",
-          "2A.3.13R",
-          "2A.3.18R",
-          "2A.3.19R",
-          "2A.3.20R",
-          "2A.3.21R",
-          "2A.3.22G",
-          "2A.3.23G",
-          "2A.3.24R",
-          "2A.3.25G",
-          "2A.3.26R",
-          "2A.3.27G",
-          "2A.3.28R",
-          "2A.3.29G",
-          "2A.4.12G",
-          "2A.4.13R",
-          "2A.4.14R",
-          "2A.4.15R",
-          "2A.4.16R",
-          "2A.4.17R",
-          "2A.4.18R",
-          "2A.4.19R",
-          "2A.4.20R",
-          "2A.4.21R",
-          "2A.4.22G",
-          "2A.4.23G",
-          "2A.4.24R",
-          "2A.4.25R",
-          "2A.4.26R",
-          "2A.4.27R",
-          "6.6.26G",
-          "8.5.22R",
-          "15.7.24R",
-          "2A.4.33R",
-          "2A.4.34R",
-          "2A.4.2R",
-          "2A.4.4G",
-          "2A.4.6G",
-          "2A.4.8R",
-          "2A.4.29R",
-          "2A.4.31G",
-          "2A.4.35E",
-          "2A.4.36R",
-          "2A.10.3R",
-          "2A.10.4G",
-          "2A.10.5R",
-          "2A.11.1R",
-          "2A.11.2R",
-          "3.1.6R",
-          "3.1.7G",
-          "3.1.8R",
-          "3.1.10R",
-          "3.1.12R",
-          "3.1.13R",
-          "3.2.1AR",
-          "3.2.6R",
-          "3.2.7R",
-          "3.2.8R",
-          "3.2.9G",
-          "3.2.10R",
-          "3.2.11G",
-          "3.2.12G",
-          "3.3.1R"
+          "2A.3.9R"
         ]
       },
       "review": {
         "orchestrationStatus": "READY",
         "publicationCoverageComplete": false,
+        "regulatoryExtractionAccuracyComplete": false,
         "analysisScope": "PARTIAL_INSTRUMENT_PROVISIONS",
         "consolidatedFindingCount": 0,
         "dedupeKeysRecorded": 0,
@@ -1668,8 +2275,8 @@
           "unresolvedProvisionCores": []
         },
         "spend": {
-          "capUsd": 0.25,
-          "estimatedTokens": 28598,
+          "capUsd": 0.2,
+          "estimatedTokens": 34084,
           "batchesAttempted": 0,
           "batchesSucceeded": 0
         },
@@ -1680,8 +2287,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 69,
-            "provisionsOutstanding": 173
+            "provisionsNewlySupplied": 14,
+            "provisionsOutstanding": 228
           },
           {
             "batchIndex": 1,
@@ -1689,8 +2296,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 26,
-            "provisionsOutstanding": 147
+            "provisionsNewlySupplied": 10,
+            "provisionsOutstanding": 218
           },
           {
             "batchIndex": 2,
@@ -1698,8 +2305,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 25,
-            "provisionsOutstanding": 122
+            "provisionsNewlySupplied": 14,
+            "provisionsOutstanding": 204
           },
           {
             "batchIndex": 3,
@@ -1707,8 +2314,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 15,
-            "provisionsOutstanding": 107
+            "provisionsNewlySupplied": 11,
+            "provisionsOutstanding": 193
           },
           {
             "batchIndex": 4,
@@ -1716,8 +2323,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 14,
-            "provisionsOutstanding": 93
+            "provisionsNewlySupplied": 16,
+            "provisionsOutstanding": 177
           },
           {
             "batchIndex": 5,
@@ -1725,8 +2332,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 20,
-            "provisionsOutstanding": 73
+            "provisionsNewlySupplied": 22,
+            "provisionsOutstanding": 155
           },
           {
             "batchIndex": 6,
@@ -1734,8 +2341,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 18,
-            "provisionsOutstanding": 55
+            "provisionsNewlySupplied": 10,
+            "provisionsOutstanding": 145
           },
           {
             "batchIndex": 7,
@@ -1743,8 +2350,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 12,
-            "provisionsOutstanding": 43
+            "provisionsNewlySupplied": 13,
+            "provisionsOutstanding": 132
           },
           {
             "batchIndex": 8,
@@ -1752,8 +2359,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 13,
-            "provisionsOutstanding": 30
+            "provisionsNewlySupplied": 17,
+            "provisionsOutstanding": 115
           },
           {
             "batchIndex": 9,
@@ -1761,8 +2368,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 13,
-            "provisionsOutstanding": 17
+            "provisionsNewlySupplied": 17,
+            "provisionsOutstanding": 98
           },
           {
             "batchIndex": 10,
@@ -1770,8 +2377,8 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 11,
-            "provisionsOutstanding": 6
+            "provisionsNewlySupplied": 20,
+            "provisionsOutstanding": 78
           },
           {
             "batchIndex": 11,
@@ -1779,7 +2386,52 @@
             "runId": null,
             "idempotencySuffix": null,
             "errorCode": null,
-            "provisionsNewlySupplied": 6,
+            "provisionsNewlySupplied": 20,
+            "provisionsOutstanding": 58
+          },
+          {
+            "batchIndex": 12,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 14,
+            "provisionsOutstanding": 44
+          },
+          {
+            "batchIndex": 13,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 12,
+            "provisionsOutstanding": 32
+          },
+          {
+            "batchIndex": 14,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 14,
+            "provisionsOutstanding": 18
+          },
+          {
+            "batchIndex": 15,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 10,
+            "provisionsOutstanding": 8
+          },
+          {
+            "batchIndex": 16,
+            "status": "PENDING",
+            "runId": null,
+            "idempotencySuffix": null,
+            "errorCode": null,
+            "provisionsNewlySupplied": 8,
             "provisionsOutstanding": 0
           }
         ],
@@ -1789,11 +2441,11 @@
     },
     {
       "step": "extract",
-      "at": "2026-11-23T14:06:09.384Z",
+      "at": "2026-11-23T19:22:57.343Z",
       "http": 202,
       "exBody": {
         "ok": true,
-        "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
+        "runId": "063a2e9f-8279-4310-9341-354110d5e675",
         "reused": false,
         "dispatched": true,
         "executionStatus": "RUNNING"
@@ -1801,11 +2453,11 @@
     },
     {
       "step": "terminal",
-      "at": "2026-11-23T14:07:47.155Z",
-      "status": "FAILED",
-      "spend": 0.135888,
-      "errorCode": "AI_OUTPUT_SCHEMA_INVALID",
-      "runId": "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e"
+      "at": "2026-11-23T19:23:46.533Z",
+      "status": "COMPLETED",
+      "spend": 0.091182,
+      "errorCode": null,
+      "runId": "063a2e9f-8279-4310-9341-354110d5e675"
     }
   ]
 }

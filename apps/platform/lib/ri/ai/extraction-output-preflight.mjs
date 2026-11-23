@@ -35,8 +35,11 @@ export function assertExtractionOutputBudget({ estimateTokens, maxOutputTokens, 
 
 export function scaleMaxOutputTokensForBatch(baseMaxOutput, { provisionCount = 0, sectionCount = 0 } = {}) {
   const base = Math.max(1024, Number(baseMaxOutput) || 8192);
-  const scaled = Math.ceil(420 + Math.max(provisionCount, 0) * 96 + Math.max(sectionCount, 0) * 24);
-  return Math.min(base, Math.max(2048, scaled));
+  const est = estimateStructuredOutputTokens({ provisionCount, sectionCount });
+  const headroom = provisionCount >= 4 ? 4.5 : 2.25;
+  const floor = provisionCount >= 4 ? 4096 : 2048;
+  const scaled = Math.ceil(Math.max(est * headroom, 420 + provisionCount * 96 + sectionCount * 24));
+  return Math.min(base, Math.max(floor, scaled));
 }
 
 export function charsBudgetFromOutputTokens(tokens) {

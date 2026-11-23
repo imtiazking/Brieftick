@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-11-23T19:25:00Z",
+  "ceilingUsd": 2.35,
+  "userApproved": true,
+  "cumulativeSpendUsd": 0.761004,
+  "remainingUsd": 1.588996,
+  "ps26FiveOperative": {
+    "authoritativeSuccessRunId": "9b3bf495-9c55-428f-81bd-d786f8d9a3ee",
+    "spendUsd": 0.060498,
+    "fiveStructuredAssessed": 5,
+    "batchCompletenessOk": true,
+    "infrastructureFailedRunsPreserved": ["038f5ae0-56ed-4961-9d1c-f2953a15e741", "d76b60f2-276b-48f2-ab78-fd449bca55b6"]
+  },
+  "ps22Batch0": {
+    "runId": "063a2e9f-8279-4310-9341-354110d5e675",
+    "suffix": "live-ps22-corrected-batch0-2026-11-23",
+    "spendUsd": 0.091182,
+    "status": "COMPLETED",
+    "provisionsSupplied": 14,
+    "provisionCompletenessOmissions": 0,
+    "candidates": 14,
+    "historicalFailedPreserved": ["147574c3-229a-42e3-9adb-fd480b905d3b", "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e"]
+  },
+  "ps22Continuation": {
+    "batchesRemaining": 16,
+    "stoppedReason": "Batch 0 accuracy gate passed; continuation requires per-batch reconcile against $2.35 ceiling (~$0.09–$0.20/batch observed)",
+    "nextSuffixPattern": "live-ps22-corrected-batch{n}-2026-11-23"
+  },
+  "production": "NO-GO"
+}

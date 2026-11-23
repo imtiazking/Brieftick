@@ -1,6 +1,8 @@
 {
   "generatedAt": "2026-11-23T19:00:00Z",
-  "authorised": false,
+  "authorised": true,
+  "authorisedAt": "2026-11-23T19:05:00Z",
+  "cumulativeCeilingUsd": 2.35,
   "publication": "PS26/1",
   "purpose": "Validate provision-scoped extraction + completeness safeguards on five verified operative requirements only",
   "targetCores": ["4.2A.3R", "4.2A.6R", "4.2A.7R", "7.20.3R", "7.20.1R"],

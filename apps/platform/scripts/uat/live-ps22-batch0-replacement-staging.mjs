@@ -11,8 +11,8 @@ import {
 } from '../../lib/ri/ai/extraction-output-preflight.mjs';
 
 const PUB_ID = '7a73ac4c-d6b4-4411-9f6d-1276053f2831';
-const SUFFIX = 'live-ps22-replace-batch0-2026-11-23';
-const MAX_USD = 0.25;
+const SUFFIX = 'live-ps22-corrected-batch0-2026-11-23';
+const MAX_USD = 0.2;
 const MAX_SECTIONS = 4;
 const EVIDENCE = resolve(process.cwd(), '..', '..', 'docs', 'eval', 'PS22-9-BATCH0-REPLACEMENT-2026-11-23.json');
 const FAILED_HISTORICAL = '147574c3-229a-42e3-9adb-fd480b905d3b';
