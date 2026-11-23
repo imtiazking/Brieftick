@@ -378,6 +378,7 @@ export async function buildPdfGroundedAnalysisContext(params) {
     const {
       estimateStructuredOutputTokens,
       assertExtractionOutputBudget,
+      assertBatchProvisionOutputBudget,
       maxProvisionsWithinOutputPreflight,
     } = await import('./extraction-output-preflight.mjs');
     const sectionCountForPreflight = Math.min(
@@ -404,6 +405,17 @@ export async function buildPdfGroundedAnalysisContext(params) {
           provisionCap,
           maxOutputTokens: maxOut,
         },
+        grounding: {
+          extractionBatch: { batchIndex: activeBatch.batchIndex, provisionCount: rawNewCount },
+        },
+      };
+    }
+    const batchPre = assertBatchProvisionOutputBudget(rawNewCount, sectionCountForPreflight, maxOut);
+    if (!batchPre.ok) {
+      return {
+        ok: false,
+        code: batchPre.code,
+        outputPreflight: batchPre,
         grounding: {
           extractionBatch: { batchIndex: activeBatch.batchIndex, provisionCount: rawNewCount },
         },

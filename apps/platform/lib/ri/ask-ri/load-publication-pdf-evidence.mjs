@@ -220,7 +220,7 @@ async function loadCataloguePublicationRows(adminSupabase, publicationIds) {
 
 /**
  * @param {import('@supabase/supabase-js').SupabaseClient} adminSupabase service role
- * @param {{ projectUrl: string, serviceRoleKey: string, publicationIds?: string[] }} options
+ * @param {{ projectUrl: string, serviceRoleKey: string, publicationIds?: string[], organisationId?: string, cacheScope?: string }} options
  */
 export async function loadPublicationPdfEvidenceForAskRi(adminSupabase, options) {
   if (!adminSupabase) {

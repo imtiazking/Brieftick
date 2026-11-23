@@ -4,13 +4,19 @@
 
 const CHARS_PER_OUTPUT_TOKEN = 4;
 
+/** Empirical cap from live PS22 pilot — 22-provision batch truncated at 8192 output (run 9fd62178). */
+export function resolveMaxProvisionsPerBatch() {
+  const n = Number(process.env.RI_LAB_MAX_PROVISIONS_PER_BATCH);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 16;
+}
+
 export function estimateStructuredOutputTokens({ provisionCount = 0, sectionCount = 0, candidateFloor = 0 } = {}) {
   const provisions = Math.max(0, Number(provisionCount) || 0);
   const sections = Math.max(0, Number(sectionCount) || 0);
   const floor = Math.max(0, Number(candidateFloor) || 0);
   const estimatedClaims = Math.max(provisions, floor);
-  // Lab UC-RI-005 runs observe higher per-claim verbosity than the offline floor; bias upward for fail-closed preflight.
-  return Math.ceil(220 + sections * 42 + estimatedClaims * 108);
+  const perClaim = provisions >= 14 ? 152 : 108;
+  return Math.ceil(220 + sections * 42 + estimatedClaims * perClaim);
 }
 
 /**
@@ -52,6 +58,7 @@ export function maxProvisionsWithinOutputPreflight({
   maxOutputTokens = 8192,
   safetyRatio = 0.82,
 } = {}) {
+  const hardCap = resolveMaxProvisionsPerBatch();
   let hi = 512;
   let best = 0;
   for (let n = 1; n <= hi; n += 1) {
@@ -59,5 +66,22 @@ export function maxProvisionsWithinOutputPreflight({
     if (assertExtractionOutputBudget({ estimateTokens: est, maxOutputTokens, safetyRatio }).ok) best = n;
     else break;
   }
-  return best;
+  return Math.min(hardCap, best);
+}
+
+/** Fail-closed gate for a committed batch shape (used in acceptance + live preflight). */
+export function assertBatchProvisionOutputBudget(provisionCount, sectionCount = 4, maxOutputTokens = 8192) {
+  const cap = resolveMaxProvisionsPerBatch();
+  const n = Number(provisionCount) || 0;
+  if (n > cap) {
+    return {
+      ok: false,
+      code: 'extraction_batch_provision_cap_exceeded',
+      provisionCount: n,
+      provisionCap: cap,
+      maxOutputTokens,
+    };
+  }
+  const est = estimateStructuredOutputTokens({ provisionCount: n, sectionCount });
+  return assertExtractionOutputBudget({ estimateTokens: est, maxOutputTokens, safetyRatio: 0.82 });
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** PS22 full-publication batch gate — 242 provisions, 17 batches, no overlap, preflight margin. */
+/** PS22 full-publication batch gate — 242 provisions, ≤16 provisions/batch, no overlap, preflight margin. */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { REPO_ROOT } from '../lib/ri/eval/eval-paths.mjs';
@@ -7,7 +7,10 @@ import { extractRegulatoryPdfContent } from '../../../integrations/regulatory-so
 import { buildPdfEvidenceBlocks } from '../../../integrations/regulatory-sources/core/pdf-evidence-blocks.mjs';
 import { detectLegalInstrumentStartPage } from '../lib/ri/classification/provision-eligibility.mjs';
 import { buildPublicationExtractionBatchPlan } from '../lib/ri/ai/extraction-batch-plan.mjs';
-import { estimateStructuredOutputTokens } from '../lib/ri/ai/extraction-output-preflight.mjs';
+import {
+  estimateStructuredOutputTokens,
+  resolveMaxProvisionsPerBatch,
+} from '../lib/ri/ai/extraction-output-preflight.mjs';
 
 const MAX_OUT = 8192;
 const SAFETY_RATIO = 0.82;
@@ -33,7 +36,10 @@ const plan = buildPublicationExtractionBatchPlan(blocks, {
 });
 
 check('instrument has 242 provisions', plan.instrumentProvisionCount === 242, { count: plan.instrumentProvisionCount });
-check('plan has 17 batches', plan.batches.length === 17, { batches: plan.batches.length });
+const provisionCap = resolveMaxProvisionsPerBatch();
+check('plan has 18 batches (post batch-5 cap split)', plan.batches.length === 18, {
+  batches: plan.batches.length,
+});
 check('publication coverage complete', plan.publicationCoverageComplete === true);
 
 const seen = new Set();
@@ -54,6 +60,7 @@ for (const b of plan.batches) {
   const pre = b.estimate?.outputPreflight;
   const sections = Math.min(4, b.selection?.selectedSections ?? 4);
   const prov = (b.instrumentProvisionsNewlySupplied || []).length;
+  check(`batch ${b.batchIndex} provision count ≤ cap`, prov <= provisionCap, { prov, provisionCap });
   const est = estimateStructuredOutputTokens({ provisionCount: prov, sectionCount: sections });
   const marginOk = est <= MAX_OUT * SAFETY_RATIO;
   check(`batch ${b.batchIndex} output within safety margin`, pre?.ok === true && marginOk, {

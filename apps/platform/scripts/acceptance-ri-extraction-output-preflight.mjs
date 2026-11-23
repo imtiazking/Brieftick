@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 import {
+  assertBatchProvisionOutputBudget,
   assertExtractionOutputBudget,
   estimateStructuredOutputTokens,
+  resolveMaxProvisionsPerBatch,
   scaleMaxOutputTokensForBatch,
 } from '../lib/ri/ai/extraction-output-preflight.mjs';
 
@@ -21,6 +23,9 @@ check('small batch passes preflight', pass.ok === true);
 
 const scaled = scaleMaxOutputTokensForBatch(8192, { provisionCount: 8, sectionCount: 8 });
 check('scaled output cap bounded', scaled >= 2048 && scaled <= 8192);
+
+check('default provision cap is 16', resolveMaxProvisionsPerBatch() === 16);
+check('22 provisions blocked', assertBatchProvisionOutputBudget(22, 4, 8192).ok === false);
 
 console.log(failed ? 'FAIL acceptance-ri-extraction-output-preflight' : 'PASS acceptance-ri-extraction-output-preflight');
 process.exit(failed ? 1 : 0);

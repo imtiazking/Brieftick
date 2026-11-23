@@ -1,0 +1,39 @@
+{
+  "runId": "9fd62178-ef68-451d-b16e-9cd17526d3f3",
+  "batchIndex": 5,
+  "executionStatus": "FAILED",
+  "errorCode": "AI_OUTPUT_TRUNCATED",
+  "providerMeta": {
+    "stopReason": "max_tokens",
+    "outputTokens": 8192
+  },
+  "instrumentProvisionsNewlySupplied": [
+    "15.7.24R",
+    "2A.2.24G",
+    "2A.2.25G",
+    "2A.2.26R",
+    "2A.2.27G",
+    "2A.2.28G",
+    "2A.3.1G",
+    "2A.3.2R",
+    "2A.3.3G",
+    "2A.4.29R",
+    "2A.4.31G",
+    "2A.4.33R",
+    "2A.4.34R",
+    "2A.4.35E",
+    "2A.4.36R",
+    "2A.5.1R",
+    "2A.5.2G",
+    "2A.5.3R",
+    "2A.5.4R",
+    "2A.5.5R",
+    "6.6.26G",
+    "8.5.22R"
+  ],
+  "structuredOutput": {
+    "candidates": [],
+    "claims": []
+  },
+  "diagnosis": "22 provisions supplied; provider exhausted max_output_tokens before valid JSON — completeness marks all cores omitted with requiresExceptionReview."
+}

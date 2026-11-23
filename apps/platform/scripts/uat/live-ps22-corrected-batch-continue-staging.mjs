@@ -10,6 +10,7 @@ import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { runAs, STAGING_ORIGIN } from './staging-user-sessions.mjs';
 import {
+  assertBatchProvisionOutputBudget,
   assertExtractionOutputBudget,
   estimateStructuredOutputTokens,
 } from '../../lib/ri/ai/extraction-output-preflight.mjs';
@@ -77,14 +78,15 @@ await runAs('A', async ({ page }) => {
   const plan = (await planRes.json().catch(() => ({}))).plan;
   const batchPlan = plan?.batches?.[nextBatch];
   const provisionCount = batchPlan?.instrumentProvisionsNewlySupplied?.length ?? 0;
-  const preflight = assertExtractionOutputBudget({
-    estimateTokens: estimateStructuredOutputTokens({
-      provisionCount,
-      sectionCount: Math.min(MAX_SECTIONS, batchPlan?.selection?.selectedSections ?? MAX_SECTIONS),
-    }),
-    maxOutputTokens: 8192,
-  });
-  record('output-preflight', { provisionCount, preflight });
+  const sections = Math.min(MAX_SECTIONS, batchPlan?.selection?.selectedSections ?? MAX_SECTIONS);
+  const batchPreflight = assertBatchProvisionOutputBudget(provisionCount, sections, 8192);
+  const preflight = batchPreflight.ok
+    ? assertExtractionOutputBudget({
+        estimateTokens: estimateStructuredOutputTokens({ provisionCount, sectionCount: sections }),
+        maxOutputTokens: 8192,
+      })
+    : batchPreflight;
+  record('output-preflight', { provisionCount, batchPreflight, preflight });
   if (!preflight.ok) throw new Error(`output preflight blocked: ${preflight.code}`);
 
   const projectedTotal = spendBefore.cumulativePilotSpendUsd + MAX_USD;
