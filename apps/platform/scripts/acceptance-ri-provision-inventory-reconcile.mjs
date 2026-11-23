@@ -30,8 +30,10 @@ const plan = buildPublicationExtractionBatchPlan(blocks, { instrumentStartPage: 
 const state = initPublicationExtractionOrchestration(plan, { publicationId: '829c5472-953a-40ff-9628-947afbfe4e7a', evidenceBlocks: blocks });
 state._provisionInventory = buildInstrumentProvisionInventory(blocks, start);
 for (const b of state.batches) {
-  if (b.batchIndex === 0) markBatchOutcome(state, 0, { ok: true, newlySuppliedCores: b.instrumentProvisionsNewlySupplied || [] });
-  if (b.batchIndex === 1) markBatchOutcome(state, 1, { ok: true, newlySuppliedCores: b.instrumentProvisionsNewlySupplied || [] });
+  markBatchOutcome(state, b.batchIndex, {
+    ok: true,
+    newlySuppliedCores: b.instrumentProvisionsNewlySupplied || [],
+  });
 }
 finalizeProvisionInventoryOutcomes(state);
 const rec = state.provisionInventoryReconciliation;

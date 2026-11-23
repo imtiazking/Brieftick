@@ -162,13 +162,6 @@ await runAs('A', async ({ page }) => {
       claims: out.claims || [],
     });
 
-  let spendAfter;
-  try {
-    spendAfter = reconcileSpend();
-  } catch (e) {
-    spendAfter = { reconcileError: String(e.message || e) };
-  }
-
   writeFileSync(
     evidencePath,
     JSON.stringify(
@@ -181,7 +174,7 @@ await runAs('A', async ({ page }) => {
         executionStatus: status,
         spendUsd: spend,
         spendBefore,
-        spendAfter,
+        spendAfter: null,
         completeness,
         structured_output: out,
         gate: {
@@ -205,5 +198,13 @@ await runAs('A', async ({ page }) => {
     throw new Error(`completeness failed — omissions ${completeness.omissionCount} — no further batches`);
   }
 });
+
+const evidence = JSON.parse(readFileSync(evidencePath, 'utf8'));
+try {
+  evidence.spendAfter = reconcileSpend();
+} catch (e) {
+  evidence.spendAfter = { reconcileError: String(e.message || e) };
+}
+writeFileSync(evidencePath, JSON.stringify(evidence, null, 2));
 
 console.log(`Wrote ${evidencePath}`);

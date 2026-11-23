@@ -396,7 +396,7 @@ try {
     upd(c, `insert into regulatory_obligations (organisation_id, publication_id, obligation_statement, status, metadata) values ($1, $2, 'Manual open', 'OPEN', $3::jsonb)`, [UAT, pubId, JSON.stringify(TEST_MANUAL_OBLIGATION_METADATA)]), 'classified_obligation_must_start_draft');
   const manualChange = (
     await db.query(
-      `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status, origin) values ($1, $2, 'Manual change', 'TEST', 'DRAFT', 'MANUAL') returning id`,
+      `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status, origin, created_by_user_id) values ($1, $2, 'Manual change', 'TEST', 'DRAFT', 'MANUAL', 'user_uat') returning id`,
       [UAT, pubId],
     )
   ).rows[0].id;

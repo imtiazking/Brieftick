@@ -7,6 +7,8 @@ import {
   scaleMaxOutputTokensForBatch,
 } from '../lib/ri/ai/extraction-output-preflight.mjs';
 
+delete process.env.RI_LAB_MAX_PROVISIONS_PER_BATCH;
+
 let failed = 0;
 const check = (label, ok) => {
   if (!ok) failed += 1;

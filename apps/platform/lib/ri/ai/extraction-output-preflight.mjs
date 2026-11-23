@@ -9,7 +9,8 @@ const CHARS_PER_OUTPUT_TOKEN = 4;
 export function resolveMaxProvisionsPerBatch(override) {
   if (Number.isFinite(override) && override > 0) return Math.floor(override);
   const n = Number(process.env.RI_LAB_MAX_PROVISIONS_PER_BATCH);
-  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 16;
+  const resolved = Number.isFinite(n) && n > 0 ? Math.floor(n) : 16;
+  return Math.min(16, resolved);
 }
 
 export function estimateStructuredOutputTokens({ provisionCount = 0, sectionCount = 0, candidateFloor = 0 } = {}) {

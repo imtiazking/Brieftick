@@ -1,0 +1,103 @@
+{
+  "generatedAt": "2026-11-23T23:02:16.408Z",
+  "publicationAssessment": {
+    "fcaReference": "CP22/9",
+    "title": "A new Consumer Duty",
+    "documentTypes": [
+      "consultation_paper",
+      "proposed_handbook_instrument"
+    ],
+    "legallyBindingAsPublished": false,
+    "consultationPreserved": true,
+    "instrumentInDocument": true,
+    "note": "Made rules text in CP22/9 are proposals subject to consultation, not independently operative Handbook obligations until implemented via Policy Statement / instrument made by the FCA.",
+    "authoritativeSources": [
+      "integrations/regulatory-sources/fixtures/fca-ps22-9-official.pdf",
+      "FCA CP22/9 (Consumer Duty consultation)"
+    ]
+  },
+  "focusProvisions": [
+    {
+      "provisionCore": "2A.2.14R",
+      "pdfPages": [
+        110
+      ],
+      "operativeMarkerInSource": true,
+      "canonicalCode": "R",
+      "canonicalLegalStatus": "binding",
+      "handbookStyleBindingIfFinalised": "binding_requirement",
+      "asPublishedLegalCharacter": "consultation_proposal",
+      "mustNotPresentAsIndependentBinding": true,
+      "historicalAiRunPreserved": true,
+      "subsequentAssessment": {
+        "assessedAt": "2026-11-23T23:02:16.405Z",
+        "regulatoryClassificationCode": "R",
+        "bindingNatureForPresentation": "consultation_proposal",
+        "conversionEligibilityUnderConsultation": "human_review_required_before_obligation_conversion",
+        "liveExtractionSnapshot": {
+          "runId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+          "bindingNature": "consultation_proposal",
+          "regulatoryClassificationCode": "R",
+          "guard": {
+            "documentType": "consultation",
+            "inLegalInstrumentSection": true,
+            "provisionSetOutInSection": true,
+            "conversionEligibilityRoute": "OBLIGATION",
+            "provisionSetOutInQuotation": true,
+            "conversionEligibilityReasons": [],
+            "mustNotPresentAsIndependentBinding": true
+          },
+          "bindingNatureGuarded": "must_not_present_as_independent_binding"
+        },
+        "alignmentWithPolicy": "ALIGNED"
+      },
+      "quotationSetOut": true
+    },
+    {
+      "provisionCore": "2A.2.26R",
+      "pdfPages": [
+        112
+      ],
+      "operativeMarkerInSource": true,
+      "canonicalCode": "R",
+      "canonicalLegalStatus": "binding",
+      "handbookStyleBindingIfFinalised": "binding_requirement",
+      "asPublishedLegalCharacter": "consultation_proposal",
+      "mustNotPresentAsIndependentBinding": true,
+      "historicalAiRunPreserved": true,
+      "subsequentAssessment": {
+        "assessedAt": "2026-11-23T23:02:16.406Z",
+        "regulatoryClassificationCode": "R",
+        "bindingNatureForPresentation": "consultation_proposal",
+        "conversionEligibilityUnderConsultation": "human_review_required_before_obligation_conversion",
+        "liveExtractionSnapshot": {
+          "runId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+          "bindingNature": "consultation_proposal",
+          "regulatoryClassificationCode": "R",
+          "guard": {
+            "documentType": "consultation",
+            "inLegalInstrumentSection": true,
+            "provisionSetOutInSection": true,
+            "conversionEligibilityRoute": "OBLIGATION",
+            "provisionSetOutInQuotation": true,
+            "conversionEligibilityReasons": [],
+            "mustNotPresentAsIndependentBinding": true
+          },
+          "bindingNatureGuarded": "must_not_present_as_independent_binding"
+        },
+        "alignmentWithPolicy": "ALIGNED"
+      },
+      "quotationSetOut": true
+    }
+  ],
+  "batch0DiscrepancyReassessment": {
+    "priorFindings": 4,
+    "resolved": true,
+    "note": "Historical batch-0 JSON unchanged; this block is subsequent legal interpretation only."
+  },
+  "batch1Reassessment": {
+    "allAligned": true,
+    "count": 2
+  },
+  "policyStatement": "Provision suffix R identifies proposed rule text in the consultation instrument; it does not alone establish a currently binding Handbook obligation. The engine must preserve consultation guards."
+}

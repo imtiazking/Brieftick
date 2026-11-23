@@ -1,0 +1,180 @@
+{
+  "generatedAt": "2026-11-23T23:02:16.562Z",
+  "operativeCount": 17,
+  "byPrimary": {
+    "AI_EXTRACTION_FAILURE": 17
+  },
+  "provisions": [
+    {
+      "core": "16.1.6R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "missing_source_evidence",
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "2.3.1R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "pdf_markup_uncertainty",
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "2.3.2R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "pdf_markup_uncertainty",
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "2.5.1R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "pdf_markup_uncertainty",
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "2.7.1R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "pdf_markup_uncertainty",
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.2.1R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "pdf_markup_uncertainty",
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.2A.11R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.2A.1R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.2A.4R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.2A.6R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap",
+        "missing_provision_reference_inference"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.2A.7R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap",
+        "missing_provision_reference_inference"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.2A.8R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.6.2AR",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "pdf_markup_uncertainty",
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "4.6.2R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "pdf_markup_uncertainty",
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "TP 13.1R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "TP 13.3R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    },
+    {
+      "core": "TP 13.4R",
+      "primary": "AI_EXTRACTION_FAILURE",
+      "reasons": [
+        "ai_extraction_omission",
+        "historical_run_gap"
+      ],
+      "liveAiStructuredRecall": false
+    }
+  ],
+  "historicalRunCount": 2,
+  "remediationWithoutPaidApi": [
+    "Provision inventory + cross-page deterministic candidates (7.20.1R pattern)",
+    "Output preflight + batch sizing",
+    "Regulatory guards + provision reference parse fixes",
+    "Hosted re-extract only when authorised"
+  ],
+  "independentlyVerifiedRegulatoryTruth": "FCA-PS26-INDEPENDENT-PROVISION-VERIFICATION-2026-11-23.json"
+}

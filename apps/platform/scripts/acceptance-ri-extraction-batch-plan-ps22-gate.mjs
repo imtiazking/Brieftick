@@ -16,6 +16,8 @@ const MAX_OUT = 8192;
 const SAFETY_RATIO = 0.82;
 const INPUT_CHARS_PER_TOKEN = 4;
 
+delete process.env.RI_LAB_MAX_PROVISIONS_PER_BATCH;
+
 let failed = 0;
 const check = (label, ok, detail) => {
   if (!ok) failed += 1;

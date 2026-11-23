@@ -1,0 +1,324 @@
+{
+  "generatedAt": "2026-11-23T23:18:15.821Z",
+  "programme": "FORGENIQ consolidated remediation",
+  "spendCumulativeUsd": 1.488222,
+  "provisionsAssessedPs22": 97,
+  "summary": {
+    "total": 15,
+    "byStatus": {
+      "FIXED AND TESTED": 7,
+      "BLOCKED — EXTERNAL DEPENDENCY": 1,
+      "BLOCKED — SPENDING AUTHORISATION": 1,
+      "READY FOR HOSTED VALIDATION": 4,
+      "TESTED AND PASSED": 2
+    },
+    "byCategory": {
+      "1": 3,
+      "2": 5,
+      "3": 1,
+      "5": 3,
+      "6": 1,
+      "7": 2
+    },
+    "gateReport": {
+      "generatedAt": "2026-11-23T23:18:15.809Z",
+      "passed": 22,
+      "failed": 0,
+      "suites": [
+        {
+          "suite": "acceptance-ri-normalize-obligation-output",
+          "ok": true,
+          "exit": 0,
+          "tail": "{\"ok\":true,\"test\":\"acceptance-ri-normalize-obligation-output\"}"
+        },
+        {
+          "suite": "acceptance-ri-extraction-output-preflight",
+          "ok": true,
+          "exit": 0,
+          "tail": "PASS 22 provisions blocked | PASS acceptance-ri-extraction-output-preflight"
+        },
+        {
+          "suite": "acceptance-ri-extraction-batch-plan-ps22-gate",
+          "ok": true,
+          "exit": 0,
+          "tail": " | acceptance-ri-extraction-batch-plan-ps22-gate: PASS"
+        },
+        {
+          "suite": "acceptance-ri-provision-assessment-completeness",
+          "ok": true,
+          "exit": 0,
+          "tail": "{\"ok\":true,\"test\":\"acceptance-ri-provision-assessment-completeness\"}"
+        },
+        {
+          "suite": "acceptance-ri-provision-source-verification-ps22",
+          "ok": true,
+          "exit": 0,
+          "tail": "PASS index lists 2A.4.35E on p.126 {\"pages\":[126]} | PASS 35E quotation verifiable on p.126 {\"ok\":true,\"quotationPage\":126}"
+        },
+        {
+          "suite": "acceptance-ri-provision-source-verification-ps26",
+          "ok": true,
+          "exit": 0,
+          "tail": "PASS provision index lists 7.20.1R on pp.94 and 95 [94,95] | PASS inventory marks 7.20.1R NEW_TEXT on p94"
+        },
+        {
+          "suite": "acceptance-ri-provision-inventory",
+          "ok": true,
+          "exit": 0,
+          "tail": "PASS orchestration carries provision inventory | acceptance-ri-provision-inventory: all passed"
+        },
+        {
+          "suite": "acceptance-ri-provision-inventory-reconcile",
+          "ok": true,
+          "exit": 0,
+          "tail": "PASS PS26/1 seven justified exception cores preserved {\"missing\":[]} | PASS acceptance-ri-provision-inventory-reconcile"
+        },
+        {
+          "suite": "acceptance-ri-ps22-final-reconcile",
+          "ok": true,
+          "exit": 0,
+          "tail": "  } | }"
+        },
+        {
+          "suite": "acceptance-ri-classification-policy-core",
+          "ok": true,
+          "exit": 0,
+          "tail": " | 116 passed, 0 failed"
+        },
+        {
+          "suite": "acceptance-ri-ps26-five-operative-historical",
+          "ok": true,
+          "exit": 0,
+          "tail": "PASS 4.2A.7R historical: completeness flags gap {\"outcome\":\"omitted\"} | PASS acceptance-ri-ps26-five-operative-historical"
+        },
+        {
+          "suite": "acceptance-ri-security-db-local-db",
+          "ok": true,
+          "exit": 0,
+          "tail": " | acceptance-ri-security-db-local-db: 5 passed, 0 failed"
+        },
+        {
+          "suite": "acceptance-ri-provision-eligibility-local-db",
+          "ok": true,
+          "exit": 0,
+          "tail": " | 47 passed, 0 failed"
+        },
+        {
+          "suite": "acceptance-ri-ai-finding-review-service",
+          "ok": true,
+          "exit": 0,
+          "tail": " | 32 passed, 0 failed"
+        },
+        {
+          "suite": "acceptance-ri-classification-triage-local-db",
+          "ok": true,
+          "exit": 0,
+          "tail": " | 99 passed, 0 failed"
+        },
+        {
+          "suite": "acceptance-ri-ai-finding-review-local-db",
+          "ok": true,
+          "exit": 0,
+          "tail": " | 52 passed, 0 failed"
+        },
+        {
+          "suite": "acceptance-ri-role-aware-rls-local-db",
+          "ok": true,
+          "exit": 0,
+          "tail": " | Role-aware RLS local DB acceptance: PASS — 68 passed"
+        },
+        {
+          "suite": "acceptance-ri-guards-and-scheduler-local-db",
+          "ok": true,
+          "exit": 0,
+          "tail": " | guards + scheduler (local DB): ALL PASS"
+        },
+        {
+          "suite": "acceptance-ri-lab-ai-analysis-post-guard",
+          "ok": true,
+          "exit": 0,
+          "tail": "  \"failures\": [] | }"
+        },
+        {
+          "suite": "acceptance-ri-uc-ri-005-run-idempotency",
+          "ok": true,
+          "exit": 0,
+          "tail": " | UC-RI-005 run idempotency: PASS"
+        },
+        {
+          "suite": "acceptance-ri-extraction-continuation-batch-index",
+          "ok": true,
+          "exit": 0,
+          "tail": "PASS outstanding provisions remain  | PASS acceptance-ri-extraction-continuation-batch-index"
+        },
+        {
+          "suite": "acceptance-ri-resource-optimisations",
+          "ok": true,
+          "exit": 0,
+          "tail": "  \"pass\": true | }"
+        }
+      ]
+    }
+  },
+  "defects": [
+    {
+      "id": "DEF-0001",
+      "title": "Continuation v2 spend runs absent from orchestration ledger",
+      "category": 1,
+      "status": "FIXED AND TESTED",
+      "rootCause": "Pilot reconcile only enumerated KNOWN + orchestration batches",
+      "resolution": "continuationEvidenceRunIds() from PS22-9-CONTINUATION-V2-BATCH*.json",
+      "commit": "ae4bd1e"
+    },
+    {
+      "id": "DEF-0002",
+      "title": "Parenthetical provision references fail parse (2.1.1R)",
+      "category": 2,
+      "status": "FIXED AND TESTED",
+      "rootCause": "parseProvisionReference did not strip trailing (Principle N) labels",
+      "resolution": "provision-eligibility.mjs + regulatoryClassificationCode on guard",
+      "commit": "4e5b688"
+    },
+    {
+      "id": "DEF-0003",
+      "title": "Batch accuracy conflated bindingNature with operative R marker under consultation",
+      "category": 6,
+      "status": "FIXED AND TESTED",
+      "rootCause": "Heuristic treated consultation_proposal as classification defect",
+      "resolution": "ps22-continuation-batch-accuracy-report.mjs dual-axis metrics",
+      "commit": "4e5b688"
+    },
+    {
+      "id": "DEF-0004",
+      "title": "Quotation accuracy checked presence only, not PDF verbatim",
+      "category": 2,
+      "status": "FIXED AND TESTED",
+      "rootCause": "textContent empty; no segment match",
+      "resolution": "quotationVerbatim + page window in accuracy report",
+      "commit": "5f7f54e"
+    },
+    {
+      "id": "DEF-0005",
+      "title": "Nested runAs during batch caused post-batch spend reconcile 401",
+      "category": 3,
+      "status": "FIXED AND TESTED",
+      "rootCause": "activePersona mutex in staging-user-sessions",
+      "resolution": "Reconcile after session closes in continuation batch script",
+      "commit": "5f7f54e"
+    },
+    {
+      "id": "DEF-0006",
+      "title": "SEC-DB-002 fixture seed missing created_by_user_id",
+      "category": 1,
+      "status": "FIXED AND TESTED",
+      "rootCause": "Finding review fixtures predated manual creator guard",
+      "resolution": "finding-review-fixtures.mjs attribution",
+      "commit": "a616b5b"
+    },
+    {
+      "id": "DEF-0007",
+      "title": "SEC-DB-003 hosted restricted-role proof",
+      "category": 7,
+      "status": "BLOCKED — EXTERNAL DEPENDENCY",
+      "rootCause": "STAGING_DATABASE_URL not in operator environment",
+      "resolution": "Local 5/5 + staging API 6/6; harness ready",
+      "evidence": "SEC-DB-003-STAGING-ACCESS-2026-11-23.json"
+    },
+    {
+      "id": "DEF-0008",
+      "title": "PS22 continuation exceeds $2.35 if all 12 batches executed",
+      "category": 7,
+      "status": "BLOCKED — SPENDING AUTHORISATION",
+      "rootCause": "Empirical ~$0.103/batch × 12 + $1.488 > $2.35",
+      "resolution": "PS22-9-CEILING-APPROVAL-REQUEST; batches 2–8 fit under current ceiling",
+      "evidence": [
+        "PILOT-SPEND-RECONCILE-2026-11-23.json",
+        "PS22-9-CONTINUATION-PLAN-14-BATCH-2026-11-23.json",
+        "PS22-9-CONTINUATION-V2-BATCH0-EXECUTION-REPORT-2026-11-23.json",
+        "PS22-9-CONTINUATION-V2-BATCH1-EXECUTION-REPORT-2026-11-23.json"
+      ]
+    },
+    {
+      "id": "DEF-0009",
+      "title": "PS26 operative requirements without live structured AI recall",
+      "category": 2,
+      "status": "READY FOR HOSTED VALIDATION",
+      "rootCause": "Historical runs: truncation, omissions, cross-page; deterministic recall separate",
+      "resolution": "Independent PDF verify 28R; pipeline trace + historical acceptance; no paid in this tranche",
+      "metrics": {
+        "operative_binding_requirement": 17,
+        "guidance": 12,
+        "amendment_or_transitional": 0,
+        "transitional_provision_TP": 0,
+        "legitimate_non_binding_exception": 0,
+        "scope_applicability_or_other": 0,
+        "ai_omission_candidates": 17,
+        "liveStructuredRecallAmongOutstanding": 0
+      }
+    },
+    {
+      "id": "DEF-0010",
+      "title": "Historical paid extraction failures (schema/truncation)",
+      "category": 1,
+      "status": "FIXED AND TESTED",
+      "rootCause": "8192 output token ceiling + batch >16 provisions",
+      "resolution": "RI_LAB_MAX_PROVISIONS_PER_BATCH=16 + output preflight",
+      "preservedEvidence": [
+        "147574c3-229a-42e3-9adb-fd480b905d3b",
+        "3872aebf-cdab-4367-8fa9-c5c1ddd0e08e",
+        "038f5ae0-56ed-4961-9d1c-f2953a15e741",
+        "d76b60f2-276b-48f2-ab78-fd449bca55b6",
+        "9fd62178-ef68-451d-b16e-9cd17526d3f3"
+      ],
+      "note": "Failed runs retained in spend line items for audit"
+    },
+    {
+      "id": "DEF-0011",
+      "title": "PS22 batch-0 four classification discrepancies",
+      "category": 2,
+      "status": "TESTED AND PASSED",
+      "rootCause": "Consultation presentation vs operative marker confusion",
+      "resolution": {
+        "investigated": 4,
+        "expectedConsultationPresentation": 3,
+        "engineDefectsRemediated": 1,
+        "genuineExtractionDefects": 0,
+        "resolved": true
+      },
+      "evidence": "PS22-9-BATCH0-CLASSIFICATION-DISCREPANCY-2026-11-23.json"
+    },
+    {
+      "id": "DEF-0012",
+      "title": "PS22/9 publication legal instrument status",
+      "category": 2,
+      "status": "TESTED AND PASSED",
+      "rootCause": "N/A — policy applied",
+      "resolution": "Consultation CP22/9: R markers are proposed rules; bindingNature must not be binding_requirement until final PS",
+      "evidence": "PS22-9-PUBLICATION-LEGAL-STATUS-ASSESSMENT-2026-11-23.json"
+    },
+    {
+      "id": "DEF-0013",
+      "title": "Hosted browser UAT: acceptance-ri-uc-ri-005-finding-review-browser",
+      "category": 5,
+      "status": "READY FOR HOSTED VALIDATION",
+      "rootCause": "Requires staging session + consolidated deploy",
+      "resolution": "Execute post-deploy on staging-app.forgeniq.com"
+    },
+    {
+      "id": "DEF-0014",
+      "title": "Hosted browser UAT: acceptance-ri-applicability-workflow-browser",
+      "category": 5,
+      "status": "READY FOR HOSTED VALIDATION",
+      "rootCause": "Requires staging session + consolidated deploy",
+      "resolution": "Execute post-deploy on staging-app.forgeniq.com"
+    },
+    {
+      "id": "DEF-0015",
+      "title": "Hosted browser UAT: acceptance-ri-uc-ri-005-extraction-button-browser",
+      "category": 5,
+      "status": "READY FOR HOSTED VALIDATION",
+      "rootCause": "Requires staging session + consolidated deploy",
+      "resolution": "Execute post-deploy on staging-app.forgeniq.com"
+    }
+  ]
+}

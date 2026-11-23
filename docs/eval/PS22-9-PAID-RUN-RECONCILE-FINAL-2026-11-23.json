@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T22:36:33.102Z",
+  "generatedAt": "2026-11-23T23:15:43.740Z",
   "gitBase": "b677d11",
   "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
   "sourceRevisionBinding": {
@@ -509,6 +509,13 @@
         "runId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
         "status": "COMPLETED",
         "spendUsd": 0.10542,
+        "preserved": true,
+        "note": null
+      },
+      {
+        "runId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+        "status": "COMPLETED",
+        "spendUsd": 0.100785,
         "preserved": true,
         "note": null
       }
@@ -1092,7 +1099,7 @@
         "continuationBatchIndex": 0,
         "provisionCount": 16,
         "outputEstimateTokens": 2820,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 2820,
@@ -1105,7 +1112,7 @@
         "continuationBatchIndex": 1,
         "provisionCount": 16,
         "outputEstimateTokens": 2820,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 2820,
@@ -1118,7 +1125,7 @@
         "continuationBatchIndex": 2,
         "provisionCount": 13,
         "outputEstimateTokens": 1792,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 1792,
@@ -1131,7 +1138,7 @@
         "continuationBatchIndex": 3,
         "provisionCount": 13,
         "outputEstimateTokens": 1792,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 1792,
@@ -1144,7 +1151,7 @@
         "continuationBatchIndex": 4,
         "provisionCount": 10,
         "outputEstimateTokens": 1468,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 1468,
@@ -1157,7 +1164,7 @@
         "continuationBatchIndex": 5,
         "provisionCount": 8,
         "outputEstimateTokens": 1252,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 1252,
@@ -1170,7 +1177,7 @@
         "continuationBatchIndex": 6,
         "provisionCount": 14,
         "outputEstimateTokens": 2516,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 2516,
@@ -1183,7 +1190,7 @@
         "continuationBatchIndex": 7,
         "provisionCount": 14,
         "outputEstimateTokens": 2516,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 2516,
@@ -1196,7 +1203,7 @@
         "continuationBatchIndex": 8,
         "provisionCount": 16,
         "outputEstimateTokens": 2820,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 2820,
@@ -1209,7 +1216,7 @@
         "continuationBatchIndex": 9,
         "provisionCount": 13,
         "outputEstimateTokens": 1792,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 1792,
@@ -1222,7 +1229,7 @@
         "continuationBatchIndex": 10,
         "provisionCount": 14,
         "outputEstimateTokens": 2516,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 2516,
@@ -1235,7 +1242,7 @@
         "continuationBatchIndex": 11,
         "provisionCount": 16,
         "outputEstimateTokens": 2820,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 2820,
@@ -1248,7 +1255,7 @@
         "continuationBatchIndex": 12,
         "provisionCount": 13,
         "outputEstimateTokens": 1792,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 1792,
@@ -1261,7 +1268,7 @@
         "continuationBatchIndex": 13,
         "provisionCount": 1,
         "outputEstimateTokens": 496,
-        "provisionCap": 512,
+        "provisionCap": 16,
         "batchPre": {
           "ok": true,
           "estimateTokens": 496,
@@ -1273,11 +1280,11 @@
     ]
   },
   "costForecast": {
-    "cumulativeSpendUsd": 1.387437,
+    "cumulativeSpendUsd": 1.488222,
     "authorizedCeilingUsd": 2.35,
     "proposedCeilingUsd": 3.25,
     "empiricalRemainingUsd": 1.33,
-    "projectedCumulativeUsd": 2.717
+    "projectedCumulativeUsd": 2.818
   },
   "acceptanceChecks": {
     "preserved65": true,
