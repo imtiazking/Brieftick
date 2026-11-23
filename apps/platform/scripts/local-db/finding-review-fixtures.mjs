@@ -96,9 +96,9 @@ export async function seedFindingReviewFixtures(db) {
   }
   const changeId = (
     await db.query(
-      `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status, metadata)
-       values ($1, $2, 'FG24/6 payment delays (test)', 'TEST', 'OPEN', '{"recordProvenance":"uat_authorised","labProvenanceLocked":true}'::jsonb) returning id`,
-      [PILOT, pubId],
+      `insert into regulatory_changes (organisation_id, publication_id, title, change_type, status, metadata, created_by_user_id)
+       values ($1, $2, 'FG24/6 payment delays (test)', 'TEST', 'OPEN', '{"recordProvenance":"uat_authorised","labProvenanceLocked":true}'::jsonb, $3) returning id`,
+      [PILOT, pubId, GMAIL],
     )
   ).rows[0].id;
 
