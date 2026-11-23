@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-11-23T18:04:22.644Z",
+  "generatedAt": "2026-11-23T21:20:22.729Z",
   "log": [
     {
       "step": "staging-batch-plan",
-      "at": "2026-11-23T18:04:22.191Z",
+      "at": "2026-11-23T21:20:22.291Z",
       "inventory": 242,
-      "batches": 17,
-      "batch0": 14,
+      "batches": 18,
+      "batch0": 16,
       "batch0Preflight": {
-        "estimateTokens": 1900,
+        "estimateTokens": 2820,
         "ok": true,
         "maxOutputTokens": 8192,
-        "provisionCap": 58,
-        "targetProvisionCount": 58
+        "provisionCap": 16,
+        "targetProvisionCount": 16
       }
     },
     {
       "step": "client-preflight",
-      "at": "2026-11-23T18:04:22.191Z",
+      "at": "2026-11-23T21:20:22.291Z",
       "ok": true,
-      "estimateTokens": 1900,
+      "estimateTokens": 2820,
       "maxOutputTokens": 8192
     },
     {
       "step": "policy",
-      "at": "2026-11-23T18:04:22.191Z",
+      "at": "2026-11-23T21:20:22.291Z",
       "maxUsdPerBatch": 0.2,
       "cumulativeCeilingUsd": 2.35,
       "existingAuthorisedCeilingUsd": 2,

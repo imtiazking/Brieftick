@@ -321,6 +321,18 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | PS22 gate | P4 unchanged | **242/242** **PASS**; no paid AI |
 | — | SEC-DB-003 | P5 | `STAGING_DATABASE_URL` still absent |
 
+## 2026-11-23 — Consolidated tranche (PS22 batch-5 cap, deploy 2ee3372)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 21:08 | PS22 batch-5 root cause | Run `9fd62178` AI_OUTPUT_TRUNCATED @ 8192 tokens, 22 provisions | `acceptance-ri-ps22-batch5-historical.mjs` **PASS**; fixture `ps22-batch5-run-9fd62178-forensic.json` |
+| 21:09 | Provision cap gate | Prevent live oversize batches | `RI_LAB_MAX_PROVISIONS_PER_BATCH=16`; `assertBatchProvisionOutputBudget` in runtime + continue script |
+| 21:10 | PS22 plan | Split former 22-provision batch | Gate **242/242**, **18 batches**, all ≤16 provisions |
+| 21:15 | Build | org-scoped PDF cache JSDoc | `npm run build` **PASS** |
+| 21:19 | Staging deploy | Policy: one deploy per tranche | `dpl_5Q6KNYMkCP2hLeS3FeZXCKCvkD9H` @ **`2ee3372`** → `staging-app.forgeniq.com` |
+| 21:20 | Hosted UAT | No paid extract | P3 verify **PASS**; SEC-DB API **6/6**; PS22 plan on staging **18 batches**; spend **$1.282 / $2.35** |
+| 21:22 | Milestone | Consolidated report | `MILESTONE-CONSOLIDATED-TRANCHE-2026-11-23.json` |
+
 ## 2026-11-23 — Provision assessment completeness (PS26 five-operative)
 
 | Time (UTC) | Decision | Reason | Outcome |

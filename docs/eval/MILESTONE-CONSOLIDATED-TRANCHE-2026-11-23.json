@@ -1,0 +1,103 @@
+{
+  "generatedAt": "2026-11-23T21:22:00.000Z",
+  "tranche": "PS22 batch-5 truncation fix + resource verification + consolidated staging deploy",
+  "gitHead": "2ee33729cec92657920cd3c6a346f70cf668a664",
+  "priorResourceCommit": "7a4928696b08c31fc96f7a71e5a29daffe03b4b0",
+  "resolvedDefects": [
+    {
+      "id": "PS22-batch-5-9fd62178",
+      "rootCause": "AI_OUTPUT_TRUNCATED (max_tokens 8192) on 22-provision batch; completeness marked all cores omitted including 15.7.24R",
+      "fix": "RI_LAB_MAX_PROVISIONS_PER_BATCH=16; assertBatchProvisionOutputBudget in plan builder and runtime; raised per-claim token estimate for dense batches",
+      "paidRetry": false,
+      "historicalPreserved": true,
+      "fixture": "docs/eval/fixtures/ps22-batch5-run-9fd62178-forensic.json",
+      "deterministicTest": "apps/platform/scripts/acceptance-ri-ps22-batch5-historical.mjs"
+    },
+    {
+      "id": "build-organisationId-jsdoc",
+      "rootCause": "TypeScript rejected organisationId on loadPublicationPdfEvidenceForAskRi options",
+      "fix": "JSDoc options type includes organisationId and cacheScope (tenant-safe PDF cache from 7a49286)"
+    }
+  ],
+  "localGates": {
+    "acceptance-ri-ps22-batch5-historical.mjs": "PASS",
+    "acceptance-ri-extraction-output-preflight.mjs": "PASS",
+    "acceptance-ri-resource-optimisations.mjs": "PASS",
+    "acceptance-ri-extraction-batch-plan-ps22-gate.mjs": "PASS (242 provisions, 18 batches, ≤16 provisions each)",
+    "acceptance-ri-security-db-local-db.mjs": "PASS 5/5",
+    "fca-ps26-accuracy-benchmark-revised.mjs": "PASS (operative binding recall 5/5 verified; 29 unresolved provisions catalogued)",
+    "npm run build": "PASS"
+  },
+  "stagingDeployment": {
+    "project": "forgeniq-platform-staging",
+    "deploymentId": "dpl_5Q6KNYMkCP2hLeS3FeZXCKCvkD9H",
+    "deploymentUrl": "https://forgeniq-platform-staging-eintfgu27-imis-projects-8e15dca0.vercel.app",
+    "alias": "https://staging-app.forgeniq.com",
+    "evidence": "docs/eval/STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json"
+  },
+  "hostedUat": {
+    "smoke-staging.mjs": {
+      "pass": false,
+      "note": "/health and auth routes 200; /ri/* returned 404 without session cookie (pre-existing unauthenticated smoke pattern)"
+    },
+    "p3-provision-engine-staging-verify.mjs": "PASS",
+    "acceptance-ri-security-db-staging-api.mjs": "PASS 6/6 (SEC-DB-003 skip — no public delete route)",
+    "ps22-first-batch-prep-staging.mjs": {
+      "pass": true,
+      "batches": 18,
+      "batch0Provisions": 16,
+      "provisionCap": 16,
+      "paidExtract": false,
+      "evidence": "docs/eval/PS22-9-FIRST-BATCH-PREP-2026-11-23.json"
+    }
+  },
+  "pilotSpend": {
+    "cumulativeUsd": 1.282017,
+    "ceilingUsd": 2.35,
+    "remainingUsd": 1.067983,
+    "failedRun9fd62178Preserved": true,
+    "additionalPaidExtractionThisTranche": false,
+    "evidence": "docs/eval/PILOT-SPEND-RECONCILE-2026-11-23.json"
+  },
+  "vercelResource": {
+    "optimisationsFrom7a49286": [
+      "uat poll exponential backoff",
+      "org-scoped PDF evidence cache (revision-hash keys)",
+      "batch-plan grounding sample opt-in default off",
+      "ai-analysis-run GET Cache-Control private no-store",
+      "lab resource metrics env gate",
+      "staging deploy throttle (15 min, FORCE_STAGING_DEPLOY override)",
+      "parallel pilot spend reconcile"
+    ],
+    "localVerification": "docs/eval/RESOURCE-OPTIMISATIONS-ACCEPTANCE-2026-11-23.json",
+    "deploymentsThisTranche": 1,
+    "hobbyObservabilityPerRouteCpu": "not available (403 on audit)"
+  },
+  "fcaAccuracy": {
+    "operativeBindingRecallFiveVerified": 1,
+    "unsupportedBindingClassifications": 0,
+    "unresolvedProvisionCount": 29,
+    "distinction": "deterministic completeness checks and historical AI runs preserved separately from new extraction gates",
+    "evidence": "docs/eval/FCA-PS26-ACCURACY-BENCHMARK-REVISED-2026-11-23.json"
+  },
+  "remainingBlockers": [
+    {
+      "id": "SEC-DB-003-hosted",
+      "reason": "STAGING_DATABASE_URL not available locally",
+      "mitigation": "Local DB harness PASS; staging API harness PASS; delete-block test deferred"
+    },
+    {
+      "id": "PS22-orchestration-batch-5",
+      "reason": "Historical run 9fd62178 remains FAILED on ledger; continuation requires new suffix/plan (18-batch) — not auto-retried this tranche"
+    },
+    {
+      "id": "PS22-paid-continuation",
+      "reason": "Batches 5–16 not re-executed — awaiting authorised paid pilot with updated plan"
+    },
+    {
+      "id": "fca-provision-identification",
+      "reason": "29 PS26 provisions still unresolved in revised benchmark (not regressions from this tranche)"
+    }
+  ],
+  "productionDeployment": "not performed — approval required"
+}
