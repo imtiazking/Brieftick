@@ -1,0 +1,98 @@
+{
+  "generatedAt": "2026-11-23T08:27:18.155Z",
+  "pilotLog": [
+    {
+      "step": "PS26/1-reconcile",
+      "at": "2026-11-23T08:24:56.034Z",
+      "inventory": 47,
+      "plannedBatches": 2,
+      "publicationCoverageCompletePlanned": true,
+      "batchLimitReached": false
+    },
+    {
+      "step": "PS26/1-change",
+      "at": "2026-11-23T08:25:09.100Z",
+      "changeId": "9ea204cb-caf4-44d0-bc95-c173a7241556",
+      "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv"
+    },
+    {
+      "step": "PS26/1-resume-marker",
+      "at": "2026-11-23T08:25:14.252Z",
+      "idem": "live-ps26-full-2026-11-22",
+      "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+      "status": "COMPLETED"
+    },
+    {
+      "step": "PS26/1-batch-0",
+      "at": "2026-11-23T08:25:17.224Z",
+      "batchIndex": 0,
+      "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+      "idempotencySuffix": "live-ps26-full-2026-11-22",
+      "executionStatus": "COMPLETED",
+      "latencyMs": 1129,
+      "extractHttp": 200,
+      "cumulativeSupplied": 40,
+      "consolidatedFindings": 0,
+      "publicationCoverageComplete": false,
+      "unresolved": 0
+    },
+    {
+      "step": "PS26/1-extract-fail",
+      "at": "2026-11-23T08:25:22.412Z",
+      "batchIndex": 1,
+      "idem": "live-ps26-full-2026-11-22-batch-2",
+      "exBody": {
+        "ok": false,
+        "error": "internal_error"
+      }
+    },
+    {
+      "step": "failed",
+      "at": "2026-11-23T08:25:23.143Z",
+      "message": "PS26/1 batch 1 extract failed — no retry"
+    }
+  ],
+  "publications": [
+    {
+      "code": "PS26/1",
+      "publicationId": "829c5472-953a-40ff-9628-947afbfe4e7a",
+      "benchmarkProvisionCount": 47,
+      "orchestrationSuppliedCount": 40,
+      "unresolvedProvisionCores": [],
+      "outstandingProvisionEstimate": 7,
+      "publicationCoverageComplete": false,
+      "batches": [
+        {
+          "batchIndex": 0,
+          "status": "SUCCEEDED",
+          "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91"
+        },
+        {
+          "batchIndex": 1,
+          "status": "PENDING",
+          "runId": null
+        }
+      ],
+      "recallProxy": 0.851063829787234,
+      "precisionRecallNote": "Full precision/recall requires claim-level reconciliation against benchmark cores; proxy uses supplied/total instrument provisions."
+    },
+    {
+      "code": "PS22/9",
+      "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "benchmarkProvisionCount": null,
+      "orchestrationSuppliedCount": 0,
+      "unresolvedProvisionCores": [],
+      "outstandingProvisionEstimate": 0,
+      "publicationCoverageComplete": false,
+      "recallProxy": null,
+      "precisionRecallNote": "Full precision/recall requires claim-level reconciliation against benchmark cores; proxy uses supplied/total instrument provisions."
+    }
+  ],
+  "spendUsdEstimate": 0,
+  "acceptance": {
+    "processingCoverageComplete": false,
+    "accuracyMeasured": false,
+    "withinBudgetUsd": 2,
+    "withinBudget": true
+  }
+}

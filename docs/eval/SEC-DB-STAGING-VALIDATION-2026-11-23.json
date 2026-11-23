@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-11-23T08:30:00.000Z",
+  "scope": "Hosted staging positive/negative RLS (SEC-DB-001..003)",
+  "status": "PARTIAL",
+  "localAcceptance": {
+    "script": "acceptance-ri-security-db-local-db.mjs",
+    "result": "5/5 PASS (prior session)",
+    "projectRef": "lhgzdicffkhaaykzthep"
+  },
+  "stagingMigrationEvidence": {
+    "migration": "20261122233000_ri_security_db_hardening.sql",
+    "applied": true,
+    "triggerInventory": [
+      "findings_set_updated_at on findings",
+      "ri_guard_finding_close on findings",
+      "ri_guard_manual_finding_creator on findings",
+      "ri_guard_workflow_events_immutable on workflow_events"
+    ],
+    "source": "Supabase execute_sql 2026-11-23"
+  },
+  "hostedRolePlayUat": {
+    "script": "acceptance-ri-security-db-staging.mjs",
+    "result": "NOT RUN",
+    "blocker": "STAGING_DATABASE_URL not present in local operator environment (direct Postgres RLS session required)"
+  },
+  "closureRule": "SEC-DB-001..003 remain conditionally closed on migration + local 5/5; hosted RLS role-play pending connection string or API harness"
+}

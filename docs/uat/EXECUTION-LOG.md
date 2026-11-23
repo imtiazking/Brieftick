@@ -2,6 +2,17 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-23 — Autonomous tranche (08:24 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 08:24 | Commit `e0d1994` | Pilot + durability + harness | Poll fix, PDF batch fallback, stale AI recovery, master port retry |
+| 08:24 | Batch 0 reconcile | No duplicate paid POST | `PS26-1-BATCH-0-RUN-RECONCILIATION-2026-11-23.json` |
+| 08:25 | Pilot resume | Batch 0 marker reuse | **COMPLETED** 40/47; batch 1 `internal_error` on pre-deploy runtime |
+| 08:24 | RI master ×3 | P2 gate | Run 1/3 started (background) |
+| — | Staging deploy | `vercel deploy` token invalid; MCP 0 projects | **Blocker** until operator auth |
+| — | SEC-DB staging | No `STAGING_DATABASE_URL` locally | Partial: Supabase trigger inventory + local 5/5 |
+
 ## 2026-11-23 — Production readiness programme (continued)
 
 | Time (UTC) | Decision | Reason | Outcome |

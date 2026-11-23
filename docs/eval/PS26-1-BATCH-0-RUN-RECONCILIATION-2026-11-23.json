@@ -1,0 +1,42 @@
+{
+  "reconciledAt": "2026-11-23T08:24:19.981Z",
+  "batchIndex": 0,
+  "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+  "idempotencySuffix": "live-ps26-full-2026-11-22",
+  "idempotencyLookup": {
+    "http": 200,
+    "ok": true,
+    "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+    "executionStatus": "COMPLETED",
+    "errorCode": null,
+    "completedAt": "2026-11-23T00:14:56.552+00:00",
+    "idempotencyKey": "UC-RI-005:a12a0769-31a5-4b2a-a6e0-962a5cb70dcd:b8f5e3a1-00ad-4000-8000-000000000001:live-ps26-full-2026-11-22"
+  },
+  "executionStatus": "Completed",
+  "claimsCount": 12,
+  "completedAt": "2026-11-23T00:14:56.552+00:00",
+  "spend": null,
+  "orchestration": {
+    "batches": [
+      {
+        "batchIndex": 0,
+        "status": "SUCCEEDED",
+        "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
+        "idempotencySuffix": "batch-0"
+      },
+      {
+        "batchIndex": 1,
+        "status": "PENDING",
+        "runId": null,
+        "idempotencySuffix": null
+      }
+    ],
+    "cumulativeSupplied": 40,
+    "publicationCoverageComplete": false,
+    "unresolved": []
+  },
+  "notes": [
+    "Batch 0 run reused via idempotency; no duplicate POST for this suffix.",
+    "consolidatedFindings on run may be zero when review not submitted — orchestration ledger is authoritative for coverage."
+  ]
+}

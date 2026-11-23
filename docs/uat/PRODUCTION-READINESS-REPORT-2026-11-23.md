@@ -1,85 +1,84 @@
-# FORGENIQ Regulatory Intelligence — production readiness report (2026-11-23)
+# FORGENIQ Regulatory Intelligence — production readiness report (2026-11-23, accepted baseline; progress update)
 
-**Decision: NO-GO for production** until live extraction accuracy is evidenced under acceptance criteria and RI master passes three consecutive full runs.
+**Baseline decision accepted:** **NO-GO for production** until live extraction accuracy is evidenced and RI master passes three consecutive full runs.
+
+This update reflects commit **`e0d1994`** and autonomous execution on 2026-11-23 (08:24 UTC tranche).
+
+## Readiness tiers
+
+| Tier | Definition | Decision |
+|---|---|---|
+| **1 — FCA pilot** | FCA corpus + staging UAT + authorised live extraction for PS26/1 & PS22/9 | **NO-GO** — batch 0 reconciled; batch 1+ blocked on staging app deploy |
+| **2 — Wider RI** | Multi-regulator catalogue, ingestion, classification fail-closed, platform UAT | **NO-GO** — FCA only verified/activated; FRC suspended |
+| **3 — 36 regulators** | Verified policy per regulator + activation + UAT | **NO-GO** — 1 verified active (FCA); 31+ outstanding |
 
 ## Git and staging
 
 | Item | Value |
 |---|---|
 | Branch | `feature/ri-classification-triage` |
-| Head commit | `2707ac6` (async UC-RI-005 dispatch, Phase 3A harness, pilot recovery) |
-| Staging deployment | `dpl_Hrtx7ABaxJBZBBxt9mBYnEZtVYuc` @ `https://staging-app.forgeniq.com` |
-| Production | **Not deployed** |
+| Head commit | `e0d1994` (pilot poll fix, PDF batch fallback, stale AI recovery, harness retry) |
+| Staging runtime | Still on prior deployment (`dpl_Hrtx7ABaxJBZBBxt9mBYnEZtVYuc` class) — **new commit not deployed** |
+| Deploy blocker | Local `vercel deploy --prod` rejected token; Vercel MCP lists **0 projects** for connected account |
+| Production | **Not deployed** (mandatory approval unchanged) |
 
-## Workstream 1 — Live full-publication extraction
-
-| Item | Status |
-|---|---|
-| Provision inventory reconcile | PS26/1 **47** / PS22/9 **242** (read-only plan API) |
-| Orchestration persistence | Tenant `organisation_publications.metadata._extractionOrchestration` |
-| Transport remediation | **Implemented** — `202 Accepted` + `after()` provider dispatch; idempotency GET; pilot transport recovery |
-| Paid batch completion | **In progress / pending evidence** — see `LIVE-FULL-PUBLICATION-EXTRACTION-PILOT-RUN-2026-11-22.json` |
-| Acceptance criteria | `docs/eval/LIVE-EXTRACTION-ACCEPTANCE-CRITERIA-2026-11-23.md` |
-| Authorised AI spend cap | **$2.00** (no automatic paid retries) |
-| Actual spend (session) | Pending pilot completion (structured_output `_forgeniqSpend` / lab audit) |
-
-**Outstanding:** Complete 6 paid batches; run accuracy reconcile vs `PS26-1-PROVISION-SOURCE-VERIFICATION` / `PS22-9-PROVISION-SOURCE-VERIFICATION`; report precision/recall and unresolved cores.
-
-## Workstream 2 — Phase 3A reproducibility
+## Priority 1 — Live full-publication extraction
 
 | Item | Status |
 |---|---|
-| Windows shared-memory / EBUSY | **Mitigated** — random port selection, retry on init failure, per-port data dirs, post-stop delay |
-| Phase 3A clean cycle ×2 | **PASS** (2026-11-23 run) |
-| RI master ×3 consecutive | **Not completed** — use `acceptance-ri-master-triple.mjs` (long-running; prior single master run still open at time of report) |
+| Batch 0 reconcile | **DONE** — run `2c840c0b-0534-4429-a02d-6db8850a3f91`, idempotency `live-ps26-full-2026-11-22`, **COMPLETED**, 12 claims; orchestration 40/47 supplied |
+| Evidence | `PS26-1-BATCH-0-RUN-RECONCILIATION-2026-11-23.json` |
+| Duplicate paid POST | **None** for batch 0 (marker + idempotency GET) |
+| Batch 1 POST | **FAIL** — `internal_error` (pre-deploy: batch-2 PDF grounding on staging runtime) |
+| Async durability | RUNNING row inserted **before** dispatch; `recoverStaleAiAnalysisRuns` on UC-RI-005 POST; `maxDuration` 300s on route |
+| Spend | **≤ $2 cap**; batch 0 reuses prior run — incremental spend on batch 1+ only after deploy |
+| Accuracy metrics | `LIVE-EXTRACTION-ACCURACY-METRICS-2026-11-23.json` (proxy recall; full precision after batches complete) |
 
-## Workstream 3 — FRC policy suspension
+**Mandatory next step:** Deploy `e0d1994` to `staging-app.forgeniq.com`, then resume pilot from batch 1 (no batch-0 repost).
+
+## Priority 2 — Master acceptance
 
 | Item | Status |
 |---|---|
-| OP1 propose REG-FRC v2 (all `conversionEnabled: false`) | **PASS** — policy `fed40928-…` |
-| OP2 activate | **PASS** — active version **2**, `allConversionDisabled: true` |
-| Evidence | `docs/eval/REG-FRC-SUSPENSION-APPLIED-2026-11-22.json` |
-| Admin writes restored disabled | Env set `RI_CLASSIFICATION_POLICY_ADMIN_WRITES_ENABLED=false` (redeploy to enforce at runtime) |
+| Phase 3A / harness | Random-port retry after shared-memory collision (**fixed** in `e0d1994`) |
+| Phase 5 downstream | **PASS** (standalone, post-fix) |
+| RI master ×3 | **IN PROGRESS** (`acceptance-ri-master-triple.mjs` run 1/3 started 08:24 UTC) |
 
-## Workstream 4 — Regulator policies (36 / 41 sources)
+## Priority 3 — SEC-DB (hosted)
 
-| Regulator | Draft | Verified | Approved | Activated | Tested |
-|---|---|---|---|---|---|
-| FCA | Yes | Yes | Yes | Yes | Yes (staging UAT corpus) |
-| PRA | Draft only | No | No | No | No |
-| ICO | Draft only | No | No | No | No |
-| FRC | Draft + **suspended ACTIVE** | No | Operator only | Yes (fail-closed convert) | Partial |
-| PSR (REG-PSR-UK) | Draft only | No | No | No | No |
-| Other 31 regulators | See matrix | No | No | No | No |
+| Control | Local | Staging DB objects | Hosted RLS role-play |
+|---|---|---|---|
+| SEC-DB-001 finding close | 5/5 | Triggers present (`ri_guard_finding_close`) | **Pending** (`STAGING_DATABASE_URL`) |
+| SEC-DB-002 creator binding | 5/5 | `ri_guard_manual_finding_creator` | **Pending** |
+| SEC-DB-003 audit immutability | 5/5 | `ri_guard_workflow_events_immutable` | **Pending** |
 
-Full matrix: `docs/eval/REGULATOR-READINESS-MATRIX-2026-11-23.json`.
+Evidence: `SEC-DB-STAGING-VALIDATION-2026-11-23.json`
 
-**Mandatory activation approvals** remain consolidated — no unverified policies activated beyond FCA and FRC suspension.
+## Priority 4 — Regulators
 
-## Workstream 5 — Production readiness checklist
+Unchanged from `REGULATOR-READINESS-MATRIX-2026-11-23.json`. **FCA** operational for classification; **FRC** active with conversion suspended; **PRA, ICO, PSR** draft-only — not activated.
 
-| Area | Status | Notes |
-|---|---|---|
-| SEC-DB-001/002/003 | Staging applied; local **5/5** | Production promotion needs approval |
-| SEC-GOV-001 | Not re-verified this session | Prior staging operator UAT |
-| Tenant isolation / RBAC | Master phases 2–3A | — |
-| End-to-end UAT | Partial | P2 regression + targeted pilots; full RI UAT matrix open |
-| Connectors / scheduling | Phase 6–8 acceptance scripts | Not full staging scheduler proof this session |
-| AI spend controls | Suffix guard + async dispatch | — |
-| Migration reproducibility | Phase 3A **PASS** | Triple master pending |
-| Rollback plan | Staging redeploy + env revert | Documented in deploy JSON artefacts |
+## Priority 5 — E2E platform UAT
 
-## Genuine blockers (non-fabricated)
+Partial prior staging sessions (Users A/B/C). Full journey UAT deferred until P1 pilot completes.
 
-1. **Live extraction accuracy evidence** not yet complete for PS26/1 + PS22/9 full publication runs.
-2. **Three consecutive RI master passes** not yet recorded.
-3. **Production deployment** explicitly out of scope without approval.
-4. **31 regulators** still require authoritative policy research before activation.
+## Priority 6 — Operations
 
-## Recommended next actions (autonomous where authorised)
+| Area | Status |
+|---|---|
+| Migrations | Staging includes orchestration + SEC-DB hardening |
+| Monitoring / rollback | Documented; not re-verified this tranche |
+| AI spend controls | Suffix allowlist + idempotency enforced |
 
-1. Allow live pilot to finish; emit accuracy reconcile and spend totals.
-2. Run `node scripts/acceptance-ri-master-triple.mjs` to completion.
-3. Staging security smoke for SEC-DB on tenant paths (read-only + negative probes).
-4. Schedule production go/no-go review after blockers 1–2 clear.
+## Genuine blockers requiring intervention
+
+1. **Staging application deploy** — operator must refresh Vercel credentials (`vercel login`) or deploy `e0d1994` via linked CI; until then batch 1+ extraction cannot complete on staging.
+2. **Hosted SEC-DB role-play** — requires `STAGING_DATABASE_URL` in operator environment (or approved secrets channel).
+
+## Consolidated decision
+
+| Scope | GO? |
+|---|---|
+| FCA-only production | **NO** |
+| Wider RI production | **NO** |
+| Full 36-regulator production | **NO** |

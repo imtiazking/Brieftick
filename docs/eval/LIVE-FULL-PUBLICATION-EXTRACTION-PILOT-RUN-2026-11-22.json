@@ -3,7 +3,7 @@
   "log": [
     {
       "step": "PS26/1-reconcile",
-      "at": "2026-11-23T01:00:58.126Z",
+      "at": "2026-11-23T08:24:56.034Z",
       "inventory": 47,
       "plannedBatches": 2,
       "publicationCoverageCompletePlanned": true,
@@ -11,25 +11,25 @@
     },
     {
       "step": "PS26/1-change",
-      "at": "2026-11-23T01:01:04.175Z",
-      "changeId": "5002f1ba-c0d7-45bb-8e01-c1aabb1b6ac8",
+      "at": "2026-11-23T08:25:09.100Z",
+      "changeId": "9ea204cb-caf4-44d0-bc95-c173a7241556",
       "actor": "user_3LA76vR4CueutWtEpcAxvqYKkEv"
     },
     {
       "step": "PS26/1-resume-marker",
-      "at": "2026-11-23T01:01:10.554Z",
+      "at": "2026-11-23T08:25:14.252Z",
       "idem": "live-ps26-full-2026-11-22",
       "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
       "status": "COMPLETED"
     },
     {
       "step": "PS26/1-batch-0",
-      "at": "2026-11-23T01:01:14.184Z",
+      "at": "2026-11-23T08:25:17.224Z",
       "batchIndex": 0,
       "runId": "2c840c0b-0534-4429-a02d-6db8850a3f91",
       "idempotencySuffix": "live-ps26-full-2026-11-22",
       "executionStatus": "COMPLETED",
-      "latencyMs": 1657,
+      "latencyMs": 1129,
       "extractHttp": 200,
       "cumulativeSupplied": 40,
       "consolidatedFindings": 0,
@@ -38,7 +38,7 @@
     },
     {
       "step": "PS26/1-extract-fail",
-      "at": "2026-11-23T01:01:19.565Z",
+      "at": "2026-11-23T08:25:22.412Z",
       "batchIndex": 1,
       "idem": "live-ps26-full-2026-11-22-batch-2",
       "exBody": {
@@ -48,7 +48,7 @@
     },
     {
       "step": "failed",
-      "at": "2026-11-23T01:01:20.620Z",
+      "at": "2026-11-23T08:25:23.143Z",
       "message": "PS26/1 batch 1 extract failed — no retry"
     }
   ]
