@@ -529,3 +529,14 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Report | `docs/uat/HOSTED-DESIGN-LAB-E2E-WORKFLOW-2026-11-24.md` + JSON |
 | Workflow verdict | **PASS** (15/15 stages) |
 | Production | **NO-GO** unchanged (legal verification, SEC-DB-003, second org) |
+
+## 2026-11-24 — Obligation Triage human verification & approval indicators
+
+| Activity | Outcome |
+|---|---|
+| Feature | Human Verification + Approval Status columns, filters with live counts, row actions (Verify / View Verification / View Decision / View Approval) on Design Lab `#/triage/obligations` |
+| Backend | `triage-verification-status.mjs` + `triage-queues.ts` — derived from `ai_analysis_finding_decisions` + `regulatory_obligations.status`; `legallyVerified` remains **false** |
+| Local gates | Typecheck PASS; build PASS; `acceptance-ri-triage-verification-status` PASS; `acceptance-ri-triage-screens` PASS; finding-review SoD **32/32** |
+| Staging deploy | **`dpl_Bq7199abopXnX4Jszcr967Bp1gaW`** — commit `ad9edcb` → `forgeniq-platform-staging` (`prj_y9O1A1zGFXe3GvJITnLL9mJUqve7`) |
+| Hosted evidence | `docs/uat/evidence/triage-verification-2026-11-24/` — API counts **60** obligation-triage rows: verified **12**, rejected **36**, needs review **12**; approval approved **9**, draft **3** |
+| Production | **NO-GO** unchanged |

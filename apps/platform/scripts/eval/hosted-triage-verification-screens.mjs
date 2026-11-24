@@ -16,14 +16,9 @@ const hosted = await runAs('B', async ({ page }) => {
   const api = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/triage?queue=OBLIGATION_TRIAGE`);
   const apiBody = await api.json().catch(() => null);
   await page.goto(LAB, { waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(
-    () => {
-      const filters = document.querySelector('[data-triage-verification-filters]');
-      const badge = document.querySelector('.ri-triage-status-badge');
-      return filters && filters.children.length > 0 && badge;
-    },
-    { timeout: 90_000 },
-  );
+  await page.waitForSelector('[data-triage-verification-filters] button', { timeout: 90_000 });
+  await page.waitForSelector('.ri-table thead th', { timeout: 90_000 });
+  await page.waitForSelector('.ri-triage-status-badge strong', { timeout: 90_000 });
   await page.screenshot({ path: join(OUT, 'obligation-triage-badges-and-filters.png'), fullPage: true });
 
   const verifiedBtn = page.locator('[data-triage-view-verification]').first();

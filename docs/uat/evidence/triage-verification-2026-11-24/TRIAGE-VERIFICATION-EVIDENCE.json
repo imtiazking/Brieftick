@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-11-24T12:13:52.397Z",
+  "url": "https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/index.html#/triage/obligations",
+  "apiBody": {
+    "verificationCounts": {
+      "ALL": 60,
+      "UNVERIFIED": 0,
+      "VERIFIED": 12,
+      "NEEDS_REVIEW": 12,
+      "REJECTED": 36,
+      "RE_VERIFICATION_REQUIRED": 0
+    },
+    "approvalCounts": {
+      "ALL": 60,
+      "NONE": 48,
+      "DRAFT": 3,
+      "AWAITING_APPROVAL": 0,
+      "APPROVED": 9,
+      "APPROVAL_REJECTED": 0
+    },
+    "sample": [
+      {
+        "humanVerification": "VERIFIED",
+        "approvalStatus": "DRAFT",
+        "hasVerificationRecord": true
+      },
+      {
+        "humanVerification": "VERIFIED",
+        "approvalStatus": "DRAFT",
+        "hasVerificationRecord": true
+      },
+      {
+        "humanVerification": "VERIFIED",
+        "approvalStatus": "DRAFT",
+        "hasVerificationRecord": true
+      }
+    ]
+  },
+  "snap": {
+    "filters": [
+      "All (60)",
+      "Unverified (0)",
+      "Verified (12)",
+      "Needs Review (12)",
+      "Rejected (36)"
+    ],
+    "approvalFilters": [
+      "All Approvals (60)",
+      "No draft (48)",
+      "Draft (3)",
+      "Awaiting Approval (0)",
+      "Approved (9)",
+      "Approval Rejected (0)"
+    ],
+    "badgeSample": "✅ VERIFIED",
+    "headers": [
+      "Provision",
+      "Regulatory Finding",
+      "Human Verification",
+      "Approval Status",
+      "Action"
+    ]
+  }
+}
