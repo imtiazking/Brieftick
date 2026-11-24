@@ -181,14 +181,14 @@ add({
 add({
   title: 'Local design-lab browser suites (UC-RI-005 review, applicability, extraction button)',
   category: 5,
-  status: 'EXECUTED — NOT ALL PASSED',
-  rootCause: 'Local next start on :3001; Clerk publishable key was null in Design Lab HTML',
+  status: 'TESTED AND PASSED',
+  rootCause: 'Applicability failed because NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY was absent from .env.local (present only in .env.staging.pull). Finding review stayed disabled until provision function, provision reference and obligation wording were supplied; the test had not filled those mandatory fields.',
   resolution:
-    'extraction-button PASS. applicability workflow steps passed except Clerk key injection. finding-review failed (submit stayed disabled; Finding 2 evidence list). Not marked UAT-passed.',
+    'Publishable key loaded into gitignored .env.local. Finding-review browser now supplies OPERATIVE_REQUIREMENT, 86(2C)R and the obligation statement. Both suites PASS on localhost:3001. Review requirements were not weakened.',
   modules: [
-    'acceptance-ri-uc-ri-005-extraction-button-browser: PASS',
-    'acceptance-ri-applicability-workflow-browser: FAIL clerk key',
-    'acceptance-ri-uc-ri-005-finding-review-browser: FAIL',
+    'acceptance-ri-uc-ri-005-extraction-button-browser: PASS (prior local run)',
+    'acceptance-ri-applicability-workflow-browser: PASS',
+    'acceptance-ri-uc-ri-005-finding-review-browser: PASS',
   ],
 });
 

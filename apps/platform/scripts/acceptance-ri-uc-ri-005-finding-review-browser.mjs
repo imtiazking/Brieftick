@@ -236,9 +236,12 @@ async function main() {
   check(await openRun(page), 'enabled environment: per-finding review loaded');
   const cardText = await page.$eval(card(1), (el) => el.innerText);
   check(
-    /Statement:.*notify payers/s.test(cardText) && /VERIFIED/i.test(cardText) && /p\.14/.test(cardText) && /verify against the PDF/.test(cardText),
+    /AI-proposed statement:[\s\S]*notify payers/i.test(cardText) &&
+      /VERIFIED/i.test(cardText) &&
+      /p\.14/.test(cardText) &&
+      /verify against the PDF/i.test(cardText),
     'finding card shows statement, citation status, cited page and the verify-against-PDF warning',
-    cardText.slice(0, 300),
+    cardText.slice(0, 400),
   );
   check(!!(await page.$('[data-finding-review-uat-pathway]')), 'human-verified UAT pathway notice shown (obligationGradeSuitable=false)');
   check(await submitDisabled(page), 'submit disabled before any decision');
@@ -259,7 +262,17 @@ async function main() {
   await page.selectOption(`${card(1)} [data-finding-code]`, 'R');
   check(/select a disposition/.test(await outcome(page, 1)), 'binding code needs an explicit disposition (no auto-conversion)', await outcome(page, 1));
   await page.selectOption(`${card(1)} [data-finding-disposition]`, 'CONVERT_TO_DRAFT_OBLIGATION');
-  check(/Missing: legal basis, exact quotation, PDF page, comment/.test(await outcome(page, 1)), 'obligation-class acceptance lists missing evidence', await outcome(page, 1));
+  check(
+    /Missing: provision function, legal basis, provision reference, exact quotation, PDF page, comment/.test(await outcome(page, 1)),
+    'obligation-class acceptance lists missing evidence',
+    await outcome(page, 1),
+  );
+  await page.selectOption(`${card(1)} [data-finding-provision-function]`, 'OPERATIVE_REQUIREMENT');
+  await page.fill(`${card(1)} [data-finding-provision-reference]`, '86(2C)R');
+  const statement = await page.$eval(`${card(1)} [data-finding-obligation-statement]`, (el) => el.value || '');
+  if (statement.trim().length < 10) {
+    await page.fill(`${card(1)} [data-finding-obligation-statement]`, 'PSPs must notify payers of payment delays by the end of the next business day.');
+  }
   await page.click(`${card(1)} details summary`);
   await page.click(`${card(1)} [data-finding-use-suggestion]`);
   await page.fill(`${card(1)} [data-finding-legal-basis]`, 'PSRs 2017 regulation 86(2C)');
@@ -325,7 +338,9 @@ async function main() {
       d2.disposition === 'CONVERT_TO_DRAFT_OBLIGATION' &&
       d2.quotation === QUOTE_2 &&
       d2.quotationPage === 14 &&
-      d2.legalBasis === 'PSRs 2017 regulation 86(2C)',
+      d2.legalBasis === 'PSRs 2017 regulation 86(2C)' &&
+      d2.provisionFunction === 'OPERATIVE_REQUIREMENT' &&
+      d2.provisionReference === '86(2C)R',
     'binding acceptance carries code, disposition, legal basis, quotation and page',
     JSON.stringify(d2),
   );

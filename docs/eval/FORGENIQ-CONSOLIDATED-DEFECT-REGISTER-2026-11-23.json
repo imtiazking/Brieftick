@@ -10,9 +10,8 @@
       "BLOCKED — EXTERNAL DEPENDENCY": 1,
       "BLOCKED — SPENDING AUTHORISATION": 1,
       "READY FOR HOSTED VALIDATION": 1,
-      "TESTED AND PASSED": 2,
-      "CORRECTED — NOT LEGALLY VERIFIED": 1,
-      "EXECUTED — NOT ALL PASSED": 1
+      "TESTED AND PASSED": 3,
+      "CORRECTED — NOT LEGALLY VERIFIED": 1
     },
     "byCategory": {
       "1": 6,
@@ -343,9 +342,9 @@
       "id": "DEF-0017",
       "title": "Local design-lab browser suites (UC-RI-005 review, applicability, extraction button)",
       "category": 5,
-      "status": "EXECUTED — NOT ALL PASSED",
-      "rootCause": "Local next start on :3001; Clerk publishable key was null in Design Lab HTML",
-      "resolution": "extraction-button PASS. applicability workflow steps passed except Clerk key injection. finding-review failed (submit stayed disabled). Not marked UAT-passed.",
+      "status": "TESTED AND PASSED",
+      "rootCause": "Applicability failed because the Clerk publishable key was absent from .env.local. Finding review stayed disabled until mandatory provision function, reference and obligation wording were supplied.",
+      "resolution": "Key added to gitignored .env.local. Finding-review test now fills those fields. Both suites PASS. Review requirements were not weakened.",
       "modules": [
         "acceptance-ri-uc-ri-005-finding-review-browser",
         "acceptance-ri-applicability-workflow-browser",

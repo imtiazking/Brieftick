@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-11-24T00:33:40.825Z",
+  "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+  "authoritativePublicationDate": "2022-07-27",
+  "hosted": {
+    "http": 200,
+    "publicationDate": null,
+    "effectiveDate": null,
+    "labPublishedDate": null,
+    "title": "PS22/9: A new Consumer Duty",
+    "publicationType": "Policy Statement",
+    "canonicalUrl": null
+  },
+  "matchesAuthoritativeDate": false,
+  "writePath": "PATCH /api/ri-lab/publications/:id updates applicability assessments only. It must not be used to change publication_date. No audited catalogue-date write exists.",
+  "correctionPreparedNotExecuted": {
+    "field": "regulatory_publications.publication_date",
+    "fromObserved": null,
+    "to": "2022-07-27",
+    "preserve": [
+      "source revisions",
+      "extraction runs",
+      "audit events",
+      "applicability assessments"
+    ],
+    "requires": "A dedicated audited metadata correction, not service-role SQL and not an applicability PATCH."
+  }
+}

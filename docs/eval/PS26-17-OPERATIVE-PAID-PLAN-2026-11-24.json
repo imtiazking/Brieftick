@@ -1,0 +1,189 @@
+{
+  "generatedAt": "2026-11-24T00:33:31.725Z",
+  "executed": false,
+  "provisionCap": 16,
+  "rejectedPlan": "A single 17-provision batch exceeds resolveMaxProvisionsPerBatch() and is invalid.",
+  "provisionCount": 17,
+  "unique": true,
+  "batches": [
+    {
+      "batchIndex": 0,
+      "provisions": [
+        "16.1.6R",
+        "2.3.1R",
+        "2.3.2R",
+        "2.5.1R",
+        "2.7.1R",
+        "4.2.1R",
+        "4.2A.11R",
+        "4.2A.1R",
+        "4.2A.4R",
+        "4.2A.6R",
+        "4.2A.7R",
+        "4.2A.8R",
+        "4.6.2AR",
+        "4.6.2R",
+        "TP 13.1R",
+        "TP 13.3R"
+      ],
+      "provisionCount": 16,
+      "withinCap": true,
+      "pdfEvidence": [
+        {
+          "core": "16.1.6R",
+          "pages": [
+            103
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "2.3.1R",
+          "pages": [
+            68
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "2.3.2R",
+          "pages": [
+            86
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "2.5.1R",
+          "pages": [
+            81,
+            84
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "2.7.1R",
+          "pages": [
+            86
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.2.1R",
+          "pages": [
+            87
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.2A.11R",
+          "pages": [
+            92
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.2A.1R",
+          "pages": [
+            87
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.2A.4R",
+          "pages": [
+            88
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.2A.6R",
+          "pages": [
+            90
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.2A.7R",
+          "pages": [
+            90
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.2A.8R",
+          "pages": [
+            91
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.6.2AR",
+          "pages": [
+            92
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "4.6.2R",
+          "pages": [
+            92
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "TP 13.1R",
+          "pages": [
+            66
+          ],
+          "inIndex": true
+        },
+        {
+          "core": "TP 13.3R",
+          "pages": [
+            66
+          ],
+          "inIndex": true
+        }
+      ],
+      "preflight": {
+        "ok": true,
+        "estimateTokens": 2820,
+        "maxOutputTokens": 8192
+      },
+      "structuredAssessmentRequired": true,
+      "omissionDetection": "assessBatchProvisionCompleteness after the run; truncated output fails preflight and completeness",
+      "estimatedUsd": 0.1936,
+      "duplicatePaidProcessing": false,
+      "historicalStructuredRecall": false
+    },
+    {
+      "batchIndex": 1,
+      "provisions": [
+        "TP 13.4R"
+      ],
+      "provisionCount": 1,
+      "withinCap": true,
+      "pdfEvidence": [
+        {
+          "core": "TP 13.4R",
+          "pages": [
+            66,
+            67
+          ],
+          "inIndex": true
+        }
+      ],
+      "preflight": {
+        "ok": true,
+        "estimateTokens": 496,
+        "maxOutputTokens": 8192
+      },
+      "structuredAssessmentRequired": true,
+      "omissionDetection": "assessBatchProvisionCompleteness after the run; truncated output fails preflight and completeness",
+      "estimatedUsd": 0.0121,
+      "duplicatePaidProcessing": false,
+      "historicalStructuredRecall": false
+    }
+  ],
+  "estimatedUsd": 0.2057,
+  "costBasis": "PS26 five-operative completed run 9b3bf495 at $0.060498 for 5 provisions, scaled per provision. Not a new charge for that run.",
+  "preserveHistoricalResults": "docs/eval/fixtures/PS26-HISTORICAL-RUNS-SNAPSHOT-2026-11-23.json"
+}

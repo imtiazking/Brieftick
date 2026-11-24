@@ -475,3 +475,15 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Security | Local 5/5; staging API 6/6; SEC-DB-003 hosted still blocked |
 | Local browsers | Extraction button PASS; applicability FAIL (Clerk key); finding review FAIL |
 | Paid AI | Not executed. Report `docs/uat/FORGENIQ-REGULATORY-ACCURACY-REMEDIATION-2026-11-24.md` |
+
+## 2026-11-24 — UAT closure and AI readiness
+
+| Activity | Outcome |
+|---|---|
+| Applicability browser | **PASS** after the Clerk publishable key was added to gitignored `.env.local` |
+| Finding-review browser | **PASS** after the test supplied provision function, reference and obligation wording |
+| PS26 paid plan | **16 + 1** provisions; preflight PASS; not executed; **$0.206** |
+| PS22 continuation | **145 provisions / 12 batches** ready; **$1.237**; not executed |
+| Hosted PS22 date | Policy Statement title is correct; `publication_date` is null; no audited write |
+| RI master, typecheck, build | **PASS** |
+| Report | `docs/uat/FORGENIQ-UAT-CLOSURE-AI-READINESS-2026-11-24.md` |
