@@ -501,3 +501,19 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Report | `docs/uat/FORGENIQ-FINAL-VALIDATION-PRODUCTION-READINESS-2026-11-24.md` |
 | Decision | **NO-GO** |
 | Local gates | Typecheck PASS. Build PASS. RI master first run failed on an empty database; migration now no-ops when the PS22/9 row is absent. Phase 3A PASS. RI master **PASS 391.5s** |
+
+## 2026-11-24 — Design Lab final validation (autonomous)
+
+| Activity | Outcome |
+|---|---|
+| Dashboard publication count | **Fixed** at `314a980`: parallel `catalogue/summary`, headline **275** on staging (was **0** while loading) |
+| Triage queues | Preserved: obligation **68**, non-obligation **136**, exception **4**; anonymous triage **401** |
+| Hosted browser | **16** Design Lab screenshots + `docs/uat/evidence/design-lab-final-2026-11-24/result.json` after deploy |
+| Staging deploy | **`dpl_EQmJ39kpih36JA43ZeNH2mfsp9tZ`** — `314a980` → `forgeniq-platform-staging` / `staging-app.forgeniq.com` |
+| Hosted API reads | Re-run `HOSTED-RI-WORKFLOW-UAT-2026-11-24.json` — catalogue **275**, triage API **200** |
+| Security local | `test:acceptance:phase8-security:local-db` **PASS** |
+| SEC-DB-003 hosted | Still **BLOCKED** (`STAGING_DATABASE_URL` unset) |
+| Paid gate | No execution; projected **$2.931** vs ceiling **$2.35** |
+| E2E writes | **Not executed** this tranche (read-only staging policy) |
+| Report | `docs/uat/FORGENIQ-FINAL-DESIGN-LAB-VALIDATION-2026-11-24.md` |
+| Decision | **NO-GO** (regulatory + security + write-path gaps) |

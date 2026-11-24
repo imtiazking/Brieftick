@@ -8,7 +8,7 @@ import { REPO_ROOT } from '../../lib/ri/eval/eval-paths.mjs';
 import { runAs, STAGING_ORIGIN } from '../uat/staging-user-sessions.mjs';
 
 const LAB = `${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html`;
-const OUT = join(REPO_ROOT, 'docs', 'uat', 'evidence', 'triage-2026-11-24');
+const OUT = join(REPO_ROOT, 'docs', 'uat', 'evidence', 'design-lab-final-2026-11-24');
 mkdirSync(OUT, { recursive: true });
 
 const routes = [
@@ -37,6 +37,7 @@ const scriptRes = await fetch(`${STAGING_ORIGIN}/design-lab/regulatory-intellige
 const scriptText = scriptRes.ok ? await scriptRes.text() : '';
 
 const hosted = await runAs('A', async ({ page }) => {
+  page.setDefaultTimeout(120_000);
   const triage = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/triage`);
   const triageBody = await triage.json().catch(() => null);
   const pages = [];
@@ -45,8 +46,11 @@ const hosted = await runAs('A', async ({ page }) => {
     if (name === 'dashboard') {
       await page.waitForFunction(
         () => {
-          const title = document.querySelector('.ri-page-head__title')?.textContent || '';
-          return /\d+ publication/.test(title) || title.includes('Loading staging catalogue');
+          const title = document.querySelector('.ri-page-head h1')?.textContent || '';
+          return (
+            (/\d+ publication/.test(title) && !/^0 publications? in staging catalogue$/i.test(title.trim())) ||
+            title.includes('Loading staging catalogue')
+          );
         },
         { timeout: 90_000 },
       );
@@ -60,7 +64,7 @@ const hosted = await runAs('A', async ({ page }) => {
       await page.waitForTimeout(2500);
     }
     const snap = await page.evaluate(() => ({
-      title: document.querySelector('h1, .ri-page-head__title')?.textContent?.trim() || '',
+      title: document.querySelector('.ri-page-head h1, h1')?.textContent?.trim() || '',
       body: document.querySelector('#app, main, body')?.innerText?.slice(0, 500) || '',
       triageCounts: Object.fromEntries([...document.querySelectorAll('[data-triage-count]')].map((el) => [el.getAttribute('data-triage-count'), el.textContent])),
     }));
