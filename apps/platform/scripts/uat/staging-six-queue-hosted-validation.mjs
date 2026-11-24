@@ -6,7 +6,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { REPO_ROOT } from '../../lib/ri/eval/eval-paths.mjs';
-import { STAGING_ORIGIN, runAs } from './staging-user-sessions.mjs';
+import { STAGING_ORIGIN, runAs, requireUatPersonas } from './staging-user-sessions.mjs';
 import { WORKFLOW_QUEUES } from '../../lib/ri/triage/regulatory-workflow-queues.mjs';
 import { deriveWorkflowQueue } from '../../lib/ri/triage/regulatory-workflow-queues.mjs';
 
@@ -69,6 +69,8 @@ async function postReassess(page, runId, findingId, payload) {
     { data: payload },
   );
 }
+
+await requireUatPersonas(['B', 'A'], { label: 'staging-six-queue-hosted-validation' });
 
 const report = await runAs('B', async ({ page, act }) => {
   const before = await act('before-counts', () => fetchCounts(page));
@@ -254,7 +256,7 @@ const report = await runAs('B', async ({ page, act }) => {
     routingTests,
     aiFivePanels: ai,
     sodTarget: candidates[0],
-    deployAccepted: 'dpl_3LMjeSKA2PTBRyYyuj9gT2t5JL8a',
+      deployAccepted: 'dpl_EvDcgUYGDsHc4rXAdXzQCL4hVL4S',
   };
 });
 
@@ -301,7 +303,7 @@ writeFileSync(
   JSON.stringify(
     {
       generatedAt: new Date().toISOString(),
-      deploymentId: 'dpl_3LMjeSKA2PTBRyYyuj9gT2t5JL8a',
+      deploymentId: 'dpl_EvDcgUYGDsHc4rXAdXzQCL4hVL4S',
       ...report,
       steps,
     },

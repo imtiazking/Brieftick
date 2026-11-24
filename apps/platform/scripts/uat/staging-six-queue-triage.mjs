@@ -5,7 +5,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { REPO_ROOT } from '../../lib/ri/eval/eval-paths.mjs';
-import { STAGING_ORIGIN, runAs } from './staging-user-sessions.mjs';
+import { STAGING_ORIGIN, runAs, requireUatPersonas } from './staging-user-sessions.mjs';
 import { WORKFLOW_QUEUES } from '../../lib/ri/triage/regulatory-workflow-queues.mjs';
 
 const OUT = join(REPO_ROOT, 'docs', 'uat', 'evidence', 'six-queue-workflow-staging-2026-11-24');
@@ -31,6 +31,8 @@ const segments = [
   'not-applicable',
   'all',
 ];
+
+await requireUatPersonas(['B'], { label: 'staging-six-queue-triage' });
 
 const apiResult = await runAs('B', async ({ page }) => {
   const summary = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/triage`);

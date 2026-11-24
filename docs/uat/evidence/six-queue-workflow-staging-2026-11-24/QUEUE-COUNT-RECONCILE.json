@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-11-24T18:59:32.983Z",
+  "workflowCounts": {
+    "AI_FINDINGS": 131,
+    "VERIFIED_OBLIGATIONS": 12,
+    "NON_OBLIGATIONS": 22,
+    "REJECTED_FINDINGS": 37,
+    "EXCEPTIONS": 6,
+    "NOT_APPLICABLE": 0,
+    "ALL_FINDINGS": 208
+  },
+  "sumSix": 208,
+  "allReported": 208,
+  "totalInResponse": 208,
+  "itemsReturned": 150,
+  "truncated": true,
+  "sumEqualsAll": true,
+  "overlapExplanation": "Each finding has exactly one workflowQueue; ALL_FINDINGS total equals sum of six queues (mutually exclusive partition).",
+  "sampleFindingIds": {
+    "AI_FINDINGS": [
+      "7e2f2bb5-8024-45db-a511-f7497c3bc5e5",
+      "ebf02005-1660-4137-b883-a448d1ac7eb4",
+      "65386545-e66a-497a-b7c6-a149a934fa43",
+      "6deb80cf-3330-4a61-89b6-4018ff05827d",
+      "bbbc99dd-d8dd-42fa-9435-3db808a555d4"
+    ],
+    "VERIFIED_OBLIGATIONS": [
+      "f1081a7d-c42f-4348-a2ea-8f0a8e0b5e02",
+      "906f9498-e8d5-4b83-b63a-384d28604f16",
+      "02fffcd9-e270-448b-b93a-308cb513c213",
+      "83f3bf02-f269-42e3-91ca-05ae5a5cc14f",
+      "df5d8254-7897-4f0c-a94e-d4f83a0adaff"
+    ],
+    "NON_OBLIGATIONS": [
+      "b63daafd-9f40-4a1d-b95d-b24373771127",
+      "0a56fcee-462a-4f56-931c-aadf86a19e87",
+      "3a0be9b5-a213-47f4-955c-177f619392e6",
+      "bc988d5d-2534-4828-ab61-42708978beb7",
+      "c787b27f-9520-4e6a-a117-8ad1c3216c5c"
+    ],
+    "REJECTED_FINDINGS": [
+      "37342101-55ef-4ab0-9a5d-c29ad00ec672",
+      "8cdee742-f24d-4762-9322-5353e2f77514",
+      "830f72fd-2589-439a-bbe5-3b1299389575",
+      "424afcf0-2bc1-49cf-b496-761ba1f3bad7",
+      "5fde19e9-1942-4abb-8cf9-983513d285a0"
+    ],
+    "EXCEPTIONS": [
+      "aad1987e-1ca6-4b80-83af-cdc01c34e627",
+      "4ddcbbfa-4c46-4cc2-b64a-50aa1f5dc381"
+    ],
+    "NOT_APPLICABLE": []
+  },
+  "unassignedSample": [],
+  "uiNote": "API returned 150 items of 208 total (truncated=true); UI row count may be lower than ALL_FINDINGS count."
+}

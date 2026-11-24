@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-11-24T19:05:00Z",
+  "personas": {
+    "A": { "state": "VALID", "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv", "capabilities": ["obligations", "applicabilityWorkflow", "aiRequest"] },
+    "B": { "state": "EXPIRED", "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr", "requiredRole": "REVIEWER", "requiredCapabilities": ["aiReview"] },
+    "C": { "state": "VALID", "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh", "capabilities": ["obligationReview", "applicabilityWorkflow"] }
+  },
+  "hostedUat": {
+    "staging-six-queue-triage": "BLOCKED — requires User B reviewer session",
+    "staging-six-queue-hosted-validation": "BLOCKED — requires User B (five decisions + reassess) and User A (SoD)",
+    "staging-six-queue-count-reconcile": "PASS (User C read-only)"
+  },
+  "manualAction": "Complete Clerk sign-in in the headed renew B window until the terminal prints session saved. Do not close the browser early.",
+  "resume": [
+    "node scripts/uat/staging-user-sessions.mjs preflight B,A",
+    "node scripts/uat/staging-six-queue-triage.mjs",
+    "node scripts/uat/staging-six-queue-hosted-validation.mjs"
+  ]
+}

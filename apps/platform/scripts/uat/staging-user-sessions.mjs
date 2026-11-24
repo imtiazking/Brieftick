@@ -251,6 +251,57 @@ function attribute(entry) {
 
 let activePersona = null;
 
+/** Headless session probe — no full `runAs` attribution; use before hosted UAT. */
+export async function probePersonaSession(key) {
+  const p = persona(key);
+  if (!existsSync(profileDir(p.key))) {
+    return { persona: p.key, state: 'NO SESSION', renew: `node scripts/uat/staging-user-sessions.mjs renew ${p.key}` };
+  }
+  const { context, page } = await launch(p.key, { headless: true });
+  try {
+    const identity = await verifyIdentity(page, p.key);
+    return {
+      persona: p.key,
+      state: 'VALID',
+      userId: identity.userId,
+      role: identity.role,
+      organisationId: identity.organisationId,
+    };
+  } catch (err) {
+    return {
+      persona: p.key,
+      state: err instanceof SessionExpiredError ? 'EXPIRED' : 'INVALID',
+      detail: err.message,
+      renew: err instanceof SessionExpiredError ? `node scripts/uat/staging-user-sessions.mjs renew ${p.key}` : undefined,
+    };
+  } finally {
+    await context.close();
+  }
+}
+
+/**
+ * Fail fast when personas are not ready. Preserves valid sessions; prints renew commands only when needed.
+ */
+export async function requireUatPersonas(keys, { label = 'UAT' } = {}) {
+  const rows = [];
+  for (const key of keys) {
+    rows.push(await probePersonaSession(key));
+  }
+  const bad = rows.filter((r) => r.state !== 'VALID');
+  if (bad.length) {
+    console.error(`\n${label} blocked — session preflight failed:\n`);
+    console.table(rows);
+    for (const b of bad) {
+      if (b.renew) console.error(`  ${b.renew}`);
+    }
+    const err = new Error('uat_personas_not_ready');
+    err.personas = rows;
+    throw err;
+  }
+  console.log(`${label} preflight OK — ${keys.join(', ')}`);
+  return rows;
+}
+
 /**
  * Opens one persona's session (only one at a time, so actions cannot be attributed to the wrong user),
  * verifies identity, and passes an `act(label, fn)` helper that re-verifies identity before every action.
@@ -460,11 +511,19 @@ if (isCli) {
       }
     } else if (command === 'status') {
       await status();
+    } else if (command === 'preflight') {
+      const keys =
+        arg?.toLowerCase() === 'all' || !arg ? ['A', 'B', 'C'] : arg.split(/[, ]+/).map((k) => k.trim().toUpperCase());
+      try {
+        await requireUatPersonas(keys, { label: 'CLI preflight' });
+      } catch {
+        process.exitCode = 2;
+      }
     } else if (command === 'logout') {
       await logout(arg);
     } else {
       console.log(
-        'usage: staging-user-sessions.mjs login|renew <A|B|C|OP1|all> [--fresh] | inspect <B> | diagnose <B> | status | logout <A|B|C|OP1>',
+        'usage: staging-user-sessions.mjs login|renew <A|B|C|OP1|all> [--fresh] | preflight [A,B,C|all] | inspect <B> | diagnose <B> | status | logout <A|B|C|OP1>',
       );
       process.exitCode = 2;
     }
