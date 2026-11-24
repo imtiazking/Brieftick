@@ -38,9 +38,10 @@ check('triage read is tenant scoped', route.includes("requireRiContext('ai:read'
 check('triage does not approve obligations', service.includes('legallyVerified: false') && !route.includes('submitFindingReview'));
 check('triage exposes verification counts', service.includes('verificationCounts') && triage.includes('data-triage-verification-filter'));
 check('non-obligation copy refuses approved obligations', triage.includes('No approved organisation obligations'));
-const hydrateBlock = triage.slice(triage.indexOf('export async function hydrateConnectedTriage'));
-check('hydrateConnectedTriage scopes segment locally', hydrateBlock.includes('const segment = LEGACY_TRIAGE_SEGMENT'));
-check('hydrateConnectedTriage does not reference resolvedSegment', !/\bresolvedSegment\b/.test(hydrateBlock));
+const loadBlock = triage.slice(triage.indexOf('export async function loadConnectedTriageScreen'));
+check('loadConnectedTriageScreen scopes segment locally', loadBlock.includes('const segment = LEGACY_TRIAGE_SEGMENT'));
+check('triage hydration does not reference resolvedSegment', !/\bresolvedSegment\b/.test(triage));
+check('pagination controls in triage screen', triage.includes('data-triage-pagination'));
 
 const policy = {
   nonBindingPublicationTypes: [],

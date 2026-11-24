@@ -136,6 +136,19 @@ export function renderTriageScreen(segment) {
     <section class="ri-panel" data-triage-screen="${esc(screen.queue)}" data-triage-segment="${esc(resolvedSegment)}">
       ${filterBlock}
       <p class="ri-muted" data-triage-status>Loading this organisation’s ${esc(screen.title)} queue…</p>
+      <nav class="ri-triage-pagination" data-triage-pagination hidden aria-label="Findings pagination">
+        <label class="ri-muted">Per page
+          <select data-triage-page-size>
+            <option value="25">25</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+        <input type="search" class="ri-input" data-triage-search placeholder="Search this queue (server-side)…" autocomplete="off" />
+        <button type="button" class="ri-btn ri-btn--ghost" data-triage-prev>Previous</button>
+        <span data-triage-page-info class="ri-muted">Page 1</span>
+        <button type="button" class="ri-btn ri-btn--ghost" data-triage-next>Next</button>
+      </nav>
       <div data-triage-rows></div>
       <dialog class="ri-dialog" data-triage-detail-dialog>
         <form method="dialog">
@@ -288,76 +301,76 @@ function renderFilterChips(container, groups, activeKey, attrName) {
     .join(' ');
 }
 
-function applyRowFilters(screen, verificationFilter, approvalFilter) {
-  const rows = screen.querySelectorAll('[data-triage-row]');
-  let visible = 0;
-  rows.forEach((row) => {
-    const hv = row.getAttribute('data-human-verification');
-    const ap = row.getAttribute('data-approval-status');
-    let show = true;
-    if (verificationFilter && verificationFilter !== 'ALL') {
-      if (verificationFilter === 'NEEDS_REVIEW') {
-        show = hv === 'NEEDS_REVIEW' || hv === 'RE_VERIFICATION_REQUIRED';
-      } else if (verificationFilter === 'UAT_TEST') {
-        show = row.getAttribute('data-counts-as-uat') === '1';
-      } else if (verificationFilter === 'VERIFIED') {
-        show = hv === 'VERIFIED' && row.getAttribute('data-genuine-verified') === '1';
-      } else if (verificationFilter === 'VERIFIED_UAT') {
-        show = hv === 'VERIFIED' && row.getAttribute('data-genuine-verified') !== '1';
-      } else if (verificationFilter === 'AWAITING_FIRST_REVIEW') {
-        show = row.getAttribute('data-awaiting-first-review') === '1';
-      } else {
-        show = hv === verificationFilter;
-      }
-    }
-    if (show && approvalFilter && approvalFilter !== 'ALL') {
-      show = ap === approvalFilter;
-    }
-    row.hidden = !show;
-    if (show) visible += 1;
-  });
-  const status = screen.querySelector('[data-triage-status]');
-  if (status?.dataset.baseStatus) {
-    status.textContent = `${visible} shown (filtered) · ${status.dataset.baseStatus}`;
+function buildTriageListUrl(base, queue, screen) {
+  const params = new URLSearchParams();
+  if (queue) params.set('queue', queue);
+  params.set('page', String(screen.dataset.triagePage || '1'));
+  params.set('pageSize', String(screen.dataset.triagePageSize || '50'));
+  params.set('verificationFilter', screen.dataset.verificationFilter || 'ALL');
+  params.set('approvalFilter', screen.dataset.approvalFilter || 'ALL');
+  const search = (screen.dataset.triageSearch || '').trim();
+  if (search) params.set('search', search);
+  const qs = params.toString();
+  return qs ? `${base}/triage?${qs}` : `${base}/triage`;
+}
+
+function syncPaginationUi(screen, body) {
+  const nav = screen.querySelector('[data-triage-pagination]');
+  const pg = body.pagination;
+  if (!nav || !pg) {
+    if (nav) nav.hidden = true;
+    return;
+  }
+  nav.hidden = false;
+  const sizeSelect = nav.querySelector('[data-triage-page-size]');
+  if (sizeSelect && String(sizeSelect.value) !== String(pg.pageSize)) sizeSelect.value = String(pg.pageSize);
+  const info = nav.querySelector('[data-triage-page-info]');
+  if (info) info.textContent = `Page ${pg.page} of ${pg.totalPages || 1} · ${pg.totalItems} in view`;
+  const prev = nav.querySelector('[data-triage-prev]');
+  const next = nav.querySelector('[data-triage-next]');
+  if (prev) prev.disabled = !pg.hasPreviousPage;
+  if (next) next.disabled = !pg.hasNextPage;
+  const searchInput = nav.querySelector('[data-triage-search]');
+  if (searchInput && searchInput !== document.activeElement) {
+    searchInput.value = body.activeFilters?.search || screen.dataset.triageSearch || '';
   }
 }
 
-export async function hydrateConnectedTriage(root = document) {
+export async function loadConnectedTriageScreen(screen, root, { force = false } = {}) {
   const state = getState();
-  if (!isConnectedBackendActive(state)) return;
-  const board = root.querySelector('[data-triage-board]');
-  const screen = root.querySelector('[data-triage-screen]');
-  if (!board && !screen) return;
   const base = apiBase(state);
-  const queue = screen?.getAttribute('data-triage-screen') || '';
-  const rawSegment = screen?.getAttribute('data-triage-segment') || '';
+  const queue = screen.getAttribute('data-triage-screen') || '';
+  const rawSegment = screen.getAttribute('data-triage-segment') || '';
   const segment = LEGACY_TRIAGE_SEGMENT[rawSegment] || rawSegment;
-  const url = queue ? `${base}/triage?queue=${encodeURIComponent(queue)}` : `${base}/triage`;
-  const target = screen || board;
-  if (target.dataset.loaded === '1') return;
-  target.dataset.loaded = '1';
+  const loadKey = `${queue}|${screen.dataset.triagePage || '1'}|${screen.dataset.triagePageSize || '50'}|${screen.dataset.verificationFilter || 'ALL'}|${screen.dataset.approvalFilter || 'ALL'}|${screen.dataset.triageSearch || ''}`;
+  if (!force && screen.dataset.loadKey === loadKey) return;
+  screen.dataset.loadKey = loadKey;
+  const url = buildTriageListUrl(base, queue, screen);
+  const status = screen.querySelector('[data-triage-status]');
+  const rows = screen.querySelector('[data-triage-rows]');
   try {
     const res = await fetch(url, { credentials: 'same-origin', headers: { Accept: 'application/json' } });
     const body = await res.json().catch(() => ({}));
     if (!res.ok || !body.ok) throw new Error(body.error || body.code || 'triage_unavailable');
-    root.querySelectorAll('[data-triage-count]').forEach((el) => {
-      const key = el.getAttribute('data-triage-count');
-      const value = body.counts?.[key];
-      el.textContent = Number.isInteger(value) ? String(value) : '0';
-    });
-    if (!screen) return;
-    const status = screen.querySelector('[data-triage-status]');
-    const rows = screen.querySelector('[data-triage-rows]');
-    const note = body.truncated ? ' The newest completed runs are shown; older runs are not in this count.' : '';
-    const statusText = `${body.total ?? 0} finding(s) in this queue from ${body.scannedRuns ?? 0} completed extraction run(s).${note} ${body.draftCreation || ''}`;
+    const note = body.truncated
+      ? ' Counts reflect the newest completed extraction runs in the scan window only.'
+      : '';
+    const pg = body.pagination;
+    const listTotal = body.filteredTotal ?? body.items?.length ?? 0;
+    const range =
+      pg && pg.totalItems
+        ? `Showing ${body.items?.length ?? 0} of ${listTotal} on this page (queue total ${body.total ?? 0}).`
+        : `${body.total ?? 0} finding(s) in this queue.`;
+    const statusText = `${range} ${body.scannedRuns ?? 0} completed extraction run(s) scanned.${note} ${body.draftCreation || ''}`;
     if (status) {
       status.textContent = statusText;
       status.dataset.baseStatus = statusText;
     }
+    syncPaginationUi(screen, body);
     const filters = screen.querySelector('[data-triage-filters]');
-    const vCounts = body.verificationCounts || { ALL: body.items?.length ?? 0 };
+    const vCounts = body.verificationCounts || { ALL: body.total ?? 0 };
     const pCounts = body.presentationCounts || {};
-    const aCounts = body.approvalCounts || { ALL: body.items?.length ?? 0 };
+    const aCounts = body.approvalCounts || { ALL: body.total ?? 0 };
     if (filters) {
       filters.hidden = false;
       const metrics = screen.querySelector('[data-triage-presentation-metrics]');
@@ -406,7 +419,8 @@ export async function hydrateConnectedTriage(root = document) {
     }
     if (!rows) return;
     if (!body.items?.length) {
-      rows.innerHTML = '<p>No findings in this queue for the scanned runs.</p>';
+      rows.innerHTML = '<p>No findings in this queue for the current filters.</p>';
+      screen._triageItems = [];
       return;
     }
     screen._triageItems = body.items;
@@ -425,11 +439,45 @@ export async function hydrateConnectedTriage(root = document) {
     rows.innerHTML = `<table class="ri-table">${head}<tbody>${body.items.map((item) => rowHtml(item, segment)).join('')}</tbody></table>`;
     bindTriageReview(screen);
     bindTriageFilters(screen);
+    bindTriagePagination(screen);
     bindTriageDetailDialogs(screen);
   } catch (err) {
-    target.dataset.loaded = '';
-    const status = screen?.querySelector('[data-triage-status]');
+    screen.dataset.loadKey = '';
     if (status) status.textContent = err?.message || 'Triage queue unavailable';
+    if (rows) rows.innerHTML = '';
+  }
+}
+
+export async function hydrateConnectedTriage(root = document) {
+  const state = getState();
+  if (!isConnectedBackendActive(state)) return;
+  const board = root.querySelector('[data-triage-board]');
+  const screen = root.querySelector('[data-triage-screen]');
+  if (!board && !screen) return;
+  const base = apiBase(state);
+  const target = screen || board;
+  if (screen) {
+    if (!screen.dataset.triagePage) screen.dataset.triagePage = '1';
+    if (!screen.dataset.triagePageSize) screen.dataset.triagePageSize = '50';
+    if (!screen.dataset.verificationFilter) screen.dataset.verificationFilter = 'ALL';
+    if (!screen.dataset.approvalFilter) screen.dataset.approvalFilter = 'ALL';
+    await loadConnectedTriageScreen(screen, root);
+    return;
+  }
+  const url = `${base}/triage`;
+  if (target.dataset.boardLoaded === '1') return;
+  target.dataset.boardLoaded = '1';
+  try {
+    const res = await fetch(url, { credentials: 'same-origin', headers: { Accept: 'application/json' } });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok || !body.ok) throw new Error(body.error || body.code || 'triage_unavailable');
+    root.querySelectorAll('[data-triage-count]').forEach((el) => {
+      const key = el.getAttribute('data-triage-count');
+      const value = body.counts?.[key];
+      el.textContent = Number.isInteger(value) ? String(value) : '0';
+    });
+  } catch {
+    target.dataset.boardLoaded = '';
     root.querySelectorAll('[data-triage-count]').forEach((el) => {
       if (el.textContent === '…') el.textContent = '—';
     });
@@ -499,19 +547,59 @@ function bindTriageFilters(screen) {
     const af = event.target.closest('[data-triage-approval-filter]');
     if (vf) {
       screen.dataset.verificationFilter = vf.getAttribute('data-triage-verification-filter');
-      applyRowFilters(screen, screen.dataset.verificationFilter, screen.dataset.approvalFilter || 'ALL');
-      screen.querySelectorAll('[data-triage-verification-filter]').forEach((btn) => {
-        btn.classList.toggle('ri-btn--active', btn === vf);
-      });
+      screen.dataset.triagePage = '1';
+      screen.dataset.loadKey = '';
+      loadConnectedTriageScreen(screen, document);
     }
     if (af) {
       screen.dataset.approvalFilter = af.getAttribute('data-triage-approval-filter');
-      applyRowFilters(screen, screen.dataset.verificationFilter || 'ALL', screen.dataset.approvalFilter);
-      screen.querySelectorAll('[data-triage-approval-filter]').forEach((btn) => {
-        btn.classList.toggle('ri-btn--active', btn === af);
-      });
+      screen.dataset.triagePage = '1';
+      screen.dataset.loadKey = '';
+      loadConnectedTriageScreen(screen, document);
     }
   });
+}
+
+function bindTriagePagination(screen) {
+  if (screen.dataset.paginationBound === '1') return;
+  screen.dataset.paginationBound = '1';
+  const nav = screen.querySelector('[data-triage-pagination]');
+  if (!nav) return;
+  let searchTimer = null;
+  nav.addEventListener('click', (event) => {
+    const prev = event.target.closest('[data-triage-prev]');
+    const next = event.target.closest('[data-triage-next]');
+    if (prev && !prev.disabled) {
+      screen.dataset.triagePage = String(Math.max(1, Number(screen.dataset.triagePage || '1') - 1));
+      screen.dataset.loadKey = '';
+      loadConnectedTriageScreen(screen, document);
+    }
+    if (next && !next.disabled) {
+      screen.dataset.triagePage = String(Number(screen.dataset.triagePage || '1') + 1);
+      screen.dataset.loadKey = '';
+      loadConnectedTriageScreen(screen, document);
+    }
+  });
+  nav.addEventListener('change', (event) => {
+    if (event.target.matches('[data-triage-page-size]')) {
+      screen.dataset.triagePageSize = event.target.value;
+      screen.dataset.triagePage = '1';
+      screen.dataset.loadKey = '';
+      loadConnectedTriageScreen(screen, document);
+    }
+  });
+  const searchInput = nav.querySelector('[data-triage-search]');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        screen.dataset.triageSearch = searchInput.value.trim();
+        screen.dataset.triagePage = '1';
+        screen.dataset.loadKey = '';
+        loadConnectedTriageScreen(screen, document);
+      }, 350);
+    });
+  }
 }
 
 function applyTriageReviewMode(host, findingId, mode) {
@@ -569,7 +657,10 @@ export function bindTriageReview(screen = document.querySelector('[data-triage-s
         bindFindingReassessment(host.querySelector('[data-connected-finding-reassessment]'), {
           onSubmitted: () => {
             const screen = document.querySelector('[data-triage-screen]');
-            if (screen) screen.dataset.loaded = '';
+            if (screen) {
+              screen.dataset.loadKey = '';
+              screen.dataset.triagePage = '1';
+            }
             hydrateConnectedTriage(document);
           },
           onError: (err) => {
@@ -587,7 +678,10 @@ export function bindTriageReview(screen = document.querySelector('[data-triage-s
           bindConnectedAiFindingReview(panel, {
             onSubmitted: () => {
               const screen = document.querySelector('[data-triage-screen]');
-              if (screen) screen.dataset.loaded = '';
+              if (screen) {
+                screen.dataset.loadKey = '';
+                screen.dataset.triagePage = '1';
+              }
               hydrateConnectedTriage(document);
             },
           });

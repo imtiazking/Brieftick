@@ -21,6 +21,7 @@ import {
   isWorkflowQueue,
   resolveWorkflowQueueParam,
 } from '@/lib/ri/triage/regulatory-workflow-queues.mjs';
+import { paginateTriageItems } from '@/lib/ri/triage/triage-list-pagination.mjs';
 
 /** Authorised staging UAT org — decisions here are never production legal verification. */
 const AUTHORISED_STAGING_ORG_ID = 'b8f5e3a1-00ad-4000-8000-000000000001';
@@ -34,7 +35,14 @@ import {
 
 const USE_CASE = 'UC-RI-005';
 const MAX_RUNS = 20;
-const MAX_ITEMS = 150;
+
+export type TriageListQuery = {
+  page?: number;
+  pageSize?: number;
+  verificationFilter?: string;
+  approvalFilter?: string;
+  search?: string;
+};
 
 const CLASSIFICATION_QUEUES = [
   TRIAGE_QUEUES.OBLIGATION,
@@ -135,6 +143,7 @@ export async function listTriageQueues(
   supabase: SupabaseClient,
   organisationId: string,
   queue: string | null,
+  query: TriageListQuery = {},
 ) {
   const workflowFilter =
     queue && queue !== WORKFLOW_QUEUES.ALL_FINDINGS ? resolveWorkflowQueueParam(queue) : queue;
@@ -384,6 +393,8 @@ export async function listTriageQueues(
       const row = {
         runId: run.id,
         findingId: finding.findingId,
+        claimIndex: (finding as { number?: number }).number != null ? (finding as { number: number }).number - 1 : null,
+        runCreatedAt: run.created_at,
         reviewHref: `#/ai-analysis/${run.id}`,
         regulator: regulator?.name || regulator?.external_key || context.regulatorKey || null,
         publicationId: run.publication_id,
@@ -488,9 +499,15 @@ export async function listTriageQueues(
         });
       }
       if (!workflowFilter) continue;
-      if (items.length >= MAX_ITEMS) continue;
       items.push(row);
     }
+  }
+
+  let pageResult: ReturnType<typeof paginateTriageItems> | null = null;
+  if (workflowFilter) {
+    pageResult = paginateTriageItems(items, query);
+    items.length = 0;
+    items.push(...(pageResult.items as Array<Record<string, unknown>>));
   }
 
   const workflowCounts = countWorkflowQueues(workflowRowsForCount);
@@ -525,11 +542,18 @@ export async function listTriageQueues(
         : workflowCounts[workflowFilter] ?? 0
       : workflowCounts[WORKFLOW_QUEUES.ALL_FINDINGS],
     items: workflowFilter ? items : [],
+    filteredTotal: pageResult?.pagination.totalItems ?? null,
+    pagination: pageResult?.pagination ?? null,
+    activeFilters: pageResult
+      ? {
+          verificationFilter: pageResult.verificationFilter,
+          approvalFilter: pageResult.approvalFilter,
+          search: pageResult.search,
+        }
+      : null,
     scannedRuns: runRows.length,
     completedRuns: count ?? runRows.length,
-    truncated:
-      (count ?? 0) > runRows.length ||
-      (workflowFilter ? (workflowCounts[workflowFilter] ?? 0) > items.length : false),
+    truncated: (count ?? 0) > runRows.length || (citations ?? []).length >= 1000,
     citationsCapped: (citations ?? []).length >= 1000,
     draftCreation: 'Only an accepted Obligation Triage finding can become a DRAFT obligation, and only through finding review. Nothing on this read is approved.',
     humanVerificationNote:

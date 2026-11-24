@@ -14,10 +14,30 @@ mkdirSync(OUT, { recursive: true });
 await requireUatPersonas(['C'], { label: 'queue-reconcile' });
 
 const result = await runAs('C', async ({ page }) => {
-  const res = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/triage?queue=${WORKFLOW_QUEUES.ALL_FINDINGS}`);
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok()) throw new Error(body.error || 'triage_all_failed');
-  const wc = body.workflowCounts || body.counts || {};
+  const wcRes = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/triage`);
+  const wcBody = await wcRes.json().catch(() => ({}));
+  if (!wcRes.ok()) throw new Error(wcBody.error || 'triage_counts_failed');
+  const wc = wcBody.workflowCounts || wcBody.counts || {};
+
+  const allIds = new Set();
+  let items = [];
+  let pageNum = 1;
+  let lastBody = null;
+  for (;;) {
+    const res = await page.request.get(
+      `${STAGING_ORIGIN}/api/ri-lab/triage?queue=${WORKFLOW_QUEUES.ALL_FINDINGS}&page=${pageNum}&pageSize=100`,
+    );
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok()) throw new Error(body.error || 'triage_all_failed');
+    lastBody = body;
+  for (const item of body.items || []) {
+    allIds.add(item.findingId);
+    items.push(item);
+  }
+    if (!body.pagination?.hasNextPage) break;
+    pageNum = body.pagination.page + 1;
+  }
+  const body = lastBody || {};
   const keys = [
     WORKFLOW_QUEUES.AI_FINDINGS,
     WORKFLOW_QUEUES.VERIFIED_OBLIGATIONS,
@@ -28,10 +48,9 @@ const result = await runAs('C', async ({ page }) => {
   ];
   const sumSix = keys.reduce((s, k) => s + (wc[k] || 0), 0);
   const all = wc[WORKFLOW_QUEUES.ALL_FINDINGS] ?? body.total ?? 0;
-  const items = body.items || [];
   const mismatches = [];
   const byQueue = Object.fromEntries(keys.map((k) => [k, []]));
-  for (const item of items.slice(0, 500)) {
+  for (const item of items) {
     const q = item.workflowQueue || deriveWorkflowQueue({
       hasPersistedDecision: item.hasPersistedDecision,
       humanVerification: item.humanVerification,
@@ -47,8 +66,10 @@ const result = await runAs('C', async ({ page }) => {
     sumSix,
     allReported: all,
     totalInResponse: body.total,
-    itemsReturned: items.length,
+    itemsReturned: allIds.size,
+    paginatedUniqueIds: allIds.size,
     truncated: body.truncated === true,
+    paginationEnabled: Boolean(body.pagination),
     sumEqualsAll: sumSix === all,
     overlapExplanation:
       sumSix === all
@@ -57,13 +78,13 @@ const result = await runAs('C', async ({ page }) => {
     sampleFindingIds: Object.fromEntries(keys.map((k) => [k, (byQueue[k] || []).slice(0, 5)])),
     unassignedSample: mismatches.slice(0, 10),
     uiNote:
-      items.length < (body.total || 0)
-        ? `API returned ${items.length} items of ${body.total} total (truncated=${body.truncated}); UI row count may be lower than ALL_FINDINGS count.`
-        : null,
+      allIds.size < (body.total || 0)
+        ? `Paginated fetch returned ${allIds.size} of ${body.total} total — investigate pagination integrity.`
+        : `All ${allIds.size} findings retrieved via paginated API (pageSize 100).`,
   };
 });
 
 writeFileSync(join(OUT, 'QUEUE-COUNT-RECONCILE.json'), JSON.stringify({ generatedAt: new Date().toISOString(), ...result }, null, 2));
 console.log(JSON.stringify(result, null, 2));
-if (!result.sumEqualsAll) process.exit(1);
+if (!result.sumEqualsAll || result.itemsReturned !== result.allReported) process.exit(1);
 console.log('staging-six-queue-count-reconcile: PASS');
