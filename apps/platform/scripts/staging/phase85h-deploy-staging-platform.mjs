@@ -90,11 +90,26 @@ if (!deploymentUrl) {
   process.exit(1);
 }
 
-const previewSmoke = spawnSync(
-  'node',
-  ['./scripts/eval/design-lab-browser-smoke.mjs', `--base=${deploymentUrl}`],
-  { cwd: platformRoot, stdio: 'inherit', encoding: 'utf8', shell: process.platform === 'win32' },
-);
+const previewSmoke =
+  process.platform === 'win32'
+    ? spawnSync(
+        'cmd',
+        [
+          '/c',
+          `set FORGENIQ_SMOKE_BASE=${deploymentUrl}&& vercel env run --scope ${SCOPE} -- node ./scripts/eval/design-lab-browser-smoke.mjs`,
+        ],
+        { cwd: platformRoot, stdio: 'inherit', encoding: 'utf8' },
+      )
+    : spawnSync(
+        'vercel',
+        ['env', 'run', '--scope', SCOPE, '--', 'node', './scripts/eval/design-lab-browser-smoke.mjs'],
+        {
+          cwd: platformRoot,
+          stdio: 'inherit',
+          encoding: 'utf8',
+          env: { ...process.env, FORGENIQ_SMOKE_BASE: deploymentUrl },
+        },
+      );
 if (previewSmoke.status !== 0) {
   const failed = {
     capturedAt: new Date().toISOString(),

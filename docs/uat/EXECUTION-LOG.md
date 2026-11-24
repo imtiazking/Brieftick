@@ -672,3 +672,15 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Hosted UAT | **BLOCKED** — Clerk saved sessions A/B/C **401** after deploy window; renew with `node scripts/uat/staging-user-sessions.mjs renew <A|B|C>` then `staging-my-tasks-abc.mjs` + `staging-design-lab-my-tasks-browser.mjs` |
 | Six-queue | Unchanged — triage service/logic not modified |
 | Production | **NO-GO** unchanged; no paid AI extraction |
+
+## 2026-11-24 — Blank-screen P0 (My Tasks module crash)
+
+| Activity | Outcome |
+|---|---|
+| Cause | `connected-my-tasks.js` imported `connectedCatalogueBanner` from `connected-display.js`, which does not export it. The browser aborted the whole `app.js` module graph, so `#ri-app` stayed empty. |
+| Fix | Import the banner from `connected-catalogue.js`. HTML shell shows **FORGENIQ is temporarily unable to load** if startup fails. HTML entry script is stamped with the build id. |
+| Gate | Named-import and syntax check in `validate-design-lab-js-deps.mjs` (sync fails closed). ESLint `no-undef` / `no-redeclare` on Design Lab `js/`. Unauthenticated Playwright smoke of 12 routes plus a recovery fixture. |
+| Preview | `dpl_GGs2zrCHDPVTyhHR35PmCbKRstZG` was **not** promoted when the first preview smoke hit Vercel Authentication. After an OIDC header, preview smoke **PASS** (sign-in shell mounted). |
+| Limitation | `vercel promote` on this project created a new production deployment rather than only aliasing the preview. Preview URLs require Vercel authentication; smoke uses `vercel env run`. |
+| Staging | **`dpl_HDHFNZkoRa6mpeHxXrWTvWL2ef2V`** aliased to `https://staging-app.forgeniq.com`. Live browser: dashboard **275 publications**, My Tasks empty state for the signed-in maker, AI Findings **queue total 96** with pagination. |
+| Production | **NO-GO**. No paid AI. Six-queue logic unchanged. |

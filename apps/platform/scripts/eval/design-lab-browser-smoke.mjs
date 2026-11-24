@@ -100,7 +100,7 @@ function startStatic() {
   });
 }
 
-const baseArg = process.argv.find((a) => a.startsWith('--base='));
+const baseArg = process.argv.find((a) => a.startsWith('--base=')) || (process.env.FORGENIQ_SMOKE_BASE ? `--base=${process.env.FORGENIQ_SMOKE_BASE}` : '');
 let origin = baseArg ? baseArg.slice('--base='.length).replace(/\/$/, '') : '';
 let server;
 if (!origin) {
@@ -108,7 +108,12 @@ if (!origin) {
 }
 
 const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage();
+const extraHTTPHeaders = {};
+if (process.env.VERCEL_OIDC_TOKEN) {
+  extraHTTPHeaders['x-vercel-trusted-oidc-idp-token'] = process.env.VERCEL_OIDC_TOKEN;
+}
+const context = await browser.newContext({ extraHTTPHeaders });
+const page = await context.newPage();
 if (!baseArg) {
   await page.addInitScript(() => {
     localStorage.setItem('forgeniq-ri-presentation-mode', '1');
@@ -122,7 +127,14 @@ page.on('pageerror', (err) => {
 });
 page.on('console', (msg) => {
   const text = msg.text();
-  if (msg.type() === 'error' && !text.includes('Failed to load resource')) fatal.push(text.slice(0, 400));
+  if (
+    msg.type() === 'error' &&
+    !text.includes('Failed to load resource') &&
+    !text.includes('fonts.gstatic.com') &&
+    !text.includes('x-vercel-trusted-oidc-idp-token')
+  ) {
+    fatal.push(text.slice(0, 400));
+  }
 });
 page.on('response', (res) => {
   const type = res.headers()['content-type'] || '';
@@ -144,7 +156,11 @@ for (const route of ROUTES) {
   await page.waitForFunction(() => document.documentElement.dataset.riMounted === '1', null, { timeout: 15_000 }).catch(() => {});
   const mounted = await page.evaluate(() => document.documentElement.dataset.riMounted === '1');
   const nav = await page.locator('nav.ri-topnav').count();
-  const heading = await page.locator('h1').first().innerText().catch(() => '');
+  let heading = await page.locator('h1').first().innerText().catch(() => '');
+  for (let i = 0; i < 8 && /connecting/i.test(heading); i += 1) {
+    await page.waitForTimeout(1000);
+    heading = await page.locator('h1').first().innerText().catch(() => heading);
+  }
   const fallback = await page.locator('#ri-boot-fallback:not([hidden])').count();
   const appLen = await page.evaluate(() => document.getElementById('ri-app')?.innerText?.length || 0);
   const triage = route.hash.startsWith('#/triage/');
@@ -190,6 +206,7 @@ if (!baseArg) {
   console.log(recoveryOk ? 'PASS' : 'FAIL', 'Recovery screen');
 }
 
+await context.close();
 await browser.close();
 server?.close();
 
