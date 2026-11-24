@@ -57,7 +57,13 @@ const report = await runAs('C', async ({ page }) => {
     };
   }
   const all = queueResults[WORKFLOW_QUEUES.ALL_FINDINGS];
-  return { queueResults, ok: all?.complete === true && all?.total === 208, expectedTotal: 208 };
+  const allComplete = Object.values(queueResults).every((q) => q.complete);
+  return {
+    queueResults,
+    ok: allComplete && all?.complete === true,
+    allFindingsTotal: all?.total ?? null,
+    allFindingsUnique: all?.unique ?? null,
+  };
 });
 
 writeFileSync(join(OUT, 'PAGINATION-INTEGRITY.json'), JSON.stringify({ generatedAt: new Date().toISOString(), ...report }, null, 2));

@@ -138,7 +138,7 @@ export function renderTriageScreen(segment) {
       <p class="ri-muted" data-triage-status>Loading this organisation’s ${esc(screen.title)} queue…</p>
       <nav class="ri-triage-pagination" data-triage-pagination hidden aria-label="Findings pagination">
         <label class="ri-muted">Per page
-          <select data-triage-page-size>
+          <select data-triage-page-size-select>
             <option value="25">25</option>
             <option value="50" selected>50</option>
             <option value="100">100</option>
@@ -322,7 +322,7 @@ function syncPaginationUi(screen, body) {
     return;
   }
   nav.hidden = false;
-  const sizeSelect = nav.querySelector('[data-triage-page-size]');
+  const sizeSelect = nav.querySelector('[data-triage-page-size-select]');
   if (sizeSelect && String(sizeSelect.value) !== String(pg.pageSize)) sizeSelect.value = String(pg.pageSize);
   const info = nav.querySelector('[data-triage-page-info]');
   if (info) info.textContent = `Page ${pg.page} of ${pg.totalPages || 1} · ${pg.totalItems} in view`;
@@ -581,7 +581,7 @@ function bindTriagePagination(screen) {
     }
   });
   nav.addEventListener('change', (event) => {
-    if (event.target.matches('[data-triage-page-size]')) {
+    if (event.target.matches('[data-triage-page-size-select]')) {
       screen.dataset.triagePageSize = event.target.value;
       screen.dataset.triagePage = '1';
       screen.dataset.loadKey = '';

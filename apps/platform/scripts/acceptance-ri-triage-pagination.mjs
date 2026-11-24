@@ -28,7 +28,10 @@ check('route accepts page and pageSize', route.includes('pageSize') && route.inc
 check('service paginates after queue filter', service.includes('paginateTriageItems') && !service.includes('MAX_ITEMS = 150'));
 check('pagination metadata exposed', service.includes('pagination:') && service.includes('filteredTotal'));
 check('stable sort keys on rows', service.includes('runCreatedAt') && service.includes('claimIndex'));
-check('UI has prev/next and page size', triage.includes('data-triage-prev') && triage.includes('data-triage-page-size'));
+check(
+  'UI has prev/next and page size',
+  triage.includes('data-triage-prev') && triage.includes('data-triage-page-size-select'),
+);
 check('server-side filter reload', triage.includes('loadConnectedTriageScreen') && triage.includes('verificationFilter'));
 
 const sample = Array.from({ length: 30 }, (_, i) => ({

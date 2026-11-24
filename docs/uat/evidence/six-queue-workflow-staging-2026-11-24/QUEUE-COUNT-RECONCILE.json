@@ -1,19 +1,21 @@
 {
-  "generatedAt": "2026-11-24T20:24:16.831Z",
+  "generatedAt": "2026-11-24T20:51:05.754Z",
   "workflowCounts": {
-    "AI_FINDINGS": 107,
+    "AI_FINDINGS": 96,
     "VERIFIED_OBLIGATIONS": 12,
     "NON_OBLIGATIONS": 23,
-    "REJECTED_FINDINGS": 47,
+    "REJECTED_FINDINGS": 57,
     "EXCEPTIONS": 16,
-    "NOT_APPLICABLE": 3,
+    "NOT_APPLICABLE": 4,
     "ALL_FINDINGS": 208
   },
   "sumSix": 208,
   "allReported": 208,
   "totalInResponse": 208,
-  "itemsReturned": 150,
-  "truncated": true,
+  "itemsReturned": 208,
+  "paginatedUniqueIds": 208,
+  "truncated": false,
+  "paginationEnabled": true,
   "sumEqualsAll": true,
   "overlapExplanation": "Each finding has exactly one workflowQueue; ALL_FINDINGS total equals sum of six queues (mutually exclusive partition).",
   "sampleFindingIds": {
@@ -39,11 +41,11 @@
       "c787b27f-9520-4e6a-a117-8ad1c3216c5c"
     ],
     "REJECTED_FINDINGS": [
-      "ff29d9e2-a98e-4a56-b798-6af5c80254b8",
-      "1fda0019-c77a-4a84-833e-f093cf95e6b0",
-      "8dbac0b9-f83b-4e11-8f4c-3c77a8df98b7",
-      "9cdb6b39-2999-492c-ad15-c41009f3ddd3",
-      "9446c5ce-9b7e-4c8f-946c-6f13bbe307ef"
+      "d9532c5c-48c3-4b19-9e6f-a6a9bd9c4243",
+      "9f9e2347-acae-40e0-a58f-15ae7bc23bee",
+      "1bf2d024-1b32-4c4b-a0d4-376867ad3b52",
+      "1a4e9a31-0719-40b6-bbc9-522c5e20bf45",
+      "0c4e9098-86c7-4983-8666-3f2f0f4fb438"
     ],
     "EXCEPTIONS": [
       "f293a1c0-df33-44ab-b31b-2eea536e5406",
@@ -53,11 +55,12 @@
       "830f72fd-2589-439a-bbe5-3b1299389575"
     ],
     "NOT_APPLICABLE": [
+      "9da97a0a-dccd-47ef-878b-1e56c6ee0291",
       "37342101-55ef-4ab0-9a5d-c29ad00ec672",
       "fb48ec85-6489-4d1c-9135-2ae071ac84c1",
       "1454cf32-5584-44bc-880c-31caec28c127"
     ]
   },
   "unassignedSample": [],
-  "uiNote": "API returned 150 items of 208 total (truncated=true); UI row count may be lower than ALL_FINDINGS count."
+  "uiNote": "All 208 findings retrieved via paginated API (pageSize 100)."
 }

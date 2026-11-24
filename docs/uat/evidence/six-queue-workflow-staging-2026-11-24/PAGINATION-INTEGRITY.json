@@ -1,0 +1,57 @@
+{
+  "generatedAt": "2026-11-24T20:50:54.503Z",
+  "queueResults": {
+    "AI_FINDINGS": {
+      "total": 96,
+      "unique": 96,
+      "pages": 4,
+      "duplicates": 0,
+      "complete": true
+    },
+    "VERIFIED_OBLIGATIONS": {
+      "total": 12,
+      "unique": 12,
+      "pages": 1,
+      "duplicates": 0,
+      "complete": true
+    },
+    "NON_OBLIGATIONS": {
+      "total": 23,
+      "unique": 23,
+      "pages": 1,
+      "duplicates": 0,
+      "complete": true
+    },
+    "REJECTED_FINDINGS": {
+      "total": 57,
+      "unique": 57,
+      "pages": 3,
+      "duplicates": 0,
+      "complete": true
+    },
+    "EXCEPTIONS": {
+      "total": 16,
+      "unique": 16,
+      "pages": 1,
+      "duplicates": 0,
+      "complete": true
+    },
+    "NOT_APPLICABLE": {
+      "total": 4,
+      "unique": 4,
+      "pages": 1,
+      "duplicates": 0,
+      "complete": true
+    },
+    "ALL_FINDINGS": {
+      "total": 208,
+      "unique": 208,
+      "pages": 9,
+      "duplicates": 0,
+      "complete": true
+    }
+  },
+  "ok": true,
+  "allFindingsTotal": 208,
+  "allFindingsUnique": 208
+}
