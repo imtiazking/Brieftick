@@ -25,11 +25,16 @@ function bucket(items, keyFn) {
   return m;
 }
 
-const audit = await runAs('B', async ({ page, request }) => {
-  const triageAll = await request.get(`${STAGING_ORIGIN}/api/ri-lab/triage`);
-  const triageObl = await request.get(`${STAGING_ORIGIN}/api/ri-lab/triage?queue=OBLIGATION_TRIAGE`);
-  const allBody = await triageAll.json();
-  const oblBody = await triageObl.json();
+const audit = await runAs('B', async ({ page }) => {
+  const triageAll = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/triage`);
+  const triageObl = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/triage?queue=OBLIGATION_TRIAGE`);
+  const allBody = await triageAll.json().catch(() => ({}));
+  const oblBody = await triageObl.json().catch(() => ({}));
+  const apiMeta = {
+    triageAllStatus: triageAll.status(),
+    triageOblStatus: triageObl.status(),
+    triageOblError: oblBody.error || oblBody.code || null,
+  };
   const items = oblBody.items || [];
 
   const decisions = [];
@@ -70,19 +75,28 @@ const audit = await runAs('B', async ({ page, request }) => {
   const needsReview = decisions.filter((d) => d.humanVerification === 'NEEDS_REVIEW' || d.humanVerification === 'RE_VERIFICATION_REQUIRED');
   const approved = decisions.filter((d) => d.approvalStatus === 'APPROVED');
 
+  let screenshots = { manualActions: false, verificationDialog: false };
   await page.goto(`${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html#/triage/obligations`, {
     waitUntil: 'domcontentloaded',
   });
-  await page.waitForSelector('[data-triage-manual-actions]', { timeout: 90_000 });
-  await page.screenshot({ path: join(OUT_DIR, 'manual-verify-reject-needs-review-actions.png'), fullPage: true });
+  await page
+    .waitForSelector('[data-triage-review-mode="reject"], [data-triage-manual-actions]', { timeout: 120_000 })
+    .catch(() => null);
+  if (await page.locator('[data-triage-review-mode="reject"]').count()) {
+    await page.screenshot({ path: join(OUT_DIR, 'manual-verify-reject-needs-review-actions.png'), fullPage: true });
+    screenshots.manualActions = true;
+  }
   const viewBtn = page.locator('[data-triage-view-verification]').first();
   if (await viewBtn.count()) {
     await viewBtn.click();
     await page.waitForTimeout(400);
     await page.screenshot({ path: join(OUT_DIR, 'verification-evidence-dialog.png'), fullPage: true });
+    screenshots.verificationDialog = true;
   }
 
   return {
+    apiMeta,
+    screenshots,
     triageCounts: allBody.counts,
     obligationQueueCount: allBody.counts?.OBLIGATION_TRIAGE,
     verificationCounts: oblBody.verificationCounts,

@@ -165,13 +165,14 @@ export async function listTriageQueues(
   ] as string[];
   const { data: memberRows, error: memberError } = reviewerIds.length
     ? await supabase
-        .from('organisation_members')
-        .select('user_id, role')
+        .from('organisation_memberships')
+        .select('clerk_user_id, role')
         .eq('organisation_id', organisationId)
-        .in('user_id', reviewerIds)
+        .in('clerk_user_id', reviewerIds)
+        .eq('status', 'active')
     : { data: [], error: null };
   if (memberError) throw new Error(memberError.message);
-  const roleByReviewerId = new Map((memberRows ?? []).map((m) => [m.user_id as string, m.role as string]));
+  const roleByReviewerId = new Map((memberRows ?? []).map((m) => [m.clerk_user_id as string, m.role as string]));
   const stagingTenant = organisationId === AUTHORISED_STAGING_ORG_ID;
   const currentPublicationVersionById = new Map<string, string>();
   for (const row of versionRows ?? []) {
