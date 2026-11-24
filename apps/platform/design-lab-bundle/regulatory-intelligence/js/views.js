@@ -479,8 +479,13 @@ function viewDashboard() {
   const dataAsOfIso = connected
     ? (catLoadedAt || stats.latestRetrievedAt || new Date().toISOString()).slice(0, 10)
     : DEMO_TODAY;
+  const catalogueCount = connected
+    ? stats.catalogueCount ?? getConnectedCatalogue(s).publicationTotal ?? getConnectedCatalogue(s).catalogueSummaryTotal ?? scopedPubs.length
+    : stats.catalogueCount ?? scopedPubs.length;
   const headline = connected
-    ? `${stats.catalogueCount ?? scopedPubs.length} publication${(stats.catalogueCount ?? scopedPubs.length) === 1 ? '' : 's'} in staging catalogue`
+    ? stats.catalogueLoading && catalogueCount == null
+      ? 'Loading staging catalogue…'
+      : `${catalogueCount} publication${catalogueCount === 1 ? '' : 's'} in staging catalogue`
     : materialOpen.length > 0
       ? `${materialOpen.length} material change${materialOpen.length === 1 ? '' : 's'} require attention`
       : 'Regulatory implementation remains broadly controlled';
@@ -504,7 +509,7 @@ function viewDashboard() {
     ? `${connectedCatalogueBanner(s)}
     <section class="ri-dashboard-hero">
       <p class="ri-dashboard-hero__narrative">Staging catalogue connected — publication metrics reflect ingested <code>regulatory_publications</code>. Tenant compliance counts use server-enforced <code>dataScope=operational</code> (UAT-labelled rows excluded).</p>
-      <p class="ri-muted">Global catalogue · ${scopedPubs.length} publication(s) · tenant triage/applicability overlay when provisioned</p>
+      <p class="ri-muted">Global catalogue · ${catalogueCount ?? scopedPubs.length} publication(s) · tenant triage/applicability overlay when provisioned</p>
     </section>`
     : `<section class="ri-dashboard-hero">
       <p class="ri-dashboard-hero__narrative">${esc(s.forgeniqRead.summary)}</p>
@@ -527,7 +532,7 @@ function viewDashboard() {
     <div class="ri-priority-metrics">
       ${
         connected
-          ? `${metric('Catalogue publications', `<strong>${stats.catalogueCount ?? scopedPubs.length}</strong>`, 'regulatory_publications (global)')}
+          ? `${metric('Catalogue publications', `<strong>${catalogueCount ?? scopedPubs.length}</strong>`, 'regulatory_publications (global)')}
       ${metric('Awaiting triage', `<strong>${tenantSummary?.publicationsAwaitingTriage ?? stats.notTriaged ?? 0}</strong>`, 'organisation_publications')}
       ${metric('Pending approvals', `<strong>${tenantSummary?.pendingApprovals ?? pendingApprovals.length}</strong>`, 'Impact & applicability IN_REVIEW')}
       ${metric('Overdue obligations', `<strong>${tenantSummary?.obligationsOverdue ?? 0}</strong>`, 'regulatory_obligations')}

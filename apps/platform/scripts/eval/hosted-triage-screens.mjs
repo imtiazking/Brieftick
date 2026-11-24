@@ -42,12 +42,22 @@ const hosted = await runAs('A', async ({ page }) => {
   const pages = [];
   for (const [name, hash, file] of routes) {
     await page.goto(`${LAB}${hash}`, { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2500);
-    if (name.endsWith('triage') || name === 'dashboard') {
+    if (name === 'dashboard') {
+      await page.waitForFunction(
+        () => {
+          const title = document.querySelector('.ri-page-head__title')?.textContent || '';
+          return /\d+ publication/.test(title) || title.includes('Loading staging catalogue');
+        },
+        { timeout: 90_000 },
+      );
+    } else if (name.endsWith('triage')) {
       await page.waitForFunction(() => {
-        const el = document.querySelector('[data-triage-count], [data-triage-status]');
-        return el && !el.textContent.includes('…') && !el.textContent.includes('Loading');
-      }, { timeout: 20000 }).catch(() => {});
+        const el = document.querySelector('[data-triage-status]');
+        return el && !el.textContent.includes('Loading this organisation');
+      }, { timeout: 60000 }).catch(() => {});
+      await page.waitForTimeout(1000);
+    } else {
+      await page.waitForTimeout(2500);
     }
     const snap = await page.evaluate(() => ({
       title: document.querySelector('h1, .ri-page-head__title')?.textContent?.trim() || '',

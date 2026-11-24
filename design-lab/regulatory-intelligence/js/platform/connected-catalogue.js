@@ -385,18 +385,20 @@ async function loadConnectedCatalogueInner(state, cat) {
 
   const base = apiBase(state).replace(/\/$/, '');
   try {
-    const [pubRes, workRes, govRes, opsRes, membersRes] = await Promise.all([
+    const [pubRes, workRes, govRes, opsRes, membersRes, summaryRes] = await Promise.all([
       fetch(scopedApiUrl(base, '/publications'), { credentials: 'same-origin', headers: { Accept: 'application/json' } }),
       fetch(scopedApiUrl(base, '/tenant-work'), { credentials: 'same-origin', headers: { Accept: 'application/json' } }),
       fetch(scopedApiUrl(base, '/tenant-governance'), { credentials: 'same-origin', headers: { Accept: 'application/json' } }),
       fetch(`${base}/tenant-operations`, { credentials: 'same-origin', headers: { Accept: 'application/json' } }),
       fetch(`${base}/tenant-members`, { credentials: 'same-origin', headers: { Accept: 'application/json' } }),
+      fetch(`${base}/catalogue/summary`, { credentials: 'same-origin', headers: { Accept: 'application/json' } }),
     ]);
     const pubBody = await pubRes.json().catch(() => ({}));
     const workBody = await workRes.json().catch(() => ({}));
     const govBody = await govRes.json().catch(() => ({}));
     const opsBody = await opsRes.json().catch(() => ({}));
     const membersBody = await membersRes.json().catch(() => ({}));
+    const summaryBody = await summaryRes.json().catch(() => ({}));
 
     if (!pubRes.ok || !pubBody.ok) {
       const err = new Error(pubBody.error || pubBody.message || `publications_http_${pubRes.status}`);
@@ -420,6 +422,11 @@ async function loadConnectedCatalogueInner(state, cat) {
     }
 
     cat.publications = Array.isArray(pubBody.publications) ? pubBody.publications : [];
+    const summaryTotal = Number(summaryBody.total);
+    cat.catalogueSummaryTotal = summaryRes.ok && summaryBody.ok && Number.isFinite(summaryTotal) ? summaryTotal : null;
+    cat.publicationTotal =
+      cat.catalogueSummaryTotal ??
+      (Number.isFinite(Number(pubBody.total)) ? Number(pubBody.total) : cat.publications.length);
     cat.changes = Array.isArray(workBody.changes) ? workBody.changes : [];
     cat.authorisedUatChanges = Array.isArray(workBody.authorisedUatChanges)
       ? workBody.authorisedUatChanges
@@ -1208,7 +1215,8 @@ export function connectedCatalogueBanner(state) {
       excludedTotal > 0
         ? ` · ${excludedTotal} labelled UAT row(s) excluded from dashboard (<code>dataScope=operational</code>)`
         : ' · UAT-labelled rows excluded by server filter';
-    return `<p class="ri-connected-banner">Connected staging${writes} · ${scope}${uatNote} · Global catalogue (${cat.publications.length} publication${cat.publications.length === 1 ? '' : 's'}) · Operational changes: ${tw.changes ?? 0}${cat.changeProvenance?.uatAuthorised ? ` · ${cat.changeProvenance.uatAuthorised} UAT audit change(s)` : ''} · ${tw.impacts ?? cat.impactAssessments?.length ?? 0} assessment(s) · ${tw.obligations ?? cat.obligations?.length ?? 0} obligation(s) · GRC: ${tg.risks ?? 0} risk(s) · ${tg.controls ?? 0} control(s) · ${tg.assuranceReviews ?? 0} assurance · ${tg.workflowEvents ?? 0} workflow event(s)</p>`;
+    const pubCount = cat.publicationTotal ?? cat.catalogueSummaryTotal ?? cat.publications.length;
+    return `<p class="ri-connected-banner">Connected staging${writes} · ${scope}${uatNote} · Global catalogue (${pubCount} publication${pubCount === 1 ? '' : 's'}) · Operational changes: ${tw.changes ?? 0}${cat.changeProvenance?.uatAuthorised ? ` · ${cat.changeProvenance.uatAuthorised} UAT audit change(s)` : ''} · ${tw.impacts ?? cat.impactAssessments?.length ?? 0} assessment(s) · ${tw.obligations ?? cat.obligations?.length ?? 0} obligation(s) · GRC: ${tg.risks ?? 0} risk(s) · ${tg.controls ?? 0} control(s) · ${tg.assuranceReviews ?? 0} assurance · ${tg.workflowEvents ?? 0} workflow event(s)</p>`;
   }
   return '';
 }

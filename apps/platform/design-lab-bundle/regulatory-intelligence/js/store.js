@@ -1093,7 +1093,25 @@ export function getAction(id) {
   return state.actions.find((a) => a.id === id);
 }
 
+function connectedCataloguePublicationCount() {
+  const cat = getConnectedCatalogue(state);
+  if (Number.isFinite(cat.publicationTotal)) return cat.publicationTotal;
+  if (Number.isFinite(cat.catalogueSummaryTotal)) return cat.catalogueSummaryTotal;
+  if (Array.isArray(cat.publications) && cat.publications.length) return cat.publications.length;
+  return null;
+}
+
 export function computeDashboardStats() {
+  if (isConnectedBackendActive(state) && !isConnectedCatalogueReady(state)) {
+    const count = connectedCataloguePublicationCount();
+    return {
+      connected: true,
+      catalogueLoading: getConnectedCatalogue(state).status !== 'error',
+      catalogueCount: count,
+      awaitingReview: 0,
+      notTriaged: 0,
+    };
+  }
   const pubs = getViewPublications();
   if (isConnectedBackendActive(state) && isConnectedCatalogueReady(state)) {
     const changes = getViewChanges();
@@ -1136,7 +1154,7 @@ export function computeDashboardStats() {
 
     return {
       connected: true,
-      catalogueCount: pubs.length,
+      catalogueCount: connectedCataloguePublicationCount() ?? pubs.length,
       regulatoryChangesCount: changes.length,
       impactAssessmentCount: impactCount,
       obligationCount,
