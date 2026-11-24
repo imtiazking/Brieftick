@@ -336,11 +336,14 @@ function renderSectorRegulators(s, sector) {
         : 'No live connector';
     return `<tr><td><a href="#/landscape/regulator/${esc(r.id)}">${esc(r.name)}</a></td><td>${esc(r.shortName)}</td><td>${esc(live)}</td></tr>`;
   });
+  const sectorSources = connected
+    ? regulatorsForSector(s, sector.id).flatMap((r) => connectedSourcesForRegulator(s, r.id))
+    : [];
   const sourceTable =
-    connected && allSources.length
+    connected && sectorSources.length
       ? `<h3>Global regulatory sources (production catalogue)</h3>${dataTable(
           ['Source', 'Regulator', 'Production'],
-          allSources.map(
+          sectorSources.map(
             (src) =>
               `<tr><td class="ri-mono">${esc(src.externalKey)}</td><td>${esc(src.regulatorName)}</td><td>${esc(src.productionStatus)}</td></tr>`,
           ),

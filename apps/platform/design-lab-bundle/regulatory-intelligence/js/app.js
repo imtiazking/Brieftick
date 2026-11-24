@@ -1,4 +1,5 @@
 import './platform/clerk-session.js';
+import { telemetry } from './platform/telemetry.js';
 import {
   initStore,
   subscribe,
@@ -530,6 +531,7 @@ function renderChromeUserSlot() {
 
 function renderChrome() {
   const app = document.getElementById('ri-app');
+  document.documentElement.dataset.riMounted = '1';
   app.innerHTML = `
     <header class="ri-shell-header">
       <div class="ri-chrome">

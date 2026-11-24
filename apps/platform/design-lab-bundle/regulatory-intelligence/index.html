@@ -14,7 +14,38 @@
     <div class="split-atmosphere__fog"></div>
   </div>
   <div id="ri-app" class="ri-app-root"></div>
+  <div id="ri-boot-fallback" hidden style="position:relative;z-index:5;max-width:36rem;margin:4rem auto;padding:1.5rem 1.75rem;background:#141820;color:#f4f1ea;border:1px solid rgba(255,255,255,.14);border-radius:12px;font-family:Inter Tight,Segoe UI,sans-serif">
+    <h1 style="font-size:1.35rem;margin:0 0 .5rem">FORGENIQ is temporarily unable to load.</h1>
+    <p style="margin:0 0 .75rem;line-height:1.45">The application did not finish starting. Retry, or reload the page. Your regulatory records are unchanged.</p>
+    <p style="margin:0 0 1rem;font-size:.9rem">Reference: <span id="ri-boot-ref">—</span></p>
+    <button type="button" id="ri-boot-retry" style="margin-right:.5rem">Retry</button>
+    <button type="button" id="ri-boot-reload">Reload application</button>
+  </div>
   <p class="ri-demo-banner ri-environment-banner--demo" id="ri-environment-banner">DEMO / MOCK DATA — Regulatory Intelligence Design Lab. Not production. No live FCA/PRA APIs.</p>
+  <script>
+    (function () {
+      var shown = false;
+      function show(code) {
+        if (shown) return;
+        if (document.documentElement.getAttribute('data-ri-mounted') === '1') return;
+        shown = true;
+        var el = document.getElementById('ri-boot-fallback');
+        if (!el) return;
+        el.hidden = false;
+        var ref = document.getElementById('ri-boot-ref');
+        if (ref) ref.textContent = code || 'RI-LOAD';
+      }
+      window.addEventListener('error', function (event) {
+        var file = String(event.filename || '');
+        if (file.indexOf('/js/') !== -1 || file.indexOf('app.js') !== -1) show('RI-MODULE');
+      });
+      document.getElementById('ri-boot-retry').addEventListener('click', function () { location.reload(); });
+      document.getElementById('ri-boot-reload').addEventListener('click', function () { location.reload(); });
+      window.setTimeout(function () {
+        if (document.documentElement.getAttribute('data-ri-mounted') !== '1') show('RI-TIMEOUT');
+      }, 12000);
+    })();
+  </script>
   <script type="module" src="/design-lab/regulatory-intelligence/js/app.js"></script>
 </body>
 </html>
