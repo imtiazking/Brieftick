@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T23:02:16.562Z",
+  "generatedAt": "2026-11-24T00:25:48.779Z",
   "operativeCount": 17,
   "byPrimary": {
     "AI_EXTRACTION_FAILURE": 17
@@ -8,165 +8,199 @@
     {
       "core": "16.1.6R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "missing_source_evidence",
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "2.3.1R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "pdf_markup_uncertainty",
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "2.3.2R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "pdf_markup_uncertainty",
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "2.5.1R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "pdf_markup_uncertainty",
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "2.7.1R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "pdf_markup_uncertainty",
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.2.1R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "pdf_markup_uncertainty",
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.2A.11R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.2A.1R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.2A.4R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.2A.6R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap",
         "missing_provision_reference_inference"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.2A.7R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap",
         "missing_provision_reference_inference"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.2A.8R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.6.2AR",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "pdf_markup_uncertainty",
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "4.6.2R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "pdf_markup_uncertainty",
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "TP 13.1R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "TP 13.3R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     },
     {
       "core": "TP 13.4R",
       "primary": "AI_EXTRACTION_FAILURE",
+      "failedExtractionStage": "supplied_to_model_structured_reference_omitted",
       "reasons": [
         "ai_extraction_omission",
         "historical_run_gap"
       ],
-      "liveAiStructuredRecall": false
+      "liveAiStructuredRecall": false,
+      "deterministicDetectionIsNotLiveRecall": true
     }
   ],
   "historicalRunCount": 2,

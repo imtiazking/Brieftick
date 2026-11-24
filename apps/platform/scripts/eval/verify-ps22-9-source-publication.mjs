@@ -8,6 +8,7 @@ import { join } from 'node:path';
 import { REPO_ROOT } from '../../lib/ri/eval/eval-paths.mjs';
 import { extractRegulatoryPdfContent } from '../../../../integrations/regulatory-sources/core/regulatory-pdf-extract.mjs';
 import { analyzeRegulatoryPdfDocument } from '../../../../integrations/regulatory-sources/core/regulatory-pdf-analysis.mjs';
+import { FCA_PS22_9_AUTHORITATIVE_METADATA as META } from '../../../../integrations/regulatory-sources/catalogue/fca-ps22-9-authoritative-metadata.mjs';
 
 const PDF = join(REPO_ROOT, 'integrations/regulatory-sources/fixtures/fca-ps22-9-official.pdf');
 const OUT = join(REPO_ROOT, 'docs/eval/PS22-9-SOURCE-PUBLICATION-VERIFICATION-2026-11-23.json');
@@ -70,7 +71,11 @@ const publicationIdentity = {
   fcaReference: signals.ps22_9 ? 'PS22/9' : signals.cp22_9 ? 'CP22/9 (text signal — investigate)' : 'UNRESOLVED',
   officialTitle: 'A new Consumer Duty',
   canonicalUrl: 'https://www.fca.org.uk/publication/policy/ps22-9.pdf',
-  publicationDate: signals.july2022 ? '2022-07-29 (text signal)' : 'See FCA register',
+  publicationDate: META.publicationDate,
+  publicationDateAuthority: META.canonicalPublicationPage,
+  pdfCoverDateText: META.pdfCoverDateText,
+  priorIncorrectPublicationDate: META.priorIncorrectPublicationDate,
+  commencement: META.commencement,
   publicationType: 'policy_statement',
   documentContains: signals.madeRules ? 'final_policy_statement_with_made_rules' : 'unknown',
   rulesCharacter: 'Final rules as made in PS22/9 instrument (not a standalone consultation paper PDF)',

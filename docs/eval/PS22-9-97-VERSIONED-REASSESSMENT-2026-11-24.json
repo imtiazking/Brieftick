@@ -1,0 +1,3842 @@
+{
+  "generatedAt": "2026-11-24T00:22:38.194Z",
+  "publication": {
+    "fcaReference": "PS22/9",
+    "officialTitle": "A new Consumer Duty",
+    "subtitle": "Feedback to CP21/36 and final rules",
+    "canonicalPublicationPage": "https://www.fca.org.uk/publications/policy-statements/ps22-9-new-consumer-duty",
+    "canonicalPdfUrl": "https://www.fca.org.uk/publication/policy/ps22-9.pdf",
+    "publicationType": "policy_statement",
+    "publicationDate": "2022-07-27",
+    "lastUpdatedOnFcaRecord": "2025-12-03",
+    "pdfCoverDateText": "July 2022",
+    "priorIncorrectPublicationDate": "2022-07-29",
+    "priorIncorrectPublicationDateReason": "Inferred day not present on the FCA publication record or PDF cover.",
+    "consultationOpened": "2021-12-07",
+    "consultationClosed": "2022-02-15",
+    "relatedConsultations": [
+      "CP21/13",
+      "CP21/36"
+    ],
+    "notThisDocument": [
+      "CP22/09 Dormant Assets scheme"
+    ],
+    "commencement": {
+      "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+      "closedProductsOrServices": "2024-07-31",
+      "source": "FCA PS22/9 publication page — Next steps"
+    },
+    "scopeNote": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+    "sourcePdfSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b"
+  },
+  "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+  "historicalAiMutated": false,
+  "summary": {
+    "provisionCount": 97,
+    "legallyVerifiedCount": 0,
+    "validNoCorrection": 0,
+    "correctedUsingExistingEvidence": 96,
+    "requiresHumanLegalReview": 1,
+    "requiresFreshAiExtraction": 0,
+    "invalidSourceOrEvidence": 0,
+    "paidReextractionCount": 0,
+    "note": "A matching reference and quotation is not a legally verified obligation. legallyVerifiedCount remains 0."
+  },
+  "provisions": [
+    {
+      "core": "2A.1.1R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.2R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.3G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.4G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.5G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.6G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.7.5G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105,
+        136
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.7R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.8G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.9G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        105
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.6R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        114,
+        118
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.7R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        114
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.8R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        114
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.9R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        114
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.10R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        114,
+        115
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.11R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        115
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.12R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        115
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.13R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        115
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.18R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        117
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.19R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        117
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.20R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        117
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.21R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        117
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.22G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        117
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.23G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        117,
+        118
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.14R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        116
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.15G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        116
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.16R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        116
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.17R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        116
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.24R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        118
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.25G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        118
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.26R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        118
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.27G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        118
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.28R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        118
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.29G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        118
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.3.30E",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        119
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "E",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "evidential_provision_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "REQUIRES HUMAN LEGAL REVIEW",
+      "reason": "Evidential provision text is in the instrument; obligation treatment requires human legal review",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.1R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        119
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.2R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        119,
+        126
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.3R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        119
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.4G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        120,
+        126
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.5R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        120
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.6G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        120,
+        126
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.7R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        120
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.8R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        120,
+        121,
+        126
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.12G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        122,
+        126
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.13R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        122
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.14R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        122
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.15R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        122
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.16R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        122
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.17R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        123
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.2R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        108
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.3G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        108
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.4G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        108
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.5R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        108
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.6R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        108
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.7G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        108
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.18R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        123
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.19R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        123
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.20R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        123,
+        126
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.21R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        124
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.22G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        124
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.23G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        124
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.24R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        124
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.25R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        124,
+        126
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.26R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        124
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.4.27R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": null,
+      "historicalEvidenceFile": null,
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        124
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": false,
+      "quotationSegments": 0,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": false,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": false,
+      "historicalBindingNature": null,
+      "evidenceBasis": "pdf_instrument",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "No local structured AI candidate; legal status taken from the verified PS22/9 instrument text. Staging extraction records remain unchanged.",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "1.2.1G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        104
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2.1.1R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        104
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 2,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.10G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.11G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.12G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.13G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.14G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        106
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.15G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.16G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.17G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.1.18G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.1R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        107
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "consultation_proposal",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.8R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "consultation_proposal",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.9R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "consultation_proposal",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.10G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.11G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "9b8fbd1f-3dc8-4fe4-9b42-9eb7eacaae00",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH0-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.12G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.13G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        109
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.14R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        110
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "consultation_proposal",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.15G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        110
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.16G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        110
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.17G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        110
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.18G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        110
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.19G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        110
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.20G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        110
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.21G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        111
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.22G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        111
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.23G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        111
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.24G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        112
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.25G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        112
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.26R",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        112
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "R",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "final_rule_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "consultation_proposal",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    },
+    {
+      "core": "2A.2.27G",
+      "reassessmentVersion": "ps22-9-legal-reassessment-v1",
+      "historicalAiPreserved": true,
+      "historicalRunId": "ffb5ae47-9193-434c-8fd9-75eaec349eaa",
+      "historicalEvidenceFile": "PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json",
+      "sourceSha256": "ee1230a9d9dfc378604ea9462568817cf6c1e7702ab38e927027fe08172f637b",
+      "sourceSha256Match": true,
+      "inInstrumentIndex": true,
+      "pdfPages": [
+        112
+      ],
+      "instrumentStartPage": 92,
+      "quotationVerbatim": true,
+      "quotationSegments": 1,
+      "ruleOrGuidanceMarker": "G",
+      "markerMatch": true,
+      "legalStatusInFinalInstrument": "guidance_in_PS22_9_made_instrument",
+      "commencement": {
+        "newAndExistingOpenToSaleOrRenewal": "2023-07-31",
+        "closedProductsOrServices": "2024-07-31",
+        "source": "FCA PS22/9 publication page — Next steps"
+      },
+      "scopeConditions": "Regulated firms including e-money and payments; retail customer outcomes. Firm-specific applicability is a human review matter.",
+      "affectedByConsultationMisclassification": true,
+      "historicalBindingNature": "guidance",
+      "evidenceBasis": "historical_candidate_plus_pdf",
+      "disposition": "CORRECTED USING EXISTING VERIFIED EVIDENCE",
+      "reason": "Quotation verified; consultation presentation corrected to final-instrument status without a new AI call",
+      "legallyVerified": false,
+      "legallyVerifiedBlockers": [
+        "human_legal_review_not_recorded",
+        "maker_checker_not_recorded",
+        "firm_applicability_not_assessed"
+      ],
+      "humanApprovalRequired": true,
+      "makerCheckerRequired": true,
+      "paidReextractionRecommended": false
+    }
+  ]
+}

@@ -162,10 +162,11 @@ add({
 add({
   title: '97 provision extractions used consultationPreserved presentation guards',
   category: 2,
-  status: 'FAILED',
+  status: 'CORRECTED — NOT LEGALLY VERIFIED',
   rootCause: 'Downstream consultationPreserved=true from misclassification',
-  resolution: 'Historical JSON preserved; PS22-9-97-PROVISION-REVALIDATION marks legallyVerified:0; re-assessment required (no auto-conversion to approved obligations)',
-  evidence: 'PS22-9-97-PROVISION-REVALIDATION-2026-11-23.json',
+  resolution:
+    'Versioned reassessment v1: 96 corrected from PDF/historical evidence, 1 evidential (2A.3.30E) human review, 0 paid re-extraction. legallyVerifiedCount remains 0.',
+  evidence: 'PS22-9-97-VERSIONED-REASSESSMENT-2026-11-24.json',
 });
 
 add({
@@ -180,14 +181,14 @@ add({
 add({
   title: 'Local design-lab browser suites (UC-RI-005 review, applicability, extraction button)',
   category: 5,
-  status: 'NOT EXECUTED — REQUIRES LOCAL DESIGN-LAB SERVER',
-  rootCause: 'Scripts refuse non-localhost; no server on :3001 in this tranche',
+  status: 'EXECUTED — NOT ALL PASSED',
+  rootCause: 'Local next start on :3001; Clerk publishable key was null in Design Lab HTML',
   resolution:
-    'Three acceptance-ri-*-browser.mjs modules; run after local serve — distinct from staging-p2-regression hosted evidence',
+    'extraction-button PASS. applicability workflow steps passed except Clerk key injection. finding-review failed (submit stayed disabled; Finding 2 evidence list). Not marked UAT-passed.',
   modules: [
-    'acceptance-ri-uc-ri-005-finding-review-browser',
-    'acceptance-ri-applicability-workflow-browser',
-    'acceptance-ri-uc-ri-005-extraction-button-browser',
+    'acceptance-ri-uc-ri-005-extraction-button-browser: PASS',
+    'acceptance-ri-applicability-workflow-browser: FAIL clerk key',
+    'acceptance-ri-uc-ri-005-finding-review-browser: FAIL',
   ],
 });
 

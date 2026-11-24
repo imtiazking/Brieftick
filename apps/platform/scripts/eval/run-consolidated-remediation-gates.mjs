@@ -31,6 +31,8 @@ const suites = [
   'acceptance-ri-extraction-continuation-batch-index',
   'acceptance-ri-resource-optimisations',
   'acceptance-ri-regulatory-pdf-analysis-ps22',
+  'acceptance-ri-ps22-publication-dates',
+  'acceptance-ri-ps26-seventeen-operative-omissions',
 ];
 
 const results = [];

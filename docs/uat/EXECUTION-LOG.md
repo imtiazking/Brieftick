@@ -464,3 +464,14 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | — | Paid PS22 continuation | **Not executed** ($1.488 / $2.35 ceiling) |
 | — | SEC-DB-003 hosted | **BLOCKED** (no `STAGING_DATABASE_URL`) |
 | — | Deliverable | `docs/uat/FORGENIQ-FINAL-REGULATORY-VERIFICATION-2026-11-23.md` |
+
+## 2026-11-24 — Regulatory accuracy remediation
+
+| Activity | Outcome |
+|---|---|
+| 97 versioned reassessments | 96 corrected from existing PDF evidence; 1 human review (`2A.3.30E`); 0 fresh AI; legally verified **0** |
+| Publication date | FCA record **2022-07-27**; 29 July was an incorrect inference. Commencement 2023-07-31 / 2024-07-31 |
+| PS26 17 operative | Stage `supplied_to_model_structured_reference_omitted`; not counted as live recall |
+| Security | Local 5/5; staging API 6/6; SEC-DB-003 hosted still blocked |
+| Local browsers | Extraction button PASS; applicability FAIL (Clerk key); finding review FAIL |
+| Paid AI | Not executed. Report `docs/uat/FORGENIQ-REGULATORY-ACCURACY-REMEDIATION-2026-11-24.md` |

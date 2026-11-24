@@ -17,6 +17,30 @@ function classify(p) {
   if (p.deterministicCompletenessSignal && !p.liveAiStructuredRecall) reasons.push('ai_extraction_omission');
   if (p.aiExtractionFinding === 'ai_extraction_omission_candidate') reasons.push('historical_run_gap');
   const traceRow = (trace.trace || []).find((t) => t.core === p.core);
+  const grounding = (hist.runs || []).flatMap((run) => {
+    const ground = run.structured_output?._forgeniqGrounding || {};
+    const sel = ground.selection || {};
+    const omitted = [
+      ...(sel.instrumentProvisionsOmitted || []).map((x) => x.provision),
+      ...(sel.instrumentProvisionsNotSupplied || []),
+    ];
+    const setOut = [];
+    for (const block of ground.sectionCatalog || []) {
+      for (const ref of block.provisionsSetOut || []) setOut.push(ref);
+    }
+    const candidates = run.structured_output?.candidates || [];
+    return [{ runId: run.runId, omitted, setOut, candidates }];
+  });
+  const omittedBeforeModel = grounding.some((g) => g.omitted.includes(p.core));
+  const supplied = grounding.some((g) => g.setOut.includes(p.core));
+  const structured = grounding.some((g) =>
+    g.candidates.some((c) => String(c.provisionReference || '').replace(/\s+/g, '').includes(p.core.replace(/\s+/g, ''))),
+  );
+  let failedExtractionStage = 'not_present_in_historical_snapshot';
+  if (omittedBeforeModel && !supplied) failedExtractionStage = 'pre_model_batch_selection_omitted';
+  else if (supplied && !structured) failedExtractionStage = 'supplied_to_model_structured_reference_omitted';
+  else if (supplied && structured) failedExtractionStage = 'structured_candidate_present_review_merge';
+  else if (omittedBeforeModel) failedExtractionStage = 'pre_model_batch_selection_omitted';
   if (traceRow?.crossPageNote) reasons.push('cross_page');
   if (traceRow && traceRow.heuristicOperativeCandidate && (traceRow.aiHits || []).every((h) => !h.provisionReference)) {
     reasons.push('missing_provision_reference_inference');
@@ -28,7 +52,7 @@ function classify(p) {
       : reasons.includes('pdf_markup_uncertainty')
         ? 'PDF_PARSING_COVERAGE'
         : 'CLASSIFICATION_OR_POSTPROCESS';
-  return { core: p.core, primary, reasons, liveAiStructuredRecall: p.liveAiStructuredRecall };
+  return { core: p.core, primary, failedExtractionStage, reasons, liveAiStructuredRecall: false, deterministicDetectionIsNotLiveRecall: true };
 }
 
 const classified = operative.map(classify);

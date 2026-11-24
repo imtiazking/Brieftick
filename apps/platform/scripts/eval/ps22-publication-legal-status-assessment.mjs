@@ -17,6 +17,7 @@ import {
   provisionMarkersInText,
 } from '../../lib/ri/classification/provision-eligibility.mjs';
 import { CANONICAL_CLASSIFICATION_CODES } from '../../lib/ri/classification/regulatory-classification-policy.mjs';
+import { FCA_PS22_9_AUTHORITATIVE_METADATA as META } from '../../../../integrations/regulatory-sources/catalogue/fca-ps22-9-authoritative-metadata.mjs';
 
 const OUT = join(REPO_ROOT, 'docs/eval/PS22-9-PUBLICATION-LEGAL-STATUS-ASSESSMENT-2026-11-23.json');
 const BATCH1 = join(REPO_ROOT, 'docs/eval/PS22-9-CONTINUATION-V2-BATCH1-2026-11-23.json');
@@ -52,7 +53,11 @@ const publicationAssessment = {
   fcaReference: 'PS22/9',
   officialTitle: 'A new Consumer Duty — Feedback to CP21/36 and final rules',
   canonicalUrl: 'https://www.fca.org.uk/publication/policy/ps22-9.pdf',
-  publicationDate: '2022-07-29',
+  publicationDate: META.publicationDate,
+  pdfCoverDateText: META.pdfCoverDateText,
+  commencement: META.commencement,
+  dateDiscrepancy:
+    '29 July 2022 was not on the FCA record. Authoritative first-published date is 27 July 2022. PDF cover says July 2022 only.',
   documentTypes: ['policy_statement', 'made_rules_instrument'],
   legallyBindingAsPublished: analysis.regulatoryStatus?.publishedFinalRules === true,
   consultationPreserved: analysis.consultationPreserved === true,
