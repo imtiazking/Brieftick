@@ -57,16 +57,18 @@ const result = await runAs('B', async ({ page }) => {
   const review = await reviewRes.json().catch(() => ({}));
   const finding = (review.findings || []).find((f) => f.findingId === target.findingId);
 
+  if (!finding?.claimTextSha256) {
+    fail('finding-claim-hash', { findingKeys: finding ? Object.keys(finding) : null });
+    return { steps, triage };
+  }
   const payload = {
     decision: {
       findingId: target.findingId,
-      claimIndex: finding?.claimIndex ?? 1,
+      claimTextSha256: finding.claimTextSha256,
       decision: 'REJECTED',
       comment: `Staging reassessment smoke ${new Date().toISOString()}`,
       reassessmentJustification:
         'Controlled reassessment smoke: authorised reviewer reconfirms rejection without new AI extraction.',
-      disposition: 'NOT_OBLIGATION',
-      triageQueue: 'OBLIGATION_TRIAGE',
     },
   };
 
@@ -83,12 +85,14 @@ const result = await runAs('B', async ({ page }) => {
 
   const reviewAfter = await page.request.get(`${STAGING_ORIGIN}/api/ri-lab/ai-analysis-runs/${target.runId}/findings`);
   const reviewAfterBody = await reviewAfter.json().catch(() => ({}));
-  const findingAfter = (reviewAfterBody.findings || []).find((f) => f.findingId === target.findingId);
-  const reassessCount = (findingAfter?.reassessments || []).length;
-  if (reassessCount < 1) {
-    fail('reassessment-history', { reassessCount });
+  const historyRows = (reviewAfterBody.reassessments || []).filter((r) => r.finding_id === target.findingId);
+  if (historyRows.length < 1) {
+    fail('reassessment-history', { reassessCount: historyRows.length });
   } else {
-    pass('reassessment-history', { reassessCount, latest: findingAfter.reassessments[reassessCount - 1]?.decision });
+    pass('reassessment-history', {
+      reassessCount: historyRows.length,
+      latest: historyRows[historyRows.length - 1]?.decision,
+    });
   }
 
   return { steps, presentationCounts: pc, target: { runId: target.runId, findingId: target.findingId }, payload };
