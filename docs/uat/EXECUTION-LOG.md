@@ -2,6 +2,16 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-24 — Six-queue UAT auth gate (19:05 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 19:00 | Session status | Hosted validation needs User B | **A/C VALID**; **B EXPIRED** (Clerk cookie) |
+| 19:00 | Preflight | Fail before API mutations | `requireUatPersonas` + `preflight` CLI on `staging-user-sessions.mjs` |
+| 19:01 | Headed renew B | Interactive Clerk only path | Browser open — waiting **session saved** |
+| 19:04 | Queue reconcile | User C read-only | **PASS** — 131+12+22+37+6+0=**208**=ALL; UI returns **150** rows (`truncated=true`) |
+| — | Five-decision hosted | Reviewer | **BLOCKED** until B session valid |
+
 ## 2026-11-24 — P0 triage ReferenceError (18:30 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |
