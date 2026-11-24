@@ -2,6 +2,15 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-24 — Staging UAT session regression (17:15 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 17:15 | Auth root cause | A/B/C `401` on `/api/ri-lab/session`; E2E passed 10:46 UTC same day | **Clerk cookie expiry** in Playwright profiles — not staging API/RBAC regression |
+| 17:15 | Blank headed login | `about:blank` + no Clerk wait (prior behaviour) | Fixed in `staging-user-sessions.mjs`: full redirect, `load`, Clerk wait; `diagnose B` **PASS** |
+| 17:15 | Tooling | `inspect`, `renew`, `FORGENIQ_UAT_LOGIN_WAIT_MS`, `lastEstablished` in `status` | Doc `STAGING-SESSION-REGRESSION-2026-11-24.md` |
+| — | Six-queue hosted UAT | All personas **EXPIRED** | **Blocked** until `renew B` + `renew A` (interactive Clerk); no staging redeploy required |
+
 ## 2026-11-23 — Embedded PG isolation + preflight regression (14:36 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |

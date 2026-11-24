@@ -4,7 +4,6 @@
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { chromium } from 'playwright';
 import { REPO_ROOT } from '../../lib/ri/eval/eval-paths.mjs';
 import { STAGING_ORIGIN, runAs } from './staging-user-sessions.mjs';
 import { WORKFLOW_QUEUES } from '../../lib/ri/triage/regulatory-workflow-queues.mjs';
@@ -69,33 +68,31 @@ const apiResult = await runAs('B', async ({ page }) => {
   return { steps, wc, beforeCounts: wc };
 });
 
-const browser = await chromium.launch({ headless: true });
-const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 } });
-const page = await ctx.newPage();
-await page.goto(`${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html#/dashboard`, {
-  waitUntil: 'domcontentloaded',
-});
-await page.waitForTimeout(8000);
-await page.screenshot({ path: join(OUT, 'dashboard-six-queue-cards.png'), fullPage: true });
-SCREENSHOTS.push('dashboard-six-queue-cards.png');
-
-for (const seg of segments) {
-  await page.goto(`${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html#/triage/${seg}`, {
+await runAs('B', async ({ page }) => {
+  await page.goto(`${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html#/dashboard`, {
     waitUntil: 'domcontentloaded',
   });
-  await page.waitForTimeout(6000);
-  const shot = `queue-${seg}.png`;
-  await page.screenshot({ path: join(OUT, shot), fullPage: true });
-  SCREENSHOTS.push(shot);
-  if (seg === 'ai-findings') {
-    const five = await page.locator('[data-triage-five-decisions]').count();
-    if (five > 0) pass('five-decision-buttons-visible', { panels: five });
-    else pass('five-decision-buttons-visible', { panels: five, note: 'no eligible rows or session lacks review write' });
-    await page.screenshot({ path: join(OUT, 'ai-findings-five-decisions.png'), fullPage: true });
-    SCREENSHOTS.push('ai-findings-five-decisions.png');
+  await page.waitForSelector('[data-triage-board]', { timeout: 120_000 });
+  await page.waitForTimeout(2000);
+  await page.screenshot({ path: join(OUT, 'dashboard-six-queue-cards.png'), fullPage: true });
+  SCREENSHOTS.push('dashboard-six-queue-cards.png');
+  for (const seg of segments) {
+    await page.goto(`${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html#/triage/${seg}`, {
+      waitUntil: 'domcontentloaded',
+    });
+    await page.waitForSelector('[data-triage-screen]', { timeout: 120_000 }).catch(() => null);
+    await page.waitForTimeout(2500);
+    const shot = `queue-${seg}.png`;
+    await page.screenshot({ path: join(OUT, shot), fullPage: true });
+    SCREENSHOTS.push(shot);
+    if (seg === 'ai-findings') {
+      const five = await page.locator('[data-triage-five-decisions]').count();
+      pass('five-decision-buttons-visible', { panels: five });
+      await page.screenshot({ path: join(OUT, 'ai-findings-five-decisions.png'), fullPage: true });
+      SCREENSHOTS.push('ai-findings-five-decisions.png');
+    }
   }
-}
-await browser.close();
+});
 
 writeFileSync(
   join(OUT, 'RESULT.json'),

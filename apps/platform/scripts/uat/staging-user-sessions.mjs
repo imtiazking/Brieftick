@@ -17,7 +17,7 @@
  *   await runAs('B', async ({ page, act }) => { await act('submit review', async () => { ... }); });
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, rmSync, appendFileSync } from 'node:fs';
+import { existsSync, mkdirSync, rmSync, appendFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
 
@@ -25,6 +25,7 @@ export const STAGING_ORIGIN = 'https://staging-app.forgeniq.com';
 export const STAGING_ORGANISATION_ID = 'b8f5e3a1-00ad-4000-8000-000000000001';
 const SESSION_ROOT = join(process.env.LOCALAPPDATA || join(process.env.USERPROFILE || '.', 'AppData', 'Local'), 'forgeniq-uat-sessions');
 const ATTRIBUTION_LOG = join(SESSION_ROOT, 'attribution.log');
+const LOGIN_WAIT_MS = Number(process.env.FORGENIQ_UAT_LOGIN_WAIT_MS || 30 * 60_000);
 const DESIGN_LAB = `${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html`;
 const ALLOWED_ROLES = new Set(['OWNER', 'ADMIN', 'COMPLIANCE_MANAGER', 'ANALYST', 'REVIEWER']);
 
@@ -113,14 +114,14 @@ function hostAllowed(url) {
   }
 }
 
-function registerNetworkGuard(context) {
+async function registerNetworkGuard(context) {
   context.on('requestfailed', (request) => {
     const failure = request.failure();
     if (failure?.errorText === 'net::ERR_BLOCKED_BY_CLIENT') {
       console.error(`BLOCKED ${request.url()}`);
     }
   });
-  context.route('**/*', (route) => {
+  await context.route('**/*', (route) => {
     const request = route.request();
     const url = request.url();
     if (request.isNavigationRequest() && request.frame() === request.frame().page().mainFrame()) {
@@ -157,9 +158,9 @@ async function launch(key, { headless, fresh = false }) {
   } else {
     context = await chromium.launchPersistentContext(profile, options);
   }
-  registerNetworkGuard(context);
-  const initialPages = context.pages();
-  const page = await context.newPage();
+  await registerNetworkGuard(context);
+  const initialPages = context.pages().filter((p) => !p.isClosed());
+  const page = initialPages[0] ?? (await context.newPage());
   for (const stale of initialPages) {
     if (stale !== page) await stale.close().catch(() => {});
   }
@@ -306,8 +307,9 @@ async function login(key, { fresh = false } = {}) {
   const { context, page } = await launch(p.key, { headless: false, fresh });
   try {
     await openSignInPage(page, `${p.label} (${p.userId})`);
-    console.log(`${p.label}: waiting up to 10 minutes for successful session…`);
-    const deadline = Date.now() + 10 * 60_000;
+    const waitMin = Math.round(LOGIN_WAIT_MS / 60_000);
+    console.log(`${p.label}: waiting up to ${waitMin} minutes for successful session (FORGENIQ_UAT_LOGIN_WAIT_MS)…`);
+    const deadline = Date.now() + LOGIN_WAIT_MS;
     while (Date.now() < deadline) {
       try {
         await page.waitForTimeout(3000);
@@ -337,18 +339,79 @@ async function login(key, { fresh = false } = {}) {
   }
 }
 
+function lastSessionEstablished(key) {
+  if (!existsSync(ATTRIBUTION_LOG)) return null;
+  try {
+    const lines = readFileSync(ATTRIBUTION_LOG, 'utf8').trim().split('\n');
+    for (let i = lines.length - 1; i >= 0; i -= 1) {
+      const row = JSON.parse(lines[i]);
+      if (row.persona === key && row.action === 'session_established') return row.at;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+async function inspect(key) {
+  const p = persona(key);
+  if (!existsSync(profileDir(p.key))) {
+    console.log(JSON.stringify({ persona: p.key, profile: 'missing', lastEstablished: lastSessionEstablished(p.key) }));
+    return;
+  }
+  const { context, page } = await launch(p.key, { headless: true });
+  try {
+    await page.goto(DESIGN_LAB_DASHBOARD, { waitUntil: 'domcontentloaded', timeout: 60_000 }).catch(() => null);
+    const id = await readIdentity(page);
+    console.log(
+      JSON.stringify(
+        {
+          persona: p.key,
+          profileDir: profileDir(p.key),
+          pageUrl: page.url(),
+          lastEstablished: lastSessionEstablished(p.key),
+          sessionApi: { status: id.status, ok: id.ok, clientUserId: id.clientUserId, userId: id.userId, role: id.role },
+          diagnosis:
+            id.status === 401
+              ? 'Clerk browser session cookie expired or missing — interactive login required (cannot be refreshed without Clerk).'
+              : id.ok
+                ? 'VALID'
+                : 'INVALID',
+        },
+        null,
+        2,
+      ),
+    );
+  } finally {
+    await context.close();
+  }
+}
+
 async function status() {
   const rows = [];
   for (const key of Object.keys(PERSONAS)) {
+    const established = lastSessionEstablished(key);
     if (!existsSync(profileDir(key))) {
-      rows.push({ persona: key, state: 'NO SESSION' });
+      rows.push({ persona: key, state: 'NO SESSION', lastEstablished: established });
       continue;
     }
     try {
       const identity = await runAs(key, async ({ identity: i }) => i);
-      rows.push({ persona: key, state: 'VALID', userId: identity.userId, organisation: identity.organisationName, role: identity.role });
+      rows.push({
+        persona: key,
+        state: 'VALID',
+        userId: identity.userId,
+        organisation: identity.organisationName,
+        role: identity.role,
+        lastEstablished: established,
+      });
     } catch (err) {
-      rows.push({ persona: key, state: err instanceof SessionExpiredError ? 'EXPIRED' : 'INVALID', detail: err.message });
+      rows.push({
+        persona: key,
+        state: err instanceof SessionExpiredError ? 'EXPIRED' : 'INVALID',
+        lastEstablished: established,
+        detail: err.message,
+      });
     }
   }
   console.table(rows);
@@ -375,10 +438,13 @@ const isCli = process.argv[1] && import.meta.url.endsWith(process.argv[1].replac
 if (isCli) {
   const [command, arg] = process.argv.slice(2);
   try {
-    if (command === 'login') {
-      const fresh = process.argv.includes('--fresh');
+    if (command === 'login' || command === 'renew') {
+      const fresh = command === 'login' && process.argv.includes('--fresh');
+      if (fresh) console.warn(`Removing profile for ${arg} (--fresh). Use only when the profile is corrupt.`);
       for (const key of arg?.toLowerCase() === 'all' ? Object.keys(PERSONAS) : [arg])
         await login(key, { fresh });
+    } else if (command === 'inspect') {
+      await inspect(arg || 'B');
     } else if (command === 'diagnose') {
       const { context, page } = await launch(arg || 'B', { headless: true });
       try {
@@ -397,7 +463,9 @@ if (isCli) {
     } else if (command === 'logout') {
       await logout(arg);
     } else {
-      console.log('usage: staging-user-sessions.mjs login <A|B|C|OP1|all> [--fresh] | diagnose <B> | status | logout <A|B|C|OP1>');
+      console.log(
+        'usage: staging-user-sessions.mjs login|renew <A|B|C|OP1|all> [--fresh] | inspect <B> | diagnose <B> | status | logout <A|B|C|OP1>',
+      );
       process.exitCode = 2;
     }
   } catch (err) {
