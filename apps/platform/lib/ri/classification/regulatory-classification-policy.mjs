@@ -71,6 +71,8 @@ export const DISPOSITIONS = Object.freeze({
   HORIZON: 'HORIZON_SCANNING',
   ARCHIVE: 'ARCHIVE',
   RECLASSIFY: 'RECLASSIFICATION_REQUESTED',
+  /** Binding requirement verified but not applicable to this organisation (distinct from non-binding source). */
+  ORGANISATION_NOT_APPLICABLE: 'ORGANISATION_NOT_APPLICABLE',
 });
 
 export const QUEUE_ACTIONS = Object.freeze({
@@ -80,6 +82,7 @@ export const QUEUE_ACTIONS = Object.freeze({
     'verify_legal_basis',
     DISPOSITIONS.CONVERT,
     DISPOSITIONS.LINK,
+    DISPOSITIONS.ORGANISATION_NOT_APPLICABLE,
     'reclassify',
     'reject',
   ],

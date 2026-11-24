@@ -14,9 +14,18 @@ import {
   deriveHumanVerification,
 } from '@/lib/ri/triage/triage-verification-status.mjs';
 import { countVerificationPresentation } from '@/lib/ri/triage/verification-presentation.mjs';
+import {
+  WORKFLOW_QUEUES,
+  countWorkflowQueues,
+  deriveWorkflowQueue,
+  isWorkflowQueue,
+  resolveWorkflowQueueParam,
+} from '@/lib/ri/triage/regulatory-workflow-queues.mjs';
 
 /** Authorised staging UAT org — decisions here are never production legal verification. */
 const AUTHORISED_STAGING_ORG_ID = 'b8f5e3a1-00ad-4000-8000-000000000001';
+
+export { isWorkflowQueue, resolveWorkflowQueueParam };
 import {
   loadActiveClassificationPolicy,
   loadPublicationClassificationContext,
@@ -27,16 +36,16 @@ const USE_CASE = 'UC-RI-005';
 const MAX_RUNS = 20;
 const MAX_ITEMS = 150;
 
-const QUEUES = [
+const CLASSIFICATION_QUEUES = [
   TRIAGE_QUEUES.OBLIGATION,
   TRIAGE_QUEUES.NON_OBLIGATION,
   TRIAGE_QUEUES.EXCEPTION,
 ] as const;
 
-export type TriageQueueName = (typeof QUEUES)[number];
+export type TriageQueueName = (typeof CLASSIFICATION_QUEUES)[number];
 
 export function isTriageQueue(value: string | null | undefined): value is TriageQueueName {
-  return QUEUES.includes(value as TriageQueueName);
+  return CLASSIFICATION_QUEUES.includes(value as TriageQueueName);
 }
 
 type DecisionRow = {
@@ -125,8 +134,10 @@ function clip(value: unknown, max = 500) {
 export async function listTriageQueues(
   supabase: SupabaseClient,
   organisationId: string,
-  queue: TriageQueueName | null,
+  queue: string | null,
 ) {
+  const workflowFilter =
+    queue && queue !== WORKFLOW_QUEUES.ALL_FINDINGS ? resolveWorkflowQueueParam(queue) : queue;
   const { count, error: countError } = await supabase
     .from('ai_analysis_runs')
     .select('id', { count: 'exact', head: true })
@@ -294,11 +305,12 @@ export async function listTriageQueues(
     citationsByRun.set(runId, list);
   }
 
-  const counts: Record<TriageQueueName, number> = {
+  const classificationCounts: Record<TriageQueueName, number> = {
     OBLIGATION_TRIAGE: 0,
     NON_OBLIGATION_TRIAGE: 0,
     EXCEPTION_TRIAGE: 0,
   };
+  const workflowRowsForCount: Array<{ workflowQueue: string }> = [];
   const queueMetricRows: Array<{
     humanVerification: string;
     approvalStatus: string;
@@ -326,7 +338,7 @@ export async function listTriageQueues(
         ? recorded.triage_queue
         : finding.triage?.queue) as TriageQueueName;
       if (!isTriageQueue(queueName)) continue;
-      counts[queueName] += 1;
+      classificationCounts[queueName] += 1;
       const suggestion = finding.suggestion;
       const quotation = recorded?.verified_quotation || suggestion?.sourceQuotation || finding.statement;
       const draftEligible =
@@ -355,7 +367,14 @@ export async function listTriageQueues(
         !runHasCompletedReview &&
         ['HUMAN_REVIEW_REQUIRED', 'AI_DRAFT'].includes(String(run.review_status || '').toUpperCase());
       const canReassess = runHasCompletedReview && hasPersistedDecision && !obligationApprovalLocked;
-      const canFirstReview = runOpenForFirstReview;
+      const canFirstReview = !hasPersistedDecision && !obligationApprovalLocked && runOpenForFirstReview;
+      const workflowQueue = deriveWorkflowQueue({
+        hasPersistedDecision,
+        humanVerification,
+        decision: recorded?.decision ?? null,
+        disposition: recorded?.disposition ?? null,
+        classificationQueue: queueName,
+      });
       const reviewerRole = recorded?.reviewer_user_id ? roleByReviewerId.get(recorded.reviewer_user_id) ?? null : null;
       const decisionProvenance = classifyFindingDecisionProvenance(recorded ?? {}, {
         stagingTenant,
@@ -386,6 +405,12 @@ export async function listTriageQueues(
         reviewStatus: recorded ? recorded.decision : run.review_status || 'HUMAN_REVIEW_REQUIRED',
         disposition: recorded?.disposition || null,
         triageQueue: queueName,
+        workflowQueue,
+        aiAssessmentRationale: clip((finding as { statement?: string }).statement, 400),
+        aiConfidence: (finding as { modelConfidence?: number | null }).modelConfidence ?? null,
+        sourcePdfPage: (finding as { pages?: number[] }).pages?.length
+          ? (finding as { pages: number[] }).pages[0]
+          : (suggestion as { quotationPage?: number } | undefined)?.quotationPage ?? null,
         provisional: recorded ? false : finding.triage?.provisional === true,
         exceptionReasons: finding.triage?.exceptionReasons || [],
         draftEligible,
@@ -445,7 +470,15 @@ export async function listTriageQueues(
         publicationVersionAtExtraction: runVersionId ?? null,
         currentPublicationVersionId: currentVersionId ?? null,
       };
-      if (!queue || queueName === queue) {
+      workflowRowsForCount.push({ workflowQueue });
+      if (
+        workflowFilter &&
+        workflowFilter !== WORKFLOW_QUEUES.ALL_FINDINGS &&
+        workflowQueue !== workflowFilter
+      ) {
+        continue;
+      }
+      if (!workflowFilter || workflowFilter === WORKFLOW_QUEUES.ALL_FINDINGS || workflowQueue === workflowFilter) {
         queueMetricRows.push({
           humanVerification,
           approvalStatus,
@@ -454,39 +487,49 @@ export async function listTriageQueues(
           decisionProvenance,
         });
       }
-      if (queue && queueName !== queue) continue;
+      if (!workflowFilter) continue;
       if (items.length >= MAX_ITEMS) continue;
       items.push(row);
     }
   }
 
-  const verificationCounts = queue ? countVerificationWithProvenance(queueMetricRows) : { ALL: 0 };
-  const presentationCounts = queue ? countVerificationPresentation(queueMetricRows) : { ALL: 0 };
-  const approvalCounts = queue ? countApprovalStatus(queueMetricRows) : { ALL: 0 };
+  const workflowCounts = countWorkflowQueues(workflowRowsForCount);
+  const verificationCounts = workflowFilter ? countVerificationWithProvenance(queueMetricRows) : { ALL: 0 };
+  const presentationCounts = workflowFilter ? countVerificationPresentation(queueMetricRows) : { ALL: 0 };
+  const approvalCounts = workflowFilter ? countApprovalStatus(queueMetricRows) : { ALL: 0 };
 
   return {
     ok: true,
     tenantScope: true,
     useCaseId: USE_CASE,
-    counts,
+    counts: workflowCounts,
+    workflowCounts,
+    classificationCounts,
     verificationCounts,
     presentationCounts,
     approvalCounts,
-    triageReconcile: queue
+    triageReconcile: workflowFilter
       ? {
-          obligationQueueCount: counts[TRIAGE_QUEUES.OBLIGATION],
+          obligationQueueCount: workflowCounts[WORKFLOW_QUEUES.VERIFIED_OBLIGATIONS],
+          aiFindingsCount: workflowCounts[WORKFLOW_QUEUES.AI_FINDINGS],
           metricRowCount: queueMetricRows.length,
           scannedRuns: runRows.length,
           completedRunsInTenant: count ?? null,
-          note: 'Dashboard card uses counts.OBLIGATION_TRIAGE across the newest completed UC-RI-005 runs (MAX_RUNS cap). Filter counts use the same scan window. A lower obligation count usually means fewer runs in the scan window or findings reclassified to other queues after human review — not silent deletion.',
+          note: 'Workflow queue counts derive from persisted human decisions — no duplicate finding rows. AI Findings hold unreviewed items; after a valid review the effective queue updates automatically.',
         }
       : null,
-    queue,
-    total: queue ? counts[queue] : Object.values(counts).reduce((sum, n) => sum + n, 0),
-    items: queue ? items : [],
+    queue: workflowFilter,
+    total: workflowFilter
+      ? workflowFilter === WORKFLOW_QUEUES.ALL_FINDINGS
+        ? workflowCounts[WORKFLOW_QUEUES.ALL_FINDINGS]
+        : workflowCounts[workflowFilter] ?? 0
+      : workflowCounts[WORKFLOW_QUEUES.ALL_FINDINGS],
+    items: workflowFilter ? items : [],
     scannedRuns: runRows.length,
     completedRuns: count ?? runRows.length,
-    truncated: (count ?? 0) > runRows.length || (queue ? counts[queue] > items.length : false),
+    truncated:
+      (count ?? 0) > runRows.length ||
+      (workflowFilter ? (workflowCounts[workflowFilter] ?? 0) > items.length : false),
     citationsCapped: (citations ?? []).length >= 1000,
     draftCreation: 'Only an accepted Obligation Triage finding can become a DRAFT obligation, and only through finding review. Nothing on this read is approved.',
     humanVerificationNote:

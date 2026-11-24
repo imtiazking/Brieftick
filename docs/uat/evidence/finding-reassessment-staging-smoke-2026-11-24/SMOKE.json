@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-11-24T13:15:14.849Z",
+  "steps": [
+    {
+      "step": "presentation-counts-shape",
+      "ok": true,
+      "detail": {
+        "ALL": 60,
+        "AWAITING_FIRST_REVIEW": 12,
+        "GENUINE_REGULATORY_VERIFIED": 0,
+        "UAT_VERIFIED": 12,
+        "NEEDS_FURTHER_INVESTIGATION": 0,
+        "REJECTED_UAT": 36,
+        "REJECTED_REGULATORY": 0,
+        "RE_VERIFICATION_REQUIRED": 0
+      }
+    },
+    {
+      "step": "regulatory-verified-still-zero",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "step": "reassess-candidate",
+      "ok": true,
+      "detail": {
+        "provisionReference": "PDF p.114, FCA 2022/31, PRIN 2A.3.7R",
+        "runId": "3ed8c3e2-162c-4be9-868e-b123e6a46288",
+        "findingId": "37342101-55ef-4ab0-9a5d-c29ad00ec672"
+      }
+    },
+    {
+      "step": "reassess-post-reviewer",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "findingId": "37342101-55ef-4ab0-9a5d-c29ad00ec672",
+        "reassessmentId": "c1a0ddcf-882b-4026-874a-4e85d337be33",
+        "sequenceNumber": 2
+      }
+    },
+    {
+      "step": "reassessment-history",
+      "ok": true,
+      "detail": {
+        "reassessCount": 2,
+        "latest": "REJECTED"
+      }
+    },
+    {
+      "step": "sod-unauthorised-reassess",
+      "ok": true,
+      "detail": {
+        "status": 403,
+        "code": "forbidden"
+      }
+    }
+  ],
+  "presentationCounts": {
+    "ALL": 60,
+    "AWAITING_FIRST_REVIEW": 12,
+    "GENUINE_REGULATORY_VERIFIED": 0,
+    "UAT_VERIFIED": 12,
+    "NEEDS_FURTHER_INVESTIGATION": 0,
+    "REJECTED_UAT": 36,
+    "REJECTED_REGULATORY": 0,
+    "RE_VERIFICATION_REQUIRED": 0
+  },
+  "target": {
+    "runId": "3ed8c3e2-162c-4be9-868e-b123e6a46288",
+    "findingId": "37342101-55ef-4ab0-9a5d-c29ad00ec672"
+  },
+  "payload": {
+    "decision": {
+      "findingId": "37342101-55ef-4ab0-9a5d-c29ad00ec672",
+      "claimTextSha256": "bbc41a85f62b8c5bccc0ded842f1c13e18eea9f265eae96fa83e15e04aab6bf3",
+      "decision": "REJECTED",
+      "comment": "Staging reassessment smoke 2026-11-24T13:15:05.091Z",
+      "reassessmentJustification": "Controlled reassessment smoke: authorised reviewer reconfirms rejection without new AI extraction."
+    }
+  }
+}

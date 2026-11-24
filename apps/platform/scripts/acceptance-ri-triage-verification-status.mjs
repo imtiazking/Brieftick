@@ -90,12 +90,12 @@ check('triage API derives humanVerification', service.includes('deriveHumanVerif
 check('triage API derives approvalStatus', service.includes('deriveApprovalStatus'));
 check('triage API returns verificationCounts', service.includes('verificationCounts'));
 check('triage API keeps legallyVerified false', service.includes('legallyVerified: false'));
-check('obligation table columns', triage.includes('Human Verification') && triage.includes('Approval Status'));
+check('verified obligations table columns', triage.includes('Human verification') && triage.includes('Approval'));
 check('verification filters', triage.includes('data-triage-verification-filter'));
 check('approval filters on obligation triage', triage.includes('data-triage-approval-filter'));
 check('verification badges labelled', triage.includes('UNVERIFIED') && triage.includes('aria-label'));
 check('view verification dialog', triage.includes('data-triage-view-verification'));
-check('manual verify reject needs review actions', triage.includes('data-triage-review-mode="reject"'));
+check('manual five decision actions', triage.includes('data-triage-review-mode="verify-obligation"') && triage.includes('not-applicable'));
 check('UAT provenance filter', triage.includes('UAT_TEST'));
 check('verify does not infer from obligation alone', !triage.includes('legallyVerified: true'));
 

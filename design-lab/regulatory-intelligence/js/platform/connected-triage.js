@@ -14,21 +14,46 @@ import {
   renderFindingReassessmentPanel,
 } from './connected-ai-governance-panels.js';
 
+const LEGACY_TRIAGE_SEGMENT = {
+  obligations: 'verified-obligations',
+  exceptions: 'exceptions',
+};
+
 export const TRIAGE_SCREENS = {
-  obligations: {
-    queue: 'OBLIGATION_TRIAGE',
-    title: 'Obligation Triage',
-    copy: 'Potential binding requirements from completed UC-RI-005 extractions. A row can become a DRAFT obligation only after human finding review accepts a conversion-eligible classification. Nothing here is legally approved.',
+  'ai-findings': {
+    queue: 'AI_FINDINGS',
+    title: 'AI Findings',
+    copy: 'Newly extracted findings awaiting human classification. AI recommendations are provisional — they are not verification or approval.',
+  },
+  'verified-obligations': {
+    queue: 'VERIFIED_OBLIGATIONS',
+    title: 'Verified Obligations',
+    copy: 'Human-verified potential obligations. Human verified ≠ maker-checker approved ≠ legally verified. DRAFT materialisation follows existing finding review only.',
   },
   'non-obligations': {
-    queue: 'NON_OBLIGATION_TRIAGE',
-    title: 'Non-Obligation Triage',
-    copy: 'Guidance, explanations and other non-binding findings. Review decisions are recorded on the finding. These rows cannot become approved obligations.',
+    queue: 'NON_OBLIGATIONS',
+    title: 'Non-Obligations',
+    copy: 'Findings confirmed as non-binding material, guidance, or definitions. No approved organisation obligations are created here.',
+  },
+  rejected: {
+    queue: 'REJECTED_FINDINGS',
+    title: 'Rejected Findings',
+    copy: 'Incorrect extractions, duplicates and rejected AI findings. Original extraction and audit history are preserved.',
   },
   exceptions: {
-    queue: 'EXCEPTION_TRIAGE',
-    title: 'Exception Triage',
-    copy: 'Ambiguous findings, unverified citations, scope or evidential questions, and disputed classifications. Resolve them in finding review. They are not approved obligations.',
+    queue: 'EXCEPTIONS',
+    title: 'Exceptions',
+    copy: 'Ambiguous findings requiring further investigation, conflicting classifications, or specialist review.',
+  },
+  'not-applicable': {
+    queue: 'NOT_APPLICABLE',
+    title: 'Not Applicable',
+    copy: 'Binding requirements assessed as not applicable to this organisation. Distinct from non-binding regulatory material.',
+  },
+  all: {
+    queue: 'ALL_FINDINGS',
+    title: 'All Findings',
+    copy: 'Every finding in the current scan window regardless of workflow queue.',
   },
 };
 
@@ -53,7 +78,8 @@ function apiBase(state) {
 }
 
 export function triageScreenFor(segment) {
-  return TRIAGE_SCREENS[segment] || null;
+  const resolved = LEGACY_TRIAGE_SEGMENT[segment] || segment;
+  return TRIAGE_SCREENS[resolved] || null;
 }
 
 export function renderTriageBoard() {
@@ -66,12 +92,16 @@ export function renderTriageBoard() {
     </a>`;
   };
   return `<section class="ri-panel" data-triage-board>
-    <h2>Triage</h2>
-    <p class="ri-muted">Counts are loaded from this organisation’s completed extractions. They are not demonstration figures.</p>
-    <div class="ri-priority-metrics">
-      ${card('obligations', 'Obligation Triage', 'Potential binding requirements')}
-      ${card('non-obligations', 'Non-Obligation Triage', 'Guidance and other non-binding findings')}
-      ${card('exceptions', 'Exception Triage', 'Ambiguous and disputed findings')}
+    <h2>Regulatory triage</h2>
+    <p class="ri-muted">Six workflow queues plus All Findings — live counts from persisted review decisions (tenant-scoped).</p>
+    <div class="ri-priority-metrics ri-priority-metrics--dense">
+      ${card('ai-findings', 'AI Findings', 'Awaiting human review')}
+      ${card('verified-obligations', 'Verified Obligations', 'Human-verified potential obligations')}
+      ${card('non-obligations', 'Non-Obligations', 'Non-binding confirmations')}
+      ${card('rejected', 'Rejected Findings', 'Rejected extractions')}
+      ${card('exceptions', 'Exceptions', 'Needs investigation')}
+      ${card('not-applicable', 'Not Applicable', 'Binding but N/A to org')}
+      ${card('all', 'All Findings', 'Complete inventory')}
     </div>
   </section>`;
 }
@@ -79,19 +109,20 @@ export function renderTriageBoard() {
 export function renderTriageScreen(segment) {
   const screen = triageScreenFor(segment);
   if (!screen) {
-    return `${pageHeader('Triage', 'Choose a queue')}
+    return `${pageHeader('Regulatory triage', 'Choose a workflow queue')}
       <ul>
-        <li><a href="#/triage/obligations">Obligation Triage</a></li>
-        <li><a href="#/triage/non-obligations">Non-Obligation Triage</a></li>
-        <li><a href="#/triage/exceptions">Exception Triage</a></li>
+        ${Object.entries(TRIAGE_SCREENS)
+          .map(([seg, s]) => `<li><a href="#/triage/${seg}">${esc(s.title)}</a></li>`)
+          .join('')}
       </ul>`;
   }
   if (!isConnectedBackendActive(getState())) {
     return `${pageHeader(screen.title, 'Connected staging data is required')}
       <section class="ri-panel"><p>Sign in and connect this organisation. Demonstration counts are not shown on this screen.</p></section>`;
   }
+  const resolvedSegment = LEGACY_TRIAGE_SEGMENT[segment] || segment;
   const filterBlock =
-    segment === 'obligations'
+    resolvedSegment === 'verified-obligations' || resolvedSegment === 'ai-findings' || resolvedSegment === 'all'
       ? `<div class="ri-triage-filters" data-triage-filters hidden>
       <p class="ri-muted" data-triage-filter-hint>Human verification and formal approval are separate. <strong>Verified (regulatory)</strong> counts only evidence-backed regulatory reviews — not UAT or staging test decisions.</p>
       <div class="ri-triage-presentation-metrics" data-triage-presentation-metrics hidden></div>
@@ -101,8 +132,9 @@ export function renderTriageScreen(segment) {
       : `<div class="ri-triage-filters" data-triage-filters hidden>
       <div class="ri-triage-filter-row" data-triage-verification-filters></div>
     </div>`;
+  const resolvedSegment = LEGACY_TRIAGE_SEGMENT[segment] || segment;
   return `${pageHeader({ title: screen.title, subtitle: screen.copy })}
-    <section class="ri-panel" data-triage-screen="${esc(screen.queue)}" data-triage-segment="${esc(segment)}">
+    <section class="ri-panel" data-triage-screen="${esc(screen.queue)}" data-triage-segment="${esc(resolvedSegment)}">
       ${filterBlock}
       <p class="ri-muted" data-triage-status>Loading this organisation’s ${esc(screen.title)} queue…</p>
       <div data-triage-rows></div>
@@ -137,11 +169,22 @@ function approvalBadge(status) {
 function manualReviewButtons(item, intent) {
   const run = esc(item.runId);
   const finding = esc(item.findingId);
-  const label = intent === 'reassess' ? 'Reassess' : 'Review';
-  return `<div class="ri-triage-manual-actions" data-triage-manual-actions>
-    <button type="button" class="ri-btn ri-btn--primary" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="verify" data-triage-review-intent="${esc(intent)}" title="Accept after confirming quotation, provision, legal basis and justification">✅ ${label} · Verify</button>
-    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="reject" data-triage-review-intent="${esc(intent)}" title="Reject with mandatory justification">❌ ${label} · Reject</button>
-    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="needs-review" data-triage-review-intent="${esc(intent)}" title="Flag for further investigation (reclassification)">🟠 ${label} · Needs review</button>
+  const prefix = intent === 'reassess' ? 'Reassess' : '';
+  if (intent === 'reassess') {
+    return `<div class="ri-triage-manual-actions" data-triage-manual-actions>
+    <button type="button" class="ri-btn ri-btn--primary" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="verify-obligation" data-triage-review-intent="reassess" title="Reassess → Verified Obligations">✅ Reassess · Verify obligation</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="non-obligation" data-triage-review-intent="reassess">🔵 Reassess · Non-obligation</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="reject" data-triage-review-intent="reassess">🔴 Reassess · Reject</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="exception" data-triage-review-intent="reassess">🟠 Reassess · Exception</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="not-applicable" data-triage-review-intent="reassess">⚪ Reassess · Not applicable</button>
+  </div>`;
+  }
+  return `<div class="ri-triage-manual-actions" data-triage-manual-actions data-triage-five-decisions>
+    <button type="button" class="ri-btn ri-btn--primary" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="verify-obligation" data-triage-review-intent="first-review" title="Verify obligation — routes to Verified Obligations">✅ ${prefix} Verify obligation</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="non-obligation" data-triage-review-intent="first-review">🔵 ${prefix} Non-obligation</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="reject" data-triage-review-intent="first-review">🔴 ${prefix} Reject</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="exception" data-triage-review-intent="first-review">🟠 ${prefix} Exception</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="not-applicable" data-triage-review-intent="first-review">⚪ ${prefix} Not applicable</button>
   </div>`;
 }
 
@@ -149,7 +192,8 @@ function rowActionButtons(item, state) {
   const hv = item.humanVerification || 'UNVERIFIED';
   const canWrite = isConnectedAiReviewEnabled(state);
   const parts = [];
-  if (canWrite && item.canFirstReview) {
+  const inAiInbox = item.workflowQueue === 'AI_FINDINGS';
+  if (canWrite && item.canFirstReview && inAiInbox) {
     parts.push(manualReviewButtons(item, 'first-review'));
   } else if (canWrite && item.canReassess) {
     parts.push(manualReviewButtons(item, 'reassess'));
@@ -189,21 +233,40 @@ function rowHtml(item, segment) {
   const reasons = Array.isArray(item.exceptionReasons) && item.exceptionReasons.length
     ? `<br><span class="ri-muted">${esc(item.exceptionReasons.join(', '))}</span>`
     : '';
-  if (segment === 'obligations') {
-    return `<tr data-triage-row data-human-verification="${esc(item.humanVerification || 'UNVERIFIED')}" data-approval-status="${esc(item.approvalStatus || 'NONE')}" data-counts-as-uat="${item.countsAsUatOrTest ? '1' : '0'}" data-genuine-verified="${item.countsAsGenuineHumanVerification ? '1' : '0'}" data-awaiting-first-review="${item.hasPersistedDecision ? '0' : '1'}">
+  const rowAttrs = `data-triage-row data-workflow-queue="${esc(item.workflowQueue || '')}" data-human-verification="${esc(item.humanVerification || 'UNVERIFIED')}" data-approval-status="${esc(item.approvalStatus || 'NONE')}" data-counts-as-uat="${item.countsAsUatOrTest ? '1' : '0'}" data-genuine-verified="${item.countsAsGenuineHumanVerification ? '1' : '0'}" data-awaiting-first-review="${item.hasPersistedDecision ? '0' : '1'}"`;
+  const confidence =
+    item.aiConfidence != null ? `<br><span class="ri-muted">AI confidence ${esc(String(Math.round(item.aiConfidence * 100)))}%</span>` : '';
+  const pdfRef = item.sourcePdfPage != null ? `<br><span class="ri-muted">PDF p.${esc(String(item.sourcePdfPage))}</span>` : '';
+  const draft = item.obligationId
+    ? `DRAFT ${item.obligationId}`
+    : item.workflowQueue === 'VERIFIED_OBLIGATIONS'
+      ? 'Eligible for DRAFT via full finding review'
+      : '—';
+  if (segment === 'ai-findings') {
+    return `<tr ${rowAttrs}>
+      <td>${esc(item.regulator || '—')}</td>
+      <td>${item.publicationId ? `<a href="#/publication/${esc(item.publicationId)}">${esc(item.publicationTitle || item.publicationId)}</a>` : '—'}</td>
       <td>${esc(item.provisionReference || '—')}</td>
-      <td>${esc(item.regulatoryFinding || item.quotation || '—')}</td>
-      <td>${verificationBadge(item.humanVerification, item)}${item.reVerificationRequired ? '<br><span class="ri-muted">Source revision changed</span>' : ''}${item.reassessmentCount ? `<br><span class="ri-muted">${item.reassessmentCount} reassessment(s)</span>` : ''}</td>
-      <td>${approvalBadge(item.approvalStatus)}</td>
+      <td>${esc(item.aiClassification || item.classificationCode || '—')}${item.provisional ? ' <span class="ri-muted">(provisional)</span>' : ''}</td>
+      <td>${esc(item.aiAssessmentRationale || item.regulatoryFinding || '—')}${confidence}</td>
+      <td>${esc(item.quotation || '—')}${pdfRef}</td>
+      <td>${esc(item.legalBasis || '—')}</td>
+      <td>${esc(item.applicability || '—')}</td>
+      <td>${verificationBadge(item.humanVerification, item)}</td>
       <td>${rowActionButtons(item, getState())}</td>
     </tr>`;
   }
-  const draft = item.obligationId
-    ? `DRAFT recorded ${item.obligationId}`
-    : item.triageQueue === 'OBLIGATION_TRIAGE'
-      ? 'Human review required before a DRAFT obligation can be created'
-      : 'Cannot become an approved obligation from this queue';
-  return `<tr data-triage-row data-human-verification="${esc(item.humanVerification || 'UNVERIFIED')}" data-approval-status="${esc(item.approvalStatus || 'NONE')}">
+  if (segment === 'verified-obligations') {
+    return `<tr ${rowAttrs}>
+      <td>${esc(item.provisionReference || '—')}</td>
+      <td>${esc(item.regulatoryFinding || item.quotation || '—')}</td>
+      <td>${verificationBadge(item.humanVerification, item)}${item.reassessmentCount ? `<br><span class="ri-muted">${item.reassessmentCount} reassessment(s)</span>` : ''}</td>
+      <td>${approvalBadge(item.approvalStatus)}</td>
+      <td>${esc(draft)}</td>
+      <td>${rowActionButtons(item, getState())}</td>
+    </tr>`;
+  }
+  return `<tr ${rowAttrs}>
     <td>${esc(item.regulator || '—')}</td>
     <td>${item.publicationId ? `<a href="#/publication/${esc(item.publicationId)}">${esc(item.publicationTitle || item.publicationId)}</a>` : '—'}</td>
     <td>${esc(item.provisionReference || '—')}</td>
@@ -211,9 +274,8 @@ function rowHtml(item, segment) {
     <td>${esc(item.classificationCode || (item.modelLabels || []).join(', ') || '—')}${item.provisional ? ' <span class="ri-muted">(provisional)</span>' : ''}</td>
     <td>${verificationBadge(item.humanVerification, item)}</td>
     <td>${esc(item.legalStatus || '—')}${item.legalBasis ? `<br><span class="ri-muted">${esc(item.legalBasis)}</span>` : ''}</td>
-    <td>${esc(item.applicability || '—')}</td>
-    <td>${badge(item.reviewStatus || '—')}${item.disposition ? `<br><span class="ri-muted">${esc(item.disposition)}</span>` : ''}${reasons}</td>
-    <td>${esc(draft)}<br>${rowActionButtons(item, getState())}</td>
+    <td>${badge(item.workflowQueue || '—')}${item.disposition ? `<br><span class="ri-muted">${esc(item.disposition)}</span>` : ''}${reasons}</td>
+    <td>${rowActionButtons(item, getState())}</td>
   </tr>`;
 }
 
@@ -269,7 +331,8 @@ export async function hydrateConnectedTriage(root = document) {
   if (!board && !screen) return;
   const base = apiBase(state);
   const queue = screen?.getAttribute('data-triage-screen') || '';
-  const segment = screen?.getAttribute('data-triage-segment') || '';
+  const rawSegment = screen?.getAttribute('data-triage-segment') || '';
+  const segment = LEGACY_TRIAGE_SEGMENT[rawSegment] || rawSegment;
   const url = queue ? `${base}/triage?queue=${encodeURIComponent(queue)}` : `${base}/triage`;
   const target = screen || board;
   if (target.dataset.loaded === '1') return;
@@ -299,7 +362,7 @@ export async function hydrateConnectedTriage(root = document) {
     if (filters) {
       filters.hidden = false;
       const metrics = screen.querySelector('[data-triage-presentation-metrics]');
-      if (metrics && segment === 'obligations') {
+      if (metrics && (resolvedSegment === 'verified-obligations' || resolvedSegment === 'ai-findings')) {
         metrics.hidden = false;
         metrics.innerHTML = `<div class="ri-priority-metrics">
           <span class="ri-metric"><span class="ri-metric__label">Awaiting first review</span><span class="ri-metric__value">${pCounts.AWAITING_FIRST_REVIEW ?? 0}</span></span>
@@ -325,7 +388,7 @@ export async function hydrateConnectedTriage(root = document) {
         screen.dataset.verificationFilter || 'ALL',
         'triage-verification-filter',
       );
-      if (segment === 'obligations') {
+      if (segment === 'verified-obligations') {
         const approvalGroups = [
           ['ALL', 'All Approvals', aCounts.ALL ?? 0],
           ['NONE', 'No draft', aCounts.NONE ?? 0],
@@ -349,12 +412,16 @@ export async function hydrateConnectedTriage(root = document) {
     }
     screen._triageItems = body.items;
     const head =
-      segment === 'obligations'
+      segment === 'ai-findings'
         ? `<thead><tr>
-      <th>Provision</th><th>Regulatory Finding</th><th>Human Verification</th><th>Approval Status</th><th>Action</th>
+      <th>Regulator</th><th>Publication</th><th>Provision</th><th>AI classification</th><th>AI rationale</th><th>Quotation</th><th>Legal basis</th><th>Applicability</th><th>Status</th><th>Actions</th>
     </tr></thead>`
-        : `<thead><tr>
-      <th>Regulator</th><th>Publication</th><th>Provision</th><th>Quotation</th><th>Classification</th><th>Human Verification</th><th>Legal basis</th><th>Applicability</th><th>Review</th><th>Action</th>
+        : segment === 'verified-obligations'
+          ? `<thead><tr>
+      <th>Provision</th><th>Requirement</th><th>Human verification</th><th>Approval</th><th>Draft</th><th>Actions</th>
+    </tr></thead>`
+          : `<thead><tr>
+      <th>Regulator</th><th>Publication</th><th>Provision</th><th>Quotation</th><th>Classification</th><th>Verification</th><th>Legal basis</th><th>Queue / disposition</th><th>Actions</th>
     </tr></thead>`;
     rows.innerHTML = `<table class="ri-table">${head}<tbody>${body.items.map((item) => rowHtml(item, segment)).join('')}</tbody></table>`;
     bindTriageReview(screen);
@@ -451,17 +518,33 @@ function bindTriageFilters(screen) {
 function applyTriageReviewMode(host, findingId, mode) {
   const card = host.querySelector(`[data-finding-review-item="${CSS.escape(findingId)}"]`);
   if (!card) return;
-  if (mode === 'verify') {
-    card.querySelector('[data-finding-decision][value="ACCEPTED"]')?.click();
+  const accepted = () => card.querySelector('[data-finding-decision][value="ACCEPTED"]')?.click();
+  const disposition = (value) => {
+    const disp = card.querySelector('[data-finding-disposition]');
+    if (disp) disp.value = value;
+  };
+  if (mode === 'verify' || mode === 'verify-obligation') {
+    accepted();
   } else if (mode === 'reject') {
     card.querySelector('[data-finding-decision][value="REJECTED"]')?.click();
-  } else if (mode === 'needs-review') {
-    card.querySelector('[data-finding-decision][value="ACCEPTED"]')?.click();
-    const disp = card.querySelector('[data-finding-disposition]');
-    if (disp) disp.value = 'RECLASSIFICATION_REQUESTED';
+  } else if (mode === 'non-obligation') {
+    accepted();
+    disposition('SUPPORTING_INFORMATION');
+    const code = card.querySelector('[data-finding-classification]');
+    if (code && !code.value) code.value = 'G';
+  } else if (mode === 'exception' || mode === 'needs-review') {
+    accepted();
+    disposition('RECLASSIFICATION_REQUESTED');
     const reclass = card.querySelector('[data-finding-reclassification]');
     if (reclass && !reclass.value) {
-      reclass.value = 'Further investigation required — applicability or classification uncertain.';
+      reclass.value = 'Exception — further investigation required before routing.';
+    }
+  } else if (mode === 'not-applicable') {
+    accepted();
+    disposition('ORGANISATION_NOT_APPLICABLE');
+    const comment = card.querySelector('[data-finding-comment]');
+    if (comment && !comment.value.trim()) {
+      comment.value = 'Binding requirement assessed as not applicable to this organisation.';
     }
   }
 }

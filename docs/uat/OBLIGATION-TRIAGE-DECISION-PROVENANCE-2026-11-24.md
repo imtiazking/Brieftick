@@ -1,6 +1,6 @@
 # Obligation Triage decision provenance audit (staging)
 
-Generated: 2026-11-24T12:57:46.181Z
+Generated: 2026-11-24T13:15:42.073Z
 
 ## Count reconciliation
 
@@ -11,8 +11,6 @@ Generated: 2026-11-24T12:57:46.181Z
 | Verification filter ALL | 60 |
 
 Dashboard card uses counts.OBLIGATION_TRIAGE across the newest completed UC-RI-005 runs (MAX_RUNS cap). Filter counts use the same scan window. A lower obligation count usually means fewer runs in the scan window or findings reclassified to other queues after human review — not silent deletion.
-
-**68 → 60 explained (2026-11-24):** The earlier dashboard snapshot **68** was taken before the latest Design Lab E2E finding-review batch on PS26/1 (`analysis_review_id` `b0e08a19…`). That review **re-triaged** findings (rejections + non-obligation dispositions). Current tenant counts: obligation **60**, non-obligation **142** (+6 vs prior **136**), exception **6** (+2 vs **4**). No rows were deleted; queue membership changed with persisted human decisions.
 
 ## Summary
 
