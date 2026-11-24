@@ -551,3 +551,17 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | UI | Manual **Verify / Reject / Needs review** buttons; UAT badges; **Verified (regulatory)** vs **Verified (UAT)** filters |
 | Hotfix | `organisation_memberships` join restored triage API (`d440ade`) |
 | Deploy | **`dpl_Arq8jVRdRRnCRHEqzp9H4A4uzgbt`** (`d440ade`) |
+
+## 2026-11-24 — Human-review experience (presentation counts + reassessment)
+
+| Activity | Outcome |
+|---|---|
+| Presentation counts | `verification-presentation.mjs` + triage API `presentationCounts` — **AWAITING_FIRST_REVIEW 12**, **GENUINE_REGULATORY_VERIFIED 0**, **UAT_VERIFIED 12**, **REJECTED_UAT 36** (staging) |
+| Reassessment | Migration `20261124130500` + RPC `ri_reassess_ai_finding`; append-only `ai_analysis_finding_reassessments`; POST `/api/ri-lab/ai-analysis-runs/[id]/findings/[findingId]/reassess` |
+| UI | Design Lab obligation triage metrics strip; **Reassess** + **View history**; governance panel `renderFindingReassessmentPanel` — prior rows immutable |
+| Local gates | Build PASS; `acceptance-ri-finding-reassessment` PASS; `acceptance-ri-triage-verification-status` PASS; `acceptance-ri-triage-screens` PASS; finding-review service **32/32** |
+| Staging DB | Supabase `forgeniq-ri-staging` — migration applied (`ri_finding_reassessment_v2`; RLS `is_active_member`) |
+| Staging deploy | **`dpl_8pL5b3zp7623h2ECTA2NKFNMYBQu`** — `da4a8e3` → `forgeniq-platform-staging` (smoke script `7df9e0c`, no redeploy) |
+| Hosted UAT | `staging-finding-reassessment-smoke.mjs` **PASS** — evidence `docs/uat/evidence/finding-reassessment-staging-smoke-2026-11-24/SMOKE.json`; User B reassessment persisted; User A **400**; no paid AI |
+| Design Lab URL | `https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/index.html#/triage/obligations` |
+| Production | **NO-GO** unchanged |
