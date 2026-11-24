@@ -132,7 +132,6 @@ export function renderTriageScreen(segment) {
       : `<div class="ri-triage-filters" data-triage-filters hidden>
       <div class="ri-triage-filter-row" data-triage-verification-filters></div>
     </div>`;
-  const resolvedSegment = LEGACY_TRIAGE_SEGMENT[segment] || segment;
   return `${pageHeader({ title: screen.title, subtitle: screen.copy })}
     <section class="ri-panel" data-triage-screen="${esc(screen.queue)}" data-triage-segment="${esc(resolvedSegment)}">
       ${filterBlock}
