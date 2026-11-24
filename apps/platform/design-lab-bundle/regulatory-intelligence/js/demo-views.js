@@ -36,7 +36,7 @@ export function viewDemo(queryJourney) {
     subtitle: 'Presentation-ready paths through mock regulatory change data. All source text is DEMO / MOCK REGULATORY TEXT.',
   })}
     ${focus}
-    <p class="ri-muted ri-demo-purpose"><strong>Dashboard</strong> = management overview · <strong>Work Queue</strong> = assigned work · <strong>Attention Centre</strong> = alerts and exceptions.</p>
+    <p class="ri-muted ri-demo-purpose"><strong>Dashboard</strong> = management overview · <strong>My Tasks</strong> = assigned work · <strong>Attention Centre</strong> = alerts and exceptions.</p>
     <div class="ri-split">${cards}</div>
     <p class="ri-muted"><a href="#/admin">Administration</a> — switch demo persona or reset the demo environment.</p>`;
 }

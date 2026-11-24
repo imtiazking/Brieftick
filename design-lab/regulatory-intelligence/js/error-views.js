@@ -16,7 +16,7 @@ export function viewPageNotFound(route) {
       <p class="ri-not-found__body">No view is registered for <span class="ri-mono">${esc(route)}</span>.</p>
       <div class="ri-not-found__actions">
         <a class="ri-btn ri-btn--primary" href="#/dashboard">Back to Dashboard</a>
-        <a class="ri-btn ri-btn--ghost" href="#/work">Work Queue</a>
+        <a class="ri-btn ri-btn--ghost" href="#/work">My Tasks</a>
       </div>
     </div>`;
 }

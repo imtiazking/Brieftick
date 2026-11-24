@@ -27,6 +27,7 @@ const KNOWN_TOP_LEVEL = new Set([
   'triage',
   'work',
   'work-queue',
+  'my-tasks',
   'notifications',
   'feed',
   'horizon',

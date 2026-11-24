@@ -18,6 +18,7 @@ import { guardConnectedDemoSubroute } from './platform/connected-route-guard.js'
 import { connectedReadOnlyOperationsBanner, renderConnectedOperationalAlertsTable } from './platform/connected-operations-ui.js';
 import { connectedIntakeRowCells, connectedWorkModeBanner } from './platform/connected-display.js';
 import { connectedIntakeTriageEnabled } from './platform/connected-intake-writes.js';
+import { renderConnectedMyTasksShell } from './platform/connected-my-tasks.js';
 import { getConnectedNotifications } from './platform/connected-notifications.js';
 import {
   filterNotificationsClient,
@@ -276,26 +277,7 @@ export function viewWorkQueue() {
   const s = getState();
   const connected = isConnectedBackendActive(s);
   if (connected) {
-    const changes = getViewChanges();
-    const rows = changes.map(
-      (c) => `<tr>
-      <td class="ri-table__title"><a class="ri-table__title-link" href="#/change/${esc(c.id)}">${esc(c.title)}</a></td>
-      <td>Regulatory Change</td>
-      <td class="ri-mono"><a href="#/change/${esc(c.id)}">${esc(c.externalKey || c.id.slice(0, 8))}</a></td>
-      <td>${esc(getConnectedAssigneeLabel(s, c.ownerId))}</td>
-      <td>${badge(c.materiality)}</td>
-      <td>${formatDate(c.dueDate)}</td>
-      <td>${badge(c.status)}</td>
-      <td>—</td>
-      <td>—</td>
-      <td>${esc(c.regulator || '—')}</td>
-    </tr>`,
-    );
-    return `${pageHeader('Work Queue', 'Tenant regulatory changes · connected catalogue')}
-      ${connectedCatalogueBanner(s)}
-      ${connectedWorkModeBanner(s)}
-      <p class="ri-muted">Production work items derived from tenant regulatory changes (owner and status from staging). Demo SLA personas are not used.</p>
-      ${dataTable(['Item', 'Type', 'ID', 'Owner', 'Priority', 'Due', 'Status', 'SLA', 'Scenario', 'Regulator'], rows, 'No tenant changes in work queue')}`;
+    return renderConnectedMyTasksShell();
   }
   const demo = getDemoUser();
   let items = buildWorkQueue(s, s.scenarioId);
@@ -319,8 +301,8 @@ export function viewWorkQueue() {
   </tr>`;
   });
 
-  return `${pageHeader('Work Queue', `Assigned regulatory work · Demo persona: ${esc(demo?.name)} (${esc(demo?.title)})`)}
-    <p class="ri-muted">Operational tasks owned by people and teams — distinct from the <a href="#/dashboard">Dashboard</a> overview and <a href="#/notifications">Attention Centre</a> alerts.</p>
+  return `${pageHeader('My Tasks', `Assigned regulatory work · Demo persona: ${esc(demo?.name)} (${esc(demo?.title)})`)}
+    <p class="ri-muted">Personalised action inbox — distinct from the <a href="#/dashboard">Dashboard</a> overview and <a href="#/notifications">Attention Centre</a> alerts.</p>
     <div class="ri-toolbar ri-toolbar--wrap">
       <select class="ri-select" id="work-view"><option value="all">All</option><option value="my">My work</option><option value="my-team">My team</option><option value="overdue">Overdue</option><option value="due-soon">Due this week</option><option value="approval">Awaiting approval</option><option value="governance">Governance (approvals &amp; reviews)</option><option value="assurance">Assurance</option><option value="findings">Findings</option><option value="validation">Validation</option><option value="attestations">Attestations</option><option value="exceptions">Exceptions</option></select>
       <select class="ri-select" data-work-filter="entity"><option value="">All entity types</option>
@@ -381,7 +363,7 @@ export function viewNotifications() {
       eyebrow: 'ATTENTION CENTRE',
       title: 'Exceptions, escalations and deadlines',
       subtitle: 'Tenant in-app notifications · external delivery disabled',
-      actions: `<a class="ri-btn ri-btn--ghost" href="#/work">Work queue</a>`,
+      actions: `<a class="ri-btn ri-btn--ghost" href="#/work">My Tasks</a>`,
     })}
       ${connectedCatalogueBanner(s)}
       ${connectedReadOnlyOperationsBanner()}

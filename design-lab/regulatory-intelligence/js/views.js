@@ -263,6 +263,7 @@ export function renderView(route) {
       return id ? viewIntakeDetail(id) : viewIntakeList();
     case 'work':
     case 'work-queue':
+    case 'my-tasks':
       return viewWorkQueue();
     case 'notifications':
       return viewNotifications();
@@ -781,11 +782,11 @@ function viewDashboard() {
       <h2 class="ri-panel__title"><span>15</span> My work (${connected ? 'Connected tenant registers' : esc(getDemoUser()?.name || 'Demo user')})</h2>
       ${
         connected
-          ? `${renderConnectedDashboardWorkLoadPlaceholder()}<p><a href="#/work">Open work queue</a> · tenant changes and impacts from <code>/api/ri-lab/tenant-work</code></p>`
+          ? `${renderConnectedDashboardWorkLoadPlaceholder()}<p><a href="#/work">Open My Tasks</a> · personalised inbox from <code>/api/ri-lab/my-tasks</code></p>`
           : `<ul class="ri-list-compact">
         ${buildWorkQueuePreview(s, 5)}
       </ul>
-      <p><a href="#/work">Open work queue</a></p>`
+      <p><a href="#/work">Open My Tasks</a></p>`
       }
     </section>`;
 }
