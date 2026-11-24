@@ -219,6 +219,23 @@ export async function fetchConnectedAiFindingReview(state, runId) {
   return body;
 }
 
+export async function submitConnectedFindingReassessment(state, runId, findingId, decision) {
+  if (!isConnectedAiReviewEnabled(state)) throw new Error('connected_writes_disabled');
+  const res = await fetch(
+    `${apiBase(state)}/ai-analysis-runs/${encodeURIComponent(runId)}/findings/${encodeURIComponent(findingId)}/reassess`,
+    {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ decision }),
+    },
+  );
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.ok) throw new Error(formatFindingReviewError(body.detail || body.reason || body.error));
+  notify();
+  return body;
+}
+
 export async function submitConnectedAiFindingReview(state, runId, payload) {
   if (!isConnectedAiReviewEnabled(state)) throw new Error('connected_writes_disabled');
   const res = await fetch(`${apiBase(state)}/ai-analysis-runs/${encodeURIComponent(runId)}/findings`, {
@@ -758,6 +775,76 @@ export function collectFindingReviewPayload(panel) {
 
 /** Wires inputs and the submit button; `onSubmitted` receives the API result. */
 const findingReviewSubmitInflight = new Map();
+
+export function renderFindingReassessmentPanel(body, findingId, mode = 'reassess', state = getState()) {
+  const finding = body.findings?.find((f) => f.findingId === findingId);
+  if (!finding) return '<p class="ri-callout">Finding not found in this extraction run.</p>';
+  const prior = (body.decisions || []).find((d) => d.finding_id === findingId);
+  const history = (body.reassessments || []).filter((r) => r.finding_id === findingId);
+  const canReview = body.enabled === true && isConnectedAiReviewEnabled(state);
+  const historyHtml = [
+  prior
+      ? `<li><strong>Original</strong> ${badge(prior.decision)} · ${esc(prior.reviewer_user_id)} · ${esc(prior.created_at)} · ${esc(prior.reviewer_comment || '')}</li>`
+      : '',
+    ...history.map(
+      (r) =>
+        `<li><strong>Reassessment #${esc(String(r.sequence_number))}</strong> ${badge(r.decision)} · ${esc(r.reviewer_user_id)} · ${esc(r.created_at)} · ${esc(r.reviewer_comment || '')}<br><span class="ri-muted">Justification: ${esc(r.reassessment_justification || '')}</span></li>`,
+    ),
+  ]
+    .filter(Boolean)
+    .join('');
+  const reviewBlock =
+    canReview && mode !== 'history'
+      ? renderFindingCard(finding, body.classificationPolicy, true, {}, body.findings) +
+        `<label>Reassessment justification (required)
+      <textarea data-reassessment-justification rows="2" placeholder="Why is this finding being reconsidered?"></textarea>
+    </label>
+    <button type="button" class="ri-btn ri-btn--primary" data-finding-reassessment-submit>Submit reassessment</button>`
+      : canReview
+        ? '<p class="ri-muted">Open Reassess to record a new versioned decision. Original UAT decisions remain in the audit trail.</p>'
+        : '<p class="ri-callout">Reassessment writes are disabled for this session.</p>';
+  return `<section class="ri-panel" data-connected-finding-reassessment="${esc(body.runId)}" data-finding-id="${esc(findingId)}" data-evidence-pathway="${esc(body.evidence?.pathway || '')}">
+    <h3>Finding verification history</h3>
+    <p class="ri-muted">Prior decisions are immutable. A reassessment appends a new versioned record — it does not overwrite UAT or regulatory audit rows.</p>
+    <ul class="ri-read">${historyHtml || '<li>No prior human decision recorded.</li>'}</ul>
+    ${reviewBlock}
+  </section>`;
+}
+
+export function bindFindingReassessment(panel, { onSubmitted, onError } = {}) {
+  if (!panel || panel.dataset.reassessmentBound === '1') return;
+  panel.dataset.reassessmentBound = '1';
+  const submit = panel.querySelector('[data-finding-reassessment-submit]');
+  const card = panel.querySelector('[data-finding-review-item]');
+  if (!submit || !card) return;
+  const uat = panel.getAttribute('data-evidence-pathway') === 'human_verified_uat';
+  submit.addEventListener('click', async () => {
+    const justification = panel.querySelector('[data-reassessment-justification]')?.value?.trim() || '';
+    if (justification.length < 10) {
+      onError?.(new Error('finding_reassessment_justification_required'));
+      return;
+    }
+    const read = readFindingCard(card, uat);
+    if (read.missing.length) {
+      onError?.(new Error(`finding_incomplete:${read.missing.join(',')}`));
+      return;
+    }
+    submit.disabled = true;
+    try {
+      const runId = panel.getAttribute('data-connected-finding-reassessment');
+      const findingId = panel.getAttribute('data-finding-id');
+      const result = await submitConnectedFindingReassessment(getState(), runId, findingId, {
+        ...read.payload,
+        reassessmentJustification: justification,
+      });
+      onSubmitted?.(result);
+    } catch (e) {
+      onError?.(e);
+    } finally {
+      submit.disabled = false;
+    }
+  });
+}
 
 export function bindConnectedAiFindingReview(panel, { onSubmitted, onError } = {}) {
   if (!panel) return;

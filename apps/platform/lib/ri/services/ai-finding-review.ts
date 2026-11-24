@@ -76,15 +76,26 @@ export async function getFindingReview(supabase: SupabaseClient, organisationId:
   if (run.use_case_id !== FINDING_REVIEW_USE_CASE) throw new RiConflictError('finding_review_use_case_unsupported');
   const classification = await loadClassificationForRun(supabase, run.publication_id);
   const view = buildFindingsView(run, citations ?? [], classification);
-  const { data: decisions, error } = await supabase
-    .from('ai_analysis_finding_decisions')
-    .select(
-      'finding_id, claim_index, decision, classification, regulatory_classification_code, legal_status, triage_queue, exception_reasons, disposition, linked_obligation_id, provision_reference, provision_function, legal_basis, verified_quotation, quotation_page, reviewer_comment, evidence_pathway, obligation_id, skip_reason, reviewer_user_id, analysis_review_id, created_at',
-    )
-    .eq('analysis_run_id', runId)
-    .eq('organisation_id', organisationId)
-    .order('claim_index', { ascending: true });
+  const [{ data: decisions, error }, { data: reassessments, error: reassessmentError }] = await Promise.all([
+    supabase
+      .from('ai_analysis_finding_decisions')
+      .select(
+        'id, finding_id, claim_index, decision, classification, regulatory_classification_code, legal_status, triage_queue, exception_reasons, disposition, linked_obligation_id, provision_reference, provision_function, legal_basis, verified_quotation, quotation_page, reviewer_comment, evidence_pathway, obligation_id, skip_reason, reviewer_user_id, analysis_review_id, created_at, quotation_verification_id',
+      )
+      .eq('analysis_run_id', runId)
+      .eq('organisation_id', organisationId)
+      .order('claim_index', { ascending: true }),
+    supabase
+      .from('ai_analysis_finding_reassessments')
+      .select(
+        'id, finding_id, prior_decision_id, sequence_number, decision, disposition, regulatory_classification_code, legal_status, legal_basis, verified_quotation, quotation_page, quotation_verification_id, provision_reference, provision_function, triage_queue, reviewer_comment, reassessment_justification, evidence_pathway, stale_prior_verification, reviewer_user_id, created_at',
+      )
+      .eq('analysis_run_id', runId)
+      .eq('organisation_id', organisationId)
+      .order('sequence_number', { ascending: true }),
+  ]);
   if (error) throw new Error(error.message);
+  if (reassessmentError) throw new Error(reassessmentError.message);
   return {
     runId,
     enabled: isFindingReviewEnabled(),
@@ -97,6 +108,8 @@ export async function getFindingReview(supabase: SupabaseClient, organisationId:
     queueCounts: summariseQueues(view.findings),
     ...view,
     decisions: decisions ?? [],
+    reassessments: reassessments ?? [],
+    runReviewCompleted: !['HUMAN_REVIEW_REQUIRED', 'AI_DRAFT'].includes(String(run.review_status || '')),
   };
 }
 
@@ -303,4 +316,99 @@ export async function submitFindingReview(
   }
 
   return { ok: true as const, ...result };
+}
+
+export type FindingReassessmentInput = FindingDecisionInput & {
+  reassessmentJustification: string;
+};
+
+const REASSESSMENT_RPC_CONFLICTS = new Set([
+  'finding_reassessment_requires_prior_review',
+  'finding_reassessment_no_prior_decision',
+  'obligation_approval_locked',
+  'analysis_outdated',
+  'analysis_not_completed',
+]);
+
+function mapReassessmentRpcError(message: string): Error {
+  const code = message.trim();
+  if (code === 'segregation_of_duties' || code === 'insufficient_role') return new Error(code);
+  if (code === 'not_found') return new RiNotFoundError('not_found');
+  if (REASSESSMENT_RPC_CONFLICTS.has(code)) return new RiConflictError(code);
+  if (code.startsWith('finding_') || code === 'finding_reassessment_justification_required') {
+    return new RiValidationError(code);
+  }
+  return new Error(`finding_reassessment_failed:${code.slice(0, 160)}`);
+}
+
+export async function submitFindingReassessment(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    userId: string;
+    role: PlatformRole;
+    runId: string;
+    findingId: string;
+    decision: FindingReassessmentInput;
+  },
+) {
+  assertCanRi(params.role, 'ai:review');
+  if (!isFindingReviewEnabled()) throw new RiConflictError('uc_ri_005_finding_review_disabled');
+
+  const { run, citations } = await getAnalysisRun(supabase, params.organisationId, params.runId);
+  assertExperimentalAiTenant({ organisationId: params.organisationId, useCaseId: run.use_case_id, operation: 'review' });
+  if (run.use_case_id !== FINDING_REVIEW_USE_CASE) throw new RiConflictError('finding_review_use_case_unsupported');
+  if (run.execution_status !== AI_EXECUTION_STATUS.COMPLETED) throw new RiConflictError('analysis_not_completed');
+  if (run.freshness === AI_FRESHNESS.OUTDATED) throw new RiConflictError('analysis_outdated');
+
+  const classification = await loadClassificationForRun(supabase, run.publication_id);
+  const view = buildFindingsView(run, citations ?? [], classification);
+  const target = view.findings.find((f: { findingId: string }) => f.findingId === params.findingId);
+  if (!target) throw new RiNotFoundError('not_found');
+
+  const validated = validateFindingDecisions([target], [params.decision], {
+    pathway: view.evidence.pathway,
+    policy: classification.policy,
+    publicationType: classification.publicationType,
+  });
+  if (!validated.ok) {
+    if (validated.error === 'classification_policy_unavailable') throw new RiConflictError(validated.error);
+    throw new RiValidationError(validated.error);
+  }
+  const [d] = validated.decisions as Array<Record<string, unknown>>;
+  if ((params.decision.reassessmentJustification || '').trim().length < 10) {
+    throw new RiValidationError('finding_reassessment_justification_required');
+  }
+
+  const quotationVerificationId: string | null = null;
+  if (d.createsObligation) {
+    throw new RiValidationError('finding_reassessment_no_new_obligation_materialisation');
+  }
+
+  const payload = {
+    decision: d.decision,
+    disposition: d.disposition ?? null,
+    regulatoryClassificationCode: d.regulatoryClassificationCode ?? null,
+    legalStatus: d.legalStatus ?? null,
+    legalBasis: d.legalBasis ?? null,
+    quotation: d.quotation ?? null,
+    quotationPage: d.quotationPage ?? null,
+    quotationVerificationId,
+    provisionReference: d.provisionReference ?? null,
+    provisionFunction: d.provisionFunction ?? null,
+    triageQueue: d.triageQueue ?? null,
+    comment: d.comment,
+    reassessmentJustification: params.decision.reassessmentJustification.trim(),
+    evidencePathway: view.evidence.pathway,
+  };
+
+  const { data, error } = await supabase.rpc('ri_reassess_ai_finding', {
+    p_organisation_id: params.organisationId,
+    p_run_id: params.runId,
+    p_finding_id: params.findingId,
+    p_payload: payload,
+  });
+  if (error) throw mapReassessmentRpcError(error.message || 'unknown');
+
+  return { ok: true as const, ...(data as Record<string, unknown>) };
 }
