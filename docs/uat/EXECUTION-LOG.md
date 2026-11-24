@@ -2,6 +2,16 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-24 — P0 Design Lab blank screen (17:30 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 17:20 | Root cause | `#ri-app` empty; HTTP 200 | ES module parse error in `connected-triage.js`: duplicate `const resolvedSegment` (six-queue, deploy `dpl_3LMje…`) |
+| 17:22 | Fix | Remove duplicate declaration | Commit `5cb31cb`; `sync-design-lab-bundle` module graph OK |
+| 17:28 | Staging deploy | Restore visible RI | **`dpl_GLP3MRLtRpdMNcszCw8Ap24WW339`** → `https://staging-app.forgeniq.com` |
+| 17:28 | Browser verify | Nav + invalid `#/ai-a/broken` | **Page not found** (not blank); dashboard chrome renders |
+| — | Six-queue UAT | A/B/C sessions still EXPIRED | Resume after site confirmed; auth unchanged |
+
 ## 2026-11-24 — Staging UAT session regression (17:15 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |
