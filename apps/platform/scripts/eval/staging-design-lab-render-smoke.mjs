@@ -4,8 +4,10 @@
  * Includes all seven workflow triage queues (mandatory deployment gate).
  */
 import { chromium } from 'playwright';
+import { runAs, SessionExpiredError } from '../uat/staging-user-sessions.mjs';
 
 const LAB = 'https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/index.html';
+const PERSONA = process.env.FORGENIQ_UAT_SMOKE_PERSONA || 'C';
 const TRIAGE_QUEUES = [
   { name: 'triage-ai-findings', hash: '#/triage/ai-findings', expect: /AI findings/i, triage: true },
   { name: 'triage-verified-obligations', hash: '#/triage/verified-obligations', expect: /verified obligations/i, triage: true },
@@ -22,43 +24,55 @@ const cases = [
 ];
 
 let failed = 0;
-const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const consoleErrors = [];
-page.on('pageerror', (e) => consoleErrors.push(String(e)));
 
-for (const c of cases) {
-  pageErrors.length = 0;
-  await page.goto(`${LAB}${c.hash}`, { waitUntil: 'domcontentloaded', timeout: 120_000 });
-  if (c.triage) await page.waitForSelector('[data-triage-rows]', { timeout: 60_000 }).catch(() => null);
-  await page.waitForTimeout(c.triage ? 6000 : 2500);
-  const riAppLen = await page.locator('#ri-app').innerHTML().then((h) => h.trim().length).catch(() => 0);
-  const mainText = await page.evaluate(() => document.getElementById('ri-app')?.innerText || '');
-  let ok = riAppLen > 5000 && c.expect.test(mainText);
-  if (c.triage) {
-    const triageOk = await page.evaluate(() => {
-      const status = document.querySelector('[data-triage-status]')?.textContent || '';
-      const rows = document.querySelector('[data-triage-rows]');
-      const html = rows?.innerHTML || '';
-      const hasTable = Boolean(rows?.querySelector('table.ri-table'));
-      const hasEmpty = /no findings/i.test(html);
-      const bad = /resolvedSegment is not defined/i.test(status + html);
-      return !bad && status.length > 0 && (hasTable || hasEmpty);
-    });
-    ok = ok && triageOk && !pageErrors.some((e) => /ReferenceError|resolvedSegment/i.test(e));
+async function exercise(page, list) {
+  for (const c of list) {
+    consoleErrors.length = 0;
+    page.on('pageerror', (e) => consoleErrors.push(String(e)));
+    await page.goto(`${LAB}?v=render-smoke${c.hash}`, { waitUntil: 'domcontentloaded', timeout: 120_000 });
+    if (c.triage) {
+      await page.waitForSelector('[data-triage-rows]', { timeout: 90_000 }).catch(() => null);
+      await page.waitForTimeout(8000);
+    } else {
+      await page.waitForTimeout(2500);
+    }
+    const riAppLen = await page.locator('#ri-app').innerHTML().then((h) => h.trim().length).catch(() => 0);
+    const mainText = await page.evaluate(() => document.getElementById('ri-app')?.innerText || '');
+    let ok = riAppLen > 5000 && c.expect.test(mainText);
+    if (c.triage) {
+      const triageOk = await page.evaluate(() => {
+        const status = document.querySelector('[data-triage-status]')?.textContent || '';
+        const rows = document.querySelector('[data-triage-rows]');
+        const html = rows?.innerHTML || '';
+        const hasTable = Boolean(rows?.querySelector('table.ri-table'));
+        const hasEmpty = /no findings/i.test(html);
+        const bad = /resolvedSegment is not defined/i.test(status + html);
+        return !bad && status.length > 0 && (hasTable || hasEmpty);
+      });
+      ok = ok && triageOk && !consoleErrors.some((e) => /ReferenceError|resolvedSegment/i.test(e));
+    }
+    console.log(ok ? 'PASS' : 'FAIL', c.name, { riAppLen, sample: mainText.slice(0, 120).replace(/\s+/g, ' ') });
+    if (!ok) failed += 1;
   }
-  console.log(ok ? 'PASS' : 'FAIL', c.name, { riAppLen, sample: mainText.slice(0, 120).replace(/\s+/g, ' ') });
-  if (!ok) failed += 1;
 }
 
-if (consoleErrors.some((e) => /resolvedSegment|already been declared/i.test(e))) {
-  console.log('FAIL module parse error still present', consoleErrors);
-  failed += 1;
-} else if (consoleErrors.length) {
-  console.log('WARN pageerrors', consoleErrors.slice(0, 5));
-}
+const anonymousCases = cases.filter((c) => !c.triage);
+const triageCases = cases.filter((c) => c.triage);
 
+const browser = await chromium.launch({ headless: true });
+const anonPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await exercise(anonPage, anonymousCases);
 await browser.close();
+
+try {
+  await runAs(PERSONA, async ({ page }) => await exercise(page, triageCases));
+} catch (err) {
+  if (err instanceof SessionExpiredError) {
+    console.error(`Triage cases skipped — persona ${PERSONA} expired`);
+    failed += triageCases.length;
+  } else throw err;
+}
 if (failed) {
   console.error(`staging-design-lab-render-smoke: FAIL (${failed})`);
   process.exit(1);

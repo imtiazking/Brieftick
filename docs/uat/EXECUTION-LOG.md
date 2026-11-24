@@ -2,6 +2,15 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-24 — P0 triage ReferenceError (18:30 UTC)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 18:18 | `resolvedSegment is not defined` | `5cb31cb` removed duplicate `const` but `hydrateConnectedTriage` still referenced `resolvedSegment` | Use in-scope `segment` (lines 333–334); include `all` for metrics |
+| 18:28 | Staging deploy | Consolidated fix | **`dpl_EvDcgUYGDsHc4rXAdXzQCL4hVL4S`** @ `staging-app.forgeniq.com` |
+| 18:31 | Hosted queue smoke | User C session + DOM | **7/7 PASS** (`staging-design-lab-triage-queues-smoke.mjs`); AI Findings 131 rows + five-decision host |
+| — | User B session | Reviewer SoD | Still **EXPIRED** — first-review buttons need `renew B` for full reviewer UAT |
+
 ## 2026-11-24 — P0 Design Lab blank screen (17:30 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |
