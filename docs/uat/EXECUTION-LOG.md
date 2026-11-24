@@ -565,3 +565,15 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Hosted UAT | `staging-finding-reassessment-smoke.mjs` **PASS** — evidence `docs/uat/evidence/finding-reassessment-staging-smoke-2026-11-24/SMOKE.json`; User B reassessment persisted; User A **400**; no paid AI |
 | Design Lab URL | `https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/index.html#/triage/obligations` |
 | Production | **NO-GO** unchanged |
+
+## 2026-11-24 — Six-queue regulatory triage workflow
+
+| Activity | Outcome |
+|---|---|
+| Queues | `regulatory-workflow-queues.mjs` — AI Findings, Verified Obligations, Non-Obligations, Rejected Findings, Exceptions, Not Applicable, All Findings (derived; no duplicate rows) |
+| Routing | Effective queue from persisted decisions + reassessments; `ORGANISATION_NOT_APPLICABLE` disposition |
+| Design Lab | Dashboard seven cards; five human decision buttons on AI Findings inbox; legacy `#/triage/obligations` → verified-obligations |
+| Local gates | Build PASS; `acceptance-ri-six-queue-workflow` PASS; triage screens/verification PASS; finding-review **32/32** |
+| Staging deploy | **`dpl_3LMjeSKA2PTBRyYyuj9gT2t5JL8a`** — `0894e1f` |
+| Hosted UAT | **BLOCKED** (Clerk session expired User B **401**); login B then `staging-six-queue-triage.mjs` |
+| Production | **NO-GO** unchanged |
