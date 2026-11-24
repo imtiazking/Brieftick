@@ -1,4 +1,4 @@
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { NextResponse } from 'next/server';
@@ -54,8 +54,9 @@ export async function designLabFileResponse(filePath: string | null): Promise<Ne
   const type = MIME[ext] || 'application/octet-stream';
   if (ext === '.html' || ext === '.css' || ext === '.js' || ext === '.mjs' || ext === '.json') {
     const raw = await readFile(filePath, 'utf8');
+    const withVersion = ext === '.html' ? stampDesignLabAssetVersion(raw) : raw;
     const body =
-      ext === '.html' ? injectClerkPublishableKey(raw, process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) : raw;
+      ext === '.html' ? injectClerkPublishableKey(withVersion, process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) : withVersion;
     return new NextResponse(body, {
       status: 200,
       headers: {
@@ -69,6 +70,21 @@ export async function designLabFileResponse(filePath: string | null): Promise<Ne
     status: 200,
     headers: { 'Content-Type': type, 'Cache-Control': 'public, max-age=60' },
   });
+}
+
+/** Bust HTML entry references so a new release cannot reuse a cached app.js from an older deploy. */
+export function stampDesignLabAssetVersion(html: string): string {
+  let version = 'dev';
+  try {
+    const idPath = path.join(process.cwd(), '.forgeniq-build-id');
+    if (existsSync(idPath)) version = readFileSync(idPath, 'utf8').trim().slice(0, 12) || version;
+  } catch {
+    version = 'dev';
+  }
+  return html.replace(
+    '/design-lab/regulatory-intelligence/js/app.js"',
+    `/design-lab/regulatory-intelligence/js/app.js?v=${encodeURIComponent(version)}"`,
+  );
 }
 
 export async function serveDesignLabSegments(segments: string[] | undefined): Promise<NextResponse> {

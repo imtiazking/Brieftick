@@ -30,6 +30,7 @@ import { connectedCatalogueBanner } from './platform/connected-catalogue.js';
 import {
   getViewRegulatorySources,
   getViewIngestionRuns,
+  getConnectedIngestionRunDetail,
   getViewOperationalAlerts,
   getConnectedOperationsMetrics,
   getConnectedSourceMonitoringSummary,

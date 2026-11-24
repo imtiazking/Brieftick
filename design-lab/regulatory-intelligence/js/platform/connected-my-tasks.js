@@ -3,7 +3,8 @@
  */
 import { esc, badge, pageHeader, formatDate, dataTable } from '../components.js';
 import { getState } from '../store.js';
-import { connectedCatalogueBanner, connectedWorkModeBanner } from './connected-display.js';
+import { connectedCatalogueBanner } from './connected-catalogue.js';
+import { connectedWorkModeBanner } from './connected-display.js';
 import { isConnectedBackendActive } from './connected-mode.js';
 
 function apiBase(state) {

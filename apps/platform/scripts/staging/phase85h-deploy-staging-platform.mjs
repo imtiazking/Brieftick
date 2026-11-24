@@ -47,6 +47,15 @@ if (process.env.FORCE_STAGING_DEPLOY !== '1' && existsSync(evidencePath) && MIN_
   }
 }
 
+run('design-lab javascript gate', 'node', ['./scripts/validate-design-lab-js-deps.mjs', join(repoRoot, 'design-lab', 'regulatory-intelligence', 'js')], platformRoot);
+run(
+  'design-lab eslint',
+  'node',
+  [join(platformRoot, 'node_modules', 'eslint', 'bin', 'eslint.js'), '-c', 'eslint.config.mjs', 'js', '--max-warnings', '0'],
+  join(repoRoot, 'design-lab', 'regulatory-intelligence'),
+);
+run('my-tasks acceptance', 'node', ['./scripts/acceptance-ri-my-tasks.mjs'], platformRoot);
+run('unauthenticated browser smoke', 'node', ['./scripts/eval/design-lab-browser-smoke.mjs'], platformRoot);
 run('sync design-lab bundle', 'node', ['./scripts/sync-design-lab-bundle.mjs'], platformRoot);
 run('emit build id', 'node', ['./scripts/emit-forgeniq-build-id.mjs'], platformRoot);
 
@@ -59,14 +68,14 @@ try {
   /* detached or no git */
 }
 
-console.log(`Deploying HEAD ${head} buildId ${buildId} → ${PROJECT_NAME} (prod target)\n`);
+console.log(`Deploying HEAD ${head} buildId ${buildId} → ${PROJECT_NAME} (preview, then promote if smoke passes)\n`);
 
 run('assert vercel staging target', 'node', ['./scripts/staging/assert-vercel-staging-target.mjs'], platformRoot);
 
 const out = run(
-  'vercel deploy',
+  'vercel preview deploy',
   'vercel',
-  ['deploy', '--prod', '--archive=tgz', '--yes', `--scope=${SCOPE}`, `--project=${PROJECT_NAME}`],
+  ['deploy', '--archive=tgz', '--yes', `--scope=${SCOPE}`, `--project=${PROJECT_NAME}`],
   repoRoot,
   {},
 );
@@ -75,6 +84,38 @@ const idMatch = out.match(/dpl_[A-Za-z0-9]+/);
 const urlMatch = out.match(/https:\/\/[^\s]+\.vercel\.app/);
 const deploymentId = idMatch?.[0] ?? null;
 const deploymentUrl = urlMatch?.[0] ?? null;
+
+if (!deploymentUrl) {
+  console.error('preview deploy did not return a URL — staging alias was not changed');
+  process.exit(1);
+}
+
+const previewSmoke = spawnSync(
+  'node',
+  ['./scripts/eval/design-lab-browser-smoke.mjs', `--base=${deploymentUrl}`],
+  { cwd: platformRoot, stdio: 'inherit', encoding: 'utf8', shell: process.platform === 'win32' },
+);
+if (previewSmoke.status !== 0) {
+  const failed = {
+    capturedAt: new Date().toISOString(),
+    status: 'FAILED',
+    gitHead: head,
+    deploymentId,
+    deploymentUrl,
+    aliasUntouched: 'https://staging-app.forgeniq.com',
+    note: 'Preview browser smoke failed. Production alias was not promoted. Previous verified staging deployment remains.',
+  };
+  writeFileSync(evidencePath, JSON.stringify(failed, null, 2));
+  console.error('\nPreview smoke failed — not promoted.', JSON.stringify(failed, null, 2));
+  process.exit(previewSmoke.status ?? 1);
+}
+
+run(
+  'promote verified preview',
+  'vercel',
+  ['promote', deploymentUrl, '--yes', `--scope=${SCOPE}`],
+  repoRoot,
+);
 
 const evidence = {
   capturedAt: new Date().toISOString(),
@@ -85,7 +126,8 @@ const evidence = {
   deploymentId,
   deploymentUrl,
   alias: 'https://staging-app.forgeniq.com',
-  note: 'Authorised P3 provision-engine staging release; not production tenant.',
+  promoted: true,
+  note: 'Preview passed unauthenticated Design Lab browser smoke before alias promotion. Not a production tenant.',
 };
 writeFileSync(evidencePath, JSON.stringify(evidence, null, 2));
 console.log('\nDeploy evidence:', evidencePath);

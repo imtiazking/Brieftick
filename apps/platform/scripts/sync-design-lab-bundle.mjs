@@ -57,7 +57,7 @@ if (!readFileSync(labConnectivity, 'utf8').includes('adapter.bootstrap()')) {
   console.error('sync-design-lab-bundle: lab-connectivity missing adapter.bootstrap() call');
   process.exit(1);
 }
-const { validateDesignLabJsModuleGraph } = await import(
+const { validateDesignLabJsModuleGraph, validateDesignLabJsBindings } = await import(
   pathToFileURL(join(dirname(fileURLToPath(import.meta.url)), 'validate-design-lab-js-deps.mjs')).href
 );
 const srcGraph = validateDesignLabJsModuleGraph(join(srcLab, 'js'));
@@ -71,6 +71,17 @@ if (!bundleGraph.ok) {
   console.error('sync-design-lab-bundle: bundle module graph has missing files');
   for (const m of bundleGraph.missing) console.error(`  MISSING: ${m.spec} (${m.from})`);
   process.exit(1);
+}
+for (const [label, root] of [
+  ['source', join(srcLab, 'js')],
+  ['bundle', join(destLab, 'js')],
+]) {
+  const bindings = validateDesignLabJsBindings(root);
+  if (!bindings.ok) {
+    console.error(`sync-design-lab-bundle: ${label} JavaScript bindings failed`);
+    for (const problem of bindings.problems) console.error(`  ${problem}`);
+    process.exit(1);
+  }
 }
 console.log(
   `sync-design-lab-bundle: module graph OK (${bundleGraph.scanned} modules)`,
