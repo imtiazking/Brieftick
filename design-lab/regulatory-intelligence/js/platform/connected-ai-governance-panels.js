@@ -406,10 +406,11 @@ function renderRecordedFindingDecisions(body) {
             ? `Not an obligation (${esc(d.skip_reason.replace('classification_not_obligation:', ''))})`
             : '—';
     const reasons = reasonsText(d.exception_reasons);
+    const uatPath = d.evidence_pathway === 'human_verified_uat';
     return `<tr data-finding-decision-row="${esc(d.finding_id)}">
       <td>${esc(String(d.claim_index + 1))}</td>
       <td>${esc(f?.statement || '')}</td>
-      <td>${badge(d.decision)}</td>
+      <td>${badge(d.decision)}${uatPath ? ' <span class="ri-badge ri-badge--warn">UAT</span>' : ''}</td>
       <td>${esc(d.regulatory_classification_code || d.classification || '—')}${d.legal_status ? ` <span class="ri-muted">(${esc(d.legal_status)})</span>` : ''}${
         d.provision_reference || d.provision_function
           ? `<br><span class="ri-muted" data-finding-decision-provision>${esc(d.provision_reference || '—')} · ${esc(PROVISION_FUNCTION_LABELS[d.provision_function] || d.provision_function || '—')}</span>`
@@ -418,16 +419,23 @@ function renderRecordedFindingDecisions(body) {
       <td data-finding-decision-queue>${esc(queueLabel(d.triage_queue))}${reasons ? `<br><span class="ri-muted">${esc(reasons)}</span>` : ''}</td>
       <td>${d.quotation_page ? `p.${esc(String(d.quotation_page))}` : '—'}</td>
       <td>${outcome}</td>
+      <td>${esc(d.reviewer_user_id || '—')}${d.created_at ? `<br><span class="ri-muted">${esc(d.created_at)}</span>` : ''}</td>
       <td>${esc(d.reviewer_comment || '')}</td>
     </tr>`;
   });
   const policy = body.classificationPolicy;
+  const pathway = body.decisions[0]?.evidence_pathway || '—';
   return `<section class="ri-panel" data-connected-ai-finding-review-recorded>
     <h3>Per-finding review decisions</h3>
-    <p class="ri-muted">Evidence pathway: <strong>${esc(body.decisions[0]?.evidence_pathway || '—')}</strong>.${
+    ${
+      pathway === 'human_verified_uat'
+        ? '<p class="ri-callout">These decisions were recorded on the <strong>human_verified_uat</strong> pathway. They are technical/UAT audit records — not legal or regulatory sign-off.</p>'
+        : ''
+    }
+    <p class="ri-muted">Evidence pathway: <strong>${esc(pathway)}</strong>.${
       policy ? ` Classification policy: ${esc(policy.regulatorKey)} v${esc(String(policy.policyVersion))}.` : ''
-    } DRAFT obligations require submission and independent approval by a reviewer who is neither the AI requester nor the acceptor.</p>
-    <table class="ri-table"><thead><tr><th>#</th><th>Finding</th><th>Decision</th><th>Classification</th><th>Triage queue</th><th>Page</th><th>Outcome</th><th>Reviewer comment</th></tr></thead>
+    } Review audit ref: <strong>${esc(body.decisions[0]?.analysis_review_id || '—')}</strong>. DRAFT obligations require submission and independent approval by a reviewer who is neither the AI requester nor the acceptor. Reassessment does not overwrite these rows.</p>
+    <table class="ri-table"><thead><tr><th>#</th><th>Finding</th><th>Decision</th><th>Classification</th><th>Triage queue</th><th>Page</th><th>Outcome</th><th>Reviewer</th><th>Reviewer comment</th></tr></thead>
     <tbody>${rows.join('')}</tbody></table>
   </section>`;
 }

@@ -6,10 +6,13 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  classifyFindingDecisionProvenance,
+  countVerificationWithProvenance,
+} from '../lib/ri/triage/finding-decision-provenance.mjs';
+import {
   APPROVAL_STATUS,
   HUMAN_VERIFICATION,
   countApprovalStatus,
-  countHumanVerification,
   deriveApprovalStatus,
   deriveHumanVerification,
   triageRowActionKind,
@@ -58,8 +61,23 @@ check('approval draft', deriveApprovalStatus('DRAFT') === APPROVAL_STATUS.DRAFT)
 check('approval awaiting', deriveApprovalStatus('IN_REVIEW') === APPROVAL_STATUS.AWAITING_APPROVAL);
 check('approval approved register', deriveApprovalStatus('OPEN') === APPROVAL_STATUS.APPROVED);
 check(
-  'verification and approval counts',
-  countHumanVerification([{ humanVerification: 'UNVERIFIED' }, { humanVerification: 'VERIFIED' }]).VERIFIED === 1,
+  'UAT pathway not genuine verification',
+  classifyFindingDecisionProvenance(
+    { decision: 'ACCEPTED', evidence_pathway: 'human_verified_uat', reviewer_user_id: 'u', analysis_review_id: 'r' },
+    { stagingTenant: true },
+  ).countsAsGenuineHumanVerification === false,
+);
+check(
+  'provenance-aware counts split UAT verified',
+  countVerificationWithProvenance([
+    {
+      humanVerification: 'VERIFIED',
+      decisionProvenance: classifyFindingDecisionProvenance(
+        { decision: 'ACCEPTED', evidence_pathway: 'human_verified_uat', reviewer_user_id: 'u', analysis_review_id: 'r' },
+        { stagingTenant: true },
+      ),
+    },
+  ]).VERIFIED_UAT === 1,
 );
 check(
   'approval counts',
@@ -77,6 +95,8 @@ check('verification filters', triage.includes('data-triage-verification-filter')
 check('approval filters on obligation triage', triage.includes('data-triage-approval-filter'));
 check('verification badges labelled', triage.includes('UNVERIFIED') && triage.includes('aria-label'));
 check('view verification dialog', triage.includes('data-triage-view-verification'));
+check('manual verify reject needs review actions', triage.includes('data-triage-review-mode="reject"'));
+check('UAT provenance filter', triage.includes('UAT_TEST'));
 check('verify does not infer from obligation alone', !triage.includes('legallyVerified: true'));
 
 if (failures.length) {

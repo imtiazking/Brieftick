@@ -90,7 +90,7 @@ export function renderTriageScreen(segment) {
   const filterBlock =
     segment === 'obligations'
       ? `<div class="ri-triage-filters" data-triage-filters hidden>
-      <p class="ri-muted" data-triage-filter-hint>Human verification and approval are separate decisions.</p>
+      <p class="ri-muted" data-triage-filter-hint>Human verification and formal approval are separate. <strong>Verified (regulatory)</strong> counts only evidence-backed regulatory reviews — not UAT or staging test decisions.</p>
       <div class="ri-triage-filter-row" data-triage-verification-filters></div>
       <div class="ri-triage-filter-row" data-triage-approval-filters></div>
     </div>`
@@ -113,9 +113,16 @@ export function renderTriageScreen(segment) {
     </section>`;
 }
 
-function verificationBadge(status) {
+function verificationBadge(status, item) {
   const meta = HUMAN_VERIFICATION_LABELS[status] || HUMAN_VERIFICATION_LABELS.UNVERIFIED;
-  return `<span class="ri-triage-status-badge" title="${esc(meta.label)}" aria-label="${esc(meta.label)}">${esc(meta.icon)} <strong>${esc(meta.label)}</strong></span>`;
+  const prov = item?.decisionProvenance;
+  const uat = item?.countsAsUatOrTest || prov?.countsAsUatOrTest;
+  const suffix =
+    status === 'VERIFIED' && uat ? ' <span class="ri-badge ri-badge--warn">UAT / test</span>' : '';
+  const provenanceLine = prov?.label
+    ? `<br><span class="ri-muted" title="${esc(prov.detail || '')}">${esc(prov.label)}</span>`
+    : '';
+  return `<span class="ri-triage-status-badge" title="${esc(meta.label)}" aria-label="${esc(meta.label)}">${esc(meta.icon)} <strong>${esc(meta.label)}</strong>${suffix}${provenanceLine}</span>`;
 }
 
 function approvalBadge(status) {
@@ -123,26 +130,33 @@ function approvalBadge(status) {
   return `<span class="ri-triage-status-badge" title="${esc(meta.label)}" aria-label="${esc(meta.label)}">${esc(meta.icon)} <strong>${esc(meta.label)}</strong></span>`;
 }
 
+function manualReviewButtons(item) {
+  const run = esc(item.runId);
+  const finding = esc(item.findingId);
+  return `<div class="ri-triage-manual-actions">
+    <button type="button" class="ri-btn ri-btn--primary" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="verify" title="Accept after confirming quotation, provision, legal basis and justification">✅ Verify</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="reject" title="Reject with mandatory justification">❌ Reject</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${run}" data-triage-finding-id="${finding}" data-triage-review-mode="needs-review" title="Flag for further investigation (reclassification)">🟠 Needs review</button>
+  </div>`;
+}
+
 function rowActionButtons(item) {
   const hv = item.humanVerification || 'UNVERIFIED';
-  const parts = [];
+  const parts = [manualReviewButtons(item)];
   if (hv === 'VERIFIED') {
     parts.push(
-      `<button type="button" class="ri-btn ri-btn--ghost" data-triage-view-verification="${esc(item.findingId)}">View Verification</button>`,
+      `<button type="button" class="ri-btn ri-btn--ghost" data-triage-view-verification="${esc(item.findingId)}">View verification record</button>`,
     );
   } else if (hv === 'REJECTED') {
     parts.push(
-      `<button type="button" class="ri-btn ri-btn--ghost" data-triage-view-decision="${esc(item.findingId)}">View Decision</button>`,
+      `<button type="button" class="ri-btn ri-btn--ghost" data-triage-view-decision="${esc(item.findingId)}">View rejection record</button>`,
     );
   } else if (hv === 'NEEDS_REVIEW' || hv === 'RE_VERIFICATION_REQUIRED') {
-    parts.push(
-      `<button type="button" class="ri-btn" data-triage-open-review="${esc(item.runId)}" data-triage-finding-id="${esc(item.findingId)}">Review</button>`,
-    );
-  } else {
-    parts.push(
-      `<button type="button" class="ri-btn ri-btn--primary" data-triage-open-review="${esc(item.runId)}" data-triage-finding-id="${esc(item.findingId)}">Verify</button>`,
-    );
+    parts.push(`<span class="ri-muted">Prior decision flagged for investigation — use Reassess below after opening history.</span>`);
   }
+  parts.push(
+    `<button type="button" class="ri-btn ri-btn--ghost" data-triage-open-review="${esc(item.runId)}" data-triage-finding-id="${esc(item.findingId)}" data-triage-review-mode="history">View history / reassess</button>`,
+  );
   if (item.approvalStatus === 'APPROVED' && item.obligationId) {
     parts.push(
       `<a class="ri-btn ri-btn--ghost" href="${esc(item.approvalRecord?.obligationHref || `#/obligation/${item.obligationId}`)}">View Approval</a>`,
@@ -159,10 +173,10 @@ function rowHtml(item, segment) {
     ? `<br><span class="ri-muted">${esc(item.exceptionReasons.join(', '))}</span>`
     : '';
   if (segment === 'obligations') {
-    return `<tr data-triage-row data-human-verification="${esc(item.humanVerification || 'UNVERIFIED')}" data-approval-status="${esc(item.approvalStatus || 'NONE')}">
+    return `<tr data-triage-row data-human-verification="${esc(item.humanVerification || 'UNVERIFIED')}" data-approval-status="${esc(item.approvalStatus || 'NONE')}" data-counts-as-uat="${item.countsAsUatOrTest ? '1' : '0'}" data-genuine-verified="${item.countsAsGenuineHumanVerification ? '1' : '0'}">
       <td>${esc(item.provisionReference || '—')}</td>
       <td>${esc(item.regulatoryFinding || item.quotation || '—')}</td>
-      <td>${verificationBadge(item.humanVerification)}${item.reVerificationRequired ? '<br><span class="ri-muted">Source revision changed</span>' : ''}</td>
+      <td>${verificationBadge(item.humanVerification, item)}${item.reVerificationRequired ? '<br><span class="ri-muted">Source revision changed</span>' : ''}</td>
       <td>${approvalBadge(item.approvalStatus)}</td>
       <td>${rowActionButtons(item)}</td>
     </tr>`;
@@ -178,7 +192,7 @@ function rowHtml(item, segment) {
     <td>${esc(item.provisionReference || '—')}</td>
     <td>${esc(item.quotation || '—')}</td>
     <td>${esc(item.classificationCode || (item.modelLabels || []).join(', ') || '—')}${item.provisional ? ' <span class="ri-muted">(provisional)</span>' : ''}</td>
-    <td>${verificationBadge(item.humanVerification)}</td>
+    <td>${verificationBadge(item.humanVerification, item)}</td>
     <td>${esc(item.legalStatus || '—')}${item.legalBasis ? `<br><span class="ri-muted">${esc(item.legalBasis)}</span>` : ''}</td>
     <td>${esc(item.applicability || '—')}</td>
     <td>${badge(item.reviewStatus || '—')}${item.disposition ? `<br><span class="ri-muted">${esc(item.disposition)}</span>` : ''}${reasons}</td>
@@ -206,6 +220,12 @@ function applyRowFilters(screen, verificationFilter, approvalFilter) {
     if (verificationFilter && verificationFilter !== 'ALL') {
       if (verificationFilter === 'NEEDS_REVIEW') {
         show = hv === 'NEEDS_REVIEW' || hv === 'RE_VERIFICATION_REQUIRED';
+      } else if (verificationFilter === 'UAT_TEST') {
+        show = row.getAttribute('data-counts-as-uat') === '1';
+      } else if (verificationFilter === 'VERIFIED') {
+        show = hv === 'VERIFIED' && row.getAttribute('data-genuine-verified') === '1';
+      } else if (verificationFilter === 'VERIFIED_UAT') {
+        show = hv === 'VERIFIED' && row.getAttribute('data-genuine-verified') !== '1';
       } else {
         show = hv === verificationFilter;
       }
@@ -261,9 +281,11 @@ export async function hydrateConnectedTriage(root = document) {
       const verificationGroups = [
         ['ALL', 'All', vCounts.ALL ?? 0],
         ['UNVERIFIED', 'Unverified', vCounts.UNVERIFIED ?? 0],
-        ['VERIFIED', 'Verified', vCounts.VERIFIED ?? 0],
+        ['VERIFIED', 'Verified (regulatory)', vCounts.VERIFIED ?? vCounts.GENUINE_VERIFIED ?? 0],
+        ['VERIFIED_UAT', 'Verified (UAT)', vCounts.VERIFIED_UAT ?? 0],
         ['NEEDS_REVIEW', 'Needs Review', (vCounts.NEEDS_REVIEW ?? 0) + (vCounts.RE_VERIFICATION_REQUIRED ?? 0)],
         ['REJECTED', 'Rejected', vCounts.REJECTED ?? 0],
+        ['UAT_TEST', 'UAT / test decisions', vCounts.UAT_TEST ?? 0],
       ];
       renderFilterChips(
         screen.querySelector('[data-triage-verification-filters]'),
@@ -329,8 +351,13 @@ function formatVerificationDetail(item) {
     <dt>Legal basis</dt><dd>${esc(v.legalBasis || '—')}</dd>
     <dt>Classification</dt><dd>${esc(v.regulatoryClassificationCode || '—')} · ${esc(v.legalStatus || '—')}</dd>
     <dt>Evidence pathway</dt><dd>${esc(v.evidencePathway || '—')}</dd>
+    <dt>Quotation verification</dt><dd>${esc(v.quotationVerificationId || '—')}</dd>
+    <dt>Provenance</dt><dd>${esc(v.provenanceLabel || item.decisionProvenance?.label || '—')} (${esc(v.provenanceClass || item.decisionProvenance?.provenanceClass || '—')})</dd>
+    <dt>Reviewer role</dt><dd>${esc(v.reviewerRole || item.reviewerRole || '—')}</dd>
     <dt>Justification</dt><dd>${esc(v.reviewerJustification || '—')}</dd>
+    ${item.countsAsUatOrTest ? '<dt>Regulatory sign-off</dt><dd><strong>Not legal verification</strong> — staging/UAT pathway. Audit record only.</dd>' : ''}
     ${item.reVerificationRequired ? '<dt>Note</dt><dd><strong>RE-VERIFICATION REQUIRED</strong> — publication version at extraction differs from current version.</dd>' : ''}
+    <dt>Reassessment</dt><dd>Prior run-level reviews are immutable. Reassessment requires a new extraction run or future reassessment workflow — use View history to inspect the audit record without overwriting it.</dd>
   </dl>`;
 }
 
@@ -389,6 +416,24 @@ function bindTriageFilters(screen) {
   });
 }
 
+function applyTriageReviewMode(host, findingId, mode) {
+  const card = host.querySelector(`[data-finding-review-item="${CSS.escape(findingId)}"]`);
+  if (!card) return;
+  if (mode === 'verify') {
+    card.querySelector('[data-finding-decision][value="ACCEPTED"]')?.click();
+  } else if (mode === 'reject') {
+    card.querySelector('[data-finding-decision][value="REJECTED"]')?.click();
+  } else if (mode === 'needs-review') {
+    card.querySelector('[data-finding-decision][value="ACCEPTED"]')?.click();
+    const disp = card.querySelector('[data-finding-disposition]');
+    if (disp) disp.value = 'RECLASSIFICATION_REQUESTED';
+    const reclass = card.querySelector('[data-finding-reclassification]');
+    if (reclass && !reclass.value) {
+      reclass.value = 'Further investigation required — applicability or classification uncertain.';
+    }
+  }
+}
+
 export function bindTriageReview(screen = document.querySelector('[data-triage-screen]')) {
   const host = screen?.querySelector('[data-triage-review-host]');
   if (!screen || !host || screen.dataset.reviewBound === '1') return;
@@ -398,19 +443,31 @@ export function bindTriageReview(screen = document.querySelector('[data-triage-s
     if (!button) return;
     const runId = button.getAttribute('data-triage-open-review');
     const findingId = button.getAttribute('data-triage-finding-id');
+    const mode = button.getAttribute('data-triage-review-mode') || 'verify';
     host.innerHTML = '<p class="ri-muted">Loading finding review…</p>';
     try {
       const body = await fetchConnectedAiFindingReview(getState(), runId);
       host.innerHTML = renderConnectedAiFindingReviewPanel(body);
-      bindConnectedAiFindingReview(host.querySelector('[data-connected-ai-finding-review]'), {
-        onSubmitted: () => {
-          const screen = document.querySelector('[data-triage-screen]');
-          if (screen) screen.dataset.loaded = '';
-          hydrateConnectedTriage(document);
-        },
-      });
+      const panel = host.querySelector('[data-connected-ai-finding-review]');
+      if (panel) {
+        bindConnectedAiFindingReview(panel, {
+          onSubmitted: () => {
+            const screen = document.querySelector('[data-triage-screen]');
+            if (screen) screen.dataset.loaded = '';
+            hydrateConnectedTriage(document);
+          },
+        });
+        if (findingId && mode !== 'history') applyTriageReviewMode(host, findingId, mode);
+      } else if (body.decisions?.length) {
+        host.insertAdjacentHTML(
+          'afterbegin',
+          '<p class="ri-callout">This extraction run was already reviewed. Decisions are immutable — reassessment requires a new UC-RI-005 run. The audit history is shown below.</p>',
+        );
+      }
       if (findingId) {
-        const target = host.querySelector(`[data-finding-review-item="${CSS.escape(findingId)}"]`);
+        const target =
+          host.querySelector(`[data-finding-review-item="${CSS.escape(findingId)}"]`) ||
+          host.querySelector(`[data-finding-decision-row="${CSS.escape(findingId)}"]`);
         target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         target?.classList.add('ri-finding-review--highlight');
       }

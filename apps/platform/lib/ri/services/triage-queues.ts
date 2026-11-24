@@ -5,11 +5,17 @@ import { AI_EXECUTION_STATUS } from '@/lib/ri/ai/enums';
 import { buildFindingsView } from '@/lib/ri/ai/finding-review-core.mjs';
 import { TRIAGE_QUEUES } from '@/lib/ri/classification/regulatory-classification-policy.mjs';
 import {
+  classifyFindingDecisionProvenance,
+  countVerificationWithProvenance,
+} from '@/lib/ri/triage/finding-decision-provenance.mjs';
+import {
   countApprovalStatus,
-  countHumanVerification,
   deriveApprovalStatus,
   deriveHumanVerification,
 } from '@/lib/ri/triage/triage-verification-status.mjs';
+
+/** Authorised staging UAT org — decisions here are never production legal verification. */
+const AUTHORISED_STAGING_ORG_ID = 'b8f5e3a1-00ad-4000-8000-000000000001';
 import {
   loadActiveClassificationPolicy,
   loadPublicationClassificationContext,
@@ -50,6 +56,7 @@ type DecisionRow = {
   reviewer_user_id: string | null;
   analysis_review_id: string | null;
   created_at: string | null;
+  quotation_verification_id: string | null;
   obligation_id: string | null;
 };
 
@@ -109,7 +116,7 @@ export async function listTriageQueues(
         ? supabase
             .from('ai_analysis_finding_decisions')
             .select(
-              'analysis_run_id, finding_id, decision, triage_queue, disposition, regulatory_classification_code, legal_status, legal_basis, verified_quotation, provision_reference, provision_function, quotation_page, reviewer_comment, evidence_pathway, reviewer_user_id, analysis_review_id, created_at, obligation_id',
+              'analysis_run_id, finding_id, decision, triage_queue, disposition, regulatory_classification_code, legal_status, legal_basis, verified_quotation, provision_reference, provision_function, quotation_page, reviewer_comment, evidence_pathway, reviewer_user_id, analysis_review_id, created_at, quotation_verification_id, obligation_id',
             )
             .eq('organisation_id', organisationId)
             .in('analysis_run_id', runIds)
@@ -134,7 +141,7 @@ export async function listTriageQueues(
     obligationIds.length
       ? supabase
           .from('regulatory_obligations')
-          .select('id, status, owner_user_id, metadata')
+          .select('id, status, owner_user_id, origin, metadata, ai_analysis_review_id, created_by_user_id')
           .eq('organisation_id', organisationId)
           .in('id', obligationIds)
       : Promise.resolve({ data: [], error: null }),
@@ -152,6 +159,20 @@ export async function listTriageQueues(
   const obligationStatusById = new Map(
     (obligationRows ?? []).map((o) => [o.id as string, o.status as string]),
   );
+  const obligationDetailById = new Map((obligationRows ?? []).map((o) => [o.id as string, o]));
+  const reviewerIds = [
+    ...new Set(((decisions ?? []) as DecisionRow[]).map((d) => d.reviewer_user_id).filter(Boolean)),
+  ] as string[];
+  const { data: memberRows, error: memberError } = reviewerIds.length
+    ? await supabase
+        .from('organisation_members')
+        .select('user_id, role')
+        .eq('organisation_id', organisationId)
+        .in('user_id', reviewerIds)
+    : { data: [], error: null };
+  if (memberError) throw new Error(memberError.message);
+  const roleByReviewerId = new Map((memberRows ?? []).map((m) => [m.user_id as string, m.role as string]));
+  const stagingTenant = organisationId === AUTHORISED_STAGING_ORG_ID;
   const currentPublicationVersionById = new Map<string, string>();
   for (const row of versionRows ?? []) {
     const pubId = row.publication_id as string;
@@ -200,7 +221,11 @@ export async function listTriageQueues(
     NON_OBLIGATION_TRIAGE: 0,
     EXCEPTION_TRIAGE: 0,
   };
-  const queueMetricRows: Array<{ humanVerification: string; approvalStatus: string }> = [];
+  const queueMetricRows: Array<{
+    humanVerification: string;
+    approvalStatus: string;
+    decisionProvenance?: ReturnType<typeof classifyFindingDecisionProvenance>;
+  }> = [];
   const items: Array<Record<string, unknown>> = [];
 
   for (const run of runRows) {
@@ -241,6 +266,12 @@ export async function listTriageQueues(
       const obligationId = recorded?.obligation_id || null;
       const obligationStatus = obligationId ? obligationStatusById.get(obligationId) : null;
       const approvalStatus = deriveApprovalStatus(obligationStatus);
+      const reviewerRole = recorded?.reviewer_user_id ? roleByReviewerId.get(recorded.reviewer_user_id) ?? null : null;
+      const decisionProvenance = classifyFindingDecisionProvenance(recorded ?? {}, {
+        stagingTenant,
+        reviewerRole,
+      });
+      const obligationRow = obligationId ? obligationDetailById.get(obligationId) : null;
       const row = {
         runId: run.id,
         findingId: finding.findingId,
@@ -253,6 +284,11 @@ export async function listTriageQueues(
         quotation: clip(quotation),
         regulatoryFinding: clip(quotation, 280),
         classificationCode: recorded?.regulatory_classification_code || finding.triage?.code || null,
+        aiClassification:
+          (finding as { modelLabels?: string[] }).modelLabels?.join(', ') ||
+          recorded?.regulatory_classification_code ||
+          finding.triage?.code ||
+          null,
         legalStatus: recorded?.legal_status || finding.triage?.legalStatus || null,
         modelLabels: (finding as { modelLabels?: string[] }).modelLabels || [],
         legalBasis: clip(recorded?.legal_basis, 300),
@@ -268,10 +304,15 @@ export async function listTriageQueues(
         approvalStatus,
         reVerificationRequired,
         legallyVerified: false,
+        decisionProvenance,
+        countsAsGenuineHumanVerification: decisionProvenance.countsAsGenuineHumanVerification,
+        countsAsUatOrTest: decisionProvenance.countsAsUatOrTest,
+        reviewerRole,
         verificationRecord: recorded
           ? {
               analysisReviewId: recorded.analysis_review_id,
               reviewerUserId: recorded.reviewer_user_id,
+              reviewerRole,
               decision: recorded.decision,
               verifiedAt: recorded.created_at,
               legalBasis: recorded.legal_basis,
@@ -280,17 +321,27 @@ export async function listTriageQueues(
               provisionFunction: recorded.provision_function,
               quotationPage: recorded.quotation_page,
               evidencePathway: recorded.evidence_pathway,
+              quotationVerificationId: recorded.quotation_verification_id,
               reviewerJustification: recorded.reviewer_comment,
               disposition: recorded.disposition,
               regulatoryClassificationCode: recorded.regulatory_classification_code,
               legalStatus: recorded.legal_status,
+              provenanceClass: decisionProvenance.provenanceClass,
+              provenanceLabel: decisionProvenance.label,
             }
           : null,
         approvalRecord: obligationId
           ? {
               obligationId,
               status: obligationStatus ?? null,
+              origin: (obligationRow as { origin?: string } | undefined)?.origin ?? null,
               obligationHref: `#/obligation/${obligationId}`,
+              makerCheckerNote:
+                obligationStatus === 'OPEN' || obligationStatus === 'IN_PROGRESS'
+                  ? stagingTenant
+                    ? 'Staging maker-checker approval — not production legal sign-off.'
+                    : 'Maker-checker approved into register.'
+                  : null,
             }
           : null,
         publicationVersionAtExtraction: runVersionId ?? null,
@@ -300,6 +351,7 @@ export async function listTriageQueues(
         queueMetricRows.push({
           humanVerification,
           approvalStatus,
+          decisionProvenance,
         });
       }
       if (queue && queueName !== queue) continue;
@@ -308,7 +360,7 @@ export async function listTriageQueues(
     }
   }
 
-  const verificationCounts = queue ? countHumanVerification(queueMetricRows) : { ALL: 0 };
+  const verificationCounts = queue ? countVerificationWithProvenance(queueMetricRows) : { ALL: 0 };
   const approvalCounts = queue ? countApprovalStatus(queueMetricRows) : { ALL: 0 };
 
   return {
@@ -318,6 +370,15 @@ export async function listTriageQueues(
     counts,
     verificationCounts,
     approvalCounts,
+    triageReconcile: queue
+      ? {
+          obligationQueueCount: counts[TRIAGE_QUEUES.OBLIGATION],
+          metricRowCount: queueMetricRows.length,
+          scannedRuns: runRows.length,
+          completedRunsInTenant: count ?? null,
+          note: 'Dashboard card uses counts.OBLIGATION_TRIAGE across the newest completed UC-RI-005 runs (MAX_RUNS cap). Filter counts use the same scan window. A lower obligation count usually means fewer runs in the scan window or findings reclassified to other queues after human review — not silent deletion.',
+        }
+      : null,
     queue,
     total: queue ? counts[queue] : Object.values(counts).reduce((sum, n) => sum + n, 0),
     items: queue ? items : [],

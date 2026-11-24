@@ -79,7 +79,7 @@ export async function getFindingReview(supabase: SupabaseClient, organisationId:
   const { data: decisions, error } = await supabase
     .from('ai_analysis_finding_decisions')
     .select(
-      'finding_id, claim_index, decision, classification, regulatory_classification_code, legal_status, triage_queue, exception_reasons, disposition, linked_obligation_id, provision_reference, provision_function, legal_basis, verified_quotation, quotation_page, reviewer_comment, evidence_pathway, obligation_id, skip_reason, reviewer_user_id, created_at',
+      'finding_id, claim_index, decision, classification, regulatory_classification_code, legal_status, triage_queue, exception_reasons, disposition, linked_obligation_id, provision_reference, provision_function, legal_basis, verified_quotation, quotation_page, reviewer_comment, evidence_pathway, obligation_id, skip_reason, reviewer_user_id, analysis_review_id, created_at',
     )
     .eq('analysis_run_id', runId)
     .eq('organisation_id', organisationId)
