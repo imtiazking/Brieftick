@@ -229,6 +229,41 @@ const rejectedAll = view.findings.map((f) => d(f, { decision: 'REJECTED' }));
 v = validateFindingDecisions(view.findings, rejectedAll, ctx);
 check(v.ok && v.decisions.every((x) => x.triageQueue && !x.createsObligation), 'rejected findings keep a triage queue and create nothing', v.ok && v.decisions.map((x) => x.triageQueue));
 
+const naInitialReview = [
+  d(f1, {
+    decision: 'ACCEPTED',
+    regulatoryClassificationCode: 'R',
+    disposition: DISPOSITIONS.ORGANISATION_NOT_APPLICABLE,
+    legalBasis: 'PRIN 2.1.1R',
+    quotation: 'A firm must conduct its business with integrity.',
+    quotationPage: 3,
+    provisionReference: 'PRIN 2.1.1R',
+    provisionFunction: 'OPERATIVE_REQUIREMENT',
+  }),
+  d(f2, { decision: 'REJECTED' }),
+  d(f3, { decision: 'REJECTED' }),
+];
+v = validateFindingDecisions(view.findings, naInitialReview, ctx);
+check(
+  v.ok &&
+    v.decisions[0].disposition === DISPOSITIONS.ORGANISATION_NOT_APPLICABLE &&
+    v.decisions[0].triageQueue === A &&
+    !v.decisions[0].createsObligation,
+  'initial review: binding R may be ORGANISATION_NOT_APPLICABLE (obligation triage, no conversion)',
+  v,
+);
+const guidanceOnly = [
+  d(f1, { decision: 'REJECTED' }),
+  d(f2, { decision: 'ACCEPTED', regulatoryClassificationCode: 'G', disposition: DISPOSITIONS.HORIZON }),
+  d(f3, { decision: 'REJECTED' }),
+];
+v = validateFindingDecisions(view.findings, guidanceOnly, ctx);
+check(
+  v.ok && v.decisions[1].triageQueue === B && v.decisions[1].disposition === DISPOSITIONS.HORIZON,
+  'non-binding guidance remains Non-Obligation triage (distinct from organisation N/A)',
+  v.decisions?.[1],
+);
+
 // C = FCA Handbook market abuse conclusive provisions: never converted, Non-Obligation Triage, distinct from R.
 const cEntry = FCA_POLICY_V1.entries.find((e) => e.code === 'C');
 check(

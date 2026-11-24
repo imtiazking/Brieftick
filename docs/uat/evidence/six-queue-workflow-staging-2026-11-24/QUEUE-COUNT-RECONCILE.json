@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-24T18:59:32.983Z",
+  "generatedAt": "2026-11-24T20:24:16.831Z",
   "workflowCounts": {
-    "AI_FINDINGS": 131,
+    "AI_FINDINGS": 107,
     "VERIFIED_OBLIGATIONS": 12,
-    "NON_OBLIGATIONS": 22,
-    "REJECTED_FINDINGS": 37,
-    "EXCEPTIONS": 6,
-    "NOT_APPLICABLE": 0,
+    "NON_OBLIGATIONS": 23,
+    "REJECTED_FINDINGS": 47,
+    "EXCEPTIONS": 16,
+    "NOT_APPLICABLE": 3,
     "ALL_FINDINGS": 208
   },
   "sumSix": 208,
@@ -39,17 +39,24 @@
       "c787b27f-9520-4e6a-a117-8ad1c3216c5c"
     ],
     "REJECTED_FINDINGS": [
-      "37342101-55ef-4ab0-9a5d-c29ad00ec672",
-      "8cdee742-f24d-4762-9322-5353e2f77514",
-      "830f72fd-2589-439a-bbe5-3b1299389575",
-      "424afcf0-2bc1-49cf-b496-761ba1f3bad7",
-      "5fde19e9-1942-4abb-8cf9-983513d285a0"
+      "ff29d9e2-a98e-4a56-b798-6af5c80254b8",
+      "1fda0019-c77a-4a84-833e-f093cf95e6b0",
+      "8dbac0b9-f83b-4e11-8f4c-3c77a8df98b7",
+      "9cdb6b39-2999-492c-ad15-c41009f3ddd3",
+      "9446c5ce-9b7e-4c8f-946c-6f13bbe307ef"
     ],
     "EXCEPTIONS": [
+      "f293a1c0-df33-44ab-b31b-2eea536e5406",
       "aad1987e-1ca6-4b80-83af-cdc01c34e627",
-      "4ddcbbfa-4c46-4cc2-b64a-50aa1f5dc381"
+      "4ddcbbfa-4c46-4cc2-b64a-50aa1f5dc381",
+      "8cdee742-f24d-4762-9322-5353e2f77514",
+      "830f72fd-2589-439a-bbe5-3b1299389575"
     ],
-    "NOT_APPLICABLE": []
+    "NOT_APPLICABLE": [
+      "37342101-55ef-4ab0-9a5d-c29ad00ec672",
+      "fb48ec85-6489-4d1c-9135-2ae071ac84c1",
+      "1454cf32-5584-44bc-880c-31caec28c127"
+    ]
   },
   "unassignedSample": [],
   "uiNote": "API returned 150 items of 208 total (truncated=true); UI row count may be lower than ALL_FINDINGS count."

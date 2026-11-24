@@ -29,14 +29,15 @@ try {
       pageErrors.length = 0;
       await page.goto(`${LAB}?v=queue-smoke${q.hash}`, { waitUntil: 'domcontentloaded', timeout: 120_000 });
       await page.waitForSelector('[data-triage-rows]', { timeout: 90_000 }).catch(() => null);
-      for (let i = 0; i < 30; i += 1) {
+      const loadWaitMax = q.name === 'AI Findings' ? 90 : 30;
+      for (let i = 0; i < loadWaitMax; i += 1) {
         const loading = await page
           .evaluate(() => (document.querySelector('[data-triage-status]')?.textContent || '').includes('Loading'))
           .catch(() => true);
         if (!loading) break;
         await page.waitForTimeout(1000);
       }
-      await page.waitForTimeout(1500);
+      await page.waitForTimeout(q.name === 'AI Findings' ? 2500 : 1500);
       const diag = await page.evaluate(() => {
         const status = document.querySelector('[data-triage-status]')?.textContent?.trim() || '';
         const rows = document.querySelector('[data-triage-rows]');

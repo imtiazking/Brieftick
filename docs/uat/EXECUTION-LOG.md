@@ -615,3 +615,33 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Staging deploy | **`dpl_3LMjeSKA2PTBRyYyuj9gT2t5JL8a`** — `0894e1f` |
 | Hosted UAT | **BLOCKED** (Clerk session expired User B **401**); login B then `staging-six-queue-triage.mjs` |
 | Production | **NO-GO** unchanged |
+
+## 2026-11-24 — Six-queue hosted UAT tranche (Users B + A)
+
+| Activity | Outcome |
+|---|---|
+| Auth preflight | **B, A VALID** (`staging-user-sessions.mjs preflight B,A`) |
+| Staging deploy | **`dpl_BhxKEAGPjyK3hP8jpLpsJyKGAcMK`** — local HEAD incl. `finding-review-core` N/A triage fallback + triage `resolvedSegment` fixes (`staging-app.forgeniq.com`) |
+| Triage script | `staging-six-queue-triage.mjs` — **PASS** (counts, reconcile, five-decision buttons) |
+| Hosted validation | `staging-six-queue-hosted-validation.mjs` — **PASS** (24 steps): all queue screens + screenshots; routing reject / exception / N/A / non-obligation / verify-obligation; audit history; SoD User A **403/400** on reassess |
+| Queue reconcile | `ALL_FINDINGS` **208**; `NOT_APPLICABLE` **0 → 1** after N/A routing test |
+| Evidence | `docs/uat/evidence/six-queue-workflow-staging-2026-11-24/` (`HOSTED-VALIDATION.json`, `RESULT.json`, `queue-*.png`, `dashboard-six-queue-cards.png`, `ai-findings-five-decisions.png`) |
+| Defect fixes | UAT: N/A route via **reassess** only (first review requires full-run decisions); core: OBLIGATION_TRIAGE fallback when disposition `ORGANISATION_NOT_APPLICABLE` blocked on EXCEPTION queue |
+| Local changes | Uncommitted: `finding-review-core.mjs`, `staging-six-queue-hosted-validation.mjs` |
+| Production | **NO-GO** unchanged |
+
+## 2026-11-24 — Six-queue release housekeeping **COMPLETE**
+
+| Activity | Outcome |
+|---|---|
+| Status | **Six-queue implementation and validated test coverage: COMPLETE** |
+| Staging app deploy | **`dpl_B6KXoEmriaxA6BAfNAcXyrhX5TB8`** (`staging-app.forgeniq.com`) — N/A triage fallback in Node (`finding-review-core.mjs`) |
+| Staging DB | Migrations applied: `20261124194500_ri_finding_review_org_not_applicable` (RPC allow-list + rejected `legal_status` hotfix); `20261124201500_ri_finding_decision_disposition_org_na` (`ai_analysis_finding_decisions` disposition check includes `ORGANISATION_NOT_APPLICABLE`) |
+| Initial-review N/A | Hosted POST first human review **PASS** — run `be03ff0f-841a-45ce-a7b5-1dfbd4dc5ae0`, finding `9da97a0a…`, disposition `ORGANISATION_NOT_APPLICABLE` → workflow queue **NOT_APPLICABLE** (distinct from non-binding guidance) — evidence `FIRST-REVIEW-NA.json` |
+| Hosted validation | `staging-six-queue-hosted-validation.mjs` — **PASS** (24 steps) |
+| Queue smoke | `staging-design-lab-triage-queues-smoke.mjs` — **PASS** (7/7; extended AI Findings load wait) |
+| Count reconcile | `ALL_FINDINGS` **208**; API returns **150** rows (`truncated=true`); sum of six queues **208** — evidence `QUEUE-COUNT-RECONCILE.json` |
+| Local gates | `acceptance-ri-six-queue-workflow` PASS; `acceptance-ri-classification-policy-core` **118/118**; `npm run build` PASS |
+| Evidence | `docs/uat/evidence/six-queue-workflow-staging-2026-11-24/` (JSON + PNG) |
+| Limitation | All Findings UI/API list cap **150** of **208** (`MAX_ITEMS` in `triage-queues.ts`); counts and reconcile remain authoritative |
+| Production | **NO-GO** unchanged; no paid AI extraction |

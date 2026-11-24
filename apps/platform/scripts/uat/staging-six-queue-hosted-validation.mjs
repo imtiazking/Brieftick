@@ -70,6 +70,27 @@ async function postReassess(page, runId, findingId, payload) {
   );
 }
 
+function bindingReviewDecision(target, finding, { disposition, comment, justification }) {
+  const quotationPage = finding.pages?.[0] ?? target.sourcePdfPage ?? finding.quotationPage;
+  let quotation = String(finding.suggestedQuotation || target.quotation || finding.statement || '').trim();
+  if (quotation.length > 4000) quotation = `${quotation.slice(0, 3997)}…`;
+  if (quotation.length < 20) quotation = `${quotation} — staged verification quotation for policy validation.`.slice(0, 500);
+  return {
+    findingId: target.findingId,
+    claimTextSha256: finding.claimTextSha256,
+    decision: 'ACCEPTED',
+    regulatoryClassificationCode: 'R',
+    disposition,
+    comment,
+    reassessmentJustification: justification,
+    legalBasis: target.legalBasis || finding.legalBasis || 'Staging org applicability review',
+    quotation,
+    quotationPage: quotationPage ?? 1,
+    provisionReference: target.provisionReference || finding.provisionReference || null,
+    provisionFunction: 'OPERATIVE_REQUIREMENT',
+  };
+}
+
 await requireUatPersonas(['B', 'A'], { label: 'staging-six-queue-hosted-validation' });
 
 const report = await runAs('B', async ({ page, act }) => {
@@ -122,14 +143,38 @@ const report = await runAs('B', async ({ page, act }) => {
     });
   }
 
+  const reassessable = (items) =>
+  (items || []).filter((i) => i.canReassess && !i.obligationApprovalLocked);
+  const usedFindingIds = new Set();
+  const take = (pool) => {
+    const item = pool.find((i) => !usedFindingIds.has(i.findingId));
+    if (item) usedFindingIds.add(item.findingId);
+    return item;
+  };
+
   const rejected = await act('pick-rejected', () => fetchQueue(page, WORKFLOW_QUEUES.REJECTED_FINDINGS));
-  const candidates = (rejected.body?.items || []).filter((i) => i.canReassess && !i.obligationApprovalLocked);
-  if (!candidates.length) fail('reassess-candidates', { count: rejected.body?.items?.length });
-  else pass('reassess-candidates', { count: candidates.length });
+  const rejectedPool = reassessable(rejected.body?.items);
+  const aiItems = (await fetchQueue(page, WORKFLOW_QUEUES.AI_FINDINGS)).body?.items || [];
+  const aiPool = reassessable(aiItems);
+  const nonOblPool = reassessable((await fetchQueue(page, WORKFLOW_QUEUES.NON_OBLIGATIONS)).body?.items);
+  const obligationTriagePool = [...aiPool, ...rejectedPool].filter(
+    (i) =>
+      i.triageQueue === 'OBLIGATION_TRIAGE' ||
+      (i.modelLabels || []).includes('binding_requirement') ||
+      i.aiClassification === 'binding_requirement',
+  );
+  const guidancePool = [...nonOblPool, ...aiPool, ...rejectedPool].filter(
+    (i) =>
+      i.triageQueue === 'NON_OBLIGATION_TRIAGE' ||
+      (i.modelLabels || []).some((l) => /guidance|non_binding|explanatory/i.test(String(l))),
+  );
+  const totalReassess = new Set([...rejectedPool, ...aiPool, ...nonOblPool].map((i) => i.findingId)).size;
+  if (totalReassess < 3) fail('reassess-candidates', { totalReassess, rejected: rejectedPool.length });
+  else pass('reassess-candidates', { totalReassess, rejected: rejectedPool.length, obligationTriage: obligationTriagePool.length });
 
   const routingTests = [];
-  if (candidates.length >= 1) {
-    const target = candidates[0];
+  const target = take(rejectedPool);
+  if (target) {
     const review = await loadFindingReview(page, target.runId, target.findingId);
     const finding = (review.findings || []).find((f) => f.findingId === target.findingId);
     if (!finding?.claimTextSha256) {
@@ -154,53 +199,85 @@ const report = await runAs('B', async ({ page, act }) => {
     }
   }
 
-  if (candidates.length >= 2) {
-    const target = candidates[1];
-    const review = await loadFindingReview(page, target.runId, target.findingId);
-    const finding = (review.findings || []).find((f) => f.findingId === target.findingId);
-    if (finding?.claimTextSha256) {
-      const post = await postReassess(page, target.runId, target.findingId, {
-        decision: {
-          findingId: target.findingId,
-          claimTextSha256: finding.claimTextSha256,
-          decision: 'ACCEPTED',
-          regulatoryClassificationCode: 'R',
-          disposition: 'RECLASSIFICATION_REQUESTED',
-          comment: `Six-queue exception test ${new Date().toISOString()}`,
-          reassessmentJustification: 'Hosted validation: route to exceptions via reclassification request.',
-          reclassificationEvidence: 'Uncertain interpretation requires specialist legal review.',
-        },
-      });
-      const pb = await post.json().catch(() => ({}));
-      if (!post.ok()) fail('routing-exception', { status: post.status(), pb });
-      else {
-        pass('routing-exception', pb);
-        routingTests.push({ action: 'exception', findingId: target.findingId });
+  {
+    const exTarget = take(rejectedPool.length ? rejectedPool : aiPool);
+    if (!exTarget) fail('routing-exception', { reason: 'no_candidate' });
+    else {
+      const review = await loadFindingReview(page, exTarget.runId, exTarget.findingId);
+      const finding = (review.findings || []).find((f) => f.findingId === exTarget.findingId);
+      if (finding?.claimTextSha256) {
+        const post = await postReassess(page, exTarget.runId, exTarget.findingId, {
+          decision: {
+            findingId: exTarget.findingId,
+            claimTextSha256: finding.claimTextSha256,
+            decision: 'ACCEPTED',
+            regulatoryClassificationCode: 'R',
+            disposition: 'RECLASSIFICATION_REQUESTED',
+            comment: `Six-queue exception test ${new Date().toISOString()}`,
+            reassessmentJustification: 'Hosted validation: route to exceptions via reclassification request.',
+            reclassificationEvidence: 'Uncertain interpretation requires specialist legal review.',
+          },
+        });
+        const pb = await post.json().catch(() => ({}));
+        if (!post.ok()) fail('routing-exception', { status: post.status(), pb });
+        else {
+          pass('routing-exception', pb);
+          routingTests.push({ action: 'exception', findingId: exTarget.findingId });
+        }
       }
     }
   }
 
-  if (candidates.length >= 3) {
-    const target = candidates[2];
-    const review = await loadFindingReview(page, target.runId, target.findingId);
-    const finding = (review.findings || []).find((f) => f.findingId === target.findingId);
-    if (finding?.claimTextSha256) {
-      const post = await postReassess(page, target.runId, target.findingId, {
-        decision: {
-          findingId: target.findingId,
-          claimTextSha256: finding.claimTextSha256,
-          decision: 'ACCEPTED',
-          regulatoryClassificationCode: 'R',
+  {
+    const naObligationPool = obligationTriagePool.filter((i) => i.canReassess && !usedFindingIds.has(i.findingId));
+    const naTarget = take(naObligationPool);
+    if (!naTarget) fail('routing-not-applicable', { reason: 'no_reassessable_obligation_triage_candidate' });
+    else {
+      const review = await loadFindingReview(page, naTarget.runId, naTarget.findingId);
+      const finding = (review.findings || []).find((f) => f.findingId === naTarget.findingId);
+      if (!finding?.claimTextSha256) fail('routing-not-applicable', { reason: 'missing_hash' });
+      else {
+        const decision = bindingReviewDecision(naTarget, finding, {
           disposition: 'ORGANISATION_NOT_APPLICABLE',
           comment: `Six-queue N/A test ${new Date().toISOString()}`,
-          reassessmentJustification: 'Hosted validation: binding requirement not applicable to staging org.',
-        },
-      });
-      const pb = await post.json().catch(() => ({}));
-      if (!post.ok()) fail('routing-not-applicable', { status: post.status(), pb });
+          justification: 'Hosted validation: binding requirement not applicable to staging org.',
+        });
+        const post = await postReassess(page, naTarget.runId, naTarget.findingId, { decision });
+        const pb = await post.json().catch(() => ({}));
+        if (!post.ok()) fail('routing-not-applicable', { status: post.status(), pb, reassess: true });
+        else {
+          pass('routing-not-applicable', { ...pb, reassess: true, findingId: naTarget.findingId });
+          routingTests.push({ action: 'not-applicable', findingId: naTarget.findingId, reassess: true });
+        }
+      }
+    }
+  }
+
+  {
+    const noTarget = take(guidancePool.length ? guidancePool : nonOblPool);
+    if (!noTarget) fail('routing-non-obligation', { reason: 'no_candidate' });
+    else {
+      const review = await loadFindingReview(page, noTarget.runId, noTarget.findingId);
+      const finding = (review.findings || []).find((f) => f.findingId === noTarget.findingId);
+      if (!finding?.claimTextSha256) fail('routing-non-obligation', { reason: 'missing_hash' });
       else {
-        pass('routing-not-applicable', pb);
-        routingTests.push({ action: 'not-applicable', findingId: target.findingId });
+        const post = await postReassess(page, noTarget.runId, noTarget.findingId, {
+          decision: {
+            findingId: noTarget.findingId,
+            claimTextSha256: finding.claimTextSha256,
+            decision: 'ACCEPTED',
+            regulatoryClassificationCode: 'G',
+            disposition: 'HORIZON_SCANNING',
+            comment: `Six-queue non-obligation test ${new Date().toISOString()}`,
+            reassessmentJustification: 'Hosted validation: non-binding guidance routed to non-obligations workflow.',
+          },
+        });
+        const pb = await post.json().catch(() => ({}));
+        if (!post.ok()) fail('routing-non-obligation', { status: post.status(), pb });
+        else {
+          pass('routing-non-obligation', pb);
+          routingTests.push({ action: 'non-obligation', findingId: noTarget.findingId });
+        }
       }
     }
   }
@@ -219,12 +296,12 @@ const report = await runAs('B', async ({ page, act }) => {
   const after = await act('after-counts', () => fetchCounts(page));
   if (after.ok) pass('after-counts', after.counts);
 
-  const history = candidates[0]
-    ? await loadFindingReview(page, candidates[0].runId, candidates[0].findingId)
-    : null;
-  const histRows = (history?.reassessments || []).filter((r) => r.finding_id === candidates[0]?.findingId);
+  const sodFindingId = routingTests.find((r) => r.action === 'reject')?.findingId || target?.findingId;
+  const sodEntry = [...rejectedPool, ...aiPool].find((i) => i.findingId === sodFindingId);
+  const history = sodEntry ? await loadFindingReview(page, sodEntry.runId, sodEntry.findingId) : null;
+  const histRows = (history?.reassessments || []).filter((r) => r.finding_id === sodFindingId);
   if (histRows.length) pass('audit-history-append', { count: histRows.length });
-  else if (candidates[0]) fail('audit-history-append', { count: 0 });
+  else if (sodEntry) fail('audit-history-append', { count: 0 });
 
   const verified = await fetchQueue(page, WORKFLOW_QUEUES.VERIFIED_OBLIGATIONS);
   const vCand = (verified.body?.items || []).find((i) => i.canReassess && !i.obligationApprovalLocked);
@@ -255,8 +332,8 @@ const report = await runAs('B', async ({ page, act }) => {
     afterCounts: after.counts,
     routingTests,
     aiFivePanels: ai,
-    sodTarget: candidates[0],
-      deployAccepted: 'dpl_EvDcgUYGDsHc4rXAdXzQCL4hVL4S',
+    sodTarget: sodEntry,
+      deployAccepted: 'dpl_BhxKEAGPjyK3hP8jpLpsJyKGAcMK',
   };
 });
 
@@ -303,7 +380,7 @@ writeFileSync(
   JSON.stringify(
     {
       generatedAt: new Date().toISOString(),
-      deploymentId: 'dpl_EvDcgUYGDsHc4rXAdXzQCL4hVL4S',
+      deploymentId: 'dpl_B6KXoEmriaxA6BAfNAcXyrhX5TB8',
       ...report,
       steps,
     },

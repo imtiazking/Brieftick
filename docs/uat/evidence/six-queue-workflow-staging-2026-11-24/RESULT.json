@@ -1,0 +1,173 @@
+{
+  "generatedAt": "2026-11-24T19:34:17.169Z",
+  "steps": [
+    {
+      "step": "workflow-count-AI_FINDINGS",
+      "ok": true,
+      "detail": {
+        "count": 131
+      }
+    },
+    {
+      "step": "workflow-count-VERIFIED_OBLIGATIONS",
+      "ok": true,
+      "detail": {
+        "count": 12
+      }
+    },
+    {
+      "step": "workflow-count-NON_OBLIGATIONS",
+      "ok": true,
+      "detail": {
+        "count": 22
+      }
+    },
+    {
+      "step": "workflow-count-REJECTED_FINDINGS",
+      "ok": true,
+      "detail": {
+        "count": 31
+      }
+    },
+    {
+      "step": "workflow-count-EXCEPTIONS",
+      "ok": true,
+      "detail": {
+        "count": 12
+      }
+    },
+    {
+      "step": "workflow-count-NOT_APPLICABLE",
+      "ok": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "step": "all-findings-reconcile",
+      "ok": true,
+      "detail": {
+        "all": 208,
+        "sum": 208,
+        "wc": {
+          "AI_FINDINGS": 131,
+          "VERIFIED_OBLIGATIONS": 12,
+          "NON_OBLIGATIONS": 22,
+          "REJECTED_FINDINGS": 31,
+          "EXCEPTIONS": 12,
+          "NOT_APPLICABLE": 0,
+          "ALL_FINDINGS": 208
+        }
+      }
+    },
+    {
+      "step": "ai-findings-api",
+      "ok": true,
+      "detail": {
+        "total": 131,
+        "items": 131
+      }
+    },
+    {
+      "step": "five-decision-buttons-visible",
+      "ok": true,
+      "detail": {
+        "panels": 131
+      }
+    },
+    {
+      "step": "workflow-count-AI_FINDINGS",
+      "ok": true,
+      "detail": {
+        "count": 131
+      }
+    },
+    {
+      "step": "workflow-count-VERIFIED_OBLIGATIONS",
+      "ok": true,
+      "detail": {
+        "count": 12
+      }
+    },
+    {
+      "step": "workflow-count-NON_OBLIGATIONS",
+      "ok": true,
+      "detail": {
+        "count": 22
+      }
+    },
+    {
+      "step": "workflow-count-REJECTED_FINDINGS",
+      "ok": true,
+      "detail": {
+        "count": 31
+      }
+    },
+    {
+      "step": "workflow-count-EXCEPTIONS",
+      "ok": true,
+      "detail": {
+        "count": 12
+      }
+    },
+    {
+      "step": "workflow-count-NOT_APPLICABLE",
+      "ok": true,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "step": "all-findings-reconcile",
+      "ok": true,
+      "detail": {
+        "all": 208,
+        "sum": 208,
+        "wc": {
+          "AI_FINDINGS": 131,
+          "VERIFIED_OBLIGATIONS": 12,
+          "NON_OBLIGATIONS": 22,
+          "REJECTED_FINDINGS": 31,
+          "EXCEPTIONS": 12,
+          "NOT_APPLICABLE": 0,
+          "ALL_FINDINGS": 208
+        }
+      }
+    },
+    {
+      "step": "ai-findings-api",
+      "ok": true,
+      "detail": {
+        "total": 131,
+        "items": 131
+      }
+    },
+    {
+      "step": "five-decision-buttons-visible",
+      "ok": true,
+      "detail": {
+        "panels": 131
+      }
+    }
+  ],
+  "screenshots": [
+    "dashboard-six-queue-cards.png",
+    "queue-ai-findings.png",
+    "ai-findings-five-decisions.png",
+    "queue-verified-obligations.png",
+    "queue-non-obligations.png",
+    "queue-rejected.png",
+    "queue-exceptions.png",
+    "queue-not-applicable.png",
+    "queue-all.png"
+  ],
+  "workflowCounts": {
+    "AI_FINDINGS": 131,
+    "VERIFIED_OBLIGATIONS": 12,
+    "NON_OBLIGATIONS": 22,
+    "REJECTED_FINDINGS": 31,
+    "EXCEPTIONS": 12,
+    "NOT_APPLICABLE": 0,
+    "ALL_FINDINGS": 208
+  }
+}

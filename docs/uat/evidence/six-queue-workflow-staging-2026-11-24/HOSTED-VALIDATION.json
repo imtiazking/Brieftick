@@ -1,0 +1,332 @@
+{
+  "generatedAt": "2026-11-24T20:23:43.347Z",
+  "deploymentId": "dpl_B6KXoEmriaxA6BAfNAcXyrhX5TB8",
+  "beforeCounts": {
+    "AI_FINDINGS": 107,
+    "VERIFIED_OBLIGATIONS": 12,
+    "NON_OBLIGATIONS": 23,
+    "REJECTED_FINDINGS": 49,
+    "EXCEPTIONS": 15,
+    "NOT_APPLICABLE": 2,
+    "ALL_FINDINGS": 208
+  },
+  "afterCounts": {
+    "AI_FINDINGS": 107,
+    "VERIFIED_OBLIGATIONS": 12,
+    "NON_OBLIGATIONS": 23,
+    "REJECTED_FINDINGS": 47,
+    "EXCEPTIONS": 16,
+    "NOT_APPLICABLE": 3,
+    "ALL_FINDINGS": 208
+  },
+  "routingTests": [
+    {
+      "action": "reject",
+      "findingId": "ff29d9e2-a98e-4a56-b798-6af5c80254b8",
+      "ok": true
+    },
+    {
+      "action": "exception",
+      "findingId": "f293a1c0-df33-44ab-b31b-2eea536e5406"
+    },
+    {
+      "action": "not-applicable",
+      "findingId": "37342101-55ef-4ab0-9a5d-c29ad00ec672",
+      "reassess": true
+    },
+    {
+      "action": "non-obligation",
+      "findingId": "b63daafd-9f40-4a1d-b95d-b24373771127"
+    }
+  ],
+  "aiFivePanels": 107,
+  "sodTarget": {
+    "runId": "3f3f57e1-5afc-40ac-a8d6-2f792b60c5f1",
+    "findingId": "ff29d9e2-a98e-4a56-b798-6af5c80254b8",
+    "reviewHref": "#/ai-analysis/3f3f57e1-5afc-40ac-a8d6-2f792b60c5f1",
+    "regulator": "Financial Conduct Authority",
+    "publicationId": "7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+    "publicationTitle": "PS22/9: A new Consumer Duty",
+    "publicationType": "policy_statement",
+    "provisionReference": "PDF p.114–115 · legal instrument",
+    "quotation": "2A.3.10 R If the results of the testing show that the product does not meet the identified needs, characteristics and objectives of the target market, including identified needs, characteristics and objectives of any group or groups of retail customers in the target market with characteristics of vulnerability: (1) in relation to a new product or a significant adaptation of an existing product, the manufacturer must not bring the new or adapted product to the market",
+    "regulatoryFinding": "2A.3.10 R If the results of the testing show that the product does not meet the identified needs, characteristics and objectives of the target market, including identified needs, characteristics and objectives of any group or groups of retail customers in the target market with c…",
+    "classificationCode": null,
+    "aiClassification": "consultation_proposal",
+    "legalStatus": null,
+    "modelLabels": [
+      "consultation_proposal"
+    ],
+    "legalBasis": null,
+    "applicability": "Applies to manufacturers when testing results show product does not meet target market needs; specifically for new products or significant adaptations of existing products",
+    "reviewStatus": "REJECTED",
+    "disposition": null,
+    "triageQueue": "NON_OBLIGATION_TRIAGE",
+    "workflowQueue": "REJECTED_FINDINGS",
+    "aiAssessmentRationale": "If testing shows that a product does not meet the identified needs, characteristics and objectives of the target market, including those of retail customers with characteristics of vulnerability, the manufacturer must not bring a new or significantly adapted product to the market.",
+    "aiConfidence": 95,
+    "sourcePdfPage": 114,
+    "provisional": false,
+    "exceptionReasons": [],
+    "draftEligible": false,
+    "obligationId": null,
+    "hasPersistedDecision": true,
+    "runOpenForFirstReview": false,
+    "runHasCompletedReview": true,
+    "canFirstReview": false,
+    "canReassess": true,
+    "obligationApprovalLocked": false,
+    "reassessmentCount": 0,
+    "humanVerification": "REJECTED",
+    "approvalStatus": "NONE",
+    "reVerificationRequired": false,
+    "legallyVerified": false,
+    "decisionProvenance": {
+      "provenanceClass": "AUTOMATED_UAT_DECISION",
+      "verificationTier": "technical_uat",
+      "countsAsGenuineHumanVerification": false,
+      "countsAsUatOrTest": true,
+      "label": "UAT / test pathway",
+      "detail": "Persisted under human_verified_uat evidence pathway. Technical review only — not legal or regulatory sign-off."
+    },
+    "countsAsGenuineHumanVerification": false,
+    "countsAsUatOrTest": true,
+    "reviewerRole": "REVIEWER",
+    "verificationRecord": {
+      "originalDecisionId": "1cc6ab92-bac9-47c7-b075-9843fe609529",
+      "analysisReviewId": "279f1e0e-26a8-47a5-9f76-b2d0b3258e9e",
+      "reviewerUserId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "reviewerRole": "REVIEWER",
+      "decision": "REJECTED",
+      "verifiedAt": "2026-11-24T20:20:29.063073+00:00",
+      "legalBasis": null,
+      "verifiedQuotation": null,
+      "provisionReference": null,
+      "provisionFunction": null,
+      "quotationPage": null,
+      "evidencePathway": "human_verified_uat",
+      "quotationVerificationId": null,
+      "reviewerJustification": "Probe reject-all pathway. 1",
+      "disposition": null,
+      "regulatoryClassificationCode": null,
+      "legalStatus": null,
+      "provenanceClass": "AUTOMATED_UAT_DECISION",
+      "provenanceLabel": "UAT / test pathway"
+    },
+    "approvalRecord": null,
+    "publicationVersionAtExtraction": "38fd7832-bb34-4708-bda5-50927131450f",
+    "currentPublicationVersionId": "38fd7832-bb34-4708-bda5-50927131450f"
+  },
+  "deployAccepted": "dpl_BhxKEAGPjyK3hP8jpLpsJyKGAcMK",
+  "steps": [
+    {
+      "step": "before-counts",
+      "ok": true,
+      "detail": {
+        "AI_FINDINGS": 107,
+        "VERIFIED_OBLIGATIONS": 12,
+        "NON_OBLIGATIONS": 23,
+        "REJECTED_FINDINGS": 49,
+        "EXCEPTIONS": 15,
+        "NOT_APPLICABLE": 2,
+        "ALL_FINDINGS": 208
+      }
+    },
+    {
+      "step": "count-shape-AI_FINDINGS",
+      "ok": true,
+      "detail": {
+        "count": 107
+      }
+    },
+    {
+      "step": "count-shape-VERIFIED_OBLIGATIONS",
+      "ok": true,
+      "detail": {
+        "count": 12
+      }
+    },
+    {
+      "step": "count-shape-NON_OBLIGATIONS",
+      "ok": true,
+      "detail": {
+        "count": 23
+      }
+    },
+    {
+      "step": "count-shape-REJECTED_FINDINGS",
+      "ok": true,
+      "detail": {
+        "count": 49
+      }
+    },
+    {
+      "step": "count-shape-EXCEPTIONS",
+      "ok": true,
+      "detail": {
+        "count": 15
+      }
+    },
+    {
+      "step": "count-shape-NOT_APPLICABLE",
+      "ok": true,
+      "detail": {
+        "count": 2
+      }
+    },
+    {
+      "step": "queue-screen-ai-findings",
+      "ok": true,
+      "detail": {
+        "total": 107,
+        "rendered": 107,
+        "truncated": false
+      }
+    },
+    {
+      "step": "queue-screen-verified-obligations",
+      "ok": true,
+      "detail": {
+        "total": 12,
+        "rendered": 12,
+        "truncated": false
+      }
+    },
+    {
+      "step": "queue-screen-non-obligations",
+      "ok": true,
+      "detail": {
+        "total": 23,
+        "rendered": 23,
+        "truncated": false
+      }
+    },
+    {
+      "step": "queue-screen-rejected",
+      "ok": true,
+      "detail": {
+        "total": 49,
+        "rendered": 49,
+        "truncated": false
+      }
+    },
+    {
+      "step": "queue-screen-exceptions",
+      "ok": true,
+      "detail": {
+        "total": 15,
+        "rendered": 15,
+        "truncated": false
+      }
+    },
+    {
+      "step": "queue-screen-not-applicable",
+      "ok": true,
+      "detail": {
+        "total": 2,
+        "rendered": 2,
+        "truncated": false
+      }
+    },
+    {
+      "step": "queue-screen-all",
+      "ok": true,
+      "detail": {
+        "total": 208,
+        "rendered": 150,
+        "truncated": true
+      }
+    },
+    {
+      "step": "reassess-candidates",
+      "ok": true,
+      "detail": {
+        "totalReassess": 72,
+        "rejected": 49,
+        "obligationTriage": 37
+      }
+    },
+    {
+      "step": "routing-reject",
+      "ok": true,
+      "detail": {
+        "findingId": "ff29d9e2-a98e-4a56-b798-6af5c80254b8",
+        "wqBefore": "REJECTED_FINDINGS",
+        "reassessmentId": "99058338-3fd8-4e5f-ba47-8b1d43525b56"
+      }
+    },
+    {
+      "step": "routing-exception",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "findingId": "f293a1c0-df33-44ab-b31b-2eea536e5406",
+        "reassessmentId": "a1b1ca8c-e01f-4fc2-bce0-b5477e6ea73c",
+        "sequenceNumber": 1
+      }
+    },
+    {
+      "step": "routing-not-applicable",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "findingId": "37342101-55ef-4ab0-9a5d-c29ad00ec672",
+        "reassessmentId": "70d1981e-9b6a-413e-a21b-e8630815a746",
+        "sequenceNumber": 12,
+        "reassess": true
+      }
+    },
+    {
+      "step": "routing-non-obligation",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "findingId": "b63daafd-9f40-4a1d-b95d-b24373771127",
+        "reassessmentId": "beb67e0c-16b1-45fb-bda8-40648a7e8c5f",
+        "sequenceNumber": 9
+      }
+    },
+    {
+      "step": "five-decision-buttons",
+      "ok": true,
+      "detail": {
+        "panels": 107
+      }
+    },
+    {
+      "step": "after-counts",
+      "ok": true,
+      "detail": {
+        "AI_FINDINGS": 107,
+        "VERIFIED_OBLIGATIONS": 12,
+        "NON_OBLIGATIONS": 23,
+        "REJECTED_FINDINGS": 47,
+        "EXCEPTIONS": 16,
+        "NOT_APPLICABLE": 3,
+        "ALL_FINDINGS": 208
+      }
+    },
+    {
+      "step": "audit-history-append",
+      "ok": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "step": "routing-verify-obligation",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "optionalLink": false
+      }
+    },
+    {
+      "step": "sod-unauthorised",
+      "ok": true,
+      "detail": {
+        "status": 400
+      }
+    }
+  ]
+}

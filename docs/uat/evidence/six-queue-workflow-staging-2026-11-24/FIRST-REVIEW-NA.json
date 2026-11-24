@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-11-24T20:28:00.000Z",
+  "deploymentId": "dpl_B6KXoEmriaxA6BAfNAcXyrhX5TB8",
+  "skipped": false,
+  "ok": true,
+  "firstReview": true,
+  "runId": "be03ff0f-841a-45ce-a7b5-1dfbd4dc5ae0",
+  "findingId": "9da97a0a-dccd-47ef-878b-1e56c6ee0291",
+  "findingCount": 11,
+  "workflowQueue": "NOT_APPLICABLE",
+  "inNaQueue": true,
+  "guidanceDistinction": "ok",
+  "disposition": "ORGANISATION_NOT_APPLICABLE",
+  "regulatoryClassificationCode": "R",
+  "rootCauseFixed": "ai_analysis_finding_decisions_disposition_check omitted ORGANISATION_NOT_APPLICABLE (staging migration 20261124201500_ri_finding_decision_disposition_org_na)",
+  "note": "Hosted POST initial review after DB constraint fix; distinct from non-binding guidance (Non-Obligations queue). No staging app redeploy required for constraint fix."
+}

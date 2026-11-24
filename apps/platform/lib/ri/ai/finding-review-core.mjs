@@ -11,6 +11,7 @@ import {
   evaluateFindingTriage,
   modelLabelsForFinding,
   policyEntry,
+  TRIAGE_QUEUES,
 } from '../classification/regulatory-classification-policy.mjs';
 import {
   PROVISION_FUNCTIONS,
@@ -327,7 +328,28 @@ export function validateFindingDecisions(findings, decisions, context) {
       provisionReference,
       provisionFunction,
     };
-    const triage = evaluateFindingTriage({ policy, publicationType, finding, proposal: code ? proposal : null });
+    const explicitDisposition = optionalText(d.disposition);
+    let triage = evaluateFindingTriage({ policy, publicationType, finding, proposal: code ? proposal : null });
+    if (
+      d.decision === 'ACCEPTED' &&
+      explicitDisposition === DISPOSITIONS.ORGANISATION_NOT_APPLICABLE &&
+      code &&
+      !QUEUE_ACTIONS[triage.queue]?.includes(explicitDisposition)
+    ) {
+      const provisional = evaluateFindingTriage({ policy, publicationType, finding, proposal: null });
+      if (provisional.queue === TRIAGE_QUEUES.OBLIGATION) {
+        triage = { ...provisional, provisional: false };
+      } else if (policyEntry(policy, code)?.conversionEnabled) {
+        triage = {
+          queue: TRIAGE_QUEUES.OBLIGATION,
+          exceptionReasons: [],
+          conversionEligible: false,
+          nonOperativeProvision: false,
+          legalStatus: policyEntry(policy, code).legalStatus,
+          provisional: false,
+        };
+      }
+    }
     const entry = {
       findingId: d.findingId,
       claimTextSha256: d.claimTextSha256,
