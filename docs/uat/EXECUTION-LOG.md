@@ -540,3 +540,14 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Staging deploy | **`dpl_Bq7199abopXnX4Jszcr967Bp1gaW`** — commit `ad9edcb` → `forgeniq-platform-staging` (`prj_y9O1A1zGFXe3GvJITnLL9mJUqve7`) |
 | Hosted evidence | `docs/uat/evidence/triage-verification-2026-11-24/` — API counts **60** obligation-triage rows: verified **12**, rejected **36**, needs review **12**; approval approved **9**, draft **3** |
 | Production | **NO-GO** unchanged |
+
+## 2026-11-24 — Obligation triage decision provenance audit + manual controls
+
+| Activity | Outcome |
+|---|---|
+| Audit | `docs/uat/OBLIGATION-TRIAGE-DECISION-PROVENANCE-2026-11-24.md` + `docs/uat/evidence/obligation-triage-decision-audit-2026-11-24/` |
+| Finding | **0** genuine regulatory VERIFIED on staging; **12** workflow VERIFIED = **UAT** (`human_verified_uat`); **48** UAT/test decision rows; **12** NEEDS REVIEW (no decision row yet); **9** APPROVED obligations = staging maker-checker only |
+| 68→60 | Post–PS26/1 E2E review re-triaged findings (+6 non-obligation, +2 exception) — not deletion |
+| UI | Manual **Verify / Reject / Needs review** buttons; UAT badges; **Verified (regulatory)** vs **Verified (UAT)** filters |
+| Hotfix | `organisation_memberships` join restored triage API (`d440ade`) |
+| Deploy | **`dpl_Arq8jVRdRRnCRHEqzp9H4A4uzgbt`** (`d440ade`) |
