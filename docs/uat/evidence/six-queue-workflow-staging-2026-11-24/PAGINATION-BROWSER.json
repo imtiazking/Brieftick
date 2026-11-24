@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-11-24T20:58:20.319Z",
+  "statusBefore": "Showing 50 of 208 on this page (queue total 208). 16 completed extraction run(s) scanned. Only an accepted Obligation Triage finding can become a DRAFT obligation, and only through finding review. Nothing on this read is approved.",
+  "pageInfo1": "Page 1 of 5 · 208 in view",
+  "pageInfo2": "Page 2 of 5 · 208 in view",
+  "rowCount1": 50,
+  "rowCount25": 0,
+  "rowCount2": 50,
+  "totalMatch": true,
+  "totalNum": 208,
+  "ok": true,
+  "screenshot": "all-findings-pagination.png"
+}

@@ -645,3 +645,17 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Evidence | `docs/uat/evidence/six-queue-workflow-staging-2026-11-24/` (JSON + PNG) |
 | Limitation | All Findings UI/API list cap **150** of **208** (`MAX_ITEMS` in `triage-queues.ts`); counts and reconcile remain authoritative |
 | Production | **NO-GO** unchanged; no paid AI extraction |
+
+## 2026-11-24 — Triage pagination (all workflow queues)
+
+| Activity | Outcome |
+|---|---|
+| Change | Server-side pagination on `GET /api/ri-lab/triage` — `page`, `pageSize` (25/50/100), `verificationFilter`, `approvalFilter`, `search`; stable sort (`runCreatedAt`, `claimIndex`, `findingId`) |
+| UI | Design Lab queue screens: per-page selector, Previous/Next, server-side filters/search preserved across pages |
+| Staging deploy | **`dpl_6yZzEKoRBpyUkFcrcPGDBfLvCxzz`** (`09fdb44`) → `staging-app.forgeniq.com` |
+| API integrity | `staging-six-queue-pagination-integrity.mjs` **PASS** — **208** ALL_FINDINGS ids across **9** pages (size 25), zero duplicates, all six queues complete |
+| Count reconcile | **208** unique ids via paginated fetch (`pageSize=100`); sum six queues **208** |
+| Browser | `staging-design-lab-triage-pagination-browser.mjs` — evidence `PAGINATION-BROWSER.json`, `all-findings-pagination.png` |
+| Queue smoke | `staging-design-lab-triage-queues-smoke.mjs` **PASS** (7/7) — default page shows ≤50 rows; totals in status line |
+| Commits | `83c15fe` (pagination core), `09fdb44` (page-size attribute fix) |
+| Six-queue logic | Unchanged — workflow derivation, decisions, reassessments, audit |
