@@ -361,7 +361,7 @@ export async function hydrateConnectedTriage(root = document) {
     if (filters) {
       filters.hidden = false;
       const metrics = screen.querySelector('[data-triage-presentation-metrics]');
-      if (metrics && (resolvedSegment === 'verified-obligations' || resolvedSegment === 'ai-findings')) {
+      if (metrics && (segment === 'verified-obligations' || segment === 'ai-findings' || segment === 'all')) {
         metrics.hidden = false;
         metrics.innerHTML = `<div class="ri-priority-metrics">
           <span class="ri-metric"><span class="ri-metric__label">Awaiting first review</span><span class="ri-metric__value">${pCounts.AWAITING_FIRST_REVIEW ?? 0}</span></span>
