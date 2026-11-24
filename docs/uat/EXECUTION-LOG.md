@@ -487,3 +487,17 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Hosted PS22 date | Policy Statement title is correct; `publication_date` is null; no audited write |
 | RI master, typecheck, build | **PASS** |
 | Report | `docs/uat/FORGENIQ-UAT-CLOSURE-AI-READINESS-2026-11-24.md` |
+
+## 2026-11-24 — Final validation and production readiness
+
+| Activity | Outcome |
+|---|---|
+| PS22/9 publication date | Staging row `7a73ac4c-d6b4-4411-9f6d-1276053f2831` set to **2022-07-27** by migration `20261124013000_ps22_9_publication_date`. Source hash unchanged. One row updated. API GET confirms the date |
+| Hosted workflow reads | Anonymous **401**. Catalogue **275**. Orchestration `PARTIAL_PAUSED`, 17 batches. Changes **25**. Impacts **1** UAT. Obligations **9** UAT, known obligation **OPEN**. Audit events **7**. Notifications **22**. Risks, controls, actions, evidence **0** for this organisation |
+| Not executed | New ingestion, new finding review, new maker-checker, cross-tenant negative, paid extraction |
+| Paid gate | Plan valid. `--execute` not used. Projected **$2.931** against ceiling **$2.35**. No provider call |
+| SEC-DB-003 hosted | **BLOCKED — EXTERNAL DEPENDENCY**. `STAGING_DATABASE_URL` unset |
+| Deploy | None. Existing staging app already returns `publication_date`. No production deploy |
+| Report | `docs/uat/FORGENIQ-FINAL-VALIDATION-PRODUCTION-READINESS-2026-11-24.md` |
+| Decision | **NO-GO** |
+| Local gates | Typecheck PASS. Build PASS. RI master first run failed on an empty database; migration now no-ops when the PS22/9 row is absent. Phase 3A PASS. RI master **PASS 391.5s** |

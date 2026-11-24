@@ -1,0 +1,461 @@
+{
+  "generatedAt": "2026-11-24T00:54:56.174Z",
+  "writesPerformed": false,
+  "paidAi": false,
+  "anonymousPublicationRead": {
+    "http": 401
+  },
+  "modules": [
+    {
+      "path": "/api/ri-lab/publications/7a73ac4c-d6b4-4411-9f6d-1276053f2831",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": null,
+        "arrays": {},
+        "publicationDate": "2022-07-27",
+        "publicationType": "Policy Statement",
+        "title": "PS22/9: A new Consumer Duty",
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "labPublication",
+          "display",
+          "detail",
+          "publication"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/catalogue/summary",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": 275,
+        "tenantScope": null,
+        "arrays": {
+          "sample": 5
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "total",
+          "sample"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/publications/7a73ac4c-d6b4-4411-9f6d-1276053f2831/extraction-orchestration",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": true,
+        "arrays": {},
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": "PARTIAL_PAUSED",
+        "orchestrationBatches": 17,
+        "keys": [
+          "ok",
+          "publicationId",
+          "orchestration",
+          "tenantScope"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/changes?scope=all",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": 25,
+        "tenantScope": true,
+        "arrays": {
+          "changes": 25
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "total",
+          "tenantScope",
+          "dataScope",
+          "excludedSyntheticUat",
+          "changes"
+        ]
+      },
+      "sampleId": {
+        "list": "changes",
+        "id": "e22981b0-4a70-4f2c-b30e-6f2a340b0fb4",
+        "status": "OPEN"
+      }
+    },
+    {
+      "path": "/api/ri-lab/impact-assessments?scope=all",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": 1,
+        "tenantScope": true,
+        "arrays": {
+          "impactAssessments": 1,
+          "authorisedUatImpacts": 1
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": {
+          "operational": 0,
+          "uatAuthorised": 1,
+          "unverified": 0,
+          "syntheticUat": 0
+        },
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "total",
+          "tenantScope",
+          "dataScope",
+          "excludedSyntheticUat",
+          "impactProvenance",
+          "impactAssessments",
+          "authorisedUatImpacts"
+        ]
+      },
+      "sampleId": {
+        "list": "impactAssessments",
+        "id": "77d960f5-2aff-469f-a316-293d1cb78064",
+        "status": "Approved"
+      }
+    },
+    {
+      "path": "/api/ri-lab/risks?scope=all",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": null,
+        "arrays": {
+          "risks": 0
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "risks"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/controls?scope=all",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": null,
+        "arrays": {
+          "controls": 0
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "controls"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/actions?scope=all",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": null,
+        "arrays": {
+          "actions": 0
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "actions"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/evidence?scope=all",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": null,
+        "arrays": {
+          "evidence": 0
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "evidence"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/notifications",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": true,
+        "arrays": {
+          "notifications": 22
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "tenantScope",
+          "notifications",
+          "filteredCount",
+          "totalMatching",
+          "unreadCount",
+          "query",
+          "externalDeliveryDisabled"
+        ]
+      },
+      "sampleId": {
+        "list": "notifications",
+        "id": "ai-event:b573992f-2ad7-492f-896a-c7d07e3d585d",
+        "status": null
+      }
+    },
+    {
+      "path": "/api/ri-lab/workflow-events?entityType=regulatory_obligation&entityId=63b84f23-9b4f-424a-96c9-f33eb3192779",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": 7,
+        "tenantScope": true,
+        "arrays": {
+          "events": 7
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "total",
+          "events",
+          "tenantScope"
+        ]
+      },
+      "sampleId": {
+        "list": "events",
+        "id": "bd893ee2-a385-4926-baec-02bae9469813",
+        "status": null
+      }
+    },
+    {
+      "path": "/api/ri-lab/reports/board",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": true,
+        "arrays": {
+          "materialChanges": 0,
+          "emptySections": 6
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "generatedAt",
+          "tenantScope",
+          "dataPopulation",
+          "reportingPeriod",
+          "metricsNote",
+          "activityInPeriod",
+          "report",
+          "materialChanges",
+          "controlGaps",
+          "emptySections"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/obligations?scope=all",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": 9,
+        "tenantScope": true,
+        "arrays": {
+          "obligations": 9,
+          "authorisedUatObligations": 9
+        },
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": {
+          "operational": 0,
+          "uatAuthorised": 9,
+          "unverified": 0,
+          "syntheticUat": 0
+        },
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "total",
+          "tenantScope",
+          "dataScope",
+          "excludedSyntheticUat",
+          "obligationProvenance",
+          "obligations",
+          "authorisedUatObligations"
+        ]
+      },
+      "sampleId": {
+        "list": "obligations",
+        "id": "2046ef71-f8b2-42f4-bdc4-3a1ec48b1b8a",
+        "status": "OPEN"
+      }
+    },
+    {
+      "path": "/api/ri-lab/obligations/63b84f23-9b4f-424a-96c9-f33eb3192779",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": null,
+        "arrays": {},
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": "OPEN",
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "obligation"
+        ]
+      },
+      "sampleId": null
+    },
+    {
+      "path": "/api/ri-lab/classification-policy?regulatorKey=REG-FCA",
+      "http": 200,
+      "summary": {
+        "ok": true,
+        "total": null,
+        "tenantScope": null,
+        "arrays": {},
+        "publicationDate": null,
+        "publicationType": null,
+        "title": null,
+        "obligationStatus": null,
+        "provenance": null,
+        "error": null,
+        "orchestrationStatus": null,
+        "orchestrationBatches": null,
+        "keys": [
+          "ok",
+          "policy"
+        ]
+      },
+      "sampleId": null
+    }
+  ],
+  "assertions": {
+    "publicationDate": "2022-07-27",
+    "publicationHttp": 200,
+    "obligationHttp": 200
+  },
+  "notExecuted": [
+    "New publication ingestion write",
+    "New paid provision extraction",
+    "New finding-review submission",
+    "New maker-checker approval",
+    "Cross-tenant negative (Users A/B/C share one staging organisation)"
+  ]
+}
