@@ -659,3 +659,16 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Queue smoke | `staging-design-lab-triage-queues-smoke.mjs` **PASS** (7/7) — default page shows ≤50 rows; totals in status line |
 | Commits | `83c15fe` (pagination core), `09fdb44` (page-size attribute fix) |
 | Six-queue logic | Unchanged — workflow derivation, decisions, reassessments, audit |
+
+## 2026-11-24 — My Tasks (Work Queue rename)
+
+| Activity | Outcome |
+|---|---|
+| Rename | Design Lab **Work Queue → My Tasks**; routes `#/work`, `#/work-queue`, `#/my-tasks` (same view); not a seventh triage queue |
+| API | `GET /api/ri-lab/my-tasks` — aggregates work-queue, obligations maker-checker, governance pending, triage actionable items (team scope only); pagination 25/50/100 |
+| UI | Metrics strip, filters (open / awaiting review / overdue / due soon / unassigned / completed), search, server pagination — `connected-my-tasks.js` |
+| Local gates | `acceptance-ri-my-tasks` **PASS**; `npm run build` **PASS** |
+| Staging deploy | **`dpl_6Zwj67yP1WXTbPyoCirLafNHw7WU`** (`1c991ee`) → `staging-app.forgeniq.com` |
+| Hosted UAT | **BLOCKED** — Clerk saved sessions A/B/C **401** after deploy window; renew with `node scripts/uat/staging-user-sessions.mjs renew <A|B|C>` then `staging-my-tasks-abc.mjs` + `staging-design-lab-my-tasks-browser.mjs` |
+| Six-queue | Unchanged — triage service/logic not modified |
+| Production | **NO-GO** unchanged; no paid AI extraction |
