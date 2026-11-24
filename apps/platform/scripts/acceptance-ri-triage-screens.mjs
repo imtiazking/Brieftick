@@ -36,6 +36,7 @@ check('navigation exposes three queues', ['triage/obligations', 'triage/non-obli
 check('cards do not hardcode a count', !/data-triage-count="[^"]+">\d+/.test(triage));
 check('triage read is tenant scoped', route.includes("requireRiContext('ai:read')") && service.includes('organisation_id'));
 check('triage does not approve obligations', service.includes('legallyVerified: false') && !route.includes('submitFindingReview'));
+check('triage exposes verification counts', service.includes('verificationCounts') && triage.includes('data-triage-verification-filter'));
 check('non-obligation copy refuses approved obligations', triage.includes('cannot become approved obligations'));
 
 const policy = {

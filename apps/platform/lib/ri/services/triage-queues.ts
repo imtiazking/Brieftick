@@ -5,6 +5,12 @@ import { AI_EXECUTION_STATUS } from '@/lib/ri/ai/enums';
 import { buildFindingsView } from '@/lib/ri/ai/finding-review-core.mjs';
 import { TRIAGE_QUEUES } from '@/lib/ri/classification/regulatory-classification-policy.mjs';
 import {
+  countApprovalStatus,
+  countHumanVerification,
+  deriveApprovalStatus,
+  deriveHumanVerification,
+} from '@/lib/ri/triage/triage-verification-status.mjs';
+import {
   loadActiveClassificationPolicy,
   loadPublicationClassificationContext,
   type ClassificationPolicy,
@@ -37,7 +43,23 @@ type DecisionRow = {
   legal_basis: string | null;
   verified_quotation: string | null;
   provision_reference: string | null;
+  provision_function: string | null;
+  quotation_page: number | null;
+  reviewer_comment: string | null;
+  evidence_pathway: string | null;
+  reviewer_user_id: string | null;
+  analysis_review_id: string | null;
+  created_at: string | null;
   obligation_id: string | null;
+};
+
+type RunRow = {
+  id: string;
+  publication_id: string | null;
+  publication_version_id: string | null;
+  review_status: string | null;
+  structured_output: unknown;
+  created_at: string;
 };
 
 function clip(value: unknown, max = 500) {
@@ -61,7 +83,7 @@ export async function listTriageQueues(
 
   const { data: runs, error: runError } = await supabase
     .from('ai_analysis_runs')
-    .select('id, publication_id, review_status, structured_output, created_at')
+    .select('id, publication_id, publication_version_id, review_status, structured_output, created_at')
     .eq('organisation_id', organisationId)
     .eq('use_case_id', USE_CASE)
     .eq('execution_status', AI_EXECUTION_STATUS.COMPLETED)
@@ -69,10 +91,9 @@ export async function listTriageQueues(
     .limit(MAX_RUNS);
   if (runError) throw new Error(runError.message);
 
-  const runRows = runs ?? [];
-  const runIds = runRows.map((r) => r.id as string);
+  const runRows = (runs ?? []) as RunRow[];
+  const runIds = runRows.map((r) => r.id);
   const publicationIds = [...new Set(runRows.map((r) => r.publication_id).filter(Boolean))] as string[];
-
   const [{ data: citations, error: citationError }, { data: decisions, error: decisionError }, { data: publications, error: publicationError }] =
     await Promise.all([
       runIds.length
@@ -88,7 +109,7 @@ export async function listTriageQueues(
         ? supabase
             .from('ai_analysis_finding_decisions')
             .select(
-              'analysis_run_id, finding_id, decision, triage_queue, disposition, regulatory_classification_code, legal_status, legal_basis, verified_quotation, provision_reference, obligation_id',
+              'analysis_run_id, finding_id, decision, triage_queue, disposition, regulatory_classification_code, legal_status, legal_basis, verified_quotation, provision_reference, provision_function, quotation_page, reviewer_comment, evidence_pathway, reviewer_user_id, analysis_review_id, created_at, obligation_id',
             )
             .eq('organisation_id', organisationId)
             .in('analysis_run_id', runIds)
@@ -103,6 +124,41 @@ export async function listTriageQueues(
   if (citationError) throw new Error(citationError.message);
   if (decisionError) throw new Error(decisionError.message);
   if (publicationError) throw new Error(publicationError.message);
+
+  const obligationIds = [
+    ...new Set(
+      ((decisions ?? []) as DecisionRow[]).map((d) => d.obligation_id).filter(Boolean),
+    ),
+  ] as string[];
+  const [{ data: obligationRows, error: obligationError }, { data: versionRows, error: versionError }] = await Promise.all([
+    obligationIds.length
+      ? supabase
+          .from('regulatory_obligations')
+          .select('id, status, owner_user_id, metadata')
+          .eq('organisation_id', organisationId)
+          .in('id', obligationIds)
+      : Promise.resolve({ data: [], error: null }),
+    publicationIds.length
+      ? supabase
+          .from('regulatory_publication_versions')
+          .select('publication_id, id, created_at')
+          .in('publication_id', publicationIds)
+          .order('created_at', { ascending: false })
+      : Promise.resolve({ data: [], error: null }),
+  ]);
+  if (obligationError) throw new Error(obligationError.message);
+  if (versionError) throw new Error(versionError.message);
+
+  const obligationStatusById = new Map(
+    (obligationRows ?? []).map((o) => [o.id as string, o.status as string]),
+  );
+  const currentPublicationVersionById = new Map<string, string>();
+  for (const row of versionRows ?? []) {
+    const pubId = row.publication_id as string;
+    if (!currentPublicationVersionById.has(pubId)) {
+      currentPublicationVersionById.set(pubId, row.id as string);
+    }
+  }
 
   const publicationById = new Map((publications ?? []).map((p) => [p.id as string, p]));
   const regulatorIds = [...new Set((publications ?? []).map((p) => p.regulator_id).filter(Boolean))] as string[];
@@ -144,6 +200,7 @@ export async function listTriageQueues(
     NON_OBLIGATION_TRIAGE: 0,
     EXCEPTION_TRIAGE: 0,
   };
+  const queueMetricRows: Array<{ humanVerification: string; approvalStatus: string }> = [];
   const items: Array<Record<string, unknown>> = [];
 
   for (const run of runRows) {
@@ -162,15 +219,29 @@ export async function listTriageQueues(
         : finding.triage?.queue) as TriageQueueName;
       if (!isTriageQueue(queueName)) continue;
       counts[queueName] += 1;
-      if (queue && queueName !== queue) continue;
-      if (items.length >= MAX_ITEMS) continue;
       const suggestion = finding.suggestion;
       const quotation = recorded?.verified_quotation || suggestion?.sourceQuotation || finding.statement;
       const draftEligible =
         queueName === TRIAGE_QUEUES.OBLIGATION &&
         finding.triage?.conversionEligible === true &&
         !recorded?.obligation_id;
-      items.push({
+      const pubId = run.publication_id as string | null;
+      const runVersionId = run.publication_version_id;
+      const currentVersionId = pubId ? currentPublicationVersionById.get(pubId) : null;
+      const reVerificationRequired = Boolean(
+        recorded && currentVersionId && runVersionId && runVersionId !== currentVersionId,
+      );
+      const humanVerification = deriveHumanVerification({
+        recorded,
+        provisional: recorded ? false : finding.triage?.provisional === true,
+        queueName,
+        exceptionReasons: finding.triage?.exceptionReasons || [],
+        reVerificationRequired,
+      });
+      const obligationId = recorded?.obligation_id || null;
+      const obligationStatus = obligationId ? obligationStatusById.get(obligationId) : null;
+      const approvalStatus = deriveApprovalStatus(obligationStatus);
+      const row = {
         runId: run.id,
         findingId: finding.findingId,
         reviewHref: `#/ai-analysis/${run.id}`,
@@ -180,6 +251,7 @@ export async function listTriageQueues(
         publicationType: publication?.publication_type || context.publicationType,
         provisionReference: recorded?.provision_reference || suggestion?.citation || null,
         quotation: clip(quotation),
+        regulatoryFinding: clip(quotation, 280),
         classificationCode: recorded?.regulatory_classification_code || finding.triage?.code || null,
         legalStatus: recorded?.legal_status || finding.triage?.legalStatus || null,
         modelLabels: (finding as { modelLabels?: string[] }).modelLabels || [],
@@ -191,17 +263,61 @@ export async function listTriageQueues(
         provisional: recorded ? false : finding.triage?.provisional === true,
         exceptionReasons: finding.triage?.exceptionReasons || [],
         draftEligible,
-        obligationId: recorded?.obligation_id || null,
+        obligationId,
+        humanVerification,
+        approvalStatus,
+        reVerificationRequired,
         legallyVerified: false,
-      });
+        verificationRecord: recorded
+          ? {
+              analysisReviewId: recorded.analysis_review_id,
+              reviewerUserId: recorded.reviewer_user_id,
+              decision: recorded.decision,
+              verifiedAt: recorded.created_at,
+              legalBasis: recorded.legal_basis,
+              verifiedQuotation: recorded.verified_quotation,
+              provisionReference: recorded.provision_reference,
+              provisionFunction: recorded.provision_function,
+              quotationPage: recorded.quotation_page,
+              evidencePathway: recorded.evidence_pathway,
+              reviewerJustification: recorded.reviewer_comment,
+              disposition: recorded.disposition,
+              regulatoryClassificationCode: recorded.regulatory_classification_code,
+              legalStatus: recorded.legal_status,
+            }
+          : null,
+        approvalRecord: obligationId
+          ? {
+              obligationId,
+              status: obligationStatus ?? null,
+              obligationHref: `#/obligation/${obligationId}`,
+            }
+          : null,
+        publicationVersionAtExtraction: runVersionId ?? null,
+        currentPublicationVersionId: currentVersionId ?? null,
+      };
+      if (!queue || queueName === queue) {
+        queueMetricRows.push({
+          humanVerification,
+          approvalStatus,
+        });
+      }
+      if (queue && queueName !== queue) continue;
+      if (items.length >= MAX_ITEMS) continue;
+      items.push(row);
     }
   }
+
+  const verificationCounts = queue ? countHumanVerification(queueMetricRows) : { ALL: 0 };
+  const approvalCounts = queue ? countApprovalStatus(queueMetricRows) : { ALL: 0 };
 
   return {
     ok: true,
     tenantScope: true,
     useCaseId: USE_CASE,
     counts,
+    verificationCounts,
+    approvalCounts,
     queue,
     total: queue ? counts[queue] : Object.values(counts).reduce((sum, n) => sum + n, 0),
     items: queue ? items : [],
@@ -210,5 +326,7 @@ export async function listTriageQueues(
     truncated: (count ?? 0) > runRows.length || (queue ? counts[queue] > items.length : false),
     citationsCapped: (citations ?? []).length >= 1000,
     draftCreation: 'Only an accepted Obligation Triage finding can become a DRAFT obligation, and only through finding review. Nothing on this read is approved.',
+    humanVerificationNote:
+      'Human verification reflects persisted finding-review decisions. Formal obligation approval is a separate maker-checker decision.',
   };
 }
