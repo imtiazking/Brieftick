@@ -517,3 +517,15 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | E2E writes | **Not executed** this tranche (read-only staging policy) |
 | Report | `docs/uat/FORGENIQ-FINAL-DESIGN-LAB-VALIDATION-2026-11-24.md` |
 | Decision | **NO-GO** (regulatory + security + write-path gaps) |
+
+## 2026-11-24 — Design Lab full compliance workflow (executed)
+
+| Activity | Outcome |
+|---|---|
+| Isolated UAT run | `2c840c0b` PS26/1 — **not** PS22/9 |
+| Finding review | User B — review `b0e08a19`; **4** DRAFT obligations materialised |
+| Maker–checker | User A → IN_REVIEW; User C → OPEN on `57bcc479-fe9f-42ec-873e-3cdb1552a2cc`; User B SoD **403** |
+| GRC | Impact `c76007e4`; risk `89b7d5c3`; control `005e92f7`; action `136a52ad`; evidence `e700c545` + upload |
+| Report | `docs/uat/HOSTED-DESIGN-LAB-E2E-WORKFLOW-2026-11-24.md` + JSON |
+| Workflow verdict | **PASS** (15/15 stages) |
+| Production | **NO-GO** unchanged (legal verification, SEC-DB-003, second org) |
