@@ -1,0 +1,142 @@
+{
+  "generatedAt": "2026-11-24T02:51:28.062Z",
+  "anonymousTriageHttp": 401,
+  "deployedTriageScript": true,
+  "triageHttp": 200,
+  "triageBody": {
+    "ok": true,
+    "tenantScope": true,
+    "useCaseId": "UC-RI-005",
+    "counts": {
+      "OBLIGATION_TRIAGE": 68,
+      "NON_OBLIGATION_TRIAGE": 136,
+      "EXCEPTION_TRIAGE": 4
+    },
+    "queue": null,
+    "total": 208,
+    "items": [],
+    "scannedRuns": 16,
+    "completedRuns": 16,
+    "truncated": false,
+    "citationsCapped": false,
+    "draftCreation": "Only an accepted Obligation Triage finding can become a DRAFT obligation, and only through finding review. Nothing on this read is approved."
+  },
+  "pages": [
+    {
+      "name": "dashboard",
+      "hash": "#/dashboard",
+      "title": "0 publications in staging catalogue",
+      "triageCounts": {
+        "OBLIGATION_TRIAGE": "68",
+        "NON_OBLIGATION_TRIAGE": "136",
+        "EXCEPTION_TRIAGE": "4"
+      },
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nREGULATORY POSITION · DATA AS OF 24 NOV 2026\n\n0 publications in staging catalogue\n\nRegulatory Intelligence — know what changed, understand what it means, prove what you did.\n\nConnected read-only · global catalogue\nREVIEW INT"
+    },
+    {
+      "name": "publications",
+      "hash": "#/library",
+      "title": "Regulatory Library",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nRegulatory Library\n\nGlobal catalogue · connected read-only\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalogue (274 "
+    },
+    {
+      "name": "obligation-triage",
+      "hash": "#/triage/obligations",
+      "title": "Obligation Triage",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nObligation Triage\n\nPotential binding requirements from completed UC-RI-005 extractions. A row can become a DRAFT obligation only after human finding review accepts a conversion-eligible classification. Nothing here is legall"
+    },
+    {
+      "name": "non-obligation-triage",
+      "hash": "#/triage/non-obligations",
+      "title": "Non-Obligation Triage",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nNon-Obligation Triage\n\nGuidance, explanations and other non-binding findings. Review decisions are recorded on the finding. These rows cannot become approved obligations.\n\n136 finding(s) in this queue from 16 completed extra"
+    },
+    {
+      "name": "exception-triage",
+      "hash": "#/triage/exceptions",
+      "title": "Exception Triage",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nException Triage\n\nAmbiguous findings, unverified citations, scope or evidential questions, and disputed classifications. Resolve them in finding review. They are not approved obligations.\n\n4 finding(s) in this queue from 16 "
+    },
+    {
+      "name": "obligations",
+      "hash": "#/obligations",
+      "title": "Obligations",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nObligations\n\nTenant obligations · connected read-only\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalogue (274 publi"
+    },
+    {
+      "name": "impacts",
+      "hash": "#/assessments",
+      "title": "Impact Assessments",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nImpact Assessments\n\nTenant impact assessments · connected read-only\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalo"
+    },
+    {
+      "name": "reporting",
+      "hash": "#/reports",
+      "title": "Reports & Audit",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nReports & Audit\n\nConnected tenant reporting\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalogue (274 publications) ·"
+    },
+    {
+      "name": "changes",
+      "hash": "#/changes",
+      "title": "Regulatory Changes",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nRegulatory Changes\n\nTenant-scoped regulatory changes · connected writes enabled\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · G"
+    },
+    {
+      "name": "risks",
+      "hash": "#/risks",
+      "title": "Risks",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nRisks\n\nTenant regulatory risks · connected\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalogue (274 publications) · "
+    },
+    {
+      "name": "controls",
+      "hash": "#/controls",
+      "title": "Controls",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nControls\n\nTenant controls · connected\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalogue (274 publications) · Opera"
+    },
+    {
+      "name": "actions",
+      "hash": "#/actions",
+      "title": "Issues & Actions",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nIssues & Actions\n\nTenant remediation actions · connected read/write when enabled\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · "
+    },
+    {
+      "name": "evidence",
+      "hash": "#/evidence",
+      "title": "Evidence",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nEvidence\n\nTenant evidence · connected read/write when enabled\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalogue (2"
+    },
+    {
+      "name": "notifications",
+      "hash": "#/notifications",
+      "title": "Exceptions, escalations and deadlines",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nATTENTION CENTRE\n\nExceptions, escalations and deadlines\n\nTenant in-app notifications · external delivery disabled\n\nWork queue\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) exclu"
+    },
+    {
+      "name": "audit",
+      "hash": "#/audit",
+      "title": "Audit Trail",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nAudit Trail\n\nProduction workflow events · connected\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalogue (274 publica"
+    },
+    {
+      "name": "admin",
+      "hash": "#/admin",
+      "title": "Administration",
+      "triageCounts": {},
+      "body": "FORGENIQ\nRI\n· Regulatory Intelligence\n▾\nCONNECTED (WRITES)\nConnected catalogue\nFO\nAccount\nAlerts (22)\nPlatform home\nDashboard\nIntake\nRegulatory Landscape\n▾\nChanges\n▾\nWork\n▾\nGovernance\n▾\nReports\n▾\nOperations\n▾\nAdmin\n▾\n\nConnected catalogue · presentation scenarios not applied\n\nAdministration\n\nAuthenticated FORGENIQ tenant · connected read-only\n\nConnected staging · change writes ON · operational tenant metrics · 217 labelled UAT row(s) excluded from dashboard (dataScope=operational) · Global catalo"
+    }
+  ]
+}
