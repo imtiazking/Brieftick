@@ -24,6 +24,7 @@ const KNOWN_TOP_LEVEL = new Set([
   'ai-config',
   'assurance',
   'intake',
+  'triage',
   'work',
   'work-queue',
   'notifications',

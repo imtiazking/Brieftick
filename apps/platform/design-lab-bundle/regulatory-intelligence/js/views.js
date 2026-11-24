@@ -45,6 +45,7 @@ import {
 } from './store.js';
 import { connectedCatalogueBanner, getConnectedCatalogue, getConnectedAssigneeLabel, isConnectedCatalogueReady } from './platform/connected-catalogue.js';
 import { getConnectedDashboardMetrics } from './platform/connected-notifications.js';
+import { renderTriageBoard, renderTriageScreen } from './platform/connected-triage.js';
 import {
   isConnectedBackendActive,
   isConnectedChangeWritesEnabled,
@@ -327,6 +328,8 @@ export function renderView(route) {
       return viewBoardReport();
     case 'assurance':
       return id ? viewAssuranceReview(id) : viewAssuranceDashboard();
+    case 'triage':
+      return renderTriageScreen(id);
     case 'findings':
       return viewFindingsList();
     case 'finding':
@@ -540,6 +543,7 @@ function viewDashboard() {
       ${metric('Upcoming deadlines', `<strong>${stats.upcomingDeadlines}</strong>`, 'Next 30 days')}`
       }
     </div>
+    ${connected ? renderTriageBoard() : ''}
     ${
       connected && (pendingApprovals.length || pendingUatExcluded)
         ? `<section class="ri-panel ri-panel--compact"><h2>Pending approvals</h2>

@@ -114,6 +114,7 @@ import {
   submitConnectedAiReview,
   renderConnectedAiRunDetail,
 } from './platform/connected-ai-governance-panels.js';
+import { hydrateConnectedTriage } from './platform/connected-triage.js';
 import {
   bindClassificationPolicyAdmin,
   fetchClassificationPolicyAdmin,
@@ -222,7 +223,7 @@ import {
 const NAV_ACTIVE = {
   landscape: ['landscape'],
   changes: ['changes', 'change', 'library', 'publication', 'horizon', 'feed', 'version', 'applicability'],
-  work: ['work', 'work-queue', 'notifications'],
+  work: ['work', 'work-queue', 'notifications', 'triage'],
   governance: [
     'governance',
     'ai-governance',
@@ -273,6 +274,9 @@ const TOP_NAV = [
     label: 'Work',
     items: [
       { path: 'work', label: 'Work Queue' },
+      { path: 'triage/obligations', label: 'Obligation Triage' },
+      { path: 'triage/non-obligations', label: 'Non-Obligation Triage' },
+      { path: 'triage/exceptions', label: 'Exception Triage' },
       { path: 'notifications', label: 'Attention Centre' },
     ],
   },
@@ -876,6 +880,7 @@ function applicabilityErrorMessage(code) {
 
 function bindViewHandlers() {
   const route = getRoute();
+  hydrateConnectedTriage(document);
   if (isConnectedBackendActive()) {
     runConnectedDetailLoadsIfNeeded(route, () => scheduleConnectedDetailLoadsForRoute(route));
   }
