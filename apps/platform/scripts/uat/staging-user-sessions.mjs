@@ -113,21 +113,56 @@ function hostAllowed(url) {
   }
 }
 
-async function launch(key, { headless }) {
+function registerNetworkGuard(context) {
+  context.on('requestfailed', (request) => {
+    const failure = request.failure();
+    if (failure?.errorText === 'net::ERR_BLOCKED_BY_CLIENT') {
+      console.error(`BLOCKED ${request.url()}`);
+    }
+  });
+  context.route('**/*', (route) => {
+    const request = route.request();
+    const url = request.url();
+    if (request.isNavigationRequest() && request.frame() === request.frame().page().mainFrame()) {
+      if (!hostAllowed(url)) {
+        console.error(`BLOCKED navigation ${url}`);
+        return route.abort('blockedbyclient');
+      }
+      return route.continue();
+    }
+    return hostAllowed(url) ? route.continue() : route.abort('blockedbyclient');
+  });
+}
+
+async function launch(key, { headless, fresh = false }) {
   secureSessionRoot();
+  if (fresh && existsSync(profileDir(key))) {
+    rmSync(profileDir(key), { recursive: true, force: true });
+  }
   const options = {
     headless,
     viewport: { width: 1360, height: 900 },
     acceptDownloads: false,
   };
+  const profile = profileDir(key);
   let context;
-  try {
-    context = await chromium.launchPersistentContext(profileDir(key), { ...options, channel: 'chrome' });
-  } catch {
-    context = await chromium.launchPersistentContext(profileDir(key), options);
+  const useChannel = process.env.FORGENIQ_UAT_CHROME_CHANNEL === '1';
+  if (useChannel) {
+    try {
+      context = await chromium.launchPersistentContext(profile, { ...options, channel: 'chrome' });
+    } catch (err) {
+      console.warn(`Chrome channel unavailable (${err.message}); using bundled Chromium.`);
+      context = await chromium.launchPersistentContext(profile, options);
+    }
+  } else {
+    context = await chromium.launchPersistentContext(profile, options);
   }
-  await context.route('**/*', (route) => (hostAllowed(route.request().url()) ? route.continue() : route.abort('blockedbyclient')));
-  const page = context.pages()[0] || (await context.newPage());
+  registerNetworkGuard(context);
+  const initialPages = context.pages();
+  const page = await context.newPage();
+  for (const stale of initialPages) {
+    if (stale !== page) await stale.close().catch(() => {});
+  }
   return { context, page };
 }
 
@@ -239,15 +274,49 @@ export async function runAs(key, fn, { headless = true } = {}) {
   }
 }
 
-async function login(key) {
+const SIGN_IN_LANDING = `${STAGING_ORIGIN}/sign-in`;
+const DESIGN_LAB_DASHBOARD = `${DESIGN_LAB}#/dashboard`;
+
+function signInUrl() {
+  const redirect = encodeURIComponent(DESIGN_LAB_DASHBOARD);
+  return `${SIGN_IN_LANDING}?redirect_url=${redirect}`;
+}
+
+async function openSignInPage(page, label) {
+  const target = signInUrl();
+  console.log(`${label}: loading ${target}`);
+  const response = await page.goto(target, { waitUntil: 'load', timeout: 120_000 });
+  const status = response?.status() ?? null;
+  const finalUrl = page.url();
+  console.log(`${label}: document ${status ?? '—'} at ${finalUrl}`);
+  if (!finalUrl.startsWith(STAGING_ORIGIN) || !finalUrl.includes('/sign-in')) {
+    throw new Error(`${label}: expected staging sign-in, got ${finalUrl}`);
+  }
+  if (status != null && status >= 400) {
+    throw new Error(`${label}: sign-in HTTP ${status}`);
+  }
+  await page.waitForFunction(() => typeof window.Clerk !== 'undefined', { timeout: 90_000 }).catch(() => {
+    throw new Error(`${label}: Clerk did not initialise on sign-in (blank or blocked assets)`);
+  });
+  console.log(`${label}: Clerk ready — complete sign-in in this window (do not close the browser).`);
+}
+
+async function login(key, { fresh = false } = {}) {
   const p = persona(key);
-  const { context, page } = await launch(p.key, { headless: false });
+  const { context, page } = await launch(p.key, { headless: false, fresh });
   try {
-    await page.goto(`${STAGING_ORIGIN}/sign-in?redirect_url=${encodeURIComponent('/design-lab/regulatory-intelligence/index.html#/dashboard')}`);
-    console.log(`${p.label}: sign in as ${p.userId} in the Chrome window that has opened (waiting up to 10 minutes)…`);
+    await openSignInPage(page, `${p.label} (${p.userId})`);
+    console.log(`${p.label}: waiting up to 10 minutes for successful session…`);
     const deadline = Date.now() + 10 * 60_000;
     while (Date.now() < deadline) {
-      await page.waitForTimeout(3000);
+      try {
+        await page.waitForTimeout(3000);
+      } catch (err) {
+        if (String(err.message || err).includes('closed')) {
+          throw new SessionExpiredError(`${p.label}: browser closed before sign-in completed`);
+        }
+        throw err;
+      }
       if (!page.url().startsWith(STAGING_ORIGIN) || page.url().includes('/sign-in')) continue;
       const clerkUserId = await page.evaluate(() => window.Clerk?.user?.id ?? null).catch(() => null);
       if (!clerkUserId) continue;
@@ -307,13 +376,28 @@ if (isCli) {
   const [command, arg] = process.argv.slice(2);
   try {
     if (command === 'login') {
-      for (const key of arg?.toLowerCase() === 'all' ? Object.keys(PERSONAS) : [arg]) await login(key);
+      const fresh = process.argv.includes('--fresh');
+      for (const key of arg?.toLowerCase() === 'all' ? Object.keys(PERSONAS) : [arg])
+        await login(key, { fresh });
+    } else if (command === 'diagnose') {
+      const { context, page } = await launch(arg || 'B', { headless: true });
+      try {
+        await openSignInPage(page, persona(arg || 'B').label);
+        const consoleErrors = [];
+        page.on('console', (m) => {
+          if (m.type() === 'error') consoleErrors.push(m.text());
+        });
+        console.log(JSON.stringify({ url: page.url(), title: await page.title(), clerk: await page.evaluate(() => Boolean(window.Clerk)) }));
+        if (consoleErrors.length) console.log('console errors:', consoleErrors.slice(0, 8));
+      } finally {
+        await context.close();
+      }
     } else if (command === 'status') {
       await status();
     } else if (command === 'logout') {
       await logout(arg);
     } else {
-      console.log('usage: staging-user-sessions.mjs login <A|B|C|OP1|all> | status | logout <A|B|C|OP1>');
+      console.log('usage: staging-user-sessions.mjs login <A|B|C|OP1|all> [--fresh] | diagnose <B> | status | logout <A|B|C|OP1>');
       process.exitCode = 2;
     }
   } catch (err) {
