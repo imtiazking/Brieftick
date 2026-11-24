@@ -29,6 +29,7 @@ const ROUTES = [
   { hash: '#/triage/all', heading: /All Findings/i, name: 'All Findings' },
   { hash: '#/work', heading: /My Tasks/i, name: 'My Tasks' },
   { hash: '#/notifications', heading: /Attention|notification|exception/i, name: 'Attention Centre' },
+  { hash: '#/admin/qa', heading: /Quality assurance/i, name: 'Quality assurance' },
   { hash: '#/this-route-does-not-exist', heading: /not found|no view|dashboard/i, name: 'Invalid route' },
 ];
 
@@ -166,6 +167,17 @@ for (const route of ROUTES) {
   const triage = route.hash.startsWith('#/triage/');
   const table = triage ? await page.locator('[data-triage-screen], table, .ri-panel').count() : 1;
   const myTasks = route.hash === '#/work' ? await page.locator('[data-my-tasks-screen], table, .ri-muted').count() : 1;
+  if (!baseArg && route.hash === '#/admin/qa') {
+    await page.waitForFunction(
+      () => /Technical tests:/.test(document.querySelector('[data-qa-status]')?.textContent || ''),
+      null,
+      { timeout: 8000 },
+    ).catch(() => {});
+    const qaText = await page.locator('[data-qa-status]').innerText().catch(() => '');
+    if (!/Technical tests:\s*PASS/i.test(qaText) || !/Business UAT approved:\s*no/i.test(qaText) || !/Production authorised:\s*no/i.test(qaText)) {
+      fatal.push(`qa dashboard verdict missing: ${qaText.slice(0, 180)}`);
+    }
+  }
   const authGate = /sign in|backend unavailable|organisation access/i.test(heading);
   const contentOk = baseArg ? authGate || route.heading.test(heading) : route.heading.test(heading);
   const ok =
@@ -211,6 +223,11 @@ await browser.close();
 server?.close();
 
 const failed = results.filter((r) => !r.ok);
+const authWall = failed.length > 0 && failed.every((r) => /log in to vercel/i.test(r.heading || ''));
+if (authWall) {
+  console.error('design-lab-browser-smoke: AUTH_BLOCKED Vercel authentication wall. This is not an application defect.');
+  process.exit(2);
+}
 if (failed.length) {
   console.error(`design-lab-browser-smoke: FAIL ${failed.length}/${results.length}`);
   process.exit(1);

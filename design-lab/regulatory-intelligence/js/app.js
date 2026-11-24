@@ -335,6 +335,7 @@ const TOP_NAV = [
       { path: 'admin/platform', label: 'Platform' },
       { path: 'admin/classification-policy', label: 'Classification Policy' },
       { path: 'admin/health', label: 'Health' },
+      { path: 'admin/qa', label: 'Quality assurance' },
       { path: 'admin/readiness', label: 'Readiness' },
       { path: 'demo', label: 'Demo Journeys' },
       { path: 'admin', label: 'Administration' },
@@ -889,6 +890,9 @@ function bindViewHandlers() {
   const route = getRoute();
   hydrateConnectedTriage(document);
   hydrateConnectedMyTasks(document);
+  if (getRoute().startsWith('/admin/qa')) {
+    import('./platform/qa-dashboard.js').then((mod) => mod.hydrateQaDashboard(document));
+  }
   if (isConnectedBackendActive()) {
     runConnectedDetailLoadsIfNeeded(route, () => scheduleConnectedDetailLoadsForRoute(route));
   }

@@ -47,15 +47,7 @@ if (process.env.FORCE_STAGING_DEPLOY !== '1' && existsSync(evidencePath) && MIN_
   }
 }
 
-run('design-lab javascript gate', 'node', ['./scripts/validate-design-lab-js-deps.mjs', join(repoRoot, 'design-lab', 'regulatory-intelligence', 'js')], platformRoot);
-run(
-  'design-lab eslint',
-  'node',
-  [join(platformRoot, 'node_modules', 'eslint', 'bin', 'eslint.js'), '-c', 'eslint.config.mjs', 'js', '--max-warnings', '0'],
-  join(repoRoot, 'design-lab', 'regulatory-intelligence'),
-);
-run('my-tasks acceptance', 'node', ['./scripts/acceptance-ri-my-tasks.mjs'], platformRoot);
-run('unauthenticated browser smoke', 'node', ['./scripts/eval/design-lab-browser-smoke.mjs'], platformRoot);
+run('qa release gate', 'node', ['./scripts/qa/orchestrator.mjs', '--mode=release'], platformRoot);
 run('sync design-lab bundle', 'node', ['./scripts/sync-design-lab-bundle.mjs'], platformRoot);
 run('emit build id', 'node', ['./scripts/emit-forgeniq-build-id.mjs'], platformRoot);
 

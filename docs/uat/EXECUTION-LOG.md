@@ -684,3 +684,18 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Limitation | `vercel promote` on this project created a new production deployment rather than only aliasing the preview. Preview URLs require Vercel authentication; smoke uses `vercel env run`. |
 | Staging | **`dpl_HDHFNZkoRa6mpeHxXrWTvWL2ef2V`** aliased to `https://staging-app.forgeniq.com`. Live browser: dashboard **275 publications**, My Tasks empty state for the signed-in maker, AI Findings **queue total 96** with pagination. |
 | Production | **NO-GO**. No paid AI. Six-queue logic unchanged. |
+
+## 2026-11-24 — QA orchestrator
+
+| Activity | Outcome |
+|---|---|
+| Approach | One orchestrator over existing acceptance scripts, Design Lab ESLint, the module-binding check, and the Playwright render smoke. No second test runner. |
+| Local release gate | `node scripts/qa/orchestrator.mjs --mode=release` — **PASS** 17, failed 0, blocked 0. Evidence `docs/uat/qa/latest.json`. |
+| Self-test | Isolated fixtures detected a missing named export, a duplicate `const`, an undefined variable, and destructive SQL (`DROP DATABASE` / `TRUNCATE regulatory_obligations`). A failed assertion yields **FAIL**. A mandatory **BLOCKED** or **NOT RUN** result cannot be **PASS**. |
+| Browser | Local Playwright smoke **PASS** 14 routes, including `#/admin/qa`. The dashboard shows technical **PASS**, business UAT **not approved**, production **not authorised**. |
+| Auth | Saved Clerk A/B/C sessions are **not** in the offline gate. Missing sessions stay **AUTH_BLOCKED** via `UAT-PERSONAS`, which is extended and does not turn a technical pass into business UAT. A Vercel login wall exits the smoke as **AUTH_BLOCKED** (code 2), not as an application defect. |
+| Not claimed | Paid AI extraction. Live RLS against a second tenant. Remediation end-to-end. Market Intelligence (other repository). Hosted persona UAT. |
+| Release rule | **PASS** only when every mandatory check passed. **FAIL** if any assertion failed. **BLOCKED** if a mandatory check is blocked, not run, or auth-blocked. Production remains separately unauthorised. |
+| CI | `.github/workflows/forgeniq-qa.yml` runs the same release gate on pull requests and on pushes to `feature/ri-classification-triage` and `main`. |
+| Deploy gate | `phase85h-deploy-staging-platform.mjs` runs `--mode=release` before upload. A failed preview smoke still does not promote. `vercel promote` on this plan builds a new production deployment of `forgeniq-platform-staging`; there is no automatic schema rollback and no production (`www.forgeniq.com`) deploy. |
+| Production | **NO-GO**. |

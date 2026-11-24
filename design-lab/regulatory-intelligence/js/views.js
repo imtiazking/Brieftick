@@ -1,4 +1,5 @@
 import { summarizeObligationPortfolio, UI_LABEL_OPEN_OBLIGATIONS } from './ai/obligation-portfolio.js';
+import { viewQaDashboard } from './platform/qa-dashboard.js';
 import {
   getState,
   computeDashboardStats,
@@ -385,6 +386,7 @@ export function renderView(route) {
       if (id === 'readiness') return viewAdminReadiness();
       if (id === 'ai') return viewAdminAi();
       if (id === 'classification-policy') return viewAdminClassificationPolicy();
+      if (id === 'qa') return viewQaDashboard();
       return viewAdmin();
     case 'legislation':
       if (id === 'staging') return viewLegislationStaging();
