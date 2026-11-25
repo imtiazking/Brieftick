@@ -19,7 +19,7 @@ import {
   assuranceWorkflowStatus as assuranceWfFromMeta,
   evaluateAssuranceLifecycleClosure,
 } from '@/lib/ri/assurance-closure-guards.mjs';
-import { linkFindingAssuranceReview } from '@/lib/ri/links';
+import { linkAssuranceControl, linkFindingAssuranceReview } from '@/lib/ri/links';
 import { canRi } from '@/lib/ri/permissions';
 import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
 import {
@@ -366,7 +366,7 @@ export async function updateAssuranceWithGovernance(
   const meta = { ...(existing.metadata as Record<string, unknown>) };
   const update: Record<string, unknown> = { metadata: meta };
   const action = String(params.fields.action);
-  let pendingEvents: Array<{
+  const pendingEvents: Array<{
     eventType: import('@/lib/ri/workflow-events').WorkflowEventType;
     fromStatus: string;
     toStatus: string;

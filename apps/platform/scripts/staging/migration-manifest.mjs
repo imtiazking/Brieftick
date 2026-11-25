@@ -32,6 +32,18 @@ export const STAGING_MIGRATION_STEPS = [
     name: '20261106120000_risk_control_evidence_metadata_provenance',
     path: join(migrationsDir, '20261106120000_risk_control_evidence_metadata_provenance.sql'),
   },
+  {
+    name: '20261125180000_stage2_impact_per_obligation_unique',
+    path: join(migrationsDir, '20261125180000_stage2_impact_per_obligation_unique.sql'),
+  },
+  {
+    name: '20261125194500_compliance_lifecycle_stages_3_5',
+    path: join(migrationsDir, '20261125194500_compliance_lifecycle_stages_3_5.sql'),
+  },
+  {
+    name: '20261125200000_impact_assessment_risk_links_rls',
+    path: join(migrationsDir, '20261125200000_impact_assessment_risk_links_rls.sql'),
+  },
 ];
 
 /** Legacy MCP names that may exist without full DDL — do not treat as complete. */

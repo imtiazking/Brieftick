@@ -23,6 +23,7 @@ export function assuranceWorkflowStatus(metadata) {
  *   metadata: Record<string, unknown> | null | undefined;
  *   openFindingsCount?: number;
  *   incompleteRemediationCount?: number;
+ *   evidenceIntegrityGaps?: string[];
  * }} input
  * @returns {{ ok: boolean; gaps: string[] }}
  */

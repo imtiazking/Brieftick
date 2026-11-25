@@ -116,6 +116,15 @@ const PREFLIGHT = {
     select 1 from information_schema.columns
     where table_schema='public' and table_name='risks' and column_name='metadata'
   ) as ok`,
+  '20261125180000_stage2_impact_per_obligation_unique': `select exists (
+    select 1 from pg_indexes where schemaname='public' and indexname='impact_assessments_source_obligation_unique_idx'
+  ) as ok`,
+  '20261125194500_compliance_lifecycle_stages_3_5': `select exists (
+    select 1 from information_schema.tables where table_schema='public' and table_name='impact_assessment_risk_links'
+  ) as ok`,
+  '20261125200000_impact_assessment_risk_links_rls': `select exists (
+    select 1 from pg_policies where schemaname='public' and tablename='impact_assessment_risk_links'
+  ) as ok`,
 };
 
 async function preflightOk(name) {
