@@ -25,9 +25,17 @@ export async function hydrateQaDashboard(doc = document) {
     const res = await fetch('/design-lab/regulatory-intelligence/qa/latest.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('qa_report_missing');
     const report = await res.json();
-    if (status) status.textContent = `Technical tests: ${report.technicalTests || 'NOT RUN'}. Business UAT approved: no. Production authorised: no.`;
+    const build = (doc.querySelector('script[src*="app.js"]')?.getAttribute('src') || '').match(/[?&]v=([a-f0-9]+)/i)?.[1] || '';
+    const head = String(report.gitHead || '');
+    const stale = Boolean(build && head && !head.startsWith(build));
+    const deployment = report.latestKnownDeployment?.id || 'none recorded';
+    if (status) {
+      status.textContent = stale
+        ? `Stale report for commit ${head.slice(0, 12)}. This build is ${build}. It is not the current release result.`
+        : `Technical tests: ${report.technicalTests || 'NOT RUN'}. Authenticated staging: ${report.authenticatedStaging || 'NOT RUN'}. Security validation: ${report.securityValidation || 'NOT RUN'}. Promotion: ${report.promotion || 'NOT RUN'}. Business UAT approved: no. Production authorised: no. Commit ${head.slice(0, 12) || 'unknown'}. Deployment ${deployment}. Executed ${report.generatedAt || 'unknown'}.`;
+    }
     const metrics = host.querySelector('[data-qa-metrics]');
-    if (metrics) {
+    if (metrics && !stale) {
       metrics.innerHTML = `<div class="ri-metrics ri-metrics--wrap">
         <div class="ri-metric"><span class="ri-metric__label">Passed</span><span class="ri-metric__value">${esc(report.passed ?? 0)}</span></div>
         <div class="ri-metric"><span class="ri-metric__label">Failed</span><span class="ri-metric__value">${esc(report.failed ?? 0)}</span></div>
@@ -36,7 +44,7 @@ export async function hydrateQaDashboard(doc = document) {
       </div>`;
     }
     const results = host.querySelector('[data-qa-results]');
-    if (results) {
+    if (results && !stale) {
       const rows = (report.results || [])
         .map(
           (row) =>
@@ -44,7 +52,7 @@ export async function hydrateQaDashboard(doc = document) {
         )
         .join('');
       const gaps = (report.coverageGaps || [])
-        .map((row) => `<tr><td>${esc(row.id)}</td><td>${esc(row.feature)}</td><td>${esc(row.note)}</td><td>NOT RUN</td></tr>`)
+        .map((row) => `<tr><td>${esc(row.id)}</td><td>${esc(row.feature)}</td><td>${esc(row.note)}</td><td>${esc(row.status || 'NOT RUN')}</td></tr>`)
         .join('');
       results.innerHTML = `<table class="ri-table"><thead><tr><th>Test</th><th>Feature</th><th>Type</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table>
         <h2>Coverage not yet automated</h2>

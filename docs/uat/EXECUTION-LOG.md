@@ -701,3 +701,18 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Staging | Preview **`dpl_XzzTPTjRm52WEvakuYtiJZZARBLb`** smoke **PASS** (13 routes, sign-in shell, including `#/admin/qa`). Alias **`dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW`** at `https://staging-app.forgeniq.com`. Served `app.js?v=1adb6757fac7`, QA report `technicalTests: PASS`, `businessUatApproved: false`, `productionReleaseAuthorised: false`. |
 | Commit | `1adb675` |
 | Production | **NO-GO**. |
+
+## 2026-11-25 — Authenticated staging QA
+
+| Activity | Outcome |
+|---|---|
+| Personas | Saved Clerk sessions A, B and C **VALID**. No credentials stored or printed. |
+| Authenticated browser | `staging-design-lab-authenticated-smoke.mjs` **PASS 19** on `https://staging-app.forgeniq.com`. User C rendered dashboard, six queues, All Findings (**208**), My Tasks, Attention Centre, obligations, impact, risks (**2**), controls (**2**), assurance and the QA dashboard. APIs returned **200**. User B (REVIEWER) showed **50** human-review actions and they were not clicked. User A is COMPLIANCE_MANAGER with `aiReview` and `obligationReview`; the UI matches those grants. Three distinct users, one organisation. |
+| SoD | Offline maker-checker test remains in the release gate. The live User A account is not a restricted maker, so the browser check does not claim that account lacks checker rights. |
+| RLS | Embedded database, app role via `SET LOCAL ROLE` (not a privileged bypass). `acceptance-phase-8-security-rls.mjs --local-db` **PASS**. `acceptance-ri-role-aware-rls-local-db.mjs` **PASS** (68), including Partner UAT cross-tenant denial. |
+| Pre-upload gate | `--mode=promote` **technical PASS**, **authenticated PASS**, **security PASS**. Business UAT remains unapproved. Production remains unauthorised. |
+| Preview | **`dpl_CunZGjj83GgJcwkGwkzRek7evcqh`** unauthenticated smoke **PASS** (13 routes, sign-in shell). |
+| Alias promotion | **BLOCKED**. Clerk sessions belong to `staging-app.forgeniq.com` and cannot authenticate a `vercel.app` preview. The alias stayed on **`dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW`**. |
+| Not implemented | Automatic write chain from obligation approval through impact, risk, control and assurance. Remediation end-to-end. Paid AI. |
+| Commit | `d2c7794` |
+| Production | **NO-GO**. |

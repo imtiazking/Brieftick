@@ -1,14 +1,10 @@
 {
-  "capturedAt": "2026-11-25T00:01:43.158Z",
-  "gitHead": "1adb6757fac7251138ba643c24de02e8a13ddfd4",
-  "buildId": "1adb6757fac7251138ba643c24de02e8a13ddfd4",
-  "vercelScope": "imis-projects-8e15dca0",
-  "vercelProjectName": "forgeniq-platform-staging",
-  "previewDeploymentId": "dpl_XzzTPTjRm52WEvakuYtiJZZARBLb",
-  "previewUrl": "https://forgeniq-platform-staging-ji7jmjyzj-imis-projects-8e15dca0.vercel.app",
-  "deploymentId": "dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW",
-  "deploymentUrl": "https://forgeniq-platform-staging-jdg9m2l3w-imis-projects-8e15dca0.vercel.app",
-  "alias": "https://staging-app.forgeniq.com",
-  "promoted": true,
-  "note": "Preview passed unauthenticated Design Lab browser smoke. vercel promote then built a new production deployment, which is the alias. Not a production tenant."
+  "capturedAt": "2026-11-25T00:38:51.608Z",
+  "status": "BLOCKED",
+  "gitHead": "d2c7794aabd919a78a6f9f1ec78e6ea6df58fd75",
+  "deploymentId": "dpl_CunZGjj83GgJcwkGwkzRek7evcqh",
+  "deploymentUrl": "https://forgeniq-platform-staging-529ohl3ug-imis-projects-8e15dca0.vercel.app",
+  "aliasUntouched": "https://staging-app.forgeniq.com",
+  "liveAliasDeploymentId": "dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW",
+  "note": "Authenticated preview validation is BLOCKED. Clerk sessions are scoped to staging-app.forgeniq.com and were not applied to this preview host. The alias was not moved."
 }

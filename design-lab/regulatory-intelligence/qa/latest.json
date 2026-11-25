@@ -1,13 +1,21 @@
 {
-  "generatedAt": "2026-11-24T23:56:40.759Z",
-  "mode": "release",
+  "generatedAt": "2026-11-25T00:33:25.035Z",
+  "mode": "promote",
+  "gitHead": "d2c7794aabd919a78a6f9f1ec78e6ea6df58fd75",
+  "latestKnownDeployment": {
+    "id": "dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW",
+    "url": "https://forgeniq-platform-staging-jdg9m2l3w-imis-projects-8e15dca0.vercel.app",
+    "alias": "https://staging-app.forgeniq.com",
+    "capturedAt": "2026-11-25T00:01:43.158Z"
+  },
   "technicalTests": "PASS",
+  "authenticatedStaging": "PASS",
+  "securityValidation": "PASS",
+  "promotion": "PASS",
   "businessUatApproved": false,
   "productionReleaseAuthorised": false,
-  "changedFiles": [
-    "docs/eval/STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json"
-  ],
-  "catalogueSize": 24,
+  "changedFiles": [],
+  "catalogueSize": 29,
   "coverageGaps": [
     {
       "id": "GAP-PAID-AI",
@@ -20,15 +28,22 @@
       "id": "GAP-REMEDIATION-E2E",
       "feature": "Remediation end-to-end",
       "area": "Regulatory Intelligence",
-      "status": "NOT RUN",
-      "note": "No offline end-to-end remediation scenario is wired into this gate."
+      "status": "NOT IMPLEMENTED",
+      "note": "No automatic remediation scenario is wired into this gate."
+    },
+    {
+      "id": "GAP-DOWNSTREAM-WRITE",
+      "feature": "Obligation approval through assurance write chain",
+      "area": "Regulatory Intelligence",
+      "status": "NOT IMPLEMENTED",
+      "note": "Authenticated reads of these registers are covered. An automatic scenario that approves an obligation and writes impact, risk, control and assurance records is not implemented."
     },
     {
       "id": "GAP-SECOND-TENANT",
       "feature": "Live cross-tenant denial on a second organisation",
       "area": "Platform",
       "status": "NOT RUN",
-      "note": "Offline tenant-isolation checks run. A second hosted test tenant is not configured, so live cross-tenant denial is not claimed."
+      "note": "Cross-tenant denial runs on the isolated embedded database as two test organisations. A second hosted Clerk organisation is not used for live negative tests."
     },
     {
       "id": "GAP-MARKET-INTELLIGENCE",
@@ -38,7 +53,7 @@
       "note": "Market Intelligence tests live in the Brieftick workspace and are not executed by this orchestrator."
     }
   ],
-  "passed": 17,
+  "passed": 21,
   "failed": 0,
   "blocked": 0,
   "results": [
@@ -96,7 +111,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 146,
+      "ms": 140,
       "output": "acceptance-ri-design-lab-release-gate: PASS { missingNamed: true, duplicateDeclaration: true }\n\n"
     },
     {
@@ -141,7 +156,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 128,
+      "ms": 106,
       "output": "PASS six workflow queue constants\nPASS derive unreviewed → AI_FINDINGS\nPASS derive rejected\nPASS derive verified obligation\nPASS derive not applicable disposition\nPASS derive exception needs review\nPASS count workflow ALL\nPASS API accepts workflow queue\nPASS service derives workflowQueue\nPASS dashboard seven cards\nPASS five decision buttons\nPASS isWorkflowQueue ALL\nacceptance-ri-six-queue-workflow: PASS\n\n"
     },
     {
@@ -162,7 +177,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 110,
+      "ms": 119,
       "output": "PASS route accepts page and pageSize\nPASS service paginates after queue filter\nPASS pagination metadata exposed\nPASS stable sort keys on rows\nPASS UI has prev/next and page size\nPASS server-side filter reload\nPASS page 1 length\nPASS page 2 length\nPASS no duplicate across pages\nPASS allowed page sizes\nPASS stable sort is deterministic\nPASS search filter\nPASS verification filter\nacceptance-ri-triage-pagination: PASS\n\n"
     },
     {
@@ -186,7 +201,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 106,
+      "ms": 104,
       "output": "PASS  pagination page size 25\nPASS  OPEN filter\nPASS  UNASSIGNED filter\nPASS  metrics mine open\nPASS  taskMatchesViewFilter AWAITING_REVIEW\nPASS  service exports buildMyTasks\nPASS  no independent task table\nPASS  API route uses buildMyTasks\nPASS  Design Lab My Tasks screen\nPASS  Design Lab does not load full triage inventory in browser\nPASS  Nav renamed My Tasks\n\nacceptance-ri-my-tasks: PASS (11 checks)\n\n"
     },
     {
@@ -209,7 +224,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 107,
+      "ms": 95,
       "output": "PASS reassessment migration defines table\nPASS reassessment RPC exists\nPASS submitFindingReassessment exported\nPASS triage exposes presentation counts\nPASS UI blocks reassess when obligation approved\nPASS presentation counts awaiting first review\nacceptance-ri-finding-reassessment: PASS\n\n"
     },
     {
@@ -233,7 +248,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 113,
+      "ms": 93,
       "output": "PASS: UC-RI-005 without parent change is refused before execution\nPASS: parent change not visible in organisation is refused\nPASS: parent change from another publication is refused\nPASS: parent change of same publication is accepted\nPASS: no applicability assessment → refused\nPASS: applicability DRAFT → refused\nPASS: applicability IN_REVIEW → refused\nPASS: approved NOT_APPLICABLE → refused\nPASS: approved APPLICABLE → allowed\nPASS: approved POSSIBLY_APPLICABLE → allowed\nPASS: verified citation + statement + change → materialisable\nPASS: PARTIAL citation → materialisable\nPASS: no citation row (pre-14-Nov Anthropic runs) → no_citation_record\nPASS: INVALID citation → citation_not_verified\nPASS: UNVERIFIED citation → citation_not_verified\nPASS: missing statement → candidate_missing_statement\nPASS: no parent change (18-Nov AI Dev run) → no_parent_change\nPASS: parent change in other org → parent_change_not_in_organisation\nPASS: AI DRAFT → OPEN directly is blocked\nPASS: AI DRAFT → COMPLETE is blocked\nPASS: AI DRAFT → IN_REVIEW by acceptor allowed\nPASS: AI IN_REVIEW → OPEN without review role blocked\nPASS: AI IN_REVIEW → OPEN by AI run requester blocked (maker-checker)\nPASS: AI IN_REVIEW → OPEN by AI output acceptor blocked (maker-checker)\nPASS: AI IN_REVIEW → OPEN by submitter blocked (maker-checker)\nPASS: AI IN_REVIEW → OPEN by independent reviewer allowed\nPASS: AI IN_REVIEW → DRAFT (return) allowed\nPASS: AI OPEN → IN_PROGRESS uses existing register lifecycle\n\npublication-to-obligat"
     },
     {
@@ -254,7 +269,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 122,
+      "ms": 98,
       "output": "PASS: allows submit from DRAFT\nPASS: allows submit from IN_PROGRESS\nPASS: blocks submit from IN_REVIEW\nPASS: blocks submit from APPROVED\nPASS: allows approve from IN_REVIEW\nPASS: blocks approve from APPROVED\nPASS: blocks approve from DRAFT\nPASS: blocks reject from APPROVED\nPASS: workflow event recorded after successful status update\nPASS: optimistic status guard on workflow update\nPASS: UI hides approve/reject unless IN_REVIEW\nPASS: SoD unchanged on approve\n\nImpact governance transitions: PASS\n\n\n"
     },
     {
@@ -275,7 +290,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 122,
+      "ms": 118,
       "output": "PASS: server_create — assurance provenance + create audit event\nPASS: server_patch — outcome patch audit\nPASS: partition — partitionAssuranceReviewsForLabScope\nPASS: parse — parseLabAssuranceCreateBody\nPASS: post_detail — create response includes relationships\nPASS: governance — authorisedUatAssuranceReviews\nPASS: workflow_entity — assurance audit fetch\nPASS: detail_api — detail + patch routes\nPASS: patch_auth_parity — assertLabAssuranceWritesEnabled + parseUuid on PATCH\nPASS: post_writes_gate — assurance POST write gate\nPASS: client_patch — session preflight + patch error mapping\nPASS: dashboard — assurance operational isolation\nPASS: link_prov — cross-provenance link rejection\nPASS: link_audit_semantics — ASSURANCE_CONTROL_LINKED on link\nPASS: create_audit_semantics — ASSURANCE_REVIEW_CREATED only on insert path\nPASS: workflow_types — link + result event types registered\nPASS: legacy_label — append-only audit display annotation\nPASS: ui_mode — UAT create mode UI\nPASS: catalogue — assurance detail hydration\nPASS: app_wiring — app handlers wired\nPASS: register_ui — operational vs UAT registers\nPASS: migration — assurance_reviews.metadata column\n\nacceptance-phase-8-step-85w-assurance-uat: PASS\n\n\n"
     },
     {
@@ -294,7 +309,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 212,
+      "ms": 88,
       "output": "PASS: management report defaults to operational population\nPASS: export route: requireRiContext('ri:read')\nPASS: export route: 'Content-Type': 'application/pdf'\nPASS: export route: 'Content-Disposition'\nPASS: export route: parseReportingPeriod\nPASS: export route: buildBoardReportPdfLines\nPASS: export route: renderSimpleTextPdf\nPASS: export route: X-Forgeniq-Reporting-Period\nPASS: export route: X-Forgeniq-Data-Population\nPASS: export route: organisationName\nPASS: PDF magic header\nPASS: organisation name, tenant id and period in PDF body\nPASS: operational scope in PDF\nPASS: no question-mark mojibake in title\nPASS: activity-in-period figures in PDF\nPASS: no cross-tenant id injected in fixture\nPASS: no invented compliance score disclaimer\n\n"
     },
     {
@@ -315,7 +330,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 253,
+      "ms": 97,
       "output": "PASS: schema workflow_events.occurred_at\nPASS: schema workflow_events has no created_at\nPASS: governance service uses occurred_at\nPASS: governance service has no created_at\nPASS: governance page uses occurred_at\nPASS: governance page has no created_at\n\nGovernance workflow_events acceptance: PASS\n\n"
     },
     {
@@ -336,7 +351,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 121,
+      "ms": 99,
       "output": "PASS: identity migration present\nPASS: table organisations defined\nPASS: RLS enabled on organisations\nPASS: table organisation_memberships defined\nPASS: RLS enabled on organisation_memberships\nPASS: no USING (true) policies\nPASS: platform_role enum\nPASS: role OWNER in schema\nPASS: role ADMIN in schema\nPASS: role COMPLIANCE_MANAGER in schema\nPASS: role ANALYST in schema\nPASS: role REVIEWER in schema\nPASS: role VIEWER in schema\nPASS: unique organisation membership constraint\nPASS: UUID defaults present\nPASS: no Supabase Auth schema\nPASS: roles contract clean\nPASS: browser client has no service role\nPASS: admin client server-only\nPASS: ORG-A cannot access ORG-B\nPASS: invalid organisation id rejected\nPASS: browser-supplied role ignored\nPASS: ADMIN cannot become OWNER\nPASS: ADMIN cannot assign OWNER role\nPASS: VIEWER cannot perform privileged ADMIN actions\nPASS: unknown client role rejected\nPASS: unknown user has no tenant access\nPASS: Clerk-only session helpers\nPASS: user Supabase path avoids service role\nPASS: /ri avoids Design Lab / Ask RI imports\nPASS: 43 migration file(s)\nPASS: regulatory-source baseline present\n\nPhase 2 tenant isolation acceptance: PASS\n\n"
     },
     {
@@ -360,7 +375,7 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 308,
+      "ms": 283,
       "output": "PASS: REVIEWER obligation:review = true\nPASS: REVIEWER ai:review = true\nPASS: REVIEWER obligation:read = true\nPASS: REVIEWER obligation:write = false\nPASS: REVIEWER ai:request = false\nPASS: REVIEWER change:write = false\nPASS: REVIEWER applicability:write = false\nPASS: REVIEWER impact:write = false\nPASS: REVIEWER impact:approve = false\nPASS: REVIEWER risk:write = false\nPASS: REVIEWER control:write = false\nPASS: REVIEWER ai:governance = false\nPASS: VIEWER cannot review obligations\nPASS: ANALYST keeps obligation:write\nPASS: COMPLIANCE_MANAGER keeps obligation:review\nPASS: REVIEWER capability obligationReview\nPASS: REVIEWER capability obligations (write)\nPASS: REVIEWER capability aiRequest\nPASS: REVIEWER capability changeManagement\nPASS: REVIEWER capability risks\nPASS: ANALYST capability obligations (write) unchanged\nPASS: VIEWER refused by review gate\nPASS: switch off → REVIEWER obligationReview false\nPASS: switch off → review gate refuses REVIEWER\nPASS: approve submitted AI obligation is a review decision\nPASS: return submitted AI obligation is a review decision\nPASS: manual obligation is not\nPASS: DRAFT → IN_REVIEW (submission) is not\nPASS: OPEN → CLOSED is not\nPASS: IN_REVIEW → CLOSED is not\nPASS: status plus another field is not\nPASS: non-status field is not\nPASS: independent REVIEWER approves → OPEN in existing register\nPASS: approval audited with approver, from and to status\nPASS: independent REVIEWER returns → DRAFT\nPASS: REVIEWER cannot edit statement\nPASS: REVIEWER cann"
     },
     {
@@ -379,8 +394,116 @@
       ],
       "mandatory": true,
       "status": "PASS",
-      "ms": 4624,
-      "output": "PASS Dashboard 2 material changes require attention\nPASS Publications Regulatory Library\nPASS AI Findings AI Findings\nPASS Verified Obligations Verified Obligations\nPASS Non-Obligations Non-Obligations\nPASS Rejected Findings Rejected Findings\nPASS Exceptions Exceptions\nPASS Not Applicable Not Applicable\nPASS All Findings All Findings\nPASS My Tasks My Tasks\nPASS Attention Centre Exceptions, escalations and deadlines\nPASS Quality assurance Quality assurance\nPASS Invalid route Page not found\nPASS Recovery screen\ndesign-lab-browser-smoke: PASS 14 routes @ http://127.0.0.1:58625\n\n"
+      "ms": 4701,
+      "output": "PASS Dashboard 2 material changes require attention\nPASS Publications Regulatory Library\nPASS AI Findings AI Findings\nPASS Verified Obligations Verified Obligations\nPASS Non-Obligations Non-Obligations\nPASS Rejected Findings Rejected Findings\nPASS Exceptions Exceptions\nPASS Not Applicable Not Applicable\nPASS All Findings All Findings\nPASS My Tasks My Tasks\nPASS Attention Centre Exceptions, escalations and deadlines\nPASS Quality assurance Quality assurance\nPASS Invalid route Page not found\nPASS Recovery screen\ndesign-lab-browser-smoke: PASS 14 routes @ http://127.0.0.1:64692\n\n"
+    },
+    {
+      "id": "RI-RISK-CONTROL-UI",
+      "area": "Regulatory Intelligence",
+      "feature": "Risk and control link contract",
+      "type": "acceptance",
+      "criticality": "high",
+      "gate": "release",
+      "route": "#/risks",
+      "apis": [
+        "/api/ri-lab/risks",
+        "/api/ri-lab/controls",
+        "/api/ri-lab/links"
+      ],
+      "entities": [
+        "risks",
+        "controls"
+      ],
+      "command": "node scripts/acceptance-phase-8-step-85w-risk-control-link-ui.mjs",
+      "paths": [
+        "design-lab/regulatory-intelligence/js/platform/connected-risk-control-panels.js"
+      ],
+      "mandatory": true,
+      "status": "PASS",
+      "ms": 99,
+      "output": "PASS: risk_link_panel — Link control panel on risk detail\nPASS: risk_view — Connected risk detail wires link panel\nPASS: delegation — risk_control uses control UUID target\nPASS: refresh — Linked controls refresh after risk_control\nPASS: api — Backend risk_control link type registered\n\nacceptance-phase-8-step-85w-risk-control-link-ui: PASS\n\n\n"
+    },
+    {
+      "id": "AUTH-STAGING-BROWSER",
+      "area": "Regulatory Intelligence",
+      "feature": "Authenticated Design Lab routes for Users A, B and C",
+      "type": "browser",
+      "criticality": "critical",
+      "gate": "authenticated",
+      "route": "https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/index.html#/dashboard",
+      "apis": [
+        "/api/ri-lab/session",
+        "/api/ri-lab/triage",
+        "/api/ri-lab/obligations",
+        "/api/ri-lab/impact-assessments",
+        "/api/ri-lab/risks",
+        "/api/ri-lab/controls",
+        "/api/ri-lab/assurance-reviews"
+      ],
+      "entities": [
+        "regulatory_obligations",
+        "impact_assessments",
+        "risks",
+        "controls",
+        "assurance_reviews"
+      ],
+      "command": "node scripts/eval/staging-design-lab-authenticated-smoke.mjs",
+      "paths": [
+        "design-lab/regulatory-intelligence/"
+      ],
+      "requires": "clerk-session",
+      "mandatory": true,
+      "status": "PASS",
+      "ms": 48844,
+      "output": "authenticated-smoke preflight OK — A, B, C\nPASS C Dashboard 275 publications in staging catalogue api 200 count -\nPASS C AI Findings AI Findings api 200 count 96\nPASS C Verified Obligations Verified Obligations api 200 count 12\nPASS C Non-Obligations Non-Obligations api 200 count 23\nPASS C Rejected Findings Rejected Findings api 200 count 57\nPASS C Exceptions Exceptions api 200 count 16\nPASS C Not Applicable Not Applicable api 200 count 4\nPASS C All Findings All Findings api 200 count 208\nPASS C My Tasks My Tasks api 200 count 0\nPASS C Attention Centre Exceptions, escalations and deadlines api 200 count -\nPASS C Obligations Obligations api 200 count 0\nPASS C Impact assessments Impact Assessments api 200 count 0\nPASS C Risks Risks api 200 count 2\nPASS C Controls Controls api 200 count 2\nPASS C Assurance Assurance api 200 count 0\nPASS C Quality assurance Quality assurance api 200 count -\nPASS C Checker pending approvals obligationReview true api 200 count 0\nPASS B Reviewer human-review actions role REVIEWER aiReview true buttons 50 api 200\nPASS A User A actions match granted capabilities role COMPLIANCE_MANAGER aiReview true obligationReview true buttons 50 distinctUsers true. Self-approval denial stays in the offline maker-checker test.\nauthenticated-smoke: PASS 19 checks @ https://staging-app.forgeniq.com\n\n"
+    },
+    {
+      "id": "SEC-RLS-EMBEDDED",
+      "area": "Platform",
+      "feature": "RLS on an isolated embedded database",
+      "type": "security",
+      "criticality": "critical",
+      "gate": "security",
+      "route": null,
+      "apis": [],
+      "entities": [
+        "organisations",
+        "organisation_memberships",
+        "operational_alerts"
+      ],
+      "command": "node scripts/acceptance-phase-8-security-rls.mjs --local-db",
+      "paths": [
+        "apps/platform/supabase/migrations/"
+      ],
+      "requires": "local-db",
+      "mandatory": true,
+      "status": "PASS",
+      "ms": 14187,
+      "output": "PASS: migration file 20261025100000_phase8_security_hardening.sql\nPASS: platform_operators table defined\nPASS: is_platform_operator() defined\nPASS: no org-role-based ingestion ops privilege\nPASS: operational_alerts_update_platform_operator policy\nPASS: notification_events_insert_tenant_ai policy\nPASS: SECURITY DEFINER functions use explicit search_path\nPASS: drops organisations_insert_authenticated\nPASS: global catalogue policies untouched in migration text\n\n--- Embedded Postgres RLS verification ---\n\nPASS: non-member: organisations count 0\nPASS: non-member: cannot update operational_alerts\nPASS: non-member: cannot insert ingestion_operational_events\nPASS: customer COMPLIANCE_MANAGER: cannot update operational_alerts\nPASS: customer COMPLIANCE_MANAGER: cannot read ingestion_runs\nPASS: tenant OWNER: organisation visible (tenant RLS)\nPASS: platform operator: can update operational_alerts\nPASS: platform operator: can insert ingestion_operational_events\nPASS: OWNER without platform operator: cannot update operational_alerts\nPASS: VIEWER: cannot emit tenant AI notifications (REVIEWER or above required)\nPASS: VIEWER: cannot insert arbitrary global notification\nPASS: VIEWER: cannot read regulatory_source_operations (not platform operator)\nPASS: VIEWER: global regulators catalogue readable\n\nPhase 8 security RLS acceptance: PASS\nNOTE: After migration on lhgzdicffkhaaykzthep, run bootstrap-platform-operator.mjs for RI admin Clerk id.\n\n"
+    },
+    {
+      "id": "SEC-RLS-CROSS-TENANT",
+      "area": "Platform",
+      "feature": "Cross-tenant denial between two isolated test organisations",
+      "type": "security",
+      "criticality": "critical",
+      "gate": "security",
+      "route": null,
+      "apis": [],
+      "entities": [
+        "regulatory_obligations",
+        "risks",
+        "assurance_reviews"
+      ],
+      "command": "node scripts/acceptance-ri-role-aware-rls-local-db.mjs",
+      "paths": [
+        "apps/platform/supabase/migrations/"
+      ],
+      "requires": "local-db",
+      "mandatory": true,
+      "status": "PASS",
+      "ms": 39861,
+      "output": "les\nPASS: workflow_events has no UPDATE/DELETE policy (append-only via API)\nPASS: new functions pin search_path to empty\nPASS: TRUNCATE (which bypasses RLS) revoked from anon/authenticated on every public table\nPASS: role matrix: 285 insert/update/delete checks across 19 tables × 5 roles match lib/ri/permissions.ts\nPASS: role matrix probes left no trace (all rolled back)\nPASS: audit: VIEWER may log own Ask RI query event\nPASS: audit: VIEWER may log own evidence download event\nPASS: audit: VIEWER cannot log a compliance event (CHANGE_CREATED)\nPASS: audit: VIEWER cannot log an event as another user\nPASS: audit: event without an actor refused\nPASS: audit: REVIEWER may log own obligation review decision\nPASS: audit: REVIEWER cannot log RISK_LINKED\nPASS: audit: ANALYST may log own compliance event\nPASS: audit: ANALYST cannot attribute an event to the Compliance Manager\nPASS: audit: AI Development analyst cannot write Partner UAT events\nPASS: audit: VIEWER cannot modify or delete existing events\nPASS: audit: REVIEWER cannot modify or delete existing events\nPASS: audit: ANALYST cannot modify or delete existing events\nPASS: audit: COMPLIANCE_MANAGER cannot modify or delete existing events\nPASS: audit: ADMIN cannot modify or delete existing events\nPASS: audit: other-tenant OWNER cannot modify or delete existing events\nPASS: Ask RI log: members log their own queries only\nPASS: AI notification events: REVIEWER may emit, VIEWER may not\nPASS: storage: VIEWER cannot upload evidence files\nP"
     },
     {
       "id": "RI-MIGRATION-SCAN",
