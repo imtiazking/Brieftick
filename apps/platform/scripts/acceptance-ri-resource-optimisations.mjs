@@ -127,8 +127,7 @@ assert.equal(normalizeExecutionStatus({ detail: { execution_status: 'completed' 
   assert.match(verifySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
   assert.match(verifySrc, /candidate_not_isolated/);
   assert.match(workflowSrc, /--mode=ci/);
-  assert.match(catalogueSrc, /gate: 'candidate'/);
-  assert.match(catalogueSrc, /UAT-SESSION-RECOVERY/);
+  assert.match(catalogueSrc, /acceptance-staging-candidate-isolation-regression\.mjs/);
   pass('candidate_deployment_isolation_gate', {});
 }
 

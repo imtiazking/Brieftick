@@ -303,7 +303,7 @@ export const QA_CATALOGUE = [
     route: null,
     apis: [],
     entities: [],
-    command: 'node scripts/acceptance-ri-resource-optimisations.mjs',
+    command: 'node scripts/acceptance-staging-candidate-isolation-regression.mjs',
     paths: ['scripts/staging/verify-candidate-deployment.mjs', 'scripts/staging/phase85h-deploy-staging-platform.mjs'],
   },
   {
