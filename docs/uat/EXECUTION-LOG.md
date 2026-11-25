@@ -754,6 +754,15 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Deployment isolation | `verify-candidate-deployment.mjs`: official and candidate both **`dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8`** (`sameDeployment: true`). Candidate-first **promotion blocked** until next consolidated `phase85h` deploy assigns a distinct candidate build (defer while Vercel Hobby CPU quota exceeded). |
 | Production | **NO-GO**. No production deploy. Auth security unchanged. |
 
+## 2026-11-25 — Push `bab7985` to GitHub (`feature/ri-classification-triage`)
+
+| Topic | Outcome |
+|---|---|
+| Remote | `origin` → `imtiazking/Brieftick`; `1b4ad6c..bab7985` pushed; tracking set. |
+| Secrets | Push contains only committed repo files; local `uat-agent.env` and Playwright profiles untouched. |
+| Vercel | No `phase85h` / staging promote. Vercel GitHub app posted **Preview Comments** check only; **forgeniq-platform-staging** is not aliased from this push. |
+| CI | Workflow [`forgeniq-qa`](https://github.com/imtiazking/Brieftick/actions/runs/45616831513) **failed**: `--mode=release` treated **AUTH_BLOCKED** session recovery as a failed gate (`technicalTests !== 'PASS'`). Fixed by `--mode=ci` (offline only) vs `--mode=promote` (candidate release). |
+
 ## 2026-11-25 — UAT automation commit (auth + QA; no promote)
 
 | Topic | Outcome |

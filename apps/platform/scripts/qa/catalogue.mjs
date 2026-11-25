@@ -10,7 +10,7 @@ export const QA_CATALOGUE = [
     feature: 'Design Lab module graph',
     type: 'static',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: '/design-lab/regulatory-intelligence/index.html',
     apis: [],
     entities: [],
@@ -23,7 +23,7 @@ export const QA_CATALOGUE = [
     feature: 'no-undef and no-redeclare',
     type: 'static',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: null,
     apis: [],
     entities: [],
@@ -36,7 +36,7 @@ export const QA_CATALOGUE = [
     feature: 'QA self-check for missing exports and duplicate declarations',
     type: 'acceptance',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: null,
     apis: [],
     entities: [],
@@ -49,7 +49,7 @@ export const QA_CATALOGUE = [
     feature: 'Single resolvedSegment declaration',
     type: 'static',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: '#/triage/ai-findings',
     apis: ['/api/ri-lab/triage'],
     entities: [],
@@ -62,7 +62,7 @@ export const QA_CATALOGUE = [
     feature: 'Six triage queues',
     type: 'acceptance',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: '#/triage/all',
     apis: ['/api/ri-lab/triage'],
     entities: ['ai_analysis_finding_decisions'],
@@ -75,7 +75,7 @@ export const QA_CATALOGUE = [
     feature: 'Findings pagination',
     type: 'acceptance',
     criticality: 'high',
-    gate: 'release',
+    gate: 'ci',
     route: '#/triage/all',
     apis: ['/api/ri-lab/triage'],
     entities: [],
@@ -88,7 +88,7 @@ export const QA_CATALOGUE = [
     feature: 'My Tasks',
     type: 'acceptance',
     criticality: 'high',
-    gate: 'release',
+    gate: 'ci',
     route: '#/work',
     apis: ['/api/ri-lab/my-tasks'],
     entities: ['regulatory_obligations'],
@@ -101,7 +101,7 @@ export const QA_CATALOGUE = [
     feature: 'Finding reassessment',
     type: 'acceptance',
     criticality: 'high',
-    gate: 'release',
+    gate: 'ci',
     route: '#/triage/ai-findings',
     apis: ['/api/ri-lab/triage'],
     entities: ['ai_analysis_finding_reassessments'],
@@ -114,7 +114,7 @@ export const QA_CATALOGUE = [
     feature: 'Publication to obligation chain',
     type: 'acceptance',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: '#/obligation',
     apis: ['/api/ri-lab/obligations'],
     entities: ['regulatory_obligations'],
@@ -127,7 +127,7 @@ export const QA_CATALOGUE = [
     feature: 'Impact assessment approval gates',
     type: 'acceptance',
     criticality: 'high',
-    gate: 'release',
+    gate: 'ci',
     route: '#/assessments',
     apis: [],
     entities: ['impact_assessments'],
@@ -140,7 +140,7 @@ export const QA_CATALOGUE = [
     feature: 'Assurance create and audit contract',
     type: 'acceptance',
     criticality: 'high',
-    gate: 'release',
+    gate: 'ci',
     route: '#/assurance',
     apis: [],
     entities: ['assurance_reviews'],
@@ -153,7 +153,7 @@ export const QA_CATALOGUE = [
     feature: 'Board report PDF contract',
     type: 'acceptance',
     criticality: 'medium',
-    gate: 'release',
+    gate: 'ci',
     route: '#/reports/board',
     apis: [],
     entities: [],
@@ -166,7 +166,7 @@ export const QA_CATALOGUE = [
     feature: 'Governance audit event timestamps',
     type: 'acceptance',
     criticality: 'high',
-    gate: 'release',
+    gate: 'ci',
     route: '#/governance',
     apis: [],
     entities: ['workflow_events'],
@@ -179,7 +179,7 @@ export const QA_CATALOGUE = [
     feature: 'Tenant isolation SQL and guards',
     type: 'security',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: null,
     apis: [],
     entities: ['organisation_memberships'],
@@ -192,7 +192,7 @@ export const QA_CATALOGUE = [
     feature: 'Maker-checker segregation and tenant denial',
     type: 'security',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: '#/obligation',
     apis: ['/api/ri-lab/obligations'],
     entities: ['regulatory_obligations'],
@@ -205,7 +205,7 @@ export const QA_CATALOGUE = [
     feature: 'Rendered Design Lab routes',
     type: 'browser',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: '#/dashboard',
     apis: [],
     entities: [],
@@ -218,7 +218,7 @@ export const QA_CATALOGUE = [
     feature: 'Risk and control link contract',
     type: 'acceptance',
     criticality: 'high',
-    gate: 'release',
+    gate: 'ci',
     route: '#/risks',
     apis: ['/api/ri-lab/risks', '/api/ri-lab/controls', '/api/ri-lab/links'],
     entities: ['risks', 'controls'],
@@ -245,7 +245,7 @@ export const QA_CATALOGUE = [
     feature: 'RLS on an isolated embedded database',
     type: 'security',
     criticality: 'critical',
-    gate: 'security',
+    gate: 'ci',
     route: null,
     apis: [],
     entities: ['organisations', 'organisation_memberships', 'operational_alerts'],
@@ -259,7 +259,7 @@ export const QA_CATALOGUE = [
     feature: 'Cross-tenant denial between two isolated test organisations',
     type: 'security',
     criticality: 'critical',
-    gate: 'security',
+    gate: 'ci',
     route: null,
     apis: [],
     entities: ['regulatory_obligations', 'risks', 'assurance_reviews'],
@@ -273,12 +273,25 @@ export const QA_CATALOGUE = [
     feature: 'Destructive migration scan',
     type: 'static',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: null,
     apis: [],
     entities: [],
     command: 'migration-scan',
     paths: ['apps/platform/supabase/migrations/'],
+  },
+  {
+    id: 'STAGING-CANDIDATE-ISOLATION-REGRESSION',
+    area: 'Platform',
+    feature: 'Candidate deployment isolation enforced in phase85h',
+    type: 'acceptance',
+    criticality: 'critical',
+    gate: 'ci',
+    route: null,
+    apis: [],
+    entities: [],
+    command: 'node scripts/acceptance-ri-resource-optimisations.mjs',
+    paths: ['scripts/staging/verify-candidate-deployment.mjs', 'scripts/staging/phase85h-deploy-staging-platform.mjs'],
   },
   {
     id: 'RI-BROWSER-HOSTED',
@@ -313,7 +326,7 @@ export const QA_CATALOGUE = [
     feature: 'Recover and validate saved Playwright session profiles',
     type: 'uat',
     criticality: 'high',
-    gate: 'release',
+    gate: 'candidate',
     route: null,
     apis: [],
     entities: [],
@@ -322,12 +335,27 @@ export const QA_CATALOGUE = [
     requires: 'clerk-session',
   },
   {
+    id: 'STAGING-CANDIDATE-ISOLATION-LIVE',
+    area: 'Platform',
+    feature: 'Candidate and official deployment identity (read-only inspect)',
+    type: 'infra',
+    criticality: 'critical',
+    gate: 'candidate',
+    route: null,
+    apis: [],
+    entities: [],
+    command: 'node scripts/staging/verify-candidate-deployment.mjs',
+    paths: ['scripts/staging/verify-candidate-deployment.mjs'],
+    requires: 'network',
+    note: 'Mandatory before promotion when FORGENIQ_REQUIRE_CANDIDATE_ISOLATION=1 in phase85h; orchestrator records state without forcing distinct ids locally.',
+  },
+  {
     id: 'CLERK-HOST-AUTH',
     area: 'Platform',
     feature: 'Clerk configuration on staging and candidate hostnames',
     type: 'infra',
     criticality: 'critical',
-    gate: 'release',
+    gate: 'ci',
     route: null,
     apis: [],
     entities: [],
@@ -424,17 +452,28 @@ export const QA_CATALOGUE = [
   },
 ];
 
+export const CI_GATES = ['ci'];
+export const CANDIDATE_RELEASE_GATES = ['ci', 'candidate', 'authenticated', 'security'];
+
+export function normalizeQaMode(mode) {
+  return mode === 'release' ? 'ci' : mode;
+}
+
 export function selectCatalogue(changedPaths, mode) {
-  if (mode === 'promote') {
-    return QA_CATALOGUE.filter((row) => row.gate === 'release' || row.gate === 'authenticated' || row.gate === 'security');
+  const normalized = normalizeQaMode(mode);
+  if (normalized === 'ci') {
+    return QA_CATALOGUE.filter((row) => row.gate === 'ci');
   }
-  if (mode === 'release' || mode === 'post-deploy') {
-    return QA_CATALOGUE.filter((row) => row.gate === mode || (mode === 'release' && row.gate === 'release'));
+  if (normalized === 'promote') {
+    return QA_CATALOGUE.filter((row) => CANDIDATE_RELEASE_GATES.includes(row.gate));
+  }
+  if (normalized === 'post-deploy') {
+    return QA_CATALOGUE.filter((row) => row.gate === 'post-deploy');
   }
   const paths = changedPaths.length ? changedPaths : ['design-lab/regulatory-intelligence/js/'];
   const selected = QA_CATALOGUE.filter(
     (row) =>
-      row.gate === 'release' &&
+      row.gate === 'ci' &&
       row.paths.some((prefix) => paths.some((file) => file.replace(/\\/g, '/').includes(prefix.replace(/\/$/, '')))),
   );
   return selected.length ? selected : QA_CATALOGUE.filter((row) => row.id === 'RI-JS-GRAPH');

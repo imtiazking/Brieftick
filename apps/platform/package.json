@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start --port 3001",
     "lint": "next lint",
-    "qa": "node ./scripts/qa/orchestrator.mjs --mode=release",
+    "qa": "node ./scripts/qa/orchestrator.mjs --mode=ci",
     "qa:promote": "node ./scripts/qa/orchestrator.mjs --mode=promote",
     "qa:change": "node ./scripts/qa/orchestrator.mjs --mode=change",
     "qa:self-test": "node ./scripts/qa/orchestrator.mjs --mode=self-test",

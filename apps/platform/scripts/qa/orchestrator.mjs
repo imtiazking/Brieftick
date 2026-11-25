@@ -3,14 +3,14 @@
  * FORGENIQ QA orchestrator. Runs existing scripts. A failed assertion is FAIL.
  * Missing credentials are AUTH_BLOCKED or BLOCKED, never a pass.
  *
- *   node scripts/qa/orchestrator.mjs --mode change|release|promote|post-deploy|self-test
+ *   node scripts/qa/orchestrator.mjs --mode change|ci|release|promote|post-deploy|self-test
  */
 import { spawnSync, execSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { QA_CATALOGUE, selectCatalogue } from './catalogue.mjs';
+import { QA_CATALOGUE, selectCatalogue, normalizeQaMode } from './catalogue.mjs';
 import { validateDesignLabJsBindings } from '../validate-design-lab-js-deps.mjs';
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -19,7 +19,8 @@ const labJs = join(repoRoot, 'design-lab', 'regulatory-intelligence', 'js');
 const evidenceDir = join(repoRoot, 'docs', 'uat', 'qa');
 const latestLab = join(repoRoot, 'design-lab', 'regulatory-intelligence', 'qa', 'latest.json');
 
-const mode = (process.argv.find((a) => a.startsWith('--mode=')) || '--mode=change').slice('--mode='.length);
+const rawMode = (process.argv.find((a) => a.startsWith('--mode=')) || '--mode=change').slice('--mode='.length);
+const mode = normalizeQaMode(rawMode);
 
 export function decideRelease(results) {
   if (results.some((r) => r.status === 'FAIL')) return 'FAIL';
@@ -82,6 +83,21 @@ function scanMigrations(files) {
     }
   }
   return problems;
+}
+
+function rowMandatory(row, qaMode) {
+  if (qaMode === 'ci') {
+    if (row.requires === 'local-db') return process.env.FORGENIQ_QA_REQUIRE_DB === '1';
+    return true;
+  }
+  if (qaMode === 'promote') {
+    if (row.gate === 'ci') {
+      if (row.requires === 'local-db') return true;
+      return true;
+    }
+    if (row.gate === 'candidate' || row.gate === 'authenticated' || row.gate === 'security') return true;
+  }
+  return false;
 }
 
 function countResolvedSegment() {
@@ -208,7 +224,7 @@ if (mode === 'promote') process.env.FORGENIQ_QA_REQUIRE_DB = '1';
 const files = changedFiles();
 const selected = mode === 'post-deploy'
   ? QA_CATALOGUE.filter((row) => row.id === 'RI-BROWSER-HOSTED')
-  : selectCatalogue(files, mode === 'release' || mode === 'promote' ? mode : 'change');
+  : selectCatalogue(files, mode === 'ci' || mode === 'promote' ? mode : rawMode === 'release' ? 'release' : 'change');
 
 const results = [];
 for (const row of selected) {
@@ -222,9 +238,7 @@ for (const row of selected) {
     continue;
   }
   const outcome = executeRow(row, files);
-  const mandatory = row.gate === 'release'
-    ? !row.requires
-    : mode === 'promote' && (row.gate === 'authenticated' || row.gate === 'security');
+  const mandatory = rowMandatory(row, mode);
   results.push({ ...row, mandatory, ...outcome });
   console.log(`${outcome.status}  ${row.id}  ${row.feature}`);
 }
@@ -243,16 +257,23 @@ function verdictFor(gate) {
   return decideRelease(rows);
 }
 
-const technicalTests = verdictFor('release');
+const offlineTests = verdictFor('ci');
+const candidateRelease = verdictFor('candidate');
 const authenticatedStaging = verdictFor('authenticated');
 const securityValidation = verdictFor('security');
-const promotion = mode === 'promote'
-  ? (['FAIL'].includes(technicalTests) || authenticatedStaging === 'FAIL' || securityValidation === 'FAIL'
+const securityOk = securityValidation === 'PASS' || securityValidation === 'NOT RUN';
+const promotion =
+  mode === 'promote'
+    ? [offlineTests, candidateRelease, authenticatedStaging, securityValidation].includes('FAIL')
       ? 'FAIL'
-      : technicalTests === 'PASS' && authenticatedStaging === 'PASS' && securityValidation === 'PASS'
+      : offlineTests === 'PASS' &&
+          candidateRelease === 'PASS' &&
+          authenticatedStaging === 'PASS' &&
+          securityOk
         ? 'PASS'
-        : 'BLOCKED')
-  : 'NOT RUN';
+        : 'BLOCKED'
+    : 'NOT RUN';
+const technicalTests = offlineTests;
 let gitHead = 'unknown';
 try {
   gitHead = execSync('git rev-parse HEAD', { cwd: repoRoot, encoding: 'utf8' }).trim();
@@ -267,7 +288,10 @@ try {
 }
 const report = {
   generatedAt: new Date().toISOString(),
-  mode,
+  mode: rawMode,
+  qaContext: mode === 'ci' ? 'offline-ci' : mode === 'promote' ? 'candidate-release' : mode,
+  offlineTests,
+  candidateRelease: mode === 'promote' ? candidateRelease : 'NOT RUN',
   gitHead,
   latestKnownDeployment: latestKnownDeployment
     ? {
@@ -299,6 +323,12 @@ const report = {
   results: results.map(({ output, ...rest }) => ({ ...rest, output: output.slice(0, 1500) })),
 };
 writeEvidence(report);
-console.log(`qa ${mode}: technical ${technicalTests} authenticated ${authenticatedStaging} security ${securityValidation} promotion ${promotion}  passed ${report.passed} failed ${report.failed} blocked ${report.blocked}`);
+console.log(
+  `qa ${rawMode}: offline ${offlineTests} candidate ${mode === 'promote' ? candidateRelease : 'NOT RUN'} authenticated ${authenticatedStaging} security ${securityValidation} promotion ${promotion}  passed ${report.passed} failed ${report.failed} blocked ${report.blocked}`,
+);
 if (mode === 'promote' && promotion !== 'PASS') process.exit(promotion === 'FAIL' ? 1 : 2);
-if (technicalTests === 'FAIL' || (mode === 'release' && technicalTests !== 'PASS')) process.exit(1);
+if (mode === 'ci') {
+  if (offlineTests === 'FAIL') process.exit(1);
+  if (offlineTests !== 'PASS') process.exit(2);
+  process.exit(0);
+}

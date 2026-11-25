@@ -120,10 +120,15 @@ assert.equal(normalizeExecutionStatus({ detail: { execution_status: 'completed' 
 {
   const deploySrc = readFileSync(join(platformRoot, 'scripts/staging/phase85h-deploy-staging-platform.mjs'), 'utf8');
   const verifySrc = readFileSync(join(platformRoot, 'scripts/staging/verify-candidate-deployment.mjs'), 'utf8');
+  const workflowSrc = readFileSync(join(platformRoot, '..', '..', '.github', 'workflows', 'forgeniq-qa.yml'), 'utf8');
+  const catalogueSrc = readFileSync(join(platformRoot, 'scripts/qa/catalogue.mjs'), 'utf8');
   assert.match(deploySrc, /verify-candidate-deployment\.mjs/);
   assert.match(deploySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
   assert.match(verifySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
   assert.match(verifySrc, /candidate_not_isolated/);
+  assert.match(workflowSrc, /--mode=ci/);
+  assert.match(catalogueSrc, /gate: 'candidate'/);
+  assert.match(catalogueSrc, /UAT-SESSION-RECOVERY/);
   pass('candidate_deployment_isolation_gate', {});
 }
 
