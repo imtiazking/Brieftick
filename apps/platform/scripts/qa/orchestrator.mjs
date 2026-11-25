@@ -228,6 +228,8 @@ const selected = mode === 'post-deploy'
   ? QA_CATALOGUE.filter((row) => row.id === 'RI-BROWSER-HOSTED')
   : selectCatalogue(files, mode === 'ci' || mode === 'promote' ? mode : rawMode === 'release' ? 'release' : 'change');
 
+console.log(JSON.stringify({ qaMode: mode, rawMode, catalogue: selected.length, context: mode === 'ci' ? 'offline-ci' : mode === 'promote' ? 'candidate-release' : mode }));
+console.log(JSON.stringify({ qaMode: mode, rawMode, catalogue: selected.length, context: mode === 'ci' ? 'offline-ci' : mode === 'promote' ? 'candidate-release' : mode }));
 const results = [];
 for (const row of selected) {
   if (mode === 'post-deploy' && row.command === 'hosted-shell') {

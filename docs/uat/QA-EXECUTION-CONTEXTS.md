@@ -8,7 +8,7 @@ GitHub Actions and local offline checks. **No Clerk profiles, production secrets
 
 | Gate | Includes |
 |------|----------|
-| `ci` | Design Lab static/binding, offline Playwright smoke (local HTTP server), acceptance tests, embedded RLS (with `FORGENIQ_QA_REQUIRE_DB=1`), SoD, migration scan, Clerk **contract** (offline), candidate isolation **regression** (static) |
+| `ci` | Design Lab static/binding, offline Playwright smoke (local HTTP server), acceptance tests, **RLS migration contract** (static SQL), SoD, migration scan, Clerk **contract** (offline), candidate isolation **regression** (static) |
 
 Hosted-only rows are **not** selected. Exit **0** only when every mandatory `ci` row is **PASS**.
 
@@ -23,7 +23,7 @@ Required before `phase85h` promotes official staging. **Mandatory hosted and aut
 | `ci` | Full offline suite |
 | `candidate` | Session recovery (A/B/C), live Clerk host readiness, live deployment inspect |
 | `authenticated` | Authenticated Design Lab browser smoke |
-| `security` | Reserved for additional hosted security rows |
+| `security` | Embedded Postgres RLS and cross-tenant denial (local DB fixtures) |
 
 Missing sessions → **AUTH_BLOCKED** / **BLOCKED** → promotion **BLOCKED** (exit 2), never faked PASS.
 

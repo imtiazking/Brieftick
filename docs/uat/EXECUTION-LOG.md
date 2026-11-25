@@ -761,7 +761,7 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Remote | `origin` → `imtiazking/Brieftick`; `1b4ad6c..bab7985` pushed; tracking set. |
 | Secrets | Push contains only committed repo files; local `uat-agent.env` and Playwright profiles untouched. |
 | Vercel | No `phase85h` / staging promote. Vercel GitHub app posted **Preview Comments** check only; **forgeniq-platform-staging** is not aliased from this push. |
-| CI | Workflow [`forgeniq-qa`](https://github.com/imtiazking/Brieftick/actions/runs/45616831513) **failed**: `--mode=release` treated **AUTH_BLOCKED** session recovery as a failed gate (`technicalTests !== 'PASS'`). Fixed by `--mode=ci` (offline only) vs `--mode=promote` (candidate release). |
+| CI | [`forgeniq-qa`](https://github.com/imtiazking/Brieftick/actions/runs/45616831513) failed: release mode ran **UAT-SESSION-RECOVERY** + treated **AUTH_BLOCKED** as exit 1 (`technicalTests !== 'PASS'`). Fixed **`e6a30da`→`b02536b`**: `--mode=ci` vs `--mode=promote`, offline Clerk contract, Playwright CI sandbox, static RLS in CI / embedded RLS in promote `security` gate. |
 
 ## 2026-11-25 — UAT automation commit (auth + QA; no promote)
 
