@@ -3,7 +3,7 @@
  * FORGENIQ QA orchestrator. Runs existing scripts. A failed assertion is FAIL.
  * Missing credentials are AUTH_BLOCKED or BLOCKED, never a pass.
  *
- *   node scripts/qa/orchestrator.mjs --mode change|release|post-deploy|self-test
+ *   node scripts/qa/orchestrator.mjs --mode change|release|promote|post-deploy|self-test
  */
 import { spawnSync, execSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -45,17 +45,18 @@ function changedFiles() {
 function childEnv() {
   const env = { ...process.env };
   delete env.FORGENIQ_SMOKE_BASE;
+  delete env.FORGENIQ_AUTH_BASE;
   delete env.VERCEL_OIDC_TOKEN;
   return env;
 }
 
-function runNode(args) {
+function runNode(args, timeout = 180000) {
   const started = Date.now();
   const result = spawnSync(process.execPath, args, {
     cwd: platformRoot,
     encoding: 'utf8',
     env: childEnv(),
-    timeout: 180000,
+    timeout,
   });
   const timedOut = result.error && result.error.code === 'ETIMEDOUT';
   return {
@@ -114,14 +115,12 @@ function executeRow(row, files) {
   if (row.command === 'hosted-shell') {
     return { status: 'NOT RUN', output: 'post-deploy only', ms: 0 };
   }
-  if (row.requires === 'clerk-session') {
-    return { status: 'AUTH_BLOCKED', output: 'Saved Clerk sessions are checked by staging-user-sessions.mjs and are not required for the offline gate.', ms: 0 };
-  }
   if (row.requires === 'local-db' && !process.env.FORGENIQ_QA_REQUIRE_DB) {
     return { status: 'BLOCKED', output: 'Local database not requested. Set FORGENIQ_QA_REQUIRE_DB=1 to run RLS.', ms: 0 };
   }
   const args = row.command.replace(/^node\s+/, '').split(' ');
-  const result = runNode(args);
+  const timeout = /local-db|role-aware|authenticated-smoke/.test(row.command) ? 600000 : 180000;
+  const result = runNode(args, timeout);
   const status = result.exitCode === 0 ? 'PASS' : result.exitCode === 2 ? 'AUTH_BLOCKED' : 'FAIL';
   return { status, output: result.output, ms: result.ms };
 }
@@ -196,10 +195,12 @@ function selfTest() {
 
 if (mode === 'self-test') selfTest();
 
+if (mode === 'promote') process.env.FORGENIQ_QA_REQUIRE_DB = '1';
+
 const files = changedFiles();
 const selected = mode === 'post-deploy'
   ? QA_CATALOGUE.filter((row) => row.id === 'RI-BROWSER-HOSTED')
-  : selectCatalogue(files, mode === 'release' ? 'release' : 'change');
+  : selectCatalogue(files, mode === 'release' || mode === 'promote' ? mode : 'change');
 
 const results = [];
 for (const row of selected) {
@@ -213,12 +214,10 @@ for (const row of selected) {
     continue;
   }
   const outcome = executeRow(row, files);
-  const mandatory = row.gate === 'release' && row.requires !== 'local-db' && row.requires !== 'clerk-session';
-  if (row.requires && outcome.status !== 'PASS' && outcome.status !== 'FAIL') {
-    results.push({ ...row, mandatory: false, ...outcome });
-  } else {
-    results.push({ ...row, mandatory, ...outcome });
-  }
+  const mandatory = row.gate === 'release'
+    ? !row.requires
+    : mode === 'promote' && (row.gate === 'authenticated' || row.gate === 'security');
+  results.push({ ...row, mandatory, ...outcome });
   console.log(`${outcome.status}  ${row.id}  ${row.feature}`);
 }
 
@@ -226,15 +225,54 @@ const coverageGaps = QA_CATALOGUE.filter((row) => row.gate === 'gap').map((row) 
   id: row.id,
   feature: row.feature,
   area: row.area,
-  status: 'NOT RUN',
+  status: row.coverageStatus || 'NOT RUN',
   note: row.note,
 }));
 
-const release = decideRelease(results.filter((r) => r.mandatory || r.status === 'FAIL'));
+function verdictFor(gate) {
+  const rows = results.filter((row) => row.gate === gate);
+  if (!rows.length) return 'NOT RUN';
+  return decideRelease(rows);
+}
+
+const technicalTests = verdictFor('release');
+const authenticatedStaging = verdictFor('authenticated');
+const securityValidation = verdictFor('security');
+const promotion = mode === 'promote'
+  ? (['FAIL'].includes(technicalTests) || authenticatedStaging === 'FAIL' || securityValidation === 'FAIL'
+      ? 'FAIL'
+      : technicalTests === 'PASS' && authenticatedStaging === 'PASS' && securityValidation === 'PASS'
+        ? 'PASS'
+        : 'BLOCKED')
+  : 'NOT RUN';
+let gitHead = 'unknown';
+try {
+  gitHead = execSync('git rev-parse HEAD', { cwd: repoRoot, encoding: 'utf8' }).trim();
+} catch {
+  /* no git */
+}
+let latestKnownDeployment = null;
+try {
+  latestKnownDeployment = JSON.parse(readFileSync(join(repoRoot, 'docs', 'eval', 'STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json'), 'utf8'));
+} catch {
+  latestKnownDeployment = null;
+}
 const report = {
   generatedAt: new Date().toISOString(),
   mode,
-  technicalTests: release,
+  gitHead,
+  latestKnownDeployment: latestKnownDeployment
+    ? {
+        id: latestKnownDeployment.deploymentId || null,
+        url: latestKnownDeployment.deploymentUrl || null,
+        alias: latestKnownDeployment.alias || null,
+        capturedAt: latestKnownDeployment.capturedAt || null,
+      }
+    : null,
+  technicalTests,
+  authenticatedStaging,
+  securityValidation,
+  promotion,
   businessUatApproved: false,
   productionReleaseAuthorised: false,
   changedFiles: files,
@@ -246,5 +284,6 @@ const report = {
   results: results.map(({ output, ...rest }) => ({ ...rest, output: output.slice(0, 1500) })),
 };
 writeEvidence(report);
-console.log(`qa ${mode}: ${release}  passed ${report.passed} failed ${report.failed} blocked ${report.blocked}`);
-if (release === 'FAIL' || (mode === 'release' && release !== 'PASS')) process.exit(1);
+console.log(`qa ${mode}: technical ${technicalTests} authenticated ${authenticatedStaging} security ${securityValidation} promotion ${promotion}  passed ${report.passed} failed ${report.failed} blocked ${report.blocked}`);
+if (mode === 'promote' && promotion !== 'PASS') process.exit(promotion === 'FAIL' ? 1 : 2);
+if (technicalTests === 'FAIL' || (mode === 'release' && technicalTests !== 'PASS')) process.exit(1);

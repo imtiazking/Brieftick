@@ -213,6 +213,61 @@ export const QA_CATALOGUE = [
     paths: ['design-lab/regulatory-intelligence/'],
   },
   {
+    id: 'RI-RISK-CONTROL-UI',
+    area: 'Regulatory Intelligence',
+    feature: 'Risk and control link contract',
+    type: 'acceptance',
+    criticality: 'high',
+    gate: 'release',
+    route: '#/risks',
+    apis: ['/api/ri-lab/risks', '/api/ri-lab/controls', '/api/ri-lab/links'],
+    entities: ['risks', 'controls'],
+    command: 'node scripts/acceptance-phase-8-step-85w-risk-control-link-ui.mjs',
+    paths: ['design-lab/regulatory-intelligence/js/platform/connected-risk-control-panels.js'],
+  },
+  {
+    id: 'AUTH-STAGING-BROWSER',
+    area: 'Regulatory Intelligence',
+    feature: 'Authenticated Design Lab routes for Users A, B and C',
+    type: 'browser',
+    criticality: 'critical',
+    gate: 'authenticated',
+    route: 'https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/index.html#/dashboard',
+    apis: ['/api/ri-lab/session', '/api/ri-lab/triage', '/api/ri-lab/obligations', '/api/ri-lab/impact-assessments', '/api/ri-lab/risks', '/api/ri-lab/controls', '/api/ri-lab/assurance-reviews'],
+    entities: ['regulatory_obligations', 'impact_assessments', 'risks', 'controls', 'assurance_reviews'],
+    command: 'node scripts/eval/staging-design-lab-authenticated-smoke.mjs',
+    paths: ['design-lab/regulatory-intelligence/'],
+    requires: 'clerk-session',
+  },
+  {
+    id: 'SEC-RLS-EMBEDDED',
+    area: 'Platform',
+    feature: 'RLS on an isolated embedded database',
+    type: 'security',
+    criticality: 'critical',
+    gate: 'security',
+    route: null,
+    apis: [],
+    entities: ['organisations', 'organisation_memberships', 'operational_alerts'],
+    command: 'node scripts/acceptance-phase-8-security-rls.mjs --local-db',
+    paths: ['apps/platform/supabase/migrations/'],
+    requires: 'local-db',
+  },
+  {
+    id: 'SEC-RLS-CROSS-TENANT',
+    area: 'Platform',
+    feature: 'Cross-tenant denial between two isolated test organisations',
+    type: 'security',
+    criticality: 'critical',
+    gate: 'security',
+    route: null,
+    apis: [],
+    entities: ['regulatory_obligations', 'risks', 'assurance_reviews'],
+    command: 'node scripts/acceptance-ri-role-aware-rls-local-db.mjs',
+    paths: ['apps/platform/supabase/migrations/'],
+    requires: 'local-db',
+  },
+  {
     id: 'RI-MIGRATION-SCAN',
     area: 'Platform',
     feature: 'Destructive migration scan',
@@ -292,7 +347,23 @@ export const QA_CATALOGUE = [
     entities: [],
     command: 'coverage-gap',
     paths: [],
-    note: 'No offline end-to-end remediation scenario is wired into this gate.',
+    note: 'No automatic remediation scenario is wired into this gate.',
+    coverageStatus: 'NOT IMPLEMENTED',
+  },
+  {
+    id: 'GAP-DOWNSTREAM-WRITE',
+    area: 'Regulatory Intelligence',
+    feature: 'Obligation approval through assurance write chain',
+    type: 'gap',
+    criticality: 'high',
+    gate: 'gap',
+    route: '#/assessments',
+    apis: ['/api/ri-lab/impact-assessments', '/api/ri-lab/risks', '/api/ri-lab/controls', '/api/ri-lab/assurance-reviews'],
+    entities: ['impact_assessments', 'risks', 'controls', 'assurance_reviews'],
+    command: 'coverage-gap',
+    paths: [],
+    note: 'Authenticated reads of these registers are covered. An automatic scenario that approves an obligation and writes impact, risk, control and assurance records is not implemented.',
+    coverageStatus: 'NOT IMPLEMENTED',
   },
   {
     id: 'GAP-SECOND-TENANT',
@@ -306,7 +377,8 @@ export const QA_CATALOGUE = [
     entities: ['organisation_memberships'],
     command: 'coverage-gap',
     paths: [],
-    note: 'Offline tenant-isolation checks run. A second hosted test tenant is not configured, so live cross-tenant denial is not claimed.',
+    note: 'Cross-tenant denial runs on the isolated embedded database as two test organisations. A second hosted Clerk organisation is not used for live negative tests.',
+    coverageStatus: 'NOT RUN',
   },
   {
     id: 'GAP-MARKET-INTELLIGENCE',
@@ -325,6 +397,9 @@ export const QA_CATALOGUE = [
 ];
 
 export function selectCatalogue(changedPaths, mode) {
+  if (mode === 'promote') {
+    return QA_CATALOGUE.filter((row) => row.gate === 'release' || row.gate === 'authenticated' || row.gate === 'security');
+  }
   if (mode === 'release' || mode === 'post-deploy') {
     return QA_CATALOGUE.filter((row) => row.gate === mode || (mode === 'release' && row.gate === 'release'));
   }

@@ -1,0 +1,173 @@
+{
+  "generatedAt": "2026-11-25T00:29:07.493Z",
+  "origin": "https://staging-app.forgeniq.com",
+  "identities": [
+    {
+      "persona": "C",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    },
+    {
+      "persona": "B",
+      "role": "REVIEWER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    },
+    {
+      "persona": "A",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    }
+  ],
+  "passed": 19,
+  "failed": 0,
+  "results": [
+    {
+      "persona": "C",
+      "name": "Dashboard",
+      "ok": true,
+      "detail": "275 publications in staging catalogue api 200 count -",
+      "apiStatus": 200,
+      "count": null
+    },
+    {
+      "persona": "C",
+      "name": "AI Findings",
+      "ok": true,
+      "detail": "AI Findings api 200 count 96",
+      "apiStatus": 200,
+      "count": 96
+    },
+    {
+      "persona": "C",
+      "name": "Verified Obligations",
+      "ok": true,
+      "detail": "Verified Obligations api 200 count 12",
+      "apiStatus": 200,
+      "count": 12
+    },
+    {
+      "persona": "C",
+      "name": "Non-Obligations",
+      "ok": true,
+      "detail": "Non-Obligations api 200 count 23",
+      "apiStatus": 200,
+      "count": 23
+    },
+    {
+      "persona": "C",
+      "name": "Rejected Findings",
+      "ok": true,
+      "detail": "Rejected Findings api 200 count 57",
+      "apiStatus": 200,
+      "count": 57
+    },
+    {
+      "persona": "C",
+      "name": "Exceptions",
+      "ok": true,
+      "detail": "Exceptions api 200 count 16",
+      "apiStatus": 200,
+      "count": 16
+    },
+    {
+      "persona": "C",
+      "name": "Not Applicable",
+      "ok": true,
+      "detail": "Not Applicable api 200 count 4",
+      "apiStatus": 200,
+      "count": 4
+    },
+    {
+      "persona": "C",
+      "name": "All Findings",
+      "ok": true,
+      "detail": "All Findings api 200 count 208",
+      "apiStatus": 200,
+      "count": 208
+    },
+    {
+      "persona": "C",
+      "name": "My Tasks",
+      "ok": true,
+      "detail": "My Tasks api 200 count 0",
+      "apiStatus": 200,
+      "count": 0
+    },
+    {
+      "persona": "C",
+      "name": "Attention Centre",
+      "ok": true,
+      "detail": "Exceptions, escalations and deadlines api 200 count -",
+      "apiStatus": 200,
+      "count": null
+    },
+    {
+      "persona": "C",
+      "name": "Obligations",
+      "ok": true,
+      "detail": "Obligations api 200 count 0",
+      "apiStatus": 200,
+      "count": 0
+    },
+    {
+      "persona": "C",
+      "name": "Impact assessments",
+      "ok": true,
+      "detail": "Impact Assessments api 200 count 0",
+      "apiStatus": 200,
+      "count": 0
+    },
+    {
+      "persona": "C",
+      "name": "Risks",
+      "ok": true,
+      "detail": "Risks api 200 count 2",
+      "apiStatus": 200,
+      "count": 2
+    },
+    {
+      "persona": "C",
+      "name": "Controls",
+      "ok": true,
+      "detail": "Controls api 200 count 2",
+      "apiStatus": 200,
+      "count": 2
+    },
+    {
+      "persona": "C",
+      "name": "Assurance",
+      "ok": true,
+      "detail": "Assurance api 200 count 0",
+      "apiStatus": 200,
+      "count": 0
+    },
+    {
+      "persona": "C",
+      "name": "Quality assurance",
+      "ok": true,
+      "detail": "Quality assurance api 200 count -",
+      "apiStatus": 200,
+      "count": null
+    },
+    {
+      "persona": "C",
+      "name": "Checker pending approvals",
+      "ok": true,
+      "detail": "obligationReview true api 200 count 0",
+      "apiStatus": 200,
+      "count": 0
+    },
+    {
+      "persona": "B",
+      "name": "Reviewer human-review actions",
+      "ok": true,
+      "detail": "role REVIEWER aiReview true buttons 50 api 200"
+    },
+    {
+      "persona": "A",
+      "name": "User A actions match granted capabilities",
+      "ok": true,
+      "detail": "role COMPLIANCE_MANAGER aiReview true obligationReview true buttons 50 distinctUsers true. Self-approval denial stays in the offline maker-checker test."
+    }
+  ]
+}

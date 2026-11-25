@@ -47,7 +47,7 @@ if (process.env.FORCE_STAGING_DEPLOY !== '1' && existsSync(evidencePath) && MIN_
   }
 }
 
-run('qa release gate', 'node', ['./scripts/qa/orchestrator.mjs', '--mode=release'], platformRoot);
+run('qa promotion gate', 'node', ['./scripts/qa/orchestrator.mjs', '--mode=promote'], platformRoot);
 run('sync design-lab bundle', 'node', ['./scripts/sync-design-lab-bundle.mjs'], platformRoot);
 run('emit build id', 'node', ['./scripts/emit-forgeniq-build-id.mjs'], platformRoot);
 
@@ -115,6 +115,35 @@ if (previewSmoke.status !== 0) {
   writeFileSync(evidencePath, JSON.stringify(failed, null, 2));
   console.error('\nPreview smoke failed — not promoted.', JSON.stringify(failed, null, 2));
   process.exit(previewSmoke.status ?? 1);
+}
+
+const authPreview = process.platform === 'win32'
+  ? spawnSync(
+      'cmd.exe',
+      ['/d', '/s', '/c', `set FORGENIQ_AUTH_BASE=${deploymentUrl}&& node ./scripts/eval/staging-design-lab-authenticated-smoke.mjs`],
+      { cwd: platformRoot, stdio: 'inherit', encoding: 'utf8' },
+    )
+  : spawnSync('node', ['./scripts/eval/staging-design-lab-authenticated-smoke.mjs'], {
+      cwd: platformRoot,
+      stdio: 'inherit',
+      encoding: 'utf8',
+      env: { ...process.env, FORGENIQ_AUTH_BASE: deploymentUrl },
+    });
+if (authPreview.status !== 0) {
+  const blocked = {
+    capturedAt: new Date().toISOString(),
+    status: authPreview.status === 2 ? 'BLOCKED' : 'FAILED',
+    gitHead: head,
+    deploymentId,
+    deploymentUrl,
+    aliasUntouched: 'https://staging-app.forgeniq.com',
+    note: authPreview.status === 2
+      ? 'Authenticated preview validation is BLOCKED. Clerk sessions are scoped to staging-app.forgeniq.com and were not applied to this preview host. The alias was not moved.'
+      : 'Authenticated preview validation failed. The alias was not moved.',
+  };
+  writeFileSync(evidencePath, JSON.stringify(blocked, null, 2));
+  console.error('\nAuthenticated preview validation did not pass — not promoted.', JSON.stringify(blocked, null, 2));
+  process.exit(authPreview.status ?? 2);
 }
 
 run(
