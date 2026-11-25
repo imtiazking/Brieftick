@@ -1110,16 +1110,6 @@ export async function fetchConnectedAssuranceDetail(state, assuranceId) {
 export function scheduleConnectedAssuranceDetailFetch(state, assuranceId) {
   const cat = initConnectedCatalogueState(state);
   cat.assuranceDetailsById = cat.assuranceDetailsById || {};
-  const fromList =
-    cat.assuranceReviews?.find((r) => r.id === assuranceId) ||
-    cat.authorisedUatAssuranceReviews?.find((r) => r.id === assuranceId);
-  const token = `assuranceDetailsById:${assuranceId}`;
-  const inflight = coerceInflightPromise(cat._detailInflight?.[token]);
-  if (inflight) return inflight;
-  const cached = cat.assuranceDetailsById?.[assuranceId];
-  if (fromList && cached?._detailHydrated === true && !cached._detailLoadError) {
-    return Promise.resolve(cached);
-  }
   return scheduleConnectedDetailFetch(state, 'assuranceDetailsById', assuranceId, fetchConnectedAssuranceDetail);
 }
 
