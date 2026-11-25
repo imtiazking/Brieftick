@@ -38,6 +38,24 @@ import {
   parseUuid,
 } from '@/lib/ri/validation';
 
+async function obligationLifecycleCloseAlreadyRecorded(
+  supabase: SupabaseClient,
+  organisationId: string,
+  obligationId: string,
+  idempotencyKey: string,
+): Promise<boolean> {
+  const { count, error } = await supabase
+    .from('workflow_events')
+    .select('id', { count: 'exact', head: true })
+    .eq('organisation_id', organisationId)
+    .eq('entity_type', 'regulatory_obligation')
+    .eq('entity_id', obligationId)
+    .eq('event_type', 'COMPLIANCE_LIFECYCLE_CLOSED')
+    .eq('metadata->>idempotencyKey', idempotencyKey);
+  if (error) throw new Error(error.message);
+  return (count ?? 0) > 0;
+}
+
 const LOCKED_METADATA_KEYS = new Set([
   'recordProvenance',
   'record_provenance',
@@ -355,6 +373,7 @@ export async function updateAssuranceWithGovernance(
     extra?: Record<string, unknown>;
   }> = [];
   let closeLifecycle = false;
+  let obligationLifecycleReopen = false;
   let requiredMetaStatus: string | null = null;
 
   if (action === 'submit') {
@@ -621,6 +640,7 @@ export async function updateAssuranceWithGovernance(
       fromStatus: wfStatus,
       toStatus: ASSURANCE_WF.TESTING_READY,
     });
+    obligationLifecycleReopen = true;
   } else {
     throw new Error('invalid_action');
   }
@@ -652,18 +672,39 @@ export async function updateAssuranceWithGovernance(
     });
   }
 
+  if (obligationLifecycleReopen) {
+    const obligationId = meta.sourceRegulatoryObligationId;
+    if (typeof obligationId === 'string') {
+      await recordWorkflowEvent(supabase, {
+        organisationId: params.organisationId,
+        entityType: 'regulatory_obligation',
+        entityId: obligationId,
+        eventType: 'COMPLIANCE_LIFECYCLE_REOPENED',
+        actorUserId: params.userId,
+        fromStatus: ASSURANCE_WF.CLOSED,
+        toStatus: ASSURANCE_WF.TESTING_READY,
+        metadata: {
+          assuranceReviewId: params.assuranceId,
+          lifecycleReopenedAt: meta.lifecycleReopenedAt,
+          contractVersion: '2026-11-26',
+        },
+      });
+    }
+  }
+
   if (closeLifecycle) {
     const obligationId = meta.sourceRegulatoryObligationId;
     if (typeof obligationId === 'string') {
-      const { data: priorClose } = await supabase
-        .from('workflow_events')
-        .select('id')
-        .eq('organisation_id', params.organisationId)
-        .eq('entity_type', 'regulatory_obligation')
-        .eq('entity_id', obligationId)
-        .eq('event_type', 'COMPLIANCE_LIFECYCLE_CLOSED')
-        .limit(1);
-      if (!priorClose?.length) {
+      const closureEpoch =
+        typeof meta.lifecycleReopenedAt === 'string' ? meta.lifecycleReopenedAt : 'initial';
+      const idempotencyKey = `lifecycle_close:${params.assuranceId}:${closureEpoch}`;
+      const alreadyRecorded = await obligationLifecycleCloseAlreadyRecorded(
+        supabase,
+        params.organisationId,
+        obligationId,
+        idempotencyKey,
+      );
+      if (!alreadyRecorded) {
         await recordWorkflowEvent(supabase, {
           organisationId: params.organisationId,
           entityType: 'regulatory_obligation',
@@ -675,7 +716,7 @@ export async function updateAssuranceWithGovernance(
             assuranceReviewId: params.assuranceId,
             assuranceResult: update.result,
             contractVersion: '2026-11-26',
-            idempotencyKey: `lifecycle_close:${params.assuranceId}`,
+            idempotencyKey,
           },
         });
       }

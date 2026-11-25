@@ -1,6 +1,6 @@
 # Consolidated staging UAT — five-stage compliance lifecycle
 
-**Status:** Preparation complete (local). **Baseline commit:** `f89b8f5` (+ prep migration `20261125200000` on branch, not yet deployed).  
+**Status:** Preparation complete (local). **Baseline commit:** `f89b8f5` + audit fix (reopen/re-close). Prep migration `20261125200000` on branch, not yet deployed.  
 **Policy:** [`CONSOLIDATED-DEVELOPMENT-DEPLOYMENT-POLICY.md`](CONSOLIDATED-DEVELOPMENT-DEPLOYMENT-POLICY.md) — **one** controlled deploy when gates and capacity allow.
 
 ---
@@ -11,7 +11,7 @@
 |------|--------|
 | **Branch** | `feature/ri-classification-triage` |
 | **Local baseline** | `f89b8f56ec390ec29d7eb5521909786e8f2956f5` |
-| **Ahead of remote** | 5 commits (push required before hosted UAT) |
+| **Ahead of remote** | 6 commits + audit fix (push required before hosted UAT) |
 | **Offline CI** | 25/25 PASS (`npm run qa --mode=ci`) |
 | **Scope** | Stages 1–5 compliance lifecycle + assurance execution + evidence integrity |
 
@@ -95,9 +95,9 @@ Validate locally before apply: `applyAllMigrations` in embedded harness (CI alre
 ## 5. Reopen / re-close audit (verification)
 
 - `workflow_events` remain **append-only** (no deletes on reopen).  
-- **Reopen:** `COMPLIANCE_LIFECYCLE_REOPENED` on assurance; clears ready-for-closure decision fields in metadata only.  
-- **Re-close:** New `ASSURANCE_CLOSED` + **at most one** `COMPLIANCE_LIFECYCLE_CLOSED` per obligation (idempotent `close_lifecycle`).  
-- Verified offline: `acceptance-ri-assurance-governance-security.mjs` (reopen + idempotent close + single close event).
+- **Reopen:** `COMPLIANCE_LIFECYCLE_REOPENED` on **assurance_review** and **regulatory_obligation**; clears independent closure fields in metadata only.  
+- **Re-close:** New `ASSURANCE_CLOSED` plus a **new** obligation `COMPLIANCE_LIFECYCLE_CLOSED` keyed by `lifecycle_close:{assuranceId}:{lifecycleReopenedAt|initial}` — duplicate `close_lifecycle` on an already-closed assurance is idempotent (no extra events).  
+- Verified offline: `acceptance-ri-assurance-governance-security.mjs` (idempotent close, reopen audit on obligation, premature close after reopen blocked, retest + second close emits **two** distinct close events).
 
 ---
 
@@ -125,7 +125,8 @@ Validate locally before apply: `applyAllMigrations` in embedded harness (CI alre
 | Close before test | `premature_compliance_lifecycle_closure` |
 | Unrelated evidence | `assurance_evidence_wrong_control` |
 | Cross-tenant read (B vs Org A data) | RLS 0 rows / API 404 |
-| Duplicate close | Single close event; idempotent row |
+| Duplicate close | Idempotent assurance row; single close event per closure epoch |
+| Reopen + re-close | Two obligation close events; one reopen on obligation |
 | Stale PATCH | `stale_record` |
 | Open finding without exception | `assurance_closure_blocked` |
 
@@ -153,10 +154,10 @@ Staging defaults: `FORGENIQ_STAGE*_AI=FIXTURE` / `RI_AI_PROVIDER_MODE=FIXTURE`. 
 
 | Check | Result |
 |-------|--------|
-| Last audit | `docs/eval/VERCEL-RESOURCE-AUDIT-2026-11-23.md` — Hobby Fluid CPU **~3h07m / 4h**; deployment storage **~8.32 GB / 10 GB** |
+| Last audit (reference only) | `docs/eval/VERCEL-RESOURCE-AUDIT-2026-11-23.md` — do **not** use stale CPU snapshot for go/no-go |
 | Policy | **No deploy** while quota constrained; batch **one** deploy per tranche |
-| Fresh team quota API | Not available (MCP project list empty / observability 403 on Hobby) |
-| **Conclusion** | Treat hosting restriction as **still unresolved** until dashboard shows comfortable CPU/storage margin |
+| Fresh quota (2026-11-25) | Vercel MCP `list_projects` empty (auth/scope); no fresh Fluid CPU reading captured this session |
+| **Conclusion** | Treat hosting restriction as **still unresolved** — confirm dashboard headroom immediately before the authorised deployment window |
 
 **Before deploy:** confirm dashboard headroom; set `FORCE_STAGING_DEPLOY=1` only with defined UAT objective; use `phase85h-deploy-staging-platform.mjs` + candidate-first.
 
@@ -166,7 +167,7 @@ Staging defaults: `FORGENIQ_STAGE*_AI=FIXTURE` / `RI_AI_PROVIDER_MODE=FIXTURE`. 
 
 | # | Blocker | Mitigation |
 |---|---------|------------|
-| 1 | Branch **not pushed** (5 commits local) | `git push` before CI/candidate build |
+| 1 | Branch **not pushed** (6 + audit fix local) | `git push` triggers **GitHub Actions only** (`forgeniq-qa.yml`); Vercel may post preview build/check — **does not** alias staging per prior evidence |
 | 2 | Staging migrations **not applied** | Apply `25180000`, `25194500`, `25200000` after backup |
 | 3 | `impact_assessment_risk_links` RLS | Included in `20261125200000` (prep commit) |
 | 4 | Vercel Hobby CPU/storage | Defer deploy until quota OK |

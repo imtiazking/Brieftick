@@ -825,3 +825,16 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Auth | `unattendedReady` and `candidateUnattendedReady` **true**; profiles preserved. |
 | Promotion | **Not run.** Official and candidate share deployment id → isolation gate would block `phase85h` until next distinct candidate deploy when CPU allows. |
 | Vercel CPU | Continue local-first; see resource audit + deploy throttle; pause hosted pilot drain / repeated deploys. |
+
+## 2026-11-25 — Consolidated staging UAT prep (lifecycle audit + 25/25 CI)
+
+| Topic | Outcome |
+|---|---|
+| Audit defect | Confirmed: first `COMPLIANCE_LIFECYCLE_CLOSED` blocked legitimate **second** close after reopen. Fixed per-closure `idempotencyKey` (`lifecycle_close:{assuranceId}:{reopenAt\|initial}`); obligation `COMPLIANCE_LIFECYCLE_REOPENED` on reopen. |
+| Offline QA | `npm run qa --mode=ci` **25/25 PASS** (includes `RI-ASSURANCE-GOVERNANCE-SECURITY` reopen → retest → second close). |
+| Migrations (local) | Embedded `applyAllMigrations` via CI gates covers `20261125180000`, `20261125194500`, `20261125200000` in order. **Hosted apply not run** (await deployment window). |
+| Git | 6 commits on `feature/ri-classification-triage` + audit fix; push triggers `forgeniq-qa.yml` only; staging **not** auto-promoted from Git push (per prior Vercel evidence). |
+| UAT sessions | A/B/C **VALID** (`staging-user-sessions.mjs status` 2026-11-25). |
+| Vercel capacity | No fresh quota in MCP; treat hosting as **constrained** until dashboard confirms headroom before `phase85h`. |
+| Hosted UAT | **Blocked** until authorised deploy + staging migrations + `npm run qa --mode=promote` on candidate. |
+| Live AI | UC-RI-004/006/007/008 pilot documented in `STAGING-UAT-COMPLIANCE-LIFECYCLE-PREP.md` §7; **not executed** (budget). |

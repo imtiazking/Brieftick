@@ -305,6 +305,50 @@ try {
   });
   pass('lifecycle reopen');
 
+  const { rows: reopenEvents } = await admin.query(
+    `select count(*)::int as n from workflow_events where organisation_id = $1 and entity_id = $2 and entity_type = 'regulatory_obligation' and event_type = 'COMPLIANCE_LIFECYCLE_REOPENED'`,
+    [ORG_A, ctx.obligationOpenId],
+  );
+  if (reopenEvents[0].n === 1) pass('obligation lifecycle reopen audited');
+  else fail('missing obligation reopen event', reopenEvents[0]);
+
+  const prematureAfterReopen = await updateAssuranceWithGovernance(adminSb, {
+    organisationId: ORG_A,
+    assuranceId: ctx.assuranceId,
+    userId: USER_C,
+    role: 'COMPLIANCE_MANAGER',
+    fields: { action: 'close_lifecycle', result: 'PASS' },
+  }).catch((e) => e);
+  if (String(prematureAfterReopen?.message || prematureAfterReopen).includes('premature_compliance_lifecycle_closure')) {
+    pass('premature closure after reopen rejected');
+  } else fail('close without retest after reopen should fail', prematureAfterReopen);
+
+  await updateAssuranceWithGovernance(adminSb, {
+    organisationId: ORG_A,
+    assuranceId: ctx.assuranceId,
+    userId: USER_A,
+    role: 'ANALYST',
+    fields: { action: 'record_test', result: 'PASS', evidenceIds: [evGood.id] },
+  });
+  pass('retest recorded after reopen');
+
+  await updateAssuranceWithGovernance(adminSb, {
+    organisationId: ORG_A,
+    assuranceId: ctx.assuranceId,
+    userId: USER_C,
+    role: 'COMPLIANCE_MANAGER',
+    fields: { action: 'close_lifecycle', result: 'PASS' },
+  });
+  pass('second independent closure after reopen');
+
+  const { rows: closeEventsAfterReopen } = await admin.query(
+    `select count(*)::int as n from workflow_events where organisation_id = $1 and entity_id = $2 and event_type = 'COMPLIANCE_LIFECYCLE_CLOSED'`,
+    [ORG_A, ctx.obligationOpenId],
+  );
+  if (closeEventsAfterReopen[0].n === 2) {
+    pass('reopen then re-close emits second obligation close event');
+  } else fail('expected two distinct close events after reopen', closeEventsAfterReopen[0]);
+
   const cross = await withRlsSessionCommit(adminUrl, USER_B, async (c) => {
     const r = await c.query(
       `select count(*)::int as n from evidence_items where id = $1 and organisation_id = $2`,
