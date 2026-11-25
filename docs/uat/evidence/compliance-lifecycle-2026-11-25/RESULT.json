@@ -1,0 +1,198 @@
+{
+  "run": "UAT-LIFECYCLE-20261125-mwwln795",
+  "deployment": "dpl_DALWABZ2iGk571HjAD2kYoVswAkq",
+  "ids": {
+    "run": "UAT-LIFECYCLE-20261125-mwwlgtyw",
+    "origin": "https://staging-app.forgeniq.com",
+    "obligationId": "0222809b-b74e-4577-88d4-e1d8701f5385",
+    "impactId": "ed1cdfef-2fcc-473a-bb14-97f4adecd649",
+    "controlId": "88a5bab9-ed49-4c58-ad57-de3d59254019",
+    "assuranceId": "02f84855-ea94-4df7-a990-f31a3f60dd00",
+    "evidenceId": "c94976f9-4bab-4bec-8664-d2b288dba2f4",
+    "wrongEvidenceId": "88b532f1-1747-426f-9544-b931346ff5d7",
+    "remediationActionId": null,
+    "obligationEvents": [
+      "RISK_LINKED",
+      "IMPACT_INITIATED_FROM_OBLIGATION",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_CREATED"
+    ]
+  },
+  "session": {
+    "A": {
+      "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    },
+    "C": {
+      "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    },
+    "B": {
+      "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "role": "REVIEWER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+    }
+  },
+  "results": [
+    {
+      "id": "AUTH-A",
+      "layer": "hosted-auth",
+      "status": "PASS",
+      "detail": {
+        "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+        "role": "COMPLIANCE_MANAGER",
+        "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+      }
+    },
+    {
+      "id": "AUTH-C",
+      "layer": "hosted-auth",
+      "status": "PASS",
+      "detail": {
+        "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+        "role": "COMPLIANCE_MANAGER",
+        "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+      }
+    },
+    {
+      "id": "AUTH-B",
+      "layer": "hosted-auth",
+      "status": "PASS",
+      "detail": {
+        "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+        "role": "REVIEWER",
+        "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001"
+      }
+    },
+    {
+      "id": "S5-PLAN-SUBMIT",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-PREMATURE-CLOSE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 403
+      }
+    },
+    {
+      "id": "S5-PLAN-APPROVE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-EVIDENCE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 201
+      }
+    },
+    {
+      "id": "S5-FAIL-TEST",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "id": "S5-CLOSE-WHILE-FAIL",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 403
+      }
+    },
+    {
+      "id": "S5-REMEDIATE",
+      "layer": "hosted-api",
+      "status": "FAIL",
+      "detail": {
+        "reason": "remediationActionId missing"
+      }
+    },
+    {
+      "id": "S5-RETEST",
+      "layer": "hosted-api",
+      "status": "FAIL",
+      "detail": {
+        "http": 409,
+        "error": "assurance_invalid_transition"
+      }
+    },
+    {
+      "id": "S5-WRONG-EVIDENCE",
+      "layer": "hosted-api",
+      "status": "PASS",
+      "detail": {
+        "http": 409
+      }
+    },
+    {
+      "id": "S5-CLOSE",
+      "layer": "hosted-api",
+      "status": "FAIL",
+      "detail": {
+        "http": 409,
+        "error": "premature_compliance_lifecycle_closure"
+      }
+    },
+    {
+      "id": "S5-IDEMPOTENT-CLOSE",
+      "layer": "hosted-api",
+      "status": "FAIL",
+      "detail": {
+        "http": 409
+      }
+    },
+    {
+      "id": "AUDIT-OBLIGATION-CLOSED",
+      "layer": "hosted-api",
+      "status": "FAIL",
+      "detail": {
+        "types": [
+          "RISK_LINKED",
+          "IMPACT_INITIATED_FROM_OBLIGATION",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_STATUS_CHANGED",
+          "OBLIGATION_CREATED"
+        ]
+      }
+    },
+    {
+      "id": "UI-OBLIGATION",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "shot": "obligation-lifecycle.png"
+      }
+    },
+    {
+      "id": "SEC-CROSS-TENANT",
+      "layer": "hosted-api",
+      "status": "BLOCKED",
+      "detail": {
+        "reason": "Users A, B and C share one organisation; hosted cross-tenant denial is not claimed. Offline RLS remains in RI-ASSURANCE-GOVERNANCE-SECURITY."
+      }
+    }
+  ],
+  "failed": 5
+}

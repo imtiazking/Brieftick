@@ -1,0 +1,34 @@
+[
+  {
+    "step": "retest",
+    "http": 200
+  },
+  {
+    "step": "close",
+    "http": 409,
+    "error": "assurance_closure_blocked:open_findings_without_exception"
+  },
+  {
+    "step": "idempotent",
+    "http": 409,
+    "error": "assurance_closure_blocked:open_findings_without_exception"
+  },
+  {
+    "step": "reopen",
+    "http": 200
+  },
+  {
+    "step": "events",
+    "types": [
+      "COMPLIANCE_LIFECYCLE_REOPENED",
+      "RISK_LINKED",
+      "IMPACT_INITIATED_FROM_OBLIGATION",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_CREATED"
+    ]
+  }
+]

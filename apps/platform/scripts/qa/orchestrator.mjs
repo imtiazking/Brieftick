@@ -48,6 +48,20 @@ function childEnv() {
   delete env.FORGENIQ_SMOKE_BASE;
   delete env.FORGENIQ_AUTH_BASE;
   delete env.VERCEL_OIDC_TOKEN;
+  delete env.FORGENIQ_REQUIRE_CANDIDATE_ISOLATION;
+  if (mode === 'promote' || mode === 'post-deploy') {
+    try {
+      const evidencePath = join(repoRoot, 'docs', 'eval', 'STAGING-P3-PROVISION-ENGINE-DEPLOY-2026-11-22.json');
+      if (existsSync(evidencePath)) {
+        const ev = JSON.parse(readFileSync(evidencePath, 'utf8'));
+        if (ev.status === 'PROMOTED' && ev.deploymentId) {
+          env.FORGENIQ_RELEASE_PHASE = 'post-promote';
+        }
+      }
+    } catch {
+      /* observe */
+    }
+  }
   return env;
 }
 

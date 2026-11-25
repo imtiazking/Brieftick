@@ -1,0 +1,39 @@
+[
+  {
+    "step": "maker-exception",
+    "http": 200
+  },
+  {
+    "step": "accept-exception",
+    "http": 200
+  },
+  {
+    "step": "retest-after-reopen",
+    "http": 409,
+    "error": "assurance_invalid_transition"
+  },
+  {
+    "step": "close",
+    "http": 409,
+    "error": "premature_compliance_lifecycle_closure"
+  },
+  {
+    "step": "idempotent",
+    "http": 409,
+    "error": "premature_compliance_lifecycle_closure"
+  },
+  {
+    "step": "events",
+    "types": [
+      "COMPLIANCE_LIFECYCLE_REOPENED",
+      "RISK_LINKED",
+      "IMPACT_INITIATED_FROM_OBLIGATION",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_CREATED"
+    ]
+  }
+]

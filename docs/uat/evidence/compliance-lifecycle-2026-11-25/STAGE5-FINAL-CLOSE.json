@@ -1,0 +1,29 @@
+[
+  {
+    "step": "record-pass",
+    "http": 200
+  },
+  {
+    "step": "close",
+    "http": 200
+  },
+  {
+    "step": "idempotent",
+    "http": 200
+  },
+  {
+    "step": "events",
+    "types": [
+      "COMPLIANCE_LIFECYCLE_CLOSED",
+      "COMPLIANCE_LIFECYCLE_REOPENED",
+      "RISK_LINKED",
+      "IMPACT_INITIATED_FROM_OBLIGATION",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_CREATED"
+    ]
+  }
+]

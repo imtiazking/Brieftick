@@ -38,21 +38,56 @@ if (existsSync(evidencePath)) {
 }
 
 const sameDeployment = official.id && candidate.id ? official.id === candidate.id : null;
+const phase = (process.env.FORGENIQ_RELEASE_PHASE || '').trim();
+const isolationRequired =
+  process.env.FORGENIQ_REQUIRE_CANDIDATE_ISOLATION === '1' && phase !== 'post-promote';
 const report = {
   generatedAt: new Date().toISOString(),
+  releasePhase: phase || (isolationRequired ? 'pre-promote' : 'observe'),
   official,
   candidate,
   sameDeployment,
   expectedPreviewId: expectedPreview,
   candidateMatchesExpected: expectedPreview && candidate.id ? candidate.id === expectedPreview : null,
+  officialMatchesExpected: expectedPreview && official.id ? official.id === expectedPreview : null,
   candidateDistinctFromOfficialDuringValidation:
     official.id && candidate.id ? official.id !== candidate.id : null,
-  isolationRequired: process.env.FORGENIQ_REQUIRE_CANDIDATE_ISOLATION === '1',
+  isolationRequired,
 };
 writeFileSync(join(outDir, 'CANDIDATE-DEPLOYMENT-VERIFY.json'), JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
 
-if (process.env.FORGENIQ_REQUIRE_CANDIDATE_ISOLATION === '1') {
+if (phase === 'post-promote') {
+  if (!expectedPreview || !official.id) {
+    console.error(JSON.stringify({ ok: false, code: 'post_promote_identity_unknown' }));
+    process.exit(2);
+  }
+  if (official.id !== expectedPreview) {
+    console.error(
+      JSON.stringify({
+        ok: false,
+        code: 'official_not_promoted_deployment',
+        official: official.id,
+        expected: expectedPreview,
+      }),
+    );
+    process.exit(1);
+  }
+  if (candidate.id && candidate.id !== official.id) {
+    console.error(
+      JSON.stringify({
+        ok: false,
+        code: 'candidate_not_aligned_after_promote',
+        candidate: candidate.id,
+        official: official.id,
+      }),
+    );
+    process.exit(1);
+  }
+  process.exit(0);
+}
+
+if (isolationRequired) {
   if (sameDeployment) {
     console.error(
       JSON.stringify({

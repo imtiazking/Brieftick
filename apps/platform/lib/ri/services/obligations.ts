@@ -388,6 +388,9 @@ export async function updateObligation(
         role: params.role ?? null,
       });
     }
+    if (next === 'OPEN' && existing.status !== 'OPEN' && params.role && !canRi(params.role, 'impact:approve')) {
+      throw new RiConflictError('insufficient_role');
+    }
     update.status = next;
   }
 
@@ -415,12 +418,21 @@ export async function updateObligation(
       toStatus: update.status as string,
     });
     if (update.status === 'OPEN' && existing.status !== 'OPEN') {
-      await ensureImpactAssessmentFromApprovedObligation(supabase, {
-        organisationId: params.organisationId,
-        obligationId: params.obligationId,
-        actorUserId: params.userId,
-        role: params.role ?? null,
-      });
+      try {
+        await ensureImpactAssessmentFromApprovedObligation(supabase, {
+          organisationId: params.organisationId,
+          obligationId: params.obligationId,
+          actorUserId: params.userId,
+          role: params.role ?? null,
+        });
+      } catch (err) {
+        await supabase
+          .from('regulatory_obligations')
+          .update({ status: existing.status })
+          .eq('id', params.obligationId)
+          .eq('organisation_id', params.organisationId);
+        throw err;
+      }
     }
   }
   if (

@@ -1,0 +1,42 @@
+[
+  {
+    "step": "detail-keys",
+    "keys": []
+  },
+  {
+    "step": "evidence",
+    "n": 0
+  },
+  {
+    "step": "remediate",
+    "http": 200
+  },
+  {
+    "step": "retest",
+    "http": 409,
+    "error": "assurance_test_requires_evidence"
+  },
+  {
+    "step": "close",
+    "http": 409,
+    "error": "premature_compliance_lifecycle_closure"
+  },
+  {
+    "step": "idempotent",
+    "http": 409,
+    "error": "premature_compliance_lifecycle_closure"
+  },
+  {
+    "step": "events",
+    "types": [
+      "RISK_LINKED",
+      "IMPACT_INITIATED_FROM_OBLIGATION",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_STATUS_CHANGED",
+      "OBLIGATION_CREATED"
+    ]
+  }
+]
