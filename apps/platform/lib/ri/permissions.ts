@@ -21,8 +21,14 @@ export type RiAction =
   | 'policy:write'
   | 'risk:read'
   | 'risk:write'
+  | 'risk:submit'
+  | 'risk:approve'
   | 'control:read'
   | 'control:write'
+  | 'control:submit'
+  | 'control:approve'
+  | 'assurance:submit'
+  | 'assurance:approve'
   | 'action:read'
   | 'action:write'
   | 'evidence:read'
@@ -61,8 +67,14 @@ const MATRIX: Record<RiAction, PlatformRole> = {
   'policy:write': 'ANALYST',
   'risk:read': 'VIEWER',
   'risk:write': 'ANALYST',
+  'risk:submit': 'ANALYST',
+  'risk:approve': 'COMPLIANCE_MANAGER',
   'control:read': 'VIEWER',
   'control:write': 'ANALYST',
+  'control:submit': 'ANALYST',
+  'control:approve': 'COMPLIANCE_MANAGER',
+  'assurance:submit': 'ANALYST',
+  'assurance:approve': 'COMPLIANCE_MANAGER',
   'action:read': 'VIEWER',
   'action:write': 'ANALYST',
   'evidence:read': 'VIEWER',

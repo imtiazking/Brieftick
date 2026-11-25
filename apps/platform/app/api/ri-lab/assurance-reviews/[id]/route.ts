@@ -4,7 +4,7 @@ import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { mapAssuranceRowToLabView, parseLabRowMetadata } from '@/lib/ri/lab-api/lab-governance-view';
 import { assertLabAssuranceWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
 import { parseLabAssurancePatchBody } from '@/lib/ri/lab-api/lab-link-write';
-import { getAssuranceDetail, updateAssuranceReview } from '@/lib/ri/services/assurance';
+import { getAssuranceDetail, updateAssuranceWithGovernance } from '@/lib/ri/services/assurance';
 import { parseUuid } from '@/lib/ri/validation';
 
 export const dynamic = 'force-dynamic';
@@ -65,10 +65,11 @@ export async function PATCH(
     const ctx = await requireRiContext('assurance:write');
     assertLabAssuranceWritesEnabled(ctx.role);
     const patch = parseLabAssurancePatchBody(await request.json());
-    const row = await updateAssuranceReview(ctx.supabase, {
+    const row = await updateAssuranceWithGovernance(ctx.supabase, {
       organisationId: ctx.organisationId,
       assuranceId,
       userId: ctx.userId,
+      role: ctx.role,
       fields: patch.fields,
       expectedUpdatedAt: patch.expectedUpdatedAt,
     });

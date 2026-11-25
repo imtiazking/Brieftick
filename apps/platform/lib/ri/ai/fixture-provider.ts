@@ -126,6 +126,70 @@ export function createFixtureProvider() {
         });
       }
 
+      if (scenario === 'stage3-impact-risk' && analysisType === 'Risk Mapping') {
+        return {
+          ok: true,
+          structured: {
+            confidence: 81,
+            riskProposals: [
+              {
+                title: 'Non-compliance with approved regulatory obligation',
+                description: 'Failure to meet operational requirements from approved impact.',
+                category: 'Compliance',
+                inherent_risk: 'HIGH',
+                residual_risk: 'MEDIUM',
+              },
+            ],
+            existingRiskMappings: [],
+            claims: claims.slice(0, 3),
+            regulatoryGaps: ['Monitoring evidence may be incomplete.'],
+            uncertainties: ['Organisation risk appetite not verified by AI.'],
+          },
+          schemaName: 'RiskMappingResult',
+          latencyMs: 14,
+        };
+      }
+
+      if (scenario === 'stage4-risk-control' && analysisType === 'Control Mapping') {
+        return {
+          ok: true,
+          structured: {
+            confidence: 80,
+            controlProposals: [
+              {
+                name: 'Obligation compliance monitoring control',
+                description: 'Periodic attestation and evidence review for regulatory obligation.',
+                control_type: 'Detective',
+                effectiveness: 'NOT_TESTED',
+              },
+            ],
+            existingControlMappings: [],
+            claims: claims.slice(0, 3),
+          },
+          schemaName: 'ControlMappingResult',
+          latencyMs: 14,
+        };
+      }
+
+      if (scenario === 'stage5-control-assurance' && analysisType === 'Control Assurance Plan') {
+        return {
+          ok: true,
+          structured: {
+            confidence: 79,
+            testPlan: {
+              reviewType: 'control_test',
+              objective: 'Confirm control operates effectively for mapped risk.',
+              procedure: 'Sample obligations, inspect evidence, interview owner.',
+              evidenceRequirements: 'Policy, procedure, sample testing workpapers.',
+              assignedTester: null,
+            },
+            claims: claims.slice(0, 2),
+          },
+          schemaName: 'ControlAssurancePlanResult',
+          latencyMs: 12,
+        };
+      }
+
       if (scenario === 'stage2-obligation-impact' && analysisType === 'Impact Suggestion') {
         return {
           ok: true,

@@ -124,6 +124,8 @@ export function parseLabRiskPatchBody(body: unknown): {
     'residual_risk',
     'status',
     'review_date',
+    'action',
+    'owner_user_id',
   ]) {
     if (key in raw) fields[key] = raw[key];
   }
@@ -155,6 +157,8 @@ export function parseLabControlPatchBody(body: unknown): {
     'effectiveness',
     'testing_status',
     'status',
+    'action',
+    'owner_user_id',
   ]) {
     if (key in raw) fields[key] = raw[key];
   }

@@ -4,7 +4,7 @@ import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { mapControlRowToLabView } from '@/lib/ri/lab-api/lab-governance-view';
 import { parseLabControlPatchBody } from '@/lib/ri/lab-api/lab-work-write';
 import { assertLabControlWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
-import { getControlDetail, updateControl } from '@/lib/ri/services/controls';
+import { getControlDetail, updateControlWithGovernance } from '@/lib/ri/services/controls';
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -38,13 +38,14 @@ export async function PATCH(
     const ctx = await requireRiContext('control:write');
     assertLabControlWritesEnabled(ctx.role);
     const patch = parseLabControlPatchBody(await request.json());
-    const row = await updateControl(
-      ctx.supabase,
-      ctx.organisationId,
-      id,
-      patch.fields,
-      patch.expectedUpdatedAt,
-    );
+    const row = await updateControlWithGovernance(ctx.supabase, {
+      organisationId: ctx.organisationId,
+      controlId: id,
+      userId: ctx.userId,
+      role: ctx.role,
+      fields: patch.fields,
+      expectedUpdatedAt: patch.expectedUpdatedAt,
+    });
     const control = mapControlRowToLabView(row as Record<string, unknown>);
     return NextResponse.json({ ok: true, control });
   } catch (err) {

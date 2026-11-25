@@ -1,7 +1,15 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { RiConflictError } from '@/lib/ri/errors';
+import {
+  assertGovernanceActionAllowed,
+  requiredStatusForGovernanceAction,
+} from '@/lib/ri/governance-draft-workflow-guards.mjs';
 import { assertActiveOrganisationAssignee } from '@/lib/ri/organisation-assignee';
+import { canRi } from '@/lib/ri/permissions';
+import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
+import { ensureControlMappingFromApprovedRisk } from '@/lib/ri/services/risk-control-downstream';
 import { parseOptionalDate, parseOptionalText, parseRequiredText, parseUuid } from '@/lib/ri/validation';
 import { LAB_PROVENANCE_LOCKED_KEY } from '@/lib/ri/lab-api/change-create-provenance';
 import { parseCreationModeField, resolveRiskCreateMetadata } from '@/lib/ri/lab-api/risk-control-lab-provenance';
@@ -175,5 +183,129 @@ export async function updateRisk(
     .select()
     .single();
   if (error) throw new Error(error.message);
+  return data;
+}
+
+export async function updateRiskWithGovernance(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    riskId: string;
+    userId: string;
+    role: PlatformRole;
+    fields: Record<string, unknown>;
+    expectedUpdatedAt?: string | null;
+  },
+) {
+  if (!params.fields.action) {
+    return updateRisk(supabase, params.organisationId, params.riskId, params.fields, params.expectedUpdatedAt);
+  }
+
+  await assertRowInOrganisation(supabase, 'risks', params.riskId, params.organisationId);
+  const { data: existing } = await supabase
+    .from('risks')
+    .select('status, updated_at, owner_user_id')
+    .eq('id', params.riskId)
+    .eq('organisation_id', params.organisationId)
+    .single();
+  if (!existing) throw new Error('not_found');
+
+  if (
+    params.expectedUpdatedAt &&
+    new Date(existing.updated_at).getTime() !== new Date(params.expectedUpdatedAt).getTime()
+  ) {
+    throw new Error('stale_record');
+  }
+
+  const update: Record<string, unknown> = {};
+  let pendingEvent: {
+    eventType: 'RISK_SUBMITTED' | 'RISK_VALIDATED' | 'RISK_REJECTED';
+    fromStatus: string;
+    toStatus: string;
+  } | null = null;
+  let requiredCurrentStatus: string | null = null;
+
+  if (params.fields.action === 'submit') {
+    if (!canRi(params.role, 'risk:submit')) throw new Error('insufficient_role');
+    try {
+      assertGovernanceActionAllowed('submit', existing.status);
+    } catch {
+      throw new RiConflictError('risk_invalid_transition');
+    }
+    requiredCurrentStatus = requiredStatusForGovernanceAction('submit', existing.status);
+    update.status = 'IN_REVIEW';
+    pendingEvent = { eventType: 'RISK_SUBMITTED', fromStatus: existing.status, toStatus: 'IN_REVIEW' };
+  } else if (params.fields.action === 'approve') {
+    if (!canRi(params.role, 'risk:approve')) throw new Error('insufficient_role');
+    try {
+      assertGovernanceActionAllowed('approve', existing.status);
+    } catch {
+      throw new RiConflictError('risk_invalid_transition');
+    }
+    assertImpactApproverSoD({ ownerUserId: existing.owner_user_id, approverUserId: params.userId });
+    requiredCurrentStatus = requiredStatusForGovernanceAction('approve', existing.status);
+    update.status = 'APPROVED';
+    pendingEvent = { eventType: 'RISK_VALIDATED', fromStatus: existing.status, toStatus: 'APPROVED' };
+  } else if (params.fields.action === 'reject') {
+    if (!canRi(params.role, 'risk:approve')) throw new Error('insufficient_role');
+    try {
+      assertGovernanceActionAllowed('reject', existing.status);
+    } catch {
+      throw new RiConflictError('risk_invalid_transition');
+    }
+    requiredCurrentStatus = requiredStatusForGovernanceAction('reject', existing.status);
+    update.status = 'DRAFT';
+    pendingEvent = { eventType: 'RISK_REJECTED', fromStatus: existing.status, toStatus: 'DRAFT' };
+  } else {
+    throw new Error('invalid_action');
+  }
+
+  let query = supabase
+    .from('risks')
+    .update(update)
+    .eq('id', params.riskId)
+    .eq('organisation_id', params.organisationId);
+  if (requiredCurrentStatus) query = query.eq('status', requiredCurrentStatus);
+  const { data, error } = await query.select().maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data) throw new RiConflictError('risk_invalid_transition');
+
+  if (pendingEvent) {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'risk',
+      entityId: params.riskId,
+      eventType: pendingEvent.eventType,
+      actorUserId: params.userId,
+      fromStatus: pendingEvent.fromStatus,
+      toStatus: pendingEvent.toStatus,
+    });
+    if (pendingEvent.eventType === 'RISK_VALIDATED') {
+      const { count: priorReady } = await supabase
+        .from('workflow_events')
+        .select('id', { count: 'exact', head: true })
+        .eq('organisation_id', params.organisationId)
+        .eq('entity_type', 'risk')
+        .eq('entity_id', params.riskId)
+        .eq('event_type', 'STAGE4_CONTROL_MAPPING_READY');
+      if (!priorReady) {
+        await recordWorkflowEvent(supabase, {
+          organisationId: params.organisationId,
+          entityType: 'risk',
+          entityId: params.riskId,
+          eventType: 'STAGE4_CONTROL_MAPPING_READY',
+          actorUserId: params.userId,
+          fromStatus: 'IN_REVIEW',
+          toStatus: 'APPROVED',
+          metadata: { contractVersion: '2026-11-25', stage: 4, nextWorkflow: 'AI_CONTROL_MAPPING' },
+        });
+      }
+      await ensureControlMappingFromApprovedRisk(supabase, {
+        organisationId: params.organisationId,
+        riskId: params.riskId,
+        actorUserId: params.userId,
+      });
+    }
+  }
   return data;
 }

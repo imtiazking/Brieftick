@@ -100,6 +100,7 @@ async function recordDualEntityLinkEvents(
 type TenantEntityTable =
   | 'regulatory_obligations'
   | 'regulatory_changes'
+  | 'impact_assessments'
   | 'policies'
   | 'risks'
   | 'controls'
@@ -200,6 +201,38 @@ export async function unlinkObligationPolicy(
   if (error) throw new Error(error.message);
 }
 
+export async function linkImpactAssessmentRisk(
+  supabase: SupabaseClient,
+  organisationId: string,
+  impactAssessmentId: string,
+  riskId: string,
+  userId: string,
+  linkKind: 'AI_MAPPED' | 'AI_PROPOSED' = 'AI_MAPPED',
+) {
+  const { a, b } = await assertPair(
+    supabase,
+    organisationId,
+    { table: 'impact_assessments', id: impactAssessmentId },
+    { table: 'risks', id: riskId },
+  );
+  const inserted = await insertLinkRow(supabase, 'impact_assessment_risk_links', {
+    organisation_id: organisationId,
+    impact_assessment_id: a,
+    risk_id: b,
+    link_kind: linkKind,
+  });
+  if (inserted) {
+    await recordWorkflowEvent(supabase, {
+      organisationId,
+      entityType: 'impact_assessment',
+      entityId: a,
+      eventType: 'RISK_LINKED',
+      actorUserId: userId,
+      metadata: { risk_id: b, link_kind: linkKind },
+    });
+  }
+}
+
 export async function linkObligationRisk(
   supabase: SupabaseClient,
   organisationId: string,
@@ -216,14 +249,21 @@ export async function linkObligationRisk(
   const [{ data: oblRow }, { data: riskRow }] = await Promise.all([
     supabase
       .from('regulatory_obligations')
-      .select('id, metadata, regulatory_change_id, change:regulatory_changes(id, title, description, external_key, origin, publication_id, metadata)')
+      .select('id, metadata, regulatory_change_id')
       .eq('id', a)
       .eq('organisation_id', organisationId)
       .single(),
     supabase.from('risks').select('id, metadata').eq('id', b).eq('organisation_id', organisationId).single(),
   ]);
   if (!oblRow || !riskRow) throw new Error('not_found');
-  const ch = Array.isArray(oblRow.change) ? oblRow.change[0] : oblRow.change;
+  const { data: ch } = oblRow.regulatory_change_id
+    ? await supabase
+        .from('regulatory_changes')
+        .select('id, title, description, external_key, origin, publication_id, metadata')
+        .eq('id', oblRow.regulatory_change_id)
+        .eq('organisation_id', organisationId)
+        .maybeSingle()
+    : { data: null };
   const oblClass = classifyObligationForLab(
     obligationLabProvenanceInputFromRow({ ...oblRow, change: ch ?? null } as never),
   );

@@ -8,7 +8,14 @@ import {
   classifyAssuranceForLab,
   resolveAssuranceCreateMetadata,
 } from '@/lib/ri/lab-api/risk-control-lab-provenance';
+import { RiConflictError } from '@/lib/ri/errors';
+import {
+  assertGovernanceActionAllowed,
+  requiredStatusForGovernanceAction,
+} from '@/lib/ri/governance-draft-workflow-guards.mjs';
 import { linkAssuranceControl } from '@/lib/ri/links';
+import { canRi } from '@/lib/ri/permissions';
+import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 import {
   parseAssuranceResult,
@@ -196,4 +203,135 @@ export async function getAssuranceDetail(
     findings: (findings.data ?? []).map((r) => (Array.isArray(r.finding) ? r.finding[0] : r.finding)),
     labClass: classifyAssuranceForLab(assuranceLabProvenanceInputFromRow(data)),
   };
+}
+
+function assuranceWorkflowStatus(metadata: Record<string, unknown> | null | undefined): string {
+  const m = metadata && typeof metadata === 'object' ? metadata : {};
+  return String(m.assuranceStatus || (m.stage5PrimaryPlan ? 'DRAFT' : 'OPEN'));
+}
+
+export async function updateAssuranceWithGovernance(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    assuranceId: string;
+    userId: string;
+    role: PlatformRole;
+    fields: Record<string, unknown>;
+    expectedUpdatedAt?: string | null;
+  },
+) {
+  await assertRowInOrganisation(supabase, 'assurance_reviews', params.assuranceId, params.organisationId);
+  const { data: existing, error: loadErr } = await supabase
+    .from('assurance_reviews')
+    .select('result, notes, updated_at, reviewer_user_id, metadata')
+    .eq('id', params.assuranceId)
+    .eq('organisation_id', params.organisationId)
+    .single();
+  if (loadErr || !existing) throw new Error('not_found');
+
+  const wfStatus = assuranceWorkflowStatus(existing.metadata as Record<string, unknown>);
+  if (
+    params.expectedUpdatedAt &&
+    new Date(existing.updated_at).getTime() !== new Date(params.expectedUpdatedAt).getTime()
+  ) {
+    throw new Error('stale_record');
+  }
+
+  if (!params.fields.action) {
+    return updateAssuranceReview(supabase, {
+      organisationId: params.organisationId,
+      assuranceId: params.assuranceId,
+      userId: params.userId,
+      fields: params.fields,
+      expectedUpdatedAt: params.expectedUpdatedAt,
+    });
+  }
+
+  const meta = { ...(existing.metadata as Record<string, unknown>) };
+  const update: Record<string, unknown> = { metadata: meta };
+  let pendingEvent: {
+    eventType: 'ASSURANCE_PLAN_SUBMITTED' | 'ASSURANCE_CLOSED';
+    fromStatus: string;
+    toStatus: string;
+  } | null = null;
+  let requiredMetaStatus: string | null = null;
+
+  if (params.fields.action === 'submit') {
+    if (!canRi(params.role, 'assurance:submit')) throw new Error('insufficient_role');
+    try {
+      assertGovernanceActionAllowed('submit', wfStatus);
+    } catch {
+      throw new RiConflictError('assurance_invalid_transition');
+    }
+    requiredMetaStatus = requiredStatusForGovernanceAction('submit', wfStatus);
+    meta.assuranceStatus = 'IN_REVIEW';
+    pendingEvent = { eventType: 'ASSURANCE_PLAN_SUBMITTED', fromStatus: wfStatus, toStatus: 'IN_REVIEW' };
+  } else if (params.fields.action === 'approve') {
+    if (!canRi(params.role, 'assurance:approve')) throw new Error('insufficient_role');
+    try {
+      assertGovernanceActionAllowed('approve', wfStatus);
+    } catch {
+      throw new RiConflictError('assurance_invalid_transition');
+    }
+    assertImpactApproverSoD({
+      ownerUserId: existing.reviewer_user_id,
+      approverUserId: params.userId,
+    });
+    requiredMetaStatus = requiredStatusForGovernanceAction('approve', wfStatus);
+    const nextResult = params.fields.result ? parseAssuranceResult(params.fields.result) : 'PASS';
+    if (nextResult === 'NOT_TESTED') {
+      throw new RiConflictError('assurance_close_requires_result');
+    }
+    update.result = nextResult;
+    meta.assuranceStatus = 'CLOSED';
+    pendingEvent = { eventType: 'ASSURANCE_CLOSED', fromStatus: wfStatus, toStatus: 'CLOSED' };
+  } else {
+    throw new Error('invalid_action');
+  }
+
+  if (requiredMetaStatus && wfStatus !== requiredMetaStatus) {
+    throw new RiConflictError('assurance_invalid_transition');
+  }
+
+  const { data, error } = await supabase
+    .from('assurance_reviews')
+    .update(update)
+    .eq('id', params.assuranceId)
+    .eq('organisation_id', params.organisationId)
+    .select()
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data) throw new RiConflictError('assurance_invalid_transition');
+
+  if (pendingEvent) {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'assurance_review',
+      entityId: params.assuranceId,
+      eventType: pendingEvent.eventType,
+      actorUserId: params.userId,
+      fromStatus: pendingEvent.fromStatus,
+      toStatus: pendingEvent.toStatus,
+    });
+    if (pendingEvent.eventType === 'ASSURANCE_CLOSED') {
+      const obligationId = meta.sourceRegulatoryObligationId;
+      if (typeof obligationId === 'string') {
+        await recordWorkflowEvent(supabase, {
+          organisationId: params.organisationId,
+          entityType: 'regulatory_obligation',
+          entityId: obligationId,
+          eventType: 'COMPLIANCE_LIFECYCLE_CLOSED',
+          actorUserId: params.userId,
+          toStatus: 'CLOSED',
+          metadata: {
+            assuranceReviewId: params.assuranceId,
+            assuranceResult: update.result,
+            contractVersion: '2026-11-25',
+          },
+        });
+      }
+    }
+  }
+  return data;
 }

@@ -1,6 +1,14 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PlatformRole } from '@/lib/roles';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { RiConflictError } from '@/lib/ri/errors';
+import {
+  assertGovernanceActionAllowed,
+  requiredStatusForGovernanceAction,
+} from '@/lib/ri/governance-draft-workflow-guards.mjs';
+import { canRi } from '@/lib/ri/permissions';
+import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
+import { ensureAssurancePlanFromApprovedControl } from '@/lib/ri/services/control-assurance-downstream';
 import { parseOptionalText, parseRequiredText } from '@/lib/ri/validation';
 import { parseUuid } from '@/lib/ri/validation';
 import { LAB_PROVENANCE_LOCKED_KEY } from '@/lib/ri/lab-api/change-create-provenance';
@@ -214,5 +222,143 @@ export async function updateControl(
     .select()
     .single();
   if (error) throw new Error(error.message);
+  return data;
+}
+
+export async function updateControlWithGovernance(
+  supabase: SupabaseClient,
+  params: {
+    organisationId: string;
+    controlId: string;
+    userId: string;
+    role: PlatformRole;
+    fields: Record<string, unknown>;
+    expectedUpdatedAt?: string | null;
+  },
+) {
+  if (!params.fields.action) {
+    return updateControl(
+      supabase,
+      params.organisationId,
+      params.controlId,
+      params.fields,
+      params.expectedUpdatedAt,
+    );
+  }
+
+  await assertRowInOrganisation(supabase, 'controls', params.controlId, params.organisationId);
+  const { data: existing } = await supabase
+    .from('controls')
+    .select('status, updated_at, owner_user_id')
+    .eq('id', params.controlId)
+    .eq('organisation_id', params.organisationId)
+    .single();
+  if (!existing) throw new Error('not_found');
+
+  if (
+    params.expectedUpdatedAt &&
+    new Date(existing.updated_at).getTime() !== new Date(params.expectedUpdatedAt).getTime()
+  ) {
+    throw new Error('stale_record');
+  }
+
+  const update: Record<string, unknown> = {};
+  let pendingEvent: {
+    eventType: 'CONTROL_SUBMITTED' | 'CONTROL_MAPPING_APPROVED' | 'CONTROL_MAPPING_REJECTED';
+    fromStatus: string;
+    toStatus: string;
+  } | null = null;
+  let requiredCurrentStatus: string | null = null;
+
+  if (params.fields.action === 'submit') {
+    if (!canRi(params.role, 'control:submit')) throw new Error('insufficient_role');
+    try {
+      assertGovernanceActionAllowed('submit', existing.status);
+    } catch {
+      throw new RiConflictError('control_invalid_transition');
+    }
+    requiredCurrentStatus = requiredStatusForGovernanceAction('submit', existing.status);
+    update.status = 'IN_REVIEW';
+    pendingEvent = { eventType: 'CONTROL_SUBMITTED', fromStatus: existing.status, toStatus: 'IN_REVIEW' };
+  } else if (params.fields.action === 'approve') {
+    if (!canRi(params.role, 'control:approve')) throw new Error('insufficient_role');
+    try {
+      assertGovernanceActionAllowed('approve', existing.status);
+    } catch {
+      throw new RiConflictError('control_invalid_transition');
+    }
+    assertImpactApproverSoD({ ownerUserId: existing.owner_user_id, approverUserId: params.userId });
+    requiredCurrentStatus = requiredStatusForGovernanceAction('approve', existing.status);
+    update.status = 'ACTIVE';
+    pendingEvent = {
+      eventType: 'CONTROL_MAPPING_APPROVED',
+      fromStatus: existing.status,
+      toStatus: 'ACTIVE',
+    };
+  } else if (params.fields.action === 'reject') {
+    if (!canRi(params.role, 'control:approve')) throw new Error('insufficient_role');
+    try {
+      assertGovernanceActionAllowed('reject', existing.status);
+    } catch {
+      throw new RiConflictError('control_invalid_transition');
+    }
+    requiredCurrentStatus = requiredStatusForGovernanceAction('reject', existing.status);
+    update.status = 'DRAFT';
+    pendingEvent = {
+      eventType: 'CONTROL_MAPPING_REJECTED',
+      fromStatus: existing.status,
+      toStatus: 'DRAFT',
+    };
+  } else {
+    throw new Error('invalid_action');
+  }
+
+  let query = supabase
+    .from('controls')
+    .update(update)
+    .eq('id', params.controlId)
+    .eq('organisation_id', params.organisationId);
+  if (requiredCurrentStatus) query = query.eq('status', requiredCurrentStatus);
+  const { data, error } = await query.select().maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data) throw new RiConflictError('control_invalid_transition');
+
+  if (pendingEvent) {
+    await recordWorkflowEvent(supabase, {
+      organisationId: params.organisationId,
+      entityType: 'control',
+      entityId: params.controlId,
+      eventType: pendingEvent.eventType,
+      actorUserId: params.userId,
+      fromStatus: pendingEvent.fromStatus,
+      toStatus: pendingEvent.toStatus,
+    });
+    if (pendingEvent.eventType === 'CONTROL_MAPPING_APPROVED') {
+      const { count: priorReady } = await supabase
+        .from('workflow_events')
+        .select('id', { count: 'exact', head: true })
+        .eq('organisation_id', params.organisationId)
+        .eq('entity_type', 'control')
+        .eq('entity_id', params.controlId)
+        .eq('event_type', 'STAGE5_ASSURANCE_READY');
+      if (!priorReady) {
+        await recordWorkflowEvent(supabase, {
+          organisationId: params.organisationId,
+          entityType: 'control',
+          entityId: params.controlId,
+          eventType: 'STAGE5_ASSURANCE_READY',
+          actorUserId: params.userId,
+          fromStatus: 'IN_REVIEW',
+          toStatus: 'ACTIVE',
+          metadata: { contractVersion: '2026-11-25', stage: 5, nextWorkflow: 'AI_CONTROL_ASSURANCE' },
+        });
+      }
+      await ensureAssurancePlanFromApprovedControl(supabase, {
+        organisationId: params.organisationId,
+        controlId: params.controlId,
+        actorUserId: params.userId,
+      });
+    }
+  }
   return data;
 }

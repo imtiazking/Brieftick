@@ -9,6 +9,7 @@ import {
   buildLockedChildMetadataFromParentChange,
   workflowMetadataForChildRecordCreate,
 } from '@/lib/ri/lab-api/child-record-provenance';
+import { ensureRiskMappingFromApprovedImpact } from '@/lib/ri/services/impact-risk-downstream';
 import { fanOutTenantNotification } from '@/lib/ri/services/tenant-notification-fanout';
 import { RiConflictError } from '@/lib/ri/errors';
 import {
@@ -315,6 +316,11 @@ export async function updateImpactAssessment(
           },
         });
       }
+      await ensureRiskMappingFromApprovedImpact(supabase, {
+        organisationId: params.organisationId,
+        impactAssessmentId: params.impactId,
+        actorUserId: params.userId,
+      });
     }
     if (pendingEvent.eventType === 'IMPACT_SUBMITTED') {
       const fanOut = await fanOutTenantNotification(supabase, {

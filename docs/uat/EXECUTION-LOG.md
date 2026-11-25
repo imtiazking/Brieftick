@@ -2,6 +2,14 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-25 — Stages 3–5: integrated compliance lifecycle (fixture AI)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | Stages 3–5 orchestration | Impact approve → UC-RI-006 risk DRAFT; risk validate → UC-RI-007 control DRAFT; control approve → UC-RI-008 assurance plan; human submit/approve each stage; `COMPLIANCE_LIFECYCLE_CLOSED` on obligation | Downstream services + governance on risks/controls/assurance; `acceptance-ri-compliance-lifecycle-e2e.mjs` **PASS**; catalogue **RI-COMPLIANCE-LIFECYCLE-E2E**; Design Lab `connected-compliance-lifecycle-panel.js` |
+| — | Regression | Stage 2 preserved | `acceptance-ri-stage2-obligation-to-impact.mjs` **PASS** after Stage 3 hook on impact approve |
+| — | Vercel | Hobby CPU quota | **No deploy** |
+
 ## 2026-11-25 — Stage 2: obligation OPEN → AI impact draft
 
 | Time (UTC) | Decision | Reason | Outcome |

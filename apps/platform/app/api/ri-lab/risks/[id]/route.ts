@@ -4,7 +4,7 @@ import { labApiErrorResponse } from '@/lib/ri/lab-api/errors';
 import { mapRiskRowToLabView } from '@/lib/ri/lab-api/lab-governance-view';
 import { parseLabRiskPatchBody } from '@/lib/ri/lab-api/lab-work-write';
 import { assertLabRiskWritesEnabled } from '@/lib/ri/lab-api/lab-connected-writes';
-import { getRiskDetail, updateRisk } from '@/lib/ri/services/risks';
+import { getRiskDetail, updateRiskWithGovernance } from '@/lib/ri/services/risks';
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -35,13 +35,14 @@ export async function PATCH(
     const ctx = await requireRiContext('risk:write');
     assertLabRiskWritesEnabled(ctx.role);
     const patch = parseLabRiskPatchBody(await request.json());
-    const row = await updateRisk(
-      ctx.supabase,
-      ctx.organisationId,
-      id,
-      patch.fields,
-      patch.expectedUpdatedAt,
-    );
+    const row = await updateRiskWithGovernance(ctx.supabase, {
+      organisationId: ctx.organisationId,
+      riskId: id,
+      userId: ctx.userId,
+      role: ctx.role,
+      fields: patch.fields,
+      expectedUpdatedAt: patch.expectedUpdatedAt,
+    });
     const risk = mapRiskRowToLabView(row as Record<string, unknown>);
     return NextResponse.json({ ok: true, risk });
   } catch (err) {

@@ -164,6 +164,7 @@ export function parseLabAssurancePatchBody(body: unknown): {
   const fields: Record<string, unknown> = {};
   if ('result' in raw) fields.result = parseAssuranceResult(raw.result);
   if ('notes' in raw) fields.notes = parseOptionalText(raw.notes, 8000);
+  if ('action' in raw && typeof raw.action === 'string') fields.action = raw.action;
   if (!Object.keys(fields).length) throw new RiValidationError('missing_patch_fields');
   return { fields, expectedUpdatedAt };
 }

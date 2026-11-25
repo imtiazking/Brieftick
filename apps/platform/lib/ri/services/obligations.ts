@@ -28,6 +28,7 @@ import {
 } from '@/lib/ri/validation';
 import { summarizeProductionObligationRows } from '@/lib/ri/lab-compat/dashboard-parity.mjs';
 import { assertActiveOrganisationAssignee } from '@/lib/ri/organisation-assignee';
+import { getComplianceLifecycleForObligation } from '@/lib/ri/services/compliance-lifecycle';
 import { ensureImpactAssessmentFromApprovedObligation } from '@/lib/ri/services/obligation-impact-downstream';
 
 export function summarizeObligationListRows(rows: { status: string }[]) {
@@ -235,10 +236,17 @@ export async function getObligationDetail(
     .limit(1)
     .maybeSingle();
 
+  const complianceLifecycle = await getComplianceLifecycleForObligation(
+    supabase,
+    organisationId,
+    obligationId,
+  );
+
   return {
     obligation: { ...data, change },
     impacts: impacts ?? [],
     stage2ImpactAssessment: stage2Impact ?? null,
+    complianceLifecycle,
     risks,
     controls,
   };

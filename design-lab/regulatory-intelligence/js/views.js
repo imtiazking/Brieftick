@@ -73,6 +73,7 @@ import {
   renderConnectedObligationWorkflowPanel,
   renderConnectedObligationStage2ImpactPanel,
 } from './platform/connected-obligation-panels.js';
+import { renderConnectedComplianceLifecyclePanel } from './platform/connected-compliance-lifecycle-panel.js';
 import {
   renderConnectedControlEditPanel,
   renderConnectedRiskEditPanel,
@@ -1342,6 +1343,7 @@ function viewObligation(id) {
       ${controlSection}
       ${renderConnectedObligationClassificationPanel(id, o)}
       ${renderConnectedObligationStage2ImpactPanel(id, o)}
+      ${renderConnectedComplianceLifecyclePanel(id, o.complianceLifecycle)}
       ${renderConnectedObligationReviewPanel(id, o)}
       ${renderConnectedObligationEditPanel(id, o)}
       ${renderConnectedObligationLinkPanel(id, o)}

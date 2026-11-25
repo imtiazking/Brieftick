@@ -22,6 +22,18 @@ export const SCHEMAS = {
     required: ['candidates', 'confidence'],
     confidence: { min: 0, max: 100 },
   },
+  RiskMappingResult: {
+    required: ['riskProposals', 'confidence'],
+    confidence: { min: 0, max: 100 },
+  },
+  ControlMappingResult: {
+    required: ['controlProposals', 'confidence'],
+    confidence: { min: 0, max: 100 },
+  },
+  ControlAssurancePlanResult: {
+    required: ['testPlan', 'confidence'],
+    confidence: { min: 0, max: 100 },
+  },
 } as const;
 
 export function validateStructuredOutput(
@@ -65,5 +77,8 @@ export function mapSchemaForAnalysisType(analysisType: string): string {
   if (analysisType === 'Regulatory Change Extraction') return 'ChangeExtractionResult';
   if (analysisType === 'Impact Suggestion') return 'ImpactSuggestionResult';
   if (analysisType === 'Obligation Extraction') return 'ObligationExtractionResult';
+  if (analysisType === 'Risk Mapping') return 'RiskMappingResult';
+  if (analysisType === 'Control Mapping') return 'ControlMappingResult';
+  if (analysisType === 'Control Assurance Plan') return 'ControlAssurancePlanResult';
   return 'ApplicabilityResult';
 }
