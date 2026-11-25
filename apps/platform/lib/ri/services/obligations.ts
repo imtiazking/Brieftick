@@ -388,9 +388,6 @@ export async function updateObligation(
         role: params.role ?? null,
       });
     }
-    if (next === 'OPEN' && existing.status !== 'OPEN' && params.role && !canRi(params.role, 'impact:approve')) {
-      throw new RiConflictError('insufficient_role');
-    }
     update.status = next;
   }
 

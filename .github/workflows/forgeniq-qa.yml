@@ -24,6 +24,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Embedded Postgres system libraries
         run: sudo apt-get update && sudo apt-get install -y libreadline-dev zlib1g-dev libicu-dev
+      - name: Reference catalogue seed for embedded Postgres
+        run: npm run sync:reference-catalogue
       - name: QA catalogue preflight
         run: node -e "import('./scripts/qa/catalogue.mjs').then((m) => { const n = m.selectCatalogue([], 'ci').length; console.log('ci_rows', n); if (n < 25) process.exit(1); })"
       - name: Offline CI gate (no Clerk sessions or staging promotion)
