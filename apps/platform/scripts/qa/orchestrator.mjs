@@ -6,7 +6,7 @@
  *   node scripts/qa/orchestrator.mjs --mode change|ci|release|promote|post-deploy|self-test
  */
 import { spawnSync, execSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -158,6 +158,12 @@ function writeEvidence(report) {
   writeFileSync(join(evidenceDir, `run-${stamp}.json`), JSON.stringify(report, null, 2));
   writeFileSync(join(evidenceDir, 'latest.json'), JSON.stringify(report, null, 2));
   writeFileSync(latestLab, JSON.stringify(report, null, 2));
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    const failed = report.results.filter((r) => r.status === 'FAIL').map((r) => r.id);
+    const blocked = report.results.filter((r) => r.status === 'BLOCKED' || r.status === 'AUTH_BLOCKED').map((r) => r.id);
+    const summary = `### QA ${report.mode} (${report.qaContext})\n\n- offline: ${report.offlineTests}\n- passed: ${report.passed}\n- failed: ${report.failed}\n- blocked: ${report.blocked}\n${failed.length ? `\n**Failed:** ${failed.join(', ')}` : ''}${blocked.length ? `\n**Blocked:** ${blocked.join(', ')}` : ''}\n`;
+    appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
+  }
   const defects = report.results.filter((r) => r.status === 'FAIL');
   if (defects.length) {
     mkdirSync(join(evidenceDir, 'defects'), { recursive: true });

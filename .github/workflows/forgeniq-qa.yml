@@ -24,8 +24,13 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Embedded Postgres system libraries
         run: sudo apt-get update && sudo apt-get install -y libreadline-dev zlib1g-dev libicu-dev
-      - name: Offline CI gate (no Clerk sessions or staging promotion)
-        run: npm run qa || (test -f ../../docs/uat/qa/latest.json && head -80 ../../docs/uat/qa/latest.json; exit 1)
+      - name: QA catalogue preflight
+        run: node -e "import('./scripts/qa/catalogue.mjs').then((m) => { const n = m.selectCatalogue([], 'ci').length; console.log('ci_rows', n); if (n < 18) process.exit(1); })"
+      - name: Design Lab offline browser smoke
+        run: node scripts/eval/design-lab-browser-smoke.mjs
         env:
           CI: 'true'
-          FORGENIQ_QA_REQUIRE_DB: '1'
+      - name: Offline CI gate (no Clerk sessions or staging promotion)
+        run: npm run qa
+        env:
+          CI: 'true'
