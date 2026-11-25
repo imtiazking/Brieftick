@@ -716,3 +716,19 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Not implemented | Automatic write chain from obligation approval through impact, risk, control and assurance. Remediation end-to-end. Paid AI. |
 | Commit | `d2c7794` |
 | Production | **NO-GO**. |
+
+## 2026-11-25 — Candidate staging release host and authenticated preview pipeline
+
+| Topic | Outcome |
+|---|---|
+| Preview auth solution | Clerk sessions stay on authorised FORGENIQ hosts only (`staging-app`, `candidate-staging`). `*.vercel.app` previews remain **AUTH_BLOCKED** by design. Pre-promotion authenticated testing targets **`https://candidate-staging.forgeniq.com`** (Vercel domain added; **GoDaddy CNAME pending**). Optional Clerk satellite (`NEXT_PUBLIC_CLERK_CANDIDATE_SATELLITE=1`) documented; not enabled. Interim: **`FORGENIQ_RELEASE_PREAUTH=promote-verify`** (default) — offline `promote` gate, unauth preview smoke, alias validated preview to official host, post-promotion auth, **`vercel rollback <protectedId>`** on failure. |
+| Code | `staging-release-hosts.mjs`, host-scoped UAT profiles, `audit-staging-personas.mjs`, `phase85h` candidate alias + rollback, middleware satellite hook (off), auth smoke allows candidate host. **Promotion mechanism:** `vercel alias <validated-preview> staging-app.forgeniq.com` (not blind `promote`, which can spawn a separate production build). |
+| DNS (owner) | CNAME `candidate-staging` → Vercel target from Domains UI; `vercel domains verify candidate-staging.forgeniq.com`. |
+| Technical QA | `orchestrator --mode=promote` **PASS 21** (includes AUTH-STAGING-BROWSER, RLS). |
+| Security | SEC-RLS embedded + cross-tenant local **PASS** in promote gate. |
+| Personas | **User A** `COMPLIANCE_MANAGER` with `aiReview` + `obligationReview` — **not** a restricted maker. **User B** `REVIEWER` / `aiReview`. **User C** checker grants. SoD self-approval remains offline (`RI-SOD`). Evidence `docs/uat/evidence/persona-audit-2026-11-25/PERSONA-AUDIT.json`. |
+| Deploy tranche | Preview **`dpl_AHimQPwDhpBAJkgWV2JHtj39f8DD`** unauth smoke **PASS 13**. Pre-promotion auth **DEFERRED** (`candidate_dns_pending`). Post-promotion auth **PASS 19** during `phase85h`. Official alias → preview via `vercel alias` (**`staging-app`** serves validated build). Protected rollback id **`dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW`**. |
+| Sessions | After alias cutover, saved Clerk profiles reported **401** until `renew A,B,C` — manual login required (mandatory approval). Does not negate deploy-window **PASS** evidence. |
+| Business UAT / production | **false** / **NO-GO**. No paid AI. No DB rollback. |
+| Doc | `docs/uat/STAGING-CANDIDATE-RELEASE.md`. |
+| Limitation | Pre-promotion authenticated candidate smoke blocked until DNS; persona renew needed after long runs or alias changes. **GAP-DOWNSTREAM-WRITE** unchanged. |

@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-11-25T01:04:41.056Z",
+  "origin": "https://staging-app.forgeniq.com",
+  "sodOfflineGate": "RI-SOD acceptance-ri-obligation-reviewer-approval.mjs (in-memory, not live self-approval)",
+  "personas": [
+    {
+      "persona": "A",
+      "label": "User A — Maker",
+      "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "writeCapabilities": {
+        "changeManagement": true,
+        "impactAssessments": true,
+        "obligations": true,
+        "obligationReview": true,
+        "risks": true,
+        "controls": true,
+        "evidence": true,
+        "findings": true,
+        "assurance": true,
+        "triage": true,
+        "applicabilityWorkflow": true,
+        "policies": true,
+        "actions": true,
+        "aiReview": true,
+        "aiRequest": true
+      },
+      "personaCapabilities": [
+        "obligations",
+        "applicabilityWorkflow",
+        "aiRequest"
+      ],
+      "notes": [
+        "User A is COMPLIANCE_MANAGER with reviewer and obligation-approval grants; not a restricted maker."
+      ]
+    },
+    {
+      "persona": "B",
+      "label": "User B — Reviewer",
+      "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "role": "REVIEWER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "writeCapabilities": {
+        "changeManagement": false,
+        "impactAssessments": false,
+        "obligations": false,
+        "obligationReview": true,
+        "risks": false,
+        "controls": false,
+        "evidence": false,
+        "findings": false,
+        "assurance": false,
+        "triage": false,
+        "applicabilityWorkflow": false,
+        "policies": false,
+        "actions": false,
+        "aiReview": true,
+        "aiRequest": false
+      },
+      "personaCapabilities": [
+        "aiReview"
+      ],
+      "notes": [
+        "User B is the dedicated REVIEWER for human finding review."
+      ]
+    },
+    {
+      "persona": "C",
+      "label": "User C — Approver",
+      "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "writeCapabilities": {
+        "changeManagement": true,
+        "impactAssessments": true,
+        "obligations": true,
+        "obligationReview": true,
+        "risks": true,
+        "controls": true,
+        "evidence": true,
+        "findings": true,
+        "assurance": true,
+        "triage": true,
+        "applicabilityWorkflow": true,
+        "policies": true,
+        "actions": true,
+        "aiReview": true,
+        "aiRequest": true
+      },
+      "personaCapabilities": [
+        "obligationReview",
+        "applicabilityWorkflow"
+      ],
+      "notes": [
+        "User C carries obligationReview for checker workflows."
+      ]
+    }
+  ]
+}

@@ -20,18 +20,39 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, rmSync, appendFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
+import {
+  OFFICIAL_STAGING_ORIGIN,
+  authOrigin,
+  designLabEntry,
+} from '../staging/staging-release-hosts.mjs';
 
-export const STAGING_ORIGIN = 'https://staging-app.forgeniq.com';
+export const STAGING_ORIGIN = OFFICIAL_STAGING_ORIGIN;
 export const STAGING_ORGANISATION_ID = 'b8f5e3a1-00ad-4000-8000-000000000001';
 const SESSION_ROOT = join(process.env.LOCALAPPDATA || join(process.env.USERPROFILE || '.', 'AppData', 'Local'), 'forgeniq-uat-sessions');
 const ATTRIBUTION_LOG = join(SESSION_ROOT, 'attribution.log');
 const LOGIN_WAIT_MS = Number(process.env.FORGENIQ_UAT_LOGIN_WAIT_MS || 30 * 60_000);
-const DESIGN_LAB = `${STAGING_ORIGIN}/design-lab/regulatory-intelligence/index.html`;
 const ALLOWED_ROLES = new Set(['OWNER', 'ADMIN', 'COMPLIANCE_MANAGER', 'ANALYST', 'REVIEWER']);
+
+function activeOrigin() {
+  return authOrigin();
+}
+
+function designLabUrl() {
+  return designLabEntry(activeOrigin());
+}
+
+function hostProfileSlug(origin) {
+  return new URL(origin).hostname.replace(/\./g, '_');
+}
+
+function onOrigin(url, origin = activeOrigin()) {
+  return url.startsWith(origin);
+}
 
 /** Only staging and its authentication providers may be loaded; production FORGENIQ hosts are refused. */
 const ALLOWED_HOSTS = [
   /^staging-app\.forgeniq\.com$/,
+  /^candidate-staging\.forgeniq\.com$/,
   /^clerk\.forgeniq\.com$/,
   /^accounts\.forgeniq\.com$/,
   /^img\.clerk\.com$/,
@@ -93,7 +114,10 @@ function persona(key) {
 function profileDir(key) {
   const p = persona(key);
   const dirKey = p.sessionProfile || p.key;
-  return join(SESSION_ROOT, `persona-${dirKey}`);
+  const origin = activeOrigin();
+  const legacy = join(SESSION_ROOT, `persona-${dirKey}`);
+  if (origin === OFFICIAL_STAGING_ORIGIN && existsSync(legacy)) return legacy;
+  return join(SESSION_ROOT, hostProfileSlug(origin), `persona-${dirKey}`);
 }
 
 /** Restrict the session folder to the current Windows user (no inherited ACEs). */
@@ -187,7 +211,8 @@ async function selectStagingOrganisation(page) {
 
 /** Server-side identity from /api/ri-lab/session (Clerk session → organisation membership → role). */
 async function readIdentity(page) {
-  if (!page.url().startsWith(STAGING_ORIGIN)) await page.goto(`${DESIGN_LAB}#/dashboard`, { waitUntil: 'domcontentloaded' });
+  const origin = activeOrigin();
+  if (!onOrigin(page.url(), origin)) await page.goto(`${designLabUrl()}#/dashboard`, { waitUntil: 'domcontentloaded' });
   const signedIn = await page.evaluate(() => Boolean(window.Clerk?.user?.id)).catch(() => false);
   if (signedIn) await selectStagingOrganisation(page);
   return page.evaluate(async () => {
@@ -211,8 +236,9 @@ async function readIdentity(page) {
 /** Throws unless the page is signed in as exactly this persona, in the staging UAT organisation, with the persona's capabilities. */
 export async function verifyIdentity(page, key) {
   const p = persona(key);
-  if (!page.url().startsWith(STAGING_ORIGIN) && page.url() !== 'about:blank') {
-    throw new IdentityMismatchError(`${p.label}: page is not on staging (${new URL(page.url()).host})`);
+  const origin = activeOrigin();
+  if (!onOrigin(page.url(), origin) && page.url() !== 'about:blank') {
+    throw new IdentityMismatchError(`${p.label}: page is not on the active auth host (${new URL(page.url()).host}, expected ${new URL(origin).host})`);
   }
   const id = await readIdentity(page);
   if (id.status === 401 || id.status === 403 || !id.ok) {
@@ -326,12 +352,16 @@ export async function runAs(key, fn, { headless = true } = {}) {
   }
 }
 
-const SIGN_IN_LANDING = `${STAGING_ORIGIN}/sign-in`;
-const DESIGN_LAB_DASHBOARD = `${DESIGN_LAB}#/dashboard`;
+function signInLanding() {
+  return `${activeOrigin()}/sign-in`;
+}
+function designLabDashboard() {
+  return `${designLabUrl()}#/dashboard`;
+}
 
 function signInUrl() {
-  const redirect = encodeURIComponent(DESIGN_LAB_DASHBOARD);
-  return `${SIGN_IN_LANDING}?redirect_url=${redirect}`;
+  const redirect = encodeURIComponent(designLabDashboard());
+  return `${signInLanding()}?redirect_url=${redirect}`;
 }
 
 async function openSignInPage(page, label) {
@@ -341,7 +371,7 @@ async function openSignInPage(page, label) {
   const status = response?.status() ?? null;
   const finalUrl = page.url();
   console.log(`${label}: document ${status ?? '—'} at ${finalUrl}`);
-  if (!finalUrl.startsWith(STAGING_ORIGIN) || !finalUrl.includes('/sign-in')) {
+  if (!onOrigin(finalUrl, activeOrigin()) || !finalUrl.includes('/sign-in')) {
     throw new Error(`${label}: expected staging sign-in, got ${finalUrl}`);
   }
   if (status != null && status >= 400) {
@@ -370,7 +400,7 @@ async function login(key, { fresh = false } = {}) {
         }
         throw err;
       }
-      if (!page.url().startsWith(STAGING_ORIGIN) || page.url().includes('/sign-in')) continue;
+      if (!onOrigin(page.url()) || page.url().includes('/sign-in')) continue;
       const clerkUserId = await page.evaluate(() => window.Clerk?.user?.id ?? null).catch(() => null);
       if (!clerkUserId) continue;
       if (clerkUserId !== p.userId) {
@@ -412,7 +442,7 @@ async function inspect(key) {
   }
   const { context, page } = await launch(p.key, { headless: true });
   try {
-    await page.goto(DESIGN_LAB_DASHBOARD, { waitUntil: 'domcontentloaded', timeout: 60_000 }).catch(() => null);
+    await page.goto(designLabDashboard(), { waitUntil: 'domcontentloaded', timeout: 60_000 }).catch(() => null);
     const id = await readIdentity(page);
     console.log(
       JSON.stringify(
@@ -474,7 +504,7 @@ async function logout(key) {
   if (existsSync(profileDir(p.key))) {
     const { context, page } = await launch(p.key, { headless: true });
     try {
-      await page.goto(`${DESIGN_LAB}#/dashboard`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`${designLabUrl()}#/dashboard`, { waitUntil: 'domcontentloaded' });
       await page.evaluate(() => window.Clerk?.signOut?.()).catch(() => {});
     } finally {
       await context.close();

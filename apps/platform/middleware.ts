@@ -21,25 +21,43 @@ const clerkEnabled =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith('pk_') &&
   Boolean(process.env.CLERK_SECRET_KEY?.trim());
 
-const clerkHandler = clerkMiddleware(async (auth, request) => {
-  if (isPublicRoute(request)) {
-    return;
-  }
-  if (isHostedSchedulerRoute(request)) {
-    return;
-  }
-  if (isSignOutAppSessionRoute(request)) {
-    return;
-  }
-  if (isRiLabJsonApiRoute(request)) {
-    const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+const candidateHost = process.env.FORGENIQ_CANDIDATE_HOST?.trim() || 'candidate-staging.forgeniq.com';
+const officialStagingOrigin = process.env.FORGENIQ_OFFICIAL_STAGING_ORIGIN?.trim() || 'https://staging-app.forgeniq.com';
+const candidateSatelliteEnabled = process.env.NEXT_PUBLIC_CLERK_CANDIDATE_SATELLITE === '1';
+
+const clerkHandler = clerkMiddleware(
+  async (auth, request) => {
+    if (isPublicRoute(request)) {
+      return;
     }
-    return;
-  }
-  await auth.protect();
-});
+    if (isHostedSchedulerRoute(request)) {
+      return;
+    }
+    if (isSignOutAppSessionRoute(request)) {
+      return;
+    }
+    if (isRiLabJsonApiRoute(request)) {
+      const { userId } = await auth();
+      if (!userId) {
+        return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+      }
+      return;
+    }
+    await auth.protect();
+  },
+  (req) => {
+    if (!candidateSatelliteEnabled) return {};
+    const host = req.headers.get('host')?.split(':')[0]?.toLowerCase();
+    if (host !== candidateHost) return {};
+    return {
+      isSatellite: true,
+      domain: `https://${candidateHost}`,
+      signInUrl: `${officialStagingOrigin}/sign-in`,
+      signUpUrl: `${officialStagingOrigin}/sign-up`,
+      satelliteAutoSync: true,
+    };
+  },
+);
 
 export default function middleware(request: NextRequest, event: NextFetchEvent) {
   if (!clerkEnabled) {

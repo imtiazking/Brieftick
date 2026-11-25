@@ -9,22 +9,32 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  STAGING_ORIGIN,
   SessionExpiredError,
   requireUatPersonas,
   runAs,
 } from '../uat/staging-user-sessions.mjs';
+import { authOrigin, designLabEntry, isAuthorizedAuthHost } from '../staging/staging-release-hosts.mjs';
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const repoRoot = join(platformRoot, '..', '..');
-const origin = (process.env.FORGENIQ_AUTH_BASE || STAGING_ORIGIN).replace(/\/$/, '');
-const host = new URL(origin).host;
-const LAB = `${origin}/design-lab/regulatory-intelligence/index.html`;
+let origin;
+try {
+  origin = authOrigin();
+} catch (err) {
+  const host = new URL((process.env.FORGENIQ_AUTH_BASE || '').replace(/\/$/, '') || 'https://invalid').hostname;
+  if (host.endsWith('.vercel.app')) {
+    console.error(
+      `AUTH_BLOCKED Clerk persona sessions require an authorised FORGENIQ staging host, not ${host}. Use candidate-staging.forgeniq.com or staging-app.forgeniq.com. This is not an application defect.`,
+    );
+    process.exit(2);
+  }
+  throw err;
+}
+const host = new URL(origin).hostname;
+const LAB = designLabEntry(origin);
 
-if (host !== 'staging-app.forgeniq.com') {
-  console.error(
-    `AUTH_BLOCKED Clerk persona sessions belong to staging-app.forgeniq.com and cannot authenticate ${host}. This is not an application defect.`,
-  );
+if (!isAuthorizedAuthHost(host)) {
+  console.error(`AUTH_BLOCKED host ${host} is not an authorised auth host.`);
   process.exit(2);
 }
 
