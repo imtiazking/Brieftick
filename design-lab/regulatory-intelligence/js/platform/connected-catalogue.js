@@ -672,7 +672,8 @@ function listRowUpdatedAt(cat, detailsKey, id) {
 function scheduleConnectedDetailFetch(state, detailsKey, id, fetcher) {
   const cat = initConnectedCatalogueState(state);
   const cached = cat[detailsKey]?.[id];
-  const alwaysRevalidate = detailsKey === 'obligationDetailsById';
+  const alwaysRevalidate =
+    detailsKey === 'obligationDetailsById' || detailsKey === 'assuranceDetailsById';
   if (cached) {
     const listUpdated = listRowUpdatedAt(cat, detailsKey, id);
     if (alwaysRevalidate || (listUpdated && cached.updatedAt && listUpdated > cached.updatedAt)) {

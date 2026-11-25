@@ -58,7 +58,8 @@ export function formatConnectedPatchError(body, fallback) {
   if (body.error === 'stale_record') return 'Record was updated elsewhere — refresh and save again';
   if (body.error === 'validation_error' && body.detail) return body.detail;
   if (body.error === 'connected_writes_disabled') return 'Connected writes are disabled on staging';
-  if (body.error === 'forbidden') return 'Insufficient permission to update this record';
+  if (body.reason === 'segregation_of_duties' && body.message) return body.message;
+  if (body.error === 'forbidden') return body.message || 'Insufficient permission to update this record';
   if (body.error === 'internal_error') {
     return 'The server could not complete this request. Refresh this page — if the change appears, do not submit again.';
   }
