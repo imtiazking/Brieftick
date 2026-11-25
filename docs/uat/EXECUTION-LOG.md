@@ -698,4 +698,6 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Release rule | **PASS** only when every mandatory check passed. **FAIL** if any assertion failed. **BLOCKED** if a mandatory check is blocked, not run, or auth-blocked. Production remains separately unauthorised. |
 | CI | `.github/workflows/forgeniq-qa.yml` runs the same release gate on pull requests and on pushes to `feature/ri-classification-triage` and `main`. |
 | Deploy gate | `phase85h-deploy-staging-platform.mjs` runs `--mode=release` before upload. A failed preview smoke still does not promote. `vercel promote` on this plan builds a new production deployment of `forgeniq-platform-staging`; there is no automatic schema rollback and no production (`www.forgeniq.com`) deploy. |
+| Staging | Preview **`dpl_XzzTPTjRm52WEvakuYtiJZZARBLb`** smoke **PASS** (13 routes, sign-in shell, including `#/admin/qa`). Alias **`dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW`** at `https://staging-app.forgeniq.com`. Served `app.js?v=1adb6757fac7`, QA report `technicalTests: PASS`, `businessUatApproved: false`, `productionReleaseAuthorised: false`. |
+| Commit | `1adb675` |
 | Production | **NO-GO**. |
