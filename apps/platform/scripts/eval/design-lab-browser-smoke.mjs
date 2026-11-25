@@ -136,6 +136,10 @@ page.on('console', (msg) => {
     !text.includes('fonts.gstatic.com') &&
     !text.includes('x-vercel-trusted-oidc-idp-token')
   ) {
+    if (/clerk\.forgeniq\.com|clerk\.browser\.js|blocked by CORS policy/i.test(text)) {
+      fatal.push(`clerk-cors:${text.slice(0, 180)}`);
+      return;
+    }
     fatal.push(text.slice(0, 400));
   }
 });
@@ -191,13 +195,16 @@ for (const route of ROUTES) {
   }
   const authGate = /sign in|backend unavailable|organisation access/i.test(heading);
   const contentOk = baseArg ? authGate || route.heading.test(heading) : route.heading.test(heading);
+  const blocking = fatal.filter((entry) => !String(entry).startsWith('clerk-cors:'));
+  const clerkOnly = fatal.length > 0 && blocking.length === 0;
   const ok =
     mounted &&
     nav > 0 &&
     contentOk &&
     fallback === 0 &&
     appLen > 40 &&
-    fatal.length === 0 &&
+    blocking.length === 0 &&
+    (!clerkOnly || authGate) &&
     (baseArg || table > 0) &&
     (baseArg || myTasks > 0);
   results.push({

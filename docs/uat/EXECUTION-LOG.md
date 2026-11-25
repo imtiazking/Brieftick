@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-25 — Design Lab authorised UAT registers
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 22:15 | Render authorised UAT obligations and impact assessments in their own register sections | Catalogue side arrays were loaded, but the obligation and impact pages only rendered the operational partition, so persisted UAT rows were not navigable | Local Design Lab module graph OK. Hosted browser proof follows the candidate release |
+
 ## 2026-11-25 — Obligation approval atomicity and Design Lab list scope
 
 | Time (UTC) | Decision | Reason | Outcome |
