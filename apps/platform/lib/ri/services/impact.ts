@@ -123,13 +123,24 @@ export async function getImpactDetail(
     .single();
   if (error) throw new Error(error.message);
 
-  const { data: dimensions } = await supabase
-    .from('impact_assessment_business_areas')
-    .select('business_area')
-    .eq('impact_assessment_id', impactId)
-    .eq('organisation_id', organisationId);
+  const [{ data: dimensions }, { data: riskLinks }] = await Promise.all([
+    supabase
+      .from('impact_assessment_business_areas')
+      .select('business_area')
+      .eq('impact_assessment_id', impactId)
+      .eq('organisation_id', organisationId),
+    supabase
+      .from('impact_assessment_risk_links')
+      .select('risk_id')
+      .eq('impact_assessment_id', impactId)
+      .eq('organisation_id', organisationId),
+  ]);
 
-  return { impact: data, businessAreas: dimensions?.map((d) => d.business_area) ?? [] };
+  return {
+    impact: data,
+    businessAreas: dimensions?.map((d) => d.business_area) ?? [],
+    riskIds: (riskLinks ?? []).map((link) => link.risk_id).filter(Boolean),
+  };
 }
 
 export async function updateImpactAssessment(

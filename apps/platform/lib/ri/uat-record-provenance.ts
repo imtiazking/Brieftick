@@ -81,6 +81,11 @@ export function parseLabDataScope(url: URL): LabDataScope {
   return DEFAULT_LAB_DATA_SCOPE;
 }
 
+/** Operational dashboards keep the filtered register. scope=all returns every authorised tenant row. */
+export function primaryRowsForLabScope<T>(scope: LabDataScope, operationalRows: T[], allRows: T[]): T[] {
+  return scope === 'operational' ? operationalRows : allRows;
+}
+
 /** Pending governance queue rows (impact / applicability IN_REVIEW). */
 export type PendingGovernanceProvenanceFields = {
   id?: string | null;

@@ -37,6 +37,7 @@ registerHooks({
 
 const { canRi } = await import('../lib/ri/permissions.ts');
 const writes = await import('../lib/ri/lab-api/lab-connected-writes.ts');
+const { primaryRowsForLabScope } = await import('../lib/ri/uat-record-provenance.ts');
 const { updateObligation } = await import('../lib/ri/services/obligations.ts');
 const { isAiObligationReviewDecision } = await import('../lib/ri/ai/ai-obligation-workflow.mjs');
 
@@ -124,7 +125,7 @@ const ACC = 'user_acceptor';
 const SUB = 'user_submitter';
 const CHK = 'user_checker';
 
-function makeDb({ beforeUpdate } = {}) {
+function makeDb({ beforeUpdate, impactInsertError } = {}) {
   const t = {
     regulatory_obligations: [
       { id: 'obl-ai', organisation_id: ORG_A, status: 'IN_REVIEW', origin: 'AI_ASSISTED', obligation_statement: 'Firms must…', citation: 'FG24/6 §2', owner_user_id: ACC, created_by_user_id: ACC, ai_analysis_run_id: 'run-1', updated_at: '2026-11-20T09:00:00.000Z' },
@@ -145,10 +146,23 @@ function makeDb({ beforeUpdate } = {}) {
 
   function query(table) {
     const state = { op: 'select', filters: [], payload: null, limit: null, order: null, mode: 'many' };
-    const rows = () => (t[table] ||= []).filter((r) => state.filters.every(([c, v]) => r[c] === v));
+    const rows = () => (t[table] ||= []).filter((r) => state.filters.every(([c, v]) => {
+      if (c.startsWith('metadata->>')) return r.metadata?.[c.slice('metadata->>'.length)] === v;
+      return r[c] === v;
+    }));
     function run() {
       if (state.op === 'insert') {
-        t[table].push({ created_at: new Date().toISOString(), ...state.payload });
+        if (table === 'impact_assessments' && impactInsertError) {
+          return { data: null, error: impactInsertError };
+        }
+        const row = {
+          id: state.payload.id || `${table}-${(t[table] || []).length + 1}`,
+          created_at: new Date().toISOString(),
+          ...state.payload,
+        };
+        t[table] ||= [];
+        t[table].push(row);
+        if (state.mode === 'single') return { data: { ...row }, error: null };
         return { data: null, error: null };
       }
       let out = rows();
@@ -251,6 +265,98 @@ for (const [label, over, expected, id] of refused) {
   check('write path unchanged: Compliance Manager edits citation', db.tables.regulatory_obligations.find((r) => r.id === 'obl-ai').citation, 'FG24/6 §2.1');
   await rejects('write path keeps SoD: acceptor approving via write path', () =>
     updateObligation(db.client, { organisationId: ORG_A, obligationId: 'obl-ai', userId: ACC, role: 'COMPLIANCE_MANAGER', fields: { status: 'OPEN' } }), 'segregation_of_duties');
+}
+
+check(
+  'operational scope keeps authorised UAT out of the primary register',
+  primaryRowsForLabScope('operational', ['op'], ['op', 'uat']),
+  ['op'],
+);
+check(
+  'scope=all keeps authorised UAT in the primary register',
+  primaryRowsForLabScope('all', ['op'], ['op', 'uat']),
+  ['op', 'uat'],
+);
+
+function stage2Obligation(db) {
+  db.tables.regulatory_changes = [
+    {
+      id: 'ch-1',
+      organisation_id: ORG_A,
+      title: 'Hosted regulatory change',
+      origin: 'MANUAL',
+      metadata: { labProvenanceLocked: true, labCreationMode: 'uat_authorised', recordProvenance: 'uat_authorised' },
+    },
+  ];
+  db.tables.regulatory_obligations.push({
+    id: 'obl-stage2',
+    organisation_id: ORG_A,
+    status: 'IN_REVIEW',
+    origin: 'AI_ASSISTED',
+    obligation_statement: 'Firms must keep labelled test evidence.',
+    citation: 'FG24/6',
+    owner_user_id: CHK,
+    created_by_user_id: ACC,
+    ai_analysis_run_id: 'run-1',
+    regulatory_change_id: 'ch-1',
+    updated_at: '2026-11-20T09:00:00.000Z',
+  });
+}
+
+{
+  const savedStage = process.env.FORGENIQ_STAGE2_AI;
+  const savedKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  process.env.FORGENIQ_STAGE2_AI = 'OFF';
+  delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const db = makeDb({
+    impactInsertError: { code: '42501', message: 'new row violates row-level security policy' },
+  });
+  stage2Obligation(db);
+  await rejects(
+    'reviewer stage2 denial does not report success',
+    () => review(db, { obligationId: 'obl-stage2' }),
+    'new row violates row-level security policy',
+  );
+  check('failed approval restores the previous status', statusOf(db, 'obl-stage2'), 'IN_REVIEW');
+  check(
+    'failed approval does not audit OPEN',
+    eventsFor(db, 'obl-stage2').some((e) => e.to_status === 'OPEN'),
+    false,
+  );
+  check(
+    'failed approval records stage2 failure',
+    db.tables.workflow_events.some(
+      (e) => e.event_type === 'OBLIGATION_STAGE2_INITIATION_FAILED' && e.entity_id === 'obl-stage2',
+    ),
+    true,
+  );
+  check('failed approval inserts no impact assessment', (db.tables.impact_assessments || []).length, 0);
+  if (savedStage === undefined) delete process.env.FORGENIQ_STAGE2_AI;
+  else process.env.FORGENIQ_STAGE2_AI = savedStage;
+  if (savedKey === undefined) delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+  else process.env.SUPABASE_SERVICE_ROLE_KEY = savedKey;
+}
+
+{
+  const savedStage = process.env.FORGENIQ_STAGE2_AI;
+  process.env.FORGENIQ_STAGE2_AI = 'OFF';
+  const db = makeDb();
+  stage2Obligation(db);
+  const approve = () =>
+    updateObligation(db.client, {
+      organisationId: ORG_A,
+      obligationId: 'obl-stage2',
+      userId: CHK,
+      role: 'COMPLIANCE_MANAGER',
+      fields: { status: 'OPEN' },
+    });
+  await approve();
+  check('successful approval remains OPEN with its impact', statusOf(db, 'obl-stage2'), 'OPEN');
+  check('successful approval creates one impact', db.tables.impact_assessments.length, 1);
+  await approve();
+  check('repeated approval does not create a second impact', db.tables.impact_assessments.length, 1);
+  if (savedStage === undefined) delete process.env.FORGENIQ_STAGE2_AI;
+  else process.env.FORGENIQ_STAGE2_AI = savedStage;
 }
 
 // ── 5. Route and UI wiring ──────────────────────────────────────────────────────────────────────────

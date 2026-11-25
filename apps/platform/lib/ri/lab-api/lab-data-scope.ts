@@ -15,6 +15,7 @@ import {
 export {
   filterRowsByLabDataScope,
   parseLabDataScope,
+  primaryRowsForLabScope,
   DEFAULT_LAB_DATA_SCOPE,
   isSyntheticUatRecord,
 } from '@/lib/ri/uat-record-provenance';

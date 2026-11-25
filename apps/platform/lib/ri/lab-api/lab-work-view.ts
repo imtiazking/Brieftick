@@ -108,6 +108,7 @@ export type LabImpactAssessmentView = {
   ownerLabel: string;
   reviewerId: string | null;
   approverId: string | null;
+  sourceRegulatoryObligationId: string | null;
   tenantScope: true;
   dataProvenance: RecordProvenanceKind;
   labClassification: ChangeLabClass;
@@ -274,6 +275,10 @@ export function mapImpactRowToLabView(row: {
     ownerLabel: row.owner_user_id ? `User ${row.owner_user_id.slice(0, 8)}…` : '—',
     reviewerId: row.reviewer_user_id ?? null,
     approverId: row.approver_user_id ?? null,
+    sourceRegulatoryObligationId:
+      typeof row.metadata?.sourceRegulatoryObligationId === 'string'
+        ? row.metadata.sourceRegulatoryObligationId
+        : null,
     tenantScope: true,
     dataProvenance: recordKindForImpactLabClass(labClass),
     labClassification: labClass,

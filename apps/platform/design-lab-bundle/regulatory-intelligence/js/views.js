@@ -1220,6 +1220,12 @@ function viewAssessment(id) {
         { label: a.id.slice(0, 8) },
       ])}
       <p class="ri-muted">Change: ${a.changeId ? linkRecord('Regulatory Change', a.changeId, a.changeTitle || a.changeId) : '—'}</p>
+      ${a.sourceRegulatoryObligationId ? `<p>Obligation: ${linkRecord('Obligation', a.sourceRegulatoryObligationId, a.sourceRegulatoryObligationId)}</p>` : ''}
+      <section class="ri-panel"><h3>Linked risks</h3>${
+        (a.riskIds || []).length
+          ? `<ul>${a.riskIds.map((rid) => `<li><a href="#/risk/${esc(rid)}">${esc(String(rid).slice(0, 8))}…</a></li>`).join('')}</ul>`
+          : '<p class="ri-muted">No linked risks yet.</p>'
+      }</section>
       ${renderConnectedImpactEditPanel(id, a)}
       ${renderConnectedImpactWorkflowPanel(id)}
       <div class="ri-form__actions" hidden aria-hidden="true"></div>`;
@@ -1436,6 +1442,7 @@ function viewRisk(id) {
         <dt>Owner</dt><dd>${esc(r.owner || '—')}</dt><dt>Status</dt><dd>${badge(r.status)}</dd>
         <dt>Inherent / residual</dt><dd>${esc(r.inherentRisk || '—')} / ${esc(r.residualRisk || '—')}</dd>
         <dt>Review date</dt><dd>${formatDate(r.reviewDate)}</dd></dl>
+      ${r.sourceImpactAssessmentId ? `<p>Impact assessment: <a href="#/assessment/${esc(r.sourceImpactAssessmentId)}">${esc(String(r.sourceImpactAssessmentId).slice(0, 8))}…</a></p>` : ''}
       ${renderConnectedRiskEditPanel(id, r)}
       <section><h3>Linked obligations</h3>${obligations ? `<ul>${obligations}</ul>` : '<p class="ri-muted">No linked obligations.</p>'}</section>
       <section class="ri-panel"><h3>Linked controls</h3>${controls ? `<ul>${controls}</ul>` : '<p class="ri-muted">No linked controls.</p>'}</section>

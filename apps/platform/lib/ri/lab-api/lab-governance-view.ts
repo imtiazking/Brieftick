@@ -63,6 +63,9 @@ export type LabRiskView = {
   labClassification: ChangeLabClass;
   labClassificationLabel: string;
   tenantScope: true;
+  sourceImpactAssessmentId: string | null;
+  sourceRegulatoryObligationId: string | null;
+  obligationIds: string[];
   _connected: true;
 };
 
@@ -82,6 +85,10 @@ export type LabControlView = {
   labClassification: ChangeLabClass;
   labClassificationLabel: string;
   tenantScope: true;
+  sourceApprovedRiskId: string | null;
+  sourceRegulatoryObligationId: string | null;
+  riskIds: string[];
+  obligationIds: string[];
   _connected: true;
 };
 
@@ -249,8 +256,15 @@ export type LabGovernanceMetricsView = {
   _connected: true;
 };
 
+function lineageId(row: Record<string, unknown>, key: string): string | null {
+  const meta = parseLabRowMetadata(row.metadata);
+  const value = meta?.[key];
+  return typeof value === 'string' && value ? value : null;
+}
+
 export function mapRiskRowToLabView(row: Record<string, unknown>): LabRiskView {
   const labClass = classifyRiskForLab(riskLabProvenanceInputFromRow(row));
+  const obligationId = lineageId(row, 'sourceRegulatoryObligationId');
   return {
     id: String(row.id),
     title: String(row.title ?? ''),
@@ -267,12 +281,17 @@ export function mapRiskRowToLabView(row: Record<string, unknown>): LabRiskView {
     labClassification: labClass,
     labClassificationLabel: labChangeClassificationLabel(labClass),
     tenantScope: true,
+    sourceImpactAssessmentId: lineageId(row, 'sourceImpactAssessmentId'),
+    sourceRegulatoryObligationId: obligationId,
+    obligationIds: obligationId ? [obligationId] : [],
     _connected: true,
   };
 }
 
 export function mapControlRowToLabView(row: Record<string, unknown>): LabControlView {
   const labClass = classifyControlForLab(controlLabProvenanceInputFromRow(row));
+  const riskId = lineageId(row, 'sourceApprovedRiskId');
+  const obligationId = lineageId(row, 'sourceRegulatoryObligationId');
   return {
     id: String(row.id),
     name: String(row.name ?? ''),
@@ -289,6 +308,10 @@ export function mapControlRowToLabView(row: Record<string, unknown>): LabControl
     labClassification: labClass,
     labClassificationLabel: labChangeClassificationLabel(labClass),
     tenantScope: true,
+    sourceApprovedRiskId: riskId,
+    sourceRegulatoryObligationId: obligationId,
+    riskIds: riskId ? [riskId] : [],
+    obligationIds: obligationId ? [obligationId] : [],
     _connected: true,
   };
 }

@@ -2,6 +2,13 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-25 — Obligation approval atomicity and Design Lab list scope
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 21:40 | Roll back OPEN when Stage 2 throws, and retry the impact insert with the workflow writer only after approval is authorised | Reviewer RLS can reject the impact insert after the status update, leaving OPEN without an assessment | Local `acceptance-ri-obligation-reviewer-approval.mjs` PASS, including rollback, no success audit, and idempotent repeat |
+| 21:40 | `scope=all` primary registers include authorised UAT rows; list views carry lineage ids | `tenant-work` always returned the operational partition, and risk/control list JSON omitted parent ids | `primaryRowsForLabScope`; impact detail exposes `riskIds` |
+
 ## 2026-11-26 — Staging UAT preparation (compliance lifecycle)
 
 | Time (UTC) | Decision | Reason | Outcome |

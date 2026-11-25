@@ -13,7 +13,7 @@ export async function GET(
   try {
     const { id } = await params;
     const ctx = await requireRiContext('impact:read');
-    const { impact, businessAreas } = await getImpactDetail(ctx.supabase, ctx.organisationId, id);
+    const { impact, businessAreas, riskIds } = await getImpactDetail(ctx.supabase, ctx.organisationId, id);
     const change = Array.isArray(impact.change) ? impact.change[0] : impact.change;
     const lab = mapImpactRowToLabView({
       id: impact.id,
@@ -38,6 +38,7 @@ export async function GET(
         financialImpact: impact.financial_impact,
         implementationComplexity: impact.implementation_complexity,
         businessAreas,
+        riskIds,
         submittedAt: impact.submitted_at,
         approvedAt: impact.approved_at,
         updatedAt: impact.updated_at,
@@ -65,7 +66,7 @@ export async function PATCH(
       fields: patch.fields,
       expectedUpdatedAt: patch.expectedUpdatedAt,
     });
-    const { impact, businessAreas } = await getImpactDetail(ctx.supabase, ctx.organisationId, id);
+    const { impact, businessAreas, riskIds } = await getImpactDetail(ctx.supabase, ctx.organisationId, id);
     const change = Array.isArray(impact.change) ? impact.change[0] : impact.change;
     const lab = mapImpactRowToLabView({
       id: impact.id,
@@ -90,6 +91,7 @@ export async function PATCH(
         financialImpact: impact.financial_impact,
         implementationComplexity: impact.implementation_complexity,
         businessAreas,
+        riskIds,
         updatedAt: impact.updated_at,
       },
     });

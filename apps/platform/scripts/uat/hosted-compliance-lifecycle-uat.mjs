@@ -64,7 +64,12 @@ record('AUTH-B', 'hosted-auth', session.B?.role === 'REVIEWER' ? 'PASS' : 'FAIL'
 
 if (!ids.impactId) {
 await runAs('A', async ({ page }) => {
-  const list = changes.body.changes || changes.body.regulatoryChanges || [];
+  const changes = await api(page, 'GET', '/api/ri-lab/changes?scope=all');
+  const list = [
+    ...(changes.body.changes || []),
+    ...(changes.body.authorisedUatChanges || []),
+    ...(changes.body.regulatoryChanges || []),
+  ];
   const change = list.find((c) => c.id) || null;
   if (!change?.id) {
     record('S1-CHANGE', 'hosted-api', 'BLOCKED', { status: changes.status, keys: Object.keys(changes.body || {}) });
@@ -143,8 +148,13 @@ if (ids.impactId && !ids.controlId) {
     ids.riskId = risks[0]?.id || null;
     if (!ids.riskId) {
       const listed = await api(page, 'GET', '/api/ri-lab/risks?scope=all');
-      const rows = listed.body.risks || [];
-      const hit = rows.find((r) => JSON.stringify(r).includes(ids.impactId) || JSON.stringify(r).includes(ids.obligationId));
+      const rows = [...(listed.body.risks || []), ...(listed.body.authorisedUatRisks || [])];
+      const hit = rows.find(
+        (r) =>
+          r.sourceImpactAssessmentId === ids.impactId ||
+          r.sourceRegulatoryObligationId === ids.obligationId ||
+          (r.obligationIds || []).includes(ids.obligationId),
+      );
       ids.riskId = hit?.id || null;
     }
     record('S3-AUTO-DRAFT', 'hosted-api', ids.riskId ? 'PASS' : 'FAIL', { riskId: ids.riskId });
@@ -166,8 +176,10 @@ if (ids.riskId && !ids.controlId) {
     ids.controlId = controls[0]?.id || null;
     if (!ids.controlId) {
       const listed = await api(page, 'GET', '/api/ri-lab/controls?scope=all');
-      const rows = listed.body.controls || [];
-      const hit = rows.find((r) => JSON.stringify(r).includes(ids.riskId));
+      const rows = [...(listed.body.controls || []), ...(listed.body.authorisedUatControls || [])];
+      const hit = rows.find(
+        (r) => r.sourceApprovedRiskId === ids.riskId || (r.riskIds || []).includes(ids.riskId),
+      );
       ids.controlId = hit?.id || null;
     }
     record('S4-AUTO-DRAFT', 'hosted-api', ids.controlId ? 'PASS' : 'FAIL', { controlId: ids.controlId });

@@ -396,15 +396,66 @@ export async function updateObligation(
     .update(update)
     .eq('id', params.obligationId)
     .eq('organisation_id', params.organisationId);
-  if (params.reviewDecisionOnly) updateQuery = updateQuery.eq('status', existing.status);
+  if ('status' in update) updateQuery = updateQuery.eq('status', existing.status);
   const { data, error } = await updateQuery.select().single();
   if (error) {
-    if (params.reviewDecisionOnly && error.code === 'PGRST116') throw new Error('stale_record');
+    if (error.code === 'PGRST116' && ('status' in update || params.reviewDecisionOnly)) {
+      throw new Error('stale_record');
+    }
     const dbCode = error.message.split(' ')[0];
     if (/^(classified_obligation_|obligation_classification_immutable)/.test(dbCode)) throw new RiConflictError(dbCode);
     throw new Error(error.message);
   }
-  if ('status' in update) {
+  const becameOpen = update.status === 'OPEN' && existing.status !== 'OPEN';
+  if (update.status === 'OPEN') {
+    try {
+      await ensureImpactAssessmentFromApprovedObligation(supabase, {
+        organisationId: params.organisationId,
+        obligationId: params.obligationId,
+        actorUserId: params.userId,
+        role: params.role ?? null,
+      });
+    } catch (err) {
+      const reason = err instanceof Error ? err.message : String(err);
+      if (becameOpen) {
+        const { error: revertError } = await supabase
+          .from('regulatory_obligations')
+          .update({ status: existing.status })
+          .eq('id', params.obligationId)
+          .eq('organisation_id', params.organisationId)
+          .eq('status', 'OPEN');
+        await recordWorkflowEvent(supabase, {
+          organisationId: params.organisationId,
+          entityType: 'regulatory_obligation',
+          entityId: params.obligationId,
+          eventType: 'OBLIGATION_STAGE2_INITIATION_FAILED',
+          actorUserId: params.userId,
+          fromStatus: 'OPEN',
+          toStatus: revertError ? 'OPEN' : existing.status,
+          metadata: {
+            reverted: !revertError,
+            reason: reason.slice(0, 500),
+          },
+        }).catch(() => undefined);
+        if (revertError) {
+          throw new Error(`stage2_initiation_failed_status_not_reverted:${revertError.message}`);
+        }
+      } else {
+        await recordWorkflowEvent(supabase, {
+          organisationId: params.organisationId,
+          entityType: 'regulatory_obligation',
+          entityId: params.obligationId,
+          eventType: 'OBLIGATION_STAGE2_INITIATION_FAILED',
+          actorUserId: params.userId,
+          fromStatus: 'OPEN',
+          toStatus: 'OPEN',
+          metadata: { reverted: false, reason: reason.slice(0, 500), alreadyOpen: true },
+        }).catch(() => undefined);
+      }
+      throw err;
+    }
+  }
+  if ('status' in update && update.status !== existing.status) {
     await recordWorkflowEvent(supabase, {
       organisationId: params.organisationId,
       entityType: 'regulatory_obligation',
@@ -414,23 +465,6 @@ export async function updateObligation(
       fromStatus: existing.status,
       toStatus: update.status as string,
     });
-    if (update.status === 'OPEN' && existing.status !== 'OPEN') {
-      try {
-        await ensureImpactAssessmentFromApprovedObligation(supabase, {
-          organisationId: params.organisationId,
-          obligationId: params.obligationId,
-          actorUserId: params.userId,
-          role: params.role ?? null,
-        });
-      } catch (err) {
-        await supabase
-          .from('regulatory_obligations')
-          .update({ status: existing.status })
-          .eq('id', params.obligationId)
-          .eq('organisation_id', params.organisationId);
-        throw err;
-      }
-    }
   }
   if (
     'owner_user_id' in update &&

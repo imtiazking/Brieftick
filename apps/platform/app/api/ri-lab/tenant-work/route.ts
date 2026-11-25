@@ -18,6 +18,7 @@ import {
   emptyLabScopeMeta,
   mergeExcluded,
   parseLabDataScope,
+  primaryRowsForLabScope,
 } from '@/lib/ri/lab-api/lab-data-scope';
 import {
   controlLabProvenanceInputFromRow,
@@ -107,22 +108,26 @@ export async function GET(request: Request) {
     const impactPartition = partitionImpactsForLabScope(impactRowsRaw, scope, (r) =>
       impactLabProvenanceInputFromRow(r),
     );
-    const impactRows = impactPartition.operational;
+    const impactRows = primaryRowsForLabScope(scope, impactPartition.operational, impactRowsRaw);
     const exImpacts = impactPartition.excludedFromOperationalCount;
     const obligationPartition = partitionObligationsForLabScope(obligationRowsRaw, scope, (r) =>
       obligationLabProvenanceInputFromRow(r),
     );
-    const obligationRows = obligationPartition.operational;
+    const obligationRows = primaryRowsForLabScope(
+      scope,
+      obligationPartition.operational,
+      obligationRowsRaw,
+    );
     const exObl = obligationPartition.excludedFromOperationalCount;
 
     const riskPartition = partitionRisksForLabScope(riskRowsRaw, scope, (r) => riskLabProvenanceInputFromRow(r));
-    const riskRows = riskPartition.operational;
+    const riskRows = primaryRowsForLabScope(scope, riskPartition.operational, riskRowsRaw);
     const exRisks = riskPartition.excludedFromOperationalCount;
 
     const controlPartition = partitionControlsForLabScope(controlRowsRaw, scope, (c) =>
       controlLabProvenanceInputFromRow(c),
     );
-    const controlRows = controlPartition.operational;
+    const controlRows = primaryRowsForLabScope(scope, controlPartition.operational, controlRowsRaw);
     const exControls = controlPartition.excludedFromOperationalCount;
 
     mergeExcluded(scopeMeta, 'changes', exChanges);
