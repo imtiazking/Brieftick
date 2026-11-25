@@ -126,7 +126,9 @@ assert.equal(normalizeExecutionStatus({ detail: { execution_status: 'completed' 
   assert.match(deploySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
   assert.match(verifySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
   assert.match(verifySrc, /candidate_not_isolated/);
-  assert.match(workflowSrc, /--mode=ci/);
+  const packageJson = readFileSync(join(platformRoot, 'package.json'), 'utf8');
+  assert.match(workflowSrc, /npm run qa|--mode=ci/);
+  assert.match(packageJson, /--mode=ci/);
   assert.match(catalogueSrc, /acceptance-staging-candidate-isolation-regression\.mjs/);
   pass('candidate_deployment_isolation_gate', {});
 }

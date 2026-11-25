@@ -16,7 +16,9 @@ assert.match(deploySrc, /verify-candidate-deployment\.mjs/);
 assert.match(deploySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
 assert.match(verifySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
 assert.match(verifySrc, /candidate_not_isolated/);
-assert.match(workflowSrc, /--mode=ci/);
+const packageJson = readFileSync(join(platformRoot, 'package.json'), 'utf8');
+assert.match(workflowSrc, /npm run qa|--mode=ci/);
+assert.match(packageJson, /--mode=ci/);
 assert.match(catalogueSrc, /gate: 'candidate'/);
 assert.match(catalogueSrc, /UAT-SESSION-RECOVERY/);
 
