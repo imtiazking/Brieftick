@@ -268,7 +268,7 @@ export async function resetAndStartEmbedded({ port: preferredPort } = {}) {
       user: 'postgres',
       password,
       persistent: false,
-      initdbFlags: ['--encoding=UTF8', '--locale=C'],
+      initdbFlags: ['--encoding=UTF8', `--locale=${process.platform === 'win32' ? 'C' : 'C.UTF-8'}`],
       onLog: () => {},
     });
     try {

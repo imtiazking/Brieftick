@@ -162,6 +162,7 @@ function executeRow(row, files) {
     else process.env.FORGENIQ_QA_REQUIRE_CANDIDATE = prevCandidate;
   }
   const status = result.exitCode === 0 ? 'PASS' : result.exitCode === 2 ? 'AUTH_BLOCKED' : 'FAIL';
+  if (status === 'FAIL') console.error(result.output.slice(-1200));
   return { status, output: result.output, ms: result.ms };
 }
 
