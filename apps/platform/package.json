@@ -238,6 +238,7 @@
     "eslint": "^9.16.0",
     "eslint-config-next": "^15.5.0",
     "pg": "^8.23.1",
+    "playwright": "^1.60.0",
     "typescript": "^5.7.0"
   }
 }

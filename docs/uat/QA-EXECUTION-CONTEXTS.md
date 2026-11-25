@@ -29,6 +29,10 @@ Missing sessions → **AUTH_BLOCKED** / **BLOCKED** → promotion **BLOCKED** (e
 
 `FORGENIQ_QA_REQUIRE_DB=1` is set automatically for promote.
 
+## Dependencies
+
+GitHub Actions installs npm packages only under `apps/platform`. Playwright for offline browser smoke must be listed in `apps/platform/package.json` (not only the repo root).
+
 ## Environment
 
 | Variable | CI | Promote |

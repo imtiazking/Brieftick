@@ -2,6 +2,14 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-25 — GitHub Actions offline CI gate
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 13:50 | Root cause | `forgeniq-qa` runs `npm ci` only in `apps/platform`; browser smoke imports `playwright` declared at repo root | GHA exited in &lt;1s (`ERR_MODULE_NOT_FOUND` / missing browser binary); local passed via hoisted root `node_modules` |
+| 13:52 | Fix | Declare `playwright` in `apps/platform`; keep `npx playwright install chromium` in workflow; remove duplicate preflight smoke step | Offline `npm run qa` **PASS** with root `playwright` hidden; promote gate unchanged |
+| — | Vercel | Hobby CPU quota | **No deploy** |
+
 ## 2026-11-24 — Six-queue UAT auth gate (19:05 UTC)
 
 | Time (UTC) | Decision | Reason | Outcome |
