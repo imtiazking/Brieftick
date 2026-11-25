@@ -16,20 +16,47 @@
  *   import { runAs } from './staging-user-sessions.mjs';
  *   await runAs('B', async ({ page, act }) => { await act('submit review', async () => { ... }); });
  */
-import { execFileSync } from 'node:child_process';
+import { config as dotenvConfig } from 'dotenv';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, rmSync, appendFileSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import {
   OFFICIAL_STAGING_ORIGIN,
   authOrigin,
   designLabEntry,
 } from '../staging/staging-release-hosts.mjs';
+import {
+  probeClerkOnHost,
+  recordSessionValidation,
+  markSessionState,
+  registryKey,
+} from './uat-session-registry.mjs';
 
 export const STAGING_ORIGIN = OFFICIAL_STAGING_ORIGIN;
 export const STAGING_ORGANISATION_ID = 'b8f5e3a1-00ad-4000-8000-000000000001';
 const SESSION_ROOT = join(process.env.LOCALAPPDATA || join(process.env.USERPROFILE || '.', 'AppData', 'Local'), 'forgeniq-uat-sessions');
 const ATTRIBUTION_LOG = join(SESSION_ROOT, 'attribution.log');
+const UAT_AGENT_ENV = join(SESSION_ROOT, 'uat-agent.env');
+
+export function loadUatAgentEnv() {
+  secureSessionRoot();
+  if (existsSync(UAT_AGENT_ENV)) {
+    const raw = readFileSync(UAT_AGENT_ENV, 'utf8');
+    if (!/FORGENIQ_HOSTED_CLERK_SECRET_KEY\s*=/.test(raw) && /^sk_/m.test(raw.trim())) {
+      const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
+      spawnSync(process.execPath, ['./scripts/uat/_normalize-uat-agent-env.mjs'], { cwd: platformRoot, encoding: 'utf8' });
+    }
+    dotenvConfig({ path: UAT_AGENT_ENV });
+  }
+  dotenvConfig({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '..', '.env.local'), override: false });
+  const sk = process.env.FORGENIQ_HOSTED_CLERK_SECRET_KEY?.trim() || process.env.CLERK_SECRET_KEY?.trim();
+  const pk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim();
+  if (sk && pk && sk.startsWith('sk_test_') && pk.startsWith('pk_live_')) {
+    process.env.FORGENIQ_UAT_CLERK_KEY_MISMATCH = 'test_secret_with_live_frontend';
+  }
+}
 const LOGIN_WAIT_MS = Number(process.env.FORGENIQ_UAT_LOGIN_WAIT_MS || 30 * 60_000);
 const ALLOWED_ROLES = new Set(['OWNER', 'ADMIN', 'COMPLIANCE_MANAGER', 'ANALYST', 'REVIEWER']);
 
@@ -104,20 +131,25 @@ export const PERSONAS = {
 
 export class SessionExpiredError extends Error {}
 export class IdentityMismatchError extends Error {}
+/** Hosted Clerk keys missing (preview deployment) — do not open interactive login. */
+export class ClerkNotConfiguredError extends Error {}
 
-function persona(key) {
+export function persona(key) {
   const p = PERSONAS[String(key).toUpperCase()];
   if (!p) throw new Error(`unknown persona ${key} (expected A, B, C, OP1 or OP2)`);
   return { key: String(key).toUpperCase(), ...p };
 }
 
-function profileDir(key) {
+export function resolveProfileDir(key, origin = activeOrigin()) {
   const p = persona(key);
   const dirKey = p.sessionProfile || p.key;
-  const origin = activeOrigin();
   const legacy = join(SESSION_ROOT, `persona-${dirKey}`);
   if (origin === OFFICIAL_STAGING_ORIGIN && existsSync(legacy)) return legacy;
   return join(SESSION_ROOT, hostProfileSlug(origin), `persona-${dirKey}`);
+}
+
+function profileDir(key) {
+  return resolveProfileDir(key);
 }
 
 /** Restrict the session folder to the current Windows user (no inherited ACEs). */
@@ -159,9 +191,19 @@ async function registerNetworkGuard(context) {
   });
 }
 
-async function launch(key, { headless, fresh = false }) {
+async function assertClerkReadyForLogin(origin = activeOrigin(), label = 'auth host') {
+  const probe = await probeClerkOnHost(origin);
+  if (!probe.ok && probe.code === 'CLERK_NOT_CONFIGURED') {
+    throw new ClerkNotConfiguredError(
+      `${label}: Clerk is not configured on ${origin} (deployment/env regression). Fix hosting — do not open interactive login.`,
+    );
+  }
+}
+
+export async function launch(key, { headless, fresh = false }) {
   secureSessionRoot();
   if (fresh && existsSync(profileDir(key))) {
+    console.warn(`--fresh: archiving is skipped; removing corrupt profile for ${key} only when --fresh is explicit.`);
     rmSync(profileDir(key), { recursive: true, force: true });
   }
   const options = {
@@ -260,7 +302,7 @@ export async function verifyIdentity(page, key) {
     if (!isOp) problems.push('not a platform operator (classification-policy/admin)');
   }
   if (problems.length) throw new IdentityMismatchError(`${p.label}: ${problems.join('; ')}`);
-  return {
+  const identity = {
     persona: p.key,
     label: p.label,
     userId: id.userId,
@@ -269,6 +311,17 @@ export async function verifyIdentity(page, key) {
     role: id.role,
     capabilities: p.requiredCapabilities,
   };
+  const host = new URL(activeOrigin()).hostname;
+  recordSessionValidation({
+    hostname: host,
+    persona: p.key,
+    userId: identity.userId,
+    role: identity.role,
+    organisationId: identity.organisationId,
+    profilePath: profileDir(p.key),
+    origin: activeOrigin(),
+  });
+  return identity;
 }
 
 function attribute(entry) {
@@ -280,8 +333,27 @@ let activePersona = null;
 /** Headless session probe — no full `runAs` attribution; use before hosted UAT. */
 export async function probePersonaSession(key) {
   const p = persona(key);
+  const origin = activeOrigin();
+  const host = new URL(origin).hostname;
+  const clerk = await probeClerkOnHost(origin);
+  if (!clerk.ok) {
+    return {
+      persona: p.key,
+      state: clerk.code === 'CLERK_NOT_CONFIGURED' ? 'CLERK_NOT_CONFIGURED' : 'HOST_UNREACHABLE',
+      detail: clerk.detail || clerk.code,
+      host,
+      renew: undefined,
+      fix: clerk.code === 'CLERK_NOT_CONFIGURED' ? 'Use a production-environment deployment on this hostname (see STAGING-CANDIDATE-RELEASE.md).' : undefined,
+    };
+  }
   if (!existsSync(profileDir(p.key))) {
-    return { persona: p.key, state: 'NO SESSION', renew: `node scripts/uat/staging-user-sessions.mjs renew ${p.key}` };
+    return {
+      persona: p.key,
+      state: 'NO SESSION',
+      host,
+      profilePath: resolveProfileDir(p.key),
+      renew: `FORGENIQ_AUTH_BASE=${origin} node scripts/uat/staging-user-sessions.mjs login ${p.key}`,
+    };
   }
   const { context, page } = await launch(p.key, { headless: true });
   try {
@@ -289,16 +361,31 @@ export async function probePersonaSession(key) {
     return {
       persona: p.key,
       state: 'VALID',
+      host,
       userId: identity.userId,
       role: identity.role,
       organisationId: identity.organisationId,
+      profilePath: profileDir(p.key),
+      registryKey: registryKey(host, p.key),
     };
   } catch (err) {
+    const state =
+      err instanceof ClerkNotConfiguredError
+        ? 'CLERK_NOT_CONFIGURED'
+        : err instanceof SessionExpiredError
+          ? 'EXPIRED'
+          : 'INVALID';
+    markSessionState(host, p.key, state, err.message);
     return {
       persona: p.key,
-      state: err instanceof SessionExpiredError ? 'EXPIRED' : 'INVALID',
+      state,
+      host,
       detail: err.message,
-      renew: err instanceof SessionExpiredError ? `node scripts/uat/staging-user-sessions.mjs renew ${p.key}` : undefined,
+      profilePath: profileDir(p.key),
+      renew:
+        state === 'EXPIRED'
+          ? `FORGENIQ_AUTH_BASE=${origin} node scripts/uat/staging-user-sessions.mjs login ${p.key}`
+          : undefined,
     };
   } finally {
     await context.close();
@@ -308,20 +395,75 @@ export async function probePersonaSession(key) {
 /**
  * Fail fast when personas are not ready. Preserves valid sessions; prints renew commands only when needed.
  */
-export async function requireUatPersonas(keys, { label = 'UAT' } = {}) {
+export async function ensureUatPersonas(keys, { label = 'UAT', allowProgrammatic = true } = {}) {
+  loadUatAgentEnv();
   const rows = [];
   for (const key of keys) {
-    rows.push(await probePersonaSession(key));
+    let row = await probePersonaSession(key);
+    if (row.state === 'VALID') {
+      rows.push(row);
+      continue;
+    }
+    if (row.state === 'CLERK_NOT_CONFIGURED' || row.state === 'HOST_UNREACHABLE') {
+      rows.push(row);
+      continue;
+    }
+    if (allowProgrammatic && (row.state === 'EXPIRED' || row.state === 'NO SESSION' || row.state === 'INVALID')) {
+      const { programmaticSignInPersona, canProgrammaticSignIn, programmaticSignInBlocker, ProgrammaticSignInBlockedError, MfaRequiredError } =
+        await import('./uat-clerk-programmatic-signin.mjs');
+      if (canProgrammaticSignIn(key)) {
+        try {
+          await programmaticSignInPersona(key, { headless: true });
+          row = await probePersonaSession(key);
+        } catch (err) {
+          row = {
+            persona: key,
+            state: err instanceof MfaRequiredError ? 'MFA_REQUIRED' : err instanceof ProgrammaticSignInBlockedError ? 'AUTO_SIGNIN_BLOCKED' : 'INVALID',
+            detail: err.message,
+            fix:
+              err instanceof MfaRequiredError
+                ? 'Disable MFA for UAT test users or use Clerk sign-in tokens with MFA bypass policy.'
+                : err instanceof ProgrammaticSignInBlockedError
+                  ? err.message
+                  : programmaticSignInBlocker(),
+          };
+        }
+      } else if (process.env.FORGENIQ_UAT_ALLOW_INTERACTIVE_LOGIN === '1' || process.argv.includes('--interactive')) {
+        await login(key, { fresh: false, forceInteractive: true });
+        row = await probePersonaSession(key);
+      } else {
+        row = {
+          ...row,
+          state: row.state === 'NO SESSION' ? 'NO SESSION' : row.state,
+          fix: programmaticSignInBlocker(),
+          renew: undefined,
+        };
+      }
+    }
+    rows.push(row);
   }
+  return rows;
+}
+
+export async function requireUatPersonas(keys, { label = 'UAT' } = {}) {
+  const rows = await ensureUatPersonas(keys, { label });
   const bad = rows.filter((r) => r.state !== 'VALID');
   if (bad.length) {
     console.error(`\n${label} blocked — session preflight failed:\n`);
     console.table(rows);
     for (const b of bad) {
+      if (b.fix) console.error(`  FIX: ${b.fix}`);
       if (b.renew) console.error(`  ${b.renew}`);
     }
     const err = new Error('uat_personas_not_ready');
     err.personas = rows;
+    if (bad.some((b) => b.state === 'CLERK_NOT_CONFIGURED' || b.state === 'HOST_UNREACHABLE')) {
+      err.code = 'clerk_or_host';
+    } else if (bad.some((b) => b.state === 'MFA_REQUIRED')) {
+      err.code = 'mfa_required';
+    } else if (bad.some((b) => b.state === 'AUTO_SIGNIN_BLOCKED' || b.state === 'NO SESSION')) {
+      err.code = 'auto_signin_blocked';
+    }
     throw err;
   }
   console.log(`${label} preflight OK — ${keys.join(', ')}`);
@@ -377,14 +519,32 @@ async function openSignInPage(page, label) {
   if (status != null && status >= 400) {
     throw new Error(`${label}: sign-in HTTP ${status}`);
   }
+  const html = await page.content().catch(() => '');
+  if (/Clerk is not configured/i.test(html)) {
+    throw new ClerkNotConfiguredError(`${label}: Clerk is not configured on this host (deployment/env).`);
+  }
   await page.waitForFunction(() => typeof window.Clerk !== 'undefined', { timeout: 90_000 }).catch(() => {
-    throw new Error(`${label}: Clerk did not initialise on sign-in (blank or blocked assets)`);
+    throw new ClerkNotConfiguredError(`${label}: Clerk did not initialise — treat as host configuration, not session expiry.`);
   });
   console.log(`${label}: Clerk ready — complete sign-in in this window (do not close the browser).`);
 }
 
-async function login(key, { fresh = false } = {}) {
+async function login(key, { fresh = false, forceInteractive = false } = {}) {
   const p = persona(key);
+  await assertClerkReadyForLogin(activeOrigin(), p.label);
+  if (!forceInteractive && existsSync(profileDir(p.key))) {
+    const probe = await probePersonaSession(p.key);
+    if (probe.state === 'VALID') {
+      console.log(`${p.label}: reusing saved profile on ${probe.host} (${probe.userId} · ${probe.role})`);
+      return { userId: probe.userId, role: probe.role, organisationId: probe.organisationId };
+    }
+    if (probe.state === 'CLERK_NOT_CONFIGURED' || probe.state === 'HOST_UNREACHABLE') {
+      throw new ClerkNotConfiguredError(probe.detail || probe.state);
+    }
+    if (probe.state === 'INVALID') {
+      console.warn(`${p.label}: profile present but invalid — attempting interactive login (${probe.detail || 'unknown'})`);
+    }
+  }
   const { context, page } = await launch(p.key, { headless: false, fresh });
   try {
     await openSignInPage(page, `${p.label} (${p.userId})`);
@@ -520,10 +680,19 @@ if (isCli) {
   const [command, arg] = process.argv.slice(2);
   try {
     if (command === 'login' || command === 'renew') {
-      const fresh = command === 'login' && process.argv.includes('--fresh');
-      if (fresh) console.warn(`Removing profile for ${arg} (--fresh). Use only when the profile is corrupt.`);
-      for (const key of arg?.toLowerCase() === 'all' ? Object.keys(PERSONAS) : [arg])
-        await login(key, { fresh });
+      const fresh = process.argv.includes('--fresh');
+      if (fresh) console.warn(`--fresh: removing existing profile for ${arg} before login.`);
+      for (const key of arg?.toLowerCase() === 'all' ? ['A', 'B', 'C'] : [arg]) {
+        await login(key, { fresh, forceInteractive: process.argv.includes('--interactive') });
+      }
+    } else if (command === 'recover') {
+      const { spawnSync: sp } = await import('node:child_process');
+      const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
+      sp(process.execPath, ['./scripts/uat/uat-session-recover.mjs'], {
+        cwd: platformRoot,
+        stdio: 'inherit',
+        shell: process.platform === 'win32',
+      });
     } else if (command === 'inspect') {
       await inspect(arg || 'B');
     } else if (command === 'diagnose') {
@@ -553,7 +722,7 @@ if (isCli) {
       await logout(arg);
     } else {
       console.log(
-        'usage: staging-user-sessions.mjs login|renew <A|B|C|OP1|all> [--fresh] | preflight [A,B,C|all] | inspect <B> | diagnose <B> | status | logout <A|B|C|OP1>',
+        'usage: staging-user-sessions.mjs login|renew <A|B|C|all> [--fresh] [--interactive] | preflight [A,B,C|all] | recover | inspect <B> | diagnose <B> | status | logout <A|B|C|OP1>',
       );
       process.exitCode = 2;
     }

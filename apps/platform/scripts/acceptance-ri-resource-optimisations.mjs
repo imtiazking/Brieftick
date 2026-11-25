@@ -116,6 +116,17 @@ assert.equal(normalizeExecutionStatus({ detail: { execution_status: 'completed' 
   pass('parallel_spend_reconcile', {});
 }
 
+// 8. Candidate deployment isolation — mandatory in phase85h (no silent same-deployment promotion)
+{
+  const deploySrc = readFileSync(join(platformRoot, 'scripts/staging/phase85h-deploy-staging-platform.mjs'), 'utf8');
+  const verifySrc = readFileSync(join(platformRoot, 'scripts/staging/verify-candidate-deployment.mjs'), 'utf8');
+  assert.match(deploySrc, /verify-candidate-deployment\.mjs/);
+  assert.match(deploySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
+  assert.match(verifySrc, /FORGENIQ_REQUIRE_CANDIDATE_ISOLATION/);
+  assert.match(verifySrc, /candidate_not_isolated/);
+  pass('candidate_deployment_isolation_gate', {});
+}
+
 const payload = { generatedAt: new Date().toISOString(), checks, pass: checks.every((c) => c.ok) };
 writeFileSync(evidencePath, JSON.stringify(payload, null, 2));
 console.log(JSON.stringify(payload, null, 2));

@@ -1,28 +1,17 @@
 {
-  "capturedAt": "2026-11-25T01:02:17.214Z",
-  "gitHead": "435e6362b7412b1314ee437ced345f08779f5bfc",
-  "buildId": "435e6362b7412b1314ee437ced345f08779f5bfc",
-  "vercelScope": "imis-projects-8e15dca0",
-  "vercelProjectName": "forgeniq-platform-staging",
-  "previewDeploymentId": "dpl_AHimQPwDhpBAJkgWV2JHtj39f8DD",
-  "previewUrl": "https://forgeniq-platform-staging-ntmgdsrfy-imis-projects-8e15dca0.vercel.app",
-  "deploymentId": "dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW",
-  "deploymentUrl": "https://staging-app.forgeniq.com",
-  "alias": "https://staging-app.forgeniq.com",
-  "candidateAlias": null,
-  "protectedOfficialDeploymentId": "dpl_DYiqJ1ghbaWyrSgG8urexqSFRpFW",
+  "capturedAt": "2026-11-25T10:53:07.439Z",
+  "status": "BLOCKED",
+  "gitHead": "8450a41b9ee5697518b9da8184a914868ad0e5e5",
+  "deploymentId": "dpl_EB1Q2NjL6xnqTK99vyDbws3q5HWx",
+  "deploymentUrl": "https://forgeniq-platform-staging-5mtr8mzll-imis-projects-8e15dca0.vercel.app",
+  "candidateAlias": "https://candidate-staging.forgeniq.com",
+  "protectedOfficialDeploymentId": "dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8",
+  "aliasUntouched": "https://staging-app.forgeniq.com",
   "prePromotionAuth": {
-    "mode": "promote-verify",
-    "status": "DEFERRED",
-    "reason": "candidate_dns_pending"
+    "mode": "candidate-first",
+    "host": "https://candidate-staging.forgeniq.com",
+    "exitCode": 2,
+    "status": "AUTH_BLOCKED"
   },
-  "postPromotionAuth": {
-    "host": "https://staging-app.forgeniq.com",
-    "exitCode": 0,
-    "status": "PASS"
-  },
-  "promoted": true,
-  "businessUatApproved": false,
-  "productionReleaseAuthorised": false,
-  "note": "Candidate validated before promotion when DNS is ready; otherwise promote-verify with post-promotion auth and rollback. Not a production tenant."
+  "note": "Authenticated candidate validation blocked. Sign in on candidate-staging or enable Clerk satellite. Official alias not moved."
 }

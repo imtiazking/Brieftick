@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-11-25T10:55:00.000Z",
+  "dnsResolves": true,
+  "httpsSignInStatus": 200,
+  "signInUrl": "https://candidate-staging.forgeniq.com/sign-in",
+  "clerkInitialisesOnSignIn": true,
+  "allowedAuthHosts": ["staging-app.forgeniq.com", "candidate-staging.forgeniq.com"],
+  "satelliteEnabled": false,
+  "cookieCopyBetweenHosts": false,
+  "playwrightProfilePolicy": "host-scoped under %LOCALAPPDATA%\\forgeniq-uat-sessions\\candidate-staging_forgeniq_com\\",
+  "interactiveLoginCommand": "set FORGENIQ_AUTH_BASE=https://candidate-staging.forgeniq.com && node apps/platform/scripts/uat/staging-user-sessions.mjs login A",
+  "note": "Clerk sign-in returns HTTP 200 and window.Clerk loads on the candidate host. Personas A/B/C need one interactive sign-in per host before authenticated candidate smoke can pass."
+}

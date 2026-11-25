@@ -732,3 +732,35 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Business UAT / production | **false** / **NO-GO**. No paid AI. No DB rollback. |
 | Doc | `docs/uat/STAGING-CANDIDATE-RELEASE.md`. |
 | Limitation | Pre-promotion authenticated candidate smoke blocked until DNS; persona renew needed after long runs or alias changes. **GAP-DOWNSTREAM-WRITE** unchanged. |
+
+## 2026-11-25 — UAT session automation and persistence
+
+| Topic | Outcome |
+|---|---|
+| Recovery | Official **A/B/C VALID** from legacy profiles (`unattendedReady: true`). Candidate **A VALID**; **B EXPIRED**; **C NO PROFILE** (`candidateUnattendedReady: false`). Evidence `docs/uat/evidence/session-recovery-2026-11-25/SESSION-RECOVERY.json`. |
+| Automation | `ensureUatPersonas` reuses profiles, validates `/api/ri-lab/session`, records registry metadata, distinguishes `CLERK_NOT_CONFIGURED` vs expiry. Headless **Clerk sign-in tokens** + `@clerk/testing` password path when `%LOCALAPPDATA%\\forgeniq-uat-sessions\\uat-agent.env` has `FORGENIQ_HOSTED_CLERK_SECRET_KEY` or UAT passwords. No interactive login by default. |
+| Hosting | Preview deployments lack Production Clerk env; `phase85h` uses `vercel deploy --prod` and restores official alias before candidate validation. |
+| Blocker | Vercel does not inject Production secrets into local `vercel env run`. **Owner once:** copy `FORGENIQ_HOSTED_CLERK_SECRET_KEY` into `uat-agent.env` (see `docs/uat/UAT-SESSION-AUTOMATION.md`) to refresh candidate B/C without manual login. No promotion until candidate gates pass. |
+
+## 2026-11-25 — Production Clerk secret validated; candidate unattended auth restored
+
+| Topic | Outcome |
+|---|---|
+| Clerk instance | `_verify-clerk-instance.mjs` **PASS** (`ins_3FZpAYsf8rSBFoViPPgTppkxJYY`, matches staging). Secret not printed. |
+| Root cause | Programmatic sign-in used Clerk `ticket.url` (`accounts.forgeniq.com`), which hit bot interstitials in headless Playwright. Fix: redeem `__clerk_ticket` on the **app origin** only (`uat-clerk-programmatic-signin.mjs`). |
+| Session recovery | `FORGENIQ_QA_REQUIRE_CANDIDATE=1` → official and candidate **A/B/C VALID**; `unattendedReady: true`; **`candidateUnattendedReady: true`**. Legacy and host-scoped profiles preserved (no `--fresh`). Evidence `docs/uat/evidence/session-recovery-2026-11-25/SESSION-RECOVERY.json`. |
+| Identities | Shared org `b8f5e3a1-00ad-4000-8000-000000000001`. **A** `COMPLIANCE_MANAGER`; **B** `REVIEWER`; **C** `COMPLIANCE_MANAGER`. Roles confirmed via session probe on both hosts. |
+| Local QA | `orchestrator --mode=promote` **PASS 23** / fail 0 (technical, authenticated, security, promotion). No Vercel deploy. |
+| Deployment isolation | `verify-candidate-deployment.mjs`: official and candidate both **`dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8`** (`sameDeployment: true`). Candidate-first **promotion blocked** until next consolidated `phase85h` deploy assigns a distinct candidate build (defer while Vercel Hobby CPU quota exceeded). |
+| Production | **NO-GO**. No production deploy. Auth security unchanged. |
+
+## 2026-11-25 — UAT automation commit (auth + QA; no promote)
+
+| Topic | Outcome |
+|---|---|
+| Commit scope | Headless Clerk sign-in on app origin (`__clerk_ticket`), session registry/recover, programmatic sign-in, QA catalogue (`UAT-SESSION-RECOVERY`, `CLERK-HOST-AUTH`), mandatory candidate isolation in `phase85h`, docs `UAT-SESSION-AUTOMATION.md`. |
+| Security | Pre-commit scan: no `sk_live`/`sk_test` literals, no cookies/tokens in repo; credentials remain under `%LOCALAPPDATA%\\forgeniq-uat-sessions\\` only. |
+| QA | Local `orchestrator --mode=promote` **23/23 PASS** at `2026-11-25T12:15:39Z` (`docs/uat/qa/latest.json`). |
+| Auth | `unattendedReady` and `candidateUnattendedReady` **true**; profiles preserved. |
+| Promotion | **Not run.** Official and candidate share deployment id → isolation gate would block `phase85h` until next distinct candidate deploy when CPU allows. |
+| Vercel CPU | Continue local-first; see resource audit + deploy throttle; pause hosted pilot drain / repeated deploys. |

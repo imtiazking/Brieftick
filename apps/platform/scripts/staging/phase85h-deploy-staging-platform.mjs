@@ -21,7 +21,7 @@ const MIN_DEPLOY_INTERVAL_MS = Number(process.env.FORGENIQ_STAGING_DEPLOY_MIN_MS
 const SCOPE = 'imis-projects-8e15dca0';
 const PROJECT_NAME = 'forgeniq-platform-staging';
 const CANDIDATE_HOST = new URL(CANDIDATE_STAGING_ORIGIN).hostname;
-const PREAUTH_MODE = process.env.FORGENIQ_RELEASE_PREAUTH?.trim() || 'promote-verify';
+const PREAUTH_MODE = process.env.FORGENIQ_RELEASE_PREAUTH?.trim() || 'candidate-first';
 
 function run(label, cmd, args, cwd, env = {}, inherit = false) {
   const r = spawnSync(cmd, args, {
@@ -138,14 +138,16 @@ try {
   /* detached or no git */
 }
 
-console.log(`Deploying HEAD ${head} buildId ${buildId} → ${PROJECT_NAME} (preview, validate, promote)\n`);
+console.log(`Deploying HEAD ${head} buildId ${buildId} → ${PROJECT_NAME} (production build, candidate validate, alias promote)\n`);
 
 run('assert vercel staging target', 'node', ['./scripts/staging/assert-vercel-staging-target.mjs'], platformRoot);
 
+const officialHost = new URL(OFFICIAL_STAGING_ORIGIN).hostname;
+
 const out = run(
-  'vercel preview deploy',
+  'vercel production deploy',
   'vercel',
-  ['deploy', '--archive=tgz', '--yes', `--scope=${SCOPE}`, `--project=${PROJECT_NAME}`],
+  ['deploy', '--archive=tgz', '--yes', '--prod', `--scope=${SCOPE}`, `--project=${PROJECT_NAME}`],
   repoRoot,
   {},
 );
@@ -156,8 +158,17 @@ const deploymentId = idMatch?.[0] ?? null;
 const deploymentUrl = urlMatch?.[0] ?? null;
 
 if (!deploymentUrl) {
-  console.error('preview deploy did not return a URL — staging alias was not changed');
+  console.error('deploy did not return a URL — staging alias was not changed');
   process.exit(1);
+}
+
+if (protectedOfficial.id) {
+  run(
+    'restore official staging alias',
+    'vercel',
+    ['alias', protectedOfficial.id, officialHost, `--scope=${SCOPE}`],
+    repoRoot,
+  );
 }
 
 const previewSmoke = runUnauthPreviewSmoke(deploymentUrl);
@@ -181,6 +192,51 @@ const candidateReady = candidateResolvable && (await candidateHttpsReachable());
 
 if (candidateReady) {
   run('assign candidate alias', 'vercel', ['alias', deploymentUrl, CANDIDATE_HOST, `--scope=${SCOPE}`], repoRoot);
+  const isolationCheck = spawnSync(
+    'node',
+    ['./scripts/staging/verify-candidate-deployment.mjs'],
+    {
+      cwd: platformRoot,
+      stdio: 'inherit',
+      encoding: 'utf8',
+      env: { ...process.env, FORGENIQ_REQUIRE_CANDIDATE_ISOLATION: '1' },
+    },
+  );
+  if (isolationCheck.status !== 0) {
+    writeEvidence({
+      capturedAt: new Date().toISOString(),
+      status: 'BLOCKED',
+      gitHead: head,
+      deploymentId,
+      deploymentUrl,
+      candidateAlias: CANDIDATE_STAGING_ORIGIN,
+      protectedOfficialDeploymentId: protectedOfficial.id,
+      aliasUntouched: OFFICIAL_STAGING_ORIGIN,
+      prePromotionAuth: { mode: 'candidate-first', status: 'BLOCKED', reason: 'candidate_not_isolated' },
+      note: 'Candidate alias must target the new deployment while official remains on the protected id. Official alias was not moved.',
+    });
+    process.exit(isolationCheck.status ?? 1);
+  }
+  const clerkCheck = spawnSync('node', ['./scripts/staging/staging-clerk-host-check.mjs'], {
+    cwd: platformRoot,
+    stdio: 'inherit',
+    encoding: 'utf8',
+  });
+  if (clerkCheck.status !== 0) {
+    writeEvidence({
+      capturedAt: new Date().toISOString(),
+      status: 'BLOCKED',
+      gitHead: head,
+      deploymentId,
+      deploymentUrl,
+      candidateAlias: CANDIDATE_STAGING_ORIGIN,
+      protectedOfficialDeploymentId: protectedOfficial.id,
+      aliasUntouched: OFFICIAL_STAGING_ORIGIN,
+      prePromotionAuth: { mode: 'candidate-first', status: 'CLERK_NOT_CONFIGURED' },
+      note: 'Candidate hostname missing Clerk configuration (usually Preview-scoped env). Official alias not moved.',
+    });
+    process.exit(2);
+  }
   const candidateAuth = runAuthenticatedSmoke(CANDIDATE_STAGING_ORIGIN);
   prePromotionAuth = {
     mode: 'candidate-first',
@@ -236,7 +292,6 @@ if (candidateReady) {
   process.exit(2);
 }
 
-const officialHost = new URL(OFFICIAL_STAGING_ORIGIN).hostname;
 run('assign official staging alias', 'vercel', ['alias', deploymentUrl, officialHost, `--scope=${SCOPE}`], repoRoot);
 
 const postAuth = runAuthenticatedSmoke(OFFICIAL_STAGING_ORIGIN);
@@ -288,7 +343,9 @@ const evidence = {
   deploymentUrl: OFFICIAL_STAGING_ORIGIN,
   alias: OFFICIAL_STAGING_ORIGIN,
   candidateAlias: candidateReady ? CANDIDATE_STAGING_ORIGIN : null,
+  candidateDeploymentId: candidateReady ? deploymentId : null,
   protectedOfficialDeploymentId: protectedOfficial.id,
+  officialDeploymentIdBeforePromotion: protectedOfficial.id,
   prePromotionAuth,
   postPromotionAuth,
   promoted: true,

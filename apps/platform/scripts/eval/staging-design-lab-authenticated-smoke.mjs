@@ -189,7 +189,11 @@ try {
   });
 } catch (err) {
   if (err instanceof SessionExpiredError || err?.message === 'uat_personas_not_ready') {
-    console.error(`AUTH_BLOCKED ${err.message}`);
+    if (err?.code === 'clerk_or_host' || err?.personas?.some((p) => p.state === 'CLERK_NOT_CONFIGURED')) {
+      console.error(`AUTH_BLOCKED clerk_or_host — fix deployment before renewing sessions (${err.message})`);
+    } else {
+      console.error(`AUTH_BLOCKED ${err.message}`);
+    }
     process.exit(2);
   }
   throw err;

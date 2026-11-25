@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T23:18:15.792Z",
+  "generatedAt": "2026-11-25T12:33:46.407Z",
   "checks": [
     {
       "name": "terminal_polling_stops",
@@ -45,6 +45,11 @@
     },
     {
       "name": "parallel_spend_reconcile",
+      "ok": true,
+      "detail": {}
+    },
+    {
+      "name": "candidate_deployment_isolation_gate",
       "ok": true,
       "detail": {}
     }

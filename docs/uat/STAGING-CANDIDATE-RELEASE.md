@@ -13,9 +13,11 @@ Clerk Playwright profiles are bound to `https://staging-app.forgeniq.com`. Tempo
 
 Release flow:
 
-1. Deploy preview archive.
+1. Deploy a **production-environment** build (`vercel deploy --prod`) so Clerk and database env vars apply (preview-only deployments do not receive Production-scoped secrets on this project).
+1b. Immediately restore `staging-app` to the protected deployment id if the production deploy moved the official alias.
 2. Unauthenticated render smoke on the preview URL (Vercel OIDC).
 3. `vercel alias <preview> candidate-staging.forgeniq.com` (official alias untouched).
+3b. **Deployment isolation (mandatory):** `node scripts/staging/verify-candidate-deployment.mjs` with `FORGENIQ_REQUIRE_CANDIDATE_ISOLATION=1`. Official must remain on the protected deployment id while candidate targets the new build. `phase85h` aborts promotion when both aliases share the same `dpl_*` id (no bypass except fixing aliases).
 4. Authenticated Playwright on `candidate-staging.forgeniq.com` using host-scoped session profiles.
 5. Promote preview to the staging project production target.
 6. Authenticated post-promotion smoke on `staging-app.forgeniq.com`.

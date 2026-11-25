@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-11-25T12:15:38.484Z",
+  "sessionRoot": null,
+  "registryEntries": 6,
+  "storedProfiles": [
+    {
+      "hostname": "staging-app.forgeniq.com",
+      "persona": "A",
+      "layout": "legacy-official",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\persona-A"
+    },
+    {
+      "hostname": "staging-app.forgeniq.com",
+      "persona": "B",
+      "layout": "legacy-official",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\persona-B"
+    },
+    {
+      "hostname": "staging-app.forgeniq.com",
+      "persona": "C",
+      "layout": "legacy-official",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\persona-C"
+    },
+    {
+      "hostname": "staging-app.forgeniq.com",
+      "persona": "OP1",
+      "layout": "legacy-official",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\persona-OP1"
+    },
+    {
+      "hostname": "candidate-staging.forgeniq.com",
+      "persona": "A",
+      "layout": "host-scoped",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\candidate-staging_forgeniq_com\\persona-A"
+    },
+    {
+      "hostname": "candidate-staging.forgeniq.com",
+      "persona": "B",
+      "layout": "host-scoped",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\candidate-staging_forgeniq_com\\persona-B"
+    },
+    {
+      "hostname": "candidate-staging.forgeniq.com",
+      "persona": "C",
+      "layout": "host-scoped",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\candidate-staging_forgeniq_com\\persona-C"
+    }
+  ],
+  "clerkHostProbe": [
+    {
+      "origin": "https://staging-app.forgeniq.com",
+      "ok": true,
+      "code": "CLERK_READY",
+      "httpStatus": 200
+    },
+    {
+      "origin": "https://candidate-staging.forgeniq.com",
+      "ok": true,
+      "code": "CLERK_READY",
+      "httpStatus": 200
+    }
+  ],
+  "validations": [
+    {
+      "origin": "https://staging-app.forgeniq.com",
+      "hasProfile": true,
+      "persona": "A",
+      "state": "VALID",
+      "host": "staging-app.forgeniq.com",
+      "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\persona-A",
+      "registryKey": "staging-app.forgeniq.com/A"
+    },
+    {
+      "origin": "https://staging-app.forgeniq.com",
+      "hasProfile": true,
+      "persona": "B",
+      "state": "VALID",
+      "host": "staging-app.forgeniq.com",
+      "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "role": "REVIEWER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\persona-B",
+      "registryKey": "staging-app.forgeniq.com/B"
+    },
+    {
+      "origin": "https://staging-app.forgeniq.com",
+      "hasProfile": true,
+      "persona": "C",
+      "state": "VALID",
+      "host": "staging-app.forgeniq.com",
+      "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\persona-C",
+      "registryKey": "staging-app.forgeniq.com/C"
+    },
+    {
+      "origin": "https://candidate-staging.forgeniq.com",
+      "hasProfile": true,
+      "persona": "A",
+      "state": "VALID",
+      "host": "candidate-staging.forgeniq.com",
+      "userId": "user_3LA76vR4CueutWtEpcAxvqYKkEv",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\candidate-staging_forgeniq_com\\persona-A",
+      "registryKey": "candidate-staging.forgeniq.com/A"
+    },
+    {
+      "origin": "https://candidate-staging.forgeniq.com",
+      "hasProfile": true,
+      "persona": "B",
+      "state": "VALID",
+      "host": "candidate-staging.forgeniq.com",
+      "userId": "user_3Fa9TcFi8izkxHdDP58Qb3UY4mr",
+      "role": "REVIEWER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\candidate-staging_forgeniq_com\\persona-B",
+      "registryKey": "candidate-staging.forgeniq.com/B"
+    },
+    {
+      "origin": "https://candidate-staging.forgeniq.com",
+      "hasProfile": true,
+      "persona": "C",
+      "state": "VALID",
+      "host": "candidate-staging.forgeniq.com",
+      "userId": "user_3LBBtwYR4mmFisfpzMj3n7DVtVh",
+      "role": "COMPLIANCE_MANAGER",
+      "organisationId": "b8f5e3a1-00ad-4000-8000-000000000001",
+      "profilePath": "C:\\Users\\imtia\\AppData\\Local\\forgeniq-uat-sessions\\candidate-staging_forgeniq_com\\persona-C",
+      "registryKey": "candidate-staging.forgeniq.com/C"
+    }
+  ],
+  "unattendedReady": true,
+  "candidateUnattendedReady": true
+}

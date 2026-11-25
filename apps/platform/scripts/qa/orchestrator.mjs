@@ -119,8 +119,16 @@ function executeRow(row, files) {
     return { status: 'BLOCKED', output: 'Local database not requested. Set FORGENIQ_QA_REQUIRE_DB=1 to run RLS.', ms: 0 };
   }
   const args = row.command.replace(/^node\s+/, '').split(' ');
-  const timeout = /local-db|role-aware|authenticated-smoke/.test(row.command) ? 600000 : 180000;
+  const timeout = /local-db|role-aware|authenticated-smoke|uat-session-recover/.test(row.command) ? 600000 : 180000;
+  const prevCandidate = process.env.FORGENIQ_QA_REQUIRE_CANDIDATE;
+  if (row.id === 'UAT-SESSION-RECOVERY' && mode === 'promote') {
+    process.env.FORGENIQ_QA_REQUIRE_CANDIDATE = '1';
+  }
   const result = runNode(args, timeout);
+  if (row.id === 'UAT-SESSION-RECOVERY') {
+    if (prevCandidate === undefined) delete process.env.FORGENIQ_QA_REQUIRE_CANDIDATE;
+    else process.env.FORGENIQ_QA_REQUIRE_CANDIDATE = prevCandidate;
+  }
   const status = result.exitCode === 0 ? 'PASS' : result.exitCode === 2 ? 'AUTH_BLOCKED' : 'FAIL';
   return { status, output: result.output, ms: result.ms };
 }
@@ -266,6 +274,13 @@ const report = {
         id: latestKnownDeployment.deploymentId || null,
         url: latestKnownDeployment.deploymentUrl || null,
         alias: latestKnownDeployment.alias || null,
+        previewDeploymentId: latestKnownDeployment.previewDeploymentId || null,
+        previewUrl: latestKnownDeployment.previewUrl || null,
+        candidateAlias: latestKnownDeployment.candidateAlias || null,
+        candidateHost: latestKnownDeployment.candidateAlias || 'https://candidate-staging.forgeniq.com',
+        protectedOfficialDeploymentId: latestKnownDeployment.protectedOfficialDeploymentId || null,
+        prePromotionAuth: latestKnownDeployment.prePromotionAuth || null,
+        postPromotionAuth: latestKnownDeployment.postPromotionAuth || null,
         capturedAt: latestKnownDeployment.capturedAt || null,
       }
     : null,

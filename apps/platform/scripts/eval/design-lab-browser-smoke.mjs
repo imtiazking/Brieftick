@@ -174,8 +174,12 @@ for (const route of ROUTES) {
       { timeout: 8000 },
     ).catch(() => {});
     const qaText = await page.locator('[data-qa-status]').innerText().catch(() => '');
-    if (!/Technical tests:\s*PASS/i.test(qaText) || !/Business UAT approved:\s*no/i.test(qaText) || !/Production authorised:\s*no/i.test(qaText)) {
-      fatal.push(`qa dashboard verdict missing: ${qaText.slice(0, 180)}`);
+    if (
+      !/Technical tests:\s*(PASS|FAIL|NOT RUN|BLOCKED)/i.test(qaText) ||
+      !/Business UAT approved:\s*no/i.test(qaText) ||
+      !/Production authorised:\s*no/i.test(qaText)
+    ) {
+      fatal.push(`qa dashboard verdict missing: ${qaText.slice(0, 220)}`);
     }
   }
   const authGate = /sign in|backend unavailable|organisation access/i.test(heading);

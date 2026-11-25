@@ -28,11 +28,15 @@ export async function hydrateQaDashboard(doc = document) {
     const build = (doc.querySelector('script[src*="app.js"]')?.getAttribute('src') || '').match(/[?&]v=([a-f0-9]+)/i)?.[1] || '';
     const head = String(report.gitHead || '');
     const stale = Boolean(build && head && !head.startsWith(build));
-    const deployment = report.latestKnownDeployment?.id || 'none recorded';
+    const dep = report.latestKnownDeployment || {};
+    const deployment = dep.id || 'none recorded';
+    const candidatePreview = dep.previewDeploymentId || '—';
+    const protectedOfficial = dep.protectedOfficialDeploymentId || '—';
+    const preAuth = dep.prePromotionAuth?.status || '—';
     if (status) {
       status.textContent = stale
         ? `Stale report for commit ${head.slice(0, 12)}. This build is ${build}. It is not the current release result.`
-        : `Technical tests: ${report.technicalTests || 'NOT RUN'}. Authenticated staging: ${report.authenticatedStaging || 'NOT RUN'}. Security validation: ${report.securityValidation || 'NOT RUN'}. Promotion: ${report.promotion || 'NOT RUN'}. Business UAT approved: no. Production authorised: no. Commit ${head.slice(0, 12) || 'unknown'}. Deployment ${deployment}. Executed ${report.generatedAt || 'unknown'}.`;
+        : `Technical tests: ${report.technicalTests || 'NOT RUN'}. Authenticated staging: ${report.authenticatedStaging || 'NOT RUN'}. Security validation: ${report.securityValidation || 'NOT RUN'}. Promotion: ${report.promotion || 'NOT RUN'}. Pre-promotion auth: ${preAuth}. Business UAT approved: no. Production authorised: no. Commit ${head.slice(0, 12) || 'unknown'}. Official deployment ${deployment}. Protected rollback ${protectedOfficial}. Candidate preview ${candidatePreview}. Executed ${report.generatedAt || 'unknown'}.`;
     }
     const metrics = host.querySelector('[data-qa-metrics]');
     if (metrics && !stale) {
