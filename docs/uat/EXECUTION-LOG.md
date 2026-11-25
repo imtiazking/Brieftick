@@ -2,6 +2,16 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — Staging UAT preparation (compliance lifecycle)
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | Baseline frozen | `f89b8f5` accepted as local dev baseline | No new feature work; prep only |
+| — | UAT pack | Consolidated manifest + migration/RLS review | `docs/uat/STAGING-UAT-COMPLIANCE-LIFECYCLE-PREP.md`; prep migration `20261125200000_impact_assessment_risk_links_rls.sql` |
+| — | Sessions | Preserve A/B/C Clerk profiles | `staging-user-sessions.mjs status` → A/B/C VALID |
+| — | Vercel | CPU/storage quota | **No deploy** — restriction treated as unresolved pending dashboard check |
+| — | Hosting | — | Candidate-first + authenticated gates remain mandatory for promote |
+
 ## 2026-11-26 — Evidence integrity and assurance governance matrix
 
 | Time (UTC) | Decision | Reason | Outcome |
