@@ -11,6 +11,7 @@ import { readFileSync, existsSync, mkdirSync, statSync } from 'node:fs';
 import { join, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
+import { playwrightLaunchOptions } from './playwright-ci-launch.mjs';
 
 const platformRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const repoRoot = join(platformRoot, '..', '..');
@@ -108,7 +109,7 @@ if (!origin) {
   ({ server, origin } = await startStatic());
 }
 
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch(playwrightLaunchOptions());
 const extraHTTPHeaders = {};
 if (process.env.VERCEL_OIDC_TOKEN) {
   extraHTTPHeaders['x-vercel-trusted-oidc-idp-token'] = process.env.VERCEL_OIDC_TOKEN;
