@@ -90,6 +90,7 @@ import {
   renderConnectedAssuranceHistoryNote,
   renderConnectedAssuranceRelationshipsPanel,
   renderConnectedAssuranceOutcomePanel,
+  renderConnectedAssuranceExecutionPanel,
   renderConnectedAssuranceWorkflowPanel,
 } from './platform/connected-assurance-panels.js';
 export function renderDashboardAssuranceSummary() {
@@ -328,6 +329,7 @@ export function viewAssuranceReview(id) {
       </dl>
       ${renderConnectedAssuranceRelationshipsPanel(id, r, linkPanelState)}
       ${renderConnectedAssuranceOutcomePanel(id, r)}
+      ${renderConnectedAssuranceExecutionPanel(id, r)}
       ${renderConnectedAssuranceWorkflowPanel(id, { loading: auditLoading, error: auditError })}`;
   }
   const r = getAssuranceReview(s, id);

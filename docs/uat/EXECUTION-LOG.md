@@ -2,6 +2,15 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — Assurance execution and guarded lifecycle closure
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | Assurance workflow split | Plan approval must not emit `COMPLIANCE_LIFECYCLE_CLOSED` | `approve` → `TESTING_READY`; actions `record_test`, `complete_remediation`, `accept_exception`, `close_lifecycle`, `reopen_lifecycle`; `assurance-closure-guards.mjs` |
+| — | Provenance lineage | Silent `provenance_link_mismatch` skips removed | `buildLockedChildMetadataFromParentRecord` on stages 3–5 children; `LIFECYCLE_LINK_DEFERRED` when link still incompatible |
+| — | Acceptance | Negative premature closure + fail/remediate/retest path | `acceptance-ri-compliance-lifecycle-e2e.mjs` and `acceptance-ri-assurance-lifecycle-gaps.mjs` **PASS**; offline CI **24/24 PASS** |
+| — | Vercel | Hobby CPU quota | **No deploy** |
+
 ## 2026-11-25 — Stages 3–5: integrated compliance lifecycle (fixture AI)
 
 | Time (UTC) | Decision | Reason | Outcome |

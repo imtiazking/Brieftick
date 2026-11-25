@@ -5,7 +5,9 @@ import { mapControlMappingToDraftFields } from '@/lib/ri/ai/control-mapping-mapp
 import { mapSchemaForAnalysisType, validateStructuredOutput } from '@/lib/ri/ai/output-schemas';
 import { createFixtureProvider, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child-record-provenance';
 import { linkRiskControl } from '@/lib/ri/links';
+import { attemptMandatoryLifecycleLink } from '@/lib/ri/services/lifecycle-link-recovery';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 
 export type Stage4DownstreamResult =
@@ -92,20 +94,18 @@ export async function ensureControlMappingFromApprovedRisk(
 
   const mapped = mapControlMappingToDraftFields({ structured: aiStructured });
   const riskMeta = (risk.metadata || {}) as Record<string, unknown>;
-  const recordProvenance =
-    (riskMeta.recordProvenance as string | undefined) ||
-    (riskMeta.record_provenance as string | undefined) ||
-    'tenant_operational';
-  const metadata = {
-    sourceApprovedRiskId: params.riskId,
-    sourceImpactAssessmentId: riskMeta.sourceImpactAssessmentId ?? null,
-    sourceRegulatoryObligationId: riskMeta.sourceRegulatoryObligationId ?? null,
-    stage4PrimaryDraft: true,
-    stage4Workflow: 'risk_validated_to_control_draft',
-    stage4Ai: mapped.stage4Metadata,
-    labProvenanceLocked: true,
-    recordProvenance,
-  };
+  const metadata = buildLockedChildMetadataFromParentRecord({
+    parentMetadata: riskMeta,
+    actorUserId: params.actorUserId,
+    extras: {
+      sourceApprovedRiskId: params.riskId,
+      sourceImpactAssessmentId: riskMeta.sourceImpactAssessmentId ?? null,
+      sourceRegulatoryObligationId: riskMeta.sourceRegulatoryObligationId ?? null,
+      stage4PrimaryDraft: true,
+      stage4Workflow: 'risk_validated_to_control_draft',
+      stage4Ai: mapped.stage4Metadata,
+    },
+  });
 
   const { data: control, error: insertErr } = await supabase
     .from('controls')
@@ -134,22 +134,31 @@ export async function ensureControlMappingFromApprovedRisk(
     throw new Error(insertErr.message);
   }
 
-  try {
-    await linkRiskControl(supabase, params.organisationId, params.riskId, control.id, params.actorUserId);
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    if (msg !== 'provenance_link_mismatch') throw e;
-  }
+  await attemptMandatoryLifecycleLink(supabase, {
+    organisationId: params.organisationId,
+    actorUserId: params.actorUserId,
+    linkType: 'risk_control',
+    sourceEntityType: 'risk',
+    sourceEntityId: params.riskId,
+    targetEntityType: 'control',
+    targetEntityId: control.id,
+    link: () => linkRiskControl(supabase, params.organisationId, params.riskId, control.id, params.actorUserId),
+  });
 
   for (const m of mapped.existingControlMappings) {
     const existingControlId = m?.controlId || m?.existingControlId;
     if (typeof existingControlId === 'string') {
-      try {
-        await linkRiskControl(supabase, params.organisationId, params.riskId, existingControlId, params.actorUserId);
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : String(e);
-        if (msg !== 'provenance_link_mismatch') throw e;
-      }
+      await attemptMandatoryLifecycleLink(supabase, {
+        organisationId: params.organisationId,
+        actorUserId: params.actorUserId,
+        linkType: 'risk_control',
+        sourceEntityType: 'risk',
+        sourceEntityId: params.riskId,
+        targetEntityType: 'control',
+        targetEntityId: existingControlId,
+        link: () =>
+          linkRiskControl(supabase, params.organisationId, params.riskId, existingControlId, params.actorUserId),
+      });
     }
   }
 

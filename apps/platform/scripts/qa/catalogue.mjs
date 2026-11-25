@@ -211,6 +211,23 @@ export const QA_CATALOGUE = [
     ],
   },
   {
+    id: 'RI-ASSURANCE-LIFECYCLE-GAPS',
+    area: 'Regulatory Intelligence',
+    feature: 'Assurance execution, remediation, retest and guarded lifecycle closure',
+    type: 'acceptance',
+    criticality: 'critical',
+    gate: 'ci',
+    route: '#/assurance',
+    apis: ['/api/ri-lab/assurance-reviews', '/api/ri-lab/evidence'],
+    entities: ['assurance_reviews', 'findings', 'actions', 'evidence_items'],
+    command: 'node scripts/acceptance-ri-assurance-lifecycle-gaps.mjs',
+    paths: [
+      'apps/platform/lib/ri/services/assurance.ts',
+      'apps/platform/lib/ri/assurance-closure-guards.mjs',
+      'design-lab/regulatory-intelligence/js/platform/connected-assurance-panels.js',
+    ],
+  },
+  {
     id: 'RI-STAGE2-OBLIGATION-IMPACT',
     area: 'Regulatory Intelligence',
     feature: 'Stage 2: approved obligation to AI impact draft',
@@ -485,7 +502,7 @@ export const QA_CATALOGUE = [
     entities: ['impact_assessments', 'risks', 'controls', 'assurance_reviews'],
     command: 'coverage-gap',
     paths: [],
-    note: 'Stages 2–5 orchestration (impact → risk → control → assurance) is implemented offline via RI-STAGE2-OBLIGATION-IMPACT and RI-COMPLIANCE-LIFECYCLE-E2E. Deep remediation/retest automation and paid-model accuracy are not proven in CI.',
+    note: 'Full assurance execution (test, evidence, remediation, retest, guarded closure) is covered by RI-ASSURANCE-LIFECYCLE-GAPS and RI-COMPLIANCE-LIFECYCLE-E2E. Paid live AI model accuracy is still not proven in CI.',
     coverageStatus: 'PARTIAL',
   },
   {

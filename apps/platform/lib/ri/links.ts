@@ -581,6 +581,35 @@ export async function linkFindingAction(
   );
 }
 
+export async function linkFindingAssuranceReview(
+  supabase: SupabaseClient,
+  organisationId: string,
+  findingId: string,
+  assuranceReviewId: string,
+  userId: string,
+) {
+  const { a, b } = await assertPair(
+    supabase,
+    organisationId,
+    { table: 'findings', id: findingId },
+    { table: 'assurance_reviews', id: assuranceReviewId },
+  );
+  const inserted = await insertLinkRow(supabase, 'finding_assurance_review_links', {
+    organisation_id: organisationId,
+    finding_id: a,
+    assurance_review_id: b,
+  });
+  if (!inserted) return;
+  await recordWorkflowEvent(supabase, {
+    organisationId,
+    entityType: 'finding',
+    entityId: a,
+    eventType: 'FINDING_STATUS_CHANGED',
+    actorUserId: userId,
+    metadata: { assurance_review_id: b, link: 'finding_assurance_review' },
+  });
+}
+
 export async function linkAssuranceControl(
   supabase: SupabaseClient,
   organisationId: string,

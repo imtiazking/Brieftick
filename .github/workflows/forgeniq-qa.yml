@@ -25,7 +25,7 @@ jobs:
       - name: Embedded Postgres system libraries
         run: sudo apt-get update && sudo apt-get install -y libreadline-dev zlib1g-dev libicu-dev
       - name: QA catalogue preflight
-        run: node -e "import('./scripts/qa/catalogue.mjs').then((m) => { const n = m.selectCatalogue([], 'ci').length; console.log('ci_rows', n); if (n < 23) process.exit(1); })"
+        run: node -e "import('./scripts/qa/catalogue.mjs').then((m) => { const n = m.selectCatalogue([], 'ci').length; console.log('ci_rows', n); if (n < 24) process.exit(1); })"
       - name: Offline CI gate (no Clerk sessions or staging promotion)
         run: npm run qa
         env:

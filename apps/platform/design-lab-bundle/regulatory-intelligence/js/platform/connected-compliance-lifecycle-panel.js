@@ -19,7 +19,9 @@ export function renderConnectedComplianceLifecyclePanel(obligationId, lifecycle)
     ['Control', lifecycle.control?.status, lifecycle.links?.controlId ? `#/control/${esc(lifecycle.links.controlId)}` : null],
     [
       'Assurance',
-      lifecycle.assurance?.result || lifecycle.assurance?.metadata?.assuranceStatus,
+      lifecycle.assurance?.metadata?.assuranceStatus
+        ? `${lifecycle.assurance?.result || 'NOT_TESTED'} / ${lifecycle.assurance.metadata.assuranceStatus}`
+        : lifecycle.assurance?.result || lifecycle.assurance?.metadata?.assuranceStatus,
       lifecycle.links?.assuranceReviewId ? `#/assurance/${esc(lifecycle.links.assuranceReviewId)}` : null,
     ],
   ];

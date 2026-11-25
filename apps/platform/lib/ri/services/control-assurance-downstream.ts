@@ -5,7 +5,9 @@ import { mapAssurancePlanToDraftFields } from '@/lib/ri/ai/assurance-plan-mapper
 import { mapSchemaForAnalysisType, validateStructuredOutput } from '@/lib/ri/ai/output-schemas';
 import { createFixtureProvider, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child-record-provenance';
 import { linkAssuranceControl } from '@/lib/ri/links';
+import { attemptMandatoryLifecycleLink } from '@/lib/ri/services/lifecycle-link-recovery';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 
 export type Stage5DownstreamResult =
@@ -92,23 +94,21 @@ export async function ensureAssurancePlanFromApprovedControl(
 
   const mapped = mapAssurancePlanToDraftFields({ structured: aiStructured });
   const ctrlMeta = (control.metadata || {}) as Record<string, unknown>;
-  const recordProvenance =
-    (ctrlMeta.recordProvenance as string | undefined) ||
-    (ctrlMeta.record_provenance as string | undefined) ||
-    'tenant_operational';
-  const metadata = {
-    sourceApprovedControlId: params.controlId,
-    sourceApprovedRiskId: ctrlMeta.sourceApprovedRiskId ?? null,
-    sourceImpactAssessmentId: ctrlMeta.sourceImpactAssessmentId ?? null,
-    sourceRegulatoryObligationId: ctrlMeta.sourceRegulatoryObligationId ?? null,
-    stage5PrimaryPlan: true,
-    stage5Workflow: 'control_approved_to_assurance_plan',
-    stage5Ai: mapped.stage5Metadata,
-    assuranceStatus: 'DRAFT',
-    assuranceWorkflow: true,
-    labProvenanceLocked: true,
-    recordProvenance,
-  };
+  const metadata = buildLockedChildMetadataFromParentRecord({
+    parentMetadata: ctrlMeta,
+    actorUserId: params.actorUserId,
+    extras: {
+      sourceApprovedControlId: params.controlId,
+      sourceApprovedRiskId: ctrlMeta.sourceApprovedRiskId ?? null,
+      sourceImpactAssessmentId: ctrlMeta.sourceImpactAssessmentId ?? null,
+      sourceRegulatoryObligationId: ctrlMeta.sourceRegulatoryObligationId ?? null,
+      stage5PrimaryPlan: true,
+      stage5Workflow: 'control_approved_to_assurance_plan',
+      stage5Ai: mapped.stage5Metadata,
+      assuranceStatus: 'DRAFT',
+      assuranceWorkflow: true,
+    },
+  });
 
   const { data: review, error: insertErr } = await supabase
     .from('assurance_reviews')
@@ -134,12 +134,17 @@ export async function ensureAssurancePlanFromApprovedControl(
     throw new Error(insertErr.message);
   }
 
-  try {
-    await linkAssuranceControl(supabase, params.organisationId, review.id, params.controlId, params.actorUserId);
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    if (msg !== 'provenance_link_mismatch') throw e;
-  }
+  await attemptMandatoryLifecycleLink(supabase, {
+    organisationId: params.organisationId,
+    actorUserId: params.actorUserId,
+    linkType: 'assurance_control',
+    sourceEntityType: 'assurance_review',
+    sourceEntityId: review.id,
+    targetEntityType: 'control',
+    targetEntityId: params.controlId,
+    link: () =>
+      linkAssuranceControl(supabase, params.organisationId, review.id, params.controlId, params.actorUserId),
+  });
 
   await recordWorkflowEvent(supabase, {
     organisationId: params.organisationId,

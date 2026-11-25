@@ -59,6 +59,42 @@ export function buildLockedChildMetadataFromParentChange(params: {
   return { metadata, recordProvenance, labClass };
 }
 
+const LINEAGE_PROVENANCE_KEYS = [
+  RECORD_PROVENANCE_METADATA_KEY,
+  'record_provenance',
+  LAB_PROVENANCE_LOCKED_KEY,
+  LAB_CREATION_MODE_KEY,
+  LAB_PROVENANCE_RECORDED_AT_KEY,
+  LAB_PROVENANCE_RECORDED_BY_KEY,
+  LAB_PARENT_REGULATORY_CHANGE_ID_KEY,
+] as const;
+
+/** Copy locked lab provenance from an approved parent record (impact → risk → control → assurance). */
+export function buildLockedChildMetadataFromParentRecord(params: {
+  parentMetadata: Record<string, unknown> | null | undefined;
+  actorUserId: string;
+  extras: Record<string, unknown>;
+}): Record<string, unknown> {
+  const parent = params.parentMetadata && typeof params.parentMetadata === 'object' ? params.parentMetadata : {};
+  const metadata: Record<string, unknown> = { ...params.extras };
+  for (const key of LINEAGE_PROVENANCE_KEYS) {
+    if (parent[key] !== undefined && parent[key] !== null) {
+      metadata[key] = parent[key];
+    }
+  }
+  metadata[LAB_PROVENANCE_LOCKED_KEY] = true;
+  if (
+    metadata[RECORD_PROVENANCE_METADATA_KEY] === undefined &&
+    metadata.record_provenance === undefined
+  ) {
+    metadata[RECORD_PROVENANCE_METADATA_KEY] = 'tenant_operational';
+  }
+  metadata[LAB_PROVENANCE_RECORDED_AT_KEY] =
+    metadata[LAB_PROVENANCE_RECORDED_AT_KEY] ?? new Date().toISOString();
+  metadata[LAB_PROVENANCE_RECORDED_BY_KEY] = params.actorUserId;
+  return metadata;
+}
+
 export function workflowMetadataForChildRecordCreate(params: {
   recordProvenance: RecordProvenanceKind;
   parentChangeId: string;

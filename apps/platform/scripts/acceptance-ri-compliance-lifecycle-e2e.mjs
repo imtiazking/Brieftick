@@ -59,6 +59,7 @@ const { ensureRiskMappingFromApprovedImpact } = await import('../lib/ri/services
 const { updateRiskWithGovernance } = await import('../lib/ri/services/risks.ts');
 const { updateControlWithGovernance } = await import('../lib/ri/services/controls.ts');
 const { updateAssuranceWithGovernance } = await import('../lib/ri/services/assurance.ts');
+const { createEvidence } = await import('../lib/ri/services/evidence.ts');
 
 let failures = 0;
 const pass = (m) => console.log(`PASS: ${m}`);
@@ -233,9 +234,53 @@ try {
     assuranceId: assurance[0].id,
     userId: USER_C,
     role: 'COMPLIANCE_MANAGER',
-    fields: { action: 'approve', result: 'PASS' },
+    fields: { action: 'approve' },
   });
-  pass('Stage 5 independent human closure');
+  pass('Stage 5 assurance plan approved (testing ready)');
+
+  const premature = await updateAssuranceWithGovernance(adminSb, {
+    organisationId: ORG_A,
+    assuranceId: assurance[0].id,
+    userId: USER_C,
+    role: 'COMPLIANCE_MANAGER',
+    fields: { action: 'close_lifecycle', result: 'PASS' },
+  }).catch((e) => e);
+  if (String(premature?.message || premature).includes('premature_compliance_lifecycle_closure')) {
+    pass('premature lifecycle closure blocked before testing');
+  } else fail('premature closure should be blocked', premature);
+
+  const evidence = await createEvidence(adminSb, {
+    organisationId: ORG_A,
+    userId: USER_A,
+    role: 'ANALYST',
+    fields: {
+      title: 'Lifecycle control test evidence',
+      evidence_type: 'TEST',
+    },
+  });
+
+  await updateAssuranceWithGovernance(adminSb, {
+    organisationId: ORG_A,
+    assuranceId: assurance[0].id,
+    userId: USER_A,
+    role: 'ANALYST',
+    fields: {
+      action: 'record_test',
+      result: 'PASS',
+      evidenceIds: [evidence.id],
+      effectiveness: 'Effective',
+    },
+  });
+  pass('Stage 5 control test recorded with evidence');
+
+  await updateAssuranceWithGovernance(adminSb, {
+    organisationId: ORG_A,
+    assuranceId: assurance[0].id,
+    userId: USER_C,
+    role: 'COMPLIANCE_MANAGER',
+    fields: { action: 'close_lifecycle', result: 'PASS' },
+  });
+  pass('Stage 5 independent human assurance closure');
 
   const { rows: closed } = await admin.query(
     `select 1 from workflow_events where organisation_id = $1 and entity_id = $2 and event_type = 'COMPLIANCE_LIFECYCLE_CLOSED'`,

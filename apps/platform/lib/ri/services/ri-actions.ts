@@ -129,6 +129,7 @@ export async function createRiAction(
       description: parseOptionalText(params.description, 8000),
       source_type: parseRequiredText(params.sourceType, 'source_type', 100),
       owner_user_id: params.ownerUserId ?? params.userId,
+      created_by_user_id: params.userId,
       metadata: insertMetadata,
       priority: parseOptionalText(params.priority, 100),
       due_date: parseOptionalDate(params.dueDate),

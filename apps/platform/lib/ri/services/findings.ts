@@ -73,6 +73,7 @@ export async function createFinding(
       severity: parseRequiredText(raw.severity, 'severity', 50),
       status: 'OPEN',
       owner_user_id: params.userId,
+      created_by_user_id: params.userId,
       due_date: parseOptionalDate(raw.due_date),
       metadata,
     })

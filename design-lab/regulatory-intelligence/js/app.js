@@ -1678,6 +1678,39 @@ function bindViewHandlers() {
     });
   }
 
+  document.querySelectorAll('[data-connected-assurance-action]').forEach((btn) => {
+    if (btn.dataset.riBoundAssuranceExec) return;
+    btn.dataset.riBoundAssuranceExec = '1';
+    btn.addEventListener('click', async (ev) => {
+      const actionBtn = ev.currentTarget;
+      const panel = actionBtn.closest('[data-connected-assurance-execution]');
+      const assuranceId = panel?.dataset?.connectedAssuranceExecution;
+      if (!assuranceId) return;
+      const action = actionBtn.dataset.connectedAssuranceAction;
+      const evidenceId = panel?.querySelector('[data-connected-assurance-evidence-id]')?.value?.trim();
+      const testResult = actionBtn.dataset.connectedAssuranceTestResult;
+      const r = getConnectedAssurance(assuranceId);
+      const body = {
+        action,
+        ...(r?.updatedAt ? { expectedUpdatedAt: r.updatedAt } : {}),
+      };
+      if (testResult) {
+        body.result = testResult;
+        body.retest = panel?.dataset?.assuranceRetest === 'true';
+        if (evidenceId) body.evidenceIds = [evidenceId];
+      }
+      actionBtn.disabled = true;
+      try {
+        await patchConnectedAssuranceReview(getState(), assuranceId, body);
+        showToast(`Assurance: ${action}`);
+        renderShell();
+      } catch (e) {
+        showToast(e?.message || 'Assurance action failed');
+        actionBtn.disabled = false;
+      }
+    });
+  });
+
   document.querySelectorAll('[data-connected-evidence-upload]').forEach((btn) => {
     if (btn.dataset.riBoundEvidenceUpload) return;
     btn.dataset.riBoundEvidenceUpload = '1';

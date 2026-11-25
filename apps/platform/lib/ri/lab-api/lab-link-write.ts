@@ -165,6 +165,20 @@ export function parseLabAssurancePatchBody(body: unknown): {
   if ('result' in raw) fields.result = parseAssuranceResult(raw.result);
   if ('notes' in raw) fields.notes = parseOptionalText(raw.notes, 8000);
   if ('action' in raw && typeof raw.action === 'string') fields.action = raw.action;
+  if ('effectiveness' in raw) fields.effectiveness = parseOptionalText(raw.effectiveness, 200);
+  if ('retest' in raw) fields.retest = raw.retest === true || raw.retest === 'true';
+  if ('remediationActionId' in raw && raw.remediationActionId) {
+    fields.remediationActionId = parseUuid(raw.remediationActionId, 'remediation_action_id');
+  }
+  if ('findingId' in raw && raw.findingId) {
+    fields.findingId = parseUuid(raw.findingId, 'finding_id');
+  }
+  if ('evidenceIds' in raw) {
+    const list = Array.isArray(raw.evidenceIds) ? raw.evidenceIds : [raw.evidenceIds];
+    fields.evidenceIds = list
+      .filter((id) => id !== null && id !== undefined && id !== '')
+      .map((id) => parseUuid(id, 'evidence_id'));
+  }
   if (!Object.keys(fields).length) throw new RiValidationError('missing_patch_fields');
   return { fields, expectedUpdatedAt };
 }

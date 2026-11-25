@@ -5,7 +5,9 @@ import { mapRiskMappingToDraftFields } from '@/lib/ri/ai/risk-mapping-mapper.mjs
 import { mapSchemaForAnalysisType, validateStructuredOutput } from '@/lib/ri/ai/output-schemas';
 import { createFixtureProvider, FIXTURE_PROVIDER_ID } from '@/lib/ri/ai/fixture-provider';
 import { assertRowInOrganisation } from '@/lib/ri/db-guard';
+import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child-record-provenance';
 import { linkImpactAssessmentRisk, linkObligationRisk } from '@/lib/ri/links';
+import { attemptMandatoryLifecycleLink } from '@/lib/ri/services/lifecycle-link-recovery';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
 
 export type Stage3DownstreamResult =
@@ -105,19 +107,17 @@ export async function ensureRiskMappingFromApprovedImpact(
 
   const mapped = mapRiskMappingToDraftFields({ structured: aiStructured });
   const impactMeta = (impact.metadata || {}) as Record<string, unknown>;
-  const recordProvenance =
-    (impactMeta.recordProvenance as string | undefined) ||
-    (impactMeta.record_provenance as string | undefined) ||
-    'tenant_operational';
-  const metadata = {
-    sourceImpactAssessmentId: params.impactAssessmentId,
-    sourceRegulatoryObligationId: obligationId,
-    stage3PrimaryDraft: true,
-    stage3Workflow: 'impact_approved_to_risk_draft',
-    stage3Ai: mapped.stage3Metadata,
-    labProvenanceLocked: true,
-    recordProvenance,
-  };
+  const metadata = buildLockedChildMetadataFromParentRecord({
+    parentMetadata: impactMeta,
+    actorUserId: params.actorUserId,
+    extras: {
+      sourceImpactAssessmentId: params.impactAssessmentId,
+      sourceRegulatoryObligationId: obligationId,
+      stage3PrimaryDraft: true,
+      stage3Workflow: 'impact_approved_to_risk_draft',
+      stage3Ai: mapped.stage3Metadata,
+    },
+  });
 
   const { data: risk, error: insertErr } = await supabase
     .from('risks')
@@ -161,12 +161,16 @@ export async function ensureRiskMappingFromApprovedImpact(
 
   const linkedExisting: string[] = [];
   if (obligationId) {
-    try {
-      await linkObligationRisk(supabase, params.organisationId, obligationId, risk.id, params.actorUserId);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      if (msg !== 'provenance_link_mismatch') throw e;
-    }
+    await attemptMandatoryLifecycleLink(supabase, {
+      organisationId: params.organisationId,
+      actorUserId: params.actorUserId,
+      linkType: 'obligation_risk',
+      sourceEntityType: 'regulatory_obligation',
+      sourceEntityId: obligationId,
+      targetEntityType: 'risk',
+      targetEntityId: risk.id,
+      link: () => linkObligationRisk(supabase, params.organisationId, obligationId!, risk.id, params.actorUserId),
+    });
   }
 
   for (const m of mapped.existingRiskMappings) {

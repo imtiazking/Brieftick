@@ -107,6 +107,23 @@ export function renderConnectedAssuranceOutcomePanel(assuranceId, r) {
   </section>`;
 }
 
+export function renderConnectedAssuranceExecutionPanel(assuranceId, r) {
+  if (!isConnectedAssuranceWritesEnabled(getState())) return '';
+  const wf = (r.metadata && r.metadata.assuranceStatus) || r.assuranceStatus || 'DRAFT';
+  return `<section class="ri-panel" data-connected-assurance-execution="${esc(assuranceId)}">
+    <h2>Control testing &amp; lifecycle closure</h2>
+    <p class="ri-muted">Workflow: <strong>${esc(String(wf))}</strong>. Plan approval does not close the obligation lifecycle — record tests, evidence, remediation and independent closure.</p>
+    <label>Evidence item ID (UUID) <input data-connected-assurance-evidence-id placeholder="evidence id" autocomplete="off" /></label>
+    <div class="ri-btn-row">
+      <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="approve">Approve plan (→ testing)</button>
+      <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="record_test" data-connected-assurance-test-result="PASS">Record test PASS</button>
+      <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="record_test" data-connected-assurance-test-result="FAIL">Record test FAIL</button>
+      <button type="button" class="ri-btn ri-btn--ghost" data-connected-assurance-action="complete_remediation">Complete remediation</button>
+      <button type="button" class="ri-btn ri-btn--primary" data-connected-assurance-action="close_lifecycle">Independent closure</button>
+    </div>
+  </section>`;
+}
+
 export function renderConnectedAssuranceWorkflowPanel(assuranceId, loadState = {}) {
   if (loadState.loading) {
     return `<section class="ri-panel"><h2>Audit history</h2>
