@@ -18,6 +18,7 @@ import {
   recordKindForChangeLabClass,
   type ChangeLabClass,
 } from '@/lib/ri/lab-api/change-lab-provenance';
+import { buildLockedChildMetadataFromParentRecord } from '@/lib/ri/lab-api/child-record-provenance';
 import {
   classifyObligationForLab,
   obligationLabProvenanceInputFromRow,
@@ -465,6 +466,19 @@ export async function resolveEvidenceCreateMetadata(params: {
       .single();
     if (error || !ctrl) throw new Error('not_found');
     const ctrlClass = classifyControlForLab(controlLabProvenanceInputFromRow(ctrl));
+    const ctrlMeta = (ctrl.metadata || {}) as Record<string, unknown>;
+    if (ctrlMeta[LAB_PROVENANCE_LOCKED_KEY] === true) {
+      const metadata = buildLockedChildMetadataFromParentRecord({
+        parentMetadata: ctrlMeta,
+        actorUserId: params.actorUserId,
+        extras: { parentControlId: ctrl.id },
+      });
+      return {
+        metadata,
+        labClass: ctrlClass,
+        recordProvenance: recordKindForRiskControlLabClass(ctrlClass),
+      };
+    }
     const ctrlProv = recordKindForRiskControlLabClass(ctrlClass);
     if (ctrlClass !== 'operational' && ctrlClass !== 'uat_authorised') {
       throw new Error('control_provenance_unverified');

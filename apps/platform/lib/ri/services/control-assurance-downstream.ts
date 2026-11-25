@@ -134,7 +134,7 @@ export async function ensureAssurancePlanFromApprovedControl(
     throw new Error(insertErr.message);
   }
 
-  await attemptMandatoryLifecycleLink(supabase, {
+  const linkResult = await attemptMandatoryLifecycleLink(supabase, {
     organisationId: params.organisationId,
     actorUserId: params.actorUserId,
     linkType: 'assurance_control',
@@ -145,6 +145,25 @@ export async function ensureAssurancePlanFromApprovedControl(
     link: () =>
       linkAssuranceControl(supabase, params.organisationId, review.id, params.controlId, params.actorUserId),
   });
+  if (!linkResult.linked && linkResult.deferred) {
+    await supabase
+      .from('assurance_reviews')
+      .update({
+        metadata: {
+          ...metadata,
+          deferredMandatoryLinks: [
+            {
+              linkType: 'assurance_control',
+              controlId: params.controlId,
+              reason: linkResult.reason,
+              recordedAt: new Date().toISOString(),
+            },
+          ],
+        },
+      })
+      .eq('id', review.id)
+      .eq('organisation_id', params.organisationId);
+  }
 
   await recordWorkflowEvent(supabase, {
     organisationId: params.organisationId,

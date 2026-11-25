@@ -198,7 +198,7 @@ try {
     organisationId: ORG_A,
     userId: USER_A,
     role: 'ANALYST',
-    fields: { title: 'Failed test evidence', evidence_type: 'TEST' },
+    fields: { title: 'Failed test evidence', evidence_type: 'TEST', controlId: ctx.controlId },
   });
 
   await updateAssuranceWithGovernance(adminSb, {
@@ -232,7 +232,7 @@ try {
     organisationId: ORG_A,
     userId: USER_A,
     role: 'ANALYST',
-    fields: { title: 'Retest evidence', evidence_type: 'TEST' },
+    fields: { title: 'Retest evidence', evidence_type: 'TEST', controlId: ctx.controlId },
   });
   await updateAssuranceWithGovernance(adminSb, {
     organisationId: ORG_A,

@@ -2,6 +2,15 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-26 — Evidence integrity and assurance governance matrix
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | Evidence–control binding | Silent provenance skips allowed unrelated tenant evidence | `assurance-evidence-binding.ts`: align lineage, mandatory `evidence_control_links`, per-test bindings; lifecycle evidence inherits locked control metadata; closure validates integrity |
+| — | Closure hardening | Staging UAT requires non-bypassable guards | Authorised exception detail; deferred mandatory links block close; idempotent `COMPLIANCE_LIFECYCLE_CLOSED` |
+| — | Security acceptance | Runtime RLS + SoD matrix before staging | `acceptance-ri-assurance-governance-security.mjs` **PASS**; catalogue **RI-ASSURANCE-GOVERNANCE-SECURITY**; offline CI **25/25 PASS** |
+| — | Vercel | Hobby CPU quota | **No deploy** |
+
 ## 2026-11-26 — Assurance execution and guarded lifecycle closure
 
 | Time (UTC) | Decision | Reason | Outcome |

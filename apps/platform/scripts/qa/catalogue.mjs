@@ -211,6 +211,22 @@ export const QA_CATALOGUE = [
     ],
   },
   {
+    id: 'RI-ASSURANCE-GOVERNANCE-SECURITY',
+    area: 'Regulatory Intelligence',
+    feature: 'Assurance evidence integrity, closure guards and RLS security matrix',
+    type: 'acceptance',
+    criticality: 'critical',
+    gate: 'ci',
+    route: '#/assurance',
+    apis: ['/api/ri-lab/assurance-reviews', '/api/ri-lab/evidence'],
+    entities: ['assurance_reviews', 'evidence_items', 'evidence_control_links', 'workflow_events'],
+    command: 'node scripts/acceptance-ri-assurance-governance-security.mjs',
+    paths: [
+      'apps/platform/lib/ri/services/assurance-evidence-binding.ts',
+      'apps/platform/lib/ri/assurance-closure-guards.mjs',
+    ],
+  },
+  {
     id: 'RI-ASSURANCE-LIFECYCLE-GAPS',
     area: 'Regulatory Intelligence',
     feature: 'Assurance execution, remediation, retest and guarded lifecycle closure',

@@ -256,6 +256,7 @@ try {
     fields: {
       title: 'Lifecycle control test evidence',
       evidence_type: 'TEST',
+      controlId: controls[0].id,
     },
   });
 

@@ -48,10 +48,25 @@ export function evaluateAssuranceLifecycleClosure(input) {
     gaps.push('missing_linked_evidence');
   }
   const openFindings = input.openFindingsCount ?? 0;
-  const accepted = Array.isArray(meta.acceptedFindingExceptions) ? meta.acceptedFindingExceptions : [];
-  if (openFindings > 0 && accepted.length < openFindings) {
-    gaps.push('open_findings_without_exception');
+  const acceptedDetail = Array.isArray(meta.acceptedFindingExceptionsDetail)
+    ? meta.acceptedFindingExceptionsDetail
+    : [];
+  const acceptedIds = new Set(
+    [
+      ...acceptedDetail.map((d) => String(d?.findingId || '')),
+      ...(Array.isArray(meta.acceptedFindingExceptions) ? meta.acceptedFindingExceptions : []).map(String),
+    ].filter(Boolean),
+  );
+  if (openFindings > 0) {
+    const unauthorised = acceptedDetail.filter((d) => d && d.authority !== 'assurance:approve');
+    if (unauthorised.length) gaps.push('exception_missing_authorised_acceptance');
+    if (acceptedIds.size < openFindings) gaps.push('open_findings_without_exception');
   }
+  if (Array.isArray(meta.deferredMandatoryLinks) && meta.deferredMandatoryLinks.length > 0) {
+    gaps.push('mandatory_lifecycle_links_unresolved');
+  }
+  const extraGaps = Array.isArray(input.evidenceIntegrityGaps) ? input.evidenceIntegrityGaps : [];
+  for (const g of extraGaps) gaps.push(g);
   if ((input.incompleteRemediationCount ?? 0) > 0) {
     gaps.push('remediation_incomplete');
   }

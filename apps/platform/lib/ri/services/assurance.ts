@@ -19,9 +19,14 @@ import {
   assuranceWorkflowStatus as assuranceWfFromMeta,
   evaluateAssuranceLifecycleClosure,
 } from '@/lib/ri/assurance-closure-guards.mjs';
-import { linkAssuranceControl, linkEvidenceControl, linkFindingAssuranceReview } from '@/lib/ri/links';
+import { linkFindingAssuranceReview } from '@/lib/ri/links';
 import { canRi } from '@/lib/ri/permissions';
 import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
+import {
+  bindEvidenceForAssuranceTest,
+  mergeEvidenceBindings,
+  validateAssuranceEvidenceIntegrity,
+} from '@/lib/ri/services/assurance-evidence-binding';
 import { createFinding } from '@/lib/ri/services/findings';
 import { createRiAction, updateRiAction } from '@/lib/ri/services/ri-actions';
 import { recordWorkflowEvent } from '@/lib/ri/workflow-events';
@@ -247,9 +252,19 @@ async function countOpenFindingsForAssurance(
   assuranceId: string,
   meta: Record<string, unknown>,
 ): Promise<number> {
+  const acceptedDetail = Array.isArray(meta.acceptedFindingExceptionsDetail)
+    ? meta.acceptedFindingExceptionsDetail
+    : [];
   const accepted = new Set(
-    (Array.isArray(meta.acceptedFindingExceptions) ? meta.acceptedFindingExceptions : []).map(String),
+    acceptedDetail
+      .filter((d) => d && d.authority === 'assurance:approve')
+      .map((d) => String(d.findingId)),
   );
+  for (const id of Array.isArray(meta.acceptedFindingExceptions) ? meta.acceptedFindingExceptions : []) {
+    if (acceptedDetail.some((d) => String(d?.findingId) === String(id) && d?.authority === 'assurance:approve')) {
+      accepted.add(String(id));
+    }
+  }
   const { data: links } = await supabase
     .from('finding_assurance_review_links')
     .select('finding_id')
@@ -396,27 +411,36 @@ export async function updateAssuranceWithGovernance(
       params.assuranceId,
       meta,
     );
+    if (!controlId) throw new RiConflictError('assurance_control_link_required');
+    let bindingsList = Array.isArray(meta.assuranceEvidenceBindings)
+      ? (meta.assuranceEvidenceBindings as import('@/lib/ri/services/assurance-evidence-binding').AssuranceEvidenceBinding[])
+      : [];
     for (const evidenceId of evidenceIds) {
-      await assertRowInOrganisation(supabase, 'evidence_items', evidenceId, params.organisationId);
-      if (controlId) {
-        try {
-          await linkEvidenceControl(
-            supabase,
-            params.organisationId,
-            evidenceId,
-            controlId,
-            params.userId,
-          );
-        } catch (e) {
-          const msg = e instanceof Error ? e.message : String(e);
-          if (msg !== 'provenance_link_mismatch') throw e;
-        }
-      }
+      const binding = await bindEvidenceForAssuranceTest(supabase, {
+        organisationId: params.organisationId,
+        userId: params.userId,
+        assuranceId: params.assuranceId,
+        controlId,
+        evidenceId,
+        retest,
+      });
+      bindingsList = mergeEvidenceBindings({ assuranceEvidenceBindings: bindingsList }, binding);
     }
+    meta.assuranceEvidenceBindings = bindingsList;
     const priorEvidence = Array.isArray(meta.assuranceEvidenceIds) ? meta.assuranceEvidenceIds : [];
     meta.assuranceEvidenceIds = [...new Set([...priorEvidence.map(String), ...evidenceIds])];
+    const evidenceGaps = await validateAssuranceEvidenceIntegrity(supabase, {
+      organisationId: params.organisationId,
+      assuranceId: params.assuranceId,
+      controlId,
+      metadata: meta,
+    });
+    if (evidenceGaps.length) {
+      throw new RiConflictError(`assurance_evidence_binding_incomplete:${evidenceGaps.join(',')}`);
+    }
     meta.controlTestCompleted = true;
     meta.evidenceReviewed = true;
+    meta.lastTestControlId = controlId;
     if (params.fields.effectiveness) {
       meta.effectivenessAssessment = String(params.fields.effectiveness);
     }
@@ -504,9 +528,27 @@ export async function updateAssuranceWithGovernance(
     if (!canRi(params.role, 'assurance:approve')) throw new Error('insufficient_role');
     const findingId = params.fields.findingId;
     if (typeof findingId !== 'string') throw new RiConflictError('finding_id_required');
+    const { data: fLink } = await supabase
+      .from('finding_assurance_review_links')
+      .select('finding_id')
+      .eq('organisation_id', params.organisationId)
+      .eq('assurance_review_id', params.assuranceId)
+      .eq('finding_id', findingId)
+      .maybeSingle();
+    if (!fLink?.finding_id) throw new RiConflictError('finding_not_linked_to_assurance');
     const accepted = Array.isArray(meta.acceptedFindingExceptions) ? [...meta.acceptedFindingExceptions] : [];
     if (!accepted.includes(findingId)) accepted.push(findingId);
     meta.acceptedFindingExceptions = accepted;
+    const detail = Array.isArray(meta.acceptedFindingExceptionsDetail)
+      ? [...meta.acceptedFindingExceptionsDetail]
+      : [];
+    detail.push({
+      findingId,
+      acceptedByUserId: params.userId,
+      acceptedAt: new Date().toISOString(),
+      authority: 'assurance:approve',
+    });
+    meta.acceptedFindingExceptionsDetail = detail;
     pendingEvents.push({
       eventType: 'ASSURANCE_EXCEPTION_ACCEPTED',
       fromStatus: wfStatus,
@@ -519,11 +561,26 @@ export async function updateAssuranceWithGovernance(
       ownerUserId: existing.reviewer_user_id,
       approverUserId: params.userId,
     });
+    if (wfStatus === ASSURANCE_WF.CLOSED) {
+      return existing;
+    }
     if (wfStatus !== ASSURANCE_WF.READY_FOR_CLOSURE) {
       throw new RiConflictError('premature_compliance_lifecycle_closure');
     }
     const nextResult = params.fields.result ? parseAssuranceResult(params.fields.result) : 'PASS';
     if (nextResult !== 'PASS') throw new RiConflictError('assurance_close_requires_pass');
+    const controlId = await linkedControlIdForAssurance(
+      supabase,
+      params.organisationId,
+      params.assuranceId,
+      meta,
+    );
+    const evidenceIntegrityGaps = await validateAssuranceEvidenceIntegrity(supabase, {
+      organisationId: params.organisationId,
+      assuranceId: params.assuranceId,
+      controlId,
+      metadata: meta,
+    });
     const openFindings = await countOpenFindingsForAssurance(
       supabase,
       params.organisationId,
@@ -536,6 +593,7 @@ export async function updateAssuranceWithGovernance(
       metadata: { ...meta, independentAssuranceDecisionAt: new Date().toISOString() },
       openFindingsCount: openFindings,
       incompleteRemediationCount: incompleteRemediation,
+      evidenceIntegrityGaps,
     });
     if (!closure.ok) {
       throw new RiConflictError(`assurance_closure_blocked:${closure.gaps.join(',')}`);
@@ -597,19 +655,30 @@ export async function updateAssuranceWithGovernance(
   if (closeLifecycle) {
     const obligationId = meta.sourceRegulatoryObligationId;
     if (typeof obligationId === 'string') {
-      await recordWorkflowEvent(supabase, {
-        organisationId: params.organisationId,
-        entityType: 'regulatory_obligation',
-        entityId: obligationId,
-        eventType: 'COMPLIANCE_LIFECYCLE_CLOSED',
-        actorUserId: params.userId,
-        toStatus: 'CLOSED',
-        metadata: {
-          assuranceReviewId: params.assuranceId,
-          assuranceResult: update.result,
-          contractVersion: '2026-11-26',
-        },
-      });
+      const { data: priorClose } = await supabase
+        .from('workflow_events')
+        .select('id')
+        .eq('organisation_id', params.organisationId)
+        .eq('entity_type', 'regulatory_obligation')
+        .eq('entity_id', obligationId)
+        .eq('event_type', 'COMPLIANCE_LIFECYCLE_CLOSED')
+        .limit(1);
+      if (!priorClose?.length) {
+        await recordWorkflowEvent(supabase, {
+          organisationId: params.organisationId,
+          entityType: 'regulatory_obligation',
+          entityId: obligationId,
+          eventType: 'COMPLIANCE_LIFECYCLE_CLOSED',
+          actorUserId: params.userId,
+          toStatus: 'CLOSED',
+          metadata: {
+            assuranceReviewId: params.assuranceId,
+            assuranceResult: update.result,
+            contractVersion: '2026-11-26',
+            idempotencyKey: `lifecycle_close:${params.assuranceId}`,
+          },
+        });
+      }
     }
   }
   return data;
