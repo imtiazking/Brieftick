@@ -6,7 +6,7 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 
 | Time (UTC) | Decision | Reason | Outcome |
 |---|---|---|---|
-| 22:15 | Render authorised UAT obligations and impact assessments in their own register sections | Catalogue side arrays were loaded, but the obligation and impact pages only rendered the operational partition, so persisted UAT rows were not navigable | Local Design Lab module graph OK. Hosted browser proof follows the candidate release |
+| 22:15 | Render authorised UAT obligations and impact assessments in their own register sections | Catalogue side arrays were loaded, but the obligation and impact pages only rendered the operational partition, so persisted UAT rows were not navigable | Commit `83a33cd`. Candidate `dpl_83MfoihicphZm4hmbs5nMe7YTzia` promoted to official and candidate aliases after isolation, Clerk, and authenticated smoke. Browser register contained the new synthetic obligation. Full five-stage click-through was not completed in the browser. |
 
 ## 2026-11-25 — Obligation approval atomicity and Design Lab list scope
 

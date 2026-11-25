@@ -1,0 +1,63 @@
+{
+  "run": "UAT-LIFECYCLE-BROWSER-20261125-mwwotm0x",
+  "ids": {
+    "run": "UAT-LIFECYCLE-BROWSER-20261125-mwwotm0x",
+    "obligationId": "b330fc90-b16c-4dd0-947f-10a96c209efe"
+  },
+  "results": [
+    {
+      "id": "BROWSER-S1-CREATE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation created",
+        "obligationId": "b330fc90-b16c-4dd0-947f-10a96c209efe"
+      }
+    },
+    {
+      "id": "BROWSER-S1-SUBMIT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation saved"
+      }
+    },
+    {
+      "id": "BROWSER-S1-SELF-APPROVE",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "Obligation saved",
+        "statusValue": "OPEN"
+      }
+    },
+    {
+      "id": "BROWSER-S1-REVIEWER",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Obligation approved into register",
+        "stage2": "AI impact assessment (Stage 2)\n\nDraft generated from this approved obligation. Human review and approval are required; AI cannot approve its own assessment.\n\nOPEN IMPACT ASSESSMENT · DRAFT",
+        "linked": true
+      }
+    },
+    {
+      "id": "BROWSER-OBLIGATION-REGISTER",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "obligationId": "b330fc90-b16c-4dd0-947f-10a96c209efe"
+      }
+    },
+    {
+      "id": "BROWSER-PRIOR-LIFECYCLE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "obligationId": "0222809b-b74e-4577-88d4-e1d8701f5385"
+      }
+    }
+  ],
+  "consoleErrors": [],
+  "failedApi": []
+}

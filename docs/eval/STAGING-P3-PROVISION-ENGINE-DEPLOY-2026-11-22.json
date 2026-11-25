@@ -1,29 +1,38 @@
 {
-  "capturedAt": "2026-11-25T20:32:00.000Z",
+  "capturedAt": "2026-11-25T22:19:46.022Z",
   "status": "PROMOTED",
-  "gitHead": "ae4b8281c988840638b5ba27a98480383f43b851",
-  "buildId": "ae4b8281c988840638b5ba27a98480383f43b851",
-  "deploymentId": "dpl_DALWABZ2iGk571HjAD2kYoVswAkq",
-  "deploymentUrl": "https://forgeniq-platform-staging-6bnb0b7x4-imis-projects-8e15dca0.vercel.app",
-  "protectedOfficialDeploymentId": "dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8",
+  "gitHead": "83a33cd22e3837d72555706cd5b97bdae152ccc0",
+  "buildId": "83a33cd22e3837d72555706cd5b97bdae152ccc0",
+  "vercelScope": "imis-projects-8e15dca0",
+  "vercelProjectName": "forgeniq-platform-staging",
+  "previewDeploymentId": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
+  "previewUrl": "https://forgeniq-platform-staging-cazkd8vqp-imis-projects-8e15dca0.vercel.app",
+  "deploymentId": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
+  "deploymentUrl": "https://staging-app.forgeniq.com",
+  "alias": "https://staging-app.forgeniq.com",
   "candidateAlias": "https://candidate-staging.forgeniq.com",
-  "officialAlias": "https://staging-app.forgeniq.com",
-  "prePromotionIsolation": {
-    "officialId": "dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8",
-    "candidateId": "dpl_DALWABZ2iGk571HjAD2kYoVswAkq",
-    "sameDeployment": false,
-    "verifiedAt": "2026-11-25T20:22:09.398Z"
-  },
+  "candidateDeploymentId": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
+  "protectedOfficialDeploymentId": "dpl_D3sRnLSz1bdf3eLGKqhf2ZgroCQ6",
+  "officialDeploymentIdBeforePromotion": "dpl_D3sRnLSz1bdf3eLGKqhf2ZgroCQ6",
   "prePromotionAuth": {
     "mode": "candidate-first",
     "host": "https://candidate-staging.forgeniq.com",
     "status": "PASS",
     "checks": 19
   },
-  "postPromotionAuth": {
-    "host": "https://staging-app.forgeniq.com",
+  "prePromotionUnauthSmoke": {
+    "host": "https://candidate-staging.forgeniq.com",
     "status": "PASS",
-    "checks": 19
+    "checks": 13
   },
-  "note": "Promoted after manual candidate-first validation. phase85h smoke on raw *.vercel.app blocked by Deployment Protection (Pro); candidate-host smoke used. Official rollback reference: dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8."
+  "postPromotionIdentity": {
+    "official": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
+    "candidate": "dpl_83MfoihicphZm4hmbs5nMe7YTzia",
+    "sameDeployment": true
+  },
+  "promoted": true,
+  "promotionMechanism": "vercel_alias_to_validated_preview",
+  "businessUatApproved": false,
+  "productionReleaseAuthorised": false,
+  "note": "Candidate validated before promotion. Official alias moved only after isolation, Clerk, unauthenticated smoke and authenticated smoke passed. Not a production tenant."
 }
