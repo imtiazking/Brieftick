@@ -1574,6 +1574,11 @@ function viewControl(id) {
       <section><h3>Linked risks</h3>${risks ? `<ul>${risks}</ul>` : '<p class="ri-muted">No linked risks.</p>'}</section>
       <section><h3>Linked obligations</h3>${obls ? `<ul>${obls}</ul>` : '<p class="ri-muted">No linked obligations.</p>'}</section>
       <section><h3>Linked evidence</h3>${evidence ? `<ul>${evidence}</ul>` : '<p class="ri-muted">No linked evidence.</p>'}</section>
+      <section><h3>Assurance reviews</h3>${
+        (c.assuranceReviewIds || []).length
+          ? `<ul>${c.assuranceReviewIds.map((aid) => `<li><a href="#/assurance/${esc(aid)}">${esc(String(aid).slice(0, 8))}…</a></li>`).join('')}</ul>`
+          : '<p class="ri-muted">No assurance reviews linked yet.</p>'
+      }</section>
       ${renderConnectedControlWorkflowPanel(id)}`;
   }
   const tests = (s.controlTests || []).filter((t) => t.controlId === id);

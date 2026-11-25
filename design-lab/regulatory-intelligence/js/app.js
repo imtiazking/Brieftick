@@ -1696,7 +1696,8 @@ function bindViewHandlers() {
       };
       if (testResult) {
         body.result = testResult;
-        body.retest = panel?.dataset?.assuranceRetest === 'true';
+        body.retest =
+          actionBtn.dataset.connectedAssuranceRetest === 'true' || panel?.dataset?.assuranceRetest === 'true';
         if (evidenceId) body.evidenceIds = [evidenceId];
       }
       actionBtn.disabled = true;
@@ -2895,6 +2896,23 @@ function initConnectedWriteDelegation() {
   document.addEventListener(
     'click',
     async (ev) => {
+      const riskAction = ev.target.closest('[data-connected-risk-action]');
+      if (riskAction && !riskAction.disabled) {
+        const id = riskAction.dataset.riskId;
+        const action = riskAction.dataset.connectedRiskAction;
+        if (!id || !action) return;
+        riskAction.disabled = true;
+        try {
+          await patchConnectedRisk(getState(), id, { action }, riskAction.dataset.expectedUpdatedAt || null);
+          showToast(action === 'approve' ? 'Risk approved' : 'Risk submitted');
+          renderShell();
+        } catch (e) {
+          showToast(e?.message || 'Risk action failed');
+          riskAction.disabled = false;
+        }
+        return;
+      }
+
       const riskBtn = ev.target.closest('[data-connected-risk-save]');
       if (riskBtn && !riskBtn.disabled) {
         const id = riskBtn.dataset.riskId;
@@ -2934,6 +2952,23 @@ function initConnectedWriteDelegation() {
         } catch (e) {
           showToast(e?.message || 'Save failed');
           actionBtn.disabled = false;
+        }
+        return;
+      }
+
+      const controlAction = ev.target.closest('[data-connected-control-action]');
+      if (controlAction && !controlAction.disabled) {
+        const id = controlAction.dataset.controlId;
+        const action = controlAction.dataset.connectedControlAction;
+        if (!id || !action) return;
+        controlAction.disabled = true;
+        try {
+          await patchConnectedControl(getState(), id, { action }, controlAction.dataset.expectedUpdatedAt || null);
+          showToast(action === 'approve' ? 'Control approved' : 'Control submitted');
+          renderShell();
+        } catch (e) {
+          showToast(e?.message || 'Control action failed');
+          controlAction.disabled = false;
         }
         return;
       }
