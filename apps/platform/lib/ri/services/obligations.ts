@@ -28,6 +28,7 @@ import {
 } from '@/lib/ri/validation';
 import { summarizeProductionObligationRows } from '@/lib/ri/lab-compat/dashboard-parity.mjs';
 import { assertActiveOrganisationAssignee } from '@/lib/ri/organisation-assignee';
+import { ensureImpactAssessmentFromApprovedObligation } from '@/lib/ri/services/obligation-impact-downstream';
 
 export function summarizeObligationListRows(rows: { status: string }[]) {
   return summarizeProductionObligationRows(rows);
@@ -226,7 +227,21 @@ export async function getObligationDetail(
     .map((r) => (Array.isArray(r.control) ? r.control[0] : r.control))
     .filter(Boolean);
 
-  return { obligation: { ...data, change }, impacts: impacts ?? [], risks, controls };
+  const { data: stage2Impact } = await supabase
+    .from('impact_assessments')
+    .select('id, status, materiality, metadata')
+    .eq('organisation_id', organisationId)
+    .eq('metadata->>sourceRegulatoryObligationId', obligationId)
+    .limit(1)
+    .maybeSingle();
+
+  return {
+    obligation: { ...data, change },
+    impacts: impacts ?? [],
+    stage2ImpactAssessment: stage2Impact ?? null,
+    risks,
+    controls,
+  };
 }
 
 async function assertAiObligationTransition(
@@ -391,6 +406,14 @@ export async function updateObligation(
       fromStatus: existing.status,
       toStatus: update.status as string,
     });
+    if (update.status === 'OPEN' && existing.status !== 'OPEN') {
+      await ensureImpactAssessmentFromApprovedObligation(supabase, {
+        organisationId: params.organisationId,
+        obligationId: params.obligationId,
+        actorUserId: params.userId,
+        role: params.role ?? null,
+      });
+    }
   }
   if (
     'owner_user_id' in update &&

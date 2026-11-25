@@ -25,14 +25,32 @@ function makeRunner(adminUrl, sub) {
   };
 }
 
+function filterSql(col, val, params) {
+  if (col.includes('->>')) {
+    const [jsonCol, jsonKey] = col.split('->>');
+    params.push(jsonKey, val);
+    return `${ident(jsonCol)}->>$${params.length - 1} = $${params.length}`;
+  }
+  params.push(val);
+  return `${ident(col)} = $${params.length}`;
+}
+
 function builder(run, table) {
-  const state = { op: 'select', columns: '*', filters: [], order: null, limit: null, rows: null, returning: false, mode: 'many' };
+  const state = {
+    op: 'select',
+    columns: '*',
+    filters: [],
+    order: null,
+    limit: null,
+    rows: null,
+    update: null,
+    returning: false,
+    mode: 'many',
+    countHead: false,
+  };
   const exec = async () => {
     const params = [];
-    const where = state.filters.map(([col, val]) => {
-      params.push(val);
-      return `${ident(col)} = $${params.length}`;
-    });
+    const where = state.filters.map(([col, val]) => filterSql(col, val, params));
     let sql;
     if (state.op === 'insert') {
       const rows = Array.isArray(state.rows) ? state.rows : [state.rows];
@@ -48,6 +66,16 @@ function builder(run, table) {
             .join(', ')})`,
       );
       sql = `insert into public.${ident(table)} (${cols.map(ident).join(', ')}) values ${values.join(', ')}${state.returning ? ` returning ${state.columns === '*' ? '*' : state.columns.split(',').map((c) => ident(c.trim())).join(', ')}` : ''}`;
+    } else if (state.op === 'update') {
+      const setCols = Object.keys(state.update || {});
+      const sets = setCols.map((c) => {
+        const v = state.update[c];
+        params.push(v !== null && typeof v === 'object' && !Array.isArray(v) ? JSON.stringify(v) : v);
+        return `${ident(c)} = $${params.length}`;
+      });
+      sql = `update public.${ident(table)} set ${sets.join(', ')}${where.length ? ` where ${where.join(' and ')}` : ''}${state.returning ? ` returning ${state.columns === '*' ? '*' : state.columns.split(',').map((c) => ident(c.trim())).join(', ')}` : ''}`;
+    } else if (state.countHead) {
+      sql = `select count(*)::int as c from public.${ident(table)}${where.length ? ` where ${where.join(' and ')}` : ''}`;
     } else {
       const cols = state.columns === '*' ? '*' : state.columns.split(',').map((c) => ident(c.trim())).join(', ');
       sql = `select ${cols} from public.${ident(table)}${where.length ? ` where ${where.join(' and ')}` : ''}`;
@@ -56,6 +84,7 @@ function builder(run, table) {
     }
     try {
       const res = await run(sql, params);
+      if (state.countHead) return { data: null, count: res.rows[0]?.c ?? 0, error: null };
       if (state.mode === 'single') {
         if (res.rows.length !== 1) return { data: null, error: { message: 'single_row_expected', code: 'PGRST116' } };
         return { data: res.rows[0], error: null };
@@ -67,14 +96,20 @@ function builder(run, table) {
     }
   };
   const api = {
-    select(columns = '*') {
-      if (state.op === 'insert') state.returning = true;
+    select(columns = '*', opts = null) {
+      if (state.op === 'insert' || state.op === 'update') state.returning = true;
       state.columns = columns;
+      if (opts?.count === 'exact' && opts?.head) state.countHead = true;
       return api;
     },
     insert(rows) {
       state.op = 'insert';
       state.rows = rows;
+      return api;
+    },
+    update(row) {
+      state.op = 'update';
+      state.update = row;
       return api;
     },
     eq(col, val) {

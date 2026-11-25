@@ -281,6 +281,41 @@ export async function updateImpactAssessment(
       fromStatus: pendingEvent.fromStatus,
       toStatus: pendingEvent.toStatus,
     });
+    if (pendingEvent.eventType === 'IMPACT_APPROVED') {
+      const { data: impactRow } = await supabase
+        .from('impact_assessments')
+        .select('regulatory_change_id, metadata')
+        .eq('id', params.impactId)
+        .eq('organisation_id', params.organisationId)
+        .maybeSingle();
+      const meta = (impactRow?.metadata || {}) as Record<string, unknown>;
+      const { count: priorReady } = await supabase
+        .from('workflow_events')
+        .select('id', { count: 'exact', head: true })
+        .eq('organisation_id', params.organisationId)
+        .eq('entity_type', 'impact_assessment')
+        .eq('entity_id', params.impactId)
+        .eq('event_type', 'STAGE3_RISK_MAPPING_READY');
+      if (!priorReady) {
+        await recordWorkflowEvent(supabase, {
+          organisationId: params.organisationId,
+          entityType: 'impact_assessment',
+          entityId: params.impactId,
+          eventType: 'STAGE3_RISK_MAPPING_READY',
+          actorUserId: params.userId,
+          fromStatus: 'IN_REVIEW',
+          toStatus: 'APPROVED',
+          metadata: {
+            contractVersion: '2026-11-25',
+            stage: 3,
+            nextWorkflow: 'AI_RISK_MAPPING',
+            regulatoryChangeId: impactRow?.regulatory_change_id ?? null,
+            sourceRegulatoryObligationId: meta.sourceRegulatoryObligationId ?? null,
+            humanApprovedBy: params.userId,
+          },
+        });
+      }
+    }
     if (pendingEvent.eventType === 'IMPACT_SUBMITTED') {
       const fanOut = await fanOutTenantNotification(supabase, {
         organisationId: params.organisationId,

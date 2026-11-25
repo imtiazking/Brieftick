@@ -2,6 +2,14 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-25 — Stage 2: obligation OPEN → AI impact draft
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| — | Stage 2 orchestration | Approved obligation (`OPEN`) must idempotently create linked DRAFT impact (UC-RI-004 fixture) + human approve + `STAGE3_RISK_MAPPING_READY` | `ensureImpactAssessmentFromApprovedObligation` on obligation transition; unique partial index on `metadata->>sourceRegulatoryObligationId`; Design Lab link panel on obligation detail |
+| — | Acceptance | Embedded Postgres + RLS; classified obligation OPEN by independent reviewer (not submitter) | `acceptance-ri-stage2-obligation-to-impact.mjs` **PASS**; catalogue `RI-STAGE2-OBLIGATION-IMPACT`; offline `npm run qa --mode=ci` **22/22 PASS** |
+| — | Vercel | Hobby CPU quota | **No deploy** |
+
 ## 2026-11-25 — GitHub Actions offline CI gate
 
 | Time (UTC) | Decision | Reason | Outcome |

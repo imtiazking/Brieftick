@@ -126,6 +126,31 @@ export function createFixtureProvider() {
         });
       }
 
+      if (scenario === 'stage2-obligation-impact' && analysisType === 'Impact Suggestion') {
+        return {
+          ok: true,
+          structured: {
+            confidence: 82,
+            dimensions: [
+              'Regulatory',
+              'Operations',
+              'Technology',
+              'Data protection',
+              'Third-party',
+            ],
+            claims: claims.slice(0, 4),
+            implementationDeadlines: 'Confirm against publication effective dates.',
+            complianceGaps: ['Policy refresh may be required.', 'Training needs assessment pending.'],
+            dependencies: ['Approved obligation register entry', 'Change owner sign-off'],
+            uncertainties: ['Organisation-specific system inventory not verified by AI.'],
+          },
+          schemaName: 'ImpactSuggestionResult',
+          latencyMs: 12,
+          inputTokenEstimate: 900,
+          outputTokenEstimate: 280,
+        };
+      }
+
       const changeCandidates =
         analysisType === 'Regulatory Change Extraction'
           ? claims.map((_, i) => ({

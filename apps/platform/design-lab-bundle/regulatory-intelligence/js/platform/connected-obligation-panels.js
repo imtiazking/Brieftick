@@ -83,6 +83,25 @@ export function renderConnectedObligationClassificationPanel(id, o) {
   </section>`;
 }
 
+/** Stage 2 link: approved obligation → AI impact assessment draft. */
+export function renderConnectedObligationStage2ImpactPanel(id, o) {
+  const impact = o.stage2ImpactAssessment;
+  if (!impact?.id) {
+    if (o.statusCode === 'OPEN' || o.status === 'OPEN') {
+      return `<section class="ri-panel" data-connected-obligation-stage2="${esc(id)}">
+        <h2>AI impact assessment (Stage 2)</h2>
+        <p class="ri-muted">No linked impact draft yet. If processing is still running, refresh this obligation.</p>
+      </section>`;
+    }
+    return '';
+  }
+  return `<section class="ri-panel" data-connected-obligation-stage2="${esc(id)}">
+    <h2>AI impact assessment (Stage 2)</h2>
+    <p class="ri-muted">Draft generated from this approved obligation. Human review and approval are required; AI cannot approve its own assessment.</p>
+  <p><a class="ri-btn ri-btn--primary" href="#/assessment/${esc(impact.id)}">Open impact assessment · ${esc(impact.status || 'DRAFT')}</a></p>
+  </section>`;
+}
+
 export function renderConnectedObligationReviewPanel(id, o) {
   if (!isConnectedObligationReviewEnabled(getState())) return '';
   const governed = o.origin === 'AI_ASSISTED' || (o.classificationCode && !o.classificationReviewRequired);

@@ -71,6 +71,7 @@ import {
   renderConnectedObligationLinkPanel,
   renderConnectedObligationReviewPanel,
   renderConnectedObligationWorkflowPanel,
+  renderConnectedObligationStage2ImpactPanel,
 } from './platform/connected-obligation-panels.js';
 import {
   renderConnectedControlEditPanel,
@@ -1340,6 +1341,7 @@ function viewObligation(id) {
       ${riskSection}
       ${controlSection}
       ${renderConnectedObligationClassificationPanel(id, o)}
+      ${renderConnectedObligationStage2ImpactPanel(id, o)}
       ${renderConnectedObligationReviewPanel(id, o)}
       ${renderConnectedObligationEditPanel(id, o)}
       ${renderConnectedObligationLinkPanel(id, o)}
