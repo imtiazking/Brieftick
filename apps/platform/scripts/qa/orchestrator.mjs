@@ -135,7 +135,9 @@ function executeRow(row, files) {
     return { status: 'BLOCKED', output: 'Local database not requested. Set FORGENIQ_QA_REQUIRE_DB=1 to run RLS.', ms: 0 };
   }
   const args = row.command.replace(/^node\s+/, '').split(' ');
-  const timeout = /local-db|role-aware|authenticated-smoke|uat-session-recover/.test(row.command) ? 600000 : 180000;
+  const timeout = /local-db|role-aware|authenticated-smoke|uat-session-recover|resource-optimisations/.test(row.command)
+    ? 600000
+    : 180000;
   const prevCandidate = process.env.FORGENIQ_QA_REQUIRE_CANDIDATE;
   if (row.id === 'UAT-SESSION-RECOVERY' && mode === 'promote') {
     process.env.FORGENIQ_QA_REQUIRE_CANDIDATE = '1';

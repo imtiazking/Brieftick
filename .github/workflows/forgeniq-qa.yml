@@ -22,6 +22,8 @@ jobs:
           cache-dependency-path: apps/platform/package-lock.json
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - name: Embedded Postgres system libraries
+        run: sudo apt-get update && sudo apt-get install -y libreadline-dev zlib1g-dev libicu-dev
       - name: Offline CI gate (no Clerk sessions or staging promotion)
         run: node scripts/qa/orchestrator.mjs --mode=ci
         env:
