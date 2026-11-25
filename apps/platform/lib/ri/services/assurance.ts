@@ -19,7 +19,6 @@ import {
   assuranceWorkflowStatus as assuranceWfFromMeta,
   evaluateAssuranceLifecycleClosure,
 } from '@/lib/ri/assurance-closure-guards.mjs';
-import type { ChangeCreateMode } from '@/lib/ri/lab-api/change-create-provenance';
 import { linkAssuranceControl, linkEvidenceControl, linkFindingAssuranceReview } from '@/lib/ri/links';
 import { canRi } from '@/lib/ri/permissions';
 import { assertImpactApproverSoD } from '@/lib/ri/separation-of-duties';
@@ -216,11 +215,6 @@ export async function getAssuranceDetail(
 
 function assuranceWorkflowStatus(metadata: Record<string, unknown> | null | undefined): string {
   return assuranceWfFromMeta(metadata);
-}
-
-function creationModeFromAssuranceMeta(metadata: Record<string, unknown>): ChangeCreateMode {
-  const mode = metadata.labCreationMode;
-  return mode === 'uat_authorised' ? 'uat_authorised' : 'operational';
 }
 
 function parseEvidenceIdList(fields: Record<string, unknown>): string[] {
