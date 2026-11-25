@@ -200,6 +200,7 @@ export async function ensureImpactAssessmentFromApprovedObligation(
     }
     throw new Error(insertErr.message);
   }
+  if (!impact?.id) throw new Error('impact_insert_failed');
 
   await recordWorkflowEvent(writer, {
     organisationId: params.organisationId,
