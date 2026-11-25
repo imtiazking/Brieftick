@@ -25,7 +25,7 @@ jobs:
       - name: Embedded Postgres system libraries
         run: sudo apt-get update && sudo apt-get install -y libreadline-dev zlib1g-dev libicu-dev
       - name: Offline CI gate (no Clerk sessions or staging promotion)
-        run: node scripts/qa/orchestrator.mjs --mode=ci || (test -f ../../docs/uat/qa/latest.json && head -80 ../../docs/uat/qa/latest.json; exit 1)
+        run: npm run qa || (test -f ../../docs/uat/qa/latest.json && head -80 ../../docs/uat/qa/latest.json; exit 1)
         env:
           CI: 'true'
           FORGENIQ_QA_REQUIRE_DB: '1'

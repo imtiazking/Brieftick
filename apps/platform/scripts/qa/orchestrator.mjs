@@ -223,28 +223,33 @@ if (mode === 'self-test') selfTest();
 
 if (mode === 'promote') process.env.FORGENIQ_QA_REQUIRE_DB = '1';
 
-const files = changedFiles();
-const selected = mode === 'post-deploy'
-  ? QA_CATALOGUE.filter((row) => row.id === 'RI-BROWSER-HOSTED')
-  : selectCatalogue(files, mode === 'ci' || mode === 'promote' ? mode : rawMode === 'release' ? 'release' : 'change');
+async function runOrchestrator() {
+  const files = changedFiles();
+  const selected = mode === 'post-deploy'
+    ? QA_CATALOGUE.filter((row) => row.id === 'RI-BROWSER-HOSTED')
+    : selectCatalogue(files, mode === 'ci' || mode === 'promote' ? mode : rawMode === 'release' ? 'release' : 'change');
 
-console.log(JSON.stringify({ qaMode: mode, rawMode, catalogue: selected.length, context: mode === 'ci' ? 'offline-ci' : mode === 'promote' ? 'candidate-release' : mode }));
-const results = [];
-for (const row of selected) {
-  if (mode === 'post-deploy' && row.command === 'hosted-shell') {
-    const response = await fetch('https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/js/platform/connected-my-tasks.js', {
-      headers: { 'cache-control': 'no-cache' },
-    });
-    const body = await response.text();
-    const pass = response.ok && body.includes("from './connected-catalogue.js'");
-    results.push({ ...row, mandatory: true, status: pass ? 'PASS' : 'FAIL', output: `status ${response.status}` });
-    continue;
+  console.log(JSON.stringify({ qaMode: mode, rawMode, catalogue: selected.length, context: mode === 'ci' ? 'offline-ci' : mode === 'promote' ? 'candidate-release' : mode }));
+  const results = [];
+  for (const row of selected) {
+    if (mode === 'post-deploy' && row.command === 'hosted-shell') {
+      const response = await fetch('https://staging-app.forgeniq.com/design-lab/regulatory-intelligence/js/platform/connected-my-tasks.js', {
+        headers: { 'cache-control': 'no-cache' },
+      });
+      const body = await response.text();
+      const pass = response.ok && body.includes("from './connected-catalogue.js'");
+      results.push({ ...row, mandatory: true, status: pass ? 'PASS' : 'FAIL', output: `status ${response.status}` });
+      continue;
+    }
+    const outcome = executeRow(row, files);
+    const mandatory = rowMandatory(row, mode);
+    results.push({ ...row, mandatory, ...outcome });
+    console.log(`${outcome.status}  ${row.id}  ${row.feature}`);
   }
-  const outcome = executeRow(row, files);
-  const mandatory = rowMandatory(row, mode);
-  results.push({ ...row, mandatory, ...outcome });
-  console.log(`${outcome.status}  ${row.id}  ${row.feature}`);
+  return { files, results };
 }
+
+const { files, results } = await runOrchestrator();
 
 const coverageGaps = QA_CATALOGUE.filter((row) => row.gate === 'gap').map((row) => ({
   id: row.id,
@@ -332,6 +337,9 @@ console.log(
 if (mode === 'promote' && promotion !== 'PASS') process.exit(promotion === 'FAIL' ? 1 : 2);
 if (mode === 'ci') {
   if (offlineTests === 'FAIL') process.exit(1);
-  if (offlineTests !== 'PASS') process.exit(2);
+  if (offlineTests !== 'PASS') {
+    console.error(JSON.stringify({ code: 'ci_gate_not_pass', offlineTests, resultCount: results.length }));
+    process.exit(2);
+  }
   process.exit(0);
 }
