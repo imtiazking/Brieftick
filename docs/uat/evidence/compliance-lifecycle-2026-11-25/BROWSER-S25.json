@@ -1,0 +1,250 @@
+{
+  "run": "UAT-LIFECYCLE-BROWSER-S25-20261125-mwwpurkf",
+  "ids": {
+    "run": "UAT-LIFECYCLE-BROWSER-S25-20261125-mwwpurkf",
+    "obligationId": "b330fc90-b16c-4dd0-947f-10a96c209efe",
+    "impactId": "bfba3c56-6425-404c-a4fa-ad3834c46e5a",
+    "deploymentId": "dpl_4fjaB8z4fe9dVLnEXzpcUyJ4FNVH",
+    "riskId": "a483d450-e10b-425a-8b38-ee87955f7219",
+    "controlId": "01319003-c940-400b-ba90-59cba49f78b5",
+    "assuranceId": "122e9511-323c-49e7-a023-1d54486a97c9",
+    "failEvidenceId": "542b7437-f56e-4f5a-92b2-56e9771f2e99",
+    "retestEvidenceId": "2e55036b-2c04-43ec-9d61-c152aecff579",
+    "auditEventTypes": [
+      "ASSURANCE_PLAN_APPROVED",
+      "ASSURANCE_PLAN_SUBMITTED",
+      "ASSURANCE_CONTROL_LINKED"
+    ]
+  },
+  "results": [
+    {
+      "id": "BROWSER-S2-OPEN",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "fixtureChars": 333,
+        "obligationLink": 1,
+        "alreadyApproved": false
+      }
+    },
+    {
+      "id": "BROWSER-S2-SUBMIT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "note": "Submit already recorded in this run; assessment is no longer a draft."
+      }
+    },
+    {
+      "id": "BROWSER-S2-SELF-APPROVE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "note": "Maker self-approval was rejected before this resume; assessment remained unapproved until User C."
+      }
+    },
+    {
+      "id": "BROWSER-S2-CHECKER",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "riskId": "a483d450-e10b-425a-8b38-ee87955f7219"
+      }
+    },
+    {
+      "id": "BROWSER-S3-OPEN",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "riskId": "a483d450-e10b-425a-8b38-ee87955f7219",
+        "impactLinked": true
+      }
+    },
+    {
+      "id": "BROWSER-S3-SUBMIT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "note": "Risk was already submitted in this browser run."
+      }
+    },
+    {
+      "id": "BROWSER-S3-SELF-APPROVE",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "toast_timeout",
+        "note": "Maker approve click produced no toast while the risk was still In Review. Checker approval then completed."
+      }
+    },
+    {
+      "id": "BROWSER-S3-CHECKER",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Risk approved",
+        "controlId": "01319003-c940-400b-ba90-59cba49f78b5",
+        "clickedLink": false
+      }
+    },
+    {
+      "id": "BROWSER-S4-OPEN",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "controlId": "01319003-c940-400b-ba90-59cba49f78b5"
+      }
+    },
+    {
+      "id": "BROWSER-S4-SUBMIT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Control submitted"
+      }
+    },
+    {
+      "id": "BROWSER-S4-SELF-APPROVE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Insufficient permission to update this record",
+        "note": "Owner approval was rejected and the control stayed In Review."
+      }
+    },
+    {
+      "id": "BROWSER-S4-CHECKER",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Control approved",
+        "assuranceId": "122e9511-323c-49e7-a023-1d54486a97c9",
+        "clickedLink": false
+      }
+    },
+    {
+      "id": "BROWSER-S5-SUBMIT",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Assurance: submit"
+      }
+    },
+    {
+      "id": "BROWSER-S5-SELF-APPROVE",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "toast_timeout"
+      }
+    },
+    {
+      "id": "BROWSER-S5-PLAN-APPROVE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "Assurance: approve",
+        "testing": true,
+        "closed": false
+      }
+    },
+    {
+      "id": "BROWSER-S5-PREMATURE-CLOSE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "toast": "premature_compliance_lifecycle_closure"
+      }
+    },
+    {
+      "id": "BROWSER-S5-UNRELATED-EVIDENCE",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "toast_timeout"
+      }
+    },
+    {
+      "id": "BROWSER-S5-EVIDENCE",
+      "layer": "hosted-browser",
+      "status": "PASS",
+      "detail": {
+        "created": "Evidence registered",
+        "evidenceId": "542b7437-f56e-4f5a-92b2-56e9771f2e99"
+      }
+    },
+    {
+      "id": "BROWSER-S5-FAIL-TEST",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "Evidence registered"
+      }
+    },
+    {
+      "id": "BROWSER-S5-REMEDIATION",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "Record was updated elsewhere — refresh and save again"
+      }
+    },
+    {
+      "id": "BROWSER-S5-RETEST",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "Evidence registered",
+        "evidenceId": "2e55036b-2c04-43ec-9d61-c152aecff579"
+      }
+    },
+    {
+      "id": "BROWSER-S5-CLOSE",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "premature_compliance_lifecycle_closure"
+      }
+    },
+    {
+      "id": "BROWSER-S5-DUPLICATE-CLOSE",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "toast": "premature_compliance_lifecycle_closure"
+      }
+    },
+    {
+      "id": "BROWSER-S5-AUDIT",
+      "layer": "hosted-browser",
+      "status": "FAIL",
+      "detail": {
+        "http": 200,
+        "status": null,
+        "eventTypes": [
+          "ASSURANCE_PLAN_APPROVED",
+          "ASSURANCE_PLAN_SUBMITTED",
+          "ASSURANCE_CONTROL_LINKED"
+        ]
+      }
+    }
+  ],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 403 ()",
+    "Failed to load resource: the server responded with a status of 409 ()",
+    "Failed to load resource: the server responded with a status of 409 ()",
+    "Failed to load resource: the server responded with a status of 409 ()",
+    "Failed to load resource: the server responded with a status of 409 ()",
+    "Failed to load resource: the server responded with a status of 409 ()",
+    "Failed to load resource: the server responded with a status of 409 ()"
+  ],
+  "failedApi": [
+    "403 /api/ri-lab/assurance-reviews/122e9511-323c-49e7-a023-1d54486a97c9",
+    "409 /api/ri-lab/assurance-reviews/122e9511-323c-49e7-a023-1d54486a97c9",
+    "409 /api/ri-lab/assurance-reviews/122e9511-323c-49e7-a023-1d54486a97c9",
+    "409 /api/ri-lab/assurance-reviews/122e9511-323c-49e7-a023-1d54486a97c9",
+    "409 /api/ri-lab/assurance-reviews/122e9511-323c-49e7-a023-1d54486a97c9",
+    "409 /api/ri-lab/assurance-reviews/122e9511-323c-49e7-a023-1d54486a97c9",
+    "409 /api/ri-lab/assurance-reviews/122e9511-323c-49e7-a023-1d54486a97c9"
+  ]
+}

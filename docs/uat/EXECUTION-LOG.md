@@ -2,6 +2,12 @@
 
 Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-execution.mdc`. Newest first.
 
+## 2026-11-25 — Design Lab stages 2–5 browser completion
+
+| Time (UTC) | Decision | Reason | Outcome |
+|---|---|---|---|
+| 23:33 | Refetch assurance detail on every open, and add Design Lab submit/approve controls for risks, controls and the assurance plan | Cached assurance timestamps rejected later actions as stale, and risk/control pages could not start the next stage | Official `dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR` (`9241298`). GitHub Actions run `45720343481` success. Browser path closed with `COMPLIANCE_LIFECYCLE_CLOSED` on obligation `b330fc90-b16c-4dd0-947f-10a96c209efe`. Risk self-approval did not surface a toast. The assurance page does not link the failed-test finding; closure succeeded after the finding was closed on its own page. |
+
 ## 2026-11-25 — Design Lab authorised UAT registers
 
 | Time (UTC) | Decision | Reason | Outcome |

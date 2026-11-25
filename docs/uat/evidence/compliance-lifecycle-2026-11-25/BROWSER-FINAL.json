@@ -1,0 +1,30 @@
+{
+  "run": "UAT-LIFECYCLE-BROWSER-S25-20261125-mwwpurkf",
+  "deploymentId": "dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR",
+  "gitHead": "924129814d3cb71899430b2ae6dc63fcf41c3170",
+  "githubActions": { "run": 45720343481, "conclusion": "success" },
+  "crossTenant": "BLOCKED",
+  "records": {
+    "obligationId": "b330fc90-b16c-4dd0-947f-10a96c209efe",
+    "impactId": "bfba3c56-6425-404c-a4fa-ad3834c46e5a",
+    "riskId": "a483d450-e10b-425a-8b38-ee87955f7219",
+    "controlId": "01319003-c940-400b-ba90-59cba49f78b5",
+    "assuranceId": "122e9511-323c-49e7-a023-1d54486a97c9",
+    "failEvidenceId": "542b7437-f56e-4f5a-92b2-56e9771f2e99",
+    "retestEvidenceId": "2e55036b-2c04-43ec-9d61-c152aecff579",
+    "findingId": "3b98fa4f-06dd-437d-95db-49f04b024532",
+    "remediationActionId": "d7b9846c-38be-493a-a953-02c63d4882d3"
+  },
+  "stages": {
+    "1": "PASS",
+    "2": "PASS",
+    "3": "PASS",
+    "4": "PASS",
+    "5": "PASS"
+  },
+  "gaps": [
+    "Stage 3 maker self-approval click produced no toast before User C approved the risk.",
+    "Assurance detail does not link the finding created by a failed test. The finding was closed from the finding page, after which independent closure succeeded."
+  ],
+  "lifecycleEvent": "COMPLIANCE_LIFECYCLE_CLOSED"
+}

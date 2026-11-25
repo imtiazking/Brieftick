@@ -1,0 +1,65 @@
+{
+  "assuranceId": "122e9511-323c-49e7-a023-1d54486a97c9",
+  "results": [
+    {
+      "id": "BROWSER-S5-UNRELATED-EVIDENCE",
+      "status": "PASS",
+      "detail": {
+        "toast": "assurance_evidence_provenance_mismatch"
+      }
+    },
+    {
+      "id": "BROWSER-S5-FAIL-TEST",
+      "status": "PASS",
+      "detail": {
+        "toast": "Assurance: record_test",
+        "evidenceId": "542b7437-f56e-4f5a-92b2-56e9771f2e99",
+        "controlId": "01319003-c940-400b-ba90-59cba49f78b5"
+      }
+    },
+    {
+      "id": "BROWSER-S5-REMEDIATION",
+      "status": "PASS",
+      "detail": {
+        "toast": "Assurance: complete_remediation"
+      }
+    },
+    {
+      "id": "BROWSER-S5-RETEST",
+      "status": "PASS",
+      "detail": {
+        "toast": "Assurance: record_test",
+        "evidenceId": "2e55036b-2c04-43ec-9d61-c152aecff579"
+      }
+    },
+    {
+      "id": "BROWSER-S5-CLOSE",
+      "status": "FAIL",
+      "detail": {
+        "toast": "assurance_closure_blocked:open_findings_without_exception"
+      }
+    },
+    {
+      "id": "BROWSER-S5-DUPLICATE-CLOSE",
+      "status": "FAIL",
+      "detail": {
+        "toast": "assurance_closure_blocked:open_findings_without_exception"
+      }
+    },
+    {
+      "id": "BROWSER-S5-AUDIT",
+      "status": "FAIL",
+      "detail": {
+        "eventTypes": [
+          "ASSURANCE_RETEST_RECORDED",
+          "ASSURANCE_REMEDIATION_COMPLETED",
+          "ASSURANCE_REMEDIATION_REQUIRED",
+          "ASSURANCE_TEST_RECORDED",
+          "ASSURANCE_PLAN_APPROVED",
+          "ASSURANCE_PLAN_SUBMITTED",
+          "ASSURANCE_CONTROL_LINKED"
+        ]
+      }
+    }
+  ]
+}

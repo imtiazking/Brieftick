@@ -34,6 +34,8 @@ async function ready(page) {
 }
 
 async function openAssurance(page) {
+  await page.goto(LAB, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+  await page.evaluate(() => localStorage.clear());
   const detail = page.waitForResponse(
     (res) => res.url().includes(`/api/ri-lab/assurance-reviews/${ASSURANCE}`) && res.request().method() === 'GET',
     { timeout: 45_000 },
@@ -41,6 +43,7 @@ async function openAssurance(page) {
   await page.goto(`${LAB}#/assurance/${ASSURANCE}`, { waitUntil: 'domcontentloaded', timeout: 60_000 });
   await ready(page);
   await detail.catch(() => {});
+  await page.waitForTimeout(1500);
   await page.locator('[data-connected-assurance-execution]').waitFor({ timeout: 30_000 });
 }
 
@@ -76,6 +79,8 @@ async function clickFresh(page, selector) {
 await requireUatPersonas(['A', 'C'], { label: 'hosted-design-lab-stage5-continue' });
 
 await runAs('A', async ({ page }) => {
+  const session = await page.context().newCDPSession(page);
+  await session.send('Network.setCacheDisabled', { cacheDisabled: true }).catch(() => {});
   await openAssurance(page);
   await page.locator('[data-connected-assurance-evidence-id]').fill(UNRELATED);
   const unrelated = await clickFresh(
@@ -107,6 +112,8 @@ await runAs('A', async ({ page }) => {
 });
 
 await runAs('C', async ({ page }) => {
+  const session = await page.context().newCDPSession(page);
+  await session.send('Network.setCacheDisabled', { cacheDisabled: true }).catch(() => {});
   await openAssurance(page);
   const closed = await clickFresh(page, '[data-connected-assurance-action="close_lifecycle"]');
   record('BROWSER-S5-CLOSE', /close_lifecycle/i.test(closed) ? 'PASS' : 'FAIL', { toast: closed });
