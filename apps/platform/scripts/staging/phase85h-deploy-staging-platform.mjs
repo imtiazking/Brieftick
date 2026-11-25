@@ -171,27 +171,29 @@ if (protectedOfficial.id) {
   );
 }
 
-const previewSmoke = runUnauthPreviewSmoke(deploymentUrl);
-if (previewSmoke.status !== 0) {
-  writeEvidence({
-    capturedAt: new Date().toISOString(),
-    status: 'FAILED',
-    gitHead: head,
-    deploymentId,
-    deploymentUrl,
-    protectedOfficialDeploymentId: protectedOfficial.id,
-    aliasUntouched: OFFICIAL_STAGING_ORIGIN,
-    note: 'Preview browser smoke failed. Official staging alias was not changed.',
-  });
-  process.exit(previewSmoke.status ?? 1);
-}
-
 let prePromotionAuth = { status: 'SKIPPED', mode: PREAUTH_MODE };
 const candidateResolvable = await candidateHostResolves();
 const candidateReady = candidateResolvable && (await candidateHttpsReachable());
 
 if (candidateReady) {
   run('assign candidate alias', 'vercel', ['alias', deploymentUrl, CANDIDATE_HOST, `--scope=${SCOPE}`], repoRoot);
+  const previewSmoke = runUnauthPreviewSmoke(CANDIDATE_STAGING_ORIGIN);
+  if (previewSmoke.status !== 0) {
+    writeEvidence({
+      capturedAt: new Date().toISOString(),
+      status: 'FAILED',
+      gitHead: head,
+      deploymentId,
+      deploymentUrl,
+      candidateAlias: CANDIDATE_STAGING_ORIGIN,
+      protectedOfficialDeploymentId: protectedOfficial.id,
+      aliasUntouched: OFFICIAL_STAGING_ORIGIN,
+      note: 'Unauthenticated smoke on candidate host failed. Official staging alias was not changed.',
+    });
+    run('restore official candidate on protected deployment', 'vercel', ['alias', protectedOfficial.id, CANDIDATE_HOST, `--scope=${SCOPE}`], repoRoot);
+    process.exit(previewSmoke.status ?? 1);
+  }
+
   const isolationCheck = spawnSync(
     'node',
     ['./scripts/staging/verify-candidate-deployment.mjs'],
@@ -237,6 +239,24 @@ if (candidateReady) {
     });
     process.exit(2);
   }
+} else {
+  const previewSmoke = runUnauthPreviewSmoke(deploymentUrl);
+  if (previewSmoke.status !== 0) {
+    writeEvidence({
+      capturedAt: new Date().toISOString(),
+      status: 'FAILED',
+      gitHead: head,
+      deploymentId,
+      deploymentUrl,
+      protectedOfficialDeploymentId: protectedOfficial.id,
+      aliasUntouched: OFFICIAL_STAGING_ORIGIN,
+      note: 'Preview browser smoke failed. Official staging alias was not changed.',
+    });
+    process.exit(previewSmoke.status ?? 1);
+  }
+}
+
+if (candidateReady) {
   const candidateAuth = runAuthenticatedSmoke(CANDIDATE_STAGING_ORIGIN);
   prePromotionAuth = {
     mode: 'candidate-first',

@@ -1,17 +1,29 @@
 {
-  "capturedAt": "2026-11-25T10:53:07.439Z",
-  "status": "BLOCKED",
-  "gitHead": "8450a41b9ee5697518b9da8184a914868ad0e5e5",
-  "deploymentId": "dpl_EB1Q2NjL6xnqTK99vyDbws3q5HWx",
-  "deploymentUrl": "https://forgeniq-platform-staging-5mtr8mzll-imis-projects-8e15dca0.vercel.app",
-  "candidateAlias": "https://candidate-staging.forgeniq.com",
+  "capturedAt": "2026-11-25T20:32:00.000Z",
+  "status": "PROMOTED",
+  "gitHead": "ae4b8281c988840638b5ba27a98480383f43b851",
+  "buildId": "ae4b8281c988840638b5ba27a98480383f43b851",
+  "deploymentId": "dpl_DALWABZ2iGk571HjAD2kYoVswAkq",
+  "deploymentUrl": "https://forgeniq-platform-staging-6bnb0b7x4-imis-projects-8e15dca0.vercel.app",
   "protectedOfficialDeploymentId": "dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8",
-  "aliasUntouched": "https://staging-app.forgeniq.com",
+  "candidateAlias": "https://candidate-staging.forgeniq.com",
+  "officialAlias": "https://staging-app.forgeniq.com",
+  "prePromotionIsolation": {
+    "officialId": "dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8",
+    "candidateId": "dpl_DALWABZ2iGk571HjAD2kYoVswAkq",
+    "sameDeployment": false,
+    "verifiedAt": "2026-11-25T20:22:09.398Z"
+  },
   "prePromotionAuth": {
     "mode": "candidate-first",
     "host": "https://candidate-staging.forgeniq.com",
-    "exitCode": 2,
-    "status": "AUTH_BLOCKED"
+    "status": "PASS",
+    "checks": 19
   },
-  "note": "Authenticated candidate validation blocked. Sign in on candidate-staging or enable Clerk satellite. Official alias not moved."
+  "postPromotionAuth": {
+    "host": "https://staging-app.forgeniq.com",
+    "status": "PASS",
+    "checks": 19
+  },
+  "note": "Promoted after manual candidate-first validation. phase85h smoke on raw *.vercel.app blocked by Deployment Protection (Pro); candidate-host smoke used. Official rollback reference: dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8."
 }

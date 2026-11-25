@@ -838,3 +838,15 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Vercel capacity | No fresh quota in MCP; treat hosting as **constrained** until dashboard confirms headroom before `phase85h`. |
 | Hosted UAT | **Blocked** until authorised deploy + staging migrations + `npm run qa --mode=promote` on candidate. |
 | Live AI | UC-RI-004/006/007/008 pilot documented in `STAGING-UAT-COMPLIANCE-LIFECYCLE-PREP.md` §7; **not executed** (budget). |
+
+## 2026-11-25 — Five-stage lifecycle staging release (Pro; candidate-first promote)
+
+| Topic | Outcome |
+|---|---|
+| Vercel | Team `imis-projects-8e15dca0` **Pro** (`vercel teams ls`). One production build deployed (`dpl_DALWABZ2iGk571HjAD2kYoVswAkq`, `ae4b828`). Rollback ref **dpl_2BLmhtnwtXWSaVtNjBrDf5kZmYP8**. |
+| DB | Staging Supabase `forgeniq-ri-staging` (`lhgzdicffkhaaykzthep`) — migrations `20261125180000`, `20261125194500`, `20261125200000` applied; RLS policies **4** on `impact_assessment_risk_links`. **Candidate + official Vercel deployments share this single staging database.** |
+| Isolation | Pre-promote: official `dpl_2BLmhtnwt…` vs candidate `dpl_DALWABZ2iGk…` — distinct (`verify-candidate-deployment` 2026-11-25T20:22Z). Post-promote both aliases on promoted id (expected). |
+| QA | `orchestrator --mode=promote`: **30 PASS / 1 FAIL** (`STAGING-CANDIDATE-ISOLATION-LIVE` after coalesce). Offline lifecycle + governance **PASS**; auth smoke **19/19** candidate + official; security **PASS**. Post-deploy **PASS**. |
+| GitHub | Run #12 on `feab18c` **failed**; release head `ae4b828` (build fix + manifest) — local **25/25** CI. |
+| UAT | Users A/B/C sessions preserved; authenticated staging smoke **PASS**. Full hosted Design Lab lifecycle walkthrough **not** automated end-to-end (evidence = offline `RI-COMPLIANCE-LIFECYCLE-E2E` + governance matrix). **No paid AI.** |
+| Blocker cleared | Pro removes Hobby CPU gate; `phase85h` preview smoke on `*.vercel.app` now blocked by Deployment Protection — smoke reworked to **candidate host** before promote. |
