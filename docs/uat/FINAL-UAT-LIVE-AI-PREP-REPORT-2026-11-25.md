@@ -9,16 +9,24 @@
 | Stale risk/control detail after PATCH | `alwaysRevalidate` on `riskDetailsById` / `controlDetailsById` | Static acceptance + prebuild sync PASS |
 | Server SoD | Unchanged — embedded test confirms `IN_REVIEW` after denied self-approve | `acceptance-ri-governance-risk-sod.mjs` |
 
-**Hosted browser re-run:** execute `hosted-design-lab-stages-2-5.mjs` after staging promote of this tranche (expect `BROWSER-S3-SELF-APPROVE` PASS with segregation toast).
+**Hosted browser re-run (2026-11-26, `dpl_5VRiovc31XtAxzocj36wR3jJhoCb`):**
+
+| Check | Result |
+| --- | --- |
+| `BROWSER-S5-FINDING-LINKS` | **PASS** — `#/finding/` visible on assurance `122e9511-…` |
+| `BROWSER-S3-SELF-APPROVE` | **FAIL** on recycled lifecycle risk (already approved in prior run); re-test on fresh IN_REVIEW risk recommended |
+| Stages 5 submit/close chain | **FAIL** — expected when lifecycle already **CLOSED** from 25-Nov run (script exited on DOM churn) |
+
+Embedded `acceptance-ri-governance-risk-sod.mjs` remains authoritative for **no mutation** on SoD denial.
 
 ## 2. Staging & CI
 
 | Item | Value |
 | --- | --- |
-| Prior green deployment | `dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR` |
-| Prior release commit | `9241298` |
-| GitHub Actions | PASS (per handoff) |
-| This tranche | Local gates + Design Lab bundle sync PASS; **candidate-first deploy pending/running** for UI fixes |
+| Official staging deployment | `dpl_5VRiovc31XtAxzocj36wR3jJhoCb` |
+| Release commit | `7167773` |
+| GitHub Actions | PASS on prior tranche; re-run after push |
+| Authenticated smoke | PASS on candidate + official post-promote |
 
 ## 3. Live AI readiness (five stages)
 
