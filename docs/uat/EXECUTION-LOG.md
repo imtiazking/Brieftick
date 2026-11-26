@@ -7,6 +7,7 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | Time (UTC) | Decision | Reason | Outcome |
 |---|---|---|---|
 | 01:55 | Require a grounded citation before a live stage 2–5 draft is returned, and add `release_abandoned_lab_ai_reservation` | A schema-valid model reply could be stored without a source, and a dead process could leave a RESERVED hold with no operator trail | Recovery function applied on forgeniq-ri-staging. Execute limited to `postgres` and `service_role`. Ledger still empty. Local acceptance PASS. No paid calls. |
+| 02:13 | Promote the citation gate | The running deployment had to contain the preflight code | Official `dpl_CABPEw5cx3y96MnMMMtR2o4gSRhF` (`c511084`). Candidate and post-promote smoke PASS. Catalogue counts unchanged. GitHub Actions `45739119148` success. Execution remains off. |
 
 ## 2026-11-26 — Shared spend ledger on staging, CI unblock
 
