@@ -174,6 +174,76 @@ if (uncited.ok || uncited.code !== 'AI_OUTPUT_CITATION_MISSING' || !uncited.fail
   failTest('citation_required', JSON.stringify(uncited));
 } else pass('citation_required');
 
+// Telemetry: model, request id, billing categories and costs travel with the outcome (stages 2-5 share this path).
+const telemetryRun = await runLifecycleStageAnalysis({
+  stage: 3,
+  organisationId: 'org-test',
+  idempotencyKey: 'stage3:telemetry',
+  sourceSections: [{ sourceSectionId: 'IMP-1', citation: 'impact', text: 'Impact text' }],
+  providerOverride: {
+    id: 'mock-live',
+    async execute() {
+      return {
+        ok: true,
+        structured: {
+          confidence: 70,
+          riskProposals: [{ title: 'Conduct risk', category: 'Conduct' }],
+          claims: [{ text: 'Grounded', confidence: 70, sourceSectionIds: ['IMP-1'] }],
+        },
+        latencyMs: 9,
+        providerRequestId: 'req_tel_1',
+        usage: { standardInputTokens: 900, outputTokens: 300, cacheWrite5mTokens: 0, cacheWrite1hTokens: 0, cacheReadTokens: 2000 },
+        providerMeta: { requestedModel: 'claude-sonnet-5-5', responseModel: 'claude-sonnet-5-5', requestId: 'req_tel_1', effort: 'medium', thinkingType: 'adaptive', stopReason: 'end_turn' },
+        spendAudit: { reservedUsd: 0.09, settledEstimatedUsd: 0.0048, usageKnown: true, pricingVersion: 'anthropic-list-2026-11-26', calculatedUsd: 0.0048 },
+      };
+    },
+  },
+});
+const tel = telemetryRun.ok ? telemetryRun.telemetry : null;
+if (
+  !tel ||
+  tel.requestedModel !== 'claude-sonnet-5-5' ||
+  tel.providerRequestId !== 'req_tel_1' ||
+  tel.standardInputTokens !== 900 ||
+  tel.cacheReadTokens !== 2000 ||
+  tel.reservedUsd !== 0.09 ||
+  tel.settledEstimatedUsd !== 0.0048 ||
+  tel.effort !== 'medium'
+) {
+  failTest('telemetry_captured', JSON.stringify(telemetryRun));
+} else pass('telemetry_captured');
+
+process.env.FORGENIQ_STAGE2_AI = 'ANTHROPIC';
+const failedTel = await runLifecycleStageAnalysis({
+  stage: 2,
+  organisationId: 'org-test',
+  idempotencyKey: 'stage2:refusal',
+  sourceSections: [{ sourceSectionId: 'OBL-1', citation: 'c', text: 't' }],
+  providerOverride: {
+    id: 'mock-live',
+    async execute() {
+      return {
+        ok: false,
+        code: 'AI_PROVIDER_REFUSAL',
+        message: 'declined',
+        spendAudit: { reservedUsd: 0.09, settledEstimatedUsd: 0.0004, usageKnown: true },
+        providerMeta: { requestId: 'req_ref_1', stopReason: 'refusal' },
+      };
+    },
+  },
+});
+if (failedTel.ok || failedTel.code !== 'AI_PROVIDER_REFUSAL' || !failedTel.failClosed || failedTel.telemetry?.providerRequestId !== 'req_ref_1' || failedTel.spendAudit?.settledEstimatedUsd !== 0.0004) {
+  failTest('failed_call_keeps_spend_and_telemetry', JSON.stringify(failedTel));
+} else pass('failed_call_keeps_spend_and_telemetry');
+
+const { resolveModelForProviderMode } = await import('../lib/ri/ai/provider-registry.ts');
+delete process.env.RI_ANTHROPIC_MODEL;
+delete process.env.ANTHROPIC_MODEL;
+delete process.env.RI_AI_MODEL;
+if (resolveModelForProviderMode('ANTHROPIC') !== 'claude-sonnet-5-5') {
+  failTest('registry_selects_sonnet_5_5', String(resolveModelForProviderMode('ANTHROPIC')));
+} else pass('registry_selects_sonnet_5_5');
+
 const prompt = buildAnthropicPrompts({
   useCaseId: 'UC-RI-006',
   analysisType: 'Risk Mapping',

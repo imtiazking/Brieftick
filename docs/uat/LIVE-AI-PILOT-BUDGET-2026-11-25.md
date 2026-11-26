@@ -1,44 +1,50 @@
-# Live AI pilot — proposed budget (approval required)
+# Live AI pilot — budget (updated for Claude Sonnet 5.5, 2026-11-26)
 
-**No paid AI has been executed for this tranche.**
+**No paid AI has been executed for this tranche.** Live execution stays disabled until you authorise the first paid request. Full migration record: `SONNET-5-5-MIGRATION-2026-11-26.md`.
 
 ## Pricing basis
 
-Conservative estimates from `apps/platform/lib/ri/reasoner/anthropic-eval-budget.mjs` (Sonnet 4.5: $3 / MTok in, $15 / MTok out).
+Published list prices, kept in `apps/platform/lib/ri/reasoner/anthropic-eval-budget.mjs` (pricing version `anthropic-list-2026-11-26`). Each ledger row records the model id and pricing version it was priced under. Earlier Sonnet 4.5 usage is not repriced.
 
-Default model: `claude-sonnet-4-5` (`RI_ANTHROPIC_MODEL`).
+| Model | Input | Output | Cache write 5m | Cache write 1h | Cache read |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `claude-sonnet-5-5` (default) | $2 / MTok | $10 / MTok | $2.50 | $4 | $0.10 |
+| `claude-sonnet-4-5` (legacy, retires 2026-11-30) | $3 / MTok | $15 / MTok | $3.75 | $6 | $0.30 |
 
-## Estimated calls (pilot v1)
+Default model: `claude-sonnet-5-5` (`RI_ANTHROPIC_MODEL` overrides). A model with no entry in the table is refused (fail closed); there is no fallback to another model's rate.
 
-| Step | Use case | Calls | Est. input tokens | Est. output tokens | Est. USD |
-| --- | --- | ---: | ---: | ---: | ---: |
-| Obligation extraction | UC-RI-005 | 1 (+0–1 retry) | 12,000 | 4,000 | **0.10–0.18** |
-| Impact suggestion | UC-RI-004 | 1 | 3,000 | 1,200 | **0.03** |
-| Risk mapping | UC-RI-006 | 1 | 3,500 | 1,500 | **0.04** |
-| Control mapping | UC-RI-007 | 1 | 3,500 | 1,500 | **0.04** |
-| Assurance plan | UC-RI-008 | 1 | 3,000 | 1,200 | **0.03** |
-| **Subtotal (downstream needs wiring)** | | **4–5** | | | **0.24–0.32** |
-| **Total with UC-RI-005** | | **5–6** | | | **0.34–0.50** |
+## Estimated calls (pilot v1, Sonnet 5.5)
 
-Add **50% contingency** for truncation retries and PDF batch overlap: **recommended ceiling $0.75 USD**.
+"Expected" assumes the same token estimates as the Sonnet 4.5 plan with no thinking overhead. "Ceiling" is what the ledger reserves per call: the prompt at the highest input-side rate ($4 / MTok, the 1h cache write rate) plus the full 8,192-token output cap at $10 / MTok. Adaptive thinking tokens count toward `max_tokens` and are billed as output.
 
-## Hard limits (proposed env)
+| Step | Use case | Calls | Est. input tokens | Est. output tokens | Expected USD | Reserve ceiling USD |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Obligation extraction | UC-RI-005 | 1 | 12,000 | 4,000 | 0.064 | 0.130 |
+| Impact suggestion | UC-RI-004 | 1 | 3,000 | 1,200 | 0.018 | 0.094 |
+| Risk mapping | UC-RI-006 | 1 | 3,500 | 1,500 | 0.022 | 0.096 |
+| Control mapping | UC-RI-007 | 1 | 3,500 | 1,500 | 0.022 | 0.096 |
+| Assurance plan | UC-RI-008 | 1 | 3,000 | 1,200 | 0.018 | 0.094 |
+| **Total (five stages)** | | **5** | | | **0.14** | **0.51** |
+
+With thinking tokens roughly doubling output, expect about **$0.25**. The Sonnet 4.5 plan was $0.34–0.50. The five-stage ceiling is $0.51 even if every call spends its full output cap. The reserve uses a pessimistic 3 characters per token for the prompt, so the real reserve is slightly higher than the table.
+
+## Hard limits (pilot environment)
 
 | Control | Value |
 | --- | --- |
-| `RI_LAB_ANTHROPIC_MAX_USD` | **0.75** (pilot); raise only with written approval |
-| `RI_ANTHROPIC_MAX_TOKENS` | **4096** per request (existing default) |
-| `RI_ANTHROPIC_TIMEOUT_MS` | **120000** (pilot suggestion) |
-| Max HTTP attempts | **1**. Truncation fails closed. No automatic retry. |
-| Concurrent in-flight UC-RI-005 | **1** per org (spend guard) |
-| `RI_AI_EXECUTION_ENABLED` | `true` only during pilot window |
+| `RI_LAB_ANTHROPIC_MAX_USD` | **0.75** |
+| `RI_LAB_ANTHROPIC_MAX_REQUESTS` | **8** (a failed call uses one) |
+| `RI_LAB_SPEND_SCOPE` | `forgeniq-lab-anthropic` |
+| Output cap per request | **8,192** tokens (`RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS` to change); includes thinking |
+| `RI_ANTHROPIC_EFFORT` / `RI_ANTHROPIC_THINKING` | `medium` / `adaptive` (defaults) |
+| `RI_ANTHROPIC_TIMEOUT_MS` | **120000** suggested; the recovery window is at least 420 s |
+| Max HTTP attempts | **1**. No automatic retry. Truncation, refusal and context-window stops fail closed. |
+| `RI_AI_EXECUTION_ENABLED` | `true` only during the pilot window |
 
 ## Estimate versus Anthropic invoice
 
-The ledger prices tokens with the static Sonnet 4.5 table ($3 / MTok input, $15 / MTok output). Anthropic's invoice can differ by cache reads, batch discounts, or a model price change. Each request reserves the prompt-size estimate plus the full output cap, then settles the provider's reported token counts and releases the unused reserve. A failed call still consumes one request and settles whatever usage the provider reported (often zero). A process that dies after reserve and before settle leaves a `RESERVED` hold until that row is settled; nothing expires it automatically. The ledger does not span a different `RI_LAB_SPEND_SCOPE`.
+The ledger is an estimated-cost control, not an invoice cap. It prices the four reported usage categories (standard input, output, cache writes by tier, cache reads) with the table above. Each request reserves its worst case before HTTP, then settles the reported usage and releases the unused reserve. A failed call consumes one request. HTTP errors and refusals settle at the reported usage. A timeout or transport error has unknown provider usage and settles at the **full reserve**. A process that dies between reserve and settle leaves a `RESERVED` hold that only a registered operator can recover, after the provider window has ended (see the migration record). Anthropic's invoice can still differ (discounts, taxes, tier changes).
 
-## Approval question
+## Authorisation
 
-**Proceed with live pilot under `RI_LAB_ANTHROPIC_MAX_USD=0.75` and Anthropic on staging?** (Y/N)
-
-Until approved: keep `FORGENIQ_STAGE2_AI` … `STAGE5_AI` = `FIXTURE` and `RI_AI_EXECUTION_ENABLED` unset/false on staging.
+Live execution is **not** authorised. Keep `FORGENIQ_STAGE2_AI` … `STAGE5_AI` = `FIXTURE` and `RI_AI_EXECUTION_ENABLED` unset/false until you give an explicit instruction.

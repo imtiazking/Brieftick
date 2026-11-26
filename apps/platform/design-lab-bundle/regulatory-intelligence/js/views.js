@@ -20,7 +20,9 @@ import {
   getViewUnverifiedAuditChanges,
   getConnectedChangeProvenance,
   getViewImpactAssessments,
+  getViewAuthorisedUatImpacts,
   getViewObligations,
+  getViewAuthorisedUatObligations,
   getViewRisks,
   getViewAuthorisedUatRisks,
   getViewControls,
@@ -1189,10 +1191,32 @@ function viewAssessments() {
       <td>${formatDate(a.dueDate)}</td>
     </tr>`,
   );
-  return `${pageHeader('Impact Assessments', connected ? 'Tenant impact assessments · connected read-only' : 'DEMO register')}
+  const uatList = connected ? getViewAuthorisedUatImpacts() : [];
+  const uatRows = uatList.map(
+    (a) => `<tr data-href="#/assessment/${a.id}" class="ri-row-link">
+      <td><a href="#/assessment/${a.id}">${esc(a.externalKey || a.id.slice(0, 8))}</a></td>
+      <td>${esc(a.title)}</td>
+      <td>${a.sourceRegulatoryObligationId ? `<a href="#/obligation/${esc(a.sourceRegulatoryObligationId)}">${esc(String(a.sourceRegulatoryObligationId).slice(0, 8))}</a>` : '—'}</td>
+      <td>${badge(a.dataProvenance || 'uat_authorised')}</td>
+      <td>${badge(a.status)}</td>
+    </tr>`,
+  );
+  const uatSection = connected
+    ? `<section class="ri-panel"><h2>Authorised UAT impact assessments</h2>
+        <p class="ri-muted">Excluded from operational dashboard metrics. Open a row to follow the obligation, risks and approval history.</p>
+        ${
+          uatRows.length
+            ? dataTable(['ID', 'Title', 'Obligation', 'Provenance', 'Status'], uatRows)
+            : '<p class="ri-muted">No authorised UAT impact assessments in this tenant.</p>'
+        }</section>`
+    : '';
+  return `${pageHeader('Impact Assessments', connected ? 'Tenant impact assessments · connected' : 'DEMO register')}
     ${connected ? connectedCatalogueBanner(s) : ''}
     ${connected ? connectedWorkModeBanner(s) : ''}
-    ${rows.length ? dataTable(['ID', 'Title', 'Change', 'Owner', 'Materiality', 'Status', 'Due'], rows) : emptyState('No impact assessments for this organisation')}`;
+    <section class="ri-panel"><h2>Operational impact assessments</h2>
+    ${rows.length ? dataTable(['ID', 'Title', 'Change', 'Owner', 'Materiality', 'Status', 'Due'], rows) : emptyState('No operational impact assessments for this organisation')}
+    </section>
+    ${uatSection}`;
 }
 
 function viewAssessment(id) {
@@ -1277,6 +1301,7 @@ function viewObligations() {
   const s = getState();
   const connected = isConnectedBackendActive(s);
   const obls = connected ? getViewObligations() : scenarioFilter(s.obligations);
+  const uatObls = connected ? getViewAuthorisedUatObligations() : [];
   const portfolio = connected ? null : summarizeObligationPortfolio(obls);
   const rows = obls.map((o) => {
     const statement = o.title || o.statement || '';
@@ -1292,7 +1317,28 @@ function viewObligations() {
       <td>${badge(o.status)}</td>
     </tr>`;
   });
-  return `${pageHeader('Obligations', connected ? 'Tenant obligations · connected read-only' : 'DEMO register')}
+  const uatRows = uatObls.map((o) => {
+    const statement = o.title || o.statement || '';
+    const snippet = statement.length > 60 ? `${statement.slice(0, 60)}…` : statement;
+    return `<tr class="ri-row-link">
+      <td><a href="#/obligation/${o.id}">${esc(o.externalKey || o.id.slice(0, 8))}</a></td>
+      <td>${esc(snippet)}</td>
+      <td>${o.changeId ? `<a href="#/change/${esc(o.changeId)}">${esc(String(o.changeId).slice(0, 8))}</a>` : '—'}</td>
+      <td>${badge(o.dataProvenance || 'uat_authorised')}</td>
+      <td>${esc(o.ownerLabel || o.owner || '—')}</td>
+      <td>${badge(o.status)}</td>
+    </tr>`;
+  });
+  const uatSection = connected
+    ? `<section class="ri-panel"><h2>Authorised UAT obligations</h2>
+        <p class="ri-muted">Excluded from operational dashboard metrics. Open a row to follow impact, risk, control and assurance.</p>
+        ${
+          uatRows.length
+            ? dataTable(['ID', 'Statement', 'Change', 'Provenance', 'Owner', 'Status'], uatRows)
+            : '<p class="ri-muted">No authorised UAT obligations in this tenant.</p>'
+        }</section>`
+    : '';
+  return `${pageHeader('Obligations', connected ? 'Tenant obligations · connected' : 'DEMO register')}
     ${connected ? connectedCatalogueBanner(s) : ''}
     ${connected ? connectedWorkModeBanner(s) : ''}
     ${
@@ -1307,7 +1353,10 @@ function viewObligations() {
       <span>High <strong>${obls.filter((o) => o.priority === 'High').length}</strong></span>
     </div>`
     }
-    ${rows.length ? dataTable(['ID', 'Statement', 'Source', 'Owner', 'Priority', 'Effective', 'Coverage', 'Status'], rows) : emptyState('No obligations for this organisation')}`;
+    <section class="ri-panel"><h2>${connected ? 'Operational obligations' : 'Obligations'}</h2>
+    ${rows.length ? dataTable(['ID', 'Statement', 'Source', 'Owner', 'Priority', 'Effective', 'Coverage', 'Status'], rows) : emptyState(connected ? 'No operational obligations for this organisation' : 'No obligations for this organisation')}
+    </section>
+    ${uatSection}`;
 }
 
 function viewObligation(id) {
@@ -1525,6 +1574,11 @@ function viewControl(id) {
       <section><h3>Linked risks</h3>${risks ? `<ul>${risks}</ul>` : '<p class="ri-muted">No linked risks.</p>'}</section>
       <section><h3>Linked obligations</h3>${obls ? `<ul>${obls}</ul>` : '<p class="ri-muted">No linked obligations.</p>'}</section>
       <section><h3>Linked evidence</h3>${evidence ? `<ul>${evidence}</ul>` : '<p class="ri-muted">No linked evidence.</p>'}</section>
+      <section><h3>Assurance reviews</h3>${
+        (c.assuranceReviewIds || []).length
+          ? `<ul>${c.assuranceReviewIds.map((aid) => `<li><a href="#/assurance/${esc(aid)}">${esc(String(aid).slice(0, 8))}…</a></li>`).join('')}</ul>`
+          : '<p class="ri-muted">No assurance reviews linked yet.</p>'
+      }</section>
       ${renderConnectedControlWorkflowPanel(id)}`;
   }
   const tests = (s.controlTests || []).filter((t) => t.controlId === id);

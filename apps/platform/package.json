@@ -52,6 +52,8 @@
     "test:acceptance:impact-governance": "node ./scripts/acceptance-impact-governance-transitions.mjs",
     "test:acceptance:ai-providers": "node ./scripts/acceptance-ai-providers.mjs",
     "test:acceptance:anthropic": "node ./scripts/acceptance-anthropic-provider.mjs",
+    "test:acceptance:sonnet-55": "node ./scripts/acceptance-anthropic-sonnet-55-compat.mjs",
+    "staging:lab-spend-ledger": "node ./scripts/staging/lab-spend-ledger.mjs",
     "test:acceptance:ask-ri-v2-reasoner": "node ./scripts/acceptance-ask-ri-v2-reasoner.mjs",
     "test:acceptance:ask-ri-v2-reference-regression": "node ./scripts/acceptance-ask-ri-v2-reference-regression.mjs",
     "test:smoke:ask-ri-v2-anthropic": "node ./scripts/run-ask-ri-v2-anthropic-smoke.mjs",

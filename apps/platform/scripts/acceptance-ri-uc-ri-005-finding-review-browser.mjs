@@ -111,7 +111,7 @@ const runView = {
   executionStatus: 'Completed',
   reviewStatus: 'Human Review Required',
   provider: 'AIPROV-ANTHROPIC-001',
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-5-5',
   createdAt: '2026-11-21T09:00:00Z',
   completedAt: '2026-11-21T09:01:30Z',
   humanReviewRequired: true,

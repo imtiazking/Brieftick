@@ -29,6 +29,10 @@ Independent reviewers score each model output 0–2 per dimension (0 = fail, 1 =
 
 **Hard fails (automatic case fail):** hallucinated rule numbers; citations without backing section; asserting FCA requirements not present in source; treating draft AI as approved record.
 
+## Evidence capture
+
+Evidence collection for FCA-EVAL-001 (twenty items, read-only collector, technical success kept separate from regulatory accuracy) is defined in `FCA-EVAL-001-EVIDENCE-PLAN-2026-11-26.md`. It is prepared and has not been executed.
+
 ## Scoring aggregate
 
 - **Weighted mean** across dimensions; weight 2× on citations and obligation extraction.  

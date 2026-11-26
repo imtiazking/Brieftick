@@ -903,3 +903,16 @@ Decisions, reasons and outcomes taken under `.cursor/rules/forgeniq-autonomous-e
 | GitHub | Run #12 on `feab18c` **failed**; release head `ae4b828` (build fix + manifest) — local **25/25** CI. |
 | UAT | Users A/B/C sessions preserved; authenticated staging smoke **PASS**. Full hosted Design Lab lifecycle walkthrough **not** automated end-to-end (evidence = offline `RI-COMPLIANCE-LIFECYCLE-E2E` + governance matrix). **No paid AI.** |
 | Blocker cleared | Pro removes Hobby CPU gate; `phase85h` preview smoke on `*.vercel.app` now blocked by Deployment Protection — smoke reworked to **candidate host** before promote. |
+
+## 2026-11-26 — Claude Sonnet 5.5 migration (local tranche; live AI disabled)
+
+| Topic | Outcome |
+|---|---|
+| Model | Default claude-sonnet-5-5; configurable (RI_ANTHROPIC_MODEL > ANTHROPIC_MODEL > RI_AI_MODEL); 4.5 retained and priced for history/rollback. Request builder follows the migration guide: no sampling params or prefill, adaptive thinking, output_config.effort (default medium), `thinking: disabled` translated to `between_tools`, efusal and model_context_window_exceeded stop reasons handled. Invalid config rejected locally with no network call. |
+| Pricing | 5.5 $2/, cache write 5m $2.50, 1h $4, read $0.10 (version nthropic-list-2026-11-26). 4.5 history not repriced. Unpriced models fail closed (previously fell back to the cheapest rate). |
+| Ledger | Worst-case reserve (prompt at 1h-write rate + full output cap); categories settled separately; unknown usage (timeout/transport) charges the full reserve in the database; failed calls counted. Recovery needs a registered operator, passed provider deadline, minimum age, reason, audit row, one per reservation. Migration 20261126120000 written and manifest-listed; **not yet applied to staging**. |
+| Decision | Staging model/budget vars are Secret type and cannot be read back; RI_ANTHROPIC_MODEL updated in place (removal needs approval and was not attempted). Hosted posture to be proven behaviourally. |
+| Decision | The Design Lab bundle in pps/platform/design-lab-bundle was stale relative to committed design-lab source (submit/approve controls, authorised UAT rows); the QA sync refreshed it and it is included in this commit. |
+| Evidence collector | FCA-EVAL-001 collector checked against the staging schema (read-only); workflow_events ordering fixed to occurred_at. Technical success and regulatory accuracy kept separate; accuracy NOT_ASSESSED. |
+| QA | 
+pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI-LIFECYCLE-LIVE-AI; 	sc --noEmit clean. No provider call made. |

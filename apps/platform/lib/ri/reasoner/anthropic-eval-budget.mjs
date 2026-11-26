@@ -4,20 +4,110 @@
 
 export const V2_EVAL_BUDGET_USD = 10;
 
-/** Conservative $/MTok estimates — actual usage recorded from provider. */
+/**
+ * Published Anthropic list prices ($ per million tokens). Source:
+ * https://platform.claude.com/docs/en/about-claude/pricing (checked 2026-11-26).
+ * Each ledger row stores the model id and ANTHROPIC_PRICING_VERSION it was priced under,
+ * so a later price change never reprices earlier usage.
+ */
 import { resolveV2EvalModelId } from './v2-eval-models.mjs';
 
+export const ANTHROPIC_PRICING_VERSION = 'anthropic-list-2026-11-26';
+
+function rates(input, output, cacheWrite5m, cacheWrite1h, cacheRead) {
+  return {
+    inputPerMtok: input,
+    outputPerMtok: output,
+    cacheWrite5mPerMtok: cacheWrite5m,
+    cacheWrite1hPerMtok: cacheWrite1h,
+    cacheReadPerMtok: cacheRead,
+  };
+}
+
 export const MODEL_PRICING_ESTIMATE = {
-  'claude-haiku-5-5': { inputPerMtok: 0.1, outputPerMtok: 0.5 },
-  'claude-sonnet-5-5': { inputPerMtok: 2.0, outputPerMtok: 10.0 },
-  'claude-haiku-4-5': { inputPerMtok: 1.0, outputPerMtok: 5.0 },
-  'claude-sonnet-4-5': { inputPerMtok: 3.0, outputPerMtok: 15.0 },
+  /** Haiku 5.5 is priced from $0.10 / $0.50 and has higher tiers above 100k tokens; not used for the pilot. */
+  'claude-haiku-5-5': rates(0.1, 0.5, 0.125, 0.2, 0.01),
+  'claude-sonnet-5-5': rates(2.0, 10.0, 2.5, 4.0, 0.1),
+  'claude-haiku-4-5': rates(1.0, 5.0, 1.25, 2.0, 0.1),
+  'claude-sonnet-4-5': rates(3.0, 15.0, 3.75, 6.0, 0.3),
+  'claude-sonnet-4-5-20250929': rates(3.0, 15.0, 3.75, 6.0, 0.3),
 };
+
+export function hasPublishedPricing(model) {
+  return Object.prototype.hasOwnProperty.call(MODEL_PRICING_ESTIMATE, model);
+}
+
+/** Highest input-side rate. A reservation uses it so unexpected cache writes cannot exceed the hold. */
+export function maxInputSideRatePerMtok(model) {
+  const r = MODEL_PRICING_ESTIMATE[model];
+  if (!r) return null;
+  return Math.max(r.inputPerMtok, r.cacheWrite5mPerMtok, r.cacheWrite1hPerMtok);
+}
+
+const toCount = (n) => (Number.isFinite(Number(n)) && Number(n) > 0 ? Math.floor(Number(n)) : 0);
+
+/**
+ * Normalise provider usage into the four billed categories.
+ * Anthropic reports input_tokens as uncached input only; cache writes and reads are separate fields.
+ * When a cache write is reported without its tier it is priced at the 1h rate (the higher one).
+ */
+export function normaliseAnthropicUsage(usage) {
+  const u = usage && typeof usage === 'object' ? usage : {};
+  const breakdown = u.cache_creation && typeof u.cache_creation === 'object' ? u.cache_creation : null;
+  const write5m = toCount(breakdown?.ephemeral_5m_input_tokens);
+  const write1h = toCount(breakdown?.ephemeral_1h_input_tokens);
+  const writeTotal = toCount(u.cache_creation_input_tokens);
+  const unclassified = Math.max(0, writeTotal - write5m - write1h);
+  return {
+    standardInputTokens: toCount(u.input_tokens),
+    outputTokens: toCount(u.output_tokens),
+    cacheWrite5mTokens: write5m,
+    cacheWrite1hTokens: write1h + unclassified,
+    cacheReadTokens: toCount(u.cache_read_input_tokens),
+    cacheWriteTierAssumed: unclassified > 0 ? '1h' : null,
+  };
+}
+
+/** Cost of one call from the four usage categories. Cached tokens are never priced as standard input. */
+export function estimateUsageCostUsd(model, usage) {
+  const r = MODEL_PRICING_ESTIMATE[model];
+  if (!r) return null;
+  const n =
+    usage && 'standardInputTokens' in usage ? usage : normaliseAnthropicUsage(usage);
+  const parts = {
+    standardInputUsd: (n.standardInputTokens / 1e6) * r.inputPerMtok,
+    outputUsd: (n.outputTokens / 1e6) * r.outputPerMtok,
+    cacheWrite5mUsd: (n.cacheWrite5mTokens / 1e6) * r.cacheWrite5mPerMtok,
+    cacheWrite1hUsd: (n.cacheWrite1hTokens / 1e6) * r.cacheWrite1hPerMtok,
+    cacheReadUsd: (n.cacheReadTokens / 1e6) * r.cacheReadPerMtok,
+  };
+  const totalUsd = Number(Object.values(parts).reduce((a, b) => a + b, 0).toFixed(6));
+  return {
+    model,
+    pricingVersion: ANTHROPIC_PRICING_VERSION,
+    ...n,
+    ...Object.fromEntries(Object.entries(parts).map(([k, v]) => [k, Number(v.toFixed(6))])),
+    totalUsd,
+  };
+}
+
+/** Maximum cost a request can incur: prompt at the highest input-side rate plus the full output cap. */
+export function estimateMaxRequestCostUsd(model, inputTokens, maxOutputTokens) {
+  const r = MODEL_PRICING_ESTIMATE[model];
+  if (!r) return null;
+  const inCost = (inputTokens / 1_000_000) * maxInputSideRatePerMtok(model);
+  const outCost = (maxOutputTokens / 1_000_000) * r.outputPerMtok;
+  return Number((inCost + outCost).toFixed(6));
+}
 
 export function resolveV2EvalModel(cliModel) {
   return resolveV2EvalModelId(cliModel);
 }
 
+/**
+ * Standard-rate estimate used by the V2 eval harness (no cache categories). Unknown models fall back to
+ * Haiku 5.5 here; the lab spend guard does NOT use this fallback and fails closed on unpriced models.
+ */
 export function estimateRequestCostUsd(model, inputTokens, outputTokens) {
   const rates = MODEL_PRICING_ESTIMATE[model] || MODEL_PRICING_ESTIMATE['claude-haiku-5-5'];
   const inCost = (inputTokens / 1_000_000) * rates.inputPerMtok;

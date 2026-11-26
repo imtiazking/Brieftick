@@ -153,7 +153,7 @@ else fail('idempotency should reject');
 // Tracker settle over budget
 const tracker = new LabAnthropicSpendTracker({
   budgetUsd: 0.01,
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-5-5',
   maxOutputTokens: 1000,
   maxInputTokens: 5000,
   retryReserveFactor: 1,

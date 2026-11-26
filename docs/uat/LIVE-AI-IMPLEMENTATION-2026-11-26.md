@@ -17,7 +17,7 @@ Default mode remains **fixture** (`FORGENIQ_STAGE{n}_AI` unset or `FIXTURE`). `A
 ## 2. Provider and model
 
 - Registry: `provider-registry.ts`.
-- Anthropic model resolver: `claude-sonnet-4-5` unless `RI_ANTHROPIC_MODEL` / `ANTHROPIC_MODEL` / `RI_AI_MODEL` is set to a non-GPT id.
+- Anthropic model resolver: `claude-sonnet-5-5` (migrated from `claude-sonnet-4-5`; see `SONNET-5-5-MIGRATION-2026-11-26.md`) unless `RI_ANTHROPIC_MODEL` / `ANTHROPIC_MODEL` / `RI_AI_MODEL` is set to a non-GPT id.
 - OpenAI default id: `gpt-4o-mini`. `createOpenAiProvider().execute` still returns not-implemented for structured analysis, so a live lifecycle pilot must use Anthropic.
 - Prompts for risk, control, and assurance schemas are in `anthropic-prompts-core.mjs`.
 
@@ -45,7 +45,7 @@ Official staging: `dpl_BNifu9UxyuQW7SDPQHaq1EUwZMvu` (`3d8de4e`). Candidate-firs
 
 ## 6. Cost safeguards
 
-`RI_LAB_ANTHROPIC_MAX_USD` is enforced by `reserve_lab_ai_spend` / `settle_lab_ai_spend` on staging Postgres (`lab_ai_spend_accounts`, `lab_ai_spend_reservations`). Each call reserves its maximum estimated cost before HTTP, counts toward `RI_LAB_ANTHROPIC_MAX_REQUESTS` (default 8) even when the provider fails, and settles actual token estimates afterwards. A missing ledger fails closed. There is no fixture fallback and no automatic provider retry. The reserve uses the static Sonnet 4.5 price table ($3 / MTok in, $15 / MTok out), so it can differ from Anthropic's invoice. A crashed instance leaves a `RESERVED` hold until that reservation is settled; there is no automatic expiry. `RI_AI_EXECUTION_ENABLED` must be `true` or the provider returns `AI_EXTERNAL_PROCESSING_DISABLED` before any HTTP call. The functions are security definer and executable only by `service_role` (and the table owner). `anon` and `authenticated` are revoked.
+`RI_LAB_ANTHROPIC_MAX_USD` is enforced by `reserve_lab_ai_spend` / `settle_lab_ai_spend` on staging Postgres (`lab_ai_spend_accounts`, `lab_ai_spend_reservations`). Each call reserves its maximum estimated cost before HTTP, counts toward `RI_LAB_ANTHROPIC_MAX_REQUESTS` (default 8) even when the provider fails, and settles actual token estimates afterwards. A missing ledger fails closed. There is no fixture fallback and no automatic provider retry. The reserve uses the static published price table (Sonnet 5.5: $2 / MTok in, $10 / MTok out, with cache write and read rates; version recorded per row), so it can differ from Anthropic's invoice. A crashed instance leaves a `RESERVED` hold that only a registered operator can recover, after the provider window has ended (`release_abandoned_lab_ai_reservation`); there is no automatic expiry. `RI_AI_EXECUTION_ENABLED` must be `true` or the provider returns `AI_EXTERNAL_PROCESSING_DISABLED` before any HTTP call. The functions are security definer and executable only by `service_role` (and the table owner). `anon` and `authenticated` are revoked.
 
 ## 7. Remaining defects
 
@@ -54,7 +54,7 @@ Official staging: `dpl_BNifu9UxyuQW7SDPQHaq1EUwZMvu` (`3d8de4e`). Candidate-firs
 
 ## 8. Estimated pilot cost
 
-**$0.34–0.50** typical, ceiling **$0.75** (`RI_LAB_ANTHROPIC_MAX_USD`). See `LIVE-AI-PILOT-BUDGET-2026-11-25.md`.
+**$0.14 expected / about $0.25 with thinking** on Sonnet 5.5 (the Sonnet 4.5 plan was $0.34–0.50), reserve ceiling $0.51, hard limit **$0.75** (`RI_LAB_ANTHROPIC_MAX_USD`). See `LIVE-AI-PILOT-BUDGET-2026-11-25.md`.
 
 ## 9. Paid AI
 

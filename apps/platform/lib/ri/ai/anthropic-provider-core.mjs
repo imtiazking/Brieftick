@@ -2,10 +2,12 @@
  * Anthropic provider implementation (importable from acceptance without server-only).
  */
 import {
+  buildAnthropicRequestBody,
   callAnthropicMessages,
   classifyMaxTokensTruncation,
   parseAnthropicJsonText,
 } from './anthropic-messages-core.mjs';
+import { resolveConfiguredAnthropicModel } from './anthropic-model-config.mjs';
 import { buildAnthropicPrompts } from './anthropic-prompts-core.mjs';
 import {
   guardLabAnthropicSpendBeforeCall,
@@ -43,14 +45,9 @@ export function validateAnthropicApiKeyFormat(apiKey) {
   return /^sk-ant-[a-zA-Z0-9_-]+$/.test(key) && key.length >= 20;
 }
 
+/** Defaults to claude-sonnet-5-5; RI_ANTHROPIC_MODEL overrides (claude-sonnet-4-5 still works until retired). */
 export function resolveAnthropicModel() {
-  const explicit =
-    process.env.RI_ANTHROPIC_MODEL?.trim() ||
-    process.env.ANTHROPIC_MODEL?.trim() ||
-    process.env.RI_AI_MODEL?.trim();
-  if (explicit && !explicit.startsWith('gpt-')) return explicit;
-  // Dated snapshot IDs are not always enabled on Console-funded keys; alias is widely available.
-  return 'claude-sonnet-4-5';
+  return resolveConfiguredAnthropicModel();
 }
 
 export function isRiAiExecutionEnabled() {
@@ -75,9 +72,19 @@ export function anthropicCallMeta(apiResult) {
     responseReceived: apiResult?.responseReceived ?? null,
     httpStatus: apiResult?.httpStatus ?? null,
     requestId: apiResult?.requestId ?? null,
+    messageId: apiResult?.messageId ?? null,
+    requestedModel: apiResult?.requestedModel ?? null,
+    responseModel: apiResult?.responseModel ?? null,
+    effort: apiResult?.effort ?? null,
+    thinkingType: apiResult?.thinkingType ?? null,
+    maxTokens: apiResult?.maxTokens ?? null,
+    usageKnown: apiResult?.usageKnown ?? null,
     stopReason: apiResult?.stopReason ?? null,
     inputTokens: apiResult?.inputTokens ?? null,
     outputTokens: apiResult?.outputTokens ?? null,
+    cacheWrite5mTokens: apiResult?.usage?.cacheWrite5mTokens ?? null,
+    cacheWrite1hTokens: apiResult?.usage?.cacheWrite1hTokens ?? null,
+    cacheReadTokens: apiResult?.usage?.cacheReadTokens ?? null,
     textLength: typeof apiResult?.text === 'string' ? apiResult.text.length : null,
   };
 }
@@ -127,7 +134,15 @@ export function createAnthropicProvider(deps = {}) {
           null,
       });
 
+      // Unsupported parameters for the model (for example thinking budgets or sampling) are rejected
+      // here, before a reservation is taken, so a configuration mistake never consumes a request slot.
+      const shape = buildAnthropicRequestBody({ model, system, user, maxTokens: 1 });
+      if (!shape.ok) {
+        return { ok: false, code: shape.code, message: shape.message };
+      }
+
       const budgetCtx = request.budgetContext || {};
+      const timeoutMs = Number(process.env.RI_ANTHROPIC_TIMEOUT_MS ?? 60_000);
       const spendGuard = await guardLabAnthropicSpendBeforeCall({
         useCaseId: request.useCaseId,
         system,
@@ -135,6 +150,8 @@ export function createAnthropicProvider(deps = {}) {
         idempotencyKey: budgetCtx.idempotencyKey,
         organisationId: budgetCtx.organisationId,
         maxOutputTokensOverride: budgetCtx.maxOutputTokens,
+        model,
+        timeoutMs,
       });
       if (!spendGuard.ok) {
         return {
@@ -146,13 +163,13 @@ export function createAnthropicProvider(deps = {}) {
         };
       }
 
-      const maxTokens = spendGuard.maxOutputTokens ?? Number(process.env.RI_ANTHROPIC_MAX_TOKENS ?? 4096);
+      const maxTokens = spendGuard.maxOutputTokens ?? Number(process.env.RI_ANTHROPIC_MAX_TOKENS ?? 8192);
       const reservedAmount = spendGuard.reserveUsd ?? 0;
 
       const started = Date.now();
       const apiResult = await callAnthropicMessages(
         apiKey,
-        { model, system, user, maxTokens },
+        { model, system, user, maxTokens, timeoutMs },
         { fetchFn: deps.fetchFn },
       );
       const latencyMs = Date.now() - started;
@@ -218,6 +235,8 @@ export function createAnthropicProvider(deps = {}) {
         schemaName: mapSchemaForAnalysisType(analysisType),
         latencyMs,
         providerRequestId: apiResult.requestId,
+        model: apiResult.responseModel ?? model,
+        usage: apiResult.usage ?? null,
         inputTokenEstimate: apiResult.inputTokens,
         outputTokenEstimate: apiResult.outputTokens,
         spendAudit,

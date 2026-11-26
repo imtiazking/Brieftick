@@ -22,6 +22,8 @@ export function renderConnectedRiskEditPanel(id, r) {
       <label>Status <input data-connected-risk-field="status" value="${esc(r.status || 'OPEN')}" /></label>
     </div>
     <button type="button" class="ri-btn ri-btn--primary" data-connected-risk-save data-risk-id="${esc(id)}" data-expected-updated-at="${esc(r.updatedAt || '')}">Save</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-connected-risk-action="submit" data-risk-id="${esc(id)}" data-expected-updated-at="${esc(r.updatedAt || '')}">Submit for review</button>
+    <button type="button" class="ri-btn ri-btn--primary" data-connected-risk-action="approve" data-risk-id="${esc(id)}" data-expected-updated-at="${esc(r.updatedAt || '')}">Approve</button>
   </section>`;
 }
 
@@ -42,6 +44,8 @@ export function renderConnectedControlEditPanel(id, c) {
       <label>Status <input data-connected-control-field="status" value="${esc(c.status || 'ACTIVE')}" /></label>
     </div>
     <button type="button" class="ri-btn ri-btn--primary" data-connected-control-save data-control-id="${esc(id)}" data-expected-updated-at="${esc(c.updatedAt || '')}">Save</button>
+    <button type="button" class="ri-btn ri-btn--ghost" data-connected-control-action="submit" data-control-id="${esc(id)}" data-expected-updated-at="${esc(c.updatedAt || '')}">Submit for review</button>
+    <button type="button" class="ri-btn ri-btn--primary" data-connected-control-action="approve" data-control-id="${esc(id)}" data-expected-updated-at="${esc(c.updatedAt || '')}">Approve</button>
   </section>`;
 }
 

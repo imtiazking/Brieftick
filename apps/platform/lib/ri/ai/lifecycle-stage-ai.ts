@@ -63,6 +63,59 @@ export type LifecycleCitation = {
   provisionReference: string | null;
 };
 
+/** Provider-reported billing categories and call metadata. Never contains prompt or completion text. */
+export type LifecycleTelemetry = {
+  requestedModel: string | null;
+  responseModel: string | null;
+  providerRequestId: string | null;
+  effort: string | null;
+  thinkingType: string | null;
+  stopReason: string | null;
+  usageKnown: boolean | null;
+  standardInputTokens: number | null;
+  outputTokens: number | null;
+  cacheWrite5mTokens: number | null;
+  cacheWrite1hTokens: number | null;
+  cacheReadTokens: number | null;
+  reservedUsd: number | null;
+  settledEstimatedUsd: number | null;
+  pricingVersion: string | null;
+};
+
+const num = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null);
+const str = (v: unknown): string | null => (typeof v === 'string' && v ? v : null);
+const rec = (v: unknown): Record<string, unknown> | null =>
+  v && typeof v === 'object' ? (v as Record<string, unknown>) : null;
+
+export function lifecycleTelemetry(result: Record<string, unknown>): LifecycleTelemetry | null {
+  const meta = rec(result.providerMeta);
+  const spend = rec(result.spendAudit);
+  const usage = rec(result.usage);
+  if (!meta && !spend && !usage) return null;
+  return {
+    requestedModel: str(meta?.requestedModel),
+    responseModel: str(meta?.responseModel),
+    providerRequestId: str(meta?.requestId) ?? str(result.providerRequestId),
+    effort: str(meta?.effort),
+    thinkingType: str(meta?.thinkingType),
+    stopReason: str(meta?.stopReason),
+    usageKnown:
+      typeof spend?.usageKnown === 'boolean'
+        ? spend.usageKnown
+        : typeof meta?.usageKnown === 'boolean'
+          ? meta.usageKnown
+          : null,
+    standardInputTokens: num(usage?.standardInputTokens) ?? num(meta?.inputTokens),
+    outputTokens: num(usage?.outputTokens) ?? num(meta?.outputTokens),
+    cacheWrite5mTokens: num(usage?.cacheWrite5mTokens) ?? num(meta?.cacheWrite5mTokens),
+    cacheWrite1hTokens: num(usage?.cacheWrite1hTokens) ?? num(meta?.cacheWrite1hTokens),
+    cacheReadTokens: num(usage?.cacheReadTokens) ?? num(meta?.cacheReadTokens),
+    reservedUsd: num(spend?.reservedUsd),
+    settledEstimatedUsd: num(spend?.settledEstimatedUsd),
+    pricingVersion: str(spend?.pricingVersion),
+  };
+}
+
 export type LifecycleAiOutcome =
   | {
       ok: true;
@@ -75,6 +128,7 @@ export type LifecycleAiOutcome =
       inputTokens: number | null;
       outputTokens: number | null;
       spendAudit: Record<string, unknown> | null;
+      telemetry: LifecycleTelemetry | null;
     }
   | {
       ok: false;
@@ -84,6 +138,9 @@ export type LifecycleAiOutcome =
       message: string;
       providerId: string | null;
       model: string | null;
+      /** A failed live call still consumes a request slot; its spend is kept for the audit trail. */
+      spendAudit?: Record<string, unknown> | null;
+      telemetry?: LifecycleTelemetry | null;
     };
 
 function asText(value: unknown): string | null {
@@ -168,6 +225,7 @@ export async function runLifecycleStageAnalysis(params: {
         inputTokens: null,
         outputTokens: null,
         spendAudit: null,
+        telemetry: null,
       };
     }
     const schemaName = mapSchemaForAnalysisType(spec.analysisType);
@@ -183,6 +241,7 @@ export async function runLifecycleStageAnalysis(params: {
       inputTokens: null,
       outputTokens: null,
       spendAudit: null,
+      telemetry: null,
     };
   }
 
@@ -229,6 +288,8 @@ export async function runLifecycleStageAnalysis(params: {
       message: String(result.message || 'Live provider rejected the lifecycle analysis.'),
       providerId: provider.id,
       model,
+      spendAudit: rec(result.spendAudit),
+      telemetry: lifecycleTelemetry(result),
     };
   }
   if (!result.structured || typeof result.structured !== 'object') {
@@ -283,6 +344,7 @@ export async function runLifecycleStageAnalysis(params: {
     inputTokens: typeof result.inputTokenEstimate === 'number' ? result.inputTokenEstimate : null,
     outputTokens: typeof result.outputTokenEstimate === 'number' ? result.outputTokenEstimate : null,
     spendAudit: spend,
+    telemetry: lifecycleTelemetry(result),
   };
 }
 
@@ -296,9 +358,13 @@ export function lifecycleAiAudit(outcome: Extract<LifecycleAiOutcome, { ok: true
     latencyMs: outcome.latencyMs,
     inputTokens: outcome.inputTokens,
     outputTokens: outcome.outputTokens,
+    /** This call's settled estimated cost (not an invoice figure). */
     estimatedUsd:
-      outcome.spendAudit && typeof outcome.spendAudit.calculatedUsd === 'number'
-        ? outcome.spendAudit.calculatedUsd
-        : null,
+      outcome.spendAudit && typeof outcome.spendAudit.settledEstimatedUsd === 'number'
+        ? outcome.spendAudit.settledEstimatedUsd
+        : outcome.spendAudit && typeof outcome.spendAudit.calculatedUsd === 'number'
+          ? outcome.spendAudit.calculatedUsd
+          : null,
+    telemetry: outcome.telemetry,
   };
 }

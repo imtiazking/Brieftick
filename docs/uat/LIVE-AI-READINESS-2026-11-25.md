@@ -11,12 +11,12 @@ Staging reference deployment: `dpl_6isCeKaCNMuAYR9PvCGfdSSXirPR` (release commit
 
 Paid execution stays off until `RI_AI_EXECUTION_ENABLED=true` and the shared ledger can reserve against `RI_LAB_ANTHROPIC_MAX_USD`. The guard covers UC-RI-004, UC-RI-006, UC-RI-007 and UC-RI-008 as well as UC-RI-005. Reservations are atomic in staging Postgres across serverless instances. `RI_LAB_ANTHROPIC_MAX_REQUESTS` defaults to 8. Estimated cost uses the static price table and is not an Anthropic invoice.
 
-Models: Anthropic `claude-sonnet-4-5` (`resolveAnthropicModel`), OpenAI `gpt-4o-mini` (structured OpenAI analysis still returns not-implemented; live lifecycle preference is Anthropic).
+Models: Anthropic `claude-sonnet-5-5` (`resolveAnthropicModel`; was `claude-sonnet-4-5` until 2026-11-26), OpenAI `gpt-4o-mini` (structured OpenAI analysis still returns not-implemented; live lifecycle preference is Anthropic).
 
 ## Stage 1 — UC-RI-005 (and related UC-RI-001–003)
 
 - **Provider resolution:** `RI_AI_PROVIDER_MODE` (`FIXTURE` | `ANTHROPIC` | `OPENAI` | `LIVE` | `AUTO`), `resolveAiProviderMode()` / `getAiProvider()` in `apps/platform/lib/ri/ai/provider-registry.ts`.
-- **Models:** Anthropic default `claude-sonnet-4-5` via `RI_ANTHROPIC_MODEL` / `ANTHROPIC_MODEL` / `RI_AI_MODEL`; OpenAI `RI_OPENAI_MODEL` (default `gpt-4o-mini`).
+- **Models:** Anthropic default `claude-sonnet-5-5` (legacy `claude-sonnet-4-5` still selectable) via `RI_ANTHROPIC_MODEL` / `ANTHROPIC_MODEL` / `RI_AI_MODEL`; OpenAI `RI_OPENAI_MODEL` (default `gpt-4o-mini`).
 - **Execution gate:** `RI_AI_EXECUTION_ENABLED=true` required for paid calls; fail-closed if live requested but keys missing (`AI_LIVE_PROVIDER_UNAVAILABLE`).
 - **Spend guard (UC-RI-005):** `lab-anthropic-spend-guard.mjs` — requires `RI_LAB_ANTHROPIC_MAX_USD` when execution enabled; tracks reservations, prompt size, in-flight scope.
 - **Pathway:** Design Lab → `/api/ri-lab/ai-analysis-runs` → `executePublicationAnalysis` / materialisation → human finding review → obligation OPEN.

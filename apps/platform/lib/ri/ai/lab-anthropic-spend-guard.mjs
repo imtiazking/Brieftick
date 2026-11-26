@@ -3,19 +3,27 @@
  * Not a billing-system hard cap — see limitationsInDocstring().
  */
 import {
-  estimatePromptCostUsd,
-  estimateRequestCostUsd,
+  ANTHROPIC_PRICING_VERSION,
+  estimateMaxRequestCostUsd,
+  estimateUsageCostUsd,
+  hasPublishedPricing,
+  maxInputSideRatePerMtok,
   MODEL_PRICING_ESTIMATE,
 } from '../reasoner/anthropic-eval-budget.mjs';
-import { reserveSharedLabSpend, settleSharedLabSpend, sharedSpendScopeKey } from './lab-shared-spend.mjs';
+import {
+  providerWindowSeconds,
+  reserveSharedLabSpend,
+  settleSharedLabSpend,
+  sharedSpendScopeKey,
+} from './lab-shared-spend.mjs';
+import { resolveConfiguredAnthropicModel } from './anthropic-model-config.mjs';
+
 function resolveLabAnthropicModel() {
-  const explicit =
-    process.env.RI_ANTHROPIC_MODEL?.trim() ||
-    process.env.ANTHROPIC_MODEL?.trim() ||
-    process.env.RI_AI_MODEL?.trim();
-  if (explicit && !explicit.startsWith('gpt-')) return explicit;
-  return 'claude-sonnet-4-5';
+  return resolveConfiguredAnthropicModel();
 }
+
+/** Reserve-side prompt estimate. Deliberately pessimistic (3 chars per token) so the hold covers real tokenisation. */
+export const RESERVE_CHARS_PER_TOKEN = 3;
 
 export const LAB_BUDGET_ERROR_CODES = {
   LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED: 'LAB_ANTHROPIC_BUDGET_NOT_CONFIGURED',
@@ -55,7 +63,7 @@ function parsePositiveFloat(raw, label) {
  * When RI_AI_EXECUTION_ENABLED=true and the use case is budgeted
  * (UC-RI-005 and lifecycle UC-RI-004/006/007/008), RI_LAB_ANTHROPIC_MAX_USD is mandatory.
  */
-export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled } = {}) {
+export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled, model: modelOverride } = {}) {
   if (!BUDGETED_USE_CASES.has(useCaseId)) {
     return { enforced: false, reason: 'use_case_not_budgeted' };
   }
@@ -94,7 +102,17 @@ export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled } 
     };
   }
 
-  const model = resolveLabAnthropicModel();
+  const model = modelOverride || resolveLabAnthropicModel();
+  if (!hasPublishedPricing(model)) {
+    // No silent fallback to another model's rate: an unpriced model cannot be reserved or settled.
+    return {
+      enforced: true,
+      failClosed: true,
+      code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+      message: `No published pricing is configured for model "${model}". Live execution is refused.`,
+    };
+  }
+  const rate = MODEL_PRICING_ESTIMATE[model];
   const maxOutputTokens = parsePositiveFloat(
     process.env.RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS?.trim(),
     'RI_LAB_ANTHROPIC_MAX_OUTPUT_TOKENS',
@@ -107,12 +125,12 @@ export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled } 
   const outputCap =
     maxOutputTokens != null
       ? Math.floor(maxOutputTokens)
-      : Math.min(8192, Math.max(1024, Math.floor((budgetUsd / 0.015) * 1000)));
+      : Math.min(8192, Math.max(1024, Math.floor((budgetUsd / rate.outputPerMtok) * 1_000_000)));
 
   const inputCap =
     maxInputTokens != null
       ? Math.floor(maxInputTokens)
-      : Math.min(200_000, Math.max(8_000, Math.floor((budgetUsd / 0.003) * 1_000_000)));
+      : Math.min(200_000, Math.max(8_000, Math.floor((budgetUsd / maxInputSideRatePerMtok(model)) * 1_000_000)));
 
   const retryReserveFactor = Number(process.env.RI_LAB_ANTHROPIC_RETRY_RESERVE_FACTOR?.trim() || '1');
   const retryFactor = Number.isFinite(retryReserveFactor) && retryReserveFactor >= 1 ? retryReserveFactor : 1;
@@ -125,7 +143,8 @@ export function resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled } 
     maxOutputTokens: outputCap,
     maxInputTokens: inputCap,
     retryReserveFactor: retryFactor,
-    pricingEstimate: MODEL_PRICING_ESTIMATE[model] ? model : 'claude-sonnet-4-5',
+    pricingEstimate: model,
+    pricingVersion: ANTHROPIC_PRICING_VERSION,
   };
 }
 
@@ -194,7 +213,7 @@ export class LabAnthropicSpendTracker {
 
   estimateInputTokensFromPrompt(system, user) {
     const chars = String(system || '').length + String(user || '').length;
-    return Math.ceil(chars / 3.5);
+    return Math.ceil(chars / RESERVE_CHARS_PER_TOKEN);
   }
 
   assertPromptWithinInputCap(system, user) {
@@ -219,7 +238,14 @@ export class LabAnthropicSpendTracker {
     if (!capCheck.ok) return capCheck;
 
     const outputTokens = this.maxOutputTokens;
-    const singleAttemptUsd = estimateRequestCostUsd(this.model, capCheck.inputTokensEstimate, outputTokens);
+    const singleAttemptUsd = estimateMaxRequestCostUsd(this.model, capCheck.inputTokensEstimate, outputTokens);
+    if (singleAttemptUsd == null) {
+      return {
+        ok: false,
+        code: LAB_BUDGET_ERROR_CODES.LAB_ANTHROPIC_BUDGET_ENFORCEMENT_FAILED,
+        message: `No published pricing is configured for model "${this.model}".`,
+      };
+    }
     const reserveUsd = Number((singleAttemptUsd * this.config.retryReserveFactor).toFixed(6));
 
     if (this.calculatedUsd + this.reservedUsd + reserveUsd > this.budgetUsd + 1e-9) {
@@ -250,17 +276,28 @@ export class LabAnthropicSpendTracker {
     };
   }
 
-  settleAttempt({ inputTokens = 0, outputTokens = 0, reserveUsd = 0 } = {}) {
+  settleAttempt({ inputTokens = 0, outputTokens = 0, reserveUsd = 0, usage = null, usageKnown = true } = {}) {
     this.attemptCount += 1;
-    this.inputTokens += inputTokens || 0;
-    this.outputTokens += outputTokens || 0;
-    const actualUsd = estimateRequestCostUsd(this.model, inputTokens || 0, outputTokens || 0);
+    const cost = usageKnown
+      ? estimateUsageCostUsd(
+          this.model,
+          usage || { standardInputTokens: inputTokens || 0, outputTokens: outputTokens || 0 },
+        )
+      : null;
+    // Unknown outcome (timeout / transport error): charge the whole reserve, like the shared ledger.
+    const actualUsd = cost ? cost.totalUsd : reserveUsd;
+    if (cost) {
+      this.inputTokens += cost.standardInputTokens ?? 0;
+      this.outputTokens += cost.outputTokens ?? 0;
+    }
     this.reservedUsd = Math.max(0, this.reservedUsd - reserveUsd);
     this.calculatedUsd += actualUsd;
     this.records.push({
       kind: 'settle',
       inputTokens,
       outputTokens,
+      usageKnown,
+      costBreakdown: cost,
       actualUsd,
       at: new Date().toISOString(),
     });
@@ -297,9 +334,9 @@ export class LabAnthropicSpendTracker {
 export function labBudgetEnforcementLimitations() {
   return [
     'HARD_INVOICE_CAP_NOT_GUARANTEED: the shared ledger reserves the maximum estimated cost and later reconciles reported tokens. It is not an Anthropic invoice or workspace cap.',
-    'Pricing uses static MODEL_PRICING_ESTIMATE — actual Anthropic invoice may differ by model snapshot, cache tokens, or taxes.',
-    'A crashed instance can leave a RESERVED row. Release it only with release_abandoned_lab_ai_reservation, an actor, and a written reason, after the row is at least 180 seconds old. Nothing releases it automatically, and there is no automatic retry.',
-    'Failed provider calls still consume one request. Reported tokens are settled; a call that reports no tokens settles at zero and releases the unused reserve.',
+    'Pricing uses the static published list prices in MODEL_PRICING_ESTIMATE (version recorded per row). Standard input, output, cache writes (5m/1h) and cache reads are priced separately. Actual Anthropic invoices may differ (discounts, taxes, tiers).',
+    'A crashed instance can leave a RESERVED row. Recover it only with release_abandoned_lab_ai_reservation: a registered operator, a reason, the provider deadline passed, and either verified usage with evidence or ASSUME_MAX (the full reserve stays spent). Nothing releases it automatically, a reservation is recovered at most once, and there is no automatic retry.',
+    'Failed provider calls still consume one request. HTTP error responses and refusals settle at the reported usage. A timeout or transport error has unknown provider usage and settles at the full reserve.',
     'RI_LAB_SPEND_GUARD_MODE=memory is for offline tests only. Live execution without a shared database fails closed.',
     'A request that passes pre-flight may still consume thinking tokens inside max_tokens before text appears; partial responses may still incur billed input tokens.',
     'No org-wide Anthropic workspace spend cap — only per-request guard when env is set.',
@@ -383,6 +420,7 @@ async function resolveSharedSpendQuery() {
   const sb = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
   return async (sql, params) => {
     const isReserve = sql.includes('reserve_lab_ai_spend');
+    const json = (v) => (typeof v === 'string' ? JSON.parse(v) : v ?? null);
     const { data, error } = await sb.rpc(isReserve ? 'reserve_lab_ai_spend' : 'settle_lab_ai_spend', isReserve
       ? {
           p_scope_key: params[0],
@@ -392,6 +430,10 @@ async function resolveSharedSpendQuery() {
           p_use_case_id: params[4],
           p_idempotency_key: params[5],
           p_organisation_id: params[6],
+          p_model: params[7],
+          p_pricing_version: params[8],
+          p_reserve_basis: json(params[9]),
+          p_provider_window_seconds: params[10],
         }
       : {
           p_reservation_id: params[0],
@@ -399,6 +441,12 @@ async function resolveSharedSpendQuery() {
           p_input_tokens: params[2],
           p_output_tokens: params[3],
           p_provider_ok: params[4],
+          p_cache_write_5m_tokens: params[5],
+          p_cache_write_1h_tokens: params[6],
+          p_cache_read_tokens: params[7],
+          p_provider_request_id: params[8],
+          p_usage_known: params[9],
+          p_cost_breakdown: json(params[10]),
         });
     if (error) {
       const err = new Error(error.message || 'shared_spend_rpc_failed');
@@ -416,6 +464,8 @@ async function guardWithSharedLedger({
   idempotencyKey,
   organisationId,
   maxOutputTokens,
+  inputTokensEstimate,
+  timeoutMs,
 }) {
   let query;
   try {
@@ -447,6 +497,17 @@ async function guardWithSharedLedger({
       useCaseId,
       idempotencyKey: idempotencyKey || `${useCaseId}:missing-key`,
       organisationId,
+      model: config.model,
+      pricingVersion: config.pricingVersion,
+      reserveBasis: {
+        inputTokensEstimate: inputTokensEstimate ?? null,
+        maxOutputTokens,
+        charsPerToken: RESERVE_CHARS_PER_TOKEN,
+        inputSideRatePerMtok: maxInputSideRatePerMtok(config.model),
+        outputRatePerMtok: MODEL_PRICING_ESTIMATE[config.model].outputPerMtok,
+        retryReserveFactor: config.retryReserveFactor,
+      },
+      providerWindowSeconds: providerWindowSeconds(timeoutMs),
     });
     if (!reserved?.ok) {
       return { ok: false, ...reserved, failClosed: true, query };
@@ -489,9 +550,11 @@ export async function guardLabAnthropicSpendBeforeCall({
   idempotencyKey,
   organisationId,
   maxOutputTokensOverride,
+  model,
+  timeoutMs,
 }) {
   const exec = process.env.RI_AI_EXECUTION_ENABLED === 'true';
-  const config = resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled: exec });
+  const config = resolveLabAnthropicBudgetConfig(useCaseId, { executionEnabled: exec, model });
   if (!config.enforced) {
     return { ok: true, skipped: true, reason: config.reason };
   }
@@ -517,6 +580,8 @@ export async function guardLabAnthropicSpendBeforeCall({
       idempotencyKey,
       organisationId,
       maxOutputTokens: reserve.maxOutputTokens,
+      inputTokensEstimate: reserve.inputTokensEstimate,
+      timeoutMs,
     });
   }
 
@@ -556,24 +621,75 @@ export async function guardLabAnthropicSpendBeforeCall({
   };
 }
 
+/**
+ * Usage categories and cost for one finished call.
+ * When the provider outcome is unknown (timeout, transport error, no response) usage cannot be read, so the
+ * call is settled at the full reserve — a charge may exist that we cannot see.
+ */
+export function describeCallUsage(model, apiResult, reserveUsd) {
+  const usageKnown = apiResult?.usageKnown ?? (apiResult?.ok === true || apiResult?.responseReceived === true);
+  const usage =
+    apiResult?.usage ?? {
+      standardInputTokens: apiResult?.inputTokens ?? 0,
+      outputTokens: apiResult?.outputTokens ?? 0,
+      cacheWrite5mTokens: 0,
+      cacheWrite1hTokens: 0,
+      cacheReadTokens: 0,
+    };
+  const cost = usageKnown ? estimateUsageCostUsd(model, usage) : null;
+  const settledEstimatedUsd = cost ? cost.totalUsd : Number(reserveUsd || 0);
+  return {
+    usageKnown,
+    usage,
+    cost,
+    settledEstimatedUsd,
+    costBreakdown: cost ?? {
+      model,
+      pricingVersion: ANTHROPIC_PRICING_VERSION,
+      usageAssumedMax: true,
+      totalUsd: settledEstimatedUsd,
+    },
+  };
+}
+
 export async function finalizeLabSpendAfterCall(tracker, slotKey, apiResult, reserveUsd) {
   if (tracker?.durable && tracker.query && tracker.reservationId) {
-    const inputTokens = apiResult?.inputTokens ?? 0;
-    const outputTokens = apiResult?.outputTokens ?? 0;
-    const actualUsd = estimateRequestCostUsd(tracker.config.model, inputTokens, outputTokens);
+    const model = tracker.config.model;
+    const described = describeCallUsage(model, apiResult, reserveUsd);
+    const usage = described.usage;
     try {
       const settled = await settleSharedLabSpend(tracker.query, {
         reservationId: tracker.reservationId,
-        actualUsd,
-        inputTokens,
-        outputTokens,
+        actualUsd: described.settledEstimatedUsd,
+        inputTokens: usage.standardInputTokens ?? 0,
+        outputTokens: usage.outputTokens ?? 0,
+        cacheWrite5mTokens: usage.cacheWrite5mTokens ?? 0,
+        cacheWrite1hTokens: usage.cacheWrite1hTokens ?? 0,
+        cacheReadTokens: usage.cacheReadTokens ?? 0,
+        providerRequestId: apiResult?.requestId ?? null,
+        usageKnown: described.usageKnown,
+        costBreakdown: described.costBreakdown,
         providerOk: apiResult?.ok === true,
       });
       return {
         ok: settled?.ok !== false,
         code: settled?.code,
         message: settled?.message,
-        spendAudit: { ...(tracker.spendAudit || {}), reconciliation: settled, calculatedUsd: settled?.settledUsd ?? actualUsd },
+        spendAudit: {
+          ...(tracker.spendAudit || {}),
+          reconciliation: settled,
+          pricingVersion: tracker.config?.pricingVersion ?? ANTHROPIC_PRICING_VERSION,
+          usageKnown: described.usageKnown,
+          usage: described.usageKnown ? usage : null,
+          costBreakdown: described.costBreakdown,
+          reservedUsd: reserveUsd,
+          settledEstimatedUsd: described.settledEstimatedUsd,
+          /** This call's settled estimate (legacy field name kept for readers of earlier audits). */
+          calculatedUsd: described.settledEstimatedUsd,
+          accountSettledUsd: settled?.settledUsd ?? null,
+          inputTokens: usage.standardInputTokens ?? 0,
+          outputTokens: usage.outputTokens ?? 0,
+        },
         providerOk: apiResult?.ok === true,
       };
     } catch (err) {
@@ -589,10 +705,13 @@ export async function finalizeLabSpendAfterCall(tracker, slotKey, apiResult, res
   try {
     const inputTokens = apiResult?.inputTokens ?? 0;
     const outputTokens = apiResult?.outputTokens ?? 0;
+    const described = describeCallUsage(tracker.model, apiResult, reserveUsd);
     const settle = tracker.settleAttempt({
       inputTokens,
       outputTokens,
       reserveUsd,
+      usage: described.usageKnown ? described.usage : null,
+      usageKnown: described.usageKnown,
     });
     if (apiResult && apiResult.ok === false) {
       tracker.records.push({

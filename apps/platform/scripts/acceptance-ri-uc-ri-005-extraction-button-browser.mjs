@@ -38,7 +38,7 @@ const uatRunView = (id, executionStatus, errorCode = null) => ({
   errorCode,
   reviewStatus: 'Ai Draft',
   provider: 'AIPROV-ANTHROPIC-001',
-  model: 'claude-sonnet-4-5',
+  model: 'claude-sonnet-5-5',
   createdAt: '2026-11-21T01:41:45Z',
   completedAt: null,
   humanReviewRequired: false,
