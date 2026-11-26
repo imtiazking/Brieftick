@@ -927,3 +927,16 @@ pm run qa (ci) **29/29 PASS** including RI-SONNET-55-COMPAT, RI-SHARED-SPEND, RI
 | Post-promotion | Catalogue unchanged: 275 publications, 208 findings, 12 verified obligations, 6 risks, 6 controls, 2 assurance reviews (API counts). Database after deploy: ai_analysis_runs 29 (latest 2026-11-23), ledger 0/0/0, obligations 38, risks 30, controls 29, assurance 6 â€” identical to pre-deploy. No AI run and no ledger activity: execution disabled and stages in fixture mode. |
 | Not touched | `platform`, `brieftick`, `www.forgeniq.com`; no Clerk or permission changes; no deployment deleted; no provider call. |
 | Open | Hosted effective model value is a Secret and cannot be read back; first authorised run records requested/response model in telemetry. |
+
+## 2026-11-26 — FCA-EVAL-001 live five-stage AI pilot (executed)
+
+| Item | Outcome |
+|---|---|
+| Authorisation | One controlled paid pilot, max $0.75 and 8 requests, staging only |
+| Execution | 5 live `claude-sonnet-5-5` requests (UC-RI-005, 004, 006, 007, 008), 8,348 input / 5,678 output tokens, `.073476` settled, 0 retries, 0 failures. Ledger: 5 SETTLED, 0 open, 0 recoveries |
+| Governance | Stage 1 review by B (synthetic, quotation corrected from verified PDF text); A submit / C approve for obligation, impact, risk, control, assurance plan. Assurance stopped at TESTING_READY; no test, exception or closure |
+| Findings | Defect A: PS26/1 publication context labelled `consultation` so binding nature was wrong (reference: binding, commencement 2026-07-15); Gap B effective date null; stages 2-5 citations carry section ids only; Defect D assurance notes truncated mid-word. Regulatory accuracy NOT_ASSESSED; everything pending human review |
+| Restore | `RI_AI_EXECUTION_ENABLED=false`, stages FIXTURE, suffix vars closed. Final official `dpl_xVuJVTVj6gfUQKDjBeTkhbV8onHU` (candidate-first, QA 36/36, smoke 19/19). Posture verified on the running app |
+| Harness change | Persona preflight retries handshake navigation and expects `aiRequest` only while paid AI is enabled |
+| Evidence | `docs/uat/evidence/live-ai-pilot-2026-11-26/` (PILOT-REPORT.md, RESTORE.md, ledger-reconciliation.json, raw responses) |
+| Not touched | `platform`, `brieftick`, `www.forgeniq.com`; no Clerk or permission changes; no deployment deleted |
