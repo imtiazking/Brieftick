@@ -408,6 +408,22 @@ export const QA_CATALOGUE = [
     ],
   },
   {
+    id: 'RI-CLASSIFICATION-CORPUS',
+    area: 'Regulatory Intelligence',
+    feature: 'Classification regression corpus (5,000+ oracle-checked cases, policy validation, JS/SQL vocabulary drift)',
+    type: 'acceptance',
+    criticality: 'critical',
+    gate: 'ci',
+    route: null,
+    apis: [],
+    entities: ['regulatory_classification_policies', 'regulatory_classification_policy_entries'],
+    command: 'node scripts/acceptance-ri-classification-corpus.mjs',
+    paths: [
+      'apps/platform/lib/ri/classification',
+      'apps/platform/supabase/migrations/20261121180000_ri_regulatory_classification_policy.sql',
+    ],
+  },
+  {
     id: 'RI-STAGE4-RECOVERY',
     area: 'Regulatory Intelligence',
     feature: 'Stage 4 recovery: run isolation, numbered retries, in-flight duplicate refusal, timeout accounting (mocked provider)',
