@@ -26,6 +26,10 @@ function makeRunner(adminUrl, sub) {
 }
 
 function filterSql(col, val, params) {
+  if (val && typeof val === 'object' && Array.isArray(val.__in)) {
+    params.push(val.__in);
+    return `${ident(col)} = any($${params.length})`;
+  }
   if (col.includes('->>')) {
     const [jsonCol, jsonKey] = col.split('->>');
     params.push(jsonKey, val);
@@ -114,6 +118,10 @@ function builder(run, table) {
     },
     eq(col, val) {
       state.filters.push([col, val]);
+      return api;
+    },
+    in(col, values) {
+      state.filters.push([col, { __in: values }]);
       return api;
     },
     order(col, opts = {}) {

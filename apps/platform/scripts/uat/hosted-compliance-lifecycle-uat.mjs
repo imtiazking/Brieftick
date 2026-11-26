@@ -112,8 +112,23 @@ if (!ids.obligationId) {
 }
 
 await runAs('B', async ({ page }) => {
-  const res = await api(page, 'PATCH', `/api/ri-lab/obligations/${ids.obligationId}`, { status: 'OPEN' });
-  record('S1-REVIEWER-APPROVE', 'hosted-api', denied(res) ? 'PASS' : 'FAIL', { http: res.status });
+  // Policy: an independent REVIEWER may approve a classified obligation as a pure decision (maker-checker),
+  // but must not use the approval to edit its content. Prove the second half; the plain decision is then
+  // exercised by User C so the lifecycle continues from a single, unambiguous approval.
+  const res = await api(page, 'PATCH', `/api/ri-lab/obligations/${ids.obligationId}`, {
+    status: 'OPEN',
+    priority: 'HIGH',
+    citation: `${RUN} SMUGGLED-BY-REVIEWER`,
+  });
+  const after = await api(page, 'GET', `/api/ri-lab/obligations/${ids.obligationId}`);
+  const still = after.body?.obligation?.status ?? after.body?.status;
+  const citation = after.body?.obligation?.citation ?? after.body?.citation;
+  record(
+    'S1-REVIEWER-NO-CONTENT-EDIT',
+    'hosted-api',
+    denied(res) && still === 'IN_REVIEW' && !String(citation ?? '').includes('SMUGGLED') ? 'PASS' : 'FAIL',
+    { http: res.status, statusAfter: still, error: res.body?.error || res.body?.message },
+  );
 });
 
 await runAs('C', async ({ page }) => {
@@ -314,6 +329,6 @@ record(
 );
 
 const failed = results.filter((r) => r.status === 'FAIL').length;
-writeFileSync(join(OUT, 'RESULT.json'), JSON.stringify({ run: RUN, deployment: 'dpl_DALWABZ2iGk571HjAD2kYoVswAkq', ids, session, results, failed }, null, 2));
+writeFileSync(join(OUT, 'RESULT.json'), JSON.stringify({ run: RUN, deployment: process.env.FORGENIQ_UAT_DEPLOYMENT || 'UNSPECIFIED (set FORGENIQ_UAT_DEPLOYMENT)', ids, session, results, failed }, null, 2));
 console.log(`hosted lifecycle: ${results.length} checks, failed ${failed}`);
 process.exit(failed ? 1 : 0);

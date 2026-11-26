@@ -77,6 +77,31 @@ export async function listAssuranceReviews(supabase: SupabaseClient, organisatio
   return data ?? [];
 }
 
+/**
+ * Control ids linked to each assurance review, from the authoritative link table (tenant-scoped; RLS still applies,
+ * so this can only ever return links the caller may already read).
+ */
+export async function listAssuranceControlLinks(
+  supabase: SupabaseClient,
+  organisationId: string,
+  assuranceReviewIds: string[],
+): Promise<Map<string, string[]>> {
+  const map = new Map<string, string[]>();
+  if (!assuranceReviewIds.length) return map;
+  const { data, error } = await supabase
+    .from('assurance_review_control_links')
+    .select('assurance_review_id, control_id')
+    .eq('organisation_id', organisationId)
+    .in('assurance_review_id', assuranceReviewIds);
+  if (error) throw new Error(error.message);
+  for (const row of data ?? []) {
+    const list = map.get(row.assurance_review_id) ?? [];
+    if (!list.includes(row.control_id)) list.push(row.control_id);
+    map.set(row.assurance_review_id, list);
+  }
+  return map;
+}
+
 export async function createAssuranceReview(
   supabase: SupabaseClient,
   params: {

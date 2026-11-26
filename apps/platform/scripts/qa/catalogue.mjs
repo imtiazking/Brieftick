@@ -524,6 +524,10 @@ export const QA_CATALOGUE = [
       'apps/platform/app/api/ri-lab/changes/route.ts',
       'apps/platform/app/api/ri-lab/risks/route.ts',
       'apps/platform/app/api/ri-lab/controls/route.ts',
+      'apps/platform/app/api/ri-lab/assurance-reviews/route.ts',
+      'apps/platform/app/api/ri-lab/tenant-governance/route.ts',
+      'apps/platform/lib/ri/lab-api/lab-governance-view.ts',
+      'apps/platform/lib/ri/services/assurance.ts',
     ],
   },
   {

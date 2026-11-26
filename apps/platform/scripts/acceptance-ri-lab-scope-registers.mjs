@@ -38,6 +38,9 @@ const { partitionObligationsForLabScope, obligationLabProvenanceInputFromRow } =
 const {
   partitionRisksForLabScope, partitionControlsForLabScope, riskLabProvenanceInputFromRow, controlLabProvenanceInputFromRow,
 } = await import('../lib/ri/lab-api/risk-control-lab-provenance.ts');
+const { mapAssuranceRowToLabView, withAssuranceControlLinks } = await import('../lib/ri/lab-api/lab-governance-view.ts');
+const { partitionAssuranceReviewsForLabScope, assuranceLabProvenanceInputFromRow } = await import('../lib/ri/lab-api/risk-control-lab-provenance.ts');
+const { listAssuranceControlLinks, listAssuranceReviews } = await import('../lib/ri/services/assurance.ts');
 const { listRisks } = await import('../lib/ri/services/risks.ts');
 const { listControls } = await import('../lib/ri/services/controls.ts');
 const { listChanges } = await import('../lib/ri/services/changes.ts');
@@ -126,8 +129,31 @@ for (const [name, def] of Object.entries(registers)) {
   check('REGRESSION: scope=all changes include the authorised UAT change (previously dropped)', ids(all.primary).includes('ch-uat'), ids(all.primary));
 }
 
+// ------------------------------------------------------------------------------------------------ Control → Assurance lineage
+{
+  const CTRL = '6a684a8e-788e-49dd-ab8d-2a2696da788d';
+  const base = { id: 'ar-1', review_type: 'Control assurance plan', result: 'NOT_TESTED', review_date: '2026-11-26', reviewer_user_id: 'u', updated_at: '2026-11-26T00:00:00Z' };
+  // The shape the Stage 5 auto-draft actually writes (observed on hosted staging): no parentControlId.
+  const auto = mapAssuranceRowToLabView({ ...base, metadata: { ...UAT, sourceApprovedControlId: CTRL, stage5PrimaryPlan: true } });
+  check('REGRESSION: auto-drafted plan exposes its control (sourceApprovedControlId) in controlIds', JSON.stringify(auto.controlIds) === JSON.stringify([CTRL]) && auto.parentControlId === CTRL, auto);
+  const manual = mapAssuranceRowToLabView({ ...base, metadata: { ...UAT, parentControlId: 'ctrl-manual' } });
+  check('plan bound manually keeps parentControlId lineage', JSON.stringify(manual.controlIds) === JSON.stringify(['ctrl-manual']), manual);
+  const bare = mapAssuranceRowToLabView({ ...base, metadata: { ...UAT } });
+  check('a plan with no lineage metadata has no controlIds (nothing invented)', bare.controlIds === undefined && bare.parentControlId === null, bare);
+  check('link-table ids are merged into a view that has no metadata lineage', JSON.stringify(withAssuranceControlLinks(bare, ['c1', 'c2']).controlIds) === JSON.stringify(['c1', 'c2']));
+  check('merge de-duplicates and keeps metadata lineage first', JSON.stringify(withAssuranceControlLinks(auto, [CTRL, 'c2']).controlIds) === JSON.stringify([CTRL, 'c2']));
+  check('merge with no links and no lineage leaves the view untouched', withAssuranceControlLinks(bare, undefined) === bare);
+}
+
 // ------------------------------------------------------------------------------------------------ route wiring
 const read = (p) => readFileSync(join(platformRoot, p), 'utf8');
+{
+  const ar = read('app/api/ri-lab/assurance-reviews/route.ts');
+  check('assurance-reviews route parses scope and calls scopeRegister', /parseLabDataScope\(new URL\(request\.url\)\)/.test(ar) && /scopeRegister\(scope, rowsRaw, partition\)/.test(ar));
+  check('assurance-reviews route merges link-table control ids', /listAssuranceControlLinks\(/.test(ar) && /withAssuranceControlLinks\(/.test(ar));
+  const tg = read('app/api/ri-lab/tenant-governance/route.ts');
+  check('tenant-governance merges link-table control ids for both assurance lists', /listAssuranceControlLinks\(/.test(tg) && (tg.match(/withAssuranceControlLinks\(/g) ?? []).length >= 2);
+}
 for (const [route, helper] of [
   ['app/api/ri-lab/risks/route.ts', 'scopeRegister'],
   ['app/api/ri-lab/controls/route.ts', 'scopeRegister'],
@@ -205,6 +231,46 @@ try {
     check(`PG ${reg.name}: user B asking for organisation A (scope=all) gets nothing`, crossBtoA.length === 0, crossBtoA.map(reg.key));
     const allCross = scopeRegister('all', crossAtoB, reg.partition(crossAtoB, 'all'));
     check(`PG ${reg.name}: scope=all over a cross-tenant result is still empty (the helper cannot widen access)`, allCross.primary.length === 0);
+  }
+
+  // ---- Control → Assurance lineage against real Postgres + RLS
+  {
+    const ctrl = async (org, name) => (await admin.query(`select id from controls where organisation_id = $1 and name = $2`, [org, name])).rows[0].id;
+    const ctrlAUat = await ctrl(ORG_A, 'A uat control');
+    const ctrlAOp = await ctrl(ORG_A, 'A operational control');
+    const ctrlBOp = await ctrl(ORG_B, 'B operational control');
+    const insAr = async (org, meta) => (await admin.query(
+      `insert into assurance_reviews (organisation_id, review_type, result, review_date, reviewer_user_id, metadata) values ($1, 'Control assurance plan', 'NOT_TESTED', current_date, $2, $3::jsonb) returning id`,
+      [org, UA, JSON.stringify(meta)],
+    )).rows[0].id;
+    const link = (org, ar, c) => admin.query(`insert into assurance_review_control_links (organisation_id, assurance_review_id, control_id) values ($1, $2, $3)`, [org, ar, c]);
+    // Exactly what the Stage 5 auto-draft writes: metadata.sourceApprovedControlId + a link-table row.
+    const arAuto = await insAr(ORG_A, { ...UAT, sourceApprovedControlId: ctrlAUat });
+    await link(ORG_A, arAuto, ctrlAUat);
+    // A plan whose only lineage is the link table (no metadata at all).
+    const arLinkOnly = await insAr(ORG_A, { ...OP });
+    await link(ORG_A, arLinkOnly, ctrlAOp);
+    const arB = await insAr(ORG_B, { ...OP });
+    await link(ORG_B, arB, ctrlBOp);
+
+    const rowsA = await listAssuranceReviews(clientA, ORG_A);
+    const linksA = await listAssuranceControlLinks(clientA, ORG_A, rowsA.map((r) => String(r.id)));
+    const viewOf = (r) => withAssuranceControlLinks(mapAssuranceRowToLabView(r), linksA.get(String(r.id)));
+    const allA = scopeRegister('all', rowsA, partitionAssuranceReviewsForLabScope(rowsA, 'all', (r) => assuranceLabProvenanceInputFromRow(r)));
+    const views = new Map(allA.primary.map((r) => [String(r.id), viewOf(r)]));
+    check('PG assurance: scope=all returns both of user A\'s plans and not organisation B\'s', views.has(arAuto) && views.has(arLinkOnly) && !views.has(arB), [...views.keys()]);
+    check('PG assurance REGRESSION: the auto-drafted plan exposes its control to the Design Lab', JSON.stringify(views.get(arAuto)?.controlIds) === JSON.stringify([ctrlAUat]), views.get(arAuto));
+    check('PG assurance: a plan with only a link-table row still exposes its control', JSON.stringify(views.get(arLinkOnly)?.controlIds) === JSON.stringify([ctrlAOp]), views.get(arLinkOnly));
+    const opA = scopeRegister('operational', rowsA, partitionAssuranceReviewsForLabScope(rowsA, 'operational', (r) => assuranceLabProvenanceInputFromRow(r)));
+    const opIds = opA.primary.map((r) => String(r.id));
+    check('PG assurance: operational scope keeps the UAT plan out of the primary list but labelled in authorisedUat', !opIds.includes(arAuto) && opIds.includes(arLinkOnly) && opA.authorisedUat.some((r) => String(r.id) === arAuto), { opIds });
+    // Tenant isolation of the link lookup itself.
+    const crossLinks = await listAssuranceControlLinks(clientA, ORG_B, [arB]);
+    check('PG assurance: user A cannot read organisation B\'s control links (RLS)', crossLinks.size === 0, [...crossLinks.entries()]);
+    const smuggled = await listAssuranceControlLinks(clientA, ORG_A, [arB]);
+    check('PG assurance: asking for another tenant\'s review id under own org returns nothing', smuggled.size === 0, [...smuggled.entries()]);
+    const crossBtoA = await listAssuranceReviews(clientB, ORG_A);
+    check('PG assurance: user B asking for organisation A\'s plans gets nothing', crossBtoA.length === 0, crossBtoA.length);
   }
 } catch (e) {
   fail += 1;

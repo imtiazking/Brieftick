@@ -30,7 +30,7 @@ import {
   partitionActionsForLabScope,
 } from '@/lib/ri/lab-api/action-lab-provenance';
 import { listAnalysisRuns } from '@/lib/ri/services/ai-analysis';
-import { listAssuranceReviews } from '@/lib/ri/services/assurance';
+import { listAssuranceControlLinks, listAssuranceReviews } from '@/lib/ri/services/assurance';
 import { listControls } from '@/lib/ri/services/controls';
 import { getDashboardSummary } from '@/lib/ri/services/dashboard';
 import { listEvidence } from '@/lib/ri/services/evidence';
@@ -52,6 +52,7 @@ import {
   mapPolicyRowToLabView,
   mapRiskRowToLabView,
   mapWorkflowEventToLabView,
+  withAssuranceControlLinks,
 } from '@/lib/ri/lab-api/lab-governance-view';
 
 export async function GET(request: Request) {
@@ -160,6 +161,12 @@ export async function GET(request: Request) {
       assuranceLabProvenanceInputFromRow(r),
     );
     const assuranceRows = scope === 'operational' ? assurancePartition.operational : assuranceRowsRaw;
+    // Authoritative Control → Assurance relationships (link table), merged into the views below.
+    const assuranceControlLinks = await listAssuranceControlLinks(
+      supabase,
+      organisationId,
+      assuranceRowsRaw.map((r) => String(r.id)),
+    );
     const exAssurance = assurancePartition.excludedFromOperationalCount;
     const actionPartition = partitionActionsForLabScope(actionRowsRaw, scope, (r) =>
       actionLabProvenanceInputFromRow(r as { metadata?: Record<string, unknown> | null }),
@@ -241,10 +248,10 @@ export async function GET(request: Request) {
         syntheticUat: findingPartition.syntheticUat.length,
       },
       assuranceReviews: assuranceRows.map((r) =>
-        mapAssuranceRowToLabView(r as Record<string, unknown>),
+        withAssuranceControlLinks(mapAssuranceRowToLabView(r as Record<string, unknown>), assuranceControlLinks.get(String(r.id))),
       ),
       authorisedUatAssuranceReviews: assurancePartition.authorisedUat.map((r) =>
-        mapAssuranceRowToLabView(r as Record<string, unknown>),
+        withAssuranceControlLinks(mapAssuranceRowToLabView(r as Record<string, unknown>), assuranceControlLinks.get(String(r.id))),
       ),
       assuranceProvenance: {
         operational: assurancePartition.operational.length,

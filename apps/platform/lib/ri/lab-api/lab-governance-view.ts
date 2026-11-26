@@ -374,7 +374,14 @@ export function mapFindingRowToLabView(row: Record<string, unknown>): LabFinding
 export function mapAssuranceRowToLabView(row: Record<string, unknown>): LabAssuranceReviewView {
   const labClass = classifyAssuranceForLab(assuranceLabProvenanceInputFromRow(row));
   const meta = parseLabRowMetadata(row.metadata) ?? null;
-  const parentControlId = typeof meta?.parentControlId === 'string' ? meta.parentControlId : null;
+  // The Stage 5 auto-drafted plan records its control as sourceApprovedControlId; manually bound plans use
+  // parentControlId. Either is the plan's lineage back to its control.
+  const parentControlId =
+    typeof meta?.parentControlId === 'string'
+      ? meta.parentControlId
+      : typeof meta?.sourceApprovedControlId === 'string'
+        ? meta.sourceApprovedControlId
+        : null;
   return {
     id: String(row.id),
     reviewType: String(row.review_type ?? '—'),
@@ -392,6 +399,20 @@ export function mapAssuranceRowToLabView(row: Record<string, unknown>): LabAssur
     tenantScope: true,
     _connected: true,
   };
+}
+
+/**
+ * Merge the authoritative link-table control ids into an assurance review view. Metadata can be absent (a plan linked
+ * through the links API, or a deferred mandatory link), so the link table is the source of truth; metadata lineage is
+ * kept. Order is stable and duplicates are removed.
+ */
+export function withAssuranceControlLinks<T extends { controlIds?: string[]; parentControlId?: string | null }>(
+  view: T,
+  linkedControlIds: readonly string[] | undefined,
+): T {
+  const merged = [...new Set([...(view.controlIds ?? []), ...(linkedControlIds ?? [])])];
+  if (!merged.length) return view;
+  return { ...view, controlIds: merged, parentControlId: view.parentControlId ?? merged[0] };
 }
 
 export function mapActionRowToLabView(row: Record<string, unknown>): LabActionView {
