@@ -23,7 +23,7 @@ const sha256 = (buf) => createHash('sha256').update(buf.toString('utf8').replace
 /** Files present at pilot close, hashed so later work can prove the originals were not altered. */
 export function originalEvidenceFiles() {
   const top = readdirSync(PILOT_EVIDENCE_DIR, { withFileTypes: true }).filter((e) => e.isFile()).map((e) => e.name);
-  const exportFile = join('saved-outputs', 'stage2-5-records-as-persisted.json');
+  const exportFile = 'saved-outputs/stage2-5-records-as-persisted.json';
   const exclude = new Set(['ORIGINALS-MANIFEST.json', 'EVALUATION-DETERMINISTIC.json', 'HARDENING-REPORT.md']);
   return [...top.filter((n) => !exclude.has(n)), exportFile].sort();
 }

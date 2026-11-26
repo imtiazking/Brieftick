@@ -1,6 +1,6 @@
 {
   "note": "SHA-256 of the pilot evidence as saved. Later hardening work must not change these files.",
-  "createdAt": "2026-11-26T12:24:33.426Z",
+  "createdAt": "2026-11-26T12:35:28.390Z",
   "files": {
     "PILOT-REPORT.md": "5f7b803db42748fec89334c243bd3a11d045a5e819539943ba4f4d64ab9a637e",
     "PREFLIGHT.md": "713bfbd3c176c4dc7a763dee98e1677dbf2ad08c89302b5e721243a20f7ce79c",
@@ -12,7 +12,7 @@
     "posture-2026-11-26T10-55-02-098Z.json": "bf62ab244725024e7f366a5ff49134de7eae4e2e379299e096b8abf1638141bb",
     "posture-2026-11-26T11-17-39-340Z.json": "21b9e3adfc71aac5ea8831a2d344ad23b5f92c9663698942d0362a84394c662f",
     "posture-2026-11-26T11-47-31-278Z.json": "9076217c47dfe461d61dc996c34e0e12d3ea42736ea888d65680c94de44a609c",
-    "saved-outputs\\stage2-5-records-as-persisted.json": "66520d8afb620fc938ca272fa96de70460941996c4d010b5dcb2251fe0b2bdf4",
+    "saved-outputs/stage2-5-records-as-persisted.json": "66520d8afb620fc938ca272fa96de70460941996c4d010b5dcb2251fe0b2bdf4",
     "stage1-findings-view.json": "be55cf84ff256aa91eaa38341a577045bda1b2377f7a7357a71a61870314bca0",
     "stage1-quotation-verification.json": "2049d77cc23f39079751c8b26b8ce44b3f24dd77386cea4b7d3c31327505c290",
     "stage1-review-response.json": "0cdb30936a0ad0d6923a7ad1c2f43aaa9cea3d753cf67517d3dc6b2e7fe4114f",
